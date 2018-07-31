@@ -22,11 +22,9 @@ describe('Tabs with routing', () => {
             cy.contains('Id');
             cy.contains('Name');
             ShowPage.gotoTab(2);
-            cy
-                .url()
-                .then(url =>
-                    expect(url).to.match(/.*#\/users\/1\/show\/security/)
-                );
+            cy.url().then(url =>
+                expect(url).to.match(/.*#\/users\/1\/show\/security/)
+            );
             cy.contains('Role');
             ShowPage.gotoTab(1);
             cy.contains('Id');
@@ -38,11 +36,9 @@ describe('Tabs with routing', () => {
             cy.contains('Id');
             cy.contains('Name');
             ShowPage.gotoTab(2);
-            cy
-                .url()
-                .then(url =>
-                    expect(url).to.match(/.*#\/users\/1\/show\/security/)
-                );
+            cy.url().then(url =>
+                expect(url).to.match(/.*#\/users\/1\/show\/security/)
+            );
             cy.contains('Role');
             cy.go('back');
             cy.contains('Id');
@@ -53,34 +49,42 @@ describe('Tabs with routing', () => {
 
     describe('in TabbedForm component', () => {
         beforeEach(() => EditPage.navigate());
-        it('allows to switch tabs using the buttons', () => {
+        it('allows to switch tabs using the buttons without reseting the form', () => {
             cy.contains('Summary');
             cy.contains('Security');
             cy.contains('Id');
             cy.contains('Name');
+            EditPage.setInputValue('name', 'Luke Skywalker');
             EditPage.gotoTab(2);
-            cy
-                .url()
-                .then(url => expect(url).to.match(/.*#\/users\/1\/security/));
+            cy.url().then(url =>
+                expect(url).to.match(/.*#\/users\/1\/security/)
+            );
             cy.contains('Role');
             EditPage.gotoTab(1);
             cy.contains('Id');
             cy.contains('Name');
             cy.url().then(url => expect(url).to.match(/.*#\/users\/1/));
+            cy.get(EditPage.elements.input('name')).should(el =>
+                expect(el).to.have.value('Luke Skywalker')
+            );
         });
 
-        it('allows to switch tabs using the browser history', () => {
+        it('allows to switch tabs using the browser history without reseting the form', () => {
             cy.contains('Id');
             cy.contains('Name');
+            EditPage.setInputValue('name', 'Luke Skywalker');
             EditPage.gotoTab(2);
-            cy
-                .url()
-                .then(url => expect(url).to.match(/.*#\/users\/1\/security/));
+            cy.url().then(url =>
+                expect(url).to.match(/.*#\/users\/1\/security/)
+            );
             cy.contains('Role');
             cy.go('back');
             cy.contains('Id');
             cy.contains('Name');
             cy.url().then(url => expect(url).to.match(/.*#\/users\/1/));
+            cy.get(EditPage.elements.input('name')).should(el =>
+                expect(el).to.have.value('Luke Skywalker')
+            );
         });
     });
 });
