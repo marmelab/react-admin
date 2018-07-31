@@ -32,6 +32,7 @@ export const styles = theme => ({
         background: 'transparent',
         display: 'block',
         flexGrow: 1,
+        margin: 0,
     },
     panelDetails: {
         display: 'flex',

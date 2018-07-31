@@ -7,7 +7,7 @@ import { translate } from 'ra-core';
 const styles = theme => ({
     item: {
         alignItems: 'center',
-        backgroundColor: theme.palette.secondary.main,
+        backgroundColor: theme.palette.action.active,
         display: 'inline-flex',
         height: 72,
         minWidth: 72,
@@ -17,17 +17,30 @@ const styles = theme => ({
         paddingRight: theme.spacing.unit * 4,
     },
 });
-const DragPreview = ({ className, classes, node, style, translate }) => (
+const DragPreview = ({
+    children,
+    className,
+    classes,
+    node,
+    style,
+    translate,
+}) => (
     <div className={className || classes.item} style={style}>
-        {translate('ra.tree.dragpreview', {
-            _: 'Node #%{id} |||| Node #%{id} with %{smart_count} children',
-            id: node.id,
-            smart_count: node.children.length,
-        })}
+        {children
+            ? typeof children === 'function'
+                ? children({ node, translate })
+                : children
+            : translate('ra.tree.dragpreview', {
+                  _:
+                      'Node #%{id} |||| Node #%{id} with %{smart_count} children',
+                  id: node.id,
+                  smart_count: node.children.length,
+              })}
     </div>
 );
 
 DragPreview.propTypes = {
+    children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
     className: PropTypes.string,
     classes: PropTypes.object,
     node: PropTypes.object,

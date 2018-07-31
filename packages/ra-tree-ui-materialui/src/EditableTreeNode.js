@@ -24,14 +24,14 @@ const styles = theme => {
             paddingLeft: theme.spacing.unit * 6,
         },
         handle: {
-            top: theme.spacing.unit * 4,
+            top: theme.spacing.unit * 6,
             left: theme.spacing.unit,
             position: 'absolute',
             transition: 'transform 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
             cursor: 'crosshair',
         },
         draggingOver: {
-            background: theme.palette.secondary.light,
+            background: theme.palette.action.hover,
         },
     };
 };
