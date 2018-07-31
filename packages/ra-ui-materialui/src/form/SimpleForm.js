@@ -85,6 +85,8 @@ export class SimpleForm extends Component {
         return (
             <form
                 className={classnames('simple-form', className)}
+                // Prevent automatic submission when hitting enter
+                action="javascript: void(0)"
                 {...sanitizeRestProps(rest)}
             >
                 <div className={classes.form} key={version}>

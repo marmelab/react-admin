@@ -121,6 +121,8 @@ export class TabbedForm extends Component {
             <form
                 className={classnames('tabbed-form', className)}
                 key={version}
+                // Prevent automatic submission when hitting enter
+                action="javascript: void(0)"
                 {...sanitizeRestProps(rest)}
             >
                 <Tabs
