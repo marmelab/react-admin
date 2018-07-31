@@ -22,6 +22,16 @@ describe('Create Page', () => {
         );
     });
 
+    it('should have a working array input with references', () => {
+        cy.get(CreatePage.elements.addAuthor).click();
+        cy.get(CreatePage.elements.input('authors[0].user_id')).should(
+            el => expect(el).to.exist
+        );
+        cy.get(CreatePage.elements.input('authors[0].role')).should(
+            el => expect(el).to.exist
+        );
+    });
+
     it('should put the ArrayInput default value', () => {
         const currentDate = new Date();
         const currentDateString = currentDate.toISOString().slice(0, 10);

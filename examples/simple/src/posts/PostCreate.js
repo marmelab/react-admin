@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import RichTextInput from 'ra-input-rich-text';
 import {
     ArrayInput,
+    AutocompleteInput,
     BooleanInput,
     Create,
     crudCreate,
@@ -11,7 +12,9 @@ import {
     FormDataConsumer,
     LongTextInput,
     NumberInput,
+    ReferenceInput,
     SaveButton,
+    SelectInput,
     SimpleForm,
     SimpleFormIterator,
     TextInput,
@@ -112,6 +115,27 @@ const PostCreate = ({ permissions, ...props }) => (
             </FormDataConsumer>
             <DateInput source="published_at" defaultValue={getDefaultDate} />
             <BooleanInput source="commentable" defaultValue />
+            {permissions === 'admin' && (
+                <ArrayInput source="authors">
+                    <SimpleFormIterator>
+                        <ReferenceInput
+                            label="User"
+                            source="user_id"
+                            reference="users"
+                        >
+                            <AutocompleteInput />
+                        </ReferenceInput>
+                        <SelectInput
+                            source="role"
+                            choices={[
+                                { id: 'headwriter', name: 'Head Writer' },
+                                { id: 'proofreader', name: 'Proof reader' },
+                                { id: 'cowriter', name: 'Co-Writer' },
+                            ]}
+                        />
+                    </SimpleFormIterator>
+                </ArrayInput>
+            )}
             <ArrayInput
                 source="backlinks"
                 defaultValue={[
