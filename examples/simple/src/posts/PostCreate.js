@@ -4,22 +4,21 @@ import { connect } from 'react-redux';
 import RichTextInput from 'ra-input-rich-text';
 import {
     ArrayInput,
+    AutocompleteInput,
     BooleanInput,
     Create,
-    crudCreate,
     DateInput,
     FormDataConsumer,
     LongTextInput,
     NumberInput,
+    ReferenceInput,
     SaveButton,
+    SelectInput,
     SimpleForm,
     SimpleFormIterator,
     TextInput,
     Toolbar,
-    SimpleFormIterator,
-    ReferenceInput,
-    AutocompleteInput,
-    SelectInput,
+    crudCreate,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
 
 const saveWithNote = (values, basePath, redirectTo) =>
