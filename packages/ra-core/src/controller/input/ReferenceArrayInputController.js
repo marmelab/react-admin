@@ -112,16 +112,34 @@ export class ReferenceArrayInputController extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
+        let shouldFetchOptions = false;
+
         if (this.props.record.id !== nextProps.record.id) {
             this.fetchReferencesAndOptions(nextProps);
         } else if (this.props.input.value !== nextProps.input.value) {
             this.fetchReferences(nextProps);
-        } else if (
-            !isEqual(nextProps.filter, this.props.filter) ||
-            !isEqual(nextProps.sort, this.props.sort) ||
-            nextProps.perPage !== this.props.perPage
-        ) {
-            this.fetchOptions(nextProps);
+        } else {
+            if (!isEqual(nextProps.filter, this.props.filter)) {
+                this.params = { ...this.params, filter: nextProps.filter };
+                shouldFetchOptions = true;
+            }
+            if (!isEqual(nextProps.sort, this.props.sort)) {
+                this.params = { ...this.params, sort: nextProps.sort };
+                shouldFetchOptions = true;
+            }
+            if (nextProps.perPage !== this.props.perPage) {
+                this.params = {
+                    ...this.params,
+                    pagination: {
+                        ...this.params.pagination,
+                        perPage: nextProps.perPage,
+                    },
+                };
+                shouldFetchOptions = true;
+            }
+        }
+        if (shouldFetchOptions) {
+            this.fetchOptions();
         }
     }
 

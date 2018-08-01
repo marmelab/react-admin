@@ -1,6 +1,7 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import isEqual from 'lodash/isEqual';
 
 import { crudGetManyReference as crudGetManyReferenceAction } from '../../actions';
 import {
@@ -72,6 +73,10 @@ export class ReferenceManyFieldController extends Component {
     componentWillReceiveProps(nextProps) {
         if (this.props.record.id !== nextProps.record.id) {
             this.fetchReferences(nextProps);
+        }
+
+        if (!isEqual(this.props.sort, nextProps.sort)) {
+            this.setState({ sort: nextProps.sort }, this.fetchReferences);
         }
     }
 
