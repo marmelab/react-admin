@@ -19,6 +19,7 @@ import { getDefaultValues, translate, REDUX_FORM_NAME } from 'ra-core';
 import Toolbar from './Toolbar';
 
 const styles = theme => ({
+    content: { paddingTop: 0 },
     errorTabButton: { color: theme.palette.error.main },
 });
 
@@ -144,7 +145,7 @@ export class TabbedForm extends Component {
                     })}
                 </Tabs>
                 <Divider />
-                <CardContent>
+                <CardContent className={classes.content}>
                     {/* All tabs are rendered (not only the one in focus), to allow validation
                     on tabs not in focus. The tabs receive a `hidden` property, which they'll
                     use to hide the tab using CSS if it's not the one in focus.

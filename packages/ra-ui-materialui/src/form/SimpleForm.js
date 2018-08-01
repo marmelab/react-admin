@@ -4,10 +4,15 @@ import { reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import CardContent from '@material-ui/core/CardContent';
+import { withStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
 import { getDefaultValues, translate, REDUX_FORM_NAME } from 'ra-core';
 import FormInput from './FormInput';
 import Toolbar from './Toolbar';
+
+const styles = {
+    content: { paddingTop: 0 },
+};
 
 const sanitizeRestProps = ({
     anyTouched,
@@ -18,6 +23,7 @@ const sanitizeRestProps = ({
     autofill,
     blur,
     change,
+    classes,
     clearAsyncError,
     clearFields,
     clearSubmit,
@@ -57,6 +63,7 @@ export class SimpleForm extends Component {
         const {
             basePath,
             children,
+            classes,
             className,
             invalid,
             pristine,
@@ -75,7 +82,7 @@ export class SimpleForm extends Component {
                 className={classnames('simple-form', className)}
                 {...sanitizeRestProps(rest)}
             >
-                <CardContent key={version}>
+                <CardContent className={classes.content} key={version}>
                     {Children.map(children, input => (
                         <FormInput
                             basePath={basePath}
@@ -104,6 +111,7 @@ export class SimpleForm extends Component {
 SimpleForm.propTypes = {
     basePath: PropTypes.string,
     children: PropTypes.node,
+    classes: PropTypes.object,
     className: PropTypes.string,
     defaultValue: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
     handleSubmit: PropTypes.func, // passed by redux-form
@@ -139,7 +147,8 @@ const enhance = compose(
     reduxForm({
         enableReinitialize: true,
         keepDirtyOnReinitialize: true,
-    })
+    }),
+    withStyles(styles)
 );
 
 export default enhance(SimpleForm);

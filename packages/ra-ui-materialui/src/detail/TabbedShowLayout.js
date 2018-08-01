@@ -3,12 +3,18 @@ import PropTypes from 'prop-types';
 import Tabs from '@material-ui/core/Tabs';
 import Divider from '@material-ui/core/Divider';
 import CardContent from '@material-ui/core/CardContent';
+import { withStyles } from '@material-ui/core/styles';
 import { withRouter, Route } from 'react-router-dom';
 import compose from 'recompose/compose';
 import { translate } from 'ra-core';
 
+const styles = {
+    content: { paddingTop: 0 },
+};
+
 const sanitizeRestProps = ({
     children,
+    classes,
     className,
     record,
     resource,
@@ -68,6 +74,7 @@ export class TabbedShowLayout extends Component {
         const {
             basePath,
             children,
+            classes,
             className,
             location,
             match,
@@ -108,7 +115,7 @@ export class TabbedShowLayout extends Component {
                     })}
                 </Tabs>
                 <Divider />
-                <CardContent>
+                <CardContent className={classes.content}>
                     {Children.map(
                         children,
                         (tab, index) =>
@@ -135,6 +142,7 @@ export class TabbedShowLayout extends Component {
 
 TabbedShowLayout.propTypes = {
     children: PropTypes.node,
+    classes: PropTypes.object,
     className: PropTypes.string,
     location: PropTypes.object,
     match: PropTypes.object,
@@ -148,7 +156,8 @@ TabbedShowLayout.propTypes = {
 
 const enhance = compose(
     withRouter,
-    translate
+    translate,
+    withStyles(styles)
 );
 
 export default enhance(TabbedShowLayout);
