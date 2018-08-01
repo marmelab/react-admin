@@ -349,12 +349,12 @@ describe('<ReferenceArrayInputController />', () => {
                 crudGetMatching={crudGetMatching}
             />
         );
-        expect(crudGetMatching).toHaveBeenCalledTimes(1);
-        expect(crudGetMany).toHaveBeenCalledTimes(1);
+        assert.equal(crudGetMatching.mock.calls.length, 1);
+        assert.equal(crudGetMany.mock.calls.length, 1);
 
         wrapper.instance().setFilter('bar');
-        expect(crudGetMatching).toHaveBeenCalledTimes(2);
-        expect(crudGetMany).toHaveBeenCalledTimes(1);
+        assert.equal(crudGetMatching.mock.calls.length, 2);
+        assert.equal(crudGetMany.mock.calls.length, 1);
     });
 
     it('should only call crudGetMatching when props are changed from outside', () => {
@@ -369,20 +369,38 @@ describe('<ReferenceArrayInputController />', () => {
                 crudGetMatching={crudGetMatching}
             />
         );
-        expect(crudGetMatching).toHaveBeenCalledTimes(1);
-        expect(crudGetMany).toHaveBeenCalledTimes(1);
+        assert.equal(crudGetMatching.mock.calls.length, 1);
+        assert.equal(crudGetMany.mock.calls.length, 1);
 
         wrapper.setProps({ filter: { foo: 'bar' } });
-        expect(crudGetMatching.mock.calls.length).toBe(2);
-        expect(crudGetMany).toHaveBeenCalledTimes(1);
+        assert.deepEqual(crudGetMatching.mock.calls[1], [
+            'tags',
+            'posts@tag_ids',
+            { page: 1, perPage: 25 },
+            { field: 'id', order: 'DESC' },
+            { foo: 'bar' },
+        ]);
+        assert.equal(crudGetMany.mock.calls.length, 1);
 
         wrapper.setProps({ sort: { field: 'foo', order: 'ASC' } });
-        expect(crudGetMatching.mock.calls.length).toBe(3);
-        expect(crudGetMany).toHaveBeenCalledTimes(1);
+        assert.deepEqual(crudGetMatching.mock.calls[2], [
+            'tags',
+            'posts@tag_ids',
+            { page: 1, perPage: 25 },
+            { field: 'foo', order: 'ASC' },
+            { foo: 'bar' },
+        ]);
+        assert.equal(crudGetMany.mock.calls.length, 1);
 
         wrapper.setProps({ perPage: 42 });
-        expect(crudGetMatching.mock.calls.length).toBe(4);
-        expect(crudGetMany).toHaveBeenCalledTimes(1);
+        assert.deepEqual(crudGetMatching.mock.calls[3], [
+            'tags',
+            'posts@tag_ids',
+            { page: 1, perPage: 42 },
+            { field: 'foo', order: 'ASC' },
+            { foo: 'bar' },
+        ]);
+        assert.equal(crudGetMany.mock.calls.length, 1);
     });
 
     it('should call crudGetMany when input value changes', () => {
@@ -395,9 +413,9 @@ describe('<ReferenceArrayInputController />', () => {
                 crudGetMany={crudGetMany}
             />
         );
-        expect(crudGetMany.mock.calls.length).toBe(1);
+        assert.equal(crudGetMany.mock.calls.length, 1);
         wrapper.setProps({ input: { value: [6] } });
-        expect(crudGetMany.mock.calls.length).toBe(2);
+        assert.equal(crudGetMany.mock.calls.length, 2);
     });
 
     it('should call crudGetOne and crudGetMatching when record changes', () => {
@@ -412,10 +430,10 @@ describe('<ReferenceArrayInputController />', () => {
                 crudGetMatching={crudGetMatching}
             />
         );
-        expect(crudGetMany.mock.calls.length).toBe(1);
-        expect(crudGetMatching.mock.calls.length).toBe(1);
+        assert.equal(crudGetMatching.mock.calls.length, 1);
+        assert.equal(crudGetMany.mock.calls.length, 1);
         wrapper.setProps({ record: { id: 1 } });
-        expect(crudGetMany.mock.calls.length).toBe(2);
-        expect(crudGetMatching.mock.calls.length).toBe(2);
+        assert.equal(crudGetMatching.mock.calls.length, 2);
+        assert.equal(crudGetMany.mock.calls.length, 2);
     });
 });

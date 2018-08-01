@@ -95,7 +95,7 @@ describe('<ReferenceManyFieldController />', () => {
 
     it('should support custom source', () => {
         const children = jest.fn();
-        const crudGetManyReference = jest.fn(() => {});
+        const crudGetManyReference = jest.fn();
 
         shallow(
             <ReferenceManyFieldController
@@ -112,5 +112,37 @@ describe('<ReferenceManyFieldController />', () => {
         );
 
         assert.equal(crudGetManyReference.mock.calls[0][2], 1);
+    });
+
+    it('should call crudGetManyReference when its props changes', () => {
+        const children = jest.fn();
+        const crudGetManyReference = jest.fn();
+        const wrapper = shallow(
+            <ReferenceManyFieldController
+                record={{ id: 1 }}
+                resource="foo"
+                reference="bar"
+                target="foo_id"
+                basePath=""
+                data={{
+                    1: { id: 1, title: 'hello' },
+                    2: { id: 2, title: 'world' },
+                }}
+                ids={[1, 2]}
+                crudGetManyReference={crudGetManyReference}
+            >
+                {children}
+            </ReferenceManyFieldController>
+        );
+        wrapper.setProps({ sort: { field: 'id', order: 'ASC' } });
+        assert.deepEqual(crudGetManyReference.mock.calls[1], [
+            'bar',
+            'foo_id',
+            1,
+            'foo_bar@foo_id_1',
+            { page: 1, perPage: 25 },
+            { field: 'id', order: 'ASC' },
+            {},
+        ]);
     });
 });
