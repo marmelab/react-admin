@@ -1,10 +1,10 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { createSelector } from 'reselect';
 import get from 'lodash/get';
 
-import { crudGetManyAccumulate as crudGetManyAccumulateAction } from '../../actions';
-import { getReferencesByIds } from '../../reducer/admin/references/oneToMany';
+import { crudGetManyAccumulate } from '../../actions';
 
 /**
  * A container component that fetches records from another resource specified
@@ -92,18 +92,37 @@ ReferenceArrayFieldController.propTypes = {
     source: PropTypes.string.isRequired,
 };
 
-const mapStateToProps = (state, props) => {
-    const { record, source, reference } = props;
-    const ids = get(record, source) || [];
-    return {
-        data: getReferencesByIds(state, reference, ids),
-        ids,
-    };
+const emptyIds = [];
+
+const idsSelector = (state, props) =>
+    get(props.record, props.source) || emptyIds;
+const resourceSelector = (state, props) =>
+    state.admin.resources[props.reference];
+const makeDataSelector = () =>
+    createSelector([resourceSelector, idsSelector], (resource, ids) => {
+        const references = ids
+            .map(id => resource && resource.data[id])
+            .filter(r => typeof r !== 'undefined')
+            .reduce(
+                (prev, record) => ({
+                    ...prev,
+                    [record.id]: record,
+                }),
+                {}
+            );
+
+        return Object.keys(references).length > 0 ? references : null;
+    });
+
+const makeMapStateToProps = () => {
+    const getData = makeDataSelector();
+    return (state, props) => ({
+        ids: idsSelector(state, props),
+        data: getData(state, props),
+    });
 };
 
 export default connect(
-    mapStateToProps,
-    {
-        crudGetManyAccumulate: crudGetManyAccumulateAction,
-    }
+    makeMapStateToProps,
+    { crudGetManyAccumulate }
 )(ReferenceArrayFieldController);

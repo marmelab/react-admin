@@ -28,6 +28,8 @@ import {
 import translate from '../i18n/translate';
 import removeKey from '../util/removeKey';
 
+const emptyFilterValues = {};
+
 /**
  * List page component
  *
@@ -245,7 +247,7 @@ export class ListController extends Component {
         } = this.props;
         const query = this.getQuery();
 
-        const queryFilterValues = query.filter || {};
+        const queryFilterValues = query.filter || emptyFilterValues;
 
         const resourceName = translate(`resources.${resource}.name`, {
             smart_count: 2,

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import onlyUpdateForKeys from 'recompose/onlyUpdateForKeys';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import Checkbox from '@material-ui/core/Checkbox';
@@ -106,4 +107,10 @@ DatagridRow.defaultProps = {
     selected: false,
 };
 
-export default DatagridRow;
+export default onlyUpdateForKeys([
+    'id',
+    'selected',
+    'record',
+    'hover',
+    'children',
+])(DatagridRow);

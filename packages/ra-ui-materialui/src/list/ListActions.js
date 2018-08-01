@@ -1,6 +1,7 @@
 import React, { cloneElement } from 'react';
 import PropTypes from 'prop-types';
-import onlyUpdateForKeys from 'recompose/onlyUpdateForKeys';
+import shouldUpdate from 'recompose/shouldUpdate';
+import shallowEqual from 'recompose/shallowEqual';
 import CardActions from '@material-ui/core/CardActions';
 import { sanitizeListRestProps } from 'ra-core';
 
@@ -74,10 +75,11 @@ Actions.defaultProps = {
     selectedIds: [],
 };
 
-export default onlyUpdateForKeys([
-    'resource',
-    'filters',
-    'displayedFilters',
-    'filterValues',
-    'selectedIds',
-])(Actions);
+export default shouldUpdate(
+    (props, nextProps) =>
+        props.resource !== nextProps.resource ||
+        props.filters !== nextProps.filters ||
+        props.displayedFilters !== nextProps.displayedFilters ||
+        !shallowEqual(props.filterValues, nextProps.filterValues) ||
+        props.selectedIds !== nextProps.selectedIds
+)(Actions);

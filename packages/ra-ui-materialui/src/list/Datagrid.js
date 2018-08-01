@@ -1,16 +1,12 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { sanitizeListRestProps } from 'ra-core';
 import { withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Checkbox from '@material-ui/core/Checkbox';
 
 import classnames from 'classnames';
 
-import DatagridHeaderCell from './DatagridHeaderCell';
+import DatagridHeader from './DatagridHeader';
 import DatagridBody from './DatagridBody';
 
 const styles = {
@@ -69,118 +65,66 @@ const styles = {
  *     </Datagrid>
  * </ReferenceManyField>
  */
-class Datagrid extends Component {
-    updateSort = event => {
-        event.stopPropagation();
-        this.props.setSort(event.currentTarget.dataset.sort);
-    };
-
-    handleSelectAll = event => {
-        const { onSelect, ids, selectedIds } = this.props;
-        if (event.target.checked) {
-            onSelect(
-                ids.reduce(
-                    (idList, id) =>
-                        idList.includes(id) ? idList : idList.concat(id),
-
-                    selectedIds
-                )
-            );
-        } else {
-            onSelect([]);
-        }
-    };
-
-    render() {
-        const {
-            basePath,
-            data,
-            children,
-            classes,
-            className,
-            currentSort,
-            hasBulkActions,
-            hover,
-            ids,
-            isLoading,
-            resource,
-            rowStyle,
-            selectedIds,
-            setSort,
-            onSelect,
-            onToggleItem,
-            total,
-            version,
-            ...rest
-        } = this.props;
-
-        if (!isLoading && (ids.length === 0 || total === 0)) {
-            return null;
-        }
-
-        return (
-            <Table
-                className={classnames(classes.table, className)}
-                {...sanitizeListRestProps(rest)}
-            >
-                <TableHead>
-                    <TableRow className={classes.row}>
-                        {hasBulkActions && (
-                            <TableCell padding="none">
-                                <Checkbox
-                                    className="select-all"
-                                    color="primary"
-                                    checked={
-                                        selectedIds.length > 0 &&
-                                        ids.length > 0 &&
-                                        !ids.find(
-                                            it => selectedIds.indexOf(it) === -1
-                                        )
-                                    }
-                                    onChange={this.handleSelectAll}
-                                />
-                            </TableCell>
-                        )}
-                        {React.Children.map(
-                            children,
-                            (field, index) =>
-                                field ? (
-                                    <DatagridHeaderCell
-                                        className={classes.headerCell}
-                                        currentSort={currentSort}
-                                        field={field}
-                                        isSorting={
-                                            field.props.source ===
-                                            currentSort.field
-                                        }
-                                        key={field.props.source || index}
-                                        resource={resource}
-                                        updateSort={this.updateSort}
-                                    />
-                                ) : null
-                        )}
-                    </TableRow>
-                </TableHead>
-                <DatagridBody
-                    basePath={basePath}
-                    classes={classes}
-                    data={data}
-                    hasBulkActions={hasBulkActions}
-                    hover={hover}
-                    ids={ids}
-                    isLoading={isLoading}
-                    onToggleItem={onToggleItem}
-                    resource={resource}
-                    rowStyle={rowStyle}
-                    selectedIds={selectedIds}
-                    version={version}
-                >
-                    {children}
-                </DatagridBody>
-            </Table>
-        );
+const Datagrid = ({
+    basePath,
+    data,
+    children,
+    classes,
+    className,
+    currentSort,
+    hasBulkActions,
+    hover,
+    ids,
+    isLoading,
+    resource,
+    rowStyle,
+    selectedIds,
+    setSort,
+    onSelect,
+    onToggleItem,
+    total,
+    version,
+    ...rest
+}) => {
+    if (!isLoading && (ids.length === 0 || total === 0)) {
+        return null;
     }
-}
+
+    return (
+        <Table
+            className={classnames(classes.table, className)}
+            {...sanitizeListRestProps(rest)}
+        >
+            <DatagridHeader
+                classes={classes}
+                currentSort={currentSort}
+                hasBulkActions={hasBulkActions}
+                ids={ids}
+                onSelect={onSelect}
+                resource={resource}
+                selectedIds={selectedIds}
+                setSort={setSort}
+            >
+                {children}
+            </DatagridHeader>
+            <DatagridBody
+                basePath={basePath}
+                classes={classes}
+                data={data}
+                hasBulkActions={hasBulkActions}
+                hover={hover}
+                ids={ids}
+                onToggleItem={onToggleItem}
+                resource={resource}
+                rowStyle={rowStyle}
+                selectedIds={selectedIds}
+                version={version}
+            >
+                {children}
+            </DatagridBody>
+        </Table>
+    );
+};
 
 Datagrid.propTypes = {
     basePath: PropTypes.string,

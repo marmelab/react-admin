@@ -15,7 +15,6 @@ const DatagridBody = ({
     hasBulkActions,
     hover,
     ids,
-    isLoading,
     data,
     selectedIds,
     styles,
@@ -58,7 +57,6 @@ DatagridBody.propTypes = {
     hasBulkActions: PropTypes.bool.isRequired,
     hover: PropTypes.bool,
     ids: PropTypes.arrayOf(PropTypes.any).isRequired,
-    isLoading: PropTypes.bool,
     onToggleItem: PropTypes.func,
     resource: PropTypes.string,
     rowStyle: PropTypes.func,
@@ -79,8 +77,8 @@ const areArraysEqual = (arr1, arr2) =>
 const PureDatagridBody = shouldUpdate(
     (props, nextProps) =>
         props.version !== nextProps.version ||
-        nextProps.isLoading === false ||
         !areArraysEqual(props.ids, nextProps.ids) ||
+        props.selectedIds !== nextProps.selectedIds ||
         props.data !== nextProps.data
 )(DatagridBody);
 
