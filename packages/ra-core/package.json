@@ -1,6 +1,6 @@
 {
     "name": "ra-core",
-    "version": "2.1.3",
+    "version": "2.1.5",
     "description": "Core components of react-admin, a frontend Framework for building admin applications on top of REST services, using ES6, React",
     "files": [
         "*.md",

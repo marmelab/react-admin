@@ -22,6 +22,15 @@
 * Fix bug with Form state being persisted between resources ([djhi](https://github.com/djhi))
 * Fix `defaultValue` for `<ArrayInput>` ([djhi](https://github.com/djhi))
 
+## v2.1.5
+
+* Fix `NumberField` style regression in Show views ([djhi](https://github.com/djhi))
+* Add `ra-customizable-datagrid` to Ecosystem documentation ([AkselsLedins](https://github.com/AkselsLedins))
+* Fix e2e tests failing on chrome 68 ([djhi](https://github.com/djhi))
+* Add Vietnamese translation ([hieunguyendut](https://github.com/hieunguyendut))
+* Fix `<ReferenceInput>` when used inside `<ArrayInput>` ([djhi](https://github.com/djhi))
+* Fix broken link in Actions documentation ([djhi](https://github.com/djhi))
+
 ## v2.1.4
 
 * Fix link color in `<ReferenceField>` ([fzaninotto](https://github.com/fzaninotto))

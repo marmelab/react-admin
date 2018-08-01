@@ -1,6 +1,6 @@
 {
     "name": "ra-ui-materialui",
-    "version": "2.1.4",
+    "version": "2.1.5",
     "description": "UI Components for react-admin with MaterialUI",
     "files": [
         "*.md",
@@ -45,7 +45,7 @@
         "lodash": "~4.17.5",
         "papaparse": "^4.1.4",
         "prop-types": "~15.6.1",
-        "ra-core": "^2.1.3",
+        "ra-core": "^2.1.5",
         "react-autosuggest": "^9.3.2",
         "react-dropzone": "~4.0.1",
         "react-redux": "~5.0.7",
