@@ -14,6 +14,7 @@ import { USER_LOGOUT } from './actions/authActions';
 import createAppReducer from './reducer';
 import { adminSaga } from './sideEffect';
 import { TranslationProvider, defaultI18nProvider } from './i18n';
+import formMiddleware from './form/formMiddleware';
 import CoreAdminRouter from './CoreAdminRouter';
 
 const CoreAdmin = ({
@@ -56,7 +57,11 @@ const CoreAdmin = ({
         resettableAppReducer,
         initialState,
         compose(
-            applyMiddleware(sagaMiddleware, routerMiddleware(routerHistory)),
+            applyMiddleware(
+                sagaMiddleware,
+                routerMiddleware(routerHistory),
+                formMiddleware
+            ),
             typeof window !== 'undefined' && window.devToolsExtension
                 ? window.devToolsExtension()
                 : f => f
