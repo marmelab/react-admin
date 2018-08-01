@@ -3,22 +3,11 @@ import PropTypes from 'prop-types';
 import { reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
-import { withStyles } from '@material-ui/core/styles';
+import CardContent from '@material-ui/core/CardContent';
 import classnames from 'classnames';
 import { getDefaultValues, translate, REDUX_FORM_NAME } from 'ra-core';
 import FormInput from './FormInput';
 import Toolbar from './Toolbar';
-
-const styles = theme => ({
-    form: {
-        [theme.breakpoints.up('sm')]: {
-            padding: '0 1em 1em 1em',
-        },
-        [theme.breakpoints.down('xs')]: {
-            padding: '0 1em 5em 1em',
-        },
-    },
-});
 
 const sanitizeRestProps = ({
     anyTouched,
@@ -68,7 +57,6 @@ export class SimpleForm extends Component {
         const {
             basePath,
             children,
-            classes = {},
             className,
             invalid,
             pristine,
@@ -87,7 +75,7 @@ export class SimpleForm extends Component {
                 className={classnames('simple-form', className)}
                 {...sanitizeRestProps(rest)}
             >
-                <div className={classes.form} key={version}>
+                <CardContent key={version}>
                     {Children.map(children, input => (
                         <FormInput
                             basePath={basePath}
@@ -96,7 +84,7 @@ export class SimpleForm extends Component {
                             resource={resource}
                         />
                     ))}
-                </div>
+                </CardContent>
                 {toolbar &&
                     React.cloneElement(toolbar, {
                         basePath,
@@ -116,7 +104,6 @@ export class SimpleForm extends Component {
 SimpleForm.propTypes = {
     basePath: PropTypes.string,
     children: PropTypes.node,
-    classes: PropTypes.object,
     className: PropTypes.string,
     defaultValue: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
     handleSubmit: PropTypes.func, // passed by redux-form
@@ -152,8 +139,7 @@ const enhance = compose(
     reduxForm({
         enableReinitialize: true,
         keepDirtyOnReinitialize: true,
-    }),
-    withStyles(styles)
+    })
 );
 
 export default enhance(SimpleForm);
