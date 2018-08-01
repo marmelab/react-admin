@@ -12,20 +12,13 @@ import { withRouter, Route } from 'react-router-dom';
 import compose from 'recompose/compose';
 import Divider from '@material-ui/core/Divider';
 import Tabs from '@material-ui/core/Tabs';
+import CardContent from '@material-ui/core/CardContent';
 import { withStyles } from '@material-ui/core/styles';
 import { getDefaultValues, translate, REDUX_FORM_NAME } from 'ra-core';
 
 import Toolbar from './Toolbar';
 
 const styles = theme => ({
-    form: {
-        [theme.breakpoints.up('sm')]: {
-            padding: '0 1em 1em 1em',
-        },
-        [theme.breakpoints.down('xs')]: {
-            padding: '0 1em 5em 1em',
-        },
-    },
     errorTabButton: { color: theme.palette.error.main },
 });
 
@@ -151,7 +144,7 @@ export class TabbedForm extends Component {
                     })}
                 </Tabs>
                 <Divider />
-                <div className={classes.form}>
+                <CardContent>
                     {/* All tabs are rendered (not only the one in focus), to allow validation
                     on tabs not in focus. The tabs receive a `hidden` property, which they'll
                     use to hide the tab using CSS if it's not the one in focus.
@@ -189,19 +182,18 @@ export class TabbedForm extends Component {
                                 </Route>
                             )
                     )}
-                    {toolbar &&
-                        React.cloneElement(toolbar, {
-                            className: 'toolbar',
-                            handleSubmitWithRedirect: this
-                                .handleSubmitWithRedirect,
-                            handleSubmit: this.props.handleSubmit,
-                            invalid,
-                            pristine,
-                            redirect,
-                            saving,
-                            submitOnEnter,
-                        })}
-                </div>
+                </CardContent>
+                {toolbar &&
+                    React.cloneElement(toolbar, {
+                        className: 'toolbar',
+                        handleSubmitWithRedirect: this.handleSubmitWithRedirect,
+                        handleSubmit: this.props.handleSubmit,
+                        invalid,
+                        pristine,
+                        redirect,
+                        saving,
+                        submitOnEnter,
+                    })}
             </form>
         );
     }

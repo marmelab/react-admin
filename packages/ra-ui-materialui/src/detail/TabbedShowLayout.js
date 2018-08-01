@@ -2,19 +2,14 @@ import React, { Component, Children, cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import Tabs from '@material-ui/core/Tabs';
 import Divider from '@material-ui/core/Divider';
-import { withStyles } from '@material-ui/core/styles';
+import CardContent from '@material-ui/core/CardContent';
 import { withRouter, Route } from 'react-router-dom';
 import compose from 'recompose/compose';
 import { translate } from 'ra-core';
 
-const styles = {
-    tab: { padding: '0 1em 1em 1em' },
-};
-
 const sanitizeRestProps = ({
     children,
     className,
-    classes,
     record,
     resource,
     basePath,
@@ -74,7 +69,6 @@ export class TabbedShowLayout extends Component {
             basePath,
             children,
             className,
-            classes,
             location,
             match,
             record,
@@ -114,7 +108,7 @@ export class TabbedShowLayout extends Component {
                     })}
                 </Tabs>
                 <Divider />
-                <div className={classes.tab}>
+                <CardContent>
                     {Children.map(
                         children,
                         (tab, index) =>
@@ -133,7 +127,7 @@ export class TabbedShowLayout extends Component {
                                 />
                             )
                     )}
-                </div>
+                </CardContent>
             </div>
         );
     }
@@ -142,7 +136,6 @@ export class TabbedShowLayout extends Component {
 TabbedShowLayout.propTypes = {
     children: PropTypes.node,
     className: PropTypes.string,
-    classes: PropTypes.object,
     location: PropTypes.object,
     match: PropTypes.object,
     record: PropTypes.object,
@@ -155,7 +148,6 @@ TabbedShowLayout.propTypes = {
 
 const enhance = compose(
     withRouter,
-    withStyles(styles),
     translate
 );
 
