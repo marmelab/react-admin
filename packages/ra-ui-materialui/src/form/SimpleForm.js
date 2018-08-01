@@ -23,6 +23,7 @@ const styles = theme => ({
 const sanitizeRestProps = ({
     anyTouched,
     array,
+    asyncBlurFields,
     asyncValidate,
     asyncValidating,
     autofill,
@@ -98,7 +99,9 @@ export class SimpleForm extends Component {
                 </div>
                 {toolbar &&
                     React.cloneElement(toolbar, {
+                        basePath,
                         handleSubmitWithRedirect: this.handleSubmitWithRedirect,
+                        handleSubmit: this.props.handleSubmit,
                         invalid,
                         pristine,
                         redirect,
@@ -147,8 +150,8 @@ const enhance = compose(
     })),
     translate, // Must be before reduxForm so that it can be used in validation
     reduxForm({
-        destroyOnUnmount: false,
         enableReinitialize: true,
+        keepDirtyOnReinitialize: true,
     }),
     withStyles(styles)
 );

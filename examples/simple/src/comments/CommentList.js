@@ -1,3 +1,4 @@
+import React from 'react';
 import ChevronLeft from '@material-ui/icons/ChevronLeft';
 import ChevronRight from '@material-ui/icons/ChevronRight';
 import PersonIcon from '@material-ui/icons/Person';
@@ -10,12 +11,13 @@ import CardHeader from '@material-ui/core/CardHeader';
 import Grid from '@material-ui/core/Grid';
 import Toolbar from '@material-ui/core/Toolbar';
 import { withStyles } from '@material-ui/core/styles';
-import React from 'react';
+import { unparse as convertToCSV } from 'papaparse/papaparse.min';
 import {
     DateField,
     EditButton,
     Filter,
     List,
+    PaginationLimit,
     ReferenceField,
     ReferenceInput,
     Responsive,
@@ -23,6 +25,7 @@ import {
     ShowButton,
     SimpleList,
     TextField,
+    downloadCSV,
     translate,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
 
@@ -34,9 +37,32 @@ const CommentFilter = props => (
     </Filter>
 );
 
+const exporter = (records, fetchRelatedRecords) =>
+    fetchRelatedRecords(records, 'post_id', 'posts').then(posts => {
+        const data = records.map(record => {
+            const { author, ...recordForExport } = record; // omit author
+            recordForExport.author_name = author.name;
+            recordForExport.post_title = posts[record.post_id].title;
+            return recordForExport;
+        });
+        const fields = [
+            'id',
+            'author_name',
+            'post_id',
+            'post_title',
+            'created_at',
+            'body',
+        ];
+        downloadCSV(convertToCSV({ data, fields }), 'comments');
+    });
+
 const CommentPagination = translate(
-    ({ page, perPage, total, setPage, translate }) => {
+    ({ isLoading, ids, page, perPage, total, setPage, translate }) => {
         const nbPages = Math.ceil(total / perPage) || 1;
+        if (!isLoading && (total === 0 || (ids && !ids.length))) {
+            return <PaginationLimit total={total} page={page} ids={ids} />;
+        }
+
         return (
             nbPages > 1 && (
                 <Toolbar>
@@ -163,6 +189,7 @@ const CommentList = props => (
     <List
         {...props}
         perPage={6}
+        exporter={exporter}
         filters={<CommentFilter />}
         pagination={<CommentPagination />}
     >

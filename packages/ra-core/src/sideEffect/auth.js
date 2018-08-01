@@ -19,6 +19,9 @@ const nextPathnameSelector = state => {
     const locationState = state.routing.location.state;
     return locationState && locationState.nextPathname;
 };
+
+const currentPathnameSelector = state => state.routing.location;
+
 export default authProvider => {
     if (!authProvider) return () => null;
     function* handleAuth(action) {
@@ -83,8 +86,14 @@ export default authProvider => {
                 try {
                     yield call(authProvider, AUTH_ERROR, error);
                 } catch (e) {
+                    const nextPathname = yield select(currentPathnameSelector);
                     yield call(authProvider, AUTH_LOGOUT);
-                    yield put(push('/login'));
+                    yield put(
+                        push({
+                            pathname: '/login',
+                            state: { nextPathname },
+                        })
+                    );
                     yield put(hideNotification());
                 }
                 break;

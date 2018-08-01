@@ -147,51 +147,31 @@ Using a custom `EditActions` component also allow to remove the `<DeleteButton>`
 
 ## Prefilling a `<Create>` Record
 
-By default, the `<Create>` view starts with an empty `record`. You can pass a custom `record` object to start with preset values:
+You may need to prepopulate a record based on another one. For that use case, use the `<CloneButton>` component. It expects a `record` and a `basePath` (usually injected to children of `<Datagrid>`, `<SimpleForm>`, `<SimpleShowLayout>`, etc.), so it's as simple to use as a regulat field or input.
+
+For instance, to allow cloning all the posts from the list:
 
 ```jsx
-const commentDefaultValue = { nb_views: 0 };
-export const CommentCreate = (props) => (
-    <Create {...props} record={commentDefaultValue}>
-        <SimpleForm>
-            <TextInput source="author" />
-            <RichTextInput source="body" />
-            <NumberInput source="nb_views" />
-        </SimpleForm>
-    </Create>
-);
+import { List, Datagrid, TextField, CloneButton } from 'react-admin';
+
+const PostList = props => (
+    <List {...props}>
+        <Datagrid>
+            <TextField source="title" />
+            <CloneButton />
+        </Datagrid>
+    </List>
+)
 ```
 
-While using the `record` to set default values works here, it doesn't work with `<Edit>`. So it's recommended to use [the `defaultValue` prop in the Form component](#default-values) instead.
+Alternately, you may need to prepopulate a record based on a *related* record. For instance, in a `PostList` component, you may want to display a button to create a comment related to the current post. Clicking on that button would lead to a `CommentCreate` page where the `post_id` is preset to the id of the Post.
 
-However, there is a valid use case for presetting the `record` prop: to prepopulate a record based on a related record. For instance, in a `PostShow` component, you may want to display a button to create a comment related to the current post, that would lead to a `CommentCreate` page where the `post_id` is preset.
+By default, the `<Create>` view starts with an empty `record`. However, if the `location` object (injected by [react-router](https://reacttraining.com/react-router/web/api/location)) contains a `record` in its `state`, the `<Create>` view uses that `record` instead of the empty object. That's how the `<CloneButton>` works behind the hood.
 
-To enable this, you must first update the `CommentCreate` component to read the record from the `location` object (which is injected by react-router):
-
-```diff
-const commentDefaultValue = { nb_views: 0 };
--export const CommentCreate = (props) => (
-+export const CommentCreate = ({ location, ...props}) => (
--   <Create {...props}>
-+   <Create
-+       record={(location.state && location.state.record) || defaultValue}
-+       location={location}
-+       {...props}
-+   >
-       <SimpleForm>
-            <TextInput source="author" />
-            <RichTextInput source="body" />
-            <NumberInput source="nb_views" />
-        </SimpleForm>
-    </Create>
-);
-```
-
-To set this `location.state`, you have to create a link or a button using react-router's `<Link>` component:
+That means that if you want to create a link to a creation form, presetting *some* values, all you have to do is to set the location `state`. React-router provides the `<Link>` component for that:
 
 {% raw %}
 ```jsx
-// in PostShow.js
 import Button from '@material-ui/core/Button';
 import { Link } from 'react-router-dom';
 
@@ -207,18 +187,43 @@ const CreateRelatedCommentButton = ({ record }) => (
     </Button>
 );
 
-export default PostShow = props => (
-    <Show {...props}>
-        <SimpleShowLayout>
+export default PostList = props => (
+    <List {...props}>
+        <Datagrid>
             ...
             <CreateRelatedCommentButton />
-        </SimpleShowLayout>
-    </Show>
+        </Datagrid>
+    </List>
 )
 ```
 {% endraw %}
 
-**Tip**: To style the button with the main color from the material-ui theme, use the `Link` component from the `react-admin` package rather than the one from `react-router`.
+**Tip**: To style the button with the main color from the material-ui theme, use the `Link` component from the `react-admin` package rather than the one from `react-router-dom`.
+
+**Tip**: The `<Create>` component also watches the `location.search` (the query string in the URL) in addition to `location.state` (a cross-page message hidden in the router memory). So the `CreateRelatedCommentButton` could, in theory, be written as:
+
+{% raw %}
+```jsx
+import Button from '@material-ui/core/Button';
+import { Link } from 'react-router-dom';
+
+const CreateRelatedCommentButton = ({ record }) => (
+    <Button
+        component={Link}
+        to={{
+            pathname: '/comments/create',
+            search: '?post_id=' + record.id,
+        }}
+    >
+        Write a comment for that post
+    </Button>
+);
+```
+{% endraw %}
+
+However, this will only work if the post ids are typed as strings in the store. That's because the query string `?post_id=123`, once deserialized, reads as `{ post_id: '123' }` and not `{ post_id: 123 }`. Since [the `<SelectInput>` uses srict equality to check the selected option](https://github.com/mui-org/material-ui/issues/12047) comparing the `post_id` `'123'` from the URL with values like `123` in the choices will fail. 
+
+So prefer `location.state` instead of `location.search` when you can, or use custom selection components.
 
 ## The `<SimpleForm>` component
 
@@ -612,6 +617,7 @@ export const PostEdit = (props) => (
 Here are the props received by the `Toolbar` component when passed as the `toolbar` prop of the `SimpleForm` or `TabbedForm` components:
 
 * `handleSubmitWithRedirect`: The function to call in order to submit the form. It accepts a single parameter overriding the form's default redirect.
+* `handleSubmit` which is the same prop as in [`react-form`](https://redux-form.com/7.4.2/docs/api/props.md/#-code-handlesubmit-eventorsubmit-function-code-)
 * `invalid`: A boolean indicating whether the form is invalid
 * `pristine`: A boolean indicating whether the form is pristine (eg: no inputs have been changed yet)
 * `redirect`: The default form's redirect
@@ -621,6 +627,8 @@ Here are the props received by the `Toolbar` component when passed as the `toolb
 **Tip**: Use react-admin's `<Toolbar>` component instead of material-ui's `<Toolbar>` component. The former builds up on the latter, and adds support for an alternative mobile layout (and is therefore responsive).
 
 **Tip**: Don't forget to also set the `redirect` prop of the Form component to handle submission by the `ENTER` key.
+
+**Tip**: To alter the form values before submitting, you should use the `handleSubmit` prop. See [Altering the Form Values before Submitting](/Actions.html#altering-the-form-values-before-submitting) for more informations and example.
 
 ## Customizing Input Container Styles
 

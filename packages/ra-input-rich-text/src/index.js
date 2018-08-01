@@ -15,6 +15,7 @@ export class RichTextInput extends Component {
         classes: PropTypes.object,
         input: PropTypes.object,
         label: PropTypes.string,
+        meta: PropTypes.object,
         options: PropTypes.object,
         source: PropTypes.string,
         toolbar: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),

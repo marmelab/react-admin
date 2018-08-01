@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import MuiButton from '@material-ui/core/Button';
+import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
 import { withStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
@@ -35,14 +36,16 @@ const Button = ({
 }) => (
     <Responsive
         small={
-            <IconButton
-                arial-label={label && translate(label, { _: label })}
-                className={className}
-                color={color}
-                {...rest}
-            >
-                {children}
-            </IconButton>
+            <Tooltip title={label && translate(label, { _: label })}>
+                <IconButton
+                    arial-label={label && translate(label, { _: label })}
+                    className={className}
+                    color={color}
+                    {...rest}
+                >
+                    {children}
+                </IconButton>
+            </Tooltip>
         }
         medium={
             <MuiButton

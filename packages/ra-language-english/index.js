@@ -1,35 +1,39 @@
 module.exports = {
     ra: {
         action: {
-            delete: 'Delete',
-            show: 'Show',
-            list: 'List',
-            save: 'Save',
-            create: 'Create',
-            edit: 'Edit',
-            sort: 'Sort',
-            cancel: 'Cancel',
-            undo: 'Undo',
-            refresh: 'Refresh',
-            add: 'Add',
-            remove: 'Remove',
             add_filter: 'Add filter',
-            remove_filter: 'Remove this filter',
+            add: 'Add',
             back: 'Go Back',
             bulk_actions: '%{smart_count} selected',
+            cancel: 'Cancel',
+            clear_input_value: 'Clear value',
+            clone: 'Clone',
+            create: 'Create',
+            delete: 'Delete',
+            edit: 'Edit',
+            export: 'Export',
+            list: 'List',
+            refresh: 'Refresh',
+            remove_filter: 'Remove this filter',
+            remove: 'Remove',
+            save: 'Save',
+            show: 'Show',
+            sort: 'Sort',
+            undo: 'Undo',
         },
         boolean: {
             true: 'Yes',
             false: 'No',
         },
         page: {
-            list: '%{name} List',
-            edit: '%{name} #%{id}',
-            show: '%{name} #%{id}',
             create: 'Create %{name}',
             dashboard: 'Dashboard',
-            not_found: 'Not Found',
+            edit: '%{name} #%{id}',
+            error: 'Something went wrong',
+            list: '%{name} List',
             loading: 'Loading',
+            not_found: 'Not Found',
+            show: '%{name} #%{id}',
         },
         input: {
             file: {
@@ -52,20 +56,23 @@ module.exports = {
             },
         },
         message: {
-            yes: 'Yes',
-            no: 'No',
-            are_you_sure: 'Are you sure?',
             about: 'About',
-            not_found:
-                'Either you typed a wrong URL, or you followed a bad link.',
-            loading: 'The page is loading, just a moment please',
-            invalid_form: 'The form is not valid. Please check for errors',
-            delete_title: 'Delete %{name} #%{id}',
-            delete_content: 'Are you sure you want to delete this item?',
-            bulk_delete_title:
-                'Delete %{name} |||| Delete %{smart_count} %{name} items',
+            are_you_sure: 'Are you sure?',
             bulk_delete_content:
                 'Are you sure you want to delete this %{name}? |||| Are you sure you want to delete these %{smart_count} items?',
+            bulk_delete_title:
+                'Delete %{name} |||| Delete %{smart_count} %{name} items',
+            delete_content: 'Are you sure you want to delete this item?',
+            delete_title: 'Delete %{name} #%{id}',
+            details: 'Details',
+            error:
+                "A client error occurred and your request couldn't be completed.",
+            invalid_form: 'The form is not valid. Please check for errors',
+            loading: 'The page is loading, just a moment please',
+            no: 'No',
+            not_found:
+                'Either you typed a wrong URL, or you followed a bad link.',
+            yes: 'Yes',
         },
         navigation: {
             no_results: 'No results found',
@@ -92,6 +99,8 @@ module.exports = {
             bad_item: 'Incorrect element',
             item_doesnt_exist: 'Element does not exist',
             http_error: 'Server communication error',
+            data_provider_error:
+                'dataProvider error. Check the console for details.',
             canceled: 'Action cancelled',
         },
         validation: {

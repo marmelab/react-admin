@@ -3,7 +3,7 @@
     "version": "0.1.0",
     "private": true,
     "dependencies": {
-        "@material-ui/core": "~1.2.1",
+        "@material-ui/core": "~1.4.0",
         "@material-ui/icons": "~1.1.0",
         "ra-data-graphcool": "~2.0.0",
         "ra-input-rich-text": "^2.0.0",
@@ -16,7 +16,7 @@
         "react-router-dom": "~4.2.2",
         "react-scripts": "1.1.4",
         "recompose": "~0.26.0",
-        "redux-form": "~7.3.0",
+        "redux-form": "~7.4.0",
         "redux-saga": "~0.16.0"
     },
     "scripts": {

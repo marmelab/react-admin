@@ -5,6 +5,7 @@ import {
     DisabledInput,
     Edit,
     FormTab,
+    SelectInput,
     TabbedForm,
     TextInput,
     required,
@@ -16,11 +17,24 @@ const UserEdit = ({ permissions, ...props }) => (
         <TabbedForm defaultValue={{ role: 'user' }}>
             <FormTab label="user.form.summary" path="">
                 {permissions === 'admin' && <DisabledInput source="id" />}
-                <TextInput source="name" validate={required()} />
+                <TextInput
+                    source="name"
+                    defaultValue="slim shady"
+                    validate={required()}
+                />
             </FormTab>
             {permissions === 'admin' && (
                 <FormTab label="user.form.security" path="security">
-                    <TextInput source="role" validate={required()} />
+                    <SelectInput
+                        source="role"
+                        validate={required()}
+                        choices={[
+                            { id: '', name: 'None' },
+                            { id: 'admin', name: 'Admin' },
+                            { id: 'user', name: 'User' },
+                        ]}
+                        defaultValue={'user'}
+                    />
                 </FormTab>
             )}
         </TabbedForm>

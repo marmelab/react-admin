@@ -114,9 +114,9 @@
     debug "^3.1.0"
     lodash.once "^4.1.1"
 
-"@material-ui/core@^1.0.0", "@material-ui/core@~1.2.1":
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/@material-ui/core/-/core-1.2.1.tgz#f8c73da10b875762b37be7167ec2ac79b027499f"
+"@material-ui/core@^1.4.0", "@material-ui/core@~1.4.0":
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/@material-ui/core/-/core-1.4.0.tgz#e535fef84576b096c46e1fb7d6c4c61895155fd3"
   dependencies:
     "@babel/runtime" "^7.0.0-beta.42"
     "@types/jss" "^9.5.3"
@@ -128,6 +128,7 @@
     deepmerge "^2.0.1"
     dom-helpers "^3.2.1"
     hoist-non-react-statics "^2.5.0"
+    is-plain-object "^2.0.4"
     jss "^9.3.3"
     jss-camel-case "^6.0.0"
     jss-default-unit "^8.0.2"
@@ -137,12 +138,12 @@
     jss-vendor-prefixer "^7.0.0"
     keycode "^2.1.9"
     normalize-scroll-left "^0.1.2"
+    popper.js "^1.0.0"
     prop-types "^15.6.0"
     react-event-listener "^0.6.0"
     react-jss "^8.1.0"
-    react-popper "^0.10.0"
     react-transition-group "^2.2.1"
-    recompose "^0.26.0 || ^0.27.0"
+    recompose "^0.27.0"
     scroll "^2.0.3"
     warning "^4.0.1"
 
@@ -8055,6 +8056,10 @@ pako@~1.0.5:
   version "1.0.6"
   resolved "https://registry.yarnpkg.com/pako/-/pako-1.0.6.tgz#0101211baa70c4bca4a0f63f2206e97b7dfaf258"
 
+papaparse@^4.1.4:
+  version "4.5.0"
+  resolved "https://registry.yarnpkg.com/papaparse/-/papaparse-4.5.0.tgz#fb625d390b6e5d544db20658ce3665002c3d8e80"
+
 parallel-transform@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/parallel-transform/-/parallel-transform-1.1.0.tgz#d410f065b05da23081fcd10f28854c29bda33b06"
@@ -8257,7 +8262,7 @@ pluralize@^7.0.0, pluralize@~7.0.0:
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/pluralize/-/pluralize-7.0.0.tgz#298b89df8b93b0221dbf421ad2b1b1ea23fc6777"
 
-popper.js@^1.14.1:
+popper.js@^1.0.0:
   version "1.14.3"
   resolved "https://registry.yarnpkg.com/popper.js/-/popper.js-1.14.3.tgz#1438f98d046acf7b4d78cd502bf418ac64d4f095"
 
@@ -9017,13 +9022,6 @@ react-lifecycles-compat@^3.0.2:
   version "3.0.4"
   resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
 
-react-popper@^0.10.0:
-  version "0.10.4"
-  resolved "https://registry.yarnpkg.com/react-popper/-/react-popper-0.10.4.tgz#af2a415ea22291edd504678d7afda8a6ee3295aa"
-  dependencies:
-    popper.js "^1.14.1"
-    prop-types "^15.6.1"
-
 react-reconciler@^0.7.0:
   version "0.7.0"
   resolved "https://registry.yarnpkg.com/react-reconciler/-/react-reconciler-0.7.0.tgz#9614894103e5f138deeeb5eabaf3ee80eb1d026d"
@@ -9295,7 +9293,7 @@ rechoir@^0.6.2:
   dependencies:
     resolve "^1.1.6"
 
-"recompose@^0.26.0 || ^0.27.0":
+"recompose@^0.26.0 || ^0.27.0", recompose@^0.27.0:
   version "0.27.1"
   resolved "https://registry.yarnpkg.com/recompose/-/recompose-0.27.1.tgz#1a49e931f183634516633bbb4f4edbfd3f38a7ba"
   dependencies:
@@ -9349,9 +9347,9 @@ reduce-function-call@^1.0.1:
   dependencies:
     balanced-match "^0.4.2"
 
-redux-form@~7.3.0:
-  version "7.3.0"
-  resolved "https://registry.yarnpkg.com/redux-form/-/redux-form-7.3.0.tgz#b92ef1639c86a6009b0821aacfc80ad8b5ac8c05"
+redux-form@~7.4.0:
+  version "7.4.2"
+  resolved "https://registry.yarnpkg.com/redux-form/-/redux-form-7.4.2.tgz#d6061088fb682eb9fc5fb9749bd8b102f03154b0"
   dependencies:
     deep-equal "^1.0.1"
     es6-error "^4.1.1"

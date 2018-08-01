@@ -5,6 +5,52 @@ import { shallow } from 'enzyme';
 import { Pagination } from './Pagination';
 
 describe('<Pagination />', () => {
+    it('should display a pagination limit when there is no result', () => {
+        const wrapper = shallow(
+            <Pagination
+                translate={x => x}
+                total={0}
+                changeFormValue={() => true}
+                changeListParams={() => true}
+            />
+        );
+        expect(wrapper.find('pure(translate(PaginationLimit))')).toHaveLength(
+            1
+        );
+    });
+
+    it('should not display a pagination limit when there are results', () => {
+        const wrapper = shallow(
+            <Pagination
+                translate={x => x}
+                total={1}
+                ids={[1]}
+                changeFormValue={() => true}
+                changeListParams={() => true}
+            />
+        );
+        expect(wrapper.find('pure(translate(PaginationLimit))')).toHaveLength(
+            0
+        );
+    });
+
+    it('should display a pagination limit on an empty paginated page', () => {
+        const wrapper = shallow(
+            <Pagination
+                translate={x => x}
+                total={10}
+                ids={[]}
+                page={2}
+                perPage={10}
+                changeFormValue={() => true}
+                changeListParams={() => true}
+            />
+        );
+        expect(wrapper.find('pure(translate(PaginationLimit))')).toHaveLength(
+            1
+        );
+    });
+
     describe('mobile', () => {
         it('should render a condensed <Toolbar>', () => {
             const wrapper = shallow(

@@ -1,36 +1,40 @@
 module.exports = {
     ra: {
         action: {
-            delete: 'Supprimer',
-            show: 'Afficher',
-            list: 'Liste',
-            save: 'Enregistrer',
-            create: 'Créer',
-            edit: 'Éditer',
-            sort: 'Trier',
-            cancel: 'Annuler',
-            undo: 'Annuler',
-            refresh: 'Actualiser',
-            add: 'Ajouter',
-            remove: 'Supprimer',
             add_filter: 'Ajouter un filtre',
-            remove_filter: 'Supprimer ce filtre',
+            add: 'Ajouter',
             back: 'Retour',
             bulk_actions:
                 '%{smart_count} selectionné |||| %{smart_count} selectionnés',
+            cancel: 'Annuler',
+            clear_input_value: 'Vider le champ',
+            clone: 'Dupliquer',
+            create: 'Créer',
+            delete: 'Supprimer',
+            edit: 'Éditer',
+            export: 'Exporter',
+            list: 'Liste',
+            refresh: 'Actualiser',
+            remove_filter: 'Supprimer ce filtre',
+            remove: 'Supprimer',
+            save: 'Enregistrer',
+            show: 'Afficher',
+            sort: 'Trier',
+            undo: 'Annuler',
         },
         boolean: {
             true: 'Oui',
             false: 'Non',
         },
         page: {
-            list: 'Liste des %{name}',
-            edit: '%{name} #%{id}',
-            show: '%{name} #%{id}',
             create: 'Créer %{name}',
             dashboard: 'Tableau de bord',
-            not_found: 'Page manquante',
+            edit: '%{name} #%{id}',
+            error: 'Un problème est survenu',
+            list: 'Liste des %{name}',
             loading: 'Chargement',
+            not_found: 'Page manquante',
+            show: '%{name} #%{id}',
         },
         input: {
             file: {
@@ -54,22 +58,25 @@ module.exports = {
             },
         },
         message: {
-            yes: 'Oui',
-            no: 'Non',
-            are_you_sure: 'Êtes-vous sûr ?',
             about: 'Au sujet de',
-            not_found:
-                "L'URL saisie est incorrecte, ou vous avez suivi un mauvais lien.",
-            loading:
-                'La page est en cours de chargement, merci de bien vouloir patienter.',
-            invalid_form: "Le formulaire n'est pas valide.",
-            delete_title: 'Supprimer %{name} #%{id}',
-            delete_content:
-                'Êtes-vous sur(e) de vouloir supprimer cet élément ?',
-            bulk_delete_title:
-                'Supprimer %{name} |||| Supprimer %{smart_count} %{name} éléments',
+            are_you_sure: 'Êtes-vous sûr ?',
             bulk_delete_content:
                 'Êtes-vous sur(e) de vouloir supprimer cet élément ? |||| Êtes-vous sur(e) de vouloir supprimer ces %{smart_count} éléments ?',
+            bulk_delete_title:
+                'Supprimer %{name} |||| Supprimer %{smart_count} %{name} éléments',
+            delete_content:
+                'Êtes-vous sur(e) de vouloir supprimer cet élément ?',
+            delete_title: 'Supprimer %{name} #%{id}',
+            details: 'Détails',
+            error:
+                "En raison d'une erreur côté navigateur, votre requête n'a pas pu aboutir.",
+            invalid_form: "Le formulaire n'est pas valide.",
+            loading:
+                'La page est en cours de chargement, merci de bien vouloir patienter.',
+            no: 'Non',
+            not_found:
+                "L'URL saisie est incorrecte, ou vous avez suivi un mauvais lien.",
+            yes: 'Oui',
         },
         navigation: {
             no_results: 'Aucun résultat',
@@ -95,6 +102,8 @@ module.exports = {
             bad_item: 'Élément inconnu',
             item_doesnt_exist: "L'élément n'existe pas",
             http_error: 'Erreur de communication avec le serveur',
+            data_provider_error:
+                'Erreur dans le dataProvider. Plus de détails dans la console.',
             canceled: 'Action annulée',
         },
         validation: {

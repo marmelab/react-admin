@@ -9,7 +9,7 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
 import { withStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
-import { linkToRecord } from 'ra-core';
+import { linkToRecord, sanitizeListRestProps } from 'ra-core';
 
 const styles = {
     link: {
@@ -37,9 +37,6 @@ const LinkOrNot = withStyles(styles)(
         )
 );
 
-const sanitizeRestProps = ({ currentSort, isLoading, setSort, ...rest }) =>
-    rest;
-
 const SimpleList = ({
     basePath,
     classes = {},
@@ -47,6 +44,7 @@ const SimpleList = ({
     data,
     hasBulkActions,
     ids,
+    isLoading,
     leftAvatar,
     leftIcon,
     linkType,
@@ -57,50 +55,61 @@ const SimpleList = ({
     secondaryText,
     selectedIds,
     tertiaryText,
+    total,
     ...rest
-}) => (
-    <List className={className} {...sanitizeRestProps(rest)}>
-        {ids.map(id => (
-            <LinkOrNot linkType={linkType} basePath={basePath} id={id} key={id}>
-                <ListItem button>
-                    {leftIcon && (
-                        <ListItemIcon>{leftIcon(data[id], id)}</ListItemIcon>
-                    )}
-                    {leftAvatar && (
-                        <ListItemAvatar>
-                            <Avatar>{leftAvatar(data[id], id)}</Avatar>
-                        </ListItemAvatar>
-                    )}
-                    <ListItemText
-                        primary={
-                            <div>
-                                {primaryText(data[id], id)}
-                                {tertiaryText && (
-                                    <span className={classes.tertiary}>
-                                        {tertiaryText(data[id], id)}
-                                    </span>
+}) =>
+    (isLoading || total > 0) && (
+        <List className={className} {...sanitizeListRestProps(rest)}>
+            {ids.map(id => (
+                <LinkOrNot
+                    linkType={linkType}
+                    basePath={basePath}
+                    id={id}
+                    key={id}
+                >
+                    <ListItem button>
+                        {leftIcon && (
+                            <ListItemIcon>
+                                {leftIcon(data[id], id)}
+                            </ListItemIcon>
+                        )}
+                        {leftAvatar && (
+                            <ListItemAvatar>
+                                <Avatar>{leftAvatar(data[id], id)}</Avatar>
+                            </ListItemAvatar>
+                        )}
+                        <ListItemText
+                            primary={
+                                <div>
+                                    {primaryText(data[id], id)}
+                                    {tertiaryText && (
+                                        <span className={classes.tertiary}>
+                                            {tertiaryText(data[id], id)}
+                                        </span>
+                                    )}
+                                </div>
+                            }
+                            secondary={
+                                secondaryText && secondaryText(data[id], id)
+                            }
+                        />
+                        {(rightAvatar || rightIcon) && (
+                            <ListItemSecondaryAction>
+                                {rightAvatar && (
+                                    <Avatar>{rightAvatar(data[id], id)}</Avatar>
                                 )}
-                            </div>
-                        }
-                        secondary={secondaryText && secondaryText(data[id], id)}
-                    />
-                    {(rightAvatar || rightIcon) && (
-                        <ListItemSecondaryAction>
-                            {rightAvatar && (
-                                <Avatar>{rightAvatar(data[id], id)}</Avatar>
-                            )}
-                            {rightIcon && (
-                                <ListItemIcon>
-                                    {rightIcon(data[id], id)}
-                                </ListItemIcon>
-                            )}
-                        </ListItemSecondaryAction>
-                    )}
-                </ListItem>
-            </LinkOrNot>
-        ))}
-    </List>
-);
+                                {rightIcon && (
+                                    <ListItemIcon>
+                                        {rightIcon(data[id], id)}
+                                    </ListItemIcon>
+                                )}
+                            </ListItemSecondaryAction>
+                        )}
+                    </ListItem>
+                </LinkOrNot>
+            ))}
+        </List>
+    );
 
 SimpleList.propTypes = {
     basePath: PropTypes.string,

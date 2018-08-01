@@ -5,7 +5,7 @@ import { createStore, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
 import { TranslationProvider } from 'ra-core';
 
-import { ArrayInput } from './ArrayInput';
+import ArrayInput, { ArrayInput as ArrayInputView } from './ArrayInput';
 import NumberInput from './NumberInput';
 import TextInput from './TextInput';
 import SimpleFormIterator from '../form/SimpleFormIterator';
@@ -25,10 +25,8 @@ const AppMock = ({ children }) => (
 
 describe('<ArrayInput />', () => {
     it('should render a FieldArray', () => {
-        const wrapper = shallow(<ArrayInput source="arr" record={{}} />);
-        expect(
-            wrapper.find('TranslatedComponent(pure(FieldTitle))').length
-        ).toBe(1);
+        const wrapper = shallow(<ArrayInputView source="arr" record={{}} />);
+        expect(wrapper.find('translate(pure(FieldTitle))').length).toBe(1);
         expect(wrapper.find('FieldArray').length).toBe(1);
     });
 

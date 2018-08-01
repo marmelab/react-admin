@@ -5,7 +5,8 @@ import GridListTileBar from '@material-ui/core/GridListTileBar';
 import { withStyles } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
 import ContentCreate from '@material-ui/icons/Create';
-import { NumberField, Link } from 'react-admin';
+import { Link } from 'react-router-dom';
+import { NumberField } from 'react-admin';
 import { linkToRecord } from 'ra-core';
 
 const styles = {
