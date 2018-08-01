@@ -33,11 +33,25 @@ describe('Create Page', () => {
         );
     });
 
-  it('should have a working array input with references', () => {
+    it('should have a working array input with references', () => {
         cy.get(CreatePage.elements.addAuthor).click();
         cy.get(CreatePage.elements.input('authors[0].user_id')).should(
             el => expect(el).to.exist
         );
+        cy.get(CreatePage.elements.input('authors[0].role')).should(
+            el => expect(el).to.not.exist
+        );
+    });
+
+    it.only('should have a working array input with a scoped FormDataConsumer', () => {
+        cy.get(CreatePage.elements.addAuthor).click();
+        CreatePage.setValues([
+            {
+                type: 'input',
+                name: 'authors[0].user_id',
+                value: 'Annamarie Mayer{enter}',
+            },
+        ]);
         cy.get(CreatePage.elements.input('authors[0].role')).should(
             el => expect(el).to.exist
         );

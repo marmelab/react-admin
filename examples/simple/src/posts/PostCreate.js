@@ -134,14 +134,36 @@ const PostCreate = ({ permissions, ...props }) => (
                         >
                             <AutocompleteInput />
                         </ReferenceInput>
-                        <SelectInput
-                            source="role"
-                            choices={[
-                                { id: 'headwriter', name: 'Head Writer' },
-                                { id: 'proofreader', name: 'Proof reader' },
-                                { id: 'cowriter', name: 'Co-Writer' },
-                            ]}
-                        />
+                        <FormDataConsumer>
+                            {({
+                                formData,
+                                scopedFormData,
+                                getSource,
+                                ...rest
+                            }) =>
+                                scopedFormData.user_id ? (
+                                    <SelectInput
+                                        label="Role"
+                                        source={getSource('role')}
+                                        choices={[
+                                            {
+                                                id: 'headwriter',
+                                                name: 'Head Writer',
+                                            },
+                                            {
+                                                id: 'proofreader',
+                                                name: 'Proof reader',
+                                            },
+                                            {
+                                                id: 'cowriter',
+                                                name: 'Co-Writer',
+                                            },
+                                        ]}
+                                        {...rest}
+                                    />
+                                ) : null
+                            }
+                        </FormDataConsumer>
                     </SimpleFormIterator>
                 </ArrayInput>
             )}
