@@ -63,7 +63,7 @@ export class SimpleForm extends Component {
         const {
             basePath,
             children,
-            classes,
+            classes = {},
             className,
             invalid,
             pristine,
