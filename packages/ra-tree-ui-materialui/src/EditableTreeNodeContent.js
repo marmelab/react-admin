@@ -31,6 +31,7 @@ class TreeNodeContent extends Component {
         classes: PropTypes.object.isRequired,
         crudUpdate: PropTypes.func.isRequired,
         handleSubmit: PropTypes.func.isRequired,
+        cancelDropOnChildren: PropTypes.bool,
         isLeaf: PropTypes.bool,
         node: PropTypes.object.isRequired,
         record: PropTypes.object.isRequired,
@@ -44,6 +45,12 @@ class TreeNodeContent extends Component {
         // propagate to the parent
         if (event.target.tagName.toLowerCase() !== 'form') {
             event.stopPropagation();
+        }
+    };
+
+    handleDrop = event => {
+        if (this.props.cancelDropOnChildren) {
+            event.preventDefault();
         }
     };
 
@@ -86,6 +93,7 @@ class TreeNodeContent extends Component {
                             ? cloneElement(field, {
                                   className: classes.formControl,
                                   basePath: field.props.basePath || basePath,
+                                  onDrop: this.handleDrop,
                                   handleSubmit: this.handleSubmit,
                                   record,
                                   resource,

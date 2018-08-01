@@ -10,6 +10,7 @@ import { TreeContext } from 'ra-tree-core';
 export class TreeNodeWithChildrenView extends Component {
     static propTypes = {
         basePath: PropTypes.string.isRequired,
+        cancelDropOnChildren: PropTypes.bool,
         children: PropTypes.node,
         classes: PropTypes.object,
         isExpanded: PropTypes.bool,
@@ -39,6 +40,7 @@ export class TreeNodeWithChildrenView extends Component {
     render() {
         const {
             basePath,
+            cancelDropOnChildren,
             children,
             classes,
             isExpanded,
@@ -72,6 +74,7 @@ export class TreeNodeWithChildrenView extends Component {
                         basePath={basePath}
                         node={node}
                         resource={resource}
+                        cancelDropOnChildren={cancelDropOnChildren}
                         {...props}
                     >
                         {children}

@@ -48,6 +48,7 @@ class EditableTreeNode extends Component {
             isDragging,
             isOver,
             isOverCurrent,
+            itemType,
             node,
             resource,
             treeNodeComponent,
@@ -78,6 +79,7 @@ class EditableTreeNode extends Component {
                     {node.children.length > 0 ? (
                         <TreeNodeWithChildren
                             basePath={basePath}
+                            cancelDropOnChildren={!!itemType}
                             classes={classes}
                             /*
                                 Override the isExpanded prop managed through redux on hover.
@@ -101,6 +103,7 @@ class EditableTreeNode extends Component {
                                 node={node}
                                 resource={resource}
                                 isLeaf={true}
+                                cancelDropOnChildren={!!itemType}
                                 onDrop={
                                     isOver && canDrop
                                         ? event => event.preventDefault()
