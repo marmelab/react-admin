@@ -3,7 +3,6 @@ import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
 import { DragSource, DropTarget } from 'react-dnd';
-import { getEmptyImage } from 'react-dnd-html5-backend';
 import ListItem from '@material-ui/core/ListItem';
 import IconDragHandle from '@material-ui/icons/DragHandle';
 import { withStyles } from '@material-ui/core/styles';
@@ -21,14 +20,12 @@ const styles = theme => {
         },
         node: {
             ...defaultStyles.root,
+            alignItems: 'baseline',
             paddingLeft: theme.spacing.unit * 6,
         },
         handle: {
-            top: theme.spacing.unit * 6,
-            left: theme.spacing.unit,
-            position: 'absolute',
-            transition: 'transform 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
             cursor: 'crosshair',
+            marginRight: theme.spacing.unit * 2,
         },
         draggingOver: {
             background: theme.palette.action.hover,
@@ -60,9 +57,6 @@ class EditableTreeNode extends Component {
         } = this.props;
         return connectDropTarget(
             <div className={classes.root}>
-                {connectDragPreview(getEmptyImage(), {
-                    captureDraggingState: true,
-                })}
                 <ListItem
                     button
                     classes={{
@@ -174,6 +168,13 @@ const dragSourceSpecs = {
         }
 
         const droppedOnNode = monitor.getDropResult();
+        if (
+            typeof droppedOnNode.id === 'undefined' ||
+            droppedOnNode.id === node.record[parentSource]
+        ) {
+            return;
+        }
+
         crudUpdate(
             resource,
             node.record.id,

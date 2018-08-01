@@ -9,7 +9,7 @@ import DefaultTreeNode from './TreeNode';
 import DefaultTreeNodeContent from './TreeNodeContent';
 import DefaultTreeNodeWithChildren from './TreeNodeWithChildren';
 
-const styles = {
+export const styles = {
     root: {
         display: 'flex',
         flexDirection: 'column',
@@ -80,8 +80,8 @@ Tree.defaultProps = {
     classes: {},
     parentSource: 'parent_id',
     treeNodeComponent: DefaultTreeNode,
-    treeNodeWithChildrenComponent: DefaultTreeNodeWithChildren,
     treeNodeContentComponent: DefaultTreeNodeContent,
+    treeNodeWithChildrenComponent: DefaultTreeNodeWithChildren,
 };
 
 export default withStyles(styles)(Tree);

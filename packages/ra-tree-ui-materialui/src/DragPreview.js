@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import { withStyles } from '@material-ui/core/styles';
@@ -17,7 +17,10 @@ const styles = theme => ({
         paddingRight: theme.spacing.unit * 4,
     },
 });
-class DragPreview extends PureComponent {
+class DragPreview extends Component {
+    shouldComponentUpdate() {
+        return false;
+    }
     render() {
         const {
             children,
@@ -33,7 +36,7 @@ class DragPreview extends PureComponent {
                     ? typeof children === 'function'
                         ? children({ node, translate })
                         : children
-                    : translate('ra.tree.dragpreview', {
+                    : translate('ra.tree.drag_preview', {
                           _:
                               'Node #%{id} |||| Node #%{id} with %{smart_count} children',
                           id: node.id,

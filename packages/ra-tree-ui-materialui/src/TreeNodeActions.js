@@ -4,6 +4,7 @@ import { withStyles } from '@material-ui/core/styles';
 
 const styles = theme => ({
     root: {
+        alignItems: 'center',
         marginLeft: 'auto',
         marginRight: theme.spacing.unit * 4,
     },

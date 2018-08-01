@@ -10,6 +10,7 @@ import { crudUpdate as crudUpdateAction } from 'ra-core';
 const styles = theme => ({
     root: {
         display: 'flex',
+        alignItems: 'center',
         flexGrow: 1,
     },
     handle: {
@@ -17,6 +18,9 @@ const styles = theme => ({
         cursor: 'crosshair',
         display: 'flex',
         marginRight: theme.spacing.unit * 2,
+    },
+    formControl: {
+        margin: 0,
     },
 });
 
@@ -80,6 +84,7 @@ class TreeNodeContent extends Component {
                     field =>
                         field
                             ? cloneElement(field, {
+                                  className: classes.formControl,
                                   basePath: field.props.basePath || basePath,
                                   handleSubmit: this.handleSubmit,
                                   record,

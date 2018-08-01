@@ -15,7 +15,7 @@ export class TreeNodeWithChildrenView extends Component {
         isExpanded: PropTypes.bool,
         node: PropTypes.object.isRequired,
         resource: PropTypes.string.isRequired,
-        toggleNode: PropTypes.func.isRequired,
+        toggleNode: PropTypes.func,
         treeNodeComponent: PropTypes.oneOfType([
             PropTypes.element,
             PropTypes.func,

@@ -83,16 +83,6 @@ build-ra-tree-ui-materialui:
 	@rm -rf ./packages/ra-tree-ui-materialui/lib
 	@NODE_ENV=production ./node_modules/.bin/babel --quiet ./packages/ra-tree-ui-materialui/src -d ./packages/ra-tree-ui-materialui/lib --ignore spec.js,test.js
 
-build-ra-tree-core:
-	@echo "Transpiling ra-tree-core files...";
-	@rm -rf ./packages/ra-tree-core/lib
-	@NODE_ENV=production ./node_modules/.bin/babel --quiet ./packages/ra-tree-core/src -d ./packages/ra-tree-core/lib --ignore spec.js,test.js
-
-build-ra-tree-ui-materialui:
-	@echo "Transpiling ra-tree-ui-materialui files...";
-	@rm -rf ./packages/ra-tree-ui-materialui/lib
-	@NODE_ENV=production ./node_modules/.bin/babel --quiet ./packages/ra-tree-ui-materialui/src -d ./packages/ra-tree-ui-materialui/lib --ignore spec.js,test.js
-
 build-data-generator:
 	@echo "Transpiling data-generator files...";
 	@cd ./examples/data-generator && yarn -s build

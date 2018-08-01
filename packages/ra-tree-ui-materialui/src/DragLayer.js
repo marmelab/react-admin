@@ -1,6 +1,10 @@
+/**
+ * Custom DragLayer from Alejandro Hernandez
+ * See https://github.com/react-dnd/react-dnd/issues/592#issuecomment-399287474
+ */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { DragLayer as DndDragLayer } from 'react-dnd';
+import { DragLayer } from 'react-dnd';
 import compose from 'recompose/compose';
 import { withStyles } from '@material-ui/core/styles';
 
@@ -16,55 +20,69 @@ const styles = {
     },
 };
 
-const getItemStyles = props => {
-    const { currentOffset } = props;
-    if (!currentOffset) {
-        return {
-            display: 'none',
-        };
-    }
+let subscribedToOffsetChange = false;
 
-    const { x, y } = currentOffset;
-    const transform = `translate(${x}px, ${y}px)`;
-    return {
-        transform: transform,
-        WebkitTransform: transform,
+let dragPreviewRef = null;
+
+const onOffsetChange = monitor => () => {
+    if (!dragPreviewRef) return;
+
+    const offset = monitor.getSourceClientOffset();
+    if (!offset) return;
+
+    const transform = `translate(${offset.x}px, ${offset.y}px)`;
+    dragPreviewRef.style['transform'] = transform;
+    dragPreviewRef.style['-webkit-transform'] = transform;
+};
+
+class CustomDragLayer extends React.PureComponent {
+    static propTypes = {
+        beingDragged: PropTypes.bool,
+        classes: PropTypes.object.isRequired,
+        dragPreviewComponent: PropTypes.oneOfType([
+            PropTypes.element,
+            PropTypes.func,
+        ]).isRequired,
+        itemBeingDragged: PropTypes.object,
     };
-};
 
-const DragLayer = ({
-    classes,
-    dragPreviewComponent: DragPreview,
-    isDragging,
-    item,
-    ...props
-}) => {
-    if (!isDragging) {
-        return null;
+    componentDidUpdate() {
+        dragPreviewRef = this.rootNode;
     }
 
-    return (
-        <div className={classes.layer}>
-            <DragPreview node={item} style={getItemStyles(props)} />
-        </div>
-    );
-};
+    render() {
+        const {
+            classes,
+            beingDragged,
+            dragPreviewComponent: DragPreview,
+            itemBeingDragged,
+        } = this.props;
 
-DragLayer.propTypes = {
-    classes: PropTypes.object.isRequired,
-    dragPreviewComponent: PropTypes.oneOfType([
-        PropTypes.element,
-        PropTypes.func,
-    ]),
-    isDragging: PropTypes.bool,
-    item: PropTypes.object,
-};
+        if (!beingDragged) return null;
+        return (
+            <div
+                role="presentation"
+                ref={el => (this.rootNode = el)}
+                className={classes.layer}
+            >
+                <DragPreview node={itemBeingDragged} />
+            </div>
+        );
+    }
+}
 
 export default compose(
     withStyles(styles),
-    DndDragLayer(monitor => ({
-        item: monitor.getItem(),
-        currentOffset: monitor.getSourceClientOffset(),
-        isDragging: monitor.isDragging(),
-    }))
-)(DragLayer);
+    DragLayer(monitor => {
+        if (!subscribedToOffsetChange) {
+            monitor.subscribeToOffsetChange(onOffsetChange(monitor));
+            subscribedToOffsetChange = true;
+        }
+
+        return {
+            itemBeingDragged: monitor.getItem(),
+            componentType: monitor.getItemType(),
+            beingDragged: monitor.isDragging(),
+        };
+    })
+)(CustomDragLayer);
