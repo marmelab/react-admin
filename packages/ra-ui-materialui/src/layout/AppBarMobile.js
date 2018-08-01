@@ -8,7 +8,6 @@ import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
 import compose from 'recompose/compose';
-import classnames from 'classnames';
 import { toggleSidebar } from 'ra-core';
 
 import LoadingIndicator from './LoadingIndicator';
