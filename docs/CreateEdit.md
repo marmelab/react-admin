@@ -119,7 +119,6 @@ You can replace the list of default actions by your own element using the `actio
 import Button from '@material-ui/core/Button';
 import {
     CardActions,
-    ListButton,
     ShowButton,
     DeleteButton,
     RefreshButton,
@@ -128,7 +127,6 @@ import {
 const PostEditActions = ({ basePath, data, resource }) => (
     <CardActions>
         <ShowButton basePath={basePath} record={data} />
-        <ListButton basePath={basePath} />
         <DeleteButton basePath={basePath} record={data} resource={resource} />
         <RefreshButton />
         {/* Add your custom actions */}
