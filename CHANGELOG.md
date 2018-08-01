@@ -1,5 +1,27 @@
 # Changelog
 
+## v2.2.0
+
+* Add Export feature ([fzaninotto](https://github.com/fzaninotto))
+* Add the `callback` side effect ([fzaninotto](https://github.com/fzaninotto))
+* Add Error Page ([fzaninotto](https://github.com/fzaninotto))
+* Add clear button on inputs ([djhi](https://github.com/djhi))
+* Add ability to clone a record ([fzaninotto](https://github.com/fzaninotto))
+* Add validation for `dataProvider` response format ([djhi](https://github.com/djhi), [fzaninotto](https://github.com/fzaninotto))
+* Add Tooltips To Icon Buttons ([fzaninotto](https://github.com/fzaninotto))
+* Add ability to alter values after submission and before saving them ([djhi](https://github.com/djhi))
+* Add support for forms in lists ([djhi](https://github.com/djhi))
+* Add support for `asyncBlurFields` in forms ([fzaninotto](https://github.com/fzaninotto))
+* Add redirection to the previous page when a `FETCH_ERROR` occurs ([djhi](https://github.com/djhi))
+* Add `<CreateActions>` and `<RecordTitle>` components ([djhi](https://github.com/djhi))
+* Update the UI to make the `<AppBar>` dense ([fzaninotto](https://github.com/fzaninotto))
+* Update the UI to make the page heading smaller ([fzaninotto](https://github.com/fzaninotto))
+* Update the `<ListView>` implementation to make it easier to override ([fzaninotto](https://github.com/fzaninotto))
+* Fix bug with `defaultValues` and `<TabbedForm>` ([djhi](https://github.com/djhi))
+* Fix bug with `defaultValues` and `<FormDataConsumer>` ([djhi](https://github.com/djhi))
+* Fix bug with Form state being persisted between resources ([djhi](https://github.com/djhi))
+* Fix `defaultValue` for `<ArrayInput>` ([djhi](https://github.com/djhi))
+
 ## v2.1.4
 
 * Fix link color in `<ReferenceField>` ([fzaninotto](https://github.com/fzaninotto))
