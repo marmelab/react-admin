@@ -1284,6 +1284,36 @@ const OrderEdit = (props) => (
 ); 
 ```
 
+**Tip**: Changing the props of a `ReferenceInput`, `ReferenceArrayInput` or `ReferenceManyField` component need a little more work. Those components have internal state which cannot be updated from their props. You need to update their `key` prop in addition to the other props which need to be modified:
+
+```jsx
+import { FormDataConsumer } from 'react-admin';
+
+const ProductEdit = (props) => (
+    <Edit {...props}>
+        <SimpleForm>
+            <ReferenceInput label="Category" source="categoryId" reference="categories">
+                <SelectInput optionText="label" />
+            </ReferenceInput>
+            <FormDataConsumer>
+                {({ formData, ...rest }) =>
+                    <ReferenceInput
+                        key={formData.categoryId}
+                        label="Sub Category"
+                        source="subCategoryId"
+                        reference="subcategories"
+                        filters={{ categoryId: formData.categoryId}}
+                        {...rest}
+                    >
+                        <SelectInput optionText="label" />
+                    </ReferenceInput>
+                }
+            </FormDataConsumer>
+        </SimpleForm>
+    </Edit>
+); 
+```
+
 ## Hiding Inputs Based On Other Inputs
 
 You may want to display or hide inputs base on the value of another input - for instance, show an `email` input only if the `hasEmail` boolean input is ticked to `true`.

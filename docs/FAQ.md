@@ -87,7 +87,7 @@ Some fairly common use cases which may be dependent on the user permissions:
 - Having parts of a view (fields, inputs) differents for specific users
 - Hiding or displaying menu items
 
-For all those cases, you can use the [aor-permissions](https://github.com/marmelab/aor-permissions) addon.
+For all those cases, follow the [Authorization](./Authorization.html) documention.
 
 ## How can I customize forms depending on its inputs values?
 
@@ -95,6 +95,6 @@ Some use cases:
 
 - Show/hide some inputs if another input has a value
 - Show/hide some inputs if another input has a specific value
-- Show/hide some inputs if the current form values matches specific constraints
+- Customize an input's props from another input value
 
-For all those cases, you can use the [aor-dependent-input](https://github.com/marmelab/aor-dependent-input) addon.
+For all those cases, you can use the [`<FormDataConsumer>`](./Inputs.html#linking-two-inputs) component.
