@@ -5,7 +5,6 @@ import classnames from 'classnames';
 import { CreateController } from 'ra-core';
 
 import Header from '../layout/Header';
-import DefaultActions from './CreateActions';
 import RecordTitle from '../layout/RecordTitle';
 
 const sanitizeRestProps = ({
@@ -31,7 +30,7 @@ const sanitizeRestProps = ({
 }) => rest;
 
 export const CreateView = ({
-    actions = <DefaultActions />,
+    actions,
     basePath,
     children,
     className,

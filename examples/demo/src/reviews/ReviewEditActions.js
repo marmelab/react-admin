@@ -1,6 +1,6 @@
 import React from 'react';
 import CardActions from '@material-ui/core/CardActions';
-import { ListButton, DeleteButton, RefreshButton } from 'react-admin';
+import { DeleteButton, RefreshButton } from 'react-admin';
 
 import AcceptButton from './AcceptButton';
 import RejectButton from './RejectButton';
@@ -11,11 +11,10 @@ const cardActionStyle = {
     float: 'right',
 };
 
-const ReviewEditActions = ({ basePath, data, resource, hasShow, refresh }) => (
+const ReviewEditActions = ({ basePath, data, resource, refresh }) => (
     <CardActions style={cardActionStyle}>
         <AcceptButton record={data} />
         <RejectButton record={data} />
-        <ListButton basePath={basePath} />
         <DeleteButton basePath={basePath} record={data} resource={resource} />
         <RefreshButton refresh={refresh} />
     </CardActions>
