@@ -59,6 +59,8 @@ export const CategoriesList = (props) => (
 
 ### <TreeController>
 
+Meant to be used as the child of the [`List`](https://marmelab.com/react-admin/List.html#the-list-component), [`ReferenceManyField`](https://marmelab.com/react-admin/Fields.html#referencemanyfield) or [ReferenceArrayField](https://marmelab.com/react-admin/Fields.html#referencearrayfield) components.
+
 The `TreeController` accepts the following props:
 
 - `parentSource`: The field used as the parent identifier for each node. Defaults to `parent_id`

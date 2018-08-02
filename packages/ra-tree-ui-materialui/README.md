@@ -1,23 +1,23 @@
-# ra-materialui-treeview
+# ra-tree-ui-materialui
 
-A treeview component with [material-ui](https://github.com/mui-org/material-ui) to use with [react-admin](https://github.com/marmelab/react-admin).
+A Tree component with [material-ui](https://github.com/mui-org/material-ui) to use with [react-admin](https://github.com/marmelab/react-admin).
 
 ## Installation
 
 ```sh
-npm install --save ra-materialui-treeview
+npm install --save ra-tree-ui-materialui
 # or
-yarn add ra-materialui-treeview
+yarn add ra-tree-ui-materialui
 ```
 
 ## Dependencies
 
-If you want to enable [edition](#editable) (with drag and drop), ensure you also installed [react-beautiful-dnd](https://github.com/atlassian/react-beautiful-dnd)
+If you want to enable [edition](#editable) (with drag and drop), ensure you also installed the [react-dnd](https://github.com/react-dnd/react-dnd) and the `react-dnd-html5-backend` packages
 
 ```sh
-npm install --save react-beautiful-dnd
+npm install --save react-dnd react-dnd-html5-backend
 # or
-yarn add react-beautiful-dnd
+yarn add react-dnd react-dnd-html5-backend
 ```
 
 ## Usage
@@ -41,29 +41,30 @@ With a categories ressource having this structure where a category may have a pa
 ```
 
 ```js
+// in src/category/list.js
 import React from 'react';
 import {
     List,
     TextField,
 } from 'react-admin';
-import Treeview from 'ra-materialui-treeview';
+import { Tree } from 'ra-tree-ui-materialui';
 
 export const CategoriesList = (props) => (
     <List {...props}>
-        <Treeview>
+        <Tree>
             <TextField source="name" />
-        </Treeview>
+            <EditButton />
+            <DeleteButton />
+        </Tree>
     </List>
 );
 ```
 
-`react-admin` will fetch the data and the `Treeview` component will build a tree from it. Note that every category which do not have a parent will be considered a root node. The `Treeview` component will render them using material-ui `ListItem`.
-
-TODO: ADD SCREENSHOT
+`react-admin` will fetch the data and the `Tree` component will build a tree from it. Note that every category which do not have a parent will be considered a root node.
 
 ## Editable
 
-Requires [react-beautiful-dnd](https://github.com/atlassian/react-beautiful-dnd) to be installed. See [Dependencies](#dependencies).
+Requires [react-dnd](https://github.com/react-dnd/react-dnd) to be installed. See [Dependencies](#dependencies).
 
 ```js
 import React, { Component } from 'react';
@@ -74,28 +75,26 @@ import {
     SaveButton,
     TextInput,
 } from 'react-admin';
-import Treeview from 'ra-materialui-treeview';
+import { EditableTree } from 'ra-tree-ui-materialui';
 
 const CategoriesList = () => (
     <List {...this.props}>
-        <Treeview>
+        <EditableTree>
             <TextInput source="name" /> {/* Quick name edition */}
             <SaveButton />
             <EditButton />
             <DeleteButton />
-        </Treeview>
+        </EditableTree>
     </List>
 );
 ```
 
-TODO: ADD SCREENSHOT
-
 ## Roadmap
 
 * Support nested set hierarchical data
-* `TreeviewSelectInput` to select a value inside the hierarchical data (with autocomplete showing the matched nodes)
-* `TreeviewInput` to edit a field containing hierarchical data as json
-* `TreeviewNodeField` to show a node and its hierarchie. It should recursively fetch the parents by default, allow a custom function to be supplied to fetch them in one call (`fetchHierarchy`) and fallback to a simple `depth` display (`--|--|--[NODE_LABEL]`) if a `depthSource` is supplied.
+* `TreeSelectInput` to select a value inside the hierarchical data (with autocomplete showing the matched nodes)
+* `TreeInput` to edit a field containing hierarchical data as json
+* `TreeNodeField` to show a node and its hierarchie. It should recursively fetch the parents by default, allow a custom function to be supplied to fetch them in one call (`fetchHierarchy`) and fallback to a simple `depth` display (`--|--|--[NODE_LABEL]`) if a `depthSource` is supplied.
 
 ## License
 
