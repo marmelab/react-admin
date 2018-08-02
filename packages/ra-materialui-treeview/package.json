@@ -1,6 +1,6 @@
 {
-    "name": "ra-tree-ui-materialui",
-    "version": "0.0.1",
+    "name": "ra-materialui-treeview",
+    "version": "0.0.0",
     "description": "A treeview component with material-ui to use with react-admin",
     "main": "lib/index.js",
     "files": [
@@ -32,24 +32,20 @@
         "watch": "rimraf ./lib && cross-env NODE_ENV=production babel --watch ./src -d ./lib --ignore spec.js,test.js"
     },
     "peerDependencies": {
-        "react": "~16.0.0 || ~16.1.0 || ~16.2.0 || ~16.3.0 || ~16.4.0",
-        "ra-core": "^2.0.0",
-        "ra-ui-materialui": "^2.0.0",
-        "react-dnd": "^5.0.0",
-        "react-dnd-html5-backend": "^5.0.1",
-        "react-dom": "~16.0.0 || ~16.1.0 || ~16.2.0 || ~16.3.0 || ~16.4.0"
+        "react": "~16.0.0 || ~16.1.0 || ~16.2.0 || ~16.3.0",
+        "react-admin": "^2.0.0",
+        "react-beautiful-dnd": "^8.0.5",
+        "react-dom": "~16.0.0 || ~16.1.0 || ~16.2.0 || ~16.3.0"
     },
     "dependencies": {
         "prop-types": "^15.6.1",
-        "ra-tree-core": "^0.0.1"
+        "performant-array-to-tree": "^1.1.2"
     },
     "devDependencies": {
         "babel-cli": "~6.26.0",
         "cross-env": "^5.2.0",
-        "ra-core": "^2.0.0",
-        "ra-ui-materialui": "^2.0.0",
-        "react-dnd": "^5.0.0",
-        "react-dnd-html5-backend": "^5.0.1",
+        "react-admin": "^2.0.0",
+        "react-beautiful-dnd": "^8.0.5",
         "rimraf": "^2.6.2"
     }
 }

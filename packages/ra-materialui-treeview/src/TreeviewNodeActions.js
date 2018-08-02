@@ -4,21 +4,19 @@ import { withStyles } from '@material-ui/core/styles';
 
 const styles = theme => ({
     root: {
-        alignItems: 'center',
         marginLeft: 'auto',
         marginRight: theme.spacing.unit * 4,
     },
 });
 
-export class TreeNodeActionsView extends Component {
+export class TreeviewNodeActionsView extends Component {
     static propTypes = {
         classes: PropTypes.object.isRequired,
         basePath: PropTypes.string.isRequired,
         children: PropTypes.node,
-        handleSubmit: PropTypes.func,
+        handleSubmit: PropTypes.func.isRequired,
         record: PropTypes.object.isRequired,
         resource: PropTypes.string.isRequired,
-        submitOnEnter: PropTypes.bool,
     };
 
     render() {
@@ -29,7 +27,6 @@ export class TreeNodeActionsView extends Component {
             handleSubmit,
             record,
             resource,
-            submitOnEnter,
         } = this.props;
         return (
             <span className={classes.root}>
@@ -43,7 +40,6 @@ export class TreeNodeActionsView extends Component {
                                   handleSubmit,
                                   record,
                                   resource,
-                                  submitOnEnter,
                               })
                             : null
                 )}
@@ -52,4 +48,4 @@ export class TreeNodeActionsView extends Component {
     }
 }
 
-export default withStyles(styles)(TreeNodeActionsView);
+export default withStyles(styles)(TreeviewNodeActionsView);

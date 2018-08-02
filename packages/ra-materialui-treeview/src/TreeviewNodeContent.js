@@ -1,67 +1,69 @@
 import React, { cloneElement, Children, Component } from 'react';
 import PropTypes from 'prop-types';
+import { reduxForm } from 'redux-form';
 import { withStyles } from '@material-ui/core/styles';
-import classNames from 'classnames';
 
 const styles = {
     root: {
-        alignItems: 'center',
         display: 'flex',
         flexGrow: 1,
     },
 };
 
-const CONTAINER_CLASS = 'treenode-content';
-
-class TreeNodeContent extends Component {
+class TreeviewNodeContent extends Component {
     static propTypes = {
         basePath: PropTypes.string.isRequired,
         children: PropTypes.node,
         classes: PropTypes.object.isRequired,
-        isLeaf: PropTypes.bool,
+        handleSubmit: PropTypes.func.isRequired,
+        onSubmit: PropTypes.func.isRequired,
         node: PropTypes.object.isRequired,
         resource: PropTypes.string.isRequired,
     };
 
     handleClick = event => {
-        // This ensure clicking on a button does not collapse/expand a node
-        // When clicking on the form (empty spaces around buttons) however, it should
-        // propagate to the parent
-        if (!event.target.matches(`.${CONTAINER_CLASS}`)) {
-            event.stopPropagation();
-        }
+        event.stopPropagation();
+    };
+
+    handleSubmit = () => {
+        const {
+            handleSubmit,
+            node: { __children, __depth, ...node },
+            onSubmit,
+        } = this.props;
+
+        return handleSubmit(values => onSubmit({ ...node, ...values }));
     };
 
     render() {
         const {
             basePath,
-            children,
             classes,
-            isLeaf,
-            node: { record },
+            children,
+            node: { __children, ...node },
             resource,
-            ...props
         } = this.props;
         return (
-            <div
-                className={classNames(CONTAINER_CLASS, classes.root)}
-                onClick={this.handleClick}
-            >
+            <form className={classes.root} onClick={this.handleClick}>
                 {Children.map(
                     children,
                     field =>
                         field
                             ? cloneElement(field, {
                                   basePath: field.props.basePath || basePath,
-                                  record,
+                                  handleSubmit: this.handleSubmit,
+                                  record: node,
                                   resource,
-                                  ...props,
+                                  submitOnEnter: true,
                               })
                             : null
                 )}
-            </div>
+            </form>
         );
     }
 }
 
-export default withStyles(styles)(TreeNodeContent);
+export default reduxForm({
+    enableReinitialize: true,
+    keepDirtyOnReinitialize: true,
+})(withStyles(styles)(TreeviewNodeContent));
