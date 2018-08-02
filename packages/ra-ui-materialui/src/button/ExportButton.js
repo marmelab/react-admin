@@ -13,9 +13,12 @@ const sanitizeRestProps = ({
     dispatch,
     exporter,
     filter,
+    handleSubmit,
+    handleSubmitWithRedirect,
     maxResults,
     resource,
     sort,
+    submitOnEnter,
     ...rest
 }) => rest;
 
