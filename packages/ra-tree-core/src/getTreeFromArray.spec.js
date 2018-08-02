@@ -1,5 +1,18 @@
 import getTreeFromArray from './getTreeFromArray';
 
+const getNode = ({ id, record, depth, children }) => ({
+    id,
+    record,
+    depth,
+    childCount: children.length,
+});
+const getNodeFromData = (record, depth, childCount) => ({
+    id: record.id,
+    record: { ...record, parent_id: record.parent_id || null },
+    depth,
+    childCount,
+});
+
 describe('getTreeFromArray', () => {
     it('return a tree from flat data', () => {
         const data = [
@@ -16,122 +29,29 @@ describe('getTreeFromArray', () => {
             { id: 9, name: 'Sun Dresses', parent_id: 7 },
         ];
 
-        expect(getTreeFromArray(data, 'parent_id')).toEqual([
-            {
-                children: [
-                    {
-                        children: [
-                            {
-                                children: [
-                                    {
-                                        children: [],
-                                        depth: 4,
-                                        id: 4,
-                                        record: {
-                                            id: 4,
-                                            name: 'Slacks',
-                                            parent_id: 3,
-                                        },
-                                    },
-                                    {
-                                        children: [],
-                                        depth: 4,
-                                        id: 5,
-                                        record: {
-                                            id: 5,
-                                            name: 'Jackets',
-                                            parent_id: 3,
-                                        },
-                                    },
-                                ],
-                                depth: 3,
-                                id: 3,
-                                record: {
-                                    id: 3,
-                                    name: 'Suits',
-                                    parent_id: 2,
-                                },
-                            },
-                        ],
-                        depth: 2,
-                        id: 2,
-                        record: {
-                            id: 2,
-                            name: 'Men',
-                            parent_id: 1,
-                        },
-                    },
-                    {
-                        children: [
-                            {
-                                children: [],
-                                depth: 3,
-                                id: 11,
-                                record: {
-                                    id: 11,
-                                    name: 'Blouses',
-                                    parent_id: 6,
-                                },
-                            },
-                            {
-                                children: [],
-                                depth: 3,
-                                id: 10,
-                                record: {
-                                    id: 10,
-                                    name: 'Skirts',
-                                    parent_id: 6,
-                                },
-                            },
-                            {
-                                children: [
-                                    {
-                                        children: [],
-                                        depth: 4,
-                                        id: 8,
-                                        record: {
-                                            id: 8,
-                                            name: 'Evening Gowns',
-                                            parent_id: 7,
-                                        },
-                                    },
-                                    {
-                                        children: [],
-                                        depth: 4,
-                                        id: 9,
-                                        record: {
-                                            id: 9,
-                                            name: 'Sun Dresses',
-                                            parent_id: 7,
-                                        },
-                                    },
-                                ],
-                                depth: 3,
-                                id: 7,
-                                record: {
-                                    id: 7,
-                                    name: 'Dresses',
-                                    parent_id: 6,
-                                },
-                            },
-                        ],
-                        depth: 2,
-                        id: 6,
-                        record: {
-                            id: 6,
-                            name: 'Women',
-                            parent_id: 1,
-                        },
-                    },
-                ],
-                depth: 1,
-                id: 1,
-                record: {
-                    id: 1,
-                    name: 'Clothing',
-                    parent_id: null,
-                },
-            },
+        const tree = getTreeFromArray(data, 'parent_id');
+        expect(tree.map(getNode)).toEqual([
+            getNodeFromData(data.find(d => d.id === 1), 1, 2),
+        ]);
+        expect(tree[0].children.map(getNode)).toEqual([
+            getNodeFromData(data.find(d => d.id === 2), 2, 1),
+            getNodeFromData(data.find(d => d.id === 6), 2, 3),
+        ]);
+        expect(tree[0].children[0].children.map(getNode)).toEqual([
+            getNodeFromData(data.find(d => d.id === 3), 3, 2),
+        ]);
+        expect(tree[0].children[0].children[0].children.map(getNode)).toEqual([
+            getNodeFromData(data.find(d => d.id === 4), 4, 0),
+            getNodeFromData(data.find(d => d.id === 5), 4, 0),
+        ]);
+        expect(tree[0].children[1].children.map(getNode)).toEqual([
+            getNodeFromData(data.find(d => d.id === 11), 3, 0),
+            getNodeFromData(data.find(d => d.id === 10), 3, 0),
+            getNodeFromData(data.find(d => d.id === 7), 3, 2),
+        ]);
+        expect(tree[0].children[1].children[2].children.map(getNode)).toEqual([
+            getNodeFromData(data.find(d => d.id === 8), 4, 0),
+            getNodeFromData(data.find(d => d.id === 9), 4, 0),
         ]);
     });
 });
