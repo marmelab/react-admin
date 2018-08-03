@@ -39,7 +39,7 @@ export class RichTextInput extends Component {
             theme: 'snow',
         });
 
-        this.quill.pasteHTML(value);
+        this.quill.setContents(this.quill.clipboard.convert(value));
 
         this.editor = this.divRef.querySelector('.ql-editor');
         this.quill.on('text-change', debounce(this.onTextChange, 500));
