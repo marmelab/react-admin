@@ -101,12 +101,12 @@ export default (previousState = initialState, { payload, meta }) => {
     }
     if (
         !meta ||
-        (!meta.effect && !meta.fetch) ||
+        (!meta.effect && !meta.fetchResponse) ||
         meta.fetchStatus !== FETCH_END
     ) {
         return previousState;
     }
-    switch (meta.effect || meta.fetch) {
+    switch (meta.effect || meta.fetchResponse) {
         case GET_LIST:
         case GET_MANY:
         case GET_MANY_REFERENCE:
