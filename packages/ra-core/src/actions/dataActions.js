@@ -21,6 +21,7 @@ export const crudGetList = (resource, pagination, sort, filter) => ({
     meta: {
         resource,
         fetch: GET_LIST,
+        effect: GET_LIST,
         onFailure: {
             notification: {
                 body: 'ra.notification.http_error',
@@ -41,6 +42,7 @@ export const crudGetAll = (resource, sort, filter, maxResults, callback) => ({
     meta: {
         resource,
         fetch: GET_LIST,
+        effect: GET_LIST,
         onSuccess: {
             callback,
         },
@@ -64,6 +66,7 @@ export const crudGetOne = (resource, id, basePath, refresh = true) => ({
     meta: {
         resource,
         fetch: GET_ONE,
+        effect: GET_ONE,
         basePath,
         onFailure: {
             notification: {
@@ -87,6 +90,7 @@ export const crudCreate = (resource, data, basePath, redirectTo = 'edit') => ({
     meta: {
         resource,
         fetch: CREATE,
+        effect: CREATE,
         onSuccess: {
             notification: {
                 body: 'ra.notification.created',
@@ -126,6 +130,7 @@ export const crudUpdate = (
     meta: {
         resource,
         fetch: UPDATE,
+        effect: UPDATE,
         onSuccess: {
             notification: {
                 body: 'ra.notification.updated',
@@ -164,6 +169,7 @@ export const crudUpdateMany = (
     meta: {
         resource,
         fetch: UPDATE_MANY,
+        effect: UPDATE_MANY,
         cancelPrevious: false,
         onSuccess: {
             notification: {
@@ -204,6 +210,7 @@ export const crudDelete = (
     meta: {
         resource,
         fetch: DELETE,
+        effect: DELETE,
         onSuccess: {
             notification: {
                 body: 'ra.notification.deleted',
@@ -236,6 +243,7 @@ export const crudDeleteMany = (resource, ids, basePath, refresh = true) => ({
     meta: {
         resource,
         fetch: DELETE_MANY,
+        effect: DELETE_MANY,
         onSuccess: {
             notification: {
                 body: 'ra.notification.deleted',
@@ -297,6 +305,7 @@ export const crudGetMatching = (
         resource: reference,
         relatedTo,
         fetch: GET_LIST,
+        effect: GET_LIST,
         onFailure: {
             notification: {
                 body: 'ra.notification.http_error',
@@ -330,6 +339,7 @@ export const crudGetManyReference = (
         resource: reference,
         relatedTo,
         fetch: GET_MANY_REFERENCE,
+        effect: GET_MANY_REFERENCE,
         onFailure: {
             notification: {
                 body: 'ra.notification.http_error',

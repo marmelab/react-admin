@@ -6,13 +6,10 @@ import {
     GET_MANY_REFERENCE,
     CREATE,
     UPDATE,
+    UPDATE_MANY,
+    DELETE,
+    DELETE_MANY,
 } from '../../../dataFetchActions';
-import {
-    CRUD_DELETE_OPTIMISTIC,
-    CRUD_DELETE_MANY_OPTIMISTIC,
-    CRUD_UPDATE_OPTIMISTIC,
-    CRUD_UPDATE_MANY_OPTIMISTIC,
-} from '../../../actions/dataActions';
 
 import getFetchedAt from '../../../util/getFetchedAt';
 
@@ -60,18 +57,29 @@ const addRecords = addRecordsFactory(getFetchedAt);
 const initialState = {};
 Object.defineProperty(initialState, 'fetchedAt', { value: {} }); // non enumerable by default
 
-export default (previousState = initialState, { type, payload, meta }) => {
-    if (type === CRUD_UPDATE_OPTIMISTIC) {
-        const updatedRecord = { ...previousState[payload.id], ...payload.data };
-        return addRecords([updatedRecord], previousState);
+export default (previousState = initialState, { payload, meta }) => {
+    if (!meta) {
+        return previousState;
     }
-    if (type === CRUD_UPDATE_MANY_OPTIMISTIC) {
+
+    if (meta.effect === UPDATE && meta.optimistic) {
+        const updatedRecord = {
+            ...previousState[payload.id],
+            ...(meta.optimisticData || payload.data),
+        };
+        const newState = addRecords([updatedRecord], previousState);
+        return newState;
+    }
+    if (meta.effect === UPDATE_MANY && meta.optimistic) {
         const updatedRecords = payload.ids
             .reduce((records, id) => records.concat(previousState[id]), [])
-            .map(record => ({ ...record, ...payload.data }));
+            .map(record => ({
+                ...record,
+                ...(meta.optimisticData || payload.data),
+            }));
         return addRecords(updatedRecords, previousState);
     }
-    if (type === CRUD_DELETE_OPTIMISTIC) {
+    if (meta.effect === DELETE && meta.optimistic) {
         const { [payload.id]: removed, ...newState } = previousState;
 
         Object.defineProperty(newState, 'fetchedAt', {
@@ -80,7 +88,7 @@ export default (previousState = initialState, { type, payload, meta }) => {
 
         return newState;
     }
-    if (type === CRUD_DELETE_MANY_OPTIMISTIC) {
+    if (meta.effect === DELETE_MANY && meta.optimistic) {
         const newState = Object.entries(previousState)
             .filter(([key]) => !payload.ids.includes(key))
             .reduce((obj, [key, val]) => ({ ...obj, [key]: val }), {});
@@ -94,7 +102,7 @@ export default (previousState = initialState, { type, payload, meta }) => {
     if (!meta || !meta.fetchResponse || meta.fetchStatus !== FETCH_END) {
         return previousState;
     }
-    switch (meta.fetchResponse) {
+    switch (meta.effect) {
         case GET_LIST:
         case GET_MANY:
         case GET_MANY_REFERENCE:

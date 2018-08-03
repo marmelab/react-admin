@@ -3,7 +3,15 @@ import assert from 'assert';
 import {
     CRUD_DELETE_OPTIMISTIC,
     CRUD_DELETE_MANY_OPTIMISTIC,
+    CRUD_UPDATE_OPTIMISTIC,
+    CRUD_UPDATE_MANY_OPTIMISTIC,
 } from '../../../actions/dataActions';
+import {
+    DELETE,
+    DELETE_MANY,
+    UPDATE,
+    UPDATE_MANY,
+} from '../../../dataFetchActions';
 
 import dataReducer, { addRecordsFactory } from './data';
 
@@ -112,6 +120,7 @@ describe('Resources data reducer', () => {
                 dataReducer(state, {
                     type: CRUD_DELETE_OPTIMISTIC,
                     payload: { id: 'record2' },
+                    meta: { effect: DELETE, optimistic: true },
                 }),
                 {
                     record1: { id: 'record1', prop: 'value' },
@@ -132,9 +141,160 @@ describe('Resources data reducer', () => {
                 dataReducer(state, {
                     type: CRUD_DELETE_MANY_OPTIMISTIC,
                     payload: { ids: ['record3', 'record2'] },
+                    meta: {
+                        effect: DELETE_MANY,
+                        optimistic: true,
+                    },
                 }),
                 {
                     record1: { id: 'record1', prop: 'value' },
+                }
+            );
+        });
+    });
+    describe('CRUD_UPDATE_OPTIMISTIC', () => {
+        it('updates the updated record', () => {
+            const state = {
+                record1: { id: 'record1', prop: 'value' },
+                record2: { id: 'record2', prop: 'value' },
+                record3: { id: 'record3', prop: 'value' },
+            };
+
+            const now = new Date();
+            Object.defineProperty(state, 'fetchedAt', {
+                value: {
+                    record3: now,
+                    record2: now,
+                    record1: now,
+                },
+            });
+
+            assert.deepEqual(
+                dataReducer(state, {
+                    type: CRUD_UPDATE_OPTIMISTIC,
+                    payload: {
+                        id: 'record2',
+                        data: { prop: 'value updated' },
+                    },
+                    meta: { effect: UPDATE, optimistic: true },
+                }),
+                {
+                    record1: { id: 'record1', prop: 'value' },
+                    record2: { id: 'record2', prop: 'value updated' },
+                    record3: { id: 'record3', prop: 'value' },
+                }
+            );
+        });
+    });
+    describe('CRUD_UPDATE_MANY_OPTIMISTIC', () => {
+        it('updates the updated records', () => {
+            const state = {
+                record1: { id: 'record1', prop: 'value' },
+                record2: { id: 'record2', prop: 'value' },
+                record3: { id: 'record3', prop: 'value' },
+            };
+
+            const now = new Date();
+            Object.defineProperty(state, 'fetchedAt', {
+                value: {
+                    record3: now,
+                    record2: now,
+                    record1: now,
+                },
+            });
+
+            assert.deepEqual(
+                dataReducer(state, {
+                    type: CRUD_UPDATE_MANY_OPTIMISTIC,
+                    payload: {
+                        ids: ['record3', 'record2'],
+                        data: { prop: 'value updated' },
+                    },
+                    meta: {
+                        effect: UPDATE_MANY,
+                        optimistic: true,
+                    },
+                }),
+                {
+                    record1: { id: 'record1', prop: 'value' },
+                    record2: { id: 'record2', prop: 'value updated' },
+                    record3: { id: 'record3', prop: 'value updated' },
+                }
+            );
+        });
+    });
+    describe('Custom action with optimistic data and an UPDATE effect', () => {
+        it('updates the updated record', () => {
+            const state = {
+                record1: { id: 'record1', prop: 'value' },
+                record2: { id: 'record2', prop: 'value' },
+                record3: { id: 'record3', prop: 'value' },
+            };
+
+            const now = new Date();
+            Object.defineProperty(state, 'fetchedAt', {
+                value: {
+                    record3: now,
+                    record2: now,
+                    record1: now,
+                },
+            });
+
+            assert.deepEqual(
+                dataReducer(state, {
+                    type: 'MY_CUSTOM_ACTION',
+                    payload: {
+                        id: 'record2',
+                        data: { endPointSpecificParam: 'value' },
+                    },
+                    meta: {
+                        effect: UPDATE,
+                        optimistic: true,
+                        optimisticData: { prop: 'value updated' },
+                    },
+                }),
+                {
+                    record1: { id: 'record1', prop: 'value' },
+                    record2: { id: 'record2', prop: 'value updated' },
+                    record3: { id: 'record3', prop: 'value' },
+                }
+            );
+        });
+    });
+    describe('Custom action with optimistic data and an UPDATE_MANY effect', () => {
+        it('updates the updated records', () => {
+            const state = {
+                record1: { id: 'record1', prop: 'value' },
+                record2: { id: 'record2', prop: 'value' },
+                record3: { id: 'record3', prop: 'value' },
+            };
+
+            const now = new Date();
+            Object.defineProperty(state, 'fetchedAt', {
+                value: {
+                    record3: now,
+                    record2: now,
+                    record1: now,
+                },
+            });
+
+            assert.deepEqual(
+                dataReducer(state, {
+                    type: 'MY_CUSTOM_ACTION',
+                    payload: {
+                        ids: ['record3', 'record2'],
+                        data: { endPointSpecificParam: 'value' },
+                    },
+                    meta: {
+                        effect: UPDATE_MANY,
+                        optimistic: true,
+                        optimisticData: { prop: 'value updated' },
+                    },
+                }),
+                {
+                    record1: { id: 'record1', prop: 'value' },
+                    record2: { id: 'record2', prop: 'value updated' },
+                    record3: { id: 'record3', prop: 'value updated' },
                 }
             );
         });
