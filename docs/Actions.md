@@ -456,16 +456,18 @@ The fact that react-admin updates the internal store if you use custom actions w
 
 There are cases when you'll have to use a custom `fetch` meta because you want to call a specific end point, especially when using GraphQL. Yet, you may already know the effect your action will have on your data and want it to be updated optimistically. You can leverage the `effect` and `effectData` metas for this.
 
-```jsx
+```js
 // in src/comment/commentActions.js
 import { UPDATE } from 'react-admin';
 
 export const commentApprove = (id, data, basePath) => ({
     type: CRUD_UPDATE,
-    payload: { id, data: { endPointParameter: 'a value' } },
+    // These are the parameters received by the data provider. They are specific to the custom end point
+    payload: { id, data: { status: 'approved' } },
     meta: {
         fetch: 'COMMENT_APPROVE',
         effect: UPDATE,
+        // Data used to optimistically update the record
         effectData: { ...data, is_approved: true },
         resource: 'comments',
     },
@@ -474,7 +476,7 @@ export const commentApprove = (id, data, basePath) => ({
 
 Would you also need to handle side effects specific to your action:
 
-```jsx
+```js
 // in src/comment/commentActions.js
 import { UPDATE } from 'react-admin';
 
@@ -482,14 +484,22 @@ export const COMMENT_APPROVE = 'COMMENT_APPROVE';
 
 export const commentApprove = (id, data, basePath) => ({
     type: COMMENT_APPROVE,
-    payload: { id, data: { endPointParameter: 'a value' } },
+    // These are the parameters received by the data provider. They are specific to the custom end point
+    payload: { id, data: { status: 'approved' } },
     meta: {
         fetch: 'COMMENT_APPROVE',
         effect: UPDATE,
+        // Data used to optimistically update the record
         effectData: { ...data, is_approved: true },
         resource: 'comments',
     },
 });
+```
+
+In both cases, the `dataProvider` will be called with the following parameters:
+
+```js
+'COMMENT_APPROVE', 'comments', { id, data: { status: 'approved' } }
 ```
 
 ## Altering the Form Values before Submitting
