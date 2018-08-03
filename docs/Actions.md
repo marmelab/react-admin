@@ -452,6 +452,46 @@ And that's all it takes to make a fetch action optimistic. Note that the `startU
 
 The fact that react-admin updates the internal store if you use custom actions with the `fetch` meta should be another motivation to avoid using raw `fetch`.
 
+## Custom fetch action
+
+There are cases when you'll have to use a custom `fetch` meta because you want to call a specific end point, especially when using GraphQL. Yet, you may already know the effect your action will have on your data and want it to be updated optimistically. You can leverage the `effect` and `effectData` metas for this.
+
+```jsx
+// in src/comment/commentActions.js
+import { UPDATE } from 'react-admin';
+
+export const commentApprove = (id, data, basePath) => ({
+    type: CRUD_UPDATE,
+    payload: { id, data: { endPointParameter: 'a value' } },
+    meta: {
+        fetch: 'COMMENT_APPROVE',
+        effect: UPDATE,
+        effectData: { ...data, is_approved: true },
+        resource: 'comments',
+    },
+});
+```
+
+Would you also need to handle side effects specific to your action:
+
+```jsx
+// in src/comment/commentActions.js
+import { UPDATE } from 'react-admin';
+
+export const COMMENT_APPROVE = 'COMMENT_APPROVE';
+
+export const commentApprove = (id, data, basePath) => ({
+    type: COMMENT_APPROVE,
+    payload: { id, data: { endPointParameter: 'a value' } },
+    meta: {
+        fetch: 'COMMENT_APPROVE',
+        effect: UPDATE,
+        effectData: { ...data, is_approved: true },
+        resource: 'comments',
+    },
+});
+```
+
 ## Altering the Form Values before Submitting
 
 Sometimes, you may want your custom action to alter the form values before actually sending them to the `dataProvider`. For those cases, you should know that every buttons inside a form [Toolbar](/CreateEdit.md#toolbar) receive two props:
