@@ -65,7 +65,7 @@ export default (previousState = initialState, { payload, meta }) => {
     if (meta.effect === UPDATE && meta.optimistic) {
         const updatedRecord = {
             ...previousState[payload.id],
-            ...(meta.optimisticData || payload.data),
+            ...(meta.effectData || payload.data),
         };
         const newState = addRecords([updatedRecord], previousState);
         return newState;
@@ -75,7 +75,7 @@ export default (previousState = initialState, { payload, meta }) => {
             .reduce((records, id) => records.concat(previousState[id]), [])
             .map(record => ({
                 ...record,
-                ...(meta.optimisticData || payload.data),
+                ...(meta.effectData || payload.data),
             }));
         return addRecords(updatedRecords, previousState);
     }
@@ -99,7 +99,7 @@ export default (previousState = initialState, { payload, meta }) => {
 
         return newState;
     }
-    if (!meta || !meta.fetchResponse || meta.fetchStatus !== FETCH_END) {
+    if (!meta || !meta.effect || meta.fetchStatus !== FETCH_END) {
         return previousState;
     }
     switch (meta.effect) {
@@ -111,6 +111,15 @@ export default (previousState = initialState, { payload, meta }) => {
         case UPDATE:
         case CREATE:
             return addRecords([payload.data], previousState);
+        case UPDATE_MANY: {
+            const updatedRecords = payload.ids
+                .reduce((records, id) => records.concat(previousState[id]), [])
+                .map(record => ({
+                    ...record,
+                    ...payload.data,
+                }));
+            return addRecords(updatedRecords, previousState);
+        }
         default:
             return previousState;
     }
