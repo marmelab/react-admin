@@ -62,7 +62,7 @@ export default (previousState = initialState, { payload, meta }) => {
         return previousState;
     }
 
-    if (meta.effect === UPDATE && meta.optimistic) {
+    if ((meta.effect || meta.fetch) === UPDATE && meta.optimistic) {
         const updatedRecord = {
             ...previousState[payload.id],
             ...(meta.effectData || payload.data),
@@ -70,7 +70,7 @@ export default (previousState = initialState, { payload, meta }) => {
         const newState = addRecords([updatedRecord], previousState);
         return newState;
     }
-    if (meta.effect === UPDATE_MANY && meta.optimistic) {
+    if ((meta.effect || meta.fetch) === UPDATE_MANY && meta.optimistic) {
         const updatedRecords = payload.ids
             .reduce((records, id) => records.concat(previousState[id]), [])
             .map(record => ({
@@ -79,7 +79,7 @@ export default (previousState = initialState, { payload, meta }) => {
             }));
         return addRecords(updatedRecords, previousState);
     }
-    if (meta.effect === DELETE && meta.optimistic) {
+    if ((meta.effect || meta.fetch) === DELETE && meta.optimistic) {
         const { [payload.id]: removed, ...newState } = previousState;
 
         Object.defineProperty(newState, 'fetchedAt', {
@@ -88,7 +88,7 @@ export default (previousState = initialState, { payload, meta }) => {
 
         return newState;
     }
-    if (meta.effect === DELETE_MANY && meta.optimistic) {
+    if ((meta.effect || meta.fetch) === DELETE_MANY && meta.optimistic) {
         const newState = Object.entries(previousState)
             .filter(([key]) => !payload.ids.includes(key))
             .reduce((obj, [key, val]) => ({ ...obj, [key]: val }), {});
@@ -99,10 +99,14 @@ export default (previousState = initialState, { payload, meta }) => {
 
         return newState;
     }
-    if (!meta || !meta.effect || meta.fetchStatus !== FETCH_END) {
+    if (
+        !meta ||
+        (!meta.effect && !meta.fetch) ||
+        meta.fetchStatus !== FETCH_END
+    ) {
         return previousState;
     }
-    switch (meta.effect) {
+    switch (meta.effect || meta.fetch) {
         case GET_LIST:
         case GET_MANY:
         case GET_MANY_REFERENCE:
