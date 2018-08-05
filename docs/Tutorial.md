@@ -200,6 +200,12 @@ UrlField.propTypes = {
 export default UrlField;
 ```
 
+To take advantage of the prop-types library, you can go ahead and install it.
+
+```sh
+yarn add prop-types
+```
+
 ## Handling Relationships
 
 In JSONPlaceholder, each `post` record includes a `userId` field, which points to a `user`:
