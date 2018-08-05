@@ -1,13 +1,13 @@
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { getFormValues } from 'redux-form';
+import get from 'lodash/get';
 
 const REDUX_FORM_NAME = 'record-form';
-const ARRAY_SOURCE_REGEX = /^(.*)\[(\d*)\]/;
 
 const warnAboutArrayInput = () =>
     console.warn( // eslint-disable-line
-        `You have an input inside a FormDataConsumer inside an ArrayInput and you did not called the getSource function supplied by the FormDataConsumer component. This is required for your input to get the proper source and name.
+        `You're using a FormDataConsumer inside an ArrayInput and you did not called the getSource function supplied by the FormDataConsumer component. This is required for your inputs to get the proper source.
 
     <ArrayInput source="users">
         <SimpleFormIterator>
@@ -71,23 +71,18 @@ const warnAboutArrayInput = () =>
  *     </Edit>
  * );
  */
-const FormDataConsumer = ({ children, formData, source, ...rest }) => {
+const FormDataConsumer = ({ children, formData, source, index, ...rest }) => {
     let scopedFormData = formData;
     let getSource;
     let getSourceHasBeenCalled = false;
 
-    // If we have a source, we are in an ArrayInput component
-    if (source) {
-        const matches = ARRAY_SOURCE_REGEX.exec(source);
-
-        if (matches.length > 2) {
-            const [, arraySource, index] = matches;
-            scopedFormData = formData[arraySource][parseInt(index)];
-            getSource = scopedSource => {
-                getSourceHasBeenCalled = true;
-                return `${arraySource}[${index}].${scopedSource}`;
-            };
-        }
+    // If we have an index, we are in an iterator like component (such as the SimpleFormIterator)
+    if (index) {
+        scopedFormData = get(formData, source);
+        getSource = scopedSource => {
+            getSourceHasBeenCalled = true;
+            return `${source}.${scopedSource}`;
+        };
     }
     const ret = children({ formData, scopedFormData, getSource, ...rest });
 
