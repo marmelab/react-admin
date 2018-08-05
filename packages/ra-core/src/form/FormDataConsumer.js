@@ -5,6 +5,34 @@ import { getFormValues } from 'redux-form';
 const REDUX_FORM_NAME = 'record-form';
 const ARRAY_SOURCE_REGEX = /^(.*)\[(\d*)\]/;
 
+const warnAboutArrayInput = () =>
+    console.warn( // eslint-disable-line
+        `You have an input inside a FormDataConsumer inside an ArrayInput and you did not called the getSource function supplied by the FormDataConsumer component. This is required for your input to get the proper source and name.
+
+    <ArrayInput source="users">
+        <SimpleFormIterator>
+            <TextInput source="name" />
+
+            <FormDataConsumer>
+                {({
+                    formData, // The whole form data
+                    scopedFormData, // The data for this item of the ArrayInput
+                    getSource, // A function to get the valid source inside an ArrayInput
+                    ...rest,
+                }) =>
+                    scopedFormData.name ? (
+                        <SelectInput
+                            source={getSource('role')} // Will translate to "users[0].role"
+                            choices={['admin', 'user']}
+                            {...rest}
+                        />
+                    ) : null
+                }
+            </FormDataConsumer>
+        </SimpleFormIterator>
+    </ArrayInput>`
+    );
+
 /**
  * Get the current (edited) value of the record from the form and pass it
  * to child function
@@ -68,31 +96,7 @@ const FormDataConsumer = ({ children, formData, source, ...rest }) => {
         !getSourceHasBeenCalled &&
         process.env.NODE_ENV !== 'production'
     ) {
-        console.warn( // eslint-disable-line
-            `You have an input inside a FormDataConsumer inside an ArrayInput and you did not called the getSource function supplied by the FormDataConsumer component. This is required for your input to get the proper source and name.
-
-            <ArrayInput source="users">
-                <TextInput source="name" />
-
-                <FormDataConsumer>
-                    {({
-                        formData, // The whole form data
-                        scopedFormData, // The data for this item of the ArrayInput
-                        getSource, // A function to get the valid source inside an ArrayInput
-                        ...rest,
-                    }) =>
-                        scopedFormData.name ? (
-                            <SelectInput
-                                source={getSource('role')} // Will translate to "users[0].role"
-                                choices={['admin', 'user']}
-                                {...rest}
-                            />
-                        ) : null
-                    }
-                </FormDataConsumer>
-            </ArrayInput>
-            `
-        );
+        warnAboutArrayInput();
     }
 
     return ret === undefined ? null : ret;

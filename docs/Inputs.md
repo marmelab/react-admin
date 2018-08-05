@@ -1296,24 +1296,26 @@ const PostEdit = (props) => (
     <Edit {...props}>
         <SimpleForm>
             <ArrayInput source="authors">
-                <TextInput source="name" />
+                <SimpleFormIterator>
+                    <TextInput source="name" />
 
-                <FormDataConsumer>
-                    {({
-                        formData, // The whole form data
-                        scopedFormData, // The data for this item of the ArrayInput
-                        getSource, // A function to get the valid source inside an ArrayInput
-                        ...rest,
-                    }) =>
-                        scopedFormData.name ? (
-                            <SelectInput
-                                source={getSource('role')} // Will translate to "authors[0].role"
-                                choices={['main', 'coauthor']}
-                                {...rest}
-                            />
-                        ) : null
-                    }
-                </FormDataConsumer>
+                    <FormDataConsumer>
+                        {({
+                            formData, // The whole form data
+                            scopedFormData, // The data for this item of the ArrayInput
+                            getSource, // A function to get the valid source inside an ArrayInput
+                            ...rest,
+                        }) =>
+                            scopedFormData.name ? (
+                                <SelectInput
+                                    source={getSource('role')} // Will translate to "authors[0].role"
+                                    choices={['main', 'coauthor']}
+                                    {...rest}
+                                />
+                            ) : null
+                        }
+                    </FormDataConsumer>
+                </SimpleFormIterator>
             </ArrayInput>
         </SimpleForm>
     </Edit>

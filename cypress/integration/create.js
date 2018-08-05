@@ -43,7 +43,7 @@ describe('Create Page', () => {
         );
     });
 
-    it.only('should have a working array input with a scoped FormDataConsumer', () => {
+    it('should have a working array input with a scoped FormDataConsumer', () => {
         cy.get(CreatePage.elements.addAuthor).click();
         CreatePage.setValues([
             {
