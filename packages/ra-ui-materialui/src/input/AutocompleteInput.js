@@ -276,7 +276,7 @@ export class AutocompleteInput extends React.Component {
         const { touched, error, helperText = false } = meta;
 
         // We need to store the input reference for our Popper element containg the suggestions
-        // but Autosuggest also need this reference (it provides the ref prop)
+        // but Autosuggest also needs this reference (it provides the ref prop)
         const storeInputRef = input => {
             this.inputEl = input;
             ref(input);
@@ -317,13 +317,10 @@ export class AutocompleteInput extends React.Component {
         const { containerProps, children } = options;
 
         return (
-            <Popper
-                {...containerProps}
-                open
-                anchorEl={this.inputEl}
-                placement="bottom-start"
-            >
-                <Paper>{children}</Paper>
+            <Popper open anchorEl={this.inputEl} placement="bottom-start">
+                <Paper square {...containerProps}>
+                    {children}
+                </Paper>
             </Popper>
         );
     };
