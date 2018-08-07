@@ -1,8 +1,37 @@
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { getFormValues } from 'redux-form';
+import get from 'lodash/get';
 
 const REDUX_FORM_NAME = 'record-form';
+
+const warnAboutArrayInput = () =>
+    console.warn( // eslint-disable-line
+        `You're using a FormDataConsumer inside an ArrayInput and you did not called the getSource function supplied by the FormDataConsumer component. This is required for your inputs to get the proper source.
+
+    <ArrayInput source="users">
+        <SimpleFormIterator>
+            <TextInput source="name" />
+
+            <FormDataConsumer>
+                {({
+                    formData, // The whole form data
+                    scopedFormData, // The data for this item of the ArrayInput
+                    getSource, // A function to get the valid source inside an ArrayInput
+                    ...rest,
+                }) =>
+                    scopedFormData.name ? (
+                        <SelectInput
+                            source={getSource('role')} // Will translate to "users[0].role"
+                            choices={['admin', 'user']}
+                            {...rest}
+                        />
+                    ) : null
+                }
+            </FormDataConsumer>
+        </SimpleFormIterator>
+    </ArrayInput>`
+    );
 
 /**
  * Get the current (edited) value of the record from the form and pass it
@@ -42,8 +71,29 @@ const REDUX_FORM_NAME = 'record-form';
  *     </Edit>
  * );
  */
-const FormDataConsumer = ({ children, formData, ...rest }) => {
-    const ret = children({ formData, ...rest });
+const FormDataConsumer = ({ children, formData, source, index, ...rest }) => {
+    let scopedFormData = formData;
+    let getSource;
+    let getSourceHasBeenCalled = false;
+
+    // If we have an index, we are in an iterator like component (such as the SimpleFormIterator)
+    if (index) {
+        scopedFormData = get(formData, source);
+        getSource = scopedSource => {
+            getSourceHasBeenCalled = true;
+            return `${source}.${scopedSource}`;
+        };
+    }
+    const ret = children({ formData, scopedFormData, getSource, ...rest });
+
+    if (
+        ret &&
+        !getSourceHasBeenCalled &&
+        process.env.NODE_ENV !== 'production'
+    ) {
+        warnAboutArrayInput();
+    }
+
     return ret === undefined ? null : ret;
 };
 
