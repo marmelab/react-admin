@@ -44,6 +44,7 @@ const LoginForm = ({ classes, isLoading, handleSubmit, translate }) => (
         <div className={classes.form}>
             <div className={classes.input}>
                 <Field
+                    id="username"
                     name="username"
                     component={renderInput}
                     label={translate('ra.auth.username')}
@@ -52,6 +53,7 @@ const LoginForm = ({ classes, isLoading, handleSubmit, translate }) => (
             </div>
             <div className={classes.input}>
                 <Field
+                    id="password"
                     name="password"
                     component={renderInput}
                     label={translate('ra.auth.password')}
