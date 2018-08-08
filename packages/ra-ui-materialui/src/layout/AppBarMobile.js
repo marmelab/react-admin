@@ -24,6 +24,7 @@ const styles = {
         overflow: 'hidden',
         textOverflow: 'ellipsis',
         whiteSpace: 'nowrap',
+        flex: 1,
     },
     icon: {
         marginTop: 0,
@@ -33,12 +34,6 @@ const styles = {
     link: {
         color: '#fff',
         textDecoration: 'none',
-    },
-    loadingIndicator: {
-        position: 'absolute',
-        top: 0,
-        right: 0,
-        zIndex: 1200,
     },
 };
 
@@ -71,7 +66,7 @@ const AppBarMobile = ({
             >
                 {title}
             </Typography>
-            <LoadingIndicator className={classes.loadingIndicator} />
+            <LoadingIndicator />
         </Toolbar>
     </MuiAppBar>
 );
