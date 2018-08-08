@@ -17,4 +17,5 @@ export RecordTitle from './RecordTitle';
 export Responsive from './Responsive';
 export Sidebar from './Sidebar';
 export Title from './Title';
+export UserMenu from './UserMenu';
 export ViewTitle from './ViewTitle';
