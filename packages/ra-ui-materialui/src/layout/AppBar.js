@@ -45,17 +45,6 @@ const styles = theme => ({
     title: {
         flex: 1,
     },
-    loadingIndicator: {
-        position: 'absolute',
-        top: 0,
-        right: 0,
-        left: 0,
-        zIndex: 1200,
-        marginBottom: 14,
-        marginTop: 14,
-        marginLeft: 'auto',
-        marginRight: 'auto',
-    },
     logout: {
         color: theme.palette.secondary.contrastText,
     },
@@ -98,12 +87,12 @@ const AppBar = ({
             >
                 {typeof title === 'string' ? title : React.cloneElement(title)}
             </Typography>
+            <LoadingIndicator />
             {logout &&
                 cloneElement(logout, {
                     className: classes.logout,
                 })}
         </Toolbar>
-        <LoadingIndicator className={classes.loadingIndicator} />
     </MuiAppBar>
 );
 
