@@ -24,13 +24,13 @@ import { routerMiddleware } from 'react-router-redux';
 import createSagaMiddleware from 'redux-saga';
 import { all, fork } from 'redux-saga/effects';
 import {
-    USER_LOGOUT,
-    createAppReducer,
     adminReducer,
     adminSaga,
-    i18nReducer,
+    createAppReducer,
     defaultI18nProvider,
+    i18nReducer,
     formMiddleware,
+    USER_LOGOUT,
 } from 'react-admin';
 
 export default ({
