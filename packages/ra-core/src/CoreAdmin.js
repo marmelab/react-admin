@@ -38,6 +38,10 @@ class CoreAdmin extends React.Component {
         title: PropTypes.node,
     };
 
+    static contextTypes = {
+        store: PropTypes.object,
+    };
+
     reduxIsAlreadyInitialized = false;
     history = null;
 
