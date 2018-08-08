@@ -12,6 +12,7 @@ import compose from 'recompose/compose';
 import { toggleSidebar as toggleSidebarAction } from 'ra-core';
 
 import LoadingIndicator from './LoadingIndicator';
+import UserMenu from './UserMenu';
 
 const styles = theme => ({
     appBar: {
@@ -44,9 +45,6 @@ const styles = theme => ({
     },
     title: {
         flex: 1,
-    },
-    logout: {
-        color: theme.palette.secondary.contrastText,
     },
 });
 
@@ -88,10 +86,7 @@ const AppBar = ({
                 {typeof title === 'string' ? title : React.cloneElement(title)}
             </Typography>
             <LoadingIndicator />
-            {logout &&
-                cloneElement(logout, {
-                    className: classes.logout,
-                })}
+            {logout && <UserMenu logout={logout} />}
         </Toolbar>
     </MuiAppBar>
 );
