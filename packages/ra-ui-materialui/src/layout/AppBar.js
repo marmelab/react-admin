@@ -49,6 +49,7 @@ const styles = theme => ({
 });
 
 const AppBar = ({
+    children,
     classes,
     className,
     logout,
@@ -86,12 +87,13 @@ const AppBar = ({
                 {typeof title === 'string' ? title : React.cloneElement(title)}
             </Typography>
             <LoadingIndicator />
-            {logout && <UserMenu logout={logout} />}
+            {logout && <UserMenu logout={logout}>{children}</UserMenu>}
         </Toolbar>
     </MuiAppBar>
 );
 
 AppBar.propTypes = {
+    children: PropTypes.node,
     classes: PropTypes.object,
     className: PropTypes.string,
     logout: PropTypes.element,
