@@ -1,10 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
-import AccountCircle from '@material-ui/icons/AccountCircle';
 import Menu from '@material-ui/core/Menu';
+import AccountCircle from '@material-ui/icons/AccountCircle';
+import { translate } from 'ra-core';
 
 class UserMenu extends React.Component {
+    static propTypes = {
+        label: PropTypes.string.isRequired,
+        logout: PropTypes.node,
+        translate: PropTypes.func.isRequired,
+    };
+
+    static defaultProps = {
+        label: 'ra.auth.user_menu'
+    }
+
     state = {
         auth: true,
         anchorEl: null,
@@ -23,20 +35,23 @@ class UserMenu extends React.Component {
     };
 
     render() {
-        const { logout } = this.props;
+        const { label, logout, translate } = this.props;
         const { anchorEl } = this.state;
         const open = Boolean(anchorEl);
 
         return (
             <div>
-                <IconButton
-                    aria-owns={open ? 'menu-appbar' : null}
-                    aria-haspopup="true"
-                    onClick={this.handleMenu}
-                    color="inherit"
-                >
-                    <AccountCircle />
-                </IconButton>
+                <Tooltip title={label && translate(label, { _: label })}>
+                    <IconButton
+                        arial-label={label && translate(label, { _: label })}
+                        aria-owns={open ? 'menu-appbar' : null}
+                        aria-haspopup="true"
+                        onClick={this.handleMenu}
+                        color="inherit"
+                    >
+                        <AccountCircle />
+                    </IconButton>
+                </Tooltip>
                 <Menu
                     id="menu-appbar"
                     anchorEl={anchorEl}
@@ -58,8 +73,4 @@ class UserMenu extends React.Component {
     }
 }
 
-UserMenu.propTypes = {
-    logout: PropTypes.node,
-};
-
-export default UserMenu;
+export default translate(UserMenu);
