@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { EditButton, DeleteButton, RefreshButton } from '../button';
+import { EditButton, DeleteButton } from '../button';
 import CardActions from '../layout/CardActions';
 
 const sanitizeRestProps = ({
@@ -23,13 +23,12 @@ const sanitizeRestProps = ({
  *
  * @example
  *     import Button from '@material-ui/core/Button';
- *     import { CardActions, EditButton, DeleteButton, RefreshButton, Show } from 'react-admin';
+ *     import { CardActions, EditButton, DeleteButton, Show } from 'react-admin';
  *
  *     const PostShowActions = ({ basePath, record, resource }) => (
  *         <CardActions>
  *             <EditButton basePath={basePath} record={record} />
  *             <DeleteButton basePath={basePath} record={record} resource={resource} />
- *             <RefreshButton />
  *             // Add your custom actions here //
  *             <Button color="primary" onClick={customAction}>Custom Action</Button>
  *         </CardActions>
@@ -58,7 +57,6 @@ const ShowActions = ({
                 resource={resource}
             />
         )}
-        <RefreshButton />
     </CardActions>
 );
 
