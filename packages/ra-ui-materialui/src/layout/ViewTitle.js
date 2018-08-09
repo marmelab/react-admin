@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
@@ -10,11 +10,14 @@ import AppBarMobile from './AppBarMobile';
 const ViewTitle = ({ className, title, ...rest }) => (
     <Responsive
         xsmall={
-            <AppBarMobile
-                className={classnames('title', className)}
-                title={title}
-                {...rest}
-            />
+            <Fragment>
+                <AppBarMobile
+                    className={classnames('title', className)}
+                    title={title}
+                    {...rest}
+                />
+                <span> </span>
+            </Fragment>
         }
         medium={
             <CardContent className={classnames('title', className)} {...rest}>

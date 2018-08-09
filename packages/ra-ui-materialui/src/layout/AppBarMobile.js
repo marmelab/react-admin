@@ -8,16 +8,11 @@ import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
 import compose from 'recompose/compose';
-import classnames from 'classnames';
 import { toggleSidebar } from 'ra-core';
 
 import LoadingIndicator from './LoadingIndicator';
 
 const styles = {
-    bar: {
-        height: '3em',
-        top: 0,
-    },
     title: {
         fontSize: '1.25em',
         lineHeight: '2.5em',
@@ -25,11 +20,12 @@ const styles = {
         textOverflow: 'ellipsis',
         whiteSpace: 'nowrap',
         flex: 1,
+        paddingRight: '1.5em',
     },
     icon: {
         marginTop: 0,
         marginRight: 0,
-        marginLeft: '-24px',
+        marginLeft: '-12px',
     },
     link: {
         color: '#fff',
@@ -45,7 +41,7 @@ const AppBarMobile = ({
     ...rest
 }) => (
     <MuiAppBar
-        className={classnames(classes.bar, className)}
+        className={className}
         color="secondary"
         position="fixed"
         {...rest}

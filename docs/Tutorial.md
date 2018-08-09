@@ -20,7 +20,7 @@ React-admin uses React. We'll use Facebook's [create-react-app](https://github.c
 npm install -g create-react-app
 create-react-app test-admin
 cd test-admin/
-yarn add react-admin
+yarn add react-admin prop-types
 yarn start
 ```
 

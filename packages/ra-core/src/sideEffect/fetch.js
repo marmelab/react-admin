@@ -24,7 +24,7 @@ function validateResponseFormat(
     type,
     logger = console.error // eslint-disable-line no-console
 ) {
-    if (!response.data) {
+    if (!response.hasOwnProperty('data')) {
         logger(
             `The response to '${type}' must be like { data: ... }, but the received response does not have a 'data' key. The dataProvider is probably wrong for '${type}'.`
         );

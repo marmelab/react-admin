@@ -80,7 +80,6 @@ title: "Reference"
 * `<ShowButton>`
 * `<Sidebar>`
 * `<SimpleList>`
-* `<SingleFieldList>`
 * [`<SimpleForm>`](./CreateEdit.html#the-simpleform-component)
 * [`<SimpleformIterator>`](./Inputs.html#arrayinput)
 * [`<SimpleList>`](./List.html#the-simplelist-component)

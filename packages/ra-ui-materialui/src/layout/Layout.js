@@ -49,7 +49,7 @@ const styles = theme => ({
             padding: 0,
         },
         [theme.breakpoints.down('xs')]: {
-            marginTop: '3em',
+            marginTop: '3.5em',
         },
     },
 });

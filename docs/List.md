@@ -155,11 +155,14 @@ Here is an example for a Posts exporter, omitting, adding, and reordering fields
 import { List, downloadCSV } from 'react-admin';
 import { unparse as convertToCSV } from 'papaparse/papaparse.min';
 
-const exporter = (data) => data.map(post => {
-    const { postForExport, backlinks, author } = post; // omit backlinks and author
-    postForExport.author_name = post.author.name; // add a field
+const exporter = posts => {
+    const postsForExport = posts.map(post => {
+        const { postForExport, backlinks, author } = post; // omit backlinks and author
+        postForExport.author_name = post.author.name; // add a field
+        return postForExport;
+    });
     const csv = convertToCSV({
-        data: postForExport,
+        data: postsForExport,
         fields: ['id', 'title', 'author_name', 'body'] // order fields in the export
     });
     downloadCSV(csv, 'posts'); // download as 'posts.csv` file
