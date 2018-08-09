@@ -88,6 +88,7 @@ module.exports = {
             prev: 'Précédent',
         },
         auth: {
+            user_menu: 'Profile',
             username: 'Identifiant',
             password: 'Mot de passe',
             sign_in: 'Connexion',

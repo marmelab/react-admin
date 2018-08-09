@@ -4,7 +4,7 @@ import onlyUpdateForKeys from 'recompose/onlyUpdateForKeys';
 import CardActions from '@material-ui/core/CardActions';
 import { sanitizeListRestProps } from 'ra-core';
 
-import { CreateButton, ExportButton, RefreshButton } from '../button';
+import { CreateButton, ExportButton } from '../button';
 
 const Actions = ({
     bulkActions,
@@ -50,7 +50,6 @@ const Actions = ({
             filter={filterValues}
             exporter={exporter}
         />
-        <RefreshButton />
     </CardActions>
 );
 

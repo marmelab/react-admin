@@ -1,4 +1,4 @@
-import React, { cloneElement } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
@@ -12,6 +12,7 @@ import compose from 'recompose/compose';
 import { toggleSidebar as toggleSidebarAction } from 'ra-core';
 
 import LoadingIndicator from './LoadingIndicator';
+import UserMenu from './UserMenu';
 
 const styles = theme => ({
     appBar: {
@@ -45,23 +46,10 @@ const styles = theme => ({
     title: {
         flex: 1,
     },
-    loadingIndicator: {
-        position: 'absolute',
-        top: 0,
-        right: 0,
-        left: 0,
-        zIndex: 1200,
-        marginBottom: 14,
-        marginTop: 14,
-        marginLeft: 'auto',
-        marginRight: 'auto',
-    },
-    logout: {
-        color: theme.palette.secondary.contrastText,
-    },
 });
 
 const AppBar = ({
+    children,
     classes,
     className,
     logout,
@@ -98,16 +86,14 @@ const AppBar = ({
             >
                 {typeof title === 'string' ? title : React.cloneElement(title)}
             </Typography>
-            {logout &&
-                cloneElement(logout, {
-                    className: classes.logout,
-                })}
+            <LoadingIndicator />
+            {logout && <UserMenu logout={logout}>{children}</UserMenu>}
         </Toolbar>
-        <LoadingIndicator className={classes.loadingIndicator} />
     </MuiAppBar>
 );
 
 AppBar.propTypes = {
+    children: PropTypes.node,
     classes: PropTypes.object,
     className: PropTypes.string,
     logout: PropTypes.element,
