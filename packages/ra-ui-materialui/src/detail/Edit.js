@@ -62,14 +62,17 @@ export const EditView = ({
             defaultTitle={defaultTitle}
         />
         <Card>
-            {actions &&
-                React.cloneElement(actions, {
-                    basePath,
-                    data: record,
-                    hasShow,
-                    hasList,
-                    resource,
-                })}
+            {actions && (
+                <CardContent>
+                    {React.cloneElement(actions, {
+                        basePath,
+                        data: record,
+                        hasShow,
+                        hasList,
+                        resource,
+                    })}
+                </CardContent>
+            )}
             {record ? (
                 React.cloneElement(children, {
                     basePath,

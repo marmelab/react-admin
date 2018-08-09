@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
 import classnames from 'classnames';
 import { ShowController } from 'ra-core';
 
-import Header from '../layout/Header';
 import DefaultActions from './ShowActions';
 import RecordTitle from '../layout/RecordTitle';
 
@@ -52,24 +52,24 @@ export const ShowView = ({
         className={classnames('show-page', className)}
         {...sanitizeRestProps(rest)}
     >
+        <RecordTitle
+            title={title}
+            record={record}
+            defaultTitle={defaultTitle}
+        />
         <Card style={{ opacity: isLoading ? 0.8 : 1 }}>
-            <Header
-                title={
-                    <RecordTitle
-                        title={title}
-                        record={record}
-                        defaultTitle={defaultTitle}
-                    />
-                }
-                actions={actions}
-                actionProps={{
-                    basePath,
-                    data: record,
-                    hasList,
-                    hasEdit,
-                    resource,
-                }}
-            />
+            {actions && (
+                <CardContent>
+                    {React.cloneElement(actions, {
+                        basePath,
+                        data: record,
+                        hasList,
+                        hasEdit,
+                        resource,
+                    })}
+                </CardContent>
+            )}
+
             {record &&
                 React.cloneElement(children, {
                     resource,

@@ -46,6 +46,9 @@ const styles = theme => ({
     },
     title: {
         flex: 1,
+        textOverflow: 'ellipsis',
+        whiteSpace: 'nowrap',
+        overflow: 'hidden',
     },
 });
 
