@@ -5,7 +5,6 @@ import Card from '@material-ui/core/Card';
 import classnames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
 
-import Header from '../layout/Header';
 import Title from '../layout/Title';
 import DefaultPagination from './Pagination';
 import DefaultBulkActions from './BulkActions';
@@ -100,24 +99,21 @@ export const ListView = ({
 }) => {
     const { defaultTitle, version } = rest;
     const controllerProps = getListControllerProps(rest);
-    const titleElement = <Title title={title} defaultTitle={defaultTitle} />;
+
     return (
         <div
             className={classnames('list-page', classes.root, className)}
             {...sanitizeRestProps(rest)}
         >
+            <Title title={title} defaultTitle={defaultTitle} />
             <Card>
-                <Header
-                    className={classes.header}
-                    title={titleElement}
-                    actions={React.cloneElement(actions, {
-                        ...controllerProps,
-                        className: classes.actions,
-                        bulkActions,
-                        exporter,
-                        filters,
-                    })}
-                />
+                {React.cloneElement(actions, {
+                    ...controllerProps,
+                    className: classes.actions,
+                    bulkActions,
+                    exporter,
+                    filters,
+                })}
                 {filters &&
                     React.cloneElement(filters, {
                         ...controllerProps,

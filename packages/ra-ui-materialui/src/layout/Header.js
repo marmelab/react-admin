@@ -12,6 +12,9 @@ const styles = {
     },
 };
 
+/**
+ * @deprecated
+ */
 export const Header = ({
     classes,
     className,
@@ -19,12 +22,15 @@ export const Header = ({
     actions,
     actionProps,
     ...rest
-}) => (
-    <div className={classnames(classes.root, className)} {...rest}>
-        <ViewTitle title={title} />
-        {actions && React.cloneElement(actions, actionProps)}
-    </div>
-);
+}) =>
+    console.warn(
+        '<Header> is deprecated, please use <Title> directly instead'
+    ) || (
+        <div className={classnames(classes.root, className)} {...rest}>
+            <ViewTitle title={title} />
+            {actions && React.cloneElement(actions, actionProps)}
+        </div>
+    );
 
 Header.propTypes = {
     classes: PropTypes.object,

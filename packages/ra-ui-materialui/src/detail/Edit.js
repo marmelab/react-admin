@@ -5,7 +5,6 @@ import CardContent from '@material-ui/core/CardContent';
 import classnames from 'classnames';
 import { EditController } from 'ra-core';
 
-import Header from '../layout/Header';
 import DefaultActions from './EditActions';
 import RecordTitle from '../layout/RecordTitle';
 
@@ -57,24 +56,20 @@ export const EditView = ({
         className={classnames('edit-page', className)}
         {...sanitizeRestProps(rest)}
     >
+        <RecordTitle
+            title={title}
+            record={record}
+            defaultTitle={defaultTitle}
+        />
         <Card>
-            <Header
-                title={
-                    <RecordTitle
-                        title={title}
-                        record={record}
-                        defaultTitle={defaultTitle}
-                    />
-                }
-                actions={actions}
-                actionProps={{
+            {actions &&
+                React.cloneElement(actions, {
                     basePath,
                     data: record,
                     hasShow,
                     hasList,
                     resource,
-                }}
-            />
+                })}
             {record ? (
                 React.cloneElement(children, {
                     basePath,

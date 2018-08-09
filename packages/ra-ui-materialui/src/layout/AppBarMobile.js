@@ -33,39 +33,39 @@ const styles = {
     },
 };
 
-const AppBarMobile = ({
-    classes,
-    className,
-    title,
-    toggleSidebar,
-    ...rest
-}) => (
-    <MuiAppBar
-        className={className}
-        color="secondary"
-        position="fixed"
-        {...rest}
-    >
-        <Toolbar>
-            <IconButton
-                color="inherit"
-                aria-label="open drawer"
-                onClick={toggleSidebar}
-                className={classes.icon}
-            >
-                <MenuIcon />
-            </IconButton>
-            <Typography
-                className={classes.title}
-                variant="title"
-                color="inherit"
-            >
-                {title}
-            </Typography>
-            <LoadingIndicator />
-        </Toolbar>
-    </MuiAppBar>
-);
+/**
+ * @deprecated
+ */
+const AppBarMobile = ({ classes, className, title, toggleSidebar, ...rest }) =>
+    console.warn(
+        '<AppBarMobile> is deprecated, please use <AppBar>, which is now responsive'
+    ) || (
+        <MuiAppBar
+            className={className}
+            color="secondary"
+            position="fixed"
+            {...rest}
+        >
+            <Toolbar>
+                <IconButton
+                    color="inherit"
+                    aria-label="open drawer"
+                    onClick={toggleSidebar}
+                    className={classes.icon}
+                >
+                    <MenuIcon />
+                </IconButton>
+                <Typography
+                    className={classes.title}
+                    variant="title"
+                    color="inherit"
+                >
+                    {title}
+                </Typography>
+                <LoadingIndicator />
+            </Toolbar>
+        </MuiAppBar>
+    );
 
 AppBarMobile.propTypes = {
     classes: PropTypes.object,

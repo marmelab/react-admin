@@ -4,7 +4,6 @@ import Card from '@material-ui/core/Card';
 import classnames from 'classnames';
 import { CreateController } from 'ra-core';
 
-import Header from '../layout/Header';
 import RecordTitle from '../layout/RecordTitle';
 
 const sanitizeRestProps = ({
@@ -48,22 +47,19 @@ export const CreateView = ({
         className={classnames('create-page', className)}
         {...sanitizeRestProps(rest)}
     >
+        <RecordTitle
+            title={title}
+            record={record}
+            defaultTitle={defaultTitle}
+        />
         <Card>
-            <Header
-                title={
-                    <RecordTitle
-                        title={title}
-                        record={record}
-                        defaultTitle={defaultTitle}
-                    />
-                }
-                actions={actions}
-                actionProps={{
+            {actions &&
+                React.cloneElement(actions, {
                     basePath,
                     resource,
                     hasList,
-                }}
-            />
+                })}
+
             {React.cloneElement(children, {
                 basePath,
                 record,

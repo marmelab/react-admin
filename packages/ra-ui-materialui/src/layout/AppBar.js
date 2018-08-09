@@ -8,6 +8,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
+import withWidth from '@material-ui/core/withWidth';
 import compose from 'recompose/compose';
 import { toggleSidebar as toggleSidebarAction } from 'ra-core';
 
@@ -56,15 +57,20 @@ const AppBar = ({
     open,
     title,
     toggleSidebar,
+    width,
     ...rest
 }) => (
     <MuiAppBar
         className={classNames(classes.appBar, className)}
         color="secondary"
-        position="absolute"
+        position={width === 'xs' ? 'fixed' : 'absolute'}
         {...rest}
     >
-        <Toolbar disableGutters variant="dense" className={classes.toolbar}>
+        <Toolbar
+            disableGutters
+            variant={width === 'xs' ? 'regular' : 'dense'}
+            className={classes.toolbar}
+        >
             <IconButton
                 color="inherit"
                 aria-label="open drawer"
@@ -83,9 +89,8 @@ const AppBar = ({
                 variant="title"
                 color="inherit"
                 className={classes.title}
-            >
-                {typeof title === 'string' ? title : React.cloneElement(title)}
-            </Typography>
+                id="react-admin-title"
+            />
             <LoadingIndicator />
             {logout && <UserMenu logout={logout}>{children}</UserMenu>}
         </Toolbar>
@@ -101,6 +106,7 @@ AppBar.propTypes = {
     title: PropTypes.oneOfType([PropTypes.string, PropTypes.element])
         .isRequired,
     toggleSidebar: PropTypes.func.isRequired,
+    width: PropTypes.string,
 };
 
 const enhance = compose(
@@ -112,7 +118,8 @@ const enhance = compose(
             toggleSidebar: toggleSidebarAction,
         }
     ),
-    withStyles(styles)
+    withStyles(styles),
+    withWidth()
 );
 
 export default enhance(AppBar);

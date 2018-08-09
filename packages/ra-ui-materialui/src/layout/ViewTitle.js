@@ -7,25 +7,32 @@ import classnames from 'classnames';
 import Responsive from './Responsive';
 import AppBarMobile from './AppBarMobile';
 
-const ViewTitle = ({ className, title, ...rest }) => (
-    <Responsive
-        xsmall={
-            <Fragment>
-                <AppBarMobile
+/**
+ * @deprecated
+ */
+const ViewTitle = ({ className, title, ...rest }) =>
+    console.warn('<ViewTitle> is deprecated, please use <Title> instead') || (
+        <Responsive
+            xsmall={
+                <Fragment>
+                    <AppBarMobile
+                        className={classnames('title', className)}
+                        title={title}
+                        {...rest}
+                    />
+                    <span> </span>
+                </Fragment>
+            }
+            medium={
+                <CardContent
                     className={classnames('title', className)}
-                    title={title}
                     {...rest}
-                />
-                <span> </span>
-            </Fragment>
-        }
-        medium={
-            <CardContent className={classnames('title', className)} {...rest}>
-                <Typography variant="title">{title}</Typography>
-            </CardContent>
-        }
-    />
-);
+                >
+                    <Typography variant="title">{title}</Typography>
+                </CardContent>
+            }
+        />
+    );
 
 ViewTitle.propTypes = {
     className: PropTypes.string,
