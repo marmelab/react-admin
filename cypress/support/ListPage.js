@@ -23,6 +23,7 @@ export default url => ({
         selectAll: '.select-all',
         selectedItem: '.select-item input:checked',
         selectItem: '.select-item input',
+        userMenu: 'button[title="Profile"]',
     },
 
     navigate() {
@@ -74,6 +75,7 @@ export default url => ({
     },
 
     logout() {
+        cy.get(this.elements.userMenu).click();
         cy.get(this.elements.logout).click();
     },
 
