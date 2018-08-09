@@ -8,6 +8,9 @@ import { SaveButton } from '../button';
 import Responsive from '../layout/Responsive';
 
 const styles = {
+    desktopToolbar: {
+        marginBottom: '0.5em',
+    },
     mobileToolbar: {
         position: 'fixed',
         bottom: 0,
@@ -75,7 +78,11 @@ const Toolbar = ({
             </MuiToolbar>
         }
         medium={
-            <MuiToolbar className={className} {...rest}>
+            <MuiToolbar
+                className={classnames(classes.desktopToolbar, className)}
+                disableGutters
+                {...rest}
+            >
                 {Children.count(children) === 0 ? (
                     <SaveButton
                         handleSubmitWithRedirect={handleSubmitWithRedirect}

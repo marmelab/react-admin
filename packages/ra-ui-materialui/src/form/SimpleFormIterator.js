@@ -123,15 +123,20 @@ export class SimpleFormIterator extends Component {
                                     {index + 1}
                                 </Typography>
                                 <section className={classes.form}>
-                                    {Children.map(children, input => (
+                                    {Children.map(children, (input, index) => (
                                         <FormInput
                                             basePath={
                                                 input.props.basePath || basePath
                                             }
                                             input={cloneElement(input, {
-                                                source: `${member}.${
-                                                    input.props.source
-                                                }`,
+                                                source: input.props.source
+                                                    ? `${member}.${
+                                                          input.props.source
+                                                      }`
+                                                    : member,
+                                                index: input.props.source
+                                                    ? undefined
+                                                    : index,
                                                 label:
                                                     input.props.label ||
                                                     input.props.source,

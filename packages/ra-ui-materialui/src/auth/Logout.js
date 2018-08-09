@@ -2,14 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
-import Button from '@material-ui/core/Button';
 import MenuItem from '@material-ui/core/MenuItem';
 import { withStyles } from '@material-ui/core/styles';
 import ExitIcon from '@material-ui/icons/PowerSettingsNew';
 import classnames from 'classnames';
 import { translate, userLogout as userLogoutAction } from 'ra-core';
-
-import Responsive from '../layout/Responsive';
 
 const styles = theme => ({
     menuItem: {
@@ -38,31 +35,16 @@ const sanitizeRestProps = ({
  * Used for the Logout Menu item in the sidebar
  */
 const Logout = ({ classes, className, translate, userLogout, ...rest }) => (
-    <Responsive
-        xsmall={
-            <MenuItem
-                className={classnames('logout', classes.menuItem, className)}
-                onClick={userLogout}
-                {...sanitizeRestProps(rest)}
-            >
-                <span className={classes.iconMenuPaddingStyle}>
-                    <ExitIcon />
-                </span>
-                {translate('ra.auth.logout')}
-            </MenuItem>
-        }
-        medium={
-            <Button
-                className={classnames('logout', className)}
-                onClick={userLogout}
-                size="small"
-                {...sanitizeRestProps(rest)}
-            >
-                <ExitIcon className={classes.iconPaddingStyle} />
-                {translate('ra.auth.logout')}
-            </Button>
-        }
-    />
+    <MenuItem
+        className={classnames('logout', classes.menuItem, className)}
+        onClick={userLogout}
+        {...sanitizeRestProps(rest)}
+    >
+        <span className={classes.iconMenuPaddingStyle}>
+            <ExitIcon />
+        </span>
+        {translate('ra.auth.logout')}
+    </MenuItem>
 );
 
 Logout.propTypes = {

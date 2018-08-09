@@ -374,7 +374,7 @@ import MyAppBar from './MyAppBar';
 import MyMenu from './MyMenu';
 import MyNotification from './MyNotification';
 
-const MyLayout = (props) => <Layout 
+const MyLayout = props => <Layout 
     {...props}
     appBar={MyAppBar}
     menu={MyMenu}
@@ -382,6 +382,27 @@ const MyLayout = (props) => <Layout
 />;
 
 export default MyLayout;
+```
+
+You can add custom menu items to the default `AppBar` user menu by adding children to it:
+
+```js
+import { AppBar, MenuItemLink } from 'react-admin';
+import SettingsIcon from '@material-ui/icons/Settings';
+
+const MyAppBar = props => (
+    <AppBar {...props}>
+        <MenuItemLink
+            to="/configuration"
+            primaryText="Configuration"
+            leftIcon={<SettingsIcon />}
+        />
+    </AppBar>
+);
+const MyLayout = props => <Layout
+    {...props}
+    appBar={MyAppBar}
+/>;
 ```
 
 For more custom layouts, write a component from scratch. It must contain a `{children}` placeholder, where react-admin will render the resources. Use the [default layout](https://github.com/marmelab/react-admin/blob/master/src/mui/layout/Layout.js) as a starting point. Here is a simplified version (with no responsive support):

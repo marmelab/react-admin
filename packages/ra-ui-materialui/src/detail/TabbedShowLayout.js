@@ -2,19 +2,20 @@ import React, { Component, Children, cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import Tabs from '@material-ui/core/Tabs';
 import Divider from '@material-ui/core/Divider';
+import CardContent from '@material-ui/core/CardContent';
 import { withStyles } from '@material-ui/core/styles';
 import { withRouter, Route } from 'react-router-dom';
 import compose from 'recompose/compose';
 import { translate } from 'ra-core';
 
 const styles = {
-    tab: { padding: '0 1em 1em 1em' },
+    content: { paddingTop: 0 },
 };
 
 const sanitizeRestProps = ({
     children,
-    className,
     classes,
+    className,
     record,
     resource,
     basePath,
@@ -73,8 +74,8 @@ export class TabbedShowLayout extends Component {
         const {
             basePath,
             children,
-            className,
             classes,
+            className,
             location,
             match,
             record,
@@ -114,7 +115,7 @@ export class TabbedShowLayout extends Component {
                     })}
                 </Tabs>
                 <Divider />
-                <div className={classes.tab}>
+                <CardContent className={classes.content}>
                     {Children.map(
                         children,
                         (tab, index) =>
@@ -133,7 +134,7 @@ export class TabbedShowLayout extends Component {
                                 />
                             )
                     )}
-                </div>
+                </CardContent>
             </div>
         );
     }
@@ -141,8 +142,8 @@ export class TabbedShowLayout extends Component {
 
 TabbedShowLayout.propTypes = {
     children: PropTypes.node,
-    className: PropTypes.string,
     classes: PropTypes.object,
+    className: PropTypes.string,
     location: PropTypes.object,
     match: PropTypes.object,
     record: PropTypes.object,
@@ -155,8 +156,8 @@ TabbedShowLayout.propTypes = {
 
 const enhance = compose(
     withRouter,
-    withStyles(styles),
-    translate
+    translate,
+    withStyles(styles)
 );
 
 export default enhance(TabbedShowLayout);

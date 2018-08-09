@@ -1,18 +1,19 @@
 import React, { Children } from 'react';
 import PropTypes from 'prop-types';
+import CardContent from '@material-ui/core/CardContent';
 import { withStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
 
 import Labeled from '../input/Labeled';
 
 const styles = {
-    root: { padding: '0 1em 1em 1em' },
+    content: { paddingTop: 0 },
 };
 
 const sanitizeRestProps = ({
     children,
-    className,
     classes,
+    className,
     record,
     resource,
     basePath,
@@ -56,16 +57,16 @@ const sanitizeRestProps = ({
  */
 export const SimpleShowLayout = ({
     basePath,
+    classes,
     className,
     children,
-    classes,
     record,
     resource,
     version,
     ...rest
 }) => (
-    <div
-        className={classnames(classes.root, className)}
+    <CardContent
+        className={classnames(classes.content, className)}
         key={version}
         {...sanitizeRestProps(rest)}
     >
@@ -103,14 +104,14 @@ export const SimpleShowLayout = ({
                     </div>
                 ) : null
         )}
-    </div>
+    </CardContent>
 );
 
 SimpleShowLayout.propTypes = {
     basePath: PropTypes.string,
+    classes: PropTypes.object,
     className: PropTypes.string,
     children: PropTypes.node,
-    classes: PropTypes.object,
     record: PropTypes.object,
     resource: PropTypes.string,
     version: PropTypes.number,

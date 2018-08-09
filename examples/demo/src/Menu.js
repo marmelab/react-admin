@@ -49,11 +49,16 @@ const Menu = ({ onMenuClick, translate, logout }) => (
                 onClick={onMenuClick}
             />
         ))}
-        <MenuItemLink
-            to="/configuration"
-            primaryText={translate('pos.configuration')}
-            leftIcon={<SettingsIcon />}
-            onClick={onMenuClick}
+        <Responsive
+            xsmall={
+                <MenuItemLink
+                    to="/configuration"
+                    primaryText={translate('pos.configuration')}
+                    leftIcon={<SettingsIcon />}
+                    onClick={onMenuClick}
+                />
+            }
+            medium={null}
         />
         <Responsive xsmall={logout} medium={null} />
     </div>

@@ -27,5 +27,6 @@ export {
 export * from './sideEffect';
 export CoreAdmin from './CoreAdmin';
 export CoreAdminRouter from './CoreAdminRouter';
+export createAdminStore from './createAdminStore';
 export RoutesWithLayout from './RoutesWithLayout';
 export Resource from './Resource';
