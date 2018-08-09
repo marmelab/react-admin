@@ -2,6 +2,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
 import classnames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
 
@@ -20,7 +21,11 @@ const styles = {
         justifyContent: 'flex-end',
         flexWrap: 'wrap',
     },
-    header: {},
+    header: {
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignSelf: 'flex-start',
+    },
     noResults: { padding: 20 },
 };
 
@@ -107,18 +112,22 @@ export const ListView = ({
         >
             <Title title={title} defaultTitle={defaultTitle} />
             <Card>
-                {React.cloneElement(actions, {
-                    ...controllerProps,
-                    className: classes.actions,
-                    bulkActions,
-                    exporter,
-                    filters,
-                })}
-                {filters &&
-                    React.cloneElement(filters, {
+                <CardContent className={classes.header}>
+                    <span>
+                        {filters &&
+                            React.cloneElement(filters, {
+                                ...controllerProps,
+                                context: 'form',
+                            })}
+                    </span>
+                    {React.cloneElement(actions, {
                         ...controllerProps,
-                        context: 'form',
+                        className: classes.actions,
+                        bulkActions,
+                        exporter,
+                        filters,
                     })}
+                </CardContent>
                 <div key={version}>
                     {children &&
                         React.cloneElement(children, {
