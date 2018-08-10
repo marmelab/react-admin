@@ -6,7 +6,7 @@ import classnames from 'classnames';
 import { EditController } from 'ra-core';
 
 import DefaultActions from './EditActions';
-import RecordTitle from '../layout/RecordTitle';
+import TitleForRecord from '../layout/TitleForRecord';
 
 const sanitizeRestProps = ({
     actions,
@@ -56,7 +56,7 @@ export const EditView = ({
         className={classnames('edit-page', className)}
         {...sanitizeRestProps(rest)}
     >
-        <RecordTitle
+        <TitleForRecord
             title={title}
             record={record}
             defaultTitle={defaultTitle}

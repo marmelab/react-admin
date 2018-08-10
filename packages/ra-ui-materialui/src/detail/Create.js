@@ -5,7 +5,7 @@ import CardContent from '@material-ui/core/CardContent';
 import classnames from 'classnames';
 import { CreateController } from 'ra-core';
 
-import RecordTitle from '../layout/RecordTitle';
+import TitleForRecord from '../layout/TitleForRecord';
 
 const sanitizeRestProps = ({
     actions,
@@ -48,7 +48,7 @@ export const CreateView = ({
         className={classnames('create-page', className)}
         {...sanitizeRestProps(rest)}
     >
-        <RecordTitle
+        <TitleForRecord
             title={title}
             record={record}
             defaultTitle={defaultTitle}

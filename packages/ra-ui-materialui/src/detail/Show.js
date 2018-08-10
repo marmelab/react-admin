@@ -6,7 +6,7 @@ import classnames from 'classnames';
 import { ShowController } from 'ra-core';
 
 import DefaultActions from './ShowActions';
-import RecordTitle from '../layout/RecordTitle';
+import TitleForRecord from '../layout/TitleForRecord';
 
 const sanitizeRestProps = ({
     actions,
@@ -52,7 +52,7 @@ export const ShowView = ({
         className={classnames('show-page', className)}
         {...sanitizeRestProps(rest)}
     >
-        <RecordTitle
+        <TitleForRecord
             title={title}
             record={record}
             defaultTitle={defaultTitle}
