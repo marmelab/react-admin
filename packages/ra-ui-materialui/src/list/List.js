@@ -112,22 +112,25 @@ export const ListView = ({
         >
             <Title title={title} defaultTitle={defaultTitle} />
             <Card>
-                <CardContent className={classes.header}>
-                    <span>
-                        {filters &&
-                            React.cloneElement(filters, {
+                {(filters || actions) && (
+                    <CardContent className={classes.header}>
+                        <span>
+                            {filters &&
+                                React.cloneElement(filters, {
+                                    ...controllerProps,
+                                    context: 'form',
+                                })}
+                        </span>
+                        {actions &&
+                            React.cloneElement(actions, {
                                 ...controllerProps,
-                                context: 'form',
+                                className: classes.actions,
+                                bulkActions,
+                                exporter,
+                                filters,
                             })}
-                    </span>
-                    {React.cloneElement(actions, {
-                        ...controllerProps,
-                        className: classes.actions,
-                        bulkActions,
-                        exporter,
-                        filters,
-                    })}
-                </CardContent>
+                    </CardContent>
+                )}
                 <div key={version}>
                     {children &&
                         React.cloneElement(children, {
