@@ -25,7 +25,8 @@ export const DatagridHeaderCell = ({
         variant="head"
         {...rest}
     >
-        {field.props.sortable !== false && field.props.source ? (
+        {field.props.sortable !== false &&
+        (field.props.sortBy || field.props.source) ? (
             <Tooltip
                 title={translate('ra.action.sort')}
                 placement={
