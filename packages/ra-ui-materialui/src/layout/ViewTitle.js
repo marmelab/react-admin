@@ -11,6 +11,7 @@ import AppBarMobile from './AppBarMobile';
  * @deprecated
  */
 const ViewTitle = ({ className, title, ...rest }) =>
+    // eslint-disable-next-line no-console
     console.warn('<ViewTitle> is deprecated, please use <Title> instead') || (
         <Responsive
             xsmall={

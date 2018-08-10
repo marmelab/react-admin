@@ -23,6 +23,7 @@ export const Header = ({
     actionProps,
     ...rest
 }) =>
+    // eslint-disable-next-line no-console
     console.warn(
         '<Header> is deprecated, please use <Title> directly instead'
     ) || (

@@ -37,6 +37,7 @@ const styles = {
  * @deprecated
  */
 const AppBarMobile = ({ classes, className, title, toggleSidebar, ...rest }) =>
+    // eslint-disable-next-line no-console
     console.warn(
         '<AppBarMobile> is deprecated, please use <AppBar>, which is now responsive'
     ) || (
