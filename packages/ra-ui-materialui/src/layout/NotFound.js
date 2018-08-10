@@ -2,14 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
-import Hidden from '@material-ui/core/Hidden';
 import HotTub from '@material-ui/icons/HotTub';
 import History from '@material-ui/icons/History';
 import compose from 'recompose/compose';
 import classnames from 'classnames';
 
-import AppBarMobile from './AppBarMobile';
 import { translate } from 'ra-core';
+import Title from './Title';
 
 const styles = theme => ({
     container: {
@@ -46,9 +45,7 @@ function goBack() {
 
 const NotFound = ({ classes, className, translate, title, ...rest }) => (
     <div className={classnames(classes.container, className)} {...rest}>
-        <Hidden mdUp>
-            <AppBarMobile title={title} />
-        </Hidden>
+        <Title defaultTitle={title} />
         <div className={classes.message}>
             <HotTub className={classes.icon} />
             <h1>{translate('ra.page.not_found')}</h1>

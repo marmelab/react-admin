@@ -12,7 +12,7 @@ import ErrorIcon from '@material-ui/icons/Report';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import History from '@material-ui/icons/History';
 
-import AppBarMobile from './AppBarMobile';
+import Title from './Title';
 import { translate } from 'ra-core';
 
 const styles = theme => ({
@@ -56,13 +56,12 @@ const Error = ({
     errorInfo,
     classes,
     className,
+    title,
     translate,
     ...rest
 }) => (
     <Fragment>
-        <Hidden mdUp>
-            <AppBarMobile />
-        </Hidden>
+        <Title defaultTitle={title} />
         <div className={classnames(classes.container, className)} {...rest}>
             <h1 className={classes.title} role="alert">
                 <ErrorIcon className={classes.icon} />
@@ -97,6 +96,7 @@ Error.propTypes = {
     error: PropTypes.object.isRequired,
     errorInfo: PropTypes.object,
     translate: PropTypes.func.isRequired,
+    title: PropTypes.string,
 };
 
 const enhance = compose(
