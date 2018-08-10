@@ -92,17 +92,23 @@ export class SimpleForm extends Component {
                         />
                     ))}
                 </CardContent>
-                {toolbar &&
-                    React.cloneElement(toolbar, {
-                        basePath,
-                        handleSubmitWithRedirect: this.handleSubmitWithRedirect,
-                        handleSubmit: this.props.handleSubmit,
-                        invalid,
-                        pristine,
-                        redirect,
-                        saving,
-                        submitOnEnter,
-                    })}
+                {toolbar && (
+                    <CardContent>
+                        {React.cloneElement(toolbar, {
+                            basePath,
+                            handleSubmitWithRedirect: this
+                                .handleSubmitWithRedirect,
+                            handleSubmit: this.props.handleSubmit,
+                            invalid,
+                            pristine,
+                            record,
+                            redirect,
+                            resource,
+                            saving,
+                            submitOnEnter,
+                        })}
+                    </CardContent>
+                )}
             </form>
         );
     }

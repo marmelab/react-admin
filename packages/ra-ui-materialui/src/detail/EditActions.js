@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { ShowButton, DeleteButton } from '../button';
+import { ShowButton } from '../button';
 import CardActions from '../layout/CardActions';
 
 const sanitizeRestProps = ({
@@ -49,7 +49,6 @@ const EditActions = ({
 }) => (
     <CardActions className={className} {...sanitizeRestProps(rest)}>
         {hasShow && <ShowButton basePath={basePath} record={data} />}
-        <DeleteButton basePath={basePath} record={data} resource={resource} />
     </CardActions>
 );
 

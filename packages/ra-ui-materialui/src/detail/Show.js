@@ -34,7 +34,7 @@ const sanitizeRestProps = ({
 }) => rest;
 
 export const ShowView = ({
-    actions = <DefaultActions />,
+    actions,
     basePath,
     children,
     className,
@@ -47,39 +47,43 @@ export const ShowView = ({
     title,
     version,
     ...rest
-}) => (
-    <div
-        className={classnames('show-page', className)}
-        {...sanitizeRestProps(rest)}
-    >
-        <TitleForRecord
-            title={title}
-            record={record}
-            defaultTitle={defaultTitle}
-        />
-        <Card style={{ opacity: isLoading ? 0.8 : 1 }}>
-            {actions && (
-                <CardContent>
-                    {React.cloneElement(actions, {
-                        basePath,
-                        data: record,
-                        hasList,
-                        hasEdit,
+}) => {
+    if (typeof actions === 'undefined' && hasEdit) {
+        actions = <DefaultActions />;
+    }
+    return (
+        <div
+            className={classnames('show-page', className)}
+            {...sanitizeRestProps(rest)}
+        >
+            <TitleForRecord
+                title={title}
+                record={record}
+                defaultTitle={defaultTitle}
+            />
+            <Card style={{ opacity: isLoading ? 0.8 : 1 }}>
+                {actions && (
+                    <CardContent>
+                        {React.cloneElement(actions, {
+                            basePath,
+                            data: record,
+                            hasList,
+                            hasEdit,
+                            resource,
+                        })}
+                    </CardContent>
+                )}
+                {record &&
+                    React.cloneElement(children, {
                         resource,
+                        basePath,
+                        record,
+                        version,
                     })}
-                </CardContent>
-            )}
-
-            {record &&
-                React.cloneElement(children, {
-                    resource,
-                    basePath,
-                    record,
-                    version,
-                })}
-        </Card>
-    </div>
-);
+            </Card>
+        </div>
+    );
+};
 
 ShowView.propTypes = {
     actions: PropTypes.element,
