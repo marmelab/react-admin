@@ -13,6 +13,9 @@ const Title = ({
 }) => {
     const container = document.getElementById('react-admin-title');
     if (!container) return null;
+    if (!defaultTitle && !title) {
+        console.warn('Missing title prop in <Title> element'); //eslint-disable-line no-console
+    }
     const titleElement = !title ? (
         <span className={className} {...rest}>
             {defaultTitle}
@@ -28,7 +31,7 @@ const Title = ({
 };
 
 Title.propTypes = {
-    defaultTitle: PropTypes.string.isRequired,
+    defaultTitle: PropTypes.string,
     className: PropTypes.string,
     record: PropTypes.object,
     translate: PropTypes.func.isRequired,
