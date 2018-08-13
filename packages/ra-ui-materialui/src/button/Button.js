@@ -21,6 +21,15 @@ const styles = {
     labelRightIcon: {
         paddingRight: '0.5em',
     },
+    smallIcon: {
+        fontSize: 20,
+    },
+    mediumIcon: {
+        fontSize: 22,
+    },
+    largeIcon: {
+        fontSize: 24,
+    },
 };
 
 const Button = ({
@@ -54,7 +63,10 @@ const Button = ({
                 size={size}
                 {...rest}
             >
-                {alignIcon === 'left' && children}
+                {alignIcon === 'left' &&
+                    React.cloneElement(children, {
+                        className: classes[`${size}Icon`],
+                    })}
                 <span
                     className={classnames({
                         [classes.label]: alignIcon === 'left',
@@ -63,7 +75,10 @@ const Button = ({
                 >
                     {label && translate(label, { _: label })}
                 </span>
-                {alignIcon === 'right' && children}
+                {alignIcon === 'right' &&
+                    React.cloneElement(children, {
+                        className: classes[`${size}Icon`],
+                    })}
             </MuiButton>
         }
     />

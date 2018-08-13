@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import onlyUpdateForKeys from 'recompose/onlyUpdateForKeys';
-import Button from '@material-ui/core/Button';
+import MuiButton from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
 import ContentAdd from '@material-ui/icons/Add';
 import compose from 'recompose/compose';
@@ -9,6 +9,7 @@ import classnames from 'classnames';
 import { Link } from 'react-router-dom';
 import { translate } from 'ra-core';
 
+import Button from './Button';
 import Responsive from '../layout/Responsive';
 
 const styles = theme => ({
@@ -25,13 +26,6 @@ const styles = theme => ({
     floatingLink: {
         color: 'inherit',
     },
-    desktopLink: {
-        display: 'inline-flex',
-        alignItems: 'center',
-    },
-    label: {
-        paddingLeft: '0.5em',
-    },
 });
 
 const CreateButton = ({
@@ -40,12 +34,11 @@ const CreateButton = ({
     classes = {},
     translate,
     label = 'ra.action.create',
-    size = 'small',
     ...rest
 }) => (
     <Responsive
         small={
-            <Button
+            <MuiButton
                 component={Link}
                 variant="fab"
                 color="primary"
@@ -54,21 +47,17 @@ const CreateButton = ({
                 {...rest}
             >
                 <ContentAdd />
-            </Button>
+            </MuiButton>
         }
         medium={
             <Button
                 component={Link}
-                color="primary"
                 to={`${basePath}/create`}
-                className={classnames(classes.desktopLink, className)}
-                size={size}
+                className={className}
+                label={label && translate(label)}
                 {...rest}
             >
-                <ContentAdd className={classes.iconPaddingStyle} />
-                <span className={classes.label}>
-                    {label && translate(label)}
-                </span>
+                <ContentAdd />
             </Button>
         }
     />
