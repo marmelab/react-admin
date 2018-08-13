@@ -221,7 +221,7 @@ const CreateRelatedCommentButton = ({ record }) => (
 ```
 {% endraw %}
 
-However, this will only work if the post ids are typed as strings in the store. That's because the query string `?post_id=123`, once deserialized, reads as `{ post_id: '123' }` and not `{ post_id: 123 }`. Since [the `<SelectInput>` uses srict equality to check the selected option](https://github.com/mui-org/material-ui/issues/12047) comparing the `post_id` `'123'` from the URL with values like `123` in the choices will fail. 
+However, this will only work if the post ids are typed as strings in the store. That's because the query string `?post_id=123`, once deserialized, reads as `{ post_id: '123' }` and not `{ post_id: 123 }`. Since [the `<SelectInput>` uses srict equality to check the selected option](https://github.com/mui-org/material-ui/issues/12047) comparing the `post_id` `'123'` from the URL with values like `123` in the choices will fail.
 
 So prefer `location.state` instead of `location.search` when you can, or use custom selection components.
 
@@ -436,7 +436,7 @@ Input validation functions receive the current field value, and the values of al
 **Tip**: Validator functions receive the form `props` as third parameter, including the `translate` function. This lets you build internationalized validators:
 
 ```jsx
-const required = (message = 'myroot.validation.required') => 
+const required = (message = 'myroot.validation.required') =>
     (value, allValues, props) => value ? undefined : props.translate(message);
 ```
 
@@ -482,7 +482,7 @@ React-admin already bundles a few validator functions, that you can just require
 Example usage:
 
 ```jsx
-import { 
+import {
     required,
     minLength,
     maxLength,
@@ -516,7 +516,7 @@ export const UserCreate = (props) => (
 );
 ```
 
-**Tip**: If you pass a function as a message, react-admin calls this function with `{ args, value, values,translate, ...props }` as argument. For instance: 
+**Tip**: If you pass a function as a message, react-admin calls this function with `{ args, value, values,translate, ...props }` as argument. For instance:
 
 ```jsx
 const message = ({ translate }) => translate('myroot.validation.email_invalid');
@@ -561,7 +561,7 @@ You can also pass a custom route (e.g. "/home") or a function as `redirect` prop
 ```jsx
 // redirect to the related Author show page
 const redirect = (basePath, id, data) => `/author/${data.author_id}/show`;
-  
+
 export const PostEdit = (props) => {
     <Edit {...props}>
         <SimpleForm redirect={redirect}>
@@ -628,7 +628,7 @@ Here are the props received by the `Toolbar` component when passed as the `toolb
 
 **Tip**: Don't forget to also set the `redirect` prop of the Form component to handle submission by the `ENTER` key.
 
-**Tip**: To alter the form values before submitting, you should use the `handleSubmit` prop. See [Altering the Form Values before Submitting](/Actions.html#altering-the-form-values-before-submitting) for more informations and example.
+**Tip**: To alter the form values before submitting, you should use the `handleSubmit` prop. See [Altering the Form Values before Submitting](./Actions.md#altering-the-form-values-before-submitting) for more informations and example.
 
 ## Customizing Input Container Styles
 
