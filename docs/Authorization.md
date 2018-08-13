@@ -7,7 +7,7 @@ title: "Authorization"
 
 Some applications may require to determine what level of access a particular authenticated user should have to secured resources. Since there are many different possible strategies (single role, multiple roles or rights, etc.), react-admin simply provides hooks to execute your own authorization code.
 
-By default, a react-admin app doesn't require authorization. However, if needed, it will rely on the `authProvider` introduced in the [Authentication](./Authentication.html) section.
+By default, a react-admin app doesn't require authorization. However, if needed, it will rely on the `authProvider` introduced in the [Authentication](./Authentication.md) section.
 
 ## Configuring the Auth Provider
 
@@ -278,7 +278,7 @@ export default [
 
 ## Restricting Access to Content in Custom Menu
 
-What if you want to check the permissions inside a [custom menu](./Admin.html#menu) ? Much like getting permissions inside a custom page, you'll have to use the `WithPermissions` component:
+What if you want to check the permissions inside a [custom menu](./Admin.md#menu) ? Much like getting permissions inside a custom page, you'll have to use the `WithPermissions` component:
 
 {% raw %}
 ```jsx

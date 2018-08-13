@@ -30,7 +30,7 @@ All input components accept the following attributes:
 
 * `source`: Property name of your entity to view/edit. This attribute is required.
 * `defaultValue`: Value to be set when the property is `null` or `undefined`.
-* `validate`: Validation rules for the current property (see the [Validation Documentation](./CreateEdit.html#validation))
+* `validate`: Validation rules for the current property (see the [Validation Documentation](./CreateEdit.md#validation))
 * `label`: Used as a table header of an input label. Defaults to the `source` when omitted.
 * `style`: A style object to customize the look and feel of the field container (e.g. the `<div>` in a form).
 * `elStyle`: A style object to customize the look and feel of the field element itself
@@ -630,7 +630,7 @@ import { ReferenceArrayInput, SelectArrayInput } from 'react-admin'
 ```
 
 Set the `allowEmpty` prop when you want to add an empty choice with a value of null in the choices list.
-Disabling `allowEmpty` does not mean that the input will be required. If you want to make the input required, you must add a validator as indicated in [Validation Documentation](./CreateEdit.html#validation). Enabling the `allowEmpty` props just adds an empty choice (with `null` value) on top of the options, and makes the value nullable.
+Disabling `allowEmpty` does not mean that the input will be required. If you want to make the input required, you must add a validator as indicated in [Validation Documentation](./CreateEdit.md#validation). Enabling the `allowEmpty` props just adds an empty choice (with `null` value) on top of the options, and makes the value nullable.
 
 ```js
 import { ReferenceArrayInput, SelectArrayInput } from 'react-admin'
@@ -703,7 +703,7 @@ import { ReferenceInput, SelectInput } from 'react-admin'
 ```
 
 Set the `allowEmpty` prop when you want to add an empty choice with a value of null in the choices list.
-Disabling `allowEmpty` does not mean that the input will be required. If you want to make the input required, you must add a validator as indicated in [Validation Documentation](./CreateEdit.html#validation). Enabling the `allowEmpty` props just adds an empty choice (with `null` value) on top of the options, and makes the value nullable.
+Disabling `allowEmpty` does not mean that the input will be required. If you want to make the input required, you must add a validator as indicated in [Validation Documentation](./CreateEdit.md#validation). Enabling the `allowEmpty` props just adds an empty choice (with `null` value) on top of the options, and makes the value nullable.
 
 ```jsx
 import { ReferenceInput, SelectInput } from 'react-admin'
