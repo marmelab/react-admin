@@ -1,6 +1,7 @@
 export AppBar from './AppBar';
 export AppBarMobile from './AppBarMobile';
 export CardActions from './CardActions';
+export CardContentInner from './CardContentInner';
 export Confirm from './Confirm';
 export DashboardMenuItem from './DashboardMenuItem';
 export Error from './Error';

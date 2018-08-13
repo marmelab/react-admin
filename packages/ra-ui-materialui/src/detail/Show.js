@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
 import classnames from 'classnames';
 import { ShowController } from 'ra-core';
 
 import DefaultActions from './ShowActions';
 import TitleForRecord from '../layout/TitleForRecord';
+import CardContentInner from '../layout/CardContentInner';
 
 const sanitizeRestProps = ({
     actions,
@@ -63,7 +63,7 @@ export const ShowView = ({
             />
             <Card style={{ opacity: isLoading ? 0.8 : 1 }}>
                 {actions && (
-                    <CardContent>
+                    <CardContentInner>
                         {React.cloneElement(actions, {
                             basePath,
                             data: record,
@@ -71,7 +71,7 @@ export const ShowView = ({
                             hasEdit,
                             resource,
                         })}
-                    </CardContent>
+                    </CardContentInner>
                 )}
                 {record &&
                     React.cloneElement(children, {

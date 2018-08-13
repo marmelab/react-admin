@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
 import classnames from 'classnames';
 import { CreateController } from 'ra-core';
 
 import TitleForRecord from '../layout/TitleForRecord';
+import CardContentInner from '../layout/CardContentInner';
 
 const sanitizeRestProps = ({
     actions,
@@ -55,13 +55,13 @@ export const CreateView = ({
         />
         <Card>
             {actions && (
-                <CardContent>
+                <CardContentInner>
                     {React.cloneElement(actions, {
                         basePath,
                         resource,
                         hasList,
                     })}
-                </CardContent>
+                </CardContentInner>
             )}
             {React.cloneElement(children, {
                 basePath,

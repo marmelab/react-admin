@@ -2,15 +2,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
 import classnames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
+import { ListController, getListControllerProps } from 'ra-core';
 
 import Title from '../layout/Title';
+import CardContentInner from '../layout/CardContentInner';
 import DefaultPagination from './Pagination';
 import DefaultBulkActions from './BulkActions';
 import DefaultActions from './ListActions';
-import { ListController, getListControllerProps } from 'ra-core';
 import defaultTheme from '../defaultTheme';
 
 const styles = {
@@ -113,7 +113,7 @@ export const ListView = ({
             <Title title={title} defaultTitle={defaultTitle} />
             <Card>
                 {(filters || actions) && (
-                    <CardContent className={classes.header}>
+                    <CardContentInner className={classes.header}>
                         <span>
                             {filters &&
                                 React.cloneElement(filters, {
@@ -129,7 +129,7 @@ export const ListView = ({
                                 exporter,
                                 filters,
                             })}
-                    </CardContent>
+                    </CardContentInner>
                 )}
                 <div key={version}>
                     {children &&

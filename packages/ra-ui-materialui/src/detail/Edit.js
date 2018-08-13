@@ -7,6 +7,7 @@ import { EditController } from 'ra-core';
 
 import DefaultActions from './EditActions';
 import TitleForRecord from '../layout/TitleForRecord';
+import CardContentInner from '../layout/CardContentInner';
 
 const sanitizeRestProps = ({
     actions,
@@ -67,7 +68,7 @@ export const EditView = ({
             />
             <Card>
                 {actions && (
-                    <CardContent>
+                    <CardContentInner>
                         {React.cloneElement(actions, {
                             basePath,
                             data: record,
@@ -75,7 +76,7 @@ export const EditView = ({
                             hasList,
                             resource,
                         })}
-                    </CardContent>
+                    </CardContentInner>
                 )}
                 {record ? (
                     React.cloneElement(children, {
