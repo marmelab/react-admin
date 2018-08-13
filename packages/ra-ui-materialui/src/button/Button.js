@@ -64,6 +64,7 @@ const Button = ({
                 {...rest}
             >
                 {alignIcon === 'left' &&
+                    children &&
                     React.cloneElement(children, {
                         className: classes[`${size}Icon`],
                     })}
@@ -76,6 +77,7 @@ const Button = ({
                     {label && translate(label, { _: label })}
                 </span>
                 {alignIcon === 'right' &&
+                    children &&
                     React.cloneElement(children, {
                         className: classes[`${size}Icon`],
                     })}
@@ -86,7 +88,7 @@ const Button = ({
 
 Button.propTypes = {
     alignIcon: PropTypes.string,
-    children: PropTypes.node.isRequired,
+    children: PropTypes.element,
     classes: PropTypes.object,
     className: PropTypes.string,
     color: PropTypes.string,
