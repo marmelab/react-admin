@@ -90,26 +90,21 @@ describe('<AutocompleteInput />', () => {
     };
 
     it('should use optionText with a string value as text identifier', () => {
-        const wrapper = shallow(
-            <AutocompleteInput {...defaultProps} optionText="foobar" />,
+        const wrapper = render(
+            <AutocompleteInput
+                {...defaultProps}
+                optionText="foobar"
+                choices={[{ id: 'M', foobar: 'Male' }]}
+                alwaysRenderSuggestions={true}
+            />,
             { context, childContextTypes }
         );
-
-        // This is necesary because we use the material-ui Popper element which does not includes
-        // its children in the AutocompleteInput dom hierarchy
-        const menuItem = wrapper
-            .instance()
-            .renderSuggestion(
-                { id: 'M', foobar: 'Male' },
-                { query: '', highlighted: false }
-            );
-
-        const MenuItem = render(menuItem);
+        const MenuItem = wrapper.find('div[role="menuitem"]').first();
         assert.equal(MenuItem.text(), 'Male');
     });
 
     it('should use optionText with a string value including "." as text identifier', () => {
-        const wrapper = shallow(
+        const wrapper = render(
             <AutocompleteInput
                 {...defaultProps}
                 optionText="foobar.name"
@@ -118,22 +113,12 @@ describe('<AutocompleteInput />', () => {
             />,
             { context, childContextTypes }
         );
-
-        // This is necesary because we use the material-ui Popper element which does not includes
-        // its children in the AutocompleteInput dom hierarchy
-        const menuItem = wrapper
-            .instance()
-            .renderSuggestion(
-                { id: 'M', foobar: { name: 'Male' } },
-                { query: '', highlighted: false }
-            );
-
-        const MenuItem = render(menuItem);
+        const MenuItem = wrapper.find('div[role="menuitem"]').first();
         assert.equal(MenuItem.text(), 'Male');
     });
 
     it('should use optionText with a function value as text identifier', () => {
-        const wrapper = shallow(
+        const wrapper = render(
             <AutocompleteInput
                 {...defaultProps}
                 optionText={choice => choice.foobar}
@@ -142,22 +127,12 @@ describe('<AutocompleteInput />', () => {
             />,
             { context, childContextTypes }
         );
-
-        // This is necesary because we use the material-ui Popper element which does not includes
-        // its children in the AutocompleteInput dom hierarchy
-        const menuItem = wrapper
-            .instance()
-            .renderSuggestion(
-                { id: 'M', foobar: 'Male' },
-                { query: '', highlighted: false }
-            );
-
-        const MenuItem = render(menuItem);
+        const MenuItem = wrapper.find('div[role="menuitem"]').first();
         assert.equal(MenuItem.text(), 'Male');
     });
 
     it('should translate the choices by default', () => {
-        const wrapper = shallow(
+        const wrapper = render(
             <AutocompleteInput
                 {...defaultProps}
                 choices={[{ id: 'M', name: 'Male' }]}
@@ -166,21 +141,12 @@ describe('<AutocompleteInput />', () => {
             />,
             { context, childContextTypes }
         );
-        // This is necesary because we use the material-ui Popper element which does not includes
-        // its children in the AutocompleteInput dom hierarchy
-        const menuItem = wrapper
-            .instance()
-            .renderSuggestion(
-                { id: 'M', name: 'Male' },
-                { query: '', highlighted: false }
-            );
-
-        const MenuItem = render(menuItem);
+        const MenuItem = wrapper.find('div[role="menuitem"]').first();
         assert.equal(MenuItem.text(), '**Male**');
     });
 
     it('should not translate the choices if translateChoice is false', () => {
-        const wrapper = shallow(
+        const wrapper = render(
             <AutocompleteInput
                 {...defaultProps}
                 choices={[{ id: 'M', name: 'Male' }]}
@@ -190,16 +156,7 @@ describe('<AutocompleteInput />', () => {
             />,
             { context, childContextTypes }
         );
-        // This is necesary because we use the material-ui Popper element which does not includes
-        // its children in the AutocompleteInput dom hierarchy
-        const menuItem = wrapper
-            .instance()
-            .renderSuggestion(
-                { id: 'M', name: 'Male' },
-                { query: '', highlighted: false }
-            );
-
-        const MenuItem = render(menuItem);
+        const MenuItem = wrapper.find('div[role="menuitem"]').first();
         assert.equal(MenuItem.text(), 'Male');
     });
 
