@@ -81,7 +81,7 @@ const App = () => (
 
 ## `dashboard`
 
-By default, the homepage of an an admin app is the `list` of the first child `<Resource>`. But you can also specify a custom component instead. To fit in the general design, use Material UI's `<Card>` component, and react-admin's `<Title>` component to set the title in teh AppBar:
+By default, the homepage of an admin app is the `list` of the first child `<Resource>`. But you can also specify a custom component instead. To fit in the general design, use Material UI's `<Card>` component, and react-admin's `<Title>` component to set the title in the AppBar:
 
 ```jsx
 // in src/Dashboard.js
