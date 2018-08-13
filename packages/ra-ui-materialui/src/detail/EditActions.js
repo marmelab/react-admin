@@ -22,12 +22,11 @@ const sanitizeRestProps = ({
  *
  * @example
  *     import Button from '@material-ui/core/Button';
- *     import { CardActions, ShowButton, DeleteButton, Edit } from 'react-admin';
+ *     import { CardActions, ShowButton, Edit } from 'react-admin';
  *
  *     const PostEditActions = ({ basePath, record, rseource }) => (
  *         <CardActions>
  *             <ShowButton basePath={basePath} record={record} />
- *             <DeleteButton basePath={basePath} record={record} resource={resource} />
  *             // Add your custom actions here //
  *             <Button color="primary" onClick={customAction}>Custom Action</Button>
  *         </CardActions>

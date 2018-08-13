@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { GET_LIST, GET_MANY, Responsive, ViewTitle } from 'react-admin';
+import { GET_LIST, GET_MANY, Responsive, Title } from 'react-admin';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 
@@ -151,7 +151,7 @@ class Dashboard extends Component {
             <Responsive
                 xsmall={
                     <Card>
-                        <ViewTitle title="Posters Galore Admin" />
+                        <Title title="Posters Galore Admin" />
                         <CardContent>
                             <Welcome style={styles.welcome} />
                             <div style={styles.flex}>

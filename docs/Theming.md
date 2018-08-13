@@ -655,6 +655,7 @@ import React from 'react';
 import Button from '@material-ui/core/Button';
 import ErrorIcon from '@material-ui/icons/Report';
 import History from '@material-ui/icons/History';
+import { Title } from 'react-admin';
 
 const MyError = ({
     error,
@@ -662,6 +663,7 @@ const MyError = ({
     ...rest
 }) => (
     <div>
+        <Title title="Error" />
         <h1><ErrorIcon /> Something Went Wrong </h1>
         <div>A client error occurred and your request couldn't be completed.</div>
         {process.env.NODE_ENV === 'development' && (

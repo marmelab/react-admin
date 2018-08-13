@@ -117,18 +117,11 @@ You can replace the list of default actions by your own element using the `actio
 
 ```jsx
 import Button from '@material-ui/core/Button';
-import {
-    CardActions,
-    ShowButton,
-    DeleteButton,
-    RefreshButton,
-} from 'react-admin';
+import { CardActions, ShowButton } from 'react-admin';
 
 const PostEditActions = ({ basePath, data, resource }) => (
     <CardActions>
         <ShowButton basePath={basePath} record={data} />
-        <DeleteButton basePath={basePath} record={data} resource={resource} />
-        <RefreshButton />
         {/* Add your custom actions */}
         <Button color="primary" onClick={customAction}>Custom Action</Button>
     </CardActions>
