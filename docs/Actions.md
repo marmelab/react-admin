@@ -76,7 +76,7 @@ export const CommentList = (props) =>
     </List>;
 ```
 
-Or, in the `<Edit>` page, as a [custom action](./CreateEdit.md#actions):
+Or, in the `<Edit>` page, as a [custom action](./CreateEdit.html#actions):
 
 ```jsx
 // in src/comments/CommentEditActions.js
@@ -112,7 +112,7 @@ export const CommentEdit = (props) =>
 
 ## Using a Data Provider Instead of Fetch
 
-The previous code uses `fetch()`, which means it has to make raw HTTP requests. The REST logic often requires a bit of HTTP plumbing to deal with authentication, query parameters, encoding, headers, etc. It turns out you probably already have a function that maps from a REST request to an HTTP request: the [Data Provider](./DataProviders.md). So it's a good idea to use this function instead of `fetch` - provided you have exported it:
+The previous code uses `fetch()`, which means it has to make raw HTTP requests. The REST logic often requires a bit of HTTP plumbing to deal with authentication, query parameters, encoding, headers, etc. It turns out you probably already have a function that maps from a REST request to an HTTP request: the [Data Provider](./DataProviders.html). So it's a good idea to use this function instead of `fetch` - provided you have exported it:
 
 ```jsx
 // in src/dataProvider.js
@@ -174,7 +174,7 @@ There you go: no more `fetch`. Just like `fetch`, the `dataProvider` returns a `
 const dataProvider = (type, resource, params) => new Promise();
 ```
 
-As for the syntax of the various request types (`GET_LIST`, `GET_ONE`, `UPDATE`, etc.), head to the [Data Provider documentation](./DataProviders.md#request-format) for more details.
+As for the syntax of the various request types (`GET_LIST`, `GET_ONE`, `UPDATE`, etc.), head to the [Data Provider documentation](./DataProviders.html#request-format) for more details.
 
 ## Triggering The Loading Indicator
 

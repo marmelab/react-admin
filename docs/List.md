@@ -585,7 +585,7 @@ export withStyles(styles)(PostList);
 
 ## The `<Datagrid>` component
 
-The datagrid component renders a list of records as a table. It is usually used as a child of the [`<List>`](#the-list-component) and [`<ReferenceManyField>`](./Fields.md#referencemanyfield) components.
+The datagrid component renders a list of records as a table. It is usually used as a child of the [`<List>`](#the-list-component) and [`<ReferenceManyField>`](./Fields.html#referencemanyfield) components.
 
 Here are all the props accepted by the component:
 

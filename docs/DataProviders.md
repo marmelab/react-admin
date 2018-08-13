@@ -659,7 +659,7 @@ export default (type, resource, params) => {
 
 ### Error Format
 
-When the API backend returns an error, the Data Provider should `throw` an `Error` object. This object should contain a `status` property with the HTTP response code (404, 500, etc.). React-admin inspects this error code, and uses it for [authentication](./Authentication.md) (in case of 401 or 403 errors). Besides, react-admin displays the error `message` on screen in a temporary notification.
+When the API backend returns an error, the Data Provider should `throw` an `Error` object. This object should contain a `status` property with the HTTP response code (404, 500, etc.). React-admin inspects this error code, and uses it for [authentication](./Authentication.html) (in case of 401 or 403 errors). Besides, react-admin displays the error `message` on screen in a temporary notification.
 
 ### Example implementation
 

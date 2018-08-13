@@ -52,7 +52,7 @@ npm install react-admin
 
 ## Usage
 
-Read the [Tutorial](./Tutorial.md) for a 15 minutes introduction. After that, head to the [Documentation](./index.md), or checkout the [source code of the demo](https://github.com/marmelab/react-admin/tree/master/examples/demo) for an example usage.
+Read the [Tutorial](./Tutorial.html) for a 15 minutes introduction. After that, head to the [Documentation](./index.html), or checkout the [source code of the demo](https://github.com/marmelab/react-admin/tree/master/examples/demo) for an example usage.
 
 ## At a Glance
 
@@ -136,7 +136,7 @@ React-admin uses an adapter approach, with a concept called *Data Providers*. Ex
 
 ![Data Provider architecture](./img/data-provider.png)
 
-See the [Data Providers documentation](./DataProviders.md) for details.
+See the [Data Providers documentation](./DataProviders.html) for details.
 
 ## Batteries Included But Removable
 
