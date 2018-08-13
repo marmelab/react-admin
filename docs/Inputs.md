@@ -60,7 +60,7 @@ Then you can display a text input to edit the author first name as follows:
 <TextInput source="author.firstName" />
 ```
 
-**Tip**: If your interface has to support multiple languages, don't use the `label` prop, and put the localized labels in a dictionary instead. See the [Translation documentation](./Translation.md#translating-resource-and-field-names) for details.
+**Tip**: If your interface has to support multiple languages, don't use the `label` prop, and put the localized labels in a dictionary instead. See the [Translation documentation](./Translation.html#translating-resource-and-field-names) for details.
 
 ## `<ArrayInput>`
 
@@ -411,7 +411,7 @@ Previews are enabled using `<ImageInput>` children, as following:
 </ImageInput>
 ```
 
-Writing a custom field component for displaying the current value(s) is easy:  it's a standard [field](./Fields.md#writing_your_own_field_component).
+Writing a custom field component for displaying the current value(s) is easy:  it's a standard [field](./Fields.html#writing_your_own_field_component).
 
 When receiving **new** files, `ImageInput` will add a `rawFile` property to the object passed as the `record` prop of children. This `rawFile` is the [File](https://developer.mozilla.org/en-US/docs/Web/API/File) instance of the newly added file. This can be useful to display informations about size or mimetype inside a custom field.
 
@@ -425,7 +425,7 @@ If the default Dropzone label doesn't fit with your need, you can pass a `placeh
 </ImageInput>
 ```
 
-Note that the image upload returns a [File](https://developer.mozilla.org/en/docs/Web/API/File) object. It is your responsibility to handle it depending on your API behavior. You can for instance encode it in base64, or send it as a multi-part form data. Check [this example](./DataProviders.md#decorating-your-rest-client-example-of-file-upload) for base64 encoding data by extending the REST Client.
+Note that the image upload returns a [File](https://developer.mozilla.org/en/docs/Web/API/File) object. It is your responsibility to handle it depending on your API behavior. You can for instance encode it in base64, or send it as a multi-part form data. Check [this example](./DataProviders.html#decorating-your-rest-client-example-of-file-upload) for base64 encoding data by extending the REST Client.
 
 ## `<FileInput>`
 
@@ -441,11 +441,11 @@ Previews (actually a simple list of files names) are enabled using `<FileInput>`
 </FileInput>
 ```
 
-Writing a custom field component for displaying the current value(s) is easy:  it's a standard [field](./Fields.md#writing_your_own_field_component).
+Writing a custom field component for displaying the current value(s) is easy:  it's a standard [field](./Fields.html#writing_your_own_field_component).
 
 When receiving **new** files, `FileInput` will add a `rawFile` property to the object passed as the `record` prop of children. This `rawFile` is the [File](https://developer.mozilla.org/en-US/docs/Web/API/File) instance of the newly added file. This can be useful to display informations about size or mimetype inside a custom field.
 
-The `FileInput` component accepts an `options` prop into which you can pass all the [react-dropzone properties](https://github.com/okonet/react-dropzone#features). For instance, if you need to upload several files at once, just add the `options={{ multiple: true }}` DropZone attribute to your `<FileInput />` field.
+The `FileInput` component accepts an `options` prop into which you can pass all the [react-dropzone properties](https://github.com/okonet/react-dropzone#features). For instance, if you need to upload several files at once, just add the {% raw %}`options={{ multiple: true }}`{% endraw %} DropZone attribute to your `<FileInput />` field.
 
 If the default Dropzone label doesn't fit with your need, you can pass a `placeholder` attribute to overwrite it. The attribute can be anything React can render (`PropTypes.node`):
 
@@ -455,7 +455,7 @@ If the default Dropzone label doesn't fit with your need, you can pass a `placeh
 </FileInput>
 ```
 
-Note that the file upload returns a [File](https://developer.mozilla.org/en/docs/Web/API/File) object. It is your responsibility to handle it depending on your API behavior. You can for instance encode it in base64, or send it as a multi-part form data. Check [this example](./DataProviders.md#decorating-your-rest-client-example-of-file-upload) for base64 encoding data by extending the REST Client.
+Note that the file upload returns a [File](https://developer.mozilla.org/en/docs/Web/API/File) object. It is your responsibility to handle it depending on your API behavior. You can for instance encode it in base64, or send it as a multi-part form data. Check [this example](./DataProviders.html#decorating-your-rest-client-example-of-file-upload) for base64 encoding data by extending the REST Client.
 
 ## `<LongTextInput>`
 

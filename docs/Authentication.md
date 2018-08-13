@@ -67,7 +67,7 @@ Upon receiving a 403 response, the admin app shows the Login page. `authProvider
 
 ## Sending Credentials to the API
 
-To use the credentials when calling a data provider, you have to tweak, this time, the `dataProvider` function. As explained in the [Data providers documentation](DataProviders.md#adding-custom-headers), `simpleRestProvider` and `jsonServerProvider` take an `httpClient` as second parameter. That's the place where you can change request headers, cookies, etc.
+To use the credentials when calling a data provider, you have to tweak, this time, the `dataProvider` function. As explained in the [Data providers documentation](DataProviders.html#adding-custom-headers), `simpleRestProvider` and `jsonServerProvider` take an `httpClient` as second parameter. That's the place where you can change request headers, cookies, etc.
 
 For instance, to pass the token obtained during login as an `Authorization` header, configure the Data Provider as follows:
 
@@ -315,7 +315,7 @@ const App = () => (
 
 ## Restricting Access To A Custom Page
 
-If you add [custom pages](./Actions.md), of if you [create an admin app from scratch](./CustomApp.md), you may need to secure access to pages manually. That's the purpose of the `<Authenticated>` component, that you can use as a decorator for your own components.
+If you add [custom pages](./Actions.html), of if you [create an admin app from scratch](./CustomApp.html), you may need to secure access to pages manually. That's the purpose of the `<Authenticated>` component, that you can use as a decorator for your own components.
 
 {% raw %}
 ```jsx

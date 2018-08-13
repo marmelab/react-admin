@@ -202,7 +202,7 @@ export const UserList = ({ permissions, ...props }) =>
 
 ## Restricting Access to Content Inside a Dashboard
 
-The component provided as a [`dashboard`]('./Admin.md#dashboard) will receive the permissions in its props too:
+The component provided as a [`dashboard`]('./Admin.html#dashboard) will receive the permissions in its props too:
 
 {% raw %}
 ```jsx
@@ -227,7 +227,7 @@ export default ({ permissions }) => (
 
 ## Restricting Access to Content Inside Custom Pages
 
-You might want to check user permissions inside a [custom pages](./Admin.md#customroutes). You'll have to use the `WithPermissions` component for that. It will ensure the user is authenticated then call the `authProvider` with the `AUTH_GET_PERMISSIONS` type and the `authParams` you specify:
+You might want to check user permissions inside a [custom pages](./Admin.html#customroutes). You'll have to use the `WithPermissions` component for that. It will ensure the user is authenticated then call the `authProvider` with the `AUTH_GET_PERMISSIONS` type and the `authParams` you specify:
 
 {% raw %}
 ```jsx
