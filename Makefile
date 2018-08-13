@@ -115,5 +115,5 @@ test-e2e: ## launch end-to-end tests
 
 
 test-e2e-local: ## launch end-to-end tests for development
-	echo 'Starting e2e tests environment. Ensure you started the simple example first (make run-simple)'
-	cd cypress && yarn -s start
+	@echo 'Starting e2e tests environment. Ensure you started the simple example first (make run-simple)'
+	@cd cypress && yarn -s start

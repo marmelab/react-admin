@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { crudGetList as crudGetListAction } from 'react-admin'; // eslint-disable-line import/no-unresolved
+import { crudGetList as crudGetListAction, Title } from 'react-admin'; // eslint-disable-line import/no-unresolved
 
 class CustomRouteLayout extends Component {
     componentWillMount() {
@@ -16,6 +16,7 @@ class CustomRouteLayout extends Component {
 
         return (
             <div>
+                <Title title="Example Admin" />
                 <h1>Posts</h1>
                 <p>
                     Found <span className="total">{total}</span> posts !
