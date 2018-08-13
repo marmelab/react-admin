@@ -82,7 +82,6 @@ Or, in the `<Edit>` page, as a [custom action](./CreateEdit.md#actions):
 // in src/comments/CommentEditActions.js
 import React from 'react';
 import CardActions from '@material-ui/core/CardActions';
-import { DeleteButton } from 'react-admin';
 import ApproveButton from './ApproveButton';
 
 const cardActionStyle = {
@@ -94,7 +93,6 @@ const cardActionStyle = {
 const CommentEditActions = ({ basePath, data, resource }) => (
     <CardActions style={cardActionStyle}>
         <ApproveButton record={data} />
-        <DeleteButton basePath={basePath} record={data} resource={resource} />
     </CardActions>
 );
 
