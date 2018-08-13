@@ -8,7 +8,7 @@ export default url => ({
         snackbar: 'div[role="alertdialog"]',
         submitButton: ".edit-page button[type='submit']",
         tab: index => `.form-tab:nth-of-type(${index})`,
-        title: '.title',
+        title: '#react-admin-title',
     },
 
     navigate() {

@@ -9,6 +9,12 @@ describe('List Page', () => {
         ListPagePosts.navigate();
     });
 
+    describe('Title', () => {
+        it('should show the correct title in the appBar', () => {
+            cy.get(ListPagePosts.elements.title).contains('Posts List');
+        });
+    });
+
     describe('Pagination', () => {
         it('should display paginated list of available posts', () => {
             cy.contains('1-10 of 13');

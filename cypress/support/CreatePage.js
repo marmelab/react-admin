@@ -12,6 +12,7 @@ export default url => ({
             ".create-page form>div:last-child button[type='button']:last-child",
         descInput: '.ql-editor',
         tab: index => `.form-tab:nth-of-type(${index})`,
+        title: '#react-admin-title',
     },
 
     navigate() {

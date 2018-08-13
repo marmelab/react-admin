@@ -16,6 +16,10 @@ describe('Create Page', () => {
         CreatePage.navigate();
     });
 
+    it('should show the correct title in the appBar', () => {
+        cy.get(CreatePage.elements.title).contains('Create Post');
+    });
+
     it('should put the current date in the field by default', () => {
         const currentDate = new Date();
         const currentDateString = currentDate.toISOString().slice(0, 10);
