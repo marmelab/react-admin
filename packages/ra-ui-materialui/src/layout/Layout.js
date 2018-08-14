@@ -30,7 +30,6 @@ const styles = theme => ({
     appFrame: {
         display: 'flex',
         flexDirection: 'column',
-        overflowX: 'auto',
     },
     contentWithSidebar: {
         display: 'flex',

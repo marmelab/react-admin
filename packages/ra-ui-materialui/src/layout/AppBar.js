@@ -10,6 +10,7 @@ import { withStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
 import compose from 'recompose/compose';
 import { toggleSidebar as toggleSidebarAction } from 'ra-core';
+import Headroom from 'react-headroom';
 
 import LoadingIndicator from './LoadingIndicator';
 
@@ -70,41 +71,45 @@ const AppBar = ({
     toggleSidebar,
     ...rest
 }) => (
-    <MuiAppBar
-        className={classNames(classes.appBar, className)}
-        color="secondary"
-        position="absolute"
-        {...rest}
-    >
-        <Toolbar disableGutters variant="dense" className={classes.toolbar}>
-            <IconButton
-                color="inherit"
-                aria-label="open drawer"
-                onClick={toggleSidebar}
-                className={classNames(classes.menuButton)}
-            >
-                <MenuIcon
-                    classes={{
-                        root: open
-                            ? classes.menuButtonIconOpen
-                            : classes.menuButtonIconClosed,
-                    }}
-                />
-            </IconButton>
-            <Typography
-                variant="title"
-                color="inherit"
-                className={classes.title}
-            >
-                {typeof title === 'string' ? title : React.cloneElement(title)}
-            </Typography>
-            {logout &&
-                cloneElement(logout, {
-                    className: classes.logout,
-                })}
-        </Toolbar>
-        <LoadingIndicator className={classes.loadingIndicator} />
-    </MuiAppBar>
+    <Headroom className={classNames(classes.appBar)}>
+        <MuiAppBar
+            className={className}
+            color="secondary"
+            position="static"
+            {...rest}
+        >
+            <Toolbar disableGutters variant="dense" className={classes.toolbar}>
+                <IconButton
+                    color="inherit"
+                    aria-label="open drawer"
+                    onClick={toggleSidebar}
+                    className={classNames(classes.menuButton)}
+                >
+                    <MenuIcon
+                        classes={{
+                            root: open
+                                ? classes.menuButtonIconOpen
+                                : classes.menuButtonIconClosed,
+                        }}
+                    />
+                </IconButton>
+                <Typography
+                    variant="title"
+                    color="inherit"
+                    className={classes.title}
+                >
+                    {typeof title === 'string'
+                        ? title
+                        : React.cloneElement(title)}
+                </Typography>
+                {logout &&
+                    cloneElement(logout, {
+                        className: classes.logout,
+                    })}
+            </Toolbar>
+            <LoadingIndicator className={classes.loadingIndicator} />
+        </MuiAppBar>
+    </Headroom>
 );
 
 AppBar.propTypes = {
