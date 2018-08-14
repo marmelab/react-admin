@@ -11,7 +11,6 @@ import { showNotification, translate } from 'ra-core';
 
 const styles = {
     button: {
-        margin: '10px 24px',
         position: 'relative',
     },
     iconPaddingStyle: {

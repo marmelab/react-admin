@@ -2,19 +2,14 @@ import React, { Component, Children, cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import Tabs from '@material-ui/core/Tabs';
 import Divider from '@material-ui/core/Divider';
-import CardContent from '@material-ui/core/CardContent';
-import { withStyles } from '@material-ui/core/styles';
 import { withRouter, Route } from 'react-router-dom';
 import compose from 'recompose/compose';
 import { translate } from 'ra-core';
 
-const styles = {
-    content: { paddingTop: 0 },
-};
+import CardContentInner from '../layout/CardContentInner';
 
 const sanitizeRestProps = ({
     children,
-    classes,
     className,
     record,
     resource,
@@ -74,7 +69,6 @@ export class TabbedShowLayout extends Component {
         const {
             basePath,
             children,
-            classes,
             className,
             location,
             match,
@@ -94,6 +88,7 @@ export class TabbedShowLayout extends Component {
             >
                 <Tabs
                     scrollable
+                    scrollButtons="off"
                     // The location pathname will contain the page path including the current tab path
                     // so we can use it as a way to determine the current tab
                     value={location.pathname}
@@ -115,7 +110,7 @@ export class TabbedShowLayout extends Component {
                     })}
                 </Tabs>
                 <Divider />
-                <CardContent className={classes.content}>
+                <CardContentInner>
                     {Children.map(
                         children,
                         (tab, index) =>
@@ -134,7 +129,7 @@ export class TabbedShowLayout extends Component {
                                 />
                             )
                     )}
-                </CardContent>
+                </CardContentInner>
             </div>
         );
     }
@@ -142,7 +137,6 @@ export class TabbedShowLayout extends Component {
 
 TabbedShowLayout.propTypes = {
     children: PropTypes.node,
-    classes: PropTypes.object,
     className: PropTypes.string,
     location: PropTypes.object,
     match: PropTypes.object,
@@ -156,8 +150,7 @@ TabbedShowLayout.propTypes = {
 
 const enhance = compose(
     withRouter,
-    translate,
-    withStyles(styles)
+    translate
 );
 
 export default enhance(TabbedShowLayout);

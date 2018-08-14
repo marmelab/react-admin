@@ -1,9 +1,9 @@
 import React, { cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import onlyUpdateForKeys from 'recompose/onlyUpdateForKeys';
-import CardActions from '@material-ui/core/CardActions';
 import { sanitizeListRestProps } from 'ra-core';
 
+import CardActions from '../layout/CardActions';
 import { CreateButton, ExportButton } from '../button';
 
 const Actions = ({
@@ -22,11 +22,7 @@ const Actions = ({
     showFilter,
     ...rest
 }) => (
-    <CardActions
-        className={className}
-        disableActionSpacing
-        {...sanitizeListRestProps(rest)}
-    >
+    <CardActions className={className} {...sanitizeListRestProps(rest)}>
         {bulkActions &&
             cloneElement(bulkActions, {
                 basePath,

@@ -104,17 +104,17 @@ class BulkActions extends Component {
                     <Button
                         buttonRef={this.storeButtonRef}
                         className={classnames('bulk-actions-button', className)}
-                        alignIcon="right"
+                        alignIcon="left"
                         aria-owns={isOpen ? 'bulk-actions-menu' : null}
                         aria-haspopup="true"
                         onClick={this.handleClick}
                         {...sanitizeRestProps(rest)}
-                    >
-                        <FilterNoneIcon className={classes.icon} />
-                        {translate(label, {
+                        label={translate(label, {
                             _: label,
                             smart_count: selectedIds.length,
                         })}
+                    >
+                        <FilterNoneIcon className={classes.icon} />
                     </Button>
                     <Menu
                         id="bulk-actions-menu"

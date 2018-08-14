@@ -15,7 +15,6 @@ export default url => ({
         recordRows: '.datagrid-body tr',
         viewsColumn: '.datagrid-body tr td:nth-child(6)',
         datagridHeaders: 'th',
-        title: '.title',
         logout: '.logout',
         bulkActionsButton: '.bulk-actions-button',
         customBulkActionsButtonMenuItem: '.bulk-actions-menu-item:first-child',
@@ -24,6 +23,7 @@ export default url => ({
         selectedItem: '.select-item input:checked',
         selectItem: '.select-item input',
         userMenu: 'button[title="Profile"]',
+        title: '#react-admin-title',
     },
 
     navigate() {

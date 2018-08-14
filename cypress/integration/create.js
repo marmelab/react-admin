@@ -1,4 +1,5 @@
 import createPageFactory from '../support/CreatePage';
+import editPageFactory from '../support/EditPage';
 import showPageFactory from '../support/ShowPage';
 import loginPageFactory from '../support/LoginPage';
 
@@ -6,12 +7,17 @@ describe('Create Page', () => {
     const CreatePage = createPageFactory('/#/posts/create');
     const UserCreatePage = createPageFactory('/#/users/create');
     const ShowPage = showPageFactory('/#/posts/14/show');
+    const EditPage = editPageFactory('/#/posts/14');
     const LoginPage = loginPageFactory('/#/login');
 
     beforeEach(() => {
         LoginPage.navigate();
         LoginPage.login('admin', 'password');
         CreatePage.navigate();
+    });
+
+    it('should show the correct title in the appBar', () => {
+        cy.get(CreatePage.elements.title).contains('Create Post');
     });
 
     it('should put the current date in the field by default', () => {
@@ -74,7 +80,8 @@ describe('Create Page', () => {
         CreatePage.setValues(values);
         CreatePage.submit();
         ShowPage.waitUntilVisible();
-        ShowPage.delete();
+        EditPage.navigate();
+        EditPage.delete();
     });
 
     it('should stay at create page after create success with "Save and add"', () => {
@@ -97,8 +104,8 @@ describe('Create Page', () => {
             expect(el).to.have.value('')
         ); // new empty form
 
-        ShowPage.navigate();
-        ShowPage.delete();
+        EditPage.navigate();
+        EditPage.delete();
     });
 
     it('should allow to call a custom action updating values before submit', () => {
@@ -125,7 +132,8 @@ describe('Create Page', () => {
         ShowPage.waitUntilVisible();
         ShowPage.gotoTab(3);
         cy.contains('10');
-        ShowPage.delete();
+        EditPage.navigate();
+        EditPage.delete();
     });
 
     it('should not accept creation without required fields', () => {

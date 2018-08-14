@@ -1,12 +1,14 @@
 export default url => ({
     elements: {
         body: 'body',
+        deleteButton: '.ra-delete-button',
         input: name => `.edit-page input[name='${name}']`,
         inputs: `.ra-input`,
         tabs: `.form-tab`,
+        snackbar: 'div[role="alertdialog"]',
         submitButton: ".edit-page button[type='submit']",
         tab: index => `.form-tab:nth-of-type(${index})`,
-        title: '.title',
+        title: '#react-admin-title',
     },
 
     navigate() {
@@ -34,5 +36,12 @@ export default url => ({
 
     submit() {
         cy.get(this.elements.submitButton).click();
+    },
+
+    delete() {
+        cy.get(this.elements.deleteButton).click();
+        cy.get(this.elements.snackbar);
+        cy.get(this.elements.body).click(); // dismiss notification
+        cy.wait(200); // let the notification disappear (could block further submits)
     },
 });

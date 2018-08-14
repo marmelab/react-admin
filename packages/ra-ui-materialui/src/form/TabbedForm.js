@@ -12,14 +12,13 @@ import { withRouter, Route } from 'react-router-dom';
 import compose from 'recompose/compose';
 import Divider from '@material-ui/core/Divider';
 import Tabs from '@material-ui/core/Tabs';
-import CardContent from '@material-ui/core/CardContent';
 import { withStyles } from '@material-ui/core/styles';
 import { getDefaultValues, translate, REDUX_FORM_NAME } from 'ra-core';
 
 import Toolbar from './Toolbar';
+import CardContentInner from '../layout/CardContentInner';
 
 const styles = theme => ({
-    content: { paddingTop: 0 },
     errorTabButton: { color: theme.palette.error.main },
 });
 
@@ -119,6 +118,7 @@ export class TabbedForm extends Component {
             >
                 <Tabs
                     scrollable
+                    scrollButtons="off"
                     // The location pathname will contain the page path including the current tab path
                     // so we can use it as a way to determine the current tab
                     value={tabsValue}
@@ -145,7 +145,7 @@ export class TabbedForm extends Component {
                     })}
                 </Tabs>
                 <Divider />
-                <CardContent className={classes.content}>
+                <CardContentInner>
                     {/* All tabs are rendered (not only the one in focus), to allow validation
                     on tabs not in focus. The tabs receive a `hidden` property, which they'll
                     use to hide the tab using CSS if it's not the one in focus.
@@ -183,18 +183,25 @@ export class TabbedForm extends Component {
                                 </Route>
                             )
                     )}
-                </CardContent>
-                {toolbar &&
-                    React.cloneElement(toolbar, {
-                        className: 'toolbar',
-                        handleSubmitWithRedirect: this.handleSubmitWithRedirect,
-                        handleSubmit: this.props.handleSubmit,
-                        invalid,
-                        pristine,
-                        redirect,
-                        saving,
-                        submitOnEnter,
-                    })}
+                </CardContentInner>
+                {toolbar && (
+                    <CardContentInner>
+                        {React.cloneElement(toolbar, {
+                            basePath,
+                            className: 'toolbar',
+                            handleSubmitWithRedirect: this
+                                .handleSubmitWithRedirect,
+                            handleSubmit: this.props.handleSubmit,
+                            invalid,
+                            pristine,
+                            record,
+                            redirect,
+                            resource,
+                            saving,
+                            submitOnEnter,
+                        })}{' '}
+                    </CardContentInner>
+                )}
             </form>
         );
     }

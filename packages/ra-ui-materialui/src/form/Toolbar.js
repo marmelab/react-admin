@@ -1,22 +1,28 @@
 import React, { Children } from 'react';
 import PropTypes from 'prop-types';
+import compose from 'recompose/compose';
 import MuiToolbar from '@material-ui/core/Toolbar';
+import withWidth from '@material-ui/core/withWidth';
 import { withStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
 
-import { SaveButton } from '../button';
-import Responsive from '../layout/Responsive';
+import { SaveButton, DeleteButton } from '../button';
 
 const styles = {
     desktopToolbar: {
-        marginBottom: '0.5em',
+        justifyContent: 'space-between',
     },
     mobileToolbar: {
         position: 'fixed',
         bottom: 0,
+        left: 0,
+        right: 0,
+        padding: '16px',
         width: '100%',
+        boxSizing: 'border-box',
+        flexShrink: 0,
         backgroundColor: 'white',
-        justifyContent: 'flex-end',
+        justifyContent: 'space-between',
         zIndex: 2,
     },
 };
@@ -33,87 +39,61 @@ const Toolbar = ({
     handleSubmitWithRedirect,
     invalid,
     pristine,
+    record,
     redirect,
+    resource,
     saving,
     submitOnEnter,
+    width,
     ...rest
 }) => (
-    <Responsive
-        xsmall={
-            <MuiToolbar
-                className={classnames(classes.mobileToolbar, className)}
-                disableGutters
-                {...rest}
-            >
-                {Children.count(children) === 0 ? (
-                    <SaveButton
-                        handleSubmitWithRedirect={handleSubmitWithRedirect}
-                        invalid={invalid}
-                        variant="flat"
-                        redirect={redirect}
-                        saving={saving}
-                        submitOnEnter={submitOnEnter}
-                    />
-                ) : (
-                    Children.map(
-                        children,
-                        button =>
-                            button
-                                ? React.cloneElement(button, {
-                                      basePath,
-                                      handleSubmit,
-                                      handleSubmitWithRedirect,
-                                      invalid,
-                                      pristine,
-                                      saving,
-                                      submitOnEnter: valueOrDefault(
-                                          button.props.submitOnEnter,
-                                          submitOnEnter
-                                      ),
-                                      variant: 'flat',
-                                  })
-                                : null
-                    )
-                )}
-            </MuiToolbar>
-        }
-        medium={
-            <MuiToolbar
-                className={classnames(classes.desktopToolbar, className)}
-                disableGutters
-                {...rest}
-            >
-                {Children.count(children) === 0 ? (
-                    <SaveButton
-                        handleSubmitWithRedirect={handleSubmitWithRedirect}
-                        invalid={invalid}
-                        redirect={redirect}
-                        saving={saving}
-                        submitOnEnter={submitOnEnter}
-                    />
-                ) : (
-                    Children.map(
-                        children,
-                        button =>
-                            button
-                                ? React.cloneElement(button, {
-                                      basePath,
-                                      handleSubmit,
-                                      handleSubmitWithRedirect,
-                                      invalid,
-                                      pristine,
-                                      saving,
-                                      submitOnEnter: valueOrDefault(
-                                          button.props.submitOnEnter,
-                                          submitOnEnter
-                                      ),
-                                  })
-                                : null
-                    )
-                )}
-            </MuiToolbar>
-        }
-    />
+    <MuiToolbar
+        className={classnames(
+            width === 'xs' ? classes.mobileToolbar : classes.desktopToolbar,
+            className
+        )}
+        disableGutters
+        {...rest}
+    >
+        <span>
+            {Children.count(children) === 0 ? (
+                <SaveButton
+                    handleSubmitWithRedirect={handleSubmitWithRedirect}
+                    invalid={invalid}
+                    redirect={redirect}
+                    saving={saving}
+                    submitOnEnter={submitOnEnter}
+                />
+            ) : (
+                Children.map(
+                    children,
+                    button =>
+                        button
+                            ? React.cloneElement(button, {
+                                  basePath,
+                                  handleSubmit,
+                                  handleSubmitWithRedirect,
+                                  invalid,
+                                  pristine,
+                                  saving,
+                                  submitOnEnter: valueOrDefault(
+                                      button.props.submitOnEnter,
+                                      submitOnEnter
+                                  ),
+                              })
+                            : null
+                )
+            )}
+        </span>
+        {record &&
+            record.id && (
+                <DeleteButton
+                    basePath={basePath}
+                    record={record}
+                    resource={resource}
+                />
+            )}
+    </MuiToolbar>
 );
 
 Toolbar.propTypes = {
@@ -125,17 +105,24 @@ Toolbar.propTypes = {
     handleSubmitWithRedirect: PropTypes.func,
     invalid: PropTypes.bool,
     pristine: PropTypes.bool,
+    record: PropTypes.object,
     redirect: PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.bool,
         PropTypes.func,
     ]),
+    resource: PropTypes.string,
     saving: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
     submitOnEnter: PropTypes.bool,
+    width: PropTypes.string,
 };
 
 Toolbar.defaultProps = {
     submitOnEnter: true,
 };
 
-export default withStyles(styles)(Toolbar);
+const enhance = compose(
+    withWidth(),
+    withStyles(styles)
+);
+export default enhance(Toolbar);

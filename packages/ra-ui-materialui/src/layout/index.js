@@ -1,6 +1,7 @@
 export AppBar from './AppBar';
 export AppBarMobile from './AppBarMobile';
 export CardActions from './CardActions';
+export CardContentInner from './CardContentInner';
 export Confirm from './Confirm';
 export DashboardMenuItem from './DashboardMenuItem';
 export Error from './Error';
@@ -17,5 +18,6 @@ export RecordTitle from './RecordTitle';
 export Responsive from './Responsive';
 export Sidebar from './Sidebar';
 export Title from './Title';
+export TitleForRecord from './TitleForRecord';
 export UserMenu from './UserMenu';
 export ViewTitle from './ViewTitle';

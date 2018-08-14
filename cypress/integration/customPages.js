@@ -8,7 +8,7 @@ describe('Custom Pages', () => {
     describe('Without Layout', () => {
         it('should not display the layout', () => {
             CustomPageNoLayout.navigate();
-            cy.contains('Example Admin').should(el => expect(el).to.not.exist);
+            cy.get('main').should(el => expect(el).to.not.exist);
         });
 
         it('should have retrieved the number of posts', () => {
@@ -19,7 +19,7 @@ describe('Custom Pages', () => {
     describe('With Layout', () => {
         it('should display the layout', () => {
             CustomPageWithLayout.navigate();
-            cy.contains('Example Admin');
+            cy.get('main').should(el => expect(el).to.exist);
         });
 
         it('should have retrieved the number of posts', () => {

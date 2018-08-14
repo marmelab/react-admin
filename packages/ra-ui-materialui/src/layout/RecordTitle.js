@@ -1,10 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Title from './Title';
+import TitleDeprecated from './TitleDeprecated';
 
+/**
+ * @deprecated Use TitleForRecord instead
+ */
 const RecordTitle = ({ defaultTitle, record, title }) =>
     record ? (
-        <Title title={title} record={record} defaultTitle={defaultTitle} />
+        <TitleDeprecated
+            title={title}
+            record={record}
+            defaultTitle={defaultTitle}
+        />
     ) : (
         ''
     );

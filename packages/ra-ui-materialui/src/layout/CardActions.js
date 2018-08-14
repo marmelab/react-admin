@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import MuiCardActions from '@material-ui/core/CardActions';
 import { withStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
 
@@ -8,19 +7,17 @@ const styles = {
     cardActions: {
         zIndex: 2,
         display: 'flex',
+        alignItems: 'flex-start',
         justifyContent: 'flex-end',
         flexWrap: 'wrap',
+        padding: 0,
     },
 };
 
 const CardActions = ({ classes, className, children, ...rest }) => (
-    <MuiCardActions
-        disableActionSpacing
-        className={classnames(classes.cardActions, className)}
-        {...rest}
-    >
+    <div className={classnames(classes.cardActions, className)} {...rest}>
         {children}
-    </MuiCardActions>
+    </div>
 );
 
 CardActions.propTypes = {

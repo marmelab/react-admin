@@ -69,7 +69,7 @@ The `dataProvider` is also the ideal place to add custom HTTP headers, authentic
 
 ## `title`
 
-By default, the header of an admin app uses 'React Admin' as the main app title. It's probably the first thing you'll want to customize. The `title` prop serves exactly that purpose.
+On error pages, the header of an admin app uses 'React Admin' as the main app title. Use the `title` to customize it.
 
 ```jsx
 const App = () => (
@@ -81,17 +81,17 @@ const App = () => (
 
 ## `dashboard`
 
-By default, the homepage of an an admin app is the `list` of the first child `<Resource>`. But you can also specify a custom component instead. To fit in the general design, use Material UI's `<Card>` component, and react-admin's `<ViewTitle>` component:
+By default, the homepage of an admin app is the `list` of the first child `<Resource>`. But you can also specify a custom component instead. To fit in the general design, use Material UI's `<Card>` component, and react-admin's `<Title>` component to set the title in the AppBar:
 
 ```jsx
 // in src/Dashboard.js
 import React from 'react';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
-import { ViewTitle } from 'react-admin';
+import { Title } from 'react-admin';
 export default () => (
     <Card>
-        <ViewTitle title="Welcome to the administration" />
+        <Title title="Welcome to the administration" />
         <CardContent>Lorem ipsum sic dolor amet...</CardContent>
     </Card>
 );
@@ -110,26 +110,24 @@ const App = () => (
 
 ![Custom home page](./img/dashboard.png)
 
-**Tip**: Adding the `<ViewTitle>` component will also allow the header to be displayed in mobile resolutions.
-
 ## `catchAll`
 
 When users type URLs that don't match any of the children `<Resource>` components, they see a default "Not Found" page. 
 
 ![Not Found](./img/not-found.png)
 
-You can customize this page to use the component of your choice by passing it as the `catchAll` prop. To fit in the general design, use Material UI's `<Card>` component, and react-admin's `<ViewTitle>` component:
+You can customize this page to use the component of your choice by passing it as the `catchAll` prop. To fit in the general design, use Material UI's `<Card>` component, and react-admin's `<Title>` component:
 
 ```jsx
 // in src/NotFound.js
 import React from 'react';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
-import { ViewTitle } from 'react-admin';
+import { Title } from 'react-admin';
 
 export default () => (
     <Card>
-        <ViewTitle title="Not Found" />
+        <Title title="Not Found" />
         <CardContent>
             <h1>404: Page not found</h1>
         </CardContent>
@@ -423,11 +421,11 @@ to design the screen the way you want.
 import React from 'react';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
-import { ViewTitle } from 'react-admin';
+import { Title } from 'react-admin';
 
 const Foo = () => (
     <Card>
-        <ViewTitle title="My Page" />
+        <Title title="My Page" />
         <CardContent>
             ...
         </CardContent>
