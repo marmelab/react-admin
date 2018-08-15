@@ -10,11 +10,14 @@ const styles = theme => ({
         color: theme.palette.text.secondary,
         display: 'flex',
         alignItems: 'flex-start',
+        flexShrink: 0,
+        whiteSpace: 'normal',
+        height: "auto"
     },
     active: {
         color: theme.palette.text.primary,
     },
-    icon: { paddingRight: '1.2em' },
+    icon: { paddingRight: '1.2em', height: "24px" },
 });
 
 export class MenuItemLink extends Component {
