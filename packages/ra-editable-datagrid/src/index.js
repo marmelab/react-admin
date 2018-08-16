@@ -97,7 +97,8 @@ class EditableDatagrid extends Component {
                         rowToUpdate,
                         '',
                         false
-                    )
+                    ),
+                    false // prevent refresh, which would force a remount and loose selected cell
                 );
             } else {
                 dispatchCrudUpdate(

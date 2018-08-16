@@ -12,7 +12,7 @@ import { refreshView } from '../actions/uiActions';
 
 export function* handleUndoRace(undoableAction) {
     const {
-        payload: { action },
+        payload: { action, refresh },
     } = undoableAction;
     const { onSuccess, onFailure, ...metaWithoutSideEffects } = action.meta;
     yield put(startOptimisticMode());
@@ -38,7 +38,7 @@ export function* handleUndoRace(undoableAction) {
             ...action,
             meta: {
                 ...metaWithoutSideEffects,
-                onSuccess: { refresh: true },
+                onSuccess: { refresh },
                 onFailure: { ...onFailure, refresh: true },
             },
         });
