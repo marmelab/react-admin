@@ -1,0 +1,32 @@
+{
+    "name": "ra-editable-datagrid",
+    "version": "2.0.0",
+    "description": "A datagrid with editable cells, Excel-like",
+    "main": "./lib/index.js",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/marmelab/react-admin.git"
+    },
+    "bugs": {
+        "url": "https://github.com/marmelab/react-admin/issues"
+    },
+    "homepage": "https://github.com/marmelab/react-admin#readme",
+    "authors": [
+        "François Zaninotto"
+    ],
+    "keywords": [
+        "reactjs",
+        "react",
+        "react-admin",
+        "admin-on-rest",
+        "datagrid",
+        "excel",
+        "spreadsheet"
+    ],
+    "license": "MIT",
+    "dependencies": {
+        "react-data-grid": "^4.0.7"
+    },
+    "peerDependencies": {},
+    "devDependencies": {}
+}

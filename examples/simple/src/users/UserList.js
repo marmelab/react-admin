@@ -4,16 +4,14 @@ import SearchIcon from '@material-ui/icons/Search';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import React from 'react';
 import {
-    Datagrid,
-    EditButton,
     Filter,
     List,
+    Pagination,
     Responsive,
-    ShowButton,
     SimpleList,
-    TextField,
     TextInput,
 } from 'react-admin';
+import EditableDatagrid from 'ra-editable-datagrid';
 export const UserIcon = PeopleIcon;
 
 const UserFilter = ({ permissions, ...props }) => (
@@ -35,12 +33,23 @@ const UserFilter = ({ permissions, ...props }) => (
     </Filter>
 );
 
+const columns = [
+    { key: 'id', name: 'ID', resizable: true, locked: true, sortable: true },
+    {
+        key: 'name',
+        name: 'Name',
+        editable: true,
+        resizable: true,
+        sortable: true,
+    },
+];
 const UserList = ({ permissions, ...props }) => (
     <List
         {...props}
         filters={<UserFilter permissions={permissions} />}
-        filterDefaultValues={{ role: 'user' }}
         sort={{ field: 'name', order: 'ASC' }}
+        perPage={5}
+        pagination={<Responsive small={<Pagination />} medium={null} />}
     >
         <Responsive
             small={
@@ -51,15 +60,7 @@ const UserList = ({ permissions, ...props }) => (
                     }
                 />
             }
-            medium={
-                <Datagrid hover={false}>
-                    <TextField source="id" />
-                    <TextField source="name" />
-                    {permissions === 'admin' && <TextField source="role" />}
-                    <EditButton />
-                    <ShowButton />
-                </Datagrid>
-            }
+            medium={<EditableDatagrid columns={columns} pageSize={5} />}
         />
     </List>
 );

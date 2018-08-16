@@ -66,6 +66,14 @@ module.exports = {
                 'ra-input-rich-text',
                 'src'
             ),
+            'ra-editable-datagrid': path.join(
+                __dirname,
+                '..',
+                '..',
+                'packages',
+                'ra-editable-datagrid',
+                'src'
+            ),
         },
     },
     devServer: {
