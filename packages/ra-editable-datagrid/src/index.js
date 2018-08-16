@@ -112,8 +112,18 @@ class EditableDatagrid extends Component {
         }
     };
 
+    handleRowSelect = rows => {
+        this.props.onSelect(rows.map(row => row.id));
+    };
+
     render() {
-        const { classes, columns, currentSort, total } = this.props;
+        const {
+            classes,
+            columns,
+            currentSort,
+            hasBulkActions,
+            total,
+        } = this.props;
         if (typeof total == 'undefined') {
             return null;
         }
@@ -121,12 +131,14 @@ class EditableDatagrid extends Component {
             <div className={classes.main}>
                 <ReactDataGrid
                     className="toto"
+                    enableRowSelect={hasBulkActions}
                     enableCellSelect={true}
                     columns={columns}
                     rowGetter={this.rowGetter}
                     rowsCount={total}
                     sortColumn={currentSort.field}
                     sortDirection={currentSort.order}
+                    onRowSelect={this.handleRowSelect}
                     onGridRowsUpdated={this.handleGridRowsUpdated}
                     onGridSort={this.handleGridSort}
                 />
