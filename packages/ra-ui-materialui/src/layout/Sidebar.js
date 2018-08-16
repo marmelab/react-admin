@@ -79,7 +79,7 @@ class Sidebar extends PureComponent {
                     >
                         {React.cloneElement(children, {
                             onMenuClick: this.handleClose,
-                            open
+                            open,
                         })}
                     </Drawer>
                 }
@@ -99,7 +99,7 @@ class Sidebar extends PureComponent {
                         {React.cloneElement(children, {
                             dense: true,
                             onMenuClick: this.handleClose,
-                            open
+                            open,
                         })}
                     </Drawer>
                 }
@@ -118,7 +118,7 @@ class Sidebar extends PureComponent {
                     >
                         {React.cloneElement(children, {
                             dense: true,
-                            open
+                            open,
                         })}
                     </Drawer>
                 }
