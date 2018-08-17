@@ -3,11 +3,10 @@ import SearchIcon from '@material-ui/icons/Search';
 import Chip from '@material-ui/core/Chip';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import { withStyles } from '@material-ui/core/styles';
-import React, { Children, cloneElement } from 'react';
+import React, { Children, Fragment, cloneElement } from 'react';
 import {
     BooleanField,
-    BulkActions,
-    BulkDeleteAction,
+    BulkDeleteButton,
     ChipField,
     Datagrid,
     DateField,
@@ -25,7 +24,7 @@ import {
     translate,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
 
-import ResetViewsAction from './ResetViewsAction';
+import ResetViewsButton from './ResetViewsButton';
 export const PostIcon = BookIcon;
 
 const QuickFilter = translate(({ label, translate }) => (
@@ -74,10 +73,10 @@ const styles = theme => ({
 });
 
 const PostListBulkActions = props => (
-    <BulkActions {...props}>
-        <ResetViewsAction label="simple.action.resetViews" />
-        <BulkDeleteAction />
-    </BulkActions>
+    <Fragment>
+        <ResetViewsButton {...props} />
+        <BulkDeleteButton {...props} />
+    </Fragment>
 );
 
 const PostListActionToolbar = withStyles({
@@ -94,7 +93,7 @@ const PostListActionToolbar = withStyles({
 const PostList = withStyles(styles)(({ classes, ...props }) => (
     <List
         {...props}
-        bulkActions={<PostListBulkActions />}
+        bulkActionButtons={<PostListBulkActions />}
         filters={<PostFilter />}
         sort={{ field: 'published_at', order: 'DESC' }}
     >

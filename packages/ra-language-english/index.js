@@ -4,7 +4,7 @@ module.exports = {
             add_filter: 'Add filter',
             add: 'Add',
             back: 'Go Back',
-            bulk_actions: '%{smart_count} selected',
+            bulk_actions: '1 item selected |||| %{smart_count} items selected',
             cancel: 'Cancel',
             clear_input_value: 'Clear value',
             clone: 'Clone',

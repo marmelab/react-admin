@@ -1,26 +1,29 @@
-import { Component } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { startUndoable, crudUpdateMany } from 'ra-core';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import { startUndoable, crudUpdateMany, Button } from 'react-admin';
 
 class ResetViewsAction extends Component {
-    componentDidMount = () => {
+    handleClick = () => {
         const { basePath, startUndoable, resource, selectedIds } = this.props;
         startUndoable(
             crudUpdateMany(resource, selectedIds, { views: 0 }, basePath)
         );
-        this.props.onExit();
     };
 
     render() {
-        return null;
+        return (
+            <Button label="simple.action.resetViews" onClick={this.handleClick}>
+                <VisibilityOff />
+            </Button>
+        );
     }
 }
 
 ResetViewsAction.propTypes = {
     basePath: PropTypes.string,
     label: PropTypes.string,
-    onExit: PropTypes.func.isRequired,
     resource: PropTypes.string.isRequired,
     selectedIds: PropTypes.arrayOf(PropTypes.any).isRequired,
     startUndoable: PropTypes.func.isRequired,
