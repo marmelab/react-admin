@@ -7,7 +7,6 @@ import { withStyles } from '@material-ui/core/styles';
 import { ListController, getListControllerProps } from 'ra-core';
 
 import Title from '../layout/Title';
-import CardContentInner from '../layout/CardContentInner';
 import ListToolbar from './ListToolbar';
 import DefaultPagination from './Pagination';
 import DefaultBulkActionButtons from '../button/BulkDeleteButton';
@@ -17,6 +16,9 @@ import defaultTheme from '../defaultTheme';
 
 const styles = {
     root: {},
+    card: {
+        position: 'relative',
+    },
     actions: {
         zIndex: 2,
         display: 'flex',
@@ -114,23 +116,21 @@ export const ListView = ({
             {...sanitizeRestProps(rest)}
         >
             <Title title={title} defaultTitle={defaultTitle} />
-            <Card>
+            <Card className={classes.card}>
                 {bulkActionButtons &&
-                !bulkActions &&
-                rest.selectedIds.length > 0 ? (
-                    <BulkActionsToolbar {...controllerProps}>
-                        {bulkActionButtons}
-                    </BulkActionsToolbar>
-                ) : (
-                    (filters || actions) && (
-                        <ListToolbar
-                            filters={filters}
-                            {...controllerProps}
-                            actions={actions}
-                            bulkActions={bulkActions}
-                            exporter={exporter}
-                        />
-                    )
+                    !bulkActions && (
+                        <BulkActionsToolbar {...controllerProps}>
+                            {bulkActionButtons}
+                        </BulkActionsToolbar>
+                    )}
+                {(filters || actions) && (
+                    <ListToolbar
+                        filters={filters}
+                        {...controllerProps}
+                        actions={actions}
+                        bulkActions={bulkActions}
+                        exporter={exporter}
+                    />
                 )}
                 <div key={version}>
                     {children &&

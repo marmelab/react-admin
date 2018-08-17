@@ -33,6 +33,11 @@ const QuickFilter = translate(({ label, translate }) => (
 const PostFilter = props => (
     <Filter {...props}>
         <SearchInput source="q" alwaysOn />
+        <TextInput source="title2" />
+        <TextInput source="title3" />
+        <TextInput source="title4" />
+        <TextInput source="title5" />
+        <TextInput source="title6" />
         <TextInput
             source="title"
             defaultValue="Qui tempore rerum et voluptates"
