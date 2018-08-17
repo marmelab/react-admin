@@ -3,6 +3,9 @@ import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
+import Input from '@material-ui/core/Input';
+import MenuItem from '@material-ui/core/MenuItem';
+import Select from '@material-ui/core/Select';
 import Typography from '@material-ui/core/Typography';
 import Toolbar from '@material-ui/core/Toolbar';
 import { withStyles } from '@material-ui/core/styles';
@@ -15,7 +18,38 @@ import { translate, sanitizeListRestProps } from 'ra-core';
 import PaginationLimit from './PaginationLimit';
 import Responsive from '../layout/Responsive';
 
-const styles = {
+const styles = theme => ({
+    actions: {
+        flexShrink: 0,
+        color: theme.palette.text.secondary,
+        marginLeft: 20,
+    },
+    caption: {
+        flexShrink: 0,
+    },
+    spacer: {
+        flex: '1 1 100%',
+    },
+    /* Styles applied to the Select component `root` class. */
+    selectRoot: {
+        marginRight: 32,
+        marginLeft: 8,
+        color: theme.palette.text.secondary,
+    },
+    /* Styles applied to the Select component `select` class. */
+    select: {
+        paddingLeft: 8,
+        paddingRight: 16,
+    },
+    /* Styles applied to the Select component `icon` class. */
+    selectIcon: {
+        top: 1,
+    },
+    /* Styles applied to the Input component. */
+    input: {
+        fontSize: theme.typography.pxToRem(12),
+        flexShrink: 0,
+    },
     pageInfo: {
         padding: '1.2em',
     },
@@ -26,7 +60,7 @@ const styles = {
         justifyContent: 'center',
     },
     hellip: { padding: '1.2em' },
-};
+});
 
 export class Pagination extends Component {
     range() {
@@ -102,6 +136,10 @@ export class Pagination extends Component {
         this.props.setPage(page);
     };
 
+    handlePerPageChange = event => {
+        this.props.setPerPage(event.target.value);
+    };
+
     renderPageNums() {
         const { classes = {} } = this.props;
 
@@ -120,6 +158,7 @@ export class Pagination extends Component {
                         key={pageNum}
                         data-page={pageNum}
                         onClick={this.gotoPage}
+                        size="small"
                     >
                         {pageNum}
                     </Button>
@@ -135,6 +174,7 @@ export class Pagination extends Component {
             isLoading,
             page,
             perPage,
+            rowsPerPageOptions,
             setPage,
             setPerPage,
             total,
@@ -188,9 +228,44 @@ export class Pagination extends Component {
                         )}
                         {...sanitizeListRestProps(rest)}
                     >
+                        <div className={classes.spacer} />
+
                         <Typography
-                            variant="body1"
-                            className="displayed-records"
+                            variant="caption"
+                            className={classes.caption}
+                        >
+                            {translate('ra.navigation.page_rows_per_page')}
+                        </Typography>
+                        <Select
+                            classes={{
+                                root: classes.selectRoot,
+                                select: classes.select,
+                                icon: classes.selectIcon,
+                            }}
+                            input={
+                                <Input
+                                    className={classes.input}
+                                    disableUnderline
+                                />
+                            }
+                            value={perPage}
+                            onChange={this.handlePerPageChange}
+                        >
+                            {rowsPerPageOptions.map(rowsPerPageOption => (
+                                <MenuItem
+                                    key={rowsPerPageOption}
+                                    value={rowsPerPageOption}
+                                >
+                                    {rowsPerPageOption}
+                                </MenuItem>
+                            ))}
+                        </Select>
+                        <Typography
+                            variant="caption"
+                            className={classnames(
+                                classes.caption,
+                                'displayed-records'
+                            )}
                         >
                             {translate('ra.navigation.page_range_info', {
                                 offsetBegin,
@@ -198,31 +273,35 @@ export class Pagination extends Component {
                                 total,
                             })}
                         </Typography>
-                        {nbPages > 1 && [
-                            page > 1 && (
-                                <Button
-                                    color="primary"
-                                    key="prev"
-                                    onClick={this.prevPage}
-                                    className="previous-page"
-                                >
-                                    <ChevronLeft />
-                                    {translate('ra.navigation.prev')}
-                                </Button>
-                            ),
-                            this.renderPageNums(),
-                            page !== nbPages && (
-                                <Button
-                                    color="primary"
-                                    key="next"
-                                    onClick={this.nextPage}
-                                    className="next-page"
-                                >
-                                    {translate('ra.navigation.next')}
-                                    <ChevronRight />
-                                </Button>
-                            ),
-                        ]}
+                        <div className={classes.actions}>
+                            {nbPages > 1 && [
+                                page > 1 && (
+                                    <Button
+                                        color="primary"
+                                        key="prev"
+                                        onClick={this.prevPage}
+                                        className="previous-page"
+                                        size="small"
+                                    >
+                                        <ChevronLeft />
+                                        {translate('ra.navigation.prev')}
+                                    </Button>
+                                ),
+                                this.renderPageNums(),
+                                page !== nbPages && (
+                                    <Button
+                                        color="primary"
+                                        key="next"
+                                        onClick={this.nextPage}
+                                        className="next-page"
+                                        size="small"
+                                    >
+                                        {translate('ra.navigation.next')}
+                                        <ChevronRight />
+                                    </Button>
+                                ),
+                            ]}
+                        </div>
                     </Toolbar>
                 }
             />
@@ -237,10 +316,15 @@ Pagination.propTypes = {
     isLoading: PropTypes.bool,
     page: PropTypes.number,
     perPage: PropTypes.number,
+    rowsPerPageOptions: PropTypes.arrayOf(PropTypes.number),
     setPage: PropTypes.func,
     setPerPage: PropTypes.func,
     translate: PropTypes.func.isRequired,
     total: PropTypes.number,
+};
+
+Pagination.defaultProps = {
+    rowsPerPageOptions: [5, 10, 25],
 };
 
 const enhance = compose(
