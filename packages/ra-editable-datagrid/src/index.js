@@ -123,6 +123,7 @@ class EditableDatagrid extends Component {
             columns,
             currentSort,
             hasBulkActions,
+            minHeight,
             total,
         } = this.props;
         if (typeof total == 'undefined') {
@@ -142,15 +143,21 @@ class EditableDatagrid extends Component {
                     onRowSelect={this.handleRowSelect}
                     onGridRowsUpdated={this.handleGridRowsUpdated}
                     onGridSort={this.handleGridSort}
+                    minHeight={minHeight}
                 />
             </div>
         );
     }
 }
 
+EditableDatagrid.defaultProps = {
+    minHeight: 500,
+};
+
 const mapStateToProps = (state, props) => ({
     params: state.admin.resources[props.resource].list.params,
 });
+
 export default compose(
     withStyles(styles),
     connect(
