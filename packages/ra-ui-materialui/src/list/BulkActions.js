@@ -61,6 +61,7 @@ class BulkActions extends Component {
     };
 
     componentDidMount() {
+        // eslint-disable-next-line no-console
         console.warn(
             '<BulkActions> is deprecated. Use the bulkActionButtons prop instead.'
         );
