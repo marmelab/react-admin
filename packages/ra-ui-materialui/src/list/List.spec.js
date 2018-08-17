@@ -30,7 +30,7 @@ describe('<List />', () => {
         assert.equal(wrapper.find('WithStyles(Card)').length, 1);
     });
 
-    it('should render filters, children and pagination', () => {
+    it('should render a toolbar, children and pagination', () => {
         const Filters = () => <div>filters</div>;
         const Pagination = () => <div>pagination</div>;
         const Datagrid = () => <div>datagrid</div>;
@@ -43,8 +43,10 @@ describe('<List />', () => {
                 <Datagrid />
             </ListView>
         );
-        assert.equal(wrapper.find('Filters').length, 1);
-        assert.equal(wrapper.find('Pagination').length, 1);
-        assert.equal(wrapper.find('Datagrid').length, 1);
+        expect(
+            wrapper.find('translate(WithStyles(BulkActionsToolbar))')
+        ).toHaveLength(1);
+        expect(wrapper.find('Datagrid')).toHaveLength(1);
+        expect(wrapper.find('Pagination')).toHaveLength(1);
     });
 });
