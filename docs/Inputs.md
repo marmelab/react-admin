@@ -79,7 +79,7 @@ import { ArrayInput, SimpleFormIterator, DateInput, TextInput } from 'react-admi
 
 ![ArrayInput](./img/array-input.png)
 
- `<ArrayInput>` allows the addition of embedded arrays, like the `backlinks` field in the following `post` record:
+ `<ArrayInput>` allows editing of embedded arrays, like the `backlinks` field in the following `post` record:
 
 ```js
 {
