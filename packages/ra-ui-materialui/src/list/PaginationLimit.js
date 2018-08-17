@@ -16,15 +16,14 @@ const PaginationLimit = ({ ids, page, total, translate }) => {
             </CardContent>
         );
     }
-    if (ids && !ids.length) {
-        return (
-            <CardContent>
-                <Typography variant="body1">
-                    {translate('ra.navigation.no_more_results', { page })}
-                </Typography>
-            </CardContent>
-        );
-    }
+
+    return (
+        <CardContent>
+            <Typography variant="body1">
+                {translate('ra.navigation.no_more_results', { page })}
+            </Typography>
+        </CardContent>
+    );
 };
 
 PaginationLimit.propTypes = {
