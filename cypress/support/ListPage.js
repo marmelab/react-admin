@@ -10,7 +10,7 @@ export default url => ({
         hideFilterButton: source =>
             `.filter-field[data-source="${source}"] .hide-filter`,
         nextPage: '.next-page',
-        pageNumber: n => `.page-number[data-page='${n}']`,
+        pageNumber: n => `.page-number[data-page='${n - 1}']`,
         previousPage: '.previous-page',
         recordRows: '.datagrid-body tr',
         viewsColumn: '.datagrid-body tr td:nth-child(6)',
