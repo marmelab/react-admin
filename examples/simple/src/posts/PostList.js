@@ -1,7 +1,5 @@
 import BookIcon from '@material-ui/icons/Book';
-import SearchIcon from '@material-ui/icons/Search';
 import Chip from '@material-ui/core/Chip';
-import InputAdornment from '@material-ui/core/InputAdornment';
 import { withStyles } from '@material-ui/core/styles';
 import React, { Children, Fragment, cloneElement } from 'react';
 import {
@@ -16,6 +14,7 @@ import {
     NumberField,
     ReferenceArrayField,
     Responsive,
+    SearchInput,
     ShowButton,
     SimpleList,
     SingleFieldList,
@@ -33,18 +32,7 @@ const QuickFilter = translate(({ label, translate }) => (
 
 const PostFilter = props => (
     <Filter {...props}>
-        <TextInput
-            label="post.list.search"
-            source="q"
-            alwaysOn
-            InputProps={{
-                endAdornment: (
-                    <InputAdornment position="end">
-                        <SearchIcon color="disabled" />
-                    </InputAdornment>
-                ),
-            }}
-        />
+        <SearchInput source="q" alwaysOn />
         <TextInput
             source="title"
             defaultValue="Qui tempore rerum et voluptates"

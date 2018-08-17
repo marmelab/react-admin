@@ -17,6 +17,7 @@ module.exports = {
             remove_filter: 'Remove this filter',
             remove: 'Remove',
             save: 'Save',
+            search: 'Search',
             show: 'Show',
             sort: 'Sort',
             undo: 'Undo',
