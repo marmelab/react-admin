@@ -44,7 +44,6 @@ export class Pagination extends Component {
 
     render() {
         const {
-            ids,
             isLoading,
             page,
             perPage,
@@ -59,7 +58,7 @@ export class Pagination extends Component {
             page < 1 ||
             page > this.getNbPages()
         ) {
-            return <PaginationLimit total={total} page={page} ids={ids} />;
+            return <PaginationLimit total={total} page={page} />;
         }
 
         return (
