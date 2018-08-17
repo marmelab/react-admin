@@ -8,6 +8,7 @@ import { ListController, getListControllerProps } from 'ra-core';
 
 import Title from '../layout/Title';
 import CardContentInner from '../layout/CardContentInner';
+import ListToolbar from './ListToolbar';
 import DefaultPagination from './Pagination';
 import DefaultBulkActionButtons from '../button/BulkDeleteButton';
 import BulkActionsToolbar from './BulkActionsToolbar';
@@ -122,23 +123,13 @@ export const ListView = ({
                     </BulkActionsToolbar>
                 ) : (
                     (filters || actions) && (
-                        <CardContentInner className={classes.header}>
-                            <span>
-                                {filters &&
-                                    React.cloneElement(filters, {
-                                        ...controllerProps,
-                                        context: 'form',
-                                    })}
-                            </span>
-                            {actions &&
-                                React.cloneElement(actions, {
-                                    ...controllerProps,
-                                    className: classes.actions,
-                                    bulkActions,
-                                    exporter,
-                                    filters,
-                                })}
-                        </CardContentInner>
+                        <ListToolbar
+                            filters={filters}
+                            {...controllerProps}
+                            actions={actions}
+                            bulkActions={bulkActions}
+                            exporter={exporter}
+                        />
                     )
                 )}
                 <div key={version}>

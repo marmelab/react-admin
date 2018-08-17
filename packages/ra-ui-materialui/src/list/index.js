@@ -7,6 +7,7 @@ export FilterButton from './FilterButton';
 export FilterForm from './FilterForm';
 export List from './List';
 export ListActions from './ListActions';
+export ListToolbar from './ListToolbar';
 export Pagination from './Pagination';
 export PaginationLimit from './PaginationLimit';
 export SimpleList from './SimpleList';
