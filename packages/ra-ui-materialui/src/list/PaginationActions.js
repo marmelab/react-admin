@@ -17,7 +17,7 @@ const styles = theme => ({
     hellip: { padding: '1.2em' },
 });
 
-class PaginationActions extends Component {
+export class PaginationActions extends Component {
     /**
      * Warning: material-ui's page is 0-based
      */
@@ -123,7 +123,7 @@ class PaginationActions extends Component {
         const { classes = {}, page, translate } = this.props;
 
         const nbPages = this.getNbPages();
-        if (nbPages === 0) return null;
+        if (nbPages === 1) return <div className={classes.actions} />;
         return (
             <div className={classes.actions}>
                 {page > 0 && (
