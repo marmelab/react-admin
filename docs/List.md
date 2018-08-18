@@ -516,7 +516,24 @@ const filterSentToDataProvider = { ...filterDefaultValues, ...filterChosenByUser
 
 You can replace the default pagination element by your own, using the `pagination` prop. The pagination element receives the current page, the number of records per page, the total number of records, as well as a `setPage()` function that changes the page.
 
-So if you want to replace the default pagination by a "<previous - next>" pagination, create a pagination component like the following:
+For instance, you can modify the default pagination by adjusting the "rows per page" selector. 
+
+```jsx
+// in src/MyPagination.js
+import { Pagination } from 'react-admin';
+
+const PostPagination = props => <Pagination rowsPerPageOptions={[10, 25, 50, 100]} {...props} />
+
+export const PostList = (props) => (
+    <List {...props} pagination={<PostPagination />}>
+        ...
+    </List>
+);
+```
+
+**Tip**: Pass an empty array to `rowsPerPageOptions` to disable the rows per page selection.
+
+Alternately, if you want to replace the default pagination by a "<previous - next>" pagination, create a pagination component like the following:
 
 ```jsx
 import Button from '@material-ui/core/Button';

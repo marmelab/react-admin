@@ -6,7 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import compose from 'recompose/compose';
 import { translate } from 'ra-core';
 
-const PaginationLimit = ({ ids, page, total, translate }) => {
+const PaginationLimit = ({ page, total, translate }) => {
     if (total === 0) {
         return (
             <CardContent>
@@ -16,15 +16,14 @@ const PaginationLimit = ({ ids, page, total, translate }) => {
             </CardContent>
         );
     }
-    if (ids && !ids.length) {
-        return (
-            <CardContent>
-                <Typography variant="body1">
-                    {translate('ra.navigation.no_more_results', { page })}
-                </Typography>
-            </CardContent>
-        );
-    }
+
+    return (
+        <CardContent>
+            <Typography variant="body1">
+                {translate('ra.navigation.no_more_results', { page })}
+            </Typography>
+        </CardContent>
+    );
 };
 
 PaginationLimit.propTypes = {

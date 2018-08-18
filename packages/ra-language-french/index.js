@@ -84,6 +84,7 @@ module.exports = {
             page_out_from_end: 'Fin de la pagination',
             page_out_from_begin: 'La page doit être supérieure à 1',
             page_range_info: '%{offsetBegin}-%{offsetEnd} sur %{total}',
+            page_rows_per_page: 'Lignes par page :',
             next: 'Suivant',
             prev: 'Précédent',
         },
