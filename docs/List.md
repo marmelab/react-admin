@@ -224,10 +224,10 @@ import { BulkDeleteButton } from 'react-admin';
 import ResetViewsButton from './ResetViewsButton';
 
 const PostBulkActionButtons = props => (
-    <Fragment {...props}>
-        <ResetViewsButton label="Reset Views" />
+    <Fragment>
+        <ResetViewsButton label="Reset Views" {...props} />
         {/* Add the default bulk delete action */}
-        <BulkDeleteButton />
+        <BulkDeleteButton {...props} />
     </Fragment>
 );
 
