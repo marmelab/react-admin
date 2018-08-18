@@ -20,7 +20,7 @@ Here are all the props accepted by the `<List>` component:
 * [`title`](#page-title)
 * [`actions`](#actions)
 * [`exporter`](#exporter)
-* [`bulkActions`](#bulk-actions)
+* [`bulkActionButtons`](#bulk-action-buttons)
 * [`filters`](#filters) (a React element used to display the filter form)
 * [`perPage`](#records-per-page)
 * [`sort`](#default-sort-field)
@@ -213,134 +213,138 @@ Under the hood, `fetchRelatedRecords()` uses react-admin's sagas, which trigger 
 
 **Tip**: For complex (or large) exports, fetching all the related records and assembling them client-side can be slow. In that case, create the CSV on the server side, and replace the `<ExportButton>` component by a custom one, fetching the CSV route.
 
-### Bulk Actions
+### Bulk Action Buttons
 
-Bulk actions are actions that affect several records at once, like mass deletion for instance. In the `<Datagrid>` component, bulk actions are triggered by ticking the checkboxes in the first column of the table, then choosing an action from the bulk action menu. By default, all list views have a single bulk action, the bulk delete action. You can add other bulk actions by passing a custom element as the `bulkActions` prop of the `<List>` component:
+Bulk action buttons are buttons that affect several records at once, like mass deletion for instance. In the `<Datagrid>` component, the bulk actions toolbar appears when a user ticks the checkboxes in the first column of the table. The user can then choose a button from the bulk actions toolbar. By default, all list views have a single bulk action button, the bulk delete button. You can add other bulk action buttons by passing a custom element as the `bulkActionButtons` prop of the `<List>` component:
 
 ```jsx
+import React, { Fragment } from 'react';
 import Button from '@material-ui/core/Button';
-import { BulkActions, BulkDeleteAction } from 'react-admin';
-import ResetViewsAction from './ResetViewsAction';
+import { BulkDeleteButton } from 'react-admin';
+import ResetViewsButton from './ResetViewsButton';
 
-const PostBulkActions = props => (
-    <BulkActions {...props}>
-        <ResetViewsAction label="Reset Views" />
+const PostBulkActionButtons = props => (
+    <Fragment {...props}>
+        <ResetViewsButton label="Reset Views" />
         {/* Add the default bulk delete action */}
-        <BulkDeleteAction />
-    </BulkActions>
+        <BulkDeleteButton />
+    </Fragment>
 );
 
 export const PostList = (props) => (
-    <List {...props} bulkActions={<PostBulkActions />}>
+    <List {...props} bulkActionButtons={<PostBulkActionButtons />}>
         ...
     </List>
 );
 ```
 
-**Tip**: You can also disable bulk actions altogether by passing `false` to the `bulkActions` prop. When using a `Datagrid` inside a `List` with disabled bulk actions, the checkboxes column won't be added.
+![Bulk Action Buttons](./img/bulk-actions-toolbar.gif)
 
-React-admin uses the `label` prop of the bulk action components to display the bulk action menu items. 
+**Tip**: You can also disable bulk actions altogether by passing `false` to the `bulkActionButtons` prop. When using a `Datagrid` inside a `List` with disabled bulk actions, the checkboxes column won't be added.
 
-Bulk action components are regular React component that gets mounted when the related menu item is clicked. The component receives several props allowing it to perform its job:
+Bulk action button components receive several props allowing them to perform their job:
 
 * `resource`: the currently displayed resource (eg `posts`, `comments`, etc.)
 * `basePath`: the current router base path for the resource (eg `/posts`, `/comments`, etc.)
 * `filterValues`: the filter values. This can be useful if you want to apply your action on all items matching the filter.
 * `selectedIds`: the identifiers of the currently selected items.
-* `onExit`: an event handler you should call when the bulk action ends.
 
 Here is an example leveraging the `UPDATE_MANY` crud action, which will set the `views` property of all posts to `0`:
 
 ```jsx
-// in ./ResetViewsAction.js
-import { Component } from 'react';
+// in ./ResetViewsButton.js
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { crudUpdateMany } from 'react-admin';
+import { Button, crudUpdateMany } from 'react-admin';
 
-class ResetViewsAction extends Component {
-    componentDidMount = () => {
-        const {
-            resource,
-            basePath,
-            selectedIds,
-            onExit,
-            crudUpdateMany,
-        } = this.props;
-
+class ResetViewsButton extends Component {
+    handleClick = () => {
+        const { basePath, crudUpdateMany, resource, selectedIds } = this.props;
         crudUpdateMany(resource, selectedIds, { views: 0 }, basePath);
-        onExit();
     };
 
     render() {
-        return null;
+        return (
+            <Button label="Reset Views" onClick={this.handleClick} />
+        );
     }
 }
 
-export default connect(undefined, { crudUpdateMany })(ResetViewsAction);
+export default connect(undefined, { crudUpdateMany })(ResetViewsButton);
 ```
 
-This component renders nothing - it just dispatches an action when mounted. Once finished, it also calls the `onExit()` method passed by the main bulk actions component, which has the effect of unmounting the `ResetViewsAction` component.
-
-But most of the time, bulk actions are mini-applications with a standalone user interface (in a Dialog), so the `render()` method is useful. Here is the same `ResetViewsAction` implemented behind a confirmation dialog:
+But most of the time, bulk actions are mini-applications with a standalone user interface (in a Dialog). Here is the same `ResetViewsAction` implemented behind a confirmation dialog:
 
 ```jsx
-// in ./ResetViewsAction.js
-import React, { Component } from 'react';
+// in ./ResetViewsButton.js
+import React, { Fragment, Component } from 'react';
 import { connect } from 'react-redux';
-import { Confirm } from 'react-admin';
-import { crudUpdateMany } from 'ra-core';
+import { Button, Confirm, crudUpdateMany } from 'react-admin';
 
-class ResetViewsAction extends Component {
+class ResetViewsButton extends Component {
+    state = {
+        isOpen: false,
+    }
+
+    handleClick = () => {
+        this.setState({ isOpen: true });
+    }
+
     handleDialogClose = () => {
-        this.props.onExit();
+        this.setState({ isOpen: false });
     };
 
     handleConfirm = () => {
         const { basePath, crudUpdateMany, resource, selectedIds } = this.props;
         crudUpdateMany(resource, selectedIds, { views: 0 }, basePath);
-        this.props.onExit();
+        this.setState({ isOpen: true });
     };
 
     render() {
         return (
-            <Confirm
-                isOpen={true}
-                title="Update View Count"
-                content="Are you sure you want to reset the views for these items?"
-                onConfirm={this.handleConfirm}
-                onClose={this.handleDialogClose}
-            />
+            <Fragment>
+                <Button label="Reset Views" onClick={this.handleClick} />
+                <Confirm
+                    isOpen={this.state.isOpen}
+                    title="Update View Count"
+                    content="Are you sure you want to reset the views for these items?"
+                    onConfirm={this.handleConfirm}
+                    onClose={this.handleDialogClose}
+                />
+            </Fragment>
         );
     }
 }
 
-export default connect(undefined, { crudUpdateMany })(ResetViewsAction);
+export default connect(undefined, { crudUpdateMany })(ResetViewsButton);
 ```
 
 **Tip**: `<Confirm>` leverages material-ui's `<Dialog>` component to implement a confirmation popup. Feel free to use it in your admins!
 
-**Tip**: React-admin doesn't use the `<Confirm>` component internally, because deletes and updates are applied locally immediately, then dispatched to the server after a few seconds, unless the user chooses to undo the modification. That's what we call optimistic rendering. You can do the same for the `ResetViewsAction` by wrapping the `crudUpdateMany()` action creator inside a `startUndoable()` action creator, as follows:
+**Tip**: React-admin doesn't use the `<Confirm>` component internally, because deletes and updates are applied locally immediately, then dispatched to the server after a few seconds, unless the user chooses to undo the modification. That's what we call optimistic rendering. You can do the same for the `ResetViewsButton` by wrapping the `crudUpdateMany()` action creator inside a `startUndoable()` action creator, as follows:
 
 ```jsx
-import { Component } from 'react';
+// in ./ResetViewsButton.js
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { startUndoable, crudUpdateMany } from 'ra-core';
+import { Button, crudUpdateMany, startUndoable } from 'react-admin';
 
-class ResetViewsAction extends Component {
-    componentDidMount = () => {
-        const { basePath, startUndoable, resource, selectedIds } = this.props;
+class ResetViewsButton extends Component {
+    handleClick = () => {
+        const {  basePath, resource, selectedIds, startUndoable } = this.props;
         startUndoable(
             crudUpdateMany(resource, selectedIds, { views: 0 }, basePath)
         );
-        this.props.onExit();
     };
 
     render() {
-        return null;
+        return (
+            <Button label="Reset Views" onClick={this.handleClick} />
+        );
     }
 }
 
-export default connect(undefined, { startUndoable })(ResetViewsAction);
+export default connect(undefined, { startUndoable })(ResetViewsButton);
 ```
 
 Note that the `crudUpdateMany` action creator is *not* present in the `mapDispatchToProps` argument of `connect()` in that case. Only `startUndoable` needs to be dispatched in this case, using the result of the `crudUpdateMany()` call as parameter.

@@ -60,12 +60,16 @@ export class TextInput extends Component {
                 margin="normal"
                 type={type}
                 label={
-                    <FieldTitle
-                        label={label}
-                        source={source}
-                        resource={resource}
-                        isRequired={isRequired}
-                    />
+                    label === false ? (
+                        label
+                    ) : (
+                        <FieldTitle
+                            label={label}
+                            source={source}
+                            resource={resource}
+                            isRequired={isRequired}
+                        />
+                    )
                 }
                 error={!!(touched && error)}
                 helperText={touched && error}
@@ -85,7 +89,7 @@ TextInput.propTypes = {
     className: PropTypes.string,
     input: PropTypes.object,
     isRequired: PropTypes.bool,
-    label: PropTypes.string,
+    label: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
     meta: PropTypes.object,
     name: PropTypes.string,
     onBlur: PropTypes.func,

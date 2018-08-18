@@ -7,14 +7,18 @@ import { withStyles } from '@material-ui/core/styles';
 import { ListController, getListControllerProps } from 'ra-core';
 
 import Title from '../layout/Title';
-import CardContentInner from '../layout/CardContentInner';
+import ListToolbar from './ListToolbar';
 import DefaultPagination from './Pagination';
-import DefaultBulkActions from './BulkActions';
+import DefaultBulkActionButtons from '../button/BulkDeleteButton';
+import BulkActionsToolbar from './BulkActionsToolbar';
 import DefaultActions from './ListActions';
 import defaultTheme from '../defaultTheme';
 
 const styles = {
     root: {},
+    card: {
+        position: 'relative',
+    },
     actions: {
         zIndex: 2,
         display: 'flex',
@@ -92,7 +96,8 @@ export const ListView = ({
     // component props
     actions = <DefaultActions />,
     filters,
-    bulkActions = <DefaultBulkActions />,
+    bulkActions, // deprecated
+    bulkActionButtons = <DefaultBulkActionButtons />,
     pagination = <DefaultPagination />,
     // overridable by user
     children,
@@ -111,31 +116,31 @@ export const ListView = ({
             {...sanitizeRestProps(rest)}
         >
             <Title title={title} defaultTitle={defaultTitle} />
-            <Card>
+            <Card className={classes.card}>
+                {bulkActions !== false &&
+                    bulkActionButtons !== false &&
+                    bulkActionButtons &&
+                    !bulkActions && (
+                        <BulkActionsToolbar {...controllerProps}>
+                            {bulkActionButtons}
+                        </BulkActionsToolbar>
+                    )}
                 {(filters || actions) && (
-                    <CardContentInner className={classes.header}>
-                        <span>
-                            {filters &&
-                                React.cloneElement(filters, {
-                                    ...controllerProps,
-                                    context: 'form',
-                                })}
-                        </span>
-                        {actions &&
-                            React.cloneElement(actions, {
-                                ...controllerProps,
-                                className: classes.actions,
-                                bulkActions,
-                                exporter,
-                                filters,
-                            })}
-                    </CardContentInner>
+                    <ListToolbar
+                        filters={filters}
+                        {...controllerProps}
+                        actions={actions}
+                        bulkActions={bulkActions}
+                        exporter={exporter}
+                    />
                 )}
                 <div key={version}>
                     {children &&
                         React.cloneElement(children, {
                             ...controllerProps,
-                            hasBulkActions: !!bulkActions,
+                            hasBulkActions:
+                                bulkActions !== false &&
+                                bulkActionButtons !== false,
                         })}
                     {pagination &&
                         React.cloneElement(pagination, controllerProps)}
@@ -149,6 +154,7 @@ ListView.propTypes = {
     actions: PropTypes.element,
     basePath: PropTypes.string,
     bulkActions: PropTypes.oneOfType([PropTypes.bool, PropTypes.element]),
+    bulkActionButtons: PropTypes.oneOfType([PropTypes.bool, PropTypes.element]),
     children: PropTypes.element,
     className: PropTypes.string,
     classes: PropTypes.object,

@@ -14,6 +14,7 @@ export RadioButtonGroupInput from './RadioButtonGroupInput';
 export ReferenceArrayInput from './ReferenceArrayInput';
 export ReferenceInput from './ReferenceInput';
 export ResettableTextField from './ResettableTextField';
+export SearchInput from './SearchInput';
 export SelectArrayInput from './SelectArrayInput';
 export SelectInput from './SelectInput';
 export TextInput from './TextInput';

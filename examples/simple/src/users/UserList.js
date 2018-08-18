@@ -9,6 +9,7 @@ import {
     Filter,
     List,
     Responsive,
+    SearchInput,
     ShowButton,
     SimpleList,
     TextField,
@@ -18,18 +19,7 @@ export const UserIcon = PeopleIcon;
 
 const UserFilter = ({ permissions, ...props }) => (
     <Filter {...props}>
-        <TextInput
-            label="user.list.search"
-            source="q"
-            alwaysOn
-            InputProps={{
-                endAdornment: (
-                    <InputAdornment position="end">
-                        <SearchIcon color="disabled" />
-                    </InputAdornment>
-                ),
-            }}
-        />
+        <SearchInput source="q" alwaysOn />
         <TextInput source="name" />
         {permissions === 'admin' ? <TextInput source="role" /> : null}
     </Filter>
