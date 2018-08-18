@@ -97,31 +97,31 @@ describe('List Page', () => {
 
     describe('Bulk Actions', () => {
         it('should allow to select all items on the current page', () => {
-            cy.contains('1-10 of 13');
+            cy.contains('1-10 of 13'); // wait for data
             ListPagePosts.toggleSelectAll();
+            cy.get(ListPagePosts.elements.bulkActionsToolbar).should('exist');
+            cy.contains('10 items selected');
             cy.get(ListPagePosts.elements.selectedItem).should(els =>
                 expect(els).to.have.length(10)
             );
         });
 
         it('should allow to unselect all items on the current page', () => {
-            cy.contains('1-10 of 13');
+            cy.contains('1-10 of 13'); // wait for data
             ListPagePosts.toggleSelectAll();
-            cy.get(ListPagePosts.elements.selectedItem).should(els =>
-                expect(els).to.have.length(10)
+            cy.get(ListPagePosts.elements.bulkActionsToolbar).should('exist');
+            ListPagePosts.toggleSelectAll();
+            cy.get(ListPagePosts.elements.bulkActionsToolbar).should(
+                'not.exist'
             );
-            ListPagePosts.toggleSelectAll();
             cy.get(ListPagePosts.elements.selectedItem).should(els =>
                 expect(els).to.have.length(0)
             );
         });
 
         it('should allow to trigger a custom bulk action on selected items', () => {
-            cy.contains('1-10 of 13');
+            cy.contains('1-10 of 13'); // wait for data
             ListPagePosts.toggleSelectAll();
-            cy.get(ListPagePosts.elements.selectedItem).should(els =>
-                expect(els).to.have.length(10)
-            );
             ListPagePosts.applyUpdateBulkAction();
             cy.get(ListPagePosts.elements.viewsColumn).should(els =>
                 expect(els).to.have.text('0000000000')
@@ -129,14 +129,11 @@ describe('List Page', () => {
         });
 
         it('should have unselected all items after bulk action', () => {
-            cy.contains('1-10 of 13');
+            cy.contains('1-10 of 13'); // wait for data
             ListPagePosts.toggleSelectAll();
-            cy.get(ListPagePosts.elements.selectedItem).should(els =>
-                expect(els).to.have.length(10)
-            );
             ListPagePosts.applyUpdateBulkAction();
-            cy.get(ListPagePosts.elements.viewsColumn).should(els =>
-                expect(els).to.have.text('0000000000')
+            cy.get(ListPagePosts.elements.bulkActionsToolbar).should(
+                'not.exist'
             );
             cy.get(ListPagePosts.elements.selectedItem).should(els =>
                 expect(els).to.have.length(0)
@@ -144,7 +141,7 @@ describe('List Page', () => {
         });
 
         it('should allow to select multiple items on the current page', () => {
-            cy.contains('1-10 of 13');
+            cy.contains('1-10 of 13'); // wait for data
             ListPagePosts.toggleSelectSomeItems(3);
             cy.get(ListPagePosts.elements.selectedItem).should(els =>
                 expect(els).to.have.length(3)
@@ -152,7 +149,7 @@ describe('List Page', () => {
         });
 
         it('should allow to trigger the delete bulk action on selected items', () => {
-            cy.contains('1-10 of 13');
+            cy.contains('1-10 of 13'); // wait for data
             ListPagePosts.toggleSelectSomeItems(3);
             ListPagePosts.applyDeleteBulkAction();
             cy.contains('1-10 of 10');

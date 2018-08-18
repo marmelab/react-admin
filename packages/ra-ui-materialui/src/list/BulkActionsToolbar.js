@@ -59,7 +59,11 @@ const BulkActionsToolbar = ({
     ...rest
 }) =>
     selectedIds.length > 0 ? (
-        <Toolbar className={classes.toolbar} {...sanitizeListRestProps(rest)}>
+        <Toolbar
+            data-test="bulk-actions-toolbar"
+            className={classes.toolbar}
+            {...sanitizeListRestProps(rest)}
+        >
             <div className={classes.title}>
                 <Typography color="inherit" variant="subheading">
                     {translate(label, {
