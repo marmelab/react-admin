@@ -117,7 +117,9 @@ export const ListView = ({
         >
             <Title title={title} defaultTitle={defaultTitle} />
             <Card className={classes.card}>
-                {bulkActionButtons &&
+                {bulkActions !== false &&
+                    bulkActionButtons !== false &&
+                    bulkActionButtons &&
                     !bulkActions && (
                         <BulkActionsToolbar {...controllerProps}>
                             {bulkActionButtons}
@@ -136,9 +138,9 @@ export const ListView = ({
                     {children &&
                         React.cloneElement(children, {
                             ...controllerProps,
-                            hasBulkActions: !!(
-                                bulkActions || bulkActionButtons
-                            ),
+                            hasBulkActions:
+                                bulkActions !== false &&
+                                bulkActionButtons !== false,
                         })}
                     {pagination &&
                         React.cloneElement(pagination, controllerProps)}
