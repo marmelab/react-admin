@@ -20,7 +20,7 @@ Here are all the props accepted by the `<List>` component:
 * [`title`](#page-title)
 * [`actions`](#actions)
 * [`exporter`](#exporter)
-* [`bulkActionButtons`](#bulk-actions-buttons)
+* [`bulkActionButtons`](#bulk-action-buttons)
 * [`filters`](#filters) (a React element used to display the filter form)
 * [`perPage`](#records-per-page)
 * [`sort`](#default-sort-field)
@@ -215,7 +215,7 @@ Under the hood, `fetchRelatedRecords()` uses react-admin's sagas, which trigger 
 
 ### Bulk Action Buttons
 
-Bulk action buttons are buttons that affect several records at once, like mass deletion for instance. In the `<Datagrid>` component, the bulk actions toolbar appears when a user ticks the checkboxes in the first column of the table. The user can then choose a button from the bulk actions toolbar. By default, all list views have a single bulk action button, the bulk delete button. You can add other bulk action buttons by passing a custom element as the `bulkActionButtonss` prop of the `<List>` component:
+Bulk action buttons are buttons that affect several records at once, like mass deletion for instance. In the `<Datagrid>` component, the bulk actions toolbar appears when a user ticks the checkboxes in the first column of the table. The user can then choose a button from the bulk actions toolbar. By default, all list views have a single bulk action button, the bulk delete button. You can add other bulk action buttons by passing a custom element as the `bulkActionButtons` prop of the `<List>` component:
 
 ```jsx
 import React, { Fragment } from 'react';
@@ -232,11 +232,13 @@ const PostBulkActionButtons = props => (
 );
 
 export const PostList = (props) => (
-    <List {...props} bulkActionButtonss={<PostBulkActionButtons />}>
+    <List {...props} bulkActionButtons={<PostBulkActionButtons />}>
         ...
     </List>
 );
 ```
+
+![Bulk Action Buttons](./img/bulk-actions-toolbar.gif)
 
 **Tip**: You can also disable bulk actions altogether by passing `false` to the `bulkActionButtons` prop. When using a `Datagrid` inside a `List` with disabled bulk actions, the checkboxes column won't be added.
 
