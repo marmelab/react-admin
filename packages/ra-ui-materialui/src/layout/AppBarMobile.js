@@ -36,11 +36,20 @@ const styles = {
 /**
  * @deprecated
  */
-const AppBarMobile = ({ classes, className, title, toggleSidebar, ...rest }) =>
-    // eslint-disable-next-line no-console
-    console.warn(
-        '<AppBarMobile> is deprecated, please use <AppBar>, which is now responsive'
-    ) || (
+const AppBarMobile = ({
+    classes,
+    className,
+    title,
+    toggleSidebar,
+    ...rest
+}) => {
+    if (process.env.NODE_ENV !== 'production') {
+        // eslint-disable-next-line no-console
+        console.warn(
+            '<AppBarMobile> is deprecated, please use <AppBar>, which is now responsive'
+        );
+    }
+    return (
         <MuiAppBar
             className={className}
             color="secondary"
@@ -67,6 +76,7 @@ const AppBarMobile = ({ classes, className, title, toggleSidebar, ...rest }) =>
             </Toolbar>
         </MuiAppBar>
     );
+};
 
 AppBarMobile.propTypes = {
     classes: PropTypes.object,

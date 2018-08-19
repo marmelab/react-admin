@@ -6,10 +6,12 @@ import { crudDeleteMany, startUndoable, translate } from 'ra-core';
 
 class BulkDeleteAction extends Component {
     componentDidMount = () => {
-        // eslint-disable-next-line no-console
-        console.warn(
-            '<BulkDeleteAction> is deprecated. Use the <BulkDeleteButton> component instead, via the bulkActionButton props.'
-        );
+        if (process.env.NODE_ENV !== 'production') {
+            // eslint-disable-next-line no-console
+            console.warn(
+                '<BulkDeleteAction> is deprecated. Use the <BulkDeleteButton> component instead, via the bulkActionButton props.'
+            );
+        }
         const {
             basePath,
             dispatchCrudDeleteMany,
