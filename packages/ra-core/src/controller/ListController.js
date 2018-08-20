@@ -99,7 +99,10 @@ export class ListController extends Component {
             nextProps.query.sort !== this.props.query.sort ||
             nextProps.query.order !== this.props.query.order ||
             nextProps.query.page !== this.props.query.page ||
-            nextProps.query.filter !== this.props.query.filter
+            !isEqual(nextProps.query.filter, this.props.query.filter) ||
+            !isEqual(nextProps.filter, this.props.filter) ||
+            !isEqual(nextProps.sort, this.props.sort) ||
+            !isEqual(nextProps.perPage, this.props.perPage)
         ) {
             this.updateData(
                 Object.keys(nextProps.query).length > 0
