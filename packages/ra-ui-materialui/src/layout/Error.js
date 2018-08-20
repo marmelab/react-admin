@@ -67,7 +67,7 @@ const Error = ({
                 {translate('ra.page.error')}
             </h1>
             <div>{translate('ra.message.error')}</div>
-            {process.env.NODE_ENV === 'development' && (
+            {process.env.NODE_ENV !== 'production' && (
                 <ExpansionPanel className={classes.panel}>
                     <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
                         {translate('ra.message.details')}
