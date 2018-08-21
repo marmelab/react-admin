@@ -23,6 +23,7 @@ const CoreAdmin = ({
     customReducers = {},
     customSagas = [],
     customRoutes = [],
+    customMiddlewares = [],
     dashboard,
     history,
     menu, // deprecated, use a custom layout instead
@@ -56,7 +57,7 @@ const CoreAdmin = ({
         resettableAppReducer,
         initialState,
         compose(
-            applyMiddleware(sagaMiddleware, routerMiddleware(routerHistory)),
+            applyMiddleware(sagaMiddleware, routerMiddleware(routerHistory), ...customMiddlewares),
             typeof window !== 'undefined' && window.devToolsExtension
                 ? window.devToolsExtension()
                 : f => f
