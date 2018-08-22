@@ -10,16 +10,6 @@ npm install --save ra-tree-ui-materialui
 yarn add ra-tree-ui-materialui
 ```
 
-## Dependencies
-
-If you want to enable [edition](#editable) (with drag and drop), ensure you also installed the [react-dnd](https://github.com/react-dnd/react-dnd) and the `react-dnd-html5-backend` packages
-
-```sh
-npm install --save react-dnd react-dnd-html5-backend
-# or
-yarn add react-dnd react-dnd-html5-backend
-```
-
 ## Usage
 
 With a categories ressource having this structure where a category may have a parent category referenced by the `parent_id` field:

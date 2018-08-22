@@ -42,7 +42,7 @@
         "ra-tree-core": "^1.1.2",
         "ra-ui-materialui": "^2.0.0",
         "react-dnd": "^5.0.0",
-        "react-dnd-html5-backend": "^5.0.1"
+        "react-dnd-touch-backend": "^0.5.1"
     },
     "devDependencies": {
         "babel-cli": "~6.26.0",
