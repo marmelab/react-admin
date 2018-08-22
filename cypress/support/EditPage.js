@@ -5,6 +5,7 @@ export default url => ({
         inputs: `.ra-input`,
         tabs: `.form-tab`,
         submitButton: ".edit-page button[type='submit']",
+        cloneButton: '.button-clone',
         tab: index => `.form-tab:nth-of-type(${index})`,
         title: '.title',
     },
@@ -34,5 +35,9 @@ export default url => ({
 
     submit() {
         cy.get(this.elements.submitButton).click();
+    },
+
+    clone() {
+        cy.get(this.elements.cloneButton).click();
     },
 });
