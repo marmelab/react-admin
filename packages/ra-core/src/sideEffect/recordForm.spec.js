@@ -12,8 +12,8 @@ describe('recordForm saga', () => {
             payload: { pathname: '/comments/create' },
         });
 
-        expect(saga.next().value).toEqual(put(destroy(REDUX_FORM_NAME)));
         expect(saga.next().value).toEqual(put(resetForm()));
+        expect(saga.next().value).toEqual(put(destroy(REDUX_FORM_NAME)));
     });
 
     it('does not reset the form when the LOCATION_CHANGE action state has skipFormReset set to true', () => {

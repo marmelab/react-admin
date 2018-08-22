@@ -81,4 +81,22 @@ describe('Edit Page', () => {
             expect(el).to.have.value(currentDateString)
         );
     });
+
+    it('should intialize the form correctly when cloning from edit', () => {
+        EditPostPage.navigate();
+        cy.get(EditPostPage.elements.input('title')).should(el =>
+            expect(el).to.have.value('Sed quo et et fugiat modi')
+        );
+
+        EditPostPage.clone();
+        cy.url().then(url => expect(url).to.contain('/#/posts/create'));
+        cy.get(CreatePostPage.elements.input('title')).should(el =>
+            expect(el).to.have.value('Sed quo et et fugiat modi')
+        );
+
+        const date = new Date('2012-08-05').toISOString().slice(0, 10);
+        cy.get(CreatePostPage.elements.input('published_at')).should(el =>
+            expect(el).to.have.value(date)
+        );
+    });
 });
