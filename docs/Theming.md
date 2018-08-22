@@ -666,7 +666,7 @@ const MyError = ({
         <Title title="Error" />
         <h1><ErrorIcon /> Something Went Wrong </h1>
         <div>A client error occurred and your request couldn't be completed.</div>
-        {process.env.NODE_ENV === 'development' && (
+        {process.env.NODE_ENV !== 'production' && (
             <details>
                 <h2>{translate(error.toString())}</h2>
                 {errorInfo.componentStack}

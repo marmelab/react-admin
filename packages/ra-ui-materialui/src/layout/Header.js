@@ -22,16 +22,20 @@ export const Header = ({
     actions,
     actionProps,
     ...rest
-}) =>
-    // eslint-disable-next-line no-console
-    console.warn(
-        '<Header> is deprecated, please use <Title> directly instead'
-    ) || (
+}) => {
+    if (process.env.NODE_ENV !== 'production') {
+        // eslint-disable-next-line no-console
+        console.warn(
+            '<Header> is deprecated, please use <Title> directly instead'
+        );
+    }
+    return (
         <div className={classnames(classes.root, className)} {...rest}>
             <ViewTitle title={title} />
             {actions && React.cloneElement(actions, actionProps)}
         </div>
     );
+};
 
 Header.propTypes = {
     classes: PropTypes.object,
