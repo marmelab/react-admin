@@ -325,7 +325,6 @@ export class AutocompleteInput extends React.Component {
                 open
                 anchorEl={this.inputEl}
                 placement="bottom-start"
-                popperOptions={{ positionFixed: true }}
             >
                 <Paper square {...containerProps}>
                     {children}
