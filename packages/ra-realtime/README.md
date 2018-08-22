@@ -74,3 +74,26 @@ const observeRequest = dataProvider => (type, resource, params) => {
 
 export default dataProvider => realtimeSaga(observeRequest(dataProvider));
 ```
+
+This saga factory can be used like this:
+
+```jsx
+import React from "react";
+import { Admin, Resource } from "react-admin";
+
+import createRealtimeSaga from "./createRealtimeSaga";
+import dataProvider from "./dataProvider";
+import posts from "./posts";
+
+const realTimeSaga = createRealtimeSaga(dataProvider);
+
+render(
+    <Admin
+        dataProvider={dataProvider}
+        customSagas={[realTimeSaga]}
+    >
+        <Resource name="posts" {...posts} />
+    </Admin>,
+    document.getElementById("root")
+);
+```
