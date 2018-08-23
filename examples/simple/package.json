@@ -30,6 +30,7 @@
         "react": "~16.3.1",
         "react-admin": "^2.0.0",
         "react-dom": "~16.3.1",
+        "react-headroom": "^2.2.2",
         "serve": "~9.1.0",
         "style-loader": "~0.20.3",
         "wait-on": "^2.1.0",

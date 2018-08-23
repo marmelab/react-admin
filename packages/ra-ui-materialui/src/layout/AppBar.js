@@ -1,4 +1,4 @@
-import React, { cloneElement } from 'react';
+import React, { createElement, cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
@@ -61,7 +61,7 @@ const styles = theme => ({
     },
 });
 
-const AppBar = ({
+const MuiAppBarChildren = ({
     classes,
     className,
     logout,
@@ -73,7 +73,7 @@ const AppBar = ({
     <MuiAppBar
         className={classNames(classes.appBar, className)}
         color="secondary"
-        position="absolute"
+        position="static"
         {...rest}
     >
         <Toolbar disableGutters variant="dense" className={classes.toolbar}>
@@ -96,7 +96,7 @@ const AppBar = ({
                 color="inherit"
                 className={classes.title}
             >
-                {typeof title === 'string' ? title : React.cloneElement(title)}
+                {typeof title === 'string' ? title : cloneElement(title)}
             </Typography>
             {logout &&
                 cloneElement(logout, {
@@ -107,7 +107,7 @@ const AppBar = ({
     </MuiAppBar>
 );
 
-AppBar.propTypes = {
+MuiAppBarChildren.propTypes = {
     classes: PropTypes.object,
     className: PropTypes.string,
     logout: PropTypes.element,
@@ -115,6 +115,14 @@ AppBar.propTypes = {
     title: PropTypes.oneOfType([PropTypes.string, PropTypes.element])
         .isRequired,
     toggleSidebar: PropTypes.func.isRequired,
+};
+
+const AppBar = ({ appBarContainer, ...props }) =>
+    createElement(appBarContainer, {}, <MuiAppBarChildren {...props} />);
+
+AppBar.propTypes = {
+    ...MuiAppBarChildren.propTypes,
+    appBarContainer: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
 };
 
 const enhance = compose(

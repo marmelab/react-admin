@@ -1,7 +1,7 @@
 /* eslint react/jsx-key: off */
 import 'babel-polyfill';
 import React from 'react';
-import { Admin, Resource } from 'react-admin'; // eslint-disable-line import/no-unresolved
+import { Admin, Resource, Layout } from 'react-admin'; // eslint-disable-line import/no-unresolved
 import { render } from 'react-dom';
 import { Route } from 'react-router';
 import authProvider from './authProvider';
@@ -12,6 +12,19 @@ import dataProvider from './dataProvider';
 import i18nProvider from './i18nProvider';
 import posts from './posts';
 import users from './users';
+import Headroom from 'react-headroom';
+
+const styleHeadroom = {
+    position: 'fixed',
+};
+
+const CustomAppBarContainer = props => (
+    <Headroom style={styleHeadroom} {...props} />
+);
+
+const MyLayout = props => (
+    <Layout {...props} appBarContainer={CustomAppBarContainer} />
+);
 
 render(
     <Admin
@@ -20,6 +33,7 @@ render(
         i18nProvider={i18nProvider}
         title="Example Admin"
         locale="en"
+        appLayout={MyLayout}
         customRoutes={[
             <Route
                 exact

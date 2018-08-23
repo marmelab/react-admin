@@ -30,7 +30,6 @@ const styles = theme => ({
     appFrame: {
         display: 'flex',
         flexDirection: 'column',
-        overflowX: 'auto',
     },
     contentWithSidebar: {
         display: 'flex',
@@ -97,6 +96,7 @@ class Layout extends Component {
             notification,
             open,
             title,
+            appBarContainer,
             ...props
         } = this.props;
         const { hasError, errorMessage, errorInfo } = this.state;
@@ -107,7 +107,12 @@ class Layout extends Component {
             >
                 <div className={classes.appFrame}>
                     <Hidden xsDown>
-                        {createElement(appBar, { title, open, logout })}
+                        {createElement(appBar, {
+                            title,
+                            open,
+                            logout,
+                            appBarContainer,
+                        })}
                     </Hidden>
                     <main className={classes.contentWithSidebar}>
                         <Sidebar>
@@ -155,13 +160,17 @@ Layout.propTypes = {
     notification: componentPropType,
     open: PropTypes.bool,
     title: PropTypes.node.isRequired,
+    appBarContainer: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
 };
+
+const DefaultAppBarContainer = props => <div {...props} />;
 
 Layout.defaultProps = {
     appBar: AppBar,
     error: Error,
     menu: Menu,
     notification: Notification,
+    appBarContainer: DefaultAppBarContainer,
 };
 
 const mapStateToProps = state => ({
