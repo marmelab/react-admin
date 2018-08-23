@@ -129,6 +129,9 @@ export class SelectInput extends Component {
             ? eventOrValue.target.value
             : eventOrValue;
         this.props.input.onChange(value);
+
+        // HACK: For some reason, redux-form does not consider this input touched without calling onBlur manually
+        this.props.input.onBlur();
         this.setState({ value });
     };
 
@@ -187,7 +190,9 @@ export class SelectInput extends Component {
             );
         }
         const { touched, error, helperText = false } = meta;
+        const helperTextError = (touched && error) || helperText;
 
+        console.log({ meta, helperTextError });
         return (
             <ResettableTextField
                 select
