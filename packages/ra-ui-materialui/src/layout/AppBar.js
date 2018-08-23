@@ -1,4 +1,4 @@
-import React, { cloneElement } from 'react';
+import React, { createElement, cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
@@ -10,7 +10,6 @@ import { withStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
 import compose from 'recompose/compose';
 import { toggleSidebar as toggleSidebarAction } from 'ra-core';
-import Headroom from 'react-headroom';
 
 import LoadingIndicator from './LoadingIndicator';
 
@@ -62,11 +61,7 @@ const styles = theme => ({
     },
 });
 
-const styleHeadroom = {
-    position: 'fixed',
-};
-
-const AppBar = ({
+const MuiAppBarChildren = ({
     classes,
     className,
     logout,
@@ -75,48 +70,44 @@ const AppBar = ({
     toggleSidebar,
     ...rest
 }) => (
-    <Headroom className={classNames(classes.appBar)} style={styleHeadroom}>
-        <MuiAppBar
-            className={className}
-            color="secondary"
-            position="static"
-            {...rest}
-        >
-            <Toolbar disableGutters variant="dense" className={classes.toolbar}>
-                <IconButton
-                    color="inherit"
-                    aria-label="open drawer"
-                    onClick={toggleSidebar}
-                    className={classNames(classes.menuButton)}
-                >
-                    <MenuIcon
-                        classes={{
-                            root: open
-                                ? classes.menuButtonIconOpen
-                                : classes.menuButtonIconClosed,
-                        }}
-                    />
-                </IconButton>
-                <Typography
-                    variant="title"
-                    color="inherit"
-                    className={classes.title}
-                >
-                    {typeof title === 'string'
-                        ? title
-                        : React.cloneElement(title)}
-                </Typography>
-                {logout &&
-                    cloneElement(logout, {
-                        className: classes.logout,
-                    })}
-            </Toolbar>
-            <LoadingIndicator className={classes.loadingIndicator} />
-        </MuiAppBar>
-    </Headroom>
+    <MuiAppBar
+        className={classNames(classes.appBar, className)}
+        color="secondary"
+        position="static"
+        {...rest}
+    >
+        <Toolbar disableGutters variant="dense" className={classes.toolbar}>
+            <IconButton
+                color="inherit"
+                aria-label="open drawer"
+                onClick={toggleSidebar}
+                className={classNames(classes.menuButton)}
+            >
+                <MenuIcon
+                    classes={{
+                        root: open
+                            ? classes.menuButtonIconOpen
+                            : classes.menuButtonIconClosed,
+                    }}
+                />
+            </IconButton>
+            <Typography
+                variant="title"
+                color="inherit"
+                className={classes.title}
+            >
+                {typeof title === 'string' ? title : cloneElement(title)}
+            </Typography>
+            {logout &&
+                cloneElement(logout, {
+                    className: classes.logout,
+                })}
+        </Toolbar>
+        <LoadingIndicator className={classes.loadingIndicator} />
+    </MuiAppBar>
 );
 
-AppBar.propTypes = {
+MuiAppBarChildren.propTypes = {
     classes: PropTypes.object,
     className: PropTypes.string,
     logout: PropTypes.element,
@@ -124,6 +115,14 @@ AppBar.propTypes = {
     title: PropTypes.oneOfType([PropTypes.string, PropTypes.element])
         .isRequired,
     toggleSidebar: PropTypes.func.isRequired,
+};
+
+const AppBar = ({ appBarContainer, ...props }) =>
+    createElement(appBarContainer, {}, <MuiAppBarChildren {...props} />);
+
+AppBar.propTypes = {
+    ...MuiAppBarChildren.propTypes,
+    appBarContainer: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
 };
 
 const enhance = compose(
