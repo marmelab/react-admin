@@ -183,7 +183,7 @@ The `TreeForm` component accepts the following props:
 
 ### <DragPreview>
 
-By default, the default `DragPreview` component will display the node identifier and, if it has children, the number of its children.
+By default, the `DragPreview` component will display the node identifier and, if it has children, the number of its children.
 
 Instead of making a full custom preview component, you can use the `DragPreview` and pass it a child, either a react element or a function. The function will be called with the current `node` and the `translate` function.
 
