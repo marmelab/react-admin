@@ -62,6 +62,10 @@ const styles = theme => ({
     },
 });
 
+const styleHeadroom = {
+    position: 'fixed',
+};
+
 const AppBar = ({
     classes,
     className,
@@ -71,7 +75,7 @@ const AppBar = ({
     toggleSidebar,
     ...rest
 }) => (
-    <Headroom className={classNames(classes.appBar)}>
+    <Headroom className={classNames(classes.appBar)} style={styleHeadroom}>
         <MuiAppBar
             className={className}
             color="secondary"
