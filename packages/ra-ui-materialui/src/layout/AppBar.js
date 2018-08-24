@@ -14,15 +14,9 @@ import { toggleSidebar as toggleSidebarAction } from 'ra-core';
 
 import LoadingIndicator from './LoadingIndicator';
 import UserMenu from './UserMenu';
+import Headroom from './Headroom';
 
 const styles = theme => ({
-    appBar: {
-        transition: theme.transitions.create(['margin', 'width'], {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.leavingScreen,
-        }),
-        zIndex: 1300,
-    },
     toolbar: {
         paddingRight: 24,
     },
@@ -63,41 +57,43 @@ const AppBar = ({
     width,
     ...rest
 }) => (
-    <MuiAppBar
-        className={classNames(classes.appBar, className)}
-        color="secondary"
-        position={width === 'xs' ? 'fixed' : 'absolute'}
-        {...rest}
-    >
-        <Toolbar
-            disableGutters
-            variant={width === 'xs' ? 'regular' : 'dense'}
-            className={classes.toolbar}
+    <Headroom>
+        <MuiAppBar
+            className={className}
+            color="secondary"
+            position="static"
+            {...rest}
         >
-            <IconButton
-                color="inherit"
-                aria-label="open drawer"
-                onClick={toggleSidebar}
-                className={classNames(classes.menuButton)}
+            <Toolbar
+                disableGutters
+                variant={width === 'xs' ? 'regular' : 'dense'}
+                className={classes.toolbar}
             >
-                <MenuIcon
-                    classes={{
-                        root: open
-                            ? classes.menuButtonIconOpen
-                            : classes.menuButtonIconClosed,
-                    }}
+                <IconButton
+                    color="inherit"
+                    aria-label="open drawer"
+                    onClick={toggleSidebar}
+                    className={classNames(classes.menuButton)}
+                >
+                    <MenuIcon
+                        classes={{
+                            root: open
+                                ? classes.menuButtonIconOpen
+                                : classes.menuButtonIconClosed,
+                        }}
+                    />
+                </IconButton>
+                <Typography
+                    variant="title"
+                    color="inherit"
+                    className={classes.title}
+                    id="react-admin-title"
                 />
-            </IconButton>
-            <Typography
-                variant="title"
-                color="inherit"
-                className={classes.title}
-                id="react-admin-title"
-            />
-            <LoadingIndicator />
-            {logout && <UserMenu logout={logout}>{children}</UserMenu>}
-        </Toolbar>
-    </MuiAppBar>
+                <LoadingIndicator />
+                {logout && <UserMenu logout={logout}>{children}</UserMenu>}
+            </Toolbar>
+        </MuiAppBar>
+    </Headroom>
 );
 
 AppBar.propTypes = {

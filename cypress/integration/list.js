@@ -15,6 +15,18 @@ describe('List Page', () => {
         });
     });
 
+    describe('Headroom', () => {
+        it('should hide/show the appBar when scroll action appears', () => {
+            cy.viewport(1280, 500);
+
+            cy.scrollTo(0, 200);
+            cy.get(ListPagePosts.elements.headroom).should('not.be.visible');
+
+            cy.scrollTo(0, -100);
+            cy.get(ListPagePosts.elements.headroom).should('be.visible');
+        });
+    });
+
     describe('Pagination', () => {
         it('should display paginated list of available posts', () => {
             cy.contains('1-10 of 13');

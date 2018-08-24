@@ -26,6 +26,7 @@ export default url => ({
         selectItem: '.select-item input',
         userMenu: 'button[title="Profile"]',
         title: '#react-admin-title',
+        headroom: '.headroom',
     },
 
     navigate() {
