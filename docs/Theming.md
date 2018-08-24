@@ -374,7 +374,7 @@ import MyAppBar from './MyAppBar';
 import MyMenu from './MyMenu';
 import MyNotification from './MyNotification';
 
-const MyLayout = props => <Layout 
+const MyLayout = props => <Layout
     {...props}
     appBar={MyAppBar}
     menu={MyMenu}
@@ -497,6 +497,58 @@ MyLayout.propTypes = {
 
 const mapStateToProps = state => ({ isLoading: state.admin.loading > 0 });
 export default connect(mapStateToProps, { setSidebarVisibility })(withStyles(styles)(MyLayout));
+```
+
+## Using a Custom AppBar
+
+By default, React-admin use [react-headroom](https://github.com/KyleAMathews/react-headroom) with [`<AppBar>`](https://material-ui.com/api/app-bar/#appbar).
+
+The `<AppBar>` don't follow [the material design guidelines](https://material.io/design/components/app-bars-top.html#behavior), which specify that the scrollbar should hide on scroll down, and show up (fixed) on scroll up.
+
+A discussion on the same subject in the [material-ui tracker: mui-org/material-ui#12337](https://github.com/mui-org/material-ui/issues/12337).
+
+If you want to remove the `<Headroom>` component, you can create your own appBar component:
+
+```jsx
+// in src/MyAppBar.js
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+
+const MyAppBar = props => (
+    <AppBar {...props}>
+        <Toolbar>
+            <Typography variant="title" id="react-admin-title" />
+        </Toolbar>
+    </AppBar>
+);
+
+export default MyAppBar;
+```
+
+To use this custom appBar component, pass it to a custom Layout, as explained above:
+
+```jsx
+// in src/MyLayout.js
+import { Layout } from 'react-admin';
+import MyAppBar from './MyAppBar';
+
+const MyLayout = (props) => <Layout {...props} appBar={MyAppBar} />;
+
+export default MyLayout;
+```
+
+Then, use this layout in the `<Admin>` `applayout` prop:
+
+```jsx
+// in src/App.js
+import MyLayout from './MyLayout';
+
+const App = () => (
+    <Admin appLayout={MyLayout} dataProvider={simpleRestProvider('http://path.to.my.api')}>
+        // ...
+    </Admin>
+);
 ```
 
 ## Using a Custom Menu
@@ -714,9 +766,9 @@ const App = () => (
 
 ## Loading
 
-Display a circular progress component with optional messages. Display the same loading component as `react-admin` on custom pages for consistency. 
+Display a circular progress component with optional messages. Display the same loading component as `react-admin` on custom pages for consistency.
 
-Supported props: 
+Supported props:
 
 Prop | Type | Default | Descriptions
 ---|---|---|---
@@ -725,18 +777,18 @@ Prop | Type | Default | Descriptions
 
 Usage:
 
-```jsx 
+```jsx
 <Loading loadingPrimary="app.page.loading" loadingSecondary="app.message.loading" />
-``` 
+```
 
 ## LinearProgress
 
-Display a linear progress component. Display the same loading component as `react-admin` on custom inputs for consistency. 
+Display a linear progress component. Display the same loading component as `react-admin` on custom inputs for consistency.
 
 Usage:
 
-```jsx 
-({ data, ...props }) => !data? 
-        <LinearProgress /> : 
-        <MyInput data={data} />        
-``` 
+```jsx
+({ data, ...props }) => !data?
+        <LinearProgress /> :
+        <MyInput data={data} />
+```
