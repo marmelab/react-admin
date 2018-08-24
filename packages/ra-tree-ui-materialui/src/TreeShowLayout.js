@@ -15,6 +15,7 @@ const styles = {
 const sanitizeRestProps = ({
     cancelDropOnChildren,
     crudUpdate,
+    dispatchCrudUpdate,
     getTreeState,
     isDragging,
     onSelect,
