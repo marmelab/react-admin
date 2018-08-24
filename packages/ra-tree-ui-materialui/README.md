@@ -159,7 +159,7 @@ The `Tree` component accepts the following props:
 - `enableDragAndDrop`: Enable drag & drop. This will show drag handles on every node
 - `allowDropOnRoot`: Setting this prop to `true` will add a root drop zone at the top of the list. Dropping nodes on it will set their parent to null
 - `dragPreviewComponent`: Customize the preview of the currently dragged node by passing your own component. You can leverage the existing `DragPreview` component and adjusts its content. See [DragPreview](#dragpreview)
-- `getTreeFromArray`: The function used to build the tree from the fetched data. It defaults to one using [performant-array-to-tree](https://github.com/philipstanislaus/performant-array-to-tree)
+- `getTreeFromArray`: The function used to build the tree from the fetched data. By default, uses a function based on [performant-array-to-tree](https://github.com/philipstanislaus/performant-array-to-tree)
 - `getTreeState`: A function which must return the tree state root from the redux state in case you mounted it on a different key than `tree`. It will be called with a single `state` argument which is the redux state.
 - `children`: A function which will be called with a single object argument having the following props
   - `tree`: an array of the root nodes. Each node have the following properties:
