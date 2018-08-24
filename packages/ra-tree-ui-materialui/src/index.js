@@ -1,4 +1,5 @@
 export Tree from './Tree';
+export IgnoreFormProps from './IgnoreFormProps';
 export TreeNodeActions from './TreeNodeActions';
 export DragPreview from './DragPreview';
 export TreeShowLayout from './TreeShowLayout';

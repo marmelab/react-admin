@@ -10,6 +10,7 @@ import {
 } from 'react-admin';
 import {
     DragPreview,
+    IgnoreFormProps,
     TreeShowLayout,
     TreeForm,
     Tree,
@@ -23,9 +24,11 @@ const TagDragPreview = props => (
 const TreeActions = props => (
     <TreeNodeActions {...props}>
         <SaveButton variant="flat" />
-        <EditButton />
-        <ShowButton />
-        <DeleteButton />
+        <IgnoreFormProps>
+            <EditButton />
+            <ShowButton />
+            <DeleteButton />
+        </IgnoreFormProps>
     </TreeNodeActions>
 );
 

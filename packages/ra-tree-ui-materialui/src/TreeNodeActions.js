@@ -15,10 +15,8 @@ export class TreeNodeActionsView extends Component {
         classes: PropTypes.object.isRequired,
         basePath: PropTypes.string.isRequired,
         children: PropTypes.node,
-        handleSubmit: PropTypes.func,
         record: PropTypes.object.isRequired,
         resource: PropTypes.string.isRequired,
-        submitOnEnter: PropTypes.bool,
     };
 
     render() {

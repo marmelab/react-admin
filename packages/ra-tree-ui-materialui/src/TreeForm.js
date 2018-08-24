@@ -134,8 +134,11 @@ class Form extends Component {
             children,
             classes,
             handleSubmit,
+            invalid,
             node,
+            pristine,
             resource,
+            saving,
             submitOnEnter = true,
             ...props
         } = this.props;
@@ -162,6 +165,9 @@ class Form extends Component {
                         resource,
                         handleSubmit: this.handleSubmit,
                         handleSubmitWithRedirect: this.handleSubmit,
+                        invalid,
+                        pristine,
+                        saving,
                         submitOnEnter,
                         ...sanitizeRestProps(props),
                     })}
