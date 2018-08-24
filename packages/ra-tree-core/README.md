@@ -80,7 +80,7 @@ A React [`Context`](https://reactjs.org/docs/context.html) allowing us to avoid 
 - `getIsNodeExpanded`: a function which takes a node identifier and returns a boolean indicating whether this node is expanded
 - `toggleNode`: a function which takes a node identifier and toggle its expanded state
 
-Under the hood, it stores the expanded state of all nodes in redux and dispatch the appropriate redux actions when calling `toggleNode`, avoiding you to connect your components by yourself.
+Under the hood, it stores the expanded state of all nodes in redux and dispatches the appropriate redux actions when calling `toggleNode`, avoiding you to connect your components by yourself.
 
 To use it, you must first register the provided reducer:
 
