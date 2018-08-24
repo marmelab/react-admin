@@ -156,7 +156,7 @@ export const CategoriesList = (props) => (
 
 The `Tree` component accepts the following props:
 
-- `enableDragAndDrop`: Enable drag & drop. This will show drag handles on every nodes
+- `enableDragAndDrop`: Enable drag & drop. This will show drag handles on every node
 - `allowDropOnRoot`: Setting this prop to `true` will add a root drop zone at the top of the list. Dropping node on it will set their parent to null
 - `dragPreviewComponent`: Customize the preview of the currently dragged node by passing your own component. You can leverage the existing `DragPreview` component and adjusts its content. See [DragPreview](#dragpreview)
 - `getTreeFromArray`: The function used to build the tree from the fetched data. It defaults to one using [performant-array-to-tree](https://github.com/philipstanislaus/performant-array-to-tree)
