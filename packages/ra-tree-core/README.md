@@ -78,7 +78,7 @@ The `TreeController` accepts the following props:
 A React [`Context`](https://reactjs.org/docs/context.html) allowing us to avoid passing everything through props. It provides a single object value containing the following properties:
 
 - `getIsNodeExpanded`: a function which takes a node identifier and returns a boolean indicating whether this node is expanded
-- `toggleNode`: a function which takes a node identifier and toggle its expanded state
+- `togglesNode`: a function which takes a node identifier and toggles its expanded state
 
 Under the hood, it stores the expanded state of all nodes in redux and dispatches the appropriate redux actions when calling `toggleNode`, avoiding you to connect your components by yourself.
 
