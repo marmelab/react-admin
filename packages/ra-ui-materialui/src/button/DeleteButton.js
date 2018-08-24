@@ -23,6 +23,13 @@ const styles = theme => ({
     },
 });
 
+const sanitizeRestProps = ({
+    handleSubmit,
+    handleSubmitWithRedirect,
+    submitOnEnter,
+    ...rest
+}) => rest;
+
 class DeleteButton extends Component {
     handleDelete = event => {
         event.preventDefault();
@@ -49,6 +56,7 @@ class DeleteButton extends Component {
             label = 'ra.action.delete',
             classes = {},
             className,
+            ...rest
         } = this.props;
         return (
             <Button
@@ -60,6 +68,7 @@ class DeleteButton extends Component {
                     className
                 )}
                 key="button"
+                {...sanitizeRestProps(rest)}
             >
                 <ActionDelete />
             </Button>

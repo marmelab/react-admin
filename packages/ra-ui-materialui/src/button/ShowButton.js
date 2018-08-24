@@ -7,6 +7,13 @@ import { linkToRecord } from 'ra-core';
 
 import Button from './Button';
 
+const sanitizeRestProps = ({
+    handleSubmit,
+    handleSubmitWithRedirect,
+    submitOnEnter,
+    ...rest
+}) => rest;
+
 const ShowButton = ({
     basePath = '',
     label = 'ra.action.show',
@@ -17,7 +24,7 @@ const ShowButton = ({
         component={Link}
         to={`${linkToRecord(basePath, record.id)}/show`}
         label={label}
-        {...rest}
+        {...sanitizeRestProps(rest)}
     >
         <ImageEye />
     </Button>

@@ -5,8 +5,20 @@ import { Link } from 'react-router-dom';
 
 import Button from './Button';
 
+const sanitizeRestProps = ({
+    handleSubmit,
+    handleSubmitWithRedirect,
+    submitOnEnter,
+    ...rest
+}) => rest;
+
 const ListButton = ({ basePath = '', label = 'ra.action.list', ...rest }) => (
-    <Button component={Link} to={basePath} label={label} {...rest}>
+    <Button
+        component={Link}
+        to={basePath}
+        label={label}
+        {...sanitizeRestProps(rest)}
+    >
         <ActionList />
     </Button>
 );

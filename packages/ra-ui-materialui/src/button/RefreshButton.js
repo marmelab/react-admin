@@ -6,6 +6,13 @@ import { refreshView as refreshViewAction } from 'ra-core';
 
 import Button from './Button';
 
+const sanitizeRestProps = ({
+    handleSubmit,
+    handleSubmitWithRedirect,
+    submitOnEnter,
+    ...rest
+}) => rest;
+
 class RefreshButton extends Component {
     static propTypes = {
         label: PropTypes.string,
@@ -25,7 +32,11 @@ class RefreshButton extends Component {
         const { label, refreshView, ...rest } = this.props;
 
         return (
-            <Button label={label} onClick={this.handleClick} {...rest}>
+            <Button
+                label={label}
+                onClick={this.handleClick}
+                {...sanitizeRestProps(rest)}
+            >
                 <NavigationRefresh />
             </Button>
         );

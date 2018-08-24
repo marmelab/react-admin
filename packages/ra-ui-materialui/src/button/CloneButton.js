@@ -8,6 +8,13 @@ import Button from './Button';
 
 const omitId = ({ id, ...rest }) => rest;
 
+const sanitizeRestProps = ({
+    handleSubmit,
+    handleSubmitWithRedirect,
+    submitOnEnter,
+    ...rest
+}) => rest;
+
 export const CloneButton = ({
     basePath = '',
     label = 'ra.action.clone',
@@ -21,7 +28,7 @@ export const CloneButton = ({
             state: { record: omitId(record) },
         }}
         label={label}
-        {...rest}
+        {...sanitizeRestProps(rest)}
     >
         <ContentCreate />
     </Button>
