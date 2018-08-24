@@ -501,13 +501,9 @@ export default connect(mapStateToProps, { setSidebarVisibility })(withStyles(sty
 
 ## Using a Custom AppBar
 
-By default, React-admin use [react-headroom](https://github.com/KyleAMathews/react-headroom) with [`<AppBar>`](https://material-ui.com/api/app-bar/#appbar).
+By default, React-admin uses [Material_ui's `<AppBar>` component](https://material-ui.com/api/app-bar/) together with [react-headroom](https://github.com/KyleAMathews/react-headroom) to hide the `AppBar` on scroll.
 
-The `<AppBar>` don't follow [the material design guidelines](https://material.io/design/components/app-bars-top.html#behavior), which specify that the scrollbar should hide on scroll down, and show up (fixed) on scroll up.
-
-A discussion on the same subject in the [material-ui tracker: mui-org/material-ui#12337](https://github.com/mui-org/material-ui/issues/12337).
-
-If you want to remove the `<Headroom>` component, you can create your own appBar component:
+You can create your own `AppBar` component to replace the react-admin one. For instance, to remove the "headroom" effect:
 
 ```jsx
 // in src/MyAppBar.js
@@ -526,7 +522,7 @@ const MyAppBar = props => (
 export default MyAppBar;
 ```
 
-To use this custom appBar component, pass it to a custom Layout, as explained above:
+To use this custom `AppBar` component, pass it as prop to a custom `Layout`, as explained below:
 
 ```jsx
 // in src/MyLayout.js

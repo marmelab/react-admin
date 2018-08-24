@@ -15,7 +15,7 @@ describe('List Page', () => {
         });
     });
 
-    describe('Headroom', () => {
+    describe('Auto-hide AppBar', () => {
         it('should hide/show the appBar when scroll action appears', () => {
             cy.viewport(1280, 500);
 
