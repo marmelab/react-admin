@@ -1,8 +1,11 @@
 # Changelog
 
-## v2.2.1
+## v2.2.2
 
 * Fix `<SelectInput>` and `<SelectArrayInput>` validation ([djhi](https://github.com/djhi))
+
+## v2.2.1
+
 * Fix `<AutocompleteInput>` when suggestions are numbers ([djhi](https://github.com/djhi))
 * Fix `ra-realtime` documentation to add an example of `createRealtimeSaga` factory function ([djhi](https://github.com/djhi))
 * Fix `ListController` props cannot be changed from outside ([djhi](https://github.com/djhi))
