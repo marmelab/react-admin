@@ -166,9 +166,11 @@ export class AutocompleteInput extends React.Component {
             typeof optionText === 'function'
                 ? optionText(suggestion)
                 : get(suggestion, optionText);
+
+        // We explicitly call toString here because AutoSuggest expect a string
         return translateChoice
-            ? translate(suggestionLabel, { _: suggestionLabel })
-            : suggestionLabel;
+            ? translate(suggestionLabel, { _: suggestionLabel }).toString()
+            : suggestionLabel.toString();
     };
 
     handleSuggestionSelected = (event, { suggestion, method }) => {
