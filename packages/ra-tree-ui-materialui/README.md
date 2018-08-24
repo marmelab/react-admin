@@ -12,7 +12,7 @@ yarn add ra-tree-ui-materialui
 
 ## Usage
 
-With a categories ressource having this structure where a category may have a parent category referenced by the `parent_id` field:
+With a `categories` ressource having this structure where a category may have a parent category referenced by the `parent_id` field:
 
 ```json
 [
