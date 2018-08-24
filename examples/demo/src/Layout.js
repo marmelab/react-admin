@@ -3,7 +3,9 @@ import { connect } from 'react-redux';
 import { Layout } from 'react-admin';
 import AppBar from './AppBar';
 
-const CustomLayout = props => <Layout appBar={AppBar} {...props} />;
+const CustomLayout = props => (
+    <Layout appBar={AppBar} sidebarWidth={200} {...props} />
+);
 
 const darkTheme = {
     palette: {
