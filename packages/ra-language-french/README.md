@@ -1,4 +1,4 @@
-# Franch Messages for React-Admin
+# French Messages for React-Admin
 
 French messages for [react-admin](https://github.com/marmelab/react-admin), the frontend framework for building admin applications on top of REST/GraphQL services.
 
