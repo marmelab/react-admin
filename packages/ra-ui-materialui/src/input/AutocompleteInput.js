@@ -4,6 +4,7 @@ import get from 'lodash/get';
 import isEqual from 'lodash/isEqual';
 import Autosuggest from 'react-autosuggest';
 import Paper from '@material-ui/core/Paper';
+import Popper from '@material-ui/core/Popper';
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
 import { withStyles } from '@material-ui/core/styles';
@@ -96,6 +97,8 @@ export class AutocompleteInput extends React.Component {
         selectedItem: null,
         suggestions: [],
     };
+
+    inputEl = null;
 
     componentWillMount() {
         const selectedItem = this.getSelectedItem(
@@ -274,6 +277,13 @@ export class AutocompleteInput extends React.Component {
 
         const { touched, error, helperText = false } = meta;
 
+        // We need to store the input reference for our Popper element containg the suggestions
+        // but Autosuggest also needs this reference (it provides the ref prop)
+        const storeInputRef = input => {
+            this.inputEl = input;
+            ref(input);
+        };
+
         return (
             <TextField
                 label={
@@ -289,7 +299,7 @@ export class AutocompleteInput extends React.Component {
                 autoFocus={autoFocus}
                 margin="normal"
                 className={classnames(classes.root, className)}
-                inputRef={ref}
+                inputRef={storeInputRef}
                 error={!!(touched && error)}
                 helperText={(touched && error) || helperText}
                 name={input.name}
@@ -306,12 +316,22 @@ export class AutocompleteInput extends React.Component {
     };
 
     renderSuggestionsContainer = options => {
-        const { containerProps, children } = options;
+        const {
+            containerProps: { className, ...containerProps },
+            children,
+        } = options;
 
         return (
-            <Paper {...containerProps} square>
-                {children}
-            </Paper>
+            <Popper
+                className={className}
+                open
+                anchorEl={this.inputEl}
+                placement="bottom-start"
+            >
+                <Paper square {...containerProps}>
+                    {children}
+                </Paper>
+            </Popper>
         );
     };
 
