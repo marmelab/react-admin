@@ -374,7 +374,7 @@ import MyAppBar from './MyAppBar';
 import MyMenu from './MyMenu';
 import MyNotification from './MyNotification';
 
-const MyLayout = props => <Layout
+const MyLayout = props => <Layout 
     {...props}
     appBar={MyAppBar}
     menu={MyMenu}
@@ -762,9 +762,9 @@ const App = () => (
 
 ## Loading
 
-Display a circular progress component with optional messages. Display the same loading component as `react-admin` on custom pages for consistency.
+Display a circular progress component with optional messages. Display the same loading component as `react-admin` on custom pages for consistency. 
 
-Supported props:
+Supported props: 
 
 Prop | Type | Default | Descriptions
 ---|---|---|---
@@ -773,18 +773,18 @@ Prop | Type | Default | Descriptions
 
 Usage:
 
-```jsx
+```jsx 
 <Loading loadingPrimary="app.page.loading" loadingSecondary="app.message.loading" />
-```
+``` 
 
 ## LinearProgress
 
-Display a linear progress component. Display the same loading component as `react-admin` on custom inputs for consistency.
+Display a linear progress component. Display the same loading component as `react-admin` on custom inputs for consistency. 
 
 Usage:
 
-```jsx
-({ data, ...props }) => !data?
-        <LinearProgress /> :
-        <MyInput data={data} />
-```
+```jsx 
+({ data, ...props }) => !data? 
+        <LinearProgress /> : 
+        <MyInput data={data} />        
+``` 
