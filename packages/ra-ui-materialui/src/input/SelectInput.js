@@ -190,9 +190,7 @@ export class SelectInput extends Component {
             );
         }
         const { touched, error, helperText = false } = meta;
-        const helperTextError = (touched && error) || helperText;
 
-        console.log({ meta, helperTextError });
         return (
             <ResettableTextField
                 select
