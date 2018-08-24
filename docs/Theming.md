@@ -365,7 +365,7 @@ const App = () => (
 );
 ```
 
-Your custom layout can extend the default `<Layout>` component if you only want to override the appBar, the menu, the notification component, or the error page. For instance:
+Your custom layout can extend the default `<Layout>` component if you only want to override the sidebar width, the appBar, the menu, the notification component, or the error page. For instance:
 
 ```jsx
 // in src/MyLayout.js
@@ -376,6 +376,7 @@ import MyNotification from './MyNotification';
 
 const MyLayout = props => <Layout
     {...props}
+    sidebarWidth={200}
     appBar={MyAppBar}
     menu={MyMenu}
     notification={MyNotification}

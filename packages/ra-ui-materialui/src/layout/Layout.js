@@ -90,6 +90,7 @@ class Layout extends Component {
             menu,
             notification,
             open,
+            sidebarWidth,
             title,
             ...props
         } = this.props;
@@ -102,7 +103,7 @@ class Layout extends Component {
                 <div className={classes.appFrame}>
                     {createElement(appBar, { title, open, logout })}
                     <main className={classes.contentWithSidebar}>
-                        <Sidebar>
+                        <Sidebar size={sidebarWidth}>
                             {createElement(menu, {
                                 logout,
                                 hasDashboard: !!dashboard,
@@ -147,6 +148,7 @@ Layout.propTypes = {
     menu: componentPropType,
     notification: componentPropType,
     open: PropTypes.bool,
+    sidebarWidth: PropTypes.number,
     title: PropTypes.node.isRequired,
 };
 

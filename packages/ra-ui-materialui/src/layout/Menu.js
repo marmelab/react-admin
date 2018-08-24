@@ -11,14 +11,12 @@ import DefaultIcon from '@material-ui/icons/ViewList';
 import DashboardMenuItem from './DashboardMenuItem';
 import MenuItemLink from './MenuItemLink';
 import Responsive from '../layout/Responsive';
-import { DRAWER_WIDTH } from './Sidebar';
 
 const styles = {
     main: {
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'flex-start',
-        width: DRAWER_WIDTH,
     },
 };
 

@@ -5,18 +5,17 @@ import compose from 'recompose/compose';
 import Drawer from '@material-ui/core/Drawer';
 import { withStyles } from '@material-ui/core/styles';
 import withWidth from '@material-ui/core/withWidth';
-import classnames from 'classnames';
 import { setSidebarVisibility } from 'ra-core';
 
 import Responsive from './Responsive';
 
 export const DRAWER_WIDTH = 240;
+export const CLOSED_DRAWER_WIDTH = 55;
 
 const styles = theme => ({
     drawerPaper: {
         position: 'relative',
         height: 'auto',
-        width: DRAWER_WIDTH,
         overflowX: 'hidden',
         transition: theme.transitions.create('width', {
             easing: theme.transitions.easing.sharp,
@@ -27,6 +26,7 @@ const styles = theme => ({
         borderRight: 'none',
         [theme.breakpoints.only('xs')]: {
             marginTop: 0,
+            width: 240,
             height: '100vh',
             position: 'inherit',
             backgroundColor: theme.palette.background.default,
@@ -35,9 +35,6 @@ const styles = theme => ({
             border: 'none',
             marginTop: '1.5em',
         },
-    },
-    drawerPaperClose: {
-        width: 55,
     },
 });
 
@@ -61,6 +58,7 @@ class Sidebar extends PureComponent {
             classes,
             open,
             setSidebarVisibility,
+            size,
             width,
             ...rest
         } = this.props;
@@ -71,8 +69,9 @@ class Sidebar extends PureComponent {
                     <Drawer
                         variant="temporary"
                         open={open}
-                        classes={{
-                            paper: classes.drawerPaper,
+                        PaperProps={{
+                            className: classes.drawerPaper,
+                            style: { width: size },
                         }}
                         onClose={this.toggleSidebar}
                         {...rest}
@@ -86,11 +85,11 @@ class Sidebar extends PureComponent {
                     <Drawer
                         variant="permanent"
                         open={open}
-                        classes={{
-                            paper: classnames(
-                                classes.drawerPaper,
-                                !open && classes.drawerPaperClose
-                            ),
+                        PaperProps={{
+                            className: classes.drawerPaper,
+                            style: {
+                                width: open ? size : CLOSED_DRAWER_WIDTH,
+                            },
                         }}
                         onClose={this.toggleSidebar}
                         {...rest}
@@ -105,11 +104,11 @@ class Sidebar extends PureComponent {
                     <Drawer
                         variant="permanent"
                         open={open}
-                        classes={{
-                            paper: classnames(
-                                classes.drawerPaper,
-                                !open && classes.drawerPaperClose
-                            ),
+                        PaperProps={{
+                            className: classes.drawerPaper,
+                            style: {
+                                width: open ? size : CLOSED_DRAWER_WIDTH,
+                            },
                         }}
                         onClose={this.toggleSidebar}
                         {...rest}
@@ -127,7 +126,12 @@ Sidebar.propTypes = {
     classes: PropTypes.object,
     open: PropTypes.bool.isRequired,
     setSidebarVisibility: PropTypes.func.isRequired,
+    size: PropTypes.number,
     width: PropTypes.string,
+};
+
+Sidebar.defaultProps = {
+    size: DRAWER_WIDTH,
 };
 
 const mapStateToProps = state => ({
@@ -141,5 +145,5 @@ export default compose(
         { setSidebarVisibility }
     ),
     withStyles(styles),
-    withWidth()
+    withWidth({ resizeInterval: Infinity }) // used to initialize the visibility on first render
 )(Sidebar);
