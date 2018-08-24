@@ -137,7 +137,7 @@ export class SelectArrayInput extends Component {
     handleChange = event => {
         this.props.input.onChange(event.target.value);
         // HACK: For some reason, redux-form does not consider this input touched without calling onBlur manually
-        this.props.input.onChange(event.target.value);
+        this.props.input.onBlur(event.target.value);
         this.setState({ value: event.target.value });
     };
     renderMenuItemOption = choice => {
