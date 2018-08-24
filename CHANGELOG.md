@@ -12,7 +12,6 @@
 * Fix Autocomplete list is cut off by content area ([djhi](https://github.com/djhi))
 * Fix form reset on navigation ([djhi](https://github.com/djhi))
 * Fix `ra-data-fakerest` package name in readme ([mexitalian](https://github.com/mexitalian))
-* Add link to Farsi translations ([hamidfzm](https://github.com/hamidfzm))
 * Fix `ra-data-graphql-simple` example usage ([kfern](https://github.com/kfern))
 * Fix typo in `<ArrayInput>` documentation ([igneel64](https://github.com/igneel64))
 * Fix documentation links not working work when browsing the doc via Github ([fzaninotto](https://github.com/fzaninotto))
@@ -26,6 +25,8 @@
 * Fix missing `$options` prop in `<FileInput>` documentation ([djhi](https://github.com/djhi))
 * Fix mobile layout ([fzaninotto](https://github.com/fzaninotto))
 * Fix Reference components do not update from their props ([djhi](https://github.com/djhi))
+* Add link to Farsi translations ([hamidfzm](https://github.com/hamidfzm))
+* Add link to Finnish translations ([Aikain](https://github.com/Aikain))
 
 ## v2.2.0
 
