@@ -1,15 +1,13 @@
 import getTreeFromArray from './getTreeFromArray';
 
-const getNode = ({ id, record, depth, children }) => ({
+const getNode = ({ id, record, children }) => ({
     id,
     record,
-    depth,
     childCount: children.length,
 });
-const getNodeFromData = (record, depth, childCount) => ({
+const getNodeFromData = (record, childCount) => ({
     id: record.id,
     record: { ...record, parent_id: record.parent_id || null },
-    depth,
     childCount,
 });
 
@@ -31,27 +29,27 @@ describe('getTreeFromArray', () => {
 
         const tree = getTreeFromArray(data, 'parent_id');
         expect(tree.map(getNode)).toEqual([
-            getNodeFromData(data.find(d => d.id === 1), 1, 2),
+            getNodeFromData(data.find(d => d.id === 1), 2),
         ]);
         expect(tree[0].children.map(getNode)).toEqual([
-            getNodeFromData(data.find(d => d.id === 2), 2, 1),
-            getNodeFromData(data.find(d => d.id === 6), 2, 3),
+            getNodeFromData(data.find(d => d.id === 2), 1),
+            getNodeFromData(data.find(d => d.id === 6), 3),
         ]);
         expect(tree[0].children[0].children.map(getNode)).toEqual([
-            getNodeFromData(data.find(d => d.id === 3), 3, 2),
+            getNodeFromData(data.find(d => d.id === 3), 2),
         ]);
         expect(tree[0].children[0].children[0].children.map(getNode)).toEqual([
-            getNodeFromData(data.find(d => d.id === 4), 4, 0),
-            getNodeFromData(data.find(d => d.id === 5), 4, 0),
+            getNodeFromData(data.find(d => d.id === 4), 0),
+            getNodeFromData(data.find(d => d.id === 5), 0),
         ]);
         expect(tree[0].children[1].children.map(getNode)).toEqual([
-            getNodeFromData(data.find(d => d.id === 11), 3, 0),
-            getNodeFromData(data.find(d => d.id === 10), 3, 0),
-            getNodeFromData(data.find(d => d.id === 7), 3, 2),
+            getNodeFromData(data.find(d => d.id === 11), 0),
+            getNodeFromData(data.find(d => d.id === 10), 0),
+            getNodeFromData(data.find(d => d.id === 7), 2),
         ]);
         expect(tree[0].children[1].children[2].children.map(getNode)).toEqual([
-            getNodeFromData(data.find(d => d.id === 8), 4, 0),
-            getNodeFromData(data.find(d => d.id === 9), 4, 0),
+            getNodeFromData(data.find(d => d.id === 8), 0),
+            getNodeFromData(data.find(d => d.id === 9), 0),
         ]);
     });
 });
