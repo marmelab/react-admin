@@ -1,6 +1,7 @@
 export const TOGGLE_NODE = 'RA/TREE/TOGGLE_NODE';
 
-export const toggleNode = (nodeId, fromHover = false) => ({
+export const toggleNode = (resource, nodeId) => ({
     type: TOGGLE_NODE,
-    payload: { nodeId, fromHover },
+    payload: nodeId,
+    meta: { resource },
 });

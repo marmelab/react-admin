@@ -15,16 +15,19 @@ export const TreeControllerView = ({
     parentSource,
     toggleNode,
     treeState,
+    resource,
     ...props
 }) => {
     const availableData = ids.reduce((acc, id) => [...acc, data[id]], []);
     const tree = getTreeFromArray(Object.values(availableData), parentSource);
 
     return children({
-        getIsNodeExpanded: nodeId => getIsNodeExpanded(treeState, nodeId),
+        getIsNodeExpanded: nodeId =>
+            getIsNodeExpanded(treeState, resource, nodeId),
         parentSource,
         tree,
-        toggleNode,
+        toggleNode: nodeId => toggleNode(resource, nodeId),
+        resource,
         ...props,
     });
 };

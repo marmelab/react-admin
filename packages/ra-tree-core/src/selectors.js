@@ -1,7 +1,2 @@
-export const getIsNodeExpanded = (state, nodeId) => {
-    const nodeStatus = state[nodeId] || {
-        isExpanded: false,
-        fromHover: false,
-    };
-    return nodeStatus.isExpanded;
-};
+export const getIsNodeExpanded = (state, resource, nodeId) =>
+    (state[resource] && state[resource][nodeId]) || false;
