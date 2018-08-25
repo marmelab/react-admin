@@ -44,53 +44,55 @@ const sanitizeRestProps = ({
 }) => rest;
 
 const warnAboutChildren = () => console.warn( // eslint-disable-line
-        `You passed multiple children to the Tree component. You must either pass it a TreeShowLayout or a TreeForm component as its only child:
+        `You passed multiple children to the Tree component. You must either pass it a NodeView or a NodeForm component as its only child:
 
     <Tree>
-        <TreeShowLayout>
+        <NodeView>
             <TextField source="name" />
-        </TreeShowLayout>
+        </NodeView>
     </Tree>
 
     // Or
 
     <Tree>
-        <TreeForm>
+        <NodeForm>
             <TextInput source="name" />
-        </TreeForm>
+        </NodeForm>
     </Tree>
 
-If you need actions on each node, use the actions prop on either the TreeShowLayout or TreeForm component:
+If you need actions on each node, use the actions prop on either the NodeView or NodeForm component:
 
-    const TreeActions = props => (
-        <TreeNodeActions {...props}>
+    const MyNodeActions = props => (
+        <NodeActions {...props}>
             <EditButton />
             <ShowButton />
             <DeleteButton />
-        </TreeNodeActions>
+        </NodeActions>
     );
 
     <Tree>
-        <TreeShowLayout actions={<TreeActions />}>
+        <NodeView actions={<MyNodeActions />}>
             <TextField source="name" />
-        </TreeShowLayout>
+        </NodeView>
     </Tree>
 
     // Or
 
-    const TreeActions = props => (
-        <TreeNodeActions {...props}>
+    const MyNodeActions = props => (
+        <NodeActions {...props}>
             <SaveButton variant="flat" />
-            <EditButton />
-            <ShowButton />
-            <DeleteButton />
-        </TreeNodeActions>
+            <IgnoreFormProps>
+                <EditButton />
+                <ShowButton />
+                <DeleteButton />
+            </IgnoreFormProps>
+        </NodeActions>
     );
 
     <Tree>
-        <TreeForm actions={<TreeActions />}>
+        <NodeForm actions={<MyNodeActions />}>
             <TextInput source="name" />
-        </TreeForm>
+        </NodeForm>
     </Tree>
 `
     );

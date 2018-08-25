@@ -64,12 +64,10 @@ class CustomDragLayer extends Component {
 
 export default compose(
     withStyles(styles),
-    DragLayer(monitor => {
-        return {
-            itemBeingDragged: monitor.getItem(),
-            componentType: monitor.getItemType(),
-            beingDragged: monitor.isDragging(),
-            offset: monitor.getSourceClientOffset(),
-        };
+    DragLayer(monitor => ({
+        itemBeingDragged: monitor.getItem(),
+        componentType: monitor.getItemType(),
+        beingDragged: monitor.isDragging(),
+        offset: monitor.getSourceClientOffset(),
     })
 )(CustomDragLayer);
