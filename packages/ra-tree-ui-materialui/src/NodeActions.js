@@ -10,7 +10,7 @@ const styles = theme => ({
     },
 });
 
-export class TreeNodeActionsView extends Component {
+export class NodeActions extends Component {
     static propTypes = {
         classes: PropTypes.object.isRequired,
         basePath: PropTypes.string.isRequired,
@@ -32,4 +32,4 @@ export class TreeNodeActionsView extends Component {
     }
 }
 
-export default withStyles(styles)(TreeNodeActionsView);
+export default withStyles(styles)(NodeActions);

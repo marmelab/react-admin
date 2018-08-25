@@ -8,7 +8,7 @@ import {
     startUndoable as startUndoableAction,
 } from 'ra-core';
 
-import TreeFormActions from './TreeFormActions';
+import NodeFormActions from './NodeFormActions';
 
 const styles = {
     root: {
@@ -70,9 +70,9 @@ const sanitizeRestProps = ({
     validate,
     ...props
 }) => props;
-class Form extends Component {
+class NodeForm extends Component {
     static defaultProps = {
-        actions: <TreeFormActions />,
+        actions: <NodeFormActions />,
     };
 
     handleClick = event => {
@@ -195,4 +195,4 @@ export default compose(
         keepDirtyOnReinitialize: true,
     }),
     withStyles(styles)
-)(Form);
+)(NodeForm);

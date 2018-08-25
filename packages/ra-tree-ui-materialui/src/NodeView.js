@@ -29,7 +29,7 @@ const sanitizeRestProps = ({
     ...rest
 }) => rest;
 
-export class ShowLayout extends Component {
+export class NodeView extends Component {
     handleClick = event => {
         event.persist();
         // This ensure clicking on a button does not collapse/expand a node
@@ -80,4 +80,4 @@ export class ShowLayout extends Component {
     }
 }
 
-export default withStyles(styles)(ShowLayout);
+export default withStyles(styles)(NodeView);

@@ -11,25 +11,25 @@ import {
 import {
     DragPreview,
     IgnoreFormProps,
-    TreeShowLayout,
-    TreeForm,
+    NodeView,
+    NodeForm,
     Tree,
-    TreeNodeActions,
+    NodeActions,
 } from 'ra-tree-ui-materialui';
 
 const TagDragPreview = props => (
     <DragPreview {...props}>{({ node }) => node.record.name}</DragPreview>
 );
 
-const TreeActions = props => (
-    <TreeNodeActions {...props}>
+const CustomNodeActions = props => (
+    <NodeActions {...props}>
         <SaveButton variant="flat" />
         <IgnoreFormProps>
             <EditButton />
             <ShowButton />
             <DeleteButton />
         </IgnoreFormProps>
-    </TreeNodeActions>
+    </NodeActions>
 );
 
 const TagList = props => (
@@ -40,9 +40,9 @@ const TagList = props => (
             parentSource="parent_id"
             dragPreviewComponent={TagDragPreview}
         >
-            <TreeForm actions={<TreeActions />}>
+            <NodeForm actions={<CustomNodeActions />}>
                 <TextInput source="name" />
-            </TreeForm>
+            </NodeForm>
         </Tree>
     </List>
 );
