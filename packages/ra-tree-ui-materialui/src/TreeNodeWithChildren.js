@@ -5,9 +5,8 @@ import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import KeyboardArrowDown from '@material-ui/icons/KeyboardArrowDown';
-import { TreeContext } from 'ra-tree-core';
 
-export class TreeNodeWithChildrenView extends Component {
+export class TreeNodeWithChildren extends Component {
     static propTypes = {
         basePath: PropTypes.string.isRequired,
         cancelDropOnChildren: PropTypes.bool,
@@ -43,6 +42,7 @@ export class TreeNodeWithChildrenView extends Component {
             cancelDropOnChildren,
             children,
             classes,
+            getIsNodeExpanded,
             isExpanded,
             node,
             resource,
@@ -59,7 +59,7 @@ export class TreeNodeWithChildrenView extends Component {
                     root: classes.panel,
                 }}
                 elevation={0}
-                expanded={isExpanded}
+                expanded={isExpanded || getIsNodeExpanded(node.id)}
                 onChange={this.handleChange}
             >
                 <ExpansionPanelSummary
@@ -94,12 +94,14 @@ export class TreeNodeWithChildrenView extends Component {
                                 basePath={basePath}
                                 classes={classes}
                                 node={child}
+                                getIsNodeExpanded={getIsNodeExpanded}
                                 resource={resource}
                                 treeNodeComponent={TreeNode}
                                 treeNodeWithChildrenComponent={
                                     treeNodeWithChildrenComponent
                                 }
                                 treeNodeContentComponent={TreeNodeContent}
+                                toggleNode={toggleNode}
                                 {...props}
                             >
                                 {children}
@@ -111,19 +113,5 @@ export class TreeNodeWithChildrenView extends Component {
         );
     }
 }
-
-const TreeNodeWithChildren = ({ isExpanded, ...props }) => (
-    <TreeContext.Consumer>
-        {({ getIsNodeExpanded, toggleNode }) => (
-            <TreeNodeWithChildrenView
-                {...props}
-                toggleNode={toggleNode}
-                isExpanded={isExpanded || getIsNodeExpanded(props.node.id)}
-            />
-        )}
-    </TreeContext.Consumer>
-);
-
-TreeNodeWithChildren.propTypes = TreeNodeWithChildrenView.propTypes;
 
 export default TreeNodeWithChildren;

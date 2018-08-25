@@ -72,6 +72,7 @@ const TreeNode = ({
     children,
     classes,
     connectDropTarget,
+    getIsNodeExpanded,
     isOver,
     isOverCurrent,
     itemType,
@@ -80,6 +81,7 @@ const TreeNode = ({
     treeNodeComponent,
     treeNodeWithChildrenComponent: TreeNodeWithChildren,
     treeNodeContentComponent: TreeNodeContent,
+    toggleNode,
     ...props
 }) =>
     connectDropTarget(
@@ -102,6 +104,7 @@ const TreeNode = ({
                         basePath={basePath}
                         cancelDropOnChildren={!!itemType}
                         classes={classes}
+                        getIsNodeExpanded={getIsNodeExpanded}
                         /*
                             Override the isExpanded prop managed through redux on hover.
                             Set it to undefined when not hovering to fall back to redux state
@@ -113,6 +116,7 @@ const TreeNode = ({
                         treeNodeComponent={treeNodeComponent}
                         treeNodeWithChildrenComponent={TreeNodeWithChildren}
                         treeNodeContentComponent={TreeNodeContent}
+                        toggleNode={toggleNode}
                         {...props}
                     >
                         {children}

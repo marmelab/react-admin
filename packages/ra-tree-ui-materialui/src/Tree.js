@@ -137,7 +137,7 @@ export class Tree extends Component {
 
         return (
             <TreeController parentSource={parentSource} {...props}>
-                {({ getTreeState, tree, ...props }) => (
+                {({ getTreeState, tree, ...controllerProps }) => (
                     <Container>
                         {enableDragAndDrop ? (
                             <DragLayer
@@ -168,7 +168,7 @@ export class Tree extends Component {
                                         treeNodeWithChildrenComponent
                                     }
                                     treeNodeContentComponent={TreeNodeContent}
-                                    {...sanitizeRestProps(props)}
+                                    {...sanitizeRestProps(controllerProps)}
                                 >
                                     {children}
                                 </TreeNode>
