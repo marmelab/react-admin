@@ -2,6 +2,8 @@
 
 A Tree component with [material-ui](https://github.com/mui-org/material-ui) to use with [react-admin](https://github.com/marmelab/react-admin).
 
+![`ra-tree-ui-materialui`](https://github.com/marmelab/react-admin/raw/master/docs/img/ra-tree.gif)
+
 ## Installation
 
 ```sh

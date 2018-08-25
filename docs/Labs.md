@@ -5,7 +5,7 @@ title: "Labs"
 
 # Labs
 
-This section references some projects we're working which are not ready yet for production. They probably miss some features or are not handling all corner cases. Use them at your own risks and we would appreciate some feedback!
+This section references some projects we're working which are not ready yet for production. They probably miss some features or are not handling all corner cases. Use them at your own risks. Besides, we would really appreciate some feedback!
 
 ## ra-tree
 

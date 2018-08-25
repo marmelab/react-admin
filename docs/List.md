@@ -822,6 +822,70 @@ When you want to display only one property of a list of records, instead of usin
 </ReferenceArrayField>
 ```
 
+## The `<Tree>` component
+
+When you want to display a hierarchized list of records, instead of using a `<Datagrid>`, use the `<Tree>` component. This component is available in an addon package: [`ra-tree-ui-materialui`](https://github.com/marmelab/react-admin/blob/master/packages/ra-tree-ui-materialui/README.md).
+
+*Important*: This package is part of our [Labs](/Labs.md) experimentations. This means it misses some features and might not handle all corner cases. Use it at your own risks. Besides, we would really appreciate some feedback!
+
+It expects that every resource returned from the `List` has a `parent_id` property by default:
+
+```json
+[
+    { "id": 1, "name": "Clothing" },
+    { "id": 2, "name": "Men", "parent_id": 1 },
+    { "id": 3, "name": "Suits", "parent_id": 2 },
+    { "id": 6, "name": "Women", "parent_id": 1 },
+    { "id": 7, "name": "Dresses", "parent_id": 6 },
+    { "id": 10, "name": "Skirts", "parent_id": 6 },
+    { "id": 11, "name": "Blouses", "parent_id": 6 }
+]
+```
+
+Here's an example showing how to use it:
+
+```jsx
+// in src/categories.js
+import React from 'react';
+import { List, TextField, EditButton, DeleteButton } from 'react-admin';
+import { Tree, NodeView, NodeActions } from 'ra-tree-ui-materialui';
+
+const CategoriesActions = props => (
+    <NodeActions {...props}>
+        <EditButton />
+        <DeleteButton />
+    </NodeActions>
+);
+
+export const CategoriesList = (props) => (
+    <List {...props} perPage={10000}>
+        <Tree>
+            <NodeView actions={<CategoriesActions />}>
+                <TextField source="name" />
+            </NodeView>
+        </Tree>
+    </List>
+);
+```
+
+![ra-tree demo](./img/ra-tree.gif)
+
+**Tip**: The `<Tree>` component supports drag & drop operations:
+
+```jsx
+export const CategoriesList = (props) => (
+    <List {...props} perPage={10000}>
+        <Tree enableDragAndDrop>
+            <NodeView actions={<CategoriesActions />}>
+                <TextField source="name" />
+            </NodeView>
+        </Tree>
+    </List>
+);
+```
+
+To learn more about this component features, please refers to its [README](https://github.com/marmelab/react-admin/blob/master/packages/ra-tree-ui-materialui/README.md).
+
 ## Using a Custom Iterator
 
 A `<List>` can delegate to any iterator component - `<Datagrid>` is just one example. An iterator component must accept at least two props:
