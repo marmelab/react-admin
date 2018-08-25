@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
 import { ReferenceFieldController } from 'ra-core';
 
@@ -37,7 +38,10 @@ export const ReferenceFieldView = ({
         return (
             <Link to={resourceLinkPath} className={className}>
                 {React.cloneElement(children, {
-                    className: classes.link, // force color override for Typography components
+                    className: classnames(
+                        children.props.className,
+                        classes.link // force color override for Typography components
+                    ),
                     record: referenceRecord,
                     resource: reference,
                     allowEmpty,
