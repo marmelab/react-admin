@@ -69,5 +69,5 @@ export default compose(
         componentType: monitor.getItemType(),
         beingDragged: monitor.isDragging(),
         offset: monitor.getSourceClientOffset(),
-    })
+    }))
 )(CustomDragLayer);
