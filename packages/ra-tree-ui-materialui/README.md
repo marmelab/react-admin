@@ -65,21 +65,21 @@ import {
     EditButton,
     DeleteButton,
 } from 'react-admin';
-import { Tree, TreeShowLayout, TreeNodeActions } from 'ra-tree-ui-materialui';
+import { Tree, NodeView, NodeActions } from 'ra-tree-ui-materialui';
 
 const CategoriesActions = props => (
-    <TreeNodeActions {...props}>
+    <NodeActions {...props}>
         <EditButton />
         <DeleteButton />
-    </TreeNodeActions>
+    </NodeActions>
 );
 
 export const CategoriesList = (props) => (
     <List {...props}>
         <Tree>
-            <TreeShowLayout actions={<CategoriesActions />}>
+            <NodeView actions={<CategoriesActions />}>
                 <TextField source="name" />
-            </TreeShowLayout>
+            </NodeView>
         </Tree>
     </List>
 );
@@ -100,24 +100,24 @@ import {
     SaveButton,
     TextInput,
 } from 'react-admin';
-import { IgnoreFormProps, Tree, TreeForm, TreeNodeActions } from 'ra-tree-ui-materialui';
+import { IgnoreFormProps, Tree, NodeForm, NodeActions } from 'ra-tree-ui-materialui';
 
 const CategoriesActions = props => (
-    <TreeNodeActions {...props}>
+    <NodeActions {...props}>
         <SaveButton />
         <IgnoreFormProps> {/* This is important to not get warnings about unknown props with those buttons */}
             <EditButton />
             <DeleteButton />
         </IgnoreFormProps>
-    </TreeNodeActions>
+    </NodeActions>
 )
 
 const CategoriesList = () => (
     <List {...this.props}>
         <Tree>
-            <TreeForm actions={<CategoriesActions />}>
+            <NodeForm actions={<CategoriesActions />}>
                 <TextInput source="name" /> {/* Quick name edition */}
-            </TreeForm>
+            </NodeForm>
         </Tree>
     </List>
 );
@@ -169,15 +169,15 @@ The `Tree` component accepts the following props:
   - any additional props received by the `TreeController` component
 - `parentSource`: The field used as the parent identifier for each node. Defaults to `parent_id`
 
-### <TreeShowLayout>
+### <NodeView>
 
-The `TreeShowLayout` component accepts the following props:
+The `NodeView` component accepts the following props:
 
 - `actions`: A component displaying actions for each node
 
-### <TreeForm>
+### <NodeForm>
 
-The `TreeForm` component accepts the following props:
+The `NodeForm` component accepts the following props:
 
 - `actions`: A component displaying actions for each node
 - `submitOnEnter`: Enable or disable the automated form submission on enter
