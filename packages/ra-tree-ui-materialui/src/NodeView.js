@@ -48,7 +48,6 @@ export class NodeView extends Component {
             classes,
             node,
             resource,
-            ...props
         } = this.props;
 
         return (
@@ -64,7 +63,6 @@ export class NodeView extends Component {
                                   basePath: field.props.basePath || basePath,
                                   record: node.record,
                                   resource,
-                                  ...sanitizeRestProps(props),
                               })
                             : null
                 )}
@@ -73,7 +71,6 @@ export class NodeView extends Component {
                         basePath,
                         record: node.record,
                         resource,
-                        ...sanitizeRestProps(props),
                     })}
             </div>
         );

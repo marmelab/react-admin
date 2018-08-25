@@ -140,7 +140,6 @@ class NodeForm extends Component {
             resource,
             saving,
             submitOnEnter = true,
-            ...props
         } = this.props;
 
         return (
@@ -154,7 +153,6 @@ class NodeForm extends Component {
                                   onDrop: this.handleDrop,
                                   record: node.record,
                                   resource,
-                                  ...sanitizeRestProps(props),
                               })
                             : null
                 )}
@@ -169,7 +167,6 @@ class NodeForm extends Component {
                         pristine,
                         saving,
                         submitOnEnter,
-                        ...sanitizeRestProps(props),
                     })}
             </form>
         );
