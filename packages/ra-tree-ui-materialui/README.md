@@ -75,7 +75,7 @@ const CategoriesActions = props => (
 );
 
 export const CategoriesList = (props) => (
-    <List {...props}>
+    <List {...props} perPage={10000}>
         <Tree>
             <NodeView actions={<CategoriesActions />}>
                 <TextField source="name" />
@@ -85,7 +85,7 @@ export const CategoriesList = (props) => (
 );
 ```
 
-`react-admin` will fetch the data and the `Tree` component will build a tree from it. Note that every category which do not have a parent will be considered a root node.
+`react-admin` will fetch the data and the `Tree` component will build a tree from it. Note that every category which do not have a parent will be considered a root node. Note that we specified a very high `perPage` prop on the `List` component. Indeed, the `Tree` component needs the entire tree to work so you'll have to make sure your API returns all the required items.
 
 ## Editable
 
@@ -216,10 +216,11 @@ export default TagList;
 
 ## Roadmap
 
-* Support nested set hierarchical data
+* Support async fetch of nodes
 * `TreeSelectInput` to select a value inside the hierarchical data (with autocomplete showing the matched nodes)
 * `TreeInput` to edit a field containing hierarchical data as json
 * `TreeNodeField` to show a node and its hierarchie. It should recursively fetch the parents by default, allow a custom function to be supplied to fetch them in one call (`fetchHierarchy`) and fallback to a simple `depth` display (`--|--|--[NODE_LABEL]`) if a `depthSource` is supplied.
+* Support nested set hierarchical data
 
 ## License
 
