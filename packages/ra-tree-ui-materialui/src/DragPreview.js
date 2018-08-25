@@ -37,8 +37,6 @@ class DragPreview extends Component {
                         ? children({ node, translate })
                         : children
                     : translate('ra.tree.drag_preview', {
-                          _:
-                              'Node #%{id} |||| Node #%{id} with %{smart_count} children',
                           id: node.id,
                           smart_count: node.children.length,
                       })}

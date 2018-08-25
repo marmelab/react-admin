@@ -5,9 +5,9 @@ A Tree component with [material-ui](https://github.com/mui-org/material-ui) to u
 ## Installation
 
 ```sh
-npm install --save ra-tree-ui-materialui
+npm install --save ra-tree-ui-materialui ra-tree-language-english
 # or
-yarn add ra-tree-ui-materialui
+yarn add ra-tree-ui-materialui ra-tree-language-english
 ```
 
 ## Usage
@@ -30,22 +30,29 @@ With a `categories` ressource having this structure where a category may have a 
 ]
 ```
 
-First, you need to register the tree reducer:
+First, you need to register the tree reducer and the translations:
 
 ```js
 // in App.js
 import React from 'react';
-import { Admin, Resource } from 'react-admin';
+import { Admin, Resource, mergeTranslations } from 'react-admin';
 import { reducer as tree } from 'ra-tree-ui-materialui';
+import englishMessages from 'ra-language-english';
+import treeEnglishMessages from 'ra-tree-language-english';
 
 import dataProvider from './dataProvider';
 import posts from './posts';
 import tags from './tags';
 
+const messages = {
+    'en': mergeTranslations(englishMessages, treeEnglishMessages),
+};
+
 const App = () => (
     <Admin
         dataProvider={dataProvider}
         locale="en"
+        messages={messages}
         customReducers={{ tree }}
     >
         <Resource name="posts" {...posts} />
@@ -54,7 +61,7 @@ const App = () => (
 )
 ```
 
-Then, you can use the tree components:
+You can then use the tree components:
 
 ```js
 // in src/category/list.js

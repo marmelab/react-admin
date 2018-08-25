@@ -59,9 +59,7 @@ class RootDropTarget extends Component {
                 {connectDropTarget(
                     <div>
                         <Typography className={classes.text}>
-                            {translate('ra.tree.root_target', {
-                                _: 'Drop an item here to make it top level',
-                            })}
+                            {translate('ra.tree.root_target')}
                         </Typography>
                     </div>
                 )}
