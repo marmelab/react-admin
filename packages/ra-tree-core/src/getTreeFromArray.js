@@ -1,14 +1,17 @@
 import { arrayToTree } from 'performant-array-to-tree';
 
-const applyDepth = ({ children, ...node }, depth) => ({
+/**
+ * Recursivly create nodes.
+ */
+const createNode = ({ children, ...node }) => ({
     id: node.data.id,
     record: node.data,
-    depth,
-    children: children
-        ? children.map(child => applyDepth(child, depth + 1))
-        : [],
+    children: children ? children.map(child => createNode(child)) : [],
 });
 
+/**
+ * Recursivly add a parent property to every nodes so that they can a reference to their parent
+ */
 const applyParent = (node, parent) => ({
     ...node,
     children: node.children.map(child => applyParent(child, node)),
@@ -26,6 +29,6 @@ export default (data, parentSource) => {
         id: 'id',
         parentId: parentSource,
     })
-        .map(node => applyDepth(node, 1))
+        .map(node => createNode(node, 1))
         .map(node => applyParent(node, null));
 };
