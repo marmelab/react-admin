@@ -1,4 +1,4 @@
-import { TOGGLE_NODE } from '../actions';
+import { TOGGLE_NODE } from './actions';
 
 const initialState = {};
 
