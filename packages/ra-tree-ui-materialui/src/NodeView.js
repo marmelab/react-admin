@@ -48,12 +48,14 @@ export class NodeView extends Component {
             classes,
             node,
             resource,
+            ...props
         } = this.props;
 
         return (
             <div
                 className={classNames(CONTAINER_CLASS, classes.root)}
                 onClick={this.handleClick}
+                {...sanitizeRestProps(props)}
             >
                 {Children.map(
                     children,

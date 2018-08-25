@@ -140,10 +140,15 @@ class NodeForm extends Component {
             resource,
             saving,
             submitOnEnter = true,
+            ...props
         } = this.props;
 
         return (
-            <form className={classes.root} onClick={this.handleClick}>
+            <form
+                className={classes.root}
+                onClick={this.handleClick}
+                {...sanitizeRestProps(props)}
+            >
                 {Children.map(
                     children,
                     field =>
