@@ -1,14 +1,17 @@
+import { random, lorem } from 'faker';
 import subDays from 'date-fns/sub_days';
 import isAfter from 'date-fns/is_after';
 
-export default (db, chance, randomDate) => {
+import { randomDate, weightedArrayElement, weightedBoolean } from './utils';
+
+export default db => {
     const today = new Date();
     const aMonthAgo = subDays(today, 30);
 
     let id = 0;
     const reviewers = db.customers
         .filter(customer => customer.has_ordered)
-        .filter(() => chance.bool({ likelihood: 60 })) // only 60% of buyers write reviews
+        .filter(() => weightedBoolean(60)) // only 60% of buyers write reviews
         .map(customer => customer.id);
 
     return db.commands
@@ -17,12 +20,15 @@ export default (db, chance, randomDate) => {
             (acc, command) => [
                 ...acc,
                 ...command.basket
-                    .filter(() => chance.bool({ likelihood: 40 })) // reviewers review 40% of their products
+                    .filter(() => weightedBoolean(40)) // reviewers review 40% of their products
                     .map(product => {
                         const date = randomDate(command.date);
                         const status = isAfter(aMonthAgo, date)
-                            ? chance.weighted(['accepted', 'rejected'], [3, 1])
-                            : chance.weighted(
+                            ? weightedArrayElement(
+                                  ['accepted', 'rejected'],
+                                  [3, 1]
+                              )
+                            : weightedArrayElement(
                                   ['pending', 'accepted', 'rejected'],
                                   [5, 3, 1]
                               );
@@ -34,8 +40,8 @@ export default (db, chance, randomDate) => {
                             command_id: command.id,
                             product_id: product.product_id,
                             customer_id: command.customer_id,
-                            rating: chance.integer({ min: 1, max: 5 }),
-                            comment: chance.paragraph(),
+                            rating: random.number({ min: 1, max: 5 }),
+                            comment: lorem.paragraph(),
                         };
                     }),
             ],

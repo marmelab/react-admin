@@ -1,12 +1,16 @@
-export default (db, chance) => {
+import { random, lorem } from 'faker';
+
+import { randomFloat, weightedBoolean } from './utils';
+
+export default db => {
     let id = 0;
 
     return db.categories.reduce(
         (acc, category) => [
             ...acc,
             ...Array.from(Array(10).keys()).map(index => {
-                const width = chance.floating({ min: 10, max: 40, fixed: 2 });
-                const height = chance.floating({ min: 10, max: 40, fixed: 2 });
+                const width = randomFloat(10, 40);
+                const height = randomFloat(10, 40);
 
                 return {
                     id: id++,
@@ -14,22 +18,15 @@ export default (db, chance) => {
                     reference:
                         category.name.substr(0, 2) +
                         '-' +
-                        chance.string({
-                            length: 5,
-                            pool: 'abcdefghijklmnopqrstuvwxyz0123456789',
-                        }) +
+                        random.alphaNumeric(5) +
                         '-' +
-                        chance.string({
-                            length: 1,
-                            pool: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
-                        }),
+                        random.arrayElement('ABCDEFGHIJKLMNOPQRSTUVWXYZ'),
                     width: width,
                     height: height,
-                    price: chance.floating({
-                        min: (width * height) / 20,
-                        max: (width * height) / 15,
-                        fixed: 2,
-                    }),
+                    price: randomFloat(
+                        (width * height) / 20,
+                        (width * height) / 15
+                    ),
                     thumbnail:
                         'https://marmelab.com/posters/' +
                         category.name +
@@ -42,10 +39,10 @@ export default (db, chance) => {
                         '-' +
                         (index + 1) +
                         '.jpeg',
-                    description: chance.paragraph(),
-                    stock: chance.bool({ likelihood: 20 })
+                    description: lorem.paragraph(),
+                    stock: weightedBoolean(20)
                         ? 0
-                        : chance.integer({ min: 0, max: 250 }),
+                        : random.number({ min: 0, max: 250 }),
                 };
             }),
         ],
