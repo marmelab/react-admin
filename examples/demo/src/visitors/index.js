@@ -148,6 +148,7 @@ export const VisitorEdit = withStyles(editStyles)(({ classes, ...props }) => (
             <FormTab label="resources.customers.tabs.orders">
                 <ReferenceManyField
                     addLabel={false}
+                    sort={{ field: 'date', order: 'DESC' }}
                     reference="commands"
                     target="customer_id"
                 >
@@ -167,6 +168,7 @@ export const VisitorEdit = withStyles(editStyles)(({ classes, ...props }) => (
             <FormTab label="resources.customers.tabs.reviews">
                 <ReferenceManyField
                     addLabel={false}
+                    sort={{ field: 'date', order: 'DESC' }}
                     reference="reviews"
                     target="customer_id"
                 >
