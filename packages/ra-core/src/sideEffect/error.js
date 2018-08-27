@@ -5,7 +5,7 @@ import { showNotification } from '../actions/notificationActions';
 /**
  * Side effects for fetch responses
  *
- * Mostly corenr case handling
+ * Mostly corner case handling
  */
 function* handleResponse({ type, requestPayload, payload }) {
     switch (type) {
