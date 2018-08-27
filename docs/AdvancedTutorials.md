@@ -20,5 +20,5 @@ This tutorial is about how to have a create, show or edit view of a referenced r
 
 ![Screencast](https://marmelab.com/images/blog/react-admin/react-admin-tutorials-custom-forms-related-records-quick-preview.gif)
 
-* [Article](https://marmelab.com/blog/2018/07/03/react-admin-tutorials-custom-forms-related-records.html)
+* [Article](https://marmelab.com/blog/2018/08/27/react-admin-tutorials-custom-forms-related-records.html)
 * [Codesandbox](https://codesandbox.io/s/ypp9ljxqlj)
