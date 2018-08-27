@@ -41,7 +41,12 @@ export default db => {
                             product_id: product.product_id,
                             customer_id: command.customer_id,
                             rating: random.number({ min: 1, max: 5 }),
-                            comment: lorem.paragraph(),
+                            comment: Array.apply(
+                                null,
+                                Array(random.number({ min: 1, max: 5 }))
+                            )
+                                .map(() => lorem.sentences())
+                                .join('\n \r'),
                         };
                     }),
             ],
