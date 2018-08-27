@@ -58,8 +58,14 @@ const Toolbar = ({
                             button
                                 ? React.cloneElement(button, {
                                       basePath,
-                                      handleSubmit,
-                                      handleSubmitWithRedirect,
+                                      handleSubmit: valueOrDefault(
+                                          button.props.handleSubmit,
+                                          handleSubmit
+                                      ),
+                                      handleSubmitWithRedirect: valueOrDefault(
+                                          button.props.handleSubmitWithRedirect,
+                                          handleSubmitWithRedirect
+                                      ),
                                       invalid,
                                       pristine,
                                       saving,
