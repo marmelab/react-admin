@@ -1,4 +1,4 @@
-import faker from 'faker';
+import faker from 'faker/locale/en';
 
 export const weightedArrayElement = (values, weights) =>
     faker.random.arrayElement(

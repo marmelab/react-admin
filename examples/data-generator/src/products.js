@@ -1,4 +1,4 @@
-import { random, lorem } from 'faker';
+import { random, lorem } from 'faker/locale/en';
 
 import { randomFloat, weightedBoolean } from './utils';
 

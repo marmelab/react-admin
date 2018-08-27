@@ -1,4 +1,4 @@
-import { random, lorem } from 'faker';
+import { random, lorem } from 'faker/locale/en';
 import subDays from 'date-fns/sub_days';
 import isAfter from 'date-fns/is_after';
 
