@@ -49,12 +49,17 @@ const styles = theme => ({
         margin: 0,
         padding: 0,
     },
+    panelSummaryExpanded: {
+        margin: 0,
+    },
     panelSummaryContent: {
         alignItems: 'center',
         margin: 0,
-    },
-    panelSummaryExpanded: {
-        margin: '0 !important',
+
+        // JSS notation to reference another class (here panelSummaryExpanded)
+        '&$panelSummaryExpanded': {
+            margin: 0,
+        },
     },
     handle: {
         cursor: 'crosshair',
