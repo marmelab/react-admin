@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import Card from '@material-ui/core/Card';
 import Avatar from '@material-ui/core/Avatar';
 import { withStyles } from '@material-ui/core/styles';
-import LockIcon from '@material-ui/icons/LockOutline';
+import LockIcon from '@material-ui/icons/Lock';
 
 import defaultTheme from '../defaultTheme';
 import Notification from '../layout/Notification';
