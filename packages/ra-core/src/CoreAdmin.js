@@ -1,80 +1,90 @@
 import React, { createElement } from 'react';
 import PropTypes from 'prop-types';
-import { createStore, compose, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import createHistory from 'history/createHashHistory';
 import { Switch, Route } from 'react-router-dom';
-import { ConnectedRouter, routerMiddleware } from 'react-router-redux';
-import createSagaMiddleware from 'redux-saga';
-import { all, fork } from 'redux-saga/effects';
+import { ConnectedRouter } from 'react-router-redux';
 import withContext from 'recompose/withContext';
 
-import { USER_LOGOUT } from './actions/authActions';
-
-import createAppReducer from './reducer';
-import { adminSaga } from './sideEffect';
-import { TranslationProvider, defaultI18nProvider } from './i18n';
-import formMiddleware from './form/formMiddleware';
+import createAdminStore from './createAdminStore';
+import TranslationProvider from './i18n/TranslationProvider';
 import CoreAdminRouter from './CoreAdminRouter';
 
-const CoreAdmin = ({
-    appLayout,
-    authProvider,
-    children,
-    customReducers = {},
-    customSagas = [],
-    customRoutes = [],
-    dashboard,
-    history,
-    menu, // deprecated, use a custom layout instead
-    catchAll,
-    dataProvider,
-    i18nProvider = defaultI18nProvider,
-    theme,
-    title = 'React Admin',
-    loading,
-    loginPage,
-    logoutButton,
-    initialState,
-    locale = 'en',
-}) => {
-    const messages = i18nProvider(locale);
-    const appReducer = createAppReducer(customReducers, locale, messages);
+const componentPropType = PropTypes.oneOfType([
+    PropTypes.func,
+    PropTypes.string,
+]);
 
-    const resettableAppReducer = (state, action) =>
-        appReducer(action.type !== USER_LOGOUT ? state : undefined, action);
-    const saga = function* rootSaga() {
-        yield all(
-            [
-                adminSaga(dataProvider, authProvider, i18nProvider),
-                ...customSagas,
-            ].map(fork)
-        );
+class CoreAdmin extends React.Component {
+    static propTypes = {
+        appLayout: componentPropType,
+        authProvider: PropTypes.func,
+        children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
+        catchAll: componentPropType,
+        customSagas: PropTypes.array,
+        customReducers: PropTypes.object,
+        customRoutes: PropTypes.array,
+        dashboard: componentPropType,
+        dataProvider: PropTypes.func,
+        history: PropTypes.object,
+        i18nProvider: PropTypes.func,
+        initialState: PropTypes.object,
+        loading: componentPropType,
+        locale: PropTypes.string,
+        loginPage: componentPropType,
+        logoutButton: componentPropType,
+        menu: componentPropType,
+        theme: PropTypes.object,
+        title: PropTypes.node,
     };
-    const sagaMiddleware = createSagaMiddleware();
-    const routerHistory = history || createHistory();
-    const store = createStore(
-        resettableAppReducer,
-        initialState,
-        compose(
-            applyMiddleware(
-                sagaMiddleware,
-                routerMiddleware(routerHistory),
-                formMiddleware
-            ),
-            typeof window !== 'undefined' && window.devToolsExtension
-                ? window.devToolsExtension()
-                : f => f
-        )
-    );
-    sagaMiddleware.run(saga);
 
-    const logout = authProvider ? createElement(logoutButton) : null;
+    static contextTypes = {
+        store: PropTypes.object,
+    };
 
-    return (
-        <Provider store={store}>
+    reduxIsAlreadyInitialized = false;
+    history = null;
+
+    constructor(props, context) {
+        super(props, context);
+        if (context.store) {
+            this.reduxIsAlreadyInitialized = true;
+            if (!props.history) {
+                throw new Error(`Missing history prop.
+When integrating react-admin inside an existing redux Provider, you must provide the same 'history' prop to the <Admin> as the one used to bootstrap your routerMiddleware.
+React-admin uses this history for its own ConnectedRouter.`);
+            }
+            this.history = props.history;
+        } else {
+            if (!props.dataProvider) {
+                throw new Error(`Missing dataProvider prop.
+React-admin requires a valid dataProvider function to work.`);
+            }
+            this.history = props.history || createHistory();
+        }
+    }
+
+    renderCore() {
+        const {
+            appLayout,
+            authProvider,
+            children,
+            customRoutes = [],
+            dashboard,
+            menu, // deprecated, use a custom layout instead
+            catchAll,
+            theme,
+            title = 'React Admin',
+            loading,
+            loginPage,
+            logoutButton,
+        } = this.props;
+
+        const logout = authProvider ? createElement(logoutButton) : null;
+
+        return (
             <TranslationProvider>
-                <ConnectedRouter history={routerHistory}>
+                <ConnectedRouter history={this.history}>
                     <Switch>
                         <Route
                             exact
@@ -109,36 +119,24 @@ const CoreAdmin = ({
                     </Switch>
                 </ConnectedRouter>
             </TranslationProvider>
-        </Provider>
-    );
-};
+        );
+    }
 
-const componentPropType = PropTypes.oneOfType([
-    PropTypes.func,
-    PropTypes.string,
-]);
-
-CoreAdmin.propTypes = {
-    appLayout: componentPropType,
-    authProvider: PropTypes.func,
-    children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
-    catchAll: componentPropType,
-    customSagas: PropTypes.array,
-    customReducers: PropTypes.object,
-    customRoutes: PropTypes.array,
-    dashboard: componentPropType,
-    dataProvider: PropTypes.func.isRequired,
-    history: PropTypes.object,
-    i18nProvider: PropTypes.func,
-    initialState: PropTypes.object,
-    loading: componentPropType,
-    locale: PropTypes.string,
-    loginPage: componentPropType,
-    logoutButton: componentPropType,
-    menu: componentPropType,
-    theme: PropTypes.object,
-    title: PropTypes.node,
-};
+    render() {
+        return this.reduxIsAlreadyInitialized ? (
+            this.renderCore()
+        ) : (
+            <Provider
+                store={createAdminStore({
+                    ...this.props,
+                    history: this.history,
+                })}
+            >
+                {this.renderCore()}
+            </Provider>
+        );
+    }
+}
 
 export default withContext(
     {

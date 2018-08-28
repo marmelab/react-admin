@@ -4,24 +4,32 @@ import PropTypes from 'prop-types';
 import Card from '@material-ui/core/Card';
 import classnames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
-
-import Header from '../layout/Header';
-import Title from '../layout/Title';
-import DefaultPagination from './Pagination';
-import DefaultBulkActions from './BulkActions';
-import DefaultActions from './ListActions';
 import { ListController, getListControllerProps } from 'ra-core';
+
+import Title from '../layout/Title';
+import ListToolbar from './ListToolbar';
+import DefaultPagination from './Pagination';
+import DefaultBulkActionButtons from '../button/BulkDeleteButton';
+import BulkActionsToolbar from './BulkActionsToolbar';
+import DefaultActions from './ListActions';
 import defaultTheme from '../defaultTheme';
 
 const styles = {
     root: {},
+    card: {
+        position: 'relative',
+    },
     actions: {
         zIndex: 2,
         display: 'flex',
         justifyContent: 'flex-end',
         flexWrap: 'wrap',
     },
-    header: {},
+    header: {
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignSelf: 'flex-start',
+    },
     noResults: { padding: 20 },
 };
 
@@ -88,7 +96,8 @@ export const ListView = ({
     // component props
     actions = <DefaultActions />,
     filters,
-    bulkActions = <DefaultBulkActions />,
+    bulkActions, // deprecated
+    bulkActionButtons = <DefaultBulkActionButtons />,
     pagination = <DefaultPagination />,
     // overridable by user
     children,
@@ -100,34 +109,38 @@ export const ListView = ({
 }) => {
     const { defaultTitle, version } = rest;
     const controllerProps = getListControllerProps(rest);
-    const titleElement = <Title title={title} defaultTitle={defaultTitle} />;
+
     return (
         <div
             className={classnames('list-page', classes.root, className)}
             {...sanitizeRestProps(rest)}
         >
-            <Card>
-                <Header
-                    className={classes.header}
-                    title={titleElement}
-                    actions={React.cloneElement(actions, {
-                        ...controllerProps,
-                        className: classes.actions,
-                        bulkActions,
-                        exporter,
-                        filters,
-                    })}
-                />
-                {filters &&
-                    React.cloneElement(filters, {
-                        ...controllerProps,
-                        context: 'form',
-                    })}
+            <Title title={title} defaultTitle={defaultTitle} />
+            <Card className={classes.card}>
+                {bulkActions !== false &&
+                    bulkActionButtons !== false &&
+                    bulkActionButtons &&
+                    !bulkActions && (
+                        <BulkActionsToolbar {...controllerProps}>
+                            {bulkActionButtons}
+                        </BulkActionsToolbar>
+                    )}
+                {(filters || actions) && (
+                    <ListToolbar
+                        filters={filters}
+                        {...controllerProps}
+                        actions={actions}
+                        bulkActions={bulkActions}
+                        exporter={exporter}
+                    />
+                )}
                 <div key={version}>
                     {children &&
                         React.cloneElement(children, {
                             ...controllerProps,
-                            hasBulkActions: !!bulkActions,
+                            hasBulkActions:
+                                bulkActions !== false &&
+                                bulkActionButtons !== false,
                         })}
                     {pagination &&
                         React.cloneElement(pagination, controllerProps)}
@@ -141,6 +154,7 @@ ListView.propTypes = {
     actions: PropTypes.element,
     basePath: PropTypes.string,
     bulkActions: PropTypes.oneOfType([PropTypes.bool, PropTypes.element]),
+    bulkActionButtons: PropTypes.oneOfType([PropTypes.bool, PropTypes.element]),
     children: PropTypes.element,
     className: PropTypes.string,
     classes: PropTypes.object,

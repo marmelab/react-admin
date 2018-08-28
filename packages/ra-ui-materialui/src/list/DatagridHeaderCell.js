@@ -6,9 +6,23 @@ import compose from 'recompose/compose';
 import TableCell from '@material-ui/core/TableCell';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Tooltip from '@material-ui/core/Tooltip';
+import { withStyles } from '@material-ui/core/styles';
 import { FieldTitle, translate } from 'ra-core';
 
+// remove the sort icons when not active
+const styles = {
+    icon: {
+        display: 'none',
+    },
+    active: {
+        '& $icon': {
+            display: 'inline',
+        },
+    },
+};
+
 export const DatagridHeaderCell = ({
+    classes,
     className,
     field,
     currentSort,
@@ -44,6 +58,7 @@ export const DatagridHeaderCell = ({
                     direction={currentSort.order === 'ASC' ? 'asc' : 'desc'}
                     data-sort={field.props.sortBy || field.props.source}
                     onClick={updateSort}
+                    classes={classes}
                 >
                     <FieldTitle
                         label={field.props.label}
@@ -63,6 +78,7 @@ export const DatagridHeaderCell = ({
 );
 
 DatagridHeaderCell.propTypes = {
+    classes: PropTypes.object,
     className: PropTypes.string,
     field: PropTypes.element,
     currentSort: PropTypes.shape({
@@ -83,7 +99,8 @@ const enhance = compose(
             (nextProps.isSorting &&
                 props.currentSort.order !== nextProps.currentSort.order)
     ),
-    translate
+    translate,
+    withStyles(styles)
 );
 
 export default enhance(DatagridHeaderCell);

@@ -40,6 +40,7 @@ const Menu = ({
     dense,
     hasDashboard,
     onMenuClick,
+    open,
     pathname,
     resources,
     translate,
@@ -73,6 +74,7 @@ Menu.propTypes = {
     hasDashboard: PropTypes.bool,
     logout: PropTypes.element,
     onMenuClick: PropTypes.func,
+    open: PropTypes.bool,
     pathname: PropTypes.string,
     resources: PropTypes.array.isRequired,
     translate: PropTypes.func.isRequired,
@@ -83,6 +85,7 @@ Menu.defaultProps = {
 };
 
 const mapStateToProps = state => ({
+    open: state.admin.ui.sidebarOpen,
     resources: getResources(state),
     pathname: state.routing.location.pathname, // used to force redraw on navigation
 });
@@ -97,7 +100,9 @@ const enhance = compose(
             areStatePropsEqual: (prev, next) =>
                 prev.resources.every(
                     (value, index) => value === next.resources[index] // shallow compare resources
-                ) && prev.pathname == next.pathname,
+                ) &&
+                prev.pathname == next.pathname &&
+                prev.open == next.open,
         }
     ),
     withStyles(styles)

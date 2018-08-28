@@ -1,4 +1,4 @@
-import React, { cloneElement } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
@@ -8,19 +8,15 @@ import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
+import withWidth from '@material-ui/core/withWidth';
 import compose from 'recompose/compose';
 import { toggleSidebar as toggleSidebarAction } from 'ra-core';
 
 import LoadingIndicator from './LoadingIndicator';
+import UserMenu from './UserMenu';
+import Headroom from './Headroom';
 
 const styles = theme => ({
-    appBar: {
-        transition: theme.transitions.create(['margin', 'width'], {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.leavingScreen,
-        }),
-        zIndex: 1300,
-    },
     toolbar: {
         paddingRight: 24,
     },
@@ -44,70 +40,64 @@ const styles = theme => ({
     },
     title: {
         flex: 1,
-    },
-    loadingIndicator: {
-        position: 'absolute',
-        top: 0,
-        right: 0,
-        left: 0,
-        zIndex: 1200,
-        marginBottom: 14,
-        marginTop: 14,
-        marginLeft: 'auto',
-        marginRight: 'auto',
-    },
-    logout: {
-        color: theme.palette.secondary.contrastText,
+        textOverflow: 'ellipsis',
+        whiteSpace: 'nowrap',
+        overflow: 'hidden',
     },
 });
 
 const AppBar = ({
+    children,
     classes,
     className,
     logout,
     open,
     title,
     toggleSidebar,
+    width,
     ...rest
 }) => (
-    <MuiAppBar
-        className={classNames(classes.appBar, className)}
-        color="secondary"
-        position="absolute"
-        {...rest}
-    >
-        <Toolbar disableGutters variant="dense" className={classes.toolbar}>
-            <IconButton
-                color="inherit"
-                aria-label="open drawer"
-                onClick={toggleSidebar}
-                className={classNames(classes.menuButton)}
+    <Headroom>
+        <MuiAppBar
+            className={className}
+            color="secondary"
+            position="static"
+            {...rest}
+        >
+            <Toolbar
+                disableGutters
+                variant={width === 'xs' ? 'regular' : 'dense'}
+                className={classes.toolbar}
             >
-                <MenuIcon
-                    classes={{
-                        root: open
-                            ? classes.menuButtonIconOpen
-                            : classes.menuButtonIconClosed,
-                    }}
+                <IconButton
+                    color="inherit"
+                    aria-label="open drawer"
+                    onClick={toggleSidebar}
+                    className={classNames(classes.menuButton)}
+                >
+                    <MenuIcon
+                        classes={{
+                            root: open
+                                ? classes.menuButtonIconOpen
+                                : classes.menuButtonIconClosed,
+                        }}
+                    />
+                </IconButton>
+                <Typography
+                    variant="title"
+                    color="inherit"
+                    className={classes.title}
+                    id="react-admin-title"
                 />
-            </IconButton>
-            <Typography
-                variant="title"
-                color="inherit"
-                className={classes.title}
-            >
-                {typeof title === 'string' ? title : React.cloneElement(title)}
-            </Typography>
-            {logout &&
-                cloneElement(logout, {
-                    className: classes.logout,
-                })}
-        </Toolbar>
-        <LoadingIndicator className={classes.loadingIndicator} />
-    </MuiAppBar>
+                <LoadingIndicator />
+                {logout && <UserMenu logout={logout}>{children}</UserMenu>}
+            </Toolbar>
+        </MuiAppBar>
+    </Headroom>
 );
 
 AppBar.propTypes = {
+    children: PropTypes.node,
     classes: PropTypes.object,
     className: PropTypes.string,
     logout: PropTypes.element,
@@ -115,6 +105,7 @@ AppBar.propTypes = {
     title: PropTypes.oneOfType([PropTypes.string, PropTypes.element])
         .isRequired,
     toggleSidebar: PropTypes.func.isRequired,
+    width: PropTypes.string,
 };
 
 const enhance = compose(
@@ -126,7 +117,8 @@ const enhance = compose(
             toggleSidebar: toggleSidebarAction,
         }
     ),
-    withStyles(styles)
+    withStyles(styles),
+    withWidth()
 );
 
 export default enhance(AppBar);

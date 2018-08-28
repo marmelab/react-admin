@@ -1284,6 +1284,44 @@ const OrderEdit = (props) => (
 ); 
 ```
 
+**Tip**: When using a `FormDataConsumer` inside an `ArrayInput`, the `FormDataConsumer` will provide two additional properties to its children function:
+
+- `scopedFormData`: an object containing the current values of the currently rendered item from the `ArrayInput`
+- `getSource`: a function which will translate the source into a valid one for the `ArrayInput`
+
+```jsx
+import { FormDataConsumer } from 'react-admin';
+
+const PostEdit = (props) => (
+    <Edit {...props}>
+        <SimpleForm>
+            <ArrayInput source="authors">
+                <SimpleFormIterator>
+                    <TextInput source="name" />
+
+                    <FormDataConsumer>
+                        {({
+                            formData, // The whole form data
+                            scopedFormData, // The data for this item of the ArrayInput
+                            getSource, // A function to get the valid source inside an ArrayInput
+                            ...rest,
+                        }) =>
+                            scopedFormData.name ? (
+                                <SelectInput
+                                    source={getSource('role')} // Will translate to "authors[0].role"
+                                    choices={['main', 'coauthor']}
+                                    {...rest}
+                                />
+                            ) : null
+                        }
+                    </FormDataConsumer>
+                </SimpleFormIterator>
+            </ArrayInput>
+        </SimpleForm>
+    </Edit>
+);
+```
+
 ## Hiding Inputs Based On Other Inputs
 
 You may want to display or hide inputs base on the value of another input - for instance, show an `email` input only if the `hasEmail` boolean input is ticked to `true`.

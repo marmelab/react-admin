@@ -8,7 +8,6 @@ import {
     createMuiTheme,
     withStyles,
 } from '@material-ui/core/styles';
-import Hidden from '@material-ui/core/Hidden';
 import compose from 'recompose/compose';
 
 import AppBar from './AppBar';
@@ -30,7 +29,6 @@ const styles = theme => ({
     appFrame: {
         display: 'flex',
         flexDirection: 'column',
-        overflowX: 'auto',
     },
     contentWithSidebar: {
         display: 'flex',
@@ -42,14 +40,10 @@ const styles = theme => ({
         flexGrow: 2,
         padding: theme.spacing.unit * 3,
         [theme.breakpoints.up('xs')]: {
-            marginTop: '3em',
             paddingLeft: 5,
         },
         [theme.breakpoints.down('sm')]: {
             padding: 0,
-        },
-        [theme.breakpoints.down('xs')]: {
-            marginTop: '3.5em',
         },
     },
 });
@@ -106,9 +100,7 @@ class Layout extends Component {
                 {...sanitizeRestProps(props)}
             >
                 <div className={classes.appFrame}>
-                    <Hidden xsDown>
-                        {createElement(appBar, { title, open, logout })}
-                    </Hidden>
+                    {createElement(appBar, { title, open, logout })}
                     <main className={classes.contentWithSidebar}>
                         <Sidebar>
                             {createElement(menu, {
@@ -121,6 +113,7 @@ class Layout extends Component {
                                 ? createElement(error, {
                                       error: errorMessage,
                                       errorInfo,
+                                      title,
                                   })
                                 : children}
                         </div>

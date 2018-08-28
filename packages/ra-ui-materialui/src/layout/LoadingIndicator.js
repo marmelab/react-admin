@@ -6,9 +6,11 @@ import { withStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import compose from 'recompose/compose';
 
+import RefreshIconButton from '../button/RefreshIconButton';
+
 const styles = {
     loader: {
-        margin: 16,
+        margin: 14,
     },
 };
 
@@ -17,11 +19,13 @@ export const LoadingIndicator = ({ classes, className, isLoading, ...rest }) =>
         <CircularProgress
             className={classNames('app-loader', classes.loader, className)}
             color="inherit"
-            size={20}
-            thickness={4}
+            size={18}
+            thickness={5}
             {...rest}
         />
-    ) : null;
+    ) : (
+        <RefreshIconButton />
+    );
 
 LoadingIndicator.propTypes = {
     classes: PropTypes.object,

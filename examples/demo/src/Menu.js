@@ -26,17 +26,8 @@ const items = [
     { name: 'reviews', icon: <ReviewIcon /> },
 ];
 
-const styles = {
-    main: {
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'flex-start',
-        height: '100%',
-    },
-};
-
 const Menu = ({ onMenuClick, translate, logout }) => (
-    <div style={styles.main}>
+    <div>
         <DashboardMenuItem onClick={onMenuClick} />
         {items.map(item => (
             <MenuItemLink
@@ -49,11 +40,16 @@ const Menu = ({ onMenuClick, translate, logout }) => (
                 onClick={onMenuClick}
             />
         ))}
-        <MenuItemLink
-            to="/configuration"
-            primaryText={translate('pos.configuration')}
-            leftIcon={<SettingsIcon />}
-            onClick={onMenuClick}
+        <Responsive
+            xsmall={
+                <MenuItemLink
+                    to="/configuration"
+                    primaryText={translate('pos.configuration')}
+                    leftIcon={<SettingsIcon />}
+                    onClick={onMenuClick}
+                />
+            }
+            medium={null}
         />
         <Responsive xsmall={logout} medium={null} />
     </div>

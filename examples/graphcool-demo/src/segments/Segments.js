@@ -5,13 +5,13 @@ import TableBody from '@material-ui/core/TableBody';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
-import { translate, ViewTitle } from 'react-admin';
+import { translate, Title } from 'react-admin';
 
 import LinkToRelatedCustomers from './LinkToRelatedCustomers';
 
 export default translate(({ translate }) => (
     <Card>
-        <ViewTitle title={translate('resources.segments.name')} />
+        <Title title={translate('resources.segments.name')} />
         <Table>
             <TableHead>
                 <TableRow>

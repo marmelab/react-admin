@@ -1,4 +1,6 @@
-export default function(db, chance) {
+import { weightedBoolean } from './utils';
+
+export default function(db) {
     // set latest purchase date
     db.commands.forEach(command => {
         let customer = db.customers[command.customer_id];
@@ -38,7 +40,7 @@ export default function(db, chance) {
 
     // add 'regular' group
     db.customers
-        .filter(() => chance.bool({ likelihood: 20 }))
+        .filter(() => weightedBoolean(20))
         .forEach(customer => customer.groups.push('regular'));
 
     // add 'returns' group

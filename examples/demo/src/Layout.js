@@ -1,5 +1,9 @@
+import React from 'react';
 import { connect } from 'react-redux';
 import { Layout } from 'react-admin';
+import AppBar from './AppBar';
+
+const CustomLayout = props => <Layout appBar={AppBar} {...props} />;
 
 const darkTheme = {
     palette: {
@@ -23,4 +27,4 @@ export default connect(
         theme: state.theme === 'dark' ? darkTheme : lightTheme,
     }),
     {}
-)(Layout);
+)(CustomLayout);

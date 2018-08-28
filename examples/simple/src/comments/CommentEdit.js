@@ -13,6 +13,7 @@ import {
     ReferenceInput,
     SimpleForm,
     TextInput,
+    Title,
     minLength,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
 
@@ -25,12 +26,8 @@ const LinkToRelatedPost = ({ record }) => (
 );
 
 const editStyles = {
-    header: {
-        display: 'flex',
-        justifyContent: 'space-between',
-    },
     actions: {
-        height: 'auto',
+        float: 'right',
     },
     card: {
         marginTop: '1em',
@@ -42,17 +39,14 @@ const CommentEdit = withStyles(editStyles)(({ classes, ...props }) => (
     <EditController {...props}>
         {({ resource, record, redirect, save, basePath, version }) => (
             <div className="edit-page">
-                <div className={classes.header}>
-                    <Typography variant="headline">
-                        Comment #{record && record.id}
-                    </Typography>
+                <Title defaultTitle={`Comment #${record ? record.id : ''}`} />
+                <div className={classes.actions}>
                     <EditActions
                         basePath={basePath}
                         resource={resource}
                         data={record}
                         hasShow
                         hasList
-                        className={classes.actions}
                     />
                 </div>
                 <Card className={classes.card}>

@@ -23,8 +23,8 @@ const styles = theme => ({
             duration: theme.transitions.duration.leavingScreen,
         }),
         backgroundColor: 'transparent',
+        marginTop: '0.5em',
         borderRight: 'none',
-        marginTop: '3.5em',
         [theme.breakpoints.only('xs')]: {
             marginTop: 0,
             height: '100vh',
@@ -33,7 +33,7 @@ const styles = theme => ({
         },
         [theme.breakpoints.up('md')]: {
             border: 'none',
-            marginTop: '4.5em',
+            marginTop: '1.5em',
         },
     },
     drawerPaperClose: {
@@ -114,9 +114,7 @@ class Sidebar extends PureComponent {
                         onClose={this.toggleSidebar}
                         {...rest}
                     >
-                        {React.cloneElement(children, {
-                            dense: true,
-                        })}
+                        {React.cloneElement(children, { dense: true })}
                     </Drawer>
                 }
             />
