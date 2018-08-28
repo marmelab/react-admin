@@ -8,6 +8,7 @@ describe('Edit Page', () => {
 
     describe('Title', () => {
         it('should show the correct title in the appBar', () => {
+            EditPostPage.navigate();
             cy.get(EditPostPage.elements.title).contains(
                 'Post "Sed quo et et fugiat modi"'
             );

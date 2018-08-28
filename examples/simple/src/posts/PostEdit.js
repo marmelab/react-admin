@@ -52,7 +52,6 @@ const EditActions = ({
             basePath={basePath}
             record={data}
         />
-        <DeleteButton basePath={basePath} record={data} resource={resource} />
         <RefreshButton />
     </CardActions>
 );
