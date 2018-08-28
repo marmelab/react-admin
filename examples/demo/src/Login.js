@@ -11,7 +11,7 @@ import CardActions from '@material-ui/core/CardActions';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import TextField from '@material-ui/core/TextField';
 import { withStyles } from '@material-ui/core/styles';
-import LockIcon from '@material-ui/icons/LockOutline';
+import LockIcon from '@material-ui/icons/Lock';
 
 import { Notification, translate, userLogin } from 'react-admin';
 
