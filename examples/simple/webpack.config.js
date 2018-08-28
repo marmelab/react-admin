@@ -82,6 +82,20 @@ module.exports = {
                 'ra-tree-ui-materialui',
                 'src'
             ),
+            'ra-tree-language-english': path.join(
+                __dirname,
+                '..',
+                '..',
+                'packages',
+                'ra-tree-language-english'
+            ),
+            'ra-tree-language-french': path.join(
+                __dirname,
+                '..',
+                '..',
+                'packages',
+                'ra-tree-language-french'
+            ),
         },
     },
     devServer: {
