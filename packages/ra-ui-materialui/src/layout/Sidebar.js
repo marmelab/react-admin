@@ -55,6 +55,7 @@ class Sidebar extends PureComponent {
         const {
             children,
             classes,
+            closedSize,
             open,
             setSidebarVisibility,
             size,
@@ -87,7 +88,7 @@ class Sidebar extends PureComponent {
                         PaperProps={{
                             className: classes.drawerPaper,
                             style: {
-                                width: open ? size : CLOSED_DRAWER_WIDTH,
+                                width: open ? size : closedSize,
                             },
                         }}
                         onClose={this.toggleSidebar}
@@ -106,7 +107,7 @@ class Sidebar extends PureComponent {
                         PaperProps={{
                             className: classes.drawerPaper,
                             style: {
-                                width: open ? size : CLOSED_DRAWER_WIDTH,
+                                width: open ? size : closedSize,
                             },
                         }}
                         onClose={this.toggleSidebar}
@@ -123,6 +124,7 @@ class Sidebar extends PureComponent {
 Sidebar.propTypes = {
     children: PropTypes.node.isRequired,
     classes: PropTypes.object,
+    closedSize: PropTypes.number,
     open: PropTypes.bool.isRequired,
     setSidebarVisibility: PropTypes.func.isRequired,
     size: PropTypes.number,
@@ -131,6 +133,7 @@ Sidebar.propTypes = {
 
 Sidebar.defaultProps = {
     size: DRAWER_WIDTH,
+    closedSize: CLOSED_DRAWER_WIDTH,
 };
 
 const mapStateToProps = state => ({
