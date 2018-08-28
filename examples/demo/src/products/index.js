@@ -30,9 +30,17 @@ import Poster from './Poster';
 
 export const ProductIcon = Icon;
 
-const QuickFilter = translate(({ label, translate }) => (
-    <Chip>{translate(label)}</Chip>
-));
+const quickFilterStyles = {
+    root: {
+        marginBottom: '0.7em',
+    },
+};
+
+const QuickFilter = translate(
+    withStyles(quickFilterStyles)(({ classes, label, translate }) => (
+        <Chip className={classes.root} label={translate(label)} />
+    ))
+);
 
 export const ProductFilter = props => (
     <Filter {...props}>
