@@ -9,8 +9,6 @@ export default locale => {
         return messages[locale]();
     }
 
-    console.log({ englishMessages });
-
     // Always fallback on english
     return englishMessages;
 };
