@@ -153,7 +153,9 @@ import { Tree } from 'ra-tree-ui-materialui';
 export const CategoriesList = (props) => (
     <List {...props}>
         <Tree allowDropOnRoot enableDragAndDrop>
-            <TextField source="name" />
+            <NodeView>
+                <TextField source="name" />
+            </NodeView>
         </Tree>
     </List>
 );
@@ -215,7 +217,9 @@ const TagList = props => (
             enableDragAndDrop
             dragPreviewComponent={TagDragPreview}
         >
-            <TextField source="name" />
+            <NodeView>
+                <TextField source="name" />
+            </NodeView>
         </TreeShow>
     </List>
 );
