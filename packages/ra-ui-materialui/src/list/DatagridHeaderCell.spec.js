@@ -24,7 +24,19 @@ describe('<DatagridHeaderCell />', () => {
             assert.equal(wrapper.find('WithStyles(TableSortLabel)').length, 1);
         });
 
-        it('should be disabled when field has no source', () => {
+        it('should be enabled when field has a sortBy props', () => {
+            const wrapper = shallow(
+                <DatagridHeaderCell
+                    currentSort={{}}
+                    field={<Field sortBy="title" />}
+                    updateSort={() => true}
+                    translate={() => ''}
+                />
+            );
+            assert.equal(wrapper.find('WithStyles(TableSortLabel)').length, 1);
+        });
+
+        it('should be disabled when field has no sortby and no source', () => {
             const wrapper = shallow(
                 <DatagridHeaderCell
                     currentSort={{}}

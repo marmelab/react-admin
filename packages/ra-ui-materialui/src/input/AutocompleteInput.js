@@ -169,9 +169,11 @@ export class AutocompleteInput extends React.Component {
             typeof optionText === 'function'
                 ? optionText(suggestion)
                 : get(suggestion, optionText);
+
+        // We explicitly call toString here because AutoSuggest expect a string
         return translateChoice
-            ? translate(suggestionLabel, { _: suggestionLabel })
-            : suggestionLabel;
+            ? translate(suggestionLabel, { _: suggestionLabel }).toString()
+            : suggestionLabel.toString();
     };
 
     handleSuggestionSelected = (event, { suggestion, method }) => {
@@ -314,10 +316,18 @@ export class AutocompleteInput extends React.Component {
     };
 
     renderSuggestionsContainer = options => {
-        const { containerProps, children } = options;
+        const {
+            containerProps: { className, ...containerProps },
+            children,
+        } = options;
 
         return (
-            <Popper open anchorEl={this.inputEl} placement="bottom-start">
+            <Popper
+                className={className}
+                open
+                anchorEl={this.inputEl}
+                placement="bottom-start"
+            >
                 <Paper square {...containerProps}>
                     {children}
                 </Paper>

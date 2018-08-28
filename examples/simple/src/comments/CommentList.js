@@ -103,6 +103,9 @@ const listStyles = theme => ({
         ...theme.typography.body1,
         flexGrow: 1,
     },
+    cardLinkLink: {
+        display: 'inline',
+    },
     cardActions: {
         justifyContent: 'flex-end',
     },
@@ -146,7 +149,10 @@ const CommentGrid = withStyles(listStyles)(
                                 reference="posts"
                                 basePath={basePath}
                             >
-                                <TextField source="title" />
+                                <TextField
+                                    source="title"
+                                    className={classes.cardLinkLink}
+                                />
                             </ReferenceField>
                         </CardContent>
                         <CardActions className={classes.cardActions}>

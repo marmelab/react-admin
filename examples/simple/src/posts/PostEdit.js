@@ -9,7 +9,13 @@ import {
     DateInput,
     DisabledInput,
     Edit,
+    CardActions,
+    CloneButton,
+    RefreshButton,
+    DeleteButton,
+    ShowButton,
     EditButton,
+    ListButton,
     FormTab,
     ImageField,
     ImageInput,
@@ -29,8 +35,30 @@ import {
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
 import PostTitle from './PostTitle';
 
+const EditActions = ({
+    basePath,
+    className,
+    data,
+    hasShow,
+    hasList,
+    resource,
+    ...rest
+}) => (
+    <CardActions className={className} {...rest}>
+        {hasShow && <ShowButton basePath={basePath} record={data} />}
+        {hasList && <ListButton basePath={basePath} />}
+        <CloneButton
+            className="button-clone"
+            basePath={basePath}
+            record={data}
+        />
+        <DeleteButton basePath={basePath} record={data} resource={resource} />
+        <RefreshButton />
+    </CardActions>
+);
+
 const PostEdit = props => (
-    <Edit title={<PostTitle />} {...props}>
+    <Edit title={<PostTitle />} actions={<EditActions />} {...props}>
         <TabbedForm defaultValue={{ average_note: 0 }}>
             <FormTab label="post.form.summary">
                 <DisabledInput source="id" />

@@ -5,7 +5,7 @@ title: "The List View"
 
 # The List View
 
-The List view displays a list of records fetched from the REST API. The entry point for this view is the `<List>` component, which takes care of fetching the data. Then, it passes the data to an iterator view - usually `<Datagrid>`, which then delegates the rendering of each record property to [`<Field>`](./Fields.html) components.
+The List view displays a list of records fetched from the REST API. The entry point for this view is the `<List>` component, which takes care of fetching the data. Then, it passes the data to an iterator view - usually `<Datagrid>`, which then delegates the rendering of each record property to [`<Field>`](./Fields.md) components.
 
 ![The List View](./img/list-view.png)
 
@@ -207,7 +207,7 @@ const CommentList = props => (
 
 Under the hood, `fetchRelatedRecords()` uses react-admin's sagas, which trigger the loading spinner while loading. As a bonus, all the records fetched during an export are kepts in the main Redux store, so further browsing the admin will be accelerated.
 
-**Tip**: If you need to call another `dataProvider` verb in the exporter, take advantage of the third parameter passed to the function: `dispatch()`. It allows you to call any Redux action. Combine it with [the `callback` side effect](./Actions.html#custom-sagas) to grab the result in a callback.
+**Tip**: If you need to call another `dataProvider` verb in the exporter, take advantage of the third parameter passed to the function: `dispatch()`. It allows you to call any Redux action. Combine it with [the `callback` side effect](./Actions.md#custom-sagas) to grab the result in a callback.
 
 **Tip**: The `<ExportButton>` limits the main request to the `dataProvider` to 1,000 records. If you want to increase or decrease this limit, pass a `maxResults` prop to the `<ExportButton>` in a custom `<ListActions>` component, as explained in the previous section.
 

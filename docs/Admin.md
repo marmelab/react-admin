@@ -65,7 +65,7 @@ The only required prop, it must be a function returning a promise, with the foll
 const dataProvider = (type, resource, params) => new Promise();
 ```
 
-The `dataProvider` is also the ideal place to add custom HTTP headers, authentication, etc. The [Data Providers Chapter](./DataProviders.html) of the documentation lists available data providers, and explains how to build your own.
+The `dataProvider` is also the ideal place to add custom HTTP headers, authentication, etc. The [Data Providers Chapter](./DataProviders.md) of the documentation lists available data providers, and explains how to build your own.
 
 ## `title`
 
@@ -214,7 +214,7 @@ const App = () => (
 );
 ```
 
-See the [Theming documentation](./Theming.html#using-a-custom-menu) for more details.
+See the [Theming documentation](./Theming.md#using-a-custom-menu) for more details.
 
 ## `theme`
 
@@ -244,7 +244,7 @@ For more details on predefined themes and custom themes, refer to the [Material 
 
 If you want to deeply customize the app header, the menu, or the notifications, the best way is to provide a custom layout component. It must contain a `{children}` placeholder, where react-admin will render the resources. If you use material UI fields and inputs, it should contain a `<MuiThemeProvider>` element. And finally, if you want to show the spinner in the app header when the app fetches data in the background, the Layout should connect to the redux store.
 
-Use the [default layout](https://github.com/marmelab/react-admin/blob/master/packages/ra-ui-materialui/src/layout/Layout.js) as a starting point, and check [the Theming documentation](./Theming.html#using-a-custom-layout) for examples.
+Use the [default layout](https://github.com/marmelab/react-admin/blob/master/packages/ra-ui-materialui/src/layout/Layout.js) as a starting point, and check [the Theming documentation](./Theming.md#using-a-custom-layout) for examples.
 
 ```jsx
 // in src/App.js
@@ -276,7 +276,7 @@ const MyLayout = (props) => <Layout
 export default MyLayout;
 ```
 
-For more details on custom layouts, check [the Theming documentation](./Theming.html#using-a-custom-layout).
+For more details on custom layouts, check [the Theming documentation](./Theming.md#using-a-custom-layout).
 
 ## `customReducers`
 
@@ -455,7 +455,7 @@ const App = () => (
 );
 ```
 
-The [Authentication documentation](./Authentication.html) explains how to implement these functions in detail.
+The [Authentication documentation](./Authentication.md) explains how to implement these functions in detail.
 
 ## `loginPage`
 
@@ -471,7 +471,7 @@ const App = () => (
 );
 ```
 
-See The [Authentication documentation](./Authentication.html#customizing-the-login-and-logout-components) for more details.
+See The [Authentication documentation](./Authentication.md#customizing-the-login-and-logout-components) for more details.
 
 ## `logoutButton`
 
@@ -512,11 +512,11 @@ const App = () => (
 
 ## Internationalization
 
-The `locale` and `messages` props let you translate the GUI. The [Translation Documentation](./Translation.html) details this process.
+The `locale` and `messages` props let you translate the GUI. The [Translation Documentation](./Translation.md) details this process.
 
 ## Declaring resources at runtime
 
-You might want to dynamically define the resources when the app starts. The `<Admin>` component accepts a function as its child and this function can return a Promise. If you also defined an `authProvider`, the function will receive the result of a call to `authProvider` with the `AUTH_GET_PERMISSIONS` type (you can read more about this in the [Authorization](./Authorization.html) chapter).
+You might want to dynamically define the resources when the app starts. The `<Admin>` component accepts a function as its child and this function can return a Promise. If you also defined an `authProvider`, the function will receive the result of a call to `authProvider` with the `AUTH_GET_PERMISSIONS` type (you can read more about this in the [Authorization](./Authorization.md) chapter).
 
 For instance, getting the resource from an API might look like:
 
@@ -554,4 +554,4 @@ const App = () => (
 
 ## Using react-admin without `<Admin>` and `<Resource>`
 
-Using `<Admin>` and `<Resource>` is completely optional. If you feel like bootstrapping a redux app yourself, it's totally possible. Head to [Including in another app](./CustomApp.html) for a detailed how-to.
+Using `<Admin>` and `<Resource>` is completely optional. If you feel like bootstrapping a redux app yourself, it's totally possible. Head to [Including in another app](./CustomApp.md) for a detailed how-to.
