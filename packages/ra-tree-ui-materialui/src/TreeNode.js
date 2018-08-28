@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import ListItem from '@material-ui/core/ListItem';
@@ -66,107 +66,127 @@ const styles = theme => ({
     },
 });
 
-const TreeNode = ({
-    basePath,
-    canDrop,
-    children,
-    classes,
-    connectDropTarget,
-    getIsNodeExpanded,
-    isOver,
-    isOverCurrent,
-    itemType,
-    node,
-    resource,
-    treeNodeComponent,
-    treeNodeWithChildrenComponent: TreeNodeWithChildren,
-    treeNodeContentComponent: TreeNodeContent,
-    toggleNode,
-    ...props
-}) =>
-    connectDropTarget(
-        <div className={classes.root}>
-            <ListItem
-                button
-                classes={{
-                    root: classNames({
-                        [classes.node]: node.children.length > 0,
-                        [classes.leaf]: node.children.length === 0,
-                        [classes.draggingOver]: isOverCurrent,
-                    }),
-                }}
-                dense
-                disableGutters
-            >
-                {node.children.length > 0 ? (
-                    <TreeNodeWithChildren
-                        key={`TreeNodeWithChildren${node.id}`}
-                        basePath={basePath}
-                        cancelDropOnChildren={!!itemType}
-                        classes={classes}
-                        getIsNodeExpanded={getIsNodeExpanded}
-                        /*
+class TreeNode extends Component {
+    static propTypes = {
+        basePath: PropTypes.string.isRequired,
+        canDrop: PropTypes.bool,
+        children: PropTypes.node,
+        classes: PropTypes.object,
+        closeNode: PropTypes.func,
+        connectDropTarget: PropTypes.func,
+        expandNode: PropTypes.func,
+        getIsNodeExpanded: PropTypes.func,
+        isOver: PropTypes.bool,
+        isOverCurrent: PropTypes.bool,
+        itemType: PropTypes.string,
+        node: PropTypes.object.isRequired,
+        resource: PropTypes.string.isRequired,
+        toggleNode: PropTypes.func,
+        treeNodeComponent: PropTypes.oneOfType([
+            PropTypes.element,
+            PropTypes.func,
+        ]),
+        treeNodeContentComponent: PropTypes.oneOfType([
+            PropTypes.element,
+            PropTypes.func,
+        ]).isRequired,
+        treeNodeWithChildrenComponent: PropTypes.oneOfType([
+            PropTypes.element,
+            PropTypes.func,
+        ]),
+    };
+
+    static defaultProps = {
+        connectDropTarget: target => target,
+    };
+
+    handleDrop = event => {
+        if (this.props.isOver && this.props.canDrop) {
+            event.persit();
+            event.preventDefault();
+        }
+    };
+
+    render() {
+        const {
+            basePath,
+            canDrop,
+            children,
+            classes,
+            closeNode,
+            connectDropTarget,
+            expandNode,
+            getIsNodeExpanded,
+            isOver,
+            isOverCurrent,
+            itemType,
+            node,
+            resource,
+            treeNodeComponent,
+            treeNodeWithChildrenComponent: TreeNodeWithChildren,
+            treeNodeContentComponent: TreeNodeContent,
+            toggleNode,
+            ...props
+        } = this.props;
+        return connectDropTarget(
+            <div className={classes.root}>
+                <ListItem
+                    button
+                    classes={{
+                        root: classNames({
+                            [classes.node]: node.children.length > 0,
+                            [classes.leaf]: node.children.length === 0,
+                            [classes.draggingOver]: isOverCurrent,
+                        }),
+                    }}
+                    dense
+                    disableGutters
+                >
+                    {node.children.length > 0 ? (
+                        <TreeNodeWithChildren
+                            key={`TreeNodeWithChildren${node.id}`}
+                            basePath={basePath}
+                            cancelDropOnChildren={!!itemType}
+                            classes={classes}
+                            closeNode={closeNode}
+                            expandNode={expandNode}
+                            getIsNodeExpanded={getIsNodeExpanded}
+                            /*
                             Override the isExpanded prop managed through redux on hover.
                             Set it to undefined when not hovering to fall back to redux state
                             so that it stay expanded if it was before
                         */
-                        isExpanded={isOver && canDrop ? true : undefined}
-                        node={node}
-                        resource={resource}
-                        treeNodeComponent={treeNodeComponent}
-                        treeNodeWithChildrenComponent={TreeNodeWithChildren}
-                        treeNodeContentComponent={TreeNodeContent}
-                        toggleNode={toggleNode}
-                        {...props}
-                    >
-                        {children}
-                    </TreeNodeWithChildren>
-                ) : (
-                    <Fragment>
-                        <TreeNodeContent
-                            key={`TreeNodeContent_${node.id}`}
-                            basePath={basePath}
+                            isExpanded={isOver && canDrop ? true : undefined}
                             node={node}
                             resource={resource}
-                            isLeaf={true}
-                            cancelDropOnChildren={!!itemType}
-                            onDrop={
-                                isOver && canDrop
-                                    ? event => {
-                                          event.persit();
-                                          event.preventDefault();
-                                      }
-                                    : undefined
-                            }
+                            treeNodeComponent={treeNodeComponent}
+                            treeNodeWithChildrenComponent={TreeNodeWithChildren}
+                            treeNodeContentComponent={TreeNodeContent}
+                            toggleNode={toggleNode}
                             {...props}
                         >
                             {children}
-                        </TreeNodeContent>
-                    </Fragment>
-                )}
-            </ListItem>
-        </div>
-    );
-
-TreeNode.propTypes = {
-    basePath: PropTypes.string.isRequired,
-    children: PropTypes.node,
-    classes: PropTypes.object,
-    node: PropTypes.object.isRequired,
-    resource: PropTypes.string.isRequired,
-    treeNodeComponent: PropTypes.oneOfType([PropTypes.element, PropTypes.func]),
-    treeNodeContentComponent: PropTypes.oneOfType([
-        PropTypes.element,
-        PropTypes.func,
-    ]).isRequired,
-    treeNodeWithChildrenComponent: PropTypes.oneOfType([
-        PropTypes.element,
-        PropTypes.func,
-    ]),
-};
-
-TreeNode.defaultProps = {
-    connectDropTarget: target => target,
-};
+                        </TreeNodeWithChildren>
+                    ) : (
+                        <Fragment>
+                            <TreeNodeContent
+                                key={`TreeNodeContent_${node.id}`}
+                                basePath={basePath}
+                                node={node}
+                                resource={resource}
+                                isLeaf={true}
+                                cancelDropOnChildren={!!itemType}
+                                onDrop={this.handleDrop}
+                                {...props}
+                            >
+                                {children}
+                            </TreeNodeContent>
+                        </Fragment>
+                    )}
+                </ListItem>
+            </div>
+        );
+    }
+}
 
 export default withStyles(styles)(TreeNode);

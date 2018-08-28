@@ -1,29 +1,26 @@
-import { TOGGLE_NODE } from './actions';
+import { CLOSE_NODE, TOGGLE_NODE, EXPAND_NODE } from './actions';
 
 const initialState = {};
 
 export default (state = initialState, { type, payload: nodeId, meta }) => {
-    if (type !== TOGGLE_NODE) {
+    if (![CLOSE_NODE, TOGGLE_NODE, EXPAND_NODE].includes(type)) {
         return state;
     }
     if (!meta.resource) {
-        console.warn(`The TOGGLE_NODE action does not have a resource meta`); // eslint-disable-line
+        console.warn(`The ${type} action does not have a resource meta`); // eslint-disable-line
         return state;
     }
 
-    let newState = { ...state };
-    if (!newState[meta.resource]) {
-        newState = {
-            ...newState,
-            [meta.resource]: {},
-        };
-    }
-
     return {
-        ...newState,
+        ...state,
         [meta.resource]: {
-            ...newState[meta.resource],
-            [nodeId]: !newState[meta.resource][nodeId],
+            ...(state[meta.resource] || {}),
+            [nodeId]:
+                type === TOGGLE_NODE
+                    ? state[meta.resource]
+                        ? !state[meta.resource][nodeId]
+                        : true
+                    : type === EXPAND_NODE,
         },
     };
 };

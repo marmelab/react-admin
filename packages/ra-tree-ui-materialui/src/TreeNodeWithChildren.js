@@ -12,6 +12,9 @@ export class TreeNodeWithChildren extends Component {
         cancelDropOnChildren: PropTypes.bool,
         children: PropTypes.node,
         classes: PropTypes.object,
+        closeNode: PropTypes.func,
+        expandNode: PropTypes.func,
+        getIsNodeExpanded: PropTypes.func,
         isExpanded: PropTypes.bool,
         node: PropTypes.object.isRequired,
         resource: PropTypes.string.isRequired,
@@ -42,6 +45,8 @@ export class TreeNodeWithChildren extends Component {
             cancelDropOnChildren,
             children,
             classes,
+            closeNode,
+            expandNode,
             getIsNodeExpanded,
             isExpanded,
             node,
@@ -102,6 +107,8 @@ export class TreeNodeWithChildren extends Component {
                                 }
                                 treeNodeContentComponent={TreeNodeContent}
                                 toggleNode={toggleNode}
+                                closeNode={closeNode}
+                                expandNode={expandNode}
                                 {...props}
                             >
                                 {children}

@@ -5,6 +5,7 @@ import {
     crudUpdate as crudUpdateAction,
     startUndoable as startUndoableAction,
 } from 'ra-core';
+import { expandNode as expandNodeAction } from 'ra-tree-core';
 
 import { DROP_TARGET_TYPE } from './constants';
 
@@ -16,6 +17,7 @@ const dragSourceSpecs = {
         {
             basePath,
             dispatchCrudUpdate,
+            expandNode,
             node,
             parentSource,
             resource,
@@ -34,6 +36,18 @@ const dragSourceSpecs = {
             droppedOnNode.id === node.record[parentSource]
         ) {
             return;
+        }
+
+        // Ensure the node on which the dragged node has been dropped is expanded along with its parents
+        // to avoid the dropped node to disappear
+        let nodeToExpand = droppedOnNode;
+        expandNode(resource, nodeToExpand.id);
+
+        if (nodeToExpand.parent) {
+            do {
+                nodeToExpand = nodeToExpand.parent;
+                expandNode(resource, nodeToExpand.id);
+            } while (nodeToExpand.parent);
         }
 
         if (undoableDragDrop) {
@@ -71,6 +85,7 @@ export default compose(
         undefined,
         {
             dispatchCrudUpdate: crudUpdateAction,
+            expandNode: expandNodeAction,
             startUndoable: startUndoableAction,
         }
     ),
