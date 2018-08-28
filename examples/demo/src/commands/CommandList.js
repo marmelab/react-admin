@@ -12,6 +12,7 @@ import {
     NumberField,
     ReferenceInput,
     Responsive,
+    SearchInput,
     TextField,
     TextInput,
 } from 'react-admin';
@@ -33,7 +34,7 @@ const filterStyles = {
 
 const CommandFilter = withStyles(filterStyles)(({ classes, ...props }) => (
     <Filter {...props}>
-        <TextInput label="pos.search" source="q" alwaysOn />
+        <SearchInput source="q" alwaysOn />
         <ReferenceInput source="customer_id" reference="customers">
             <AutocompleteInput
                 optionText={choice =>

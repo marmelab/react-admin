@@ -10,7 +10,7 @@ import TextInput from './TextInput';
 
 const searchFilterStyles = {
     input: {
-        'label + &': { marginTop: 0 },
+        marginTop: 32,
     },
 };
 
@@ -24,8 +24,8 @@ const SearchInput = ({ classes, translate, ...props }) => (
                     <SearchIcon color="disabled" />
                 </InputAdornment>
             ),
-            classes: { formControl: classes.input },
         }}
+        className={classes.input}
         {...props}
     />
 );
