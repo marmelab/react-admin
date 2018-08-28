@@ -415,7 +415,7 @@ Writing a custom field component for displaying the current value(s) is easy:  i
 
 When receiving **new** files, `ImageInput` will add a `rawFile` property to the object passed as the `record` prop of children. This `rawFile` is the [File](https://developer.mozilla.org/en-US/docs/Web/API/File) instance of the newly added file. This can be useful to display informations about size or mimetype inside a custom field.
 
-The `ImageInput` component accepts all [react-dropzone properties](https://github.com/okonet/react-dropzone#features), in addition to those of react-admin. For instance, if you need to upload several images at once, just add the `multiple` DropZone attribute to your `<ImageInput />` field.
+The `ImageInput` component accepts an `options` prop into which you can pass all the [react-dropzone properties](https://react-dropzone.netlify.com/#proptypes). However, some of the most useful props should be passed **directly** on the `ImageInput`: `maxSize`, `minSize`, `multiple`.
 
 If the default Dropzone label doesn't fit with your need, you can pass a `placeholder` attribute to overwrite it. The attribute can be anything React can render (`PropTypes.node`):
 
@@ -445,7 +445,7 @@ Writing a custom field component for displaying the current value(s) is easy:  i
 
 When receiving **new** files, `FileInput` will add a `rawFile` property to the object passed as the `record` prop of children. This `rawFile` is the [File](https://developer.mozilla.org/en-US/docs/Web/API/File) instance of the newly added file. This can be useful to display informations about size or mimetype inside a custom field.
 
-The `FileInput` component accepts an `options` prop into which you can pass all the [react-dropzone properties](https://github.com/okonet/react-dropzone#features). For instance, if you need to upload several files at once, just add the {% raw %}`options={{ multiple: true }}`{% endraw %} DropZone attribute to your `<FileInput />` field.
+The `FileInput` component accepts an `options` prop into which you can pass all the [react-dropzone properties](https://react-dropzone.netlify.com/#proptypes). However, some of the most useful props should be passed **directly** on the `FileInput`: `maxSize`, `minSize`, `multiple`.
 
 If the default Dropzone label doesn't fit with your need, you can pass a `placeholder` attribute to overwrite it. The attribute can be anything React can render (`PropTypes.node`):
 
