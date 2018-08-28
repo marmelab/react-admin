@@ -25,6 +25,8 @@ const styles = theme => ({
         minHeight: '100vh',
         backgroundColor: theme.palette.background.default,
         position: 'relative',
+        minWidth: 'fit-content',
+        width: '100%',
     },
     appFrame: {
         display: 'flex',
@@ -37,7 +39,7 @@ const styles = theme => ({
     content: {
         display: 'flex',
         flexDirection: 'column',
-        flexGrow: 2,
+        flexGrow: 1,
         padding: theme.spacing.unit * 3,
         [theme.breakpoints.up('xs')]: {
             paddingLeft: 5,
