@@ -67,7 +67,7 @@ describe('<SelectInput />', () => {
         const MenuItemElements = wrapper.find('WithStyles(MenuItem)');
         assert.equal(MenuItemElements.length, 3);
         const MenuItemElement1 = MenuItemElements.first();
-        assert.equal(MenuItemElement1.prop('value'), null);
+        assert.equal(MenuItemElement1.prop('value'), '');
         assert.equal(MenuItemElement1.childAt(0).text(), '');
     });
 
