@@ -26,7 +26,6 @@ const styles = theme => ({
         borderRight: 'none',
         [theme.breakpoints.only('xs')]: {
             marginTop: 0,
-            width: 240,
             height: '100vh',
             position: 'inherit',
             backgroundColor: theme.palette.background.default,
