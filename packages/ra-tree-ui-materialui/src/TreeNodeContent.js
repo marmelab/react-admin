@@ -16,6 +16,8 @@ class TreeNodeContent extends Component {
     static propTypes = {
         basePath: PropTypes.string.isRequired,
         cancelDropOnChildren: PropTypes.bool,
+        connectDragPreview: PropTypes.func,
+        connectDragSource: PropTypes.func,
         containerElement: PropTypes.oneOfType([
             PropTypes.element,
             PropTypes.func,
@@ -23,6 +25,7 @@ class TreeNodeContent extends Component {
         ]),
         children: PropTypes.node,
         classes: PropTypes.object.isRequired,
+        expandNode: PropTypes.func,
         isLeaf: PropTypes.bool,
         node: PropTypes.object.isRequired,
         resource: PropTypes.string.isRequired,
@@ -40,6 +43,7 @@ class TreeNodeContent extends Component {
             connectDragPreview,
             connectDragSource,
             containerElement: Container,
+            expandNode,
             submit,
             isLeaf,
             node,
