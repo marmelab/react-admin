@@ -21,6 +21,7 @@ import {
     ReferenceField,
     ReferenceInput,
     Responsive,
+    SearchInput,
     SelectInput,
     ShowButton,
     SimpleList,
@@ -31,6 +32,7 @@ import {
 
 const CommentFilter = props => (
     <Filter {...props}>
+        <SearchInput source="q" alwaysOn />
         <ReferenceInput source="post_id" reference="posts">
             <SelectInput optionText="title" />
         </ReferenceInput>

@@ -11,7 +11,7 @@ import FilterFormInput from './FilterFormInput';
 
 const styles = ({ palette: { primary1Color } }) => ({
     form: {
-        marginTop: '-14px',
+        marginTop: '-10px',
         paddingTop: 0,
         display: 'flex',
         alignItems: 'flex-end',

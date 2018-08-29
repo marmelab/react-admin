@@ -12,6 +12,7 @@ import {
     NumberInput,
     ReferenceInput,
     ReferenceManyField,
+    SearchInput,
     SelectInput,
     TabbedForm,
     TextField,
@@ -44,7 +45,7 @@ const QuickFilter = translate(
 
 export const ProductFilter = props => (
     <Filter {...props}>
-        <TextInput label="pos.search" source="q" alwaysOn />
+        <SearchInput source="q" alwaysOn />
         <ReferenceInput
             source="category_id"
             reference="categories"
