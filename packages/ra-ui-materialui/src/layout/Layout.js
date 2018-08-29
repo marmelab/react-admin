@@ -90,6 +90,7 @@ class Layout extends Component {
             menu,
             notification,
             open,
+            sidebar,
             title,
             ...props
         } = this.props;
@@ -102,12 +103,12 @@ class Layout extends Component {
                 <div className={classes.appFrame}>
                     {createElement(appBar, { title, open, logout })}
                     <main className={classes.contentWithSidebar}>
-                        <Sidebar>
-                            {createElement(menu, {
+                        {createElement(sidebar, {
+                            children: createElement(menu, {
                                 logout,
                                 hasDashboard: !!dashboard,
-                            })}
-                        </Sidebar>
+                            }),
+                        })}
                         <div className={classes.content}>
                             {hasError
                                 ? createElement(error, {
@@ -147,6 +148,7 @@ Layout.propTypes = {
     menu: componentPropType,
     notification: componentPropType,
     open: PropTypes.bool,
+    sidebar: componentPropType,
     title: PropTypes.node.isRequired,
 };
 
@@ -155,6 +157,7 @@ Layout.defaultProps = {
     error: Error,
     menu: Menu,
     notification: Notification,
+    sidebar: Sidebar,
 };
 
 const mapStateToProps = state => ({

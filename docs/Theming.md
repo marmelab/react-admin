@@ -365,18 +365,20 @@ const App = () => (
 );
 ```
 
-Your custom layout can extend the default `<Layout>` component if you only want to override the appBar, the menu, the notification component, or the error page. For instance:
+Your custom layout can extend the default `<Layout>` component if you only want to override the sidebar, the appBar, the menu, the notification component, or the error page. For instance:
 
 ```jsx
 // in src/MyLayout.js
 import { Layout } from 'react-admin';
 import MyAppBar from './MyAppBar';
+import MySidebar from './MySidebar';
 import MyMenu from './MyMenu';
 import MyNotification from './MyNotification';
 
 const MyLayout = props => <Layout
     {...props}
     appBar={MyAppBar}
+    sidebar={MySidebar}
     menu={MyMenu}
     notification={MyNotification}
 />;
@@ -403,6 +405,19 @@ const MyLayout = props => <Layout
     {...props}
     appBar={MyAppBar}
 />;
+```
+
+You can speciy the `Sidebar` size by setting the `size` property:
+
+```jsx
+import { Sidebar } from 'react-admin';
+
+const MySidebar = props => <Sidebar {...props} size={200} />;
+const MyLayout = props => <Layout
+    {...props}
+    sidebar={MySidebar}
+/>;
+
 ```
 
 For more custom layouts, write a component from scratch. It must contain a `{children}` placeholder, where react-admin will render the resources. Use the [default layout](https://github.com/marmelab/react-admin/blob/master/src/mui/layout/Layout.js) as a starting point. Here is a simplified version (with no responsive support):
