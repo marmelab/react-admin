@@ -11,11 +11,18 @@ import { call, cancel, fork, put, takeEvery } from 'redux-saga/effects';
  */
 let accumulations = {};
 
-const addIds = (accumulations, { payload: { ids } }) => {
+/**
+ * Distinct reducer on ids
+ *
+ * @example
+ * addIds([1, 2, 3], { payload: { ids: [3, 4] } })
+ *   => [1, 2, 3, 4]
+ */
+const addIds = (oldIds, { payload: { ids } }) => {
     // Using a Set ensure we only keep distinct values
-    const accumulatedValue = new Set(accumulations) || new Set();
-    ids.forEach(id => accumulatedValue.add(id));
-    return Array.from(accumulatedValue);
+    const oldIdsSet = new Set(oldIds);
+    ids.forEach(id => oldIdsSet.add(id));
+    return Array.from(oldIdsSet);
 };
 
 const getAccumulatedValue = key => {
@@ -42,7 +49,7 @@ export function* finalize(key, actionCreator) {
     // Get the latest accumulated value for the provided key
     const accumulatedValue = getAccumulatedValue(key);
 
-    // For backward compatibility, we passes the key (which may be a resource name) as the first parameter
+    // For backward compatibility, we pass the key (which may be a resource name) as the first parameter
     const action = actionCreator(key, accumulatedValue);
 
     yield put(action);
@@ -50,10 +57,20 @@ export function* finalize(key, actionCreator) {
 }
 
 /**
- * Cancel call to finalize, accumulate values, and call finalize
+ * Accumulate actions and eventually redispatch an action with the accumulated payload
  *
  * @example
- * accumulate({ type: CRUD_GET_MANY_ACCUMULATE, payload: { ids: [1, 3, 5], resource: 'posts' } })
+ * accumulate({
+ *    type: CRUD_GET_MANY_ACCUMULATE,
+ *    payload: { ids: [1, 2, 3], resource: 'posts' },
+ *    meta: { accumulate: crudGetMany }
+ * });
+ * accumulate({
+ *    type: CRUD_GET_MANY_ACCUMULATE,
+ *    payload: { ids: [4, 5], resource: 'posts' },
+ *    meta: { accumulate: crudGetMany }
+ * });
+ *   => crudGetMany({ ids: [1, 2, 3, 4, 5], resource: 'posts' })
  */
 export function* accumulate(action) {
     // For backward compatibility, if no accumulateKey is provided, we fallback to the resource
@@ -65,11 +82,11 @@ export function* accumulate(action) {
 
     // For backward compatibility, if no accumulateValues function is provided, we fallback to the old
     // addIds function (used by the crudGetManyAccumulate action for example)
-    const accumulatedValues = action.meta.accumulateValues || addIds;
+    const accumulateValues = action.meta.accumulateValues || addIds;
 
     // accumulateValues is a reducer function, it receives the previous accumulatedValues for
-    // the provided key and must returned the updated accumulatedValues
-    accumulations[key] = accumulatedValues(accumulations[key], action);
+    // the provided key, and must return the updated accumulatedValues
+    accumulations[key] = accumulateValues(accumulations[key], action);
 
     tasks[key] = yield fork(finalize, key, action.meta.accumulate);
 }
