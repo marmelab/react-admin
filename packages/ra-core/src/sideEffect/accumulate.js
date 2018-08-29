@@ -25,12 +25,6 @@ const addIds = (oldIds, { payload: { ids } }) => {
     return Array.from(oldIdsSet);
 };
 
-const getAccumulatedValue = key => {
-    const accumulatedValue = accumulations[key];
-    delete accumulations[key];
-    return accumulatedValue;
-};
-
 const tasks = {};
 
 /**
@@ -47,7 +41,10 @@ export function* finalize(key, actionCreator) {
     yield call(delay, 50);
 
     // Get the latest accumulated value for the provided key
-    const accumulatedValue = getAccumulatedValue(key);
+    const accumulatedValue = accumulations[key];
+
+    // Remove the latest accumulated value so that they do not interfere with later calls
+    delete accumulations[key];
 
     // For backward compatibility, we pass the key (which may be a resource name) as the first parameter
     const action = actionCreator(key, accumulatedValue);
