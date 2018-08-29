@@ -101,5 +101,8 @@ For all those cases, you can use the [aor-dependent-input](https://github.com/ma
 
 ## UI in production build is empty or broke
 
-Your `@material-ui/core` and `@material-ui/icons` version specified in `package.json` should be the same version used by `react-admin`.
+You have probably specified a version requirement for `@material-ui/core` that is incompatible with the one required by `react-admin`. As a consequence, npm bundled two copies of `material-ui` in your application, and `material-ui` doesn't work in that case.
+
+Please align your version requirement with the one of the `ra-ui-materialui` package.
+
 See this [issue for more information](https://github.com/marmelab/react-admin/issues/1782).
