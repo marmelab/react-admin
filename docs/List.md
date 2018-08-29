@@ -95,10 +95,19 @@ const PostActions = ({
     exporter,
     filters,
     filterValues,
+    onUnselectItems,
     resource,
+    selectedIds,
     showFilter
 }) => (
     <CardActions>
+        {bulkActions && cloneElement(bulkActions, {
+            basePath,
+            filterValues,
+            resource,
+            selectedIds,
+            onUnselectItems,
+        })}
         {filters && React.cloneElement(filters, {
             resource,
             showFilter,
