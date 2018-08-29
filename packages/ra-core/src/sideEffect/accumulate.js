@@ -18,7 +18,7 @@ const addIds = (accumulations, { payload: { ids } }) => {
     return Array.from(accumulatedValue);
 };
 
-const getAccumuledValue = key => {
+const getAccumulatedValue = key => {
     const accumulatedValue = accumulations[key];
     delete accumulations[key];
     return accumulatedValue;
@@ -40,7 +40,7 @@ export function* finalize(key, actionCreator) {
     yield call(delay, 50);
 
     // Get the latest accumulated value for the provided key
-    const accumulatedValue = getAccumuledValue(key);
+    const accumulatedValue = getAccumulatedValue(key);
 
     // For backward compatibility, we passes the key (which may be a resource name) as the first parameter
     const action = actionCreator(key, accumulatedValue);
