@@ -5,7 +5,7 @@ export const CRUD_GET_MANY_ACCUMULATE = 'RA/CRUD_GET_MANY_ACCUMULATE';
 export const crudGetManyAccumulate = (resource, ids) => ({
     type: CRUD_GET_MANY_ACCUMULATE,
     payload: { resource, ids },
-    meta: { accumulate: (resource, ids) => crudGetMany(resource, ids) },
+    meta: { accumulate: crudGetMany },
 });
 
 export const CRUD_GET_MATCHING_ACCUMULATE = 'RA/CRUD_GET_MATCHING_ACCUMULATE';
