@@ -4,6 +4,7 @@
     "description": "A Graphcool data provider for react-admin",
     "main": "lib/index.js",
     "module": "esm/index.js",
+    "sideEffects": false,
     "repository": {
         "type": "git",
         "url": "git+https://github.com/marmelab/react-admin.git"

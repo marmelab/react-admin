@@ -10,6 +10,7 @@
     ],
     "main": "lib/index.js",
     "module": "esm/index.js",
+    "sideEffects": false,
     "authors": [
         "François Zaninotto"
     ],

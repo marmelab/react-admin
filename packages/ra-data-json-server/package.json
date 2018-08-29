@@ -4,6 +4,7 @@
     "description": "JSON Server data provider for react-admin",
     "main": "lib/index.js",
     "module": "esm/index.js",
+    "sideEffects": false,
     "files": [
         "*.md",
         "lib",
