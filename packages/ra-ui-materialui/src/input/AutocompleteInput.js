@@ -119,7 +119,6 @@ export class AutocompleteInput extends React.Component {
     componentWillReceiveProps(nextProps) {
         const { choices, input, limitChoicesToValue } = nextProps;
         if (input.value !== this.state.inputValue) {
-            console.log('componentWillReceiveProps.value');
             const selectedItem = this.getSelectedItem(nextProps, input.value);
             this.setState({
                 selectedItem,
@@ -135,7 +134,6 @@ export class AutocompleteInput extends React.Component {
             // Ensure to reset the filter
             this.updateFilter('');
         } else if (!isEqual(choices, this.props.choices)) {
-            console.log('componentWillReceiveProps.choices');
             const selectedItem = this.getSelectedItem(
                 nextProps,
                 this.state.inputValue
