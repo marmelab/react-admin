@@ -24,11 +24,10 @@ const styles = theme => ({
     leaf: {
         display: 'flex',
         flexGrow: 1,
-        // Restore default ListItem padding
-        paddingTop: theme.spacing.unit * 1.5,
-        paddingBottom: theme.spacing.unit * 1.5,
-        paddingRight: theme.spacing.unit * 4,
+        margin: 0,
+        padding: 0,
         paddingLeft: theme.spacing.unit * 4,
+        paddingRight: theme.spacing.unit * 4,
         position: 'relative',
     },
 
