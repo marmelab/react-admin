@@ -26,7 +26,7 @@ const getAccumuledValue = key => {
 const tasks = {};
 
 /**
- * Fetch the list of accumulated ids after a delay
+ * Fetch the accumulated value after a delay
  *
  * As this gets canceled by subsequent calls to accumulate(), only the last
  * call to finalize() will not be canceled. The delay acts as a
@@ -44,7 +44,7 @@ export function* finalize(key, actionCreator) {
 }
 
 /**
- * Cancel call to finalize, accumulate ids, and call finalize
+ * Cancel call to finalize, accumulate values, and call finalize
  *
  * @example
  * accumulate({ type: CRUD_GET_MANY_ACCUMULATE, payload: { ids: [1, 3, 5], resource: 'posts' } })
