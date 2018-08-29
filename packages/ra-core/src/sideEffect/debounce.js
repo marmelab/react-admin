@@ -5,9 +5,8 @@ const tasks = {};
 
 /**
  * Dispatch the first action and ensure we don't prevent future actions of the same
- * type with the same parameter to execute again by listening to the action
- * `SUCCESS` or `FAILURE` counterparts and removing the action from our debounced tasks
- * list
+ * type with the same parameter to execute again by waiting for a 50ms delay before
+ * allowing other actions
  */
 export function* handleDebouncedAction(debounceKey, debouncedAction) {
     yield put({
