@@ -119,6 +119,7 @@ export class AutocompleteInput extends React.Component {
     componentWillReceiveProps(nextProps) {
         const { choices, input, limitChoicesToValue } = nextProps;
         if (input.value !== this.state.inputValue) {
+            console.log('componentWillReceiveProps.value');
             const selectedItem = this.getSelectedItem(nextProps, input.value);
             this.setState({
                 selectedItem,
@@ -134,6 +135,7 @@ export class AutocompleteInput extends React.Component {
             // Ensure to reset the filter
             this.updateFilter('');
         } else if (!isEqual(choices, this.props.choices)) {
+            console.log('componentWillReceiveProps.choices');
             const selectedItem = this.getSelectedItem(
                 nextProps,
                 this.state.inputValue
@@ -218,24 +220,24 @@ export class AutocompleteInput extends React.Component {
         if (matches.length === 1) {
             const match = matches[0];
             const nextId = this.getSuggestionValue(match);
+            const suggestionText = this.getSuggestionText(match);
+
             if (this.state.inputValue !== nextId) {
-                input.onChange(this.getSuggestionValue(match));
                 this.setState(
                     {
+                        inputValue: nextId,
+                        searchText: suggestionText, // The searchText could be whatever the inputvalue matcher likes, so sanitize it
+                        selectedItem: match,
                         suggestions: [match],
-                        searchText: this.getSuggestionText(match), // The searchText could be whatever the inputvalue matcher likes, so sanitize it
                     },
-                    () => this.updateFilter(inputValue)
+                    () => input.onChange(nextId)
                 );
             } else {
-                this.setState(
-                    {
-                        dirty: false,
-                        suggestions: [match],
-                        searchText: this.getSuggestionText(match),
-                    },
-                    () => this.updateFilter(inputValue)
-                );
+                this.setState({
+                    dirty: false,
+                    suggestions: [match],
+                    searchText: suggestionText,
+                });
             }
         } else {
             this.setState({
