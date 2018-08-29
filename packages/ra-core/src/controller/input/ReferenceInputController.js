@@ -8,7 +8,7 @@ import isEqual from 'lodash/isEqual';
 
 import {
     crudGetManyAccumulate as crudGetManyAccumulateAction,
-    crudGetMatchingDebounce as crudGetMatchingDebounceAction,
+    crudGetMatchingAccumulate as crudGetMatchingAccumulateAction,
 } from '../../actions/accumulateActions';
 import {
     getPossibleReferences,
@@ -166,7 +166,7 @@ export class ReferenceInputController extends Component {
 
     fetchOptions = (props = this.props) => {
         const {
-            crudGetMatchingDebounce,
+            crudGetMatchingAccumulate,
             filter: filterFromProps,
             reference,
             referenceSource,
@@ -175,7 +175,7 @@ export class ReferenceInputController extends Component {
         } = props;
         const { pagination, sort, filter } = this.state;
 
-        crudGetMatchingDebounce(
+        crudGetMatchingAccumulate(
             reference,
             referenceSource(resource, source),
             pagination,
@@ -229,7 +229,7 @@ ReferenceInputController.propTypes = {
     children: PropTypes.func.isRequired,
     className: PropTypes.string,
     classes: PropTypes.object,
-    crudGetMatchingDebounce: PropTypes.func.isRequired,
+    crudGetMatchingAccumulate: PropTypes.func.isRequired,
     crudGetManyAccumulate: PropTypes.func.isRequired,
     filter: PropTypes.object,
     filterToQuery: PropTypes.func.isRequired,
@@ -287,7 +287,7 @@ const EnhancedReferenceInputController = compose(
         makeMapStateToProps(),
         {
             crudGetManyAccumulate: crudGetManyAccumulateAction,
-            crudGetMatchingDebounce: crudGetMatchingDebounceAction,
+            crudGetMatchingAccumulate: crudGetMatchingAccumulateAction,
         }
     )
 )(ReferenceInputController);

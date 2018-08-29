@@ -8,9 +8,9 @@ export const crudGetManyAccumulate = (resource, ids) => ({
     meta: { accumulate: (resource, ids) => crudGetMany(resource, ids) },
 });
 
-export const CRUD_GET_MATCHING_DEBOUNCE = 'RA/CRUD_GET_MATCHING_DEBOUNCE';
+export const CRUD_GET_MATCHING_ACCUMULATE = 'RA/CRUD_GET_MATCHING_ACCUMULATE';
 
-export const crudGetMatchingDebounce = (
+export const crudGetMatchingAccumulate = (
     reference,
     relatedTo,
     pagination,
@@ -26,7 +26,7 @@ export const crudGetMatchingDebounce = (
     );
 
     return {
-        type: CRUD_GET_MATCHING_DEBOUNCE,
+        type: CRUD_GET_MATCHING_ACCUMULATE,
         meta: {
             accumulate: () => action,
             accumulateValues: () => true,
