@@ -20,7 +20,8 @@ export const crudGetMatchingDebounce = (
     return {
         type: CRUD_GET_MATCHING_DEBOUNCE,
         meta: {
-            debounce: action,
+            debouncedAction: action,
+            debounceKey: JSON.stringify(action.payload),
         },
     };
 };

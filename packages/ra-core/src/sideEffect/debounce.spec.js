@@ -1,23 +1,26 @@
-import { fork, put, take } from 'redux-saga/effects';
-import {
-    handleFinalize,
-    handleDebouncedAction,
-    handleDebounce,
-} from './debounce';
+import { delay } from 'redux-saga';
+import { call, fork, put } from 'redux-saga/effects';
+import { handleDebouncedAction, handleDebounce } from './debounce';
 
 describe('debounce saga', () => {
     const debouncedAction = { type: 'DEBOUNCED_ACTION', payload: 'a_payload' };
+    const action = {
+        meta: {
+            debouncedAction,
+            debounceKey: 'generated-from-payload',
+        },
+    };
 
     it('handles only the first debounced action', () => {
-        const handleDebounceSaga = handleDebounce({
-            meta: { debounce: debouncedAction },
-        });
-        const handleDebounceSaga2 = handleDebounce({
-            meta: { debounce: debouncedAction },
-        });
+        const handleDebounceSaga = handleDebounce(action);
+        const handleDebounceSaga2 = handleDebounce(action);
 
         expect(handleDebounceSaga.next().value).toEqual(
-            fork(handleDebouncedAction, '"a_payload"', debouncedAction)
+            fork(
+                handleDebouncedAction,
+                'generated-from-payload',
+                debouncedAction
+            )
         );
         handleDebounceSaga.next(); // This ensure the fork has been handled
         expect(handleDebounceSaga2.next().value).toEqual(undefined);
@@ -25,39 +28,55 @@ describe('debounce saga', () => {
 
     it('dispatches the debounced action', () => {
         const handleDebouncedActionSaga = handleDebouncedAction(
-            '"a_payload"',
+            'generated-from-payload',
             debouncedAction
         );
 
         expect(handleDebouncedActionSaga.next().value).toEqual(
-            put(debouncedAction)
+            put({
+                ...debouncedAction,
+                meta: {
+                    ...debouncedAction.meta,
+                    debounceKey: 'generated-from-payload',
+                },
+            })
         );
     });
 
     it('waits for the debounced action to finish', () => {
-        const isRelatedAction = jest.fn();
-
         const handleDebouncedActionSaga = handleDebouncedAction(
-            '"a_payload"',
-            debouncedAction,
-            isRelatedAction
+            'generated-from-payload',
+            debouncedAction
         );
 
         handleDebouncedActionSaga.next();
-        expect(handleDebouncedActionSaga.next().value).toEqual(
-            take(isRelatedAction, handleFinalize, '"a_payload"')
-        );
+        expect(handleDebouncedActionSaga.next().value).toEqual(call(delay, 50));
     });
 
     it('ensure another action with the same signature can be debounced after the debounced action has finished', () => {
-        handleFinalize('"a_payload"');
+        const handleDebouncedActionSaga = handleDebouncedAction(
+            'generated-from-payload',
+            debouncedAction
+        );
+
+        // Ensure we finish the handleDebouncedAction saga
+        handleDebouncedActionSaga.next();
+        handleDebouncedActionSaga.next();
+        handleDebouncedActionSaga.next();
 
         const handleDebounceSaga = handleDebounce({
-            meta: { debounce: debouncedAction },
+            meta: {
+                debouncedAction,
+                debounceKey: 'generated-from-payload',
+            },
         });
 
         expect(handleDebounceSaga.next().value).toEqual(
-            fork(handleDebouncedAction, '"a_payload"', debouncedAction)
+            fork(
+                handleDebouncedAction,
+                'generated-from-payload',
+                debouncedAction
+            )
         );
         handleDebounceSaga.next(); // This ensure the fork has been handled
     });
