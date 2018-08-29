@@ -4,7 +4,7 @@ import {
     Create,
     FormTab,
     SaveButton,
-    SelectInput,
+    AutocompleteInput,
     TabbedForm,
     TextInput,
     Toolbar,
@@ -41,14 +41,14 @@ const UserCreate = ({ permissions, ...props }) => (
             </FormTab>
             {permissions === 'admin' && (
                 <FormTab label="user.form.security" path="security">
-                    <SelectInput
+                    <AutocompleteInput
                         source="role"
                         choices={[
                             { id: '', name: 'None' },
                             { id: 'admin', name: 'Admin' },
                             { id: 'user', name: 'User' },
+                            { id: 'user_simple', name: 'UserSimple' },
                         ]}
-                        defaultValue={'user'}
                     />
                 </FormTab>
             )}
