@@ -6,8 +6,10 @@ import compose from 'recompose/compose';
 import { createSelector } from 'reselect';
 import isEqual from 'lodash/isEqual';
 
-import { crudGetManyAccumulate as crudGetManyAccumulateAction } from '../../actions/accumulateActions';
-import { crudGetMatchingDebounce as crudGetMatchingDebounceAction } from '../../actions/debounceActions';
+import {
+    crudGetManyAccumulate as crudGetManyAccumulateAction,
+    crudGetMatchingDebounce as crudGetMatchingDebounceAction,
+} from '../../actions/accumulateActions';
 import {
     getPossibleReferences,
     getPossibleReferenceValues,

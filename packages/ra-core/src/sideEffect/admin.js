@@ -10,7 +10,6 @@ import accumulate from './accumulate';
 import refresh from './refresh';
 import undo from './undo';
 import recordForm from './recordForm';
-import debounce from './debounce';
 
 /**
  * @param {Object} dataProvider A Data Provider function
@@ -24,7 +23,6 @@ export default (dataProvider, authProvider, i18nProvider) =>
             fetch(dataProvider)(),
             error(),
             accumulate(),
-            debounce(),
             redirection(),
             refresh(),
             notification(),

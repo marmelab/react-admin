@@ -4,24 +4,23 @@ import { call, cancel, fork, put, takeEvery } from 'redux-saga/effects';
 /**
  * Example
  *
- * let debouncedIds = {
+ * let accumulations = {
  *   posts: { 4: true, 7: true, 345: true },
  *   authors: { 23: true, 47: true, 78: true },
  * }
  */
-const debouncedIds = {};
-const addIds = (resource, ids) => {
-    if (!debouncedIds[resource]) {
-        debouncedIds[resource] = {};
-    }
-    ids.forEach(id => {
-        debouncedIds[resource][id] = id;
-    }); // fast UNIQUE
+let accumulations = {};
+
+const addIds = (accumulations, { payload: { ids } }) => {
+    const accumulatedValue = new Set(accumulations) || new Set();
+    ids.forEach(id => accumulatedValue.add(id));
+    return Array.from(accumulatedValue);
 };
-const getIds = resource => {
-    const ids = Object.values(debouncedIds[resource]);
-    delete debouncedIds[resource];
-    return ids;
+
+const getAccumuledValue = key => {
+    const accumulatedValue = accumulations[key];
+    delete accumulations[key];
+    return accumulatedValue;
 };
 
 const tasks = {};
@@ -35,11 +34,13 @@ const tasks = {};
  *
  * @see https://redux-saga.js.org/docs/recipes/#debouncing
  */
-function* finalize(resource, actionCreator) {
+export function* finalize(key, actionCreator) {
     // combined with cancel(), this debounces the calls
     yield call(delay, 50);
-    yield put(actionCreator(resource, getIds(resource)));
-    delete tasks[resource];
+    const accumulatedValue = getAccumuledValue(key);
+    const action = actionCreator(key, accumulatedValue);
+    yield put(action);
+    delete tasks[key];
 }
 
 /**
@@ -48,13 +49,16 @@ function* finalize(resource, actionCreator) {
  * @example
  * accumulate({ type: CRUD_GET_MANY_ACCUMULATE, payload: { ids: [1, 3, 5], resource: 'posts' } })
  */
-function* accumulate({ payload, meta }) {
-    const { ids, resource } = payload;
-    if (tasks[resource]) {
-        yield cancel(tasks[resource]);
+export function* accumulate(action) {
+    const key = action.meta.accumulateKey || action.payload.resource;
+    if (tasks[key]) {
+        yield cancel(tasks[key]);
     }
-    addIds(resource, ids);
-    tasks[resource] = yield fork(finalize, resource, meta.accumulate);
+    accumulations[key] = (action.meta.accumulateValues || addIds)(
+        accumulations[key],
+        action
+    );
+    tasks[key] = yield fork(finalize, key, action.meta.accumulate);
 }
 
 export default function*() {
