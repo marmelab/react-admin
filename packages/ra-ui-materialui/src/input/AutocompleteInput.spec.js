@@ -492,4 +492,43 @@ describe('<AutocompleteInput />', () => {
             expect(wrapper.state('suggestions')).toHaveLength(2);
         });
     });
+
+    it('does not automatically select a matched choice if there are more than one', () => {
+        const wrapper = mount(
+            <AutocompleteInput
+                {...defaultProps}
+                input={{ value: null }}
+                choices={[
+                    { id: 1, name: 'ab' },
+                    { id: 2, name: 'abc' },
+                    { id: 3, name: '123' },
+                ]}
+            />,
+            { context, childContextTypes }
+        );
+        wrapper.find('input').simulate('focus');
+        wrapper.find('input').simulate('change', { target: { value: 'ab' } });
+        expect(wrapper.state('suggestions')).toHaveLength(2);
+    });
+
+    it('automatically selects a matched choice if there is only one', () => {
+        const onChange = jest.fn();
+
+        const wrapper = mount(
+            <AutocompleteInput
+                {...defaultProps}
+                input={{ value: null, onChange }}
+                choices={[
+                    { id: 1, name: 'ab' },
+                    { id: 2, name: 'abc' },
+                    { id: 3, name: '123' },
+                ]}
+            />,
+            { context, childContextTypes }
+        );
+        wrapper.find('input').simulate('focus');
+        wrapper.find('input').simulate('change', { target: { value: 'abc' } });
+        expect(wrapper.state('suggestions')).toHaveLength(1);
+        expect(onChange).toHaveBeenCalledWith(2);
+    });
 });
