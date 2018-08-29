@@ -152,12 +152,7 @@ Among the default list actions, react-admin includes an `<ExportButton>`. By def
 1. Call the `dataProvider` with the current sort and filter (but without pagination),
 2. Transform the result into a CSV string,
 3. Download the CSV file.
-basePath,
-            filterValues,
-            resource,
-            selectedIds,
-            onUnselectItems,
-        })}
+
 The columns of the CSV file match all the fields of the records in the `dataProvider` response. That means that the export doesn't take into account the selection and ordering of fields in your `<List>` via `Field` components. If you want to customize the result, pass a custom `exporter` function to the `<List>`. This function will receive the data from the `dataProvider` (after step 1), and replace steps 2-3 (i.e. it's in charge of transforming, converting, and downloading the file). 
 
 **Tip**: For CSV conversion, you can import [Papaparse](https://www.papaparse.com/), a CSV parser and stringifier which is already a react-admin dependency. And for CSV download, take advantage of react-admin's `downloadCSV` function.
