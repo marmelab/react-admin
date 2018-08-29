@@ -82,6 +82,9 @@ export class TreeNodeWithChildren extends Component {
                         node={node}
                         resource={resource}
                         cancelDropOnChildren={cancelDropOnChildren}
+                        classes={{
+                            handle: classes.handle,
+                        }}
                         {...props}
                     >
                         {children}

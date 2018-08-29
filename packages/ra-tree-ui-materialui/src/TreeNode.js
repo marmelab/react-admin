@@ -7,6 +7,7 @@ import { withStyles } from '@material-ui/core/styles';
 const styles = theme => ({
     expandIcon: {
         margin: 0,
+        left: -theme.spacing.unit * 6,
     },
     root: {
         alignItems: 'baseline',
@@ -19,16 +20,15 @@ const styles = theme => ({
         display: 'flex',
         padding: 0,
         flexGrow: 1,
-        paddingLeft: theme.spacing.unit * 4,
+        paddingLeft: theme.spacing.unit * 6,
     },
     leaf: {
         display: 'flex',
         flexGrow: 1,
-        // Restore default ListItem padding
-        paddingTop: theme.spacing.unit * 1.5,
-        paddingBottom: theme.spacing.unit * 1.5,
+        margin: 0,
+        padding: 0,
+        paddingLeft: theme.spacing.unit * 6,
         paddingRight: theme.spacing.unit * 4,
-        paddingLeft: theme.spacing.unit * 4,
         position: 'relative',
     },
 
@@ -62,8 +62,9 @@ const styles = theme => ({
         },
     },
     handle: {
-        cursor: 'crosshair',
-        marginLeft: theme.spacing.unit * 2,
+        cursor: 'drag',
+        alignItems: 'center',
+        display: 'flex',
         marginRight: theme.spacing.unit * 2,
     },
     draggingOver: {
@@ -182,6 +183,9 @@ class TreeNode extends Component {
                                 isLeaf={true}
                                 cancelDropOnChildren={!!itemType}
                                 onDrop={this.handleDrop}
+                                classes={{
+                                    handle: classes.handle,
+                                }}
                                 {...props}
                             >
                                 {children}

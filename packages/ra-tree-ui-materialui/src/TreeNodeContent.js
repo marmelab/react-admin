@@ -1,16 +1,6 @@
 import React, { cloneElement, Children, Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
 import IconDragHandle from '@material-ui/icons/DragHandle';
-
-const styles = theme => ({
-    handle: {
-        alignItems: 'center',
-        cursor: 'crosshair',
-        display: 'flex',
-        marginRight: theme.spacing.unit * 2,
-    },
-});
 
 class TreeNodeContent extends Component {
     static propTypes = {
@@ -51,10 +41,8 @@ class TreeNodeContent extends Component {
         } = this.props;
         return (
             <Fragment>
-                {// Use empty image as a drag preview so browsers don't draw it
-                // and we can draw whatever we want on the custom drag layer instead.
-
-                connectDragPreview &&
+                {cloneElement(Children.only(children), { node, ...props })}
+                {connectDragPreview &&
                     connectDragPreview(<span />, {
                         // IE fallback: specify that we'd rather screenshot the node
                         // when it already knows it's being dragged so we can hide it with CSS.
@@ -66,10 +54,9 @@ class TreeNodeContent extends Component {
                             <IconDragHandle />
                         </div>
                     )}
-                {cloneElement(Children.only(children), { node, ...props })}
             </Fragment>
         );
     }
 }
 
-export default withStyles(styles)(TreeNodeContent);
+export default TreeNodeContent;
