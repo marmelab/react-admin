@@ -203,34 +203,39 @@ export class AutocompleteInput extends React.Component {
     };
 
     handleSuggestionsClearRequested = () => {
-        this.setState(({ suggestions, prevSuggestions }) => ({
-            suggestions: [],
-            prevSuggestions: prevSuggestions || suggestions,
-        }));
+        this.updateFilter('');
     };
 
     handleMatchSuggestionOrFilter = inputValue => {
         const { choices, inputValueMatcher, input } = this.props;
 
-        const match =
+        const matches =
             inputValue &&
-            choices.find(it =>
+            choices.filter(it =>
                 inputValueMatcher(inputValue, it, this.getSuggestionText)
             );
-        if (match) {
+
+        if (matches.length === 1) {
+            const match = matches[0];
             const nextId = this.getSuggestionValue(match);
             if (this.state.inputValue !== nextId) {
                 input.onChange(this.getSuggestionValue(match));
-                this.setState({
-                    suggestions: [match],
-                    searchText: this.getSuggestionText(match), // The searchText could be whatever the inputvalue matcher likes, so sanitize it
-                });
+                this.setState(
+                    {
+                        suggestions: [match],
+                        searchText: this.getSuggestionText(match), // The searchText could be whatever the inputvalue matcher likes, so sanitize it
+                    },
+                    () => this.updateFilter(inputValue)
+                );
             } else {
-                this.setState({
-                    dirty: false,
-                    suggestions: [match],
-                    searchText: this.getSuggestionText(match),
-                });
+                this.setState(
+                    {
+                        dirty: false,
+                        suggestions: [match],
+                        searchText: this.getSuggestionText(match),
+                    },
+                    () => this.updateFilter(inputValue)
+                );
             }
         } else {
             this.setState({
@@ -516,10 +521,10 @@ AutocompleteInput.defaultProps = {
     limitChoicesToValue: false,
     translateChoice: true,
     inputValueMatcher: (input, suggestion, getOptionText) =>
-        input.toLowerCase().trim() ===
         getOptionText(suggestion)
             .toLowerCase()
-            .trim(),
+            .trim()
+            .includes(input.toLowerCase().trim()),
 };
 
 export default compose(
