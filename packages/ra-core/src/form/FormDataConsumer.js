@@ -75,18 +75,22 @@ const FormDataConsumer = ({ children, formData, source, index, ...rest }) => {
     let scopedFormData = formData;
     let getSource;
     let getSourceHasBeenCalled = false;
+    let ret;
 
     // If we have an index, we are in an iterator like component (such as the SimpleFormIterator)
-    if (index) {
+    if (typeof index !== 'undefined') {
         scopedFormData = get(formData, source);
         getSource = scopedSource => {
             getSourceHasBeenCalled = true;
             return `${source}.${scopedSource}`;
         };
+        ret = children({ formData, scopedFormData, getSource, ...rest });
+    } else {
+        ret = children({ formData, ...rest });
     }
-    const ret = children({ formData, scopedFormData, getSource, ...rest });
 
     if (
+        typeof index !== 'undefined' &&
         ret &&
         !getSourceHasBeenCalled &&
         process.env.NODE_ENV !== 'production'
