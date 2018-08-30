@@ -114,7 +114,7 @@ export class ReferenceArrayInputController extends Component {
     componentWillReceiveProps(nextProps) {
         let shouldFetchOptions = false;
 
-        if (this.props.record.id !== nextProps.record.id) {
+        if ((this.props.record || {}).id !== (nextProps.record || {}).id) {
             this.fetchReferencesAndOptions(nextProps);
         } else if (this.props.input.value !== nextProps.input.value) {
             this.fetchReferences(nextProps);
