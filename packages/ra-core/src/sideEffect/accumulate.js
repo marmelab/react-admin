@@ -60,6 +60,25 @@ export const accumulateFactory = (tasks, accumulations, finalize) =>
      *    meta: { accumulate: crudGetMany }
      * });
      *   => crudGetMany({ ids: [1, 2, 3, 4, 5], resource: 'posts' })
+     *
+     * @example
+     * accumulate({
+     *    type: CRUD_GET_MATCHING_ACCUMULATE,
+     *    meta: {
+     *      accumulate: crudGetMatching('posts', 'posts@comments[1].authorId', { page:1, perPage: 10 }, {field: 'id', order: 'DESC' }, {}),
+     *      accumulateValues: () => true,
+     *      accumulateKey: '{"resource":"authors", "pagination":{"page":1,"perPage":10},"sort":{"field":"id","order":"DESC"},"filter":{}}'
+     *    }
+     * });
+     * accumulate({
+     *    type: CRUD_GET_MATCHING_ACCUMULATE,
+     *    meta: {
+     *      accumulate: crudGetMatching('posts', 'posts@comments[1].authorId', { page:1, perPage: 10 }, {field: 'id', order: 'DESC' }, {}),
+     *      accumulateValues: () => true,
+     *      accumulateKey: '{"resource":"authors", "pagination":{"page":1,"perPage":10},"sort":{"field":"id","order":"DESC"},"filter":{}}'
+     *    }
+     * });
+     *   => crudGetMatching('posts', 'posts@comments[1].authorId', { page:1, perPage: 10 }, {field: 'id', order: 'DESC' }, {})
      */
 
     function* accumulate(action) {
