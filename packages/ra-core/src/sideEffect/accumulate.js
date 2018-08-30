@@ -86,8 +86,10 @@ export default function*() {
      * Example
      *
      * const accumulations = {
-     *   posts: { 4: true, 7: true, 345: true },
-     *   authors: { 23: true, 47: true, 78: true },
+     *   posts: [4, 7, 345 ], // a CRUD_GET_MANY_ACCUMULATE action
+     *   authors: [23, 47, 78 ], // another CRUD_GET_MANY_ACCUMULATE action
+     *   '{"resource":"authors", "pagination":{"page":1,"perPage":10},"sort":{"field":"id","order":"DESC"},"filter":{}}': true, // a CRUD_GET_MATCHING_ACCUMULATE action
+     *   '{"resource":"authors", "pagination":{"page":1,"perPage":10},"sort":{"field":"id","order":"DESC"},"filter":{"hasValidEmail":true}}': true, // another CRUD_GET_MATCHING_ACCUMULATE action
      * }
      */
     const accumulations = {};
