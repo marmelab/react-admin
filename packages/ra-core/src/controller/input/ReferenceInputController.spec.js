@@ -7,7 +7,7 @@ describe('<ReferenceInputController />', () => {
     const defaultProps = {
         children: jest.fn(),
         crudGetManyAccumulate: jest.fn(),
-        crudGetMatchingDebounce: jest.fn(),
+        crudGetMatchingAccumulate: jest.fn(),
         meta: {},
         input: {},
         reference: 'posts',
@@ -211,16 +211,16 @@ describe('<ReferenceInputController />', () => {
         assert.equal(children.mock.calls[0][0].warning, undefined);
     });
 
-    it('should call crudGetMatchingDebounce on mount with default fetch values', () => {
-        const crudGetMatchingDebounce = jest.fn();
+    it('should call crudGetMatchingAccumulate on mount with default fetch values', () => {
+        const crudGetMatchingAccumulate = jest.fn();
         shallow(
             <ReferenceInputController
                 {...defaultProps}
                 allowEmpty
-                crudGetMatchingDebounce={crudGetMatchingDebounce}
+                crudGetMatchingAccumulate={crudGetMatchingAccumulate}
             />
         );
-        assert.deepEqual(crudGetMatchingDebounce.mock.calls[0], [
+        assert.deepEqual(crudGetMatchingAccumulate.mock.calls[0], [
             'posts',
             'comments@post_id',
             {
@@ -235,19 +235,19 @@ describe('<ReferenceInputController />', () => {
         ]);
     });
 
-    it('should allow to customize crudGetMatchingDebounce arguments with perPage, sort, and filter props', () => {
-        const crudGetMatchingDebounce = jest.fn();
+    it('should allow to customize crudGetMatchingAccumulate arguments with perPage, sort, and filter props', () => {
+        const crudGetMatchingAccumulate = jest.fn();
         shallow(
             <ReferenceInputController
                 {...defaultProps}
                 allowEmpty
-                crudGetMatchingDebounce={crudGetMatchingDebounce}
+                crudGetMatchingAccumulate={crudGetMatchingAccumulate}
                 sort={{ field: 'foo', order: 'ASC' }}
                 perPage={5}
                 filter={{ q: 'foo' }}
             />
         );
-        assert.deepEqual(crudGetMatchingDebounce.mock.calls[0], [
+        assert.deepEqual(crudGetMatchingAccumulate.mock.calls[0], [
             'posts',
             'comments@post_id',
             {
@@ -264,13 +264,13 @@ describe('<ReferenceInputController />', () => {
         ]);
     });
 
-    it('should allow to customize crudGetMatchingDebounce arguments with perPage, sort, and filter props without loosing original default filter', () => {
-        const crudGetMatchingDebounce = jest.fn();
+    it('should allow to customize crudGetMatchingAccumulate arguments with perPage, sort, and filter props without loosing original default filter', () => {
+        const crudGetMatchingAccumulate = jest.fn();
         const wrapper = shallow(
             <ReferenceInputController
                 {...defaultProps}
                 allowEmpty
-                crudGetMatchingDebounce={crudGetMatchingDebounce}
+                crudGetMatchingAccumulate={crudGetMatchingAccumulate}
                 sort={{ field: 'foo', order: 'ASC' }}
                 perPage={5}
                 filter={{ foo: 'bar' }}
@@ -279,7 +279,7 @@ describe('<ReferenceInputController />', () => {
 
         wrapper.instance().setFilter('search_me');
 
-        assert.deepEqual(crudGetMatchingDebounce.mock.calls[1], [
+        assert.deepEqual(crudGetMatchingAccumulate.mock.calls[1], [
             'posts',
             'comments@post_id',
             {
@@ -297,17 +297,17 @@ describe('<ReferenceInputController />', () => {
         ]);
     });
 
-    it('should call crudGetMatchingDebounce when setFilter is called', () => {
-        const crudGetMatchingDebounce = jest.fn();
+    it('should call crudGetMatchingAccumulate when setFilter is called', () => {
+        const crudGetMatchingAccumulate = jest.fn();
         const wrapper = shallow(
             <ReferenceInputController
                 {...defaultProps}
                 allowEmpty
-                crudGetMatchingDebounce={crudGetMatchingDebounce}
+                crudGetMatchingAccumulate={crudGetMatchingAccumulate}
             />
         );
         wrapper.instance().setFilter('bar');
-        assert.deepEqual(crudGetMatchingDebounce.mock.calls[1], [
+        assert.deepEqual(crudGetMatchingAccumulate.mock.calls[1], [
             'posts',
             'comments@post_id',
             {
@@ -325,17 +325,17 @@ describe('<ReferenceInputController />', () => {
     });
 
     it('should use custom filterToQuery function prop', () => {
-        const crudGetMatchingDebounce = jest.fn();
+        const crudGetMatchingAccumulate = jest.fn();
         const wrapper = shallow(
             <ReferenceInputController
                 {...defaultProps}
                 allowEmpty
-                crudGetMatchingDebounce={crudGetMatchingDebounce}
+                crudGetMatchingAccumulate={crudGetMatchingAccumulate}
                 filterToQuery={searchText => ({ foo: searchText })}
             />
         );
         wrapper.instance().setFilter('bar');
-        assert.deepEqual(crudGetMatchingDebounce.mock.calls[1], [
+        assert.deepEqual(crudGetMatchingAccumulate.mock.calls[1], [
             'posts',
             'comments@post_id',
             {
@@ -385,8 +385,8 @@ describe('<ReferenceInputController />', () => {
         assert.deepEqual(children.mock.calls[0][0].onChange, onChange);
     });
 
-    it('should only call crudGetMatchingDebounce when calling setFilter', () => {
-        const crudGetMatchingDebounce = jest.fn();
+    it('should only call crudGetMatchingAccumulate when calling setFilter', () => {
+        const crudGetMatchingAccumulate = jest.fn();
         const crudGetManyAccumulate = jest.fn();
         const wrapper = shallow(
             <ReferenceInputController
@@ -394,19 +394,19 @@ describe('<ReferenceInputController />', () => {
                 allowEmpty
                 input={{ value: 5 }}
                 crudGetManyAccumulate={crudGetManyAccumulate}
-                crudGetMatchingDebounce={crudGetMatchingDebounce}
+                crudGetMatchingAccumulate={crudGetMatchingAccumulate}
             />
         );
-        assert.equal(crudGetMatchingDebounce.mock.calls.length, 1);
+        assert.equal(crudGetMatchingAccumulate.mock.calls.length, 1);
         assert.equal(crudGetManyAccumulate.mock.calls.length, 1);
 
         wrapper.instance().setFilter('bar');
-        assert.equal(crudGetMatchingDebounce.mock.calls.length, 2);
+        assert.equal(crudGetMatchingAccumulate.mock.calls.length, 2);
         assert.equal(crudGetManyAccumulate.mock.calls.length, 1);
     });
 
     it('should only call crudGetMatching when props are changed from outside', () => {
-        const crudGetMatchingDebounce = jest.fn();
+        const crudGetMatchingAccumulate = jest.fn();
         const crudGetManyAccumulate = jest.fn();
         const wrapper = shallow(
             <ReferenceInputController
@@ -414,15 +414,15 @@ describe('<ReferenceInputController />', () => {
                 allowEmpty
                 input={{ value: 5 }}
                 crudGetManyAccumulate={crudGetManyAccumulate}
-                crudGetMatchingDebounce={crudGetMatchingDebounce}
+                crudGetMatchingAccumulate={crudGetMatchingAccumulate}
             />
         );
-        assert.equal(crudGetMatchingDebounce.mock.calls.length, 1);
+        assert.equal(crudGetMatchingAccumulate.mock.calls.length, 1);
         assert.equal(crudGetManyAccumulate.mock.calls.length, 1);
 
         wrapper.setProps({ filter: { foo: 'bar' } });
         assert.equal(crudGetManyAccumulate.mock.calls.length, 1);
-        assert.deepEqual(crudGetMatchingDebounce.mock.calls[1], [
+        assert.deepEqual(crudGetMatchingAccumulate.mock.calls[1], [
             'posts',
             'comments@post_id',
             { page: 1, perPage: 25 },
@@ -432,7 +432,7 @@ describe('<ReferenceInputController />', () => {
 
         wrapper.setProps({ sort: { field: 'foo', order: 'ASC' } });
         assert.equal(crudGetManyAccumulate.mock.calls.length, 1);
-        assert.deepEqual(crudGetMatchingDebounce.mock.calls[2], [
+        assert.deepEqual(crudGetMatchingAccumulate.mock.calls[2], [
             'posts',
             'comments@post_id',
             { page: 1, perPage: 25 },
@@ -442,7 +442,7 @@ describe('<ReferenceInputController />', () => {
 
         wrapper.setProps({ perPage: 42 });
         assert.equal(crudGetManyAccumulate.mock.calls.length, 1);
-        assert.deepEqual(crudGetMatchingDebounce.mock.calls[3], [
+        assert.deepEqual(crudGetMatchingAccumulate.mock.calls[3], [
             'posts',
             'comments@post_id',
             { page: 1, perPage: 42 },
@@ -451,8 +451,8 @@ describe('<ReferenceInputController />', () => {
         ]);
     });
 
-    it('should only call crudGetMatchingDebounce when props are changed from outside', () => {
-        const crudGetMatchingDebounce = jest.fn();
+    it('should only call crudGetMatchingAccumulate when props are changed from outside', () => {
+        const crudGetMatchingAccumulate = jest.fn();
         const crudGetManyAccumulate = jest.fn();
         const wrapper = shallow(
             <ReferenceInputController
@@ -460,22 +460,22 @@ describe('<ReferenceInputController />', () => {
                 allowEmpty
                 input={{ value: 5 }}
                 crudGetManyAccumulate={crudGetManyAccumulate}
-                crudGetMatchingDebounce={crudGetMatchingDebounce}
+                crudGetMatchingAccumulate={crudGetMatchingAccumulate}
             />
         );
-        expect(crudGetMatchingDebounce).toHaveBeenCalledTimes(1);
+        expect(crudGetMatchingAccumulate).toHaveBeenCalledTimes(1);
         expect(crudGetManyAccumulate).toHaveBeenCalledTimes(1);
 
         wrapper.setProps({ filter: { foo: 'bar' } });
-        expect(crudGetMatchingDebounce.mock.calls.length).toBe(2);
+        expect(crudGetMatchingAccumulate.mock.calls.length).toBe(2);
         expect(crudGetManyAccumulate).toHaveBeenCalledTimes(1);
 
         wrapper.setProps({ sort: { field: 'foo', order: 'ASC' } });
-        expect(crudGetMatchingDebounce.mock.calls.length).toBe(3);
+        expect(crudGetMatchingAccumulate.mock.calls.length).toBe(3);
         expect(crudGetManyAccumulate).toHaveBeenCalledTimes(1);
 
         wrapper.setProps({ perPage: 42 });
-        expect(crudGetMatchingDebounce.mock.calls.length).toBe(4);
+        expect(crudGetMatchingAccumulate.mock.calls.length).toBe(4);
         expect(crudGetManyAccumulate).toHaveBeenCalledTimes(1);
     });
 
@@ -494,22 +494,22 @@ describe('<ReferenceInputController />', () => {
         assert.equal(crudGetManyAccumulate.mock.calls.length, 2);
     });
 
-    it('should call crudGetManyAccumulate and crudGetMatchingDebounce when record changes', () => {
+    it('should call crudGetManyAccumulate and crudGetMatchingAccumulate when record changes', () => {
         const crudGetManyAccumulate = jest.fn();
-        const crudGetMatchingDebounce = jest.fn();
+        const crudGetMatchingAccumulate = jest.fn();
         const wrapper = shallow(
             <ReferenceInputController
                 {...defaultProps}
                 allowEmpty
                 input={{ value: 5 }}
                 crudGetManyAccumulate={crudGetManyAccumulate}
-                crudGetMatchingDebounce={crudGetMatchingDebounce}
+                crudGetMatchingAccumulate={crudGetMatchingAccumulate}
             />
         );
-        assert.equal(crudGetMatchingDebounce.mock.calls.length, 1);
+        assert.equal(crudGetMatchingAccumulate.mock.calls.length, 1);
         assert.equal(crudGetManyAccumulate.mock.calls.length, 1);
         wrapper.setProps({ record: { id: 1 } });
-        assert.equal(crudGetMatchingDebounce.mock.calls.length, 2);
+        assert.equal(crudGetMatchingAccumulate.mock.calls.length, 2);
         assert.equal(crudGetManyAccumulate.mock.calls.length, 2);
     });
 });
