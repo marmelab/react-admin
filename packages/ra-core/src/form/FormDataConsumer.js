@@ -71,7 +71,13 @@ const warnAboutArrayInput = () =>
  *     </Edit>
  * );
  */
-const FormDataConsumer = ({ children, formData, source, index, ...rest }) => {
+export const FormDataConsumer = ({
+    children,
+    formData,
+    source,
+    index,
+    ...rest
+}) => {
     let scopedFormData = formData;
     let getSource;
     let getSourceHasBeenCalled = false;
