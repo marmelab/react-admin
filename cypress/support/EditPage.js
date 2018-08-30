@@ -1,7 +1,7 @@
 export default url => ({
     elements: {
         body: 'body',
-        input: name => `.edit-page input[name='${name}']`,
+        input: name => `.edit-page [name='${name}']`,
         inputs: `.ra-input`,
         tabs: `.form-tab`,
         submitButton: ".edit-page button[type='submit']",
