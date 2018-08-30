@@ -58,9 +58,14 @@ describe('Edit Page', () => {
             expect(el).to.have.value('Edmond Schulist')
         );
 
-        EditPostPage.navigate();
-        cy.get(EditPostPage.elements.input('title')).should(el =>
-            expect(el).to.have.value('Sed quo et et fugiat modi')
+        // This validate that the current redux form values are not kept after we navigate
+        EditCommentPage.setInputValue('body', 'Test');
+
+        CreatePostPage.navigate();
+
+        cy.get(CreatePostPage.elements.bodyInput).should(el =>
+            // When the Quill editor is empty, it add the "ql-blank" CSS class
+            expect(el).to.have.class('ql-blank')
         );
     });
 
@@ -70,10 +75,15 @@ describe('Edit Page', () => {
             expect(el).to.have.value('Sed quo et et fugiat modi')
         );
 
+        // This validate that the current redux form values are not kept after we navigate
+        EditPostPage.setInputValue('title', 'Another title');
+
         CreatePostPage.navigate();
         cy.get(CreatePostPage.elements.input('title')).should(el =>
             expect(el).to.have.value('')
         );
+
+        // This validate the old record values are not kept after we navigated
         const currentDate = new Date();
         const currentDateString = currentDate.toISOString().slice(0, 10);
 
