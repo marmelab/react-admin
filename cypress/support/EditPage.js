@@ -2,7 +2,7 @@ export default url => ({
     elements: {
         body: 'body',
         deleteButton: '.ra-delete-button',
-        input: name => `.edit-page input[name='${name}']`,
+        input: name => `.edit-page [name='${name}']`,
         inputs: `.ra-input`,
         tabs: `.form-tab`,
         snackbar: 'div[role="alertdialog"]',
