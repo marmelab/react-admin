@@ -68,6 +68,7 @@ class EditableDatagrid extends Component {
             setImmediate(() => {
                 setPerPage(perPage + pageSize);
             });
+            // FIXME this limits autopagination to one additinoal page
             this.loading = true;
         }
         return emptyRow;
