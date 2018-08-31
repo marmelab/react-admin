@@ -36,10 +36,7 @@ export default ({
         resettableAppReducer,
         initialState,
         compose(
-            applyMiddleware(
-                sagaMiddleware,
-                routerMiddleware(history)
-            ),
+            applyMiddleware(sagaMiddleware, routerMiddleware(history)),
             typeof window !== 'undefined' && window.devToolsExtension
                 ? window.devToolsExtension()
                 : f => f
