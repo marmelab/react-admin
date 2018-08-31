@@ -1,5 +1,23 @@
 # Changelog
 
+## v2.2.3
+
+* Fix form reset with navigation (again) ([djhi](https://github.com/djhi))
+* Fix `ReferenceArrayInputController` error on undefined record ([natrim](https://github.com/natrim))
+* Fix `<AutoCompleteInput>` updates its choices after blur ([djhi](https://github.com/djhi))
+* Fix `<AutoCompleteInput>` does not automatically select a choice when there are still multiple matches ([djhi](https://github.com/djhi))
+* Fix `<FileField>` warnings about unknown props ([djhi](https://github.com/djhi))
+* Fix `<FileInput>` `multiple` prop documentation ([djhi](https://github.com/djhi))
+* Fix `<SelectInput>` when used inside a `<ReferenceInput>` with `allowEmpty` ([djhi](https://github.com/djhi))
+* Fix list documentation for `bulkActions` ([djhi](https://github.com/djhi))
+* Fix typo in `error` side effect comment ([Kmaschta](https://github.com/Kmaschta))
+* Fix doc mentions obsolete translation packages ([fzaninotto](https://github.com/fzaninotto))
+* Add link to Danish translation ([nikri](https://github.com/nikri))
+* Add an Advanced Tutorials section to the documentation ([djhi](https://github.com/djhi))
+* Fix `handleSubmit` should not be overriden in `<Toolbar>` children ([djhi](https://github.com/djhi))
+* Fix `<ReferenceField>` does not respect its child's `className` ([fzaninotto](https://github.com/fzaninotto))
+* Fix typo on `ra-language-french` French translations ([Kmaschta](https://github.com/Kmaschta))
+
 ## v2.2.2
 
 * Fix `<SelectInput>` and `<SelectArrayInput>` validation ([djhi](https://github.com/djhi))
