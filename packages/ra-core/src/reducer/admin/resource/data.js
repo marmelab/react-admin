@@ -70,6 +70,7 @@ export default (previousState = initialState, { payload, meta }) => {
         const newState = addRecords([updatedRecord], previousState);
         return newState;
     }
+
     if ((meta.effect || meta.fetch) === UPDATE_MANY && meta.optimistic) {
         const updatedRecords = payload.ids
             .reduce((records, id) => records.concat(previousState[id]), [])
@@ -79,6 +80,7 @@ export default (previousState = initialState, { payload, meta }) => {
             }));
         return addRecords(updatedRecords, previousState);
     }
+
     if ((meta.effect || meta.fetch) === DELETE && meta.optimistic) {
         const { [payload.id]: removed, ...newState } = previousState;
 
@@ -88,6 +90,7 @@ export default (previousState = initialState, { payload, meta }) => {
 
         return newState;
     }
+
     if ((meta.effect || meta.fetch) === DELETE_MANY && meta.optimistic) {
         const newState = Object.entries(previousState)
             .filter(([key]) => !payload.ids.includes(key))
@@ -99,6 +102,7 @@ export default (previousState = initialState, { payload, meta }) => {
 
         return newState;
     }
+
     if (
         !meta ||
         (!meta.effect && !meta.fetchResponse) ||
@@ -106,6 +110,7 @@ export default (previousState = initialState, { payload, meta }) => {
     ) {
         return previousState;
     }
+
     switch (meta.effect || meta.fetchResponse) {
         case GET_LIST:
         case GET_MANY:
@@ -114,13 +119,13 @@ export default (previousState = initialState, { payload, meta }) => {
         case GET_ONE:
         case UPDATE:
         case CREATE:
-            return addRecords([payload.data], previousState);
+            return addRecords([meta.effectData || payload.data], previousState);
         case UPDATE_MANY: {
             const updatedRecords = payload.ids
                 .reduce((records, id) => records.concat(previousState[id]), [])
                 .map(record => ({
                     ...record,
-                    ...payload.data,
+                    ...(meta.effectData || payload.data),
                 }));
             return addRecords(updatedRecords, previousState);
         }
