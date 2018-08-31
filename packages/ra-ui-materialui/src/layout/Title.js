@@ -13,7 +13,7 @@ const Title = ({
 }) => {
     const container = document.getElementById('react-admin-title');
     if (!container) return null;
-    if (!defaultTitle && !title) {
+    if (!defaultTitle && !title && process.env.NODE_ENV !== 'production') {
         console.warn('Missing title prop in <Title> element'); //eslint-disable-line no-console
     }
     const titleElement = !title ? (

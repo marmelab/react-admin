@@ -1,4 +1,3 @@
-import assert from 'assert';
 import React from 'react';
 import { shallow } from 'enzyme';
 
@@ -52,7 +51,7 @@ describe('<Pagination />', () => {
     });
 
     describe('mobile', () => {
-        it('should render a condensed <Toolbar>', () => {
+        it('should render a <TablePagination> without rowsPerPage choice', () => {
             const wrapper = shallow(
                 <Pagination
                     page={2}
@@ -66,40 +65,12 @@ describe('<Pagination />', () => {
                 .setProps({ width: 'xs' })
                 .shallow()
                 .shallow();
-            const iconButtons = wrapper.find('WithStyles(IconButton)');
-            assert.equal(iconButtons.length, 2);
-            const flatButtons = wrapper.find('WithStyles(Button)');
-            assert.equal(flatButtons.length, 0);
-        });
-        it('should render only the text when no pagination is necessary', () => {
-            const wrapper = shallow(
-                <Pagination
-                    page={1}
-                    perPage={20}
-                    total={15}
-                    translate={x => x}
-                    width={1}
-                />
-            )
-                .shallow()
-                .shallow()
-                .setProps({ width: 'xs' })
-                .shallow()
-                .shallow();
-            const iconButtons = wrapper.find('WithStyles(IconButton)');
-            assert.equal(iconButtons.length, 0);
-            const typography = wrapper.find('WithStyles(Typography)');
-            assert.equal(
-                typography
-                    .shallow()
-                    .shallow()
-                    .text(),
-                'ra.navigation.page_range_info'
-            );
+            const pagination = wrapper.find('WithStyles(TablePagination)');
+            expect(pagination.prop('rowsPerPageOptions')).toEqual([]);
         });
     });
     describe('desktop', () => {
-        it('should render a normal <Toolbar>', () => {
+        it('should render a <TablePagination> with rowsPerPage choice', () => {
             const wrapper = shallow(
                 <Pagination
                     page={2}
@@ -113,35 +84,8 @@ describe('<Pagination />', () => {
                 .shallow()
                 .shallow()
                 .shallow();
-            const iconButtons = wrapper.find('WithStyles(IconButton)');
-            assert.equal(iconButtons.length, 0);
-            const flatButtons = wrapper.find('WithStyles(Button)');
-            assert.equal(flatButtons.length, 5);
-        });
-        it('should render only the text when no pagination is necessary', () => {
-            const wrapper = shallow(
-                <Pagination
-                    page={1}
-                    perPage={20}
-                    total={15}
-                    translate={x => x}
-                    width={2}
-                />
-            )
-                .shallow()
-                .shallow()
-                .shallow()
-                .shallow();
-            const flatButtons = wrapper.find('WithStyles(Button)');
-            assert.equal(flatButtons.length, 0);
-            const typography = wrapper.find('WithStyles(Typography)');
-            assert.equal(
-                typography
-                    .shallow()
-                    .shallow()
-                    .text(),
-                'ra.navigation.page_range_info'
-            );
+            const pagination = wrapper.find('WithStyles(TablePagination)');
+            expect(pagination.prop('rowsPerPageOptions')).toBe(undefined);
         });
     });
 });

@@ -15,6 +15,7 @@ import {
     NumberField,
     ReferenceManyField,
     Responsive,
+    SearchInput,
     TabbedForm,
     TextField,
     TextInput,
@@ -36,7 +37,7 @@ export const VisitorIcon = Icon;
 
 const VisitorFilter = props => (
     <Filter {...props}>
-        <TextInput label="pos.search" source="q" alwaysOn />
+        <SearchInput source="q" alwaysOn />
         <DateInput source="last_seen_gte" />
         <NullableBooleanInput source="has_ordered" />
         <NullableBooleanInput source="has_newsletter" defaultValue />
@@ -148,6 +149,7 @@ export const VisitorEdit = withStyles(editStyles)(({ classes, ...props }) => (
             <FormTab label="resources.customers.tabs.orders">
                 <ReferenceManyField
                     addLabel={false}
+                    sort={{ field: 'date', order: 'DESC' }}
                     reference="commands"
                     target="customer_id"
                 >
@@ -167,6 +169,7 @@ export const VisitorEdit = withStyles(editStyles)(({ classes, ...props }) => (
             <FormTab label="resources.customers.tabs.reviews">
                 <ReferenceManyField
                     addLabel={false}
+                    sort={{ field: 'date', order: 'DESC' }}
                     reference="reviews"
                     target="customer_id"
                 >

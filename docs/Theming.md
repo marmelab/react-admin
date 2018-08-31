@@ -365,18 +365,20 @@ const App = () => (
 );
 ```
 
-Your custom layout can extend the default `<Layout>` component if you only want to override the appBar, the menu, the notification component, or the error page. For instance:
+Your custom layout can extend the default `<Layout>` component if you only want to override the sidebar, the appBar, the menu, the notification component, or the error page. For instance:
 
 ```jsx
 // in src/MyLayout.js
 import { Layout } from 'react-admin';
 import MyAppBar from './MyAppBar';
+import MySidebar from './MySidebar';
 import MyMenu from './MyMenu';
 import MyNotification from './MyNotification';
 
-const MyLayout = props => <Layout 
+const MyLayout = props => <Layout
     {...props}
     appBar={MyAppBar}
+    sidebar={MySidebar}
     menu={MyMenu}
     notification={MyNotification}
 />;
@@ -403,6 +405,19 @@ const MyLayout = props => <Layout
     {...props}
     appBar={MyAppBar}
 />;
+```
+
+You can speciy the `Sidebar` size by setting the `size` property:
+
+```jsx
+import { Sidebar } from 'react-admin';
+
+const MySidebar = props => <Sidebar {...props} size={200} />;
+const MyLayout = props => <Layout
+    {...props}
+    sidebar={MySidebar}
+/>;
+
 ```
 
 For more custom layouts, write a component from scratch. It must contain a `{children}` placeholder, where react-admin will render the resources. Use the [default layout](https://github.com/marmelab/react-admin/blob/master/src/mui/layout/Layout.js) as a starting point. Here is a simplified version (with no responsive support):
@@ -497,6 +512,54 @@ MyLayout.propTypes = {
 
 const mapStateToProps = state => ({ isLoading: state.admin.loading > 0 });
 export default connect(mapStateToProps, { setSidebarVisibility })(withStyles(styles)(MyLayout));
+```
+
+## Using a Custom AppBar
+
+By default, React-admin uses [Material_ui's `<AppBar>` component](https://material-ui.com/api/app-bar/) together with [react-headroom](https://github.com/KyleAMathews/react-headroom) to hide the `AppBar` on scroll.
+
+You can create your own `AppBar` component to replace the react-admin one. For instance, to remove the "headroom" effect:
+
+```jsx
+// in src/MyAppBar.js
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+
+const MyAppBar = props => (
+    <AppBar {...props}>
+        <Toolbar>
+            <Typography variant="title" id="react-admin-title" />
+        </Toolbar>
+    </AppBar>
+);
+
+export default MyAppBar;
+```
+
+To use this custom `AppBar` component, pass it as prop to a custom `Layout`, as explained below:
+
+```jsx
+// in src/MyLayout.js
+import { Layout } from 'react-admin';
+import MyAppBar from './MyAppBar';
+
+const MyLayout = (props) => <Layout {...props} appBar={MyAppBar} />;
+
+export default MyLayout;
+```
+
+Then, use this layout in the `<Admin>` with the `applayout` prop:
+
+```jsx
+// in src/App.js
+import MyLayout from './MyLayout';
+
+const App = () => (
+    <Admin appLayout={MyLayout} dataProvider={simpleRestProvider('http://path.to.my.api')}>
+        // ...
+    </Admin>
+);
 ```
 
 ## Using a Custom Menu
@@ -666,7 +729,7 @@ const MyError = ({
         <Title title="Error" />
         <h1><ErrorIcon /> Something Went Wrong </h1>
         <div>A client error occurred and your request couldn't be completed.</div>
-        {process.env.NODE_ENV === 'development' && (
+        {process.env.NODE_ENV !== 'production' && (
             <details>
                 <h2>{translate(error.toString())}</h2>
                 {errorInfo.componentStack}
@@ -714,9 +777,9 @@ const App = () => (
 
 ## Loading
 
-Display a circular progress component with optional messages. Display the same loading component as `react-admin` on custom pages for consistency. 
+Display a circular progress component with optional messages. Display the same loading component as `react-admin` on custom pages for consistency.
 
-Supported props: 
+Supported props:
 
 Prop | Type | Default | Descriptions
 ---|---|---|---
@@ -725,18 +788,18 @@ Prop | Type | Default | Descriptions
 
 Usage:
 
-```jsx 
+```jsx
 <Loading loadingPrimary="app.page.loading" loadingSecondary="app.message.loading" />
-``` 
+```
 
 ## LinearProgress
 
-Display a linear progress component. Display the same loading component as `react-admin` on custom inputs for consistency. 
+Display a linear progress component. Display the same loading component as `react-admin` on custom inputs for consistency.
 
 Usage:
 
-```jsx 
-({ data, ...props }) => !data? 
-        <LinearProgress /> : 
-        <MyInput data={data} />        
-``` 
+```jsx
+({ data, ...props }) => !data?
+        <LinearProgress /> :
+        <MyInput data={data} />
+```

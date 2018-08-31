@@ -117,8 +117,6 @@ export class TabbedForm extends Component {
                 {...sanitizeRestProps(rest)}
             >
                 <Tabs
-                    scrollable
-                    scrollButtons="off"
                     // The location pathname will contain the page path including the current tab path
                     // so we can use it as a way to determine the current tab
                     value={tabsValue}
@@ -291,6 +289,7 @@ const enhance = compose(
     }),
     translate, // Must be before reduxForm so that it can be used in validation
     reduxForm({
+        destroyOnUnmount: false,
         enableReinitialize: true,
         keepDirtyOnReinitialize: true,
     }),

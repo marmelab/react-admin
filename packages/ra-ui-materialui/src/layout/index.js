@@ -6,6 +6,7 @@ export Confirm from './Confirm';
 export DashboardMenuItem from './DashboardMenuItem';
 export Error from './Error';
 export Header from './Header';
+export Headroom from './Headroom';
 export Layout from './Layout';
 export Loading from './Loading';
 export LinearProgress from './LinearProgress';

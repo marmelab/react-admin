@@ -169,9 +169,11 @@ export class AutocompleteInput extends React.Component {
             typeof optionText === 'function'
                 ? optionText(suggestion)
                 : get(suggestion, optionText);
+
+        // We explicitly call toString here because AutoSuggest expect a string
         return translateChoice
-            ? translate(suggestionLabel, { _: suggestionLabel })
-            : suggestionLabel;
+            ? translate(suggestionLabel, { _: suggestionLabel }).toString()
+            : suggestionLabel.toString();
     };
 
     handleSuggestionSelected = (event, { suggestion, method }) => {
@@ -201,33 +203,38 @@ export class AutocompleteInput extends React.Component {
     };
 
     handleSuggestionsClearRequested = () => {
-        this.setState(({ suggestions, prevSuggestions }) => ({
-            suggestions: [],
-            prevSuggestions: prevSuggestions || suggestions,
-        }));
+        this.updateFilter('');
     };
 
     handleMatchSuggestionOrFilter = inputValue => {
         const { choices, inputValueMatcher, input } = this.props;
 
-        const match =
+        const matches =
             inputValue &&
-            choices.find(it =>
+            choices.filter(it =>
                 inputValueMatcher(inputValue, it, this.getSuggestionText)
             );
-        if (match) {
+
+        if (matches.length === 1) {
+            const match = matches[0];
             const nextId = this.getSuggestionValue(match);
+            const suggestionText = this.getSuggestionText(match);
+
             if (this.state.inputValue !== nextId) {
-                input.onChange(this.getSuggestionValue(match));
-                this.setState({
-                    suggestions: [match],
-                    searchText: this.getSuggestionText(match), // The searchText could be whatever the inputvalue matcher likes, so sanitize it
-                });
+                this.setState(
+                    {
+                        inputValue: nextId,
+                        searchText: suggestionText, // The searchText could be whatever the inputvalue matcher likes, so sanitize it
+                        selectedItem: match,
+                        suggestions: [match],
+                    },
+                    () => input.onChange(nextId)
+                );
             } else {
                 this.setState({
                     dirty: false,
                     suggestions: [match],
-                    searchText: this.getSuggestionText(match),
+                    searchText: suggestionText,
                 });
             }
         } else {
@@ -314,10 +321,18 @@ export class AutocompleteInput extends React.Component {
     };
 
     renderSuggestionsContainer = options => {
-        const { containerProps, children } = options;
+        const {
+            containerProps: { className, ...containerProps },
+            children,
+        } = options;
 
         return (
-            <Popper open anchorEl={this.inputEl} placement="bottom-start">
+            <Popper
+                className={className}
+                open
+                anchorEl={this.inputEl}
+                placement="bottom-start"
+            >
                 <Paper square {...containerProps}>
                     {children}
                 </Paper>
@@ -506,10 +521,10 @@ AutocompleteInput.defaultProps = {
     limitChoicesToValue: false,
     translateChoice: true,
     inputValueMatcher: (input, suggestion, getOptionText) =>
-        input.toLowerCase().trim() ===
         getOptionText(suggestion)
             .toLowerCase()
-            .trim(),
+            .trim()
+            .includes(input.toLowerCase().trim()),
 };
 
 export default compose(

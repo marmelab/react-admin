@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import shouldUpdate from 'recompose/shouldUpdate';
-import ContentCreate from '@material-ui/icons/Create';
+import Queue from '@material-ui/icons/Queue';
 import { Link } from 'react-router-dom';
 
 import Button from './Button';
@@ -23,7 +23,7 @@ export const CloneButton = ({
         label={label}
         {...rest}
     >
-        <ContentCreate />
+        <Queue />
     </Button>
 );
 

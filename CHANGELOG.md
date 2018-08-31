@@ -1,5 +1,51 @@
 # Changelog
 
+## v2.2.3
+
+* Fix form reset with navigation (again) ([djhi](https://github.com/djhi))
+* Fix `ReferenceArrayInputController` error on undefined record ([natrim](https://github.com/natrim))
+* Fix `<AutoCompleteInput>` updates its choices after blur ([djhi](https://github.com/djhi))
+* Fix `<AutoCompleteInput>` does not automatically select a choice when there are still multiple matches ([djhi](https://github.com/djhi))
+* Fix `<FileField>` warnings about unknown props ([djhi](https://github.com/djhi))
+* Fix `<FileInput>` `multiple` prop documentation ([djhi](https://github.com/djhi))
+* Fix `<SelectInput>` when used inside a `<ReferenceInput>` with `allowEmpty` ([djhi](https://github.com/djhi))
+* Fix list documentation for `bulkActions` ([djhi](https://github.com/djhi))
+* Fix typo in `error` side effect comment ([Kmaschta](https://github.com/Kmaschta))
+* Fix doc mentions obsolete translation packages ([fzaninotto](https://github.com/fzaninotto))
+* Add link to Danish translation ([nikri](https://github.com/nikri))
+* Add an Advanced Tutorials section to the documentation ([djhi](https://github.com/djhi))
+* Fix `handleSubmit` should not be overriden in `<Toolbar>` children ([djhi](https://github.com/djhi))
+* Fix `<ReferenceField>` does not respect its child's `className` ([fzaninotto](https://github.com/fzaninotto))
+* Fix typo on `ra-language-french` French translations ([Kmaschta](https://github.com/Kmaschta))
+
+## v2.2.2
+
+* Fix `<SelectInput>` and `<SelectArrayInput>` validation ([djhi](https://github.com/djhi))
+
+## v2.2.1
+
+* Fix `<AutocompleteInput>` when suggestions are numbers ([djhi](https://github.com/djhi))
+* Fix `ra-realtime` documentation to add an example of `createRealtimeSaga` factory function ([djhi](https://github.com/djhi))
+* Fix `ListController` props cannot be changed from outside ([djhi](https://github.com/djhi))
+* Fix Autocomplete list is cut off by content area ([djhi](https://github.com/djhi))
+* Fix form reset on navigation ([djhi](https://github.com/djhi))
+* Fix `ra-data-fakerest` package name in readme ([mexitalian](https://github.com/mexitalian))
+* Fix `ra-data-graphql-simple` example usage ([kfern](https://github.com/kfern))
+* Fix typo in `<ArrayInput>` documentation ([igneel64](https://github.com/igneel64))
+* Fix documentation links not working work when browsing the doc via Github ([fzaninotto](https://github.com/fzaninotto))
+* Fix link in `CreateEdit` dicumentation ([JulienMattiussi](https://github.com/JulienMattiussi))
+* Fix error when using `<ReferenceInput>` in `<SimpleFormIterator>` ([blasic](https://github.com/blasic))
+* Fix Field with `sortBy` and no `source` is not sortable ([Luwangel](https://github.com/Luwangel))
+* Fix `<label>` and `<input>` not bounded correctly in login form ([josx](https://github.com/josx))
+* Fix fetch alert when response contains falsy data ([fzaninotto](https://github.com/fzaninotto))
+* Fix Tutorial documentation missing `prop-types` package ([igneel64](https://github.com/igneel64))
+* Fix Quill autofocus in `<RichTextInput>` ([floo51](https://github.com/floo51))
+* Fix missing `$options` prop in `<FileInput>` documentation ([djhi](https://github.com/djhi))
+* Fix mobile layout ([fzaninotto](https://github.com/fzaninotto))
+* Fix Reference components do not update from their props ([djhi](https://github.com/djhi))
+* Add link to Farsi translations ([hamidfzm](https://github.com/hamidfzm))
+* Add link to Finnish translations ([Aikain](https://github.com/Aikain))
+
 ## v2.2.0
 
 * Add Export feature ([fzaninotto](https://github.com/fzaninotto))

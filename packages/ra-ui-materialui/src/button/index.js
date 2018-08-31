@@ -1,3 +1,4 @@
+export BulkDeleteButton from './BulkDeleteButton';
 export Button from './Button';
 export CloneButton from './CloneButton';
 export CreateButton from './CreateButton';

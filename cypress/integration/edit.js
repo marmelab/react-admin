@@ -1,11 +1,14 @@
+import createPageFactory from '../support/CreatePage';
 import editPageFactory from '../support/EditPage';
 
 describe('Edit Page', () => {
     const EditPostPage = editPageFactory('/#/posts/5');
+    const CreatePostPage = createPageFactory('/#/posts/create');
     const EditCommentPage = editPageFactory('/#/comments/5');
 
     describe('Title', () => {
         it('should show the correct title in the appBar', () => {
+            EditPostPage.navigate();
             cy.get(EditPostPage.elements.title).contains(
                 'Post "Sed quo et et fugiat modi"'
             );
@@ -64,9 +67,55 @@ describe('Edit Page', () => {
             expect(el).to.have.value('Edmond Schulist')
         );
 
+        // This validate that the current redux form values are not kept after we navigate
+        EditCommentPage.setInputValue('body', 'Test');
+
+        CreatePostPage.navigate();
+
+        cy.get(CreatePostPage.elements.bodyInput).should(el =>
+            // When the Quill editor is empty, it add the "ql-blank" CSS class
+            expect(el).to.have.class('ql-blank')
+        );
+    });
+
+    it('should reset the form correctly when switching from edit to create', () => {
         EditPostPage.navigate();
         cy.get(EditPostPage.elements.input('title')).should(el =>
             expect(el).to.have.value('Sed quo et et fugiat modi')
+        );
+
+        // This validate that the current redux form values are not kept after we navigate
+        EditPostPage.setInputValue('title', 'Another title');
+
+        CreatePostPage.navigate();
+        cy.get(CreatePostPage.elements.input('title')).should(el =>
+            expect(el).to.have.value('')
+        );
+
+        // This validate the old record values are not kept after we navigated
+        const currentDate = new Date();
+        const currentDateString = currentDate.toISOString().slice(0, 10);
+
+        cy.get(CreatePostPage.elements.input('published_at')).should(el =>
+            expect(el).to.have.value(currentDateString)
+        );
+    });
+
+    it('should intialize the form correctly when cloning from edit', () => {
+        EditPostPage.navigate();
+        cy.get(EditPostPage.elements.input('title')).should(el =>
+            expect(el).to.have.value('Sed quo et et fugiat modi')
+        );
+
+        EditPostPage.clone();
+        cy.url().then(url => expect(url).to.contain('/#/posts/create'));
+        cy.get(CreatePostPage.elements.input('title')).should(el =>
+            expect(el).to.have.value('Sed quo et et fugiat modi')
+        );
+
+        const date = new Date('2012-08-05').toISOString().slice(0, 10);
+        cy.get(CreatePostPage.elements.input('published_at')).should(el =>
+            expect(el).to.have.value(date)
         );
     });
 });

@@ -129,12 +129,15 @@ export class SelectInput extends Component {
             ? eventOrValue.target.value
             : eventOrValue;
         this.props.input.onChange(value);
+
+        // HACK: For some reason, redux-form does not consider this input touched without calling onBlur manually
+        this.props.input.onBlur();
         this.setState({ value });
     };
 
     addAllowEmpty = choices => {
         if (this.props.allowEmpty) {
-            return [<MenuItem value={null} key="null" />, ...choices];
+            return [<MenuItem value="" key="null" />, ...choices];
         }
 
         return choices;

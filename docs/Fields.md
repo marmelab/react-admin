@@ -245,7 +245,7 @@ import { ImageField } from 'react-admin';
 <ImageField source="url" title="title" />
 ```
 
-This field is also generally used within an [<ImageInput />](http://marmelab.com/react-admin/Inputs.md#imageinput) component to display preview.
+This field is also generally used within an [<ImageInput />](./Inputs.md#imageinput) component to display preview.
 
 The optional `title` prop points to the picture title property, used for both `alt` and `title` attributes. It can either be an hard-written string, or a path within your JSON object:
 
@@ -286,7 +286,7 @@ import { FileField } from 'react-admin';
 <FileField source="url" title="title" />
 ```
 
-This field is also generally used within an [<FileInput />](http://marmelab.com/react-admin/Inputs.md#fileinput) component to display preview.
+This field is also generally used within an [<FileInput />](./Inputs.md#fileinput) component to display preview.
 
 The optional `title` prop points to the file title property, used for `title` attributes. It can either be an hard-written string, or a path within your JSON object:
 

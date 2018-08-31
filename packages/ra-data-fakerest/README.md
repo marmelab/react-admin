@@ -11,7 +11,7 @@ All operations carried out in react-admin are local to the browser, and last onl
 ## Installation
 
 ```sh
-npm install --save ra-data-json-fakerest
+npm install --save ra-data-fakerest
 ```
 
 ## Usage

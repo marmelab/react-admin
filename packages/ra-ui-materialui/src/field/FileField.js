@@ -59,7 +59,10 @@ export const FileField = ({
     const titleValue = get(record, title) || title;
 
     return (
-        <div className={classnames(classes.root, className)} {...rest}>
+        <div
+            className={classnames(classes.root, className)}
+            {...sanitizeRestProps(rest)}
+        >
             <a href={sourceValue} title={titleValue} target={target}>
                 {titleValue}
             </a>

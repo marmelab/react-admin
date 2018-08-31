@@ -11,14 +11,12 @@ import DefaultIcon from '@material-ui/icons/ViewList';
 import DashboardMenuItem from './DashboardMenuItem';
 import MenuItemLink from './MenuItemLink';
 import Responsive from '../layout/Responsive';
-import { DRAWER_WIDTH } from './Sidebar';
 
 const styles = {
     main: {
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'flex-start',
-        width: DRAWER_WIDTH,
     },
 };
 
@@ -85,6 +83,7 @@ Menu.defaultProps = {
 };
 
 const mapStateToProps = state => ({
+    open: state.admin.ui.sidebarOpen,
     resources: getResources(state),
     pathname: state.routing.location.pathname, // used to force redraw on navigation
 });
@@ -99,7 +98,9 @@ const enhance = compose(
             areStatePropsEqual: (prev, next) =>
                 prev.resources.every(
                     (value, index) => value === next.resources[index] // shallow compare resources
-                ) && prev.pathname == next.pathname,
+                ) &&
+                prev.pathname == next.pathname &&
+                prev.open == next.open,
         }
     ),
     withStyles(styles)

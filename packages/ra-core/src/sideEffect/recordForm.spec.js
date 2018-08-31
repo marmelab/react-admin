@@ -1,7 +1,9 @@
 import { put } from 'redux-saga/effects';
 import { LOCATION_CHANGE } from 'react-router-redux';
+import { destroy } from 'redux-form';
 import { resetForm } from '../actions/formActions';
 import { handleLocationChange } from './recordForm';
+import { REDUX_FORM_NAME } from '../form/constants';
 
 describe('recordForm saga', () => {
     it('resets the form when the LOCATION_CHANGE action has no state', () => {
@@ -11,6 +13,7 @@ describe('recordForm saga', () => {
         });
 
         expect(saga.next().value).toEqual(put(resetForm()));
+        expect(saga.next().value).toEqual(put(destroy(REDUX_FORM_NAME)));
     });
 
     it('does not reset the form when the LOCATION_CHANGE action state has skipFormReset set to true', () => {

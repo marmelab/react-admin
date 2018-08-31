@@ -1,8 +1,10 @@
 import React from 'react';
+import compose from 'recompose/compose';
 import MuiGridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
 import { withStyles } from '@material-ui/core/styles';
+import withWidth from '@material-ui/core/withWidth';
 import IconButton from '@material-ui/core/IconButton';
 import ContentCreate from '@material-ui/icons/Create';
 import { Link } from 'react-router-dom';
@@ -30,9 +32,21 @@ const styles = {
     },
 };
 
-const GridList = ({ classes, ids, data, basePath }) => (
+const getColsForWidth = width => {
+    if (width === 'xs') return 2;
+    if (width === 'sm') return 3;
+    if (width === 'md') return 4;
+    if (width === 'lg') return 5;
+    return 6;
+};
+
+const GridList = ({ classes, ids, data, basePath, width }) => (
     <div className={classes.root}>
-        <MuiGridList cellHeight={180} cols={4} className={classes.gridList}>
+        <MuiGridList
+            cellHeight={180}
+            cols={getColsForWidth(width)}
+            className={classes.gridList}
+        >
             {ids.map(id => (
                 <GridListTile key={id}>
                     <img src={data[id].thumbnail} alt="" />
@@ -70,4 +84,9 @@ const GridList = ({ classes, ids, data, basePath }) => (
     </div>
 );
 
-export default withStyles(styles)(GridList);
+const enhance = compose(
+    withWidth(),
+    withStyles(styles)
+);
+
+export default enhance(GridList);

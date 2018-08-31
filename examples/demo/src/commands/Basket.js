@@ -8,17 +8,12 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import { translate, crudGetMany as crudGetManyAction } from 'react-admin';
+import { Link, translate, crudGetMany as crudGetManyAction } from 'react-admin';
 import compose from 'recompose/compose';
 import withStyles from '@material-ui/core/styles/withStyles';
 
 const styles = {
-    container: {
-        width: '42em',
-        float: 'right',
-        zIndex: 2,
-        '&:after': { clear: 'both' },
-    },
+    container: { width: '35em' },
     rightAlignedCell: { textAlign: 'right' },
     boldCell: { fontWeight: 'bold' },
 };
@@ -70,10 +65,16 @@ class Basket extends Component {
                                 products[item.product_id] && (
                                     <TableRow key={item.product_id}>
                                         <TableCell>
-                                            {
-                                                products[item.product_id]
-                                                    .reference
-                                            }
+                                            <Link
+                                                to={`/products/${
+                                                    item.product_id
+                                                }`}
+                                            >
+                                                {
+                                                    products[item.product_id]
+                                                        .reference
+                                                }
+                                            </Link>
                                         </TableCell>
                                         <TableCell
                                             className={classes.rightAlignedCell}

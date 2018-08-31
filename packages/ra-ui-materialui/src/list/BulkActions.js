@@ -51,11 +51,23 @@ const sanitizeRestProps = ({
     ...rest
 }) => rest;
 
+/**
+ * @deprecated pass a Fragment with button children as bulkActionButtons props instead
+ */
 class BulkActions extends Component {
     state = {
         isOpen: false,
         activeAction: null,
     };
+
+    componentDidMount() {
+        if (process.env.NODE_ENV !== 'production') {
+            // eslint-disable-next-line no-console
+            console.warn(
+                '<BulkActions> is deprecated. Use the bulkActionButtons prop instead.'
+            );
+        }
+    }
 
     storeButtonRef = node => {
         this.anchorElement = node;
