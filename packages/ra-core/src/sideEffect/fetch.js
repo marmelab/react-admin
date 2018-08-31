@@ -96,7 +96,7 @@ export function* handleFetch(dataProvider, action) {
             meta.resource,
             payload
         );
-        process.env.NODE_ENV === 'development' &&
+        process.env.NODE_ENV !== 'production' &&
             validateResponseFormat(response, restType);
         yield put({
             type: `${type}_SUCCESS`,

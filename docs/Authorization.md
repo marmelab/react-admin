@@ -210,11 +210,11 @@ The component provided as a [`dashboard`]('./Admin.md#dashboard) will receive th
 import React from 'react';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
-import { ViewTitle } from 'react-admin';
+import { Title } from 'react-admin';
 
 export default ({ permissions }) => (
     <Card>
-        <ViewTitle title="Dashboard" />
+        <Title title="Dashboard" />
         <CardContent>Lorem ipsum sic dolor amet...</CardContent>
         {permissions === 'admin'
             ? <CardContent>Sensitive data</CardContent>
@@ -235,12 +235,12 @@ You might want to check user permissions inside a [custom pages](./Admin.md#cust
 import React from 'react';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
-import { ViewTitle, WithPermissions } from 'react-admin';
+import { Title, WithPermissions } from 'react-admin';
 import { withRouter } from 'react-router-dom';
 
 const MyPage = ({ permissions }) => (
     <Card>
-        <ViewTitle title="My custom page" />
+        <Title title="My custom page" />
         <CardContent>Lorem ipsum sic dolor amet...</CardContent>
         {permissions === 'admin'
             ? <CardContent>Sensitive data</CardContent>

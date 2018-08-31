@@ -9,9 +9,8 @@
     },
     "dependencies": {
         "babel-core": "~6.26.0",
-        "chance": "~1.0.13",
         "date-fns": "~1.29.0",
-        "md5": "~2.2.1"
+        "faker": "^4.1.0"
     },
     "devDependencies": {
         "babel-cli": "~6.26.0",

@@ -19,6 +19,7 @@ export class RichTextInput extends Component {
         options: PropTypes.object,
         source: PropTypes.string,
         toolbar: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),
+        fullWidth: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -26,6 +27,7 @@ export class RichTextInput extends Component {
         options: {},
         record: {},
         toolbar: true,
+        fullWidth: true,
     };
 
     componentDidMount() {
@@ -63,7 +65,11 @@ export class RichTextInput extends Component {
     render() {
         const { error, helperText = false } = this.props.meta;
         return (
-            <FormControl error={error} className="ra-rich-text-input">
+            <FormControl
+                error={error}
+                fullWidth={this.props.fullWidth}
+                className="ra-rich-text-input"
+            >
                 <div ref={this.updateDivRef} />
                 {error && <FormHelperText>{error}</FormHelperText>}
                 {helperText && <FormHelperText>{helperText}</FormHelperText>}
@@ -76,5 +82,6 @@ const RichRextInputWithField = addField(withStyles(styles)(RichTextInput));
 
 RichRextInputWithField.defaultProps = {
     addLabel: true,
+    fullWidth: true,
 };
 export default RichRextInputWithField;

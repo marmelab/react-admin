@@ -29,6 +29,9 @@ const styles = {
     rowOdd: {},
     rowCell: {
         padding: '0 12px',
+        '&:last-child': {
+            padding: '0 12px',
+        },
     },
 };
 

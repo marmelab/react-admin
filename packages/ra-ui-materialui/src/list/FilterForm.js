@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { reduxForm } from 'redux-form';
-import CardContent from '@material-ui/core/CardContent';
+import classnames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
 import compose from 'recompose/compose';
 import withProps from 'recompose/withProps';
@@ -10,16 +10,15 @@ import lodashSet from 'lodash/set';
 import FilterFormInput from './FilterFormInput';
 
 const styles = ({ palette: { primary1Color } }) => ({
-    card: {
-        marginTop: '-14px',
+    form: {
+        marginTop: '-10px',
         paddingTop: 0,
         display: 'flex',
-        justifyContent: 'flex-end',
         alignItems: 'flex-end',
         flexWrap: 'wrap',
     },
     body: { display: 'flex', alignItems: 'flex-end' },
-    spacer: { width: 48 },
+    spacer: { width: '1em' },
     icon: { color: primary1Color || '#00bcd4', paddingBottom: 0 },
     clearFix: { clear: 'right' },
 });
@@ -94,20 +93,19 @@ export class FilterForm extends Component {
         const { classes = {}, className, resource, ...rest } = this.props;
 
         return (
-            <div className={className} {...sanitizeRestProps(rest)}>
-                <CardContent className={classes.card}>
-                    {this.getShownFilters()
-                        .reverse()
-                        .map(filterElement => (
-                            <FilterFormInput
-                                key={filterElement.props.source}
-                                filterElement={filterElement}
-                                handleHide={this.handleHide}
-                                classes={classes}
-                                resource={resource}
-                            />
-                        ))}
-                </CardContent>
+            <div
+                className={classnames(className, classes.form)}
+                {...sanitizeRestProps(rest)}
+            >
+                {this.getShownFilters().map(filterElement => (
+                    <FilterFormInput
+                        key={filterElement.props.source}
+                        filterElement={filterElement}
+                        handleHide={this.handleHide}
+                        classes={classes}
+                        resource={resource}
+                    />
+                ))}
                 <div className={classes.clearFix} />
             </div>
         );

@@ -21,9 +21,7 @@ const FilterFormInput = ({
         data-source={filterElement.props.source}
         className={classnames('filter-field', classes.body)}
     >
-        {filterElement.props.alwaysOn ? (
-            <div className={classes.spacer}>&nbsp;</div>
-        ) : (
+        {!filterElement.props.alwaysOn && (
             <IconButton
                 className="hide-filter"
                 onClick={handleHide}
@@ -33,16 +31,15 @@ const FilterFormInput = ({
                 <ActionHide />
             </IconButton>
         )}
-        <div>
-            <Field
-                allowEmpty
-                {...sanitizeRestProps(filterElement.props)}
-                name={filterElement.props.source}
-                component={filterElement.type}
-                resource={resource}
-                record={emptyRecord}
-            />
-        </div>
+        <Field
+            allowEmpty
+            {...sanitizeRestProps(filterElement.props)}
+            name={filterElement.props.source}
+            component={filterElement.type}
+            resource={resource}
+            record={emptyRecord}
+        />
+        <div className={classes.spacer}>&nbsp;</div>
     </div>
 );
 

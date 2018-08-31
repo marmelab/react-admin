@@ -16,16 +16,9 @@ import { withStyles } from '@material-ui/core/styles';
 import { getDefaultValues, translate, REDUX_FORM_NAME } from 'ra-core';
 
 import Toolbar from './Toolbar';
+import CardContentInner from '../layout/CardContentInner';
 
 const styles = theme => ({
-    form: {
-        [theme.breakpoints.up('sm')]: {
-            padding: '0 1em 1em 1em',
-        },
-        [theme.breakpoints.down('xs')]: {
-            padding: '0 1em 5em 1em',
-        },
-    },
     errorTabButton: { color: theme.palette.error.main },
 });
 
@@ -124,7 +117,6 @@ export class TabbedForm extends Component {
                 {...sanitizeRestProps(rest)}
             >
                 <Tabs
-                    scrollable
                     // The location pathname will contain the page path including the current tab path
                     // so we can use it as a way to determine the current tab
                     value={tabsValue}
@@ -151,7 +143,7 @@ export class TabbedForm extends Component {
                     })}
                 </Tabs>
                 <Divider />
-                <div className={classes.form}>
+                <CardContentInner>
                     {/* All tabs are rendered (not only the one in focus), to allow validation
                     on tabs not in focus. The tabs receive a `hidden` property, which they'll
                     use to hide the tab using CSS if it's not the one in focus.
@@ -189,19 +181,25 @@ export class TabbedForm extends Component {
                                 </Route>
                             )
                     )}
-                    {toolbar &&
-                        React.cloneElement(toolbar, {
+                </CardContentInner>
+                {toolbar && (
+                    <CardContentInner>
+                        {React.cloneElement(toolbar, {
+                            basePath,
                             className: 'toolbar',
                             handleSubmitWithRedirect: this
                                 .handleSubmitWithRedirect,
                             handleSubmit: this.props.handleSubmit,
                             invalid,
                             pristine,
+                            record,
                             redirect,
+                            resource,
                             saving,
                             submitOnEnter,
-                        })}
-                </div>
+                        })}{' '}
+                    </CardContentInner>
+                )}
             </form>
         );
     }

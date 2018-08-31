@@ -11,7 +11,7 @@ title: "Reference"
 * [`<Admin>`](./Admin.md)
 * `<AdminRoutes>`
 * `<AppBar>`
-* `<AppBarMobile>`
+* `<AppBarMobile>` (deprecated)
 * [`<ArrayField>`](./Fields.md#arrayfield)
 * [`<ArrayInput>`](./Inputs.md#arrayinput)
 * [`<Authenticated>`](./Authentication.md#restricting-access-to-a-custom-page)
@@ -93,7 +93,7 @@ title: "Reference"
 * `<Title>`
 * `<Toolbar>`
 * [`<UrlField>`](./Fields.md#urlfield)
-* `<ViewTitle>`
+* `<ViewTitle>` (deprecated)
 * [`<WithPermissions>`](./Authorization.md#withpermissions)
 
 </div>

@@ -4,9 +4,9 @@ import Card from '@material-ui/core/Card';
 import classnames from 'classnames';
 import { ShowController } from 'ra-core';
 
-import Header from '../layout/Header';
 import DefaultActions from './ShowActions';
-import RecordTitle from '../layout/RecordTitle';
+import TitleForRecord from '../layout/TitleForRecord';
+import CardContentInner from '../layout/CardContentInner';
 
 const sanitizeRestProps = ({
     actions,
@@ -34,7 +34,7 @@ const sanitizeRestProps = ({
 }) => rest;
 
 export const ShowView = ({
-    actions = <DefaultActions />,
+    actions,
     basePath,
     children,
     className,
@@ -47,39 +47,43 @@ export const ShowView = ({
     title,
     version,
     ...rest
-}) => (
-    <div
-        className={classnames('show-page', className)}
-        {...sanitizeRestProps(rest)}
-    >
-        <Card style={{ opacity: isLoading ? 0.8 : 1 }}>
-            <Header
-                title={
-                    <RecordTitle
-                        title={title}
-                        record={record}
-                        defaultTitle={defaultTitle}
-                    />
-                }
-                actions={actions}
-                actionProps={{
-                    basePath,
-                    data: record,
-                    hasList,
-                    hasEdit,
-                    resource,
-                }}
+}) => {
+    if (typeof actions === 'undefined' && hasEdit) {
+        actions = <DefaultActions />;
+    }
+    return (
+        <div
+            className={classnames('show-page', className)}
+            {...sanitizeRestProps(rest)}
+        >
+            <TitleForRecord
+                title={title}
+                record={record}
+                defaultTitle={defaultTitle}
             />
-            {record &&
-                React.cloneElement(children, {
-                    resource,
-                    basePath,
-                    record,
-                    version,
-                })}
-        </Card>
-    </div>
-);
+            <Card style={{ opacity: isLoading ? 0.8 : 1 }}>
+                {actions && (
+                    <CardContentInner>
+                        {React.cloneElement(actions, {
+                            basePath,
+                            data: record,
+                            hasList,
+                            hasEdit,
+                            resource,
+                        })}
+                    </CardContentInner>
+                )}
+                {record &&
+                    React.cloneElement(children, {
+                        resource,
+                        basePath,
+                        record,
+                        version,
+                    })}
+            </Card>
+        </div>
+    );
+};
 
 ShowView.propTypes = {
     actions: PropTypes.element,

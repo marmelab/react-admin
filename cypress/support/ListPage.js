@@ -10,19 +10,23 @@ export default url => ({
         hideFilterButton: source =>
             `.filter-field[data-source="${source}"] .hide-filter`,
         nextPage: '.next-page',
-        pageNumber: n => `.page-number[data-page='${n}']`,
+        pageNumber: n => `.page-number[data-page='${n - 1}']`,
         previousPage: '.previous-page',
         recordRows: '.datagrid-body tr',
         viewsColumn: '.datagrid-body tr td:nth-child(6)',
         datagridHeaders: 'th',
-        title: '.title',
         logout: '.logout',
-        bulkActionsButton: '.bulk-actions-button',
-        customBulkActionsButtonMenuItem: '.bulk-actions-menu-item:first-child',
-        deleteBulkActionsButtonMenuItem: '.bulk-actions-menu-item:last-child',
+        bulkActionsToolbar: '[data-test=bulk-actions-toolbar]',
+        customBulkActionsButton:
+            '[data-test=bulk-actions-toolbar] button:first-child',
+        deleteBulkActionsButton:
+            '[data-test=bulk-actions-toolbar] button:last-child',
         selectAll: '.select-all',
         selectedItem: '.select-item input:checked',
         selectItem: '.select-item input',
+        userMenu: 'button[title="Profile"]',
+        title: '#react-admin-title',
+        headroom: '.headroom',
     },
 
     navigate() {
@@ -74,6 +78,7 @@ export default url => ({
     },
 
     logout() {
+        cy.get(this.elements.userMenu).click();
         cy.get(this.elements.logout).click();
     },
 
@@ -90,12 +95,10 @@ export default url => ({
     },
 
     applyUpdateBulkAction() {
-        cy.get(this.elements.bulkActionsButton).click();
-        cy.get(this.elements.customBulkActionsButtonMenuItem).click();
+        cy.get(this.elements.customBulkActionsButton).click();
     },
 
     applyDeleteBulkAction() {
-        cy.get(this.elements.bulkActionsButton).click();
-        cy.get(this.elements.deleteBulkActionsButtonMenuItem).click();
+        cy.get(this.elements.deleteBulkActionsButton).click();
     },
 });

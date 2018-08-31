@@ -11,11 +11,8 @@ import {
     Edit,
     CardActions,
     CloneButton,
-    RefreshButton,
-    DeleteButton,
     ShowButton,
     EditButton,
-    ListButton,
     FormTab,
     ImageField,
     ImageInput,
@@ -45,15 +42,12 @@ const EditActions = ({
     ...rest
 }) => (
     <CardActions className={className} {...rest}>
-        {hasShow && <ShowButton basePath={basePath} record={data} />}
-        {hasList && <ListButton basePath={basePath} />}
         <CloneButton
             className="button-clone"
             basePath={basePath}
             record={data}
         />
-        <DeleteButton basePath={basePath} record={data} resource={resource} />
-        <RefreshButton />
+        {hasShow && <ShowButton basePath={basePath} record={data} />}
     </CardActions>
 );
 

@@ -19,6 +19,7 @@ const styles = {
         overflow: 'hidden',
         textOverflow: 'ellipsis',
         whiteSpace: 'nowrap',
+        flex: 1,
         paddingRight: '1.5em',
     },
     icon: {
@@ -30,47 +31,52 @@ const styles = {
         color: '#fff',
         textDecoration: 'none',
     },
-    loadingIndicator: {
-        position: 'absolute',
-        top: 0,
-        right: 0,
-        zIndex: 1200,
-    },
 };
 
+/**
+ * @deprecated
+ */
 const AppBarMobile = ({
     classes,
     className,
     title,
     toggleSidebar,
     ...rest
-}) => (
-    <MuiAppBar
-        className={className}
-        color="secondary"
-        position="fixed"
-        {...rest}
-    >
-        <Toolbar>
-            <IconButton
-                color="inherit"
-                aria-label="open drawer"
-                onClick={toggleSidebar}
-                className={classes.icon}
-            >
-                <MenuIcon />
-            </IconButton>
-            <Typography
-                className={classes.title}
-                variant="title"
-                color="inherit"
-            >
-                {title}
-            </Typography>
-            <LoadingIndicator className={classes.loadingIndicator} />
-        </Toolbar>
-    </MuiAppBar>
-);
+}) => {
+    if (process.env.NODE_ENV !== 'production') {
+        // eslint-disable-next-line no-console
+        console.warn(
+            '<AppBarMobile> is deprecated, please use <AppBar>, which is now responsive'
+        );
+    }
+    return (
+        <MuiAppBar
+            className={className}
+            color="secondary"
+            position="fixed"
+            {...rest}
+        >
+            <Toolbar>
+                <IconButton
+                    color="inherit"
+                    aria-label="open drawer"
+                    onClick={toggleSidebar}
+                    className={classes.icon}
+                >
+                    <MenuIcon />
+                </IconButton>
+                <Typography
+                    className={classes.title}
+                    variant="title"
+                    color="inherit"
+                >
+                    {title}
+                </Typography>
+                <LoadingIndicator />
+            </Toolbar>
+        </MuiAppBar>
+    );
+};
 
 AppBarMobile.propTypes = {
     classes: PropTypes.object,

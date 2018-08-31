@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import IconButton from '@material-ui/core/IconButton';
-import { withStyles } from '@material-ui/core/styles';
 import ThumbUp from '@material-ui/icons/ThumbUp';
 import ThumbDown from '@material-ui/icons/ThumbDown';
 
@@ -10,15 +9,6 @@ import {
     reviewApprove as reviewApproveAction,
     reviewReject as reviewRejectAction,
 } from './reviewActions';
-
-const styles = {
-    accepted: {
-        color: 'green',
-    },
-    rejected: {
-        color: 'red',
-    },
-};
 
 class ApproveButton extends Component {
     handleApprove = () => {
@@ -32,28 +22,15 @@ class ApproveButton extends Component {
     };
 
     render() {
-        const { record, classes } = this.props;
+        const { record } = this.props;
+        if (record.status !== 'pending') return null;
         return (
             <span>
-                <IconButton
-                    onClick={this.handleApprove}
-                    disabled={record.status === 'accepted'}
-                >
-                    <ThumbUp
-                        className={
-                            record.status === 'accepted' ? classes.accepted : ''
-                        }
-                    />
+                <IconButton onClick={this.handleApprove}>
+                    <ThumbUp />
                 </IconButton>
-                <IconButton
-                    onClick={this.handleReject}
-                    disabled={record.status === 'rejected'}
-                >
-                    <ThumbDown
-                        className={
-                            record.status === 'rejected' ? classes.rejected : ''
-                        }
-                    />
+                <IconButton onClick={this.handleReject}>
+                    <ThumbDown />
                 </IconButton>
             </span>
         );
@@ -73,4 +50,4 @@ export default connect(
         reviewApprove: reviewApproveAction,
         reviewReject: reviewRejectAction,
     }
-)(withStyles(styles)(ApproveButton));
+)(ApproveButton);
