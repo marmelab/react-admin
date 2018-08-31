@@ -58,6 +58,12 @@ export default async options => {
         ...otherOptions
     } = merge({}, defaultOptions, options);
 
+    if (override && process.env.NODE_ENV === 'production') {
+        console.warn(
+            'The override option is deprecated. You should instead wrap the buildQuery function provided by the dataProvider you use.'
+        );
+    }
+
     const client = clientObject || buildApolloClient(clientOptions);
 
     let introspectionResults;

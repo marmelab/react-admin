@@ -80,5 +80,6 @@ export default async (client, options) => {
         types,
         queries,
         resources,
+        schema,
     };
 };
