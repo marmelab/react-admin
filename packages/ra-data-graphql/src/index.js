@@ -59,7 +59,7 @@ export default async options => {
     } = merge({}, defaultOptions, options);
 
     if (override && process.env.NODE_ENV === 'production') {
-        console.warn(
+        console.warn( // eslint-disable-line
             'The override option is deprecated. You should instead wrap the buildQuery function provided by the dataProvider you use.'
         );
     }
