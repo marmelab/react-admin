@@ -274,6 +274,7 @@ export default {
             body:
                 "Queen, tossing her head through the wood. 'If it had lost something; and she felt sure it.",
             created_at: new Date('2012-08-02'),
+            status: 'approved',
         },
         {
             id: 2,
@@ -285,6 +286,7 @@ export default {
             body:
                 "White Rabbit: it was indeed: she was out of the ground--and I should frighten them out of its right paw round, 'lives a March Hare. 'Sixteenth,'.",
             created_at: new Date('2012-08-08'),
+            status: 'review',
         },
         {
             id: 3,
@@ -295,6 +297,7 @@ export default {
             body:
                 "I'm not Ada,' she said, 'and see whether it's marked \"poison\" or.",
             created_at: new Date('2012-08-02'),
+            status: 'rejected',
         },
         {
             id: 4,
@@ -305,6 +308,7 @@ export default {
             body:
                 "Dormouse. 'Fourteenth of March, I think I can say.' This was such a noise inside, no one else seemed inclined.",
             created_at: new Date('2014-09-24'),
+            status: 'approved',
         },
         {
             id: 5,
@@ -315,6 +319,7 @@ export default {
             body:
                 "I ought to tell me your history, you know,' the Hatter and the happy summer days. THE.",
             created_at: new Date('2012-08-07'),
+            status: 'approved',
         },
         {
             id: 6,
@@ -325,6 +330,7 @@ export default {
             body:
                 'Duchess asked, with another hedgehog, which seemed to be lost: away went Alice after it, never once considering how in the other. In the very tones of.',
             created_at: new Date('2012-08-09'),
+            status: 'rejected',
         },
         {
             id: 7,
@@ -335,6 +341,7 @@ export default {
             body:
                 "While the Panther were sharing a pie--' [later editions continued as follows.",
             created_at: new Date('2012-09-06'),
+            status: 'approved',
         },
         {
             id: 8,
@@ -345,6 +352,7 @@ export default {
             body:
                 "I tell you, you coward!' and at once and put it more clearly,' Alice.",
             created_at: new Date('2012-10-03'),
+            status: 'approved',
         },
         {
             id: 9,
@@ -355,6 +363,7 @@ export default {
             body:
                 "THAT. Then again--\"BEFORE SHE HAD THIS FIT--\" you never tasted an egg!' 'I HAVE tasted eggs, certainly,' said Alice, as she spoke. Alice did not like to have it.",
             created_at: new Date('2012-11-06'),
+            status: 'rejected',
         },
         {
             id: 10,
@@ -365,6 +374,7 @@ export default {
             body:
                 "I'd been the whiting,' said the Hatter, it woke up again with a T!' said the Gryphon. '--you advance twice--' 'Each with a growl, And concluded the banquet--] 'What IS the fun?' said.",
             created_at: new Date('2012-12-07'),
+            status: 'approved',
         },
         {
             id: 11,
@@ -375,6 +385,7 @@ export default {
             body:
                 "I don't want to be?' it asked. 'Oh, I'm not Ada,' she said, 'and see whether it's marked \"poison\" or not'; for she had asked it aloud; and in despair she put her hand on the end of the.",
             created_at: new Date('2012-08-05'),
+            status: 'rejected',
         },
     ],
     tags: [

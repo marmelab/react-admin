@@ -3,7 +3,7 @@ import ChevronLeft from '@material-ui/icons/ChevronLeft';
 import ChevronRight from '@material-ui/icons/ChevronRight';
 import PersonIcon from '@material-ui/icons/Person';
 import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
+import MuiButton from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
@@ -13,6 +13,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import { withStyles } from '@material-ui/core/styles';
 import { unparse as convertToCSV } from 'papaparse/papaparse.min';
 import {
+    ChipField,
     DateField,
     EditButton,
     Filter,
@@ -29,6 +30,8 @@ import {
     downloadCSV,
     translate,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
+import ApproveButton from './ApproveButton';
+import RejectButton from './RejectButton';
 
 const CommentFilter = props => (
     <Filter {...props}>
@@ -69,24 +72,24 @@ const CommentPagination = translate(
             nbPages > 1 && (
                 <Toolbar>
                     {page > 1 && (
-                        <Button
+                        <MuiButton
                             color="primary"
                             key="prev"
                             onClick={() => setPage(page - 1)}
                         >
                             <ChevronLeft />&nbsp;
                             {translate('ra.navigation.prev')}
-                        </Button>
+                        </MuiButton>
                     )}
                     {page !== nbPages && (
-                        <Button
+                        <MuiButton
                             color="primary"
                             key="next"
                             onClick={() => setPage(page + 1)}
                         >
                             {translate('ra.navigation.next')}&nbsp;
                             <ChevronRight />
-                        </Button>
+                        </MuiButton>
                     )}
                 </Toolbar>
             )
@@ -117,10 +120,9 @@ const CommentGrid = withStyles(listStyles)(
     translate(({ classes, ids, data, basePath, translate }) => (
         <Grid spacing={16} container style={{ padding: '0 1em' }}>
             {ids.map(id => (
-                <Grid item key={id} sm={12} md={6} lg={4}>
+                <Grid item key={id} sm={12} md={6} lg={4} className="comment">
                     <Card className={classes.card}>
                         <CardHeader
-                            className="comment"
                             title={
                                 <TextField
                                     record={data[id]}
@@ -157,6 +159,14 @@ const CommentGrid = withStyles(listStyles)(
                                 />
                             </ReferenceField>
                         </CardContent>
+                        <CardContent className={classes.cardContent}>
+                            <ChipField
+                                className="comment-status"
+                                record={data[id]}
+                                source="status"
+                            />
+                        </CardContent>
+
                         <CardActions className={classes.cardActions}>
                             <EditButton
                                 resource="posts"
@@ -164,6 +174,16 @@ const CommentGrid = withStyles(listStyles)(
                                 record={data[id]}
                             />
                             <ShowButton
+                                resource="posts"
+                                basePath={basePath}
+                                record={data[id]}
+                            />
+                            <ApproveButton
+                                resource="posts"
+                                basePath={basePath}
+                                record={data[id]}
+                            />
+                            <RejectButton
                                 resource="posts"
                                 basePath={basePath}
                                 record={data[id]}

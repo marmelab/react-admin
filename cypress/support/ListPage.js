@@ -17,6 +17,11 @@ export default url => ({
         datagridHeaders: 'th',
         logout: '.logout',
         bulkActionsToolbar: '[data-test=bulk-actions-toolbar]',
+        commentApproveButton: index =>
+            `.comment:nth-child(${index}) [data-testid="approve-button"]`,
+        commentRejectButton: index =>
+            `.comment:nth-child(${index}) [data-testid="reject-button"]`,
+        commentStatus: index => `.comment:nth-child(${index}) .comment-status`,
         customBulkActionsButton:
             '[data-test=bulk-actions-toolbar] button:first-child',
         deleteBulkActionsButton:

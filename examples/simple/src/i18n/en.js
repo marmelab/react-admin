@@ -7,8 +7,16 @@ export const messages = {
         action: {
             close: 'Close',
             resetViews: 'Reset views',
+            approve: 'Approve',
+            reject: 'Reject',
         },
         'create-post': 'New post',
+        notification: {
+            approved: 'The comment has been approved',
+            rejected: 'The comment has been rejected',
+            approved_error: 'The comment has not been approved',
+            rejected_error: 'The comment has not been rejected',
+        },
     },
     ...mergeTranslations(englishMessages, treeEnglishMessages),
     resources: {

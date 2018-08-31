@@ -7,8 +7,16 @@ export default {
         action: {
             close: 'Fermer',
             resetViews: 'Réinitialiser des vues',
+            approve: 'Approuver',
+            reject: 'Rejeter',
         },
         'create-post': 'Nouveau post',
+        notification: {
+            approved: 'Le commentaire a été approuvé',
+            rejected: 'Le commentaire a été rejeté',
+            approved_error: "Le commentaire n'a pas été approuvé",
+            rejected_error: "Le commentaire n'a pas été rejeté",
+        },
     },
     ...mergeTranslations(frenchMessages, treeFrenchMessages),
     resources: {
