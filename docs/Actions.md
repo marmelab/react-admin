@@ -462,19 +462,18 @@ import { UPDATE } from 'react-admin';
 
 export const commentApprove = (id, data, basePath) => ({
     type: CRUD_UPDATE,
-    // These are the parameters received by the data provider. They are specific to the custom end point
-    payload: { id, data: { status: 'approved' } },
+    // These are the parameters received by the data provider
+    payload: { id, status: 'approved' },
     meta: {
         fetch: 'COMMENT_APPROVE',
-        effect: UPDATE,
-        // Data used to optimistically update the record
-        effectData: { ...data, is_approved: true },
+        effect: UPDATE, // Intruct react-admin that this action should be handled as an UPDATE
         resource: 'comments',
     },
 });
 ```
 
-Would you also need to handle side effects specific to your action:
+Sometimes, the action payload doesn't match the data which should be updated on the targeted resource(s). For those cases where
+`startUndoable` wouldn't be able to optimistically update the local data, you can use the `effectData` meta:
 
 ```js
 // in src/comment/commentActions.js
@@ -485,7 +484,7 @@ export const COMMENT_APPROVE = 'COMMENT_APPROVE';
 export const commentApprove = (id, data, basePath) => ({
     type: COMMENT_APPROVE,
     // These are the parameters received by the data provider. They are specific to the custom end point
-    payload: { id, data: { status: 'approved' } },
+    payload: { id },
     meta: {
         fetch: 'COMMENT_APPROVE',
         effect: UPDATE,
@@ -496,11 +495,7 @@ export const commentApprove = (id, data, basePath) => ({
 });
 ```
 
-In both cases, the `dataProvider` will be called with the following parameters:
-
-```js
-'COMMENT_APPROVE', 'comments', { id, data: { status: 'approved' } }
-```
+In that `UPDATE` case, your backend must still returns the updated comment.
 
 ## Altering the Form Values before Submitting
 
