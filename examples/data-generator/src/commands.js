@@ -9,7 +9,7 @@ import {
     weightedBoolean,
 } from './utils';
 
-export default db => {
+export default (db, { serializeDate }) => {
     const today = new Date();
     const aMonthAgo = subDays(today, 30);
 
@@ -47,7 +47,7 @@ export default db => {
         return {
             id,
             reference: random.alphaNumeric(6).toUpperCase(),
-            date: date,
+            date: serializeDate ? date.toISOString() : date,
             customer_id: customer.id,
             basket: basket,
             total_ex_taxes: total_ex_taxes,

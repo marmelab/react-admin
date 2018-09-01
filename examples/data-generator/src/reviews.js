@@ -4,7 +4,7 @@ import isAfter from 'date-fns/is_after';
 
 import { randomDate, weightedArrayElement, weightedBoolean } from './utils';
 
-export default db => {
+export default (db, { serializeDate }) => {
     const today = new Date();
     const aMonthAgo = subDays(today, 30);
 
@@ -35,7 +35,7 @@ export default db => {
 
                         return {
                             id: id++,
-                            date: date,
+                            date: serializeDate ? date.toISOString() : date,
                             status: status,
                             command_id: command.id,
                             product_id: product.product_id,

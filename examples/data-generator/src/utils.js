@@ -22,7 +22,7 @@ export const randomDate = (minDate, maxDate) => {
     const randomRange = faker.random.number({ max: range });
     // move it more towards today to account for traffic increase
     const ts = Math.sqrt(randomRange / range) * range;
-    return new Date(minTs + ts).toISOString();
+    return new Date(minTs + ts);
 };
 
 export const randomFloat = (min, max) =>
