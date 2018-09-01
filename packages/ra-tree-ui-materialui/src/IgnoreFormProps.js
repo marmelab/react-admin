@@ -1,4 +1,5 @@
 import React, { Children, Fragment, cloneElement } from 'react';
+import PropTypes from 'prop-types';
 
 const sanitizeRestProps = ({
     handleSubmit,
@@ -34,5 +35,9 @@ const IgnoreFormProps = ({ children, ...props }) => (
         )}
     </Fragment>
 );
+
+IgnoreFormProps.propTypes = {
+    children: PropTypes.node.isRequired,
+};
 
 export default IgnoreFormProps;
