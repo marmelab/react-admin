@@ -52,9 +52,7 @@ export const buildQueryFactory = (
         );
 
         return {
-            query: gql`
-                ${query}
-            `,
+            query,
             variables,
             parseResponse,
         };
