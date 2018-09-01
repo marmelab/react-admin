@@ -95,13 +95,13 @@ The default behavior might not be optimized especially when dealing with referen
 // in src/dataProvider.js
 import buildGraphcoolProvider, { buildQuery } from 'ra-data-graphcool';
 
-const overrideBuildQuery = buildQuery => (fetchType, resource, params) => {
-    const builtQuery = buildQuery(fetchType, resource, params);
+const myBuildQuery = introspection => (fetchType, resource, params) => {
+    const builtQuery = buildQuery(introspection)(fetchType, resource, params);
 
     if (resource === 'Command' && fetchType === 'GET_ONE') {
         return {
             // Use the default query variables and parseResponse
-            ...buildQuery,
+            ...builtQuery,
             // Override the query
             query: gql`
                 query Command($id: ID!) {
@@ -120,6 +120,8 @@ const overrideBuildQuery = buildQuery => (fetchType, resource, params) => {
 
     return builtQuery;
 }
+
+export default buildGraphcoolProvider({ buildQuery: myBuildQuery })
 ```
 
 ### Customize the introspection
