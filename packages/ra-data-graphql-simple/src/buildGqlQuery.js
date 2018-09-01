@@ -1,7 +1,7 @@
 import { GET_LIST, GET_MANY, GET_MANY_REFERENCE, DELETE } from 'react-admin';
 import { QUERY_TYPES } from 'ra-data-graphql';
 import { TypeKind } from 'graphql';
-import * as graphqlTypes from 'graphql-ast-types';
+import * as gqlTypes from 'graphql-ast-types';
 
 import getFinalType from './getFinalType';
 import isList from './isList';
@@ -16,7 +16,7 @@ export const buildFields = introspectionResults => fields =>
         }
 
         if (type.kind !== TypeKind.OBJECT) {
-            return [...acc, graphqlTypes.field(graphqlTypes.name(field.name))];
+            return [...acc, gqlTypes.field(gqlTypes.name(field.name))];
         }
 
         const linkedResource = introspectionResults.resources.find(
@@ -26,14 +26,12 @@ export const buildFields = introspectionResults => fields =>
         if (linkedResource) {
             return [
                 ...acc,
-                graphqlTypes.field(
-                    graphqlTypes.name(field.name),
+                gqlTypes.field(
+                    gqlTypes.name(field.name),
                     null,
                     null,
                     null,
-                    graphqlTypes.selectionSet([
-                        graphqlTypes.field(graphqlTypes.name('id')),
-                    ])
+                    gqlTypes.selectionSet([gqlTypes.field(gqlTypes.name('id'))])
                 ),
             ];
         }
@@ -45,12 +43,12 @@ export const buildFields = introspectionResults => fields =>
         if (linkedType) {
             return [
                 ...acc,
-                graphqlTypes.field(
-                    graphqlTypes.name(field.name),
+                gqlTypes.field(
+                    gqlTypes.name(field.name),
                     null,
                     null,
                     null,
-                    graphqlTypes.selectionSet(
+                    gqlTypes.selectionSet(
                         buildFields(introspectionResults)(linkedType.fields)
                     )
                 ),
@@ -69,24 +67,22 @@ export const getArgType = arg => {
 
     if (list) {
         if (required) {
-            return graphqlTypes.listType(
-                graphqlTypes.nonNullType(
-                    graphqlTypes.namedType(graphqlTypes.name(type.name))
+            return gqlTypes.listType(
+                gqlTypes.nonNullType(
+                    gqlTypes.namedType(gqlTypes.name(type.name))
                 )
             );
         }
-        return graphqlTypes.listType(
-            graphqlTypes.namedType(graphqlTypes.name(type.name))
-        );
+        return gqlTypes.listType(gqlTypes.namedType(gqlTypes.name(type.name)));
     }
 
     if (required) {
-        return graphqlTypes.nonNullType(
-            graphqlTypes.namedType(graphqlTypes.name(type.name))
+        return gqlTypes.nonNullType(
+            gqlTypes.namedType(gqlTypes.name(type.name))
         );
     }
 
-    return graphqlTypes.namedType(graphqlTypes.name(type.name));
+    return gqlTypes.namedType(gqlTypes.name(type.name));
 };
 
 export const buildArgs = (query, variables) => {
@@ -102,9 +98,9 @@ export const buildArgs = (query, variables) => {
         .reduce(
             (acc, arg) => [
                 ...acc,
-                graphqlTypes.argument(
-                    graphqlTypes.name(arg.name),
-                    graphqlTypes.variable(graphqlTypes.name(arg.name))
+                gqlTypes.argument(
+                    gqlTypes.name(arg.name),
+                    gqlTypes.variable(gqlTypes.name(arg.name))
                 ),
             ],
             []
@@ -127,8 +123,8 @@ export const buildApolloArgs = (query, variables) => {
         .reduce((acc, arg) => {
             return [
                 ...acc,
-                graphqlTypes.variableDefinition(
-                    graphqlTypes.variable(graphqlTypes.name(arg.name)),
+                gqlTypes.variableDefinition(
+                    gqlTypes.variable(gqlTypes.name(arg.name)),
                     getArgType(arg)
                 ),
             ];
@@ -153,67 +149,67 @@ export default introspectionResults => (
         aorFetchType === GET_MANY ||
         aorFetchType === GET_MANY_REFERENCE
     ) {
-        return graphqlTypes.document([
-            graphqlTypes.operationDefinition(
+        return gqlTypes.document([
+            gqlTypes.operationDefinition(
                 'query',
-                graphqlTypes.selectionSet([
-                    graphqlTypes.field(
-                        graphqlTypes.name(queryType.name),
-                        graphqlTypes.name('items'),
+                gqlTypes.selectionSet([
+                    gqlTypes.field(
+                        gqlTypes.name(queryType.name),
+                        gqlTypes.name('items'),
                         args,
                         null,
-                        graphqlTypes.selectionSet(fields)
+                        gqlTypes.selectionSet(fields)
                     ),
-                    graphqlTypes.field(
-                        graphqlTypes.name(`_${queryType.name}Meta`),
-                        graphqlTypes.name('total'),
+                    gqlTypes.field(
+                        gqlTypes.name(`_${queryType.name}Meta`),
+                        gqlTypes.name('total'),
                         metaArgs,
                         null,
-                        graphqlTypes.selectionSet([
-                            graphqlTypes.field(graphqlTypes.name('count')),
+                        gqlTypes.selectionSet([
+                            gqlTypes.field(gqlTypes.name('count')),
                         ])
                     ),
                 ]),
-                graphqlTypes.name(queryType.name),
+                gqlTypes.name(queryType.name),
                 apolloArgs
             ),
         ]);
     }
 
     if (aorFetchType === DELETE) {
-        return graphqlTypes.document([
-            graphqlTypes.operationDefinition(
+        return gqlTypes.document([
+            gqlTypes.operationDefinition(
                 'mutation',
-                graphqlTypes.selectionSet([
-                    graphqlTypes.field(
-                        graphqlTypes.name(queryType.name),
-                        graphqlTypes.name('data'),
+                gqlTypes.selectionSet([
+                    gqlTypes.field(
+                        gqlTypes.name(queryType.name),
+                        gqlTypes.name('data'),
                         args,
                         null,
-                        graphqlTypes.selectionSet([
-                            graphqlTypes.field(graphqlTypes.name('id')),
+                        gqlTypes.selectionSet([
+                            gqlTypes.field(gqlTypes.name('id')),
                         ])
                     ),
                 ]),
-                graphqlTypes.name(queryType.name),
+                gqlTypes.name(queryType.name),
                 apolloArgs
             ),
         ]);
     }
 
-    return graphqlTypes.document([
-        graphqlTypes.operationDefinition(
+    return gqlTypes.document([
+        gqlTypes.operationDefinition(
             QUERY_TYPES.includes(aorFetchType) ? 'query' : 'mutation',
-            graphqlTypes.selectionSet([
-                graphqlTypes.field(
-                    graphqlTypes.name(queryType.name),
-                    graphqlTypes.name('data'),
+            gqlTypes.selectionSet([
+                gqlTypes.field(
+                    gqlTypes.name(queryType.name),
+                    gqlTypes.name('data'),
                     args,
                     null,
-                    graphqlTypes.selectionSet(fields)
+                    gqlTypes.selectionSet(fields)
                 ),
             ]),
-            graphqlTypes.name(queryType.name),
+            gqlTypes.name(queryType.name),
             apolloArgs
         ),
     ]);
