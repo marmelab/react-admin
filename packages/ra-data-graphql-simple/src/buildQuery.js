@@ -1,4 +1,3 @@
-import gql from 'graphql-tag';
 import buildVariables from './buildVariables';
 import buildGqlQuery from './buildGqlQuery';
 import getResponseParser from './getResponseParser';
