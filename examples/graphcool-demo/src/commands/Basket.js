@@ -1,23 +1,19 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
+
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import { translate, crudGetMany as crudGetManyAction } from 'react-admin';
+import { Link, translate, crudGetMany as crudGetManyAction } from 'react-admin';
 import compose from 'recompose/compose';
 import withStyles from '@material-ui/core/styles/withStyles';
 
 const styles = {
-    container: {
-        width: '42em',
-        float: 'right',
-        zIndex: 2,
-        '&:after': { clear: 'both' },
-    },
+    container: { width: '35em' },
     rightAlignedCell: { textAlign: 'right' },
     boldCell: { fontWeight: 'bold' },
 };
@@ -31,7 +27,7 @@ class Basket extends Component {
             record: { basket },
             crudGetMany,
         } = this.props;
-        crudGetMany('Product', basket.map(item => item['product.id']));
+        crudGetMany('Product', basket.map(item => item.product.id));
     }
     render() {
         const { classes, record, products, translate } = this.props;
@@ -66,14 +62,19 @@ class Basket extends Component {
                     <TableBody>
                         {basket.map(
                             item =>
-                                item.product &&
                                 products[item.product.id] && (
                                     <TableRow key={item.product.id}>
                                         <TableCell>
-                                            {
-                                                products[item.product.id]
-                                                    .reference
-                                            }
+                                            <Link
+                                                to={`/Product/${
+                                                    item.product.id
+                                                }`}
+                                            >
+                                                {
+                                                    products[item.product.id]
+                                                        .reference
+                                                }
+                                            </Link>
                                         </TableCell>
                                         <TableCell
                                             className={classes.rightAlignedCell}
@@ -175,11 +176,11 @@ const mapStateToProps = (state, props) => {
     const {
         record: { basket },
     } = props;
-    const productIds = basket.map(item => item['product.id']);
+    const productIds = basket.map(item => item.product.id);
     return {
         products: productIds
             .map(productId => state.admin.resources.Product.data[productId])
-            .filter(r => r != undefined) // eslint-disable-line eqeqeq
+            .filter(r => typeof r !== 'undefined')
             .reduce((prev, next) => {
                 prev[next.id] = next;
                 return prev;
@@ -189,13 +190,13 @@ const mapStateToProps = (state, props) => {
 
 const enhance = compose(
     translate,
+    withStyles(styles),
     connect(
         mapStateToProps,
         {
             crudGetMany: crudGetManyAction,
         }
-    ),
-    withStyles(styles)
+    )
 );
 
 export default enhance(Basket);

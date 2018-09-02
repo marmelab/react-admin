@@ -10,7 +10,7 @@ import { ProductIcon } from '../products';
 
 const styles = {
     icon: { paddingRight: '0.5em' },
-    link: {
+    label: {
         display: 'inline-flex',
         alignItems: 'center',
     },

@@ -5,7 +5,7 @@
     "dependencies": {
         "@material-ui/core": "~1.4.0",
         "@material-ui/icons": "~1.1.0",
-        "ra-data-graphcool": "~2.0.0",
+        "ra-data-graphcool": "^2.0.0",
         "ra-input-rich-text": "^2.0.0",
         "ra-language-english": "^2.0.0",
         "ra-language-french": "^2.0.0",
