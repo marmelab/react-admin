@@ -1,8 +1,8 @@
 import { GET_LIST, GET_MANY, GET_MANY_REFERENCE, DELETE } from 'react-admin';
 import { QUERY_TYPES } from 'ra-data-graphql';
 import { TypeKind } from 'graphql';
+import * as gqlTypes from 'graphql-ast-types';
 
-import { encodeQuery, encodeMutation } from './graphqlify';
 import getFinalType from './getFinalType';
 import isList from './isList';
 import isRequired from './isRequired';
@@ -16,7 +16,7 @@ export const buildFields = introspectionResults => fields =>
         }
 
         if (type.kind !== TypeKind.OBJECT) {
-            return { ...acc, [field.name]: {} };
+            return [...acc, gqlTypes.field(gqlTypes.name(field.name))];
         }
 
         const linkedResource = introspectionResults.resources.find(
@@ -24,7 +24,16 @@ export const buildFields = introspectionResults => fields =>
         );
 
         if (linkedResource) {
-            return { ...acc, [field.name]: { fields: { id: {} } } };
+            return [
+                ...acc,
+                gqlTypes.field(
+                    gqlTypes.name(field.name),
+                    null,
+                    null,
+                    null,
+                    gqlTypes.selectionSet([gqlTypes.field(gqlTypes.name('id'))])
+                ),
+            ];
         }
 
         const linkedType = introspectionResults.types.find(
@@ -32,34 +41,53 @@ export const buildFields = introspectionResults => fields =>
         );
 
         if (linkedType) {
-            return {
+            return [
                 ...acc,
-                [field.name]: {
-                    fields: buildFields(introspectionResults)(
-                        linkedType.fields
-                    ),
-                },
-            };
+                gqlTypes.field(
+                    gqlTypes.name(field.name),
+                    null,
+                    null,
+                    null,
+                    gqlTypes.selectionSet(
+                        buildFields(introspectionResults)(linkedType.fields)
+                    )
+                ),
+            ];
         }
 
         // NOTE: We might have to handle linked types which are not resources but will have to be careful about
         // ending with endless circular dependencies
         return acc;
-    }, {});
+    }, []);
 
 export const getArgType = arg => {
     const type = getFinalType(arg.type);
     const required = isRequired(arg.type);
     const list = isList(arg.type);
 
-    return `${list ? '[' : ''}${type.name}${list ? '!]' : ''}${
-        required ? '!' : ''
-    }`;
+    if (list) {
+        if (required) {
+            return gqlTypes.listType(
+                gqlTypes.nonNullType(
+                    gqlTypes.namedType(gqlTypes.name(type.name))
+                )
+            );
+        }
+        return gqlTypes.listType(gqlTypes.namedType(gqlTypes.name(type.name)));
+    }
+
+    if (required) {
+        return gqlTypes.nonNullType(
+            gqlTypes.namedType(gqlTypes.name(type.name))
+        );
+    }
+
+    return gqlTypes.namedType(gqlTypes.name(type.name));
 };
 
 export const buildArgs = (query, variables) => {
     if (query.args.length === 0) {
-        return {};
+        return [];
     }
 
     const validVariables = Object.keys(variables).filter(
@@ -68,8 +96,14 @@ export const buildArgs = (query, variables) => {
     let args = query.args
         .filter(a => validVariables.includes(a.name))
         .reduce(
-            (acc, arg) => ({ ...acc, [`${arg.name}`]: `$${arg.name}` }),
-            {}
+            (acc, arg) => [
+                ...acc,
+                gqlTypes.argument(
+                    gqlTypes.name(arg.name),
+                    gqlTypes.variable(gqlTypes.name(arg.name))
+                ),
+            ],
+            []
         );
 
     return args;
@@ -77,7 +111,7 @@ export const buildArgs = (query, variables) => {
 
 export const buildApolloArgs = (query, variables) => {
     if (query.args.length === 0) {
-        return {};
+        return [];
     }
 
     const validVariables = Object.keys(variables).filter(
@@ -87,8 +121,14 @@ export const buildApolloArgs = (query, variables) => {
     let args = query.args
         .filter(a => validVariables.includes(a.name))
         .reduce((acc, arg) => {
-            return { ...acc, [`$${arg.name}`]: getArgType(arg) };
-        }, {});
+            return [
+                ...acc,
+                gqlTypes.variableDefinition(
+                    gqlTypes.variable(gqlTypes.name(arg.name)),
+                    getArgType(arg)
+                ),
+            ];
+        }, []);
 
     return args;
 };
@@ -99,60 +139,78 @@ export default introspectionResults => (
     queryType,
     variables
 ) => {
+    const { sortField, sortOrder, ...metaVariables } = variables;
     const apolloArgs = buildApolloArgs(queryType, variables);
     const args = buildArgs(queryType, variables);
+    const metaArgs = buildArgs(queryType, metaVariables);
     const fields = buildFields(introspectionResults)(resource.type.fields);
     if (
         aorFetchType === GET_LIST ||
         aorFetchType === GET_MANY ||
         aorFetchType === GET_MANY_REFERENCE
     ) {
-        const result = encodeQuery(queryType.name, {
-            params: apolloArgs,
-            fields: {
-                items: {
-                    field: queryType.name,
-                    params: args,
-                    fields,
-                },
-                total: {
-                    field: `_${queryType.name}Meta`,
-                    params: args,
-                    fields: { count: {} },
-                },
-            },
-        });
-
-        return result;
+        return gqlTypes.document([
+            gqlTypes.operationDefinition(
+                'query',
+                gqlTypes.selectionSet([
+                    gqlTypes.field(
+                        gqlTypes.name(queryType.name),
+                        gqlTypes.name('items'),
+                        args,
+                        null,
+                        gqlTypes.selectionSet(fields)
+                    ),
+                    gqlTypes.field(
+                        gqlTypes.name(`_${queryType.name}Meta`),
+                        gqlTypes.name('total'),
+                        metaArgs,
+                        null,
+                        gqlTypes.selectionSet([
+                            gqlTypes.field(gqlTypes.name('count')),
+                        ])
+                    ),
+                ]),
+                gqlTypes.name(queryType.name),
+                apolloArgs
+            ),
+        ]);
     }
 
     if (aorFetchType === DELETE) {
-        return encodeMutation(queryType.name, {
-            params: apolloArgs,
-            fields: {
-                data: {
-                    field: queryType.name,
-                    params: args,
-                    fields: { id: {} },
-                },
-            },
-        });
+        return gqlTypes.document([
+            gqlTypes.operationDefinition(
+                'mutation',
+                gqlTypes.selectionSet([
+                    gqlTypes.field(
+                        gqlTypes.name(queryType.name),
+                        gqlTypes.name('data'),
+                        args,
+                        null,
+                        gqlTypes.selectionSet([
+                            gqlTypes.field(gqlTypes.name('id')),
+                        ])
+                    ),
+                ]),
+                gqlTypes.name(queryType.name),
+                apolloArgs
+            ),
+        ]);
     }
 
-    const query = {
-        params: apolloArgs,
-        fields: {
-            data: {
-                field: queryType.name,
-                params: args,
-                fields,
-            },
-        },
-    };
-
-    const result = QUERY_TYPES.includes(aorFetchType)
-        ? encodeQuery(queryType.name, query)
-        : encodeMutation(queryType.name, query);
-
-    return result;
+    return gqlTypes.document([
+        gqlTypes.operationDefinition(
+            QUERY_TYPES.includes(aorFetchType) ? 'query' : 'mutation',
+            gqlTypes.selectionSet([
+                gqlTypes.field(
+                    gqlTypes.name(queryType.name),
+                    gqlTypes.name('data'),
+                    args,
+                    null,
+                    gqlTypes.selectionSet(fields)
+                ),
+            ]),
+            gqlTypes.name(queryType.name),
+            apolloArgs
+        ),
+    ]);
 };
