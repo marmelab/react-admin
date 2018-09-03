@@ -1,6 +1,7 @@
 import React from 'react';
 import {
     BooleanField,
+    Create,
     Datagrid,
     DateField,
     DateInput,
@@ -14,6 +15,7 @@ import {
     NumberField,
     ReferenceManyField,
     Responsive,
+    SearchInput,
     TabbedForm,
     TextField,
     TextInput,
@@ -24,6 +26,7 @@ import Icon from '@material-ui/icons/Person';
 import NbItemsField from '../commands/NbItemsField';
 import ProductReferenceField from '../products/ProductReferenceField';
 import StarRatingField from '../reviews/StarRatingField';
+import CustomerLinkField from './CustomerLinkField';
 import FullNameField from './FullNameField';
 import SegmentReferenceField from '../segments/SegmentReferenceField';
 import MobileGrid from './MobileGrid';
@@ -32,7 +35,7 @@ export const VisitorIcon = Icon;
 
 const VisitorFilter = props => (
     <Filter {...props}>
-        <TextInput label="pos.search" source="q" alwaysOn />
+        <SearchInput source="q" alwaysOn />
         <DateInput source="lastSeen_gte" />
         <NullableBooleanInput source="hasOrdered" />
         <NullableBooleanInput source="hasNewsletter" defaultValue />
@@ -68,7 +71,7 @@ export const VisitorList = props => (
             xsmall={<MobileGrid />}
             medium={
                 <Datagrid>
-                    <FullNameField />
+                    <CustomerLinkField />
                     <DateField source="lastSeen" type="date" />
                     <NumberField
                         source="nbCommands"
@@ -126,7 +129,7 @@ export const VisitorEdit = withStyles(editStyles)(({ classes, ...props }) => (
                 />
                 <DateInput source="birthday" />
             </FormTab>
-            <FormTab label="resources.Customer.tabs.address">
+            <FormTab label="resources.Customer.tabs.address" path="address">
                 <LongTextInput
                     source="address"
                     formClassName={classes.address}
@@ -134,7 +137,7 @@ export const VisitorEdit = withStyles(editStyles)(({ classes, ...props }) => (
                 <TextInput source="zipcode" formClassName={classes.zipcode} />
                 <TextInput source="city" formClassName={classes.city} />
             </FormTab>
-            <FormTab label="resources.Customer.tabs.orders">
+            <FormTab label="resources.Customer.tabs.orders" path="orders">
                 <ReferenceManyField
                     addLabel={false}
                     reference="Command"
@@ -153,7 +156,7 @@ export const VisitorEdit = withStyles(editStyles)(({ classes, ...props }) => (
                     </Datagrid>
                 </ReferenceManyField>
             </FormTab>
-            <FormTab label="resources.Customer.tabs.reviews">
+            <FormTab label="resources.Customer.tabs.reviews" path="reviews">
                 <ReferenceManyField
                     addLabel={false}
                     reference="Review"
@@ -171,7 +174,7 @@ export const VisitorEdit = withStyles(editStyles)(({ classes, ...props }) => (
                     </Datagrid>
                 </ReferenceManyField>
             </FormTab>
-            <FormTab label="resources.Customer.tabs.stats">
+            <FormTab label="resources.Customer.tabs.stats" path="stats">
                 <NullableBooleanInput source="hasNewsletter" />
                 <DateField source="firstSeen" formClassName={classes.date} />
                 <DateField
@@ -182,4 +185,34 @@ export const VisitorEdit = withStyles(editStyles)(({ classes, ...props }) => (
             </FormTab>
         </TabbedForm>
     </Edit>
+));
+
+export const VisitorCreate = withStyles(editStyles)(({ classes, ...props }) => (
+    <Create {...props}>
+        <TabbedForm>
+            <FormTab label="resources.Customer.tabs.identity">
+                <TextInput
+                    source="firstName"
+                    formClassName={classes.firstName}
+                />
+                <TextInput source="lastName" formClassName={classes.lastName} />
+                <TextInput
+                    type="email"
+                    source="email"
+                    validation={{ email: true }}
+                    fullWidth={true}
+                    formClassName={classes.email}
+                />
+                <DateInput source="birthday" />
+            </FormTab>
+            <FormTab label="resources.Customer.tabs.address" path="address">
+                <LongTextInput
+                    source="address"
+                    formClassName={classes.address}
+                />
+                <TextInput source="zipcode" formClassName={classes.zipcode} />
+                <TextInput source="city" formClassName={classes.city} />
+            </FormTab>
+        </TabbedForm>
+    </Create>
 ));

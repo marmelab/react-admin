@@ -1,6 +1,8 @@
 import React from 'react';
 import {
     AutocompleteInput,
+    BulkActions,
+    BulkDeleteAction,
     Datagrid,
     DateField,
     DateInput,
@@ -12,12 +14,12 @@ import {
     ReferenceField,
     ReferenceInput,
     Responsive,
+    SearchInput,
     SelectInput,
     SimpleForm,
     TextField,
-    TextInput,
 } from 'react-admin';
-import { withStyles } from '@material-ui/core/styles';
+import withStyles from '@material-ui/core/styles/withStyles';
 import Icon from '@material-ui/icons/Comment';
 
 import ProductReferenceField from '../products/ProductReferenceField';
@@ -25,49 +27,67 @@ import CustomerReferenceField from '../visitors/CustomerReferenceField';
 import StarRatingField from './StarRatingField';
 import ApproveButton from './ApproveButton';
 import ReviewEditActions from './ReviewEditActions';
+import BulkApproveAction from './BulkApproveAction';
+import BulkRejectAction from './BulkRejectAction';
 import rowStyle from './rowStyle';
 import MobileGrid from './MobileGrid';
 
 export const ReviewIcon = Icon;
 
-export const ReviewFilter = props => (
-    <Filter {...props}>
-        <TextInput label="pos.search" source="q" alwaysOn />
-        <SelectInput
-            source="status"
-            choices={[
-                { id: 'accepted', name: 'Accepted' },
-                { id: 'pending', name: 'Pending' },
-                { id: 'rejected', name: 'Rejected' },
-            ]}
-            elStyle={{ width: 150 }}
-        />
-        <ReferenceInput source="customer.id" reference="Customer">
-            <AutocompleteInput
-                optionText={choice => `${choice.firstName} ${choice.lastName}`}
+const filterStyles = {
+    status: { width: 150 },
+};
+
+export const ReviewFilter = withStyles(filterStyles)(
+    ({ classes, ...props }) => (
+        <Filter {...props}>
+            <SearchInput source="q" alwaysOn />
+            <SelectInput
+                source="status"
+                choices={[
+                    { id: 'accepted', name: 'Accepted' },
+                    { id: 'pending', name: 'Pending' },
+                    { id: 'rejected', name: 'Rejected' },
+                ]}
+                className={classes.status}
             />
-        </ReferenceInput>
-        <ReferenceInput source="product.id" reference="Product">
-            <AutocompleteInput optionText="reference" />
-        </ReferenceInput>
-        <DateInput source="date_gte" />
-        <DateInput source="date_lte" />
-    </Filter>
+            <ReferenceInput source="customer.id" reference="Customer">
+                <AutocompleteInput
+                    optionText={choice =>
+                        `${choice.firstName} ${choice.lastName}`
+                    }
+                />
+            </ReferenceInput>
+            <ReferenceInput source="product.id" reference="Product">
+                <AutocompleteInput optionText="reference" />
+            </ReferenceInput>
+            <DateInput source="date_gte" />
+            <DateInput source="date_lte" />
+        </Filter>
+    )
 );
 
-const styles = {
-    commentCell: {
+const listStyles = {
+    comment: {
         maxWidth: '18em',
         overflow: 'hidden',
         textOverflow: 'ellipsis',
         whiteSpace: 'nowrap',
     },
-    button: { padding: 0 },
 };
 
-export const ReviewList = withStyles(styles)(({ classes, ...props }) => (
+const ReviewsBulkActions = props => (
+    <BulkActions {...props}>
+        <BulkApproveAction label="resources.Review.action.accept" />
+        <BulkRejectAction label="resources.Review.action.reject" />
+        <BulkDeleteAction />
+    </BulkActions>
+);
+
+export const ReviewList = withStyles(listStyles)(({ classes, ...props }) => (
     <List
         {...props}
+        bulkActions={<ReviewsBulkActions />}
         filters={<ReviewFilter />}
         perPage={25}
         sort={{ field: 'date', order: 'DESC' }}
@@ -85,15 +105,15 @@ export const ReviewList = withStyles(styles)(({ classes, ...props }) => (
                         cellClassName={classes.comment}
                     />
                     <TextField source="status" />
-                    <ApproveButton className={classes.button} />
-                    <EditButton className={classes.button} />
+                    <ApproveButton />
+                    <EditButton />
                 </Datagrid>
             }
         />
     </List>
 ));
 
-const editStyles = {
+const editStyle = {
     detail: {
         display: 'inline-block',
         verticalAlign: 'top',
@@ -101,21 +121,21 @@ const editStyles = {
         minWidth: '8em',
     },
 };
-export const ReviewEdit = withStyles(editStyles)(({ classes, ...props }) => (
+export const ReviewEdit = withStyles(editStyle)(({ classes, ...props }) => (
     <Edit {...props} actions={<ReviewEditActions />}>
         <SimpleForm>
-            <DateField source="date" className={classes.detail} />
-            <CustomerReferenceField className={classes.detail} />
-            <ProductReferenceField className={classes.detail} />
+            <DateField source="date" formClassName={classes.detail} />
+            <CustomerReferenceField formClassName={classes.detail} />
+            <ProductReferenceField formClassName={classes.detail} />
             <ReferenceField
                 source="command.id"
                 reference="Command"
                 addLabel
-                className={classes.detail}
+                formClassName={classes.detail}
             >
                 <TextField source="reference" />
             </ReferenceField>
-            <StarRatingField className={classes.detail} />
+            <StarRatingField formClassName={classes.detail} />
             <LongTextInput source="comment" />
             <SelectInput
                 source="status"

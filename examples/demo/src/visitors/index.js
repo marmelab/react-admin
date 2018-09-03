@@ -138,7 +138,7 @@ export const VisitorEdit = withStyles(editStyles)(({ classes, ...props }) => (
                 />
                 <DateInput source="birthday" />
             </FormTab>
-            <FormTab label="resources.customers.tabs.address">
+            <FormTab label="resources.customers.tabs.address" path="address">
                 <LongTextInput
                     source="address"
                     formClassName={classes.address}
@@ -146,7 +146,7 @@ export const VisitorEdit = withStyles(editStyles)(({ classes, ...props }) => (
                 <TextInput source="zipcode" formClassName={classes.zipcode} />
                 <TextInput source="city" formClassName={classes.city} />
             </FormTab>
-            <FormTab label="resources.customers.tabs.orders">
+            <FormTab label="resources.customers.tabs.orders" path="orders">
                 <ReferenceManyField
                     addLabel={false}
                     sort={{ field: 'date', order: 'DESC' }}
@@ -166,7 +166,7 @@ export const VisitorEdit = withStyles(editStyles)(({ classes, ...props }) => (
                     </Datagrid>
                 </ReferenceManyField>
             </FormTab>
-            <FormTab label="resources.customers.tabs.reviews">
+            <FormTab label="resources.customers.tabs.reviews" path="reviews">
                 <ReferenceManyField
                     addLabel={false}
                     sort={{ field: 'date', order: 'DESC' }}
@@ -185,7 +185,7 @@ export const VisitorEdit = withStyles(editStyles)(({ classes, ...props }) => (
                     </Datagrid>
                 </ReferenceManyField>
             </FormTab>
-            <FormTab label="resources.customers.tabs.stats">
+            <FormTab label="resources.customers.tabs.stats" path="stats">
                 <SegmentsInput />
                 <NullableBooleanInput source="has_newsletter" />
                 <DateField
@@ -226,7 +226,7 @@ export const VisitorCreate = withStyles(editStyles)(({ classes, ...props }) => (
                 />
                 <DateInput source="birthday" />
             </FormTab>
-            <FormTab label="resources.customers.tabs.address">
+            <FormTab label="resources.customers.tabs.address" path="address">
                 <LongTextInput
                     source="address"
                     formClassName={classes.address}

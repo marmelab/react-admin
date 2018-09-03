@@ -15,7 +15,12 @@ import { Dashboard } from './dashboard';
 import customRoutes from './routes';
 import englishMessages from './i18n/en';
 
-import { VisitorList, VisitorEdit, VisitorIcon } from './visitors';
+import {
+    VisitorList,
+    VisitorEdit,
+    VisitorIcon,
+    VisitorCreate,
+} from './visitors';
 import { CommandList, CommandEdit, CommandIcon } from './commands';
 import {
     ProductList,
@@ -48,7 +53,11 @@ class App extends Component {
         const { dataProvider } = this.state;
 
         if (!dataProvider) {
-            return <div>Loading</div>;
+            return (
+                <div className="loader-container">
+                    <div className="loader">Loading...</div>
+                </div>
+            );
         }
 
         return (
@@ -69,6 +78,7 @@ class App extends Component {
                 <Resource
                     name="Customer"
                     list={VisitorList}
+                    create={VisitorCreate}
                     edit={VisitorEdit}
                     icon={VisitorIcon}
                 />
