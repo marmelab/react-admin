@@ -29,6 +29,7 @@
         "watch": "rimraf ./lib && cross-env NODE_ENV=production babel --watch ./src -d ./lib --ignore spec.js,test.js"
     },
     "dependencies": {
+        "graphql-ast-types": "^1.0.2",
         "graphql-tag": "^2.6.1",
         "lodash": "~4.17.5",
         "pluralize": "~7.0.0",
