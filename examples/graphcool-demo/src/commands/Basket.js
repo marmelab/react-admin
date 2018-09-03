@@ -22,6 +22,7 @@ class Basket extends Component {
     componentDidMount() {
         this.fetchData();
     }
+
     fetchData() {
         const {
             record: { basket },
@@ -32,6 +33,7 @@ class Basket extends Component {
     render() {
         const { classes, record, products, translate } = this.props;
         const { basket } = record;
+
         return (
             <Paper className={classes.container}>
                 <Table>
@@ -62,6 +64,7 @@ class Basket extends Component {
                     <TableBody>
                         {basket.map(
                             item =>
+                                item.product &&
                                 products[item.product.id] && (
                                     <TableRow key={item.product.id}>
                                         <TableCell>
@@ -176,7 +179,9 @@ const mapStateToProps = (state, props) => {
     const {
         record: { basket },
     } = props;
-    const productIds = basket.map(item => item.product.id);
+    const productIds = basket
+        .map(item => item.product && item.product.id)
+        .filter(item => !!item);
     return {
         products: productIds
             .map(productId => state.admin.resources.Product.data[productId])

@@ -87,6 +87,43 @@ Or supply your client directly with:
 buildGraphcoolProvider({ client: myClient });
 ```
 
+### Overriding a specific query
+
+The default behavior might not be optimized especially when dealing with references. You can override a specific query by wrapping the `buildQuery` function:
+
+```js
+// in src/dataProvider.js
+import buildGraphcoolProvider, { buildQuery } from 'ra-data-graphcool';
+
+const myBuildQuery = introspection => (fetchType, resource, params) => {
+    const builtQuery = buildQuery(introspection)(fetchType, resource, params);
+
+    if (resource === 'Command' && fetchType === 'GET_ONE') {
+        return {
+            // Use the default query variables and parseResponse
+            ...builtQuery,
+            // Override the query
+            query: gql`
+                query Command($id: ID!) {
+                    data: Command(id: $id) {
+                        id
+                        reference
+                        customer {
+                            id
+                            firstName
+                            lastName
+                        }
+                    }
+                }`,
+        };
+    }
+
+    return builtQuery;
+}
+
+export default buildGraphcoolProvider({ buildQuery: myBuildQuery })
+```
+
 ### Customize the introspection
 
 These are the default options for introspection:
