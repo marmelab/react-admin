@@ -1,4 +1,5 @@
 import React, { cloneElement, Children, Component } from 'react';
+import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
 
@@ -30,6 +31,15 @@ const sanitizeRestProps = ({
 }) => rest;
 
 export class NodeView extends Component {
+    static propTypes = {
+        actions: PropTypes.node,
+        basePath: PropTypes.string.isRequired,
+        children: PropTypes.node,
+        classes: PropTypes.object,
+        node: PropTypes.object.isRequired,
+        resource: PropTypes.string.isRequired,
+    };
+
     handleClick = event => {
         event.persist();
         // This ensure clicking on a button does not collapse/expand a node

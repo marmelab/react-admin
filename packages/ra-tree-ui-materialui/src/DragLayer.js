@@ -30,6 +30,7 @@ class CustomDragLayer extends Component {
             PropTypes.func,
         ]).isRequired,
         itemBeingDragged: PropTypes.object,
+        offset: PropTypes.object,
     };
 
     shouldComponentUpdate(nextProps) {

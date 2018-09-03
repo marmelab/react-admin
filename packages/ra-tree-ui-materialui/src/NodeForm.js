@@ -1,4 +1,5 @@
 import React, { cloneElement, Children, Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import { withStyles } from '@material-ui/core/styles';
@@ -71,6 +72,24 @@ const sanitizeRestProps = ({
     ...props
 }) => props;
 class NodeForm extends Component {
+    static propTypes = {
+        actions: PropTypes.node,
+        basePath: PropTypes.string.isRequired,
+        cancelDropOnChildren: PropTypes.bool,
+        children: PropTypes.node,
+        classes: PropTypes.object,
+        dispatchCrudUpdate: PropTypes.func.isRequired,
+        handleSubmit: PropTypes.func.isRequired,
+        invalid: PropTypes.bool,
+        node: PropTypes.object.isRequired,
+        pristine: PropTypes.bool,
+        resource: PropTypes.string.isRequired,
+        saving: PropTypes.bool,
+        startUndoable: PropTypes.func.isRequired,
+        submitOnEnter: PropTypes.bool,
+        undoable: PropTypes.bool,
+    };
+
     static defaultProps = {
         actions: <NodeFormActions />,
     };

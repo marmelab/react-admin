@@ -27,6 +27,7 @@ const styles = theme => ({
 
 class RootDropTarget extends Component {
     static propTypes = {
+        canDrop: PropTypes.bool,
         classes: PropTypes.object.isRequired,
         connectDropTarget: PropTypes.func.isRequired,
         isOverCurrent: PropTypes.bool,
