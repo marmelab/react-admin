@@ -1,6 +1,7 @@
 import RichTextInput from 'ra-input-rich-text';
 import React from 'react';
 import {
+    AutocompleteArrayInput,
     ArrayInput,
     BooleanInput,
     CheckboxGroupInput,
@@ -20,7 +21,6 @@ import {
     NumberInput,
     ReferenceArrayInput,
     ReferenceManyField,
-    SelectArrayInput,
     SelectInput,
     SimpleFormIterator,
     TabbedForm,
@@ -84,7 +84,7 @@ const PostEdit = props => (
             </FormTab>
             <FormTab label="post.form.miscellaneous">
                 <ReferenceArrayInput reference="tags" source="tags">
-                    <SelectArrayInput optionText="name" />
+                    <AutocompleteArrayInput optionText="name" />
                 </ReferenceArrayInput>
                 <ArrayInput source="backlinks">
                     <SimpleFormIterator>
