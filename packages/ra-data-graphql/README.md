@@ -185,7 +185,7 @@ For example:
 ```js
 import buildFieldList from './buildFieldList';
 
-const queryBuilder = introspectionResults => (raFetchType, resourceName, params) => {
+const buildQuery = introspectionResults => (raFetchType, resourceName, params) => {
     const resource = introspectionResults.resource.find(r => r.type.name === resourceName);
 
     switch (raFetchType) {
@@ -206,7 +206,7 @@ const queryBuilder = introspectionResults => (raFetchType, resourceName, params)
 ```
 
 ```js
-buildGraphQLProvider({ queryBuilder });
+buildGraphQLProvider({ buildQuery });
 ```
 
 ## Troubleshooting
