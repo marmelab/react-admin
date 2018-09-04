@@ -130,7 +130,6 @@ export class AutocompleteArrayInput extends React.Component {
             this.updateFilter('');
         } else if (!isEqual(choices, this.props.choices)) {
             this.setState(({ searchText }) => ({
-                searchText,
                 suggestions: choices.filter(suggestion =>
                     inputValueMatcher(
                         searchText,
@@ -270,18 +269,34 @@ export class AutocompleteArrayInput extends React.Component {
     };
 
     handleAdd = chip => {
-        const { choices, input, limitChoicesToValue } = this.props;
+        const {
+            choices,
+            input,
+            limitChoicesToValue,
+            inputValueMatcher,
+        } = this.props;
+        const filteredChoices = choices.filter(choice =>
+            inputValueMatcher(chip, choice, this.getSuggestionText)
+        );
 
         if (limitChoicesToValue) {
-            const choice = choices.find(
-                c => this.getSuggestionValue(c) === chip
-            );
+            const choice =
+                filteredChoices.length === 1
+                    ? filteredChoices[0]
+                    : filteredChoices.find(
+                          c => this.getSuggestionValue(c) === chip
+                      );
 
-            if (!choice) {
-                // Ensure to reset the filter
-                this.updateFilter('');
-                return;
+            if (choice) {
+                input.onChange([
+                    ...this.state.inputValue,
+                    this.getSuggestionValue(choice),
+                ]);
             }
+
+            // Ensure to reset the filter
+            this.updateFilter('');
+            return;
         }
 
         input.onChange([...this.state.inputValue, chip]);
@@ -359,24 +374,6 @@ export class AutocompleteArrayInput extends React.Component {
         );
     };
 
-    handleBlur = () => {
-        const { dirty, searchText } = this.state;
-        const { allowEmpty, input } = this.props;
-        if (dirty) {
-            if (searchText === '' && allowEmpty) {
-                input && input.onBlur && input.onBlur(null);
-            } else {
-                input && input.onBlur && input.onBlur(this.state.inputValue);
-                this.setState({
-                    dirty: false,
-                    suggestions: this.props.choices,
-                });
-            }
-        } else {
-            input && input.onBlur && input.onBlur(this.state.inputValue);
-        }
-    };
-
     handleFocus = () => {
         const { input } = this.props;
         input && input.onFocus && input.onFocus();
@@ -389,6 +386,7 @@ export class AutocompleteArrayInput extends React.Component {
                 setFilter(value);
             } else {
                 this.setState({
+                    searchText: value,
                     suggestions: choices.filter(choice =>
                         this.getSuggestionText(choice)
                             .toLowerCase()
@@ -439,6 +437,7 @@ export class AutocompleteArrayInput extends React.Component {
                 renderSuggestion={this.renderSuggestion}
                 shouldRenderSuggestions={this.shouldRenderSuggestions}
                 inputProps={{
+                    blurBehavior: 'add',
                     className,
                     classes,
                     isRequired,
@@ -448,7 +447,6 @@ export class AutocompleteArrayInput extends React.Component {
                     resource,
                     source,
                     value: searchText,
-                    onBlur: this.handleBlur,
                     onFocus: this.handleFocus,
                     options,
                 }}
