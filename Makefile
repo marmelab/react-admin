@@ -75,11 +75,11 @@ build-ra-realtime:
 
 build-ra-tree-core:
 	@echo "Transpiling ra-tree-core files...";
-	@cd ./packages/ra-tree-core && yarn -s build
+	@cd ./packages/ra-tree-core && yarn -s build && yarn -s build-esm
 
 build-ra-tree-ui-materialui:
 	@echo "Transpiling ra-tree-ui-materialui files...";
-	@cd ./packages/ra-tree-ui-materialui && yarn -s build
+	@cd ./packages/ra-tree-ui-materialui && yarn -s build && yarn -s build-esm
 
 build-data-generator:
 	@echo "Transpiling data-generator files...";
