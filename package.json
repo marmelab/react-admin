@@ -4,8 +4,8 @@
     "scripts": {
         "build": "lerna run build",
         "build-demo": "cd examples/demo && cross-env REACT_APP_DATA_PROVIDER=rest yarn -s build",
-        "test-unit": "cross-env NODE_ENV=test cross-env NODE_ICU_DATA=node_modules/full-icu jest",
-        "test-unit-ci": "cross-env NODE_ENV=test cross-env NODE_ICU_DATA=node_modules/full-icu jest --runInBand",
+        "test-unit": "cross-env NODE_ENV=test cross-env BABEL_ENV=cjs NODE_ICU_DATA=node_modules/full-icu jest",
+        "test-unit-ci": "cross-env NODE_ENV=test cross-env BABEL_ENV=cjs NODE_ICU_DATA=node_modules/full-icu jest --runInBand",
         "test-e2e": "yarn run -s build && cross-env NODE_ENV=test && cd cypress && yarn -s test",
         "test-e2e-local": "cd cypress && yarn -s start",
         "test": "yarn -s test-unit && yarn -s test-e2e",

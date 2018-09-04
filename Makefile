@@ -116,7 +116,7 @@ test-unit-watch: ## launch unit tests and watch for changes
 test-e2e: ## launch end-to-end tests
 	@if [ "$(build)" != "false" ]; then \
 		echo 'Building example code (call "make build=false test-e2e" to skip the build)...'; \
-		cd examples/simple && yarn -s build && yarn -s build-esm; \
+		cd examples/simple && yarn -s build; \
 	fi
 
 	@NODE_ENV=test cd cypress && yarn -s test

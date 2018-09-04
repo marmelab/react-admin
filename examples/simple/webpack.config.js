@@ -32,7 +32,7 @@ module.exports = {
                 '..',
                 'packages',
                 'ra-core',
-                'src'
+                'lib'
             ),
             'ra-ui-materialui': path.join(
                 __dirname,
@@ -40,7 +40,7 @@ module.exports = {
                 '..',
                 'packages',
                 'ra-ui-materialui',
-                'src'
+                'lib'
             ),
             'react-admin': path.join(
                 __dirname,
@@ -48,7 +48,7 @@ module.exports = {
                 '..',
                 'packages',
                 'react-admin',
-                'src'
+                'lib'
             ),
             'ra-data-fakerest': path.join(
                 __dirname,
@@ -56,7 +56,7 @@ module.exports = {
                 '..',
                 'packages',
                 'ra-data-fakerest',
-                'src'
+                'lib'
             ),
             'ra-input-rich-text': path.join(
                 __dirname,
@@ -64,7 +64,7 @@ module.exports = {
                 '..',
                 'packages',
                 'ra-input-rich-text',
-                'src'
+                'lib'
             ),
             'ra-tree-core': path.join(
                 __dirname,
@@ -72,7 +72,7 @@ module.exports = {
                 '..',
                 'packages',
                 'ra-tree-core',
-                'src'
+                'lib'
             ),
             'ra-tree-ui-materialui': path.join(
                 __dirname,
@@ -80,7 +80,7 @@ module.exports = {
                 '..',
                 'packages',
                 'ra-tree-ui-materialui',
-                'src'
+                'lib'
             ),
             'ra-tree-language-english': path.join(
                 __dirname,
