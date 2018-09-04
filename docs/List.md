@@ -135,7 +135,7 @@ export const PostList = (props) => (
 );
 ```
 
-You can also use such a custom `ListActions` prop to omit or reorder buttons based on permissions. Just pass the `permisisons` down from the `List` component:
+You can also use such a custom `ListActions` prop to omit or reorder buttons based on permissions. Just pass the `permissions` down from the `List` component:
 
 ```jsx
 export const PostList = ({ permissions, ...props }) => (
