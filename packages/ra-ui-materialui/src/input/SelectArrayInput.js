@@ -30,6 +30,7 @@ const sanitizeRestProps = ({
     input,
     isRequired,
     label,
+    limitChoicesToValue,
     locale,
     meta,
     onChange,

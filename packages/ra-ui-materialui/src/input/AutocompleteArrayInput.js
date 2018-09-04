@@ -10,12 +10,13 @@ import MenuItem from '@material-ui/core/MenuItem';
 import { withStyles } from '@material-ui/core/styles';
 import parse from 'autosuggest-highlight/parse';
 import match from 'autosuggest-highlight/match';
-import MuiChipInput from 'material-ui-chip-input';
 import blue from '@material-ui/core/colors/blue';
 import compose from 'recompose/compose';
 import classNames from 'classnames';
 
 import { addField, translate } from 'ra-core';
+
+import AutocompleteArrayInputChip from './AutocompleteArrayInputChip';
 
 const styles = theme => ({
     container: {
@@ -49,18 +50,6 @@ const styles = theme => ({
         backgroundColor: blue[300],
     },
 });
-
-const chipInputStyles = {
-    chipContainer: {
-        alignItems: 'center',
-        display: 'flex',
-        minHeight: 50,
-    },
-};
-
-const ChipInputView = props => <MuiChipInput {...props} />;
-
-const ChipInput = withStyles(chipInputStyles)(ChipInputView);
 
 /**
  * An Input component for an autocomplete field, using an array of objects for the options
@@ -112,7 +101,7 @@ const ChipInput = withStyles(chipInputStyles)(ChipInputView);
  * @example
  * <AutocompleteInput source="author_id" options={{ fullWidth: true }} />
  */
-export class AutocompleteInput extends React.Component {
+export class AutocompleteArrayInput extends React.Component {
     state = {
         dirty: false,
         inputValue: null,
@@ -130,21 +119,25 @@ export class AutocompleteInput extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        const { choices, input } = nextProps;
+        const { choices, input, inputValueMatcher } = nextProps;
         if (!isEqual(input.value, this.state.inputValue)) {
             this.setState({
                 inputValue: input.value,
                 dirty: false,
                 suggestions: this.props.choices,
-                prevSuggestions: false,
             });
             // Ensure to reset the filter
             this.updateFilter('');
         } else if (!isEqual(choices, this.props.choices)) {
             this.setState(({ searchText }) => ({
                 searchText,
-                suggestions: choices,
-                prevSuggestions: false,
+                suggestions: choices.filter(suggestion =>
+                    inputValueMatcher(
+                        searchText,
+                        suggestion,
+                        this.getSuggestionText
+                    )
+                ),
             }));
         }
     }
@@ -176,9 +169,9 @@ export class AutocompleteInput extends React.Component {
     };
 
     handleSuggestionsFetchRequested = () => {
-        this.setState(({ suggestions, prevSuggestions }) => ({
-            suggestions: prevSuggestions ? prevSuggestions : suggestions,
-        }));
+        this.setState({
+            suggestions: this.props.choices,
+        });
     };
 
     handleSuggestionsClearRequested = () => {
@@ -186,35 +179,11 @@ export class AutocompleteInput extends React.Component {
     };
 
     handleMatchSuggestionOrFilter = inputValue => {
-        const { choices, inputValueMatcher } = this.props;
-
-        const matches =
-            inputValue &&
-            choices.filter(it =>
-                inputValueMatcher(inputValue, it, this.getSuggestionText)
-            );
-
-        if (matches.length === 1) {
-            const match = matches[0];
-            const nextId = this.getSuggestionValue(match);
-            const suggestionText = this.getSuggestionText(match);
-
-            if (!this.state.inputValue.includes(nextId)) {
-                this.handleAdd(nextId);
-            } else {
-                this.setState({
-                    dirty: false,
-                    suggestions: [match],
-                    searchText: suggestionText,
-                });
-            }
-        } else {
-            this.setState({
-                dirty: true,
-                searchText: inputValue,
-            });
-            this.updateFilter(inputValue);
-        }
+        this.setState({
+            dirty: true,
+            searchText: inputValue,
+        });
+        this.updateFilter(inputValue);
     };
     handleChange = (event, { newValue, method }) => {
         switch (method) {
@@ -260,7 +229,7 @@ export class AutocompleteInput extends React.Component {
         };
 
         return (
-            <ChipInput
+            <AutocompleteArrayInputChip
                 clearInputValueOnChange
                 onUpdateInput={onChange}
                 onAdd={this.handleAdd}
@@ -271,6 +240,7 @@ export class AutocompleteInput extends React.Component {
                 helperText={touched && error && helperText}
                 chipRenderer={this.renderChip}
                 {...other}
+                {...options}
             />
         );
     };
@@ -300,7 +270,19 @@ export class AutocompleteInput extends React.Component {
     };
 
     handleAdd = chip => {
-        const { input } = this.props;
+        const { choices, input, limitChoicesToValue } = this.props;
+
+        if (limitChoicesToValue) {
+            const choice = choices.find(
+                c => this.getSuggestionValue(c) === chip
+            );
+
+            if (!choice) {
+                // Ensure to reset the filter
+                this.updateFilter('');
+                return;
+            }
+        }
 
         input.onChange([...this.state.inputValue, chip]);
     };
@@ -378,7 +360,7 @@ export class AutocompleteInput extends React.Component {
     };
 
     handleBlur = () => {
-        const { dirty, searchText, selectedItem } = this.state;
+        const { dirty, searchText } = this.state;
         const { allowEmpty, input } = this.props;
         if (dirty) {
             if (searchText === '' && allowEmpty) {
@@ -387,11 +369,7 @@ export class AutocompleteInput extends React.Component {
                 input && input.onBlur && input.onBlur(this.state.inputValue);
                 this.setState({
                     dirty: false,
-                    searchText: this.getSuggestionText(selectedItem),
-                    suggestions:
-                        this.props.limitChoicesToValue && selectedItem
-                            ? [selectedItem]
-                            : this.props.choices,
+                    suggestions: this.props.choices,
                 });
             }
         } else {
@@ -479,7 +457,7 @@ export class AutocompleteInput extends React.Component {
     }
 }
 
-AutocompleteInput.propTypes = {
+AutocompleteArrayInput.propTypes = {
     allowEmpty: PropTypes.bool,
     alwaysRenderSuggestions: PropTypes.bool, // used only for unit tests
     choices: PropTypes.arrayOf(PropTypes.object),
@@ -487,6 +465,7 @@ AutocompleteInput.propTypes = {
     className: PropTypes.string,
     InputProps: PropTypes.object,
     input: PropTypes.object,
+    inputValueMatcher: PropTypes.func,
     isRequired: PropTypes.bool,
     label: PropTypes.string,
     limitChoicesToValue: PropTypes.bool,
@@ -501,10 +480,9 @@ AutocompleteInput.propTypes = {
     suggestionComponent: PropTypes.func,
     translate: PropTypes.func.isRequired,
     translateChoice: PropTypes.bool.isRequired,
-    inputValueMatcher: PropTypes.func,
 };
 
-AutocompleteInput.defaultProps = {
+AutocompleteArrayInput.defaultProps = {
     choices: [],
     options: {},
     optionText: 'name',
@@ -522,4 +500,4 @@ export default compose(
     addField,
     translate,
     withStyles(styles)
-)(AutocompleteInput);
+)(AutocompleteArrayInput);
