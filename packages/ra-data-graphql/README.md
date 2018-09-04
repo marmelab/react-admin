@@ -40,8 +40,6 @@ import { Admin, Resource, Delete } from 'react-admin';
 
 import { PostCreate, PostEdit, PostList } from '../components/admin/posts';
 
-const client = new ApolloClient();
-
 class App extends Component {
     constructor() {
         super();
