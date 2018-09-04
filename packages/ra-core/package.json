@@ -5,6 +5,7 @@
     "files": [
         "*.md",
         "lib",
+        "esm",
         "src"
     ],
     "main": "lib/index",

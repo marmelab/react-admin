@@ -9,6 +9,7 @@
         "LICENSE",
         "*.md",
         "lib",
+        "esm",
         "src"
     ],
     "repository": {

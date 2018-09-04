@@ -8,6 +8,7 @@
     "files": [
         "*.md",
         "lib",
+        "esm",
         "src"
     ],
     "authors": [
