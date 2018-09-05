@@ -168,9 +168,17 @@ export class AutocompleteArrayInput extends React.Component {
     };
 
     handleSuggestionsFetchRequested = () => {
-        this.setState({
-            suggestions: this.props.choices,
-        });
+        const { choices, inputValueMatcher } = this.props;
+
+        this.setState(({ searchText }) => ({
+            suggestions: choices.filter(suggestion =>
+                inputValueMatcher(
+                    searchText,
+                    suggestion,
+                    this.getSuggestionText
+                )
+            ),
+        }));
     };
 
     handleSuggestionsClearRequested = () => {
@@ -275,25 +283,26 @@ export class AutocompleteArrayInput extends React.Component {
             limitChoicesToValue,
             inputValueMatcher,
         } = this.props;
+
         const filteredChoices = choices.filter(choice =>
             inputValueMatcher(chip, choice, this.getSuggestionText)
         );
 
+        const choice =
+            filteredChoices.length === 1
+                ? filteredChoices[0]
+                : filteredChoices.find(
+                      c => this.getSuggestionValue(c) === chip
+                  );
+
+        if (choice) {
+            return input.onChange([
+                ...this.state.inputValue,
+                this.getSuggestionValue(choice),
+            ]);
+        }
+
         if (limitChoicesToValue) {
-            const choice =
-                filteredChoices.length === 1
-                    ? filteredChoices[0]
-                    : filteredChoices.find(
-                          c => this.getSuggestionValue(c) === chip
-                      );
-
-            if (choice) {
-                input.onChange([
-                    ...this.state.inputValue,
-                    this.getSuggestionValue(choice),
-                ]);
-            }
-
             // Ensure to reset the filter
             this.updateFilter('');
             return;
