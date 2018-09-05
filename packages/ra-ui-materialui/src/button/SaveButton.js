@@ -15,7 +15,7 @@ const styles = {
         position: 'relative',
     },
     iconPaddingStyle: {
-        paddingRight: '0.5em',
+        marginRight: '0.5em', // use margin instead of padding because rotating padding is bad, issue #2279
     },
 };
 
