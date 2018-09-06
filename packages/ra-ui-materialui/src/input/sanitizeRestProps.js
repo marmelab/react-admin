@@ -8,6 +8,7 @@ export default ({
     input,
     isRequired,
     label,
+    limitChoicesToValue,
     locale,
     meta,
     options,
