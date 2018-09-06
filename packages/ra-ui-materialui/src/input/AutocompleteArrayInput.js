@@ -159,8 +159,12 @@ export class AutocompleteArrayInput extends React.Component {
     };
 
     handleSuggestionSelected = (event, { suggestion, method }) => {
-        const inputValue = this.getSuggestionValue(suggestion);
-        this.handleAdd(inputValue);
+        const { input } = this.props;
+
+        input.onChange([
+            ...this.state.inputValue,
+            this.getSuggestionValue(suggestion),
+        ]);
 
         if (method === 'enter') {
             event.preventDefault();
