@@ -18,7 +18,7 @@ Please do not submit support requests or "How to" questions here. For that, go t
 **Related code:**
 <!-- If you are able to illustrate the bug or feature request with an example, please provide a sample application via one of the following means:
 
-* CodeSandbox (https://codesandbox.io/s/pw74xww3p0)
+* CodeSandbox (https://codesandbox.io/s/kmyk6xwjwr)
 * A sample application via GitHub
 -->
 
