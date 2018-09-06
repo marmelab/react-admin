@@ -9,7 +9,7 @@ install: package.json ## install dependencies
 run: run-simple
 
 run-simple: ## run the simple example
-	@yarn -s run-simple
+	@BABEL_ENV=cjs yarn -s run-simple
 
 run-tutorial: ## run the tutorial example
 	@yarn -s run-tutorial
@@ -116,7 +116,7 @@ test-unit-watch: ## launch unit tests and watch for changes
 test-e2e: ## launch end-to-end tests
 	@if [ "$(build)" != "false" ]; then \
 		echo 'Building example code (call "make build=false test-e2e" to skip the build)...'; \
-		cd examples/simple && yarn -s build; \
+		cd examples/simple && BABEL_ENV=cjs yarn -s build; \
 	fi
 
 	@NODE_ENV=test cd cypress && yarn -s test
