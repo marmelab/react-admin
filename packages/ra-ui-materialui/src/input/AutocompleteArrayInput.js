@@ -14,7 +14,7 @@ import blue from '@material-ui/core/colors/blue';
 import compose from 'recompose/compose';
 import classNames from 'classnames';
 
-import { addField, translate } from 'ra-core';
+import { addField, translate, FieldTitle } from 'ra-core';
 
 import AutocompleteArrayInputChip from './AutocompleteArrayInputChip';
 
@@ -159,8 +159,12 @@ export class AutocompleteArrayInput extends React.Component {
     };
 
     handleSuggestionSelected = (event, { suggestion, method }) => {
-        const inputValue = this.getSuggestionValue(suggestion);
-        this.handleAdd(inputValue);
+        const { input } = this.props;
+
+        input.onChange([
+            ...this.state.inputValue,
+            this.getSuggestionValue(suggestion),
+        ]);
 
         if (method === 'enter') {
             event.preventDefault();
@@ -246,6 +250,7 @@ export class AutocompleteArrayInput extends React.Component {
                 error={touched && error}
                 helperText={touched && error && helperText}
                 chipRenderer={this.renderChip}
+                label={<FieldTitle label={label} />}
                 {...other}
                 {...options}
             />
