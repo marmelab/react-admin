@@ -2,7 +2,9 @@
     "name": "ra-data-graphcool",
     "version": "2.2.3",
     "description": "A Graphcool data provider for react-admin",
-    "main": "./lib/index.js",
+    "main": "lib/index.js",
+    "module": "esm/index.js",
+    "sideEffects": false,
     "repository": {
         "type": "git",
         "url": "git+https://github.com/marmelab/react-admin.git"
@@ -25,7 +27,8 @@
     ],
     "license": "MIT",
     "scripts": {
-        "build": "rimraf ./lib && cross-env NODE_ENV=production babel --quiet ./src -d ./lib --ignore spec.js,test.js",
+        "build": "rimraf ./lib && cross-env NODE_ENV=production BABEL_ENV=cjs babel --quiet ./src -d ./lib --ignore spec.js,test.js",
+        "build-esm": "rimraf ./esm && cross-env NODE_ENV=production BABEL_ENV=esm babel --quiet ./src -d ./esm --ignore spec.js,test.js",
         "watch": "rimraf ./lib && cross-env NODE_ENV=production babel --watch ./src -d ./lib --ignore spec.js,test.js"
     },
     "dependencies": {
