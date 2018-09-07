@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
@@ -54,6 +54,7 @@ const AppBar = ({
     open,
     title,
     toggleSidebar,
+    userMenu,
     width,
     ...rest
 }) => (
@@ -90,7 +91,7 @@ const AppBar = ({
                     id="react-admin-title"
                 />
                 <LoadingIndicator />
-                {logout && <UserMenu logout={logout}>{children}</UserMenu>}
+                {cloneElement(userMenu, { logout })}
             </Toolbar>
         </MuiAppBar>
     </Headroom>
@@ -105,7 +106,12 @@ AppBar.propTypes = {
     title: PropTypes.oneOfType([PropTypes.string, PropTypes.element])
         .isRequired,
     toggleSidebar: PropTypes.func.isRequired,
+    userMenu: PropTypes.node,
     width: PropTypes.string,
+};
+
+AppBar.defaultProps = {
+    userMenu: <UserMenu />,
 };
 
 const enhance = compose(
