@@ -174,7 +174,7 @@ By default the component matches choices with the current input searchText: if i
 
 If you want to limit the initial choices shown to the current value only, you can set the `limitChoicesToValue` prop.  
 
-Lastly, `<AutocompleteInput>` renders a meterial-ui `<TextField>` component. Use the `options` attribute to override any of the `<TextField>` attributes:
+Lastly, `<AutocompleteInput>` renders a material-ui `<TextField>` component. Use the `options` attribute to override any of the `<TextField>` attributes:
 
 {% raw %}
 ```jsx
@@ -195,6 +195,106 @@ import { AutocompleteInput, ReferenceInput } from 'react-admin'
 ```
 
 **Tip**: `<AutocompleteInput>` is a stateless component, so it only allows to *filter* the list of choices, not to *extend* it. If you need to populate the list of choices based on the result from a `fetch` call (and if [`<ReferenceInput>`](#referenceinput) doesn't cover your need), you'll have to [write your own Input component](#writing-your-own-input-component) based on material-ui `<AutoComplete>` component.
+
+**Tip**: React-admin's `<AutocompleteInput>` has only a capital A, while material-ui's `<AutoComplete>` has a capital A and a capital C. Don't mix up the components!
+
+### Properties
+
+| Prop | Required | Type | Default | Description |
+| ---|---|---|---|--- |
+| `choices` | Required | `Object[]` | - | List of items to autosuggest |
+| `resource` | Required | `string` | - | The resource working on. This field is passed down by wrapped components like `Create` and `Edit`.   |
+| `source` | Required |  `string` | - | Name of field to edit, its type should match the type retrieved from `optionValue`  |
+| `allowEmpty` | Optional | `boolean` | `false` | If `false` and the searchText typed did not match any suggestion, the searchText will revert to the current value when the field is blurred. If `true` and the `searchText` is set to `''` then the field will set the input value to `null`. |
+| `inputValueMatcher` | Optional | `Function` | `(input, suggestion, getOptionText) => input.toLowerCase().trim() === getOptionText(suggestion).toLowerCase().trim()` | Allows to define how choices are matched with the searchText while typing.    |
+| `optionValue` | Optional | `string` | `id` | Fieldname of record containing the value to use as input value  |
+| `optionText` | Optional | <code>string &#124; Function</code> | `name` | Fieldname of record to display in the suggestion item or function which accepts the currect record as argument (`(record)=> {string}`) |
+| `setFilter` | Optional | `Function` | null | A callback to inform the `searchText` has changed and new `choices` can be retrieved based on this `searchText`. Signature `searchText => void`. This function is automatically setup when using `ReferenceInput`.  |
+| `suggestionComponent` | Optional | Function | `({ suggestion, query, isHighlighted, props }) => <div {...props} />` | Allows to override how the item is rendered.  |
+
+## `<AutocompleteArrayInput>`
+
+To let users choose multiple values in a list using a dropdown with autocompletion, use `<AutocompleteArrayInput>`. It renders using [material-ui-chip-input](https://github.com/TeamWertarbyte/material-ui-chip-input), [react-autosuggest](http://react-autosuggest.js.org/) and a `fuzzySearch` filter. Set the `choices` attribute to determine the options list (with `id`, `name` tuples).
+
+```jsx
+import { AutocompleteArrayInput } from 'react-admin';
+
+<AutocompleteArrayInput source="category" choices={[
+    { id: 'programming', name: 'Programming' },
+    { id: 'lifestyle', name: 'Lifestyle' },
+    { id: 'photography', name: 'Photography' },
+]} />
+```
+
+You can also customize the properties to use for the option name and value, thanks to the `optionText` and `optionValue` attributes:
+
+```jsx
+const choices = [
+    { _id: 123, full_name: 'Leo Tolstoi', sex: 'M' },
+    { _id: 456, full_name: 'Jane Austen', sex: 'F' },
+];
+<AutocompleteArrayInput source="author_id" choices={choices} optionText="full_name" optionValue="_id" />
+```
+
+`optionText` also accepts a function, so you can shape the option text at will:
+
+```jsx
+const choices = [
+   { id: 123, first_name: 'Leo', last_name: 'Tolstoi' },
+   { id: 456, first_name: 'Jane', last_name: 'Austen' },
+];
+const optionRenderer = choice => `${choice.first_name} ${choice.last_name}`;
+<AutocompleteArrayInput source="author_id" choices={choices} optionText={optionRenderer} />
+```
+
+The choices are translated by default, so you can use translation identifiers as choices:
+
+```jsx
+const choices = [
+   { id: 'M', name: 'myroot.gender.male' },
+   { id: 'F', name: 'myroot.gender.female' },
+];
+```
+
+However, in some cases (e.g. inside a `<ReferenceInput>`), you may not want the choice to be translated. In that case, set the `translateChoice` prop to false.
+
+```jsx
+<AutocompleteArrayInput source="gender" choices={choices} translateChoice={false}/>
+```
+
+By default the component matches choices with the current input searchText. For example, given the choices `[{ id: 'M', name: 'Male', id: 'F', name: 'Female' }]`, when the user enters the text `male`, then the component will set the input value to `M`. If you need to change how choices are matched, pass a custom function as `inputValueMatcher` prop. For example, given the choices: `[{id:1,iso2:'NL',name:'Dutch'},{id:2,iso2:'EN',name:'English'},{id:3,iso2:'FR',name:'French'}]`, if you want to match choices on the iso2 code, you can create the following `inputValueMatcher` function: 
+
+```javascript
+<AutocompleteArrayInput inputValueMatcher={
+    (input, suggestion, getOptionText) => 
+        input.toUpperCase().trim() === suggestion.iso2 || 
+        input.toLowerCase().trim() === getOptionText(suggestion).toLowerCase().trim()
+}/>
+```
+
+If you want to limit the initial choices shown to the current value only, you can set the `limitChoicesToValue` prop.  
+
+Lastly, `<AutocompleteArrayInput>` renders a [material-ui-chip-input](https://github.com/TeamWertarbyte/material-ui-chip-input) component. Use the `options` attribute to override any of the `<ChipInput>` attributes:
+
+{% raw %}
+```jsx
+<AutocompleteArrayInput source="category" options={{
+    fullWidth: true,
+}} />
+```
+{% endraw %}
+
+**Tip**: If you want to populate the `choices` attribute with a list of related records, you should decorate `<AutocompleteArrayInput>` with [`<ReferenceArrayInput>`](#referenceinput), and leave the `choices` empty:
+
+```jsx
+import { AutocompleteArrayInput, ReferenceArrayInput } from 'react-admin'
+
+<ReferenceArrayInput label="Tags" reference="tags" source="tags">
+    <AutocompleteArrayInput />
+</ReferenceArrayInput>
+```
+
+**Tip**: `<ReferenceArrayInput>` is a stateless component, so it only allows to *filter* the list of choices, not to *extend* it. If you need to populate the list of choices based on the result from a `fetch` call (and if [`<ReferenceArrayInput>`](#referencearrayinput) doesn't cover your need), you'll have to [write your own Input component](#writing-your-own-input-component) based on [material-ui-chip-input](https://github.com/TeamWertarbyte/material-ui-chip-input).
 
 **Tip**: React-admin's `<AutocompleteInput>` has only a capital A, while material-ui's `<AutoComplete>` has a capital A and a capital C. Don't mix up the components!
 
@@ -1282,6 +1382,44 @@ const OrderEdit = (props) => (
         </SimpleForm>
     </Edit>
 ); 
+```
+
+**Tip**: When using a `FormDataConsumer` inside an `ArrayInput`, the `FormDataConsumer` will provide two additional properties to its children function:
+
+- `scopedFormData`: an object containing the current values of the currently rendered item from the `ArrayInput`
+- `getSource`: a function which will translate the source into a valid one for the `ArrayInput`
+
+```jsx
+import { FormDataConsumer } from 'react-admin';
+
+const PostEdit = (props) => (
+    <Edit {...props}>
+        <SimpleForm>
+            <ArrayInput source="authors">
+                <SimpleFormIterator>
+                    <TextInput source="name" />
+
+                    <FormDataConsumer>
+                        {({
+                            formData, // The whole form data
+                            scopedFormData, // The data for this item of the ArrayInput
+                            getSource, // A function to get the valid source inside an ArrayInput
+                            ...rest,
+                        }) =>
+                            scopedFormData.name ? (
+                                <SelectInput
+                                    source={getSource('role')} // Will translate to "authors[0].role"
+                                    choices={['main', 'coauthor']}
+                                    {...rest}
+                                />
+                            ) : null
+                        }
+                    </FormDataConsumer>
+                </SimpleFormIterator>
+            </ArrayInput>
+        </SimpleForm>
+    </Edit>
+);
 ```
 
 ## Hiding Inputs Based On Other Inputs

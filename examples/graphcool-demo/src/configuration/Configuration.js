@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
-import { translate, changeLocale, ViewTitle } from 'react-admin';
+import { translate, changeLocale, Title } from 'react-admin';
 
 import { changeTheme } from './actions';
 
@@ -20,7 +20,7 @@ const Configuration = ({
     translate,
 }) => (
     <Card>
-        <ViewTitle title={translate('pos.configuration')} />
+        <Title title={translate('pos.configuration')} />
         <CardContent>
             <div style={styles.label}>{translate('pos.theme.name')}</div>
             <Button
@@ -64,7 +64,7 @@ const Configuration = ({
 
 const mapStateToProps = state => ({
     theme: state.theme,
-    locale: state.locale,
+    locale: state.i18n.locale,
 });
 
 export default connect(

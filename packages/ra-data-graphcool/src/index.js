@@ -2,11 +2,13 @@ import merge from 'lodash/merge';
 import buildDataProvider from 'ra-data-graphql';
 import { DELETE, DELETE_MANY, UPDATE, UPDATE_MANY } from 'react-admin';
 
-import buildQuery from './buildQuery';
+import defaultBuildQuery from './buildQuery';
 
 const defaultOptions = {
-    buildQuery,
+    buildQuery: defaultBuildQuery,
 };
+
+export const buildQuery = defaultBuildQuery;
 
 export default options => {
     return buildDataProvider(merge({}, defaultOptions, options)).then(

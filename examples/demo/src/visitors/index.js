@@ -15,6 +15,7 @@ import {
     NumberField,
     ReferenceManyField,
     Responsive,
+    SearchInput,
     TabbedForm,
     TextField,
     TextInput,
@@ -36,7 +37,7 @@ export const VisitorIcon = Icon;
 
 const VisitorFilter = props => (
     <Filter {...props}>
-        <TextInput label="pos.search" source="q" alwaysOn />
+        <SearchInput source="q" alwaysOn />
         <DateInput source="last_seen_gte" />
         <NullableBooleanInput source="has_ordered" />
         <NullableBooleanInput source="has_newsletter" defaultValue />
@@ -137,7 +138,7 @@ export const VisitorEdit = withStyles(editStyles)(({ classes, ...props }) => (
                 />
                 <DateInput source="birthday" />
             </FormTab>
-            <FormTab label="resources.customers.tabs.address">
+            <FormTab label="resources.customers.tabs.address" path="address">
                 <LongTextInput
                     source="address"
                     formClassName={classes.address}
@@ -145,9 +146,10 @@ export const VisitorEdit = withStyles(editStyles)(({ classes, ...props }) => (
                 <TextInput source="zipcode" formClassName={classes.zipcode} />
                 <TextInput source="city" formClassName={classes.city} />
             </FormTab>
-            <FormTab label="resources.customers.tabs.orders">
+            <FormTab label="resources.customers.tabs.orders" path="orders">
                 <ReferenceManyField
                     addLabel={false}
+                    sort={{ field: 'date', order: 'DESC' }}
                     reference="commands"
                     target="customer_id"
                 >
@@ -164,9 +166,10 @@ export const VisitorEdit = withStyles(editStyles)(({ classes, ...props }) => (
                     </Datagrid>
                 </ReferenceManyField>
             </FormTab>
-            <FormTab label="resources.customers.tabs.reviews">
+            <FormTab label="resources.customers.tabs.reviews" path="reviews">
                 <ReferenceManyField
                     addLabel={false}
+                    sort={{ field: 'date', order: 'DESC' }}
                     reference="reviews"
                     target="customer_id"
                 >
@@ -182,7 +185,7 @@ export const VisitorEdit = withStyles(editStyles)(({ classes, ...props }) => (
                     </Datagrid>
                 </ReferenceManyField>
             </FormTab>
-            <FormTab label="resources.customers.tabs.stats">
+            <FormTab label="resources.customers.tabs.stats" path="stats">
                 <SegmentsInput />
                 <NullableBooleanInput source="has_newsletter" />
                 <DateField
@@ -223,7 +226,7 @@ export const VisitorCreate = withStyles(editStyles)(({ classes, ...props }) => (
                 />
                 <DateInput source="birthday" />
             </FormTab>
-            <FormTab label="resources.customers.tabs.address">
+            <FormTab label="resources.customers.tabs.address" path="address">
                 <LongTextInput
                     source="address"
                     formClassName={classes.address}

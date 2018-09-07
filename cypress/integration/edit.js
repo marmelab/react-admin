@@ -6,6 +6,15 @@ describe('Edit Page', () => {
     const CreatePostPage = createPageFactory('/#/posts/create');
     const EditCommentPage = editPageFactory('/#/comments/5');
 
+    describe('Title', () => {
+        it('should show the correct title in the appBar', () => {
+            EditPostPage.navigate();
+            cy.get(EditPostPage.elements.title).contains(
+                'Post "Sed quo et et fugiat modi"'
+            );
+        });
+    });
+
     describe('TabbedForm', () => {
         beforeEach(() => EditPostPage.navigate());
 

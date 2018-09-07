@@ -12,6 +12,7 @@ import {
     NumberInput,
     ReferenceInput,
     ReferenceManyField,
+    SearchInput,
     SelectInput,
     TabbedForm,
     TextField,
@@ -30,13 +31,21 @@ import Poster from './Poster';
 
 export const ProductIcon = Icon;
 
-const QuickFilter = translate(({ label, translate }) => (
-    <Chip>{translate(label)}</Chip>
-));
+const quickFilterStyles = {
+    root: {
+        marginBottom: '0.7em',
+    },
+};
+
+const QuickFilter = translate(
+    withStyles(quickFilterStyles)(({ classes, label, translate }) => (
+        <Chip className={classes.root} label={translate(label)} />
+    ))
+);
 
 export const ProductFilter = props => (
     <Filter {...props}>
-        <TextInput label="pos.search" source="q" alwaysOn />
+        <SearchInput source="q" alwaysOn />
         <ReferenceInput
             source="category_id"
             reference="categories"
@@ -92,7 +101,7 @@ export const ProductCreate = withStyles(createStyles)(
                         validate={required()}
                     />
                 </FormTab>
-                <FormTab label="resources.products.tabs.details">
+                <FormTab label="resources.products.tabs.details" path="details">
                     <TextInput source="reference" validate={required()} />
                     <NumberInput
                         source="price"
@@ -124,7 +133,10 @@ export const ProductCreate = withStyles(createStyles)(
                         className={classes.stock}
                     />
                 </FormTab>
-                <FormTab label="resources.products.tabs.description">
+                <FormTab
+                    label="resources.products.tabs.description"
+                    path="description"
+                >
                     <RichTextInput source="description" addLabel={false} />
                 </FormTab>
             </TabbedForm>
@@ -152,7 +164,7 @@ export const ProductEdit = withStyles(editStyles)(({ classes, ...props }) => (
                 <TextInput source="image" options={{ fullWidth: true }} />
                 <TextInput source="thumbnail" options={{ fullWidth: true }} />
             </FormTab>
-            <FormTab label="resources.products.tabs.details">
+            <FormTab label="resources.products.tabs.details" path="details">
                 <TextInput source="reference" />
                 <NumberInput source="price" className={classes.price} />
                 <NumberInput
@@ -170,10 +182,13 @@ export const ProductEdit = withStyles(editStyles)(({ classes, ...props }) => (
                 </ReferenceInput>
                 <NumberInput source="stock" className={classes.stock} />
             </FormTab>
-            <FormTab label="resources.products.tabs.description">
+            <FormTab
+                label="resources.products.tabs.description"
+                path="description"
+            >
                 <RichTextInput source="description" addLabel={false} />
             </FormTab>
-            <FormTab label="resources.products.tabs.reviews">
+            <FormTab label="resources.products.tabs.reviews" path="reviews">
                 <ReferenceManyField
                     reference="reviews"
                     target="product_id"

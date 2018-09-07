@@ -1,4 +1,5 @@
 export ArrayInput from './ArrayInput';
+export AutocompleteArrayInput from './AutocompleteArrayInput';
 export AutocompleteInput from './AutocompleteInput';
 export BooleanInput from './BooleanInput';
 export CheckboxGroupInput from './CheckboxGroupInput';
@@ -14,6 +15,7 @@ export RadioButtonGroupInput from './RadioButtonGroupInput';
 export ReferenceArrayInput from './ReferenceArrayInput';
 export ReferenceInput from './ReferenceInput';
 export ResettableTextField from './ResettableTextField';
+export SearchInput from './SearchInput';
 export SelectArrayInput from './SelectArrayInput';
 export SelectInput from './SelectInput';
 export TextInput from './TextInput';

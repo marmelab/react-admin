@@ -82,7 +82,7 @@ export const ProductCreate = withStyles(stylesCreate)(
                         validation={{ required: true }}
                     />
                 </FormTab>
-                <FormTab label="resources.Product.tabs.details">
+                <FormTab label="resources.Product.tabs.details" path="details">
                     <TextInput
                         source="reference"
                         validation={{ required: true }}
@@ -117,7 +117,10 @@ export const ProductCreate = withStyles(stylesCreate)(
                         className={classes.stock}
                     />
                 </FormTab>
-                <FormTab label="resources.Product.tabs.description">
+                <FormTab
+                    label="resources.Product.tabs.description"
+                    path="description"
+                >
                     <RichTextInput source="description" addLabel={false} />
                 </FormTab>
             </TabbedForm>
@@ -150,7 +153,7 @@ export const ProductEdit = withStyles(stylesEdit)(({ classes, ...props }) => (
                 <TextInput source="image" options={{ fullWidth: true }} />
                 <TextInput source="thumbnail" options={{ fullWidth: true }} />
             </FormTab>
-            <FormTab label="resources.Product.tabs.details">
+            <FormTab label="resources.Product.tabs.details" path="details">
                 <TextInput source="reference" />
                 <NumberInput source="price" className={classes.price} />
                 <NumberInput
@@ -168,10 +171,13 @@ export const ProductEdit = withStyles(stylesEdit)(({ classes, ...props }) => (
                 </ReferenceInput>
                 <NumberInput source="stock" formClassName={classes.stock} />
             </FormTab>
-            <FormTab label="resources.Product.tabs.description">
+            <FormTab
+                label="resources.Product.tabs.description"
+                path="description"
+            >
                 <RichTextInput source="description" addLabel={false} />
             </FormTab>
-            <FormTab label="resources.Product.tabs.reviews">
+            <FormTab label="resources.Product.tabs.reviews" path="reviews">
                 <ReferenceManyField
                     reference="Review"
                     target="product.id"

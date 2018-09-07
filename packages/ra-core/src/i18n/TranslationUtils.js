@@ -1,3 +1,4 @@
+import merge from 'lodash/merge';
 import { DEFAULT_LOCALE } from './index';
 
 /**
@@ -30,3 +31,25 @@ export const resolveBrowserLocale = (defaultLocale = DEFAULT_LOCALE) => {
         '-'
     )[0];
 };
+
+/**
+ * Compose translations from multiple packages for a single language (eg: 'english').
+ *
+ * Use it to merge translations from addons with the main react-admin translations.
+ *
+ * @example
+ *     import React from 'react';
+ *     import { Admin, Resource, mergeTranslations } from 'react-admin';
+ *     import englishMessages from 'ra-language-english';
+ *     import englishTreeMessages from 'ra-tree-language-english';
+ *     const messages = {
+ *        en: mergeTranslations(englishMessages, englishTreeMessages),
+ *     };
+ *     const App = () => (
+ *         <Admin locale="en" messages={messages}>
+ *             ...
+ *         </Admin>
+ *     );
+ */
+export const mergeTranslations = (...translationsModules) =>
+    merge({}, ...translationsModules);

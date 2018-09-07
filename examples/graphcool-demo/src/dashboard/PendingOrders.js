@@ -16,13 +16,10 @@ const style = theme => ({
         flex: 1,
     },
     avatar: {
-        background: theme.palette.background.contentFrame,
+        background: theme.palette.background.avatar,
     },
     cost: {
         marginRight: '1em',
-        position: 'absolute',
-        top: '1em',
-        right: 0,
         color: theme.palette.text.primary,
     },
 });

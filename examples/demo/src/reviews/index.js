@@ -14,10 +14,10 @@ import {
     ReferenceField,
     ReferenceInput,
     Responsive,
+    SearchInput,
     SelectInput,
     SimpleForm,
     TextField,
-    TextInput,
 } from 'react-admin';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Icon from '@material-ui/icons/Comment';
@@ -41,7 +41,7 @@ const filterStyles = {
 export const ReviewFilter = withStyles(filterStyles)(
     ({ classes, ...props }) => (
         <Filter {...props}>
-            <TextInput label="pos.search" source="q" alwaysOn />
+            <SearchInput source="q" alwaysOn />
             <SelectInput
                 source="status"
                 choices={[

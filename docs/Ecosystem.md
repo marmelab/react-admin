@@ -38,8 +38,10 @@ See the [translation](./Translation.md#available-locales) page.
 
 ## Miscellaneous
 
+- [marmelab/ra-realtime](https://github.com/marmelab/react-admin/tree/master/packages/ra-realtime): enable realtime updates
+- [marmelab/ra-tree-ui-materialui](https://github.com/marmelab/react-admin/blob/master/packages/ra-tree-ui-materialui/): Components to show data represented as a tree. This package is part of our [Labs](/Labs.md) experimentations. This means it misses some features and might not handle all corner cases. Use it at your own risks. Besides, we would really appreciate some feedback!
+- [marmelab/ra-tree-core](https://github.com/marmelab/react-admin/blob/master/packages/ra-tree-core/): Components providing the logic but no UI to show data represented as a tree. This package is part of our [Labs](/Labs.md) experimentations. This means it misses some features and might not handle all corner cases. Use it at your own risks. Besides, we would really appreciate some feedback!
 - [ra-customizable-datagrid](https://github.com/fizix-io/ra-customizable-datagrid): plugin that allows to hide / show columns dynamically.
 - [api-platform/admin](https://api-platform.com/docs/admin): create a fully featured admin using React Admin for API supporting the [Hydra Core Vocabulary](http://www.hydra-cg.com/), including but not limited to APIs created using the [API Platform framework](https://api-platform.com)
-- [marmelab/ra-realtime](https://github.com/marmelab/react-admin/tree/master/packages/ra-realtime): enable realtime updates
 - [zifnab87/ra-component-factory](https://github.com/zifnab87/ra-component-factory): centralized configuration of immutability/visibility of fields/menu-links/action buttons, easy re-ordering of fields/properties and tab reorganization based on permission roles
 - [ctbucha/bs-react-admin](https://github.com/ctbucha/bs-react-admin): [BuckleScript](https://bucklescript.github.io/) bindings for React Admin.

@@ -1,5 +1,52 @@
 # Changelog
 
+## v2.3.0
+
+* [`Actions`] Move `<Refresh>` to `<AppBar>` ([fzaninotto](https://github.com/fzaninotto))
+* [`Actions`] Remove the `<ListButton>` ([fzaninotto](https://github.com/fzaninotto))
+* [`Actions`] Update `<Button>` to adapt the icon size to the button size ([fzaninotto](https://github.com/fzaninotto))
+* [`AppBar`] Add `<UserMenu>` to group user-related actions (and `<Logout>`) ([fzaninotto](https://github.com/fzaninotto))
+* [`AppBar`] Add Headroom effect (show/hide on scroll) ([zyhou](https://github.com/zyhou))
+* [`ArrayInput`] Add debounce to `crudGetMatching` calls ([djhi](https://github.com/djhi))
+* [`ArrayInput`] Allow the `<FormDataConsumer>` to be used inside an `ArrayInput` ([djhi](https://github.com/djhi))
+* [`AutocompleteArrayInput`] Fix select on click ([djhi](https://github.com/djhi))
+* [`Datagrid`] Add padding right to the last column ([fzaninotto](https://github.com/fzaninotto))
+* [`Datagrid`] Hide the sort icons when the column is not active ([fzaninotto](https://github.com/fzaninotto))
+* [`Edit`] Add the `<TitleForRecord>` component (replacement for `<RecordTitle>`) ([fzaninotto](https://github.com/fzaninotto))
+* [`Edit`] Move the `<Delete>` button down to the Toolbar ([fzaninotto](https://github.com/fzaninotto))
+* [`Edit`] Use material design recommended margin for content ([fzaninotto](https://github.com/fzaninotto))
+* [`FormDataConsumer`] Fix wrong warning ([djhi](https://github.com/djhi))
+* [`FormInput`] Add the component to the export ([pedrohh](https://github.com/pedrohh))
+* [`Input`] Add `<AutocompleteArrayInput>` for editing one-to-many relationships with a large number of options ([djhi](https://github.com/djhi))
+* [`List`] Add `<BulkActionToolbar>` as a replacement for the `<BulkActions>` ([fzaninotto](https://github.com/fzaninotto))
+* [`List`] Display the `Filter` on the top left of the content ([fzaninotto](https://github.com/fzaninotto))
+* [`Login`] Replace the lock icon to allow forward compatibility with `@material-ui/icons` 2.0 ([djhi](https://github.com/djhi))
+* [`Pagination`] Add the ability to set the number of rows per page ([fzaninotto](https://github.com/fzaninotto))
+* [`RichTextInput`] Add support for `fullWidth` prop ([natrim](https://github.com/natrim))
+* [`Sidebar`] Add the ability to change the width ([fzaninotto](https://github.com/fzaninotto))
+* [`TabbedLayout`, `TabbedForm`] Let large forms extend horizontally, remove overflow scroll ([djhi](https://github.com/djhi))
+* [`Title`] Move the content to the `AppBar` ([fzaninotto](https://github.com/fzaninotto))
+* [`tree`] Introduce `ra-tree-core` and `ra-tree-ui-materialui` to display and edit tress structures in a List view (Labs) ([djhi](https://github.com/djhi))
+* [console] Add deprecation warnings (when not in production mode) ([djhi](https://github.com/djhi))
+* [Demo] Fix and upgrade GraphQL and Graphcool demos ([djhi](https://github.com/djhi))
+* [Demo] Improve fake data to have real avatars, consistent emails, and better looking reviews ([fzaninotto](https://github.com/fzaninotto))
+* [GraphQL] Add 'How does it work' section to the `ra-data-graphql` README ([Weakky](https://github.com/Weakky))
+* [GraphQL] Add a link to a Prisma `dataProvider` ([Weakky](https://github.com/Weakky))
+* [GraphQL] Allow easier per-query override ([djhi](https://github.com/djhi))
+* [npm] Expose `esm` modules to enable tree shaking (and smaller bundle size) ([Kmaschta](https://github.com/Kmaschta))
+* [npm] Remove babel `stage-0` preset and use `preset-env` instead ([Kmaschta](https://github.com/Kmaschta))
+* [redux] Allow to use <Admin> inside an external <Provider> ([fzaninotto](https://github.com/fzaninotto))
+
+Deprecations:
+
+* `<Admin>` `menu` prop. To override the menu component, use a [custom layout](#appLayout) instead.
+* `<AppBarMobile>`. The `<AppBar>` component is now responsive.
+* `<BulkActions>`. Use `<BulkActionToolbar>` instead.
+* `<Header>`. Use `<Title>` instead.
+* `<RecordTitle>`. Use `<TitleForRecord>` instead.
+* `<ViewTitle>`. Use `<Title>` instead.
+* GraphQL provides `override` prop. Use `buildQuery` instead.
+
 ## v2.2.4
 
 * Fix `<SaveButton>` misaligned `<CircularProgress>` ([natrim](https://github.com/natrim))

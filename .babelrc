@@ -1,14 +1,56 @@
 {
-    "presets": ["es2015", "stage-0", "react"],
-    "plugins": [
-        "transform-react-jsx",
-        "add-module-exports",
-        ["babel-plugin-transform-builtin-extend", {
-            "globals": ["Error"]
-        }],
-        ["transform-runtime", {
-            "polyfill": false,
-            "regenerator": true
-        }]
-    ]
+    "env": {
+        "cjs": {
+            "presets": [
+                ["env", {
+                    "targets": {
+                        "browsers": ["last 2 versions"]
+                    }
+                }],
+                "react"
+            ],
+            "plugins": [
+                "transform-react-jsx",
+                "add-module-exports",
+                ["babel-plugin-transform-builtin-extend", {
+                    "globals": ["Error"]
+                }],
+                ["transform-runtime", {
+                    "polyfill": false,
+                    "regenerator": true
+                }],
+                "transform-class-properties",
+                "transform-object-rest-spread",
+                "transform-export-extensions",
+                "transform-async-to-generator",
+                "syntax-trailing-function-commas"
+            ]
+        },
+        "esm": {
+            "presets": [
+                ["env", {
+                    "modules": false,
+                    "targets": {
+                        "browsers": ["last 2 versions"]
+                    }
+                }],
+                "react"
+            ],
+            "plugins": [
+                "transform-react-jsx",
+                ["babel-plugin-transform-builtin-extend", {
+                    "globals": ["Error"]
+                }],
+                ["transform-runtime", {
+                    "polyfill": false,
+                    "regenerator": true
+                }],
+                "transform-class-properties",
+                "transform-object-rest-spread",
+                "transform-export-extensions",
+                "transform-async-to-generator",
+                "syntax-trailing-function-commas"
+            ]
+        },
+    },
 }

@@ -16,6 +16,18 @@ It provides the foundations for other GraphQL data provider packages such as `ra
 This library is meant to be used with Apollo on the **client** side but
 you're free to use any graphql **server**.
 
+## How does it work?
+
+In a nutshell, `ra-data-graphql` runs an *introspection query* on your GraphQL API and passes it to your adaptator, along with the *type of query* that is being made (`CREATE`, `UPDATE`, `GET_ONE`, `GET_LIST` etc..) and the *name of the resource* that is being queried.
+
+It is then the job of ***your*** GraphQL adaptator to craft the GraphQL query that will match your backend conventions, and to provide a function that will parse the response of that query in a way that react-admin can understand.
+
+Once the query and the function are passed back to `ra-data-graphql`, the actual HTTP request is sent (using [ApolloClient](https://github.com/apollographql/apollo-client)) to your GraphQL API. The response from your backend is then parsed with the provided function and that parsed response is given to `ra-core`, the core of `react-admin`.
+
+Below is a rough graph summarizing how the data flows:
+
+`ra-core` => `ra-data-graphql` => `your-adaptator` => `ra-data-graphql` => `ra-core`
+
 ## Installation
 
 Install with:
@@ -96,17 +108,13 @@ buildGraphQLProvider({ client: myClient });
 
 ### Introspection Options
 
-Instead of running an IntrospectionQuery you can also provide the IntrospectionQuery result directly. This speeds up the initial rendering of the `Admin` component as it no longer has to wait for the introspection query request to resolve.
+Instead of running an introspection query you can also provide the introspection query result directly. This speeds up the initial rendering of the `Admin` component as it no longer has to wait for the introspection query request to resolve.
 
 ```jsx
 import { __schema as schema } from './schema';
 
-const introspectionOptions = {
-    schema
-};
-
 buildGraphQLProvider({
-    introspection: introspectionOptions
+    introspection: { schema }
 });
 ```
 
@@ -118,11 +126,12 @@ The `./schema` file is a `schema.json` in `./scr` retrieved with [`get-graphql-s
 
 For the provider to know how to map react-admin request to apollo queries and mutations, you must provide a `queryBuilder` option. The `queryBuilder` is a factory function which will be called with the introspection query result.
 
-The introspection result is an object with 3 properties:
+The introspection result is an object with 4 properties:
 
 - `types`: an array of all the GraphQL types discovered on your endpoint
 - `queries`: an array of all the GraphQL queries and mutations discovered on your endpoint
 - `resources`: an array of objects with a `type` property, which is the GraphQL type for this resource, and a property for each react-admin fetch verb for which we found a matching query or mutation
+- `schema`: the full schema
 
 For example:
 
@@ -170,7 +179,8 @@ For example:
             },
             ...
         }
-    ]
+    ],
+    schema: {} // Omitting for brevity
 }
 ```
 
@@ -209,7 +219,7 @@ buildGraphQLProvider({ buildQuery });
 
 ## Troubleshooting
 
-*When I create or edit a resource, the list or edit page does not refresh its data*
+## When I create or edit a resource, the list or edit page does not refresh its data
 
 `react-admin` maintain its own cache of resources data but, by default, so does the Apollo client. For every queries, we inject a default [`fetchPolicy`](http://dev.apollodata.com/react/api-queries.html#graphql-config-options-fetchPolicy) set to `network-only` so that the Apollo client always refetch the data when requested.
 

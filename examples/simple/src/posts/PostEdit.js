@@ -1,6 +1,7 @@
 import RichTextInput from 'ra-input-rich-text';
 import React from 'react';
 import {
+    AutocompleteArrayInput,
     ArrayInput,
     BooleanInput,
     CheckboxGroupInput,
@@ -11,11 +12,8 @@ import {
     Edit,
     CardActions,
     CloneButton,
-    RefreshButton,
-    DeleteButton,
     ShowButton,
     EditButton,
-    ListButton,
     FormTab,
     ImageField,
     ImageInput,
@@ -23,7 +21,6 @@ import {
     NumberInput,
     ReferenceArrayInput,
     ReferenceManyField,
-    SelectArrayInput,
     SelectInput,
     SimpleFormIterator,
     TabbedForm,
@@ -45,15 +42,12 @@ const EditActions = ({
     ...rest
 }) => (
     <CardActions className={className} {...rest}>
-        {hasShow && <ShowButton basePath={basePath} record={data} />}
-        {hasList && <ListButton basePath={basePath} />}
         <CloneButton
             className="button-clone"
             basePath={basePath}
             record={data}
         />
-        <DeleteButton basePath={basePath} record={data} resource={resource} />
-        <RefreshButton />
+        {hasShow && <ShowButton basePath={basePath} record={data} />}
     </CardActions>
 );
 
@@ -90,7 +84,7 @@ const PostEdit = props => (
             </FormTab>
             <FormTab label="post.form.miscellaneous">
                 <ReferenceArrayInput reference="tags" source="tags">
-                    <SelectArrayInput optionText="name" />
+                    <AutocompleteArrayInput />
                 </ReferenceArrayInput>
                 <ArrayInput source="backlinks">
                     <SimpleFormIterator>

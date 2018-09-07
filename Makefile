@@ -9,7 +9,7 @@ install: package.json ## install dependencies
 run: run-simple
 
 run-simple: ## run the simple example
-	@yarn -s run-simple
+	@BABEL_ENV=cjs yarn -s run-simple
 
 run-tutorial: ## run the tutorial example
 	@yarn -s run-tutorial
@@ -28,56 +28,64 @@ run-graphcool-demo: ## run the demo example
 
 build-ra-core:
 	@echo "Transpiling ra-core files...";
-	@cd ./packages/ra-core && yarn -s build
+	@cd ./packages/ra-core && yarn -s build && yarn -s build-esm
 
 build-ra-ui-materialui:
 	@echo "Transpiling ra-ui-materialui files...";
-	@cd ./packages/ra-ui-materialui && yarn -s build
+	@cd ./packages/ra-ui-materialui && yarn -s build && yarn -s build-esm
 
 build-react-admin:
 	@echo "Transpiling react-admin files...";
 	@rm -rf ./packages/react-admin/docs
-	@cd ./packages/react-admin && yarn -s build
+	@cd ./packages/react-admin && yarn -s build && yarn -s build-esm
 	@mkdir packages/react-admin/docs
 	@cp docs/*.md packages/react-admin/docs
 
 build-ra-data-fakerest:
 	@echo "Transpiling ra-data-fakerest files...";
-	@cd ./packages/ra-data-fakerest && yarn -s build
+	@cd ./packages/ra-data-fakerest && yarn -s build && yarn -s build-esm
 
 build-ra-data-json-server:
 	@echo "Transpiling ra-data-json-server files...";
-	@cd ./packages/ra-data-json-server && yarn -s build
+	@cd ./packages/ra-data-json-server && yarn -s build && yarn -s build-esm
 
 build-ra-data-simple-rest:
 	@echo "Transpiling ra-data-simple-rest files...";
-	@cd ./packages/ra-data-simple-rest && yarn -s build
+	@cd ./packages/ra-data-simple-rest && yarn -s build && yarn -s build-esm
 
 build-ra-data-graphql:
 	@echo "Transpiling ra-data-graphql files...";
-	@cd ./packages/ra-data-graphql && yarn -s build
+	@cd ./packages/ra-data-graphql && yarn -s build && yarn -s build-esm
 
 build-ra-data-graphcool:
 	@echo "Transpiling ra-data-graphcool files...";
-	@cd ./packages/ra-data-graphcool && yarn -s build
+	@cd ./packages/ra-data-graphcool && yarn -s build && yarn -s build-esm
 
 build-ra-data-graphql-simple:
 	@echo "Transpiling ra-data-graphql-simple files...";
-	@cd ./packages/ra-data-graphql-simple && yarn -s build
+	@cd ./packages/ra-data-graphql-simple && yarn -s build && yarn -s build-esm
 
 build-ra-input-rich-text:
 	@echo "Transpiling ra-input-rich-text files...";
-	@cd ./packages/ra-input-rich-text && yarn -s build
+	@cd ./packages/ra-input-rich-text && yarn -s build && yarn -s build-esm
 
 build-ra-realtime:
 	@echo "Transpiling ra-realtime files...";
-	@cd ./packages/ra-realtime && yarn -s build
+	@cd ./packages/ra-realtime && yarn -s build && yarn -s build-esm
+
+build-ra-tree-core:
+	@echo "Transpiling ra-tree-core files...";
+	@cd ./packages/ra-tree-core && yarn -s build && yarn -s build-esm
+
+build-ra-tree-ui-materialui:
+	@echo "Transpiling ra-tree-ui-materialui files...";
+	@cd ./packages/ra-tree-ui-materialui && yarn -s build && yarn -s build-esm
 
 build-data-generator:
 	@echo "Transpiling data-generator files...";
-	@cd ./examples/data-generator && yarn -s build
+	@cd ./examples/data-generator && yarn -s build && yarn -s build-esm
 
-build: build-ra-core build-ra-ui-materialui build-react-admin build-ra-data-fakerest build-ra-data-json-server build-ra-data-simple-rest build-ra-data-graphql build-ra-data-graphcool build-ra-data-graphql-simple build-ra-input-rich-text build-ra-realtime build-data-generator ## compile ES6 files to JS
+build: build-ra-core build-ra-ui-materialui build-react-admin build-ra-data-fakerest build-ra-data-json-server build-ra-data-simple-rest build-ra-data-graphql build-ra-data-graphcool build-ra-data-graphql-simple build-ra-input-rich-text build-ra-realtime build-ra-tree-core build-ra-tree-ui-materialui build-data-generator ## compile ES6 files to JS
 
 doc: ## compile doc as html and launch doc web server
 	@yarn -s doc
@@ -108,12 +116,12 @@ test-unit-watch: ## launch unit tests and watch for changes
 test-e2e: ## launch end-to-end tests
 	@if [ "$(build)" != "false" ]; then \
 		echo 'Building example code (call "make build=false test-e2e" to skip the build)...'; \
-		cd examples/simple && yarn -s build; \
+		cd examples/simple && BABEL_ENV=cjs yarn -s build; \
 	fi
 
 	@NODE_ENV=test cd cypress && yarn -s test
 
 
 test-e2e-local: ## launch end-to-end tests for development
-	echo 'Starting e2e tests environment. Ensure you started the simple example first (make run-simple)'
-	cd cypress && yarn -s start
+	@echo 'Starting e2e tests environment. Ensure you started the simple example first (make run-simple)'
+	@cd cypress && yarn -s start

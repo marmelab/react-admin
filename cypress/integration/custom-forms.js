@@ -1,9 +1,9 @@
 import createPageFactory from '../support/CustomFormPage';
-import showPageFactory from '../support/ShowPage';
+import editPageFactory from '../support/EditPage';
 
 describe('Custom Forms', () => {
     const CreatePage = createPageFactory('#/comments/create');
-    const ShowPage = showPageFactory('#/posts/14/show');
+    const EditPage = editPageFactory('#/posts/14');
 
     beforeEach(() => CreatePage.navigate());
 
@@ -28,7 +28,7 @@ describe('Custom Forms', () => {
         CreatePage.setInputValue('textarea', 'teaser', 'Bazingaaaaaaaa!');
         cy.get(CreatePage.elements.modalSubmitButton).click();
         cy.contains('Bazinga!');
-        ShowPage.navigate();
-        ShowPage.delete();
+        EditPage.navigate();
+        EditPage.delete();
     });
 });

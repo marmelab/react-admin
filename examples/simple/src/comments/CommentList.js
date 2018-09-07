@@ -21,6 +21,7 @@ import {
     ReferenceField,
     ReferenceInput,
     Responsive,
+    SearchInput,
     SelectInput,
     ShowButton,
     SimpleList,
@@ -31,6 +32,7 @@ import {
 
 const CommentFilter = props => (
     <Filter {...props}>
+        <SearchInput source="q" alwaysOn />
         <ReferenceInput source="post_id" reference="posts">
             <SelectInput optionText="title" />
         </ReferenceInput>
@@ -113,7 +115,7 @@ const listStyles = theme => ({
 
 const CommentGrid = withStyles(listStyles)(
     translate(({ classes, ids, data, basePath, translate }) => (
-        <Grid spacing={16} container style={{ padding: '1em' }}>
+        <Grid spacing={16} container style={{ padding: '0 1em' }}>
             {ids.map(id => (
                 <Grid item key={id} sm={12} md={6} lg={4}>
                     <Card className={classes.card}>

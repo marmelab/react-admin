@@ -6,13 +6,12 @@ import Button from '@material-ui/core/Button';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import Hidden from '@material-ui/core/Hidden';
 import { withStyles } from '@material-ui/core/styles';
 import ErrorIcon from '@material-ui/icons/Report';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import History from '@material-ui/icons/History';
 
-import AppBarMobile from './AppBarMobile';
+import Title from './Title';
 import { translate } from 'ra-core';
 
 const styles = theme => ({
@@ -56,20 +55,19 @@ const Error = ({
     errorInfo,
     classes,
     className,
+    title,
     translate,
     ...rest
 }) => (
     <Fragment>
-        <Hidden mdUp>
-            <AppBarMobile />
-        </Hidden>
+        <Title defaultTitle={title} />
         <div className={classnames(classes.container, className)} {...rest}>
             <h1 className={classes.title} role="alert">
                 <ErrorIcon className={classes.icon} />
                 {translate('ra.page.error')}
             </h1>
             <div>{translate('ra.message.error')}</div>
-            {process.env.NODE_ENV === 'development' && (
+            {process.env.NODE_ENV !== 'production' && (
                 <ExpansionPanel className={classes.panel}>
                     <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
                         {translate('ra.message.details')}
@@ -97,6 +95,7 @@ Error.propTypes = {
     error: PropTypes.object.isRequired,
     errorInfo: PropTypes.object,
     translate: PropTypes.func.isRequired,
+    title: PropTypes.string,
 };
 
 const enhance = compose(

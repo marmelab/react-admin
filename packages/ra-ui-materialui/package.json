@@ -5,9 +5,12 @@
     "files": [
         "*.md",
         "lib",
+        "esm",
         "src"
     ],
     "main": "lib/index",
+    "module": "esm/index.js",
+    "sideEffects": false,
     "authors": [
         "François Zaninotto",
         "Gildas Garcia"
@@ -17,7 +20,8 @@
     "bugs": "https://github.com/marmelab/react-admin/issues",
     "license": "MIT",
     "scripts": {
-        "build": "rimraf ./lib && cross-env NODE_ENV=production babel --quiet ./src -d ./lib --ignore spec.js,test.js",
+        "build": "rimraf ./lib && cross-env NODE_ENV=production BABEL_ENV=cjs babel --quiet ./src -d ./lib --ignore spec.js,test.js",
+        "build-esm": "rimraf ./esm && cross-env NODE_ENV=production BABEL_ENV=esm babel --quiet ./src -d ./esm --ignore spec.js,test.js",
         "watch": "rimraf ./lib && cross-env NODE_ENV=production babel --watch ./src -d ./lib --ignore spec.js,test.js"
     },
     "devDependencies": {
@@ -43,11 +47,13 @@
         "classnames": "~2.2.5",
         "inflection": "~1.12.0",
         "lodash": "~4.17.5",
+        "material-ui-chip-input": "^1.0.0-beta.6",
         "papaparse": "^4.1.4",
         "prop-types": "~15.6.1",
         "ra-core": "^2.2.3",
         "react-autosuggest": "^9.3.2",
         "react-dropzone": "~4.0.1",
+        "react-headroom": "^2.2.2",
         "react-redux": "~5.0.7",
         "react-router-dom": "~4.2.2",
         "react-transition-group": "^2.2.1",
