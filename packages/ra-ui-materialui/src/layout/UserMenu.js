@@ -37,6 +37,7 @@ class UserMenu extends React.Component {
 
     render() {
         const { children, label, logout, translate } = this.props;
+        if (!logout && !children) return null;
         const { anchorEl } = this.state;
         const open = Boolean(anchorEl);
 

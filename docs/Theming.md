@@ -386,28 +386,28 @@ const MyLayout = props => <Layout
 export default MyLayout;
 ```
 
-You can add custom menu items to the default `AppBar` user menu by adding children to it:
+You can replace the default user menu by your own by setting the `userMenu` prop of the `<AppBar>` component. For instance, to add custom menu items, just decorate the default `<UserMenu>` by adding children to it:
 
 ```js
-import { AppBar, MenuItemLink } from 'react-admin';
+import { AppBar, UserMenu, MenuItemLink } from 'react-admin';
 import SettingsIcon from '@material-ui/icons/Settings';
 
-const MyAppBar = props => (
-    <AppBar {...props}>
+const MyUserMenu = props => (
+    <UserMenu {...props}>
         <MenuItemLink
             to="/configuration"
             primaryText="Configuration"
             leftIcon={<SettingsIcon />}
         />
-    </AppBar>
+    </UserMenu>
 );
-const MyLayout = props => <Layout
-    {...props}
-    appBar={MyAppBar}
-/>;
+
+const MyAppBar = props => <AppBar {...props} userMenu={<MyUserMenu />} />;
+
+const MyLayout = props => <Layout {...props} appBar={MyAppBar} />;
 ```
 
-You can speciy the `Sidebar` size by setting the `size` property:
+You can specify the `Sidebar` size by setting the `size` property:
 
 ```jsx
 import { Sidebar } from 'react-admin';

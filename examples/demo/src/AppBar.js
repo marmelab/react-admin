@@ -1,15 +1,19 @@
 import React from 'react';
-import { AppBar, MenuItemLink, translate } from 'react-admin';
+import { AppBar, UserMenu, MenuItemLink, translate } from 'react-admin';
 import SettingsIcon from '@material-ui/icons/Settings';
 
-const CustomAppBar = ({ translate, ...props }) => (
-    <AppBar {...props}>
+const CustomUserMenu = translate(({ translate, ...props }) => (
+    <UserMenu {...props}>
         <MenuItemLink
             to="/configuration"
             primaryText={translate('pos.configuration')}
             leftIcon={<SettingsIcon />}
         />
-    </AppBar>
+    </UserMenu>
+));
+
+const CustomAppBar = props => (
+    <AppBar {...props} userMenu={<CustomUserMenu />} />
 );
 
-export default translate(CustomAppBar);
+export default CustomAppBar;
