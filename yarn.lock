@@ -5141,9 +5141,9 @@ graphql-anywhere@^4.1.14:
   dependencies:
     apollo-utilities "^1.0.16"
 
-graphql-ast-types@^1.0.2:
+graphql-ast-types@Kmaschta/graphql-ast-types#master:
   version "1.0.2"
-  resolved "https://registry.yarnpkg.com/graphql-ast-types/-/graphql-ast-types-1.0.2.tgz#49f2ae8f52be9ae426263f95320888f0cb772711"
+  resolved "https://codeload.github.com/Kmaschta/graphql-ast-types/tar.gz/412a17d44c4c9e05dc93195263c96e6c96f5db85"
 
 graphql-tag@^2.0.0, graphql-tag@^2.4.2, graphql-tag@^2.6.1:
   version "2.9.2"
