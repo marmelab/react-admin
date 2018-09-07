@@ -52,8 +52,6 @@ import { Admin, Resource, Delete } from 'react-admin';
 
 import { PostCreate, PostEdit, PostList } from '../components/admin/posts';
 
-const client = new ApolloClient();
-
 class App extends Component {
     constructor() {
         super();
@@ -195,7 +193,7 @@ For example:
 ```js
 import buildFieldList from './buildFieldList';
 
-const queryBuilder = introspectionResults => (raFetchType, resourceName, params) => {
+const buildQuery = introspectionResults => (raFetchType, resourceName, params) => {
     const resource = introspectionResults.resource.find(r => r.type.name === resourceName);
 
     switch (raFetchType) {
@@ -216,7 +214,7 @@ const queryBuilder = introspectionResults => (raFetchType, resourceName, params)
 ```
 
 ```js
-buildGraphQLProvider({ queryBuilder });
+buildGraphQLProvider({ buildQuery });
 ```
 
 ## Troubleshooting

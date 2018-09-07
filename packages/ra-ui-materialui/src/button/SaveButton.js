@@ -14,7 +14,7 @@ const styles = {
         position: 'relative',
     },
     iconPaddingStyle: {
-        paddingRight: '0.5em',
+        marginRight: '0.5em',
     },
 };
 

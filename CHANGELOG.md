@@ -1,5 +1,14 @@
 # Changelog
 
+## v2.2.4
+
+* Fix `<SaveButton>` misaligned `<CircularProgress>` ([natrim](https://github.com/natrim))
+* Fix typo in List documentation ([jbeurel](https://github.com/jbeurel))
+* Fix code snippets in `ra-data-graphql` readme ([nicgirault](https://github.com/nicgirault))
+* Add link to Hungarian translation ([phelion](https://github.com/phelion))
+* Add link to `bs-react-admin` (BuckleScript) to the Ecosystem documentation ([ctbucha](https://github.com/ctbucha))
+* Update the CodeSandbox link in issue template ([Kmaschta](https://github.com/Kmaschta))
+
 ## v2.2.3
 
 * Fix form reset with navigation (again) ([djhi](https://github.com/djhi))
