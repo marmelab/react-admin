@@ -12,6 +12,7 @@
 * [`AutocompleteArrayInput`] Fix select on click ([djhi](https://github.com/djhi))
 * [`Datagrid`] Add padding right to the last column ([fzaninotto](https://github.com/fzaninotto))
 * [`Datagrid`] Hide the sort icons when the column is not active ([fzaninotto](https://github.com/fzaninotto))
+* [`Edit`] Add the `<TitleForRecord>` component (replacement for `<RecordTitle>`) ([fzaninotto](https://github.com/fzaninotto))
 * [`Edit`] Move the `<Delete>` button down to the Toolbar ([fzaninotto](https://github.com/fzaninotto))
 * [`Edit`] Use material design recommended margin for content ([fzaninotto](https://github.com/fzaninotto))
 * [`FormDataConsumer`] Fix wrong warning ([djhi](https://github.com/djhi))
@@ -35,7 +36,17 @@
 * [npm] Expose `esm` modules to enable tree shaking (and smaller bundle size) ([Kmaschta](https://github.com/Kmaschta))
 * [npm] Remove babel `stage-0` preset and use `preset-env` instead ([Kmaschta](https://github.com/Kmaschta))
 * [redux] Allow to use <Admin> inside an external <Provider> ([fzaninotto](https://github.com/fzaninotto))
- 
+
+Deprecations:
+
+* `<Admin>` `menu` prop. To override the menu component, use a [custom layout](#appLayout) instead.
+* `<AppBarMobile>`. The `<AppBar>` component is now responsive.
+* `<BulkActions>`. Use `<BulkActionToolbar>` instead.
+* `<Header>`. Use `<Title>` instead.
+* `<RecordTitle>`. Use `<TitleForRecord>` instead.
+* `<ViewTitle>`. Use `<Title>` instead.
+* GraphQL provides `override` prop. Use `buildQuery` instead.
+
 ## v2.2.4
 
 * Fix `<SaveButton>` misaligned `<CircularProgress>` ([natrim](https://github.com/natrim))
