@@ -88,6 +88,7 @@ export class Pagination extends Component {
                             'ra.navigation.page_rows_per_page'
                         )}
                         labelDisplayedRows={this.labelDisplayedRows}
+                        rowsPerPageOptions={rowsPerPageOptions}
                         {...sanitizeListRestProps(rest)}
                     />
                 }
