@@ -85,7 +85,7 @@ describe('<Pagination />', () => {
                 .shallow()
                 .shallow();
             const pagination = wrapper.find('WithStyles(TablePagination)');
-            expect(pagination.prop('rowsPerPageOptions')).toBe(undefined);
+            expect(pagination.prop('rowsPerPageOptions')).toEqual([5, 10, 25]);
         });
     });
 });
