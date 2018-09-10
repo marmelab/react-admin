@@ -249,7 +249,7 @@ export const PostList = (props) => (
 
 ![Bulk Action Buttons](./img/bulk-actions-toolbar.gif)
 
-**Tip**: You can also disable bulk actions altogether by passing `false` to the `bulkActionButtons` prop. When using a `Datagrid` inside a `List` with disabled bulk actions, the checkboxes column won't be added.
+**Tip**: You can also disable bulk actions altogether by passing `false` to the `bulkActions` prop. When using a `Datagrid` inside a `List` with disabled bulk actions, the checkboxes column won't be added.
 
 Bulk action button components receive several props allowing them to perform their job:
 
