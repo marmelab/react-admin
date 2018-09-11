@@ -106,7 +106,7 @@ export const ListView = ({
     // overridable by user
     children,
     className,
-    classes = {},
+    classes,
     exporter,
     title,
     ...rest
@@ -197,6 +197,10 @@ ListView.propTypes = {
     total: PropTypes.number,
     translate: PropTypes.func,
     version: PropTypes.number,
+};
+
+ListView.defaultProps = {
+    classes: {},
 };
 
 /**

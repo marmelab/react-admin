@@ -11,6 +11,8 @@ import {
     required,
 } from 'react-admin';
 
+import Aside from './Aside';
+
 const UserEditToolbar = ({ permissions, ...props }) => (
     <Toolbar {...props}>
         <SaveButton
@@ -30,7 +32,7 @@ const UserEditToolbar = ({ permissions, ...props }) => (
 );
 
 const UserCreate = ({ permissions, ...props }) => (
-    <Create {...props}>
+    <Create {...props} aside={<Aside />}>
         <TabbedForm toolbar={<UserEditToolbar permissions={permissions} />}>
             <FormTab label="user.form.summary" path="">
                 <TextInput

@@ -122,6 +122,10 @@ ShowView.propTypes = {
     version: PropTypes.number,
 };
 
+ShowView.defaultProps = {
+    classes: {},
+};
+
 /**
  * Page component for the Show view
  *
@@ -172,6 +176,7 @@ const Show = props => (
 
 Show.propTypes = {
     actions: PropTypes.element,
+    aside: PropTypes.node,
     children: PropTypes.element,
     classes: PropTypes.node,
     className: PropTypes.string,
