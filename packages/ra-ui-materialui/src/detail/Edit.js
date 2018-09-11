@@ -53,7 +53,7 @@ export const EditView = ({
     aside,
     basePath,
     children,
-    classes = {},
+    classes,
     className,
     defaultTitle,
     hasList,
@@ -136,6 +136,10 @@ EditView.propTypes = {
     version: PropTypes.number,
 };
 
+EditView.defaultProps = {
+    classes: {},
+};
+
 /**
  * Page component for the Edit view
  *
@@ -186,6 +190,7 @@ const Edit = props => (
 
 Edit.propTypes = {
     actions: PropTypes.element,
+    aside: PropTypes.node,
     children: PropTypes.node,
     classes: PropTypes.object,
     className: PropTypes.string,
