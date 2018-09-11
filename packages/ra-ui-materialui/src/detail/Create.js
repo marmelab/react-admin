@@ -158,7 +158,7 @@ CreateView.defaultProps = {
  *     );
  *     export default App;
  */
-const Create = props => (
+export const Create = props => (
     <CreateController {...props}>
         {controllerProps => <CreateView {...props} {...controllerProps} />}
     </CreateController>
