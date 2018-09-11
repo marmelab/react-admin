@@ -27,6 +27,7 @@ Here are all the props accepted by the `<List>` component:
 * [`filter`](#permanent-filter) (the permanent filter used in the REST request)
 * [`filterDefaultValues`](#filter-default-values) (the default values for `alwaysOn` filters)
 * [`pagination`](#pagination)
+* [`aside`](#aside-component)
 
 Here is the minimal code necessary to display a list of posts:
 
@@ -578,6 +579,54 @@ export const PostList = (props) => (
     <List {...props} pagination={<PostPagination />}>
         ...
     </List>
+);
+```
+
+### Aside component
+
+You may want to display additional information on the side of the list. Use the `aside` prop for that, passing the component of your choice:
+
+```jsx
+const Aside = () => (
+    <div style={{ width: 200, margin: '1em' }}>
+        <Typography variant="title">Post details</Typography>
+        <Typography variant="body1">
+            Posts will only be published one an editor approves them
+        </Typography>
+    </div>
+);
+
+const PostList = props => (
+    <List aside={<Aside />} {...props}>
+        ...
+    </List>
+```
+
+The `aside` component receives the same props as the `List` child component, including the following:
+
+* `basePath`,
+* `currentSort`,
+* `data`,
+* `defaultTitle`,
+* `filterValues`,
+* `ids`,
+* `page`,
+* `perPage`,
+* `resource`,
+* `selectedIds`,
+* `total`,
+* `version`,
+
+That means you can display additional details of the current list in the aside component:
+
+```jsx
+const Aside = ({ data, ids }) => (
+    <div style={{ width: 200, margin: '1em' }}>
+        <Typography variant="title">Posts stats</Typography>
+        <Typography variant="body1">
+            Total views: {ids.map(id => data[id]).reduce((sum, post) => sum + post.views)}
+        </Typography>
+    </div>
 );
 ```
 

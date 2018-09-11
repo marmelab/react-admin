@@ -19,6 +19,7 @@ Here are all the props accepted by the `<Create>` and `<Edit>` components:
 
 * [`title`](#page-title)
 * [`actions`](#actions)
+* [`aside`](#aside-component)
 
 Here is the minimal code necessary to display a form to create and edit comments:
 
@@ -135,6 +136,39 @@ export const PostEdit = (props) => (
 ```
 
 Using a custom `EditActions` component also allow to remove the `<DeleteButton>` if you want to prevent deletions from the admin.
+
+### Aside component
+
+You may want to display additional information on the side of the form. Use the `aside` prop for that, passing the component of your choice:
+
+```jsx
+const Aside = () => (
+    <div style={{ width: 200, margin: '1em' }}>
+        <Typography variant="title">Post details</Typography>
+        <Typography variant="body1">
+            Posts will only be published one an editor approves them
+        </Typography>
+    </div>
+);
+
+const PostEdit = props => (
+    <Edit aside={<Aside />} {...props}>
+        ...
+    </Edit>
+```
+
+The `aside` component receives the same props as the `Edit` child component: `basePath`, `record`, `resource`, and `version`. That means you can display non-editable details of the current record in the aside component:
+
+```jsx
+const Aside = ({ record }) => (
+    <div style={{ width: 200, margin: '1em' }}>
+        <Typography variant="title">Post details</Typography>
+        <Typography variant="body1">
+            Creation date: {record.createdAt}
+        </Typography>
+    </div>
+);
+```
 
 ## Prefilling a `<Create>` Record
 
