@@ -157,7 +157,7 @@ const PostEdit = props => (
     </Edit>
 ```
 
-The `aside` component receives the same props as the `Edit` child component: `basePath`, `record`, `resource`, and `version`. That means you can display non-editable details of the current record in the aside component:
+The `aside` component receives the same props as the `Edit` of `Create` child component: `basePath`, `record`, `resource`, and `version`. That means you can display non-editable details of the current record in the aside component:
 
 ```jsx
 const Aside = ({ record }) => (
