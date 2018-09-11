@@ -17,6 +17,7 @@ Here are all the props accepted by the `<Show>` component:
 
 * [`title`](#page-title)
 * [`actions`](#actions)
+* [`aside`](#aside-component)
 
 Here is the minimal code necessary to display a view to show a post:
 
@@ -112,6 +113,39 @@ export const PostShow = (props) => (
     <Show actions={<PostShowActions />} {...props}>
         ...
     </Show>
+);
+```
+
+### Aside component
+
+You may want to display additional information on the side of the resource detail. Use the `aside` prop for that, passing the component of your choice:
+
+```jsx
+const Aside = () => (
+    <div style={{ width: 200, margin: '1em' }}>
+        <Typography variant="title">Post details</Typography>
+        <Typography variant="body1">
+            Posts will only be published one an editor approves them
+        </Typography>
+    </div>
+);
+
+const PostShow = props => (
+    <Show aside={<Aside />} {...props}>
+        ...
+    </Show>
+```
+
+The `aside` component receives the same props as the `Show` child component: `basePath`, `record`, `resource`, and `version`. That means you can display secondary details of the current record in the aside component:
+
+```jsx
+const Aside = ({ record }) => (
+    <div style={{ width: 200, margin: '1em' }}>
+        <Typography variant="title">Post details</Typography>
+        <Typography variant="body1">
+            Creation date: {record.createdAt}
+        </Typography>
+    </div>
 );
 ```
 
