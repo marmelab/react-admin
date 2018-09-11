@@ -182,7 +182,7 @@ EditView.defaultProps = {
  *     );
  *     export default App;
  */
-const Edit = props => (
+export const Edit = props => (
     <EditController {...props}>
         {controllerProps => <EditView {...props} {...controllerProps} />}
     </EditController>
