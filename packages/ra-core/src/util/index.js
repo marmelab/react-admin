@@ -7,3 +7,4 @@ export linkToRecord from './linkToRecord';
 export removeEmpty from './removeEmpty';
 export removeKey from './removeKey';
 export resolveRedirectTo from './resolveRedirectTo';
+export TestContext from './TestContext';
