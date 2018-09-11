@@ -244,7 +244,7 @@ ListView.defaultProps = {
  *         </List>
  *     );
  */
-const List = props => (
+export const List = props => (
     <ListController {...props}>
         {controllerProps => <ListView {...props} {...controllerProps} />}
     </ListController>

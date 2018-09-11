@@ -1,8 +1,9 @@
 import assert from 'assert';
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, render } from 'enzyme';
+import { TestContext } from 'ra-core';
 
-import { ListView } from './List';
+import { List, ListView } from './List';
 
 describe('<List />', () => {
     const defaultProps = {
@@ -48,5 +49,47 @@ describe('<List />', () => {
         ).toHaveLength(1);
         expect(wrapper.find('Datagrid')).toHaveLength(1);
         expect(wrapper.find('Pagination')).toHaveLength(1);
+    });
+
+    const defaultListProps = {
+        basePath: '/foo',
+        ids: [],
+        data: {},
+        hasCreate: false,
+        hasEdit: false,
+        hasList: false,
+        hasShow: false,
+        location: {},
+        match: {},
+        resource: 'foo',
+        total: 0,
+    };
+    const defaultStoreForList = {
+        admin: {
+            resources: {
+                foo: {
+                    list: {
+                        ids: [],
+                        params: {},
+                        selectedIds: [],
+                        total: 0,
+                    },
+                },
+            },
+        },
+    };
+
+    it('should display aside component', () => {
+        const Dummy = () => <div />;
+        const Aside = () => <div id="aside">Hello</div>;
+        const wrapper = render(
+            <TestContext store={defaultStoreForList}>
+                <List {...defaultListProps} aside={<Aside />}>
+                    <Dummy />
+                </List>
+            </TestContext>
+        );
+        const aside = wrapper.find('#aside');
+        expect(aside.text()).toEqual('Hello');
     });
 });
