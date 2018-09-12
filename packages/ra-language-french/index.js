@@ -62,11 +62,11 @@ module.exports = {
             about: 'Au sujet de',
             are_you_sure: 'Êtes-vous sûr ?',
             bulk_delete_content:
-                'Êtes-vous sur(e) de vouloir supprimer cet élément ? |||| Êtes-vous sur(e) de vouloir supprimer ces %{smart_count} éléments ?',
+                'Êtes-vous sûr(e) de vouloir supprimer cet élément ? |||| Êtes-vous sûr(e) de vouloir supprimer ces %{smart_count} éléments ?',
             bulk_delete_title:
                 'Supprimer %{name} |||| Supprimer %{smart_count} %{name} éléments',
             delete_content:
-                'Êtes-vous sur(e) de vouloir supprimer cet élément ?',
+                'Êtes-vous sûr(e) de vouloir supprimer cet élément ?',
             delete_title: 'Supprimer %{name} #%{id}',
             details: 'Détails',
             error:
@@ -90,7 +90,7 @@ module.exports = {
             prev: 'Précédent',
         },
         auth: {
-            user_menu: 'Profile',
+            user_menu: 'Profil',
             username: 'Identifiant',
             password: 'Mot de passe',
             sign_in: 'Connexion',
