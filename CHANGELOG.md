@@ -1,5 +1,15 @@
 # Changelog
 
+## v2.3.1
+
+* Fix Delete button for record of id zero ([fzaninotto](https://github.com/fzaninotto))
+* Fix typos in French translations ([despatates](https://github.com/despatates))
+* Fix keyboard handling in `<DateInput>` ([fzaninotto](https://github.com/fzaninotto))
+* Remove deprecated Data Providers from the documentation ([Kmaschta](https://github.com/Kmaschta))
+* Update CodeSandbox link to 2.3 in issue template ([Kmaschta](https://github.com/Kmaschta))
+* Fix `rowsPerPageOptions` not transmitted to pagination ([antonversal](https://github.com/antonversal))
+* Fix Webpack compilation of projects using GraphQL data providers ([Kmaschta](https://github.com/Kmaschta))
+
 ## v2.3.0
 
 * [`Actions`] Move `<Refresh>` to `<AppBar>` ([fzaninotto](https://github.com/fzaninotto))
