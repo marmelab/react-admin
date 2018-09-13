@@ -15,9 +15,12 @@ import DefaultActions from './ListActions';
 import defaultTheme from '../defaultTheme';
 
 const styles = {
-    root: {},
+    root: {
+        display: 'flex',
+    },
     card: {
         position: 'relative',
+        flex: '1 1 auto',
     },
     actions: {
         zIndex: 2,
@@ -95,6 +98,7 @@ const sanitizeRestProps = ({
 export const ListView = ({
     // component props
     actions = <DefaultActions />,
+    aside,
     filters,
     bulkActions, // deprecated
     bulkActionButtons = <DefaultBulkActionButtons />,
@@ -102,7 +106,7 @@ export const ListView = ({
     // overridable by user
     children,
     className,
-    classes = {},
+    classes,
     exporter,
     title,
     ...rest
@@ -146,12 +150,14 @@ export const ListView = ({
                         React.cloneElement(pagination, controllerProps)}
                 </div>
             </Card>
+            {aside && React.cloneElement(aside, controllerProps)}
         </div>
     );
 };
 
 ListView.propTypes = {
     actions: PropTypes.element,
+    aside: PropTypes.node,
     basePath: PropTypes.string,
     bulkActions: PropTypes.oneOfType([PropTypes.bool, PropTypes.element]),
     bulkActionButtons: PropTypes.oneOfType([PropTypes.bool, PropTypes.element]),
@@ -191,6 +197,10 @@ ListView.propTypes = {
     total: PropTypes.number,
     translate: PropTypes.func,
     version: PropTypes.number,
+};
+
+ListView.defaultProps = {
+    classes: {},
 };
 
 /**
@@ -234,7 +244,7 @@ ListView.propTypes = {
  *         </List>
  *     );
  */
-const List = props => (
+export const List = props => (
     <ListController {...props}>
         {controllerProps => <ListView {...props} {...controllerProps} />}
     </ListController>
@@ -243,6 +253,7 @@ const List = props => (
 List.propTypes = {
     // the props you can change
     actions: PropTypes.element,
+    aside: PropTypes.node,
     bulkActions: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
     children: PropTypes.node,
     classes: PropTypes.object,
