@@ -49,6 +49,21 @@ You can find Data Providers for various backends in third-party repositories:
 
 If you've written a Data Provider for another backend, and open-sourced it, please help complete this list with your package.
 
+### Legacy Data Providers
+
+Before the version 2, react-admin was called [admin-on-rest](/admin-on-rest) (AOR) and the community was as active as it is now and several Data Providers was published yet.
+
+Due to the breaking changes, the following providers are no longer works with the current react-admin implementation:
+
+* **[DynamoDb](https://github.com/abiglobalhealth/aor-dynamodb-client)**: [abiglobalhealth/aor-dynamodb-client](https://github.com/abiglobalhealth/aor-dynamodb-client)		
+* **[Epilogue](https://github.com/dchester/epilogue)**: [dunghuynh/aor-epilogue-client](https://github.com/dunghuynh/aor-epilogue-client)
+* **[Firebase](https://firebase.google.com/)**: [sidferreira/aor-firebase-client](https://github.com/sidferreira/aor-firebase-client)		
+* **[JSON API](http://jsonapi.org/)**: [moonlight-labs/aor-jsonapi-client](https://github.com/moonlight-labs/aor-jsonapi-client)		
+* **[Loopback](http://loopback.io/)**: [kimkha/aor-loopback](https://github.com/kimkha/aor-loopback)		
+* **[Parse Server](https://github.com/ParsePlatform/parse-server)**: [leperone/aor-parseserver-client](https://github.com/leperone/aor-parseserver-client)
+ 
+Hopefully, Data Providers aren't complex pieces of code. If you are a maintainer of one of these projects we would warmly welcome an upgrade to support the new react-admin version.
+
 ## Usage
 
 As an example, let's focus on the Simple REST data provider. It fits REST APIs using simple GET parameters for filters and sorting.
