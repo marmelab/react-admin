@@ -51,9 +51,9 @@ If you've written a Data Provider for another backend, and open-sourced it, plea
 
 ### Legacy Data Providers
 
-Before the version 2, react-admin was called [admin-on-rest](/admin-on-rest) (AOR) and the community was as active as it is now and several Data Providers was published yet.
+Before the version 2, react-admin was called [admin-on-rest](/admin-on-rest) (AOR), the community was as active as it is now, and several Data Providers was published yet.
 
-Due to the breaking changes, the following providers are no longer works with the current react-admin implementation:
+Due to the breaking changes, the following providers are no longer working with the current react-admin implementation:
 
 * **[DynamoDb](https://github.com/abiglobalhealth/aor-dynamodb-client)**: [abiglobalhealth/aor-dynamodb-client](https://github.com/abiglobalhealth/aor-dynamodb-client)		
 * **[Epilogue](https://github.com/dchester/epilogue)**: [dunghuynh/aor-epilogue-client](https://github.com/dunghuynh/aor-epilogue-client)
@@ -62,7 +62,7 @@ Due to the breaking changes, the following providers are no longer works with th
 * **[Loopback](http://loopback.io/)**: [kimkha/aor-loopback](https://github.com/kimkha/aor-loopback)		
 * **[Parse Server](https://github.com/ParsePlatform/parse-server)**: [leperone/aor-parseserver-client](https://github.com/leperone/aor-parseserver-client)
  
-Hopefully, Data Providers aren't complex pieces of code. If you are a maintainer of one of these projects we would warmly welcome an upgrade to support the new react-admin version.
+Hopefully, Data Providers aren't complex pieces of code and supporting the new version of react-admin should not be too harsh. If you are a maintainer of one of these projects we would warmly welcome an upgrade.
 
 ## Usage
 
