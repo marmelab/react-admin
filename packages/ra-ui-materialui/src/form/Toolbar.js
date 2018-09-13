@@ -92,7 +92,7 @@ const Toolbar = ({
             )}
         </span>
         {record &&
-            record.id && (
+            typeof record.id !== 'undefined' && (
                 <DeleteButton
                     basePath={basePath}
                     record={record}
