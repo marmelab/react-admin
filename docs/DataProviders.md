@@ -51,7 +51,7 @@ If you've written a Data Provider for another backend, and open-sourced it, plea
 
 ### Legacy Data Providers
 
-Before the version 2, react-admin was called [admin-on-rest](/admin-on-rest) (AOR), the community was as active as it is now, and several Data Providers was published yet.
+Before the version 2, react-admin was called [admin-on-rest](/admin-on-rest) (AOR), the community was as active as it is now, and several Data Providers were published then.
 
 Due to the breaking changes, the following providers are no longer working with the current react-admin implementation:
 
