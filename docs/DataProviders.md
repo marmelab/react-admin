@@ -62,7 +62,7 @@ Due to the breaking changes, the following providers are no longer working with 
 * **[Loopback](http://loopback.io/)**: [kimkha/aor-loopback](https://github.com/kimkha/aor-loopback)		
 * **[Parse Server](https://github.com/ParsePlatform/parse-server)**: [leperone/aor-parseserver-client](https://github.com/leperone/aor-parseserver-client)
  
-Hopefully, Data Providers aren't complex pieces of code and supporting the new version of react-admin should not be too harsh. If you are a maintainer of one of these projects we would warmly welcome an upgrade.
+Fortunately, Data Providers aren't complex pieces of code and supporting the new version of react-admin should not be too harsh. If you are a maintainer of one of these projects we would warmly welcome an upgrade.
 
 ## Usage
 
