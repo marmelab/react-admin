@@ -56,7 +56,6 @@
         "redux": "~3.7.2",
         "redux-form": "~7.4.0",
         "redux-saga": "~0.16.0",
-        "reselect": "~3.0.0",
-        "warning": "~3.0.0"
+        "reselect": "~3.0.0"
     }
 }
