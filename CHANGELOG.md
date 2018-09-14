@@ -12,6 +12,9 @@
 
 ## v2.3.0
 
+For highlights about this version, read [the 2.3 release announcement post](https://marmelab.com/blog/2018/09/07/react-admin-2-3.html) on the marmelab blog.
+
+
 * [`Actions`] Move `<Refresh>` to `<AppBar>` ([fzaninotto](https://github.com/fzaninotto))
 * [`Actions`] Remove the `<ListButton>` ([fzaninotto](https://github.com/fzaninotto))
 * [`Actions`] Update `<Button>` to adapt the icon size to the button size ([fzaninotto](https://github.com/fzaninotto))
@@ -114,6 +117,8 @@ Deprecations:
 
 ## v2.2.0
 
+For highlights about this version, read [the 2.2 release announcement post](https://marmelab.com/blog/2018/08/16/react-admin-2-2.html) on the marmelab blog.
+
 * Add Export feature ([fzaninotto](https://github.com/fzaninotto))
 * Add the `callback` side effect ([fzaninotto](https://github.com/fzaninotto))
 * Add Error Page ([fzaninotto](https://github.com/fzaninotto))
@@ -181,6 +186,8 @@ Deprecations:
 * Add documentation on tabs routing ([djhi](https://github.com/djhi))
 
 ## v2.1.0
+
+For highlights about this version, read [the 2.1 release announcement post](https://marmelab.com/blog/2018/07/02/react-admin-2-1.html) on the marmelab blog.
 
 * [`TabbedForm`, `TabbedShowLayout`] Add routing support for tab navigation ([djhi](https://github.com/djhi))
 * [`SimpleForm`, `TabbedForm`] Add ability to customize the redux form ([djhi](https://github.com/djhi))
@@ -279,6 +286,8 @@ Here are some hilghlights ✨:
 * Asynchronous i18n
 * Extra props passed transparently
 * More implementation examples
+
+For more details, read [the 2.0 release announcement blog post](https://marmelab.com/blog/2018/05/18/react-admin-2-0.html) on the marmelab blog.
 
 There are many more features in 2.0, as well as all bug fixes from 1.x.
 
