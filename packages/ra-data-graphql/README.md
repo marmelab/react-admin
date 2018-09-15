@@ -71,7 +71,7 @@ class App extends Component {
 
         return (
             <Admin dataProvider={dataProvider}>
-                <Resource name="Post" list={PostList} edit={PostEdit} create={PostCreate} remove={Delete} />
+                <Resource name="Post" list={PostList} edit={PostEdit} create={PostCreate} />
             </Admin>
         );
     }
