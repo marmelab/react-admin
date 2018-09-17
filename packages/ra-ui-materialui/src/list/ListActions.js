@@ -50,7 +50,7 @@ const Actions = ({
 );
 
 Actions.propTypes = {
-    bulkActions: PropTypes.node,
+    bulkActions: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
     basePath: PropTypes.string,
     className: PropTypes.string,
     currentSort: PropTypes.object,

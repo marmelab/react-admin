@@ -244,6 +244,7 @@ List.propTypes = {
     // the props you can change
     actions: PropTypes.element,
     bulkActions: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
+    bulkActionButtons: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
     children: PropTypes.node,
     classes: PropTypes.object,
     className: PropTypes.string,
