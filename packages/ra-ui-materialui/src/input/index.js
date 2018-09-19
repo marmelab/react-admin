@@ -4,6 +4,7 @@ export AutocompleteInput from './AutocompleteInput';
 export BooleanInput from './BooleanInput';
 export CheckboxGroupInput from './CheckboxGroupInput';
 export DateInput from './DateInput';
+export DateTimeInput from './DateTimeInput';
 export DisabledInput from './DisabledInput';
 export FileInput from './FileInput';
 export ImageInput from './ImageInput';

@@ -436,7 +436,7 @@ Refer to [Material UI Checkbox documentation](http://www.material-ui.com/#/compo
 
 ## `<DateInput>`
 
-Ideal for editing dates, `<DateInput>` renders a standard browser [Date Picker](http://www.material-ui.com/#/components/date-picker).
+Ideal for editing dates, `<DateInput>` renders a standard browser [Date Picker](https://material-ui.com/demos/pickers/#date-pickers), so the appearance depends on the browser (and falls back to a text input on safari).
 
 ```jsx
 import { DateInput } from 'react-admin';
@@ -445,6 +445,20 @@ import { DateInput } from 'react-admin';
 ```
 
 ![DateInput](./img/date-input.gif)
+
+**Tip**: For a material-ui styled `<DateInput>` component, check out [vascofg/react-admin-date-inputs](https://github.com/vascofg/react-admin-date-inputs).
+
+## `<DateTimeInput>`
+
+An input for editing dates with time. `<DateTimeInput>` renders a standard browser [Date and Time Picker](https://material-ui.com/demos/pickers/#date-amp-time-pickers), so the appearance depends on the browser (and falls back to a text input on safari).
+
+```jsx
+import { DateTimeInput } from 'react-admin';
+
+<DateTimeInput source="published_at" />
+```
+
+**Tip**: For a material-ui styled `<DateTimeInput>` component, check out [vascofg/react-admin-date-inputs](https://github.com/vascofg/react-admin-date-inputs).
 
 ## `<DisabledInput>`
 
@@ -1326,6 +1340,17 @@ const renderSexInput = ({ input, meta: { touched, error } }) => (
 );
 const SexInput = ({ source }) => <Field name={source} component={renderSexInput} />
 export default SexInput;
+```
+
+**Tip**: `addField` takes a list of props as second argument, so you can set `<Field>` props there. It's useful for instance if you need to set the [`format`](https://redux-form.com/7.4.2/docs/api/field.md/#-code-format-value-name-gt-formattedvalue-code-optional-) and [`parse`](https://redux-form.com/7.4.2/docs/api/field.md/#-code-parse-value-name-gt-parsedvalue-code-optional-) props of the field:
+
+```jsx
+const parse = value => // ...
+const format = value => // ...
+
+const MyDateInput = props => // ...
+
+export default addField(MyDateInput, { parse, format });
 ```
 
 For more details on how to use redux-form's `<Field>` component, please refer to [the redux-form doc](http://redux-form.com/6.5.0/docs/api/Field.md/).
