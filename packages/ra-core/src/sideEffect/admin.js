@@ -9,7 +9,6 @@ import redirection from './redirection';
 import accumulate from './accumulate';
 import refresh from './refresh';
 import undo from './undo';
-import recordForm from './recordForm';
 
 /**
  * @param {Object} dataProvider A Data Provider function
@@ -27,6 +26,5 @@ export default (dataProvider, authProvider, i18nProvider) =>
             refresh(),
             notification(),
             callback(),
-            recordForm(),
         ]);
     };

@@ -63,7 +63,7 @@ describe('Create Page', () => {
         );
     });
 
-    it.only('should redirect to edit page after create success', () => {
+    it('should redirect to edit page after create success', () => {
         const values = [
             {
                 type: 'input',
