@@ -1,4 +1,4 @@
-import React, { Children, Fragment } from 'react';
+import React, { Children } from 'react';
 import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import MuiToolbar from '@material-ui/core/Toolbar';
