@@ -24,7 +24,7 @@ import warning from '../util/warning';
 const translate = BaseComponent => {
     warning(
         typeof BaseComponent === 'string',
-        `The translate function is an Higher Order Component and should not be called directly with a translation key. Use the translate function this HOC adds to your component props instead:
+        `The translate function is a Higher Order Component, and should not be called directly with a translation key. Use the translate function passed as prop to your component props instead:
 
 const MyHelloButton = ({ translate }) => (
     <button>{translate('myroot.hello.world')}</button>
