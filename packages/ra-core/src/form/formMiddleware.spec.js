@@ -40,7 +40,7 @@ describe('form middleware', () => {
         expect(next).toHaveBeenCalledWith(resetForm());
         expect(next).toHaveBeenCalledWith(destroy(REDUX_FORM_NAME));
         expect(next).toHaveBeenCalledWith(action);
-        expect(next).toHaveBeenCalledTimes(1);
+        expect(next).toHaveBeenCalledTimes(3);
     });
 
     it('does not resets the record and form if LOCATION_CHANGE targets the same location', () => {
@@ -54,8 +54,9 @@ describe('form middleware', () => {
         const middleware = formMiddleware()(next);
         middleware(action);
         middleware(action);
-        expect(next).toHaveBeenNthCalledWith(1, resetForm());
-        expect(next).toHaveBeenNthCalledWith(1, destroy(REDUX_FORM_NAME));
-        expect(next).toHaveBeenNthCalledWith(2, action);
+        expect(next).toHaveBeenCalledWith(resetForm());
+        expect(next).toHaveBeenCalledWith(destroy(REDUX_FORM_NAME));
+        expect(next).toHaveBeenCalledWith(action);
+        expect(next).toHaveBeenCalledTimes(4);
     });
 });
