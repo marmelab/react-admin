@@ -1342,6 +1342,17 @@ const SexInput = ({ source }) => <Field name={source} component={renderSexInput}
 export default SexInput;
 ```
 
+**Tip**: `addField` takes a list of props as second argument, so you can set `<Field>` props there. It's useful for instance if you need to set the [`format`](https://redux-form.com/7.4.2/docs/api/field.md/#-code-format-value-name-gt-formattedvalue-code-optional-) and [`parse`](https://redux-form.com/7.4.2/docs/api/field.md/#-code-parse-value-name-gt-parsedvalue-code-optional-) props of the field:
+
+```jsx
+const parse = value => // ...
+const format = value => // ...
+
+const MyDateInput = props => // ...
+
+export default addField(MyDateInput, { parse, format });
+```
+
 For more details on how to use redux-form's `<Field>` component, please refer to [the redux-form doc](http://redux-form.com/6.5.0/docs/api/Field.md/).
 
 Instead of HTML `input` elements or material-ui components, you can use react-admin input components, like `<NumberInput>` for instance. React-admin components are already decorated by `<Field>`, and already include a label, so you don't need either `<Field>` or `<Labeled>` when using them:
