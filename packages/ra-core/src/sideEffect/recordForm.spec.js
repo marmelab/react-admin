@@ -27,4 +27,25 @@ describe('recordForm saga', () => {
 
         expect(saga.next().value).toBeUndefined();
     });
+
+    it('does not reset the form when navigating to same location', () => {
+        const saga = handleLocationChange({
+            type: LOCATION_CHANGE,
+            payload: {
+                pathname: '/comments/create/2',
+            },
+        });
+        saga.next();
+        saga.next();
+        saga.next();
+
+        const saga2 = handleLocationChange({
+            type: LOCATION_CHANGE,
+            payload: {
+                pathname: '/comments/create/2',
+            },
+        });
+
+        expect(saga2.next().value).toBeUndefined();
+    });
 });
