@@ -98,3 +98,11 @@ Some use cases:
 - Show/hide some inputs if the current form values matches specific constraints
 
 For all those cases, you can use the [aor-dependent-input](https://github.com/marmelab/aor-dependent-input) addon.
+
+## UI in production build is empty or broke
+
+You have probably specified a version requirement for `@material-ui/core` that is incompatible with the one required by `react-admin`. As a consequence, npm bundled two copies of `material-ui` in your application, and `material-ui` doesn't work in that case.
+
+Please align your version requirement with the one of the `ra-ui-materialui` package.
+
+See this [issue for more information](https://github.com/marmelab/react-admin/issues/1782).
