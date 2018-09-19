@@ -177,7 +177,8 @@ export class CheckboxGroupInput extends Component {
                     />
                 </FormLabel>
                 <FormGroup row>{choices.map(this.renderCheckbox)}</FormGroup>
-                {touched && error && <FormHelperText>{error}</FormHelperText>}
+                {touched &&
+                    error && <FormHelperText error>{error}</FormHelperText>}
                 {helperText && <FormHelperText>{helperText}</FormHelperText>}
             </FormControl>
         );

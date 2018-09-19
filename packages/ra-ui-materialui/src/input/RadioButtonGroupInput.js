@@ -159,7 +159,8 @@ export class RadioButtonGroupInput extends Component {
                 >
                     {choices.map(this.renderRadioButton)}
                 </RadioGroup>
-                {touched && error && <FormHelperText>{error}</FormHelperText>}
+                {touched &&
+                    error && <FormHelperText error>{error}</FormHelperText>}
                 {helperText && <FormHelperText>{helperText}</FormHelperText>}
             </FormControl>
         );
