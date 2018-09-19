@@ -8,19 +8,20 @@ import DatagridRow from './DatagridRow';
 
 const DatagridBody = ({
     basePath,
+    children,
     classes,
     className,
-    resource,
-    children,
+    data,
     hasBulkActions,
     hover,
     ids,
     isLoading,
-    data,
+    onToggleItem,
+    resource,
+    rowClick,
+    rowStyle,
     selectedIds,
     styles,
-    rowStyle,
-    onToggleItem,
     version,
     ...rest
 }) => (
@@ -32,7 +33,9 @@ const DatagridBody = ({
                 className={classnames(classes.row, {
                     [classes.rowEven]: rowIndex % 2 === 0,
                     [classes.rowOdd]: rowIndex % 2 !== 0,
+                    [classes.clickableRow]: rowClick,
                 })}
+                rowClick={rowClick}
                 hasBulkActions={hasBulkActions}
                 id={id}
                 key={id}
@@ -61,6 +64,7 @@ DatagridBody.propTypes = {
     isLoading: PropTypes.bool,
     onToggleItem: PropTypes.func,
     resource: PropTypes.string,
+    rowClick: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
     rowStyle: PropTypes.func,
     selectedIds: PropTypes.arrayOf(PropTypes.any).isRequired,
     styles: PropTypes.object,

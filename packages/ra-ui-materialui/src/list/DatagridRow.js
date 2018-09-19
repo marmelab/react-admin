@@ -1,31 +1,51 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { push } from 'react-router-redux';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import Checkbox from '@material-ui/core/Checkbox';
 import classnames from 'classnames';
+import { linkToRecord } from 'ra-core';
 
 import DatagridCell from './DatagridCell';
 
 const sanitizeRestProps = ({
+    basePath,
+    children,
     classes,
     className,
-    resource,
-    children,
+    rowClick,
     id,
     isLoading,
-    record,
-    basePath,
-    selected,
-    styles,
-    style,
     onToggleItem,
+    push,
+    record,
+    resource,
+    selected,
+    style,
+    styles,
     ...rest
 }) => rest;
 
 class DatagridRow extends Component {
-    handleToggle = () => {
+    handleToggle = event => {
         this.props.onToggleItem(this.props.id);
+        event.stopPropagation();
+    };
+
+    handleClick = () => {
+        const { basePath, rowClick, id, push } = this.props;
+        if (!rowClick) return;
+        if (rowClick === 'edit') {
+            push(linkToRecord(basePath, id));
+        }
+        if (rowClick === 'show') {
+            push(linkToRecord(basePath, id, 'show'));
+        }
+        if (typeof rowClick === 'function') {
+            push(rowClick(id, basePath));
+        }
     };
 
     render() {
@@ -50,6 +70,7 @@ class DatagridRow extends Component {
                 key={id}
                 style={style}
                 hover={hover}
+                onClick={this.handleClick}
                 {...sanitizeRestProps(rest)}
             >
                 {hasBulkActions && (
@@ -92,8 +113,10 @@ DatagridRow.propTypes = {
     hover: PropTypes.bool,
     id: PropTypes.any,
     onToggleItem: PropTypes.func,
+    push: PropTypes.func,
     record: PropTypes.object.isRequired,
     resource: PropTypes.string,
+    rowClick: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
     selected: PropTypes.bool,
     style: PropTypes.object,
     styles: PropTypes.object,
@@ -106,4 +129,7 @@ DatagridRow.defaultProps = {
     selected: false,
 };
 
-export default DatagridRow;
+export default connect(
+    null,
+    { push }
+)(DatagridRow);

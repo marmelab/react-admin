@@ -670,6 +670,7 @@ The datagrid component renders a list of records as a table. It is usually used 
 Here are all the props accepted by the component:
 
 * [`rowStyle`](#row-style-function)
+* [`rowClick`](#rowclick)
 
 It renders as many columns as it receives `<Field>` children.
 
@@ -710,6 +711,26 @@ export const PostList = (props) => (
     </List>
 );
 ```
+
+### `rowClick`
+
+You can catch clicks on rows to redirect to the show or edit view by setting the `rowClick` prop:
+
+```jsx
+export const PostList = (props) => (
+    <List {...props}>
+        <Datagrid rowClick="edit">
+            ...
+        </Datagrid>
+    </List>
+);
+```
+
+`rowClick` accepts the following values:
+
+* "edit" to redirect to the edition vue
+* "show" to redirect to the show vue
+* a function `(id, basePath) => path` to redirect to a custom path
 
 ### CSS API
 
