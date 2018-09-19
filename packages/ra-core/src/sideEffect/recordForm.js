@@ -19,8 +19,8 @@ export function* handleLocationChange({ payload }) {
 
     previousLocation = payload;
 
-    yield put(resetForm());
     yield put(destroy(REDUX_FORM_NAME));
+    yield put(resetForm());
 }
 
 export default function* recordForm() {

@@ -53,9 +53,15 @@ const SaveWithNoteButton = connect(
 const PostCreateToolbar = props => (
     <Toolbar {...props}>
         <SaveButton
+            label="post.action.save_and_edit"
+            redirect="edit"
+            submitOnEnter={true}
+        />
+        <SaveButton
             label="post.action.save_and_show"
             redirect="show"
-            submitOnEnter={true}
+            submitOnEnter={false}
+            variant="flat"
         />
         <SaveButton
             label="post.action.save_and_add"
