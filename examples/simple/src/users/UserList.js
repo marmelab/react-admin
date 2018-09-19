@@ -45,12 +45,10 @@ const UserList = ({ permissions, ...props }) => (
                 />
             }
             medium={
-                <Datagrid hover={false}>
+                <Datagrid rowClick="show">
                     <TextField source="id" />
                     <TextField source="name" />
                     {permissions === 'admin' && <TextField source="role" />}
-                    <EditButton />
-                    <ShowButton />
                 </Datagrid>
             }
         />
