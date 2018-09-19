@@ -612,7 +612,7 @@ The most common use case is to display two submit buttons in the `<Create>` view
 For that use case, use the `<SaveButton>` component with a custom `redirect` prop:
 
 ```jsx
-import { Edit, SimpleForm, SaveButton, Toolbar } from 'react-admin';
+import { Create, SimpleForm, SaveButton, Toolbar } from 'react-admin';
 
 const PostCreateToolbar = props => (
     <Toolbar {...props} >
@@ -630,9 +630,29 @@ const PostCreateToolbar = props => (
     </Toolbar>
 );
 
+export const PostCreate = (props) => (
+    <Create {...props}>
+        <SimpleForm toolbar={<PostCreateToolbar />} redirect="show">
+            ...
+        </SimpleForm>
+    </Create>
+);
+```
+
+Another use case is to remove the `<DeleteButton>` from the toolbar in an edit view. In that case, create a custom toolbar containing only the `<SaveButton>` as child;
+
+```jsx
+import { Edit, SimpleForm, SaveButton, Toolbar } from 'react-admin';
+
+const PostEditToolbar = props => (
+    <Toolbar {...props} >
+        <SaveButton />
+    </Toolbar>
+);
+
 export const PostEdit = (props) => (
     <Edit {...props}>
-        <SimpleForm toolbar={<PostCreateToolbar />} redirect="show">
+        <SimpleForm toolbar={<PostEditToolbar />}>
             ...
         </SimpleForm>
     </Edit>
