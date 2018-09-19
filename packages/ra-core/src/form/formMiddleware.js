@@ -10,9 +10,9 @@ let previousLocation;
 /**
  * This middleware ensure that whenever a location change happen, we get the
  * chance to properly reset the redux-form record form, preventing data to be
- * kept between different resources.
+ * kept between different resources or form types (CREATE, EDIT).
  *
- * A middleware is needed instead of a saga because we to control the actions
+ * A middleware is needed instead of a saga because we need to control the actions
  * order: we need to ensure we reset the redux form BEFORE the location actually
  * change. Otherwise, the new page which may contains a record redux-form might
  * initialize before our reset and loose its data.
