@@ -12,7 +12,7 @@ import { REDUX_FORM_NAME } from '../form/constants';
  *
  * A middleware is needed instead of a saga because we need to control the actions
  * order: we need to ensure we reset the redux form BEFORE the location actually
- * changes. Otherwise, the new page which may contains a record redux-form might
+ * changes. Otherwise, the new page which may contain a record redux-form might
  * initialize before our reset and loose its data.
  */
 const formMiddleware = () => {
