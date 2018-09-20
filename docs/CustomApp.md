@@ -66,8 +66,8 @@ export default ({
         compose(
             applyMiddleware(
                 sagaMiddleware,
-                routerMiddleware(history),
                 formMiddleware,
+                routerMiddleware(history),
                 // add your own middlewares here
             ),
             typeof window !== 'undefined' && window.devToolsExtension
