@@ -135,8 +135,6 @@ export const PostEdit = (props) => (
 );
 ```
 
-Using a custom `EditActions` component also allow to remove the `<DeleteButton>` if you want to prevent deletions from the admin.
-
 ### Aside component
 
 You may want to display additional information on the side of the form. Use the `aside` prop for that, passing the component of your choice:
