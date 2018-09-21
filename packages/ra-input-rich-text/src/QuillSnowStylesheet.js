@@ -425,6 +425,7 @@ export default {
         color: '#444',
         padding: '5px 12px',
         whiteSpace: 'nowrap',
+        zIndex: 1,
     },
     '.ql-snow .ql-tooltip a': {
         cursor: 'pointer',
