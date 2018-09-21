@@ -1,5 +1,19 @@
 # Changelog
 
+## v2.3.2
+
+* Fix `<RichTextInput>` link tooltip z-index ([#2345](https://github.com/marmelab/react-admin/pull/2345)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<RichTextInput>` unordered list rendering ([#2330](https://github.com/marmelab/react-admin/pull/2330)) ([neomusic](https://github.com/neomusic))
+* Fix `<Edit>` form empty after creation ([#2339](https://github.com/marmelab/react-admin/pull/2339)) ([djhi](https://github.com/djhi))
+* Fix example schema for delete in simple GraphQL adapter ([#2342](https://github.com/marmelab/react-admin/pull/2342)) ([kpollich](https://github.com/kpollich))
+* Fix `<List>` showing incorrect number of selected ids after deletion ([#2336](https://github.com/marmelab/react-admin/pull/2336)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix form reset in Save and Add scenarios ([#2332](https://github.com/marmelab/react-admin/pull/2332)) ([djhi](https://github.com/djhi))
+* Fix type warning in `<List>` when setting `bulkActions` props to `false` ([#2327](https://github.com/marmelab/react-admin/pull/2327)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix incorrect `<Resource>` prop in GraphQL readme usage instructions ([#2325](https://github.com/marmelab/react-admin/pull/2325)) ([hips1](https://github.com/hips1))
+* Fix `<ReferenceInput>` fails to load choices when multiple instances reference the same resource ([#2321](https://github.com/marmelab/react-admin/pull/2321)) ([djhi](https://github.com/djhi))
+* Add a section about production build UI bug in FAQ ([#2215](https://github.com/marmelab/react-admin/pull/2215)) ([edouardmenayde](https://github.com/edouardmenayde))
+* Add mention of `ra-data-firebase-client` dataProvider ([#2334](https://github.com/marmelab/react-admin/pull/2334)) ([aymendhaya](https://github.com/aymendhaya))
+
 ## v2.3.1
 
 * Fix Delete button for record of id zero ([fzaninotto](https://github.com/fzaninotto))
