@@ -53,7 +53,7 @@ export default {
         listStyleType: 'none',
     },
     '.ql-editor ul > li::before': {
-        content: "'\2022'",
+        content: "'\\2022'",
     },
     '.ql-editor ul[data-checked=true], .ql-editor ul[data-checked=false]': {
         pointerEvents: 'none',
@@ -67,10 +67,10 @@ export default {
         pointerEvents: 'all',
     },
     '.ql-editor ul[data-checked=true] > li::before': {
-        content: "'\2611'",
+        content: "'\\2611'",
     },
     '.ql-editor ul[data-checked=false] > li::before': {
-        content: "'\2610'",
+        content: "'\\2610'",
     },
     '.ql-editor li::before': {
         display: 'inline-block',
