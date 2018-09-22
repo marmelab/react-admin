@@ -53,7 +53,7 @@
         "ra-core": "^2.3.2",
         "react-autosuggest": "^9.3.2",
         "react-dropzone": "~4.0.1",
-        "react-headroom": "^2.2.2",
+        "react-headroom": "^2.2.4",
         "react-redux": "~5.0.7",
         "react-router-dom": "~4.2.2",
         "react-transition-group": "^2.2.1",
