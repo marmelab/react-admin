@@ -9068,9 +9068,9 @@ react-event-listener@^0.6.0:
     prop-types "^15.6.0"
     warning "^3.0.0"
 
-react-headroom@^2.2.2:
-  version "2.2.2"
-  resolved "https://registry.yarnpkg.com/react-headroom/-/react-headroom-2.2.2.tgz#5ddea3bc87cd54be38f6f98c3fde4527e2a5fb0f"
+react-headroom@^2.2.4:
+  version "2.2.4"
+  resolved "https://registry.yarnpkg.com/react-headroom/-/react-headroom-2.2.4.tgz#e931bf5f91d0ea2c2fbf0f156a2b82d7db6cbe3b"
   dependencies:
     prop-types "^15.5.8"
     raf "^3.3.0"
