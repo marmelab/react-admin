@@ -44,6 +44,7 @@ const CreateButton = ({
                 color="primary"
                 className={classnames(classes.floating, className)}
                 to={`${basePath}/create`}
+                aria-label={label && translate(label)}
                 {...rest}
             >
                 <ContentAdd />
