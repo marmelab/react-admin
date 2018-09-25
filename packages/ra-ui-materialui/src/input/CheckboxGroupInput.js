@@ -107,6 +107,7 @@ export class CheckboxGroupInput extends Component {
 
     renderCheckbox = choice => {
         const {
+            id,
             input: { value },
             optionText,
             optionValue,
@@ -121,6 +122,7 @@ export class CheckboxGroupInput extends Component {
                 : get(choice, optionText);
         return (
             <FormControlLabel
+                htmlFor={`${id}_${get(choice, optionValue)}`}
                 key={get(choice, optionValue)}
                 checked={
                     value
@@ -130,7 +132,13 @@ export class CheckboxGroupInput extends Component {
                 }
                 onChange={this.handleCheck}
                 value={String(get(choice, optionValue))}
-                control={<Checkbox color="primary" {...options} />}
+                control={
+                    <Checkbox
+                        id={`${id}_${get(choice, optionValue)}`}
+                        color="primary"
+                        {...options}
+                    />
+                }
                 label={
                     translateChoice
                         ? translate(choiceName, { _: choiceName })
@@ -192,6 +200,7 @@ CheckboxGroupInput.propTypes = {
     label: PropTypes.string,
     source: PropTypes.string,
     options: PropTypes.object,
+    id: PropTypes.string,
     input: PropTypes.shape({
         onChange: PropTypes.func.isRequired,
     }),

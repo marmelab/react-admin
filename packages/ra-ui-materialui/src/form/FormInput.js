@@ -21,7 +21,11 @@ export const FormInput = ({ classes, input, ...rest }) =>
             )}
         >
             {input.props.addLabel ? (
-                <Labeled {...input.props} {...sanitizeRestProps(rest)}>
+                <Labeled
+                    id={input.props.id || input.props.source}
+                    {...input.props}
+                    {...sanitizeRestProps(rest)}
+                >
                     {React.cloneElement(input, {
                         className: classnames(
                             {
@@ -29,6 +33,7 @@ export const FormInput = ({ classes, input, ...rest }) =>
                             },
                             input.props.className
                         ),
+                        id: input.props.id || input.props.source,
                         ...rest,
                     })}
                 </Labeled>
@@ -40,6 +45,7 @@ export const FormInput = ({ classes, input, ...rest }) =>
                         },
                         input.props.className
                     ),
+                    id: input.props.id || input.props.source,
                     ...rest,
                 })
             )}
