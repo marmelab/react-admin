@@ -89,6 +89,7 @@ import Button from '@material-ui/core/Button';
 import { CardActions, CreateButton, ExportButton, RefreshButton } from 'react-admin';
 
 const PostActions = ({
+    bulkActions,
     basePath,
     currentSort,
     displayedFilters,
@@ -101,7 +102,7 @@ const PostActions = ({
     showFilter
 }) => (
     <CardActions>
-        {bulkActions && cloneElement(bulkActions, {
+        {bulkActions && React.cloneElement(bulkActions, {
             basePath,
             filterValues,
             resource,
