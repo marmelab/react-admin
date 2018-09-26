@@ -61,6 +61,7 @@ const Button = ({
                 className={classnames(classes.button, className)}
                 color={color}
                 size={size}
+                aria-label={label && translate(label, { _: label })}
                 {...rest}
             >
                 {alignIcon === 'left' &&

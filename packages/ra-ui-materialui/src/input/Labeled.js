@@ -43,6 +43,7 @@ export const Labeled = ({
     classes,
     className,
     fullWidth,
+    id,
     input,
     isRequired,
     label,
@@ -68,7 +69,7 @@ export const Labeled = ({
             fullWidth={fullWidth}
             error={meta && meta.touched && meta.error}
         >
-            <InputLabel shrink className={classes.label}>
+            <InputLabel htmlFor={id} shrink className={classes.label}>
                 <FieldTitle
                     label={label}
                     source={source}
@@ -95,6 +96,7 @@ Labeled.propTypes = {
     classes: PropTypes.object,
     className: PropTypes.string,
     fullWidth: PropTypes.bool,
+    id: PropTypes.string,
     input: PropTypes.object,
     isRequired: PropTypes.bool,
     label: PropTypes.string,
