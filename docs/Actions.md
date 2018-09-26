@@ -182,8 +182,8 @@ React-admin keeps track of the number of pending XHR requests in its internal st
 ```diff
 // in src/comments/ApproveButton.js
 -import { showNotification, UPDATE } from 'react-admin';
-+import { 
-+   showNotification, 
++import {
++   showNotification,
 +   fetchStart,
 +   fetchEnd,
 +   UPDATE
@@ -255,8 +255,8 @@ To use the new action creator in the component, `connect` it:
 
 ```diff
 // in src/comments/ApproveButton.js
--import { 
--   showNotification, 
+-import {
+-   showNotification,
 -   fetchStart,
 -   fetchEnd,
 -   UPDATE
@@ -312,7 +312,7 @@ But it's not possible to call `push` or `showNotification` in `handleClick` anym
 
 ## Handling Side Effects
 
-Fetching data is called a *side effect*, since it calls the outside world, and is asynchronous. Usual actions may have other side effects, like showing a notification, or redirecting the user to another page. Just like for the `fetch` side effect, you can associate side effects to an action declaratively by setting the appropriate keys in the action `meta`. 
+Fetching data is called a *side effect*, since it calls the outside world, and is asynchronous. Usual actions may have other side effects, like showing a notification, or redirecting the user to another page. Just like for the `fetch` side effect, you can associate side effects to an action declaratively by setting the appropriate keys in the action `meta`.
 
 So the side effects will be declared in the action creator rather than in the component. For instance, to display a notification when the `COMMENT_APPROVE` action is dispatched, add the `notification` meta:
 
@@ -409,7 +409,7 @@ You can use `onSuccess` and `onFailure` metas in your own actions to handle side
 
 ## Optimistic Rendering and Undo
 
-In the previous example, after clicking on the "Approve" button, a spinner displays while the data provider is fetched. Then, users are redirected to the comments list. But in most cases, the server returns a success response, so the user waits for this response for nothing. 
+In the previous example, after clicking on the "Approve" button, a spinner displays while the data provider is fetched. Then, users are redirected to the comments list. But in most cases, the server returns a success response, so the user waits for this response for nothing.
 
 For its own fetch actions, react-admin uses an approach called *optimistic rendering*. The idea is to handle the `fetch` actions on the client side first (i.e. updating entities in the Redux store), and re-render the screen immediately. The user sees the effect of their action with no delay. Then, react-admin applies the success side effects, and only after that, it triggers the call to the data provider. If the fetch ends with a success, react-admin does nothing more than a refresh to grab the latest data from the server. In most cases, the user sees no difference (the data in the Redux store and the data from the data provider are the same). If the fetch fails, react-admin shows an error notification, and forces a refresh, too.
 
@@ -553,7 +553,7 @@ export const commentApprove = (id, data, basePath) => ({
 
 However, react-admin promotes a programming style where side effects are decoupled from the rest of the code, which has the benefit of making them testable.
 
-In react-admin, side effects are handled by Sagas. [Redux-saga](https://redux-saga.github.io/redux-saga/) is a side effect library built for Redux, where side effects are defined by generator functions. If this is new to you, take a few minutes to go through the Saga documentation. 
+In react-admin, side effects are handled by Sagas. [Redux-saga](https://redux-saga.github.io/redux-saga/) is a side effect library built for Redux, where side effects are defined by generator functions. If this is new to you, take a few minutes to go through the Saga documentation.
 
 Here is the generator function necessary to handle the side effects for a failed `COMMENT_APPROVE` action which would log the error with an external service such as [Sentry](https://sentry.io):
 

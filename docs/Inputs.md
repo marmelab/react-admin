@@ -64,7 +64,7 @@ Then you can display a text input to edit the author first name as follows:
 
 ## `<ArrayInput>`
 
-To edit arrays of data embedded inside a record, `<ArrayInput>` creates a list of sub-forms. 
+To edit arrays of data embedded inside a record, `<ArrayInput>` creates a list of sub-forms.
 
 ```jsx
 import { ArrayInput, SimpleFormIterator, DateInput, TextInput } from 'react-admin';
@@ -162,17 +162,17 @@ However, in some cases (e.g. inside a `<ReferenceInput>`), you may not want the 
 <AutocompleteInput source="gender" choices={choices} translateChoice={false}/>
 ```
 
-By default the component matches choices with the current input searchText: if it finds a match, this choice will be selected. For example, given the choices `[{ id: 'M', name: 'Male', id: 'F', name: 'Female' }]`, when the user enters the text `male`, then the component will set the input value to `M`. If you need to change how choices are matched, pass a custom function as `inputValueMatcher` prop. For example, given the choices: `[{id:1,iso2:'NL',name:'Dutch'},{id:2,iso2:'EN',name:'English'},{id:3,iso2:'FR',name:'French'}]`, if you want to match choices on the iso2 code, you can create the following `inputValueMatcher` function: 
+By default the component matches choices with the current input searchText: if it finds a match, this choice will be selected. For example, given the choices `[{ id: 'M', name: 'Male', id: 'F', name: 'Female' }]`, when the user enters the text `male`, then the component will set the input value to `M`. If you need to change how choices are matched, pass a custom function as `inputValueMatcher` prop. For example, given the choices: `[{id:1,iso2:'NL',name:'Dutch'},{id:2,iso2:'EN',name:'English'},{id:3,iso2:'FR',name:'French'}]`, if you want to match choices on the iso2 code, you can create the following `inputValueMatcher` function:
 
 ```javascript
 <AutocompleteInput inputValueMatcher={
-    (input, suggestion, getOptionText) => 
-        input.toUpperCase().trim() === suggestion.iso2 || 
+    (input, suggestion, getOptionText) =>
+        input.toUpperCase().trim() === suggestion.iso2 ||
         input.toLowerCase().trim() === getOptionText(suggestion).toLowerCase().trim()
 }/>
 ```
 
-If you want to limit the initial choices shown to the current value only, you can set the `limitChoicesToValue` prop.  
+If you want to limit the initial choices shown to the current value only, you can set the `limitChoicesToValue` prop.
 
 Lastly, `<AutocompleteInput>` renders a material-ui `<TextField>` component. Use the `options` attribute to override any of the `<TextField>` attributes:
 
@@ -262,17 +262,17 @@ However, in some cases (e.g. inside a `<ReferenceInput>`), you may not want the 
 <AutocompleteArrayInput source="gender" choices={choices} translateChoice={false}/>
 ```
 
-By default the component matches choices with the current input searchText. For example, given the choices `[{ id: 'M', name: 'Male', id: 'F', name: 'Female' }]`, when the user enters the text `male`, then the component will set the input value to `M`. If you need to change how choices are matched, pass a custom function as `inputValueMatcher` prop. For example, given the choices: `[{id:1,iso2:'NL',name:'Dutch'},{id:2,iso2:'EN',name:'English'},{id:3,iso2:'FR',name:'French'}]`, if you want to match choices on the iso2 code, you can create the following `inputValueMatcher` function: 
+By default the component matches choices with the current input searchText. For example, given the choices `[{ id: 'M', name: 'Male', id: 'F', name: 'Female' }]`, when the user enters the text `male`, then the component will set the input value to `M`. If you need to change how choices are matched, pass a custom function as `inputValueMatcher` prop. For example, given the choices: `[{id:1,iso2:'NL',name:'Dutch'},{id:2,iso2:'EN',name:'English'},{id:3,iso2:'FR',name:'French'}]`, if you want to match choices on the iso2 code, you can create the following `inputValueMatcher` function:
 
 ```javascript
 <AutocompleteArrayInput inputValueMatcher={
-    (input, suggestion, getOptionText) => 
-        input.toUpperCase().trim() === suggestion.iso2 || 
+    (input, suggestion, getOptionText) =>
+        input.toUpperCase().trim() === suggestion.iso2 ||
         input.toLowerCase().trim() === getOptionText(suggestion).toLowerCase().trim()
 }/>
 ```
 
-If you want to limit the initial choices shown to the current value only, you can set the `limitChoicesToValue` prop.  
+If you want to limit the initial choices shown to the current value only, you can set the `limitChoicesToValue` prop.
 
 Lastly, `<AutocompleteArrayInput>` renders a [material-ui-chip-input](https://github.com/TeamWertarbyte/material-ui-chip-input) component. Use the `options` attribute to override any of the `<ChipInput>` attributes:
 
@@ -685,7 +685,7 @@ import { RadioButtonGroupInput, ReferenceInput } from 'react-admin'
 
 Use `<ReferenceArrayInput>` to edit an array of reference values, i.e. to let users choose a list of values (usually foreign keys) from another REST endpoint.
 
-`<ReferenceArrayInput>` fetches the related resources (using the `CRUD_GET_MANY` REST method) as well as possible resources (using the 
+`<ReferenceArrayInput>` fetches the related resources (using the `CRUD_GET_MANY` REST method) as well as possible resources (using the
 `CRUD_GET_MATCHING` REST method) in the reference endpoint.
 
 For instance, if the post object has many tags, a post resource may look like:
@@ -1372,7 +1372,7 @@ const OrderEdit = (props) => (
             <SelectInput source="country" choices={countries} />
             <FormDataConsumer>
                 {({ formData, ...rest }) =>
-                     <SelectInput 
+                     <SelectInput
                          source="city"
                          choices={getCitiesFor(formData.country)}
                          {...rest}
@@ -1381,7 +1381,7 @@ const OrderEdit = (props) => (
             </FormDataConsumer>
         </SimpleForm>
     </Edit>
-); 
+);
 ```
 
 **Tip**: When using a `FormDataConsumer` inside an `ArrayInput`, the `FormDataConsumer` will provide two additional properties to its children function:
@@ -1442,5 +1442,5 @@ import { FormDataConsumer } from 'react-admin';
              </FormDataConsumer>
          </SimpleForm>
      </Edit>
- ); 
+ );
 ```
