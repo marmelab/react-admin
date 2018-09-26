@@ -27,7 +27,7 @@ const convertHTTPResponse = (response, type, resource, params) => {
     case UPDATE:
     case DELETE:
     case GET_ONE:
-        return { ...json, id: json._id }; 
+        return { ...json, id: json._id };
     case CREATE:
         return { ...params.data, id: json._id };
     default:

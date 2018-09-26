@@ -154,7 +154,7 @@ Among the default list actions, react-admin includes an `<ExportButton>`. By def
 2. Transform the result into a CSV string,
 3. Download the CSV file.
 
-The columns of the CSV file match all the fields of the records in the `dataProvider` response. That means that the export doesn't take into account the selection and ordering of fields in your `<List>` via `Field` components. If you want to customize the result, pass a custom `exporter` function to the `<List>`. This function will receive the data from the `dataProvider` (after step 1), and replace steps 2-3 (i.e. it's in charge of transforming, converting, and downloading the file). 
+The columns of the CSV file match all the fields of the records in the `dataProvider` response. That means that the export doesn't take into account the selection and ordering of fields in your `<List>` via `Field` components. If you want to customize the result, pass a custom `exporter` function to the `<List>`. This function will receive the data from the `dataProvider` (after step 1), and replace steps 2-3 (i.e. it's in charge of transforming, converting, and downloading the file).
 
 **Tip**: For CSV conversion, you can import [Papaparse](https://www.papaparse.com/), a CSV parser and stringifier which is already a react-admin dependency. And for CSV download, take advantage of react-admin's `downloadCSV` function.
 
@@ -530,7 +530,7 @@ const filterSentToDataProvider = { ...filterDefaultValues, ...filterChosenByUser
 
 You can replace the default pagination element by your own, using the `pagination` prop. The pagination element receives the current page, the number of records per page, the total number of records, as well as a `setPage()` function that changes the page.
 
-For instance, you can modify the default pagination by adjusting the "rows per page" selector. 
+For instance, you can modify the default pagination by adjusting the "rows per page" selector.
 
 ```jsx
 // in src/MyPagination.js

@@ -56,12 +56,12 @@ Before the version 2, react-admin was called [admin-on-rest](/admin-on-rest) (AO
 
 Due to the breaking changes, the following providers are no longer working with the current react-admin implementation:
 
-* **[DynamoDb](https://github.com/abiglobalhealth/aor-dynamodb-client)**: [abiglobalhealth/aor-dynamodb-client](https://github.com/abiglobalhealth/aor-dynamodb-client)		
+* **[DynamoDb](https://github.com/abiglobalhealth/aor-dynamodb-client)**: [abiglobalhealth/aor-dynamodb-client](https://github.com/abiglobalhealth/aor-dynamodb-client)
 * **[Epilogue](https://github.com/dchester/epilogue)**: [dunghuynh/aor-epilogue-client](https://github.com/dunghuynh/aor-epilogue-client)
-* **[JSON API](http://jsonapi.org/)**: [moonlight-labs/aor-jsonapi-client](https://github.com/moonlight-labs/aor-jsonapi-client)		
-* **[Loopback](http://loopback.io/)**: [kimkha/aor-loopback](https://github.com/kimkha/aor-loopback)		
+* **[JSON API](http://jsonapi.org/)**: [moonlight-labs/aor-jsonapi-client](https://github.com/moonlight-labs/aor-jsonapi-client)
+* **[Loopback](http://loopback.io/)**: [kimkha/aor-loopback](https://github.com/kimkha/aor-loopback)
 * **[Parse Server](https://github.com/ParsePlatform/parse-server)**: [leperone/aor-parseserver-client](https://github.com/leperone/aor-parseserver-client)
- 
+
 Fortunately, Data Providers aren't complex pieces of code and supporting the new version of react-admin should not be too harsh. If you are a maintainer of one of these projects we would warmly welcome an upgrade.
 
 ## Usage
@@ -349,7 +349,7 @@ const apiUrl = 'http://path.to.my.api/';
  */
 export default (type, resource, params) => {
     let url = '';
-    const options = { 
+    const options = {
         headers : new Headers({
             Accept: 'application/json',
         }),
@@ -624,7 +624,7 @@ const apiUrl = 'http://path.to.my.api/';
  */
 export default (type, resource, params) => {
     let url = '';
-    const options = { 
+    const options = {
         headers : new Headers({
             Accept: 'application/json',
         }),
