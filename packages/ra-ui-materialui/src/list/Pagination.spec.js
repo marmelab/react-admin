@@ -33,7 +33,7 @@ describe('<Pagination />', () => {
         );
     });
 
-    it('should display a pagination limit on an empty paginated page', () => {
+    it('should not display a pagination limit on an out of bounds page', () => {
         const wrapper = shallow(
             <Pagination
                 translate={x => x}
@@ -46,7 +46,7 @@ describe('<Pagination />', () => {
             />
         );
         expect(wrapper.find('pure(translate(PaginationLimit))')).toHaveLength(
-            1
+            0
         );
     });
 
