@@ -29,8 +29,8 @@ class FormTab extends Component {
         );
     };
 
-    renderContent = ({ children, hidden, ...rest }) => (
-        <span style={hidden ? hiddenStyle : null}>
+    renderContent = ({ children, className, hidden, ...rest }) => (
+        <span className={className} style={hidden ? hiddenStyle : null}>
             {React.Children.map(
                 children,
                 input =>
