@@ -6,16 +6,19 @@ import Typography from '@material-ui/core/Typography';
 
 import sanitizeRestProps from './sanitizeRestProps';
 
-const TextField = ({ className, source, record = {}, ...rest }) => (
-    <Typography
-        component="span"
-        body1="body1"
-        className={className}
-        {...sanitizeRestProps(rest)}
-    >
-        {get(record, source)}
-    </Typography>
-);
+const TextField = ({ className, source, record = {}, ...rest }) => {
+    const value = get(record, source);
+    return (
+        <Typography
+            component="span"
+            body1="body1"
+            className={className}
+            {...sanitizeRestProps(rest)}
+        >
+            {typeof value !== 'string' ? JSON.stringify(value) : value}
+        </Typography>
+    );
+};
 
 TextField.propTypes = {
     addLabel: PropTypes.bool,

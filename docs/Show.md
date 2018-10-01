@@ -59,6 +59,8 @@ That's enough to display the post show view:
 
 ![post show view](./img/post-show.png)
 
+**Tip**: When it has no children, `Show` fetches the data, analyzes the response, then guesses the fields it should use to display a basic page with the data. It also dumps the components it has guessed in the console, where you can copy it into your own code. Use this feature to quickly bootstrap a `Show` on top of an existing API, without adding the fields one by one.
+
 ### Page Title
 
 By default, the title for the Show view is "[resource_name] #[record_id]".

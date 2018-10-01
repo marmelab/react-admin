@@ -85,6 +85,8 @@ That's enough to display the post edit form:
 
  `<Create>` accepts a `record` prop, to initialize the form based on an value object.
 
+**Tip**: When it has no children, `Edit` fetches the data, analyzes the response, then guesses the inputs it should use to display a basic form with the data. It also dumps the components it has guessed in the console, where you can copy it into your own code. Use this feature to quickly bootstrap an `Edit` on top of an existing API, without adding the inputs one by one.
+
 ### Page Title
 
 By default, the title for the Create view is "Create [resource_name]", and the title for the Edit view is "Edit [resource_name] #[record_id]".

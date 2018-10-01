@@ -14,7 +14,7 @@ import BulkActionsToolbar from './BulkActionsToolbar';
 import DefaultActions from './ListActions';
 import defaultTheme from '../defaultTheme';
 
-const styles = {
+export const styles = {
     root: {
         display: 'flex',
     },
@@ -113,7 +113,6 @@ export const ListView = ({
 }) => {
     const { defaultTitle, version } = rest;
     const controllerProps = getListControllerProps(rest);
-
     return (
         <div
             className={classnames('list-page', classes.root, className)}
