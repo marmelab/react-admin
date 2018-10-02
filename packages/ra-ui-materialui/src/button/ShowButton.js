@@ -4,6 +4,7 @@ import shouldUpdate from 'recompose/shouldUpdate';
 import ImageEye from '@material-ui/icons/RemoveRedEye';
 import { Link } from 'react-router-dom';
 import { linkToRecord } from 'ra-core';
+import { get } from 'lodash';
 
 import Button from './Button';
 
@@ -11,11 +12,12 @@ const ShowButton = ({
     basePath = '',
     label = 'ra.action.show',
     record = {},
+    source = 'id',
     ...rest
 }) => (
     <Button
         component={Link}
-        to={`${linkToRecord(basePath, record.id)}/show`}
+        to={`${linkToRecord(basePath, get(record, source))}/show`}
         label={label}
         {...rest}
     >
@@ -27,6 +29,7 @@ ShowButton.propTypes = {
     basePath: PropTypes.string,
     label: PropTypes.string,
     record: PropTypes.object,
+    source: PropTypes.string,
 };
 
 const enhance = shouldUpdate(
