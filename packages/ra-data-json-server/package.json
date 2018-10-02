@@ -1,6 +1,6 @@
 {
     "name": "ra-data-json-server",
-    "version": "2.3.2",
+    "version": "2.3.3",
     "description": "JSON Server data provider for react-admin",
     "main": "lib/index.js",
     "module": "esm/index.js",
@@ -25,7 +25,7 @@
     },
     "dependencies": {
         "query-string": "~5.1.1",
-        "react-admin": "^2.3.2"
+        "react-admin": "^2.3.3"
     },
     "devDependencies": {
         "babel-cli": "~6.26.0",
