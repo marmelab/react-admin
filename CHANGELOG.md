@@ -1,5 +1,18 @@
 # Changelog
 
+## v2.3.3
+
+* Fix query-string parsing for array values in `Create` ([#2373](https://github.com/marmelab/react-admin/pull/2373)) ([djhi](https://github.com/djhi))
+* Fix out of boundaries pagination does not allow pagination ([#2365](https://github.com/marmelab/react-admin/pull/2365)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `SimpleFormIterator` does not iterate on sub records ([#2364](https://github.com/marmelab/react-admin/pull/2364)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix triling whitespaces in documentation ([#2359](https://github.com/marmelab/react-admin/pull/2359)) ([josx](https://github.com/josx))
+* Fix Feathers dataProvidr package name to `ra-data-feathers` ([#2358](https://github.com/marmelab/react-admin/pull/2358)) ([josx](https://github.com/josx))
+* Fix small typo in `List` doc ([#2355](https://github.com/marmelab/react-admin/pull/2355)) ([ArnaudD](https://github.com/ArnaudD))
+* Fix `fetchRelatedRecords` should ignore nullable relationships in `exporter` ([#2354](https://github.com/marmelab/react-admin/pull/2354)) ([Luwangel](https://github.com/Luwangel))
+* Fix `AppBar` sometimes doesn't appear when scrolling up ([#2348](https://github.com/marmelab/react-admin/pull/2348)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix outdated reference to `DeleteButton` in `EditActions` documentation ([#2347](https://github.com/marmelab/react-admin/pull/2347)) ([swrobel](https://github.com/swrobel))
+* Add new Turkish translation ([#2349](https://github.com/marmelab/react-admin/pull/2349)) ([KamilGunduz](https://github.com/KamilGunduz))
+
 ## v2.3.2
 
 * Fix `<RichTextInput>` link tooltip z-index ([#2345](https://github.com/marmelab/react-admin/pull/2345)) ([fzaninotto](https://github.com/fzaninotto))
