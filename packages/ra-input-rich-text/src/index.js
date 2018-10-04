@@ -66,7 +66,7 @@ export class RichTextInput extends Component {
         const { error, helperText = false } = this.props.meta;
         return (
             <FormControl
-                error={error}
+                error={error !== null && error != undefined}
                 fullWidth={this.props.fullWidth}
                 className="ra-rich-text-input"
             >
