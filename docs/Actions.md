@@ -343,7 +343,7 @@ React-admin can handle the following side effects metas:
 - `refresh`: Force a rerender of the current view (equivalent to pressing the Refresh button). Set to true to enable.
 - `unselectAll`: Unselect all lines in the current datagrid. Set to true to enable.
 - `callback`: Execute an arbitrary function. The meta value should be the function to execute. It receives the `requestPayload` and the response `payload`.
-- `basePath`: This is not a side effect, but it's used internaly to compute redirection paths. Set it when you have a redirection side effect.
+- `basePath`: This is not a side effect, but it's used internally to compute redirection paths. Set it when you have a redirection side effect.
 
 ## Success and Failure Side Effects
 

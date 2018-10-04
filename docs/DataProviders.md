@@ -209,7 +209,7 @@ const addUploadFeature = requestHandler => (type, resource, params) => {
                 }));
         }
     }
-    // for other request types and reources, fall back to the defautl request handler
+    // for other request types and resources, fall back to the default request handler
     return requestHandler(type, resource, params);
 };
 

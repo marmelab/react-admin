@@ -57,7 +57,7 @@ export default (type, params) => {
         const role = localStorage.getItem('role');
         return role ? Promise.resolve(role) : Promise.reject();
     }
-    return Promise.reject('Unkown method');
+    return Promise.reject('Unknown method');
 };
 ```
 {% endraw %}
