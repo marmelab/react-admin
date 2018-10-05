@@ -250,7 +250,14 @@ export class AutocompleteArrayInput extends React.Component {
                 error={touched && error}
                 helperText={touched && error && helperText}
                 chipRenderer={this.renderChip}
-                label={<FieldTitle label={label} />}
+                label={
+                    <FieldTitle
+                        label={label}
+                        source={source}
+                        resource={resource}
+                        isRequired={isRequired}
+                    />
+                }
                 {...other}
                 {...options}
             />
