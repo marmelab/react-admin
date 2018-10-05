@@ -386,9 +386,11 @@ const MyLayout = props => <Layout
 export default MyLayout;
 ```
 
+### UserMenu Customization
+
 You can replace the default user menu by your own by setting the `userMenu` prop of the `<AppBar>` component. For instance, to add custom menu items, just decorate the default `<UserMenu>` by adding children to it:
 
-```js
+```jsx
 import { AppBar, UserMenu, MenuItemLink } from 'react-admin';
 import SettingsIcon from '@material-ui/icons/Settings';
 
@@ -407,6 +409,53 @@ const MyAppBar = props => <AppBar {...props} userMenu={<MyUserMenu />} />;
 const MyLayout = props => <Layout {...props} appBar={MyAppBar} />;
 ```
 
+You can also customize the default icon by setting the `icon` prop to the `<UserMenu />` component.
+
+``` jsx
+import AccountBox from '@material-ui/icons/AccountBox';
+
+const MyAppBar = props => <AppBar {...props} userMenu={<MyUserMenu icon={<AccountBox />}/>} />;
+```
+
+Event better, there is a way to write your own component using the `customIcon` prop.
+
+{% raw %}
+``` jsx
+import { AppBar, UserMenu } from 'react-admin';
+import { withStyles } from '@material-ui/core/styles';
+import IconButton from '@material-ui/core/IconButton';
+import Avatar from '@material-ui/core/Avatar';
+
+const myCustomIconStyle = {
+    avatar: {
+        height: 30,
+        width: 30,
+    },
+};
+
+const MyCustomIcon = withStyles(myCustomIconStyle)(
+    ({ classes, ...props }) => (
+        <IconButton {...props}>
+            <Avatar
+                className={classes.avatar}
+                src="https://marmelab.com/images/avatars/adrien.jpg"
+            />
+        </IconButton>
+    )
+);
+
+const MyUserMenu = props => (<UserMenu {...props} customIcon={<MyCustomIcon />} />);
+
+const MyAppBar = props => <AppBar {...props} userMenu={<MyUserMenu />} />;
+```
+{% endraw %}
+
+**Be careful**: You can't have `icon` and `customIcon` props at the same time. The `icon` prop will be ignored if both are defined.
+
+**Tip**: Don't forget to make your `customIcon` component clickable and to pass down props.
+
+### Sidebar Customization
+
 You can specify the `Sidebar` size by setting the `size` property:
 
 ```jsx
@@ -419,6 +468,8 @@ const MyLayout = props => <Layout
 />;
 
 ```
+
+### Layout From Scratch
 
 For more custom layouts, write a component from scratch. It must contain a `{children}` placeholder, where react-admin will render the resources. Use the [default layout](https://github.com/marmelab/react-admin/blob/master/src/mui/layout/Layout.js) as a starting point. Here is a simplified version (with no responsive support):
 
