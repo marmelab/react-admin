@@ -104,6 +104,7 @@ class Notification extends React.Component {
                         </Button>
                     ) : null
                 }
+                classes
                 {...rest}
             />
         );
