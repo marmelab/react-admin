@@ -71,7 +71,7 @@ class Notification extends React.Component {
             hideNotification,
             ...rest
         } = this.props;
-
+        const { warning, confirm, undo, ...snackbarClasses } = classses;
         return (
             <Snackbar
                 open={this.state.open}
@@ -104,6 +104,7 @@ class Notification extends React.Component {
                         </Button>
                     ) : null
                 }
+                classes={snackbarClasses}
                 {...rest}
             />
         );
