@@ -11,7 +11,6 @@ class UserMenu extends React.Component {
         children: PropTypes.node,
         label: PropTypes.string.isRequired,
         logout: PropTypes.node,
-        customIcon: PropTypes.node,
         icon: PropTypes.node,
         translate: PropTypes.func.isRequired,
     };
@@ -39,14 +38,7 @@ class UserMenu extends React.Component {
     };
 
     render() {
-        const {
-            children,
-            label,
-            customIcon,
-            icon,
-            logout,
-            translate,
-        } = this.props;
+        const { children, label, icon, logout, translate } = this.props;
         if (!logout && !children) return null;
         const { anchorEl } = this.state;
         const open = Boolean(anchorEl);
@@ -57,17 +49,13 @@ class UserMenu extends React.Component {
             'aria-haspopup': true,
             color: 'inherit',
             onClick: this.handleMenu,
-            children: !customIcon ? cloneElement(icon) : '',
+            children: cloneElement(icon),
         };
 
         return (
             <div>
                 <Tooltip title={label && translate(label, { _: label })}>
-                    {customIcon ? (
-                        cloneElement(customIcon, menuIconProps)
-                    ) : (
-                        <IconButton {...menuIconProps} />
-                    )}
+                    <IconButton {...menuIconProps} />
                 </Tooltip>
                 <Menu
                     id="menu-appbar"
