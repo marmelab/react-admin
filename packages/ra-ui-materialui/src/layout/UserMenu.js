@@ -43,19 +43,18 @@ class UserMenu extends React.Component {
         const { anchorEl } = this.state;
         const open = Boolean(anchorEl);
 
-        const menuIconProps = {
-            'arial-label': label && translate(label, { _: label }),
-            'aria-owns': open ? 'menu-appbar' : null,
-            'aria-haspopup': true,
-            color: 'inherit',
-            onClick: this.handleMenu,
-            children: cloneElement(icon),
-        };
-
         return (
             <div>
                 <Tooltip title={label && translate(label, { _: label })}>
-                    <IconButton {...menuIconProps} />
+                    <IconButton
+                        arial-label={label && translate(label, { _: label })}
+                        aria-owns={open ? 'menu-appbar' : null}
+                        aria-haspopup={true}
+                        color="inherit"
+                        onClick={this.handleMenu}
+                    >
+                        {icon && cloneElement(icon)}
+                    </IconButton>
                 </Tooltip>
                 <Menu
                     id="menu-appbar"
