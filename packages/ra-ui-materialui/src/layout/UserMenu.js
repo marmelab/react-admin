@@ -53,7 +53,7 @@ class UserMenu extends React.Component {
                         color="inherit"
                         onClick={this.handleMenu}
                     >
-                        {icon && cloneElement(icon)}
+                        {icon}
                     </IconButton>
                 </Tooltip>
                 <Menu
