@@ -2,15 +2,15 @@
 
 ## v2.3.4
 
-* Fix double asterix on required RadioButtonGroupInput  ([2417](https://github.com/marmelab/react-admin/pull/2417) ([fzaninotto](https://github.com/fzaninotto))
-* Fix autocomplete content overflow not visible ([2415](https://github.com/marmelab/react-admin/pull/2415) ([fzaninotto](https://github.com/fzaninotto))
-* Fix GraphQL introspection issue with Apollo cache ([2411](https://github.com/marmelab/react-admin/pull/2411) ([audunhalland](https://github.com/audunhalland))
-* Fixed typo for aria attribute in `<Button>` components ([2408](https://github.com/marmelab/react-admin/pull/2408) ([pastparty](https://github.com/pastparty))
-* Fix and translate `<AutocompleteArrayInput>` label ([2392](https://github.com/marmelab/react-admin/pull/2392) ([djhi](https://github.com/djhi))
-* Fix missing index for `<AutocompleteArrayInput>` documentation ([2393](https://github.com/marmelab/react-admin/pull/2393) ([djhi](https://github.com/djhi))
-* Fix various documentation spelling & grammar errors ([2390](https://github.com/marmelab/react-admin/pull/2390) ([civilizedgorilla](https://github.com/civilizedgorilla))Approved
-* Add mention of `ra-jsonapi-client` Data Provider in documentation ([2386](https://github.com/marmelab/react-admin/pull/2386) ([henvo](https://github.com/henvo))
-* Fix `<SelectArrayInput>` error style ([2377](https://github.com/marmelab/react-admin/pull/2377) ([djhi](https://github.com/djhi))
+* Fix double asterix on required RadioButtonGroupInput  ([2417](https://github.com/marmelab/react-admin/pull/2417)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix autocomplete content overflow not visible ([2415](https://github.com/marmelab/react-admin/pull/2415)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix GraphQL introspection issue with Apollo cache ([2411](https://github.com/marmelab/react-admin/pull/2411)) ([audunhalland](https://github.com/audunhalland))
+* Fixed typo for aria attribute in `<Button>` components ([2408](https://github.com/marmelab/react-admin/pull/2408)) ([pastparty](https://github.com/pastparty))
+* Fix and translate `<AutocompleteArrayInput>` label ([2392](https://github.com/marmelab/react-admin/pull/2392)) ([djhi](https://github.com/djhi))
+* Fix missing index for `<AutocompleteArrayInput>` documentation ([2393](https://github.com/marmelab/react-admin/pull/2393)) ([djhi](https://github.com/djhi))
+* Fix various documentation spelling & grammar errors ([2390](https://github.com/marmelab/react-admin/pull/2390)) ([civilizedgorilla](https://github.com/civilizedgorilla))
+* Add mention of `ra-jsonapi-client` Data Provider in documentation ([2386](https://github.com/marmelab/react-admin/pull/2386)) ([henvo](https://github.com/henvo))
+* Fix `<SelectArrayInput>` error style ([2377](https://github.com/marmelab/react-admin/pull/2377)) ([djhi](https://github.com/djhi))
 
 ## v2.3.3
 
