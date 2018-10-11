@@ -5,7 +5,7 @@ title: "My First Project Tutorial"
 
 # React-Admin Tutorial
 
-This 15 minutes tutorial will expose how to create a new admin app based on an existing REST API.
+This 20 minutes tutorial will expose how to create a new admin app based on an existing REST API.
 
 <video width="800" height="600" controls>
   <source src="http://static.marmelab.com/react-admin/react-admin.mp4" type="video/mp4">
@@ -88,12 +88,12 @@ const App = () => (
 
 **Tip**: We'll define the `<PostList>` component in the next section.
 
-The line `<Resource name="posts" />` informs react-admin to fetch the "posts" records from the [http://jsonplaceholder.typicode.com/posts](http://jsonplaceholder.typicode.com/posts) URL.
+The line `<Resource name="posts" />` informs react-admin to fetch the "posts" records from the [http://jsonplaceholder.typicode.com/posts](http://jsonplaceholder.typicode.com/posts) URL. `<Resource>` also defines the React components to use for each CRUD operation (`list`, `create`, `edit`, and `show`). The `list={PostList}` prop means that react-admin should use the `<PostList>` component to display the list of posts. 
 
 
 ## Displaying A List Of Records
 
-`<Resource>` also defines the React components to use for each CRUD operation (`list`, `create`, `edit`, and `show`). The `list={PostList}` prop means that react-admin should use the `<PostList>` component to display the list of posts. Create that component as follows:
+Let's create this `PostList` component, in a new file named `posts.js`:
 
 ```jsx
 // in src/posts.js
@@ -199,6 +199,8 @@ UrlField.propTypes = {
 
 export default UrlField;
 ```
+
+We won't be using this component, but it illustrates how straightforward custom Field components are.
 
 ## Handling Relationships
 
@@ -328,7 +330,7 @@ The form rendered in the create and edit pages is already functional. It issues 
 
 **Note**: JSONPlaceholder is a read-only API; although it seems to accept `POST` and `PUT` requests, it doesn't take into account the creations and edits - that's why, in this particular case, you will see errors after creation, and you won't see your edits after you save them. It's just an artifact of JSONPlaceholder.
 
-React-admin uses *optimistic rendering*. That means that, when you edit a record and hit the "Save" button, the UI displays a confirmation and displays the updated data *before sending the update query to server*. Not only does this make the interface ultra fast, it also allows the "Undo" feature. It's already functional in the admin at that point. Try editing a record, then hit the "Undo" link in the black confirmation bar before it slides out. You'll see that the app does not send the `UPDATE` query to the API, and displays the non-modified data.
+React-admin uses *optimistic rendering*. That means that, when you edit a record and hit the "Save" button, the UI shows a confirmation and displays the updated data *before sending the update query to server*. Not only does this make the interface ultra fast, it also allows the "Undo" feature. It's already functional in the admin at that point. Try editing a record, then hit the "Undo" link in the black confirmation box before it slides out. You'll see that the app does not send the `UPDATE` query to the API, and displays the non-modified data.
 
 **Note**: When you add the ability to edit an item, you also add the ability to delete it. The "Delete" button in the edit view is fully working out of the box.
 
@@ -547,6 +549,74 @@ export const PostList = (props) => (
 This works exactly the way you expect. The lesson here is that react-admin takes care of responsive web design for the layout, but it's your job to use `<Responsive>` in pages.
 
 ![Responsive List](./img/responsive-list.gif)
+
+## Bootstrapping a CRUD Using Guessers
+
+As you've seen, adding new screens to a react-admin app starts by selecting Field and Input components based on the type of data returned by the API. React-admin can help you with that, and bootstrap a CRUD for you entirely based on the data returned by the API.
+
+To illustrate that, let's add a new `Resource` to the application, based on the `comments` endpoint. Only this time, we won't define a `CommentList` by hand, but we'll let react-admin guess it using `ListGuesser`:
+
+```jsx
+// in src/App.js
+import { Admin, Resource, ListGuesser } from 'react-admin';
+
+const App = () => (
+    <Admin dataProvider={dataProvider}>
+        // ...
+        <Resource name="comments" list={ListGuesser} />
+    </Admin>
+);
+```
+
+Now click on the new Comments menu. The list shows a datagrid with columns for post, id, name, email and body. `<ListGuesser>` even guessed the types of the fields to use, and dumped the code to the console.
+
+![Guessed List](./img/guessed-list.png)
+
+Now you just need to copy that code into a `comments.js` file, add the missing `import`s from react-admin, and replace the `ListGuesser` with the new `CommentList`:
+
+```jsx
+// in src/comments.js
+import React from 'react';
+import {
+    List,
+    Datagrid,
+    TextField,
+    ReferenceField,
+    EmailField,
+} from 'react-admin';
+
+export const CommentList = props => (
+    <List {...props}>
+        <Datagrid rowClick="edit">
+            <ReferenceField source="postId" reference="posts">
+                <TextField source="id" />
+            </ReferenceField>
+            <TextField source="id" />
+            <TextField source="name" />
+            <EmailField source="email" />
+            <TextField source="body" />
+        </Datagrid>
+    </List>
+);
+
+// in src/App.js
+import { Admin, Resource } from 'react-admin';
+// ...
+import { CommentList } from './comments';
+
+const App = () => (
+    <Admin dataProvider={dataProvider}>
+        // ...
+        <Resource name="comments" list={CommentList} />
+    </Admin>
+);
+```
+
+That's typical of a development workflow with react-admin: start with a `Guesser`, copy/paste the code from the console to a custom component, then customize the view by reordering fields, renaming them, changing the types, etc.
+
+React-admin provides guessers for the `List` view (`ListGuesser`), the `Edit` view (`EditGuesser`), and the `Show` view (`ShowGuesser`).
+
+**Tip**: Do not use the guessers in production. They are slower than manually-defined components, because they have to infer types based on the content. Besides, the guesses are not always perfect.
 
 ## Connecting To A Real API
 

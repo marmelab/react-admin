@@ -109,6 +109,7 @@ ReferenceFieldController.defaultProps = {
 
 const mapStateToProps = (state, props) => ({
     referenceRecord:
+        state.admin.resources[props.reference] &&
         state.admin.resources[props.reference].data[
             get(props.record, props.source)
         ],

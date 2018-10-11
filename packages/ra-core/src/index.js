@@ -2,6 +2,7 @@ export * from './dataFetchActions';
 export * from './actions';
 export * from './auth';
 export * from './i18n';
+export * from './inference';
 export * from './util';
 export * from './controller';
 export * from './form';

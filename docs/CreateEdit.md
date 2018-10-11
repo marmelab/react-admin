@@ -248,6 +248,31 @@ However, this will only work if the post ids are typed as strings in the store. 
 
 So prefer `location.state` instead of `location.search` when you can, or use custom selection components.
 
+## The `<EditGuesser>` component
+
+Instead of a custom `Edit`, you can use the `EditGuesser` to determine which inputs to use based on the data returned by the API.
+
+```jsx
+// in src/App.js
+import React from 'react';
+import { Admin, Resource, EditGuesser } from 'react-admin';
+import jsonServerProvider from 'ra-data-json-server';
+
+const App = () => (
+    <Admin dataProvider={jsonServerProvider('http://jsonplaceholder.typicode.com')}>
+        <Resource name="posts" edit={EditGuesser} />
+    </Admin>
+);
+```
+
+Just like `Edit`, `EditGuesser` fetches the data. It then analyzes the response, and guesses the inputs it should use to display a basic form with the data. It also dumps the components it has guessed in the console, where you can copy it into your own code. Use this feature to quickly bootstrap an `Edit` on top of an existing API, without adding the inputs one by one.
+
+![Guessed Edit](./img/guessed-edit.png)
+
+React-admin provides guessers for the `List` view (`ListGuesser`), the `Edit` view (`EditGuesser`), and the `Show` view (`ShowGuesser`).
+
+**Tip**: Do not use the guessers in production. They are slower than manually-defined components, because they have to infer types based on the content. Besides, the guesses are not always perfect.
+
 ## The `<SimpleForm>` component
 
 The `<SimpleForm>` component receives the `record` as prop from its parent component. It is responsible for rendering the actual form. It is also responsible for validating the form data. Finally, it receives a `handleSubmit` function as prop, to be called with the updated record as argument when the user submits the form.

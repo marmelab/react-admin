@@ -9,7 +9,7 @@ import DefaultActions from './ShowActions';
 import TitleForRecord from '../layout/TitleForRecord';
 import CardContentInner from '../layout/CardContentInner';
 
-const styles = {
+export const styles = {
     root: {
         display: 'flex',
     },
@@ -63,6 +63,9 @@ export const ShowView = ({
 }) => {
     if (typeof actions === 'undefined' && hasEdit) {
         actions = <DefaultActions />;
+    }
+    if (!children) {
+        return null;
     }
     return (
         <div
