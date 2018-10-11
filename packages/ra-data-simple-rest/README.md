@@ -99,6 +99,13 @@ const httpClient = (url, options = {}) => {
 
 Now all the requests to the REST API will contain the `Authorization: SRTRDFVESGNJYTUKTYTHRG` header.
 
+**Note**: In case of REST verb "CREATE" consider that the response body is the same as the request body but with the object ID injected .
+```
+case CREATE:
+return { data: { ...params.data, id: json.id } };
+```
+This is because of backwards compatibility compliance.
+
 ## License
 
 This data provider is licensed under the MIT License, and sponsored by [marmelab](http://marmelab.com).

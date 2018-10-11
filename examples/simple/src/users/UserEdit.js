@@ -10,10 +10,12 @@ import {
     TextInput,
     required,
 } from 'react-admin';
+
 import UserTitle from './UserTitle';
+import Aside from './Aside';
 
 const UserEdit = ({ permissions, ...props }) => (
-    <Edit title={<UserTitle />} {...props}>
+    <Edit title={<UserTitle />} aside={<Aside />} {...props}>
         <TabbedForm defaultValue={{ role: 'user' }}>
             <FormTab label="user.form.summary" path="">
                 {permissions === 'admin' && <DisabledInput source="id" />}

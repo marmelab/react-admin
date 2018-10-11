@@ -11,11 +11,13 @@ class UserMenu extends React.Component {
         children: PropTypes.node,
         label: PropTypes.string.isRequired,
         logout: PropTypes.node,
+        icon: PropTypes.node,
         translate: PropTypes.func.isRequired,
     };
 
     static defaultProps = {
         label: 'ra.auth.user_menu',
+        icon: <AccountCircle />,
     };
 
     state = {
@@ -36,7 +38,7 @@ class UserMenu extends React.Component {
     };
 
     render() {
-        const { children, label, logout, translate } = this.props;
+        const { children, label, icon, logout, translate } = this.props;
         if (!logout && !children) return null;
         const { anchorEl } = this.state;
         const open = Boolean(anchorEl);
@@ -47,11 +49,11 @@ class UserMenu extends React.Component {
                     <IconButton
                         aria-label={label && translate(label, { _: label })}
                         aria-owns={open ? 'menu-appbar' : null}
-                        aria-haspopup="true"
-                        onClick={this.handleMenu}
+                        aria-haspopup={true}
                         color="inherit"
+                        onClick={this.handleMenu}
                     >
-                        <AccountCircle />
+                        {icon}
                     </IconButton>
                 </Tooltip>
                 <Menu

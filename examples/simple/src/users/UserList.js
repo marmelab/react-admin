@@ -17,6 +17,8 @@ import {
 } from 'react-admin';
 export const UserIcon = PeopleIcon;
 
+import Aside from './Aside';
+
 const UserFilter = ({ permissions, ...props }) => (
     <Filter {...props}>
         <SearchInput source="q" alwaysOn />
@@ -31,6 +33,7 @@ const UserList = ({ permissions, ...props }) => (
         filters={<UserFilter permissions={permissions} />}
         filterDefaultValues={{ role: 'user' }}
         sort={{ field: 'name', order: 'ASC' }}
+        aside={<Aside />}
     >
         <Responsive
             small={
@@ -42,12 +45,10 @@ const UserList = ({ permissions, ...props }) => (
                 />
             }
             medium={
-                <Datagrid hover={false}>
+                <Datagrid rowClick="show">
                     <TextField source="id" />
                     <TextField source="name" />
                     {permissions === 'admin' && <TextField source="role" />}
-                    <EditButton />
-                    <ShowButton />
                 </Datagrid>
             }
         />

@@ -1,11 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Card from '@material-ui/core/Card';
+import { withStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
 import { CreateController } from 'ra-core';
 
 import TitleForRecord from '../layout/TitleForRecord';
 import CardContentInner from '../layout/CardContentInner';
+
+const styles = {
+    root: {
+        display: 'flex',
+    },
+    card: {
+        flex: '1 1 auto',
+    },
+};
 
 const sanitizeRestProps = ({
     actions,
@@ -31,8 +41,10 @@ const sanitizeRestProps = ({
 
 export const CreateView = ({
     actions,
+    aside,
     basePath,
     children,
+    classes,
     className,
     defaultTitle,
     hasList,
@@ -45,7 +57,7 @@ export const CreateView = ({
     ...rest
 }) => (
     <div
-        className={classnames('create-page', className)}
+        className={classnames('create-page', classes.root, className)}
         {...sanitizeRestProps(rest)}
     >
         <TitleForRecord
@@ -53,7 +65,7 @@ export const CreateView = ({
             record={record}
             defaultTitle={defaultTitle}
         />
-        <Card>
+        <Card className={classes.card}>
             {actions && (
                 <CardContentInner>
                     {React.cloneElement(actions, {
@@ -74,13 +86,22 @@ export const CreateView = ({
                 save,
             })}
         </Card>
+        {aside &&
+            React.cloneElement(aside, {
+                basePath,
+                record,
+                resource,
+                save,
+            })}
     </div>
 );
 
 CreateView.propTypes = {
     actions: PropTypes.element,
+    aside: PropTypes.node,
     basePath: PropTypes.string,
     children: PropTypes.element,
+    classes: PropTypes.object,
     className: PropTypes.string,
     defaultTitle: PropTypes.any,
     hasList: PropTypes.bool,
@@ -90,6 +111,10 @@ CreateView.propTypes = {
     resource: PropTypes.string,
     save: PropTypes.func,
     title: PropTypes.any,
+};
+
+CreateView.defaultProps = {
+    classes: {},
 };
 
 /**
@@ -133,7 +158,7 @@ CreateView.propTypes = {
  *     );
  *     export default App;
  */
-const Create = props => (
+export const Create = props => (
     <CreateController {...props}>
         {controllerProps => <CreateView {...props} {...controllerProps} />}
     </CreateController>
@@ -141,7 +166,9 @@ const Create = props => (
 
 Create.propTypes = {
     actions: PropTypes.element,
+    aside: PropTypes.node,
     children: PropTypes.element,
+    classes: PropTypes.object,
     className: PropTypes.string,
     hasCreate: PropTypes.bool,
     hasEdit: PropTypes.bool,
@@ -152,4 +179,4 @@ Create.propTypes = {
     hasList: PropTypes.bool,
 };
 
-export default Create;
+export default withStyles(styles)(Create);

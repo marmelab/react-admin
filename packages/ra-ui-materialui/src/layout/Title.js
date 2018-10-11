@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
-import { translate } from 'ra-core';
+import { translate, warning } from 'ra-core';
 
 const Title = ({
     className,
@@ -13,9 +13,8 @@ const Title = ({
 }) => {
     const container = document.getElementById('react-admin-title');
     if (!container) return null;
-    if (!defaultTitle && !title && process.env.NODE_ENV !== 'production') {
-        console.warn('Missing title prop in <Title> element'); //eslint-disable-line no-console
-    }
+    warning(!defaultTitle && !title, 'Missing title prop in <Title> element');
+
     const titleElement = !title ? (
         <span className={className} {...rest}>
             {defaultTitle}

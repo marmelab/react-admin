@@ -45,22 +45,29 @@ const Button = ({
 }) => (
     <Responsive
         small={
-            <Tooltip title={label && translate(label, { _: label })}>
-                <IconButton
-                    aria-label={label && translate(label, { _: label })}
-                    className={className}
-                    color={color}
-                    {...rest}
-                >
+            label ? (
+                <Tooltip title={translate(label, { _: label })}>
+                    <IconButton
+                        aria-label={translate(label, { _: label })}
+                        className={className}
+                        color={color}
+                        {...rest}
+                    >
+                        {children}
+                    </IconButton>
+                </Tooltip>
+            ) : (
+                <IconButton className={className} color={color} {...rest}>
                     {children}
                 </IconButton>
-            </Tooltip>
+            )
         }
         medium={
             <MuiButton
                 className={classnames(classes.button, className)}
                 color={color}
                 size={size}
+                aria-label={label ? translate(label, { _: label }) : undefined}
                 {...rest}
             >
                 {alignIcon === 'left' &&
@@ -68,14 +75,16 @@ const Button = ({
                     React.cloneElement(children, {
                         className: classes[`${size}Icon`],
                     })}
-                <span
-                    className={classnames({
-                        [classes.label]: alignIcon === 'left',
-                        [classes.labelRightIcon]: alignIcon !== 'left',
-                    })}
-                >
-                    {label && translate(label, { _: label })}
-                </span>
+                {label && (
+                    <span
+                        className={classnames({
+                            [classes.label]: alignIcon === 'left',
+                            [classes.labelRightIcon]: alignIcon !== 'left',
+                        })}
+                    >
+                        {translate(label, { _: label })}
+                    </span>
+                )}
                 {alignIcon === 'right' &&
                     children &&
                     React.cloneElement(children, {

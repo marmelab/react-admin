@@ -15,6 +15,7 @@ export class BooleanInput extends Component {
     render() {
         const {
             className,
+            id,
             input,
             isRequired,
             label,
@@ -29,8 +30,10 @@ export class BooleanInput extends Component {
         return (
             <FormGroup className={className} {...sanitizeRestProps(rest)}>
                 <FormControlLabel
+                    htmlFor={id}
                     control={
                         <Switch
+                            id={id}
                             color="primary"
                             checked={!!value}
                             onChange={this.handleChange}
@@ -54,6 +57,7 @@ export class BooleanInput extends Component {
 
 BooleanInput.propTypes = {
     className: PropTypes.string,
+    id: PropTypes.string,
     input: PropTypes.object,
     isRequired: PropTypes.bool,
     label: PropTypes.string,

@@ -2,10 +2,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Show, Tab, TabbedShowLayout, TextField } from 'react-admin'; // eslint-disable-line import/no-unresolved
+
 import UserTitle from './UserTitle';
+import Aside from './Aside';
 
 const UserShow = ({ permissions, ...props }) => (
-    <Show title={<UserTitle />} {...props}>
+    <Show title={<UserTitle />} aside={<Aside />} {...props}>
         <TabbedShowLayout>
             <Tab label="user.form.summary">
                 <TextField source="id" />
