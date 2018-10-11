@@ -32,6 +32,7 @@ export const crudGetMatchingAccumulate = (
             accumulateValues: () => true,
             accumulateKey: JSON.stringify({
                 resource: reference,
+                relatedTo: relatedTo,
                 ...action.payload,
             }),
         },

@@ -26,6 +26,10 @@ const styles = theme => ({
         marginBottom: theme.spacing.unit * 3,
         zIndex: 2,
     },
+    suggestionsPaper: {
+        maxHeight: '50vh',
+        overflowY: 'auto',
+    },
     suggestion: {
         display: 'block',
         fontFamily: theme.typography.fontFamily,
@@ -325,6 +329,7 @@ export class AutocompleteInput extends React.Component {
             containerProps: { className, ...containerProps },
             children,
         } = options;
+        const { classes = {} } = this.props;
 
         return (
             <Popper
@@ -333,7 +338,11 @@ export class AutocompleteInput extends React.Component {
                 anchorEl={this.inputEl}
                 placement="bottom-start"
             >
-                <Paper square {...containerProps}>
+                <Paper
+                    square
+                    className={classes.suggestionsPaper}
+                    {...containerProps}
+                >
                     {children}
                 </Paper>
             </Popper>

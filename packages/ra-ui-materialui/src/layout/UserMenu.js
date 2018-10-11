@@ -47,7 +47,7 @@ class UserMenu extends React.Component {
             <div>
                 <Tooltip title={label && translate(label, { _: label })}>
                     <IconButton
-                        arial-label={label && translate(label, { _: label })}
+                        aria-label={label && translate(label, { _: label })}
                         aria-owns={open ? 'menu-appbar' : null}
                         aria-haspopup={true}
                         color="inherit"

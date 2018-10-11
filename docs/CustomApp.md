@@ -66,8 +66,8 @@ export default ({
         compose(
             applyMiddleware(
                 sagaMiddleware,
-                routerMiddleware(history),
                 formMiddleware,
+                routerMiddleware(history),
                 // add your own middlewares here
             ),
             typeof window !== 'undefined' && window.devToolsExtension
@@ -142,7 +142,7 @@ export default App;
 
 ## Not Using the `<Admin>` Components
 
-The `<Admin>` component takes care of defining the store (unless you provide one, as seen above), of setting the Translation and Authentication contexts, and of bootstrapping the Router. In case you need to override any of these, you can use your own component instead of `<Admin>`. 
+The `<Admin>` component takes care of defining the store (unless you provide one, as seen above), of setting the Translation and Authentication contexts, and of bootstrapping the Router. In case you need to override any of these, you can use your own component instead of `<Admin>`.
 
 Here is the main code for bootstrapping a barebones react-admin application without `<Admin>`:
 

@@ -33,6 +33,7 @@ export default async (client, options) => {
         ? options.schema
         : await client
               .query({
+                  fetchPolicy: 'network-only',
                   query: gql`
                       ${introspectionQuery}
                   `,

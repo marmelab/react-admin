@@ -112,7 +112,7 @@ const App = () => (
 
 ## `catchAll`
 
-When users type URLs that don't match any of the children `<Resource>` components, they see a default "Not Found" page. 
+When users type URLs that don't match any of the children `<Resource>` components, they see a default "Not Found" page.
 
 ![Not Found](./img/not-found.png)
 
@@ -169,14 +169,14 @@ import Responsive from '../layout/Responsive';
 const Menu = ({ resources, onMenuClick, logout }) => (
     <div>
         {resources.map(resource => (
-            <MenuItemLink 
+            <MenuItemLink
                 to={`/${resource.name}`}
                 primaryText={resource.name}
                 leftIcon={createElement(resource.icon)}
                 onClick={onMenuClick}
             />
         ))}
-        <MenuItemLink 
+        <MenuItemLink
             to="/custom-route"
             primaryText="Miscellaneous"
             leftIcon={<LabelIcon />}
@@ -266,7 +266,7 @@ import MyAppBar from './MyAppBar';
 import MyMenu from './MyMenu';
 import MyNotification from './MyNotification';
 
-const MyLayout = (props) => <Layout 
+const MyLayout = (props) => <Layout
     {...props}
     appBar={MyAppBar}
     menu={MyMenu}

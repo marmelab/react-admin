@@ -123,7 +123,7 @@ export class SimpleFormIterator extends Component {
                                     {index + 1}
                                 </Typography>
                                 <section className={classes.form}>
-                                    {Children.map(children, (input, index) => (
+                                    {Children.map(children, (input, index2) => (
                                         <FormInput
                                             basePath={
                                                 input.props.basePath || basePath
@@ -136,7 +136,7 @@ export class SimpleFormIterator extends Component {
                                                     : member,
                                                 index: input.props.source
                                                     ? undefined
-                                                    : index,
+                                                    : index2,
                                                 label:
                                                     input.props.label ||
                                                     input.props.source,

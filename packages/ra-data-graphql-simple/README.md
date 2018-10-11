@@ -84,7 +84,7 @@ type Mutation {
     views: Int!
     user_id: ID!
   ): Post
-  deletePost(id: ID!): Boolean
+  deletePost(id: ID!): Post
 }
 
 type Post {

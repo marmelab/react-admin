@@ -64,7 +64,7 @@ Then you can display a text input to edit the author first name as follows:
 
 ## `<ArrayInput>`
 
-To edit arrays of data embedded inside a record, `<ArrayInput>` creates a list of sub-forms. 
+To edit arrays of data embedded inside a record, `<ArrayInput>` creates a list of sub-forms.
 
 ```jsx
 import { ArrayInput, SimpleFormIterator, DateInput, TextInput } from 'react-admin';
@@ -162,17 +162,17 @@ However, in some cases (e.g. inside a `<ReferenceInput>`), you may not want the 
 <AutocompleteInput source="gender" choices={choices} translateChoice={false}/>
 ```
 
-By default the component matches choices with the current input searchText: if it finds a match, this choice will be selected. For example, given the choices `[{ id: 'M', name: 'Male', id: 'F', name: 'Female' }]`, when the user enters the text `male`, then the component will set the input value to `M`. If you need to change how choices are matched, pass a custom function as `inputValueMatcher` prop. For example, given the choices: `[{id:1,iso2:'NL',name:'Dutch'},{id:2,iso2:'EN',name:'English'},{id:3,iso2:'FR',name:'French'}]`, if you want to match choices on the iso2 code, you can create the following `inputValueMatcher` function: 
+By default the component matches choices with the current input searchText: if it finds a match, this choice will be selected. For example, given the choices `[{ id: 'M', name: 'Male', id: 'F', name: 'Female' }]`, when the user enters the text `male`, then the component will set the input value to `M`. If you need to change how choices are matched, pass a custom function as `inputValueMatcher` prop. For example, given the choices: `[{id:1,iso2:'NL',name:'Dutch'},{id:2,iso2:'EN',name:'English'},{id:3,iso2:'FR',name:'French'}]`, if you want to match choices on the iso2 code, you can create the following `inputValueMatcher` function:
 
 ```javascript
 <AutocompleteInput inputValueMatcher={
-    (input, suggestion, getOptionText) => 
-        input.toUpperCase().trim() === suggestion.iso2 || 
+    (input, suggestion, getOptionText) =>
+        input.toUpperCase().trim() === suggestion.iso2 ||
         input.toLowerCase().trim() === getOptionText(suggestion).toLowerCase().trim()
 }/>
 ```
 
-If you want to limit the initial choices shown to the current value only, you can set the `limitChoicesToValue` prop.  
+If you want to limit the initial choices shown to the current value only, you can set the `limitChoicesToValue` prop.
 
 Lastly, `<AutocompleteInput>` renders a material-ui `<TextField>` component. Use the `options` attribute to override any of the `<TextField>` attributes:
 
@@ -262,17 +262,17 @@ However, in some cases (e.g. inside a `<ReferenceInput>`), you may not want the 
 <AutocompleteArrayInput source="gender" choices={choices} translateChoice={false}/>
 ```
 
-By default the component matches choices with the current input searchText. For example, given the choices `[{ id: 'M', name: 'Male', id: 'F', name: 'Female' }]`, when the user enters the text `male`, then the component will set the input value to `M`. If you need to change how choices are matched, pass a custom function as `inputValueMatcher` prop. For example, given the choices: `[{id:1,iso2:'NL',name:'Dutch'},{id:2,iso2:'EN',name:'English'},{id:3,iso2:'FR',name:'French'}]`, if you want to match choices on the iso2 code, you can create the following `inputValueMatcher` function: 
+By default the component matches choices with the current input searchText. For example, given the choices `[{ id: 'M', name: 'Male', id: 'F', name: 'Female' }]`, when the user enters the text `male`, then the component will set the input value to `M`. If you need to change how choices are matched, pass a custom function as `inputValueMatcher` prop. For example, given the choices: `[{id:1,iso2:'NL',name:'Dutch'},{id:2,iso2:'EN',name:'English'},{id:3,iso2:'FR',name:'French'}]`, if you want to match choices on the iso2 code, you can create the following `inputValueMatcher` function:
 
 ```javascript
 <AutocompleteArrayInput inputValueMatcher={
-    (input, suggestion, getOptionText) => 
-        input.toUpperCase().trim() === suggestion.iso2 || 
+    (input, suggestion, getOptionText) =>
+        input.toUpperCase().trim() === suggestion.iso2 ||
         input.toLowerCase().trim() === getOptionText(suggestion).toLowerCase().trim()
 }/>
 ```
 
-If you want to limit the initial choices shown to the current value only, you can set the `limitChoicesToValue` prop.  
+If you want to limit the initial choices shown to the current value only, you can set the `limitChoicesToValue` prop.
 
 Lastly, `<AutocompleteArrayInput>` renders a [material-ui-chip-input](https://github.com/TeamWertarbyte/material-ui-chip-input) component. Use the `options` attribute to override any of the `<ChipInput>` attributes:
 
@@ -308,7 +308,7 @@ import { AutocompleteArrayInput, ReferenceArrayInput } from 'react-admin'
 | `allowEmpty` | Optional | `boolean` | `false` | If `false` and the searchText typed did not match any suggestion, the searchText will revert to the current value when the field is blurred. If `true` and the `searchText` is set to `''` then the field will set the input value to `null`. |
 | `inputValueMatcher` | Optional | `Function` | `(input, suggestion, getOptionText) => input.toLowerCase().trim() === getOptionText(suggestion).toLowerCase().trim()` | Allows to define how choices are matched with the searchText while typing.    |
 | `optionValue` | Optional | `string` | `id` | Fieldname of record containing the value to use as input value  |
-| `optionText` | Optional | <code>string &#124; Function</code> | `name` | Fieldname of record to display in the suggestion item or function which accepts the currect record as argument (`(record)=> {string}`) |
+| `optionText` | Optional | <code>string &#124; Function</code> | `name` | Fieldname of record to display in the suggestion item or function which accepts the current record as argument (`(record)=> {string}`) |
 | `setFilter` | Optional | `Function` | null | A callback to inform the `searchText` has changed and new `choices` can be retrieved based on this `searchText`. Signature `searchText => void`. This function is automatically setup when using `ReferenceInput`.  |
 | `suggestionComponent` | Optional | Function | `({ suggestion, query, isHighlighted, props }) => <div {...props} />` | Allows to override how the item is rendered.  |
 
@@ -527,7 +527,7 @@ Previews are enabled using `<ImageInput>` children, as following:
 
 Writing a custom field component for displaying the current value(s) is easy:  it's a standard [field](./Fields.md#writing_your_own_field_component).
 
-When receiving **new** files, `ImageInput` will add a `rawFile` property to the object passed as the `record` prop of children. This `rawFile` is the [File](https://developer.mozilla.org/en-US/docs/Web/API/File) instance of the newly added file. This can be useful to display informations about size or mimetype inside a custom field.
+When receiving **new** files, `ImageInput` will add a `rawFile` property to the object passed as the `record` prop of children. This `rawFile` is the [File](https://developer.mozilla.org/en-US/docs/Web/API/File) instance of the newly added file. This can be useful to display information about size or mimetype inside a custom field.
 
 The `ImageInput` component accepts an `options` prop into which you can pass all the [react-dropzone properties](https://react-dropzone.netlify.com/#proptypes). However, some of the most useful props should be passed **directly** on the `ImageInput`: `maxSize`, `minSize`, `multiple`.
 
@@ -557,7 +557,7 @@ Previews (actually a simple list of files names) are enabled using `<FileInput>`
 
 Writing a custom field component for displaying the current value(s) is easy:  it's a standard [field](./Fields.md#writing_your_own_field_component).
 
-When receiving **new** files, `FileInput` will add a `rawFile` property to the object passed as the `record` prop of children. This `rawFile` is the [File](https://developer.mozilla.org/en-US/docs/Web/API/File) instance of the newly added file. This can be useful to display informations about size or mimetype inside a custom field.
+When receiving **new** files, `FileInput` will add a `rawFile` property to the object passed as the `record` prop of children. This `rawFile` is the [File](https://developer.mozilla.org/en-US/docs/Web/API/File) instance of the newly added file. This can be useful to display information about size or mimetype inside a custom field.
 
 The `FileInput` component accepts an `options` prop into which you can pass all the [react-dropzone properties](https://react-dropzone.netlify.com/#proptypes). However, some of the most useful props should be passed **directly** on the `FileInput`: `maxSize`, `minSize`, `multiple`.
 
@@ -699,7 +699,7 @@ import { RadioButtonGroupInput, ReferenceInput } from 'react-admin'
 
 Use `<ReferenceArrayInput>` to edit an array of reference values, i.e. to let users choose a list of values (usually foreign keys) from another REST endpoint.
 
-`<ReferenceArrayInput>` fetches the related resources (using the `CRUD_GET_MANY` REST method) as well as possible resources (using the 
+`<ReferenceArrayInput>` fetches the related resources (using the `CRUD_GET_MANY` REST method) as well as possible resources (using the
 `CRUD_GET_MATCHING` REST method) in the reference endpoint.
 
 For instance, if the post object has many tags, a post resource may look like:
@@ -1397,7 +1397,7 @@ const OrderEdit = (props) => (
             <SelectInput source="country" choices={countries} />
             <FormDataConsumer>
                 {({ formData, ...rest }) =>
-                     <SelectInput 
+                     <SelectInput
                          source="city"
                          choices={getCitiesFor(formData.country)}
                          {...rest}
@@ -1406,7 +1406,7 @@ const OrderEdit = (props) => (
             </FormDataConsumer>
         </SimpleForm>
     </Edit>
-); 
+);
 ```
 
 **Tip**: When using a `FormDataConsumer` inside an `ArrayInput`, the `FormDataConsumer` will provide two additional properties to its children function:
@@ -1467,5 +1467,5 @@ import { FormDataConsumer } from 'react-admin';
              </FormDataConsumer>
          </SimpleForm>
      </Edit>
- ); 
+ );
 ```

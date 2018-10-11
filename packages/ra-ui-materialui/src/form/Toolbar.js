@@ -66,7 +66,7 @@ const Toolbar = ({
                     submitOnEnter={submitOnEnter}
                 />
                 {record &&
-                    record.id && (
+                    typeof record.id !== 'undefined' && (
                         <DeleteButton
                             basePath={basePath}
                             record={record}

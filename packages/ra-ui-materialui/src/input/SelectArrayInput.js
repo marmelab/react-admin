@@ -194,6 +194,7 @@ export class SelectArrayInput extends Component {
             <FormControl
                 margin="normal"
                 className={classnames(classes.root, className)}
+                error={!!(touched && error)}
                 {...sanitizeRestProps(rest)}
             >
                 <InputLabel htmlFor={source}>

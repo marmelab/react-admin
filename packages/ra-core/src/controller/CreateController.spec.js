@@ -47,12 +47,14 @@ describe('CreateController', () => {
             const props = {
                 ...defaultProps,
                 children: childrenMock,
-                location: { search: '?foo=baz' },
+                location: { search: '?foo=baz&array[]=1&array[]=2' },
             };
 
             shallow(<CreateController {...props} />);
             expect(childrenMock).toHaveBeenCalledWith(
-                expect.objectContaining({ record: { foo: 'baz' } })
+                expect.objectContaining({
+                    record: { foo: 'baz', array: ['1', '2'] },
+                })
             );
         });
 

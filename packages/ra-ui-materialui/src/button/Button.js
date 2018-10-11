@@ -48,7 +48,7 @@ const Button = ({
             label ? (
                 <Tooltip title={translate(label, { _: label })}>
                     <IconButton
-                        arial-label={translate(label, { _: label })}
+                        aria-label={translate(label, { _: label })}
                         className={className}
                         color={color}
                         {...rest}

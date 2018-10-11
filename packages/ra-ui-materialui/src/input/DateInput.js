@@ -20,11 +20,17 @@ const dateFormatter = v => {
     return `${yyyy}-${(pad + MM).slice(-2)}-${(pad + dd).slice(-2)}`;
 };
 
+const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+
 const sanitizeValue = value => {
     // null, undefined and empty string values should not go through dateFormatter
     // otherwise, it returns undefined and will make the input an uncontrolled one.
     if (value == null || value === '') {
         return '';
+    }
+    // valid dates should not be converted
+    if (dateRegex.test(value)) {
+        return value;
     }
 
     const finalValue = typeof value instanceof Date ? value : new Date(value);
@@ -79,7 +85,6 @@ export class DateInput extends Component {
                 {...sanitizeRestProps(rest)}
                 value={value}
                 onChange={this.onChange}
-                onBlur={this.onBlur}
             />
         );
     }

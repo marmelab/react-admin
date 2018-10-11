@@ -905,7 +905,7 @@ export const UserList = (props) => (
 
 ## Adding Label To Custom Field Components In The Show View
 
-React-admin lets you use the same Field components in the List view and in the Show view. But if you use the `<FullNameField>` custom field component defined earlier in a Show view, something is missing: the Field label. Why do other fields have a label and not this custom Field? And how can you create a Field component that has a label in the Show view, but not in the List view? 
+React-admin lets you use the same Field components in the List view and in the Show view. But if you use the `<FullNameField>` custom field component defined earlier in a Show view, something is missing: the Field label. Why do other fields have a label and not this custom Field? And how can you create a Field component that has a label in the Show view, but not in the List view?
 
 React-admin uses a trick: the Show view layouts (`<SimpleShowLayout>` and `<TabbedShowLayout>`) inspect their Field children, and whenever one has the `addLabel` prop set to `true`, the layout adds a label.
 
@@ -927,8 +927,8 @@ For such cases, you can use the custom field approach: use the injected `record`
 import React from 'react';
 import { EmailField } from 'react-admin';
 
-const ConditionalEmailField = ({ record, ...rest }) => 
-    record && record.hasEmail 
+const ConditionalEmailField = ({ record, ...rest }) =>
+    record && record.hasEmail
         ? <EmailField source="email" record={record} {...rest} />
         : null;
 
@@ -945,8 +945,8 @@ One solution is to add the label manually in the custom component:
 import React from 'react';
 import { Labeled, EmailField } from 'react-admin';
 
-const ConditionalEmailField = ({ record, ...rest }) => 
-    record && record.hasEmail 
+const ConditionalEmailField = ({ record, ...rest }) =>
+    record && record.hasEmail
         ? (
             <Labeled label="Email">
                 <EmailField source="email" record={record} {...rest} />
@@ -992,7 +992,7 @@ import { ShowController, ShowView, SimpleShowLayout, TextField } from 'react-adm
 
 const UserShow = props => (
     <ShowController {...props}>
-        {controllerProps => 
+        {controllerProps =>
             <ShowView {...props} {...controllerProps}>
                 <SimpleShowLayout>
                     <TextField source="username" />
@@ -1011,11 +1011,11 @@ import { ShowController, ShowView, SimpleShowLayout, TextField } from 'react-adm
 
 const UserShow = props => (
     <ShowController {...props}>
-        {controllerProps => 
+        {controllerProps =>
             <ShowView {...props} {...controllerProps}>
                 <SimpleShowLayout>
                     <TextField source="username" />
-                    {controllerProps.record && controllerProps.record.hasEmail && 
+                    {controllerProps.record && controllerProps.record.hasEmail &&
                         <TextField source="email" />
                     }
                 </SimpleShowLayout>

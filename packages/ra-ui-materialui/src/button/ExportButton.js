@@ -32,8 +32,13 @@ const sanitizeRestProps = ({
  */
 const fetchRelatedRecords = dispatch => (data, field, resource) =>
     new Promise((resolve, reject) => {
+        const sanitizedData = data
+            .filter(record => record[field])
+            .map(record => record[field]);
+
         // find unique keys
-        const ids = [...new Set(data.map(record => record[field]))];
+        const ids = [...new Set(sanitizedData)];
+
         dispatch({
             type: CRUD_GET_MANY,
             payload: { ids },

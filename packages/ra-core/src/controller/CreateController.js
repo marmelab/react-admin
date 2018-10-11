@@ -60,7 +60,7 @@ export class CreateController extends Component {
             state && state.record
                 ? state.record
                 : search
-                    ? parse(search)
+                    ? parse(search, { arrayFormat: 'bracket' })
                     : record;
     }
 
