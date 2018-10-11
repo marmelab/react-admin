@@ -329,7 +329,7 @@ export class AutocompleteInput extends React.Component {
             containerProps: { className, ...containerProps },
             children,
         } = options;
-        const { classes } = this.props;
+        const { classes = {} } = this.props;
 
         return (
             <Popper
