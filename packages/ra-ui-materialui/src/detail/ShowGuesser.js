@@ -31,7 +31,7 @@ export class ShowViewGuesser extends Component {
                 console.log(
                     `Guessed Show:
 
-const ${inflection.capitalize(
+export const ${inflection.capitalize(
                         inflection.singularize(resource)
                     )}Show = props => (
     <Show {...props}>

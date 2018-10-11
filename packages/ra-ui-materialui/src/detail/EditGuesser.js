@@ -31,7 +31,7 @@ export class EditViewGuesser extends Component {
                 console.log(
                     `Guessed Edit:
 
-const ${inflection.capitalize(
+export const ${inflection.capitalize(
                         inflection.singularize(resource)
                     )}Edit = props => (
     <Edit {...props}>

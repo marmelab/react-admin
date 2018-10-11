@@ -31,7 +31,7 @@ export class ListViewGuesser extends Component {
                 console.log(
                     `Guessed List:
 
-const ${inflection.capitalize(
+export const ${inflection.capitalize(
                         inflection.singularize(resource)
                     )}List = props => (
     <List {...props}>
