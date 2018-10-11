@@ -132,17 +132,11 @@ export class RadioButtonGroupInput extends Component {
         return (
             <FormControl
                 component="fieldset"
-                required={isRequired}
                 className={className}
                 margin="normal"
                 {...sanitizeRestProps(rest)}
             >
-                <InputLabel
-                    component="legend"
-                    shrink
-                    required={isRequired}
-                    className={classes.label}
-                >
+                <InputLabel component="legend" shrink className={classes.label}>
                     <FieldTitle
                         label={label}
                         source={source}
