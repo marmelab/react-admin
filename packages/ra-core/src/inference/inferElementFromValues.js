@@ -94,13 +94,42 @@ const inferElementFromValues = (name, values = [], types = defaultTypes) => {
             )
         );
     }
+    if (name.substr(name.length - 2) === 'Id' && hasType('reference', types)) {
+        const reference = inflection.pluralize(name.substr(0, name.length - 2));
+        return (
+            types.reference &&
+            new InferredElement(
+                types.reference,
+                {
+                    source: name,
+                    reference: reference,
+                },
+                new InferredElement(types.referenceChild)
+            )
+        );
+    }
     if (
         name.substr(name.length - 4) === '_ids' &&
         hasType('referenceArray', types)
     ) {
-        const reference = inflection.pluralize(
-            name.substr(0, name.length - 4) + 's'
+        const reference = inflection.pluralize(name.substr(0, name.length - 4));
+        return (
+            types.referenceArray &&
+            new InferredElement(
+                types.referenceArray,
+                {
+                    source: name,
+                    reference: reference,
+                },
+                new InferredElement(types.referenceArrayChild)
+            )
         );
+    }
+    if (
+        name.substr(name.length - 3) === 'Ids' &&
+        hasType('referenceArray', types)
+    ) {
+        const reference = inflection.pluralize(name.substr(0, name.length - 3));
         return (
             types.referenceArray &&
             new InferredElement(

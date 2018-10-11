@@ -55,6 +55,20 @@ describe('inferElementFromValues', () => {
             </Good>
         );
     });
+    it('should return a reference field for field named *Id', () => {
+        const types = {
+            reference: { component: Good },
+            string: { component: Bad },
+            referenceChild: { component: Dummy },
+        };
+        expect(
+            inferElementFromValues('fooId', ['foo', 'bar'], types).getElement()
+        ).toEqual(
+            <Good source="fooId" reference="foos">
+                <Dummy />
+            </Good>
+        );
+    });
     it('should return a reference array field for field named *_ids', () => {
         const types = {
             referenceArray: { component: Good },
@@ -69,6 +83,20 @@ describe('inferElementFromValues', () => {
             ).getElement()
         ).toEqual(
             <Good source="foo_ids" reference="foos">
+                <Dummy />
+            </Good>
+        );
+    });
+    it('should return a reference array field for field named *Ids', () => {
+        const types = {
+            referenceArray: { component: Good },
+            string: { component: Bad },
+            referenceArrayChild: { component: Dummy },
+        };
+        expect(
+            inferElementFromValues('fooIds', ['foo', 'bar'], types).getElement()
+        ).toEqual(
+            <Good source="fooIds" reference="foos">
                 <Dummy />
             </Good>
         );
