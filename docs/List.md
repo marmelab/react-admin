@@ -100,33 +100,35 @@ const PostActions = ({
     resource,
     selectedIds,
     showFilter
-}) => (
-    <CardActions>
-        {bulkActions && React.cloneElement(bulkActions, {
-            basePath,
-            filterValues,
-            resource,
-            selectedIds,
-            onUnselectItems,
-        })}
-        {filters && React.cloneElement(filters, {
-            resource,
-            showFilter,
-            displayedFilters,
-            filterValues,
-            context: 'button',
-        }) }
-        <CreateButton basePath={basePath} />
-        <ExportButton
-            resource={resource}
-            sort={currentSort}
-            filter={filterValues}
-            exporter={exporter}
-        />
-        <RefreshButton />
-        {/* Add your custom actions */}
-        <Button primary onClick={customAction}>Custom Action</Button>
-    </CardActions>
+}) => {
+    return (
+        <CardActions>
+            {bulkActions && React.cloneElement(bulkActions, {
+                basePath,
+                filterValues,
+                resource,
+                selectedIds,
+                onUnselectItems,
+            })}
+            {filters && React.cloneElement(filters, {
+                resource,
+                showFilter,
+                displayedFilters,
+                filterValues,
+                context: 'button',
+            }) }
+            <CreateButton basePath={basePath} />
+            <ExportButton
+                resource={resource}
+                sort={currentSort}
+                filter={filterValues}
+                exporter={exporter}
+            />
+            <RefreshButton />
+            {/* Add your custom actions */}
+            <Button primary onClick={customAction}>Custom Action</Button>
+        </CardActions>
+    )
 );
 
 export const PostList = (props) => (
