@@ -550,7 +550,7 @@ This works exactly the way you expect. The lesson here is that react-admin takes
 
 ![Responsive List](./img/responsive-list.gif)
 
-## Bootstrapping a CRUD Using View Guessers
+## Bootstrapping a CRUD Using Guessers
 
 As you've seen, adding new screens to a react-admin app starts by selecting Field and Input components based on the type of data returned by the API. React-admin can help you with that, and bootstrap a CRUD for you entirely based on the data returned by the API.
 
@@ -616,7 +616,7 @@ That's typical of a development workflow with react-admin: start with a `Guesser
 
 React-admin provides guessers for the `List` view (`ListGuesser`), the `Edit` view (`EditGuesser`), and the `Show` view (`ShowGuesser`).
 
-**Tip**: Do not use the guessers in produciton. They are slower than manually-defined components, because they have to infer types based on the content. Besides, the guesses are not always perfect.
+**Tip**: Do not use the guessers in production. They are slower than manually-defined components, because they have to infer types based on the content. Besides, the guesses are not always perfect.
 
 ## Connecting To A Real API
 

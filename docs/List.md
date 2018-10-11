@@ -66,8 +66,6 @@ That's enough to display the post list:
 
 ![Simple posts list](./img/simple-post-list.png)
 
-**Tip**: When it has no children, `List` fetches the data, analyzes the response, then guesses the fields it should use to display a basic datagrid with the data. It also dumps the components it has guessed in the console, where you can copy it into your own code. Use this feature to quickly bootstrap a `List` on top of an existing API, without adding the fields one by one.
-
 ### Page Title
 
 The default title for a list view is "[resource] list" (e.g. "Posts list"). Use the `title` prop to customize the List view title:
@@ -664,6 +662,31 @@ const PostList = ({ classes, ...props) => (
 export withStyles(styles)(PostList);
 ```
 {% endraw %}
+
+## The `<ListGuesser>` component
+
+Instead of a custom `List`, you can use the `ListGuesser` to determine which fields to use based on the data returned by the API.
+
+```jsx
+// in src/App.js
+import React from 'react';
+import { Admin, Resource, ListGuesser } from 'react-admin';
+import jsonServerProvider from 'ra-data-json-server';
+
+const App = () => (
+    <Admin dataProvider={jsonServerProvider('http://jsonplaceholder.typicode.com')}>
+        <Resource name="posts" list={ListGuesser} />
+    </Admin>
+);
+```
+
+Just like `List`, `ListGuesser` fetches the data. It then analyzes the response, and guesses the fields it should use to display a basic datagrid with the data. It also dumps the components it has guessed in the console, where you can copy it into your own code. Use this feature to quickly bootstrap a `List` on top of an existing API, without adding the fields one by one.
+
+![Guessed List](./img/guessed-list.png)
+
+React-admin provides guessers for the `List` view (`ListGuesser`), the `Edit` view (`EditGuesser`), and the `Show` view (`ShowGuesser`).
+
+**Tip**: Do not use the guessers in production. They are slower than manually-defined components, because they have to infer types based on the content. Besides, the guesses are not always perfect.
 
 ## The `<Datagrid>` component
 

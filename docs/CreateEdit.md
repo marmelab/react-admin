@@ -85,8 +85,6 @@ That's enough to display the post edit form:
 
  `<Create>` accepts a `record` prop, to initialize the form based on an value object.
 
-**Tip**: When it has no children, `Edit` fetches the data, analyzes the response, then guesses the inputs it should use to display a basic form with the data. It also dumps the components it has guessed in the console, where you can copy it into your own code. Use this feature to quickly bootstrap an `Edit` on top of an existing API, without adding the inputs one by one.
-
 ### Page Title
 
 By default, the title for the Create view is "Create [resource_name]", and the title for the Edit view is "Edit [resource_name] #[record_id]".
@@ -249,6 +247,31 @@ const CreateRelatedCommentButton = ({ record }) => (
 However, this will only work if the post ids are typed as strings in the store. That's because the query string `?post_id=123`, once deserialized, reads as `{ post_id: '123' }` and not `{ post_id: 123 }`. Since [the `<SelectInput>` uses strict equality to check the selected option](https://github.com/mui-org/material-ui/issues/12047) comparing the `post_id` `'123'` from the URL with values like `123` in the choices will fail.
 
 So prefer `location.state` instead of `location.search` when you can, or use custom selection components.
+
+## The `<EditGuesser>` component
+
+Instead of a custom `Edit`, you can use the `EditGuesser` to determine which inputs to use based on the data returned by the API.
+
+```jsx
+// in src/App.js
+import React from 'react';
+import { Admin, Resource, EditGuesser } from 'react-admin';
+import jsonServerProvider from 'ra-data-json-server';
+
+const App = () => (
+    <Admin dataProvider={jsonServerProvider('http://jsonplaceholder.typicode.com')}>
+        <Resource name="posts" edit={EditGuesser} />
+    </Admin>
+);
+```
+
+Just like `Edit`, `EditGuesser` fetches the data. It then analyzes the response, and guesses the inputs it should use to display a basic form with the data. It also dumps the components it has guessed in the console, where you can copy it into your own code. Use this feature to quickly bootstrap an `Edit` on top of an existing API, without adding the inputs one by one.
+
+![Guessed Edit](./img/guessed-edit.png)
+
+React-admin provides guessers for the `List` view (`ListGuesser`), the `Edit` view (`EditGuesser`), and the `Show` view (`ShowGuesser`).
+
+**Tip**: Do not use the guessers in production. They are slower than manually-defined components, because they have to infer types based on the content. Besides, the guesses are not always perfect.
 
 ## The `<SimpleForm>` component
 

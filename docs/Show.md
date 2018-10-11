@@ -59,8 +59,6 @@ That's enough to display the post show view:
 
 ![post show view](./img/post-show.png)
 
-**Tip**: When it has no children, `Show` fetches the data, analyzes the response, then guesses the fields it should use to display a basic page with the data. It also dumps the components it has guessed in the console, where you can copy it into your own code. Use this feature to quickly bootstrap a `Show` on top of an existing API, without adding the fields one by one.
-
 ### Page Title
 
 By default, the title for the Show view is "[resource_name] #[record_id]".
@@ -150,6 +148,31 @@ const Aside = ({ record }) => (
     </div>
 );
 ```
+
+## The `<ShowGuesser>` component
+
+Instead of a custom `Show`, you can use the `ShowGuesser` to determine which fields to use based on the data returned by the API.
+
+```jsx
+// in src/App.js
+import React from 'react';
+import { Admin, Resource, ShowGuesser } from 'react-admin';
+import jsonServerProvider from 'ra-data-json-server';
+
+const App = () => (
+    <Admin dataProvider={jsonServerProvider('http://jsonplaceholder.typicode.com')}>
+        <Resource name="posts" show={ShowGuesser} />
+    </Admin>
+);
+```
+
+Just like `Show`, `ShowGuesser` fetches the data. It then analyzes the response, and guesses the fields it should use to display a basic page with the data. It also dumps the components it has guessed in the console, where you can copy it into your own code. Use this feature to quickly bootstrap a `Show` on top of an existing API, without adding the inputs one by one.
+
+![Guessed Show](./img/guessed-show.png)
+
+React-admin provides guessers for the `List` view (`ListGuesser`), the `Edit` view (`EditGuesser`), and the `Show` view (`ShowGuesser`).
+
+**Tip**: Do not use the guessers in production. They are slower than manually-defined components, because they have to infer types based on the content. Besides, the guesses are not always perfect.
 
 ## The `<SimpleShowLayout>` component
 
