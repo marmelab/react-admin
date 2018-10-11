@@ -15,7 +15,7 @@ const TextField = ({ className, source, record = {}, ...rest }) => {
             className={className}
             {...sanitizeRestProps(rest)}
         >
-            {typeof value !== 'string' ? JSON.stringify(value) : value}
+            {value && typeof value !== 'string' ? JSON.stringify(value) : value}
         </Typography>
     );
 };
