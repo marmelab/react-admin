@@ -1,3 +1,6 @@
+import * as Link from './Link';
+import * as defaultTheme from './defaultTheme';
+
 export * from './auth';
 export * from './button';
 export * from './detail';
@@ -6,5 +9,4 @@ export * from './field';
 export * from './input';
 export * from './layout';
 export * from './list';
-export Link from './Link';
-export defaultTheme from './defaultTheme';
+export { Link, defaultTheme };

@@ -59,5 +59,8 @@
         "packages/*",
         "examples/*",
         "cypress"
-    ]
+    ],
+    "dependencies": {
+        "typescript": "^3.1.3"
+    }
 }

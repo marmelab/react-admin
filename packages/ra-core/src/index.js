@@ -1,3 +1,24 @@
+import * as createAppReducer from './reducer';
+import * as adminReducer from './reducer/admin';
+import * as i18nReducer from './reducer/i18n';
+import * as queryReducer from './reducer/admin/resource/list/queryReducer';
+import * as CoreAdmin from './CoreAdmin';
+import * as CoreAdminRouter from './CoreAdminRouter';
+import * as createAdminStore from './createAdminStore';
+import * as RoutesWithLayout from './RoutesWithLayout';
+import * as Resource from './Resource';
+
+export {
+    createAppReducer,
+    adminReducer,
+    i18nReducer,
+    queryReducer,
+    CoreAdmin,
+    CoreAdminRouter,
+    createAdminStore,
+    RoutesWithLayout,
+    Resource,
+};
 export * from './dataFetchActions';
 export * from './actions';
 export * from './auth';
@@ -6,7 +27,7 @@ export * from './inference';
 export * from './util';
 export * from './controller';
 export * from './form';
-export createAppReducer, {
+export {
     getResources,
     getReferenceResource,
     getLocale,
@@ -14,9 +35,6 @@ export createAppReducer, {
     getPossibleReferences,
     getPossibleReferenceValues,
 } from './reducer';
-export adminReducer from './reducer/admin';
-export i18nReducer from './reducer/i18n';
-export queryReducer from './reducer/admin/resource/list/queryReducer';
 
 export {
     getIds,
@@ -26,8 +44,3 @@ export {
 } from './reducer/admin/references/oneToMany';
 
 export * from './sideEffect';
-export CoreAdmin from './CoreAdmin';
-export CoreAdminRouter from './CoreAdminRouter';
-export createAdminStore from './createAdminStore';
-export RoutesWithLayout from './RoutesWithLayout';
-export Resource from './Resource';

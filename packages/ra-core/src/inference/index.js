@@ -1,2 +1,4 @@
-export getElementsFromRecords from './getElementsFromRecords';
-export InferredElement from './InferredElement';
+import * as getElementsFromRecords from './getElementsFromRecords';
+import * as InferredElement from './InferredElement';
+
+export { getElementsFromRecords, InferredElement };

@@ -85,7 +85,8 @@ build-data-generator:
 	@echo "Transpiling data-generator files...";
 	@cd ./examples/data-generator && yarn -s build && yarn -s build-esm
 
-build: build-ra-core build-ra-ui-materialui build-react-admin build-ra-data-fakerest build-ra-data-json-server build-ra-data-simple-rest build-ra-data-graphql build-ra-data-graphcool build-ra-data-graphql-simple build-ra-input-rich-text build-ra-realtime build-ra-tree-core build-ra-tree-ui-materialui build-data-generator ## compile ES6 files to JS
+build:  ## compile ES6 files to JS
+	@yarn -s build
 
 doc: ## compile doc as html and launch doc web server
 	@yarn -s doc
