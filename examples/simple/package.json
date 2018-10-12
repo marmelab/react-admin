@@ -13,17 +13,15 @@
     "author": "",
     "license": "MIT",
     "devDependencies": {
+        "@babel/cli": "^7.1.2",
+        "@babel/core": "^7.1.2",
+        "@babel/plugin-proposal-class-properties": "^7.1.0",
+        "@babel/plugin-syntax-dynamic-import": "^7.0.0",
+        "@babel/preset-env": "^7.1.0",
+        "@babel/preset-react": "^7.0.0",
         "@material-ui/core": "~1.4.0",
         "@material-ui/icons": "~1.1.0",
-        "babel-core": "~6.26.0",
-        "babel-loader": "~7.1.1",
-        "babel-plugin-dynamic-import-webpack": "~1.0.2",
-        "babel-plugin-syntax-trailing-function-commas": "~6.22.0",
-        "babel-plugin-transform-class-properties": "~6.24.1",
-        "babel-plugin-transform-object-rest-spread": "~6.26.0",
-        "babel-plugin-transform-react-jsx": "~6.24.1",
-        "babel-polyfill": "~6.26.0",
-        "babel-preset-react": "~6.24.1",
+        "babel-loader": "^8.0.4",
         "hard-source-webpack-plugin": "^0.11.2",
         "html-loader": "~0.5.5",
         "html-webpack-plugin": "~3.2.0",
@@ -32,9 +30,9 @@
         "ra-language-english": "^2.0.0",
         "ra-language-french": "^2.0.0",
         "ra-tree-core": "^2.0.0",
-        "ra-tree-ui-materialui": "^2.0.0",
         "ra-tree-language-english": "^2.0.0",
         "ra-tree-language-french": "^2.0.0",
+        "ra-tree-ui-materialui": "^2.0.0",
         "react": "~16.3.1",
         "react-admin": "^2.0.0",
         "react-dom": "~16.3.1",
@@ -44,5 +42,8 @@
         "webpack": "~4.5.0",
         "webpack-cli": "~2.0.13",
         "webpack-dev-server": "~3.1.1"
+    },
+    "dependencies": {
+        "@babel/polyfill": "^7.0.0"
     }
 }

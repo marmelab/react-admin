@@ -1,4 +1,3 @@
-import fetchUtils from './fetch';
 import downloadCSV from './downloadCSV';
 import FieldTitle from './FieldTitle';
 import getFetchedAt from './getFetchedAt';
@@ -9,6 +8,7 @@ import removeKey from './removeKey';
 import resolveRedirectTo from './resolveRedirectTo';
 import TestContext from './TestContext';
 import warning from './warning';
+import * as fetchUtils from './fetch';
 
 export {
     fetchUtils,
