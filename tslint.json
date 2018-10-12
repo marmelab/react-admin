@@ -1,7 +1,7 @@
 {
     "extends": ["tslint-react", "tslint:recommended", "tslint-config-prettier"],
     "linterOptions": {
-        "exclude": ["node_modules/**/*.ts"]
+        "exclude": ["node_modules/**/*.ts", "packages/*/lib", "packages/*/esm"]
     },
     "rulesDirectory": ["tslint-plugin-prettier"],
     "jsRules": {
