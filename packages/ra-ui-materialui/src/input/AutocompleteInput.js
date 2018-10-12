@@ -218,7 +218,6 @@ export class AutocompleteInput extends React.Component {
             choices.filter(it =>
                 inputValueMatcher(inputValue, it, this.getSuggestionText)
             );
-
         if (matches.length === 1) {
             const match = matches[0];
             const nextId = this.getSuggestionValue(match);
@@ -325,6 +324,7 @@ export class AutocompleteInput extends React.Component {
     };
 
     renderSuggestionsContainer = options => {
+
         const {
             containerProps: { className, ...containerProps },
             children,
@@ -440,6 +440,12 @@ export class AutocompleteInput extends React.Component {
         this.previousFilterValue = value;
     };
 
+    sliceSuggestions = suggestions => {
+      const { suggestionLimit } = this.props;
+
+      return suggestionLimit ? suggestions.slice(0, suggestionLimit) : suggestions;
+    }
+
     shouldRenderSuggestions = () => true;
 
     render() {
@@ -455,6 +461,7 @@ export class AutocompleteInput extends React.Component {
             options,
         } = this.props;
         const { suggestions, searchText } = this.state;
+        const slicedSuggestions = this.sliceSuggestions(suggestions);
 
         return (
             <Autosuggest
@@ -465,7 +472,7 @@ export class AutocompleteInput extends React.Component {
                     suggestion: classes.suggestion,
                 }}
                 renderInputComponent={this.renderInput}
-                suggestions={suggestions}
+                suggestions={slicedSuggestions}
                 alwaysRenderSuggestions={alwaysRenderSuggestions}
                 onSuggestionSelected={this.handleSuggestionSelected}
                 onSuggestionsFetchRequested={
@@ -520,6 +527,7 @@ AutocompleteInput.propTypes = {
     translate: PropTypes.func.isRequired,
     translateChoice: PropTypes.bool.isRequired,
     inputValueMatcher: PropTypes.func,
+    suggestionLimit: PropTypes.number,
 };
 
 AutocompleteInput.defaultProps = {
