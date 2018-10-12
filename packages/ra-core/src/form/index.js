@@ -1,8 +1,8 @@
-import * as addField from './addField';
-import * as FormDataConsumer from './FormDataConsumer';
-import * as FormField from './FormField';
-import * as getDefaultValues from './getDefaultValues';
-import * as withDefaultValue from './withDefaultValue';
+import addField from './addField';
+import FormDataConsumer from './FormDataConsumer';
+import FormField from './FormField';
+import getDefaultValues from './getDefaultValues';
+import withDefaultValue from './withDefaultValue';
 
 export {
     addField,

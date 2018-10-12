@@ -1,14 +1,14 @@
-import * as adminSaga from './admin';
-import * as authSaga from './auth';
-import * as callbackSaga from './callback';
-import * as fetchSaga from './fetch';
-import * as errorSaga from './error';
-import * as notificationSaga from './notification';
-import * as redirectionSaga from './redirection';
-import * as accumulateSaga from './accumulate';
-import * as refreshSaga from './refresh';
-import * as i18nSaga from './i18n';
-import * as undoSaga from './undo';
+import adminSaga from './admin';
+import authSaga from './auth';
+import callbackSaga from './callback';
+import fetchSaga from './fetch';
+import errorSaga from './error';
+import notificationSaga from './notification';
+import redirectionSaga from './redirection';
+import accumulateSaga from './accumulate';
+import refreshSaga from './refresh';
+import i18nSaga from './i18n';
+import undoSaga from './undo';
 
 export {
     adminSaga,

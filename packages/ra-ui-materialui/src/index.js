@@ -1,5 +1,5 @@
-import * as Link from './Link';
-import * as defaultTheme from './defaultTheme';
+import Link from './Link';
+import defaultTheme from './defaultTheme';
 
 export * from './auth';
 export * from './button';

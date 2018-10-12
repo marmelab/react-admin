@@ -1,5 +1,5 @@
-import * as Login from './Login';
-import * as LoginForm from './LoginForm';
-import * as Logout from './Logout';
+import Login from './Login';
+import LoginForm from './LoginForm';
+import Logout from './Logout';
 
 export { Login, LoginForm, Logout };

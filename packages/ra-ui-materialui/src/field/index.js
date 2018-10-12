@@ -1,19 +1,19 @@
-import * as ArrayField from './ArrayField';
-import * as BooleanField from './BooleanField';
-import * as ChipField from './ChipField';
-import * as DateField from './DateField';
-import * as EmailField from './EmailField';
-import * as FileField from './FileField';
-import * as ImageField from './ImageField';
-import * as FunctionField from './FunctionField';
-import * as NumberField from './NumberField';
-import * as ReferenceField from './ReferenceField';
-import * as ReferenceArrayField from './ReferenceArrayField';
-import * as ReferenceManyField from './ReferenceManyField';
-import * as RichTextField from './RichTextField';
-import * as SelectField from './SelectField';
-import * as TextField from './TextField';
-import * as UrlField from './UrlField';
+import ArrayField from './ArrayField';
+import BooleanField from './BooleanField';
+import ChipField from './ChipField';
+import DateField from './DateField';
+import EmailField from './EmailField';
+import FileField from './FileField';
+import ImageField from './ImageField';
+import FunctionField from './FunctionField';
+import NumberField from './NumberField';
+import ReferenceField from './ReferenceField';
+import ReferenceArrayField from './ReferenceArrayField';
+import ReferenceManyField from './ReferenceManyField';
+import RichTextField from './RichTextField';
+import SelectField from './SelectField';
+import TextField from './TextField';
+import UrlField from './UrlField';
 
 export {
     ArrayField,

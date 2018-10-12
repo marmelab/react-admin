@@ -1,15 +1,15 @@
-import * as BulkDeleteButton from './BulkDeleteButton';
-import * as Button from './Button';
-import * as CloneButton from './CloneButton';
-import * as CreateButton from './CreateButton';
-import * as DeleteButton from './DeleteButton';
-import * as EditButton from './EditButton';
-import * as ExportButton from './ExportButton';
-import * as ListButton from './ListButton';
-import * as SaveButton from './SaveButton';
-import * as ShowButton from './ShowButton';
-import * as RefreshButton from './RefreshButton';
-import * as RefreshIconButton from './RefreshIconButton';
+import BulkDeleteButton from './BulkDeleteButton';
+import Button from './Button';
+import CloneButton from './CloneButton';
+import CreateButton from './CreateButton';
+import DeleteButton from './DeleteButton';
+import EditButton from './EditButton';
+import ExportButton from './ExportButton';
+import ListButton from './ListButton';
+import SaveButton from './SaveButton';
+import ShowButton from './ShowButton';
+import RefreshButton from './RefreshButton';
+import RefreshIconButton from './RefreshIconButton';
 
 export {
     BulkDeleteButton,

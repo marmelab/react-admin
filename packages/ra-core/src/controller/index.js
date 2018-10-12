@@ -2,10 +2,10 @@ import {
     getListControllerProps,
     sanitizeListRestProps,
 } from './ListController';
-import * as CreateController from './CreateController';
-import * as EditController from './EditController';
-import * as ListController from './ListController';
-import * as ShowController from './ShowController';
+import CreateController from './CreateController';
+import EditController from './EditController';
+import ListController from './ListController';
+import ShowController from './ShowController';
 export {
     getListControllerProps,
     sanitizeListRestProps,

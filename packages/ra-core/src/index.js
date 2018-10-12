@@ -1,12 +1,12 @@
-import * as createAppReducer from './reducer';
-import * as adminReducer from './reducer/admin';
-import * as i18nReducer from './reducer/i18n';
-import * as queryReducer from './reducer/admin/resource/list/queryReducer';
-import * as CoreAdmin from './CoreAdmin';
-import * as CoreAdminRouter from './CoreAdminRouter';
-import * as createAdminStore from './createAdminStore';
-import * as RoutesWithLayout from './RoutesWithLayout';
-import * as Resource from './Resource';
+import createAppReducer from './reducer';
+import adminReducer from './reducer/admin';
+import i18nReducer from './reducer/i18n';
+import queryReducer from './reducer/admin/resource/list/queryReducer';
+import CoreAdmin from './CoreAdmin';
+import CoreAdminRouter from './CoreAdminRouter';
+import createAdminStore from './createAdminStore';
+import RoutesWithLayout from './RoutesWithLayout';
+import Resource from './Resource';
 
 export {
     createAppReducer,

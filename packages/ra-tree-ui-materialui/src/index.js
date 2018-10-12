@@ -1,8 +1,8 @@
-import * as DragPreview from './DragPreview';
-import * as IgnoreFormProps from './IgnoreFormProps';
-import * as NodeActions from './NodeActions';
-import * as NodeView from './NodeView';
-import * as NodeForm from './NodeForm';
-import * as Tree from './Tree';
+import DragPreview from './DragPreview';
+import IgnoreFormProps from './IgnoreFormProps';
+import NodeActions from './NodeActions';
+import NodeView from './NodeView';
+import NodeForm from './NodeForm';
+import Tree from './Tree';
 export { DragPreview, IgnoreFormProps, NodeActions, NodeView, NodeForm, Tree };
 export * from 'ra-tree-core';

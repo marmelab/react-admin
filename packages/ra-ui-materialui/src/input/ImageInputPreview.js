@@ -1,2 +1,2 @@
-import * as FileInputPreview from './FileInputPreview';
+import FileInputPreview from './FileInputPreview';
 export default FileInputPreview;

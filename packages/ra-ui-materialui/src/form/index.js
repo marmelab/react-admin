@@ -1,9 +1,9 @@
-import * as FormInput from './FormInput';
-import * as FormTab from './FormTab';
-import * as SimpleForm from './SimpleForm';
-import * as SimpleFormIterator from './SimpleFormIterator';
-import * as TabbedForm from './TabbedForm';
-import * as Toolbar from './Toolbar';
+import FormInput from './FormInput';
+import FormTab from './FormTab';
+import SimpleForm from './SimpleForm';
+import SimpleFormIterator from './SimpleFormIterator';
+import TabbedForm from './TabbedForm';
+import Toolbar from './Toolbar';
 
 export {
     FormInput,
