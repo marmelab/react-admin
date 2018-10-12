@@ -9,7 +9,13 @@ import {
     CRUD_UPDATE_FAILURE,
 } from '../../actions';
 
-export default (previousState = false, { type, meta }) => {
+interface Action {
+    type: string;
+    meta?: any;
+    payload?: any;
+}
+
+export default (previousState = false, { type, meta }: Action) => {
     switch (type) {
         case CRUD_CREATE:
         case CRUD_UPDATE:

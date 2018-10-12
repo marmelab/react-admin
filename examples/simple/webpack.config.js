@@ -25,6 +25,7 @@ module.exports = {
         new HardSourceWebpackPlugin(),
     ],
     resolve: {
+        extensions: ['.ts', '.js', '.tsx', '.json'],
         alias: {
             'ra-core': path.join(
                 __dirname,
