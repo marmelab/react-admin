@@ -92,7 +92,7 @@ doc: ## compile doc as html and launch doc web server
 
 lint: ## lint the code and check coding conventions
 	@echo "Running linter..."
-	@yarn -s lint
+	@yarn -s tslint 'packages/*/src/**/*.*s'
 
 prettier: ## prettify the source code using prettier
 	@echo "Running prettier..."

@@ -31,43 +31,44 @@ export const required = memoize((message = 'ra.validation.required') =>
             isEmpty(value)
                 ? getMessage(message, undefined, value, values, props)
                 : undefined,
-        { isRequired: true }
-    )
+        { isRequired: true },
+    ),
 );
 
 export const minLength = memoize(
     (min, message = 'ra.validation.minLength') => (value, values, props) =>
         !isEmpty(value) && value.length < min
             ? getMessage(message, { min }, value, values, props)
-            : undefined
+            : undefined,
 );
 
 export const maxLength = memoize(
     (max, message = 'ra.validation.maxLength') => (value, values, props) =>
         !isEmpty(value) && value.length > max
             ? getMessage(message, { max }, value, values, props)
-            : undefined
+            : undefined,
 );
 
 export const minValue = memoize(
     (min, message = 'ra.validation.minValue') => (value, values, props) =>
         !isEmpty(value) && value < min
             ? getMessage(message, { min }, value, values, props)
-            : undefined
+            : undefined,
 );
 
 export const maxValue = memoize(
     (max, message = 'ra.validation.maxValue') => (value, values, props) =>
         !isEmpty(value) && value > max
             ? getMessage(message, { max }, value, values, props)
-            : undefined
+            : undefined,
 );
 
+// tslint:disable-next-line:variable-name
 export const number = memoize(
     (message = 'ra.validation.number') => (value, values, props) =>
         !isEmpty(value) && isNaN(Number(value))
             ? getMessage(message, undefined, value, values, props)
-            : undefined
+            : undefined,
 );
 
 export const regex = lodashMemoize(
@@ -77,11 +78,11 @@ export const regex = lodashMemoize(
             : undefined,
     (pattern, message) => {
         return pattern.toString() + message;
-    }
+    },
 );
 
 export const email = memoize((message = 'ra.validation.email') =>
-    regex(EMAIL_REGEX, message)
+    regex(EMAIL_REGEX, message),
 );
 
 const oneOfTypeMessage = ({ list }, value, values, { translate }) => {
@@ -94,5 +95,5 @@ export const choices = memoize(
     (list, message = oneOfTypeMessage) => (value, values, props) =>
         !isEmpty(value) && list.indexOf(value) === -1
             ? getMessage(message, { list }, value, values, props)
-            : undefined
+            : undefined,
 );
