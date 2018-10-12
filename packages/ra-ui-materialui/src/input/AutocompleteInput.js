@@ -324,7 +324,6 @@ export class AutocompleteInput extends React.Component {
     };
 
     renderSuggestionsContainer = options => {
-
         const {
             containerProps: { className, ...containerProps },
             children,
@@ -441,10 +440,12 @@ export class AutocompleteInput extends React.Component {
     };
 
     sliceSuggestions = suggestions => {
-      const { suggestionLimit } = this.props;
+        const { suggestionLimit } = this.props;
 
-      return suggestionLimit ? suggestions.slice(0, suggestionLimit) : suggestions;
-    }
+        return suggestionLimit
+            ? suggestions.slice(0, suggestionLimit)
+            : suggestions;
+    };
 
     shouldRenderSuggestions = () => true;
 
