@@ -533,7 +533,7 @@ Note that the image upload returns a [File](https://developer.mozilla.org/en/doc
 
 ![FileInput](./img/file-input.png)
 
-Previews (actually a simple list of files names) are enabled using `<FileInput>` children, as following:
+Previews (actually a simple list of files names) are enabled using `<FileField>` children, as following:
 
 ```jsx
 <FileInput source="files" label="Related files" accept="application/pdf">
