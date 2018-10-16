@@ -50,7 +50,6 @@
         "react-dnd-touch-backend": "^0.5.1"
     },
     "devDependencies": {
-        "babel-cli": "~6.26.0",
         "cross-env": "^5.2.0",
         "rimraf": "^2.6.2"
     }

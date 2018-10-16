@@ -26,7 +26,6 @@
         "watch": "rimraf ./lib && tsc --watch"
     },
     "devDependencies": {
-        "babel-cli": "~6.26.0",
         "cross-env": "^5.2.0",
         "rimraf": "^2.6.2"
     },

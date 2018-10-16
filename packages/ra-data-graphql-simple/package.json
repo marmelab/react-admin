@@ -43,7 +43,6 @@
         "react-admin": "^2.3.4"
     },
     "devDependencies": {
-        "babel-cli": "~6.26.0",
         "cross-env": "^5.2.0",
         "graphql": "^0.13.2",
         "react-admin": "^2.3.4",

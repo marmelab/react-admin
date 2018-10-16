@@ -26,7 +26,6 @@
         "watch": "rimraf ./lib && tsc --watch"
     },
     "devDependencies": {
-        "babel-cli": "~6.26.0",
         "cross-env": "^5.2.0",
         "enzyme": "~3.3.0",
         "enzyme-adapter-react-16": "~1.1.1",
@@ -41,7 +40,6 @@
         "react-dom": "~16.0.0 || ~16.1.0 || ~16.2.0 || ~16.3.0"
     },
     "dependencies": {
-        "babel-runtime": "~6.26.0",
         "classnames": "~2.2.5",
         "date-fns": "^1.29.0",
         "inflection": "~1.12.0",

@@ -41,7 +41,6 @@
         "redux-saga": "~0.16.0"
     },
     "devDependencies": {
-        "babel-cli": "~6.26.0",
         "cross-env": "^5.2.0",
         "react-admin": "^2.3.4",
         "react-router": "~4.2.0",
