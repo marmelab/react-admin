@@ -21,7 +21,15 @@
     },
     "jest": {
         "setupTestFrameworkScriptFile": "./test-setup.js",
-        "preset": "ts-jest/presets/js-with-ts"
+        "preset": "ts-jest/presets/js-with-ts",
+        "testPathIgnorePatterns": [
+            "/node_modules/",
+            "/lib/",
+            "/esm/"
+        ],
+        "transformIgnorePatterns": [
+            "[/\\\\]node_modules[/\\\\].+\\.(js|jsx|mjs|ts|tsx)$"
+        ]
     },
     "devDependencies": {
         "@types/jest": "^23.3.5",
