@@ -51,7 +51,7 @@
         "papaparse": "^4.1.4",
         "prop-types": "~15.6.1",
         "ra-core": "^2.3.3",
-        "react-autosuggest": "^9.3.2",
+        "react-autosuggest": "^9.4.2",
         "react-dropzone": "~4.0.1",
         "react-headroom": "^2.2.4",
         "react-redux": "~5.0.7",
