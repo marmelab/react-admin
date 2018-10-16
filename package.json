@@ -20,9 +20,13 @@
         "run-graphcool-demo": "yarn run -s build && cd examples/graphcool-demo && yarn -s start"
     },
     "jest": {
-        "setupTestFrameworkScriptFile": "./test-setup.js"
+        "setupTestFrameworkScriptFile": "./test-setup.js",
+        "preset": "ts-jest/presets/js-with-ts"
     },
     "devDependencies": {
+        "@types/jest": "^23.3.5",
+        "@types/react": "^16.4.16",
+        "@types/recompose": "^0.27.0",
         "babel-cli": "~6.26.0",
         "babel-core": "~6.26.3",
         "babel-eslint": "~8.2.2",
@@ -41,12 +45,13 @@
         "cross-env": "^5.2.0",
         "express": "~4.16.3",
         "full-icu": "~1.2.1",
-        "jest": "20.0.4",
+        "jest": "^23.6.0",
         "lerna": "~2.9.1",
         "lolex": "~2.3.2",
         "prettier": "~1.13.7",
         "prettier-eslint-cli": "~4.7.1",
         "raf": "~3.4.0",
+        "ts-jest": "^23.10.4",
         "tslint": "^5.11.0",
         "tslint-config-prettier": "^1.15.0",
         "tslint-plugin-prettier": "^2.0.0",
