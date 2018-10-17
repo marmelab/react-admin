@@ -1,6 +1,6 @@
 {
     "name": "ra-data-fakerest",
-    "version": "2.3.0",
+    "version": "2.4.0-0",
     "description": "JSON Server data provider for react-admin",
     "main": "lib/index.js",
     "module": "esm/index.js",
