@@ -32,6 +32,8 @@ TextField.propTypes = {
     source: PropTypes.string.isRequired,
 };
 
+// wat? TypeScript looses the displayName if we don't set it explicitly
+TextField.displayName = 'TextField';
 const PureTextField = pure(TextField);
 
 PureTextField.defaultProps = {

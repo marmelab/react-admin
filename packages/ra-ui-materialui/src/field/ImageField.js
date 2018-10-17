@@ -83,4 +83,7 @@ ImageField.propTypes = {
     title: PropTypes.string,
 };
 
+// wat? TypeScript looses the displayName if we don't set it explicitly
+ImageField.displayName = 'ImageField';
+
 export default withStyles(styles)(ImageField);

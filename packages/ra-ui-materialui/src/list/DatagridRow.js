@@ -129,6 +129,9 @@ DatagridRow.defaultProps = {
     selected: false,
 };
 
+// wat? TypeScript looses the displayName if we don't set it explicitly
+DatagridRow.displayName = 'DatagridRow';
+
 export default connect(
     null,
     { push }
