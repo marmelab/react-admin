@@ -31,6 +31,7 @@ export class FileInput extends Component {
         classes: PropTypes.object,
         className: PropTypes.string,
         disableClick: PropTypes.bool,
+        id: PropTypes.string,
         input: PropTypes.object,
         isRequired: PropTypes.bool,
         label: PropTypes.string,
@@ -150,6 +151,7 @@ export class FileInput extends Component {
             classes = {},
             className,
             disableClick,
+            id,
             isRequired,
             label,
             maxSize,
@@ -157,12 +159,13 @@ export class FileInput extends Component {
             multiple,
             resource,
             source,
-            options,
+            options = {},
             ...rest
         } = this.props;
 
         return (
             <Labeled
+                id={id}
                 label={label}
                 className={classnames(classes.root, className)}
                 source={source}
@@ -180,6 +183,7 @@ export class FileInput extends Component {
                         multiple={multiple}
                         className={classes.dropZone}
                         {...options}
+                        inputProps={{ id, ...options.inputProps }}
                     >
                         {this.label()}
                     </Dropzone>

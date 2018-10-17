@@ -1,9 +1,31 @@
-export Create, { CreateView } from './Create';
-export CreateActions from './CreateActions';
-export Edit, { EditView } from './Edit';
-export EditActions from './EditActions';
-export Show, { ShowView } from './Show';
-export ShowActions from './ShowActions';
-export SimpleShowLayout from './SimpleShowLayout';
-export TabbedShowLayout from './TabbedShowLayout';
-export Tab from './Tab';
+import Create from './Create';
+import { CreateView } from './Create';
+import CreateActions from './CreateActions';
+import Edit from './Edit';
+import { EditView } from './Edit';
+import EditActions from './EditActions';
+import EditGuesser from './EditGuesser';
+import Show from './Show';
+import { ShowView } from './Show';
+import ShowActions from './ShowActions';
+import ShowGuesser from './ShowGuesser';
+import SimpleShowLayout from './SimpleShowLayout';
+import TabbedShowLayout from './TabbedShowLayout';
+import Tab from './Tab';
+
+export {
+    Create,
+    CreateView,
+    CreateActions,
+    Edit,
+    EditView,
+    EditActions,
+    EditGuesser,
+    Show,
+    ShowView,
+    ShowActions,
+    ShowGuesser,
+    SimpleShowLayout,
+    TabbedShowLayout,
+    Tab,
+};

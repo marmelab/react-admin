@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Card from '@material-ui/core/Card';
+import { withStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
 import { ShowController } from 'ra-core';
 
@@ -8,8 +9,18 @@ import DefaultActions from './ShowActions';
 import TitleForRecord from '../layout/TitleForRecord';
 import CardContentInner from '../layout/CardContentInner';
 
+export const styles = {
+    root: {
+        display: 'flex',
+    },
+    card: {
+        flex: '1 1 auto',
+    },
+};
+
 const sanitizeRestProps = ({
     actions,
+    aside,
     title,
     children,
     className,
@@ -35,8 +46,10 @@ const sanitizeRestProps = ({
 
 export const ShowView = ({
     actions,
+    aside,
     basePath,
     children,
+    classes,
     className,
     defaultTitle,
     hasEdit,
@@ -51,9 +64,12 @@ export const ShowView = ({
     if (typeof actions === 'undefined' && hasEdit) {
         actions = <DefaultActions />;
     }
+    if (!children) {
+        return null;
+    }
     return (
         <div
-            className={classnames('show-page', className)}
+            className={classnames('show-page', classes.root, className)}
             {...sanitizeRestProps(rest)}
         >
             <TitleForRecord
@@ -61,7 +77,7 @@ export const ShowView = ({
                 record={record}
                 defaultTitle={defaultTitle}
             />
-            <Card style={{ opacity: isLoading ? 0.8 : 1 }}>
+            <Card className={classes.card}>
                 {actions && (
                     <CardContentInner>
                         {React.cloneElement(actions, {
@@ -81,14 +97,23 @@ export const ShowView = ({
                         version,
                     })}
             </Card>
+            {aside &&
+                React.cloneElement(aside, {
+                    resource,
+                    basePath,
+                    record,
+                    version,
+                })}
         </div>
     );
 };
 
 ShowView.propTypes = {
     actions: PropTypes.element,
+    aside: PropTypes.node,
     basePath: PropTypes.string,
     children: PropTypes.element,
+    classes: PropTypes.object,
     className: PropTypes.string,
     defaultTitle: PropTypes.any,
     hasEdit: PropTypes.bool,
@@ -98,6 +123,10 @@ ShowView.propTypes = {
     resource: PropTypes.string,
     title: PropTypes.any,
     version: PropTypes.number,
+};
+
+ShowView.defaultProps = {
+    classes: {},
 };
 
 /**
@@ -142,7 +171,7 @@ ShowView.propTypes = {
  *     );
  *     export default App;
  */
-const Show = props => (
+export const Show = props => (
     <ShowController {...props}>
         {controllerProps => <ShowView {...props} {...controllerProps} />}
     </ShowController>
@@ -150,7 +179,9 @@ const Show = props => (
 
 Show.propTypes = {
     actions: PropTypes.element,
+    aside: PropTypes.node,
     children: PropTypes.element,
+    classes: PropTypes.node,
     className: PropTypes.string,
     hasCreate: PropTypes.bool,
     hasEdit: PropTypes.bool,
@@ -161,4 +192,4 @@ Show.propTypes = {
     title: PropTypes.any,
 };
 
-export default Show;
+export default withStyles(styles)(Show);

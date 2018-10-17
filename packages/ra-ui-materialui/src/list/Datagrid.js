@@ -25,6 +25,9 @@ const styles = {
     },
     checkbox: {},
     row: {},
+    clickableRow: {
+        cursor: 'pointer',
+    },
     rowEven: {},
     rowOdd: {},
     rowCell: {
@@ -112,6 +115,7 @@ class Datagrid extends Component {
             setSort,
             onSelect,
             onToggleItem,
+            rowClick,
             total,
             version,
             ...rest
@@ -167,6 +171,7 @@ class Datagrid extends Component {
                 <DatagridBody
                     basePath={basePath}
                     classes={classes}
+                    rowClick={rowClick}
                     data={data}
                     hasBulkActions={hasBulkActions}
                     hover={hover}
@@ -202,6 +207,7 @@ Datagrid.propTypes = {
     onSelect: PropTypes.func,
     onToggleItem: PropTypes.func,
     resource: PropTypes.string,
+    rowClick: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
     rowStyle: PropTypes.func,
     selectedIds: PropTypes.arrayOf(PropTypes.any).isRequired,
     setSort: PropTypes.func,

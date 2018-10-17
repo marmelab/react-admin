@@ -9,9 +9,6 @@ import classnames from 'classnames';
 import { SaveButton, DeleteButton } from '../button';
 
 const styles = {
-    desktopToolbar: {
-        justifyContent: 'space-between',
-    },
     mobileToolbar: {
         position: 'fixed',
         bottom: 0,
@@ -22,8 +19,12 @@ const styles = {
         boxSizing: 'border-box',
         flexShrink: 0,
         backgroundColor: 'white',
-        justifyContent: 'space-between',
         zIndex: 2,
+    },
+    defaultToolbar: {
+        flex: 1,
+        display: 'flex',
+        justifyContent: 'space-between',
     },
 };
 
@@ -49,14 +50,14 @@ const Toolbar = ({
 }) => (
     <MuiToolbar
         className={classnames(
-            width === 'xs' ? classes.mobileToolbar : classes.desktopToolbar,
+            { [classes.mobileToolbar]: width === 'xs' },
             className
         )}
         disableGutters
         {...rest}
     >
-        <span>
-            {Children.count(children) === 0 ? (
+        {Children.count(children) === 0 ? (
+            <div className={classes.defaultToolbar}>
                 <SaveButton
                     handleSubmitWithRedirect={handleSubmitWithRedirect}
                     invalid={invalid}
@@ -64,41 +65,41 @@ const Toolbar = ({
                     saving={saving}
                     submitOnEnter={submitOnEnter}
                 />
-            ) : (
-                Children.map(
-                    children,
-                    button =>
-                        button
-                            ? React.cloneElement(button, {
-                                  basePath,
-                                  handleSubmit: valueOrDefault(
-                                      button.props.handleSubmit,
-                                      handleSubmit
-                                  ),
-                                  handleSubmitWithRedirect: valueOrDefault(
-                                      button.props.handleSubmitWithRedirect,
-                                      handleSubmitWithRedirect
-                                  ),
-                                  invalid,
-                                  pristine,
-                                  saving,
-                                  submitOnEnter: valueOrDefault(
-                                      button.props.submitOnEnter,
-                                      submitOnEnter
-                                  ),
-                              })
-                            : null
-                )
-            )}
-        </span>
-        {record &&
-            typeof record.id !== 'undefined' && (
-                <DeleteButton
-                    basePath={basePath}
-                    record={record}
-                    resource={resource}
-                />
-            )}
+                {record &&
+                    typeof record.id !== 'undefined' && (
+                        <DeleteButton
+                            basePath={basePath}
+                            record={record}
+                            resource={resource}
+                        />
+                    )}
+            </div>
+        ) : (
+            Children.map(
+                children,
+                button =>
+                    button
+                        ? React.cloneElement(button, {
+                              basePath,
+                              handleSubmit: valueOrDefault(
+                                  button.props.handleSubmit,
+                                  handleSubmit
+                              ),
+                              handleSubmitWithRedirect: valueOrDefault(
+                                  button.props.handleSubmitWithRedirect,
+                                  handleSubmitWithRedirect
+                              ),
+                              invalid,
+                              pristine,
+                              saving,
+                              submitOnEnter: valueOrDefault(
+                                  button.props.submitOnEnter,
+                                  submitOnEnter
+                              ),
+                          })
+                        : null
+            )
+        )}
     </MuiToolbar>
 );
 

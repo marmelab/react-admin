@@ -83,6 +83,7 @@ export class RadioButtonGroupInput extends Component {
 
     renderRadioButton = choice => {
         const {
+            id,
             optionText,
             optionValue,
             translate,
@@ -95,9 +96,15 @@ export class RadioButtonGroupInput extends Component {
                 : get(choice, optionText);
         return (
             <FormControlLabel
+                htmlFor={`${id}_${get(choice, optionValue)}`}
                 key={get(choice, optionValue)}
                 value={get(choice, optionValue)}
-                control={<Radio color="primary" />}
+                control={
+                    <Radio
+                        id={`${id}_${get(choice, optionValue)}`}
+                        color="primary"
+                    />
+                }
                 label={
                     translateChoice
                         ? translate(choiceName, { _: choiceName })
@@ -153,7 +160,8 @@ export class RadioButtonGroupInput extends Component {
                 >
                     {choices.map(this.renderRadioButton)}
                 </RadioGroup>
-                {touched && error && <FormHelperText>{error}</FormHelperText>}
+                {touched &&
+                    error && <FormHelperText error>{error}</FormHelperText>}
                 {helperText && <FormHelperText>{helperText}</FormHelperText>}
             </FormControl>
         );
@@ -164,6 +172,7 @@ RadioButtonGroupInput.propTypes = {
     choices: PropTypes.arrayOf(PropTypes.object),
     classes: PropTypes.object,
     className: PropTypes.string,
+    id: PropTypes.string,
     input: PropTypes.object,
     isRequired: PropTypes.bool,
     label: PropTypes.string,

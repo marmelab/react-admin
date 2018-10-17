@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import getContext from 'recompose/getContext';
-import warning from 'warning';
 
 import { userCheck } from '../actions/authActions';
 import { AUTH_GET_PERMISSIONS } from '../auth/types';
 import { isLoggedIn } from '../reducer';
+import warning from '../util/warning';
 
 const isEmptyChildren = children => Children.count(children) === 0;
 
@@ -64,11 +64,9 @@ export class WithPermissions extends Component {
 
     componentWillMount() {
         warning(
-            !(
-                this.props.render &&
+            this.props.render &&
                 this.props.children &&
-                !isEmptyChildren(this.props.children)
-            ),
+                !isEmptyChildren(this.props.children),
             'You should not use both <WithPermissions render> and <WithPermissions children>; <WithPermissions children> will be ignored'
         );
         this.checkAuthentication(this.props);

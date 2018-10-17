@@ -5,7 +5,7 @@ title: "The List View"
 
 # The List View
 
-The List view displays a list of records fetched from the REST API. The entry point for this view is the `<List>` component, which takes care of fetching the data. Then, it passes the data to an iterator view - usually `<Datagrid>`, which then delegates the rendering of each record property to [`<Field>`](./Fields.md) components.
+The List view displays a list of records fetched from the API. The entry point for this view is the `<List>` component, which takes care of fetching the data. Then, it passes the data to an iterator view - usually `<Datagrid>`, which then delegates the rendering of each record property to [`<Field>`](./Fields.md) components.
 
 ![The List View](./img/list-view.png)
 
@@ -27,6 +27,7 @@ Here are all the props accepted by the `<List>` component:
 * [`filter`](#permanent-filter) (the permanent filter used in the REST request)
 * [`filterDefaultValues`](#filter-default-values) (the default values for `alwaysOn` filters)
 * [`pagination`](#pagination)
+* [`aside`](#aside-component)
 
 Here is the minimal code necessary to display a list of posts:
 
@@ -196,7 +197,7 @@ import { unparse as convertToCSV } from 'papaparse/papaparse.min';
 
 const exporter = (records, fetchRelatedRecords) => {
     fetchRelatedRecords(records, 'post_id', 'posts').then(posts => {
-        const data = posts.map(record => ({
+        const data = records.map(record => ({
                 ...record,
                 post_title: posts[record.post_id].title,
         }));
@@ -581,6 +582,54 @@ export const PostList = (props) => (
 );
 ```
 
+### Aside component
+
+You may want to display additional information on the side of the list. Use the `aside` prop for that, passing the component of your choice:
+
+```jsx
+const Aside = () => (
+    <div style={{ width: 200, margin: '1em' }}>
+        <Typography variant="title">Post details</Typography>
+        <Typography variant="body1">
+            Posts will only be published one an editor approves them
+        </Typography>
+    </div>
+);
+
+const PostList = props => (
+    <List aside={<Aside />} {...props}>
+        ...
+    </List>
+```
+
+The `aside` component receives the same props as the `List` child component, including the following:
+
+* `basePath`,
+* `currentSort`,
+* `data`,
+* `defaultTitle`,
+* `filterValues`,
+* `ids`,
+* `page`,
+* `perPage`,
+* `resource`,
+* `selectedIds`,
+* `total`,
+* `version`,
+
+That means you can display additional details of the current list in the aside component:
+
+```jsx
+const Aside = ({ data, ids }) => (
+    <div style={{ width: 200, margin: '1em' }}>
+        <Typography variant="title">Posts stats</Typography>
+        <Typography variant="body1">
+            Total views: {ids.map(id => data[id]).reduce((sum, post) => sum + post.views)}
+        </Typography>
+    </div>
+);
+```
+
 ### CSS API
 
 The `List` component accepts the usual `className` prop but you can override many class names injected to the inner components by React-admin thanks to the `classes` property (as most Material UI components, see their [documentation about it](https://material-ui.com/customization/overrides/#overriding-with-classes)). This property accepts the following keys:
@@ -614,6 +663,31 @@ export withStyles(styles)(PostList);
 ```
 {% endraw %}
 
+## The `<ListGuesser>` component
+
+Instead of a custom `List`, you can use the `ListGuesser` to determine which fields to use based on the data returned by the API.
+
+```jsx
+// in src/App.js
+import React from 'react';
+import { Admin, Resource, ListGuesser } from 'react-admin';
+import jsonServerProvider from 'ra-data-json-server';
+
+const App = () => (
+    <Admin dataProvider={jsonServerProvider('http://jsonplaceholder.typicode.com')}>
+        <Resource name="posts" list={ListGuesser} />
+    </Admin>
+);
+```
+
+Just like `List`, `ListGuesser` fetches the data. It then analyzes the response, and guesses the fields it should use to display a basic datagrid with the data. It also dumps the components it has guessed in the console, where you can copy it into your own code. Use this feature to quickly bootstrap a `List` on top of an existing API, without adding the fields one by one.
+
+![Guessed List](./img/guessed-list.png)
+
+React-admin provides guessers for the `List` view (`ListGuesser`), the `Edit` view (`EditGuesser`), and the `Show` view (`ShowGuesser`).
+
+**Tip**: Do not use the guessers in production. They are slower than manually-defined components, because they have to infer types based on the content. Besides, the guesses are not always perfect.
+
 ## The `<Datagrid>` component
 
 The datagrid component renders a list of records as a table. It is usually used as a child of the [`<List>`](#the-list-component) and [`<ReferenceManyField>`](./Fields.md#referencemanyfield) components.
@@ -621,6 +695,7 @@ The datagrid component renders a list of records as a table. It is usually used 
 Here are all the props accepted by the component:
 
 * [`rowStyle`](#row-style-function)
+* [`rowClick`](#rowclick)
 
 It renders as many columns as it receives `<Field>` children.
 
@@ -661,6 +736,26 @@ export const PostList = (props) => (
     </List>
 );
 ```
+
+### `rowClick`
+
+You can catch clicks on rows to redirect to the show or edit view by setting the `rowClick` prop:
+
+```jsx
+export const PostList = (props) => (
+    <List {...props}>
+        <Datagrid rowClick="edit">
+            ...
+        </Datagrid>
+    </List>
+);
+```
+
+`rowClick` accepts the following values:
+
+* "edit" to redirect to the edition vue
+* "show" to redirect to the show vue
+* a function `(id, basePath) => path` to redirect to a custom path
 
 ### CSS API
 

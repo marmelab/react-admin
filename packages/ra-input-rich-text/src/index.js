@@ -71,7 +71,7 @@ export class RichTextInput extends Component {
                 className="ra-rich-text-input"
             >
                 <div ref={this.updateDivRef} />
-                {error && <FormHelperText>{error}</FormHelperText>}
+                {error && <FormHelperText error>{error}</FormHelperText>}
                 {helperText && <FormHelperText>{helperText}</FormHelperText>}
             </FormControl>
         );

@@ -1,5 +1,24 @@
 # Changelog
 
+## v2.4.0
+
+* Bootstrap TypeScript migration ([#2426](https://github.com/marmelab/react-admin/pull/2426)) ([fzaninotto](https://github.com/fzaninotto))
+* Add `<ListGuesser>`, `<EditGuesser>`, and `<ShowGuesser>` to facilitate CRUD bootstrap and prototyping ([#2376](https://github.com/marmelab/react-admin/pull/2376)) ([fzaninotto](https://github.com/fzaninotto))
+* Add ability to use custom icon in `<UserMenu>`  ([#2391](https://github.com/marmelab/react-admin/pull/2391)) ([Luwangel](https://github.com/Luwangel))
+* Add `id` attribute on input if not specified and other accessibility fixes ([#2351](https://github.com/marmelab/react-admin/pull/2351)) ([djhi](https://github.com/djhi))
+* Add `aside` support in `List`, `Edit`, and `Show` views ([#2304](https://github.com/marmelab/react-admin/pull/2304)) ([fzaninotto](https://github.com/fzaninotto))
+* Add warning when the `translate()` higher-order component is used directly to translate a string ([#2318](https://github.com/marmelab/react-admin/pull/2318)) ([djhi](https://github.com/djhi))
+* Add `Datagrid` `rowClick` attribute to avoid adding an `<EditButton>`([#2341](https://github.com/marmelab/react-admin/pull/2341)) ([fzaninotto](https://github.com/fzaninotto))
+* Add `<DateTimeInput>` ([#2332](https://github.com/marmelab/react-admin/pull/2332)) ([fzaninotto](https://github.com/fzaninotto))
+* Add easier `<Toolbar>` customization for `<Edit>` (small breaking change) ([#2340](https://github.com/marmelab/react-admin/pull/2340)) ([fzaninotto](https://github.com/fzaninotto))
+* Add documentation on the data returned from create requests ([#2262](https://github.com/marmelab/react-admin/pull/2262)) ([cuococarlos](https://github.com/cuococarlos))
+* Fix error formatting on `<RichTextInput>`, `<CheckboxGroupInput>`, `<RadioButtonGroupInput>`, and `<SelectArrayInput>` ([#2335](https://github.com/marmelab/react-admin/pull/2335)) ([natrim](https://github.com/natrim))
+* Fix empty label appears on mobile when using a `<Button>` with no label ([#2409](https://github.com/marmelab/react-admin/pull/2409)) ([natrim](https://github.com/natrim))
+* Fix autosuggest toggle problem ([#2436](https://github.com/marmelab/react-admin/pull/2436)) ([oksuz](https://github.com/oksuz))
+* Fix typo in `exporter` example ([#2434](https://github.com/marmelab/react-admin/pull/2434)) ([jarradsl](https://github.com/jarradsl))
+* Fix Validation issues on `<RichTextInput>` ([#2423](https://github.com/marmelab/react-admin/pull/2423)) ([TomJannes](https://github.com/TomJannes))
+* Fix typo reference to FileInput instead of FileField ([#2419](https://github.com/marmelab/react-admin/pull/2419)) ([daytonn](https://github.com/daytonn))
+
 ## v2.3.4
 
 * Fix double asterix on required RadioButtonGroupInput  ([2417](https://github.com/marmelab/react-admin/pull/2417)) ([fzaninotto](https://github.com/fzaninotto))

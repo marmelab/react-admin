@@ -28,5 +28,7 @@ LinearProgress.propTypes = {
     classes: PropTypes.object,
     className: PropTypes.string,
 };
+// wat? TypeScript looses the displayName if we don't set it explicitly
+LinearProgress.displayName = 'LinearProgress';
 
 export default withStyles(styles)(LinearProgress);

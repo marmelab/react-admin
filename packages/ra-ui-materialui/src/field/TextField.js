@@ -6,16 +6,19 @@ import Typography from '@material-ui/core/Typography';
 
 import sanitizeRestProps from './sanitizeRestProps';
 
-const TextField = ({ className, source, record = {}, ...rest }) => (
-    <Typography
-        component="span"
-        body1="body1"
-        className={className}
-        {...sanitizeRestProps(rest)}
-    >
-        {get(record, source)}
-    </Typography>
-);
+const TextField = ({ className, source, record = {}, ...rest }) => {
+    const value = get(record, source);
+    return (
+        <Typography
+            component="span"
+            body1="body1"
+            className={className}
+            {...sanitizeRestProps(rest)}
+        >
+            {value && typeof value !== 'string' ? JSON.stringify(value) : value}
+        </Typography>
+    );
+};
 
 TextField.propTypes = {
     addLabel: PropTypes.bool,
@@ -29,6 +32,8 @@ TextField.propTypes = {
     source: PropTypes.string.isRequired,
 };
 
+// wat? TypeScript looses the displayName if we don't set it explicitly
+TextField.displayName = 'TextField';
 const PureTextField = pure(TextField);
 
 PureTextField.defaultProps = {

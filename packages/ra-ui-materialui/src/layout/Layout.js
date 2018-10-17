@@ -67,7 +67,7 @@ class Layout extends Component {
          * Reset the error state upon navigation
          *
          * @see https://stackoverflow.com/questions/48121750/browser-navigation-broken-by-use-of-react-error-boundaries
-         * */
+         */
         props.history.listen(() => {
             if (this.state.hasError) {
                 this.setState({ hasError: false });
@@ -169,10 +169,10 @@ const mapStateToProps = state => ({
 const EnhancedLayout = compose(
     connect(
         mapStateToProps,
-        {} // Avoid connect passing dispatch in props
+        {}, // Avoid connect passing dispatch in props
     ),
     withRouter,
-    withStyles(styles)
+    withStyles(styles),
 )(Layout);
 
 class LayoutWithTheme extends Component {

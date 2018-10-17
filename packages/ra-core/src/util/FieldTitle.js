@@ -39,6 +39,8 @@ FieldTitle.propTypes = {
 FieldTitle.defaultProps = {
     translate: x => x,
 };
+// wat? TypeScript looses the displayName if we don't set it explicitly
+FieldTitle.displayName = 'FieldTitle';
 
 const enhance = compose(
     translate,

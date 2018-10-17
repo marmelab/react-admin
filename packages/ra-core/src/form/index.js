@@ -1,7 +1,16 @@
-export addField from './addField';
-export FormDataConsumer from './FormDataConsumer';
-export FormField, { isRequired } from './FormField';
-export getDefaultValues from './getDefaultValues';
-export withDefaultValue from './withDefaultValue';
+import addField from './addField';
+import FormDataConsumer from './FormDataConsumer';
+import FormField from './FormField';
+import getDefaultValues from './getDefaultValues';
+import withDefaultValue from './withDefaultValue';
+
+export {
+    addField,
+    FormDataConsumer,
+    FormField,
+    getDefaultValues,
+    withDefaultValue,
+};
+export { isRequired } from './FormField';
 export * from './validate';
 export * from './constants';
