@@ -1,3 +1,8 @@
-export ReferenceArrayFieldController from './ReferenceArrayFieldController';
-export ReferenceFieldController from './ReferenceFieldController';
-export ReferenceManyFieldController from './ReferenceManyFieldController';
+import ReferenceArrayFieldController from './ReferenceArrayFieldController';
+import ReferenceFieldController from './ReferenceFieldController';
+import ReferenceManyFieldController from './ReferenceManyFieldController';
+export {
+    ReferenceArrayFieldController,
+    ReferenceFieldController,
+    ReferenceManyFieldController,
+};

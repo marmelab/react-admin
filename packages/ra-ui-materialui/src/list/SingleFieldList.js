@@ -44,7 +44,6 @@ const sanitizeRestProps = ({ currentSort, setSort, isLoading, ...props }) =>
  *         <ChipField source="title" />
  *     </SingleFieldList>
  * </ReferenceManyField>
-
  */
 export class SingleFieldList extends Component {
     // Our handleClick does nothing as we wrap the children inside a Link but it is

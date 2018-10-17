@@ -36,6 +36,9 @@ ChipField.propTypes = {
     record: PropTypes.object,
 };
 
+// wat? TypeScript looses the displayName if we don't set it explicitly
+ChipField.displayName = 'ChipField';
+
 const PureChipField = withStyles(styles)(pure(ChipField));
 
 export default PureChipField;

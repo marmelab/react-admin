@@ -95,6 +95,9 @@ NumberField.propTypes = {
     source: PropTypes.string.isRequired,
 };
 
+// wat? TypeScript looses the displayName if we don't set it explicitly
+NumberField.displayName = 'NumberField';
+
 const ComposedNumberField = pure(NumberField);
 
 ComposedNumberField.defaultProps = {

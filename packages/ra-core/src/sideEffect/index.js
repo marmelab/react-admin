@@ -1,11 +1,25 @@
-export adminSaga from './admin';
-export authSaga from './auth';
-export callbackSaga from './callback';
-export fetchSaga from './fetch';
-export errorSaga from './error';
-export notificationSaga from './notification';
-export redirectionSaga from './redirection';
-export accumulateSaga from './accumulate';
-export refreshSaga from './refresh';
-export i18nSaga from './i18n';
-export undoSaga from './undo';
+import adminSaga from './admin';
+import authSaga from './auth';
+import callbackSaga from './callback';
+import fetchSaga from './fetch';
+import errorSaga from './error';
+import notificationSaga from './notification';
+import redirectionSaga from './redirection';
+import accumulateSaga from './accumulate';
+import refreshSaga from './refresh';
+import i18nSaga from './i18n';
+import undoSaga from './undo';
+
+export {
+    adminSaga,
+    authSaga,
+    callbackSaga,
+    fetchSaga,
+    errorSaga,
+    notificationSaga,
+    redirectionSaga,
+    accumulateSaga,
+    refreshSaga,
+    i18nSaga,
+    undoSaga,
+};

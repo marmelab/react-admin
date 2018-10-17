@@ -1,1 +1,2 @@
-export default from './FileInputPreview';
+import FileInputPreview from './FileInputPreview';
+export default FileInputPreview;

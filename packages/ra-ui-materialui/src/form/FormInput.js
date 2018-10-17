@@ -58,4 +58,7 @@ FormInput.propTypes = {
     input: PropTypes.object,
 };
 
+// wat? TypeScript looses the displayName if we don't set it explicitly
+FormInput.displayName = 'FormInput';
+
 export default withStyles(styles)(FormInput);

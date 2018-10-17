@@ -9,7 +9,7 @@ describe('<AutocompleteArrayInput />', () => {
     const defaultProps = {
         source: 'foo',
         meta: {},
-        input: {},
+        input: { onChange: () => {} },
         translate: x => x,
     };
 
@@ -169,7 +169,7 @@ describe('<AutocompleteArrayInput />', () => {
             const wrapper = shallow(
                 <AutocompleteArrayInput
                     {...defaultProps}
-                    input={{ value: [] }}
+                    input={{ value: [], onChange: () => {} }}
                     choices={[{ id: 'M', name: 'Male' }]}
                 />
             );
@@ -183,7 +183,7 @@ describe('<AutocompleteArrayInput />', () => {
             const wrapper = mount(
                 <AutocompleteArrayInput
                     {...defaultProps}
-                    input={{ value: [] }}
+                    input={{ value: [], onChange: () => {} }}
                     choices={[{ id: 'M', name: 'Male' }]}
                     alwaysRenderSuggestions
                 />,
@@ -205,7 +205,7 @@ describe('<AutocompleteArrayInput />', () => {
             mount(
                 <AutocompleteArrayInput
                     {...defaultProps}
-                    input={{ value: ['M'] }}
+                    input={{ value: ['M'], onChange: () => {} }}
                     choices={[{ id: 'M', name: 'Male' }]}
                     optionText={v => {
                         optionText(v);
@@ -223,7 +223,7 @@ describe('<AutocompleteArrayInput />', () => {
             const wrapper = mount(
                 <AutocompleteArrayInput
                     {...defaultProps}
-                    input={{ value: ['M'] }}
+                    input={{ value: ['M'], onChange: () => {} }}
                     meta={{ active: true }}
                     choices={[{ id: 'M', name: 'Male' }]}
                     optionText={v => {
@@ -251,7 +251,7 @@ describe('<AutocompleteArrayInput />', () => {
                 <AutocompleteArrayInput
                     {...defaultProps}
                     allowEmpty
-                    input={{ value: ['M'] }}
+                    input={{ value: ['M'], onChange: () => {} }}
                     choices={[{ id: 'M', name: 'Male' }]}
                 />,
                 { context, childContextTypes }
@@ -272,7 +272,7 @@ describe('<AutocompleteArrayInput />', () => {
             const wrapper = mount(
                 <AutocompleteArrayInput
                     {...defaultProps}
-                    input={{ value: ['M'] }}
+                    input={{ value: ['M'], onChange: () => {} }}
                     choices={[{ id: 'M', name: 'Male' }]}
                 />,
                 { context, childContextTypes }
@@ -289,7 +289,7 @@ describe('<AutocompleteArrayInput />', () => {
             const wrapper = mount(
                 <AutocompleteArrayInput
                     {...defaultProps}
-                    input={{ value: [] }}
+                    input={{ value: [], onChange: () => {} }}
                 />,
                 { context, childContextTypes }
             );
@@ -315,9 +315,10 @@ describe('<AutocompleteArrayInput />', () => {
             wrapper.setProps({
                 choices: [{ id: 'M', name: 'Male' }],
             });
-            const input = wrapper.find('input');
-            input.simulate('change', { target: { value: 'male' } });
-            input.simulate('blur');
+            wrapper
+                .find('input')
+                .simulate('change', { target: { value: 'male' } });
+            wrapper.find('input').simulate('blur');
 
             expect.assertions(2);
             return new Promise((resolve, reject) => {
@@ -440,7 +441,7 @@ describe('<AutocompleteArrayInput />', () => {
             const wrapper = mount(
                 <AutocompleteArrayInput
                     {...defaultProps}
-                    input={{ value: [] }}
+                    input={{ value: [], onChange: () => {} }}
                     choices={[
                         { id: 1, name: 'ab' },
                         { id: 2, name: 'abc' },
@@ -467,7 +468,7 @@ describe('<AutocompleteArrayInput />', () => {
         const wrapper = mount(
             <AutocompleteArrayInput
                 {...defaultProps}
-                input={{ value: [] }}
+                input={{ value: [], onChange: () => {} }}
                 choices={[
                     { id: 1, name: 'ab' },
                     { id: 2, name: 'abc' },
@@ -517,10 +518,9 @@ describe('<AutocompleteArrayInput />', () => {
             />,
             { context, childContextTypes }
         );
-        const input = wrapper.find('input');
-        input.simulate('focus');
-        input.simulate('change', { target: { value: 'abc' } });
-        input.simulate('blur');
+        wrapper.find('input').simulate('focus');
+        wrapper.find('input').simulate('change', { target: { value: 'abc' } });
+        wrapper.find('input').simulate('blur');
 
         expect.assertions(1);
         return new Promise((resolve, reject) => {

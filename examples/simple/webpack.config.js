@@ -7,7 +7,7 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.js$/,
+                test: /\.(t|j)sx?$/,
                 exclude: /node_modules/,
                 use: { loader: 'babel-loader' },
             },
@@ -25,6 +25,7 @@ module.exports = {
         new HardSourceWebpackPlugin(),
     ],
     resolve: {
+        extensions: ['.ts', '.js', '.tsx', '.json'],
         alias: {
             'ra-core': path.join(
                 __dirname,
