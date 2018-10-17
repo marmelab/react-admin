@@ -1,6 +1,6 @@
 {
     "name": "data-generator",
-    "version": "2.4.0-0",
+    "version": "2.4.0",
     "private": true,
     "main": "./lib/index.js",
     "scripts": {
