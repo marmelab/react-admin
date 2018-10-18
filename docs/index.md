@@ -9,7 +9,8 @@ A frontend Framework for building admin applications running in the browser on t
 <div style="text-align: center" markdown="1">
 <i class="octicon octicon-device-desktop"></i> [Demo](https://marmelab.com/react-admin-demo/) -
 <i class="octicon octicon-mark-github"></i> [Source](https://github.com/marmelab/react-admin) -
-<i class="octicon octicon-megaphone"></i> [Releases](https://github.com/marmelab/react-admin/releases) -
+<i class="octicon octicon-megaphone"></i> [News](https://https://marmelab.com/en/blog/#react-admin) -
+<i class="octicon octicon-clock"></i> [Releases](https://github.com/marmelab/react-admin/releases) -
 <i class="octicon octicon-comment-discussion"></i> [Support](http://stackoverflow.com/questions/tagged/react-admin)
 </div>
 
