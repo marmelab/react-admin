@@ -181,7 +181,7 @@ Show.propTypes = {
     actions: PropTypes.element,
     aside: PropTypes.node,
     children: PropTypes.element,
-    classes: PropTypes.node,
+    classes: PropTypes.object,
     className: PropTypes.string,
     hasCreate: PropTypes.bool,
     hasEdit: PropTypes.bool,
