@@ -1,5 +1,5 @@
 /* eslint no-console: ["error", { allow: ["warn", "error"] }] */
-import { Component } from 'react';
+import { Component, isValidElement } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { parse, stringify } from 'query-string';
@@ -73,6 +73,11 @@ export class ListController extends Component {
     state = {};
 
     componentDidMount() {
+        if (this.props.filter && isValidElement(this.props.filter)) {
+            throw new Error(
+                '<List> received a React element as `filter` props. If you intended to set the list filter elements, use the `filters` (with an s) prop instead. The `filter` prop is internal and should not be set by the developer.'
+            );
+        }
         if (
             !this.props.query.page &&
             !(this.props.ids || []).length &&
