@@ -37,7 +37,7 @@ const fetchRelatedRecords = dispatch => (data, field, resource) =>
             .map(record => record[field]);
 
         // find unique keys
-        const ids = [...new Set(sanitizedData)];
+        const ids = Array.from(new Set(sanitizedData));
 
         dispatch({
             type: CRUD_GET_MANY,
