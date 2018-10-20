@@ -41,13 +41,13 @@ export default async (client, options) => {
               .then(({ data: { __schema } }) => __schema);
 
     const queries = schema.types.reduce((acc, type) => {
-        if (type.name !== 'Query' && type.name !== 'Mutation') return acc;
+        if (type.name !== schema.queryType && type.name !== schema.mutationType) return acc;
 
         return [...acc, ...type.fields];
     }, []);
 
     const types = schema.types.filter(
-        type => type.name !== 'Query' && type.name !== 'Mutation'
+        type => type.name !== schema.queryType && type.name !== schema.mutationType
     );
 
     const isResource = type =>
