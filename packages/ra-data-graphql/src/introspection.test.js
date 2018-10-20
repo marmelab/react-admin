@@ -80,6 +80,8 @@ describe('introspection', () => {
                 Promise.resolve({
                     data: {
                         __schema: {
+                            queryType: { name: 'Query' },
+                            mutationType: { name: 'Mutation' },
                             types: [
                                 {
                                     name: 'Query',
