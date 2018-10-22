@@ -10,6 +10,9 @@ const styles = {
     root: { display: 'flex', flexWrap: 'wrap' },
 };
 
+// useful to prevent click bubbling in a datagrid with rowClick
+const stopPropagation = e => e.stopPropagation();
+
 const sanitizeRestProps = ({ currentSort, setSort, isLoading, ...props }) =>
     props;
 
@@ -22,7 +25,7 @@ const sanitizeRestProps = ({ currentSort, setSort, isLoading, ...props }) =>
  *         <ChipField source="title" />
  *     </SingleFieldList>
  * </ReferenceManyField>
- * 
+ *
  * By default, it includes a link to the <Edit> page of the related record
  * (`/books/:id` in the previous example).
  *
@@ -79,6 +82,7 @@ export class SingleFieldList extends Component {
                                 className={classnames(classes.link, className)}
                                 key={id}
                                 to={resourceLinkPath}
+                                onClick={stopPropagation}
                             >
                                 {cloneElement(children, {
                                     record: data[id],

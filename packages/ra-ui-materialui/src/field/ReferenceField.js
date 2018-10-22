@@ -14,6 +14,9 @@ const styles = theme => ({
     },
 });
 
+// useful to prevent click bubbling in a datagrid with rowClick
+const stopPropagation = e => e.stopPropagation();
+
 export const ReferenceFieldView = ({
     allowEmpty,
     basePath,
@@ -36,7 +39,11 @@ export const ReferenceFieldView = ({
 
     if (resourceLinkPath) {
         return (
-            <Link to={resourceLinkPath} className={className}>
+            <Link
+                to={resourceLinkPath}
+                className={className}
+                onClick={stopPropagation}
+            >
                 {React.cloneElement(children, {
                     className: classnames(
                         children.props.className,

@@ -13,8 +13,8 @@ const styles = theme => ({
 /**
  * @deprecated Use react-router-dom's Link instead
  */
-const Link = ({ to, children, className, classes }) => (
-    <RRLink to={to} className={classNames(classes.link, className)}>
+const Link = ({ to, children, className, classes, ...rest }) => (
+    <RRLink to={to} className={classNames(classes.link, className)} {...rest}>
         {children}
     </RRLink>
 );
