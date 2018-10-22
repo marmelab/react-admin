@@ -1285,9 +1285,8 @@ import TextField from '@material-ui/core/TextField';
 import { Field } from 'redux-form';
 const renderTextField = ({ input, label, meta: { touched, error }, ...custom }) => (
     <TextField
-        hintText={label}
-        floatingLabelText={label}
-        errorText={touched && error}
+        helperText={label}
+        label={label}
         {...input}
         {...custom}
     />
