@@ -29,7 +29,12 @@
         ],
         "transformIgnorePatterns": [
             "[/\\\\]node_modules[/\\\\].+\\.(js|jsx|mjs|ts|tsx)$"
-        ]
+        ],
+        "globals": {
+            "ts-jest": {
+                "isolatedModules": true
+            }
+        }
     },
     "devDependencies": {
         "@types/jest": "^23.3.5",
