@@ -13,7 +13,6 @@ var styles = theme => ({
     },
     '&:last-child': {
       paddingBottom: 16,
-      // Reset on mouse devices
       [theme.breakpoints.only('xs')]: {
         paddingBottom: 70,
       },
