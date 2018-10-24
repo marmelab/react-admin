@@ -58,7 +58,7 @@ const SimpleList = ({
     total,
     ...rest
 }) =>
-    (isLoading || total > 0) && (
+    (isLoading || total > 0 || (ids && ids.length > 0)) && (
         <List className={className} {...sanitizeListRestProps(rest)}>
             {ids.map(id => (
                 <LinkOrNot
@@ -122,7 +122,7 @@ SimpleList.propTypes = {
     leftIcon: PropTypes.func,
     linkType: PropTypes.oneOfType([PropTypes.string, PropTypes.bool])
         .isRequired,
-    onToggleItem: PropTypes.func.isRequired,
+    onToggleItem: PropTypes.func,
     primaryText: PropTypes.func,
     rightAvatar: PropTypes.func,
     rightIcon: PropTypes.func,
