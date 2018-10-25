@@ -7,11 +7,6 @@ title: "My First Project Tutorial"
 
 This 20 minutes tutorial will expose how to create a new admin app based on an existing REST API.
 
-<video width="800" height="600" controls>
-  <source src="http://static.marmelab.com/react-admin/react-admin.mp4" type="video/mp4">
-Your browser does not support the video tag.
-</video>
-
 ## Setting Up
 
 React-admin uses React. We'll use Facebook's [create-react-app](https://github.com/facebookincubator/create-react-app) to create an empty React app, and install the `react-admin` package:
