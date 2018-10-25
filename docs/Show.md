@@ -120,6 +120,7 @@ export const PostShow = (props) => (
 
 You may want to display additional information on the side of the resource detail. Use the `aside` prop for that, passing the component of your choice:
 
+{% raw %}
 ```jsx
 const Aside = () => (
     <div style={{ width: 200, margin: '1em' }}>
@@ -135,9 +136,11 @@ const PostShow = props => (
         ...
     </Show>
 ```
+{% endraw %}
 
 The `aside` component receives the same props as the `Show` child component: `basePath`, `record`, `resource`, and `version`. That means you can display secondary details of the current record in the aside component:
 
+{% raw %}
 ```jsx
 const Aside = ({ record }) => (
     <div style={{ width: 200, margin: '1em' }}>
@@ -148,6 +151,7 @@ const Aside = ({ record }) => (
     </div>
 );
 ```
+{% endraw %}
 
 ## The `<ShowGuesser>` component
 
