@@ -225,7 +225,7 @@ $ cd ..
 $ git clone git@github.com:marmelab/react-admin.git && cd react-admin && make install
 # replace your node_modules/react-admin by a symbolic link to the github checkout
 $ cd ../myapp
-$ npm link ../react-admin
+$ npm link ../react-admin/packages/react-admin
 # go back to the checkout, and replace the version of react by the one in your app
 $ cd ../react-admin
 $ npm link ../myapp/node_modules/react
