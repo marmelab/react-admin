@@ -417,32 +417,63 @@ export const PostList = props => (
 
 ## Adding Creation and Editing Capabilities
 
-An admin interface isn't just about displaying remote data, it should also allow creating and editing records. React-admin provides `<Create>` and `<Edit>` components for that purpose. Add them to the `posts.js` script:
+An admin interface isn't just about displaying remote data, it should also allow editing records. React-admin provides an `<Edit>` components for that purpose ; let's use the `<EditGuesser>` to help bootstrap it.
 
-```jsx
+```diff
+// in src/App.js
+-import { Admin, Resource } from 'react-admin';
++import { Admin, Resource, EditGuesser } from 'react-admin';
+import { PostList } from './posts';
+import { UserList } from './users';
+
+const App = () => (
+    <Admin dataProvider={dataProvider}>
+-       <Resource name="posts" list={PostList} />
++       <Resource name="posts" list={PostList} edit={EditGuesser} />
+        <Resource name="users" list={UserList} />
+    </Admin>
+);
+```
+
+![Post Edit Guesser](./img/tutorial_edit_guesser.gif)
+
+Users can display the edit page just by clicking on a row in the post datagrid. The form rendered is already functional ; it issues `PUT` requests to the REST API upon submission.
+
+Copy the `PostEdit` code dumped by the guesser in the console to the `posts.js` file so that you can customize the view. Don't forget to `import` the new components from react-admin.
+
+You can now adjust the `PostEdit` component to disable the edition of the primary key (`id`), place it first, use the user `name` instead of the user `id` in the reference, and use a longer test input for the `body` field, as follows:
+
+```diff
 // in src/posts.js
-import React from 'react';
-import { List, Edit, Create, Datagrid, ReferenceField, TextField, EditButton, DisabledInput, LongTextInput, ReferenceInput, SelectInput, SimpleForm, TextInput } from 'react-admin';
-
-// ....
-
 export const PostEdit = props => (
     <Edit {...props}>
         <SimpleForm>
-            <DisabledInput source="id" />
-            <ReferenceInput label="User" source="userId" reference="users">
-                <SelectInput optionText="name" />
++           <DisabledInput source="id" />
+            <ReferenceInput source="userId" reference="users">
+-               <SelectInput optionText="id" />
++               <SelectInput optionText="name" />
             </ReferenceInput>
+-           <TextInput source="id" />
             <TextInput source="title" />
-            <LongTextInput source="body" />
+-           <TextInput source="body" />
++           <LongTextInput source="body" />
         </SimpleForm>
     </Edit>
 );
+```
 
+If you've understood the `<List>` component, the `<Edit>` component will be no surprise. It's responsible for fetching the record, and displaying the page title. It passes the record down to the `<SimpleForm>` component, which is responsible for the form layout, default values, and validation. Just like `<Datagrid>`, `<SimpleForm>` uses its children to determine the form inputs to display. It expects *input components* as children. `<DisabledInput>`, `<TextInput>`, `<ReferenceInput>`, and `<SelectInput>` are such inputs.
+
+The `<ReferenceInput>` takes the same props as the `<ReferenceField>` (used earlier in the `PostList` page). `<ReferenceInput>` uses these props to fetch the API for possible references related to the current record (in this case, possible `users` for the current `post`). It then passes these possible references to the child component (`<SelectInput>`), which is responsible for displaying them (via their `name` in that case), and letting the user select one. `<SelectInput>` renders as a `<select>` tag in HTML.
+
+Before you use that custom component in the `App.js`, copy the `PostEdit` component into a `PostCreate`, but remove the initial `DisabledInput`:
+
+```jsx
+// in src/posts.js
 export const PostCreate = props => (
     <Create {...props}>
         <SimpleForm>
-            <ReferenceInput label="User" source="userId" reference="users">
+            <ReferenceInput source="userId" reference="users">
                 <SelectInput optionText="name" />
             </ReferenceInput>
             <TextInput source="title" />
@@ -452,18 +483,21 @@ export const PostCreate = props => (
 );
 ```
 
-To use the new `<PostEdit>` and `<PostCreate>` components in the posts resource, just add them as `edit` and `create` attributes in the `<Resource>` component:
+**Tip**: The `<PostEdit>` and the `<PostCreate>` components use almost the same child form, except for the additional `id` input in `<PostEdit>`. In most cases, the forms for creating and editing a record are a bit different, because most APIs create primary keys server-side. But if the forms are the same, you can share a common form component in `<PostEdit>` and `<PostCreate>`.
+
+To use the new `<PostEdit>` and `<PostCreate>` components in the posts resource, just add them as `edit` and `create` attributes in the `<Resource name="posts">` component:
 
 ```diff
 // in src/App.js
-import { Admin, Resource } from 'react-admin';
+-import { Admin, Resource, EditGuesser } from 'react-admin';
++import { Admin, Resource } from 'react-admin';
 -import { PostList } from './posts';
 +import { PostList, PostEdit, PostCreate } from './posts';
 import { UserList } from './users';
 
 const App = () => (
     <Admin dataProvider={dataProvider}>
--       <Resource name="posts" list={PostList} />
+-       <Resource name="posts" list={PostList} edit={EditGuesser} />
 +       <Resource name="posts" list={PostList} edit={PostEdit} create={PostCreate} />
         <Resource name="users" list={UserList} />
     </Admin>
@@ -472,17 +506,7 @@ const App = () => (
 
 ![Post Creation](./img/tutorial_post_create.gif)
 
-React-admin automatically adds a "create" button on top of the posts list to give access to the `<PostCreate>` component. And users get to the `<PostEdit>` component just by clicking on a row in the post datagrid.
-
-The form rendered in the create and edit pages is already functional. It issues `POST` and `PUT` requests to the REST API upon submission.
-
-If you've understood the `<List>` component, the `<Edit>` and `<Create>` components will be no surprise. They are responsible for fetching the record (or initializing an empty record in the case of `<Create>`), and displaying the page title. They pass the record down to the `<SimpleForm>` component, which is responsible for the form layout, default values, and validation. Just like `<Datagrid>`, `<SimpleForm>` uses its children to determine the form inputs to display. It expects *input components* as children. `<DisabledInput>`, `<TextInput>`, `<LongTextInput>`, and `<ReferenceInput>` are such inputs.
-
-As for the `<ReferenceInput>`, it takes the same props as the `<ReferenceField>` (used earlier in the list page). `<ReferenceInput>` uses these props to fetch the API for possible references related to the current record (in this case, possible `users` for the current `post`). It then passes these possible references to the child component (`<SelectInput>`), which is responsible for displaying them (via their `name` in that case), and letting the user select one. `<SelectInput>` renders as a `<select>` tag in HTML.
-
-**Tip**: The `<Edit>` and the `<Create>` components use almost the same child form, except for the additional `id` input in `<Edit>`. In most cases, the forms for creating and editing a record are a bit different. But if they are the same, you can share a common form component between the two.
-
-**Tip**: Notice the `label` property: you can use it on any field component to customize the field label.
+React-admin automatically adds a "create" button on top of the posts list to give access to the `<PostCreate>` component. And the creation form works ; it issues a `POST` request to the REST API upon submission.
 
 ## Optimistic Rendering And Undo
 
@@ -551,6 +575,8 @@ The first filter, 'q', takes advantage of a full-text functionality offered by J
 ![posts search engine](./img/filters.gif)
 
 Filters are "search-as-you-type", meaning that when the user enters new values in the filter form, the list refreshes (via an API request) immediately.
+
+**Tip**: Notice the `label` property: you can use it on any field component to customize the field label.
 
 ## Customizing the Menu Icons
 
