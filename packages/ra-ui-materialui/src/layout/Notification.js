@@ -101,7 +101,7 @@ class Notification extends React.Component {
                     notification && notification.undoable ? (
                         <Button
                             color="primary"
-                            className={classes.undo}
+                            className={undoClass}
                             size="small"
                             onClick={undo}
                         >
