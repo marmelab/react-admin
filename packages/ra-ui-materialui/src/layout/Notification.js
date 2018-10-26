@@ -71,7 +71,12 @@ class Notification extends React.Component {
             hideNotification,
             ...rest
         } = this.props;
-
+        const {
+            warning,
+            confirm,
+            undo: undoClass, // Rename classes.undo to undoClass in this scope to avoid name conflicts
+            ...snackbarClasses
+        } = classes;
         return (
             <Snackbar
                 open={this.state.open}
@@ -96,7 +101,7 @@ class Notification extends React.Component {
                     notification && notification.undoable ? (
                         <Button
                             color="primary"
-                            className={classes.undo}
+                            className={undoClass}
                             size="small"
                             onClick={undo}
                         >
@@ -104,6 +109,7 @@ class Notification extends React.Component {
                         </Button>
                     ) : null
                 }
+                classes={snackbarClasses}
                 {...rest}
             />
         );
