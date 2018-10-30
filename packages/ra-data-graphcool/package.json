@@ -33,7 +33,7 @@
         "watch": "rimraf ./lib && tsc --watch"
     },
     "dependencies": {
-        "graphql-ast-types": "Kmaschta/graphql-ast-types#master",
+        "graphql-ast-types-browser": "~1.0.2",
         "graphql-tag": "^2.6.1",
         "lodash": "~4.17.5",
         "pluralize": "~7.0.0",
