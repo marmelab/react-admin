@@ -1,7 +1,7 @@
 import { GET_LIST, GET_MANY, GET_MANY_REFERENCE, DELETE } from 'react-admin';
 import { QUERY_TYPES } from 'ra-data-graphql';
 import { TypeKind } from 'graphql';
-import * as gqlTypes from 'graphql-ast-types';
+import * as gqlTypes from 'graphql-ast-types-browser';
 
 import getFinalType from './getFinalType';
 import isList from './isList';
