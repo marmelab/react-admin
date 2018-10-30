@@ -19,6 +19,7 @@ export const ReferenceManyFieldView = ({
     reference,
     referenceBasePath,
     setSort,
+    total,
 }) => {
     if (isLoading) {
         return <LinearProgress className={classes.progress} />;
@@ -32,6 +33,7 @@ export const ReferenceManyFieldView = ({
         basePath: referenceBasePath,
         currentSort,
         setSort,
+        total,
     });
 };
 

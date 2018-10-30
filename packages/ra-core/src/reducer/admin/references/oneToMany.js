@@ -7,7 +7,10 @@ export default (previousState = initialState, { type, payload, meta }) => {
         case CRUD_GET_MANY_REFERENCE_SUCCESS:
             return {
                 ...previousState,
-                [meta.relatedTo]: payload.data.map(record => record.id),
+                [meta.relatedTo]: {
+                    ids: payload.data.map(record => record.id),
+                    total: payload.total,
+                },
             };
         default:
             return previousState;
@@ -15,7 +18,12 @@ export default (previousState = initialState, { type, payload, meta }) => {
 };
 
 export const getIds = (state, relatedTo) =>
-    state.admin.references.oneToMany[relatedTo];
+    state.admin.references.oneToMany[relatedTo] &&
+    state.admin.references.oneToMany[relatedTo].ids;
+
+export const getTotal = (state, relatedTo) =>
+    state.admin.references.oneToMany[relatedTo] &&
+    state.admin.references.oneToMany[relatedTo].total;
 
 export const getReferences = (state, reference, relatedTo) => {
     const ids = getIds(state, relatedTo);
