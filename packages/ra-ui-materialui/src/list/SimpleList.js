@@ -122,7 +122,7 @@ SimpleList.propTypes = {
     leftIcon: PropTypes.func,
     linkType: PropTypes.oneOfType([PropTypes.string, PropTypes.bool])
         .isRequired,
-    onToggleItem: PropTypes.func.isRequired,
+    onToggleItem: PropTypes.func,
     primaryText: PropTypes.func,
     rightAvatar: PropTypes.func,
     rightIcon: PropTypes.func,

@@ -11,6 +11,7 @@ import {
 import {
     getIds,
     getReferences,
+    getTotal,
     nameRelatedTo,
 } from '../../reducer/admin/references/oneToMany';
 
@@ -121,6 +122,7 @@ export class ReferenceManyFieldController extends Component {
             ids,
             children,
             basePath,
+            total,
         } = this.props;
 
         const referenceBasePath = basePath.replace(resource, reference);
@@ -132,6 +134,7 @@ export class ReferenceManyFieldController extends Component {
             isLoading: typeof ids === 'undefined',
             referenceBasePath,
             setSort: this.setSort,
+            total,
         });
     }
 }
@@ -155,6 +158,7 @@ ReferenceManyFieldController.propTypes = {
     source: PropTypes.string.isRequired,
     target: PropTypes.string.isRequired,
     isLoading: PropTypes.bool,
+    total: PropTypes.number,
 };
 
 ReferenceManyFieldController.defaultProps = {
@@ -175,6 +179,7 @@ function mapStateToProps(state, props) {
     return {
         data: getReferences(state, props.reference, relatedTo),
         ids: getIds(state, relatedTo),
+        total: getTotal(state, relatedTo),
     };
 }
 
