@@ -201,18 +201,18 @@ const App = () => (
 -           <Resource name="comments" list={CommentList} edit={CommentEdit} create={CommentCreate} />
 -           <Resource name="users" list={UserList} edit={UserEdit} create={UserCreate} />
 +       <TranslationProvider>
-+           <ConnectedRouter history={history}>
++           <MuiThemeProvider>
 +               <Resource name="posts" context="registration" />
 +               <Resource name="comments" context="registration" />
 +               <Resource name="users" context="registration" />
-+               <MuiThemeProvider>
-+                   <AppBar position="static" color="default">
-+                       <Toolbar>
-+                           <Typography variant="title" color="inherit">
-+                               My admin
-+                           </Typography>
-+                       </Toolbar>
-+                   </AppBar>
++               <AppBar position="static" color="default">
++                   <Toolbar>
++                       <Typography variant="title" color="inherit">
++                           My admin
++                       </Typography>
++                   </Toolbar>
++               </AppBar>
++               <ConnectedRouter history={history}>
 +                   <Switch>
 +                       <Route exact path="/" component={Dashboard} />
 +                       <Route exact path="/posts" hasCreate render={(routeProps) => <PostList resource="posts" {...routeProps} />} />
@@ -226,8 +226,8 @@ const App = () => (
 +                       <Route exact path="/users/create" render={(routeProps) => <UsersCreate resource="users" {...routeProps} />} />
 +                       <Route exact path="/users/:id" render={(routeProps) => <UsersEdit resource="users" {...routeProps} />} />
 +                   </Switch>
-+               </MuiThemeProvider>
-+           </ConnectedRouter>
++               </ConnectedRouter>
++           </MuiThemeProvider>
 +       </TranslationProvider>
 -       </Admin>
     </Provider>
@@ -239,6 +239,7 @@ const App = () => (
 +       authProvider: PropTypes.func,
 +   },
 +   () => ({ authProvider })
++)(App);
 ```
 
 Note that this example still uses `<Resource>`, because this component lazily initializes the store for the resource data.
