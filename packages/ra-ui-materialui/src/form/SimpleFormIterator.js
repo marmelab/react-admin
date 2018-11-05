@@ -85,9 +85,9 @@ export class SimpleFormIterator extends Component {
     };
 
     addField = () => {
-        const { fields } = this.props;
+        const { fields, defaultItemValue } = this.props;
         this.ids.push(this.nextId++);
-        fields.push({});
+        fields.push(defaultItemValue);
     };
 
     render() {
@@ -195,10 +195,12 @@ export class SimpleFormIterator extends Component {
 SimpleFormIterator.defaultProps = {
     disableAdd: false,
     disableRemove: false,
+    defaultItemValue: {},
 };
 
 SimpleFormIterator.propTypes = {
     defaultValue: PropTypes.any,
+    defaultItemValue: PropTypes.any,
     basePath: PropTypes.string,
     children: PropTypes.node,
     classes: PropTypes.object,
