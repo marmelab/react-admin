@@ -958,6 +958,10 @@
   version "2.2.44"
   resolved "https://registry.yarnpkg.com/@types/mocha/-/mocha-2.2.44.tgz#1d4a798e53f35212fd5ad4d04050620171cd5b5e"
 
+"@types/node-polyglot@^0.4.31":
+  version "0.4.31"
+  resolved "http://registry.npmjs.org/@types/node-polyglot/-/node-polyglot-0.4.31.tgz#4185cb3a52a468ca12c349ef26cd6d76ee203ca0"
+
 "@types/node@*":
   version "10.3.5"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-10.3.5.tgz#8423cdf6e6fb83433e489900d7600d3b61c8260c"
