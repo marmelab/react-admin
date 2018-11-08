@@ -1,4 +1,4 @@
-export type I18nProvider = (locale: string) => object;
+export type I18nProvider = (locale: string) => object | Promise<object>;
 export type Translate = (id: string, options?: any) => string;
 
 export type AuthActionType =
