@@ -1,6 +1,7 @@
 import React from 'react';
 import assert from 'assert';
 import { shallow } from 'enzyme';
+import { render } from 'react-testing-library';
 import { ReferenceManyFieldController } from './ReferenceManyFieldController';
 
 describe('<ReferenceManyFieldController />', () => {
@@ -117,24 +118,38 @@ describe('<ReferenceManyFieldController />', () => {
     it('should call crudGetManyReference when its props changes', () => {
         const children = jest.fn();
         const crudGetManyReference = jest.fn();
-        const wrapper = shallow(
-            <ReferenceManyFieldController
-                record={{ id: 1 }}
-                resource="foo"
-                reference="bar"
-                target="foo_id"
-                basePath=""
-                data={{
-                    1: { id: 1, title: 'hello' },
-                    2: { id: 2, title: 'world' },
-                }}
-                ids={[1, 2]}
-                crudGetManyReference={crudGetManyReference}
-            >
+        const { rerender } = render(
+            <ReferenceManyFieldView record={{ id: 1 }}
+            resource="foo"
+            reference="bar"
+            target="foo_id"
+            basePath=""
+            data={{
+                1: { id: 1, title: 'hello' },
+                2: { id: 2, title: 'world' },
+            }}
+            ids={[1, 2]}
+            crudGetManyReference={crudGetManyReference}>
                 {children}
-            </ReferenceManyFieldController>
+            </ReferenceManyFieldView>
         );
-        wrapper.setProps({ sort: { field: 'id', order: 'ASC' } });
+
+        rerender(
+            <ReferenceManyFieldView record={{ id: 1 }}
+            resource="foo"
+            reference="bar"
+            target="foo_id"
+            basePath=""
+            data={{
+                1: { id: 1, title: 'hello' },
+                2: { id: 2, title: 'world' },
+            }}
+            ids={[1, 2]}
+            sort={{ field: 'id', order: 'ASC' }}
+            crudGetManyReference={crudGetManyReference}>
+                {children}
+            </ReferenceManyFieldView>
+        );
         assert.deepEqual(crudGetManyReference.mock.calls[1], [
             'bar',
             'foo_id',
@@ -146,3 +161,9 @@ describe('<ReferenceManyFieldController />', () => {
         ]);
     });
 });
+
+class ReferenceManyFieldView extends ReferenceManyFieldController {
+    render() {
+        return (<div></div>);
+    }
+}
