@@ -22,6 +22,9 @@ const styles = {
     },
     headerCell: {
         padding: '0 12px',
+        '&:last-child': {
+            padding: '0 12px',
+        },
     },
     checkbox: {},
     row: {},
