@@ -1,6 +1,7 @@
 import React from 'react';
 import assert from 'assert';
 import { shallow } from 'enzyme';
+import { render } from 'react-testing-library';
 import { ReferenceManyFieldController } from './ReferenceManyFieldController';
 
 describe('<ReferenceManyFieldController />', () => {
@@ -115,26 +116,29 @@ describe('<ReferenceManyFieldController />', () => {
     });
 
     it('should call crudGetManyReference when its props changes', () => {
-        const children = jest.fn();
         const crudGetManyReference = jest.fn();
-        const wrapper = shallow(
-            <ReferenceManyFieldController
-                record={{ id: 1 }}
-                resource="foo"
-                reference="bar"
-                target="foo_id"
-                basePath=""
-                data={{
-                    1: { id: 1, title: 'hello' },
-                    2: { id: 2, title: 'world' },
-                }}
-                ids={[1, 2]}
-                crudGetManyReference={crudGetManyReference}
-            >
-                {children}
+        const ControllerWrapper = (props) => (
+            <ReferenceManyFieldController record={{ id: 1 }}
+            resource="foo"
+            reference="bar"
+            target="foo_id"
+            basePath=""
+            data={{
+                1: { id: 1, title: 'hello' },
+                2: { id: 2, title: 'world' },
+            }}
+            ids={[1, 2]}
+            crudGetManyReference={crudGetManyReference}
+            {...props}>
+                {() => null}
             </ReferenceManyFieldController>
         );
-        wrapper.setProps({ sort: { field: 'id', order: 'ASC' } });
+
+        const { rerender } = render(<ControllerWrapper />);
+        rerender(
+            <ControllerWrapper sort={{ field: 'id', order: 'ASC' }} />
+        );
+
         assert.deepEqual(crudGetManyReference.mock.calls[1], [
             'bar',
             'foo_id',

@@ -26,13 +26,18 @@
         "watch": "rimraf ./lib && tsc --watch"
     },
     "devDependencies": {
+        "@types/history": "^4.7.2",
+        "@types/node-polyglot": "^0.4.31",
+        "@types/react-router": "^4.4.1",
+        "@types/recompose": "^0.27.0",
         "cross-env": "^5.2.0",
-        "enzyme": "~3.3.0",
-        "enzyme-adapter-react-16": "~1.1.1",
+        "enzyme": "~3.7.0",
+        "enzyme-adapter-react-16": "~1.6.0",
         "ignore-styles": "~5.0.1",
         "react": "~16.3.1",
         "react-dom": "~16.3.1",
         "react-test-renderer": "~16.3.1",
+        "react-testing-library": "^5.2.3",
         "rimraf": "^2.6.2"
     },
     "peerDependencies": {

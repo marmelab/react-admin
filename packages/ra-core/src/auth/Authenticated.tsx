@@ -1,8 +1,15 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React, { Component, ReactElement } from 'react';
 import { connect } from 'react-redux';
 
-import { userCheck } from '../actions/authActions';
+import { userCheck as userCheckAction } from '../actions/authActions';
+import { UserCheck } from './types';
+
+interface Props {
+    authParams: object;
+    children: ReactElement<any>;
+    location: object;
+    userCheck: UserCheck;
+}
 
 /**
  * Restrict access to children to authenticated users
@@ -31,14 +38,7 @@ import { userCheck } from '../actions/authActions';
  *         </Admin>
  *     );
  */
-export class Authenticated extends Component {
-    static propTypes = {
-        authParams: PropTypes.object,
-        children: PropTypes.element.isRequired,
-        location: PropTypes.object,
-        userCheck: PropTypes.func,
-    };
-
+export class Authenticated extends Component<Props> {
     componentWillMount() {
         this.checkAuthentication(this.props);
     }
@@ -69,5 +69,5 @@ export class Authenticated extends Component {
 
 export default connect(
     null,
-    { userCheck }
+    { userCheck: userCheckAction }
 )(Authenticated);
