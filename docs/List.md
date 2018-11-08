@@ -655,7 +655,7 @@ const styles = {
     },
 };
 
-const PostList = ({ classes, ...props) => (
+const PostList = ({ classes, ...props }) => (
     <List {...props} classes={{ header: classes.header }}>
         <Datagrid>
             ...
