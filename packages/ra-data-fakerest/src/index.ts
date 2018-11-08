@@ -11,7 +11,7 @@ import {
     DELETE_MANY,
 } from 'react-admin';
 
-/* eslint-disable no-console */
+/* tslint:disable:no-console */
 function log(type, resource, params, response) {
     if (console.group) {
         // Better logging in Chrome
@@ -46,7 +46,7 @@ export default (data, loggingEnabled = false) => {
     const restServer = new FakeRest.Server();
     restServer.init(data);
     if (window) {
-        window.restServer = restServer; // give way to update data in the console
+        (window as any).restServer = restServer; // give way to update data in the console
     }
 
     function getResponse(type, resource, params) {
