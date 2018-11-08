@@ -1,6 +1,5 @@
 import React, { Component, ReactElement } from 'react';
 import { connect } from 'react-redux';
-import isEqual from 'lodash/isEqual';
 
 import { userCheck as userCheckAction } from '../actions/authActions';
 import { UserCheck } from './types';
@@ -45,7 +44,7 @@ export class Authenticated extends Component<Props> {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (!isEqual(nextProps.location, this.props.location)) {
+        if (nextProps.location !== this.props.location) {
             this.checkAuthentication(nextProps);
         }
     }
