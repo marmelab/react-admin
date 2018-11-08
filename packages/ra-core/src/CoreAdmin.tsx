@@ -1,4 +1,9 @@
-import React, { createElement } from 'react';
+import React, {
+    createElement,
+    Component,
+    ReactNode,
+    ComponentType,
+} from 'react';
 import PropTypes from 'prop-types';
 import { Provider } from 'react-redux';
 import createHistory from 'history/createHashHistory';
@@ -9,35 +14,33 @@ import withContext from 'recompose/withContext';
 import createAdminStore from './createAdminStore';
 import TranslationProvider from './i18n/TranslationProvider';
 import CoreAdminRouter from './CoreAdminRouter';
+import { AuthProvider, I18nProvider, DataProvider } from './types';
 
-const componentPropType = PropTypes.oneOfType([
-    PropTypes.func,
-    PropTypes.string,
-]);
+export type ChildrenFunction = () => ComponentType[];
 
-class CoreAdmin extends React.Component {
-    static propTypes = {
-        appLayout: componentPropType,
-        authProvider: PropTypes.func,
-        children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
-        catchAll: componentPropType,
-        customSagas: PropTypes.array,
-        customReducers: PropTypes.object,
-        customRoutes: PropTypes.array,
-        dashboard: componentPropType,
-        dataProvider: PropTypes.func,
-        history: PropTypes.object,
-        i18nProvider: PropTypes.func,
-        initialState: PropTypes.object,
-        loading: componentPropType,
-        locale: PropTypes.string,
-        loginPage: componentPropType,
-        logoutButton: componentPropType,
-        menu: componentPropType,
-        theme: PropTypes.object,
-        title: PropTypes.node,
-    };
+interface Props {
+    appLayout: ComponentType;
+    authProvider: AuthProvider;
+    children: ReactNode | ChildrenFunction;
+    catchAll: ComponentType;
+    customSagas: any[];
+    customReducers: object;
+    customRoutes: any[];
+    dashboard: ComponentType;
+    dataProvider: DataProvider;
+    history: object;
+    i18nProvider: I18nProvider;
+    initialState: object;
+    loading: ComponentType;
+    locale: string;
+    loginPage: ComponentType;
+    logoutButton: ComponentType;
+    menu: ComponentType;
+    theme: object;
+    title: ReactNode;
+}
 
+class CoreAdmin extends Component<Props> {
     static contextTypes = {
         store: PropTypes.object,
     };
@@ -123,12 +126,28 @@ React-admin requires a valid dataProvider function to work.`);
     }
 
     render() {
+        const {
+            authProvider,
+            customReducers,
+            customSagas,
+            dataProvider,
+            i18nProvider,
+            initialState,
+            locale,
+        } = this.props;
+
         return this.reduxIsAlreadyInitialized ? (
             this.renderCore()
         ) : (
             <Provider
                 store={createAdminStore({
-                    ...this.props,
+                    authProvider,
+                    customReducers,
+                    customSagas,
+                    dataProvider,
+                    i18nProvider,
+                    initialState,
+                    locale,
                     history: this.history,
                 })}
             >

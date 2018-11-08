@@ -1,13 +1,40 @@
-import { Children, Component } from 'react';
+import { Children, Component, ReactNode } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import getContext from 'recompose/getContext';
 
-import { userCheck } from '../actions/authActions';
-import { AUTH_GET_PERMISSIONS } from '../auth/types';
-import { isLoggedIn } from '../reducer';
+import { userCheck as userCheckAction } from '../actions/authActions';
+import { AUTH_GET_PERMISSIONS } from './types';
+import { isLoggedIn as getIsLoggedIn } from '../reducer';
 import warning from '../util/warning';
+import { AuthProvider } from '../types';
+import { UserCheck } from './types';
+import { Location } from 'history';
+import { match as Match } from 'react-router';
+
+interface WithPermissionsChildrenParams {
+    authParams: object;
+    location?: Location;
+    match: Match;
+    permissions: any;
+}
+
+type WithPermissionsChildren = (
+    params: WithPermissionsChildrenParams
+) => ReactNode;
+
+interface Props {
+    authProvider: AuthProvider;
+    authParams: object;
+    children: WithPermissionsChildren;
+    location: Location;
+    match: Match;
+    render: WithPermissionsChildren;
+    isLoggedIn: boolean;
+    staticContext: object;
+    userCheck: UserCheck;
+}
 
 const isEmptyChildren = children => Children.count(children) === 0;
 
@@ -45,19 +72,7 @@ const isEmptyChildren = children => Children.count(children) === 0;
  *         </Admin>
  *     );
  */
-export class WithPermissions extends Component {
-    static propTypes = {
-        authProvider: PropTypes.func,
-        authParams: PropTypes.object,
-        children: PropTypes.func,
-        location: PropTypes.object,
-        match: PropTypes.object,
-        render: PropTypes.func,
-        isLoggedIn: PropTypes.bool,
-        staticContext: PropTypes.object,
-        userCheck: PropTypes.func,
-    };
-
+export class WithPermissions extends Component<Props> {
     cancelled = false;
 
     state = { permissions: null };
@@ -91,12 +106,12 @@ export class WithPermissions extends Component {
         }
     }
 
-    checkAuthentication(params) {
+    checkAuthentication(params: Props) {
         const { userCheck, authParams, location } = params;
         userCheck(authParams, location && location.pathname);
     }
 
-    async checkPermissions(params) {
+    async checkPermissions(params: Props) {
         const { authProvider, authParams, location, match } = params;
         try {
             const permissions = await authProvider(AUTH_GET_PERMISSIONS, {
@@ -139,7 +154,7 @@ export class WithPermissions extends Component {
     }
 }
 const mapStateToProps = state => ({
-    isLoggedIn: isLoggedIn(state),
+    isLoggedIn: getIsLoggedIn(state),
 });
 
 export default compose(
@@ -148,6 +163,6 @@ export default compose(
     }),
     connect(
         mapStateToProps,
-        { userCheck }
+        { userCheck: userCheckAction }
     )
 )(WithPermissions);
