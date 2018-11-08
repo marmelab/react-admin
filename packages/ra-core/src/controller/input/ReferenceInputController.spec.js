@@ -406,31 +406,27 @@ describe('<ReferenceInputController />', () => {
         assert.equal(crudGetManyAccumulate.mock.calls.length, 1);
     });
 
-    it('should only call crudGetMatching when props are changed from outside', () => {
+    it.only('should only call crudGetMatching when props are changed from outside', () => {
         const crudGetMatchingAccumulate = jest.fn();
         const crudGetManyAccumulate = jest.fn();
-        const { rerender } = render(
-            <ReferenceInputView
+        const ControllerWrapper = (props) => (
+            <ReferenceInputController
                 {...defaultProps}
                 allowEmpty
                 input={{ value: 5 }}
                 crudGetManyAccumulate={crudGetManyAccumulate}
                 crudGetMatchingAccumulate={crudGetMatchingAccumulate}
-            />
+                {...props}
+            >
+                {() => null}
+            </ReferenceInputController>
         );
+
+        const { rerender } = render(<ControllerWrapper />);
         assert.equal(crudGetMatchingAccumulate.mock.calls.length, 1);
         assert.equal(crudGetManyAccumulate.mock.calls.length, 1);
 
-        rerender(
-            <ReferenceInputView
-                {...defaultProps}
-                allowEmpty
-                input={{ value: 5 }}
-                crudGetManyAccumulate={crudGetManyAccumulate}
-                crudGetMatchingAccumulate={crudGetMatchingAccumulate}
-                filter={{ foo: 'bar' }}
-            />
-        );
+        rerender(<ControllerWrapper filter={{ foo: 'bar' }} />);
 
         assert.equal(crudGetManyAccumulate.mock.calls.length, 1);
         assert.deepEqual(crudGetMatchingAccumulate.mock.calls[1], [
@@ -442,16 +438,12 @@ describe('<ReferenceInputController />', () => {
         ]);
 
         rerender(
-            <ReferenceInputView
-                {...defaultProps}
-                allowEmpty
-                input={{ value: 5 }}
-                crudGetManyAccumulate={crudGetManyAccumulate}
-                crudGetMatchingAccumulate={crudGetMatchingAccumulate}
+            <ControllerWrapper
                 filter={{ foo: 'bar' }}
                 sort={{ field: 'foo', order: 'ASC' }}
             />
         );
+
         assert.equal(crudGetManyAccumulate.mock.calls.length, 1);
         assert.deepEqual(crudGetMatchingAccumulate.mock.calls[2], [
             'posts',
@@ -462,17 +454,13 @@ describe('<ReferenceInputController />', () => {
         ]);
 
         rerender(
-            <ReferenceInputView
-                {...defaultProps}
-                allowEmpty
-                input={{ value: 5 }}
-                crudGetManyAccumulate={crudGetManyAccumulate}
-                crudGetMatchingAccumulate={crudGetMatchingAccumulate}
+            <ControllerWrapper
                 filter={{ foo: 'bar' }}
                 sort={{ field: 'foo', order: 'ASC' }}
                 perPage={42}
             />
         );
+
         assert.equal(crudGetManyAccumulate.mock.calls.length, 1);
         assert.deepEqual(crudGetMatchingAccumulate.mock.calls[3], [
             'posts',
@@ -545,9 +533,3 @@ describe('<ReferenceInputController />', () => {
         assert.equal(crudGetManyAccumulate.mock.calls.length, 2);
     });
 });
-
-class ReferenceInputView extends ReferenceInputController {
-    render() {
-        return (<div></div>);
-    }
-}
