@@ -9,6 +9,10 @@ import { adminSaga } from './sideEffect';
 import { defaultI18nProvider } from './i18n';
 import formMiddleware from './form/formMiddleware';
 
+interface Window {
+    devToolsExtension?: () => () => void;
+}
+
 export default ({
     authProvider,
     customReducers = {},
@@ -33,6 +37,8 @@ export default ({
         );
     };
     const sagaMiddleware = createSagaMiddleware();
+    const typedWindow = window as Window;
+
     const store = createStore(
         resettableAppReducer,
         initialState,
@@ -42,8 +48,8 @@ export default ({
                 formMiddleware,
                 routerMiddleware(history)
             ),
-            typeof window !== 'undefined' && window.devToolsExtension
-                ? window.devToolsExtension()
+            typeof typedWindow !== 'undefined' && typedWindow.devToolsExtension
+                ? typedWindow.devToolsExtension()
                 : f => f
         )
     );
