@@ -2,19 +2,21 @@ import { crudGetMany, crudGetMatching } from './dataActions';
 
 export const CRUD_GET_MANY_ACCUMULATE = 'RA/CRUD_GET_MANY_ACCUMULATE';
 
-export const crudGetManyAccumulate = (
-    resource: string,
-    ids: []
-): {
-    type: string;
-    payload: {
+export interface CrudGetManyAccumulateAction {
+    readonly type: typeof CRUD_GET_MANY_ACCUMULATE;
+    readonly payload: {
         resource: string;
         ids: [];
     };
-    meta: {
+    readonly meta: {
         accumulate: any;
     };
-} => ({
+}
+
+export const crudGetManyAccumulate = (
+    resource: string,
+    ids: []
+): CrudGetManyAccumulateAction => ({
     type: CRUD_GET_MANY_ACCUMULATE,
     payload: { resource, ids },
     meta: { accumulate: crudGetMany },
@@ -22,20 +24,22 @@ export const crudGetManyAccumulate = (
 
 export const CRUD_GET_MATCHING_ACCUMULATE = 'RA/CRUD_GET_MATCHING_ACCUMULATE';
 
+export interface CrudGetMatchingAccumulateAction {
+    readonly type: typeof CRUD_GET_MATCHING_ACCUMULATE;
+    readonly meta: {
+        accumulate: () => any;
+        accumulateValues?: () => boolean;
+        accumulateKey?: string;
+    };
+}
+
 export const crudGetMatchingAccumulate = (
     reference: string,
     relatedTo: string,
     pagination: object,
     sort: object,
     filter: object
-): {
-    type: string;
-    meta: {
-        accumulate: any;
-        accumulateValues: () => boolean;
-        accumulateKey: string;
-    };
-} => {
+): CrudGetMatchingAccumulateAction => {
     const action = crudGetMatching(
         reference,
         relatedTo,
