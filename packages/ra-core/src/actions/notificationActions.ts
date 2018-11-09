@@ -1,5 +1,7 @@
 export const SHOW_NOTIFICATION = 'RA/SHOW_NOTIFICATION';
 
+export type NotificationType = 'info' | 'warning' | 'error';
+
 interface NotificationOptions {
     // The type of the notification
     autoHideDuration?: number;
@@ -7,15 +9,15 @@ interface NotificationOptions {
     messageArgs?: any;
 }
 
-type MessageType = 'info' | 'warning' | 'error';
+export interface Notification {
+    readonly message: string;
+    readonly type: NotificationType;
+    readonly notificationOptions?: NotificationOptions;
+}
 
 export interface ShowNotificationAction {
     readonly type: typeof SHOW_NOTIFICATION;
-    readonly payload: {
-        message: string;
-        type: MessageType;
-        notificationOptions?: NotificationOptions;
-    };
+    readonly payload: Notification;
 }
 
 /**
@@ -28,7 +30,7 @@ export const showNotification = (
     // A translatable label or text to display on notification
     message: string,
     // The type of the notification
-    type: MessageType = 'info',
+    type: NotificationType = 'info',
     // Specify additional parameters of notification
     notificationOptions?: NotificationOptions
 ): ShowNotificationAction => ({
