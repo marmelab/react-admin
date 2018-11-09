@@ -1,10 +1,10 @@
 import { Reducer } from 'redux';
 import {
     CHANGE_LOCALE,
-    CHANGE_LOCALE_SUCCESS,
-    CHANGE_LOCALE_FAILURE,
     ChangeLocaleAction,
+    CHANGE_LOCALE_SUCCESS,
     ChangeLocaleSuccessAction,
+    CHANGE_LOCALE_FAILURE,
     ChangeLocaleFailureAction,
 } from '../../actions/localeActions';
 

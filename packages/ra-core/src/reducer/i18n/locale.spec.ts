@@ -9,7 +9,7 @@ import {
 
 describe('locale reducer', () => {
     it('should return DEFAULT_LOCALE by default', () => {
-        assert.equal(DEFAULT_LOCALE, reducer()(undefined, {}));
+        assert.equal(DEFAULT_LOCALE, reducer()(undefined, { type: 'foo' }));
     });
     it('should change with CHANGE_LOCALE_SUCCESS action', () => {
         assert.equal(
