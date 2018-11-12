@@ -440,7 +440,14 @@ export class AutocompleteInput extends React.Component {
         this.previousFilterValue = value;
     };
 
-    shouldRenderSuggestions = () => true;
+    shouldRenderSuggestions = (val) => {
+      const { shouldRenderSuggestions } = this.props;
+      if (shouldRenderSuggestions !== undefined && typeof shouldRenderSuggestions === 'function') {
+        return shouldRenderSuggestions(val)
+      }
+
+      return true
+    }
 
     render() {
         const {
@@ -515,6 +522,7 @@ AutocompleteInput.propTypes = {
     optionValue: PropTypes.string.isRequired,
     resource: PropTypes.string,
     setFilter: PropTypes.func,
+    shouldRenderSuggestions: PropTypes.func,
     source: PropTypes.string,
     suggestionComponent: PropTypes.func,
     translate: PropTypes.func.isRequired,
