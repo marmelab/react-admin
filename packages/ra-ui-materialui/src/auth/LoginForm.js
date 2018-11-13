@@ -49,6 +49,7 @@ const LoginForm = ({ classes, isLoading, handleSubmit, translate }) => (
                     component={renderInput}
                     label={translate('ra.auth.username')}
                     disabled={isLoading}
+                    autoFocus
                 />
             </div>
             <div className={classes.input}>
