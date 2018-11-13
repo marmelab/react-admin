@@ -25,7 +25,7 @@ const styles = theme => ({
 
 class DeleteButton extends Component {
     handleDelete = event => {
-        event.stopPropagation();
+        event.preventDefault();
         const {
             dispatchCrudDelete,
             startUndoable,
