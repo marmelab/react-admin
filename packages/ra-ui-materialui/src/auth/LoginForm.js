@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { Field, propTypes, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
-import lifecycle from 'recompose/lifecycle';
 import CardActions from '@material-ui/core/CardActions';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -50,6 +49,7 @@ const LoginForm = ({ classes, isLoading, handleSubmit, translate }) => (
                     component={renderInput}
                     label={translate('ra.auth.username')}
                     disabled={isLoading}
+                    autoFocus
                 />
             </div>
             <div className={classes.input}>
@@ -99,11 +99,6 @@ const enhance = compose(
             if (!values.password)
                 errors.password = translate('ra.validation.required');
             return errors;
-        },
-    }),
-    lifecycle({
-        componentDidMount() {
-            document.getElementById('username').focus();
         },
     })
 );
