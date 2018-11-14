@@ -1,10 +1,32 @@
 import { put, takeEvery } from 'redux-saga/effects';
-import { showNotification } from '../actions/notificationActions';
+import {
+    showNotification,
+    NotificationType,
+} from '../actions/notificationActions';
+
+export interface NotificationSideEffect {
+    body: string;
+    level: NotificationType;
+    messageArgs?: object;
+}
+
+interface ActionWithSideEffect {
+    type: string;
+    payload?: any;
+    error: string | { message: string };
+    meta: {
+        notification: NotificationSideEffect;
+        optimistic?: boolean;
+    };
+}
 
 /**
  * Notification Side Effects
  */
-function* handleNotification({ error, meta: { notification, optimistic } }) {
+function* handleNotification({
+    error,
+    meta: { notification, optimistic },
+}: ActionWithSideEffect) {
     const { body, level, messageArgs = {} } = notification;
     if (error) {
         return yield put(
@@ -28,6 +50,7 @@ function* handleNotification({ error, meta: { notification, optimistic } }) {
 
 export default function*() {
     yield takeEvery(
+        // @ts-ignore
         action => action.meta && action.meta.notification,
         handleNotification
     );

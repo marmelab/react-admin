@@ -1,17 +1,32 @@
+import { Reducer } from 'react-redux';
 import {
     SET_LIST_SELECTED_IDS,
+    SetListLelectedIdsAction,
     TOGGLE_LIST_ITEM,
+    ToggleListItemAction,
+    toggleListItem,
 } from '../../../../actions/listActions';
 import { CRUD_DELETE_OPTIMISTIC } from '../../../../actions/dataActions';
 
 const initialState = [];
 
-export default (previousState = initialState, action) => {
+type State = any[];
+
+type ActionTypes =
+    | SetListLelectedIdsAction
+    | ToggleListItemAction
+    | { type: typeof CRUD_DELETE_OPTIMISTIC; payload: { id: string } } // FIXME use type from action creator
+    | { type: 'OTHER_ACTION'; meta?: any };
+
+const selectedIdsReducer: Reducer<State> = (
+    previousState: State = initialState,
+    action: ActionTypes
+) => {
     switch (action.type) {
         case SET_LIST_SELECTED_IDS:
             return action.payload;
         case TOGGLE_LIST_ITEM: {
-            let index = previousState.indexOf(action.payload);
+            const index = previousState.indexOf(action.payload);
             if (index > -1) {
                 return [
                     ...previousState.slice(0, index),
@@ -22,7 +37,7 @@ export default (previousState = initialState, action) => {
             }
         }
         case CRUD_DELETE_OPTIMISTIC: {
-            let index = previousState.indexOf(action.payload.id);
+            const index = previousState.indexOf(action.payload.id);
             if (index === -1) {
                 return previousState;
             }
@@ -37,3 +52,5 @@ export default (previousState = initialState, action) => {
                 : previousState;
     }
 };
+
+export default selectedIdsReducer;

@@ -1,3 +1,4 @@
+import expect from 'expect';
 import { put } from 'redux-saga/effects';
 
 import { showNotification } from '../actions/notificationActions';

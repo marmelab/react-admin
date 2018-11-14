@@ -1,3 +1,4 @@
+import expect from 'expect';
 import { put } from 'redux-saga/effects';
 import { push } from 'react-router-redux';
 import { reset } from 'redux-form';
@@ -7,6 +8,7 @@ import { handleRedirection } from './redirection';
 describe('redirection saga', () => {
     it('should yield a redirection if redirectTo is truthy', () => {
         const action = {
+            type: 'foo',
             payload: { id: 123 },
             meta: { redirectTo: 'edit', basePath: '/posts' },
         };
@@ -16,6 +18,7 @@ describe('redirection saga', () => {
 
     it('should yield a redirection using the payload data if available', () => {
         const action = {
+            type: 'foo',
             payload: { data: { id: 123 } },
             meta: { redirectTo: 'edit', basePath: '/posts' },
         };

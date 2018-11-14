@@ -5,7 +5,7 @@ import { userCheck as userCheckAction } from '../actions/authActions';
 import { UserCheck } from './types';
 
 interface Props {
-    authParams: object;
+    authParams?: object;
     children: ReactElement<any>;
     location: object;
     userCheck: UserCheck;
