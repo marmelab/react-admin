@@ -53,6 +53,24 @@ describe('<SelectInput />', () => {
         assert.equal(MenuItemElement2.childAt(0).text(), 'Female');
     });
 
+    it('should render disable choices marked so', () => {
+        const wrapper = shallow(
+            <SelectInput
+                {...defaultProps}
+                choices={[
+                    { _id: 123, full_name: 'Leo Tolstoi', sex: 'M' },
+                    { _id: 456, full_name: 'Jane Austen', sex: 'F' },
+                    { _id: 1, full_name: 'System Administrator', sex: 'F', disabled: true }
+                ]}
+            />
+        );
+        const MenuItemElements = wrapper.find('WithStyles(MenuItem)');
+        const MenuItemElement = MenuItemElements.at(1);
+        assert.equal(!!MenuItemElement.prop('disabled'), false);
+        const MenuItemElement2 = MenuItemElements.at(2);
+        assert.equal(MenuItemElement2.prop('disabled'), true);
+    });
+
     it('should add an empty menu when allowEmpty is true', () => {
         const wrapper = shallow(
             <SelectInput
