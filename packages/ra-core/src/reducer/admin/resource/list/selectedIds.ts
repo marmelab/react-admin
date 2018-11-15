@@ -1,10 +1,9 @@
-import { Reducer } from 'react-redux';
+import { Reducer } from 'redux';
 import {
     SET_LIST_SELECTED_IDS,
     SetListLelectedIdsAction,
     TOGGLE_LIST_ITEM,
     ToggleListItemAction,
-    toggleListItem,
 } from '../../../../actions/listActions';
 import { CRUD_DELETE_OPTIMISTIC } from '../../../../actions/dataActions';
 
