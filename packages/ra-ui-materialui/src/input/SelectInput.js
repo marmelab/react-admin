@@ -30,6 +30,7 @@ const sanitizeRestProps = ({
     options,
     optionValue,
     optionText,
+    disableValue,
     perPage,
     record,
     reference,
@@ -108,6 +109,23 @@ const styles = theme => ({
  * <SelectInput source="gender" choices={choices} translateChoice={false}/>
  *
  * The object passed as `options` props is passed to the material-ui <Select> component
+ * 
+ * You can disable some choices by providing a `disableValue` field which name is `disabled` by default 
+ * @example
+ * const choices = [
+ *    { id: 123, first_name: 'Leo', last_name: 'Tolstoi' },
+ *    { id: 456, first_name: 'Jane', last_name: 'Austen' },
+ *    { id: 976, first_name: 'William', last_name: 'Rinkerd', disabled: true },
+ * ];
+ * 
+ * @example
+ * const choices = [
+ *    { id: 123, first_name: 'Leo', last_name: 'Tolstoi' },
+ *    { id: 456, first_name: 'Jane', last_name: 'Austen' },
+ *    { id: 976, first_name: 'William', last_name: 'Rinkerd', not_available: true },
+ * ];
+ * <SelectInput source="gender" choices={choices} disableValue="not_available" />
+ * 
  */
 export class SelectInput extends Component {
     /*
@@ -158,11 +176,12 @@ export class SelectInput extends Component {
     };
 
     renderMenuItem = choice => {
-        const { optionValue } = this.props;
+        const { optionValue, disableValue } = this.props;
         return (
             <MenuItem
                 key={get(choice, optionValue)}
                 value={get(choice, optionValue)}
+                disabled={get(choice, disableValue)}
             >
                 {this.renderMenuItemOption(choice)}
             </MenuItem>
@@ -235,6 +254,7 @@ SelectInput.propTypes = {
         PropTypes.element,
     ]).isRequired,
     optionValue: PropTypes.string.isRequired,
+    disableValue: PropTypes.string,
     resource: PropTypes.string,
     source: PropTypes.string,
     translate: PropTypes.func.isRequired,
@@ -249,6 +269,7 @@ SelectInput.defaultProps = {
     optionText: 'name',
     optionValue: 'id',
     translateChoice: true,
+    disableValue: 'disabled'
 };
 
 export default compose(
