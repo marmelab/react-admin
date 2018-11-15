@@ -58,6 +58,7 @@ const CommandEdit = ({ classes, ...props }) => (
                                     { id: 'delivered', name: 'delivered' },
                                     { id: 'ordered', name: 'ordered' },
                                     { id: 'cancelled', name: 'cancelled' },
+                                    { id: 'unknown', name: 'unknown', disabled: true },
                                 ]}
                             />
                             <BooleanInput source="returned" />
