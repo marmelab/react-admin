@@ -248,7 +248,7 @@ const MyPage = ({ permissions }) => (
         }
     </Card>
 )
-const MyPageWithPermissions = ({ location, match }) => (
+const MyPageWithPermissions = ({ location, match }, route) => (
     <WithPermissions
         authParams={{ key: match.path, params: route.params }}
         // location is not required but it will trigger a new permissions check if specified when it changes
