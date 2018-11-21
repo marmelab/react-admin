@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 import Button from '@material-ui/core/Button';
-import TablePaginationActions from '@material-ui/core/TablePaginationActions';
 import { withStyles } from '@material-ui/core/styles';
 import ChevronLeft from '@material-ui/icons/ChevronLeft';
 import ChevronRight from '@material-ui/icons/ChevronRight';
@@ -156,7 +156,21 @@ export class PaginationActions extends Component {
     }
 }
 
-PaginationActions.propTypes = TablePaginationActions.propTypes;
+/**
+ * PaginationActions propTypes are copied over from material-ui’s
+ * TablePaginationActions propTypes. See
+ * https://github.com/mui-org/material-ui/blob/869692ecf3812bc4577ed4dde81a9911c5949695/packages/material-ui/src/TablePaginationActions/TablePaginationActions.js#L53-L85
+ * for reference.
+ */
+PaginationActions.propTypes = {
+  backIconButtonProps: PropTypes.object,
+  count: PropTypes.number.isRequired,
+  nextIconButtonProps: PropTypes.object,
+  onChangePage: PropTypes.func.isRequired,
+  page: PropTypes.number.isRequired,
+  rowsPerPage: PropTypes.number.isRequired,
+  theme: PropTypes.object.isRequired,
+};
 
 const enhance = compose(
     pure,
