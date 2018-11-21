@@ -16,11 +16,11 @@ import {
 import { FETCH_ERROR } from '../actions/fetchActions';
 import { AUTH_LOGIN, AUTH_CHECK, AUTH_ERROR, AUTH_LOGOUT } from '../auth';
 const nextPathnameSelector = state => {
-    const locationState = state.routing.location.state;
+    const locationState = state.router.location.state;
     return locationState && locationState.nextPathname;
 };
 
-const currentPathnameSelector = state => state.routing.location;
+const currentPathnameSelector = state => state.router.location;
 
 export default authProvider => {
     if (!authProvider) return () => null;
