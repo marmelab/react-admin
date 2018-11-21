@@ -4,6 +4,28 @@ import { reset } from 'redux-form';
 
 import resolveRedirectTo from '../util/resolveRedirectTo';
 
+export type RedirectionSideEffect = string;
+
+interface ActionWithSideEffect {
+    type: string;
+    payload?: {
+        id?: string | number;
+        data?: {
+            id?: string | number;
+        };
+    };
+    requestPayload?: {
+        id?: string | number;
+        data?: {
+            id?: string | number;
+        };
+    };
+    meta: {
+        redirectTo: RedirectionSideEffect | boolean;
+        basePath?: string;
+    };
+}
+
 /**
  * Redirection Side Effects
  */
@@ -11,7 +33,7 @@ export function* handleRedirection({
     payload,
     requestPayload,
     meta: { basePath, redirectTo },
-}) {
+}: ActionWithSideEffect) {
     return redirectTo
         ? yield put(
               push(
@@ -37,6 +59,7 @@ export function* handleRedirection({
 
 export default function*() {
     yield takeEvery(
+        // @ts-ignore
         action => action.meta && typeof action.meta.redirectTo !== 'undefined',
         handleRedirection
     );

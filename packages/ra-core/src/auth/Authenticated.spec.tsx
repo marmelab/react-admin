@@ -1,4 +1,5 @@
 import React from 'react';
+import expect from 'expect';
 import { shallow, render } from 'enzyme';
 import { html } from 'cheerio';
 
@@ -9,7 +10,7 @@ describe('<Authenticated>', () => {
     it('should call userCheck on mount', () => {
         const userCheck = jest.fn();
         shallow(
-            <Authenticated userCheck={userCheck}>
+            <Authenticated location={{}} userCheck={userCheck}>
                 <Foo />
             </Authenticated>
         );
@@ -18,7 +19,7 @@ describe('<Authenticated>', () => {
     it('should call userCheck on update', () => {
         const userCheck = jest.fn();
         const wrapper = shallow(
-            <Authenticated userCheck={userCheck}>
+            <Authenticated location={{}} userCheck={userCheck}>
                 <Foo />
             </Authenticated>
         );
@@ -28,7 +29,7 @@ describe('<Authenticated>', () => {
     it('should render its child by default', () => {
         const userCheck = jest.fn();
         const wrapper = render(
-            <Authenticated userCheck={userCheck}>
+            <Authenticated location={{}} userCheck={userCheck}>
                 <Foo />
             </Authenticated>
         );

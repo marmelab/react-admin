@@ -5,7 +5,14 @@ import {
     changeLocaleFailure,
 } from '../actions';
 
-export default i18nProvider => {
+export type I18nProvider = (locale: string) => object | Promise<object>;
+
+/**
+ * The i18n side effect reacts to the CHANGE_LOCALE actions, calls
+ * the i18nProvider (which may be asynchronous) with the requested locale,
+ * and dispatches changeLocaleSuccess or changeLocaleFailure with the result.
+ */
+export default (i18nProvider: I18nProvider) => {
     function* loadMessages(action) {
         const locale = action.payload;
 

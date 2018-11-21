@@ -1,3 +1,4 @@
+import expect from 'expect';
 import {
     resolveBrowserLocale,
     mergeTranslations,
@@ -7,15 +8,18 @@ import {
 describe('TranslationUtils', () => {
     describe('resolveBrowserLocale', () => {
         beforeEach(() => {
+            // @ts-ignore
             global.window = {};
         });
 
         it("should return default locale if there's no available locale in browser", () => {
+            // @ts-ignore
             window.navigator = {};
             expect(resolveBrowserLocale()).toEqual(DEFAULT_LOCALE);
         });
 
         it('should splice browser language to take first two locale letters', () => {
+            // @ts-ignore
             window.navigator = { language: 'en-US' };
             expect(resolveBrowserLocale()).toEqual('en');
         });

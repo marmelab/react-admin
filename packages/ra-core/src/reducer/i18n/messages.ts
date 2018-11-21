@@ -8,7 +8,7 @@ type ActionTypes = ChangeLocaleSuccessAction | { type: 'OTHER_ACTION' };
 
 type State = any;
 
-const messagesReducer: Reducer<State> = defaultMessages => {
+export default (defaultMessages: string): Reducer<State> => {
     return (previousState = defaultMessages, action: ActionTypes) => {
         switch (action.type) {
             case CHANGE_LOCALE_SUCCESS:
@@ -18,5 +18,3 @@ const messagesReducer: Reducer<State> = defaultMessages => {
         }
     };
 };
-
-export default messagesReducer;

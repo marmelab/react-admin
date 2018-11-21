@@ -10,7 +10,7 @@ import {
 } from '../actions/undoActions';
 import { refreshView } from '../actions/uiActions';
 
-export function* handleUndoRace(undoableAction) {
+export function* handleUndoRace(undoableAction: { payload: { action: any } }) {
     const {
         payload: { action },
     } = undoableAction;
@@ -49,5 +49,6 @@ export function* handleUndoRace(undoableAction) {
 }
 
 export default function* watchUndoable() {
+    // @ts-ignore
     yield takeEvery(UNDOABLE, handleUndoRace);
 }

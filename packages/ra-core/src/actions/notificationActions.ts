@@ -7,6 +7,8 @@ interface NotificationOptions {
     autoHideDuration?: number;
     // Arguments used to translate the message
     messageArgs?: any;
+    // If true, the notification shows an Undo button
+    undoable?: boolean;
 }
 
 export interface Notification {
