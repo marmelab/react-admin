@@ -85,7 +85,7 @@ Menu.defaultProps = {
 const mapStateToProps = state => ({
     open: state.admin.ui.sidebarOpen,
     resources: getResources(state),
-    pathname: state.routing.location.pathname, // used to force redraw on navigation
+    pathname: state.router.location.pathname, // used to force redraw on navigation
 });
 
 const enhance = compose(
