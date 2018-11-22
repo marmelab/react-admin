@@ -1,5 +1,15 @@
 # Changelog
 
+## v2.4.3
+
+* Add types to side effects ([#2535](https://github.com/marmelab/react-admin/pull)) ([fzaninotto](https://github.com/fzaninotto))
+* Add documentation for unit testing custom views ([#2554](https://github.com/marmelab/react-admin/pull)) ([kierenhughes](https://github.com/kierenhughes))
+* Fix `TablePaginationAction` using private material-ui API ([#2551](https://github.com/marmelab/react-admin/pull)) ([phacks](https://github.com/phacks))
+* Fix typo in tutorial ([#2529](https://github.com/marmelab/react-admin/pull)) ([Shaglock](https://github.com/Shaglock))
+* Fix click on `DeleteButton` in `List` redirects to `Edit` ([#2526](https://github.com/marmelab/react-admin/pull)) ([fzaninotto](https://github.com/fzaninotto)))
+* Fix Datagrid header cell padding ([#2522](https://github.com/marmelab/react-admin/pull)) ([aliang](https://github.com/aliang))
+* Fix example code for adding upload feature in `DataProviders` documentation ([#2503](https://github.com/marmelab/react-admin/pull)) ([misino](https://github.com/misino))
+
 ## v2.4.2
 
 * Fix example code in List documentation ([#2518](https://github.com/marmelab/react-admin/pull/2518)) ([pastparty](https://github.com/pastparty))
