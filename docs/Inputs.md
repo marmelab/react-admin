@@ -1031,6 +1031,28 @@ You can make the `SelectInput` component resettable using the `resettable` prop.
 
 ![resettable SelectInput](./img/resettable-select-input.png)
 
+You can set disabled values by setting the `disabled` property of one item: 
+
+```jsx
+const choices = [
+    { _id: 123, full_name: 'Leo Tolstoi', sex: 'M' },
+    { _id: 456, full_name: 'Jane Austen', sex: 'F' },
+    { _id: 1, full_name: 'System Administrator', sex: 'F', disabled: true },
+];
+<SelectInput source="author_id" choices={choices} optionText="full_name" optionValue="_id" />
+```
+
+You can use a custom field name by setting `disableValue` prop: 
+
+```jsx
+const choices = [
+    { _id: 123, full_name: 'Leo Tolstoi', sex: 'M' },
+    { _id: 456, full_name: 'Jane Austen', sex: 'F' },
+    { _id: 987, full_name: 'Jack Harden', sex: 'M', not_available: true },
+];
+<SelectInput source="contact_id" choices={choices} optionText="full_name" optionValue="_id" disableValue="not_available" />
+```
+
 ## `<SelectArrayInput>`
 
 To let users choose several values in a list using a dropdown, use `<SelectArrayInput>`. It renders using [Material ui's `<Select>`](http://www.material-ui.com/#/components/select). Set the `choices` attribute to determine the options (with `id`, `name` tuples):
