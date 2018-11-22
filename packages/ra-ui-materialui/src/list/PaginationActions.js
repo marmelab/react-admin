@@ -163,13 +163,12 @@ export class PaginationActions extends Component {
  * for reference.
  */
 PaginationActions.propTypes = {
-  backIconButtonProps: PropTypes.object,
-  count: PropTypes.number.isRequired,
-  nextIconButtonProps: PropTypes.object,
-  onChangePage: PropTypes.func.isRequired,
-  page: PropTypes.number.isRequired,
-  rowsPerPage: PropTypes.number.isRequired,
-  theme: PropTypes.object.isRequired,
+    backIconButtonProps: PropTypes.object,
+    count: PropTypes.number.isRequired,
+    nextIconButtonProps: PropTypes.object,
+    onChangePage: PropTypes.func.isRequired,
+    page: PropTypes.number.isRequired,
+    rowsPerPage: PropTypes.number.isRequired,
 };
 
 const enhance = compose(
