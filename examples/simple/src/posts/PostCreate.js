@@ -100,7 +100,7 @@ const PostCreate = ({ permissions, ...props }) => (
                 return errors;
             }}
         >
-            <TextInput source="title" />
+            <TextInput autoFocus source="title" />
             <LongTextInput source="teaser" />
             <RichTextInput source="body" />
             <FormDataConsumer>
