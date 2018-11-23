@@ -4,7 +4,7 @@ import i18nReducer from './reducer/i18n';
 import queryReducer from './reducer/admin/resource/list/queryReducer';
 import CoreAdmin from './CoreAdmin';
 import CoreAdminRouter from './CoreAdminRouter';
-import createAdminStore from './createAdminStore';
+import createAdminStore, { getStore } from './createAdminStore';
 import RoutesWithLayout from './RoutesWithLayout';
 import Resource from './Resource';
 
@@ -16,6 +16,7 @@ export {
     CoreAdmin,
     CoreAdminRouter,
     createAdminStore,
+    getStore,
     RoutesWithLayout,
     Resource,
 };
