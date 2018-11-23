@@ -91,6 +91,7 @@ export const ProductCreate = withStyles(createStyles)(
             <TabbedForm>
                 <FormTab label="resources.products.tabs.image">
                     <TextInput
+                        autoFocus
                         source="image"
                         options={{ fullWidth: true }}
                         validate={required()}

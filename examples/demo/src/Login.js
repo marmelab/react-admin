@@ -94,6 +94,7 @@ class Login extends Component {
                         <div className={classes.form}>
                             <div className={classes.input}>
                                 <Field
+                                    autoFocus
                                     name="username"
                                     component={renderInput}
                                     label={translate('ra.auth.username')}

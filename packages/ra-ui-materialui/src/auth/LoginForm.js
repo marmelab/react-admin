@@ -44,6 +44,7 @@ const LoginForm = ({ classes, isLoading, handleSubmit, translate }) => (
         <div className={classes.form}>
             <div className={classes.input}>
                 <Field
+                    autoFocus
                     id="username"
                     name="username"
                     component={renderInput}

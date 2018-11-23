@@ -210,6 +210,7 @@ export const VisitorCreate = withStyles(editStyles)(({ classes, ...props }) => (
         <TabbedForm>
             <FormTab label="resources.customers.tabs.identity">
                 <TextInput
+                    autoFocus
                     source="first_name"
                     formClassName={classes.first_name}
                 />
