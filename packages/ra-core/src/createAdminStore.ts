@@ -13,6 +13,10 @@ interface Window {
     devToolsExtension?: () => () => void;
 }
 
+let store = null;
+
+export const getStore = () => store;
+
 export default ({
     authProvider,
     customReducers = {},
@@ -39,7 +43,7 @@ export default ({
     const sagaMiddleware = createSagaMiddleware();
     const typedWindow = window as Window;
 
-    const store = createStore(
+    store = createStore(
         resettableAppReducer,
         initialState,
         compose(
