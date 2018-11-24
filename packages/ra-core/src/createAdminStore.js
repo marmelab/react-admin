@@ -9,6 +9,10 @@ import { adminSaga } from './sideEffect';
 import { defaultI18nProvider } from './i18n';
 import formMiddleware from './form/formMiddleware';
 
+let store = null;
+
+const getStore = () => store;
+
 export default ({
     authProvider,
     customReducers = {},
@@ -33,7 +37,7 @@ export default ({
         );
     };
     const sagaMiddleware = createSagaMiddleware();
-    const store = createStore(
+    store = createStore(
         resettableAppReducer,
         initialState,
         compose(

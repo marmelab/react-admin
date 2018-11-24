@@ -162,6 +162,34 @@ class LocaleSwitcher extends Component {
 export default connect(undefined, { changeLocale: changeLocaleAction })(LocaleSwitcher);
 ```
 
+## Sending locale info in requests header
+
+You can access global store. this can be achieved by using `getStore`
+this way you can work with store even in none react component part of your project.
+it will be useful for example when your api needs to know sender's locale info.
+
+
+```jsx
+import { fetchUtils, Admin, Resource, getStore } from 'react-admin';
+import simpleRestProvider from 'ra-data-simple-rest';
+
+const httpClient = (url, options = {}) => {
+    if (!options.headers) {
+        options.headers = new Headers({ Accept: 'application/json' });
+    }
+
+    options.headers.set('accept-language', `${getStore().i18n.locale}`);
+    return fetchUtils.fetchJson(url, options);
+}
+const dataProvider = simpleRestProvider('http://localhost:3000', httpClient);
+
+const App = () => (
+    <Admin locale="de" dataProvider={dataProvider} >
+        ...
+    </Admin>
+);
+```
+
 ## Using The Browser Locale
 
 React-admin provides a helper function named `resolveBrowserLocale()`, which helps you to introduce a dynamic locale attribution based on the locale configured in the user's browser. To use it, simply pass the function as `locale` prop.
