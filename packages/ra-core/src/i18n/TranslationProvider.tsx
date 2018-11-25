@@ -39,21 +39,37 @@ interface ViewProps extends MappedProps, Props {}
  *     );
  */
 class TranslationProviderView extends Component<ViewProps, State> {
-    polyglot = undefined;
-    state = {
-        contextValues: {
-            locale: 'en',
-            translate: id => id,
-        },
-    };
+    constructor(props) {
+        super(props);
+        const { locale, messages } = props;
+        const polyglot = new Polyglot({
+            locale,
+            phrases: defaultsDeep({}, messages, defaultMessages),
+        });
 
-    componentDidMount() {
-        this.setUpContextValues();
+        this.state = {
+            contextValues: {
+                locale,
+                translate: polyglot.t.bind(polyglot),
+            },
+        };
     }
 
     componentDidUpdate(prevProps) {
         if (prevProps.locale !== this.props.locale) {
-            this.setUpContextValues();
+            const { locale, messages } = this.props;
+
+            const polyglot = new Polyglot({
+                locale,
+                phrases: defaultsDeep({}, messages, defaultMessages),
+            });
+
+            this.setState({
+                contextValues: {
+                    locale,
+                    translate: polyglot.t.bind(polyglot),
+                },
+            });
         }
     }
 
@@ -67,22 +83,6 @@ class TranslationProviderView extends Component<ViewProps, State> {
             </TranslationContext.Provider>
         );
     }
-
-    setUpContextValues = () => {
-        const { locale, messages } = this.props;
-
-        const polyglot = new Polyglot({
-            locale,
-            phrases: defaultsDeep({}, messages, defaultMessages),
-        });
-
-        this.setState({
-            contextValues: {
-                locale,
-                translate: polyglot.t.bind(polyglot),
-            },
-        });
-    };
 }
 
 const mapStateToProps: MapStateToProps<
