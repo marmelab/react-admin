@@ -36,6 +36,24 @@ const styles = theme => ({
 });
 
 class BulkDeleteButton extends Component {
+    static propTypes = {
+        basePath: PropTypes.string,
+        classes: PropTypes.object,
+        dispatchCrudDeleteMany: PropTypes.func.isRequired,
+        label: PropTypes.string,
+        resource: PropTypes.string.isRequired,
+        startUndoable: PropTypes.func,
+        selectedIds: PropTypes.arrayOf(PropTypes.any).isRequired,
+        undoable: PropTypes.bool,
+        icon: PropTypes.element,
+    };
+
+    static defaultProps = {
+        label: 'ra.action.delete',
+        undoable: true,
+        icon: <ActionDelete />,
+    };
+
     handleClick = () => {
         const {
             basePath,
@@ -53,7 +71,7 @@ class BulkDeleteButton extends Component {
     };
 
     render() {
-        const { classes, label, ...rest } = this.props;
+        const { classes, label, icon, ...rest } = this.props;
         return (
             <Button
                 onClick={this.handleClick}
@@ -61,22 +79,11 @@ class BulkDeleteButton extends Component {
                 className={classes.deleteButton}
                 {...sanitizeRestProps(rest)}
             >
-                <ActionDelete />
+                {icon}
             </Button>
         );
     }
 }
-
-BulkDeleteButton.propTypes = {
-    basePath: PropTypes.string,
-    classes: PropTypes.object,
-    dispatchCrudDeleteMany: PropTypes.func.isRequired,
-    label: PropTypes.string,
-    resource: PropTypes.string.isRequired,
-    startUndoable: PropTypes.func,
-    selectedIds: PropTypes.arrayOf(PropTypes.any).isRequired,
-    undoable: PropTypes.bool,
-};
 
 const EnhancedBulkDeleteButton = compose(
     connect(
@@ -88,10 +95,5 @@ const EnhancedBulkDeleteButton = compose(
     ),
     withStyles(styles)
 )(BulkDeleteButton);
-
-EnhancedBulkDeleteButton.defaultProps = {
-    label: 'ra.action.delete',
-    undoable: true,
-};
 
 export default EnhancedBulkDeleteButton;

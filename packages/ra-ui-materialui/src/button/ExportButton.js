@@ -101,6 +101,13 @@ class ExportButton extends Component {
         maxResults: PropTypes.number.isRequired,
         resource: PropTypes.string.isRequired,
         sort: PropTypes.object,
+        icon: PropTypes.element,
+    };
+
+    static defaultProps = {
+      label: 'ra.action.export',
+      maxResults: 1000,
+      icon: <GetApp />,
     };
 
     handleClick = () => {
@@ -131,7 +138,7 @@ class ExportButton extends Component {
     };
 
     render() {
-        const { label, ...rest } = this.props;
+        const { label, icon, ...rest } = this.props;
 
         return (
             <Button
@@ -139,15 +146,10 @@ class ExportButton extends Component {
                 label={label}
                 {...sanitizeRestProps(rest)}
             >
-                <GetApp />
+                {icon}
             </Button>
         );
     }
 }
-
-ExportButton.defaultProps = {
-    label: 'ra.action.export',
-    maxResults: 1000,
-};
 
 export default connect()(ExportButton); // inject redux dispatch

@@ -37,6 +37,31 @@ const sanitizeRestProps = ({
 }) => rest;
 
 export class SaveButton extends Component {
+    static propTypes = {
+        className: PropTypes.string,
+        classes: PropTypes.object,
+        handleSubmitWithRedirect: PropTypes.func,
+        invalid: PropTypes.bool,
+        label: PropTypes.string,
+        pristine: PropTypes.bool,
+        redirect: PropTypes.oneOfType([
+          PropTypes.string,
+          PropTypes.bool,
+          PropTypes.func,
+        ]),
+        saving: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
+        showNotification: PropTypes.func,
+        submitOnEnter: PropTypes.bool,
+        translate: PropTypes.func.isRequired,
+        variant: PropTypes.oneOf(['raised', 'flat', 'fab']),
+        icon: PropTypes.element,
+    };
+
+    static defaultProps = {
+        handleSubmitWithRedirect: () => () => {},
+        icon: <ContentSave />,
+    };
+
     handleClick = e => {
         const {
             handleSubmitWithRedirect,
@@ -73,6 +98,7 @@ export class SaveButton extends Component {
             submitOnEnter,
             translate,
             variant = 'raised',
+            icon,
             ...rest
         } = this.props;
 
@@ -93,36 +119,15 @@ export class SaveButton extends Component {
                         className={classes.iconPaddingStyle}
                     />
                 ) : (
-                    <ContentSave className={classes.iconPaddingStyle} />
+                    React.cloneElement(icon, {
+                        className: classes.iconPaddingStyle,
+                    })
                 )}
                 {label && translate(label, { _: label })}
             </Button>
         );
     }
 }
-
-SaveButton.propTypes = {
-    className: PropTypes.string,
-    classes: PropTypes.object,
-    handleSubmitWithRedirect: PropTypes.func,
-    invalid: PropTypes.bool,
-    label: PropTypes.string,
-    pristine: PropTypes.bool,
-    redirect: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.bool,
-        PropTypes.func,
-    ]),
-    saving: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
-    showNotification: PropTypes.func,
-    submitOnEnter: PropTypes.bool,
-    translate: PropTypes.func.isRequired,
-    variant: PropTypes.oneOf(['raised', 'flat', 'fab']),
-};
-
-SaveButton.defaultProps = {
-    handleSubmitWithRedirect: () => () => {},
-};
 
 const enhance = compose(
     translate,
