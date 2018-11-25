@@ -65,7 +65,7 @@ const sanitizeRestProps = ({
 
 const getTabFullPath = (tab, index, baseUrl) =>
     `${baseUrl}${
-        tab.props.path ? `/${tab.props.path}` : index > 0 ? `/${index}` : ''
+    tab.props.path ? `/${tab.props.path}` : index > 0 ? `/${index}` : ''
     }`;
 
 export class TabbedForm extends Component {
@@ -136,7 +136,7 @@ export class TabbedForm extends Component {
                             value: tabPath,
                             className:
                                 tabsWithErrors.includes(tab.props.label) &&
-                                location.pathname !== tabPath
+                                    location.pathname !== tabPath
                                     ? classes.errorTabButton
                                     : null,
                         });
@@ -182,24 +182,21 @@ export class TabbedForm extends Component {
                             )
                     )}
                 </CardContentInner>
-                {toolbar && (
-                    <CardContentInner>
-                        {React.cloneElement(toolbar, {
-                            basePath,
-                            className: 'toolbar',
-                            handleSubmitWithRedirect: this
-                                .handleSubmitWithRedirect,
-                            handleSubmit: this.props.handleSubmit,
-                            invalid,
-                            pristine,
-                            record,
-                            redirect,
-                            resource,
-                            saving,
-                            submitOnEnter,
-                        })}{' '}
-                    </CardContentInner>
-                )}
+                {toolbar &&
+                    React.cloneElement(toolbar, {
+                        basePath,
+                        className: 'toolbar',
+                        handleSubmitWithRedirect: this
+                            .handleSubmitWithRedirect,
+                        handleSubmit: this.props.handleSubmit,
+                        invalid,
+                        pristine,
+                        record,
+                        redirect,
+                        resource,
+                        saving,
+                        submitOnEnter,
+                    })}
             </form>
         );
     }
