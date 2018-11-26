@@ -46,7 +46,10 @@ React-admin is available from npm. You can install it (and its required dependen
 using:
 
 ```sh
-npm install --save-dev react-admin
+npm install react-admin
+
+#or
+yarn add react-admin
 ```
 
 ## Upgrading From Admin-On-Rest
