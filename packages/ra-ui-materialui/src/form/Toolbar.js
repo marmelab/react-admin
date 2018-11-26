@@ -10,7 +10,7 @@ import { SaveButton, DeleteButton } from '../button';
 
 const styles = theme => ({
     toolbar: {
-        backgroundColor: theme.palette.type === 'light' ? theme.palette.grey[200] : theme.palette.grey[900],
+        backgroundColor: theme.palette.type === 'light' ? theme.palette.grey[100] : theme.palette.grey[900],
     },
     desktopToolbar: {
         marginTop: theme.spacing.unit * 2,
