@@ -90,6 +90,7 @@ const AppBar = ({
                     className={classes.title}
                     id="react-admin-title"
                 />
+                {children}
                 <LoadingIndicator />
                 {cloneElement(userMenu, { logout })}
             </Toolbar>
