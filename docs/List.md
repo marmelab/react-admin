@@ -694,6 +694,7 @@ The datagrid component renders a list of records as a table. It is usually used 
 
 Here are all the props accepted by the component:
 
+* [`body`](#body-element)
 * [`rowStyle`](#row-style-function)
 * [`rowClick`](#rowclick)
 
@@ -717,6 +718,56 @@ export const PostList = (props) => (
 ```
 
 The datagrid is an *iterator* component: it receives an array of ids, and a data store, and is supposed to iterate over the ids to display each record. Another example of iterator component is [`<SingleFieldList>`](#the-singlefieldlist-component).
+
+### Body element
+
+By default, `<Datagrid>` renders its body using `<DatagridBody>`, an internal react-admin component. You can pass a custom component as the `row` prop to override that default. And by the way, `<DatagridBody>` has a `row` property set to `<DatagridRow>` by default for the same purpose. `<DatagridRow>` receives the row `record`, the `resource`, and a copy of the datagrid children. That means you can create a custom datagrid logic without copying several components from the react-admin source.
+
+For instance, to show the selection checkbox only for records that have a `selectable` field set to true, you can override `<DatagridRow>` and `<DatagridBody>` as follows:
+
+```jsx
+// in src/PostList.js
+import { Datagrid, DatagridBody, List, TextField } from 'react-admin';
+import TableCell from '@material-ui/core/TableCell';
+import TableRow from '@material-ui/core/TableRow';
+import Checkbox from '@material-ui/core/Checkbox';
+
+const MyDatagridRow = ({ record, resource, id, onToggleItem, children, selected, basePath }) => (
+    <TableRow key={id}>
+        {/* first column: selection checkbox */}
+        <TableCell padding="none">
+            {record.selectable && <Checkbox
+                checked={selected}
+                onClick={() => onToggleItem(id)}
+            />}
+        </TableCell>
+        {/* data columns based on children */}
+        {React.Children.map(children, field => (
+            <TableCell key={`${id}-${field.props.source}`}>
+                {React.cloneElement(field, {
+                    record,
+                    basePath,
+                    resource,
+                })}
+            </TableCell>
+        ))}
+    </TableRow>
+)
+
+const MyDatagridBody = props => <DatagridBody {...props} row={<MyDatagridRow />} />;
+const MyDatagrid = props => <Datagrid {...props} body={<MyDatagridBody />} />;
+
+const PostList = props => (
+    <List {...props}>
+        <MyDatagrid>
+            <Textfield source="title" />
+            ...
+        </MyDatagrid>
+    </List>
+)
+
+export default PostList;
+```
 
 ### Row Style Function
 

@@ -43,12 +43,7 @@ const styles = {
  * It is usually used as a child of the <List> and <ReferenceManyField> components.
  *
  * Props:
- *  - styles
  *  - rowStyle
- *  - options (passed as props to <Table>)
- *  - headerOptions (passed as props to mui <TableHead>)
- *  - bodyOptions (passed as props to mui <TableBody>)
- *  - rowOptions (passed as props to mui <TableRow>)
  *
  * @example Display all posts as a datagrid
  * const postRowStyle = (record, index) => ({
@@ -100,22 +95,23 @@ class Datagrid extends Component {
     render() {
         const {
             basePath,
-            data,
+            body,
             children,
             classes,
             className,
             currentSort,
+            data,
             hasBulkActions,
             hover,
             ids,
             isLoading,
+            onSelect,
+            onToggleItem,
             resource,
+            rowClick,
             rowStyle,
             selectedIds,
             setSort,
-            onSelect,
-            onToggleItem,
-            rowClick,
             total,
             version,
             ...rest
@@ -168,23 +164,21 @@ class Datagrid extends Component {
                         )}
                     </TableRow>
                 </TableHead>
-                <DatagridBody
-                    basePath={basePath}
-                    classes={classes}
-                    rowClick={rowClick}
-                    data={data}
-                    hasBulkActions={hasBulkActions}
-                    hover={hover}
-                    ids={ids}
-                    isLoading={isLoading}
-                    onToggleItem={onToggleItem}
-                    resource={resource}
-                    rowStyle={rowStyle}
-                    selectedIds={selectedIds}
-                    version={version}
-                >
-                    {children}
-                </DatagridBody>
+                {React.cloneElement(body, {
+                    basePath,
+                    classes,
+                    rowClick,
+                    data,
+                    hasBulkActions,
+                    hover,
+                    ids,
+                    isLoading,
+                    onToggleItem,
+                    resource,
+                    rowStyle,
+                    selectedIds,
+                    version
+                }, children)}
             </Table>
         );
     }
@@ -192,6 +186,7 @@ class Datagrid extends Component {
 
 Datagrid.propTypes = {
     basePath: PropTypes.string,
+    body: PropTypes.element.isRequired,
     children: PropTypes.node.isRequired,
     classes: PropTypes.object,
     className: PropTypes.string,
@@ -220,6 +215,7 @@ Datagrid.defaultProps = {
     hasBulkActions: false,
     ids: [],
     selectedIds: [],
+    body: <DatagridBody />
 };
 
 export default withStyles(styles)(Datagrid);
