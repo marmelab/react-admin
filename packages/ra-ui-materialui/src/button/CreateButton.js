@@ -34,6 +34,7 @@ const CreateButton = ({
     classes = {},
     translate,
     label = 'ra.action.create',
+    icon = <ContentAdd />,
     ...rest
 }) => (
     <Responsive
@@ -47,7 +48,7 @@ const CreateButton = ({
                 aria-label={label && translate(label)}
                 {...rest}
             >
-                <ContentAdd />
+                {icon}
             </MuiButton>
         }
         medium={
@@ -58,7 +59,7 @@ const CreateButton = ({
                 label={label && translate(label)}
                 {...rest}
             >
-                <ContentAdd />
+                {icon}
             </Button>
         }
     />
@@ -71,6 +72,7 @@ CreateButton.propTypes = {
     label: PropTypes.string,
     size: PropTypes.string,
     translate: PropTypes.func.isRequired,
+    icon: PropTypes.element,
 };
 
 const enhance = compose(

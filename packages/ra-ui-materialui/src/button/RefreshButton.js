@@ -10,10 +10,12 @@ class RefreshButton extends Component {
     static propTypes = {
         label: PropTypes.string,
         refreshView: PropTypes.func.isRequired,
+        icon: PropTypes.element,
     };
 
     static defaultProps = {
         label: 'ra.action.refresh',
+        icon: <NavigationRefresh />,
     };
 
     handleClick = event => {
@@ -22,11 +24,11 @@ class RefreshButton extends Component {
     };
 
     render() {
-        const { label, refreshView, ...rest } = this.props;
+        const { label, refreshView, icon, ...rest } = this.props;
 
         return (
             <Button label={label} onClick={this.handleClick} {...rest}>
-                <NavigationRefresh />
+                {icon}
             </Button>
         );
     }
