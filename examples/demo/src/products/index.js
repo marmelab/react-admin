@@ -10,6 +10,7 @@ import {
     FormTab,
     List,
     NumberInput,
+    Pagination,
     ReferenceInput,
     ReferenceManyField,
     SearchInput,
@@ -194,6 +195,7 @@ export const ProductEdit = withStyles(editStyles)(({ classes, ...props }) => (
                     reference="reviews"
                     target="product_id"
                     addLabel={false}
+                    pagination={<Pagination />}
                 >
                     <Datagrid>
                         <DateField source="date" />
