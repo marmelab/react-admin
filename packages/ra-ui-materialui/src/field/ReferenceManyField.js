@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment, cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import { withStyles } from '@material-ui/core/styles';
@@ -16,26 +16,35 @@ export const ReferenceManyFieldView = ({
     data,
     ids,
     isLoading,
+    page,
+    pagination,
+    perPage,
     reference,
     referenceBasePath,
+    setPage,
+    setPerPage,
     setSort,
     total,
-}) => {
-    if (isLoading) {
-        return <LinearProgress className={classes.progress} />;
-    }
-
-    return React.cloneElement(children, {
-        className,
-        resource: reference,
-        ids,
-        data,
-        basePath: referenceBasePath,
-        currentSort,
-        setSort,
-        total,
-    });
-};
+}) => isLoading ? <LinearProgress className={classes.progress} /> :
+        <Fragment>
+            {cloneElement(children, {
+                className,
+                resource: reference,
+                ids,
+                data,
+                basePath: referenceBasePath,
+                currentSort,
+                setSort,
+                total,
+            })}
+            {pagination && cloneElement(pagination, {
+                page,
+                perPage,
+                setPage,
+                setPerPage,
+                total,
+            })}
+        </Fragment>;
 
 ReferenceManyFieldView.propTypes = {
     children: PropTypes.element,
@@ -48,6 +57,7 @@ ReferenceManyFieldView.propTypes = {
     data: PropTypes.object,
     ids: PropTypes.array,
     isLoading: PropTypes.bool,
+    pagination: PropTypes.element,
     reference: PropTypes.string,
     referenceBasePath: PropTypes.string,
     setSort: PropTypes.func,

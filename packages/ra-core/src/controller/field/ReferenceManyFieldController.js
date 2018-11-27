@@ -64,7 +64,7 @@ import {
 export class ReferenceManyFieldController extends Component {
     constructor(props) {
         super(props);
-        this.state = { sort: props.sort };
+        this.state = { sort: props.sort, page: 1, perPage: props.perPage };
     }
 
     componentDidMount() {
@@ -84,18 +84,21 @@ export class ReferenceManyFieldController extends Component {
     setSort = field => {
         const order =
             this.state.sort.field === field &&
-            this.state.sort.order === SORT_ASC
+                this.state.sort.order === SORT_ASC
                 ? SORT_DESC
                 : SORT_ASC;
         this.setState({ sort: { field, order } }, this.fetchReferences);
     };
 
+    setPage = page => this.setState({ page }, this.fetchReferences);
+
+    setPerPage = perPage => this.setState({ perPage }, this.fetchReferences);
+
     fetchReferences(
-        { reference, record, resource, target, perPage, filter, source } = this
-            .props
+        { reference, record, resource, target, filter, source } = this.props
     ) {
         const { crudGetManyReference } = this.props;
-        const pagination = { page: 1, perPage };
+        const { page, perPage, sort } = this.state;
         const relatedTo = nameRelatedTo(
             reference,
             record[source],
@@ -108,8 +111,8 @@ export class ReferenceManyFieldController extends Component {
             target,
             record[source],
             relatedTo,
-            pagination,
-            this.state.sort,
+            { page, perPage },
+            sort,
             filter
         );
     }
@@ -124,6 +127,7 @@ export class ReferenceManyFieldController extends Component {
             basePath,
             total,
         } = this.props;
+        const { page, perPage } = this.state;
 
         const referenceBasePath = basePath.replace(resource, reference);
 
@@ -132,7 +136,11 @@ export class ReferenceManyFieldController extends Component {
             data,
             ids,
             isLoading: typeof ids === 'undefined',
+            page,
+            perPage,
             referenceBasePath,
+            setPage: this.setPage,
+            setPerPage: this.setPerPage,
             setSort: this.setSort,
             total,
         });
@@ -157,6 +165,7 @@ ReferenceManyFieldController.propTypes = {
     sortBy: PropTypes.string,
     source: PropTypes.string.isRequired,
     target: PropTypes.string.isRequired,
+    total: PropTypes.number,
     isLoading: PropTypes.bool,
     total: PropTypes.number,
 };

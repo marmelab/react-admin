@@ -534,7 +534,7 @@ Then react-admin renders the `<CommentList>` with a loader for the `<ReferenceFi
 
 ## `<ReferenceManyField>`
 
-This component fetches a list of referenced records by reverse lookup of the current `record.id` in other resource (using the `GET_MANY_REFERENCE` REST method). The field name of the current record's id in the other resource is specified by the required `target` field. The result is then passed to an iterator component (like `<SingleFieldList>` or `<Datagrid>`). The iterator component usually has one or more child `<Field>` components.
+This component fetches a list of referenced records by reverse lookup of the current `record.id` in other resource (using the `GET_MANY_REFERENCE` REST method). You can specify the target field name, i.e. the field name of the current record's id in the other resource, using the required `target` field. The result is then passed to an iterator component (like `<SingleFieldList>` or `<Datagrid>`). The iterator component usually has one or more child `<Field>` components.
 
 For instance, here is how to fetch the `comments` related to a `post` record by matching `comment.post_id` to `post.id`, and then display the `author.name` for each, in a `<ChipField>`:
 
@@ -594,10 +594,20 @@ export const PostEdit = (props) => (
 
 ![ReferenceManyFieldDatagrid](./img/reference-many-field-datagrid.png)
 
-By default, react-admin restricts the possible values to 25. You can change this limit by setting the `perPage` prop.
+By default, react-admin restricts the possible values to 25 and displays no pagination control. You can change the limit by setting the `perPage` prop:
 
 ```jsx
 <ReferenceManyField perPage={10} reference="comments" target="post_id">
+   ...
+</ReferenceManyField>
+```
+
+And if you want to allow users to paginate the list, pass a `<Pagination>` component as the `pagination` prop:
+
+```jsx
+import { Pagination } from 'react-admin';
+
+<ReferenceManyField pagination={<Pagination />} reference="comments" target="post_id">
    ...
 </ReferenceManyField>
 ```
