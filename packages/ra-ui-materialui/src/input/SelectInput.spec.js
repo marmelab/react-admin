@@ -86,7 +86,7 @@ describe('<SelectInput />', () => {
         assert.equal(MenuItemElements.length, 3);
         const MenuItemElement1 = MenuItemElements.first();
         assert.equal(MenuItemElement1.prop('value'), '');
-        assert.equal(MenuItemElement1.childAt(0).text(), '');
+        assert.equal(MenuItemElement1.children().length, 0);
     });
 
     it('should not add a falsy (null or false) element when allowEmpty is false', () => {

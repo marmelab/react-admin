@@ -26,7 +26,7 @@ ${children.map(child => `            ${child.getRepresentation()}`).join('\n')}
         ),
         representation: (props, children) =>
             `<ArrayInput source="${
-                props.source
+            props.source
             }"><SimpleFormIterator>${children
                 .map(child => child.getRepresentation())
                 .join('\n')}</SimpleFormIterator></ArrayInput>`,
@@ -55,23 +55,23 @@ ${children.map(child => `            ${child.getRepresentation()}`).join('\n')}
         component: ReferenceInput,
         representation: (props, children) =>
             `<ReferenceInput source="${props.source}" reference="${
-                props.reference
+            props.reference
             }">${children.getRepresentation()}</ReferenceInput>`,
     },
     referenceChild: {
         component: props => <SelectInput optionText="id" {...props} />, // eslint-disable-line react/display-name
-        representation: () => `<SelectInput optionText="id">`,
+        representation: () => `<SelectInput optionText="id" />`,
     },
     referenceArray: {
         component: ReferenceArrayInput,
         representation: props =>
             `<ReferenceArrayInput source="${props.source}" reference="${
-                props.reference
+            props.reference
             }"><TextInput source="id" /></ReferenceArrayInput>`,
     },
     referenceArrayChild: {
         component: props => <SelectInput optionText="id" {...props} />, // eslint-disable-line react/display-name
-        representation: () => `<SelectInput optionText="id">`,
+        representation: () => `<SelectInput optionText="id" />`,
     },
     richText: {
         component: TextInput,

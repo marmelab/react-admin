@@ -1,4 +1,3 @@
-import 'babel-polyfill';
 import React, { Component } from 'react';
 import { Admin, Resource } from 'react-admin';
 

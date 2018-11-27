@@ -1,5 +1,44 @@
 # Changelog
 
+## v2.4.3
+
+* Add types to side effects ([#2535](https://github.com/marmelab/react-admin/pull)) ([fzaninotto](https://github.com/fzaninotto))
+* Add documentation for unit testing custom views ([#2554](https://github.com/marmelab/react-admin/pull)) ([kierenhughes](https://github.com/kierenhughes))
+* Fix `TablePaginationAction` using private material-ui API ([#2551](https://github.com/marmelab/react-admin/pull)) ([phacks](https://github.com/phacks))
+* Fix typo in tutorial ([#2529](https://github.com/marmelab/react-admin/pull)) ([Shaglock](https://github.com/Shaglock))
+* Fix click on `DeleteButton` in `List` redirects to `Edit` ([#2526](https://github.com/marmelab/react-admin/pull)) ([fzaninotto](https://github.com/fzaninotto)))
+* Fix Datagrid header cell padding ([#2522](https://github.com/marmelab/react-admin/pull)) ([aliang](https://github.com/aliang))
+* Fix example code for adding upload feature in `DataProviders` documentation ([#2503](https://github.com/marmelab/react-admin/pull)) ([misino](https://github.com/misino))
+
+## v2.4.2
+
+* Fix example code in List documentation ([#2518](https://github.com/marmelab/react-admin/pull/2518)) ([pastparty](https://github.com/pastparty))
+* Fix `<Aside>` documentation for undefined record ([#2513](https://github.com/marmelab/react-admin/pull/2513)) ([fzaninotto](https://github.com/fzaninotto)) 
+* Fix incorrect quotes in custom `<RichTextInput>` styles ([#2505](https://github.com/marmelab/react-admin/pull/2505)) ([moklick](https://github.com/moklick)
+* Fix non-Admin snippet in custom app documentation ([#2493](https://github.com/marmelab/react-admin/pull/2493)) ([fzaninotto](https://github.com/fzaninotto)) 
+* Fix `<ReferenceManyField>` does not pass total to children ([#2487](https://github.com/marmelab/react-admin/pull/2487)) ([fzaninotto](https://github.com/fzaninotto)) 
+* Fix production build problem with graphql-ast-types package ([#2486](https://github.com/marmelab/react-admin/pull/2486)) ([Kmaschta](https://github.com/Kmaschta)
+* Migrate non-data actions of ra-core package to Typescript ([#2521](https://github.com/marmelab/react-admin/pull/2521)) ([xavierhans](https://github.com/xavierhans)
+* Migrate i18n and auth directories of ra-core package to TypeScript ([#2508](https://github.com/marmelab/react-admin/pull/2508)) ([djhi](https://github.com/djhi)
+* Add Catalan translation ([#2488](https://github.com/marmelab/react-admin/pull/2488)) ([sergioedo](https://github.com/sergioedo)) 
+
+## v2.4.1
+
+* Fix link for graphcool data provider in docs ([#2476](https://github.com/marmelab/react-admin/pull/2476)) ([bamorim](https://github.com/bamorim)
+* Fix instructions to develop react-admin using npm link ([#2473](https://github.com/marmelab/react-admin/pull/2473)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix missing styles in rendered documentation ([#2474](https://github.com/marmelab/react-admin/pull/2474)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix outdated screenshots in Tutorial ([#2470](https://github.com/marmelab/react-admin/pull/2470)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<Edit>` toolbar hides the last form item on mobile ([#2466](https://github.com/marmelab/react-admin/pull/2466)) ([vedmalex](https://github.com/vedmalex))
+* Fix create URL in `ra-data-simple-rest` documentation ([#2468](https://github.com/marmelab/react-admin/pull/2468)) ([maruware](https://github.com/maruware))
+* Fix `<ReferenceField>` in Datagrids using `rowClick` ([#2457](https://github.com/marmelab/react-admin/pull/2457)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix hardcoded query and mutation types in GraphQL introspection ([#2454](https://github.com/marmelab/react-admin/pull/2454)) ([yishus](https://github.com/yishus))
+* Fix bug in exporter `fetchRelatedRecords` ([#2450](https://github.com/marmelab/react-admin/pull/2450)) ([fzaninotto](https://github.com/fzaninotto))
+* Add link to news in `README` and documentation ([#2445](https://github.com/marmelab/react-admin/pull/2445)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix wrong PropType warning in `<ShowView>` ([#2444](https://github.com/marmelab/react-admin/pull/2444)) ([fzaninotto](https://github.com/fzaninotto))
+* Add an explicit error if the developer used the wrong prop name for filters ([#2451](https://github.com/marmelab/react-admin/pull/2451)) ([fzaninotto](https://github.com/fzaninotto))
+* Add jsonapi data provider to documentation ([#2455](https://github.com/marmelab/react-admin/pull/2455)) ([henvo](https://github.com/henvo)
+* Add Norwegian translation to docs and removed old translation (aor) ([#2481](https://github.com/marmelab/react-admin/pull/2481)) ([jon](https://github.com/jon-harald))
+
 ## v2.4.0
 
 For highlights about this version, read the [react-admin 2.4 announcement blog post](https://marmelab.com/blog/2018/10/18/react-admin-2-4.html) on the marmelab blog.

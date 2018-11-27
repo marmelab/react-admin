@@ -72,6 +72,7 @@ const App = () => (
 
 You can find translation packages for the following languages:
 
+- Catalan (`ca`): [sergioedo/ra-language-catalan](https://github.com/sergioedo/ra-language-catalan)
 - Chinese (`cn`): [chen4w/ra-language-chinese](https://github.com/chen4w/ra-language-chinese)
 - Czech (`cs`): [binao/ra-language-czech](https://github.com/binao/ra-language-czech)
 - Danish (`da`): [nikri/ra-language-danish](https://github.com/nikri/ra-language-danish)
@@ -84,6 +85,7 @@ You can find translation packages for the following languages:
 - Hungarian (`hu`): [phelion/ra-language-hungarian](https://github.com/phelion/ra-language-hungarian)
 - Indonesian (`id`): [ronadi/ra-language-indonesian](https://github.com/ronadi/ra-language-indonesian)
 - Italian (`it`): [stefsava/ra-language-italian](https://github.com/stefsava/ra-language-italian)
+- Norwegian (`no`): [jon-harald/ra-language-norwegian](https://github.com/jon-harald/ra-language-norwegian)
 - Polish (`pl`): [tskorupka/ra-language-polish](https://github.com/tskorupka/ra-language-polish)
 - Portuguese (`pt`): [marquesgabriel/ra-language-portuguese](https://github.com/marquesgabriel/ra-language-portuguese)
 - Russian (`ru`): [klucherev/ra-language-russian](https://github.com/klucherev/ra-language-russian)
@@ -101,7 +103,6 @@ In addition, the previous version of react-admin, called admin-on-rest, was tran
 - Greek (`el`): [zifnab87/aor-language-greek](https://github.com/zifnab87/aor-language-greek)
 - Hebrew (`he`): [motro/aor-language-hebrew](https://github.com/motro/aor-language-hebrew)
 - Japanese (`ja`): [kuma-guy/aor-language-japanese](https://github.com/kuma-guy/aor-language-japanese)
-- Norwegian (`nb`): [zeusbaba/aor-language-norwegian](https://github.com/zeusbaba/aor-language-norwegian)
 - Slovenian (`sl`): [ariskemper/aor-language-slovenian](https://github.com/ariskemper/aor-language-slovenian)
 - Swedish (`sv`): [StefanWallin/aor-language-swedish](https://github.com/StefanWallin/aor-language-swedish)
 - Thai (`th`): [liverbool/aor-language-thai](https://github.com/liverbool/aor-language-thai)

@@ -586,6 +586,7 @@ export const PostList = (props) => (
 
 You may want to display additional information on the side of the list. Use the `aside` prop for that, passing the component of your choice:
 
+{% raw %}
 ```jsx
 const Aside = () => (
     <div style={{ width: 200, margin: '1em' }}>
@@ -601,6 +602,7 @@ const PostList = props => (
         ...
     </List>
 ```
+{% endraw %}
 
 The `aside` component receives the same props as the `List` child component, including the following:
 
@@ -619,6 +621,7 @@ The `aside` component receives the same props as the `List` child component, inc
 
 That means you can display additional details of the current list in the aside component:
 
+{% raw %}
 ```jsx
 const Aside = ({ data, ids }) => (
     <div style={{ width: 200, margin: '1em' }}>
@@ -629,6 +632,7 @@ const Aside = ({ data, ids }) => (
     </div>
 );
 ```
+{% endraw %}
 
 ### CSS API
 
@@ -651,7 +655,7 @@ const styles = {
     },
 };
 
-const PostList = ({ classes, ...props) => (
+const PostList = ({ classes, ...props }) => (
     <List {...props} classes={{ header: classes.header }}>
         <Datagrid>
             ...
