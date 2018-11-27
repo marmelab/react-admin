@@ -47,7 +47,7 @@
         "classnames": "~2.2.5",
         "inflection": "~1.12.0",
         "lodash": "~4.17.5",
-        "material-ui-chip-input": "^1.0.0-beta.6",
+        "material-ui-chip-input": "1.0.0-beta.6 - 1.0.0-beta.8",
         "papaparse": "^4.1.4",
         "prop-types": "~15.6.1",
         "ra-core": "^2.4.3",
