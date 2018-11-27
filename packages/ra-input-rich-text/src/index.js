@@ -47,6 +47,12 @@ export class RichTextInput extends Component {
         this.quill.on('text-change', debounce(this.onTextChange, 500));
     }
 
+    componentWillReceiveProps(nextProps) {
+       if (nextProps.input.value !== this.props.input.value) {
+          this.quill.pasteHTML(nextProps.input.value);
+       }
+    }
+
     componentWillUnmount() {
         this.quill.off('text-change', this.onTextChange);
         this.quill = null;
