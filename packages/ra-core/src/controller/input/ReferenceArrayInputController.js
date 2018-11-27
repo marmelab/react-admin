@@ -184,6 +184,7 @@ export class ReferenceArrayInputController extends Component {
             source,
             resource,
             referenceSource,
+            filter: defaultFilter,
         } = props;
         const { pagination, sort, filter } = this.params;
         crudGetMatching(
@@ -191,7 +192,7 @@ export class ReferenceArrayInputController extends Component {
             referenceSource(resource, source),
             pagination,
             sort,
-            filter
+            { ...filter, ...defaultFilter }
         );
     };
 
