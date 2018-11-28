@@ -1,5 +1,17 @@
 # Changelog
 
+## v2.4.4
+
+* Fix `to` prop propType `<MenuItemLink>` ([#2584](https://github.com/marmelab/react-admin/pull/2584)) ([afilp](https://github.com/afilp))
+* Fix `<ReferenceArrayInput>` ignores default filter on search ([#2583](https://github.com/marmelab/react-admin/pull/2583)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix Error when using `<CheckboxGroupInput>` with wrong source attribute ([#2582](https://github.com/marmelab/react-admin/pull/2582)) ([afilp](https://github.com/afilp))
+* Fix breaking change in `material-ui-chip-input` breaks compilation ([#2579](https://github.com/marmelab/react-admin/pull/2579)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix node polyglot dependency tag ([#2577](https://github.com/marmelab/react-admin/pull/2577)) ([hamidfzm](https://github.com/hamidfzm))
+* Fix package install instructions from dev to production ([#2574](https://github.com/marmelab/react-admin/pull/2574)) ([ajhool](https://github.com/ajhool))
+* Fix JSX syntax error in code suggested `<EditGuesser>` ([#2569](https://github.com/marmelab/react-admin/pull/2569)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix translation provider first loads with identity translate ([#2563](https://github.com/marmelab/react-admin/pull/2563)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix custom app snippet leads to warnings for missing props ([#2558](https://github.com/marmelab/react-admin/pull/2558)) ([fzaninotto](https://github.com/fzaninotto))
+
 ## v2.4.3
 
 * Add types to side effects ([#2535](https://github.com/marmelab/react-admin/pull)) ([fzaninotto](https://github.com/fzaninotto))
