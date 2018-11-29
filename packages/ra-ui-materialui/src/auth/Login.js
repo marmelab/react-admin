@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import Card from '@material-ui/core/Card';
@@ -10,6 +10,8 @@ import defaultTheme from '../defaultTheme';
 import Notification from '../layout/Notification';
 import DefaultLoginForm from './LoginForm';
 
+const DEFAULT_BACKGROUND_IMAGE = 'https://source.unsplash.com/random/1600x900';
+
 const styles = theme => ({
     main: {
         display: 'flex',
@@ -18,7 +20,6 @@ const styles = theme => ({
         height: '1px',
         alignItems: 'center',
         justifyContent: 'flex-start',
-        background: 'url(https://source.unsplash.com/random/1600x900)',
         backgroundRepeat: 'no-repeat',
         backgroundSize: 'cover',
     },
@@ -65,22 +66,48 @@ const sanitizeRestProps = ({
  *        </Admin>
  *     );
  */
-const Login = ({ classes, className, loginForm, ...rest }) => (
-    <div
-        className={classnames(classes.main, className)}
-        {...sanitizeRestProps(rest)}
-    >
-        <Card className={classes.card}>
-            <div className={classes.avatar}>
-                <Avatar className={classes.icon}>
-                    <LockIcon />
-                </Avatar>
+class Login extends Component {
+    constructor(props) {
+        super(props);
+
+        this.containerRef = React.createRef();
+    }
+
+    // Load background image asynchronously to speed up time to interactive
+    lazyLoadBackgroundImage() {
+        const img = new Image();
+        img.onload = () => {
+            this.containerRef.current.style.background = `url(${DEFAULT_BACKGROUND_IMAGE})`;
+        };
+        img.src = DEFAULT_BACKGROUND_IMAGE;
+    }
+
+    componentDidMount() {
+        this.lazyLoadBackgroundImage();
+    }
+
+    render() {
+        const { classes, className, loginForm, ...rest } = this.props;
+
+        return (
+            <div
+                className={classnames(classes.main, className)}
+                {...sanitizeRestProps(rest)}
+                ref={this.containerRef}
+            >
+                <Card className={classes.card}>
+                    <div className={classes.avatar}>
+                        <Avatar className={classes.icon}>
+                            <LockIcon />
+                        </Avatar>
+                    </div>
+                    {loginForm}
+                </Card>
+                <Notification />
             </div>
-            {loginForm}
-        </Card>
-        <Notification />
-    </div>
-);
+        );
+    }
+}
 
 Login.propTypes = {
     className: PropTypes.string,
