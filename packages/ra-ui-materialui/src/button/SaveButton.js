@@ -73,6 +73,7 @@ export class SaveButton extends Component {
             submitOnEnter,
             translate,
             variant = 'raised',
+            icon = <ContentSave className={classes.iconPaddingStyle} />,
             ...rest
         } = this.props;
 
@@ -93,7 +94,7 @@ export class SaveButton extends Component {
                         className={classes.iconPaddingStyle}
                     />
                 ) : (
-                    <ContentSave className={classes.iconPaddingStyle} />
+                    icon
                 )}
                 {label && translate(label, { _: label })}
             </Button>
@@ -118,6 +119,7 @@ SaveButton.propTypes = {
     submitOnEnter: PropTypes.bool,
     translate: PropTypes.func.isRequired,
     variant: PropTypes.oneOf(['raised', 'flat', 'fab']),
+    icon: PropTypes.func,
 };
 
 SaveButton.defaultProps = {
