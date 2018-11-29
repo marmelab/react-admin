@@ -3,14 +3,16 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import Card from '@material-ui/core/Card';
 import Avatar from '@material-ui/core/Avatar';
-import { withStyles } from '@material-ui/core/styles';
+import {
+    MuiThemeProvider,
+    createMuiTheme,
+    withStyles,
+} from '@material-ui/core/styles';
 import LockIcon from '@material-ui/icons/Lock';
 
 import defaultTheme from '../defaultTheme';
 import Notification from '../layout/Notification';
 import DefaultLoginForm from './LoginForm';
-
-const DEFAULT_BACKGROUND_IMAGE = 'https://source.unsplash.com/random/1600x900';
 
 const styles = theme => ({
     main: {
@@ -38,13 +40,14 @@ const styles = theme => ({
 });
 
 const sanitizeRestProps = ({
+    array,
+    backgroundImage,
     classes,
     className,
     location,
-    title,
-    array,
-    theme,
     staticContext,
+    theme,
+    title,
     ...rest
 }) => rest;
 
@@ -69,17 +72,18 @@ const sanitizeRestProps = ({
 class Login extends Component {
     constructor(props) {
         super(props);
-
+        this.theme = createMuiTheme(props.theme);
         this.containerRef = React.createRef();
     }
 
     // Load background image asynchronously to speed up time to interactive
     lazyLoadBackgroundImage() {
+        const { backgroundImage } = this.props;
         const img = new Image();
         img.onload = () => {
-            this.containerRef.current.style.background = `url(${DEFAULT_BACKGROUND_IMAGE})`;
+            this.containerRef.current.style.background = `url(${backgroundImage})`;
         };
-        img.src = DEFAULT_BACKGROUND_IMAGE;
+        img.src = backgroundImage;
     }
 
     componentDidMount() {
@@ -90,36 +94,40 @@ class Login extends Component {
         const { classes, className, loginForm, ...rest } = this.props;
 
         return (
-            <div
-                className={classnames(classes.main, className)}
-                {...sanitizeRestProps(rest)}
-                ref={this.containerRef}
-            >
-                <Card className={classes.card}>
-                    <div className={classes.avatar}>
-                        <Avatar className={classes.icon}>
-                            <LockIcon />
-                        </Avatar>
-                    </div>
-                    {loginForm}
-                </Card>
-                <Notification />
-            </div>
+            <MuiThemeProvider theme={this.theme}>
+                <div
+                    className={classnames(classes.main, className)}
+                    {...sanitizeRestProps(rest)}
+                    ref={this.containerRef}
+                >
+                    <Card className={classes.card}>
+                        <div className={classes.avatar}>
+                            <Avatar className={classes.icon}>
+                                <LockIcon />
+                            </Avatar>
+                        </div>
+                        {loginForm}
+                    </Card>
+                    <Notification />
+                </div>
+            </MuiThemeProvider>
         );
     }
 }
 
 Login.propTypes = {
-    className: PropTypes.string,
     authProvider: PropTypes.func,
+    backgroundImage: PropTypes.string,
     classes: PropTypes.object,
+    className: PropTypes.string,
     input: PropTypes.object,
+    loginForm: PropTypes.element,
     meta: PropTypes.object,
     previousRoute: PropTypes.string,
-    loginForm: PropTypes.element,
 };
 
 Login.defaultProps = {
+    backgroundImage: 'https://source.unsplash.com/random/1600x900/daily',
     theme: defaultTheme,
     loginForm: <DefaultLoginForm />,
 };
