@@ -460,6 +460,7 @@ export class AutocompleteInput extends React.Component {
             source,
             className,
             options,
+            ...rest
         } = this.props;
         const { suggestions, searchText } = this.state;
 
@@ -499,6 +500,7 @@ export class AutocompleteInput extends React.Component {
                     onFocus: this.handleFocus,
                     options,
                 }}
+                {...rest}
             />
         );
     }
