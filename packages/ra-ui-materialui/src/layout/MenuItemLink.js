@@ -28,8 +28,8 @@ export class MenuItemLink extends Component {
         to: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
     };
 
-    handleMenuTap = () => {
-        this.props.onClick && this.props.onClick();
+    handleMenuTap = (e) => {
+        this.props.onClick && this.props.onClick(e);
     };
 
     render() {
