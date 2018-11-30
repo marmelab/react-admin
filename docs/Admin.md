@@ -471,7 +471,9 @@ const App = () => (
 );
 ```
 
-See The [Authentication documentation](./Authentication.md#customizing-the-login-and-logout-components) for more details.
+Before considering to write your own login page component, please take a look at how to change the default [background image](./Theming.md#using-a-custom-login-page) or the [Material UI theme](#theme).
+
+See the [Authentication documentation](./Authentication.md#customizing-the-login-and-logout-components) for more details.
 
 ## `logoutButton`
 

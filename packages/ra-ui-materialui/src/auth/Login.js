@@ -74,20 +74,47 @@ class Login extends Component {
         super(props);
         this.theme = createMuiTheme(props.theme);
         this.containerRef = React.createRef();
+        this.backgroundImageLoaded = false;
+    }
+
+    // Even though the React doc ensure the ref creation is done before the
+    // componentDidMount, it can happen that the ref is set to null until the
+    // next render.
+    // So, to handle this case the component will now try to load the image on
+    // the componentDidMount, but if the ref doesn't exist, it will try again
+    // on the following componentDidUpdate. The try will be done only once.
+    // @see https://reactjs.org/docs/refs-and-the-dom.html#adding-a-ref-to-a-dom-element
+    updateBackgroundImage = (lastTry = false) => {
+        if (!this.backgroundImageLoaded && this.containerRef.current) {
+            const { backgroundImage } = this.props;
+            this.containerRef.current.style.backgroundImage = `url(${backgroundImage})`;
+            this.backgroundImageLoaded = true;
+        }
+
+        if (lastTry) {
+            this.backgroundImageLoaded = true;
+        }
     }
 
     // Load background image asynchronously to speed up time to interactive
     lazyLoadBackgroundImage() {
         const { backgroundImage } = this.props;
-        const img = new Image();
-        img.onload = () => {
-            this.containerRef.current.style.backgroundImage = `url(${backgroundImage})`;
-        };
-        img.src = backgroundImage;
+
+        if (backgroundImage) {
+            const img = new Image();
+            img.onload = this.updateBackgroundImage;
+            img.src = backgroundImage;
+        }
     }
 
     componentDidMount() {
         this.lazyLoadBackgroundImage();
+    }
+
+    componentDidUpdate() {
+        if (!this.backgroundImageLoaded) {
+            this.lazyLoadBackgroundImage(true);
+        }
     }
 
     render() {

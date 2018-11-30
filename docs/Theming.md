@@ -704,6 +704,24 @@ const mapStateToProps = state => ({
 export default withRouter(connect(mapStateToProps)(withStyles(styles)(Menu)));
 ```
 
+## Using a Custom Login Page
+
+### Changing the Background Image
+
+By default, the login page displays a random background image changing every day. If you want to change that background image, you can use the default Login page component and pass an image URL as the `backgroundImage` prop.
+
+```jsx
+import { Admin, Login } from 'react-admin';
+
+const MyLoginPage = () => <Login backgroundImage="/background.jpg" />;
+
+const App = () => (
+    <Admin loginPage={MyLoginPage}>
+        // ...
+    </Admin>
+);
+```
+
 ## Notifications
 
 You can override the notification component, for instance to change the notification duration. It defaults to 4000, i.e. 4 seconds, and you can override it using the `autoHideDuration` prop. For instance, to create a custom Notification component with a 5 seconds default:
