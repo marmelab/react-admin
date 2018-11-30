@@ -1,5 +1,25 @@
 # Changelog
 
+# v2.5.0
+
+* Add support for custom theme in Login page ([#2591](https://github.com/marmelab/react-admin/pull/2591)) ([fzaninotto](https://github.com/fzaninotto))
+* Add ability to paginate `<ReferenceManyField>` ([#2580](https://github.com/marmelab/react-admin/pull/2580)) ([fzaninotto](https://github.com/fzaninotto))
+* Add support for custom `icon` on all buttons ([#2556](https://github.com/marmelab/react-admin/pull/2556)) ([afilp](https://github.com/afilp))
+* Add ability to override Datagrid Body and Row elements ([#2575](https://github.com/marmelab/react-admin/pull/2575)) ([fzaninotto](https://github.com/fzaninotto))
+* Add background to `<Edit>` toolbar ([#2568](https://github.com/marmelab/react-admin/pull/2568)) ([fzaninotto](https://github.com/fzaninotto))
+* Add autofocus to login and creation forms in examples ([#2560](https://github.com/marmelab/react-admin/pull/2560)) ([fzaninotto](https://github.com/fzaninotto))
+* Add autofocus to 1st input of login form ([#2530](https://github.com/marmelab/react-admin/pull/2530)) ([afilp](https://github.com/afilp))
+* Add ability to disable some options in `<SelectInput>` ([#2555](https://github.com/marmelab/react-admin/pull/2555)) ([mikaoelitiana](https://github.com/mikaoelitiana))
+* Update routing state key from `routing` to `router` ([#2553](https://github.com/marmelab/react-admin/pull/2553)) ([AleBlondin](https://github.com/AleBlondin))
+* Add ability to pass custom props to react-autosuggest from `<AutocompleteInput>>` ([#2410](https://github.com/marmelab/react-admin/pull/2410)) ([AskseL](https://github.com/AskseL))
+* Add ability to hide some suggestions in `<AutocompleteInput>` ([#2502](https://github.com/marmelab/react-admin/pull/2502)) ([ginman86](https://github.com/ginman86))
+* Add ability to override `<SnackBar>` style in `<Notification>` component ([#2405](https://github.com/marmelab/react-admin/pull/2405)) ([rameshsyn](https://github.com/rameshsyn))
+* Add support for arrays of references in exporter `fetchRelatedRecords` ([#2461](https://github.com/marmelab/react-admin/pull/2461)) ([fzaninotto](https://github.com/fzaninotto))
+* Remove outdated graphcool demo link ([#2592](https://github.com/marmelab/react-admin/pull/2592)) ([fzaninotto](https://github.com/fzaninotto))
+* Improve time to interactive in default Login page ([#2589](https://github.com/marmelab/react-admin/pull/2589)) ([Kmaschta](https://github.com/Kmaschta))
+* Fix `UPDATE_MANY` mapping for `ra-data-json-server` data provider ([#2382](https://github.com/marmelab/react-admin/pull/2382)) ([Mclovinn](https://github.com/Mclovinn))
+* Fix `MenuItemLink` click handler not passing the event ([#2588](https://github.com/marmelab/react-admin/pull/2588)) ([afilp](https://github.com/afilp))
+
 ## v2.4.4
 
 * Fix `to` prop propType `<MenuItemLink>` ([#2584](https://github.com/marmelab/react-admin/pull/2584)) ([afilp](https://github.com/afilp))
