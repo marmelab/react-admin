@@ -1,6 +1,6 @@
 {
     "name": "ra-tree-ui-materialui",
-    "version": "2.4.4",
+    "version": "2.5.0",
     "description": "A treeview component with material-ui to use with react-admin",
     "main": "lib/index.js",
     "module": "esm/index.js",
@@ -43,9 +43,9 @@
     "dependencies": {
         "lodash": "^4.17.10",
         "prop-types": "^15.6.1",
-        "ra-core": "^2.4.4",
+        "ra-core": "^2.5.0",
         "ra-tree-core": "^2.4.0",
-        "ra-ui-materialui": "^2.4.4",
+        "ra-ui-materialui": "^2.5.0",
         "react-dnd": "^5.0.0",
         "react-dnd-touch-backend": "^0.5.1"
     },
