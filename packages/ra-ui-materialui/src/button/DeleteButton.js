@@ -49,6 +49,7 @@ class DeleteButton extends Component {
             label = 'ra.action.delete',
             classes = {},
             className,
+            icon
         } = this.props;
         return (
             <Button
@@ -61,7 +62,7 @@ class DeleteButton extends Component {
                 )}
                 key="button"
             >
-                <ActionDelete />
+                {icon}
             </Button>
         );
     }
@@ -83,11 +84,13 @@ DeleteButton.propTypes = {
     startUndoable: PropTypes.func,
     translate: PropTypes.func,
     undoable: PropTypes.bool,
+    icon: PropTypes.element,
 };
 
 DeleteButton.defaultProps = {
     redirect: 'list',
     undoable: true,
+    icon: <ActionDelete />,
 };
 
 export default compose(

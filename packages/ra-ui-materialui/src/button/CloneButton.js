@@ -12,6 +12,7 @@ export const CloneButton = ({
     basePath = '',
     label = 'ra.action.clone',
     record = {},
+    icon = <Queue />,
     ...rest
 }) => (
     <Button
@@ -23,7 +24,7 @@ export const CloneButton = ({
         label={label}
         {...rest}
     >
-        <Queue />
+        {icon}
     </Button>
 );
 
@@ -33,6 +34,7 @@ CloneButton.propTypes = {
     classes: PropTypes.object,
     label: PropTypes.string,
     record: PropTypes.object,
+    icon: PropTypes.element,
 };
 
 const enhance = shouldUpdate(

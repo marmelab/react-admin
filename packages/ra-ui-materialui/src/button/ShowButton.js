@@ -11,6 +11,7 @@ const ShowButton = ({
     basePath = '',
     label = 'ra.action.show',
     record = {},
+    icon = <ImageEye />,
     ...rest
 }) => (
     <Button
@@ -19,7 +20,7 @@ const ShowButton = ({
         label={label}
         {...rest}
     >
-        <ImageEye />
+        {icon}
     </Button>
 );
 
@@ -27,6 +28,7 @@ ShowButton.propTypes = {
     basePath: PropTypes.string,
     label: PropTypes.string,
     record: PropTypes.object,
+    icon: PropTypes.element,
 };
 
 const enhance = shouldUpdate(

@@ -38,6 +38,7 @@ const UserCreate = ({ permissions, ...props }) => (
                 <TextInput
                     source="name"
                     defaultValue="Slim Shady"
+                    autoFocus
                     validate={required()}
                 />
             </FormTab>

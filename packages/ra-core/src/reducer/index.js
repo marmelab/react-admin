@@ -14,7 +14,7 @@ export default (customReducers, locale, messages) =>
         admin,
         i18n: i18nReducer(locale, messages),
         form: formReducer,
-        routing: routerReducer,
+        router: routerReducer,
         ...customReducers,
     });
 

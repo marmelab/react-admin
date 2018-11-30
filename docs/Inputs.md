@@ -174,6 +174,9 @@ By default the component matches choices with the current input searchText: if i
 
 If you want to limit the initial choices shown to the current value only, you can set the `limitChoicesToValue` prop.
 
+When dealing with a large amount of `choices` you may need to limit the number of suggestions that are rendered in order to maintain usable performance. The `shouldRenderSuggestions` is an optional prop that allows you to set conditions on when to render suggestions. An easy way to improve performance would be to skip rendering until the user has entered 2 or 3 characters in the search box. This lowers the result set significantly, and might be all you need (depending on your data set). 
+Ex. `<AutocompleteInput shouldRenderSuggestions={(val) => { return val.trim() > 2 }} />` would not render any suggestions until the 3rd character was entered. This prop is passed to the underlying `react-autosuggest` component and is documented [here](https://github.com/moroshko/react-autosuggest#should-render-suggestions-prop).
+
 Lastly, `<AutocompleteInput>` renders a material-ui `<TextField>` component. Use the `options` attribute to override any of the `<TextField>` attributes:
 
 {% raw %}
@@ -208,9 +211,10 @@ import { AutocompleteInput, ReferenceInput } from 'react-admin'
 | `allowEmpty` | Optional | `boolean` | `false` | If `false` and the searchText typed did not match any suggestion, the searchText will revert to the current value when the field is blurred. If `true` and the `searchText` is set to `''` then the field will set the input value to `null`. |
 | `inputValueMatcher` | Optional | `Function` | `(input, suggestion, getOptionText) => input.toLowerCase().trim() === getOptionText(suggestion).toLowerCase().trim()` | Allows to define how choices are matched with the searchText while typing.    |
 | `optionValue` | Optional | `string` | `id` | Fieldname of record containing the value to use as input value  |
-| `optionText` | Optional | <code>string &#124; Function</code> | `name` | Fieldname of record to display in the suggestion item or function which accepts the currect record as argument (`(record)=> {string}`) |
+| `optionText` | Optional | <code>string &#124; Function</code> | `name` | Fieldname of record to display in the suggestion item or function which accepts the correct record as argument (`(record)=> {string}`) |
 | `setFilter` | Optional | `Function` | null | A callback to inform the `searchText` has changed and new `choices` can be retrieved based on this `searchText`. Signature `searchText => void`. This function is automatically setup when using `ReferenceInput`.  |
 | `suggestionComponent` | Optional | Function | `({ suggestion, query, isHighlighted, props }) => <div {...props} />` | Allows to override how the item is rendered.  |
+| `shouldRenderSuggestions` | Optional | Function | `() => true` | A function that returns a `boolean` to determine whether or not suggestions are rendered. Use this when working with large collections of data to improve performance and user experience. This function is passed into the underlying react-autosuggest component. Ex.`(value) => value.trim() > 2` |
 
 ## `<AutocompleteArrayInput>`
 
@@ -1026,6 +1030,28 @@ If, instead of showing choices as a dropdown list, you prefer to display them as
 You can make the `SelectInput` component resettable using the `resettable` prop. This will add a reset button which will be displayed only when the field has a value.
 
 ![resettable SelectInput](./img/resettable-select-input.png)
+
+You can set disabled values by setting the `disabled` property of one item: 
+
+```jsx
+const choices = [
+    { _id: 123, full_name: 'Leo Tolstoi', sex: 'M' },
+    { _id: 456, full_name: 'Jane Austen', sex: 'F' },
+    { _id: 1, full_name: 'System Administrator', sex: 'F', disabled: true },
+];
+<SelectInput source="author_id" choices={choices} optionText="full_name" optionValue="_id" />
+```
+
+You can use a custom field name by setting `disableValue` prop: 
+
+```jsx
+const choices = [
+    { _id: 123, full_name: 'Leo Tolstoi', sex: 'M' },
+    { _id: 456, full_name: 'Jane Austen', sex: 'F' },
+    { _id: 987, full_name: 'Jack Harden', sex: 'M', not_available: true },
+];
+<SelectInput source="contact_id" choices={choices} optionText="full_name" optionValue="_id" disableValue="not_available" />
+```
 
 ## `<SelectArrayInput>`
 

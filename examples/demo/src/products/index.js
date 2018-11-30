@@ -10,6 +10,7 @@ import {
     FormTab,
     List,
     NumberInput,
+    Pagination,
     ReferenceInput,
     ReferenceManyField,
     SearchInput,
@@ -91,6 +92,7 @@ export const ProductCreate = withStyles(createStyles)(
             <TabbedForm>
                 <FormTab label="resources.products.tabs.image">
                     <TextInput
+                        autoFocus
                         source="image"
                         options={{ fullWidth: true }}
                         validate={required()}
@@ -193,6 +195,7 @@ export const ProductEdit = withStyles(editStyles)(({ classes, ...props }) => (
                     reference="reviews"
                     target="product_id"
                     addLabel={false}
+                    pagination={<Pagination />}
                 >
                     <Datagrid>
                         <DateField source="date" />

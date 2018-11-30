@@ -203,6 +203,25 @@ describe('<AutocompleteInput />', () => {
         assert.equal(MenuItem.text(), 'Male');
     });
 
+    it('should respect shouldRenderSuggestions over default if passed in', () => {
+        const wrapper = mount(
+            <AutocompleteInput
+                {...defaultProps}
+                input={{ value: null }}
+                choices={[{ id: 'M', name: 'Male' }]}
+                shouldRenderSuggestions={() => false}
+            />,
+            { context, childContextTypes }
+        );
+        wrapper.find('input').simulate('focus');
+        wrapper
+            .find('input')
+            .simulate('change', { target: { value: 'foo' } });
+        expect(wrapper.state('searchText')).toBe('foo');
+        expect(wrapper.state('suggestions')).toHaveLength(1);
+        expect(wrapper.find('ListItem')).toHaveLength(0);
+    });
+
     describe('Fix issue #1410', () => {
         it('should not fail when value is null and new choices are applied', () => {
             const wrapper = shallow(

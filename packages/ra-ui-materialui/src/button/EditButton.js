@@ -11,6 +11,7 @@ const EditButton = ({
     basePath = '',
     label = 'ra.action.edit',
     record = {},
+    icon = <ContentCreate />,
     ...rest
 }) => (
     <Button
@@ -19,7 +20,7 @@ const EditButton = ({
         label={label}
         {...rest}
     >
-        <ContentCreate />
+        {icon}
     </Button>
 );
 
@@ -29,6 +30,7 @@ EditButton.propTypes = {
     classes: PropTypes.object,
     label: PropTypes.string,
     record: PropTypes.object,
+    icon: PropTypes.element,
 };
 
 const enhance = shouldUpdate(
