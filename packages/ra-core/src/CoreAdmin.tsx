@@ -96,6 +96,7 @@ React-admin requires a valid dataProvider function to work.`);
                                 createElement(loginPage, {
                                     ...props,
                                     title,
+                                    theme,
                                 })
                             }
                         />
