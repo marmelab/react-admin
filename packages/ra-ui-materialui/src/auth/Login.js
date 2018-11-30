@@ -81,7 +81,7 @@ class Login extends Component {
         const { backgroundImage } = this.props;
         const img = new Image();
         img.onload = () => {
-            this.containerRef.current.style.background = `url(${backgroundImage})`;
+            this.containerRef.current.style.backgroundImage = `url(${backgroundImage})`;
         };
         img.src = backgroundImage;
     }
