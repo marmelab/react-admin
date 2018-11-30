@@ -99,7 +99,7 @@ export class CheckboxGroupInput extends Component {
             newValue = event.target.value;
         }
         if (isChecked) {
-            onChange([...value, ...[newValue]]);
+            onChange([...(value || []), ...[newValue]]);
         } else {
             onChange(value.filter(v => v != newValue));
         }
