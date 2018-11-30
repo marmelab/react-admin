@@ -65,6 +65,7 @@ Actions.propTypes = {
     onUnselectItems: PropTypes.func.isRequired,
     selectedIds: PropTypes.arrayOf(PropTypes.any),
     showFilter: PropTypes.func,
+    total: PropTypes.number.isRequired,
 };
 
 Actions.defaultProps = {
