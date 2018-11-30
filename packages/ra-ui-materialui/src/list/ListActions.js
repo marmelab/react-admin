@@ -20,6 +20,7 @@ const Actions = ({
     selectedIds,
     onUnselectItems,
     showFilter,
+    total,
     ...rest
 }) => (
     <CardActions className={className} {...sanitizeListRestProps(rest)}>
@@ -41,6 +42,7 @@ const Actions = ({
             })}
         {hasCreate && <CreateButton basePath={basePath} />}
         <ExportButton
+            disabled={total === 0}
             resource={resource}
             sort={currentSort}
             filter={filterValues}
