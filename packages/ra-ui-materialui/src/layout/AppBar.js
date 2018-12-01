@@ -113,7 +113,7 @@ AppBar.propTypes = {
 
 AppBar.defaultProps = {
 	userMenu: <UserMenu />,
-	color: "secondary"
+	color: "primary" // from the official material-ui docs (https://material-ui.com/api/app-bar/#props)
 };
 
 const enhance = compose(
