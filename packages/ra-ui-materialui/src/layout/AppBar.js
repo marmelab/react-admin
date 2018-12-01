@@ -52,6 +52,7 @@ const AppBar = ({
     className,
     logout,
     open,
+    color,
     title,
     toggleSidebar,
     userMenu,
@@ -61,7 +62,7 @@ const AppBar = ({
     <Headroom>
         <MuiAppBar
             className={className}
-            color="secondary"
+            color={color}
             position="static"
             {...rest}
         >
@@ -103,15 +104,16 @@ AppBar.propTypes = {
     className: PropTypes.string,
     logout: PropTypes.element,
     open: PropTypes.bool,
-    title: PropTypes.oneOfType([PropTypes.string, PropTypes.element])
-        .isRequired,
+    color: PropTypes.oneOf(["inherit", "primary", "secondary", "default"]), // from the official material-ui docs (https://material-ui.com/api/app-bar/#props)
+    title: PropTypes.oneOfType([PropTypes.string, PropTypes.element]).isRequired,
     toggleSidebar: PropTypes.func.isRequired,
     userMenu: PropTypes.node,
     width: PropTypes.string,
 };
 
 AppBar.defaultProps = {
-    userMenu: <UserMenu />,
+	userMenu: <UserMenu />,
+	color: "secondary"
 };
 
 const enhance = compose(
