@@ -10,7 +10,7 @@ import { defaultI18nProvider } from './i18n';
 import formMiddleware from './form/formMiddleware';
 
 interface Window {
-    devToolsExtension?: () => () => void;
+    __REDUX_DEVTOOLS_EXTENSION__?: () => () => void;
 }
 
 export default ({
