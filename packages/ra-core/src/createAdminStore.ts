@@ -48,9 +48,10 @@ export default ({
                 formMiddleware,
                 routerMiddleware(history)
             ),
-            typeof typedWindow !== 'undefined' && typedWindow.__REDUX_DEVTOOLS_EXTENSION__
-                ? typedWindow.__REDUX_DEVTOOLS_EXTENSION__()
-                : f => f
+            (typeof typedWindow !== 'undefined' 
+                && typedWindow.__REDUX_DEVTOOLS_EXTENSION__)
+                    ? typedWindow.__REDUX_DEVTOOLS_EXTENSION__()
+                    : f => f
         )
     );
     sagaMiddleware.run(saga);
