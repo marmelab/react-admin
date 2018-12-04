@@ -71,6 +71,7 @@ const Toolbar = ({
                 },
                 className
             )}
+            role="toolbar"
             {...rest}
         >
             {Children.count(children) === 0 ? (
