@@ -162,7 +162,7 @@ export class AutocompleteArrayInput extends React.Component {
         const { input } = this.props;
 
         input.onChange([
-            ...this.state.inputValue,
+            ...(this.state.inputValue || []),
             this.getSuggestionValue(suggestion),
         ]);
 
@@ -309,7 +309,7 @@ export class AutocompleteArrayInput extends React.Component {
 
         if (choice) {
             return input.onChange([
-                ...this.state.inputValue,
+                ...(this.state.inputValue || []),
                 this.getSuggestionValue(choice),
             ]);
         }
