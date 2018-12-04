@@ -6,7 +6,7 @@ export default url => ({
         inputs: `.ra-input`,
         tabs: `.form-tab`,
         snackbar: 'div[role="alertdialog"]',
-        submitButton: ".edit-page button[type='submit']",
+        submitButton: ".edit-page div[role='toolbar'] button[type='submit']",
         cloneButton: '.button-clone',
         tab: index => `.form-tab:nth-of-type(${index})`,
         title: '#react-admin-title',
