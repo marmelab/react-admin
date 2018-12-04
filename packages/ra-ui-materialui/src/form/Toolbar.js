@@ -1,4 +1,4 @@
-import React, { Children } from 'react';
+import React, { Children, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import MuiToolbar from '@material-ui/core/Toolbar';
@@ -10,7 +10,10 @@ import { SaveButton, DeleteButton } from '../button';
 
 const styles = theme => ({
     toolbar: {
-        backgroundColor: theme.palette.type === 'light' ? theme.palette.grey[100] : theme.palette.grey[900],
+        backgroundColor:
+            theme.palette.type === 'light'
+                ? theme.palette.grey[100]
+                : theme.palette.grey[900],
     },
     desktopToolbar: {
         marginTop: theme.spacing.unit * 2,
@@ -30,6 +33,11 @@ const styles = theme => ({
         flex: 1,
         display: 'flex',
         justifyContent: 'space-between',
+    },
+    spacer: {
+        [theme.breakpoints.down('xs')]: {
+            height: '5em',
+        },
     },
 });
 
@@ -53,12 +61,13 @@ const Toolbar = ({
     width,
     ...rest
 }) => (
+    <Fragment>
         <MuiToolbar
             className={classnames(
                 classes.toolbar,
                 {
                     [classes.mobileToolbar]: width === 'xs',
-                    [classes.desktopToolbar]: width !== 'xs'
+                    [classes.desktopToolbar]: width !== 'xs',
                 },
                 className
             )}
@@ -83,33 +92,35 @@ const Toolbar = ({
                         )}
                 </div>
             ) : (
-                    Children.map(
-                        children,
-                        button =>
-                            button
-                                ? React.cloneElement(button, {
-                                    basePath,
-                                    handleSubmit: valueOrDefault(
-                                        button.props.handleSubmit,
-                                        handleSubmit
-                                    ),
-                                    handleSubmitWithRedirect: valueOrDefault(
-                                        button.props.handleSubmitWithRedirect,
-                                        handleSubmitWithRedirect
-                                    ),
-                                    invalid,
-                                    pristine,
-                                    saving,
-                                    submitOnEnter: valueOrDefault(
-                                        button.props.submitOnEnter,
-                                        submitOnEnter
-                                    ),
-                                })
-                                : null
-                    )
-                )}
+                Children.map(
+                    children,
+                    button =>
+                        button
+                            ? React.cloneElement(button, {
+                                  basePath,
+                                  handleSubmit: valueOrDefault(
+                                      button.props.handleSubmit,
+                                      handleSubmit
+                                  ),
+                                  handleSubmitWithRedirect: valueOrDefault(
+                                      button.props.handleSubmitWithRedirect,
+                                      handleSubmitWithRedirect
+                                  ),
+                                  invalid,
+                                  pristine,
+                                  saving,
+                                  submitOnEnter: valueOrDefault(
+                                      button.props.submitOnEnter,
+                                      submitOnEnter
+                                  ),
+                              })
+                            : null
+                )
+            )}
         </MuiToolbar>
-    );
+        <div className={classes.spacer} />
+    </Fragment>
+);
 
 Toolbar.propTypes = {
     basePath: PropTypes.string,
