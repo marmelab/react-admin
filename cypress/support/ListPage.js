@@ -15,6 +15,7 @@ export default url => ({
         recordRows: '.datagrid-body tr',
         viewsColumn: '.datagrid-body tr td:nth-child(6)',
         datagridHeaders: 'th',
+        sortBy: name => `th span[data-sort=${name}]`,
         logout: '.logout',
         bulkActionsToolbar: '[data-test=bulk-actions-toolbar]',
         customBulkActionsButton:
@@ -101,4 +102,8 @@ export default url => ({
     applyDeleteBulkAction() {
         cy.get(this.elements.deleteBulkActionsButton).click();
     },
+
+    toggleColumnSort(name) {
+        cy.get(this.elements.sortBy(name)).click();
+    }
 });
