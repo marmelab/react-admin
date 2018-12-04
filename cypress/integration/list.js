@@ -173,23 +173,23 @@ describe('List Page', () => {
             ListPagePosts.toggleColumnSort('id');
             cy.get(ListPagePosts.elements.sortBy('id')).get("svg").should('be.visible');
 
-            ListPagePosts.toggleColumnSort('tags');
-            cy.get(ListPagePosts.elements.sortBy('tags')).get("svg").should('be.visible');
+            ListPagePosts.toggleColumnSort('"tags.name"');
+            cy.get(ListPagePosts.elements.sortBy('"tags.name"')).get("svg").should('be.visible');
         });
 
         it('should hide the sort arrow when clicking on another sortable column header', () => {
             ListPagePosts.toggleColumnSort('published_at');
             cy.get(ListPagePosts.elements.sortBy('id')).get("svg").should('be.hidden');
-            cy.get(ListPagePosts.elements.sortBy('tags')).get("svg").should('be.hidden');
+            cy.get(ListPagePosts.elements.sortBy('"tags.name"')).get("svg").should('be.hidden');
         });
 
         it('should reverse the sort arrow when clicking on an already sorted column header', () => {
             ListPagePosts.toggleColumnSort('published_at');
-            ListPagePosts.toggleColumnSort('tags');
-            cy.get(ListPagePosts.elements.sortBy('tags')).get("[class*=iconDirectionAsc]").should('exist');
+            ListPagePosts.toggleColumnSort('"tags.name"');
+            cy.get(ListPagePosts.elements.sortBy('"tags.name"')).get("[class*=iconDirectionAsc]").should('exist');
 
-            ListPagePosts.toggleColumnSort('tags');
-            cy.get(ListPagePosts.elements.sortBy('tags')).get("[class*=iconDirectionDesc]").should('exist');
+            ListPagePosts.toggleColumnSort('"tags.name"');
+            cy.get(ListPagePosts.elements.sortBy('"tags.name"')).get("[class*=iconDirectionDesc]").should('exist');
         });
     })
 });
