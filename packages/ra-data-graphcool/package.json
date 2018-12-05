@@ -46,7 +46,6 @@
     "devDependencies": {
         "cross-env": "^5.2.0",
         "graphql": "^0.13.2",
-        "react-admin": "^2.5.0",
         "rimraf": "^2.6.2"
     }
 }
