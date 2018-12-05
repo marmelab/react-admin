@@ -100,7 +100,8 @@ const PostActions = ({
     onUnselectItems,
     resource,
     selectedIds,
-    showFilter
+    showFilter,
+    total
 }) => (
     <CardActions>
         {bulkActions && React.cloneElement(bulkActions, {
@@ -119,6 +120,7 @@ const PostActions = ({
         }) }
         <CreateButton basePath={basePath} />
         <ExportButton
+            disabled={total === 0}
             resource={resource}
             sort={currentSort}
             filter={filterValues}
@@ -149,7 +151,9 @@ export const PostList = ({ permissions, ...props }) => (
 
 ### Exporter
 
-Among the default list actions, react-admin includes an `<ExportButton>`. By default, clicking this button will:
+Among the default list actions, react-admin includes an `<ExportButton>`. This button is disabled when there is no record in the current `<List>`.
+
+By default, clicking this button will:
 
 1. Call the `dataProvider` with the current sort and filter (but without pagination),
 2. Transform the result into a CSV string,
