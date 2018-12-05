@@ -6,12 +6,12 @@ import {
     CREATE,
     UPDATE,
     DELETE,
-} from 'react-admin';
+} from 'ra-core';
 
 const buildGetListVariables = introspectionResults => (
     resource,
     aorFetchType,
-    params,
+    params
 ) => {
     const filter = Object.keys(params.filter).reduce((acc, key) => {
         if (key === 'ids') {
@@ -20,10 +20,10 @@ const buildGetListVariables = introspectionResults => (
 
         if (typeof params.filter[key] === 'object') {
             const type = introspectionResults.types.find(
-                t => t.name === `${resource.type.name}Filter`,
+                t => t.name === `${resource.type.name}Filter`
             );
             const filterSome = type.inputFields.find(
-                t => t.name === `${key}_some`,
+                t => t.name === `${key}_some`
             );
 
             if (filterSome) {
@@ -32,7 +32,7 @@ const buildGetListVariables = introspectionResults => (
                         ...acc,
                         [`${k}_in`]: params.filter[key][k],
                     }),
-                    {},
+                    {}
                 );
                 return { ...acc, [`${key}_some`]: filter };
             }
@@ -43,10 +43,10 @@ const buildGetListVariables = introspectionResults => (
         if (parts.length > 1) {
             if (parts[1] == 'id') {
                 const type = introspectionResults.types.find(
-                    t => t.name === `${resource.type.name}Filter`,
+                    t => t.name === `${resource.type.name}Filter`
                 );
                 const filterSome = type.inputFields.find(
-                    t => t.name === `${parts[0]}_some`,
+                    t => t.name === `${parts[0]}_some`
                 );
 
                 if (filterSome) {
@@ -60,7 +60,7 @@ const buildGetListVariables = introspectionResults => (
             }
 
             const resourceField = resource.type.fields.find(
-                f => f.name === parts[0],
+                f => f.name === parts[0]
             );
             if (resourceField.type.name === 'Int') {
                 return { ...acc, [key]: parseInt(params.filter[key], 10) };
@@ -76,7 +76,7 @@ const buildGetListVariables = introspectionResults => (
     return {
         skip: parseInt(
             (params.pagination.page - 1) * params.pagination.perPage,
-            10,
+            10
         ),
         first: parseInt(params.pagination.perPage, 10),
         orderBy: `${params.sort.field}_${params.sort.order}`,
@@ -88,7 +88,7 @@ const buildCreateUpdateVariables = () => (
     resource,
     aorFetchType,
     params,
-    queryType,
+    queryType
 ) =>
     Object.keys(params.data).reduce((acc, key) => {
         if (Array.isArray(params.data[key])) {
@@ -123,7 +123,7 @@ export default introspectionResults => (
     resource,
     aorFetchType,
     params,
-    queryType,
+    queryType
 ) => {
     switch (aorFetchType) {
         case GET_LIST: {
@@ -131,7 +131,7 @@ export default introspectionResults => (
                 resource,
                 aorFetchType,
                 params,
-                queryType,
+                queryType
             );
         }
         case GET_MANY:
@@ -154,7 +154,7 @@ export default introspectionResults => (
                 resource,
                 aorFetchType,
                 params,
-                queryType,
+                queryType
             );
         }
 
@@ -163,7 +163,7 @@ export default introspectionResults => (
                 resource,
                 aorFetchType,
                 params,
-                queryType,
+                queryType
             );
         }
 

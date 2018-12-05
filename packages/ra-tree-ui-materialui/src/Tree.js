@@ -1,11 +1,11 @@
 import React, { Children, Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
-
 import { withStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import { TreeController } from 'ra-tree-core';
 import { DragDropContext } from 'react-dnd';
 import TouchBackend from 'react-dnd-touch-backend';
+
 import draggable from './draggable';
 import droppable from './droppable';
 import DragLayer from './DragLayer';
@@ -43,7 +43,9 @@ const sanitizeRestProps = ({
     ...rest
 }) => rest;
 
-const warnAboutChildren = () => console.warn( // eslint-disable-line
+const warnAboutChildren = () =>
+    console.warn(
+        // eslint-disable-line
         `You passed multiple children to the Tree component. You must either pass it a NodeView or a NodeForm component as its only child:
 
     <Tree>
