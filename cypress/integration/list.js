@@ -3,6 +3,7 @@ import loginPageFactory from '../support/LoginPage';
 
 describe('List Page', () => {
     const ListPagePosts = listPageFactory('/#/posts');
+    const ListPageUsers = listPageFactory('/#/users');
     const LoginPage = loginPageFactory('/#/login');
 
     beforeEach(() => {
@@ -165,6 +166,21 @@ describe('List Page', () => {
             ListPagePosts.toggleSelectSomeItems(3);
             ListPagePosts.applyDeleteBulkAction();
             cy.contains('1-10 of 10');
+        });
+    });
+
+    describe('rowClick', () => {
+        it('should accept a function', () => {
+            cy.contains('Fusce massa lorem, pulvinar a posuere ut, accumsan ac nisi').parents('tr').click();
+            cy.contains('Summary').should(el => expect(el).to.exist);
+        });
+
+        it('should accept a function returning a promise', () => {
+            LoginPage.navigate();
+            LoginPage.login('user', 'password');
+            ListPageUsers.navigate();
+            cy.contains('Annamarie Mayer').parents('tr').click();
+            cy.contains('Summary').should(el => expect(el).to.exist);
         });
     });
 });

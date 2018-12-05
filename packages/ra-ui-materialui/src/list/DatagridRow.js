@@ -34,19 +34,34 @@ class DatagridRow extends Component {
         event.stopPropagation();
     };
 
-    handleClick = () => {
-        const { basePath, rowClick, id, push } = this.props;
+    handleClick = async () => {
+        const { basePath, rowClick, id, record } = this.props;
+
         if (!rowClick) return;
-        if (rowClick === 'edit') {
-            push(linkToRecord(basePath, id));
-        }
-        if (rowClick === 'show') {
-            push(linkToRecord(basePath, id, 'show'));
-        }
+
         if (typeof rowClick === 'function') {
-            push(rowClick(id, basePath));
+            const path = await rowClick(id, basePath, record);
+            this.handleRedirection(path);
+            return;
         }
+
+        this.handleRedirection(rowClick);
     };
+
+    handleRedirection = path => {
+        const { basePath, id, push } = this.props;
+
+        if (path === 'edit') {
+            push(linkToRecord(basePath, id));
+            return;
+        }
+        if (path === 'show') {
+            push(linkToRecord(basePath, id, 'show'));
+            return;
+        }
+
+        push(path);
+    }
 
     render() {
         const {
