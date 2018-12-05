@@ -41,7 +41,6 @@ class DatagridRow extends Component {
 
         if (typeof rowClick === 'function') {
             const path = await rowClick(id, basePath, record);
-            console.log({ path })
             this.handleRedirection(path);
             return;
         }
