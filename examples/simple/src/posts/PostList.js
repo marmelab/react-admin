@@ -78,6 +78,14 @@ const PostListActionToolbar = withStyles({
     </div>
 ));
 
+const rowClick = (id, basePath, record) => {
+    if (record.commentable) {
+        return 'edit';
+    }
+
+    return 'show';
+}
+
 const PostList = withStyles(styles)(({ classes, ...props }) => (
     <List
         {...props}
@@ -96,7 +104,7 @@ const PostList = withStyles(styles)(({ classes, ...props }) => (
                 />
             }
             medium={
-                <Datagrid>
+                <Datagrid rowClick={rowClick}>
                     <TextField source="id" />
                     <TextField source="title" cellClassName={classes.title} />
                     <DateField

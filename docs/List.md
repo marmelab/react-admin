@@ -810,7 +810,21 @@ export const PostList = (props) => (
 
 * "edit" to redirect to the edition vue
 * "show" to redirect to the show vue
-* a function `(id, basePath) => path` to redirect to a custom path
+* a function `(id, basePath, record) => path` to redirect to a custom path
+
+**Tip**: If you pass a function, it can return `edit`, `show` or a router path. This allows to redirect to either `edit` or `show` after checking a condition on the record. For example:
+
+```js
+const postRowClick = (id, basePath, record) => record.editable ? 'edit' : 'show';
+```
+
+**Tip**: If you pass a function, it can also return a promise allowing you to check an external API before returning a path. For example:
+
+```js
+import fetchUserRights from './fetchUserRights';
+
+const postRowClick = (id, basePath, record) => fetchUserRights().then(({ canEdit }) canEdit ? 'edit' : 'show');
+```
 
 ### CSS API
 
