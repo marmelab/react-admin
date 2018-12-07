@@ -191,7 +191,7 @@ DatagridRow.propTypes = {
     children: PropTypes.node,
     classes: PropTypes.object,
     className: PropTypes.string,
-    detail: PropTypes.node,
+    expand: PropTypes.node,
     hasBulkActions: PropTypes.bool.isRequired,
     hover: PropTypes.bool,
     id: PropTypes.any,
