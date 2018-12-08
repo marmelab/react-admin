@@ -89,7 +89,7 @@ class DatagridRow extends Component {
     computeColSpan = props => {
         const { children, hasBulkActions } = props;
         return (
-            1 + // show detail button
+            1 + // show expand button
             (hasBulkActions ? 1 : 0) + // checkbox column
             React.Children.toArray(children).filter(child => !!child).length // non-null children
         );
