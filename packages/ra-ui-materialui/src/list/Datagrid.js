@@ -41,9 +41,10 @@ const styles = theme => ({
     },
     expandHeader: {
         padding: 0,
+        width: 48,
     },
     expandIconCell: {
-        width: '2em',
+        width: 48,
     },
     expandIcon: {
         transform: 'rotate(-90deg)',
