@@ -135,6 +135,7 @@ class DatagridRow extends Component {
                                 component="div"
                                 tabIndex={-1}
                                 aria-hidden="true"
+                                role="expand"
                                 onClick={this.handleToggleExpanded}
                             >
                                 <ExpandMoreIcon />
@@ -171,7 +172,7 @@ class DatagridRow extends Component {
                 {expand &&
                     expanded && (
                         <TableRow key={`${id}-expand`}>
-                            <TableCell colSpan={colSpan}>
+                            <TableCell colSpan={colSpan} role="expand-content">
                                 {React.cloneElement(expand, {
                                     record,
                                     basePath,

@@ -39,6 +39,9 @@ const styles = theme => ({
             padding: '0 12px',
         },
     },
+    expandHeader: {
+        padding: 0,
+    },
     expandIconCell: {
         width: '2em',
     },
@@ -144,7 +147,9 @@ class Datagrid extends Component {
             >
                 <TableHead>
                     <TableRow className={classes.row}>
-                        {expand && <TableCell />}
+                        {expand && (
+                            <TableCell className={classes.expandHeader} />
+                        )}
                         {hasBulkActions && (
                             <TableCell padding="none">
                                 <Checkbox

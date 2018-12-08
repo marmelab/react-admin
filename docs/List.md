@@ -863,7 +863,11 @@ The `expand` prop expects an element as value. When the user chooses to expand t
 
 ```js
 const PostShow = props => (
-    <Show {...props}>
+    <Show
+        {...props}
+        /* disable the app title change when shown */
+        title=" "
+    >
         <SimpleShowLayout>
             <RichTextField source="body" />
         </SimpleShowLayout>
@@ -889,7 +893,11 @@ The result will be the same as in the previous snippet, except that `<Show>` enc
 
 ```js
 const PostEdit = props => (
-    <Edit {...props}>
+    <Edit 
+        {...props}
+        /* disable the app title change when shown */
+        title=" "
+    >
         <SimpleForm
             /* The form must have a name dependent on the record, because by default all forms have the same name */
             form={`post_edit_${props.id}`}

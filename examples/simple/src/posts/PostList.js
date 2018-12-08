@@ -84,7 +84,11 @@ const rowClick = (id, basePath, record) => {
     }
 
     return 'show';
-}
+};
+
+const PostPanel = ({ id, record, resource }) => (
+    <div dangerouslySetInnerHTML={{ __html: record.body }} />
+);
 
 const PostList = withStyles(styles)(({ classes, ...props }) => (
     <List
@@ -104,7 +108,7 @@ const PostList = withStyles(styles)(({ classes, ...props }) => (
                 />
             }
             medium={
-                <Datagrid rowClick={rowClick}>
+                <Datagrid rowClick={rowClick} expand={<PostPanel />}>
                     <TextField source="id" />
                     <TextField source="title" cellClassName={classes.title} />
                     <DateField
