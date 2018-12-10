@@ -23,6 +23,19 @@ const styles = theme => ({
     },
 });
 
+const sanitizeRestProps = ({
+    basePath,
+    classes,
+    dispatchCrudDeleteMany,
+    filterValues,
+    label,
+    resource,
+    selectedIds,
+    startUndoable,
+    undoable,
+    ...rest
+}) => rest;
+
 class DeleteButton extends Component {
     handleDelete = event => {
         event.stopPropagation();
@@ -34,6 +47,7 @@ class DeleteButton extends Component {
             basePath,
             redirect,
             undoable,
+            onClick,
         } = this.props;
         if (undoable) {
             startUndoable(
@@ -42,6 +56,10 @@ class DeleteButton extends Component {
         } else {
             dispatchCrudDelete(resource, record.id, record, basePath, redirect);
         }
+
+        if (typeof onClick === 'function') {
+            onClick();
+        }
     };
 
     render() {
@@ -49,7 +67,9 @@ class DeleteButton extends Component {
             label = 'ra.action.delete',
             classes = {},
             className,
-            icon
+            icon,
+            onClick,
+            ...rest
         } = this.props;
         return (
             <Button
@@ -61,6 +81,7 @@ class DeleteButton extends Component {
                     className
                 )}
                 key="button"
+                {...sanitizeRestProps(rest)}
             >
                 {icon}
             </Button>
