@@ -41,13 +41,15 @@ const Actions = ({
                 context: 'button',
             })}
         {hasCreate && <CreateButton basePath={basePath} />}
-        <ExportButton
-            disabled={total === 0}
-            resource={resource}
-            sort={currentSort}
-            filter={filterValues}
-            exporter={exporter}
-        />
+        {exporter !== false && (
+            <ExportButton
+                disabled={total === 0}
+                resource={resource}
+                sort={currentSort}
+                filter={filterValues}
+                exporter={exporter}
+            />
+        )}
     </CardActions>
 );
 
@@ -57,7 +59,7 @@ Actions.propTypes = {
     className: PropTypes.string,
     currentSort: PropTypes.object,
     displayedFilters: PropTypes.object,
-    exporter: PropTypes.func,
+    exporter: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
     filters: PropTypes.element,
     filterValues: PropTypes.object,
     hasCreate: PropTypes.bool,

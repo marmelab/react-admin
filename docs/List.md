@@ -163,6 +163,8 @@ The columns of the CSV file match all the fields of the records in the `dataProv
 
 **Tip**: For CSV conversion, you can import [Papaparse](https://www.papaparse.com/), a CSV parser and stringifier which is already a react-admin dependency. And for CSV download, take advantage of react-admin's `downloadCSV` function.
 
+**Tip**: You may also remove the `<ExportButton>` by passing `false` to the `exporter` prop: `exporter={false}`
+
 Here is an example for a Posts exporter, omitting, adding, and reordering fields:
 
 ```jsx
