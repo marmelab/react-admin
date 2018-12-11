@@ -13,7 +13,7 @@ import classnames from 'classnames';
 import DatagridHeaderCell from './DatagridHeaderCell';
 import DatagridBody from './DatagridBody';
 
-const styles = {
+const styles = theme => ({
     table: {
         tableLayout: 'auto',
     },
@@ -39,7 +39,23 @@ const styles = {
             padding: '0 12px',
         },
     },
-};
+    expandHeader: {
+        padding: 0,
+        width: 48,
+    },
+    expandIconCell: {
+        width: 48,
+    },
+    expandIcon: {
+        transform: 'rotate(-90deg)',
+        transition: theme.transitions.create('transform', {
+            duration: theme.transitions.duration.shortest,
+        }),
+    },
+    expanded: {
+        transform: 'rotate(0deg)',
+    },
+});
 
 /**
  * The Datagrid component renders a list of records as a table.
@@ -104,6 +120,7 @@ class Datagrid extends Component {
             className,
             currentSort,
             data,
+            expand,
             hasBulkActions,
             hover,
             ids,
@@ -131,6 +148,9 @@ class Datagrid extends Component {
             >
                 <TableHead>
                     <TableRow className={classes.row}>
+                        {expand && (
+                            <TableCell className={classes.expandHeader} />
+                        )}
                         {hasBulkActions && (
                             <TableCell padding="none">
                                 <Checkbox
@@ -167,21 +187,26 @@ class Datagrid extends Component {
                         )}
                     </TableRow>
                 </TableHead>
-                {React.cloneElement(body, {
-                    basePath,
-                    classes,
-                    rowClick,
-                    data,
-                    hasBulkActions,
-                    hover,
-                    ids,
-                    isLoading,
-                    onToggleItem,
-                    resource,
-                    rowStyle,
-                    selectedIds,
-                    version
-                }, children)}
+                {React.cloneElement(
+                    body,
+                    {
+                        basePath,
+                        classes,
+                        expand,
+                        rowClick,
+                        data,
+                        hasBulkActions,
+                        hover,
+                        ids,
+                        isLoading,
+                        onToggleItem,
+                        resource,
+                        rowStyle,
+                        selectedIds,
+                        version,
+                    },
+                    children
+                )}
             </Table>
         );
     }
@@ -198,6 +223,7 @@ Datagrid.propTypes = {
         order: PropTypes.string,
     }).isRequired,
     data: PropTypes.object.isRequired,
+    expand: PropTypes.node,
     hasBulkActions: PropTypes.bool.isRequired,
     hover: PropTypes.bool,
     ids: PropTypes.arrayOf(PropTypes.any).isRequired,
@@ -218,7 +244,7 @@ Datagrid.defaultProps = {
     hasBulkActions: false,
     ids: [],
     selectedIds: [],
-    body: <DatagridBody />
+    body: <DatagridBody />,
 };
 
 export default withStyles(styles)(Datagrid);

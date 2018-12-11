@@ -707,6 +707,7 @@ Here are all the props accepted by the component:
 * [`body`](#body-element)
 * [`rowStyle`](#row-style-function)
 * [`rowClick`](#rowclick)
+* [`expand`](#expand)
 
 It renders as many columns as it receives `<Field>` children.
 
@@ -830,6 +831,95 @@ const postRowClick = (id, basePath, record) => record.editable ? 'edit' : 'show'
 import fetchUserRights from './fetchUserRights';
 
 const postRowClick = (id, basePath, record) => fetchUserRights().then(({ canEdit }) canEdit ? 'edit' : 'show');
+```
+
+### `expand`
+
+To show more data from the resource without adding too many columns, you can show data in an expandable panel below the row on demand, using the `expand` prop. For instance, this code shows the `body` of a post in an expandable panel:
+
+{% raw %}
+```js
+const PostPanel = ({ id, record, resource }) => (
+    <div dangerouslySetInnerHTML={{ __html: record.body }} />
+);
+
+const PostList = props => (
+    <List {...props}>
+        <Datagrid expand={<PostPanel />}>
+            <TextField source="id" />
+            <TextField source="title" />
+            <DateField source="published_at" />
+            <BooleanField source="commentable" />
+            <EditButton />
+        </Datagrid>
+    </List>
+)
+```
+{% endraw %}
+
+![expandable panel](./img/datagrid_expand.gif)
+
+The `expand` prop expects an element as value. When the user chooses to expand the row, the Datagrid clones the element, and passes the current `record`, `id`, and `resource`.
+
+**Tip**: Since the `expand` element receives the same props as a detail view, you can actually use a `<Show>` view as element for the `expand` prop:
+
+```js
+const PostShow = props => (
+    <Show
+        {...props}
+        /* disable the app title change when shown */
+        title=" "
+    >
+        <SimpleShowLayout>
+            <RichTextField source="body" />
+        </SimpleShowLayout>
+    </Show>
+);
+
+const PostList = props => (
+    <List {...props}>
+        <Datagrid expand={<PostShow />}>
+            <TextField source="id" />
+            <TextField source="title" />
+            <DateField source="published_at" />
+            <BooleanField source="commentable" />
+            <EditButton />
+        </Datagrid>
+    </List>
+)
+```
+
+The result will be the same as in the previous snippet, except that `<Show>` encloses the content inside a material-ui `<Card>`.
+
+**Tip**: You can go one step further and use an `<Edit>` view as `expand` element, albeit with a twist:
+
+```js
+const PostEdit = props => (
+    <Edit 
+        {...props}
+        /* disable the app title change when shown */
+        title=" "
+    >
+        <SimpleForm
+            /* The form must have a name dependent on the record, because by default all forms have the same name */
+            form={`post_edit_${props.id}`}
+        >
+            <RichTextInput source="body" />
+        </SimpleForm>
+    </Edit>
+);
+
+const PostList = props => (
+    <List {...props}>
+        <Datagrid expand={<PostEdit />}>
+            <TextField source="id" />
+            <TextField source="title" />
+            <DateField source="published_at" />
+            <BooleanField source="commentable" />
+            <EditButton />
+        </Datagrid>
+    </List>
+)
 ```
 
 ### CSS API
