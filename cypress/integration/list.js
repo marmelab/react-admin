@@ -196,13 +196,13 @@ describe('List Page', () => {
             cy.get('[role="expand"]')
                 .eq(0)
                 .click();
-            cy.get('[role="expand-content"]').should(
-                'contain',
-                'Curabitur eu odio ullamcorper, pretium sem at, blandit libero. Nulla sodales facilisis libero, eu gravida tellus ultrices nec. In ut gravida mi. Vivamus finibus tortor tempus egestas lacinia. Cras eu arcu nisl. Donec pretium dolor ipsum, eget feugiat urna iaculis ut.'
+            cy.get('[role="expand-content"]').should(el =>
+                expect(el).to.contain(
+                    'Curabitur eu odio ullamcorper, pretium sem at, blandit libero. Nulla sodales facilisis libero, eu gravida tellus ultrices nec. In ut gravida mi. Vivamus finibus tortor tempus egestas lacinia. Cras eu arcu nisl. Donec pretium dolor ipsum, eget feugiat urna iaculis ut.'
+                )
             );
-            cy.get('.datagrid-body').should(
-                'not.contain',
-                '[role="expand-content"]'
+            cy.get('.datagrid-body').should(el =>
+                expect(el).to.not.contain('[role="expand-content"]')
             );
         });
 
@@ -214,7 +214,9 @@ describe('List Page', () => {
             cy.get('[role="expand"]')
                 .eq(1)
                 .click();
-            cy.get('[role="expand-content"]').should('have.length', 2);
+            cy.get('[role="expand-content"]').should(el =>
+                expect(el).to.have.length(2)
+            );
         });
     });
 });
