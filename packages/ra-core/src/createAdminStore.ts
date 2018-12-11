@@ -10,7 +10,7 @@ import { defaultI18nProvider } from './i18n';
 import formMiddleware from './form/formMiddleware';
 
 interface Window {
-    devToolsExtension?: () => () => void;
+    __REDUX_DEVTOOLS_EXTENSION__?: () => () => void;
 }
 
 export default ({
@@ -48,8 +48,9 @@ export default ({
                 formMiddleware,
                 routerMiddleware(history)
             ),
-            typeof typedWindow !== 'undefined' && typedWindow.devToolsExtension
-                ? typedWindow.devToolsExtension()
+            typeof typedWindow !== 'undefined' &&
+            typedWindow.__REDUX_DEVTOOLS_EXTENSION__
+                ? typedWindow.__REDUX_DEVTOOLS_EXTENSION__()
                 : f => f
         )
     );
