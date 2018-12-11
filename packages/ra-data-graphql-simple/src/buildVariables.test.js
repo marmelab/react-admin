@@ -142,7 +142,7 @@ describe('buildVariables', () => {
                     {}
                 )
             ).toEqual({
-                filter: { author: { id: 'author1' } },
+                filter: { authorId: 'author1' },
             });
         });
     });

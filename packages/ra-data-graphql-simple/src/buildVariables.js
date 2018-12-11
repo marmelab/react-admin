@@ -169,9 +169,8 @@ export default introspectionResults => (
             };
         case GET_MANY_REFERENCE: {
             const parts = params.target.split('.');
-
             return {
-                filter: { [parts[0]]: { id: params.id } },
+                filter: { [`${parts[0]}Id`]: params.id },
             };
         }
         case GET_ONE:
