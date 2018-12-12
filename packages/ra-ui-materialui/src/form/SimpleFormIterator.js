@@ -5,6 +5,7 @@ import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import get from 'lodash/get';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
+import FormHelperText from '@material-ui/core/FormHelperText';
 import { withStyles } from '@material-ui/core/styles';
 import CloseIcon from '@material-ui/icons/RemoveCircleOutline';
 import AddIcon from '@material-ui/icons/AddCircleOutline';
@@ -107,7 +108,8 @@ export class SimpleFormIterator extends Component {
         const records = get(record, source);
         return fields ? (
             <ul className={classes.root}>
-                {submitFailed && error && <span>{error}</span>}
+                {submitFailed &&
+                    error && <FormHelperText error>{error}</FormHelperText>}
                 <TransitionGroup>
                     {fields.map((member, index) => (
                         <CSSTransition
