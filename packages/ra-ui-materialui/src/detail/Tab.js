@@ -83,17 +83,13 @@ class Tab extends Component {
                                 <Labeled
                                     label={field.props.label}
                                     source={field.props.source}
-                                    {...sanitizeRestProps(rest)}
                                 >
                                     {field}
                                 </Labeled>
                             ) : typeof field.type === 'string' ? (
                                 field
                             ) : (
-                                React.cloneElement(
-                                    field,
-                                    sanitizeRestProps(rest)
-                                )
+                                React.cloneElement(field)
                             )}
                         </div>
                     )

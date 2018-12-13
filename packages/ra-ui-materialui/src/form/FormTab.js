@@ -35,7 +35,7 @@ class FormTab extends Component {
                 children,
                 input =>
                     input && (
-                        <FormInput input={input} {...sanitizeRestProps(rest)} />
+                        <FormInput input={input} />
                     )
             )}
         </span>
