@@ -69,6 +69,7 @@ export class SaveButton extends Component {
             redirect,
             saving,
             showNotification,
+            onClick,
         } = this.props;
 
         if (saving) {
@@ -83,6 +84,10 @@ export class SaveButton extends Component {
                 e.preventDefault();
             }
             handleSubmitWithRedirect(redirect)();
+        }
+
+        if (typeof onClick === 'function') {
+            onClick();
         }
     };
 
@@ -99,6 +104,7 @@ export class SaveButton extends Component {
             translate,
             variant = 'raised',
             icon,
+            onClick,
             ...rest
         } = this.props;
 
