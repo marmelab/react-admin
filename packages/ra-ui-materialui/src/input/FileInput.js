@@ -134,7 +134,7 @@ export class FileInput extends Component {
         } = this.props;
 
         if (placeholder) {
-            return placeholder;
+            return translate(placeholder, { _: placeholder });
         }
 
         if (this.props.multiple) {
