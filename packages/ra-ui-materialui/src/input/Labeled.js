@@ -67,7 +67,7 @@ export const Labeled = ({
             className={className}
             margin="normal"
             fullWidth={fullWidth}
-            error={meta && meta.touched && meta.error}
+            error={meta && meta.touched && !!meta.error}
         >
             <InputLabel htmlFor={id} shrink className={classes.label}>
                 <FieldTitle
