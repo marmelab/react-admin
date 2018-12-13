@@ -439,6 +439,39 @@ const MyAppBar = props => <AppBar {...props} userMenu={<MyUserMenu />} />;
 ```
 {% endraw %}
 
+### Add Footer
+
+You can add a footer. Using the `Footer` component, and setting the `footer` property:
+
+```jsx
+// in src/MyFooter.js
+
+import { Footer } from 'react-admin';
+
+const MyFooter = props => (
+    <Footer {...props}>
+        <p>
+            Footer Text
+        </p>
+    </Footer>
+);
+
+export default MyFooter;
+```
+
+```jsx
+// in src/App.js
+import MyFooter from './MyFooter';
+
+const MyLayout = (props) => <Layout {...props} footer={MyFooter} />;
+
+const App = () => (
+    <Admin appLayout={MyLayout} dataProvider={simpleRestProvider('http://path.to.my.api')}>
+        // ...
+    </Admin>
+);
+```
+
 ### Sidebar Customization
 
 You can specify the `Sidebar` size by setting the `size` property:
