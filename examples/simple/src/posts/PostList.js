@@ -114,6 +114,7 @@ const PostList = withStyles(styles)(({ classes, ...props }) => (
                         label="Tags"
                         reference="tags"
                         source="tags"
+                        sortBy="tags.name"
                         cellClassName={classes.hiddenOnSmallScreens}
                         headerClassName={classes.hiddenOnSmallScreens}
                     >
