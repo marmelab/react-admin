@@ -4,6 +4,7 @@ import { shallowEqual } from 'recompose';
 import Dropzone from 'react-dropzone';
 import compose from 'recompose/compose';
 import { withStyles } from '@material-ui/core/styles';
+import FormHelperText from '@material-ui/core/FormHelperText';
 import classnames from 'classnames';
 import { addField, translate } from 'ra-core';
 
@@ -83,9 +84,10 @@ export class FileInput extends Component {
         this.setState({ files: updatedFiles });
 
         if (this.props.multiple) {
-            this.props.input.onChange(updatedFiles);
+            // Use onBlur to ensure redux-form set the input as touched
+            this.props.input.onBlur(updatedFiles);
         } else {
-            this.props.input.onChange(updatedFiles[0]);
+            this.props.input.onBlur(updatedFiles[0]);
         }
     };
 
@@ -96,10 +98,11 @@ export class FileInput extends Component {
 
         this.setState({ files: filteredFiles });
 
+        // Use onBlur to ensure redux-form set the input as touched
         if (this.props.multiple) {
-            this.props.input.onChange(filteredFiles);
+            this.props.input.onBlur(filteredFiles);
         } else {
-            this.props.input.onChange(null);
+            this.props.input.onBlur(null);
         }
     };
 
@@ -155,10 +158,12 @@ export class FileInput extends Component {
             isRequired,
             label,
             maxSize,
+            meta,
             minSize,
             multiple,
             resource,
             source,
+            translate,
             options = {},
             ...rest
         } = this.props;
@@ -171,6 +176,7 @@ export class FileInput extends Component {
                 source={source}
                 resource={resource}
                 isRequired={isRequired}
+                meta={meta}
                 {...sanitizeRestProps(rest)}
             >
                 <span>
@@ -204,6 +210,13 @@ export class FileInput extends Component {
                             ))}
                         </div>
                     )}
+                    {meta &&
+                        meta.touched &&
+                        meta.error && (
+                            <FormHelperText>
+                                {translate(meta.error)}
+                            </FormHelperText>
+                        )}
                 </span>
             </Labeled>
         );
