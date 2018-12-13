@@ -1,5 +1,20 @@
 # Changelog
 
+## v2.5.2
+
+* Fix demo application for IE 11 ([#2661](https://github.com/marmelab/react-admin/pull/2661)) ([phacks](https://github.com/phacks))
+* Fix validation errors are not displayed in `<FileInput>` ([#2660](https://github.com/marmelab/react-admin/pull/2660)) ([djhi](https://github.com/djhi))
+* Fix `<ArrayInput>` error format ([#2655](https://github.com/marmelab/react-admin/pull/2655)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<FormDataConsumer>` not working with custom form name ([#2656](https://github.com/marmelab/react-admin/pull/2656)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix missing documentation for `ra-data-fakerest` logging abilities ([#2652](https://github.com/marmelab/react-admin/pull/2652)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix syntax error with `shouldRenderSuggestions` ([#2648](https://github.com/marmelab/react-admin/pull/2648)) ([nacimgoura](https://github.com/nacimgoura))
+* Fix deprecated Redux Dev Tools extension warning ([#2646](https://github.com/marmelab/react-admin/pull/2646)) ([phacks](https://github.com/phacks))
+* Fix `<DataGrid>` export ([#2644](https://github.com/marmelab/react-admin/pull/2644)) ([hamidfzm](https://github.com/hamidfzm))
+* Fix broken link to default layout in Theming documentation ([#2627](https://github.com/marmelab/react-admin/pull/2627)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix mobile toolbar overlays on last input ([#2620](https://github.com/marmelab/react-admin/pull/2620)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<AutocompleteArrayInput>` crash when selecting value ([#2616](https://github.com/marmelab/react-admin/pull/2616)) ([fzaninotto](https://github.com/fzaninotto))
+* Add Loopback data provider to docs ([#2633](https://github.com/marmelab/react-admin/pull/2633)) ([darthwesker](https://github.com/darthwesker))
+
 ## v2.5.1
 
 * Fix warning in SelectInput test ([2608](https://github.com/marmelab/react-admin/pull/2608)) ([fzaninotto](https://github.com/fzaninotto))
