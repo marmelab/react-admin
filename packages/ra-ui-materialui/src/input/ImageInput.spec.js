@@ -216,7 +216,7 @@ describe('<ImageInput />', () => {
                 source="picture"
                 translate={x => x}
                 input={{
-                    onChange: () => {},
+                    onBlur: () => {},
                     value: [
                         { url: 'http://static.acme.com/foo.jpg' },
                         { url: 'http://static.acme.com/bar.jpg' },
