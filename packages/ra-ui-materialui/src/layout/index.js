@@ -22,6 +22,7 @@ import Title from './Title';
 import TitleForRecord from './TitleForRecord';
 import UserMenu from './UserMenu';
 import ViewTitle from './ViewTitle';
+import Footer from './Footer';
 
 export {
     AppBar,
@@ -48,4 +49,5 @@ export {
     TitleForRecord,
     UserMenu,
     ViewTitle,
+    Footer,
 };

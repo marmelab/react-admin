@@ -31,15 +31,19 @@ const styles = theme => ({
     appFrame: {
         display: 'flex',
         flexDirection: 'column',
+        minHeight: 'calc(100vh)',
     },
     contentWithSidebar: {
         display: 'flex',
         flexGrow: 1,
     },
-    content: {
+    contentWithFooter: {
         display: 'flex',
         flexDirection: 'column',
         flexGrow: 1,
+    },
+    content: {
+        flex: 1,
         padding: theme.spacing.unit * 3,
         [theme.breakpoints.up('xs')]: {
             paddingLeft: 5,
@@ -94,6 +98,7 @@ class Layout extends Component {
             open,
             sidebar,
             title,
+            footer,
             ...props
         } = this.props;
         const { hasError, errorMessage, errorInfo } = this.state;
@@ -111,14 +116,21 @@ class Layout extends Component {
                                 hasDashboard: !!dashboard,
                             }),
                         })}
-                        <div className={classes.content}>
-                            {hasError
-                                ? createElement(error, {
-                                      error: errorMessage,
-                                      errorInfo,
-                                      title,
-                                  })
-                                : children}
+                        <div className={classes.contentWithFooter}>
+                            <div className={classes.content}>
+                                {hasError
+                                        ? createElement(error, {
+                                            error: errorMessage,
+                                            errorInfo,
+                                            title,
+                                        })
+                                        : children}
+                            </div>
+                            {footer &&
+                                    <div className={classes.footer}>
+                                         {createElement(footer)}
+                                    </div>
+                            }
                         </div>
                     </main>
                     {createElement(notification)}
@@ -152,6 +164,7 @@ Layout.propTypes = {
     open: PropTypes.bool,
     sidebar: componentPropType,
     title: PropTypes.node.isRequired,
+    footer: componentPropType,
 };
 
 Layout.defaultProps = {
