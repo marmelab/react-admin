@@ -70,7 +70,7 @@ const PostEdit = props => (
                         { id: 42, name: 'Sean Phonee' },
                     ]}
                 />
-                <ImageInput multiple source="pictures" accept="image/*" validate={required()}>
+                <ImageInput multiple source="pictures" accept="image/*">
                     <ImageField source="src" title="title" />
                 </ImageInput>
             </FormTab>
