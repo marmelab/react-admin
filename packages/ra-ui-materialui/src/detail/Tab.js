@@ -83,6 +83,9 @@ class Tab extends Component {
                                 <Labeled
                                     label={field.props.label}
                                     source={field.props.source}
+                                    basePath={basePath}
+                                    record={record}
+                                    resource={resource}
                                 >
                                     {field}
                                 </Labeled>
