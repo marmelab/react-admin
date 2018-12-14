@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
+import compose from 'recompose/compose';
 import PropTypes from 'prop-types';
 import IconButton from '@material-ui/core/IconButton';
 import { withStyles } from '@material-ui/core/styles';
 import RemoveCircle from '@material-ui/icons/RemoveCircle';
+import { translate } from 'ra-core';
 
 const styles = theme => ({
     removeButton: {},
@@ -30,12 +32,17 @@ export class FileInputPreview extends Component {
             onRemove,
             revokeObjectURL,
             file,
+            translate,
             ...rest
         } = this.props;
 
         return (
             <div className={className} {...rest}>
-                <IconButton className={classes.removeButton} onClick={onRemove}>
+                <IconButton
+                    className={classes.removeButton}
+                    onClick={onRemove}
+                    title={translate('ra.action.delete')}
+                >
                     <RemoveCircle className={classes.removeIcon} />
                 </IconButton>
                 {children}
@@ -57,4 +64,7 @@ FileInputPreview.defaultProps = {
     file: undefined,
 };
 
-export default withStyles(styles)(FileInputPreview);
+export default compose(
+    withStyles(styles),
+    translate
+)(FileInputPreview);
