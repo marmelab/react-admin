@@ -18,8 +18,9 @@ import englishMessages from 'ra-language-english';
 const messages = {
     'en': englishMessages,
 };
+const i18nProvider = locale => messages[locale];
 
-<Admin locale="en" messages={messages}>
+<Admin locale="en" i18nProvider={i18nProvider}>
   ...
 </Admin>
 ```
