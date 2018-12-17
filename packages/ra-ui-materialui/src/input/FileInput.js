@@ -53,6 +53,7 @@ export class FileInput extends Component {
         labelSingle: 'ra.input.file.upload_single',
         multiple: false,
         onUpload: () => {},
+        translate: id => id,
     };
 
     constructor(props) {
