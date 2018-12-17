@@ -14,6 +14,20 @@ const styles = theme => ({
 });
 
 export class FileInputPreview extends Component {
+    static propTypes = {
+        children: PropTypes.element.isRequired,
+        classes: PropTypes.object,
+        className: PropTypes.string,
+        file: PropTypes.object,
+        onRemove: PropTypes.func.isRequired,
+        revokeObjectURL: PropTypes.func,
+    };
+
+    static defaultProps = {
+        file: undefined,
+        translate: id => id,
+    };
+
     componentWillUnmount() {
         const { file, revokeObjectURL } = this.props;
 
@@ -50,19 +64,6 @@ export class FileInputPreview extends Component {
         );
     }
 }
-
-FileInputPreview.propTypes = {
-    children: PropTypes.element.isRequired,
-    classes: PropTypes.object,
-    className: PropTypes.string,
-    file: PropTypes.object,
-    onRemove: PropTypes.func.isRequired,
-    revokeObjectURL: PropTypes.func,
-};
-
-FileInputPreview.defaultProps = {
-    file: undefined,
-};
 
 export default compose(
     withStyles(styles),
