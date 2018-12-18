@@ -329,7 +329,7 @@ export class AutocompleteInput extends React.Component {
             containerProps: { className, ...containerProps },
             children,
         } = options;
-        const { classes = {} } = this.props;
+        const { classes = {}, modifiers } = this.props;
 
         return (
             <Popper
@@ -337,6 +337,7 @@ export class AutocompleteInput extends React.Component {
                 open={Boolean(children)}
                 anchorEl={this.inputEl}
                 placement="bottom-start"
+                modifiers={modifiers}
             >
                 <Paper
                     square
