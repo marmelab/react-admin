@@ -2,7 +2,7 @@
 
 English messages for [react-admin](https://github.com/marmelab/react-admin), the frontend framework for building admin applications on top of REST/GraphQL services.
 
-![react-admin demo](http://static.marmelab.com/react-admin.gif)
+[![react-admin-demo](https://marmelab.com/react-admin/img/react-admin-demo-still.png)](https://vimeo.com/268958716)
 
 ## Installation
 
@@ -18,8 +18,9 @@ import englishMessages from 'ra-language-english';
 const messages = {
     'en': englishMessages,
 };
+const i18nProvider = locale => messages[locale];
 
-<Admin locale="en" messages={messages}>
+<Admin locale="en" i18nProvider={i18nProvider}>
   ...
 </Admin>
 ```
