@@ -177,7 +177,7 @@ If you want to limit the initial choices shown to the current value only, you ca
 When dealing with a large amount of `choices` you may need to limit the number of suggestions that are rendered in order to maintain usable performance. The `shouldRenderSuggestions` is an optional prop that allows you to set conditions on when to render suggestions. An easy way to improve performance would be to skip rendering until the user has entered 2 or 3 characters in the search box. This lowers the result set significantly, and might be all you need (depending on your data set). 
 Ex. `<AutocompleteInput shouldRenderSuggestions={(val) => { return val.trim() > 2 }} />` would not render any suggestions until the 3rd character was entered. This prop is passed to the underlying `react-autosuggest` component and is documented [here](https://github.com/moroshko/react-autosuggest#should-render-suggestions-prop).
 
-Lastly, `<AutocompleteInput>` renders a material-ui `<TextField>` component. Use the `options` attribute to override any of the `<TextField>` attributes:
+`<AutocompleteInput>` renders a material-ui `<TextField>` component. Use the `options` attribute to override any of the `<TextField>` attributes:
 
 {% raw %}
 ```jsx
@@ -196,6 +196,17 @@ import { AutocompleteInput, ReferenceInput } from 'react-admin'
     <AutocompleteInput optionText="title" />
 </ReferenceInput>
 ```
+
+Lastly, would you need to override the props of the suggestions container (a `Popper` element), you can specify them using the `options.suggestionsContainerProps`. For example:
+
+{% raw %}
+```jsx
+<AutocompleteInput source="category" options={{
+    suggestionsContainerProps: {
+        disablePortal: true,
+}} />
+```
+{% endraw %}
 
 **Tip**: `<AutocompleteInput>` is a stateless component, so it only allows to *filter* the list of choices, not to *extend* it. If you need to populate the list of choices based on the result from a `fetch` call (and if [`<ReferenceInput>`](#referenceinput) doesn't cover your need), you'll have to [write your own Input component](#writing-your-own-input-component) based on material-ui `<AutoComplete>` component.
 

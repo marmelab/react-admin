@@ -324,12 +324,12 @@ export class AutocompleteInput extends React.Component {
         );
     };
 
-    renderSuggestionsContainer = options => {
+    renderSuggestionsContainer = autosuggestOptions => {
         const {
             containerProps: { className, ...containerProps },
             children,
-        } = options;
-        const { classes = {} } = this.props;
+        } = autosuggestOptions;
+        const { classes = {}, options } = this.props;
 
         return (
             <Popper
@@ -337,6 +337,7 @@ export class AutocompleteInput extends React.Component {
                 open
                 anchorEl={this.inputEl}
                 placement="bottom-start"
+                {...options.suggestionsContainerProps}
             >
                 <Paper
                     square
