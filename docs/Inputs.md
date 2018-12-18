@@ -215,6 +215,7 @@ import { AutocompleteInput, ReferenceInput } from 'react-admin'
 | `setFilter` | Optional | `Function` | null | A callback to inform the `searchText` has changed and new `choices` can be retrieved based on this `searchText`. Signature `searchText => void`. This function is automatically setup when using `ReferenceInput`.  |
 | `suggestionComponent` | Optional | Function | `({ suggestion, query, isHighlighted, props }) => <div {...props} />` | Allows to override how the item is rendered.  |
 | `shouldRenderSuggestions` | Optional | Function | `() => true` | A function that returns a `boolean` to determine whether or not suggestions are rendered. Use this when working with large collections of data to improve performance and user experience. This function is passed into the underlying react-autosuggest component. Ex.`(value) => value.trim() > 2` |
+| `disablePortal` | Optional | `boolean` | `false` | `disablePortal` prop of the material-ui `Popper` (more info: https://material-ui.com/api/popper/) |
 | `modifiers` | Optional | `Object[]` | - | Modifiers for the material-ui `Popper` (more info: https://material-ui.com/api/popper/) |
 
 ## `<AutocompleteArrayInput>`
@@ -316,6 +317,7 @@ import { AutocompleteArrayInput, ReferenceArrayInput } from 'react-admin'
 | `optionText` | Optional | <code>string &#124; Function</code> | `name` | Fieldname of record to display in the suggestion item or function which accepts the current record as argument (`(record)=> {string}`) |
 | `setFilter` | Optional | `Function` | null | A callback to inform the `searchText` has changed and new `choices` can be retrieved based on this `searchText`. Signature `searchText => void`. This function is automatically setup when using `ReferenceInput`.  |
 | `suggestionComponent` | Optional | Function | `({ suggestion, query, isHighlighted, props }) => <div {...props} />` | Allows to override how the item is rendered.  |
+| `disablePortal` | Optional | `boolean` | `false` | `disablePortal` prop of the material-ui `Popper` (more info: https://material-ui.com/api/popper/) |
 | `modifiers` | Optional | `Object[]` | - | Modifiers for the material-ui `Popper` (more info: https://material-ui.com/api/popper/) |
 
 ## `<BooleanInput>` and `<NullableBooleanInput>`

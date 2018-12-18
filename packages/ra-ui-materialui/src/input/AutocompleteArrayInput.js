@@ -334,7 +334,7 @@ export class AutocompleteArrayInput extends React.Component {
             containerProps: { className, ...containerProps },
             children,
         } = options;
-        const { modifiers } = this.props;
+        const { modifiers, disablePortal = false } = this.props;
 
         return (
             <Popper
@@ -343,6 +343,7 @@ export class AutocompleteArrayInput extends React.Component {
                 anchorEl={this.inputEl}
                 placement="bottom-start"
                 modifiers={modifiers}
+                disablePortal={disablePortal}
             >
                 <Paper square {...containerProps}>
                     {children}
