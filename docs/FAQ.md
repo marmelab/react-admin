@@ -10,6 +10,7 @@ title: "FAQ"
 - [A form with validation freezes when rendering](#a-form-with-validation-freezes-when-rendering)
 - [How can I customize the UI depending on the user permissions?](#how-can-i-customize-the-ui-depending-on-the-user-permissions)
 - [How can I customize forms depending on its inputs values?](#how-can-i-customize-forms-depending-on-its-inputs-values)
+- [My Resource is defined but not displayed on the Menu](#my-resource-is-defined-but-not-displayed-on-the-menu)
 
 ## Can I have custom identifiers/primary keys for my resources?
 
@@ -106,3 +107,28 @@ You have probably specified a version requirement for `@material-ui/core` that i
 Please align your version requirement with the one of the `ra-ui-materialui` package.
 
 See this [issue for more information](https://github.com/marmelab/react-admin/issues/1782).
+
+## My Resource is defined but not displayed on the Menu
+
+You can declare a resource without `list` prop, to manage reference for example:
+
+```jsx
+<Admin>
+    <Resource name="reference" create={PostReference} edit={EditReference} />
+</Admin>
+```
+
+But with the default menu, resources without `list` prop aren't shown.
+
+In order to have a specific resource without `list` prop listed on the menu, you have to [write your own custom menu](./Theming.html#using-a-custom-menu).
+
+ ```jsx
+ const MyMenu = ({ resources, onMenuClick, logout }) => (
+    <div>
+        {resources.map(resource => (
+            <MenuItemLink to={`/${resource.name}`} primaryText={resource.name} onClick={onMenuClick} />
+        ))}
+        <MenuItemLink to="/reference/create" primaryText="New Reference" onClick={onMenuClick} />
+    </div>
+);
+```
