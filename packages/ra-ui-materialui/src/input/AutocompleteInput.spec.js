@@ -550,4 +550,27 @@ describe('<AutocompleteInput />', () => {
         expect(wrapper.state('suggestions')).toHaveLength(1);
         expect(onChange).toHaveBeenCalledWith(2);
     });
+
+    it('passes options.suggestionsContainerProps to the suggestions container', () => {
+        const onChange = jest.fn();
+
+        const wrapper = mount(
+            <AutocompleteInput
+                {...defaultProps}
+                input={{ value: null, onChange }}
+                choices={[
+                    { id: 1, name: 'ab' },
+                    { id: 2, name: 'abc' },
+                    { id: 3, name: '123' },
+                ]}
+                options={{
+                    suggestionsContainerProps: {
+                        disablePortal: true,
+                    }
+                }}
+            />,
+            { context, childContextTypes }
+        );
+        expect(wrapper.find('Popper').props().disablePortal).toEqual(true);
+    });
 });
