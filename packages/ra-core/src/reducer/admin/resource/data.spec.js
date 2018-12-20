@@ -96,7 +96,7 @@ describe('data addRecordsFactory', () => {
     });
 });
 
-describe.only('Resources data reducer', () => {
+describe('Resources data reducer', () => {
     describe('optimistic DELETE', () => {
         it('removes the deleted record', () => {
             const state = {
@@ -105,7 +105,6 @@ describe.only('Resources data reducer', () => {
                 record3: { id: 'record3', prop: 'value' },
             };
 
-            console.log('test');
             assert.deepEqual(
                 dataReducer(state, {
                     type: 'FOO',
