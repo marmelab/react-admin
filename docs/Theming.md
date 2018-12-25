@@ -409,22 +409,6 @@ const MyAppBar = props => <AppBar {...props} userMenu={<MyUserMenu />} />;
 const MyLayout = props => <Layout {...props} appBar={MyAppBar} />;
 ```
 
-`AppBar` can accept children so you are able to add more custom components in it.
-
-```jsx
-import { AppBar, UserMenu, MenuItemLink } from 'react-admin';
-import SomeCustomComponent from './SomeCustomComponent';
-
-const MyAppBar = props => (
-    <AppBar {...props}>
-        <SomeCustomComponent />
-    </AppBar>
-);
-
-const MyLayout = props => <Layout {...props} appBar={MyAppBar} />;
-
-```
-
 You can also customize the default icon by setting the `icon` prop to the `<UserMenu />` component.
 
 {% raw %}
@@ -612,6 +596,21 @@ const App = () => (
         // ...
     </Admin>
 );
+```
+`AppBar` can accept children so you are able to add more custom components in it.
+
+```jsx
+import { AppBar, UserMenu, MenuItemLink } from 'react-admin';
+import SomeCustomComponent from './SomeCustomComponent';
+
+const MyAppBar = props => (
+    <AppBar {...props}>
+        <SomeCustomComponent />
+    </AppBar>
+);
+
+const MyLayout = props => <Layout {...props} appBar={MyAppBar} />;
+
 ```
 
 ## Using a Custom Menu
