@@ -9,7 +9,7 @@ install: package.json ## install dependencies
 run: run-simple
 
 run-simple: ## run the simple example
-	yarn -s run-simple
+	@yarn -s run-simple
 
 run-tutorial: ## run the tutorial example
 	@yarn -s run-tutorial
