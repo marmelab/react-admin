@@ -35,6 +35,7 @@ const CreateButton = ({
     translate,
     label = 'ra.action.create',
     icon = <ContentAdd />,
+    to,
     ...rest
 }) => (
     <Responsive
@@ -44,7 +45,7 @@ const CreateButton = ({
                 variant="fab"
                 color="primary"
                 className={classnames(classes.floating, className)}
-                to={`${basePath}/create`}
+                to={to || `${basePath}/create`}
                 aria-label={label && translate(label)}
                 {...rest}
             >
@@ -54,7 +55,7 @@ const CreateButton = ({
         medium={
             <Button
                 component={Link}
-                to={`${basePath}/create`}
+                to={to || `${basePath}/create`}
                 className={className}
                 label={label && translate(label)}
                 {...rest}
