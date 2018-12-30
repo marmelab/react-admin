@@ -12,6 +12,7 @@ import classnames from 'classnames';
 
 import DatagridHeaderCell from './DatagridHeaderCell';
 import DatagridBody from './DatagridBody';
+import DatagridLoading from './DatagridLoading';
 
 const styles = theme => ({
     table: {
@@ -125,6 +126,7 @@ class Datagrid extends Component {
             hover,
             ids,
             isLoading,
+            loadedOnce,
             onSelect,
             onToggleItem,
             resource,
@@ -136,6 +138,18 @@ class Datagrid extends Component {
             version,
             ...rest
         } = this.props;
+
+        if (loadedOnce === false) {
+            return (
+                <DatagridLoading
+                    classes={classes}
+                    className={className}
+                    expand={expand}
+                    hasBulkActions={hasBulkActions}
+                    nbChildren={React.Children.count(children)}
+                />
+            );
+        }
 
         if (!isLoading && (ids.length === 0 || total === 0)) {
             return null;
