@@ -84,7 +84,7 @@ export class ReferenceManyFieldController extends Component {
     setSort = field => {
         const order =
             this.state.sort.field === field &&
-                this.state.sort.order === SORT_ASC
+            this.state.sort.order === SORT_ASC
                 ? SORT_DESC
                 : SORT_ASC;
         this.setState({ sort: { field, order } }, this.fetchReferences);
@@ -135,7 +135,7 @@ export class ReferenceManyFieldController extends Component {
             currentSort: this.state.sort,
             data,
             ids,
-            isLoading: typeof ids === 'undefined',
+            loadedOnce: typeof ids !== 'undefined',
             page,
             perPage,
             referenceBasePath,
