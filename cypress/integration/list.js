@@ -18,6 +18,9 @@ describe('List Page', () => {
 
     describe('Auto-hide AppBar', () => {
         it('should hide/show the appBar when scroll action appears', () => {
+            // wait for the skeleton to disappear
+            cy.contains('1-10 of 13');
+
             cy.viewport(1280, 500);
 
             cy.scrollTo(0, 200);
