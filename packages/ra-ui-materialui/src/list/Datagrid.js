@@ -17,9 +17,11 @@ const styles = theme => ({
     table: {
         tableLayout: 'auto',
     },
+    thead: {},
     tbody: {
         height: 'inherit',
     },
+    headerRow: {},
     headerCell: {
         padding: '0 12px',
         '&:last-child': {
@@ -146,8 +148,10 @@ class Datagrid extends Component {
                 className={classnames(classes.table, className)}
                 {...sanitizeListRestProps(rest)}
             >
-                <TableHead>
-                    <TableRow className={classes.row}>
+                <TableHead className={classes.thead}>
+                    <TableRow
+                        className={classnames(classes.row, classes.headerRow)}
+                    >
                         {expand && (
                             <TableCell className={classes.expandHeader} />
                         )}
@@ -191,6 +195,7 @@ class Datagrid extends Component {
                     body,
                     {
                         basePath,
+                        className: classes.tbody,
                         classes,
                         expand,
                         rowClick,
