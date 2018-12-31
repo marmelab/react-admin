@@ -186,7 +186,7 @@ React-admin provides guessers for the `List` view (`ListGuesser`), the `Edit` vi
 
 The `<SimpleShowLayout>` component receives the `record` as prop from its parent component. It is responsible for rendering the actual view.
 
-The `<SimpleShowLayout>` renders its child components line by line (within `<div>` components).
+The `<SimpleShowLayout>` renders its child components line by line (within `<div>` components) inside a material-ui `<CardContent/>`.
 
 ```jsx
 export const PostShow = (props) => (
@@ -200,28 +200,7 @@ export const PostShow = (props) => (
 );
 ```
 
-It is possible to override its style by specifying the `style` prop, for example:
-
-```jsx
-const styles = {
-    container: {
-        display: 'flex',
-    },
-    item: {
-        marginRight: '1rem',
-    },
-};
-
-export const PostShow = (props) => (
-    <Show {...props}>
-        <SimpleShowLayout style={styles.container}>
-            <TextField source="title" style={styles.item} />
-            <RichTextField source="body" style={styles.item} />
-            <NumberField source="nb_views" style={styles.item} />
-        </SimpleShowLayout>
-    </Show>
-);
-```
+It accepts a `className` prop to let you override the style of the `<CardContent/>`.
 
 ## The `<TabbedShowLayout>` component
 
