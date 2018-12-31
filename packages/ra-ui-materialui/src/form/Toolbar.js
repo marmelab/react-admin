@@ -79,6 +79,7 @@ const Toolbar = ({
                                 basePath={basePath}
                                 record={record}
                                 resource={resource}
+                                redirect={redirect}
                             />
                         )}
                 </div>
