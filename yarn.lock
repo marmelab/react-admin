@@ -12103,22 +12103,6 @@ quill@~1.3.6:
     parchment "^1.1.4"
     quill-delta "^3.6.2"
 
-ra-data-json-server@~2.0.0:
-  version "2.0.4"
-  resolved "https://registry.yarnpkg.com/ra-data-json-server/-/ra-data-json-server-2.0.4.tgz#0773f3bd30bdc91640eaf7d930d205eea76328a9"
-  integrity sha512-/+6vJ3jUsQQHL3RqDxoIzL8DPc7gJEoXEfhP5xcPrpqr2ZkMCc//c5W7dy7XWZ0IyNyxIeD1Tr8iQnQw/60pJA==
-  dependencies:
-    query-string "~5.1.1"
-    react-admin "^2.0.4"
-
-ra-data-simple-rest@~2.0.0:
-  version "2.0.4"
-  resolved "https://registry.yarnpkg.com/ra-data-simple-rest/-/ra-data-simple-rest-2.0.4.tgz#f6e842c55a9cf94d8ce3923ee7734f75e81ab145"
-  integrity sha512-r6Y1tI8aw65FGA66lXRi32KVd1AR9LHa4iHyJenxGCEGrkyZ/8X3Np3pNRPB1hkBdNpH+nOcyfryfp+TKVk7KQ==
-  dependencies:
-    query-string "~5.1.1"
-    react-admin "^2.0.4"
-
 raf@3.4.0, raf@^3.3.0, raf@^3.4.0, raf@~3.4.0:
   version "3.4.0"
   resolved "https://registry.yarnpkg.com/raf/-/raf-3.4.0.tgz#a28876881b4bc2ca9117d4138163ddb80f781575"
@@ -12209,15 +12193,6 @@ rc@^1.0.1, rc@^1.1.6, rc@^1.2.7:
     ini "~1.3.0"
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
-
-react-admin@~2.0.0:
-  version "2.0.4"
-  resolved "https://registry.yarnpkg.com/react-admin/-/react-admin-2.0.4.tgz#bddd29f411d250cee0728ced7a75663907fd86ea"
-  integrity sha512-faKEWZTox9TOLsaDvn4mv6flxIrq4MZGnbPkDmiBSlTYT4OXoVT9cu4vYIH3b+YykG5ZzFCggwGPqO6iGQu9lw==
-  dependencies:
-    ra-core "^2.0.4"
-    ra-language-english "^2.0.2"
-    ra-ui-materialui "^2.0.4"
 
 react-app-polyfill@^0.1.3:
   version "0.1.3"
