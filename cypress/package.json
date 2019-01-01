@@ -3,6 +3,7 @@
     "name": "e2e",
     "version": "0.1.0",
     "scripts": {
+        "serve": "node ./infinitStart.js",
         "start": "./node_modules/.bin/cypress open",
         "test": "node ./start.js"
     },

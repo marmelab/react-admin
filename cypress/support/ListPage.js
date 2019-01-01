@@ -15,7 +15,8 @@ export default url => ({
         recordRows: '.datagrid-body tr',
         viewsColumn: '.datagrid-body tr td:nth-child(6)',
         datagridHeaders: 'th',
-        sortBy: name => `th span[data-sort=${name}]`,
+        sortBy: name => `th span[data-sort=\"${name}\"]`,
+        svg: (name, criteria = '') => `th span[data-sort=\"${name}\"] svg${criteria}`,
         logout: '.logout',
         bulkActionsToolbar: '[data-test=bulk-actions-toolbar]',
         customBulkActionsButton:
@@ -27,7 +28,8 @@ export default url => ({
         selectItem: '.select-item input',
         userMenu: 'button[title="Profile"]',
         title: '#react-admin-title',
-        headroom: '.headroom',
+        headroomUnfixed: '.headroom--unfixed',
+        headroomUnpinned: '.headroom--unpinned',
     },
 
     navigate() {
