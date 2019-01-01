@@ -2,6 +2,7 @@ import BulkActions from './BulkActions';
 import BulkActionsToolbar from './BulkActionsToolbar';
 import BulkDeleteAction from './BulkDeleteAction';
 import Datagrid from './Datagrid';
+import DatagridLoading from './DatagridLoading';
 import Filter from './Filter';
 import FilterButton from './FilterButton';
 import FilterForm from './FilterForm';
@@ -19,6 +20,7 @@ export {
     BulkActionsToolbar,
     BulkDeleteAction,
     Datagrid,
+    DatagridLoading,
     Filter,
     FilterButton,
     FilterForm,

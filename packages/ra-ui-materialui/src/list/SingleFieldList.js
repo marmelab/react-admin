@@ -1,6 +1,7 @@
 import React, { cloneElement, Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import LinearProgress from '@material-ui/core/LinearProgress';
 import { withStyles } from '@material-ui/core/styles';
 import { linkToRecord } from 'ra-core';
 
@@ -13,7 +14,7 @@ const styles = {
 // useful to prevent click bubbling in a datagrid with rowClick
 const stopPropagation = e => e.stopPropagation();
 
-const sanitizeRestProps = ({ currentSort, setSort, isLoading, ...props }) =>
+const sanitizeRestProps = ({ currentSort, setSort, loadedOnce, ...props }) =>
     props;
 
 /**
@@ -59,12 +60,17 @@ export class SingleFieldList extends Component {
             className,
             ids,
             data,
+            loadedOnce,
             resource,
             basePath,
             children,
             linkType,
             ...rest
         } = this.props;
+
+        if (loadedOnce === false) {
+            return <LinearProgress />;
+        }
 
         return (
             <div
