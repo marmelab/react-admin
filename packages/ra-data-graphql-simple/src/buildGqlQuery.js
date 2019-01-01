@@ -139,10 +139,9 @@ export default introspectionResults => (
     queryType,
     variables
 ) => {
-    const { sortField, sortOrder, ...metaVariables } = variables;
     const apolloArgs = buildApolloArgs(queryType, variables);
     const args = buildArgs(queryType, variables);
-    const metaArgs = buildArgs(queryType, metaVariables);
+    const metaArgs = buildArgs(queryType, { filter: variables.filter });
     const fields = buildFields(introspectionResults)(resource.type.fields);
     if (
         aorFetchType === GET_LIST ||
