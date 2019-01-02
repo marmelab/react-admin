@@ -24,8 +24,7 @@
         "preset": "ts-jest/presets/js-with-ts",
         "testPathIgnorePatterns": [
             "/node_modules/",
-            "/lib/",
-            "/esm/"
+            "/lib/"
         ],
         "transformIgnorePatterns": [
             "[/\\\\]node_modules[/\\\\].+\\.(js|jsx|mjs|ts|tsx)$"
@@ -38,9 +37,6 @@
     },
     "devDependencies": {
         "@types/jest": "^23.3.5",
-        "@types/react": "^16.4.16",
-        "@types/react-redux": "^6.0.9",
-        "@types/recompose": "^0.27.0",
         "cheerio": "~1.0.0-rc.2",
         "cross-env": "^5.2.0",
         "express": "~4.16.3",
@@ -58,12 +54,22 @@
         "tslint-react": "^3.6.0",
         "wait-on": "^2.1.0"
     },
+    "resolutions": {
+        "@types/react": "^16.4.16"
+    },
     "workspaces": [
         "packages/*",
         "examples/*",
         "cypress"
     ],
     "dependencies": {
+        "@types/react": "^16.4.16",
+        "@types/react-dom": "^16.0.11",
+        "@types/react-redux": "^6.0.9",
+        "@types/recompose": "^0.30.0",
+        "react": "~16.3.1",
+        "react-dom": "~16.3.1",
+        "react-scripts": "^2.1.2",
         "typescript": "^3.1.3"
     }
 }

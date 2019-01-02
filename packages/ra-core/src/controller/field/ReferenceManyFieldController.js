@@ -167,7 +167,6 @@ ReferenceManyFieldController.propTypes = {
     target: PropTypes.string.isRequired,
     total: PropTypes.number,
     isLoading: PropTypes.bool,
-    total: PropTypes.number,
 };
 
 ReferenceManyFieldController.defaultProps = {

@@ -10,7 +10,7 @@
         "docs"
     ],
     "main": "lib/index.js",
-    "module": "esm/index.js",
+    "module": "lib/index.js",
     "sideEffects": false,
     "authors": [
         "François Zaninotto"
@@ -20,22 +20,15 @@
     "bugs": "https://github.com/marmelab/react-admin/issues",
     "license": "MIT",
     "scripts": {
-        "build": "yarn run build-cjs && yarn run build-esm",
-        "build-cjs": "rimraf ./lib && tsc",
-        "build-esm": "rimraf ./esm && tsc --outDir esm --module es2015",
+        "build": "rimraf ./lib && tsc",
         "watch": "rimraf ./lib && tsc --watch"
     },
     "devDependencies": {
         "cross-env": "^5.2.0",
-        "rimraf": "^2.6.2"
-    },
-    "peerDependencies": {
-        "react": "~16.3.0",
-        "react-dom": "~16.3.0"
-    },
-    "dependencies": {
         "ra-core": "^2.5.2",
         "ra-language-english": "^2.3.0",
-        "ra-ui-materialui": "^2.5.2"
+        "ra-language-french": "^2.3.0",
+        "ra-ui-materialui": "^2.5.2",
+        "rimraf": "^2.6.2"
     }
 }

@@ -3,7 +3,7 @@
     "version": "2.5.2",
     "description": "Simple REST data provider for react-admin",
     "main": "lib/index.js",
-    "module": "esm/index.js",
+    "module": "lib/index.js",
     "sideEffects": false,
     "files": [
         "*.md",
@@ -19,17 +19,15 @@
     "bugs": "https://github.com/marmelab/react-admin/issues",
     "license": "MIT",
     "scripts": {
-        "build": "yarn run build-cjs && yarn run build-esm",
-        "build-cjs": "rimraf ./lib && tsc",
-        "build-esm": "rimraf ./esm && tsc --outDir esm --module es2015",
+        "build": "rimraf ./lib && tsc",
         "watch": "rimraf ./lib && tsc --watch"
     },
     "dependencies": {
-        "query-string": "~5.1.1",
-        "react-admin": "^2.5.2"
     },
     "devDependencies": {
         "cross-env": "^5.2.0",
+        "query-string": "~5.1.1",
+        "react-admin": "2.x.x",
         "rimraf": "^2.6.2"
     }
 }

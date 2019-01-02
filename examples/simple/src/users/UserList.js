@@ -15,9 +15,10 @@ import {
     TextField,
     TextInput,
 } from 'react-admin';
-export const UserIcon = PeopleIcon;
 
 import Aside from './Aside';
+
+export const UserIcon = PeopleIcon;
 
 const UserFilter = ({ permissions, ...props }) => (
     <Filter {...props}>

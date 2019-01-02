@@ -3,7 +3,7 @@
     "version": "2.4.0",
     "description": "A treeview component without ui to use with react-admin",
     "main": "lib/index.js",
-    "module": "esm/index.js",
+    "module": "lib/index.js",
     "sideEffects": false,
     "files": [
         "LICENSE",
@@ -31,21 +31,17 @@
     },
     "homepage": "https://github.com/marmelab/react-admin#readme",
     "scripts": {
-        "build": "yarn run build-cjs && yarn run build-esm",
-        "build-cjs": "rimraf ./lib && tsc",
-        "build-esm": "rimraf ./esm && tsc --outDir esm --module es2015",
+        "build": "rimraf ./lib && tsc",
         "watch": "rimraf ./lib && tsc --watch"
     },
-    "peerDependencies": {
-        "react": "~16.0.0 || ~16.1.0 || ~16.2.0 || ~16.3.0 || ~16.4.0",
-        "react-dom": "~16.0.0 || ~16.1.0 || ~16.2.0 || ~16.3.0 || ~16.4.0"
-    },
     "dependencies": {
-        "performant-array-to-tree": "^1.1.2",
-        "prop-types": "^15.6.1"
     },
     "devDependencies": {
         "cross-env": "^5.2.0",
+        "performant-array-to-tree": "^1.1.2",
+        "prop-types": "^15.6.1",
+        "react": "~16.3.1",
+        "react-dom": "~16.3.1",
         "rimraf": "^2.6.2"
     }
 }

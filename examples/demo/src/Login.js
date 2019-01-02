@@ -19,7 +19,7 @@ import LockIcon from '@material-ui/icons/Lock';
 
 import { Notification, translate, userLogin } from 'react-admin';
 
-import { darkTheme, lightTheme } from './themes';
+import { lightTheme } from './themes';
 
 const styles = theme => ({
     main: {
