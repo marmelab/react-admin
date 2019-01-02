@@ -73,8 +73,11 @@ export default (previousState = initialState, { payload, meta }) => {
         }
         if (meta.fetch === UPDATE_MANY) {
             const updatedRecords = payload.ids
-                .reduce((records, id) => records.concat(previousState[id]), [])
-                .map(record => ({ ...record, ...payload.data }));
+                .map(id => ({
+                    ...previousState[id],
+                    ...payload.data,
+                }));
+
             return addRecords(updatedRecords, previousState);
         }
         if (meta.fetch === DELETE) {
