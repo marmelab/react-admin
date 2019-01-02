@@ -3,7 +3,7 @@
     "version": "2.5.2",
     "description": "A saga enabling realtime updates for react-admin",
     "main": "lib/index.js",
-    "module": "esm/index.js",
+    "module": "lib/index.js",
     "sideEffects": false,
     "repository": {
         "type": "git",
@@ -26,22 +26,14 @@
     ],
     "license": "MIT",
     "scripts": {
-        "build": "yarn run build-cjs && yarn run build-esm",
-        "build-cjs": "rimraf ./lib && tsc",
-        "build-esm": "rimraf ./esm && tsc --outDir esm --module es2015",
+        "build": "rimraf ./lib && tsc",
         "watch": "rimraf ./lib && tsc --watch"
     },
     "dependencies": {
-        "lodash": "~4.17.5"
-    },
-    "peerDependencies": {
-        "react-admin": "^2.4.3",
-        "react-router": "~4.2.0",
-        "react-router-redux": "~5.0.0-alpha.9",
-        "redux-saga": "~0.16.0"
     },
     "devDependencies": {
         "cross-env": "^5.2.0",
+        "lodash": "~4.17.5",
         "react-admin": "^2.5.2",
         "react-router": "~4.2.0",
         "react-router-redux": "~5.0.0-alpha.9",

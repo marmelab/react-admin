@@ -9,7 +9,7 @@
         "src"
     ],
     "main": "lib/index",
-    "module": "esm/index.js",
+    "module": "lib/index.js",
     "sideEffects": false,
     "authors": [
         "François Zaninotto",
@@ -20,45 +20,37 @@
     "bugs": "https://github.com/marmelab/react-admin/issues",
     "license": "MIT",
     "scripts": {
-        "build": "yarn run build-cjs && yarn run build-esm",
-        "build-cjs": "rimraf ./lib && tsc",
-        "build-esm": "rimraf ./esm && tsc --outDir esm --module es2015",
+        "build": "rimraf ./lib && tsc",
         "watch": "rimraf ./lib && tsc --watch"
     },
     "devDependencies": {
+        "@material-ui/core": "^1.4.0",
+        "@material-ui/icons": "^1.0.0",
+        "autosuggest-highlight": "^3.1.1",
+        "classnames": "~2.2.5",
         "cross-env": "^5.2.0",
         "enzyme": "~3.7.0",
         "enzyme-adapter-react-16": "~1.6.0",
         "file-api": "~0.10.4",
         "ignore-styles": "~5.0.1",
-        "react": "~16.3.1",
-        "react-dom": "~16.3.1",
-        "react-test-renderer": "~16.3.1",
-        "rimraf": "^2.6.2"
-    },
-    "peerDependencies": {
-        "react": "~16.3.0",
-        "react-dom": "~16.3.0"
-    },
-    "dependencies": {
-        "@material-ui/core": "^1.4.0",
-        "@material-ui/icons": "^1.0.0",
-        "autosuggest-highlight": "^3.1.1",
-        "classnames": "~2.2.5",
         "inflection": "~1.12.0",
         "lodash": "~4.17.5",
         "material-ui-chip-input": "1.0.0-beta.6 - 1.0.0-beta.8",
         "papaparse": "^4.1.4",
         "prop-types": "~15.6.1",
         "ra-core": "^2.5.2",
+        "react": "~16.3.1",
         "react-autosuggest": "^9.4.2",
+        "react-dom": "~16.3.1",
         "react-dropzone": "~4.0.1",
         "react-headroom": "^2.2.4",
-        "react-redux": "~5.0.7",
+        "react-redux": "~5.1.0",
         "react-router-dom": "~4.2.2",
+        "react-test-renderer": "~16.3.1",
         "react-transition-group": "^2.2.1",
         "recompose": "~0.26.0",
         "redux": "~3.7.2",
-        "redux-form": "~7.4.0"
+        "redux-form": "~7.4.0",
+        "rimraf": "^2.6.2"
     }
 }

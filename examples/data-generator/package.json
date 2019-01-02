@@ -3,10 +3,9 @@
     "version": "2.4.0",
     "private": true,
     "main": "./lib/index.js",
+    "module": "./lib/index.js",
     "scripts": {
-        "build": "yarn run build-cjs && yarn run build-esm",
-        "build-cjs": "rimraf ./lib && tsc",
-        "build-esm": "rimraf ./esm && tsc --outDir esm --module es2015",
+        "build": "rimraf ./lib && tsc",
         "watch": "rimraf ./lib && tsc --watch"
     },
     "dependencies": {

@@ -3,7 +3,7 @@
     "version": "2.5.2",
     "description": "A GraphQL data provider for react-admin",
     "main": "lib/index.js",
-    "module": "esm/index.js",
+    "module": "lib/index.js",
     "sideEffects": false,
     "repository": {
         "type": "git",
@@ -26,26 +26,18 @@
     ],
     "license": "MIT",
     "scripts": {
-        "build": "yarn run build-cjs && yarn run build-esm",
-        "build-cjs": "rimraf ./lib && tsc",
-        "build-esm": "rimraf ./esm && tsc --outDir esm --module es2015",
+        "build": "rimraf ./lib && tsc",
         "watch": "rimraf ./lib && tsc --watch"
     },
-    "dependencies": {
+    "devDependencies": {
         "apollo-client": "^2.2.8",
         "apollo-client-preset": "^1.0.6",
+        "cross-env": "^5.2.0",
+        "graphql": "^14.0.0",
         "graphql-tag": "^2.6.1",
         "lodash": "~4.17.5",
-        "pluralize": "~7.0.0"
-    },
-    "peerDependencies": {
-        "graphql": "^0.13.2",
-        "react-admin": "^2.4.3"
-    },
-    "devDependencies": {
-        "cross-env": "^5.2.0",
-        "graphql": "^0.13.2",
-        "react-admin": "^2.5.2",
+        "pluralize": "~7.0.0",
+        "react-admin": "2.x.x",
         "rimraf": "^2.6.2"
     }
 }

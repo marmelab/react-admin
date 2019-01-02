@@ -3,12 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@material-ui/core": "~1.4.0",
-    "ra-data-json-server": "~2.0.0",
-    "react": "~16.3.1",
-    "react-admin": "~2.0.0",
-    "react-dom": "~16.3.1",
-    "react-scripts": "^2.0.5"
+    "ra-data-json-server": "2.x.x",
+    "react-admin": "2.x.x"
   },
   "scripts": {
     "start": "react-scripts start",
