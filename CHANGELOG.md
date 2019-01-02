@@ -5,15 +5,15 @@
 * Fix Chinese Locale name ([#2710](https://github.com/marmelab/react-admin/pull/2710)) ([fzaninotto](https://github.com/fzaninotto))
 * Fix `ra-data-simple-rest` dependency ([#2708](https://github.com/marmelab/react-admin/pull/2708)) ([fzaninotto](https://github.com/fzaninotto))
 * Fix outdated `<SimpleShowLayout>` doc about custom styles ([#2707](https://github.com/marmelab/react-admin/pull/2707)) ([fzaninotto](https://github.com/fzaninotto))
-* Fix `<EditButton>` in `<Datagrid>` when using `rowClick` ([#2686](https://github.com/marmelab/react-admin/pull/2686)) ([plattdl](https://github.com/plattdl
-* Rely on `meta` to handle optimistic actions ([#2684](https://github.com/marmelab/react-admin/pull/2684)) ([djhi](https://github.com/djhi
-* Update Codesandbox link ([#2682](https://github.com/marmelab/react-admin/pull/2682)) ([Kmaschta](https://github.com/Kmaschta)
-* Document `<Resource>` without list prop / Menu ([#2679](https://github.com/marmelab/react-admin/pull/2679)) ([Kmaschta](https://github.com/Kmaschta)
-* Fix outdated documentation on `ra-lanhuage-english` and `ra-language-french` ([#2674](https://github.com/marmelab/react-admin/pull/2674)) ([sovattha](https://github.com/sovattha)
-* Fix accessibility on `<FileInput>` delete button ([#2666](https://github.com/marmelab/react-admin/pull/2666)) ([djhi](https://github.com/djhi
+* Fix `<EditButton>` in `<Datagrid>` when using `rowClick` ([#2686](https://github.com/marmelab/react-admin/pull/2686)) ([plattdl](https://github.com/plattdl))
+* Fix custom fetch actions can't benefit from optimistic rendering ([#2684](https://github.com/marmelab/react-admin/pull/2684)) ([djhi](https://github.com/djhi))
+* Fix outdated Codesandbox link ([#2682](https://github.com/marmelab/react-admin/pull/2682)) ([Kmaschta](https://github.com/Kmaschta))
+* Fix missing `<Resource>` documentation without list prop / Menu ([#2679](https://github.com/marmelab/react-admin/pull/2679)) ([Kmaschta](https://github.com/Kmaschta))
+* Fix outdated documentation on `ra-lanhuage-english` and `ra-language-french` ([#2674](https://github.com/marmelab/react-admin/pull/2674)) ([sovattha](https://github.com/sovattha))
+* Fix accessibility on `<FileInput>` delete button ([#2666](https://github.com/marmelab/react-admin/pull/2666)) ([djhi](https://github.com/djhi))
 * Fix custom material-ui input documentation ([#2664](https://github.com/marmelab/react-admin/pull/2664)) ([fzaninotto](https://github.com/fzaninotto))
 * Fix extra `<FormTab>`/`<Tab>` props are passed to two different components ([#2654](https://github.com/marmelab/react-admin/pull/2654)) ([waynebloss](https://github.com/waynebloss))
-* Fix arrow in sorted column header when field uses `sortBy` props ([#2600](https://github.com/marmelab/react-admin/pull/2600)) ([louisbl](https://github.com/louisbl)
+* Fix arrow in sorted column header when field uses `sortBy` props ([#2600](https://github.com/marmelab/react-admin/pull/2600)) ([louisbl](https://github.com/louisbl))
 
 ## v2.5.2
 
