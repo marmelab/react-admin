@@ -54,8 +54,16 @@ export const addRecordsFactory = getFetchedAt => (
 
 const addRecords = addRecordsFactory(getFetchedAt);
 
+// We track the last time data was fetched by adding a property on the data which is an array
+// (Hence using defineProperty)
+const updateDataFetchedTime = (data, fetchedAt) => {
+    Object.defineProperty(data, 'fetchedAt', {
+        value: fetchedAt,
+    });
+}
+
 const initialState = {};
-Object.defineProperty(initialState, 'fetchedAt', { value: {} }); // non enumerable by default
+updateDataFetchedTime(initialState, {}); // non enumerable by default
 
 export default (previousState = initialState, { payload, meta }) => {
     if (meta && meta.optimistic) {
@@ -72,9 +80,7 @@ export default (previousState = initialState, { payload, meta }) => {
         if (meta.fetch === DELETE) {
             const { [payload.id]: removed, ...newState } = previousState;
 
-            Object.defineProperty(newState, 'fetchedAt', {
-                value: previousState.fetchedAt,
-            });
+            updateDataFetchedTime(newState, previousState.fetchedAt);
 
             return newState;
         }
@@ -83,9 +89,7 @@ export default (previousState = initialState, { payload, meta }) => {
                 .filter(([key]) => !payload.ids.includes(key))
                 .reduce((obj, [key, val]) => ({ ...obj, [key]: val }), {});
 
-            Object.defineProperty(newState, 'fetchedAt', {
-                value: previousState.fetchedAt,
-            });
+            updateDataFetchedTime(newState, previousState.fetchedAt);
 
             return newState;
         }
