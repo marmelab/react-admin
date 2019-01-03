@@ -168,19 +168,24 @@ describe('<AutocompleteArrayInput />', () => {
         const wrapper = mount(
             <AutocompleteArrayInput
                 {...defaultProps}
-                input={{ value: null }}
+                input={{ value: ['M'], onChange: () => {} }}
                 choices={[{ id: 'M', name: 'Male' }]}
-                shouldRenderSuggestions={() => false}
+                shouldRenderSuggestions={v => v.length > 2}
             />,
             { context, childContextTypes }
         );
         wrapper.find('input').simulate('focus');
         wrapper
             .find('input')
-            .simulate('change', { target: { value: 'foo' } });
-        expect(wrapper.state('searchText')).toBe('foo');
+            .simulate('change', { target: { value: 'Ma' } });
         expect(wrapper.state('suggestions')).toHaveLength(1);
         expect(wrapper.find('ListItem')).toHaveLength(0);
+
+        wrapper
+            .find('input')
+            .simulate('change', { target: { value: 'Mal' } });
+        expect(wrapper.state('suggestions')).toHaveLength(1);
+        expect(wrapper.find('ListItem')).toHaveLength(1);
     });
 
     describe('Fix issue #1410', () => {

@@ -502,6 +502,7 @@ AutocompleteArrayInput.propTypes = {
     optionValue: PropTypes.string.isRequired,
     resource: PropTypes.string,
     setFilter: PropTypes.func,
+    shouldRenderSuggestions: PropTypes.func,
     source: PropTypes.string,
     suggestionComponent: PropTypes.func,
     translate: PropTypes.func.isRequired,
