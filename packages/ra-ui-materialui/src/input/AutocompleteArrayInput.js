@@ -419,7 +419,14 @@ export class AutocompleteArrayInput extends React.Component {
         this.previousFilterValue = value;
     };
 
-    shouldRenderSuggestions = () => true;
+    shouldRenderSuggestions = (val) => {
+        const { shouldRenderSuggestions } = this.props;
+        if (shouldRenderSuggestions !== undefined && typeof shouldRenderSuggestions === 'function') {
+          return shouldRenderSuggestions(val)
+        }
+  
+        return true
+    };
 
     render() {
         const {

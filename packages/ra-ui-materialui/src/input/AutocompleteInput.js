@@ -447,7 +447,7 @@ export class AutocompleteInput extends React.Component {
       }
 
       return true
-    }
+    };
 
     render() {
         const {
