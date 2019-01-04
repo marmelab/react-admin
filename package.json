@@ -25,7 +25,8 @@
         "testPathIgnorePatterns": [
             "/node_modules/",
             "/lib/",
-            "/esm/"
+            "/esm/",
+            "/examples/simple/"
         ],
         "transformIgnorePatterns": [
             "[/\\\\]node_modules[/\\\\].+\\.(js|jsx|mjs|ts|tsx)$"
