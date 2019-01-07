@@ -157,6 +157,7 @@ ReferenceManyFieldController.propTypes = {
     record: PropTypes.object,
     reference: PropTypes.string.isRequired,
     data: PropTypes.object,
+    loadedOnce: PropTypes.bool,
     resource: PropTypes.string.isRequired,
     sort: PropTypes.shape({
         field: PropTypes.string,
@@ -165,8 +166,6 @@ ReferenceManyFieldController.propTypes = {
     sortBy: PropTypes.string,
     source: PropTypes.string.isRequired,
     target: PropTypes.string.isRequired,
-    total: PropTypes.number,
-    isLoading: PropTypes.bool,
     total: PropTypes.number,
 };
 

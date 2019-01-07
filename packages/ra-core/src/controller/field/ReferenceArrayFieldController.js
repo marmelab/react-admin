@@ -66,7 +66,7 @@ export class ReferenceArrayFieldController extends Component {
         const referenceBasePath = basePath.replace(resource, reference); // FIXME obviously very weak
 
         return children({
-            isLoading: ids.length !== 0 && !data,
+            loadedOnce: data != undefined,
             ids,
             data,
             referenceBasePath,

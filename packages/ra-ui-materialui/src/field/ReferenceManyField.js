@@ -125,7 +125,7 @@ export const ReferenceManyField = ({ children, ...props }) => {
 
 ReferenceManyField.propTypes = {
     addLabel: PropTypes.bool,
-    basePath: PropTypes.string.isRequired,
+    basePath: PropTypes.string,
     children: PropTypes.element.isRequired,
     classes: PropTypes.object,
     className: PropTypes.string,
@@ -134,7 +134,7 @@ ReferenceManyField.propTypes = {
     perPage: PropTypes.number,
     record: PropTypes.object,
     reference: PropTypes.string.isRequired,
-    resource: PropTypes.string.isRequired,
+    resource: PropTypes.string,
     sortBy: PropTypes.string,
     source: PropTypes.string.isRequired,
     sort: PropTypes.shape({
