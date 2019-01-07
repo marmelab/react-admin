@@ -95,6 +95,7 @@ export default authProvider => {
                         })
                     );
                     yield put(hideNotification());
+                    yield put(showNotification('ra.notification.logged_out', 'warning'));
                 }
                 break;
         }

@@ -105,6 +105,7 @@ module.exports = {
             data_provider_error:
                 'dataProvider error. Check the console for details.',
             canceled: 'Action cancelled',
+            logged_out: 'Your session has ended, please reconnect.'
         },
         validation: {
             required: 'Required',
