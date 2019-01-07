@@ -14,8 +14,13 @@ const styles = {
 // useful to prevent click bubbling in a datagrid with rowClick
 const stopPropagation = e => e.stopPropagation();
 
-const sanitizeRestProps = ({ currentSort, setSort, loadedOnce, ...props }) =>
-    props;
+const sanitizeRestProps = ({
+    currentSort,
+    setSort,
+    isLoading,
+    loadedOnce,
+    ...props
+}) => props;
 
 /**
  * Iterator component to be used to display a list of entities, using a single field
