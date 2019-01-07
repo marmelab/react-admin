@@ -6,6 +6,7 @@
 * Add ability to attach an expansion panel to a `<Datagrid>` row ([2634](https://github.com/marmelab/react-admin/pull/2634)) ([fzaninotto](https://github.com/fzaninotto))
 * Add ability to hide the `<ExportButton>` in the `<List>` ([2638](https://github.com/marmelab/react-admin/pull/2638)) ([afilp](https://github.com/afilp))
 * Add the current record as parameter to the `rowClick` function ([2625](https://github.com/marmelab/react-admin/pull/2625)) ([djhi](https://github.com/djhi))
+* Add logged out notification when the `authProvider` throws a fetch error ([2733](https://github.com/marmelab/react-admin/pull/2733)) ([ThieryMichel](https://github.com/ThieryMichel))
 * Add ability to extend the buttons `onClick` handlers ([2640](https://github.com/marmelab/react-admin/pull/2640)) ([djhi](https://github.com/djhi))
 * Add ability to override `<Datagrid>` header style ([2709](https://github.com/marmelab/react-admin/pull/2709)) ([fzaninotto](https://github.com/fzaninotto))
 * Add ability to override the `<Popper>` props in `<AutocompleteInput>` ([2678](https://github.com/marmelab/react-admin/pull/2678)) ([djhi](https://github.com/djhi))
