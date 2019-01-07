@@ -11,7 +11,7 @@
 * Add ability to override `<Datagrid>` header style ([2709](https://github.com/marmelab/react-admin/pull/2709)) ([fzaninotto](https://github.com/fzaninotto))
 * Add ability to override the `<Popper>` props in `<AutocompleteInput>` ([2678](https://github.com/marmelab/react-admin/pull/2678)) ([djhi](https://github.com/djhi))
 * Add the ability to disable the `/login` route and component ([2622](https://github.com/marmelab/react-admin/pull/2622)) ([djhi](https://github.com/djhi))
-* Add `enableReducers` and `renderProp` options to `<TestContext>` to help with integration testing ([2614](https://github.com/marmelab/react-admin/pull/2614)) ([peter](https://github.com/peter))-mouland
+* Add `enableReducers` and `renderProp` options to `<TestContext>` to help with integration testing ([2614](https://github.com/marmelab/react-admin/pull/2614)) ([peter-mouland](https://github.com/peter-mouland))
 * Disable the `<ExportButton>` when there is nothing to export ([2595](https://github.com/marmelab/react-admin/pull/2595)) ([Luwangel](https://github.com/Luwangel))
 * Update dependencies of secondary packages to `ra-core` ([2606](https://github.com/marmelab/react-admin/pull/2606)) ([fzaninotto](https://github.com/fzaninotto))
 * Fix `<ShowButton>` in `<Datagrid>` when using `rowClick` ([2716](https://github.com/marmelab/react-admin/pull/2716)) ([plattdl](https://github.com/plattdl))
