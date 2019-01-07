@@ -249,6 +249,7 @@ For all these cases, it's up to you to implement your own `LoginPage` component,
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { userLogin } from 'react-admin';
+import { MuiThemeProvider } from '@material-ui/core/styles';
 
 class MyLoginPage extends Component {
     submit = (e) => {
@@ -262,9 +263,11 @@ class MyLoginPage extends Component {
 
     render() {
         return (
-            <form onSubmit={this.submit}>
-            ...
-            </form>
+            <MuiThemeProvider theme={this.props.theme}>
+                <form onSubmit={this.submit}>
+                ...
+                </form>
+            </MuiThemeProvider>
         );
     }
 };

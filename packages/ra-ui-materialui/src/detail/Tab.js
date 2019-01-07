@@ -65,7 +65,7 @@ class Tab extends Component {
         />
     );
 
-    renderContent = ({ className, children, ...rest }) => (
+    renderContent = ({ className, children, basePath, record, resource }) => (
         <span className={className}>
             {React.Children.map(
                 children,
@@ -83,17 +83,20 @@ class Tab extends Component {
                                 <Labeled
                                     label={field.props.label}
                                     source={field.props.source}
-                                    {...sanitizeRestProps(rest)}
+                                    basePath={basePath}
+                                    record={record}
+                                    resource={resource}
                                 >
                                     {field}
                                 </Labeled>
                             ) : typeof field.type === 'string' ? (
                                 field
                             ) : (
-                                React.cloneElement(
-                                    field,
-                                    sanitizeRestProps(rest)
-                                )
+                                React.cloneElement(field, {
+                                    basePath,
+                                    record,
+                                    resource,
+                                })
                             )}
                         </div>
                     )

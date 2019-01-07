@@ -1,9 +1,6 @@
 import assert from 'assert';
 
-import {
-    CRUD_DELETE_OPTIMISTIC,
-    CRUD_DELETE_MANY_OPTIMISTIC,
-} from '../../../actions/dataActions';
+import { DELETE, DELETE_MANY } from '../../../dataFetchActions';
 
 import dataReducer, { addRecordsFactory } from './data';
 
@@ -100,7 +97,7 @@ describe('data addRecordsFactory', () => {
 });
 
 describe('Resources data reducer', () => {
-    describe('CRUD_DELETE_OPTIMISTIC', () => {
+    describe('optimistic DELETE', () => {
         it('removes the deleted record', () => {
             const state = {
                 record1: { id: 'record1', prop: 'value' },
@@ -110,8 +107,12 @@ describe('Resources data reducer', () => {
 
             assert.deepEqual(
                 dataReducer(state, {
-                    type: CRUD_DELETE_OPTIMISTIC,
+                    type: 'FOO',
                     payload: { id: 'record2' },
+                    meta: {
+                        fetch: DELETE,
+                        optimistic: true,
+                    }
                 }),
                 {
                     record1: { id: 'record1', prop: 'value' },
@@ -120,7 +121,7 @@ describe('Resources data reducer', () => {
             );
         });
     });
-    describe('CRUD_DELETE_MANY_OPTIMISTIC', () => {
+    describe('optimistic DELETE_MANY', () => {
         it('removes the deleted records', () => {
             const state = {
                 record1: { id: 'record1', prop: 'value' },
@@ -130,8 +131,12 @@ describe('Resources data reducer', () => {
 
             assert.deepEqual(
                 dataReducer(state, {
-                    type: CRUD_DELETE_MANY_OPTIMISTIC,
+                    type: 'FOO',
                     payload: { ids: ['record3', 'record2'] },
+                    meta: {
+                        fetch: DELETE_MANY,
+                        optimistic: true,
+                    }
                 }),
                 {
                     record1: { id: 'record1', prop: 'value' },

@@ -456,7 +456,7 @@ const MyLayout = props => <Layout
 
 ### Layout From Scratch
 
-For more custom layouts, write a component from scratch. It must contain a `{children}` placeholder, where react-admin will render the resources. Use the [default layout](https://github.com/marmelab/react-admin/blob/master/src/mui/layout/Layout.js) as a starting point. Here is a simplified version (with no responsive support):
+For more custom layouts, write a component from scratch. It must contain a `{children}` placeholder, where react-admin will render the resources. Use the [default layout](https://github.com/marmelab/react-admin/blob/master/packages/ra-ui-materialui/src/layout/Layout.js) as a starting point. Here is a simplified version (with no responsive support):
 
 ```jsx
 // in src/MyLayout.js
@@ -702,6 +702,24 @@ const mapStateToProps = state => ({
 });
 
 export default withRouter(connect(mapStateToProps)(withStyles(styles)(Menu)));
+```
+
+## Using a Custom Login Page
+
+### Changing the Background Image
+
+By default, the login page displays a random background image changing every day. If you want to change that background image, you can use the default Login page component and pass an image URL as the `backgroundImage` prop.
+
+```jsx
+import { Admin, Login } from 'react-admin';
+
+const MyLoginPage = () => <Login backgroundImage="/background.jpg" />;
+
+const App = () => (
+    <Admin loginPage={MyLoginPage}>
+        // ...
+    </Admin>
+);
 ```
 
 ## Notifications

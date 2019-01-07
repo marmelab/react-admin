@@ -1,6 +1,6 @@
 {
     "name": "ra-data-json-server",
-    "version": "2.5.0",
+    "version": "2.5.3",
     "description": "JSON Server data provider for react-admin",
     "main": "lib/index.js",
     "module": "esm/index.js",

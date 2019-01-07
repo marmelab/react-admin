@@ -29,13 +29,24 @@ class FormTab extends Component {
         );
     };
 
-    renderContent = ({ children, hidden, ...rest }) => (
+    renderContent = ({
+        children,
+        hidden,
+        basePath,
+        record,
+        resource,
+    }) => (
         <span style={hidden ? hiddenStyle : null}>
             {React.Children.map(
                 children,
                 input =>
                     input && (
-                        <FormInput input={input} {...sanitizeRestProps(rest)} />
+                        <FormInput
+                            basePath={basePath}
+                            input={input}
+                            record={record}
+                            resource={resource}
+                        />
                     )
             )}
         </span>

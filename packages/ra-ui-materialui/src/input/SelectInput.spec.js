@@ -58,9 +58,14 @@ describe('<SelectInput />', () => {
             <SelectInput
                 {...defaultProps}
                 choices={[
-                    { _id: 123, full_name: 'Leo Tolstoi', sex: 'M' },
-                    { _id: 456, full_name: 'Jane Austen', sex: 'F' },
-                    { _id: 1, full_name: 'System Administrator', sex: 'F', disabled: true }
+                    { id: 123, full_name: 'Leo Tolstoi', sex: 'M' },
+                    { id: 456, full_name: 'Jane Austen', sex: 'F' },
+                    {
+                        id: 1,
+                        full_name: 'System Administrator',
+                        sex: 'F',
+                        disabled: true,
+                    },
                 ]}
             />
         );

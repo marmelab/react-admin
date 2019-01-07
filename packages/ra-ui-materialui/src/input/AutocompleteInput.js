@@ -334,7 +334,7 @@ export class AutocompleteInput extends React.Component {
         return (
             <Popper
                 className={className}
-                open
+                open={Boolean(children)}
                 anchorEl={this.inputEl}
                 placement="bottom-start"
                 {...options.suggestionsContainerProps}

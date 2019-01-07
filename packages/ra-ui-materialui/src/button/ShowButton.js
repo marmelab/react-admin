@@ -7,6 +7,9 @@ import { linkToRecord } from 'ra-core';
 
 import Button from './Button';
 
+// useful to prevent click bubbling in a datagrid with rowClick
+const stopPropagation = e => e.stopPropagation();
+
 const ShowButton = ({
     basePath = '',
     label = 'ra.action.show',
@@ -18,6 +21,7 @@ const ShowButton = ({
         component={Link}
         to={`${linkToRecord(basePath, record.id)}/show`}
         label={label}
+        onClick={stopPropagation}
         {...rest}
     >
         {icon}

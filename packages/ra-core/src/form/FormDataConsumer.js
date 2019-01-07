@@ -1,11 +1,10 @@
+import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { getFormValues } from 'redux-form';
+import { getFormValues, FormName } from 'redux-form';
 import get from 'lodash/get';
 
 import warning from '../util/warning';
-
-const REDUX_FORM_NAME = 'record-form';
 
 /**
  * Get the current (edited) value of the record from the form and pass it
@@ -45,8 +44,9 @@ const REDUX_FORM_NAME = 'record-form';
  *     </Edit>
  * );
  */
-export const FormDataConsumer = ({
+export const FormDataConsumerView = ({
     children,
+    form,
     formData,
     source,
     index,
@@ -100,13 +100,23 @@ export const FormDataConsumer = ({
     return ret === undefined ? null : ret;
 };
 
-FormDataConsumer.propTypes = {
+FormDataConsumerView.propTypes = {
     children: PropTypes.func.isRequired,
     data: PropTypes.object,
 };
 
-const mapStateToProps = (state, { record }) => ({
-    formData: getFormValues(REDUX_FORM_NAME)(state) || record,
+const mapStateToProps = (state, { form, record }) => ({
+    formData: getFormValues(form)(state) || record,
 });
 
-export default connect(mapStateToProps)(FormDataConsumer);
+const ConnectedFormDataConsumerView = connect(mapStateToProps)(
+    FormDataConsumerView
+);
+
+const FormDataConsumer = props => (
+    <FormName>
+        {({ form }) => <ConnectedFormDataConsumerView form={form} {...props} />}
+    </FormName>
+);
+
+export default FormDataConsumer;

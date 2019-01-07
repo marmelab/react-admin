@@ -1,15 +1,17 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import { FormDataConsumer } from './FormDataConsumer';
+import { FormDataConsumerView } from './FormDataConsumer';
 
-describe('FormDataConsumer', () => {
+describe('FormDataConsumerView', () => {
     it('does not call its children function with scopedFormData and getSource if it did not receive an index prop', () => {
         const children = jest.fn();
         const formData = { id: 123, title: 'A title' };
 
         shallow(
-            <FormDataConsumer formData={formData}>{children}</FormDataConsumer>
+            <FormDataConsumerView formData={formData}>
+                {children}
+            </FormDataConsumerView>
         );
 
         expect(children).toHaveBeenCalledWith({
@@ -24,9 +26,13 @@ describe('FormDataConsumer', () => {
         const formData = { id: 123, title: 'A title', authors: [{ id: 0 }] };
 
         shallow(
-            <FormDataConsumer source="authors[0]" index={0} formData={formData}>
+            <FormDataConsumerView
+                source="authors[0]"
+                index={0}
+                formData={formData}
+            >
                 {children}
-            </FormDataConsumer>
+            </FormDataConsumerView>
         );
 
         expect(children.mock.calls[0][0].formData).toEqual(formData);

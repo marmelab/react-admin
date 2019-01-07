@@ -11,12 +11,13 @@
         "json-graphql-server": "~2.1.1",
         "ra-data-fakerest": "^2.0.0",
         "ra-data-graphql-simple": "^2.0.0",
-        "ra-data-simple-rest": "~2.0.0",
+        "ra-data-simple-rest": "^2.0.0",
         "ra-input-rich-text": "^2.0.0",
         "ra-language-english": "^2.0.0",
         "ra-language-french": "^2.0.0",
         "react": "~16.3.1",
         "react-admin": "^2.0.0",
+        "react-app-polyfill": "^0.1.3",
         "react-dom": "~16.3.1",
         "react-redux": "~5.0.7",
         "react-router-dom": "~4.2.2",
@@ -34,7 +35,7 @@
     "browserslist": [
         ">0.2%",
         "not dead",
-        "not ie <= 11",
+        "not ie <= 10",
         "not op_mini all"
     ]
 }

@@ -175,7 +175,7 @@ By default the component matches choices with the current input searchText: if i
 If you want to limit the initial choices shown to the current value only, you can set the `limitChoicesToValue` prop.
 
 When dealing with a large amount of `choices` you may need to limit the number of suggestions that are rendered in order to maintain usable performance. The `shouldRenderSuggestions` is an optional prop that allows you to set conditions on when to render suggestions. An easy way to improve performance would be to skip rendering until the user has entered 2 or 3 characters in the search box. This lowers the result set significantly, and might be all you need (depending on your data set). 
-Ex. `<AutocompleteInput shouldRenderSuggestions={(val) => { return val.trim() > 2 }} />` would not render any suggestions until the 3rd character was entered. This prop is passed to the underlying `react-autosuggest` component and is documented [here](https://github.com/moroshko/react-autosuggest#should-render-suggestions-prop).
+Ex. `<AutocompleteInput shouldRenderSuggestions={(val) => { return val.trim().length > 2 }} />` would not render any suggestions until the 3rd character was entered. This prop is passed to the underlying `react-autosuggest` component and is documented [here](https://github.com/moroshko/react-autosuggest#should-render-suggestions-prop).
 
 `<AutocompleteInput>` renders a material-ui `<TextField>` component. Use the `options` attribute to override any of the `<TextField>` attributes:
 
@@ -1322,9 +1322,9 @@ import TextField from '@material-ui/core/TextField';
 import { Field } from 'redux-form';
 const renderTextField = ({ input, label, meta: { touched, error }, ...custom }) => (
     <TextField
-        hintText={label}
-        floatingLabelText={label}
-        errorText={touched && error}
+        label={label}
+        error={!!(touched && error)}
+        helperText={touched && error}
         {...input}
         {...custom}
     />
