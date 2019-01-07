@@ -38,6 +38,7 @@ const Button = ({
     classes = {},
     className,
     color = 'primary',
+    disabled,
     label,
     size = 'small',
     translate,
@@ -45,7 +46,7 @@ const Button = ({
 }) => (
     <Responsive
         small={
-            label ? (
+            label && !disabled ? (
                 <Tooltip title={translate(label, { _: label })}>
                     <IconButton
                         aria-label={translate(label, { _: label })}
@@ -57,7 +58,12 @@ const Button = ({
                     </IconButton>
                 </Tooltip>
             ) : (
-                <IconButton className={className} color={color} {...rest}>
+                <IconButton
+                    className={className}
+                    color={color}
+                    disabled={disabled}
+                    {...rest}
+                >
                     {children}
                 </IconButton>
             )
@@ -68,6 +74,7 @@ const Button = ({
                 color={color}
                 size={size}
                 aria-label={label ? translate(label, { _: label }) : undefined}
+                disabled={disabled}
                 {...rest}
             >
                 {alignIcon === 'left' &&
@@ -101,6 +108,7 @@ Button.propTypes = {
     classes: PropTypes.object,
     className: PropTypes.string,
     color: PropTypes.string,
+    disabled: PropTypes.bool,
     label: PropTypes.string,
     size: PropTypes.string,
     translate: PropTypes.func.isRequired,
