@@ -26,7 +26,7 @@ const styles = theme => ({
 const sanitizeRestProps = ({
     basePath,
     classes,
-    dispatchCrudDeleteMany,
+    dispatchCrudDelete,
     filterValues,
     label,
     resource,
