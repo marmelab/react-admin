@@ -275,7 +275,7 @@ export class AutocompleteInput extends React.Component {
             source,
             value,
             ref,
-            options: { InputProps, ...options },
+            options: { InputProps, suggestionsContainerProps, ...options },
             ...other
         } = inputProps;
         if (typeof meta === 'undefined') {
@@ -441,14 +441,17 @@ export class AutocompleteInput extends React.Component {
         this.previousFilterValue = value;
     };
 
-    shouldRenderSuggestions = (val) => {
-      const { shouldRenderSuggestions } = this.props;
-      if (shouldRenderSuggestions !== undefined && typeof shouldRenderSuggestions === 'function') {
-        return shouldRenderSuggestions(val)
-      }
+    shouldRenderSuggestions = val => {
+        const { shouldRenderSuggestions } = this.props;
+        if (
+            shouldRenderSuggestions !== undefined &&
+            typeof shouldRenderSuggestions === 'function'
+        ) {
+            return shouldRenderSuggestions(val);
+        }
 
-      return true
-    }
+        return true;
+    };
 
     render() {
         const {
