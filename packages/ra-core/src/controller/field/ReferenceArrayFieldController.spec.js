@@ -4,7 +4,7 @@ import { shallow } from 'enzyme';
 import { ReferenceArrayFieldController } from './ReferenceArrayFieldController';
 
 describe('<ReferenceArrayFieldController />', () => {
-    it('should set the isLoading prop to true when related records are not yet fetched', () => {
+    it('should set the loadedOnce prop to false when related records are not yet fetched', () => {
         const children = jest.fn();
 
         shallow(
@@ -21,10 +21,10 @@ describe('<ReferenceArrayFieldController />', () => {
                 {children}
             </ReferenceArrayFieldController>
         );
-        assert.equal(children.mock.calls[0][0].isLoading, true);
+        assert.equal(children.mock.calls[0][0].loadedOnce, false);
     });
 
-    it('should set the isLoading prop to false when at least one related record is found', () => {
+    it('should set the loadedOnce prop to true when at least one related record is found', () => {
         const children = jest.fn();
 
         shallow(
@@ -42,7 +42,7 @@ describe('<ReferenceArrayFieldController />', () => {
             </ReferenceArrayFieldController>
         );
 
-        assert.equal(children.mock.calls[0][0].isLoading, false);
+        assert.equal(children.mock.calls[0][0].loadedOnce, true);
     });
 
     it('should set the data prop to the loaded data when it has been fetched', () => {
@@ -65,7 +65,7 @@ describe('<ReferenceArrayFieldController />', () => {
                 {children}
             </ReferenceArrayFieldController>
         );
-        assert.equal(children.mock.calls[0][0].isLoading, false);
+        assert.equal(children.mock.calls[0][0].loadedOnce, true);
         assert.deepEqual(children.mock.calls[0][0].data, data);
         assert.deepEqual(children.mock.calls[0][0].ids, [1, 2]);
     });
@@ -90,7 +90,7 @@ describe('<ReferenceArrayFieldController />', () => {
                 {children}
             </ReferenceArrayFieldController>
         );
-        assert.equal(children.mock.calls[0][0].isLoading, false);
+        assert.equal(children.mock.calls[0][0].loadedOnce, true);
         assert.deepEqual(children.mock.calls[0][0].data, data);
         assert.deepEqual(children.mock.calls[0][0].ids, ['abc-1', 'abc-2']);
     });
@@ -115,7 +115,7 @@ describe('<ReferenceArrayFieldController />', () => {
                 {children}
             </ReferenceArrayFieldController>
         );
-        assert.equal(children.mock.calls[0][0].isLoading, false);
+        assert.equal(children.mock.calls[0][0].loadedOnce, true);
         assert.deepEqual(children.mock.calls[0][0].data, data);
         assert.deepEqual(children.mock.calls[0][0].ids, [1, 2]);
     });

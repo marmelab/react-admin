@@ -12,14 +12,17 @@ import classnames from 'classnames';
 
 import DatagridHeaderCell from './DatagridHeaderCell';
 import DatagridBody from './DatagridBody';
+import DatagridLoading from './DatagridLoading';
 
-const styles = {
+const styles = theme => ({
     table: {
         tableLayout: 'auto',
     },
+    thead: {},
     tbody: {
         height: 'inherit',
     },
+    headerRow: {},
     headerCell: {
         padding: '0 12px',
         '&:last-child': {
@@ -39,7 +42,23 @@ const styles = {
             padding: '0 12px',
         },
     },
-};
+    expandHeader: {
+        padding: 0,
+        width: 48,
+    },
+    expandIconCell: {
+        width: 48,
+    },
+    expandIcon: {
+        transform: 'rotate(-90deg)',
+        transition: theme.transitions.create('transform', {
+            duration: theme.transitions.duration.shortest,
+        }),
+    },
+    expanded: {
+        transform: 'rotate(0deg)',
+    },
+});
 
 /**
  * The Datagrid component renders a list of records as a table.
@@ -104,10 +123,12 @@ class Datagrid extends Component {
             className,
             currentSort,
             data,
+            expand,
             hasBulkActions,
             hover,
             ids,
             isLoading,
+            loadedOnce,
             onSelect,
             onToggleItem,
             resource,
@@ -120,17 +141,49 @@ class Datagrid extends Component {
             ...rest
         } = this.props;
 
+        /**
+         * if loadedOnce is false, the list displays for the first time, and the dataProvider hasn't answered yet
+         * if loadedOnce is true, the data for the list has at least been returned once by the dataProvider
+         * if loadedOnce is undefined, the Datagrid parent doesn't track loading state (e.g. ReferenceArrayField)
+         */
+        if (loadedOnce === false) {
+            return (
+                <DatagridLoading
+                    classes={classes}
+                    className={className}
+                    expand={expand}
+                    hasBulkActions={hasBulkActions}
+                    nbChildren={React.Children.count(children)}
+                />
+            );
+        }
+
+        /**
+         * Once loaded, the data for the list may be empty. Instead of
+         * displaying the table header with zero data rows,
+         * the datagrid displays nothing in this case.
+         */
         if (!isLoading && (ids.length === 0 || total === 0)) {
             return null;
         }
 
+        /**
+         * After the initial load, if the data for the list isn't empty,
+         * and even if the data is refreshing (e.g. after a filter change),
+         * the datagrid displays the current data.
+         */
         return (
             <Table
                 className={classnames(classes.table, className)}
                 {...sanitizeListRestProps(rest)}
             >
-                <TableHead>
-                    <TableRow className={classes.row}>
+                <TableHead className={classes.thead}>
+                    <TableRow
+                        className={classnames(classes.row, classes.headerRow)}
+                    >
+                        {expand && (
+                            <TableCell className={classes.expandHeader} />
+                        )}
                         {hasBulkActions && (
                             <TableCell padding="none">
                                 <Checkbox
@@ -167,21 +220,27 @@ class Datagrid extends Component {
                         )}
                     </TableRow>
                 </TableHead>
-                {React.cloneElement(body, {
-                    basePath,
-                    classes,
-                    rowClick,
-                    data,
-                    hasBulkActions,
-                    hover,
-                    ids,
-                    isLoading,
-                    onToggleItem,
-                    resource,
-                    rowStyle,
-                    selectedIds,
-                    version
-                }, children)}
+                {React.cloneElement(
+                    body,
+                    {
+                        basePath,
+                        className: classes.tbody,
+                        classes,
+                        expand,
+                        rowClick,
+                        data,
+                        hasBulkActions,
+                        hover,
+                        ids,
+                        isLoading,
+                        onToggleItem,
+                        resource,
+                        rowStyle,
+                        selectedIds,
+                        version,
+                    },
+                    children
+                )}
             </Table>
         );
     }
@@ -198,6 +257,7 @@ Datagrid.propTypes = {
         order: PropTypes.string,
     }).isRequired,
     data: PropTypes.object.isRequired,
+    expand: PropTypes.node,
     hasBulkActions: PropTypes.bool.isRequired,
     hover: PropTypes.bool,
     ids: PropTypes.arrayOf(PropTypes.any).isRequired,
@@ -218,7 +278,7 @@ Datagrid.defaultProps = {
     hasBulkActions: false,
     ids: [],
     selectedIds: [],
-    body: <DatagridBody />
+    body: <DatagridBody />,
 };
 
 export default withStyles(styles)(Datagrid);

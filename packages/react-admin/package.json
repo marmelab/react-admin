@@ -30,8 +30,8 @@
         "rimraf": "^2.6.2"
     },
     "peerDependencies": {
-        "react": "~16.3.0",
-        "react-dom": "~16.3.0"
+        "react": "^16.3.0",
+        "react-dom": "^16.3.0"
     },
     "dependencies": {
         "ra-core": "^2.5.3",

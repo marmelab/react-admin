@@ -1,21 +1,14 @@
 import React, { Fragment, cloneElement } from 'react';
 import PropTypes from 'prop-types';
-import LinearProgress from '@material-ui/core/LinearProgress';
-import { withStyles } from '@material-ui/core/styles';
 import { ReferenceManyFieldController } from 'ra-core';
-
-const styles = {
-    progress: { marginTop: '1em' },
-};
 
 export const ReferenceManyFieldView = ({
     children,
-    classes = {},
     className,
     currentSort,
     data,
     ids,
-    isLoading,
+    loadedOnce,
     page,
     pagination,
     perPage,
@@ -25,30 +18,32 @@ export const ReferenceManyFieldView = ({
     setPerPage,
     setSort,
     total,
-}) => isLoading ? <LinearProgress className={classes.progress} /> :
-        <Fragment>
-            {cloneElement(children, {
-                className,
-                resource: reference,
-                ids,
-                data,
-                basePath: referenceBasePath,
-                currentSort,
-                setSort,
-                total,
-            })}
-            {pagination && cloneElement(pagination, {
+}) => (
+    <Fragment>
+        {cloneElement(children, {
+            className,
+            resource: reference,
+            ids,
+            loadedOnce,
+            data,
+            basePath: referenceBasePath,
+            currentSort,
+            setSort,
+            total,
+        })}
+        {pagination &&
+            cloneElement(pagination, {
                 page,
                 perPage,
                 setPage,
                 setPerPage,
                 total,
             })}
-        </Fragment>;
+    </Fragment>
+);
 
 ReferenceManyFieldView.propTypes = {
     children: PropTypes.element,
-    classes: PropTypes.object,
     className: PropTypes.string,
     currentSort: PropTypes.shape({
         field: PropTypes.string,
@@ -56,7 +51,7 @@ ReferenceManyFieldView.propTypes = {
     }),
     data: PropTypes.object,
     ids: PropTypes.array,
-    isLoading: PropTypes.bool,
+    loadedOnce: PropTypes.bool,
     pagination: PropTypes.element,
     reference: PropTypes.string,
     referenceBasePath: PropTypes.string,
@@ -130,7 +125,7 @@ export const ReferenceManyField = ({ children, ...props }) => {
 
 ReferenceManyField.propTypes = {
     addLabel: PropTypes.bool,
-    basePath: PropTypes.string.isRequired,
+    basePath: PropTypes.string,
     children: PropTypes.element.isRequired,
     classes: PropTypes.object,
     className: PropTypes.string,
@@ -139,7 +134,7 @@ ReferenceManyField.propTypes = {
     perPage: PropTypes.number,
     record: PropTypes.object,
     reference: PropTypes.string.isRequired,
-    resource: PropTypes.string.isRequired,
+    resource: PropTypes.string,
     sortBy: PropTypes.string,
     source: PropTypes.string.isRequired,
     sort: PropTypes.shape({
@@ -154,13 +149,7 @@ ReferenceManyField.defaultProps = {
     perPage: 25,
     sort: { field: 'id', order: 'DESC' },
     source: 'id',
-};
-
-const EnhancedReferenceManyField = withStyles(styles)(ReferenceManyField);
-
-EnhancedReferenceManyField.defaultProps = {
     addLabel: true,
-    source: 'id',
 };
 
-export default EnhancedReferenceManyField;
+export default ReferenceManyField;

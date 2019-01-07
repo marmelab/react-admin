@@ -2,7 +2,7 @@ import debounce from 'lodash/debounce';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Quill from 'quill';
-import { addField } from 'react-admin';
+import { addField } from 'ra-core';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import { withStyles } from '@material-ui/core/styles';

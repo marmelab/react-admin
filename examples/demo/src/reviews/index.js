@@ -68,6 +68,11 @@ export const ReviewFilter = withStyles(filterStyles)(
 );
 
 const listStyles = {
+    headerRow: {
+        borderLeftColor: 'white',
+        borderLeftWidth: 5,
+        borderLeftStyle: 'solid',
+    },
     comment: {
         maxWidth: '18em',
         overflow: 'hidden',
@@ -95,7 +100,10 @@ export const ReviewList = withStyles(listStyles)(({ classes, ...props }) => (
         <Responsive
             xsmall={<MobileGrid />}
             medium={
-                <Datagrid rowStyle={rowStyle}>
+                <Datagrid
+                    rowStyle={rowStyle}
+                    classes={{ headerRow: classes.headerRow }}
+                >
                     <DateField source="date" />
                     <CustomerReferenceField />
                     <ProductReferenceField />

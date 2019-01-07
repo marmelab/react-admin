@@ -62,16 +62,21 @@ class BulkDeleteButton extends Component {
             selectedIds,
             startUndoable,
             undoable,
+            onClick,
         } = this.props;
         if (undoable) {
             startUndoable(crudDeleteMany(resource, selectedIds, basePath));
         } else {
             dispatchCrudDeleteMany(resource, selectedIds, basePath);
         }
+
+        if (typeof onClick === 'function') {
+            onClick();
+        }
     };
 
     render() {
-        const { classes, label, icon, ...rest } = this.props;
+        const { classes, label, icon, onClick, ...rest } = this.props;
         return (
             <Button
                 onClick={this.handleClick}

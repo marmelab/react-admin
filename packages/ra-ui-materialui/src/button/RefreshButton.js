@@ -19,8 +19,13 @@ class RefreshButton extends Component {
     };
 
     handleClick = event => {
+        const { refreshView, onClick } = this.props; 
         event.preventDefault();
-        this.props.refreshView();
+        refreshView();
+
+        if (typeof onClick === 'function') {
+            onClick();
+        }
     };
 
     render() {
