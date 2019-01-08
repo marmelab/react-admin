@@ -31,6 +31,7 @@ const getTabFullPath = (tab, index, baseUrl) =>
  *
  * Receives the current `record` from the parent `<Show>` component,
  * and passes it to its childen. Children should be Tab components.
+ * The object passed as `options` props is passed to the material-ui <Tabs> component
  *
  * @example
  *     // in src/posts.js
@@ -77,6 +78,7 @@ export class TabbedShowLayout extends Component {
             translate,
             version,
             value,
+            options,
             ...rest
         } = this.props;
 
@@ -91,6 +93,7 @@ export class TabbedShowLayout extends Component {
                     // so we can use it as a way to determine the current tab
                     value={location.pathname}
                     indicatorColor="primary"
+                    {...options}
                 >
                     {Children.map(children, (tab, index) => {
                         if (!tab) return null;
@@ -144,6 +147,7 @@ TabbedShowLayout.propTypes = {
     value: PropTypes.number,
     version: PropTypes.number,
     translate: PropTypes.func,
+    options: PropTypes.object,
 };
 
 const enhance = compose(
