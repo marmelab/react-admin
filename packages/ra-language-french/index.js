@@ -9,6 +9,7 @@ module.exports = {
             cancel: 'Annuler',
             clear_input_value: 'Vider le champ',
             clone: 'Dupliquer',
+            confirm: 'Confirmer',
             create: 'Créer',
             delete: 'Supprimer',
             edit: 'Éditer',
