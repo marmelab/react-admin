@@ -8,7 +8,7 @@
         "start": "./node_modules/.bin/webpack-dev-server --progress --color --hot --watch --mode development",
         "serve": "./node_modules/.bin/serve --listen 8080 ./dist",
         "build": "./node_modules/.bin/webpack-cli --color --mode development --hide-modules true",
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "test": "jest"
     },
     "author": "",
     "license": "MIT",
@@ -24,9 +24,12 @@
         "@material-ui/core": "~1.4.0",
         "@material-ui/icons": "~1.1.0",
         "babel-loader": "^8.0.4",
+        "enzyme": "^3.8.0",
+        "enzyme-adapter-react-16": "^1.7.1",
         "hard-source-webpack-plugin": "^0.11.2",
         "html-loader": "~0.5.5",
         "html-webpack-plugin": "~3.2.0",
+        "jest": "^23.6.0",
         "ra-data-fakerest": "^2.0.0",
         "ra-input-rich-text": "^2.0.0",
         "ra-language-english": "^2.0.0",
