@@ -11,6 +11,8 @@ import { fade } from '@material-ui/core/styles/colorManipulator';
 import ActionCheck from '@material-ui/icons/CheckCircle';
 import AlertError from '@material-ui/icons/ErrorOutline';
 import classnames from 'classnames';
+import compose from 'recompose/compose';
+import { translate } from 'ra-core';
 
 const styles = theme => ({
     confirmPrimary: {
@@ -56,20 +58,21 @@ const Confirm = ({
     onConfirm,
     onClose,
     classes,
+    translate,
 }) => (
     <Dialog
         open={isOpen}
         onClose={onClose}
         aria-labelledby="alert-dialog-title"
     >
-        <DialogTitle id="alert-dialog-title">{title}</DialogTitle>
+        <DialogTitle id="alert-dialog-title">{translate(title, { _: title })}</DialogTitle>
         <DialogContent>
-            <DialogContentText>{content}</DialogContentText>
+            <DialogContentText>{translate(content, { _: content })}</DialogContentText>
         </DialogContent>
         <DialogActions>
             <Button onClick={onClose}>
                 <AlertError className={classes.iconPaddingStyle} />
-                {cancel}
+                {translate(cancel, { _: cancel })}
             </Button>
             <Button
                 onClick={onConfirm}
@@ -80,7 +83,7 @@ const Confirm = ({
                 autoFocus
             >
                 <ActionCheck className={classes.iconPaddingStyle} />
-                {confirm}
+                {translate(confirm, { _: confirm })}
             </Button>
         </DialogActions>
     </Dialog>
@@ -96,14 +99,18 @@ Confirm.propTypes = {
     onClose: PropTypes.func.isRequired,
     onConfirm: PropTypes.func.isRequired,
     title: PropTypes.string.isRequired,
+    translate: PropTypes.func.isRequired,
 };
 
 Confirm.defaultProps = {
-    cancel: 'Cancel',
+    cancel: 'ra.action.cancel',
     classes: {},
-    confirm: 'Confirm',
+    confirm: 'ra.action.confirm',
     confirmColor: 'primary',
     isOpen: false,
 };
 
-export default withStyles(styles)(Confirm);
+export default compose(
+    withStyles(styles),
+    translate
+)(Confirm);
