@@ -40,7 +40,7 @@ ListToolbar.propTypes = {
     filters: PropTypes.element,
     actions: PropTypes.element,
     bulkActions: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
-    exporter: PropTypes.func,
+    exporter: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
 };
 
 export default withStyles(styles)(ListToolbar);
