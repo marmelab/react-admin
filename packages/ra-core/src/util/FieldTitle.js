@@ -5,6 +5,7 @@ import pure from 'recompose/pure';
 import compose from 'recompose/compose';
 
 import translate from '../i18n/translate';
+import getFieldLabelTranslationArgs from './getFieldLabelTranslationArgs';
 
 export const FieldTitle = ({
     resource,
@@ -14,16 +15,7 @@ export const FieldTitle = ({
     translate,
 }) => (
     <span>
-        {typeof label !== 'undefined'
-            ? translate(label, { _: label })
-            : typeof source !== 'undefined'
-                ? translate(`resources.${resource}.fields.${source}`, {
-                      _: inflection.transform(source, [
-                          'underscore',
-                          'humanize',
-                      ]),
-                  })
-                : ''}
+        {translate(...getFieldLabelTranslationArgs({ label, resource, source }))}
         {isRequired && ' *'}
     </span>
 );

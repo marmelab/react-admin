@@ -149,6 +149,18 @@ import { BooleanField } from 'react-admin';
 
 ![BooleanField](./img/boolean-field.png)
 
+The `BooleanField` also includes an hidden text for accessibility (or to query in end to end tests). By default, it includes the translated label and the translated value, for example `Published: false`.
+
+If you need to override it, you can use the `valueLabelTrue` and `valueLabelFalse` props which accepts a string. Those strings may be translation keys:
+
+```jsx
+// Simple texts
+<BooleanField source="published" valueLabelTrue="Has been published" valueLabelFalse="Has not been published yet" />
+
+// Translation keys
+<BooleanField source="published" valueLabelTrue="myapp.published.true" valueLabelFalse="myapp.published.false" />
+```
+
 ## `<ChipField>`
 
 Displays a value inside a ["Chip"](http://www.material-ui.com/#/components/chip), which is Material UI's term for a label.
