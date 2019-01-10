@@ -2,6 +2,8 @@
 import PeopleIcon from '@material-ui/icons/People';
 import SearchIcon from '@material-ui/icons/Search';
 import InputAdornment from '@material-ui/core/InputAdornment';
+import memoize from 'lodash/memoize';
+
 import React from 'react';
 import {
     Datagrid,
@@ -18,6 +20,7 @@ import {
 export const UserIcon = PeopleIcon;
 
 import Aside from './Aside';
+import UserEditEmbedded from './UserEditEmbedded';
 
 const UserFilter = ({ permissions, ...props }) => (
     <Filter {...props}>
@@ -26,6 +29,12 @@ const UserFilter = ({ permissions, ...props }) => (
         {permissions === 'admin' ? <TextInput source="role" /> : null}
     </Filter>
 );
+
+const rowClick = memoize(permissions => (id, basePath, record) => {
+    return permissions === 'admin'
+        ? Promise.resolve('edit')
+        : Promise.resolve('show');
+});
 
 const UserList = ({ permissions, ...props }) => (
     <List
@@ -45,7 +54,10 @@ const UserList = ({ permissions, ...props }) => (
                 />
             }
             medium={
-                <Datagrid rowClick="show">
+                <Datagrid
+                    rowClick={rowClick(permissions)}
+                    expand={<UserEditEmbedded />}
+                >
                     <TextField source="id" />
                     <TextField source="name" />
                     {permissions === 'admin' && <TextField source="role" />}

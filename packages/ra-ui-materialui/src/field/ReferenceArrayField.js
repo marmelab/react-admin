@@ -14,11 +14,11 @@ export const ReferenceArrayFieldView = ({
     classes = {},
     data,
     ids,
-    isLoading,
+    loadedOnce,
     reference,
     referenceBasePath,
 }) => {
-    if (isLoading) {
+    if (loadedOnce === false) {
         return <LinearProgress className={classes.progress} />;
     }
 
@@ -27,7 +27,7 @@ export const ReferenceArrayFieldView = ({
         resource: reference,
         ids,
         data,
-        isLoading,
+        loadedOnce,
         basePath: referenceBasePath,
         currentSort: {},
     });
@@ -38,7 +38,7 @@ ReferenceArrayFieldView.propTypes = {
     className: PropTypes.string,
     data: PropTypes.object,
     ids: PropTypes.array,
-    isLoading: PropTypes.bool,
+    loadedOnce: PropTypes.bool,
     children: PropTypes.element.isRequired,
     reference: PropTypes.string.isRequired,
     referenceBasePath: PropTypes.string,

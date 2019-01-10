@@ -8,7 +8,7 @@ import {
     UPDATE_MANY,
     DELETE,
     DELETE_MANY,
-} from 'react-admin';
+} from 'ra-core';
 
 export const QUERY_TYPES = [GET_LIST, GET_MANY, GET_MANY_REFERENCE, GET_ONE];
 export const MUTATION_TYPES = [

@@ -1,5 +1,5 @@
 import { TypeKind } from 'graphql';
-import { GET_LIST, GET_MANY, GET_MANY_REFERENCE } from 'react-admin';
+import { GET_LIST, GET_MANY, GET_MANY_REFERENCE } from 'ra-core';
 import getFinalType from './getFinalType';
 
 const sanitizeResource = (introspectionResults, resource) => data => {

@@ -33,7 +33,7 @@ interface Props {
     initialState: object;
     loading: ComponentType;
     locale: string;
-    loginPage: ComponentType;
+    loginPage: ComponentType | boolean;
     logoutButton: ComponentType;
     menu: ComponentType;
     theme: object;
@@ -85,21 +85,29 @@ React-admin requires a valid dataProvider function to work.`);
 
         const logout = authProvider ? createElement(logoutButton) : null;
 
+        if (loginPage === true && process.env.NODE_ENV !== 'production') {
+            console.warn(
+                'You passed true to the loginPage prop. You must either pass false to disable it or a component class to customize it'
+            );
+        }
+
         return (
             <TranslationProvider>
                 <ConnectedRouter history={this.history}>
                     <Switch>
-                        <Route
-                            exact
-                            path="/login"
-                            render={props =>
-                                createElement(loginPage, {
-                                    ...props,
-                                    title,
-                                    theme,
-                                })
-                            }
-                        />
+                        {loginPage !== false ? (
+                            <Route
+                                exact
+                                path="/login"
+                                render={props =>
+                                    createElement(loginPage as ComponentType, {
+                                        ...props,
+                                        title,
+                                        theme,
+                                    })
+                                }
+                            />
+                        ) : null}
                         <Route
                             path="/"
                             render={props => (

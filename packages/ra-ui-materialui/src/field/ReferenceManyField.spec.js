@@ -6,28 +6,6 @@ import TextField from './TextField';
 import SingleFieldList from '../list/SingleFieldList';
 
 describe('<ReferenceManyField />', () => {
-    it('should render a loading indicator when isLoading is true', () => {
-        const wrapper = shallow(
-            <ReferenceManyFieldView
-                resource="foo"
-                reference="bar"
-                basePath=""
-                isLoading={true}
-            >
-                <SingleFieldList>
-                    <TextField source="title" />
-                </SingleFieldList>
-            </ReferenceManyFieldView>,
-            { disableLifecycleMethods: true }
-        );
-        const ProgressElements = wrapper.find('WithStyles(LinearProgress)');
-        assert.equal(ProgressElements.length, 1);
-        const SingleFieldListElement = wrapper.find(
-            'WithStyles(SingleFieldList)'
-        );
-        assert.equal(SingleFieldListElement.length, 0);
-    });
-
     it('should render a list of the child component', () => {
         const data = {
             1: { id: 1, title: 'hello' },

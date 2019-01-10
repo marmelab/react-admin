@@ -275,7 +275,7 @@ export class AutocompleteInput extends React.Component {
             source,
             value,
             ref,
-            options: { InputProps, ...options },
+            options: { InputProps, suggestionsContainerProps, ...options },
             ...other
         } = inputProps;
         if (typeof meta === 'undefined') {
@@ -324,12 +324,12 @@ export class AutocompleteInput extends React.Component {
         );
     };
 
-    renderSuggestionsContainer = options => {
+    renderSuggestionsContainer = autosuggestOptions => {
         const {
             containerProps: { className, ...containerProps },
             children,
-        } = options;
-        const { classes = {} } = this.props;
+        } = autosuggestOptions;
+        const { classes = {}, options } = this.props;
 
         return (
             <Popper
@@ -337,6 +337,7 @@ export class AutocompleteInput extends React.Component {
                 open={Boolean(children)}
                 anchorEl={this.inputEl}
                 placement="bottom-start"
+                {...options.suggestionsContainerProps}
             >
                 <Paper
                     square
@@ -440,13 +441,16 @@ export class AutocompleteInput extends React.Component {
         this.previousFilterValue = value;
     };
 
-    shouldRenderSuggestions = (val) => {
-      const { shouldRenderSuggestions } = this.props;
-      if (shouldRenderSuggestions !== undefined && typeof shouldRenderSuggestions === 'function') {
-        return shouldRenderSuggestions(val)
-      }
-
-      return true
+    shouldRenderSuggestions = val => {
+        const { shouldRenderSuggestions } = this.props;
+        if (
+            shouldRenderSuggestions !== undefined &&
+            typeof shouldRenderSuggestions === 'function'
+        ) {
+            return shouldRenderSuggestions(val);
+        }
+      
+        return true;
     };
 
     render() {

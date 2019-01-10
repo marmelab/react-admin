@@ -3,6 +3,7 @@ import loginPageFactory from '../support/LoginPage';
 
 describe('List Page', () => {
     const ListPagePosts = listPageFactory('/#/posts');
+    const ListPageUsers = listPageFactory('/#/users');
     const LoginPage = loginPageFactory('/#/login');
 
     beforeEach(() => {
@@ -17,6 +18,9 @@ describe('List Page', () => {
 
     describe('Auto-hide AppBar', () => {
         it('should hide/show the appBar when scroll action appears', () => {
+            // wait for the skeleton to disappear
+            cy.contains('1-10 of 13');
+
             cy.viewport(1280, 500);
 
             cy.scrollTo(0, 200);
@@ -165,6 +169,57 @@ describe('List Page', () => {
             ListPagePosts.toggleSelectSomeItems(3);
             ListPagePosts.applyDeleteBulkAction();
             cy.contains('1-10 of 10');
+        });
+    });
+
+    describe('rowClick', () => {
+        it('should accept a function', () => {
+            cy.contains(
+                'Fusce massa lorem, pulvinar a posuere ut, accumsan ac nisi'
+            )
+                .parents('tr')
+                .click();
+            cy.contains('Summary').should(el => expect(el).to.exist);
+        });
+
+        it('should accept a function returning a promise', () => {
+            LoginPage.navigate();
+            LoginPage.login('user', 'password');
+            ListPageUsers.navigate();
+            cy.contains('Annamarie Mayer')
+                .parents('tr')
+                .click();
+            cy.contains('Summary').should(el => expect(el).to.exist);
+        });
+    });
+
+    describe('expand panel', () => {
+        it('should show an expand button opening the expand element', () => {
+            cy.contains('1-10 of 13'); // wait for data
+            cy.get('[role="expand"]')
+                .eq(0)
+                .click();
+            cy.get('[role="expand-content"]').should(el =>
+                expect(el).to.contain(
+                    'Curabitur eu odio ullamcorper, pretium sem at, blandit libero. Nulla sodales facilisis libero, eu gravida tellus ultrices nec. In ut gravida mi. Vivamus finibus tortor tempus egestas lacinia. Cras eu arcu nisl. Donec pretium dolor ipsum, eget feugiat urna iaculis ut.'
+                )
+            );
+            cy.get('.datagrid-body').should(el =>
+                expect(el).to.not.contain('[role="expand-content"]')
+            );
+        });
+
+        it('should accept multiple expands', () => {
+            cy.contains('1-10 of 13'); // wait for data
+            cy.get('[role="expand"]')
+                .eq(0)
+                .click();
+            cy.get('[role="expand"]')
+                .eq(1)
+                .click();
+            cy.get('[role="expand-content"]').should(el =>
+                expect(el).to.have.length(2)
+            );
         });
     });
 

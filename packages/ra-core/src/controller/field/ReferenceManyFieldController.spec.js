@@ -5,7 +5,7 @@ import { render } from 'react-testing-library';
 import { ReferenceManyFieldController } from './ReferenceManyFieldController';
 
 describe('<ReferenceManyFieldController />', () => {
-    it('should set isLoading to true when related records are not yet fetched', () => {
+    it('should set loadedOnce to false when related records are not yet fetched', () => {
         const children = jest.fn();
         shallow(
             <ReferenceManyFieldController
@@ -19,7 +19,7 @@ describe('<ReferenceManyFieldController />', () => {
             </ReferenceManyFieldController>,
             { disableLifecycleMethods: true }
         );
-        assert.equal(children.mock.calls[0][0].isLoading, true);
+        assert.equal(children.mock.calls[0][0].loadedOnce, false);
     });
 
     it('should pass data and ids to children function', () => {
@@ -117,27 +117,27 @@ describe('<ReferenceManyFieldController />', () => {
 
     it('should call crudGetManyReference when its props changes', () => {
         const crudGetManyReference = jest.fn();
-        const ControllerWrapper = (props) => (
-            <ReferenceManyFieldController record={{ id: 1 }}
-            resource="foo"
-            reference="bar"
-            target="foo_id"
-            basePath=""
-            data={{
-                1: { id: 1, title: 'hello' },
-                2: { id: 2, title: 'world' },
-            }}
-            ids={[1, 2]}
-            crudGetManyReference={crudGetManyReference}
-            {...props}>
+        const ControllerWrapper = props => (
+            <ReferenceManyFieldController
+                record={{ id: 1 }}
+                resource="foo"
+                reference="bar"
+                target="foo_id"
+                basePath=""
+                data={{
+                    1: { id: 1, title: 'hello' },
+                    2: { id: 2, title: 'world' },
+                }}
+                ids={[1, 2]}
+                crudGetManyReference={crudGetManyReference}
+                {...props}
+            >
                 {() => null}
             </ReferenceManyFieldController>
         );
 
         const { rerender } = render(<ControllerWrapper />);
-        rerender(
-            <ControllerWrapper sort={{ field: 'id', order: 'ASC' }} />
-        );
+        rerender(<ControllerWrapper sort={{ field: 'id', order: 'ASC' }} />);
 
         assert.deepEqual(crudGetManyReference.mock.calls[1], [
             'bar',

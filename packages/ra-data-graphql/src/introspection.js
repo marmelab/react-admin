@@ -1,6 +1,6 @@
 import { introspectionQuery } from 'graphql';
 import gql from 'graphql-tag';
-import { GET_LIST, GET_ONE } from 'react-admin';
+import { GET_LIST, GET_ONE } from 'ra-core';
 
 import { ALL_TYPES } from './constants';
 
