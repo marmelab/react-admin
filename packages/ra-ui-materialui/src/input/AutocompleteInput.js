@@ -449,7 +449,7 @@ export class AutocompleteInput extends React.Component {
         ) {
             return shouldRenderSuggestions(val);
         }
-      
+
         return true;
     };
 
