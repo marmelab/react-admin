@@ -7,6 +7,7 @@ import compose from 'recompose/compose';
 import { translate } from 'ra-core';
 
 import CardContentInner from '../layout/CardContentInner';
+import TabbedShowLayoutTabs from './TabbedShowLayoutTabs';
 
 const sanitizeRestProps = ({
     children,
@@ -18,6 +19,7 @@ const sanitizeRestProps = ({
     initialValues,
     staticContext,
     translate,
+    tabs,
     ...rest
 }) => rest;
 
@@ -31,7 +33,7 @@ const getTabFullPath = (tab, index, baseUrl) =>
  *
  * Receives the current `record` from the parent `<Show>` component,
  * and passes it to its childen. Children should be Tab components.
- * The object passed as `options` props is passed to the material-ui <Tabs> component
+ * The component passed as `tabs` props replaces the default material-ui's <Tabs> component.
  *
  * @example
  *     // in src/posts.js
@@ -78,7 +80,7 @@ export class TabbedShowLayout extends Component {
             translate,
             version,
             value,
-            options,
+            tabs,
             ...rest
         } = this.props;
 
@@ -88,14 +90,15 @@ export class TabbedShowLayout extends Component {
                 key={version}
                 {...sanitizeRestProps(rest)}
             >
-                <Tabs
-                    // The location pathname will contain the page path including the current tab path
-                    // so we can use it as a way to determine the current tab
-                    value={location.pathname}
-                    indicatorColor="primary"
-                    {...options}
-                >
-                    {Children.map(children, (tab, index) => {
+                {React.cloneElement(
+                    tabs,
+                    {
+                      // The location pathname will contain the page path including the current tab path
+                      // so we can use it as a way to determine the current tab
+                      value: location.pathname,
+                      match
+                    },
+                    Children.map(children, (tab, index) => {
                         if (!tab) return null;
 
                         // Builds the full tab tab which is the concatenation of the last matched route in the
@@ -108,8 +111,8 @@ export class TabbedShowLayout extends Component {
                             context: 'header',
                             value: tabPath,
                         });
-                    })}
-                </Tabs>
+                    })
+                )}
                 <Divider />
                 <CardContentInner>
                     {Children.map(
@@ -147,7 +150,11 @@ TabbedShowLayout.propTypes = {
     value: PropTypes.number,
     version: PropTypes.number,
     translate: PropTypes.func,
-    options: PropTypes.object,
+  tabs: PropTypes.element.required
+};
+
+TabbedShowLayout.defaultProps = {
+    tabs: <TabbedShowLayoutTabs />
 };
 
 const enhance = compose(
