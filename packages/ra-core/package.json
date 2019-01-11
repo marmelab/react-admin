@@ -38,11 +38,17 @@
         "react-dom": "~16.3.1",
         "react-test-renderer": "~16.3.1",
         "react-testing-library": "^5.2.3",
+        "react-redux": "~5.0.7",
+        "redux": "~3.7.2",
+        "react-router-redux": "~5.0.0-alpha.9",
         "rimraf": "^2.6.2"
     },
     "peerDependencies": {
         "react": "^16.3.0",
-        "react-dom": "^16.3.0"
+        "react-dom": "^16.3.0",
+        "react-redux": "^5.0.7",
+        "redux": "^3.7.2",
+        "react-router-redux": "^5.0.0-alpha.9"
     },
     "dependencies": {
         "classnames": "~2.2.5",
@@ -53,12 +59,9 @@
         "prop-types": "~15.6.1",
         "query-string": "~5.1.1",
         "ra-language-english": "^2.6.0",
-        "react-redux": "~5.0.7",
         "react-router": "~4.2.0",
         "react-router-dom": "~4.2.2",
-        "react-router-redux": "~5.0.0-alpha.9",
         "recompose": "~0.26.0",
-        "redux": "~3.7.2",
         "redux-form": "~7.4.0",
         "redux-saga": "~0.16.0",
         "reselect": "~3.0.0"
