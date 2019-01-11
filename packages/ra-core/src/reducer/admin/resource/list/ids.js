@@ -1,8 +1,6 @@
 import uniq from 'lodash/uniq';
 import {
     CRUD_GET_LIST_SUCCESS,
-    CRUD_DELETE_OPTIMISTIC,
-    CRUD_DELETE_MANY_OPTIMISTIC,
     CRUD_GET_MANY_SUCCESS,
     CRUD_GET_MANY_REFERENCE_SUCCESS,
     CRUD_GET_ONE_SUCCESS,
@@ -11,6 +9,7 @@ import {
 } from '../../../../actions/dataActions';
 
 import getFetchedAt from '../../../../util/getFetchedAt';
+import { DELETE, DELETE_MANY } from '../../../../dataFetchActions';
 
 export const addRecordIdsFactory = getFetchedAt => (
     newRecordIds = [],
@@ -29,23 +28,9 @@ export const addRecordIdsFactory = getFetchedAt => (
 
 const addRecordIds = addRecordIdsFactory(getFetchedAt);
 
-export default (previousState = [], { type, payload }) => {
-    switch (type) {
-        case CRUD_GET_LIST_SUCCESS:
-            return addRecordIds(payload.data.map(({ id }) => id), []);
-        case CRUD_GET_MANY_SUCCESS:
-        case CRUD_GET_MANY_REFERENCE_SUCCESS:
-            return addRecordIds(
-                payload.data
-                    .map(({ id }) => id)
-                    .filter(id => previousState.indexOf(id) !== -1),
-                previousState
-            );
-        case CRUD_GET_ONE_SUCCESS:
-        case CRUD_CREATE_SUCCESS:
-        case CRUD_UPDATE_SUCCESS:
-            return addRecordIds([payload.data.id], previousState);
-        case CRUD_DELETE_OPTIMISTIC: {
+export default (previousState = [], { type, payload, meta }) => {
+    if (meta && meta.optimistic) {
+        if (meta.fetch === DELETE) {
             const index = previousState
                 .map(el => el == payload.id) // eslint-disable-line eqeqeq
                 .indexOf(true);
@@ -63,7 +48,7 @@ export default (previousState = [], { type, payload }) => {
 
             return newState;
         }
-        case CRUD_DELETE_MANY_OPTIMISTIC: {
+        if (meta.fetch === DELETE_MANY) {
             const newState = previousState.filter(
                 el => !payload.ids.includes(el)
             );
@@ -73,6 +58,23 @@ export default (previousState = [], { type, payload }) => {
 
             return newState;
         }
+    }
+
+    switch (type) {
+        case CRUD_GET_LIST_SUCCESS:
+            return addRecordIds(payload.data.map(({ id }) => id), []);
+        case CRUD_GET_MANY_SUCCESS:
+        case CRUD_GET_MANY_REFERENCE_SUCCESS:
+            return addRecordIds(
+                payload.data
+                    .map(({ id }) => id)
+                    .filter(id => previousState.indexOf(id) !== -1),
+                previousState
+            );
+        case CRUD_GET_ONE_SUCCESS:
+        case CRUD_CREATE_SUCCESS:
+        case CRUD_UPDATE_SUCCESS:
+            return addRecordIds([payload.data.id], previousState);
         default:
             return previousState;
     }
