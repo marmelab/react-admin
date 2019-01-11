@@ -72,7 +72,10 @@ export class ReferenceManyFieldController extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (this.props.record.id !== nextProps.record.id) {
+        if (
+          this.props.record.id !== nextProps.record.id ||
+          !isEqual(this.props.filter, nextProps.filter)
+        ) {
             this.fetchReferences(nextProps);
         }
 

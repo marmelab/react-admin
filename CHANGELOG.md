@@ -1,5 +1,18 @@
 # Changelog
 
+## v2.6.1
+
+* Fix welcome message appears in production when permissions lead to no resource ([2759](https://github.com/marmelab/react-admin/pull/2759)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix warning when using `fullWidth` with `BooleanInput` ([2758](https://github.com/marmelab/react-admin/pull/2758)) ([djhi](https://github.com/djhi))
+* Fix incomplete optimistic handling in delete and update ([2756](https://github.com/marmelab/react-admin/pull/2756)) ([djhi](https://github.com/djhi))
+* Fix double attribute declaration in `LoginForm` causes error in IE11 ([2754](https://github.com/marmelab/react-admin/pull/2754)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `ReferenceManyField` doesn't rerender when the filter props changes ([2753](https://github.com/marmelab/react-admin/pull/2753)) ([kandebr](https://github.com/kandebr))
+* Fix `CheckboxGroupInput` design ([2751](https://github.com/marmelab/react-admin/pull/2751)) ([Luwangel](https://github.com/Luwangel))
+* Fix propType warning when using `exporter false` in List ([2746](https://github.com/marmelab/react-admin/pull/2746)) ([afilp](https://github.com/afilp))
+* Fix `<Confirm>` element isn't translatable ([2739](https://github.com/marmelab/react-admin/pull/2739)) ([djhi](https://github.com/djhi))
+* Improve documentation about unit testing authorization logic ([2728](https://github.com/marmelab/react-admin/pull/2728)) ([Kmaschta](https://github.com/Kmaschta))
+* Update italian translation url ([2725] (https://github.com/marmelab/react-admin/pull/2725)) ([stefsava](https://github.com/stefsava))
+
 ## v2.6.0
 
 * Add skeleton to `<Datagrid>` when loading the data for the first time ([2706](https://github.com/marmelab/react-admin/pull/2706)) ([fzaninotto](https://github.com/fzaninotto))
