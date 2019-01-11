@@ -224,6 +224,7 @@ CheckboxGroupInput.propTypes = {
 
 CheckboxGroupInput.defaultProps = {
     choices: [],
+    classes: {},
     options: {},
     optionText: 'name',
     optionValue: 'id',
