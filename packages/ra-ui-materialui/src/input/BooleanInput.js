@@ -22,6 +22,7 @@ export class BooleanInput extends Component {
             source,
             resource,
             options,
+            fullWidth,
             ...rest
         } = this.props;
 
