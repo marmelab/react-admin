@@ -20,7 +20,8 @@ export const styles = {
     },
     card: {
         position: 'relative',
-        flex: '1 1 auto',
+        flex: '1 1 0px',
+        overflowX: 'auto',
     },
     actions: {
         zIndex: 2,

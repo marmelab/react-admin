@@ -14,7 +14,8 @@ export const styles = {
         display: 'flex',
     },
     card: {
-        flex: '1 1 auto',
+        flex: '1 1 0px',
+        overflowX: 'auto',
     },
 };
 
