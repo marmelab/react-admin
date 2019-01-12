@@ -120,6 +120,8 @@ module.exports = {
             maxValue: 'Maximum %{max}',
             number: 'Doit être un nombre',
             email: 'Doit être un email',
+            oneOf: `Doit être au choix: %{options}`,
+            regex: 'Doit respecter un format spécifique (regexp): %{pattern}',
         },
     },
 };
