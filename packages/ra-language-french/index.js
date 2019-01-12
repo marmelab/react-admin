@@ -82,6 +82,7 @@ module.exports = {
         },
         navigation: {
             no_results: 'Aucun résultat',
+            no_more_results: 'La page numéro {page} est en dehors des limites. Essayez la page précédente.',
             page_out_of_boundaries: 'La page %{page} est en dehors des limites',
             page_out_from_end: 'Fin de la pagination',
             page_out_from_begin: 'La page doit être supérieure à 1',
