@@ -7,7 +7,7 @@ import TrueIcon from '@material-ui/icons/Done';
 import Typography from '@material-ui/core/Typography';
 import { createStyles, withStyles } from '@material-ui/core/styles';
 import compose from 'recompose/compose';
-import { translate, getFieldLabelTranslationArgs } from 'ra-core';
+import { translate } from 'ra-core';
 
 import sanitizeRestProps from './sanitizeRestProps';
 
@@ -47,17 +47,9 @@ export const BooleanField = ({
         : valueLabelFalse;
 
     if (!ariaLabel) {
-        const fieldLabel = translate(...getFieldLabelTranslationArgs({
-            label: rest.label,
-            resource: rest.resource,
-            source
-        }));
-
-        const valueLabel = value === false
+        ariaLabel = value === false
             ? translate('ra.boolean.false')
             : translate('ra.boolean.true');
-
-        ariaLabel = `${fieldLabel}: ${valueLabel}`;
     }
 
     if (value === false) {
@@ -66,7 +58,6 @@ export const BooleanField = ({
                 component="span"
                 body1="body1"
                 className={className}
-                aria-label={ariaLabel}
                 {...sanitizeRestProps(rest)}
             >
                 <span className={classes.label}>{ariaLabel}</span>
@@ -81,7 +72,6 @@ export const BooleanField = ({
                 component="span"
                 body1="body1"
                 className={className}
-                aria-label={ariaLabel}
                 {...sanitizeRestProps(rest)}
             >
                 <span className={classes.label}>{ariaLabel}</span>
