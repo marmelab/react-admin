@@ -806,7 +806,7 @@ You can tweak how this component fetches the possible values using the `perPage`
 
 ## `<ReferenceInput>`
 
-Use `<ReferenceInput>` for foreign-key values, for instance, to edit the `post_id` of a `comment` resource. This component fetches the possible values in the reference resource (using the `GET_LIST` REST method) and the referenced record (using the `GET_ONE` REST method), then delegates rendering to a subcomponent, to which it passes the possible choices as the `choices` attribute.
+Use `<ReferenceInput>` for foreign-key values, for instance, to edit the `post_id` of a `comment` resource. This component fetches the possible values in the reference resource (using the `GET_LIST` data provider verb) and the referenced record (using the `GET_MANY` data provider verb), then delegates rendering to a subcomponent, to which it passes the possible choices as the `choices` attribute.
 
 This means you can use `<ReferenceInput>` with any of [`<SelectInput>`](#selectinput), [`<AutocompleteInput>`](#autocompleteinput), or [`<RadioButtonGroupInput>`](#radiobuttongroupinput), or even with the component of your choice, provided it supports the `choices` attribute.
 
@@ -830,6 +830,8 @@ import { ReferenceInput, SelectInput } from 'react-admin'
     <Resource name="posts" />
 </Admin>
 ```
+
+**Tip**: Why does `<ReferenceInput>` use the `GET_MANY` verb with a single value `[id]` instead of `GET_ONE` to fetch the record for the current value? Because when there are many `<ReferenceInput>` for the same resource in a form (for instance when inside an `<ArrayInput>`), react-admin *aggregates* the calls to `GET_MANY` into a single one with `[id1, id2, ...)]`. This speeds up the UI and avoids hitting the API too much.
 
 Set the `allowEmpty` prop when you want to add an empty choice with a value of null in the choices list.
 Disabling `allowEmpty` does not mean that the input will be required. If you want to make the input required, you must add a validator as indicated in [Validation Documentation](./CreateEdit.md#validation). Enabling the `allowEmpty` props just adds an empty choice (with `null` value) on top of the options, and makes the value nullable.
