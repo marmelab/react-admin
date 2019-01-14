@@ -10,7 +10,7 @@ describe('<BooleanField />', () => {
         );
         assert.ok(wrapper.first().is('WithStyles(Typography)'));
         assert.equal(wrapper.first().find('pure(Done)').length, 1);
-        assert.equal(wrapper.first().find('span').text(), 'resources.posts.fields.published: ra.boolean.true');
+        assert.equal(wrapper.first().find('span').text(), 'ra.boolean.true');
     });
 
     it('should display tick and custom truthy text if value is true', () => {
@@ -29,7 +29,7 @@ describe('<BooleanField />', () => {
 
         assert.ok(wrapper.first().is('WithStyles(Typography)'));
         assert.equal(wrapper.first().find('pure(Clear)').length, 1);
-        assert.equal(wrapper.first().find('span').text(), 'resources.posts.fields.published: ra.boolean.false');
+        assert.equal(wrapper.first().find('span').text(), 'ra.boolean.false');
     });
 
     it('should display tick and custom falsy text if value is true', () => {
