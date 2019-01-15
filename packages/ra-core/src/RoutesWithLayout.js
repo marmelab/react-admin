@@ -16,23 +16,7 @@ const RoutesWithLayout = ({
 
     return (
         <Switch>
-            {customRoutes &&
-                customRoutes.map((route, index) => route.props.path ? (
-                    <Route
-                        key={index}
-                        exact={route.props.exact}
-                        path={route.props.path}
-                        component={route.props.component}
-                        render={route.props.render}
-                        children={route.props.children} // eslint-disable-line react/no-children-prop
-                    />
-                ) : (
-                    <Redirect
-                        key={index}
-                        from={route.props.from}
-                        to={route.props.to}
-                    />
-                ))}
+            {customRoutes}
             {Children.map(children, child => (
                 <Route
                     key={child.props.name}
