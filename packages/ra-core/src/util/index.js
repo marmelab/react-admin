@@ -1,6 +1,7 @@
 import downloadCSV from './downloadCSV';
 import FieldTitle from './FieldTitle';
 import getFetchedAt from './getFetchedAt';
+import getFieldLabelTranslationArgs from './getFieldLabelTranslationArgs';
 import HttpError from './HttpError';
 import linkToRecord from './linkToRecord';
 import removeEmpty from './removeEmpty';
@@ -15,6 +16,7 @@ export {
     downloadCSV,
     FieldTitle,
     getFetchedAt,
+    getFieldLabelTranslationArgs,
     HttpError,
     linkToRecord,
     removeEmpty,
