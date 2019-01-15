@@ -1,7 +1,7 @@
 import React, { Children, Component, cloneElement, createElement } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, Redirect } from 'react-router-dom';
 import compose from 'recompose/compose';
 import getContext from 'recompose/getContext';
 
@@ -135,7 +135,7 @@ export class CoreAdminRouter extends Component {
                 <Switch>
                     {customRoutes
                         .filter(route => route.props.noLayout)
-                        .map((route, index) => (
+                        .map((route, index) => route.props.path ? (
                             <Route
                                 key={index}
                                 exact={route.props.exact}
@@ -146,6 +146,12 @@ export class CoreAdminRouter extends Component {
                                         props
                                     )
                                 }
+                            />
+                        ) : (
+                            <Redirect
+                                key={index}
+                                from={route.props.from}
+                                to={route.props.to}
                             />
                         ))}
                     <Route
