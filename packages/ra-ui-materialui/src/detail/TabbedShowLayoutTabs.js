@@ -7,7 +7,7 @@ const getTabFullPath = (tab, index, baseUrl) =>
       tab.props.path ? `/${tab.props.path}` : index > 0 ? `/${index}` : ''
     }`;
 
-const TabbedShowLayoutTabs = ({ value, children, match }) => (
+const TabbedShowLayoutTabs = ({ value, children, match, ...rest }) => (
     <Tabs value={value} indicatorColor='primary'>
         {Children.map(children, (tab, index) => {
             if (!tab) return null;
@@ -21,6 +21,7 @@ const TabbedShowLayoutTabs = ({ value, children, match }) => (
             return cloneElement(tab, {
                 context: 'header',
                 value: tabPath,
+                ...rest,
             });
         })}
     </Tabs>
