@@ -11,7 +11,6 @@ const TabbedShowLayoutTabs = ({ children, match, ...rest }) => (
     <Tabs indicatorColor='primary' {...rest} >
         {Children.map(children, (tab, index) => {
             if (!tab) return null;
-
             // Builds the full tab tab which is the concatenation of the last matched route in the
             // TabbedShowLayout hierarchy (ex: '/posts/create', '/posts/12', , '/posts/12/show')
             // and the tab path.
@@ -28,7 +27,8 @@ const TabbedShowLayoutTabs = ({ children, match, ...rest }) => (
 
 TabbedShowLayoutTabs.propTypes = {
     children: PropTypes.node,
-    value: PropTypes.number,
+    match: PropTypes.object,
+    value: PropTypes.string,
 };
 
 export default TabbedShowLayoutTabs;

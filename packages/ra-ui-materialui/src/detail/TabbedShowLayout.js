@@ -132,7 +132,7 @@ TabbedShowLayout.propTypes = {
     value: PropTypes.number,
     version: PropTypes.number,
     translate: PropTypes.func,
-    tabs: PropTypes.element.required
+    tabs: PropTypes.element.isRequired,
 };
 
 TabbedShowLayout.defaultProps = {
