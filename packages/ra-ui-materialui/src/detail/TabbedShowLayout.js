@@ -1,6 +1,5 @@
 import React, { Component, Children, cloneElement } from 'react';
 import PropTypes from 'prop-types';
-import Tabs from '@material-ui/core/Tabs';
 import Divider from '@material-ui/core/Divider';
 import { withRouter, Route } from 'react-router-dom';
 import compose from 'recompose/compose';
@@ -85,33 +84,16 @@ export class TabbedShowLayout extends Component {
         } = this.props;
 
         return (
-            <div
-                className={className}
-                key={version}
-                {...sanitizeRestProps(rest)}
-            >
-                {React.cloneElement(
+            <div className={className} key={version} {...sanitizeRestProps(rest)}>
+                {cloneElement(
                     tabs,
                     {
-                      // The location pathname will contain the page path including the current tab path
-                      // so we can use it as a way to determine the current tab
-                      value: location.pathname,
-                      match
+                        // The location pathname will contain the page path including the current tab path
+                        // so we can use it as a way to determine the current tab
+                        value: location.pathname,
+                        match,
                     },
-                    Children.map(children, (tab, index) => {
-                        if (!tab) return null;
-
-                        // Builds the full tab tab which is the concatenation of the last matched route in the
-                        // TabbedShowLayout hierarchy (ex: '/posts/create', '/posts/12', , '/posts/12/show')
-                        // and the tab path.
-                        // This will be used as the Tab's value
-                        const tabPath = getTabFullPath(tab, index, match.url);
-
-                        return cloneElement(tab, {
-                            context: 'header',
-                            value: tabPath,
-                        });
-                    })
+                    [...children],
                 )}
                 <Divider />
                 <CardContentInner>
@@ -150,7 +132,7 @@ TabbedShowLayout.propTypes = {
     value: PropTypes.number,
     version: PropTypes.number,
     translate: PropTypes.func,
-  tabs: PropTypes.element.required
+    tabs: PropTypes.element.required
 };
 
 TabbedShowLayout.defaultProps = {
