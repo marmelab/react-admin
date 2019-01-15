@@ -7,7 +7,7 @@ const getTabFullPath = (tab, index, baseUrl) =>
       tab.props.path ? `/${tab.props.path}` : index > 0 ? `/${index}` : ''
     }`;
 
-const TabbedShowLayoutTabs = ({ value, children, match, ...rest }) => (
+const TabbedShowLayoutTabs = ({ value, children, match }) => (
     <Tabs value={value} indicatorColor='primary'>
         {Children.map(children, (tab, index) => {
             if (!tab) return null;

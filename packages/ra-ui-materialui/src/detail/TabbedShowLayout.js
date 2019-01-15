@@ -93,7 +93,7 @@ export class TabbedShowLayout extends Component {
                         value: location.pathname,
                         match,
                     },
-                    [...children],
+                    children,
                 )}
                 <Divider />
                 <CardContentInner>
