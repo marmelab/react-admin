@@ -136,7 +136,6 @@ export class CoreAdminRouter extends Component {
                     {customRoutes
                         .filter(route => route.props.noLayout)
                         .map((route) => cloneElement(route, {
-                          ...route.props ,
                           exact: true,
                           render: props =>
                             this.renderCustomRoutesWithoutLayout(
