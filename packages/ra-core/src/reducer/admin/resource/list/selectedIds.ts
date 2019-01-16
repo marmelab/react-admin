@@ -56,10 +56,6 @@ const selectedIdsReducer: Reducer<State> = (
             ];
         }
         if (action.meta.fetch === DELETE_MANY) {
-            const index = previousState.indexOf(action.payload.ids);
-            if (index === -1) {
-                return previousState;
-            }
             return previousState.filter(id => !action.payload.ids.includes(id));
         }
     }
