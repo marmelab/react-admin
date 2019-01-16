@@ -1448,10 +1448,48 @@ const OrderEdit = (props) => (
 );
 ```
 
-**Tip**: When using a `FormDataConsumer` inside an `ArrayInput`, the `FormDataConsumer` will provide two additional properties to its children function:
+**Tip**: When using a `FormDataConsumer` inside an `ArrayInput`, the `FormDataConsumer` will provide three additional properties to its children function:
 
 - `scopedFormData`: an object containing the current values of the currently rendered item from the `ArrayInput`
 - `getSource`: a function which will translate the source into a valid one for the `ArrayInput`
+- `dispatch`: Redux' function to dispatch an action. Useful to update another input value.
+
+Here is an example usage for `dispatch`: A country input that resets a city input on change.
+
+```jsx
+
+import React, { Fragment } from 'react'
+import { change } from 'redux-form'
+import { FormDataConsumer, REDUX_FORM_NAME } from 'react-admin';
+
+const OrderEdit = (props) => (
+    <Edit {...props}>
+        <SimpleForm>
+            <FormDataConsumer>
+                {({ formData, dispatch, ...rest }) => (
+                    <Fragment>
+                        <SelectInput
+                            source="country"
+                            choices={countries}
+                            onChange={value => dispatch(
+                                change(REDUX_FORM_NAME, 'city', null)
+                            )}
+                             {...rest}
+                        />
+                        <SelectInput
+                            source="city"
+                            choices={getCitiesFor(formData.country)}
+                             {...rest}
+                        />
+                    </Fragment>
+                )}
+            </FormDataConsumer>
+        </SimpleForm>
+    </Edit>
+);
+```
+
+And here is an example usage for `getSource` inside `<ArrayInput>`:
 
 ```jsx
 import { FormDataConsumer } from 'react-admin';
