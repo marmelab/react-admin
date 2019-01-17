@@ -10,6 +10,7 @@ import ResettableTextField from './ResettableTextField';
 const sanitizeRestProps = ({
     addLabel,
     allowEmpty,
+    emptyValue,
     basePath,
     choices,
     className,
@@ -155,7 +156,10 @@ export class SelectInput extends Component {
 
     addAllowEmpty = choices => {
         if (this.props.allowEmpty) {
-            return [<MenuItem value="" key="null" />, ...choices];
+            const value = this.props.hasOwnProperty('emptyValue')
+                ? this.props.emptyValue
+                : '';
+            return [<MenuItem value={value} key="null" />, ...choices];
         }
 
         return choices;
