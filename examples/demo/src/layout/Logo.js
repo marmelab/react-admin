@@ -1,6 +1,6 @@
 import React from 'react';
 
-const SvgComponent = props => (
+const Logo = props => (
     <svg width={234.532} height={20.475} viewBox="0 0 62.053 5.417" {...props}>
         <g
             aria-label="~Posters Galore~"
@@ -43,4 +43,4 @@ const SvgComponent = props => (
     </svg>
 );
 
-export default SvgComponent;
+export default Logo;
