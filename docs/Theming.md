@@ -550,11 +550,81 @@ const mapStateToProps = state => ({ isLoading: state.admin.loading > 0 });
 export default connect(mapStateToProps, { setSidebarVisibility })(withStyles(styles)(MyLayout));
 ```
 
-## Using a Custom AppBar
+## Customizing the AppBar Content
 
-By default, React-admin uses [Material_ui's `<AppBar>` component](https://material-ui.com/api/app-bar/) together with [react-headroom](https://github.com/KyleAMathews/react-headroom) to hide the `AppBar` on scroll.
+By default, the react-admin `<AppBar>` component displays the page title. You can override this default by passing children to `<AppBar>` - they will replace the default title. And if you still want to include the page title, make sure you include an element with id `react-admin-title` in the top bar (this uses React Portals). 
 
-You can create your own `AppBar` component to replace the react-admin one. For instance, to remove the "headroom" effect:
+Here is an example customization for `<AppBar>` to include a company logo in the center of the page header:
+
+```jsx
+// in src/MyAppBar.js
+import React from 'react';
+import { AppBar } from 'react-admin';
+import Typography from '@material-ui/core/Typography';
+import { withStyles } from '@material-ui/core/styles';
+
+import Logo from './Logo';
+
+const styles = {
+    title: {
+        flex: 1,
+        textOverflow: 'ellipsis',
+        whiteSpace: 'nowrap',
+        overflow: 'hidden',
+    },
+    spacer: {
+        flex: 1,
+    },
+};
+
+const MyAppBar = withStyles(styles)(({ classes, ...props }) => (
+    <AppBar {...props}>
+        <Typography
+            variant="title"
+            color="inherit"
+            className={classes.title}
+            id="react-admin-title"
+        />
+        <Logo />
+        <span className={classes.spacer} />
+    </AppBar>
+));
+
+export default MyAppBar;
+```
+
+To use this custom `MyAppBar` component, pass it as prop to a custom `Layout`, as shown below:
+
+```jsx
+// in src/MyLayout.js
+import { Layout } from 'react-admin';
+import MyAppBar from './MyAppBar';
+
+const MyLayout = (props) => <Layout {...props} appBar={MyAppBar} />;
+
+export default MyLayout;
+```
+
+Then, use this layout in the `<Admin>` with the `appLayout` prop:
+
+```jsx
+// in src/App.js
+import MyLayout from './MyLayout';
+
+const App = () => (
+    <Admin appLayout={MyLayout} dataProvider={simpleRestProvider('http://path.to.my.api')}>
+        // ...
+    </Admin>
+);
+```
+
+![custom AppBar](./img/custom_appbar.png)
+
+## Replacing The AppBar
+
+For more drastic changes of the top component, you will probably want to create an `<AppBar>` from scratch instead of just passing children to react-admin's `<AppBar>`. 
+
+By default, React-admin uses [Material_ui's `<AppBar>` component](https://material-ui.com/api/app-bar/) together with [react-headroom](https://github.com/KyleAMathews/react-headroom) to hide the `AppBar` on scroll. Here is an example top bar rebuilt from scratch to remove the "headroom" effect:
 
 ```jsx
 // in src/MyAppBar.js
@@ -573,30 +643,7 @@ const MyAppBar = props => (
 export default MyAppBar;
 ```
 
-To use this custom `AppBar` component, pass it as prop to a custom `Layout`, as explained below:
-
-```jsx
-// in src/MyLayout.js
-import { Layout } from 'react-admin';
-import MyAppBar from './MyAppBar';
-
-const MyLayout = (props) => <Layout {...props} appBar={MyAppBar} />;
-
-export default MyLayout;
-```
-
-Then, use this layout in the `<Admin>` with the `applayout` prop:
-
-```jsx
-// in src/App.js
-import MyLayout from './MyLayout';
-
-const App = () => (
-    <Admin appLayout={MyLayout} dataProvider={simpleRestProvider('http://path.to.my.api')}>
-        // ...
-    </Admin>
-);
-```
+Take note that this uses *material-ui's `<AppBar>`* instead of *react-admin's `<AppBar>`*. To use this custom `AppBar` component, pass it as prop to a custom `Layout`, as explained in the previous section.
 
 ## Using a Custom Menu
 
@@ -651,7 +698,7 @@ const MyLayout = (props) => <Layout {...props} menu={MyMenu} />;
 export default MyLayout;
 ```
 
-Then, use this layout in the `<Admin>` `applayout` prop:
+Then, use this layout in the `<Admin>` `appLayout` prop:
 
 ```jsx
 // in src/App.js
