@@ -47,6 +47,7 @@ You can find Data Providers for various backends in third-party repositories:
 * **[Prisma](https://github.com/weakky/ra-data-prisma)**: [weakky/ra-data-prisma](https://github.com/weakky/ra-data-prisma)
 * **[Xmysql](https://github.com/o1lab/xmysql)**: [soaserele/aor-xmysql](https://github.com/soaserele/aor-xmysql)
 * **[Firebase](https://github.com/aymendhaya/ra-data-firebase-client):** [aymendhaya/ra-data-firebase-client](https://github.com/aymendhaya/ra-data-firebase-client).
+* **[Firestore](https://github.com/rafalzawadzki/ra-data-firestore-client):** [rafalzawadzki/ra-data-firestore-client](https://github.com/rafalzawadzki/ra-data-firestore-client).
 * **[JSON API](http://jsonapi.org/)**: [henvo/ra-jsonapi-client](https://github.com/henvo/ra-jsonapi-client)
 * **[Loopback](http://loopback.io/)**: [darthwesker/react-admin-loopback](https://github.com/darthwesker/react-admin-loopback)
 
