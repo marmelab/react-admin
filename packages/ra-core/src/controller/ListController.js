@@ -27,6 +27,7 @@ import {
 } from '../actions/listActions';
 import translate from '../i18n/translate';
 import removeKey from '../util/removeKey';
+import checkMinimumRequiredProps from './checkMinimumRequiredProps';
 
 /**
  * List page component
@@ -439,7 +440,14 @@ function mapStateToProps(state, props) {
     };
 }
 
+
+
 export default compose(
+    checkMinimumRequiredProps('List', [
+        'basePath',
+        'location',
+        'resource',
+    ]),
     connect(
         mapStateToProps,
         {
