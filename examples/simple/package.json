@@ -46,7 +46,7 @@
         "wait-on": "^2.1.0",
         "webpack": "~4.5.0",
         "webpack-cli": "~2.0.13",
-        "webpack-dev-server": "~3.1.1"
+        "webpack-dev-server": "~3.1.11"
     },
     "dependencies": {
         "@babel/polyfill": "^7.0.0"
