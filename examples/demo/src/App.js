@@ -6,9 +6,7 @@ import './App.css';
 import authProvider from './authProvider';
 import sagas from './sagas';
 import themeReducer from './themeReducer';
-import Login from './Login';
-import Layout from './Layout';
-import Menu from './Menu';
+import { Login, Layout, Menu } from './layout';
 import { Dashboard } from './dashboard';
 import customRoutes from './routes';
 import englishMessages from './i18n/en';
@@ -73,7 +71,7 @@ class App extends Component {
 
         return (
             <Admin
-                title="Posters Galore Admin"
+                title=""
                 dataProvider={dataProvider}
                 customReducers={{ theme: themeReducer }}
                 customSagas={sagas}

@@ -1,4 +1,4 @@
-import React, { cloneElement } from 'react';
+import React, { Children, cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
@@ -50,6 +50,7 @@ const AppBar = ({
     children,
     classes,
     className,
+    logo,
     logout,
     open,
     title,
@@ -84,12 +85,16 @@ const AppBar = ({
                         }}
                     />
                 </IconButton>
-                <Typography
-                    variant="title"
-                    color="inherit"
-                    className={classes.title}
-                    id="react-admin-title"
-                />
+                {Children.count(children) === 0 ? (
+                    <Typography
+                        variant="title"
+                        color="inherit"
+                        className={classes.title}
+                        id="react-admin-title"
+                    />
+                ) : (
+                    children
+                )}
                 <LoadingIndicator />
                 {cloneElement(userMenu, { logout })}
             </Toolbar>
