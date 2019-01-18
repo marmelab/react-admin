@@ -9,6 +9,7 @@ import accumulateSaga from './accumulate';
 import refreshSaga from './refresh';
 import i18nSaga from './i18n';
 import undoSaga from './undo';
+import unloadSaga from './unload';
 
 export {
     adminSaga,
@@ -22,4 +23,5 @@ export {
     refreshSaga,
     i18nSaga,
     undoSaga,
+    unloadSaga,
 };
