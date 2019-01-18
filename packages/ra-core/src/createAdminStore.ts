@@ -2,7 +2,9 @@ import { createStore, compose, applyMiddleware } from 'redux';
 import { routerMiddleware } from 'react-router-redux';
 import createSagaMiddleware from 'redux-saga';
 import { all, fork } from 'redux-saga/effects';
+import { History } from 'history';
 
+import { AuthProvider, DataProvider, I18nProvider } from './types';
 import { USER_LOGOUT } from './actions/authActions';
 import createAppReducer from './reducer';
 import { adminSaga } from './sideEffect';
@@ -13,16 +15,27 @@ interface Window {
     __REDUX_DEVTOOLS_EXTENSION__?: () => () => void;
 }
 
+interface Params {
+    dataProvider: DataProvider;
+    history: History;
+    authProvider?: AuthProvider;
+    customReducers?: any;
+    customSagas?: any[];
+    i18nProvider?: I18nProvider;
+    initialState?: object;
+    locale?: string;
+}
+
 export default ({
-    authProvider,
-    customReducers = {},
-    customSagas = [],
     dataProvider,
-    i18nProvider = defaultI18nProvider,
     history,
+    customReducers = {},
+    authProvider = null,
+    customSagas = [],
+    i18nProvider = defaultI18nProvider,
     initialState,
     locale = 'en',
-}) => {
+}: Params) => {
     const messages = i18nProvider(locale);
     const appReducer = createAppReducer(customReducers, locale, messages);
 

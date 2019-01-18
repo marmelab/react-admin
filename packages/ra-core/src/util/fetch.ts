@@ -1,12 +1,18 @@
 import HttpError from './HttpError';
 import { stringify } from 'query-string';
 
-export const fetchJson = (url, options = {}) => {
-    const requestHeaders =
-        options.headers ||
+interface Options extends RequestInit {
+    user?: {
+        authenticated?: boolean;
+        token?: string;
+    };
+}
+
+export const fetchJson = (url, options: Options = {}) => {
+    const requestHeaders = (options.headers ||
         new Headers({
             Accept: 'application/json',
-        });
+        })) as Headers;
     if (
         !requestHeaders.has('Content-Type') &&
         !(options && options.body && options.body instanceof FormData)
@@ -42,7 +48,7 @@ export const fetchJson = (url, options = {}) => {
                     )
                 );
             }
-            return { status, headers, body, json };
+            return Promise.resolve({ status, headers, body, json });
         });
 };
 
