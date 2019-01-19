@@ -49,6 +49,7 @@ You can find Data Providers for various backends in third-party repositories:
 * **[Firebase](https://github.com/aymendhaya/ra-data-firebase-client):** [aymendhaya/ra-data-firebase-client](https://github.com/aymendhaya/ra-data-firebase-client).
 * **[JSON API](http://jsonapi.org/)**: [henvo/ra-jsonapi-client](https://github.com/henvo/ra-jsonapi-client)
 * **[Loopback](http://loopback.io/)**: [darthwesker/react-admin-loopback](https://github.com/darthwesker/react-admin-loopback)
+* **[Hasura](https://github.com/hasura/graphql-engine)**: [hasura/ra-data-hasura](https://github.com/hasura/graphql-engine/tree/master/community/tools/ra-data-hasura)
 
 If you've written a Data Provider for another backend, and open-sourced it, please help complete this list with your package.
 
