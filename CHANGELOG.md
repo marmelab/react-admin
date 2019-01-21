@@ -1,5 +1,20 @@
 # Changelog
 
+## v2.6.2
+
+* Fix prop type warning in `Datagrid` sort prop ([2794](https://github.com/marmelab/react-admin/pull/2794)) ([santaclauze](https://github.com/santaclauze))
+* Fix vulnerability in webpack development tools (did not affect production builds) ([2788](https://github.com/marmelab/react-admin/pull/2788)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix optimistic actions never get sent when changing tabs ([2785](https://github.com/marmelab/react-admin/pull/2785)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix bulk deletion keeps deleted items in selected ids ([2774](https://github.com/marmelab/react-admin/pull/2774)) ([g3offrey](https://github.com/g3offrey))
+* Fix `ReferenceInput` documentation mentions wrong data provider verb ([2764](https://github.com/marmelab/react-admin/pull/2764)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<RichTextInput>` not working on IE11 ([2676](https://github.com/marmelab/react-admin/pull/2676)) ([phacks](https://github.com/phacks))
+* Fix missing translation key in `Pagination` ([2762](https://github.com/marmelab/react-admin/pull/2762)) ([kopax](https://github.com/kopax))
+* Add explicit error message when required props are missing in `Create`, `Edit`, `Show`, and `List` controllers ([2782](https://github.com/marmelab/react-admin/pull/2782)) ([Kmaschta](https://github.com/Kmaschta))
+* Add documentation about dispatching actions within `<FormDataConsumer>` ([2775](https://github.com/marmelab/react-admin/pull/2775)) ([fzaninotto](https://github.com/fzaninotto))
+* Add Hasura data provider ([2791](https://github.com/marmelab/react-admin/pull/2791)) ([praveenweb](https://github.com/praveenweb))
+* Add JSDoc to validators for easier debugging ([2773](https://github.com/marmelab/react-admin/pull/2773)) ([fzaninotto](https://github.com/fzaninotto))
+* Migrate ra-core util scripts to TypeScript ([2787](https://github.com/marmelab/react-admin/pull/2787)) ([fzaninotto](https://github.com/fzaninotto))
+
 ## v2.6.1
 
 * Fix welcome message appears in production when permissions lead to no resource ([2759](https://github.com/marmelab/react-admin/pull/2759)) ([fzaninotto](https://github.com/fzaninotto))
