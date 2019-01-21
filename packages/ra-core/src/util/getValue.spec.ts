@@ -1,4 +1,5 @@
 import getValue from './getValue';
+import expect from 'expect';
 
 describe('getValue', () => {
     it('returns directly the value if it is not an object', () => {

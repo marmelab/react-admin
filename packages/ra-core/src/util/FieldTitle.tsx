@@ -1,17 +1,25 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { SFC } from 'react';
 import inflection from 'inflection';
 import pure from 'recompose/pure';
 import compose from 'recompose/compose';
 
-import translate from '../i18n/translate';
+import translateHoc from '../i18n/translate';
+import { Translate } from '../types';
 
-export const FieldTitle = ({
+interface Props {
+    isRequired?: boolean;
+    resource?: string;
+    source?: string;
+    label?: string;
+    translate?: Translate;
+}
+
+export const FieldTitle: SFC<Props> = ({
     resource,
     source,
     label,
     isRequired,
-    translate,
+    translate = (name: string, options) => name,
 }) => (
     <span>
         {typeof label !== 'undefined'
@@ -28,22 +36,11 @@ export const FieldTitle = ({
     </span>
 );
 
-FieldTitle.propTypes = {
-    isRequired: PropTypes.bool,
-    resource: PropTypes.string,
-    source: PropTypes.string,
-    label: PropTypes.string,
-    translate: PropTypes.func.isRequired,
-};
-
-FieldTitle.defaultProps = {
-    translate: x => x,
-};
 // wat? TypeScript looses the displayName if we don't set it explicitly
 FieldTitle.displayName = 'FieldTitle';
 
 const enhance = compose(
-    translate,
+    translateHoc,
     pure
 );
 
