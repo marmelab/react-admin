@@ -31,7 +31,7 @@ module.exports = {
             dashboard: 'Dashboard',
             edit: '%{name} #%{id}',
             error: 'Something went wrong',
-            list: '%{name} List',
+            list: '%{name}',
             loading: 'Loading',
             not_found: 'Not Found',
             show: '%{name} #%{id}',
@@ -105,7 +105,7 @@ module.exports = {
             data_provider_error:
                 'dataProvider error. Check the console for details.',
             canceled: 'Action cancelled',
-            logged_out: 'Your session has ended, please reconnect.'
+            logged_out: 'Your session has ended, please reconnect.',
         },
         validation: {
             required: 'Required',
