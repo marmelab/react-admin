@@ -13,7 +13,7 @@ import compose from 'recompose/compose';
 import withStyles from '@material-ui/core/styles/withStyles';
 
 const styles = {
-    container: { width: '35em', marginLeft: '1em' },
+    container: { minWidth: '35em', marginLeft: '1em' },
     rightAlignedCell: { textAlign: 'right' },
     boldCell: { fontWeight: 'bold' },
 };

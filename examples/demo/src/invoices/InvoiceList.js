@@ -6,13 +6,13 @@ import {
     DateField,
     ReferenceField,
     NumberField,
-    ShowGuesser,
     Filter,
     DateInput,
 } from 'react-admin';
 
 import FullNameField from '../visitors/FullNameField';
 import AddressField from '../visitors/AddressField';
+import InvoiceShow from './InvoiceShow';
 
 const ListFilters = props => (
     <Filter {...props}>
@@ -23,7 +23,7 @@ const ListFilters = props => (
 
 const InvoiceList = props => (
     <List {...props} filters={<ListFilters />} perPage={25}>
-        <Datagrid expand={<ShowGuesser />}>
+        <Datagrid expand={<InvoiceShow />}>
             <TextField source="id" />
             <DateField source="date" />
             <ReferenceField source="customer_id" reference="customers">
@@ -38,7 +38,7 @@ const InvoiceList = props => (
                 <AddressField />
             </ReferenceField>
             <ReferenceField source="command_id" reference="commands">
-                <TextField source="id" />
+                <TextField source="reference" />
             </ReferenceField>
             <NumberField source="total_ex_taxes" />
             <NumberField source="delivery_fees" />
