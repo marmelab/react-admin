@@ -134,14 +134,12 @@ In order to have a specific resource without `list` prop listed on the menu, you
 );
 ```
 
-## Why React Admin Doesn't Support The Latest Version Of Material-UI?
+## Why Doesn't React Admin Support The Latest Version Of Material-UI?
 
-React Admin users and third-party libraries maintainers might have noticed that the default UI template [`ra-ui-materialui` has `@material-ui/core@^1.4.0` as dependency](https://github.com/marmelab/react-admin/blob/ae45a2509b391a6ea81cdf9c248ff9d28364b6e1/packages/ra-ui-materialui/package.json#L44) even though the latest version of Material UI is up to 3.x.
+React Admin users and third-party libraries maintainers might have noticed that the default UI template `ra-ui-materialui` [has `@material-ui/core@^1.4.0` as dependency](https://github.com/marmelab/react-admin/blob/ae45a2509b391a6ea81cdf9c248ff9d28364b6e1/packages/ra-ui-materialui/package.json#L44) even though the latest version of Material UI is already 3.x.
 
-We didn't planned to upgrade to Material UI v3 few month ago because the MUI team is quick to develop major versions (which include breaking changes), and our team can't follow them. More details on the [issue #2399](https://github.com/marmelab/react-admin/issues/2399).
+We chose not to upgrade to Material UI v3 when it was released because the MUI team was already hard at work preparing the next major version ([which includes major breaking changes](https://github.com/mui-org/material-ui/issues/13663)). In fact, material-ui published a release schedule for one major version every 6 months. This means that developers using material-ui have to upgrade their codebase every six months to get the latest updates. On the other hand, react-admin plans to release a major version once every year, minimizing the upgrade work for developers. This gain in stability is a tradeoff - react-admin users can't use the latest version of material-ui for about half a year.
 
-As of now, the MUI team already considered a [v4 with major breaking changes including the styling system, React 16.8 support and the usage the hook API as its core](https://github.com/mui-org/material-ui/issues/13663).
+Feel free to discuss this policy in [issue #2399](https://github.com/marmelab/react-admin/issues/2399).
 
-Upgrading Material UI on React Admin means a breaking change. The version 2 of React Admin doesn't have one year, so it's unlikely we plan a migration for Material UI v3.
-
-If you are a maintainer of a third-party library based on React Admin, your library have to get the Materiual UI v1.x version as a peer dependency.
+If you are a maintainer of a third-party library based on React Admin, your library has to add material-ui v1.x as a peer dependency.
