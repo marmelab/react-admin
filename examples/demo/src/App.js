@@ -24,6 +24,7 @@ import {
     ProductEdit,
     ProductIcon,
 } from './products';
+import invoices from './invoices';
 import { CategoryList, CategoryEdit, CategoryIcon } from './categories';
 import { ReviewList, ReviewEdit, ReviewIcon } from './reviews';
 
@@ -98,6 +99,7 @@ class App extends Component {
                     icon={CommandIcon}
                     options={{ label: 'Orders' }}
                 />
+                <Resource name="invoices" {...invoices} />
                 <Resource
                     name="products"
                     list={ProductList}

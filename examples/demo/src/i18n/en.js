@@ -71,6 +71,18 @@ export default {
                 returned: 'Returned',
             },
         },
+        invoices: {
+            name: 'Invoice |||| Invoices',
+            fields: {
+                date: 'Invoice date',
+                customer_id: 'Customer',
+                command_id: 'Order',
+                date_gte: 'Passed Since',
+                date_lte: 'Passed Before',
+                total_gte: 'Min amount',
+                address: 'Address',
+            },
+        },
         products: {
             name: 'Poster |||| Posters',
             fields: {
