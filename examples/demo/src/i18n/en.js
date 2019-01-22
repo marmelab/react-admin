@@ -53,6 +53,7 @@ export default {
         },
         commands: {
             name: 'Order |||| Orders',
+            title: 'Order %{reference}',
             fields: {
                 basket: {
                     delivery: 'Delivery',

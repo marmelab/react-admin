@@ -64,6 +64,7 @@ export default {
         },
         commands: {
             name: 'Commande |||| Commandes',
+            title: 'Commande n°%{reference}',
             fields: {
                 basket: {
                     delivery: 'Frais de livraison',
