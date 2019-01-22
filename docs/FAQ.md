@@ -11,6 +11,7 @@ title: "FAQ"
 - [How can I customize the UI depending on the user permissions?](#how-can-i-customize-the-ui-depending-on-the-user-permissions)
 - [How can I customize forms depending on its inputs values?](#how-can-i-customize-forms-depending-on-its-inputs-values)
 - [My Resource is defined but not displayed on the Menu](#my-resource-is-defined-but-not-displayed-on-the-menu)
+- [Why React Admin Doesn't Support The Latest Version Of Material-UI?](#why-react-admin-doesnt-support-the-latest-version-of-material-ui)
 
 ## Can I have custom identifiers/primary keys for my resources?
 
@@ -132,3 +133,15 @@ In order to have a specific resource without `list` prop listed on the menu, you
     </div>
 );
 ```
+
+## Why React Admin Doesn't Support The Latest Version Of Material-UI?
+
+React Admin users and third-party libraries maintainers might have noticed that the default UI template [`ra-ui-materialui` has `@material-ui/core@^1.4.0` as dependency](https://github.com/marmelab/react-admin/blob/ae45a2509b391a6ea81cdf9c248ff9d28364b6e1/packages/ra-ui-materialui/package.json#L44) even though the latest version of Material UI is up to 3.x.
+
+We didn't planned to upgrade to Material UI v3 few month ago because the MUI team is quick to develop major versions (which include breaking changes), and our team can't follow them. More details on the [issue #2399](https://github.com/marmelab/react-admin/issues/2399).
+
+As of now, the MUI team already considered a [v4 with major breaking changes including the styling system, React 16.8 support and the usage the hook API as its core](https://github.com/mui-org/material-ui/issues/13663).
+
+Upgrading Material UI on React Admin means a breaking change. The version 2 of React Admin doesn't have one year, so it's unlikely we plan a migration for Material UI v3.
+
+If you are a maintainer of a third-party library based on React Admin, your library have to get the Materiual UI v1.x version as a peer dependency.
