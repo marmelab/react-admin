@@ -141,6 +141,7 @@ export class SelectArrayInput extends Component {
         this.props.input.onBlur(event.target.value);
         this.setState({ value: event.target.value });
     };
+
     renderMenuItemOption = choice => {
         const { optionText, translate, translateChoice } = this.props;
         if (React.isValidElement(optionText))
@@ -213,16 +214,16 @@ export class SelectArrayInput extends Component {
                     error={!!(touched && error)}
                     renderValue={selected => (
                         <div className={classes.chips}>
-                            {choices
-                                .filter(choice =>
-                                    selected.includes(get(choice, optionValue))
+                            {selected
+                                .map(item =>
+                                    choices.find(
+                                        choice => choice[optionValue] === item
+                                    )
                                 )
-                                .map(choice => (
+                                .map(item => (
                                     <Chip
-                                        key={get(choice, optionValue)}
-                                        label={this.renderMenuItemOption(
-                                            choice
-                                        )}
+                                        key={get(item, optionValue)}
+                                        label={this.renderMenuItemOption(item)}
                                         className={classes.chip}
                                     />
                                 ))}
