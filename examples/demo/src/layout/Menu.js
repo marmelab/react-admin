@@ -17,7 +17,7 @@ import { CommandIcon } from '../commands';
 import invoices from '../invoices';
 import { ProductIcon } from '../products';
 import { CategoryIcon } from '../categories';
-import { ReviewIcon } from '../reviews';
+import reviews from '../reviews';
 import SubMenu from './SubMenu';
 
 class Menu extends Component {
@@ -71,7 +71,7 @@ class Menu extends Component {
                     isOpen={this.state.menuCatalog}
                     sidebarIsOpen={open}
                     name="Catalog"
-                    icon={<VisitorIcon />}
+                    icon={<ProductIcon />}
                 >
                     <MenuItemLink
                         to={`/products`}
@@ -119,7 +119,7 @@ class Menu extends Component {
                     primaryText={translate(`resources.reviews.name`, {
                         smart_count: 2,
                     })}
-                    leftIcon={<ReviewIcon />}
+                    leftIcon={<reviews.icon />}
                     onClick={onMenuClick}
                 />
                 <Responsive

@@ -21,7 +21,7 @@ import {
     TextInput,
 } from 'react-admin';
 import withStyles from '@material-ui/core/styles/withStyles';
-import Icon from '@material-ui/icons/Person';
+import Icon from '@material-ui/icons/People';
 
 import NbItemsField from '../commands/NbItemsField';
 import ProductReferenceField from '../products/ProductReferenceField';
