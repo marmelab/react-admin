@@ -1,55 +1,51 @@
 import React from 'react';
-import {
-    DateField,
-    Edit,
-    LongTextInput,
-    ReferenceField,
-    SelectInput,
-    SimpleForm,
-    TextField,
-} from 'react-admin';
+import { EditController, LongTextInput, SimpleForm } from 'react-admin';
+import IconButton from '@material-ui/core/IconButton';
+import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
+import CloseIcon from '@material-ui/icons/Close';
 
-import ProductReferenceField from '../products/ProductReferenceField';
-import CustomerReferenceField from '../visitors/CustomerReferenceField';
 import StarRatingField from './StarRatingField';
-import ReviewEditActions from './ReviewEditActions';
+import ReviewEditToolbar from './ReviewEditToolbar';
 
 const editStyle = {
-    detail: {
-        display: 'inline-block',
-        verticalAlign: 'top',
-        marginRight: '2em',
-        minWidth: '8em',
+    root: {
+        paddingTop: 40,
+    },
+    title: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        margin: '1em',
+    },
+    form: {
+        width: 400,
     },
 };
 
-const ReviewEdit = withStyles(editStyle)(({ classes, ...props }) => (
-    <Edit {...props} actions={<ReviewEditActions />}>
-        <SimpleForm>
-            <DateField source="date" formClassName={classes.detail} />
-            <CustomerReferenceField formClassName={classes.detail} />
-            <ProductReferenceField formClassName={classes.detail} />
-            <ReferenceField
-                source="command_id"
-                reference="commands"
-                addLabel
-                formClassName={classes.detail}
-            >
-                <TextField source="reference" />
-            </ReferenceField>
-            <StarRatingField formClassName={classes.detail} />
-            <LongTextInput source="comment" />
-            <SelectInput
-                source="status"
-                choices={[
-                    { id: 'accepted', name: 'Accepted' },
-                    { id: 'pending', name: 'Pending' },
-                    { id: 'rejected', name: 'Rejected' },
-                ]}
-            />
-        </SimpleForm>
-    </Edit>
-));
+const ReviewEdit = ({ classes, onCancel, ...props }) => (
+    <EditController {...props}>
+        {controllerProps =>
+            controllerProps.record ? (
+                <div className={classes.root}>
+                    <div className={classes.title}>
+                        <Typography variant="title">Review detail</Typography>
+                        <IconButton onClick={onCancel}>
+                            <CloseIcon />
+                        </IconButton>
+                    </div>
+                    <SimpleForm
+                        className={classes.form}
+                        {...controllerProps}
+                        toolbar={<ReviewEditToolbar />}
+                    >
+                        <StarRatingField />
+                        <LongTextInput source="comment" rowsMax={10} />
+                    </SimpleForm>
+                </div>
+            ) : null
+        }
+    </EditController>
+);
 
-export default ReviewEdit;
+export default withStyles(editStyle)(ReviewEdit);

@@ -9,7 +9,6 @@ import { DateField, EditButton, translate } from 'react-admin';
 import CustomerReferenceField from '../visitors/CustomerReferenceField';
 import StarRatingField from './StarRatingField';
 import ProductReferenceField from '../products/ProductReferenceField';
-import ApproveButton from './ApproveButton';
 import rowStyle from './rowStyle';
 
 const cardStyle = {
@@ -88,11 +87,6 @@ const MobileGrid = withStyles(listStyles)(
                             <span className={classes.cardContentRow}>
                                 {translate('resources.reviews.fields.comment')}:<br />
                                 {data[id].comment}
-                            </span>
-                        )}
-                        {data[id].status === 'pending' && (
-                            <span className={classes.cardContentRow}>
-                                <ApproveButton record={data[id]} />
                             </span>
                         )}
                     </CardContent>
