@@ -28,7 +28,7 @@ const CustomUserMenu = translate(({ translate, ...props }) => (
     </UserMenu>
 ));
 
-const CustomAppBar = withStyles(styles)(({ classes, ...props }) => (
+const CustomAppBar = ({ classes, ...props }) => (
     <AppBar {...props} userMenu={<CustomUserMenu />}>
         <Typography
             variant="title"
@@ -39,6 +39,6 @@ const CustomAppBar = withStyles(styles)(({ classes, ...props }) => (
         <Logo />
         <span className={classes.spacer} />
     </AppBar>
-));
+);
 
-export default CustomAppBar;
+export default withStyles(styles)(CustomAppBar);

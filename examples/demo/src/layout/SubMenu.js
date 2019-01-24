@@ -1,4 +1,5 @@
 import React, { Fragment } from 'react';
+import compose from 'recompose/compose';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -71,4 +72,9 @@ const SubMenu = ({
     </Fragment>
 );
 
-export default withStyles(styles)(translate(SubMenu));
+const enhance = compose(
+    withStyles(styles),
+    translate
+);
+
+export default enhance(SubMenu);
