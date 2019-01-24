@@ -18,12 +18,7 @@ import {
     VisitorIcon,
 } from './visitors';
 import { CommandList, CommandEdit, CommandIcon } from './commands';
-import {
-    ProductList,
-    ProductCreate,
-    ProductEdit,
-    ProductIcon,
-} from './products';
+import products from './products';
 import invoices from './invoices';
 import { CategoryList, CategoryEdit, CategoryIcon } from './categories';
 import reviews from './reviews';
@@ -100,13 +95,7 @@ class App extends Component {
                     options={{ label: 'Orders' }}
                 />
                 <Resource name="invoices" {...invoices} />
-                <Resource
-                    name="products"
-                    list={ProductList}
-                    create={ProductCreate}
-                    edit={ProductEdit}
-                    icon={ProductIcon}
-                />
+                <Resource name="products" {...products} />
                 <Resource
                     name="categories"
                     list={CategoryList}

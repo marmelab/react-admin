@@ -15,7 +15,7 @@ import {
 import { VisitorIcon } from '../visitors';
 import { CommandIcon } from '../commands';
 import invoices from '../invoices';
-import { ProductIcon } from '../products';
+import products from '../products';
 import { CategoryIcon } from '../categories';
 import reviews from '../reviews';
 import SubMenu from './SubMenu';
@@ -71,14 +71,14 @@ class Menu extends Component {
                     isOpen={this.state.menuCatalog}
                     sidebarIsOpen={open}
                     name="pos.menu.catalog"
-                    icon={<ProductIcon />}
+                    icon={<products.icon />}
                 >
                     <MenuItemLink
                         to={`/products`}
                         primaryText={translate(`resources.products.name`, {
                             smart_count: 2,
                         })}
-                        leftIcon={<ProductIcon />}
+                        leftIcon={<products.icon />}
                         onClick={onMenuClick}
                     />
                     <MenuItemLink
