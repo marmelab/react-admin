@@ -16,7 +16,7 @@ import {
 } from 'react-admin';
 import withStyles from '@material-ui/core/styles/withStyles';
 
-import NbItemsField from '../commands/NbItemsField';
+import NbItemsField from '../orders/NbItemsField';
 import ProductReferenceField from '../products/ProductReferenceField';
 import StarRatingField from '../reviews/StarRatingField';
 import FullNameField from './FullNameField';

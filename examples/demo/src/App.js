@@ -12,7 +12,7 @@ import customRoutes from './routes';
 import englishMessages from './i18n/en';
 
 import visitors from './visitors';
-import commands from './commands';
+import orders from './orders';
 import products from './products';
 import invoices from './invoices';
 import categories from './categories';
@@ -78,7 +78,7 @@ class App extends Component {
                 <Resource name="customers" {...visitors} />
                 <Resource
                     name="commands"
-                    {...commands}
+                    {...orders}
                     options={{ label: 'Orders' }}
                 />
                 <Resource name="invoices" {...invoices} />

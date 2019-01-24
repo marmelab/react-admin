@@ -5,7 +5,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { ShowController, ReferenceField, TextField } from 'react-admin';
 
-import Basket from '../commands/Basket';
+import Basket from '../orders/Basket';
 
 const CustomerField = ({ record }) => (
     <Typography>

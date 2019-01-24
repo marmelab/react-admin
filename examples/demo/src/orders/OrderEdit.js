@@ -13,7 +13,7 @@ import withStyles from '@material-ui/core/styles/withStyles';
 
 import Basket from './Basket';
 
-const CommandTitle = translate(({ record, translate }) => (
+const OrderTitle = translate(({ record, translate }) => (
     <span>
         {translate('resources.commands.title', { reference: record.reference })}
     </span>
@@ -23,8 +23,8 @@ const editStyles = {
     root: { alignItems: 'flex-start' },
 };
 
-const CommandEdit = props => (
-    <Edit title={<CommandTitle />} aside={<Basket />} {...props}>
+const OrderEdit = props => (
+    <Edit title={<OrderTitle />} aside={<Basket />} {...props}>
         <SimpleForm>
             <DateInput source="date" />
             <ReferenceInput source="customer_id" reference="customers">
@@ -52,4 +52,4 @@ const CommandEdit = props => (
     </Edit>
 );
 
-export default withStyles(editStyles)(CommandEdit);
+export default withStyles(editStyles)(OrderEdit);

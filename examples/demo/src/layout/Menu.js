@@ -13,7 +13,7 @@ import {
 } from 'react-admin';
 
 import visitors from '../visitors';
-import commands from '../commands';
+import orders from '../orders';
 import invoices from '../invoices';
 import products from '../products';
 import categories from '../categories';
@@ -47,14 +47,14 @@ class Menu extends Component {
                     isOpen={this.state.menuSales}
                     sidebarIsOpen={open}
                     name="pos.menu.sales"
-                    icon={<commands.icon />}
+                    icon={<orders.icon />}
                 >
                     <MenuItemLink
                         to={`/commands`}
                         primaryText={translate(`resources.commands.name`, {
                             smart_count: 2,
                         })}
-                        leftIcon={<commands.icon />}
+                        leftIcon={<orders.icon />}
                         onClick={onMenuClick}
                     />
                     <MenuItemLink
