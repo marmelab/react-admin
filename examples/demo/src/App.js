@@ -17,7 +17,7 @@ import {
     VisitorCreate,
     VisitorIcon,
 } from './visitors';
-import { CommandList, CommandEdit, CommandIcon } from './commands';
+import commands from './commands';
 import products from './products';
 import invoices from './invoices';
 import categories from './categories';
@@ -89,9 +89,7 @@ class App extends Component {
                 />
                 <Resource
                     name="commands"
-                    list={CommandList}
-                    edit={CommandEdit}
-                    icon={CommandIcon}
+                    {...commands}
                     options={{ label: 'Orders' }}
                 />
                 <Resource name="invoices" {...invoices} />

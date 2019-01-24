@@ -1,5 +1,10 @@
-import CommandList from './CommandList';
-import CommandEdit from './CommandEdit';
 import CommandIcon from '@material-ui/icons/AttachMoney';
 
-export { CommandIcon, CommandEdit, CommandList };
+import CommandList from './CommandList';
+import CommandEdit from './CommandEdit';
+
+export default {
+    list: CommandList,
+    edit: CommandEdit,
+    icon: CommandIcon,
+};
