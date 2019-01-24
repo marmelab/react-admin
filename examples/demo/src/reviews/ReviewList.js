@@ -21,7 +21,7 @@ import StarRatingField from './StarRatingField';
 import BulkApproveAction from './BulkApproveAction';
 import BulkRejectAction from './BulkRejectAction';
 import rowStyle from './rowStyle';
-import MobileGrid from './MobileGrid';
+import ReviewMobileList from './ReviewMobileList';
 import ReviewFilter from './ReviewFilter';
 import ReviewEdit from './ReviewEdit';
 
@@ -60,7 +60,7 @@ class ReviewList extends Component {
                     sort={{ field: 'date', order: 'DESC' }}
                 >
                     <Responsive
-                        xsmall={<MobileGrid />}
+                        xsmall={<ReviewMobileList />}
                         medium={
                             <Datagrid
                                 rowClick="edit"
@@ -68,8 +68,8 @@ class ReviewList extends Component {
                                 classes={{ headerRow: classes.headerRow }}
                             >
                                 <DateField source="date" />
-                                <CustomerReferenceField />
-                                <ProductReferenceField />
+                                <CustomerReferenceField linkType={false} />
+                                <ProductReferenceField linkType={false} />
                                 <StarRatingField />
                                 <TextField
                                     source="comment"

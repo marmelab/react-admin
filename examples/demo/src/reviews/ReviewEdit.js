@@ -5,10 +5,12 @@ import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
 import CloseIcon from '@material-ui/icons/Close';
 
+import ProductReferenceField from '../products/ProductReferenceField';
+import CustomerReferenceField from '../visitors/CustomerReferenceField';
 import StarRatingField from './StarRatingField';
 import ReviewEditToolbar from './ReviewEditToolbar';
 
-const editStyle = {
+const editStyle = theme => ({
     root: {
         paddingTop: 40,
     },
@@ -19,9 +21,14 @@ const editStyle = {
         margin: '1em',
     },
     form: {
-        width: 400,
+        [theme.breakpoints.up('xs')]: {
+            width: 400,
+        },
+        [theme.breakpoints.down('xs')]: {
+            width: '100vw',
+        },
     },
-};
+});
 
 const ReviewEdit = ({ classes, onCancel, ...props }) => (
     <EditController {...props}>
@@ -36,9 +43,16 @@ const ReviewEdit = ({ classes, onCancel, ...props }) => (
                     </div>
                     <SimpleForm
                         className={classes.form}
-                        {...controllerProps}
+                        basePath={controllerProps.basePath}
+                        record={controllerProps.record}
+                        save={controllerProps.save}
+                        version={controllerProps.version}
+                        redirect="list"
+                        resource="reviews"
                         toolbar={<ReviewEditToolbar />}
                     >
+                        <CustomerReferenceField />
+                        <ProductReferenceField />
                         <StarRatingField />
                         <LongTextInput source="comment" rowsMax={10} />
                     </SimpleForm>
