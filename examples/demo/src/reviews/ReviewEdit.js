@@ -1,5 +1,10 @@
 import React from 'react';
-import { EditController, LongTextInput, SimpleForm } from 'react-admin';
+import {
+    EditController,
+    LongTextInput,
+    SimpleForm,
+    DateField,
+} from 'react-admin';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
@@ -26,7 +31,12 @@ const editStyle = theme => ({
         },
         [theme.breakpoints.down('xs')]: {
             width: '100vw',
+            marginTop: -30,
         },
+    },
+    inlineField: {
+        display: 'inline-block',
+        width: '50%',
     },
 });
 
@@ -51,10 +61,19 @@ const ReviewEdit = ({ classes, onCancel, ...props }) => (
                         resource="reviews"
                         toolbar={<ReviewEditToolbar />}
                     >
-                        <CustomerReferenceField />
-                        <ProductReferenceField />
-                        <StarRatingField />
-                        <LongTextInput source="comment" rowsMax={10} />
+                        <CustomerReferenceField
+                            formClassName={classes.inlineField}
+                        />
+
+                        <ProductReferenceField
+                            formClassName={classes.inlineField}
+                        />
+                        <DateField
+                            source="date"
+                            formClassName={classes.inlineField}
+                        />
+                        <StarRatingField formClassName={classes.inlineField} />
+                        <LongTextInput source="comment" rowsMax={15} />
                     </SimpleForm>
                 </div>
             ) : null

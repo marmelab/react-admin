@@ -1,43 +1,16 @@
 import React, { Fragment, Component } from 'react';
-import {
-    BulkActions,
-    BulkDeleteAction,
-    Datagrid,
-    DateField,
-    List,
-    Responsive,
-    TextField,
-} from 'react-admin';
+import { BulkActions, BulkDeleteAction, List, Responsive } from 'react-admin';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 import { Route } from 'react-router';
 import Drawer from '@material-ui/core/Drawer';
-import withStyles from '@material-ui/core/styles/withStyles';
-
-import ProductReferenceField from '../products/ProductReferenceField';
-import CustomerReferenceField from '../visitors/CustomerReferenceField';
-import StarRatingField from './StarRatingField';
 
 import BulkApproveAction from './BulkApproveAction';
 import BulkRejectAction from './BulkRejectAction';
-import rowStyle from './rowStyle';
-import ReviewMobileList from './ReviewMobileList';
+import ReviewListMobile from './ReviewListMobile';
+import ReviewListDesktop from './ReviewListDesktop';
 import ReviewFilter from './ReviewFilter';
 import ReviewEdit from './ReviewEdit';
-
-const listStyles = {
-    headerRow: {
-        borderLeftColor: 'white',
-        borderLeftWidth: 5,
-        borderLeftStyle: 'solid',
-    },
-    comment: {
-        maxWidth: '18em',
-        overflow: 'hidden',
-        textOverflow: 'ellipsis',
-        whiteSpace: 'nowrap',
-    },
-};
 
 const ReviewsBulkActions = props => (
     <BulkActions {...props}>
@@ -49,7 +22,7 @@ const ReviewsBulkActions = props => (
 
 class ReviewList extends Component {
     render() {
-        const { classes, ...props } = this.props;
+        const props = this.props;
         return (
             <Fragment>
                 <List
@@ -60,24 +33,8 @@ class ReviewList extends Component {
                     sort={{ field: 'date', order: 'DESC' }}
                 >
                     <Responsive
-                        xsmall={<ReviewMobileList />}
-                        medium={
-                            <Datagrid
-                                rowClick="edit"
-                                rowStyle={rowStyle}
-                                classes={{ headerRow: classes.headerRow }}
-                            >
-                                <DateField source="date" />
-                                <CustomerReferenceField linkType={false} />
-                                <ProductReferenceField linkType={false} />
-                                <StarRatingField />
-                                <TextField
-                                    source="comment"
-                                    cellClassName={classes.comment}
-                                />
-                                <TextField source="status" />
-                            </Datagrid>
-                        }
+                        xsmall={<ReviewListMobile />}
+                        medium={<ReviewListDesktop />}
                     />
                 </List>
                 <Route path="/reviews/:id">
@@ -114,9 +71,7 @@ class ReviewList extends Component {
     };
 }
 
-export default withStyles(listStyles)(
-    connect(
-        undefined,
-        { push }
-    )(ReviewList)
-);
+export default connect(
+    undefined,
+    { push }
+)(ReviewList);
