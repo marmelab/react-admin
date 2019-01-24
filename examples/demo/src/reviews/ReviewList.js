@@ -1,23 +1,23 @@
 import React, { Fragment, Component } from 'react';
-import { BulkActions, BulkDeleteAction, List, Responsive } from 'react-admin';
+import { BulkDeleteButton, List, Responsive } from 'react-admin';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 import { Route } from 'react-router';
 import Drawer from '@material-ui/core/Drawer';
 
-import BulkApproveAction from './BulkApproveAction';
-import BulkRejectAction from './BulkRejectAction';
+import BulkAcceptButton from './BulkAcceptButton';
+import BulkRejectButton from './BulkRejectButton';
 import ReviewListMobile from './ReviewListMobile';
 import ReviewListDesktop from './ReviewListDesktop';
 import ReviewFilter from './ReviewFilter';
 import ReviewEdit from './ReviewEdit';
 
-const ReviewsBulkActions = props => (
-    <BulkActions {...props}>
-        <BulkApproveAction label="resources.reviews.action.accept" />
-        <BulkRejectAction label="resources.reviews.action.reject" />
-        <BulkDeleteAction />
-    </BulkActions>
+const ReviewsBulkActionButtons = props => (
+    <Fragment>
+        <BulkAcceptButton {...props} />
+        <BulkRejectButton {...props} />
+        <BulkDeleteButton {...props} />
+    </Fragment>
 );
 
 class ReviewList extends Component {
@@ -27,7 +27,7 @@ class ReviewList extends Component {
             <Fragment>
                 <List
                     {...props}
-                    bulkActions={<ReviewsBulkActions />}
+                    bulkActionButtons={<ReviewsBulkActionButtons />}
                     filters={<ReviewFilter />}
                     perPage={25}
                     sort={{ field: 'date', order: 'DESC' }}

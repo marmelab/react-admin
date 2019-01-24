@@ -1,10 +1,11 @@
-import { Component } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { startUndoable, crudUpdateMany } from 'ra-core';
+import ThumbUp from '@material-ui/icons/ThumbUp';
+import { Button, startUndoable, crudUpdateMany } from 'react-admin';
 
-class BulkApproveAction extends Component {
-    componentDidMount = () => {
+class BulkAcceptButton extends Component {
+    handleClick = () => {
         const { basePath, startUndoable, resource, selectedIds } = this.props;
         startUndoable(
             crudUpdateMany(
@@ -14,18 +15,21 @@ class BulkApproveAction extends Component {
                 basePath
             )
         );
-        this.props.onExit();
     };
 
     render() {
-        return null;
+        return (
+            <Button
+                label="resources.reviews.action.accept"
+                onClick={this.handleClick}
+            >
+                <ThumbUp />
+            </Button>
+        );
     }
 }
 
-BulkApproveAction.propTypes = {
-    basePath: PropTypes.string,
-    label: PropTypes.string,
-    onExit: PropTypes.func.isRequired,
+BulkAcceptButton.propTypes = {
     resource: PropTypes.string.isRequired,
     selectedIds: PropTypes.arrayOf(PropTypes.any).isRequired,
     startUndoable: PropTypes.func.isRequired,
@@ -34,4 +38,4 @@ BulkApproveAction.propTypes = {
 export default connect(
     undefined,
     { startUndoable }
-)(BulkApproveAction);
+)(BulkAcceptButton);
