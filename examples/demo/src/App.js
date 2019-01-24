@@ -20,7 +20,7 @@ import {
 import { CommandList, CommandEdit, CommandIcon } from './commands';
 import products from './products';
 import invoices from './invoices';
-import { CategoryList, CategoryEdit, CategoryIcon } from './categories';
+import categories from './categories';
 import reviews from './reviews';
 
 import dataProviderFactory from './dataProvider';
@@ -96,12 +96,7 @@ class App extends Component {
                 />
                 <Resource name="invoices" {...invoices} />
                 <Resource name="products" {...products} />
-                <Resource
-                    name="categories"
-                    list={CategoryList}
-                    edit={CategoryEdit}
-                    icon={CategoryIcon}
-                />
+                <Resource name="categories" {...categories} />
                 <Resource name="reviews" {...reviews} />
             </Admin>
         );

@@ -16,7 +16,7 @@ import { VisitorIcon } from '../visitors';
 import { CommandIcon } from '../commands';
 import invoices from '../invoices';
 import products from '../products';
-import { CategoryIcon } from '../categories';
+import categories from '../categories';
 import reviews from '../reviews';
 import SubMenu from './SubMenu';
 
@@ -86,7 +86,7 @@ class Menu extends Component {
                         primaryText={translate(`resources.categories.name`, {
                             smart_count: 2,
                         })}
-                        leftIcon={<CategoryIcon />}
+                        leftIcon={<categories.icon />}
                         onClick={onMenuClick}
                     />
                 </SubMenu>
