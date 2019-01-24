@@ -46,7 +46,7 @@ class Menu extends Component {
                     handleToggle={() => this.handleToggle('menuSales')}
                     isOpen={this.state.menuSales}
                     sidebarIsOpen={open}
-                    name="Sales"
+                    name="pos.menu.sales"
                     icon={<CommandIcon />}
                 >
                     <MenuItemLink
@@ -70,7 +70,7 @@ class Menu extends Component {
                     handleToggle={() => this.handleToggle('menuCatalog')}
                     isOpen={this.state.menuCatalog}
                     sidebarIsOpen={open}
-                    name="Catalog"
+                    name="pos.menu.catalog"
                     icon={<ProductIcon />}
                 >
                     <MenuItemLink
@@ -94,7 +94,7 @@ class Menu extends Component {
                     handleToggle={() => this.handleToggle('menuCustomer')}
                     isOpen={this.state.menuCustomer}
                     sidebarIsOpen={open}
-                    name="Customers"
+                    name="pos.menu.customers"
                     icon={<VisitorIcon />}
                 >
                     <MenuItemLink

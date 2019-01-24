@@ -46,7 +46,11 @@ const ReviewEdit = ({ classes, onCancel, ...props }) => (
             controllerProps.record ? (
                 <div className={classes.root}>
                     <div className={classes.title}>
-                        <Typography variant="title">Review detail</Typography>
+                        <Typography variant="title">
+                            {controllerProps.translate(
+                                'resources.reviews.detail'
+                            )}
+                        </Typography>
                         <IconButton onClick={onCancel}>
                             <CloseIcon />
                         </IconButton>

@@ -8,6 +8,8 @@ import Divider from '@material-ui/core/Divider';
 import Collapse from '@material-ui/core/Collapse';
 import { withStyles } from '@material-ui/core/styles';
 
+import { translate } from 'react-admin';
+
 const styles = {
     listItem: {
         paddingLeft: '1rem',
@@ -34,6 +36,7 @@ const SubMenu = ({
     icon,
     classes,
     children,
+    translate,
 }) => (
     <Fragment>
         <ListItem
@@ -45,8 +48,8 @@ const SubMenu = ({
             <ListItemIcon>{isOpen ? <ExpandMore /> : icon}</ListItemIcon>
             <ListItemText
                 inset
-                primary={isOpen ? name : ''}
-                secondary={isOpen ? '' : name}
+                primary={isOpen ? translate(name) : ''}
+                secondary={isOpen ? '' : translate(name)}
                 className={classes.listItemText}
             />
         </ListItem>
@@ -68,4 +71,4 @@ const SubMenu = ({
     </Fragment>
 );
 
-export default withStyles(styles)(SubMenu);
+export default withStyles(styles)(translate(SubMenu));

@@ -29,6 +29,11 @@ export default {
                 demo_button: 'Source for this demo',
             },
         },
+        menu: {
+            sales: 'Sales',
+            catalog: 'Catalog',
+            customers: 'Customers',
+        },
     },
     resources: {
         customers: {
@@ -116,6 +121,7 @@ export default {
         },
         reviews: {
             name: 'Review |||| Reviews',
+            detail: 'Review detail',
             fields: {
                 customer_id: 'Customer',
                 command_id: 'Order',
