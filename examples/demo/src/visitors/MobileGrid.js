@@ -7,7 +7,7 @@ import { withStyles } from '@material-ui/core/styles';
 import { DateField, EditButton, translate, NumberField } from 'react-admin';
 
 import AvatarField from './AvatarField';
-import { ColoredNumberField } from './index';
+import ColoredNumberField from './ColoredNumberField';
 import SegmentsField from './SegmentsField';
 
 const listStyles = theme => ({

@@ -11,12 +11,7 @@ import { Dashboard } from './dashboard';
 import customRoutes from './routes';
 import englishMessages from './i18n/en';
 
-import {
-    VisitorList,
-    VisitorEdit,
-    VisitorCreate,
-    VisitorIcon,
-} from './visitors';
+import visitors from './visitors';
 import commands from './commands';
 import products from './products';
 import invoices from './invoices';
@@ -80,13 +75,7 @@ class App extends Component {
                 locale="en"
                 i18nProvider={i18nProvider}
             >
-                <Resource
-                    name="customers"
-                    list={VisitorList}
-                    edit={VisitorEdit}
-                    create={VisitorCreate}
-                    icon={VisitorIcon}
-                />
+                <Resource name="customers" {...visitors} />
                 <Resource
                     name="commands"
                     {...commands}

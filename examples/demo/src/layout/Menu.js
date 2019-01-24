@@ -12,7 +12,7 @@ import {
     Responsive,
 } from 'react-admin';
 
-import { VisitorIcon } from '../visitors';
+import visitors from '../visitors';
 import commands from '../commands';
 import invoices from '../invoices';
 import products from '../products';
@@ -95,14 +95,14 @@ class Menu extends Component {
                     isOpen={this.state.menuCustomer}
                     sidebarIsOpen={open}
                     name="pos.menu.customers"
-                    icon={<VisitorIcon />}
+                    icon={<visitors.icon />}
                 >
                     <MenuItemLink
                         to={`/customers`}
                         primaryText={translate(`resources.customers.name`, {
                             smart_count: 2,
                         })}
-                        leftIcon={<VisitorIcon />}
+                        leftIcon={<visitors.icon />}
                         onClick={onMenuClick}
                     />
                     <MenuItemLink
