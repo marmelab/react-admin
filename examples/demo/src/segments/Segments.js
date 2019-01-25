@@ -10,7 +10,7 @@ import { translate, Title } from 'react-admin';
 import LinkToRelatedCustomers from './LinkToRelatedCustomers';
 import segments from './data';
 
-export default translate(({ translate }) => (
+const Segments = ({ translate }) => (
     <Card>
         <Title title={translate('resources.segments.name')} />
         <Table>
@@ -34,4 +34,6 @@ export default translate(({ translate }) => (
             </TableBody>
         </Table>
     </Card>
-));
+);
+
+export default translate(Segments);

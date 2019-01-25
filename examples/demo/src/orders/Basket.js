@@ -13,7 +13,7 @@ import compose from 'recompose/compose';
 import withStyles from '@material-ui/core/styles/withStyles';
 
 const styles = {
-    container: { width: '35em' },
+    container: { minWidth: '35em', marginLeft: '1em' },
     rightAlignedCell: { textAlign: 'right' },
     boldCell: { fontWeight: 'bold' },
 };
@@ -31,6 +31,7 @@ class Basket extends Component {
     }
     render() {
         const { classes, record, products, translate } = this.props;
+        if (!record) return null;
         const { basket } = record;
         return (
             <Paper className={classes.container}>

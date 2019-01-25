@@ -17,7 +17,6 @@ import {
     TextInput,
 } from 'react-admin';
 import withStyles from '@material-ui/core/styles/withStyles';
-import Icon from '@material-ui/icons/AttachMoney';
 import Divider from '@material-ui/core/Divider';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
@@ -26,13 +25,11 @@ import NbItemsField from './NbItemsField';
 import CustomerReferenceField from '../visitors/CustomerReferenceField';
 import MobileGrid from './MobileGrid';
 
-export const CommandIcon = Icon;
-
 const filterStyles = {
     status: { width: 150 },
 };
 
-const CommandFilter = withStyles(filterStyles)(({ classes, ...props }) => (
+const OrderFilter = withStyles(filterStyles)(({ classes, ...props }) => (
     <Filter {...props}>
         <SearchInput source="q" alwaysOn />
         <ReferenceInput source="customer_id" reference="customers">
@@ -104,10 +101,7 @@ class TabbedDatagrid extends React.Component {
                     medium={
                         <div>
                             {filterValues.status === 'ordered' && (
-                                <Datagrid
-                                    {...props}
-                                    ids={this.state['ordered']}
-                                >
+                                <Datagrid {...props} ids={this.state.ordered}>
                                     <DateField source="date" showTime />
                                     <TextField source="reference" />
                                     <CustomerReferenceField />
@@ -124,10 +118,7 @@ class TabbedDatagrid extends React.Component {
                                 </Datagrid>
                             )}
                             {filterValues.status === 'delivered' && (
-                                <Datagrid
-                                    {...props}
-                                    ids={this.state['delivered']}
-                                >
+                                <Datagrid {...props} ids={this.state.delivered}>
                                     <DateField source="date" showTime />
                                     <TextField source="reference" />
                                     <CustomerReferenceField />
@@ -145,10 +136,7 @@ class TabbedDatagrid extends React.Component {
                                 </Datagrid>
                             )}
                             {filterValues.status === 'cancelled' && (
-                                <Datagrid
-                                    {...props}
-                                    ids={this.state['cancelled']}
-                                >
+                                <Datagrid {...props} ids={this.state.cancelled}>
                                     <DateField source="date" showTime />
                                     <TextField source="reference" />
                                     <CustomerReferenceField />
@@ -175,16 +163,16 @@ class TabbedDatagrid extends React.Component {
 
 const StyledTabbedDatagrid = withStyles(datagridStyles)(TabbedDatagrid);
 
-const CommandList = ({ classes, ...props }) => (
+const OrderList = ({ classes, ...props }) => (
     <List
         {...props}
         filterDefaultValues={{ status: 'ordered' }}
         sort={{ field: 'date', order: 'DESC' }}
         perPage={25}
-        filters={<CommandFilter />}
+        filters={<OrderFilter />}
     >
         <StyledTabbedDatagrid />
     </List>
 );
 
-export default CommandList;
+export default OrderList;

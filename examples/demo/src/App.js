@@ -11,21 +11,12 @@ import { Dashboard } from './dashboard';
 import customRoutes from './routes';
 import englishMessages from './i18n/en';
 
-import {
-    VisitorList,
-    VisitorEdit,
-    VisitorCreate,
-    VisitorIcon,
-} from './visitors';
-import { CommandList, CommandEdit, CommandIcon } from './commands';
-import {
-    ProductList,
-    ProductCreate,
-    ProductEdit,
-    ProductIcon,
-} from './products';
-import { CategoryList, CategoryEdit, CategoryIcon } from './categories';
-import { ReviewList, ReviewEdit, ReviewIcon } from './reviews';
+import visitors from './visitors';
+import orders from './orders';
+import products from './products';
+import invoices from './invoices';
+import categories from './categories';
+import reviews from './reviews';
 
 import dataProviderFactory from './dataProvider';
 import fakeServerFactory from './fakeServer';
@@ -84,39 +75,16 @@ class App extends Component {
                 locale="en"
                 i18nProvider={i18nProvider}
             >
-                <Resource
-                    name="customers"
-                    list={VisitorList}
-                    edit={VisitorEdit}
-                    create={VisitorCreate}
-                    icon={VisitorIcon}
-                />
+                <Resource name="customers" {...visitors} />
                 <Resource
                     name="commands"
-                    list={CommandList}
-                    edit={CommandEdit}
-                    icon={CommandIcon}
+                    {...orders}
                     options={{ label: 'Orders' }}
                 />
-                <Resource
-                    name="products"
-                    list={ProductList}
-                    create={ProductCreate}
-                    edit={ProductEdit}
-                    icon={ProductIcon}
-                />
-                <Resource
-                    name="categories"
-                    list={CategoryList}
-                    edit={CategoryEdit}
-                    icon={CategoryIcon}
-                />
-                <Resource
-                    name="reviews"
-                    list={ReviewList}
-                    edit={ReviewEdit}
-                    icon={ReviewIcon}
-                />
+                <Resource name="invoices" {...invoices} />
+                <Resource name="products" {...products} />
+                <Resource name="categories" {...categories} />
+                <Resource name="reviews" {...reviews} />
             </Admin>
         );
     }
