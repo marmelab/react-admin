@@ -176,11 +176,7 @@ function mapStateToProps(state, props) {
 }
 
 export default compose(
-    checkMinimumRequiredProps('Edit', [
-        'basePath',
-        'location',
-        'resource',
-    ]),
+    checkMinimumRequiredProps('Edit', ['basePath', 'resource']),
     connect(
         mapStateToProps,
         {
