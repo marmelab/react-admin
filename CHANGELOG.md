@@ -1,5 +1,12 @@
 # Changelog
 
+## v2.6.3
+
+* Fix sanitization of `<DeleteButton>` props ([2810](https://github.com/marmelab/react-admin/pull/2810)) ([djhi](https://github.com/djhi))
+* Fix display order of selected choices in their in `<SelectArrayInput>` ([2806](https://github.com/marmelab/react-admin/pull/2806)) ([Luwangel](https://github.com/Luwangel))
+* Add explanation about Material UI version on the FAQ ([2797](https://github.com/marmelab/react-admin/pull/2797)) ([Kmaschta](https://github.com/Kmaschta))
+* Add Firestore Data Provider ([2778](https://github.com/marmelab/react-admin/pull/2778)) ([rafalzawadzki](https://github.com/rafalzawadzki))
+
 ## v2.6.2
 
 * Fix prop type warning in `Datagrid` sort prop ([2794](https://github.com/marmelab/react-admin/pull/2794)) ([santaclauze](https://github.com/santaclauze))
