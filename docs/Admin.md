@@ -43,7 +43,8 @@ Here are all the props accepted by the component:
     - [`logoutButton`](#logoutbutton)
     - [`initialState`](#initialstate)
     - [`history`](#history)
-    - [Internationalization](#internationalization)
+    - [`locale`](#internationalization)
+    - [`i18nProvider`](#internationalization)
     - [Declaring resources at runtime](#declaring-resources-at-runtime)
     - [Using react-admin without `<Admin>` and `<Resource>`](#using-react-admin-without-admin-and-resource)
 
@@ -518,7 +519,7 @@ const App = () => (
 
 ## Internationalization
 
-The `locale` and `messages` props let you translate the GUI. The [Translation Documentation](./Translation.md) details this process.
+The `locale` and `i18nProvider` props let you translate the GUI. The [Translation Documentation](./Translation.md) details this process.
 
 ## Declaring resources at runtime
 
