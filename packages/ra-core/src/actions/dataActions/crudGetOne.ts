@@ -1,13 +1,17 @@
 import { GET_ONE } from '../../dataFetchActions';
+import { FETCH_END, FETCH_ERROR } from '../fetchActions';
 import { NotificationSideEffect } from '../../sideEffect/notification';
 import { RedirectionSideEffect } from '../../sideEffect/redirection';
 import { RefreshSideEffect } from '../../sideEffect/refresh';
 
-interface CrudGetOneGenericAction<T> {
-    readonly type: T;
-    readonly payload: {
-        id: string;
-    };
+interface RequestPayload {
+    id: string;
+}
+
+export const CRUD_GET_ONE = 'RA/CRUD_GET_ONE';
+export interface CrudGetOneAction {
+    readonly type: typeof CRUD_GET_ONE;
+    readonly payload: RequestPayload;
     readonly meta: {
         resource: string;
         fetch: typeof GET_ONE;
@@ -20,14 +24,11 @@ interface CrudGetOneGenericAction<T> {
     };
 }
 
-export const CRUD_GET_ONE = 'RA/CRUD_GET_ONE';
-export type CrudGetOneAction = CrudGetOneGenericAction<typeof CRUD_GET_ONE>;
-
 export const crudGetOne = (
-    resource,
-    id,
-    basePath,
-    refresh = true
+    resource: string,
+    id: string,
+    basePath: string,
+    refresh: boolean = true
 ): CrudGetOneAction => ({
     type: CRUD_GET_ONE,
     payload: { id },
@@ -47,16 +48,41 @@ export const crudGetOne = (
 });
 
 export const CRUD_GET_ONE_LOADING = 'RA/CRUD_GET_ONE_LOADING';
-export type CrudGetOneLoadingAction = CrudGetOneGenericAction<
-    typeof CRUD_GET_ONE_LOADING
->;
+export interface CrudGetOneLoadingAction {
+    readonly type: typeof CRUD_GET_ONE_LOADING;
+    readonly payload: RequestPayload;
+    readonly meta: {
+        resource: string;
+        basePath: string;
+    };
+}
 
 export const CRUD_GET_ONE_FAILURE = 'RA/CRUD_GET_ONE_FAILURE';
-export type CrudGetOneFailingAction = CrudGetOneGenericAction<
-    typeof CRUD_GET_ONE_FAILURE
->;
+export interface CrudGetOneFailureAction {
+    readonly type: typeof CRUD_GET_ONE_FAILURE;
+    readonly error: string | object;
+    readonly payload: string;
+    readonly requestPayload: RequestPayload;
+    readonly meta: {
+        resource: string;
+        notification: NotificationSideEffect;
+        redirectTo: RedirectionSideEffect;
+        refresh: RefreshSideEffect;
+        fetchResponse: typeof GET_ONE;
+        fetchStatus: typeof FETCH_ERROR;
+    };
+}
 
 export const CRUD_GET_ONE_SUCCESS = 'RA/CRUD_GET_ONE_SUCCESS';
-export type CrudGetOneSuccessAction = CrudGetOneGenericAction<
-    typeof CRUD_GET_ONE_SUCCESS
->;
+export interface CrudGetOneSuccessAction {
+    readonly type: typeof CRUD_GET_ONE_SUCCESS;
+    readonly payload: {
+        data: any;
+    };
+    readonly requestPayload: RequestPayload;
+    readonly meta: {
+        resource: string;
+        fetchResponse: typeof GET_ONE;
+        fetchStatus: typeof FETCH_END;
+    };
+}

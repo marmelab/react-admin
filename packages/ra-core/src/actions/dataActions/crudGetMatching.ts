@@ -1,13 +1,17 @@
 import { GET_LIST } from '../../dataFetchActions';
+import { FETCH_END, FETCH_ERROR } from '../fetchActions';
 import { NotificationSideEffect } from '../../sideEffect/notification';
 
-interface CrudGetMatchingGenericAction<T> {
-    readonly type: T;
-    readonly payload: {
-        pagination: { page: number; perPage: number };
-        sort: { field: string; order: string };
-        filter: object;
-    };
+interface RequestPayload {
+    pagination: { page: number; perPage: number };
+    sort: { field: string; order: string };
+    filter: object;
+}
+
+export const CRUD_GET_MATCHING = 'RA/CRUD_GET_MATCHING';
+interface CrudGetMatchingAction {
+    readonly type: typeof CRUD_GET_MATCHING;
+    readonly payload: RequestPayload;
     readonly meta: {
         resource: string;
         fetch: typeof GET_LIST;
@@ -18,17 +22,12 @@ interface CrudGetMatchingGenericAction<T> {
     };
 }
 
-export const CRUD_GET_MATCHING = 'RA/CRUD_GET_MATCHING';
-export type CrudGetMatchingAction = CrudGetMatchingGenericAction<
-    typeof CRUD_GET_MATCHING
->;
-
 export const crudGetMatching = (
-    reference,
-    relatedTo,
-    pagination,
-    sort,
-    filter
+    reference: string,
+    relatedTo: string,
+    pagination: { page: number; perPage: number },
+    sort: { field: string; order: string },
+    filter: object
 ): CrudGetMatchingAction => ({
     type: CRUD_GET_MATCHING,
     payload: { pagination, sort, filter },
@@ -46,16 +45,42 @@ export const crudGetMatching = (
 });
 
 export const CRUD_GET_MATCHING_LOADING = 'RA/CRUD_GET_MATCHING_LOADING';
-export type CrudGetMatchingLoadingAction = CrudGetMatchingGenericAction<
-    typeof CRUD_GET_MATCHING_LOADING
->;
+export interface CrudGetMatchingLoadingAction {
+    readonly type: typeof CRUD_GET_MATCHING_LOADING;
+    readonly payload: RequestPayload;
+    readonly meta: {
+        resource: string;
+        relatedTo: string;
+    };
+}
 
 export const CRUD_GET_MATCHING_FAILURE = 'RA/CRUD_GET_MATCHING_FAILURE';
-export type CrudGetMatchingFailingAction = CrudGetMatchingGenericAction<
-    typeof CRUD_GET_MATCHING_FAILURE
->;
+export interface CrudGetMatchingFailureAction {
+    readonly type: typeof CRUD_GET_MATCHING_FAILURE;
+    readonly error: string | object;
+    readonly payload: string;
+    readonly requestPayload: RequestPayload;
+    readonly meta: {
+        resource: string;
+        relatedTo: string;
+        notification: NotificationSideEffect;
+        fetchResponse: typeof GET_LIST;
+        fetchStatus: typeof FETCH_ERROR;
+    };
+}
 
 export const CRUD_GET_MATCHING_SUCCESS = 'RA/CRUD_GET_MATCHING_SUCCESS';
-export type CrudGetMatchingSuccessAction = CrudGetMatchingGenericAction<
-    typeof CRUD_GET_MATCHING_SUCCESS
->;
+export interface CrudGetMatchingSuccessAction {
+    readonly type: typeof CRUD_GET_MATCHING_SUCCESS;
+    readonly payload: {
+        data: any[];
+        total: number;
+    };
+    readonly requestPayload: RequestPayload;
+    readonly meta: {
+        resource: string;
+        relatedTo: string;
+        fetchResponse: typeof GET_LIST;
+        fetchStatus: typeof FETCH_END;
+    };
+}

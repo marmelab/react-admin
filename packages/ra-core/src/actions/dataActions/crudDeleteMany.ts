@@ -1,12 +1,16 @@
 import { DELETE_MANY } from '../../dataFetchActions';
+import { FETCH_END, FETCH_ERROR } from '../fetchActions';
 import { NotificationSideEffect } from '../../sideEffect/notification';
 import { RefreshSideEffect } from '../../sideEffect/refresh';
 
-interface CrudDeleteManyGenericAction<T> {
-    readonly type: T;
-    readonly payload: {
-        ids: [string];
-    };
+interface RequestPayload {
+    ids: string[];
+}
+
+export const CRUD_DELETE_MANY = 'RA/CRUD_DELETE_MANY';
+export interface CrudDeleteManyAction {
+    readonly type: typeof CRUD_DELETE_MANY;
+    readonly payload: RequestPayload;
     readonly meta: {
         resource: string;
         fetch: typeof DELETE_MANY;
@@ -21,17 +25,11 @@ interface CrudDeleteManyGenericAction<T> {
         };
     };
 }
-
-export const CRUD_DELETE_MANY = 'RA/CRUD_DELETE_MANY';
-export type CrudDeleteManyAction = CrudDeleteManyGenericAction<
-    typeof CRUD_DELETE_MANY
->;
-
 export const crudDeleteMany = (
-    resource,
-    ids,
-    basePath,
-    refresh = true
+    resource: string,
+    ids: string[],
+    basePath: string,
+    refresh: boolean = true
 ): CrudDeleteManyAction => ({
     type: CRUD_DELETE_MANY,
     payload: { ids },
@@ -60,16 +58,42 @@ export const crudDeleteMany = (
 });
 
 export const CRUD_DELETE_MANY_LOADING = 'RA/CRUD_DELETE_MANY_LOADING';
-export type CrudDeleteManyLoadingAction = CrudDeleteManyGenericAction<
-    typeof CRUD_DELETE_MANY_LOADING
->;
+export interface CrudDeleteManyLoadingAction {
+    readonly type: typeof CRUD_DELETE_MANY_LOADING;
+    readonly payload: RequestPayload;
+    readonly meta: {
+        resource: string;
+    };
+}
 
 export const CRUD_DELETE_MANY_FAILURE = 'RA/CRUD_DELETE_MANY_FAILURE';
-export type CrudDeleteManyFailingAction = CrudDeleteManyGenericAction<
-    typeof CRUD_DELETE_MANY_FAILURE
->;
+export interface CrudDeleteMAnyFailureAction {
+    readonly type: typeof CRUD_DELETE_MANY_FAILURE;
+    readonly error: string | object;
+    readonly payload: string;
+    readonly requestPayload: RequestPayload;
+    readonly meta: {
+        resource: string;
+        notification: NotificationSideEffect;
+        fetchResponse: typeof DELETE_MANY;
+        fetchStatus: typeof FETCH_ERROR;
+    };
+}
 
 export const CRUD_DELETE_MANY_SUCCESS = 'RA/CRUD_DELETE_MANY_SUCCESS';
-export type CrudDeleteManySuccessAction = CrudDeleteManyGenericAction<
-    typeof CRUD_DELETE_MANY_SUCCESS
->;
+export interface CrudDeleteManySuccessAction {
+    readonly type: typeof CRUD_DELETE_MANY_SUCCESS;
+    readonly payload: {
+        data: string[];
+    };
+    readonly requestPayload: RequestPayload;
+    readonly meta: {
+        resource: string;
+        notification: NotificationSideEffect;
+        refresh: RefreshSideEffect;
+        basePath: string;
+        unselectAll: boolean;
+        fetchResponse: typeof DELETE_MANY;
+        fetchStatus: typeof FETCH_END;
+    };
+}

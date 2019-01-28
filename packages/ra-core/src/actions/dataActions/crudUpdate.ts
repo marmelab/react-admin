@@ -1,14 +1,18 @@
 import { UPDATE } from '../../dataFetchActions';
+import { FETCH_END, FETCH_ERROR } from '../fetchActions';
 import { NotificationSideEffect } from '../../sideEffect/notification';
 import { RedirectionSideEffect } from '../../sideEffect/redirection';
 
-interface CrudUpdateGenericAction<T> {
-    readonly type: T;
-    readonly payload: {
-        id: string;
-        data: any;
-        previousData?: any;
-    };
+interface RequestPayload {
+    id: string;
+    data: any;
+    previousData?: any;
+}
+
+export const CRUD_UPDATE = 'RA/CRUD_UPDATE';
+export interface CrudUpdateAction {
+    readonly type: typeof CRUD_UPDATE;
+    readonly payload: RequestPayload;
     readonly meta: {
         resource: string;
         fetch: typeof UPDATE;
@@ -23,15 +27,12 @@ interface CrudUpdateGenericAction<T> {
     };
 }
 
-export const CRUD_UPDATE = 'RA/CRUD_UPDATE';
-export type CrudUpdateAction = CrudUpdateGenericAction<typeof CRUD_UPDATE>;
-
 export const crudUpdate = (
-    resource,
-    id,
-    data,
-    previousData,
-    basePath,
+    resource: string,
+    id: string,
+    data: any,
+    previousData: any,
+    basePath: string,
     redirectTo = 'show'
 ): CrudUpdateAction => ({
     type: CRUD_UPDATE,
@@ -60,16 +61,41 @@ export const crudUpdate = (
 });
 
 export const CRUD_UPDATE_LOADING = 'RA/CRUD_UPDATE_LOADING';
-export type CrudUpdateLoadingAction = CrudUpdateGenericAction<
-    typeof CRUD_UPDATE_LOADING
->;
+export interface CrudUpdateLoadingAction {
+    readonly type: typeof CRUD_UPDATE_LOADING;
+    readonly payload: RequestPayload;
+    readonly meta: {
+        resource: string;
+    };
+}
 
 export const CRUD_UPDATE_FAILURE = 'RA/CRUD_UPDATE_FAILURE';
-export type CrudUpdateFailingAction = CrudUpdateGenericAction<
-    typeof CRUD_UPDATE_FAILURE
->;
+export interface CrudUpdateFailureAction {
+    readonly type: typeof CRUD_UPDATE_FAILURE;
+    readonly error: string | object;
+    readonly payload: string;
+    readonly requestPayload: RequestPayload;
+    readonly meta: {
+        resource: string;
+        notification: NotificationSideEffect;
+        fetchResponse: typeof UPDATE;
+        fetchStatus: typeof FETCH_ERROR;
+    };
+}
 
 export const CRUD_UPDATE_SUCCESS = 'RA/CRUD_UPDATE_SUCCESS';
-export type CrudUpdateSuccessAction = CrudUpdateGenericAction<
-    typeof CRUD_UPDATE_SUCCESS
->;
+export interface CrudUpdateSuccessAction {
+    readonly type: typeof CRUD_UPDATE_SUCCESS;
+    readonly payload: {
+        data: any;
+    };
+    readonly requestPayload: RequestPayload;
+    readonly meta: {
+        resource: string;
+        notification: NotificationSideEffect;
+        redirectTo: RedirectionSideEffect;
+        basePath: string;
+        fetchResponse: typeof UPDATE;
+        fetchStatus: typeof FETCH_END;
+    };
+}

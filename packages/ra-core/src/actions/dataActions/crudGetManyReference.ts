@@ -1,16 +1,20 @@
 import { GET_MANY_REFERENCE } from '../../dataFetchActions';
+import { FETCH_END, FETCH_ERROR } from '../fetchActions';
 import { NotificationSideEffect } from '../../sideEffect/notification';
 
-interface CrudGetManyReferenceGenericAction<T> {
-    readonly type: T;
-    readonly payload: {
-        source: string;
-        target: string;
-        id: string;
-        pagination: { page: number; perPage: number };
-        sort: { field: string; order: string };
-        filter: object;
-    };
+interface RequestPayload {
+    source: string;
+    target: string;
+    id: string;
+    pagination: { page: number; perPage: number };
+    sort: { field: string; order: string };
+    filter: object;
+}
+
+export const CRUD_GET_MANY_REFERENCE = 'RA/CRUD_GET_MANY_REFERENCE';
+export interface CrudGetManyReferenceAction {
+    readonly type: typeof CRUD_GET_MANY_REFERENCE;
+    readonly payload: RequestPayload;
     readonly meta: {
         resource: string;
         fetch: typeof GET_MANY_REFERENCE;
@@ -21,20 +25,15 @@ interface CrudGetManyReferenceGenericAction<T> {
     };
 }
 
-export const CRUD_GET_MANY_REFERENCE = 'RA/CRUD_GET_MANY_REFERENCE';
-export type CrudGetManyReferenceAction = CrudGetManyReferenceGenericAction<
-    typeof CRUD_GET_MANY_REFERENCE
->;
-
 export const crudGetManyReference = (
-    reference,
-    target,
-    id,
-    relatedTo,
-    pagination,
-    sort,
-    filter,
-    source
+    reference: string,
+    target: string,
+    id: string,
+    relatedTo: string,
+    pagination: { page: number; perPage: number },
+    sort: { field: string; order: string },
+    filter: object,
+    source: string
 ): CrudGetManyReferenceAction => ({
     type: CRUD_GET_MANY_REFERENCE,
     payload: { target, id, pagination, sort, filter, source },
@@ -53,18 +52,44 @@ export const crudGetManyReference = (
 
 export const CRUD_GET_MANY_REFERENCE_LOADING =
     'RA/CRUD_GET_MANY_REFERENCE_LOADING';
-export type CrudGetManyReferenceLoadingAction = CrudGetManyReferenceGenericAction<
-    typeof CRUD_GET_MANY_REFERENCE_LOADING
->;
+export interface CrudGetManyReferenceLoadingAction {
+    readonly type: typeof CRUD_GET_MANY_REFERENCE_LOADING;
+    readonly payload: RequestPayload;
+    readonly meta: {
+        resource: string;
+        relatedTo: string;
+    };
+}
 
 export const CRUD_GET_MANY_REFERENCE_FAILURE =
     'RA/CRUD_GET_MANY_REFERENCE_FAILURE';
-export type CrudGetManyReferenceFailingAction = CrudGetManyReferenceGenericAction<
-    typeof CRUD_GET_MANY_REFERENCE_FAILURE
->;
+export interface CrudGetManyReferenceFailureAction {
+    readonly type: typeof CRUD_GET_MANY_REFERENCE_FAILURE;
+    readonly error: string | object;
+    readonly payload: string;
+    readonly requestPayload: RequestPayload;
+    readonly meta: {
+        resource: string;
+        relatedTo: string;
+        notification: NotificationSideEffect;
+        fetchResponse: typeof GET_MANY_REFERENCE;
+        fetchStatus: typeof FETCH_ERROR;
+    };
+}
 
 export const CRUD_GET_MANY_REFERENCE_SUCCESS =
     'RA/CRUD_GET_MANY_REFERENCE_SUCCESS';
-export type CrudGetManyReferenceSuccessAction = CrudGetManyReferenceGenericAction<
-    typeof CRUD_GET_MANY_REFERENCE_SUCCESS
->;
+export interface CrudGetManyReferenceSuccessAction {
+    readonly type: typeof CRUD_GET_MANY_REFERENCE_SUCCESS;
+    readonly payload: {
+        data: any[];
+        total: number;
+    };
+    readonly requestPayload: RequestPayload;
+    readonly meta: {
+        resource: string;
+        relatedTo: string;
+        fetchResponse: typeof GET_MANY_REFERENCE;
+        fetchStatus: typeof FETCH_END;
+    };
+}

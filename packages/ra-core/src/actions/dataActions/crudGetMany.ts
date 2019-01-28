@@ -1,11 +1,15 @@
 import { GET_MANY } from '../../dataFetchActions';
+import { FETCH_END, FETCH_ERROR } from '../fetchActions';
 import { NotificationSideEffect } from '../../sideEffect/notification';
 
-interface CrudGetManyGenericAction<T> {
-    readonly type: T;
-    readonly payload: {
-        ids: [string];
-    };
+interface RequestPayload {
+    ids: string[];
+}
+
+export const CRUD_GET_MANY = 'RA/CRUD_GET_MANY';
+export interface CrudGetManyAction {
+    readonly type: typeof CRUD_GET_MANY;
+    readonly payload: RequestPayload;
     readonly meta: {
         resource: string;
         fetch: typeof GET_MANY;
@@ -14,9 +18,6 @@ interface CrudGetManyGenericAction<T> {
         };
     };
 }
-
-export const CRUD_GET_MANY = 'RA/CRUD_GET_MANY';
-export type CrudGetManyAction = CrudGetManyGenericAction<typeof CRUD_GET_MANY>;
 
 export const crudGetMany = (resource, ids): CrudGetManyAction => ({
     type: CRUD_GET_MANY,
@@ -34,16 +35,38 @@ export const crudGetMany = (resource, ids): CrudGetManyAction => ({
 });
 
 export const CRUD_GET_MANY_LOADING = 'RA/CRUD_GET_MANY_LOADING';
-export type CrudGetManyLoadingAction = CrudGetManyGenericAction<
-    typeof CRUD_GET_MANY_LOADING
->;
+export interface CrudGetManyLoadingAction {
+    readonly type: typeof CRUD_GET_MANY_LOADING;
+    readonly payload: RequestPayload;
+    readonly meta: {
+        resource: string;
+    };
+}
 
 export const CRUD_GET_MANY_FAILURE = 'RA/CRUD_GET_MANY_FAILURE';
-export type CrudGetManyFailingAction = CrudGetManyGenericAction<
-    typeof CRUD_GET_MANY_FAILURE
->;
+export interface CrudGetManyFailureAction {
+    readonly type: typeof CRUD_GET_MANY_FAILURE;
+    readonly error: string | object;
+    readonly payload: string;
+    readonly requestPayload: RequestPayload;
+    readonly meta: {
+        resource: string;
+        notification: NotificationSideEffect;
+        fetchResponse: typeof GET_MANY;
+        fetchStatus: typeof FETCH_ERROR;
+    };
+}
 
 export const CRUD_GET_MANY_SUCCESS = 'RA/CRUD_GET_MANY_SUCCESS';
-export type CrudGetManySuccessAction = CrudGetManyGenericAction<
-    typeof CRUD_GET_MANY_SUCCESS
->;
+export interface CrudGetManySuccessAction {
+    readonly type: typeof CRUD_GET_MANY_SUCCESS;
+    readonly payload: {
+        data: any[];
+    };
+    readonly requestPayload: RequestPayload;
+    readonly meta: {
+        resource: string;
+        fetchResponse: typeof GET_MANY;
+        fetchStatus: typeof FETCH_END;
+    };
+}
