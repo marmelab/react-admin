@@ -23,7 +23,7 @@ const ListFilters = props => (
 
 const InvoiceList = props => (
     <List {...props} filters={<ListFilters />} perPage={25}>
-        <Datagrid expand={<InvoiceShow />}>
+        <Datagrid rowClick="expand" expand={<InvoiceShow />}>
             <TextField source="id" />
             <DateField source="date" />
             <ReferenceField source="customer_id" reference="customers">
