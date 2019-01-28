@@ -135,19 +135,13 @@ export class CoreAdminRouter extends Component {
                 <Switch>
                     {customRoutes
                         .filter(route => route.props.noLayout)
-                        .map((route, index) => (
-                            <Route
-                                key={index}
-                                exact={route.props.exact}
-                                path={route.props.path}
-                                render={props =>
-                                    this.renderCustomRoutesWithoutLayout(
-                                        route,
-                                        props
-                                    )
-                                }
-                            />
-                        ))}
+                        .map((route) => cloneElement(route, {
+                          render: props =>
+                            this.renderCustomRoutesWithoutLayout(
+                              route,
+                              props
+                            )
+                        }))}
                     <Route
                         path="/"
                         render={() =>
