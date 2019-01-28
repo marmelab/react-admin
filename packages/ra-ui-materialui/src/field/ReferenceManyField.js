@@ -32,7 +32,6 @@ export const ReferenceManyFieldView = ({
             total,
         })}
         {pagination &&
-            total !== undefined &&
             cloneElement(pagination, {
                 page,
                 perPage,
