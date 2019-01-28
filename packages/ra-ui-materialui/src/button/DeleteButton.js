@@ -69,15 +69,19 @@ class DeleteButton extends Component {
             className,
             icon,
             onClick,
+            color = 'danger',
             ...rest
         } = this.props;
         return (
             <Button
                 onClick={this.handleDelete}
                 label={label}
+                // danger is not supported by material-ui so we pass default as we will use a custom class anyway
+                color={color === 'danger' ? 'default' : color}
                 className={classnames(
                     'ra-delete-button',
-                    classes.deleteButton,
+                    // Most of the time, the delete button shouldn't stand out so we only apply the danger class if explicitly required
+                    color === 'danger' ? classes.deleteButton : undefined,
                     className
                 )}
                 key="button"
@@ -92,6 +96,7 @@ class DeleteButton extends Component {
 DeleteButton.propTypes = {
     basePath: PropTypes.string,
     classes: PropTypes.object,
+    color: PropTypes.oneOf(['default', 'inherit', 'primary', 'secondary', 'danger']),
     className: PropTypes.string,
     dispatchCrudDelete: PropTypes.func.isRequired,
     label: PropTypes.string,
@@ -109,6 +114,7 @@ DeleteButton.propTypes = {
 };
 
 DeleteButton.defaultProps = {
+    color: 'default',
     redirect: 'list',
     undoable: true,
     icon: <ActionDelete />,

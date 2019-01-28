@@ -103,11 +103,7 @@ export class PaginationActions extends Component {
                 ) : (
                     <Button
                         className="page-number"
-                        color={
-                            pageNum === this.props.page + 1
-                                ? 'default'
-                                : 'primary'
-                        }
+                        color="default"
                         key={pageNum}
                         data-page={pageNum - 1}
                         onClick={this.gotoPage}
@@ -128,7 +124,6 @@ export class PaginationActions extends Component {
             <div className={classes.actions}>
                 {page > 0 && (
                     <Button
-                        color="primary"
                         key="prev"
                         onClick={this.prevPage}
                         className="previous-page"
@@ -141,7 +136,6 @@ export class PaginationActions extends Component {
                 {this.renderPageNums()}
                 {page !== nbPages - 1 && (
                     <Button
-                        color="primary"
                         key="next"
                         onClick={this.nextPage}
                         className="next-page"

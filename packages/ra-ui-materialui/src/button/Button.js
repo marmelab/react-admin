@@ -37,7 +37,7 @@ const Button = ({
     children,
     classes = {},
     className,
-    color = 'primary',
+    color = 'default',
     disabled,
     label,
     size = 'small',
