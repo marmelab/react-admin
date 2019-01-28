@@ -133,11 +133,7 @@ function mapStateToProps(state, props) {
 }
 
 export default compose(
-    checkMinimumRequiredProps('Show', [
-        'basePath',
-        'location',
-        'resource',
-    ]),
+    checkMinimumRequiredProps('Show', ['basePath', 'resource']),
     connect(
         mapStateToProps,
         { crudGetOne: crudGetOneAction }
