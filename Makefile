@@ -23,9 +23,6 @@ build-demo: ## compile the demo example to static js
 run-graphql-demo: ## run the demo example
 	@yarn -s run-graphql-demo
 
-run-graphcool-demo: ## run the demo example
-	@yarn -s run-graphcool-demo
-
 build-ra-core:
 	@echo "Transpiling ra-core files...";
 	@cd ./packages/ra-core && yarn -s build
