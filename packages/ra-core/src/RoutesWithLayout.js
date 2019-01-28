@@ -16,7 +16,8 @@ const RoutesWithLayout = ({
 
     return (
         <Switch>
-            {customRoutes && customRoutes.map((route) => cloneElement(route))}
+            {customRoutes &&
+                customRoutes.map((route, key) => cloneElement(route, { key }))}
             {Children.map(children, child => (
                 <Route
                     key={child.props.name}
