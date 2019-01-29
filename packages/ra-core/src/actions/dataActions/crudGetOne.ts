@@ -7,26 +7,6 @@ import {
     RefreshSideEffect,
 } from '../../sideEffect';
 
-interface RequestPayload {
-    id: Identifier;
-}
-
-export const CRUD_GET_ONE = 'RA/CRUD_GET_ONE';
-export interface CrudGetOneAction {
-    readonly type: typeof CRUD_GET_ONE;
-    readonly payload: RequestPayload;
-    readonly meta: {
-        resource: string;
-        fetch: typeof GET_ONE;
-        basePath: string;
-        onFailure: {
-            notification: NotificationSideEffect;
-            redirectTo: RedirectionSideEffect;
-            refresh: RefreshSideEffect;
-        };
-    };
-}
-
 export const crudGetOne = (
     resource: string,
     id: Identifier,
@@ -49,6 +29,26 @@ export const crudGetOne = (
         },
     },
 });
+
+interface RequestPayload {
+    id: Identifier;
+}
+
+export const CRUD_GET_ONE = 'RA/CRUD_GET_ONE';
+export interface CrudGetOneAction {
+    readonly type: typeof CRUD_GET_ONE;
+    readonly payload: RequestPayload;
+    readonly meta: {
+        resource: string;
+        fetch: typeof GET_ONE;
+        basePath: string;
+        onFailure: {
+            notification: NotificationSideEffect;
+            redirectTo: RedirectionSideEffect;
+            refresh: RefreshSideEffect;
+        };
+    };
+}
 
 export const CRUD_GET_ONE_LOADING = 'RA/CRUD_GET_ONE_LOADING';
 export interface CrudGetOneLoadingAction {

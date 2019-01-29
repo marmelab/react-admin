@@ -7,30 +7,6 @@ import {
     RefreshSideEffect,
 } from '../../sideEffect';
 
-interface RequestPayload {
-    id: Identifier;
-    previousData: Record;
-}
-
-export const CRUD_DELETE = 'RA/CRUD_DELETE';
-export interface CrudDeleteAction {
-    readonly type: typeof CRUD_DELETE;
-    readonly payload: RequestPayload;
-    readonly meta: {
-        resource: string;
-        fetch: typeof DELETE;
-        onSuccess: {
-            notification: NotificationSideEffect;
-            redirectTo: RedirectionSideEffect;
-            refresh: RefreshSideEffect;
-            basePath: string;
-        };
-        onFailure: {
-            notification: NotificationSideEffect;
-        };
-    };
-}
-
 export const crudDelete = (
     resource: string,
     id: Identifier,
@@ -64,6 +40,30 @@ export const crudDelete = (
         },
     },
 });
+
+interface RequestPayload {
+    id: Identifier;
+    previousData: Record;
+}
+
+export const CRUD_DELETE = 'RA/CRUD_DELETE';
+export interface CrudDeleteAction {
+    readonly type: typeof CRUD_DELETE;
+    readonly payload: RequestPayload;
+    readonly meta: {
+        resource: string;
+        fetch: typeof DELETE;
+        onSuccess: {
+            notification: NotificationSideEffect;
+            redirectTo: RedirectionSideEffect;
+            refresh: RefreshSideEffect;
+            basePath: string;
+        };
+        onFailure: {
+            notification: NotificationSideEffect;
+        };
+    };
+}
 
 export const CRUD_DELETE_LOADING = 'RA/CRUD_DELETE_LOADING';
 export interface CrudDeleteLoadingAction {

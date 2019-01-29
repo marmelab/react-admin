@@ -3,28 +3,6 @@ import { GET_LIST } from '../../dataFetchActions';
 import { FETCH_END, FETCH_ERROR } from '../fetchActions';
 import { NotificationSideEffect, CallbackSideEffect } from '../../sideEffect';
 
-interface RequestPayload {
-    pagination: Pagination;
-    sort: Sort;
-    filter: object;
-}
-
-export const CRUD_GET_ALL = 'RA/CRUD_GET_ALL';
-interface CrudGetAllAction {
-    readonly type: typeof CRUD_GET_ALL;
-    readonly payload: RequestPayload;
-    readonly meta: {
-        resource: string;
-        fetch: typeof GET_LIST;
-        onFailure: {
-            notification: NotificationSideEffect;
-        };
-        onSuccess: {
-            callback: CallbackSideEffect;
-        };
-    };
-}
-
 export const crudGetAll = (
     resource: string,
     sort: Sort,
@@ -48,6 +26,28 @@ export const crudGetAll = (
         },
     },
 });
+
+interface RequestPayload {
+    pagination: Pagination;
+    sort: Sort;
+    filter: object;
+}
+
+export const CRUD_GET_ALL = 'RA/CRUD_GET_ALL';
+interface CrudGetAllAction {
+    readonly type: typeof CRUD_GET_ALL;
+    readonly payload: RequestPayload;
+    readonly meta: {
+        resource: string;
+        fetch: typeof GET_LIST;
+        onFailure: {
+            notification: NotificationSideEffect;
+        };
+        onSuccess: {
+            callback: CallbackSideEffect;
+        };
+    };
+}
 
 export const CRUD_GET_ALL_LOADING = 'RA/CRUD_GET_ALL_LOADING';
 export interface CrudGetAllLoadingAction {

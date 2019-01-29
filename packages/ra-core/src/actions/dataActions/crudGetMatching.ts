@@ -3,26 +3,6 @@ import { GET_LIST } from '../../dataFetchActions';
 import { FETCH_END, FETCH_ERROR } from '../fetchActions';
 import { NotificationSideEffect } from '../../sideEffect';
 
-interface RequestPayload {
-    pagination: Pagination;
-    sort: Sort;
-    filter: object;
-}
-
-export const CRUD_GET_MATCHING = 'RA/CRUD_GET_MATCHING';
-interface CrudGetMatchingAction {
-    readonly type: typeof CRUD_GET_MATCHING;
-    readonly payload: RequestPayload;
-    readonly meta: {
-        resource: string;
-        fetch: typeof GET_LIST;
-        relatedTo: string;
-        onFailure: {
-            notification: NotificationSideEffect;
-        };
-    };
-}
-
 export const crudGetMatching = (
     reference: string,
     relatedTo: string,
@@ -44,6 +24,26 @@ export const crudGetMatching = (
         },
     },
 });
+
+interface RequestPayload {
+    pagination: Pagination;
+    sort: Sort;
+    filter: object;
+}
+
+export const CRUD_GET_MATCHING = 'RA/CRUD_GET_MATCHING';
+interface CrudGetMatchingAction {
+    readonly type: typeof CRUD_GET_MATCHING;
+    readonly payload: RequestPayload;
+    readonly meta: {
+        resource: string;
+        fetch: typeof GET_LIST;
+        relatedTo: string;
+        onFailure: {
+            notification: NotificationSideEffect;
+        };
+    };
+}
 
 export const CRUD_GET_MATCHING_LOADING = 'RA/CRUD_GET_MATCHING_LOADING';
 export interface CrudGetMatchingLoadingAction {

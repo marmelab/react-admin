@@ -3,23 +3,6 @@ import { GET_MANY } from '../../dataFetchActions';
 import { FETCH_END, FETCH_ERROR } from '../fetchActions';
 import { NotificationSideEffect } from '../../sideEffect';
 
-interface RequestPayload {
-    ids: Identifier[];
-}
-
-export const CRUD_GET_MANY = 'RA/CRUD_GET_MANY';
-export interface CrudGetManyAction {
-    readonly type: typeof CRUD_GET_MANY;
-    readonly payload: RequestPayload;
-    readonly meta: {
-        resource: string;
-        fetch: typeof GET_MANY;
-        onFailure: {
-            notification: NotificationSideEffect;
-        };
-    };
-}
-
 export const crudGetMany = (
     resource: string,
     ids: Identifier[]
@@ -37,6 +20,23 @@ export const crudGetMany = (
         },
     },
 });
+
+interface RequestPayload {
+    ids: Identifier[];
+}
+
+export const CRUD_GET_MANY = 'RA/CRUD_GET_MANY';
+export interface CrudGetManyAction {
+    readonly type: typeof CRUD_GET_MANY;
+    readonly payload: RequestPayload;
+    readonly meta: {
+        resource: string;
+        fetch: typeof GET_MANY;
+        onFailure: {
+            notification: NotificationSideEffect;
+        };
+    };
+}
 
 export const CRUD_GET_MANY_LOADING = 'RA/CRUD_GET_MANY_LOADING';
 export interface CrudGetManyLoadingAction {

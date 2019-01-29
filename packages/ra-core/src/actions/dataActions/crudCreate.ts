@@ -6,28 +6,6 @@ import {
     RedirectionSideEffect,
 } from '../../sideEffect';
 
-interface RequestPayload {
-    data: any;
-}
-
-export const CRUD_CREATE = 'RA/CRUD_CREATE';
-export interface CrudCreateAction {
-    readonly type: typeof CRUD_CREATE;
-    readonly payload: RequestPayload;
-    readonly meta: {
-        resource: string;
-        fetch: typeof CREATE;
-        onSuccess: {
-            notification: NotificationSideEffect;
-            redirectTo: RedirectionSideEffect;
-            basePath: string;
-        };
-        onFailure: {
-            notification: NotificationSideEffect;
-        };
-    };
-}
-
 export const crudCreate = (
     resource: string,
     data: any,
@@ -58,6 +36,28 @@ export const crudCreate = (
         },
     },
 });
+
+interface RequestPayload {
+    data: any;
+}
+
+export const CRUD_CREATE = 'RA/CRUD_CREATE';
+export interface CrudCreateAction {
+    readonly type: typeof CRUD_CREATE;
+    readonly payload: RequestPayload;
+    readonly meta: {
+        resource: string;
+        fetch: typeof CREATE;
+        onSuccess: {
+            notification: NotificationSideEffect;
+            redirectTo: RedirectionSideEffect;
+            basePath: string;
+        };
+        onFailure: {
+            notification: NotificationSideEffect;
+        };
+    };
+}
 
 export const CRUD_CREATE_LOADING = 'RA/CRUD_CREATE_LOADING';
 export interface CrudCreateLoadingAction {

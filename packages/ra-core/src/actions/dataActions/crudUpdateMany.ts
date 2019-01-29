@@ -3,30 +3,6 @@ import { UPDATE_MANY } from '../../dataFetchActions';
 import { FETCH_END, FETCH_ERROR } from '../fetchActions';
 import { NotificationSideEffect, RefreshSideEffect } from '../../sideEffect';
 
-interface RequestPayload {
-    ids: Identifier[];
-    data: any;
-}
-
-export const CRUD_UPDATE_MANY = 'RA/CRUD_UPDATE_MANY';
-export interface CrudUpdateManyAction {
-    readonly type: typeof CRUD_UPDATE_MANY;
-    readonly payload: RequestPayload;
-    readonly meta: {
-        resource: string;
-        fetch: typeof UPDATE_MANY;
-        onSuccess: {
-            notification: NotificationSideEffect;
-            refresh: RefreshSideEffect;
-            basePath: string;
-            unselectAll: boolean;
-        };
-        onFailure: {
-            notification: NotificationSideEffect;
-        };
-    };
-}
-
 export const crudUpdateMany = (
     resource: string,
     ids: Identifier[],
@@ -59,6 +35,30 @@ export const crudUpdateMany = (
         },
     },
 });
+
+interface RequestPayload {
+    ids: Identifier[];
+    data: any;
+}
+
+export const CRUD_UPDATE_MANY = 'RA/CRUD_UPDATE_MANY';
+export interface CrudUpdateManyAction {
+    readonly type: typeof CRUD_UPDATE_MANY;
+    readonly payload: RequestPayload;
+    readonly meta: {
+        resource: string;
+        fetch: typeof UPDATE_MANY;
+        onSuccess: {
+            notification: NotificationSideEffect;
+            refresh: RefreshSideEffect;
+            basePath: string;
+            unselectAll: boolean;
+        };
+        onFailure: {
+            notification: NotificationSideEffect;
+        };
+    };
+}
 
 export const CRUD_UPDATE_MANY_LOADING = 'RA/CRUD_UPDATE_MANY_LOADING';
 export interface CrudUpdateManyLoadingAction {
