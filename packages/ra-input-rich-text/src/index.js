@@ -24,7 +24,7 @@ export class RichTextInput extends Component {
 
     static defaultProps = {
         addLabel: true,
-        options: {},
+        options: {}, // Quill editor options
         record: {},
         toolbar: true,
         fullWidth: true,
@@ -34,11 +34,13 @@ export class RichTextInput extends Component {
         const {
             input: { value },
             toolbar,
+            options,
         } = this.props;
 
         this.quill = new Quill(this.divRef, {
-            modules: { toolbar },
+            modules: { toolbar, clipboard: { matchVisual: false } },
             theme: 'snow',
+            ...options,
         });
 
         this.quill.setContents(this.quill.clipboard.convert(value));
