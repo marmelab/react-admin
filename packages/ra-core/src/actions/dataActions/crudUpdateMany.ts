@@ -33,7 +33,7 @@ export const crudUpdateMany = (
     ids: Identifier[],
     data: any,
     basePath: string,
-    refresh: boolean = true
+    refresh: RefreshSideEffect = true
 ): CrudUpdateManyAction => ({
     type: CRUD_UPDATE_MANY,
     payload: { ids, data },

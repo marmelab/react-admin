@@ -34,8 +34,8 @@ export const crudDelete = (
     id: Identifier,
     previousData: Record,
     basePath: string,
-    redirectTo: string = 'list',
-    refresh: boolean = true
+    redirectTo: RedirectionSideEffect = 'list',
+    refresh: RefreshSideEffect = true
 ): CrudDeleteAction => ({
     type: CRUD_DELETE,
     payload: { id, previousData },

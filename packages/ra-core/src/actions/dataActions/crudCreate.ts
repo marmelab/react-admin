@@ -30,7 +30,7 @@ export const crudCreate = (
     resource: string,
     data: any,
     basePath: string,
-    redirectTo: string = 'edit'
+    redirectTo: RedirectionSideEffect = 'edit'
 ): CrudCreateAction => ({
     type: CRUD_CREATE,
     payload: { data },

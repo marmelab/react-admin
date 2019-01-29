@@ -29,7 +29,7 @@ export const crudGetOne = (
     resource: string,
     id: Identifier,
     basePath: string,
-    refresh: boolean = true
+    refresh: RefreshSideEffect = true
 ): CrudGetOneAction => ({
     type: CRUD_GET_ONE,
     payload: { id },

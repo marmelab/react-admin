@@ -30,7 +30,7 @@ export const crudDeleteMany = (
     resource: string,
     ids: Identifier[],
     basePath: string,
-    refresh: boolean = true
+    refresh: RefreshSideEffect = true
 ): CrudDeleteManyAction => ({
     type: CRUD_DELETE_MANY,
     payload: { ids },

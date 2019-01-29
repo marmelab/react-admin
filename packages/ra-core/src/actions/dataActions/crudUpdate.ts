@@ -34,7 +34,7 @@ export const crudUpdate = (
     data: any,
     previousData: any,
     basePath: string,
-    redirectTo = 'show'
+    redirectTo: RedirectionSideEffect = 'show'
 ): CrudUpdateAction => ({
     type: CRUD_UPDATE,
     payload: { id, data, previousData },
