@@ -6,6 +6,7 @@ import {
     select,
     takeEvery,
 } from 'redux-saga/effects';
+import { DataProvider, ReduxState } from '../types';
 import {
     FETCH_CANCEL,
     FETCH_END,
@@ -70,7 +71,21 @@ function validateResponseFormat(
     }
 }
 
-export function* handleFetch(dataProvider, action) {
+interface ActionWithSideEffect {
+    type: string;
+    payload: any;
+    meta: {
+        fetch: string;
+        resource: string;
+        onSuccess?: any;
+        onFailure?: any;
+    };
+}
+
+export function* handleFetch(
+    dataProvider: DataProvider,
+    action: ActionWithSideEffect
+) {
     const {
         type,
         payload,
@@ -79,7 +94,9 @@ export function* handleFetch(dataProvider, action) {
     const restType = fetchMeta;
 
     try {
-        const isOptimistic = yield select(state => state.admin.ui.optimistic);
+        const isOptimistic = yield select(
+            (state: ReduxState) => state.admin.ui.optimistic
+        );
         if (isOptimistic) {
             // in optimistic mode, all fetch actions are canceled,
             // so the admin uses the store without synchronization
@@ -90,14 +107,15 @@ export function* handleFetch(dataProvider, action) {
             put({ type: `${type}_LOADING`, payload, meta }),
             put({ type: FETCH_START }),
         ]);
-        let response = yield call(
+        const response = yield call(
             dataProvider,
             restType,
             meta.resource,
             payload
         );
-        process.env.NODE_ENV !== 'production' &&
+        if (process.env.NODE_ENV !== 'production') {
             validateResponseFormat(response, restType);
+        }
         yield put({
             type: `${type}_SUCCESS`,
             payload: response,
@@ -127,12 +145,14 @@ export function* handleFetch(dataProvider, action) {
     } finally {
         if (yield cancelled()) {
             yield put({ type: FETCH_CANCEL });
-            return; /* eslint no-unsafe-finally:0 */
+            return; /* tslint:disable-line no-unsafe-finally */
         }
     }
 }
+
 export const takeFetchAction = action => action.meta && action.meta.fetch;
-const fetch = dataProvider => {
+
+const fetch = (dataProvider: DataProvider) => {
     return function* watchFetch() {
         yield takeEvery(takeFetchAction, handleFetch, dataProvider);
     };

@@ -1,3 +1,4 @@
+import expect from 'expect';
 import { delay } from 'redux-saga';
 import { call, cancel, fork, put } from 'redux-saga/effects';
 import { createMockTask } from 'redux-saga/utils';
@@ -82,8 +83,8 @@ describe('accumulate saga', () => {
                 payload: { ids: [1, 2] },
                 meta: {
                     accumulate: crudGetMany,
-                    accumulateValues: (accumulations, action) => [
-                        ...(accumulations || []),
+                    accumulateValues: (accumulations2, action) => [
+                        ...(accumulations2 || []),
                         ...action.payload.ids,
                     ],
                     accumulateKey: 'posts',
@@ -110,8 +111,8 @@ describe('accumulate saga', () => {
                 payload: { ids: [3, 4] },
                 meta: {
                     accumulate: crudGetMany,
-                    accumulateValues: (accumulations, action) => [
-                        ...(accumulations || []),
+                    accumulateValues: (accumulations2, action) => [
+                        ...(accumulations2 || []),
                         ...action.payload.ids,
                     ],
                     accumulateKey: 'posts',

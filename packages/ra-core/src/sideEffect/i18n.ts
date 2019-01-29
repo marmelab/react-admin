@@ -1,11 +1,10 @@
 import { all, call, put, takeLatest } from 'redux-saga/effects';
+import { I18nProvider } from '../types';
 import {
     CHANGE_LOCALE,
     changeLocaleSuccess,
     changeLocaleFailure,
 } from '../actions';
-
-export type I18nProvider = (locale: string) => object | Promise<object>;
 
 /**
  * The i18n side effect reacts to the CHANGE_LOCALE actions, calls

@@ -1,3 +1,4 @@
+import { DataProvider, AuthProvider, I18nProvider } from '../types';
 import { all } from 'redux-saga/effects';
 import auth from './auth';
 import callback from './callback';
@@ -13,7 +14,11 @@ import undo from './undo';
 /**
  * @param {Object} dataProvider A Data Provider function
  */
-export default (dataProvider, authProvider, i18nProvider) =>
+export default (
+    dataProvider: DataProvider,
+    authProvider: AuthProvider | null,
+    i18nProvider: I18nProvider
+) =>
     function* admin() {
         yield all([
             i18n(i18nProvider)(),

@@ -6,8 +6,7 @@
         "module":
             "commonjs" /* Specify module code generation: 'none', 'commonjs', 'amd', 'system', 'umd', 'es2015', or 'ESNext'. */,
         "lib": [
-            "es7",
-            "es6",
+            "es2017",
             "dom"
         ] /* Specify library files to be included in the compilation. */,
         "allowJs": true /* Allow javascript files to be compiled. */,

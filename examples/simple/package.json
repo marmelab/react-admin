@@ -29,6 +29,7 @@
         "hard-source-webpack-plugin": "^0.11.2",
         "html-loader": "~0.5.5",
         "html-webpack-plugin": "~3.2.0",
+        "ignore-not-found-export-plugin": "^1.0.1",
         "jest": "^23.6.0",
         "ra-data-fakerest": "^2.0.0",
         "ra-input-rich-text": "^2.0.0",

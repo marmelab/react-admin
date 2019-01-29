@@ -1,6 +1,7 @@
 import { all, put, call, select, takeEvery } from 'redux-saga/effects';
 import { push, replace } from 'react-router-redux';
 
+import { AuthProvider } from '../types';
 import {
     showNotification,
     hideNotification,
@@ -22,8 +23,10 @@ const nextPathnameSelector = state => {
 
 const currentPathnameSelector = state => state.router.location;
 
-export default authProvider => {
-    if (!authProvider) return () => null;
+export default (authProvider?: AuthProvider) => {
+    if (!authProvider) {
+        return () => null;
+    }
     function* handleAuth(action) {
         const { type, payload, error, meta } = action;
         switch (type) {
@@ -95,7 +98,12 @@ export default authProvider => {
                         })
                     );
                     yield put(hideNotification());
-                    yield put(showNotification('ra.notification.logged_out', 'warning'));
+                    yield put(
+                        showNotification(
+                            'ra.notification.logged_out',
+                            'warning'
+                        )
+                    );
                 }
                 break;
         }

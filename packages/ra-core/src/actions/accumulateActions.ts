@@ -36,8 +36,8 @@ export interface CrudGetMatchingAccumulateAction {
 export const crudGetMatchingAccumulate = (
     reference: string,
     relatedTo: string,
-    pagination: object,
-    sort: object,
+    pagination: { page: number; perPage: number },
+    sort: { field: string; order: string },
     filter: object
 ): CrudGetMatchingAccumulateAction => {
     const action = crudGetMatching(
