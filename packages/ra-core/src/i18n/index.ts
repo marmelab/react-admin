@@ -5,4 +5,5 @@ import TranslationProvider from './TranslationProvider';
 export { defaultI18nProvider, translate, TranslationProvider };
 export const DEFAULT_LOCALE = 'en';
 
+export * from './TranslationContext';
 export * from './TranslationUtils';
