@@ -149,7 +149,7 @@ export class SelectInput extends Component {
         this.props.input.onChange(value);
 
         // HACK: For some reason, redux-form does not consider this input touched without calling onBlur manually
-        this.props.input.onBlur();
+        this.props.input.onBlur(value);
         this.setState({ value });
     };
 
