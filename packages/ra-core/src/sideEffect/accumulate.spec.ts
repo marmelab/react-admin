@@ -1,3 +1,4 @@
+import expect from 'expect';
 import { delay } from 'redux-saga';
 import { call, cancel, fork, put } from 'redux-saga/effects';
 import { createMockTask } from 'redux-saga/utils';

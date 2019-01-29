@@ -7617,6 +7617,11 @@ iferr@^0.1.5:
   resolved "https://registry.yarnpkg.com/iferr/-/iferr-0.1.5.tgz#c60eed69e6d8fdb6b3104a1fcbca1c192dc5b501"
   integrity sha1-xg7taebY/bazEEofy8ocGS3FtQE=
 
+ignore-not-found-export-plugin@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/ignore-not-found-export-plugin/-/ignore-not-found-export-plugin-1.0.1.tgz#0cc1af5f709df808e079ef4000641a6aa1c606ad"
+  integrity sha512-QPMrUVdhTXUII2xcq1pGqXJvIz7qb77TlY9eejQdZJaE2bKMBMBtjkVbDTgovieV591tfZ9fSr6ejCWxzX/gzw==
+
 ignore-styles@~5.0.1:
   version "5.0.1"
   resolved "https://registry.yarnpkg.com/ignore-styles/-/ignore-styles-5.0.1.tgz#b49ef2274bdafcd8a4880a966bfe38d1a0bf4671"
