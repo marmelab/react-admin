@@ -1,3 +1,4 @@
+import { Identifier, Record } from '../../types';
 import { GET_ONE } from '../../dataFetchActions';
 import { FETCH_END, FETCH_ERROR } from '../fetchActions';
 import { NotificationSideEffect } from '../../sideEffect/notification';
@@ -5,7 +6,7 @@ import { RedirectionSideEffect } from '../../sideEffect/redirection';
 import { RefreshSideEffect } from '../../sideEffect/refresh';
 
 interface RequestPayload {
-    id: string;
+    id: Identifier;
 }
 
 export const CRUD_GET_ONE = 'RA/CRUD_GET_ONE';
@@ -26,7 +27,7 @@ export interface CrudGetOneAction {
 
 export const crudGetOne = (
     resource: string,
-    id: string,
+    id: Identifier,
     basePath: string,
     refresh: boolean = true
 ): CrudGetOneAction => ({
@@ -77,7 +78,7 @@ export const CRUD_GET_ONE_SUCCESS = 'RA/CRUD_GET_ONE_SUCCESS';
 export interface CrudGetOneSuccessAction {
     readonly type: typeof CRUD_GET_ONE_SUCCESS;
     readonly payload: {
-        data: any;
+        data: Record;
     };
     readonly requestPayload: RequestPayload;
     readonly meta: {

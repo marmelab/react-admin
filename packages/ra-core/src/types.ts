@@ -1,3 +1,9 @@
+export type Identifier = string | boolean;
+export interface Record {
+    id: Identifier;
+    [key: string]: any;
+}
+
 export type I18nProvider = (locale: string) => object | Promise<object>;
 export type Translate = (id: string, options?: any) => string;
 

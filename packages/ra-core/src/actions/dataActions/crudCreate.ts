@@ -1,3 +1,4 @@
+import { Record } from '../../types';
 import { CREATE } from '../../dataFetchActions';
 import { FETCH_END, FETCH_ERROR } from '../fetchActions';
 import { NotificationSideEffect } from '../../sideEffect/notification';
@@ -83,7 +84,7 @@ export const CRUD_CREATE_SUCCESS = 'RA/CRUD_CREATE_SUCCESS';
 export interface CrudCreateSuccessAction {
     readonly type: typeof CRUD_CREATE_SUCCESS;
     readonly payload: {
-        data: any;
+        data: Record;
     };
     readonly requestPayload: RequestPayload;
     readonly meta: {

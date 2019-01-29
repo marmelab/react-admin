@@ -1,9 +1,10 @@
+import { Identifier, Record } from '../../types';
 import { GET_MANY } from '../../dataFetchActions';
 import { FETCH_END, FETCH_ERROR } from '../fetchActions';
 import { NotificationSideEffect } from '../../sideEffect/notification';
 
 interface RequestPayload {
-    ids: string[];
+    ids: Identifier[];
 }
 
 export const CRUD_GET_MANY = 'RA/CRUD_GET_MANY';
@@ -19,7 +20,10 @@ export interface CrudGetManyAction {
     };
 }
 
-export const crudGetMany = (resource, ids): CrudGetManyAction => ({
+export const crudGetMany = (
+    resource: string,
+    ids: Identifier[]
+): CrudGetManyAction => ({
     type: CRUD_GET_MANY,
     payload: { ids },
     meta: {
@@ -61,7 +65,7 @@ export const CRUD_GET_MANY_SUCCESS = 'RA/CRUD_GET_MANY_SUCCESS';
 export interface CrudGetManySuccessAction {
     readonly type: typeof CRUD_GET_MANY_SUCCESS;
     readonly payload: {
-        data: any[];
+        data: Record[];
     };
     readonly requestPayload: RequestPayload;
     readonly meta: {

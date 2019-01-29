@@ -1,10 +1,11 @@
+import { Identifier, Record } from '../../types';
 import { UPDATE_MANY } from '../../dataFetchActions';
 import { FETCH_END, FETCH_ERROR } from '../fetchActions';
 import { NotificationSideEffect } from '../../sideEffect/notification';
 import { RefreshSideEffect } from '../../sideEffect/refresh';
 
 interface RequestPayload {
-    ids: string[];
+    ids: Identifier[];
     data: any;
 }
 
@@ -29,7 +30,7 @@ export interface CrudUpdateManyAction {
 
 export const crudUpdateMany = (
     resource: string,
-    ids: string[],
+    ids: Identifier[],
     data: any,
     basePath: string,
     refresh: boolean = true
@@ -87,7 +88,7 @@ export const CRUD_UPDATE_MANY_SUCCESS = 'RA/CRUD_UPDATE_MANY_SUCCESS';
 export interface CrudUpdateManySuccessAction {
     readonly type: typeof CRUD_UPDATE_MANY_SUCCESS;
     readonly payload: {
-        data: any[];
+        data: Identifier[];
     };
     readonly requestPayload: RequestPayload;
     readonly meta: {

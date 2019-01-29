@@ -1,3 +1,4 @@
+import { Record } from '../../types';
 import { GET_LIST } from '../../dataFetchActions';
 import { FETCH_END, FETCH_ERROR } from '../fetchActions';
 import { NotificationSideEffect } from '../../sideEffect/notification';
@@ -68,7 +69,7 @@ export const CRUD_GET_LIST_SUCCESS = 'RA/CRUD_GET_LIST_SUCCESS';
 export interface CrudGetListSuccessAction {
     readonly type: typeof CRUD_GET_LIST_SUCCESS;
     readonly payload: {
-        data: any[];
+        data: Record[];
         total: number;
     };
     readonly requestPayload: RequestPayload;

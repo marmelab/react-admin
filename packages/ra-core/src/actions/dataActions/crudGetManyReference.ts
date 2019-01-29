@@ -1,3 +1,4 @@
+import { Identifier, Record } from '../../types';
 import { GET_MANY_REFERENCE } from '../../dataFetchActions';
 import { FETCH_END, FETCH_ERROR } from '../fetchActions';
 import { NotificationSideEffect } from '../../sideEffect/notification';
@@ -5,7 +6,7 @@ import { NotificationSideEffect } from '../../sideEffect/notification';
 interface RequestPayload {
     source: string;
     target: string;
-    id: string;
+    id: Identifier;
     pagination: { page: number; perPage: number };
     sort: { field: string; order: string };
     filter: object;
@@ -28,7 +29,7 @@ export interface CrudGetManyReferenceAction {
 export const crudGetManyReference = (
     reference: string,
     target: string,
-    id: string,
+    id: Identifier,
     relatedTo: string,
     pagination: { page: number; perPage: number },
     sort: { field: string; order: string },
@@ -82,7 +83,7 @@ export const CRUD_GET_MANY_REFERENCE_SUCCESS =
 export interface CrudGetManyReferenceSuccessAction {
     readonly type: typeof CRUD_GET_MANY_REFERENCE_SUCCESS;
     readonly payload: {
-        data: any[];
+        data: Record[];
         total: number;
     };
     readonly requestPayload: RequestPayload;

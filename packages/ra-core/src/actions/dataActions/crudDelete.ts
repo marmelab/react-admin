@@ -1,3 +1,4 @@
+import { Identifier, Record } from '../../types';
 import { DELETE } from '../../dataFetchActions';
 import { FETCH_END, FETCH_ERROR } from '../fetchActions';
 import { NotificationSideEffect } from '../../sideEffect/notification';
@@ -5,8 +6,8 @@ import { RedirectionSideEffect } from '../../sideEffect/redirection';
 import { RefreshSideEffect } from '../../sideEffect/refresh';
 
 interface RequestPayload {
-    id: string;
-    previousData: any;
+    id: Identifier;
+    previousData: Record;
 }
 
 export const CRUD_DELETE = 'RA/CRUD_DELETE';
@@ -30,8 +31,8 @@ export interface CrudDeleteAction {
 
 export const crudDelete = (
     resource: string,
-    id: string,
-    previousData: any,
+    id: Identifier,
+    previousData: Record,
     basePath: string,
     redirectTo: string = 'list',
     refresh: boolean = true
@@ -89,7 +90,7 @@ export const CRUD_DELETE_SUCCESS = 'RA/CRUD_DELETE_SUCCESS';
 export interface CrudDeleteSuccessAction {
     readonly type: typeof CRUD_DELETE_SUCCESS;
     readonly payload: {
-        data: any;
+        data: Record;
     };
     readonly requestPayload: RequestPayload;
     readonly meta: {

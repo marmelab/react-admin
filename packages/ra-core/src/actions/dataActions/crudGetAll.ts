@@ -1,6 +1,8 @@
+import { Record } from '../../types';
 import { GET_LIST } from '../../dataFetchActions';
 import { FETCH_END, FETCH_ERROR } from '../fetchActions';
 import { NotificationSideEffect } from '../../sideEffect/notification';
+import { CallbackSideEffect } from '../../sideEffect/callback';
 
 interface RequestPayload {
     pagination: { page: number; perPage: number };
@@ -19,7 +21,7 @@ interface CrudGetAllAction {
             notification: NotificationSideEffect;
         };
         onSuccess: {
-            callback: any;
+            callback: CallbackSideEffect;
         };
     };
 }
@@ -29,7 +31,7 @@ export const crudGetAll = (
     sort: { field: string; order: string },
     filter: object,
     maxResults: number,
-    callback?: () => any
+    callback?: CallbackSideEffect
 ): CrudGetAllAction => ({
     type: CRUD_GET_ALL,
     payload: { sort, filter, pagination: { page: 1, perPage: maxResults } },
@@ -75,7 +77,7 @@ export const CRUD_GET_ALL_SUCCESS = 'RA/CRUD_GET_ALL_SUCCESS';
 export interface CrudGetAllSuccessAction {
     readonly type: typeof CRUD_GET_ALL_SUCCESS;
     readonly payload: {
-        data: any[];
+        data: Record[];
         total: number;
     };
     readonly requestPayload: RequestPayload;

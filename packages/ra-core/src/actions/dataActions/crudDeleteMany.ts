@@ -1,10 +1,11 @@
+import { Identifier, Record } from '../../types';
 import { DELETE_MANY } from '../../dataFetchActions';
 import { FETCH_END, FETCH_ERROR } from '../fetchActions';
 import { NotificationSideEffect } from '../../sideEffect/notification';
 import { RefreshSideEffect } from '../../sideEffect/refresh';
 
 interface RequestPayload {
-    ids: string[];
+    ids: Identifier[];
 }
 
 export const CRUD_DELETE_MANY = 'RA/CRUD_DELETE_MANY';
@@ -27,7 +28,7 @@ export interface CrudDeleteManyAction {
 }
 export const crudDeleteMany = (
     resource: string,
-    ids: string[],
+    ids: Identifier[],
     basePath: string,
     refresh: boolean = true
 ): CrudDeleteManyAction => ({
@@ -84,7 +85,7 @@ export const CRUD_DELETE_MANY_SUCCESS = 'RA/CRUD_DELETE_MANY_SUCCESS';
 export interface CrudDeleteManySuccessAction {
     readonly type: typeof CRUD_DELETE_MANY_SUCCESS;
     readonly payload: {
-        data: string[];
+        data: Record[];
     };
     readonly requestPayload: RequestPayload;
     readonly meta: {
