@@ -19,8 +19,9 @@ Here is the default store creation for react-admin:
 
 ```js
 // in src/createAdminStore.js
-import { combineReducers, createStore, compose, applyMiddleware } from 'redux';
-import { routerMiddleware } from 'react-router-redux';
+import { applyMiddleware, combineReducers, compose, createStore } from 'redux';
+import { routerMiddleware, routerReducer } from 'react-router-redux';
+import { reducer as formReducer } from 'redux-form';
 import createSagaMiddleware from 'redux-saga';
 import { all, fork } from 'redux-saga/effects';
 import {
