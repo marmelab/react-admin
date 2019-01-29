@@ -1,4 +1,4 @@
-export type Identifier = string | boolean;
+export type Identifier = string | number;
 export interface Record {
     id: Identifier;
     [key: string]: any;
@@ -23,7 +23,7 @@ export type AuthActionType =
     | 'AUTH_CHECK'
     | 'AUTH_GET_PERMISSIONS';
 
-export type AuthProvider = (type: AuthActionType, params: any) => Promise<any>;
+export type AuthProvider = (type: AuthActionType, params?: any) => Promise<any>;
 
 export type DataProvider = (
     type: string,
@@ -32,6 +32,11 @@ export type DataProvider = (
 ) => Promise<any>;
 
 export interface ReduxState {
+    admin: {
+        ui: {
+            optimistic: boolean;
+        };
+    };
     i18n: {
         locale: string;
         messages: object;

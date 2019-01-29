@@ -1,8 +1,10 @@
 import { Identifier, Record } from '../../types';
 import { UPDATE } from '../../dataFetchActions';
 import { FETCH_END, FETCH_ERROR } from '../fetchActions';
-import { NotificationSideEffect } from '../../sideEffect/notification';
-import { RedirectionSideEffect } from '../../sideEffect/redirection';
+import {
+    NotificationSideEffect,
+    RedirectionSideEffect,
+} from '../../sideEffect';
 
 interface RequestPayload {
     id: Identifier;

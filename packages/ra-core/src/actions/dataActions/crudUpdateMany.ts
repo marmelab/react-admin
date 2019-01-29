@@ -1,8 +1,7 @@
 import { Identifier, Record } from '../../types';
 import { UPDATE_MANY } from '../../dataFetchActions';
 import { FETCH_END, FETCH_ERROR } from '../fetchActions';
-import { NotificationSideEffect } from '../../sideEffect/notification';
-import { RefreshSideEffect } from '../../sideEffect/refresh';
+import { NotificationSideEffect, RefreshSideEffect } from '../../sideEffect';
 
 interface RequestPayload {
     ids: Identifier[];

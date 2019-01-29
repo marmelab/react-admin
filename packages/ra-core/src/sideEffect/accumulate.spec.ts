@@ -82,8 +82,8 @@ describe('accumulate saga', () => {
                 payload: { ids: [1, 2] },
                 meta: {
                     accumulate: crudGetMany,
-                    accumulateValues: (accumulations, action) => [
-                        ...(accumulations || []),
+                    accumulateValues: (accumulations2, action) => [
+                        ...(accumulations2 || []),
                         ...action.payload.ids,
                     ],
                     accumulateKey: 'posts',
@@ -110,8 +110,8 @@ describe('accumulate saga', () => {
                 payload: { ids: [3, 4] },
                 meta: {
                     accumulate: crudGetMany,
-                    accumulateValues: (accumulations, action) => [
-                        ...(accumulations || []),
+                    accumulateValues: (accumulations2, action) => [
+                        ...(accumulations2 || []),
                         ...action.payload.ids,
                     ],
                     accumulateKey: 'posts',

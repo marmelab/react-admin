@@ -1,7 +1,7 @@
 import { Identifier, Record, Pagination, Sort } from '../../types';
 import { GET_MANY_REFERENCE } from '../../dataFetchActions';
 import { FETCH_END, FETCH_ERROR } from '../fetchActions';
-import { NotificationSideEffect } from '../../sideEffect/notification';
+import { NotificationSideEffect } from '../../sideEffect';
 
 interface RequestPayload {
     source: string;

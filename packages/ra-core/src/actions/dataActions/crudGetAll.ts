@@ -1,8 +1,7 @@
 import { Record, Pagination, Sort } from '../../types';
 import { GET_LIST } from '../../dataFetchActions';
 import { FETCH_END, FETCH_ERROR } from '../fetchActions';
-import { NotificationSideEffect } from '../../sideEffect/notification';
-import { CallbackSideEffect } from '../../sideEffect/callback';
+import { NotificationSideEffect, CallbackSideEffect } from '../../sideEffect';
 
 interface RequestPayload {
     pagination: Pagination;

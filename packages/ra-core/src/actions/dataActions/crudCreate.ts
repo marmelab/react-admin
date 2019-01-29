@@ -1,8 +1,10 @@
 import { Record } from '../../types';
 import { CREATE } from '../../dataFetchActions';
 import { FETCH_END, FETCH_ERROR } from '../fetchActions';
-import { NotificationSideEffect } from '../../sideEffect/notification';
-import { RedirectionSideEffect } from '../../sideEffect/redirection';
+import {
+    NotificationSideEffect,
+    RedirectionSideEffect,
+} from '../../sideEffect';
 
 interface RequestPayload {
     data: any;
