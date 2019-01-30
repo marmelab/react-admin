@@ -152,11 +152,13 @@ export class ListController extends Component {
      */
     hasCustomParams(params) {
         return (
-            Object.keys(params.filter).length > 0 ||
-            params.order != null ||
-            params.page !== 1 ||
-            params.perPage != null ||
-            params.sort != null
+            params &&
+            params.filter &&
+            (Object.keys(params.filter).length > 0 ||
+                params.order != null ||
+                params.page !== 1 ||
+                params.perPage != null ||
+                params.sort != null)
         );
     }
 
