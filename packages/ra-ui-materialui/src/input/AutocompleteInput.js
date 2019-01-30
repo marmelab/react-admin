@@ -211,43 +211,11 @@ export class AutocompleteInput extends React.Component {
     };
 
     handleMatchSuggestionOrFilter = inputValue => {
-        const { choices, inputValueMatcher, input } = this.props;
-
-        const matches =
-            inputValue &&
-            choices.filter(it =>
-                inputValueMatcher(inputValue, it, this.getSuggestionText)
-            );
-
-        if (matches.length === 1) {
-            const match = matches[0];
-            const nextId = this.getSuggestionValue(match);
-            const suggestionText = this.getSuggestionText(match);
-
-            if (this.state.inputValue !== nextId) {
-                this.setState(
-                    {
-                        inputValue: nextId,
-                        searchText: suggestionText, // The searchText could be whatever the inputvalue matcher likes, so sanitize it
-                        selectedItem: match,
-                        suggestions: [match],
-                    },
-                    () => input.onChange(nextId)
-                );
-            } else {
-                this.setState({
-                    dirty: false,
-                    suggestions: [match],
-                    searchText: suggestionText,
-                });
-            }
-        } else {
-            this.setState({
-                dirty: true,
-                searchText: inputValue,
-            });
-            this.updateFilter(inputValue);
-        }
+        this.setState({
+            dirty: true,
+            searchText: inputValue,
+        });
+        this.updateFilter(inputValue);
     };
 
     handleChange = (event, { newValue, method }) => {
@@ -533,7 +501,6 @@ AutocompleteInput.propTypes = {
     suggestionComponent: PropTypes.func,
     translate: PropTypes.func.isRequired,
     translateChoice: PropTypes.bool.isRequired,
-    inputValueMatcher: PropTypes.func,
 };
 
 AutocompleteInput.defaultProps = {
@@ -543,11 +510,6 @@ AutocompleteInput.defaultProps = {
     optionValue: 'id',
     limitChoicesToValue: false,
     translateChoice: true,
-    inputValueMatcher: (input, suggestion, getOptionText) =>
-        getOptionText(suggestion)
-            .toLowerCase()
-            .trim()
-            .includes(input.toLowerCase().trim()),
 };
 
 export default compose(
