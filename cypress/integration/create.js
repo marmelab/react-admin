@@ -55,9 +55,10 @@ describe('Create Page', () => {
             {
                 type: 'input',
                 name: 'authors[0].user_id',
-                value: 'Annamarie Mayer{enter}',
+                value: 'Annamarie Mayer',
             },
         ]);
+        cy.contains('Annamarie Mayer').click();
         cy.get(CreatePage.elements.input('authors[0].role')).should(
             el => expect(el).to.exist
         );
