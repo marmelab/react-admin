@@ -25,7 +25,7 @@ describe('ListController', () => {
         location: {
             pathname: '',
         },
-        params: {},
+        params: { filter: {} },
         push: () => {},
         query: {},
         resource: '',
@@ -74,7 +74,7 @@ describe('ListController', () => {
                 ...defaultProps,
                 debounce: 200,
                 changeListParams: jest.fn(),
-                filterValues: { q: 'hello' },
+                params: { filter: { q: 'hello' } },
                 children: fakeComponent,
             };
 
