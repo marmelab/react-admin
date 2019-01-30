@@ -138,6 +138,29 @@ export class ListController extends Component {
     }
 
     /**
+     * Check if user has already set custom sort, page, or filters for this list
+     *
+     * User params come from the Redux store as the params props. By default,
+     * this object is:
+     *
+     * { filter: {}, order: null, page: 1, perPage: null, sort: null }
+     *
+     * To check if the user has custom params, we must compare the params
+     * to these initial values.
+     *
+     * @param {object} params
+     */
+    hasCustomParams(params) {
+        return (
+            Object.keys(params.filter).length > 0 ||
+            params.order != null ||
+            params.page !== 1 ||
+            params.perPage != null ||
+            params.sort != null
+        );
+    }
+
+    /**
      * Merge list params from 4 different sources:
      *   - the query string
      *   - the params stored in the state (from previous navigation)
@@ -148,10 +171,9 @@ export class ListController extends Component {
         const query =
             Object.keys(this.props.query).length > 0
                 ? this.props.query
-                : { ...this.props.params };
-        const filterDefaultValues = this.props.filterDefaultValues || {};
-
-        query.filter = { ...filterDefaultValues, ...query.filter };
+                : this.hasCustomParams(this.props.params)
+                    ? { ...this.props.params }
+                    : { filter: this.props.filterDefaultValues || {} };
 
         if (!query.sort) {
             query.sort = this.props.sort.field;
@@ -164,6 +186,11 @@ export class ListController extends Component {
             query.page = 1;
         }
         return query;
+    }
+
+    getFilterValues() {
+        const query = this.getQuery();
+        return query.filter || {};
     }
 
     updateData(query) {
@@ -190,7 +217,7 @@ export class ListController extends Component {
         this.changeParams({ type: SET_PER_PAGE, payload: perPage });
 
     setFilters = debounce(filters => {
-        if (isEqual(filters, this.props.filterValues)) {
+        if (isEqual(filters, this.getFilterValues())) {
             return;
         }
 
@@ -203,7 +230,7 @@ export class ListController extends Component {
         this.setState({ [filterName]: true });
         if (typeof defaultValue !== 'undefined') {
             this.setFilters({
-                ...this.props.filterValues,
+                ...this.getFilterValues(),
                 [filterName]: defaultValue,
             });
         }
@@ -211,7 +238,7 @@ export class ListController extends Component {
 
     hideFilter = filterName => {
         this.setState({ [filterName]: false });
-        const newFilters = removeKey(this.props.filterValues, filterName);
+        const newFilters = removeKey(this.getFilterValues(), filterName);
         this.setFilters(newFilters);
     };
 
@@ -255,9 +282,6 @@ export class ListController extends Component {
             selectedIds,
         } = this.props;
         const query = this.getQuery();
-
-        const queryFilterValues = query.filter || {};
-
         const resourceName = translate(`resources.${resource}.name`, {
             smart_count: 2,
             _: inflection.humanize(inflection.pluralize(resource)),
@@ -275,7 +299,7 @@ export class ListController extends Component {
             data,
             defaultTitle,
             displayedFilters: this.state,
-            filterValues: queryFilterValues,
+            filterValues: this.getFilterValues(),
             hasCreate,
             hideFilter: this.hideFilter,
             ids,
@@ -320,7 +344,6 @@ ListController.propTypes = {
     crudGetList: PropTypes.func.isRequired,
     data: PropTypes.object, // eslint-disable-line react/forbid-prop-types
     debounce: PropTypes.number,
-    filterValues: PropTypes.object, // eslint-disable-line react/forbid-prop-types
     hasCreate: PropTypes.bool,
     hasEdit: PropTypes.bool,
     hasList: PropTypes.bool,
@@ -345,7 +368,6 @@ ListController.propTypes = {
 ListController.defaultProps = {
     debounce: 500,
     filter: {},
-    filterValues: {},
     perPage: 10,
     sort: {
         field: 'id',
@@ -435,19 +457,12 @@ function mapStateToProps(state, props) {
         total: resourceState.list.total,
         data: resourceState.data,
         isLoading: state.admin.loading > 0,
-        filterValues: resourceState.list.params.filter,
         version: state.admin.ui.viewVersion,
     };
 }
 
-
-
 export default compose(
-    checkMinimumRequiredProps('List', [
-        'basePath',
-        'location',
-        'resource',
-    ]),
+    checkMinimumRequiredProps('List', ['basePath', 'location', 'resource']),
     connect(
         mapStateToProps,
         {
