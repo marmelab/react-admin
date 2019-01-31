@@ -14,7 +14,7 @@ export default options => {
         defaultDataProvider => {
             return (fetchType, resource, params) => {
                 // This provider does not support multiple deletions so instead we send multiple DELETE requests
-                // This can be optimized using the apollo-link-batch-http link
+                // This can be optimized using the apollo-link-batch-http link          
                 if (fetchType === DELETE_MANY) {
                     const { ids, ...otherParams } = params;
                     return Promise.all(
@@ -36,14 +36,13 @@ export default options => {
                 // This provider does not support multiple deletions so instead we send multiple UPDATE requests
                 // This can be optimized using the apollo-link-batch-http link
                 if (fetchType === UPDATE_MANY) {
-                    const { ids, ...otherParams } = params;
                     return Promise.all(
-                        params.ids.map(id =>
-                            defaultDataProvider(UPDATE, resource, {
-                                id,
-                                ...otherParams,
-                            })
-                        )
+                        params.ids.map(id => defaultDataProvider(UPDATE, resource, { 
+								data : { 
+									id, 
+									...params.data 
+								} 
+							})
                     ).then(results => {
                         const data = results.reduce(
                             (acc, { data }) => [...acc, data.id],
