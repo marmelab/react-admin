@@ -363,26 +363,6 @@ describe('<AutocompleteInput />', () => {
             expect(wrapper.find('ListItem')).toHaveLength(2);
         });
 
-        it('should resolve value from input value', () => {
-            const onChange = jest.fn();
-            const wrapper = mount(
-                <AutocompleteInput
-                    {...defaultProps}
-                    input={{ value: '', onChange }}
-                />,
-                { context, childContextTypes }
-            );
-            wrapper.setProps({
-                choices: [{ id: 'M', name: 'Male' }],
-            });
-            wrapper
-                .find('input')
-                .simulate('change', { target: { value: 'male' } });
-            expect(wrapper.state('searchText')).toBe('Male');
-            expect(onChange).toHaveBeenCalledTimes(1);
-            expect(onChange).toHaveBeenCalledWith('M');
-        });
-
         it('should reset filter when input value changed', () => {
             const setFilter = jest.fn();
             const wrapper = mount(
@@ -530,7 +510,7 @@ describe('<AutocompleteInput />', () => {
         expect(wrapper.state('suggestions')).toHaveLength(2);
     });
 
-    it('automatically selects a matched choice if there is only one', () => {
+    it('does not automatically select a matched choice if there is only one', () => {
         const onChange = jest.fn();
 
         const wrapper = mount(
@@ -548,7 +528,6 @@ describe('<AutocompleteInput />', () => {
         wrapper.find('input').simulate('focus');
         wrapper.find('input').simulate('change', { target: { value: 'abc' } });
         expect(wrapper.state('suggestions')).toHaveLength(1);
-        expect(onChange).toHaveBeenCalledWith(2);
     });
 
     it('passes options.suggestionsContainerProps to the suggestions container', () => {
