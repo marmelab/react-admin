@@ -279,36 +279,7 @@ const App = () => (
 
 ## Translating Your Own Components
 
-The translation system use the React `context` to pass translations down the component tree. To translate a sentence, use the `translate` function from the context. Of course, this assumes that you've previously added the corresponding translation to the `messages` props of the `Admin` component.
-
-```jsx
-// in src/MyHelloButton.js
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-
-class MyHelloButton {
-    render() {
-        const { translate } = this.context;
-        return <button>{translate('myroot.hello.world')}</button>;
-    }
-}
-MyHelloButton.contextTypes = {
-    translate: PropTypes.func,
-};
-
-// in src/App.js
-const messages = {
-    en: {
-        myroot: {
-            hello: {
-                world: 'Hello, World!',
-            },
-        },
-    },
-};
-```
-
-However, using the context makes components harder to test. That's why react-admin provides a `translate` Higher-Order Component, which simply passes the `translate` function from context to props:
+React-admin package provides a `translate` Higher-Order Component, which simply passes the `translate` function as a prop to the wrapped component:
 
 ```jsx
 // in src/MyHelloButton.js
