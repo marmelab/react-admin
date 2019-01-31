@@ -5,7 +5,7 @@ title: "Translation"
 
 # Translation
 
-React-admin interface uses English as the default language. But it also supports any other language, thanks to the [polyglot.js](http://airbnb.io/polyglot.js/) library.
+The react-admin interface uses English as the default language. But it also supports any other language, thanks to the [polyglot.js](http://airbnb.io/polyglot.js/) library.
 
 ## Changing Locale
 
@@ -279,7 +279,7 @@ const App = () => (
 
 ## Translating Your Own Components
 
-React-admin package provides a `translate` Higher-Order Component, which simply passes the `translate` function to props of the wrapped component:
+React-admin package provides a `translate` Higher-Order Component, which simply passes the `translate` function as a prop to the wrapped component:
 
 ```jsx
 // in src/MyHelloButton.js
