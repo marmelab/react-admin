@@ -5,7 +5,7 @@ title: "Translation"
 
 # Translation
 
-The react-admin interface uses English as the default language. But it also supports any other language, thanks to the [polyglot.js](http://airbnb.io/polyglot.js/) library.
+React-admin interface uses English as the default language. But it also supports any other language, thanks to the [polyglot.js](http://airbnb.io/polyglot.js/) library.
 
 ## Changing Locale
 
