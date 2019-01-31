@@ -184,16 +184,9 @@ export class AutocompleteInput extends React.Component {
         const { input } = this.props;
 
         const inputValue = this.getSuggestionValue(suggestion);
-        this.setState(
-            {
-                dirty: false,
-                inputValue,
-                selectedItem: suggestion,
-                searchText: this.getSuggestionText(suggestion),
-                suggestions: [suggestion],
-            },
-            () => input && input.onChange && input.onChange(inputValue)
-        );
+        if (input && input.onChange) {
+            input.onChange(inputValue)
+        }
 
         if (method === 'enter') {
             event.preventDefault();
