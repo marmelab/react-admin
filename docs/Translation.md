@@ -279,7 +279,7 @@ const App = () => (
 
 ## Translating Your Own Components
 
-The react-admin package provides a `translate` Higher-Order Component, which simply passes the `translate` function to props of wrapped component:
+React-admin package provides a `translate` Higher-Order Component, which simply passes the `translate` function to props of the wrapped component:
 
 ```jsx
 // in src/MyHelloButton.js
