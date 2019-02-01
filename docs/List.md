@@ -338,6 +338,10 @@ export default connect(undefined, { crudUpdateMany })(ResetViewsButton);
 
 **Tip**: `<Confirm>` leverages material-ui's `<Dialog>` component to implement a confirmation popup. Feel free to use it in your admins!
 
+**Tip**: `<Confirm>` text props such as `title` and `content` are translatable. You can pass them translation keys.
+
+**Tip**: You can customize the text of the two `<Confirm>` component buttons using the `cancel` and `confirm` prop which accepts translation keys too.
+
 **Tip**: React-admin doesn't use the `<Confirm>` component internally, because deletes and updates are applied locally immediately, then dispatched to the server after a few seconds, unless the user chooses to undo the modification. That's what we call optimistic rendering. You can do the same for the `ResetViewsButton` by wrapping the `crudUpdateMany()` action creator inside a `startUndoable()` action creator, as follows:
 
 ```jsx

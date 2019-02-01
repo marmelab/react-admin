@@ -6,6 +6,7 @@ import React, {
 } from 'react';
 import PropTypes from 'prop-types';
 import { Provider } from 'react-redux';
+import { History } from 'history';
 import createHistory from 'history/createHashHistory';
 import { Switch, Route } from 'react-router-dom';
 import { ConnectedRouter } from 'react-router-redux';
@@ -28,7 +29,7 @@ interface Props {
     customRoutes: any[];
     dashboard: ComponentType;
     dataProvider: DataProvider;
-    history: object;
+    history: History;
     i18nProvider: I18nProvider;
     initialState: object;
     loading: ComponentType;

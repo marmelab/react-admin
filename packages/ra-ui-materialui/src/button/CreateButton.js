@@ -77,7 +77,7 @@ CreateButton.propTypes = {
 
 const enhance = compose(
     translate,
-    onlyUpdateForKeys(['basePath', 'label']),
+    onlyUpdateForKeys(['basePath', 'label', 'translate']),
     withStyles(styles)
 );
 

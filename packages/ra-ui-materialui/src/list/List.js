@@ -171,7 +171,7 @@ ListView.propTypes = {
     data: PropTypes.object,
     defaultTitle: PropTypes.string,
     displayedFilters: PropTypes.object,
-    exporter: PropTypes.func,
+    exporter: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
     filterDefaultValues: PropTypes.object,
     filters: PropTypes.element,
     filterValues: PropTypes.object,

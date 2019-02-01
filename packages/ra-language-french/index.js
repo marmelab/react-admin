@@ -9,6 +9,7 @@ module.exports = {
             cancel: 'Annuler',
             clear_input_value: 'Vider le champ',
             clone: 'Dupliquer',
+            confirm: 'Confirmer',
             create: 'Créer',
             delete: 'Supprimer',
             edit: 'Éditer',
@@ -81,6 +82,7 @@ module.exports = {
         },
         navigation: {
             no_results: 'Aucun résultat',
+            no_more_results: 'La page numéro %{page} est en dehors des limites. Essayez la page précédente.',
             page_out_of_boundaries: 'La page %{page} est en dehors des limites',
             page_out_from_end: 'Fin de la pagination',
             page_out_from_begin: 'La page doit être supérieure à 1',
@@ -118,6 +120,8 @@ module.exports = {
             maxValue: 'Maximum %{max}',
             number: 'Doit être un nombre',
             email: 'Doit être un email',
+            oneOf: `Doit être au choix: %{options}`,
+            regex: 'Doit respecter un format spécifique (regexp): %{pattern}',
         },
     },
 };

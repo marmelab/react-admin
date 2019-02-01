@@ -253,9 +253,9 @@ Datagrid.propTypes = {
     classes: PropTypes.object,
     className: PropTypes.string,
     currentSort: PropTypes.shape({
-        sort: PropTypes.string,
+        field: PropTypes.string,
         order: PropTypes.string,
-    }).isRequired,
+    }),
     data: PropTypes.object.isRequired,
     expand: PropTypes.node,
     hasBulkActions: PropTypes.bool.isRequired,

@@ -100,7 +100,11 @@ export class CoreAdminRouter extends Component {
             title,
         } = this.props;
 
-        if (typeof children !== 'function' && !children) {
+        if (
+            process.env.NODE_ENV !== 'production' &&
+            typeof children !== 'function' &&
+            !children
+        ) {
             return (
                 <div style={welcomeStyles}>
                     React-admin is properly configured.<br />

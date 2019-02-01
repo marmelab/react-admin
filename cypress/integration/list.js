@@ -111,6 +111,15 @@ describe('List Page', () => {
             cy.contains('1-1 of 1');
             ListPagePosts.setFilterValue('q', '');
         });
+
+        it('should allow to disable alwaysOn filters with default value', () => {
+            LoginPage.navigate();
+            LoginPage.login('admin', 'password');
+            ListPageUsers.navigate();
+            cy.contains('1-2 of 2');
+            cy.get('button[tooltip="Remove this filter"]').click();
+            cy.contains('1-3 of 3');
+        });
     });
 
     describe('Bulk Actions', () => {

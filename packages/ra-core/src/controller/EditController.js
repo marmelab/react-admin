@@ -7,6 +7,7 @@ import { reset } from 'redux-form';
 import translate from '../i18n/translate';
 import { crudGetOne, crudUpdate, startUndoable } from '../actions';
 import { REDUX_FORM_NAME } from '../form';
+import checkMinimumRequiredProps from './checkMinimumRequiredProps';
 
 /**
  * Page component for the Edit view
@@ -175,6 +176,7 @@ function mapStateToProps(state, props) {
 }
 
 export default compose(
+    checkMinimumRequiredProps('Edit', ['basePath', 'resource']),
     connect(
         mapStateToProps,
         {

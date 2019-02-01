@@ -33,6 +33,7 @@ const sanitizeRestProps = ({
     selectedIds,
     startUndoable,
     undoable,
+    redirect,
     ...rest
 }) => rest;
 

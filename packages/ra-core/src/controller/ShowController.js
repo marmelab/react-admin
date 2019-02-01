@@ -5,6 +5,7 @@ import compose from 'recompose/compose';
 import inflection from 'inflection';
 import translate from '../i18n/translate';
 import { crudGetOne as crudGetOneAction } from '../actions';
+import checkMinimumRequiredProps from './checkMinimumRequiredProps';
 
 /**
  * Page component for the Show view
@@ -132,6 +133,7 @@ function mapStateToProps(state, props) {
 }
 
 export default compose(
+    checkMinimumRequiredProps('Show', ['basePath', 'resource']),
     connect(
         mapStateToProps,
         { crudGetOne: crudGetOneAction }

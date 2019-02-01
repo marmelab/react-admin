@@ -8,6 +8,7 @@ module.exports = {
             cancel: 'Cancel',
             clear_input_value: 'Clear value',
             clone: 'Clone',
+            confirm: 'Confirm',
             create: 'Create',
             delete: 'Delete',
             edit: 'Edit',

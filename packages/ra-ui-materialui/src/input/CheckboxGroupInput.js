@@ -18,8 +18,11 @@ const sanitizeRestProps = ({ setFilter, setPagination, setSort, ...rest }) =>
 const styles = theme => ({
     root: {},
     label: {
-        transform: 'translate(0, 5px) scale(0.75)',
+        transform: 'translate(0, 1.5px) scale(0.75)',
         transformOrigin: `top ${theme.direction === 'ltr' ? 'left' : 'right'}`,
+    },
+    checkbox: {
+        height: 32,
     },
 });
 
@@ -114,6 +117,7 @@ export class CheckboxGroupInput extends Component {
             options,
             translate,
             translateChoice,
+            classes,
         } = this.props;
         const choiceName = React.isValidElement(optionText) // eslint-disable-line no-nested-ternary
             ? React.cloneElement(optionText, { record: choice })
@@ -136,6 +140,7 @@ export class CheckboxGroupInput extends Component {
                     <Checkbox
                         id={`${id}_${get(choice, optionValue)}`}
                         color="primary"
+                        className={classes.checkbox}
                         {...options}
                     />
                 }
@@ -219,6 +224,7 @@ CheckboxGroupInput.propTypes = {
 
 CheckboxGroupInput.defaultProps = {
     choices: [],
+    classes: {},
     options: {},
     optionText: 'name',
     optionValue: 'id',
