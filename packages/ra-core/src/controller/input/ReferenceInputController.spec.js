@@ -406,7 +406,7 @@ describe('<ReferenceInputController />', () => {
         assert.equal(crudGetManyAccumulate.mock.calls.length, 1);
     });
 
-    it.only('should only call crudGetMatching when props are changed from outside', () => {
+    it('should only call crudGetMatching when props are changed from outside', () => {
         const crudGetMatchingAccumulate = jest.fn();
         const crudGetManyAccumulate = jest.fn();
         const ControllerWrapper = (props) => (
