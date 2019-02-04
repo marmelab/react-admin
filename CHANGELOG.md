@@ -1,5 +1,19 @@
 # Changelog
 
+# v2.7.0
+
+* Add support for `rowClick="expand"` in `<Datagrid>` ([2820](https://github.com/marmelab/react-admin/pull/2820)) ([fzaninotto](https://github.com/fzaninotto))
+* Add an alert preventing data loss when a user closes the app while in optimistic mode ([2784](https://github.com/marmelab/react-admin/pull/2784)) ([fzaninotto](https://github.com/fzaninotto))
+* Add the ability to customize the `<AppBar>` content ([2777](https://github.com/marmelab/react-admin/pull/2777)) ([fzaninotto](https://github.com/fzaninotto))
+* Add support for `<Redirect>` in `customRoutes` ([2771](https://github.com/marmelab/react-admin/pull/2771)) ([kopax](https://github.com/kopax))
+* Add accessibility to `<BooleanField>` ([2744](https://github.com/marmelab/react-admin/pull/2744)) ([djhi](https://github.com/djhi))
+* Add `options` prop to `<TabbedShowLayout>` ([2740](https://github.com/marmelab/react-admin/pull/2740)) ([lucas2595](https://github.com/lucas2595))
+* Add more examples to the Posters Galore demo ([2799](https://github.com/marmelab/react-admin/pull/2799)) ([fzaninotto](https://github.com/fzaninotto))
+* Add support for `shouldRenderSuggestions` prop in `<AutocompleteArrayInput>` ([2720](https://github.com/marmelab/react-admin/pull/2720)) ([davidpicarra](https://github.com/davidpicarra))
+* Update default list page name (remove "List") ([2801](https://github.com/marmelab/react-admin/pull/2801)) ([fzaninotto](https://github.com/fzaninotto))
+* Remove Graphcool demo([2821](https://github.com/marmelab/react-admin/pull/2821)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix tests disabled by mistake may hide failing test cases ([2845](https://github.com/marmelab/react-admin/pull/2845)) ([Luwangel](https://github.com/Luwangel))
+
 ## v2.6.4
 
 * Fix `<CreateButton>` not being re-translated when language changes at runtime ([2842](https://github.com/marmelab/react-admin/pull/2842)) ([maoueh](https://github.com/maoueh))
