@@ -1,6 +1,6 @@
 {
     "name": "ra-language-french",
-    "version": "2.6.2",
+    "version": "2.7.0",
     "description": "French messages for react-admin, the frontend framework for building admin applications on top of REST/GraphQL services",
     "main": "index.js",
     "repository": {
