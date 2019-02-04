@@ -92,8 +92,8 @@ export class RadioButtonGroupInput extends Component {
         const choiceName = React.isValidElement(optionText) // eslint-disable-line no-nested-ternary
             ? React.cloneElement(optionText, { record: choice })
             : typeof optionText === 'function'
-                ? optionText(choice)
-                : get(choice, optionText);
+            ? optionText(choice)
+            : get(choice, optionText);
         return (
             <FormControlLabel
                 htmlFor={`${id}_${get(choice, optionValue)}`}
@@ -160,8 +160,9 @@ export class RadioButtonGroupInput extends Component {
                 >
                     {choices.map(this.renderRadioButton)}
                 </RadioGroup>
-                {touched &&
-                    error && <FormHelperText error>{error}</FormHelperText>}
+                {touched && error && (
+                    <FormHelperText error>{error}</FormHelperText>
+                )}
                 {helperText && <FormHelperText>{helperText}</FormHelperText>}
             </FormControl>
         );

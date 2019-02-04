@@ -61,8 +61,8 @@ export class CreateController extends Component {
             state && state.record
                 ? state.record
                 : search
-                    ? parse(search, { arrayFormat: 'bracket' })
-                    : record;
+                ? parse(search, { arrayFormat: 'bracket' })
+                : record;
     }
 
     defaultRedirectRoute() {
@@ -140,14 +140,10 @@ function mapStateToProps(state) {
 }
 
 export default compose(
-    checkMinimumRequiredProps('Create', [
-        'basePath',
-        'location',
-        'resource',
-    ]),
+    checkMinimumRequiredProps('Create', ['basePath', 'location', 'resource']),
     connect(
         mapStateToProps,
         { crudCreate: crudCreateAction }
     ),
-    translate,
+    translate
 )(CreateController);

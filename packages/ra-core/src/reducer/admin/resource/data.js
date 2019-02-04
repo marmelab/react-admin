@@ -60,7 +60,7 @@ const updateDataFetchedTime = (data, fetchedAt) => {
     Object.defineProperty(data, 'fetchedAt', {
         value: fetchedAt,
     });
-}
+};
 
 const initialState = {};
 updateDataFetchedTime(initialState, {}); // non enumerable by default
@@ -68,15 +68,17 @@ updateDataFetchedTime(initialState, {}); // non enumerable by default
 export default (previousState = initialState, { payload, meta }) => {
     if (meta && meta.optimistic) {
         if (meta.fetch === UPDATE) {
-            const updatedRecord = { ...previousState[payload.id], ...payload.data };
+            const updatedRecord = {
+                ...previousState[payload.id],
+                ...payload.data,
+            };
             return addRecords([updatedRecord], previousState);
         }
         if (meta.fetch === UPDATE_MANY) {
-            const updatedRecords = payload.ids
-                .map(id => ({
-                    ...previousState[id],
-                    ...payload.data,
-                }));
+            const updatedRecords = payload.ids.map(id => ({
+                ...previousState[id],
+                ...payload.data,
+            }));
 
             return addRecords(updatedRecords, previousState);
         }

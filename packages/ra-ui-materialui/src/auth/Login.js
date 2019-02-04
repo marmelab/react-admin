@@ -94,7 +94,7 @@ class Login extends Component {
         if (lastTry) {
             this.backgroundImageLoaded = true;
         }
-    }
+    };
 
     // Load background image asynchronously to speed up time to interactive
     lazyLoadBackgroundImage() {

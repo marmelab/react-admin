@@ -84,7 +84,11 @@ export class TabbedShowLayout extends Component {
         } = this.props;
 
         return (
-            <div className={className} key={version} {...sanitizeRestProps(rest)}>
+            <div
+                className={className}
+                key={version}
+                {...sanitizeRestProps(rest)}
+            >
                 {cloneElement(
                     tabs,
                     {
@@ -93,7 +97,7 @@ export class TabbedShowLayout extends Component {
                         value: location.pathname,
                         match,
                     },
-                    children,
+                    children
                 )}
                 <Divider />
                 <CardContentInner>
@@ -136,7 +140,7 @@ TabbedShowLayout.propTypes = {
 };
 
 TabbedShowLayout.defaultProps = {
-    tabs: <TabbedShowLayoutTabs />
+    tabs: <TabbedShowLayoutTabs />,
 };
 
 const enhance = compose(

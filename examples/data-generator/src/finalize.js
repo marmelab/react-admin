@@ -44,13 +44,16 @@ export default function(db) {
         .forEach(customer => customer.groups.push('regular'));
 
     // add 'returns' group
-    db.commands.filter(command => command.returned).forEach(command => {
-        if (
-            db.customers[command.customer_id].groups.indexOf('returns') === -1
-        ) {
-            db.customers[command.customer_id].groups.push('returns');
-        }
-    });
+    db.commands
+        .filter(command => command.returned)
+        .forEach(command => {
+            if (
+                db.customers[command.customer_id].groups.indexOf('returns') ===
+                -1
+            ) {
+                db.customers[command.customer_id].groups.push('returns');
+            }
+        });
 
     // add 'reviewer' group
     db.reviews.forEach(review => {

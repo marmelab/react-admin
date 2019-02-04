@@ -409,7 +409,7 @@ describe('<ReferenceInputController />', () => {
     it('should only call crudGetMatching when props are changed from outside', () => {
         const crudGetMatchingAccumulate = jest.fn();
         const crudGetManyAccumulate = jest.fn();
-        const ControllerWrapper = (props) => (
+        const ControllerWrapper = props => (
             <ReferenceInputController
                 {...defaultProps}
                 allowEmpty

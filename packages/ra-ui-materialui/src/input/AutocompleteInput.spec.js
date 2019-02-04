@@ -214,9 +214,7 @@ describe('<AutocompleteInput />', () => {
             { context, childContextTypes }
         );
         wrapper.find('input').simulate('focus');
-        wrapper
-            .find('input')
-            .simulate('change', { target: { value: 'foo' } });
+        wrapper.find('input').simulate('change', { target: { value: 'foo' } });
         expect(wrapper.state('searchText')).toBe('foo');
         expect(wrapper.state('suggestions')).toHaveLength(1);
         expect(wrapper.find('ListItem')).toHaveLength(0);
@@ -545,7 +543,7 @@ describe('<AutocompleteInput />', () => {
                 options={{
                     suggestionsContainerProps: {
                         disablePortal: true,
-                    }
+                    },
                 }}
             />,
             { context, childContextTypes }

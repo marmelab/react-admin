@@ -122,8 +122,8 @@ export class CheckboxGroupInput extends Component {
         const choiceName = React.isValidElement(optionText) // eslint-disable-line no-nested-ternary
             ? React.cloneElement(optionText, { record: choice })
             : typeof optionText === 'function'
-                ? optionText(choice)
-                : get(choice, optionText);
+            ? optionText(choice)
+            : get(choice, optionText);
         return (
             <FormControlLabel
                 htmlFor={`${id}_${get(choice, optionValue)}`}
@@ -190,8 +190,9 @@ export class CheckboxGroupInput extends Component {
                     />
                 </FormLabel>
                 <FormGroup row>{choices.map(this.renderCheckbox)}</FormGroup>
-                {touched &&
-                    error && <FormHelperText error>{error}</FormHelperText>}
+                {touched && error && (
+                    <FormHelperText error>{error}</FormHelperText>
+                )}
                 {helperText && <FormHelperText>{helperText}</FormHelperText>}
             </FormControl>
         );

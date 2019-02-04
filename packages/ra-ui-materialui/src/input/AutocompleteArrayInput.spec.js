@@ -175,15 +175,11 @@ describe('<AutocompleteArrayInput />', () => {
             { context, childContextTypes }
         );
         wrapper.find('input').simulate('focus');
-        wrapper
-            .find('input')
-            .simulate('change', { target: { value: 'Ma' } });
+        wrapper.find('input').simulate('change', { target: { value: 'Ma' } });
         expect(wrapper.state('suggestions')).toHaveLength(1);
         expect(wrapper.find('ListItem')).toHaveLength(0);
 
-        wrapper
-            .find('input')
-            .simulate('change', { target: { value: 'Mal' } });
+        wrapper.find('input').simulate('change', { target: { value: 'Mal' } });
         expect(wrapper.state('suggestions')).toHaveLength(1);
         expect(wrapper.find('ListItem')).toHaveLength(1);
     });

@@ -25,10 +25,11 @@ export class MenuItemLink extends Component {
         onClick: PropTypes.func,
         primaryText: PropTypes.string,
         staticContext: PropTypes.object,
-        to: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
+        to: PropTypes.oneOfType([PropTypes.string, PropTypes.object])
+            .isRequired,
     };
 
-    handleMenuTap = (e) => {
+    handleMenuTap = e => {
         this.props.onClick && this.props.onClick(e);
     };
 

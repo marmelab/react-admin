@@ -122,20 +122,10 @@ class NodeForm extends Component {
             undoable = true,
         } = this.props;
 
-        return handleSubmit(
-            values =>
-                undoable
-                    ? startUndoable(
-                          crudUpdateAction(
-                              resource,
-                              record.id,
-                              { ...record, ...values },
-                              record,
-                              basePath,
-                              false
-                          )
-                      )
-                    : dispatchCrudUpdate(
+        return handleSubmit(values =>
+            undoable
+                ? startUndoable(
+                      crudUpdateAction(
                           resource,
                           record.id,
                           { ...record, ...values },
@@ -143,6 +133,15 @@ class NodeForm extends Component {
                           basePath,
                           false
                       )
+                  )
+                : dispatchCrudUpdate(
+                      resource,
+                      record.id,
+                      { ...record, ...values },
+                      record,
+                      basePath,
+                      false
+                  )
         );
     };
 
@@ -168,17 +167,15 @@ class NodeForm extends Component {
                 onClick={this.handleClick}
                 {...sanitizeRestProps(props)}
             >
-                {Children.map(
-                    children,
-                    field =>
-                        field
-                            ? cloneElement(field, {
-                                  basePath: field.props.basePath || basePath,
-                                  onDrop: this.handleDrop,
-                                  record: node.record,
-                                  resource,
-                              })
-                            : null
+                {Children.map(children, field =>
+                    field
+                        ? cloneElement(field, {
+                              basePath: field.props.basePath || basePath,
+                              onDrop: this.handleDrop,
+                              record: node.record,
+                              resource,
+                          })
+                        : null
                 )}
                 {actions &&
                     cloneElement(actions, {

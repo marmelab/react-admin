@@ -28,14 +28,11 @@ export default (options: Args): TranslationArguments => {
     return typeof label !== 'undefined'
         ? [label, { _: label }]
         : typeof source !== 'undefined'
-            ? [
-                  `resources.${resource}.fields.${source}`,
-                  {
-                      _: inflection.transform(source, [
-                          'underscore',
-                          'humanize',
-                      ]),
-                  },
-              ]
-            : [''];
+        ? [
+              `resources.${resource}.fields.${source}`,
+              {
+                  _: inflection.transform(source, ['underscore', 'humanize']),
+              },
+          ]
+        : [''];
 };

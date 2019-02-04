@@ -211,13 +211,9 @@ export class FileInput extends Component {
                             ))}
                         </div>
                     )}
-                    {meta &&
-                        meta.touched &&
-                        meta.error && (
-                            <FormHelperText>
-                                {translate(meta.error)}
-                            </FormHelperText>
-                        )}
+                    {meta && meta.touched && meta.error && (
+                        <FormHelperText>{translate(meta.error)}</FormHelperText>
+                    )}
                 </span>
             </Labeled>
         );

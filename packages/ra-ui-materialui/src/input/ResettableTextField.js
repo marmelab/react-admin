@@ -88,35 +88,30 @@ class ResettableTextField extends Component {
                 classes={restClasses}
                 value={value}
                 InputProps={{
-                    endAdornment: resettable &&
-                        value && (
-                            <InputAdornment position="end">
-                                <IconButton
-                                    className={classNames(clearButton, {
-                                        [visibleClearButton]:
+                    endAdornment: resettable && value && (
+                        <InputAdornment position="end">
+                            <IconButton
+                                className={classNames(clearButton, {
+                                    [visibleClearButton]:
+                                        clearAlwaysVisible || showClear,
+                                })}
+                                aria-label={translate(
+                                    'ra.action.clear_input_value'
+                                )}
+                                title={translate('ra.action.clear_input_value')}
+                                disableRipple
+                                onClick={this.handleClickClearButton}
+                                onMouseDown={this.handleMouseDownClearButton}
+                            >
+                                <ClearIcon
+                                    className={classNames(clearIcon, {
+                                        [visibleClearIcon]:
                                             clearAlwaysVisible || showClear,
                                     })}
-                                    aria-label={translate(
-                                        'ra.action.clear_input_value'
-                                    )}
-                                    title={translate(
-                                        'ra.action.clear_input_value'
-                                    )}
-                                    disableRipple
-                                    onClick={this.handleClickClearButton}
-                                    onMouseDown={
-                                        this.handleMouseDownClearButton
-                                    }
-                                >
-                                    <ClearIcon
-                                        className={classNames(clearIcon, {
-                                            [visibleClearIcon]:
-                                                clearAlwaysVisible || showClear,
-                                        })}
-                                    />
-                                </IconButton>
-                            </InputAdornment>
-                        ),
+                                />
+                            </IconButton>
+                        </InputAdornment>
+                    ),
                     ...InputProps,
                 }}
                 {...props}

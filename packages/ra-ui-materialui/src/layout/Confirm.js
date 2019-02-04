@@ -65,9 +65,13 @@ const Confirm = ({
         onClose={onClose}
         aria-labelledby="alert-dialog-title"
     >
-        <DialogTitle id="alert-dialog-title">{translate(title, { _: title })}</DialogTitle>
+        <DialogTitle id="alert-dialog-title">
+            {translate(title, { _: title })}
+        </DialogTitle>
         <DialogContent>
-            <DialogContentText>{translate(content, { _: content })}</DialogContentText>
+            <DialogContentText>
+                {translate(content, { _: content })}
+            </DialogContentText>
         </DialogContent>
         <DialogActions>
             <Button onClick={onClose}>

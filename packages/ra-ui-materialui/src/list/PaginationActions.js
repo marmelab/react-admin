@@ -94,28 +94,25 @@ export class PaginationActions extends Component {
     renderPageNums() {
         const { classes = {} } = this.props;
 
-        return this.range().map(
-            (pageNum, index) =>
-                pageNum === '.' ? (
-                    <span key={`hyphen_${index}`} className={classes.hellip}>
-                        &hellip;
-                    </span>
-                ) : (
-                    <Button
-                        className="page-number"
-                        color={
-                            pageNum === this.props.page + 1
-                                ? 'default'
-                                : 'primary'
-                        }
-                        key={pageNum}
-                        data-page={pageNum - 1}
-                        onClick={this.gotoPage}
-                        size="small"
-                    >
-                        {pageNum}
-                    </Button>
-                )
+        return this.range().map((pageNum, index) =>
+            pageNum === '.' ? (
+                <span key={`hyphen_${index}`} className={classes.hellip}>
+                    &hellip;
+                </span>
+            ) : (
+                <Button
+                    className="page-number"
+                    color={
+                        pageNum === this.props.page + 1 ? 'default' : 'primary'
+                    }
+                    key={pageNum}
+                    data-page={pageNum - 1}
+                    onClick={this.gotoPage}
+                    size="small"
+                >
+                    {pageNum}
+                </Button>
+            )
         );
     }
 

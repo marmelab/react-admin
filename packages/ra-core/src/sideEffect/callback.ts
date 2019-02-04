@@ -1,8 +1,9 @@
 import { call, takeEvery } from 'redux-saga/effects';
 
-export type CallbackSideEffect = (
-    args: { payload: any; requestPayload?: any }
-) => any;
+export type CallbackSideEffect = (args: {
+    payload: any;
+    requestPayload?: any;
+}) => any;
 
 interface ActionWithSideEffect {
     type: string;

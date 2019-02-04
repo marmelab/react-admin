@@ -69,8 +69,8 @@ export class SimpleFormIterator extends Component {
         this.nextId = props.fields.length
             ? props.fields.length
             : props.defaultValue
-                ? props.defaultValue.length
-                : 0;
+            ? props.defaultValue.length
+            : 0;
 
         // We check whether we have a defaultValue (which must be an array) before checking
         // the fields prop which will always be empty for a new record.
@@ -108,8 +108,9 @@ export class SimpleFormIterator extends Component {
         const records = get(record, source);
         return fields ? (
             <ul className={classes.root}>
-                {submitFailed &&
-                    error && <FormHelperText error>{error}</FormHelperText>}
+                {submitFailed && error && (
+                    <FormHelperText error>{error}</FormHelperText>
+                )}
                 <TransitionGroup>
                     {fields.map((member, index) => (
                         <CSSTransition

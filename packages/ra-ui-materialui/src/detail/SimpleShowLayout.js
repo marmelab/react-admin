@@ -63,39 +63,37 @@ export const SimpleShowLayout = ({
         key={version}
         {...sanitizeRestProps(rest)}
     >
-        {Children.map(
-            children,
-            field =>
-                field ? (
-                    <div
-                        key={field.props.source}
-                        className={classnames(
-                            `ra-field ra-field-${field.props.source}`,
-                            field.props.className
-                        )}
-                    >
-                        {field.props.addLabel ? (
-                            <Labeled
-                                record={record}
-                                resource={resource}
-                                basePath={basePath}
-                                label={field.props.label}
-                                source={field.props.source}
-                                disabled={false}
-                            >
-                                {field}
-                            </Labeled>
-                        ) : typeof field.type === 'string' ? (
-                            field
-                        ) : (
-                            React.cloneElement(field, {
-                                record,
-                                resource,
-                                basePath,
-                            })
-                        )}
-                    </div>
-                ) : null
+        {Children.map(children, field =>
+            field ? (
+                <div
+                    key={field.props.source}
+                    className={classnames(
+                        `ra-field ra-field-${field.props.source}`,
+                        field.props.className
+                    )}
+                >
+                    {field.props.addLabel ? (
+                        <Labeled
+                            record={record}
+                            resource={resource}
+                            basePath={basePath}
+                            label={field.props.label}
+                            source={field.props.source}
+                            disabled={false}
+                        >
+                            {field}
+                        </Labeled>
+                    ) : typeof field.type === 'string' ? (
+                        field
+                    ) : (
+                        React.cloneElement(field, {
+                            record,
+                            resource,
+                            basePath,
+                        })
+                    )}
+                </div>
+            ) : null
         )}
     </CardContentInner>
 );
