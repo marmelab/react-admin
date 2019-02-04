@@ -28,7 +28,7 @@ const styles = createStyles({
 
         // Text won't wrap to a second line.
         whiteSpace: 'nowrap',
-    }
+    },
 });
 
 export const BooleanField = ({
@@ -42,14 +42,13 @@ export const BooleanField = ({
     ...rest
 }) => {
     const value = get(record, source);
-    let ariaLabel = value
-        ? valueLabelTrue
-        : valueLabelFalse;
+    let ariaLabel = value ? valueLabelTrue : valueLabelFalse;
 
     if (!ariaLabel) {
-        ariaLabel = value === false
-            ? translate('ra.boolean.false')
-            : translate('ra.boolean.true');
+        ariaLabel =
+            value === false
+                ? translate('ra.boolean.false')
+                : translate('ra.boolean.true');
     }
 
     if (value === false) {
@@ -112,7 +111,7 @@ BooleanField.defaultProps = {
 const PureBooleanField = compose(
     pure,
     withStyles(styles),
-    translate,
+    translate
 )(BooleanField);
 
 PureBooleanField.defaultProps = {

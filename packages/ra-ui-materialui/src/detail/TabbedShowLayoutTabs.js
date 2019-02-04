@@ -4,11 +4,11 @@ import Tabs from '@material-ui/core/Tabs';
 
 const getTabFullPath = (tab, index, baseUrl) =>
     `${baseUrl}${
-      tab.props.path ? `/${tab.props.path}` : index > 0 ? `/${index}` : ''
+        tab.props.path ? `/${tab.props.path}` : index > 0 ? `/${index}` : ''
     }`;
 
 const TabbedShowLayoutTabs = ({ children, match, ...rest }) => (
-    <Tabs indicatorColor='primary' {...rest} >
+    <Tabs indicatorColor="primary" {...rest}>
         {Children.map(children, (tab, index) => {
             if (!tab) return null;
             // Builds the full tab tab which is the concatenation of the last matched route in the

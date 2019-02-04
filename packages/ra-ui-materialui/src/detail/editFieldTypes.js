@@ -26,7 +26,7 @@ ${children.map(child => `            ${child.getRepresentation()}`).join('\n')}
         ),
         representation: (props, children) =>
             `<ArrayInput source="${
-            props.source
+                props.source
             }"><SimpleFormIterator>${children
                 .map(child => child.getRepresentation())
                 .join('\n')}</SimpleFormIterator></ArrayInput>`,
@@ -55,7 +55,7 @@ ${children.map(child => `            ${child.getRepresentation()}`).join('\n')}
         component: ReferenceInput,
         representation: (props, children) =>
             `<ReferenceInput source="${props.source}" reference="${
-            props.reference
+                props.reference
             }">${children.getRepresentation()}</ReferenceInput>`,
     },
     referenceChild: {
@@ -66,7 +66,7 @@ ${children.map(child => `            ${child.getRepresentation()}`).join('\n')}
         component: ReferenceArrayInput,
         representation: props =>
             `<ReferenceArrayInput source="${props.source}" reference="${
-            props.reference
+                props.reference
             }"><TextInput source="id" /></ReferenceArrayInput>`,
     },
     referenceArrayChild: {

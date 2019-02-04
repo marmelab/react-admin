@@ -52,7 +52,8 @@ const MobileGrid = ({ classes, ids, data, basePath, translate }) => (
                 />
                 <CardContent className={classes.cardContent}>
                     <div>
-                        {translate('resources.customers.fields.last_seen_gte')}&nbsp;
+                        {translate('resources.customers.fields.last_seen_gte')}
+                        &nbsp;
                         <DateField
                             record={data[id]}
                             source="last_seen"
@@ -63,7 +64,9 @@ const MobileGrid = ({ classes, ids, data, basePath, translate }) => (
                         {translate(
                             'resources.commands.name',
                             parseInt(data[id].nb_commands, 10) || 1
-                        )}&nbsp;:&nbsp;<NumberField
+                        )}
+                        &nbsp;:&nbsp;
+                        <NumberField
                             record={data[id]}
                             source="nb_commands"
                             label="resources.customers.fields.commands"
@@ -71,8 +74,8 @@ const MobileGrid = ({ classes, ids, data, basePath, translate }) => (
                         />
                     </div>
                     <div>
-                        {translate('resources.customers.fields.total_spent')}&nbsp;
-                        :{' '}
+                        {translate('resources.customers.fields.total_spent')}
+                        &nbsp; :{' '}
                         <ColoredNumberField
                             record={data[id]}
                             source="total_spent"
@@ -80,12 +83,11 @@ const MobileGrid = ({ classes, ids, data, basePath, translate }) => (
                         />
                     </div>
                 </CardContent>
-                {data[id].groups &&
-                    data[id].groups.length > 0 && (
-                        <CardContent className={classes.cardContent}>
-                            <SegmentsField record={data[id]} />
-                        </CardContent>
-                    )}
+                {data[id].groups && data[id].groups.length > 0 && (
+                    <CardContent className={classes.cardContent}>
+                        <SegmentsField record={data[id]} />
+                    </CardContent>
+                )}
             </Card>
         ))}
     </div>

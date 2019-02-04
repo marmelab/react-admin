@@ -41,15 +41,15 @@ const EditActions = ({
     resource,
     ...rest
 }) => (
-        <CardActions className={className} {...rest}>
-            <CloneButton
-                className="button-clone"
-                basePath={basePath}
-                record={data}
-            />
-            {hasShow && <ShowButton basePath={basePath} record={data} />}
-        </CardActions>
-    );
+    <CardActions className={className} {...rest}>
+        <CloneButton
+            className="button-clone"
+            basePath={basePath}
+            record={data}
+        />
+        {hasShow && <ShowButton basePath={basePath} record={data} />}
+    </CardActions>
+);
 
 const PostEdit = props => (
     <Edit title={<PostTitle />} actions={<EditActions />} {...props}>
@@ -83,7 +83,11 @@ const PostEdit = props => (
                 />
             </FormTab>
             <FormTab label="post.form.miscellaneous">
-                <ReferenceArrayInput reference="tags" source="tags" filter={{ published: true }}>
+                <ReferenceArrayInput
+                    reference="tags"
+                    source="tags"
+                    filter={{ published: true }}
+                >
                     <AutocompleteArrayInput />
                 </ReferenceArrayInput>
                 <ArrayInput source="backlinks">

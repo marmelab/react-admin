@@ -83,39 +83,36 @@ const Toolbar = ({
                         saving={saving}
                         submitOnEnter={submitOnEnter}
                     />
-                    {record &&
-                        typeof record.id !== 'undefined' && (
-                            <DeleteButton
-                                basePath={basePath}
-                                record={record}
-                                resource={resource}
-                            />
-                        )}
+                    {record && typeof record.id !== 'undefined' && (
+                        <DeleteButton
+                            basePath={basePath}
+                            record={record}
+                            resource={resource}
+                        />
+                    )}
                 </div>
             ) : (
-                Children.map(
-                    children,
-                    button =>
-                        button
-                            ? React.cloneElement(button, {
-                                  basePath,
-                                  handleSubmit: valueOrDefault(
-                                      button.props.handleSubmit,
-                                      handleSubmit
-                                  ),
-                                  handleSubmitWithRedirect: valueOrDefault(
-                                      button.props.handleSubmitWithRedirect,
-                                      handleSubmitWithRedirect
-                                  ),
-                                  invalid,
-                                  pristine,
-                                  saving,
-                                  submitOnEnter: valueOrDefault(
-                                      button.props.submitOnEnter,
-                                      submitOnEnter
-                                  ),
-                              })
-                            : null
+                Children.map(children, button =>
+                    button
+                        ? React.cloneElement(button, {
+                              basePath,
+                              handleSubmit: valueOrDefault(
+                                  button.props.handleSubmit,
+                                  handleSubmit
+                              ),
+                              handleSubmitWithRedirect: valueOrDefault(
+                                  button.props.handleSubmitWithRedirect,
+                                  handleSubmitWithRedirect
+                              ),
+                              invalid,
+                              pristine,
+                              saving,
+                              submitOnEnter: valueOrDefault(
+                                  button.props.submitOnEnter,
+                                  submitOnEnter
+                              ),
+                          })
+                        : null
                 )
             )}
         </MuiToolbar>

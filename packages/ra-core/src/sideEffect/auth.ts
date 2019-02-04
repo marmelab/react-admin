@@ -55,8 +55,8 @@ export default (authProvider?: AuthProvider) => {
                         typeof e === 'string'
                             ? e
                             : typeof e === 'undefined' || !e.message
-                                ? 'ra.auth.sign_in_error'
-                                : e.message;
+                            ? 'ra.auth.sign_in_error'
+                            : e.message;
                     yield put(showNotification(errorMessage, 'warning'));
                 }
                 break;

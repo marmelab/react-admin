@@ -174,8 +174,8 @@ export class ListController extends Component {
             Object.keys(this.props.query).length > 0
                 ? this.props.query
                 : this.hasCustomParams(this.props.params)
-                    ? { ...this.props.params }
-                    : { filter: this.props.filterDefaultValues || {} };
+                ? { ...this.props.params }
+                : { filter: this.props.filterDefaultValues || {} };
 
         if (!query.sort) {
             query.sort = this.props.sort.field;

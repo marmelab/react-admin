@@ -185,7 +185,7 @@ export class AutocompleteInput extends React.Component {
 
         const inputValue = this.getSuggestionValue(suggestion);
         if (input && input.onChange) {
-            input.onChange(inputValue)
+            input.onChange(inputValue);
         }
 
         if (method === 'enter') {

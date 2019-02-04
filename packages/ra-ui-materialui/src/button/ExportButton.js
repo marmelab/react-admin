@@ -105,9 +105,9 @@ class ExportButton extends Component {
     };
 
     static defaultProps = {
-      label: 'ra.action.export',
-      maxResults: 1000,
-      icon: <GetApp />,
+        label: 'ra.action.export',
+        maxResults: 1000,
+        icon: <GetApp />,
     };
 
     handleClick = () => {

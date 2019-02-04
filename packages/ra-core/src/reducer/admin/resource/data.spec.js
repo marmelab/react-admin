@@ -112,7 +112,7 @@ describe('Resources data reducer', () => {
                     meta: {
                         fetch: DELETE,
                         optimistic: true,
-                    }
+                    },
                 }),
                 {
                     record1: { id: 'record1', prop: 'value' },
@@ -136,7 +136,7 @@ describe('Resources data reducer', () => {
                     meta: {
                         fetch: DELETE_MANY,
                         optimistic: true,
-                    }
+                    },
                 }),
                 {
                     record1: { id: 'record1', prop: 'value' },

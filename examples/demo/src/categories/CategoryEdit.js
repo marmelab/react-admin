@@ -15,9 +15,8 @@ import ProductRefField from '../products/ProductRefField';
 
 const CategoryTitle = translate(({ record, translate }) => (
     <span>
-        {translate('resources.categories.name', { smart_count: 1 })} &quot;{
-            record.name
-        }&quot;
+        {translate('resources.categories.name', { smart_count: 1 })} &quot;
+        {record.name}&quot;
     </span>
 ));
 

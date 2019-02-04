@@ -49,15 +49,15 @@ export function* handleRedirection({
                       basePath,
                       payload
                           ? payload.id ||
-                            (payload.data ? payload.data.id : null)
+                                (payload.data ? payload.data.id : null)
                           : requestPayload
-                              ? requestPayload.id
-                              : null,
+                          ? requestPayload.id
+                          : null,
                       payload && payload.data
                           ? payload.data
                           : requestPayload && requestPayload.data
-                              ? requestPayload.data
-                              : null
+                          ? requestPayload.data
+                          : null
                   )
               )
           )

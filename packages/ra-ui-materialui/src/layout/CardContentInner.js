@@ -5,19 +5,19 @@ import CardContent from '@material-ui/core/CardContent';
 import { withStyles } from '@material-ui/core/styles';
 
 var styles = theme => ({
-  root: {
-    paddingTop: 0,
-    paddingBottom: 0,
-    '&:first-child': {
-      paddingTop: 16,
+    root: {
+        paddingTop: 0,
+        paddingBottom: 0,
+        '&:first-child': {
+            paddingTop: 16,
+        },
+        '&:last-child': {
+            paddingBottom: 16,
+            [theme.breakpoints.only('xs')]: {
+                paddingBottom: 70,
+            },
+        },
     },
-    '&:last-child': {
-      paddingBottom: 16,
-      [theme.breakpoints.only('xs')]: {
-        paddingBottom: 70,
-      },
-    },
-  },
 });
 
 /**

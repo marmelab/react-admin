@@ -5,7 +5,7 @@ export default {
         '.ra-rich-text-input': {
             '& .ql-editor': {
                 fontSize: '1rem',
-                fontFamily: "Roboto, sans-serif",
+                fontFamily: 'Roboto, sans-serif',
                 padding: 0,
 
                 '&:hover::before': {

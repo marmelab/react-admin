@@ -59,8 +59,8 @@ export const DateField = ({
             ? date.toLocaleString(locales, options)
             : date.toLocaleString()
         : toLocaleStringSupportsLocales
-            ? date.toLocaleDateString(locales, options)
-            : date.toLocaleDateString();
+        ? date.toLocaleDateString(locales, options)
+        : date.toLocaleDateString();
 
     return (
         <Typography

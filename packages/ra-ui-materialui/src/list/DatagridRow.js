@@ -156,36 +156,33 @@ class DatagridRow extends Component {
                             />
                         </TableCell>
                     )}
-                    {React.Children.map(
-                        children,
-                        (field, index) =>
-                            field ? (
-                                <DatagridCell
-                                    key={`${id}-${field.props.source || index}`}
-                                    className={classnames(
-                                        `column-${field.props.source}`,
-                                        classes.rowCell
-                                    )}
-                                    record={record}
-                                    id={id}
-                                    {...{ field, basePath, resource }}
-                                />
-                            ) : null
+                    {React.Children.map(children, (field, index) =>
+                        field ? (
+                            <DatagridCell
+                                key={`${id}-${field.props.source || index}`}
+                                className={classnames(
+                                    `column-${field.props.source}`,
+                                    classes.rowCell
+                                )}
+                                record={record}
+                                id={id}
+                                {...{ field, basePath, resource }}
+                            />
+                        ) : null
                     )}
                 </TableRow>
-                {expand &&
-                    expanded && (
-                        <TableRow key={`${id}-expand`}>
-                            <TableCell colSpan={colSpan} role="expand-content">
-                                {React.cloneElement(expand, {
-                                    record,
-                                    basePath,
-                                    resource,
-                                    id: String(id),
-                                })}
-                            </TableCell>
-                        </TableRow>
-                    )}
+                {expand && expanded && (
+                    <TableRow key={`${id}-expand`}>
+                        <TableCell colSpan={colSpan} role="expand-content">
+                            {React.cloneElement(expand, {
+                                record,
+                                basePath,
+                                resource,
+                                id: String(id),
+                            })}
+                        </TableCell>
+                    </TableRow>
+                )}
             </Fragment>
         );
     }

@@ -73,7 +73,8 @@ const MobileGrid = ({ classes, ids, data, basePath, translate }) => (
                         <DateField record={data[id]} source="date" showTime />
                     </span>
                     <span className={classes.cardContentRow}>
-                        {translate('resources.commands.fields.basket.total')}:&nbsp;
+                        {translate('resources.commands.fields.basket.total')}
+                        :&nbsp;
                         <NumberField
                             record={data[id]}
                             source="total"

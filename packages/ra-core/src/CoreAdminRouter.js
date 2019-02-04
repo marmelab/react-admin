@@ -107,7 +107,8 @@ export class CoreAdminRouter extends Component {
         ) {
             return (
                 <div style={welcomeStyles}>
-                    React-admin is properly configured.<br />
+                    React-admin is properly configured.
+                    <br />
                     Now you can add a first &lt;Resource&gt; as child of
                     &lt;Admin&gt;.
                 </div>

@@ -200,23 +200,22 @@ class Datagrid extends Component {
                                 />
                             </TableCell>
                         )}
-                        {React.Children.map(
-                            children,
-                            (field, index) =>
-                                field ? (
-                                    <DatagridHeaderCell
-                                        className={classes.headerCell}
-                                        currentSort={currentSort}
-                                        field={field}
-                                        isSorting={
-                                            currentSort.field ===
-                                            (field.props.sortBy || field.props.source)
-                                        }
-                                        key={field.props.source || index}
-                                        resource={resource}
-                                        updateSort={this.updateSort}
-                                    />
-                                ) : null
+                        {React.Children.map(children, (field, index) =>
+                            field ? (
+                                <DatagridHeaderCell
+                                    className={classes.headerCell}
+                                    currentSort={currentSort}
+                                    field={field}
+                                    isSorting={
+                                        currentSort.field ===
+                                        (field.props.sortBy ||
+                                            field.props.source)
+                                    }
+                                    key={field.props.source || index}
+                                    resource={resource}
+                                    updateSort={this.updateSort}
+                                />
+                            ) : null
                         )}
                     </TableRow>
                 </TableHead>

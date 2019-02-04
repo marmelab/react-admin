@@ -45,9 +45,9 @@ export class SaveButton extends Component {
         label: PropTypes.string,
         pristine: PropTypes.bool,
         redirect: PropTypes.oneOfType([
-          PropTypes.string,
-          PropTypes.bool,
-          PropTypes.func,
+            PropTypes.string,
+            PropTypes.bool,
+            PropTypes.func,
         ]),
         saving: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
         showNotification: PropTypes.func,
