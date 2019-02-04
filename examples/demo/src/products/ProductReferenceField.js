@@ -11,6 +11,7 @@ const ProductReferenceField = props => (
         <TextField source="reference" />
     </ReferenceField>
 );
+
 ProductReferenceField.defaultProps = {
     source: 'product_id',
     addLabel: true,

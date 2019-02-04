@@ -11,6 +11,7 @@ title: "FAQ"
 - [How can I customize the UI depending on the user permissions?](#how-can-i-customize-the-ui-depending-on-the-user-permissions)
 - [How can I customize forms depending on its inputs values?](#how-can-i-customize-forms-depending-on-its-inputs-values)
 - [My Resource is defined but not displayed on the Menu](#my-resource-is-defined-but-not-displayed-on-the-menu)
+- [Why React Admin Doesn't Support The Latest Version Of Material-UI?](#why-react-admin-doesnt-support-the-latest-version-of-material-ui)
 
 ## Can I have custom identifiers/primary keys for my resources?
 
@@ -132,3 +133,13 @@ In order to have a specific resource without `list` prop listed on the menu, you
     </div>
 );
 ```
+
+## Why Doesn't React Admin Support The Latest Version Of Material-UI?
+
+React Admin users and third-party libraries maintainers might have noticed that the default UI template `ra-ui-materialui` [has `@material-ui/core@^1.4.0` as dependency](https://github.com/marmelab/react-admin/blob/ae45a2509b391a6ea81cdf9c248ff9d28364b6e1/packages/ra-ui-materialui/package.json#L44) even though the latest version of Material UI is already 3.x.
+
+We chose not to upgrade to Material UI v3 when it was released because the MUI team was already hard at work preparing the next major version ([which includes major breaking changes](https://github.com/mui-org/material-ui/issues/13663)). In fact, material-ui published a release schedule for one major version every 6 months. This means that developers using material-ui have to upgrade their codebase every six months to get the latest updates. On the other hand, react-admin plans to release a major version once every year, minimizing the upgrade work for developers. This gain in stability is a tradeoff - react-admin users can't use the latest version of material-ui for about half a year.
+
+Feel free to discuss this policy in [issue #2399](https://github.com/marmelab/react-admin/issues/2399).
+
+If you are a maintainer of a third-party library based on React Admin, your library has to add material-ui v1.x as a peer dependency.

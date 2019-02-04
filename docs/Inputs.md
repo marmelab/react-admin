@@ -289,6 +289,9 @@ By default the component matches choices with the current input searchText. For 
 
 If you want to limit the initial choices shown to the current value only, you can set the `limitChoicesToValue` prop.
 
+When dealing with a large amount of `choices` you may need to limit the number of suggestions that are rendered in order to maintain usable performance. The `shouldRenderSuggestions` is an optional prop that allows you to set conditions on when to render suggestions. An easy way to improve performance would be to skip rendering until the user has entered 2 or 3 characters in the search box. This lowers the result set significantly, and might be all you need (depending on your data set). 
+Ex. `<AutocompleteArrayInput shouldRenderSuggestions={(val) => { return val.trim().length > 2 }} />` would not render any suggestions until the 3rd character was entered. This prop is passed to the underlying `react-autosuggest` component and is documented [here](https://github.com/moroshko/react-autosuggest#should-render-suggestions-prop).
+
 Lastly, `<AutocompleteArrayInput>` renders a [material-ui-chip-input](https://github.com/TeamWertarbyte/material-ui-chip-input) component. Use the `options` attribute to override any of the `<ChipInput>` attributes:
 
 {% raw %}
@@ -326,6 +329,7 @@ import { AutocompleteArrayInput, ReferenceArrayInput } from 'react-admin'
 | `optionText` | Optional | <code>string &#124; Function</code> | `name` | Fieldname of record to display in the suggestion item or function which accepts the current record as argument (`(record)=> {string}`) |
 | `setFilter` | Optional | `Function` | null | A callback to inform the `searchText` has changed and new `choices` can be retrieved based on this `searchText`. Signature `searchText => void`. This function is automatically setup when using `ReferenceInput`.  |
 | `suggestionComponent` | Optional | Function | `({ suggestion, query, isHighlighted, props }) => <div {...props} />` | Allows to override how the item is rendered.  |
+| `shouldRenderSuggestions` | Optional | Function | `() => true` | A function that returns a `boolean` to determine whether or not suggestions are rendered. Use this when working with large collections of data to improve performance and user experience. This function is passed into the underlying react-autosuggest component. Ex.`(value) => value.trim() > 2` |
 
 ## `<BooleanInput>` and `<NullableBooleanInput>`
 
@@ -806,7 +810,7 @@ You can tweak how this component fetches the possible values using the `perPage`
 
 ## `<ReferenceInput>`
 
-Use `<ReferenceInput>` for foreign-key values, for instance, to edit the `post_id` of a `comment` resource. This component fetches the possible values in the reference resource (using the `GET_LIST` REST method) and the referenced record (using the `GET_ONE` REST method), then delegates rendering to a subcomponent, to which it passes the possible choices as the `choices` attribute.
+Use `<ReferenceInput>` for foreign-key values, for instance, to edit the `post_id` of a `comment` resource. This component fetches the possible values in the reference resource (using the `GET_LIST` data provider verb) and the referenced record (using the `GET_MANY` data provider verb), then delegates rendering to a subcomponent, to which it passes the possible choices as the `choices` attribute.
 
 This means you can use `<ReferenceInput>` with any of [`<SelectInput>`](#selectinput), [`<AutocompleteInput>`](#autocompleteinput), or [`<RadioButtonGroupInput>`](#radiobuttongroupinput), or even with the component of your choice, provided it supports the `choices` attribute.
 
@@ -830,6 +834,8 @@ import { ReferenceInput, SelectInput } from 'react-admin'
     <Resource name="posts" />
 </Admin>
 ```
+
+**Tip**: Why does `<ReferenceInput>` use the `GET_MANY` verb with a single value `[id]` instead of `GET_ONE` to fetch the record for the current value? Because when there are many `<ReferenceInput>` for the same resource in a form (for instance when inside an `<ArrayInput>`), react-admin *aggregates* the calls to `GET_MANY` into a single one with `[id1, id2, ...)]`. This speeds up the UI and avoids hitting the API too much.
 
 Set the `allowEmpty` prop when you want to add an empty choice with a value of null in the choices list.
 Disabling `allowEmpty` does not mean that the input will be required. If you want to make the input required, you must add a validator as indicated in [Validation Documentation](./CreateEdit.md#validation). Enabling the `allowEmpty` props just adds an empty choice (with `null` value) on top of the options, and makes the value nullable.
@@ -1446,10 +1452,48 @@ const OrderEdit = (props) => (
 );
 ```
 
-**Tip**: When using a `FormDataConsumer` inside an `ArrayInput`, the `FormDataConsumer` will provide two additional properties to its children function:
+**Tip**: When using a `FormDataConsumer` inside an `ArrayInput`, the `FormDataConsumer` will provide three additional properties to its children function:
 
 - `scopedFormData`: an object containing the current values of the currently rendered item from the `ArrayInput`
 - `getSource`: a function which will translate the source into a valid one for the `ArrayInput`
+- `dispatch`: Redux' function to dispatch an action. Useful to update another input value.
+
+Here is an example usage for `dispatch`: A country input that resets a city input on change.
+
+```jsx
+
+import React, { Fragment } from 'react'
+import { change } from 'redux-form'
+import { FormDataConsumer, REDUX_FORM_NAME } from 'react-admin';
+
+const OrderEdit = (props) => (
+    <Edit {...props}>
+        <SimpleForm>
+            <FormDataConsumer>
+                {({ formData, dispatch, ...rest }) => (
+                    <Fragment>
+                        <SelectInput
+                            source="country"
+                            choices={countries}
+                            onChange={value => dispatch(
+                                change(REDUX_FORM_NAME, 'city', null)
+                            )}
+                             {...rest}
+                        />
+                        <SelectInput
+                            source="city"
+                            choices={getCitiesFor(formData.country)}
+                             {...rest}
+                        />
+                    </Fragment>
+                )}
+            </FormDataConsumer>
+        </SimpleForm>
+    </Edit>
+);
+```
+
+And here is an example usage for `getSource` inside `<ArrayInput>`:
 
 ```jsx
 import { FormDataConsumer } from 'react-admin';

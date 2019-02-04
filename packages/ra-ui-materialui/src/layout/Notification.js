@@ -89,6 +89,9 @@ class Notification extends React.Component {
                     (notification && notification.autoHideDuration) ||
                     autoHideDuration
                 }
+                disableWindowBlurListener={
+                    notification && notification.undoable
+                }
                 onExited={this.handleExited}
                 onClose={this.handleRequestClose}
                 ContentProps={{

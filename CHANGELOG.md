@@ -1,5 +1,63 @@
 # Changelog
 
+# v2.7.0
+
+* Add support for `rowClick="expand"` in `<Datagrid>` ([2820](https://github.com/marmelab/react-admin/pull/2820)) ([fzaninotto](https://github.com/fzaninotto))
+* Add an alert preventing data loss when a user closes the app while in optimistic mode ([2784](https://github.com/marmelab/react-admin/pull/2784)) ([fzaninotto](https://github.com/fzaninotto))
+* Add the ability to customize the `<AppBar>` content ([2777](https://github.com/marmelab/react-admin/pull/2777)) ([fzaninotto](https://github.com/fzaninotto))
+* Add support for `<Redirect>` in `customRoutes` ([2771](https://github.com/marmelab/react-admin/pull/2771)) ([kopax](https://github.com/kopax))
+* Add accessibility to `<BooleanField>` ([2744](https://github.com/marmelab/react-admin/pull/2744)) ([djhi](https://github.com/djhi))
+* Add `options` prop to `<TabbedShowLayout>` ([2740](https://github.com/marmelab/react-admin/pull/2740)) ([lucas2595](https://github.com/lucas2595))
+* Add more examples to the Posters Galore demo ([2799](https://github.com/marmelab/react-admin/pull/2799)) ([fzaninotto](https://github.com/fzaninotto))
+* Add support for `shouldRenderSuggestions` prop in `<AutocompleteArrayInput>` ([2720](https://github.com/marmelab/react-admin/pull/2720)) ([davidpicarra](https://github.com/davidpicarra))
+* Update default list page name (remove "List") ([2801](https://github.com/marmelab/react-admin/pull/2801)) ([fzaninotto](https://github.com/fzaninotto))
+* Remove Graphcool demo([2821](https://github.com/marmelab/react-admin/pull/2821)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix tests disabled by mistake may hide failing test cases ([2845](https://github.com/marmelab/react-admin/pull/2845)) ([Luwangel](https://github.com/Luwangel))
+
+## v2.6.4
+
+* Fix `<CreateButton>` not being re-translated when language changes at runtime ([2842](https://github.com/marmelab/react-admin/pull/2842)) ([maoueh](https://github.com/maoueh))
+* Fix `prettier` maintenance command ([2839](https://github.com/marmelab/react-admin/pull/2839)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<AutocompleteInput>` reopens after selection ([2836](https://github.com/marmelab/react-admin/pull/2836)) ([djhi](https://github.com/djhi))
+* Fix e2e tests fail on Chrome 72 ([2834](https://github.com/marmelab/react-admin/pull/2834)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<AutocompleteInput>` issues by removing auto selection ([2833](https://github.com/marmelab/react-admin/pull/2833)) ([djhi](https://github.com/djhi))
+* Fix default values for `<Filter>` cannot be removed by user ([2831](https://github.com/marmelab/react-admin/pull/2831)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix missing `formMiddleware` export preventing custom apps to work ([2828](https://github.com/marmelab/react-admin/pull/2828)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<RichTextInput>` adds extra paragraph element after list items ([2826](https://github.com/marmelab/react-admin/pull/2826)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `asyncValidation` issue for `<SelectInput>` ([2825](https://github.com/marmelab/react-admin/pull/2825)) ([erkimiilberg](https://github.com/erkimiilberg))
+* Migrate remaining actions and side effects to Typescript ([2824](https://github.com/marmelab/react-admin/pull/2824)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix outdated documentation about `messages` prop in `<Admin>` ([2822](https://github.com/marmelab/react-admin/pull/2822)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix warning when using `<Pagination>` in `<ReferenceManyField>` ([2819](https://github.com/marmelab/react-admin/pull/2819)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix warning in `<CloneButton>` when used inside `<Toolbar>` ([2818](https://github.com/marmelab/react-admin/pull/2818)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix error when using `<Edit>` component as `expand` in `<List>` ([2817](https://github.com/marmelab/react-admin/pull/2817)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<DeleteButton undoable={false} />` in `<List />` does not refresh List ([2662](https://github.com/marmelab/react-admin/pull/2662)) ([BartoGabriel](https://github.com/BartoGabriel))
+* Update link to Dutch translation package ([2814](https://github.com/marmelab/react-admin/pull/2814)) ([nickwaelkens](https://github.com/nickwaelkens))
+* Add mention of new data provider `ra-strapi-rest` ([2796](https://github.com/marmelab/react-admin/pull/2796)) ([nazirov91](https://github.com/nazirov91))
+* Remove mention of react Context in the translation documentation ([2841](https://github.com/marmelab/react-admin/pull/2841)) ([maoueh](https://github.com/maoueh))
+
+
+## v2.6.3
+
+* Fix sanitization of `<DeleteButton>` props ([2810](https://github.com/marmelab/react-admin/pull/2810)) ([djhi](https://github.com/djhi))
+* Fix display order of selected choices in their in `<SelectArrayInput>` ([2806](https://github.com/marmelab/react-admin/pull/2806)) ([Luwangel](https://github.com/Luwangel))
+* Add explanation about Material UI version on the FAQ ([2797](https://github.com/marmelab/react-admin/pull/2797)) ([Kmaschta](https://github.com/Kmaschta))
+* Add Firestore Data Provider ([2778](https://github.com/marmelab/react-admin/pull/2778)) ([rafalzawadzki](https://github.com/rafalzawadzki))
+
+## v2.6.2
+
+* Fix prop type warning in `Datagrid` sort prop ([2794](https://github.com/marmelab/react-admin/pull/2794)) ([santaclauze](https://github.com/santaclauze))
+* Fix vulnerability in webpack development tools (did not affect production builds) ([2788](https://github.com/marmelab/react-admin/pull/2788)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix optimistic actions never get sent when changing tabs ([2785](https://github.com/marmelab/react-admin/pull/2785)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix bulk deletion keeps deleted items in selected ids ([2774](https://github.com/marmelab/react-admin/pull/2774)) ([g3offrey](https://github.com/g3offrey))
+* Fix `ReferenceInput` documentation mentions wrong data provider verb ([2764](https://github.com/marmelab/react-admin/pull/2764)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<RichTextInput>` not working on IE11 ([2676](https://github.com/marmelab/react-admin/pull/2676)) ([phacks](https://github.com/phacks))
+* Fix missing translation key in `Pagination` ([2762](https://github.com/marmelab/react-admin/pull/2762)) ([kopax](https://github.com/kopax))
+* Add explicit error message when required props are missing in `Create`, `Edit`, `Show`, and `List` controllers ([2782](https://github.com/marmelab/react-admin/pull/2782)) ([Kmaschta](https://github.com/Kmaschta))
+* Add documentation about dispatching actions within `<FormDataConsumer>` ([2775](https://github.com/marmelab/react-admin/pull/2775)) ([fzaninotto](https://github.com/fzaninotto))
+* Add Hasura data provider ([2791](https://github.com/marmelab/react-admin/pull/2791)) ([praveenweb](https://github.com/praveenweb))
+* Add JSDoc to validators for easier debugging ([2773](https://github.com/marmelab/react-admin/pull/2773)) ([fzaninotto](https://github.com/fzaninotto))
+* Migrate ra-core util scripts to TypeScript ([2787](https://github.com/marmelab/react-admin/pull/2787)) ([fzaninotto](https://github.com/fzaninotto))
+
 ## v2.6.1
 
 * Fix welcome message appears in production when permissions lead to no resource ([2759](https://github.com/marmelab/react-admin/pull/2759)) ([fzaninotto](https://github.com/fzaninotto))
@@ -13,7 +71,7 @@
 * Improve documentation about unit testing authorization logic ([2728](https://github.com/marmelab/react-admin/pull/2728)) ([Kmaschta](https://github.com/Kmaschta))
 * Update italian translation url ([2725] (https://github.com/marmelab/react-admin/pull/2725)) ([stefsava](https://github.com/stefsava))
 
-## v2.6.0
+# v2.6.0
 
 * Add skeleton to `<Datagrid>` when loading the data for the first time ([2706](https://github.com/marmelab/react-admin/pull/2706)) ([fzaninotto](https://github.com/fzaninotto))
 * Add ability to attach an expansion panel to a `<Datagrid>` row ([2634](https://github.com/marmelab/react-admin/pull/2634)) ([fzaninotto](https://github.com/fzaninotto))
@@ -139,7 +197,7 @@
 * Add jsonapi data provider to documentation ([#2455](https://github.com/marmelab/react-admin/pull/2455)) ([henvo](https://github.com/henvo)
 * Add Norwegian translation to docs and removed old translation (aor) ([#2481](https://github.com/marmelab/react-admin/pull/2481)) ([jon](https://github.com/jon-harald))
 
-## v2.4.0
+# v2.4.0
 
 For highlights about this version, read the [react-admin 2.4 announcement blog post](https://marmelab.com/blog/2018/10/18/react-admin-2-4.html) on the marmelab blog.
 
@@ -209,7 +267,7 @@ For highlights about this version, read the [react-admin 2.4 announcement blog p
 * Fix `rowsPerPageOptions` not transmitted to pagination ([antonversal](https://github.com/antonversal))
 * Fix Webpack compilation of projects using GraphQL data providers ([Kmaschta](https://github.com/Kmaschta))
 
-## v2.3.0
+# v2.3.0
 
 For highlights about this version, read [the 2.3 release announcement post](https://marmelab.com/blog/2018/09/07/react-admin-2-3.html) on the marmelab blog.
 
@@ -314,7 +372,7 @@ Deprecations:
 * Add link to Farsi translations ([hamidfzm](https://github.com/hamidfzm))
 * Add link to Finnish translations ([Aikain](https://github.com/Aikain))
 
-## v2.2.0
+# v2.2.0
 
 For highlights about this version, read [the 2.2 release announcement post](https://marmelab.com/blog/2018/08/16/react-admin-2-2.html) on the marmelab blog.
 
@@ -384,7 +442,7 @@ For highlights about this version, read [the 2.2 release announcement post](http
 * Add polish translations ([tskorupka](https://github.com/tskorupka))
 * Add documentation on tabs routing ([djhi](https://github.com/djhi))
 
-## v2.1.0
+# v2.1.0
 
 For highlights about this version, read [the 2.1 release announcement post](https://marmelab.com/blog/2018/07/02/react-admin-2-1.html) on the marmelab blog.
 
@@ -463,7 +521,7 @@ For highlights about this version, read [the 2.1 release announcement post](http
 * Fix typo in Inputs documentation ([afilp](https://github.com/afilp))
 * Fix custom datagrid style fonction example ([afilp](https://github.com/afilp))
 
-## v2.0.0
+# v2.0.0
 
 After 7 months of refactoring for better performance and easier overrides, we finally released the new major version of react-admin 🎉.
 
@@ -492,7 +550,7 @@ There are many more features in 2.0, as well as all bug fixes from 1.x.
 
 This new release is not backwards compatible with 1.x. Please refer to [the Upgrade guide](https://github.com/marmelab/react-admin/blob/master/UPGRADE.md) for directions on upgrading your code.
 
-## v1.4.0
+# v1.4.0
 
 * Documentation: change extraction of status for AUTH_ERROR ([zifnab87](https://github.com/zifnab87))
 * Add Slovak translation ([zavadpe](https://github.com/zavadpe))
@@ -596,7 +654,7 @@ This new release is not backwards compatible with 1.x. Please refer to [the Upgr
 * Fix date filters ([djhi](https://github.com/djhi))
 * Fix typo in custom actions documentation ([RWOverdijk](https://github.com/RWOverdijk))
 
-## v.1.3.0
+# v.1.3.0
 
 * Add permissions handling ([djhi](https://github.com/djhi))
 * Add Not Found page ([fzaninotto](https://github.com/fzaninotto))
@@ -663,7 +721,7 @@ This new release is not backwards compatible with 1.x. Please refer to [the Upgr
 * Add Code of conduct ([fzaninotto](https://github.com/fzaninotto))
 * Fix documentation on `ReferenceArrayList` ([vmattos](https://github.com/vmattos))
 
-## v1.2.0
+# v1.2.0
 
 Read the [v1.1 and v1.2 announcement on the marmelab blog](https://marmelab.com/blog/2017/06/29/admin-on-rest-1-2.html).
 
@@ -711,7 +769,7 @@ Read the [v1.1 and v1.2 announcement on the marmelab blog](https://marmelab.com/
 * Fix duplicate documentation in Ecosystem ([djhi](https://github.com/djhi))
 * Fix typos on Theming documentation ([martjanz](https://github.com/martjanz))
 
-## v1.1.0
+# v1.1.0
 
 * Add `<ReferenceArrayInput>` and `<SelectArrayInput>` ([kimkha](https://github.com/kimkha) and [fzaninotto](https://github.com/fzaninotto))
 * Add `<ReferenceArrayField>` ([leesei](https://github.com/leesei) and [fzaninotto](https://github.com/fzaninotto))
@@ -755,7 +813,7 @@ Read the [v1.1 and v1.2 announcement on the marmelab blog](https://marmelab.com/
 * Add link to Chinese (Traditional) (`cht`) translation ([leesei](https://github.com/leesei))
 * Add link to sandbox in the Contributing documentation ([fzaninotto](https://github.com/fzaninotto))
 
-## v1.0.0
+# v1.0.0
 
 Read the [v1.0 announcement on the marmelab blog](https://marmelab.com/blog/2017/04/26/admin-on-rest-1-0.html).
 

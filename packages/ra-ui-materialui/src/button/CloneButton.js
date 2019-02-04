@@ -8,6 +8,17 @@ import Button from './Button';
 
 const omitId = ({ id, ...rest }) => rest;
 
+const sanitizeRestProps = ({
+    // the next 6 props are injected by Toolbar
+    handleSubmit,
+    handleSubmitWithRedirect,
+    invalid,
+    pristine,
+    saving,
+    submitOnEnter,
+    ...rest
+}) => rest;
+
 export const CloneButton = ({
     basePath = '',
     label = 'ra.action.clone',
@@ -22,7 +33,7 @@ export const CloneButton = ({
             state: { record: omitId(record) },
         }}
         label={label}
-        {...rest}
+        {...sanitizeRestProps(rest)}
     >
         {icon}
     </Button>

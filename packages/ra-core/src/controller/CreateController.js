@@ -7,6 +7,7 @@ import { parse } from 'query-string';
 
 import translate from '../i18n/translate';
 import { crudCreate as crudCreateAction } from '../actions';
+import checkMinimumRequiredProps from './checkMinimumRequiredProps';
 
 /**
  * Page component for the Create view
@@ -139,9 +140,14 @@ function mapStateToProps(state) {
 }
 
 export default compose(
+    checkMinimumRequiredProps('Create', [
+        'basePath',
+        'location',
+        'resource',
+    ]),
     connect(
         mapStateToProps,
         { crudCreate: crudCreateAction }
     ),
-    translate
+    translate,
 )(CreateController);

@@ -11,6 +11,7 @@ module.exports = on => {
                     arg => arg !== '--disable-blink-features=RootLayerScrolling'
                 ),
                 '--disable-gpu',
+                '--proxy-bypass-list=<-loopback>',
             ];
         }
     });
