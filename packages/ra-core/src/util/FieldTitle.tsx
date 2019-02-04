@@ -4,6 +4,7 @@ import pure from 'recompose/pure';
 import compose from 'recompose/compose';
 
 import translateHoc from '../i18n/translate';
+import getFieldLabelTranslationArgs from './getFieldLabelTranslationArgs';
 import { Translate } from '../types';
 
 interface Props {
@@ -22,16 +23,9 @@ export const FieldTitle: SFC<Props> = ({
     translate = (name: string, options) => name,
 }) => (
     <span>
-        {typeof label !== 'undefined'
-            ? translate(label, { _: label })
-            : typeof source !== 'undefined'
-                ? translate(`resources.${resource}.fields.${source}`, {
-                      _: inflection.transform(source, [
-                          'underscore',
-                          'humanize',
-                      ]),
-                  })
-                : ''}
+        {translate(
+            ...getFieldLabelTranslationArgs({ label, resource, source })
+        )}
         {isRequired && ' *'}
     </span>
 );

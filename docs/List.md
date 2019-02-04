@@ -821,6 +821,7 @@ export const PostList = (props) => (
 
 * "edit" to redirect to the edition vue
 * "show" to redirect to the show vue
+* "expand" to open the `expand` panel
 * a function `(id, basePath, record) => path` to redirect to a custom path
 
 **Tip**: If you pass a function, it can return `edit`, `show` or a router path. This allows to redirect to either `edit` or `show` after checking a condition on the record. For example:

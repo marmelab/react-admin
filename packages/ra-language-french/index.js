@@ -33,7 +33,7 @@ module.exports = {
             dashboard: 'Tableau de bord',
             edit: '%{name} #%{id}',
             error: 'Un problème est survenu',
-            list: 'Liste des %{name}',
+            list: '%{name}',
             loading: 'Chargement',
             not_found: 'Page manquante',
             show: '%{name} #%{id}',
@@ -110,7 +110,7 @@ module.exports = {
             data_provider_error:
                 'Erreur dans le dataProvider. Plus de détails dans la console.',
             canceled: 'Action annulée',
-            logged_out: 'Votre session a pris fin, veuillez-vous reconnectez.'
+            logged_out: 'Votre session a pris fin, veuillez-vous reconnectez.',
         },
         validation: {
             required: 'Ce champ est requis',

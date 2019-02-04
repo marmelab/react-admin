@@ -12,7 +12,7 @@ describe('List Page', () => {
 
     describe('Title', () => {
         it('should show the correct title in the appBar', () => {
-            cy.get(ListPagePosts.elements.title).contains('Posts List');
+            cy.get(ListPagePosts.elements.title).contains('Posts');
         });
     });
 

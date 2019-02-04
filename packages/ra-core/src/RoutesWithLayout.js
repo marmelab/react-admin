@@ -17,16 +17,7 @@ const RoutesWithLayout = ({
     return (
         <Switch>
             {customRoutes &&
-                customRoutes.map((route, index) => (
-                    <Route
-                        key={index}
-                        exact={route.props.exact}
-                        path={route.props.path}
-                        component={route.props.component}
-                        render={route.props.render}
-                        children={route.props.children} // eslint-disable-line react/no-children-prop
-                    />
-                ))}
+                customRoutes.map((route, key) => cloneElement(route, { key }))}
             {Children.map(children, child => (
                 <Route
                     key={child.props.name}

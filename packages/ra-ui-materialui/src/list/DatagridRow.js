@@ -57,21 +57,21 @@ class DatagridRow extends Component {
         event.stopPropagation();
     };
 
-    handleClick = async () => {
+    handleClick = async event => {
         const { basePath, rowClick, id, record } = this.props;
 
         if (!rowClick) return;
 
         if (typeof rowClick === 'function') {
             const path = await rowClick(id, basePath, record);
-            this.handleRedirection(path);
+            this.handleRedirection(path, event);
             return;
         }
 
-        this.handleRedirection(rowClick);
+        this.handleRedirection(rowClick, event);
     };
 
-    handleRedirection = path => {
+    handleRedirection = (path, event) => {
         const { basePath, id, push } = this.props;
 
         if (path === 'edit') {
@@ -80,6 +80,10 @@ class DatagridRow extends Component {
         }
         if (path === 'show') {
             push(linkToRecord(basePath, id, 'show'));
+            return;
+        }
+        if (path == 'expand') {
+            this.handleToggleExpanded(event);
             return;
         }
 

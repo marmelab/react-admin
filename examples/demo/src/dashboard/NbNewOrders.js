@@ -1,4 +1,5 @@
 import React from 'react';
+import compose from 'recompose/compose';
 import Card from '@material-ui/core/Card';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import { withStyles } from '@material-ui/core/styles';
@@ -35,4 +36,9 @@ const NbNewOrders = ({ value, translate, classes }) => (
     </div>
 );
 
-export default translate(withStyles(styles)(NbNewOrders));
+const enhance = compose(
+    withStyles(styles),
+    translate
+);
+
+export default enhance(NbNewOrders);

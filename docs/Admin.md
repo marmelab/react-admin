@@ -438,6 +438,8 @@ const Foo = () => (
 export default Foo;
 ```
 
+**Tip**: Custom routes can be [a `<Redirect>` route](https://reacttraining.com/react-router/web/api/Redirect), too. 
+
 ## `authProvider`
 
 The `authProvider` prop expect a function returning a Promise, to control the application authentication strategy:

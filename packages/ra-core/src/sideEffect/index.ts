@@ -9,6 +9,7 @@ import accumulateSaga from './accumulate';
 import refreshSaga, { RefreshSideEffect } from './refresh';
 import i18nSaga from './i18n';
 import undoSaga from './undo';
+import unloadSaga from './unload';
 
 export {
     adminSaga,
@@ -26,4 +27,5 @@ export {
     RefreshSideEffect,
     i18nSaga,
     undoSaga,
+    unloadSaga,
 };

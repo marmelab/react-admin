@@ -289,6 +289,9 @@ By default the component matches choices with the current input searchText. For 
 
 If you want to limit the initial choices shown to the current value only, you can set the `limitChoicesToValue` prop.
 
+When dealing with a large amount of `choices` you may need to limit the number of suggestions that are rendered in order to maintain usable performance. The `shouldRenderSuggestions` is an optional prop that allows you to set conditions on when to render suggestions. An easy way to improve performance would be to skip rendering until the user has entered 2 or 3 characters in the search box. This lowers the result set significantly, and might be all you need (depending on your data set). 
+Ex. `<AutocompleteArrayInput shouldRenderSuggestions={(val) => { return val.trim().length > 2 }} />` would not render any suggestions until the 3rd character was entered. This prop is passed to the underlying `react-autosuggest` component and is documented [here](https://github.com/moroshko/react-autosuggest#should-render-suggestions-prop).
+
 Lastly, `<AutocompleteArrayInput>` renders a [material-ui-chip-input](https://github.com/TeamWertarbyte/material-ui-chip-input) component. Use the `options` attribute to override any of the `<ChipInput>` attributes:
 
 {% raw %}
@@ -326,6 +329,7 @@ import { AutocompleteArrayInput, ReferenceArrayInput } from 'react-admin'
 | `optionText` | Optional | <code>string &#124; Function</code> | `name` | Fieldname of record to display in the suggestion item or function which accepts the current record as argument (`(record)=> {string}`) |
 | `setFilter` | Optional | `Function` | null | A callback to inform the `searchText` has changed and new `choices` can be retrieved based on this `searchText`. Signature `searchText => void`. This function is automatically setup when using `ReferenceInput`.  |
 | `suggestionComponent` | Optional | Function | `({ suggestion, query, isHighlighted, props }) => <div {...props} />` | Allows to override how the item is rendered.  |
+| `shouldRenderSuggestions` | Optional | Function | `() => true` | A function that returns a `boolean` to determine whether or not suggestions are rendered. Use this when working with large collections of data to improve performance and user experience. This function is passed into the underlying react-autosuggest component. Ex.`(value) => value.trim() > 2` |
 
 ## `<BooleanInput>` and `<NullableBooleanInput>`
 
