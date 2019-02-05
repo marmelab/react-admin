@@ -52,6 +52,7 @@ You can find Data Providers for various backends in third-party repositories:
 * **[Loopback](http://loopback.io/)**: [darthwesker/react-admin-loopback](https://github.com/darthwesker/react-admin-loopback)
 * **[Hasura](https://github.com/hasura/graphql-engine)**: [hasura/ra-data-hasura](https://github.com/hasura/graphql-engine/tree/master/community/tools/ra-data-hasura)
 * **[Strapi](https://strapi.io/)**: [nazirov91/ra-strapi-rest](https://github.com/nazirov91/ra-strapi-rest)
+* **[Parse](https://parseplatform.org/)** [almahdi/ra-data-parse](https://github.com/almahdi/ra-data-parse)
 
 If you've written a Data Provider for another backend, and open-sourced it, please help complete this list with your package.
 
