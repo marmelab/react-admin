@@ -43,6 +43,7 @@ const Menu = ({
     resources,
     translate,
     logout,
+    additionalMenuItems,
     ...rest
 }) => (
     <div className={classnames(classes.main, className)} {...rest}>
@@ -56,6 +57,19 @@ const Menu = ({
                     primaryText={translatedResourceName(resource, translate)}
                     leftIcon={
                         resource.icon ? <resource.icon /> : <DefaultIcon />
+                    }
+                    onClick={onMenuClick}
+                    dense={dense}
+                />
+            ))}
+        {!!additionalMenuItems &&
+            additionalMenuItems.map(menuItem => (
+                <MenuItemLink
+                    key={menuItem.key || menuItem.primaryText}
+                    to={menuItem.to}
+                    primaryText={menuItem.primaryText}
+                    leftIcon={
+                        menuItem.icon ? <menuItem.icon /> : <DefaultIcon />
                     }
                     onClick={onMenuClick}
                     dense={dense}
