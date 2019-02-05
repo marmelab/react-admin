@@ -43,6 +43,7 @@ The react-admin project includes 4 Data Providers:
 You can find Data Providers for various backends in third-party repositories:
 
 * **[Feathersjs](http://www.feathersjs.com/)**: [josx/ra-data-feathers](https://github.com/josx/ra-data-feathers)
+* **[Parse](https://parseplatform.org/)** [almahdi/ra-data-parse](https://github.com/almahdi/ra-data-parse)
 * **[PostgREST](http://postgrest.com/en/v0.4/)**: [tomberek/aor-postgrest-client](https://github.com/tomberek/aor-postgrest-client)
 * **[Prisma](https://github.com/weakky/ra-data-prisma)**: [weakky/ra-data-prisma](https://github.com/weakky/ra-data-prisma)
 * **[Xmysql](https://github.com/o1lab/xmysql)**: [soaserele/aor-xmysql](https://github.com/soaserele/aor-xmysql)
