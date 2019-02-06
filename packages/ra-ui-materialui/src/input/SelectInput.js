@@ -156,10 +156,7 @@ export class SelectInput extends Component {
 
     addAllowEmpty = choices => {
         if (this.props.allowEmpty) {
-            const value = this.props.hasOwnProperty('emptyValue')
-                ? this.props.emptyValue
-                : '';
-            return [<MenuItem value={value} key="null" />, ...choices];
+            return [<MenuItem value={this.props.emptyValue} key="null" />, ...choices];
         }
 
         return choices;
@@ -244,6 +241,7 @@ export class SelectInput extends Component {
 
 SelectInput.propTypes = {
     allowEmpty: PropTypes.bool.isRequired,
+    emptyValue: PropTypes.any,
     choices: PropTypes.arrayOf(PropTypes.object),
     classes: PropTypes.object,
     className: PropTypes.string,
@@ -267,6 +265,7 @@ SelectInput.propTypes = {
 
 SelectInput.defaultProps = {
     allowEmpty: false,
+    emptyValue: '',
     classes: {},
     choices: [],
     options: {},
