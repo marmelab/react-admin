@@ -438,7 +438,7 @@ const choices = [
    { id: 456, first_name: 'Jane', last_name: 'Austen' },
 ];
 const FullNameField = ({ record }) => <Chip>{record.first_name} {record.last_name}</Chip>;
-<SelectField source="gender" choices={choices} optionText={<FullNameField />}/>
+<SelectField source="author_id" choices={choices} optionText={<FullNameField />}/>
 ```
 
 The current choice is translated by default, so you can use translation identifiers as choices:
