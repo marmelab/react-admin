@@ -36,6 +36,16 @@ export interface ReduxState {
         ui: {
             optimistic: boolean;
         };
+        resources: {
+            [name: string]: {
+                data: any;
+            };
+        };
+        references: {
+            oneToMany: {
+                [relatedTo: string]: { ids: Identifier[]; total: number };
+            };
+        };
     };
     i18n: {
         locale: string;

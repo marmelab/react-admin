@@ -1,15 +1,18 @@
 import assert from 'assert';
 
-import { addRecordIdsFactory } from './ids';
+import { IdentifierArrayWithDate, addRecordIdsFactory } from './ids';
 
 describe('data addRecordIdsFactory', () => {
     it('should call getFetchedAt with newRecords ids and oldRecordFetchedAt and return records returned by getFetchedAt', () => {
-        const newRecords = ['record1', 'record2'];
-        const oldRecords = [];
-        oldRecords.fetchedAt = 'previousFetchetAt';
+        const newRecords: IdentifierArrayWithDate = ['record1', 'record2'];
+        const oldRecords: IdentifierArrayWithDate = [];
+        const date0 = new Date();
+        const date1 = new Date();
+        const date2 = new Date();
+        oldRecords.fetchedAt = date0;
         const getFetchedAt = jest.fn().mockReturnValue({
-            record1: 'date',
-            record2: 'date',
+            record1: date1,
+            record2: date2,
         });
 
         const newState = addRecordIdsFactory(getFetchedAt)(
@@ -21,12 +24,12 @@ describe('data addRecordIdsFactory', () => {
 
         assert.deepEqual(getFetchedAt.mock.calls[0], [
             ['record1', 'record2'],
-            'previousFetchetAt',
+            date0,
         ]);
 
         assert.deepEqual(newState.fetchedAt, {
-            record1: 'date',
-            record2: 'date',
+            record1: date1,
+            record2: date2,
         });
     });
 

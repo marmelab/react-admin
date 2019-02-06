@@ -1,21 +1,39 @@
+import { Reducer } from 'redux';
 import uniq from 'lodash/uniq';
 import {
     CRUD_GET_LIST_SUCCESS,
+    CrudGetListSuccessAction,
     CRUD_GET_MANY_SUCCESS,
+    CrudGetManySuccessAction,
     CRUD_GET_MANY_REFERENCE_SUCCESS,
+    CrudGetManyReferenceSuccessAction,
     CRUD_GET_ONE_SUCCESS,
+    CrudGetOneSuccessAction,
     CRUD_CREATE_SUCCESS,
+    CrudCreateSuccessAction,
     CRUD_UPDATE_SUCCESS,
+    CrudUpdateSuccessAction,
 } from '../../../../actions/dataActions';
-
 import getFetchedAt from '../../../../util/getFetchedAt';
 import { DELETE, DELETE_MANY } from '../../../../dataFetchActions';
+import { Identifier } from '../../../../types';
 
-export const addRecordIdsFactory = getFetchedAt => (
-    newRecordIds = [],
-    oldRecordIds
-) => {
-    const newFetchedAt = getFetchedAt(newRecordIds, oldRecordIds.fetchedAt);
+type IdentifierArray = Identifier[];
+
+export interface IdentifierArrayWithDate extends IdentifierArray {
+    fetchedAt?: Date;
+}
+
+type State = IdentifierArrayWithDate;
+
+export const addRecordIdsFactory = getFetchedAtCallback => (
+    newRecordIds: IdentifierArrayWithDate = [],
+    oldRecordIds: IdentifierArrayWithDate
+): IdentifierArrayWithDate => {
+    const newFetchedAt = getFetchedAtCallback(
+        newRecordIds,
+        oldRecordIds.fetchedAt
+    );
     const recordIds = uniq(
         oldRecordIds.filter(id => !!newFetchedAt[id]).concat(newRecordIds)
     );
@@ -28,11 +46,27 @@ export const addRecordIdsFactory = getFetchedAt => (
 
 const addRecordIds = addRecordIdsFactory(getFetchedAt);
 
-export default (previousState = [], { type, payload, meta }) => {
-    if (meta && meta.optimistic) {
-        if (meta.fetch === DELETE) {
+type ActionTypes =
+    | CrudGetListSuccessAction
+    | CrudGetManySuccessAction
+    | CrudGetManyReferenceSuccessAction
+    | CrudGetOneSuccessAction
+    | CrudCreateSuccessAction
+    | CrudUpdateSuccessAction
+    | {
+          type: 'OTHER_ACTION';
+          payload: any;
+          meta: any;
+      };
+
+const idsReducer: Reducer<State> = (
+    previousState = [],
+    action: ActionTypes
+) => {
+    if (action.meta && action.meta.optimistic) {
+        if (action.meta.fetch === DELETE) {
             const index = previousState
-                .map(el => el == payload.id) // eslint-disable-line eqeqeq
+                .map(el => el === action.payload.id) // eslint-disable-line eqeqeq
                 .indexOf(true);
             if (index === -1) {
                 return previousState;
@@ -48,9 +82,9 @@ export default (previousState = [], { type, payload, meta }) => {
 
             return newState;
         }
-        if (meta.fetch === DELETE_MANY) {
+        if (action.meta.fetch === DELETE_MANY) {
             const newState = previousState.filter(
-                el => !payload.ids.includes(el)
+                el => !action.payload.ids.includes(el)
             );
             Object.defineProperty(newState, 'fetchedAt', {
                 value: previousState.fetchedAt,
@@ -60,13 +94,13 @@ export default (previousState = [], { type, payload, meta }) => {
         }
     }
 
-    switch (type) {
+    switch (action.type) {
         case CRUD_GET_LIST_SUCCESS:
-            return addRecordIds(payload.data.map(({ id }) => id), []);
+            return addRecordIds(action.payload.data.map(({ id }) => id), []);
         case CRUD_GET_MANY_SUCCESS:
         case CRUD_GET_MANY_REFERENCE_SUCCESS:
             return addRecordIds(
-                payload.data
+                action.payload.data
                     .map(({ id }) => id)
                     .filter(id => previousState.indexOf(id) !== -1),
                 previousState
@@ -74,10 +108,12 @@ export default (previousState = [], { type, payload, meta }) => {
         case CRUD_GET_ONE_SUCCESS:
         case CRUD_CREATE_SUCCESS:
         case CRUD_UPDATE_SUCCESS:
-            return addRecordIds([payload.data.id], previousState);
+            return addRecordIds([action.payload.data.id], previousState);
         default:
             return previousState;
     }
 };
+
+export default idsReducer;
 
 export const getIds = state => state;

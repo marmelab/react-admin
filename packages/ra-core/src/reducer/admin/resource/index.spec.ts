@@ -1,4 +1,4 @@
-import assert from 'assert';
+import expect from 'expect';
 import reducer, { getReferenceResource } from './index';
 import { REGISTER_RESOURCE, UNREGISTER_RESOURCE } from '../../../actions';
 import { CRUD_CHANGE_LIST_PARAMS } from '../../../actions/listActions';
@@ -6,14 +6,16 @@ import { CRUD_CHANGE_LIST_PARAMS } from '../../../actions/listActions';
 describe('Resources Reducer', () => {
     it('should return previous state if the action has no resource meta and is not REGISTER_RESOURCE nor UNREGISTER_RESOURCE', () => {
         const previousState = { previous: true };
-        assert.deepEqual(
-            reducer(previousState, { type: 'A_TYPE', meta: { foo: 'bar' } }),
-            previousState
-        );
+        expect(
+            reducer(previousState, {
+                type: 'OTHER_ACTION',
+                meta: {},
+            })
+        ).toEqual(previousState);
     });
 
     it('should initialize a new resource upon REGISTER_RESOURCE', () => {
-        assert.deepEqual(
+        expect(
             reducer(
                 {
                     posts: {
@@ -58,65 +60,64 @@ describe('Resources Reducer', () => {
                         options: 'foo',
                     },
                 }
-            ),
-            {
-                posts: {
-                    data: {},
-                    list: {
-                        ids: [],
-                        params: {
-                            filter: {},
-                            order: null,
-                            page: 1,
-                            perPage: null,
-                            sort: null,
-                        },
-                        selectedIds: [],
-                        total: 0,
-                        loadedOnce: false,
+            )
+        ).toEqual({
+            posts: {
+                data: {},
+                list: {
+                    ids: [],
+                    params: {
+                        filter: {},
+                        order: null,
+                        page: 1,
+                        perPage: null,
+                        sort: null,
                     },
-                    props: { name: 'posts' },
+                    selectedIds: [],
+                    total: 0,
+                    loadedOnce: false,
                 },
-                comments: {
-                    data: {},
-                    list: {
-                        ids: [],
-                        params: {
-                            filter: {},
-                            order: null,
-                            page: 1,
-                            perPage: null,
-                            sort: null,
-                        },
-                        selectedIds: [],
-                        total: 0,
-                        loadedOnce: false,
+                props: { name: 'posts' },
+            },
+            comments: {
+                data: {},
+                list: {
+                    ids: [],
+                    params: {
+                        filter: {},
+                        order: null,
+                        page: 1,
+                        perPage: null,
+                        sort: null,
                     },
-                    props: { name: 'comments' },
+                    selectedIds: [],
+                    total: 0,
+                    loadedOnce: false,
                 },
-                users: {
-                    data: {},
-                    list: {
-                        ids: [],
-                        params: {
-                            filter: {},
-                            order: null,
-                            page: 1,
-                            perPage: null,
-                            sort: null,
-                        },
-                        selectedIds: [],
-                        total: 0,
-                        loadedOnce: false,
+                props: { name: 'comments' },
+            },
+            users: {
+                data: {},
+                list: {
+                    ids: [],
+                    params: {
+                        filter: {},
+                        order: null,
+                        page: 1,
+                        perPage: null,
+                        sort: null,
                     },
-                    props: { name: 'users', options: 'foo' },
+                    selectedIds: [],
+                    total: 0,
+                    loadedOnce: false,
                 },
-            }
-        );
+                props: { name: 'users', options: 'foo' },
+            },
+        });
     });
 
     it('should remove a resource upon UNREGISTER_RESOURCE', () => {
-        assert.deepEqual(
+        expect(
             reducer(
                 {
                     posts: {
@@ -158,31 +159,30 @@ describe('Resources Reducer', () => {
                     type: UNREGISTER_RESOURCE,
                     payload: 'comments',
                 }
-            ),
-            {
-                posts: {
-                    data: {},
-                    list: {
-                        ids: [],
-                        params: {
-                            filter: {},
-                            order: null,
-                            page: 1,
-                            perPage: null,
-                            sort: null,
-                        },
-                        selectedIds: [],
-                        total: 0,
-                        loadedOnce: false,
+            )
+        ).toEqual({
+            posts: {
+                data: {},
+                list: {
+                    ids: [],
+                    params: {
+                        filter: {},
+                        order: null,
+                        page: 1,
+                        perPage: null,
+                        sort: null,
                     },
-                    props: { name: 'posts' },
+                    selectedIds: [],
+                    total: 0,
+                    loadedOnce: false,
                 },
-            }
-        );
+                props: { name: 'posts' },
+            },
+        });
     });
 
     it('should call inner reducers for each resource when action has a resource meta', () => {
-        assert.deepEqual(
+        expect(
             reducer(
                 {
                     posts: {
@@ -221,6 +221,7 @@ describe('Resources Reducer', () => {
                     },
                 },
                 {
+                    // @ts-ignore
                     type: CRUD_CHANGE_LIST_PARAMS,
                     meta: { resource: 'posts' },
                     payload: {
@@ -231,44 +232,43 @@ describe('Resources Reducer', () => {
                         sort: null,
                     },
                 }
-            ),
-            {
-                posts: {
-                    data: {},
-                    list: {
-                        ids: [],
-                        params: {
-                            filter: { commentable: true },
-                            order: null,
-                            page: 1,
-                            perPage: null,
-                            sort: null,
-                        },
-                        selectedIds: [],
-                        total: 0,
-                        loadedOnce: false,
+            )
+        ).toEqual({
+            posts: {
+                data: {},
+                list: {
+                    ids: [],
+                    params: {
+                        filter: { commentable: true },
+                        order: null,
+                        page: 1,
+                        perPage: null,
+                        sort: null,
                     },
-                    props: { name: 'posts' },
+                    selectedIds: [],
+                    total: 0,
+                    loadedOnce: false,
                 },
-                comments: {
-                    data: {},
-                    list: {
-                        ids: [],
-                        params: {
-                            filter: {},
-                            order: null,
-                            page: 1,
-                            perPage: null,
-                            sort: null,
-                        },
-                        selectedIds: [],
-                        total: 0,
-                        loadedOnce: false,
+                props: { name: 'posts' },
+            },
+            comments: {
+                data: {},
+                list: {
+                    ids: [],
+                    params: {
+                        filter: {},
+                        order: null,
+                        page: 1,
+                        perPage: null,
+                        sort: null,
                     },
-                    props: { name: 'comments' },
+                    selectedIds: [],
+                    total: 0,
+                    loadedOnce: false,
                 },
-            }
-        );
+                props: { name: 'comments' },
+            },
+        });
     });
 
     describe('getReferenceResource selector', () => {

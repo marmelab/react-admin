@@ -1,13 +1,21 @@
 export const CRUD_CHANGE_LIST_PARAMS = 'RA/CRUD_CHANGE_LIST_PARAMS';
 
+interface Params {
+    sort: string;
+    order: string;
+    page: number;
+    perPage: number;
+    filter: any;
+}
+
 export interface ChangeListParamsAction {
     readonly type: typeof CRUD_CHANGE_LIST_PARAMS;
-    readonly payload: any;
+    readonly payload: Params;
     readonly meta: { resource: string };
 }
 export const changeListParams = (
     resource: string,
-    params: any
+    params: Params
 ): ChangeListParamsAction => ({
     type: CRUD_CHANGE_LIST_PARAMS,
     payload: params,
@@ -16,7 +24,7 @@ export const changeListParams = (
 
 export const SET_LIST_SELECTED_IDS = 'RA/SET_LIST_SELECTED_IDS';
 
-export interface SetListLelectedIdsAction {
+export interface SetListSelectedIdsAction {
     readonly type: typeof SET_LIST_SELECTED_IDS;
     readonly payload: [];
     readonly meta: { resource: string };
@@ -24,7 +32,7 @@ export interface SetListLelectedIdsAction {
 export const setListSelectedIds = (
     resource: string,
     ids: []
-): SetListLelectedIdsAction => ({
+): SetListSelectedIdsAction => ({
     type: SET_LIST_SELECTED_IDS,
     payload: ids,
     meta: { resource },
