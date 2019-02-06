@@ -87,7 +87,7 @@ describe('Query Reducer', () => {
             );
             assert.deepEqual(updatedState, { sort: 'foo', order: SORT_DESC, page: 1  });
         });
-        it('should set order with the opposite order sort value is the same llke the previous state', () => {
+        it("should set order as the opposite of the one in previous state when sort hasn't change", () => {
             const updatedState = queryReducer(
                 {
                     sort: 'foo', order: SORT_DESC, page: 1
@@ -99,7 +99,7 @@ describe('Query Reducer', () => {
             );
             assert.deepEqual(updatedState, { sort: 'foo', order: SORT_ASC, page: 1  });
         });
-        it('should set order with the opposite order sort value is the same llke the previous state even when we pass a specific order', () => {
+        it("should set order as the opposite of the one in previous state even if order is specified in the payload when sort hasn't change", () => {
             const updatedState = queryReducer(
                 {
                     sort: 'foo', order: SORT_DESC, page: 1
