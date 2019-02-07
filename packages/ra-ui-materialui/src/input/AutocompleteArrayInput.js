@@ -159,12 +159,18 @@ export class AutocompleteArrayInput extends React.Component {
     };
 
     handleSuggestionSelected = (event, { suggestion, method }) => {
-        const { input } = this.props;
+        const { allowDuplicates, input } = this.props;
 
-        input.onChange([
-            ...(this.state.inputValue || []),
-            this.getSuggestionValue(suggestion),
-        ]);
+        const values = this.state.inputValue || [];
+        const newValue = this.getSuggestionValue(suggestion);
+
+        if (allowDuplicates || values.indexOf(newValue) < 0) {
+            // Add selected value to the list
+            input.onChange([...values, newValue]);
+
+            // Ensure to reset the filter
+            this.updateFilter('');
+        }
 
         if (method === 'enter') {
             event.preventDefault();
@@ -487,6 +493,7 @@ export class AutocompleteArrayInput extends React.Component {
 }
 
 AutocompleteArrayInput.propTypes = {
+    allowDuplicates: PropTypes.bool,
     allowEmpty: PropTypes.bool,
     alwaysRenderSuggestions: PropTypes.bool, // used only for unit tests
     choices: PropTypes.arrayOf(PropTypes.object),
@@ -513,6 +520,7 @@ AutocompleteArrayInput.propTypes = {
 };
 
 AutocompleteArrayInput.defaultProps = {
+    allowDuplicates: true,
     choices: [],
     options: {},
     optionText: 'name',
