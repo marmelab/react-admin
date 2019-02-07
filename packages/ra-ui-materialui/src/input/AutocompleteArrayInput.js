@@ -335,11 +335,19 @@ export class AutocompleteArrayInput extends React.Component {
             children,
         } = options;
 
+        // Force the Popper component to reposition the popup when this.inputEl is moved to another location
+        const anchorEl = !this.inputEl
+            ? null
+            : {
+                  getBoundingClientRect: () =>
+                      this.inputEl.getBoundingClientRect(),
+              };
+
         return (
             <Popper
                 className={className}
                 open
-                anchorEl={this.inputEl}
+                anchorEl={anchorEl}
                 placement="bottom-start"
             >
                 <Paper square {...containerProps}>
