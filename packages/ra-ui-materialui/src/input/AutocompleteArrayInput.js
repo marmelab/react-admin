@@ -111,6 +111,8 @@ export class AutocompleteArrayInput extends React.Component {
 
     inputEl = null;
 
+    choicesMaxHeight = 0;
+
     componentWillMount() {
         this.setState({
             inputValue: this.props.input.value,
@@ -335,6 +337,11 @@ export class AutocompleteArrayInput extends React.Component {
             children,
         } = options;
 
+        const style =
+            this.choicesMaxHeight > 0
+                ? { maxHeight: this.choicesMaxHeight, overflow: 'auto' }
+                : null;
+
         return (
             <Popper
                 className={className}
@@ -342,7 +349,7 @@ export class AutocompleteArrayInput extends React.Component {
                 anchorEl={this.inputEl}
                 placement="bottom-start"
             >
-                <Paper square {...containerProps}>
+                <Paper square {...containerProps} style={style}>
                     {children}
                 </Paper>
             </Popper>
@@ -441,9 +448,12 @@ export class AutocompleteArrayInput extends React.Component {
             resource,
             source,
             className,
+            choicesMaxHeight,
             options,
         } = this.props;
         const { suggestions, searchText } = this.state;
+
+        this.choicesMaxHeight = choicesMaxHeight;
 
         return (
             <Autosuggest
@@ -490,6 +500,7 @@ AutocompleteArrayInput.propTypes = {
     allowEmpty: PropTypes.bool,
     alwaysRenderSuggestions: PropTypes.bool, // used only for unit tests
     choices: PropTypes.arrayOf(PropTypes.object),
+    choicesMaxHeight: PropTypes.number,
     classes: PropTypes.object,
     className: PropTypes.string,
     InputProps: PropTypes.object,
@@ -514,6 +525,7 @@ AutocompleteArrayInput.propTypes = {
 
 AutocompleteArrayInput.defaultProps = {
     choices: [],
+    choicesMaxHeight: 0,
     options: {},
     optionText: 'name',
     optionValue: 'id',
