@@ -104,25 +104,27 @@ const styles = theme => ({
 export class AutocompleteArrayInput extends React.Component {
     state = {
         dirty: false,
-        inputValue: null,
+        inputValue: [],
         searchText: '',
         suggestions: [],
     };
 
     inputEl = null;
 
+    getInputValue = inputValue => (inputValue === '' ? [] : inputValue);
+
     componentWillMount() {
         this.setState({
-            inputValue: this.props.input.value,
+            inputValue: this.getInputValue(this.props.input.value),
             suggestions: this.props.choices,
         });
     }
 
     componentWillReceiveProps(nextProps) {
         const { choices, input, inputValueMatcher } = nextProps;
-        if (!isEqual(input.value, this.state.inputValue)) {
+        if (!isEqual(this.getInputValue(input.value), this.state.inputValue)) {
             this.setState({
-                inputValue: input.value,
+                inputValue: this.getInputValue(input.value),
                 dirty: false,
                 suggestions: this.props.choices,
             });
@@ -245,7 +247,7 @@ export class AutocompleteArrayInput extends React.Component {
                 onUpdateInput={onChange}
                 onAdd={this.handleAdd}
                 onDelete={this.handleDelete}
-                value={input.value}
+                value={this.getInputValue(input.value)}
                 inputRef={storeInputRef}
                 error={touched && error}
                 helperText={touched && error && helperText}
