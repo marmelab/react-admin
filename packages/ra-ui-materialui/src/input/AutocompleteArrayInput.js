@@ -110,6 +110,7 @@ export class AutocompleteArrayInput extends React.Component {
     };
 
     inputEl = null;
+    anchorEl = null;
 
     componentWillMount() {
         this.setState({
@@ -236,6 +237,7 @@ export class AutocompleteArrayInput extends React.Component {
         // but Autosuggest also needs this reference (it provides the ref prop)
         const storeInputRef = input => {
             this.inputEl = input;
+            this.updateAnchorEl();
             ref(input);
         };
 
@@ -329,25 +331,42 @@ export class AutocompleteArrayInput extends React.Component {
         input.onChange(this.state.inputValue.filter(value => value !== chip));
     };
 
+    updateAnchorEl() {
+        if (!this.inputEl) {
+            return;
+        }
+
+        if (!this.anchorEl) {
+            const inputPosition = this.inputEl.getBoundingClientRect();
+
+            this.anchorEl = { getBoundingClientRect: () => inputPosition };
+        } else {
+            const anchorPosition = this.anchorEl.getBoundingClientRect();
+            const inputPosition = this.inputEl.getBoundingClientRect();
+
+            if (
+                anchorPosition.x !== inputPosition.x ||
+                anchorPosition.y !== inputPosition.y
+            ) {
+                this.anchorEl = { getBoundingClientRect: () => inputPosition };
+            }
+        }
+    }
+
     renderSuggestionsContainer = options => {
         const {
             containerProps: { className, ...containerProps },
             children,
         } = options;
 
-        // Force the Popper component to reposition the popup when this.inputEl is moved to another location
-        const anchorEl = !this.inputEl
-            ? null
-            : {
-                  getBoundingClientRect: () =>
-                      this.inputEl.getBoundingClientRect(),
-              };
+        // Force the Popper component to reposition the popup only when this.inputEl is moved to another location
+        this.updateAnchorEl();
 
         return (
             <Popper
                 className={className}
                 open
-                anchorEl={anchorEl}
+                anchorEl={this.anchorEl}
                 placement="bottom-start"
             >
                 <Paper square {...containerProps}>
