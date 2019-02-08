@@ -336,13 +336,12 @@ export class AutocompleteArrayInput extends React.Component {
             return;
         }
 
-        if (!this.anchorEl) {
-            const inputPosition = this.inputEl.getBoundingClientRect();
+        const inputPosition = this.inputEl.getBoundingClientRect();
 
+        if (!this.anchorEl) {
             this.anchorEl = { getBoundingClientRect: () => inputPosition };
         } else {
             const anchorPosition = this.anchorEl.getBoundingClientRect();
-            const inputPosition = this.inputEl.getBoundingClientRect();
 
             if (
                 anchorPosition.x !== inputPosition.x ||
