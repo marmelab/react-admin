@@ -1,3 +1,7 @@
+
+// Basado ra-input-rich-text pero para arreglar error de touched
+// Tener en cuenta para utilizar el modulo si se corrige este error
+
 import debounce from 'lodash/debounce';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
@@ -7,9 +11,9 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import { withStyles } from '@material-ui/core/styles';
 
-import styles from './styles';
+import styles from 'ra-input-rich-text/src/styles';
 
-export class RichTextInput extends Component {
+class RichTextInput extends Component {
     static propTypes = {
         addLabel: PropTypes.bool.isRequired,
         classes: PropTypes.object,
@@ -30,6 +34,10 @@ export class RichTextInput extends Component {
         fullWidth: true,
     };
 
+    state = {
+        touched: this.props.meta.touched || false
+    }
+
     componentDidMount() {
         const {
             input: { value },
@@ -47,43 +55,52 @@ export class RichTextInput extends Component {
 
         this.editor = this.divRef.querySelector('.ql-editor');
         this.quill.on('text-change', debounce(this.onTextChange, 500));
+        this.quill.on('selection-change',debounce(this.onSelectionChange, 500))
     }
 
     componentWillUnmount() {
         this.quill.off('text-change', this.onTextChange);
+        this.quill.off('selection-change', this.onSelectionChange);
         this.quill = null;
     }
 
     onTextChange = () => {
         const value =
-            this.editor.innerHTML == '<p><br></p>' ? '' : this.editor.innerHTML;
+            this.editor.innerHTML === '<p><br></p>' ? '' : this.editor.innerHTML;
         this.props.input.onChange(value);
     };
+
+    onSelectionChange = () =>{
+        this.setState({touched: true})
+    }
 
     updateDivRef = ref => {
         this.divRef = ref;
     };
 
+
     render() {
         const { error, helperText = false } = this.props.meta;
+        const { touched } = this.state;
         return (
             <FormControl
-                error={error !== null && error != undefined}
+                error={!!(touched && error)}
+                helperText={touched && error}
                 fullWidth={this.props.fullWidth}
                 className="ra-rich-text-input"
             >
                 <div ref={this.updateDivRef} />
-                {error && <FormHelperText error>{error}</FormHelperText>}
+                {touched && error && <FormHelperText error>{error}</FormHelperText>}
                 {helperText && <FormHelperText>{helperText}</FormHelperText>}
             </FormControl>
         );
     }
 }
 
-const RichRextInputWithField = addField(withStyles(styles)(RichTextInput));
+const RichTextInputWithField = addField(withStyles(styles)(RichTextInput));
 
-RichRextInputWithField.defaultProps = {
+RichTextInputWithField.defaultProps = {
     addLabel: true,
     fullWidth: true,
 };
-export default RichRextInputWithField;
+export default RichTextInputWithField;
