@@ -1,3 +1,4 @@
+import { Reducer } from 'redux';
 import {
     FETCH_START,
     FETCH_END,
@@ -11,7 +12,9 @@ import {
     USER_LOGIN_FAILURE,
 } from '../../actions/authActions';
 
-export default (previousState = 0, { type }) => {
+type State = number;
+
+const loadingReducer: Reducer<State> = (previousState = 0, { type }) => {
     switch (type) {
         case FETCH_START:
         case USER_LOGIN_LOADING:
@@ -26,3 +29,5 @@ export default (previousState = 0, { type }) => {
             return previousState;
     }
 };
+
+export default loadingReducer;

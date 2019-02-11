@@ -1,15 +1,31 @@
-import { CRUD_GET_MANY_REFERENCE_SUCCESS } from '../../../actions/dataActions';
+import { Reducer } from 'redux';
+import {
+    CRUD_GET_MANY_REFERENCE_SUCCESS,
+    CrudGetManyReferenceSuccessAction,
+} from '../../../actions/dataActions';
+import { Identifier, ReduxState } from '../../../types';
 
 const initialState = {};
 
-export default (previousState = initialState, { type, payload, meta }) => {
-    switch (type) {
+interface State {
+    [relatedTo: string]: { ids: Identifier[]; total: number };
+}
+
+type ActionTypes =
+    | CrudGetManyReferenceSuccessAction
+    | { type: 'OTHER_ACTION'; payload: any; meta?: any };
+
+const oneToManyReducer: Reducer<State> = (
+    previousState = initialState,
+    action: ActionTypes
+) => {
+    switch (action.type) {
         case CRUD_GET_MANY_REFERENCE_SUCCESS:
             return {
                 ...previousState,
-                [meta.relatedTo]: {
-                    ids: payload.data.map(record => record.id),
-                    total: payload.total,
+                [action.meta.relatedTo]: {
+                    ids: action.payload.data.map(record => record.id),
+                    total: action.payload.total,
                 },
             };
         default:
@@ -17,17 +33,19 @@ export default (previousState = initialState, { type, payload, meta }) => {
     }
 };
 
-export const getIds = (state, relatedTo) =>
+export const getIds = (state: ReduxState, relatedTo) =>
     state.admin.references.oneToMany[relatedTo] &&
     state.admin.references.oneToMany[relatedTo].ids;
 
-export const getTotal = (state, relatedTo) =>
+export const getTotal = (state: ReduxState, relatedTo) =>
     state.admin.references.oneToMany[relatedTo] &&
     state.admin.references.oneToMany[relatedTo].total;
 
-export const getReferences = (state, reference, relatedTo) => {
+export const getReferences = (state: ReduxState, reference, relatedTo) => {
     const ids = getIds(state, relatedTo);
-    if (typeof ids === 'undefined') return undefined;
+    if (typeof ids === 'undefined') {
+        return undefined;
+    }
 
     if (!state.admin.resources[reference]) {
         // eslint-disable-next-line no-console
@@ -57,8 +75,10 @@ export const getReferences = (state, reference, relatedTo) => {
         }, {});
 };
 
-export const getReferencesByIds = (state, reference, ids) => {
-    if (ids.length === 0) return {};
+export const getReferencesByIds = (state: ReduxState, reference, ids) => {
+    if (ids.length === 0) {
+        return {};
+    }
 
     if (!state.admin.resources[reference]) {
         // eslint-disable-next-line no-console
@@ -100,3 +120,5 @@ export const nameRelatedTo = (reference, id, resource, target, filter = {}) => {
         .map(key => `${key}=${JSON.stringify(filter[key])}`)
         .join('&')}`;
 };
+
+export default oneToManyReducer;
