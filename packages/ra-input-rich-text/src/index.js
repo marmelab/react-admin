@@ -8,7 +8,7 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import { withStyles } from '@material-ui/core/styles';
 
-import styles from 'ra-input-rich-text/src/styles';
+import styles from './styles';
 
 class RichTextInput extends Component {
     static propTypes = {
