@@ -1,7 +1,4 @@
 
-// Basado ra-input-rich-text pero para arreglar error de touched
-// Tener en cuenta para utilizar el modulo si se corrige este error
-
 import debounce from 'lodash/debounce';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
