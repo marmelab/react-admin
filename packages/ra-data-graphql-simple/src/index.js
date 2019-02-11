@@ -37,12 +37,15 @@ export default options => {
                 // This can be optimized using the apollo-link-batch-http link
                 if (fetchType === UPDATE_MANY) {
                     return Promise.all(
-                        params.ids.map(id => defaultDataProvider(UPDATE, resource, { 
+						params.ids.map(id => 
+							defaultDataProvider(UPDATE, resource, { 
 								data : { 
-									id, 
-									...params.data 
-								} 
+									id,
+									...params.data
+								}
 							})
+						)
+
                     ).then(results => {
                         const data = results.reduce(
                             (acc, { data }) => [...acc, data.id],
