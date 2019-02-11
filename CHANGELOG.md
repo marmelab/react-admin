@@ -1,5 +1,14 @@
 # Changelog
 
+## v2.7.1
+
+* Fix typo in `ra-data-graphql-simple` documentation ([2863](https://github.com/marmelab/react-admin/pull/2863)) ([EricTousignant](https://github.com/EricTousignant))
+* Fix typo in French messages ([2858](https://github.com/marmelab/react-admin/pull/2858)) ([Benew](https://github.com/Benew))
+* Fix `<SelectField>` example snippet on the docs ([2854](https://github.com/marmelab/react-admin/pull/2854)) ([ofpau](https://github.com/ofpau))
+* Migrate reducers to TypeScript ([2857](https://github.com/marmelab/react-admin/pull/2857)) ([fzaninotto](https://github.com/fzaninotto))
+* Add Parse Client to data providers ([2852](https://github.com/marmelab/react-admin/pull/2852)) ([almahdi](https://github.com/almahdi))
+* Upgrade prettier and apply format ([2849](https://github.com/marmelab/react-admin/pull/2849)) ([fzaninotto](https://github.com/fzaninotto))
+
 # v2.7.0
 
 * Add support for `rowClick="expand"` in `<Datagrid>` ([2820](https://github.com/marmelab/react-admin/pull/2820)) ([fzaninotto](https://github.com/fzaninotto))
