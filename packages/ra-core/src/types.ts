@@ -4,6 +4,10 @@ export interface Record {
     [key: string]: any;
 }
 
+export interface RecordMap {
+    [id: string]: Record;
+}
+
 export interface Sort {
     field: string;
     order: string;

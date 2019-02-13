@@ -1,22 +1,24 @@
 import React from 'react';
 import assert from 'assert';
 import { shallow } from 'enzyme';
-import { ReferenceArrayFieldController } from './ReferenceArrayFieldController';
+import { ReferenceArrayFieldControllerView as ReferenceArrayFieldController } from './ReferenceArrayFieldController';
 
 describe('<ReferenceArrayFieldController />', () => {
+    const crudGetManyAccumulate = jest.fn();
+
     it('should set the loadedOnce prop to false when related records are not yet fetched', () => {
         const children = jest.fn();
 
         shallow(
             <ReferenceArrayFieldController
-                record={{ barIds: [1, 2] }}
+                record={{ id: 1, barIds: [1, 2] }}
                 resource="foo"
                 reference="bar"
                 source="barIds"
                 basePath=""
                 data={null}
                 ids={[1, 2]}
-                crudGetManyAccumulate={() => {}}
+                crudGetManyAccumulate={crudGetManyAccumulate}
             >
                 {children}
             </ReferenceArrayFieldController>
@@ -29,14 +31,14 @@ describe('<ReferenceArrayFieldController />', () => {
 
         shallow(
             <ReferenceArrayFieldController
-                record={{ barIds: [1, 2] }}
+                record={{ id: 1, barIds: [1, 2] }}
                 resource="foo"
                 reference="bar"
                 source="barIds"
                 basePath=""
                 data={{ 1: { id: 1 } }}
                 ids={[1, 2]}
-                crudGetManyAccumulate={() => {}}
+                crudGetManyAccumulate={crudGetManyAccumulate}
             >
                 {children}
             </ReferenceArrayFieldController>
@@ -53,14 +55,14 @@ describe('<ReferenceArrayFieldController />', () => {
         };
         shallow(
             <ReferenceArrayFieldController
-                record={{ barIds: [1, 2] }}
+                record={{ id: 1, barIds: [1, 2] }}
                 resource="foo"
                 reference="bar"
                 source="barIds"
                 basePath=""
                 data={data}
                 ids={[1, 2]}
-                crudGetManyAccumulate={() => {}}
+                crudGetManyAccumulate={crudGetManyAccumulate}
             >
                 {children}
             </ReferenceArrayFieldController>
@@ -78,14 +80,14 @@ describe('<ReferenceArrayFieldController />', () => {
         };
         shallow(
             <ReferenceArrayFieldController
-                record={{ barIds: ['abc-1', 'abc-2'] }}
+                record={{ id: 1, barIds: ['abc-1', 'abc-2'] }}
                 resource="foo"
                 reference="bar"
                 source="barIds"
                 basePath=""
                 data={data}
                 ids={['abc-1', 'abc-2']}
-                crudGetManyAccumulate={() => {}}
+                crudGetManyAccumulate={crudGetManyAccumulate}
             >
                 {children}
             </ReferenceArrayFieldController>
@@ -103,14 +105,14 @@ describe('<ReferenceArrayFieldController />', () => {
         };
         shallow(
             <ReferenceArrayFieldController
-                record={{ barIds: [1, 2] }}
+                record={{ id: 1, barIds: [1, 2] }}
                 resource="foo"
                 reference="bar"
                 source="barIds"
                 basePath=""
                 data={data}
                 ids={[1, 2]}
-                crudGetManyAccumulate={() => {}}
+                crudGetManyAccumulate={crudGetManyAccumulate}
             >
                 {children}
             </ReferenceArrayFieldController>

@@ -75,7 +75,11 @@ export const getReferences = (state: ReduxState, reference, relatedTo) => {
         }, {});
 };
 
-export const getReferencesByIds = (state: ReduxState, reference, ids) => {
+export const getReferencesByIds = (
+    state: ReduxState,
+    reference: string,
+    ids: any[]
+) => {
     if (ids.length === 0) {
         return {};
     }

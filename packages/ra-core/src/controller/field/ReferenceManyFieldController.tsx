@@ -1,9 +1,12 @@
-import { Component } from 'react';
+import { Component, ReactNode } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import isEqual from 'lodash/isEqual';
 
-import { crudGetManyReference as crudGetManyReferenceAction } from '../../actions';
+import {
+    crudGetManyReference as crudGetManyReferenceAction,
+    CrudGetManyReference,
+} from '../../actions';
 import {
     SORT_ASC,
     SORT_DESC,
@@ -14,6 +17,39 @@ import {
     getTotal,
     nameRelatedTo,
 } from '../../reducer/admin/references/oneToMany';
+import { Record, Sort, RecordMap, Identifier } from '../../types';
+
+interface ChildrenFuncParams {
+    currentSort: Sort;
+    data: RecordMap;
+    ids: Identifier[];
+    loadedOnce: boolean;
+    page: number;
+    perPage: number;
+    referenceBasePath: string;
+    setPage: (page: number) => void;
+    setPerPage: (perPage: number) => void;
+    setSort: (field: string) => void;
+    total: number;
+}
+
+interface Props {
+    basePath: string;
+    children: (params: ChildrenFuncParams) => ReactNode;
+    crudGetManyReference: CrudGetManyReference;
+    data?: RecordMap;
+    filter?: any;
+    ids?: any[];
+    loadedOnce?: boolean;
+    perPage?: number;
+    record?: Record;
+    reference: string;
+    resource: string;
+    sort?: Sort;
+    source: string;
+    target: string;
+    total?: number;
+}
 
 /**
  * Render related records to the current one.
@@ -61,11 +97,19 @@ import {
  *    ...
  * </ReferenceManyField>
  */
-export class ReferenceManyFieldController extends Component {
-    constructor(props) {
-        super(props);
-        this.state = { sort: props.sort, page: 1, perPage: props.perPage };
-    }
+export class ReferenceManyFieldControllerView extends Component<Props> {
+    public static defaultProps: Partial<Props> = {
+        filter: {},
+        perPage: 25,
+        sort: { field: 'id', order: 'DESC' },
+        source: 'id',
+    };
+
+    public state = {
+        sort: this.props.sort,
+        page: 1,
+        perPage: this.props.perPage,
+    };
 
     componentDidMount() {
         this.fetchReferences();
@@ -84,7 +128,7 @@ export class ReferenceManyFieldController extends Component {
         }
     }
 
-    setSort = field => {
+    setSort = (field: string) => {
         const order =
             this.state.sort.field === field &&
             this.state.sort.order === SORT_ASC
@@ -109,6 +153,7 @@ export class ReferenceManyFieldController extends Component {
             target,
             filter
         );
+
         crudGetManyReference(
             reference,
             target,
@@ -116,7 +161,8 @@ export class ReferenceManyFieldController extends Component {
             relatedTo,
             { page, perPage },
             sort,
-            filter
+            filter,
+            source
         );
     }
 
@@ -150,35 +196,6 @@ export class ReferenceManyFieldController extends Component {
     }
 }
 
-ReferenceManyFieldController.propTypes = {
-    basePath: PropTypes.string.isRequired,
-    children: PropTypes.func.isRequired,
-    crudGetManyReference: PropTypes.func.isRequired,
-    filter: PropTypes.object,
-    ids: PropTypes.array,
-    perPage: PropTypes.number,
-    record: PropTypes.object,
-    reference: PropTypes.string.isRequired,
-    data: PropTypes.object,
-    loadedOnce: PropTypes.bool,
-    resource: PropTypes.string.isRequired,
-    sort: PropTypes.shape({
-        field: PropTypes.string,
-        order: PropTypes.oneOf(['ASC', 'DESC']),
-    }),
-    sortBy: PropTypes.string,
-    source: PropTypes.string.isRequired,
-    target: PropTypes.string.isRequired,
-    total: PropTypes.number,
-};
-
-ReferenceManyFieldController.defaultProps = {
-    filter: {},
-    perPage: 25,
-    sort: { field: 'id', order: 'DESC' },
-    source: 'id',
-};
-
 function mapStateToProps(state, props) {
     const relatedTo = nameRelatedTo(
         props.reference,
@@ -194,9 +211,11 @@ function mapStateToProps(state, props) {
     };
 }
 
-export default connect(
+const ReferenceManyFieldController = connect(
     mapStateToProps,
     {
         crudGetManyReference: crudGetManyReferenceAction,
     }
-)(ReferenceManyFieldController);
+)(ReferenceManyFieldControllerView);
+
+export default ReferenceManyFieldController;

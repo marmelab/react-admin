@@ -6,16 +6,19 @@ export interface CrudGetManyAccumulateAction {
     readonly type: typeof CRUD_GET_MANY_ACCUMULATE;
     readonly payload: {
         resource: string;
-        ids: [];
+        ids: any[];
     };
     readonly meta: {
         accumulate: any;
     };
 }
 
+// Used to type the dispatcher function (the one injected by mapDispatchToProps)
+export type CrudGetManyAccumulate = (resource: string, ids: any[]) => void;
+
 export const crudGetManyAccumulate = (
     resource: string,
-    ids: []
+    ids: any[]
 ): CrudGetManyAccumulateAction => ({
     type: CRUD_GET_MANY_ACCUMULATE,
     payload: { resource, ids },

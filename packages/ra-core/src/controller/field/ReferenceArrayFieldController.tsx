@@ -1,10 +1,33 @@
-import { Component } from 'react';
-import PropTypes from 'prop-types';
+import { Component, ReactNode } from 'react';
 import { connect } from 'react-redux';
 import get from 'lodash/get';
 
-import { crudGetManyAccumulate as crudGetManyAccumulateAction } from '../../actions';
+import {
+    crudGetManyAccumulate as crudGetManyAccumulateAction,
+    CrudGetManyAccumulate,
+} from '../../actions';
 import { getReferencesByIds } from '../../reducer/admin/references/oneToMany';
+import { ReduxState, Record, RecordMap } from '../../types';
+
+interface ChildrenFuncParams {
+    loadedOnce: boolean;
+    ids: any[];
+    data: RecordMap;
+    referenceBasePath: string;
+    currentSort: any;
+}
+
+interface Props {
+    basePath: string;
+    children: (params: ChildrenFuncParams) => ReactNode;
+    crudGetManyAccumulate: CrudGetManyAccumulate;
+    data?: RecordMap;
+    ids: any[];
+    record?: Record;
+    reference: string;
+    resource: string;
+    source: string;
+}
 
 /**
  * A container component that fetches records from another resource specified
@@ -38,13 +61,16 @@ import { getReferencesByIds } from '../../reducer/admin/references/oneToMany';
  * </ReferenceArrayField>
  *
  */
-export class ReferenceArrayFieldController extends Component {
+export class ReferenceArrayFieldControllerView extends Component<Props> {
     componentDidMount() {
         this.fetchReferences();
     }
 
     componentWillReceiveProps(nextProps) {
-        if ((this.props.record || {}).id !== (nextProps.record || {}).id) {
+        if (
+            (this.props.record || { id: undefined }).id !==
+            (nextProps.record || {}).id
+        ) {
             this.fetchReferences(nextProps);
         }
     }
@@ -66,6 +92,7 @@ export class ReferenceArrayFieldController extends Component {
         const referenceBasePath = basePath.replace(resource, reference); // FIXME obviously very weak
 
         return children({
+            // tslint:disable-next-line:triple-equals
             loadedOnce: data != undefined,
             ids,
             data,
@@ -75,24 +102,7 @@ export class ReferenceArrayFieldController extends Component {
     }
 }
 
-ReferenceArrayFieldController.propTypes = {
-    addLabel: PropTypes.bool,
-    basePath: PropTypes.string.isRequired,
-    classes: PropTypes.object,
-    className: PropTypes.string,
-    children: PropTypes.func.isRequired,
-    crudGetManyAccumulate: PropTypes.func.isRequired,
-    data: PropTypes.object,
-    ids: PropTypes.array.isRequired,
-    label: PropTypes.string,
-    record: PropTypes.object.isRequired,
-    reference: PropTypes.string.isRequired,
-    resource: PropTypes.string.isRequired,
-    sortBy: PropTypes.string,
-    source: PropTypes.string.isRequired,
-};
-
-const mapStateToProps = (state, props) => {
+const mapStateToProps = (state: ReduxState, props: Props) => {
     const { record, source, reference } = props;
     const ids = get(record, source) || [];
     return {
@@ -101,9 +111,11 @@ const mapStateToProps = (state, props) => {
     };
 };
 
-export default connect(
+const ReferenceArrayFieldController = connect(
     mapStateToProps,
     {
         crudGetManyAccumulate: crudGetManyAccumulateAction,
     }
-)(ReferenceArrayFieldController);
+)(ReferenceArrayFieldControllerView);
+
+export default ReferenceArrayFieldController;

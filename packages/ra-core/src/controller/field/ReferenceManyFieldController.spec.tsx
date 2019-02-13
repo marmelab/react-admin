@@ -2,18 +2,19 @@ import React from 'react';
 import assert from 'assert';
 import { shallow } from 'enzyme';
 import { render } from 'react-testing-library';
-import { ReferenceManyFieldController } from './ReferenceManyFieldController';
+import { ReferenceManyFieldControllerView as ReferenceManyFieldController } from './ReferenceManyFieldController';
 
 describe('<ReferenceManyFieldController />', () => {
     it('should set loadedOnce to false when related records are not yet fetched', () => {
         const children = jest.fn();
+        const crudGetManyReference = jest.fn();
         shallow(
             <ReferenceManyFieldController
                 resource="foo"
                 reference="bar"
                 target="foo_id"
                 basePath=""
-                crudGetManyReference={() => {}}
+                crudGetManyReference={crudGetManyReference}
             >
                 {children}
             </ReferenceManyFieldController>,
@@ -24,6 +25,7 @@ describe('<ReferenceManyFieldController />', () => {
 
     it('should pass data and ids to children function', () => {
         const children = jest.fn();
+        const crudGetManyReference = jest.fn();
         const data = {
             1: { id: 1, title: 'hello' },
             2: { id: 2, title: 'world' },
@@ -36,7 +38,7 @@ describe('<ReferenceManyFieldController />', () => {
                 basePath=""
                 data={data}
                 ids={[1, 2]}
-                crudGetManyReference={() => {}}
+                crudGetManyReference={crudGetManyReference}
             >
                 {children}
             </ReferenceManyFieldController>,
@@ -48,6 +50,7 @@ describe('<ReferenceManyFieldController />', () => {
 
     it('should support record with string identifier', () => {
         const children = jest.fn();
+        const crudGetManyReference = jest.fn();
         const data = {
             'abc-1': { id: 'abc-1', title: 'hello' },
             'abc-2': { id: 'abc-2', title: 'world' },
@@ -60,7 +63,7 @@ describe('<ReferenceManyFieldController />', () => {
                 basePath=""
                 data={data}
                 ids={['abc-1', 'abc-2']}
-                crudGetManyReference={() => {}}
+                crudGetManyReference={crudGetManyReference}
             >
                 {children}
             </ReferenceManyFieldController>,
@@ -72,6 +75,7 @@ describe('<ReferenceManyFieldController />', () => {
 
     it('should support record with number identifier', () => {
         const children = jest.fn();
+        const crudGetManyReference = jest.fn();
         const data = {
             1: { id: 1, title: 'hello' },
             2: { id: 2, title: 'world' },
@@ -84,7 +88,7 @@ describe('<ReferenceManyFieldController />', () => {
                 basePath=""
                 data={data}
                 ids={[1, 2]}
-                crudGetManyReference={() => {}}
+                crudGetManyReference={crudGetManyReference}
             >
                 {children}
             </ReferenceManyFieldController>,
@@ -147,6 +151,7 @@ describe('<ReferenceManyFieldController />', () => {
             { page: 1, perPage: 25 },
             { field: 'id', order: 'ASC' },
             {},
+            'id',
         ]);
     });
 });
