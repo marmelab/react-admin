@@ -3,6 +3,8 @@ import { GET_MANY } from '../../dataFetchActions';
 import { FETCH_END, FETCH_ERROR } from '../fetchActions';
 import { NotificationSideEffect } from '../../sideEffect';
 
+export type CrudGetMany = (resource: string, ids: Identifier[]) => void;
+
 export const crudGetMany = (
     resource: string,
     ids: Identifier[]

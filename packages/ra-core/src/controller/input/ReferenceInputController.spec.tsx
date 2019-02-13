@@ -2,15 +2,17 @@ import React from 'react';
 import assert from 'assert';
 import { shallow } from 'enzyme';
 import { render } from 'react-testing-library';
-import { ReferenceInputController } from './ReferenceInputController';
+import { ReferenceInputControllerView as ReferenceInputController } from './ReferenceInputController';
 
 describe('<ReferenceInputController />', () => {
     const defaultProps = {
+        basePath: '/comments',
         children: jest.fn(),
         crudGetManyAccumulate: jest.fn(),
         crudGetMatchingAccumulate: jest.fn(),
         meta: {},
-        input: {},
+        input: { value: undefined },
+        onChange: jest.fn(),
         reference: 'posts',
         resource: 'comments',
         source: 'post_id',
@@ -114,7 +116,6 @@ describe('<ReferenceInputController />', () => {
                     ...defaultProps,
                     matchingReferences: { error: 'fetch error' },
                     referenceRecord: null,
-                    input: {},
                 }}
             >
                 {children}
@@ -363,12 +364,7 @@ describe('<ReferenceInputController />', () => {
                 input={{ value: 5 }}
             />
         );
-        assert.deepEqual(crudGetManyAccumulate.mock.calls[0], [
-            'posts',
-            [5],
-            null,
-            false,
-        ]);
+        assert.deepEqual(crudGetManyAccumulate.mock.calls[0], ['posts', [5]]);
     });
 
     it('should pass onChange down to child component', () => {

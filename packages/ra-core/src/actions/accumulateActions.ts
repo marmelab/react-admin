@@ -1,4 +1,5 @@
 import { crudGetMany, crudGetMatching } from './dataActions';
+import { Pagination, Sort } from '../types';
 
 export const CRUD_GET_MANY_ACCUMULATE = 'RA/CRUD_GET_MANY_ACCUMULATE';
 
@@ -36,11 +37,19 @@ export interface CrudGetMatchingAccumulateAction {
     };
 }
 
+export type CrudGetMatchingAccumulate = (
+    reference: string,
+    relatedTo: string,
+    pagination: Pagination,
+    sort: Sort,
+    filter: object
+) => void;
+
 export const crudGetMatchingAccumulate = (
     reference: string,
     relatedTo: string,
-    pagination: { page: number; perPage: number },
-    sort: { field: string; order: string },
+    pagination: Pagination,
+    sort: Sort,
     filter: object
 ): CrudGetMatchingAccumulateAction => {
     const action = crudGetMatching(
