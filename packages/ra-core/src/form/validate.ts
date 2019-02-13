@@ -45,13 +45,16 @@ const getMessage = (
               ...messageArgs,
           });
 
+type Memoize = <T extends (...args: any[]) => any>(
+    func: T,
+    resolver?: (...args: any[]) => any
+) => T;
+
 // If we define validation functions directly in JSX, it will
 // result in a new function at every render, and then trigger infinite re-render.
 // Hence, we memoize every built-in validator to prevent a "Maximum call stack" error.
-const memoize = (fn: any) =>
+const memoize: Memoize = (fn: any) =>
     lodashMemoize(fn, (...args) => JSON.stringify(args));
-
-type Required = (message?: string | MessageFunc) => Validator;
 
 /**
  * Required validator
@@ -65,18 +68,15 @@ type Required = (message?: string | MessageFunc) => Validator;
  * const titleValidators = [required('The title is required')];
  * <TextInput name="title" validate={titleValidators} />
  */
-export const required: Required = memoize(
-    (message = 'ra.validation.required') =>
-        Object.assign(
-            (value, values, props) =>
-                isEmpty(value)
-                    ? getMessage(message, undefined, value, values, props)
-                    : undefined,
-            { isRequired: true }
-        )
+export const required = memoize((message = 'ra.validation.required') =>
+    Object.assign(
+        (value, values, props) =>
+            isEmpty(value)
+                ? getMessage(message, undefined, value, values, props)
+                : undefined,
+        { isRequired: true }
+    )
 );
-
-type MinLength = (min: number, message?: string | MessageFunc) => Validator;
 
 /**
  * Minimum length validator
@@ -91,14 +91,12 @@ type MinLength = (min: number, message?: string | MessageFunc) => Validator;
  * const passwordValidators = [minLength(10, 'Should be at least 10 characters')];
  * <TextInput type="password" name="password" validate={passwordValidators} />
  */
-export const minLength: MinLength = memoize(
+export const minLength = memoize(
     (min, message = 'ra.validation.minLength') => (value, values, props) =>
         !isEmpty(value) && value.length < min
             ? getMessage(message, { min }, value, values, props)
             : undefined
 );
-
-type MaxLength = (max: number, message?: string | MessageFunc) => Validator;
 
 /**
  * Maximum length validator
@@ -113,14 +111,12 @@ type MaxLength = (max: number, message?: string | MessageFunc) => Validator;
  * const nameValidators = [maxLength(10, 'Should be at most 10 characters')];
  * <TextInput name="name" validate={nameValidators} />
  */
-export const maxLength: MaxLength = memoize(
+export const maxLength = memoize(
     (max, message = 'ra.validation.maxLength') => (value, values, props) =>
         !isEmpty(value) && value.length > max
             ? getMessage(message, { max }, value, values, props)
             : undefined
 );
-
-type MinValue = (min: number, message?: string | MessageFunc) => Validator;
 
 /**
  * Minimum validator
@@ -135,14 +131,12 @@ type MinValue = (min: number, message?: string | MessageFunc) => Validator;
  * const fooValidators = [minValue(5, 'Should be more than 5')];
  * <NumberInput name="foo" validate={fooValidators} />
  */
-export const minValue: MinValue = memoize(
+export const minValue = memoize(
     (min, message = 'ra.validation.minValue') => (value, values, props) =>
         !isEmpty(value) && value < min
             ? getMessage(message, { min }, value, values, props)
             : undefined
 );
-
-type MaxValue = (max: number, message?: string | MessageFunc) => Validator;
 
 /**
  * Maximum validator
@@ -157,14 +151,12 @@ type MaxValue = (max: number, message?: string | MessageFunc) => Validator;
  * const fooValidators = [maxValue(10, 'Should be less than 10')];
  * <NumberInput name="foo" validate={fooValidators} />
  */
-export const maxValue: MaxValue = memoize(
+export const maxValue = memoize(
     (max, message = 'ra.validation.maxValue') => (value, values, props) =>
         !isEmpty(value) && value > max
             ? getMessage(message, { max }, value, values, props)
             : undefined
 );
-
-type NumberValidator = (message?: string | MessageFunc) => Validator;
 
 /**
  * Number validator
@@ -179,17 +171,12 @@ type NumberValidator = (message?: string | MessageFunc) => Validator;
  * <TextInput name="age" validate={ageValidators} />
  */
 // tslint:disable-next-line:variable-name
-export const number: NumberValidator = memoize(
+export const number = memoize(
     (message = 'ra.validation.number') => (value, values, props) =>
         !isEmpty(value) && isNaN(Number(value))
             ? getMessage(message, undefined, value, values, props)
             : undefined
 );
-
-type RegedValidator = (
-    pattern: RegExp,
-    message?: string | MessageFunc
-) => Validator;
 
 /**
  * Regular expression validator
@@ -204,7 +191,7 @@ type RegedValidator = (
  * const zipValidators = [regex(/^\d{5}(?:[-\s]\d{4})?$/, 'Must be a zip code')];
  * <TextInput name="zip" validate={zipValidators} />
  */
-export const regex: RegedValidator = lodashMemoize(
+export const regex = lodashMemoize(
     (pattern, message = 'ra.validation.regex') => (value, values, props) =>
         !isEmpty(value) && typeof value === 'string' && !pattern.test(value)
             ? getMessage(message, { pattern }, value, values, props)
@@ -213,8 +200,6 @@ export const regex: RegedValidator = lodashMemoize(
         return pattern.toString() + message;
     }
 );
-
-type EmailValidator = (message?: string | MessageFunc) => Validator;
 
 /**
  * Email validator
@@ -228,19 +213,14 @@ type EmailValidator = (message?: string | MessageFunc) => Validator;
  * const emailValidators = [email('Must be an email')];
  * <TextInput name="email" validate={emailValidators} />
  */
-export const email: EmailValidator = memoize(
-    (message = 'ra.validation.email') => regex(EMAIL_REGEX, message)
+export const email = memoize((message = 'ra.validation.email') =>
+    regex(EMAIL_REGEX, message)
 );
 
 const oneOfTypeMessage: MessageFunc = ({ list, value, values, translate }) =>
     translate('ra.validation.oneOf', {
         options: list.join(', '),
     });
-
-type ChoicesValidator = (
-    list: any[],
-    message?: string | MessageFunc
-) => Validator;
 
 /**
  * Choices validator
@@ -255,7 +235,7 @@ type ChoicesValidator = (
  * const genderValidators = [choices(['male', 'female'], 'Must be either Male or Female')];
  * <TextInput name="gender" validate={genderValidators} />
  */
-export const choices: ChoicesValidator = memoize(
+export const choices = memoize(
     (list, message = oneOfTypeMessage) => (value, values, props) =>
         !isEmpty(value) && list.indexOf(value) === -1
             ? getMessage(message, { list }, value, values, props)
