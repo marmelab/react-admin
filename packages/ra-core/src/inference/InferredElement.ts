@@ -1,11 +1,12 @@
 import { createElement } from 'react';
+import { InferredType } from './types';
 
 class InferredElement {
-    constructor(type, props, children) {
-        this.type = type;
-        this.props = props;
-        this.children = children;
-    }
+    constructor(
+        private type?: InferredType,
+        private props?: any,
+        private children?: any
+    ) {}
 
     getElement(props = {}) {
         if (!this.isDefined()) {

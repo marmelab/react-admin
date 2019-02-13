@@ -7,7 +7,7 @@ describe('InferredElement', () => {
     });
     describe('getRepresentation', () => {
         it('should return a default visual representation', () => {
-            const DummyComponent = () => {};
+            const DummyComponent = () => <span />;
             const dummyType = { component: DummyComponent };
             const ie = new InferredElement(dummyType, { source: 'foo' });
             expect(ie.getRepresentation()).toBe(
@@ -15,7 +15,7 @@ describe('InferredElement', () => {
             );
         });
         it('should return a representation based on the representation type property', () => {
-            const DummyComponent = () => {};
+            const DummyComponent = () => <span />;
             const dummyType = {
                 component: DummyComponent,
                 representation: props => `hello, ${props.source}!`,
