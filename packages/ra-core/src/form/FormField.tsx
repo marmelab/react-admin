@@ -1,17 +1,29 @@
-import React from 'react';
+import React, { ComponentType, SFC } from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
 import withDefaultValue from './withDefaultValue';
+import { Validator } from './validate';
+import { InputProps } from './types';
 
 export const isRequired = validate => {
-    if (validate && validate.isRequired) return true;
+    if (validate && validate.isRequired) {
+        return true;
+    }
     if (Array.isArray(validate)) {
         return !!validate.find(it => it.isRequired);
     }
     return false;
 };
 
-export const FormFieldView = ({ input, ...props }) =>
+interface Props {
+    component: ComponentType<InputProps>;
+    defaultValue: any;
+    input?: any;
+    source: string;
+    validate: Validator | Validator[];
+}
+
+export const FormFieldView: SFC<Props> = ({ input, ...props }) =>
     input ? ( // An ancestor is already decorated by Field
         React.createElement(props.component, { input, ...props })
     ) : (
@@ -30,4 +42,5 @@ FormFieldView.propTypes = {
     validate: PropTypes.oneOfType([PropTypes.func, PropTypes.array]),
 };
 
-export default withDefaultValue(FormFieldView);
+const FormField = withDefaultValue(FormFieldView);
+export default FormField;

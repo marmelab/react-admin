@@ -1,10 +1,22 @@
-import React from 'react';
+import React, { ReactNode, SFC } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { getFormValues, FormName } from 'redux-form';
 import get from 'lodash/get';
 
 import warning from '../util/warning';
+import { ReduxState } from '../types';
+
+interface ChildrenFunctionParams {
+    formData: any;
+    scopedFormData?: any;
+    getSource?: (source: string) => string;
+}
+
+interface Props extends ConnectedProps {
+    formData: any;
+    index?: number;
+}
 
 /**
  * Get the current (edited) value of the record from the form and pass it
@@ -44,7 +56,7 @@ import warning from '../util/warning';
  *     </Edit>
  * );
  */
-export const FormDataConsumerView = ({
+export const FormDataConsumerView: SFC<Props> = ({
     children,
     form,
     formData,
@@ -60,7 +72,7 @@ export const FormDataConsumerView = ({
     // If we have an index, we are in an iterator like component (such as the SimpleFormIterator)
     if (typeof index !== 'undefined') {
         scopedFormData = get(formData, source);
-        getSource = scopedSource => {
+        getSource = (scopedSource: string) => {
             getSourceHasBeenCalled = true;
             return `${source}.${scopedSource}`;
         };
@@ -100,12 +112,17 @@ export const FormDataConsumerView = ({
     return ret === undefined ? null : ret;
 };
 
-FormDataConsumerView.propTypes = {
-    children: PropTypes.func.isRequired,
-    data: PropTypes.object,
-};
+interface ConnectedProps {
+    children: (params: ChildrenFunctionParams) => ReactNode;
+    form: string;
+    record?: any;
+    source: string;
+}
 
-const mapStateToProps = (state, { form, record }) => ({
+const mapStateToProps = (
+    state: ReduxState,
+    { form, record }: ConnectedProps
+) => ({
     formData: getFormValues(form)(state) || record,
 });
 
@@ -113,7 +130,7 @@ const ConnectedFormDataConsumerView = connect(mapStateToProps)(
     FormDataConsumerView
 );
 
-const FormDataConsumer = props => (
+const FormDataConsumer = (props: ConnectedProps) => (
     <FormName>
         {({ form }) => <ConnectedFormDataConsumerView form={form} {...props} />}
     </FormName>

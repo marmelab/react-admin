@@ -2,7 +2,7 @@ import { LOCATION_CHANGE } from 'react-router-redux';
 import { destroy } from 'redux-form';
 
 import formMiddleware from './formMiddleware';
-import { REDUX_FORM_NAME } from '../form/constants';
+import { REDUX_FORM_NAME } from './constants';
 import { resetForm } from '../actions/formActions';
 
 describe('form middleware', () => {
