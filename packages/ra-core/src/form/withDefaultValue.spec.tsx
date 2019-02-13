@@ -1,7 +1,7 @@
 import assert from 'assert';
 import { shallow } from 'enzyme';
 import React from 'react';
-import { DefaultValue } from './withDefaultValue';
+import { DefaultValueView } from './withDefaultValue';
 
 describe('withDefaultValue', () => {
     describe('<DefaultValue />', () => {
@@ -10,7 +10,7 @@ describe('withDefaultValue', () => {
         it('should not initialize the form if no default value', () => {
             const initializeForm = jest.fn();
             shallow(
-                <DefaultValue
+                <DefaultValueView
                     initializeForm={initializeForm}
                     decoratedComponent={BaseComponent}
                     source="title"
@@ -21,7 +21,7 @@ describe('withDefaultValue', () => {
         it('should initialize the form with default value on mount', () => {
             const initializeForm = jest.fn();
             shallow(
-                <DefaultValue
+                <DefaultValueView
                     initializeForm={initializeForm}
                     decoratedComponent={BaseComponent}
                     source="title"
@@ -34,7 +34,7 @@ describe('withDefaultValue', () => {
         it('should call initializeForm if a defaultValue changes', () => {
             const initializeForm = jest.fn();
             const wrapper = shallow(
-                <DefaultValue
+                <DefaultValueView
                     initializeForm={initializeForm}
                     decoratedComponent={BaseComponent}
                     source="bar"

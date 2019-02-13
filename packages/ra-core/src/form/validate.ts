@@ -1,13 +1,38 @@
 import lodashMemoize from 'lodash/memoize';
+import { Translate } from '../types';
 
 /* eslint-disable no-underscore-dangle */
 /* @link http://stackoverflow.com/questions/46155/validate-email-address-in-javascript */
 const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/; // eslint-disable-line no-useless-escape
 
-const isEmpty = value =>
+const isEmpty = (value: any) =>
     typeof value === 'undefined' || value === null || value === '';
 
-const getMessage = (message, messageArgs, value, values, props) =>
+export type Validator = (
+    value: any,
+    values: any,
+    props: any
+) => string | null | undefined;
+
+interface MessageFuncParams {
+    args: any;
+    value: any;
+    values: any;
+    translate: Translate;
+    [key: string]: any;
+}
+
+type MessageFunc = (params: MessageFuncParams) => string;
+
+const getMessage = (
+    message: string | MessageFunc,
+    messageArgs: any,
+    value: any,
+    values: any,
+    props: {
+        translate: Translate;
+    }
+) =>
     typeof message === 'function'
         ? message({
               args: messageArgs,
@@ -20,10 +45,16 @@ const getMessage = (message, messageArgs, value, values, props) =>
               ...messageArgs,
           });
 
+type Memoize = <T extends (...args: any[]) => any>(
+    func: T,
+    resolver?: (...args: any[]) => any
+) => T;
+
 // If we define validation functions directly in JSX, it will
 // result in a new function at every render, and then trigger infinite re-render.
 // Hence, we memoize every built-in validator to prevent a "Maximum call stack" error.
-const memoize = fn => lodashMemoize(fn, (...args) => JSON.stringify(args));
+const memoize: Memoize = (fn: any) =>
+    lodashMemoize(fn, (...args) => JSON.stringify(args));
 
 /**
  * Required validator
@@ -150,7 +181,7 @@ export const number = memoize(
 /**
  * Regular expression validator
  *
- * Returns an error if the value does not mactch the pattern given as parameter
+ * Returns an error if the value does not match the pattern given as parameter
  *
  * @param {RegExp} pattern
  * @param {string|function} message
@@ -186,11 +217,10 @@ export const email = memoize((message = 'ra.validation.email') =>
     regex(EMAIL_REGEX, message)
 );
 
-const oneOfTypeMessage = ({ list }, value, values, { translate }) => {
+const oneOfTypeMessage: MessageFunc = ({ list, value, values, translate }) =>
     translate('ra.validation.oneOf', {
         options: list.join(', '),
     });
-};
 
 /**
  * Choices validator

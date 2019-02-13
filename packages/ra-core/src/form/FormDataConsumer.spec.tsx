@@ -9,7 +9,11 @@ describe('FormDataConsumerView', () => {
         const formData = { id: 123, title: 'A title' };
 
         shallow(
-            <FormDataConsumerView formData={formData}>
+            <FormDataConsumerView
+                form="a-form"
+                formData={formData}
+                source="a-field"
+            >
                 {children}
             </FormDataConsumerView>
         );
@@ -27,6 +31,7 @@ describe('FormDataConsumerView', () => {
 
         shallow(
             <FormDataConsumerView
+                form="a-form"
                 source="authors[0]"
                 index={0}
                 formData={formData}

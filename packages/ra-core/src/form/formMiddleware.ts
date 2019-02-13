@@ -3,7 +3,7 @@ import { destroy } from 'redux-form';
 import isEqual from 'lodash/isEqual';
 
 import { resetForm } from '../actions/formActions';
-import { REDUX_FORM_NAME } from '../form/constants';
+import { REDUX_FORM_NAME } from './constants';
 
 /**
  * This middleware ensure that whenever a location change happen, we get the
