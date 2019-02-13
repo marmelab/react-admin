@@ -6,6 +6,13 @@ import {
     RedirectionSideEffect,
 } from '../../sideEffect';
 
+export type CrudCreate = (
+    resource: string,
+    data: any,
+    basePath: string,
+    redirectTo: RedirectionSideEffect
+) => void;
+
 export const crudCreate = (
     resource: string,
     data: any,

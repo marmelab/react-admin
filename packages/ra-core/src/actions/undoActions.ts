@@ -5,6 +5,8 @@ export interface StartUndoableAction {
     readonly payload: any;
 }
 
+export type StartUndoable = (action: any) => void;
+
 export const startUndoable = (action: any): StartUndoableAction => ({
     type: UNDOABLE,
     payload: { action },

@@ -1,6 +1,6 @@
 export const CRUD_CHANGE_LIST_PARAMS = 'RA/CRUD_CHANGE_LIST_PARAMS';
 
-interface Params {
+export interface ListParams {
     sort: string;
     order: string;
     page: number;
@@ -10,12 +10,18 @@ interface Params {
 
 export interface ChangeListParamsAction {
     readonly type: typeof CRUD_CHANGE_LIST_PARAMS;
-    readonly payload: Params;
+    readonly payload: ListParams;
     readonly meta: { resource: string };
 }
+
+export type ChangeListParams = (
+    resource: string,
+    params: Partial<ListParams>
+) => void;
+
 export const changeListParams = (
     resource: string,
-    params: Params
+    params: ListParams
 ): ChangeListParamsAction => ({
     type: CRUD_CHANGE_LIST_PARAMS,
     payload: params,

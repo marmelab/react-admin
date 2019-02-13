@@ -1,13 +1,56 @@
-import { Component } from 'react';
-import PropTypes from 'prop-types';
+import { Component, ReactNode } from 'react';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import inflection from 'inflection';
 import { reset } from 'redux-form';
-import translate from '../i18n/translate';
-import { crudGetOne, crudUpdate, startUndoable } from '../actions';
+import withTranslate from '../i18n/translate';
+import {
+    crudGetOne,
+    crudUpdate,
+    startUndoable as startUndoableAction,
+    CrudGetOne,
+    CrudUpdate,
+    StartUndoable,
+} from '../actions';
 import { REDUX_FORM_NAME } from '../form';
 import checkMinimumRequiredProps from './checkMinimumRequiredProps';
+import { Translate, Record } from '../types';
+import { RedirectionSideEffect } from '../sideEffect';
+
+interface ChildrenFuncParams {
+    isLoading: boolean;
+    defaultTitle: string;
+    save: (data: Record, redirect: RedirectionSideEffect) => void;
+    resource: string;
+    basePath: string;
+    record?: Record;
+    redirect: RedirectionSideEffect;
+    translate: Translate;
+    version: number;
+}
+
+interface Props {
+    basePath: string;
+    children: (params: ChildrenFuncParams) => ReactNode;
+    crudGetOne: CrudGetOne;
+    dispatchCrudUpdate: CrudUpdate;
+    record?: Record;
+    hasCreate: boolean;
+    hasEdit: boolean;
+    hasShow: boolean;
+    hasList: boolean;
+    id: string;
+    isLoading: boolean;
+    location: object;
+    match: object;
+    resetForm: (form: string) => void;
+    resource: string;
+    startUndoable: StartUndoable;
+    title: string | ReactNode;
+    translate: Translate;
+    undoable?: boolean;
+    version: number;
+}
 
 /**
  * Page component for the Edit view
@@ -51,7 +94,7 @@ import checkMinimumRequiredProps from './checkMinimumRequiredProps';
  *     );
  *     export default App;
  */
-export class EditController extends Component {
+export class EditController extends Component<Props> {
     componentDidMount() {
         this.updateData();
     }
@@ -115,7 +158,9 @@ export class EditController extends Component {
             version,
         } = this.props;
 
-        if (!children) return null;
+        if (!children) {
+            return null;
+        }
 
         const resourceName = translate(`resources.${resource}.name`, {
             smart_count: 1,
@@ -141,29 +186,6 @@ export class EditController extends Component {
     }
 }
 
-EditController.propTypes = {
-    basePath: PropTypes.string.isRequired,
-    children: PropTypes.func.isRequired,
-    crudGetOne: PropTypes.func.isRequired,
-    dispatchCrudUpdate: PropTypes.func.isRequired,
-    record: PropTypes.object,
-    hasCreate: PropTypes.bool,
-    hasEdit: PropTypes.bool,
-    hasShow: PropTypes.bool,
-    hasList: PropTypes.bool,
-    id: PropTypes.string.isRequired,
-    isLoading: PropTypes.bool.isRequired,
-    location: PropTypes.object,
-    match: PropTypes.object,
-    resetForm: PropTypes.func.isRequired,
-    resource: PropTypes.string.isRequired,
-    startUndoable: PropTypes.func.isRequired,
-    title: PropTypes.any,
-    translate: PropTypes.func,
-    undoable: PropTypes.bool,
-    version: PropTypes.number.isRequired,
-};
-
 function mapStateToProps(state, props) {
     return {
         id: props.id,
@@ -182,9 +204,9 @@ export default compose(
         {
             crudGetOne,
             dispatchCrudUpdate: crudUpdate,
-            startUndoable,
+            startUndoable: startUndoableAction,
             resetForm: reset,
         }
     ),
-    translate
+    withTranslate
 )(EditController);

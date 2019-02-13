@@ -7,6 +7,13 @@ import {
     RefreshSideEffect,
 } from '../../sideEffect';
 
+export type CrudGetOne = (
+    resource: string,
+    id: Identifier,
+    basePath: string,
+    refresh?: RefreshSideEffect
+) => void;
+
 export const crudGetOne = (
     resource: string,
     id: Identifier,

@@ -6,6 +6,15 @@ import {
     RedirectionSideEffect,
 } from '../../sideEffect';
 
+export type CrudUpdate = (
+    resource: string,
+    id: Identifier,
+    data: any,
+    previousData: any,
+    basePath: string,
+    redirectTo: RedirectionSideEffect
+) => void;
+
 export const crudUpdate = (
     resource: string,
     id: Identifier,

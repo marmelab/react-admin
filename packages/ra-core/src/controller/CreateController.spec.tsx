@@ -1,17 +1,27 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import { CreateController } from './CreateController';
+import { CreateControllerView as CreateController } from './CreateController';
 
 describe('CreateController', () => {
     describe('Presetting the record from the location', () => {
         const defaultProps = {
             basePath: '',
-            crudCreate: () => {},
+            crudCreate: jest.fn(),
+            hasCreate: true,
+            hasEdit: true,
+            hasList: true,
+            hasShow: true,
             isLoading: false,
-            location: {},
-            match: {},
+            location: {
+                pathname: '/foo',
+                search: undefined,
+                state: undefined,
+                hash: undefined,
+            },
+            match: { isExact: true, path: '/foo', params: undefined, url: '' },
             resource: 'foo',
+            title: 'Foo',
             translate: x => x,
         };
 
@@ -33,7 +43,10 @@ describe('CreateController', () => {
             const props = {
                 ...defaultProps,
                 children: childrenMock,
-                location: { state: { record: { foo: 'bar' } } },
+                location: {
+                    ...defaultProps.location,
+                    state: { record: { foo: 'bar' } },
+                },
             };
 
             shallow(<CreateController {...props} />);
@@ -47,7 +60,10 @@ describe('CreateController', () => {
             const props = {
                 ...defaultProps,
                 children: childrenMock,
-                location: { search: '?foo=baz&array[]=1&array[]=2' },
+                location: {
+                    ...defaultProps.location,
+                    search: '?foo=baz&array[]=1&array[]=2',
+                },
             };
 
             shallow(<CreateController {...props} />);
@@ -64,6 +80,7 @@ describe('CreateController', () => {
                 ...defaultProps,
                 children: childrenMock,
                 location: {
+                    ...defaultProps.location,
                     state: { record: { foo: 'bar' } },
                     search: '?foo=baz',
                 },

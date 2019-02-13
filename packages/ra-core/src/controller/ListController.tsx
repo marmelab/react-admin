@@ -1,6 +1,5 @@
 /* eslint no-console: ["error", { allow: ["warn", "error"] }] */
-import { Component, isValidElement } from 'react';
-import PropTypes from 'prop-types';
+import { Component, isValidElement, ReactNode, ReactElement } from 'react';
 import { connect } from 'react-redux';
 import { parse, stringify } from 'query-string';
 import { push as pushAction } from 'react-router-redux';
@@ -19,15 +18,88 @@ import queryReducer, {
     SET_FILTER,
     SORT_DESC,
 } from '../reducer/admin/resource/list/queryReducer';
-import { crudGetList as crudGetListAction } from '../actions/dataActions';
+import {
+    crudGetList as crudGetListAction,
+    CrudGetList,
+} from '../actions/dataActions';
 import {
     changeListParams as changeListParamsAction,
     setListSelectedIds as setListSelectedIdsAction,
     toggleListItem as toggleListItemAction,
+    ListParams,
+    ChangeListParams,
 } from '../actions/listActions';
-import translate from '../i18n/translate';
+import withTranslate from '../i18n/translate';
 import removeKey from '../util/removeKey';
 import checkMinimumRequiredProps from './checkMinimumRequiredProps';
+import { Sort, AuthProvider, RecordMap, Identifier, Translate } from '../types';
+import { Location, LocationDescriptorObject, LocationState } from 'history';
+
+interface ChildrenFuncParams {
+    basePath: string;
+    currentSort: Sort;
+    data: RecordMap;
+    defaultTitle: string;
+    displayedFilters: any;
+    filterValues: any;
+    hasCreate: boolean;
+    hideFilter: (filterName: string) => void;
+    ids: Identifier[];
+    isLoading: boolean;
+    loadedOnce: boolean;
+    onSelect: (ids: Identifier[]) => void;
+    onToggleItem: (id: Identifier) => void;
+    onUnselectItems: () => void;
+    page: number;
+    perPage: number;
+    resource: string;
+    selectedIds: Identifier[];
+    setFilters: (filters: any) => void;
+    setPage: (page: number) => void;
+    setPerPage: (page: number) => void;
+    setSort: (sort: Sort) => void;
+    showFilter: (filterName: string, defaultValue: any) => void;
+    translate: Translate;
+    total: number;
+    version: number;
+}
+
+interface Props {
+    // the props you can change
+    children: (params: ChildrenFuncParams) => ReactNode;
+    filter?: object;
+    filters: ReactElement<any>;
+    filterDefaultValues: object;
+    pagination: ReactElement<any>;
+    perPage: number;
+    sort: Sort;
+    // the props managed by react-admin
+    authProvider: AuthProvider;
+    basePath: string;
+    changeListParams: ChangeListParams;
+    crudGetList: CrudGetList;
+    data?: RecordMap;
+    debounce: number;
+    hasCreate: boolean;
+    hasEdit: boolean;
+    hasList: boolean;
+    hasShow: boolean;
+    ids: Identifier[];
+    loadedOnce: boolean;
+    selectedIds: Identifier[];
+    isLoading: boolean;
+    location: Location;
+    path: string;
+    params: ListParams;
+    push: (location: LocationDescriptorObject<LocationState>) => void;
+    query: Partial<ListParams>;
+    resource: string;
+    setSelectedIds: (resource: string, ids: Identifier[]) => void;
+    toggleItem: (resource: string, id: Identifier) => void;
+    total: number;
+    translate: Translate;
+    version: number;
+}
 
 /**
  * List page component
@@ -70,8 +142,28 @@ import checkMinimumRequiredProps from './checkMinimumRequiredProps';
  *         </List>
  *     );
  */
-export class ListController extends Component {
+export class ListControllerView extends Component<Props> {
+    public static defaultProps: Partial<Props> = {
+        debounce: 500,
+        filter: {},
+        perPage: 10,
+        sort: {
+            field: 'id',
+            order: SORT_DESC,
+        },
+    };
+
     state = {};
+
+    setFilters = debounce(filters => {
+        if (isEqual(filters, this.getFilterValues())) {
+            return;
+        }
+
+        // fix for redux-form bug with onChange and enableReinitialize
+        const filtersWithoutEmpty = removeEmpty(filters);
+        this.changeParams({ type: SET_FILTER, payload: filtersWithoutEmpty });
+    }, this.props.debounce);
 
     componentDidMount() {
         if (this.props.filter && isValidElement(this.props.filter)) {
@@ -99,7 +191,7 @@ export class ListController extends Component {
         this.setFilters.cancel();
     }
 
-    componentWillReceiveProps(nextProps) {
+    componentWillReceiveProps(nextProps: Props) {
         if (
             nextProps.resource !== this.props.resource ||
             nextProps.query.sort !== this.props.query.sort ||
@@ -122,7 +214,7 @@ export class ListController extends Component {
         }
     }
 
-    shouldComponentUpdate(nextProps, nextState) {
+    shouldComponentUpdate(nextProps: Props, nextState) {
         if (
             nextProps.translate === this.props.translate &&
             nextProps.isLoading === this.props.isLoading &&
@@ -150,7 +242,7 @@ export class ListController extends Component {
      *
      * @param {object} params
      */
-    hasCustomParams(params) {
+    hasCustomParams(params: ListParams) {
         return (
             params &&
             params.filter &&
@@ -170,7 +262,7 @@ export class ListController extends Component {
      *   - the props passed to the List component
      */
     getQuery() {
-        const query =
+        const query: Partial<ListParams> =
             Object.keys(this.props.query).length > 0
                 ? this.props.query
                 : this.hasCustomParams(this.props.params)
@@ -195,7 +287,7 @@ export class ListController extends Component {
         return query.filter || {};
     }
 
-    updateData(query) {
+    updateData(query?: any) {
         const params = query || this.getQuery();
         const { sort, order, page = 1, perPage, filter } = params;
         const pagination = {
@@ -218,17 +310,7 @@ export class ListController extends Component {
     setPerPage = perPage =>
         this.changeParams({ type: SET_PER_PAGE, payload: perPage });
 
-    setFilters = debounce(filters => {
-        if (isEqual(filters, this.getFilterValues())) {
-            return;
-        }
-
-        // fix for redux-form bug with onChange and enableReinitialize
-        const filtersWithoutEmpty = removeEmpty(filters);
-        this.changeParams({ type: SET_FILTER, payload: filtersWithoutEmpty });
-    }, this.props.debounce);
-
-    showFilter = (filterName, defaultValue) => {
+    showFilter = (filterName: string, defaultValue: any) => {
         this.setState({ [filterName]: true });
         if (typeof defaultValue !== 'undefined') {
             this.setFilters({
@@ -238,13 +320,13 @@ export class ListController extends Component {
         }
     };
 
-    hideFilter = filterName => {
+    hideFilter = (filterName: string) => {
         this.setState({ [filterName]: false });
         const newFilters = removeKey(this.getFilterValues(), filterName);
         this.setFilters(newFilters);
     };
 
-    handleSelect = ids => {
+    handleSelect = (ids: Identifier[]) => {
         this.props.setSelectedIds(this.props.resource, ids);
     };
 
@@ -252,7 +334,7 @@ export class ListController extends Component {
         this.props.setSelectedIds(this.props.resource, []);
     };
 
-    handleToggleItem = id => {
+    handleToggleItem = (id: Identifier) => {
         this.props.toggleItem(this.props.resource, id);
     };
 
@@ -310,9 +392,11 @@ export class ListController extends Component {
             onSelect: this.handleSelect,
             onToggleItem: this.handleToggleItem,
             onUnselectItems: this.handleUnselectItems,
-            page: parseInt(query.page || 1, 10),
-            perPage: parseInt(query.perPage, 10),
-            refresh: this.refresh,
+            page:
+                (typeof query.page === 'string'
+                    ? parseInt(query.page, 10)
+                    : query.page) || 1,
+            perPage: parseInt(query.perPage.toString(), 10),
             resource,
             selectedIds,
             setFilters: this.setFilters,
@@ -326,56 +410,6 @@ export class ListController extends Component {
         });
     }
 }
-
-ListController.propTypes = {
-    // the props you can change
-    children: PropTypes.func.isRequired,
-    filter: PropTypes.object,
-    filters: PropTypes.element,
-    filterDefaultValues: PropTypes.object, // eslint-disable-line react/forbid-prop-types
-    pagination: PropTypes.element,
-    perPage: PropTypes.number.isRequired,
-    sort: PropTypes.shape({
-        field: PropTypes.string,
-        order: PropTypes.string,
-    }),
-    // the props managed by react-admin
-    authProvider: PropTypes.func,
-    basePath: PropTypes.string.isRequired,
-    changeListParams: PropTypes.func.isRequired,
-    crudGetList: PropTypes.func.isRequired,
-    data: PropTypes.object, // eslint-disable-line react/forbid-prop-types
-    debounce: PropTypes.number,
-    hasCreate: PropTypes.bool,
-    hasEdit: PropTypes.bool,
-    hasList: PropTypes.bool,
-    hasShow: PropTypes.bool,
-    ids: PropTypes.array,
-    loadedOnce: PropTypes.bool,
-    selectedIds: PropTypes.array,
-    isLoading: PropTypes.bool.isRequired,
-    location: PropTypes.object.isRequired,
-    path: PropTypes.string,
-    params: PropTypes.object.isRequired,
-    push: PropTypes.func.isRequired,
-    query: PropTypes.object.isRequired,
-    resource: PropTypes.string.isRequired,
-    setSelectedIds: PropTypes.func.isRequired,
-    toggleItem: PropTypes.func.isRequired,
-    total: PropTypes.number.isRequired,
-    translate: PropTypes.func.isRequired,
-    version: PropTypes.number,
-};
-
-ListController.defaultProps = {
-    debounce: 500,
-    filter: {},
-    perPage: 10,
-    sort: {
-        field: 'id',
-        order: SORT_DESC,
-    },
-};
 
 const injectedProps = [
     'basePath',
@@ -422,7 +456,7 @@ export const getListControllerProps = props =>
  */
 export const sanitizeListRestProps = props =>
     Object.keys(props)
-        .filter(props => !injectedProps.includes(props))
+        .filter(propName => !injectedProps.includes(propName))
         .reduce((acc, key) => ({ ...acc, [key]: props[key] }), {});
 
 const validQueryParams = ['page', 'perPage', 'sort', 'order', 'filter'];
@@ -463,7 +497,7 @@ function mapStateToProps(state, props) {
     };
 }
 
-export default compose(
+const ListController = compose(
     checkMinimumRequiredProps('List', ['basePath', 'location', 'resource']),
     connect(
         mapStateToProps,
@@ -475,5 +509,7 @@ export default compose(
             push: pushAction,
         }
     ),
-    translate
-)(ListController);
+    withTranslate
+)(ListControllerView);
+
+export default ListController;
