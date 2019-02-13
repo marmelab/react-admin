@@ -13,6 +13,14 @@ interface ChildrenFunctionParams {
     getSource?: (source: string) => string;
 }
 
+interface ConnectedProps {
+    children: (params: ChildrenFunctionParams) => ReactNode;
+    form: string;
+    record?: any;
+    source: string;
+    [key: string]: any;
+}
+
 interface Props extends ConnectedProps {
     formData: any;
     index?: number;
@@ -111,13 +119,6 @@ export const FormDataConsumerView: SFC<Props> = ({
 
     return ret === undefined ? null : ret;
 };
-
-interface ConnectedProps {
-    children: (params: ChildrenFunctionParams) => ReactNode;
-    form: string;
-    record?: any;
-    source: string;
-}
 
 const mapStateToProps = (
     state: ReduxState,
