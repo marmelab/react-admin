@@ -21,7 +21,7 @@ Luckily, react-admin provides access to a `TestContext` wrapper component that c
 
 ```jsx
 import React from 'react';
-import { TestContext } from 'ra-core';
+import { TestContext } from 'react-admin';
 import { mount } from 'enzyme';
 import MyCustomEditView from './my-custom-edit-view';
 
