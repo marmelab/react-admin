@@ -800,7 +800,7 @@ import { stringify } from 'query-string';
 const API_URL = 'my.api.url';
 
 /**
- * @param {String} type One of the constants appearing at the top if this file, e.g. 'UPDATE'
+ * @param {String} type One of the constants appearing at the top of this file, e.g. 'UPDATE'
  * @param {String} resource Name of the resource to fetch, e.g. 'posts'
  * @param {Object} params The Data Provider request params, depending on the type
  * @returns {Object} { url, options } The HTTP request parameters
@@ -857,7 +857,7 @@ const convertDataProviderRequestToHTTP = (type, resource, params) => {
 
 /**
  * @param {Object} response HTTP response from fetch()
- * @param {String} type One of the constants appearing at the top if this file, e.g. 'UPDATE'
+ * @param {String} type One of the constants appearing at the top of this file, e.g. 'UPDATE'
  * @param {String} resource Name of the resource to fetch, e.g. 'posts'
  * @param {Object} params The Data Provider request params, depending on the type
  * @returns {Object} Data Provider response
