@@ -16,6 +16,7 @@ import {
     valuesAreObject,
     valuesAreString,
 } from './assertions';
+import { InferredTypeMap } from './types';
 
 const DefaultComponent = () => <span>;</span>;
 const defaultType = {
@@ -76,7 +77,11 @@ const hasType = (type, types) => typeof types[type] !== 'undefined';
  *
  * @return InferredElement
  */
-const inferElementFromValues = (name, values = [], types = defaultTypes) => {
+const inferElementFromValues = (
+    name,
+    values = [],
+    types: InferredTypeMap = defaultTypes
+) => {
     if (name === 'id' && hasType('id', types)) {
         return new InferredElement(types.id, { source: name });
     }
@@ -88,7 +93,7 @@ const inferElementFromValues = (name, values = [], types = defaultTypes) => {
                 types.reference,
                 {
                     source: name,
-                    reference: reference,
+                    reference,
                 },
                 new InferredElement(types.referenceChild)
             )
@@ -102,7 +107,7 @@ const inferElementFromValues = (name, values = [], types = defaultTypes) => {
                 types.reference,
                 {
                     source: name,
-                    reference: reference,
+                    reference,
                 },
                 new InferredElement(types.referenceChild)
             )
@@ -119,7 +124,7 @@ const inferElementFromValues = (name, values = [], types = defaultTypes) => {
                 types.referenceArray,
                 {
                     source: name,
-                    reference: reference,
+                    reference,
                 },
                 new InferredElement(types.referenceArrayChild)
             )
@@ -136,13 +141,13 @@ const inferElementFromValues = (name, values = [], types = defaultTypes) => {
                 types.referenceArray,
                 {
                     source: name,
-                    reference: reference,
+                    reference,
                 },
                 new InferredElement(types.referenceArrayChild)
             )
         );
     }
-    if (values.length == 0) {
+    if (values.length === 0) {
         // FIXME introspect further using name
         return new InferredElement(types.string, { source: name });
     }

@@ -1,11 +1,15 @@
-import React from 'react';
+import React, { SFC } from 'react';
 import inferElementFromValues from './inferElementFromValues';
 import InferredElement from './InferredElement';
 
+interface Props {
+    source: string;
+    reference?: string;
+}
 describe('inferElementFromValues', () => {
-    function Good() {}
-    function Bad() {}
-    function Dummy() {}
+    const Good: SFC<Props> = () => <span />;
+    const Bad: SFC<Props> = () => <span />;
+    const Dummy: SFC<{ [key: string]: any }> = () => <span />;
 
     it('should return an InferredElement', () => {
         const types = {
@@ -22,15 +26,6 @@ describe('inferElementFromValues', () => {
         expect(
             inferElementFromValues('id', ['foo'], types).getElement()
         ).toEqual(<Good source="id" />);
-    });
-    it('should return null if type is falsy', () => {
-        const types = {
-            id: false,
-            string: { component: Bad },
-        };
-        expect(
-            inferElementFromValues('id', ['foo'], types).getElement()
-        ).toBeUndefined();
     });
     it('should return an id field for field named id', () => {
         const types = {

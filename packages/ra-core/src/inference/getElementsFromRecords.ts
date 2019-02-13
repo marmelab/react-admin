@@ -1,5 +1,6 @@
 import inferElementFromValues from './inferElementFromValues';
 import getValuesFromRecords from './getValuesFromRecords';
+import { InferredTypeMap } from './types';
 
 /**
  * Get a list of React-admin field components from a list of records
@@ -32,7 +33,7 @@ import getValuesFromRecords from './getValuesFromRecords';
  * //    <ReferenceField source="user_id" reference="users"><NumberField source="id" /></ReferenceField>,
  * // ];
  */
-export default (records, types) => {
+export default (records: any[], types: InferredTypeMap) => {
     const fieldValues = getValuesFromRecords(records);
     return Object.keys(fieldValues)
         .reduce(

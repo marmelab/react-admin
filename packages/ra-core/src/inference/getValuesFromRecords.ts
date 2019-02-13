@@ -24,7 +24,7 @@
  * //    user_id: [123, 456],
  * // }
  */
-export default records =>
+export default (records: any[]) =>
     records.reduce((values, record) => {
         Object.keys(record).forEach(fieldName => {
             if (!values[fieldName]) {
