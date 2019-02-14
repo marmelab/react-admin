@@ -1,5 +1,5 @@
 import { crudGetMany, crudGetMatching } from './dataActions';
-import { Pagination, Sort } from '../types';
+import { Pagination, Sort, Identifier } from '../types';
 
 export const CRUD_GET_MANY_ACCUMULATE = 'RA/CRUD_GET_MANY_ACCUMULATE';
 
@@ -7,7 +7,7 @@ export interface CrudGetManyAccumulateAction {
     readonly type: typeof CRUD_GET_MANY_ACCUMULATE;
     readonly payload: {
         resource: string;
-        ids: any[];
+        ids: Identifier[];
     };
     readonly meta: {
         accumulate: any;
@@ -16,7 +16,7 @@ export interface CrudGetManyAccumulateAction {
 
 export const crudGetManyAccumulate = (
     resource: string,
-    ids: any[]
+    ids: Identifier[]
 ): CrudGetManyAccumulateAction => ({
     type: CRUD_GET_MANY_ACCUMULATE,
     payload: { resource, ids },
