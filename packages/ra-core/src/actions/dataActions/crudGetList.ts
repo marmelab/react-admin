@@ -3,13 +3,6 @@ import { GET_LIST } from '../../dataFetchActions';
 import { FETCH_END, FETCH_ERROR } from '../fetchActions';
 import { NotificationSideEffect } from '../../sideEffect';
 
-export type CrudGetList = (
-    resource: string,
-    pagination: Pagination,
-    sort: Sort,
-    filter: object
-) => void;
-
 export const crudGetList = (
     resource: string,
     pagination: Pagination,

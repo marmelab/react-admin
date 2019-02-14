@@ -18,21 +18,24 @@ import queryReducer, {
     SET_FILTER,
     SORT_DESC,
 } from '../reducer/admin/resource/list/queryReducer';
-import {
-    crudGetList as crudGetListAction,
-    CrudGetList,
-} from '../actions/dataActions';
+import { crudGetList as crudGetListAction } from '../actions/dataActions';
 import {
     changeListParams as changeListParamsAction,
     setListSelectedIds as setListSelectedIdsAction,
     toggleListItem as toggleListItemAction,
     ListParams,
-    ChangeListParams,
 } from '../actions/listActions';
 import withTranslate from '../i18n/translate';
 import removeKey from '../util/removeKey';
 import checkMinimumRequiredProps from './checkMinimumRequiredProps';
-import { Sort, AuthProvider, RecordMap, Identifier, Translate } from '../types';
+import {
+    Sort,
+    AuthProvider,
+    RecordMap,
+    Identifier,
+    Translate,
+    Dispatch,
+} from '../types';
 import { Location, LocationDescriptorObject, LocationState } from 'history';
 
 interface ChildrenFuncParams {
@@ -76,8 +79,8 @@ interface Props {
     // the props managed by react-admin
     authProvider: AuthProvider;
     basePath: string;
-    changeListParams: ChangeListParams;
-    crudGetList: CrudGetList;
+    changeListParams: Dispatch<typeof changeListParamsAction>;
+    crudGetList: Dispatch<typeof crudGetListAction>;
     data?: RecordMap;
     debounce: number;
     hasCreate: boolean;

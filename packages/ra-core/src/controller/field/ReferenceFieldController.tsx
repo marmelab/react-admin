@@ -2,12 +2,9 @@ import { Component, ReactNode } from 'react';
 import { connect } from 'react-redux';
 import get from 'lodash/get';
 
-import {
-    crudGetManyAccumulate as crudGetManyAccumulateAction,
-    CrudGetManyAccumulate,
-} from '../../actions';
+import { crudGetManyAccumulate as crudGetManyAccumulateAction } from '../../actions';
 import { linkToRecord } from '../../util';
-import { Record } from '../../types';
+import { Record, Dispatch } from '../../types';
 
 interface ChildrenFuncParams {
     isLoading: boolean;
@@ -19,7 +16,7 @@ interface Props {
     allowEmpty?: boolean;
     basePath: string;
     children: (params: ChildrenFuncParams) => ReactNode;
-    crudGetManyAccumulate: CrudGetManyAccumulate;
+    crudGetManyAccumulate: Dispatch<typeof crudGetManyAccumulateAction>;
     record?: Record;
     reference: string;
     referenceRecord?: Record;

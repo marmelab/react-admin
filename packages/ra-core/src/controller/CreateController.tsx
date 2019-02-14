@@ -5,11 +5,11 @@ import inflection from 'inflection';
 import { parse } from 'query-string';
 
 import withTranslate from '../i18n/translate';
-import { crudCreate as crudCreateAction, CrudCreate } from '../actions';
+import { crudCreate as crudCreateAction } from '../actions';
 import checkMinimumRequiredProps from './checkMinimumRequiredProps';
 import { Location } from 'history';
 import { match as Match } from 'react-router';
-import { Record, Translate } from '../types';
+import { Record, Translate, Dispatch } from '../types';
 import { RedirectionSideEffect } from '../sideEffect';
 
 interface ChildrenFuncParams {
@@ -26,7 +26,7 @@ interface ChildrenFuncParams {
 interface Props {
     basePath: string;
     children: (params: ChildrenFuncParams) => ReactNode;
-    crudCreate: CrudCreate;
+    crudCreate: Dispatch<typeof crudCreateAction>;
     hasCreate: boolean;
     hasEdit: boolean;
     hasList: boolean;

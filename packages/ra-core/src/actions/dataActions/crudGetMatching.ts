@@ -3,14 +3,6 @@ import { GET_LIST } from '../../dataFetchActions';
 import { FETCH_END, FETCH_ERROR } from '../fetchActions';
 import { NotificationSideEffect } from '../../sideEffect';
 
-export type CrudGetMatching = (
-    reference: string,
-    relatedTo: string,
-    pagination: Pagination,
-    sort: Sort,
-    filter: object
-) => void;
-
 export const crudGetMatching = (
     reference: string,
     relatedTo: string,

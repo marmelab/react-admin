@@ -3,17 +3,6 @@ import { GET_MANY_REFERENCE } from '../../dataFetchActions';
 import { FETCH_END, FETCH_ERROR } from '../fetchActions';
 import { NotificationSideEffect } from '../../sideEffect';
 
-export type CrudGetManyReference = (
-    reference: string,
-    target: string,
-    id: Identifier,
-    relatedTo: string,
-    pagination: Pagination,
-    sort: Sort,
-    filter: object,
-    source: string
-) => void;
-
 export const crudGetManyReference = (
     reference: string,
     target: string,

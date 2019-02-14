@@ -14,11 +14,6 @@ export interface ChangeListParamsAction {
     readonly meta: { resource: string };
 }
 
-export type ChangeListParams = (
-    resource: string,
-    params: Partial<ListParams>
-) => void;
-
 export const changeListParams = (
     resource: string,
     params: ListParams

@@ -8,13 +8,10 @@ import {
     crudGetOne,
     crudUpdate,
     startUndoable as startUndoableAction,
-    CrudGetOne,
-    CrudUpdate,
-    StartUndoable,
 } from '../actions';
 import { REDUX_FORM_NAME } from '../form';
 import checkMinimumRequiredProps from './checkMinimumRequiredProps';
-import { Translate, Record } from '../types';
+import { Translate, Record, Dispatch } from '../types';
 import { RedirectionSideEffect } from '../sideEffect';
 
 interface ChildrenFuncParams {
@@ -32,8 +29,8 @@ interface ChildrenFuncParams {
 interface Props {
     basePath: string;
     children: (params: ChildrenFuncParams) => ReactNode;
-    crudGetOne: CrudGetOne;
-    dispatchCrudUpdate: CrudUpdate;
+    crudGetOne: Dispatch<typeof crudGetOne>;
+    dispatchCrudUpdate: Dispatch<typeof crudUpdate>;
     record?: Record;
     hasCreate: boolean;
     hasEdit: boolean;
@@ -45,7 +42,7 @@ interface Props {
     match: object;
     resetForm: (form: string) => void;
     resource: string;
-    startUndoable: StartUndoable;
+    startUndoable: Dispatch<typeof startUndoableAction>;
     title: string | ReactNode;
     translate: Translate;
     undoable?: boolean;

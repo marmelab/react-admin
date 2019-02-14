@@ -3,9 +3,9 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import inflection from 'inflection';
 import withTranslate from '../i18n/translate';
-import { crudGetOne as crudGetOneAction, CrudGetOne } from '../actions';
+import { crudGetOne as crudGetOneAction } from '../actions';
 import checkMinimumRequiredProps from './checkMinimumRequiredProps';
-import { Translate, Record } from '../types';
+import { Translate, Record, Dispatch } from '../types';
 
 interface ChildrenFuncParams {
     isLoading: boolean;
@@ -21,7 +21,7 @@ interface ChildrenFuncParams {
 interface Props {
     basePath: string;
     children: (params: ChildrenFuncParams) => ReactNode;
-    crudGetOne: CrudGetOne;
+    crudGetOne: Dispatch<typeof crudGetOneAction>;
     record?: Record;
     hasCreate: boolean;
     hasEdit: boolean;

@@ -56,3 +56,7 @@ export interface ReduxState {
         messages: object;
     };
 }
+
+export type Dispatch<T> = T extends (...args: infer A) => any
+    ? (...args: A) => void
+    : never;

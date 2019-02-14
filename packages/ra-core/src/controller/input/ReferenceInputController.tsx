@@ -8,8 +8,6 @@ import isEqual from 'lodash/isEqual';
 import {
     crudGetManyAccumulate as crudGetManyAccumulateAction,
     crudGetMatchingAccumulate as crudGetMatchingAccumulateAction,
-    CrudGetMatchingAccumulate,
-    CrudGetManyAccumulate,
 } from '../../actions/accumulateActions';
 import {
     getPossibleReferences,
@@ -18,7 +16,7 @@ import {
 } from '../../reducer';
 import { getStatusForInput as getDataStatus } from './referenceDataStatus';
 import withTranslate from '../../i18n/translate';
-import { Sort, Translate, Record, Pagination } from '../../types';
+import { Sort, Translate, Record, Pagination, Dispatch } from '../../types';
 import { MatchingReferencesError } from './types';
 
 const defaultReferenceSource = (resource: string, source: string) =>
@@ -42,8 +40,8 @@ interface Props {
     allowEmpty?: boolean;
     basePath: string;
     children: (params: ChildrenFuncParams) => ReactNode;
-    crudGetMatchingAccumulate: CrudGetMatchingAccumulate;
-    crudGetManyAccumulate: CrudGetManyAccumulate;
+    crudGetMatchingAccumulate: Dispatch<typeof crudGetMatchingAccumulateAction>;
+    crudGetManyAccumulate: Dispatch<typeof crudGetManyAccumulateAction>;
     filter?: object;
     filterToQuery: (filter: {}) => any;
     input?: {

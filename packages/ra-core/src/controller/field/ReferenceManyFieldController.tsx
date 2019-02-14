@@ -2,10 +2,7 @@ import { Component, ReactNode } from 'react';
 import { connect } from 'react-redux';
 import isEqual from 'lodash/isEqual';
 
-import {
-    crudGetManyReference as crudGetManyReferenceAction,
-    CrudGetManyReference,
-} from '../../actions';
+import { crudGetManyReference as crudGetManyReferenceAction } from '../../actions';
 import {
     SORT_ASC,
     SORT_DESC,
@@ -16,7 +13,7 @@ import {
     getTotal,
     nameRelatedTo,
 } from '../../reducer/admin/references/oneToMany';
-import { Record, Sort, RecordMap, Identifier } from '../../types';
+import { Record, Sort, RecordMap, Identifier, Dispatch } from '../../types';
 
 interface ChildrenFuncParams {
     currentSort: Sort;
@@ -35,7 +32,7 @@ interface ChildrenFuncParams {
 interface Props {
     basePath: string;
     children: (params: ChildrenFuncParams) => ReactNode;
-    crudGetManyReference: CrudGetManyReference;
+    crudGetManyReference: Dispatch<typeof crudGetManyReferenceAction>;
     data?: RecordMap;
     filter?: any;
     ids?: any[];

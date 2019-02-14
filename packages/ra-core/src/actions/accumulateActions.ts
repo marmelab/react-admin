@@ -14,9 +14,6 @@ export interface CrudGetManyAccumulateAction {
     };
 }
 
-// Used to type the dispatcher function (the one injected by mapDispatchToProps)
-export type CrudGetManyAccumulate = (resource: string, ids: any[]) => void;
-
 export const crudGetManyAccumulate = (
     resource: string,
     ids: any[]
@@ -36,14 +33,6 @@ export interface CrudGetMatchingAccumulateAction {
         accumulateKey?: string;
     };
 }
-
-export type CrudGetMatchingAccumulate = (
-    reference: string,
-    relatedTo: string,
-    pagination: Pagination,
-    sort: Sort,
-    filter: object
-) => void;
 
 export const crudGetMatchingAccumulate = (
     reference: string,
