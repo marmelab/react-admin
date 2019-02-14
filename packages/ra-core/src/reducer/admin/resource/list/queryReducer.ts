@@ -15,7 +15,7 @@ const oppositeOrder = direction =>
 /**
  * This reducer is for the react-router query string, NOT for redux.
  */
-const queryReducer: Reducer<Partial<ListParams>> = (
+const queryReducer: Reducer<ListParams> = (
     previousState,
     { type, payload }
 ) => {

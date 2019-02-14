@@ -30,7 +30,7 @@ const paramsReducer: Reducer<State> = (
 ) => {
     switch (action.type) {
         case CRUD_CHANGE_LIST_PARAMS:
-            return action.payload;
+            return { ...previousState, ...action.payload };
         default:
             return previousState;
     }

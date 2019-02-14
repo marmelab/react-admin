@@ -95,7 +95,7 @@ interface Props {
     path: string;
     params: ListParams;
     push: (location: LocationDescriptorObject<LocationState>) => void;
-    query: Partial<ListParams>;
+    query: ListParams;
     resource: string;
     setSelectedIds: (resource: string, ids: Identifier[]) => void;
     toggleItem: (resource: string, id: Identifier) => void;
@@ -282,7 +282,7 @@ export class ListControllerView extends Component<Props> {
         if (!query.page) {
             query.page = 1;
         }
-        return query;
+        return query as ListParams;
     }
 
     getFilterValues() {
