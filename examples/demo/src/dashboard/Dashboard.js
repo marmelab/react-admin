@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { GET_LIST, GET_MANY, Responsive } from 'react-admin';
+import { GET_LIST, GET_MANY, Responsive, withReduxFetch } from 'react-admin';
+import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 
 import Welcome from './Welcome';
@@ -42,103 +43,69 @@ class Dashboard extends Component {
         );
     }
 
-    customFetch = (
-        resource,
-        verb,
-        payload,
-        successCallback,
-        errorCallback,
-        meta = {}
-    ) => {
-        const action = {
-            type: 'CUSTOM_FETCH',
-            payload,
-            meta: {
-                resource,
-                fetch: verb,
-                ...meta,
-            },
-        };
-        if (successCallback) {
-            action.meta.onSuccess = { callback: successCallback };
-        }
-        if (errorCallback) {
-            action.meta.onError = { callback: errorCallback };
-        }
-
-        return action;
-    };
-
-    fetchOrders(dataProvider) {
+    async fetchOrders() {
+        const { reduxFetch } = this.props;
         const aMonthAgo = new Date();
         aMonthAgo.setDate(aMonthAgo.getDate() - 30);
-        this.props.dispatch(
-            this.customFetch(
-                'commands',
-                GET_LIST,
-                {
-                    filter: { date_gte: aMonthAgo.toISOString() },
-                    sort: { field: 'date', order: 'DESC' },
-                    pagination: { page: 1, perPage: 50 },
-                },
-                res => {
-                    const aggregations = res.payload.data
-                        .filter(order => order.status !== 'cancelled')
-                        .reduce(
-                            (stats, order) => {
-                                if (order.status !== 'cancelled') {
-                                    stats.revenue += order.total;
-                                    stats.nbNewOrders++;
-                                }
-                                if (order.status === 'ordered') {
-                                    stats.pendingOrders.push(order);
-                                }
-                                return stats;
-                            },
-                            {
-                                revenue: 0,
-                                nbNewOrders: 0,
-                                pendingOrders: [],
-                            }
-                        );
-                    this.setState({
-                        revenue: aggregations.revenue.toLocaleString(
-                            undefined,
-                            {
-                                style: 'currency',
-                                currency: 'USD',
-                                minimumFractionDigits: 0,
-                                maximumFractionDigits: 0,
-                            }
-                        ),
-                        nbNewOrders: aggregations.nbNewOrders,
-                        pendingOrders: aggregations.pendingOrders,
-                    });
-                    this.props.dispatch(
-                        this.customFetch(
-                            'customers',
-                            'GET_MANY',
-                            {
-                                ids: aggregations.pendingOrders.map(
-                                    order => order.customer_id
-                                ),
-                            },
-                            res2 => {
-                                this.setState({
-                                    pendingOrdersCustomers: res2.payload.data.reduce(
-                                        (prev, customer) => {
-                                            prev[customer.id] = customer; // eslint-disable-line no-param-reassign
-                                            return prev;
-                                        },
-                                        {}
-                                    ),
-                                });
-                            }
-                        )
-                    );
-                }
-            )
+        const res = await reduxFetch(
+            'commands',
+            GET_LIST,
+            {
+                filter: { date_gte: aMonthAgo.toISOString() },
+                sort: { field: 'date', order: 'DESC' },
+                pagination: { page: 1, perPage: 50 },
+            }
         );
+        const aggregations = res.payload.data
+            .filter(order => order.status !== 'cancelled')
+            .reduce(
+                (stats, order) => {
+                    if (order.status !== 'cancelled') {
+                        stats.revenue += order.total;
+                        stats.nbNewOrders++;
+                    }
+                    if (order.status === 'ordered') {
+                        stats.pendingOrders.push(order);
+                    }
+                    return stats;
+                },
+                {
+                    revenue: 0,
+                    nbNewOrders: 0,
+                    pendingOrders: [],
+                }
+            );
+        this.setState({
+            revenue: aggregations.revenue.toLocaleString(
+                undefined,
+                {
+                    style: 'currency',
+                    currency: 'USD',
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 0,
+                }
+            ),
+            nbNewOrders: aggregations.nbNewOrders,
+            pendingOrders: aggregations.pendingOrders,
+        });
+        const res2 = await reduxFetch(
+            'customers',
+            'GET_MANY',
+            {
+                ids: aggregations.pendingOrders.map(
+                    order => order.customer_id
+                ),
+            }
+        );
+        this.setState({
+            pendingOrdersCustomers: res2.payload.data.reduce(
+                (prev, customer) => {
+                    prev[customer.id] = customer; // eslint-disable-line no-param-reassign
+                    return prev;
+                },
+                {}
+            ),
+        });
     }
 
     fetchReviews(dataProvider) {
@@ -287,4 +254,4 @@ const mapStateToProps = state => ({
     version: state.admin.ui.viewVersion,
 });
 
-export default connect(mapStateToProps)(Dashboard);
+export default compose(connect(mapStateToProps), withReduxFetch)(Dashboard);

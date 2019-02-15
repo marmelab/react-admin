@@ -9,6 +9,7 @@ import removeKey from './removeKey';
 import resolveRedirectTo from './resolveRedirectTo';
 import TestContext from './TestContext';
 import warning from './warning';
+import withReduxFetch from './withReduxFetch';
 import * as fetchUtils from './fetch';
 
 export {
@@ -24,4 +25,5 @@ export {
     resolveRedirectTo,
     TestContext,
     warning,
+    withReduxFetch,
 };
