@@ -61,10 +61,6 @@ class RichTextInput extends Component {
         this.quill = null;
     }
 
-    componentWillReceiveProps(nextProps){
-        this.editor.innerHTML = nextProps.input.value
-    }
-
     onTextChange = () => {
         const value =
             this.editor.innerHTML === '<p><br></p>' ? '' : this.editor.innerHTML;
