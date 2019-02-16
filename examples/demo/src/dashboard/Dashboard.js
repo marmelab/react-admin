@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { GET_LIST, GET_MANY, Responsive, withReduxFetch } from 'react-admin';
+import { GET_LIST, GET_MANY, Responsive, withDataProvider } from 'react-admin';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 
@@ -9,7 +9,6 @@ import NbNewOrders from './NbNewOrders';
 import PendingOrders from './PendingOrders';
 import PendingReviews from './PendingReviews';
 import NewCustomers from './NewCustomers';
-import dataProviderFactory from '../dataProvider';
 
 const styles = {
     flex: { display: 'flex' },
@@ -34,29 +33,25 @@ class Dashboard extends Component {
     }
 
     fetchData() {
-        dataProviderFactory(process.env.REACT_APP_DATA_PROVIDER).then(
-            dataProvider => {
-                this.fetchOrders(dataProvider);
-                this.fetchReviews(dataProvider);
-                this.fetchCustomers(dataProvider);
-            }
-        );
+        this.fetchOrders();
+        this.fetchReviews();
+        this.fetchCustomers();
     }
 
     async fetchOrders() {
-        const { reduxFetch } = this.props;
+        const { dataProvider } = this.props;
         const aMonthAgo = new Date();
         aMonthAgo.setDate(aMonthAgo.getDate() - 30);
-        const res = await reduxFetch(
-            'commands',
+        const res = await dataProvider(
             GET_LIST,
+            'commands',
             {
                 filter: { date_gte: aMonthAgo.toISOString() },
                 sort: { field: 'date', order: 'DESC' },
                 pagination: { page: 1, perPage: 50 },
             }
         );
-        const aggregations = res.payload.data
+        const aggregations = res.data
             .filter(order => order.status !== 'cancelled')
             .reduce(
                 (stats, order) => {
@@ -88,9 +83,9 @@ class Dashboard extends Component {
             nbNewOrders: aggregations.nbNewOrders,
             pendingOrders: aggregations.pendingOrders,
         });
-        const res2 = await reduxFetch(
-            'customers',
+        const res2 = await dataProvider(
             'GET_MANY',
+            'customers',
             {
                 ids: aggregations.pendingOrders.map(
                     order => order.customer_id
@@ -98,7 +93,7 @@ class Dashboard extends Component {
             }
         );
         this.setState({
-            pendingOrdersCustomers: res2.payload.data.reduce(
+            pendingOrdersCustomers: res2.data.reduce(
                 (prev, customer) => {
                     prev[customer.id] = customer; // eslint-disable-line no-param-reassign
                     return prev;
@@ -108,7 +103,8 @@ class Dashboard extends Component {
         });
     }
 
-    fetchReviews(dataProvider) {
+    fetchReviews() {
+        const { dataProvider } = this.props;
         dataProvider(GET_LIST, 'reviews', {
             filter: { status: 'pending' },
             sort: { field: 'date', order: 'DESC' },
@@ -142,7 +138,8 @@ class Dashboard extends Component {
             );
     }
 
-    fetchCustomers(dataProvider) {
+    fetchCustomers() {
+        const { dataProvider } = this.props;
         const aMonthAgo = new Date();
         aMonthAgo.setDate(aMonthAgo.getDate() - 30);
 
@@ -254,4 +251,4 @@ const mapStateToProps = state => ({
     version: state.admin.ui.viewVersion,
 });
 
-export default compose(connect(mapStateToProps), withReduxFetch)(Dashboard);
+export default compose(connect(mapStateToProps), withDataProvider)(Dashboard);
