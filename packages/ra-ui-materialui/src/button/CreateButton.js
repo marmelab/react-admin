@@ -35,35 +35,47 @@ const CreateButton = ({
     translate,
     label = 'ra.action.create',
     icon = <ContentAdd />,
+    data,
     ...rest
-}) => (
-    <Responsive
-        small={
-            <MuiButton
-                component={Link}
-                variant="fab"
-                color="primary"
-                className={classnames(classes.floating, className)}
-                to={`${basePath}/create`}
-                aria-label={label && translate(label)}
-                {...rest}
-            >
-                {icon}
-            </MuiButton>
-        }
-        medium={
-            <Button
-                component={Link}
-                to={`${basePath}/create`}
-                className={className}
-                label={label && translate(label)}
-                {...rest}
-            >
-                {icon}
-            </Button>
-        }
-    />
-);
+}) => {
+    let url = `${basePath}/create`;
+    if (data) {
+        url +=
+            '?' +
+            Object.keys(data)
+                .map(key => `${key}=${data[key]}`)
+                .join('&');
+    }
+
+    return (
+        <Responsive
+            small={
+                <MuiButton
+                    component={Link}
+                    variant="fab"
+                    color="primary"
+                    className={classnames(classes.floating, className)}
+                    to={url}
+                    aria-label={label && translate(label)}
+                    {...rest}
+                >
+                    {icon}
+                </MuiButton>
+            }
+            medium={
+                <Button
+                    component={Link}
+                    to={url}
+                    className={className}
+                    label={label && translate(label)}
+                    {...rest}
+                >
+                    {icon}
+                </Button>
+            }
+        />
+    )
+};
 
 CreateButton.propTypes = {
     basePath: PropTypes.string,
@@ -73,6 +85,7 @@ CreateButton.propTypes = {
     size: PropTypes.string,
     translate: PropTypes.func.isRequired,
     icon: PropTypes.element,
+    data: PropTypes.object,
 };
 
 const enhance = compose(
