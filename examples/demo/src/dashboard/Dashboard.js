@@ -42,7 +42,7 @@ class Dashboard extends Component {
         const { dataProvider } = this.props;
         const aMonthAgo = new Date();
         aMonthAgo.setDate(aMonthAgo.getDate() - 30);
-        const res = await dataProvider(
+        const { data: recentOrders } = await dataProvider(
             GET_LIST,
             'commands',
             {
@@ -51,7 +51,7 @@ class Dashboard extends Component {
                 pagination: { page: 1, perPage: 50 },
             }
         );
-        const aggregations = res.data
+        const aggregations = recentOrders
             .filter(order => order.status !== 'cancelled')
             .reduce(
                 (stats, order) => {
@@ -71,93 +71,67 @@ class Dashboard extends Component {
                 }
             );
         this.setState({
-            revenue: aggregations.revenue.toLocaleString(
-                undefined,
-                {
-                    style: 'currency',
-                    currency: 'USD',
-                    minimumFractionDigits: 0,
-                    maximumFractionDigits: 0,
-                }
-            ),
+            revenue: aggregations.revenue.toLocaleString(undefined, {
+                style: 'currency',
+                currency: 'USD',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0,
+            }),
             nbNewOrders: aggregations.nbNewOrders,
             pendingOrders: aggregations.pendingOrders,
         });
-        const res2 = await dataProvider(
-            'GET_MANY',
-            'customers',
-            {
-                ids: aggregations.pendingOrders.map(
-                    order => order.customer_id
-                ),
-            }
-        );
+        const { data: customers } = await dataProvider(GET_MANY, 'customers', {
+            ids: aggregations.pendingOrders.map(order => order.customer_id),
+        });
         this.setState({
-            pendingOrdersCustomers: res2.data.reduce(
-                (prev, customer) => {
-                    prev[customer.id] = customer; // eslint-disable-line no-param-reassign
-                    return prev;
-                },
-                {}
-            ),
+            pendingOrdersCustomers: customers.reduce((prev, customer) => {
+                prev[customer.id] = customer; // eslint-disable-line no-param-reassign
+                return prev;
+            }, {}),
         });
     }
 
-    fetchReviews() {
+    async fetchReviews() {
         const { dataProvider } = this.props;
-        dataProvider(GET_LIST, 'reviews', {
+        const { data: reviews } = await dataProvider(GET_LIST, 'reviews', {
             filter: { status: 'pending' },
             sort: { field: 'date', order: 'DESC' },
             pagination: { page: 1, perPage: 100 },
-        })
-            .then(response => response.data)
-            .then(reviews => {
-                const nbPendingReviews = reviews.reduce(nb => ++nb, 0);
-                const pendingReviews = reviews.slice(
-                    0,
-                    Math.min(10, reviews.length)
-                );
-                this.setState({ pendingReviews, nbPendingReviews });
-                return pendingReviews;
-            })
-            .then(reviews => reviews.map(review => review.customer_id))
-            .then(customerIds =>
-                dataProvider(GET_MANY, 'customers', {
-                    ids: customerIds,
-                })
-            )
-            .then(response => response.data)
-            .then(customers =>
-                customers.reduce((prev, customer) => {
-                    prev[customer.id] = customer; // eslint-disable-line no-param-reassign
-                    return prev;
-                }, {})
-            )
-            .then(customers =>
-                this.setState({ pendingReviewsCustomers: customers })
-            );
+        });
+        const nbPendingReviews = reviews.reduce(nb => ++nb, 0);
+        const pendingReviews = reviews.slice(0, Math.min(10, reviews.length));
+        this.setState({ pendingReviews, nbPendingReviews });
+        const { data: customers } = await dataProvider(GET_MANY, 'customers', {
+            ids: pendingReviews.map(review => review.customer_id),
+        });
+        this.setState({
+            pendingReviewsCustomers: customers.reduce((prev, customer) => {
+                prev[customer.id] = customer; // eslint-disable-line no-param-reassign
+                return prev;
+            }, {}),
+        });
     }
 
-    fetchCustomers() {
+    async fetchCustomers() {
         const { dataProvider } = this.props;
         const aMonthAgo = new Date();
         aMonthAgo.setDate(aMonthAgo.getDate() - 30);
-
-        dataProvider(GET_LIST, 'customers', {
-            filter: {
-                has_ordered: true,
-                first_seen_gte: aMonthAgo.toISOString(),
-            },
-            sort: { field: 'first_seen', order: 'DESC' },
-            pagination: { page: 1, perPage: 100 },
-        })
-            .then(response => response.data)
-            .then(newCustomers => {
-                this.setState({ newCustomers });
-                this.setState({
-                    nbNewCustomers: newCustomers.reduce(nb => ++nb, 0),
-                });
-            });
+        const { data: newCustomers } = await dataProvider(
+            GET_LIST,
+            'customers',
+            {
+                filter: {
+                    has_ordered: true,
+                    first_seen_gte: aMonthAgo.toISOString(),
+                },
+                sort: { field: 'first_seen', order: 'DESC' },
+                pagination: { page: 1, perPage: 100 },
+            }
+        );
+        this.setState({
+            newCustomers,
+            nbNewCustomers: newCustomers.reduce(nb => ++nb, 0),
+        });
     }
 
     render() {
@@ -251,4 +225,7 @@ const mapStateToProps = state => ({
     version: state.admin.ui.viewVersion,
 });
 
-export default compose(connect(mapStateToProps), withDataProvider)(Dashboard);
+export default compose(
+    connect(mapStateToProps),
+    withDataProvider
+)(Dashboard);
