@@ -261,7 +261,7 @@ class ApproveButton extends Component {
 +       dataProvider(UPDATE, 'comments', { id: record.id, data: updatedRecord }, {
 +           onSuccess: {
 +               notification: 'Comment approved',
-+               redirectTo: '/comments
++               redirectTo: '/comments',
 +           },
 +           onError: {
 +               notification: { body: 'Error: comment not approved', level: 'warning' }
@@ -311,7 +311,7 @@ class ApproveButton extends Component {
 +           undoable: true,
             onSuccess: {
                 notification: 'Comment approved',
-                redirectTo: '/comments
+                redirectTo: '/comments',
             },
             onError: {
                 notification: { body: 'Error: comment not approved', level: 'warning' }
@@ -325,6 +325,69 @@ class ApproveButton extends Component {
 ```
 
 The fact that react-admin can undo a call to the API if you use `withDataProvider` should be another motivation to avoid using raw `fetch`.
+
+## Query and Mutation Components
+
+When using the `withDataProvider` decorator to fetch data from the API, you must create a stateful class component to handle the initial state, the loading state, the loaded state, and the error state. That's a lot of boilerplate for a simple query.
+
+For such cases, react-admin provides a `<Query>` component, which uses `withDataProvider` under the hood. It leverages the render props pattern to reduce the boilerplate.
+
+For instance, to fetch and display a user profile in a standalone component:
+
+```jsx
+import { Query } from 'react-admin';
+
+const UserProfile = ({ record }) => (
+    <Query type="GET_ONE" resource="users" payload={{ id: record.id }}>
+        {({ data, loading, error }) => {
+            if (loading) { return <Loading />; }
+            if (error) { return <p>ERROR</p>; }
+            return <div>User {data.username}</div>;
+        }}
+    </Query>
+);
+```
+
+Just like the `dataProvider` injected prop, the `<Query>` component expects three paramaters: `type`, `resource`, and `payload`. It fetches the data provider on mount, and passes the data to its child component once the response from the API arrives.
+
+The `<Query>` component is designed to read data from the API. When calling the API to update ("mutate") data, use the `<Mutation>` component instead. It passes a callback to trigger the API call to its child function. And the `<ApproveButton>` component from previous sections is a great use case for demonstrating `<Mutation>`:
+
+```jsx
+import { Mutation } from 'react-admin';
+
+const options = 
+    undoable: true,
+    onSuccess: {
+        notification: 'Comment approved',
+        redirectTo: '/comments',
+    },
+    onError: {
+        notification: { body: 'Error: comment not approved', level: 'warning' }
+    }
+};
+
+const ApproveButton = ({ record }) => {
+    const payload = { id: record.id, data: { ...record, is_approved: true } };
+    return (
+        <Mutation
+            type="UPDATE"
+            resource="comments"
+            payload={payload}
+            options={options}
+        >
+            {(approve) => (
+                <FlatButton label="Approve" onClick={approve} />
+            )}
+        </Mutation>
+    );
+}
+
+export default ApproveButton;
+```
+
+Thanks to `Query` and `Mutation`, you can use a stateless function component instead of a class component, avoid the decoration with the `withDataProvider` HOC, and write less code.
+
+And if you need to chain API calls, don't hesitate to nest `<Query>` components!
 
 ## Using a Custom Action Creator 
 
