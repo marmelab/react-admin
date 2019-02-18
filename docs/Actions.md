@@ -124,6 +124,8 @@ import jsonServerProvider from 'ra-data-json-server';
 export default jsonServerProvider('http://Mydomain.com/api/');
 ```
 
+The `dataProvider` function returns a Promise, so the difference with `fetch` is minimal:
+
 ```diff
 // in src/comments/ApproveButton.js
 -import { showNotification } from 'react-admin';
@@ -135,21 +137,14 @@ class ApproveButton extends Component {
         const { push, record, showNotification } = this.props;
         const updatedRecord = { ...record, is_approved: true };
 -       fetch(`/comments/${record.id}`, { method: 'PUT', body: updatedRecord })
--           .then(() => {
--               showNotification('Comment approved');
--               push('/comments');
--           })
--           .catch((e) => {
--               showNotification('Error: comment not approved', 'warning')
--           });
 +       dataProvider(UPDATE, 'comments', { id: record.id, data: updatedRecord })
-+           .then(() => {
-+               showNotification('Comment approved');
-+               push('/comments');
-+           })
-+           .catch((e) => {
-+               showNotification('Error: comment not approved', 'warning')
-+           });
+            .then(() => {
+                showNotification('Comment approved');
+                push('/comments');
+            })
+            .catch((e) => {
+                showNotification('Error: comment not approved', 'warning')
+            });
     }
 
     render() {
@@ -158,7 +153,7 @@ class ApproveButton extends Component {
 }
 ```
 
-There you go: no more `fetch`. Just like `fetch`, the `dataProvider` returns a `Promise`. It's signature is:
+As a reminder, the signature of the  `dataProvider` function is:
 
 ```jsx
 /**
@@ -180,9 +175,9 @@ As for the syntax of the various request types (`GET_LIST`, `GET_ONE`, `UPDATE`,
 
 ## Using the `withDataProvider` Decorator
 
-Fetching data with `fetch` or the `dataProvider` right inside the component is easy. But both these solutions have one drawback: while the request is being processed by the server, the UI doesn't show the loading indicator.
+Using either `fetch` or the `dataProvider` has one drawback: while the request is being processed by the server, the UI doesn't show the loading indicator.
 
-React-admin components don't call the `dataProvider` directly. Instead, they dispatch special Redux actions that react-admin turns into `dataProvider` calls. This allows react-admin to handle the loading state automatically. 
+React-admin components don't call the `dataProvider` function directly. Instead, they dispatch special Redux actions that react-admin turns into `dataProvider` calls. This allows react-admin to handle the loading state automatically. 
 
 You can use the same feature for your own components. You'll need to wrap your component with a function called `withDataProvider`, which injects a `dataProvider` prop to the component. This `dataProvider` prop is a function which behaves exactly like your own `dataProvider`: it has the same signature, and it returns a Promise. The only difference is that it uses Redux under the hood. That means you get a loading indicator! In addition, `withDataProvider` injects the `dispatch` function into the component, so you don't even need to `connect()` your own component to dispatch actions anymore.
 
@@ -236,11 +231,9 @@ ApproveButton.propTypes = {
 +export default withDataProvider(ApproveButton)
 ```
 
-This is the recommended way to fetch the API in your components. It is readable and perfectly functional.
-
 ## Handling Side Effects
 
-Fetching data is called a *side effect*, since it calls the outside world, and is asynchronous. Usual actions may have other side effects, like showing a notification, or redirecting the user to another page. The `dataProvider` function injected by `withDataProvider` accepts a fourth parameter, which lets you describe the options of the query, including success anf failure side effects. So the previous component can be even further rewritten as follows:
+Fetching data is called a *side effect*, since it calls the outside world, and is asynchronous. Usual actions may have other side effects, like showing a notification, or redirecting the user to another page. The `dataProvider` function injected by `withDataProvider` accepts a fourth parameter, which lets you describe the options of the query, including success and failure side effects. So the previous component can be even further simplified as follows:
 
 ```diff
 // in src/comments/ApproveButton.js
@@ -305,7 +298,7 @@ For its own fetch actions, react-admin uses an approach called *optimistic rende
 
 As a bonus, while the success notification is displayed, users have the ability to cancel the action *before* the data provider is even called.
 
-You can benefit from optimistic rendering in your own custom actions, too. You just need to pass the `undoable: true` option in the fourth parameter to the `dataProvider` call:
+You can benefit from optimistic rendering when you call the `dataProvider` prop function, too. You just need to pass the `undoable: true` option in the options parameter:
 
 ```diff
 // in src/comments/ApproveButton.js
@@ -330,7 +323,7 @@ class ApproveButton extends Component {
 }
 ```
 
-The fact that react-admin can undo a call to the API if you use `withDataProvider` should be another motivation to avoid using raw `fetch`.
+The fact that react-admin can handle side effects and undo a call to the API if you use `withDataProvider` should be a good motivation to prefer it to raw `fetch`.
 
 ## `<Query>` and `<Mutation>` Components
 
