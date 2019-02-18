@@ -1,17 +1,23 @@
 ---
 layout: default
-title: "Actions"
+title: "Queryng the API"
 ---
 
 # Querying the API
 
-Admin interfaces often have to offer custom actions, beyond the simple CRUD. For instance, in an administration for comments, an "Approve" button (allowing to update the `is_approved` property and to save the updated record in one click) - is a must have.
+Admin interfaces often have to query the API beyond CRUD requests. For instance, in an administration for comments, an "Approve" button (allowing to update the `is_approved` property and to save the updated record in one click) - is a must have.
 
-How can you add such custom actions with react-admin? There are several answers to that question, and you should understand the strengths and drawbacks of each solution before choosing one. 
+How can you add such custom actions with react-admin? There are several answers to that question, and you should understand the strengths and drawbacks of each solution before choosing one.
 
-**Tip**: Reading this tutorial until the end will give you a better understanding of how react-admin uses Redux and redux-saga.
+* [Using `fetch`](#the-simple-way-using-fetch)
+* [Using the `dataProvider`](#using-the-data-provider-instead-of-fetch)
+* [Using the `withDataProvider` Decorator](#using-the-withdataprovider-decorator)
+* [Using the `<Query>` and `<Mutation>` Components](#query-and-mutation-components)
+* [Using a Custom Action Creator](#using-a-custom-action-creator)
 
-## The Simple Way: Using Fetch
+**Tip**: Most of the time, the `<Query>` and `<Mutation>` components will do everything you need wit hthe simplest API.
+
+## The Simple Way: Using `fetch`
 
 Here is an implementation of the "Approve" button using the browser `fetch()` function that works fine:
 
@@ -108,7 +114,7 @@ export const CommentEdit = (props) =>
     </Edit>;
 ```
 
-## Using a Data Provider Instead of Fetch
+## Using The Data Provider Instead of Fetch
 
 The previous code uses `fetch()`, which means it makes HTTP requests directly. But APIs often require a bit of HTTP plumbing to deal with authentication, query parameters, encoding, headers, etc. It turns out you probably already have a function that maps from a REST request to an HTTP request: the [Data Provider](./DataProviders.md). So it's a good idea to use this function instead of `fetch` - provided you have exported it:
 
@@ -326,7 +332,7 @@ class ApproveButton extends Component {
 
 The fact that react-admin can undo a call to the API if you use `withDataProvider` should be another motivation to avoid using raw `fetch`.
 
-## Query and Mutation Components
+## `<Query>` and `<Mutation>` Components
 
 When using the `withDataProvider` decorator to fetch data from the API, you must create a stateful class component to handle the initial state, the loading state, the loaded state, and the error state. That's a lot of boilerplate for a simple query.
 
@@ -334,6 +340,7 @@ For such cases, react-admin provides a `<Query>` component, which uses `withData
 
 For instance, to fetch and display a user profile in a standalone component:
 
+{% raw %}
 ```jsx
 import { Query } from 'react-admin';
 
@@ -347,6 +354,7 @@ const UserProfile = ({ record }) => (
     </Query>
 );
 ```
+{% endraw %}
 
 Just like the `dataProvider` injected prop, the `<Query>` component expects three paramaters: `type`, `resource`, and `payload`. It fetches the data provider on mount, and passes the data to its child component once the response from the API arrives.
 
@@ -485,7 +493,7 @@ The side effects accepted in the `meta` field of the aciton are the same as in t
 - `callback`: Execute an arbitrary function. The meta value should be the function to execute. It receives the `requestPayload` and the response `payload`.
 - `basePath`: This is not a side effect, but it's used internally to compute redirection paths. Set it when you have a redirection side effect.
 
-## Undoable Action
+## Making An Action Undoable
 
 when using the `withDataProvider` function, you could trigger optimistic rendering and get an undo button for free. the same feature is possible using custom actions. You need to decorate the action with the `startUndoable` action creator:
 
@@ -766,8 +774,13 @@ You can find a complete example of a custom Bulk Action button in the `List` doc
 
 ## Conclusion
 
-Which style should you choose for your own action buttons?
+Which style should you choose for your own action buttons? Here is a quick benchmark:
 
-The first version (with `fetch`) is perfectly fine, and if you're not into unit testing your components, or decoupling side effects from pure functions, then you can stick with it without problem.
 
-On the other hand, if you want to promote reusability, separation of concerns, adhere to react-admin's coding standards, and if you know enough Redux and Saga, use the final version.
+Solution | Advantages | Drawbacks 
+---------|------------|-----------
+`fetch`  | Nothing to learn | Requires duplication of authentication, does not handle the loading state, adds boilerplate
+`dataProvider` | Familiar API | Does not handle the loading state, adds boilerplate
+`withDataProvider` | Familiar API, handles side effects | Adds boilerplate, uses HOC
+`<Query>` and `<Mutation>` | Declarative, dense, handles loading and error states, handles side effects | Mostly for simple use cases
+Custom action | Allows logic reuse, handles side effects, idiomatic to Redux | Hard to chain calls
