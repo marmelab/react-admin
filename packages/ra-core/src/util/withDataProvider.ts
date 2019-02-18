@@ -55,7 +55,7 @@ export default Component =>
         null,
         dispatch => ({
             dataProvider: (
-                verb,
+                type,
                 resource: string,
                 payload: any,
                 meta: any = {}
@@ -67,7 +67,7 @@ export default Component =>
                         meta: {
                             ...meta,
                             resource,
-                            fetch: verb,
+                            fetch: type,
                             onSuccess: {
                                 ...get(meta, 'onSuccess', {}),
                                 callback: ({ payload: response }) =>
