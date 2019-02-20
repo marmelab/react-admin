@@ -145,7 +145,10 @@ interface State {
  *     <SelectInput optionText="title" />
  * </ReferenceInput>
  */
-export class ReferenceInputControllerView extends Component<Props, State> {
+export class UnconnectedReferenceInputController extends Component<
+    Props,
+    State
+> {
     public static defaultProps = {
         allowEmpty: false,
         filter: {},
@@ -312,7 +315,7 @@ const ReferenceInputController = compose(
             crudGetMatchingAccumulate: crudGetMatchingAccumulateAction,
         }
     )
-)(ReferenceInputControllerView);
+)(UnconnectedReferenceInputController);
 
 ReferenceInputController.defaultProps = {
     referenceSource: defaultReferenceSource, // used in makeMapStateToProps

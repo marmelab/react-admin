@@ -34,9 +34,8 @@ interface Props {
     isLoading: boolean;
     location: Location;
     match: Match;
-    record?: Record;
+    record?: Partial<Record>;
     resource: string;
-    title: string | ReactNode;
     translate: Translate;
 }
 
@@ -81,12 +80,12 @@ interface Props {
  *     );
  *     export default App;
  */
-export class CreateControllerView extends Component<Props> {
-    public static defaultProps = {
+export class UnconnectedCreateController extends Component<Props> {
+    public static defaultProps: Partial<Props> = {
         record: {},
     };
 
-    private record;
+    private record: Partial<Record>;
 
     constructor(props) {
         super(props);
@@ -168,6 +167,6 @@ const CreateController = compose(
         { crudCreate: crudCreateAction }
     ),
     withTranslate
-)(CreateControllerView);
+)(UnconnectedCreateController);
 
 export default CreateController;

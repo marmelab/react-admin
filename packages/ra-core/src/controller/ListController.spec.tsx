@@ -3,7 +3,7 @@ import { shallow } from 'enzyme';
 import lolex from 'lolex';
 
 import {
-    ListControllerView as ListController,
+    UnconnectedListController as ListController,
     getListControllerProps,
     sanitizeListRestProps,
 } from './ListController';

@@ -2,7 +2,7 @@ import React from 'react';
 import assert from 'assert';
 import { shallow } from 'enzyme';
 import { render } from 'react-testing-library';
-import { ReferenceManyFieldControllerView as ReferenceManyFieldController } from './ReferenceManyFieldController';
+import { UnconnectedReferenceManyFieldController as ReferenceManyFieldController } from './ReferenceManyFieldController';
 
 describe('<ReferenceManyFieldController />', () => {
     it('should set loadedOnce to false when related records are not yet fetched', () => {

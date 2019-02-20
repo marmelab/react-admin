@@ -54,7 +54,7 @@ interface Props {
  *     <TextField source="name" />
  * </ReferenceField>
  */
-export class ReferenceFieldControllerView extends Component<Props> {
+export class UnconnectedReferenceFieldController extends Component<Props> {
     public static defaultProps: Partial<Props> = {
         allowEmpty: false,
         linkType: 'edit',
@@ -117,6 +117,6 @@ const ReferenceFieldController = connect(
     {
         crudGetManyAccumulate: crudGetManyAccumulateAction,
     }
-)(ReferenceFieldControllerView);
+)(UnconnectedReferenceFieldController);
 
 export default ReferenceFieldController;

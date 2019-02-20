@@ -1,7 +1,7 @@
 import React from 'react';
 import assert from 'assert';
 import { shallow } from 'enzyme';
-import { ReferenceArrayInputControllerView as ReferenceArrayInputController } from './ReferenceArrayInputController';
+import { UnconnectedReferenceArrayInputController as ReferenceArrayInputController } from './ReferenceArrayInputController';
 
 describe('<ReferenceArrayInputController />', () => {
     const defaultProps = {

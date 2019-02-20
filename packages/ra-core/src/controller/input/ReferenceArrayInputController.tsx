@@ -136,7 +136,7 @@ interface Props {
  *     <SelectArrayInput optionText="name" />
  * </ReferenceArrayInput>
  */
-export class ReferenceArrayInputControllerView extends Component<Props> {
+export class UnconnectedReferenceArrayInputController extends Component<Props> {
     public static defaultProps = {
         allowEmpty: false,
         filter: {},
@@ -319,7 +319,7 @@ const ReferenceArrayInputController = compose(
             crudGetMatching: crudGetMatchingAction,
         }
     )
-)(ReferenceArrayInputControllerView);
+)(UnconnectedReferenceArrayInputController);
 
 ReferenceArrayInputController.defaultProps = {
     referenceSource: defaultReferenceSource, // used in makeMapStateToProps

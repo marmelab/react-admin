@@ -2,7 +2,7 @@ import React from 'react';
 import assert from 'assert';
 import { shallow } from 'enzyme';
 import { render } from 'react-testing-library';
-import { ReferenceInputControllerView as ReferenceInputController } from './ReferenceInputController';
+import { UnconnectedReferenceInputController as ReferenceInputController } from './ReferenceInputController';
 
 describe('<ReferenceInputController />', () => {
     const defaultProps = {

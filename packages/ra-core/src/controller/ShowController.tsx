@@ -5,7 +5,9 @@ import inflection from 'inflection';
 import withTranslate from '../i18n/translate';
 import { crudGetOne as crudGetOneAction } from '../actions';
 import checkMinimumRequiredProps from './checkMinimumRequiredProps';
-import { Translate, Record, Dispatch } from '../types';
+import { Translate, Record, Dispatch, Identifier } from '../types';
+import { Location } from 'history';
+import { match as Match } from 'react-router';
 
 interface ChildrenFuncParams {
     isLoading: boolean;
@@ -13,7 +15,6 @@ interface ChildrenFuncParams {
     resource: string;
     basePath: string;
     record?: Record;
-    title: string | ReactNode;
     translate: Translate;
     version: number;
 }
@@ -27,12 +28,11 @@ interface Props {
     hasEdit: boolean;
     hasShow: boolean;
     hasList: boolean;
-    id: string;
+    id: Identifier;
     isLoading: boolean;
-    location: object;
-    match: object;
+    location: Location;
+    match: Match;
     resource: string;
-    title: string | ReactNode;
     translate: Translate;
     version: number;
 }
@@ -79,7 +79,7 @@ interface Props {
  *     );
  *     export default App;
  */
-export class ShowController extends Component<Props> {
+export class UnconnectedShowController extends Component<Props> {
     componentDidMount() {
         this.updateData();
     }
@@ -105,7 +105,6 @@ export class ShowController extends Component<Props> {
             isLoading,
             record,
             resource,
-            title,
             translate,
             version,
         } = this.props;
@@ -125,7 +124,6 @@ export class ShowController extends Component<Props> {
         });
         return children({
             isLoading,
-            title,
             defaultTitle,
             resource,
             basePath,
@@ -147,11 +145,13 @@ function mapStateToProps(state, props) {
     };
 }
 
-export default compose(
+const ShowController = compose(
     checkMinimumRequiredProps('Show', ['basePath', 'resource']),
     connect(
         mapStateToProps,
         { crudGetOne: crudGetOneAction }
     ),
     withTranslate
-)(ShowController);
+)(UnconnectedShowController);
+
+export default ShowController;

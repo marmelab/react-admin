@@ -11,7 +11,7 @@ import {
 } from '../actions';
 import { REDUX_FORM_NAME } from '../form';
 import checkMinimumRequiredProps from './checkMinimumRequiredProps';
-import { Translate, Record, Dispatch } from '../types';
+import { Translate, Record, Dispatch, Identifier } from '../types';
 import { RedirectionSideEffect } from '../sideEffect';
 
 interface ChildrenFuncParams {
@@ -36,14 +36,13 @@ interface Props {
     hasEdit: boolean;
     hasShow: boolean;
     hasList: boolean;
-    id: string;
+    id: Identifier;
     isLoading: boolean;
     location: object;
     match: object;
     resetForm: (form: string) => void;
     resource: string;
     startUndoable: Dispatch<typeof startUndoableAction>;
-    title: string | ReactNode;
     translate: Translate;
     undoable?: boolean;
     version: number;
@@ -91,7 +90,7 @@ interface Props {
  *     );
  *     export default App;
  */
-export class EditController extends Component<Props> {
+export class UnconnectedEditController extends Component<Props> {
     componentDidMount() {
         this.updateData();
     }
@@ -194,7 +193,7 @@ function mapStateToProps(state, props) {
     };
 }
 
-export default compose(
+const EditController = compose(
     checkMinimumRequiredProps('Edit', ['basePath', 'resource']),
     connect(
         mapStateToProps,
@@ -206,4 +205,6 @@ export default compose(
         }
     ),
     withTranslate
-)(EditController);
+)(UnconnectedEditController);
+
+export default EditController;

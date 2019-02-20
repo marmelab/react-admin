@@ -4,14 +4,21 @@ import get from 'lodash/get';
 
 import { crudGetManyAccumulate as crudGetManyAccumulateAction } from '../../actions';
 import { getReferencesByIds } from '../../reducer/admin/references/oneToMany';
-import { ReduxState, Record, RecordMap, Dispatch } from '../../types';
+import {
+    ReduxState,
+    Record,
+    RecordMap,
+    Dispatch,
+    Sort,
+    Identifier,
+} from '../../types';
 
 interface ChildrenFuncParams {
     loadedOnce: boolean;
-    ids: any[];
+    ids: Identifier[];
     data: RecordMap;
     referenceBasePath: string;
-    currentSort: any;
+    currentSort: Sort;
 }
 
 interface Props {
@@ -19,7 +26,7 @@ interface Props {
     children: (params: ChildrenFuncParams) => ReactNode;
     crudGetManyAccumulate: Dispatch<typeof crudGetManyAccumulateAction>;
     data?: RecordMap;
-    ids: any[];
+    ids: Identifier[];
     record?: Record;
     reference: string;
     resource: string;
@@ -58,7 +65,7 @@ interface Props {
  * </ReferenceArrayField>
  *
  */
-export class ReferenceArrayFieldControllerView extends Component<Props> {
+export class UnconnectedReferenceArrayFieldController extends Component<Props> {
     componentDidMount() {
         this.fetchReferences();
     }
@@ -94,7 +101,10 @@ export class ReferenceArrayFieldControllerView extends Component<Props> {
             ids,
             data,
             referenceBasePath,
-            currentSort: {},
+            currentSort: {
+                field: 'id',
+                order: 'ASC',
+            },
         });
     }
 }
@@ -113,6 +123,6 @@ const ReferenceArrayFieldController = connect(
     {
         crudGetManyAccumulate: crudGetManyAccumulateAction,
     }
-)(ReferenceArrayFieldControllerView);
+)(UnconnectedReferenceArrayFieldController);
 
 export default ReferenceArrayFieldController;

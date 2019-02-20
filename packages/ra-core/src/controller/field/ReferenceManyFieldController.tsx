@@ -47,6 +47,12 @@ interface Props {
     total?: number;
 }
 
+interface State {
+    sort: Sort;
+    page: number;
+    perPage: number;
+}
+
 /**
  * Render related records to the current one.
  *
@@ -93,7 +99,10 @@ interface Props {
  *    ...
  * </ReferenceManyField>
  */
-export class ReferenceManyFieldControllerView extends Component<Props> {
+export class UnconnectedReferenceManyFieldController extends Component<
+    Props,
+    State
+> {
     public static defaultProps: Partial<Props> = {
         filter: {},
         perPage: 25,
@@ -101,7 +110,7 @@ export class ReferenceManyFieldControllerView extends Component<Props> {
         source: 'id',
     };
 
-    public state = {
+    public state: State = {
         sort: this.props.sort,
         page: 1,
         perPage: this.props.perPage,
@@ -111,7 +120,7 @@ export class ReferenceManyFieldControllerView extends Component<Props> {
         this.fetchReferences();
     }
 
-    componentWillReceiveProps(nextProps) {
+    componentWillReceiveProps(nextProps: Props) {
         if (
             this.props.record.id !== nextProps.record.id ||
             !isEqual(this.props.filter, nextProps.filter)
@@ -133,9 +142,10 @@ export class ReferenceManyFieldControllerView extends Component<Props> {
         this.setState({ sort: { field, order } }, this.fetchReferences);
     };
 
-    setPage = page => this.setState({ page }, this.fetchReferences);
+    setPage = (page: number) => this.setState({ page }, this.fetchReferences);
 
-    setPerPage = perPage => this.setState({ perPage }, this.fetchReferences);
+    setPerPage = (perPage: number) =>
+        this.setState({ perPage }, this.fetchReferences);
 
     fetchReferences(
         { reference, record, resource, target, filter, source } = this.props
@@ -212,6 +222,6 @@ const ReferenceManyFieldController = connect(
     {
         crudGetManyReference: crudGetManyReferenceAction,
     }
-)(ReferenceManyFieldControllerView);
+)(UnconnectedReferenceManyFieldController);
 
 export default ReferenceManyFieldController;

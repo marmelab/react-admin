@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import { CreateControllerView as CreateController } from './CreateController';
+import { UnconnectedCreateController as CreateController } from './CreateController';
 
 describe('CreateController', () => {
     describe('Presetting the record from the location', () => {

@@ -145,7 +145,7 @@ interface Props {
  *         </List>
  *     );
  */
-export class ListControllerView extends Component<Props> {
+export class UnconnectedListController extends Component<Props> {
     public static defaultProps: Partial<Props> = {
         debounce: 500,
         filter: {},
@@ -399,7 +399,10 @@ export class ListControllerView extends Component<Props> {
                 (typeof query.page === 'string'
                     ? parseInt(query.page, 10)
                     : query.page) || 1,
-            perPage: parseInt(query.perPage.toString(), 10),
+            perPage:
+                (typeof query.perPage === 'string'
+                    ? parseInt(query.perPage, 10)
+                    : query.perPage) || 10,
             resource,
             selectedIds,
             setFilters: this.setFilters,
@@ -513,6 +516,6 @@ const ListController = compose(
         }
     ),
     withTranslate
-)(ListControllerView);
+)(UnconnectedListController);
 
 export default ListController;

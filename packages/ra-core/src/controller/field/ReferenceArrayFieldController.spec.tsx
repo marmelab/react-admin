@@ -1,7 +1,7 @@
 import React from 'react';
 import assert from 'assert';
 import { shallow } from 'enzyme';
-import { ReferenceArrayFieldControllerView as ReferenceArrayFieldController } from './ReferenceArrayFieldController';
+import { UnconnectedReferenceArrayFieldController as ReferenceArrayFieldController } from './ReferenceArrayFieldController';
 
 describe('<ReferenceArrayFieldController />', () => {
     const crudGetManyAccumulate = jest.fn();
