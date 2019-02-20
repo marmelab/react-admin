@@ -18,7 +18,7 @@ interface ChildrenFuncParams {
     save: (record: Partial<Record>, redirect: RedirectionSideEffect) => void;
     resource: string;
     basePath: string;
-    record?: Record;
+    record?: Partial<Record>;
     redirect: RedirectionSideEffect;
     translate: Translate;
 }
