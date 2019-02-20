@@ -5,7 +5,9 @@ export interface Record {
 }
 
 export interface RecordMap {
+    // Accept strings and numbers as identifiers
     [id: string]: Record;
+    [id: number]: Record;
 }
 
 export interface Sort {
