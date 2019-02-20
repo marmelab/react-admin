@@ -49,11 +49,12 @@ interface State {
 class Mutation extends Component<Props, State> {
     state = {
         data: null,
-        loading: true,
+        loading: false,
         error: null,
     };
 
     mutate = () => {
+        this.setState({ loading: true });
         const { dataProvider, type, resource, payload, options } = this.props;
         dataProvider(type, resource, payload, options)
             .then(({ data }) => {
