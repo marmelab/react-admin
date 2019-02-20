@@ -46,7 +46,7 @@ interface Props {
     filter?: object;
     filterToQuery: (filter: {}) => any;
     input?: WrappedFieldInputProps;
-    matchingReferences: Record[] | MatchingReferencesError;
+    matchingReferences?: Record[] | MatchingReferencesError;
     onChange: () => void;
     perPage: number;
     record?: Record;

@@ -71,28 +71,28 @@ interface Props {
     // the props you can change
     children: (params: ChildrenFuncParams) => ReactNode;
     filter?: object;
-    filters: ReactElement<any>;
-    filterDefaultValues: object;
-    pagination: ReactElement<any>;
+    filters?: ReactElement<any>;
+    filterDefaultValues?: object;
+    pagination?: ReactElement<any>;
     perPage: number;
     sort: Sort;
     // the props managed by react-admin
-    authProvider: AuthProvider;
+    authProvider?: AuthProvider;
     basePath: string;
     changeListParams: Dispatch<typeof changeListParamsAction>;
     crudGetList: Dispatch<typeof crudGetListAction>;
     data?: RecordMap;
-    debounce: number;
-    hasCreate: boolean;
-    hasEdit: boolean;
-    hasList: boolean;
-    hasShow: boolean;
-    ids: Identifier[];
-    loadedOnce: boolean;
-    selectedIds: Identifier[];
+    debounce?: number;
+    hasCreate?: boolean;
+    hasEdit?: boolean;
+    hasList?: boolean;
+    hasShow?: boolean;
+    ids?: Identifier[];
+    loadedOnce?: boolean;
+    selectedIds?: Identifier[];
     isLoading: boolean;
     location: Location;
-    path: string;
+    path?: string;
     params: ListParams;
     push: (location: LocationDescriptorObject<LocationState>) => void;
     query: ListParams;
@@ -101,7 +101,7 @@ interface Props {
     toggleItem: (resource: string, id: Identifier) => void;
     total: number;
     translate: Translate;
-    version: number;
+    version?: number;
 }
 
 /**

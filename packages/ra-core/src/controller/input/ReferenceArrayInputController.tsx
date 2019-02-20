@@ -35,7 +35,7 @@ interface ChildrenFuncParams {
 }
 
 interface Props {
-    allowEmpty: boolean;
+    allowEmpty?: boolean;
     basePath: string;
     children: (params: ChildrenFuncParams) => ReactNode;
     crudGetMatching: Dispatch<typeof crudGetMatchingAction>;

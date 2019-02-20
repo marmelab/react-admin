@@ -27,10 +27,10 @@ interface Props {
     basePath: string;
     children: (params: ChildrenFuncParams) => ReactNode;
     crudCreate: Dispatch<typeof crudCreateAction>;
-    hasCreate: boolean;
-    hasEdit: boolean;
-    hasList: boolean;
-    hasShow: boolean;
+    hasCreate?: boolean;
+    hasEdit?: boolean;
+    hasList?: boolean;
+    hasShow?: boolean;
     isLoading: boolean;
     location: Location;
     match: Match;

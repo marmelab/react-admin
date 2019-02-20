@@ -32,14 +32,12 @@ interface Props {
     crudGetOne: Dispatch<typeof crudGetOne>;
     dispatchCrudUpdate: Dispatch<typeof crudUpdate>;
     record?: Record;
-    hasCreate: boolean;
-    hasEdit: boolean;
-    hasShow: boolean;
-    hasList: boolean;
+    hasCreate?: boolean;
+    hasEdit?: boolean;
+    hasShow?: boolean;
+    hasList?: boolean;
     id: Identifier;
     isLoading: boolean;
-    location: object;
-    match: object;
     resetForm: (form: string) => void;
     resource: string;
     startUndoable: Dispatch<typeof startUndoableAction>;
