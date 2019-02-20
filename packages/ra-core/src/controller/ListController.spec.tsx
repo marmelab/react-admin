@@ -1,10 +1,9 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import lolex from 'lolex';
-import { setDisplayName } from 'recompose';
 
 import {
-    ListController,
+    UnconnectedListController as ListController,
     getListControllerProps,
     sanitizeListRestProps,
 } from './ListController';
@@ -13,9 +12,9 @@ import TextField from '@material-ui/core/TextField/TextField';
 describe('ListController', () => {
     const defaultProps = {
         basePath: '',
-        changeListParams: () => {},
-        children: () => {},
-        crudGetList: () => {},
+        changeListParams: jest.fn(),
+        children: jest.fn(),
+        crudGetList: jest.fn(),
         hasCreate: true,
         hasEdit: true,
         hasList: true,
@@ -23,16 +22,25 @@ describe('ListController', () => {
         ids: [],
         isLoading: false,
         location: {
-            pathname: '',
+            pathname: '/foo',
+            search: undefined,
+            state: undefined,
+            hash: undefined,
         },
-        params: { filter: {} },
-        push: () => {},
+        params: {
+            filter: undefined,
+            perPage: undefined,
+            page: undefined,
+            order: undefined,
+            sort: undefined,
+        },
+        push: jest.fn(),
         query: {},
         resource: '',
-        setSelectedIds: () => {},
-        toggleItem: () => {},
+        setSelectedIds: jest.fn(),
+        toggleItem: jest.fn(),
         total: 100,
-        translate: () => {},
+        translate: jest.fn(),
     };
 
     describe('setFilters', () => {
@@ -41,9 +49,9 @@ describe('ListController', () => {
 
         beforeEach(() => {
             clock = lolex.install();
-            fakeComponent = setDisplayName(
-                'FakeComponent' // for eslint
-            )(({ setFilters }) => <TextField onChange={setFilters} />);
+            fakeComponent = ({ setFilters }) => (
+                <TextField onChange={setFilters} />
+            );
         });
 
         it('should take only last change in case of a burst of changes (case of inputs being currently edited)', () => {
@@ -74,7 +82,7 @@ describe('ListController', () => {
                 ...defaultProps,
                 debounce: 200,
                 changeListParams: jest.fn(),
-                params: { filter: { q: 'hello' } },
+                params: { ...defaultProps.params, filter: { q: 'hello' } },
                 children: fakeComponent,
             };
 

@@ -1,13 +1,43 @@
-import { Component } from 'react';
-import PropTypes from 'prop-types';
+import { Component, ReactNode } from 'react';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import inflection from 'inflection';
 import { parse } from 'query-string';
 
-import translate from '../i18n/translate';
+import withTranslate from '../i18n/translate';
 import { crudCreate as crudCreateAction } from '../actions';
 import checkMinimumRequiredProps from './checkMinimumRequiredProps';
+import { Location } from 'history';
+import { match as Match } from 'react-router';
+import { Record, Translate, Dispatch } from '../types';
+import { RedirectionSideEffect } from '../sideEffect';
+
+interface ChildrenFuncParams {
+    isLoading: boolean;
+    defaultTitle: string;
+    save: (record: Partial<Record>, redirect: RedirectionSideEffect) => void;
+    resource: string;
+    basePath: string;
+    record?: Partial<Record>;
+    redirect: RedirectionSideEffect;
+    translate: Translate;
+}
+
+interface Props {
+    basePath: string;
+    children: (params: ChildrenFuncParams) => ReactNode;
+    crudCreate: Dispatch<typeof crudCreateAction>;
+    hasCreate?: boolean;
+    hasEdit?: boolean;
+    hasList?: boolean;
+    hasShow?: boolean;
+    isLoading: boolean;
+    location: Location;
+    match: Match;
+    record?: Partial<Record>;
+    resource: string;
+    translate: Translate;
+}
 
 /**
  * Page component for the Create view
@@ -50,7 +80,13 @@ import checkMinimumRequiredProps from './checkMinimumRequiredProps';
  *     );
  *     export default App;
  */
-export class CreateController extends Component {
+export class UnconnectedCreateController extends Component<Props> {
+    public static defaultProps: Partial<Props> = {
+        record: {},
+    };
+
+    private record: Partial<Record>;
+
     constructor(props) {
         super(props);
         const {
@@ -67,12 +103,16 @@ export class CreateController extends Component {
 
     defaultRedirectRoute() {
         const { hasShow, hasEdit } = this.props;
-        if (hasEdit) return 'edit';
-        if (hasShow) return 'show';
+        if (hasEdit) {
+            return 'edit';
+        }
+        if (hasShow) {
+            return 'show';
+        }
         return 'list';
     }
 
-    save = (record, redirect) => {
+    save = (record: Partial<Record>, redirect: RedirectionSideEffect) => {
         this.props.crudCreate(
             this.props.resource,
             record,
@@ -90,7 +130,9 @@ export class CreateController extends Component {
             translate,
         } = this.props;
 
-        if (!children) return null;
+        if (!children) {
+            return null;
+        }
 
         const resourceName = translate(`resources.${resource}.name`, {
             smart_count: 1,
@@ -112,38 +154,19 @@ export class CreateController extends Component {
     }
 }
 
-CreateController.propTypes = {
-    basePath: PropTypes.string.isRequired,
-    children: PropTypes.func.isRequired,
-    crudCreate: PropTypes.func.isRequired,
-    hasCreate: PropTypes.bool,
-    hasEdit: PropTypes.bool,
-    hasList: PropTypes.bool,
-    hasShow: PropTypes.bool,
-    isLoading: PropTypes.bool.isRequired,
-    location: PropTypes.object.isRequired,
-    match: PropTypes.object.isRequired,
-    record: PropTypes.object,
-    resource: PropTypes.string.isRequired,
-    title: PropTypes.any,
-    translate: PropTypes.func.isRequired,
-};
-
-CreateController.defaultProps = {
-    record: {},
-};
-
 function mapStateToProps(state) {
     return {
         isLoading: state.admin.loading > 0,
     };
 }
 
-export default compose(
+const CreateController = compose(
     checkMinimumRequiredProps('Create', ['basePath', 'location', 'resource']),
     connect(
         mapStateToProps,
         { crudCreate: crudCreateAction }
     ),
-    translate
-)(CreateController);
+    withTranslate
+)(UnconnectedCreateController);
+
+export default CreateController;

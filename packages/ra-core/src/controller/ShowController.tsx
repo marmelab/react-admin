@@ -1,11 +1,37 @@
-import { Component } from 'react';
-import PropTypes from 'prop-types';
+import { Component, ReactNode } from 'react';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import inflection from 'inflection';
-import translate from '../i18n/translate';
+import withTranslate from '../i18n/translate';
 import { crudGetOne as crudGetOneAction } from '../actions';
 import checkMinimumRequiredProps from './checkMinimumRequiredProps';
+import { Translate, Record, Dispatch, Identifier } from '../types';
+
+interface ChildrenFuncParams {
+    isLoading: boolean;
+    defaultTitle: string;
+    resource: string;
+    basePath: string;
+    record?: Record;
+    translate: Translate;
+    version: number;
+}
+
+interface Props {
+    basePath: string;
+    children: (params: ChildrenFuncParams) => ReactNode;
+    crudGetOne: Dispatch<typeof crudGetOneAction>;
+    record?: Record;
+    hasCreate?: boolean;
+    hasEdit?: boolean;
+    hasShow?: boolean;
+    hasList?: boolean;
+    id: Identifier;
+    isLoading: boolean;
+    resource: string;
+    translate: Translate;
+    version: number;
+}
 
 /**
  * Page component for the Show view
@@ -49,7 +75,7 @@ import checkMinimumRequiredProps from './checkMinimumRequiredProps';
  *     );
  *     export default App;
  */
-export class ShowController extends Component {
+export class UnconnectedShowController extends Component<Props> {
     componentDidMount() {
         this.updateData();
     }
@@ -75,12 +101,13 @@ export class ShowController extends Component {
             isLoading,
             record,
             resource,
-            title,
             translate,
             version,
         } = this.props;
 
-        if (!children) return null;
+        if (!children) {
+            return null;
+        }
 
         const resourceName = translate(`resources.${resource}.name`, {
             smart_count: 1,
@@ -93,7 +120,6 @@ export class ShowController extends Component {
         });
         return children({
             isLoading,
-            title,
             defaultTitle,
             resource,
             basePath,
@@ -103,23 +129,6 @@ export class ShowController extends Component {
         });
     }
 }
-
-ShowController.propTypes = {
-    basePath: PropTypes.string.isRequired,
-    children: PropTypes.func.isRequired,
-    crudGetOne: PropTypes.func.isRequired,
-    record: PropTypes.object,
-    hasCreate: PropTypes.bool,
-    hasEdit: PropTypes.bool,
-    hasList: PropTypes.bool,
-    hasShow: PropTypes.bool,
-    id: PropTypes.string.isRequired,
-    isLoading: PropTypes.bool.isRequired,
-    resource: PropTypes.string.isRequired,
-    title: PropTypes.any,
-    translate: PropTypes.func,
-    version: PropTypes.number.isRequired,
-};
 
 function mapStateToProps(state, props) {
     return {
@@ -132,11 +141,13 @@ function mapStateToProps(state, props) {
     };
 }
 
-export default compose(
+const ShowController = compose(
     checkMinimumRequiredProps('Show', ['basePath', 'resource']),
     connect(
         mapStateToProps,
         { crudGetOne: crudGetOneAction }
     ),
-    translate
-)(ShowController);
+    withTranslate
+)(UnconnectedShowController);
+
+export default ShowController;

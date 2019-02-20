@@ -18,9 +18,9 @@ describe('References data status', () => {
         };
 
         it('should indicate whether the data are ready or not', () => {
-            const test = (data, waiting, explanation) =>
+            const test = (params, waiting, explanation) =>
                 assert.equal(
-                    getStatusForInput(data).waiting,
+                    getStatusForInput(params).waiting,
                     waiting,
                     explanation
                 );
@@ -56,8 +56,8 @@ describe('References data status', () => {
         });
 
         it('should claim an error if needed', () => {
-            const test = (data, error, explanation) => {
-                const status = getStatusForInput(data);
+            const test = (params, error, explanation) => {
+                const status = getStatusForInput(params);
                 assert.equal(status.waiting, false);
                 assert.equal(status.error, error, explanation);
             };
@@ -119,8 +119,8 @@ describe('References data status', () => {
         });
 
         it('should claim a warning if needed', () => {
-            const test = (data, warning, explanation) => {
-                const status = getStatusForInput(data);
+            const test = (params, warning, explanation) => {
+                const status = getStatusForInput(params);
                 assert.equal(status.waiting, false);
                 assert.equal(status.error, null);
                 assert.equal(status.warning, warning, explanation);
@@ -167,8 +167,8 @@ describe('References data status', () => {
         });
 
         it('should return choices consistent with the data status', () => {
-            const test = (data, warning, choices, explanation) => {
-                const status = getStatusForInput(data);
+            const test = (params, warning, choices, explanation) => {
+                const status = getStatusForInput(params);
                 assert.equal(status.waiting, false);
                 assert.equal(status.error, null);
                 assert.equal(status.warning, warning);
@@ -259,9 +259,9 @@ describe('References data status', () => {
         };
 
         it('should indicate whether the data are ready or not', () => {
-            const test = (data, waiting, explanation) =>
+            const test = (params, waiting, explanation) =>
                 assert.equal(
-                    getStatusForArrayInput(data).waiting,
+                    getStatusForArrayInput(params).waiting,
                     waiting,
                     explanation
                 );
@@ -301,8 +301,8 @@ describe('References data status', () => {
         });
 
         it('should return an error if needed', () => {
-            const test = (data, error, explanation) => {
-                const status = getStatusForArrayInput(data);
+            const test = (params, error, explanation) => {
+                const status = getStatusForArrayInput(params);
                 assert.equal(status.waiting, false);
                 assert.equal(status.error, error, explanation);
             };
@@ -364,8 +364,8 @@ describe('References data status', () => {
         });
 
         it('should return a warning if needed', () => {
-            const test = (data, warning, explanation) => {
-                const status = getStatusForArrayInput(data);
+            const test = (params, warning, explanation) => {
+                const status = getStatusForArrayInput(params);
                 assert.equal(status.waiting, false);
                 assert.equal(status.error, null);
                 assert.equal(status.warning, warning, explanation);
@@ -412,8 +412,8 @@ describe('References data status', () => {
         });
 
         it('should return choices consistent with the data status', () => {
-            const test = (data, warning, choices, explanation) => {
-                const status = getStatusForArrayInput(data);
+            const test = (params, warning, choices, explanation) => {
+                const status = getStatusForArrayInput(params);
                 assert.equal(status.waiting, false);
                 assert.equal(status.error, null);
                 assert.equal(status.warning, warning);

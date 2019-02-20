@@ -1,4 +1,5 @@
 import { Reducer } from 'redux';
+import { ListParams } from '../../../../actions';
 export const SET_SORT = 'SET_SORT';
 export const SORT_ASC = 'ASC';
 export const SORT_DESC = 'DESC';
@@ -11,18 +12,13 @@ export const SET_FILTER = 'SET_FILTER';
 const oppositeOrder = direction =>
     direction === SORT_DESC ? SORT_ASC : SORT_DESC;
 
-interface State {
-    sort?: string;
-    order?: string;
-    page?: number;
-    perPage?: number;
-    filter?: any;
-}
-
 /**
  * This reducer is for the react-router query string, NOT for redux.
  */
-const queryReducer: Reducer<State> = (previousState, { type, payload }) => {
+const queryReducer: Reducer<ListParams> = (
+    previousState,
+    { type, payload }
+) => {
     switch (type) {
         case SET_SORT:
             if (payload === previousState.sort) {

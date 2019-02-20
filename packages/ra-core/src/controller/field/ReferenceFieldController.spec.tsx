@@ -2,7 +2,7 @@ import React from 'react';
 import assert from 'assert';
 import { shallow } from 'enzyme';
 
-import { ReferenceFieldController } from './ReferenceFieldController';
+import { UnconnectedReferenceFieldController as ReferenceFieldController } from './ReferenceFieldController';
 
 describe('<ReferenceFieldController />', () => {
     it('should call crudGetManyAccumulate on componentDidMount if reference source is defined', () => {
@@ -10,7 +10,7 @@ describe('<ReferenceFieldController />', () => {
         shallow(
             <ReferenceFieldController
                 children={jest.fn()} // eslint-disable-line react/no-children-prop
-                record={{ postId: 123 }}
+                record={{ id: 1, postId: 123 }}
                 source="postId"
                 referenceRecord={{ id: 123, title: 'foo' }}
                 reference="posts"
@@ -25,7 +25,7 @@ describe('<ReferenceFieldController />', () => {
         shallow(
             <ReferenceFieldController
                 children={jest.fn()} // eslint-disable-line react/no-children-prop
-                record={{ postId: null }}
+                record={{ id: 1, postId: null }}
                 source="postId"
                 referenceRecord={{ id: 123, title: 'foo' }}
                 reference="posts"
@@ -37,15 +37,16 @@ describe('<ReferenceFieldController />', () => {
     });
     it('should render a link to the Edit page of the related record by default', () => {
         const children = jest.fn();
+        const crudGetManyAccumulate = jest.fn();
         shallow(
             <ReferenceFieldController
-                record={{ postId: 123 }}
+                record={{ id: 1, postId: 123 }}
                 source="postId"
                 referenceRecord={{ id: 123, title: 'foo' }}
                 reference="posts"
                 resource="comments"
                 basePath="/comments"
-                crudGetManyAccumulate={() => {}}
+                crudGetManyAccumulate={crudGetManyAccumulate}
             >
                 {children}
             </ReferenceFieldController>
@@ -54,15 +55,16 @@ describe('<ReferenceFieldController />', () => {
     });
     it('should render a link to the Edit page of the related record when the resource contains slashes', () => {
         const children = jest.fn();
+        const crudGetManyAccumulate = jest.fn();
         shallow(
             <ReferenceFieldController
-                record={{ postId: 123 }}
+                record={{ id: 1, postId: 123 }}
                 source="postId"
                 referenceRecord={{ id: 123, title: 'foo' }}
                 reference="prefix/posts"
                 resource="prefix/comments"
                 basePath="/prefix/comments"
-                crudGetManyAccumulate={() => {}}
+                crudGetManyAccumulate={crudGetManyAccumulate}
             >
                 {children}
             </ReferenceFieldController>
@@ -74,15 +76,16 @@ describe('<ReferenceFieldController />', () => {
     });
     it('should render a link to the Edit page of the related record when the resource is named edit or show', () => {
         const children = jest.fn();
+        const crudGetManyAccumulate = jest.fn();
         shallow(
             <ReferenceFieldController
-                record={{ fooId: 123 }}
+                record={{ id: 1, fooId: 123 }}
                 source="fooId"
                 referenceRecord={{ id: 123, title: 'foo' }}
                 reference="edit"
                 resource="show"
                 basePath="/show"
-                crudGetManyAccumulate={() => {}}
+                crudGetManyAccumulate={crudGetManyAccumulate}
             >
                 {children}
             </ReferenceFieldController>
@@ -91,13 +94,13 @@ describe('<ReferenceFieldController />', () => {
 
         shallow(
             <ReferenceFieldController
-                record={{ fooId: 123 }}
+                record={{ id: 1, fooId: 123 }}
                 source="fooId"
                 referenceRecord={{ id: 123, title: 'foo' }}
                 reference="show"
                 resource="edit"
                 basePath="/edit"
-                crudGetManyAccumulate={() => {}}
+                crudGetManyAccumulate={crudGetManyAccumulate}
             >
                 {children}
             </ReferenceFieldController>
@@ -106,16 +109,17 @@ describe('<ReferenceFieldController />', () => {
     });
     it('should render a link to the Show page of the related record when the linkType is show', () => {
         const children = jest.fn();
+        const crudGetManyAccumulate = jest.fn();
         shallow(
             <ReferenceFieldController
-                record={{ postId: 123 }}
+                record={{ id: 1, postId: 123 }}
                 source="postId"
                 referenceRecord={{ id: 123, title: 'foo' }}
                 resource="comments"
                 reference="posts"
                 basePath="/comments"
                 linkType="show"
-                crudGetManyAccumulate={() => {}}
+                crudGetManyAccumulate={crudGetManyAccumulate}
             >
                 {children}
             </ReferenceFieldController>
@@ -127,16 +131,17 @@ describe('<ReferenceFieldController />', () => {
     });
     it('should render a link to the Show page of the related record when the resource is named edit or show and linkType is show', () => {
         const children = jest.fn();
+        const crudGetManyAccumulate = jest.fn();
         shallow(
             <ReferenceFieldController
-                record={{ fooId: 123 }}
+                record={{ id: 1, fooId: 123 }}
                 source="fooId"
                 referenceRecord={{ id: 123, title: 'foo' }}
                 reference="edit"
                 resource="show"
                 basePath="/show"
                 linkType="show"
-                crudGetManyAccumulate={() => {}}
+                crudGetManyAccumulate={crudGetManyAccumulate}
             >
                 {children}
             </ReferenceFieldController>
@@ -148,14 +153,14 @@ describe('<ReferenceFieldController />', () => {
 
         shallow(
             <ReferenceFieldController
-                record={{ fooId: 123 }}
+                record={{ id: 1, fooId: 123 }}
                 source="fooId"
                 referenceRecord={{ id: 123, title: 'foo' }}
                 reference="show"
                 resource="edit"
                 basePath="/edit"
                 linkType="show"
-                crudGetManyAccumulate={() => {}}
+                crudGetManyAccumulate={crudGetManyAccumulate}
             >
                 {children}
             </ReferenceFieldController>
@@ -168,15 +173,16 @@ describe('<ReferenceFieldController />', () => {
     });
     it('should render no link when the linkType is false', () => {
         const children = jest.fn();
+        const crudGetManyAccumulate = jest.fn();
         shallow(
             <ReferenceFieldController
-                record={{ fooId: 123 }}
+                record={{ id: 1, fooId: 123 }}
                 source="fooId"
                 referenceRecord={{ id: 123, title: 'foo' }}
                 reference="bar"
                 basePath="/foo"
                 linkType={false}
-                crudGetManyAccumulate={() => {}}
+                crudGetManyAccumulate={crudGetManyAccumulate}
             >
                 {children}
             </ReferenceFieldController>

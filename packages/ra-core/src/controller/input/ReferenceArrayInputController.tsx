@@ -1,10 +1,10 @@
-import { Component } from 'react';
-import PropTypes from 'prop-types';
+import { Component, ReactNode } from 'react';
 import { connect } from 'react-redux';
 import debounce from 'lodash/debounce';
 import compose from 'recompose/compose';
 import { createSelector } from 'reselect';
 import isEqual from 'lodash/isEqual';
+import { WrappedFieldInputProps } from 'redux-form';
 
 import {
     crudGetMany as crudGetManyAction,
@@ -16,9 +16,46 @@ import {
     getReferenceResource,
 } from '../../reducer';
 import { getStatusForArrayInput as getDataStatus } from './referenceDataStatus';
-import translate from '../../i18n/translate';
+import withTranslate from '../../i18n/translate';
+import { Record, Sort, Translate, Pagination, Dispatch } from '../../types';
+import { MatchingReferencesError } from './types';
 
-const referenceSource = (resource, source) => `${resource}@${source}`;
+const defaultReferenceSource = (resource: string, source: string) =>
+    `${resource}@${source}`;
+
+interface ChildrenFuncParams {
+    choices: Record[];
+    error?: string;
+    isLoading: boolean;
+    onChange: (value: any) => void;
+    setFilter: (filter: any) => void;
+    setPagination: (pagination: Pagination) => void;
+    setSort: (sort: Sort) => void;
+    warning?: string;
+}
+
+interface Props {
+    allowEmpty?: boolean;
+    basePath: string;
+    children: (params: ChildrenFuncParams) => ReactNode;
+    crudGetMatching: Dispatch<typeof crudGetMatchingAction>;
+    crudGetMany: Dispatch<typeof crudGetManyAction>;
+    filter?: object;
+    filterToQuery: (filter: {}) => any;
+    input?: WrappedFieldInputProps;
+    matchingReferences?: Record[] | MatchingReferencesError;
+    meta?: object;
+    onChange?: () => void;
+    perPage?: number;
+    record?: Record;
+    reference: string;
+    referenceRecords?: Record[];
+    referenceSource: typeof defaultReferenceSource;
+    resource: string;
+    sort?: Sort;
+    source: string;
+    translate: Translate;
+}
 
 /**
  * An Input component for fields containing a list of references to another resource.
@@ -98,7 +135,21 @@ const referenceSource = (resource, source) => `${resource}@${source}`;
  *     <SelectArrayInput optionText="name" />
  * </ReferenceArrayInput>
  */
-export class ReferenceArrayInputController extends Component {
+export class UnconnectedReferenceArrayInputController extends Component<Props> {
+    public static defaultProps = {
+        allowEmpty: false,
+        filter: {},
+        filterToQuery: searchText => ({ q: searchText }),
+        matchingReferences: null,
+        perPage: 25,
+        sort: { field: 'id', order: 'DESC' },
+        referenceRecords: [],
+        referenceSource: defaultReferenceSource, // used in unit tests
+    };
+
+    private params;
+    private debouncedSetFilter;
+
     constructor(props) {
         super(props);
         const { perPage, sort, filter } = props;
@@ -108,13 +159,16 @@ export class ReferenceArrayInputController extends Component {
     }
 
     componentDidMount() {
-        this.fetchReferencesAndOptions();
+        this.fetchReferencesAndOptions(this.props);
     }
 
     componentWillReceiveProps(nextProps) {
         let shouldFetchOptions = false;
 
-        if ((this.props.record || {}).id !== (nextProps.record || {}).id) {
+        if (
+            (this.props.record || { id: undefined }).id !==
+            (nextProps.record || {}).id
+        ) {
             this.fetchReferencesAndOptions(nextProps);
         } else if (this.props.input.value !== nextProps.input.value) {
             this.fetchReferences(nextProps);
@@ -143,21 +197,21 @@ export class ReferenceArrayInputController extends Component {
         }
     }
 
-    setFilter = filter => {
+    setFilter = (filter: any) => {
         if (filter !== this.params.filter) {
             this.params.filter = this.props.filterToQuery(filter);
             this.fetchOptions();
         }
     };
 
-    setPagination = pagination => {
+    setPagination = (pagination: Pagination) => {
         if (pagination !== this.params.pagination) {
             this.params.pagination = pagination;
             this.fetchOptions();
         }
     };
 
-    setSort = sort => {
+    setSort = (sort: Sort) => {
         if (sort !== this.params.sort) {
             this.params.sort = sort;
             this.fetchOptions();
@@ -231,48 +285,6 @@ export class ReferenceArrayInputController extends Component {
     }
 }
 
-ReferenceArrayInputController.propTypes = {
-    allowEmpty: PropTypes.bool.isRequired,
-    basePath: PropTypes.string,
-    children: PropTypes.func.isRequired,
-    className: PropTypes.string,
-    crudGetMatching: PropTypes.func.isRequired,
-    crudGetMany: PropTypes.func.isRequired,
-    filter: PropTypes.object,
-    filterToQuery: PropTypes.func.isRequired,
-    input: PropTypes.object.isRequired,
-    label: PropTypes.string,
-    matchingReferences: PropTypes.oneOfType([
-        PropTypes.array,
-        PropTypes.object,
-    ]),
-    meta: PropTypes.object,
-    onChange: PropTypes.func,
-    perPage: PropTypes.number,
-    record: PropTypes.object,
-    reference: PropTypes.string.isRequired,
-    referenceRecords: PropTypes.array,
-    referenceSource: PropTypes.func.isRequired,
-    resource: PropTypes.string.isRequired,
-    sort: PropTypes.shape({
-        field: PropTypes.string,
-        order: PropTypes.oneOf(['ASC', 'DESC']),
-    }),
-    source: PropTypes.string,
-    translate: PropTypes.func.isRequired,
-};
-
-ReferenceArrayInputController.defaultProps = {
-    allowEmpty: false,
-    filter: {},
-    filterToQuery: searchText => ({ q: searchText }),
-    matchingReferences: null,
-    perPage: 25,
-    sort: { field: 'id', order: 'DESC' },
-    referenceRecords: [],
-    referenceSource, // used in unit tests
-};
-
 const makeMapStateToProps = () =>
     createSelector(
         [
@@ -297,8 +309,8 @@ const makeMapStateToProps = () =>
         })
     );
 
-const EnhancedReferenceArrayInputController = compose(
-    translate,
+const ReferenceArrayInputController = compose(
+    withTranslate,
     connect(
         makeMapStateToProps(),
         {
@@ -306,10 +318,10 @@ const EnhancedReferenceArrayInputController = compose(
             crudGetMatching: crudGetMatchingAction,
         }
     )
-)(ReferenceArrayInputController);
+)(UnconnectedReferenceArrayInputController);
 
-EnhancedReferenceArrayInputController.defaultProps = {
-    referenceSource, // used in makeMapStateToProps
+ReferenceArrayInputController.defaultProps = {
+    referenceSource: defaultReferenceSource, // used in makeMapStateToProps
 };
 
-export default EnhancedReferenceArrayInputController;
+export default ReferenceArrayInputController;

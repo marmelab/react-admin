@@ -1,17 +1,18 @@
 import React from 'react';
 import assert from 'assert';
 import { shallow } from 'enzyme';
-import { ReferenceArrayInputController } from './ReferenceArrayInputController';
+import { UnconnectedReferenceArrayInputController as ReferenceArrayInputController } from './ReferenceArrayInputController';
 
 describe('<ReferenceArrayInputController />', () => {
     const defaultProps = {
         children: jest.fn(),
         crudGetMatching: () => true,
         crudGetMany: () => true,
-        input: {},
+        input: { value: undefined },
         matchingReferences: [],
         meta: {},
-        record: {},
+        record: undefined,
+        basePath: '/tags',
         reference: 'tags',
         resource: 'posts',
         source: 'tag_ids',
@@ -25,7 +26,6 @@ describe('<ReferenceArrayInputController />', () => {
                 {...{
                     ...defaultProps,
                     matchingReferences: null,
-                    input: {},
                 }}
             >
                 {children}
@@ -77,7 +77,6 @@ describe('<ReferenceArrayInputController />', () => {
                 {...{
                     ...defaultProps,
                     matchingReferences: { error: 'fetch error' },
-                    input: {},
                     referenceRecords: [],
                 }}
             >

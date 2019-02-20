@@ -1,10 +1,10 @@
-import { Component } from 'react';
-import PropTypes from 'prop-types';
+import { Component, ReactNode } from 'react';
 import { connect } from 'react-redux';
 import debounce from 'lodash/debounce';
 import compose from 'recompose/compose';
 import { createSelector } from 'reselect';
 import isEqual from 'lodash/isEqual';
+import { WrappedFieldInputProps } from 'redux-form';
 
 import {
     crudGetManyAccumulate as crudGetManyAccumulateAction,
@@ -16,9 +16,54 @@ import {
     getReferenceResource,
 } from '../../reducer';
 import { getStatusForInput as getDataStatus } from './referenceDataStatus';
-import translate from '../../i18n/translate';
+import withTranslate from '../../i18n/translate';
+import { Sort, Translate, Record, Pagination, Dispatch } from '../../types';
+import { MatchingReferencesError } from './types';
 
-const referenceSource = (resource, source) => `${resource}@${source}`;
+const defaultReferenceSource = (resource: string, source: string) =>
+    `${resource}@${source}`;
+
+interface ChildrenFuncParams {
+    choices: Record[];
+    error?: string;
+    filter?: any;
+    isLoading: boolean;
+    onChange: (value: any) => void;
+    pagination: Pagination;
+    setFilter: (filter: any) => void;
+    setPagination: (pagination: Pagination) => void;
+    setSort: (sort: Sort) => void;
+    sort: Sort;
+    warning?: string;
+}
+
+interface Props {
+    allowEmpty?: boolean;
+    basePath: string;
+    children: (params: ChildrenFuncParams) => ReactNode;
+    crudGetMatchingAccumulate: Dispatch<typeof crudGetMatchingAccumulateAction>;
+    crudGetManyAccumulate: Dispatch<typeof crudGetManyAccumulateAction>;
+    filter?: object;
+    filterToQuery: (filter: {}) => any;
+    input?: WrappedFieldInputProps;
+    matchingReferences?: Record[] | MatchingReferencesError;
+    onChange: () => void;
+    perPage: number;
+    record?: Record;
+    reference: string;
+    referenceRecord?: Record;
+    referenceSource: typeof defaultReferenceSource;
+    resource: string;
+    sort?: Sort;
+    source: string;
+    translate: Translate;
+}
+
+interface State {
+    pagination: Pagination;
+    sort: Sort;
+    filter: any;
+}
 
 /**
  * An Input component for choosing a reference record. Useful for foreign keys.
@@ -99,7 +144,24 @@ const referenceSource = (resource, source) => `${resource}@${source}`;
  *     <SelectInput optionText="title" />
  * </ReferenceInput>
  */
-export class ReferenceInputController extends Component {
+export class UnconnectedReferenceInputController extends Component<
+    Props,
+    State
+> {
+    public static defaultProps = {
+        allowEmpty: false,
+        filter: {},
+        filterToQuery: searchText => ({ q: searchText }),
+        matchingReferences: null,
+        perPage: 25,
+        sort: { field: 'id', order: 'DESC' },
+        referenceRecord: null,
+        referenceSource: defaultReferenceSource, // used in tests
+    };
+
+    public state: State;
+    private debouncedSetFilter;
+
     constructor(props) {
         super(props);
         const { perPage, sort, filter } = props;
@@ -112,7 +174,10 @@ export class ReferenceInputController extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if ((this.props.record || {}).id !== (nextProps.record || {}).id) {
+        if (
+            (this.props.record || { id: undefined }).id !==
+            (nextProps.record || {}).id
+        ) {
             this.fetchReferenceAndOptions(nextProps);
         } else if (this.props.input.value !== nextProps.input.value) {
             this.fetchReference(nextProps);
@@ -160,7 +225,7 @@ export class ReferenceInputController extends Component {
         const { crudGetManyAccumulate, input, reference } = props;
         const id = input.value;
         if (id) {
-            crudGetManyAccumulate(reference, [id], null, false);
+            crudGetManyAccumulate(reference, [id]);
         }
     };
 
@@ -223,47 +288,6 @@ export class ReferenceInputController extends Component {
     }
 }
 
-ReferenceInputController.propTypes = {
-    allowEmpty: PropTypes.bool.isRequired,
-    basePath: PropTypes.string,
-    children: PropTypes.func.isRequired,
-    className: PropTypes.string,
-    classes: PropTypes.object,
-    crudGetMatchingAccumulate: PropTypes.func.isRequired,
-    crudGetManyAccumulate: PropTypes.func.isRequired,
-    filter: PropTypes.object,
-    filterToQuery: PropTypes.func.isRequired,
-    input: PropTypes.object.isRequired,
-    matchingReferences: PropTypes.oneOfType([
-        PropTypes.array,
-        PropTypes.object,
-    ]),
-    onChange: PropTypes.func,
-    perPage: PropTypes.number,
-    record: PropTypes.object,
-    reference: PropTypes.string.isRequired,
-    referenceRecord: PropTypes.object,
-    referenceSource: PropTypes.func.isRequired,
-    resource: PropTypes.string.isRequired,
-    sort: PropTypes.shape({
-        field: PropTypes.string,
-        order: PropTypes.oneOf(['ASC', 'DESC']),
-    }),
-    source: PropTypes.string,
-    translate: PropTypes.func.isRequired,
-};
-
-ReferenceInputController.defaultProps = {
-    allowEmpty: false,
-    filter: {},
-    filterToQuery: searchText => ({ q: searchText }),
-    matchingReferences: null,
-    perPage: 25,
-    sort: { field: 'id', order: 'DESC' },
-    referenceRecord: null,
-    referenceSource, // used in tests
-};
-
 const makeMapStateToProps = () =>
     createSelector(
         [
@@ -281,8 +305,8 @@ const makeMapStateToProps = () =>
         })
     );
 
-const EnhancedReferenceInputController = compose(
-    translate,
+const ReferenceInputController = compose(
+    withTranslate,
     connect(
         makeMapStateToProps(),
         {
@@ -290,10 +314,10 @@ const EnhancedReferenceInputController = compose(
             crudGetMatchingAccumulate: crudGetMatchingAccumulateAction,
         }
     )
-)(ReferenceInputController);
+)(UnconnectedReferenceInputController);
 
-EnhancedReferenceInputController.defaultProps = {
-    referenceSource, // used in makeMapStateToProps
+ReferenceInputController.defaultProps = {
+    referenceSource: defaultReferenceSource, // used in makeMapStateToProps
 };
 
-export default EnhancedReferenceInputController;
+export default ReferenceInputController;

@@ -1,10 +1,29 @@
-import { Component } from 'react';
-import PropTypes from 'prop-types';
+import { Component, ReactNode } from 'react';
 import { connect } from 'react-redux';
 import get from 'lodash/get';
 
 import { crudGetManyAccumulate as crudGetManyAccumulateAction } from '../../actions';
 import { linkToRecord } from '../../util';
+import { Record, Dispatch } from '../../types';
+
+interface ChildrenFuncParams {
+    isLoading: boolean;
+    referenceRecord: Record;
+    resourceLinkPath: string | boolean;
+}
+
+interface Props {
+    allowEmpty?: boolean;
+    basePath: string;
+    children: (params: ChildrenFuncParams) => ReactNode;
+    crudGetManyAccumulate: Dispatch<typeof crudGetManyAccumulateAction>;
+    record?: Record;
+    reference: string;
+    referenceRecord?: Record;
+    resource: string;
+    source: string;
+    linkType: string | boolean;
+}
 
 /**
  * Fetch reference record, and delegate rendering to child component.
@@ -35,7 +54,14 @@ import { linkToRecord } from '../../util';
  *     <TextField source="name" />
  * </ReferenceField>
  */
-export class ReferenceFieldController extends Component {
+export class UnconnectedReferenceFieldController extends Component<Props> {
+    public static defaultProps: Partial<Props> = {
+        allowEmpty: false,
+        linkType: 'edit',
+        referenceRecord: null,
+        record: { id: '' },
+    };
+
     componentDidMount() {
         this.fetchReference(this.props);
     }
@@ -68,7 +94,8 @@ export class ReferenceFieldController extends Component {
         const rootPath = basePath.replace(resource, reference);
         const resourceLinkPath = !linkType
             ? false
-            : linkToRecord(rootPath, get(record, source), linkType);
+            : linkToRecord(rootPath, get(record, source), linkType as string);
+
         return children({
             isLoading: !referenceRecord && !allowEmpty,
             referenceRecord,
@@ -76,36 +103,6 @@ export class ReferenceFieldController extends Component {
         });
     }
 }
-
-ReferenceFieldController.propTypes = {
-    addLabel: PropTypes.bool,
-    allowEmpty: PropTypes.bool.isRequired,
-    basePath: PropTypes.string.isRequired,
-    children: PropTypes.func.isRequired,
-    classes: PropTypes.object,
-    className: PropTypes.string,
-    cellClassName: PropTypes.string,
-    headerClassName: PropTypes.string,
-    crudGetManyAccumulate: PropTypes.func.isRequired,
-    label: PropTypes.string,
-    record: PropTypes.object,
-    reference: PropTypes.string.isRequired,
-    referenceRecord: PropTypes.object,
-    resource: PropTypes.string,
-    sortBy: PropTypes.string,
-    source: PropTypes.string.isRequired,
-    translateChoice: PropTypes.func,
-    linkType: PropTypes.oneOfType([PropTypes.string, PropTypes.bool])
-        .isRequired,
-};
-
-ReferenceFieldController.defaultProps = {
-    allowEmpty: false,
-    classes: {},
-    linkType: 'edit',
-    referenceRecord: null,
-    record: {},
-};
 
 const mapStateToProps = (state, props) => ({
     referenceRecord:
@@ -115,9 +112,11 @@ const mapStateToProps = (state, props) => ({
         ],
 });
 
-export default connect(
+const ReferenceFieldController = connect(
     mapStateToProps,
     {
         crudGetManyAccumulate: crudGetManyAccumulateAction,
     }
-)(ReferenceFieldController);
+)(UnconnectedReferenceFieldController);
+
+export default ReferenceFieldController;
