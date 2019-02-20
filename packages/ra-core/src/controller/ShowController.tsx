@@ -6,8 +6,6 @@ import withTranslate from '../i18n/translate';
 import { crudGetOne as crudGetOneAction } from '../actions';
 import checkMinimumRequiredProps from './checkMinimumRequiredProps';
 import { Translate, Record, Dispatch, Identifier } from '../types';
-import { Location } from 'history';
-import { match as Match } from 'react-router';
 
 interface ChildrenFuncParams {
     isLoading: boolean;
@@ -24,14 +22,12 @@ interface Props {
     children: (params: ChildrenFuncParams) => ReactNode;
     crudGetOne: Dispatch<typeof crudGetOneAction>;
     record?: Record;
-    hasCreate: boolean;
-    hasEdit: boolean;
-    hasShow: boolean;
-    hasList: boolean;
+    hasCreate?: boolean;
+    hasEdit?: boolean;
+    hasShow?: boolean;
+    hasList?: boolean;
     id: Identifier;
     isLoading: boolean;
-    location: Location;
-    match: Match;
     resource: string;
     translate: Translate;
     version: number;
