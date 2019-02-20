@@ -4,6 +4,7 @@ import debounce from 'lodash/debounce';
 import compose from 'recompose/compose';
 import { createSelector } from 'reselect';
 import isEqual from 'lodash/isEqual';
+import { WrappedFieldInputProps } from 'redux-form';
 
 import {
     crudGetManyAccumulate as crudGetManyAccumulateAction,
@@ -44,9 +45,7 @@ interface Props {
     crudGetManyAccumulate: Dispatch<typeof crudGetManyAccumulateAction>;
     filter?: object;
     filterToQuery: (filter: {}) => any;
-    input?: {
-        value: any;
-    };
+    input?: WrappedFieldInputProps;
     matchingReferences: Record[] | MatchingReferencesError;
     onChange: () => void;
     perPage: number;
