@@ -33,6 +33,7 @@ export const styles = {
         justifyContent: 'space-between',
         alignSelf: 'flex-start',
     },
+    children: { display: 'flex' },
     noResults: { padding: 20 },
 };
 
@@ -138,7 +139,7 @@ export const ListView = ({
                         exporter={exporter}
                     />
                 )}
-                <div key={version}>
+                <div className={classes.children} key={version}>
                     {children &&
                         React.cloneElement(children, {
                             ...controllerProps,
