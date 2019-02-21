@@ -1,7 +1,45 @@
+import { Dispatch, AnyAction } from 'redux';
 import { connect } from 'react-redux';
 import get from 'lodash/get';
 
 import { startUndoable } from '../actions/undoActions';
+import { DataProvider } from '../types';
+
+interface DispatchProps {
+    dataProvider: DataProvider;
+    dispatch: Dispatch<AnyAction>;
+}
+
+const mapDispatchToProps = (dispatch): DispatchProps => ({
+    dataProvider: (type, resource: string, payload: any, meta: any = {}) =>
+        new Promise((resolve, reject) => {
+            const action = {
+                type: 'CUSTOM_FETCH',
+                payload,
+                meta: {
+                    ...meta,
+                    resource,
+                    fetch: type,
+                    onSuccess: {
+                        ...get(meta, 'onSuccess', {}),
+                        callback: ({ payload: response }) => resolve(response),
+                    },
+                    onFailure: {
+                        ...get(meta, 'onFailure', {}),
+                        callback: ({ error }) =>
+                            reject(
+                                new Error(error.message ? error.message : error)
+                            ),
+                    },
+                },
+            };
+
+            return meta.undoable
+                ? dispatch(startUndoable(action))
+                : dispatch(action);
+        }),
+    dispatch,
+});
 
 /**
  * Higher-order component for fetching the dataProvider
@@ -50,47 +88,10 @@ import { startUndoable } from '../actions/undoActions';
  *
  * export default withDataProvider(PostList);
  */
-export default Component =>
-    connect(
+const withDataProvider = Component =>
+    connect<{}, DispatchProps, any>(
         null,
-        dispatch => ({
-            dataProvider: (
-                type,
-                resource: string,
-                payload: any,
-                meta: any = {}
-            ) =>
-                new Promise((resolve, reject) => {
-                    const action = {
-                        type: 'CUSTOM_FETCH',
-                        payload,
-                        meta: {
-                            ...meta,
-                            resource,
-                            fetch: type,
-                            onSuccess: {
-                                ...get(meta, 'onSuccess', {}),
-                                callback: ({ payload: response }) =>
-                                    resolve(response),
-                            },
-                            onFailure: {
-                                ...get(meta, 'onFailure', {}),
-                                callback: ({ error }) =>
-                                    reject(
-                                        new Error(
-                                            error.message
-                                                ? error.message
-                                                : error
-                                        )
-                                    ),
-                            },
-                        },
-                    };
+        mapDispatchToProps
+    )(Component as any);
 
-                    return meta.undoable
-                        ? dispatch(startUndoable(action))
-                        : dispatch(action);
-                }),
-            dispatch,
-        })
-    )(Component);
+export default withDataProvider;
