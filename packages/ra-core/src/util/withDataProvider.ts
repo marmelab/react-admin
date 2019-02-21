@@ -88,8 +88,8 @@ const mapDispatchToProps = (dispatch): DispatchProps => ({
  *
  * export default withDataProvider(PostList);
  */
-const withDataProvider = Component =>
-    connect<{}, DispatchProps, any>(
+const withDataProvider = <T>(Component) =>
+    connect<{}, DispatchProps, T>(
         null,
         mapDispatchToProps
     )(Component as any);
