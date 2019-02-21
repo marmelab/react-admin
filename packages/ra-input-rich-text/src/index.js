@@ -53,6 +53,10 @@ export class RichTextInput extends Component {
         this.quill.off('text-change', this.onTextChange);
         this.quill = null;
     }
+	
+	componentWillReceiveProps(nextProps){
+        this.editor.innerHTML = nextProps.input.value
+    }
 
     onTextChange = () => {
         const value =
