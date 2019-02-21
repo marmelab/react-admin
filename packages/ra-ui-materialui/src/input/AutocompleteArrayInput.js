@@ -102,16 +102,19 @@ const styles = theme => ({
  * <AutocompleteInput source="author_id" options={{ fullWidth: true }} />
  */
 export class AutocompleteArrayInput extends React.Component {
+    initialInputValue = [];
+
     state = {
         dirty: false,
-        inputValue: [],
+        inputValue: this.initialInputValue,
         searchText: '',
         suggestions: [],
     };
 
     inputEl = null;
 
-    getInputValue = inputValue => (inputValue === '' ? [] : inputValue);
+    getInputValue = inputValue =>
+        inputValue === '' ? this.initialInputValue : inputValue;
 
     componentWillMount() {
         this.setState({
