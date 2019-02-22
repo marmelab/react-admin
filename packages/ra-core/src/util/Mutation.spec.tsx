@@ -11,7 +11,7 @@ describe('Mutation', () => {
         const { getByTestId } = render(
             <TestContext>
                 {() => (
-                    <Mutation>
+                    <Mutation type="foo" resource="bar">
                         {() => <div data-testid="test">Hello</div>}
                     </Mutation>
                 )}
@@ -24,7 +24,7 @@ describe('Mutation', () => {
         render(
             <TestContext>
                 {() => (
-                    <Mutation>
+                    <Mutation type="foo" resource="bar">
                         {mutate => {
                             callback = mutate;
                             return <div data-testid="test">Hello</div>;
