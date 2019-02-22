@@ -102,9 +102,11 @@ const styles = theme => ({
  * <AutocompleteInput source="author_id" options={{ fullWidth: true }} />
  */
 export class AutocompleteArrayInput extends React.Component {
+    initialInputValue = [];
+
     state = {
         dirty: false,
-        inputValue: null,
+        inputValue: this.initialInputValue,
         searchText: '',
         suggestions: [],
     };
@@ -112,18 +114,21 @@ export class AutocompleteArrayInput extends React.Component {
     inputEl = null;
     anchorEl = null;
 
+    getInputValue = inputValue =>
+        inputValue === '' ? this.initialInputValue : inputValue;
+
     componentWillMount() {
         this.setState({
-            inputValue: this.props.input.value,
+            inputValue: this.getInputValue(this.props.input.value),
             suggestions: this.props.choices,
         });
     }
 
     componentWillReceiveProps(nextProps) {
         const { choices, input, inputValueMatcher } = nextProps;
-        if (!isEqual(input.value, this.state.inputValue)) {
+        if (!isEqual(this.getInputValue(input.value), this.state.inputValue)) {
             this.setState({
-                inputValue: input.value,
+                inputValue: this.getInputValue(input.value),
                 dirty: false,
                 suggestions: this.props.choices,
             });
@@ -247,7 +252,7 @@ export class AutocompleteArrayInput extends React.Component {
                 onUpdateInput={onChange}
                 onAdd={this.handleAdd}
                 onDelete={this.handleDelete}
-                value={input.value}
+                value={this.getInputValue(input.value)}
                 inputRef={storeInputRef}
                 error={touched && error}
                 helperText={touched && error && helperText}
