@@ -1,7 +1,15 @@
 import React from 'react';
-import { render, cleanup, fireEvent } from 'react-testing-library';
+import {
+    render,
+    cleanup,
+    fireEvent,
+    // @ts-ignore
+    waitForDomChange,
+} from 'react-testing-library';
 import expect from 'expect';
 import Mutation from './Mutation';
+import CoreAdmin from '../CoreAdmin';
+import Resource from '../Resource';
 import TestContext from './TestContext';
 
 describe('Mutation', () => {
@@ -19,6 +27,7 @@ describe('Mutation', () => {
         );
         expect(getByTestId('test').textContent).toBe('Hello');
     });
+
     it('should pass a callback to trigger the mutation', () => {
         let callback = null;
         render(
@@ -35,6 +44,7 @@ describe('Mutation', () => {
         );
         expect(callback).toBeInstanceOf(Function);
     });
+
     it('should dispatch a fetch action when the mutation callback is triggered', () => {
         let dispatchSpy;
         const myPayload = {};
@@ -61,11 +71,12 @@ describe('Mutation', () => {
         expect(action.meta.fetch).toEqual('mytype');
         expect(action.meta.resource).toEqual('myresource');
     });
+
     it('should update the loading state when the mutation callback is triggered', () => {
         const myPayload = {};
         const { getByText } = render(
             <TestContext>
-                {({ store }) => (
+                {() => (
                     <Mutation
                         type="mytype"
                         resource="myresource"
@@ -87,6 +98,56 @@ describe('Mutation', () => {
         fireEvent.click(getByText('Hello'));
         expect(getByText('Hello').className).toEqual('loading');
     });
-    // it('should update the data state after a success response');
-    // it('should update the error state after an error response');
+
+    it('should update the data state after a success response', async () => {
+        const dataProvider = jest.fn();
+        dataProvider.mockImplementationOnce(() =>
+            Promise.resolve({ data: { foo: 'bar' } })
+        );
+        const Foo = () => (
+            <Mutation type="mytype" resource="foo">
+                {(mutate, { data }) => (
+                    <button data-testid="test" onClick={mutate}>
+                        {data ? data.foo : 'no data'}
+                    </button>
+                )}
+            </Mutation>
+        );
+        const { getByTestId } = render(
+            <CoreAdmin dataProvider={dataProvider}>
+                <Resource name="foo" list={Foo} />
+            </CoreAdmin>
+        );
+        const testElement = getByTestId('test');
+        expect(testElement.textContent).toBe('no data');
+        fireEvent.click(testElement);
+        await waitForDomChange({ container: testElement });
+        expect(testElement.textContent).toEqual('bar');
+    });
+
+    it('should update the error state after an error response', async () => {
+        const dataProvider = jest.fn();
+        dataProvider.mockImplementationOnce(() =>
+            Promise.reject({ message: 'provider error' })
+        );
+        const Foo = () => (
+            <Mutation type="mytype" resource="foo">
+                {(mutate, { error }) => (
+                    <button data-testid="test" onClick={mutate}>
+                        {error ? error.message : 'no data'}
+                    </button>
+                )}
+            </Mutation>
+        );
+        const { getByTestId } = render(
+            <CoreAdmin dataProvider={dataProvider}>
+                <Resource name="foo" list={Foo} />
+            </CoreAdmin>
+        );
+        const testElement = getByTestId('test');
+        expect(testElement.textContent).toBe('no data');
+        fireEvent.click(testElement);
+        await waitForDomChange({ container: testElement });
+        expect(testElement.textContent).toEqual('provider error');
+    });
 });

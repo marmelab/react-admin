@@ -19,6 +19,8 @@ import { AuthProvider, I18nProvider, DataProvider } from './types';
 
 export type ChildrenFunction = () => ComponentType[];
 
+const DefaultLayout = ({ children }) => children;
+
 interface Props {
     appLayout: ComponentType;
     authProvider: AuthProvider;
@@ -70,7 +72,7 @@ React-admin requires a valid dataProvider function to work.`);
 
     renderCore() {
         const {
-            appLayout,
+            appLayout = DefaultLayout,
             authProvider,
             children,
             customRoutes = [],
