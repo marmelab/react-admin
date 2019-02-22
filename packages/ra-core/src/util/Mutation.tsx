@@ -14,15 +14,12 @@ interface ChildrenFuncParams {
     error?: any;
 }
 
-interface RawProps {
+interface Props {
     children: (mutate: () => void, params: ChildrenFuncParams) => ReactNode;
     type: string;
     resource: string;
     payload?: any;
     options?: any;
-}
-
-interface Props extends RawProps {
     dataProvider: DataProviderCallback;
 }
 
@@ -80,4 +77,9 @@ class Mutation extends Component<Props, State> {
     }
 }
 
-export default withDataProvider<RawProps>(Mutation);
+export default withDataProvider(Mutation);
+
+interface DispatchProps {
+    dataProvider: string;
+    dispatch: () => void;
+}

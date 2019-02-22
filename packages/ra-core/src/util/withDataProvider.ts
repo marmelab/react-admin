@@ -1,3 +1,4 @@
+import { Component, SFC } from 'react';
 import { Dispatch, AnyAction } from 'redux';
 import { connect } from 'react-redux';
 import get from 'lodash/get';
@@ -40,6 +41,12 @@ const mapDispatchToProps = (dispatch): DispatchProps => ({
         }),
     dispatch,
 });
+
+type ExtractProps<C> = C extends Component<infer ComponentProps, any>
+    ? ComponentProps
+    : C extends SFC<infer SFCProps> ? SFCProps : never;
+
+type Omit<T, K> = Pick<T, Exclude<keyof T, K>>;
 
 /**
  * Higher-order component for fetching the dataProvider
@@ -88,10 +95,14 @@ const mapDispatchToProps = (dispatch): DispatchProps => ({
  *
  * export default withDataProvider(PostList);
  */
-const withDataProvider = <T>(Component) =>
-    connect<{}, DispatchProps, T>(
+const withDataProvider = SimpleComponent =>
+    connect<
+        {},
+        DispatchProps,
+        Omit<ExtractProps<typeof SimpleComponent>, keyof DispatchProps>
+    >(
         null,
         mapDispatchToProps
-    )(Component as any);
+    )(SimpleComponent);
 
 export default withDataProvider;
