@@ -1,5 +1,11 @@
 /* eslint no-console: ["error", { allow: ["warn", "error"] }] */
-import { Component, isValidElement, ReactNode, ReactElement } from 'react';
+import {
+    Component,
+    isValidElement,
+    ReactNode,
+    ReactElement,
+    ComponentType,
+} from 'react';
 import { connect } from 'react-redux';
 import { parse, stringify } from 'query-string';
 import { push as pushAction } from 'react-router-redux';
@@ -79,24 +85,26 @@ interface Props {
     // the props managed by react-admin
     authProvider?: AuthProvider;
     basePath: string;
-    changeListParams: Dispatch<typeof changeListParamsAction>;
-    crudGetList: Dispatch<typeof crudGetListAction>;
-    data?: RecordMap;
     debounce?: number;
     hasCreate?: boolean;
     hasEdit?: boolean;
     hasList?: boolean;
     hasShow?: boolean;
-    ids?: Identifier[];
-    loadedOnce?: boolean;
-    selectedIds?: Identifier[];
-    isLoading: boolean;
     location: Location;
     path?: string;
-    params: ListParams;
-    push: (location: LocationDescriptorObject<LocationState>) => void;
     query: ListParams;
     resource: string;
+}
+interface EnhancedProps {
+    changeListParams: Dispatch<typeof changeListParamsAction>;
+    crudGetList: Dispatch<typeof crudGetListAction>;
+    data?: RecordMap;
+    ids?: Identifier[];
+    isLoading: boolean;
+    loadedOnce?: boolean;
+    params: ListParams;
+    push: (location: LocationDescriptorObject<LocationState>) => void;
+    selectedIds?: Identifier[];
     setSelectedIds: (resource: string, ids: Identifier[]) => void;
     toggleItem: (resource: string, id: Identifier) => void;
     total: number;
@@ -145,7 +153,9 @@ interface Props {
  *         </List>
  *     );
  */
-export class UnconnectedListController extends Component<Props> {
+export class UnconnectedListController extends Component<
+    Props & EnhancedProps
+> {
     public static defaultProps: Partial<Props> = {
         debounce: 500,
         filter: {},
@@ -194,7 +204,7 @@ export class UnconnectedListController extends Component<Props> {
         this.setFilters.cancel();
     }
 
-    componentWillReceiveProps(nextProps: Props) {
+    componentWillReceiveProps(nextProps: Props & EnhancedProps) {
         if (
             nextProps.resource !== this.props.resource ||
             nextProps.query.sort !== this.props.query.sort ||
@@ -217,7 +227,7 @@ export class UnconnectedListController extends Component<Props> {
         }
     }
 
-    shouldComponentUpdate(nextProps: Props, nextState) {
+    shouldComponentUpdate(nextProps: Props & EnhancedProps, nextState) {
         if (
             nextProps.translate === this.props.translate &&
             nextProps.isLoading === this.props.isLoading &&
@@ -518,4 +528,4 @@ const ListController = compose(
     withTranslate
 )(UnconnectedListController);
 
-export default ListController;
+export default ListController as ComponentType<Props>;

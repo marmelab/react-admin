@@ -1,4 +1,4 @@
-import { Component, ReactNode } from 'react';
+import { Component, ReactNode, ComponentType } from 'react';
 import { connect } from 'react-redux';
 import debounce from 'lodash/debounce';
 import compose from 'recompose/compose';
@@ -41,21 +41,24 @@ interface Props {
     allowEmpty?: boolean;
     basePath: string;
     children: (params: ChildrenFuncParams) => ReactNode;
-    crudGetMatchingAccumulate: Dispatch<typeof crudGetMatchingAccumulateAction>;
-    crudGetManyAccumulate: Dispatch<typeof crudGetManyAccumulateAction>;
     filter?: object;
     filterToQuery: (filter: {}) => any;
     input?: WrappedFieldInputProps;
-    matchingReferences?: Record[] | MatchingReferencesError;
-    onChange: () => void;
     perPage: number;
     record?: Record;
     reference: string;
-    referenceRecord?: Record;
     referenceSource: typeof defaultReferenceSource;
     resource: string;
     sort?: Sort;
     source: string;
+}
+
+interface EnhancedProps {
+    crudGetMatchingAccumulate: Dispatch<typeof crudGetMatchingAccumulateAction>;
+    crudGetManyAccumulate: Dispatch<typeof crudGetManyAccumulateAction>;
+    matchingReferences?: Record[] | MatchingReferencesError;
+    onChange: () => void;
+    referenceRecord?: Record;
     translate: Translate;
 }
 
@@ -145,7 +148,7 @@ interface State {
  * </ReferenceInput>
  */
 export class UnconnectedReferenceInputController extends Component<
-    Props,
+    Props & EnhancedProps,
     State
 > {
     public static defaultProps = {
@@ -173,10 +176,10 @@ export class UnconnectedReferenceInputController extends Component<
         this.fetchReferenceAndOptions(this.props);
     }
 
-    componentWillReceiveProps(nextProps) {
+    componentWillReceiveProps(nextProps: Props & EnhancedProps) {
         if (
             (this.props.record || { id: undefined }).id !==
-            (nextProps.record || {}).id
+            (nextProps.record || { id: undefined }).id
         ) {
             this.fetchReferenceAndOptions(nextProps);
         } else if (this.props.input.value !== nextProps.input.value) {
@@ -200,7 +203,7 @@ export class UnconnectedReferenceInputController extends Component<
         }
     }
 
-    setFilter = filter => {
+    setFilter = (filter: any) => {
         if (filter !== this.state.filter) {
             this.setState(
                 { filter: this.props.filterToQuery(filter) },
@@ -209,13 +212,13 @@ export class UnconnectedReferenceInputController extends Component<
         }
     };
 
-    setPagination = pagination => {
+    setPagination = (pagination: Pagination) => {
         if (pagination !== this.state.pagination) {
             this.setState({ pagination }, this.fetchOptions);
         }
     };
 
-    setSort = sort => {
+    setSort = (sort: Sort) => {
         if (sort !== this.state.sort) {
             this.setState({ sort }, this.fetchOptions);
         }
@@ -320,4 +323,4 @@ ReferenceInputController.defaultProps = {
     referenceSource: defaultReferenceSource, // used in makeMapStateToProps
 };
 
-export default ReferenceInputController;
+export default ReferenceInputController as ComponentType<Props>;

@@ -1,4 +1,4 @@
-import { Component, ReactNode } from 'react';
+import { Component, ReactNode, ComponentType } from 'react';
 import { connect } from 'react-redux';
 import debounce from 'lodash/debounce';
 import compose from 'recompose/compose';
@@ -38,22 +38,25 @@ interface Props {
     allowEmpty?: boolean;
     basePath: string;
     children: (params: ChildrenFuncParams) => ReactNode;
-    crudGetMatching: Dispatch<typeof crudGetMatchingAction>;
-    crudGetMany: Dispatch<typeof crudGetManyAction>;
     filter?: object;
     filterToQuery: (filter: {}) => any;
     input?: WrappedFieldInputProps;
-    matchingReferences?: Record[] | MatchingReferencesError;
     meta?: object;
-    onChange?: () => void;
     perPage?: number;
     record?: Record;
     reference: string;
-    referenceRecords?: Record[];
     referenceSource: typeof defaultReferenceSource;
     resource: string;
     sort?: Sort;
     source: string;
+}
+
+interface EnhancedProps {
+    crudGetMatching: Dispatch<typeof crudGetMatchingAction>;
+    crudGetMany: Dispatch<typeof crudGetManyAction>;
+    matchingReferences?: Record[] | MatchingReferencesError;
+    onChange?: () => void;
+    referenceRecords?: Record[];
     translate: Translate;
 }
 
@@ -135,7 +138,9 @@ interface Props {
  *     <SelectArrayInput optionText="name" />
  * </ReferenceArrayInput>
  */
-export class UnconnectedReferenceArrayInputController extends Component<Props> {
+export class UnconnectedReferenceArrayInputController extends Component<
+    Props & EnhancedProps
+> {
     public static defaultProps = {
         allowEmpty: false,
         filter: {},
@@ -150,7 +155,7 @@ export class UnconnectedReferenceArrayInputController extends Component<Props> {
     private params;
     private debouncedSetFilter;
 
-    constructor(props) {
+    constructor(props: Props & EnhancedProps) {
         super(props);
         const { perPage, sort, filter } = props;
         // stored as a property rather than state because we don't want redraw of async updates
@@ -162,12 +167,12 @@ export class UnconnectedReferenceArrayInputController extends Component<Props> {
         this.fetchReferencesAndOptions(this.props);
     }
 
-    componentWillReceiveProps(nextProps) {
+    componentWillReceiveProps(nextProps: Props & EnhancedProps) {
         let shouldFetchOptions = false;
 
         if (
             (this.props.record || { id: undefined }).id !==
-            (nextProps.record || {}).id
+            (nextProps.record || { id: undefined }).id
         ) {
             this.fetchReferencesAndOptions(nextProps);
         } else if (this.props.input.value !== nextProps.input.value) {
@@ -324,4 +329,4 @@ ReferenceArrayInputController.defaultProps = {
     referenceSource: defaultReferenceSource, // used in makeMapStateToProps
 };
 
-export default ReferenceArrayInputController;
+export default ReferenceArrayInputController as ComponentType<Props>;

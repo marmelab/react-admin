@@ -1,4 +1,4 @@
-import { Component, ReactNode } from 'react';
+import { Component, ReactNode, ComponentType } from 'react';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import inflection from 'inflection';
@@ -29,20 +29,23 @@ interface ChildrenFuncParams {
 interface Props {
     basePath: string;
     children: (params: ChildrenFuncParams) => ReactNode;
-    crudGetOne: Dispatch<typeof crudGetOne>;
-    dispatchCrudUpdate: Dispatch<typeof crudUpdate>;
-    record?: Record;
     hasCreate?: boolean;
     hasEdit?: boolean;
     hasShow?: boolean;
     hasList?: boolean;
     id: Identifier;
     isLoading: boolean;
-    resetForm: (form: string) => void;
     resource: string;
+    undoable?: boolean;
+}
+
+interface EnhancedProps {
+    crudGetOne: Dispatch<typeof crudGetOne>;
+    dispatchCrudUpdate: Dispatch<typeof crudUpdate>;
+    record?: Record;
+    resetForm: (form: string) => void;
     startUndoable: Dispatch<typeof startUndoableAction>;
     translate: Translate;
-    undoable?: boolean;
     version: number;
 }
 
@@ -88,12 +91,14 @@ interface Props {
  *     );
  *     export default App;
  */
-export class UnconnectedEditController extends Component<Props> {
+export class UnconnectedEditController extends Component<
+    Props & EnhancedProps
+> {
     componentDidMount() {
         this.updateData();
     }
 
-    componentWillReceiveProps(nextProps) {
+    componentWillReceiveProps(nextProps: Props & EnhancedProps) {
         if (
             this.props.id !== nextProps.id ||
             nextProps.version !== this.props.version
@@ -205,4 +210,4 @@ const EditController = compose(
     withTranslate
 )(UnconnectedEditController);
 
-export default EditController;
+export default EditController as ComponentType<Props>;
