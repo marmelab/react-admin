@@ -15,13 +15,14 @@ import {
     CustomRoutes,
     CatchAllComponent,
     TitleComponent,
+    DashboardComponent,
 } from './types';
 
 interface Props {
     catchAll?: CatchAllComponent;
     children: AdminChildren;
     customRoutes?: CustomRoutes;
-    dashboard?: ComponentType<WithPermissionsChildrenParams>;
+    dashboard?: DashboardComponent;
     title?: TitleComponent;
 }
 

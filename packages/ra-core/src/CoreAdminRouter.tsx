@@ -23,9 +23,9 @@ import {
     AdminChildren,
     CustomRoutes,
     CatchAllComponent,
-    TitleComponent,
+    LayoutComponent,
+    LayoutProps,
 } from './types';
-import { WithPermissionsChildrenParams } from './auth/WithPermissions';
 
 const welcomeStyles: CSSProperties = {
     width: '50%',
@@ -33,67 +33,64 @@ const welcomeStyles: CSSProperties = {
     textAlign: 'center',
 };
 
-interface LayoutProps {
-    dashboard?: ComponentType<WithPermissionsChildrenParams>;
-    logout: ReactNode;
-    menu: ComponentType;
-    theme: object;
-    title?: TitleComponent;
-}
-
 interface Props extends LayoutProps {
-    appLayout: ComponentType<LayoutProps>;
-    authProvider?: AuthProvider;
+    appLayout?: LayoutComponent;
     catchAll?: CatchAllComponent;
-    userLogout: Dispatch<typeof userLogoutAction>;
     children: AdminChildren;
     customRoutes?: CustomRoutes;
-    isLoggedIn?: boolean;
     loading?: ComponentType;
+}
+
+interface EnhancedProps {
+    authProvider?: AuthProvider;
+    isLoggedIn?: boolean;
+    userLogout: Dispatch<typeof userLogoutAction>;
 }
 
 interface State {
     children: any[];
 }
 
-export class CoreAdminRouter extends Component<Props, State> {
+export class CoreAdminRouter extends Component<Props & EnhancedProps, State> {
     state: State = { children: [] };
 
     componentWillMount() {
         this.initializeResources(this.props);
     }
 
-    initializeResources = nextProps => {
+    initializeResources = (nextProps: Props & EnhancedProps) => {
         if (typeof nextProps.children === 'function') {
             this.initializeResourcesAsync(nextProps);
         }
     };
 
-    initializeResourcesAsync = async props => {
+    initializeResourcesAsync = async (props: Props & EnhancedProps) => {
         const { authProvider } = props;
         try {
             const permissions = await authProvider(AUTH_GET_PERMISSIONS);
             const { children } = props;
 
-            const childrenFuncResult = children(permissions);
-            if (childrenFuncResult.then) {
-                childrenFuncResult.then(resolvedChildren => {
-                    this.setState({
-                        children: resolvedChildren
-                            .filter(child => child)
-                            .map(child => ({
-                                ...child,
-                                props: {
-                                    ...child.props,
-                                    key: child.props.name,
-                                },
-                            })),
+            if (typeof children === 'function') {
+                const childrenFuncResult = children(permissions);
+                if (childrenFuncResult.then) {
+                    childrenFuncResult.then(resolvedChildren => {
+                        this.setState({
+                            children: resolvedChildren
+                                .filter(child => child)
+                                .map(child => ({
+                                    ...child,
+                                    props: {
+                                        ...child.props,
+                                        key: child.props.name,
+                                    },
+                                })),
+                        });
                     });
-                });
-            } else {
-                this.setState({
-                    children: childrenFuncResult.filter(child => child),
-                });
+                } else {
+                    this.setState({
+                        children: childrenFuncResult.filter(child => child),
+                    });
+                }
             }
         } catch (error) {
             this.props.userLogout();
@@ -235,4 +232,4 @@ export default compose(
         mapStateToProps,
         { userLogout: userLogoutAction }
     )
-)(CoreAdminRouter);
+)(CoreAdminRouter) as ComponentType<Props>;

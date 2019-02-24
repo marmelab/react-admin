@@ -1,5 +1,6 @@
 import { ReactNode, ReactElement, ComponentType } from 'react';
-import { RouteProps } from 'react-router';
+import { RouteProps, RouteComponentProps } from 'react-router';
+import { WithPermissionsChildrenParams } from './auth/WithPermissions';
 
 export type Identifier = string | number;
 export interface Record {
@@ -77,3 +78,20 @@ export type CustomRoutes = Array<ReactElement<CustomRoute>>;
 
 export type TitleComponent = string | ReactElement<any>;
 export type CatchAllComponent = ComponentType<{ title?: TitleComponent }>;
+
+interface LoginComponentProps extends RouteComponentProps {
+    title?: TitleComponent;
+    theme?: object;
+}
+export type LoginComponent = ComponentType<LoginComponentProps>;
+export type DashboardComponent = ComponentType<WithPermissionsChildrenParams>;
+
+export interface LayoutProps {
+    dashboard?: DashboardComponent;
+    logout: ReactNode;
+    menu: ComponentType;
+    theme: object;
+    title?: TitleComponent;
+}
+
+export type LayoutComponent = ComponentType<LayoutProps>;
