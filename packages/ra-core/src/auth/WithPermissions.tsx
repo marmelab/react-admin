@@ -13,8 +13,8 @@ import { UserCheck } from './types';
 import { Location } from 'history';
 import { match as Match } from 'react-router';
 
-interface WithPermissionsChildrenParams {
-    authParams: object;
+export interface WithPermissionsChildrenParams {
+    authParams?: object;
     location?: Location;
     match: Match;
     permissions: any;
@@ -25,7 +25,7 @@ type WithPermissionsChildren = (
 ) => ReactNode;
 
 interface Props {
-    authParams: object;
+    authParams?: object;
     children?: WithPermissionsChildren;
     location: Location;
     match: Match;

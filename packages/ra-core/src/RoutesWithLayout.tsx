@@ -7,7 +7,9 @@ import React, {
 } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
-import WithPermissions from './auth/WithPermissions';
+import WithPermissions, {
+    WithPermissionsChildrenParams,
+} from './auth/WithPermissions';
 import {
     AdminChildren,
     CustomRoutes,
@@ -19,7 +21,7 @@ interface Props {
     catchAll?: CatchAllComponent;
     children: AdminChildren;
     customRoutes?: CustomRoutes;
-    dashboard?: ComponentType;
+    dashboard?: ComponentType<WithPermissionsChildrenParams>;
     title?: TitleComponent;
 }
 

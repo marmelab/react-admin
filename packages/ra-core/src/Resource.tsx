@@ -8,17 +8,29 @@ import {
     unregisterResource as unregisterResourceAction,
 } from './actions';
 import { match as Match } from 'react-router';
-import { Dispatch } from './types';
+import { Dispatch, Identifier } from './types';
+
+interface ReactAdminComponentProps {
+    basePath: string;
+}
+interface ReactAdminComponentPropsWithId {
+    id: Identifier;
+    basePath: string;
+}
+
+type ResourceMatch = Match<{
+    id?: string;
+}>;
 
 interface Props {
-    context: 'route' | 'registration';
-    match: Match;
+    context?: 'route' | 'registration';
+    match?: ResourceMatch;
     name: string;
-    list?: ComponentType;
-    create?: ComponentType;
-    edit?: ComponentType;
-    show?: ComponentType;
-    icon?: ComponentType;
+    list?: ComponentType<ReactAdminComponentProps>;
+    create?: ComponentType<ReactAdminComponentProps>;
+    edit?: ComponentType<ReactAdminComponentPropsWithId>;
+    show?: ComponentType<ReactAdminComponentPropsWithId>;
+    icon?: ComponentType<any>;
     options?: object;
 }
 
@@ -123,7 +135,8 @@ export class Resource extends Component<Props & ConnectedProps> {
                                     createElement(show, {
                                         basePath,
                                         id: decodeURIComponent(
-                                            props.match.params.id
+                                            (props.match as ResourceMatch)
+                                                .params.id
                                         ),
                                         ...props,
                                     })
@@ -143,7 +156,8 @@ export class Resource extends Component<Props & ConnectedProps> {
                                     createElement(edit, {
                                         basePath,
                                         id: decodeURIComponent(
-                                            props.match.params.id
+                                            (props.match as ResourceMatch)
+                                                .params.id
                                         ),
                                         ...props,
                                     })
