@@ -1,17 +1,38 @@
-import React, { createElement, Component } from 'react';
-import PropTypes from 'prop-types';
+import React, { createElement, Component, ComponentType } from 'react';
 import { connect } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
 import WithPermissions from './auth/WithPermissions';
 
-import { registerResource, unregisterResource } from './actions';
+import {
+    registerResource as registerResourceAction,
+    unregisterResource as unregisterResourceAction,
+} from './actions';
+import { match as Match } from 'react-router';
+import { Dispatch } from './types';
 
-const componentPropType = PropTypes.oneOfType([
-    PropTypes.func,
-    PropTypes.string,
-]);
+interface Props {
+    context: 'route' | 'registration';
+    match: Match;
+    name: string;
+    list?: ComponentType;
+    create?: ComponentType;
+    edit?: ComponentType;
+    show?: ComponentType;
+    icon?: ComponentType;
+    options?: object;
+}
 
-export class Resource extends Component {
+interface ConnectedProps {
+    registerResource: Dispatch<typeof registerResourceAction>;
+    unregisterResource: Dispatch<typeof unregisterResourceAction>;
+}
+
+export class Resource extends Component<Props & ConnectedProps> {
+    static defaultProps = {
+        context: 'route',
+        options: {},
+    };
+
     componentWillMount() {
         const {
             context,
@@ -155,31 +176,16 @@ export class Resource extends Component {
     }
 }
 
-Resource.propTypes = {
-    context: PropTypes.oneOf(['route', 'registration']).isRequired,
-    match: PropTypes.shape({
-        isExact: PropTypes.bool,
-        params: PropTypes.object,
-        path: PropTypes.string,
-        url: PropTypes.string,
-    }),
-    name: PropTypes.string.isRequired,
-    list: componentPropType,
-    create: componentPropType,
-    edit: componentPropType,
-    show: componentPropType,
-    icon: componentPropType,
-    options: PropTypes.object,
-    registerResource: PropTypes.func.isRequired,
-    unregisterResource: PropTypes.func.isRequired,
-};
-
-Resource.defaultProps = {
-    context: 'route',
-    options: {},
-};
-
-export default connect(
+const ConnectedResource = connect(
     null,
-    { registerResource, unregisterResource }
-)(Resource);
+    {
+        registerResource: registerResourceAction,
+        unregisterResource: unregisterResourceAction,
+    }
+)(
+    // Necessary casting because of https://github.com/DefinitelyTyped/DefinitelyTyped/issues/19989#issuecomment-432752918
+    Resource as ComponentType<Props & ConnectedProps>
+);
+
+// Necessary casting because of https://github.com/DefinitelyTyped/DefinitelyTyped/issues/19989#issuecomment-432752918
+export default ConnectedResource as ComponentType<Props>;
