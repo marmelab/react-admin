@@ -1,3 +1,6 @@
+import { ReactNode, ReactElement, ComponentType } from 'react';
+import { RouteProps } from 'react-router';
+
 export type Identifier = string | number;
 export interface Record {
     id: Identifier;
@@ -62,3 +65,15 @@ export interface ReduxState {
 export type Dispatch<T> = T extends (...args: infer A) => any
     ? (...args: A) => void
     : never;
+
+type RenderResourcesFunction = (permissions: any) => any[];
+export type AdminChildren = RenderResourcesFunction | ReactNode;
+
+export interface CustomRoute extends RouteProps {
+    noLayout: boolean;
+}
+
+export type CustomRoutes = Array<ReactElement<CustomRoute>>;
+
+export type TitleComponent = string | ReactElement<any>;
+export type CatchAllComponent = ComponentType<{ title?: TitleComponent }>;

@@ -9,9 +9,9 @@ import RoutesWithLayout from './RoutesWithLayout';
 
 describe('<RoutesWithLayout>', () => {
     const Dashboard = () => <div>Dashboard</div>;
-    const Custom = () => <div>Custom</div>;
-    const FirstResource = () => <div>Default</div>;
-    const Resource = () => <div>Resource</div>;
+    const Custom = ({ name }) => <div>Custom</div>;
+    const FirstResource = ({ name }) => <div>Default</div>;
+    const Resource = ({ name }) => <div>Resource</div>;
 
     // the Provider is required because the dashboard is wrapped by <Authenticated>, which is a connected component
     const store = createStore(() => ({
@@ -22,10 +22,7 @@ describe('<RoutesWithLayout>', () => {
         const wrapper = mount(
             <Provider store={store}>
                 <MemoryRouter initialEntries={['/']}>
-                    <RoutesWithLayout
-                        dashboard={Dashboard}
-                        declareResources={() => true}
-                    >
+                    <RoutesWithLayout dashboard={Dashboard}>
                         <FirstResource name="default" />
                         <Resource name="another" />
                         <Resource name="yetanother" />
@@ -40,7 +37,7 @@ describe('<RoutesWithLayout>', () => {
         const wrapper = mount(
             <Provider store={store}>
                 <MemoryRouter initialEntries={['/']}>
-                    <RoutesWithLayout declareResources={() => true}>
+                    <RoutesWithLayout>
                         <FirstResource name="default" />
                     </RoutesWithLayout>
                 </MemoryRouter>
@@ -54,7 +51,7 @@ describe('<RoutesWithLayout>', () => {
         const wrapper = mount(
             <Provider store={store}>
                 <MemoryRouter initialEntries={['/']}>
-                    <RoutesWithLayout declareResources={() => true}>
+                    <RoutesWithLayout>
                         <FirstResource name="default" />
                         <Resource name="another" />
                         <Resource name="yetanother" />
@@ -68,7 +65,9 @@ describe('<RoutesWithLayout>', () => {
     });
 
     it('should accept custom routes', () => {
-        const customRoutes = [<Route path="/custom" component={Custom} />]; // eslint-disable-line react/jsx-key
+        const customRoutes = [
+            <Route key="custom" path="/custom" component={Custom} />,
+        ]; // eslint-disable-line react/jsx-key
         const wrapper = mount(
             <Provider store={store}>
                 <MemoryRouter initialEntries={['/custom']}>
