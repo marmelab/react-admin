@@ -253,10 +253,8 @@ By default, `<TabbedShowLayout>` renders its tabs using `<TabbedShowLayoutTabs>`
 For instance, to make use of scrollable `<Tabs>`, you can pass a scrollable props to `<TabbedShowLayoutTabs>` and use it in the `tabs` prop from `<TabbedShowLayout>` as follows:
 
 ```jsx
-import React from 'react';
 import {
     Show,
-    Tab,
     TabbedShowLayout,
     TabbedShowLayoutTabs,
 } from 'react-admin';
@@ -264,18 +262,6 @@ import {
 const ScrollableTabbedShowLayout = props => (
     <Show{...props}>
         <TabbedShowLayout tabs={<TabbedShowLayoutTabs scrollable={true}/>}>
-            <Tab label="Tab Component 1">
-                ...
-            </Tab>
-            <Tab label="Tab Component 2">
-                ...
-            </Tab>
-            <Tab label="Tab Component 3">
-                ...
-            </Tab>
-            <Tab label="Tab Component 4">
-                ...
-            </Tab>
             ...
         </TabbedShowLayout>
     </Show>
