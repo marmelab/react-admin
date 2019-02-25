@@ -1,14 +1,14 @@
-import React, { Children, Fragment, cloneElement } from 'react';
-import PropTypes from 'prop-types';
+import React, { Children, Fragment, cloneElement } from "react";
+import PropTypes from "prop-types";
 
 const sanitizeRestProps = ({
-    handleSubmit,
-    handleSubmitWithRedirect,
-    invalid,
-    pristine,
-    saving,
-    submitOnEnter,
-    ...rest
+  handleSubmit,
+  handleSubmitWithRedirect,
+  invalid,
+  pristine,
+  saving,
+  submitOnEnter,
+  ...rest
 }) => rest;
 
 /**
@@ -29,15 +29,15 @@ const sanitizeRestProps = ({
  * );
  */
 const IgnoreFormProps = ({ children, ...props }) => (
-    <Fragment>
-        {Children.map(children, child =>
-            cloneElement(child, sanitizeRestProps(props))
-        )}
-    </Fragment>
+  <Fragment>
+    {Children.map(children, child =>
+      cloneElement(child, sanitizeRestProps(props))
+    )}
+  </Fragment>
 );
 
 IgnoreFormProps.propTypes = {
-    children: PropTypes.node.isRequired,
+  children: PropTypes.node.isRequired
 };
 
 export default IgnoreFormProps;

@@ -1,16 +1,16 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
-import { ShowButton } from '../button';
-import CardActions from '../layout/CardActions';
+import { ShowButton } from "../button";
+import CardActions from "../layout/CardActions";
 
 const sanitizeRestProps = ({
-    basePath,
-    className,
-    record,
-    hasShow,
-    hasList,
-    ...rest
+  basePath,
+  className,
+  record,
+  hasShow,
+  hasList,
+  ...rest
 }) => rest;
 
 /**
@@ -39,24 +39,24 @@ const sanitizeRestProps = ({
  *     );
  */
 const EditActions = ({
-    basePath,
-    className,
-    data,
-    hasShow,
-    resource,
-    ...rest
+  basePath,
+  className,
+  data,
+  hasShow,
+  resource,
+  ...rest
 }) => (
-    <CardActions className={className} {...sanitizeRestProps(rest)}>
-        {hasShow && <ShowButton basePath={basePath} record={data} />}
-    </CardActions>
+  <CardActions className={className} {...sanitizeRestProps(rest)}>
+    {hasShow && <ShowButton basePath={basePath} record={data} />}
+  </CardActions>
 );
 
 EditActions.propTypes = {
-    basePath: PropTypes.string,
-    className: PropTypes.string,
-    data: PropTypes.object,
-    hasShow: PropTypes.bool,
-    resource: PropTypes.string,
+  basePath: PropTypes.string,
+  className: PropTypes.string,
+  data: PropTypes.object,
+  hasShow: PropTypes.bool,
+  resource: PropTypes.string
 };
 
 export default EditActions;

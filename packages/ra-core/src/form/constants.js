@@ -1,1 +1,1 @@
-export const REDUX_FORM_NAME = 'record-form';
+export const REDUX_FORM_NAME = "record-form";

@@ -1,5 +1,5 @@
-import inferElementFromValues from './inferElementFromValues';
-import getValuesFromRecords from './getValuesFromRecords';
+import inferElementFromValues from "./inferElementFromValues";
+import getValuesFromRecords from "./getValuesFromRecords";
 
 /**
  * Get a list of React-admin field components from a list of records
@@ -33,18 +33,14 @@ import getValuesFromRecords from './getValuesFromRecords';
  * // ];
  */
 export default (records, types) => {
-    const fieldValues = getValuesFromRecords(records);
-    return Object.keys(fieldValues)
-        .reduce(
-            (fields, fieldName) =>
-                fields.concat(
-                    inferElementFromValues(
-                        fieldName,
-                        fieldValues[fieldName],
-                        types
-                    )
-                ),
-            []
-        )
-        .filter(inferredElement => inferredElement.isDefined());
+  const fieldValues = getValuesFromRecords(records);
+  return Object.keys(fieldValues)
+    .reduce(
+      (fields, fieldName) =>
+        fields.concat(
+          inferElementFromValues(fieldName, fieldValues[fieldName], types)
+        ),
+      []
+    )
+    .filter(inferredElement => inferredElement.isDefined());
 };

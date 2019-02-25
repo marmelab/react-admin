@@ -1,19 +1,19 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import get from 'lodash/get';
-import pure from 'recompose/pure';
-import Typography from '@material-ui/core/Typography';
+import React from "react";
+import PropTypes from "prop-types";
+import get from "lodash/get";
+import pure from "recompose/pure";
+import Typography from "@material-ui/core/Typography";
 
-import sanitizeRestProps from './sanitizeRestProps';
+import sanitizeRestProps from "./sanitizeRestProps";
 
 const toLocaleStringSupportsLocales = (() => {
-    // from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toLocaleString
-    try {
-        new Date().toLocaleString('i');
-    } catch (error) {
-        return error instanceof RangeError;
-    }
-    return false;
+  // from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toLocaleString
+  try {
+    new Date().toLocaleString("i");
+  } catch (error) {
+    return error instanceof RangeError;
+  }
+  return false;
 })();
 
 /**
@@ -42,60 +42,60 @@ const toLocaleStringSupportsLocales = (() => {
  */
 
 export const DateField = ({
-    className,
-    locales,
-    options,
-    record,
-    showTime = false,
-    source,
-    ...rest
+  className,
+  locales,
+  options,
+  record,
+  showTime = false,
+  source,
+  ...rest
 }) => {
-    if (!record) return null;
-    const value = get(record, source);
-    if (value == null) return null;
-    const date = value instanceof Date ? value : new Date(value);
-    const dateString = showTime
-        ? toLocaleStringSupportsLocales
-            ? date.toLocaleString(locales, options)
-            : date.toLocaleString()
-        : toLocaleStringSupportsLocales
-            ? date.toLocaleDateString(locales, options)
-            : date.toLocaleDateString();
+  if (!record) return null;
+  const value = get(record, source);
+  if (value == null) return null;
+  const date = value instanceof Date ? value : new Date(value);
+  const dateString = showTime
+    ? toLocaleStringSupportsLocales
+      ? date.toLocaleString(locales, options)
+      : date.toLocaleString()
+    : toLocaleStringSupportsLocales
+      ? date.toLocaleDateString(locales, options)
+      : date.toLocaleDateString();
 
-    return (
-        <Typography
-            component="span"
-            body1="body1"
-            className={className}
-            {...sanitizeRestProps(rest)}
-        >
-            {dateString}
-        </Typography>
-    );
+  return (
+    <Typography
+      component="span"
+      body1="body1"
+      className={className}
+      {...sanitizeRestProps(rest)}
+    >
+      {dateString}
+    </Typography>
+  );
 };
 
 DateField.propTypes = {
-    addLabel: PropTypes.bool,
-    basePath: PropTypes.string,
-    className: PropTypes.string,
-    cellClassName: PropTypes.string,
-    headerClassName: PropTypes.string,
-    label: PropTypes.string,
-    locales: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.arrayOf(PropTypes.string),
-    ]),
-    options: PropTypes.object,
-    record: PropTypes.object,
-    showTime: PropTypes.bool,
-    sortBy: PropTypes.string,
-    source: PropTypes.string.isRequired,
+  addLabel: PropTypes.bool,
+  basePath: PropTypes.string,
+  className: PropTypes.string,
+  cellClassName: PropTypes.string,
+  headerClassName: PropTypes.string,
+  label: PropTypes.string,
+  locales: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.arrayOf(PropTypes.string)
+  ]),
+  options: PropTypes.object,
+  record: PropTypes.object,
+  showTime: PropTypes.bool,
+  sortBy: PropTypes.string,
+  source: PropTypes.string.isRequired
 };
 
 const PureDateField = pure(DateField);
 
 PureDateField.defaultProps = {
-    addLabel: true,
+  addLabel: true
 };
 
 export default PureDateField;

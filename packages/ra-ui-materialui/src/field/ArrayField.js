@@ -1,11 +1,11 @@
-import { Component, cloneElement } from 'react';
-import PropTypes from 'prop-types';
-import get from 'lodash/get';
-import pure from 'recompose/pure';
+import { Component, cloneElement } from "react";
+import PropTypes from "prop-types";
+import get from "lodash/get";
+import pure from "recompose/pure";
 
 const initialState = {
-    data: {},
-    ids: [],
+  data: {},
+  ids: []
 };
 
 /**
@@ -72,70 +72,68 @@ const initialState = {
  *     TagsField.defaultProps = { addLabel: true };
  */
 export class ArrayField extends Component {
-    constructor(props) {
-        super(props);
-        this.state = props.record
-            ? this.getDataAndIds(props.record, props.source)
-            : initialState;
-    }
+  constructor(props) {
+    super(props);
+    this.state = props.record
+      ? this.getDataAndIds(props.record, props.source)
+      : initialState;
+  }
 
-    componentWillReceiveProps(nextProps, prevProps) {
-        if (nextProps.record !== prevProps.record) {
-            this.setState(
-                this.getDataAndIds(nextProps.record, nextProps.source)
-            );
+  componentWillReceiveProps(nextProps, prevProps) {
+    if (nextProps.record !== prevProps.record) {
+      this.setState(this.getDataAndIds(nextProps.record, nextProps.source));
+    }
+  }
+
+  getDataAndIds(record, source) {
+    const list = get(record, source);
+    return list
+      ? {
+          data: list.reduce((prev, item) => {
+            prev[JSON.stringify(item)] = item;
+            return prev;
+          }, {}),
+          ids: list.map(JSON.stringify)
         }
-    }
+      : initialState;
+  }
 
-    getDataAndIds(record, source) {
-        const list = get(record, source);
-        return list
-            ? {
-                  data: list.reduce((prev, item) => {
-                      prev[JSON.stringify(item)] = item;
-                      return prev;
-                  }, {}),
-                  ids: list.map(JSON.stringify),
-              }
-            : initialState;
-    }
+  render() {
+    const {
+      addLabel,
+      basePath,
+      children,
+      record,
+      source,
+      ...rest
+    } = this.props;
+    const { ids, data } = this.state;
 
-    render() {
-        const {
-            addLabel,
-            basePath,
-            children,
-            record,
-            source,
-            ...rest
-        } = this.props;
-        const { ids, data } = this.state;
-
-        return cloneElement(children, {
-            ids,
-            data,
-            isLoading: false,
-            basePath,
-            currentSort: {},
-            ...rest,
-        });
-    }
+    return cloneElement(children, {
+      ids,
+      data,
+      isLoading: false,
+      basePath,
+      currentSort: {},
+      ...rest
+    });
+  }
 }
 
 ArrayField.propTypes = {
-    addLabel: PropTypes.bool,
-    basePath: PropTypes.string,
-    children: PropTypes.element.isRequired,
-    record: PropTypes.object,
-    resource: PropTypes.string,
-    sortBy: PropTypes.string,
-    source: PropTypes.string,
+  addLabel: PropTypes.bool,
+  basePath: PropTypes.string,
+  children: PropTypes.element.isRequired,
+  record: PropTypes.object,
+  resource: PropTypes.string,
+  sortBy: PropTypes.string,
+  source: PropTypes.string
 };
 
 const EnhancedArrayField = pure(ArrayField);
 
 EnhancedArrayField.defaultProps = {
-    addLabel: true,
+  addLabel: true
 };
 
 export default EnhancedArrayField;

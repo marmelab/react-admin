@@ -1,33 +1,33 @@
-import buildApolloClient from 'ra-data-graphql-simple';
+import buildApolloClient from "ra-data-graphql-simple";
 
 export default () => {
-    const getGqlResource = resource => {
-        switch (resource) {
-            case 'customers':
-                return 'Customer';
+  const getGqlResource = resource => {
+    switch (resource) {
+      case "customers":
+        return "Customer";
 
-            case 'categories':
-                return 'Category';
+      case "categories":
+        return "Category";
 
-            case 'commands':
-                return 'Command';
+      case "commands":
+        return "Command";
 
-            case 'products':
-                return 'Product';
+      case "products":
+        return "Product";
 
-            case 'reviews':
-                return 'Review';
+      case "reviews":
+        return "Review";
 
-            default:
-                throw new Error(`Unknown resource ${resource}`);
-        }
-    };
+      default:
+        throw new Error(`Unknown resource ${resource}`);
+    }
+  };
 
-    return buildApolloClient({
-        clientOptions: {
-            uri: 'http://localhost:4000/graphql',
-        },
-    }).then(dataProvider => (type, resource, params) =>
-        dataProvider(type, getGqlResource(resource), params)
-    );
+  return buildApolloClient({
+    clientOptions: {
+      uri: "http://localhost:4000/graphql"
+    }
+  }).then(dataProvider => (type, resource, params) =>
+    dataProvider(type, getGqlResource(resource), params)
+  );
 };

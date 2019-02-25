@@ -1,10 +1,10 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { getFormValues, FormName } from 'redux-form';
-import get from 'lodash/get';
+import React from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { getFormValues, FormName } from "redux-form";
+import get from "lodash/get";
 
-import warning from '../util/warning';
+import warning from "../util/warning";
 
 /**
  * Get the current (edited) value of the record from the form and pass it
@@ -45,33 +45,33 @@ import warning from '../util/warning';
  * );
  */
 export const FormDataConsumerView = ({
-    children,
-    form,
-    formData,
-    source,
-    index,
-    ...rest
+  children,
+  form,
+  formData,
+  source,
+  index,
+  ...rest
 }) => {
-    let scopedFormData = formData;
-    let getSource;
-    let getSourceHasBeenCalled = false;
-    let ret;
+  let scopedFormData = formData;
+  let getSource;
+  let getSourceHasBeenCalled = false;
+  let ret;
 
-    // If we have an index, we are in an iterator like component (such as the SimpleFormIterator)
-    if (typeof index !== 'undefined') {
-        scopedFormData = get(formData, source);
-        getSource = scopedSource => {
-            getSourceHasBeenCalled = true;
-            return `${source}.${scopedSource}`;
-        };
-        ret = children({ formData, scopedFormData, getSource, ...rest });
-    } else {
-        ret = children({ formData, ...rest });
-    }
+  // If we have an index, we are in an iterator like component (such as the SimpleFormIterator)
+  if (typeof index !== "undefined") {
+    scopedFormData = get(formData, source);
+    getSource = scopedSource => {
+      getSourceHasBeenCalled = true;
+      return `${source}.${scopedSource}`;
+    };
+    ret = children({ formData, scopedFormData, getSource, ...rest });
+  } else {
+    ret = children({ formData, ...rest });
+  }
 
-    warning(
-        typeof index !== 'undefined' && ret && !getSourceHasBeenCalled,
-        `You're using a FormDataConsumer inside an ArrayInput and you did not called the getSource function supplied by the FormDataConsumer component. This is required for your inputs to get the proper source.
+  warning(
+    typeof index !== "undefined" && ret && !getSourceHasBeenCalled,
+    `You're using a FormDataConsumer inside an ArrayInput and you did not called the getSource function supplied by the FormDataConsumer component. This is required for your inputs to get the proper source.
 
 <ArrayInput source="users">
     <SimpleFormIterator>
@@ -95,28 +95,28 @@ export const FormDataConsumerView = ({
         </FormDataConsumer>
     </SimpleFormIterator>
 </ArrayInput>`
-    );
+  );
 
-    return ret === undefined ? null : ret;
+  return ret === undefined ? null : ret;
 };
 
 FormDataConsumerView.propTypes = {
-    children: PropTypes.func.isRequired,
-    data: PropTypes.object,
+  children: PropTypes.func.isRequired,
+  data: PropTypes.object
 };
 
 const mapStateToProps = (state, { form, record }) => ({
-    formData: getFormValues(form)(state) || record,
+  formData: getFormValues(form)(state) || record
 });
 
 const ConnectedFormDataConsumerView = connect(mapStateToProps)(
-    FormDataConsumerView
+  FormDataConsumerView
 );
 
 const FormDataConsumer = props => (
-    <FormName>
-        {({ form }) => <ConnectedFormDataConsumerView form={form} {...props} />}
-    </FormName>
+  <FormName>
+    {({ form }) => <ConnectedFormDataConsumerView form={form} {...props} />}
+  </FormName>
 );
 
 export default FormDataConsumer;

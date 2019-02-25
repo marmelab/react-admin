@@ -1,14 +1,14 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import get from 'lodash/get';
-import pure from 'recompose/pure';
-import Typography from '@material-ui/core/Typography';
-import sanitizeRestProps from './sanitizeRestProps';
+import React from "react";
+import PropTypes from "prop-types";
+import get from "lodash/get";
+import pure from "recompose/pure";
+import Typography from "@material-ui/core/Typography";
+import sanitizeRestProps from "./sanitizeRestProps";
 
 const hasNumberFormat = !!(
-    typeof Intl === 'object' &&
-    Intl &&
-    typeof Intl.NumberFormat === 'function'
+  typeof Intl === "object" &&
+  Intl &&
+  typeof Intl.NumberFormat === "function"
 );
 
 /**
@@ -40,68 +40,68 @@ const hasNumberFormat = !!(
  * <span>25,99 $US</span>
  */
 export const NumberField = ({
-    className,
-    record,
-    source,
-    locales,
-    options,
-    textAlign,
-    ...rest
+  className,
+  record,
+  source,
+  locales,
+  options,
+  textAlign,
+  ...rest
 }) => {
-    if (!record) return null;
-    const value = get(record, source);
-    if (value == null) return null;
-    if (!hasNumberFormat) {
-        return (
-            <Typography
-                component="span"
-                body1="body1"
-                className={className}
-                {...sanitizeRestProps(rest)}
-            >
-                {value}
-            </Typography>
-        );
-    }
-
+  if (!record) return null;
+  const value = get(record, source);
+  if (value == null) return null;
+  if (!hasNumberFormat) {
     return (
-        <Typography
-            component="span"
-            body1="body1"
-            className={className}
-            {...sanitizeRestProps(rest)}
-        >
-            {value.toLocaleString(locales, options)}
-        </Typography>
+      <Typography
+        component="span"
+        body1="body1"
+        className={className}
+        {...sanitizeRestProps(rest)}
+      >
+        {value}
+      </Typography>
     );
+  }
+
+  return (
+    <Typography
+      component="span"
+      body1="body1"
+      className={className}
+      {...sanitizeRestProps(rest)}
+    >
+      {value.toLocaleString(locales, options)}
+    </Typography>
+  );
 };
 
 NumberField.propTypes = {
-    addLabel: PropTypes.bool,
-    basePath: PropTypes.string,
-    classes: PropTypes.object,
-    className: PropTypes.string,
-    cellClassName: PropTypes.string,
-    headerClassName: PropTypes.string,
-    label: PropTypes.string,
-    locales: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.arrayOf(PropTypes.string),
-    ]),
-    options: PropTypes.object,
-    record: PropTypes.object,
-    textAlign: PropTypes.string,
-    sortBy: PropTypes.string,
-    source: PropTypes.string.isRequired,
+  addLabel: PropTypes.bool,
+  basePath: PropTypes.string,
+  classes: PropTypes.object,
+  className: PropTypes.string,
+  cellClassName: PropTypes.string,
+  headerClassName: PropTypes.string,
+  label: PropTypes.string,
+  locales: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.arrayOf(PropTypes.string)
+  ]),
+  options: PropTypes.object,
+  record: PropTypes.object,
+  textAlign: PropTypes.string,
+  sortBy: PropTypes.string,
+  source: PropTypes.string.isRequired
 };
 
 // wat? TypeScript looses the displayName if we don't set it explicitly
-NumberField.displayName = 'NumberField';
+NumberField.displayName = "NumberField";
 
 const ComposedNumberField = pure(NumberField);
 
 ComposedNumberField.defaultProps = {
-    addLabel: true,
-    textAlign: 'right',
+  addLabel: true,
+  textAlign: "right"
 };
 export default ComposedNumberField;

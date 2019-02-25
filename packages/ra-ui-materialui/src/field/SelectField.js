@@ -1,12 +1,12 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import get from 'lodash/get';
-import pure from 'recompose/pure';
-import compose from 'recompose/compose';
-import { translate } from 'ra-core';
-import Typography from '@material-ui/core/Typography';
+import React from "react";
+import PropTypes from "prop-types";
+import get from "lodash/get";
+import pure from "recompose/pure";
+import compose from "recompose/compose";
+import { translate } from "ra-core";
+import Typography from "@material-ui/core/Typography";
 
-import sanitizeRestProps from './sanitizeRestProps';
+import sanitizeRestProps from "./sanitizeRestProps";
 
 /**
  * Display a value in an enumeration
@@ -68,76 +68,74 @@ import sanitizeRestProps from './sanitizeRestProps';
  * **Tip**: <ReferenceField> sets `translateChoice` to false by default.
  */
 export const SelectField = ({
-    className,
-    source,
-    record,
-    choices,
-    optionValue,
-    optionText,
-    translate,
-    translateChoice,
-    ...rest
+  className,
+  source,
+  record,
+  choices,
+  optionValue,
+  optionText,
+  translate,
+  translateChoice,
+  ...rest
 }) => {
-    const value = get(record, source);
-    const choice = choices.find(c => c[optionValue] === value);
-    if (!choice) return null;
-    const choiceName = React.isValidElement(optionText) // eslint-disable-line no-nested-ternary
-        ? React.cloneElement(optionText, { record: choice })
-        : typeof optionText === 'function'
-            ? optionText(choice)
-            : choice[optionText];
-    return (
-        <Typography
-            component="span"
-            body1="body1"
-            className={className}
-            {...sanitizeRestProps(rest)}
-        >
-            {translateChoice
-                ? translate(choiceName, { _: choiceName })
-                : choiceName}
-        </Typography>
-    );
+  const value = get(record, source);
+  const choice = choices.find(c => c[optionValue] === value);
+  if (!choice) return null;
+  const choiceName = React.isValidElement(optionText) // eslint-disable-line no-nested-ternary
+    ? React.cloneElement(optionText, { record: choice })
+    : typeof optionText === "function"
+      ? optionText(choice)
+      : choice[optionText];
+  return (
+    <Typography
+      component="span"
+      body1="body1"
+      className={className}
+      {...sanitizeRestProps(rest)}
+    >
+      {translateChoice ? translate(choiceName, { _: choiceName }) : choiceName}
+    </Typography>
+  );
 };
 
 SelectField.propTypes = {
-    addLabel: PropTypes.bool,
-    basePath: PropTypes.string,
-    className: PropTypes.string,
-    cellClassName: PropTypes.string,
-    headerClassName: PropTypes.string,
-    choices: PropTypes.arrayOf(PropTypes.object),
-    label: PropTypes.string,
-    optionText: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.func,
-        PropTypes.element,
-    ]).isRequired,
-    optionValue: PropTypes.string.isRequired,
-    resource: PropTypes.string,
-    record: PropTypes.object,
-    sortBy: PropTypes.string,
-    source: PropTypes.string.isRequired,
-    translate: PropTypes.func.isRequired,
-    translateChoice: PropTypes.bool.isRequired,
+  addLabel: PropTypes.bool,
+  basePath: PropTypes.string,
+  className: PropTypes.string,
+  cellClassName: PropTypes.string,
+  headerClassName: PropTypes.string,
+  choices: PropTypes.arrayOf(PropTypes.object),
+  label: PropTypes.string,
+  optionText: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.func,
+    PropTypes.element
+  ]).isRequired,
+  optionValue: PropTypes.string.isRequired,
+  resource: PropTypes.string,
+  record: PropTypes.object,
+  sortBy: PropTypes.string,
+  source: PropTypes.string.isRequired,
+  translate: PropTypes.func.isRequired,
+  translateChoice: PropTypes.bool.isRequired
 };
 
 SelectField.defaultProps = {
-    record: {},
-    optionText: 'name',
-    optionValue: 'id',
-    translateChoice: true,
+  record: {},
+  optionText: "name",
+  optionValue: "id",
+  translateChoice: true
 };
 
 const enhance = compose(
-    pure,
-    translate
+  pure,
+  translate
 );
 
 const EnhancedSelectField = enhance(SelectField);
 
 EnhancedSelectField.defaultProps = {
-    addLabel: true,
+  addLabel: true
 };
 
 export default EnhancedSelectField;

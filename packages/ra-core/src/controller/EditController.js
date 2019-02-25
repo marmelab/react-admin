@@ -1,13 +1,13 @@
-import { Component } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import compose from 'recompose/compose';
-import inflection from 'inflection';
-import { reset } from 'redux-form';
-import translate from '../i18n/translate';
-import { crudGetOne, crudUpdate, startUndoable } from '../actions';
-import { REDUX_FORM_NAME } from '../form';
-import checkMinimumRequiredProps from './checkMinimumRequiredProps';
+import { Component } from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import compose from "recompose/compose";
+import inflection from "inflection";
+import { reset } from "redux-form";
+import translate from "../i18n/translate";
+import { crudGetOne, crudUpdate, startUndoable } from "../actions";
+import { REDUX_FORM_NAME } from "../form";
+import checkMinimumRequiredProps from "./checkMinimumRequiredProps";
 
 /**
  * Page component for the Edit view
@@ -52,139 +52,135 @@ import checkMinimumRequiredProps from './checkMinimumRequiredProps';
  *     export default App;
  */
 export class EditController extends Component {
-    componentDidMount() {
-        this.updateData();
+  componentDidMount() {
+    this.updateData();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (
+      this.props.id !== nextProps.id ||
+      nextProps.version !== this.props.version
+    ) {
+      this.props.resetForm(REDUX_FORM_NAME);
+      this.updateData(nextProps.resource, nextProps.id);
     }
+  }
 
-    componentWillReceiveProps(nextProps) {
-        if (
-            this.props.id !== nextProps.id ||
-            nextProps.version !== this.props.version
-        ) {
-            this.props.resetForm(REDUX_FORM_NAME);
-            this.updateData(nextProps.resource, nextProps.id);
-        }
+  defaultRedirectRoute() {
+    return "list";
+  }
+
+  updateData(resource = this.props.resource, id = this.props.id) {
+    this.props.crudGetOne(resource, id, this.props.basePath);
+  }
+
+  save = (data, redirect) => {
+    const { undoable = true, startUndoable, dispatchCrudUpdate } = this.props;
+    if (undoable) {
+      startUndoable(
+        crudUpdate(
+          this.props.resource,
+          this.props.id,
+          data,
+          this.props.record,
+          this.props.basePath,
+          redirect
+        )
+      );
+    } else {
+      dispatchCrudUpdate(
+        this.props.resource,
+        this.props.id,
+        data,
+        this.props.record,
+        this.props.basePath,
+        redirect
+      );
     }
+  };
 
-    defaultRedirectRoute() {
-        return 'list';
-    }
+  render() {
+    const {
+      basePath,
+      children,
+      id,
+      isLoading,
+      record,
+      resource,
+      translate,
+      version
+    } = this.props;
 
-    updateData(resource = this.props.resource, id = this.props.id) {
-        this.props.crudGetOne(resource, id, this.props.basePath);
-    }
+    if (!children) return null;
 
-    save = (data, redirect) => {
-        const {
-            undoable = true,
-            startUndoable,
-            dispatchCrudUpdate,
-        } = this.props;
-        if (undoable) {
-            startUndoable(
-                crudUpdate(
-                    this.props.resource,
-                    this.props.id,
-                    data,
-                    this.props.record,
-                    this.props.basePath,
-                    redirect
-                )
-            );
-        } else {
-            dispatchCrudUpdate(
-                this.props.resource,
-                this.props.id,
-                data,
-                this.props.record,
-                this.props.basePath,
-                redirect
-            );
-        }
-    };
+    const resourceName = translate(`resources.${resource}.name`, {
+      smart_count: 1,
+      _: inflection.humanize(inflection.singularize(resource))
+    });
+    const defaultTitle = translate("ra.page.edit", {
+      name: `${resourceName}`,
+      id,
+      record
+    });
 
-    render() {
-        const {
-            basePath,
-            children,
-            id,
-            isLoading,
-            record,
-            resource,
-            translate,
-            version,
-        } = this.props;
-
-        if (!children) return null;
-
-        const resourceName = translate(`resources.${resource}.name`, {
-            smart_count: 1,
-            _: inflection.humanize(inflection.singularize(resource)),
-        });
-        const defaultTitle = translate('ra.page.edit', {
-            name: `${resourceName}`,
-            id,
-            record,
-        });
-
-        return children({
-            isLoading,
-            defaultTitle,
-            save: this.save,
-            resource,
-            basePath,
-            record,
-            redirect: this.defaultRedirectRoute(),
-            translate,
-            version,
-        });
-    }
+    return children({
+      isLoading,
+      defaultTitle,
+      save: this.save,
+      resource,
+      basePath,
+      record,
+      redirect: this.defaultRedirectRoute(),
+      translate,
+      version
+    });
+  }
 }
 
 EditController.propTypes = {
-    basePath: PropTypes.string.isRequired,
-    children: PropTypes.func.isRequired,
-    crudGetOne: PropTypes.func.isRequired,
-    dispatchCrudUpdate: PropTypes.func.isRequired,
-    record: PropTypes.object,
-    hasCreate: PropTypes.bool,
-    hasEdit: PropTypes.bool,
-    hasShow: PropTypes.bool,
-    hasList: PropTypes.bool,
-    id: PropTypes.string.isRequired,
-    isLoading: PropTypes.bool.isRequired,
-    location: PropTypes.object,
-    match: PropTypes.object,
-    resetForm: PropTypes.func.isRequired,
-    resource: PropTypes.string.isRequired,
-    startUndoable: PropTypes.func.isRequired,
-    title: PropTypes.any,
-    translate: PropTypes.func,
-    undoable: PropTypes.bool,
-    version: PropTypes.number.isRequired,
+  basePath: PropTypes.string.isRequired,
+  children: PropTypes.func.isRequired,
+  crudGetOne: PropTypes.func.isRequired,
+  dispatchCrudUpdate: PropTypes.func.isRequired,
+  record: PropTypes.object,
+  hasCreate: PropTypes.bool,
+  hasEdit: PropTypes.bool,
+  hasShow: PropTypes.bool,
+  hasList: PropTypes.bool,
+  id: PropTypes.string.isRequired,
+  isLoading: PropTypes.bool.isRequired,
+  location: PropTypes.object,
+  match: PropTypes.object,
+  resetForm: PropTypes.func.isRequired,
+  resource: PropTypes.string.isRequired,
+  startUndoable: PropTypes.func.isRequired,
+  title: PropTypes.any,
+  translate: PropTypes.func,
+  undoable: PropTypes.bool,
+  version: PropTypes.number.isRequired
 };
 
 function mapStateToProps(state, props) {
-    return {
-        id: props.id,
-        record: state.admin.resources[props.resource]
-            ? state.admin.resources[props.resource].data[props.id]
-            : null,
-        isLoading: state.admin.loading > 0,
-        version: state.admin.ui.viewVersion,
-    };
+  return {
+    id: props.id,
+    record: state.admin.resources[props.resource]
+      ? state.admin.resources[props.resource].data[props.id]
+      : null,
+    isLoading: state.admin.loading > 0,
+    version: state.admin.ui.viewVersion
+  };
 }
 
 export default compose(
-    checkMinimumRequiredProps('Edit', ['basePath', 'resource']),
-    connect(
-        mapStateToProps,
-        {
-            crudGetOne,
-            dispatchCrudUpdate: crudUpdate,
-            startUndoable,
-            resetForm: reset,
-        }
-    ),
-    translate
+  checkMinimumRequiredProps("Edit", ["basePath", "resource"]),
+  connect(
+    mapStateToProps,
+    {
+      crudGetOne,
+      dispatchCrudUpdate: crudUpdate,
+      startUndoable,
+      resetForm: reset
+    }
+  ),
+  translate
 )(EditController);

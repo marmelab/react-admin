@@ -1,53 +1,100 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import compose from 'recompose/compose';
-import { addField, translate, ReferenceArrayInputController } from 'ra-core';
+import React from "react";
+import PropTypes from "prop-types";
+import compose from "recompose/compose";
+import { addField, translate, ReferenceArrayInputController } from "ra-core";
 
-import LinearProgress from '../layout/LinearProgress';
-import Labeled from '../input/Labeled';
-import ReferenceError from './ReferenceError';
+import LinearProgress from "../layout/LinearProgress";
+import Labeled from "../input/Labeled";
+import ReferenceError from "./ReferenceError";
 
 const sanitizeRestProps = ({
-    alwaysOn,
-    basePath,
-    component,
-    crudGetMany,
-    crudGetMatching,
-    defaultValue,
-    filterToQuery,
-    formClassName,
-    initializeForm,
-    input,
-    isRequired,
-    label,
-    locale,
-    meta,
-    optionText,
-    optionValue,
-    perPage,
-    record,
-    referenceSource,
-    resource,
-    allowEmpty,
-    source,
-    textAlign,
-    translate,
-    translateChoice,
-    ...rest
+  alwaysOn,
+  basePath,
+  component,
+  crudGetMany,
+  crudGetMatching,
+  defaultValue,
+  filterToQuery,
+  formClassName,
+  initializeForm,
+  input,
+  isRequired,
+  label,
+  locale,
+  meta,
+  optionText,
+  optionValue,
+  perPage,
+  record,
+  referenceSource,
+  resource,
+  allowEmpty,
+  source,
+  textAlign,
+  translate,
+  translateChoice,
+  ...rest
 }) => rest;
 
 export const ReferenceArrayInputView = ({
+  allowEmpty,
+  basePath,
+  children,
+  choices,
+  className,
+  error,
+  input,
+  isLoading,
+  isRequired,
+  label,
+  meta,
+  onChange,
+  options,
+  resource,
+  setFilter,
+  setPagination,
+  setSort,
+  source,
+  translate,
+  warning,
+  ...rest
+}) => {
+  const translatedLabel = translate(
+    label || `resources.${resource}.fields.${source}`,
+    { _: label }
+  );
+
+  if (isLoading) {
+    return (
+      <Labeled
+        label={translatedLabel}
+        source={source}
+        resource={resource}
+        className={className}
+        isRequired={isRequired}
+      >
+        <LinearProgress />
+      </Labeled>
+    );
+  }
+
+  if (error) {
+    return <ReferenceError label={translatedLabel} error={error} />;
+  }
+
+  return React.cloneElement(children, {
     allowEmpty,
     basePath,
-    children,
     choices,
     className,
     error,
     input,
-    isLoading,
     isRequired,
-    label,
-    meta,
+    label: translatedLabel,
+    meta: {
+      ...meta,
+      helperText: warning || false
+    },
     onChange,
     options,
     resource,
@@ -55,79 +102,32 @@ export const ReferenceArrayInputView = ({
     setPagination,
     setSort,
     source,
-    translate,
-    warning,
-    ...rest
-}) => {
-    const translatedLabel = translate(
-        label || `resources.${resource}.fields.${source}`,
-        { _: label }
-    );
-
-    if (isLoading) {
-        return (
-            <Labeled
-                label={translatedLabel}
-                source={source}
-                resource={resource}
-                className={className}
-                isRequired={isRequired}
-            >
-                <LinearProgress />
-            </Labeled>
-        );
-    }
-
-    if (error) {
-        return <ReferenceError label={translatedLabel} error={error} />;
-    }
-
-    return React.cloneElement(children, {
-        allowEmpty,
-        basePath,
-        choices,
-        className,
-        error,
-        input,
-        isRequired,
-        label: translatedLabel,
-        meta: {
-            ...meta,
-            helperText: warning || false,
-        },
-        onChange,
-        options,
-        resource,
-        setFilter,
-        setPagination,
-        setSort,
-        source,
-        translateChoice: false,
-        limitChoicesToValue: true,
-        ...sanitizeRestProps(rest),
-    });
+    translateChoice: false,
+    limitChoicesToValue: true,
+    ...sanitizeRestProps(rest)
+  });
 };
 
 ReferenceArrayInputView.propTypes = {
-    allowEmpty: PropTypes.bool,
-    basePath: PropTypes.string,
-    children: PropTypes.element,
-    choices: PropTypes.array,
-    className: PropTypes.string,
-    error: PropTypes.string,
-    isLoading: PropTypes.bool,
-    input: PropTypes.object.isRequired,
-    label: PropTypes.string,
-    meta: PropTypes.object,
-    onChange: PropTypes.func,
-    options: PropTypes.object,
-    resource: PropTypes.string.isRequired,
-    setFilter: PropTypes.func,
-    setPagination: PropTypes.func,
-    setSort: PropTypes.func,
-    source: PropTypes.string,
-    translate: PropTypes.func.isRequired,
-    warning: PropTypes.string,
+  allowEmpty: PropTypes.bool,
+  basePath: PropTypes.string,
+  children: PropTypes.element,
+  choices: PropTypes.array,
+  className: PropTypes.string,
+  error: PropTypes.string,
+  isLoading: PropTypes.bool,
+  input: PropTypes.object.isRequired,
+  label: PropTypes.string,
+  meta: PropTypes.object,
+  onChange: PropTypes.func,
+  options: PropTypes.object,
+  resource: PropTypes.string.isRequired,
+  setFilter: PropTypes.func,
+  setPagination: PropTypes.func,
+  setSort: PropTypes.func,
+  source: PropTypes.string,
+  translate: PropTypes.func.isRequired,
+  warning: PropTypes.string
 };
 
 /**
@@ -209,56 +209,56 @@ ReferenceArrayInputView.propTypes = {
  * </ReferenceArrayInput>
  */
 export const ReferenceArrayInput = ({ children, ...props }) => {
-    if (React.Children.count(children) !== 1) {
-        throw new Error(
-            '<ReferenceArrayInput> only accepts a single child (like <Datagrid>)'
-        );
-    }
-
-    return (
-        <ReferenceArrayInputController {...props}>
-            {controllerProps => (
-                <ReferenceArrayInputView
-                    {...props}
-                    {...{ children, ...controllerProps }}
-                />
-            )}
-        </ReferenceArrayInputController>
+  if (React.Children.count(children) !== 1) {
+    throw new Error(
+      "<ReferenceArrayInput> only accepts a single child (like <Datagrid>)"
     );
+  }
+
+  return (
+    <ReferenceArrayInputController {...props}>
+      {controllerProps => (
+        <ReferenceArrayInputView
+          {...props}
+          {...{ children, ...controllerProps }}
+        />
+      )}
+    </ReferenceArrayInputController>
+  );
 };
 
 ReferenceArrayInput.propTypes = {
-    allowEmpty: PropTypes.bool.isRequired,
-    basePath: PropTypes.string,
-    children: PropTypes.element.isRequired,
-    className: PropTypes.string,
-    filter: PropTypes.object,
-    filterToQuery: PropTypes.func.isRequired,
-    input: PropTypes.object.isRequired,
-    label: PropTypes.string,
-    meta: PropTypes.object,
-    perPage: PropTypes.number,
-    reference: PropTypes.string.isRequired,
-    resource: PropTypes.string.isRequired,
-    sort: PropTypes.shape({
-        field: PropTypes.string,
-        order: PropTypes.oneOf(['ASC', 'DESC']),
-    }),
-    source: PropTypes.string,
-    translate: PropTypes.func.isRequired,
+  allowEmpty: PropTypes.bool.isRequired,
+  basePath: PropTypes.string,
+  children: PropTypes.element.isRequired,
+  className: PropTypes.string,
+  filter: PropTypes.object,
+  filterToQuery: PropTypes.func.isRequired,
+  input: PropTypes.object.isRequired,
+  label: PropTypes.string,
+  meta: PropTypes.object,
+  perPage: PropTypes.number,
+  reference: PropTypes.string.isRequired,
+  resource: PropTypes.string.isRequired,
+  sort: PropTypes.shape({
+    field: PropTypes.string,
+    order: PropTypes.oneOf(["ASC", "DESC"])
+  }),
+  source: PropTypes.string,
+  translate: PropTypes.func.isRequired
 };
 
 ReferenceArrayInput.defaultProps = {
-    allowEmpty: false,
-    filter: {},
-    filterToQuery: searchText => ({ q: searchText }),
-    perPage: 25,
-    sort: { field: 'id', order: 'DESC' },
+  allowEmpty: false,
+  filter: {},
+  filterToQuery: searchText => ({ q: searchText }),
+  perPage: 25,
+  sort: { field: "id", order: "DESC" }
 };
 
 const EnhancedReferenceArrayInput = compose(
-    addField,
-    translate
+  addField,
+  translate
 )(ReferenceArrayInput);
 
 export default EnhancedReferenceArrayInput;

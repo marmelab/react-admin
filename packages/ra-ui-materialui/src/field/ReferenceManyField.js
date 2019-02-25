@@ -1,62 +1,62 @@
-import React, { Fragment, cloneElement } from 'react';
-import PropTypes from 'prop-types';
-import { ReferenceManyFieldController } from 'ra-core';
+import React, { Fragment, cloneElement } from "react";
+import PropTypes from "prop-types";
+import { ReferenceManyFieldController } from "ra-core";
 
 export const ReferenceManyFieldView = ({
-    children,
-    className,
-    currentSort,
-    data,
-    ids,
-    loadedOnce,
-    page,
-    pagination,
-    perPage,
-    reference,
-    referenceBasePath,
-    setPage,
-    setPerPage,
-    setSort,
-    total,
+  children,
+  className,
+  currentSort,
+  data,
+  ids,
+  loadedOnce,
+  page,
+  pagination,
+  perPage,
+  reference,
+  referenceBasePath,
+  setPage,
+  setPerPage,
+  setSort,
+  total
 }) => (
-    <Fragment>
-        {cloneElement(children, {
-            className,
-            resource: reference,
-            ids,
-            loadedOnce,
-            data,
-            basePath: referenceBasePath,
-            currentSort,
-            setSort,
-            total,
-        })}
-        {pagination &&
-            total !== undefined &&
-            cloneElement(pagination, {
-                page,
-                perPage,
-                setPage,
-                setPerPage,
-                total,
-            })}
-    </Fragment>
+  <Fragment>
+    {cloneElement(children, {
+      className,
+      resource: reference,
+      ids,
+      loadedOnce,
+      data,
+      basePath: referenceBasePath,
+      currentSort,
+      setSort,
+      total
+    })}
+    {pagination &&
+      total !== undefined &&
+      cloneElement(pagination, {
+        page,
+        perPage,
+        setPage,
+        setPerPage,
+        total
+      })}
+  </Fragment>
 );
 
 ReferenceManyFieldView.propTypes = {
-    children: PropTypes.element,
-    className: PropTypes.string,
-    currentSort: PropTypes.shape({
-        field: PropTypes.string,
-        order: PropTypes.string,
-    }),
-    data: PropTypes.object,
-    ids: PropTypes.array,
-    loadedOnce: PropTypes.bool,
-    pagination: PropTypes.element,
-    reference: PropTypes.string,
-    referenceBasePath: PropTypes.string,
-    setSort: PropTypes.func,
+  children: PropTypes.element,
+  className: PropTypes.string,
+  currentSort: PropTypes.shape({
+    field: PropTypes.string,
+    order: PropTypes.string
+  }),
+  data: PropTypes.object,
+  ids: PropTypes.array,
+  loadedOnce: PropTypes.bool,
+  pagination: PropTypes.element,
+  reference: PropTypes.string,
+  referenceBasePath: PropTypes.string,
+  setSort: PropTypes.func
 };
 
 /**
@@ -106,51 +106,51 @@ ReferenceManyFieldView.propTypes = {
  * </ReferenceManyField>
  */
 export const ReferenceManyField = ({ children, ...props }) => {
-    if (React.Children.count(children) !== 1) {
-        throw new Error(
-            '<ReferenceManyField> only accepts a single child (like <Datagrid>)'
-        );
-    }
-
-    return (
-        <ReferenceManyFieldController {...props}>
-            {controllerProps => (
-                <ReferenceManyFieldView
-                    {...props}
-                    {...{ children, ...controllerProps }}
-                />
-            )}
-        </ReferenceManyFieldController>
+  if (React.Children.count(children) !== 1) {
+    throw new Error(
+      "<ReferenceManyField> only accepts a single child (like <Datagrid>)"
     );
+  }
+
+  return (
+    <ReferenceManyFieldController {...props}>
+      {controllerProps => (
+        <ReferenceManyFieldView
+          {...props}
+          {...{ children, ...controllerProps }}
+        />
+      )}
+    </ReferenceManyFieldController>
+  );
 };
 
 ReferenceManyField.propTypes = {
-    addLabel: PropTypes.bool,
-    basePath: PropTypes.string,
-    children: PropTypes.element.isRequired,
-    classes: PropTypes.object,
-    className: PropTypes.string,
-    filter: PropTypes.object,
-    label: PropTypes.string,
-    perPage: PropTypes.number,
-    record: PropTypes.object,
-    reference: PropTypes.string.isRequired,
-    resource: PropTypes.string,
-    sortBy: PropTypes.string,
-    source: PropTypes.string.isRequired,
-    sort: PropTypes.shape({
-        field: PropTypes.string,
-        order: PropTypes.string,
-    }),
-    target: PropTypes.string.isRequired,
+  addLabel: PropTypes.bool,
+  basePath: PropTypes.string,
+  children: PropTypes.element.isRequired,
+  classes: PropTypes.object,
+  className: PropTypes.string,
+  filter: PropTypes.object,
+  label: PropTypes.string,
+  perPage: PropTypes.number,
+  record: PropTypes.object,
+  reference: PropTypes.string.isRequired,
+  resource: PropTypes.string,
+  sortBy: PropTypes.string,
+  source: PropTypes.string.isRequired,
+  sort: PropTypes.shape({
+    field: PropTypes.string,
+    order: PropTypes.string
+  }),
+  target: PropTypes.string.isRequired
 };
 
 ReferenceManyField.defaultProps = {
-    filter: {},
-    perPage: 25,
-    sort: { field: 'id', order: 'DESC' },
-    source: 'id',
-    addLabel: true,
+  filter: {},
+  perPage: 25,
+  sort: { field: "id", order: "DESC" },
+  source: "id",
+  addLabel: true
 };
 
 export default ReferenceManyField;

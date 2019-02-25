@@ -1,13 +1,13 @@
-import { Component } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import compose from 'recompose/compose';
-import inflection from 'inflection';
-import { parse } from 'query-string';
+import { Component } from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import compose from "recompose/compose";
+import inflection from "inflection";
+import { parse } from "query-string";
 
-import translate from '../i18n/translate';
-import { crudCreate as crudCreateAction } from '../actions';
-import checkMinimumRequiredProps from './checkMinimumRequiredProps';
+import translate from "../i18n/translate";
+import { crudCreate as crudCreateAction } from "../actions";
+import checkMinimumRequiredProps from "./checkMinimumRequiredProps";
 
 /**
  * Page component for the Create view
@@ -51,103 +51,93 @@ import checkMinimumRequiredProps from './checkMinimumRequiredProps';
  *     export default App;
  */
 export class CreateController extends Component {
-    constructor(props) {
-        super(props);
-        const {
-            location: { state, search },
-            record,
-        } = this.props;
-        this.record =
-            state && state.record
-                ? state.record
-                : search
-                    ? parse(search, { arrayFormat: 'bracket' })
-                    : record;
-    }
+  constructor(props) {
+    super(props);
+    const {
+      location: { state, search },
+      record
+    } = this.props;
+    this.record =
+      state && state.record
+        ? state.record
+        : search
+          ? parse(search, { arrayFormat: "bracket" })
+          : record;
+  }
 
-    defaultRedirectRoute() {
-        const { hasShow, hasEdit } = this.props;
-        if (hasEdit) return 'edit';
-        if (hasShow) return 'show';
-        return 'list';
-    }
+  defaultRedirectRoute() {
+    const { hasShow, hasEdit } = this.props;
+    if (hasEdit) return "edit";
+    if (hasShow) return "show";
+    return "list";
+  }
 
-    save = (record, redirect) => {
-        this.props.crudCreate(
-            this.props.resource,
-            record,
-            this.props.basePath,
-            redirect
-        );
-    };
+  save = (record, redirect) => {
+    this.props.crudCreate(
+      this.props.resource,
+      record,
+      this.props.basePath,
+      redirect
+    );
+  };
 
-    render() {
-        const {
-            basePath,
-            children,
-            isLoading,
-            resource,
-            translate,
-        } = this.props;
+  render() {
+    const { basePath, children, isLoading, resource, translate } = this.props;
 
-        if (!children) return null;
+    if (!children) return null;
 
-        const resourceName = translate(`resources.${resource}.name`, {
-            smart_count: 1,
-            _: inflection.humanize(inflection.singularize(resource)),
-        });
-        const defaultTitle = translate('ra.page.create', {
-            name: `${resourceName}`,
-        });
-        return children({
-            isLoading,
-            defaultTitle,
-            save: this.save,
-            resource,
-            basePath,
-            record: this.record,
-            redirect: this.defaultRedirectRoute(),
-            translate,
-        });
-    }
+    const resourceName = translate(`resources.${resource}.name`, {
+      smart_count: 1,
+      _: inflection.humanize(inflection.singularize(resource))
+    });
+    const defaultTitle = translate("ra.page.create", {
+      name: `${resourceName}`
+    });
+    return children({
+      isLoading,
+      defaultTitle,
+      save: this.save,
+      resource,
+      basePath,
+      record: this.record,
+      redirect: this.defaultRedirectRoute(),
+      translate
+    });
+  }
 }
 
 CreateController.propTypes = {
-    basePath: PropTypes.string.isRequired,
-    children: PropTypes.func.isRequired,
-    crudCreate: PropTypes.func.isRequired,
-    hasCreate: PropTypes.bool,
-    hasEdit: PropTypes.bool,
-    hasList: PropTypes.bool,
-    hasShow: PropTypes.bool,
-    isLoading: PropTypes.bool.isRequired,
-    location: PropTypes.object.isRequired,
-    match: PropTypes.object.isRequired,
-    record: PropTypes.object,
-    resource: PropTypes.string.isRequired,
-    title: PropTypes.any,
-    translate: PropTypes.func.isRequired,
+  basePath: PropTypes.string.isRequired,
+  children: PropTypes.func.isRequired,
+  crudCreate: PropTypes.func.isRequired,
+  hasCreate: PropTypes.bool,
+  hasEdit: PropTypes.bool,
+  hasList: PropTypes.bool,
+  hasShow: PropTypes.bool,
+  isLoading: PropTypes.bool.isRequired,
+  location: PropTypes.object.isRequired,
+  match: PropTypes.object.isRequired,
+  record: PropTypes.object,
+  resource: PropTypes.string.isRequired,
+  title: PropTypes.any,
+  translate: PropTypes.func.isRequired
 };
 
 CreateController.defaultProps = {
-    record: {},
+  record: {}
 };
 
 function mapStateToProps(state) {
-    return {
-        isLoading: state.admin.loading > 0,
-    };
+  return {
+    isLoading: state.admin.loading > 0
+  };
 }
 
 export default compose(
-    checkMinimumRequiredProps('Create', [
-        'basePath',
-        'location',
-        'resource',
-    ]),
-    connect(
-        mapStateToProps,
-        { crudCreate: crudCreateAction }
-    ),
-    translate,
+  checkMinimumRequiredProps("Create", ["basePath", "location", "resource"]),
+  connect(
+    mapStateToProps,
+    { crudCreate: crudCreateAction }
+  ),
+  translate
 )(CreateController);

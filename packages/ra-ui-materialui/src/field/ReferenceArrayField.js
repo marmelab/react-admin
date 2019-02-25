@@ -1,47 +1,47 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import LinearProgress from '@material-ui/core/LinearProgress';
-import { withStyles } from '@material-ui/core/styles';
-import { ReferenceArrayFieldController } from 'ra-core';
+import React from "react";
+import PropTypes from "prop-types";
+import LinearProgress from "@material-ui/core/LinearProgress";
+import { withStyles } from "@material-ui/core/styles";
+import { ReferenceArrayFieldController } from "ra-core";
 
 const styles = {
-    progress: { marginTop: '1em' },
+  progress: { marginTop: "1em" }
 };
 
 export const ReferenceArrayFieldView = ({
-    children,
-    className,
-    classes = {},
-    data,
-    ids,
-    loadedOnce,
-    reference,
-    referenceBasePath,
+  children,
+  className,
+  classes = {},
+  data,
+  ids,
+  loadedOnce,
+  reference,
+  referenceBasePath
 }) => {
-    if (loadedOnce === false) {
-        return <LinearProgress className={classes.progress} />;
-    }
+  if (loadedOnce === false) {
+    return <LinearProgress className={classes.progress} />;
+  }
 
-    return React.cloneElement(children, {
-        className,
-        resource: reference,
-        ids,
-        data,
-        loadedOnce,
-        basePath: referenceBasePath,
-        currentSort: {},
-    });
+  return React.cloneElement(children, {
+    className,
+    resource: reference,
+    ids,
+    data,
+    loadedOnce,
+    basePath: referenceBasePath,
+    currentSort: {}
+  });
 };
 
 ReferenceArrayFieldView.propTypes = {
-    classes: PropTypes.object,
-    className: PropTypes.string,
-    data: PropTypes.object,
-    ids: PropTypes.array,
-    loadedOnce: PropTypes.bool,
-    children: PropTypes.element.isRequired,
-    reference: PropTypes.string.isRequired,
-    referenceBasePath: PropTypes.string,
+  classes: PropTypes.object,
+  className: PropTypes.string,
+  data: PropTypes.object,
+  ids: PropTypes.array,
+  loadedOnce: PropTypes.bool,
+  children: PropTypes.element.isRequired,
+  reference: PropTypes.string.isRequired,
+  referenceBasePath: PropTypes.string
 };
 
 /**
@@ -77,42 +77,42 @@ ReferenceArrayFieldView.propTypes = {
  *
  */
 export const ReferenceArrayField = ({ children, ...props }) => {
-    if (React.Children.count(children) !== 1) {
-        throw new Error(
-            '<ReferenceArrayField> only accepts a single child (like <Datagrid>)'
-        );
-    }
-
-    return (
-        <ReferenceArrayFieldController {...props}>
-            {controllerProps => (
-                <ReferenceArrayFieldView
-                    {...props}
-                    {...{ children, ...controllerProps }}
-                />
-            )}
-        </ReferenceArrayFieldController>
+  if (React.Children.count(children) !== 1) {
+    throw new Error(
+      "<ReferenceArrayField> only accepts a single child (like <Datagrid>)"
     );
+  }
+
+  return (
+    <ReferenceArrayFieldController {...props}>
+      {controllerProps => (
+        <ReferenceArrayFieldView
+          {...props}
+          {...{ children, ...controllerProps }}
+        />
+      )}
+    </ReferenceArrayFieldController>
+  );
 };
 
 ReferenceArrayField.propTypes = {
-    addLabel: PropTypes.bool,
-    basePath: PropTypes.string.isRequired,
-    classes: PropTypes.object,
-    className: PropTypes.string,
-    children: PropTypes.element.isRequired,
-    label: PropTypes.string,
-    record: PropTypes.object.isRequired,
-    reference: PropTypes.string.isRequired,
-    resource: PropTypes.string.isRequired,
-    sortBy: PropTypes.string,
-    source: PropTypes.string.isRequired,
+  addLabel: PropTypes.bool,
+  basePath: PropTypes.string.isRequired,
+  classes: PropTypes.object,
+  className: PropTypes.string,
+  children: PropTypes.element.isRequired,
+  label: PropTypes.string,
+  record: PropTypes.object.isRequired,
+  reference: PropTypes.string.isRequired,
+  resource: PropTypes.string.isRequired,
+  sortBy: PropTypes.string,
+  source: PropTypes.string.isRequired
 };
 
 const EnhancedReferenceArrayField = withStyles(styles)(ReferenceArrayField);
 
 EnhancedReferenceArrayField.defaultProps = {
-    addLabel: true,
+  addLabel: true
 };
 
 export default EnhancedReferenceArrayField;

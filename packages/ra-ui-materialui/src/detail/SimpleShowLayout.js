@@ -1,20 +1,20 @@
-import React, { Children } from 'react';
-import PropTypes from 'prop-types';
-import classnames from 'classnames';
+import React, { Children } from "react";
+import PropTypes from "prop-types";
+import classnames from "classnames";
 
-import CardContentInner from '../layout/CardContentInner';
-import Labeled from '../input/Labeled';
+import CardContentInner from "../layout/CardContentInner";
+import Labeled from "../input/Labeled";
 
 const sanitizeRestProps = ({
-    children,
-    className,
-    record,
-    resource,
-    basePath,
-    version,
-    initialValues,
-    translate,
-    ...rest
+  children,
+  className,
+  record,
+  resource,
+  basePath,
+  version,
+  initialValues,
+  translate,
+  ...rest
 }) => rest;
 
 /**
@@ -50,63 +50,63 @@ const sanitizeRestProps = ({
  *     export default App;
  */
 export const SimpleShowLayout = ({
-    basePath,
-    className,
-    children,
-    record,
-    resource,
-    version,
-    ...rest
+  basePath,
+  className,
+  children,
+  record,
+  resource,
+  version,
+  ...rest
 }) => (
-    <CardContentInner
-        className={className}
-        key={version}
-        {...sanitizeRestProps(rest)}
-    >
-        {Children.map(
-            children,
-            field =>
-                field ? (
-                    <div
-                        key={field.props.source}
-                        className={classnames(
-                            `ra-field ra-field-${field.props.source}`,
-                            field.props.className
-                        )}
-                    >
-                        {field.props.addLabel ? (
-                            <Labeled
-                                record={record}
-                                resource={resource}
-                                basePath={basePath}
-                                label={field.props.label}
-                                source={field.props.source}
-                                disabled={false}
-                            >
-                                {field}
-                            </Labeled>
-                        ) : typeof field.type === 'string' ? (
-                            field
-                        ) : (
-                            React.cloneElement(field, {
-                                record,
-                                resource,
-                                basePath,
-                            })
-                        )}
-                    </div>
-                ) : null
-        )}
-    </CardContentInner>
+  <CardContentInner
+    className={className}
+    key={version}
+    {...sanitizeRestProps(rest)}
+  >
+    {Children.map(
+      children,
+      field =>
+        field ? (
+          <div
+            key={field.props.source}
+            className={classnames(
+              `ra-field ra-field-${field.props.source}`,
+              field.props.className
+            )}
+          >
+            {field.props.addLabel ? (
+              <Labeled
+                record={record}
+                resource={resource}
+                basePath={basePath}
+                label={field.props.label}
+                source={field.props.source}
+                disabled={false}
+              >
+                {field}
+              </Labeled>
+            ) : typeof field.type === "string" ? (
+              field
+            ) : (
+              React.cloneElement(field, {
+                record,
+                resource,
+                basePath
+              })
+            )}
+          </div>
+        ) : null
+    )}
+  </CardContentInner>
 );
 
 SimpleShowLayout.propTypes = {
-    basePath: PropTypes.string,
-    className: PropTypes.string,
-    children: PropTypes.node,
-    record: PropTypes.object,
-    resource: PropTypes.string,
-    version: PropTypes.number,
+  basePath: PropTypes.string,
+  className: PropTypes.string,
+  children: PropTypes.node,
+  record: PropTypes.object,
+  resource: PropTypes.string,
+  version: PropTypes.number
 };
 
 export default SimpleShowLayout;

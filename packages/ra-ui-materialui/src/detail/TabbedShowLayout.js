@@ -1,30 +1,30 @@
-import React, { Component, Children, cloneElement } from 'react';
-import PropTypes from 'prop-types';
-import Tabs from '@material-ui/core/Tabs';
-import Divider from '@material-ui/core/Divider';
-import { withRouter, Route } from 'react-router-dom';
-import compose from 'recompose/compose';
-import { translate } from 'ra-core';
+import React, { Component, Children, cloneElement } from "react";
+import PropTypes from "prop-types";
+import Tabs from "@material-ui/core/Tabs";
+import Divider from "@material-ui/core/Divider";
+import { withRouter, Route } from "react-router-dom";
+import compose from "recompose/compose";
+import { translate } from "ra-core";
 
-import CardContentInner from '../layout/CardContentInner';
+import CardContentInner from "../layout/CardContentInner";
 
 const sanitizeRestProps = ({
-    children,
-    className,
-    record,
-    resource,
-    basePath,
-    version,
-    initialValues,
-    staticContext,
-    translate,
-    ...rest
+  children,
+  className,
+  record,
+  resource,
+  basePath,
+  version,
+  initialValues,
+  staticContext,
+  translate,
+  ...rest
 }) => rest;
 
 const getTabFullPath = (tab, index, baseUrl) =>
-    `${baseUrl}${
-        tab.props.path ? `/${tab.props.path}` : index > 0 ? `/${index}` : ''
-    }`;
+  `${baseUrl}${
+    tab.props.path ? `/${tab.props.path}` : index > 0 ? `/${index}` : ""
+  }`;
 
 /**
  * Tabbed Layout for a Show view, showing fields grouped in tabs.
@@ -65,90 +65,86 @@ const getTabFullPath = (tab, index, baseUrl) =>
  *     export default App;
  */
 export class TabbedShowLayout extends Component {
-    render() {
-        const {
-            basePath,
+  render() {
+    const {
+      basePath,
+      children,
+      className,
+      location,
+      match,
+      record,
+      resource,
+      translate,
+      version,
+      value,
+      ...rest
+    } = this.props;
+
+    return (
+      <div className={className} key={version} {...sanitizeRestProps(rest)}>
+        <Tabs
+          // The location pathname will contain the page path including the current tab path
+          // so we can use it as a way to determine the current tab
+          value={location.pathname}
+          indicatorColor="primary"
+        >
+          {Children.map(children, (tab, index) => {
+            if (!tab) return null;
+
+            // Builds the full tab tab which is the concatenation of the last matched route in the
+            // TabbedShowLayout hierarchy (ex: '/posts/create', '/posts/12', , '/posts/12/show')
+            // and the tab path.
+            // This will be used as the Tab's value
+            const tabPath = getTabFullPath(tab, index, match.url);
+
+            return cloneElement(tab, {
+              context: "header",
+              value: tabPath
+            });
+          })}
+        </Tabs>
+        <Divider />
+        <CardContentInner>
+          {Children.map(
             children,
-            className,
-            location,
-            match,
-            record,
-            resource,
-            translate,
-            version,
-            value,
-            ...rest
-        } = this.props;
-
-        return (
-            <div
-                className={className}
-                key={version}
-                {...sanitizeRestProps(rest)}
-            >
-                <Tabs
-                    // The location pathname will contain the page path including the current tab path
-                    // so we can use it as a way to determine the current tab
-                    value={location.pathname}
-                    indicatorColor="primary"
-                >
-                    {Children.map(children, (tab, index) => {
-                        if (!tab) return null;
-
-                        // Builds the full tab tab which is the concatenation of the last matched route in the
-                        // TabbedShowLayout hierarchy (ex: '/posts/create', '/posts/12', , '/posts/12/show')
-                        // and the tab path.
-                        // This will be used as the Tab's value
-                        const tabPath = getTabFullPath(tab, index, match.url);
-
-                        return cloneElement(tab, {
-                            context: 'header',
-                            value: tabPath,
-                        });
-                    })}
-                </Tabs>
-                <Divider />
-                <CardContentInner>
-                    {Children.map(
-                        children,
-                        (tab, index) =>
-                            tab && (
-                                <Route
-                                    exact
-                                    path={getTabFullPath(tab, index, match.url)}
-                                    render={() =>
-                                        cloneElement(tab, {
-                                            context: 'content',
-                                            resource,
-                                            record,
-                                            basePath,
-                                        })
-                                    }
-                                />
-                            )
-                    )}
-                </CardContentInner>
-            </div>
-        );
-    }
+            (tab, index) =>
+              tab && (
+                <Route
+                  exact
+                  path={getTabFullPath(tab, index, match.url)}
+                  render={() =>
+                    cloneElement(tab, {
+                      context: "content",
+                      resource,
+                      record,
+                      basePath
+                    })
+                  }
+                />
+              )
+          )}
+        </CardContentInner>
+      </div>
+    );
+  }
 }
 
 TabbedShowLayout.propTypes = {
-    children: PropTypes.node,
-    className: PropTypes.string,
-    location: PropTypes.object,
-    match: PropTypes.object,
-    record: PropTypes.object,
-    resource: PropTypes.string,
-    basePath: PropTypes.string,
-    value: PropTypes.number,
-    version: PropTypes.number,
-    translate: PropTypes.func,
+  children: PropTypes.node,
+  className: PropTypes.string,
+  location: PropTypes.object,
+  match: PropTypes.object,
+  record: PropTypes.object,
+  resource: PropTypes.string,
+  basePath: PropTypes.string,
+  value: PropTypes.number,
+  version: PropTypes.number,
+  translate: PropTypes.func
 };
 
 const enhance = compose(
-    withRouter,
-    translate
+  withRouter,
+  translate
 );
 
 export default enhance(TabbedShowLayout);
