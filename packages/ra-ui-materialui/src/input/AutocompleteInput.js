@@ -103,6 +103,7 @@ export class AutocompleteInput extends React.Component {
     };
 
     inputEl = null;
+    anchorEl = null;
 
     componentWillMount() {
         const selectedItem = this.getSelectedItem(
@@ -251,6 +252,7 @@ export class AutocompleteInput extends React.Component {
         // but Autosuggest also needs this reference (it provides the ref prop)
         const storeInputRef = input => {
             this.inputEl = input;
+            this.updateAnchorEl();
             ref(input);
         };
 
@@ -285,6 +287,27 @@ export class AutocompleteInput extends React.Component {
         );
     };
 
+    updateAnchorEl() {
+        if (!this.inputEl) {
+            return;
+        }
+
+        const inputPosition = this.inputEl.getBoundingClientRect();
+
+        if (!this.anchorEl) {
+            this.anchorEl = { getBoundingClientRect: () => inputPosition };
+        } else {
+            const anchorPosition = this.anchorEl.getBoundingClientRect();
+
+            if (
+                anchorPosition.x !== inputPosition.x ||
+                anchorPosition.y !== inputPosition.y
+            ) {
+                this.anchorEl = { getBoundingClientRect: () => inputPosition };
+            }
+        }
+    }
+
     renderSuggestionsContainer = autosuggestOptions => {
         const {
             containerProps: { className, ...containerProps },
@@ -292,11 +315,14 @@ export class AutocompleteInput extends React.Component {
         } = autosuggestOptions;
         const { classes = {}, options } = this.props;
 
+        // Force the Popper component to reposition the popup only when this.inputEl is moved to another location
+        this.updateAnchorEl();
+
         return (
             <Popper
                 className={className}
                 open={Boolean(children)}
-                anchorEl={this.inputEl}
+                anchorEl={this.anchorEl}
                 placement="bottom-start"
                 {...options.suggestionsContainerProps}
             >
