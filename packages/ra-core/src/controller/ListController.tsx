@@ -198,7 +198,6 @@ export class UnconnectedListController extends Component<Props> {
         const {
             resource,
             query,
-            params,
             filter,
             sort,
             perPage,
@@ -212,12 +211,11 @@ export class UnconnectedListController extends Component<Props> {
             prevProps.query.page !== query.page ||
             prevProps.query.perPage !== query.perPage ||
             !isEqual(prevProps.query.filter, query.filter) ||
-            !isEqual(prevProps.params, params) ||
             !isEqual(prevProps.filter, filter) ||
             !isEqual(prevProps.sort, sort) ||
             !isEqual(prevProps.perPage, perPage)
         ) {
-            this.updateData(Object.keys(query).length > 0 ? query : params);
+            this.updateData(Object.keys(query).length > 0 && query);
         }
 
         if (prevProps.version !== version) {
