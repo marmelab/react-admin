@@ -4,6 +4,12 @@ export interface Record {
     [key: string]: any;
 }
 
+export interface RecordMap {
+    // Accept strings and numbers as identifiers
+    [id: string]: Record;
+    [id: number]: Record;
+}
+
 export interface Sort {
     field: string;
     order: string;
@@ -36,9 +42,23 @@ export interface ReduxState {
         ui: {
             optimistic: boolean;
         };
+        resources: {
+            [name: string]: {
+                data: any;
+            };
+        };
+        references: {
+            oneToMany: {
+                [relatedTo: string]: { ids: Identifier[]; total: number };
+            };
+        };
     };
     i18n: {
         locale: string;
         messages: object;
     };
 }
+
+export type Dispatch<T> = T extends (...args: infer A) => any
+    ? (...args: A) => void
+    : never;

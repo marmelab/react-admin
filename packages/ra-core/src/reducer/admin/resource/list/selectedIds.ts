@@ -1,18 +1,19 @@
 import { Reducer } from 'redux';
 import {
     SET_LIST_SELECTED_IDS,
-    SetListLelectedIdsAction,
+    SetListSelectedIdsAction,
     TOGGLE_LIST_ITEM,
     ToggleListItemAction,
 } from '../../../../actions/listActions';
 import { DELETE, DELETE_MANY } from '../../../../dataFetchActions';
+import { Identifier } from '../../../../types';
 
 const initialState = [];
 
-type State = any[];
+type State = Identifier[];
 
 type ActionTypes =
-    | SetListLelectedIdsAction
+    | SetListSelectedIdsAction
     | ToggleListItemAction
     | {
           type: 'DELETE_ACTION';

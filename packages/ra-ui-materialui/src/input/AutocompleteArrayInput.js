@@ -102,29 +102,35 @@ const styles = theme => ({
  * <AutocompleteInput source="author_id" options={{ fullWidth: true }} />
  */
 export class AutocompleteArrayInput extends React.Component {
+    initialInputValue = [];
+
     state = {
         dirty: false,
-        inputValue: null,
+        inputValue: this.initialInputValue,
         searchText: '',
         suggestions: [],
     };
 
     inputEl = null;
+    anchorEl = null;
+
+    getInputValue = inputValue =>
+        inputValue === '' ? this.initialInputValue : inputValue;
 
     choicesMaxHeight = 0;
 
     componentWillMount() {
         this.setState({
-            inputValue: this.props.input.value,
+            inputValue: this.getInputValue(this.props.input.value),
             suggestions: this.props.choices,
         });
     }
 
     componentWillReceiveProps(nextProps) {
         const { choices, input, inputValueMatcher } = nextProps;
-        if (!isEqual(input.value, this.state.inputValue)) {
+        if (!isEqual(this.getInputValue(input.value), this.state.inputValue)) {
             this.setState({
-                inputValue: input.value,
+                inputValue: this.getInputValue(input.value),
                 dirty: false,
                 suggestions: this.props.choices,
             });
@@ -238,6 +244,7 @@ export class AutocompleteArrayInput extends React.Component {
         // but Autosuggest also needs this reference (it provides the ref prop)
         const storeInputRef = input => {
             this.inputEl = input;
+            this.updateAnchorEl();
             ref(input);
         };
 
@@ -247,7 +254,7 @@ export class AutocompleteArrayInput extends React.Component {
                 onUpdateInput={onChange}
                 onAdd={this.handleAdd}
                 onDelete={this.handleDelete}
-                value={input.value}
+                value={this.getInputValue(input.value)}
                 inputRef={storeInputRef}
                 error={touched && error}
                 helperText={touched && error && helperText}
@@ -331,6 +338,27 @@ export class AutocompleteArrayInput extends React.Component {
         input.onChange(this.state.inputValue.filter(value => value !== chip));
     };
 
+    updateAnchorEl() {
+        if (!this.inputEl) {
+            return;
+        }
+
+        const inputPosition = this.inputEl.getBoundingClientRect();
+
+        if (!this.anchorEl) {
+            this.anchorEl = { getBoundingClientRect: () => inputPosition };
+        } else {
+            const anchorPosition = this.anchorEl.getBoundingClientRect();
+
+            if (
+                anchorPosition.x !== inputPosition.x ||
+                anchorPosition.y !== inputPosition.y
+            ) {
+                this.anchorEl = { getBoundingClientRect: () => inputPosition };
+            }
+        }
+    }
+
     renderSuggestionsContainer = options => {
         const {
             containerProps: { className, ...containerProps },
@@ -342,11 +370,14 @@ export class AutocompleteArrayInput extends React.Component {
                 ? { maxHeight: this.choicesMaxHeight, overflow: 'auto' }
                 : null;
 
+        // Force the Popper component to reposition the popup only when this.inputEl is moved to another location
+        this.updateAnchorEl();
+
         return (
             <Popper
                 className={className}
                 open
-                anchorEl={this.inputEl}
+                anchorEl={this.anchorEl}
                 placement="bottom-start"
             >
                 <Paper square {...containerProps} style={style}>
