@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "Queryng the API"
+title: "Querying the API"
 ---
 
 # Querying the API
@@ -9,15 +9,15 @@ Admin interfaces often have to query the API beyond CRUD requests. For instance,
 
 How can you add such custom actions with react-admin? There are several answers to that question, and you should understand the strengths and drawbacks of each solution before choosing one.
 
-* [Using `fetch`](#the-simple-way-using-fetch)
+* [Using `fetch`](#the-basic-way-using-fetch)
 * [Using the `dataProvider`](#using-the-data-provider-instead-of-fetch)
 * [Using the `withDataProvider` Decorator](#using-the-withdataprovider-decorator)
 * [Using the `<Query>` and `<Mutation>` Components](#query-and-mutation-components)
 * [Using a Custom Action Creator](#using-a-custom-action-creator)
 
-**Tip**: Most of the time, the `<Query>` and `<Mutation>` components will do everything you need with the simplest API.
+**Tip**: If you don't have the time to read this entire chapter, head to [the `<Query>` and `<Mutation>` components section](#query-and-mutation-components). It's the best choice in 90% of the cases.
 
-## The Simple Way: Using `fetch`
+## The Basic Way: Using `fetch`
 
 Here is an implementation of the "Approve" button using the browser `fetch()` function that works fine:
 
@@ -349,14 +349,14 @@ const UserProfile = ({ record }) => (
 ```
 {% endraw %}
 
-Just like the `dataProvider` injected prop, the `<Query>` component expects three paramaters: `type`, `resource`, and `payload`. It fetches the data provider on mount, and passes the data to its child component once the response from the API arrives.
+Just like the `dataProvider` injected prop, the `<Query>` component expects three parameters: `type`, `resource`, and `payload`. It fetches the data provider on mount, and passes the data to its child component once the response from the API arrives.
 
 The `<Query>` component is designed to read data from the API. When calling the API to update ("mutate") data, use the `<Mutation>` component instead. It passes a callback to trigger the API call to its child function. And the `<ApproveButton>` component from previous sections is a great use case for demonstrating `<Mutation>`:
 
 ```jsx
 import { Mutation } from 'react-admin';
 
-const options = 
+const options = {
     undoable: true,
     onSuccess: {
         notification: 'Comment approved',
@@ -769,11 +769,39 @@ You can find a complete example of a custom Bulk Action button in the `List` doc
 
 Which style should you choose for your own action buttons? Here is a quick benchmark:
 
-
-Solution | Advantages | Drawbacks 
----------|------------|-----------
-`fetch`  | Nothing to learn | Requires duplication of authentication, does not handle the loading state, adds boilerplate
-`dataProvider` | Familiar API | Does not handle the loading state, adds boilerplate
-`withDataProvider` | Familiar API, handles side effects | Adds boilerplate, uses HOC
-`<Query>` and `<Mutation>` | Declarative, dense, handles loading and error states, handles side effects | Mostly for simple use cases
-Custom action | Allows logic reuse, handles side effects, idiomatic to Redux | Hard to chain calls
+<table>
+  <thead>
+    <tr>
+      <th>Solution</th>
+      <th>Advantages</th>
+      <th>Drawbacks</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="highlighter-rouge">fetch</code></td>
+      <td><ul><li>Nothing to learn</li></ul></td>
+      <td><ul><li>Requires duplication of authentication</li><li>Does not handle the loading state</li><li>Adds boilerplate</li></ul></td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">dataProvider</code></td>
+      <td><ul><li>Familiar API</li></ul></td>
+      <td><ul><li>Does not handle the loading state</li><li>Adds boilerplate</li></ul></td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">withDataProvider</code></td>
+      <td><ul><li>Familiar API</li><li>Handles side effects</li></ul></td>
+      <td><ul><li>Adds boilerplate</li><li>Uses HOC</li></ul></td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">&lt;Query&gt;</code> and <code class="highlighter-rouge">&lt;Mutation&gt;</code></td>
+      <td><ul><li>Declarative</li><li>Dense</li><li>Handles loading and error states</li><li>Handles side effects</li></ul></td>
+      <td><ul><li>Mix logic and presentation in markup</li></ul></td>
+    </tr>
+    <tr>
+      <td>Custom action</td>
+      <td><ul><li>Allows logic reuse</li><li>Handles side effects</li><li>Idiomatic to Redux</li></ul></td>
+      <td><ul><li>Hard to chain calls</li></ul></td>
+    </tr>
+  </tbody>
+</table>
