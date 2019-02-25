@@ -374,7 +374,7 @@ export class AutocompleteArrayInput extends React.Component {
         return (
             <Popper
                 className={className}
-                open
+                open={Boolean(children)}
                 anchorEl={this.anchorEl}
                 placement="bottom-start"
             >
