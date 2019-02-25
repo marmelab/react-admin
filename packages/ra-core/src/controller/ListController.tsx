@@ -212,13 +212,12 @@ export class UnconnectedListController extends Component<Props> {
             prevProps.query.page !== query.page ||
             prevProps.query.perPage !== query.perPage ||
             !isEqual(prevProps.query.filter, query.filter) ||
-            !isEqual(prevProps.query.filter, query.filter) ||
             !isEqual(prevProps.params, params) ||
             !isEqual(prevProps.filter, filter) ||
             !isEqual(prevProps.sort, sort) ||
             !isEqual(prevProps.perPage, perPage)
         ) {
-            this.updateData(Object.keys(query).length > 0 && query);
+            this.updateData(Object.keys(query).length > 0 ? query : params);
         }
 
         if (prevProps.version !== version) {
