@@ -194,25 +194,34 @@ export class UnconnectedListController extends Component<Props> {
         this.setFilters.cancel();
     }
 
-    componentWillReceiveProps(nextProps: Props) {
+    componentDidUpdate(prevProps: Props) {
+        const {
+            resource,
+            query,
+            params,
+            filter,
+            sort,
+            perPage,
+            version,
+        } = this.props;
+
         if (
-            nextProps.resource !== this.props.resource ||
-            nextProps.query.sort !== this.props.query.sort ||
-            nextProps.query.order !== this.props.query.order ||
-            nextProps.query.page !== this.props.query.page ||
-            nextProps.query.perPage !== this.props.query.perPage ||
-            !isEqual(nextProps.query.filter, this.props.query.filter) ||
-            !isEqual(nextProps.filter, this.props.filter) ||
-            !isEqual(nextProps.sort, this.props.sort) ||
-            !isEqual(nextProps.perPage, this.props.perPage)
+            prevProps.resource !== resource ||
+            prevProps.query.sort !== query.sort ||
+            prevProps.query.order !== query.order ||
+            prevProps.query.page !== query.page ||
+            prevProps.query.perPage !== query.perPage ||
+            !isEqual(prevProps.query.filter, query.filter) ||
+            !isEqual(prevProps.query.filter, query.filter) ||
+            !isEqual(prevProps.params, params) ||
+            !isEqual(prevProps.filter, filter) ||
+            !isEqual(prevProps.sort, sort) ||
+            !isEqual(prevProps.perPage, perPage)
         ) {
-            this.updateData(
-                Object.keys(nextProps.query).length > 0
-                    ? nextProps.query
-                    : nextProps.params
-            );
+            this.updateData(Object.keys(query).length > 0 && query);
         }
-        if (nextProps.version !== this.props.version) {
+
+        if (prevProps.version !== version) {
             this.updateData();
         }
     }
@@ -222,6 +231,12 @@ export class UnconnectedListController extends Component<Props> {
             nextProps.translate === this.props.translate &&
             nextProps.isLoading === this.props.isLoading &&
             nextProps.version === this.props.version &&
+            nextProps.filter === this.props.filter &&
+            nextProps.params.sort !== this.props.params.sort &&
+            nextProps.params.order !== this.props.params.order &&
+            nextProps.params.page !== this.props.params.page &&
+            nextProps.params.perPage !== this.props.params.perPage &&
+            !isEqual(nextProps.params.filter, this.props.params.filter) &&
             nextState === this.state &&
             nextProps.data === this.props.data &&
             nextProps.selectedIds === this.props.selectedIds &&
