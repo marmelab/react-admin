@@ -1,4 +1,10 @@
-import React, { createElement, Component, ComponentType } from 'react';
+import React, {
+    createElement,
+    Component,
+    ComponentType,
+    Children,
+    isValidElement,
+} from 'react';
 import PropTypes from 'prop-types';
 import { Provider } from 'react-redux';
 import { History } from 'history';
@@ -26,10 +32,10 @@ import {
 export type ChildrenFunction = () => ComponentType[];
 
 interface Props {
-    appLayout?: LayoutComponent;
+    appLayout: LayoutComponent;
     authProvider?: AuthProvider;
-    children: AdminChildren;
-    catchAll?: CatchAllComponent;
+    children?: AdminChildren;
+    catchAll: CatchAllComponent;
     customSagas?: any[];
     customReducers?: object;
     customRoutes?: CustomRoutes;
@@ -38,7 +44,7 @@ interface Props {
     history: History;
     i18nProvider?: I18nProvider;
     initialState?: object;
-    loading?: ComponentType;
+    loading: ComponentType;
     locale?: string;
     loginPage?: LoginComponent | boolean;
     logoutButton?: ComponentType;
@@ -50,6 +56,10 @@ interface Props {
 class CoreAdmin extends Component<Props> {
     static contextTypes = {
         store: PropTypes.object,
+    };
+
+    static defaultProps: Partial<Props> = {
+        loginPage: false,
     };
 
     reduxIsAlreadyInitialized = false;
@@ -102,7 +112,9 @@ React-admin requires a valid dataProvider function to work.`);
             <TranslationProvider>
                 <ConnectedRouter history={this.history}>
                     <Switch>
-                        {loginPage !== false && loginPage !== true ? (
+                        {loginPage !== false &&
+                        loginPage !== true &&
+                        typeof loginPage !== undefined ? (
                             <Route
                                 exact
                                 path="/login"

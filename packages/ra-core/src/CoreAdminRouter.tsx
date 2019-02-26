@@ -26,6 +26,7 @@ import {
     LayoutComponent,
     LayoutProps,
 } from './types';
+import { ResourceProps } from './Resource';
 
 const welcomeStyles: CSSProperties = {
     width: '50%',
@@ -34,11 +35,11 @@ const welcomeStyles: CSSProperties = {
 };
 
 interface Props extends LayoutProps {
-    appLayout?: LayoutComponent;
-    catchAll?: CatchAllComponent;
-    children: AdminChildren;
+    appLayout: LayoutComponent;
+    catchAll: CatchAllComponent;
+    children?: AdminChildren;
     customRoutes?: CustomRoutes;
-    loading?: ComponentType;
+    loading: ComponentType;
 }
 
 interface EnhancedProps {
@@ -52,6 +53,10 @@ interface State {
 }
 
 export class CoreAdminRouter extends Component<Props & EnhancedProps, State> {
+    static defaultProps: Partial<Props> = {
+        customRoutes: [],
+    };
+
     state: State = { children: [] };
 
     componentWillMount() {
@@ -168,7 +173,7 @@ export class CoreAdminRouter extends Component<Props & EnhancedProps, State> {
                 // as we need all of them and not just the one rendered
                 Children.map(
                     childrenToRender,
-                    (child: React.ReactElement<any>) =>
+                    (child: React.ReactElement<ResourceProps>) =>
                         cloneElement(child, {
                             key: child.props.name,
                             // The context prop instructs the Resource component to not render anything

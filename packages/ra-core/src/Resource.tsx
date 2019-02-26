@@ -22,7 +22,7 @@ type ResourceMatch = Match<{
     id?: string;
 }>;
 
-interface Props {
+export interface ResourceProps {
     context?: 'route' | 'registration';
     match?: ResourceMatch;
     name: string;
@@ -39,7 +39,7 @@ interface ConnectedProps {
     unregisterResource: Dispatch<typeof unregisterResourceAction>;
 }
 
-export class Resource extends Component<Props & ConnectedProps> {
+export class Resource extends Component<ResourceProps & ConnectedProps> {
     static defaultProps = {
         context: 'route',
         options: {},
@@ -198,8 +198,8 @@ const ConnectedResource = connect(
     }
 )(
     // Necessary casting because of https://github.com/DefinitelyTyped/DefinitelyTyped/issues/19989#issuecomment-432752918
-    Resource as ComponentType<Props & ConnectedProps>
+    Resource as ComponentType<ResourceProps & ConnectedProps>
 );
 
 // Necessary casting because of https://github.com/DefinitelyTyped/DefinitelyTyped/issues/19989#issuecomment-432752918
-export default ConnectedResource as ComponentType<Props>;
+export default ConnectedResource as ComponentType<ResourceProps>;
