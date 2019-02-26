@@ -29,6 +29,10 @@ const styles = theme => ({
         marginBottom: theme.spacing.unit * 3,
         zIndex: 2,
     },
+    suggestionsPaper: {
+        maxHeight: '50vh',
+        overflowY: 'auto',
+    },
     suggestion: {
         display: 'block',
         fontFamily: theme.typography.fontFamily,
@@ -357,11 +361,12 @@ export class AutocompleteArrayInput extends React.Component {
         }
     }
 
-    renderSuggestionsContainer = options => {
+    renderSuggestionsContainer = autosuggestOptions => {
         const {
             containerProps: { className, ...containerProps },
             children,
-        } = options;
+        } = autosuggestOptions;
+        const { classes = {} } = this.props;
 
         // Force the Popper component to reposition the popup only when this.inputEl is moved to another location
         this.updateAnchorEl();
@@ -369,11 +374,15 @@ export class AutocompleteArrayInput extends React.Component {
         return (
             <Popper
                 className={className}
-                open
+                open={Boolean(children)}
                 anchorEl={this.anchorEl}
                 placement="bottom-start"
             >
-                <Paper square {...containerProps}>
+                <Paper
+                    square
+                    className={classes.suggestionsPaper}
+                    {...containerProps}
+                >
                     {children}
                 </Paper>
             </Popper>
