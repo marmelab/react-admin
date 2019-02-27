@@ -1,10 +1,4 @@
-import React, {
-    createElement,
-    Component,
-    ComponentType,
-    Children,
-    isValidElement,
-} from 'react';
+import React, { createElement, Component, ComponentType } from 'react';
 import PropTypes from 'prop-types';
 import { Provider } from 'react-redux';
 import { History } from 'history';
@@ -31,7 +25,7 @@ import {
 
 export type ChildrenFunction = () => ComponentType[];
 
-interface Props {
+export interface AdminProps {
     appLayout: LayoutComponent;
     authProvider?: AuthProvider;
     children?: AdminChildren;
@@ -53,12 +47,16 @@ interface Props {
     title?: TitleComponent;
 }
 
-class CoreAdmin extends Component<Props> {
+interface AdminContext {
+    authProvider: AuthProvider;
+}
+
+class CoreAdminBase extends Component<AdminProps> {
     static contextTypes = {
         store: PropTypes.object,
     };
 
-    static defaultProps: Partial<Props> = {
+    static defaultProps: Partial<AdminProps> = {
         loginPage: false,
     };
 
@@ -184,9 +182,11 @@ React-admin requires a valid dataProvider function to work.`);
     }
 }
 
-export default withContext(
+const CoreAdmin = withContext<AdminContext, AdminProps>(
     {
         authProvider: PropTypes.func,
     },
     ({ authProvider }) => ({ authProvider })
-)(CoreAdmin);
+)(CoreAdminBase) as ComponentType<AdminProps>;
+
+export default CoreAdmin;

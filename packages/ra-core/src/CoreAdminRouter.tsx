@@ -34,7 +34,7 @@ const welcomeStyles: CSSProperties = {
     textAlign: 'center',
 };
 
-interface Props extends LayoutProps {
+export interface AdminRouterProps extends LayoutProps {
     appLayout: LayoutComponent;
     catchAll: CatchAllComponent;
     children?: AdminChildren;
@@ -52,8 +52,11 @@ interface State {
     children: any[];
 }
 
-export class CoreAdminRouter extends Component<Props & EnhancedProps, State> {
-    static defaultProps: Partial<Props> = {
+export class CoreAdminRouter extends Component<
+    AdminRouterProps & EnhancedProps,
+    State
+> {
+    static defaultProps: Partial<AdminRouterProps> = {
         customRoutes: [],
     };
 
@@ -63,13 +66,15 @@ export class CoreAdminRouter extends Component<Props & EnhancedProps, State> {
         this.initializeResources(this.props);
     }
 
-    initializeResources = (nextProps: Props & EnhancedProps) => {
+    initializeResources = (nextProps: AdminRouterProps & EnhancedProps) => {
         if (typeof nextProps.children === 'function') {
             this.initializeResourcesAsync(nextProps);
         }
     };
 
-    initializeResourcesAsync = async (props: Props & EnhancedProps) => {
+    initializeResourcesAsync = async (
+        props: AdminRouterProps & EnhancedProps
+    ) => {
         const { authProvider } = props;
         try {
             const permissions = await authProvider(AUTH_GET_PERMISSIONS);
@@ -237,4 +242,4 @@ export default compose(
         mapStateToProps,
         { userLogout: userLogoutAction }
     )
-)(CoreAdminRouter) as ComponentType<Props>;
+)(CoreAdminRouter) as ComponentType<AdminRouterProps>;
