@@ -194,31 +194,34 @@ export class UnconnectedListController extends Component<Props> {
         this.setFilters.cancel();
     }
 
-    componentDidUpdate(prevProps: Props) {
-        const {
-            resource,
-            query,
-            filter,
-            sort,
-            perPage,
-            version,
-        } = this.props;
-
-        if (
-            prevProps.resource !== resource ||
-            prevProps.query.sort !== query.sort ||
-            prevProps.query.order !== query.order ||
-            prevProps.query.page !== query.page ||
-            prevProps.query.perPage !== query.perPage ||
-            !isEqual(prevProps.query.filter, query.filter) ||
-            !isEqual(prevProps.filter, filter) ||
-            !isEqual(prevProps.sort, sort) ||
-            !isEqual(prevProps.perPage, perPage)
-        ) {
-            this.updateData(Object.keys(query).length > 0 && query);
+    componentWillReceiveProps(nextProps: Props) {
+        if (!isEqual(nextProps.filter, this.props.filter)) {
+            const filtersWithoutEmpty = removeEmpty(this.getFilterValues());
+            this.changeParams({
+                type: SET_FILTER,
+                payload: filtersWithoutEmpty,
+            });
         }
 
-        if (prevProps.version !== version) {
+        if (
+            nextProps.resource !== this.props.resource ||
+            nextProps.query.sort !== this.props.query.sort ||
+            nextProps.query.order !== this.props.query.order ||
+            nextProps.query.page !== this.props.query.page ||
+            nextProps.query.perPage !== this.props.query.perPage ||
+            !isEqual(nextProps.query.filter, this.props.query.filter) ||
+            !isEqual(nextProps.filter, this.props.filter) ||
+            !isEqual(nextProps.sort, this.props.sort) ||
+            !isEqual(nextProps.perPage, this.props.perPage)
+        ) {
+            this.updateData(
+                Object.keys(nextProps.query).length > 0
+                    ? nextProps.query
+                    : nextProps.params,
+                nextProps.filter
+            );
+        }
+        if (nextProps.version !== this.props.version) {
             this.updateData();
         }
     }
@@ -228,12 +231,6 @@ export class UnconnectedListController extends Component<Props> {
             nextProps.translate === this.props.translate &&
             nextProps.isLoading === this.props.isLoading &&
             nextProps.version === this.props.version &&
-            nextProps.filter === this.props.filter &&
-            nextProps.params.sort !== this.props.params.sort &&
-            nextProps.params.order !== this.props.params.order &&
-            nextProps.params.page !== this.props.params.page &&
-            nextProps.params.perPage !== this.props.params.perPage &&
-            !isEqual(nextProps.params.filter, this.props.params.filter) &&
             nextState === this.state &&
             nextProps.data === this.props.data &&
             nextProps.selectedIds === this.props.selectedIds &&
@@ -302,14 +299,14 @@ export class UnconnectedListController extends Component<Props> {
         return query.filter || {};
     }
 
-    updateData(query?: any) {
+    updateData(query?: any, permanentFilter?: any) {
         const params = query || this.getQuery();
         const { sort, order, page = 1, perPage, filter } = params;
         const pagination = {
             page: parseInt(page, 10),
             perPage: parseInt(perPage, 10),
         };
-        const permanentFilter = this.props.filter;
+        permanentFilter = permanentFilter || this.props.filter;
         this.props.crudGetList(
             this.props.resource,
             pagination,
