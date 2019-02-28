@@ -15,6 +15,7 @@ describe('ListController', () => {
         changeListParams: jest.fn(),
         children: jest.fn(),
         crudGetList: jest.fn(),
+        filter: undefined,
         hasCreate: true,
         hasEdit: true,
         hasList: true,
@@ -42,6 +43,19 @@ describe('ListController', () => {
         total: 100,
         translate: jest.fn(),
     };
+
+    describe('permanentFilter', () => {
+        it('should call change params if the permanent filter changes', () => {
+            const props = {
+                ...defaultProps,
+                changeListParams: jest.fn(),
+            };
+            const changeListParamsCalls = props.changeListParams.mock.calls;
+            const wrapper = shallow(<ListController {...props} />);
+            wrapper.setProps({ filter: { group: 'A' } });
+            expect(changeListParamsCalls.length).toBe(1);
+        });
+    });
 
     describe('setFilters', () => {
         let clock;
