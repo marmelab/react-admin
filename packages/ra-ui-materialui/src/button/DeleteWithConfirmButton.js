@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import { withStyles } from '@material-ui/core/styles';
+import { fade } from '@material-ui/core/styles/colorManipulator';
 import ActionDelete from '@material-ui/icons/Delete';
 import classnames from 'classnames';
 import inflection from 'inflection';
@@ -10,7 +11,6 @@ import { translate, crudDelete } from 'ra-core';
 
 import Confirm from '../layout/Confirm';
 import Button from './Button';
-import { styles } from './DeleteButton';
 
 const sanitizeRestProps = ({
     basePath,
@@ -29,6 +29,19 @@ const sanitizeRestProps = ({
     redirect,
     ...rest
 }) => rest;
+
+const styles = theme => ({
+    deleteButton: {
+        color: theme.palette.error.main,
+        '&:hover': {
+            backgroundColor: fade(theme.palette.error.main, 0.12),
+            // Reset on mouse devices
+            '@media (hover: none)': {
+                backgroundColor: 'transparent',
+            },
+        },
+    },
+});
 
 class DeleteWithConfirmButton extends Component {
     state = { isOpen: false };
