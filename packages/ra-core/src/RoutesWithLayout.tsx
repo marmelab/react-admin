@@ -1,15 +1,7 @@
-import React, {
-    Children,
-    cloneElement,
-    createElement,
-    ComponentType,
-    SFC,
-} from 'react';
+import React, { Children, cloneElement, createElement, SFC } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
-import WithPermissions, {
-    WithPermissionsChildrenParams,
-} from './auth/WithPermissions';
+import WithPermissions from './auth/WithPermissions';
 import {
     AdminChildren,
     CustomRoutes,
