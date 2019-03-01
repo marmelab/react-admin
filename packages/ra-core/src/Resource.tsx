@@ -7,32 +7,7 @@ import {
     registerResource as registerResourceAction,
     unregisterResource as unregisterResourceAction,
 } from './actions';
-import { match as Match } from 'react-router';
-import { Dispatch, Identifier } from './types';
-
-interface ReactAdminComponentProps {
-    basePath: string;
-}
-interface ReactAdminComponentPropsWithId {
-    id: Identifier;
-    basePath: string;
-}
-
-type ResourceMatch = Match<{
-    id?: string;
-}>;
-
-export interface ResourceProps {
-    context?: 'route' | 'registration';
-    match?: ResourceMatch;
-    name: string;
-    list?: ComponentType<ReactAdminComponentProps>;
-    create?: ComponentType<ReactAdminComponentProps>;
-    edit?: ComponentType<ReactAdminComponentPropsWithId>;
-    show?: ComponentType<ReactAdminComponentPropsWithId>;
-    icon?: ComponentType<any>;
-    options?: object;
-}
+import { Dispatch, ResourceProps, ResourceMatch } from './types';
 
 interface ConnectedProps {
     registerResource: Dispatch<typeof registerResourceAction>;

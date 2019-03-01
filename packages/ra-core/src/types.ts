@@ -1,5 +1,6 @@
 import { ReactNode, ReactElement, ComponentType } from 'react';
-import { RouteProps, RouteComponentProps } from 'react-router';
+import { RouteProps, RouteComponentProps, match as Match } from 'react-router';
+
 import { WithPermissionsChildrenParams } from './auth/WithPermissions';
 
 export type Identifier = string | number;
@@ -67,7 +68,10 @@ export type Dispatch<T> = T extends (...args: infer A) => any
     ? (...args: A) => void
     : never;
 
-type RenderResourcesFunction = (permissions: any) => any[];
+export type ResourceElement = ReactElement<ResourceProps>;
+export type RenderResourcesFunction = (
+    permissions: any
+) => ResourceElement[] | Promise<ResourceElement[]>;
 export type AdminChildren = RenderResourcesFunction | ReactNode;
 
 export interface CustomRoute extends RouteProps {
@@ -95,3 +99,27 @@ export interface LayoutProps {
 }
 
 export type LayoutComponent = ComponentType<LayoutProps>;
+
+interface ReactAdminComponentProps {
+    basePath: string;
+}
+interface ReactAdminComponentPropsWithId {
+    id: Identifier;
+    basePath: string;
+}
+
+export type ResourceMatch = Match<{
+    id?: string;
+}>;
+
+export interface ResourceProps {
+    context: 'route' | 'registration';
+    match?: ResourceMatch;
+    name: string;
+    list?: ComponentType<ReactAdminComponentProps>;
+    create?: ComponentType<ReactAdminComponentProps>;
+    edit?: ComponentType<ReactAdminComponentPropsWithId>;
+    show?: ComponentType<ReactAdminComponentPropsWithId>;
+    icon?: ComponentType<any>;
+    options: object;
+}

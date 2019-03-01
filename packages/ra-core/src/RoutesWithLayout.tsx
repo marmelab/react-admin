@@ -19,7 +19,7 @@ import {
 } from './types';
 
 interface Props {
-    catchAll?: CatchAllComponent;
+    catchAll: CatchAllComponent;
     children: AdminChildren;
     customRoutes?: CustomRoutes;
     dashboard?: DashboardComponent;

@@ -40,7 +40,7 @@ export interface AdminProps {
     initialState?: object;
     loading: ComponentType;
     locale?: string;
-    loginPage?: LoginComponent | boolean;
+    loginPage: LoginComponent | boolean;
     logoutButton?: ComponentType;
     menu?: ComponentType;
     theme?: object;
@@ -57,6 +57,8 @@ class CoreAdminBase extends Component<AdminProps> {
     };
 
     static defaultProps: Partial<AdminProps> = {
+        catchAll: () => null,
+        loading: () => null,
         loginPage: false,
     };
 
@@ -110,9 +112,7 @@ React-admin requires a valid dataProvider function to work.`);
             <TranslationProvider>
                 <ConnectedRouter history={this.history}>
                     <Switch>
-                        {loginPage !== false &&
-                        loginPage !== true &&
-                        typeof loginPage !== undefined ? (
+                        {loginPage !== false && loginPage !== true ? (
                             <Route
                                 exact
                                 path="/login"

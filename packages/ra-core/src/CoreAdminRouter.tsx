@@ -3,7 +3,6 @@ import React, {
     Component,
     cloneElement,
     createElement,
-    ReactNode,
     ComponentType,
     CSSProperties,
 } from 'react';
@@ -25,8 +24,10 @@ import {
     CatchAllComponent,
     LayoutComponent,
     LayoutProps,
+    ResourceProps,
+    RenderResourcesFunction,
+    ResourceElement,
 } from './types';
-import { ResourceProps } from './Resource';
 
 const welcomeStyles: CSSProperties = {
     width: '50%',
@@ -49,7 +50,7 @@ interface EnhancedProps {
 }
 
 interface State {
-    children: any[];
+    children: ResourceElement[];
 }
 
 export class CoreAdminRouter extends Component<
@@ -78,12 +79,12 @@ export class CoreAdminRouter extends Component<
         const { authProvider } = props;
         try {
             const permissions = await authProvider(AUTH_GET_PERMISSIONS);
-            const { children } = props;
+            const resolveChildren = props.children as RenderResourcesFunction;
 
-            if (typeof children === 'function') {
-                const childrenFuncResult = children(permissions);
-                if (childrenFuncResult.then) {
-                    childrenFuncResult.then(resolvedChildren => {
+            const childrenFuncResult = resolveChildren(permissions);
+            if ((childrenFuncResult as Promise<ResourceElement[]>).then) {
+                (childrenFuncResult as Promise<ResourceElement[]>).then(
+                    resolvedChildren => {
                         this.setState({
                             children: resolvedChildren
                                 .filter(child => child)
@@ -95,12 +96,14 @@ export class CoreAdminRouter extends Component<
                                     },
                                 })),
                         });
-                    });
-                } else {
-                    this.setState({
-                        children: childrenFuncResult.filter(child => child),
-                    });
-                }
+                    }
+                );
+            } else {
+                this.setState({
+                    children: (childrenFuncResult as ResourceElement[]).filter(
+                        child => child
+                    ),
+                });
             }
         } catch (error) {
             this.props.userLogout();
