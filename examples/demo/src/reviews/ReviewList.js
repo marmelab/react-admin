@@ -28,11 +28,12 @@ const styles = theme => createStyles({
     },
     list: {
         flexGrow: 1,
-    },
-    listWithDrawer: {
         transition: theme.transitions.create(['all'], {
             duration: theme.transitions.duration.enteringScreen,
         }),
+        marginRight: 0,
+    },
+    listWithDrawer: {
         marginRight: 400,
     },
 });
