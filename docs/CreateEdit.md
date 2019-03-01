@@ -20,6 +20,7 @@ Here are all the props accepted by the `<Create>` and `<Edit>` components:
 * [`title`](#page-title)
 * [`actions`](#actions)
 * [`aside`](#aside-component)
+* [`undoable`](#undoable) (`<Edit>` only)
 
 Here is the minimal code necessary to display a form to create and edit comments:
 
@@ -175,6 +176,53 @@ const Aside = ({ record }) => (
 {% endraw %}
 
 **Tip**: Always test that the `record` is defined before using it, as react-admin starts rendering the UI before the API call is over.
+
+### Undoable
+
+By default, the Save and Delete actions are undoable, i.e. react-admin only sends the related request to the data provider after a short delay, during which the user can cancel the action. This is part of the "optimistic rendering" strategy of react-admin ; it makes the user interactions more reactive.
+
+You can disable this behavior by setting `undoable={false}`. Wit hthat setting, clicking on the Delete button displays a confirmation dialog. Both the Save and the Delete actions become blocking, and delay the refresh of the screen until the data provider responds.
+
+```jsx
+const PostEdit = props => (
+    <Edit undoable={false} {...props}>
+        ...
+    </Edit>
+```
+
+**Tip**: If you want a confirmation dialog for the Delete button but don't mind undoable Edits, then pass a [custom toolbar](#toolbar) to the form, as follows:
+
+```jsx
+import {
+    Toolbar,
+    SaveButton,
+    DeleteWithConfirmButton,
+    Edit,
+    SimpleForm,
+} from 'react-admin';
+import { withStyles } from '@material-ui/core';
+
+const toolbarStyles = {
+    toolbar: {
+        display: 'flex',
+        justifyContent: 'space-between',
+    },
+};
+
+const CustomToolbar = withStyles(toolbarStyles)(props => (
+    <Toolbar {...props}>
+        <SaveButton />
+        <DeleteWithConfirmButton />
+    </Toolbar>
+));
+
+const PostEdit = props => (
+    <Edit {...props}>
+        <SimpleForm toolbar={<CustomToolbar />}>
+            ...
+        </SimpleForm>
+    </Edit>
+```
 
 ## Prefilling a `<Create>` Record
 
