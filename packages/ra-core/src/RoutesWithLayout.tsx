@@ -1,10 +1,24 @@
-import React, { Children, cloneElement, createElement } from 'react';
-import PropTypes from 'prop-types';
+import React, { Children, cloneElement, createElement, SFC } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
 import WithPermissions from './auth/WithPermissions';
+import {
+    AdminChildren,
+    CustomRoutes,
+    CatchAllComponent,
+    TitleComponent,
+    DashboardComponent,
+} from './types';
 
-const RoutesWithLayout = ({
+interface Props {
+    catchAll: CatchAllComponent;
+    children: AdminChildren;
+    customRoutes?: CustomRoutes;
+    dashboard?: DashboardComponent;
+    title?: TitleComponent;
+}
+
+const RoutesWithLayout: SFC<Props> = ({
     catchAll,
     children,
     customRoutes,
@@ -12,13 +26,16 @@ const RoutesWithLayout = ({
     title,
 }) => {
     const childrenAsArray = React.Children.toArray(children);
-    const firstChild = childrenAsArray.length > 0 ? childrenAsArray[0] : null;
+    const firstChild: React.ReactElement<any> | null =
+        childrenAsArray.length > 0
+            ? (childrenAsArray[0] as React.ReactElement<any>)
+            : null;
 
     return (
         <Switch>
             {customRoutes &&
                 customRoutes.map((route, key) => cloneElement(route, { key }))}
-            {Children.map(children, child => (
+            {Children.map(children, (child: React.ReactElement<any>) => (
                 <Route
                     key={child.props.name}
                     path={`/${child.props.name}`}
@@ -62,19 +79,6 @@ const RoutesWithLayout = ({
             />
         </Switch>
     );
-};
-
-const componentPropType = PropTypes.oneOfType([
-    PropTypes.func,
-    PropTypes.string,
-]);
-
-RoutesWithLayout.propTypes = {
-    catchAll: componentPropType,
-    children: PropTypes.oneOfType([PropTypes.func, PropTypes.node]),
-    customRoutes: PropTypes.array,
-    dashboard: componentPropType,
-    title: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
 };
 
 export default RoutesWithLayout;

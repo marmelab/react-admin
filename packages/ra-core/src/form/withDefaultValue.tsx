@@ -5,12 +5,12 @@ import { connect } from 'react-redux';
 import { initializeForm as initializeFormAction } from '../actions/formActions';
 import { InputProps } from './types';
 
-interface Props extends InputProps {
+export interface DefaultValueProps extends InputProps {
     decoratedComponent: ComponentType<InputProps>;
     initializeForm: typeof initializeFormAction;
 }
 
-export class DefaultValueView extends Component<Props> {
+export class DefaultValueView extends Component<DefaultValueProps> {
     static propTypes = {
         decoratedComponent: PropTypes.oneOfType([
             PropTypes.element,

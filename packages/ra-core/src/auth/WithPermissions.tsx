@@ -1,4 +1,4 @@
-import { Children, Component, ReactNode } from 'react';
+import { Children, Component, ReactNode, ComponentType } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
@@ -13,8 +13,8 @@ import { UserCheck } from './types';
 import { Location } from 'history';
 import { match as Match } from 'react-router';
 
-interface WithPermissionsChildrenParams {
-    authParams: object;
+export interface WithPermissionsChildrenParams {
+    authParams?: object;
     location?: Location;
     match: Match;
     permissions: any;
@@ -25,14 +25,17 @@ type WithPermissionsChildren = (
 ) => ReactNode;
 
 interface Props {
-    authProvider: AuthProvider;
-    authParams: object;
-    children: WithPermissionsChildren;
+    authParams?: object;
+    children?: WithPermissionsChildren;
     location: Location;
     match: Match;
-    render: WithPermissionsChildren;
+    render?: WithPermissionsChildren;
+    staticContext?: object;
+}
+
+interface EnhancedProps {
+    authProvider: AuthProvider;
     isLoggedIn: boolean;
-    staticContext: object;
     userCheck: UserCheck;
 }
 
@@ -72,7 +75,7 @@ const isEmptyChildren = children => Children.count(children) === 0;
  *         </Admin>
  *     );
  */
-export class WithPermissions extends Component<Props> {
+export class WithPermissions extends Component<Props & EnhancedProps> {
     cancelled = false;
 
     state = { permissions: null };
@@ -106,12 +109,12 @@ export class WithPermissions extends Component<Props> {
         }
     }
 
-    checkAuthentication(params: Props) {
+    checkAuthentication(params: Props & EnhancedProps) {
         const { userCheck, authParams, location } = params;
         userCheck(authParams, location && location.pathname);
     }
 
-    async checkPermissions(params: Props) {
+    async checkPermissions(params: Props & EnhancedProps) {
         const { authProvider, authParams, location, match } = params;
         try {
             const permissions = await authProvider(AUTH_GET_PERMISSIONS, {
@@ -157,7 +160,7 @@ const mapStateToProps = state => ({
     isLoggedIn: getIsLoggedIn(state),
 });
 
-export default compose(
+const EnhancedWithPermissions = compose(
     getContext({
         authProvider: PropTypes.func,
     }),
@@ -166,3 +169,5 @@ export default compose(
         { userCheck: userCheckAction }
     )
 )(WithPermissions);
+
+export default EnhancedWithPermissions as ComponentType<Props>;

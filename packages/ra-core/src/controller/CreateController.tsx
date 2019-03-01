@@ -1,4 +1,4 @@
-import { Component, ReactNode } from 'react';
+import { Component, ReactNode, ComponentType } from 'react';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import inflection from 'inflection';
@@ -26,16 +26,19 @@ interface ChildrenFuncParams {
 interface Props {
     basePath: string;
     children: (params: ChildrenFuncParams) => ReactNode;
-    crudCreate: Dispatch<typeof crudCreateAction>;
     hasCreate?: boolean;
     hasEdit?: boolean;
     hasList?: boolean;
     hasShow?: boolean;
-    isLoading: boolean;
     location: Location;
     match: Match;
     record?: Partial<Record>;
     resource: string;
+}
+
+interface EnhancedProps {
+    crudCreate: Dispatch<typeof crudCreateAction>;
+    isLoading: boolean;
     translate: Translate;
 }
 
@@ -80,7 +83,9 @@ interface Props {
  *     );
  *     export default App;
  */
-export class UnconnectedCreateController extends Component<Props> {
+export class UnconnectedCreateController extends Component<
+    Props & EnhancedProps
+> {
     public static defaultProps: Partial<Props> = {
         record: {},
     };
@@ -169,4 +174,4 @@ const CreateController = compose(
     withTranslate
 )(UnconnectedCreateController);
 
-export default CreateController;
+export default CreateController as ComponentType<Props>;

@@ -10,6 +10,7 @@
     ],
     "main": "lib/index",
     "module": "esm/index.js",
+    "types": "esm/index.d.ts",
     "sideEffects": false,
     "authors": [
         "François Zaninotto",
@@ -31,6 +32,8 @@
         "@types/react-router": "^4.4.1",
         "@types/recompose": "^0.27.0",
         "@types/redux-form": "^7.5.2",
+        "@types/react-router": "^4.4.4",
+        "@types/react-router-dom": "^4.3.1",
         "cross-env": "^5.2.0",
         "enzyme": "~3.7.0",
         "enzyme-adapter-react-16": "~1.6.0",

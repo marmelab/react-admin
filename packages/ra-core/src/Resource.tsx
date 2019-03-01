@@ -1,17 +1,25 @@
-import React, { createElement, Component } from 'react';
-import PropTypes from 'prop-types';
+import React, { createElement, Component, ComponentType } from 'react';
 import { connect } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
 import WithPermissions from './auth/WithPermissions';
 
-import { registerResource, unregisterResource } from './actions';
+import {
+    registerResource as registerResourceAction,
+    unregisterResource as unregisterResourceAction,
+} from './actions';
+import { Dispatch, ResourceProps, ResourceMatch } from './types';
 
-const componentPropType = PropTypes.oneOfType([
-    PropTypes.func,
-    PropTypes.string,
-]);
+interface ConnectedProps {
+    registerResource: Dispatch<typeof registerResourceAction>;
+    unregisterResource: Dispatch<typeof unregisterResourceAction>;
+}
 
-export class Resource extends Component {
+export class Resource extends Component<ResourceProps & ConnectedProps> {
+    static defaultProps = {
+        context: 'route',
+        options: {},
+    };
+
     componentWillMount() {
         const {
             context,
@@ -102,7 +110,8 @@ export class Resource extends Component {
                                     createElement(show, {
                                         basePath,
                                         id: decodeURIComponent(
-                                            props.match.params.id
+                                            (props.match as ResourceMatch)
+                                                .params.id
                                         ),
                                         ...props,
                                     })
@@ -122,7 +131,8 @@ export class Resource extends Component {
                                     createElement(edit, {
                                         basePath,
                                         id: decodeURIComponent(
-                                            props.match.params.id
+                                            (props.match as ResourceMatch)
+                                                .params.id
                                         ),
                                         ...props,
                                     })
@@ -155,31 +165,16 @@ export class Resource extends Component {
     }
 }
 
-Resource.propTypes = {
-    context: PropTypes.oneOf(['route', 'registration']).isRequired,
-    match: PropTypes.shape({
-        isExact: PropTypes.bool,
-        params: PropTypes.object,
-        path: PropTypes.string,
-        url: PropTypes.string,
-    }),
-    name: PropTypes.string.isRequired,
-    list: componentPropType,
-    create: componentPropType,
-    edit: componentPropType,
-    show: componentPropType,
-    icon: componentPropType,
-    options: PropTypes.object,
-    registerResource: PropTypes.func.isRequired,
-    unregisterResource: PropTypes.func.isRequired,
-};
-
-Resource.defaultProps = {
-    context: 'route',
-    options: {},
-};
-
-export default connect(
+const ConnectedResource = connect(
     null,
-    { registerResource, unregisterResource }
-)(Resource);
+    {
+        registerResource: registerResourceAction,
+        unregisterResource: unregisterResourceAction,
+    }
+)(
+    // Necessary casting because of https://github.com/DefinitelyTyped/DefinitelyTyped/issues/19989#issuecomment-432752918
+    Resource as ComponentType<ResourceProps & ConnectedProps>
+);
+
+// Necessary casting because of https://github.com/DefinitelyTyped/DefinitelyTyped/issues/19989#issuecomment-432752918
+export default ConnectedResource as ComponentType<ResourceProps>;
