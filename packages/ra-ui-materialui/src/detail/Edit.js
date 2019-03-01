@@ -63,6 +63,7 @@ export const EditView = ({
     resource,
     save,
     title,
+    undoable,
     version,
     ...rest
 }) => {
@@ -104,6 +105,7 @@ export const EditView = ({
                                 : children.props.redirect,
                         resource,
                         save,
+                        undoable,
                         version,
                     })
                 ) : (

@@ -24,6 +24,12 @@ const toolbarStyles = {
         justifyContent: 'space-between',
     },
 };
+
+/**
+ * Custom Toolbar for the Edit form
+ *
+ * Save with undo, but delete with confirm
+ */
 const UserEditToolbar = withStyles(toolbarStyles)(props => (
     <Toolbar {...props}>
         <SaveButton />

@@ -19,7 +19,7 @@ DeleteButton.propTypes = {
         PropTypes.bool,
         PropTypes.func,
     ]),
-    resource: PropTypes.string.isRequired,
+    resource: PropTypes.string,
     undoable: PropTypes.bool,
     icon: PropTypes.element,
 };
