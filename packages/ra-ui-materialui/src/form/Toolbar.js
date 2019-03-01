@@ -106,6 +106,8 @@ const Toolbar = ({
                               ),
                               invalid,
                               pristine,
+                              record,
+                              resource,
                               saving,
                               submitOnEnter: valueOrDefault(
                                   button.props.submitOnEnter,

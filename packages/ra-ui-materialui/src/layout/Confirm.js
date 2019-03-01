@@ -15,6 +15,9 @@ import compose from 'recompose/compose';
 import { translate } from 'ra-core';
 
 const styles = theme => ({
+    contentText: {
+        minWidth: 400,
+    },
     confirmPrimary: {
         color: theme.palette.primary.main,
     },
@@ -59,6 +62,7 @@ const Confirm = ({
     onClose,
     classes,
     translate,
+    translateOptions = {},
 }) => (
     <Dialog
         open={isOpen}
@@ -66,11 +70,11 @@ const Confirm = ({
         aria-labelledby="alert-dialog-title"
     >
         <DialogTitle id="alert-dialog-title">
-            {translate(title, { _: title })}
+            {translate(title, { _: title, ...translateOptions })}
         </DialogTitle>
         <DialogContent>
-            <DialogContentText>
-                {translate(content, { _: content })}
+            <DialogContentText className={classes.contentText}>
+                {translate(content, { _: content, ...translateOptions })}
             </DialogContentText>
         </DialogContent>
         <DialogActions>

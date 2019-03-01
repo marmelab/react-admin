@@ -10,7 +10,7 @@ import { translate, crudDelete, startUndoable } from 'ra-core';
 
 import Button from './Button';
 
-const styles = theme => ({
+export const styles = theme => ({
     deleteButton: {
         color: theme.palette.error.main,
         '&:hover': {
@@ -28,8 +28,13 @@ const sanitizeRestProps = ({
     classes,
     dispatchCrudDelete,
     filterValues,
+    handleSubmit,
+    handleSubmitWithRedirect,
+    invalid,
     label,
+    pristine,
     resource,
+    saving,
     selectedIds,
     startUndoable,
     undoable,

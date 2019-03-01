@@ -22,7 +22,7 @@ const sanitizeRestProps = ({
     ...rest
 }) => rest;
 
-const styles = theme => ({
+export const styles = theme => ({
     deleteButton: {
         color: theme.palette.error.main,
         '&:hover': {
