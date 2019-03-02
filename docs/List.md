@@ -128,7 +128,7 @@ const PostActions = ({
         />
         <RefreshButton />
         {/* Add your custom actions */}
-        <Button primary onClick={customAction}>Custom Action</Button>
+        <Button color="primary" onClick={customAction}>Custom Action</Button>
     </CardActions>
 );
 
@@ -572,12 +572,12 @@ const PostPagination = ({ page, perPage, total, setPage }) => {
         nbPages > 1 &&
             <Toolbar>
                 {page > 1 &&
-                    <Button primary key="prev" icon={<ChevronLeft />} onClick={() => setPage(page - 1)}>
+                    <Button color="primary" key="prev" icon={<ChevronLeft />} onClick={() => setPage(page - 1)}>
                         Prev
                     </Button>
                 }
                 {page !== nbPages &&
-                    <Button primary key="next" icon={<ChevronRight />} onClick={() => setPage(page + 1)} labelPosition="before">
+                    <Button color="primary" key="next" icon={<ChevronRight />} onClick={() => setPage(page + 1)} labelPosition="before">
                         Next
                     </Button>
                 }
