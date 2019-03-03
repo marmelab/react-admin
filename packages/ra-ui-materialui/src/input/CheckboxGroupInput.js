@@ -86,6 +86,8 @@ const styles = theme => ({
  * @example
  * <CheckboxGroupInput source="gender" choices={choices} translateChoice={false}/>
  *
+ * You can pass 'row={false}' for displaying checkboxes in a row
+ *
  * The object passed as `options` props is passed to the material-ui <Checkbox> components
  */
 export class CheckboxGroupInput extends Component {
@@ -164,6 +166,7 @@ export class CheckboxGroupInput extends Component {
             resource,
             source,
             input,
+            row,
             ...rest
         } = this.props;
         if (typeof meta === 'undefined') {
@@ -189,7 +192,7 @@ export class CheckboxGroupInput extends Component {
                         isRequired={isRequired}
                     />
                 </FormLabel>
-                <FormGroup row>{choices.map(this.renderCheckbox)}</FormGroup>
+                <FormGroup row={row}>{choices.map(this.renderCheckbox)}</FormGroup>
                 {touched && error && (
                     <FormHelperText error>{error}</FormHelperText>
                 )}
@@ -221,6 +224,7 @@ CheckboxGroupInput.propTypes = {
     translate: PropTypes.func.isRequired,
     translateChoice: PropTypes.bool.isRequired,
     meta: PropTypes.object,
+    row: PropTypes.bool,
 };
 
 CheckboxGroupInput.defaultProps = {
@@ -230,6 +234,7 @@ CheckboxGroupInput.defaultProps = {
     optionText: 'name',
     optionValue: 'id',
     translateChoice: true,
+    row: true,
 };
 
 const EnhancedCheckboxGroupInput = compose(

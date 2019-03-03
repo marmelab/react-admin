@@ -30,6 +30,20 @@ describe('<CheckboxGroupInput />', () => {
         assert.equal(CheckboxElement.length, 1);
     });
 
+    it('should render FormGroup as row by default', () => {
+        const wrapper = shallow(<CheckboxGroupInput {...defaultProps} />);
+        const FormGroupElement = wrapper
+            .find('WithStyles(FormGroup)');
+        assert.equal(FormGroupElement.prop('row'), true);
+    })
+
+    it('should pass row prop down to FormGroup', () => {
+        const wrapper = shallow(<CheckboxGroupInput {...defaultProps} row={false} />);
+        const FormGroupElement = wrapper
+            .find('WithStyles(FormGroup)');
+        assert.equal(FormGroupElement.prop('row'), false);
+    })
+
     it('should use the input parameter value as the initial input value', () => {
         const wrapper = shallow(
             <CheckboxGroupInput
