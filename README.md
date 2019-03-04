@@ -166,8 +166,10 @@ yarn install
 # Run the simple application
 make run-simple
 # Run the tutorial application
+make build
 make run-tutorial
 # Run the demo application
+make build
 make run-demo
 ```
 
