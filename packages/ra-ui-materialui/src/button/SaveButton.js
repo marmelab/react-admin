@@ -30,7 +30,9 @@ const sanitizeRestProps = ({
     handleSubmit,
     handleSubmitWithRedirect,
     submitOnEnter,
+    record,
     redirect,
+    resource,
     locale,
     showNotification,
     ...rest

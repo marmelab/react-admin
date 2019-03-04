@@ -57,6 +57,7 @@ const sanitizeRestProps = ({
     touch,
     translate,
     triggerSubmit,
+    undoable,
     untouch,
     valid,
     validate,
@@ -90,6 +91,7 @@ export class TabbedForm extends Component {
             tabsWithErrors,
             toolbar,
             translate,
+            undoable,
             value,
             version,
             ...rest
@@ -195,6 +197,7 @@ export class TabbedForm extends Component {
                         resource,
                         saving,
                         submitOnEnter,
+                        undoable,
                     })}
             </form>
         );
@@ -225,6 +228,7 @@ TabbedForm.propTypes = {
     tabsWithErrors: PropTypes.arrayOf(PropTypes.string),
     toolbar: PropTypes.element,
     translate: PropTypes.func,
+    undoable: PropTypes.bool,
     validate: PropTypes.func,
     value: PropTypes.number,
     version: PropTypes.number,
