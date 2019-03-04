@@ -44,7 +44,7 @@ class TranslationProviderView extends Component<ViewProps, State> {
         const { locale, messages } = props;
         const polyglot = new Polyglot({
             locale,
-            phrases: defaultsDeep({}, messages, defaultMessages),
+            phrases: defaultsDeep({ '': '' }, messages, defaultMessages),
         });
 
         this.state = {
@@ -61,7 +61,7 @@ class TranslationProviderView extends Component<ViewProps, State> {
 
             const polyglot = new Polyglot({
                 locale,
-                phrases: defaultsDeep({}, messages, defaultMessages),
+                phrases: defaultsDeep({ '': '' }, messages, defaultMessages),
             });
 
             this.setState({

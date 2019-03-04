@@ -23,7 +23,7 @@ export class MenuItemLink extends Component {
         className: PropTypes.string,
         leftIcon: PropTypes.node,
         onClick: PropTypes.func,
-        primaryText: PropTypes.string,
+        primaryText: PropTypes.node,
         staticContext: PropTypes.object,
         to: PropTypes.oneOfType([PropTypes.string, PropTypes.object])
             .isRequired,

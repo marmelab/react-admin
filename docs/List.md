@@ -128,7 +128,7 @@ const PostActions = ({
         />
         <RefreshButton />
         {/* Add your custom actions */}
-        <Button primary onClick={customAction}>Custom Action</Button>
+        <Button color="primary" onClick={customAction}>Custom Action</Button>
     </CardActions>
 );
 
@@ -572,12 +572,12 @@ const PostPagination = ({ page, perPage, total, setPage }) => {
         nbPages > 1 &&
             <Toolbar>
                 {page > 1 &&
-                    <Button primary key="prev" icon={<ChevronLeft />} onClick={() => setPage(page - 1)}>
+                    <Button color="primary" key="prev" icon={<ChevronLeft />} onClick={() => setPage(page - 1)}>
                         Prev
                     </Button>
                 }
                 {page !== nbPages &&
-                    <Button primary key="next" icon={<ChevronRight />} onClick={() => setPage(page + 1)} labelPosition="before">
+                    <Button color="primary" key="next" icon={<ChevronRight />} onClick={() => setPage(page + 1)} labelPosition="before">
                         Next
                     </Button>
                 }
@@ -995,7 +995,7 @@ export default withStyles(styles)(PostList);
 
 ## The `<SimpleList>` component
 
-For mobile devices, a `<Datagrid>` is often unusable - there is simply not enough space to display several columns. The convention in that case is to use a simple list, with only one column per row. The `<SimpleList>` component serves that purpose, leveraging [material-ui's `<List>` and `<ListItem>` components](http://www.material-ui.com/#/components/list). You can use it as `<List>` or `<ReferenceManyField>` child:
+For mobile devices, a `<Datagrid>` is often unusable - there is simply not enough space to display several columns. The convention in that case is to use a simple list, with only one column per row. The `<SimpleList>` component serves that purpose, leveraging [material-ui's `<List>` and `<ListItem>` components](https://v1-5-0.material-ui.com/demos/lists/). You can use it as `<List>` or `<ReferenceManyField>` child:
 
 ```jsx
 // in src/posts.js

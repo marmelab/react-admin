@@ -655,14 +655,13 @@ If you want to add or remove menu items, for instance to link to non-resources p
 // in src/MyMenu.js
 import React from 'react';
 import { connect } from 'react-redux';
-import { MenuItemLink, getResources } from 'react-admin';
+import { MenuItemLink, getResources, Responsive } from 'react-admin';
 import { withRouter } from 'react-router-dom';
-import Responsive from '../layout/Responsive';
 
 const MyMenu = ({ resources, onMenuClick, logout }) => (
     <div>
         {resources.map(resource => (
-            <MenuItemLink to={`/${resource.name}`} primaryText={resource.name} onClick={onMenuClick} />
+            <MenuItemLink key={resource.name} to={`/${resource.name}`} primaryText={resource.name} onClick={onMenuClick} />
         ))}
         <MenuItemLink to="/custom-route" primaryText="Miscellaneous" onClick={onMenuClick} />
         <Responsive
@@ -685,6 +684,18 @@ export default withRouter(connect(mapStateToProps)(MyMenu));
 **Tip**: Note that we include the `logout` item only on small devices. Indeed, the `logout` button is already displayed in the AppBar on larger devices.
 
 **Tip**: Note that we use React Router [`withRouter`](https://reacttraining.com/react-router/web/api/withRouter) Higher Order Component and that it is used **before** Redux [`connect](https://github.com/reactjs/react-redux/blob/master/docs/api.html#connectmapstatetoprops-mapdispatchtoprops-mergeprops-options). This is required if you want the active menu item to be highlighted.
+
+**Tip**: The `primaryText` prop accepts a React node. You can pass a custom element in it. For example:
+
+```jsx
+    import Badge from '@material-ui/core/Badge';
+
+    <MenuItemLink to="/custom-route" primaryText={
+        <Badge badgeContent={4} color="primary">
+            Notifications
+        </Badge>
+    } onClick={onMenuClick} />
+```
 
 To use this custom menu component, pass it to a custom Layout, as explained above:
 
@@ -721,7 +732,7 @@ If the default active style does not suit your tastes, you can override it by pa
 // in src/MyMenu.js
 import React from 'react';
 import { connect } from 'react-redux';
-import { MenuItemLink, getResources } from 'react-admin';
+import { MenuItemLink, getResources, Responsive } from 'react-admin';
 import { withStyles } from '@material-ui/core/styles';
 import { withRouter } from 'react-router-dom';
 
@@ -734,7 +745,7 @@ const styles = {
 const MyMenu = ({ classes, resources, onMenuClick, logout }) => (
     <div>
         {resources.map(resource => (
-            <MenuItemLink classes={classes} to={`/${resource.name}`} primaryText={resource.name} onClick={onMenuClick} />
+            <MenuItemLink classes={classes} key={resource.name} to={`/${resource.name}`} primaryText={resource.name} onClick={onMenuClick} />
         ))}
         <MenuItemLink classes={classes} to="/custom-route" primaryText="Miscellaneous" onClick={onMenuClick} />
         <Responsive
