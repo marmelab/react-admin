@@ -181,7 +181,7 @@ const Aside = ({ record }) => (
 
 By default, the Save and Delete actions are undoable, i.e. react-admin only sends the related request to the data provider after a short delay, during which the user can cancel the action. This is part of the "optimistic rendering" strategy of react-admin ; it makes the user interactions more reactive.
 
-You can disable this behavior by setting `undoable={false}`. Wit hthat setting, clicking on the Delete button displays a confirmation dialog. Both the Save and the Delete actions become blocking, and delay the refresh of the screen until the data provider responds.
+You can disable this behavior by setting `undoable={false}`. With that setting, clicking on the Delete button displays a confirmation dialog. Both the Save and the Delete actions become blocking, and delay the refresh of the screen until the data provider responds.
 
 ```jsx
 const PostEdit = props => (
