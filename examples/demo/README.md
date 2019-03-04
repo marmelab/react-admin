@@ -17,6 +17,8 @@ After having cloned the react-admin repository, run the following commands at th
 ```sh
 make install
 
+make build
+
 make run-demo
 ```
 
