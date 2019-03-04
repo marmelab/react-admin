@@ -1,6 +1,6 @@
 {
     "name": "react-admin",
-    "version": "2.7.1",
+    "version": "2.7.2",
     "description": "A frontend Framework for building admin applications on top of REST services, using ES6, React and Material UI",
     "files": [
         "*.md",
@@ -11,6 +11,7 @@
     ],
     "main": "lib/index.js",
     "module": "esm/index.js",
+    "types": "esm/index.d.ts",
     "sideEffects": false,
     "authors": [
         "François Zaninotto"
@@ -34,8 +35,8 @@
         "react-dom": "^16.3.0"
     },
     "dependencies": {
-        "ra-core": "^2.7.1",
+        "ra-core": "^2.7.2",
         "ra-language-english": "^2.7.0",
-        "ra-ui-materialui": "^2.7.1"
+        "ra-ui-materialui": "^2.7.2"
     }
 }

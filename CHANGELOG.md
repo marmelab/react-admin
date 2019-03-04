@@ -1,5 +1,20 @@
 # Changelog
 
+## v2.7.2
+
+* Fix JSONPlaceHolder name typo in Tutorial ([2906](https://github.com/marmelab/react-admin/pull/2906)) ([noobling](https://github.com/noobling))
+* Fix `<CloneButton>` documentation missing warning ([2904](https://github.com/marmelab/react-admin/pull/2904)) ([mnlbox](https://github.com/mnlbox))
+* Fix prop types for `<ArrayInput>` ([2898](https://github.com/marmelab/react-admin/pull/2898)) ([kujon](https://github.com/kujon))
+* Fix typo in jsDoc in Tutorial ([2882](https://github.com/marmelab/react-admin/pull/2882)) ([adibnaya](https://github.com/adibnaya))
+* Fix `GET_MANY` in `ra-data-json-server` data provider returns too many results ([2873](https://github.com/marmelab/react-admin/pull/2873)) ([paradoxxxzero](https://github.com/paradoxxxzero))
+* Fix import path typo in Unit Testing documentation ([2872](https://github.com/marmelab/react-admin/pull/2872)) ([mexitalian](https://github.com/mexitalian))
+* Fix `<AutocompleteArrayInput>` throws an error when receiving an empty value ([2861](https://github.com/marmelab/react-admin/pull/2861)) ([tiagoschenkel](https://github.com/tiagoschenkel))
+* Fix `<AutocompleteArrayInput>` shows choices in a wrong position when input element moves to another location ([2860](https://github.com/marmelab/react-admin/pull/2860)) ([tiagoschenkel](https://github.com/tiagoschenkel))
+* Migrate ra-core controllers to TypeScript ([2881](https://github.com/marmelab/react-admin/pull/2881)) ([djhi](https://github.com/djhi))
+* Migrate ra-core inference to TypeScript ([2879](https://github.com/marmelab/react-admin/pull/2879)) ([djhi](https://github.com/djhi))
+* Migrate ra-core form to TypeScript ([2878](https://github.com/marmelab/react-admin/pull/2878)) ([djhi](https://github.com/djhi))
+* Migrate ra-core i18n Migration to TypeScript ([2874](https://github.com/marmelab/react-admin/pull/2874)) ([djhi](https://github.com/djhi))
+
 ## v2.7.1
 
 * Fix typo in `ra-data-graphql-simple` documentation ([2863](https://github.com/marmelab/react-admin/pull/2863)) ([EricTousignant](https://github.com/EricTousignant))

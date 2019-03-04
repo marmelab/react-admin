@@ -107,7 +107,10 @@ ArrayInput.propTypes = {
     source: PropTypes.string,
     record: PropTypes.object,
     options: PropTypes.object,
-    validate: PropTypes.func,
+    validate: PropTypes.oneOfType([
+        PropTypes.func,
+        PropTypes.arrayOf(PropTypes.func),
+    ]),
 };
 
 ArrayInput.defaultProps = {

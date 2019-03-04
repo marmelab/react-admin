@@ -245,6 +245,32 @@ export const PostShow = (props) => (
 ```
 {% endraw %}
 
+
+### Tabs element
+
+By default, `<TabbedShowLayout>` renders its tabs using `<TabbedShowLayoutTabs>`, an internal react-admin component. You can pass a custom component as the `tabs` prop to override that default. Also, props passed to `<TabbedShowLayoutTabs>` are passed to the material-ui's `<Tabs>` component inside `<TabbedShowLayoutTabs>`. That means you can create a custom `tabs` component without copying several components from the react-admin source.
+
+For instance, to make use of scrollable `<Tabs>`, you can pass a scrollable props to `<TabbedShowLayoutTabs>` and use it in the `tabs` prop from `<TabbedShowLayout>` as follows:
+
+```jsx
+import {
+    Show,
+    TabbedShowLayout,
+    TabbedShowLayoutTabs,
+} from 'react-admin';
+
+const ScrollableTabbedShowLayout = props => (
+    <Show{...props}>
+        <TabbedShowLayout tabs={<TabbedShowLayoutTabs scrollable={true}/>}>
+            ...
+        </TabbedShowLayout>
+    </Show>
+);
+
+export default ScrollableTabbedShowLayout;
+
+```
+
 ## Displaying Fields depending on the user permissions
 
 You might want to display some fields only to users with specific permissions. Those permissions are retrieved for each route and will provided to your component as a `permissions` prop.

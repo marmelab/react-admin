@@ -287,7 +287,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { MenuItemLink, WithPermissions } from 'react-admin';
 
-const Menu = ({ onMenuClick, logout, permissions }) => (
+const Menu = ({ onMenuClick, logout }) => (
     <div>
         <MenuItemLink to="/posts" primaryText="Posts" onClick={onMenuClick} />
         <MenuItemLink to="/comments" primaryText="Comments" onClick={onMenuClick} />
