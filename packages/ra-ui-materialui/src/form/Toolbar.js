@@ -115,7 +115,10 @@ const Toolbar = ({
                                   button.props.submitOnEnter,
                                   submitOnEnter
                               ),
-                              undoable,
+                              undoable: valueOrDefault(
+                                  button.props.undoable,
+                                  undoable
+                              ),
                           })
                         : null
                 )

@@ -196,7 +196,7 @@ const PostEdit = props => (
 import {
     Toolbar,
     SaveButton,
-    DeleteWithConfirmButton,
+    DeleteButton,
     Edit,
     SimpleForm,
 } from 'react-admin';
@@ -212,7 +212,7 @@ const toolbarStyles = {
 const CustomToolbar = withStyles(toolbarStyles)(props => (
     <Toolbar {...props}>
         <SaveButton />
-        <DeleteWithConfirmButton />
+        <DeleteButton undoable={false} />
     </Toolbar>
 ));
 

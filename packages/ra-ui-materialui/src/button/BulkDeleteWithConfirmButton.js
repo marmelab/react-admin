@@ -9,7 +9,6 @@ import { crudDeleteMany } from 'ra-core';
 
 import Confirm from '../layout/Confirm';
 import Button from './Button';
-import { styles } from './BulkDeleteButton';
 
 const sanitizeRestProps = ({
     basePath,
@@ -21,6 +20,19 @@ const sanitizeRestProps = ({
     selectedIds,
     ...rest
 }) => rest;
+
+const styles = theme => ({
+    deleteButton: {
+        color: theme.palette.error.main,
+        '&:hover': {
+            backgroundColor: fade(theme.palette.error.main, 0.12),
+            // Reset on mouse devices
+            '@media (hover: none)': {
+                backgroundColor: 'transparent',
+            },
+        },
+    },
+});
 
 class BulkDeleteWithConfirmButton extends Component {
     static propTypes = {
