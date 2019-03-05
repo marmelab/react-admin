@@ -520,7 +520,7 @@ AutocompleteArrayInput.propTypes = {
 };
 
 AutocompleteArrayInput.defaultProps = {
-    allowDuplicates: true,
+    allowDuplicates: false,
     choices: [],
     options: {},
     optionText: 'name',
