@@ -556,15 +556,37 @@ describe('<AutocompleteArrayInput />', () => {
     });
 
     describe('Add allowDuplicates flag (Fix #2311)', () => {
+        it('should have allowDuplicates disabled by default', () => {
+            const wrapper = mount(
+                <AutocompleteArrayInput {...defaultProps} choices={[]} />
+            );
+
+            expect(wrapper.props().allowDuplicates).toBe(false);
+        });
+
+        it('should enable allowDuplicates when defined', () => {
+            const wrapper = mount(
+                <AutocompleteArrayInput
+                    {...defaultProps}
+                    allowDuplicates
+                    choices={[]}
+                />
+            );
+
+            expect(wrapper.props().allowDuplicates).toBe(true);
+        });
+
         it('should not accept duplicated items by default', () => {
+            const onChange = jest.fn();
+
             const wrapper = mount(
                 <AutocompleteArrayInput
                     {...defaultProps}
                     input={{ value: [], onChange }}
                     choices={[
-                        { id: 1, name: 'a' },
-                        { id: 2, name: 'b' },
-                        { id: 3, name: 'c' },
+                        { id: 1, name: 'Male' },
+                        { id: 2, name: 'Female' },
+                        { id: 3, name: 'Other' },
                     ]}
                 />,
                 { context, childContextTypes }
@@ -573,29 +595,42 @@ describe('<AutocompleteArrayInput />', () => {
             wrapper.find('input').simulate('focus');
             wrapper
                 .find('input')
-                .simulate('change', { target: { value: 'a' } });
+                .simulate('change', { target: { value: 'Other' } });
+            wrapper.find('input').simulate('blur');
 
-            expect(wrapper.state('suggestions')).toHaveLength(1);
-            expect(wrapper.find('ListItem')).toHaveLength(1);
-
+            wrapper.find('input').simulate('focus');
             wrapper
                 .find('input')
-                .simulate('change', { target: { value: 'a' } });
+                .simulate('change', { target: { value: 'Other' } });
+            wrapper.find('input').simulate('blur');
 
-            expect(wrapper.state('suggestions')).toHaveLength(1);
-            expect(wrapper.find('ListItem')).toHaveLength(1);
+            expect.assertions(2);
+
+            return new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    try {
+                        expect(onChange).toHaveBeenCalledTimes(2);
+                        expect(onChange).toHaveBeenCalledWith([3]);
+                    } catch (error) {
+                        return reject(error);
+                    }
+                    resolve();
+                }, 250);
+            });
         });
 
         it('should accept duplicated items when allowDuplicates is enabled', () => {
+            const onChange = jest.fn();
+
             const wrapper = mount(
                 <AutocompleteArrayInput
                     {...defaultProps}
                     allowDuplicates
                     input={{ value: [], onChange }}
                     choices={[
-                        { id: 1, name: 'a' },
-                        { id: 2, name: 'b' },
-                        { id: 3, name: 'c' },
+                        { id: 1, name: 'Male' },
+                        { id: 2, name: 'Female' },
+                        { id: 3, name: 'Other' },
                     ]}
                 />,
                 { context, childContextTypes }
@@ -604,17 +639,28 @@ describe('<AutocompleteArrayInput />', () => {
             wrapper.find('input').simulate('focus');
             wrapper
                 .find('input')
-                .simulate('change', { target: { value: 'a' } });
+                .simulate('change', { target: { value: 'Other' } });
+            wrapper.find('input').simulate('blur');
 
-            expect(wrapper.state('suggestions')).toHaveLength(1);
-            expect(wrapper.find('ListItem')).toHaveLength(1);
-
+            wrapper.find('input').simulate('focus');
             wrapper
                 .find('input')
-                .simulate('change', { target: { value: 'a' } });
+                .simulate('change', { target: { value: 'Other' } });
+            wrapper.find('input').simulate('blur');
 
-            expect(wrapper.state('suggestions')).toHaveLength(1);
-            expect(wrapper.find('ListItem')).toHaveLength(2);
+            expect.assertions(2);
+
+            return new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    try {
+                        expect(onChange).toHaveBeenCalledTimes(2);
+                        expect(onChange).toHaveBeenCalledWith([3]);
+                    } catch (error) {
+                        return reject(error);
+                    }
+                    resolve();
+                }, 250);
+            });
         });
     });
 });
