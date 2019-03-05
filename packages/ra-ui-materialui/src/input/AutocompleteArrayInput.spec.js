@@ -554,4 +554,67 @@ describe('<AutocompleteArrayInput />', () => {
             }, 250);
         });
     });
+
+    describe('Add allowDuplicates flag (Fix #2311)', () => {
+        it('should not accept duplicated items by default', () => {
+            const wrapper = mount(
+                <AutocompleteArrayInput
+                    {...defaultProps}
+                    input={{ value: [], onChange }}
+                    choices={[
+                        { id: 1, name: 'a' },
+                        { id: 2, name: 'b' },
+                        { id: 3, name: 'c' },
+                    ]}
+                />,
+                { context, childContextTypes }
+            );
+
+            wrapper.find('input').simulate('focus');
+            wrapper
+                .find('input')
+                .simulate('change', { target: { value: 'a' } });
+
+            expect(wrapper.state('suggestions')).toHaveLength(1);
+            expect(wrapper.find('ListItem')).toHaveLength(1);
+
+            wrapper
+                .find('input')
+                .simulate('change', { target: { value: 'a' } });
+
+            expect(wrapper.state('suggestions')).toHaveLength(1);
+            expect(wrapper.find('ListItem')).toHaveLength(1);
+        });
+
+        it('should accept duplicated items when allowDuplicates is enabled', () => {
+            const wrapper = mount(
+                <AutocompleteArrayInput
+                    {...defaultProps}
+                    allowDuplicates
+                    input={{ value: [], onChange }}
+                    choices={[
+                        { id: 1, name: 'a' },
+                        { id: 2, name: 'b' },
+                        { id: 3, name: 'c' },
+                    ]}
+                />,
+                { context, childContextTypes }
+            );
+
+            wrapper.find('input').simulate('focus');
+            wrapper
+                .find('input')
+                .simulate('change', { target: { value: 'a' } });
+
+            expect(wrapper.state('suggestions')).toHaveLength(1);
+            expect(wrapper.find('ListItem')).toHaveLength(1);
+
+            wrapper
+                .find('input')
+                .simulate('change', { target: { value: 'a' } });
+
+            expect(wrapper.state('suggestions')).toHaveLength(1);
+            expect(wrapper.find('ListItem')).toHaveLength(2);
+        });
+    });
 });
