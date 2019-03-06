@@ -1,0 +1,108 @@
+{
+  "projectName": "react-admin",
+  "projectOwner": "marmelab",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": true,
+  "contributors": [
+    {
+      "login": "fzaninotto",
+      "name": "Francois Zaninotto",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/99944?v=4",
+      "profile": "https://marmelab.com/",
+      "contributions": [
+        "financial",
+        "code",
+        "business",
+        "doc",
+        "ideas",
+        "review"
+      ]
+    },
+    {
+      "login": "djhi",
+      "name": "Gildas Garcia",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/1122076?v=4",
+      "profile": "https://github.com/djhi",
+      "contributions": [
+        "code",
+        "bug",
+        "blog",
+        "review",
+        "question"
+      ]
+    },
+    {
+      "login": "jpetitcolas",
+      "name": "Jonathan Petitcolas",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/688373?v=4",
+      "profile": "http://www.jonathan-petitcolas.com",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "alexisjanvier",
+      "name": "Alexis Janvier",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/547706?v=4",
+      "profile": "https://www.alexisjanvier.net",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "Kmaschta",
+      "name": "Kmaschta",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/1819833?v=4",
+      "profile": "https://www.kmaschta.me",
+      "contributions": [
+        "question",
+        "bug",
+        "doc"
+      ]
+    },
+    {
+      "login": "ThieryMichel",
+      "name": "ThieryMichel",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/4034399?v=4",
+      "profile": "https://github.com/ThieryMichel",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "tkvw",
+      "name": "Dennie de Lange",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/621098?v=4",
+      "profile": "http://www.tkvw.nl",
+      "contributions": [
+        "code",
+        "doc"
+      ]
+    },
+    {
+      "login": "wesley6j",
+      "name": "Weijie Jin",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/4378997?v=4",
+      "profile": "https://github.com/wesley6j",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "Luwangel",
+      "name": "Adrien Amoros",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/5584839?v=4",
+      "profile": "https://twitter.com/Luwangel",
+      "contributions": [
+        "code",
+        "bug"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7
+}
