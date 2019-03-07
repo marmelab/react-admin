@@ -22,6 +22,23 @@
     <div class="book with-summary font-size-2 font-family-1">
         <div id="book-summary" class="book-summary">
             <nav role="navigation">
+                <div class="search">
+                        <form action="#" onsubmit="search();return false;">
+                            <div style="display:flex;align-items:center;">
+                                <i class="octicon octicon-search"></i>
+                                <input type="text" name="q" id="query" size="31" maxlength="255" value="" placeholder="Search...">
+                            </div>
+                        </form>
+                        <script type="text/javascript">
+                            function encodeHTML(s) {
+                                return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
+                            }
+                            function search() {
+                                var query = encodeHTML(document.getElementById('query').value);
+                                window.location.href = 'https://www.qwant.com?q=' + query + "%20site:marmelab.com/react-admin";
+                            }
+                        </script>
+                </div>
                 <ul class="summary">
                     <li class="header">Table of Contents</li>
                     <li class="chapter {% if page.path == 'index.md' %}active{% endif %}">
