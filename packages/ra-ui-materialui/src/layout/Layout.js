@@ -40,6 +40,7 @@ const styles = theme => ({
         display: 'flex',
         flexDirection: 'column',
         flexGrow: 1,
+        flexBasis: 0,
         padding: theme.spacing.unit * 3,
         [theme.breakpoints.up('xs')]: {
             paddingLeft: 5,
