@@ -24,7 +24,7 @@ const styles = () => createStyles({
 
 // see http://redux-form.com/6.4.3/examples/material-ui/
 const renderInput = ({
-    meta: { touched, error } = {}, // eslint-disable-line react/prop-types
+    meta: { touched, error } = { touched: false, error: '' }, // eslint-disable-line react/prop-types
     input: { ...inputProps }, // eslint-disable-line react/prop-types
     ...props
 }) => (

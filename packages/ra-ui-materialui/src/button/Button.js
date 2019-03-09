@@ -37,10 +37,10 @@ const Button = ({
     children,
     classes = {},
     className,
-    color = 'primary',
+    color,
     disabled,
     label,
-    size = 'small',
+    size,
     translate,
     ...rest
 }) => (
@@ -110,9 +110,14 @@ Button.propTypes = {
     color: PropTypes.string,
     disabled: PropTypes.bool,
     label: PropTypes.string,
-    size: PropTypes.string,
+    size: PropTypes.oneOf(['small', 'medium', 'large']),
     translate: PropTypes.func.isRequired,
 };
+
+Button.defaultProps = {
+    color: 'primary',
+    size: 'small'
+}
 
 const enhance = compose(
     withStyles(styles),

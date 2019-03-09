@@ -7,8 +7,8 @@ const getTabFullPath = (tab, index, baseUrl) =>
         tab.props.path ? `/${tab.props.path}` : index > 0 ? `/${index}` : ''
     }`;
 
-const TabbedShowLayoutTabs = ({ children, match, ...rest }) => (
-    <Tabs indicatorColor="primary" {...rest}>
+const TabbedShowLayoutTabs = ({ children, match, value, ...rest }) => (
+    <Tabs indicatorColor="primary" value={value} {...rest}>
         {Children.map(children, (tab, index) => {
             if (!tab || !isValidElement(tab)) return null;
             // Builds the full tab tab which is the concatenation of the last matched route in the
