@@ -38,13 +38,16 @@ const format = value => {
     if (value == null || value === '') {
         return '';
     }
+
+    if (value instanceof Date) {
+        return convertDateToString(value);
+    }
     // valid dates should not be converted
     if (dateTimeRegex.test(value)) {
         return value;
     }
 
-    const finalValue = value instanceof Date ? value : new Date(value);
-    return convertDateToString(finalValue);
+    return convertDateToString(new Date(value));
 };
 
 /**

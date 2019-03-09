@@ -12,7 +12,7 @@ import sanitizeRestProps from './sanitizeRestProps';
  * @returns {String} A standardized date (yyyy-MM-dd), to be passed to an <input type="date" />
  */
 const dateFormatter = v => {
-    if (!(v instanceof Date) || isNaN(v)) return;
+    if (!(v instanceof Date) || isNaN(v.getDate())) return;
     const pad = '00';
     const yyyy = v.getFullYear().toString();
     const MM = (v.getMonth() + 1).toString();
@@ -28,13 +28,17 @@ const sanitizeValue = value => {
     if (value == null || value === '') {
         return '';
     }
+
+    if (value instanceof Date) {
+        return dateFormatter(value);
+    }
+
     // valid dates should not be converted
     if (dateRegex.test(value)) {
         return value;
     }
 
-    const finalValue = value instanceof Date ? value : new Date(value);
-    return dateFormatter(finalValue);
+    return dateFormatter(new Date(value));
 };
 
 export class DateInput extends Component {
