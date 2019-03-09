@@ -113,9 +113,7 @@ export class FileInput extends Component {
             return file;
         }
 
-        const { source, title } = React.Children.toArray(
-            this.props.children
-        )[0].props;
+        const { source, title } = Children.only(this.props.children).props;
 
         const transformedFile = {
             rawFile: file,

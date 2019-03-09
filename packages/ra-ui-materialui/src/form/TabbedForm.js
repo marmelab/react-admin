@@ -123,7 +123,7 @@ export class TabbedForm extends Component {
                     indicatorColor="primary"
                 >
                     {Children.map(children, (tab, index) => {
-                        if (!tab) return null;
+                        if (!isValidElement(tab)) return null;
 
                         // Builds the full tab tab which is the concatenation of the last matched route in the
                         // TabbedShowLayout hierarchy (ex: '/posts/create', '/posts/12', , '/posts/12/show')
@@ -256,9 +256,13 @@ export const findTabsWithErrors = (
     const errors = collectErrorsImpl(state, props);
 
     return Children.toArray(props.children).reduce((acc, child) => {
+        if (!isValidElement(child)) {
+            return acc;
+        }
+
         const inputs = Children.toArray(child.props.children);
 
-        if (inputs.some(input => errors[input.props.source])) {
+        if (inputs.some(input => isValidElement(input) && errors[input.props.source])) {
             return [...acc, child.props.label];
         }
 
@@ -270,7 +274,7 @@ const enhance = compose(
     withRouter,
     connect((state, props) => {
         const children = Children.toArray(props.children).reduce(
-            (acc, child) => [...acc, ...Children.toArray(child.props.children)],
+            (acc, child) => [...acc, ...(isValidElement(child) ? Children.toArray(child.props.children): [])],
             []
         );
 

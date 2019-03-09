@@ -1,4 +1,4 @@
-import React, { Children, cloneElement, Component } from 'react';
+import React, { Children, cloneElement, Component, isValidElement } from 'react';
 import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
@@ -126,7 +126,7 @@ export class SimpleFormIterator extends Component {
                                     {index + 1}
                                 </Typography>
                                 <section className={classes.form}>
-                                    {Children.map(children, (input, index2) => (
+                                    {Children.map(children, (input, index2) => isValidElement(input) ? (
                                         <FormInput
                                             basePath={
                                                 input.props.basePath || basePath
@@ -150,7 +150,7 @@ export class SimpleFormIterator extends Component {
                                             }
                                             resource={resource}
                                         />
-                                    ))}
+                                    ) : null)}
                                 </section>
                                 {!disableRemove && (
                                     <span className={classes.action}>

@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component, Fragment, isValidElement } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { connect } from 'react-redux';
@@ -157,7 +157,7 @@ class DatagridRow extends Component {
                         </TableCell>
                     )}
                     {React.Children.map(children, (field, index) =>
-                        field ? (
+                        isValidElement(field) ? (
                             <DatagridCell
                                 key={`${id}-${field.props.source || index}`}
                                 className={classnames(

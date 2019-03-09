@@ -1,5 +1,5 @@
 /* eslint no-console: ["error", { allow: ["warn", "error"] }] */
-import React from 'react';
+import React, { isValidElement, Children, cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import Card from '@material-ui/core/Card';
 import classnames from 'classnames';
@@ -98,12 +98,12 @@ const sanitizeRestProps = ({
 
 export const ListView = ({
     // component props
-    actions = <DefaultActions />,
+    actions,
     aside,
     filters,
     bulkActions, // deprecated
-    bulkActionButtons = <DefaultBulkActionButtons />,
-    pagination = <DefaultPagination />,
+    bulkActionButtons,
+    pagination,
     // overridable by user
     children,
     className,
@@ -140,17 +140,17 @@ export const ListView = ({
                 )}
                 <div key={version}>
                     {children &&
-                        React.cloneElement(children, {
+                        cloneElement(Children.only(children), {
                             ...controllerProps,
                             hasBulkActions:
                                 bulkActions !== false &&
                                 bulkActionButtons !== false,
                         })}
                     {pagination &&
-                        React.cloneElement(pagination, controllerProps)}
+                        cloneElement(pagination, controllerProps)}
                 </div>
             </Card>
-            {aside && React.cloneElement(aside, controllerProps)}
+            {aside && cloneElement(aside, controllerProps)}
         </div>
     );
 };
@@ -200,7 +200,10 @@ ListView.propTypes = {
 };
 
 ListView.defaultProps = {
+    actions: <DefaultActions />,
     classes: {},
+    bulkActionButtons: <DefaultBulkActionButtons />,
+    pagination: <DefaultPagination />,
 };
 
 /**

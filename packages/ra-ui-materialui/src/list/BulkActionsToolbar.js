@@ -74,7 +74,7 @@ const BulkActionsToolbar = ({
             </div>
             <CardActions>
                 {Children.map(children, child =>
-                    cloneElement(child, {
+                    cloneElement(Children.only(child), {
                         basePath,
                         filterValues,
                         resource,

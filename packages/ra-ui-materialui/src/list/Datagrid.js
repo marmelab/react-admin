@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, isValidElement, Children, cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import { sanitizeListRestProps } from 'ra-core';
 import { withStyles, createStyles } from '@material-ui/core/styles';
@@ -200,8 +200,8 @@ class Datagrid extends Component {
                                 />
                             </TableCell>
                         )}
-                        {React.Children.map(children, (field, index) =>
-                            field ? (
+                        {Children.map(children, (field, index) =>
+                            isValidElement(field) ? (
                                 <DatagridHeaderCell
                                     className={classes.headerCell}
                                     currentSort={currentSort}
@@ -219,7 +219,7 @@ class Datagrid extends Component {
                         )}
                     </TableRow>
                 </TableHead>
-                {React.cloneElement(
+                {cloneElement(
                     body,
                     {
                         basePath,
