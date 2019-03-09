@@ -4,7 +4,7 @@
     "private": true,
     "dependencies": {
         "@material-ui/core": "~1.5.1",
-        "@material-ui/icons": "~1.1.0",
+        "@material-ui/icons": "~1.1.1",
         "data-generator": "^2.4.0",
         "fakerest": "~2.1.0",
         "fetch-mock": "~6.3.0",

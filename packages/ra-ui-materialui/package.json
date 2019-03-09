@@ -42,7 +42,7 @@
     },
     "dependencies": {
         "@material-ui/core": "^1.5.1",
-        "@material-ui/icons": "^1.0.0",
+        "@material-ui/icons": "^1.1.1",
         "autosuggest-highlight": "^3.1.1",
         "classnames": "~2.2.5",
         "inflection": "~1.12.0",
