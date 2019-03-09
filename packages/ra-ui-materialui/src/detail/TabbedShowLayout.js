@@ -1,4 +1,4 @@
-import React, { Component, Children, cloneElement } from 'react';
+import React, { Component, Children, cloneElement, isValidElement } from 'react';
 import PropTypes from 'prop-types';
 import Divider from '@material-ui/core/Divider';
 import { withRouter, Route } from 'react-router-dom';
@@ -104,7 +104,7 @@ export class TabbedShowLayout extends Component {
                     {Children.map(
                         children,
                         (tab, index) =>
-                            tab && (
+                            tab && isValidElement(tab) ? (
                                 <Route
                                     exact
                                     path={getTabFullPath(tab, index, match.url)}
@@ -117,7 +117,7 @@ export class TabbedShowLayout extends Component {
                                         })
                                     }
                                 />
-                            )
+                            ) : null
                     )}
                 </CardContentInner>
             </div>

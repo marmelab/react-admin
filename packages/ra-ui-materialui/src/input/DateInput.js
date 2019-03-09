@@ -33,7 +33,7 @@ const sanitizeValue = value => {
         return value;
     }
 
-    const finalValue = typeof value instanceof Date ? value : new Date(value);
+    const finalValue = value instanceof Date ? value : new Date(value);
     return dateFormatter(finalValue);
 };
 

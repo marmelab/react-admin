@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
+import React, { Component, Children, cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import { shallowEqual } from 'recompose';
 import Dropzone from 'react-dropzone';
 import compose from 'recompose/compose';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, createStyles } from '@material-ui/core/styles';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import classnames from 'classnames';
 import { addField, translate } from 'ra-core';
@@ -12,7 +12,7 @@ import Labeled from './Labeled';
 import FileInputPreview from './FileInputPreview';
 import sanitizeRestProps from './sanitizeRestProps';
 
-const styles = {
+const styles = createStyles({
     dropZone: {
         background: '#efefef',
         cursor: 'pointer',
@@ -23,7 +23,7 @@ const styles = {
     preview: {},
     removeButton: {},
     root: { width: '100%' },
-};
+});
 
 export class FileInput extends Component {
     static propTypes = {
@@ -203,7 +203,7 @@ export class FileInput extends Component {
                                     onRemove={this.onRemove(file)}
                                     className={classes.removeButton}
                                 >
-                                    {React.cloneElement(children, {
+                                    {cloneElement(Children.only(children), {
                                         record: file,
                                         className: classes.preview,
                                     })}

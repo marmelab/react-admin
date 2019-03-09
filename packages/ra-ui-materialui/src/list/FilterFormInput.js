@@ -26,7 +26,7 @@ const FilterFormInput = ({
                 className="hide-filter"
                 onClick={handleHide}
                 data-key={filterElement.props.source}
-                tooltip={translate('ra.action.remove_filter')}
+                title={translate('ra.action.remove_filter')}
             >
                 <ActionHide />
             </IconButton>

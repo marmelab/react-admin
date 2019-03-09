@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import Drawer from '@material-ui/core/Drawer';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, createStyles } from '@material-ui/core/styles';
 import withWidth from '@material-ui/core/withWidth';
 import { setSidebarVisibility } from 'ra-core';
 
@@ -12,7 +12,7 @@ import Responsive from './Responsive';
 export const DRAWER_WIDTH = 240;
 export const CLOSED_DRAWER_WIDTH = 55;
 
-const styles = theme => ({
+const styles = theme => createStyles({
     drawerPaper: {
         position: 'relative',
         height: 'auto',

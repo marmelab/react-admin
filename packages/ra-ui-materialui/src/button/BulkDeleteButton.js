@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import ActionDelete from '@material-ui/icons/Delete';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, createStyles } from '@material-ui/core/styles';
 import { fade } from '@material-ui/core/styles/colorManipulator';
 import { crudDeleteMany, startUndoable } from 'ra-core';
 
@@ -22,7 +22,7 @@ const sanitizeRestProps = ({
     ...rest
 }) => rest;
 
-const styles = theme => ({
+const styles = theme => createStyles({
     deleteButton: {
         color: theme.palette.error.main,
         '&:hover': {

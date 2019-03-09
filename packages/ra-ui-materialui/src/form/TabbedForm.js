@@ -1,4 +1,4 @@
-import React, { Children, Component } from 'react';
+import React, { Children, Component, isValidElement } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import {
@@ -12,13 +12,13 @@ import { withRouter, Route } from 'react-router-dom';
 import compose from 'recompose/compose';
 import Divider from '@material-ui/core/Divider';
 import Tabs from '@material-ui/core/Tabs';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, createStyles } from '@material-ui/core/styles';
 import { getDefaultValues, translate, REDUX_FORM_NAME } from 'ra-core';
 
 import Toolbar from './Toolbar';
 import CardContentInner from '../layout/CardContentInner';
 
-const styles = theme => ({
+const styles = theme => createStyles({
     errorTabButton: { color: theme.palette.error.main },
 });
 
@@ -157,6 +157,7 @@ export class TabbedForm extends Component {
                                     path={getTabFullPath(tab, index, match.url)}
                                 >
                                     {routeProps =>
+                                        isValidElement(tab) ?
                                         React.cloneElement(tab, {
                                             context: 'content',
                                             resource,
@@ -176,7 +177,7 @@ export class TabbedForm extends Component {
                                              * @ref https://github.com/marmelab/react-admin/issues/1956
                                              */
                                             key: `${index}_${!routeProps.match}`,
-                                        })
+                                        }) : null
                                     }
                                 </Route>
                             )

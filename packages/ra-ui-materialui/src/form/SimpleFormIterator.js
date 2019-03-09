@@ -6,7 +6,7 @@ import get from 'lodash/get';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import FormHelperText from '@material-ui/core/FormHelperText';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, createStyles } from '@material-ui/core/styles';
 import CloseIcon from '@material-ui/icons/RemoveCircleOutline';
 import AddIcon from '@material-ui/icons/AddCircleOutline';
 import { translate } from 'ra-core';
@@ -14,7 +14,7 @@ import classNames from 'classnames';
 
 import FormInput from '../form/FormInput';
 
-const styles = theme => ({
+const styles = theme => createStyles({
     root: {
         padding: 0,
         marginBottom: 0,

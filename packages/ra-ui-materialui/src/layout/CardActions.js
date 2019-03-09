@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, createStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
 
-const styles = {
+const styles = createStyles({
     cardActions: {
         zIndex: 2,
         display: 'flex',
@@ -12,7 +12,7 @@ const styles = {
         flexWrap: 'wrap',
         padding: 0,
     },
-};
+});
 
 const CardActions = ({ classes, className, children, ...rest }) => (
     <div className={classnames(classes.cardActions, className)} {...rest}>

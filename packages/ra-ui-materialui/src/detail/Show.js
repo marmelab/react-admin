@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { cloneElement, Children } from 'react';
 import PropTypes from 'prop-types';
 import Card from '@material-ui/core/Card';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, createStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
 import { ShowController } from 'ra-core';
 
@@ -9,14 +9,14 @@ import DefaultActions from './ShowActions';
 import TitleForRecord from '../layout/TitleForRecord';
 import CardContentInner from '../layout/CardContentInner';
 
-export const styles = {
+export const styles = createStyles({
     root: {
         display: 'flex',
     },
     card: {
         flex: '1 1 auto',
     },
-};
+});
 
 const sanitizeRestProps = ({
     actions,
@@ -80,7 +80,7 @@ export const ShowView = ({
             <Card className={classes.card}>
                 {actions && (
                     <CardContentInner>
-                        {React.cloneElement(actions, {
+                        {cloneElement(actions, {
                             basePath,
                             data: record,
                             hasList,
@@ -90,7 +90,7 @@ export const ShowView = ({
                     </CardContentInner>
                 )}
                 {record &&
-                    React.cloneElement(children, {
+                    cloneElement(Children.only(children), {
                         resource,
                         basePath,
                         record,
@@ -98,7 +98,7 @@ export const ShowView = ({
                     })}
             </Card>
             {aside &&
-                React.cloneElement(aside, {
+                cloneElement(aside, {
                     resource,
                     basePath,
                     record,

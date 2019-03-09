@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Link as RRLink } from 'react-router-dom';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, createStyles } from '@material-ui/core/styles';
 
-const styles = theme => ({
+const styles = theme => createStyles({
     link: {
         textDecoration: 'none',
         color: theme.palette.primary.main,

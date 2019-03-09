@@ -1,4 +1,4 @@
-import React, { Children } from 'react';
+import React, { Children, isValidElement, cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
@@ -64,7 +64,7 @@ export const SimpleShowLayout = ({
         {...sanitizeRestProps(rest)}
     >
         {Children.map(children, field =>
-            field ? (
+            field && isValidElement(field) ? (
                 <div
                     key={field.props.source}
                     className={classnames(
@@ -86,7 +86,7 @@ export const SimpleShowLayout = ({
                     ) : typeof field.type === 'string' ? (
                         field
                     ) : (
-                        React.cloneElement(field, {
+                        cloneElement(field, {
                             record,
                             resource,
                             basePath,
