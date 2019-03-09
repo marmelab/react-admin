@@ -6,6 +6,7 @@ import { translate, warning } from 'ra-core';
 const Title = ({
     className,
     defaultTitle,
+    locale,
     record,
     title,
     translate,
@@ -32,6 +33,7 @@ const Title = ({
 Title.propTypes = {
     defaultTitle: PropTypes.string,
     className: PropTypes.string,
+    locale: PropTypes.string,
     record: PropTypes.object,
     translate: PropTypes.func.isRequired,
     title: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
