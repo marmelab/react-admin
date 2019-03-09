@@ -408,6 +408,9 @@ export class AutocompleteArrayInput extends React.Component {
                 component={
                     suggestionComponent || this.renderSuggestionComponent
                 }
+                suggestion={suggestion}
+                query={query}
+                isHighlighted={isHighlighted}
             >
                 <div>
                     {parts.map((part, index) => {

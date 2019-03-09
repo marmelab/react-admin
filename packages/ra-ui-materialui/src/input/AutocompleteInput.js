@@ -356,6 +356,9 @@ export class AutocompleteInput extends React.Component {
                 component={
                     suggestionComponent || this.renderSuggestionComponent
                 }
+                suggestion={suggestion}
+                query={query}
+                isHighlighted={isHighlighted}
             >
                 <div>
                     {parts.map((part, index) => {
