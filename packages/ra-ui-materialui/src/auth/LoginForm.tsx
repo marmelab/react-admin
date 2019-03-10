@@ -1,26 +1,48 @@
-import React from 'react';
+import React, { SFC } from 'react';
 import PropTypes from 'prop-types';
-import { Field, propTypes, reduxForm } from 'redux-form';
+import { Field, reduxForm, InjectedFormProps } from 'redux-form';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import CardActions from '@material-ui/core/CardActions';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { withStyles, createStyles } from '@material-ui/core/styles';
-import { translate, userLogin } from 'ra-core';
+import { withStyles, createStyles, WithStyles } from '@material-ui/core/styles';
+import {
+    withTranslate,
+    userLogin,
+    TranslationContextProps,
+    ReduxState,
+} from 'ra-core';
 
-const styles = () => createStyles({
-    form: {
-        padding: '0 1em 1em 1em',
-    },
-    input: {
-        marginTop: '1em',
-    },
-    button: {
-        width: '100%',
-    },
-});
+interface Props {
+    redirectTo?: string;
+}
+
+interface FormData {
+    username: string;
+    password: string;
+}
+
+interface EnhancedProps
+    extends TranslationContextProps,
+        InjectedFormProps<FormData>,
+        WithStyles<typeof styles> {
+    isLoading: boolean;
+}
+
+const styles = () =>
+    createStyles({
+        form: {
+            padding: '0 1em 1em 1em',
+        },
+        input: {
+            marginTop: '1em',
+        },
+        button: {
+            width: '100%',
+        },
+    });
 
 // see http://redux-form.com/6.4.3/examples/material-ui/
 const renderInput = ({
@@ -39,7 +61,13 @@ const renderInput = ({
 const login = (auth, dispatch, { redirectTo }) =>
     dispatch(userLogin(auth, redirectTo));
 
-const LoginForm = ({ classes, isLoading, handleSubmit, translate }) => (
+const LoginFormView: SFC<Props & EnhancedProps> = ({
+    classes,
+    isLoading,
+    handleSubmit,
+    translate,
+    ...rest
+}) => (
     <form onSubmit={handleSubmit(login)}>
         <div className={classes.form}>
             <div className={classes.input}>
@@ -77,30 +105,35 @@ const LoginForm = ({ classes, isLoading, handleSubmit, translate }) => (
         </CardActions>
     </form>
 );
-LoginForm.propTypes = {
-    ...propTypes,
-    classes: PropTypes.object,
-    redirectTo: PropTypes.string,
-};
 
-const mapStateToProps = state => ({ isLoading: state.admin.loading > 0 });
+const mapStateToProps = (state: ReduxState) => ({
+    isLoading: state.admin.loading > 0,
+});
 
-const enhance = compose(
+const enhance = compose<Props & EnhancedProps, Props>(
     withStyles(styles),
-    translate,
+    withTranslate,
     connect(mapStateToProps),
     reduxForm({
         form: 'signIn',
-        validate: (values, props) => {
-            const errors = {};
+        validate: (values: FormData, props: TranslationContextProps) => {
+            const errors = { username: '', password: '' };
             const { translate } = props;
-            if (!values.username)
+            if (!values.username) {
                 errors.username = translate('ra.validation.required');
-            if (!values.password)
+            }
+            if (!values.password) {
                 errors.password = translate('ra.validation.required');
+            }
             return errors;
         },
     })
 );
 
-export default enhance(LoginForm);
+const LoginForm = enhance(LoginFormView);
+
+LoginForm.propTypes = {
+    redirectTo: PropTypes.string,
+};
+
+export default LoginForm;
