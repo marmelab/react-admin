@@ -933,7 +933,7 @@
     debug "^3.1.0"
     lodash.once "^4.1.1"
 
-"@material-ui/core@^1.5.1", "@material-ui/core@~1.5.1":
+"@material-ui/core@^1.4.0", "@material-ui/core@~1.5.1":
   version "1.5.1"
   resolved "https://registry.yarnpkg.com/@material-ui/core/-/core-1.5.1.tgz#cb00cb934447ae688e08129f1dab55f54d29d87a"
   integrity sha512-hGT0JelWZGZqgWZzRbON/uqFCgWa4XhmEFG/IEd9SBwCU4sWC99Kv1KpywLhYYWecobqT4Dh7ijO1ZaIAk8HyA==
@@ -966,7 +966,7 @@
     recompose "^0.28.0"
     warning "^4.0.1"
 
-"@material-ui/icons@^1.1.1", "@material-ui/icons@~1.1.1":
+"@material-ui/icons@^1.0.0", "@material-ui/icons@~1.1.1":
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/@material-ui/icons/-/icons-1.1.1.tgz#f104d6a1ac4d3ff34a2bed74b066986b2a7054a5"
   integrity sha512-d7I2P1Td4S/1zMAYCIrVQVf+6NUZC5fcIuo0wTrKe/mKxYo9eQ+83lPesI9aBAh+ZTQTjPTqoIvm0WD5e+0uKQ==
