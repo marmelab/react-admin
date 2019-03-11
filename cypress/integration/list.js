@@ -117,7 +117,7 @@ describe('List Page', () => {
             LoginPage.login('admin', 'password');
             ListPageUsers.navigate();
             cy.contains('1-2 of 2');
-            cy.get('button[tooltip="Remove this filter"]').click();
+            cy.get('button[title="Remove this filter"]').click();
             cy.contains('1-3 of 3');
         });
     });

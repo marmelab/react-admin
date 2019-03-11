@@ -30,8 +30,7 @@ const dateTimeRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/;
  * Converts a date from the Redux store, with timezone, to a date string
  * without timezone for use in an <input type="datetime-local" />.
  *
- * @param {Mixed} value date string or object
- * @param {String} Date string, formatted as yyyy-MM-ddThh:mm
+ * @param {Date | String} value date string or object
  */
 const format = value => {
     // null, undefined and empty string values should not go through convertDateToString
@@ -39,13 +38,16 @@ const format = value => {
     if (value == null || value === '') {
         return '';
     }
+
+    if (value instanceof Date) {
+        return convertDateToString(value);
+    }
     // valid dates should not be converted
     if (dateTimeRegex.test(value)) {
         return value;
     }
 
-    const finalValue = typeof value instanceof Date ? value : new Date(value);
-    return convertDateToString(finalValue);
+    return convertDateToString(new Date(value));
 };
 
 /**

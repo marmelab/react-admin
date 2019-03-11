@@ -2,14 +2,14 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { reduxForm } from 'redux-form';
 import classnames from 'classnames';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, createStyles } from '@material-ui/core/styles';
 import compose from 'recompose/compose';
 import withProps from 'recompose/withProps';
 import lodashSet from 'lodash/set';
 
 import FilterFormInput from './FilterFormInput';
 
-const styles = ({ palette: { primary1Color } }) => ({
+const styles = theme => createStyles({
     form: {
         marginTop: '-10px',
         paddingTop: 0,
@@ -19,7 +19,7 @@ const styles = ({ palette: { primary1Color } }) => ({
     },
     body: { display: 'flex', alignItems: 'flex-end' },
     spacer: { width: '1em' },
-    icon: { color: primary1Color || '#00bcd4', paddingBottom: 0 },
+    icon: { color: theme.palette.primary1Color || '#00bcd4', paddingBottom: 0 },
     clearFix: { clear: 'right' },
 });
 

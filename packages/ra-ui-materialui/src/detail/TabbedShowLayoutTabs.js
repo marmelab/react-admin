@@ -1,4 +1,4 @@
-import React, { Children, cloneElement } from 'react';
+import React, { Children, cloneElement, isValidElement } from 'react';
 import PropTypes from 'prop-types';
 import Tabs from '@material-ui/core/Tabs';
 
@@ -7,10 +7,10 @@ const getTabFullPath = (tab, index, baseUrl) =>
         tab.props.path ? `/${tab.props.path}` : index > 0 ? `/${index}` : ''
     }`;
 
-const TabbedShowLayoutTabs = ({ children, match, ...rest }) => (
-    <Tabs indicatorColor="primary" {...rest}>
+const TabbedShowLayoutTabs = ({ children, match, value, ...rest }) => (
+    <Tabs indicatorColor="primary" value={value} {...rest}>
         {Children.map(children, (tab, index) => {
-            if (!tab) return null;
+            if (!tab || !isValidElement(tab)) return null;
             // Builds the full tab tab which is the concatenation of the last matched route in the
             // TabbedShowLayout hierarchy (ex: '/posts/create', '/posts/12', , '/posts/12/show')
             // and the tab path.

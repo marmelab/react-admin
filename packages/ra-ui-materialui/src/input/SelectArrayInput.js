@@ -8,7 +8,7 @@ import Input from '@material-ui/core/Input';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Chip from '@material-ui/core/Chip';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, createStyles } from '@material-ui/core/styles';
 import compose from 'recompose/compose';
 import classnames from 'classnames';
 import { addField, translate, FieldTitle } from 'ra-core';
@@ -53,7 +53,7 @@ const sanitizeRestProps = ({
     ...rest
 }) => rest;
 
-const styles = theme => ({
+const styles = theme => createStyles({
     root: {},
     chips: {
         display: 'flex',

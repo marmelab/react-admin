@@ -4,13 +4,13 @@ import compose from 'recompose/compose';
 import MuiButton from '@material-ui/core/Button';
 import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, createStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
 import { translate } from 'ra-core';
 
 import Responsive from '../layout/Responsive';
 
-const styles = {
+const styles = createStyles({
     button: {
         display: 'inline-flex',
         alignItems: 'center',
@@ -30,17 +30,17 @@ const styles = {
     largeIcon: {
         fontSize: 24,
     },
-};
+});
 
 const Button = ({
     alignIcon = 'left',
     children,
     classes = {},
     className,
-    color = 'primary',
+    color,
     disabled,
     label,
-    size = 'small',
+    size,
     translate,
     ...rest
 }) => (
@@ -110,9 +110,14 @@ Button.propTypes = {
     color: PropTypes.string,
     disabled: PropTypes.bool,
     label: PropTypes.string,
-    size: PropTypes.string,
+    size: PropTypes.oneOf(['small', 'medium', 'large']),
     translate: PropTypes.func.isRequired,
 };
+
+Button.defaultProps = {
+    color: 'primary',
+    size: 'small'
+}
 
 const enhance = compose(
     withStyles(styles),

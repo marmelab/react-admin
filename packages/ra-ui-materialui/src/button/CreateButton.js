@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import onlyUpdateForKeys from 'recompose/onlyUpdateForKeys';
 import MuiButton from '@material-ui/core/Button';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, createStyles } from '@material-ui/core/styles';
 import ContentAdd from '@material-ui/icons/Add';
 import compose from 'recompose/compose';
 import classnames from 'classnames';
@@ -12,7 +12,7 @@ import { translate } from 'ra-core';
 import Button from './Button';
 import Responsive from '../layout/Responsive';
 
-const styles = theme => ({
+const styles = theme => createStyles({
     floating: {
         color: theme.palette.getContrastText(theme.palette.primary.main),
         margin: 0,

@@ -7,7 +7,7 @@ import Chip from '@material-ui/core/Chip';
 import Paper from '@material-ui/core/Paper';
 import Popper from '@material-ui/core/Popper';
 import MenuItem from '@material-ui/core/MenuItem';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, createStyles } from '@material-ui/core/styles';
 import parse from 'autosuggest-highlight/parse';
 import match from 'autosuggest-highlight/match';
 import blue from '@material-ui/core/colors/blue';
@@ -18,7 +18,7 @@ import { addField, translate, FieldTitle } from 'ra-core';
 
 import AutocompleteArrayInputChip from './AutocompleteArrayInputChip';
 
-const styles = theme => ({
+const styles = theme => createStyles({
     container: {
         flexGrow: 1,
         position: 'relative',

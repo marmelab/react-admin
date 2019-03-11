@@ -7,6 +7,7 @@ import {
     MuiThemeProvider,
     createMuiTheme,
     withStyles,
+    createStyles,
 } from '@material-ui/core/styles';
 import compose from 'recompose/compose';
 
@@ -17,7 +18,7 @@ import Notification from './Notification';
 import Error from './Error';
 import defaultTheme from '../defaultTheme';
 
-const styles = theme => ({
+const styles = theme => createStyles({
     root: {
         display: 'flex',
         flexDirection: 'column',

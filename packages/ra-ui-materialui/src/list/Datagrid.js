@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React, { Component, isValidElement, Children, cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import { sanitizeListRestProps } from 'ra-core';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, createStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
@@ -14,7 +14,7 @@ import DatagridHeaderCell from './DatagridHeaderCell';
 import DatagridBody from './DatagridBody';
 import DatagridLoading from './DatagridLoading';
 
-const styles = theme => ({
+const styles = theme => createStyles({
     table: {
         tableLayout: 'auto',
     },
@@ -200,8 +200,8 @@ class Datagrid extends Component {
                                 />
                             </TableCell>
                         )}
-                        {React.Children.map(children, (field, index) =>
-                            field ? (
+                        {Children.map(children, (field, index) =>
+                            isValidElement(field) ? (
                                 <DatagridHeaderCell
                                     className={classes.headerCell}
                                     currentSort={currentSort}
@@ -219,7 +219,7 @@ class Datagrid extends Component {
                         )}
                     </TableRow>
                 </TableHead>
-                {React.cloneElement(
+                {cloneElement(
                     body,
                     {
                         basePath,

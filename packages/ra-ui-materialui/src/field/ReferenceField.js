@@ -1,14 +1,14 @@
-import React from 'react';
+import React, { Children } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, createStyles } from '@material-ui/core/styles';
 import { ReferenceFieldController } from 'ra-core';
 
 import LinearProgress from '../layout/LinearProgress';
 import Link from '../Link';
 import sanitizeRestProps from './sanitizeRestProps';
 
-const styles = theme => ({
+const styles = theme => createStyles({
     link: {
         color: theme.palette.primary.main,
     },
@@ -44,7 +44,7 @@ export const ReferenceFieldView = ({
                 className={className}
                 onClick={stopPropagation}
             >
-                {React.cloneElement(children, {
+                {React.cloneElement(Children.only(children), {
                     className: classnames(
                         children.props.className,
                         classes.link // force color override for Typography components
@@ -60,7 +60,7 @@ export const ReferenceFieldView = ({
         );
     }
 
-    return React.cloneElement(children, {
+    return React.cloneElement(Children.only(children), {
         record: referenceRecord,
         resource: reference,
         allowEmpty,

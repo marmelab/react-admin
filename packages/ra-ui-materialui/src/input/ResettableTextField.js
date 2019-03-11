@@ -5,12 +5,12 @@ import classNames from 'classnames';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import IconButton from '@material-ui/core/IconButton';
 import MuiTextField from '@material-ui/core/TextField';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, createStyles } from '@material-ui/core/styles';
 import ClearIcon from '@material-ui/icons/Clear';
 
 import { translate } from 'ra-core';
 
-const styles = {
+const styles = createStyles({
     clearIcon: {
         height: 16,
         width: 0,
@@ -25,7 +25,7 @@ const styles = {
     visibleClearButton: {
         width: 24,
     },
-};
+});
 
 /**
  * An override of the default Material-UI TextField which is resettable
