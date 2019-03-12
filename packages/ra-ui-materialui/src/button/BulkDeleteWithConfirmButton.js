@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import ActionDelete from '@material-ui/icons/Delete';
 import { withStyles, createStyles } from '@material-ui/core/styles';
+import { fade } from '@material-ui/core/styles/colorManipulator';
 import inflection from 'inflection';
 import { crudDeleteMany } from 'ra-core';
 
