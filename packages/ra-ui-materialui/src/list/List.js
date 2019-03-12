@@ -9,10 +9,12 @@ import { ListController, getListControllerProps } from 'ra-core';
 import Title from '../layout/Title';
 import ListToolbar from './ListToolbar';
 import DefaultPagination from './Pagination';
-import DefaultBulkActionButtons from '../button/BulkDeleteButton';
+import BulkDeleteButton from '../button/BulkDeleteButton';
 import BulkActionsToolbar from './BulkActionsToolbar';
 import DefaultActions from './ListActions';
 import defaultTheme from '../defaultTheme';
+
+const DefaultBulkActionButtons = props => <BulkDeleteButton {...props} />;
 
 export const styles = createStyles({
     root: {
@@ -146,8 +148,7 @@ export const ListView = ({
                                 bulkActions !== false &&
                                 bulkActionButtons !== false,
                         })}
-                    {pagination &&
-                        cloneElement(pagination, controllerProps)}
+                    {pagination && cloneElement(pagination, controllerProps)}
                 </div>
             </Card>
             {aside && cloneElement(aside, controllerProps)}
