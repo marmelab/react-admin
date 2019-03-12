@@ -1,4 +1,4 @@
-import React, { createElement, Component, ComponentType } from 'react';
+import React, { createElement, Component, ComponentType, SFC } from 'react';
 import PropTypes from 'prop-types';
 import { Provider } from 'react-redux';
 import { History } from 'history';
@@ -17,6 +17,7 @@ import {
     TitleComponent,
     LoginComponent,
     LayoutComponent,
+    LayoutProps,
     AdminChildren,
     CatchAllComponent,
     CustomRoutes,
@@ -24,6 +25,8 @@ import {
 } from './types';
 
 export type ChildrenFunction = () => ComponentType[];
+
+const DefaultLayout: SFC<LayoutProps> = ({ children }) => <>{children}</>;
 
 export interface AdminProps {
     appLayout: LayoutComponent;
@@ -58,6 +61,7 @@ class CoreAdminBase extends Component<AdminProps> {
 
     static defaultProps: Partial<AdminProps> = {
         catchAll: () => null,
+        appLayout: DefaultLayout,
         loading: () => null,
         loginPage: false,
     };

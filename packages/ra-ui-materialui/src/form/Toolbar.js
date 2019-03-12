@@ -58,6 +58,7 @@ const Toolbar = ({
     resource,
     saving,
     submitOnEnter,
+    undoable,
     width,
     ...rest
 }) => (
@@ -88,6 +89,7 @@ const Toolbar = ({
                             basePath={basePath}
                             record={record}
                             resource={resource}
+                            undoable={undoable}
                         />
                     )}
                 </div>
@@ -106,10 +108,16 @@ const Toolbar = ({
                               ),
                               invalid,
                               pristine,
+                              record,
+                              resource,
                               saving,
                               submitOnEnter: valueOrDefault(
                                   button.props.submitOnEnter,
                                   submitOnEnter
+                              ),
+                              undoable: valueOrDefault(
+                                  button.props.undoable,
+                                  undoable
                               ),
                           })
                         : null
@@ -138,6 +146,7 @@ Toolbar.propTypes = {
     resource: PropTypes.string,
     saving: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
     submitOnEnter: PropTypes.bool,
+    undoable: PropTypes.bool,
     width: PropTypes.string,
 };
 

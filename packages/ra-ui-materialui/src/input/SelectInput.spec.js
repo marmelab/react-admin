@@ -94,6 +94,26 @@ describe('<SelectInput />', () => {
         assert.equal(MenuItemElement1.children().length, 0);
     });
 
+    it('should add an empty menu with custom value when allowEmpty is true', () => {
+        const emptyValue = 'test';
+        const wrapper = shallow(
+            <SelectInput
+                allowEmpty
+                emptyValue={emptyValue}
+                {...defaultProps}
+                choices={[
+                    { id: 'M', name: 'Male' },
+                    { id: 'F', name: 'Female' },
+                ]}
+            />
+        );
+        const MenuItemElements = wrapper.find('WithStyles(MenuItem)');
+        assert.equal(MenuItemElements.length, 3);
+        const MenuItemElement1 = MenuItemElements.first();
+        assert.equal(MenuItemElement1.prop('value'), emptyValue);
+        assert.equal(MenuItemElement1.children().length, 0);
+    });
+
     it('should not add a falsy (null or false) element when allowEmpty is false', () => {
         const wrapper = shallow(
             <SelectInput

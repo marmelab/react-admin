@@ -85,6 +85,17 @@ export class SimpleFormIterator extends Component {
         fields.remove(index);
     };
 
+    // Returns a boolean to indicate whether to disable the remove button for certain fields.
+    // If disableRemove is a function, then call the function with the current record to
+    // determing if the button should be disabled. Otherwise, use a boolean property that
+    // enables or disables the button for all of the fields.
+    disableRemoveField = (record, disableRemove) => {
+        if (typeof disableRemove === "boolean") {
+            return disableRemove;
+        }
+        return disableRemove && disableRemove(record);
+    }
+
     addField = () => {
         const { fields } = this.props;
         this.ids.push(this.nextId++);
@@ -152,7 +163,7 @@ export class SimpleFormIterator extends Component {
                                         />
                                     ) : null)}
                                 </section>
-                                {!disableRemove && (
+                                {!(this.disableRemoveField((records && records[index]) || {}, disableRemove)) && (
                                     <span className={classes.action}>
                                         <Button
                                             className={classNames(
@@ -213,7 +224,7 @@ SimpleFormIterator.propTypes = {
     resource: PropTypes.string,
     translate: PropTypes.func,
     disableAdd: PropTypes.bool,
-    disableRemove: PropTypes.bool,
+    disableRemove: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
 };
 
 export default compose(

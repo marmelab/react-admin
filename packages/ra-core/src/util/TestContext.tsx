@@ -31,20 +31,20 @@ interface Props {
  * @example
  * // in an enzyme test
  * const wrapper = render(
- *     <AdminContext store={{ admin: { resources: { post: { data: { 1: {id: 1, title: 'foo' } } } } } }}>
+ *     <TestContext store={{ admin: { resources: { post: { data: { 1: {id: 1, title: 'foo' } } } } } }}>
  *         <Show {...defaultShowProps} />
- *     </AdminContext>
+ *     </TestContext>
  * );
  *
  * @example
  * // in an enzyme test, using jest.
  * const wrapper = render(
- *     <AdminContext store={{ admin: { resources: { post: { data: { 1: {id: 1, title: 'foo' } } } } } }}>
+ *     <TestContext store={{ admin: { resources: { post: { data: { 1: {id: 1, title: 'foo' } } } } } }}>
  *         {({ store }) => {
  *              dispatchSpy = jest.spyOn(store, 'dispatch');
  *              return <Show {...defaultShowProps} />
  *         }}
- *     </AdminContext>
+ *     </TestContext>
  * );
  */
 const TestContext: SFC<Props> = ({

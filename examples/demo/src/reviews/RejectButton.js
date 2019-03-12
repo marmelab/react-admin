@@ -8,6 +8,9 @@ import { translate } from 'react-admin';
 import compose from 'recompose/compose';
 import { reviewReject as reviewRejectAction } from './reviewActions';
 
+/**
+ * This custom button demonstrate using a custom action to update data
+ */
 class AcceptButton extends Component {
     handleApprove = () => {
         const { reviewReject, record, comment } = this.props;

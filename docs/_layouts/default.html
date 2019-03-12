@@ -709,30 +709,42 @@
 
                     <li class="chapter {% if page.path == 'Actions.md' %}active{% endif %}">
                         <a href="./Actions.html">
-                            <b>14.</b> Writing Actions
+                            <b>14.</b> Querying the API
                         </a>
                         <ul class="articles" {% if page.path !='Actions.md' %}style="display:none" {% endif %}>
                             <li class="chapter">
-                                <a href="#the-simple-way">The Simple Way</a>
+                                <a href="#the-basic-way-using-fetch">The Basic Way: Using <code>fetch</code></a>
                             </li>
                             <li class="chapter">
-                                <a href="#using-a-data-provider-instead-of-fetch">Using a Data Provider</a>
+                                <a href="#using-the-data-provider-instead-of-fetch">Using the <code>dataProvider</code></a>
                             </li>
                             <li class="chapter">
-                                <a href="#using-a-custom-action-creator">Using a Custom Action Creator</a>
+                                <a href="#using-the-withdataprovider-decorator">Using <code>withDataProvider</code></a>
                             </li>
                             <li class="chapter">
                                 <a href="#handling-side-effects">Handling Side Effects</a>
                             </li>
                             <li class="chapter">
-                                <a href="#success-and-failure-side-effects">Success and Failure Side Effects</a>
+                                <a href="#optimistic-rendering-and-undo">Optimistic Rendering and Undo</a>
                             </li>
                             <li class="chapter">
-                                <a href="#optimistic-rendering-and-undo">Optimistic Rendering and Undo</a>
+                                <a href="#query-and-mutation-components"><code>&lt;Query&gt;</code> and <code>&lt;Mutation&gt;</code></a>
+                            </li>    
+                            <li class="chapter">
+                                <a href="#using-a-custom-action-creator">Using a Custom Action Creator</a>
+                            </li>
+                            <li class="chapter">
+                                <a href="#adding-side-effects-to-actions">Adding Side Effects to Actions</a>
+                            </li>
+                            <li class="chapter">
+                                <a href="#making-an-action-undoable">Undoable Action</a>
                             </li>
                             <li class="chapter">
                                 <a href="#altering-the-form-values-before-submitting">Altering the Form Values before
                                     Submitting</a>
+                            </li>
+                            <li class="chapter">
+                                <a href="#custom-side-effects">Custom Side Effects</a>
                             </li>
                             <li class="chapter">
                                 <a href="#custom-sagas">Custom Sagas</a>

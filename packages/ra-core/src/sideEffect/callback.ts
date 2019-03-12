@@ -3,6 +3,7 @@ import { call, takeEvery } from 'redux-saga/effects';
 export type CallbackSideEffect = (args: {
     payload: any;
     requestPayload?: any;
+    error?: string | { message: string };
 }) => any;
 
 interface ActionWithSideEffect {
@@ -21,9 +22,10 @@ interface ActionWithSideEffect {
 function* handleCallback({
     payload,
     requestPayload,
+    error,
     meta: { callback },
 }: ActionWithSideEffect) {
-    yield call(callback, { payload, requestPayload });
+    yield call(callback, { payload, requestPayload, error });
 }
 
 export default function*() {

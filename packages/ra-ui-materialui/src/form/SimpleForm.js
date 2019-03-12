@@ -44,6 +44,7 @@ const sanitizeRestProps = ({
     touch,
     translate,
     triggerSubmit,
+    undoable,
     untouch,
     valid,
     validate,
@@ -67,6 +68,7 @@ export class SimpleForm extends Component {
             saving,
             submitOnEnter,
             toolbar,
+            undoable,
             version,
             ...rest
         } = this.props;
@@ -98,6 +100,7 @@ export class SimpleForm extends Component {
                         resource,
                         saving,
                         submitOnEnter,
+                        undoable,
                     })}
             </form>
         );
@@ -123,6 +126,7 @@ SimpleForm.propTypes = {
     saving: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
     submitOnEnter: PropTypes.bool,
     toolbar: PropTypes.element,
+    undoable: PropTypes.bool,
     validate: PropTypes.func,
     version: PropTypes.number,
 };
