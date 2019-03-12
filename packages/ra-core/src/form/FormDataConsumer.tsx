@@ -15,9 +15,9 @@ interface ChildrenFunctionParams {
 
 interface ConnectedProps {
     children: (params: ChildrenFunctionParams) => ReactNode;
-    form: string;
+    form?: string;
     record?: any;
-    source: string;
+    source?: string;
     [key: string]: any;
 }
 

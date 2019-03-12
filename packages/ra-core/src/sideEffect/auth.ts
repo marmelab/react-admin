@@ -1,4 +1,11 @@
-import { all, put, call, select, takeEvery } from 'redux-saga/effects';
+import {
+    all,
+    put,
+    call,
+    select,
+    takeLatest,
+    takeEvery,
+} from 'redux-saga/effects';
 import { push, replace } from 'react-router-redux';
 
 import { AuthProvider } from '../types';
@@ -111,7 +118,7 @@ export default (authProvider?: AuthProvider) => {
     return function* watchAuthActions() {
         yield all([
             takeEvery(action => action.meta && action.meta.auth, handleAuth),
-            takeEvery(FETCH_ERROR, handleAuth),
+            takeLatest(FETCH_ERROR, handleAuth),
         ]);
     };
 };

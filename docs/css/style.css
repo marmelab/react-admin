@@ -509,6 +509,28 @@
         width: 100%
     }
 }
+.search input[type='text'] {
+    font: inherit;
+    width: 100%;
+    color: inherit;
+    border: none;
+    margin: 10px;
+    cursor: inherit;
+    resize: none;
+    height: 38px;
+    outline: none;
+    padding: 0 8px 0 0;
+    background: transparent;
+    text-align: inherit;
+    box-sizing: border-box;
+    line-height: inherit;
+    border-radius: 3px;
+    font-size: 16px;
+}
+.search .octicon {
+    margin: 10px 0 10px 20px;
+    font-size: 16px;
+}
 .book .book-header .font-settings .font-enlarge {
   line-height: 30px;
   font-size: 1.4em;

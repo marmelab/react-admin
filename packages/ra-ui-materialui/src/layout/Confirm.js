@@ -6,7 +6,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, createStyles } from '@material-ui/core/styles';
 import { fade } from '@material-ui/core/styles/colorManipulator';
 import ActionCheck from '@material-ui/icons/CheckCircle';
 import AlertError from '@material-ui/icons/ErrorOutline';
@@ -14,7 +14,7 @@ import classnames from 'classnames';
 import compose from 'recompose/compose';
 import { translate } from 'ra-core';
 
-const styles = theme => ({
+const styles = theme => createStyles({
     contentText: {
         minWidth: 400,
     },

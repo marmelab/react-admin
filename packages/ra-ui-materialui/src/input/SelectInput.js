@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import MenuItem from '@material-ui/core/MenuItem';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, createStyles } from '@material-ui/core/styles';
 import compose from 'recompose/compose';
 import { addField, translate, FieldTitle } from 'ra-core';
 import ResettableTextField from './ResettableTextField';
@@ -48,7 +48,7 @@ const sanitizeRestProps = ({
     ...rest
 }) => rest;
 
-const styles = theme => ({
+const styles = theme => createStyles({
     input: {
         minWidth: theme.spacing.unit * 20,
     },

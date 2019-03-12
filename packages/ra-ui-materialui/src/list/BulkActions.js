@@ -1,9 +1,9 @@
-import React, { cloneElement, Children, Component } from 'react';
+import React, { cloneElement, Children, Component, isValidElement } from 'react';
 import PropTypes from 'prop-types';
 import { CSSTransition } from 'react-transition-group';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, createStyles } from '@material-ui/core/styles';
 import FilterNoneIcon from '@material-ui/icons/FilterNone';
 import compose from 'recompose/compose';
 import classnames from 'classnames';
@@ -12,7 +12,7 @@ import { translate } from 'ra-core';
 import Button from '../button/Button';
 import BulkDeleteAction from './BulkDeleteAction';
 
-const styles = theme => ({
+const styles = theme => createStyles({
     bulkActionsButton: {
         opacity: 1,
         transition: theme.transitions.create('opacity', {
@@ -134,7 +134,7 @@ class BulkActions extends Component {
                         onClose={this.handleClose}
                         open={isOpen}
                     >
-                        {Children.map(children, (child, index) => (
+                        {Children.map(children, (child, index) => isValidElement(child) ? (
                             <MenuItem
                                 key={index}
                                 className={classnames(
@@ -146,19 +146,20 @@ class BulkActions extends Component {
                             >
                                 {translate(child.props.label)}
                             </MenuItem>
-                        ))}
+                        ) : null)}
                     </Menu>
                     {Children.map(
                         children,
                         (child, index) =>
-                            this.state.activeAction === index &&
+                            isValidElement(child) &&
+                            this.state.activeAction === index ?
                             cloneElement(child, {
                                 basePath,
                                 filterValues,
                                 onExit: this.handleExitAction,
                                 resource,
                                 selectedIds,
-                            })
+                            }) : null
                     )}
                 </div>
             </CSSTransition>

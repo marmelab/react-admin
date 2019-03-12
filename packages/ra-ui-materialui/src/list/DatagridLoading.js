@@ -8,13 +8,13 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import IconButton from '@material-ui/core/IconButton';
 import Checkbox from '@material-ui/core/Checkbox';
 import classnames from 'classnames';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, createStyles } from '@material-ui/core/styles';
 
 const RawPlaceholder = ({ classes }) => (
     <div className={classes.root}>&nbsp;</div>
 );
 
-const styles = theme => ({
+const styles = theme => createStyles({
     root: {
         backgroundColor: theme.palette.grey[300],
         display: 'flex',

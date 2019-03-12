@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import MenuItem from '@material-ui/core/MenuItem';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, createStyles } from '@material-ui/core/styles';
 import ExitIcon from '@material-ui/icons/PowerSettingsNew';
 import classnames from 'classnames';
 import { translate, userLogout as userLogoutAction } from 'ra-core';
 
-const styles = theme => ({
+const styles = theme => createStyles({
     menuItem: {
         color: theme.palette.text.secondary,
     },

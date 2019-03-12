@@ -7,5 +7,5 @@ export interface InferredType {
 }
 
 export interface InferredTypeMap {
-    [key: string]: InferredType;
+    [key: string]: InferredType | undefined;
 }

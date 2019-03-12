@@ -1,5 +1,21 @@
 # Changelog
 
+## v2.7.3
+
+* Fix demo installation documentation ([2958](https://github.com/marmelab/react-admin/pull/2958)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix outdated `<FlatButton>` mention in Actions documentation ([2956](https://github.com/marmelab/react-admin/pull/2956)) ([mvanmeerbeck](https://github.com/mvanmeerbeck))
+* Fix outdated `<Menu>` component signature in Authorization documentation ([2948](https://github.com/marmelab/react-admin/pull/2948)) ([NikitaVlaznev](https://github.com/NikitaVlaznev))
+* Fix button color prop example in the List documentation ([2946](https://github.com/marmelab/react-admin/pull/2946)) ([developerium](https://github.com/developerium))
+* Fix build minification failing due to typo in `ra-language-french` ([2944](https://github.com/marmelab/react-admin/pull/2944)) ([vdieulesaint](https://github.com/vdieulesaint))
+* Fix `<MenuItemLink>` propTypes and documentation ([2932](https://github.com/marmelab/react-admin/pull/2932)) ([djhi](https://github.com/djhi))
+* Fix autocomplete height on `<AutocompleteArrayInput>` ([2914](https://github.com/marmelab/react-admin/pull/2914)) ([tiagoschenkel](https://github.com/tiagoschenkel))
+* Fix `<RichTextInput>` does not update when content is changed outside the editor ([2930](https://github.com/marmelab/react-admin/pull/2930)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix missing export and documentation for `<TabbedShowLayoutTabs>` ([2929](https://github.com/marmelab/react-admin/pull/2929)) ([lucas2595](https://github.com/lucas2595))
+* Fix position of suggestions container on `<AutocompleteInput>` ([2928](https://github.com/marmelab/react-admin/pull/2928)) ([tiagoschenkel](https://github.com/tiagoschenkel))
+* Fix warning about missing translation for empty key ([2922](https://github.com/marmelab/react-admin/pull/2922)) ([Luwangel](https://github.com/Luwangel))
+* Migrate Core Components to TypeScript ([2924](https://github.com/marmelab/react-admin/pull/2924)) ([djhi](https://github.com/djhi))
+* Update dependencies in CodeSandbox ([2950](https://github.com/marmelab/react-admin/pull/2950)) ([Kmaschta](https://github.com/Kmaschta))
+
 ## v2.7.2
 
 * Fix JSONPlaceHolder name typo in Tutorial ([2906](https://github.com/marmelab/react-admin/pull/2906)) ([noobling](https://github.com/noobling))

@@ -4,19 +4,19 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, createStyles } from '@material-ui/core/styles';
 import ContentSave from '@material-ui/icons/Save';
 import classnames from 'classnames';
 import { showNotification, translate } from 'ra-core';
 
-const styles = {
+const styles = createStyles({
     button: {
         position: 'relative',
     },
     iconPaddingStyle: {
         marginRight: '0.5em',
     },
-};
+});
 
 const sanitizeRestProps = ({
     basePath,

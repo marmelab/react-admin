@@ -1,4 +1,4 @@
-import React, { Fragment, cloneElement } from 'react';
+import React, { Fragment, cloneElement, Children } from 'react';
 import PropTypes from 'prop-types';
 import { ReferenceManyFieldController } from 'ra-core';
 
@@ -20,7 +20,7 @@ export const ReferenceManyFieldView = ({
     total,
 }) => (
     <Fragment>
-        {cloneElement(children, {
+        {cloneElement(Children.only(children), {
             className,
             resource: reference,
             ids,

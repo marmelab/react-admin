@@ -1,16 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Toolbar from '@material-ui/core/Toolbar';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, createStyles } from '@material-ui/core/styles';
 
-const styles = {
+const styles = createStyles({
     toolbar: {
         justifyContent: 'space-between',
     },
-};
+});
 
 const ListToolbar = ({
-    classes = {},
+    classes,
     filters,
     actions,
     bulkActions,
@@ -41,6 +41,10 @@ ListToolbar.propTypes = {
     actions: PropTypes.element,
     bulkActions: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
     exporter: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
+};
+
+ListToolbar.defaultProps = {
+    classes: {},
 };
 
 export default withStyles(styles)(ListToolbar);

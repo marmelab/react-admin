@@ -26,7 +26,7 @@ Here is an implementation of the "Approve" button using the browser `fetch()` fu
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import FlatButton from '@material-ui/core/FlatButton';
+import Button from '@material-ui/core/Button';
 import { showNotification } from 'react-admin';
 import { push } from 'react-router-redux';
 
@@ -45,7 +45,7 @@ class ApproveButton extends Component {
     }
 
     render() {
-        return <FlatButton label="Approve" onClick={this.handleClick} />;
+        return <Button label="Approve" onClick={this.handleClick} />;
     }
 }
 
@@ -148,7 +148,7 @@ class ApproveButton extends Component {
     }
 
     render() {
-        return <FlatButton label="Approve" onClick={this.handleClick} />;
+        return <Button label="Approve" onClick={this.handleClick} />;
     }
 }
 ```
@@ -212,7 +212,7 @@ class ApproveButton extends Component {
     }
 
     render() {
-        return <FlatButton label="Approve" onClick={this.handleClick} />;
+        return <Button label="Approve" onClick={this.handleClick} />;
     }
 }
 

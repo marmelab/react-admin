@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
 import BulkDeleteWithConfirmButton from './BulkDeleteWithConfirmButton';
 import BulkDeleteWithUndoButton from './BulkDeleteWithUndoButton';
 import Button from './Button';

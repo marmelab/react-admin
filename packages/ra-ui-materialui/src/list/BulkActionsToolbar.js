@@ -3,13 +3,13 @@ import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, createStyles } from '@material-ui/core/styles';
 import { lighten } from '@material-ui/core/styles/colorManipulator';
 import { translate, sanitizeListRestProps } from 'ra-core';
 
 import CardActions from '../layout/CardActions';
 
-const styles = theme => ({
+const styles = theme => createStyles({
     toolbar: {
         position: 'absolute',
         top: 0,
@@ -74,7 +74,7 @@ const BulkActionsToolbar = ({
             </div>
             <CardActions>
                 {Children.map(children, child =>
-                    cloneElement(child, {
+                    cloneElement(Children.only(child), {
                         basePath,
                         filterValues,
                         resource,

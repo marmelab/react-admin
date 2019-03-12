@@ -10,7 +10,7 @@ import AppBarMobile from './AppBarMobile';
 /**
  * @deprecated
  */
-const ViewTitle = ({ className, title, ...rest }) => {
+const ViewTitle = ({ className = undefined, title, ...rest }) => {
     if (process.env.NODE_ENV !== 'production') {
         // eslint-disable-next-line no-console
         console.warn('<ViewTitle> is deprecated, please use <Title> instead');

@@ -18,7 +18,7 @@ about: Something isn't working as expected. Please tell us!
 **Related code:**
 <!-- If you are able to illustrate the bug or feature request with an example, please provide a sample application via one of the following means:
 
-* CodeSandbox (https://codesandbox.io/s/n5q09v99xl)
+* CodeSandbox (https://codesandbox.io/s/349ovjmlx5)
 * A sample application via GitHub
 -->
 
