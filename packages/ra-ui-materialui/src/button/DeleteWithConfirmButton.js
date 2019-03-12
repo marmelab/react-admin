@@ -56,8 +56,7 @@ class DeleteWithConfirmButton extends Component {
         this.setState({ isOpen: false });
     };
 
-    handleDelete = event => {
-        event.stopPropagation();
+    handleDelete = () => {
         const { crudDelete, resource, record, basePath, redirect } = this.props;
         crudDelete(resource, record.id, record, basePath, redirect);
     };
