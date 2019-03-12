@@ -222,7 +222,18 @@ export class CoreAdminRouter extends Component<
                                     dashboard={dashboard}
                                     title={title}
                                 >
-                                    {childrenToRender}
+                                    {Children.map(
+                                        childrenToRender,
+                                        (
+                                            child: React.ReactElement<
+                                                ResourceProps
+                                            >
+                                        ) =>
+                                            cloneElement(child, {
+                                                key: child.props.name,
+                                                context: 'route',
+                                            })
+                                    )}
                                 </RoutesWithLayout>
                             )
                         }
