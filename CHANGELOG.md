@@ -1,5 +1,22 @@
 # Changelog
 
+## v2.8.0
+
+* Add `withDataProvider` HOC and `<Query>`/`<Mutation>` components to ease custom queries ([2899](https://github.com/marmelab/react-admin/pull/2899)) ([ThieryMichel](https://github.com/ThieryMichel))
+* Add confirmation dialog to non-undoable delete buttons ([2955](https://github.com/marmelab/react-admin/pull/2955)) ([fzaninotto](https://github.com/fzaninotto))
+* Add an optional `emptyValue` to `<SelectInput>` ([2780](https://github.com/marmelab/react-admin/pull/2780)) ([edy](https://github.com/edy))
+* Add ability to pass `disableRemove` prop to `<SimpleFormIterator>` ([2850](https://github.com/marmelab/react-admin/pull/2850)) ([travisMichael](https://github.com/travisMichael))
+* Add 6 new data providers to the ecosystem documentation ([2959](https://github.com/marmelab/react-admin/pull/2959)) ([fzaninotto](https://github.com/fzaninotto))
+* Add search engine to documentation (powered by Qwant) ([2972](https://github.com/marmelab/react-admin/pull/2972)) ([fzaninotto](https://github.com/fzaninotto))
+* Add arabic translation ([2987](https://github.com/marmelab/react-admin/pull/2987)) ([developerium](https://github.com/developerium))
+* Migrate first ra-ui-materialui components to TypeScript ([2982](https://github.com/marmelab/react-admin/pull/2982)) ([djhi](https://github.com/djhi))
+* Fix TypeScript false positives ([2979](https://github.com/marmelab/react-admin/pull/2979)) ([djhi](https://github.com/djhi))
+* Fix typo in Tutorial ([2986](https://github.com/marmelab/react-admin/pull/2986)) ([KayO](https://github.com/KayO))-GH
+* Fix `FormDataConsumer` TypeScript signature to prevent false positives on required props ([2974](https://github.com/marmelab/react-admin/pull/2974)) ([joehillen](https://github.com/joehillen))
+* Fix typo in `<TranslationProvider>` JSDoc ([2973](https://github.com/marmelab/react-admin/pull/2973)) ([ruiyangliu](https://github.com/ruiyangliu))
+* Fix IE11 layout problem ([2969](https://github.com/marmelab/react-admin/pull/2969)) ([batbyR](https://github.com/batbyR))
+* Fix multiple redirect events on auth error ([2960](https://github.com/marmelab/react-admin/pull/2960)) ([fxzhukov](https://github.com/fxzhukov))
+
 ## v2.7.3
 
 * Fix demo installation documentation ([2958](https://github.com/marmelab/react-admin/pull/2958)) ([fzaninotto](https://github.com/fzaninotto))
