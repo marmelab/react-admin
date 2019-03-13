@@ -1,6 +1,11 @@
 # Changelog
 
-## v2.8.0
+## v2.8.1
+
+* Fix `<DeleteWithConfirmButton>` ([2989](https://github.com/marmelab/react-admin/pull/2989)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix Typescript Import Errors ([2988](https://github.com/marmelab/react-admin/pull/2988)) ([fzaninotto](https://github.com/fzaninotto))
+
+# v2.8.0
 
 * Add `withDataProvider` HOC and `<Query>`/`<Mutation>` components to ease custom queries ([2899](https://github.com/marmelab/react-admin/pull/2899)) ([ThieryMichel](https://github.com/ThieryMichel))
 * Add confirmation dialog to non-undoable delete buttons ([2955](https://github.com/marmelab/react-admin/pull/2955)) ([fzaninotto](https://github.com/fzaninotto))
