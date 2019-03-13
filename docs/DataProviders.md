@@ -42,7 +42,7 @@ The react-admin project includes 4 Data Providers:
 
 You can find Data Providers for various backends in third-party repositories:
 
-* **[Django Rest Framework](https://www.django-rest-framework.org/)**: [ra-data-drf](https://www.npmjs.com/package/ra-data-drf)
+* **[Django Rest Framework](https://www.django-rest-framework.org/)**: [synaptic-cl/ra-data-drf](https://github.com/synaptic-cl/ra-data-drf)
 * **[Feathersjs](http://www.feathersjs.com/)**: [josx/ra-data-feathers](https://github.com/josx/ra-data-feathers)
 * **[Firebase](https://firebase.google.com/docs/database)**: [aymendhaya/ra-data-firebase-client](https://github.com/aymendhaya/ra-data-firebase-client).
 * **[Firestore](https://firebase.google.com/docs/firestore)**: [rafalzawadzki/ra-data-firestore-client](https://github.com/rafalzawadzki/ra-data-firestore-client).
