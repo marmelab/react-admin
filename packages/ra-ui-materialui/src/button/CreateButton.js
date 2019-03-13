@@ -12,21 +12,22 @@ import { translate } from 'ra-core';
 import Button from './Button';
 import Responsive from '../layout/Responsive';
 
-const styles = theme => createStyles({
-    floating: {
-        color: theme.palette.getContrastText(theme.palette.primary.main),
-        margin: 0,
-        top: 'auto',
-        right: 20,
-        bottom: 60,
-        left: 'auto',
-        position: 'fixed',
-        zIndex: 1000,
-    },
-    floatingLink: {
-        color: 'inherit',
-    },
-});
+const styles = theme =>
+    createStyles({
+        floating: {
+            color: theme.palette.getContrastText(theme.palette.primary.main),
+            margin: 0,
+            top: 'auto',
+            right: 20,
+            bottom: 60,
+            left: 'auto',
+            position: 'fixed',
+            zIndex: 1000,
+        },
+        floatingLink: {
+            color: 'inherit',
+        },
+    });
 
 const CreateButton = ({
     basePath = '',
@@ -56,7 +57,7 @@ const CreateButton = ({
                 component={Link}
                 to={`${basePath}/create`}
                 className={className}
-                label={label && translate(label)}
+                label={label}
                 {...rest}
             >
                 {icon}
