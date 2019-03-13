@@ -8,7 +8,7 @@
         "data-generator": "^2.4.0",
         "fakerest": "~2.1.0",
         "fetch-mock": "~6.3.0",
-        "json-graphql-server": "~2.1.1",
+        "json-graphql-server": "~2.1.3",
         "ra-data-fakerest": "^2.0.0",
         "ra-data-graphql-simple": "^2.0.0",
         "ra-data-simple-rest": "^2.0.0",

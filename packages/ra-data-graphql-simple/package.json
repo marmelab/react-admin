@@ -33,7 +33,7 @@
     },
     "dependencies": {
         "graphql-ast-types-browser": "~1.0.2",
-        "graphql-tag": "^2.6.1",
+        "graphql-tag": "^2.10.1",
         "lodash": "~4.17.5",
         "pluralize": "~7.0.0",
         "ra-data-graphql": "^2.6.0"
@@ -44,7 +44,7 @@
     },
     "devDependencies": {
         "cross-env": "^5.2.0",
-        "graphql": "^0.13.2",
+        "graphql": "^14.1.1",
         "rimraf": "^2.6.2"
     }
 }
