@@ -7,6 +7,10 @@
 
 # v2.8.0
 
+✨✨✨ React-admin has reached 7,000 stars on GitHub! Thank you all for your support; ✨✨✨
+
+For highlights about this version, read [the react-admin 2.8 announcement blog post](https://marmelab.com/blog/2019/03/15/react-admin-2-8.html) on the Marmelab blog.
+
 * Add `withDataProvider` HOC and `<Query>`/`<Mutation>` components to ease custom queries ([2899](https://github.com/marmelab/react-admin/pull/2899)) ([ThieryMichel](https://github.com/ThieryMichel))
 * Add confirmation dialog to non-undoable delete buttons ([2955](https://github.com/marmelab/react-admin/pull/2955)) ([fzaninotto](https://github.com/fzaninotto))
 * Add an optional `emptyValue` to `<SelectInput>` ([2780](https://github.com/marmelab/react-admin/pull/2780)) ([edy](https://github.com/edy))
@@ -134,6 +138,8 @@
 * Update italian translation url ([2725] (https://github.com/marmelab/react-admin/pull/2725)) ([stefsava](https://github.com/stefsava))
 
 # v2.6.0
+
+For highlights about this version, read [the react-admin 2.6 announcement blog post](https://marmelab.com/blog/2019/01/09/react-admin-2-6.html) on the Marmelab blog.
 
 * Add skeleton to `<Datagrid>` when loading the data for the first time ([2706](https://github.com/marmelab/react-admin/pull/2706)) ([fzaninotto](https://github.com/fzaninotto))
 * Add ability to attach an expansion panel to a `<Datagrid>` row ([2634](https://github.com/marmelab/react-admin/pull/2634)) ([fzaninotto](https://github.com/fzaninotto))
