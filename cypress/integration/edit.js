@@ -90,6 +90,15 @@ describe('Edit Page', () => {
         // Ensure it does not reappear a little after
         cy.wait(500);
         cy.get('[role="tooltip"]').should(el => expect(el).to.not.exist);
+
+        // Ensure they still appear when needed though
+        cy.get(EditPostPage.elements.input('post_id')).clear().type('architecto aut');
+        cy.get('[role="tooltip"]').within(() => {
+            cy.contains('Sed quo et et fugiat modi');
+            cy.contains('Sint dignissimos in architecto aut');
+            cy.contains('A voluptas eius eveniet ut commodi dolor');
+        });
+
     });
 
     it('should reset the form correctly when switching from edit to create', () => {
