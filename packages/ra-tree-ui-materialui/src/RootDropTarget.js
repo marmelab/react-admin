@@ -79,7 +79,7 @@ const dropTargetSpecs = {
     },
     canDrop(props, monitor) {
         const item = monitor.getItem();
-        return item.parent;
+        return !!item.parent;
     },
 };
 
