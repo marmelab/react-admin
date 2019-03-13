@@ -102,6 +102,7 @@ export class AutocompleteInput extends React.Component {
         suggestions: [],
     };
 
+    ignoreNextChoicesUpdate = false;
     inputEl = null;
     anchorEl = null;
 
@@ -136,9 +137,15 @@ export class AutocompleteInput extends React.Component {
                         : this.props.choices,
                 prevSuggestions: false,
             });
+            // Avoid displaying the suggestions again when one just has been selected
+            this.ignoreNextChoicesUpdate = true;
             // Ensure to reset the filter
             this.updateFilter('');
         } else if (!isEqual(choices, this.props.choices)) {
+            if (this.ignoreNextChoicesUpdate) {
+                this.ignoreNextChoicesUpdate = false;
+                return;
+            }
             const selectedItem = this.getSelectedItem(
                 nextProps,
                 this.state.inputValue
