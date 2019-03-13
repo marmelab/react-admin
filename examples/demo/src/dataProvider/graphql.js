@@ -18,6 +18,9 @@ export default () => {
             case 'reviews':
                 return 'Review';
 
+            case 'invoices':
+                return 'Invoice';
+
             default:
                 throw new Error(`Unknown resource ${resource}`);
         }
