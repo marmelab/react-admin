@@ -6,6 +6,9 @@ import { Link } from 'react-router-dom';
 
 import Button from './Button';
 
+// useful to prevent click bubbling in a datagrid with rowClick
+const stopPropagation = e => e.stopPropagation();
+
 const omitId = ({ id, ...rest }) => rest;
 
 const sanitizeRestProps = ({
@@ -33,6 +36,7 @@ export const CloneButton = ({
             state: { record: omitId(record) },
         }}
         label={label}
+        onClick={stopPropagation}
         {...sanitizeRestProps(rest)}
     >
         {icon}
