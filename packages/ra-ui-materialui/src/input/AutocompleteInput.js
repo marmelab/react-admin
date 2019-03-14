@@ -180,7 +180,7 @@ export class AutocompleteInput extends React.Component {
         const suggestionLabel =
             typeof optionText === 'function'
                 ? optionText(suggestion)
-                : get(suggestion, optionText);
+                : get(suggestion, optionText, '');
 
         // We explicitly call toString here because AutoSuggest expect a string
         return translateChoice
