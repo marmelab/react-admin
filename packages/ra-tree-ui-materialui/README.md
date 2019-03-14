@@ -49,12 +49,13 @@ import tags from './tags';
 const messages = {
     'en': mergeTranslations(englishMessages, treeEnglishMessages),
 };
+const i18nProvider = locale => messages[locale];
 
 const App = () => (
     <Admin
         dataProvider={dataProvider}
+        i18nProvider={i18nProvider}
         locale="en"
-        messages={messages}
         customReducers={{ tree }}
     >
         <Resource name="posts" {...posts} />
