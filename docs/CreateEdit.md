@@ -422,6 +422,11 @@ export const PostEdit = (props) => (
 ```
 {% endraw %}
 
+To style the tabs, the `<FormTab>` component accepts two props:
+
+- `className` is passed to the tab *header*
+- `contentClassName` is passed to the tab *content*
+
 ## Default Values
 
 To define default values, you can add a `defaultValue` prop to form components (`<SimpleForm>`, `<Tabbedform>`, etc.), or add a `defaultValue` to individual input components. Let's see each of these options.
