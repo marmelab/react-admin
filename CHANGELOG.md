@@ -2,17 +2,17 @@
 
 ## v2.8.2
 
-* Fix `<CloneButton>` double redirection when used in `<Datagrid>` with `rowClick` ([3006](https://github.com/marmelab/react-admin/pull/3006)) ([akshah123](https://githib.com/akshah123))
-* Fix `<AutocompleteInput>` crashes when a choice doesn't have a string value ([3004](https://github.com/marmelab/react-admin/pull/3004)) ([developerium](https://githib.com/developerium))
-* Fix outdated i18n syntax in `ra-tree-material-ui` documentation ([3002](https://github.com/marmelab/react-admin/pull/3002)) ([fzaninotto](https://githib.com/fzaninotto))
-* Fix `ra-data-graphql-simple` handling of UPDATE mutations ([3001](https://github.com/marmelab/react-admin/pull/3001)) ([djhi](https://githib.com/djhi))
-* Fix missing mention of compulsory `buildQuery` param in `ra-data-graphql` ([2999](https://github.com/marmelab/react-admin/pull/2999)) ([fzaninotto](https://githib.com/fzaninotto))
-* Fix misleading documentation about auth failure redirection ([2997](https://github.com/marmelab/react-admin/pull/2997)) ([fzaninotto](https://githib.com/fzaninotto))
-* Fix outdated screencast in `ra-tree` documentation ([2995](https://github.com/marmelab/react-admin/pull/2995)) ([fzaninotto](https://githib.com/fzaninotto))
-* Fix warning when creating custom `<Menu>` based on source ([2994](https://github.com/marmelab/react-admin/pull/2994)) ([fzaninotto](https://githib.com/fzaninotto))
-* Fix the graphql demo ([2993](https://github.com/marmelab/react-admin/pull/2993)) ([djhi](https://githib.com/djhi))
-* Fix `<AutocompleteInput>` choices are displayed again after selection ([2992](https://github.com/marmelab/react-admin/pull/2992)) ([djhi](https://githib.com/djhi))
-* Add German translation for the tree package ([3014](https://github.com/marmelab/react-admin/pull/3014)) ([straurob](https://githib.com/straurob))
+* Fix `<CloneButton>` double redirection when used in `<Datagrid>` with `rowClick` ([3006](https://github.com/marmelab/react-admin/pull/3006)) ([akshah123](https://github.com/akshah123))
+* Fix `<AutocompleteInput>` crashes when a choice doesn't have a string value ([3004](https://github.com/marmelab/react-admin/pull/3004)) ([developerium](https://github.com/developerium))
+* Fix outdated i18n syntax in `ra-tree-material-ui` documentation ([3002](https://github.com/marmelab/react-admin/pull/3002)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `ra-data-graphql-simple` handling of UPDATE mutations ([3001](https://github.com/marmelab/react-admin/pull/3001)) ([djhi](https://github.com/djhi))
+* Fix missing mention of compulsory `buildQuery` param in `ra-data-graphql` ([2999](https://github.com/marmelab/react-admin/pull/2999)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix misleading documentation about auth failure redirection ([2997](https://github.com/marmelab/react-admin/pull/2997)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix outdated screencast in `ra-tree` documentation ([2995](https://github.com/marmelab/react-admin/pull/2995)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix warning when creating custom `<Menu>` based on source ([2994](https://github.com/marmelab/react-admin/pull/2994)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix the graphql demo ([2993](https://github.com/marmelab/react-admin/pull/2993)) ([djhi](https://github.com/djhi))
+* Fix `<AutocompleteInput>` choices are displayed again after selection ([2992](https://github.com/marmelab/react-admin/pull/2992)) ([djhi](https://github.com/djhi))
+* Add German translation for the tree package ([3014](https://github.com/marmelab/react-admin/pull/3014)) ([straurob](https://github.com/straurob))
 
 ## v2.8.1
 
