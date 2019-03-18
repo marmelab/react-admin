@@ -72,6 +72,7 @@ export class Resource extends Component<ResourceProps & ConnectedProps> {
         }
 
         const resource = {
+            exact: true,
             resource: name,
             options,
             hasList: !!list,
