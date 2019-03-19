@@ -18,7 +18,14 @@ export class RichTextInput extends Component {
         meta: PropTypes.object,
         options: PropTypes.object,
         source: PropTypes.string,
-        toolbar: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),
+        toolbar: PropTypes.oneOfType([
+            PropTypes.array,
+            PropTypes.bool,
+            PropTypes.shape({
+                container: PropTypes.array,
+                handlers: PropTypes.object,
+            }),
+        ]),
         fullWidth: PropTypes.bool,
     };
 
