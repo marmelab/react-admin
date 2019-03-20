@@ -104,79 +104,23 @@ const DefaultSuggestionComponent = React.forwardRef(
 export class AutocompleteInput extends React.Component {
     state = {
         dirty: false,
-        inputValue: null,
         searchText: '',
-        selectedItem: null,
         suggestions: [],
     };
 
     ignoreNextChoicesUpdate = false;
     inputEl = null;
 
-    componentWillMount() {
-        const selectedItem = this.getSelectedItem(
-            this.props,
-            this.props.input.value
-        );
-        this.setState({
-            selectedItem,
-            inputValue: this.props.input.value,
-            searchText: this.getSuggestionText(selectedItem),
-            suggestions:
-                this.props.limitChoicesToValue && selectedItem
-                    ? [selectedItem]
-                    : this.props.choices,
-        });
-    }
-
-    componentWillReceiveProps(nextProps) {
-        const { choices, input, limitChoicesToValue } = nextProps;
-        if (input.value !== this.state.inputValue) {
-            const selectedItem = this.getSelectedItem(nextProps, input.value);
-            this.setState({
-                selectedItem,
-                inputValue: input.value,
-                searchText: this.getSuggestionText(selectedItem),
-                dirty: false,
-                suggestions:
-                    limitChoicesToValue && selectedItem
-                        ? [selectedItem]
-                        : this.props.choices,
-                prevSuggestions: false,
-            });
-            // Avoid displaying the suggestions again when one just has been selected
-            this.ignoreNextChoicesUpdate = true;
-            // Ensure to reset the filter
-            this.updateFilter('');
-        } else if (!isEqual(choices, this.props.choices)) {
-            if (this.ignoreNextChoicesUpdate) {
-                this.ignoreNextChoicesUpdate = false;
-                return;
-            }
-            const selectedItem = this.getSelectedItem(
-                nextProps,
-                this.state.inputValue
-            );
-            this.setState(({ dirty, searchText }) => ({
-                selectedItem,
-                searchText: dirty
-                    ? searchText
-                    : this.getSuggestionText(selectedItem),
-                suggestions:
-                    limitChoicesToValue && !dirty && selectedItem
-                        ? [selectedItem]
-                        : choices,
-                prevSuggestions: false,
-            }));
+    static getDerivedStateFromProps(props, state) {
+        if (state.dirty) {
+            return {
+                ...state,
+                suggestions: props.choices,
+            };
         }
-    }
 
-    getSelectedItem = ({ choices }, inputValue) =>
-        choices && inputValue
-            ? choices.find(
-                  choice => this.getSuggestionValue(choice) === inputValue
-              )
-            : null;
+        return state;
+    }
 
     getSuggestionValue = suggestion => get(suggestion, this.props.optionValue);
 
@@ -199,6 +143,9 @@ export class AutocompleteInput extends React.Component {
         const { input } = this.props;
 
         const inputValue = this.getSuggestionValue(suggestion);
+        this.setState({
+            searchText: suggestion.name,
+        });
         if (input && input.onChange) {
             this.setState(
                 {
@@ -217,27 +164,23 @@ export class AutocompleteInput extends React.Component {
         }
     };
 
-    handleSuggestionsFetchRequested = () => {
-        this.setState(({ suggestions, prevSuggestions }) => ({
-            suggestions: prevSuggestions ? prevSuggestions : suggestions,
-        }));
+    handleSuggestionsFetchRequested = ({ value }) => {
+        this.setState({ dirty: true });
+        this.updateFilter(value);
+    };
+
+    updateFilter = value => {
+        const { setFilter } = this.props;
+        setFilter(value);
     };
 
     handleSuggestionsClearRequested = () => {
-        this.updateFilter('');
-    };
-
-    handleMatchSuggestionOrFilter = inputValue => {
-        this.setState({
-            dirty: true,
-            searchText: inputValue,
-        });
-        this.updateFilter(inputValue);
+        this.setState({ suggestions: [], dirty: false });
     };
 
     handleChange = (event, { newValue, method }) => {
         if (['type', 'click', 'escape'].includes(method)) {
-            this.handleMatchSuggestionOrFilter(newValue);
+            this.setState({ searchText: newValue, dirty: true });
         }
     };
 
@@ -383,48 +326,25 @@ export class AutocompleteInput extends React.Component {
     };
 
     handleBlur = () => {
-        const { dirty, searchText, selectedItem } = this.state;
+        const { dirty, searchText } = this.state;
         const { allowEmpty, input } = this.props;
         if (dirty) {
             if (searchText === '' && allowEmpty) {
-                input && input.onBlur && input.onBlur(null);
+                input && input.onBlur && input.onBlur('');
             } else {
-                input && input.onBlur && input.onBlur(this.state.inputValue);
+                input &&
+                    input.onBlur &&
+                    input.onBlur(this.getSuggestionText(input.value));
                 this.setState({
                     dirty: false,
-                    searchText: this.getSuggestionText(selectedItem),
-                    suggestions:
-                        this.props.limitChoicesToValue && selectedItem
-                            ? [selectedItem]
-                            : this.props.choices,
+                    searchText: input.value,
                 });
             }
         } else {
-            input && input.onBlur && input.onBlur(this.state.inputValue);
+            input &&
+                input.onBlur &&
+                input.onBlur(this.getSuggestionText(input.value));
         }
-    };
-
-    handleFocus = () => {
-        const { input } = this.props;
-        input && input.onFocus && input.onFocus();
-    };
-
-    updateFilter = value => {
-        const { setFilter, choices } = this.props;
-        if (this.previousFilterValue !== value) {
-            if (setFilter) {
-                setFilter(value);
-            } else {
-                this.setState({
-                    suggestions: choices.filter(choice =>
-                        this.getSuggestionText(choice)
-                            .toLowerCase()
-                            .includes(value.toLowerCase())
-                    ),
-                });
-            }
-        }
-        this.previousFilterValue = value;
     };
 
     shouldRenderSuggestions = val => {
@@ -452,7 +372,8 @@ export class AutocompleteInput extends React.Component {
             options,
             ...rest
         } = this.props;
-        const { suggestions, searchText } = this.state;
+        const { searchText, suggestions } = this.state;
+        console.log({ searchText });
 
         return (
             <Autosuggest
@@ -482,7 +403,7 @@ export class AutocompleteInput extends React.Component {
                     isRequired,
                     label,
                     meta,
-                    onChange: this.handleChange,
+                    onChange: this.handleChangeFilter,
                     resource,
                     source,
                     value: searchText,
