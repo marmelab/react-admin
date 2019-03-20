@@ -48,6 +48,10 @@ See the [translation](./Translation.md#available-locales) page.
 * Local JSON: [marmelab/ra-data-fakerest](https://github.com/marmelab/ra-data-fakerest)
 * Simple REST: [marmelab/ra-data-simple-rest](https://github.com/marmelab/ra-data-simple-rest).
 
+## UI
+
+- [**Bootstrap**](https://getbootstrap.com/): [bootstrap-styled/react-admin](https://bootstrap-styled.github.io/react-admin)
+
 ## Miscellaneous
 
 - [marmelab/ra-realtime](https://github.com/marmelab/react-admin/tree/master/packages/ra-realtime): enable realtime updates
