@@ -37,7 +37,6 @@ const RoutesWithLayout: SFC<Props> = ({
                 customRoutes.map((route, key) => cloneElement(route, { key }))}
             {Children.map(children, (child: React.ReactElement<any>) => (
                 <Route
-                    exact
                     key={child.props.name}
                     path={`/${child.props.name}`}
                     render={props =>
