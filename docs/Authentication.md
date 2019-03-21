@@ -303,7 +303,7 @@ const MyLogoutButton = ({ userLogout, ...rest }) => (
         }
     />
 );
-export default connect(undefined, { userLogout: userLogout() })(MyLogoutButton);
+export default connect(undefined, { userLogout })(MyLogoutButton);
 
 // in src/App.js
 import MyLoginPage from './MyLoginPage';
