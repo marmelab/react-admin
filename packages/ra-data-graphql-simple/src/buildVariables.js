@@ -23,6 +23,45 @@ const sanitizeValue = (type, value) => {
     return value;
 };
 
+const castType = (value, type) => {
+    if (type.kind !== 'SCALAR') {
+        return value;
+    }
+
+    switch (type.name) {
+        case 'Int':
+            return Number(value);
+        case 'String':
+            return String(value);
+        case 'Boolean':
+            return Boolean(value);
+        default:
+            return value;
+    }
+};
+
+const prepareParams = (params, queryType) => {
+    const result = {};
+
+    Object.keys(params).forEach(key => {
+        const param = params[key];
+        if (param instanceof Object) {
+            result[key] = prepareParams(param, queryType);
+            return;
+        }
+
+        const arg = queryType.args.find(item => item.name === key);
+        if (!arg) {
+            result[key] = param;
+            return;
+        }
+
+        result[key] = castType(param, arg.type);
+    });
+
+    return result;
+};
+
 const buildGetListVariables = introspectionResults => (
     resource,
     aorFetchType,
@@ -154,35 +193,41 @@ export default introspectionResults => (
     params,
     queryType
 ) => {
+    const preparedParams = prepareParams(params, queryType);
+
     switch (aorFetchType) {
         case GET_LIST: {
             return buildGetListVariables(introspectionResults)(
                 resource,
                 aorFetchType,
-                params,
+                preparedParams,
                 queryType
             );
         }
+
         case GET_MANY:
             return {
-                filter: { ids: params.ids },
+                filter: { ids: preparedParams.ids },
             };
+
         case GET_MANY_REFERENCE: {
-            const parts = params.target.split('.');
+            const parts = preparedParams.target.split('.');
 
             return {
-                filter: { [parts[0]]: { id: params.id } },
+                filter: { [parts[0]]: { id: preparedParams.id } },
             };
         }
+
         case GET_ONE:
             return {
-                id: params.id,
+                id: preparedParams.id,
             };
+
         case UPDATE: {
             return buildCreateUpdateVariables(introspectionResults)(
                 resource,
                 aorFetchType,
-                params,
+                preparedParams,
                 queryType
             );
         }
@@ -191,14 +236,14 @@ export default introspectionResults => (
             return buildCreateUpdateVariables(introspectionResults)(
                 resource,
                 aorFetchType,
-                params,
+                preparedParams,
                 queryType
             );
         }
 
         case DELETE:
             return {
-                id: params.id,
+                id: preparedParams.id,
             };
     }
 };
