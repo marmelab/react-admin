@@ -41,7 +41,11 @@ const prepareParams = (params, queryType, introspectionResults) => {
 
   Object.keys(params).forEach(key => {
     const param = params[key];
-    const arg = queryType.args.find(item => item.name === key);
+    let arg = null;
+
+    if (queryType && Array.isArray(queryType.args)) {
+      arg = queryType.args.find(item => item.name === key)
+    }
 
     if (param instanceof Object && !Array.isArray(param) && arg && arg.type.kind === 'INPUT_OBJECT') {
       const args = introspectionResults.types.find(i => i.kind === arg.type.kind && i.name === arg.type.name).inputFields;
