@@ -41,15 +41,20 @@ const castType = (value, type) => {
 
 const prepareParams = (params, queryType, introspectionResults) => {
     const result = {};
-  
+
     Object.keys(params).forEach(key => {
         const param = params[key];
         let arg = null;
-    
+
         if (queryType && Array.isArray(queryType.args)) {
             arg = queryType.args.find(item => item.name === key);
         }
-    
+
+        if (param instanceof File) {
+            result[key] = param;
+            return;
+        }
+
         if (
             param instanceof Object &&
             !Array.isArray(param) &&
@@ -62,20 +67,20 @@ const prepareParams = (params, queryType, introspectionResults) => {
             result[key] = prepareParams(param, { args }, introspectionResults);
             return;
         }
-    
+
         if (param instanceof Object && !Array.isArray(param)) {
             result[key] = prepareParams(param, queryType, introspectionResults);
             return;
         }
-    
+
         if (!arg) {
             result[key] = param;
             return;
         }
-    
+
         result[key] = castType(param, arg.type, introspectionResults.types);
     });
-  
+
     return result;
 };
 
