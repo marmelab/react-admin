@@ -433,7 +433,7 @@ const Foo = () => (
             ...
         </CardContent>
     </Card>
-));
+);
 
 export default Foo;
 ```
