@@ -210,7 +210,7 @@ export default introspectionResults => (
     params,
     queryType
 ) => {
-    const preparedParams = prepareParams(params, queryType);
+    const preparedParams = prepareParams(params, queryType, introspectionResults);
 
     switch (aorFetchType) {
         case GET_LIST: {
