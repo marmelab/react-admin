@@ -3,6 +3,7 @@ import React from 'react';
 import {
     TopToolbar,
     AutocompleteArrayInput,
+    AutocompleteInput,
     ArrayInput,
     BooleanInput,
     CheckboxGroupInput,
@@ -19,6 +20,7 @@ import {
     NumberInput,
     ReferenceArrayInput,
     ReferenceManyField,
+    ReferenceInput,
     SelectInput,
     SimpleFormIterator,
     TabbedForm,
@@ -65,6 +67,14 @@ const PostEdit = props => (
                 <ImageInput multiple source="pictures" accept="image/*">
                     <ImageField source="src" title="title" />
                 </ImageInput>
+                <ReferenceInput
+                    label="User"
+                    source="user_id"
+                    reference="users"
+                    allowEmpty
+                >
+                    <AutocompleteInput />
+                </ReferenceInput>
             </FormTab>
             <FormTab label="post.form.body">
                 <RichTextInput
