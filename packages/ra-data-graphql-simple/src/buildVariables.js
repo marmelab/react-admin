@@ -24,42 +24,45 @@ const sanitizeValue = (type, value) => {
 };
 
 const castType = (value, type) => {
-    if (type.kind !== 'SCALAR') {
-        return value;
-    }
-
-    switch (type.name) {
-        case 'Int':
-            return Number(value);
-        case 'String':
-            return String(value);
-        case 'Boolean':
-            return Boolean(value);
-        default:
-            return value;
-    }
+  switch (`${type.kind}:${type.name}`) {
+    case 'SCALAR:Int':
+      return Number(value);
+    case 'SCALAR:String':
+      return String(value);
+    case 'SCALAR:Boolean':
+      return Boolean(value);
+    default:
+      return value;
+  }
 };
 
-const prepareParams = (params, queryType) => {
-    const result = {};
+const prepareParams = (params, queryType, introspectionResults) => {
+  const result = {};
 
-    Object.keys(params).forEach(key => {
-        const param = params[key];
-        if (param instanceof Object) {
-            result[key] = prepareParams(param, queryType);
-            return;
-        }
+  Object.keys(params).forEach(key => {
+    const param = params[key];
+    const arg = queryType.args.find(item => item.name === key);
 
-        const arg = queryType.args.find(item => item.name === key);
-        if (!arg) {
-            result[key] = param;
-            return;
-        }
+    if (param instanceof Object && !Array.isArray(param) && arg && arg.type.kind === 'INPUT_OBJECT') {
+      const args = introspectionResults.types.find(i => i.kind === arg.type.kind && i.name === arg.type.name).inputFields;
+      result[key] = prepareParams(param, { args }, introspectionResults);
+      return;
+    }
 
-        result[key] = castType(param, arg.type);
-    });
+    if (param instanceof Object && !Array.isArray(param)) {
+      result[key] = prepareParams(param, queryType, introspectionResults);
+      return;
+    }
 
-    return result;
+    if (!arg) {
+      result[key] = param;
+      return;
+    }
+
+    result[key] = castType(param, arg.type, introspectionResults.types);
+  });
+
+  return result;
 };
 
 const buildGetListVariables = introspectionResults => (
