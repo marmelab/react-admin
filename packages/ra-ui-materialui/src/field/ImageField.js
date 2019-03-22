@@ -38,7 +38,7 @@ export const ImageField = ({
             >
                 {sourceValue.map((file, index) => {
                     const titleValue = get(file, title) || title;
-                    const srcValue = get(file, src) || src;
+                    const srcValue = get(file, src) || title;
 
                     return (
                         <li key={index}>
