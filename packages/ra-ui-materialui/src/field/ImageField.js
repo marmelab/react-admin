@@ -25,7 +25,7 @@ export const ImageField = ({
     title,
     ...rest
 }) => {
-    const sourceValue = get(record, source);
+    const sourceValue = get(record, source) || source;
     if (!sourceValue) {
         return <div className={className} {...sanitizeRestProps(rest)} />;
     }
