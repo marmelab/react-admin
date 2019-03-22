@@ -1,8 +1,9 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import get from 'lodash/get';
-import { withStyles, createStyles } from '@material-ui/core/styles';
+import { createStyles, withStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
+import get from 'lodash/get';
+import PropTypes from 'prop-types';
+import React from 'react';
+
 import sanitizeRestProps from './sanitizeRestProps';
 
 const styles = createStyles({
@@ -25,7 +26,9 @@ export const ImageField = ({
     title,
     ...rest
 }) => {
-    const sourceValue = get(record, source) || source;
+    const looksLikeUri = /^https?:\/\//i.test(source);
+    const sourceDefault = looksLikeUri && source;
+    const sourceValue = get(record, source) || sourceDefault;
     if (!sourceValue) {
         return <div className={className} {...sanitizeRestProps(rest)} />;
     }

@@ -65,6 +65,21 @@ describe('<ImageField />', () => {
         assert.equal(img.prop('title'), 'Hello world!');
     });
 
+    it('should allow setting static URI as source', () => {
+        const wrapper = shallow(
+            <ImageField
+                record={{}}
+                source="http://foo.com/bar.jpg"
+                title="Hello world!"
+            />
+        );
+
+        const img = wrapper.find('img');
+        assert.equal(img.prop('src'), 'http://foo.com/bar.jpg');
+        assert.equal(img.prop('alt'), 'Hello world!');
+        assert.equal(img.prop('title'), 'Hello world!');
+    });
+
     it('should render a list of images with correct attributes based on `src` and `title`', () => {
         const wrapper = shallow(
             <ImageField
