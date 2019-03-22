@@ -384,7 +384,7 @@ export class UnconnectedListController extends Component<
             _: inflection.humanize(inflection.pluralize(resource)),
         });
         const defaultTitle = translate('ra.page.list', {
-            name: `${resourceName}`,
+            name: resourceName,
         });
 
         return children({
