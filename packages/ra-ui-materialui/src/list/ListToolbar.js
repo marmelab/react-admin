@@ -31,6 +31,7 @@ const ListToolbar = ({
                 bulkActions,
                 exporter,
                 filters,
+                ...actions.props
             })}
     </Toolbar>
 );
