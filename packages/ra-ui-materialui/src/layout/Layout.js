@@ -36,12 +36,14 @@ const styles = theme => createStyles({
     contentWithSidebar: {
         display: 'flex',
         flexGrow: 1,
+        minWidth: 0,
     },
     content: {
         display: 'flex',
         flexDirection: 'column',
         flexGrow: 1,
         flexBasis: 0,
+        minWidth: 0,
         padding: theme.spacing.unit * 3,
         [theme.breakpoints.up('xs')]: {
             paddingLeft: 5,
