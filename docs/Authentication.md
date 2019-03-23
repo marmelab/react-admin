@@ -348,6 +348,8 @@ By default, react-admin redirects the user to '/login' after they log out. This 
 ```diff
 // in src/MyLogoutButton.js
 // ...
-- export default connect(undefined, { userLogout: userLogout() })(MyLogoutButton);
-+ export default connect(undefined, { userLogout: userLogout('/') })(MyLogoutButton);
+- export default connect(undefined, { userLogout })(MyLogoutButton);
++ const redirectTo = '/';
++ const myCustomUserLogout = () => userLogout(redirectTo);
++ export default connect(undefined, { userLogout: myCustomUserLogout })(MyLogoutButton);
 ```
