@@ -42,9 +42,18 @@ const castType = (value, type) => {
 const prepareParams = (params, queryType, introspectionResults) => {
     const result = {};
 
+    if (!params) {
+        return params;
+    }
+
     Object.keys(params).forEach(key => {
         const param = params[key];
         let arg = null;
+
+        if (!param) {
+            result[key] = param;
+            return;
+        }
 
         if (queryType && Array.isArray(queryType.args)) {
             arg = queryType.args.find(item => item.name === key);
