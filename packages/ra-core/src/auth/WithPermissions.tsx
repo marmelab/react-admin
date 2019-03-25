@@ -64,9 +64,11 @@ const isEmptyChildren = children => Children.count(children) === 0;
  *
  *     const customRoutes = [
  *         <Route path="/foo" render={routeParams =>
- *             <WithPermissions location={routeParams.location} authParams={{ foo: 'bar' }}>
- *                 <Foo />
- *             </WithPermissions>
+ *             <WithPermissions 
+ *                  location={routeParams.location}
+ *                  authParams={{ foo: 'bar' }}
+ *                  render={props => <Foo {...props} />}
+ *              />
  *         } />
  *     ];
  *     const App = () => (
