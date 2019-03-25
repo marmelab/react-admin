@@ -1,5 +1,18 @@
 # Changelog
 
+## v2.8.3
+
+ * Fix `<Query>` does not pass `total` from `dataProvider` result ([3046](https://github.com/marmelab/react-admin/pull/3046)) ([Kmaschta](https://github.com/Kmaschta))
+ * Fix `<WithPermissions>` documentation to explain `authParams` ([3053](https://github.com/marmelab/react-admin/pull/3053)) ([kopax](https://github.com/kopax))
+ * Fix custom `<LogoutButton>` documentation on redirection ([3044](https://github.com/marmelab/react-admin/pull/3044)) ([Kmaschta](https://github.com/Kmaschta))
+ * Fix useless template literal in `<ListController>` ([3039](https://github.com/marmelab/react-admin/pull/3039)) ([kopax](https://github.com/kopax))
+ * Fix typo in `customRoutes` code example in `<Admin>` component documentation ([3038](https://github.com/marmelab/react-admin/pull/3038)) ([farandal](https://github.com/farandal))
+ * Fix misleading example about logout action creator usage in Authentication documentation ([3034](https://github.com/marmelab/react-admin/pull/3034)) ([Kmaschta](https://github.com/Kmaschta))
+ * Fix unused `debounce` prop in `<Filter>` ([3015](https://github.com/marmelab/react-admin/pull/3015)) ([developerium](https://github.com/developerium))
+ * Fix PropTypes of `<RichTextInput>` `toolbar` prop ([3024](https://github.com/marmelab/react-admin/pull/3024)) ([batbyR](https://github.com/batbyR))
+ * Fix `<AutocompleteInput>` `helperText` not working inside `<ReferenceInput>` ([3023](https://github.com/marmelab/react-admin/pull/3023)) ([vdieulesaint](https://github.com/vdieulesaint))
+ * Add Taiwanese translation ([3054](https://github.com/marmelab/react-admin/pull/3054)) ([areyliu6](https://github.com/areyliu6))
+
 ## v2.8.2
 
 * Fix `<CloneButton>` double redirection when used in `<Datagrid>` with `rowClick` ([3006](https://github.com/marmelab/react-admin/pull/3006)) ([akshah123](https://github.com/akshah123))
