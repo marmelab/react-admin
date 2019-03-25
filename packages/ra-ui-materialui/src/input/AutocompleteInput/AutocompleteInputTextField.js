@@ -25,10 +25,6 @@ const AutoCompleteInputTextField = ({
             }
             InputProps={{
                 inputRef,
-                classes: {
-                    root: classes.inputRoot,
-                    input: classes.inputInput,
-                },
                 ...InputProps,
                 onChange: (event) => {
                     InputProps.onChange(event);

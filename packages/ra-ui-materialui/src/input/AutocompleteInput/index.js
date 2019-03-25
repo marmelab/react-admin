@@ -1,15 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
-import Paper from '@material-ui/core/Paper';
-import Popper from '@material-ui/core/Popper';
 import { withStyles, createStyles } from '@material-ui/core/styles';
 import compose from 'recompose/compose';
 import Downshift from 'downshift';
 import { addField, translate as withTranslate } from 'ra-core';
 
 import AutocompleteInputTextField from './AutocompleteInputTextField';
-import AutocompleteSuggestionItem from './AutocompleteSuggestionItem';
+import AutocompleteSuggestionList from './AutocompleteSuggestionList';
 
 const styles = theme =>
     createStyles({
@@ -244,7 +242,6 @@ export class AutocompleteInput extends React.Component {
                         <div className={classes.container}>
                             <AutocompleteInputTextField
                                 fullWidth={fullWidth}
-                                classes={classes}
                                 labelProps={getLabelProps({ label })}
                                 InputProps={getInputProps({
                                     onFocus: openMenu,
@@ -255,57 +252,25 @@ export class AutocompleteInput extends React.Component {
                                 isRequired={isRequired}
                                 handleChange={this.updateFilter}
                             />
-                            <Popper
-                                open={isMenuOpen}
-                                anchorEl={this.inputEl}
-                                className={classes.suggestionsContainer}
-                                {...options.suggestionsContainerProps}
-                            >
-                                <div
-                                    {...(isMenuOpen
-                                        ? getMenuProps(
-                                              {},
-                                              { suppressRefError: true }
-                                          )
-                                        : {})}
-                                >
-                                    <Paper
-                                        square
-                                        style={{
-                                            marginTop: 8,
-                                            width: this.inputEl
-                                                ? this.inputEl.clientWidth
-                                                : null,
-                                        }}
-                                        className={classes.suggestionsPaper}
-                                    >
-                                        {this.getSuggestions(inputValue).map(
-                                            (suggestion, index) => (
-                                                <AutocompleteSuggestionItem
-                                                    key={this.getSuggestionValue(
-                                                        suggestion
-                                                    )}
-                                                    suggestion={suggestion}
-                                                    index={index}
-                                                    itemProps={getItemProps({
-                                                        item: this.getSuggestionText(
-                                                            suggestion
-                                                        ),
-                                                    })}
-                                                    highlightedIndex={
-                                                        highlightedIndex
-                                                    }
-                                                    selectedItem={selectedItem}
-                                                    inputValue={inputValue}
-                                                    getSuggestionText={
-                                                        this.getSuggestionText
-                                                    }
-                                                />
-                                            )
-                                        )}
-                                    </Paper>
-                                </div>
-                            </Popper>
+                            <AutocompleteSuggestionList
+                                isOpen={isMenuOpen}
+                                menuProps={getMenuProps(
+                                    {},
+                                    { suppressRefError: true }
+                                )}
+                                inputEl={this.inputEl}
+                                getSuggestions={this.getSuggestions}
+                                getSuggestionText={this.getSuggestionText}
+                                getSuggestionValue={this.getSuggestionValue}
+                                highlightedIndex={highlightedIndex}
+                                inputValue={inputValue}
+                                getItemProps={getItemProps}
+                                highlightedIndex={highlightedIndex}
+                                suggestionsContainerProps={
+                                    options.suggestionsContainerProps
+                                }
+                                selectedItem={selectedItem}
+                            />
                         </div>
                     );
                 }}
