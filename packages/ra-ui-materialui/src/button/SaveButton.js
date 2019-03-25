@@ -35,6 +35,7 @@ const sanitizeRestProps = ({
     resource,
     locale,
     showNotification,
+    undoable,
     ...rest
 }) => rest;
 
