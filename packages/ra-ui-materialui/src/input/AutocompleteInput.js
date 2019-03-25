@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import Paper from '@material-ui/core/Paper';
+import Popper from '@material-ui/core/Popper';
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
 import { withStyles, createStyles } from '@material-ui/core/styles';
@@ -20,8 +21,6 @@ const styles = theme =>
         },
         root: {},
         suggestionsContainerOpen: {
-            position: 'absolute',
-            marginBottom: theme.spacing(3),
             zIndex: 2,
         },
         suggestionsPaper: {
@@ -221,22 +220,24 @@ export class AutocompleteInput extends React.Component {
                                 }),
                                 ref: storeInputRef,
                             })}
-                            {/* // @TODO replace div with Popper and makes it work */}
-                            {isOpen ? (
-                                <div open={isOpen} anchorEl={this.inputEl}>
-                                    <div {...(isOpen ? getMenuProps({}) : {})}>
-                                        <Paper
-                                            square
-                                            style={{
-                                                marginTop: 8,
-                                                width: this.inputEl
-                                                    ? this.inputEl.clientWidth
-                                                    : null,
-                                            }}
-                                        >
-                                            {this.getSuggestions(
-                                                inputValue
-                                            ).map((suggestion, index) =>
+                            <Popper
+                                open={isOpen}
+                                anchorEl={this.inputEl}
+                                className={classes.suggestionsContainerOpen}
+                            >
+                                <div {...(isOpen ? getMenuProps() : {})}>
+                                    <Paper
+                                        square
+                                        style={{
+                                            marginTop: 8,
+                                            width: this.inputEl
+                                                ? this.inputEl.clientWidth
+                                                : null,
+                                        }}
+                                        className={classes.suggestionsPaper}
+                                    >
+                                        {this.getSuggestions(inputValue).map(
+                                            (suggestion, index) =>
                                                 this.renderSuggestion({
                                                     suggestion,
                                                     index,
@@ -249,11 +250,10 @@ export class AutocompleteInput extends React.Component {
                                                     selectedItem,
                                                     inputValue,
                                                 })
-                                            )}
-                                        </Paper>
-                                    </div>
+                                        )}
+                                    </Paper>
                                 </div>
-                            ) : null}
+                            </Popper>
                         </div>
                     );
                 }}
