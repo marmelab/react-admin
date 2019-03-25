@@ -36,7 +36,7 @@ const welcomeStyles: CSSProperties = {
 };
 
 export interface AdminRouterProps extends LayoutProps {
-    appLayout: LayoutComponent;
+    layout: LayoutComponent;
     catchAll: CatchAllComponent;
     children?: AdminChildren;
     customRoutes?: CustomRoutes;
@@ -138,7 +138,7 @@ export class CoreAdminRouter extends Component<
 
     render() {
         const {
-            appLayout,
+            layout,
             catchAll,
             children,
             customRoutes,
@@ -206,7 +206,7 @@ export class CoreAdminRouter extends Component<
                         path="/"
                         render={() =>
                             createElement(
-                                appLayout,
+                              layout,
                                 {
                                     dashboard,
                                     logout,
