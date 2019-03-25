@@ -20,7 +20,7 @@ const styles = theme =>
             position: 'relative',
         },
         root: {},
-        suggestionsContainerOpen: {
+        suggestionsContainer: {
             zIndex: 2,
         },
         suggestionsPaper: {
@@ -143,7 +143,9 @@ export class AutocompleteInput extends React.Component {
 
     updateFilter = value => {
         const { setFilter } = this.props;
-        setFilter(value);
+        if (setFilter) {
+            setFilter(value);
+        }
     };
 
     updateAnchorEl() {
@@ -168,17 +170,30 @@ export class AutocompleteInput extends React.Component {
     }
 
     getSuggestions = filter => {
-        const { choices, allowEmpty, optionText, optionValue } = this.props;
+        const {
+            choices,
+            allowEmpty,
+            optionText,
+            optionValue,
+            limitChoicesToValue,
+        } = this.props;
 
-        const filteredChoices = choices.filter(choice =>
-            choice[optionText].match(new RegExp(filter, 'i'))
-        );
+        const filteredChoices = limitChoicesToValue
+            ? choices.filter(choice =>
+                  choice[optionText].match(new RegExp(filter, 'i'))
+              )
+            : choices;
 
         if (allowEmpty) {
-            const emptySuggestion = {
-                [optionText]: '',
-                [optionValue]: null,
-            };
+            const emptySuggestion =
+                typeof optionText === 'function'
+                    ? {
+                          [optionValue]: null,
+                      }
+                    : {
+                          [optionText]: '',
+                          [optionValue]: null,
+                      };
 
             return filteredChoices.concat(emptySuggestion);
         }
@@ -186,8 +201,20 @@ export class AutocompleteInput extends React.Component {
         return filteredChoices;
     };
 
+    shouldRenderSuggestions = val => {
+        const { shouldRenderSuggestions } = this.props;
+        if (
+            shouldRenderSuggestions !== undefined &&
+            typeof shouldRenderSuggestions === 'function'
+        ) {
+            return shouldRenderSuggestions(val);
+        }
+
+        return true;
+    };
+
     render() {
-        const { classes = {}, input } = this.props;
+        const { classes = {}, input, id, label, options } = this.props;
         const storeInputRef = input => {
             this.inputEl = input;
             this.updateAnchorEl();
@@ -195,12 +222,13 @@ export class AutocompleteInput extends React.Component {
 
         return (
             <Downshift
-                id="downshift-popper"
+                id={id}
                 onChange={this.handleSuggestionSelected}
                 initialInputValue={this.getSuggestionTextFromValue(input.value)}
             >
                 {({
                     getInputProps,
+                    getLabelProps,
                     getItemProps,
                     getMenuProps,
                     highlightedIndex,
@@ -208,24 +236,33 @@ export class AutocompleteInput extends React.Component {
                     inputValue,
                     selectedItem,
                     openMenu,
-                    ...rest
                 }) => {
+                    const isMenuOpen = isOpen && this.shouldRenderSuggestions();
                     return (
                         <div className={classes.container}>
                             {this.renderInput({
                                 fullWidth: true,
                                 classes,
+                                labelProps: getLabelProps({ label }),
                                 InputProps: getInputProps({
                                     onFocus: openMenu,
                                 }),
                                 ref: storeInputRef,
                             })}
                             <Popper
-                                open={isOpen}
+                                open={isMenuOpen}
                                 anchorEl={this.inputEl}
-                                className={classes.suggestionsContainerOpen}
+                                className={classes.suggestionsContainer}
+                                {...options.suggestionsContainerProps}
                             >
-                                <div {...(isOpen ? getMenuProps() : {})}>
+                                <div
+                                    {...(isMenuOpen
+                                        ? getMenuProps(
+                                              {},
+                                              { suppressRefError: true }
+                                          )
+                                        : {})}
+                                >
                                     <Paper
                                         square
                                         style={{
@@ -262,13 +299,20 @@ export class AutocompleteInput extends React.Component {
     }
 
     renderInput = inputProps => {
-        const { InputProps, classes, ref, label, ...otherProps } = inputProps;
-        const { source, resource, isRequired, translate } = this.props;
+        const {
+            InputProps,
+            classes,
+            ref,
+            labelProps,
+            ...otherProps
+        } = inputProps;
+        const { source, resource, isRequired } = this.props;
+
         return (
             <TextField
                 label={
                     <FieldTitle
-                        label={translate(label)}
+                        {...labelProps}
                         source={source}
                         resource={resource}
                         isRequired={isRequired}
@@ -337,6 +381,7 @@ export class AutocompleteInput extends React.Component {
         highlightedIndex,
         selectedItem,
         inputValue,
+        suggestionComponent,
     }) => {
         const { classes } = this.props;
         const isHighlighted = highlightedIndex === index;
@@ -350,12 +395,12 @@ export class AutocompleteInput extends React.Component {
                 {...itemProps}
                 key={suggestionText}
                 selected={isHighlighted}
-                component="div"
+                component={suggestionComponent || 'div'}
                 style={{
                     fontWeight: isSelected ? 500 : 400,
                 }}
             >
-                <div>
+                <div className={classes.suggestion}>
                     {parts.map((part, index) => {
                         return part.highlight ? (
                             <span
