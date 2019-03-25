@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import assert from 'assert';
 import { shallow, render, mount } from 'enzyme';
 
-import { AutocompleteInput } from './AutocompleteInput';
+import { AutocompleteInput } from './AutoCompleteInput/AutocompleteInput';
 
 describe('<AutocompleteInput />', () => {
     const defaultProps = {
@@ -13,7 +13,7 @@ describe('<AutocompleteInput />', () => {
         translate: x => x,
     };
 
-    it('should use a react Autosuggest', () => {
+    it('should use a Downshift', () => {
         const wrapper = shallow(
             <AutocompleteInput
                 {...defaultProps}
@@ -21,21 +21,22 @@ describe('<AutocompleteInput />', () => {
                 choices={[{ id: 1, name: 'hello' }]}
             />
         );
-        const AutoCompleteElement = wrapper.find('Autosuggest');
+        const AutoCompleteElement = wrapper.find('Downshift');
         assert.equal(AutoCompleteElement.length, 1);
     });
 
     it('should use the input parameter value as the initial state and input searchText', () => {
+        const setFilter = jest.fn();
         const wrapper = shallow(
             <AutocompleteInput
                 {...defaultProps}
                 input={{ value: 2 }}
                 choices={[{ id: 2, name: 'foo' }]}
+                setFilter={setFilter}
             />
         );
-        const AutoCompleteElement = wrapper.find('Autosuggest').first();
-        assert.equal(AutoCompleteElement.prop('inputProps').value, 'foo');
-        assert.equal(wrapper.state('searchText'), 'foo');
+        const AutoCompleteElement = wrapper.find('Downshift').first();
+        assert.equal(AutoCompleteElement.prop('initialInputValue'), 'foo');
     });
 
     it('should extract suggestions from choices', () => {
