@@ -106,7 +106,7 @@ class BulkDeleteWithConfirmButton extends Component {
                     translateOptions={{
                         smart_count: selectedIds.length,
                         name: inflection.humanize(
-                            inflection.singularize(resource),
+                            inflection.inflect(resource, selectedIds.length),
                             true
                         ),
                     }}
