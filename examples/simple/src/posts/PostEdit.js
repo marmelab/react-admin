@@ -29,6 +29,7 @@ import {
     minValue,
     number,
     required,
+    FormDataConsumer,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
 import PostTitle from './PostTitle';
 
@@ -43,7 +44,7 @@ const EditActions = ({ basePath, data, hasShow }) => (
     </TopToolbar>
 );
 
-const PostEdit = props => (
+const PostEdit = ({ permissions, ...props }) => (
     <Edit title={<PostTitle />} actions={<EditActions />} {...props}>
         <TabbedForm defaultValue={{ average_note: 0 }}>
             <FormTab label="post.form.summary">
@@ -67,14 +68,49 @@ const PostEdit = props => (
                 <ImageInput multiple source="pictures" accept="image/*">
                     <ImageField source="src" title="title" />
                 </ImageInput>
-                <ReferenceInput
-                    label="User"
-                    source="user_id"
-                    reference="users"
-                    allowEmpty
-                >
-                    <AutocompleteInput />
-                </ReferenceInput>
+                {permissions === 'admin' && (
+                    <ArrayInput source="authors">
+                        <SimpleFormIterator>
+                            <ReferenceInput
+                                label="User"
+                                source="user_id"
+                                reference="users"
+                            >
+                                <AutocompleteInput />
+                            </ReferenceInput>
+                            <FormDataConsumer>
+                                {({
+                                    formData,
+                                    scopedFormData,
+                                    getSource,
+                                    ...rest
+                                }) =>
+                                    scopedFormData.user_id ? (
+                                        <SelectInput
+                                            label="Role"
+                                            source={getSource('role')}
+                                            choices={[
+                                                {
+                                                    id: 'headwriter',
+                                                    name: 'Head Writer',
+                                                },
+                                                {
+                                                    id: 'proofreader',
+                                                    name: 'Proof reader',
+                                                },
+                                                {
+                                                    id: 'cowriter',
+                                                    name: 'Co-Writer',
+                                                },
+                                            ]}
+                                            {...rest}
+                                        />
+                                    ) : null
+                                }
+                            </FormDataConsumer>
+                        </SimpleFormIterator>
+                    </ArrayInput>
+                )}
             </FormTab>
             <FormTab label="post.form.body">
                 <RichTextInput

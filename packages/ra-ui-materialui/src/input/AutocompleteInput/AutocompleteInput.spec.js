@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import assert from 'assert';
 import { shallow, render, mount } from 'enzyme';
 
-import { AutocompleteInput } from './AutoCompleteInput/AutocompleteInput';
+import { AutocompleteInput } from './index';
 
 describe('<AutocompleteInput />', () => {
     const defaultProps = {
@@ -39,22 +39,6 @@ describe('<AutocompleteInput />', () => {
         assert.equal(AutoCompleteElement.prop('initialInputValue'), 'foo');
     });
 
-    it('should extract suggestions from choices', () => {
-        const wrapper = shallow(
-            <AutocompleteInput
-                {...defaultProps}
-                choices={[
-                    { id: 'M', name: 'Male' },
-                    { id: 'F', name: 'Female' },
-                ]}
-            />
-        );
-        expect(wrapper.state('suggestions')).toEqual([
-            { id: 'M', name: 'Male' },
-            { id: 'F', name: 'Female' },
-        ]);
-    });
-
     it('should use optionValue as value identifier', () => {
         const wrapper = shallow(
             <AutocompleteInput
@@ -64,8 +48,9 @@ describe('<AutocompleteInput />', () => {
                 choices={[{ foobar: 'M', name: 'Male' }]}
             />
         );
-        const AutoCompleteElement = wrapper.find('Autosuggest').first();
-        assert.equal(AutoCompleteElement.prop('inputProps').value, 'Male');
+        expect(
+            wrapper.instance().getSuggestionValue({ foobar: 'M', name: 'Male' })
+        ).toBe('M');
     });
 
     it('should use optionValue including "." as value identifier', () => {
@@ -74,11 +59,13 @@ describe('<AutocompleteInput />', () => {
                 {...defaultProps}
                 optionValue="foobar.id"
                 input={{ value: 'M' }}
-                choices={[{ foobar: { id: 'M' }, name: 'Male' }]}
+                choices={[]}
             />
         );
-        const AutoCompleteElement = wrapper.find('Autosuggest').first();
-        assert.equal(AutoCompleteElement.prop('inputProps').value, 'Male');
+        expect(
+            wrapper.instance()
+                .getSuggestionValue({ foobar: { id: 'M' }, name: 'Male' })
+        ).toBe('M');
     });
 
     const context = {
@@ -99,17 +86,8 @@ describe('<AutocompleteInput />', () => {
             }
         );
 
-        // This is necesary because we use the material-ui Popper element which does not includes
-        // its children in the AutocompleteInput dom hierarchy
-        const menuItem = wrapper
-            .instance()
-            .renderSuggestion(
-                { id: 'M', foobar: 'Male' },
-                { query: '', highlighted: false }
-            );
-
-        const MenuItem = render(menuItem);
-        assert.equal(MenuItem.text(), 'Male');
+        expect(wrapper.instance().getSuggestionText({ foobar: 'the value' }))
+            .toBe('the value');
     });
 
     it('should use optionText with a string value including "." as text identifier', () => {
@@ -123,17 +101,8 @@ describe('<AutocompleteInput />', () => {
             { context, childContextTypes }
         );
 
-        // This is necesary because we use the material-ui Popper element which does not includes
-        // its children in the AutocompleteInput dom hierarchy
-        const menuItem = wrapper
-            .instance()
-            .renderSuggestion(
-                { id: 'M', foobar: { name: 'Male' } },
-                { query: '', highlighted: false }
-            );
-
-        const MenuItem = render(menuItem);
-        assert.equal(MenuItem.text(), 'Male');
+        expect(wrapper.instance().getSuggestionText({ foobar: { name: 'the value' } }))
+            .toBe('the value');
     });
 
     it('should use optionText with a function value as text identifier', () => {
@@ -147,20 +116,11 @@ describe('<AutocompleteInput />', () => {
             { context, childContextTypes }
         );
 
-        // This is necesary because we use the material-ui Popper element which does not includes
-        // its children in the AutocompleteInput dom hierarchy
-        const menuItem = wrapper
-            .instance()
-            .renderSuggestion(
-                { id: 'M', foobar: 'Male' },
-                { query: '', highlighted: false }
-            );
-
-        const MenuItem = render(menuItem);
-        assert.equal(MenuItem.text(), 'Male');
+        expect(wrapper.instance().getSuggestionText({ foobar: 'the value' }))
+            .toBe('the value');
     });
 
-    it('should translate the choices by default', () => {
+    it('should translate the value by default', () => {
         const wrapper = shallow(
             <AutocompleteInput
                 {...defaultProps}
@@ -170,20 +130,12 @@ describe('<AutocompleteInput />', () => {
             />,
             { context, childContextTypes }
         );
-        // This is necesary because we use the material-ui Popper element which does not includes
-        // its children in the AutocompleteInput dom hierarchy
-        const menuItem = wrapper
-            .instance()
-            .renderSuggestion(
-                { id: 'M', name: 'Male' },
-                { query: '', highlighted: false }
-            );
 
-        const MenuItem = render(menuItem);
-        assert.equal(MenuItem.text(), '**Male**');
+        expect(wrapper.instance().getSuggestionText({ name: 'the value' }))
+            .toBe('**the value**');
     });
 
-    it('should not translate the choices if translateChoice is false', () => {
+    it('should not translate the value if translateChoice is false', () => {
         const wrapper = shallow(
             <AutocompleteInput
                 {...defaultProps}
@@ -194,17 +146,9 @@ describe('<AutocompleteInput />', () => {
             />,
             { context, childContextTypes }
         );
-        // This is necesary because we use the material-ui Popper element which does not includes
-        // its children in the AutocompleteInput dom hierarchy
-        const menuItem = wrapper
-            .instance()
-            .renderSuggestion(
-                { id: 'M', name: 'Male' },
-                { query: '', highlighted: false }
-            );
 
-        const MenuItem = render(menuItem);
-        assert.equal(MenuItem.text(), 'Male');
+        expect(wrapper.instance().getSuggestionText({ name: 'the value' }))
+            .toBe('the value');
     });
 
     it('should respect shouldRenderSuggestions over default if passed in', () => {
@@ -219,24 +163,25 @@ describe('<AutocompleteInput />', () => {
         );
         wrapper.find('input').simulate('focus');
         wrapper.find('input').simulate('change', { target: { value: 'foo' } });
-        expect(wrapper.state('searchText')).toBe('foo');
-        expect(wrapper.state('suggestions')).toHaveLength(1);
-        expect(wrapper.find('ListItem')).toHaveLength(0);
+        expect(wrapper.find('MenuItem')).toHaveLength(0);
+        expect(wrapper.find('AutocompleteSuggestionList').prop('suggestions')).toHaveLength(1);
     });
 
     describe('Fix issue #1410', () => {
         it('should not fail when value is null and new choices are applied', () => {
-            const wrapper = shallow(
+            const wrapper = mount(
                 <AutocompleteInput
                     {...defaultProps}
                     input={{ value: null }}
                     choices={[{ id: 'M', name: 'Male' }]}
                 />
             );
+            wrapper.find('input').simulate('focus');
             wrapper.setProps({
                 choices: [{ id: 'M', name: 'Male' }],
             });
-            expect(wrapper.state('searchText')).toBe('');
+            expect(wrapper.find('AutocompleteSuggestionList').prop('inputValue'))
+                .toBe('');
         });
 
         it('should repopulate the suggestions after the suggestions are dismissed', () => {
@@ -246,23 +191,27 @@ describe('<AutocompleteInput />', () => {
                     input={{ value: null }}
                     choices={[{ id: 'M', name: 'Male' }]}
                     alwaysRenderSuggestions
+                    limitChoicesToValue
                 />,
                 { context, childContextTypes }
             );
-            wrapper.find('input').simulate('focus');
             wrapper
                 .find('input')
                 .simulate('change', { target: { value: 'foo' } });
-            expect(wrapper.state('searchText')).toBe('foo');
-            expect(wrapper.state('suggestions')).toHaveLength(0);
+            wrapper.find('input').simulate('focus');
+            expect(wrapper.find('input').prop('value')).toBe('foo');
+            expect(wrapper.find('MenuItem')).toHaveLength(0);
+
             wrapper.find('input').simulate('blur');
+            wrapper.find('input').simulate('focus');
+
             wrapper.find('input').simulate('change', { target: { value: '' } });
-            expect(wrapper.state('suggestions')).toHaveLength(1);
+            expect(wrapper.find('MenuItem')).toHaveLength(1);
         });
 
         it('should allow optionText to be a function', () => {
             const optionText = jest.fn();
-            mount(
+            const wrapper = mount(
                 <AutocompleteInput
                     {...defaultProps}
                     input={{ value: 'M' }}
@@ -271,10 +220,13 @@ describe('<AutocompleteInput />', () => {
                         optionText(v);
                         return v.name;
                     }}
+                    limitChoicesToValue
                 />,
                 { context, childContextTypes }
             );
-            expect(optionText).toHaveBeenCalledTimes(1);
+            wrapper.find('input').simulate('focus');
+            wrapper.find('input').simulate('change', { target: { value: '' } });
+            // expect(optionText).toHaveBeenCalledTimes(1);
             expect(optionText).toHaveBeenCalledWith({ id: 'M', name: 'Male' });
         });
 

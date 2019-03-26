@@ -8,27 +8,27 @@ import { addField, translate as withTranslate } from 'ra-core';
 
 import AutocompleteInputTextField from './AutocompleteInputTextField';
 import AutocompleteSuggestionList from './AutocompleteSuggestionList';
+import getSuggestions from './getSuggestions';
 
-const styles = theme =>
-    createStyles({
-        container: {
-            flexGrow: 1,
-            position: 'relative',
-        },
-        root: {},
-        suggestionsContainer: {
-            zIndex: 2,
-        },
-        suggestionsPaper: {
-            maxHeight: '50vh',
-            overflowY: 'auto',
-        },
-        suggestionsList: {
-            margin: 0,
-            padding: 0,
-            listStyleType: 'none',
-        },
-    });
+const styles = createStyles({
+    container: {
+        flexGrow: 1,
+        position: 'relative',
+    },
+    root: {},
+    suggestionsContainer: {
+        zIndex: 2,
+    },
+    suggestionsPaper: {
+        maxHeight: '50vh',
+        overflowY: 'auto',
+    },
+    suggestionsList: {
+        margin: 0,
+        padding: 0,
+        listStyleType: 'none',
+    },
+});
 
 /**
  * An Input component for an autocomplete field, using an array of objects for the options
@@ -159,38 +159,6 @@ export class AutocompleteInput extends React.Component {
         }
     }
 
-    getSuggestions = filter => {
-        const {
-            choices,
-            allowEmpty,
-            optionText,
-            optionValue,
-            limitChoicesToValue,
-        } = this.props;
-
-        const filteredChoices = limitChoicesToValue
-            ? choices.filter(choice =>
-                  choice[optionText].match(new RegExp(filter, 'i'))
-              )
-            : choices;
-
-        if (allowEmpty) {
-            const emptySuggestion =
-                typeof optionText === 'function'
-                    ? {
-                          [optionValue]: null,
-                      }
-                    : {
-                          [optionText]: '',
-                          [optionValue]: null,
-                      };
-
-            return filteredChoices.concat(emptySuggestion);
-        }
-
-        return filteredChoices;
-    };
-
     shouldRenderSuggestions = val => {
         const { shouldRenderSuggestions } = this.props;
         if (
@@ -214,6 +182,11 @@ export class AutocompleteInput extends React.Component {
             resource,
             isRequired,
             fullWidth,
+            choices,
+            allowEmpty,
+            optionText,
+            optionValue,
+            limitChoicesToValue,
         } = this.props;
         const storeInputRef = input => {
             this.inputEl = input;
@@ -259,13 +232,19 @@ export class AutocompleteInput extends React.Component {
                                     { suppressRefError: true }
                                 )}
                                 inputEl={this.inputEl}
-                                getSuggestions={this.getSuggestions}
+                                suggestions={getSuggestions({
+                                    choices,
+                                    allowEmpty,
+                                    optionText,
+                                    optionValue,
+                                    limitChoicesToValue,
+                                    getSuggestionText: this.getSuggestionText,
+                                })(inputValue)}
                                 getSuggestionText={this.getSuggestionText}
                                 getSuggestionValue={this.getSuggestionValue}
                                 highlightedIndex={highlightedIndex}
                                 inputValue={inputValue}
                                 getItemProps={getItemProps}
-                                highlightedIndex={highlightedIndex}
                                 suggestionsContainerProps={
                                     options.suggestionsContainerProps
                                 }

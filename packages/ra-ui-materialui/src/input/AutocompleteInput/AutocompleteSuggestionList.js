@@ -19,7 +19,7 @@ const AutocompleteSuggestionList = ({
     isOpen,
     menuProps,
     inputEl,
-    getSuggestions,
+    suggestions,
     getSuggestionText,
     getSuggestionValue,
     selectedItem,
@@ -42,7 +42,7 @@ const AutocompleteSuggestionList = ({
                     style={{ marginTop: 8, minWidth: inputEl ? inputEl.clientWidth : null }}
                     className={classes.suggestionsPaper}
                 >
-                    {getSuggestions(inputValue).map((suggestion, index) => (
+                    {suggestions.map((suggestion, index) => (
                         <AutocompleteSuggestionItem
                             key={getSuggestionValue(suggestion)}
                             suggestion={suggestion}
