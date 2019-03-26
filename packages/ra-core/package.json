@@ -36,7 +36,7 @@
         "cross-env": "^5.2.0",
         "enzyme": "~3.7.0",
         "enzyme-adapter-react-16": "~1.6.0",
-        "history": "4.7.2",
+        "history": "^4.7.2",
         "ignore-styles": "~5.0.1",
         "react": "~16.3.1",
         "react-dom": "~16.3.1",
