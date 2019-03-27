@@ -552,7 +552,7 @@ React-admin can use Input components to create a multi-criteria search engine in
 
 ```jsx
 // in src/posts.js
-import { Filter, ReferenceInput, SelectInput, TextInput } from 'react-admin';
+import { Filter, ReferenceInput, SelectInput, TextInput, List } from 'react-admin';
 
 const PostFilter = (props) => (
     <Filter {...props}>
