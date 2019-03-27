@@ -2,6 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 
 import { UnconnectedCreateController as CreateController } from './CreateController';
+import { crudCreate } from '../actions';
 
 describe('CreateController', () => {
     const defaultProps = {
@@ -94,7 +95,7 @@ describe('CreateController', () => {
     });
 
     describe('Overriding onSave', () => {
-        it('Allows to override onSave with a function returning an action and dispatches this action', () => {
+        it('Dispatches the default crudCreate action if onSave is not overridden', () => {
             const values = {
                 name: 'foo',
             };
@@ -114,6 +115,32 @@ describe('CreateController', () => {
             shallow(<CreateController {...props} />);
             expect(customSave).toHaveBeenCalledWith(values, 'list');
             expect(dispatch).toHaveBeenCalledWith({ type: 'CUSTOM_SAVE' });
+        });
+
+        it('Allows to override onSave with a function returning an action and dispatches this action', () => {
+            const values = {
+                name: 'foo',
+            };
+
+            const dispatch = jest.fn();
+            const childrenMock = jest.fn(({ onSave }) => {
+                onSave(values, 'list');
+            });
+            const props = {
+                ...defaultProps,
+                children: childrenMock,
+                dispatch,
+            };
+
+            shallow(<CreateController {...props} />);
+            expect(dispatch).toHaveBeenCalledWith(
+                crudCreate(
+                    defaultProps.resource,
+                    values,
+                    defaultProps.basePath,
+                    'list'
+                )
+            );
         });
 
         it('Allows to override onSave with a function returning nothing', () => {
