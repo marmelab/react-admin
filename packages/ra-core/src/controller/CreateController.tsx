@@ -1,11 +1,11 @@
 import { Component, ReactNode, ComponentType } from 'react';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
-import inflection from 'inflection';
+import { humanize, singularize } from 'inflection';
 import { parse } from 'query-string';
 
 import withTranslate from '../i18n/translate';
-import { crudCreate as crudCreateAction } from '../actions';
+import { crudCreate } from '../actions';
 import checkMinimumRequiredProps from './checkMinimumRequiredProps';
 import { Location } from 'history';
 import { match as Match } from 'react-router';
@@ -15,6 +15,7 @@ import { RedirectionSideEffect } from '../sideEffect';
 interface ChildrenFuncParams {
     isLoading: boolean;
     defaultTitle: string;
+    onSave: (record: Partial<Record>, redirect: RedirectionSideEffect) => void;
     save: (record: Partial<Record>, redirect: RedirectionSideEffect) => void;
     resource: string;
     basePath: string;
@@ -32,12 +33,16 @@ interface Props {
     hasShow?: boolean;
     location: Location;
     match: Match;
+    onSave?: (
+        record: Partial<Record>,
+        redirect: RedirectionSideEffect
+    ) => object | void;
     record?: Partial<Record>;
     resource: string;
 }
 
 interface EnhancedProps {
-    crudCreate: Dispatch<typeof crudCreateAction>;
+    dispatch: Dispatch<any>;
     isLoading: boolean;
     translate: Translate;
 }
@@ -106,7 +111,7 @@ export class UnconnectedCreateController extends Component<
                 : record;
     }
 
-    defaultRedirectRoute() {
+    getDefaultRedirectRoute() {
         const { hasShow, hasEdit } = this.props;
         if (hasEdit) {
             return 'edit';
@@ -117,13 +122,33 @@ export class UnconnectedCreateController extends Component<
         return 'list';
     }
 
-    save = (record: Partial<Record>, redirect: RedirectionSideEffect) => {
-        this.props.crudCreate(
-            this.props.resource,
-            record,
-            this.props.basePath,
-            redirect
+    handleSave = (record: Partial<Record>, redirect: RedirectionSideEffect) => {
+        if (typeof this.props.onSave === 'function') {
+            const action = this.props.onSave(record, redirect);
+
+            if (action) {
+                this.props.dispatch(action);
+            }
+        } else {
+            this.props.dispatch(
+                crudCreate(
+                    this.props.resource,
+                    record,
+                    this.props.basePath,
+                    redirect
+                )
+            );
+        }
+    };
+
+    handleOldSave = (
+        record: Partial<Record>,
+        redirect: RedirectionSideEffect
+    ) => {
+        console.warn(
+            "You're using the deprecated save function injected by CreateController. It will be removed in the next major version. Please change it to onSave"
         );
+        this.handleSave(record, redirect);
     };
 
     render() {
@@ -141,7 +166,7 @@ export class UnconnectedCreateController extends Component<
 
         const resourceName = translate(`resources.${resource}.name`, {
             smart_count: 1,
-            _: inflection.humanize(inflection.singularize(resource)),
+            _: humanize(singularize(resource)),
         });
         const defaultTitle = translate('ra.page.create', {
             name: `${resourceName}`,
@@ -149,11 +174,12 @@ export class UnconnectedCreateController extends Component<
         return children({
             isLoading,
             defaultTitle,
-            save: this.save,
+            onSave: this.handleSave,
+            save: this.handleOldSave,
             resource,
             basePath,
             record: this.record,
-            redirect: this.defaultRedirectRoute(),
+            redirect: this.getDefaultRedirectRoute(),
             translate,
         });
     }
@@ -167,10 +193,7 @@ function mapStateToProps(state) {
 
 const CreateController = compose(
     checkMinimumRequiredProps('Create', ['basePath', 'location', 'resource']),
-    connect(
-        mapStateToProps,
-        { crudCreate: crudCreateAction }
-    ),
+    connect(mapStateToProps),
     withTranslate
 )(UnconnectedCreateController);
 

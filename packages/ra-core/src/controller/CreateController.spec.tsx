@@ -4,27 +4,27 @@ import { shallow } from 'enzyme';
 import { UnconnectedCreateController as CreateController } from './CreateController';
 
 describe('CreateController', () => {
-    describe('Presetting the record from the location', () => {
-        const defaultProps = {
-            basePath: '',
-            crudCreate: jest.fn(),
-            hasCreate: true,
-            hasEdit: true,
-            hasList: true,
-            hasShow: true,
-            isLoading: false,
-            location: {
-                pathname: '/foo',
-                search: undefined,
-                state: undefined,
-                hash: undefined,
-            },
-            match: { isExact: true, path: '/foo', params: undefined, url: '' },
-            resource: 'foo',
-            title: 'Foo',
-            translate: x => x,
-        };
+    const defaultProps = {
+        basePath: '',
+        dispatch: jest.fn(),
+        hasCreate: true,
+        hasEdit: true,
+        hasList: true,
+        hasShow: true,
+        isLoading: false,
+        location: {
+            pathname: '/foo',
+            search: undefined,
+            state: undefined,
+            hash: undefined,
+        },
+        match: { isExact: true, path: '/foo', params: undefined, url: '' },
+        resource: 'foo',
+        title: 'Foo',
+        translate: x => x,
+    };
 
+    describe('Presetting the record from the location', () => {
         it('should return an empty record by default', () => {
             const childrenMock = jest.fn();
             const props = {
@@ -90,6 +90,52 @@ describe('CreateController', () => {
             expect(childrenMock).toHaveBeenCalledWith(
                 expect.objectContaining({ record: { foo: 'bar' } })
             );
+        });
+    });
+
+    describe('Overriding onSave', () => {
+        it('Allows to override onSave with a function returning an action and dispatches this action', () => {
+            const values = {
+                name: 'foo',
+            };
+
+            const customSave = jest.fn(() => ({ type: 'CUSTOM_SAVE' }));
+            const dispatch = jest.fn();
+            const childrenMock = jest.fn(({ onSave }) => {
+                onSave(values, 'list');
+            });
+            const props = {
+                ...defaultProps,
+                children: childrenMock,
+                onSave: customSave,
+                dispatch,
+            };
+
+            shallow(<CreateController {...props} />);
+            expect(customSave).toHaveBeenCalledWith(values, 'list');
+            expect(dispatch).toHaveBeenCalledWith({ type: 'CUSTOM_SAVE' });
+        });
+
+        it('Allows to override onSave with a function returning nothing', () => {
+            const values = {
+                name: 'foo',
+            };
+
+            const customSave = jest.fn();
+            const dispatch = jest.fn();
+            const childrenMock = jest.fn(({ onSave }) => {
+                onSave(values, 'list');
+            });
+            const props = {
+                ...defaultProps,
+                children: childrenMock,
+                onSave: customSave,
+                dispatch,
+            };
+
+            shallow(<CreateController {...props} />);
+            expect(customSave).toHaveBeenCalledWith(values, 'list');
+            expect(dispatch).not.toHaveBeenCalled();
         });
     });
 });
