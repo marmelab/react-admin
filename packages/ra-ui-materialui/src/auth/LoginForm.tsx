@@ -66,7 +66,6 @@ const LoginFormView: SFC<Props & EnhancedProps> = ({
     isLoading,
     handleSubmit,
     translate,
-    ...rest
 }) => (
     <form onSubmit={handleSubmit(login)}>
         <div className={classes.form}>

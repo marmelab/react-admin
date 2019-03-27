@@ -15,12 +15,14 @@ import LockIcon from '@material-ui/icons/Lock';
 import defaultTheme from '../defaultTheme';
 import Notification from '../layout/Notification';
 import DefaultLoginForm from './LoginForm';
+import { StaticContext } from 'react-router';
 
 interface Props {
-    backgroundImage: string;
+    backgroundImage?: string;
     className: string;
     loginForm: ReactElement<any>;
     theme: object;
+    staticContext: StaticContext;
 }
 
 const styles = theme =>
@@ -68,6 +70,19 @@ const styles = theme =>
  *     );
  */
 class LoginView extends Component<Props & WithStyles<typeof styles>> {
+    static propTypes = {
+        backgroundImage: PropTypes.string,
+        className: PropTypes.string,
+        loginForm: PropTypes.element,
+        theme: PropTypes.object,
+    };
+
+    static defaultProps = {
+        backgroundImage: 'https://source.unsplash.com/random/1600x900/daily',
+        theme: defaultTheme,
+        loginForm: <DefaultLoginForm />,
+    };
+
     theme = createMuiTheme(this.props.theme);
     containerRef = React.createRef<HTMLDivElement>();
     backgroundImageLoaded = false;
@@ -114,6 +129,7 @@ class LoginView extends Component<Props & WithStyles<typeof styles>> {
             classes,
             className,
             loginForm,
+            staticContext,
             ...rest
         } = this.props;
 
@@ -140,18 +156,5 @@ class LoginView extends Component<Props & WithStyles<typeof styles>> {
 }
 
 const Login = withStyles(styles)(LoginView) as ComponentType<Props>;
-
-Login.propTypes = {
-    backgroundImage: PropTypes.string,
-    className: PropTypes.string,
-    loginForm: PropTypes.element,
-    theme: PropTypes.object,
-};
-
-Login.defaultProps = {
-    backgroundImage: 'https://source.unsplash.com/random/1600x900/daily',
-    theme: defaultTheme,
-    loginForm: <DefaultLoginForm />,
-};
 
 export default Login;
