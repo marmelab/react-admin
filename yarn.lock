@@ -1070,6 +1070,13 @@
   resolved "https://registry.yarnpkg.com/@types/history/-/history-4.7.2.tgz#0e670ea254d559241b6eeb3894f8754991e73220"
   integrity sha512-ui3WwXmjTaY73fOQ3/m3nnajU/Orhi6cEu5rzX+BrAAJxa3eITXZ5ch9suPqtM03OWhAHhPSyBGCN4UKoxO20Q==
 
+"@types/hoist-non-react-statics@^3.3.0":
+  version "3.3.0"
+  resolved "https://registry.yarnpkg.com/@types/hoist-non-react-statics/-/hoist-non-react-statics-3.3.0.tgz#a59c0c995cc885bef1b8ec2241b114f9b35b517b"
+  integrity sha512-O2OGyW9wlO2bbDmZRH17MecArQfsIa1g//ve2IJk6BnmwEglFz5kdhP1BlgeqjVNH5IHIhsc83DWFo8StCe8+Q==
+  dependencies:
+    "@types/react" "*"
+
 "@types/isomorphic-fetch@0.0.34":
   version "0.0.34"
   resolved "https://registry.yarnpkg.com/@types/isomorphic-fetch/-/isomorphic-fetch-0.0.34.tgz#3c3483e606c041378438e951464f00e4e60706d6"
@@ -1133,6 +1140,15 @@
   resolved "https://registry.yarnpkg.com/@types/react-redux/-/react-redux-6.0.9.tgz#96aa7f5b0716bcc3bfb36ceaa1223118d509f79a"
   integrity sha512-LatgnnZ7bG63SmzEqGMjAIP1bN36iaXpb4G7UW3SqpHyo+OQ97MnMXm9BoNi720r61+PvseyIUJN4el4GVhAAg==
   dependencies:
+    "@types/react" "*"
+    redux "^4.0.0"
+
+"@types/react-redux@^7.0.5":
+  version "7.0.5"
+  resolved "https://registry.yarnpkg.com/@types/react-redux/-/react-redux-7.0.5.tgz#4d284f8565cd9f7316086cce50e87f3d201d0880"
+  integrity sha512-O0WyoSbrMofJRxtSDe8qYhnmr2SSlTnshlQdnpgpD763L8BzlhXuEseksV7LSoCUwZ7vN4YqpQThl3jp02sceQ==
+  dependencies:
+    "@types/hoist-non-react-statics" "^3.3.0"
     "@types/react" "*"
     redux "^4.0.0"
 
