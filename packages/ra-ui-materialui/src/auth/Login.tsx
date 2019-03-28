@@ -1,4 +1,9 @@
-import React, { Component, ReactElement, ComponentType } from 'react';
+import React, {
+    Component,
+    ReactElement,
+    ComponentType,
+    HtmlHTMLAttributes,
+} from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import Card from '@material-ui/core/Card';
@@ -9,23 +14,23 @@ import {
     withStyles,
     createStyles,
     WithStyles,
+    Theme,
 } from '@material-ui/core/styles';
 import LockIcon from '@material-ui/icons/Lock';
+import { StaticContext } from 'react-router';
 
 import defaultTheme from '../defaultTheme';
 import Notification from '../layout/Notification';
 import DefaultLoginForm from './LoginForm';
-import { StaticContext } from 'react-router';
 
-interface Props {
+interface Props extends HtmlHTMLAttributes<HTMLDivElement> {
     backgroundImage?: string;
-    className: string;
     loginForm: ReactElement<any>;
     theme: object;
     staticContext: StaticContext;
 }
 
-const styles = theme =>
+const styles = (theme: Theme) =>
     createStyles({
         main: {
             display: 'flex',
@@ -72,7 +77,6 @@ const styles = theme =>
 class LoginView extends Component<Props & WithStyles<typeof styles>> {
     static propTypes = {
         backgroundImage: PropTypes.string,
-        className: PropTypes.string,
         loginForm: PropTypes.element,
         theme: PropTypes.object,
     };

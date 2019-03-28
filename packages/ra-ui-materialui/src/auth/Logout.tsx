@@ -2,7 +2,7 @@ import React, { SFC } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
-import MenuItem from '@material-ui/core/MenuItem';
+import MenuItem, { MenuItemProps } from '@material-ui/core/MenuItem';
 import {
     withStyles,
     createStyles,
@@ -17,8 +17,7 @@ import {
     TranslationContextProps,
 } from 'ra-core';
 
-interface Props {
-    className?: string;
+interface Props extends MenuItemProps {
     redirectTo?: string;
 }
 
@@ -67,10 +66,6 @@ const LogoutView: SFC<Props & EnhancedProps> = ({
     </MenuItem>
 );
 
-const mapStateToProps = state => ({
-    theme: state.theme,
-});
-
 const mapDispatchToProps = (dispatch, { redirectTo }) => ({
     userLogout: () => dispatch(userLogoutAction(redirectTo)),
 });
@@ -78,7 +73,7 @@ const mapDispatchToProps = (dispatch, { redirectTo }) => ({
 const enhance = compose<Props & EnhancedProps, Props>(
     withTranslate,
     connect(
-        mapStateToProps,
+        undefined,
         mapDispatchToProps
     ),
     withStyles(styles)
