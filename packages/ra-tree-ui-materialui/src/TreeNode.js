@@ -8,6 +8,7 @@ const styles = theme => ({
     expandIcon: {
         margin: 0,
         left: -theme.spacing.unit * 6,
+        right: "auto" /* fix for material-ui 3 */
     },
     root: {
         alignItems: 'baseline',
