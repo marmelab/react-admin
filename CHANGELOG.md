@@ -1,5 +1,15 @@
 # Changelog
 
+## v2.8.4
+
+* Fix typo in ra-data-graphql documentation ([3074](https://github.com/marmelab/react-admin/pull/3074)) ([erichgoldman](https://github.com/erichgoldman))
+* Fix missing dependencies breaking installation with pnpm ([3032](https://github.com/marmelab/react-admin/pull/3032)) ([cortopy](https://github.com/cortopy))
+* Fix missing component import in tutorial ([3060](https://github.com/marmelab/react-admin/pull/3060)) ([matimendez88](https://github.com/matimendez88))
+* Fix bad pluralization of the confirmation message in `<BulkDeleteWithConfirmButton>` ([3058](https://github.com/marmelab/react-admin/pull/3058)) ([Luwangel](https://github.com/Luwangel))
+* Fix warning caused by passing `undoable` prop from `<Toolbar>` ([3057](https://github.com/marmelab/react-admin/pull/3057)) ([NikitaVlaznev](https://github.com/NikitaVlaznev))
+* Fix warning caused by passing `submitOnEnter` prop from `<Toolbar>` ([3056](https://github.com/marmelab/react-admin/pull/3056)) ([NikitaVlaznev](https://github.com/NikitaVlaznev))
+* Add links to 4 new advanced tutorials doc ([3063](https://github.com/marmelab/react-admin/pull/3063)) ([djhi](https://github.com/djhi))
+
 ## v2.8.3
 
  * Fix `<Query>` does not pass `total` from `dataProvider` result ([3046](https://github.com/marmelab/react-admin/pull/3046)) ([Kmaschta](https://github.com/Kmaschta))
