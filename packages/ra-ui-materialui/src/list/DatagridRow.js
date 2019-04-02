@@ -165,7 +165,6 @@ class DatagridRow extends Component {
                                     classes.rowCell
                                 )}
                                 record={record}
-                                id={id}
                                 {...{ field, basePath, resource }}
                             />
                         ) : null
