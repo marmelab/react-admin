@@ -102,6 +102,7 @@ export const ListView = ({
     // component props
     actions,
     aside,
+    filter,
     filters,
     bulkActions, // deprecated
     bulkActionButtons,
@@ -138,6 +139,7 @@ export const ListView = ({
                         actions={actions}
                         bulkActions={bulkActions}
                         exporter={exporter}
+                        permanentFilter={filter}
                     />
                 )}
                 <div key={version}>
