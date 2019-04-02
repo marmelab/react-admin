@@ -14,27 +14,28 @@ import classnames from 'classnames';
 import compose from 'recompose/compose';
 import { translate } from 'ra-core';
 
-const styles = theme => createStyles({
-    contentText: {
-        minWidth: 400,
-    },
-    confirmPrimary: {
-        color: theme.palette.primary.main,
-    },
-    confirmWarning: {
-        color: theme.palette.error.main,
-        '&:hover': {
-            backgroundColor: fade(theme.palette.error.main, 0.12),
-            // Reset on mouse devices
-            '@media (hover: none)': {
-                backgroundColor: 'transparent',
+const styles = theme =>
+    createStyles({
+        contentText: {
+            minWidth: 400,
+        },
+        confirmPrimary: {
+            color: theme.palette.primary.main,
+        },
+        confirmWarning: {
+            color: theme.palette.error.main,
+            '&:hover': {
+                backgroundColor: fade(theme.palette.error.main, 0.12),
+                // Reset on mouse devices
+                '@media (hover: none)': {
+                    backgroundColor: 'transparent',
+                },
             },
         },
-    },
-    iconPaddingStyle: {
-        paddingRight: '0.5em',
-    },
-});
+        iconPaddingStyle: {
+            paddingRight: '0.5em',
+        },
+    });
 
 /**
  * Confirmation dialog
@@ -54,7 +55,8 @@ const styles = theme => createStyles({
 class Confirm extends Component {
     state = { loading: false };
 
-    handleConfirm = () => {
+    handleConfirm = e => {
+        e.stopPropagation();
         this.setState({ loading: true });
         this.props.onConfirm();
     };
