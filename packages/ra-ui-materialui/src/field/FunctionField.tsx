@@ -1,15 +1,26 @@
-import React from 'react';
+import React, { SFC } from 'react';
 import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 import Typography from '@material-ui/core/Typography';
 
 import sanitizeRestProps from './sanitizeRestProps';
+import { FieldProps } from './types';
+
+interface Props extends FieldProps {
+    render: (record: object, source: string) => any;
+}
 
 /**
  * @example
  * <FunctionField source="last_name" label="Name" render={record => `${record.first_name} ${record.last_name}`} />
  */
-const FunctionField = ({ className, record = {}, source, render, ...rest }) =>
+const FunctionField: SFC<Props> = ({
+    className,
+    record = {},
+    source,
+    render,
+    ...rest
+}) =>
     record ? (
         <Typography
             component="span"
@@ -20,19 +31,6 @@ const FunctionField = ({ className, record = {}, source, render, ...rest }) =>
             {render(record, source)}
         </Typography>
     ) : null;
-
-FunctionField.propTypes = {
-    addLabel: PropTypes.bool,
-    basePath: PropTypes.string,
-    className: PropTypes.string,
-    cellClassName: PropTypes.string,
-    headerClassName: PropTypes.string,
-    label: PropTypes.string,
-    render: PropTypes.func.isRequired,
-    record: PropTypes.object,
-    sortBy: PropTypes.string,
-    source: PropTypes.string,
-};
 
 const PureFunctionField = pure(FunctionField);
 
