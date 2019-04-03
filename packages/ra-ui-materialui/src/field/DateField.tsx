@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { SFC } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import pure from 'recompose/pure';
 import Typography from '@material-ui/core/Typography';
 
 import sanitizeRestProps from './sanitizeRestProps';
+import { FieldProps } from './types';
 
 const toLocaleStringSupportsLocales = (() => {
     // from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toLocaleString
@@ -15,6 +16,12 @@ const toLocaleStringSupportsLocales = (() => {
     }
     return false;
 })();
+
+interface Props extends FieldProps {
+    locales?: string | string[];
+    options?: object;
+    showTime?: boolean;
+}
 
 /**
  * Display a date value as a locale string.
@@ -41,7 +48,7 @@ const toLocaleStringSupportsLocales = (() => {
  * <span>mercredi 7 novembre 2012</span>
  */
 
-export const DateField = ({
+export const DateField: SFC<Props> = ({
     className,
     locales,
     options,
@@ -50,9 +57,13 @@ export const DateField = ({
     source,
     ...rest
 }) => {
-    if (!record) return null;
+    if (!record) {
+        return null;
+    }
     const value = get(record, source);
-    if (value == null) return null;
+    if (value == null) {
+        return null;
+    }
     const date = value instanceof Date ? value : new Date(value);
     const dateString = showTime
         ? toLocaleStringSupportsLocales
@@ -72,24 +83,6 @@ export const DateField = ({
             {dateString}
         </Typography>
     );
-};
-
-DateField.propTypes = {
-    addLabel: PropTypes.bool,
-    basePath: PropTypes.string,
-    className: PropTypes.string,
-    cellClassName: PropTypes.string,
-    headerClassName: PropTypes.string,
-    label: PropTypes.string,
-    locales: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.arrayOf(PropTypes.string),
-    ]),
-    options: PropTypes.object,
-    record: PropTypes.object,
-    showTime: PropTypes.bool,
-    sortBy: PropTypes.string,
-    source: PropTypes.string.isRequired,
 };
 
 const PureDateField = pure(DateField);
