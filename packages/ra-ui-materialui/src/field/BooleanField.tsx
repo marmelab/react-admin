@@ -33,13 +33,8 @@ const styles = createStyles({
 });
 
 interface Props extends FieldProps, WithStyles<typeof styles> {
-    className?: string;
-    cellClassName?: string;
-    headerClassName?: string;
-    label?: string;
     valueLabelTrue?: string;
     valueLabelFalse?: string;
-    translate: (v: string) => string;
 }
 
 export const BooleanField: SFC<Props> = ({
