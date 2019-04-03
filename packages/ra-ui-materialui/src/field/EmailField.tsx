@@ -1,10 +1,17 @@
-import React from 'react';
+import React, { SFC } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import pure from 'recompose/pure';
-import sanitizeRestProps from './sanitizeRestProps';
 
-const EmailField = ({ className, source, record = {}, ...rest }) => (
+import sanitizeRestProps from './sanitizeRestProps';
+import { FieldProps } from './types';
+
+const EmailField: SFC<FieldProps> = ({
+    className,
+    source,
+    record = {},
+    ...rest
+}) => (
     <a
         className={className}
         href={`mailto:${get(record, source)}`}
@@ -13,18 +20,6 @@ const EmailField = ({ className, source, record = {}, ...rest }) => (
         {get(record, source)}
     </a>
 );
-
-EmailField.propTypes = {
-    addLabel: PropTypes.bool,
-    basePath: PropTypes.string,
-    className: PropTypes.string,
-    cellClassName: PropTypes.string,
-    headerClassName: PropTypes.string,
-    label: PropTypes.string,
-    record: PropTypes.object,
-    sortBy: PropTypes.string,
-    source: PropTypes.string.isRequired,
-};
 
 const PureEmailField = pure(EmailField);
 
