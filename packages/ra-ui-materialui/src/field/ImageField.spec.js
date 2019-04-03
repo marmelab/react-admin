@@ -3,22 +3,24 @@ import assert from 'assert';
 import { shallow } from 'enzyme';
 import { ImageField } from './ImageField';
 
+const defaultProps = {
+    classes: {},
+    source: 'url'
+};
+
 describe('<ImageField />', () => {
     it('should return an empty div when record is not set', () => {
-        assert.equal(
-            shallow(<ImageField source="url" />).html(),
-            '<div></div>'
-        );
+        assert.equal(shallow(<ImageField {...defaultProps} />).html(), '<div></div>');
     });
 
     it('should render an image with correct attributes based on `source` and `title`', () => {
         const wrapper = shallow(
             <ImageField
+                {...defaultProps}
                 record={{
                     url: 'http://foo.com/bar.jpg',
-                    title: 'Hello world!',
+                    title: 'Hello world!'
                 }}
-                source="url"
                 title="title"
             />
         );
@@ -32,11 +34,12 @@ describe('<ImageField />', () => {
     it('should support deep linking', () => {
         const wrapper = shallow(
             <ImageField
+                {...defaultProps}
                 record={{
                     picture: {
                         url: 'http://foo.com/bar.jpg',
-                        title: 'Hello world!',
-                    },
+                        title: 'Hello world!'
+                    }
                 }}
                 source="picture.url"
                 title="picture.title"
@@ -52,10 +55,10 @@ describe('<ImageField />', () => {
     it('should allow setting static string as title', () => {
         const wrapper = shallow(
             <ImageField
+                {...defaultProps}
                 record={{
-                    url: 'http://foo.com/bar.jpg',
+                    url: 'http://foo.com/bar.jpg'
                 }}
-                source="url"
                 title="Hello world!"
             />
         );
@@ -68,17 +71,18 @@ describe('<ImageField />', () => {
     it('should render a list of images with correct attributes based on `src` and `title`', () => {
         const wrapper = shallow(
             <ImageField
+                {...defaultProps}
                 record={{
                     pictures: [
                         {
                             url: 'http://foo.com/bar.jpg',
-                            title: 'Hello world!',
+                            title: 'Hello world!'
                         },
                         {
                             url: 'http://bar.com/foo.jpg',
-                            title: 'Bye world!',
-                        },
-                    ],
+                            title: 'Bye world!'
+                        }
+                    ]
                 }}
                 source="pictures"
                 src="url"
@@ -97,13 +101,9 @@ describe('<ImageField />', () => {
 
     it('should use custom className', () =>
         assert.deepEqual(
-            shallow(
-                <ImageField
-                    source="foo"
-                    record={{ foo: true }}
-                    className="foo"
-                />
-            ).prop('className'),
+            shallow(<ImageField {...defaultProps} source="foo" record={{ foo: true }} className="foo" />).prop(
+                'className'
+            ),
             'foo'
         ));
 });
