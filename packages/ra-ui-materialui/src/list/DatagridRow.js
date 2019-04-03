@@ -40,7 +40,7 @@ class DatagridRow extends Component {
         };
     }
 
-    coomponentDidUpdate = (prevProps, prevState) => {
+    componentDidUpdate = (prevProps, prevState) => {
         const colSpan = this.computeColSpan(this.props);
         if (colSpan !== prevState.colSpan) {
             this.setState({ colSpan });
