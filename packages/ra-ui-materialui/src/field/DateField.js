@@ -65,7 +65,7 @@ export const DateField = ({
     return (
         <Typography
             component="span"
-            body1="body1"
+            variant="body1"
             className={className}
             {...sanitizeRestProps(rest)}
         >

@@ -1,7 +1,14 @@
-import { Component, cloneElement, Children } from 'react';
+import React, { Component, cloneElement, Children } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import pure from 'recompose/pure';
+
+import { FieldProps } from './types';
+
+interface State {
+    data: object;
+    ids: string[];
+}
 
 const initialState = {
     data: {},
@@ -71,15 +78,15 @@ const initialState = {
  *     )
  *     TagsField.defaultProps = { addLabel: true };
  */
-export class ArrayField extends Component {
-    constructor(props) {
+export class ArrayField extends Component<FieldProps, State> {
+    constructor(props: FieldProps) {
         super(props);
         this.state = props.record
             ? this.getDataAndIds(props.record, props.source)
             : initialState;
     }
 
-    componentWillReceiveProps(nextProps, prevProps) {
+    componentWillReceiveProps(nextProps: FieldProps, prevProps: FieldProps) {
         if (nextProps.record !== prevProps.record) {
             this.setState(
                 this.getDataAndIds(nextProps.record, nextProps.source)
@@ -87,7 +94,7 @@ export class ArrayField extends Component {
         }
     }
 
-    getDataAndIds(record, source) {
+    getDataAndIds(record: object, source: string) {
         const list = get(record, source);
         return list
             ? {
@@ -121,16 +128,6 @@ export class ArrayField extends Component {
         });
     }
 }
-
-ArrayField.propTypes = {
-    addLabel: PropTypes.bool,
-    basePath: PropTypes.string,
-    children: PropTypes.element.isRequired,
-    record: PropTypes.object,
-    resource: PropTypes.string,
-    sortBy: PropTypes.string,
-    source: PropTypes.string,
-};
 
 const EnhancedArrayField = pure(ArrayField);
 

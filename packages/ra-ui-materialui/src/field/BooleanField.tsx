@@ -1,14 +1,15 @@
-import React from 'react';
+import React, { SFC } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import pure from 'recompose/pure';
 import FalseIcon from '@material-ui/icons/Clear';
 import TrueIcon from '@material-ui/icons/Done';
 import Typography from '@material-ui/core/Typography';
-import { createStyles, withStyles } from '@material-ui/core/styles';
+import { createStyles, withStyles, WithStyles } from '@material-ui/core/styles';
 import compose from 'recompose/compose';
-import { translate } from 'ra-core';
+import { translate as withTranslate } from 'ra-core';
 
+import { FieldProps } from './types';
 import sanitizeRestProps from './sanitizeRestProps';
 
 const styles = createStyles({
@@ -31,7 +32,17 @@ const styles = createStyles({
     },
 });
 
-export const BooleanField = ({
+interface Props extends FieldProps, WithStyles<typeof styles> {
+    className?: string;
+    cellClassName?: string;
+    headerClassName?: string;
+    label?: string;
+    valueLabelTrue?: string;
+    valueLabelFalse?: string;
+    translate: (v: string) => string;
+}
+
+export const BooleanField: SFC<Props> = ({
     className,
     classes,
     source,
@@ -55,7 +66,7 @@ export const BooleanField = ({
         return (
             <Typography
                 component="span"
-                body1="body1"
+                variant="body1"
                 className={className}
                 {...sanitizeRestProps(rest)}
             >
@@ -69,7 +80,7 @@ export const BooleanField = ({
         return (
             <Typography
                 component="span"
-                body1="body1"
+                variant="body1"
                 className={className}
                 {...sanitizeRestProps(rest)}
             >
@@ -82,36 +93,17 @@ export const BooleanField = ({
     return (
         <Typography
             component="span"
-            body1="body1"
+            variant="body1"
             className={className}
             {...sanitizeRestProps(rest)}
         />
     );
 };
 
-BooleanField.propTypes = {
-    addLabel: PropTypes.bool,
-    basePath: PropTypes.string,
-    className: PropTypes.string,
-    cellClassName: PropTypes.string,
-    headerClassName: PropTypes.string,
-    label: PropTypes.string,
-    record: PropTypes.object,
-    sortBy: PropTypes.string,
-    source: PropTypes.string.isRequired,
-    valueLabelTrue: PropTypes.string,
-    valueLabelFalse: PropTypes.string,
-};
-
-BooleanField.defaultProps = {
-    classes: {},
-    translate: x => x,
-};
-
 const PureBooleanField = compose(
     pure,
     withStyles(styles),
-    translate
+    withTranslate
 )(BooleanField);
 
 PureBooleanField.defaultProps = {
