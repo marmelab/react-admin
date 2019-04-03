@@ -1,16 +1,24 @@
-import React from 'react';
+import React, { SFC } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
-import { withStyles, createStyles } from '@material-ui/core/styles';
+import { withStyles, WithStyles, createStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
+
 import sanitizeRestProps from './sanitizeRestProps';
+import { FieldProps } from './types';
 
 const styles = createStyles({
     root: { display: 'inline-block' },
 });
 
-export const FileField = ({
-    classes = {},
+interface Props extends FieldProps, WithStyles<typeof styles> {
+    src?: string;
+    title?: string;
+    target?: string;
+}
+
+export const FileField: SFC<Props> = ({
+    classes,
     className,
     record,
     source,
@@ -37,17 +45,17 @@ export const FileField = ({
                 {...sanitizeRestProps(rest)}
             >
                 {sourceValue.map((file, index) => {
-                    const titleValue = get(file, title) || title;
+                    const fileTitleValue = get(file, title) || title;
                     const srcValue = get(file, src) || title;
 
                     return (
                         <li key={index}>
                             <a
                                 href={srcValue}
-                                title={titleValue}
+                                title={fileTitleValue}
                                 target={target}
                             >
-                                {titleValue}
+                                {fileTitleValue}
                             </a>
                         </li>
                     );
@@ -68,21 +76,6 @@ export const FileField = ({
             </a>
         </div>
     );
-};
-
-FileField.propTypes = {
-    addLabel: PropTypes.bool,
-    basePath: PropTypes.string,
-    classes: PropTypes.object,
-    className: PropTypes.string,
-    cellClassName: PropTypes.string,
-    headerClassName: PropTypes.string,
-    record: PropTypes.object,
-    sortBy: PropTypes.string,
-    source: PropTypes.string.isRequired,
-    src: PropTypes.string,
-    title: PropTypes.string,
-    target: PropTypes.string,
 };
 
 export default withStyles(styles)(FileField);

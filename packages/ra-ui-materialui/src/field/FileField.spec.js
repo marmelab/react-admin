@@ -3,22 +3,24 @@ import assert from 'assert';
 import { shallow } from 'enzyme';
 import { FileField } from './FileField';
 
+const defaultProps = {
+    classes: {},
+    source: 'url'
+};
+
 describe('<FileField />', () => {
     it('should return an empty div when record is not set', () => {
-        assert.equal(
-            shallow(<FileField source="url" />).html(),
-            '<div class=""></div>'
-        );
+        assert.equal(shallow(<FileField {...defaultProps} />).html(), '<div class=""></div>');
     });
 
     it('should render a link with correct attributes based on `source` and `title`', () => {
         const wrapper = shallow(
             <FileField
+                {...defaultProps}
                 record={{
                     url: 'http://foo.com/bar.jpg',
-                    title: 'Hello world!',
+                    title: 'Hello world!'
                 }}
-                source="url"
                 title="title"
             />
         );
@@ -31,11 +33,12 @@ describe('<FileField />', () => {
     it('should support deep linking', () => {
         const wrapper = shallow(
             <FileField
+                {...defaultProps}
                 record={{
                     file: {
                         url: 'http://foo.com/bar.jpg',
-                        title: 'Hello world!',
-                    },
+                        title: 'Hello world!'
+                    }
                 }}
                 source="file.url"
                 title="file.title"
@@ -50,10 +53,10 @@ describe('<FileField />', () => {
     it('should allow setting static string as title', () => {
         const wrapper = shallow(
             <FileField
+                {...defaultProps}
                 record={{
-                    url: 'http://foo.com/bar.jpg',
+                    url: 'http://foo.com/bar.jpg'
                 }}
-                source="url"
                 title="Hello world!"
             />
         );
@@ -65,10 +68,10 @@ describe('<FileField />', () => {
     it('should allow setting target string', () => {
         const wrapper = shallow(
             <FileField
+                {...defaultProps}
                 record={{
-                    url: 'http://foo.com/bar.jpg',
+                    url: 'http://foo.com/bar.jpg'
                 }}
-                source="url"
                 target="_blank"
             />
         );
@@ -80,17 +83,18 @@ describe('<FileField />', () => {
     it('should render a list of links with correct attributes based on `src` and `title`', () => {
         const wrapper = shallow(
             <FileField
+                {...defaultProps}
                 record={{
                     files: [
                         {
                             url: 'http://foo.com/bar.jpg',
-                            title: 'Hello world!',
+                            title: 'Hello world!'
                         },
                         {
                             url: 'http://bar.com/foo.jpg',
-                            title: 'Bye world!',
-                        },
-                    ],
+                            title: 'Bye world!'
+                        }
+                    ]
                 }}
                 source="files"
                 src="url"
@@ -107,13 +111,9 @@ describe('<FileField />', () => {
 
     it('should use custom className', () =>
         assert.deepEqual(
-            shallow(
-                <FileField
-                    record={{ foo: true }}
-                    source="email"
-                    className="foo"
-                />
-            ).prop('className'),
+            shallow(<FileField {...defaultProps} record={{ foo: true }} source="email" className="foo" />).prop(
+                'className'
+            ),
             'foo'
         ));
 });
