@@ -1,8 +1,3 @@
-enum RightLeft {
-    right,
-    left,
-}
-
 export interface FieldProps {
     addLabel?: boolean;
     basePath?: string;
@@ -14,6 +9,6 @@ export interface FieldProps {
     className?: string;
     cellClassName?: string;
     headerClassName?: string;
-    textAlign?: RightLeft;
+    textAlign?: 'right' | 'left';
     translate?: (v: string) => string;
 }

@@ -1,15 +1,22 @@
-import React from 'react';
+import React, { SFC } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import pure from 'recompose/pure';
 import Typography from '@material-ui/core/Typography';
+
 import sanitizeRestProps from './sanitizeRestProps';
+import { FieldProps } from './types';
 
 const hasNumberFormat = !!(
     typeof Intl === 'object' &&
     Intl &&
     typeof Intl.NumberFormat === 'function'
 );
+
+interface Props extends FieldProps {
+    locales?: string | string[];
+    options?: object;
+}
 
 /**
  * Display a numeric value as a locale string.
@@ -39,7 +46,7 @@ const hasNumberFormat = !!(
  * // renders the record { id: 1234, price: 25.99 } as
  * <span>25,99 $US</span>
  */
-export const NumberField = ({
+export const NumberField: SFC<Props> = ({
     className,
     record,
     source,
@@ -48,9 +55,13 @@ export const NumberField = ({
     textAlign,
     ...rest
 }) => {
-    if (!record) return null;
+    if (!record) {
+        return null;
+    }
     const value = get(record, source);
-    if (value == null) return null;
+    if (value == null) {
+        return null;
+    }
     if (!hasNumberFormat) {
         return (
             <Typography
@@ -76,25 +87,6 @@ export const NumberField = ({
     );
 };
 
-NumberField.propTypes = {
-    addLabel: PropTypes.bool,
-    basePath: PropTypes.string,
-    classes: PropTypes.object,
-    className: PropTypes.string,
-    cellClassName: PropTypes.string,
-    headerClassName: PropTypes.string,
-    label: PropTypes.string,
-    locales: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.arrayOf(PropTypes.string),
-    ]),
-    options: PropTypes.object,
-    record: PropTypes.object,
-    textAlign: PropTypes.string,
-    sortBy: PropTypes.string,
-    source: PropTypes.string.isRequired,
-};
-
 // wat? TypeScript looses the displayName if we don't set it explicitly
 NumberField.displayName = 'NumberField';
 
@@ -104,4 +96,5 @@ ComposedNumberField.defaultProps = {
     addLabel: true,
     textAlign: 'right',
 };
+
 export default ComposedNumberField;
