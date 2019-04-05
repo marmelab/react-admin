@@ -26,9 +26,6 @@
         "redux-form": "~7.4.0",
         "redux-saga": "~0.16.0"
     },
-    "optionalDependencies": {
-        "@babel/runtime": "7.0.0-beta.55"
-    },
     "scripts": {
         "start": "react-scripts start",
         "build": "react-scripts build",
