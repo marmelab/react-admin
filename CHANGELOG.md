@@ -1,5 +1,23 @@
 # Changelog
 
+## v2.8.5
+
+* Fix links to CodeSandbox become outdated rapidly ([3095](https://github.com/marmelab/react-admin/pull/3095)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix simple example dependencies ([3094](https://github.com/marmelab/react-admin/pull/3094)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix reducer test skipped because of bad suffix ([3092](https://github.com/marmelab/react-admin/pull/3092)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix typo in `<DatagridRow>` ([3089](https://github.com/marmelab/react-admin/pull/3089)) ([romakv4](https://github.com/romakv4))
+* Fix resource translation in delete confirmation dialog ([3086](https://github.com/marmelab/react-admin/pull/3086)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix deprecation warnings for recent react-router releases ([3085](https://github.com/marmelab/react-admin/pull/3085)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix demo uses deprecated menu customization syntax ([3084](https://github.com/marmelab/react-admin/pull/3084)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<ExportButton>` ignores permanent `filter` from `<List>` ([3083](https://github.com/marmelab/react-admin/pull/3083)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<Datagrid>` cells have non unique ids ([3082](https://github.com/marmelab/react-admin/pull/3082)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix delete confirmation dialog triggers `rowClick`([3080](https://github.com/marmelab/react-admin/pull/3080)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix expand icon overlaps actions in tree view ([3064](https://github.com/marmelab/react-admin/pull/3064)) ([macrozone](https://github.com/macrozone))
+* Fix custom actions cannot override `basePath` ([3043](https://github.com/marmelab/react-admin/pull/3043)) ([kopax](https://github.com/kopax))
+* Fix wrong scalar types into variables for `ra-data-graphql-simple` ([3036](https://github.com/marmelab/react-admin/pull/3036)) ([Artexoid](https://github.com/Artexoid))
+* Improve drawer animation of review edition in Posters Galore demo ([2945](https://github.com/marmelab/react-admin/pull/2945)) ([djhi](https://github.com/djhi))
+* Turn data generator for demo into a public repository ([3096](https://github.com/marmelab/react-admin/pull/3096)) ([fzaninotto](https://github.com/fzaninotto))
+
 ## v2.8.4
 
 * Fix typo in ra-data-graphql documentation ([3074](https://github.com/marmelab/react-admin/pull/3074)) ([erichgoldman](https://github.com/erichgoldman))
