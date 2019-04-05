@@ -57,49 +57,48 @@ const AppBar = ({
     toggleSidebar,
     userMenu,
     width,
+    position,
     ...rest
 }) => (
-    <Headroom>
-        <MuiAppBar
-            className={className}
-            color="secondary"
-            position="static"
-            {...rest}
+    <MuiAppBar
+        className={className}
+        color="secondary"
+        position={position}
+        {...rest}
+    >
+        <Toolbar
+            disableGutters
+            variant={width === 'xs' ? 'regular' : 'dense'}
+            className={classes.toolbar}
         >
-            <Toolbar
-                disableGutters
-                variant={width === 'xs' ? 'regular' : 'dense'}
-                className={classes.toolbar}
+            <IconButton
+                color="inherit"
+                aria-label="open drawer"
+                onClick={toggleSidebar}
+                className={classNames(classes.menuButton)}
             >
-                <IconButton
+                <MenuIcon
+                    classes={{
+                        root: open
+                            ? classes.menuButtonIconOpen
+                            : classes.menuButtonIconClosed,
+                    }}
+                />
+            </IconButton>
+            {Children.count(children) === 0 ? (
+                <Typography
+                    variant="title"
                     color="inherit"
-                    aria-label="open drawer"
-                    onClick={toggleSidebar}
-                    className={classNames(classes.menuButton)}
-                >
-                    <MenuIcon
-                        classes={{
-                            root: open
-                                ? classes.menuButtonIconOpen
-                                : classes.menuButtonIconClosed,
-                        }}
-                    />
-                </IconButton>
-                {Children.count(children) === 0 ? (
-                    <Typography
-                        variant="title"
-                        color="inherit"
-                        className={classes.title}
-                        id="react-admin-title"
-                    />
-                ) : (
-                    children
-                )}
-                <LoadingIndicator />
-                {cloneElement(userMenu, { logout })}
-            </Toolbar>
-        </MuiAppBar>
-    </Headroom>
+                    className={classes.title}
+                    id="react-admin-title"
+                />
+            ) : (
+                children
+            )}
+            <LoadingIndicator />
+            {cloneElement(userMenu, { logout })}
+        </Toolbar>
+    </MuiAppBar>
 );
 
 AppBar.propTypes = {
@@ -113,10 +112,12 @@ AppBar.propTypes = {
     toggleSidebar: PropTypes.func.isRequired,
     userMenu: PropTypes.node,
     width: PropTypes.string,
+    position: PropTypes.string,
 };
 
 AppBar.defaultProps = {
     userMenu: <UserMenu />,
+    poition: 'static',
 };
 
 const enhance = compose(
@@ -132,4 +133,11 @@ const enhance = compose(
     withWidth()
 );
 
-export default enhance(AppBar);
+const EnhancedAppBar = enhance(AppBar);
+
+export default ({ position, ...props }) =>
+    position === 'sticky'
+        ? <EnhancedAppBar {...props} position={position} />
+        : <Headroom>
+            <EnhancedAppBar {...props} />
+          </Headroom>

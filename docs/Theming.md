@@ -593,6 +593,18 @@ const MyAppBar = withStyles(styles)(({ classes, ...props }) => (
 export default MyAppBar;
 ```
 
+In addition you can pass `position="sticky"` to prevent AppBar from hiding when you scrolling down
+
+```jsx
+const MyAppBar = (props) => (
+    <AppBar {...props} position="sticky">
+       ...
+    </AppBar>
+);
+
+export default MyAppBar;
+```
+
 To use this custom `MyAppBar` component, pass it as prop to a custom `Layout`, as shown below:
 
 ```jsx
