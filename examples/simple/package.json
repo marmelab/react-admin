@@ -37,7 +37,7 @@
         "webpack-dev-server": "~3.1.11"
     },
     "dependencies": {
-        "@material-ui/core": "~1.5.1",
+        "@material-ui/core": "1.5.0",
         "@material-ui/icons": "~1.1.1",
         "@babel/polyfill": "^7.0.0",
         "ra-data-fakerest": "^2.0.0",
