@@ -48,6 +48,7 @@
         "jest": "^23.6.0",
         "lerna": "~2.9.1",
         "lolex": "~2.3.2",
+        "mutationobserver-shim": "^0.3.3",
         "prettier": "~1.16.4",
         "raf": "~3.4.0",
         "ts-jest": "^23.10.5",
