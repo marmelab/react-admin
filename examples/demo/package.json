@@ -3,7 +3,7 @@
     "version": "0.1.0",
     "private": true,
     "dependencies": {
-        "@material-ui/core": "~1.5.1",
+        "@material-ui/core": "1.5.0",
         "@material-ui/icons": "~1.1.1",
         "data-generator-retail": "^2.7.0",
         "fakerest": "~2.1.0",
