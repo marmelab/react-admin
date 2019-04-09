@@ -99,10 +99,10 @@ export class RichTextInput extends Component {
     }
 }
 
-const RichRextInputWithField = addField(withStyles(styles)(RichTextInput));
+const RichTextInputWithField = addField(withStyles(styles)(RichTextInput));
 
-RichRextInputWithField.defaultProps = {
+RichTextInputWithField.defaultProps = {
     addLabel: true,
     fullWidth: true,
 };
-export default RichRextInputWithField;
+export default RichTextInputWithField;
