@@ -8,17 +8,18 @@ import ExitIcon from '@material-ui/icons/PowerSettingsNew';
 import classnames from 'classnames';
 import { translate, userLogout as userLogoutAction } from 'ra-core';
 
-const styles = theme => createStyles({
-    menuItem: {
-        color: theme.palette.text.secondary,
-    },
-    iconMenuPaddingStyle: {
-        paddingRight: '1.2em',
-    },
-    iconPaddingStyle: {
-        paddingRight: theme.spacing.unit,
-    },
-});
+const styles = theme =>
+    createStyles({
+        menuItem: {
+            color: theme.palette.text.secondary,
+        },
+        iconMenuPaddingStyle: {
+            paddingRight: '1.2em',
+        },
+        iconPaddingStyle: {
+            paddingRight: theme.spacing.unit,
+        },
+    });
 
 const sanitizeRestProps = ({
     classes,

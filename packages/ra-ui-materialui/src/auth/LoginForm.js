@@ -10,17 +10,18 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import { withStyles, createStyles } from '@material-ui/core/styles';
 import { translate, userLogin } from 'ra-core';
 
-const styles = () => createStyles({
-    form: {
-        padding: '0 1em 1em 1em',
-    },
-    input: {
-        marginTop: '1em',
-    },
-    button: {
-        width: '100%',
-    },
-});
+const styles = () =>
+    createStyles({
+        form: {
+            padding: '0 1em 1em 1em',
+        },
+        input: {
+            marginTop: '1em',
+        },
+        button: {
+            width: '100%',
+        },
+    });
 
 // see http://redux-form.com/6.4.3/examples/material-ui/
 const renderInput = ({

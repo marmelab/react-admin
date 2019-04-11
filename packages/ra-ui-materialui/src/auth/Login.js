@@ -15,30 +15,31 @@ import defaultTheme from '../defaultTheme';
 import Notification from '../layout/Notification';
 import DefaultLoginForm from './LoginForm';
 
-const styles = theme => createStyles({
-    main: {
-        display: 'flex',
-        flexDirection: 'column',
-        minHeight: '100vh',
-        height: '1px',
-        alignItems: 'center',
-        justifyContent: 'flex-start',
-        backgroundRepeat: 'no-repeat',
-        backgroundSize: 'cover',
-    },
-    card: {
-        minWidth: 300,
-        marginTop: '6em',
-    },
-    avatar: {
-        margin: '1em',
-        display: 'flex',
-        justifyContent: 'center',
-    },
-    icon: {
-        backgroundColor: theme.palette.secondary[500],
-    },
-});
+const styles = theme =>
+    createStyles({
+        main: {
+            display: 'flex',
+            flexDirection: 'column',
+            minHeight: '100vh',
+            height: '1px',
+            alignItems: 'center',
+            justifyContent: 'flex-start',
+            backgroundRepeat: 'no-repeat',
+            backgroundSize: 'cover',
+        },
+        card: {
+            minWidth: 300,
+            marginTop: '6em',
+        },
+        avatar: {
+            margin: '1em',
+            display: 'flex',
+            justifyContent: 'center',
+        },
+        icon: {
+            backgroundColor: theme.palette.secondary[500],
+        },
+    });
 
 const sanitizeRestProps = ({
     array,
