@@ -86,6 +86,10 @@ class DatagridRow extends Component {
             this.handleToggleExpanded(event);
             return;
         }
+        if (path == 'toggle') {
+            this.handleToggle(event);
+            return;
+        }
 
         push(path);
     };
