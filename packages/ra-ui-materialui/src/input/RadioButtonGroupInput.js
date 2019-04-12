@@ -94,14 +94,15 @@ export class RadioButtonGroupInput extends Component {
             : typeof optionText === 'function'
             ? optionText(choice)
             : get(choice, optionText);
+        const nodeId = id ? `${id}_${get(choice, optionValue)}` : get(choice, optionValue)
         return (
             <FormControlLabel
-                htmlFor={`${id}_${get(choice, optionValue)}`}
+                htmlFor={nodeId}
                 key={get(choice, optionValue)}
                 value={get(choice, optionValue)}
                 control={
                     <Radio
-                        id={`${id}_${get(choice, optionValue)}`}
+                        id={nodeId}
                         color="primary"
                     />
                 }
