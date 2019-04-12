@@ -700,7 +700,6 @@ Lastly, use the `options` attribute if you want to override any of Material UI's
     labelPosition: 'right'
 }} />
 ```
-**Note**: The `RadioButtonGroupInput` component accepts an optional `id` prop. It is recommended to use this prop if you have more than one `RadioButtonGroupInput` field on one form to avoid interference between the form controls.
 {% endraw %}
 
 Refer to [Material UI RadioGroup documentation](http://www.material-ui.com/#/components/radio-button) for more details.

@@ -83,29 +83,26 @@ export class RadioButtonGroupInput extends Component {
 
     renderRadioButton = choice => {
         const {
-            id,
             optionText,
             optionValue,
             translate,
             translateChoice,
+            source,
         } = this.props;
         const choiceName = React.isValidElement(optionText) // eslint-disable-line no-nested-ternary
             ? React.cloneElement(optionText, { record: choice })
             : typeof optionText === 'function'
             ? optionText(choice)
             : get(choice, optionText);
-        const nodeId = id ? `${id}_${get(choice, optionValue)}` : get(choice, optionValue)
+
+        const nodeId = `${source}_${get(choice, optionValue)}`;
+
         return (
             <FormControlLabel
                 htmlFor={nodeId}
                 key={get(choice, optionValue)}
                 value={get(choice, optionValue)}
-                control={
-                    <Radio
-                        id={nodeId}
-                        color="primary"
-                    />
-                }
+                control={<Radio id={nodeId} color="primary" />}
                 label={
                     translateChoice
                         ? translate(choiceName, { _: choiceName })
@@ -174,7 +171,6 @@ RadioButtonGroupInput.propTypes = {
     choices: PropTypes.arrayOf(PropTypes.object),
     classes: PropTypes.object,
     className: PropTypes.string,
-    id: PropTypes.string,
     input: PropTypes.object,
     isRequired: PropTypes.bool,
     label: PropTypes.string,
