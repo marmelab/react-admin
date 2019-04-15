@@ -243,9 +243,8 @@ export default introspectionResults => (
 
         case GET_MANY_REFERENCE: {
             const parts = preparedParams.target.split('.');
-
             return {
-                filter: { [parts[0]]: { id: preparedParams.id } },
+                filter: { [`${parts[0]}Id`]: preparedParams.id },
             };
         }
 
