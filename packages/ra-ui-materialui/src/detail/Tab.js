@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, isValidElement } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import MuiTab from '@material-ui/core/Tab';
@@ -65,12 +65,12 @@ class Tab extends Component {
         />
     );
 
-    renderContent = ({ className, children, ...rest }) => (
+    renderContent = ({ className, children, basePath, record, resource }) => (
         <span className={className}>
             {React.Children.map(
                 children,
                 field =>
-                    field && (
+                    field && isValidElement(field) ? (
                         <div
                             key={field.props.source}
                             className={classnames(
@@ -83,20 +83,23 @@ class Tab extends Component {
                                 <Labeled
                                     label={field.props.label}
                                     source={field.props.source}
-                                    {...sanitizeRestProps(rest)}
+                                    basePath={basePath}
+                                    record={record}
+                                    resource={resource}
                                 >
                                     {field}
                                 </Labeled>
                             ) : typeof field.type === 'string' ? (
                                 field
                             ) : (
-                                React.cloneElement(
-                                    field,
-                                    sanitizeRestProps(rest)
-                                )
+                                React.cloneElement(field, {
+                                    basePath,
+                                    record,
+                                    resource,
+                                })
                             )}
                         </div>
-                    )
+                    ) : null
             )}
         </span>
     );

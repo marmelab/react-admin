@@ -100,7 +100,8 @@ const PostActions = ({
     onUnselectItems,
     resource,
     selectedIds,
-    showFilter
+    showFilter,
+    total
 }) => (
     <CardActions>
         {bulkActions && React.cloneElement(bulkActions, {
@@ -119,6 +120,7 @@ const PostActions = ({
         }) }
         <CreateButton basePath={basePath} />
         <ExportButton
+            disabled={total === 0}
             resource={resource}
             sort={currentSort}
             filter={filterValues}
@@ -126,7 +128,7 @@ const PostActions = ({
         />
         <RefreshButton />
         {/* Add your custom actions */}
-        <Button primary onClick={customAction}>Custom Action</Button>
+        <Button color="primary" onClick={customAction}>Custom Action</Button>
     </CardActions>
 );
 
@@ -149,7 +151,9 @@ export const PostList = ({ permissions, ...props }) => (
 
 ### Exporter
 
-Among the default list actions, react-admin includes an `<ExportButton>`. By default, clicking this button will:
+Among the default list actions, react-admin includes an `<ExportButton>`. This button is disabled when there is no record in the current `<List>`.
+
+By default, clicking this button will:
 
 1. Call the `dataProvider` with the current sort and filter (but without pagination),
 2. Transform the result into a CSV string,
@@ -158,6 +162,8 @@ Among the default list actions, react-admin includes an `<ExportButton>`. By def
 The columns of the CSV file match all the fields of the records in the `dataProvider` response. That means that the export doesn't take into account the selection and ordering of fields in your `<List>` via `Field` components. If you want to customize the result, pass a custom `exporter` function to the `<List>`. This function will receive the data from the `dataProvider` (after step 1), and replace steps 2-3 (i.e. it's in charge of transforming, converting, and downloading the file).
 
 **Tip**: For CSV conversion, you can import [Papaparse](https://www.papaparse.com/), a CSV parser and stringifier which is already a react-admin dependency. And for CSV download, take advantage of react-admin's `downloadCSV` function.
+
+**Tip**: You may also remove the `<ExportButton>` by passing `false` to the `exporter` prop: `exporter={false}`
 
 Here is an example for a Posts exporter, omitting, adding, and reordering fields:
 
@@ -331,6 +337,10 @@ export default connect(undefined, { crudUpdateMany })(ResetViewsButton);
 ```
 
 **Tip**: `<Confirm>` leverages material-ui's `<Dialog>` component to implement a confirmation popup. Feel free to use it in your admins!
+
+**Tip**: `<Confirm>` text props such as `title` and `content` are translatable. You can pass them translation keys.
+
+**Tip**: You can customize the text of the two `<Confirm>` component buttons using the `cancel` and `confirm` prop which accepts translation keys too.
 
 **Tip**: React-admin doesn't use the `<Confirm>` component internally, because deletes and updates are applied locally immediately, then dispatched to the server after a few seconds, unless the user chooses to undo the modification. That's what we call optimistic rendering. You can do the same for the `ResetViewsButton` by wrapping the `crudUpdateMany()` action creator inside a `startUndoable()` action creator, as follows:
 
@@ -562,12 +572,12 @@ const PostPagination = ({ page, perPage, total, setPage }) => {
         nbPages > 1 &&
             <Toolbar>
                 {page > 1 &&
-                    <Button primary key="prev" icon={<ChevronLeft />} onClick={() => setPage(page - 1)}>
+                    <Button color="primary" key="prev" icon={<ChevronLeft />} onClick={() => setPage(page - 1)}>
                         Prev
                     </Button>
                 }
                 {page !== nbPages &&
-                    <Button primary key="next" icon={<ChevronRight />} onClick={() => setPage(page + 1)} labelPosition="before">
+                    <Button color="primary" key="next" icon={<ChevronRight />} onClick={() => setPage(page + 1)} labelPosition="before">
                         Next
                     </Button>
                 }
@@ -701,6 +711,7 @@ Here are all the props accepted by the component:
 * [`body`](#body-element)
 * [`rowStyle`](#row-style-function)
 * [`rowClick`](#rowclick)
+* [`expand`](#expand)
 
 It renders as many columns as it receives `<Field>` children.
 
@@ -810,7 +821,111 @@ export const PostList = (props) => (
 
 * "edit" to redirect to the edition vue
 * "show" to redirect to the show vue
-* a function `(id, basePath) => path` to redirect to a custom path
+* "expand" to open the `expand` panel
+* a function `(id, basePath, record) => path` to redirect to a custom path
+
+**Tip**: If you pass a function, it can return `edit`, `show` or a router path. This allows to redirect to either `edit` or `show` after checking a condition on the record. For example:
+
+```js
+const postRowClick = (id, basePath, record) => record.editable ? 'edit' : 'show';
+```
+
+**Tip**: If you pass a function, it can also return a promise allowing you to check an external API before returning a path. For example:
+
+```js
+import fetchUserRights from './fetchUserRights';
+
+const postRowClick = (id, basePath, record) => fetchUserRights().then(({ canEdit }) canEdit ? 'edit' : 'show');
+```
+
+### `expand`
+
+To show more data from the resource without adding too many columns, you can show data in an expandable panel below the row on demand, using the `expand` prop. For instance, this code shows the `body` of a post in an expandable panel:
+
+{% raw %}
+```js
+const PostPanel = ({ id, record, resource }) => (
+    <div dangerouslySetInnerHTML={{ __html: record.body }} />
+);
+
+const PostList = props => (
+    <List {...props}>
+        <Datagrid expand={<PostPanel />}>
+            <TextField source="id" />
+            <TextField source="title" />
+            <DateField source="published_at" />
+            <BooleanField source="commentable" />
+            <EditButton />
+        </Datagrid>
+    </List>
+)
+```
+{% endraw %}
+
+![expandable panel](./img/datagrid_expand.gif)
+
+The `expand` prop expects an element as value. When the user chooses to expand the row, the Datagrid clones the element, and passes the current `record`, `id`, and `resource`.
+
+**Tip**: Since the `expand` element receives the same props as a detail view, you can actually use a `<Show>` view as element for the `expand` prop:
+
+```js
+const PostShow = props => (
+    <Show
+        {...props}
+        /* disable the app title change when shown */
+        title=" "
+    >
+        <SimpleShowLayout>
+            <RichTextField source="body" />
+        </SimpleShowLayout>
+    </Show>
+);
+
+const PostList = props => (
+    <List {...props}>
+        <Datagrid expand={<PostShow />}>
+            <TextField source="id" />
+            <TextField source="title" />
+            <DateField source="published_at" />
+            <BooleanField source="commentable" />
+            <EditButton />
+        </Datagrid>
+    </List>
+)
+```
+
+The result will be the same as in the previous snippet, except that `<Show>` encloses the content inside a material-ui `<Card>`.
+
+**Tip**: You can go one step further and use an `<Edit>` view as `expand` element, albeit with a twist:
+
+```js
+const PostEdit = props => (
+    <Edit 
+        {...props}
+        /* disable the app title change when shown */
+        title=" "
+    >
+        <SimpleForm
+            /* The form must have a name dependent on the record, because by default all forms have the same name */
+            form={`post_edit_${props.id}`}
+        >
+            <RichTextInput source="body" />
+        </SimpleForm>
+    </Edit>
+);
+
+const PostList = props => (
+    <List {...props}>
+        <Datagrid expand={<PostEdit />}>
+            <TextField source="id" />
+            <TextField source="title" />
+            <DateField source="published_at" />
+            <BooleanField source="commentable" />
+            <EditButton />
+        </Datagrid>
+    </List>
+)
+```
 
 ### CSS API
 
@@ -880,7 +995,7 @@ export default withStyles(styles)(PostList);
 
 ## The `<SimpleList>` component
 
-For mobile devices, a `<Datagrid>` is often unusable - there is simply not enough space to display several columns. The convention in that case is to use a simple list, with only one column per row. The `<SimpleList>` component serves that purpose, leveraging [material-ui's `<List>` and `<ListItem>` components](http://www.material-ui.com/#/components/list). You can use it as `<List>` or `<ReferenceManyField>` child:
+For mobile devices, a `<Datagrid>` is often unusable - there is simply not enough space to display several columns. The convention in that case is to use a simple list, with only one column per row. The `<SimpleList>` component serves that purpose, leveraging [material-ui's `<List>` and `<ListItem>` components](https://v1-5-0.material-ui.com/demos/lists/). You can use it as `<List>` or `<ReferenceManyField>` child:
 
 ```jsx
 // in src/posts.js

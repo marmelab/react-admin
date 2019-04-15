@@ -4,19 +4,19 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, createStyles } from '@material-ui/core/styles';
 import ContentSave from '@material-ui/icons/Save';
 import classnames from 'classnames';
 import { showNotification, translate } from 'ra-core';
 
-const styles = {
+const styles = createStyles({
     button: {
         position: 'relative',
     },
     iconPaddingStyle: {
         marginRight: '0.5em',
     },
-};
+});
 
 const sanitizeRestProps = ({
     basePath,
@@ -30,9 +30,12 @@ const sanitizeRestProps = ({
     handleSubmit,
     handleSubmitWithRedirect,
     submitOnEnter,
+    record,
     redirect,
+    resource,
     locale,
     showNotification,
+    undoable,
     ...rest
 }) => rest;
 
@@ -45,9 +48,9 @@ export class SaveButton extends Component {
         label: PropTypes.string,
         pristine: PropTypes.bool,
         redirect: PropTypes.oneOfType([
-          PropTypes.string,
-          PropTypes.bool,
-          PropTypes.func,
+            PropTypes.string,
+            PropTypes.bool,
+            PropTypes.func,
         ]),
         saving: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
         showNotification: PropTypes.func,
@@ -69,6 +72,7 @@ export class SaveButton extends Component {
             redirect,
             saving,
             showNotification,
+            onClick,
         } = this.props;
 
         if (saving) {
@@ -83,6 +87,10 @@ export class SaveButton extends Component {
                 e.preventDefault();
             }
             handleSubmitWithRedirect(redirect)();
+        }
+
+        if (typeof onClick === 'function') {
+            onClick();
         }
     };
 
@@ -99,6 +107,7 @@ export class SaveButton extends Component {
             translate,
             variant = 'raised',
             icon,
+            onClick,
             ...rest
         } = this.props;
 

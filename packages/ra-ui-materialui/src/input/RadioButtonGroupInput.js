@@ -7,17 +7,17 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import InputLabel from '@material-ui/core/InputLabel';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import Radio from '@material-ui/core/Radio';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, createStyles } from '@material-ui/core/styles';
 import compose from 'recompose/compose';
 import { addField, translate, FieldTitle } from 'ra-core';
 
 import sanitizeRestProps from './sanitizeRestProps';
 
-const styles = {
+const styles = createStyles({
     label: {
         position: 'relative',
     },
-};
+});
 
 /**
  * An Input component for a radio button group, using an array of objects for the options
@@ -83,28 +83,26 @@ export class RadioButtonGroupInput extends Component {
 
     renderRadioButton = choice => {
         const {
-            id,
             optionText,
             optionValue,
             translate,
             translateChoice,
+            source,
         } = this.props;
         const choiceName = React.isValidElement(optionText) // eslint-disable-line no-nested-ternary
             ? React.cloneElement(optionText, { record: choice })
             : typeof optionText === 'function'
-                ? optionText(choice)
-                : get(choice, optionText);
+            ? optionText(choice)
+            : get(choice, optionText);
+
+        const nodeId = `${source}_${get(choice, optionValue)}`;
+
         return (
             <FormControlLabel
-                htmlFor={`${id}_${get(choice, optionValue)}`}
+                htmlFor={nodeId}
                 key={get(choice, optionValue)}
                 value={get(choice, optionValue)}
-                control={
-                    <Radio
-                        id={`${id}_${get(choice, optionValue)}`}
-                        color="primary"
-                    />
-                }
+                control={<Radio id={nodeId} color="primary" />}
                 label={
                     translateChoice
                         ? translate(choiceName, { _: choiceName })
@@ -160,8 +158,9 @@ export class RadioButtonGroupInput extends Component {
                 >
                     {choices.map(this.renderRadioButton)}
                 </RadioGroup>
-                {touched &&
-                    error && <FormHelperText error>{error}</FormHelperText>}
+                {touched && error && (
+                    <FormHelperText error>{error}</FormHelperText>
+                )}
                 {helperText && <FormHelperText>{helperText}</FormHelperText>}
             </FormControl>
         );
@@ -172,7 +171,6 @@ RadioButtonGroupInput.propTypes = {
     choices: PropTypes.arrayOf(PropTypes.object),
     classes: PropTypes.object,
     className: PropTypes.string,
-    id: PropTypes.string,
     input: PropTypes.object,
     isRequired: PropTypes.bool,
     label: PropTypes.string,

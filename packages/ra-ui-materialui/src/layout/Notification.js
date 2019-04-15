@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Snackbar from '@material-ui/core/Snackbar';
 import Button from '@material-ui/core/Button';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, createStyles } from '@material-ui/core/styles';
 import compose from 'recompose/compose';
 import classnames from 'classnames';
 
@@ -15,7 +15,7 @@ import {
     complete,
 } from 'ra-core';
 
-const styles = theme => ({
+const styles = theme => createStyles({
     confirm: {
         backgroundColor: theme.palette.background.default,
     },
@@ -88,6 +88,9 @@ class Notification extends React.Component {
                 autoHideDuration={
                     (notification && notification.autoHideDuration) ||
                     autoHideDuration
+                }
+                disableWindowBlurListener={
+                    notification && notification.undoable
                 }
                 onExited={this.handleExited}
                 onClose={this.handleRequestClose}

@@ -105,9 +105,9 @@ class ExportButton extends Component {
     };
 
     static defaultProps = {
-      label: 'ra.action.export',
-      maxResults: 1000,
-      icon: <GetApp />,
+        label: 'ra.action.export',
+        maxResults: 1000,
+        icon: <GetApp />,
     };
 
     handleClick = () => {
@@ -118,6 +118,7 @@ class ExportButton extends Component {
             maxResults,
             sort,
             resource,
+            onClick,
         } = this.props;
         dispatch(
             crudGetAll(
@@ -135,6 +136,10 @@ class ExportButton extends Component {
                         : downloadCSV(convertToCSV(data), resource)
             )
         );
+
+        if (typeof onClick === 'function') {
+            onClick();
+        }
     };
 
     render() {

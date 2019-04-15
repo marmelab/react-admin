@@ -1,11 +1,12 @@
-import React, { Children, cloneElement, Component } from 'react';
+import React, { Children, cloneElement, Component, isValidElement } from 'react';
 import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import get from 'lodash/get';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import { withStyles } from '@material-ui/core/styles';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import { withStyles, createStyles } from '@material-ui/core/styles';
 import CloseIcon from '@material-ui/icons/RemoveCircleOutline';
 import AddIcon from '@material-ui/icons/AddCircleOutline';
 import { translate } from 'ra-core';
@@ -13,7 +14,7 @@ import classNames from 'classnames';
 
 import FormInput from '../form/FormInput';
 
-const styles = theme => ({
+const styles = theme => createStyles({
     root: {
         padding: 0,
         marginBottom: 0,
@@ -68,8 +69,8 @@ export class SimpleFormIterator extends Component {
         this.nextId = props.fields.length
             ? props.fields.length
             : props.defaultValue
-                ? props.defaultValue.length
-                : 0;
+            ? props.defaultValue.length
+            : 0;
 
         // We check whether we have a defaultValue (which must be an array) before checking
         // the fields prop which will always be empty for a new record.
@@ -83,6 +84,17 @@ export class SimpleFormIterator extends Component {
         this.ids.splice(index, 1);
         fields.remove(index);
     };
+
+    // Returns a boolean to indicate whether to disable the remove button for certain fields.
+    // If disableRemove is a function, then call the function with the current record to
+    // determing if the button should be disabled. Otherwise, use a boolean property that
+    // enables or disables the button for all of the fields.
+    disableRemoveField = (record, disableRemove) => {
+        if (typeof disableRemove === "boolean") {
+            return disableRemove;
+        }
+        return disableRemove && disableRemove(record);
+    }
 
     addField = () => {
         const { fields } = this.props;
@@ -107,7 +119,9 @@ export class SimpleFormIterator extends Component {
         const records = get(record, source);
         return fields ? (
             <ul className={classes.root}>
-                {submitFailed && error && <span>{error}</span>}
+                {submitFailed && error && (
+                    <FormHelperText error>{error}</FormHelperText>
+                )}
                 <TransitionGroup>
                     {fields.map((member, index) => (
                         <CSSTransition
@@ -123,7 +137,7 @@ export class SimpleFormIterator extends Component {
                                     {index + 1}
                                 </Typography>
                                 <section className={classes.form}>
-                                    {Children.map(children, (input, index2) => (
+                                    {Children.map(children, (input, index2) => isValidElement(input) ? (
                                         <FormInput
                                             basePath={
                                                 input.props.basePath || basePath
@@ -147,9 +161,9 @@ export class SimpleFormIterator extends Component {
                                             }
                                             resource={resource}
                                         />
-                                    ))}
+                                    ) : null)}
                                 </section>
-                                {!disableRemove && (
+                                {!(this.disableRemoveField((records && records[index]) || {}, disableRemove)) && (
                                     <span className={classes.action}>
                                         <Button
                                             className={classNames(
@@ -210,7 +224,7 @@ SimpleFormIterator.propTypes = {
     resource: PropTypes.string,
     translate: PropTypes.func,
     disableAdd: PropTypes.bool,
-    disableRemove: PropTypes.bool,
+    disableRemove: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
 };
 
 export default compose(

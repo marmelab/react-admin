@@ -7,6 +7,7 @@ import {
     MuiThemeProvider,
     createMuiTheme,
     withStyles,
+    createStyles,
 } from '@material-ui/core/styles';
 import compose from 'recompose/compose';
 
@@ -17,7 +18,7 @@ import Notification from './Notification';
 import Error from './Error';
 import defaultTheme from '../defaultTheme';
 
-const styles = theme => ({
+const styles = theme => createStyles({
     root: {
         display: 'flex',
         flexDirection: 'column',
@@ -40,6 +41,7 @@ const styles = theme => ({
         display: 'flex',
         flexDirection: 'column',
         flexGrow: 1,
+        flexBasis: 0,
         padding: theme.spacing.unit * 3,
         [theme.breakpoints.up('xs')]: {
             paddingLeft: 5,
@@ -169,10 +171,10 @@ const mapStateToProps = state => ({
 const EnhancedLayout = compose(
     connect(
         mapStateToProps,
-        {}, // Avoid connect passing dispatch in props
+        {} // Avoid connect passing dispatch in props
     ),
     withRouter,
-    withStyles(styles),
+    withStyles(styles)
 )(Layout);
 
 class LayoutWithTheme extends Component {

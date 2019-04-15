@@ -11,7 +11,9 @@ import authProvider from './authProvider';
 
 const App = () => (
     <Admin
-        dataProvider={jsonServerProvider('http://jsonplaceholder.typicode.com')}
+        dataProvider={jsonServerProvider(
+            'https://jsonplaceholder.typicode.com'
+        )}
         authProvider={authProvider}
         dashboard={Dashboard}
     >

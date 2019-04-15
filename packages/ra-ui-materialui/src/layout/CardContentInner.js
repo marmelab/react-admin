@@ -2,22 +2,22 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import CardContent from '@material-ui/core/CardContent';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, createStyles } from '@material-ui/core/styles';
 
-var styles = theme => ({
-  root: {
-    paddingTop: 0,
-    paddingBottom: 0,
-    '&:first-child': {
-      paddingTop: 16,
+var styles = theme => createStyles({
+    root: {
+        paddingTop: 0,
+        paddingBottom: 0,
+        '&:first-child': {
+            paddingTop: 16,
+        },
+        '&:last-child': {
+            paddingBottom: 16,
+            [theme.breakpoints.only('xs')]: {
+                paddingBottom: 70,
+            },
+        },
     },
-    '&:last-child': {
-      paddingBottom: 16,
-      [theme.breakpoints.only('xs')]: {
-        paddingBottom: 70,
-      },
-    },
-  },
 });
 
 /**

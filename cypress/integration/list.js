@@ -3,6 +3,7 @@ import loginPageFactory from '../support/LoginPage';
 
 describe('List Page', () => {
     const ListPagePosts = listPageFactory('/#/posts');
+    const ListPageUsers = listPageFactory('/#/users');
     const LoginPage = loginPageFactory('/#/login');
 
     beforeEach(() => {
@@ -11,19 +12,24 @@ describe('List Page', () => {
 
     describe('Title', () => {
         it('should show the correct title in the appBar', () => {
-            cy.get(ListPagePosts.elements.title).contains('Posts List');
+            cy.get(ListPagePosts.elements.title).contains('Posts');
         });
     });
 
     describe('Auto-hide AppBar', () => {
         it('should hide/show the appBar when scroll action appears', () => {
+            // wait for the skeleton to disappear
+            cy.contains('1-10 of 13');
+
             cy.viewport(1280, 500);
 
             cy.scrollTo(0, 200);
-            cy.get(ListPagePosts.elements.headroom).should('not.be.visible');
+            cy.get(ListPagePosts.elements.headroomUnpinned).should(
+                'not.be.visible'
+            );
 
             cy.scrollTo(0, -100);
-            cy.get(ListPagePosts.elements.headroom).should('be.visible');
+            cy.get(ListPagePosts.elements.headroomUnfixed).should('be.visible');
         });
     });
 
@@ -105,6 +111,15 @@ describe('List Page', () => {
             cy.contains('1-1 of 1');
             ListPagePosts.setFilterValue('q', '');
         });
+
+        it('should allow to disable alwaysOn filters with default value', () => {
+            LoginPage.navigate();
+            LoginPage.login('admin', 'password');
+            ListPageUsers.navigate();
+            cy.contains('1-2 of 2');
+            cy.get('button[title="Remove this filter"]').click();
+            cy.contains('1-3 of 3');
+        });
     });
 
     describe('Bulk Actions', () => {
@@ -165,6 +180,94 @@ describe('List Page', () => {
             ListPagePosts.toggleSelectSomeItems(3);
             ListPagePosts.applyDeleteBulkAction();
             cy.contains('1-10 of 10');
+        });
+    });
+
+    describe('rowClick', () => {
+        it('should accept a function', () => {
+            cy.contains(
+                'Fusce massa lorem, pulvinar a posuere ut, accumsan ac nisi'
+            )
+                .parents('tr')
+                .click();
+            cy.contains('Summary').should(el => expect(el).to.exist);
+        });
+
+        it('should accept a function returning a promise', () => {
+            LoginPage.navigate();
+            LoginPage.login('user', 'password');
+            ListPageUsers.navigate();
+            cy.contains('Annamarie Mayer')
+                .parents('tr')
+                .click();
+            cy.contains('Summary').should(el => expect(el).to.exist);
+        });
+    });
+
+    describe('expand panel', () => {
+        it('should show an expand button opening the expand element', () => {
+            cy.contains('1-10 of 13'); // wait for data
+            cy.get('[role="expand"]')
+                .eq(0)
+                .click();
+            cy.get('[role="expand-content"]').should(el =>
+                expect(el).to.contain(
+                    'Curabitur eu odio ullamcorper, pretium sem at, blandit libero. Nulla sodales facilisis libero, eu gravida tellus ultrices nec. In ut gravida mi. Vivamus finibus tortor tempus egestas lacinia. Cras eu arcu nisl. Donec pretium dolor ipsum, eget feugiat urna iaculis ut.'
+                )
+            );
+            cy.get('.datagrid-body').should(el =>
+                expect(el).to.not.contain('[role="expand-content"]')
+            );
+        });
+
+        it('should accept multiple expands', () => {
+            cy.contains('1-10 of 13'); // wait for data
+            cy.get('[role="expand"]')
+                .eq(0)
+                .click();
+            cy.get('[role="expand"]')
+                .eq(1)
+                .click();
+            cy.get('[role="expand-content"]').should(el =>
+                expect(el).to.have.length(2)
+            );
+        });
+    });
+
+    describe('Sorting', () => {
+        it('should display a sort arrow when clicking on a sortable column header', () => {
+            ListPagePosts.toggleColumnSort('id');
+            cy.get(ListPagePosts.elements.svg('id')).should('be.visible');
+
+            ListPagePosts.toggleColumnSort('tags.name');
+            cy.get(ListPagePosts.elements.svg('tags.name')).should(
+                'be.visible'
+            );
+        });
+
+        it('should hide the sort arrow when clicking on another sortable column header', () => {
+            ListPagePosts.toggleColumnSort('published_at');
+            cy.get(ListPagePosts.elements.svg('id')).should('be.hidden');
+            cy.get(ListPagePosts.elements.svg('tags.name')).should('be.hidden');
+        });
+
+        it('should reverse the sort arrow when clicking on an already sorted column header', () => {
+            ListPagePosts.toggleColumnSort('published_at');
+            ListPagePosts.toggleColumnSort('tags.name');
+            cy.get(
+                ListPagePosts.elements.svg(
+                    'tags.name',
+                    '[class*=iconDirectionAsc]'
+                )
+            ).should('exist');
+
+            ListPagePosts.toggleColumnSort('tags.name');
+            cy.get(
+                ListPagePosts.elements.svg(
+                    'tags.name',
+                    '[class*=iconDirectionDesc]'
+                )
+            ).should('exist');
         });
     });
 });

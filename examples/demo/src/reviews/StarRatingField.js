@@ -7,7 +7,9 @@ const StarRatingField = ({ record }) => (
     <span>
         {Array(record.rating)
             .fill(true)
-            .map((_, i) => <Icon key={i} style={style} />)}
+            .map((_, i) => (
+                <Icon key={i} style={style} />
+            ))}
     </span>
 );
 

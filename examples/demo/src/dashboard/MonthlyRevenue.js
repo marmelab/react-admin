@@ -1,4 +1,5 @@
 import React from 'react';
+import compose from 'recompose/compose';
 import Card from '@material-ui/core/Card';
 import DollarIcon from '@material-ui/icons/AttachMoney';
 import { withStyles } from '@material-ui/core/styles';
@@ -35,4 +36,9 @@ const MonthlyRevenue = ({ value, translate, classes }) => (
     </div>
 );
 
-export default translate(withStyles(styles)(MonthlyRevenue));
+const enhance = compose(
+    withStyles(styles),
+    translate
+);
+
+export default enhance(MonthlyRevenue);

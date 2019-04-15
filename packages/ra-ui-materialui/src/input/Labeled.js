@@ -2,10 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, createStyles } from '@material-ui/core/styles';
 import { FieldTitle } from 'ra-core';
 
-const styles = theme => ({
+const styles = theme => createStyles({
     label: {
         position: 'relative',
     },
@@ -67,7 +67,7 @@ export const Labeled = ({
             className={className}
             margin="normal"
             fullWidth={fullWidth}
-            error={meta && meta.touched && meta.error}
+            error={meta && meta.touched && !!meta.error}
         >
             <InputLabel htmlFor={id} shrink className={classes.label}>
                 <FieldTitle

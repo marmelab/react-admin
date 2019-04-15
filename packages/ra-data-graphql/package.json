@@ -1,6 +1,6 @@
 {
     "name": "ra-data-graphql",
-    "version": "2.5.1",
+    "version": "2.8.4",
     "description": "A GraphQL data provider for react-admin",
     "main": "lib/index.js",
     "module": "esm/index.js",
@@ -32,20 +32,19 @@
         "watch": "rimraf ./lib && tsc --watch"
     },
     "dependencies": {
-        "apollo-client": "^2.2.8",
-        "apollo-client-preset": "^1.0.6",
-        "graphql-tag": "^2.6.1",
+        "apollo-client": "^2.5.1",
+        "apollo-client-preset": "^1.0.8",
+        "graphql-tag": "^2.10.1",
         "lodash": "~4.17.5",
         "pluralize": "~7.0.0"
     },
     "peerDependencies": {
         "graphql": "^0.13.2",
-        "react-admin": "^2.4.3"
+        "ra-core": "^2.5.0"
     },
     "devDependencies": {
         "cross-env": "^5.2.0",
-        "graphql": "^0.13.2",
-        "react-admin": "^2.5.1",
+        "graphql": "^14.1.1",
         "rimraf": "^2.6.2"
     }
 }

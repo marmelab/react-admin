@@ -7,6 +7,7 @@ import {
     MuiThemeProvider,
     createMuiTheme,
     withStyles,
+    createStyles,
 } from '@material-ui/core/styles';
 import LockIcon from '@material-ui/icons/Lock';
 
@@ -14,7 +15,7 @@ import defaultTheme from '../defaultTheme';
 import Notification from '../layout/Notification';
 import DefaultLoginForm from './LoginForm';
 
-const styles = theme => ({
+const styles = theme => createStyles({
     main: {
         display: 'flex',
         flexDirection: 'column',
@@ -94,7 +95,7 @@ class Login extends Component {
         if (lastTry) {
             this.backgroundImageLoaded = true;
         }
-    }
+    };
 
     // Load background image asynchronously to speed up time to interactive
     lazyLoadBackgroundImage() {

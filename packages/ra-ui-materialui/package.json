@@ -1,6 +1,6 @@
 {
     "name": "ra-ui-materialui",
-    "version": "2.5.1",
+    "version": "2.8.5",
     "description": "UI Components for react-admin with MaterialUI",
     "files": [
         "*.md",
@@ -26,6 +26,8 @@
         "watch": "rimraf ./lib && tsc --watch"
     },
     "devDependencies": {
+        "@material-ui/core": "~1.5.1",
+        "@material-ui/icons": "^1.1.1",
         "cross-env": "^5.2.0",
         "enzyme": "~3.7.0",
         "enzyme-adapter-react-16": "~1.6.0",
@@ -37,8 +39,8 @@
         "rimraf": "^2.6.2"
     },
     "peerDependencies": {
-        "react": "~16.3.0",
-        "react-dom": "~16.3.0"
+        "react": "^16.3.0",
+        "react-dom": "^16.3.0"
     },
     "dependencies": {
         "@material-ui/core": "^1.4.0",
@@ -50,12 +52,14 @@
         "material-ui-chip-input": "1.0.0-beta.6 - 1.0.0-beta.8",
         "papaparse": "^4.1.4",
         "prop-types": "~15.6.1",
-        "ra-core": "^2.5.0",
+        "ra-core": "^2.8.5",
         "react-autosuggest": "^9.4.2",
         "react-dropzone": "~4.0.1",
         "react-headroom": "^2.2.4",
         "react-redux": "~5.0.7",
+        "react-router": "~4.2.0",
         "react-router-dom": "~4.2.2",
+        "react-router-redux": "~5.0.0-alpha.9",
         "react-transition-group": "^2.2.1",
         "recompose": "~0.26.0",
         "redux": "~3.7.2",

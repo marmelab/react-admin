@@ -9,6 +9,7 @@ module.exports = {
             cancel: 'Annuler',
             clear_input_value: 'Vider le champ',
             clone: 'Dupliquer',
+            confirm: 'Confirmer',
             create: 'Créer',
             delete: 'Supprimer',
             edit: 'Éditer',
@@ -32,7 +33,7 @@ module.exports = {
             dashboard: 'Tableau de bord',
             edit: '%{name} #%{id}',
             error: 'Un problème est survenu',
-            list: 'Liste des %{name}',
+            list: '%{name}',
             loading: 'Chargement',
             not_found: 'Page manquante',
             show: '%{name} #%{id}',
@@ -64,7 +65,7 @@ module.exports = {
             bulk_delete_content:
                 'Êtes-vous sûr(e) de vouloir supprimer cet élément ? |||| Êtes-vous sûr(e) de vouloir supprimer ces %{smart_count} éléments ?',
             bulk_delete_title:
-                'Supprimer %{name} |||| Supprimer %{smart_count} %{name} éléments',
+                'Supprimer %{name} |||| Supprimer %{smart_count} %{name}',
             delete_content:
                 'Êtes-vous sûr(e) de vouloir supprimer cet élément ?',
             delete_title: 'Supprimer %{name} #%{id}',
@@ -81,6 +82,8 @@ module.exports = {
         },
         navigation: {
             no_results: 'Aucun résultat',
+            no_more_results:
+                'La page numéro %{page} est en dehors des limites. Essayez la page précédente.',
             page_out_of_boundaries: 'La page %{page} est en dehors des limites',
             page_out_from_end: 'Fin de la pagination',
             page_out_from_begin: 'La page doit être supérieure à 1',
@@ -108,6 +111,7 @@ module.exports = {
             data_provider_error:
                 'Erreur dans le dataProvider. Plus de détails dans la console.',
             canceled: 'Action annulée',
+            logged_out: 'Votre session a pris fin, veuillez vous reconnecter.',
         },
         validation: {
             required: 'Ce champ est requis',
@@ -117,6 +121,8 @@ module.exports = {
             maxValue: 'Maximum %{max}',
             number: 'Doit être un nombre',
             email: 'Doit être un email',
+            oneOf: 'Doit être au choix: %{options}',
+            regex: 'Doit respecter un format spécifique (regexp): %{pattern}',
         },
     },
 };

@@ -15,11 +15,13 @@ const Actions = ({
     displayedFilters,
     exporter,
     filterValues,
+    permanentFilter,
     hasCreate,
     basePath,
     selectedIds,
     onUnselectItems,
     showFilter,
+    total,
     ...rest
 }) => (
     <CardActions className={className} {...sanitizeListRestProps(rest)}>
@@ -40,12 +42,15 @@ const Actions = ({
                 context: 'button',
             })}
         {hasCreate && <CreateButton basePath={basePath} />}
-        <ExportButton
-            resource={resource}
-            sort={currentSort}
-            filter={filterValues}
-            exporter={exporter}
-        />
+        {exporter !== false && (
+            <ExportButton
+                disabled={total === 0}
+                resource={resource}
+                sort={currentSort}
+                filter={{ ...filterValues, ...permanentFilter }}
+                exporter={exporter}
+            />
+        )}
     </CardActions>
 );
 
@@ -55,7 +60,7 @@ Actions.propTypes = {
     className: PropTypes.string,
     currentSort: PropTypes.object,
     displayedFilters: PropTypes.object,
-    exporter: PropTypes.func,
+    exporter: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
     filters: PropTypes.element,
     filterValues: PropTypes.object,
     hasCreate: PropTypes.bool,
@@ -63,6 +68,7 @@ Actions.propTypes = {
     onUnselectItems: PropTypes.func.isRequired,
     selectedIds: PropTypes.arrayOf(PropTypes.any),
     showFilter: PropTypes.func,
+    total: PropTypes.number.isRequired,
 };
 
 Actions.defaultProps = {

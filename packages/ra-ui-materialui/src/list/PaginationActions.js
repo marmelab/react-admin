@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 import Button from '@material-ui/core/Button';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, createStyles } from '@material-ui/core/styles';
 import ChevronLeft from '@material-ui/icons/ChevronLeft';
 import ChevronRight from '@material-ui/icons/ChevronRight';
 import compose from 'recompose/compose';
 import { translate } from 'ra-core';
 
-const styles = theme => ({
+const styles = theme => createStyles({
     actions: {
         flexShrink: 0,
         color: theme.palette.text.secondary,
@@ -94,28 +94,25 @@ export class PaginationActions extends Component {
     renderPageNums() {
         const { classes = {} } = this.props;
 
-        return this.range().map(
-            (pageNum, index) =>
-                pageNum === '.' ? (
-                    <span key={`hyphen_${index}`} className={classes.hellip}>
-                        &hellip;
-                    </span>
-                ) : (
-                    <Button
-                        className="page-number"
-                        color={
-                            pageNum === this.props.page + 1
-                                ? 'default'
-                                : 'primary'
-                        }
-                        key={pageNum}
-                        data-page={pageNum - 1}
-                        onClick={this.gotoPage}
-                        size="small"
-                    >
-                        {pageNum}
-                    </Button>
-                )
+        return this.range().map((pageNum, index) =>
+            pageNum === '.' ? (
+                <span key={`hyphen_${index}`} className={classes.hellip}>
+                    &hellip;
+                </span>
+            ) : (
+                <Button
+                    className="page-number"
+                    color={
+                        pageNum === this.props.page + 1 ? 'default' : 'primary'
+                    }
+                    key={pageNum}
+                    data-page={pageNum - 1}
+                    onClick={this.gotoPage}
+                    size="small"
+                >
+                    {pageNum}
+                </Button>
+            )
         );
     }
 

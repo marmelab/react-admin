@@ -27,23 +27,26 @@ export default App;
 
 Here are all the props accepted by the component:
 
-* [`dataProvider`](#dataprovider)
-* [`title`](#title)
-* [`dashboard`](#dashboard)
-* [`catchAll`](#catchall)
-* [`menu`](#menu) (deprecated)
-* [`theme`](#theme)
-* [`appLayout`](#applayout)
-* [`customReducers`](#customreducers)
-* [`customSagas`](#customsagas)
-* [`customRoutes`](#customroutes)
-* [`authProvider`](#authprovider)
-* [`loginPage`](#loginpage)
-* [`logoutButton`](#logoutbutton)
-* [`locale`](#internationalization)
-* [`messages`](#internationalization)
-* [`initialState`](#initialstate)
-* [`history`](#history)
+- [The `<Admin>` Component](#the-admin-component)
+    - [`dataProvider`](#dataprovider)
+    - [`title`](#title)
+    - [`dashboard`](#dashboard)
+    - [`catchAll`](#catchall)
+    - [`menu`](#menu)
+    - [`theme`](#theme)
+    - [`appLayout`](#applayout)
+    - [`customReducers`](#customreducers)
+    - [`customSagas`](#customsagas)
+    - [`customRoutes`](#customroutes)
+    - [`authProvider`](#authprovider)
+    - [`loginPage`](#loginpage)
+    - [`logoutButton`](#logoutbutton)
+    - [`initialState`](#initialstate)
+    - [`history`](#history)
+    - [`locale`](#internationalization)
+    - [`i18nProvider`](#internationalization)
+    - [Declaring resources at runtime](#declaring-resources-at-runtime)
+    - [Using react-admin without `<Admin>` and `<Resource>`](#using-react-admin-without-admin-and-resource)
 
 ## `dataProvider`
 
@@ -150,7 +153,7 @@ const App = () => (
 
 ## `menu`
 
-**Tip**: This prop is deprecated. To override the menu component, use a [custom layout](#appLayout) instead.
+**Tip**: This prop is deprecated. To override the menu component, use a [custom layout](#applayout) instead.
 
 React-admin uses the list of `<Resource>` components passed as children of `<Admin>` to build a menu to each resource with a `list` component.
 
@@ -430,10 +433,12 @@ const Foo = () => (
             ...
         </CardContent>
     </Card>
-));
+);
 
 export default Foo;
 ```
+
+**Tip**: Custom routes can be [a `<Redirect>` route](https://reacttraining.com/react-router/web/api/Redirect), too. 
 
 ## `authProvider`
 
@@ -471,9 +476,11 @@ const App = () => (
 );
 ```
 
-Before considering to write your own login page component, please take a look at how to change the default [background image](./Theming.md#using-a-custom-login-page) or the [Material UI theme](#theme).
+You can also disable it completely along with the `/login` route by passing `false` to this prop.
 
-See the [Authentication documentation](./Authentication.md#customizing-the-login-and-logout-components) for more details.
+See The [Authentication documentation](./Authentication.md#customizing-the-login-and-logout-components) for more details.
+
+**Tip**: Before considering to write your own login page component, please take a look at how to change the default [background image](./Theming.md#using-a-custom-login-page) or the [Material UI theme](#theme). See the [Authentication documentation](./Authentication.md#customizing-the-login-and-logout-components) for more details.
 
 ## `logoutButton`
 
@@ -514,7 +521,7 @@ const App = () => (
 
 ## Internationalization
 
-The `locale` and `messages` props let you translate the GUI. The [Translation Documentation](./Translation.md) details this process.
+The `locale` and `i18nProvider` props let you translate the GUI. The [Translation Documentation](./Translation.md) details this process.
 
 ## Declaring resources at runtime
 

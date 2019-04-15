@@ -1,4 +1,4 @@
-import React, { Children, Component } from 'react';
+import React, { Children, Component, isValidElement } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import {
@@ -12,13 +12,13 @@ import { withRouter, Route } from 'react-router-dom';
 import compose from 'recompose/compose';
 import Divider from '@material-ui/core/Divider';
 import Tabs from '@material-ui/core/Tabs';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, createStyles } from '@material-ui/core/styles';
 import { getDefaultValues, translate, REDUX_FORM_NAME } from 'ra-core';
 
 import Toolbar from './Toolbar';
 import CardContentInner from '../layout/CardContentInner';
 
-const styles = theme => ({
+const styles = theme => createStyles({
     errorTabButton: { color: theme.palette.error.main },
 });
 
@@ -57,6 +57,7 @@ const sanitizeRestProps = ({
     touch,
     translate,
     triggerSubmit,
+    undoable,
     untouch,
     valid,
     validate,
@@ -65,7 +66,7 @@ const sanitizeRestProps = ({
 
 const getTabFullPath = (tab, index, baseUrl) =>
     `${baseUrl}${
-    tab.props.path ? `/${tab.props.path}` : index > 0 ? `/${index}` : ''
+        tab.props.path ? `/${tab.props.path}` : index > 0 ? `/${index}` : ''
     }`;
 
 export class TabbedForm extends Component {
@@ -90,6 +91,7 @@ export class TabbedForm extends Component {
             tabsWithErrors,
             toolbar,
             translate,
+            undoable,
             value,
             version,
             ...rest
@@ -123,7 +125,7 @@ export class TabbedForm extends Component {
                     indicatorColor="primary"
                 >
                     {Children.map(children, (tab, index) => {
-                        if (!tab) return null;
+                        if (!isValidElement(tab)) return null;
 
                         // Builds the full tab tab which is the concatenation of the last matched route in the
                         // TabbedShowLayout hierarchy (ex: '/posts/create', '/posts/12', , '/posts/12/show')
@@ -136,7 +138,7 @@ export class TabbedForm extends Component {
                             value: tabPath,
                             className:
                                 tabsWithErrors.includes(tab.props.label) &&
-                                    location.pathname !== tabPath
+                                location.pathname !== tabPath
                                     ? classes.errorTabButton
                                     : null,
                         });
@@ -157,6 +159,7 @@ export class TabbedForm extends Component {
                                     path={getTabFullPath(tab, index, match.url)}
                                 >
                                     {routeProps =>
+                                        isValidElement(tab) ?
                                         React.cloneElement(tab, {
                                             context: 'content',
                                             resource,
@@ -176,7 +179,7 @@ export class TabbedForm extends Component {
                                              * @ref https://github.com/marmelab/react-admin/issues/1956
                                              */
                                             key: `${index}_${!routeProps.match}`,
-                                        })
+                                        }) : null
                                     }
                                 </Route>
                             )
@@ -186,8 +189,7 @@ export class TabbedForm extends Component {
                     React.cloneElement(toolbar, {
                         basePath,
                         className: 'toolbar',
-                        handleSubmitWithRedirect: this
-                            .handleSubmitWithRedirect,
+                        handleSubmitWithRedirect: this.handleSubmitWithRedirect,
                         handleSubmit: this.props.handleSubmit,
                         invalid,
                         pristine,
@@ -196,6 +198,7 @@ export class TabbedForm extends Component {
                         resource,
                         saving,
                         submitOnEnter,
+                        undoable,
                     })}
             </form>
         );
@@ -226,6 +229,7 @@ TabbedForm.propTypes = {
     tabsWithErrors: PropTypes.arrayOf(PropTypes.string),
     toolbar: PropTypes.element,
     translate: PropTypes.func,
+    undoable: PropTypes.bool,
     validate: PropTypes.func,
     value: PropTypes.number,
     version: PropTypes.number,
@@ -256,9 +260,13 @@ export const findTabsWithErrors = (
     const errors = collectErrorsImpl(state, props);
 
     return Children.toArray(props.children).reduce((acc, child) => {
+        if (!isValidElement(child)) {
+            return acc;
+        }
+
         const inputs = Children.toArray(child.props.children);
 
-        if (inputs.some(input => errors[input.props.source])) {
+        if (inputs.some(input => isValidElement(input) && errors[input.props.source])) {
             return [...acc, child.props.label];
         }
 
@@ -270,7 +278,7 @@ const enhance = compose(
     withRouter,
     connect((state, props) => {
         const children = Children.toArray(props.children).reduce(
-            (acc, child) => [...acc, ...Children.toArray(child.props.children)],
+            (acc, child) => [...acc, ...(isValidElement(child) ? Children.toArray(child.props.children): [])],
             []
         );
 

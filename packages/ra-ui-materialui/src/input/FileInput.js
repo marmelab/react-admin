@@ -1,9 +1,10 @@
-import React, { Component } from 'react';
+import React, { Component, Children, cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import { shallowEqual } from 'recompose';
 import Dropzone from 'react-dropzone';
 import compose from 'recompose/compose';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, createStyles } from '@material-ui/core/styles';
+import FormHelperText from '@material-ui/core/FormHelperText';
 import classnames from 'classnames';
 import { addField, translate } from 'ra-core';
 
@@ -11,7 +12,7 @@ import Labeled from './Labeled';
 import FileInputPreview from './FileInputPreview';
 import sanitizeRestProps from './sanitizeRestProps';
 
-const styles = {
+const styles = createStyles({
     dropZone: {
         background: '#efefef',
         cursor: 'pointer',
@@ -22,7 +23,7 @@ const styles = {
     preview: {},
     removeButton: {},
     root: { width: '100%' },
-};
+});
 
 export class FileInput extends Component {
     static propTypes = {
@@ -52,6 +53,7 @@ export class FileInput extends Component {
         labelSingle: 'ra.input.file.upload_single',
         multiple: false,
         onUpload: () => {},
+        translate: id => id,
     };
 
     constructor(props) {
@@ -83,9 +85,10 @@ export class FileInput extends Component {
         this.setState({ files: updatedFiles });
 
         if (this.props.multiple) {
-            this.props.input.onChange(updatedFiles);
+            // Use onBlur to ensure redux-form set the input as touched
+            this.props.input.onBlur(updatedFiles);
         } else {
-            this.props.input.onChange(updatedFiles[0]);
+            this.props.input.onBlur(updatedFiles[0]);
         }
     };
 
@@ -96,10 +99,11 @@ export class FileInput extends Component {
 
         this.setState({ files: filteredFiles });
 
+        // Use onBlur to ensure redux-form set the input as touched
         if (this.props.multiple) {
-            this.props.input.onChange(filteredFiles);
+            this.props.input.onBlur(filteredFiles);
         } else {
-            this.props.input.onChange(null);
+            this.props.input.onBlur(null);
         }
     };
 
@@ -109,9 +113,7 @@ export class FileInput extends Component {
             return file;
         }
 
-        const { source, title } = React.Children.toArray(
-            this.props.children
-        )[0].props;
+        const { source, title } = Children.only(this.props.children).props;
 
         const transformedFile = {
             rawFile: file,
@@ -155,10 +157,12 @@ export class FileInput extends Component {
             isRequired,
             label,
             maxSize,
+            meta,
             minSize,
             multiple,
             resource,
             source,
+            translate,
             options = {},
             ...rest
         } = this.props;
@@ -171,6 +175,7 @@ export class FileInput extends Component {
                 source={source}
                 resource={resource}
                 isRequired={isRequired}
+                meta={meta}
                 {...sanitizeRestProps(rest)}
             >
                 <span>
@@ -196,13 +201,16 @@ export class FileInput extends Component {
                                     onRemove={this.onRemove(file)}
                                     className={classes.removeButton}
                                 >
-                                    {React.cloneElement(children, {
+                                    {cloneElement(Children.only(children), {
                                         record: file,
                                         className: classes.preview,
                                     })}
                                 </FileInputPreview>
                             ))}
                         </div>
+                    )}
+                    {meta && meta.touched && meta.error && (
+                        <FormHelperText>{translate(meta.error)}</FormHelperText>
                     )}
                 </span>
             </Labeled>

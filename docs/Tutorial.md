@@ -290,7 +290,7 @@ export default withStyles(styles)(MyUrlField);
 
 In JSS, you define styles as a JavaScript object, using the JS variants of the CSS property names (e.g. `textDecoration` instead of `text-decoration`). To pass these styles to the component, wrap it inside a call to `withStyles(styles)`. JSS will create new class names for these styles, insert them (once) in the HTML document, and pass the new class names as a new `classes` property. Then, use these names in a `className` prop, as you would with a regular CSS class.
 
-**Tip**: There is much more to JSS that what this tutorial covers. Read the [material-ui documentation](https://material-ui.com/) to learn more about theming, vendor prefixes, responsive utilities, etc.
+**Tip**: There is much more to JSS than what this tutorial covers. Read the [material-ui documentation](https://material-ui.com/) to learn more about theming, vendor prefixes, responsive utilities, etc.
 
 
 ## Handling Relationships
@@ -552,7 +552,7 @@ React-admin can use Input components to create a multi-criteria search engine in
 
 ```jsx
 // in src/posts.js
-import { Filter, ReferenceInput, SelectInput, TextInput } from 'react-admin';
+import { Filter, ReferenceInput, SelectInput, TextInput, List } from 'react-admin';
 
 const PostFilter = (props) => (
     <Filter {...props}>
@@ -764,7 +764,7 @@ This works exactly the way you expect. The lesson here is that react-admin takes
 
 ## Connecting To A Real API
 
-Here is the elephant in the room of this tutorial. In real world projects, the dialect of your API (REST? GraphQL? Something else?) won't match the JSONPLaceholder dialect. Writing a Data Provider is probably the first thing you'll have to do to make react-admin work. Depending on your API, this can require a few hours of additional work.
+Here is the elephant in the room of this tutorial. In real world projects, the dialect of your API (REST? GraphQL? Something else?) won't match the JSONPlaceholder dialect. Writing a Data Provider is probably the first thing you'll have to do to make react-admin work. Depending on your API, this can require a few hours of additional work.
 
 React-admin delegates every data query to a Data Provider function. This function must simply return a promise for the result. This gives extreme freedom to map any API dialect, add authentication headers, use endpoints from several domains, etc.
 
@@ -800,7 +800,7 @@ import { stringify } from 'query-string';
 const API_URL = 'my.api.url';
 
 /**
- * @param {String} type One of the constants appearing at the top if this file, e.g. 'UPDATE'
+ * @param {String} type One of the constants appearing at the top of this file, e.g. 'UPDATE'
  * @param {String} resource Name of the resource to fetch, e.g. 'posts'
  * @param {Object} params The Data Provider request params, depending on the type
  * @returns {Object} { url, options } The HTTP request parameters
@@ -857,7 +857,7 @@ const convertDataProviderRequestToHTTP = (type, resource, params) => {
 
 /**
  * @param {Object} response HTTP response from fetch()
- * @param {String} type One of the constants appearing at the top if this file, e.g. 'UPDATE'
+ * @param {String} type One of the constants appearing at the top of this file, e.g. 'UPDATE'
  * @param {String} resource Name of the resource to fetch, e.g. 'posts'
  * @param {Object} params The Data Provider request params, depending on the type
  * @returns {Object} Data Provider response

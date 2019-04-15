@@ -1,12 +1,12 @@
-import React from 'react';
+import React, { Children } from 'react';
 import PropTypes from 'prop-types';
 import LinearProgress from '@material-ui/core/LinearProgress';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, createStyles } from '@material-ui/core/styles';
 import { ReferenceArrayFieldController } from 'ra-core';
 
-const styles = {
+const styles = createStyles({
     progress: { marginTop: '1em' },
-};
+});
 
 export const ReferenceArrayFieldView = ({
     children,
@@ -14,20 +14,20 @@ export const ReferenceArrayFieldView = ({
     classes = {},
     data,
     ids,
-    isLoading,
+    loadedOnce,
     reference,
     referenceBasePath,
 }) => {
-    if (isLoading) {
+    if (loadedOnce === false) {
         return <LinearProgress className={classes.progress} />;
     }
 
-    return React.cloneElement(children, {
+    return React.cloneElement(Children.only(children), {
         className,
         resource: reference,
         ids,
         data,
-        isLoading,
+        loadedOnce,
         basePath: referenceBasePath,
         currentSort: {},
     });
@@ -38,7 +38,7 @@ ReferenceArrayFieldView.propTypes = {
     className: PropTypes.string,
     data: PropTypes.object,
     ids: PropTypes.array,
-    isLoading: PropTypes.bool,
+    loadedOnce: PropTypes.bool,
     children: PropTypes.element.isRequired,
     reference: PropTypes.string.isRequired,
     referenceBasePath: PropTypes.string,

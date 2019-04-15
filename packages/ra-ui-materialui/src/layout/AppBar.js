@@ -1,4 +1,4 @@
-import React, { cloneElement } from 'react';
+import React, { Children, cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
@@ -6,7 +6,7 @@ import MuiAppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, createStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
 import withWidth from '@material-ui/core/withWidth';
 import compose from 'recompose/compose';
@@ -16,7 +16,7 @@ import LoadingIndicator from './LoadingIndicator';
 import UserMenu from './UserMenu';
 import Headroom from './Headroom';
 
-const styles = theme => ({
+const styles = theme => createStyles({
     toolbar: {
         paddingRight: 24,
     },
@@ -50,6 +50,7 @@ const AppBar = ({
     children,
     classes,
     className,
+    logo,
     logout,
     open,
     title,
@@ -84,12 +85,16 @@ const AppBar = ({
                         }}
                     />
                 </IconButton>
-                <Typography
-                    variant="title"
-                    color="inherit"
-                    className={classes.title}
-                    id="react-admin-title"
-                />
+                {Children.count(children) === 0 ? (
+                    <Typography
+                        variant="title"
+                        color="inherit"
+                        className={classes.title}
+                        id="react-admin-title"
+                    />
+                ) : (
+                    children
+                )}
                 <LoadingIndicator />
                 {cloneElement(userMenu, { logout })}
             </Toolbar>

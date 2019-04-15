@@ -7,9 +7,9 @@ import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import ListItem from '@material-ui/core/ListItem';
 import IconGetApp from '@material-ui/icons/GetApp';
+import { translate } from 'ra-core';
 
 import { DROP_TARGET_TYPE } from './constants';
-import { translate } from 'ra-core';
 
 const styles = theme => ({
     root: {
@@ -79,7 +79,7 @@ const dropTargetSpecs = {
     },
     canDrop(props, monitor) {
         const item = monitor.getItem();
-        return item.parent;
+        return !!item.parent;
     },
 };
 

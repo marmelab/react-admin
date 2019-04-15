@@ -1,4 +1,5 @@
 import React from 'react';
+import compose from 'recompose/compose';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
@@ -8,7 +9,6 @@ import Typography from '@material-ui/core/Typography';
 import HomeIcon from '@material-ui/icons/Home';
 import CodeIcon from '@material-ui/icons/Code';
 import { withStyles } from '@material-ui/core/styles';
-
 import { translate } from 'react-admin';
 
 const styles = {
@@ -46,4 +46,9 @@ const Welcome = ({ classes, translate }) => (
     </Card>
 );
 
-export default withStyles(styles)(translate(Welcome));
+const enhance = compose(
+    withStyles(styles),
+    translate
+);
+
+export default enhance(Welcome);

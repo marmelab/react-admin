@@ -27,7 +27,7 @@ interface ViewProps extends MappedProps, Props {}
 /**
  * Creates a translation context, available to its children
  *
- * Must be called withing a Redux app.
+ * Must be called within a Redux app.
  *
  * @example
  *     const MyApp = () => (
@@ -44,7 +44,7 @@ class TranslationProviderView extends Component<ViewProps, State> {
         const { locale, messages } = props;
         const polyglot = new Polyglot({
             locale,
-            phrases: defaultsDeep({}, messages, defaultMessages),
+            phrases: defaultsDeep({ '': '' }, messages, defaultMessages),
         });
 
         this.state = {
@@ -61,7 +61,7 @@ class TranslationProviderView extends Component<ViewProps, State> {
 
             const polyglot = new Polyglot({
                 locale,
-                phrases: defaultsDeep({}, messages, defaultMessages),
+                phrases: defaultsDeep({ '': '' }, messages, defaultMessages),
             });
 
             this.setState({

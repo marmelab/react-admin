@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, createStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
 import sanitizeRestProps from './sanitizeRestProps';
 
-const styles = {
+const styles = createStyles({
     list: {
         display: 'flex',
         listStyleType: 'none',
@@ -14,7 +14,7 @@ const styles = {
         margin: '0.5rem',
         maxHeight: '10rem',
     },
-};
+});
 
 export const ImageField = ({
     className,

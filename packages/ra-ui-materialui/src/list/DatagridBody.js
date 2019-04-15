@@ -12,6 +12,7 @@ const DatagridBody = ({
     classes,
     className,
     data,
+    expand,
     hasBulkActions,
     hover,
     ids,
@@ -26,8 +27,9 @@ const DatagridBody = ({
     version,
     ...rest
 }) => (
-        <TableBody className={classnames('datagrid-body', className)} {...rest}>
-            {ids.map((id, rowIndex) => React.cloneElement(
+    <TableBody className={classnames('datagrid-body', className)} {...rest}>
+        {ids.map((id, rowIndex) =>
+            React.cloneElement(
                 row,
                 {
                     basePath,
@@ -37,6 +39,7 @@ const DatagridBody = ({
                         [classes.rowOdd]: rowIndex % 2 !== 0,
                         [classes.clickableRow]: rowClick,
                     }),
+                    expand,
                     hasBulkActions,
                     hover,
                     id,
@@ -46,12 +49,13 @@ const DatagridBody = ({
                     resource,
                     rowClick,
                     selected: selectedIds.includes(id),
-                    style: rowStyle ? rowStyle(data[id], rowIndex) : null
+                    style: rowStyle ? rowStyle(data[id], rowIndex) : null,
                 },
                 children
-            ))}
-        </TableBody>
-    );
+            )
+        )}
+    </TableBody>
+);
 
 DatagridBody.propTypes = {
     basePath: PropTypes.string,
@@ -59,6 +63,7 @@ DatagridBody.propTypes = {
     className: PropTypes.string,
     children: PropTypes.node,
     data: PropTypes.object.isRequired,
+    expand: PropTypes.node,
     hasBulkActions: PropTypes.bool.isRequired,
     hover: PropTypes.bool,
     ids: PropTypes.arrayOf(PropTypes.any).isRequired,
@@ -77,7 +82,7 @@ DatagridBody.defaultProps = {
     data: {},
     hasBulkActions: false,
     ids: [],
-    row: <DatagridRow />
+    row: <DatagridRow />,
 };
 
 const areArraysEqual = (arr1, arr2) =>
@@ -92,6 +97,7 @@ const PureDatagridBody = shouldUpdate(
 )(DatagridBody);
 
 // trick material-ui Table into thinking this is one of the child type it supports
+// @ts-ignore
 PureDatagridBody.muiName = 'TableBody';
 
 export default PureDatagridBody;

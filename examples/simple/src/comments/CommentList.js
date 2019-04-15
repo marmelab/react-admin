@@ -74,7 +74,8 @@ const CommentPagination = translate(
                             key="prev"
                             onClick={() => setPage(page - 1)}
                         >
-                            <ChevronLeft />&nbsp;
+                            <ChevronLeft />
+                            &nbsp;
                             {translate('ra.navigation.prev')}
                         </Button>
                     )}

@@ -2,9 +2,16 @@ import { put, takeEvery } from 'redux-saga/effects';
 import { push } from 'react-router-redux';
 import { reset } from 'redux-form';
 
+import { Identifier } from '../types';
 import resolveRedirectTo from '../util/resolveRedirectTo';
 
-export type RedirectionSideEffect = string;
+type RedirectToFunction = (
+    basePath: string,
+    id: Identifier,
+    data: any
+) => string;
+
+export type RedirectionSideEffect = string | false | RedirectToFunction;
 
 interface ActionWithSideEffect {
     type: string;
@@ -21,7 +28,7 @@ interface ActionWithSideEffect {
         };
     };
     meta: {
-        redirectTo: RedirectionSideEffect | boolean;
+        redirectTo: RedirectionSideEffect;
         basePath?: string;
     };
 }
@@ -42,15 +49,15 @@ export function* handleRedirection({
                       basePath,
                       payload
                           ? payload.id ||
-                            (payload.data ? payload.data.id : null)
+                                (payload.data ? payload.data.id : null)
                           : requestPayload
-                              ? requestPayload.id
-                              : null,
+                          ? requestPayload.id
+                          : null,
                       payload && payload.data
                           ? payload.data
                           : requestPayload && requestPayload.data
-                              ? requestPayload.data
-                              : null
+                          ? requestPayload.data
+                          : null
                   )
               )
           )

@@ -19,8 +19,9 @@ Here is the default store creation for react-admin:
 
 ```js
 // in src/createAdminStore.js
-import { combineReducers, createStore, compose, applyMiddleware } from 'redux';
-import { routerMiddleware } from 'react-router-redux';
+import { applyMiddleware, combineReducers, compose, createStore } from 'redux';
+import { routerMiddleware, routerReducer } from 'react-router-redux';
+import { reducer as formReducer } from 'redux-form';
 import createSagaMiddleware from 'redux-saga';
 import { all, fork } from 'redux-saga/effects';
 import {
@@ -89,7 +90,7 @@ Then, use the `<Admin>` component as you would in a standalone application. Here
 // in src/App.js
 import React from 'react';
 import { Provider } from 'react-redux';
-import createHistory from 'history/createHashHistory';
+import { createHashHistory } from 'history';
 import { Admin, Resource } from 'react-admin';
 import restProvider from 'ra-data-simple-rest';
 import defaultMessages from 'ra-language-english';
@@ -112,7 +113,7 @@ const i18nProvider = locale => {
     }
     return defaultMessages;
 };
-const history = createHistory();
+const history = createHashHistory();
 
 const App = () => (
     <Provider
@@ -150,7 +151,7 @@ Here is the main code for bootstrapping a barebones react-admin application with
 // in src/App.js
 import React from 'react';
 import { Provider } from 'react-redux';
-import createHistory from 'history/createHashHistory';
+import { createHashHistory } from 'history';
 +import { ConnectedRouter } from 'react-router-redux';
 +import { Switch, Route } from 'react-router-dom';
 +import withContext from 'recompose/withContext';
@@ -181,7 +182,7 @@ const i18nProvider = locale => {
     }
     return defaultMessages;
 };
-const history = createHistory();
+const history = createHashHistory();
 
 const App = () => (
     <Provider

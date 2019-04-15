@@ -1,10 +1,10 @@
 import React from 'react';
 import Progress from '@material-ui/core/LinearProgress';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, createStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
 
-const styles = theme => ({
+const styles = theme => createStyles({
     root: {
         margin: `${theme.spacing.unit}px 0`,
         width: `${theme.spacing.unit * 20}px`,

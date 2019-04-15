@@ -1,12 +1,8 @@
-import React, {
-    createElement,
-    Component,
-    ReactNode,
-    ComponentType,
-} from 'react';
+import React, { createElement, Component, ComponentType, SFC } from 'react';
 import PropTypes from 'prop-types';
 import { Provider } from 'react-redux';
-import createHistory from 'history/createHashHistory';
+import { History } from 'history';
+import { createHashHistory } from 'history';
 import { Switch, Route } from 'react-router-dom';
 import { ConnectedRouter } from 'react-router-redux';
 import withContext from 'recompose/withContext';
@@ -14,35 +10,60 @@ import withContext from 'recompose/withContext';
 import createAdminStore from './createAdminStore';
 import TranslationProvider from './i18n/TranslationProvider';
 import CoreAdminRouter from './CoreAdminRouter';
-import { AuthProvider, I18nProvider, DataProvider } from './types';
+import {
+    AuthProvider,
+    I18nProvider,
+    DataProvider,
+    TitleComponent,
+    LoginComponent,
+    LayoutComponent,
+    LayoutProps,
+    AdminChildren,
+    CatchAllComponent,
+    CustomRoutes,
+    DashboardComponent,
+} from './types';
 
 export type ChildrenFunction = () => ComponentType[];
 
-interface Props {
-    appLayout: ComponentType;
-    authProvider: AuthProvider;
-    children: ReactNode | ChildrenFunction;
-    catchAll: ComponentType;
-    customSagas: any[];
-    customReducers: object;
-    customRoutes: any[];
-    dashboard: ComponentType;
+const DefaultLayout: SFC<LayoutProps> = ({ children }) => <>{children}</>;
+
+export interface AdminProps {
+    appLayout: LayoutComponent;
+    authProvider?: AuthProvider;
+    children?: AdminChildren;
+    catchAll: CatchAllComponent;
+    customSagas?: any[];
+    customReducers?: object;
+    customRoutes?: CustomRoutes;
+    dashboard?: DashboardComponent;
     dataProvider: DataProvider;
-    history: object;
-    i18nProvider: I18nProvider;
-    initialState: object;
+    history: History;
+    i18nProvider?: I18nProvider;
+    initialState?: object;
     loading: ComponentType;
-    locale: string;
-    loginPage: ComponentType;
-    logoutButton: ComponentType;
-    menu: ComponentType;
-    theme: object;
-    title: ReactNode;
+    locale?: string;
+    loginPage: LoginComponent | boolean;
+    logoutButton?: ComponentType;
+    menu?: ComponentType;
+    theme?: object;
+    title?: TitleComponent;
 }
 
-class CoreAdmin extends Component<Props> {
+interface AdminContext {
+    authProvider: AuthProvider;
+}
+
+class CoreAdminBase extends Component<AdminProps> {
     static contextTypes = {
         store: PropTypes.object,
+    };
+
+    static defaultProps: Partial<AdminProps> = {
+        catchAll: () => null,
+        appLayout: DefaultLayout,
+        loading: () => null,
+        loginPage: false,
     };
 
     reduxIsAlreadyInitialized = false;
@@ -63,7 +84,7 @@ React-admin uses this history for its own ConnectedRouter.`);
                 throw new Error(`Missing dataProvider prop.
 React-admin requires a valid dataProvider function to work.`);
             }
-            this.history = props.history || createHistory();
+            this.history = props.history || createHashHistory();
         }
     }
 
@@ -85,21 +106,29 @@ React-admin requires a valid dataProvider function to work.`);
 
         const logout = authProvider ? createElement(logoutButton) : null;
 
+        if (loginPage === true && process.env.NODE_ENV !== 'production') {
+            console.warn(
+                'You passed true to the loginPage prop. You must either pass false to disable it or a component class to customize it'
+            );
+        }
+
         return (
             <TranslationProvider>
                 <ConnectedRouter history={this.history}>
                     <Switch>
-                        <Route
-                            exact
-                            path="/login"
-                            render={props =>
-                                createElement(loginPage, {
-                                    ...props,
-                                    title,
-                                    theme,
-                                })
-                            }
-                        />
+                        {loginPage !== false && loginPage !== true ? (
+                            <Route
+                                exact
+                                path="/login"
+                                render={props =>
+                                    createElement(loginPage, {
+                                        ...props,
+                                        title,
+                                        theme,
+                                    })
+                                }
+                            />
+                        ) : null}
                         <Route
                             path="/"
                             render={props => (
@@ -109,7 +138,6 @@ React-admin requires a valid dataProvider function to work.`);
                                     customRoutes={customRoutes}
                                     dashboard={dashboard}
                                     loading={loading}
-                                    loginPage={loginPage}
                                     logout={logout}
                                     menu={menu}
                                     theme={theme}
@@ -158,9 +186,11 @@ React-admin requires a valid dataProvider function to work.`);
     }
 }
 
-export default withContext(
+const CoreAdmin = withContext<AdminContext, AdminProps>(
     {
         authProvider: PropTypes.func,
     },
     ({ authProvider }) => ({ authProvider })
-)(CoreAdmin);
+)(CoreAdminBase) as ComponentType<AdminProps>;
+
+export default CoreAdmin;

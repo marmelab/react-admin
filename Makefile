@@ -9,7 +9,7 @@ install: package.json ## install dependencies
 run: run-simple
 
 run-simple: ## run the simple example
-	@BABEL_ENV=cjs yarn -s run-simple
+	@yarn -s run-simple
 
 run-tutorial: ## run the tutorial example
 	@yarn -s run-tutorial
@@ -22,9 +22,6 @@ build-demo: ## compile the demo example to static js
 
 run-graphql-demo: ## run the demo example
 	@yarn -s run-graphql-demo
-
-run-graphcool-demo: ## run the demo example
-	@yarn -s run-graphcool-demo
 
 build-ra-core:
 	@echo "Transpiling ra-core files...";
@@ -89,6 +86,15 @@ build: build-ra-core build-ra-ui-materialui build-react-admin build-ra-data-fake
 
 doc: ## compile doc as html and launch doc web server
 	@yarn -s doc
+
+serve-github-pages: ## Serve the doc from a Github Pages docker container
+	@docker run -it --rm \
+		-p 4000:4000 \
+		-v "${PWD}/docs:/usr/src/app" \
+		starefossen/github-pages:onbuild \
+		jekyll serve \
+			--host=0.0.0.0 \
+			--incremental
 
 lint: ## lint the code and check coding conventions
 	@echo "Running linter..."

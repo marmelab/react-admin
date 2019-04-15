@@ -8,7 +8,7 @@ import Input from '@material-ui/core/Input';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Chip from '@material-ui/core/Chip';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, createStyles } from '@material-ui/core/styles';
 import compose from 'recompose/compose';
 import classnames from 'classnames';
 import { addField, translate, FieldTitle } from 'ra-core';
@@ -53,7 +53,7 @@ const sanitizeRestProps = ({
     ...rest
 }) => rest;
 
-const styles = theme => ({
+const styles = theme => createStyles({
     root: {},
     chips: {
         display: 'flex',
@@ -141,6 +141,7 @@ export class SelectArrayInput extends Component {
         this.props.input.onBlur(event.target.value);
         this.setState({ value: event.target.value });
     };
+
     renderMenuItemOption = choice => {
         const { optionText, translate, translateChoice } = this.props;
         if (React.isValidElement(optionText))
@@ -213,16 +214,16 @@ export class SelectArrayInput extends Component {
                     error={!!(touched && error)}
                     renderValue={selected => (
                         <div className={classes.chips}>
-                            {choices
-                                .filter(choice =>
-                                    selected.includes(get(choice, optionValue))
+                            {selected
+                                .map(item =>
+                                    choices.find(
+                                        choice => choice[optionValue] === item
+                                    )
                                 )
-                                .map(choice => (
+                                .map(item => (
                                     <Chip
-                                        key={get(choice, optionValue)}
-                                        label={this.renderMenuItemOption(
-                                            choice
-                                        )}
+                                        key={get(item, optionValue)}
+                                        label={this.renderMenuItemOption(item)}
                                         className={classes.chip}
                                     />
                                 ))}
@@ -233,8 +234,9 @@ export class SelectArrayInput extends Component {
                 >
                     {choices.map(this.renderMenuItem)}
                 </Select>
-                {touched &&
-                    error && <FormHelperText error>{error}</FormHelperText>}
+                {touched && error && (
+                    <FormHelperText error>{error}</FormHelperText>
+                )}
                 {helperText && <FormHelperText>{helperText}</FormHelperText>}
             </FormControl>
         );

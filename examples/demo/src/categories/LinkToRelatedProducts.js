@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import { translate } from 'react-admin';
 import { stringify } from 'query-string';
 
-import { ProductIcon } from '../products';
+import products from '../products';
 
 const styles = {
     icon: { paddingRight: '0.5em' },
@@ -33,7 +33,7 @@ const LinkToRelatedProducts = ({ classes, record, translate }) => (
         }}
         className={classes.link}
     >
-        <ProductIcon className={classes.icon} />
+        <products.icon className={classes.icon} />
         {translate('resources.categories.fields.products')}
     </Button>
 );

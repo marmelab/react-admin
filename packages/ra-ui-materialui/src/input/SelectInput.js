@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import MenuItem from '@material-ui/core/MenuItem';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, createStyles } from '@material-ui/core/styles';
 import compose from 'recompose/compose';
 import { addField, translate, FieldTitle } from 'ra-core';
 import ResettableTextField from './ResettableTextField';
@@ -10,6 +10,7 @@ import ResettableTextField from './ResettableTextField';
 const sanitizeRestProps = ({
     addLabel,
     allowEmpty,
+    emptyValue,
     basePath,
     choices,
     className,
@@ -47,7 +48,7 @@ const sanitizeRestProps = ({
     ...rest
 }) => rest;
 
-const styles = theme => ({
+const styles = theme => createStyles({
     input: {
         minWidth: theme.spacing.unit * 20,
     },
@@ -109,15 +110,15 @@ const styles = theme => ({
  * <SelectInput source="gender" choices={choices} translateChoice={false}/>
  *
  * The object passed as `options` props is passed to the material-ui <Select> component
- * 
- * You can disable some choices by providing a `disableValue` field which name is `disabled` by default 
+ *
+ * You can disable some choices by providing a `disableValue` field which name is `disabled` by default
  * @example
  * const choices = [
  *    { id: 123, first_name: 'Leo', last_name: 'Tolstoi' },
  *    { id: 456, first_name: 'Jane', last_name: 'Austen' },
  *    { id: 976, first_name: 'William', last_name: 'Rinkerd', disabled: true },
  * ];
- * 
+ *
  * @example
  * const choices = [
  *    { id: 123, first_name: 'Leo', last_name: 'Tolstoi' },
@@ -125,7 +126,7 @@ const styles = theme => ({
  *    { id: 976, first_name: 'William', last_name: 'Rinkerd', not_available: true },
  * ];
  * <SelectInput source="gender" choices={choices} disableValue="not_available" />
- * 
+ *
  */
 export class SelectInput extends Component {
     /*
@@ -149,13 +150,13 @@ export class SelectInput extends Component {
         this.props.input.onChange(value);
 
         // HACK: For some reason, redux-form does not consider this input touched without calling onBlur manually
-        this.props.input.onBlur();
+        this.props.input.onBlur(value);
         this.setState({ value });
     };
 
     addAllowEmpty = choices => {
         if (this.props.allowEmpty) {
-            return [<MenuItem value="" key="null" />, ...choices];
+            return [<MenuItem value={this.props.emptyValue} key="null" />, ...choices];
         }
 
         return choices;
@@ -240,6 +241,7 @@ export class SelectInput extends Component {
 
 SelectInput.propTypes = {
     allowEmpty: PropTypes.bool.isRequired,
+    emptyValue: PropTypes.any,
     choices: PropTypes.arrayOf(PropTypes.object),
     classes: PropTypes.object,
     className: PropTypes.string,
@@ -263,13 +265,14 @@ SelectInput.propTypes = {
 
 SelectInput.defaultProps = {
     allowEmpty: false,
+    emptyValue: '',
     classes: {},
     choices: [],
     options: {},
     optionText: 'name',
     optionValue: 'id',
     translateChoice: true,
-    disableValue: 'disabled'
+    disableValue: 'disabled',
 };
 
 export default compose(

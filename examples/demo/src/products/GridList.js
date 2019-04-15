@@ -5,13 +5,11 @@ import GridListTile from '@material-ui/core/GridListTile';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
 import { withStyles } from '@material-ui/core/styles';
 import withWidth from '@material-ui/core/withWidth';
-import IconButton from '@material-ui/core/IconButton';
-import ContentCreate from '@material-ui/icons/Create';
 import { Link } from 'react-router-dom';
 import { NumberField } from 'react-admin';
 import { linkToRecord } from 'ra-core';
 
-const styles = {
+const styles = theme => ({
     root: {
         margin: '-2px',
     },
@@ -23,6 +21,10 @@ const styles = {
         background:
             'linear-gradient(to top, rgba(0,0,0,0.8) 0%,rgba(0,0,0,0.4) 70%,rgba(0,0,0,0) 100%)',
     },
+    placeholder: {
+        backgroundColor: theme.palette.grey[300],
+        height: '100%',
+    },
     price: {
         display: 'inline',
         fontSize: '1em',
@@ -30,7 +32,7 @@ const styles = {
     link: {
         color: '#fff',
     },
-};
+});
 
 const getColsForWidth = width => {
     if (width === 'xs') return 2;
@@ -40,7 +42,27 @@ const getColsForWidth = width => {
     return 6;
 };
 
-const GridList = ({ classes, ids, data, basePath, width }) => (
+const times = (nbChildren, fn) =>
+    Array.from({ length: nbChildren }, (_, key) => fn(key));
+
+const LoadingGridList = ({ width, classes, nbItems = 10 }) => (
+    <div className={classes.root}>
+        <MuiGridList
+            cellHeight={180}
+            cols={getColsForWidth(width)}
+            className={classes.gridList}
+        >
+            {' '}
+            {times(nbItems, key => (
+                <GridListTile key={key}>
+                    <div className={classes.placeholder} />
+                </GridListTile>
+            ))}
+        </MuiGridList>
+    </div>
+);
+
+const LoadedGridList = ({ classes, ids, data, basePath, width }) => (
     <div className={classes.root}>
         <MuiGridList
             cellHeight={180}
@@ -48,7 +70,11 @@ const GridList = ({ classes, ids, data, basePath, width }) => (
             className={classes.gridList}
         >
             {ids.map(id => (
-                <GridListTile key={id}>
+                <GridListTile
+                    component={Link}
+                    key={id}
+                    to={linkToRecord(basePath, data[id].id)}
+                >
                     <img src={data[id].thumbnail} alt="" />
                     <GridListTileBar
                         className={classes.tileBar}
@@ -68,21 +94,15 @@ const GridList = ({ classes, ids, data, basePath, width }) => (
                                 />
                             </span>
                         }
-                        actionIcon={
-                            <IconButton
-                                to={linkToRecord(basePath, data[id].id)}
-                                className={classes.link}
-                                component={Link}
-                            >
-                                <ContentCreate />
-                            </IconButton>
-                        }
                     />
                 </GridListTile>
             ))}
         </MuiGridList>
     </div>
 );
+
+const GridList = ({ loadedOnce, ...props }) =>
+    loadedOnce ? <LoadedGridList {...props} /> : <LoadingGridList {...props} />;
 
 const enhance = compose(
     withWidth(),
