@@ -25,7 +25,7 @@ describe('RichTextInput', () => {
         container = null;
     });
 
-    it('should call text-change event only once when editing', async () => {
+    it('should call handleChange only once when editing', async () => {
         const mockFn = jest.fn();
         debounce.mockImplementation(fn => fn);
         const { getByTestId, rerender } = render(
