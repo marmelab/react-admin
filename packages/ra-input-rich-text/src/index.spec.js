@@ -26,6 +26,7 @@ describe('RichTextInput', () => {
     });
 
     it('should call handleChange only once when editing', async () => {
+        jest.useFakeTimers();
         const mockFn = jest.fn();
         debounce.mockImplementation(fn => fn);
         const { getByTestId, rerender } = render(
@@ -38,7 +39,13 @@ describe('RichTextInput', () => {
         const quillNode = await waitForElement(() => {
             return getByTestId('quill')
         });
-        quillNode.__quill.setText('test1');
+        const node = quillNode.querySelector('.ql-editor');
+        fireEvent.input(node, {
+          target: { innerHTML: '<p>test1</p>' }
+        });
+
+        jest.runOnlyPendingTimers();
+
         rerender(
           <RichTextInput
             input={{
