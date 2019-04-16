@@ -1,5 +1,5 @@
 require('raf/polyfill');
-require('mutationobserver-shim');
+require('mutationobserver-shim'); // required due to quilljs
 var enzyme = require('enzyme');
 var Adapter = require('enzyme-adapter-react-16');
 

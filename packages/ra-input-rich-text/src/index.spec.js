@@ -11,13 +11,13 @@ describe('RichTextInput', () => {
     beforeEach(() => {
       container = document.createElement('div');
       document.body.appendChild(container);
+      // required as quilljs uses getSelection api
       document.getSelection = () => {
           return {
             removeAllRanges: () => {},
             getRangeAt: function() {}, 
           };
       };
-      jest.mock('lodash.debounce', (fn) => fn);
     });
 
     afterEach(() => {
