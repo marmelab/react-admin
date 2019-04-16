@@ -44,6 +44,7 @@ describe('RichTextInput', () => {
           target: { innerHTML: '<p>test1</p>' }
         });
 
+        // ensuring the first 'text-change' event had been handled
         jest.runOnlyPendingTimers();
 
         rerender(

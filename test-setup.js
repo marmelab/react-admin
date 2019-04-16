@@ -1,5 +1,9 @@
 require('raf/polyfill');
-require('mutationobserver-shim'); // required due to quilljs
+/**
+ * As jsDom do not support mutationobserver and
+ * quill requires mutationobserver, thus a shim is needed
+ * */
+require('mutationobserver-shim');
 var enzyme = require('enzyme');
 var Adapter = require('enzyme-adapter-react-16');
 
