@@ -26,5 +26,6 @@ EnhancedEmailField.defaultProps = {
 };
 
 EnhancedEmailField.propTypes = fieldPropTypes;
+EnhancedEmailField.displayName = 'EnhancedEmailField';
 
 export default EnhancedEmailField;

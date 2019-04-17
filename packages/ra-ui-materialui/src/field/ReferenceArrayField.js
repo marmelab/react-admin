@@ -115,4 +115,12 @@ EnhancedReferenceArrayField.defaultProps = {
     addLabel: true,
 };
 
+EnhancedReferenceArrayField.propTypes = {
+    ...fieldPropTypes,
+    reference: PropTypes.string,
+    children: PropTypes.element.isRequired,
+};
+
+EnhancedReferenceArrayField.displayName = 'EnhancedReferenceArrayField';
+
 export default EnhancedReferenceArrayField;

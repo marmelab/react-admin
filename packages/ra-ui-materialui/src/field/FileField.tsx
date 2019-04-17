@@ -84,4 +84,6 @@ EnhancedFileField.propTypes = {
     target: PropTypes.string,
 };
 
+EnhancedFileField.displayName = 'EnhancedFileField';
+
 export default EnhancedFileField;

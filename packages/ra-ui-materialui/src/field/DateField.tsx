@@ -102,4 +102,6 @@ EnhancedDateField.propTypes = {
     showTime: PropTypes.bool,
 };
 
+EnhancedDateField.displayName = 'EnhancedDateField';
+
 export default EnhancedDateField;

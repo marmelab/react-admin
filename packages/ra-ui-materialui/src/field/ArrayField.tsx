@@ -142,5 +142,6 @@ EnhancedArrayField.defaultProps = {
 };
 
 EnhancedArrayField.propTypes = fieldPropTypes;
+EnhancedArrayField.displayName = 'EnhancedArrayField';
 
 export default EnhancedArrayField;

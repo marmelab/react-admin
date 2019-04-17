@@ -153,4 +153,6 @@ EnhancedSelectField.propTypes = {
     translateChoice: PropTypes.bool,
 };
 
+EnhancedSelectField.displayName = 'EnhancedSelectField';
+
 export default EnhancedSelectField;

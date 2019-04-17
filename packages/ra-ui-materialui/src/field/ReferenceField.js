@@ -152,17 +152,6 @@ ReferenceField.propTypes = {
         .isRequired,
 };
 
-ReferenceField.defaultProps = {
-    allowEmpty: false,
-    classes: {},
-    linkType: 'edit',
-    record: {},
-};
-
-const EnhancedReferenceField = withStyles(styles)(ReferenceField);
-
-EnhancedReferenceField.defaultProps = {
-    addLabel: true,
-};
+EnhancedReferenceField.displayName = 'EnhancedReferenceField';
 
 export default EnhancedReferenceField;

@@ -43,4 +43,6 @@ EnhancedFunctionField.propTypes = {
     ...fieldPropTypes,
 };
 
+EnhancedFunctionField.displayName = 'EnhancedFunctionField';
+
 export default EnhancedFunctionField;

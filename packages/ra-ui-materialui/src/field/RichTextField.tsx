@@ -57,4 +57,6 @@ EnhancedRichTextField.propTypes = {
     stripTags: PropTypes.bool,
 };
 
+EnhancedRichTextField.displayName = 'EnhancedRichTextField';
+
 export default EnhancedRichTextField;

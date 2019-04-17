@@ -87,4 +87,6 @@ EnhancedImageField.propTypes = {
     title: PropTypes.string,
 };
 
+EnhancedImageField.displayName = 'EnhancedImageField';
+
 export default EnhancedImageField;

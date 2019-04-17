@@ -107,4 +107,6 @@ EnhancedNumberField.propTypes = {
     options: PropTypes.object,
 };
 
+EnhancedNumberField.displayName = 'EnhancedNumberField';
+
 export default EnhancedNumberField;
