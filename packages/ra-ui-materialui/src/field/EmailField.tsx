@@ -1,17 +1,13 @@
-import React, { SFC } from 'react';
-import PropTypes from 'prop-types';
+import React, { SFC, HtmlHTMLAttributes } from 'react';
 import get from 'lodash/get';
 import pure from 'recompose/pure';
 
 import sanitizeRestProps from './sanitizeRestProps';
-import { FieldProps } from './types';
+import { FieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 
-const EmailField: SFC<FieldProps> = ({
-    className,
-    source,
-    record = {},
-    ...rest
-}) => (
+const EmailField: SFC<
+    FieldProps & InjectedFieldProps & HtmlHTMLAttributes<HTMLAnchorElement>
+> = ({ className, source, record = {}, ...rest }) => (
     <a
         className={className}
         href={`mailto:${get(record, source)}`}
@@ -21,10 +17,14 @@ const EmailField: SFC<FieldProps> = ({
     </a>
 );
 
-const PureEmailField = pure(EmailField);
+const EnhancedEmailField = pure<
+    FieldProps & HtmlHTMLAttributes<HTMLAnchorElement>
+>(EmailField);
 
-PureEmailField.defaultProps = {
+EnhancedEmailField.defaultProps = {
     addLabel: true,
 };
 
-export default PureEmailField;
+EnhancedEmailField.propTypes = fieldPropTypes;
+
+export default EnhancedEmailField;

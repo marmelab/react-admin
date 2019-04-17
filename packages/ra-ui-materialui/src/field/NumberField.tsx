@@ -2,10 +2,10 @@ import React, { SFC } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import pure from 'recompose/pure';
-import Typography from '@material-ui/core/Typography';
+import Typography, { TypographyProps } from '@material-ui/core/Typography';
 
 import sanitizeRestProps from './sanitizeRestProps';
-import { FieldProps } from './types';
+import { FieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 
 const hasNumberFormat = !!(
     typeof Intl === 'object' &&
@@ -46,7 +46,7 @@ interface Props extends FieldProps {
  * // renders the record { id: 1234, price: 25.99 } as
  * <span>25,99 $US</span>
  */
-export const NumberField: SFC<Props> = ({
+export const NumberField: SFC<Props & InjectedFieldProps & TypographyProps> = ({
     className,
     record,
     source,
@@ -90,11 +90,21 @@ export const NumberField: SFC<Props> = ({
 // wat? TypeScript looses the displayName if we don't set it explicitly
 NumberField.displayName = 'NumberField';
 
-const ComposedNumberField = pure(NumberField);
+const EnhancedNumberField = pure<Props & TypographyProps>(NumberField);
 
-ComposedNumberField.defaultProps = {
+EnhancedNumberField.defaultProps = {
     addLabel: true,
     textAlign: 'right',
 };
 
-export default ComposedNumberField;
+EnhancedNumberField.propTypes = {
+    ...Typography.propTypes,
+    ...fieldPropTypes,
+    locales: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.arrayOf(PropTypes.string),
+    ]),
+    options: PropTypes.object,
+};
+
+export default EnhancedNumberField;

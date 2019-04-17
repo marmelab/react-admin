@@ -1,13 +1,13 @@
-import React, { Component, cloneElement, Children } from 'react';
-import PropTypes from 'prop-types';
+import { Component, cloneElement, Children } from 'react';
 import get from 'lodash/get';
 import pure from 'recompose/pure';
+import { Identifier } from 'ra-core';
 
-import { FieldProps } from './types';
+import { FieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 
 interface State {
     data: object;
-    ids: string[];
+    ids: Identifier[];
 }
 
 const initialState = {
@@ -78,15 +78,21 @@ const initialState = {
  *     )
  *     TagsField.defaultProps = { addLabel: true };
  */
-export class ArrayField extends Component<FieldProps, State> {
-    constructor(props: FieldProps) {
+export class ArrayField extends Component<
+    FieldProps & InjectedFieldProps,
+    State
+> {
+    constructor(props: FieldProps & InjectedFieldProps) {
         super(props);
         this.state = props.record
             ? this.getDataAndIds(props.record, props.source)
             : initialState;
     }
 
-    componentWillReceiveProps(nextProps: FieldProps, prevProps: FieldProps) {
+    componentWillReceiveProps(
+        nextProps: FieldProps & InjectedFieldProps,
+        prevProps: FieldProps & InjectedFieldProps
+    ) {
         if (nextProps.record !== prevProps.record) {
             this.setState(
                 this.getDataAndIds(nextProps.record, nextProps.source)
@@ -129,10 +135,12 @@ export class ArrayField extends Component<FieldProps, State> {
     }
 }
 
-const EnhancedArrayField = pure(ArrayField);
+const EnhancedArrayField = pure<FieldProps>(ArrayField);
 
 EnhancedArrayField.defaultProps = {
     addLabel: true,
 };
+
+EnhancedArrayField.propTypes = fieldPropTypes;
 
 export default EnhancedArrayField;

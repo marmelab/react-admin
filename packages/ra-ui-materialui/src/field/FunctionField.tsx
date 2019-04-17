@@ -1,10 +1,10 @@
 import React, { SFC } from 'react';
 import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
-import Typography from '@material-ui/core/Typography';
+import Typography, { TypographyProps } from '@material-ui/core/Typography';
 
 import sanitizeRestProps from './sanitizeRestProps';
-import { FieldProps } from './types';
+import { FieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 
 interface Props extends FieldProps {
     render: (record: object, source: string) => any;
@@ -14,7 +14,7 @@ interface Props extends FieldProps {
  * @example
  * <FunctionField source="last_name" label="Name" render={record => `${record.first_name} ${record.last_name}`} />
  */
-const FunctionField: SFC<Props> = ({
+const FunctionField: SFC<Props & InjectedFieldProps & TypographyProps> = ({
     className,
     record = {},
     source,
@@ -32,10 +32,15 @@ const FunctionField: SFC<Props> = ({
         </Typography>
     ) : null;
 
-const PureFunctionField = pure(FunctionField);
+const EnhancedFunctionField = pure<Props & TypographyProps>(FunctionField);
 
-PureFunctionField.defaultProps = {
+EnhancedFunctionField.defaultProps = {
     addLabel: true,
 };
 
-export default PureFunctionField;
+EnhancedFunctionField.propTypes = {
+    ...Typography.propTypes,
+    ...fieldPropTypes,
+};
+
+export default EnhancedFunctionField;
