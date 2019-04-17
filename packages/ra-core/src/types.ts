@@ -57,6 +57,7 @@ export interface ReduxState {
                 [relatedTo: string]: { ids: Identifier[]; total: number };
             };
         };
+        loading: number;
     };
     i18n: {
         locale: string;

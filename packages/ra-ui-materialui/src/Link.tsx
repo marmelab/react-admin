@@ -4,12 +4,14 @@ import classNames from 'classnames';
 import { Link as RRLink } from 'react-router-dom';
 import { withStyles, createStyles } from '@material-ui/core/styles';
 
-const styles = theme => createStyles({
-    link: {
-        textDecoration: 'none',
-        color: theme.palette.primary.main,
-    },
-});
+const styles = theme =>
+    createStyles({
+        link: {
+            textDecoration: 'none',
+            color: theme.palette.primary.main,
+        },
+    });
+
 /**
  * @deprecated Use react-router-dom's Link instead
  */
