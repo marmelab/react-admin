@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import { withStyles, createStyles } from '@material-ui/core/styles';
 import { ReferenceArrayFieldController } from 'ra-core';
+import { fieldPropTypes } from './types';
 
 const styles = createStyles({
     progress: { marginTop: '1em' },
