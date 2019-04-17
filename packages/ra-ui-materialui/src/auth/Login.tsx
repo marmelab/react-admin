@@ -74,7 +74,7 @@ const styles = (theme: Theme) =>
  *        </Admin>
  *     );
  */
-class LoginView extends Component<
+class Login extends Component<
     Props & WithStyles<typeof styles> & HtmlHTMLAttributes<HTMLDivElement>
 > {
     static propTypes = {
@@ -154,6 +154,6 @@ class LoginView extends Component<
     }
 }
 
-const Login = withStyles(styles)(LoginView) as ComponentType<Props>;
+const EnhancedLogin = withStyles(styles)(Login) as ComponentType<Props>;
 
-export default Login;
+export default EnhancedLogin;

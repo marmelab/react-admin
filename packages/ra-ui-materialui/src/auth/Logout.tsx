@@ -45,7 +45,7 @@ const styles = (theme: Theme) =>
  *
  * Used for the Logout Menu item in the sidebar
  */
-const LogoutView: SFC<Props & EnhancedProps & MenuItemProps> = ({
+const Logout: SFC<Props & EnhancedProps & MenuItemProps> = ({
     classes,
     className,
     locale,
@@ -79,11 +79,11 @@ const enhance = compose<Props & EnhancedProps, Props>(
     withStyles(styles)
 );
 
-const Logout = enhance(LogoutView);
+const EnhancedLogout = enhance(Logout);
 
-Logout.propTypes = {
+EnhancedLogout.propTypes = {
     className: PropTypes.string,
     redirectTo: PropTypes.string,
 };
 
-export default Logout;
+export default EnhancedLogout;

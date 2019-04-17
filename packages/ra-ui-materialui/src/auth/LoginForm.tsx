@@ -61,7 +61,7 @@ const renderInput = ({
 const login = (auth, dispatch, { redirectTo }) =>
     dispatch(userLogin(auth, redirectTo));
 
-const LoginFormView: SFC<Props & EnhancedProps> = ({
+const LoginForm: SFC<Props & EnhancedProps> = ({
     classes,
     isLoading,
     handleSubmit,
@@ -129,10 +129,10 @@ const enhance = compose<Props & EnhancedProps, Props>(
     })
 );
 
-const LoginForm = enhance(LoginFormView);
+const EnhancedLoginForm = enhance(LoginForm);
 
-LoginForm.propTypes = {
+EnhancedLoginForm.propTypes = {
     redirectTo: PropTypes.string,
 };
 
-export default LoginForm;
+export default EnhancedLoginForm;
