@@ -17,7 +17,7 @@ import {
     TranslationContextProps,
 } from 'ra-core';
 
-interface Props extends MenuItemProps {
+interface Props {
     redirectTo?: string;
 }
 
@@ -45,7 +45,7 @@ const styles = (theme: Theme) =>
  *
  * Used for the Logout Menu item in the sidebar
  */
-const LogoutView: SFC<Props & EnhancedProps> = ({
+const LogoutView: SFC<Props & EnhancedProps & MenuItemProps> = ({
     classes,
     className,
     locale,
