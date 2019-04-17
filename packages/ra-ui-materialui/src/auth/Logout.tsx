@@ -70,7 +70,10 @@ const mapDispatchToProps = (dispatch, { redirectTo }) => ({
     userLogout: () => dispatch(userLogoutAction(redirectTo)),
 });
 
-const enhance = compose<Props & EnhancedProps, Props>(
+const enhance = compose<
+    Props & EnhancedProps & MenuItemProps,
+    Props & MenuItemProps
+>(
     withTranslate,
     connect(
         undefined,
