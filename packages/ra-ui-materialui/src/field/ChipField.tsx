@@ -40,4 +40,6 @@ EnhancedChipField.propTypes = {
     ...fieldPropTypes,
 };
 
+EnhancedChipField.displayName = 'EnhancedChipField';
+
 export default EnhancedChipField;
