@@ -610,7 +610,7 @@ const App = () => (
 
 ## Using a Custom Home Page
 
-By default, react-admin displays the list page of the first resource as home page. If you want to display a custom component instead, pass it in the `dashboard` prop of the `<Admin>` component.
+By default, react-admin displays the list page of the first `Resource` element as home page. If you want to display a custom component instead, pass it in the `dashboard` prop of the `<Admin>` component.
 
 ```jsx
 // in src/Dashboard.js
@@ -646,7 +646,7 @@ Most admin apps require authentication. React-admin can check user credentials b
 
 *What* those credentials are, and *how* to get them, are questions that you, as a developer, must answer. React-admin makes no assumption about your authentication strategy (basic auth, OAuth, custom route, etc), but gives you the hooks to plug your logic at the right place - by calling an `authProvider` function.
 
-For this tutorial, since there is no public authentication API we can use, let's use a fake authentication provider that accepts every login request, and stores the `username` in `localStorage`. Each page change will require that `localStorage` contains a `username` item.
+For this tutorial, since there is no public authentication API we can use a fake authentication provider that accepts every login request, and stores the `username` in `localStorage`. Each page change will require that `localStorage` contains a `username` item.
 
 The `authProvider` is a simple function, which must return a `Promise`:
 
