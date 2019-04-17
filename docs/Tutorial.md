@@ -448,7 +448,7 @@ const App = () => (
 
 ![Post Edit Guesser](./img/tutorial_edit_guesser.gif)
 
-Users can display the edit page just by clicking on a row in the post datagrid. The form rendered is already functional ; it issues `PUT` requests to the REST API upon submission.
+Users can display the edit page just by clicking on the Edit button. The form rendered is already functional; it issues `PUT` requests to the REST API upon submission.
 
 Copy the `PostEdit` code dumped by the guesser in the console to the `posts.js` file so that you can customize the view. Don't forget to `import` the new components from react-admin.
 
@@ -477,7 +477,7 @@ If you've understood the `<List>` component, the `<Edit>` component will be no s
 
 The `<ReferenceInput>` takes the same props as the `<ReferenceField>` (used earlier in the `PostList` page). `<ReferenceInput>` uses these props to fetch the API for possible references related to the current record (in this case, possible `users` for the current `post`). It then passes these possible references to the child component (`<SelectInput>`), which is responsible for displaying them (via their `name` in that case), and letting the user select one. `<SelectInput>` renders as a `<select>` tag in HTML.
 
-Before you use that custom component in the `App.js`, copy the `PostEdit` component into a `PostCreate`, but remove the initial `DisabledInput`:
+Before you can use that custom component in the `App.js`, copy the `PostEdit` component into a `PostCreate`, and replace `Edit` by `Create`:
 
 ```jsx
 // in src/posts.js
