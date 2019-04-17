@@ -5,7 +5,7 @@ title: "My First Project Tutorial"
 
 # React-Admin Tutorial
 
-This 20 minutes tutorial will expose how to create a new admin app based on an existing REST API.
+This 60 minutes tutorial will expose how to create a new admin app based on an existing REST API.
 
 ## Setting Up
 
@@ -87,15 +87,22 @@ Now it's time to add features!
 
 The `<Admin>` component expects one or more `<Resource>` child components. Each resource maps a name to an endpoint in the API. Edit the `App.js` file to add a resource named `users`:
 
-```jsx
+```diff
 // in src/App.js
-import { Admin, Resource, ListGuesser } from 'react-admin';
+import React from 'react';
+-import { Admin, Resource } from 'react-admin';
++import { Admin, Resource, ListGuesser } from 'react-admin';
+import jsonServerProvider from 'ra-data-json-server';
 
-const App = () => (
-    <Admin dataProvider={dataProvider}>
-        <Resource name="users" list={ListGuesser} />
-    </Admin>
-);
+const dataProvider = jsonServerProvider('http://jsonplaceholder.typicode.com');
+-const App = () => <Admin dataProvider={dataProvider} />;
++const App = () => (
++    <Admin dataProvider={dataProvider}>
++        <Resource name="users" list={ListGuesser} />
++    </Admin>
++);
+
+export default App;
 ```
 
 The line `<Resource name="users" />` informs react-admin to fetch the "users" records from the [http://jsonplaceholder.typicode.com/users](http://jsonplaceholder.typicode.com/users) URL. `<Resource>` also defines the React components to use for each CRUD operation (`list`, `create`, `edit`, and `show`).
