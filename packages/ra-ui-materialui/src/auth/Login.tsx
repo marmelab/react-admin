@@ -27,7 +27,6 @@ interface Props {
     backgroundImage?: string;
     loginForm: ReactElement<any>;
     theme: object;
-    staticContext: StaticContext;
 }
 
 const styles = (theme: Theme) =>
@@ -77,18 +76,6 @@ const styles = (theme: Theme) =>
 class Login extends Component<
     Props & WithStyles<typeof styles> & HtmlHTMLAttributes<HTMLDivElement>
 > {
-    static propTypes = {
-        backgroundImage: PropTypes.string,
-        loginForm: PropTypes.element,
-        theme: PropTypes.object,
-    };
-
-    static defaultProps = {
-        backgroundImage: 'https://source.unsplash.com/random/1600x900/daily',
-        theme: defaultTheme,
-        loginForm: <DefaultLoginForm />,
-    };
-
     theme = createMuiTheme(this.props.theme);
     containerRef = React.createRef<HTMLDivElement>();
     backgroundImageLoaded = false;
@@ -128,7 +115,6 @@ class Login extends Component<
             classes,
             className,
             loginForm,
-            staticContext,
             ...rest
         } = this.props;
 
@@ -156,4 +142,15 @@ class Login extends Component<
 
 const EnhancedLogin = withStyles(styles)(Login) as ComponentType<Props>;
 
+EnhancedLogin.propTypes = {
+    backgroundImage: PropTypes.string,
+    loginForm: PropTypes.element,
+    theme: PropTypes.object,
+};
+
+EnhancedLogin.defaultProps = {
+    backgroundImage: 'https://source.unsplash.com/random/1600x900/daily',
+    theme: defaultTheme,
+    loginForm: <DefaultLoginForm />,
+};
 export default EnhancedLogin;

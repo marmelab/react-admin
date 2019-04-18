@@ -1,71 +1,62 @@
-import assert from 'assert';
-import { shallow } from 'enzyme';
 import React from 'react';
+import expect from 'expect';
+import { render, fireEvent, cleanup } from 'react-testing-library';
 
 import { DateInput } from './DateInput';
 
 describe('<DateInput />', () => {
-    it('should render a localized <DatePicker />', () => {
-        const input = { value: null };
-        const wrapper = shallow(
-            <DateInput source="foo" meta={{}} input={input} />
-        );
-        const datePicker = wrapper.find('TextField');
-        assert.equal(datePicker.length, 1);
-        assert.equal(datePicker.first().prop('type'), 'date');
+    const defaultProps = {
+        resource: 'bar',
+        source: 'foo',
+        meta: {},
+        input: {},
+        translate: x => x,
+    };
+
+    afterEach(cleanup);
+
+    it('should render a date input', () => {
+        const { getByLabelText } = render(<DateInput {...defaultProps} />);
+        expect(getByLabelText('resources.bar.fields.foo').type).toBe('date');
     });
 
-    it('should call props `input.onChange` method when changed', () => {
-        const input = { value: null, onChange: jest.fn(), onBlur: () => {} };
-        const wrapper = shallow(
-            <DateInput source="foo" input={input} meta={{}} />
-        )
-            .shallow()
-            .find('WithStyles(Input)')
-            .shallow()
-            .shallow()
-            .find('input');
-        wrapper.simulate('change', {
-            target: { value: '2010-01-04' },
-        });
-        assert.equal(input.onChange.mock.calls[0][0], '2010-01-04');
+    it('should call `input.onChange` method when changed', () => {
+        const onChange = jest.fn();
+        const { getByLabelText } = render(
+            <DateInput {...defaultProps} input={{ onChange }} />
+        );
+        const input = getByLabelText('resources.bar.fields.foo');
+        fireEvent.change(input, { target: { value: '2010-01-04' } });
+        expect(onChange.mock.calls[0][0]).toBe('2010-01-04');
     });
 
     describe('error message', () => {
         it('should not be displayed if field is pristine', () => {
-            const wrapper = shallow(
-                <DateInput
-                    source="foo"
-                    input={{ value: null }}
-                    meta={{ touched: false }}
-                />
+            const { container } = render(
+                <DateInput {...defaultProps} meta={{ touched: false }} />
             );
-            const DatePicker = wrapper.find('TextField');
-            assert.equal(DatePicker.prop('helperText'), '');
+            expect(container.querySelector('p')).toBeNull();
         });
 
         it('should not be displayed if field has been touched but is valid', () => {
-            const wrapper = shallow(
+            const { container } = render(
                 <DateInput
-                    source="foo"
-                    input={{ value: null }}
+                    {...defaultProps}
                     meta={{ touched: true, error: false }}
                 />
             );
-            const DatePicker = wrapper.find('TextField');
-            assert.equal(DatePicker.prop('helperText'), '');
+            expect(container.querySelector('p')).toBeNull();
         });
 
         it('should be displayed if field has been touched and is invalid', () => {
-            const wrapper = shallow(
+            const { container, queryByText } = render(
                 <DateInput
-                    source="foo"
-                    input={{ value: null }}
+                    {...defaultProps}
                     meta={{ touched: true, error: 'Required field.' }}
                 />
             );
-            const DatePicker = wrapper.find('TextField');
-            assert.equal(DatePicker.prop('helperText'), 'Required field.');
+            expect(container.querySelector('p')).not.toBeNull();
+            expect(queryByText('Required field.')).not.toBeNull();
         });
     });
 });
