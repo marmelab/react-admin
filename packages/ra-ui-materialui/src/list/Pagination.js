@@ -50,6 +50,7 @@ export class Pagination extends Component {
 
     render() {
         const {
+            width, // used for testing responsive
             isLoading,
             page,
             perPage,
@@ -65,6 +66,7 @@ export class Pagination extends Component {
 
         return (
             <Responsive
+                width={width}
                 small={
                     <TablePagination
                         count={total}
