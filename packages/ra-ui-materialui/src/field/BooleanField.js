@@ -60,7 +60,7 @@ export const BooleanField = ({
                 {...sanitizeRestProps(rest)}
             >
                 <span className={classes.label}>{ariaLabel}</span>
-                <FalseIcon />
+                <FalseIcon data-testid="false" />
             </Typography>
         );
     }
@@ -74,7 +74,7 @@ export const BooleanField = ({
                 {...sanitizeRestProps(rest)}
             >
                 <span className={classes.label}>{ariaLabel}</span>
-                <TrueIcon />
+                <TrueIcon data-testid="true" />
             </Typography>
         );
     }

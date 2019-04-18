@@ -6,7 +6,7 @@ import { render, cleanup } from 'react-testing-library';
 describe('<BooleanField />', () => {
     afterEach(cleanup);
     it('should display tick and truthy text if value is true', () => {
-        const { queryByText } = render(
+        const { queryByText, getByRole } = render(
             <BooleanField
                 record={{ published: true }}
                 source="published"
@@ -14,6 +14,7 @@ describe('<BooleanField />', () => {
             />
         );
         expect(queryByText('ra.boolean.true')).not.toBeNull();
+        expect(getByRole('presentation').dataset.testid).toBe('true');
         expect(queryByText('ra.boolean.false')).toBeNull();
     });
 
@@ -31,7 +32,7 @@ describe('<BooleanField />', () => {
     });
 
     it('should display cross and falsy text if value is false', () => {
-        const { queryByText } = render(
+        const { queryByText, getByRole } = render(
             <BooleanField
                 record={{ published: false }}
                 source="published"
@@ -39,6 +40,7 @@ describe('<BooleanField />', () => {
             />
         );
         expect(queryByText('ra.boolean.true')).toBeNull();
+        expect(getByRole('presentation').dataset.testid).toBe('false');
         expect(queryByText('ra.boolean.false')).not.toBeNull();
     });
 
