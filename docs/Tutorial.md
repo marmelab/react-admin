@@ -5,7 +5,7 @@ title: "My First Project Tutorial"
 
 # React-Admin Tutorial
 
-This 60 minutes tutorial will expose how to create a new admin app based on an existing REST API.
+This 30 minutes tutorial will expose how to create a new admin app based on an existing REST API.
 
 ## Setting Up
 

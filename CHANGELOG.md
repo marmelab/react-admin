@@ -1,5 +1,21 @@
 # Changelog
 
+## v2.8.6
+
+* Fix `<Mutation>` documentation showing wrong `notification` side effect syntax ([3147](https://github.com/marmelab/react-admin/pull/3147)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<Query>` component does not fetch again when updated ([3146](https://github.com/marmelab/react-admin/pull/3146)) ([fzaninotto](https://github.com/fzaninotto))
+* Allow to override `Popper` props in `<AutocompleteArrayInput>` ([3145](https://github.com/marmelab/react-admin/pull/3145)) ([cherniavskii](https://github.com/cherniavskii))
+* Fix history console warnings ([3144](https://github.com/marmelab/react-admin/pull/3144)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix various typos in tutorial ([3135](https://github.com/marmelab/react-admin/pull/3135)) ([pemoreau](https://github.com/pemoreau))
+* Fix undefined id in `<RadioButtonGroupInput>` ([3123](https://github.com/marmelab/react-admin/pull/3123)) ([johncalvinroberts](https://github.com/johncalvinroberts))
+* Fix typo in `ra-input-rich-text` internal component name ([3109](https://github.com/marmelab/react-admin/pull/3109)) ([ruiyangliu](https://github.com/ruiyangliu))
+* Fix unnecessary update of `<RichTextInput>` on edit ([3099](https://github.com/marmelab/react-admin/pull/3099)) ([roychoo](https://github.com/roychoo))
+* Fix filter id applied incorrectly to get many ref in `ra-data-graphql-simple` ([2649](https://github.com/marmelab/react-admin/pull/2649)) ([redorb](https://github.com/redorb))
+* Migrate `ra-ui-materialui` field components to TypeScript ([3091](https://github.com/marmelab/react-admin/pull/3091)) ([Kmaschta](https://github.com/Kmaschta))
+* Migrate `ra-ui-materialui` auth components to TypeScript ([2984](https://github.com/marmelab/react-admin/pull/2984)) ([djhi](https://github.com/djhi))
+* Add license scan report and status ([3100](https://github.com/marmelab/react-admin/pull/3100)) ([fossabot](https://github.com/fossabot))
+* Add Hebrew translation ([3133](https://github.com/marmelab/react-admin/pull/3133)) ([ak-il](https://github.com/ak-il))
+
 ## v2.8.5
 
 * Fix links to CodeSandbox become outdated rapidly ([3095](https://github.com/marmelab/react-admin/pull/3095)) ([fzaninotto](https://github.com/fzaninotto))

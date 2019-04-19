@@ -53,7 +53,7 @@ npm install react-admin
 
 ## Usage
 
-Read the [Tutorial](./Tutorial.md) for a 60 minutes introduction. After that, head to the [Documentation](./index.md), or checkout the [source code of the demo](https://github.com/marmelab/react-admin/tree/master/examples/demo) for an example usage.
+Read the [Tutorial](./Tutorial.md) for a 30 minutes introduction. After that, head to the [Documentation](./index.md), or checkout the [source code of the demo](https://github.com/marmelab/react-admin/tree/master/examples/demo) for an example usage.
 
 ## At a Glance
 
