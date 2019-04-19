@@ -1,6 +1,6 @@
 {
     "name": "ra-realtime",
-    "version": "2.6.0",
+    "version": "2.8.6",
     "description": "A saga enabling realtime updates for react-admin",
     "main": "lib/index.js",
     "module": "esm/index.js",
