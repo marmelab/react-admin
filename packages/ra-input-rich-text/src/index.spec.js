@@ -55,7 +55,6 @@ describe('RichTextInput', () => {
             }}
             meta={{error: null}} />)
 
-        // jest.runOnlyPendingTimers();
         expect(handleChange).toHaveBeenCalledTimes(1);
     });
 })
