@@ -508,7 +508,7 @@ By default, react-admin creates URLs using a hash sign (e.g. "myadmin.acme.com/#
 You can create your own `history` function (compatible with [the `history` npm package](https://github.com/reacttraining/history)), and pass it to the `<Admin>` component to override the default history strategy. For instance, to use `browserHistory`:
 
 ```js
-import createHistory from 'history/createBrowserHistory';
+import { createBrowserHistory as createHistory } from 'history';
 
 const history = createHistory();
 
