@@ -259,7 +259,7 @@ class ApproveButton extends Component {
 -   }
 +       dataProvider(UPDATE, 'comments', { id: record.id, data: updatedRecord }, {
 +           onSuccess: {
-+               notification: 'Comment approved',
++               notification: { body: 'Comment approved', level: 'info' },
 +               redirectTo: '/comments',
 +           },
 +           onError: {
@@ -309,7 +309,7 @@ class ApproveButton extends Component {
         dataProvider(UPDATE, 'comments', { id: record.id, data: updatedRecord }, {
 +           undoable: true,
             onSuccess: {
-                notification: 'Comment approved',
+                notification: { body: 'Comment approved', level: 'info' },
                 redirectTo: '/comments',
             },
             onError: {
@@ -387,7 +387,7 @@ import { Mutation } from 'react-admin';
 const options = {
     undoable: true,
     onSuccess: {
-        notification: 'Comment approved',
+        notification: { body: 'Comment approved', level: 'info' },
         redirectTo: '/comments',
     },
     onError: {
