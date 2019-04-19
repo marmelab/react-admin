@@ -27,13 +27,13 @@ describe('RichTextInput', () => {
 
     it('should call handleChange only once when editing', async () => {
         jest.useFakeTimers();
-        const mockFn = jest.fn();
+        const handleChange = jest.fn();
         debounce.mockImplementation(fn => fn);
         const { getByTestId, rerender } = render(
         <RichTextInput
             input={{
               value: '<p>test</p>',
-                onChange: mockFn
+                onChange: handleChange
             }}
             meta={{error: null}} />);
         const quillNode = await waitForElement(() => {
@@ -51,10 +51,11 @@ describe('RichTextInput', () => {
           <RichTextInput
             input={{
               value: '<p>test1</p>',
-                onChange: mockFn
+                onChange: handleChange
             }}
             meta={{error: null}} />)
 
-        expect(mockFn).toHaveBeenCalledTimes(1);
+        // jest.runOnlyPendingTimers();
+        expect(handleChange).toHaveBeenCalledTimes(1);
     });
 })
