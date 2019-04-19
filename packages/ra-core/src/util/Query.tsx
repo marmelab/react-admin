@@ -1,7 +1,13 @@
 import { Component, ReactNode } from 'react';
+import { shallowEqual } from 'recompose';
 import withDataProvider from './withDataProvider';
 
-type DataProviderCallback = (type: string, resource: string, payload?: any, options?: any) => Promise<any>;
+type DataProviderCallback = (
+    type: string,
+    resource: string,
+    payload?: any,
+    options?: any
+) => Promise<any>;
 
 interface ChildrenFuncParams {
     data?: any;
@@ -72,25 +78,40 @@ class Query extends Component<Props, State> {
         data: null,
         total: null,
         loading: true,
-        error: null
+        error: null,
     };
 
-    componentDidMount = () => {
+    callDataProvider = () => {
         const { dataProvider, type, resource, payload, options } = this.props;
         dataProvider(type, resource, payload, options)
             .then(({ data, total }) => {
                 this.setState({
                     data,
                     total,
-                    loading: false
+                    loading: false,
                 });
             })
             .catch(error => {
                 this.setState({
                     error,
-                    loading: false
+                    loading: false,
                 });
             });
+    };
+
+    componentDidMount = () => {
+        this.callDataProvider();
+    };
+
+    componentDidUpdate = prevProps => {
+        if (
+            prevProps.type !== this.props.type ||
+            prevProps.resource !== this.props.resource ||
+            !shallowEqual(prevProps.payload, this.props.payload) ||
+            !shallowEqual(prevProps.options, this.props.options)
+        ) {
+            this.callDataProvider();
+        }
     };
 
     render() {
