@@ -17,7 +17,7 @@ export default (i18nProvider: I18nProvider) => {
     function* loadMessages(action) {
         const locale = action.payload;
 
-        yield put(fetchStart())
+        yield put(fetchStart());
 
         try {
             const messages = yield call(i18nProvider, locale);
@@ -25,7 +25,7 @@ export default (i18nProvider: I18nProvider) => {
         } catch (err) {
             yield put(changeLocaleFailure(action.payload.locale, err));
         }
-        yield put(fetchEnd())
+        yield put(fetchEnd());
     }
     return function*() {
         yield all([takeLatest(CHANGE_LOCALE, loadMessages)]);
