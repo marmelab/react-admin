@@ -159,11 +159,12 @@ export class SelectArrayInput extends Component {
     };
 
     renderMenuItem = choice => {
-        const { optionValue } = this.props;
+        const { optionValue, disableValue } = this.props;
         return (
             <MenuItem
                 key={get(choice, optionValue)}
                 value={get(choice, optionValue)}
+                disabled={get(choice, disableValue)}
             >
                 {this.renderMenuItemOption(choice)}
             </MenuItem>
@@ -275,6 +276,7 @@ SelectArrayInput.defaultProps = {
     optionText: 'name',
     optionValue: 'id',
     translateChoice: true,
+    disableValue: 'disabled'
 };
 
 const EnhancedSelectArrayInput = compose(
