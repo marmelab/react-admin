@@ -82,10 +82,11 @@ class DatagridRow extends Component {
             push(linkToRecord(basePath, id, 'show'));
             return;
         }
-        if (path == 'expand') {
+        if (path === 'expand') {
             this.handleToggleExpanded(event);
             return;
         }
+        if (!path) return;
 
         push(path);
     };
