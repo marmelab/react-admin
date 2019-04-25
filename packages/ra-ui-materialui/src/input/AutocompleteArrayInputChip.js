@@ -12,8 +12,13 @@ const chipInputStyles = createStyles({
     chipContainer: {
         alignItems: 'center',
         display: 'flex',
+        flexWrap: 'wrap',
         minHeight: 50,
+        paddingBottom: 8,
     },
+    inputRoot: {
+        marginTop: 8,
+    }
 });
 
 const AutocompleteArrayInputChip = props => <ChipInput {...props} />;
