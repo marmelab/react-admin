@@ -48,7 +48,7 @@ const sanitizeRestProps = ({
     ...rest
 }) => rest;
 
-export const EditView = ({
+export const EditView = withStyles(styles)(({
     actions,
     aside,
     basePath,
@@ -122,7 +122,7 @@ export const EditView = ({
                 })}
         </div>
     );
-};
+});
 
 EditView.propTypes = {
     actions: PropTypes.element,
@@ -188,7 +188,7 @@ EditView.defaultProps = {
  *     );
  *     export default App;
  */
-export const Edit = props => (
+const Edit = props => (
     <EditController {...props}>
         {controllerProps => <EditView {...props} {...controllerProps} />}
     </EditController>
@@ -209,4 +209,4 @@ Edit.propTypes = {
     title: PropTypes.any,
 };
 
-export default withStyles(styles)(Edit);
+export default Edit;
