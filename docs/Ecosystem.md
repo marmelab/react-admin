@@ -20,6 +20,10 @@ title: "Ecosystem"
 
 See the [translation](./Translation.md#available-locales) page.
 
+## Authentication Providers
+
+* **[AWS Cognito](https://docs.aws.amazon.com/cognito/latest/developerguide/setting-up-the-javascript-sdk.html)**: [thedistance/ra-cognito](https://github.com/thedistance/ra-cognito)
+
 ## Data Providers
 
 * **[Django Rest Framework](https://www.django-rest-framework.org/)**: [synaptic-cl/ra-data-drf](https://github.com/synaptic-cl/ra-data-drf)
