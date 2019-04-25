@@ -2,7 +2,7 @@ import React from 'react';
 import { render } from 'enzyme';
 import { TestContext } from 'ra-core';
 
-import { Create } from './Create';
+import Create from './Create';
 
 describe('<Create />', () => {
     const defaultCreateProps = {
