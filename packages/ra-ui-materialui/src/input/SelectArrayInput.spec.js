@@ -1,45 +1,47 @@
 import React from 'react';
-import assert from 'assert';
-import { shallow } from 'enzyme';
+import expect from 'expect';
+import { render, cleanup } from 'react-testing-library';
+
 import { SelectArrayInput } from './SelectArrayInput';
 
 describe('<SelectArrayInput />', () => {
     const defaultProps = {
         classes: {},
+        resource: 'bar',
         source: 'foo',
         meta: {},
-        input: {},
+        input: { onChange: () => null, onBlur: () => null },
         translate: x => x,
     };
 
-    it('should use a mui Select', () => {
-        const wrapper = shallow(
-            <SelectArrayInput
-                {...defaultProps}
-                input={{ value: ['programming'] }}
-            />
-        );
+    afterEach(cleanup);
 
-        const SelectFieldElement = wrapper.find('WithStyles(Select)');
-        assert.equal(SelectFieldElement.length, 1);
+    it('should use a mui Select', () => {
+        const { queryByTestId } = render(
+            <SelectArrayInput {...defaultProps} input={{}} />
+        );
+        expect(queryByTestId('selectArray')).not.toBeNull();
     });
 
     it('should use the input parameter value as the initial input value', () => {
-        const wrapper = shallow(
+        const { getByLabelText } = render(
             <SelectArrayInput
                 {...defaultProps}
                 input={{ value: ['programming', 'lifestyle'] }}
+                choices={[
+                    { id: 'programming', name: 'Programming' },
+                    { id: 'lifestyle', name: 'Lifestyle' },
+                    { id: 'lorem', name: 'Lorem' },
+                ]}
             />
         );
-        const SelectFieldElement = wrapper.find('WithStyles(Select)');
-        assert.deepEqual(SelectFieldElement.prop('value'), [
-            'programming',
-            'lifestyle',
-        ]);
+        expect(getByLabelText('resources.bar.fields.foo').value).toBe(
+            'programming,lifestyle'
+        );
     });
 
-    it('should render choices as mui MenuItem components', () => {
-        const wrapper = shallow(
+    it('should reveal choices on click', () => {
+        const { getByRole, queryByText } = render(
             <SelectArrayInput
                 {...defaultProps}
                 choices={[
@@ -49,110 +51,92 @@ describe('<SelectArrayInput />', () => {
                 ]}
             />
         );
-        const MenuItemElements = wrapper.find('WithStyles(MenuItem)');
-        assert.equal(MenuItemElements.length, 3);
-        const MenuItemElement1 = MenuItemElements.first();
-        assert.equal(MenuItemElement1.prop('value'), 'programming');
-        assert.equal(MenuItemElement1.childAt(0).text(), 'Programming');
-        const MenuItemElement2 = MenuItemElements.at(1);
-        assert.equal(MenuItemElement2.prop('value'), 'lifestyle');
-        assert.equal(MenuItemElement2.childAt(0).text(), 'Lifestyle');
-        const MenuItemElement3 = MenuItemElements.at(2);
-        assert.equal(MenuItemElement3.prop('value'), 'photography');
-        assert.equal(MenuItemElement3.childAt(0).text(), 'Photography');
+        expect(queryByText('Programming')).toBeNull();
+        expect(queryByText('Lifestyle')).toBeNull();
+        expect(queryByText('Photography')).toBeNull();
+        getByRole('button').click();
+        expect(queryByText('Programming')).not.toBeNull();
+        expect(queryByText('Lifestyle')).not.toBeNull();
+        expect(queryByText('Photography')).not.toBeNull();
     });
 
     it('should use optionValue as value identifier', () => {
-        const wrapper = shallow(
+        const { getByRole, getByText, getByLabelText } = render(
             <SelectArrayInput
                 {...defaultProps}
                 optionValue="foobar"
                 choices={[{ foobar: 'M', name: 'Male' }]}
             />
         );
-        const MenuItemElements = wrapper.find('WithStyles(MenuItem)');
-        const MenuItemElement1 = MenuItemElements.first();
-        assert.equal(MenuItemElement1.prop('value'), 'M');
-        assert.equal(MenuItemElement1.childAt(0).text(), 'Male');
+        getByRole('button').click();
+        getByText('Male').click();
+        expect(getByLabelText('resources.bar.fields.foo').value).toBe('M');
     });
 
     it('should use optionValue including "." as value identifier', () => {
-        const wrapper = shallow(
+        const { getByRole, getByText, getByLabelText } = render(
             <SelectArrayInput
                 {...defaultProps}
                 optionValue="foobar.id"
                 choices={[{ foobar: { id: 'M' }, name: 'Male' }]}
             />
         );
-        const MenuItemElements = wrapper.find('WithStyles(MenuItem)');
-        const MenuItemElement1 = MenuItemElements.first();
-        assert.equal(MenuItemElement1.prop('value'), 'M');
-        assert.equal(MenuItemElement1.childAt(0).text(), 'Male');
+        getByRole('button').click();
+        getByText('Male').click();
+        expect(getByLabelText('resources.bar.fields.foo').value).toBe('M');
     });
 
     it('should use optionText with a string value as text identifier', () => {
-        const wrapper = shallow(
+        const { getByRole, queryByText } = render(
             <SelectArrayInput
                 {...defaultProps}
                 optionText="foobar"
                 choices={[{ id: 'M', foobar: 'Male' }]}
             />
         );
-        const MenuItemElements = wrapper.find('WithStyles(MenuItem)');
-        const MenuItemElement1 = MenuItemElements.first();
-        assert.equal(MenuItemElement1.prop('value'), 'M');
-        assert.equal(MenuItemElement1.childAt(0).text(), 'Male');
+        getByRole('button').click();
+        expect(queryByText('Male')).not.toBeNull();
     });
 
     it('should use optionText with a string value including "." as text identifier', () => {
-        const wrapper = shallow(
+        const { getByRole, queryByText } = render(
             <SelectArrayInput
                 {...defaultProps}
                 optionText="foobar.name"
                 choices={[{ id: 'M', foobar: { name: 'Male' } }]}
             />
         );
-        const MenuItemElements = wrapper.find('WithStyles(MenuItem)');
-        const MenuItemElement1 = MenuItemElements.first();
-        assert.equal(MenuItemElement1.prop('value'), 'M');
-        assert.equal(MenuItemElement1.childAt(0).text(), 'Male');
+        getByRole('button').click();
+        expect(queryByText('Male')).not.toBeNull();
     });
 
     it('should use optionText with a function value as text identifier', () => {
-        const wrapper = shallow(
+        const { getByRole, queryByText } = render(
             <SelectArrayInput
                 {...defaultProps}
                 optionText={choice => choice.foobar}
                 choices={[{ id: 'M', foobar: 'Male' }]}
             />
         );
-        const MenuItemElements = wrapper.find('WithStyles(MenuItem)');
-        const MenuItemElement1 = MenuItemElements.first();
-        assert.equal(MenuItemElement1.prop('value'), 'M');
-        assert.equal(MenuItemElement1.childAt(0).text(), 'Male');
+        getByRole('button').click();
+        expect(queryByText('Male')).not.toBeNull();
     });
 
     it('should use optionText with an element value as text identifier', () => {
         const Foobar = ({ record }) => <span>{record.foobar}</span>;
-        const wrapper = shallow(
+        const { getByRole, queryByText } = render(
             <SelectArrayInput
                 {...defaultProps}
                 optionText={<Foobar />}
                 choices={[{ id: 'M', foobar: 'Male' }]}
             />
         );
-        const MenuItemElements = wrapper.find('WithStyles(MenuItem)');
-        const MenuItemElement1 = MenuItemElements.first();
-        assert.equal(MenuItemElement1.prop('value'), 'M');
-        assert.equal(MenuItemElement1.childAt(0).type(), Foobar);
-        assert.deepEqual(MenuItemElement1.childAt(0).prop('record'), {
-            id: 'M',
-            foobar: 'Male',
-        });
+        getByRole('button').click();
+        expect(queryByText('Male')).not.toBeNull();
     });
 
     it('should translate the choices', () => {
-        const wrapper = shallow(
+        const { getByRole, queryByText } = render(
             <SelectArrayInput
                 {...defaultProps}
                 choices={[
@@ -162,83 +146,63 @@ describe('<SelectArrayInput />', () => {
                 translate={x => `**${x}**`}
             />
         );
-        const MenuItemElements = wrapper.find('WithStyles(MenuItem)');
-        const MenuItemElement1 = MenuItemElements.first();
-        assert.equal(MenuItemElement1.prop('value'), 'M');
-        assert.equal(MenuItemElement1.childAt(0).text(), '**Male**');
+        getByRole('button').click();
+        expect(queryByText('**Male**')).not.toBeNull();
+        expect(queryByText('**Female**')).not.toBeNull();
     });
 
     it('should displayed helperText if prop is present in meta', () => {
-        const wrapper = shallow(
+        const { queryByText } = render(
             <SelectArrayInput
                 {...defaultProps}
-                meta={{ helperText: 'Can i help you?' }}
+                meta={{ helperText: 'Can I help you?' }}
             />
         );
-        const helperText = wrapper.find('WithStyles(FormHelperText)');
-        assert.equal(helperText.length, 1);
-        assert.equal(helperText.childAt(0).text(), 'Can i help you?');
+        expect(queryByText('Can I help you?')).not.toBeNull();
     });
 
     describe('error message', () => {
         it('should not be displayed if field is pristine', () => {
-            const wrapper = shallow(
+            const { container } = render(
                 <SelectArrayInput {...defaultProps} meta={{ touched: false }} />
             );
-            const helperText = wrapper.find('WithStyles(FormHelperText)');
-            assert.equal(helperText.length, 0);
+            expect(container.querySelector('p')).toBeNull();
         });
 
         it('should not be displayed if field has been touched but is valid', () => {
-            const wrapper = shallow(
+            const { container } = render(
                 <SelectArrayInput
                     {...defaultProps}
                     meta={{ touched: true, error: false }}
                 />
             );
-            const helperText = wrapper.find('WithStyles(FormHelperText)');
-            assert.equal(helperText.length, 0);
+            expect(container.querySelector('p')).toBeNull();
         });
 
         it('should be displayed if field has been touched and is invalid', () => {
-            const wrapper = shallow(
+            const { container, queryByText } = render(
                 <SelectArrayInput
                     {...defaultProps}
                     meta={{ touched: true, error: 'Required field.' }}
                 />
             );
-            const helperText = wrapper.find('WithStyles(FormHelperText)');
-            assert.equal(helperText.length, 1);
-            assert.equal(helperText.childAt(0).text(), 'Required field.');
+            expect(container.querySelector('p')).not.toBeNull();
+            expect(queryByText('Required field.')).not.toBeNull();
         });
 
         it('should be displayed with an helper Text', () => {
-            const wrapper = shallow(
+            const { queryByText } = render(
                 <SelectArrayInput
                     {...defaultProps}
                     meta={{
                         touched: true,
                         error: 'Required field.',
-                        helperText: 'Can i help you?',
+                        helperText: 'Can I help you?',
                     }}
                 />
             );
-            const helperText = wrapper.find('WithStyles(FormHelperText)');
-            assert.equal(helperText.length, 2);
-            assert.equal(
-                helperText
-                    .at(0)
-                    .childAt(0)
-                    .text(),
-                'Required field.'
-            );
-            assert.equal(
-                helperText
-                    .at(1)
-                    .childAt(0)
-                    .text(),
-                'Can i help you?'
-            );
+            expect(queryByText('Required field.')).not.toBeNull();
+            expect(queryByText('Can I help you?')).not.toBeNull();
         });
     });
 });

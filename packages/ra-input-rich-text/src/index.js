@@ -10,6 +10,8 @@ import { withStyles } from '@material-ui/core/styles';
 import styles from './styles';
 
 export class RichTextInput extends Component {
+    lastValueChange = null;
+
     static propTypes = {
         addLabel: PropTypes.bool.isRequired,
         classes: PropTypes.object,
@@ -18,7 +20,14 @@ export class RichTextInput extends Component {
         meta: PropTypes.object,
         options: PropTypes.object,
         source: PropTypes.string,
-        toolbar: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),
+        toolbar: PropTypes.oneOfType([
+            PropTypes.array,
+            PropTypes.bool,
+            PropTypes.shape({
+                container: PropTypes.array,
+                handlers: PropTypes.object,
+            }),
+        ]),
         fullWidth: PropTypes.bool,
     };
 
@@ -49,6 +58,10 @@ export class RichTextInput extends Component {
         this.quill.on('text-change', debounce(this.onTextChange, 500));
     }
 
+    shouldComponentUpdate(nextProps) {
+        return nextProps.input.value !== this.lastValueChange;
+    }
+
     componentDidUpdate(prevProps) {
         if (prevProps.input.value !== this.props.input.value) {
             const selection = this.quill.getSelection();
@@ -69,6 +82,7 @@ export class RichTextInput extends Component {
     onTextChange = () => {
         const value =
             this.editor.innerHTML == '<p><br></p>' ? '' : this.editor.innerHTML;
+        this.lastValueChange = value;
         this.props.input.onChange(value);
     };
 
@@ -84,7 +98,7 @@ export class RichTextInput extends Component {
                 fullWidth={this.props.fullWidth}
                 className="ra-rich-text-input"
             >
-                <div ref={this.updateDivRef} />
+                <div data-testid="quill" ref={this.updateDivRef} />
                 {error && <FormHelperText error>{error}</FormHelperText>}
                 {helperText && <FormHelperText>{helperText}</FormHelperText>}
             </FormControl>
@@ -92,10 +106,10 @@ export class RichTextInput extends Component {
     }
 }
 
-const RichRextInputWithField = addField(withStyles(styles)(RichTextInput));
+const RichTextInputWithField = addField(withStyles(styles)(RichTextInput));
 
-RichRextInputWithField.defaultProps = {
+RichTextInputWithField.defaultProps = {
     addLabel: true,
     fullWidth: true,
 };
-export default RichRextInputWithField;
+export default RichTextInputWithField;

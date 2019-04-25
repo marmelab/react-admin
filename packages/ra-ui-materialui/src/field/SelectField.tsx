@@ -1,12 +1,28 @@
-import React from 'react';
+import React, { SFC, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import pure from 'recompose/pure';
 import compose from 'recompose/compose';
-import { translate } from 'ra-core';
+import { withTranslate, TranslationContextProps } from 'ra-core';
 import Typography from '@material-ui/core/Typography';
 
 import sanitizeRestProps from './sanitizeRestProps';
+import { FieldProps, InjectedFieldProps, fieldPropTypes } from './types';
+
+interface Choice {
+    id: string;
+    name: string;
+}
+
+type OptionTextElement = ReactElement<{ record: Choice }>;
+type OptionText = (choice: Choice) => string | OptionTextElement;
+
+interface Props extends FieldProps {
+    choices: Choice[];
+    optionValue: string;
+    optionText: OptionTextElement | OptionText | string;
+    translateChoice: boolean;
+}
 
 /**
  * Display a value in an enumeration
@@ -67,7 +83,9 @@ import sanitizeRestProps from './sanitizeRestProps';
  *
  * **Tip**: <ReferenceField> sets `translateChoice` to false by default.
  */
-export const SelectField = ({
+export const SelectField: SFC<
+    Props & InjectedFieldProps & TranslationContextProps
+> = ({
     className,
     source,
     record,
@@ -80,7 +98,9 @@ export const SelectField = ({
 }) => {
     const value = get(record, source);
     const choice = choices.find(c => c[optionValue] === value);
-    if (!choice) return null;
+    if (!choice) {
+        return null;
+    }
     const choiceName = React.isValidElement(optionText) // eslint-disable-line no-nested-ternary
         ? React.cloneElement(optionText, { record: choice })
         : typeof optionText === 'function'
@@ -89,7 +109,7 @@ export const SelectField = ({
     return (
         <Typography
             component="span"
-            body1="body1"
+            variant="body1"
             className={className}
             {...sanitizeRestProps(rest)}
         >
@@ -100,38 +120,18 @@ export const SelectField = ({
     );
 };
 
-SelectField.propTypes = {
-    addLabel: PropTypes.bool,
-    basePath: PropTypes.string,
-    className: PropTypes.string,
-    cellClassName: PropTypes.string,
-    headerClassName: PropTypes.string,
-    choices: PropTypes.arrayOf(PropTypes.object),
-    label: PropTypes.string,
-    optionText: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.func,
-        PropTypes.element,
-    ]).isRequired,
-    optionValue: PropTypes.string.isRequired,
-    resource: PropTypes.string,
-    record: PropTypes.object,
-    sortBy: PropTypes.string,
-    source: PropTypes.string.isRequired,
-    translate: PropTypes.func.isRequired,
-    translateChoice: PropTypes.bool.isRequired,
-};
-
 SelectField.defaultProps = {
-    record: {},
     optionText: 'name',
     optionValue: 'id',
     translateChoice: true,
 };
 
-const enhance = compose(
+const enhance = compose<
+    Props & InjectedFieldProps & TranslationContextProps,
+    Props & TranslationContextProps
+>(
     pure,
-    translate
+    withTranslate
 );
 
 const EnhancedSelectField = enhance(SelectField);
@@ -139,5 +139,20 @@ const EnhancedSelectField = enhance(SelectField);
 EnhancedSelectField.defaultProps = {
     addLabel: true,
 };
+
+EnhancedSelectField.propTypes = {
+    ...Typography.propTypes,
+    ...fieldPropTypes,
+    choices: PropTypes.arrayOf(PropTypes.object).isRequired,
+    optionText: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.func,
+        PropTypes.element,
+    ]),
+    optionValue: PropTypes.string,
+    translateChoice: PropTypes.bool,
+};
+
+EnhancedSelectField.displayName = 'EnhancedSelectField';
 
 export default EnhancedSelectField;

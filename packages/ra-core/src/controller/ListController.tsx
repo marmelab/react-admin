@@ -94,6 +94,7 @@ interface Props {
     path?: string;
     query: ListParams;
     resource: string;
+    [key: string]: any;
 }
 interface EnhancedProps {
     changeListParams: Dispatch<typeof changeListParamsAction>;
@@ -229,6 +230,7 @@ export class UnconnectedListController extends Component<
 
     shouldComponentUpdate(nextProps: Props & EnhancedProps, nextState) {
         if (
+            nextProps.className === this.props.className &&
             nextProps.translate === this.props.translate &&
             nextProps.isLoading === this.props.isLoading &&
             nextProps.version === this.props.version &&
@@ -384,7 +386,7 @@ export class UnconnectedListController extends Component<
             _: inflection.humanize(inflection.pluralize(resource)),
         });
         const defaultTitle = translate('ra.page.list', {
-            name: `${resourceName}`,
+            name: resourceName,
         });
 
         return children({

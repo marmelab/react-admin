@@ -46,6 +46,7 @@ const styles = theme => createStyles({
     },
     chip: {
         marginRight: theme.spacing.unit,
+        marginTop: theme.spacing.unit,
     },
     chipDisabled: {
         pointerEvents: 'none',
@@ -231,7 +232,7 @@ export class AutocompleteArrayInput extends React.Component {
             source,
             value,
             ref,
-            options: { InputProps, ...options },
+            options: { InputProps, suggestionsContainerProps, ...options },
             ...other
         } = inputProps;
         if (typeof meta === 'undefined') {
@@ -366,7 +367,7 @@ export class AutocompleteArrayInput extends React.Component {
             containerProps: { className, ...containerProps },
             children,
         } = autosuggestOptions;
-        const { classes = {} } = this.props;
+        const { classes = {}, options } = this.props;
 
         // Force the Popper component to reposition the popup only when this.inputEl is moved to another location
         this.updateAnchorEl();
@@ -377,6 +378,7 @@ export class AutocompleteArrayInput extends React.Component {
                 open={Boolean(children)}
                 anchorEl={this.anchorEl}
                 placement="bottom-start"
+                {...options.suggestionsContainerProps}
             >
                 <Paper
                     square

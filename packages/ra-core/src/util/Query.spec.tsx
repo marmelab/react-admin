@@ -12,7 +12,7 @@ import CoreAdmin from '../CoreAdmin';
 import Resource from '../Resource';
 import TestContext from './TestContext';
 
-describe('Mutation', () => {
+describe('Query', () => {
     afterEach(cleanup);
 
     it('should render its child', () => {
@@ -106,6 +106,40 @@ describe('Mutation', () => {
         expect(testElement.className).toEqual('idle');
     });
 
+    it('should return the total prop if available', async () => {
+        const dataProvider = jest.fn();
+        dataProvider.mockImplementationOnce(() =>
+            Promise.resolve({ data: [{ foo: 'bar' }], total: 42 })
+        );
+
+        const Foo = () => (
+            <Query type="mytype" resource="foo">
+                {({ loading, data, total }) => (
+                    <div
+                        data-testid="test"
+                        className={loading ? 'loading' : 'idle'}
+                    >
+                        {loading ? 'no data' : total}
+                    </div>
+                )}
+            </Query>
+        );
+
+        const { getByTestId } = render(
+            <CoreAdmin dataProvider={dataProvider}>
+                <Resource name="foo" list={Foo} />
+            </CoreAdmin>
+        );
+
+        const testElement = getByTestId('test');
+        expect(testElement.className).toEqual('loading');
+        expect(testElement.textContent).toBe('no data');
+
+        await waitForDomChange({ container: testElement });
+        expect(testElement.className).toEqual('idle');
+        expect(testElement.textContent).toEqual('42');
+    });
+
     it('should update the error state after an error response', async () => {
         const dataProvider = jest.fn();
         dataProvider.mockImplementationOnce(() =>
@@ -134,5 +168,81 @@ describe('Mutation', () => {
         await waitForDomChange({ container: testElement });
         expect(testElement.textContent).toEqual('provider error');
         expect(testElement.className).toEqual('idle');
+    });
+
+    it('should dispatch a new fetch action when updating', () => {
+        let dispatchSpy;
+        const myPayload = {};
+        const { rerender } = render(
+            <TestContext>
+                {({ store }) => {
+                    dispatchSpy = jest.spyOn(store, 'dispatch');
+                    return (
+                        <Query
+                            type="mytype"
+                            resource="myresource"
+                            payload={myPayload}
+                        >
+                            {() => <div>Hello</div>}
+                        </Query>
+                    );
+                }}
+            </TestContext>
+        );
+        const mySecondPayload = { foo: 1 };
+        rerender(
+            <TestContext>
+                {() => (
+                    <Query
+                        type="mytype"
+                        resource="myresource"
+                        payload={mySecondPayload}
+                    >
+                        {() => <div>Hello</div>}
+                    </Query>
+                )}
+            </TestContext>
+        );
+        expect(dispatchSpy.mock.calls.length).toEqual(2);
+        const action = dispatchSpy.mock.calls[1][0];
+        expect(action.type).toEqual('CUSTOM_FETCH');
+        expect(action.payload).toEqual(mySecondPayload);
+        expect(action.meta.fetch).toEqual('mytype');
+        expect(action.meta.resource).toEqual('myresource');
+    });
+
+    it('should not dispatch a new fetch action when updating with the same query props', () => {
+        let dispatchSpy;
+        const myPayload = {};
+        const { rerender } = render(
+            <TestContext>
+                {({ store }) => {
+                    dispatchSpy = jest.spyOn(store, 'dispatch');
+                    return (
+                        <Query
+                            type="mytype"
+                            resource="myresource"
+                            payload={myPayload}
+                        >
+                            {() => <div>Hello</div>}
+                        </Query>
+                    );
+                }}
+            </TestContext>
+        );
+        rerender(
+            <TestContext>
+                {() => (
+                    <Query
+                        type="mytype"
+                        resource="myresource"
+                        payload={myPayload}
+                    >
+                        {() => <div>Hello</div>}
+                    </Query>
+                )}
+            </TestContext>
+        );
+        expect(dispatchSpy.mock.calls.length).toEqual(1);
     });
 });

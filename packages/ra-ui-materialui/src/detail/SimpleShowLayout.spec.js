@@ -12,7 +12,7 @@ describe('<SimpleShowLayout />', () => {
                 <TextField source="bar" />
             </SimpleShowLayout>
         );
-        const inputs = wrapper.find('pure(TextField)');
+        const inputs = wrapper.find('EnhancedTextField');
         expect(inputs.map(i => i.prop('source'))).toEqual(['foo', 'bar']);
     });
 });

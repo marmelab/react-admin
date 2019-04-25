@@ -1,24 +1,25 @@
-import React from 'react';
+import React, { SFC, ComponentType } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
-import { withStyles, createStyles } from '@material-ui/core/styles';
+import { withStyles, WithStyles, createStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
+
 import sanitizeRestProps from './sanitizeRestProps';
+import { FieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 
 const styles = createStyles({
     root: { display: 'inline-block' },
 });
 
-export const FileField = ({
-    classes = {},
-    className,
-    record,
-    source,
-    title,
-    src,
-    target,
-    ...rest
-}) => {
+interface Props extends FieldProps {
+    src?: string;
+    title?: string;
+    target?: string;
+}
+
+export const FileField: SFC<
+    Props & InjectedFieldProps & WithStyles<typeof styles>
+> = ({ classes, className, record, source, title, src, target, ...rest }) => {
     const sourceValue = get(record, source);
 
     if (!sourceValue) {
@@ -37,17 +38,17 @@ export const FileField = ({
                 {...sanitizeRestProps(rest)}
             >
                 {sourceValue.map((file, index) => {
-                    const titleValue = get(file, title) || title;
+                    const fileTitleValue = get(file, title) || title;
                     const srcValue = get(file, src) || title;
 
                     return (
                         <li key={index}>
                             <a
                                 href={srcValue}
-                                title={titleValue}
+                                title={fileTitleValue}
                                 target={target}
                             >
-                                {titleValue}
+                                {fileTitleValue}
                             </a>
                         </li>
                     );
@@ -70,19 +71,19 @@ export const FileField = ({
     );
 };
 
-FileField.propTypes = {
-    addLabel: PropTypes.bool,
-    basePath: PropTypes.string,
-    classes: PropTypes.object,
-    className: PropTypes.string,
-    cellClassName: PropTypes.string,
-    headerClassName: PropTypes.string,
-    record: PropTypes.object,
-    sortBy: PropTypes.string,
-    source: PropTypes.string.isRequired,
+const EnhancedFileField = withStyles(styles)(FileField) as ComponentType<Props>;
+
+EnhancedFileField.defaultProps = {
+    addLabel: true,
+};
+
+EnhancedFileField.propTypes = {
+    ...fieldPropTypes,
     src: PropTypes.string,
     title: PropTypes.string,
     target: PropTypes.string,
 };
 
-export default withStyles(styles)(FileField);
+EnhancedFileField.displayName = 'EnhancedFileField';
+
+export default EnhancedFileField;

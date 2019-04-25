@@ -1,7 +1,7 @@
 import React from 'react';
-import assert from 'assert';
-import { shallow } from 'enzyme';
+import expect from 'expect';
 import { CheckboxGroupInput } from './CheckboxGroupInput';
+import { render, cleanup } from 'react-testing-library';
 
 describe('<CheckboxGroupInput />', () => {
     const defaultProps = {
@@ -13,41 +13,12 @@ describe('<CheckboxGroupInput />', () => {
             value: [],
         },
         translate: x => x,
-        muiTheme: {
-            baseTheme: {},
-            textField: {},
-            prepareStyles: () => {},
-        },
     };
 
-    it('should use a mui Checkbox', () => {
-        const wrapper = shallow(<CheckboxGroupInput {...defaultProps} />);
-        const CheckboxElement = wrapper
-            .find('WithStyles(FormControlLabel)')
-            .shallow()
-            .dive()
-            .find('WithStyles(Checkbox)');
-        assert.equal(CheckboxElement.length, 1);
-    });
+    afterEach(cleanup);
 
-    it('should use the input parameter value as the initial input value', () => {
-        const wrapper = shallow(
-            <CheckboxGroupInput
-                {...defaultProps}
-                input={{ value: [1], onChange: () => {} }}
-            />
-        );
-        const CheckboxElement = wrapper
-            .find('WithStyles(FormControlLabel)')
-            .shallow()
-            .dive()
-            .find('WithStyles(Checkbox)')
-            .first();
-        assert.equal(CheckboxElement.prop('checked'), true);
-    });
-
-    it('should render choices as mui Checkbox components', () => {
-        const wrapper = shallow(
+    it('should render choices as checkbox components', () => {
+        const { getByLabelText } = render(
             <CheckboxGroupInput
                 {...defaultProps}
                 choices={[
@@ -56,255 +27,177 @@ describe('<CheckboxGroupInput />', () => {
                 ]}
             />
         );
-        const CheckboxElements = wrapper.find('WithStyles(FormControlLabel)');
-        assert.equal(CheckboxElements.length, 2);
-        const CheckboxElement1 = CheckboxElements.first();
-        assert.equal(CheckboxElement1.prop('value'), 'ang');
-        assert.equal(CheckboxElement1.prop('label'), 'Angular');
-        const CheckboxElement2 = CheckboxElements.at(1);
-        assert.equal(CheckboxElement2.prop('value'), 'rct');
-        assert.equal(CheckboxElement2.prop('label'), 'React');
+        const input1 = getByLabelText('Angular');
+        expect(input1.type).toBe('checkbox');
+        expect(input1.value).toBe('ang');
+        expect(input1.checked).toBe(false);
+        const input2 = getByLabelText('React');
+        expect(input2.type).toBe('checkbox');
+        expect(input2.value).toBe('rct');
+        expect(input2.checked).toBe(false);
+    });
+
+    it('should use the input parameter value as the initial input value', () => {
+        const { getByLabelText } = render(
+            <CheckboxGroupInput
+                {...defaultProps}
+                choices={[
+                    { id: 'ang', name: 'Angular' },
+                    { id: 'rct', name: 'React' },
+                ]}
+                input={{ value: ['ang'], onChange: () => {} }}
+            />
+        );
+        const input1 = getByLabelText('Angular');
+        expect(input1.checked).toBe(true);
+        const input2 = getByLabelText('React');
+        expect(input2.checked).toBe(false);
     });
 
     it('should use optionValue as value identifier', () => {
-        const wrapper = shallow(
+        const { getByLabelText } = render(
             <CheckboxGroupInput
                 {...defaultProps}
                 optionValue="foobar"
                 choices={[{ foobar: 'foo', name: 'Bar' }]}
             />
         );
-        const CheckboxElements = wrapper.find('WithStyles(FormControlLabel)');
-        const CheckboxElement1 = CheckboxElements.first();
-        assert.equal(CheckboxElement1.prop('value'), 'foo');
-        assert.equal(CheckboxElement1.prop('label'), 'Bar');
+        expect(getByLabelText('Bar').value).toBe('foo');
     });
 
     it('should use optionValue including "." as value identifier', () => {
-        const wrapper = shallow(
+        const { getByLabelText } = render(
             <CheckboxGroupInput
                 {...defaultProps}
                 optionValue="foobar.id"
                 choices={[{ foobar: { id: 'foo' }, name: 'Bar' }]}
             />
         );
-        const CheckboxElements = wrapper.find('WithStyles(FormControlLabel)');
-        const CheckboxElement1 = CheckboxElements.first();
-        assert.equal(CheckboxElement1.prop('value'), 'foo');
-        assert.equal(CheckboxElement1.prop('label'), 'Bar');
+        expect(getByLabelText('Bar').value).toBe('foo');
     });
 
     it('should use optionText with a string value as text identifier', () => {
-        const wrapper = shallow(
+        const { queryByLabelText } = render(
             <CheckboxGroupInput
                 {...defaultProps}
                 optionText="foobar"
                 choices={[{ id: 'foo', foobar: 'Bar' }]}
             />
         );
-        const CheckboxElements = wrapper.find('WithStyles(FormControlLabel)');
-        const CheckboxElement1 = CheckboxElements.first();
-        assert.equal(CheckboxElement1.prop('value'), 'foo');
-        assert.equal(CheckboxElement1.prop('label'), 'Bar');
+        expect(queryByLabelText('Bar')).not.toBeNull();
     });
 
     it('should use optionText with a string value including "." as text identifier', () => {
-        const wrapper = shallow(
+        const { queryByLabelText } = render(
             <CheckboxGroupInput
                 {...defaultProps}
                 optionText="foobar.name"
                 choices={[{ id: 'foo', foobar: { name: 'Bar' } }]}
             />
         );
-        const CheckboxElements = wrapper.find('WithStyles(FormControlLabel)');
-        const CheckboxElement1 = CheckboxElements.first();
-        assert.equal(CheckboxElement1.prop('value'), 'foo');
-        assert.equal(CheckboxElement1.prop('label'), 'Bar');
+        expect(queryByLabelText('Bar')).not.toBeNull();
     });
 
     it('should use optionText with a function value as text identifier', () => {
-        const wrapper = shallow(
+        const { queryByLabelText } = render(
             <CheckboxGroupInput
                 {...defaultProps}
                 optionText={choice => choice.foobar}
                 choices={[{ id: 'foo', foobar: 'Bar' }]}
             />
         );
-        const CheckboxElements = wrapper.find('WithStyles(FormControlLabel)');
-        const CheckboxElement1 = CheckboxElements.first();
-        assert.equal(CheckboxElement1.prop('value'), 'foo');
-        assert.equal(CheckboxElement1.prop('label'), 'Bar');
+        expect(queryByLabelText('Bar')).not.toBeNull();
     });
 
     it('should use optionText with an element value as text identifier', () => {
-        const Foobar = ({ record }) => <span>{record.foobar}</span>;
-        const wrapper = shallow(
+        const Foobar = ({ record }) => (
+            <span data-testid="label">{record.foobar}</span>
+        );
+        const { queryByLabelText, queryByTestId } = render(
             <CheckboxGroupInput
                 {...defaultProps}
                 optionText={<Foobar />}
                 choices={[{ id: 'foo', foobar: 'Bar' }]}
             />
         );
-        const CheckboxElements = wrapper.find('WithStyles(FormControlLabel)');
-        const CheckboxElement1 = CheckboxElements.first();
-        assert.equal(CheckboxElement1.prop('value'), 'foo');
-        assert.deepEqual(
-            CheckboxElement1.prop('label'),
-            <Foobar record={{ id: 'foo', foobar: 'Bar' }} />
-        );
+        expect(queryByLabelText('Bar')).not.toBeNull();
+        expect(queryByTestId('label')).not.toBeNull();
     });
 
     it('should translate the choices by default', () => {
-        const wrapper = shallow(
-            <CheckboxGroupInput
-                {...defaultProps}
-                choices={[
-                    { id: 'M', name: 'Male' },
-                    { id: 'F', name: 'Female' },
-                ]}
-                translate={x => `**${x}**`}
-            />
+        const { queryByLabelText } = render(
+            <CheckboxGroupInput {...defaultProps} translate={x => `**${x}**`} />
         );
-        const CheckboxElements = wrapper.find('WithStyles(FormControlLabel)');
-        const CheckboxElement1 = CheckboxElements.first();
-        assert.equal(CheckboxElement1.prop('label'), '**Male**');
+        expect(queryByLabelText('**John doe**')).not.toBeNull();
     });
 
     it('should not translate the choices if translateChoice is false', () => {
-        const wrapper = shallow(
+        const { queryByLabelText } = render(
             <CheckboxGroupInput
                 {...defaultProps}
-                choices={[
-                    { id: 'M', name: 'Male' },
-                    { id: 'F', name: 'Female' },
-                ]}
                 translate={x => `**${x}**`}
                 translateChoice={false}
             />
         );
-        const CheckboxElements = wrapper.find('WithStyles(FormControlLabel)');
-        const CheckboxElement1 = CheckboxElements.first();
-        assert.equal(CheckboxElement1.prop('label'), 'Male');
+        expect(queryByLabelText('**John doe**')).toBeNull();
+        expect(queryByLabelText('John doe')).not.toBeNull();
     });
 
     it('should displayed helperText if prop is present in meta', () => {
-        const wrapper = shallow(
+        const { queryByText } = render(
             <CheckboxGroupInput
                 {...defaultProps}
-                choices={[
-                    { id: 'M', name: 'Male' },
-                    { id: 'F', name: 'Female' },
-                ]}
-                translate={x => `**${x}**`}
-                translateChoice={false}
-                meta={{ helperText: 'Can i help you?' }}
+                meta={{ helperText: 'Can I help you?' }}
             />
         );
-        const FormHelperTextElement = wrapper.find(
-            'WithStyles(FormHelperText)'
-        );
-        assert.equal(FormHelperTextElement.length, 1);
-        assert.equal(
-            FormHelperTextElement.children().text(),
-            'Can i help you?'
-        );
+        expect(queryByText('Can I help you?')).not.toBeNull();
     });
 
     describe('error message', () => {
         it('should not be displayed if field is pristine', () => {
-            const wrapper = shallow(
+            const { container } = render(
                 <CheckboxGroupInput
                     {...defaultProps}
-                    choices={[
-                        { id: 'M', name: 'Male' },
-                        { id: 'F', name: 'Female' },
-                    ]}
-                    translate={x => `**${x}**`}
-                    translateChoice={false}
-                    meta={{ touched: false }}
+                    meta={{ touched: false, error: 'Required field.' }}
                 />
             );
-            const FormHelperTextElement = wrapper.find(
-                'WithStyles(FormHelperText)'
-            );
-            assert.equal(FormHelperTextElement.length, 0);
+            expect(container.querySelector('p')).toBeNull();
         });
 
         it('should not be displayed if field has been touched but is valid', () => {
-            const wrapper = shallow(
+            const { container } = render(
                 <CheckboxGroupInput
                     {...defaultProps}
-                    choices={[
-                        { id: 'M', name: 'Male' },
-                        { id: 'F', name: 'Female' },
-                    ]}
-                    translate={x => `**${x}**`}
-                    translateChoice={false}
                     meta={{ touched: true, error: false }}
                 />
             );
-            const FormHelperTextElement = wrapper.find(
-                'WithStyles(FormHelperText)'
-            );
-            assert.equal(FormHelperTextElement.length, 0);
+            expect(container.querySelector('p')).toBeNull();
         });
 
         it('should be displayed if field has been touched and is invalid', () => {
-            const wrapper = shallow(
+            const { container, queryByText } = render(
                 <CheckboxGroupInput
                     {...defaultProps}
-                    choices={[
-                        { id: 'M', name: 'Male' },
-                        { id: 'F', name: 'Female' },
-                    ]}
-                    translate={x => `**${x}**`}
-                    translateChoice={false}
                     meta={{ touched: true, error: 'Required field.' }}
                 />
             );
-            const FormHelperTextElement = wrapper.find(
-                'WithStyles(FormHelperText)'
-            );
-            assert.equal(FormHelperTextElement.length, 1);
-            assert.equal(
-                FormHelperTextElement.children().text(),
-                'Required field.'
-            );
+            expect(container.querySelector('p')).not.toBeNull();
+            expect(queryByText('Required field.')).not.toBeNull();
         });
 
         it('should display the error and help text if helperText is present', () => {
-            const wrapper = shallow(
+            const { queryByText } = render(
                 <CheckboxGroupInput
                     {...defaultProps}
-                    choices={[
-                        { id: 'M', name: 'Male' },
-                        { id: 'F', name: 'Female' },
-                    ]}
-                    translate={x => `**${x}**`}
-                    translateChoice={false}
                     meta={{
                         touched: true,
                         error: 'Required field.',
-                        helperText: 'Can i help you?',
+                        helperText: 'Can I help you?',
                     }}
                 />
             );
-            const FormHelperTextElement = wrapper.find(
-                'WithStyles(FormHelperText)'
-            );
-            assert.equal(FormHelperTextElement.length, 2);
-            assert.equal(
-                FormHelperTextElement.at(0)
-                    .children(0)
-                    .text(),
-                'Required field.'
-            );
-            assert.equal(
-                FormHelperTextElement.at(1)
-                    .children(0)
-                    .text(),
-                'Can i help you?'
-            );
+            expect(queryByText('Required field.')).not.toBeNull();
+            expect(queryByText('Can I help you?')).not.toBeNull();
         });
     });
 });

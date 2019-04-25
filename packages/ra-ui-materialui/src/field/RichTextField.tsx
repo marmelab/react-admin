@@ -1,14 +1,19 @@
-import React from 'react';
+import React, { SFC } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import pure from 'recompose/pure';
-import Typography from '@material-ui/core/Typography';
+import Typography, { TypographyProps } from '@material-ui/core/Typography';
 import sanitizeRestProps from './sanitizeRestProps';
+import { InjectedFieldProps, FieldProps, fieldPropTypes } from './types';
 
-export const removeTags = input =>
+export const removeTags = (input: string) =>
     input ? input.replace(/<[^>]+>/gm, '') : '';
 
-const RichTextField = ({
+interface Props extends FieldProps {
+    stripTags: boolean;
+}
+
+const RichTextField: SFC<Props & InjectedFieldProps & TypographyProps> = ({
     className,
     source,
     record = {},
@@ -39,24 +44,19 @@ const RichTextField = ({
     );
 };
 
-RichTextField.propTypes = {
-    addLabel: PropTypes.bool,
-    basePath: PropTypes.string,
-    className: PropTypes.string,
-    cellClassName: PropTypes.string,
-    headerClassName: PropTypes.string,
-    label: PropTypes.string,
-    record: PropTypes.object,
-    sortBy: PropTypes.string,
-    source: PropTypes.string.isRequired,
-    stripTags: PropTypes.bool,
-};
+const EnhancedRichTextField = pure<Props & TypographyProps>(RichTextField);
 
-const PureRichTextField = pure(RichTextField);
-
-PureRichTextField.defaultProps = {
+EnhancedRichTextField.defaultProps = {
     addLabel: true,
     stripTags: false,
 };
 
-export default PureRichTextField;
+EnhancedRichTextField.propTypes = {
+    ...Typography.propTypes,
+    ...fieldPropTypes,
+    stripTags: PropTypes.bool,
+};
+
+EnhancedRichTextField.displayName = 'EnhancedRichTextField';
+
+export default EnhancedRichTextField;

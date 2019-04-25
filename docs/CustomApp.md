@@ -90,7 +90,7 @@ Then, use the `<Admin>` component as you would in a standalone application. Here
 // in src/App.js
 import React from 'react';
 import { Provider } from 'react-redux';
-import createHistory from 'history/createHashHistory';
+import { createHashHistory } from 'history';
 import { Admin, Resource } from 'react-admin';
 import restProvider from 'ra-data-simple-rest';
 import defaultMessages from 'ra-language-english';
@@ -113,7 +113,7 @@ const i18nProvider = locale => {
     }
     return defaultMessages;
 };
-const history = createHistory();
+const history = createHashHistory();
 
 const App = () => (
     <Provider
@@ -151,7 +151,7 @@ Here is the main code for bootstrapping a barebones react-admin application with
 // in src/App.js
 import React from 'react';
 import { Provider } from 'react-redux';
-import createHistory from 'history/createHashHistory';
+import { createHashHistory } from 'history';
 +import { ConnectedRouter } from 'react-router-redux';
 +import { Switch, Route } from 'react-router-dom';
 +import withContext from 'recompose/withContext';
@@ -182,7 +182,7 @@ const i18nProvider = locale => {
     }
     return defaultMessages;
 };
-const history = createHistory();
+const history = createHashHistory();
 
 const App = () => (
     <Provider

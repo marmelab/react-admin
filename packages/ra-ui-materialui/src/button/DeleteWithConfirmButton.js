@@ -70,6 +70,7 @@ class DeleteWithConfirmButton extends Component {
             onClick,
             record,
             resource,
+            translate,
             ...rest
         } = this.props;
         return (
@@ -93,7 +94,10 @@ class DeleteWithConfirmButton extends Component {
                     content="ra.message.delete_content"
                     translateOptions={{
                         name: inflection.humanize(
-                            inflection.singularize(resource),
+                            translate(`resources.${resource}.name`, {
+                                smart_count: 1,
+                                _: inflection.singularize(resource),
+                            }),
                             true
                         ),
                         id: record.id,

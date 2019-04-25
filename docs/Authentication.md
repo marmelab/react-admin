@@ -9,7 +9,7 @@ title: "Authentication"
 
 React-admin lets you secure your admin app with the authentication strategy of your choice. Since there are many different possible strategies (Basic Auth, JWT, OAuth, etc.), react-admin simply provides hooks to execute your own authentication code.
 
-By default, an react-admin app doesn't require authentication. But if the REST API ever returns a 401 (Unauthorized) or a 403 (Forbidden) response, then the user is redirected to the `/login` route. You have nothing to do - it's already built in.
+By default, react-admin apps don't require authentication. Here are the steps to add one.
 
 ## Configuring the Auth Provider
 
@@ -122,7 +122,7 @@ The `authProvider` is also a good place to notify the authentication API that th
 
 ## Catching Authentication Errors On The API
 
-Even though a user may be authenticated on the client-side, their credentials may no longer be valid server-side (e.g. if the token is only valid for a couple weeks). In that case, the API usually answers to all REST requests with an error code 401 or 403 - but what about *your* API?
+If the API requires authentication, and the user credentials are missing or invalid in the request, the API usually answers with an error code 401 or 403.
 
 Fortunately, each time the API returns an error, the `authProvider` is called with the `AUTH_ERROR` type. Once again, it's up to you to decide which HTTP status codes should let the user continue (by returning a resolved promise) or log them out (by returning a rejected promise).
 
@@ -303,7 +303,7 @@ const MyLogoutButton = ({ userLogout, ...rest }) => (
         }
     />
 );
-export default connect(undefined, { userLogout: userLogout() })(MyLogoutButton);
+export default connect(undefined, { userLogout })(MyLogoutButton);
 
 // in src/App.js
 import MyLoginPage from './MyLoginPage';
@@ -348,6 +348,8 @@ By default, react-admin redirects the user to '/login' after they log out. This 
 ```diff
 // in src/MyLogoutButton.js
 // ...
-- export default connect(undefined, { userLogout: userLogout() })(MyLogoutButton);
-+ export default connect(undefined, { userLogout: userLogout('/') })(MyLogoutButton);
+- export default connect(undefined, { userLogout })(MyLogoutButton);
++ const redirectTo = '/';
++ const myCustomUserLogout = () => userLogout(redirectTo);
++ export default connect(undefined, { userLogout: myCustomUserLogout })(MyLogoutButton);
 ```

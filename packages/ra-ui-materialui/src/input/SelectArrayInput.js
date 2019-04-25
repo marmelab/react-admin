@@ -53,20 +53,21 @@ const sanitizeRestProps = ({
     ...rest
 }) => rest;
 
-const styles = theme => createStyles({
-    root: {},
-    chips: {
-        display: 'flex',
-        flexWrap: 'wrap',
-    },
-    chip: {
-        margin: theme.spacing.unit / 4,
-    },
-    select: {
-        height: 'auto',
-        overflow: 'auto',
-    },
-});
+const styles = theme =>
+    createStyles({
+        root: {},
+        chips: {
+            display: 'flex',
+            flexWrap: 'wrap',
+        },
+        chip: {
+            margin: theme.spacing.unit / 4,
+        },
+        select: {
+            height: 'auto',
+            overflow: 'auto',
+        },
+    });
 
 /**
  * An Input component for a select box allowing multiple selections, using an array of objects for the options
@@ -217,7 +218,8 @@ export class SelectArrayInput extends Component {
                             {selected
                                 .map(item =>
                                     choices.find(
-                                        choice => choice[optionValue] === item
+                                        choice =>
+                                            get(choice, optionValue) === item
                                     )
                                 )
                                 .map(item => (
@@ -229,6 +231,7 @@ export class SelectArrayInput extends Component {
                                 ))}
                         </div>
                     )}
+                    data-testid="selectArray"
                     {...options}
                     onChange={this.handleChange}
                 >

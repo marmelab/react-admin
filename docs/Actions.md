@@ -259,7 +259,7 @@ class ApproveButton extends Component {
 -   }
 +       dataProvider(UPDATE, 'comments', { id: record.id, data: updatedRecord }, {
 +           onSuccess: {
-+               notification: 'Comment approved',
++               notification: { body: 'Comment approved', level: 'info' },
 +               redirectTo: '/comments',
 +           },
 +           onError: {
@@ -309,7 +309,7 @@ class ApproveButton extends Component {
         dataProvider(UPDATE, 'comments', { id: record.id, data: updatedRecord }, {
 +           undoable: true,
             onSuccess: {
-                notification: 'Comment approved',
+                notification: { body: 'Comment approved', level: 'info' },
                 redirectTo: '/comments',
             },
             onError: {
@@ -349,6 +349,34 @@ const UserProfile = ({ record }) => (
 ```
 {% endraw %}
 
+Or a user list on the dashboard:
+
+{% raw %}
+```jsx
+const payload = {
+   pagination: { page: 1, perPage: 10 },
+   sort: { field: 'username', order: 'ASC' },
+};
+
+const UserList = () => (
+    <Query type="GET_LIST" resource="users" payload={payload}>
+        {({ data, total, loading, error }) => {
+            if (loading) { return <Loading />; }
+            if (error) { return <p>ERROR</p>; }
+            return (
+                <div>
+                    <p>Total users: {total}</p>
+                    <ul>
+                        {data.map(user => <li key={user.username}>{user.username}</li>)}
+                    </ul>
+                </div>
+            );
+        }}
+    </Query>
+);
+```
+{% endraw %}
+
 Just like the `dataProvider` injected prop, the `<Query>` component expects three parameters: `type`, `resource`, and `payload`. It fetches the data provider on mount, and passes the data to its child component once the response from the API arrives.
 
 The `<Query>` component is designed to read data from the API. When calling the API to update ("mutate") data, use the `<Mutation>` component instead. It passes a callback to trigger the API call to its child function. And the `<ApproveButton>` component from previous sections is a great use case for demonstrating `<Mutation>`:
@@ -359,7 +387,7 @@ import { Mutation } from 'react-admin';
 const options = {
     undoable: true,
     onSuccess: {
-        notification: 'Comment approved',
+        notification: { body: 'Comment approved', level: 'info' },
         redirectTo: '/comments',
     },
     onError: {

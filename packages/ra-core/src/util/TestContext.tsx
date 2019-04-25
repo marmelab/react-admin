@@ -1,4 +1,4 @@
-import React, { SFC } from 'react';
+import React, { Component } from 'react';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import { reducer as formReducer } from 'redux-form';
@@ -47,29 +47,37 @@ interface Props {
  *     </TestContext>
  * );
  */
-const TestContext: SFC<Props> = ({
-    store = {},
-    enableReducers = false,
-    children,
-}) => {
-    const storeWithDefault = enableReducers
-        ? createAdminStore({
-              initialState: merge(defaultStore, store),
-              dataProvider: () => Promise.resolve({}),
-              history: createMemoryHistory(),
-          })
-        : createStore(() => merge(defaultStore, store));
+class TestContext extends Component<Props> {
+    storeWithDefault = null;
 
-    const renderChildren = () =>
-        typeof children === 'function'
-            ? children({ store: storeWithDefault })
+    constructor(props) {
+        super(props);
+        const { store = {}, enableReducers = false } = props;
+        this.storeWithDefault = enableReducers
+            ? createAdminStore({
+                  initialState: merge(defaultStore, store),
+                  dataProvider: () => Promise.resolve({}),
+                  history: createMemoryHistory(),
+              })
+            : createStore(() => merge(defaultStore, store));
+    }
+
+    renderChildren = () => {
+        const { children } = this.props;
+        return typeof children === 'function'
+            ? children({ store: this.storeWithDefault })
             : children;
+    };
 
-    return (
-        <Provider store={storeWithDefault}>
-            <TranslationProvider>{renderChildren()}</TranslationProvider>
-        </Provider>
-    );
-};
+    render() {
+        return (
+            <Provider store={this.storeWithDefault}>
+                <TranslationProvider>
+                    {this.renderChildren()}
+                </TranslationProvider>
+            </Provider>
+        );
+    }
+}
 
 export default TestContext;

@@ -1,318 +1,203 @@
 import React from 'react';
-import assert from 'assert';
-import { shallow } from 'enzyme';
+import expect from 'expect';
+import { render, cleanup } from 'react-testing-library';
 
 import { RadioButtonGroupInput } from './RadioButtonGroupInput';
 
 describe('<RadioButtonGroupInput />', () => {
     const defaultProps = {
+        resource: 'bar',
         source: 'foo',
         meta: {},
         input: {},
         translate: x => x,
     };
 
-    it('should use a mui RadioGroup', () => {
-        const wrapper = shallow(
-            <RadioButtonGroupInput {...defaultProps} label="hello" />
-        );
-        const RadioGroupElement = wrapper.find('RadioGroup');
-        assert.equal(RadioGroupElement.length, 1);
-    });
+    afterEach(cleanup);
 
-    it('should use the input parameter value as the initial input value', () => {
-        const wrapper = shallow(
-            <RadioButtonGroupInput {...defaultProps} input={{ value: '2' }} />
-        );
-        const RadioGroupElement = wrapper.find('RadioGroup').first();
-        assert.equal(RadioGroupElement.prop('value'), '2');
-    });
-
-    it('should use the input parameter value as the selected value', () => {
-        const wrapper = shallow(
-            <RadioButtonGroupInput {...defaultProps} input={{ value: '2' }} />
-        );
-        const RadioGroupElement = wrapper.find('RadioGroup').first();
-        assert.equal(RadioGroupElement.prop('value'), '2');
-    });
-
-    it('should render choices as mui FormControlLabel components with a Radio control', () => {
-        const wrapper = shallow(
+    it('should render choices as radio inputs', () => {
+        const { getByLabelText, queryByText } = render(
             <RadioButtonGroupInput
                 {...defaultProps}
+                label="hello"
                 choices={[
                     { id: 'M', name: 'Male' },
                     { id: 'F', name: 'Female' },
                 ]}
             />
         );
-        const RadioButtonElements = wrapper.find(
-            'WithStyles(FormControlLabel)'
+        expect(queryByText('hello')).not.toBeNull();
+        const input1 = getByLabelText('Male');
+        expect(input1.type).toBe('radio');
+        expect(input1.name).toBe('foo');
+        expect(input1.checked).toBeFalsy();
+        const input2 = getByLabelText('Female');
+        expect(input2.type).toBe('radio');
+        expect(input2.name).toBe('foo');
+        expect(input2.checked).toBeFalsy();
+    });
+
+    it('should use the input parameter value as the initial input value', () => {
+        const { getByLabelText } = render(
+            <RadioButtonGroupInput
+                {...defaultProps}
+                choices={[
+                    { id: 'M', name: 'Male' },
+                    { id: 'F', name: 'Female' },
+                ]}
+                input={{ value: 'F' }}
+            />
         );
-        assert.equal(RadioButtonElements.length, 2);
-        const RadioButtonElement1 = RadioButtonElements.first();
-        assert.equal(RadioButtonElement1.prop('value'), 'M');
-        assert.equal(RadioButtonElement1.prop('label'), 'Male');
-        const RadioButtonElement2 = RadioButtonElements.at(1);
-        assert.equal(RadioButtonElement2.prop('value'), 'F');
-        assert.equal(RadioButtonElement2.prop('label'), 'Female');
+        expect(getByLabelText('Male').checked).toBeFalsy();
+        expect(getByLabelText('Female').checked).toBeTruthy();
     });
 
     it('should use optionValue as value identifier', () => {
-        const wrapper = shallow(
+        const { getByLabelText } = render(
             <RadioButtonGroupInput
                 {...defaultProps}
                 optionValue="foobar"
                 choices={[{ foobar: 'M', name: 'Male' }]}
             />
         );
-        const RadioButtonElements = wrapper.find(
-            'WithStyles(FormControlLabel)'
-        );
-        const RadioButtonElement1 = RadioButtonElements.first();
-        assert.equal(RadioButtonElement1.prop('value'), 'M');
-        assert.equal(RadioButtonElement1.prop('label'), 'Male');
+        expect(getByLabelText('Male').value).toBe('M');
     });
 
     it('should use optionValue including "." as value identifier', () => {
-        const wrapper = shallow(
+        const { getByLabelText } = render(
             <RadioButtonGroupInput
                 {...defaultProps}
                 optionValue="foobar.id"
                 choices={[{ foobar: { id: 'M' }, name: 'Male' }]}
             />
         );
-        const RadioButtonElements = wrapper.find(
-            'WithStyles(FormControlLabel)'
-        );
-        const RadioButtonElement1 = RadioButtonElements.first();
-        assert.equal(RadioButtonElement1.prop('value'), 'M');
-        assert.equal(RadioButtonElement1.prop('label'), 'Male');
+        expect(getByLabelText('Male').value).toBe('M');
     });
 
     it('should use optionText with a string value as text identifier', () => {
-        const wrapper = shallow(
+        const { queryByText } = render(
             <RadioButtonGroupInput
                 {...defaultProps}
                 optionText="foobar"
                 choices={[{ id: 'M', foobar: 'Male' }]}
             />
         );
-        const RadioButtonElements = wrapper.find(
-            'WithStyles(FormControlLabel)'
-        );
-        const RadioButtonElement1 = RadioButtonElements.first();
-        assert.equal(RadioButtonElement1.prop('value'), 'M');
-        assert.equal(RadioButtonElement1.prop('label'), 'Male');
+        expect(queryByText('Male')).not.toBeNull();
     });
 
     it('should use optionText with a string value including "." as text identifier', () => {
-        const wrapper = shallow(
+        const { queryByText } = render(
             <RadioButtonGroupInput
                 {...defaultProps}
                 optionText="foobar.name"
                 choices={[{ id: 'M', foobar: { name: 'Male' } }]}
             />
         );
-        const RadioButtonElements = wrapper.find(
-            'WithStyles(FormControlLabel)'
-        );
-        const RadioButtonElement1 = RadioButtonElements.first();
-        assert.equal(RadioButtonElement1.prop('value'), 'M');
-        assert.equal(RadioButtonElement1.prop('label'), 'Male');
+        expect(queryByText('Male')).not.toBeNull();
     });
 
     it('should use optionText with a function value as text identifier', () => {
-        const wrapper = shallow(
+        const { queryByText } = render(
             <RadioButtonGroupInput
                 {...defaultProps}
                 optionText={choice => choice.foobar}
                 choices={[{ id: 'M', foobar: 'Male' }]}
             />
         );
-        const RadioButtonElements = wrapper.find(
-            'WithStyles(FormControlLabel)'
-        );
-        const RadioButtonElement1 = RadioButtonElements.first();
-        assert.equal(RadioButtonElement1.prop('value'), 'M');
-        assert.equal(RadioButtonElement1.prop('label'), 'Male');
+        expect(queryByText('Male')).not.toBeNull();
     });
 
     it('should use optionText with an element value as text identifier', () => {
         const Foobar = ({ record }) => <span>{record.foobar}</span>;
-        const wrapper = shallow(
+        const { queryByText } = render(
             <RadioButtonGroupInput
                 {...defaultProps}
                 optionText={<Foobar />}
                 choices={[{ id: 'M', foobar: 'Male' }]}
             />
         );
-        const RadioButtonElements = wrapper.find(
-            'WithStyles(FormControlLabel)'
-        );
-        const RadioButtonElement1 = RadioButtonElements.first();
-        assert.equal(RadioButtonElement1.prop('value'), 'M');
-        assert.deepEqual(
-            RadioButtonElement1.prop('label'),
-            <Foobar record={{ id: 'M', foobar: 'Male' }} />
-        );
+        expect(queryByText('Male')).not.toBeNull();
     });
 
     it('should translate the choices by default', () => {
-        const wrapper = shallow(
+        const { queryByText } = render(
             <RadioButtonGroupInput
                 {...defaultProps}
-                choices={[
-                    { id: 'M', name: 'Male' },
-                    { id: 'F', name: 'Female' },
-                ]}
+                choices={[{ id: 'M', name: 'Male' }]}
                 translate={x => `**${x}**`}
             />
         );
-        const RadioButtonElements = wrapper.find(
-            'WithStyles(FormControlLabel)'
-        );
-        const RadioButtonElement1 = RadioButtonElements.first();
-        assert.equal(RadioButtonElement1.prop('label'), '**Male**');
+        expect(queryByText('**Male**')).not.toBeNull();
     });
 
     it('should not translate the choices if translateChoice is false', () => {
-        const wrapper = shallow(
+        const { queryByText } = render(
             <RadioButtonGroupInput
                 {...defaultProps}
-                choices={[
-                    { id: 'M', name: 'Male' },
-                    { id: 'F', name: 'Female' },
-                ]}
+                choices={[{ id: 'M', name: 'Male' }]}
                 translate={x => `**${x}**`}
                 translateChoice={false}
             />
         );
-        const RadioButtonElements = wrapper.find(
-            'WithStyles(FormControlLabel)'
-        );
-        const RadioButtonElement1 = RadioButtonElements.first();
-        assert.equal(RadioButtonElement1.prop('label'), 'Male');
+        expect(queryByText('**Male**')).toBeNull();
+        expect(queryByText('Male')).not.toBeNull();
     });
 
     it('should displayed helperText if prop is present in meta', () => {
-        const wrapper = shallow(
+        const { queryByText } = render(
             <RadioButtonGroupInput
                 {...defaultProps}
-                choices={[
-                    { id: 'M', name: 'Male' },
-                    { id: 'F', name: 'Female' },
-                ]}
-                translate={x => `**${x}**`}
-                translateChoice={false}
-                meta={{ helperText: 'Can i help you?' }}
+                meta={{ helperText: 'Can I help you?' }}
             />
         );
-        const FormHelperTextElement = wrapper.find(
-            'WithStyles(FormHelperText)'
-        );
-        assert.equal(FormHelperTextElement.length, 1);
-        assert.equal(
-            FormHelperTextElement.children().text(),
-            'Can i help you?'
-        );
+        expect(queryByText('Can I help you?')).not.toBeNull();
     });
 
     describe('error message', () => {
         it('should not be displayed if field is pristine', () => {
-            const wrapper = shallow(
+            const { container } = render(
                 <RadioButtonGroupInput
                     {...defaultProps}
-                    choices={[
-                        { id: 'M', name: 'Male' },
-                        { id: 'F', name: 'Female' },
-                    ]}
-                    translate={x => `**${x}**`}
-                    translateChoice={false}
                     meta={{ touched: false }}
                 />
             );
-            const FormHelperTextElement = wrapper.find(
-                'WithStyles(FormHelperText)'
-            );
-            assert.equal(FormHelperTextElement.length, 0);
+            expect(container.querySelector('p')).toBeNull();
         });
 
         it('should not be displayed if field has been touched but is valid', () => {
-            const wrapper = shallow(
+            const { container } = render(
                 <RadioButtonGroupInput
                     {...defaultProps}
-                    choices={[
-                        { id: 'M', name: 'Male' },
-                        { id: 'F', name: 'Female' },
-                    ]}
-                    translate={x => `**${x}**`}
-                    translateChoice={false}
                     meta={{ touched: true, error: false }}
                 />
             );
-            const FormHelperTextElement = wrapper.find(
-                'WithStyles(FormHelperText)'
-            );
-            assert.equal(FormHelperTextElement.length, 0);
+            expect(container.querySelector('p')).toBeNull();
         });
 
         it('should be displayed if field has been touched and is invalid', () => {
-            const wrapper = shallow(
+            const { container, queryByText } = render(
                 <RadioButtonGroupInput
                     {...defaultProps}
-                    choices={[
-                        { id: 'M', name: 'Male' },
-                        { id: 'F', name: 'Female' },
-                    ]}
-                    translate={x => `**${x}**`}
-                    translateChoice={false}
                     meta={{ touched: true, error: 'Required field.' }}
                 />
             );
-            const FormHelperTextElement = wrapper.find(
-                'WithStyles(FormHelperText)'
-            );
-            assert.equal(FormHelperTextElement.length, 1);
-            assert.equal(
-                FormHelperTextElement.children().text(),
-                'Required field.'
-            );
+            expect(container.querySelector('p')).not.toBeNull();
+            expect(queryByText('Required field.')).not.toBeNull();
         });
 
         it('should display the error and help text if helperText is present', () => {
-            const wrapper = shallow(
+            const { queryByText } = render(
                 <RadioButtonGroupInput
                     {...defaultProps}
-                    choices={[
-                        { id: 'M', name: 'Male' },
-                        { id: 'F', name: 'Female' },
-                    ]}
-                    translate={x => `**${x}**`}
-                    translateChoice={false}
                     meta={{
                         touched: true,
                         error: 'Required field.',
-                        helperText: 'Can i help you?',
+                        helperText: 'Can I help you?',
                     }}
                 />
             );
-            const FormHelperTextElement = wrapper.find(
-                'WithStyles(FormHelperText)'
-            );
-            assert.equal(FormHelperTextElement.length, 2);
-            assert.equal(
-                FormHelperTextElement.at(0)
-                    .children(0)
-                    .text(),
-                'Required field.'
-            );
-            assert.equal(
-                FormHelperTextElement.at(1)
-                    .children(0)
-                    .text(),
-                'Can i help you?'
-            );
+            expect(queryByText('Required field.')).not.toBeNull();
+            expect(queryByText('Can I help you?')).not.toBeNull();
         });
     });
 });

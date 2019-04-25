@@ -74,6 +74,7 @@ You can find translation packages for the following languages:
 
 - Arabic (`ar`): [developerium/ra-language-arabic](https://github.com/developerium/ra-language-arabic)
 - Catalan (`ca`): [sergioedo/ra-language-catalan](https://github.com/sergioedo/ra-language-catalan)
+- Chinese (`zh-TW`): [areyliu6/ra-language-chinese-traditional](https://github.com/areyliu6/ra-language-chinese-traditional)
 - Chinese (`zh`): [chen4w/ra-language-chinese](https://github.com/chen4w/ra-language-chinese)
 - Czech (`cs`): [binao/ra-language-czech](https://github.com/binao/ra-language-czech)
 - Danish (`da`): [nikri/ra-language-danish](https://github.com/nikri/ra-language-danish)
@@ -83,6 +84,7 @@ You can find translation packages for the following languages:
 - Finnish (`fi`): [aikain/ra-language-finnish](https://github.com/aikain/ra-language-finnish)
 - French (`fr`): [marmelab/ra-language-french](https://github.com/marmelab/react-admin/tree/master/packages/ra-language-french)
 - German (`de`): [greenbananaCH/ra-language-german](https://github.com/greenbananaCH/ra-language-german) (tree translation: [straurob/ra-tree-language-german](https://github.com/straurob/ra-tree-language-german))
+- Hebrew (`he`): [ak-il/ra-language-hebrew](https://github.com/ak-il/ra-language-hebrew)
 - Hungarian (`hu`): [phelion/ra-language-hungarian](https://github.com/phelion/ra-language-hungarian)
 - Indonesian (`id`): [ronadi/ra-language-indonesian](https://github.com/ronadi/ra-language-indonesian)
 - Italian (`it`): [stefsava/ra-italian](https://github.com/stefsava/ra-italian)

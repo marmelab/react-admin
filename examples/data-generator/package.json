@@ -1,7 +1,9 @@
 {
-    "name": "data-generator",
-    "version": "2.7.1",
-    "private": true,
+    "name": "data-generator-retail",
+    "version": "2.8.5",
+    "homepage": "https://github.com/marmelab/react-admin/tree/master/examples/data-generator",
+    "bugs": "https://github.com/marmelab/react-admin/issues",
+    "license": "MIT",
     "main": "./lib/index.js",
     "scripts": {
         "build": "yarn run build-cjs && yarn run build-esm",

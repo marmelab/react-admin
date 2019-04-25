@@ -1,7 +1,14 @@
 import { Component, cloneElement, Children } from 'react';
-import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import pure from 'recompose/pure';
+import { Identifier } from 'ra-core';
+
+import { FieldProps, InjectedFieldProps, fieldPropTypes } from './types';
+
+interface State {
+    data: object;
+    ids: Identifier[];
+}
 
 const initialState = {
     data: {},
@@ -71,15 +78,21 @@ const initialState = {
  *     )
  *     TagsField.defaultProps = { addLabel: true };
  */
-export class ArrayField extends Component {
-    constructor(props) {
+export class ArrayField extends Component<
+    FieldProps & InjectedFieldProps,
+    State
+> {
+    constructor(props: FieldProps & InjectedFieldProps) {
         super(props);
         this.state = props.record
             ? this.getDataAndIds(props.record, props.source)
             : initialState;
     }
 
-    componentWillReceiveProps(nextProps, prevProps) {
+    componentWillReceiveProps(
+        nextProps: FieldProps & InjectedFieldProps,
+        prevProps: FieldProps & InjectedFieldProps
+    ) {
         if (nextProps.record !== prevProps.record) {
             this.setState(
                 this.getDataAndIds(nextProps.record, nextProps.source)
@@ -87,7 +100,7 @@ export class ArrayField extends Component {
         }
     }
 
-    getDataAndIds(record, source) {
+    getDataAndIds(record: object, source: string) {
         const list = get(record, source);
         return list
             ? {
@@ -106,6 +119,7 @@ export class ArrayField extends Component {
             basePath,
             children,
             record,
+            sortable,
             source,
             ...rest
         } = this.props;
@@ -122,20 +136,13 @@ export class ArrayField extends Component {
     }
 }
 
-ArrayField.propTypes = {
-    addLabel: PropTypes.bool,
-    basePath: PropTypes.string,
-    children: PropTypes.element.isRequired,
-    record: PropTypes.object,
-    resource: PropTypes.string,
-    sortBy: PropTypes.string,
-    source: PropTypes.string,
-};
-
-const EnhancedArrayField = pure(ArrayField);
+const EnhancedArrayField = pure<FieldProps>(ArrayField);
 
 EnhancedArrayField.defaultProps = {
     addLabel: true,
 };
+
+EnhancedArrayField.propTypes = fieldPropTypes;
+EnhancedArrayField.displayName = 'EnhancedArrayField';
 
 export default EnhancedArrayField;

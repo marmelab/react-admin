@@ -6,7 +6,7 @@ import './App.css';
 import authProvider from './authProvider';
 import sagas from './sagas';
 import themeReducer from './themeReducer';
-import { Login, Layout, Menu } from './layout';
+import { Login, Layout } from './layout';
 import { Dashboard } from './dashboard';
 import customRoutes from './routes';
 import englishMessages from './i18n/en';
@@ -71,7 +71,6 @@ class App extends Component {
                 dashboard={Dashboard}
                 loginPage={Login}
                 appLayout={Layout}
-                menu={Menu}
                 locale="en"
                 i18nProvider={i18nProvider}
             >

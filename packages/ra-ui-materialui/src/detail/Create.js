@@ -39,7 +39,7 @@ const sanitizeRestProps = ({
     ...rest
 }) => rest;
 
-export const CreateView = ({
+export const CreateView = withStyles(styles)(({
     actions,
     aside,
     basePath,
@@ -72,6 +72,7 @@ export const CreateView = ({
                         basePath,
                         resource,
                         hasList,
+                        ...actions.props,
                     })}
                 </CardContentInner>
             )}
@@ -94,7 +95,7 @@ export const CreateView = ({
                 save,
             })}
     </div>
-);
+));
 
 CreateView.propTypes = {
     actions: PropTypes.element,
@@ -158,7 +159,7 @@ CreateView.defaultProps = {
  *     );
  *     export default App;
  */
-export const Create = props => (
+const Create = props => (
     <CreateController {...props}>
         {controllerProps => <CreateView {...props} {...controllerProps} />}
     </CreateController>
@@ -179,4 +180,4 @@ Create.propTypes = {
     hasList: PropTypes.bool,
 };
 
-export default withStyles(styles)(Create);
+export default Create;

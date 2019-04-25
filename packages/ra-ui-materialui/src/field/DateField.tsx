@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { SFC } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import pure from 'recompose/pure';
-import Typography from '@material-ui/core/Typography';
+import Typography, { TypographyProps } from '@material-ui/core/Typography';
 
 import sanitizeRestProps from './sanitizeRestProps';
+import { FieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 
 const toLocaleStringSupportsLocales = (() => {
     // from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toLocaleString
@@ -15,6 +16,12 @@ const toLocaleStringSupportsLocales = (() => {
     }
     return false;
 })();
+
+interface Props extends FieldProps {
+    locales?: string | string[];
+    options?: object;
+    showTime?: boolean;
+}
 
 /**
  * Display a date value as a locale string.
@@ -41,7 +48,7 @@ const toLocaleStringSupportsLocales = (() => {
  * <span>mercredi 7 novembre 2012</span>
  */
 
-export const DateField = ({
+export const DateField: SFC<Props & InjectedFieldProps & TypographyProps> = ({
     className,
     locales,
     options,
@@ -50,9 +57,13 @@ export const DateField = ({
     source,
     ...rest
 }) => {
-    if (!record) return null;
+    if (!record) {
+        return null;
+    }
     const value = get(record, source);
-    if (value == null) return null;
+    if (value == null) {
+        return null;
+    }
     const date = value instanceof Date ? value : new Date(value);
     const dateString = showTime
         ? toLocaleStringSupportsLocales
@@ -65,7 +76,7 @@ export const DateField = ({
     return (
         <Typography
             component="span"
-            body1="body1"
+            variant="body1"
             className={className}
             {...sanitizeRestProps(rest)}
         >
@@ -74,28 +85,23 @@ export const DateField = ({
     );
 };
 
-DateField.propTypes = {
-    addLabel: PropTypes.bool,
-    basePath: PropTypes.string,
-    className: PropTypes.string,
-    cellClassName: PropTypes.string,
-    headerClassName: PropTypes.string,
-    label: PropTypes.string,
+const EnhancedDateField = pure<Props>(DateField);
+
+EnhancedDateField.defaultProps = {
+    addLabel: true,
+};
+
+EnhancedDateField.propTypes = {
+    ...Typography.propTypes,
+    ...fieldPropTypes,
     locales: PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.arrayOf(PropTypes.string),
     ]),
     options: PropTypes.object,
-    record: PropTypes.object,
     showTime: PropTypes.bool,
-    sortBy: PropTypes.string,
-    source: PropTypes.string.isRequired,
 };
 
-const PureDateField = pure(DateField);
+EnhancedDateField.displayName = 'EnhancedDateField';
 
-PureDateField.defaultProps = {
-    addLabel: true,
-};
-
-export default PureDateField;
+export default EnhancedDateField;

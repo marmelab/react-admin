@@ -44,7 +44,7 @@ const sanitizeRestProps = ({
     ...rest
 }) => rest;
 
-export const ShowView = ({
+export const ShowView = withStyles(styles)(({
     actions,
     aside,
     basePath,
@@ -86,6 +86,7 @@ export const ShowView = ({
                             hasList,
                             hasEdit,
                             resource,
+                            ...actions.props
                         })}
                     </CardContentInner>
                 )}
@@ -106,7 +107,7 @@ export const ShowView = ({
                 })}
         </div>
     );
-};
+});
 
 ShowView.propTypes = {
     actions: PropTypes.element,
@@ -171,7 +172,7 @@ ShowView.defaultProps = {
  *     );
  *     export default App;
  */
-export const Show = props => (
+const Show = props => (
     <ShowController {...props}>
         {controllerProps => <ShowView {...props} {...controllerProps} />}
     </ShowController>
@@ -192,4 +193,4 @@ Show.propTypes = {
     title: PropTypes.any,
 };
 
-export default withStyles(styles)(Show);
+export default Show;

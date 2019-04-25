@@ -98,10 +98,11 @@ const sanitizeRestProps = ({
     ...rest
 }) => rest;
 
-export const ListView = ({
+export const ListView = withStyles(styles)(({
     // component props
     actions,
     aside,
+    filter,
     filters,
     bulkActions, // deprecated
     bulkActionButtons,
@@ -138,6 +139,7 @@ export const ListView = ({
                         actions={actions}
                         bulkActions={bulkActions}
                         exporter={exporter}
+                        permanentFilter={filter}
                     />
                 )}
                 <div key={version}>
@@ -154,7 +156,7 @@ export const ListView = ({
             {aside && cloneElement(aside, controllerProps)}
         </div>
     );
-};
+});
 
 ListView.propTypes = {
     actions: PropTypes.element,
@@ -248,7 +250,7 @@ ListView.defaultProps = {
  *         </List>
  *     );
  */
-export const List = props => (
+const List = props => (
     <ListController {...props}>
         {controllerProps => <ListView {...props} {...controllerProps} />}
     </ListController>
@@ -292,4 +294,4 @@ List.defaultProps = {
     theme: defaultTheme,
 };
 
-export default withStyles(styles)(List);
+export default List;

@@ -15,6 +15,7 @@ const Actions = ({
     displayedFilters,
     exporter,
     filterValues,
+    permanentFilter,
     hasCreate,
     basePath,
     selectedIds,
@@ -46,7 +47,7 @@ const Actions = ({
                 disabled={total === 0}
                 resource={resource}
                 sort={currentSort}
-                filter={filterValues}
+                filter={{ ...filterValues, ...permanentFilter }}
                 exporter={exporter}
             />
         )}

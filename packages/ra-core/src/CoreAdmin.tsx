@@ -2,7 +2,7 @@ import React, { createElement, Component, ComponentType, SFC } from 'react';
 import PropTypes from 'prop-types';
 import { Provider } from 'react-redux';
 import { History } from 'history';
-import createHistory from 'history/createHashHistory';
+import { createHashHistory } from 'history';
 import { Switch, Route } from 'react-router-dom';
 import { ConnectedRouter } from 'react-router-redux';
 import withContext from 'recompose/withContext';
@@ -84,7 +84,7 @@ React-admin uses this history for its own ConnectedRouter.`);
                 throw new Error(`Missing dataProvider prop.
 React-admin requires a valid dataProvider function to work.`);
             }
-            this.history = props.history || createHistory();
+            this.history = props.history || createHashHistory();
         }
     }
 

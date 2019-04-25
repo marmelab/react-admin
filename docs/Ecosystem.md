@@ -20,6 +20,10 @@ title: "Ecosystem"
 
 See the [translation](./Translation.md#available-locales) page.
 
+## Authentication Providers
+
+* **[AWS Cognito](https://docs.aws.amazon.com/cognito/latest/developerguide/setting-up-the-javascript-sdk.html)**: [thedistance/ra-cognito](https://github.com/thedistance/ra-cognito)
+
 ## Data Providers
 
 * **[Django Rest Framework](https://www.django-rest-framework.org/)**: [synaptic-cl/ra-data-drf](https://github.com/synaptic-cl/ra-data-drf)
@@ -47,6 +51,10 @@ See the [translation](./Translation.md#available-locales) page.
 * **[Xmysql](https://github.com/o1lab/xmysql)**: [soaserele/aor-xmysql](https://github.com/soaserele/aor-xmysql)
 * Local JSON: [marmelab/ra-data-fakerest](https://github.com/marmelab/ra-data-fakerest)
 * Simple REST: [marmelab/ra-data-simple-rest](https://github.com/marmelab/ra-data-simple-rest).
+
+## UI
+
+- [**Bootstrap**](https://getbootstrap.com/): [bootstrap-styled/react-admin](https://bootstrap-styled.github.io/react-admin)
 
 ## Miscellaneous
 

@@ -3,7 +3,7 @@ import React from 'react';
 import { shallow, render } from 'enzyme';
 import { TestContext } from 'ra-core';
 
-import { List, ListView } from './List';
+import List, { ListView } from './List';
 
 describe('<List />', () => {
     const defaultProps = {
@@ -27,7 +27,7 @@ describe('<List />', () => {
             <ListView {...defaultProps}>
                 <Datagrid />
             </ListView>
-        );
+        ).dive();
         assert.equal(wrapper.find('WithStyles(Card)').length, 1);
     });
 
@@ -43,7 +43,7 @@ describe('<List />', () => {
             >
                 <Datagrid />
             </ListView>
-        );
+        ).dive();
         expect(
             wrapper.find('translate(WithStyles(BulkActionsToolbar))')
         ).toHaveLength(1);

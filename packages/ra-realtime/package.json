@@ -1,6 +1,6 @@
 {
     "name": "ra-realtime",
-    "version": "2.6.0",
+    "version": "2.8.6",
     "description": "A saga enabling realtime updates for react-admin",
     "main": "lib/index.js",
     "module": "esm/index.js",
@@ -37,13 +37,13 @@
     "peerDependencies": {
         "ra-core": "^2.5.0",
         "react-admin": "^2.5.3",
-        "react-router": "~4.2.0",
+        "react-router": "^4.2.0",
         "react-router-redux": "~5.0.0-alpha.9",
         "redux-saga": "~0.16.0"
     },
     "devDependencies": {
         "cross-env": "^5.2.0",
-        "react-router": "~4.2.0",
+        "react-router": "^4.2.0",
         "react-router-redux": "~5.0.0-alpha.9",
         "redux-saga": "~0.16.0",
         "rimraf": "^2.6.2"

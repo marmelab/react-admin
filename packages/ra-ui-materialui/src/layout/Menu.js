@@ -99,8 +99,8 @@ const enhance = compose(
                 prev.resources.every(
                     (value, index) => value === next.resources[index] // shallow compare resources
                 ) &&
-                prev.pathname == next.pathname &&
-                prev.open == next.open,
+                prev.pathname === next.pathname &&
+                prev.open === next.open,
         }
     ),
     withStyles(styles)
