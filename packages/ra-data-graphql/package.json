@@ -35,7 +35,7 @@
         "apollo-client": "^2.5.1",
         "apollo-client-preset": "^1.0.8",
         "graphql-tag": "^2.10.1",
-        "lodash": "~4.17.5",
+        "lodash": "~4.17.11",
         "pluralize": "~7.0.0"
     },
     "peerDependencies": {

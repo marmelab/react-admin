@@ -19,12 +19,12 @@
         "react-admin": "^2.0.0",
         "react-app-polyfill": "^0.1.3",
         "react-dom": "~16.8.0",
-        "react-redux": "~5.0.7",
-        "react-router-dom": "^4.2.0",
+        "react-redux": "~7.0.2",
+        "react-router-dom": "^5.0.0",
         "react-scripts": "^3.0.0",
         "recompose": "~0.26.0",
-        "redux-form": "~7.4.0",
-        "redux-saga": "~0.16.0"
+        "redux-form": "~8.2.0",
+        "redux-saga": "~1.0.2"
     },
     "scripts": {
         "start": "react-scripts start",

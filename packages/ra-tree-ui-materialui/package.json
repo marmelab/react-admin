@@ -43,7 +43,7 @@
         "react-dom": "^16.8.0"
     },
     "dependencies": {
-        "lodash": "^4.17.10",
+        "lodash": "^4.17.11",
         "prop-types": "^15.6.1",
         "ra-tree-core": "^2.6.0",
         "react-dnd": "^5.0.0",
