@@ -1,5 +1,6 @@
 import { Component, ReactNode } from 'react';
 import { connect } from 'react-redux';
+import get from 'lodash/get';
 import isEqual from 'lodash/isEqual';
 
 import { crudGetManyReference as crudGetManyReferenceAction } from '../../actions';
@@ -154,7 +155,7 @@ export class UnconnectedReferenceManyFieldController extends Component<
         const { page, perPage, sort } = this.state;
         const relatedTo = nameRelatedTo(
             reference,
-            record[source],
+            get(record, source),
             resource,
             target,
             filter
@@ -163,7 +164,7 @@ export class UnconnectedReferenceManyFieldController extends Component<
         crudGetManyReference(
             reference,
             target,
-            record[source],
+            get(record, source),
             relatedTo,
             { page, perPage },
             sort,
@@ -205,7 +206,7 @@ export class UnconnectedReferenceManyFieldController extends Component<
 function mapStateToProps(state, props) {
     const relatedTo = nameRelatedTo(
         props.reference,
-        props.record[props.source],
+        get(props.record, props.source),
         props.resource,
         props.target,
         props.filter

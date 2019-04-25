@@ -245,6 +245,10 @@ export const PostShow = (props) => (
 ```
 {% endraw %}
 
+To style the tabs, the `<Tab>` component accepts two props:
+
+- `className` is passed to the tab *header*
+- `contentClassName` is passed to the tab *content*
 
 ### Tabs element
 

@@ -318,7 +318,7 @@ export class UnconnectedListController extends Component<
         );
     }
 
-    setSort = sort => this.changeParams({ type: SET_SORT, payload: sort });
+    setSort = sort => this.changeParams({ type: SET_SORT, payload: { sort } });
 
     setPage = page => this.changeParams({ type: SET_PAGE, payload: page });
 
