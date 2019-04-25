@@ -119,6 +119,7 @@ export class ArrayField extends Component<
             basePath,
             children,
             record,
+            sortable,
             source,
             ...rest
         } = this.props;
