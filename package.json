@@ -52,13 +52,13 @@
         "lolex": "~2.3.2",
         "mutationobserver-shim": "^0.3.3",
         "prettier": "~1.16.4",
-        "raf": "~3.4.0",
+        "raf": "~3.4.1",
         "ts-jest": "^24.0.0",
-        "tslint": "^5.12.1",
+        "tslint": "^5.16.0",
         "tslint-config-prettier": "^1.18.0",
         "tslint-plugin-prettier": "^2.0.1",
         "tslint-react": "^3.6.0",
-        "wait-on": "^2.1.0"
+        "wait-on": "^3.2.0"
     },
     "workspaces": [
         "packages/*",
@@ -66,6 +66,6 @@
         "cypress"
     ],
     "dependencies": {
-        "typescript": "^3.3.3"
+        "typescript": "^3.4.5"
     }
 }

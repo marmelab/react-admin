@@ -46,6 +46,6 @@
         "react-router": "^4.2.0",
         "react-router-redux": "~5.0.0-alpha.9",
         "redux-saga": "~0.16.0",
-        "rimraf": "^2.6.2"
+        "rimraf": "^2.6.3"
     }
 }
