@@ -2,7 +2,7 @@ import React from 'react';
 import { render } from 'enzyme';
 import { TestContext } from 'ra-core';
 
-import { Show } from './Show';
+import Show from './Show';
 
 describe('<Show />', () => {
     const defaultShowProps = {

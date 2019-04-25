@@ -172,7 +172,7 @@ ShowView.defaultProps = {
  *     );
  *     export default App;
  */
-export const Show = props => (
+const Show = props => (
     <ShowController {...props}>
         {controllerProps => <ShowView {...props} {...controllerProps} />}
     </ShowController>
