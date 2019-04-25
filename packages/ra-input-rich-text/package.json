@@ -46,7 +46,7 @@
     },
     "dependencies": {
         "lodash": "~4.17.5",
-        "prop-types": "~15.6.1",
+        "prop-types": "^15.6.1",
         "quill": "~1.3.6"
     },
     "devDependencies": {
