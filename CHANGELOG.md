@@ -1,5 +1,18 @@
 # Changelog
 
+# v2.9.0
+
+* Add support for styled `<ListView>`, `<EditView>`, `<CreateView>`, and `<ShowView>` components ([3161](https://github.com/marmelab/react-admin/pull/3161)) ([cherniavskii](https://github.com/cherniavskii))
+* Add support for nested records in `source` prop of `<ReferenceManyField>` ([3159](https://github.com/marmelab/react-admin/pull/3159)) ([aramando](https://github.com/aramando))
+* Add ability to reload translation without changing locale ([3152](https://github.com/marmelab/react-admin/pull/3152)) ([nik-lampe](https://github.com/nik-lampe))
+* Add the ability to style the `Tab` contents in `Show` and `Edit` views ([2996](https://github.com/marmelab/react-admin/pull/2996)) ([fzaninotto](https://github.com/fzaninotto))
+* Add ability to sort `<Datagrid>` by descending order by default ([2921](https://github.com/marmelab/react-admin/pull/2921)) ([frankPairs](https://github.com/frankPairs))
+* Fix `propTypes` warning when using `<ArrayField sortable={false} />` ([3164](https://github.com/marmelab/react-admin/pull/3164)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<Datagrid rowClick />` when using a function value returning empty redirect value ([3156](https://github.com/marmelab/react-admin/pull/3156)) ([tunglt1810](https://github.com/tunglt1810))
+* Fix `<AutocompleteArrayInput>` wrapping when there are many selected options ([3131](https://github.com/marmelab/react-admin/pull/3131)) ([cherniavskii](https://github.com/cherniavskii))
+* Fix circular dependency in `ra-data-graphql-simple` data provider  ([3093](https://github.com/marmelab/react-admin/pull/3093)) ([GM-Alex](https://github.com/GM-Alex))
+* Add `ra-cognito` authentication provider to the Ecosystem documentation ([3163](https://github.com/marmelab/react-admin/pull/3163)) ([anthonycmain](https://github.com/anthonycmain))
+
 ## v2.8.6
 
 * Fix `<Mutation>` documentation showing wrong `notification` side effect syntax ([3147](https://github.com/marmelab/react-admin/pull/3147)) ([fzaninotto](https://github.com/fzaninotto))
