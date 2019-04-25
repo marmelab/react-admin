@@ -3,7 +3,7 @@ import React from 'react';
 import { shallow, render } from 'enzyme';
 import { TestContext } from 'ra-core';
 
-import { List, ListView } from './List';
+import List, { ListView } from './List';
 
 describe('<List />', () => {
     const defaultProps = {
