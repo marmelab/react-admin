@@ -5,10 +5,10 @@
     "dependencies": {
         "@material-ui/core": "~1.5.1",
         "ra-data-json-server": "^2.0.0",
-        "react": "~16.3.1",
+        "react": "~16.8.0",
         "react-admin": "^2.0.0",
-        "react-dom": "~16.3.1",
-        "react-scripts": "^2.0.5"
+        "react-dom": "~16.8.0",
+        "react-scripts": "^3.0.0"
     },
     "scripts": {
         "start": "react-scripts start",
