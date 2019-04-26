@@ -7,7 +7,7 @@ export interface FieldProps {
     sortBy?: string;
     source?: string;
     label?: string;
-    formatLabel?: (record: any) => string,
+    formatLabel?: (record: any) => string;
     sortable?: boolean;
     className?: string;
     cellClassName?: string;
