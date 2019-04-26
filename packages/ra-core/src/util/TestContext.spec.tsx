@@ -30,7 +30,14 @@ const primedStore = {
         messages: {},
     },
     router: {
-        location: null,
+        action: 'POP',
+        location: {
+            hash: '',
+            key: '',
+            pathname: '/',
+            search: '',
+            state: undefined,
+        },
     },
 };
 
@@ -71,7 +78,9 @@ describe('TestContext.js', () => {
                     }}
                 </TestContext>
             );
-            assert.deepStrictEqual(testStore.getState(), primedStore);
+            const initialstate = testStore.getState();
+            initialstate.router.location.key = ''; // react-router initializes the state with a random key
+            assert.deepStrictEqual(initialstate, primedStore);
 
             testStore.dispatch(submit('foo'));
 

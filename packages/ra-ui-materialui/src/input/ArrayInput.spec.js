@@ -1,27 +1,12 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
-import { reduxForm, reducer as formReducer } from 'redux-form';
-import { createStore, combineReducers } from 'redux';
-import { Provider } from 'react-redux';
-import { TranslationProvider } from 'ra-core';
+import { reduxForm } from 'redux-form';
+import { TestContext } from 'ra-core';
 
 import ArrayInput, { ArrayInput as ArrayInputView } from './ArrayInput';
 import NumberInput from './NumberInput';
 import TextInput from './TextInput';
 import SimpleFormIterator from '../form/SimpleFormIterator';
-
-const AppMock = ({ children }) => (
-    <Provider
-        store={createStore(
-            combineReducers({
-                form: formReducer,
-                i18n: () => ({ locale: 'en', messages: {} }),
-            })
-        )}
-    >
-        <TranslationProvider>{children}</TranslationProvider>
-    </Provider>
-);
 
 describe('<ArrayInput />', () => {
     it('should render a FieldArray', () => {
@@ -41,9 +26,9 @@ describe('<ArrayInput />', () => {
         );
         const DummyFormRF = reduxForm({ form: 'record-form' })(DummyForm);
         const wrapper = mount(
-            <AppMock>
+            <TestContext>
                 <DummyFormRF />
-            </AppMock>
+            </TestContext>
         );
         expect(
             wrapper
@@ -64,9 +49,9 @@ describe('<ArrayInput />', () => {
         );
         const DummyFormRF = reduxForm({ form: 'record-form' })(DummyForm);
         const wrapper = mount(
-            <AppMock>
+            <TestContext>
                 <DummyFormRF />
-            </AppMock>
+            </TestContext>
         );
         expect(wrapper.find(MockChild).props().record).toEqual({
             iAmRecord: true,
@@ -84,14 +69,15 @@ describe('<ArrayInput />', () => {
         );
         const DummyFormRF = reduxForm({ form: 'record-form' })(DummyForm);
         const wrapper = mount(
-            <AppMock>
+            <TestContext enableReducers={true}>
                 <DummyFormRF
                     initialValues={{
                         foo: [{ id: 1 }, { id: 2 }],
                     }}
                 />
-            </AppMock>
+            </TestContext>
         );
+
         expect(
             wrapper
                 .find('MockChild')
@@ -110,9 +96,9 @@ describe('<ArrayInput />', () => {
         );
         const DummyFormRF = reduxForm({ form: 'record-form' })(DummyForm);
         const wrapper = mount(
-            <AppMock>
+            <TestContext>
                 <DummyFormRF />
-            </AppMock>
+            </TestContext>
         );
         expect(wrapper.find('section').length).toBe(0);
     });
@@ -127,13 +113,13 @@ describe('<ArrayInput />', () => {
         );
         const DummyFormRF = reduxForm({ form: 'record-form' })(DummyForm);
         const wrapper = mount(
-            <AppMock>
+            <TestContext enableReducers={true}>
                 <DummyFormRF
                     initialValues={{
                         foo: [{}, {}, {}],
                     }}
                 />
-            </AppMock>
+            </TestContext>
         );
         expect(wrapper.find('section').length).toBe(3);
     });
@@ -151,13 +137,13 @@ describe('<ArrayInput />', () => {
         );
         const DummyFormRF = reduxForm({ form: 'record-form' })(DummyForm);
         const wrapper = mount(
-            <AppMock>
+            <TestContext enableReducers={true}>
                 <DummyFormRF
                     initialValues={{
                         arr: [{ id: 123, foo: 'bar' }, { id: 456, foo: 'baz' }],
                     }}
                 />
-            </AppMock>
+            </TestContext>
         );
         expect(wrapper.find('NumberInput').length).toBe(2);
         expect(
