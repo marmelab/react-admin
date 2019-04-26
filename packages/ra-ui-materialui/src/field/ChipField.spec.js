@@ -30,4 +30,18 @@ describe('<ChipField />', () => {
             ).prop('label'),
             'foo'
         ));
+    
+    it('should display label returned by formatLabel prop', () =>
+        assert.equal(
+            shallow(
+                <ChipField
+                    className="className"
+                    classes={{}}
+                    source="firstName"
+                    record={{ firstName: 'foo', lastName: 'bar' }}
+                    formatLabel={record => `${record.firstName} ${record.lastName}`}
+                />
+            ).prop('label'),
+            'foo bar'
+        ));
 });
