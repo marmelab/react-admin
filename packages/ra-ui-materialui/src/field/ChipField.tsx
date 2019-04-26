@@ -15,10 +15,10 @@ const styles = createStyles({
 
 export const ChipField: SFC<
     FieldProps & InjectedFieldProps & WithStyles<typeof styles> & ChipProps
-> = ({ className, classes, source, record = {}, ...rest }) => (
+> = ({ className, classes, source, record = {}, formatLabel, ...rest }) => (
     <Chip
         className={classnames(classes.chip, className)}
-        label={get(record, source)}
+        label={formatLabel ? formatLabel(record) : get(record, source)}
         {...sanitizeRestProps(rest)}
     />
 );

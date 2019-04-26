@@ -7,6 +7,7 @@ export interface FieldProps {
     sortBy?: string;
     source?: string;
     label?: string;
+    formatLabel?: (record: any) => string,
     sortable?: boolean;
     className?: string;
     cellClassName?: string;
@@ -25,6 +26,7 @@ export const fieldPropTypes = {
     sortBy: PropTypes.string,
     source: PropTypes.string,
     label: PropTypes.string,
+    formatLabel: PropTypes.func,
     sortable: PropTypes.bool,
     className: PropTypes.string,
     cellClassName: PropTypes.string,
