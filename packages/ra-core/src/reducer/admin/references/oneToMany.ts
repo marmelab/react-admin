@@ -7,7 +7,7 @@ import { Identifier, ReduxState } from '../../../types';
 
 const initialState = {};
 
-interface State {
+export interface OneToManyState {
     [relatedTo: string]: { ids: Identifier[]; total: number };
 }
 
@@ -15,7 +15,7 @@ type ActionTypes =
     | CrudGetManyReferenceSuccessAction
     | { type: 'OTHER_ACTION'; payload: any; meta?: any };
 
-const oneToManyReducer: Reducer<State> = (
+const oneToManyReducer: Reducer<OneToManyState> = (
     previousState = initialState,
     action: ActionTypes
 ) => {

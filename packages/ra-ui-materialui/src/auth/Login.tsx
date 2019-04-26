@@ -26,6 +26,7 @@ import DefaultLoginForm from './LoginForm';
 interface Props {
     backgroundImage?: string;
     loginForm: ReactElement<any>;
+    staticContext: StaticContext;
     theme: object;
 }
 
@@ -115,6 +116,7 @@ class Login extends Component<
             classes,
             className,
             loginForm,
+            staticContext,
             ...rest
         } = this.props;
 

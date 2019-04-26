@@ -18,39 +18,40 @@ import Notification from './Notification';
 import Error from './Error';
 import defaultTheme from '../defaultTheme';
 
-const styles = theme => createStyles({
-    root: {
-        display: 'flex',
-        flexDirection: 'column',
-        zIndex: 1,
-        minHeight: '100vh',
-        backgroundColor: theme.palette.background.default,
-        position: 'relative',
-        minWidth: 'fit-content',
-        width: '100%',
-    },
-    appFrame: {
-        display: 'flex',
-        flexDirection: 'column',
-    },
-    contentWithSidebar: {
-        display: 'flex',
-        flexGrow: 1,
-    },
-    content: {
-        display: 'flex',
-        flexDirection: 'column',
-        flexGrow: 1,
-        flexBasis: 0,
-        padding: theme.spacing.unit * 3,
-        [theme.breakpoints.up('xs')]: {
-            paddingLeft: 5,
+const styles = theme =>
+    createStyles({
+        root: {
+            display: 'flex',
+            flexDirection: 'column',
+            zIndex: 1,
+            minHeight: '100vh',
+            backgroundColor: theme.palette.background.default,
+            position: 'relative',
+            minWidth: 'fit-content',
+            width: '100%',
         },
-        [theme.breakpoints.down('sm')]: {
-            padding: 0,
+        appFrame: {
+            display: 'flex',
+            flexDirection: 'column',
         },
-    },
-});
+        contentWithSidebar: {
+            display: 'flex',
+            flexGrow: 1,
+        },
+        content: {
+            display: 'flex',
+            flexDirection: 'column',
+            flexGrow: 1,
+            flexBasis: 0,
+            padding: theme.spacing.unit * 3,
+            [theme.breakpoints.up('xs')]: {
+                paddingLeft: 5,
+            },
+            [theme.breakpoints.down('sm')]: {
+                padding: 0,
+            },
+        },
+    });
 
 const sanitizeRestProps = ({
     staticContext,
@@ -130,29 +131,24 @@ class Layout extends Component {
     }
 }
 
-const componentPropType = PropTypes.oneOfType([
-    PropTypes.func,
-    PropTypes.string,
-]);
-
 Layout.propTypes = {
-    appBar: componentPropType,
+    appBar: PropTypes.Component,
     children: PropTypes.oneOfType([PropTypes.func, PropTypes.node]),
     classes: PropTypes.object,
     className: PropTypes.string,
     customRoutes: PropTypes.array,
-    dashboard: componentPropType,
-    error: componentPropType,
+    dashboard: PropTypes.Component,
+    error: PropTypes.Component,
     history: PropTypes.object.isRequired,
     logout: PropTypes.oneOfType([
         PropTypes.node,
         PropTypes.func,
         PropTypes.string,
     ]),
-    menu: componentPropType,
-    notification: componentPropType,
+    menu: PropTypes.Component,
+    notification: PropTypes.Component,
     open: PropTypes.bool,
-    sidebar: componentPropType,
+    sidebar: PropTypes.Component,
     title: PropTypes.node.isRequired,
 };
 

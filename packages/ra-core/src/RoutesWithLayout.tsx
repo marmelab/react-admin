@@ -43,7 +43,7 @@ const RoutesWithLayout: SFC<Props> = ({
                         cloneElement(child, {
                             // The context prop instruct the Resource component to
                             // render itself as a standard component
-                            context: 'route',
+                            intent: 'route',
                             ...props,
                         })
                     }

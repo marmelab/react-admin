@@ -8,7 +8,7 @@ import {
 } from 'react';
 import { connect } from 'react-redux';
 import { parse, stringify } from 'query-string';
-import { push as pushAction } from 'react-router-redux';
+import { push as pushAction } from 'connected-react-router';
 import compose from 'recompose/compose';
 import { createSelector } from 'reselect';
 import inflection from 'inflection';

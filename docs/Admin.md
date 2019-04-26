@@ -289,7 +289,7 @@ The `<Admin>` app uses [Redux](http://redux.js.org/) to manage state. The state 
 {
     admin: { /*...*/ }, // used by react-admin
     form: { /*...*/ }, // used by redux-form
-    routing: { /*...*/ }, // used by react-router-redux
+    routing: { /*...*/ }, // used by connected-react-router
 }
 ```
 
@@ -331,7 +331,7 @@ Now the state will look like:
 {
     admin: { /*...*/ }, // used by react-admin
     form: { /*...*/ }, // used by redux-form
-    routing: { /*...*/ }, // used by react-router-redux
+    routing: { /*...*/ }, // used by connected-react-router
     bitcoinRate: 123, // managed by rateReducer
 }
 ```

@@ -5,6 +5,7 @@ import React, {
     createElement,
     ComponentType,
     CSSProperties,
+    ReactElement,
 } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -172,8 +173,9 @@ export class CoreAdminRouter extends Component<
             return <Route path="/" key="loading" component={loading} />;
         }
 
-        const childrenToRender =
-            typeof children === 'function' ? this.state.children : children;
+        const childrenToRender = (typeof children === 'function'
+            ? this.state.children
+            : children) as Array<ReactElement<any, any>>;
 
         return (
             <div>
@@ -186,7 +188,7 @@ export class CoreAdminRouter extends Component<
                             key: child.props.name,
                             // The context prop instructs the Resource component to not render anything
                             // but simply to register itself as a known resource
-                            context: 'registration',
+                            intent: 'registration',
                         })
                 )}
                 <Switch>
@@ -231,7 +233,7 @@ export class CoreAdminRouter extends Component<
                                         ) =>
                                             cloneElement(child, {
                                                 key: child.props.name,
-                                                context: 'route',
+                                                intent: 'route',
                                             })
                                     )}
                                 </RoutesWithLayout>

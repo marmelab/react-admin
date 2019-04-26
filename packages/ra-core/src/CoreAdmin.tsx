@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import { History } from 'history';
 import { createHashHistory } from 'history';
 import { Switch, Route } from 'react-router-dom';
-import { ConnectedRouter } from 'react-router-redux';
+import { ConnectedRouter } from 'connected-react-router';
 import withContext from 'recompose/withContext';
 
 import createAdminStore from './createAdminStore';

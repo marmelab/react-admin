@@ -1,4 +1,4 @@
-import { LOCATION_CHANGE } from 'react-router-redux';
+import { LOCATION_CHANGE } from 'connected-react-router';
 import { destroy } from 'redux-form';
 
 import formMiddleware from './formMiddleware';

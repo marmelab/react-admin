@@ -1,5 +1,5 @@
 import { actionTypes } from 'redux-form';
-import { LOCATION_CHANGE } from 'react-router-redux';
+import { LOCATION_CHANGE } from 'connected-react-router';
 import {
     CRUD_CREATE,
     CRUD_CREATE_SUCCESS,
