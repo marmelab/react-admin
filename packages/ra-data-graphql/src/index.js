@@ -97,7 +97,21 @@ export default async options => {
                 ...getOptions(otherOptions.query, aorFetchType, resource),
             };
 
-            return client.query(apolloQuery).then(parseResponse);
+            const aliases = apolloQuery.query.definitions.reduce(
+                (acc, definition) => {
+                    return Object.assign(
+                        acc,
+                        retrieveAliasesFromSelections(
+                            definition.selectionSet.selections
+                        )
+                    );
+                },
+                {}
+            );
+
+            return client
+                .query(apolloQuery)
+                .then(response => parseResponse(response, aliases));
         }
 
         const apolloQuery = {
@@ -128,3 +142,23 @@ export default async options => {
 
     return raDataProvider;
 };
+
+function retrieveAliasesFromSelections(selections) {
+    return selections.reduce((acc, selection) => {
+        if (selection.alias && selection.name) {
+            acc[selection.alias.value] = {
+                alias: selection.alias.value,
+                name: selection.name.value,
+            };
+        }
+
+        if (selection.selectionSet && selection.selectionSet.selections) {
+            return Object.assign(
+                acc,
+                retrieveAliasesFromSelections(selection.selectionSet.selections)
+            );
+        }
+
+        return acc;
+    }, {});
+}

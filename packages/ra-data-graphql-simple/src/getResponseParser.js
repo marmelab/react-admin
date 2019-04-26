@@ -2,17 +2,20 @@ import { TypeKind } from 'graphql';
 import { GET_LIST, GET_MANY, GET_MANY_REFERENCE } from 'ra-core';
 import getFinalType from './getFinalType';
 
-const sanitizeResource = (introspectionResults, resource) => data => {
+const sanitizeResource = (introspectionResults, resource, aliases) => data => {
     const result = Object.keys(data).reduce((acc, key) => {
         if (key.startsWith('_')) {
             return acc;
         }
 
-        const field = resource.type.fields.find(f => f.name === key);
+        const isAlias = aliases && aliases[key] ? true : false;
+        const keyToFind = isAlias ? aliases[key].name : key;
+        const field = resource.type.fields.find(f => f.name === keyToFind);
+        const fieldName = isAlias ? aliases[key].alias : field.name;
         const type = getFinalType(field.type);
 
         if (type.kind !== TypeKind.OBJECT) {
-            return { ...acc, [field.name]: data[field.name] };
+            return { ...acc, [fieldName]: data[fieldName] };
         }
 
         // FIXME: We might have to handle linked types which are not resources but will have to be careful about
@@ -22,39 +25,42 @@ const sanitizeResource = (introspectionResults, resource) => data => {
         );
 
         if (linkedResource) {
-            const linkedResourceData = data[field.name];
+            const linkedResourceData = data[fieldName];
 
             if (Array.isArray(linkedResourceData)) {
                 return {
                     ...acc,
-                    [field.name]: data[field.name].map(
+                    [fieldName]: data[fieldName].map(
                         sanitizeResource(introspectionResults, linkedResource)
                     ),
-                    [`${field.name}Ids`]: data[field.name].map(d => d.id),
+                    [`${fieldName}Ids`]: data[fieldName].map(d => d.id),
                 };
             }
 
             return {
                 ...acc,
-                [`${field.name}.id`]: linkedResourceData
-                    ? data[field.name].id
+                [`${fieldName}.id`]: linkedResourceData
+                    ? data[fieldName].id
                     : undefined,
-                [field.name]: linkedResourceData
+                [fieldName]: linkedResourceData
                     ? sanitizeResource(introspectionResults, linkedResource)(
-                          data[field.name]
+                          data[fieldName]
                       )
                     : undefined,
             };
         }
 
-        return { ...acc, [field.name]: data[field.name] };
+        return { ...acc, [fieldName]: data[fieldName] };
     }, {});
 
     return result;
 };
 
-export default introspectionResults => (aorFetchType, resource) => response => {
-    const sanitize = sanitizeResource(introspectionResults, resource);
+export default introspectionResults => (aorFetchType, resource) => (
+    response,
+    aliases
+) => {
+    const sanitize = sanitizeResource(introspectionResults, resource, aliases);
     const data = response.data;
 
     if (
