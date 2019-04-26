@@ -185,6 +185,12 @@ import { ChipField, SingleFieldList, ReferenceManyField } from 'react-admin';
 </ReferenceManyField>
 ```
 
+**Tip**: If you need to override `ChipField` label, there's `formatLabel` prop, which receives `record` as argument:
+
+```jsx
+<ChipField formatLabel={record => `${record.firstName} ${record.lastName}`} />
+```
+
 ## `<DateField>`
 
 Displays a date or datetime using the browser locale (thanks to `Date.toLocaleDateString()` and `Date.toLocaleString()`).
