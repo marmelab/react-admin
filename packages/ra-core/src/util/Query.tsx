@@ -1,5 +1,5 @@
 import { Component, ReactNode } from 'react';
-import { shallowEqual } from 'recompose';
+import equal from 'deep-equal';
 import withDataProvider from './withDataProvider';
 
 type DataProviderCallback = (
@@ -107,8 +107,8 @@ class Query extends Component<Props, State> {
         if (
             prevProps.type !== this.props.type ||
             prevProps.resource !== this.props.resource ||
-            !shallowEqual(prevProps.payload, this.props.payload) ||
-            !shallowEqual(prevProps.options, this.props.options)
+            !equal(prevProps.payload, this.props.payload) ||
+            !equal(prevProps.options, this.props.options)
         ) {
             this.callDataProvider();
         }
