@@ -11,8 +11,8 @@ import { reviewReject as reviewRejectAction } from './reviewActions';
 /**
  * This custom button demonstrate using a custom action to update data
  */
-class AcceptButton extends Component {
-    handleApprove = () => {
+class RejectButton extends Component {
+    handleReject = () => {
         const { reviewReject, record, comment } = this.props;
         reviewReject(record.id, { ...record, comment });
     };
@@ -24,7 +24,7 @@ class AcceptButton extends Component {
                 variant="outlined"
                 color="primary"
                 size="small"
-                onClick={this.handleApprove}
+                onClick={this.handleReject}
             >
                 <ThumbDown
                     color="primary"
@@ -38,7 +38,7 @@ class AcceptButton extends Component {
     }
 }
 
-AcceptButton.propTypes = {
+RejectButton.propTypes = {
     comment: PropTypes.string,
     record: PropTypes.object,
     reviewReject: PropTypes.func,
@@ -59,4 +59,4 @@ const enhance = compose(
     )
 );
 
-export default enhance(AcceptButton);
+export default enhance(RejectButton);
