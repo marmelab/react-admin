@@ -43,7 +43,7 @@ import { startUndoable } from '../actions/undoActions';
  *     }
  * }
  */
-const useDataProvider = deps => {
+const useDataProvider = () => {
     const dispatch = useDispatch() as Dispatch;
 
     return useMemo(
@@ -77,7 +77,7 @@ const useDataProvider = deps => {
                     ? dispatch(startUndoable(action))
                     : dispatch(action);
             }),
-        deps
+        []
     );
 };
 

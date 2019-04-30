@@ -55,10 +55,9 @@ export interface DataProviderProps {
  * export default withDataProvider(PostList);
  */
 const withDataProvider = <P extends object>(
-    Component: React.ComponentType<P>,
-    deps?: any[]
+    Component: React.ComponentType<P>
 ): React.SFC<P & DataProviderProps> => (props: P) => (
-    <Component {...props} dataProvider={useDataProvider(deps)} />
+    <Component {...props} dataProvider={useDataProvider()} />
 );
 
 export default withDataProvider;
