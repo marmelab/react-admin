@@ -236,7 +236,7 @@ export default (type, params) => {
 
 ## Customizing The Login and Logout Components
 
-Using `authProvider` and `checkCredentials` is enough to implement a full-featured authorization system if the authentication relies on a username and password.
+Using `authProvider` is enough to implement a full-featured authorization system if the authentication relies on a username and password.
 
 But what if you want to use an email instead of a username? What if you want to use a Single-Sign-On (SSO) with a third-party authentication service? What if you want to use two-factor authentication?
 
