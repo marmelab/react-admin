@@ -1,38 +1,20 @@
-import { Component, ReactNode } from 'react';
-import { shallowEqual } from 'recompose';
-import withDataProvider from './withDataProvider';
-
-type DataProviderCallback = (
-    type: string,
-    resource: string,
-    payload?: any,
-    options?: any
-) => Promise<any>;
+import { FunctionComponent, ReactElement } from 'react';
+import useQuery from './useQuery';
 
 interface ChildrenFuncParams {
     data?: any;
     total?: number;
     loading: boolean;
+    loaded: boolean;
     error?: any;
 }
 
-interface RawProps {
-    children: (params: ChildrenFuncParams) => ReactNode;
+interface Props {
+    children: (params: ChildrenFuncParams) => ReactElement<any, any>;
     type: string;
     resource: string;
     payload?: any;
     options?: any;
-}
-
-interface Props extends RawProps {
-    dataProvider: DataProviderCallback;
-}
-
-interface State {
-    data?: any;
-    total?: number;
-    loading: boolean;
-    error?: any;
 }
 
 /**
@@ -73,51 +55,12 @@ interface State {
  *     </Query>
  * );
  */
-class Query extends Component<Props, State> {
-    state = {
-        data: null,
-        total: null,
-        loading: true,
-        error: null,
-    };
+const Query: FunctionComponent<Props> = ({
+    children,
+    type,
+    resource,
+    payload,
+    options,
+}) => children(useQuery(type, resource, payload, options));
 
-    callDataProvider = () => {
-        const { dataProvider, type, resource, payload, options } = this.props;
-        dataProvider(type, resource, payload, options)
-            .then(({ data, total }) => {
-                this.setState({
-                    data,
-                    total,
-                    loading: false,
-                });
-            })
-            .catch(error => {
-                this.setState({
-                    error,
-                    loading: false,
-                });
-            });
-    };
-
-    componentDidMount = () => {
-        this.callDataProvider();
-    };
-
-    componentDidUpdate = prevProps => {
-        if (
-            prevProps.type !== this.props.type ||
-            prevProps.resource !== this.props.resource ||
-            !shallowEqual(prevProps.payload, this.props.payload) ||
-            !shallowEqual(prevProps.options, this.props.options)
-        ) {
-            this.callDataProvider();
-        }
-    };
-
-    render() {
-        const { children } = this.props;
-        return children(this.state);
-    }
-}
-
-export default withDataProvider<RawProps>(Query);
+export default Query;

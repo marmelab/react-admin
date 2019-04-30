@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import compose from 'recompose/compose';
 import Card from '@material-ui/core/Card';
 import List from '@material-ui/core/List';
@@ -10,7 +10,7 @@ import Typography from '@material-ui/core/Typography';
 import CustomerIcon from '@material-ui/icons/PersonAdd';
 import Divider from '@material-ui/core/Divider';
 import { Link } from 'react-router-dom';
-import { translate } from 'react-admin';
+import { translate, useQuery, GET_LIST } from 'react-admin';
 
 import CardIcon from './CardIcon';
 
@@ -40,43 +40,64 @@ const styles = theme => ({
     },
 });
 
-const NewCustomers = ({ visitors = [], nb, translate, classes }) => (
-    <div className={classes.main}>
-        <CardIcon Icon={CustomerIcon} bgColor="#4caf50" />
-        <Card className={classes.card}>
-            <Typography className={classes.title} color="textSecondary">
-                {translate('pos.dashboard.new_customers')}
-            </Typography>
-            <Typography
-                variant="headline"
-                component="h2"
-                className={classes.value}
-            >
-                {nb}
-            </Typography>
-            <Divider />
-            <List>
-                {visitors.map(record => (
-                    <ListItem
-                        button
-                        to={`/customers/${record.id}`}
-                        component={Link}
-                        key={record.id}
-                    >
-                        <Avatar
-                            src={`${record.avatar}?size=32x32`}
-                            className={classes.avatar}
-                        />
-                        <ListItemText
-                            primary={`${record.first_name} ${record.last_name}`}
-                            className={classes.listItemText}
-                        />
-                    </ListItem>
-                ))}
-            </List>
-        </Card>
-    </div>
-);
+const NewCustomers = ({ translate, classes }) => {
+    const aMonthAgo = useMemo(() => {
+        const date = new Date();
+        date.setDate(date.getDate() - 30);
+        return date;
+    }, []);
+
+    const { loaded, data: visitors } = useQuery(GET_LIST, 'customers', {
+        filter: {
+            has_ordered: true,
+            first_seen_gte: aMonthAgo.toISOString(),
+        },
+        sort: { field: 'first_seen', order: 'DESC' },
+        pagination: { page: 1, perPage: 100 },
+    });
+
+    if (!loaded) return null;
+    const nb = visitors.reduce(nb => ++nb, 0);
+    return (
+        <div className={classes.main}>
+            <CardIcon Icon={CustomerIcon} bgColor="#4caf50" />
+            <Card className={classes.card}>
+                <Typography className={classes.title} color="textSecondary">
+                    {translate('pos.dashboard.new_customers')}
+                </Typography>
+                <Typography
+                    variant="headline"
+                    component="h2"
+                    className={classes.value}
+                >
+                    {nb}
+                </Typography>
+                <Divider />
+                <List>
+                    {visitors.map(record => (
+                        <ListItem
+                            button
+                            to={`/customers/${record.id}`}
+                            component={Link}
+                            key={record.id}
+                        >
+                            <Avatar
+                                src={`${record.avatar}?size=32x32`}
+                                className={classes.avatar}
+                            />
+                            <ListItemText
+                                primary={`${record.first_name} ${
+                                    record.last_name
+                                }`}
+                                className={classes.listItemText}
+                            />
+                        </ListItem>
+                    ))}
+                </List>
+            </Card>
+        </div>
+    );
+};
 
 const enhance = compose(
     withStyles(styles),

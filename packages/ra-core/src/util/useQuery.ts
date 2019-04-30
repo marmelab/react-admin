@@ -10,6 +10,47 @@ interface State {
     error?: any;
 }
 
+// thanks Kent C Dodds for the following helpers
+
+function useSetState(initialState) {
+    return useReducer(
+        (state, newState) => ({ ...state, ...newState }),
+        initialState
+    );
+}
+
+function useSafeSetState(initialState) {
+    const [state, setState] = useSetState(initialState);
+
+    const mountedRef = useRef(false);
+    useEffect(() => {
+        mountedRef.current = true;
+        return () => (mountedRef.current = false);
+    }, []);
+    const safeSetState = args => mountedRef.current && setState(args);
+
+    return [state, safeSetState];
+}
+
+function usePrevious(value) {
+    const ref = useRef();
+    useEffect(() => {
+        ref.current = value;
+    });
+    return ref.current;
+}
+
+function useDeepCompareEffect(callback, inputs) {
+    const cleanupRef = useRef();
+    useEffect(() => {
+        if (!isEqual(previousInputs, inputs)) {
+            cleanupRef.current = callback();
+        }
+        return cleanupRef.current;
+    });
+    const previousInputs = usePrevious(inputs);
+}
+
 /**
  * Fetch the data provider and return the result.
  *
@@ -48,23 +89,15 @@ const useQuery = (
     payload?: any,
     options?: any
 ): State => {
-    const [state, setState] = useReducer(
-        (prevState, newState) => ({ ...prevState, ...newState }),
-        {
-            data: null,
-            error: null,
-            total: null,
-            loading: false,
-            loaded: false,
-        }
-    );
+    const [state, setState] = useSafeSetState({
+        data: null,
+        error: null,
+        total: null,
+        loading: false,
+        loaded: false,
+    });
     const dataProvider = useDataProvider();
-    useEffect(() => {
-        if (
-            isEqual(previousInputs.current, [type, resource, payload, options])
-        ) {
-            return;
-        }
+    useDeepCompareEffect(() => {
         setState({ loading: true });
         dataProvider(type, resource, payload, options)
             .then(({ data: dataFromResponse, total: totalFromResponse }) => {
@@ -82,12 +115,7 @@ const useQuery = (
                     loaded: false,
                 });
             });
-    });
-
-    const previousInputs = useRef<any>();
-    useEffect(() => {
-        previousInputs.current = [type, resource, payload, options];
-    });
+    }, [type, resource, payload, options]);
 
     return state;
 };
