@@ -10,6 +10,7 @@ import {
     createStyles,
 } from '@material-ui/core/styles';
 import compose from 'recompose/compose';
+import { ComponentPropType } from 'ra-core';
 
 import AppBar from './AppBar';
 import Sidebar from './Sidebar';
@@ -132,23 +133,23 @@ class Layout extends Component {
 }
 
 Layout.propTypes = {
-    appBar: PropTypes.Component,
+    appBar: ComponentPropType,
     children: PropTypes.oneOfType([PropTypes.func, PropTypes.node]),
     classes: PropTypes.object,
     className: PropTypes.string,
     customRoutes: PropTypes.array,
-    dashboard: PropTypes.Component,
-    error: PropTypes.Component,
+    dashboard: ComponentPropType,
+    error: ComponentPropType,
     history: PropTypes.object.isRequired,
     logout: PropTypes.oneOfType([
         PropTypes.node,
         PropTypes.func,
         PropTypes.string,
     ]),
-    menu: PropTypes.Component,
-    notification: PropTypes.Component,
+    menu: ComponentPropType,
+    notification: ComponentPropType,
     open: PropTypes.bool,
-    sidebar: PropTypes.Component,
+    sidebar: ComponentPropType,
     title: PropTypes.node.isRequired,
 };
 

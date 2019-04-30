@@ -61,8 +61,8 @@ class FormTab extends Component {
     );
 
     render() {
-        const { children, context, ...rest } = this.props;
-        return context === 'header'
+        const { children, intent, ...rest } = this.props;
+        return intent === 'header'
             ? this.renderHeader(rest)
             : this.renderContent({ children, ...rest });
     }
@@ -72,7 +72,7 @@ FormTab.propTypes = {
     className: PropTypes.string,
     contentClassName: PropTypes.string,
     children: PropTypes.node,
-    context: PropTypes.oneOf(['header', 'content']),
+    intent: PropTypes.oneOf(['header', 'content']),
     hidden: PropTypes.bool,
     icon: PropTypes.element,
     label: PropTypes.string.isRequired,

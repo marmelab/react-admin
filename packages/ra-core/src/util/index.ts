@@ -2,6 +2,7 @@ import downloadCSV from './downloadCSV';
 import FieldTitle from './FieldTitle';
 import getFetchedAt from './getFetchedAt';
 import getFieldLabelTranslationArgs from './getFieldLabelTranslationArgs';
+import ComponentPropType from './ComponentPropType';
 import HttpError from './HttpError';
 import linkToRecord from './linkToRecord';
 import Mutation from './Mutation';
@@ -20,6 +21,7 @@ export {
     FieldTitle,
     getFetchedAt,
     getFieldLabelTranslationArgs,
+    ComponentPropType,
     HttpError,
     linkToRecord,
     Mutation,

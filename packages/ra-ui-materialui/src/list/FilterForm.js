@@ -9,19 +9,23 @@ import lodashSet from 'lodash/set';
 
 import FilterFormInput from './FilterFormInput';
 
-const styles = theme => createStyles({
-    form: {
-        marginTop: '-10px',
-        paddingTop: 0,
-        display: 'flex',
-        alignItems: 'flex-end',
-        flexWrap: 'wrap',
-    },
-    body: { display: 'flex', alignItems: 'flex-end' },
-    spacer: { width: '1em' },
-    icon: { color: theme.palette.primary1Color || '#00bcd4', paddingBottom: 0 },
-    clearFix: { clear: 'right' },
-});
+const styles = theme =>
+    createStyles({
+        form: {
+            marginTop: '-10px',
+            paddingTop: 0,
+            display: 'flex',
+            alignItems: 'flex-end',
+            flexWrap: 'wrap',
+        },
+        body: { display: 'flex', alignItems: 'flex-end' },
+        spacer: { width: '1em' },
+        icon: {
+            color: theme.palette.primary1Color || '#00bcd4',
+            paddingBottom: 0,
+        },
+        clearFix: { clear: 'right' },
+    });
 
 const sanitizeRestProps = ({
     anyTouched,
@@ -53,6 +57,7 @@ const sanitizeRestProps = ({
     setFilter,
     setFilters,
     submit,
+    submitAsSideEffect,
     submitFailed,
     submitSucceeded,
     submitting,
@@ -61,6 +66,7 @@ const sanitizeRestProps = ({
     untouch,
     valid,
     validate,
+    _reduxForm,
     ...props
 }) => props;
 
