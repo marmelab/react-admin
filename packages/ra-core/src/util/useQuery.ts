@@ -93,12 +93,11 @@ const useQuery = (
         data: null,
         error: null,
         total: null,
-        loading: false,
+        loading: true,
         loaded: false,
     });
     const dataProvider = useDataProvider();
     useDeepCompareEffect(() => {
-        setState({ loading: true });
         dataProvider(type, resource, payload, options)
             .then(({ data: dataFromResponse, total: totalFromResponse }) => {
                 setState({
