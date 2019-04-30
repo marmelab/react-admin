@@ -20,7 +20,9 @@ const formMiddleware = () => {
     return next => action => {
         if (
             action.type !== LOCATION_CHANGE ||
-            (action.payload.state && action.payload.state.skipFormReset)
+            (action.payload.location &&
+                action.payload.location.search &&
+                action.payload.location.search === '?skipFormReset')
         ) {
             return next(action);
         }

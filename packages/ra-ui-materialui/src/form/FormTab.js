@@ -20,7 +20,7 @@ const hiddenStyle = { display: 'none' };
 
 class FormTab extends Component {
     renderHeader = ({ className, label, icon, value, translate, ...rest }) => {
-        const to = { pathname: value, state: { skipFormReset: true } };
+        const to = { pathname: value, search: 'skipFormReset' };
 
         return (
             <MuiTab

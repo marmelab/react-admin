@@ -20,7 +20,7 @@ describe('form middleware', () => {
         const next = jest.fn();
         const action = {
             type: LOCATION_CHANGE,
-            payload: { state: { skipFormReset: true } },
+            payload: { search: 'skipFormReset' },
         };
         formMiddleware()(next)(action);
 
