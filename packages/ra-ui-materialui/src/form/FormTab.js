@@ -20,7 +20,7 @@ const hiddenStyle = { display: 'none' };
 
 class FormTab extends Component {
     renderHeader = ({ className, label, icon, value, translate, ...rest }) => {
-        const to = { pathname: value, search: 'skipFormReset' };
+        const to = { pathname: value, search: 'skipFormReset' }; // FIXME use location state when https://github.com/supasate/connected-react-router/issues/301 is fixed
 
         return (
             <MuiTab

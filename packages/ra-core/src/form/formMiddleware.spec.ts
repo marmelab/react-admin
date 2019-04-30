@@ -1,3 +1,4 @@
+import expect from 'expect';
 import { LOCATION_CHANGE } from 'connected-react-router';
 import { destroy } from 'redux-form';
 

@@ -22,7 +22,7 @@ const formMiddleware = () => {
             action.type !== LOCATION_CHANGE ||
             (action.payload.location &&
                 action.payload.location.search &&
-                action.payload.location.search === '?skipFormReset')
+                action.payload.location.search === '?skipFormReset') // FIXME use location state when https://github.com/supasate/connected-react-router/issues/301 is fixed
         ) {
             return next(action);
         }
