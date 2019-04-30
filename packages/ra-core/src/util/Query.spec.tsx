@@ -2,7 +2,7 @@ import React from 'react';
 import {
     render,
     cleanup,
-    fireEvent,
+    act,
     // @ts-ignore
     waitForDomChange,
 } from 'react-testing-library';
@@ -31,22 +31,25 @@ describe('Query', () => {
     it('should dispatch a fetch action when mounting', () => {
         let dispatchSpy;
         const myPayload = {};
-        render(
-            <TestContext>
-                {({ store }) => {
-                    dispatchSpy = jest.spyOn(store, 'dispatch');
-                    return (
-                        <Query
-                            type="mytype"
-                            resource="myresource"
-                            payload={myPayload}
-                        >
-                            {() => <div>Hello</div>}
-                        </Query>
-                    );
-                }}
-            </TestContext>
-        );
+        act(() => {
+            render(
+                <TestContext>
+                    {({ store }) => {
+                        dispatchSpy = jest.spyOn(store, 'dispatch');
+                        return (
+                            <Query
+                                type="mytype"
+                                resource="myresource"
+                                payload={myPayload}
+                            >
+                                {() => <div>Hello</div>}
+                            </Query>
+                        );
+                    }}
+                </TestContext>
+            );
+        });
+
         const action = dispatchSpy.mock.calls[0][0];
         expect(action.type).toEqual('CUSTOM_FETCH');
         expect(action.payload).toEqual(myPayload);
@@ -93,14 +96,19 @@ describe('Query', () => {
                 )}
             </Query>
         );
-        const { getByTestId } = render(
-            <CoreAdmin dataProvider={dataProvider}>
-                <Resource name="foo" list={Foo} />
-            </CoreAdmin>
-        );
+        let getByTestId;
+        act(() => {
+            const res = render(
+                <CoreAdmin dataProvider={dataProvider}>
+                    <Resource name="foo" list={Foo} />
+                </CoreAdmin>
+            );
+            getByTestId = res.getByTestId;
+        });
         const testElement = getByTestId('test');
         expect(testElement.textContent).toBe('no data');
         expect(testElement.className).toEqual('loading');
+
         await waitForDomChange({ container: testElement });
         expect(testElement.textContent).toEqual('bar');
         expect(testElement.className).toEqual('idle');
@@ -124,13 +132,15 @@ describe('Query', () => {
                 )}
             </Query>
         );
-
-        const { getByTestId } = render(
-            <CoreAdmin dataProvider={dataProvider}>
-                <Resource name="foo" list={Foo} />
-            </CoreAdmin>
-        );
-
+        let getByTestId;
+        act(() => {
+            const res = render(
+                <CoreAdmin dataProvider={dataProvider}>
+                    <Resource name="foo" list={Foo} />
+                </CoreAdmin>
+            );
+            getByTestId = res.getByTestId;
+        });
         const testElement = getByTestId('test');
         expect(testElement.className).toEqual('loading');
         expect(testElement.textContent).toBe('no data');
@@ -157,14 +167,19 @@ describe('Query', () => {
                 )}
             </Query>
         );
-        const { getByTestId } = render(
-            <CoreAdmin dataProvider={dataProvider}>
-                <Resource name="foo" list={Foo} />
-            </CoreAdmin>
-        );
+        let getByTestId;
+        act(() => {
+            const res = render(
+                <CoreAdmin dataProvider={dataProvider}>
+                    <Resource name="foo" list={Foo} />
+                </CoreAdmin>
+            );
+            getByTestId = res.getByTestId;
+        });
         const testElement = getByTestId('test');
         expect(testElement.textContent).toBe('no data');
         expect(testElement.className).toEqual('loading');
+
         await waitForDomChange({ container: testElement });
         expect(testElement.textContent).toEqual('provider error');
         expect(testElement.className).toEqual('idle');
@@ -190,19 +205,21 @@ describe('Query', () => {
             </TestContext>
         );
         const mySecondPayload = { foo: 1 };
-        rerender(
-            <TestContext>
-                {() => (
-                    <Query
-                        type="mytype"
-                        resource="myresource"
-                        payload={mySecondPayload}
-                    >
-                        {() => <div>Hello</div>}
-                    </Query>
-                )}
-            </TestContext>
-        );
+        act(() => {
+            rerender(
+                <TestContext>
+                    {() => (
+                        <Query
+                            type="mytype"
+                            resource="myresource"
+                            payload={mySecondPayload}
+                        >
+                            {() => <div>Hello</div>}
+                        </Query>
+                    )}
+                </TestContext>
+            );
+        });
         expect(dispatchSpy.mock.calls.length).toEqual(2);
         const action = dispatchSpy.mock.calls[1][0];
         expect(action.type).toEqual('CUSTOM_FETCH');
@@ -230,19 +247,21 @@ describe('Query', () => {
                 }}
             </TestContext>
         );
-        rerender(
-            <TestContext>
-                {() => (
-                    <Query
-                        type="mytype"
-                        resource="myresource"
-                        payload={myPayload}
-                    >
-                        {() => <div>Hello</div>}
-                    </Query>
-                )}
-            </TestContext>
-        );
+        act(() => {
+            rerender(
+                <TestContext>
+                    {() => (
+                        <Query
+                            type="mytype"
+                            resource="myresource"
+                            payload={myPayload}
+                        >
+                            {() => <div>Hello</div>}
+                        </Query>
+                    )}
+                </TestContext>
+            );
+        });
         expect(dispatchSpy.mock.calls.length).toEqual(1);
     });
 });
