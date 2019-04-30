@@ -13857,10 +13857,10 @@ react-lifecycles-compat@^3.0.2, react-lifecycles-compat@^3.0.4:
   resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
   integrity sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA==
 
-react-redux@^7.1.0-alpha.1:
-  version "7.1.0-alpha.1"
-  resolved "https://registry.yarnpkg.com/react-redux/-/react-redux-7.1.0-alpha.1.tgz#a82e66bbaf89d7e6c98f2b502d33318b5a298afb"
-  integrity sha512-Zxfb8xyoCx6KngsYROhOi4mDqSOFq0iWps4QsOzjbRL0L9Ls9tNpuYnPkrNbvxGJm3PUOL0BMq0buDkXD98J/g==
+react-redux@^7.1.0-alpha.3:
+  version "7.1.0-alpha.3"
+  resolved "https://registry.yarnpkg.com/react-redux/-/react-redux-7.1.0-alpha.3.tgz#89ab7ea118bf73e867260885c7498d15a3692d6e"
+  integrity sha512-Nhbdq9SbxxhJnGVIyBxkrmInXzPaQKzg93uEwB6Z55pyr35d1K34YDSl6YI47iErPwTj+SmZX5t1HdsSHIgZcw==
   dependencies:
     "@babel/runtime" "^7.4.3"
     hoist-non-react-statics "^3.3.0"

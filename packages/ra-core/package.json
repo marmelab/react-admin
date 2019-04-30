@@ -58,7 +58,7 @@
         "prop-types": "^15.6.1",
         "query-string": "~5.1.1",
         "ra-language-english": "^2.8.5",
-        "react-redux": "^7.1.0-alpha.1",
+        "react-redux": "^7.1.0-alpha.3",
         "react-router": "^4.2.0",
         "react-router-dom": "^4.2.0",
         "recompose": "~0.26.0",

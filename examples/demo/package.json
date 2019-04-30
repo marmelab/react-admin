@@ -19,7 +19,7 @@
         "react-admin": "^2.0.0",
         "react-app-polyfill": "^0.1.3",
         "react-dom": "~16.8.0",
-        "react-redux": "^7.1.0-alpha.1",
+        "react-redux": "^7.1.0-alpha.3",
         "react-router-dom": "^4.2.0",
         "react-scripts": "^3.0.0",
         "recompose": "~0.26.0",
