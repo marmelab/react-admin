@@ -114,7 +114,7 @@ export type ResourceMatch = Match<{
 }>;
 
 export interface ResourceProps {
-    context: 'route' | 'registration';
+    intent: 'route' | 'registration';
     match?: ResourceMatch;
     name: string;
     list?: ComponentType<ReactAdminComponentProps>;

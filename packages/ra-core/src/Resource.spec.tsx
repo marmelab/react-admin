@@ -28,7 +28,7 @@ describe('<Resource>', () => {
         shallow(
             <Resource
                 {...resource}
-                context="registration"
+                intent="registration"
                 registerResource={registerResource}
                 unregisterResource={unregisterResource}
             />
@@ -48,7 +48,7 @@ describe('<Resource>', () => {
         const wrapper = shallow(
             <Resource
                 {...resource}
-                context="registration"
+                intent="registration"
                 registerResource={registerResource}
                 unregisterResource={unregisterResource}
             />
@@ -61,7 +61,7 @@ describe('<Resource>', () => {
         const wrapper = shallow(
             <Resource
                 {...resource}
-                context="route"
+                intent="route"
                 match={{ url: 'posts' }}
                 registerResource={registerResource}
                 unregisterResource={unregisterResource}
@@ -73,7 +73,7 @@ describe('<Resource>', () => {
         const wrapper = shallow(
             <Resource
                 {...resource}
-                context="route"
+                intent="route"
                 match={{ url: 'posts' }}
                 registerResource={registerResource}
                 unregisterResource={unregisterResource}
@@ -87,7 +87,7 @@ describe('<Resource>', () => {
         const wrapper = shallow(
             <Resource
                 {...resource}
-                context="route"
+                intent="route"
                 match={{ url: 'posts' }}
                 registerResource={registerResource}
                 unregisterResource={unregisterResource}
@@ -99,7 +99,7 @@ describe('<Resource>', () => {
         const wrapper = shallow(
             <Resource
                 {...resource}
-                context="route"
+                intent="route"
                 match={{ url: 'posts' }}
                 registerResource={registerResource}
                 unregisterResource={unregisterResource}

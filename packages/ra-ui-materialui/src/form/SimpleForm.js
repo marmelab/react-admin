@@ -38,6 +38,7 @@ const sanitizeRestProps = ({
     resetSection,
     save,
     submit,
+    submitAsSideEffect,
     submitFailed,
     submitSucceeded,
     submitting,
@@ -48,6 +49,7 @@ const sanitizeRestProps = ({
     untouch,
     valid,
     validate,
+    _reduxForm,
     ...props
 }) => props;
 

@@ -73,6 +73,7 @@ Actions.propTypes = {
 
 Actions.defaultProps = {
     selectedIds: [],
+    onUnselectItems: () => null,
 };
 
 export default onlyUpdateForKeys([

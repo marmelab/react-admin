@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import shouldUpdate from 'recompose/shouldUpdate';
 import Queue from '@material-ui/icons/Queue';
 import { Link } from 'react-router-dom';
+import { stringify } from 'query-string'
 
 import Button from './Button';
 
@@ -33,7 +34,7 @@ export const CloneButton = ({
         component={Link}
         to={{
             pathname: `${basePath}/create`,
-            state: { record: omitId(record) },
+            search: stringify(omitId(record)), // FIXME use location state when https://github.com/supasate/connected-react-router/issues/301 is fixed
         }}
         label={label}
         onClick={stopPropagation}

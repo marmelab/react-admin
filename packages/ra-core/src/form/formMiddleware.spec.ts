@@ -1,4 +1,5 @@
-import { LOCATION_CHANGE } from 'react-router-redux';
+import expect from 'expect';
+import { LOCATION_CHANGE } from 'connected-react-router';
 import { destroy } from 'redux-form';
 
 import formMiddleware from './formMiddleware';
@@ -20,7 +21,7 @@ describe('form middleware', () => {
         const next = jest.fn();
         const action = {
             type: LOCATION_CHANGE,
-            payload: { state: { skipFormReset: true } },
+            payload: { search: 'skipFormReset' },
         };
         formMiddleware()(next)(action);
 

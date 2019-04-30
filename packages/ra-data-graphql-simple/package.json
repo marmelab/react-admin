@@ -45,6 +45,6 @@
     "devDependencies": {
         "cross-env": "^5.2.0",
         "graphql": "^14.1.1",
-        "rimraf": "^2.6.2"
+        "rimraf": "^2.6.3"
     }
 }

@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 import { reducer as formReducer } from 'redux-form';
-import { routerReducer } from 'react-router-redux';
+import { connectRouter } from 'connected-react-router';
 import admin, {
     getResources as adminGetResources,
     getReferenceResource as adminGetReferenceResource,
@@ -9,12 +9,12 @@ import admin, {
 } from './admin';
 export { getNotification } from './admin/notifications';
 import i18nReducer, { getLocale as adminGetLocale } from './i18n';
-export default (customReducers, locale, messages) =>
+export default (customReducers, locale, messages, history) =>
     combineReducers({
         admin,
         i18n: i18nReducer(locale, messages),
         form: formReducer,
-        router: routerReducer,
+        router: connectRouter(history),
         ...customReducers,
     });
 

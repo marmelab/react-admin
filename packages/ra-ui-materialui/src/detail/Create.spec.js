@@ -1,10 +1,13 @@
 import React from 'react';
-import { render } from 'enzyme';
+import expect from 'expect';
+import { render, cleanup } from 'react-testing-library';
 import { TestContext } from 'ra-core';
 
 import Create from './Create';
 
 describe('<Create />', () => {
+    afterEach(cleanup);
+
     const defaultCreateProps = {
         basePath: '/foo',
         id: '123',
@@ -16,14 +19,13 @@ describe('<Create />', () => {
     it('should display aside component', () => {
         const Dummy = () => <div />;
         const Aside = () => <div id="aside">Hello</div>;
-        const wrapper = render(
+        const { queryAllByText } = render(
             <TestContext>
                 <Create {...defaultCreateProps} aside={<Aside />}>
                     <Dummy />
                 </Create>
             </TestContext>
         );
-        const aside = wrapper.find('#aside');
-        expect(aside.text()).toEqual('Hello');
+        expect(queryAllByText('Hello')).toHaveLength(1);
     });
 });

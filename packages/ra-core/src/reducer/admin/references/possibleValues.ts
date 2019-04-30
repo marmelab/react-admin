@@ -9,7 +9,7 @@ import { Identifier } from '../../../types';
 
 const initialState = {};
 
-interface State {
+export interface PossibleValuesState {
     [relatedTo: string]: { error?: string | object } | Identifier[];
 }
 
@@ -18,7 +18,7 @@ type ActionTypes =
     | CrudGetMatchingFailureAction
     | { type: 'OTHER_ACTION' };
 
-const possibleValuesreducer: Reducer<State> = (
+const possibleValuesreducer: Reducer<PossibleValuesState> = (
     previousState = initialState,
     action: ActionTypes
 ) => {

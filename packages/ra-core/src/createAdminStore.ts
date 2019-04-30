@@ -1,5 +1,5 @@
 import { createStore, compose, applyMiddleware } from 'redux';
-import { routerMiddleware } from 'react-router-redux';
+import { routerMiddleware } from 'connected-react-router';
 import createSagaMiddleware from 'redux-saga';
 import { all, fork } from 'redux-saga/effects';
 import { History } from 'history';
@@ -37,7 +37,12 @@ export default ({
     locale = 'en',
 }: Params) => {
     const messages = i18nProvider(locale);
-    const appReducer = createAppReducer(customReducers, locale, messages);
+    const appReducer = createAppReducer(
+        customReducers,
+        locale,
+        messages,
+        history
+    );
 
     const resettableAppReducer = (state, action) =>
         appReducer(action.type !== USER_LOGOUT ? state : undefined, action);

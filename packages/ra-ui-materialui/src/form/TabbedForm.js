@@ -18,9 +18,10 @@ import { getDefaultValues, translate, REDUX_FORM_NAME } from 'ra-core';
 import Toolbar from './Toolbar';
 import CardContentInner from '../layout/CardContentInner';
 
-const styles = theme => createStyles({
-    errorTabButton: { color: theme.palette.error.main },
-});
+const styles = theme =>
+    createStyles({
+        errorTabButton: { color: theme.palette.error.main },
+    });
 
 const sanitizeRestProps = ({
     anyTouched,
@@ -51,6 +52,7 @@ const sanitizeRestProps = ({
     save,
     staticContext,
     submit,
+    submitAsSideEffect,
     submitFailed,
     submitSucceeded,
     submitting,
@@ -61,6 +63,7 @@ const sanitizeRestProps = ({
     untouch,
     valid,
     validate,
+    _reduxForm,
     ...props
 }) => props;
 
@@ -134,7 +137,7 @@ export class TabbedForm extends Component {
                         const tabPath = getTabFullPath(tab, index, match.url);
 
                         return React.cloneElement(tab, {
-                            context: 'header',
+                            intent: 'header',
                             value: tabPath,
                             className:
                                 tabsWithErrors.includes(tab.props.label) &&
@@ -159,27 +162,28 @@ export class TabbedForm extends Component {
                                     path={getTabFullPath(tab, index, match.url)}
                                 >
                                     {routeProps =>
-                                        isValidElement(tab) ?
-                                        React.cloneElement(tab, {
-                                            context: 'content',
-                                            resource,
-                                            record,
-                                            basePath,
-                                            hidden: !routeProps.match,
-                                            /**
-                                             * Force redraw when the tab becomes active
-                                             *
-                                             * This is because the fields, decorated by redux-form and connect,
-                                             * aren't redrawn by default when the tab becomes active.
-                                             * Unfortunately, some material-ui fields (like multiline TextField)
-                                             * compute their size based on the scrollHeight of a dummy DOM element,
-                                             * and scrollHeight is 0 in a hidden div. So they must be redrawn
-                                             * once the tab becomes active.
-                                             *
-                                             * @ref https://github.com/marmelab/react-admin/issues/1956
-                                             */
-                                            key: `${index}_${!routeProps.match}`,
-                                        }) : null
+                                        isValidElement(tab)
+                                            ? React.cloneElement(tab, {
+                                                  intent: 'content',
+                                                  resource,
+                                                  record,
+                                                  basePath,
+                                                  hidden: !routeProps.match,
+                                                  /**
+                                                   * Force redraw when the tab becomes active
+                                                   *
+                                                   * This is because the fields, decorated by redux-form and connect,
+                                                   * aren't redrawn by default when the tab becomes active.
+                                                   * Unfortunately, some material-ui fields (like multiline TextField)
+                                                   * compute their size based on the scrollHeight of a dummy DOM element,
+                                                   * and scrollHeight is 0 in a hidden div. So they must be redrawn
+                                                   * once the tab becomes active.
+                                                   *
+                                                   * @ref https://github.com/marmelab/react-admin/issues/1956
+                                                   */
+                                                  key: `${index}_${!routeProps.match}`,
+                                              })
+                                            : null
                                     }
                                 </Route>
                             )
@@ -266,7 +270,11 @@ export const findTabsWithErrors = (
 
         const inputs = Children.toArray(child.props.children);
 
-        if (inputs.some(input => isValidElement(input) && errors[input.props.source])) {
+        if (
+            inputs.some(
+                input => isValidElement(input) && errors[input.props.source]
+            )
+        ) {
             return [...acc, child.props.label];
         }
 
@@ -278,7 +286,12 @@ const enhance = compose(
     withRouter,
     connect((state, props) => {
         const children = Children.toArray(props.children).reduce(
-            (acc, child) => [...acc, ...(isValidElement(child) ? Children.toArray(child.props.children): [])],
+            (acc, child) => [
+                ...acc,
+                ...(isValidElement(child)
+                    ? Children.toArray(child.props.children)
+                    : []),
+            ],
             []
         );
 

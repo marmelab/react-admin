@@ -20,7 +20,7 @@ Here is the default store creation for react-admin:
 ```js
 // in src/createAdminStore.js
 import { applyMiddleware, combineReducers, compose, createStore } from 'redux';
-import { routerMiddleware, routerReducer } from 'react-router-redux';
+import { routerMiddleware, connectRouter } from 'connected-react-router';
 import { reducer as formReducer } from 'redux-form';
 import createSagaMiddleware from 'redux-saga';
 import { all, fork } from 'redux-saga/effects';
@@ -45,7 +45,7 @@ export default ({
         admin: adminReducer,
         i18n: i18nReducer(locale, i18nProvider(locale)),
         form: formReducer,
-        router: routerReducer,
+        router: connectRouter(history),
         { /* add your own reducers here */ },
     });
     const resettableAppReducer = (state, action) =>
@@ -152,7 +152,7 @@ Here is the main code for bootstrapping a barebones react-admin application with
 import React from 'react';
 import { Provider } from 'react-redux';
 import { createHashHistory } from 'history';
-+import { ConnectedRouter } from 'react-router-redux';
++import { ConnectedRouter } from 'connected-react-router';
 +import { Switch, Route } from 'react-router-dom';
 +import withContext from 'recompose/withContext';
 -import { Admin, Resource } from 'react-admin';
@@ -203,9 +203,9 @@ const App = () => (
 -           <Resource name="users" list={UserList} edit={UserEdit} create={UserCreate} />
 +       <TranslationProvider>
 +           <MuiThemeProvider>
-+               <Resource name="posts" context="registration" />
-+               <Resource name="comments" context="registration" />
-+               <Resource name="users" context="registration" />
++               <Resource name="posts" intent="registration" />
++               <Resource name="comments" intent="registration" />
++               <Resource name="users" intent="registration" />
 +               <AppBar position="static" color="default">
 +                   <Toolbar>
 +                       <Typography variant="title" color="inherit">

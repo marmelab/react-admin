@@ -1,5 +1,5 @@
 import { put, takeEvery } from 'redux-saga/effects';
-import { push } from 'react-router-redux';
+import { push } from 'connected-react-router';
 import { reset } from 'redux-form';
 
 import { Identifier } from '../types';

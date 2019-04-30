@@ -16,13 +16,13 @@ interface ConnectedProps {
 
 export class Resource extends Component<ResourceProps & ConnectedProps> {
     static defaultProps = {
-        context: 'route',
+        intent: 'route',
         options: {},
     };
 
     componentWillMount() {
         const {
-            context,
+            intent,
             name,
             list,
             create,
@@ -33,7 +33,7 @@ export class Resource extends Component<ResourceProps & ConnectedProps> {
             registerResource,
         } = this.props;
 
-        if (context === 'registration') {
+        if (intent === 'registration') {
             const resource = {
                 name,
                 options,
@@ -49,8 +49,8 @@ export class Resource extends Component<ResourceProps & ConnectedProps> {
     }
 
     componentWillUnmount() {
-        const { context, name, unregisterResource } = this.props;
-        if (context === 'registration') {
+        const { intent, name, unregisterResource } = this.props;
+        if (intent === 'registration') {
             unregisterResource(name);
         }
     }
@@ -58,7 +58,7 @@ export class Resource extends Component<ResourceProps & ConnectedProps> {
     render() {
         const {
             match,
-            context,
+            intent,
             name,
             list,
             create,
@@ -67,7 +67,7 @@ export class Resource extends Component<ResourceProps & ConnectedProps> {
             options,
         } = this.props;
 
-        if (context === 'registration') {
+        if (intent === 'registration') {
             return null;
         }
 

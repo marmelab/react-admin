@@ -30,6 +30,6 @@
     },
     "devDependencies": {
         "cross-env": "^5.2.0",
-        "rimraf": "^2.6.2"
+        "rimraf": "^2.6.3"
     }
 }

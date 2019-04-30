@@ -1,11 +1,13 @@
-import assert from 'assert';
 import React from 'react';
-import { shallow, render } from 'enzyme';
+import expect from 'expect';
+import { render, cleanup } from 'react-testing-library';
 import { TestContext } from 'ra-core';
 
 import List, { ListView } from './List';
 
 describe('<List />', () => {
+    afterEach(cleanup);
+
     const defaultProps = {
         filterValues: {},
         hasCreate: false,
@@ -13,42 +15,48 @@ describe('<List />', () => {
         isLoading: false,
         location: { pathname: '' },
         params: {},
+        perPage: 10,
         push: () => {},
         query: {},
         refresh: () => {},
         resource: 'post',
+        selectedIds: [],
         total: 100,
         translate: x => x,
         version: 1,
     };
-    it('should render a mui Card', () => {
+
+    it('should render a list page', () => {
         const Datagrid = () => <div>datagrid</div>;
-        const wrapper = shallow(
-            <ListView {...defaultProps}>
-                <Datagrid />
-            </ListView>
-        ).dive();
-        assert.equal(wrapper.find('WithStyles(Card)').length, 1);
+        const { container } = render(
+            <TestContext>
+                <ListView {...defaultProps}>
+                    <Datagrid />
+                </ListView>
+            </TestContext>
+        );
+        expect(container.querySelectorAll('.list-page')).toHaveLength(1);
     });
 
     it('should render a toolbar, children and pagination', () => {
         const Filters = () => <div>filters</div>;
         const Pagination = () => <div>pagination</div>;
         const Datagrid = () => <div>datagrid</div>;
-        const wrapper = shallow(
-            <ListView
-                filters={<Filters />}
-                pagination={<Pagination />}
-                {...defaultProps}
-            >
-                <Datagrid />
-            </ListView>
-        ).dive();
-        expect(
-            wrapper.find('translate(WithStyles(BulkActionsToolbar))')
-        ).toHaveLength(1);
-        expect(wrapper.find('Datagrid')).toHaveLength(1);
-        expect(wrapper.find('Pagination')).toHaveLength(1);
+        const { queryAllByText, debug } = render(
+            <TestContext>
+                <ListView
+                    filters={<Filters />}
+                    pagination={<Pagination />}
+                    {...defaultProps}
+                >
+                    <Datagrid />
+                </ListView>
+            </TestContext>
+        );
+        expect(queryAllByText('filters')).toHaveLength(2);
+        expect(queryAllByText('Export')).toHaveLength(1);
+        expect(queryAllByText('pagination')).toHaveLength(1);
+        expect(queryAllByText('datagrid')).toHaveLength(1);
     });
 
     const defaultListProps = {
@@ -64,6 +72,7 @@ describe('<List />', () => {
         resource: 'foo',
         total: 0,
     };
+
     const defaultStoreForList = {
         admin: {
             resources: {
@@ -82,14 +91,13 @@ describe('<List />', () => {
     it('should display aside component', () => {
         const Dummy = () => <div />;
         const Aside = () => <div id="aside">Hello</div>;
-        const wrapper = render(
+        const { queryAllByText } = render(
             <TestContext store={defaultStoreForList}>
                 <List {...defaultListProps} aside={<Aside />}>
                     <Dummy />
                 </List>
             </TestContext>
         );
-        const aside = wrapper.find('#aside');
-        expect(aside.text()).toEqual('Hello');
+        expect(queryAllByText('Hello')).toHaveLength(1);
     });
 });

@@ -28,7 +28,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Button from '@material-ui/core/Button';
 import { showNotification } from 'react-admin';
-import { push } from 'react-router-redux';
+import { push } from 'connected-react-router';
 
 class ApproveButton extends Component {
     handleClick = () => {
@@ -242,7 +242,7 @@ import {
    UPDATE,
    withDataProvider,
 } from 'react-admin';
--import { push } from 'react-router-redux';
+-import { push } from 'connected-react-router';
 
 class ApproveButton extends Component {
     handleClick = () => {

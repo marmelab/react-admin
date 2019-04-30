@@ -35,17 +35,17 @@
         "lodash": "~4.17.5"
     },
     "peerDependencies": {
+        "connected-react-router": "^6.4.0",
         "ra-core": "^2.5.0",
         "react-admin": "^2.5.3",
         "react-router": "^4.2.0",
-        "react-router-redux": "~5.0.0-alpha.9",
         "redux-saga": "~0.16.0"
     },
     "devDependencies": {
+        "connected-react-router": "^6.4.0",
         "cross-env": "^5.2.0",
         "react-router": "^4.2.0",
-        "react-router-redux": "~5.0.0-alpha.9",
         "redux-saga": "~0.16.0",
-        "rimraf": "^2.6.2"
+        "rimraf": "^2.6.3"
     }
 }

@@ -3,7 +3,7 @@ import compose from 'recompose/compose';
 import classnames from 'classnames';
 import { BulkDeleteButton, List, Responsive } from 'react-admin';
 import { connect } from 'react-redux';
-import { push } from 'react-router-redux';
+import { push } from 'connected-react-router';
 import { Route } from 'react-router';
 import Drawer from '@material-ui/core/Drawer';
 import { createStyles, withStyles } from '@material-ui/core/styles';
@@ -22,21 +22,22 @@ const ReviewsBulkActionButtons = props => (
     </Fragment>
 );
 
-const styles = theme => createStyles({
-    root: {
-        display: 'flex',
-    },
-    list: {
-        flexGrow: 1,
-        transition: theme.transitions.create(['all'], {
-            duration: theme.transitions.duration.enteringScreen,
-        }),
-        marginRight: 0,
-    },
-    listWithDrawer: {
-        marginRight: 400,
-    },
-});
+const styles = theme =>
+    createStyles({
+        root: {
+            display: 'flex',
+        },
+        list: {
+            flexGrow: 1,
+            transition: theme.transitions.create(['all'], {
+                duration: theme.transitions.duration.enteringScreen,
+            }),
+            marginRight: 0,
+        },
+        listWithDrawer: {
+            marginRight: 400,
+        },
+    });
 
 class ReviewList extends Component {
     render() {
@@ -45,19 +46,22 @@ class ReviewList extends Component {
             <div className={classes.root}>
                 <Route path="/reviews/:id">
                     {({ match }) => {
-                        const isMatch =
-                            !!(match &&
+                        const isMatch = !!(
+                            match &&
                             match.params &&
-                            match.params.id !== 'create');
+                            match.params.id !== 'create'
+                        );
 
                         return (
                             <Fragment>
                                 <List
                                     {...props}
                                     className={classnames(classes.list, {
-                                        [classes.listWithDrawer]: isMatch
+                                        [classes.listWithDrawer]: isMatch,
                                     })}
-                                    bulkActionButtons={<ReviewsBulkActionButtons />}
+                                    bulkActionButtons={
+                                        <ReviewsBulkActionButtons />
+                                    }
                                     filters={<ReviewFilter />}
                                     perPage={25}
                                     sort={{ field: 'date', order: 'DESC' }}
@@ -73,7 +77,7 @@ class ReviewList extends Component {
                                     anchor="right"
                                     onClose={this.handleClose}
                                     classes={{
-                                        paper: classes.drawerPaper
+                                        paper: classes.drawerPaper,
                                     }}
                                 >
                                     {/* To avoid any errors if the route does not match, we don't render at all the component in this case */}
@@ -99,6 +103,9 @@ class ReviewList extends Component {
 }
 
 export default compose(
-    connect(undefined, { push }),
+    connect(
+        undefined,
+        { push }
+    ),
     withStyles(styles)
 )(ReviewList);
