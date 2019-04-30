@@ -11,6 +11,7 @@ import removeEmpty from './removeEmpty';
 import removeKey from './removeKey';
 import resolveRedirectTo from './resolveRedirectTo';
 import TestContext from './TestContext';
+import useDataProvider from './useDataProvider';
 import warning from './warning';
 import withDataProvider from './withDataProvider';
 import * as fetchUtils from './fetch';
@@ -30,6 +31,7 @@ export {
     removeKey,
     resolveRedirectTo,
     TestContext,
+    useDataProvider,
     warning,
     withDataProvider,
 };

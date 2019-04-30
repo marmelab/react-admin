@@ -1,45 +1,11 @@
-import { Dispatch, AnyAction } from 'redux';
-import { connect } from 'react-redux';
-import get from 'lodash/get';
-
-import { startUndoable } from '../actions/undoActions';
+import React from 'react';
 import { DataProvider } from '../types';
 
-interface DispatchProps {
+import useDataProvider from './useDataProvider';
+
+export interface DataProviderProps {
     dataProvider: DataProvider;
-    dispatch: Dispatch<AnyAction>;
 }
-
-const mapDispatchToProps = (dispatch): DispatchProps => ({
-    dataProvider: (type, resource: string, payload: any, meta: any = {}) =>
-        new Promise((resolve, reject) => {
-            const action = {
-                type: 'CUSTOM_FETCH',
-                payload,
-                meta: {
-                    ...meta,
-                    resource,
-                    fetch: type,
-                    onSuccess: {
-                        ...get(meta, 'onSuccess', {}),
-                        callback: ({ payload: response }) => resolve(response),
-                    },
-                    onFailure: {
-                        ...get(meta, 'onFailure', {}),
-                        callback: ({ error }) =>
-                            reject(
-                                new Error(error.message ? error.message : error)
-                            ),
-                    },
-                },
-            };
-
-            return meta.undoable
-                ? dispatch(startUndoable(action))
-                : dispatch(action);
-        }),
-    dispatch,
-});
 
 /**
  * Higher-order component for fetching the dataProvider
@@ -76,7 +42,7 @@ const mapDispatchToProps = (dispatch): DispatchProps => ({
  *         const { posts } = this.state;
  *         return (
  *            <Fragment>
- *                {posts.map((post, index) => <PostDetail post={post} key={key} />)}
+ *                {posts.map((post, key) => <PostDetail post={post} key={key} />)}
  *            </Fragment>
  *         );
  *     }
@@ -88,10 +54,11 @@ const mapDispatchToProps = (dispatch): DispatchProps => ({
  *
  * export default withDataProvider(PostList);
  */
-const withDataProvider = <T>(Component) =>
-    connect<{}, DispatchProps, T>(
-        null,
-        mapDispatchToProps
-    )(Component as any);
+const withDataProvider = <P extends object>(
+    Component: React.ComponentType<P>,
+    deps?: any[]
+): React.SFC<P & DataProviderProps> => (props: P) => (
+    <Component {...props} dataProvider={useDataProvider(deps)} />
+);
 
 export default withDataProvider;
