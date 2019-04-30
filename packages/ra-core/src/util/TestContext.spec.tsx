@@ -1,5 +1,5 @@
-import assert from 'assert';
-import { shallow, mount } from 'enzyme';
+import expect from 'expect';
+import { render, cleanup } from 'react-testing-library';
 import React from 'react';
 import { submit } from 'redux-form';
 
@@ -42,19 +42,20 @@ const primedStore = {
 };
 
 describe('TestContext.js', () => {
-    let testStore;
+    afterEach(cleanup);
 
     it('should render the given children', () => {
-        const component = shallow(
+        const { queryAllByText } = render(
             <TestContext>
                 <span>foo</span>
             </TestContext>
         );
-        assert.equal(component.html(), '<span>foo</span>');
+        expect(queryAllByText('foo')).toHaveLength(1);
     });
 
     it('should return a default store as a renderProp', () => {
-        const component = shallow(
+        let testStore;
+        render(
             <TestContext>
                 {({ store }) => {
                     testStore = store;
@@ -62,15 +63,16 @@ describe('TestContext.js', () => {
                 }}
             </TestContext>
         );
-        assert.equal(component.html(), '<span>foo</span>');
-        assert.equal(typeof testStore, 'object');
-        assert.equal(typeof testStore.dispatch, 'function');
-        assert.deepStrictEqual(testStore.getState(), defaultStore);
+
+        expect(testStore).toBeInstanceOf(Object);
+        expect(testStore.dispatch).toBeInstanceOf(Function);
+        expect(testStore.getState()).toEqual(defaultStore);
     });
 
     describe('enableReducers options', () => {
         it('should update the state when set to TRUE', () => {
-            shallow(
+            let testStore;
+            render(
                 <TestContext enableReducers={true}>
                     {({ store }) => {
                         testStore = store;
@@ -80,11 +82,11 @@ describe('TestContext.js', () => {
             );
             const initialstate = testStore.getState();
             initialstate.router.location.key = ''; // react-router initializes the state with a random key
-            assert.deepStrictEqual(initialstate, primedStore);
+            expect(initialstate).toEqual(primedStore);
 
             testStore.dispatch(submit('foo'));
 
-            assert.deepStrictEqual(testStore.getState(), {
+            expect(testStore.getState()).toEqual({
                 ...primedStore,
                 form: {
                     foo: {
@@ -95,7 +97,8 @@ describe('TestContext.js', () => {
         });
 
         it('should NOT update the state when set to FALSE (default)', () => {
-            shallow(
+            let testStore;
+            render(
                 <TestContext>
                     {({ store }) => {
                         testStore = store;
@@ -103,11 +106,11 @@ describe('TestContext.js', () => {
                     }}
                 </TestContext>
             );
-            assert.deepStrictEqual(testStore.getState(), defaultStore);
+            expect(testStore.getState()).toEqual(defaultStore);
 
             testStore.dispatch(submit('foo'));
 
-            assert.deepStrictEqual(testStore.getState(), defaultStore);
+            expect(testStore.getState()).toEqual(defaultStore);
         });
     });
 });
