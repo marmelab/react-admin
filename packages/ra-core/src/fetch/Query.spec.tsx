@@ -10,7 +10,7 @@ import expect from 'expect';
 import Query from './Query';
 import CoreAdmin from '../CoreAdmin';
 import Resource from '../Resource';
-import TestContext from './TestContext';
+import TestContext from '../util/TestContext';
 
 describe('Query', () => {
     afterEach(cleanup);
