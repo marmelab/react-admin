@@ -12,6 +12,7 @@ import removeKey from './removeKey';
 import resolveRedirectTo from './resolveRedirectTo';
 import TestContext from './TestContext';
 import useDataProvider from './useDataProvider';
+import useMutation from './useMutation';
 import useQuery from './useQuery';
 import warning from './warning';
 import withDataProvider from './withDataProvider';
@@ -33,6 +34,7 @@ export {
     resolveRedirectTo,
     TestContext,
     useDataProvider,
+    useMutation,
     useQuery,
     warning,
     withDataProvider,

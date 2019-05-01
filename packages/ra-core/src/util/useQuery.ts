@@ -1,60 +1,25 @@
-import { useReducer, useRef, useEffect } from 'react';
-import isEqual from 'lodash/isEqual';
+import { useSafeSetState, useDeepCompareEffect } from './hooks';
 import useDataProvider from './useDataProvider';
 
-interface State {
-    data?: any;
-    total?: number;
-    loading: boolean;
-    loaded: boolean;
-    error?: any;
-}
-
-// thanks Kent C Dodds for the following helpers
-
-function useSetState(initialState) {
-    return useReducer(
-        (state, newState) => ({ ...state, ...newState }),
-        initialState
-    );
-}
-
-function useSafeSetState(initialState) {
-    const [state, setState] = useSetState(initialState);
-
-    const mountedRef = useRef(false);
-    useEffect(() => {
-        mountedRef.current = true;
-        return () => (mountedRef.current = false);
-    }, []);
-    const safeSetState = args => mountedRef.current && setState(args);
-
-    return [state, safeSetState];
-}
-
-function usePrevious(value) {
-    const ref = useRef();
-    useEffect(() => {
-        ref.current = value;
-    });
-    return ref.current;
-}
-
-function useDeepCompareEffect(callback, inputs) {
-    const cleanupRef = useRef();
-    useEffect(() => {
-        if (!isEqual(previousInputs, inputs)) {
-            cleanupRef.current = callback();
-        }
-        return cleanupRef.current;
-    });
-    const previousInputs = usePrevious(inputs);
-}
-
 /**
- * Fetch the data provider and return the result.
+ * Fetch the data provider through Redux
+ *
+ * The return value updates according to the request state:
+ *
+ * - start: { loading: true, loaded: false }
+ * - success: { data: [data from response], total: [total from response], loading: false, loaded: true }
+ * - error: { error: [error from response], loading: false, loaded: true }
+ *
+ * @param type The verb passed to th data provider, e.g. 'GET_LIST', 'GET_ONE'
+ * @param resource A resource name, e.g. 'posts', 'comments'
+ * @param payload The payload object, e.g; { post_id: 12 }
+ * @param meta Redux action metas, including side effects to be executed upon success of failure, e.g. { onSuccess: { refresh: true } }
+ *
+ * @returns The current request state. Destructure as { data, total, error, loading, loaded }.
  *
  * @example
+ *
+ * import { useQuery } from 'react-admin';
  *
  * const UserProfile = ({ record }) => {
  *     const { data, loading, error } = useQuery('GET_ONE', 'users', { id: record.id });
@@ -64,6 +29,8 @@ function useDeepCompareEffect(callback, inputs) {
  * };
  *
  * @example
+ *
+ * import { useQuery } from 'react-admin';
  *
  * const payload = {
  *    pagination: { page: 1, perPage: 10 },
@@ -87,8 +54,14 @@ const useQuery = (
     type: string,
     resource: string,
     payload?: any,
-    options?: any
-): State => {
+    meta?: any
+): {
+    data?: any;
+    total?: number;
+    error?: any;
+    loading: boolean;
+    loaded: boolean;
+} => {
     const [state, setState] = useSafeSetState({
         data: null,
         error: null,
@@ -98,7 +71,7 @@ const useQuery = (
     });
     const dataProvider = useDataProvider();
     useDeepCompareEffect(() => {
-        dataProvider(type, resource, payload, options)
+        dataProvider(type, resource, payload, meta)
             .then(({ data: dataFromResponse, total: totalFromResponse }) => {
                 setState({
                     data: dataFromResponse,
@@ -114,7 +87,7 @@ const useQuery = (
                     loaded: false,
                 });
             });
-    }, [type, resource, payload, options]);
+    }, [type, resource, payload, meta]);
 
     return state;
 };

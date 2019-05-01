@@ -1,5 +1,5 @@
-import { Component, ReactNode } from 'react';
-import withDataProvider from './withDataProvider';
+import { FunctionComponent, ReactElement } from 'react';
+import useMutation from './useMutation';
 
 type DataProviderCallback = (
     type: string,
@@ -14,22 +14,15 @@ interface ChildrenFuncParams {
     error?: any;
 }
 
-interface RawProps {
-    children: (mutate: () => void, params: ChildrenFuncParams) => ReactNode;
+interface Props {
+    children: (
+        mutate: () => void,
+        params: ChildrenFuncParams
+    ) => ReactElement<any, any>;
     type: string;
     resource: string;
     payload?: any;
     options?: any;
-}
-
-interface Props extends RawProps {
-    dataProvider: DataProviderCallback;
-}
-
-interface State {
-    data?: any;
-    loading: boolean;
-    error?: any;
 }
 
 /**
@@ -49,35 +42,12 @@ interface State {
  *     </Mutation>
  * );
  */
-class Mutation extends Component<Props, State> {
-    state = {
-        data: null,
-        loading: false,
-        error: null,
-    };
+const Mutation: FunctionComponent<Props> = ({
+    children,
+    type,
+    resource,
+    payload,
+    options,
+}) => children(...useMutation(type, resource, payload, options));
 
-    mutate = () => {
-        this.setState({ loading: true });
-        const { dataProvider, type, resource, payload, options } = this.props;
-        dataProvider(type, resource, payload, options)
-            .then(({ data }) => {
-                this.setState({
-                    data,
-                    loading: false,
-                });
-            })
-            .catch(error => {
-                this.setState({
-                    error,
-                    loading: false,
-                });
-            });
-    };
-
-    render() {
-        const { children } = this.props;
-        return children(this.mutate, this.state);
-    }
-}
-
-export default withDataProvider<RawProps>(Mutation);
+export default Mutation;
