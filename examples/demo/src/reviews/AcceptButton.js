@@ -8,6 +8,7 @@ import { translate, useMutation } from 'react-admin';
 import compose from 'recompose/compose';
 
 const sideEffects = {
+    undoable: true,
     onSuccess: {
         notification: {
             body: 'resources.reviews.notification.approved_success',
