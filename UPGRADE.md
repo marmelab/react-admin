@@ -86,6 +86,7 @@ import {
    UPDATE,
    withDataProvider,
 } from 'react-admin';
++ import { useDispatch } from 'react-redux';
 
 -const ApproveButton = ({ dataProvider, dispatch, record }) => {
 +const ApproveButton = ({ dataProvider, record }) => {
