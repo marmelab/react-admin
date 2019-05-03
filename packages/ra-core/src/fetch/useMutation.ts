@@ -75,7 +75,7 @@ const useMutation = (
                     loaded: false,
                 });
             });
-    }, [JSON.stringify({ type, resource, payload, meta })]); // see https://github.com/facebook/react/issues/14476#issuecomment-471199055
+    }, [JSON.stringify({ type, resource, payload, meta })]); // deep equality, see https://github.com/facebook/react/issues/14476#issuecomment-471199055
 
     return [mutate, state];
 };

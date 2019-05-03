@@ -1,4 +1,5 @@
-import { useSafeSetState, useDeepCompareEffect } from './hooks';
+import { useEffect } from 'react';
+import { useSafeSetState } from './hooks';
 import useDataProvider from './useDataProvider';
 
 /**
@@ -70,7 +71,7 @@ const useQuery = (
         loaded: false,
     });
     const dataProvider = useDataProvider();
-    useDeepCompareEffect(() => {
+    useEffect(() => {
         dataProvider(type, resource, payload, meta)
             .then(({ data: dataFromResponse, total: totalFromResponse }) => {
                 setState({
@@ -87,7 +88,7 @@ const useQuery = (
                     loaded: false,
                 });
             });
-    }, [type, resource, payload, meta]);
+    }, [JSON.stringify({ type, resource, payload, meta })]); // deep equality, see https://github.com/facebook/react/issues/14476#issuecomment-471199055
 
     return state;
 };
