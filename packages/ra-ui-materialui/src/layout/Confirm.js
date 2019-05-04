@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -11,8 +11,7 @@ import { fade } from '@material-ui/core/styles/colorManipulator';
 import ActionCheck from '@material-ui/icons/CheckCircle';
 import AlertError from '@material-ui/icons/ErrorOutline';
 import classnames from 'classnames';
-import compose from 'recompose/compose';
-import { translate } from 'ra-core';
+import { useTranslate } from 'ra-core';
 
 const styles = theme =>
     createStyles({
@@ -52,71 +51,68 @@ const styles = theme =>
  *     onClose={() => { // do something }}
  * />
  */
-class Confirm extends Component {
-    state = { loading: false };
+const Confirm = ({
+    isOpen,
+    title,
+    content,
+    confirm,
+    cancel,
+    confirmColor,
+    onClose,
+    onConfirm,
+    classes,
+    translateOptions = {},
+}) => {
+    const [loading, setLoading] = useState(false);
+    const translate = useTranslate();
 
-    handleConfirm = e => {
-        e.stopPropagation();
-        this.setState({ loading: true });
-        this.props.onConfirm();
-    };
+    const handleConfirm = useCallback(
+        e => {
+            e.stopPropagation();
+            setLoading(true);
+            onConfirm();
+        },
+        [onConfirm]
+    );
 
-    render() {
-        const {
-            isOpen,
-            title,
-            content,
-            confirm,
-            cancel,
-            confirmColor,
-            onClose,
-            classes,
-            translate,
-            translateOptions = {},
-        } = this.props;
-        const { loading } = this.state;
-
-        return (
-            <Dialog
-                open={isOpen}
-                onClose={onClose}
-                aria-labelledby="alert-dialog-title"
-            >
-                <DialogTitle id="alert-dialog-title">
-                    {translate(title, { _: title, ...translateOptions })}
-                </DialogTitle>
-                <DialogContent>
-                    <DialogContentText className={classes.contentText}>
-                        {translate(content, {
-                            _: content,
-                            ...translateOptions,
-                        })}
-                    </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <Button disabled={loading} onClick={onClose}>
-                        <AlertError className={classes.iconPaddingStyle} />
-                        {translate(cancel, { _: cancel })}
-                    </Button>
-                    <Button
-                        disabled={loading}
-                        onClick={this.handleConfirm}
-                        className={classnames('ra-confirm', {
-                            [classes.confirmWarning]:
-                                confirmColor === 'warning',
-                            [classes.confirmPrimary]:
-                                confirmColor === 'primary',
-                        })}
-                        autoFocus
-                    >
-                        <ActionCheck className={classes.iconPaddingStyle} />
-                        {translate(confirm, { _: confirm })}
-                    </Button>
-                </DialogActions>
-            </Dialog>
-        );
-    }
-}
+    return (
+        <Dialog
+            open={isOpen}
+            onClose={onClose}
+            aria-labelledby="alert-dialog-title"
+        >
+            <DialogTitle id="alert-dialog-title">
+                {translate(title, { _: title, ...translateOptions })}
+            </DialogTitle>
+            <DialogContent>
+                <DialogContentText className={classes.contentText}>
+                    {translate(content, {
+                        _: content,
+                        ...translateOptions,
+                    })}
+                </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+                <Button disabled={loading} onClick={onClose}>
+                    <AlertError className={classes.iconPaddingStyle} />
+                    {translate(cancel, { _: cancel })}
+                </Button>
+                <Button
+                    disabled={loading}
+                    onClick={handleConfirm}
+                    className={classnames('ra-confirm', {
+                        [classes.confirmWarning]: confirmColor === 'warning',
+                        [classes.confirmPrimary]: confirmColor === 'primary',
+                    })}
+                    autoFocus
+                >
+                    <ActionCheck className={classes.iconPaddingStyle} />
+                    {translate(confirm, { _: confirm })}
+                </Button>
+            </DialogActions>
+        </Dialog>
+    );
+};
 
 Confirm.propTypes = {
     cancel: PropTypes.string.isRequired,
@@ -128,7 +124,6 @@ Confirm.propTypes = {
     onClose: PropTypes.func.isRequired,
     onConfirm: PropTypes.func.isRequired,
     title: PropTypes.string.isRequired,
-    translate: PropTypes.func.isRequired,
 };
 
 Confirm.defaultProps = {
@@ -139,7 +134,4 @@ Confirm.defaultProps = {
     isOpen: false,
 };
 
-export default compose(
-    withStyles(styles),
-    translate
-)(Confirm);
+export default withStyles(styles)(Confirm);

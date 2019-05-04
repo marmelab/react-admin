@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import pure from 'recompose/pure';
 import compose from 'recompose/compose';
-import { withTranslate, TranslationContextProps } from 'ra-core';
+import { useTranslate } from 'ra-core';
 import Typography from '@material-ui/core/Typography';
 
 import sanitizeRestProps from './sanitizeRestProps';
@@ -83,19 +83,17 @@ interface Props extends FieldProps {
  *
  * **Tip**: <ReferenceField> sets `translateChoice` to false by default.
  */
-export const SelectField: SFC<
-    Props & InjectedFieldProps & TranslationContextProps
-> = ({
+export const SelectField: SFC<Props & InjectedFieldProps> = ({
     className,
     source,
     record,
     choices,
     optionValue,
     optionText,
-    translate,
     translateChoice,
     ...rest
 }) => {
+    const translate = useTranslate();
     const value = get(record, source);
     const choice = choices.find(c => c[optionValue] === value);
     if (!choice) {
@@ -126,15 +124,7 @@ SelectField.defaultProps = {
     translateChoice: true,
 };
 
-const enhance = compose<
-    Props & InjectedFieldProps & TranslationContextProps,
-    Props & TranslationContextProps
->(
-    pure,
-    withTranslate
-);
-
-const EnhancedSelectField = enhance(SelectField);
+const EnhancedSelectField = pure(SelectField);
 
 EnhancedSelectField.defaultProps = {
     addLabel: true,

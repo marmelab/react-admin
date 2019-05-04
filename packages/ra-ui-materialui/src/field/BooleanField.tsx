@@ -7,7 +7,7 @@ import TrueIcon from '@material-ui/icons/Done';
 import Typography, { TypographyProps } from '@material-ui/core/Typography';
 import { createStyles, withStyles, WithStyles } from '@material-ui/core/styles';
 import compose from 'recompose/compose';
-import { translate as withTranslate, TranslationContextProps } from 'ra-core';
+import { useTranslate } from 'ra-core';
 
 import { FieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 import sanitizeRestProps from './sanitizeRestProps';
@@ -37,9 +37,7 @@ interface Props extends FieldProps {
     valueLabelFalse?: string;
 }
 
-interface EnhancedProps
-    extends TranslationContextProps,
-        WithStyles<typeof styles> {}
+interface EnhancedProps extends WithStyles<typeof styles> {}
 
 export const BooleanField: SFC<
     Props & InjectedFieldProps & EnhancedProps & TypographyProps
@@ -48,11 +46,11 @@ export const BooleanField: SFC<
     classes,
     source,
     record = {},
-    translate,
     valueLabelTrue,
     valueLabelFalse,
     ...rest
 }) => {
+    const translate = useTranslate();
     const value = get(record, source);
     let ariaLabel = value ? valueLabelTrue : valueLabelFalse;
 
@@ -107,8 +105,7 @@ const EnhancedBooleanField = compose<
     Props & TypographyProps
 >(
     pure,
-    withStyles(styles),
-    withTranslate
+    withStyles(styles)
 )(BooleanField);
 
 EnhancedBooleanField.defaultProps = {
