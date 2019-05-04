@@ -5,7 +5,7 @@ import inflection from 'inflection';
 import compose from 'recompose/compose';
 import { withStyles, createStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
-import { getResources, translate } from 'ra-core';
+import { getResources, useTranslate } from 'ra-core';
 import DefaultIcon from '@material-ui/icons/ViewList';
 
 import DashboardMenuItem from './DashboardMenuItem';
@@ -41,29 +41,34 @@ const Menu = ({
     open,
     pathname,
     resources,
-    translate,
     logout,
     ...rest
-}) => (
-    <div className={classnames(classes.main, className)} {...rest}>
-        {hasDashboard && <DashboardMenuItem onClick={onMenuClick} />}
-        {resources
-            .filter(r => r.hasList)
-            .map(resource => (
-                <MenuItemLink
-                    key={resource.name}
-                    to={`/${resource.name}`}
-                    primaryText={translatedResourceName(resource, translate)}
-                    leftIcon={
-                        resource.icon ? <resource.icon /> : <DefaultIcon />
-                    }
-                    onClick={onMenuClick}
-                    dense={dense}
-                />
-            ))}
-        <Responsive xsmall={logout} medium={null} />
-    </div>
-);
+}) => {
+    const translate = useTranslate();
+    return (
+        <div className={classnames(classes.main, className)} {...rest}>
+            {hasDashboard && <DashboardMenuItem onClick={onMenuClick} />}
+            {resources
+                .filter(r => r.hasList)
+                .map(resource => (
+                    <MenuItemLink
+                        key={resource.name}
+                        to={`/${resource.name}`}
+                        primaryText={translatedResourceName(
+                            resource,
+                            translate
+                        )}
+                        leftIcon={
+                            resource.icon ? <resource.icon /> : <DefaultIcon />
+                        }
+                        onClick={onMenuClick}
+                        dense={dense}
+                    />
+                ))}
+            <Responsive xsmall={logout} medium={null} />
+        </div>
+    );
+};
 
 Menu.propTypes = {
     classes: PropTypes.object,
@@ -75,7 +80,6 @@ Menu.propTypes = {
     open: PropTypes.bool,
     pathname: PropTypes.string,
     resources: PropTypes.array.isRequired,
-    translate: PropTypes.func.isRequired,
 };
 
 Menu.defaultProps = {
@@ -89,7 +93,6 @@ const mapStateToProps = state => ({
 });
 
 const enhance = compose(
-    translate,
     connect(
         mapStateToProps,
         {}, // Avoid connect passing dispatch in props,

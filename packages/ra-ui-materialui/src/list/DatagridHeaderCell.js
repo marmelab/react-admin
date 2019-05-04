@@ -7,7 +7,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Tooltip from '@material-ui/core/Tooltip';
 import { withStyles, createStyles } from '@material-ui/core/styles';
-import { FieldTitle, translate } from 'ra-core';
+import { FieldTitle, useTranslate } from 'ra-core';
 
 // remove the sort icons when not active
 const styles = createStyles({
@@ -29,53 +29,55 @@ export const DatagridHeaderCell = ({
     updateSort,
     resource,
     isSorting,
-    translate,
     ...rest
-}) => (
-    <TableCell
-        className={classnames(className, field.props.headerClassName)}
-        numeric={field.props.textAlign === 'right'}
-        padding="none"
-        variant="head"
-        {...rest}
-    >
-        {field.props.sortable !== false &&
-        (field.props.sortBy || field.props.source) ? (
-            <Tooltip
-                title={translate('ra.action.sort')}
-                placement={
-                    field.props.textAlign === 'right'
-                        ? 'bottom-end'
-                        : 'bottom-start'
-                }
-                enterDelay={300}
-            >
-                <TableSortLabel
-                    active={
-                        currentSort.field ===
-                        (field.props.sortBy || field.props.source)
+}) => {
+    const translate = useTranslate();
+    return (
+        <TableCell
+            className={classnames(className, field.props.headerClassName)}
+            numeric={field.props.textAlign === 'right'}
+            padding="none"
+            variant="head"
+            {...rest}
+        >
+            {field.props.sortable !== false &&
+            (field.props.sortBy || field.props.source) ? (
+                <Tooltip
+                    title={translate('ra.action.sort')}
+                    placement={
+                        field.props.textAlign === 'right'
+                            ? 'bottom-end'
+                            : 'bottom-start'
                     }
-                    direction={currentSort.order === 'ASC' ? 'asc' : 'desc'}
-                    data-sort={field.props.sortBy || field.props.source}
-                    onClick={updateSort}
-                    classes={classes}
+                    enterDelay={300}
                 >
-                    <FieldTitle
-                        label={field.props.label}
-                        source={field.props.source}
-                        resource={resource}
-                    />
-                </TableSortLabel>
-            </Tooltip>
-        ) : (
-            <FieldTitle
-                label={field.props.label}
-                source={field.props.source}
-                resource={resource}
-            />
-        )}
-    </TableCell>
-);
+                    <TableSortLabel
+                        active={
+                            currentSort.field ===
+                            (field.props.sortBy || field.props.source)
+                        }
+                        direction={currentSort.order === 'ASC' ? 'asc' : 'desc'}
+                        data-sort={field.props.sortBy || field.props.source}
+                        onClick={updateSort}
+                        classes={classes}
+                    >
+                        <FieldTitle
+                            label={field.props.label}
+                            source={field.props.source}
+                            resource={resource}
+                        />
+                    </TableSortLabel>
+                </Tooltip>
+            ) : (
+                <FieldTitle
+                    label={field.props.label}
+                    source={field.props.source}
+                    resource={resource}
+                />
+            )}
+        </TableCell>
+    );
+};
 
 DatagridHeaderCell.propTypes = {
     classes: PropTypes.object,
@@ -88,7 +90,6 @@ DatagridHeaderCell.propTypes = {
     isSorting: PropTypes.bool,
     sortable: PropTypes.bool,
     resource: PropTypes.string,
-    translate: PropTypes.func.isRequired,
     updateSort: PropTypes.func.isRequired,
 };
 
@@ -99,7 +100,6 @@ const enhance = compose(
             (nextProps.isSorting &&
                 props.currentSort.order !== nextProps.currentSort.order)
     ),
-    translate,
     withStyles(styles)
 );
 
