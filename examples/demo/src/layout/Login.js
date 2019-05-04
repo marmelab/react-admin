@@ -17,7 +17,7 @@ import {
 } from '@material-ui/core/styles';
 import LockIcon from '@material-ui/icons/Lock';
 
-import { Notification, useTranslate, userLogin } from 'react-admin';
+import { Notification, useTranslate, translate, userLogin } from 'react-admin';
 
 import { lightTheme } from './themes';
 
@@ -144,6 +144,7 @@ Login.propTypes = {
 const mapStateToProps = state => ({ isLoading: state.admin.loading > 0 });
 
 const enhance = compose(
+    translate,
     reduxForm({
         form: 'signIn',
         validate: (values, props) => {
