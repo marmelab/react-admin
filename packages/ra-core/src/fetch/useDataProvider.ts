@@ -17,7 +17,7 @@ import { startUndoable } from '../actions/undoActions';
  *
  * In addition to the 3 parameters of the dataProvider function (verb, resource, payload),
  * the injected dataProvider prop accepts a fourth parameter, an object literal
- * which may contain side effects, of make the action optimistic (with undoable: true).
+ * which may contain side effects, or make the action optimistic (with undoable: true).
  *
  * @example
  *
