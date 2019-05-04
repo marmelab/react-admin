@@ -1,10 +1,9 @@
 import React from 'react';
-import compose from 'recompose/compose';
 import Card from '@material-ui/core/Card';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import { translate } from 'react-admin';
+import { useTranslate } from 'react-admin';
 
 import CardIcon from './CardIcon';
 
@@ -22,23 +21,21 @@ const styles = {
     },
 };
 
-const NbNewOrders = ({ value, translate, classes }) => (
-    <div className={classes.main}>
-        <CardIcon Icon={ShoppingCartIcon} bgColor="#ff9800" />
-        <Card className={classes.card}>
-            <Typography className={classes.title} color="textSecondary">
-                {translate('pos.dashboard.new_orders')}
-            </Typography>
-            <Typography variant="headline" component="h2">
-                {value}
-            </Typography>
-        </Card>
-    </div>
-);
+const NbNewOrders = ({ value, classes }) => {
+    const translate = useTranslate();
+    return (
+        <div className={classes.main}>
+            <CardIcon Icon={ShoppingCartIcon} bgColor="#ff9800" />
+            <Card className={classes.card}>
+                <Typography className={classes.title} color="textSecondary">
+                    {translate('pos.dashboard.new_orders')}
+                </Typography>
+                <Typography variant="headline" component="h2">
+                    {value}
+                </Typography>
+            </Card>
+        </div>
+    );
+};
 
-const enhance = compose(
-    withStyles(styles),
-    translate
-);
-
-export default enhance(NbNewOrders);
+export default withStyles(styles)(NbNewOrders);

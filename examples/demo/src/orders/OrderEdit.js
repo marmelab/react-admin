@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-    translate,
     AutocompleteInput,
     BooleanInput,
     DateInput,
@@ -8,16 +7,22 @@ import {
     ReferenceInput,
     SelectInput,
     SimpleForm,
+    useTranslate,
 } from 'react-admin';
 import withStyles from '@material-ui/core/styles/withStyles';
 
 import Basket from './Basket';
 
-const OrderTitle = translate(({ record, translate }) => (
-    <span>
-        {translate('resources.commands.title', { reference: record.reference })}
-    </span>
-));
+const OrderTitle = ({ record }) => {
+    const translate = useTranslate();
+    return (
+        <span>
+            {translate('resources.commands.title', {
+                reference: record.reference,
+            })}
+        </span>
+    );
+};
 
 const editStyles = {
     root: { alignItems: 'flex-start' },

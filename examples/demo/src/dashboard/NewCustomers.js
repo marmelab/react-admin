@@ -1,5 +1,4 @@
 import React, { useMemo } from 'react';
-import compose from 'recompose/compose';
 import Card from '@material-ui/core/Card';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -10,7 +9,7 @@ import Typography from '@material-ui/core/Typography';
 import CustomerIcon from '@material-ui/icons/PersonAdd';
 import Divider from '@material-ui/core/Divider';
 import { Link } from 'react-router-dom';
-import { translate, useQuery, GET_LIST } from 'react-admin';
+import { useTranslate, useQuery, GET_LIST } from 'react-admin';
 
 import CardIcon from './CardIcon';
 
@@ -40,7 +39,8 @@ const styles = theme => ({
     },
 });
 
-const NewCustomers = ({ translate, classes }) => {
+const NewCustomers = ({ classes }) => {
+    const translate = useTranslate();
     const aMonthAgo = useMemo(() => {
         const date = new Date();
         date.setDate(date.getDate() - 30);
@@ -57,6 +57,7 @@ const NewCustomers = ({ translate, classes }) => {
     });
 
     if (!loaded) return null;
+
     const nb = visitors.reduce(nb => ++nb, 0);
     return (
         <div className={classes.main}>
@@ -99,9 +100,4 @@ const NewCustomers = ({ translate, classes }) => {
     );
 };
 
-const enhance = compose(
-    withStyles(styles),
-    translate
-);
-
-export default enhance(NewCustomers);
+export default withStyles(styles)(NewCustomers);

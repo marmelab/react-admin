@@ -1,5 +1,4 @@
 import React from 'react';
-import compose from 'recompose/compose';
 import Card from '@material-ui/core/Card';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -10,7 +9,7 @@ import Typography from '@material-ui/core/Typography';
 import CommentIcon from '@material-ui/icons/Comment';
 import Divider from '@material-ui/core/Divider';
 import { Link } from 'react-router-dom';
-import { translate } from 'react-admin';
+import { useTranslate } from 'react-admin';
 
 import CardIcon from './CardIcon';
 
@@ -52,64 +51,56 @@ const location = {
     query: { filter: JSON.stringify({ status: 'pending' }) },
 };
 
-const PendingReviews = ({
-    reviews = [],
-    customers = {},
-    nb,
-    translate,
-    classes,
-}) => (
-    <div className={classes.main}>
-        <CardIcon Icon={CommentIcon} bgColor="#f44336" />
-        <Card className={classes.card}>
-            <Typography className={classes.title} color="textSecondary">
-                {translate('pos.dashboard.pending_reviews')}
-            </Typography>
-            <Typography
-                variant="headline"
-                component="h2"
-                className={classes.value}
-            >
-                <Link to={location} className={classes.titleLink}>
-                    {nb}
-                </Link>
-            </Typography>
-            <Divider />
-            <List>
-                {reviews.map(record => (
-                    <ListItem
-                        key={record.id}
-                        button
-                        component={Link}
-                        to={`/reviews/${record.id}`}
-                    >
-                        {customers[record.customer_id] ? (
-                            <Avatar
-                                src={`${
-                                    customers[record.customer_id].avatar
-                                }?size=32x32`}
-                                className={classes.avatar}
+const PendingReviews = ({ reviews = [], customers = {}, nb, classes }) => {
+    const translate = useTranslate();
+    return (
+        <div className={classes.main}>
+            <CardIcon Icon={CommentIcon} bgColor="#f44336" />
+            <Card className={classes.card}>
+                <Typography className={classes.title} color="textSecondary">
+                    {translate('pos.dashboard.pending_reviews')}
+                </Typography>
+                <Typography
+                    variant="headline"
+                    component="h2"
+                    className={classes.value}
+                >
+                    <Link to={location} className={classes.titleLink}>
+                        {nb}
+                    </Link>
+                </Typography>
+                <Divider />
+                <List>
+                    {reviews.map(record => (
+                        <ListItem
+                            key={record.id}
+                            button
+                            component={Link}
+                            to={`/reviews/${record.id}`}
+                        >
+                            {customers[record.customer_id] ? (
+                                <Avatar
+                                    src={`${
+                                        customers[record.customer_id].avatar
+                                    }?size=32x32`}
+                                    className={classes.avatar}
+                                />
+                            ) : (
+                                <Avatar />
+                            )}
+
+                            <ListItemText
+                                primary={<StarRatingField record={record} />}
+                                secondary={record.comment}
+                                className={classes.listItemText}
+                                style={{ paddingRight: 0 }}
                             />
-                        ) : (
-                            <Avatar />
-                        )}
+                        </ListItem>
+                    ))}
+                </List>
+            </Card>
+        </div>
+    );
+};
 
-                        <ListItemText
-                            primary={<StarRatingField record={record} />}
-                            secondary={record.comment}
-                            className={classes.listItemText}
-                            style={{ paddingRight: 0 }}
-                        />
-                    </ListItem>
-                ))}
-            </List>
-        </Card>
-    </div>
-);
-
-const enhance = compose(
-    withStyles(styles),
-    translate
-);
-
-export default enhance(PendingReviews);
+export default withStyles(styles)(PendingReviews);
