@@ -4,10 +4,11 @@ import { connect } from 'react-redux';
 import { formValueSelector } from 'redux-form';
 import Button from '@material-ui/core/Button';
 import ThumbUp from '@material-ui/icons/ThumbUp';
-import { translate, Mutation } from 'react-admin';
+import { translate, useMutation } from 'react-admin';
 import compose from 'recompose/compose';
 
 const sideEffects = {
+    undoable: true,
     onSuccess: {
         notification: {
             body: 'resources.reviews.notification.approved_success',
@@ -24,34 +25,33 @@ const sideEffects = {
 };
 
 /**
- * This custom button demonstrate using <Mutation> to update data
+ * This custom button demonstrate using useMutation to update data
  */
-const AcceptButton = ({ record, translate }) =>
-    record && record.status === 'pending' ? (
-        <Mutation
-            type="UPDATE"
-            resource="reviews"
-            payload={{ id: record.id, data: { status: 'accepted' } }}
-            options={sideEffects}
+const AcceptButton = ({ record, translate }) => {
+    const [approve, { loading }] = useMutation(
+        'UPDATE',
+        'reviews',
+        { id: record.id, data: { status: 'accepted' } },
+        sideEffects
+    );
+    return record && record.status === 'pending' ? (
+        <Button
+            variant="outlined"
+            color="primary"
+            size="small"
+            onClick={approve}
+            disabled={loading}
         >
-            {approve => (
-                <Button
-                    variant="outlined"
-                    color="primary"
-                    size="small"
-                    onClick={approve}
-                >
-                    <ThumbUp
-                        color="primary"
-                        style={{ paddingRight: '0.5em', color: 'green' }}
-                    />
-                    {translate('resources.reviews.action.accept')}
-                </Button>
-            )}
-        </Mutation>
+            <ThumbUp
+                color="primary"
+                style={{ paddingRight: '0.5em', color: 'green' }}
+            />
+            {translate('resources.reviews.action.accept')}
+        </Button>
     ) : (
         <span />
     );
+};
 
 AcceptButton.propTypes = {
     record: PropTypes.object,

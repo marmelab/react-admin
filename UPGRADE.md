@@ -75,3 +75,36 @@ If you're using a Custom App, you had to render Resource components with the reg
 -               <Resource name="users" context="registration" />
 +               <Resource name="users" intent="registration" />
 ```
+
+## `withDataProvider` no longer injects `dispatch`
+
+The `withDataProvider` HOC used to inject two props: `dataProvider`, and redux' `dispatch`. This last prop is now easy to get via the `useDispatch` hook from Redux, so `withDataProvider` no longer injects it.
+
+```diff
+import {
+   showNotification,
+   UPDATE,
+   withDataProvider,
+} from 'react-admin';
++ import { useDispatch } from 'react-redux';
+
+-const ApproveButton = ({ dataProvider, dispatch, record }) => {
++const ApproveButton = ({ dataProvider, record }) => {
++   const dispatch = withDispatch();
+    const handleClick = () => {
+        const updatedRecord = { ...record, is_approved: true };
+        dataProvider(UPDATE, 'comments', { id: record.id, data: updatedRecord })
+            .then(() => {
+                dispatch(showNotification('Comment approved'));
+                dispatch(push('/comments'));
+            })
+            .catch((e) => {
+                dispatch(showNotification('Error: comment not approved', 'warning'))
+            });
+    }
+
+    return <Button label="Approve" onClick={handleClick} />;
+}
+
+export default withDataProvider(ApproveButton);
+```

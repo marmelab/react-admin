@@ -10,7 +10,7 @@ import expect from 'expect';
 import Mutation from './Mutation';
 import CoreAdmin from '../CoreAdmin';
 import Resource from '../Resource';
-import TestContext from './TestContext';
+import TestContext from '../util/TestContext';
 
 describe('Mutation', () => {
     afterEach(cleanup);

@@ -35,7 +35,6 @@ class Dashboard extends Component {
     fetchData() {
         this.fetchOrders();
         this.fetchReviews();
-        this.fetchCustomers();
     }
 
     async fetchOrders() {
@@ -112,34 +111,10 @@ class Dashboard extends Component {
         });
     }
 
-    async fetchCustomers() {
-        const { dataProvider } = this.props;
-        const aMonthAgo = new Date();
-        aMonthAgo.setDate(aMonthAgo.getDate() - 30);
-        const { data: newCustomers } = await dataProvider(
-            GET_LIST,
-            'customers',
-            {
-                filter: {
-                    has_ordered: true,
-                    first_seen_gte: aMonthAgo.toISOString(),
-                },
-                sort: { field: 'first_seen', order: 'DESC' },
-                pagination: { page: 1, perPage: 100 },
-            }
-        );
-        this.setState({
-            newCustomers,
-            nbNewCustomers: newCustomers.reduce(nb => ++nb, 0),
-        });
-    }
-
     render() {
         const {
-            nbNewCustomers,
             nbNewOrders,
             nbPendingReviews,
-            newCustomers,
             pendingOrders,
             pendingOrdersCustomers,
             pendingReviews,
@@ -208,10 +183,7 @@ class Dashboard extends Component {
                                     reviews={pendingReviews}
                                     customers={pendingReviewsCustomers}
                                 />
-                                <NewCustomers
-                                    nb={nbNewCustomers}
-                                    visitors={newCustomers}
-                                />
+                                <NewCustomers />
                             </div>
                         </div>
                     </div>
