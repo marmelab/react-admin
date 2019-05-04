@@ -11,7 +11,7 @@ import SimpleFormIterator from '../form/SimpleFormIterator';
 describe('<ArrayInput />', () => {
     it('should render a FieldArray', () => {
         const wrapper = shallow(<ArrayInputView source="arr" record={{}} />);
-        expect(wrapper.find('translate(pure(FieldTitle))').length).toBe(1);
+        expect(wrapper.find('pure(FieldTitle)').length).toBe(1);
         expect(wrapper.find('FieldArray').length).toBe(1);
     });
 
