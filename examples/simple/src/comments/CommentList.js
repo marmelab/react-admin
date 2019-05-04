@@ -27,7 +27,7 @@ import {
     SimpleList,
     TextField,
     downloadCSV,
-    translate,
+    useTranslate,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
 
 const CommentFilter = props => (
@@ -58,42 +58,48 @@ const exporter = (records, fetchRelatedRecords) =>
         downloadCSV(convertToCSV({ data, fields }), 'comments');
     });
 
-const CommentPagination = translate(
-    ({ isLoading, ids, page, perPage, total, setPage, translate }) => {
-        const nbPages = Math.ceil(total / perPage) || 1;
-        if (!isLoading && (total === 0 || (ids && !ids.length))) {
-            return <PaginationLimit total={total} page={page} ids={ids} />;
-        }
-
-        return (
-            nbPages > 1 && (
-                <Toolbar>
-                    {page > 1 && (
-                        <Button
-                            color="primary"
-                            key="prev"
-                            onClick={() => setPage(page - 1)}
-                        >
-                            <ChevronLeft />
-                            &nbsp;
-                            {translate('ra.navigation.prev')}
-                        </Button>
-                    )}
-                    {page !== nbPages && (
-                        <Button
-                            color="primary"
-                            key="next"
-                            onClick={() => setPage(page + 1)}
-                        >
-                            {translate('ra.navigation.next')}&nbsp;
-                            <ChevronRight />
-                        </Button>
-                    )}
-                </Toolbar>
-            )
-        );
+const CommentPagination = ({
+    isLoading,
+    ids,
+    page,
+    perPage,
+    total,
+    setPage,
+}) => {
+    const translate = useTranslate();
+    const nbPages = Math.ceil(total / perPage) || 1;
+    if (!isLoading && (total === 0 || (ids && !ids.length))) {
+        return <PaginationLimit total={total} page={page} ids={ids} />;
     }
-);
+
+    return (
+        nbPages > 1 && (
+            <Toolbar>
+                {page > 1 && (
+                    <Button
+                        color="primary"
+                        key="prev"
+                        onClick={() => setPage(page - 1)}
+                    >
+                        <ChevronLeft />
+                        &nbsp;
+                        {translate('ra.navigation.prev')}
+                    </Button>
+                )}
+                {page !== nbPages && (
+                    <Button
+                        color="primary"
+                        key="next"
+                        onClick={() => setPage(page + 1)}
+                    >
+                        {translate('ra.navigation.next')}&nbsp;
+                        <ChevronRight />
+                    </Button>
+                )}
+            </Toolbar>
+        )
+    );
+};
 
 const listStyles = theme => ({
     card: {
@@ -115,66 +121,69 @@ const listStyles = theme => ({
 });
 
 const CommentGrid = withStyles(listStyles)(
-    translate(({ classes, ids, data, basePath, translate }) => (
-        <Grid spacing={16} container style={{ padding: '0 1em' }}>
-            {ids.map(id => (
-                <Grid item key={id} sm={12} md={6} lg={4}>
-                    <Card className={classes.card}>
-                        <CardHeader
-                            className="comment"
-                            title={
-                                <TextField
-                                    record={data[id]}
-                                    source="author.name"
-                                />
-                            }
-                            subheader={
-                                <DateField
-                                    record={data[id]}
-                                    source="created_at"
-                                />
-                            }
-                            avatar={
-                                <Avatar>
-                                    <PersonIcon />
-                                </Avatar>
-                            }
-                        />
-                        <CardContent className={classes.cardContent}>
-                            <TextField record={data[id]} source="body" />
-                        </CardContent>
-                        <CardContent className={classes.cardLink}>
-                            {translate('comment.list.about')}&nbsp;
-                            <ReferenceField
-                                resource="comments"
-                                record={data[id]}
-                                source="post_id"
-                                reference="posts"
-                                basePath={basePath}
-                            >
-                                <TextField
-                                    source="title"
-                                    className={classes.cardLinkLink}
-                                />
-                            </ReferenceField>
-                        </CardContent>
-                        <CardActions className={classes.cardActions}>
-                            <EditButton
-                                resource="posts"
-                                basePath={basePath}
-                                record={data[id]}
+    ({ classes, ids, data, basePath }) => {
+        const translate = useTranslate();
+        return (
+            <Grid spacing={16} container style={{ padding: '0 1em' }}>
+                {ids.map(id => (
+                    <Grid item key={id} sm={12} md={6} lg={4}>
+                        <Card className={classes.card}>
+                            <CardHeader
+                                className="comment"
+                                title={
+                                    <TextField
+                                        record={data[id]}
+                                        source="author.name"
+                                    />
+                                }
+                                subheader={
+                                    <DateField
+                                        record={data[id]}
+                                        source="created_at"
+                                    />
+                                }
+                                avatar={
+                                    <Avatar>
+                                        <PersonIcon />
+                                    </Avatar>
+                                }
                             />
-                            <ShowButton
-                                resource="posts"
-                                basePath={basePath}
-                                record={data[id]}
-                            />
-                        </CardActions>
-                    </Card>
-                </Grid>
-            ))}
-        </Grid>
-    ))
+                            <CardContent className={classes.cardContent}>
+                                <TextField record={data[id]} source="body" />
+                            </CardContent>
+                            <CardContent className={classes.cardLink}>
+                                {translate('comment.list.about')}&nbsp;
+                                <ReferenceField
+                                    resource="comments"
+                                    record={data[id]}
+                                    source="post_id"
+                                    reference="posts"
+                                    basePath={basePath}
+                                >
+                                    <TextField
+                                        source="title"
+                                        className={classes.cardLinkLink}
+                                    />
+                                </ReferenceField>
+                            </CardContent>
+                            <CardActions className={classes.cardActions}>
+                                <EditButton
+                                    resource="posts"
+                                    basePath={basePath}
+                                    record={data[id]}
+                                />
+                                <ShowButton
+                                    resource="posts"
+                                    basePath={basePath}
+                                    record={data[id]}
+                                />
+                            </CardActions>
+                        </Card>
+                    </Grid>
+                ))}
+            </Grid>
+        );
+    }
 );
 
 CommentGrid.defaultProps = {
