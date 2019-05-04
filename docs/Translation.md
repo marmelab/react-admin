@@ -282,23 +282,26 @@ const App = () => (
 
 ## Translating Your Own Components
 
-React-admin package provides a `translate` Higher-Order Component, which simply passes the `translate` function as a prop to the wrapped component:
+React-admin package provides a `useTranslate` hook, which simply returns the `translate` function:
 
 ```jsx
 // in src/MyHelloButton.js
 import React from 'react';
-import { translate } from 'react-admin';
+import { useTranslate } from 'react-admin';
 
-const MyHelloButton = ({ translate }) => (
-    <button>{translate('myroot.hello.world')}</button>
-);
+const MyHelloButton = () => {
+    const translate = useTranslate();
+    return (
+        <button>{translate('myroot.hello.world')}</button>
+    );
+}
 
-export default translate(MyHelloButton);
+export default MyHelloButton;
 ```
 
 **Tip**: For your message identifiers, choose a different root name than `ra` and `resources`, which are reserved.
 
-**Tip**: Don't use `translate` for Field and Input labels, or for page titles, as they are already translated:
+**Tip**: Don't use `useTranslate` for Field and Input labels, or for page titles, as they are already translated:
 
 ```jsx
 // don't do this
@@ -310,6 +313,25 @@ export default translate(MyHelloButton);
 // or even better, use the default translation key
 <TextField source="first_name" />
 // and translate the `resources.customers.fields.first_name` key
+```
+
+If you're stuck with class components, react-admin also exports a `translate` higher-order component, which injects the `translate` function as prop. 
+
+```jsx
+// in src/MyHelloButton.js
+import React, { Component } from 'react';
+import { translate as withTranslate } from 'react-admin';
+
+class MyHelloButton extends Component {
+    render() {
+        const { translate } = this.props;
+        return (
+            <button>{translate('myroot.hello.world')}</button>
+        );
+    } 
+}
+
+export default withTranslate(MyHelloButton);
 ```
 
 ## Using Specific Polyglot Features
