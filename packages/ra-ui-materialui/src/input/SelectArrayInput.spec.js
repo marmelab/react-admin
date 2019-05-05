@@ -60,6 +60,31 @@ describe('<SelectArrayInput />', () => {
         expect(queryByText('Photography')).not.toBeNull();
     });
 
+
+    it('should render disable choices marked so', () => {
+        const wrapper = shallow(
+            <SelectArrayInput
+                {...defaultProps}
+                choices={[
+                    { id: 123, full_name: 'Leo Tolstoi', sex: 'M' },
+                    { id: 456, full_name: 'Jane Austen', sex: 'F' },
+                    {
+                        id: 1,
+                        full_name: 'System Administrator',
+                        sex: 'F',
+                        disabled: true,
+                    },
+                ]}
+            />
+        );
+        const MenuItemElements = wrapper.find('WithStyles(MenuItem)');
+        const MenuItemElement = MenuItemElements.at(1);
+        assert.equal(!!MenuItemElement.prop('disabled'), false);
+        const MenuItemElement2 = MenuItemElements.at(2);
+        assert.equal(MenuItemElement2.prop('disabled'), true);
+    });
+
+
     it('should use optionValue as value identifier', () => {
         const { getByRole, getByText, getByLabelText } = render(
             <SelectArrayInput
