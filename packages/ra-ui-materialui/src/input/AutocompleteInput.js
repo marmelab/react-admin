@@ -336,6 +336,7 @@ export class AutocompleteInput extends React.Component {
             >
                 <Paper
                     square
+                    elevation={2}
                     className={classes.suggestionsPaper}
                     {...containerProps}
                 >

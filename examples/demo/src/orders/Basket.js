@@ -34,7 +34,7 @@ class Basket extends Component {
         if (!record) return null;
         const { basket } = record;
         return (
-            <Paper className={classes.container}>
+            <Paper className={classes.container} elevation={2}>
                 <Table>
                     <TableHead>
                         <TableRow>
