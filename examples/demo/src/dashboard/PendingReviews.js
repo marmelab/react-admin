@@ -61,7 +61,7 @@ const PendingReviews = ({ reviews = [], customers = {}, nb, classes }) => {
                     {translate('pos.dashboard.pending_reviews')}
                 </Typography>
                 <Typography
-                    variant="headline"
+                    variant="h5"
                     component="h2"
                     className={classes.value}
                 >

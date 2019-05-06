@@ -67,7 +67,7 @@ const NewCustomers = ({ classes }) => {
                     {translate('pos.dashboard.new_customers')}
                 </Typography>
                 <Typography
-                    variant="headline"
+                    variant="h5"
                     component="h2"
                     className={classes.value}
                 >

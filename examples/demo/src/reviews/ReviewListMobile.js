@@ -73,7 +73,7 @@ const ReviewMobileList = ({
                                                     record.last_name
                                                 }`
                                             }
-                                            variant="subheading"
+                                            variant="subtitle1"
                                             className={classes.inline}
                                         />
                                     </ReferenceField>{' '}
@@ -87,7 +87,7 @@ const ReviewMobileList = ({
                                     >
                                         <TextField
                                             source="reference"
-                                            variant="subheading"
+                                            variant="subtitle1"
                                             className={classes.inline}
                                         />
                                     </ReferenceField>
