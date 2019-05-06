@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
 import Menu from '@material-ui/core/Menu';
 import { withStyles, createStyles } from '@material-ui/core/styles';
@@ -20,6 +19,7 @@ export class FilterButton extends Component {
         super(props);
         this.state = {
             open: false,
+            anchorEl: null,
         };
         this.handleClickButton = this.handleClickButton.bind(this);
         this.handleRequestClose = this.handleRequestClose.bind(this);
@@ -42,7 +42,7 @@ export class FilterButton extends Component {
 
         this.setState({
             open: true,
-            anchorEl: findDOMNode(this.button), // eslint-disable-line react/no-find-dom-node
+            anchorEl: event.currentTarget,
         });
     }
 
@@ -58,8 +58,6 @@ export class FilterButton extends Component {
             open: false,
         });
     }
-
-    button = null;
 
     render() {
         const hiddenFilters = this.getHiddenFilters();
@@ -79,9 +77,6 @@ export class FilterButton extends Component {
             hiddenFilters.length > 0 && (
                 <div className={classnames(classes.root, className)} {...rest}>
                     <Button
-                        ref={node => {
-                            this.button = node;
-                        }}
                         className="add-filter"
                         label="ra.action.add_filter"
                         onClick={this.handleClickButton}
