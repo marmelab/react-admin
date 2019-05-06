@@ -17,8 +17,8 @@ const styles = theme => ({
     },
     text: {
         paddingLeft: theme.spacing(2),
-        paddingTop: theme.spacing(),
-        paddingBottom: theme.spacing(),
+        paddingTop: theme.spacing(1),
+        paddingBottom: theme.spacing(1),
     },
     hover: {
         backgroundColor: theme.palette.action.active,

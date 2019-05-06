@@ -30,7 +30,7 @@ const styles = (theme: Theme) =>
             paddingRight: '1.2em',
         },
         iconPaddingStyle: {
-            paddingRight: theme.spacing(),
+            paddingRight: theme.spacing(1),
         },
     });
 

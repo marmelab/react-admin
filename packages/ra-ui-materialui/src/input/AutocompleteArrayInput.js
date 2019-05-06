@@ -46,8 +46,8 @@ const styles = theme =>
             listStyleType: 'none',
         },
         chip: {
-            marginRight: theme.spacing(),
-            marginTop: theme.spacing(),
+            marginRight: theme.spacing(1),
+            marginTop: theme.spacing(1),
         },
         chipDisabled: {
             pointerEvents: 'none',

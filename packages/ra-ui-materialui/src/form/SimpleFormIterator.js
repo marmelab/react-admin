@@ -62,7 +62,7 @@ const styles = theme =>
             paddingTop: '0.5em',
         },
         leftIcon: {
-            marginRight: theme.spacing(),
+            marginRight: theme.spacing(1),
         },
     });
 

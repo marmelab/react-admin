@@ -39,7 +39,7 @@ const styles = theme =>
             },
         },
         icon: {
-            marginRight: theme.spacing(),
+            marginRight: theme.spacing(1),
         },
     });
 

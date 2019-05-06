@@ -7,7 +7,7 @@ import classnames from 'classnames';
 const styles = theme =>
     createStyles({
         root: {
-            margin: `${theme.spacing()}px 0`,
+            margin: `${theme.spacing(1)}px 0`,
             width: `${theme.spacing(20)}px`,
         },
     });

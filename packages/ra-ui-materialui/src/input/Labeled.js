@@ -13,7 +13,7 @@ const styles = theme =>
         value: {
             fontFamily: theme.typography.fontFamily,
             color: 'currentColor',
-            padding: `${theme.spacing()}px 0 ${theme.spacing() / 2}px`,
+            padding: `${theme.spacing(1)}px 0 ${theme.spacing(1) / 2}px`,
             border: 0,
             boxSizing: 'content-box',
             verticalAlign: 'middle',
