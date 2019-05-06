@@ -25,7 +25,7 @@ export const DatagridCell = ({
 }) => (
     <TableCell
         className={classnames(className, field.props.cellClassName)}
-        numeric={field.props.textAlign === 'right'}
+        align={field.props.textAlign}
         padding="none"
         {...sanitizeRestProps(rest)}
     >
