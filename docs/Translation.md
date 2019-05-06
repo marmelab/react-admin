@@ -277,7 +277,7 @@ const App = () => (
 
 ## `useTranslate` Hook
 
-If you need to translate messages in your own components, React-admin provides a `useTranslate` hook, which simply returns the `translate` function:
+If you need to translate messages in your own components, React-admin provides a `useTranslate` hook, which returns the `translate` function:
 
 ```jsx
 // in src/MyHelloButton.js
