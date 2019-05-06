@@ -1,4 +1,9 @@
-import React, { Children, cloneElement, Component, isValidElement } from 'react';
+import React, {
+    Children,
+    cloneElement,
+    Component,
+    isValidElement,
+} from 'react';
 import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
@@ -14,51 +19,52 @@ import classNames from 'classnames';
 
 import FormInput from '../form/FormInput';
 
-const styles = theme => createStyles({
-    root: {
-        padding: 0,
-        marginBottom: 0,
-        '& > li:last-child': {
-            borderBottom: 'none',
+const styles = theme =>
+    createStyles({
+        root: {
+            padding: 0,
+            marginBottom: 0,
+            '& > li:last-child': {
+                borderBottom: 'none',
+            },
         },
-    },
-    line: {
-        display: 'flex',
-        listStyleType: 'none',
-        borderBottom: `solid 1px ${theme.palette.divider}`,
-        [theme.breakpoints.down('xs')]: { display: 'block' },
-        '&.fade-enter': {
-            opacity: 0.01,
-            transform: 'translateX(100vw)',
+        line: {
+            display: 'flex',
+            listStyleType: 'none',
+            borderBottom: `solid 1px ${theme.palette.divider}`,
+            [theme.breakpoints.down('xs')]: { display: 'block' },
+            '&.fade-enter': {
+                opacity: 0.01,
+                transform: 'translateX(100vw)',
+            },
+            '&.fade-enter-active': {
+                opacity: 1,
+                transform: 'translateX(0)',
+                transition: 'all 500ms ease-in',
+            },
+            '&.fade-exit': {
+                opacity: 1,
+                transform: 'translateX(0)',
+            },
+            '&.fade-exit-active': {
+                opacity: 0.01,
+                transform: 'translateX(100vw)',
+                transition: 'all 500ms ease-in',
+            },
         },
-        '&.fade-enter-active': {
-            opacity: 1,
-            transform: 'translateX(0)',
-            transition: 'all 500ms ease-in',
+        index: {
+            width: '3em',
+            paddingTop: '1em',
+            [theme.breakpoints.down('sm')]: { display: 'none' },
         },
-        '&.fade-exit': {
-            opacity: 1,
-            transform: 'translateX(0)',
+        form: { flex: 2 },
+        action: {
+            paddingTop: '0.5em',
         },
-        '&.fade-exit-active': {
-            opacity: 0.01,
-            transform: 'translateX(100vw)',
-            transition: 'all 500ms ease-in',
+        leftIcon: {
+            marginRight: theme.spacing(),
         },
-    },
-    index: {
-        width: '3em',
-        paddingTop: '1em',
-        [theme.breakpoints.down('sm')]: { display: 'none' },
-    },
-    form: { flex: 2 },
-    action: {
-        paddingTop: '0.5em',
-    },
-    leftIcon: {
-        marginRight: theme.spacing.unit,
-    },
-});
+    });
 
 export class SimpleFormIterator extends Component {
     constructor(props) {
@@ -90,11 +96,11 @@ export class SimpleFormIterator extends Component {
     // determing if the button should be disabled. Otherwise, use a boolean property that
     // enables or disables the button for all of the fields.
     disableRemoveField = (record, disableRemove) => {
-        if (typeof disableRemove === "boolean") {
+        if (typeof disableRemove === 'boolean') {
             return disableRemove;
         }
         return disableRemove && disableRemove(record);
-    }
+    };
 
     addField = () => {
         const { fields } = this.props;
@@ -137,33 +143,40 @@ export class SimpleFormIterator extends Component {
                                     {index + 1}
                                 </Typography>
                                 <section className={classes.form}>
-                                    {Children.map(children, (input, index2) => isValidElement(input) ? (
-                                        <FormInput
-                                            basePath={
-                                                input.props.basePath || basePath
-                                            }
-                                            input={cloneElement(input, {
-                                                source: input.props.source
-                                                    ? `${member}.${
-                                                          input.props.source
-                                                      }`
-                                                    : member,
-                                                index: input.props.source
-                                                    ? undefined
-                                                    : index2,
-                                                label:
-                                                    input.props.label ||
-                                                    input.props.source,
-                                            })}
-                                            record={
-                                                (records && records[index]) ||
-                                                {}
-                                            }
-                                            resource={resource}
-                                        />
-                                    ) : null)}
+                                    {Children.map(children, (input, index2) =>
+                                        isValidElement(input) ? (
+                                            <FormInput
+                                                basePath={
+                                                    input.props.basePath ||
+                                                    basePath
+                                                }
+                                                input={cloneElement(input, {
+                                                    source: input.props.source
+                                                        ? `${member}.${
+                                                              input.props.source
+                                                          }`
+                                                        : member,
+                                                    index: input.props.source
+                                                        ? undefined
+                                                        : index2,
+                                                    label:
+                                                        input.props.label ||
+                                                        input.props.source,
+                                                })}
+                                                record={
+                                                    (records &&
+                                                        records[index]) ||
+                                                    {}
+                                                }
+                                                resource={resource}
+                                            />
+                                        ) : null
+                                    )}
                                 </section>
-                                {!(this.disableRemoveField((records && records[index]) || {}, disableRemove)) && (
+                                {!this.disableRemoveField(
+                                    (records && records[index]) || {},
+                                    disableRemove
+                                ) && (
                                     <span className={classes.action}>
                                         <Button
                                             className={classNames(

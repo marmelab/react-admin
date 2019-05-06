@@ -9,9 +9,10 @@ import { addField, translate, FieldTitle } from 'ra-core';
 
 import sanitizeRestProps from './sanitizeRestProps';
 
-const styles = theme => createStyles({
-    input: { width: theme.spacing.unit * 16 },
-});
+const styles = theme =>
+    createStyles({
+        input: { width: theme.spacing(16) },
+    });
 
 export class NullableBooleanInput extends Component {
     state = {

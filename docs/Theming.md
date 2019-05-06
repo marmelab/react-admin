@@ -495,7 +495,7 @@ const styles = theme => ({
         display: 'flex',
         flexDirection: 'column',
         flexGrow: 2,
-        padding: theme.spacing.unit * 3,
+        padding: theme.spacing(3),
         marginTop: '4em',
         paddingLeft: 5,
     },

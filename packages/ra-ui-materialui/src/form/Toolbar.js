@@ -8,38 +8,39 @@ import classnames from 'classnames';
 
 import { SaveButton, DeleteButton } from '../button';
 
-const styles = theme => createStyles({
-    toolbar: {
-        backgroundColor:
-            theme.palette.type === 'light'
-                ? theme.palette.grey[100]
-                : theme.palette.grey[900],
-    },
-    desktopToolbar: {
-        marginTop: theme.spacing.unit * 2,
-    },
-    mobileToolbar: {
-        position: 'fixed',
-        bottom: 0,
-        left: 0,
-        right: 0,
-        padding: '16px',
-        width: '100%',
-        boxSizing: 'border-box',
-        flexShrink: 0,
-        zIndex: 2,
-    },
-    defaultToolbar: {
-        flex: 1,
-        display: 'flex',
-        justifyContent: 'space-between',
-    },
-    spacer: {
-        [theme.breakpoints.down('xs')]: {
-            height: '5em',
+const styles = theme =>
+    createStyles({
+        toolbar: {
+            backgroundColor:
+                theme.palette.type === 'light'
+                    ? theme.palette.grey[100]
+                    : theme.palette.grey[900],
         },
-    },
-});
+        desktopToolbar: {
+            marginTop: theme.spacing(2),
+        },
+        mobileToolbar: {
+            position: 'fixed',
+            bottom: 0,
+            left: 0,
+            right: 0,
+            padding: '16px',
+            width: '100%',
+            boxSizing: 'border-box',
+            flexShrink: 0,
+            zIndex: 2,
+        },
+        defaultToolbar: {
+            flex: 1,
+            display: 'flex',
+            justifyContent: 'space-between',
+        },
+        spacer: {
+            [theme.breakpoints.down('xs')]: {
+                height: '5em',
+            },
+        },
+    });
 
 const valueOrDefault = (value, defaultValue) =>
     typeof value === 'undefined' ? defaultValue : value;

@@ -7,8 +7,8 @@ import { withStyles } from '@material-ui/core/styles';
 const styles = theme => ({
     expandIcon: {
         margin: 0,
-        left: -theme.spacing.unit * 6,
-        right: "auto" /* fix for material-ui 3 */
+        left: -theme.spacing(6),
+        right: 'auto' /* fix for material-ui 3 */,
     },
     root: {
         alignItems: 'baseline',
@@ -21,15 +21,15 @@ const styles = theme => ({
         display: 'flex',
         padding: 0,
         flexGrow: 1,
-        paddingLeft: theme.spacing.unit * 6,
+        paddingLeft: theme.spacing(6),
     },
     leaf: {
         display: 'flex',
         flexGrow: 1,
         margin: 0,
         padding: 0,
-        paddingLeft: theme.spacing.unit * 6,
-        paddingRight: theme.spacing.unit * 4,
+        paddingLeft: theme.spacing(6),
+        paddingRight: theme.spacing(4),
         position: 'relative',
     },
 
@@ -66,7 +66,7 @@ const styles = theme => ({
         cursor: 'drag',
         alignItems: 'center',
         display: 'flex',
-        marginRight: theme.spacing.unit * 2,
+        marginRight: theme.spacing(2),
     },
     draggingOver: {
         background: theme.palette.action.hover,

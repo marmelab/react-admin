@@ -1,4 +1,9 @@
-import React, { cloneElement, Children, Component, isValidElement } from 'react';
+import React, {
+    cloneElement,
+    Children,
+    Component,
+    isValidElement,
+} from 'react';
 import PropTypes from 'prop-types';
 import { CSSTransition } from 'react-transition-group';
 import Menu from '@material-ui/core/Menu';
@@ -12,30 +17,31 @@ import { translate } from 'ra-core';
 import Button from '../button/Button';
 import BulkDeleteAction from './BulkDeleteAction';
 
-const styles = theme => createStyles({
-    bulkActionsButton: {
-        opacity: 1,
-        transition: theme.transitions.create('opacity', {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.leavingScreen,
-        }),
-        '&.fade-enter': {
-            opacity: 0,
-        },
-        '&.fade-enter-done': {
+const styles = theme =>
+    createStyles({
+        bulkActionsButton: {
             opacity: 1,
+            transition: theme.transitions.create('opacity', {
+                easing: theme.transitions.easing.sharp,
+                duration: theme.transitions.duration.leavingScreen,
+            }),
+            '&.fade-enter': {
+                opacity: 0,
+            },
+            '&.fade-enter-done': {
+                opacity: 1,
+            },
+            '&.fade-exit': {
+                opacity: 0,
+            },
+            '&.fade-exit-done': {
+                opacity: 0,
+            },
         },
-        '&.fade-exit': {
-            opacity: 0,
+        icon: {
+            marginRight: theme.spacing(),
         },
-        '&.fade-exit-done': {
-            opacity: 0,
-        },
-    },
-    icon: {
-        marginRight: theme.spacing.unit,
-    },
-});
+    });
 
 const timeoutDurations = {
     enter: 0,
@@ -134,32 +140,35 @@ class BulkActions extends Component {
                         onClose={this.handleClose}
                         open={isOpen}
                     >
-                        {Children.map(children, (child, index) => isValidElement(child) ? (
-                            <MenuItem
-                                key={index}
-                                className={classnames(
-                                    'bulk-actions-menu-item',
-                                    child.props.className
-                                )}
-                                onClick={() => this.handleLaunchAction(index)}
-                                {...sanitizeRestProps(rest)}
-                            >
-                                {translate(child.props.label)}
-                            </MenuItem>
-                        ) : null)}
+                        {Children.map(children, (child, index) =>
+                            isValidElement(child) ? (
+                                <MenuItem
+                                    key={index}
+                                    className={classnames(
+                                        'bulk-actions-menu-item',
+                                        child.props.className
+                                    )}
+                                    onClick={() =>
+                                        this.handleLaunchAction(index)
+                                    }
+                                    {...sanitizeRestProps(rest)}
+                                >
+                                    {translate(child.props.label)}
+                                </MenuItem>
+                            ) : null
+                        )}
                     </Menu>
-                    {Children.map(
-                        children,
-                        (child, index) =>
-                            isValidElement(child) &&
-                            this.state.activeAction === index ?
-                            cloneElement(child, {
-                                basePath,
-                                filterValues,
-                                onExit: this.handleExitAction,
-                                resource,
-                                selectedIds,
-                            }) : null
+                    {Children.map(children, (child, index) =>
+                        isValidElement(child) &&
+                        this.state.activeAction === index
+                            ? cloneElement(child, {
+                                  basePath,
+                                  filterValues,
+                                  onExit: this.handleExitAction,
+                                  resource,
+                                  selectedIds,
+                              })
+                            : null
                     )}
                 </div>
             </CSSTransition>

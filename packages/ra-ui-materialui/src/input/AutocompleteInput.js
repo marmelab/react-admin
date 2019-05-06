@@ -15,33 +15,34 @@ import classnames from 'classnames';
 
 import { addField, translate, FieldTitle } from 'ra-core';
 
-const styles = theme => createStyles({
-    container: {
-        flexGrow: 1,
-        position: 'relative',
-    },
-    root: {},
-    suggestionsContainerOpen: {
-        position: 'absolute',
-        marginBottom: theme.spacing.unit * 3,
-        zIndex: 2,
-    },
-    suggestionsPaper: {
-        maxHeight: '50vh',
-        overflowY: 'auto',
-    },
-    suggestion: {
-        display: 'block',
-        fontFamily: theme.typography.fontFamily,
-    },
-    suggestionText: { fontWeight: 300 },
-    highlightedSuggestionText: { fontWeight: 500 },
-    suggestionsList: {
-        margin: 0,
-        padding: 0,
-        listStyleType: 'none',
-    },
-});
+const styles = theme =>
+    createStyles({
+        container: {
+            flexGrow: 1,
+            position: 'relative',
+        },
+        root: {},
+        suggestionsContainerOpen: {
+            position: 'absolute',
+            marginBottom: theme.spacing(3),
+            zIndex: 2,
+        },
+        suggestionsPaper: {
+            maxHeight: '50vh',
+            overflowY: 'auto',
+        },
+        suggestion: {
+            display: 'block',
+            fontFamily: theme.typography.fontFamily,
+        },
+        suggestionText: { fontWeight: 300 },
+        highlightedSuggestionText: { fontWeight: 500 },
+        suggestionsList: {
+            margin: 0,
+            padding: 0,
+            listStyleType: 'none',
+        },
+    });
 
 /**
  * An Input component for an autocomplete field, using an array of objects for the options

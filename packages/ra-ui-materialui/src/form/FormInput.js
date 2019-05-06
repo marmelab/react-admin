@@ -7,9 +7,10 @@ import Labeled from '../input/Labeled';
 
 const sanitizeRestProps = ({ basePath, record, ...rest }) => rest;
 
-const styles = theme => createStyles({
-    input: { width: theme.spacing.unit * 32 },
-});
+const styles = theme =>
+    createStyles({
+        input: { width: theme.spacing(32) },
+    });
 
 export const FormInput = ({ classes, input, ...rest }) =>
     input ? (
