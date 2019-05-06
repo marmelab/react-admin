@@ -4,8 +4,7 @@ import { connect } from 'react-redux';
 import { formValueSelector } from 'redux-form';
 import Button from '@material-ui/core/Button';
 import ThumbUp from '@material-ui/icons/ThumbUp';
-import { translate, useMutation } from 'react-admin';
-import compose from 'recompose/compose';
+import { useTranslate, useMutation } from 'react-admin';
 
 const sideEffects = {
     undoable: true,
@@ -27,7 +26,8 @@ const sideEffects = {
 /**
  * This custom button demonstrate using useMutation to update data
  */
-const AcceptButton = ({ record, translate }) => {
+const AcceptButton = ({ record }) => {
+    const translate = useTranslate();
     const [approve, { loading }] = useMutation(
         'UPDATE',
         'reviews',
@@ -56,16 +56,10 @@ const AcceptButton = ({ record, translate }) => {
 AcceptButton.propTypes = {
     record: PropTypes.object,
     comment: PropTypes.string,
-    translate: PropTypes.func,
 };
 
 const selector = formValueSelector('record-form');
 
-const enhance = compose(
-    translate,
-    connect(state => ({
-        comment: selector(state, 'comment'),
-    }))
-);
-
-export default enhance(AcceptButton);
+export default connect(state => ({
+    comment: selector(state, 'comment'),
+}))(AcceptButton);

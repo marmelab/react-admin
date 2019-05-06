@@ -1,5 +1,4 @@
 import React, { Fragment } from 'react';
-import compose from 'recompose/compose';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -9,7 +8,7 @@ import Divider from '@material-ui/core/Divider';
 import Collapse from '@material-ui/core/Collapse';
 import { withStyles } from '@material-ui/core/styles';
 
-import { translate } from 'react-admin';
+import { useTranslate } from 'react-admin';
 
 const styles = {
     listItem: {
@@ -37,44 +36,41 @@ const SubMenu = ({
     icon,
     classes,
     children,
-    translate,
-}) => (
-    <Fragment>
-        <ListItem
-            dense
-            button
-            onClick={handleToggle}
-            className={classes.listItem}
-        >
-            <ListItemIcon>{isOpen ? <ExpandMore /> : icon}</ListItemIcon>
-            <ListItemText
-                inset
-                primary={isOpen ? translate(name) : ''}
-                secondary={isOpen ? '' : translate(name)}
-                className={classes.listItemText}
-            />
-        </ListItem>
-        <Collapse in={isOpen} timeout="auto" unmountOnExit>
-            <List
+}) => {
+    const translate = useTranslate();
+    return (
+        <Fragment>
+            <ListItem
                 dense
-                component="div"
-                disablePadding
-                className={
-                    sidebarIsOpen
-                        ? classes.sidebarIsOpen
-                        : classes.sidebarIsClosed
-                }
+                button
+                onClick={handleToggle}
+                className={classes.listItem}
             >
-                {children}
-            </List>
-            <Divider />
-        </Collapse>
-    </Fragment>
-);
+                <ListItemIcon>{isOpen ? <ExpandMore /> : icon}</ListItemIcon>
+                <ListItemText
+                    inset
+                    primary={isOpen ? translate(name) : ''}
+                    secondary={isOpen ? '' : translate(name)}
+                    className={classes.listItemText}
+                />
+            </ListItem>
+            <Collapse in={isOpen} timeout="auto" unmountOnExit>
+                <List
+                    dense
+                    component="div"
+                    disablePadding
+                    className={
+                        sidebarIsOpen
+                            ? classes.sidebarIsOpen
+                            : classes.sidebarIsClosed
+                    }
+                >
+                    {children}
+                </List>
+                <Divider />
+            </Collapse>
+        </Fragment>
+    );
+};
 
-const enhance = compose(
-    withStyles(styles),
-    translate
-);
-
-export default enhance(SubMenu);
+export default withStyles(styles)(SubMenu);

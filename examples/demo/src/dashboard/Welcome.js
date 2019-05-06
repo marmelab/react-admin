@@ -1,5 +1,4 @@
 import React from 'react';
-import compose from 'recompose/compose';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
@@ -9,7 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import HomeIcon from '@material-ui/icons/Home';
 import CodeIcon from '@material-ui/icons/Code';
 import { withStyles } from '@material-ui/core/styles';
-import { translate } from 'react-admin';
+import { useTranslate } from 'react-admin';
 
 const styles = {
     media: {
@@ -22,33 +21,31 @@ const mediaUrl = `https://marmelab.com/posters/beard-${parseInt(
     10
 ) + 1}.jpeg`;
 
-const Welcome = ({ classes, translate }) => (
-    <Card>
-        <CardMedia image={mediaUrl} className={classes.media} />
-        <CardContent>
-            <Typography variant="headline" component="h2">
-                {translate('pos.dashboard.welcome.title')}
-            </Typography>
-            <Typography component="p">
-                {translate('pos.dashboard.welcome.subtitle')}
-            </Typography>
-        </CardContent>
-        <CardActions style={{ justifyContent: 'flex-end' }}>
-            <Button href="https://marmelab.com/react-admin">
-                <HomeIcon style={{ paddingRight: '0.5em' }} />
-                {translate('pos.dashboard.welcome.aor_button')}
-            </Button>
-            <Button href="https://github.com/marmelab/react-admin/tree/master/examples/demo">
-                <CodeIcon style={{ paddingRight: '0.5em' }} />
-                {translate('pos.dashboard.welcome.demo_button')}
-            </Button>
-        </CardActions>
-    </Card>
-);
+const Welcome = ({ classes }) => {
+    const translate = useTranslate();
+    return (
+        <Card>
+            <CardMedia image={mediaUrl} className={classes.media} />
+            <CardContent>
+                <Typography variant="headline" component="h2">
+                    {translate('pos.dashboard.welcome.title')}
+                </Typography>
+                <Typography component="p">
+                    {translate('pos.dashboard.welcome.subtitle')}
+                </Typography>
+            </CardContent>
+            <CardActions style={{ justifyContent: 'flex-end' }}>
+                <Button href="https://marmelab.com/react-admin">
+                    <HomeIcon style={{ paddingRight: '0.5em' }} />
+                    {translate('pos.dashboard.welcome.aor_button')}
+                </Button>
+                <Button href="https://github.com/marmelab/react-admin/tree/master/examples/demo">
+                    <CodeIcon style={{ paddingRight: '0.5em' }} />
+                    {translate('pos.dashboard.welcome.demo_button')}
+                </Button>
+            </CardActions>
+        </Card>
+    );
+};
 
-const enhance = compose(
-    withStyles(styles),
-    translate
-);
-
-export default enhance(Welcome);
+export default withStyles(styles)(Welcome);

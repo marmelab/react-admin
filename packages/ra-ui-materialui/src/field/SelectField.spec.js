@@ -1,67 +1,68 @@
 import React from 'react';
-import assert from 'assert';
-import { shallow } from 'enzyme';
+import expect from 'expect';
+import { render, cleanup } from 'react-testing-library';
+
+import { TestContext } from 'ra-core';
 import { SelectField } from './SelectField';
 
 describe('<SelectField />', () => {
+    afterEach(cleanup);
+
     const defaultProps = {
         source: 'foo',
         choices: [{ id: 0, name: 'hello' }, { id: 1, name: 'world' }],
-        translate: x => x,
     };
 
-    it('should return null when the record is not set', () =>
-        assert.equal(shallow(<SelectField {...defaultProps} />).html(), null));
+    it('should return null when the record is not set', () => {
+        const { container } = render(<SelectField {...defaultProps} />);
+        expect(container.firstChild).toBeNull();
+    });
 
-    it('should return null when the record has no value for the source', () =>
-        assert.equal(
-            shallow(<SelectField {...defaultProps} record={{}} />).html(),
-            null
-        ));
+    it('should return null when the record has no value for the source', () => {
+        const { container } = render(
+            <SelectField {...defaultProps} record={{}} />
+        );
+        expect(container.firstChild).toBeNull();
+    });
 
-    it('should return null when the record has a value for the source not in the choices', () =>
-        assert.equal(
-            shallow(
-                <SelectField {...defaultProps} record={{ foo: 2 }} />
-            ).html(),
-            null
-        ));
+    it('should return null when the record has a value for the source not in the choices', () => {
+        const { container } = render(
+            <SelectField {...defaultProps} record={{ foo: 2 }} />
+        );
+        expect(container.firstChild).toBeNull();
+    });
 
     it('should render the choice', () => {
-        const wrapper = shallow(
+        const { queryAllByText } = render(
             <SelectField {...defaultProps} record={{ foo: 0 }} />
         );
-        const chipElement = wrapper.find('WithStyles(Typography)');
-        assert.equal(chipElement.children().text(), 'hello');
+        expect(queryAllByText('hello')).toHaveLength(1);
     });
 
     it('should use custom className', () => {
-        const wrapper = shallow(
+        const { container } = render(
             <SelectField
                 {...defaultProps}
                 record={{ foo: 1 }}
-                elStyle={{ margin: 1 }}
-                className="foo"
+                className="lorem"
             />
         );
-        const chipElement = wrapper.find('WithStyles(Typography)');
-        assert.deepEqual(chipElement.prop('className'), 'foo');
+        expect(container.firstChild.className).toContain('lorem');
     });
 
     it('should handle deep fields', () => {
-        const wrapper = shallow(
+        const { queryAllByText } = render(
             <SelectField
                 {...defaultProps}
-                record={{ foo: { bar: 0 } }}
                 source="foo.bar"
+                record={{ foo: { bar: 0 } }}
             />
         );
-        const chipElement = wrapper.find('WithStyles(Typography)');
-        assert.equal(chipElement.children().text(), 'hello');
+        expect(queryAllByText('hello')).toHaveLength(1);
     });
 
     it('should use optionValue as value identifier', () => {
-        const wrapper = shallow(
+        const { queryAllByText } = render(
             <SelectField
                 {...defaultProps}
                 record={{ foo: 0 }}
@@ -69,12 +70,11 @@ describe('<SelectField />', () => {
                 choices={[{ foobar: 0, name: 'hello' }]}
             />
         );
-        const chipElement = wrapper.find('WithStyles(Typography)');
-        assert.equal(chipElement.children().text(), 'hello');
+        expect(queryAllByText('hello')).toHaveLength(1);
     });
 
     it('should use optionText with a string value as text identifier', () => {
-        const wrapper = shallow(
+        const { queryAllByText } = render(
             <SelectField
                 {...defaultProps}
                 record={{ foo: 0 }}
@@ -82,12 +82,11 @@ describe('<SelectField />', () => {
                 choices={[{ id: 0, foobar: 'hello' }]}
             />
         );
-        const chipElement = wrapper.find('WithStyles(Typography)');
-        assert.equal(chipElement.children().text(), 'hello');
+        expect(queryAllByText('hello')).toHaveLength(1);
     });
 
     it('should use optionText with a function value as text identifier', () => {
-        const wrapper = shallow(
+        const { queryAllByText } = render(
             <SelectField
                 {...defaultProps}
                 record={{ foo: 0 }}
@@ -95,13 +94,12 @@ describe('<SelectField />', () => {
                 choices={[{ id: 0, foobar: 'hello' }]}
             />
         );
-        const chipElement = wrapper.find('WithStyles(Typography)');
-        assert.equal(chipElement.children().text(), 'hello');
+        expect(queryAllByText('hello')).toHaveLength(1);
     });
 
     it('should use optionText with an element value as text identifier', () => {
         const Foobar = ({ record }) => <span>{record.foobar}</span>;
-        const wrapper = shallow(
+        const { queryAllByText } = render(
             <SelectField
                 {...defaultProps}
                 record={{ foo: 0 }}
@@ -109,35 +107,30 @@ describe('<SelectField />', () => {
                 choices={[{ id: 0, foobar: 'hello' }]}
             />
         );
-        const chipElement = wrapper.find('Foobar');
-        assert.deepEqual(chipElement.prop('record'), {
-            id: 0,
-            foobar: 'hello',
-        });
+        expect(queryAllByText('hello')).toHaveLength(1);
     });
 
     it('should translate the choice by default', () => {
-        const wrapper = shallow(
-            <SelectField
-                {...defaultProps}
-                record={{ foo: 0 }}
-                translate={x => `**${x}**`}
-            />
+        const { queryAllByText } = render(
+            <TestContext store={{ i18n: { messages: { hello: 'bonjour' } } }}>
+                <SelectField {...defaultProps} record={{ foo: 0 }} />
+            </TestContext>
         );
-        const chipElement = wrapper.find('WithStyles(Typography)');
-        assert.equal(chipElement.children().text(), '**hello**');
+        expect(queryAllByText('hello')).toHaveLength(0);
+        expect(queryAllByText('bonjour')).toHaveLength(1);
     });
 
     it('should not translate the choice if translateChoice is false', () => {
-        const wrapper = shallow(
-            <SelectField
-                {...defaultProps}
-                record={{ foo: 0 }}
-                translate={x => `**${x}**`}
-                translateChoice={false}
-            />
+        const { queryAllByText } = render(
+            <TestContext store={{ i18n: { messages: { hello: 'bonjour' } } }}>
+                <SelectField
+                    {...defaultProps}
+                    record={{ foo: 0 }}
+                    translateChoice={false}
+                />
+            </TestContext>
         );
-        const chipElement = wrapper.find('WithStyles(Typography)');
-        assert.equal(chipElement.children().text(), 'hello');
+        expect(queryAllByText('hello')).toHaveLength(1);
+        expect(queryAllByText('bonjour')).toHaveLength(0);
     });
 });

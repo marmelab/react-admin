@@ -20,15 +20,16 @@ import {
     SingleFieldList,
     TextField,
     TextInput,
-    translate,
+    useTranslate,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
 
 import ResetViewsButton from './ResetViewsButton';
 export const PostIcon = BookIcon;
 
-const QuickFilter = translate(({ label, translate }) => (
-    <Chip style={{ marginBottom: 8 }} label={translate(label)} />
-));
+const QuickFilter = ({ label }) => {
+    const translate = useTranslate();
+    return <Chip style={{ marginBottom: 8 }} label={translate(label)} />;
+};
 
 const PostFilter = props => (
     <Filter {...props}>

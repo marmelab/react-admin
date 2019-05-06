@@ -100,11 +100,9 @@ You can find translation packages for the following languages:
 
 In addition, the previous version of react-admin, called admin-on-rest, was translated in the following languages:
 
-- Arabic ( `ع` ): [aymendhaya/aor-language-arabic](https://github.com/aymendhaya/aor-language-arabic)
 - Chinese (Traditional) (`cht`): [leesei/aor-language-chinese-traditional](https://github.com/leesei/aor-language-chinese-traditional)
 - Croatian (`hr`): [ariskemper/aor-language-croatian](https://github.com/ariskemper/aor-language-croatian)
 - Greek (`el`): [zifnab87/aor-language-greek](https://github.com/zifnab87/aor-language-greek)
-- Hebrew (`he`): [motro/aor-language-hebrew](https://github.com/motro/aor-language-hebrew)
 - Japanese (`ja`): [kuma-guy/aor-language-japanese](https://github.com/kuma-guy/aor-language-japanese)
 - Slovenian (`sl`): [ariskemper/aor-language-slovenian](https://github.com/ariskemper/aor-language-slovenian)
 - Swedish (`sv`): [StefanWallin/aor-language-swedish](https://github.com/StefanWallin/aor-language-swedish)
@@ -139,31 +137,28 @@ const App = () => (
 export default App;
 ```
 
-Then, dispatch the `CHANGE_LOCALE` action, by using the `changeLocale` action creator. For instance, the following component switches language between English and French:
+Then, dispatch the `CHANGE_LOCALE` action, by using the `changeLocale` action creator. For instance, the following component allows the user to switch the interface language between English and French:
 
 ```jsx
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import Button from '@material-ui/core/Button';
-import { changeLocale as changeLocaleAction } from 'react-admin';
+import { changeLocale } from 'react-admin';
 
-class LocaleSwitcher extends Component {
-    switchToFrench = () => this.props.changeLocale('fr');
-    switchToEnglish = () => this.props.changeLocale('en');
-
-    render() {
-        const { changeLocale } = this.props;
-        return (
-            <div>
-                <div>Language</div>
-                <Button onClick={this.switchToEnglish}>en</Button>
-                <Button onClick={this.switchToFrench}>fr</Button>
-            </div>
-        );
-    }
+const LocaleSwitcher = () => {
+    const dispatch = useDispatch();
+    const switchToFrench = () => dispatch(changeLocale('fr'));
+    const switchToEnglish = () => dispatch(changeLocale('en'));
+    return (
+        <div>
+            <div>Language</div>
+            <Button onClick={switchToEnglish}>en</Button>
+            <Button onClick={switchToFrench}>fr</Button>
+        </div>
+    );
 }
 
-export default connect(undefined, { changeLocale: changeLocaleAction })(LocaleSwitcher);
+export default LocaleSwitcher;
 ```
 
 ## Using The Browser Locale
@@ -280,25 +275,28 @@ const App = () => (
 );
 ```
 
-## Translating Your Own Components
+## `useTranslate` Hook
 
-React-admin package provides a `translate` Higher-Order Component, which simply passes the `translate` function as a prop to the wrapped component:
+If you need to translate messages in your own components, React-admin provides a `useTranslate` hook, which returns the `translate` function:
 
 ```jsx
 // in src/MyHelloButton.js
 import React from 'react';
-import { translate } from 'react-admin';
+import { useTranslate } from 'react-admin';
 
-const MyHelloButton = ({ translate }) => (
-    <button>{translate('myroot.hello.world')}</button>
-);
+const MyHelloButton = () => {
+    const translate = useTranslate();
+    return (
+        <button>{translate('myroot.hello.world')}</button>
+    );
+}
 
-export default translate(MyHelloButton);
+export default MyHelloButton;
 ```
 
 **Tip**: For your message identifiers, choose a different root name than `ra` and `resources`, which are reserved.
 
-**Tip**: Don't use `translate` for Field and Input labels, or for page titles, as they are already translated:
+**Tip**: Don't use `useTranslate` for Field and Input labels, or for page titles, as they are already translated:
 
 ```jsx
 // don't do this
@@ -310,6 +308,27 @@ export default translate(MyHelloButton);
 // or even better, use the default translation key
 <TextField source="first_name" />
 // and translate the `resources.customers.fields.first_name` key
+```
+
+## `withTranslate` HOC
+
+If you're stuck with class components, react-admin also exports a `withTranslate` higher-order component, which injects the `translate` function as prop. 
+
+```jsx
+// in src/MyHelloButton.js
+import React, { Component } from 'react';
+import { withTranslate } from 'react-admin';
+
+class MyHelloButton extends Component {
+    render() {
+        const { translate } = this.props;
+        return (
+            <button>{translate('myroot.hello.world')}</button>
+        );
+    } 
+}
+
+export default withTranslate(MyHelloButton);
 ```
 
 ## Using Specific Polyglot Features

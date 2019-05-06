@@ -1,12 +1,12 @@
 import React from 'react';
 import {
-    translate,
     Filter,
     List,
     NumberInput,
     ReferenceInput,
     SearchInput,
     SelectInput,
+    useTranslate,
 } from 'react-admin';
 import Chip from '@material-ui/core/Chip';
 import withStyles from '@material-ui/core/styles/withStyles';
@@ -18,11 +18,10 @@ const quickFilterStyles = {
     },
 };
 
-const QuickFilter = translate(
-    withStyles(quickFilterStyles)(({ classes, label, translate }) => (
-        <Chip className={classes.root} label={translate(label)} />
-    ))
-);
+const QuickFilter = withStyles(quickFilterStyles)(({ classes, label }) => {
+    const translate = useTranslate();
+    return <Chip className={classes.root} label={translate(label)} />;
+});
 
 export const ProductFilter = props => (
     <Filter {...props}>
