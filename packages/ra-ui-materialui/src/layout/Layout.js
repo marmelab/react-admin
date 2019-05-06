@@ -4,11 +4,11 @@ import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { withRouter } from 'react-router';
 import {
-    MuiThemeProvider,
     createMuiTheme,
     withStyles,
     createStyles,
 } from '@material-ui/core/styles';
+import { ThemeProvider } from '@material-ui/styles';
 import compose from 'recompose/compose';
 import { ComponentPropType } from 'ra-core';
 
@@ -187,9 +187,9 @@ class LayoutWithTheme extends Component {
     render() {
         const { theme, ...rest } = this.props;
         return (
-            <MuiThemeProvider theme={this.theme}>
+            <ThemeProvider theme={this.theme}>
                 <EnhancedLayout {...rest} />
-            </MuiThemeProvider>
+            </ThemeProvider>
         );
     }
 }
