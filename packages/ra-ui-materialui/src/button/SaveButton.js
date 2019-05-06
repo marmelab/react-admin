@@ -105,7 +105,7 @@ export class SaveButton extends Component {
             saving,
             submitOnEnter,
             translate,
-            variant = 'raised',
+            variant = 'contained',
             icon,
             onClick,
             ...rest

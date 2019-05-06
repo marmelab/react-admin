@@ -110,7 +110,7 @@ const Login = ({ classes, handleSubmit, isLoading, location, userLogin }) => {
                     </div>
                     <CardActions className={classes.actions}>
                         <Button
-                            variant="raised"
+                            variant="contained"
                             type="submit"
                             color="primary"
                             disabled={isLoading}

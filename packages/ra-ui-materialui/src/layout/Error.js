@@ -76,7 +76,7 @@ const Error = ({ error, errorInfo, classes, className, title, ...rest }) => {
                 )}
                 <div className={classes.toolbar}>
                     <Button
-                        variant="raised"
+                        variant="contained"
                         icon={<History />}
                         onClick={goBack}
                     >

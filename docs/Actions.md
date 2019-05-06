@@ -611,7 +611,7 @@ const PostCreateToolbar = props => (
             label="post.action.save_with_average_note"
             redirect="show"
             submitOnEnter={false}
-            variant="flat"
+            variant="text"
         />
     </Toolbar>
 );

@@ -850,7 +850,7 @@ const MyError = ({
         )}
         <div>
             <Button
-                variant="raised"
+                variant="contained"
                 icon={<History />}
                 onClick={() => history.go(-1)}
             >
