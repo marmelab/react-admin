@@ -636,7 +636,7 @@ import Typography from '@material-ui/core/Typography';
 const MyAppBar = props => (
     <AppBar {...props}>
         <Toolbar>
-            <Typography variant="title" id="react-admin-title" />
+            <Typography variant="h6" id="react-admin-title" />
         </Toolbar>
     </AppBar>
 );

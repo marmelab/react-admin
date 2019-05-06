@@ -32,7 +32,7 @@ const ViewTitle = ({ className = undefined, title, ...rest }) => {
                     className={classnames('title', className)}
                     {...rest}
                 >
-                    <Typography variant="title">{title}</Typography>
+                    <Typography variant="h6">{title}</Typography>
                 </CardContent>
             }
         />

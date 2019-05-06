@@ -27,7 +27,7 @@ const Welcome = ({ classes }) => {
         <Card>
             <CardMedia image={mediaUrl} className={classes.media} />
             <CardContent>
-                <Typography variant="headline" component="h2">
+                <Typography variant="h5" component="h2">
                     {translate('pos.dashboard.welcome.title')}
                 </Typography>
                 <Typography component="p">

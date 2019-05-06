@@ -144,8 +144,8 @@ You may want to display additional information on the side of the form. Use the 
 ```jsx
 const Aside = () => (
     <div style={{ width: 200, margin: '1em' }}>
-        <Typography variant="title">Post details</Typography>
-        <Typography variant="body1">
+        <Typography variant="h6">Post details</Typography>
+        <Typography variant="body2">
             Posts will only be published one an editor approves them
         </Typography>
     </div>
@@ -164,9 +164,9 @@ The `aside` component receives the same props as the `Edit` or `Create` child co
 ```jsx
 const Aside = ({ record }) => (
     <div style={{ width: 200, margin: '1em' }}>
-        <Typography variant="title">Post details</Typography>
+        <Typography variant="h6">Post details</Typography>
         {record && (
-            <Typography variant="body1">
+            <Typography variant="body2">
                 Creation date: {record.createdAt}
             </Typography>
         )}

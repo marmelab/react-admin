@@ -208,7 +208,7 @@ const App = () => (
 +               <Resource name="users" intent="registration" />
 +               <AppBar position="static" color="default">
 +                   <Toolbar>
-+                       <Typography variant="title" color="inherit">
++                       <Typography variant="h6" color="inherit">
 +                           My admin
 +                       </Typography>
 +                   </Toolbar>

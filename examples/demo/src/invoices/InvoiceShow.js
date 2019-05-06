@@ -25,7 +25,7 @@ const InvoiceShow = props => (
                     <CardContent>
                         <Grid container spacing={16}>
                             <Grid item xs={6}>
-                                <Typography variant="title" gutterBottom>
+                                <Typography variant="h6" gutterBottom>
                                     Posters Galore
                                 </Typography>
                             </Grid>

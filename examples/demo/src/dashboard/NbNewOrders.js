@@ -30,7 +30,7 @@ const NbNewOrders = ({ value, classes }) => {
                 <Typography className={classes.title} color="textSecondary">
                     {translate('pos.dashboard.new_orders')}
                 </Typography>
-                <Typography variant="headline" component="h2">
+                <Typography variant="h5" component="h2">
                     {value}
                 </Typography>
             </Card>

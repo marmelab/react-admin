@@ -30,7 +30,7 @@ const MonthlyRevenue = ({ value, classes }) => {
                 <Typography className={classes.title} color="textSecondary">
                     {translate('pos.dashboard.monthly_revenue')}
                 </Typography>
-                <Typography variant="headline" component="h2">
+                <Typography variant="h5" component="h2">
                     {value}
                 </Typography>
             </Card>
