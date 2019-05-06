@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { NavLink } from 'react-router-dom';
 import MenuItem from '@material-ui/core/MenuItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
 import { withStyles, createStyles } from '@material-ui/core/styles';
 
 const NavLinkRef = React.forwardRef((props, ref) => (
@@ -13,13 +14,11 @@ const styles = theme =>
     createStyles({
         root: {
             color: theme.palette.text.secondary,
-            display: 'flex',
-            alignItems: 'flex-start',
         },
         active: {
             color: theme.palette.text.primary,
         },
-        icon: { paddingRight: '1.2em' },
+        icon: { minWidth: theme.spacing(5) },
     });
 
 export class MenuItemLink extends Component {
@@ -57,9 +56,9 @@ export class MenuItemLink extends Component {
                 onClick={this.handleMenuTap}
             >
                 {leftIcon && (
-                    <span className={classes.icon}>
+                    <ListItemIcon className={classes.icon}>
                         {cloneElement(leftIcon, { titleAccess: primaryText })}
-                    </span>
+                    </ListItemIcon>
                 )}
                 {primaryText}
             </MenuItem>
