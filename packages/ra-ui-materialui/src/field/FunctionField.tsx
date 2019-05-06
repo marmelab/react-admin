@@ -24,7 +24,7 @@ const FunctionField: SFC<Props & InjectedFieldProps & TypographyProps> = ({
     record ? (
         <Typography
             component="span"
-            variant="body1"
+            variant="body2"
             className={className}
             {...sanitizeRestProps(rest)}
         >

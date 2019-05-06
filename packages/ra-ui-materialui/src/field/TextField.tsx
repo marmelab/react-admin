@@ -17,7 +17,7 @@ const TextField: SFC<FieldProps & InjectedFieldProps & TypographyProps> = ({
     return (
         <Typography
             component="span"
-            variant="body1"
+            variant="body2"
             className={className}
             {...sanitizeRestProps(rest)}
         >

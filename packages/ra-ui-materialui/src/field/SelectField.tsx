@@ -107,7 +107,7 @@ export const SelectField: SFC<Props & InjectedFieldProps> = ({
     return (
         <Typography
             component="span"
-            variant="body1"
+            variant="body2"
             className={className}
             {...sanitizeRestProps(rest)}
         >
