@@ -4,7 +4,6 @@
     "private": true,
     "dependencies": {
         "@material-ui/core": "^4.0.0-beta.0",
-        "@material-ui/styles": "^4.0.0-beta.0",
         "@material-ui/icons": "^4.0.0-beta.0",
         "data-generator-retail": "^2.7.0",
         "fakerest": "~2.1.0",
