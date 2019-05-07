@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 import TablePagination from '@material-ui/core/TablePagination';
+import Toolbar from '@material-ui/core/Toolbar';
 import compose from 'recompose/compose';
 import { translate, sanitizeListRestProps } from 'ra-core';
 
@@ -60,13 +61,14 @@ export class Pagination extends Component {
             ...rest
         } = this.props;
 
-        if (!isLoading && total === 0) {
-            return <PaginationLimit />;
+        if (total === 0) {
+            return isLoading ? (
+                <Toolbar variant="dense" />
+            ) : (
+                <PaginationLimit />
+            );
         }
-        if (page * perPage > total) {
-            // out of bounds, probably a wrong URL
-            return null;
-        }
+
         return (
             <Responsive
                 width={width}

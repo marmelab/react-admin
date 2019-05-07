@@ -31,6 +31,7 @@ describe('<Pagination />', () => {
             const { queryByText } = render(
                 <Pagination {...defaultProps} total={10} page={2} />
             );
+            // mui TablePagination displays a warning in that case, and that's normal
             expect(queryByText('ra.navigation.no_results')).toBeNull();
         });
     });
