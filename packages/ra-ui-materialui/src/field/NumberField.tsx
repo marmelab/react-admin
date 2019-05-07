@@ -62,27 +62,14 @@ export const NumberField: SFC<Props & InjectedFieldProps & TypographyProps> = ({
     if (value == null) {
         return null;
     }
-    if (!hasNumberFormat) {
-        return (
-            <Typography
-                component="span"
-                variant="body2"
-                className={className}
-                {...sanitizeRestProps(rest)}
-            >
-                {value}
-            </Typography>
-        );
-    }
 
     return (
         <Typography
-            component="span"
-            variant="body1"
+            variant="body2"
             className={className}
             {...sanitizeRestProps(rest)}
         >
-            {value.toLocaleString(locales, options)}
+            {hasNumberFormat ? value.toLocaleString(locales, options) : value}
         </Typography>
     );
 };
