@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import MenuItem, { MenuItemProps } from '@material-ui/core/MenuItem';
 import { makeStyles } from '@material-ui/styles';
+import { Theme } from '@material-ui/core/styles';
 
 import ExitIcon from '@material-ui/icons/PowerSettingsNew';
 import classnames from 'classnames';
@@ -14,7 +15,7 @@ interface Props {
     redirectTo?: string;
 }
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme: Theme) => ({
     menuItem: {
         color: theme.palette.text.secondary,
     },
