@@ -27,6 +27,7 @@ interface Props {
     backgroundImage?: string;
     loginForm: ReactElement<any>;
     theme: object;
+    staticContext?: object;
 }
 
 const styles = (theme: Theme) =>
@@ -115,6 +116,7 @@ class Login extends Component<
             classes,
             className,
             loginForm,
+            staticContext,
             ...rest
         } = this.props;
 
@@ -146,6 +148,7 @@ EnhancedLogin.propTypes = {
     backgroundImage: PropTypes.string,
     loginForm: PropTypes.element,
     theme: PropTypes.object,
+    staticContext: PropTypes.object,
 };
 
 EnhancedLogin.defaultProps = {
