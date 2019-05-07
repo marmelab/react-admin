@@ -4,26 +4,25 @@ import CardHeader from '@material-ui/core/CardHeader';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import ListItemText from '@material-ui/core/ListItemText';
 import Avatar from '@material-ui/core/Avatar';
-import { withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
 import { useTranslate } from 'react-admin';
 
-const style = theme => ({
+const useStyles = makeStyles(theme => ({
     root: {
         flex: 1,
-    },
-    avatar: {
-        background: theme.palette.background.avatar,
     },
     cost: {
         marginRight: '1em',
         color: theme.palette.text.primary,
     },
-});
+}));
 
-const PendingOrders = ({ orders = [], customers = {}, classes }) => {
+const PendingOrders = ({ orders = [], customers = {} }) => {
+    const classes = useStyles();
     const translate = useTranslate();
     return (
         <Card className={classes.root}>
@@ -36,16 +35,17 @@ const PendingOrders = ({ orders = [], customers = {}, classes }) => {
                         component={Link}
                         to={`/commands/${record.id}`}
                     >
-                        {customers[record.customer_id] ? (
-                            <Avatar
-                                className={classes.avatar}
-                                src={`${
-                                    customers[record.customer_id].avatar
-                                }?size=32x32`}
-                            />
-                        ) : (
-                            <Avatar />
-                        )}
+                        <ListItemAvatar>
+                            {customers[record.customer_id] ? (
+                                <Avatar
+                                    src={`${
+                                        customers[record.customer_id].avatar
+                                    }?size=32x32`}
+                                />
+                            ) : (
+                                <Avatar />
+                            )}
+                        </ListItemAvatar>
                         <ListItemText
                             primary={new Date(record.date).toLocaleString(
                                 'en-GB'
@@ -76,4 +76,4 @@ const PendingOrders = ({ orders = [], customers = {}, classes }) => {
     );
 };
 
-export default withStyles(style)(PendingOrders);
+export default PendingOrders;

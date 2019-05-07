@@ -2,18 +2,19 @@ import React, { useMemo } from 'react';
 import Card from '@material-ui/core/Card';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import ListItemText from '@material-ui/core/ListItemText';
 import Avatar from '@material-ui/core/Avatar';
-import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import CustomerIcon from '@material-ui/icons/PersonAdd';
 import Divider from '@material-ui/core/Divider';
+import { makeStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
 import { useTranslate, useQuery, GET_LIST } from 'react-admin';
 
 import CardIcon from './CardIcon';
 
-const styles = theme => ({
+const useStyles = makeStyles({
     main: {
         flex: '1',
         marginLeft: '1em',
@@ -31,15 +32,10 @@ const styles = theme => ({
         padding: '0 16px',
         minHeight: 48,
     },
-    avatar: {
-        background: theme.palette.background.avatar,
-    },
-    listItemText: {
-        paddingRight: 0,
-    },
 });
 
-const NewCustomers = ({ classes }) => {
+const NewCustomers = () => {
+    const classes = useStyles();
     const translate = useTranslate();
     const aMonthAgo = useMemo(() => {
         const date = new Date();
@@ -82,15 +78,13 @@ const NewCustomers = ({ classes }) => {
                             component={Link}
                             key={record.id}
                         >
-                            <Avatar
-                                src={`${record.avatar}?size=32x32`}
-                                className={classes.avatar}
-                            />
+                            <ListItemAvatar>
+                                <Avatar src={`${record.avatar}?size=32x32`} />
+                            </ListItemAvatar>
                             <ListItemText
                                 primary={`${record.first_name} ${
                                     record.last_name
                                 }`}
-                                className={classes.listItemText}
                             />
                         </ListItem>
                     ))}
@@ -100,4 +94,4 @@ const NewCustomers = ({ classes }) => {
     );
 };
 
-export default withStyles(styles)(NewCustomers);
+export default NewCustomers;

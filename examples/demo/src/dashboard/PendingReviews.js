@@ -2,12 +2,13 @@ import React from 'react';
 import Card from '@material-ui/core/Card';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import ListItemText from '@material-ui/core/ListItemText';
 import Avatar from '@material-ui/core/Avatar';
-import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import CommentIcon from '@material-ui/icons/Comment';
 import Divider from '@material-ui/core/Divider';
+import { makeStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
 import { useTranslate } from 'react-admin';
 
@@ -15,7 +16,7 @@ import CardIcon from './CardIcon';
 
 import StarRatingField from '../reviews/StarRatingField';
 
-const styles = theme => ({
+const useStyles = makeStyles(theme => ({
     main: {
         flex: '1',
         marginRight: '1em',
@@ -44,14 +45,15 @@ const styles = theme => ({
         WebkitLineClamp: 2,
         WebkitBoxOrient: 'vertical',
     },
-});
+}));
 
 const location = {
     pathname: 'reviews',
     query: { filter: JSON.stringify({ status: 'pending' }) },
 };
 
-const PendingReviews = ({ reviews = [], customers = {}, nb, classes }) => {
+const PendingReviews = ({ reviews = [], customers = {}, nb }) => {
+    const classes = useStyles();
     const translate = useTranslate();
     return (
         <div className={classes.main}>
@@ -77,17 +79,20 @@ const PendingReviews = ({ reviews = [], customers = {}, nb, classes }) => {
                             button
                             component={Link}
                             to={`/reviews/${record.id}`}
+                            alignItems="flex-start"
                         >
-                            {customers[record.customer_id] ? (
-                                <Avatar
-                                    src={`${
-                                        customers[record.customer_id].avatar
-                                    }?size=32x32`}
-                                    className={classes.avatar}
-                                />
-                            ) : (
-                                <Avatar />
-                            )}
+                            <ListItemAvatar>
+                                {customers[record.customer_id] ? (
+                                    <Avatar
+                                        src={`${
+                                            customers[record.customer_id].avatar
+                                        }?size=32x32`}
+                                        className={classes.avatar}
+                                    />
+                                ) : (
+                                    <Avatar />
+                                )}
+                            </ListItemAvatar>
 
                             <ListItemText
                                 primary={<StarRatingField record={record} />}
@@ -103,4 +108,4 @@ const PendingReviews = ({ reviews = [], customers = {}, nb, classes }) => {
     );
 };
 
-export default withStyles(styles)(PendingReviews);
+export default PendingReviews;
