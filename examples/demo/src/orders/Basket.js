@@ -190,8 +190,8 @@ const mapStateToProps = (state, props) => {
 };
 
 const enhance = compose(
-    translate,
     withStyles(styles),
+    translate,
     connect(
         mapStateToProps,
         {
