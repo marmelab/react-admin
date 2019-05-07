@@ -63,7 +63,10 @@ export class Pagination extends Component {
         if (!isLoading && total === 0) {
             return <PaginationLimit />;
         }
-
+        if (page * perPage > total) {
+            // out of bounds, probably a wrong URL
+            return null;
+        }
         return (
             <Responsive
                 width={width}
