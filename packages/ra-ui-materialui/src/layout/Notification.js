@@ -15,17 +15,18 @@ import {
     complete,
 } from 'ra-core';
 
-const styles = theme => createStyles({
-    confirm: {
-        backgroundColor: theme.palette.background.default,
-    },
-    warning: {
-        backgroundColor: theme.palette.error.light,
-    },
-    undo: {
-        color: theme.palette.primary.light,
-    },
-});
+const styles = theme =>
+    createStyles({
+        confirm: {
+            backgroundColor: theme.palette.background.default,
+        },
+        warning: {
+            backgroundColor: theme.palette.error.light,
+        },
+        undo: {
+            color: theme.palette.primary.light,
+        },
+    });
 
 class Notification extends React.Component {
     state = {
@@ -146,8 +147,8 @@ const mapStateToProps = state => ({
 });
 
 export default compose(
-    translate,
     withStyles(styles),
+    translate,
     connect(
         mapStateToProps,
         {
