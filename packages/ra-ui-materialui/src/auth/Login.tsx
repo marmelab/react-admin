@@ -9,13 +9,13 @@ import classnames from 'classnames';
 import Card from '@material-ui/core/Card';
 import Avatar from '@material-ui/core/Avatar';
 import {
+    MuiThemeProvider,
     createMuiTheme,
     withStyles,
     createStyles,
     WithStyles,
     Theme,
 } from '@material-ui/core/styles';
-import { MuiThemeProvider } from '@material-ui/core/styles';
 import LockIcon from '@material-ui/icons/Lock';
 import { StaticContext } from 'react-router';
 
