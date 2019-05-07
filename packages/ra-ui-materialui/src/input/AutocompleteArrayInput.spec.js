@@ -177,11 +177,11 @@ describe('<AutocompleteArrayInput />', () => {
         wrapper.find('input').simulate('focus');
         wrapper.find('input').simulate('change', { target: { value: 'Ma' } });
         expect(wrapper.state('suggestions')).toHaveLength(1);
-        expect(wrapper.find('ListItem')).toHaveLength(0);
+        expect(wrapper.find('ForwardRef(ListItem)')).toHaveLength(0);
 
         wrapper.find('input').simulate('change', { target: { value: 'Mal' } });
         expect(wrapper.state('suggestions')).toHaveLength(1);
-        expect(wrapper.find('ListItem')).toHaveLength(1);
+        expect(wrapper.find('ForwardRef(ListItem)')).toHaveLength(1);
     });
 
     describe('Fix issue #1410', () => {
@@ -320,7 +320,7 @@ describe('<AutocompleteArrayInput />', () => {
                 ],
             });
             wrapper.find('input').simulate('focus');
-            expect(wrapper.find('ListItem')).toHaveLength(2);
+            expect(wrapper.find('ForwardRef(ListItem)')).toHaveLength(2);
         });
 
         it('should resolve value from input value', () => {
@@ -387,12 +387,18 @@ describe('<AutocompleteArrayInput />', () => {
                         { id: 'F', name: 'Female' },
                     ]}
                     alwaysRenderSuggestions
-                    suggestionComponent={({
-                        suggestion,
-                        query,
-                        isHighlighted,
-                        ...props
-                    }) => <div {...props} data-field={suggestion.name} />}
+                    suggestionComponent={React.forwardRef(
+                        (
+                            { suggestion, query, isHighlighted, ...props },
+                            ref
+                        ) => (
+                            <div
+                                {...props}
+                                ref={ref}
+                                data-field={suggestion.name}
+                            />
+                        )
+                    )}
                 />,
                 { context, childContextTypes }
             );
@@ -570,11 +576,13 @@ describe('<AutocompleteArrayInput />', () => {
                 options={{
                     suggestionsContainerProps: {
                         disablePortal: true,
-                    }
+                    },
                 }}
             />,
             { context, childContextTypes }
         );
-        expect(wrapper.find('Popper').props().disablePortal).toEqual(true);
+        expect(
+            wrapper.find('ForwardRef(Popper)').props().disablePortal
+        ).toEqual(true);
     });
 });

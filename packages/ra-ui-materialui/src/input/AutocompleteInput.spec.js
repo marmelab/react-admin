@@ -358,7 +358,7 @@ describe('<AutocompleteInput />', () => {
                 ],
             });
             wrapper.find('input').simulate('focus');
-            expect(wrapper.find('ListItem')).toHaveLength(2);
+            expect(wrapper.find('ForwardRef(ListItem)')).toHaveLength(2);
         });
 
         it('should reset filter when input value changed', () => {
@@ -393,12 +393,18 @@ describe('<AutocompleteInput />', () => {
                         { id: 'F', name: 'Female' },
                     ]}
                     alwaysRenderSuggestions
-                    suggestionComponent={({
-                        suggestion,
-                        query,
-                        isHighlighted,
-                        ...props
-                    }) => <div {...props} data-field={suggestion.name} />}
+                    suggestionComponent={React.forwardRef(
+                        (
+                            { suggestion, query, isHighlighted, ...props },
+                            ref
+                        ) => (
+                            <div
+                                {...props}
+                                ref={ref}
+                                data-field={suggestion.name}
+                            />
+                        )
+                    )}
                 />,
                 { context, childContextTypes }
             );
@@ -548,6 +554,8 @@ describe('<AutocompleteInput />', () => {
             />,
             { context, childContextTypes }
         );
-        expect(wrapper.find('Popper').props().disablePortal).toEqual(true);
+        expect(
+            wrapper.find('ForwardRef(Popper)').props().disablePortal
+        ).toEqual(true);
     });
 });
