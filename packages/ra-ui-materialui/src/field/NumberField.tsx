@@ -66,6 +66,7 @@ export const NumberField: SFC<Props & InjectedFieldProps & TypographyProps> = ({
     return (
         <Typography
             variant="body2"
+            component="span"
             className={className}
             {...sanitizeRestProps(rest)}
         >

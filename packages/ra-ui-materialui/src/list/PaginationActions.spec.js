@@ -15,8 +15,10 @@ describe('<PaginationActions />', () => {
                 classes={{}}
             />
         );
-        expect(wrapper.find('WithStyles(Button)')).toHaveLength(0);
-        expect(wrapper.find('WithStyles(Typography)')).toHaveLength(0);
+        expect(wrapper.find('WithStyles(ForwardRef(Button))')).toHaveLength(0);
+        expect(wrapper.find('WithStyles(ForwardRef(Typography))')).toHaveLength(
+            0
+        );
     });
     it('should render action buttons when pagination is necessary', () => {
         const wrapper = shallow(
@@ -30,7 +32,7 @@ describe('<PaginationActions />', () => {
             />
         );
         // 1 2 3 next
-        expect(wrapper.find('WithStyles(Button)')).toHaveLength(4);
+        expect(wrapper.find('WithStyles(ForwardRef(Button))')).toHaveLength(4);
     });
 
     it('should skip page action buttons when there are too many', () => {
@@ -45,6 +47,6 @@ describe('<PaginationActions />', () => {
             />
         );
         // prev 1 ... 7 8 9 ... 15 next
-        expect(wrapper.find('WithStyles(Button)')).toHaveLength(7);
+        expect(wrapper.find('WithStyles(ForwardRef(Button))')).toHaveLength(7);
     });
 });

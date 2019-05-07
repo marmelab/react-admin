@@ -22,7 +22,9 @@ describe('<NumberInput />', () => {
         const wrapper = shallow(
             <NumberInput {...defaultProps} input={{ value: 12 }} />
         );
-        const TextFieldElement = wrapper.find('TextField');
+        const TextFieldElement = wrapper.find(
+            'WithStyles(ForwardRef(TextField))'
+        );
         assert.equal(TextFieldElement.length, 1);
         assert.equal(TextFieldElement.prop('value'), 12);
         assert.equal(TextFieldElement.prop('type'), 'number');
@@ -38,7 +40,7 @@ describe('<NumberInput />', () => {
             );
 
             wrapper
-                .find('TextField')
+                .find('WithStyles(ForwardRef(TextField))')
                 .simulate('change', { target: { value: 3 } });
             assert.equal(onChange.mock.calls[0][0], 3);
         });
@@ -50,7 +52,7 @@ describe('<NumberInput />', () => {
                 <NumberInput {...defaultProps} input={{ value: 2, onChange }} />
             );
             wrapper
-                .find('TextField')
+                .find('WithStyles(ForwardRef(TextField))')
                 .simulate('change', { target: { value: 3 } });
             assert.equal(onChange.mock.calls[0][0], 3);
         });
@@ -65,7 +67,7 @@ describe('<NumberInput />', () => {
             );
 
             wrapper
-                .find('TextField')
+                .find('WithStyles(ForwardRef(TextField))')
                 .simulate('change', { target: { value: '2' } });
             assert.equal(onChange.mock.calls[0][0], 2);
         });
@@ -80,7 +82,9 @@ describe('<NumberInput />', () => {
                 <NumberInput {...props} onFocus={onFocus} />
             );
 
-            wrapper.find('TextField').simulate('focus', 3);
+            wrapper
+                .find('WithStyles(ForwardRef(TextField))')
+                .simulate('focus', 3);
             assert.equal(onFocus.mock.calls[0][0], 3);
         });
 
@@ -91,7 +95,7 @@ describe('<NumberInput />', () => {
                 <NumberInput {...defaultProps} input={{ value: 2, onFocus }} />
             );
             wrapper
-                .find('TextField')
+                .find('WithStyles(ForwardRef(TextField))')
                 .simulate('focus', { target: { value: 3 } });
             assert.deepEqual(onFocus.mock.calls[0][0], {
                 target: { value: 3 },
@@ -107,7 +111,7 @@ describe('<NumberInput />', () => {
             const wrapper = shallow(<NumberInput {...props} onBlur={onBlur} />);
 
             wrapper
-                .find('TextField')
+                .find('WithStyles(ForwardRef(TextField))')
                 .simulate('blur', { target: { value: 3 } });
             assert.equal(onBlur.mock.calls[0][0], 3);
         });
@@ -125,7 +129,7 @@ describe('<NumberInput />', () => {
 
             const wrapper = shallow(<NumberInput {...props} />);
             wrapper
-                .find('TextField')
+                .find('WithStyles(ForwardRef(TextField))')
                 .simulate('blur', { target: { value: 3 } });
             assert.equal(onBlur.mock.calls[0][0], 3);
         });
@@ -143,7 +147,7 @@ describe('<NumberInput />', () => {
             );
 
             wrapper
-                .find('TextField')
+                .find('WithStyles(ForwardRef(TextField))')
                 .simulate('blur', { target: { value: '2' } });
             assert.equal(onBlur.mock.calls[0][0], 2);
         });
