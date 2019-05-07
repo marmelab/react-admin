@@ -8,7 +8,7 @@ import {
     withStyles,
     createStyles,
 } from '@material-ui/core/styles';
-import { ThemeProvider } from '@material-ui/styles';
+import { MuiThemeProvider } from '@material-ui/core/styles';
 import compose from 'recompose/compose';
 import { ComponentPropType } from 'ra-core';
 
@@ -187,9 +187,9 @@ class LayoutWithTheme extends Component {
     render() {
         const { theme, ...rest } = this.props;
         return (
-            <ThemeProvider theme={this.theme}>
+            <MuiThemeProvider theme={this.theme}>
                 <EnhancedLayout {...rest} />
-            </ThemeProvider>
+            </MuiThemeProvider>
         );
     }
 }

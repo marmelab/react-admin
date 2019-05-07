@@ -159,7 +159,7 @@ import { createHashHistory } from 'history';
 +import { TranslationProvider, Resource } from 'react-admin';
 import restProvider from 'ra-data-simple-rest';
 import defaultMessages from 'ra-language-english';
-+import { ThemeProvider } from '@material-ui/styles';
++import { MuiThemeProvider } from '@material-ui/core/styles';
 +import AppBar from '@material-ui/core/AppBar';
 +import Toolbar from '@material-ui/core/Toolbar';
 +import Typography from '@material-ui/core/Typography';
@@ -202,7 +202,7 @@ const App = () => (
 -           <Resource name="comments" list={CommentList} edit={CommentEdit} create={CommentCreate} />
 -           <Resource name="users" list={UserList} edit={UserEdit} create={UserCreate} />
 +       <TranslationProvider>
-+           <ThemeProvider>
++           <MuiThemeProvider>
 +               <Resource name="posts" intent="registration" />
 +               <Resource name="comments" intent="registration" />
 +               <Resource name="users" intent="registration" />
@@ -228,7 +228,7 @@ const App = () => (
 +                       <Route exact path="/users/:id" render={(routeProps) => <UsersEdit resource="users" {...routeProps} />} />
 +                   </Switch>
 +               </ConnectedRouter>
-+           </ThemeProvider>
++           </MuiThemeProvider>
 +       </TranslationProvider>
 -       </Admin>
     </Provider>
