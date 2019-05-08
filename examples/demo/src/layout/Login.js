@@ -11,7 +11,7 @@ import CardActions from '@material-ui/core/CardActions';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import TextField from '@material-ui/core/TextField';
 import { createMuiTheme, withStyles } from '@material-ui/core/styles';
-import { MuiThemeProvider } from '@material-ui/core/styles';
+import { ThemeProvider } from '@material-ui/core/styles';
 import LockIcon from '@material-ui/icons/Lock';
 
 import { Notification, useTranslate, translate, userLogin } from 'react-admin';
@@ -165,13 +165,13 @@ const enhance = compose(
 
 const EnhancedLogin = enhance(Login);
 
-// We need to put the MuiThemeProvider decoration in another component
+// We need to put the ThemeProvider decoration in another component
 // Because otherwise the withStyles() HOC used in EnhancedLogin won't get
 // the right theme
 const LoginWithTheme = props => (
-    <MuiThemeProvider theme={createMuiTheme(lightTheme)}>
+    <ThemeProvider theme={createMuiTheme(lightTheme)}>
         <EnhancedLogin {...props} />
-    </MuiThemeProvider>
+    </ThemeProvider>
 );
 
 export default LoginWithTheme;

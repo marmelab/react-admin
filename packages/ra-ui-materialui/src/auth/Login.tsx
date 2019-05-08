@@ -15,7 +15,7 @@ import {
     WithStyles,
     Theme,
 } from '@material-ui/core/styles';
-import { MuiThemeProvider } from '@material-ui/core/styles';
+import { ThemeProvider } from '@material-ui/styles';
 import LockIcon from '@material-ui/icons/Lock';
 import { StaticContext } from 'react-router';
 
@@ -121,7 +121,7 @@ class Login extends Component<
         } = this.props;
 
         return (
-            <MuiThemeProvider theme={this.theme}>
+            <ThemeProvider theme={this.theme}>
                 <div
                     className={classnames(classes.main, className)}
                     {...rest}
@@ -137,7 +137,7 @@ class Login extends Component<
                     </Card>
                     <Notification />
                 </div>
-            </MuiThemeProvider>
+            </ThemeProvider>
         );
     }
 }

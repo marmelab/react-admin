@@ -464,7 +464,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withStyles, createMuiTheme } from '@material-ui/core/styles';
-import { MuiThemeProvider } from '@material-ui/Core/styles';
+import { ThemeProvider } from '@material-ui/styles';
 import {
     AppBar,
     Menu,

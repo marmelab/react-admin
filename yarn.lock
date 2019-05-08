@@ -1672,7 +1672,7 @@
   dependencies:
     "@babel/runtime" "^7.2.0"
 
-"@material-ui/styles@^4.0.0-beta.1":
+"@material-ui/styles@^4.0.0-beta.0", "@material-ui/styles@^4.0.0-beta.1":
   version "4.0.0-beta.1"
   resolved "https://registry.yarnpkg.com/@material-ui/styles/-/styles-4.0.0-beta.1.tgz#a552fe402763f0579cbd39e79a9e42fbf6762139"
   integrity sha512-k41Xw6U6CHLNupWMCcc5w7AONNddsZVTUL7qe6nIMWZeBdLxX77N/nNZBq5sU2aFY5sShB8JwXK5X/xhDNfPgg==
