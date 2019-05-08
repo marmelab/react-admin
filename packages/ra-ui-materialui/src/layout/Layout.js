@@ -4,11 +4,11 @@ import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { withRouter } from 'react-router';
 import {
-    MuiThemeProvider,
     createMuiTheme,
     withStyles,
     createStyles,
 } from '@material-ui/core/styles';
+import { MuiThemeProvider } from '@material-ui/core/styles';
 import compose from 'recompose/compose';
 import { ComponentPropType } from 'ra-core';
 
