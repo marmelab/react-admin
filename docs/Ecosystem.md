@@ -51,6 +51,7 @@ See the [translation](./Translation.md#available-locales) page.
 * **[Xmysql](https://github.com/o1lab/xmysql)**: [soaserele/aor-xmysql](https://github.com/soaserele/aor-xmysql)
 * Local JSON: [marmelab/ra-data-fakerest](https://github.com/marmelab/ra-data-fakerest)
 * Simple REST: [marmelab/ra-data-simple-rest](https://github.com/marmelab/ra-data-simple-rest).
+* NestJS CRUD: [FusionWorks/react-admin-nestjsx-crud-dataprovider](https://github.com/FusionWorks/react-admin-nestjsx-crud-dataprovider)
 
 ## UI
 
