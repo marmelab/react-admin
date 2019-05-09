@@ -16,35 +16,36 @@ import LoadingIndicator from './LoadingIndicator';
 import UserMenu from './UserMenu';
 import Headroom from './Headroom';
 
-const styles = theme => createStyles({
-    toolbar: {
-        paddingRight: 24,
-    },
-    menuButton: {
-        marginLeft: '0.5em',
-        marginRight: '0.5em',
-    },
-    menuButtonIconClosed: {
-        transition: theme.transitions.create(['transform'], {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.leavingScreen,
-        }),
-        transform: 'rotate(0deg)',
-    },
-    menuButtonIconOpen: {
-        transition: theme.transitions.create(['transform'], {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.leavingScreen,
-        }),
-        transform: 'rotate(180deg)',
-    },
-    title: {
-        flex: 1,
-        textOverflow: 'ellipsis',
-        whiteSpace: 'nowrap',
-        overflow: 'hidden',
-    },
-});
+const styles = theme =>
+    createStyles({
+        toolbar: {
+            paddingRight: 24,
+        },
+        menuButton: {
+            marginLeft: '0.5em',
+            marginRight: '0.5em',
+        },
+        menuButtonIconClosed: {
+            transition: theme.transitions.create(['transform'], {
+                easing: theme.transitions.easing.sharp,
+                duration: theme.transitions.duration.leavingScreen,
+            }),
+            transform: 'rotate(0deg)',
+        },
+        menuButtonIconOpen: {
+            transition: theme.transitions.create(['transform'], {
+                easing: theme.transitions.easing.sharp,
+                duration: theme.transitions.duration.leavingScreen,
+            }),
+            transform: 'rotate(180deg)',
+        },
+        title: {
+            flex: 1,
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+            overflow: 'hidden',
+        },
+    });
 
 const AppBar = ({
     children,
@@ -87,7 +88,7 @@ const AppBar = ({
                 </IconButton>
                 {Children.count(children) === 0 ? (
                     <Typography
-                        variant="title"
+                        variant="h6"
                         color="inherit"
                         className={classes.title}
                         id="react-admin-title"

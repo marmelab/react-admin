@@ -463,7 +463,8 @@ For more custom layouts, write a component from scratch. It must contain a `{chi
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { withStyles, MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import { withStyles, createMuiTheme } from '@material-ui/core/styles';
+import { ThemeProvider } from '@material-ui/styles';
 import {
     AppBar,
     Menu,
@@ -494,7 +495,7 @@ const styles = theme => ({
         display: 'flex',
         flexDirection: 'column',
         flexGrow: 2,
-        padding: theme.spacing.unit * 3,
+        padding: theme.spacing(3),
         marginTop: '4em',
         paddingLeft: 5,
     },
@@ -580,7 +581,7 @@ const styles = {
 const MyAppBar = withStyles(styles)(({ classes, ...props }) => (
     <AppBar {...props}>
         <Typography
-            variant="title"
+            variant="h6"
             color="inherit"
             className={classes.title}
             id="react-admin-title"
@@ -635,7 +636,7 @@ import Typography from '@material-ui/core/Typography';
 const MyAppBar = props => (
     <AppBar {...props}>
         <Toolbar>
-            <Typography variant="title" id="react-admin-title" />
+            <Typography variant="h6" id="react-admin-title" />
         </Toolbar>
     </AppBar>
 );
@@ -849,7 +850,7 @@ const MyError = ({
         )}
         <div>
             <Button
-                variant="raised"
+                variant="contained"
                 icon={<History />}
                 onClick={() => history.go(-1)}
             >

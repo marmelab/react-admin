@@ -18,7 +18,7 @@ describe('<DatagridCell />', () => {
 
     it('should render as a mui <TableRowColumn /> component', () => {
         const wrapper = shallow(<DatagridCell field={<Field />} />);
-        const col = wrapper.find('WithStyles(TableCell)');
+        const col = wrapper.find('WithStyles(ForwardRef(TableCell))');
         assert.equal(col.length, 1);
     });
 

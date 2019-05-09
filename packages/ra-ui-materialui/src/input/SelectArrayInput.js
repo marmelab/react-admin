@@ -61,7 +61,7 @@ const styles = theme =>
             flexWrap: 'wrap',
         },
         chip: {
-            margin: theme.spacing.unit / 4,
+            margin: theme.spacing(1 / 4),
         },
         select: {
             height: 'auto',

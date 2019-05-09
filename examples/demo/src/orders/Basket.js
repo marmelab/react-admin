@@ -34,7 +34,7 @@ class Basket extends Component {
         if (!record) return null;
         const { basket } = record;
         return (
-            <Paper className={classes.container}>
+            <Paper className={classes.container} elevation={2}>
                 <Table>
                     <TableHead>
                         <TableRow>
@@ -190,8 +190,8 @@ const mapStateToProps = (state, props) => {
 };
 
 const enhance = compose(
-    translate,
     withStyles(styles),
+    translate,
     connect(
         mapStateToProps,
         {

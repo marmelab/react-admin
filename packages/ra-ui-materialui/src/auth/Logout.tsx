@@ -1,56 +1,51 @@
-import React, { SFC } from 'react';
+import React, { useCallback, FunctionComponent } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import compose from 'recompose/compose';
+// @ts-ignore
+import { useDispatch } from 'react-redux';
 import MenuItem, { MenuItemProps } from '@material-ui/core/MenuItem';
-import {
-    withStyles,
-    createStyles,
-    Theme,
-    WithStyles,
-} from '@material-ui/core/styles';
+import { makeStyles, Theme } from '@material-ui/core/styles';
+
 import ExitIcon from '@material-ui/icons/PowerSettingsNew';
 import classnames from 'classnames';
-import { useTranslate, userLogout as userLogoutAction } from 'ra-core';
+import { useTranslate, userLogout } from 'ra-core';
 
 interface Props {
+    className?: string;
     redirectTo?: string;
 }
 
-interface EnhancedProps extends WithStyles<typeof styles> {
-    userLogout: () => void;
-}
-
-const styles = (theme: Theme) =>
-    createStyles({
-        menuItem: {
-            color: theme.palette.text.secondary,
-        },
-        iconMenuPaddingStyle: {
-            paddingRight: '1.2em',
-        },
-        iconPaddingStyle: {
-            paddingRight: theme.spacing.unit,
-        },
-    });
+const useStyles = makeStyles((theme: Theme) => ({
+    menuItem: {
+        color: theme.palette.text.secondary,
+    },
+    iconMenuPaddingStyle: {
+        paddingRight: '1.2em',
+    },
+    iconPaddingStyle: {
+        paddingRight: theme.spacing(1),
+    },
+}));
 
 /**
  * Logout button component, to be passed to the Admin component
  *
  * Used for the Logout Menu item in the sidebar
  */
-const Logout: SFC<Props & EnhancedProps & MenuItemProps> = ({
-    classes,
-    className,
-    redirectTo,
-    userLogout,
-    ...rest
-}) => {
+const LogoutWithRef: FunctionComponent<
+    Props & MenuItemProps
+> = React.forwardRef(function Logout(props, ref) {
+    const { className, redirectTo, ...rest } = props;
+    const classes = useStyles();
     const translate = useTranslate();
+    const dispatch = useDispatch();
+    const logout = useCallback(() => dispatch(userLogout(redirectTo)), [
+        redirectTo,
+    ]);
     return (
         <MenuItem
             className={classnames('logout', classes.menuItem, className)}
-            onClick={userLogout}
+            onClick={logout}
+            ref={ref}
             {...rest}
         >
             <span className={classes.iconMenuPaddingStyle}>
@@ -59,28 +54,11 @@ const Logout: SFC<Props & EnhancedProps & MenuItemProps> = ({
             {translate('ra.auth.logout')}
         </MenuItem>
     );
-};
-
-const mapDispatchToProps = (dispatch, { redirectTo }) => ({
-    userLogout: () => dispatch(userLogoutAction(redirectTo)),
 });
 
-const enhance = compose<
-    Props & EnhancedProps & MenuItemProps,
-    Props & MenuItemProps
->(
-    connect(
-        undefined,
-        mapDispatchToProps
-    ),
-    withStyles(styles)
-);
-
-const EnhancedLogout = enhance(Logout);
-
-EnhancedLogout.propTypes = {
+LogoutWithRef.propTypes = {
     className: PropTypes.string,
     redirectTo: PropTypes.string,
 };
 
-export default EnhancedLogout;
+export default LogoutWithRef;

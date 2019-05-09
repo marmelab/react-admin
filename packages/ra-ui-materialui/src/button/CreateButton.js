@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import onlyUpdateForKeys from 'recompose/onlyUpdateForKeys';
 import MuiButton from '@material-ui/core/Button';
+import Fab from '@material-ui/core/Fab';
 import { withStyles, createStyles } from '@material-ui/core/styles';
 import ContentAdd from '@material-ui/icons/Add';
 import compose from 'recompose/compose';
@@ -41,9 +42,8 @@ const CreateButton = ({
     return (
         <Responsive
             small={
-                <MuiButton
+                <Fab
                     component={Link}
-                    variant="fab"
                     color="primary"
                     className={classnames(classes.floating, className)}
                     to={`${basePath}/create`}
@@ -51,7 +51,7 @@ const CreateButton = ({
                     {...rest}
                 >
                     {icon}
-                </MuiButton>
+                </Fab>
             }
             medium={
                 <Button

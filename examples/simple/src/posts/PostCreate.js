@@ -61,19 +61,19 @@ const PostCreateToolbar = props => (
             label="post.action.save_and_show"
             redirect="show"
             submitOnEnter={false}
-            variant="flat"
+            variant="text"
         />
         <SaveButton
             label="post.action.save_and_add"
             redirect={false}
             submitOnEnter={false}
-            variant="flat"
+            variant="text"
         />
         <SaveWithNoteButton
             label="post.action.save_with_average_note"
             redirect="show"
             submitOnEnter={false}
-            variant="flat"
+            variant="text"
         />
     </Toolbar>
 );

@@ -34,7 +34,7 @@ const CustomUserMenu = props => {
 const CustomAppBar = ({ classes, ...props }) => (
     <AppBar {...props} userMenu={<CustomUserMenu />}>
         <Typography
-            variant="title"
+            variant="h6"
             color="inherit"
             className={classes.title}
             id="react-admin-title"

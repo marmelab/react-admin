@@ -8,7 +8,7 @@ const PaginationLimit = () => {
     const translate = useTranslate();
     return (
         <CardContent>
-            <Typography variant="body1">
+            <Typography variant="body2">
                 {translate('ra.navigation.no_results')}
             </Typography>
         </CardContent>

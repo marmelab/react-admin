@@ -15,33 +15,40 @@ import classnames from 'classnames';
 
 import { addField, translate, FieldTitle } from 'ra-core';
 
-const styles = theme => createStyles({
-    container: {
-        flexGrow: 1,
-        position: 'relative',
-    },
-    root: {},
-    suggestionsContainerOpen: {
-        position: 'absolute',
-        marginBottom: theme.spacing.unit * 3,
-        zIndex: 2,
-    },
-    suggestionsPaper: {
-        maxHeight: '50vh',
-        overflowY: 'auto',
-    },
-    suggestion: {
-        display: 'block',
-        fontFamily: theme.typography.fontFamily,
-    },
-    suggestionText: { fontWeight: 300 },
-    highlightedSuggestionText: { fontWeight: 500 },
-    suggestionsList: {
-        margin: 0,
-        padding: 0,
-        listStyleType: 'none',
-    },
-});
+const styles = theme =>
+    createStyles({
+        container: {
+            flexGrow: 1,
+            position: 'relative',
+        },
+        root: {},
+        suggestionsContainerOpen: {
+            position: 'absolute',
+            marginBottom: theme.spacing(3),
+            zIndex: 2,
+        },
+        suggestionsPaper: {
+            maxHeight: '50vh',
+            overflowY: 'auto',
+        },
+        suggestion: {
+            display: 'block',
+            fontFamily: theme.typography.fontFamily,
+        },
+        suggestionText: { fontWeight: 300 },
+        highlightedSuggestionText: { fontWeight: 500 },
+        suggestionsList: {
+            margin: 0,
+            padding: 0,
+            listStyleType: 'none',
+        },
+    });
+
+const DefaultSuggestionComponent = React.forwardRef(
+    ({ suggestion, query, isHighlighted, ...props }, ref) => (
+        <div {...props} ref={ref} />
+    )
+);
 
 /**
  * An Input component for an autocomplete field, using an array of objects for the options
@@ -104,7 +111,6 @@ export class AutocompleteInput extends React.Component {
 
     ignoreNextChoicesUpdate = false;
     inputEl = null;
-    anchorEl = null;
 
     componentWillMount() {
         const selectedItem = this.getSelectedItem(
@@ -259,7 +265,6 @@ export class AutocompleteInput extends React.Component {
         // but Autosuggest also needs this reference (it provides the ref prop)
         const storeInputRef = input => {
             this.inputEl = input;
-            this.updateAnchorEl();
             ref(input);
         };
 
@@ -294,27 +299,6 @@ export class AutocompleteInput extends React.Component {
         );
     };
 
-    updateAnchorEl() {
-        if (!this.inputEl) {
-            return;
-        }
-
-        const inputPosition = this.inputEl.getBoundingClientRect();
-
-        if (!this.anchorEl) {
-            this.anchorEl = { getBoundingClientRect: () => inputPosition };
-        } else {
-            const anchorPosition = this.anchorEl.getBoundingClientRect();
-
-            if (
-                anchorPosition.x !== inputPosition.x ||
-                anchorPosition.y !== inputPosition.y
-            ) {
-                this.anchorEl = { getBoundingClientRect: () => inputPosition };
-            }
-        }
-    }
-
     renderSuggestionsContainer = autosuggestOptions => {
         const {
             containerProps: { className, ...containerProps },
@@ -322,19 +306,17 @@ export class AutocompleteInput extends React.Component {
         } = autosuggestOptions;
         const { classes = {}, options } = this.props;
 
-        // Force the Popper component to reposition the popup only when this.inputEl is moved to another location
-        this.updateAnchorEl();
-
         return (
             <Popper
                 className={className}
                 open={Boolean(children)}
-                anchorEl={this.anchorEl}
+                anchorEl={this.inputEl}
                 placement="bottom-start"
                 {...options.suggestionsContainerProps}
             >
                 <Paper
                     square
+                    elevation={2}
                     className={classes.suggestionsPaper}
                     {...containerProps}
                 >
@@ -343,13 +325,6 @@ export class AutocompleteInput extends React.Component {
             </Popper>
         );
     };
-
-    renderSuggestionComponent = ({
-        suggestion,
-        query,
-        isHighlighted,
-        ...props
-    }) => <div {...props} />;
 
     renderSuggestion = (suggestion, { query, isHighlighted }) => {
         const label = this.getSuggestionText(suggestion);
@@ -360,9 +335,7 @@ export class AutocompleteInput extends React.Component {
         return (
             <MenuItem
                 selected={isHighlighted}
-                component={
-                    suggestionComponent || this.renderSuggestionComponent
-                }
+                component={suggestionComponent || DefaultSuggestionComponent}
                 suggestion={suggestion}
                 query={query}
                 isHighlighted={isHighlighted}

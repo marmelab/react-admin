@@ -3,8 +3,8 @@ import Typography from '@material-ui/core/Typography';
 
 const Aside = () => (
     <div style={{ width: 200, margin: '1em' }}>
-        <Typography variant="title">App Users</Typography>
-        <Typography variant="body1">
+        <Typography variant="h6">App Users</Typography>
+        <Typography variant="body2">
             Eiusmod adipisicing tempor duis qui. Ullamco aliqua tempor
             incididunt aliquip aliquip qui ad minim aliqua. Aute et magna quis
             pariatur irure sunt. Aliquip velit consequat dolore ullamco laborum

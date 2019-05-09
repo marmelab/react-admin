@@ -25,6 +25,7 @@ const RichTextField: SFC<Props & InjectedFieldProps & TypographyProps> = ({
         return (
             <Typography
                 className={className}
+                variant="body2"
                 component="span"
                 {...sanitizeRestProps(rest)}
             >
@@ -36,6 +37,7 @@ const RichTextField: SFC<Props & InjectedFieldProps & TypographyProps> = ({
     return (
         <Typography
             className={className}
+            variant="body2"
             component="span"
             {...sanitizeRestProps(rest)}
         >

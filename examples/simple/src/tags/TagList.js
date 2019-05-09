@@ -23,7 +23,7 @@ const TagDragPreview = props => (
 
 const CustomNodeActions = props => (
     <NodeActions {...props}>
-        <SaveButton variant="flat" />
+        <SaveButton variant="text" />
         <IgnoreFormProps>
             <EditButton />
             <ShowButton />

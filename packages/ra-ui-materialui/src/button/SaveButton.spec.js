@@ -10,7 +10,7 @@ describe('<SaveButton />', () => {
         const wrapper = shallow(
             <SaveButton raised={true} translate={translate} />
         );
-        const ButtonElement = wrapper.find('WithStyles(Button)');
+        const ButtonElement = wrapper.find('WithStyles(ForwardRef(Button))');
         expect(ButtonElement.length).toEqual(1);
         expect(ButtonElement.at(0).prop('raised')).toEqual(true);
     });
@@ -19,7 +19,7 @@ describe('<SaveButton />', () => {
         const wrapper = shallow(
             <SaveButton raised={false} translate={translate} />
         );
-        const ButtonElement = wrapper.find('WithStyles(Button)');
+        const ButtonElement = wrapper.find('WithStyles(ForwardRef(Button))');
         expect(ButtonElement.length).toEqual(1);
         expect(ButtonElement.at(0).prop('raised')).toEqual(false);
     });

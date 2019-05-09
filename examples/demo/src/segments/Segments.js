@@ -15,7 +15,7 @@ const Segments = () => {
     return (
         <Card>
             <Title title={translate('resources.segments.name')} />
-            <Table>
+            <Table size="small">
                 <TableHead>
                     <TableRow>
                         <TableCell>

@@ -1,23 +1,17 @@
 import React, { Fragment } from 'react';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
+import MenuItem from '@material-ui/core/MenuItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
+import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import Collapse from '@material-ui/core/Collapse';
-import { withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 
 import { useTranslate } from 'react-admin';
 
-const styles = {
-    listItem: {
-        paddingLeft: '1rem',
-    },
-    listItemText: {
-        paddingLeft: 2,
-        fontSize: '1rem',
-    },
+const useStyles = makeStyles(theme => ({
+    icon: { minWidth: theme.spacing(5) },
     sidebarIsOpen: {
         paddingLeft: 25,
         transition: 'padding-left 195ms cubic-bezier(0.4, 0, 0.6, 1) 0ms',
@@ -26,7 +20,7 @@ const styles = {
         paddingLeft: 0,
         transition: 'padding-left 195ms cubic-bezier(0.4, 0, 0.6, 1) 0ms',
     },
-};
+}));
 
 const SubMenu = ({
     handleToggle,
@@ -34,26 +28,20 @@ const SubMenu = ({
     isOpen,
     name,
     icon,
-    classes,
     children,
 }) => {
     const translate = useTranslate();
+    const classes = useStyles();
     return (
         <Fragment>
-            <ListItem
-                dense
-                button
-                onClick={handleToggle}
-                className={classes.listItem}
-            >
-                <ListItemIcon>{isOpen ? <ExpandMore /> : icon}</ListItemIcon>
-                <ListItemText
-                    inset
-                    primary={isOpen ? translate(name) : ''}
-                    secondary={isOpen ? '' : translate(name)}
-                    className={classes.listItemText}
-                />
-            </ListItem>
+            <MenuItem dense button onClick={handleToggle}>
+                <ListItemIcon className={classes.icon}>
+                    {isOpen ? <ExpandMore /> : icon}
+                </ListItemIcon>
+                <Typography variant="inherit" color="textSecondary">
+                    {translate(name)}
+                </Typography>
+            </MenuItem>
             <Collapse in={isOpen} timeout="auto" unmountOnExit>
                 <List
                     dense
@@ -73,4 +61,4 @@ const SubMenu = ({
     );
 };
 
-export default withStyles(styles)(SubMenu);
+export default SubMenu;

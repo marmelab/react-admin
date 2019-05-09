@@ -83,7 +83,7 @@ If you need actions on each node, use the actions prop on either the NodeView or
 
     const MyNodeActions = props => (
         <NodeActions {...props}>
-            <SaveButton variant="flat" />
+            <SaveButton variant="text" />
             <IgnoreFormProps>
                 <EditButton />
                 <ShowButton />

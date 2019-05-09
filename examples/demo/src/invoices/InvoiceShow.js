@@ -23,15 +23,15 @@ const InvoiceShow = props => (
             record && (
                 <Card style={{ width: 600, margin: 'auto' }}>
                     <CardContent>
-                        <Grid container spacing={16}>
+                        <Grid container spacing={2}>
                             <Grid item xs={6}>
-                                <Typography variant="title" gutterBottom>
+                                <Typography variant="h6" gutterBottom>
                                     Posters Galore
                                 </Typography>
                             </Grid>
                             <Grid item xs={6}>
                                 <Typography
-                                    variant="title"
+                                    variant="h6"
                                     gutterBottom
                                     align="right"
                                 >
@@ -39,7 +39,7 @@ const InvoiceShow = props => (
                                 </Typography>
                             </Grid>
                         </Grid>
-                        <Grid container spacing={16}>
+                        <Grid container spacing={2}>
                             <Grid item xs={12} align="right">
                                 <ReferenceField
                                     resource="invoices"
@@ -54,10 +54,10 @@ const InvoiceShow = props => (
                             </Grid>
                         </Grid>
                         <div style={{ height: 20 }}>&nbsp;</div>
-                        <Grid container spacing={16}>
+                        <Grid container spacing={2}>
                             <Grid item xs={6}>
                                 <Typography
-                                    variant="title"
+                                    variant="h6"
                                     gutterBottom
                                     align="center"
                                 >
@@ -70,7 +70,7 @@ const InvoiceShow = props => (
 
                             <Grid item xs={5}>
                                 <Typography
-                                    variant="title"
+                                    variant="h6"
                                     gutterBottom
                                     align="center"
                                 >
