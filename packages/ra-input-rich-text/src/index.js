@@ -59,11 +59,11 @@ export class RichTextInput extends Component {
     }
 
     shouldComponentUpdate(nextProps) {
-        return nextProps.input.value !== this.lastValueChange;
+        return nextProps.input.value !== this.props.input.value;
     }
 
-    componentDidUpdate(prevProps) {
-        if (prevProps.input.value !== this.props.input.value) {
+    componentDidUpdate() {
+        if (this.lastValueChange !== this.props.input.value) {
             const selection = this.quill.getSelection();
             this.quill.setContents(
                 this.quill.clipboard.convert(this.props.input.value)
