@@ -91,15 +91,15 @@ export class RichTextInput extends Component {
     };
 
     render() {
-        const { error, helperText = false } = this.props.meta;
+        const { touched, error, helperText = false } = this.props.meta;
         return (
             <FormControl
-                error={error !== null && error != undefined}
+                error={!!(touched && error)}
                 fullWidth={this.props.fullWidth}
                 className="ra-rich-text-input"
             >
                 <div data-testid="quill" ref={this.updateDivRef} />
-                {error && <FormHelperText error>{error}</FormHelperText>}
+                {touched && error && <FormHelperText error>{error}</FormHelperText>}
                 {helperText && <FormHelperText>{helperText}</FormHelperText>}
             </FormControl>
         );
