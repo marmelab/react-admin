@@ -865,6 +865,13 @@ PriceField.defaultProps = {
 ```
 {% endraw %}
 
+
+## Third-Party Components
+
+You can find components for react-admin in third-party repositories.
+
+* [procoders/ra-input-json](https://github.com/procoders/ra-input-json): a JSONEView component, useful for editing JSON based on [react-json-editor-ajrm](https://github.com/AndrewRedican/react-json-editor-ajrm)
+
 ## Writing Your Own Field Component
 
 If you don't find what you need in the list above, you can write your own Field component. It must be a regular React component, accepting not only a `source` attribute, but also a `record` attribute. React-admin will inject the `record` based on the API response data at render time. The field component only needs to find the `source` in the `record` and display it.
