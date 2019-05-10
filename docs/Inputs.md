@@ -1252,6 +1252,7 @@ You can find components for react-admin in third-party repositories.
 * [vascofg/react-admin-color-input](https://github.com/vascofg/react-admin-color-input): a color input using [React Color](http://casesandberg.github.io/react-color/), a collection of color pickers.
 * [LoicMahieu/aor-tinymce-input](https://github.com/LoicMahieu/aor-tinymce-input): a TinyMCE component, useful for editing HTML
 * [vascofg/react-admin-date-inputs](https://github.com/vascofg/react-admin-date-inputs): a collection of Date Inputs, based on [material-ui-pickers](https://material-ui-pickers.firebaseapp.com/)
+* [procoders/ra-input-json](https://github.com/procoders/ra-input-json): a JSONEditor component, useful for editing JSON based on [react-json-editor-ajrm](https://github.com/AndrewRedican/react-json-editor-ajrm)
 
 ## Writing Your Own Input Component
 
