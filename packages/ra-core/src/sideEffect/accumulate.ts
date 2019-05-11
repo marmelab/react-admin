@@ -1,5 +1,4 @@
-import { delay } from 'redux-saga';
-import { call, cancel, fork, put, takeEvery } from 'redux-saga/effects';
+import { call, cancel, delay, fork, put, takeEvery } from 'redux-saga/effects';
 
 /**
  * Distinct reducer on ids
@@ -28,7 +27,7 @@ export const finalizeFactory = (tasks, accumulations) =>
      */
     function* finalize(key, actionCreator) {
         // combined with cancel(), this debounces the calls
-        yield call(delay, 50);
+        yield delay(50);
 
         // Get the latest accumulated value for the provided key
         const accumulatedValue = accumulations[key];

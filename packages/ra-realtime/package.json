@@ -39,13 +39,13 @@
         "ra-core": "^2.5.0",
         "react-admin": "^2.5.3",
         "react-router": "^4.2.0",
-        "redux-saga": "~0.16.0"
+        "redux-saga": "^1.0.0"
     },
     "devDependencies": {
         "connected-react-router": "^6.4.0",
         "cross-env": "^5.2.0",
         "react-router": "^4.2.0",
-        "redux-saga": "~0.16.0",
+        "redux-saga": "^1.0.0",
         "rimraf": "^2.6.3"
     }
 }
