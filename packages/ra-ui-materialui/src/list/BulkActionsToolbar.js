@@ -1,5 +1,6 @@
 import React, { Children, cloneElement } from 'react';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { withStyles, createStyles } from '@material-ui/core/styles';
@@ -11,10 +12,6 @@ import CardActions from '../layout/CardActions';
 const styles = theme =>
     createStyles({
         toolbar: {
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
             zIndex: 3,
             color:
                 theme.palette.type === 'light'
@@ -25,22 +22,16 @@ const styles = theme =>
                 theme.palette.type === 'light'
                     ? lighten(theme.palette.primary.light, 0.85)
                     : theme.palette.primary.dark,
-            minHeight: 64,
-            height: 64,
+            minHeight: theme.spacing(8),
+            height: theme.spacing(8),
             transition: `${theme.transitions.create(
                 'height'
             )}, ${theme.transitions.create('min-height')}`,
         },
-        toolbarCollapsed: {
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            zIndex: 3,
+        collapsed: {
             minHeight: 0,
             height: 0,
             overflowY: 'hidden',
-            transition: theme.transitions.create('all'),
         },
         title: {
             flex: '0 0 auto',
@@ -59,10 +50,12 @@ const BulkActionsToolbar = ({
 }) => {
     const translate = useTranslate();
 
-    return selectedIds.length > 0 ? (
+    return (
         <Toolbar
             data-test="bulk-actions-toolbar"
-            className={classes.toolbar}
+            className={classnames(classes.toolbar, {
+                [classes.collapsed]: selectedIds.length == 0,
+            })}
             {...sanitizeListRestProps(rest)}
         >
             <div className={classes.title}>
@@ -84,8 +77,6 @@ const BulkActionsToolbar = ({
                 )}
             </CardActions>
         </Toolbar>
-    ) : (
-        <Toolbar className={classes.toolbarCollapsed} />
     );
 };
 

@@ -6,6 +6,8 @@ import { withStyles, createStyles } from '@material-ui/core/styles';
 const styles = createStyles({
     toolbar: {
         justifyContent: 'space-between',
+        paddingLeft: 0,
+        paddingRight: 0,
     },
 });
 

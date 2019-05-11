@@ -4,7 +4,11 @@ import PropTypes from 'prop-types';
 import Card from '@material-ui/core/Card';
 import classnames from 'classnames';
 import { withStyles, createStyles } from '@material-ui/core/styles';
-import { ListController, getListControllerProps } from 'ra-core';
+import {
+    ListController,
+    ComponentPropType,
+    getListControllerProps,
+} from 'ra-core';
 
 import Title from '../layout/Title';
 import ListToolbar from './ListToolbar';
@@ -16,13 +20,20 @@ import defaultTheme from '../defaultTheme';
 
 const DefaultBulkActionButtons = props => <BulkDeleteButton {...props} />;
 
-export const styles = createStyles({
-    root: {
+export const styles = createStyles(theme => ({
+    root: {},
+    main: {
         display: 'flex',
     },
-    card: {
+    content: {
+        marginTop: 0,
+        transition: theme.transitions.create('margin-top'),
         position: 'relative',
         flex: '1 1 auto',
+    },
+    bulkActionsDisplayed: {
+        marginTop: -theme.spacing(8),
+        transition: theme.transitions.create('margin-top'),
     },
     actions: {
         zIndex: 2,
@@ -30,13 +41,8 @@ export const styles = createStyles({
         justifyContent: 'flex-end',
         flexWrap: 'wrap',
     },
-    header: {
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignSelf: 'flex-start',
-    },
     noResults: { padding: 20 },
-});
+}));
 
 const sanitizeRestProps = ({
     actions,
@@ -98,51 +104,45 @@ const sanitizeRestProps = ({
     ...rest
 }) => rest;
 
-export const ListView = withStyles(styles)(({
-    // component props
-    actions,
-    aside,
-    filter,
-    filters,
-    bulkActions, // deprecated
-    bulkActionButtons,
-    pagination,
-    // overridable by user
-    children,
-    className,
-    classes,
-    exporter,
-    title,
-    ...rest
-}) => {
+export const ListView = withStyles(styles)(({ // component props
+    actions, aside, filter, filters, bulkActions, bulkActionButtons, pagination, children, className, classes, component, exporter, title, ...rest }) => {
+    // overridable by user // deprecated
     const { defaultTitle, version } = rest;
     const controllerProps = getListControllerProps(rest);
+    const Content = component;
     return (
         <div
             className={classnames('list-page', classes.root, className)}
             {...sanitizeRestProps(rest)}
         >
             <Title title={title} defaultTitle={defaultTitle} />
-            <Card className={classes.card}>
-                {bulkActions !== false &&
-                    bulkActionButtons !== false &&
-                    bulkActionButtons &&
-                    !bulkActions && (
-                        <BulkActionsToolbar {...controllerProps}>
-                            {bulkActionButtons}
-                        </BulkActionsToolbar>
-                    )}
-                {(filters || actions) && (
-                    <ListToolbar
-                        filters={filters}
-                        {...controllerProps}
-                        actions={actions}
-                        bulkActions={bulkActions}
-                        exporter={exporter}
-                        permanentFilter={filter}
-                    />
-                )}
-                <div key={version}>
+
+            {(filters || actions) && (
+                <ListToolbar
+                    filters={filters}
+                    {...controllerProps}
+                    actions={actions}
+                    bulkActions={bulkActions}
+                    exporter={exporter}
+                    permanentFilter={filter}
+                />
+            )}
+            <div className={classes.main}>
+                <Content
+                    className={classnames(classes.content, {
+                        [classes.bulkActionsDisplayed]:
+                            controllerProps.selectedIds.length > 0,
+                    })}
+                    key={version}
+                >
+                    {bulkActions !== false &&
+                        bulkActionButtons !== false &&
+                        bulkActionButtons &&
+                        !bulkActions && (
+                            <BulkActionsToolbar {...controllerProps}>
+                                {bulkActionButtons}
+                            </BulkActionsToolbar>
+                        )}
                     {children &&
                         cloneElement(Children.only(children), {
                             ...controllerProps,
@@ -151,9 +151,9 @@ export const ListView = withStyles(styles)(({
                                 bulkActionButtons !== false,
                         })}
                     {pagination && cloneElement(pagination, controllerProps)}
-                </div>
-            </Card>
-            {aside && cloneElement(aside, controllerProps)}
+                </Content>
+                {aside && cloneElement(aside, controllerProps)}
+            </div>
         </div>
     );
 });
@@ -167,6 +167,7 @@ ListView.propTypes = {
     children: PropTypes.element,
     className: PropTypes.string,
     classes: PropTypes.object,
+    component: ComponentPropType,
     currentSort: PropTypes.shape({
         field: PropTypes.string,
         order: PropTypes.string,
@@ -205,6 +206,7 @@ ListView.propTypes = {
 ListView.defaultProps = {
     actions: <DefaultActions />,
     classes: {},
+    component: Card,
     bulkActionButtons: <DefaultBulkActionButtons />,
     pagination: <DefaultPagination />,
 };
