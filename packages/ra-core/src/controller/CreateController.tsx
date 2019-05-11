@@ -1,16 +1,16 @@
-import { Component, ReactNode, ComponentType } from 'react';
-import { connect } from 'react-redux';
-import compose from 'recompose/compose';
+import { ReactNode, useCallback, FunctionComponent } from 'react';
+// @ts-ignore
+import { useDispatch, useSelector } from 'react-redux';
 import inflection from 'inflection';
 import { parse } from 'query-string';
 
-import withTranslate from '../i18n/translate';
-import { crudCreate as crudCreateAction } from '../actions';
-import checkMinimumRequiredProps from './checkMinimumRequiredProps';
+import { crudCreate } from '../actions';
+import { useCheckMinimumRequiredProps } from './checkMinimumRequiredProps';
 import { Location } from 'history';
 import { match as Match } from 'react-router';
-import { Record, Translate, Dispatch } from '../types';
+import { Record, Translate, ReduxState } from '../types';
 import { RedirectionSideEffect } from '../sideEffect';
+import { useTranslate } from '../i18n';
 
 interface ChildrenFuncParams {
     isLoading: boolean;
@@ -36,11 +36,22 @@ interface Props {
     resource: string;
 }
 
-interface EnhancedProps {
-    crudCreate: Dispatch<typeof crudCreateAction>;
-    isLoading: boolean;
-    translate: Translate;
-}
+export const getRecord = ({ state, search }, record: any = {}) =>
+    state && state.record
+        ? state.record
+        : search
+        ? parse(search, { arrayFormat: 'bracket' })
+        : record;
+
+const getDefaultRedirectRoute = (hasShow, hasEdit) => {
+    if (hasEdit) {
+        return 'edit';
+    }
+    if (hasShow) {
+        return 'show';
+    }
+    return 'list';
+};
 
 /**
  * Page component for the Create view
@@ -83,95 +94,57 @@ interface EnhancedProps {
  *     );
  *     export default App;
  */
-export class UnconnectedCreateController extends Component<
-    Props & EnhancedProps
-> {
-    public static defaultProps: Partial<Props> = {
-        record: {},
-    };
+const CreateController = (props: Props) => {
+    useCheckMinimumRequiredProps(
+        'Create',
+        ['basePath', 'location', 'resource'],
+        props
+    );
+    const {
+        basePath,
+        children,
+        resource,
+        location,
+        record = {},
+        hasShow,
+        hasEdit,
+    } = props;
 
-    private record: Partial<Record>;
+    const translate = useTranslate();
+    const dispatch = useDispatch();
+    const recordToUse = getRecord(location, record);
+    const isLoading = useSelector(
+        (state: ReduxState) => state.admin.loading > 0
+    );
 
-    constructor(props) {
-        super(props);
-        const {
-            location: { state, search },
-            record,
-        } = this.props;
-        this.record =
-            state && state.record
-                ? state.record
-                : search
-                ? parse(search, { arrayFormat: 'bracket' })
-                : record;
+    const save = useCallback(
+        (data: Partial<Record>, redirect: RedirectionSideEffect) => {
+            dispatch(crudCreate(resource, data, basePath, redirect));
+        },
+        [resource, basePath]
+    );
+
+    if (!children) {
+        return null;
     }
 
-    defaultRedirectRoute() {
-        const { hasShow, hasEdit } = this.props;
-        if (hasEdit) {
-            return 'edit';
-        }
-        if (hasShow) {
-            return 'show';
-        }
-        return 'list';
-    }
+    const resourceName = translate(`resources.${resource}.name`, {
+        smart_count: 1,
+        _: inflection.humanize(inflection.singularize(resource)),
+    });
+    const defaultTitle = translate('ra.page.create', {
+        name: `${resourceName}`,
+    });
+    return children({
+        isLoading,
+        defaultTitle,
+        save,
+        resource,
+        basePath,
+        record: recordToUse,
+        redirect: getDefaultRedirectRoute(hasShow, hasEdit),
+        translate,
+    });
+};
 
-    save = (record: Partial<Record>, redirect: RedirectionSideEffect) => {
-        this.props.crudCreate(
-            this.props.resource,
-            record,
-            this.props.basePath,
-            redirect
-        );
-    };
-
-    render() {
-        const {
-            basePath,
-            children,
-            isLoading,
-            resource,
-            translate,
-        } = this.props;
-
-        if (!children) {
-            return null;
-        }
-
-        const resourceName = translate(`resources.${resource}.name`, {
-            smart_count: 1,
-            _: inflection.humanize(inflection.singularize(resource)),
-        });
-        const defaultTitle = translate('ra.page.create', {
-            name: `${resourceName}`,
-        });
-        return children({
-            isLoading,
-            defaultTitle,
-            save: this.save,
-            resource,
-            basePath,
-            record: this.record,
-            redirect: this.defaultRedirectRoute(),
-            translate,
-        });
-    }
-}
-
-function mapStateToProps(state) {
-    return {
-        isLoading: state.admin.loading > 0,
-    };
-}
-
-const CreateController = compose(
-    checkMinimumRequiredProps('Create', ['basePath', 'location', 'resource']),
-    connect(
-        mapStateToProps,
-        { crudCreate: crudCreateAction }
-    ),
-    withTranslate
-)(UnconnectedCreateController);
-
-export default CreateController as ComponentType<Props>;
+export default CreateController;

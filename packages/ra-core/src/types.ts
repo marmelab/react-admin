@@ -46,6 +46,7 @@ export interface ReduxState {
     admin: {
         ui: {
             optimistic: boolean;
+            viewVersion: number;
         };
         resources: {
             [name: string]: {

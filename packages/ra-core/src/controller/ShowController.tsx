@@ -1,11 +1,11 @@
-import { Component, ReactNode, ComponentType } from 'react';
-import { connect } from 'react-redux';
-import compose from 'recompose/compose';
+import { ReactNode, useEffect } from 'react';
+// @ts-ignore
+import { useDispatch, useSelector } from 'react-redux';
 import inflection from 'inflection';
-import withTranslate from '../i18n/translate';
-import { crudGetOne as crudGetOneAction } from '../actions';
-import checkMinimumRequiredProps from './checkMinimumRequiredProps';
-import { Translate, Record, Dispatch, Identifier } from '../types';
+import { crudGetOne } from '../actions';
+import { useCheckMinimumRequiredProps } from './checkMinimumRequiredProps';
+import { Translate, Record, Identifier, ReduxState } from '../types';
+import { useTranslate } from '../i18n';
 
 interface ChildrenFuncParams {
     isLoading: boolean;
@@ -24,16 +24,9 @@ interface Props {
     hasEdit?: boolean;
     hasShow?: boolean;
     hasList?: boolean;
+    id: Identifier;
     isLoading: boolean;
     resource: string;
-}
-
-interface EnhancedProps {
-    crudGetOne: Dispatch<typeof crudGetOneAction>;
-    id: Identifier;
-    record?: Record;
-    translate: Translate;
-    version: number;
 }
 
 /**
@@ -78,81 +71,52 @@ interface EnhancedProps {
  *     );
  *     export default App;
  */
-export class UnconnectedShowController extends Component<
-    Props & EnhancedProps
-> {
-    componentDidMount() {
-        this.updateData();
-    }
+const ShowController = (props: Props) => {
+    useCheckMinimumRequiredProps('Show', ['basePath', 'resource'], props);
+    const { basePath, children, id, resource } = props;
+    const translate = useTranslate();
+    const dispatch = useDispatch();
 
-    componentWillReceiveProps(nextProps: Props & EnhancedProps) {
-        if (
-            this.props.id !== nextProps.id ||
-            nextProps.version !== this.props.version
-        ) {
-            this.updateData(nextProps.resource, nextProps.id);
-        }
-    }
-
-    updateData(resource = this.props.resource, id = this.props.id) {
-        this.props.crudGetOne(resource, id, this.props.basePath);
-    }
-
-    render() {
-        const {
-            basePath,
-            children,
-            id,
-            isLoading,
-            record,
-            resource,
-            translate,
-            version,
-        } = this.props;
-
-        if (!children) {
-            return null;
-        }
-
-        const resourceName = translate(`resources.${resource}.name`, {
-            smart_count: 1,
-            _: inflection.humanize(inflection.singularize(resource)),
-        });
-        const defaultTitle = translate('ra.page.show', {
-            name: `${resourceName}`,
-            id,
-            record,
-        });
-        return children({
-            isLoading,
-            defaultTitle,
-            resource,
-            basePath,
-            record,
-            translate,
-            version,
-        });
-    }
-}
-
-function mapStateToProps(state, props) {
-    return {
-        id: props.id,
-        record: state.admin.resources[props.resource]
+    const record = useSelector((state: ReduxState) =>
+        state.admin.resources[props.resource]
             ? state.admin.resources[props.resource].data[props.id]
-            : null,
-        isLoading: state.admin.loading > 0,
-        version: state.admin.ui.viewVersion,
-    };
-}
+            : null
+    );
 
-const ShowController = compose(
-    checkMinimumRequiredProps('Show', ['basePath', 'resource']),
-    connect(
-        mapStateToProps,
-        { crudGetOne: crudGetOneAction }
-    ),
-    withTranslate
-)(UnconnectedShowController);
+    const isLoading = useSelector(
+        (state: ReduxState) => state.admin.loading > 0
+    );
 
-export default ShowController as ComponentType<Props>;
+    const version = useSelector(
+        (state: ReduxState) => state.admin.ui.viewVersion
+    );
+
+    useEffect(() => {
+        dispatch(crudGetOne(resource, id, basePath));
+    }, [resource, id, basePath, version]);
+
+    if (!children) {
+        return null;
+    }
+
+    const resourceName = translate(`resources.${resource}.name`, {
+        smart_count: 1,
+        _: inflection.humanize(inflection.singularize(resource)),
+    });
+    const defaultTitle = translate('ra.page.show', {
+        name: `${resourceName}`,
+        id,
+        record,
+    });
+    return children({
+        isLoading,
+        defaultTitle,
+        resource,
+        basePath,
+        record,
+        translate,
+        version,
+    });
+};
+
+export default ShowController;
