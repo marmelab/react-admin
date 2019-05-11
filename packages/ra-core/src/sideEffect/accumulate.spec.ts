@@ -1,7 +1,6 @@
 import expect from 'expect';
-import { delay } from 'redux-saga';
-import { call, cancel, fork, put } from 'redux-saga/effects';
-import { createMockTask } from 'redux-saga/utils';
+import { call, cancel, delay, fork, put } from 'redux-saga/effects';
+import { createMockTask } from '@redux-saga/testing-utils';
 
 import { accumulateFactory, finalizeFactory } from './accumulate';
 import { crudGetMany } from '../actions';
@@ -60,7 +59,7 @@ describe('accumulate saga', () => {
                 crudGetMany
             );
 
-            expect(saga.next().value).toEqual(call(delay, 50));
+            expect(saga.next().value).toEqual(delay(50));
 
             expect(saga.next().value).toEqual(
                 put(crudGetMany('posts', [1, 2]))
