@@ -36,8 +36,6 @@ interface Props {
     record?: Record;
 }
 
-const getDefaultRedirectRoute = () => 'list';
-
 /**
  * Page component for the Edit view
  *
@@ -152,5 +150,7 @@ const EditController = (props: Props) => {
         version,
     });
 };
+
+const getDefaultRedirectRoute = () => 'list';
 
 export default EditController;

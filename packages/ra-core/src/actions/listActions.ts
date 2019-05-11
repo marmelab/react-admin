@@ -1,3 +1,5 @@
+import { Identifier } from '../types';
+
 export const CRUD_CHANGE_LIST_PARAMS = 'RA/CRUD_CHANGE_LIST_PARAMS';
 
 export interface ListParams {
@@ -27,12 +29,12 @@ export const SET_LIST_SELECTED_IDS = 'RA/SET_LIST_SELECTED_IDS';
 
 export interface SetListSelectedIdsAction {
     readonly type: typeof SET_LIST_SELECTED_IDS;
-    readonly payload: [];
+    readonly payload: Identifier[];
     readonly meta: { resource: string };
 }
 export const setListSelectedIds = (
     resource: string,
-    ids: []
+    ids: Identifier[]
 ): SetListSelectedIdsAction => ({
     type: SET_LIST_SELECTED_IDS,
     payload: ids,

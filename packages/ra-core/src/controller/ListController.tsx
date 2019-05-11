@@ -1,16 +1,16 @@
 /* eslint no-console: ["error", { allow: ["warn", "error"] }] */
 import {
-    Component,
     isValidElement,
     ReactNode,
     ReactElement,
-    ComponentType,
+    useCallback,
+    useState,
+    useEffect,
 } from 'react';
-import { connect } from 'react-redux';
+// @ts-ignore
+import { useSelector, useDispatch } from 'react-redux';
 import { parse, stringify } from 'query-string';
-import { push as pushAction } from 'connected-react-router';
-import compose from 'recompose/compose';
-import { createSelector } from 'reselect';
+import { push } from 'connected-react-router';
 import inflection from 'inflection';
 import debounce from 'lodash/debounce';
 import isEqual from 'lodash/isEqual';
@@ -22,27 +22,26 @@ import queryReducer, {
     SET_PAGE,
     SET_PER_PAGE,
     SET_FILTER,
-    SORT_DESC,
 } from '../reducer/admin/resource/list/queryReducer';
-import { crudGetList as crudGetListAction } from '../actions/dataActions';
+import { crudGetList } from '../actions/dataActions';
 import {
-    changeListParams as changeListParamsAction,
-    setListSelectedIds as setListSelectedIdsAction,
-    toggleListItem as toggleListItemAction,
+    changeListParams,
+    setListSelectedIds,
+    toggleListItem,
     ListParams,
 } from '../actions/listActions';
-import withTranslate from '../i18n/translate';
 import removeKey from '../util/removeKey';
-import checkMinimumRequiredProps from './checkMinimumRequiredProps';
+import { useCheckMinimumRequiredProps } from './checkMinimumRequiredProps';
 import {
     Sort,
     AuthProvider,
     RecordMap,
     Identifier,
     Translate,
-    Dispatch,
+    ReduxState,
 } from '../types';
-import { Location, LocationDescriptorObject, LocationState } from 'history';
+import { Location } from 'history';
+import { useTranslate } from '../i18n';
 
 interface ChildrenFuncParams {
     basePath: string;
@@ -96,22 +95,6 @@ interface Props {
     resource: string;
     [key: string]: any;
 }
-interface EnhancedProps {
-    changeListParams: Dispatch<typeof changeListParamsAction>;
-    crudGetList: Dispatch<typeof crudGetListAction>;
-    data?: RecordMap;
-    ids?: Identifier[];
-    isLoading: boolean;
-    loadedOnce?: boolean;
-    params: ListParams;
-    push: (location: LocationDescriptorObject<LocationState>) => void;
-    selectedIds?: Identifier[];
-    setSelectedIds: (resource: string, ids: Identifier[]) => void;
-    toggleItem: (resource: string, id: Identifier) => void;
-    total: number;
-    translate: Translate;
-    version?: number;
-}
 
 /**
  * List page component
@@ -154,280 +137,290 @@ interface EnhancedProps {
  *         </List>
  *     );
  */
-export class UnconnectedListController extends Component<
-    Props & EnhancedProps
-> {
-    public static defaultProps: Partial<Props> = {
-        debounce: 500,
-        filter: {},
-        perPage: 10,
-        sort: {
-            field: 'id',
-            order: SORT_DESC,
+const ListController = (props: Props) => {
+    useCheckMinimumRequiredProps(
+        'List',
+        ['basePath', 'location', 'resource'],
+        props
+    );
+
+    const {
+        basePath,
+        children,
+        resource,
+        hasCreate,
+        location,
+        filterDefaultValues,
+        sort,
+        perPage,
+        filter,
+    } = props;
+
+    const [state, setState] = useState({});
+    const dispatch = useDispatch();
+    const translate = useTranslate();
+    const isLoading = useSelector(
+        (reduxState: ReduxState) => reduxState.admin.loading > 0
+    );
+
+    const version = useSelector(
+        (reduxState: ReduxState) => reduxState.admin.ui.viewVersion
+    );
+
+    const { params, ids, loadedOnce, selectedIds, total } = useSelector(
+        (reduxState: ReduxState) => reduxState.admin.resources[resource].list,
+        [resource]
+    );
+
+    const query = getQuery({
+        location,
+        params,
+        filterDefaultValues,
+        sort,
+        perPage,
+    });
+    const data = useSelector(
+        (reduxState: ReduxState) => reduxState.admin.resources[resource].data,
+        [JSON.stringify(query)]
+    );
+
+    const changeParams = useCallback(
+        action => {
+            const newParams = queryReducer(query, action);
+            dispatch(
+                push({
+                    ...location,
+                    search: `?${stringify({
+                        ...newParams,
+                        filter: JSON.stringify(newParams.filter),
+                    })}`,
+                })
+            );
+            dispatch(changeListParams(resource, newParams));
         },
-    };
+        [resource, JSON.stringify(query), JSON.stringify(location)]
+    );
 
-    state = {};
+    const setSort = useCallback(
+        newSort => changeParams({ type: SET_SORT, payload: { sort: newSort } }),
+        []
+    );
 
-    setFilters = debounce(filters => {
-        if (isEqual(filters, this.getFilterValues())) {
-            return;
-        }
+    const setPage = useCallback(
+        page => changeParams({ type: SET_PAGE, payload: page }),
+        []
+    );
 
-        // fix for redux-form bug with onChange and enableReinitialize
-        const filtersWithoutEmpty = removeEmpty(filters);
-        this.changeParams({ type: SET_FILTER, payload: filtersWithoutEmpty });
-    }, this.props.debounce);
+    const setPerPage = useCallback(
+        newPerPage => changeParams({ type: SET_PER_PAGE, payload: newPerPage }),
+        []
+    );
 
-    componentDidMount() {
-        if (this.props.filter && isValidElement(this.props.filter)) {
-            throw new Error(
-                '<List> received a React element as `filter` props. If you intended to set the list filter elements, use the `filters` (with an s) prop instead. The `filter` prop is internal and should not be set by the developer.'
-            );
-        }
-        if (
-            !this.props.query.page &&
-            !(this.props.ids || []).length &&
-            this.props.params.page > 1 &&
-            this.props.total > 0
-        ) {
-            this.setPage(this.props.params.page - 1);
-            return;
-        }
-
-        this.updateData();
-        if (Object.keys(this.props.query).length > 0) {
-            this.props.changeListParams(this.props.resource, this.props.query);
-        }
-    }
-
-    componentWillUnmount() {
-        this.setFilters.cancel();
-    }
-
-    componentWillReceiveProps(nextProps: Props & EnhancedProps) {
-        if (
-            nextProps.resource !== this.props.resource ||
-            nextProps.query.sort !== this.props.query.sort ||
-            nextProps.query.order !== this.props.query.order ||
-            nextProps.query.page !== this.props.query.page ||
-            nextProps.query.perPage !== this.props.query.perPage ||
-            !isEqual(nextProps.query.filter, this.props.query.filter) ||
-            !isEqual(nextProps.filter, this.props.filter) ||
-            !isEqual(nextProps.sort, this.props.sort) ||
-            !isEqual(nextProps.perPage, this.props.perPage)
-        ) {
-            this.updateData(
-                Object.keys(nextProps.query).length > 0
-                    ? nextProps.query
-                    : nextProps.params
-            );
-        }
-        if (nextProps.version !== this.props.version) {
-            this.updateData();
-        }
-    }
-
-    shouldComponentUpdate(nextProps: Props & EnhancedProps, nextState) {
-        if (
-            nextProps.className === this.props.className &&
-            nextProps.translate === this.props.translate &&
-            nextProps.isLoading === this.props.isLoading &&
-            nextProps.version === this.props.version &&
-            nextState === this.state &&
-            nextProps.data === this.props.data &&
-            nextProps.selectedIds === this.props.selectedIds &&
-            nextProps.total === this.props.total
-        ) {
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * Check if user has already set custom sort, page, or filters for this list
-     *
-     * User params come from the Redux store as the params props. By default,
-     * this object is:
-     *
-     * { filter: {}, order: null, page: 1, perPage: null, sort: null }
-     *
-     * To check if the user has custom params, we must compare the params
-     * to these initial values.
-     *
-     * @param {object} params
-     */
-    hasCustomParams(params: ListParams) {
-        return (
-            params &&
-            params.filter &&
-            (Object.keys(params.filter).length > 0 ||
-                params.order != null ||
-                params.page !== 1 ||
-                params.perPage != null ||
-                params.sort != null)
+    if (filter && isValidElement(filter)) {
+        throw new Error(
+            '<List> received a React element as `filter` props. If you intended to set the list filter elements, use the `filters` (with an s) prop instead. The `filter` prop is internal and should not be set by the developer.'
         );
     }
-
-    /**
-     * Merge list params from 4 different sources:
-     *   - the query string
-     *   - the params stored in the state (from previous navigation)
-     *   - the filter defaultValues
-     *   - the props passed to the List component
-     */
-    getQuery() {
-        const query: Partial<ListParams> =
-            Object.keys(this.props.query).length > 0
-                ? this.props.query
-                : this.hasCustomParams(this.props.params)
-                ? { ...this.props.params }
-                : { filter: this.props.filterDefaultValues || {} };
-
-        if (!query.sort) {
-            query.sort = this.props.sort.field;
-            query.order = this.props.sort.order;
-        }
-        if (!query.perPage) {
-            query.perPage = this.props.perPage;
-        }
-        if (!query.page) {
-            query.page = 1;
-        }
-        return query as ListParams;
+    if (!query.page && !(ids || []).length && params.page > 1 && total > 0) {
+        setPage(params.page - 1);
+        return;
     }
 
-    getFilterValues() {
-        const query = this.getQuery();
-        return query.filter || {};
-    }
+    const filterValues = getFilterValues(query);
 
-    updateData(query?: any) {
-        const params = query || this.getQuery();
-        const { sort, order, page = 1, perPage, filter } = params;
-        const pagination = {
-            page: parseInt(page, 10),
-            perPage: parseInt(perPage, 10),
-        };
-        const permanentFilter = this.props.filter;
-        this.props.crudGetList(
-            this.props.resource,
-            pagination,
-            { field: sort, order },
-            { ...filter, ...permanentFilter }
-        );
-    }
+    const resourceName = translate(`resources.${resource}.name`, {
+        smart_count: 2,
+        _: inflection.humanize(inflection.pluralize(resource)),
+    });
+    const defaultTitle = translate('ra.page.list', {
+        name: resourceName,
+    });
 
-    setSort = sort => this.changeParams({ type: SET_SORT, payload: { sort } });
+    const setFilters = useCallback(
+        debounce(filters => {
+            if (isEqual(filters, filterValues)) {
+                return;
+            }
 
-    setPage = page => this.changeParams({ type: SET_PAGE, payload: page });
-
-    setPerPage = perPage =>
-        this.changeParams({ type: SET_PER_PAGE, payload: perPage });
-
-    showFilter = (filterName: string, defaultValue: any) => {
-        this.setState({ [filterName]: true });
-        if (typeof defaultValue !== 'undefined') {
-            this.setFilters({
-                ...this.getFilterValues(),
-                [filterName]: defaultValue,
+            // fix for redux-form bug with onChange and enableReinitialize
+            const filtersWithoutEmpty = removeEmpty(filters);
+            changeParams({
+                type: SET_FILTER,
+                payload: filtersWithoutEmpty,
             });
+        }, props.debounce),
+        [JSON.stringify(filterValues)]
+    );
+
+    const hideFilter = useCallback(
+        (filterName: string) => {
+            setState({ [filterName]: false });
+            const newFilters = removeKey(filterValues, filterName);
+            setFilters(newFilters);
+        },
+        [JSON.stringify(filterValues)]
+    );
+
+    const showFilter = useCallback(
+        (filterName: string, defaultValue: any) => {
+            setState({ [filterName]: true });
+            if (typeof defaultValue !== 'undefined') {
+                setFilters({
+                    ...filterValues,
+                    [filterName]: defaultValue,
+                });
+            }
+        },
+        [JSON.stringify(filterValues)]
+    );
+
+    const handleSelect = useCallback(
+        (newIds: Identifier[]) => {
+            dispatch(setListSelectedIds(resource, newIds));
+        },
+        [resource]
+    );
+
+    const handleUnselectItems = useCallback(() => {
+        dispatch(setListSelectedIds(resource, []));
+    }, [resource]);
+
+    const handleToggleItem = useCallback(
+        (id: Identifier) => {
+            dispatch(toggleListItem(resource, id));
+        },
+        [resource]
+    );
+
+    useEffect(() => {
+        const pagination = {
+            page: query.page,
+            perPage: query.perPage,
+        };
+        const permanentFilter = filter;
+        dispatch(
+            crudGetList(
+                resource,
+                pagination,
+                { field: query.sort, order: query.order },
+                { ...query.filter, ...permanentFilter }
+            )
+        );
+    }, [JSON.stringify(query)]);
+
+    return children({
+        basePath,
+        currentSort: {
+            field: query.sort,
+            order: query.order,
+        },
+        data,
+        defaultTitle,
+        displayedFilters: state,
+        filterValues,
+        hasCreate,
+        ids,
+        isLoading,
+        loadedOnce,
+        onSelect: handleSelect,
+        onToggleItem: handleToggleItem,
+        onUnselectItems: handleUnselectItems,
+        page:
+            (typeof query.page === 'string'
+                ? parseInt(query.page, 10)
+                : query.page) || 1,
+        perPage:
+            (typeof query.perPage === 'string'
+                ? parseInt(query.perPage, 10)
+                : query.perPage) || 10,
+        resource,
+        selectedIds,
+        setFilters,
+        hideFilter,
+        showFilter,
+        setPage,
+        setPerPage,
+        setSort,
+        translate,
+        total,
+        version,
+    });
+};
+
+const validQueryParams = ['page', 'perPage', 'sort', 'order', 'filter'];
+
+const parseQueryFromLocation = ({ search }) => {
+    const query = pickBy(
+        parse(search),
+        (v, k) => validQueryParams.indexOf(k) !== -1
+    );
+    if (query.filter && typeof query.filter === 'string') {
+        try {
+            query.filter = JSON.parse(query.filter);
+        } catch (err) {
+            delete query.filter;
         }
-    };
-
-    hideFilter = (filterName: string) => {
-        this.setState({ [filterName]: false });
-        const newFilters = removeKey(this.getFilterValues(), filterName);
-        this.setFilters(newFilters);
-    };
-
-    handleSelect = (ids: Identifier[]) => {
-        this.props.setSelectedIds(this.props.resource, ids);
-    };
-
-    handleUnselectItems = () => {
-        this.props.setSelectedIds(this.props.resource, []);
-    };
-
-    handleToggleItem = (id: Identifier) => {
-        this.props.toggleItem(this.props.resource, id);
-    };
-
-    changeParams(action) {
-        const newParams = queryReducer(this.getQuery(), action);
-        this.props.push({
-            ...this.props.location,
-            search: `?${stringify({
-                ...newParams,
-                filter: JSON.stringify(newParams.filter),
-            })}`,
-        });
-        this.props.changeListParams(this.props.resource, newParams);
     }
+    return query;
+};
 
-    render() {
-        const {
-            basePath,
-            children,
-            resource,
-            hasCreate,
-            data,
-            ids,
-            loadedOnce,
-            total,
-            isLoading,
-            translate,
-            version,
-            selectedIds,
-        } = this.props;
-        const query = this.getQuery();
-        const resourceName = translate(`resources.${resource}.name`, {
-            smart_count: 2,
-            _: inflection.humanize(inflection.pluralize(resource)),
-        });
-        const defaultTitle = translate('ra.page.list', {
-            name: resourceName,
-        });
+/**
+ * Check if user has already set custom sort, page, or filters for this list
+ *
+ * User params come from the Redux store as the params props. By default,
+ * this object is:
+ *
+ * { filter: {}, order: null, page: 1, perPage: null, sort: null }
+ *
+ * To check if the user has custom params, we must compare the params
+ * to these initial values.
+ *
+ * @param {object} params
+ */
+const hasCustomParams = (params: ListParams) => {
+    return (
+        params &&
+        params.filter &&
+        (Object.keys(params.filter).length > 0 ||
+            params.order != null ||
+            params.page !== 1 ||
+            params.perPage != null ||
+            params.sort != null)
+    );
+};
 
-        return children({
-            basePath,
-            currentSort: {
-                field: query.sort,
-                order: query.order,
-            },
-            data,
-            defaultTitle,
-            displayedFilters: this.state,
-            filterValues: this.getFilterValues(),
-            hasCreate,
-            hideFilter: this.hideFilter,
-            ids,
-            isLoading,
-            loadedOnce,
-            onSelect: this.handleSelect,
-            onToggleItem: this.handleToggleItem,
-            onUnselectItems: this.handleUnselectItems,
-            page:
-                (typeof query.page === 'string'
-                    ? parseInt(query.page, 10)
-                    : query.page) || 1,
-            perPage:
-                (typeof query.perPage === 'string'
-                    ? parseInt(query.perPage, 10)
-                    : query.perPage) || 10,
-            resource,
-            selectedIds,
-            setFilters: this.setFilters,
-            setPage: this.setPage,
-            setPerPage: this.setPerPage,
-            setSort: this.setSort,
-            showFilter: this.showFilter,
-            translate,
-            total,
-            version,
-        });
+/**
+ * Merge list params from 4 different sources:
+ *   - the query string
+ *   - the params stored in the state (from previous navigation)
+ *   - the filter defaultValues
+ *   - the props passed to the List component
+ */
+const getQuery = ({ location, params, filterDefaultValues, sort, perPage }) => {
+    const queryFromLocation = parseQueryFromLocation(location);
+    const query: Partial<ListParams> =
+        Object.keys(queryFromLocation).length > 0
+            ? queryFromLocation
+            : hasCustomParams(params)
+            ? { ...params }
+            : { filter: filterDefaultValues || {} };
+
+    if (!query.sort) {
+        query.sort = sort.field;
+        query.order = sort.order;
     }
-}
+    if (!query.perPage) {
+        query.perPage = perPage;
+    }
+    if (!query.page) {
+        query.page = 1;
+    }
+    return query as ListParams;
+};
+
+const getFilterValues = (query: ListParams) => {
+    return query.filter || {};
+};
 
 const injectedProps = [
     'basePath',
@@ -477,57 +470,4 @@ export const sanitizeListRestProps = props =>
         .filter(propName => !injectedProps.includes(propName))
         .reduce((acc, key) => ({ ...acc, [key]: props[key] }), {});
 
-const validQueryParams = ['page', 'perPage', 'sort', 'order', 'filter'];
-const getLocationPath = props => props.location.pathname;
-const getLocationSearch = props => props.location.search;
-const selectQuery = createSelector(
-    getLocationPath,
-    getLocationSearch,
-    (path, search) => {
-        const query = pickBy(
-            parse(search),
-            (v, k) => validQueryParams.indexOf(k) !== -1
-        );
-        if (query.filter && typeof query.filter === 'string') {
-            try {
-                query.filter = JSON.parse(query.filter);
-            } catch (err) {
-                delete query.filter;
-            }
-        }
-        return query;
-    }
-);
-
-function mapStateToProps(state, props) {
-    const resourceState = state.admin.resources[props.resource];
-
-    return {
-        query: selectQuery(props),
-        params: resourceState.list.params,
-        ids: resourceState.list.ids,
-        loadedOnce: resourceState.list.loadedOnce,
-        selectedIds: resourceState.list.selectedIds,
-        total: resourceState.list.total,
-        data: resourceState.data,
-        isLoading: state.admin.loading > 0,
-        version: state.admin.ui.viewVersion,
-    };
-}
-
-const ListController = compose(
-    checkMinimumRequiredProps('List', ['basePath', 'location', 'resource']),
-    connect(
-        mapStateToProps,
-        {
-            crudGetList: crudGetListAction,
-            changeListParams: changeListParamsAction,
-            setSelectedIds: setListSelectedIdsAction,
-            toggleItem: toggleListItemAction,
-            push: pushAction,
-        }
-    ),
-    withTranslate
-)(UnconnectedListController);
-
-export default ListController as ComponentType<Props>;
+export default ListController;

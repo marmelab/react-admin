@@ -1,4 +1,4 @@
-import { ReactNode, useCallback, FunctionComponent } from 'react';
+import { ReactNode, useCallback } from 'react';
 // @ts-ignore
 import { useDispatch, useSelector } from 'react-redux';
 import inflection from 'inflection';
@@ -35,23 +35,6 @@ interface Props {
     record?: Partial<Record>;
     resource: string;
 }
-
-export const getRecord = ({ state, search }, record: any = {}) =>
-    state && state.record
-        ? state.record
-        : search
-        ? parse(search, { arrayFormat: 'bracket' })
-        : record;
-
-const getDefaultRedirectRoute = (hasShow, hasEdit) => {
-    if (hasEdit) {
-        return 'edit';
-    }
-    if (hasShow) {
-        return 'show';
-    }
-    return 'list';
-};
 
 /**
  * Page component for the Create view
@@ -148,3 +131,20 @@ const CreateController = (props: Props) => {
 };
 
 export default CreateController;
+
+export const getRecord = ({ state, search }, record: any = {}) =>
+    state && state.record
+        ? state.record
+        : search
+        ? parse(search, { arrayFormat: 'bracket' })
+        : record;
+
+const getDefaultRedirectRoute = (hasShow, hasEdit) => {
+    if (hasEdit) {
+        return 'edit';
+    }
+    if (hasShow) {
+        return 'show';
+    }
+    return 'list';
+};
