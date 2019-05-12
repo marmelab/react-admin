@@ -1,4 +1,3 @@
-/* eslint no-console: ["error", { allow: ["warn", "error"] }] */
 import {
     isValidElement,
     ReactNode,
@@ -12,7 +11,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { parse, stringify } from 'query-string';
 import { push } from 'connected-react-router';
 import inflection from 'inflection';
-import debounce from 'lodash/debounce';
+import debounceFunction from 'lodash/debounce';
 import isEqual from 'lodash/isEqual';
 import pickBy from 'lodash/pickBy';
 
@@ -22,6 +21,7 @@ import queryReducer, {
     SET_PAGE,
     SET_PER_PAGE,
     SET_FILTER,
+    SORT_ASC,
 } from '../reducer/admin/resource/list/queryReducer';
 import { crudGetList } from '../actions/dataActions';
 import {
@@ -79,8 +79,8 @@ interface Props {
     filters?: ReactElement<any>;
     filterDefaultValues?: object;
     pagination?: ReactElement<any>;
-    perPage: number;
-    sort: Sort;
+    perPage?: number;
+    sort?: Sort;
     // the props managed by react-admin
     authProvider?: AuthProvider;
     basePath: string;
@@ -151,9 +151,13 @@ const ListController = (props: Props) => {
         hasCreate,
         location,
         filterDefaultValues,
-        sort,
-        perPage,
+        sort = {
+            field: 'id',
+            order: SORT_ASC,
+        },
+        perPage = 10,
         filter,
+        debounce = 500,
     } = props;
 
     const [state, setState] = useState({});
@@ -237,7 +241,7 @@ const ListController = (props: Props) => {
     });
 
     const setFilters = useCallback(
-        debounce(filters => {
+        debounceFunction(filters => {
             if (isEqual(filters, filterValues)) {
                 return;
             }
@@ -248,7 +252,7 @@ const ListController = (props: Props) => {
                 type: SET_FILTER,
                 payload: filtersWithoutEmpty,
             });
-        }, props.debounce),
+        }, debounce),
         [JSON.stringify(filterValues)]
     );
 
@@ -325,14 +329,8 @@ const ListController = (props: Props) => {
         onSelect: handleSelect,
         onToggleItem: handleToggleItem,
         onUnselectItems: handleUnselectItems,
-        page:
-            (typeof query.page === 'string'
-                ? parseInt(query.page, 10)
-                : query.page) || 1,
-        perPage:
-            (typeof query.perPage === 'string'
-                ? parseInt(query.perPage, 10)
-                : query.perPage) || 10,
+        page: getNumberOrDefault(query.page, 1),
+        perPage: getNumberOrDefault(query.perPage, 10),
         resource,
         selectedIds,
         setFilters,
@@ -421,6 +419,14 @@ const getQuery = ({ location, params, filterDefaultValues, sort, perPage }) => {
 const getFilterValues = (query: ListParams) => {
     return query.filter || {};
 };
+
+const getNumberOrDefault = (
+    possibleNumber: string | number | undefined,
+    defaultValue: number
+) =>
+    (typeof possibleNumber === 'string'
+        ? parseInt(possibleNumber, 10)
+        : possibleNumber) || defaultValue;
 
 const injectedProps = [
     'basePath',
