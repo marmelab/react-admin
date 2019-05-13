@@ -40,7 +40,7 @@ describe('oneToMany', () => {
                     total: 3,
                 },
                 'reviews_comments@id_1': {
-                    ids: [1, 2, 3],
+                    ids: [1, 3, 4],
                     total: 3,
                 },
                 'posts_reviews@id_1': {
@@ -67,8 +67,8 @@ describe('oneToMany', () => {
                     total: 2,
                 },
                 'reviews_comments@id_1': {
-                    ids: [1, 3],
-                    total: 2,
+                    ids: [1, 3, 4],
+                    total: 3,
                 },
                 'posts_reviews@id_1': {
                     ids: [1, 2, 3],
@@ -84,7 +84,7 @@ describe('oneToMany', () => {
                     total: 3,
                 },
                 'reviews_comments@id_1': {
-                    ids: [1, 2, 3],
+                    ids: [1, 3, 4],
                     total: 3,
                 },
                 'posts_reviews@id_1': {
@@ -111,8 +111,8 @@ describe('oneToMany', () => {
                     total: 1,
                 },
                 'reviews_comments@id_1': {
-                    ids: [1],
-                    total: 1,
+                    ids: [1, 4],
+                    total: 2,
                 },
                 'posts_reviews@id_1': {
                     ids: [1, 2, 3],

@@ -22,16 +22,14 @@ const oneToManyReducer: Reducer<State> = (
     previousState = initialState,
     action: ActionTypes
 ) => {
-    if (action.meta && action.meta.fetch === DELETE && action.meta.optimistic) {
-        return removeDeletedReference(previousState, action);
-    }
+    if (action.meta && action.meta.optimistic) {
+        if (action.meta.fetch === DELETE) {
+            return removeDeletedReference(previousState, action);
+        }
 
-    if (
-        action.meta &&
-        action.meta.fetch === DELETE_MANY &&
-        action.meta.optimistic
-    ) {
-        return removeDeletedReferences(previousState, action);
+        if (action.meta.fetch === DELETE_MANY) {
+            return removeDeletedReferences(previousState, action);
+        }
     }
     switch (action.type) {
         case CRUD_GET_MANY_REFERENCE_SUCCESS:
@@ -135,8 +133,16 @@ const getRelatedReferences = (previousState, resource) =>
 const removeDeletedReference = (previousState, action: ActionTypes) => {
     const relatedTo = getRelatedReferences(previousState, action.meta.resource);
 
-    return relatedTo.reduce(
-        (acc, key) => ({
+    return relatedTo.reduce((acc, key) => {
+        const hasReferenceToRemovedId = previousState[key].ids.includes(
+            action.payload.id
+        );
+
+        if (!hasReferenceToRemovedId) {
+            return acc;
+        }
+
+        return {
             ...acc,
             [key]: {
                 ids: previousState[key].ids.filter(
@@ -144,9 +150,8 @@ const removeDeletedReference = (previousState, action: ActionTypes) => {
                 ),
                 total: previousState[key].total - 1,
             },
-        }),
-        previousState
-    );
+        };
+    }, previousState);
 };
 
 const removeDeletedReferences = (previousState, action: ActionTypes) => {
