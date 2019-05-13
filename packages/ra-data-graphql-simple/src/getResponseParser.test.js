@@ -11,47 +11,6 @@ import getResponseParser from './getResponseParser';
 
 const testListTypes = type => {
     it('returns the response expected by AOR for GET_LIST', () => {
-        const resource = {
-            type: {
-                name: 'Post',
-                fields: [
-                    {
-                        name: 'id',
-                        type: {
-                            kind: TypeKind.NON_NULL,
-                            ofType: { kind: TypeKind.SCALAR },
-                        },
-                    },
-                    {
-                        name: 'title',
-                        type: {
-                            kind: TypeKind.NON_NULL,
-                            ofType: { kind: TypeKind.SCALAR },
-                        },
-                    },
-                    {
-                        name: 'tags',
-                        type: {
-                            kind: TypeKind.LIST,
-                            ofType: { kind: TypeKind.OBJECT, name: 'Tag' },
-                        },
-                    },
-                    { name: 'embeddedJson', type: { kind: TypeKind.JSON } },
-                    {
-                        name: 'author',
-                        type: {
-                            kind: TypeKind.NON_NULL,
-                            ofType: { kind: TypeKind.OBJECT, name: 'User' },
-                        },
-                    },
-                    {
-                        name: 'coauthor',
-                        type: { kind: TypeKind.OBJECT, name: 'User' },
-                    },
-                ],
-            },
-        };
-
         const introspectionResults = {
             resources: [
                 {
@@ -110,83 +69,42 @@ const testListTypes = type => {
             },
         };
 
-        expect(
-            getResponseParser(introspectionResults)(type, resource)(response)
-        ).toEqual({
-            data: [
-                {
-                    id: 'post1',
-                    title: 'title1',
-                    'author.id': 'author1',
-                    author: { id: 'author1', firstName: 'Toto' },
-                    tags: [
-                        { id: 'tag1', name: 'tag1 name' },
-                        { id: 'tag2', name: 'tag2 name' },
-                    ],
-                    tagsIds: ['tag1', 'tag2'],
-                    embeddedJson: { foo: 'bar' },
-                },
-                {
-                    id: 'post2',
-                    title: 'title2',
-                    'author.id': 'author1',
-                    author: { id: 'author1', firstName: 'Toto' },
-                    tags: [
-                        { id: 'tag1', name: 'tag1 name' },
-                        { id: 'tag3', name: 'tag3 name' },
-                    ],
-                    tagsIds: ['tag1', 'tag3'],
-                    embeddedJson: { foo: 'bar' },
-                },
-            ],
-            total: 100,
-        });
+        expect(getResponseParser(introspectionResults)(type)(response)).toEqual(
+            {
+                data: [
+                    {
+                        id: 'post1',
+                        title: 'title1',
+                        'author.id': 'author1',
+                        author: { id: 'author1', firstName: 'Toto' },
+                        tags: [
+                            { id: 'tag1', name: 'tag1 name' },
+                            { id: 'tag2', name: 'tag2 name' },
+                        ],
+                        tagsIds: ['tag1', 'tag2'],
+                        embeddedJson: { foo: 'bar' },
+                    },
+                    {
+                        id: 'post2',
+                        title: 'title2',
+                        'author.id': 'author1',
+                        author: { id: 'author1', firstName: 'Toto' },
+                        tags: [
+                            { id: 'tag1', name: 'tag1 name' },
+                            { id: 'tag3', name: 'tag3 name' },
+                        ],
+                        tagsIds: ['tag1', 'tag3'],
+                        embeddedJson: { foo: 'bar' },
+                    },
+                ],
+                total: 100,
+            }
+        );
     });
 };
 
 const testSingleTypes = type => {
     it('returns the response expected by AOR for GET_LIST', () => {
-        const resource = {
-            type: {
-                name: 'Post',
-                fields: [
-                    {
-                        name: 'id',
-                        type: {
-                            kind: TypeKind.NON_NULL,
-                            ofType: { kind: TypeKind.SCALAR },
-                        },
-                    },
-                    {
-                        name: 'title',
-                        type: {
-                            kind: TypeKind.NON_NULL,
-                            ofType: { kind: TypeKind.SCALAR },
-                        },
-                    },
-                    {
-                        name: 'tags',
-                        type: {
-                            kind: TypeKind.LIST,
-                            ofType: { kind: TypeKind.OBJECT, name: 'Tag' },
-                        },
-                    },
-                    { name: 'embeddedJson', type: { kind: TypeKind.JSON } },
-                    {
-                        name: 'author',
-                        type: {
-                            kind: TypeKind.NON_NULL,
-                            ofType: { kind: TypeKind.OBJECT, name: 'User' },
-                        },
-                    },
-                    {
-                        name: 'coauthor',
-                        type: { kind: TypeKind.OBJECT, name: 'User' },
-                    },
-                ],
-            },
-        };
-
         const introspectionResults = {
             resources: [
                 {
@@ -229,66 +147,25 @@ const testSingleTypes = type => {
                 },
             },
         };
-        expect(
-            getResponseParser(introspectionResults)(type, resource)(response)
-        ).toEqual({
-            data: {
-                id: 'post1',
-                title: 'title1',
-                'author.id': 'author1',
-                author: { id: 'author1', firstName: 'Toto' },
-                tags: [
-                    { id: 'tag1', name: 'tag1 name' },
-                    { id: 'tag2', name: 'tag2 name' },
-                ],
-                tagsIds: ['tag1', 'tag2'],
-                embeddedJson: { foo: 'bar' },
-            },
-        });
+        expect(getResponseParser(introspectionResults)(type)(response)).toEqual(
+            {
+                data: {
+                    id: 'post1',
+                    title: 'title1',
+                    'author.id': 'author1',
+                    author: { id: 'author1', firstName: 'Toto' },
+                    tags: [
+                        { id: 'tag1', name: 'tag1 name' },
+                        { id: 'tag2', name: 'tag2 name' },
+                    ],
+                    tagsIds: ['tag1', 'tag2'],
+                    embeddedJson: { foo: 'bar' },
+                },
+            }
+        );
     });
 
     it('returns the response expected by AOR for GET_LIST with aliases', () => {
-        const resource = {
-            type: {
-                name: 'Post',
-                fields: [
-                    {
-                        name: 'id',
-                        type: {
-                            kind: TypeKind.NON_NULL,
-                            ofType: { kind: TypeKind.SCALAR },
-                        },
-                    },
-                    {
-                        name: 'title',
-                        type: {
-                            kind: TypeKind.NON_NULL,
-                            ofType: { kind: TypeKind.SCALAR },
-                        },
-                    },
-                    {
-                        name: 'tags',
-                        type: {
-                            kind: TypeKind.LIST,
-                            ofType: { kind: TypeKind.OBJECT, name: 'Tag' },
-                        },
-                    },
-                    { name: 'embeddedJson', type: { kind: TypeKind.JSON } },
-                    {
-                        name: 'author',
-                        type: {
-                            kind: TypeKind.NON_NULL,
-                            ofType: { kind: TypeKind.OBJECT, name: 'User' },
-                        },
-                    },
-                    {
-                        name: 'coauthor',
-                        type: { kind: TypeKind.OBJECT, name: 'User' },
-                    },
-                ],
-            },
-        };
-
         const introspectionResults = {
             resources: [
                 {
@@ -332,31 +209,24 @@ const testSingleTypes = type => {
             },
         };
 
-        const aliases = {
-            aliasTitle: { alias: 'aliasTitle', name: 'title' },
-        };
-
-        expect(
-            getResponseParser(introspectionResults)(type, resource)(
-                response,
-                aliases
-            )
-        ).toEqual({
-            data: {
-                aliasTitle: 'title1',
-                author: { firstName: 'Toto', id: 'author1' },
-                'author.id': 'author1',
-                coauthor: undefined,
-                'coauthor.id': undefined,
-                embeddedJson: { foo: 'bar' },
-                id: 'post1',
-                tags: [
-                    { id: 'tag1', name: 'tag1 name' },
-                    { id: 'tag2', name: 'tag2 name' },
-                ],
-                tagsIds: ['tag1', 'tag2'],
-            },
-        });
+        expect(getResponseParser(introspectionResults)(type)(response)).toEqual(
+            {
+                data: {
+                    aliasTitle: 'title1',
+                    author: { firstName: 'Toto', id: 'author1' },
+                    'author.id': 'author1',
+                    coauthor: undefined,
+                    'coauthor.id': undefined,
+                    embeddedJson: { foo: 'bar' },
+                    id: 'post1',
+                    tags: [
+                        { id: 'tag1', name: 'tag1 name' },
+                        { id: 'tag2', name: 'tag2 name' },
+                    ],
+                    tagsIds: ['tag1', 'tag2'],
+                },
+            }
+        );
     });
 };
 

@@ -1,66 +1,43 @@
-import { TypeKind } from 'graphql';
 import { GET_LIST, GET_MANY, GET_MANY_REFERENCE } from 'ra-core';
-import getFinalType from './getFinalType';
 
-const sanitizeResource = (introspectionResults, resource, aliases) => data => {
+const sanitizeResource = data => {
     const result = Object.keys(data).reduce((acc, key) => {
         if (key.startsWith('_')) {
             return acc;
         }
 
-        const isAlias = aliases && aliases[key] ? true : false;
-        const keyToFind = isAlias ? aliases[key].name : key;
-        const field = resource.type.fields.find(f => f.name === keyToFind);
-        const fieldName = isAlias ? aliases[key].alias : field.name;
-        const type = getFinalType(field.type);
+        const dataKey = data[key];
 
-        if (type.kind !== TypeKind.OBJECT) {
-            return { ...acc, [fieldName]: data[fieldName] };
+        if (dataKey === null || dataKey === undefined) {
+            return acc;
         }
 
-        // FIXME: We might have to handle linked types which are not resources but will have to be careful about
-        // endless circular dependencies
-        const linkedResource = introspectionResults.resources.find(
-            r => r.type.name === type.name
-        );
-
-        if (linkedResource) {
-            const linkedResourceData = data[fieldName];
-
-            if (Array.isArray(linkedResourceData)) {
-                return {
-                    ...acc,
-                    [fieldName]: data[fieldName].map(
-                        sanitizeResource(introspectionResults, linkedResource)
-                    ),
-                    [`${fieldName}Ids`]: data[fieldName].map(d => d.id),
-                };
-            }
-
+        if (Array.isArray(dataKey)) {
             return {
                 ...acc,
-                [`${fieldName}.id`]: linkedResourceData
-                    ? data[fieldName].id
-                    : undefined,
-                [fieldName]: linkedResourceData
-                    ? sanitizeResource(introspectionResults, linkedResource)(
-                          data[fieldName]
-                      )
-                    : undefined,
+                [key]: dataKey.map(sanitizeResource),
+                [`${key}Ids`]: dataKey.map(d => d.id),
             };
         }
 
-        return { ...acc, [fieldName]: data[fieldName] };
+        if (typeof dataKey === 'object') {
+            return {
+                ...acc,
+                ...(dataKey &&
+                    dataKey.id && {
+                        [`${key}.id`]: dataKey.id,
+                    }),
+                [key]: sanitizeResource(dataKey),
+            };
+        }
+
+        return { ...acc, [key]: dataKey };
     }, {});
 
     return result;
 };
 
-export default introspectionResults => (aorFetchType, resource) => (
-    response,
-    aliases
-) => {
-    const sanitize = sanitizeResource(introspectionResults, resource, aliases);
+export default introspectionResults => aorFetchType => response => {
     const data = response.data;
 
     if (
@@ -69,10 +46,10 @@ export default introspectionResults => (aorFetchType, resource) => (
         aorFetchType === GET_MANY_REFERENCE
     ) {
         return {
-            data: response.data.items.map(sanitize),
+            data: response.data.items.map(sanitizeResource),
             total: response.data.total.count,
         };
     }
 
-    return { data: sanitize(data.data) };
+    return { data: sanitizeResource(data.data) };
 };
