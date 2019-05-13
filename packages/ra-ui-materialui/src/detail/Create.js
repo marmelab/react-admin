@@ -6,7 +6,6 @@ import classnames from 'classnames';
 import { CreateController } from 'ra-core';
 
 import TitleForRecord from '../layout/TitleForRecord';
-import CardContentInner from '../layout/CardContentInner';
 
 const styles = createStyles({
     root: {},

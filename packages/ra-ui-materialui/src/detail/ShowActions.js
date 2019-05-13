@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { EditButton } from '../button';
-import Actions from '../layout/Actions';
+import TopToolbar from '../layout/TopToolbar';
 
 const sanitizeRestProps = ({
     basePath,
@@ -23,14 +23,14 @@ const sanitizeRestProps = ({
  *
  * @example
  *     import Button from '@material-ui/core/Button';
- *     import { CardActions, EditButton, Show } from 'react-admin';
+ *     import { TopToolbar, EditButton, Show } from 'react-admin';
  *
  *     const PostShowActions = ({ basePath, record, resource }) => (
- *         <CardActions>
+ *         <TopToolbar>
  *             <EditButton basePath={basePath} record={record} />
  *             // Add your custom actions here //
  *             <Button color="primary" onClick={customAction}>Custom Action</Button>
- *         </CardActions>
+ *         </TopToolbar>
  *     );
  *
  *     export const PostShow = (props) => (
@@ -40,9 +40,9 @@ const sanitizeRestProps = ({
  *     );
  */
 const ShowActions = ({ basePath, className, data, hasEdit, ...rest }) => (
-    <Actions className={className} {...sanitizeRestProps(rest)}>
+    <TopToolbar className={className} {...sanitizeRestProps(rest)}>
         {hasEdit && <EditButton basePath={basePath} record={data} />}
-    </Actions>
+    </TopToolbar>
 );
 
 ShowActions.propTypes = {

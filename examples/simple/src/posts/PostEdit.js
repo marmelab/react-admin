@@ -1,6 +1,7 @@
 import RichTextInput from 'ra-input-rich-text';
 import React from 'react';
 import {
+    TopToolbar,
     AutocompleteArrayInput,
     ArrayInput,
     BooleanInput,
@@ -10,7 +11,6 @@ import {
     DateInput,
     DisabledInput,
     Edit,
-    CardActions,
     CloneButton,
     ShowButton,
     EditButton,
@@ -32,23 +32,15 @@ import {
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
 import PostTitle from './PostTitle';
 
-const EditActions = ({
-    basePath,
-    className,
-    data,
-    hasShow,
-    hasList,
-    resource,
-    ...rest
-}) => (
-    <CardActions className={className} {...rest}>
+const EditActions = ({ basePath, data, hasShow }) => (
+    <TopToolbar>
         <CloneButton
             className="button-clone"
             basePath={basePath}
             record={data}
         />
         {hasShow && <ShowButton basePath={basePath} record={data} />}
-    </CardActions>
+    </TopToolbar>
 );
 
 const PostEdit = props => (

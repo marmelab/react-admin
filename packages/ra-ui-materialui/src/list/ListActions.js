@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import onlyUpdateForKeys from 'recompose/onlyUpdateForKeys';
 import { sanitizeListRestProps } from 'ra-core';
 
-import Actions from '../layout/Actions';
+import TopToolbar from '../layout/TopToolbar';
 import { CreateButton, ExportButton } from '../button';
 
 const ListActions = ({
@@ -24,7 +24,7 @@ const ListActions = ({
     total,
     ...rest
 }) => (
-    <Actions className={className} {...sanitizeListRestProps(rest)}>
+    <TopToolbar className={className} {...sanitizeListRestProps(rest)}>
         {bulkActions &&
             cloneElement(bulkActions, {
                 basePath,
@@ -51,7 +51,7 @@ const ListActions = ({
                 exporter={exporter}
             />
         )}
-    </Actions>
+    </TopToolbar>
 );
 
 ListActions.propTypes = {

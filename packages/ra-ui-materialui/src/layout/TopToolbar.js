@@ -14,7 +14,7 @@ const useStyles = makeStyles({
     },
 });
 
-const Actions = ({ className, children, ...rest }) => {
+const TopToolbar = ({ className, children, ...rest }) => {
     const classes = useStyles();
     return (
         <Toolbar className={classnames(classes.root, className)} {...rest}>
@@ -23,9 +23,9 @@ const Actions = ({ className, children, ...rest }) => {
     );
 };
 
-Actions.propTypes = {
+TopToolbar.propTypes = {
     children: PropTypes.node,
     className: PropTypes.string,
 };
 
-export default Actions;
+export default TopToolbar;
