@@ -8,6 +8,7 @@ import React, {
 } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { AnyAction } from 'redux';
 import { Route, Switch } from 'react-router-dom';
 import compose from 'recompose/compose';
 import getContext from 'recompose/getContext';
@@ -47,6 +48,7 @@ interface EnhancedProps {
     authProvider?: AuthProvider;
     isLoggedIn?: boolean;
     userLogout: Dispatch<typeof userLogoutAction>;
+    dispatch: Dispatch<AnyAction>;
 }
 
 interface State {
@@ -81,7 +83,10 @@ export class CoreAdminRouter extends Component<
             const permissions = await authProvider(AUTH_GET_PERMISSIONS);
             const resolveChildren = props.children as RenderResourcesFunction;
 
-            const childrenFuncResult = resolveChildren(permissions);
+            const childrenFuncResult = resolveChildren(
+                permissions,
+                props.dispatch
+            );
             if ((childrenFuncResult as Promise<ResourceElement[]>).then) {
                 (childrenFuncResult as Promise<ResourceElement[]>).then(
                     resolvedChildren => {
@@ -248,12 +253,17 @@ const mapStateToProps = state => ({
     isLoggedIn: isLoggedIn(state),
 });
 
+const mapDispatchToProps = dispatch => ({
+    dispatch,
+    userLogout: userLogoutAction,
+});
+
 export default compose(
     getContext({
         authProvider: PropTypes.func,
     }),
     connect(
         mapStateToProps,
-        { userLogout: userLogoutAction }
+        mapDispatchToProps
     )
 )(CoreAdminRouter) as ComponentType<AdminRouterProps>;

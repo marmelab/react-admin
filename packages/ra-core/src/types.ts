@@ -1,5 +1,6 @@
 import { ReactNode, ReactElement, ComponentType } from 'react';
 import { RouteProps, RouteComponentProps, match as Match } from 'react-router';
+import { Dispatch, AnyAction } from 'redux';
 
 import { WithPermissionsChildrenParams } from './auth/WithPermissions';
 
@@ -71,7 +72,8 @@ export type Dispatch<T> = T extends (...args: infer A) => any
 
 export type ResourceElement = ReactElement<ResourceProps>;
 export type RenderResourcesFunction = (
-    permissions: any
+    permissions: any,
+    dispatch?: Dispatch<AnyAction>
 ) => ResourceElement[] | Promise<ResourceElement[]>;
 export type AdminChildren = RenderResourcesFunction | ReactNode;
 
