@@ -1,6 +1,8 @@
 import assert from 'assert';
 
-import { nameRelatedTo } from './oneToMany';
+import oneToManyReducer, { nameRelatedTo } from './oneToMany';
+import { DELETE } from '../../../dataFetchActions';
+import { UNDOABLE } from '../../../actions';
 
 describe('oneToMany', () => {
     describe('oneToMany', () => {
@@ -29,6 +31,50 @@ describe('oneToMany', () => {
                 }),
                 'posts_comments@id_6?active=true'
             );
+        });
+
+        it('should remove references deleted optimistically', () => {
+            const previousState = {
+                'posts_comments@id_1': {
+                    ids: [1, 2, 3],
+                    total: 3,
+                },
+                'reviews_comments@id_1': {
+                    ids: [1, 2, 3],
+                    total: 3,
+                },
+                'posts_reviews@id_1': {
+                    ids: [1, 2, 3],
+                    total: 3,
+                },
+            };
+
+            const state = oneToManyReducer(previousState, {
+                type: UNDOABLE,
+                payload: {
+                    id: 2,
+                },
+                meta: {
+                    resource: 'comments',
+                    optimistic: true,
+                    fetch: DELETE,
+                },
+            });
+
+            expect(state).toEqual({
+                'posts_comments@id_1': {
+                    ids: [1, 3],
+                    total: 2,
+                },
+                'reviews_comments@id_1': {
+                    ids: [1, 3],
+                    total: 2,
+                },
+                'posts_reviews@id_1': {
+                    ids: [1, 2, 3],
+                    total: 3,
+                },
+            });
         });
     });
 });

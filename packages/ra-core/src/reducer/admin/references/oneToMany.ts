@@ -2,8 +2,10 @@ import { Reducer } from 'redux';
 import {
     CRUD_GET_MANY_REFERENCE_SUCCESS,
     CrudGetManyReferenceSuccessAction,
+    CrudDeleteSuccessAction,
 } from '../../../actions/dataActions';
 import { Identifier, ReduxState } from '../../../types';
+import { DELETE } from '../../../dataFetchActions';
 
 const initialState = {};
 
@@ -13,12 +15,31 @@ interface State {
 
 type ActionTypes =
     | CrudGetManyReferenceSuccessAction
+    | CrudDeleteSuccessAction
     | { type: 'OTHER_ACTION'; payload: any; meta?: any };
 
 const oneToManyReducer: Reducer<State> = (
     previousState = initialState,
     action: ActionTypes
 ) => {
+    if (action.meta && action.meta.fetch === DELETE && action.meta.optimistic) {
+        const relatedTo = Object.keys(previousState).filter(key =>
+            key.includes(action.meta.resource)
+        );
+
+        return relatedTo.reduce(
+            (acc, key) => ({
+                ...acc,
+                [key]: {
+                    ids: previousState[key].ids.filter(
+                        id => id !== action.payload.id
+                    ),
+                    total: previousState[key].total - 1,
+                },
+            }),
+            previousState
+        );
+    }
     switch (action.type) {
         case CRUD_GET_MANY_REFERENCE_SUCCESS:
             return {
@@ -28,6 +49,7 @@ const oneToManyReducer: Reducer<State> = (
                     total: action.payload.total,
                 },
             };
+
         default:
             return previousState;
     }
