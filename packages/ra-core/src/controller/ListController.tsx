@@ -42,6 +42,7 @@ import {
 } from '../types';
 import { Location } from 'history';
 import { useTranslate } from '../i18n';
+import useList from './useList';
 
 interface ChildrenFuncParams {
     basePath: string;
@@ -171,57 +172,9 @@ const ListController = (props: Props) => {
         (reduxState: ReduxState) => reduxState.admin.ui.viewVersion
     );
 
-    const { params, ids, loadedOnce, selectedIds, total } = useSelector(
+    const { loadedOnce, selectedIds } = useSelector(
         (reduxState: ReduxState) => reduxState.admin.resources[resource].list,
         [resource]
-    );
-
-    const data = useSelector(
-        (reduxState: ReduxState) => reduxState.admin.resources[resource].data,
-        [resource]
-    );
-
-    const query = getQuery({
-        location,
-        params,
-        filterDefaultValues,
-        sort,
-        perPage,
-    });
-
-    const requestSignature = [
-        resource,
-        JSON.stringify(query),
-        JSON.stringify(location),
-    ];
-
-    const changeParams = useCallback(action => {
-        const newParams = queryReducer(query, action);
-        dispatch(
-            push({
-                ...location,
-                search: `?${stringify({
-                    ...newParams,
-                    filter: JSON.stringify(newParams.filter),
-                })}`,
-            })
-        );
-        dispatch(changeListParams(resource, newParams));
-    }, requestSignature);
-
-    const setSort = useCallback(
-        newSort => changeParams({ type: SET_SORT, payload: { sort: newSort } }),
-        requestSignature
-    );
-
-    const setPage = useCallback(
-        newPage => changeParams({ type: SET_PAGE, payload: newPage }),
-        requestSignature
-    );
-
-    const setPerPage = useCallback(
-        newPerPage => changeParams({ type: SET_PER_PAGE, payload: newPerPage }),
-        requestSignature
     );
 
     if (filter && isValidElement(filter)) {
@@ -230,10 +183,14 @@ const ListController = (props: Props) => {
         );
     }
 
-    if (!query.page && !(ids || []).length && params.page > 1 && total > 0) {
-        setPage(params.page - 1);
-        return null;
-    }
+    const [query, actions] = useList({
+        resource,
+        location,
+        filterDefaultValues,
+        sort,
+        perPage,
+        filter,
+    });
 
     const filterValues = query.filter || {};
 
@@ -245,19 +202,19 @@ const ListController = (props: Props) => {
 
             // fix for redux-form bug with onChange and enableReinitialize
             const filtersWithoutEmpty = removeEmpty(filters);
-            changeParams({
+            actions.changeParams({
                 type: SET_FILTER,
                 payload: filtersWithoutEmpty,
             });
         }, debounce),
-        requestSignature
+        query.requestSignature
     );
 
     const hideFilter = useCallback((filterName: string) => {
         setDisplayedFilters({ [filterName]: false });
         const newFilters = removeKey(filterValues, filterName);
         setFilters(newFilters);
-    }, requestSignature);
+    }, query.requestSignature);
 
     const showFilter = useCallback((filterName: string, defaultValue: any) => {
         setDisplayedFilters({ [filterName]: true });
@@ -267,35 +224,19 @@ const ListController = (props: Props) => {
                 [filterName]: defaultValue,
             });
         }
-    }, requestSignature);
+    }, query.requestSignature);
 
     const handleSelect = useCallback((newIds: Identifier[]) => {
         dispatch(setListSelectedIds(resource, newIds));
-    }, requestSignature);
+    }, query.requestSignature);
 
     const handleUnselectItems = useCallback(() => {
         dispatch(setListSelectedIds(resource, []));
-    }, requestSignature);
+    }, query.requestSignature);
 
     const handleToggleItem = useCallback((id: Identifier) => {
         dispatch(toggleListItem(resource, id));
-    }, requestSignature);
-
-    useEffect(() => {
-        const pagination = {
-            page: query.page,
-            perPage: query.perPage,
-        };
-        const permanentFilter = filter;
-        dispatch(
-            crudGetList(
-                resource,
-                pagination,
-                { field: query.sort, order: query.order },
-                { ...query.filter, ...permanentFilter }
-            )
-        );
-    }, requestSignature);
+    }, query.requestSignature);
 
     const resourceName = translate(`resources.${resource}.name`, {
         smart_count: 2,
@@ -311,116 +252,32 @@ const ListController = (props: Props) => {
             field: query.sort,
             order: query.order,
         },
-        data,
+        data: query.data,
         defaultTitle,
         displayedFilters,
         filterValues,
         hasCreate,
-        ids,
+        ids: query.ids,
         isLoading,
         loadedOnce,
         onSelect: handleSelect,
         onToggleItem: handleToggleItem,
         onUnselectItems: handleUnselectItems,
-        page: getNumberOrDefault(query.page, 1),
-        perPage: getNumberOrDefault(query.perPage, 10),
+        page: query.page,
+        perPage: query.perPage,
         resource,
         selectedIds,
         setFilters,
         hideFilter,
         showFilter,
-        setPage,
-        setPerPage,
-        setSort,
+        setPage: actions.setPage,
+        setPerPage: actions.setPerPage,
+        setSort: actions.setSort,
         translate,
-        total,
+        total: query.total,
         version,
     });
 };
-
-export const validQueryParams = ['page', 'perPage', 'sort', 'order', 'filter'];
-
-export const parseQueryFromLocation = ({ search }) => {
-    const query = pickBy(
-        parse(search),
-        (v, k) => validQueryParams.indexOf(k) !== -1
-    );
-    if (query.filter && typeof query.filter === 'string') {
-        try {
-            query.filter = JSON.parse(query.filter);
-        } catch (err) {
-            delete query.filter;
-        }
-    }
-    return query;
-};
-
-/**
- * Check if user has already set custom sort, page, or filters for this list
- *
- * User params come from the Redux store as the params props. By default,
- * this object is:
- *
- * { filter: {}, order: null, page: 1, perPage: null, sort: null }
- *
- * To check if the user has custom params, we must compare the params
- * to these initial values.
- *
- * @param {object} params
- */
-export const hasCustomParams = (params: ListParams) => {
-    return (
-        params &&
-        params.filter &&
-        (Object.keys(params.filter).length > 0 ||
-            params.order != null ||
-            params.page !== 1 ||
-            params.perPage != null ||
-            params.sort != null)
-    );
-};
-
-/**
- * Merge list params from 3 different sources:
- *   - the query string
- *   - the params stored in the state (from previous navigation)
- *   - the props passed to the List component (including the filter defaultValues)
- */
-export const getQuery = ({
-    location,
-    params,
-    filterDefaultValues,
-    sort,
-    perPage,
-}) => {
-    const queryFromLocation = parseQueryFromLocation(location);
-    const query: Partial<ListParams> =
-        Object.keys(queryFromLocation).length > 0
-            ? queryFromLocation
-            : hasCustomParams(params)
-            ? { ...params }
-            : { filter: filterDefaultValues || {} };
-
-    if (!query.sort) {
-        query.sort = sort.field;
-        query.order = sort.order;
-    }
-    if (!query.perPage) {
-        query.perPage = perPage;
-    }
-    if (!query.page) {
-        query.page = 1;
-    }
-    return query as ListParams;
-};
-
-export const getNumberOrDefault = (
-    possibleNumber: string | number | undefined,
-    defaultValue: number
-) =>
-    (typeof possibleNumber === 'string'
-        ? parseInt(possibleNumber, 10)
-        : possibleNumber) || defaultValue;
 
 export const injectedProps = [
     'basePath',
