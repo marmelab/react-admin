@@ -11,7 +11,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { parse, stringify } from 'query-string';
 import { push } from 'connected-react-router';
 import inflection from 'inflection';
-import debounceFunction from 'lodash/debounce';
+import lodashDebounce from 'lodash/debounce';
 import isEqual from 'lodash/isEqual';
 import pickBy from 'lodash/pickBy';
 
@@ -160,7 +160,7 @@ const ListController = (props: Props) => {
         debounce = 500,
     } = props;
 
-    const [state, setState] = useState({});
+    const [displayedFilters, setDisplayedFilters] = useState({});
     const dispatch = useDispatch();
     const translate = useTranslate();
     const isLoading = useSelector(
@@ -176,6 +176,11 @@ const ListController = (props: Props) => {
         [resource]
     );
 
+    const data = useSelector(
+        (reduxState: ReduxState) => reduxState.admin.resources[resource].data,
+        [resource]
+    );
+
     const query = getQuery({
         location,
         params,
@@ -183,41 +188,40 @@ const ListController = (props: Props) => {
         sort,
         perPage,
     });
-    const data = useSelector(
-        (reduxState: ReduxState) => reduxState.admin.resources[resource].data,
-        [JSON.stringify(query)]
-    );
 
-    const changeParams = useCallback(
-        action => {
-            const newParams = queryReducer(query, action);
-            dispatch(
-                push({
-                    ...location,
-                    search: `?${stringify({
-                        ...newParams,
-                        filter: JSON.stringify(newParams.filter),
-                    })}`,
-                })
-            );
-            dispatch(changeListParams(resource, newParams));
-        },
-        [resource, JSON.stringify(query), JSON.stringify(location)]
-    );
+    const requestSignature = [
+        resource,
+        JSON.stringify(query),
+        JSON.stringify(location),
+    ];
+
+    const changeParams = useCallback(action => {
+        const newParams = queryReducer(query, action);
+        dispatch(
+            push({
+                ...location,
+                search: `?${stringify({
+                    ...newParams,
+                    filter: JSON.stringify(newParams.filter),
+                })}`,
+            })
+        );
+        dispatch(changeListParams(resource, newParams));
+    }, requestSignature);
 
     const setSort = useCallback(
         newSort => changeParams({ type: SET_SORT, payload: { sort: newSort } }),
-        []
+        requestSignature
     );
 
     const setPage = useCallback(
-        page => changeParams({ type: SET_PAGE, payload: page }),
-        []
+        newPage => changeParams({ type: SET_PAGE, payload: newPage }),
+        requestSignature
     );
 
     const setPerPage = useCallback(
         newPerPage => changeParams({ type: SET_PER_PAGE, payload: newPerPage }),
-        []
+        requestSignature
     );
 
     if (filter && isValidElement(filter)) {
@@ -225,23 +229,16 @@ const ListController = (props: Props) => {
             '<List> received a React element as `filter` props. If you intended to set the list filter elements, use the `filters` (with an s) prop instead. The `filter` prop is internal and should not be set by the developer.'
         );
     }
+
     if (!query.page && !(ids || []).length && params.page > 1 && total > 0) {
         setPage(params.page - 1);
-        return;
+        return null;
     }
 
-    const filterValues = getFilterValues(query);
-
-    const resourceName = translate(`resources.${resource}.name`, {
-        smart_count: 2,
-        _: inflection.humanize(inflection.pluralize(resource)),
-    });
-    const defaultTitle = translate('ra.page.list', {
-        name: resourceName,
-    });
+    const filterValues = query.filter || {};
 
     const setFilters = useCallback(
-        debounceFunction(filters => {
+        lodashDebounce(filters => {
             if (isEqual(filters, filterValues)) {
                 return;
             }
@@ -253,48 +250,36 @@ const ListController = (props: Props) => {
                 payload: filtersWithoutEmpty,
             });
         }, debounce),
-        [JSON.stringify(filterValues)]
+        requestSignature
     );
 
-    const hideFilter = useCallback(
-        (filterName: string) => {
-            setState({ [filterName]: false });
-            const newFilters = removeKey(filterValues, filterName);
-            setFilters(newFilters);
-        },
-        [JSON.stringify(filterValues)]
-    );
+    const hideFilter = useCallback((filterName: string) => {
+        setDisplayedFilters({ [filterName]: false });
+        const newFilters = removeKey(filterValues, filterName);
+        setFilters(newFilters);
+    }, requestSignature);
 
-    const showFilter = useCallback(
-        (filterName: string, defaultValue: any) => {
-            setState({ [filterName]: true });
-            if (typeof defaultValue !== 'undefined') {
-                setFilters({
-                    ...filterValues,
-                    [filterName]: defaultValue,
-                });
-            }
-        },
-        [JSON.stringify(filterValues)]
-    );
+    const showFilter = useCallback((filterName: string, defaultValue: any) => {
+        setDisplayedFilters({ [filterName]: true });
+        if (typeof defaultValue !== 'undefined') {
+            setFilters({
+                ...filterValues,
+                [filterName]: defaultValue,
+            });
+        }
+    }, requestSignature);
 
-    const handleSelect = useCallback(
-        (newIds: Identifier[]) => {
-            dispatch(setListSelectedIds(resource, newIds));
-        },
-        [resource]
-    );
+    const handleSelect = useCallback((newIds: Identifier[]) => {
+        dispatch(setListSelectedIds(resource, newIds));
+    }, requestSignature);
 
     const handleUnselectItems = useCallback(() => {
         dispatch(setListSelectedIds(resource, []));
-    }, [resource]);
+    }, requestSignature);
 
-    const handleToggleItem = useCallback(
-        (id: Identifier) => {
-            dispatch(toggleListItem(resource, id));
-        },
-        [resource]
-    );
+    const handleToggleItem = useCallback((id: Identifier) => {
+        dispatch(toggleListItem(resource, id));
+    }, requestSignature);
 
     useEffect(() => {
         const pagination = {
@@ -310,7 +295,15 @@ const ListController = (props: Props) => {
                 { ...query.filter, ...permanentFilter }
             )
         );
-    }, [JSON.stringify(query)]);
+    }, requestSignature);
+
+    const resourceName = translate(`resources.${resource}.name`, {
+        smart_count: 2,
+        _: inflection.humanize(inflection.pluralize(resource)),
+    });
+    const defaultTitle = translate('ra.page.list', {
+        name: resourceName,
+    });
 
     return children({
         basePath,
@@ -320,7 +313,7 @@ const ListController = (props: Props) => {
         },
         data,
         defaultTitle,
-        displayedFilters: state,
+        displayedFilters,
         filterValues,
         hasCreate,
         ids,
@@ -388,11 +381,10 @@ const hasCustomParams = (params: ListParams) => {
 };
 
 /**
- * Merge list params from 4 different sources:
+ * Merge list params from 3 different sources:
  *   - the query string
  *   - the params stored in the state (from previous navigation)
- *   - the filter defaultValues
- *   - the props passed to the List component
+ *   - the props passed to the List component (including the filter defaultValues)
  */
 const getQuery = ({ location, params, filterDefaultValues, sort, perPage }) => {
     const queryFromLocation = parseQueryFromLocation(location);
@@ -414,10 +406,6 @@ const getQuery = ({ location, params, filterDefaultValues, sort, perPage }) => {
         query.page = 1;
     }
     return query as ListParams;
-};
-
-const getFilterValues = (query: ListParams) => {
-    return query.filter || {};
 };
 
 const getNumberOrDefault = (
