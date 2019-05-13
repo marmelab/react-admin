@@ -338,9 +338,9 @@ const ListController = (props: Props) => {
     });
 };
 
-const validQueryParams = ['page', 'perPage', 'sort', 'order', 'filter'];
+export const validQueryParams = ['page', 'perPage', 'sort', 'order', 'filter'];
 
-const parseQueryFromLocation = ({ search }) => {
+export const parseQueryFromLocation = ({ search }) => {
     const query = pickBy(
         parse(search),
         (v, k) => validQueryParams.indexOf(k) !== -1
@@ -368,7 +368,7 @@ const parseQueryFromLocation = ({ search }) => {
  *
  * @param {object} params
  */
-const hasCustomParams = (params: ListParams) => {
+export const hasCustomParams = (params: ListParams) => {
     return (
         params &&
         params.filter &&
@@ -386,7 +386,13 @@ const hasCustomParams = (params: ListParams) => {
  *   - the params stored in the state (from previous navigation)
  *   - the props passed to the List component (including the filter defaultValues)
  */
-const getQuery = ({ location, params, filterDefaultValues, sort, perPage }) => {
+export const getQuery = ({
+    location,
+    params,
+    filterDefaultValues,
+    sort,
+    perPage,
+}) => {
     const queryFromLocation = parseQueryFromLocation(location);
     const query: Partial<ListParams> =
         Object.keys(queryFromLocation).length > 0
@@ -408,7 +414,7 @@ const getQuery = ({ location, params, filterDefaultValues, sort, perPage }) => {
     return query as ListParams;
 };
 
-const getNumberOrDefault = (
+export const getNumberOrDefault = (
     possibleNumber: string | number | undefined,
     defaultValue: number
 ) =>
@@ -416,7 +422,7 @@ const getNumberOrDefault = (
         ? parseInt(possibleNumber, 10)
         : possibleNumber) || defaultValue;
 
-const injectedProps = [
+export const injectedProps = [
     'basePath',
     'currentSort',
     'data',
