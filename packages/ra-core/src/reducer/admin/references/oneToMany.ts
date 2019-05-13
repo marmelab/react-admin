@@ -141,7 +141,10 @@ export const getReferencesByIds = (
 const getRelatedReferences = (previousState, resource) =>
     Object.keys(previousState).filter(key => key.includes(resource));
 
-const removeDeletedReference = removedId => (previousState, key) => {
+const removeDeletedReference = (removedId: Identifier) => (
+    previousState,
+    key
+) => {
     const hasReferenceToRemovedId = previousState[key].ids.includes(removedId);
 
     if (!hasReferenceToRemovedId) {
@@ -157,7 +160,10 @@ const removeDeletedReference = removedId => (previousState, key) => {
     };
 };
 
-const removeDeletedReferences = removedIds => (previousState, key) => {
+const removeDeletedReferences = (removedIds: Identifier[]) => (
+    previousState,
+    key
+) => {
     const idsToRemove = previousState[key].ids.filter(id =>
         removedIds.includes(id)
     );
