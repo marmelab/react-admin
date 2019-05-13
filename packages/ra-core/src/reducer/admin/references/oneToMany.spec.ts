@@ -1,7 +1,7 @@
 import assert from 'assert';
 
 import oneToManyReducer, { nameRelatedTo } from './oneToMany';
-import { DELETE } from '../../../dataFetchActions';
+import { DELETE, DELETE_MANY } from '../../../dataFetchActions';
 import { UNDOABLE } from '../../../actions';
 
 describe('oneToMany', () => {
@@ -33,7 +33,7 @@ describe('oneToMany', () => {
             );
         });
 
-        it('should remove references deleted optimistically', () => {
+        it('should remove reference deleted optimistically', () => {
             const previousState = {
                 'posts_comments@id_1': {
                     ids: [1, 2, 3],
@@ -69,6 +69,50 @@ describe('oneToMany', () => {
                 'reviews_comments@id_1': {
                     ids: [1, 3],
                     total: 2,
+                },
+                'posts_reviews@id_1': {
+                    ids: [1, 2, 3],
+                    total: 3,
+                },
+            });
+        });
+
+        it('should remove references deleted optimistically', () => {
+            const previousState = {
+                'posts_comments@id_1': {
+                    ids: [1, 2, 3],
+                    total: 3,
+                },
+                'reviews_comments@id_1': {
+                    ids: [1, 2, 3],
+                    total: 3,
+                },
+                'posts_reviews@id_1': {
+                    ids: [1, 2, 3],
+                    total: 3,
+                },
+            };
+
+            const state = oneToManyReducer(previousState, {
+                type: UNDOABLE,
+                payload: {
+                    ids: [2, 3],
+                },
+                meta: {
+                    resource: 'comments',
+                    optimistic: true,
+                    fetch: DELETE_MANY,
+                },
+            });
+
+            expect(state).toEqual({
+                'posts_comments@id_1': {
+                    ids: [1],
+                    total: 1,
+                },
+                'reviews_comments@id_1': {
+                    ids: [1],
+                    total: 1,
                 },
                 'posts_reviews@id_1': {
                     ids: [1, 2, 3],

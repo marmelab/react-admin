@@ -5,7 +5,7 @@ import {
     CrudDeleteSuccessAction,
 } from '../../../actions/dataActions';
 import { Identifier, ReduxState } from '../../../types';
-import { DELETE } from '../../../dataFetchActions';
+import { DELETE, DELETE_MANY } from '../../../dataFetchActions';
 
 const initialState = {};
 
@@ -39,6 +39,31 @@ const oneToManyReducer: Reducer<State> = (
             }),
             previousState
         );
+    }
+    if (
+        action.meta &&
+        action.meta.fetch === DELETE_MANY &&
+        action.meta.optimistic
+    ) {
+        const relatedTo = Object.keys(previousState).filter(key =>
+            key.includes(action.meta.resource)
+        );
+
+        return relatedTo.reduce((acc, key) => {
+            const idsToRemove = previousState[key].ids.filter(id =>
+                action.payload.ids.includes(id)
+            );
+
+            return {
+                ...acc,
+                [key]: {
+                    ids: previousState[key].ids.filter(
+                        id => !action.payload.ids.includes(id)
+                    ),
+                    total: previousState[key].total - idsToRemove.length,
+                },
+            };
+        }, previousState);
     }
     switch (action.type) {
         case CRUD_GET_MANY_REFERENCE_SUCCESS:
