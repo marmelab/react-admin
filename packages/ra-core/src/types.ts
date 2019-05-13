@@ -46,10 +46,18 @@ export interface ReduxState {
     admin: {
         ui: {
             optimistic: boolean;
+            viewVersion: number;
         };
         resources: {
             [name: string]: {
                 data: any;
+                list: {
+                    params: any;
+                    ids: Identifier[];
+                    loadedOnce: boolean;
+                    selectedIds: Identifier[];
+                    total: number;
+                };
             };
         };
         references: {
