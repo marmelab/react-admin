@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { ShowButton } from '../button';
-import CardActions from '../layout/CardActions';
+import Actions from '../layout/Actions';
 
 const sanitizeRestProps = ({
     basePath,
@@ -10,6 +10,7 @@ const sanitizeRestProps = ({
     record,
     hasShow,
     hasList,
+    resource,
     ...rest
 }) => rest;
 
@@ -38,17 +39,10 @@ const sanitizeRestProps = ({
  *         </Edit>
  *     );
  */
-const EditActions = ({
-    basePath,
-    className,
-    data,
-    hasShow,
-    resource,
-    ...rest
-}) => (
-    <CardActions className={className} {...sanitizeRestProps(rest)}>
+const EditActions = ({ basePath, className, data, hasShow, ...rest }) => (
+    <Actions className={className} {...sanitizeRestProps(rest)}>
         {hasShow && <ShowButton basePath={basePath} record={data} />}
-    </CardActions>
+    </Actions>
 );
 
 EditActions.propTypes = {

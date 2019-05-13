@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import CardActions from '../layout/CardActions';
+import Actions from '../layout/Actions';
 import { ListButton } from '../button';
 
 const sanitizeRestProps = ({
@@ -38,9 +38,9 @@ const sanitizeRestProps = ({
  *     );
  */
 const CreateActions = ({ basePath, className, hasList, ...rest }) => (
-    <CardActions className={className} {...sanitizeRestProps(rest)}>
+    <Actions className={className} {...sanitizeRestProps(rest)}>
         {hasList && <ListButton basePath={basePath} />}
-    </CardActions>
+    </Actions>
 );
 
 CreateActions.propTypes = {

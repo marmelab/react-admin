@@ -7,7 +7,7 @@ import { withStyles, createStyles } from '@material-ui/core/styles';
 import { lighten } from '@material-ui/core/styles/colorManipulator';
 import { useTranslate, sanitizeListRestProps } from 'ra-core';
 
-import CardActions from '../layout/CardActions';
+import Actions from '../layout/Actions';
 
 const styles = theme =>
     createStyles({
@@ -66,7 +66,7 @@ const BulkActionsToolbar = ({
                     })}
                 </Typography>
             </div>
-            <CardActions>
+            <Actions>
                 {Children.map(children, child =>
                     cloneElement(Children.only(child), {
                         basePath,
@@ -75,7 +75,7 @@ const BulkActionsToolbar = ({
                         selectedIds,
                     })
                 )}
-            </CardActions>
+            </Actions>
         </Toolbar>
     );
 };

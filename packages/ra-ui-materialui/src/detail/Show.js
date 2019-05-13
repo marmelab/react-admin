@@ -7,11 +7,14 @@ import { ShowController } from 'ra-core';
 
 import DefaultActions from './ShowActions';
 import TitleForRecord from '../layout/TitleForRecord';
-import CardContentInner from '../layout/CardContentInner';
 
 export const styles = createStyles({
-    root: {
+    root: {},
+    main: {
         display: 'flex',
+    },
+    noActions: {
+        marginTop: '1em',
     },
     card: {
         flex: '1 1 auto',
@@ -44,70 +47,75 @@ const sanitizeRestProps = ({
     ...rest
 }) => rest;
 
-export const ShowView = withStyles(styles)(({
-    actions,
-    aside,
-    basePath,
-    children,
-    classes,
-    className,
-    defaultTitle,
-    hasEdit,
-    hasList,
-    isLoading,
-    record,
-    resource,
-    title,
-    version,
-    ...rest
-}) => {
-    if (typeof actions === 'undefined' && hasEdit) {
-        actions = <DefaultActions />;
-    }
-    if (!children) {
-        return null;
-    }
-    return (
-        <div
-            className={classnames('show-page', classes.root, className)}
-            {...sanitizeRestProps(rest)}
-        >
-            <TitleForRecord
-                title={title}
-                record={record}
-                defaultTitle={defaultTitle}
-            />
-            <Card className={classes.card}>
-                {actions && (
-                    <CardContentInner>
-                        {cloneElement(actions, {
-                            basePath,
-                            data: record,
-                            hasList,
-                            hasEdit,
-                            resource,
-                            ...actions.props
-                        })}
-                    </CardContentInner>
-                )}
-                {record &&
-                    cloneElement(Children.only(children), {
-                        resource,
+export const ShowView = withStyles(styles)(
+    ({
+        actions,
+        aside,
+        basePath,
+        children,
+        classes,
+        className,
+        defaultTitle,
+        hasEdit,
+        hasList,
+        isLoading,
+        record,
+        resource,
+        title,
+        version,
+        ...rest
+    }) => {
+        if (typeof actions === 'undefined' && hasEdit) {
+            actions = <DefaultActions />;
+        }
+        if (!children) {
+            return null;
+        }
+        return (
+            <div
+                className={classnames('show-page', classes.root, className)}
+                {...sanitizeRestProps(rest)}
+            >
+                <TitleForRecord
+                    title={title}
+                    record={record}
+                    defaultTitle={defaultTitle}
+                />
+                {actions &&
+                    cloneElement(actions, {
                         basePath,
-                        record,
-                        version,
+                        data: record,
+                        hasList,
+                        hasEdit,
+                        resource,
+                        ...actions.props,
                     })}
-            </Card>
-            {aside &&
-                cloneElement(aside, {
-                    resource,
-                    basePath,
-                    record,
-                    version,
-                })}
-        </div>
-    );
-});
+                <div
+                    className={classnames(classes.main, {
+                        [classes.noActions]: !actions,
+                    })}
+                >
+                    <Card className={classes.card}>
+                        {record &&
+                            cloneElement(Children.only(children), {
+                                resource,
+                                basePath,
+                                record,
+                                version,
+                            })}
+                    </Card>
+                    {aside &&
+                        cloneElement(aside, {
+                            resource,
+                            basePath,
+                            record,
+                            version,
+                        })}
+                </div>
+            </div>
+        );
+    }
+);
 
 ShowView.propTypes = {
     actions: PropTypes.element,

@@ -1,6 +1,6 @@
 import AppBar from './AppBar';
 import AppBarMobile from './AppBarMobile';
-import CardActions from './CardActions';
+import Actions from './Actions';
 import CardContentInner from './CardContentInner';
 import Confirm from './Confirm';
 import DashboardMenuItem from './DashboardMenuItem';
@@ -26,7 +26,7 @@ import ViewTitle from './ViewTitle';
 export {
     AppBar,
     AppBarMobile,
-    CardActions,
+    Actions as CardActions,
     CardContentInner,
     Confirm,
     DashboardMenuItem,
