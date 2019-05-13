@@ -23,12 +23,23 @@ const oneToManyReducer: Reducer<State> = (
     action: ActionTypes
 ) => {
     if (action.meta && action.meta.optimistic) {
+        const relatedTo = getRelatedReferences(
+            previousState,
+            action.meta.resource
+        );
+
         if (action.meta.fetch === DELETE) {
-            return removeDeletedReference(previousState, action);
+            return relatedTo.reduce(
+                removeDeletedReference(action.payload.id),
+                previousState
+            );
         }
 
         if (action.meta.fetch === DELETE_MANY) {
-            return removeDeletedReferences(previousState, action);
+            return relatedTo.reduce(
+                removeDeletedReferences(action.payload.ids),
+                previousState
+            );
         }
     }
     switch (action.type) {
@@ -130,48 +141,34 @@ export const getReferencesByIds = (
 const getRelatedReferences = (previousState, resource) =>
     Object.keys(previousState).filter(key => key.includes(resource));
 
-const removeDeletedReference = (previousState, action: ActionTypes) => {
-    const relatedTo = getRelatedReferences(previousState, action.meta.resource);
+const removeDeletedReference = removedId => (previousState, key) => {
+    const hasReferenceToRemovedId = previousState[key].ids.includes(removedId);
 
-    return relatedTo.reduce((acc, key) => {
-        const hasReferenceToRemovedId = previousState[key].ids.includes(
-            action.payload.id
-        );
+    if (!hasReferenceToRemovedId) {
+        return previousState;
+    }
 
-        if (!hasReferenceToRemovedId) {
-            return acc;
-        }
-
-        return {
-            ...acc,
-            [key]: {
-                ids: previousState[key].ids.filter(
-                    id => id !== action.payload.id
-                ),
-                total: previousState[key].total - 1,
-            },
-        };
-    }, previousState);
+    return {
+        ...previousState,
+        [key]: {
+            ids: previousState[key].ids.filter(id => id !== removedId),
+            total: previousState[key].total - 1,
+        },
+    };
 };
 
-const removeDeletedReferences = (previousState, action: ActionTypes) => {
-    const relatedTo = getRelatedReferences(previousState, action.meta.resource);
+const removeDeletedReferences = removedIds => (previousState, key) => {
+    const idsToRemove = previousState[key].ids.filter(id =>
+        removedIds.includes(id)
+    );
 
-    return relatedTo.reduce((acc, key) => {
-        const idsToRemove = previousState[key].ids.filter(id =>
-            action.payload.ids.includes(id)
-        );
-
-        return {
-            ...acc,
-            [key]: {
-                ids: previousState[key].ids.filter(
-                    id => !action.payload.ids.includes(id)
-                ),
-                total: previousState[key].total - idsToRemove.length,
-            },
-        };
-    }, previousState);
+    return {
+        ...previousState,
+        [key]: {
+            ids: previousState[key].ids.filter(id => !removedIds.includes(id)),
+            total: previousState[key].total - idsToRemove.length,
+        },
+    };
 };
 
 export const nameRelatedTo = (reference, id, resource, target, filter = {}) => {
