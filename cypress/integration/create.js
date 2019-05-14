@@ -250,12 +250,27 @@ describe('Create Page', () => {
     });
 
     it('should show body in edit view after creating new post', () => {
-        cy.get(CreatePage.elements.input('title')).type('Post title');
-        cy.get(CreatePage.elements.input('teaser', 'textarea')).type('Post teaser');
-        cy.get(CreatePage.elements.bodyInput).type('text');
-        cy.wait(500);
+        const values = [
+            {
+                type: 'input',
+                name: 'title',
+                value: 'Test title',
+            },
+            {
+                type: 'textarea',
+                name: 'teaser',
+                value: 'Test teaser',
+            },
+            {
+                type: 'rich-text-input',
+                name: 'body',
+                value: 'Test body',
+            },
+        ];
+
+        CreatePage.setValues(values);
         CreatePage.submit();
         EditPage.gotoTab(2);
-        cy.get(EditPage.elements.bodyInput).contains('text');
+        cy.get(EditPage.elements.bodyInput).contains('Test body');
     });
 });
