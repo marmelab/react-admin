@@ -141,34 +141,4 @@ describe('Edit Page', () => {
             expect(el).to.have.value(date)
         );
     });
-
-    it('should not show rich text input error message when field is untouched', () => {
-        CreatePostPage.navigate();
-        cy.get('.ra-rich-text-input > p').should('not.exist');
-    });
-
-    it('should show rich text input error message when form is submitted', () => {
-        CreatePostPage.navigate();
-        cy.get(CreatePostPage.elements.submitButton).click();
-        cy.get('.ra-rich-text-input > p').should('exist').contains('Required');
-    });
-
-    it('should not show rich text input error message when form is submitted and input is filled with text', () => {
-        CreatePostPage.navigate();
-        cy.get(CreatePostPage.elements.submitButton).click();
-        cy.get('.ra-rich-text-input > p').should('exist').contains('Required');
-        cy.get(CreatePostPage.elements.bodyInput).type('text');
-        cy.get('.ra-rich-text-input > p').should('not.exist');
-    });
-
-    it('should show body in edit view after creating new post', () => {
-        CreatePostPage.navigate();
-        cy.get(CreatePostPage.elements.input('title')).type('Post title');
-        cy.get(CreatePostPage.elements.input('teaser', 'textarea')).type('Post teaser');
-        cy.get(CreatePostPage.elements.bodyInput).type('text');
-        cy.wait(500);
-        CreatePostPage.submit();
-        EditPostPage.gotoTab(2);
-        cy.get(EditPostPage.elements.bodyInput).contains('text');
-    });
 });
