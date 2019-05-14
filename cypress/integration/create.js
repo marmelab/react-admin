@@ -234,19 +234,19 @@ describe('Create Page', () => {
     });
 
     it('should not show rich text input error message when field is untouched', () => {
-        cy.get('.ra-rich-text-input > p').should('not.exist');
+        cy.get('.ra-input-body .ra-rich-text-input > p').should('not.exist');
     });
 
     it('should show rich text input error message when form is submitted', () => {
         CreatePage.submit();
-        cy.get('.ra-rich-text-input > p').should('exist').contains('Required');
+        cy.get('.ra-input-body .ra-rich-text-input > p').should('exist').contains('Required');
     });
 
-    it('should not show rich text input error message when form is submitted and input is filled with text', () => {
+    it.only('should not show rich text input error message when form is submitted and input is filled with text', () => {
         CreatePage.submit();
-        cy.get('.ra-rich-text-input > p').should('exist').contains('Required');
+        cy.get('.ra-input-body .ra-rich-text-input > p').should('exist').contains('Required');
         cy.get(CreatePage.elements.input('body', 'rich-text-input')).type('text');
-        cy.get('.ra-rich-text-input > p').should('not.exist');
+        cy.get('.ra-input-body .ra-rich-text-input > p').should('not.exist');
     });
 
     it('should show body in edit view after creating new post', () => {
