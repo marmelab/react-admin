@@ -2,8 +2,10 @@ import { Reducer } from 'redux';
 import {
     CRUD_GET_MANY_REFERENCE_SUCCESS,
     CrudGetManyReferenceSuccessAction,
+    CrudDeleteSuccessAction,
 } from '../../../actions/dataActions';
 import { Identifier, ReduxState } from '../../../types';
+import { DELETE, DELETE_MANY } from '../../../dataFetchActions';
 
 const initialState = {};
 
@@ -13,12 +15,33 @@ interface State {
 
 type ActionTypes =
     | CrudGetManyReferenceSuccessAction
+    | CrudDeleteSuccessAction
     | { type: 'OTHER_ACTION'; payload: any; meta?: any };
 
 const oneToManyReducer: Reducer<State> = (
     previousState = initialState,
     action: ActionTypes
 ) => {
+    if (action.meta && action.meta.optimistic) {
+        const relatedTo = getRelatedReferences(
+            previousState,
+            action.meta.resource
+        );
+
+        if (action.meta.fetch === DELETE) {
+            return relatedTo.reduce(
+                removeDeletedReferences([action.payload.id]),
+                previousState
+            );
+        }
+
+        if (action.meta.fetch === DELETE_MANY) {
+            return relatedTo.reduce(
+                removeDeletedReferences(action.payload.ids),
+                previousState
+            );
+        }
+    }
     switch (action.type) {
         case CRUD_GET_MANY_REFERENCE_SUCCESS:
             return {
@@ -28,16 +51,17 @@ const oneToManyReducer: Reducer<State> = (
                     total: action.payload.total,
                 },
             };
+
         default:
             return previousState;
     }
 };
 
-export const getIds = (state: ReduxState, relatedTo) =>
+export const getIds = (state: ReduxState, relatedTo: string) =>
     state.admin.references.oneToMany[relatedTo] &&
     state.admin.references.oneToMany[relatedTo].ids;
 
-export const getTotal = (state: ReduxState, relatedTo) =>
+export const getTotal = (state: ReduxState, relatedTo: string) =>
     state.admin.references.oneToMany[relatedTo] &&
     state.admin.references.oneToMany[relatedTo].total;
 
@@ -114,7 +138,37 @@ export const getReferencesByIds = (
     return Object.keys(references).length > 0 ? references : null;
 };
 
-export const nameRelatedTo = (reference, id, resource, target, filter = {}) => {
+const getRelatedReferences = (previousState: State, resource: string) =>
+    Object.keys(previousState).filter(key => key.includes(resource));
+
+const removeDeletedReferences = (removedIds: Identifier[]) => (
+    previousState: State,
+    key: string
+) => {
+    const idsToKeep = previousState[key].ids.filter(
+        id => !removedIds.includes(id)
+    );
+
+    if (idsToKeep.length === previousState[key].ids.length) {
+        return previousState;
+    }
+
+    return {
+        ...previousState,
+        [key]: {
+            ids: idsToKeep,
+            total: idsToKeep.length,
+        },
+    };
+};
+
+export const nameRelatedTo = (
+    reference: string,
+    id: Identifier,
+    resource: string,
+    target: string,
+    filter: object = {}
+) => {
     const keys = Object.keys(filter);
     if (!keys.length) {
         return `${resource}_${reference}@${target}_${id}`;
