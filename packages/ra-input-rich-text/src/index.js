@@ -55,7 +55,7 @@ export class RichTextInput extends Component {
         this.quill.setContents(this.quill.clipboard.convert(value));
 
         this.editor = this.divRef.querySelector('.ql-editor');
-        this.quill.on('text-change', debounce(this.onTextChange, 500));
+        this.quill.on('text-change', this.onTextChange);
     }
 
     componentDidUpdate() {
@@ -72,15 +72,16 @@ export class RichTextInput extends Component {
 
     componentWillUnmount() {
         this.quill.off('text-change', this.onTextChange);
+        this.onTextChange.cancel();
         this.quill = null;
     }
 
-    onTextChange = () => {
+    onTextChange = debounce(() => {
         const value =
             this.editor.innerHTML == '<p><br></p>' ? '' : this.editor.innerHTML;
         this.lastValueChange = value;
         this.props.input.onChange(value);
-    };
+    }, 500);
 
     updateDivRef = ref => {
         this.divRef = ref;
