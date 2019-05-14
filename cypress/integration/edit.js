@@ -72,7 +72,7 @@ describe('Edit Page', () => {
 
         CreatePostPage.navigate();
 
-        cy.get(CreatePostPage.elements.bodyInput).should(el =>
+        cy.get(CreatePostPage.elements.input('body', 'rich-text-input')).should(el =>
             // When the Quill editor is empty, it add the "ql-blank" CSS class
             expect(el).to.have.class('ql-blank')
         );

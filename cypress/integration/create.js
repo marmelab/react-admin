@@ -245,7 +245,7 @@ describe('Create Page', () => {
     it('should not show rich text input error message when form is submitted and input is filled with text', () => {
         CreatePage.submit();
         cy.get('.ra-rich-text-input > p').should('exist').contains('Required');
-        cy.get(CreatePage.elements.bodyInput).type('text');
+        cy.get(CreatePage.elements.input('body', 'rich-text-input')).type('text');
         cy.get('.ra-rich-text-input > p').should('not.exist');
     });
 

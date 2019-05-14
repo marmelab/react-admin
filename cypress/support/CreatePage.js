@@ -2,7 +2,6 @@ export default url => ({
     elements: {
         addAuthor: '.button-add-authors',
         body: 'body',
-        bodyInput: '.ra-input-body .ql-editor',
         input: (name, type = 'input') => {
             if (type === 'rich-text-input') {
                 return `.ra-input-${name} .ql-editor`;
