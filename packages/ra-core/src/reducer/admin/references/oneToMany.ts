@@ -145,17 +145,13 @@ const removeDeletedReferences = (removedIds: Identifier[]) => (
     previousState: State,
     key: string
 ) => {
-    const idsToRemove = previousState[key].ids.filter(id =>
-        removedIds.includes(id)
-    );
-
-    if (idsToRemove.length === 0) {
-        return previousState;
-    }
-
     const idsToKeep = previousState[key].ids.filter(
         id => !removedIds.includes(id)
     );
+
+    if (idsToKeep.length === previousState[key].ids.length) {
+        return previousState;
+    }
 
     return {
         ...previousState,
