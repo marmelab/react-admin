@@ -160,4 +160,15 @@ describe('Edit Page', () => {
         cy.get('.ra-rich-text-input .ql-editor[contenteditable]').type('text');
         cy.get('.ra-rich-text-input > p').should('not.exist');
     });
+
+    it('should show body in edit view after creating new post', () => {
+        CreatePostPage.navigate();
+        cy.get(CreatePostPage.elements.input('title')).type('Post title');
+        cy.get(CreatePostPage.elements.input('teaser', 'textarea')).type('Post teaser');
+        cy.get('.ra-rich-text-input .ql-editor[contenteditable]').type('text');
+        cy.wait(500);
+        CreatePostPage.submit();
+        EditPostPage.gotoTab(2);
+        cy.get('.ra-rich-text-input .ql-editor[contenteditable]').contains('text');
+    });
 });
