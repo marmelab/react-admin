@@ -76,6 +76,11 @@ describe('Create Page', () => {
                 name: 'teaser',
                 value: 'Test teaser',
             },
+            {
+                type: 'rich-text-input',
+                name: 'body',
+                value: 'Test body',
+            },
         ];
 
         CreatePage.setValues(values);
@@ -103,6 +108,11 @@ describe('Create Page', () => {
                 name: 'teaser',
                 value: 'Test teaser',
             },
+            {
+                type: 'rich-text-input',
+                name: 'body',
+                value: 'Test body',
+            },
         ];
 
         CreatePage.setValues(values);
@@ -123,6 +133,11 @@ describe('Create Page', () => {
                 type: 'textarea',
                 name: 'teaser',
                 value: 'Test teaser',
+            },
+            {
+                type: 'rich-text-input',
+                name: 'body',
+                value: 'Test body',
             },
         ];
         CreatePage.setValues(values);
@@ -152,6 +167,11 @@ describe('Create Page', () => {
                 type: 'checkbox',
                 name: 'commentable',
                 value: false,
+            },
+            {
+                type: 'rich-text-input',
+                name: 'body',
+                value: 'Test body',
             },
         ];
 
