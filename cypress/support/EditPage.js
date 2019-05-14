@@ -2,6 +2,7 @@ export default url => ({
     elements: {
         body: 'body',
         deleteButton: '.ra-delete-button',
+        bodyInput: '.ra-input-body .ql-editor',
         input: name => `.edit-page [name='${name}']`,
         inputs: `.ra-input`,
         tabs: `.form-tab`,

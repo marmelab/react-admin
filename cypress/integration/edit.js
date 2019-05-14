@@ -169,6 +169,6 @@ describe('Edit Page', () => {
         cy.wait(500);
         CreatePostPage.submit();
         EditPostPage.gotoTab(2);
-        cy.get(CreatePostPage.elements.bodyInput).contains('text');
+        cy.get(EditPostPage.elements.bodyInput).contains('text');
     });
 });
