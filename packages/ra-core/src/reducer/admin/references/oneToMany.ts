@@ -30,7 +30,7 @@ const oneToManyReducer: Reducer<State> = (
 
         if (action.meta.fetch === DELETE) {
             return relatedTo.reduce(
-                removeDeletedReference(action.payload.id),
+                removeDeletedReferences([action.payload.id]),
                 previousState
             );
         }
@@ -57,11 +57,11 @@ const oneToManyReducer: Reducer<State> = (
     }
 };
 
-export const getIds = (state: ReduxState, relatedTo) =>
+export const getIds = (state: ReduxState, relatedTo: string) =>
     state.admin.references.oneToMany[relatedTo] &&
     state.admin.references.oneToMany[relatedTo].ids;
 
-export const getTotal = (state: ReduxState, relatedTo) =>
+export const getTotal = (state: ReduxState, relatedTo: string) =>
     state.admin.references.oneToMany[relatedTo] &&
     state.admin.references.oneToMany[relatedTo].total;
 
@@ -138,32 +138,21 @@ export const getReferencesByIds = (
     return Object.keys(references).length > 0 ? references : null;
 };
 
-const getRelatedReferences = (previousState, resource) =>
+const getRelatedReferences = (previousState: State, resource: string) =>
     Object.keys(previousState).filter(key => key.includes(resource));
 
-const removeDeletedReference = (removedId: Identifier) => (
-    previousState,
-    key
+const removeDeletedReferences = (removedIds: Identifier[]) => (
+    previousState: State,
+    key: string
 ) => {
-    const hasReferenceToRemovedId = previousState[key].ids.includes(removedId);
+    const idsToRemove = previousState[key].ids.filter(id =>
+        removedIds.includes(id)
+    );
 
-    if (!hasReferenceToRemovedId) {
+    if (idsToRemove.length === 0) {
         return previousState;
     }
 
-    return {
-        ...previousState,
-        [key]: {
-            ids: previousState[key].ids.filter(id => id !== removedId),
-            total: previousState[key].total - 1,
-        },
-    };
-};
-
-const removeDeletedReferences = (removedIds: Identifier[]) => (
-    previousState,
-    key
-) => {
     const idsToKeep = previousState[key].ids.filter(
         id => !removedIds.includes(id)
     );
@@ -177,7 +166,13 @@ const removeDeletedReferences = (removedIds: Identifier[]) => (
     };
 };
 
-export const nameRelatedTo = (reference, id, resource, target, filter = {}) => {
+export const nameRelatedTo = (
+    reference: string,
+    id: Identifier,
+    resource: string,
+    target: string,
+    filter: object = {}
+) => {
     const keys = Object.keys(filter);
     if (!keys.length) {
         return `${resource}_${reference}@${target}_${id}`;
