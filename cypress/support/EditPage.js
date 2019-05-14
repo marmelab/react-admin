@@ -25,7 +25,7 @@ export default url => ({
         return cy.get(this.elements.title);
     },
 
-    setInputValue(name, value, clearPreviousValue = true) {
+    setInputValue(type, name, value, clearPreviousValue = true) {
         if (clearPreviousValue) {
             cy.get(this.elements.input(name)).clear();
         }
