@@ -271,6 +271,6 @@ describe('Create Page', () => {
         CreatePage.setValues(values);
         CreatePage.submit();
         EditPage.gotoTab(2);
-        cy.get(EditPage.elements.bodyInput).contains('Test body');
+        cy.get(EditPage.elements.input('body', 'rich-text-input')).contains('Test body');
     });
 });
