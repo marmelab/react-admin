@@ -214,18 +214,15 @@ describe('Create Page', () => {
     });
 
     it('should not show rich text input error message when field is untouched', () => {
-        CreatePage.navigate();
         cy.get('.ra-rich-text-input > p').should('not.exist');
     });
 
     it('should show rich text input error message when form is submitted', () => {
-        CreatePage.navigate();
         cy.get(CreatePage.elements.submitButton).click();
         cy.get('.ra-rich-text-input > p').should('exist').contains('Required');
     });
 
     it('should not show rich text input error message when form is submitted and input is filled with text', () => {
-        CreatePage.navigate();
         cy.get(CreatePage.elements.submitButton).click();
         cy.get('.ra-rich-text-input > p').should('exist').contains('Required');
         cy.get(CreatePage.elements.bodyInput).type('text');
@@ -233,7 +230,6 @@ describe('Create Page', () => {
     });
 
     it('should show body in edit view after creating new post', () => {
-        CreatePage.navigate();
         cy.get(CreatePage.elements.input('title')).type('Post title');
         cy.get(CreatePage.elements.input('teaser', 'textarea')).type('Post teaser');
         cy.get(CreatePage.elements.bodyInput).type('text');
