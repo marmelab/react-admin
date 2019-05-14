@@ -141,4 +141,9 @@ describe('Edit Page', () => {
             expect(el).to.have.value(date)
         );
     });
+
+    it('should not show rich text input error message when field is untouched', () => {
+        CreatePostPage.navigate();
+        cy.get('.ra-rich-text-input > p').should('not.exist');
+    });
 });

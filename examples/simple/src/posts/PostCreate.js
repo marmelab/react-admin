@@ -19,6 +19,7 @@ import {
     TextInput,
     Toolbar,
     crudCreate,
+    required,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
 
 const saveWithNote = (values, basePath, redirectTo) =>
@@ -102,7 +103,7 @@ const PostCreate = ({ permissions, ...props }) => (
         >
             <TextInput autoFocus source="title" />
             <LongTextInput source="teaser" />
-            <RichTextInput source="body" />
+            <RichTextInput source="body" validate={[required()]} />
             <FormDataConsumer>
                 {({ formData, ...rest }) =>
                     formData.title && (
