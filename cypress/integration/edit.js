@@ -153,7 +153,7 @@ describe('Edit Page', () => {
         cy.get('.ra-rich-text-input > p').should('exist').contains('Required');
     });
 
-    it.only('should not show rich text input error message when form is submitted and input is filled with text', () => {
+    it('should not show rich text input error message when form is submitted and input is filled with text', () => {
         CreatePostPage.navigate();
         cy.get(CreatePostPage.elements.submitButton).click();
         cy.get('.ra-rich-text-input > p').should('exist').contains('Required');
