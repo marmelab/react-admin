@@ -152,4 +152,12 @@ describe('Edit Page', () => {
         cy.get(CreatePostPage.elements.submitButton).click();
         cy.get('.ra-rich-text-input > p').should('exist').contains('Required');
     });
+
+    it.only('should not show rich text input error message when form is submitted and input is filled with text', () => {
+        CreatePostPage.navigate();
+        cy.get(CreatePostPage.elements.submitButton).click();
+        cy.get('.ra-rich-text-input > p').should('exist').contains('Required');
+        cy.get('.ra-rich-text-input .ql-editor[contenteditable]').type('text');
+        cy.get('.ra-rich-text-input > p').should('not.exist');
+    });
 });
