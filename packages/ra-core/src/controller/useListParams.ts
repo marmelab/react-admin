@@ -1,20 +1,25 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 // @ts-ignore
 import { useSelector, useDispatch } from 'react-redux';
 import { parse, stringify } from 'query-string';
 import { push } from 'connected-react-router';
+import lodashDebounce from 'lodash/debounce';
+import isEqual from 'lodash/isEqual';
 import pickBy from 'lodash/pickBy';
+import { Location } from 'history';
 
 import queryReducer, {
-    SET_SORT,
+    SET_FILTER,
     SET_PAGE,
     SET_PER_PAGE,
+    SET_SORT,
     SORT_ASC,
 } from '../reducer/admin/resource/list/queryReducer';
 import { crudGetList } from '../actions/dataActions';
 import { changeListParams, ListParams } from '../actions/listActions';
 import { Sort, ReduxState, Identifier, RecordMap } from '../types';
-import { Location } from 'history';
+import removeEmpty from '../util/removeEmpty';
+import removeKey from '../util/removeKey';
 
 interface Props {
     filter?: object;
@@ -23,12 +28,17 @@ interface Props {
     sort?: Sort;
     location: Location;
     resource: string;
+    debounce?: number;
 }
 
 interface Query extends ListParams {
     data: RecordMap;
+    filterValues: object;
     ids: Identifier[];
     total: number;
+    displayedFilters: {
+        [key: string]: boolean;
+    };
     requestSignature: any[];
 }
 
@@ -37,9 +47,12 @@ interface Actions {
     setPage: (page: number) => void;
     setPerPage: (pageSize: number) => void;
     setSort: (sort: Sort) => void;
+    setFilters: (filters: any) => void;
+    hideFilter: (filterName: string) => void;
+    showFilter: (filterName: string, defaultValue: any) => void;
 }
 
-const useList = ({
+const useListParams = ({
     resource,
     location,
     filterDefaultValues,
@@ -49,7 +62,9 @@ const useList = ({
     },
     perPage = 10,
     filter,
+    debounce = 500,
 }: Props): [Query, Actions] => {
+    const [displayedFilters, setDisplayedFilters] = useState({});
     const dispatch = useDispatch();
 
     const { params, ids, total } = useSelector(
@@ -70,17 +85,12 @@ const useList = ({
         perPage,
     });
 
-    const requestSignature = [
-        resource,
-        JSON.stringify(query),
-        JSON.stringify(location),
-    ];
+    const requestSignature = [resource, JSON.stringify(query)];
 
     const changeParams = useCallback(action => {
         const newParams = queryReducer(query, action);
         dispatch(
             push({
-                ...location,
                 search: `?${stringify({
                     ...newParams,
                     filter: JSON.stringify(newParams.filter),
@@ -105,6 +115,40 @@ const useList = ({
         requestSignature
     );
 
+    const filterValues = query.filter || {};
+
+    const setFilters = useCallback(
+        lodashDebounce(filters => {
+            if (isEqual(filters, filterValues)) {
+                return;
+            }
+
+            // fix for redux-form bug with onChange and enableReinitialize
+            const filtersWithoutEmpty = removeEmpty(filters);
+            changeParams({
+                type: SET_FILTER,
+                payload: filtersWithoutEmpty,
+            });
+        }, debounce),
+        requestSignature
+    );
+
+    const hideFilter = useCallback((filterName: string) => {
+        setDisplayedFilters({ [filterName]: false });
+        const newFilters = removeKey(filterValues, filterName);
+        setFilters(newFilters);
+    }, requestSignature);
+
+    const showFilter = useCallback((filterName: string, defaultValue: any) => {
+        setDisplayedFilters({ [filterName]: true });
+        if (typeof defaultValue !== 'undefined') {
+            setFilters({
+                ...filterValues,
+                [filterName]: defaultValue,
+            });
+        }
+    }, requestSignature);
+
     if (!query.page && !(ids || []).length && params.page > 1 && total > 0) {
         setPage(params.page - 1);
     }
@@ -128,6 +172,8 @@ const useList = ({
     return [
         {
             data,
+            displayedFilters,
+            filterValues,
             ids,
             total,
             requestSignature,
@@ -138,6 +184,9 @@ const useList = ({
             setPage,
             setPerPage,
             setSort,
+            setFilters,
+            hideFilter,
+            showFilter,
         },
     ];
 };
@@ -230,4 +279,4 @@ export const getNumberOrDefault = (
         ? parseInt(possibleNumber, 10)
         : possibleNumber) || defaultValue;
 
-export default useList;
+export default useListParams;

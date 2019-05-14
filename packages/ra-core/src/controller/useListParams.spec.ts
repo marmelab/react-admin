@@ -1,4 +1,4 @@
-import { getQuery } from './useList';
+import { getQuery } from './useListParams';
 import {
     SORT_DESC,
     SORT_ASC,

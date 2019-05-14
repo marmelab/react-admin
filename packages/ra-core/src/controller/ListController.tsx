@@ -1,36 +1,14 @@
-import {
-    isValidElement,
-    ReactNode,
-    ReactElement,
-    useCallback,
-    useState,
-    useEffect,
-} from 'react';
+import { isValidElement, ReactNode, ReactElement, useCallback } from 'react';
 // @ts-ignore
 import { useSelector, useDispatch } from 'react-redux';
-import { parse, stringify } from 'query-string';
-import { push } from 'connected-react-router';
 import inflection from 'inflection';
-import lodashDebounce from 'lodash/debounce';
-import isEqual from 'lodash/isEqual';
-import pickBy from 'lodash/pickBy';
 
-import removeEmpty from '../util/removeEmpty';
-import queryReducer, {
-    SET_SORT,
-    SET_PAGE,
-    SET_PER_PAGE,
-    SET_FILTER,
-    SORT_ASC,
-} from '../reducer/admin/resource/list/queryReducer';
-import { crudGetList } from '../actions/dataActions';
+import { SORT_ASC } from '../reducer/admin/resource/list/queryReducer';
 import {
-    changeListParams,
     setListSelectedIds,
     toggleListItem,
     ListParams,
 } from '../actions/listActions';
-import removeKey from '../util/removeKey';
 import { useCheckMinimumRequiredProps } from './checkMinimumRequiredProps';
 import {
     Sort,
@@ -42,7 +20,7 @@ import {
 } from '../types';
 import { Location } from 'history';
 import { useTranslate } from '../i18n';
-import useList from './useList';
+import useListParams from './useListParams';
 
 interface ChildrenFuncParams {
     basePath: string;
@@ -161,7 +139,6 @@ const ListController = (props: Props) => {
         debounce = 500,
     } = props;
 
-    const [displayedFilters, setDisplayedFilters] = useState({});
     const dispatch = useDispatch();
     const translate = useTranslate();
     const isLoading = useSelector(
@@ -183,48 +160,15 @@ const ListController = (props: Props) => {
         );
     }
 
-    const [query, actions] = useList({
+    const [query, actions] = useListParams({
         resource,
         location,
         filterDefaultValues,
         sort,
         perPage,
         filter,
+        debounce,
     });
-
-    const filterValues = query.filter || {};
-
-    const setFilters = useCallback(
-        lodashDebounce(filters => {
-            if (isEqual(filters, filterValues)) {
-                return;
-            }
-
-            // fix for redux-form bug with onChange and enableReinitialize
-            const filtersWithoutEmpty = removeEmpty(filters);
-            actions.changeParams({
-                type: SET_FILTER,
-                payload: filtersWithoutEmpty,
-            });
-        }, debounce),
-        query.requestSignature
-    );
-
-    const hideFilter = useCallback((filterName: string) => {
-        setDisplayedFilters({ [filterName]: false });
-        const newFilters = removeKey(filterValues, filterName);
-        setFilters(newFilters);
-    }, query.requestSignature);
-
-    const showFilter = useCallback((filterName: string, defaultValue: any) => {
-        setDisplayedFilters({ [filterName]: true });
-        if (typeof defaultValue !== 'undefined') {
-            setFilters({
-                ...filterValues,
-                [filterName]: defaultValue,
-            });
-        }
-    }, query.requestSignature);
 
     const handleSelect = useCallback((newIds: Identifier[]) => {
         dispatch(setListSelectedIds(resource, newIds));
@@ -254,8 +198,8 @@ const ListController = (props: Props) => {
         },
         data: query.data,
         defaultTitle,
-        displayedFilters,
-        filterValues,
+        displayedFilters: query.displayedFilters,
+        filterValues: query.filterValues,
         hasCreate,
         ids: query.ids,
         isLoading,
@@ -267,9 +211,9 @@ const ListController = (props: Props) => {
         perPage: query.perPage,
         resource,
         selectedIds,
-        setFilters,
-        hideFilter,
-        showFilter,
+        setFilters: actions.setFilters,
+        hideFilter: actions.hideFilter,
+        showFilter: actions.showFilter,
         setPage: actions.setPage,
         setPerPage: actions.setPerPage,
         setSort: actions.setSort,
