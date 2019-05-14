@@ -239,7 +239,7 @@ describe('Create Page', () => {
         cy.get(CreatePage.elements.bodyInput).type('text');
         cy.wait(500);
         CreatePage.submit();
-        EditPostPage.gotoTab(2);
-        cy.get(EditPostPage.elements.bodyInput).contains('text');
+        EditPage.gotoTab(2);
+        cy.get(EditPage.elements.bodyInput).contains('text');
     });
 });
