@@ -157,7 +157,7 @@ describe('Edit Page', () => {
         CreatePostPage.navigate();
         cy.get(CreatePostPage.elements.submitButton).click();
         cy.get('.ra-rich-text-input > p').should('exist').contains('Required');
-        cy.get('.ra-rich-text-input .ql-editor[contenteditable]').type('text');
+        cy.get(CreatePostPage.elements.bodyInput).type('text');
         cy.get('.ra-rich-text-input > p').should('not.exist');
     });
 
@@ -165,10 +165,10 @@ describe('Edit Page', () => {
         CreatePostPage.navigate();
         cy.get(CreatePostPage.elements.input('title')).type('Post title');
         cy.get(CreatePostPage.elements.input('teaser', 'textarea')).type('Post teaser');
-        cy.get('.ra-rich-text-input .ql-editor[contenteditable]').type('text');
+        cy.get(CreatePostPage.elements.bodyInput).type('text');
         cy.wait(500);
         CreatePostPage.submit();
         EditPostPage.gotoTab(2);
-        cy.get('.ra-rich-text-input .ql-editor[contenteditable]').contains('text');
+        cy.get(CreatePostPage.elements.bodyInput).contains('text');
     });
 });
