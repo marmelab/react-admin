@@ -1,7 +1,7 @@
 import React from 'react';
 import expect from 'expect';
-import { render, cleanup } from 'react-testing-library';
-import { TestContext } from 'ra-core';
+import { cleanup } from 'react-testing-library';
+import { renderWithRedux, TestContext } from 'ra-core';
 
 import List, { ListView } from './List';
 
@@ -28,12 +28,10 @@ describe('<List />', () => {
 
     it('should render a list page', () => {
         const Datagrid = () => <div>datagrid</div>;
-        const { container } = render(
-            <TestContext>
-                <ListView {...defaultProps}>
-                    <Datagrid />
-                </ListView>
-            </TestContext>
+        const { container } = renderWithRedux(
+            <ListView {...defaultProps}>
+                <Datagrid />
+            </ListView>
         );
         expect(container.querySelectorAll('.list-page')).toHaveLength(1);
     });
@@ -42,16 +40,14 @@ describe('<List />', () => {
         const Filters = () => <div>filters</div>;
         const Pagination = () => <div>pagination</div>;
         const Datagrid = () => <div>datagrid</div>;
-        const { queryAllByText, debug } = render(
-            <TestContext>
-                <ListView
-                    filters={<Filters />}
-                    pagination={<Pagination />}
-                    {...defaultProps}
-                >
-                    <Datagrid />
-                </ListView>
-            </TestContext>
+        const { queryAllByText, debug } = renderWithRedux(
+            <ListView
+                filters={<Filters />}
+                pagination={<Pagination />}
+                {...defaultProps}
+            >
+                <Datagrid />
+            </ListView>
         );
         expect(queryAllByText('filters')).toHaveLength(2);
         expect(queryAllByText('Export')).toHaveLength(1);
@@ -91,12 +87,11 @@ describe('<List />', () => {
     it('should display aside component', () => {
         const Dummy = () => <div />;
         const Aside = () => <div id="aside">Hello</div>;
-        const { queryAllByText } = render(
-            <TestContext initialState={defaultStateForList}>
-                <List {...defaultListProps} aside={<Aside />}>
-                    <Dummy />
-                </List>
-            </TestContext>
+        const { queryAllByText } = renderWithRedux(
+            <List {...defaultListProps} aside={<Aside />}>
+                <Dummy />
+            </List>,
+            defaultStateForList
         );
         expect(queryAllByText('Hello')).toHaveLength(1);
     });

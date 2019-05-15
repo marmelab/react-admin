@@ -1,7 +1,7 @@
 import React from 'react';
 import expect from 'expect';
-import { render, cleanup } from 'react-testing-library';
-import { TestContext } from 'ra-core';
+import { cleanup } from 'react-testing-library';
+import { renderWithRedux } from 'ra-core';
 
 import Show from './Show';
 
@@ -18,12 +18,10 @@ describe('<Show />', () => {
 
     it('should display aside component', () => {
         const Aside = () => <div id="aside">Hello</div>;
-        const { queryAllByText } = render(
-            <TestContext>
-                <Show {...defaultShowProps} aside={<Aside />}>
-                    <div />
-                </Show>
-            </TestContext>
+        const { queryAllByText } = renderWithRedux(
+            <Show {...defaultShowProps} aside={<Aside />}>
+                <div />
+            </Show>
         );
         expect(queryAllByText('Hello')).toHaveLength(1);
     });

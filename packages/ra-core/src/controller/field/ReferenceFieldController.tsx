@@ -1,4 +1,4 @@
-import { SFC, ReactNode, ReactElement } from 'react';
+import { FunctionComponent, ReactNode, ReactElement } from 'react';
 import { Record } from '../../types';
 import useReference from './useReference';
 
@@ -48,7 +48,7 @@ interface Props {
  *     <TextField source="name" />
  * </ReferenceField>
  */
-export const ReferenceFieldController: SFC<Props> = ({
+export const ReferenceFieldController: FunctionComponent<Props> = ({
     children,
     ...props
 }) => {

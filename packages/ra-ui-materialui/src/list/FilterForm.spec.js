@@ -1,7 +1,7 @@
 import expect from 'expect';
 import { render, cleanup } from 'react-testing-library';
 import React from 'react';
-import { TestContext } from 'ra-core';
+import { renderWithRedux } from 'ra-core';
 
 import FilterForm, { mergeInitialValuesWithDefaultValues } from './FilterForm';
 import TextInput from '../input/TextInput';
@@ -20,16 +20,12 @@ describe('<FilterForm />', () => {
         const filters = [<TextInput source="title" label="Title" />]; // eslint-disable-line react/jsx-key
         const displayedFilters = { title: true };
 
-        const { queryAllByLabelText } = render(
-            <TestContext>
-                {() => (
-                    <FilterForm
-                        {...defaultProps}
-                        filters={filters}
-                        displayedFilters={displayedFilters}
-                    />
-                )}
-            </TestContext>
+        const { queryAllByLabelText } = renderWithRedux(
+            <FilterForm
+                {...defaultProps}
+                filters={filters}
+                displayedFilters={displayedFilters}
+            />
         );
         expect(queryAllByLabelText('Title')).toHaveLength(1);
         cleanup();

@@ -9,7 +9,7 @@ import ListController, {
     sanitizeListRestProps,
 } from './ListController';
 
-import TestContext from '../util/TestContext';
+import renderWithRedux from '../util/renderWithRedux';
 import { CRUD_CHANGE_LIST_PARAMS } from '../actions';
 
 describe('ListController', () => {
@@ -60,24 +60,13 @@ describe('ListController', () => {
                 children: fakeComponent,
             };
 
-            let reduxStore;
-            let dispatch;
-
-            const { getByLabelText } = render(
-                <TestContext
-                    initialState={{
-                        admin: {
-                            resources: { posts: { list: { params: {} } } },
-                        },
-                    }}
-                    enableReducers
-                >
-                    {({ store }) => {
-                        reduxStore = store;
-                        dispatch = jest.spyOn(store, 'dispatch');
-                        return <ListController {...props} />;
-                    }}
-                </TestContext>
+            const { getByLabelText, dispatch, reduxStore } = renderWithRedux(
+                <ListController {...props} />,
+                {
+                    admin: {
+                        resources: { posts: { list: { params: {} } } },
+                    },
+                }
             );
             const searchInput = getByLabelText('search');
 
@@ -110,22 +99,13 @@ describe('ListController', () => {
                 children: fakeComponent,
             };
 
-            let dispatch;
-
-            const { getByLabelText } = render(
-                <TestContext
-                    initialState={{
-                        admin: {
-                            resources: { posts: { list: { params: {} } } },
-                        },
-                    }}
-                    enableReducers
-                >
-                    {({ store }) => {
-                        dispatch = jest.spyOn(store, 'dispatch');
-                        return <ListController {...props} />;
-                    }}
-                </TestContext>
+            const { getByLabelText, dispatch } = renderWithRedux(
+                <ListController {...props} />,
+                {
+                    admin: {
+                        resources: { posts: { list: { params: {} } } },
+                    },
+                }
             );
             const searchInput = getByLabelText('search');
 
@@ -148,30 +128,19 @@ describe('ListController', () => {
                 children: fakeComponent,
             };
 
-            let reduxStore;
-            let dispatch;
-
-            const { getByLabelText } = render(
-                <TestContext
-                    initialState={{
-                        admin: {
-                            resources: {
-                                posts: {
-                                    list: {
-                                        params: { filter: { q: 'hello' } },
-                                    },
+            const { getByLabelText, dispatch, reduxStore } = renderWithRedux(
+                <ListController {...props} />,
+                {
+                    admin: {
+                        resources: {
+                            posts: {
+                                list: {
+                                    params: { filter: { q: 'hello' } },
                                 },
                             },
                         },
-                    }}
-                    enableReducers
-                >
-                    {({ store }) => {
-                        reduxStore = store;
-                        dispatch = jest.spyOn(store, 'dispatch');
-                        return <ListController {...props} />;
-                    }}
-                </TestContext>
+                    },
+                }
             );
             const searchInput = getByLabelText('search');
 
