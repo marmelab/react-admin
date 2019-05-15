@@ -33,7 +33,9 @@ describe('useTranslate', () => {
 
     it('should use the messages set in the store', () => {
         const { queryAllByText } = render(
-            <TestContext store={{ i18n: { messages: { hello: 'bonjour' } } }}>
+            <TestContext
+                initialState={{ i18n: { messages: { hello: 'bonjour' } } }}
+            >
                 <Component />
             </TestContext>
         );

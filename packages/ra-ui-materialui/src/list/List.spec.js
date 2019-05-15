@@ -73,7 +73,7 @@ describe('<List />', () => {
         total: 0,
     };
 
-    const defaultStoreForList = {
+    const defaultStateForList = {
         admin: {
             resources: {
                 foo: {
@@ -92,7 +92,7 @@ describe('<List />', () => {
         const Dummy = () => <div />;
         const Aside = () => <div id="aside">Hello</div>;
         const { queryAllByText } = render(
-            <TestContext store={defaultStoreForList}>
+            <TestContext initialState={defaultStateForList}>
                 <List {...defaultListProps} aside={<Aside />}>
                     <Dummy />
                 </List>

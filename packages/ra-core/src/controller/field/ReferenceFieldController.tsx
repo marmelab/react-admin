@@ -1,4 +1,5 @@
 import React, { SFC, ReactNode, useEffect, ReactElement } from 'react';
+// @ts-ignore
 import { useDispatch, useSelector } from 'react-redux';
 import get from 'lodash/get';
 

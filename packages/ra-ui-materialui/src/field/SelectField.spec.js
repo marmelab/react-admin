@@ -112,7 +112,7 @@ describe('<SelectField />', () => {
 
     it('should translate the choice by default', () => {
         const { queryAllByText } = render(
-            <TestContext store={{ i18n: { messages: { hello: 'bonjour' } } }}>
+            <TestContext initialState={{ i18n: { messages: { hello: 'bonjour' } } }}>
                 <SelectField {...defaultProps} record={{ foo: 0 }} />
             </TestContext>
         );
@@ -122,7 +122,7 @@ describe('<SelectField />', () => {
 
     it('should not translate the choice if translateChoice is false', () => {
         const { queryAllByText } = render(
-            <TestContext store={{ i18n: { messages: { hello: 'bonjour' } } }}>
+            <TestContext initialState={{ i18n: { messages: { hello: 'bonjour' } } }}>
                 <SelectField
                     {...defaultProps}
                     record={{ foo: 0 }}

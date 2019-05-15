@@ -19,7 +19,7 @@ export const defaultStore = {
 };
 
 interface Props {
-    store?: object;
+    initialState?: object;
     enableReducers?: boolean;
 }
 
@@ -31,7 +31,7 @@ interface Props {
  * @example
  * // in an enzyme test
  * const wrapper = render(
- *     <TestContext store={{ admin: { resources: { post: { data: { 1: {id: 1, title: 'foo' } } } } } }}>
+ *     <TestContext initialState={{ admin: { resources: { post: { data: { 1: {id: 1, title: 'foo' } } } } } }}>
  *         <Show {...defaultShowProps} />
  *     </TestContext>
  * );
@@ -39,7 +39,7 @@ interface Props {
  * @example
  * // in an enzyme test, using jest.
  * const wrapper = render(
- *     <TestContext store={{ admin: { resources: { post: { data: { 1: {id: 1, title: 'foo' } } } } } }}>
+ *     <TestContext initialState={{ admin: { resources: { post: { data: { 1: {id: 1, title: 'foo' } } } } } }}>
  *         {({ store }) => {
  *              dispatchSpy = jest.spyOn(store, 'dispatch');
  *              return <Show {...defaultShowProps} />
@@ -52,14 +52,14 @@ class TestContext extends Component<Props> {
 
     constructor(props) {
         super(props);
-        const { store = {}, enableReducers = false } = props;
+        const { initialState = {}, enableReducers = false } = props;
         this.storeWithDefault = enableReducers
             ? createAdminStore({
-                  initialState: merge(defaultStore, store),
+                  initialState: merge(defaultStore, initialState),
                   dataProvider: () => Promise.resolve({}),
                   history: createMemoryHistory(),
               })
-            : createStore(() => merge(defaultStore, store));
+            : createStore(() => merge(defaultStore, initialState));
     }
 
     renderChildren = () => {

@@ -26,7 +26,7 @@ describe('FieldTitle', () => {
 
     it('should use the label as translate key when translation is available', () => {
         const { container } = render(
-            <TestContext store={{ i18n: { messages: { foo: 'bar' } } }}>
+            <TestContext initialState={{ i18n: { messages: { foo: 'bar' } } }}>
                 <FieldTitle label="foo" />
             </TestContext>
         );
@@ -67,7 +67,7 @@ describe('FieldTitle', () => {
     it('should use the source and resource as translate key when translation is available', () => {
         const { container } = render(
             <TestContext
-                store={{
+                initialState={{
                     i18n: {
                         messages: { 'resources.posts.fields.title': 'titre' },
                     },

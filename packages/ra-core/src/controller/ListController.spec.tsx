@@ -65,7 +65,7 @@ describe('ListController', () => {
 
             const { getByLabelText } = render(
                 <TestContext
-                    store={{
+                    initialState={{
                         admin: {
                             resources: { posts: { list: { params: {} } } },
                         },
@@ -114,7 +114,7 @@ describe('ListController', () => {
 
             const { getByLabelText } = render(
                 <TestContext
-                    store={{
+                    initialState={{
                         admin: {
                             resources: { posts: { list: { params: {} } } },
                         },
@@ -153,7 +153,7 @@ describe('ListController', () => {
 
             const { getByLabelText } = render(
                 <TestContext
-                    store={{
+                    initialState={{
                         admin: {
                             resources: {
                                 posts: {

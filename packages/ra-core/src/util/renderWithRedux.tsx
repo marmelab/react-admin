@@ -6,7 +6,7 @@ import TestContext from './TestContext';
 export default (component, initialState) => {
     let dispatch;
     const renderResult = render(
-        <TestContext store={initialState}>
+        <TestContext initialState={initialState}>
             {({ store }) => {
                 dispatch = jest.spyOn(store, 'dispatch');
                 return component;
