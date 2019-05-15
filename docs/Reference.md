@@ -15,6 +15,7 @@ title: "Reference"
 * [`<ArrayField>`](./Fields.md#arrayfield)
 * [`<ArrayInput>`](./Inputs.md#arrayinput)
 * [`<Authenticated>`](./Authentication.md#restricting-access-to-a-custom-page)
+* [`<AutocompleteArrayInput>`](./Inputs.md#autocompletearrayinput)
 * [`<AutocompleteInput>`](./Inputs.md#autocompleteinput)
 * [`<BooleanField>`](./Fields.md#booleanfield)
 * [`<BooleanInput>`](./Inputs.md#booleaninput-and-nullablebooleaninput)

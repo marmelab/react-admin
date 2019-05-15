@@ -1,5 +1,6 @@
 // in src/comments.js
 import React from 'react';
+import compose from 'recompose/compose';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
@@ -7,7 +8,7 @@ import { withStyles } from '@material-ui/core/styles';
 import { DateField, EditButton, translate, NumberField } from 'react-admin';
 
 import AvatarField from './AvatarField';
-import { ColoredNumberField } from './index';
+import ColoredNumberField from './ColoredNumberField';
 import SegmentsField from './SegmentsField';
 
 const listStyles = theme => ({
@@ -30,69 +31,66 @@ const listStyles = theme => ({
     },
 });
 
-const MobileGrid = withStyles(listStyles)(
-    translate(({ classes, ids, data, basePath, translate }) => (
-        <div style={{ margin: '1em' }}>
-            {ids.map(id => (
-                <Card key={id} className={classes.card}>
-                    <CardHeader
-                        title={
-                            <div className={classes.cardTitleContent}>
-                                <h2>{`${data[id].first_name} ${
-                                    data[id].last_name
-                                }`}</h2>
-                                <EditButton
-                                    resource="visitors"
-                                    basePath={basePath}
-                                    record={data[id]}
-                                />
-                            </div>
-                        }
-                        avatar={<AvatarField record={data[id]} size="45" />}
-                    />
-                    <CardContent className={classes.cardContent}>
-                        <div>
-                            {translate(
-                                'resources.customers.fields.last_seen_gte'
-                            )}&nbsp;
-                            <DateField
+const MobileGrid = ({ classes, ids, data, basePath, translate }) => (
+    <div style={{ margin: '1em' }}>
+        {ids.map(id => (
+            <Card key={id} className={classes.card}>
+                <CardHeader
+                    title={
+                        <div className={classes.cardTitleContent}>
+                            <h2>{`${data[id].first_name} ${
+                                data[id].last_name
+                            }`}</h2>
+                            <EditButton
+                                resource="visitors"
+                                basePath={basePath}
                                 record={data[id]}
-                                source="last_seen"
-                                type="date"
                             />
                         </div>
-                        <div>
-                            {translate(
-                                'resources.commands.name',
-                                parseInt(data[id].nb_commands, 10) || 1
-                            )}&nbsp;:&nbsp;<NumberField
-                                record={data[id]}
-                                source="nb_commands"
-                                label="resources.customers.fields.commands"
-                                className={classes.nb_commands}
-                            />
-                        </div>
-                        <div>
-                            {translate(
-                                'resources.customers.fields.total_spent'
-                            )}&nbsp; :{' '}
-                            <ColoredNumberField
-                                record={data[id]}
-                                source="total_spent"
-                                options={{ style: 'currency', currency: 'USD' }}
-                            />
-                        </div>
-                    </CardContent>
-                    {data[id].groups &&
-                        data[id].groups.length > 0 && (
-                            <CardContent className={classes.cardContent}>
-                                <SegmentsField record={data[id]} />
-                            </CardContent>
+                    }
+                    avatar={<AvatarField record={data[id]} size="45" />}
+                />
+                <CardContent className={classes.cardContent}>
+                    <div>
+                        {translate('resources.customers.fields.last_seen_gte')}
+                        &nbsp;
+                        <DateField
+                            record={data[id]}
+                            source="last_seen"
+                            type="date"
+                        />
+                    </div>
+                    <div>
+                        {translate(
+                            'resources.commands.name',
+                            parseInt(data[id].nb_commands, 10) || 1
                         )}
-                </Card>
-            ))}
-        </div>
-    ))
+                        &nbsp;:&nbsp;
+                        <NumberField
+                            record={data[id]}
+                            source="nb_commands"
+                            label="resources.customers.fields.commands"
+                            className={classes.nb_commands}
+                        />
+                    </div>
+                    <div>
+                        {translate('resources.customers.fields.total_spent')}
+                        &nbsp; :{' '}
+                        <ColoredNumberField
+                            record={data[id]}
+                            source="total_spent"
+                            options={{ style: 'currency', currency: 'USD' }}
+                        />
+                    </div>
+                </CardContent>
+                {data[id].groups && data[id].groups.length > 0 && (
+                    <CardContent className={classes.cardContent}>
+                        <SegmentsField record={data[id]} />
+                    </CardContent>
+                )}
+            </Card>
+        ))}
+    </div>
 );
 
 MobileGrid.defaultProps = {
@@ -100,4 +98,9 @@ MobileGrid.defaultProps = {
     ids: [],
 };
 
-export default MobileGrid;
+const enhance = compose(
+    withStyles(listStyles),
+    translate
+);
+
+export default enhance(MobileGrid);

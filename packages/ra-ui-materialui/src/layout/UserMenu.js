@@ -1,4 +1,4 @@
-import React, { Children, cloneElement } from 'react';
+import React, { Children, cloneElement, isValidElement } from 'react';
 import PropTypes from 'prop-types';
 import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
@@ -11,11 +11,13 @@ class UserMenu extends React.Component {
         children: PropTypes.node,
         label: PropTypes.string.isRequired,
         logout: PropTypes.node,
+        icon: PropTypes.node,
         translate: PropTypes.func.isRequired,
     };
 
     static defaultProps = {
         label: 'ra.auth.user_menu',
+        icon: <AccountCircle />,
     };
 
     state = {
@@ -36,7 +38,7 @@ class UserMenu extends React.Component {
     };
 
     render() {
-        const { children, label, logout, translate } = this.props;
+        const { children, label, icon, logout, translate } = this.props;
         if (!logout && !children) return null;
         const { anchorEl } = this.state;
         const open = Boolean(anchorEl);
@@ -45,13 +47,13 @@ class UserMenu extends React.Component {
             <div>
                 <Tooltip title={label && translate(label, { _: label })}>
                     <IconButton
-                        arial-label={label && translate(label, { _: label })}
+                        aria-label={label && translate(label, { _: label })}
                         aria-owns={open ? 'menu-appbar' : null}
-                        aria-haspopup="true"
-                        onClick={this.handleMenu}
+                        aria-haspopup={true}
                         color="inherit"
+                        onClick={this.handleMenu}
                     >
-                        <AccountCircle />
+                        {icon}
                     </IconButton>
                 </Tooltip>
                 <Menu
@@ -69,7 +71,8 @@ class UserMenu extends React.Component {
                     onClose={this.handleClose}
                 >
                     {Children.map(children, menuItem =>
-                        cloneElement(menuItem, { onClick: this.handleClose })
+                        isValidElement(menuItem) ?
+                        cloneElement(menuItem, { onClick: this.handleClose }) : null
                     )}
                     {logout}
                 </Menu>

@@ -14,9 +14,9 @@ describe('<ReferenceArrayField />', () => {
                 reference="bar"
                 source="barIds"
                 basePath=""
-                data={{}}
+                data={null}
                 ids={[1, 2]}
-                isLoading
+                loadedOnce={false}
             >
                 <SingleFieldList>
                     <TextField source="title" />

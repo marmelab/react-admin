@@ -203,6 +203,23 @@ describe('<AutocompleteInput />', () => {
         assert.equal(MenuItem.text(), 'Male');
     });
 
+    it('should respect shouldRenderSuggestions over default if passed in', () => {
+        const wrapper = mount(
+            <AutocompleteInput
+                {...defaultProps}
+                input={{ value: null }}
+                choices={[{ id: 'M', name: 'Male' }]}
+                shouldRenderSuggestions={() => false}
+            />,
+            { context, childContextTypes }
+        );
+        wrapper.find('input').simulate('focus');
+        wrapper.find('input').simulate('change', { target: { value: 'foo' } });
+        expect(wrapper.state('searchText')).toBe('foo');
+        expect(wrapper.state('suggestions')).toHaveLength(1);
+        expect(wrapper.find('ListItem')).toHaveLength(0);
+    });
+
     describe('Fix issue #1410', () => {
         it('should not fail when value is null and new choices are applied', () => {
             const wrapper = shallow(
@@ -342,26 +359,6 @@ describe('<AutocompleteInput />', () => {
             });
             wrapper.find('input').simulate('focus');
             expect(wrapper.find('ListItem')).toHaveLength(2);
-        });
-
-        it('should resolve value from input value', () => {
-            const onChange = jest.fn();
-            const wrapper = mount(
-                <AutocompleteInput
-                    {...defaultProps}
-                    input={{ value: '', onChange }}
-                />,
-                { context, childContextTypes }
-            );
-            wrapper.setProps({
-                choices: [{ id: 'M', name: 'Male' }],
-            });
-            wrapper
-                .find('input')
-                .simulate('change', { target: { value: 'male' } });
-            expect(wrapper.state('searchText')).toBe('Male');
-            expect(onChange).toHaveBeenCalledTimes(1);
-            expect(onChange).toHaveBeenCalledWith('M');
         });
 
         it('should reset filter when input value changed', () => {
@@ -511,7 +508,7 @@ describe('<AutocompleteInput />', () => {
         expect(wrapper.state('suggestions')).toHaveLength(2);
     });
 
-    it('automatically selects a matched choice if there is only one', () => {
+    it('does not automatically select a matched choice if there is only one', () => {
         const onChange = jest.fn();
 
         const wrapper = mount(
@@ -529,6 +526,28 @@ describe('<AutocompleteInput />', () => {
         wrapper.find('input').simulate('focus');
         wrapper.find('input').simulate('change', { target: { value: 'abc' } });
         expect(wrapper.state('suggestions')).toHaveLength(1);
-        expect(onChange).toHaveBeenCalledWith(2);
+    });
+
+    it('passes options.suggestionsContainerProps to the suggestions container', () => {
+        const onChange = jest.fn();
+
+        const wrapper = mount(
+            <AutocompleteInput
+                {...defaultProps}
+                input={{ value: null, onChange }}
+                choices={[
+                    { id: 1, name: 'ab' },
+                    { id: 2, name: 'abc' },
+                    { id: 3, name: '123' },
+                ]}
+                options={{
+                    suggestionsContainerProps: {
+                        disablePortal: true,
+                    },
+                }}
+            />,
+            { context, childContextTypes }
+        );
+        expect(wrapper.find('Popper').props().disablePortal).toEqual(true);
     });
 });

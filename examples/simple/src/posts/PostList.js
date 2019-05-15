@@ -78,6 +78,18 @@ const PostListActionToolbar = withStyles({
     </div>
 ));
 
+const rowClick = (id, basePath, record) => {
+    if (record.commentable) {
+        return 'edit';
+    }
+
+    return 'show';
+};
+
+const PostPanel = ({ id, record, resource }) => (
+    <div dangerouslySetInnerHTML={{ __html: record.body }} />
+);
+
 const PostList = withStyles(styles)(({ classes, ...props }) => (
     <List
         {...props}
@@ -96,7 +108,7 @@ const PostList = withStyles(styles)(({ classes, ...props }) => (
                 />
             }
             medium={
-                <Datagrid>
+                <Datagrid rowClick={rowClick} expand={<PostPanel />}>
                     <TextField source="id" />
                     <TextField source="title" cellClassName={classes.title} />
                     <DateField
@@ -114,6 +126,7 @@ const PostList = withStyles(styles)(({ classes, ...props }) => (
                         label="Tags"
                         reference="tags"
                         source="tags"
+                        sortBy="tags.name"
                         cellClassName={classes.hiddenOnSmallScreens}
                         headerClassName={classes.hiddenOnSmallScreens}
                     >

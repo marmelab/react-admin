@@ -9,7 +9,7 @@ import {
     CREATE,
     UPDATE,
     DELETE,
-} from 'react-admin';
+} from 'ra-core';
 
 import buildApolloClient from './buildApolloClient';
 import {
@@ -59,7 +59,8 @@ export default async options => {
     } = merge({}, defaultOptions, options);
 
     if (override && process.env.NODE_ENV === 'production') {
-        console.warn( // eslint-disable-line
+        console.warn(
+            // eslint-disable-line
             'The override option is deprecated. You should instead wrap the buildQuery function provided by the dataProvider you use.'
         );
     }
@@ -77,15 +78,15 @@ export default async options => {
     const buildQuery = buildQueryFactory(introspectionResults, otherOptions);
 
     const raDataProvider = (aorFetchType, resource, params) => {
-        const overridedbuildQuery = get(
+        const overriddenBuildQuery = get(
             override,
             `${resource}.${aorFetchType}`
         );
 
-        const { parseResponse, ...query } = overridedbuildQuery
+        const { parseResponse, ...query } = overriddenBuildQuery
             ? {
                   ...buildQuery(aorFetchType, resource, params),
-                  ...overridedbuildQuery(params),
+                  ...overriddenBuildQuery(params),
               }
             : buildQuery(aorFetchType, resource, params);
 

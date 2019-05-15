@@ -55,15 +55,16 @@ describe('Create Page', () => {
             {
                 type: 'input',
                 name: 'authors[0].user_id',
-                value: 'Annamarie Mayer{enter}',
+                value: 'Annamarie Mayer',
             },
         ]);
+        cy.contains('Annamarie Mayer').click();
         cy.get(CreatePage.elements.input('authors[0].role')).should(
             el => expect(el).to.exist
         );
     });
 
-    it('should redirect to show page after create success', () => {
+    it('should redirect to edit page after create success', () => {
         const values = [
             {
                 type: 'input',
@@ -79,6 +80,33 @@ describe('Create Page', () => {
 
         CreatePage.setValues(values);
         CreatePage.submit();
+        EditPage.waitUntilVisible();
+        cy.get(EditPage.elements.input('title')).should(el =>
+            expect(el).to.have.value('Test title')
+        );
+        cy.get(EditPage.elements.input('teaser')).should(el =>
+            expect(el).to.have.value('Test teaser')
+        );
+
+        EditPage.delete();
+    });
+
+    it('should redirect to show page after create success with "Save and show"', () => {
+        const values = [
+            {
+                type: 'input',
+                name: 'title',
+                value: 'Test title',
+            },
+            {
+                type: 'textarea',
+                name: 'teaser',
+                value: 'Test teaser',
+            },
+        ];
+
+        CreatePage.setValues(values);
+        CreatePage.submitAndShow();
         ShowPage.waitUntilVisible();
         EditPage.navigate();
         EditPage.delete();

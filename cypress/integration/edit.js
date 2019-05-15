@@ -78,6 +78,29 @@ describe('Edit Page', () => {
         );
     });
 
+    it('should allow to select an item from the AutocompleteInput without showing the choices again after', () => {
+        EditCommentPage.navigate();
+        cy.get(EditCommentPage.elements.input('post_id')).clear().type('Sed quo');
+        cy.get('[role="tooltip"]').within(() => {
+            cy.contains('Accusantium qui nihil voluptatum quia voluptas maxime ab similique');
+            cy.contains('Sed quo et et fugiat modi').click();
+        });
+        cy.get('[role="tooltip"]').should(el => expect(el).to.not.exist);
+
+        // Ensure it does not reappear a little after
+        cy.wait(500);
+        cy.get('[role="tooltip"]').should(el => expect(el).to.not.exist);
+
+        // Ensure they still appear when needed though
+        cy.get(EditCommentPage.elements.input('post_id')).clear().type('architecto aut');
+        cy.get('[role="tooltip"]').within(() => {
+            cy.contains('Sed quo et et fugiat modi');
+            cy.contains('Sint dignissimos in architecto aut');
+            cy.contains('A voluptas eius eveniet ut commodi dolor');
+        });
+
+    });
+
     it('should reset the form correctly when switching from edit to create', () => {
         EditPostPage.navigate();
         cy.get(EditPostPage.elements.input('title')).should(el =>

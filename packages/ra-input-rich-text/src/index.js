@@ -2,7 +2,7 @@ import debounce from 'lodash/debounce';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Quill from 'quill';
-import { addField } from 'react-admin';
+import { addField } from 'ra-core';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import { withStyles } from '@material-ui/core/styles';
@@ -10,6 +10,8 @@ import { withStyles } from '@material-ui/core/styles';
 import styles from './styles';
 
 export class RichTextInput extends Component {
+    lastValueChange = null;
+
     static propTypes = {
         addLabel: PropTypes.bool.isRequired,
         classes: PropTypes.object,
@@ -18,13 +20,20 @@ export class RichTextInput extends Component {
         meta: PropTypes.object,
         options: PropTypes.object,
         source: PropTypes.string,
-        toolbar: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),
+        toolbar: PropTypes.oneOfType([
+            PropTypes.array,
+            PropTypes.bool,
+            PropTypes.shape({
+                container: PropTypes.array,
+                handlers: PropTypes.object,
+            }),
+        ]),
         fullWidth: PropTypes.bool,
     };
 
     static defaultProps = {
         addLabel: true,
-        options: {},
+        options: {}, // Quill editor options
         record: {},
         toolbar: true,
         fullWidth: true,
@@ -34,17 +43,35 @@ export class RichTextInput extends Component {
         const {
             input: { value },
             toolbar,
+            options,
         } = this.props;
 
         this.quill = new Quill(this.divRef, {
-            modules: { toolbar },
+            modules: { toolbar, clipboard: { matchVisual: false } },
             theme: 'snow',
+            ...options,
         });
 
         this.quill.setContents(this.quill.clipboard.convert(value));
 
         this.editor = this.divRef.querySelector('.ql-editor');
         this.quill.on('text-change', debounce(this.onTextChange, 500));
+    }
+
+    shouldComponentUpdate(nextProps) {
+        return nextProps.input.value !== this.lastValueChange;
+    }
+
+    componentDidUpdate(prevProps) {
+        if (prevProps.input.value !== this.props.input.value) {
+            const selection = this.quill.getSelection();
+            this.quill.setContents(
+                this.quill.clipboard.convert(this.props.input.value)
+            );
+            if (selection && this.quill.hasFocus()) {
+                this.quill.setSelection(selection);
+            }
+        }
     }
 
     componentWillUnmount() {
@@ -55,6 +82,7 @@ export class RichTextInput extends Component {
     onTextChange = () => {
         const value =
             this.editor.innerHTML == '<p><br></p>' ? '' : this.editor.innerHTML;
+        this.lastValueChange = value;
         this.props.input.onChange(value);
     };
 
@@ -66,22 +94,22 @@ export class RichTextInput extends Component {
         const { error, helperText = false } = this.props.meta;
         return (
             <FormControl
-                error={error}
+                error={error !== null && error != undefined}
                 fullWidth={this.props.fullWidth}
                 className="ra-rich-text-input"
             >
-                <div ref={this.updateDivRef} />
-                {error && <FormHelperText>{error}</FormHelperText>}
+                <div data-testid="quill" ref={this.updateDivRef} />
+                {error && <FormHelperText error>{error}</FormHelperText>}
                 {helperText && <FormHelperText>{helperText}</FormHelperText>}
             </FormControl>
         );
     }
 }
 
-const RichRextInputWithField = addField(withStyles(styles)(RichTextInput));
+const RichTextInputWithField = addField(withStyles(styles)(RichTextInput));
 
-RichRextInputWithField.defaultProps = {
+RichTextInputWithField.defaultProps = {
     addLabel: true,
     fullWidth: true,
 };
-export default RichRextInputWithField;
+export default RichTextInputWithField;

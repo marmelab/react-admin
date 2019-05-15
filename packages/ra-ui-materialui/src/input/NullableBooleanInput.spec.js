@@ -20,7 +20,7 @@ describe('<NullableBooleanInput />', () => {
 
         const MenuItemElement1 = MenuItemElements.at(0);
         expect(MenuItemElement1.prop('value')).toEqual('');
-        expect(MenuItemElement1.childAt(0).text()).toEqual('');
+        expect(MenuItemElement1.children().length).toEqual(0);
 
         const MenuItemElement2 = MenuItemElements.at(1);
         expect(MenuItemElement2.prop('value')).toEqual('false');

@@ -386,9 +386,11 @@ const MyLayout = props => <Layout
 export default MyLayout;
 ```
 
+### UserMenu Customization
+
 You can replace the default user menu by your own by setting the `userMenu` prop of the `<AppBar>` component. For instance, to add custom menu items, just decorate the default `<UserMenu>` by adding children to it:
 
-```js
+```jsx
 import { AppBar, UserMenu, MenuItemLink } from 'react-admin';
 import SettingsIcon from '@material-ui/icons/Settings';
 
@@ -407,6 +409,38 @@ const MyAppBar = props => <AppBar {...props} userMenu={<MyUserMenu />} />;
 const MyLayout = props => <Layout {...props} appBar={MyAppBar} />;
 ```
 
+You can also customize the default icon by setting the `icon` prop to the `<UserMenu />` component.
+
+{% raw %}
+``` jsx
+import { AppBar, UserMenu } from 'react-admin';
+import { withStyles } from '@material-ui/core/styles';
+import Avatar from '@material-ui/core/Avatar';
+
+const myCustomIconStyle = {
+    avatar: {
+        height: 30,
+        width: 30,
+    },
+};
+
+const MyCustomIcon = withStyles(myCustomIconStyle)(
+    ({ classes }) => (
+        <Avatar
+            className={classes.avatar}
+            src="https://marmelab.com/images/avatars/adrien.jpg"
+        />
+    )
+);
+
+const MyUserMenu = props => (<UserMenu {...props} icon={<MyCustomIcon />} />);
+
+const MyAppBar = props => <AppBar {...props} userMenu={<MyUserMenu />} />;
+```
+{% endraw %}
+
+### Sidebar Customization
+
 You can specify the `Sidebar` size by setting the `size` property:
 
 ```jsx
@@ -420,7 +454,9 @@ const MyLayout = props => <Layout
 
 ```
 
-For more custom layouts, write a component from scratch. It must contain a `{children}` placeholder, where react-admin will render the resources. Use the [default layout](https://github.com/marmelab/react-admin/blob/master/src/mui/layout/Layout.js) as a starting point. Here is a simplified version (with no responsive support):
+### Layout From Scratch
+
+For more custom layouts, write a component from scratch. It must contain a `{children}` placeholder, where react-admin will render the resources. Use the [default layout](https://github.com/marmelab/react-admin/blob/master/packages/ra-ui-materialui/src/layout/Layout.js) as a starting point. Here is a simplified version (with no responsive support):
 
 ```jsx
 // in src/MyLayout.js
@@ -514,11 +550,81 @@ const mapStateToProps = state => ({ isLoading: state.admin.loading > 0 });
 export default connect(mapStateToProps, { setSidebarVisibility })(withStyles(styles)(MyLayout));
 ```
 
-## Using a Custom AppBar
+## Customizing the AppBar Content
 
-By default, React-admin uses [Material_ui's `<AppBar>` component](https://material-ui.com/api/app-bar/) together with [react-headroom](https://github.com/KyleAMathews/react-headroom) to hide the `AppBar` on scroll.
+By default, the react-admin `<AppBar>` component displays the page title. You can override this default by passing children to `<AppBar>` - they will replace the default title. And if you still want to include the page title, make sure you include an element with id `react-admin-title` in the top bar (this uses [React Portals](https://reactjs.org/docs/portals.html)). 
 
-You can create your own `AppBar` component to replace the react-admin one. For instance, to remove the "headroom" effect:
+Here is an example customization for `<AppBar>` to include a company logo in the center of the page header:
+
+```jsx
+// in src/MyAppBar.js
+import React from 'react';
+import { AppBar } from 'react-admin';
+import Typography from '@material-ui/core/Typography';
+import { withStyles } from '@material-ui/core/styles';
+
+import Logo from './Logo';
+
+const styles = {
+    title: {
+        flex: 1,
+        textOverflow: 'ellipsis',
+        whiteSpace: 'nowrap',
+        overflow: 'hidden',
+    },
+    spacer: {
+        flex: 1,
+    },
+};
+
+const MyAppBar = withStyles(styles)(({ classes, ...props }) => (
+    <AppBar {...props}>
+        <Typography
+            variant="title"
+            color="inherit"
+            className={classes.title}
+            id="react-admin-title"
+        />
+        <Logo />
+        <span className={classes.spacer} />
+    </AppBar>
+));
+
+export default MyAppBar;
+```
+
+To use this custom `MyAppBar` component, pass it as prop to a custom `Layout`, as shown below:
+
+```jsx
+// in src/MyLayout.js
+import { Layout } from 'react-admin';
+import MyAppBar from './MyAppBar';
+
+const MyLayout = (props) => <Layout {...props} appBar={MyAppBar} />;
+
+export default MyLayout;
+```
+
+Then, use this layout in the `<Admin>` with the `appLayout` prop:
+
+```jsx
+// in src/App.js
+import MyLayout from './MyLayout';
+
+const App = () => (
+    <Admin appLayout={MyLayout} dataProvider={simpleRestProvider('http://path.to.my.api')}>
+        // ...
+    </Admin>
+);
+```
+
+![custom AppBar](./img/custom_appbar.png)
+
+## Replacing The AppBar
+
+For more drastic changes of the top component, you will probably want to create an `<AppBar>` from scratch instead of just passing children to react-admin's `<AppBar>`. 
+
+By default, React-admin uses [Material-ui's `<AppBar>` component](https://material-ui.com/api/app-bar/) together with [react-headroom](https://github.com/KyleAMathews/react-headroom) to hide the `AppBar` on scroll. Here is an example top bar rebuilt from scratch to remove the "headroom" effect:
 
 ```jsx
 // in src/MyAppBar.js
@@ -537,30 +643,7 @@ const MyAppBar = props => (
 export default MyAppBar;
 ```
 
-To use this custom `AppBar` component, pass it as prop to a custom `Layout`, as explained below:
-
-```jsx
-// in src/MyLayout.js
-import { Layout } from 'react-admin';
-import MyAppBar from './MyAppBar';
-
-const MyLayout = (props) => <Layout {...props} appBar={MyAppBar} />;
-
-export default MyLayout;
-```
-
-Then, use this layout in the `<Admin>` with the `applayout` prop:
-
-```jsx
-// in src/App.js
-import MyLayout from './MyLayout';
-
-const App = () => (
-    <Admin appLayout={MyLayout} dataProvider={simpleRestProvider('http://path.to.my.api')}>
-        // ...
-    </Admin>
-);
-```
+Take note that this uses *material-ui's `<AppBar>`* instead of *react-admin's `<AppBar>`*. To use this custom `AppBar` component, pass it as prop to a custom `Layout`, as explained in the previous section.
 
 ## Using a Custom Menu
 
@@ -572,14 +655,13 @@ If you want to add or remove menu items, for instance to link to non-resources p
 // in src/MyMenu.js
 import React from 'react';
 import { connect } from 'react-redux';
-import { MenuItemLink, getResources } from 'react-admin';
+import { MenuItemLink, getResources, Responsive } from 'react-admin';
 import { withRouter } from 'react-router-dom';
-import Responsive from '../layout/Responsive';
 
 const MyMenu = ({ resources, onMenuClick, logout }) => (
     <div>
         {resources.map(resource => (
-            <MenuItemLink to={`/${resource.name}`} primaryText={resource.name} onClick={onMenuClick} />
+            <MenuItemLink key={resource.name} to={`/${resource.name}`} primaryText={resource.name} onClick={onMenuClick} />
         ))}
         <MenuItemLink to="/custom-route" primaryText="Miscellaneous" onClick={onMenuClick} />
         <Responsive
@@ -603,6 +685,18 @@ export default withRouter(connect(mapStateToProps)(MyMenu));
 
 **Tip**: Note that we use React Router [`withRouter`](https://reacttraining.com/react-router/web/api/withRouter) Higher Order Component and that it is used **before** Redux [`connect](https://github.com/reactjs/react-redux/blob/master/docs/api.html#connectmapstatetoprops-mapdispatchtoprops-mergeprops-options). This is required if you want the active menu item to be highlighted.
 
+**Tip**: The `primaryText` prop accepts a React node. You can pass a custom element in it. For example:
+
+```jsx
+    import Badge from '@material-ui/core/Badge';
+
+    <MenuItemLink to="/custom-route" primaryText={
+        <Badge badgeContent={4} color="primary">
+            Notifications
+        </Badge>
+    } onClick={onMenuClick} />
+```
+
 To use this custom menu component, pass it to a custom Layout, as explained above:
 
 ```jsx
@@ -615,7 +709,7 @@ const MyLayout = (props) => <Layout {...props} menu={MyMenu} />;
 export default MyLayout;
 ```
 
-Then, use this layout in the `<Admin>` `applayout` prop:
+Then, use this layout in the `<Admin>` `appLayout` prop:
 
 ```jsx
 // in src/App.js
@@ -638,7 +732,7 @@ If the default active style does not suit your tastes, you can override it by pa
 // in src/MyMenu.js
 import React from 'react';
 import { connect } from 'react-redux';
-import { MenuItemLink, getResources } from 'react-admin';
+import { MenuItemLink, getResources, Responsive } from 'react-admin';
 import { withStyles } from '@material-ui/core/styles';
 import { withRouter } from 'react-router-dom';
 
@@ -651,7 +745,7 @@ const styles = {
 const MyMenu = ({ classes, resources, onMenuClick, logout }) => (
     <div>
         {resources.map(resource => (
-            <MenuItemLink classes={classes} to={`/${resource.name}`} primaryText={resource.name} onClick={onMenuClick} />
+            <MenuItemLink classes={classes} key={resource.name} to={`/${resource.name}`} primaryText={resource.name} onClick={onMenuClick} />
         ))}
         <MenuItemLink classes={classes} to="/custom-route" primaryText="Miscellaneous" onClick={onMenuClick} />
         <Responsive
@@ -666,6 +760,24 @@ const mapStateToProps = state => ({
 });
 
 export default withRouter(connect(mapStateToProps)(withStyles(styles)(Menu)));
+```
+
+## Using a Custom Login Page
+
+### Changing the Background Image
+
+By default, the login page displays a random background image changing every day. If you want to change that background image, you can use the default Login page component and pass an image URL as the `backgroundImage` prop.
+
+```jsx
+import { Admin, Login } from 'react-admin';
+
+const MyLoginPage = () => <Login backgroundImage="/background.jpg" />;
+
+const App = () => (
+    <Admin loginPage={MyLoginPage}>
+        // ...
+    </Admin>
+);
 ```
 
 ## Notifications

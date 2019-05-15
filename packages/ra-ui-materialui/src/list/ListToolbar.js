@@ -1,17 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Toolbar from '@material-ui/core/Toolbar';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, createStyles } from '@material-ui/core/styles';
 
-const styles = {
+const styles = createStyles({
     toolbar: {
         justifyContent: 'space-between',
     },
-};
+});
 
 const ListToolbar = ({
-    classes = {},
+    classes,
     filters,
+    filterValues, // dynamically set via the UI by the user
+    permanentFilter, // set in the List component by the developer
     actions,
     bulkActions,
     exporter,
@@ -21,6 +23,7 @@ const ListToolbar = ({
         {filters &&
             React.cloneElement(filters, {
                 ...rest,
+                filterValues,
                 context: 'form',
             })}
         <span />
@@ -31,6 +34,9 @@ const ListToolbar = ({
                 bulkActions,
                 exporter,
                 filters,
+                filterValues,
+                permanentFilter,
+                ...actions.props,
             })}
     </Toolbar>
 );
@@ -38,9 +44,14 @@ const ListToolbar = ({
 ListToolbar.propTypes = {
     classes: PropTypes.object,
     filters: PropTypes.element,
+    permanentFilter: PropTypes.object,
     actions: PropTypes.element,
     bulkActions: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
-    exporter: PropTypes.func,
+    exporter: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
+};
+
+ListToolbar.defaultProps = {
+    classes: {},
 };
 
 export default withStyles(styles)(ListToolbar);

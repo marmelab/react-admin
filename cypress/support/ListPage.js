@@ -13,8 +13,10 @@ export default url => ({
         pageNumber: n => `.page-number[data-page='${n - 1}']`,
         previousPage: '.previous-page',
         recordRows: '.datagrid-body tr',
-        viewsColumn: '.datagrid-body tr td:nth-child(6)',
+        viewsColumn: '.datagrid-body tr td:nth-child(7)',
         datagridHeaders: 'th',
+        sortBy: name => `th span[data-sort=\"${name}\"]`,
+        svg: (name, criteria = '') => `th span[data-sort=\"${name}\"] svg${criteria}`,
         logout: '.logout',
         bulkActionsToolbar: '[data-test=bulk-actions-toolbar]',
         customBulkActionsButton:
@@ -26,7 +28,8 @@ export default url => ({
         selectItem: '.select-item input',
         userMenu: 'button[title="Profile"]',
         title: '#react-admin-title',
-        headroom: '.headroom',
+        headroomUnfixed: '.headroom--unfixed',
+        headroomUnpinned: '.headroom--unpinned',
     },
 
     navigate() {
@@ -101,4 +104,8 @@ export default url => ({
     applyDeleteBulkAction() {
         cy.get(this.elements.deleteBulkActionsButton).click();
     },
+
+    toggleColumnSort(name) {
+        cy.get(this.elements.sortBy(name)).click();
+    }
 });

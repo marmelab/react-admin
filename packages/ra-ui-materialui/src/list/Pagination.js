@@ -14,11 +14,17 @@ const emptyArray = [];
 export class Pagination extends Component {
     getNbPages = () => Math.ceil(this.props.total / this.props.perPage) || 1;
 
+    componentDidUpdate() {
+        if (this.props.page < 1 || isNaN(this.props.page)) {
+            this.props.setPage(1);
+        }
+    }
+
     /**
      * Warning: material-ui's page is 0-based
      */
     handlePageChange = (event, page) => {
-        event.stopPropagation();
+        event && event.stopPropagation();
         if (page < 0 || page > this.getNbPages() - 1) {
             throw new Error(
                 this.props.translate('ra.navigation.page_out_of_boundaries', {
@@ -44,6 +50,7 @@ export class Pagination extends Component {
 
     render() {
         const {
+            width, // used for testing responsive
             isLoading,
             page,
             perPage,
@@ -53,16 +60,13 @@ export class Pagination extends Component {
             ...rest
         } = this.props;
 
-        if (
-            (!isLoading && total === 0) ||
-            page < 1 ||
-            page > this.getNbPages()
-        ) {
-            return <PaginationLimit total={total} page={page} />;
+        if (!isLoading && total === 0) {
+            return <PaginationLimit />;
         }
 
         return (
             <Responsive
+                width={width}
                 small={
                     <TablePagination
                         count={total}

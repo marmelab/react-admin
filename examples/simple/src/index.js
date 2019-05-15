@@ -1,5 +1,4 @@
 /* eslint react/jsx-key: off */
-import 'babel-polyfill';
 import React from 'react';
 import { Admin, Resource } from 'react-admin'; // eslint-disable-line import/no-unresolved
 import { render } from 'react-dom';

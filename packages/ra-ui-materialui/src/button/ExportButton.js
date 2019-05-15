@@ -20,6 +20,38 @@ const sanitizeRestProps = ({
 }) => rest;
 
 /**
+ * Extracts, aggregates and deduplicates the ids of related records
+ *
+ * @example
+ *     const books = [
+ *         { id: 1, author_id: 123, title: 'Pride and Prejudice' },
+ *         { id: 2, author_id: 123, title: 'Sense and Sensibility' },
+ *         { id: 3, author_id: 456, title: 'War and Peace' },
+ *     ];
+ *     getRelatedIds(books, 'author_id'); => [123, 456]
+ *
+ * @example
+ *     const books = [
+ *         { id: 1, tag_ids: [1, 2], title: 'Pride and Prejudice' },
+ *         { id: 2, tag_ids: [2, 3], title: 'Sense and Sensibility' },
+ *         { id: 3, tag_ids: [4], title: 'War and Peace' },
+ *     ];
+ *     getRelatedIds(records, 'tag_ids'); => [1, 2, 3, 4]
+ *
+ * @param {Object[]} records An array of records
+ * @param {string} field the identifier of the record field to use
+ */
+export const getRelatedIds = (records, field) =>
+    Array.from(
+        new Set(
+            records
+                .filter(record => record[field] != null)
+                .map(record => record[field])
+                .reduce((ids, value) => ids.concat(value), [])
+        )
+    );
+
+/**
  * Helper function for calling the data provider with GET_MANY
  * via redux and saga, and getting a Promise in return
  *
@@ -32,11 +64,9 @@ const sanitizeRestProps = ({
  */
 const fetchRelatedRecords = dispatch => (data, field, resource) =>
     new Promise((resolve, reject) => {
-        // find unique keys
-        const ids = [...new Set(data.map(record => record[field]))];
         dispatch({
             type: CRUD_GET_MANY,
-            payload: { ids },
+            payload: { ids: getRelatedIds(data, field) },
             meta: {
                 resource,
                 fetch: GET_MANY,
@@ -71,6 +101,13 @@ class ExportButton extends Component {
         maxResults: PropTypes.number.isRequired,
         resource: PropTypes.string.isRequired,
         sort: PropTypes.object,
+        icon: PropTypes.element,
+    };
+
+    static defaultProps = {
+        label: 'ra.action.export',
+        maxResults: 1000,
+        icon: <GetApp />,
     };
 
     handleClick = () => {
@@ -81,6 +118,7 @@ class ExportButton extends Component {
             maxResults,
             sort,
             resource,
+            onClick,
         } = this.props;
         dispatch(
             crudGetAll(
@@ -98,10 +136,14 @@ class ExportButton extends Component {
                         : downloadCSV(convertToCSV(data), resource)
             )
         );
+
+        if (typeof onClick === 'function') {
+            onClick();
+        }
     };
 
     render() {
-        const { label, ...rest } = this.props;
+        const { label, icon, ...rest } = this.props;
 
         return (
             <Button
@@ -109,15 +151,10 @@ class ExportButton extends Component {
                 label={label}
                 {...sanitizeRestProps(rest)}
             >
-                <GetApp />
+                {icon}
             </Button>
         );
     }
 }
-
-ExportButton.defaultProps = {
-    label: 'ra.action.export',
-    maxResults: 1000,
-};
 
 export default connect()(ExportButton); // inject redux dispatch

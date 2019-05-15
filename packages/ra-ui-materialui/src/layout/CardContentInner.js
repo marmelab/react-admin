@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import CardContent from '@material-ui/core/CardContent';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, createStyles } from '@material-ui/core/styles';
 
-const styles = {
+var styles = theme => createStyles({
     root: {
         paddingTop: 0,
         paddingBottom: 0,
@@ -13,9 +13,12 @@ const styles = {
         },
         '&:last-child': {
             paddingBottom: 16,
+            [theme.breakpoints.only('xs')]: {
+                paddingBottom: 70,
+            },
         },
     },
-};
+});
 
 /**
  * Overrides material-ui CardContent to allow inner content

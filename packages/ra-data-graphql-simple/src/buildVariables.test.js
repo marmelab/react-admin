@@ -5,7 +5,7 @@ import {
     CREATE,
     UPDATE,
     DELETE,
-} from 'react-admin';
+} from 'ra-core';
 import buildVariables from './buildVariables';
 
 describe('buildVariables', () => {
@@ -142,7 +142,7 @@ describe('buildVariables', () => {
                     {}
                 )
             ).toEqual({
-                filter: { author: { id: 'author1' } },
+                filter: { authorId: 'author1' },
             });
         });
     });

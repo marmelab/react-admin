@@ -1,8 +1,8 @@
 import React from 'react';
 import ChipInput from 'material-ui-chip-input';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, createStyles } from '@material-ui/core/styles';
 
-const chipInputStyles = {
+const chipInputStyles = createStyles({
     label: {
         top: 18,
     },
@@ -12,9 +12,14 @@ const chipInputStyles = {
     chipContainer: {
         alignItems: 'center',
         display: 'flex',
+        flexWrap: 'wrap',
         minHeight: 50,
+        paddingBottom: 8,
     },
-};
+    inputRoot: {
+        marginTop: 8,
+    }
+});
 
 const AutocompleteArrayInputChip = props => <ChipInput {...props} />;
 

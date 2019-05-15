@@ -29,6 +29,11 @@ export default {
                 demo_button: 'Source for this demo',
             },
         },
+        menu: {
+            sales: 'Sales',
+            catalog: 'Catalog',
+            customers: 'Customers',
+        },
     },
     resources: {
         customers: {
@@ -53,6 +58,7 @@ export default {
         },
         commands: {
             name: 'Order |||| Orders',
+            title: 'Order %{reference}',
             fields: {
                 basket: {
                     delivery: 'Delivery',
@@ -69,6 +75,18 @@ export default {
                 total_gte: 'Min amount',
                 status: 'Status',
                 returned: 'Returned',
+            },
+        },
+        invoices: {
+            name: 'Invoice |||| Invoices',
+            fields: {
+                date: 'Invoice date',
+                customer_id: 'Customer',
+                command_id: 'Order',
+                date_gte: 'Passed Since',
+                date_lte: 'Passed Before',
+                total_gte: 'Min amount',
+                address: 'Address',
             },
         },
         products: {
@@ -103,6 +121,7 @@ export default {
         },
         reviews: {
             name: 'Review |||| Reviews',
+            detail: 'Review detail',
             fields: {
                 customer_id: 'Customer',
                 command_id: 'Order',

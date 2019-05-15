@@ -44,6 +44,7 @@ const sanitizeRestProps = ({
     touch,
     translate,
     triggerSubmit,
+    undoable,
     untouch,
     valid,
     validate,
@@ -67,6 +68,7 @@ export class SimpleForm extends Component {
             saving,
             submitOnEnter,
             toolbar,
+            undoable,
             version,
             ...rest
         } = this.props;
@@ -86,23 +88,20 @@ export class SimpleForm extends Component {
                         />
                     ))}
                 </CardContentInner>
-                {toolbar && (
-                    <CardContentInner>
-                        {React.cloneElement(toolbar, {
-                            basePath,
-                            handleSubmitWithRedirect: this
-                                .handleSubmitWithRedirect,
-                            handleSubmit: this.props.handleSubmit,
-                            invalid,
-                            pristine,
-                            record,
-                            redirect,
-                            resource,
-                            saving,
-                            submitOnEnter,
-                        })}
-                    </CardContentInner>
-                )}
+                {toolbar &&
+                    React.cloneElement(toolbar, {
+                        basePath,
+                        handleSubmitWithRedirect: this.handleSubmitWithRedirect,
+                        handleSubmit: this.props.handleSubmit,
+                        invalid,
+                        pristine,
+                        record,
+                        redirect,
+                        resource,
+                        saving,
+                        submitOnEnter,
+                        undoable,
+                    })}
             </form>
         );
     }
@@ -127,6 +126,7 @@ SimpleForm.propTypes = {
     saving: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
     submitOnEnter: PropTypes.bool,
     toolbar: PropTypes.element,
+    undoable: PropTypes.bool,
     validate: PropTypes.func,
     version: PropTypes.number,
 };

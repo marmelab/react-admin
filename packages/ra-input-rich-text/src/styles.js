@@ -5,7 +5,7 @@ export default {
         '.ra-rich-text-input': {
             '& .ql-editor': {
                 fontSize: '1rem',
-                fontFamily: "Roboto, 'sans-serif'",
+                fontFamily: 'Roboto, sans-serif',
                 padding: 0,
 
                 '&:hover::before': {
@@ -18,7 +18,7 @@ export default {
                     right: 0,
                     bottom: 0,
                     height: 1,
-                    content: '',
+                    content: '""',
                     position: 'absolute',
                     transition:
                         'background-color 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
@@ -30,7 +30,7 @@ export default {
                     right: 0,
                     bottom: 0,
                     height: 2,
-                    content: '',
+                    content: '""',
                     position: 'absolute',
                     transform: 'scaleX(0)',
                     transition:

@@ -1,6 +1,6 @@
 import merge from 'lodash/merge';
 import buildDataProvider from 'ra-data-graphql';
-import { DELETE, DELETE_MANY, UPDATE, UPDATE_MANY } from 'react-admin';
+import { DELETE, DELETE_MANY, UPDATE, UPDATE_MANY } from 'ra-core';
 
 import defaultBuildQuery from './buildQuery';
 const defaultOptions = {
@@ -18,7 +18,7 @@ export default options => {
                 if (fetchType === DELETE_MANY) {
                     const { ids, ...otherParams } = params;
                     return Promise.all(
-                        params.ids.map(id =>
+                        ids.map(id =>
                             defaultDataProvider(DELETE, resource, {
                                 id,
                                 ...otherParams,
@@ -36,11 +36,14 @@ export default options => {
                 // This provider does not support multiple deletions so instead we send multiple UPDATE requests
                 // This can be optimized using the apollo-link-batch-http link
                 if (fetchType === UPDATE_MANY) {
-                    const { ids, ...otherParams } = params;
+                    const { ids, data, ...otherParams } = params;
                     return Promise.all(
-                        params.ids.map(id =>
+                        ids.map(id =>
                             defaultDataProvider(UPDATE, resource, {
-                                id,
+                                data: {
+                                    id,
+                                    ...data,
+                                },
                                 ...otherParams,
                             })
                         )

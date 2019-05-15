@@ -5,7 +5,7 @@ import { translate } from 'ra-core';
 
 import MenuItemLink from './MenuItemLink';
 
-const DashboardMenuItem = ({ className, onClick, translate, ...props }) => (
+const DashboardMenuItem = ({ className, locale, onClick, translate, ...props }) => (
     <MenuItemLink
         onClick={onClick}
         to="/"
@@ -19,6 +19,7 @@ const DashboardMenuItem = ({ className, onClick, translate, ...props }) => (
 DashboardMenuItem.propTypes = {
     classes: PropTypes.object,
     className: PropTypes.string,
+    locale: PropTypes.string,
     onClick: PropTypes.func,
     translate: PropTypes.func.isRequired,
 };

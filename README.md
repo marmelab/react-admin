@@ -1,8 +1,8 @@
-# react-admin [![Build Status](https://travis-ci.org/marmelab/react-admin.svg?branch=master)](https://travis-ci.org/marmelab/react-admin)
+# react-admin [![Build Status](https://travis-ci.org/marmelab/react-admin.svg?branch=master)](https://travis-ci.org/marmelab/react-admin) [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fmarmelab%2Freact-admin.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fmarmelab%2Freact-admin?ref=badge_shield)
 
 A frontend Framework for building admin applications running in the browser on top of REST/GraphQL APIs, using ES6, [React](https://facebook.github.io/react/) and [Material Design](https://material.io/). Previously named [admin-on-rest](https://github.com/marmelab/admin-on-rest). Open sourced and maintained by [marmelab](https://marmelab.com/).
 
-[Demo](https://marmelab.com/react-admin-demo/) - [Documentation](https://marmelab.com/react-admin/) - [Releases](https://github.com/marmelab/react-admin/releases) - [Support](http://stackoverflow.com/questions/tagged/react-admin)
+[Demo](https://marmelab.com/react-admin-demo/) - [Documentation](https://marmelab.com/react-admin/) - [News](https://marmelab.com/en/blog/#react-admin) - [Releases](https://github.com/marmelab/react-admin/releases) - [Support](http://stackoverflow.com/questions/tagged/react-admin)
 
 [![react-admin-demo](https://marmelab.com/react-admin/img/react-admin-demo-still.png)](https://vimeo.com/268958716)
 
@@ -46,7 +46,10 @@ React-admin is available from npm. You can install it (and its required dependen
 using:
 
 ```sh
-npm install --save-dev react-admin
+npm install react-admin
+
+#or
+yarn add react-admin
 ```
 
 ## Upgrading From Admin-On-Rest
@@ -147,8 +150,8 @@ React-admin is designed as a library of loosely coupled React components built o
 
 There are several examples inside the `examples` folder:
 
-* `simple`: a simple application with posts, comments and users that we use for our e2e tests.
-* `tutorial`: the application built while following the tutorial.
+* `simple` ([CodeSandbox](https://codesandbox.io/s/github/marmelab/react-admin/tree/master/examples/simple)): a simple application with posts, comments and users that we use for our e2e tests.
+* `tutorial` ([CodeSandbox](https://codesandbox.io/s/github/marmelab/react-admin/tree/master/examples/tutorial)): the application built while following the tutorial.
 * `demo`: the official demo application.
 
 You can run those example applications by calling:
@@ -163,8 +166,10 @@ yarn install
 # Run the simple application
 make run-simple
 # Run the tutorial application
+make build
 make run-tutorial
 # Run the demo application
+make build
 make run-demo
 ```
 
@@ -225,7 +230,7 @@ $ cd ..
 $ git clone git@github.com:marmelab/react-admin.git && cd react-admin && make install
 # replace your node_modules/react-admin by a symbolic link to the github checkout
 $ cd ../myapp
-$ npm link ../react-admin
+$ npm link ../react-admin/packages/react-admin
 # go back to the checkout, and replace the version of react by the one in your app
 $ cd ../react-admin
 $ npm link ../myapp/node_modules/react
@@ -240,6 +245,8 @@ $ npm run
 ## License
 
 React-admin is licensed under the [MIT License](https://github.com/marmelab/react-admin/blob/master/LICENSE.md), sponsored and supported by [marmelab](http://marmelab.com).
+
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fmarmelab%2Freact-admin.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fmarmelab%2Freact-admin?ref=badge_large)
 
 ## Donate
 

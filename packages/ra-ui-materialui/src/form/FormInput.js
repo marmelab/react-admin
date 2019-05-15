@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, createStyles } from '@material-ui/core/styles';
 
 import Labeled from '../input/Labeled';
 
 const sanitizeRestProps = ({ basePath, record, ...rest }) => rest;
 
-const styles = theme => ({
+const styles = theme => createStyles({
     input: { width: theme.spacing.unit * 32 },
 });
 
@@ -21,7 +21,11 @@ export const FormInput = ({ classes, input, ...rest }) =>
             )}
         >
             {input.props.addLabel ? (
-                <Labeled {...input.props} {...sanitizeRestProps(rest)}>
+                <Labeled
+                    id={input.props.id || input.props.source}
+                    {...input.props}
+                    {...sanitizeRestProps(rest)}
+                >
                     {React.cloneElement(input, {
                         className: classnames(
                             {
@@ -29,6 +33,7 @@ export const FormInput = ({ classes, input, ...rest }) =>
                             },
                             input.props.className
                         ),
+                        id: input.props.id || input.props.source,
                         ...rest,
                     })}
                 </Labeled>
@@ -40,6 +45,7 @@ export const FormInput = ({ classes, input, ...rest }) =>
                         },
                         input.props.className
                     ),
+                    id: input.props.id || input.props.source,
                     ...rest,
                 })
             )}
@@ -51,5 +57,8 @@ FormInput.propTypes = {
     classes: PropTypes.object,
     input: PropTypes.object,
 };
+
+// wat? TypeScript looses the displayName if we don't set it explicitly
+FormInput.displayName = 'FormInput';
 
 export default withStyles(styles)(FormInput);

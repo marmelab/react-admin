@@ -27,23 +27,26 @@ export default App;
 
 Here are all the props accepted by the component:
 
-* [`dataProvider`](#dataprovider)
-* [`title`](#title)
-* [`dashboard`](#dashboard)
-* [`catchAll`](#catchall)
-* [`menu`](#menu) (deprecated)
-* [`theme`](#theme)
-* [`appLayout`](#applayout)
-* [`customReducers`](#customreducers)
-* [`customSagas`](#customsagas)
-* [`customRoutes`](#customroutes)
-* [`authProvider`](#authprovider)
-* [`loginPage`](#loginpage)
-* [`logoutButton`](#logoutbutton)
-* [`locale`](#internationalization)
-* [`messages`](#internationalization)
-* [`initialState`](#initialstate)
-* [`history`](#history)
+- [The `<Admin>` Component](#the-admin-component)
+    - [`dataProvider`](#dataprovider)
+    - [`title`](#title)
+    - [`dashboard`](#dashboard)
+    - [`catchAll`](#catchall)
+    - [`menu`](#menu)
+    - [`theme`](#theme)
+    - [`appLayout`](#applayout)
+    - [`customReducers`](#customreducers)
+    - [`customSagas`](#customsagas)
+    - [`customRoutes`](#customroutes)
+    - [`authProvider`](#authprovider)
+    - [`loginPage`](#loginpage)
+    - [`logoutButton`](#logoutbutton)
+    - [`initialState`](#initialstate)
+    - [`history`](#history)
+    - [`locale`](#internationalization)
+    - [`i18nProvider`](#internationalization)
+    - [Declaring resources at runtime](#declaring-resources-at-runtime)
+    - [Using react-admin without `<Admin>` and `<Resource>`](#using-react-admin-without-admin-and-resource)
 
 ## `dataProvider`
 
@@ -112,7 +115,7 @@ const App = () => (
 
 ## `catchAll`
 
-When users type URLs that don't match any of the children `<Resource>` components, they see a default "Not Found" page. 
+When users type URLs that don't match any of the children `<Resource>` components, they see a default "Not Found" page.
 
 ![Not Found](./img/not-found.png)
 
@@ -150,7 +153,7 @@ const App = () => (
 
 ## `menu`
 
-**Tip**: This prop is deprecated. To override the menu component, use a [custom layout](#appLayout) instead.
+**Tip**: This prop is deprecated. To override the menu component, use a [custom layout](#applayout) instead.
 
 React-admin uses the list of `<Resource>` components passed as children of `<Admin>` to build a menu to each resource with a `list` component.
 
@@ -169,14 +172,14 @@ import Responsive from '../layout/Responsive';
 const Menu = ({ resources, onMenuClick, logout }) => (
     <div>
         {resources.map(resource => (
-            <MenuItemLink 
+            <MenuItemLink
                 to={`/${resource.name}`}
                 primaryText={resource.name}
                 leftIcon={createElement(resource.icon)}
                 onClick={onMenuClick}
             />
         ))}
-        <MenuItemLink 
+        <MenuItemLink
             to="/custom-route"
             primaryText="Miscellaneous"
             leftIcon={<LabelIcon />}
@@ -266,7 +269,7 @@ import MyAppBar from './MyAppBar';
 import MyMenu from './MyMenu';
 import MyNotification from './MyNotification';
 
-const MyLayout = (props) => <Layout 
+const MyLayout = (props) => <Layout
     {...props}
     appBar={MyAppBar}
     menu={MyMenu}
@@ -430,10 +433,12 @@ const Foo = () => (
             ...
         </CardContent>
     </Card>
-));
+);
 
 export default Foo;
 ```
+
+**Tip**: Custom routes can be [a `<Redirect>` route](https://reacttraining.com/react-router/web/api/Redirect), too. 
 
 ## `authProvider`
 
@@ -471,7 +476,11 @@ const App = () => (
 );
 ```
 
+You can also disable it completely along with the `/login` route by passing `false` to this prop.
+
 See The [Authentication documentation](./Authentication.md#customizing-the-login-and-logout-components) for more details.
+
+**Tip**: Before considering to write your own login page component, please take a look at how to change the default [background image](./Theming.md#using-a-custom-login-page) or the [Material UI theme](#theme). See the [Authentication documentation](./Authentication.md#customizing-the-login-and-logout-components) for more details.
 
 ## `logoutButton`
 
@@ -499,7 +508,7 @@ By default, react-admin creates URLs using a hash sign (e.g. "myadmin.acme.com/#
 You can create your own `history` function (compatible with [the `history` npm package](https://github.com/reacttraining/history)), and pass it to the `<Admin>` component to override the default history strategy. For instance, to use `browserHistory`:
 
 ```js
-import createHistory from 'history/createBrowserHistory';
+import { createBrowserHistory as createHistory } from 'history';
 
 const history = createHistory();
 
@@ -512,7 +521,7 @@ const App = () => (
 
 ## Internationalization
 
-The `locale` and `messages` props let you translate the GUI. The [Translation Documentation](./Translation.md) details this process.
+The `locale` and `i18nProvider` props let you translate the GUI. The [Translation Documentation](./Translation.md) details this process.
 
 ## Declaring resources at runtime
 

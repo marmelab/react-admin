@@ -22,6 +22,23 @@
     <div class="book with-summary font-size-2 font-family-1">
         <div id="book-summary" class="book-summary">
             <nav role="navigation">
+                <div class="search">
+                        <form action="#" onsubmit="search();return false;">
+                            <div style="display:flex;align-items:center;">
+                                <i class="octicon octicon-search"></i>
+                                <input type="text" name="q" id="query" size="31" maxlength="255" value="" placeholder="Search...">
+                            </div>
+                        </form>
+                        <script type="text/javascript">
+                            function encodeHTML(s) {
+                                return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
+                            }
+                            function search() {
+                                var query = encodeHTML(document.getElementById('query').value);
+                                window.location.href = 'https://www.qwant.com?q=' + query + "%20site:marmelab.com/react-admin";
+                            }
+                        </script>
+                </div>
                 <ul class="summary">
                     <li class="header">Table of Contents</li>
                     <li class="chapter {% if page.path == 'index.md' %}active{% endif %}">
@@ -35,37 +52,49 @@
                         </a>
                         <ul class="articles" {% if page.path !='Tutorial.md' %}style="display:none" {% endif %}>
                             <li class="chapter">
-                                <a href="#installation">Installation</a>
+                                <a href="#setting-up">Setting Up</a>
                             </li>
                             <li class="chapter">
-                                <a href="#making-contact-with-the-api">Making Contact With The API</a>
+                                <a href="#using-an-api-as-data-source">Data Source API</a>
                             </li>
                             <li class="chapter">
-                                <a href="#field-types">Field Types</a>
+                                <a href="#making-contact-with-the-api-using-a-data-provider">Data Provider</a>
                             </li>
                             <li class="chapter">
-                                <a href="#relationships">Relationships</a>
+                                <a href="#mapping-api-endpoints-with-resources">Resources</a>
                             </li>
                             <li class="chapter">
-                                <a href="#creation-and-editing">Creation and Editing</a>
+                                <a href="#selecting-columns">Selecting Columns</a>
                             </li>
                             <li class="chapter">
-                                <a href="#deletion">Deletion</a>
+                                <a href="#using-field-types">Field Types</a>
                             </li>
                             <li class="chapter">
-                                <a href="#filters">Filters</a>
+                                <a href="#customizing-styles">Custom Styles</a>
                             </li>
                             <li class="chapter">
-                                <a href="#customizing-the-menu-icons">Customizing the Menu Icons</a>
+                                <a href="#handling-relationships">Relationships</a>
                             </li>
                             <li class="chapter">
-                                <a href="#using-a-custom-home-page">Using a Custom Home Page</a>
+                                <a href="#adding-creation-and-editing-capabilities">Creation and Editing</a>
                             </li>
                             <li class="chapter">
-                                <a href="#adding-a-login-page">Adding a Login Page</a>
+                                <a href="#optimistic-rendering-and-undo">Undo</a>
                             </li>
                             <li class="chapter">
-                                <a href="#responsive-list">Responsive List</a>
+                                <a href="#adding-search-and-filters-to-the-list">Filters</a>
+                            </li>
+                            <li class="chapter">
+                                <a href="#customizing-the-menu-icons">Menu Icons</a>
+                            </li>
+                            <li class="chapter">
+                                <a href="#using-a-custom-home-page">Custom Home Page</a>
+                            </li>
+                            <li class="chapter">
+                                <a href="#adding-a-login-page">Login Page</a>
+                            </li>
+                            <li class="chapter">
+                                <a href="#supporting-mobile-devices">Responsive List</a>
                             </li>
                             <li class="chapter">
                                 <a href="#connecting-to-a-real-api">Connecting To A Real API</a>
@@ -90,7 +119,8 @@
                                 <a href="#adding-custom-headers">Adding Custom Headers</a>
                             </li>
                             <li class="chapter">
-                                <a href="#decorating-your-data-provider-example-of-file-upload">Decorating a Data Provider</a>
+                                <a href="#decorating-your-data-provider-example-of-file-upload">Decorating a Data
+                                    Provider</a>
                             </li>
                             <li class="chapter">
                                 <a href="#writing-your-own-data-provider">Writing Your Own Data Provider</a>
@@ -111,7 +141,7 @@
                                 <a href="#error-format">Error Format</a>
                             </li>
                             <li class="chapter">
-                                <a href="#example-implementation">Example Implmentation</a>
+                                <a href="#example-implementation">Example Implementation</a>
                             </li>
                         </ul>
                     </li>
@@ -244,6 +274,11 @@
                                 </a>
                             </li>
                             <li class="chapter">
+                                <a href="#the-listguesser-component">
+                                    <code>&lt;ListGuesser&gt;</code>
+                                </a>
+                            </li>
+                            <li class="chapter">
                                 <a href="#the-datagrid-component">
                                     <code>&lt;Datagrid&gt;</code>
                                 </a>
@@ -282,6 +317,11 @@
                             </li>
                             <li class="chapter">
                                 <a href="#actions">Actions</a>
+                            </li>
+                            <li class="chapter">
+                                <a href="#the-showguesser-component">
+                                    <code>&lt;ShowGuesser&gt;</code>
+                                </a>
                             </li>
                             <li class="chapter">
                                 <a href="#the-simpleshowlayout-component">
@@ -391,7 +431,8 @@
                                 <a href="#writing-your-own-field-component">Writing your own field component</a>
                             </li>
                             <li class="chapter">
-                                <a href="#adding-label-to-custom-field-components-in-the-show-view">Adding Label To Custom Fields</a>
+                                <a href="#adding-label-to-custom-field-components-in-the-show-view">Adding Label To
+                                    Custom Fields</a>
                             </li>
                             <li class="chapter">
                                 <a href="#hiding-a-field-based-on-the-value-of-another">Conditional Field</a>
@@ -424,6 +465,11 @@
                                 </a>
                             </li>
                             <li class="chapter">
+                                <a href="#the-editguesser-component">
+                                    <code>&lt;EditGuesser&gt;</code>
+                                </a>
+                            </li>
+                            <li class="chapter">
                                 <a href="#the-simpleform-component">
                                     <code>&lt;SimpleForm&gt;</code>
                                 </a>
@@ -452,7 +498,8 @@
                                 <a href="#customizing-input-container-styles">Customize Input Containers Styles</a>
                             </li>
                             <li class="chapter">
-                                <a href="#displaying-fields-or-inputs-depending-on-the-user-permissions">User permissions</a>
+                                <a href="#displaying-fields-or-inputs-depending-on-the-user-permissions">User
+                                    permissions</a>
                             </li>
                         </ul>
                     </li>
@@ -473,6 +520,11 @@
                                 </a>
                             </li>
                             <li class="chapter">
+                                <a href="#autocompletearrayinput">
+                                    <code>&lt;AutocompleteArrayInput&gt;</code>
+                                </a>
+                            </li>
+                            <li class="chapter">
                                 <a href="#booleaninput-and-nullablebooleaninput">
                                     <code>&lt;BooleanInput&gt;</code>
                                 </a>
@@ -485,6 +537,11 @@
                             <li class="chapter">
                                 <a href="#dateinput">
                                     <code>&lt;DateInput&gt;</code>
+                                </a>
+                            </li>
+                            <li class="chapter">
+                                <a href="#datetimeinput">
+                                    <code>&lt;DateTimeInput&gt;</code>
                                 </a>
                             </li>
                             <li class="chapter">
@@ -579,13 +636,16 @@
                                 <a href="#adding-a-logout-button">Adding a Logout Button</a>
                             </li>
                             <li class="chapter">
-                                <a href="#catching-authentication-errors-on-the-api">Catching Authentication Errors On The API</a>
+                                <a href="#catching-authentication-errors-on-the-api">Catching Authentication Errors On
+                                    The API</a>
                             </li>
                             <li class="chapter">
-                                <a href="#checking-credentials-during-navigation">Checking Credentials During Navigation</a>
+                                <a href="#checking-credentials-during-navigation">Checking Credentials During
+                                    Navigation</a>
                             </li>
                             <li class="chapter">
-                                <a href="#customizing-the-login-and-logout-components">Customizing The Login and Logout Components</a>
+                                <a href="#customizing-the-login-and-logout-components">Customizing The Login and Logout
+                                    Components</a>
                             </li>
                             <li class="chapter">
                                 <a href="#restricting-access-to-a-custom-page">Restricting Access To A Custom Page</a>
@@ -601,13 +661,16 @@
                                 <a href="#configuring-the-auth-provider">Configuring the Auth Provider</a>
                             </li>
                             <li class="chapter">
-                                <a href="#restricting-access-to-resources-or-views">Restricting Access To Resources or Views</a>
+                                <a href="#restricting-access-to-resources-or-views">Restricting Access To Resources or
+                                    Views</a>
                             </li>
                             <li class="chapter">
-                                <a href="#restricting-access-to-fields-and-inputs">Restricting Access To Fields And Inputs</a>
+                                <a href="#restricting-access-to-fields-and-inputs">Restricting Access To Fields And
+                                    Inputs</a>
                             </li>
                             <li class="chapter">
-                                <a href="#restricting-access-to-content-in-custom-pages-or-menus">Restricting Access To Content In Custom Pages or Menus</a>
+                                <a href="#restricting-access-to-content-in-custom-pages-or-menus">Restricting Access To
+                                    Content In Custom Pages or Menus</a>
                             </li>
                         </ul>
                     </li>
@@ -646,29 +709,42 @@
 
                     <li class="chapter {% if page.path == 'Actions.md' %}active{% endif %}">
                         <a href="./Actions.html">
-                            <b>14.</b> Writing Actions
+                            <b>14.</b> Querying the API
                         </a>
                         <ul class="articles" {% if page.path !='Actions.md' %}style="display:none" {% endif %}>
                             <li class="chapter">
-                                <a href="#the-simple-way">The Simple Way</a>
+                                <a href="#the-basic-way-using-fetch">The Basic Way: Using <code>fetch</code></a>
                             </li>
                             <li class="chapter">
-                                <a href="#using-a-data-provider-instead-of-fetch">Using a Data Provider</a>
+                                <a href="#using-the-data-provider-instead-of-fetch">Using the <code>dataProvider</code></a>
                             </li>
                             <li class="chapter">
-                                <a href="#using-a-custom-action-creator">Using a Custom Action Creator</a>
+                                <a href="#using-the-withdataprovider-decorator">Using <code>withDataProvider</code></a>
                             </li>
                             <li class="chapter">
                                 <a href="#handling-side-effects">Handling Side Effects</a>
                             </li>
                             <li class="chapter">
-                                <a href="#success-and-failure-side-effects">Success and Failure Side Effects</a>
-                            </li>
-                            <li class="chapter">
                                 <a href="#optimistic-rendering-and-undo">Optimistic Rendering and Undo</a>
                             </li>
                             <li class="chapter">
-                                <a href="#altering-the-form-values-before-submitting">Altering the Form Values before Submitting</a>
+                                <a href="#query-and-mutation-components"><code>&lt;Query&gt;</code> and <code>&lt;Mutation&gt;</code></a>
+                            </li>    
+                            <li class="chapter">
+                                <a href="#using-a-custom-action-creator">Using a Custom Action Creator</a>
+                            </li>
+                            <li class="chapter">
+                                <a href="#adding-side-effects-to-actions">Adding Side Effects to Actions</a>
+                            </li>
+                            <li class="chapter">
+                                <a href="#making-an-action-undoable">Undoable Action</a>
+                            </li>
+                            <li class="chapter">
+                                <a href="#altering-the-form-values-before-submitting">Altering the Form Values before
+                                    Submitting</a>
+                            </li>
+                            <li class="chapter">
+                                <a href="#custom-side-effects">Custom Side Effects</a>
                             </li>
                             <li class="chapter">
                                 <a href="#custom-sagas">Custom Sagas</a>
@@ -706,7 +782,8 @@
                                 <a href="#translating-resource-and-field-names">Translating Resource and Field names</a>
                             </li>
                             <li class="chapter">
-                                <a href="#mixing-interface-and-domain-translations">Mixing Interface and Domain Translations</a>
+                                <a href="#mixing-interface-and-domain-translations">Mixing Interface and Domain
+                                    Translations</a>
                             </li>
                             <li class="chapter">
                                 <a href="#translating-your-own-components">Translating Your Own Components</a>
@@ -744,15 +821,21 @@
                         </a>
                     </li>
 
+                    <li class="chapter {% if page.path == 'UnitTesting.md' %}active{% endif %}">
+                        <a href="./UnitTesting.html">
+                            <b>20.</b> Unit Testing
+                        </a>
+                    </li>
+
                     <li class="chapter {% if page.path == 'AdvancedTutorials.md' %}active{% endif %}">
                         <a href="./AdvancedTutorials.html">
-                            <b>20.</b> Advanced tutorials
+                            <b>21.</b> Advanced tutorials
                         </a>
                     </li>
 
                     <li class="chapter {% if page.path == 'Labs.md' %}active{% endif %}">
                         <a href="./Labs.html">
-                            <b>21.</b> Labs
+                            <b>22.</b> Labs
                         </a>
                     </li>
                 </ul>

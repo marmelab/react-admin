@@ -71,6 +71,25 @@ Here is an example input:
 
 You can find a more sophisticated example in [the Posters Galore demo](https://raw.githubusercontent.com/marmelab/ng-admin-demo/master/js/data.js). 
 
+## Logging
+
+Pass `true` as second argument to log the requests made to the provider in the console. This is very helpful to debug the requests made by an app using this data provider.
+
+```jsx
+// in src/App.js
+import React from 'react';
+import { Admin, Resource } from 'react-admin';
+import fakeDataProvider from 'ra-data-fakerest';
+
+const dataProvider = fakeDataProvider({ /* data here */ }, true);
+
+const App = () => (
+    <Admin dataProvider={dataProvider}>
+        // ...
+    </Admin>
+);
+```
+
 ## Features
 
 This data provider uses [FakeRest](https://github.com/marmelab/FakeRest) under the hood. That means that it offers the same features:

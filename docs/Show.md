@@ -17,6 +17,7 @@ Here are all the props accepted by the `<Show>` component:
 
 * [`title`](#page-title)
 * [`actions`](#actions)
+* [`aside`](#aside-component)
 
 Here is the minimal code necessary to display a view to show a post:
 
@@ -115,11 +116,77 @@ export const PostShow = (props) => (
 );
 ```
 
+### Aside component
+
+You may want to display additional information on the side of the resource detail. Use the `aside` prop for that, passing the component of your choice:
+
+{% raw %}
+```jsx
+const Aside = () => (
+    <div style={{ width: 200, margin: '1em' }}>
+        <Typography variant="title">Post details</Typography>
+        <Typography variant="body1">
+            Posts will only be published one an editor approves them
+        </Typography>
+    </div>
+);
+
+const PostShow = props => (
+    <Show aside={<Aside />} {...props}>
+        ...
+    </Show>
+```
+{% endraw %}
+
+The `aside` component receives the same props as the `Show` child component: `basePath`, `record`, `resource`, and `version`. That means you can display secondary details of the current record in the aside component:
+
+{% raw %}
+```jsx
+const Aside = ({ record }) => (
+    <div style={{ width: 200, margin: '1em' }}>
+        <Typography variant="title">Post details</Typography>
+        {record && (
+            <Typography variant="body1">
+                Creation date: {record.createdAt}
+            </Typography>
+        )}
+    </div>
+);
+```
+{% endraw %}
+
+**Tip**: Always test that the `record` is defined before using it, as react-admin starts rendering the UI before the API call is over.
+
+## The `<ShowGuesser>` component
+
+Instead of a custom `Show`, you can use the `ShowGuesser` to determine which fields to use based on the data returned by the API.
+
+```jsx
+// in src/App.js
+import React from 'react';
+import { Admin, Resource, ShowGuesser } from 'react-admin';
+import jsonServerProvider from 'ra-data-json-server';
+
+const App = () => (
+    <Admin dataProvider={jsonServerProvider('http://jsonplaceholder.typicode.com')}>
+        <Resource name="posts" show={ShowGuesser} />
+    </Admin>
+);
+```
+
+Just like `Show`, `ShowGuesser` fetches the data. It then analyzes the response, and guesses the fields it should use to display a basic page with the data. It also dumps the components it has guessed in the console, where you can copy it into your own code. Use this feature to quickly bootstrap a `Show` on top of an existing API, without adding the inputs one by one.
+
+![Guessed Show](./img/guessed-show.png)
+
+React-admin provides guessers for the `List` view (`ListGuesser`), the `Edit` view (`EditGuesser`), and the `Show` view (`ShowGuesser`).
+
+**Tip**: Do not use the guessers in production. They are slower than manually-defined components, because they have to infer types based on the content. Besides, the guesses are not always perfect.
+
 ## The `<SimpleShowLayout>` component
 
 The `<SimpleShowLayout>` component receives the `record` as prop from its parent component. It is responsible for rendering the actual view.
 
-The `<SimpleShowLayout>` renders its child components line by line (within `<div>` components).
+The `<SimpleShowLayout>` renders its child components line by line (within `<div>` components) inside a material-ui `<CardContent/>`.
 
 ```jsx
 export const PostShow = (props) => (
@@ -133,28 +200,7 @@ export const PostShow = (props) => (
 );
 ```
 
-It is possible to override its style by specifying the `style` prop, for example:
-
-```jsx
-const styles = {
-    container: {
-        display: 'flex',
-    },
-    item: {
-        marginRight: '1rem',
-    },
-};
-
-export const PostShow = (props) => (
-    <Show {...props}>
-        <SimpleShowLayout style={styles.container}>
-            <TextField source="title" style={styles.item} />
-            <RichTextField source="body" style={styles.item} />
-            <NumberField source="nb_views" style={styles.item} />
-        </SimpleShowLayout>
-    </Show>
-);
-```
+It accepts a `className` prop to let you override the style of the `<CardContent/>`.
 
 ## The `<TabbedShowLayout>` component
 
@@ -198,6 +244,36 @@ export const PostShow = (props) => (
 );
 ```
 {% endraw %}
+
+To style the tabs, the `<Tab>` component accepts two props:
+
+- `className` is passed to the tab *header*
+- `contentClassName` is passed to the tab *content*
+
+### Tabs element
+
+By default, `<TabbedShowLayout>` renders its tabs using `<TabbedShowLayoutTabs>`, an internal react-admin component. You can pass a custom component as the `tabs` prop to override that default. Also, props passed to `<TabbedShowLayoutTabs>` are passed to the material-ui's `<Tabs>` component inside `<TabbedShowLayoutTabs>`. That means you can create a custom `tabs` component without copying several components from the react-admin source.
+
+For instance, to make use of scrollable `<Tabs>`, you can pass a scrollable props to `<TabbedShowLayoutTabs>` and use it in the `tabs` prop from `<TabbedShowLayout>` as follows:
+
+```jsx
+import {
+    Show,
+    TabbedShowLayout,
+    TabbedShowLayoutTabs,
+} from 'react-admin';
+
+const ScrollableTabbedShowLayout = props => (
+    <Show{...props}>
+        <TabbedShowLayout tabs={<TabbedShowLayoutTabs scrollable={true}/>}>
+            ...
+        </TabbedShowLayout>
+    </Show>
+);
+
+export default ScrollableTabbedShowLayout;
+
+```
 
 ## Displaying Fields depending on the user permissions
 

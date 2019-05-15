@@ -81,7 +81,7 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson) => {
                 break;
             case GET_MANY: {
                 const query = {
-                    [`id_like`]: params.ids.join('|'),
+                    id: params.ids,
                 };
                 url = `${apiUrl}/${resource}?${stringify(query)}`;
                 break;
@@ -138,7 +138,7 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson) => {
             return Promise.all(
                 params.ids.map(id =>
                     httpClient(`${apiUrl}/${resource}/${id}`, {
-                        method: 'PATCH',
+                        method: 'PUT',
                         body: JSON.stringify(params.data),
                     })
                 )

@@ -149,6 +149,18 @@ import { BooleanField } from 'react-admin';
 
 ![BooleanField](./img/boolean-field.png)
 
+The `BooleanField` also includes an hidden text for accessibility (or to query in end to end tests). By default, it includes the translated label and the translated value, for example `Published: false`.
+
+If you need to override it, you can use the `valueLabelTrue` and `valueLabelFalse` props which both accept a string. Those strings may be translation keys:
+
+```jsx
+// Simple texts
+<BooleanField source="published" valueLabelTrue="Has been published" valueLabelFalse="Has not been published yet" />
+
+// Translation keys
+<BooleanField source="published" valueLabelTrue="myapp.published.true" valueLabelFalse="myapp.published.false" />
+```
+
 ## `<ChipField>`
 
 Displays a value inside a ["Chip"](http://www.material-ui.com/#/components/chip), which is Material UI's term for a label.
@@ -426,7 +438,7 @@ const choices = [
    { id: 456, first_name: 'Jane', last_name: 'Austen' },
 ];
 const FullNameField = ({ record }) => <Chip>{record.first_name} {record.last_name}</Chip>;
-<SelectField source="gender" choices={choices} optionText={<FullNameField />}/>
+<SelectField source="author_id" choices={choices} optionText={<FullNameField />}/>
 ```
 
 The current choice is translated by default, so you can use translation identifiers as choices:
@@ -534,7 +546,7 @@ Then react-admin renders the `<CommentList>` with a loader for the `<ReferenceFi
 
 ## `<ReferenceManyField>`
 
-This component fetches a list of referenced records by reverse lookup of the current `record.id` in other resource (using the `GET_MANY_REFERENCE` REST method). The field name of the current record's id in the other resource is specified by the required `target` field. The result is then passed to an iterator component (like `<SingleFieldList>` or `<Datagrid>`). The iterator component usually has one or more child `<Field>` components.
+This component fetches a list of referenced records by reverse lookup of the current `record.id` in other resource (using the `GET_MANY_REFERENCE` REST method). You can specify the target field name, i.e. the field name of the current record's id in the other resource, using the required `target` field. The result is then passed to an iterator component (like `<SingleFieldList>` or `<Datagrid>`). The iterator component usually has one or more child `<Field>` components.
 
 For instance, here is how to fetch the `comments` related to a `post` record by matching `comment.post_id` to `post.id`, and then display the `author.name` for each, in a `<ChipField>`:
 
@@ -594,10 +606,20 @@ export const PostEdit = (props) => (
 
 ![ReferenceManyFieldDatagrid](./img/reference-many-field-datagrid.png)
 
-By default, react-admin restricts the possible values to 25. You can change this limit by setting the `perPage` prop.
+By default, react-admin restricts the possible values to 25 and displays no pagination control. You can change the limit by setting the `perPage` prop:
 
 ```jsx
 <ReferenceManyField perPage={10} reference="comments" target="post_id">
+   ...
+</ReferenceManyField>
+```
+
+And if you want to allow users to paginate the list, pass a `<Pagination>` component as the `pagination` prop:
+
+```jsx
+import { Pagination } from 'react-admin';
+
+<ReferenceManyField pagination={<Pagination />} reference="comments" target="post_id">
    ...
 </ReferenceManyField>
 ```
@@ -905,7 +927,7 @@ export const UserList = (props) => (
 
 ## Adding Label To Custom Field Components In The Show View
 
-React-admin lets you use the same Field components in the List view and in the Show view. But if you use the `<FullNameField>` custom field component defined earlier in a Show view, something is missing: the Field label. Why do other fields have a label and not this custom Field? And how can you create a Field component that has a label in the Show view, but not in the List view? 
+React-admin lets you use the same Field components in the List view and in the Show view. But if you use the `<FullNameField>` custom field component defined earlier in a Show view, something is missing: the Field label. Why do other fields have a label and not this custom Field? And how can you create a Field component that has a label in the Show view, but not in the List view?
 
 React-admin uses a trick: the Show view layouts (`<SimpleShowLayout>` and `<TabbedShowLayout>`) inspect their Field children, and whenever one has the `addLabel` prop set to `true`, the layout adds a label.
 
@@ -927,8 +949,8 @@ For such cases, you can use the custom field approach: use the injected `record`
 import React from 'react';
 import { EmailField } from 'react-admin';
 
-const ConditionalEmailField = ({ record, ...rest }) => 
-    record && record.hasEmail 
+const ConditionalEmailField = ({ record, ...rest }) =>
+    record && record.hasEmail
         ? <EmailField source="email" record={record} {...rest} />
         : null;
 
@@ -945,8 +967,8 @@ One solution is to add the label manually in the custom component:
 import React from 'react';
 import { Labeled, EmailField } from 'react-admin';
 
-const ConditionalEmailField = ({ record, ...rest }) => 
-    record && record.hasEmail 
+const ConditionalEmailField = ({ record, ...rest }) =>
+    record && record.hasEmail
         ? (
             <Labeled label="Email">
                 <EmailField source="email" record={record} {...rest} />
@@ -992,7 +1014,7 @@ import { ShowController, ShowView, SimpleShowLayout, TextField } from 'react-adm
 
 const UserShow = props => (
     <ShowController {...props}>
-        {controllerProps => 
+        {controllerProps =>
             <ShowView {...props} {...controllerProps}>
                 <SimpleShowLayout>
                     <TextField source="username" />
@@ -1011,11 +1033,11 @@ import { ShowController, ShowView, SimpleShowLayout, TextField } from 'react-adm
 
 const UserShow = props => (
     <ShowController {...props}>
-        {controllerProps => 
+        {controllerProps =>
             <ShowView {...props} {...controllerProps}>
                 <SimpleShowLayout>
                     <TextField source="username" />
-                    {controllerProps.record && controllerProps.record.hasEmail && 
+                    {controllerProps.record && controllerProps.record.hasEmail &&
                         <TextField source="email" />
                     }
                 </SimpleShowLayout>

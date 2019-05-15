@@ -57,7 +57,7 @@ export default (type, params) => {
         const role = localStorage.getItem('role');
         return role ? Promise.resolve(role) : Promise.reject();
     }
-    return Promise.reject('Unkown method');
+    return Promise.reject('Unknown method');
 };
 ```
 {% endraw %}
@@ -287,7 +287,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { MenuItemLink, WithPermissions } from 'react-admin';
 
-const Menu = ({ onMenuClick, logout, permissions }) => (
+const Menu = ({ onMenuClick, logout }) => (
     <div>
         <MenuItemLink to="/posts" primaryText="Posts" onClick={onMenuClick} />
         <MenuItemLink to="/comments" primaryText="Comments" onClick={onMenuClick} />

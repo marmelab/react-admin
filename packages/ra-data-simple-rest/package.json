@@ -1,6 +1,6 @@
 {
     "name": "ra-data-simple-rest",
-    "version": "2.3.1",
+    "version": "2.9.1",
     "description": "Simple REST data provider for react-admin",
     "main": "lib/index.js",
     "module": "esm/index.js",
@@ -19,16 +19,16 @@
     "bugs": "https://github.com/marmelab/react-admin/issues",
     "license": "MIT",
     "scripts": {
-        "build": "rimraf ./lib && cross-env NODE_ENV=production BABEL_ENV=cjs babel --quiet ./src -d ./lib --ignore spec.js,test.js",
-        "build-esm": "rimraf ./esm && cross-env NODE_ENV=production BABEL_ENV=esm babel --quiet ./src -d ./esm --ignore spec.js,test.js",
-        "watch": "rimraf ./lib && cross-env NODE_ENV=production babel --watch ./src -d ./lib --ignore spec.js,test.js"
+        "build": "yarn run build-cjs && yarn run build-esm",
+        "build-cjs": "rimraf ./lib && tsc",
+        "build-esm": "rimraf ./esm && tsc --outDir esm --module es2015",
+        "watch": "rimraf ./lib && tsc --watch"
     },
     "dependencies": {
         "query-string": "~5.1.1",
-        "react-admin": "^2.3.1"
+        "ra-core": "^2.9.1"
     },
     "devDependencies": {
-        "babel-cli": "~6.26.0",
         "cross-env": "^5.2.0",
         "rimraf": "^2.6.2"
     }

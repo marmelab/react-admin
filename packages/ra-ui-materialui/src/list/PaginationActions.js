@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 import Button from '@material-ui/core/Button';
-import TablePaginationActions from '@material-ui/core/TablePaginationActions';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, createStyles } from '@material-ui/core/styles';
 import ChevronLeft from '@material-ui/icons/ChevronLeft';
 import ChevronRight from '@material-ui/icons/ChevronRight';
 import compose from 'recompose/compose';
 import { translate } from 'ra-core';
 
-const styles = theme => ({
+const styles = theme => createStyles({
     actions: {
         flexShrink: 0,
         color: theme.palette.text.secondary,
@@ -94,28 +94,25 @@ export class PaginationActions extends Component {
     renderPageNums() {
         const { classes = {} } = this.props;
 
-        return this.range().map(
-            (pageNum, index) =>
-                pageNum === '.' ? (
-                    <span key={`hyphen_${index}`} className={classes.hellip}>
-                        &hellip;
-                    </span>
-                ) : (
-                    <Button
-                        className="page-number"
-                        color={
-                            pageNum === this.props.page + 1
-                                ? 'default'
-                                : 'primary'
-                        }
-                        key={pageNum}
-                        data-page={pageNum - 1}
-                        onClick={this.gotoPage}
-                        size="small"
-                    >
-                        {pageNum}
-                    </Button>
-                )
+        return this.range().map((pageNum, index) =>
+            pageNum === '.' ? (
+                <span key={`hyphen_${index}`} className={classes.hellip}>
+                    &hellip;
+                </span>
+            ) : (
+                <Button
+                    className="page-number"
+                    color={
+                        pageNum === this.props.page + 1 ? 'default' : 'primary'
+                    }
+                    key={pageNum}
+                    data-page={pageNum - 1}
+                    onClick={this.gotoPage}
+                    size="small"
+                >
+                    {pageNum}
+                </Button>
+            )
         );
     }
 
@@ -156,7 +153,20 @@ export class PaginationActions extends Component {
     }
 }
 
-PaginationActions.propTypes = TablePaginationActions.propTypes;
+/**
+ * PaginationActions propTypes are copied over from material-ui’s
+ * TablePaginationActions propTypes. See
+ * https://github.com/mui-org/material-ui/blob/869692ecf3812bc4577ed4dde81a9911c5949695/packages/material-ui/src/TablePaginationActions/TablePaginationActions.js#L53-L85
+ * for reference.
+ */
+PaginationActions.propTypes = {
+    backIconButtonProps: PropTypes.object,
+    count: PropTypes.number.isRequired,
+    nextIconButtonProps: PropTypes.object,
+    onChangePage: PropTypes.func.isRequired,
+    page: PropTypes.number.isRequired,
+    rowsPerPage: PropTypes.number.isRequired,
+};
 
 const enhance = compose(
     pure,

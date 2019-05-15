@@ -7,7 +7,7 @@ import Chip from '@material-ui/core/Chip';
 import Paper from '@material-ui/core/Paper';
 import Popper from '@material-ui/core/Popper';
 import MenuItem from '@material-ui/core/MenuItem';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, createStyles } from '@material-ui/core/styles';
 import parse from 'autosuggest-highlight/parse';
 import match from 'autosuggest-highlight/match';
 import blue from '@material-ui/core/colors/blue';
@@ -18,7 +18,7 @@ import { addField, translate, FieldTitle } from 'ra-core';
 
 import AutocompleteArrayInputChip from './AutocompleteArrayInputChip';
 
-const styles = theme => ({
+const styles = theme => createStyles({
     container: {
         flexGrow: 1,
         position: 'relative',
@@ -28,6 +28,10 @@ const styles = theme => ({
         position: 'absolute',
         marginBottom: theme.spacing.unit * 3,
         zIndex: 2,
+    },
+    suggestionsPaper: {
+        maxHeight: '50vh',
+        overflowY: 'auto',
     },
     suggestion: {
         display: 'block',
@@ -42,6 +46,7 @@ const styles = theme => ({
     },
     chip: {
         marginRight: theme.spacing.unit,
+        marginTop: theme.spacing.unit,
     },
     chipDisabled: {
         pointerEvents: 'none',
@@ -102,27 +107,33 @@ const styles = theme => ({
  * <AutocompleteInput source="author_id" options={{ fullWidth: true }} />
  */
 export class AutocompleteArrayInput extends React.Component {
+    initialInputValue = [];
+
     state = {
         dirty: false,
-        inputValue: null,
+        inputValue: this.initialInputValue,
         searchText: '',
         suggestions: [],
     };
 
     inputEl = null;
+    anchorEl = null;
+
+    getInputValue = inputValue =>
+        inputValue === '' ? this.initialInputValue : inputValue;
 
     componentWillMount() {
         this.setState({
-            inputValue: this.props.input.value,
+            inputValue: this.getInputValue(this.props.input.value),
             suggestions: this.props.choices,
         });
     }
 
     componentWillReceiveProps(nextProps) {
         const { choices, input, inputValueMatcher } = nextProps;
-        if (!isEqual(input.value, this.state.inputValue)) {
+        if (!isEqual(this.getInputValue(input.value), this.state.inputValue)) {
             this.setState({
-                inputValue: input.value,
+                inputValue: this.getInputValue(input.value),
                 dirty: false,
                 suggestions: this.props.choices,
             });
@@ -162,7 +173,7 @@ export class AutocompleteArrayInput extends React.Component {
         const { input } = this.props;
 
         input.onChange([
-            ...this.state.inputValue,
+            ...(this.state.inputValue || []),
             this.getSuggestionValue(suggestion),
         ]);
 
@@ -221,7 +232,7 @@ export class AutocompleteArrayInput extends React.Component {
             source,
             value,
             ref,
-            options: { InputProps, ...options },
+            options: { InputProps, suggestionsContainerProps, ...options },
             ...other
         } = inputProps;
         if (typeof meta === 'undefined') {
@@ -236,6 +247,7 @@ export class AutocompleteArrayInput extends React.Component {
         // but Autosuggest also needs this reference (it provides the ref prop)
         const storeInputRef = input => {
             this.inputEl = input;
+            this.updateAnchorEl();
             ref(input);
         };
 
@@ -245,12 +257,19 @@ export class AutocompleteArrayInput extends React.Component {
                 onUpdateInput={onChange}
                 onAdd={this.handleAdd}
                 onDelete={this.handleDelete}
-                value={input.value}
+                value={this.getInputValue(input.value)}
                 inputRef={storeInputRef}
                 error={touched && error}
                 helperText={touched && error && helperText}
                 chipRenderer={this.renderChip}
-                label={<FieldTitle label={label} />}
+                label={
+                    <FieldTitle
+                        label={label}
+                        source={source}
+                        resource={resource}
+                        isRequired={isRequired}
+                    />
+                }
                 {...other}
                 {...options}
             />
@@ -302,7 +321,7 @@ export class AutocompleteArrayInput extends React.Component {
 
         if (choice) {
             return input.onChange([
-                ...this.state.inputValue,
+                ...(this.state.inputValue || []),
                 this.getSuggestionValue(choice),
             ]);
         }
@@ -322,20 +341,50 @@ export class AutocompleteArrayInput extends React.Component {
         input.onChange(this.state.inputValue.filter(value => value !== chip));
     };
 
-    renderSuggestionsContainer = options => {
+    updateAnchorEl() {
+        if (!this.inputEl) {
+            return;
+        }
+
+        const inputPosition = this.inputEl.getBoundingClientRect();
+
+        if (!this.anchorEl) {
+            this.anchorEl = { getBoundingClientRect: () => inputPosition };
+        } else {
+            const anchorPosition = this.anchorEl.getBoundingClientRect();
+
+            if (
+                anchorPosition.x !== inputPosition.x ||
+                anchorPosition.y !== inputPosition.y
+            ) {
+                this.anchorEl = { getBoundingClientRect: () => inputPosition };
+            }
+        }
+    }
+
+    renderSuggestionsContainer = autosuggestOptions => {
         const {
             containerProps: { className, ...containerProps },
             children,
-        } = options;
+        } = autosuggestOptions;
+        const { classes = {}, options } = this.props;
+
+        // Force the Popper component to reposition the popup only when this.inputEl is moved to another location
+        this.updateAnchorEl();
 
         return (
             <Popper
                 className={className}
-                open
-                anchorEl={this.inputEl}
+                open={Boolean(children)}
+                anchorEl={this.anchorEl}
                 placement="bottom-start"
+                {...options.suggestionsContainerProps}
             >
-                <Paper square {...containerProps}>
+                <Paper
+                    square
+                    className={classes.suggestionsPaper}
+                    {...containerProps}
+                >
                     {children}
                 </Paper>
             </Popper>
@@ -412,7 +461,17 @@ export class AutocompleteArrayInput extends React.Component {
         this.previousFilterValue = value;
     };
 
-    shouldRenderSuggestions = () => true;
+    shouldRenderSuggestions = val => {
+        const { shouldRenderSuggestions } = this.props;
+        if (
+            shouldRenderSuggestions !== undefined &&
+            typeof shouldRenderSuggestions === 'function'
+        ) {
+            return shouldRenderSuggestions(val);
+        }
+
+        return true;
+    };
 
     render() {
         const {
@@ -488,6 +547,7 @@ AutocompleteArrayInput.propTypes = {
     optionValue: PropTypes.string.isRequired,
     resource: PropTypes.string,
     setFilter: PropTypes.func,
+    shouldRenderSuggestions: PropTypes.func,
     source: PropTypes.string,
     suggestionComponent: PropTypes.func,
     translate: PropTypes.func.isRequired,

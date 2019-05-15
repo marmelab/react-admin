@@ -16,6 +16,7 @@ const FilterFormInput = ({
     classes,
     resource,
     translate,
+    locale,
 }) => (
     <div
         data-source={filterElement.props.source}
@@ -26,7 +27,7 @@ const FilterFormInput = ({
                 className="hide-filter"
                 onClick={handleHide}
                 data-key={filterElement.props.source}
-                tooltip={translate('ra.action.remove_filter')}
+                title={translate('ra.action.remove_filter')}
             >
                 <ActionHide />
             </IconButton>
@@ -48,6 +49,7 @@ FilterFormInput.propTypes = {
     handleHide: PropTypes.func,
     classes: PropTypes.object,
     resource: PropTypes.string,
+    locale: PropTypes.string,
     translate: PropTypes.func,
 };
 

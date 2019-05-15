@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, createStyles } from '@material-ui/core/styles';
 import compose from 'recompose/compose';
 import classnames from 'classnames';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { translate } from 'ra-core';
 
-const styles = theme => ({
+const styles = theme => createStyles({
     container: {
         display: 'flex',
         flexDirection: 'column',

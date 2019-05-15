@@ -4,19 +4,19 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, createStyles } from '@material-ui/core/styles';
 import ContentSave from '@material-ui/icons/Save';
 import classnames from 'classnames';
 import { showNotification, translate } from 'ra-core';
 
-const styles = {
+const styles = createStyles({
     button: {
         position: 'relative',
     },
     iconPaddingStyle: {
         marginRight: '0.5em',
     },
-};
+});
 
 const sanitizeRestProps = ({
     basePath,
@@ -30,13 +30,41 @@ const sanitizeRestProps = ({
     handleSubmit,
     handleSubmitWithRedirect,
     submitOnEnter,
+    record,
     redirect,
+    resource,
     locale,
     showNotification,
+    undoable,
     ...rest
 }) => rest;
 
 export class SaveButton extends Component {
+    static propTypes = {
+        className: PropTypes.string,
+        classes: PropTypes.object,
+        handleSubmitWithRedirect: PropTypes.func,
+        invalid: PropTypes.bool,
+        label: PropTypes.string,
+        pristine: PropTypes.bool,
+        redirect: PropTypes.oneOfType([
+            PropTypes.string,
+            PropTypes.bool,
+            PropTypes.func,
+        ]),
+        saving: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
+        showNotification: PropTypes.func,
+        submitOnEnter: PropTypes.bool,
+        translate: PropTypes.func.isRequired,
+        variant: PropTypes.oneOf(['raised', 'flat', 'fab']),
+        icon: PropTypes.element,
+    };
+
+    static defaultProps = {
+        handleSubmitWithRedirect: () => () => {},
+        icon: <ContentSave />,
+    };
+
     handleClick = e => {
         const {
             handleSubmitWithRedirect,
@@ -44,6 +72,7 @@ export class SaveButton extends Component {
             redirect,
             saving,
             showNotification,
+            onClick,
         } = this.props;
 
         if (saving) {
@@ -59,6 +88,10 @@ export class SaveButton extends Component {
             }
             handleSubmitWithRedirect(redirect)();
         }
+
+        if (typeof onClick === 'function') {
+            onClick();
+        }
     };
 
     render() {
@@ -73,6 +106,8 @@ export class SaveButton extends Component {
             submitOnEnter,
             translate,
             variant = 'raised',
+            icon,
+            onClick,
             ...rest
         } = this.props;
 
@@ -93,36 +128,15 @@ export class SaveButton extends Component {
                         className={classes.iconPaddingStyle}
                     />
                 ) : (
-                    <ContentSave className={classes.iconPaddingStyle} />
+                    React.cloneElement(icon, {
+                        className: classes.iconPaddingStyle,
+                    })
                 )}
                 {label && translate(label, { _: label })}
             </Button>
         );
     }
 }
-
-SaveButton.propTypes = {
-    className: PropTypes.string,
-    classes: PropTypes.object,
-    handleSubmitWithRedirect: PropTypes.func,
-    invalid: PropTypes.bool,
-    label: PropTypes.string,
-    pristine: PropTypes.bool,
-    redirect: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.bool,
-        PropTypes.func,
-    ]),
-    saving: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
-    showNotification: PropTypes.func,
-    submitOnEnter: PropTypes.bool,
-    translate: PropTypes.func.isRequired,
-    variant: PropTypes.oneOf(['raised', 'flat', 'fab']),
-};
-
-SaveButton.defaultProps = {
-    handleSubmitWithRedirect: () => () => {},
-};
 
 const enhance = compose(
     translate,

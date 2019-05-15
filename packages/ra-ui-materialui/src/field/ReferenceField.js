@@ -1,18 +1,21 @@
-import React from 'react';
+import React, { Children } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, createStyles } from '@material-ui/core/styles';
 import { ReferenceFieldController } from 'ra-core';
 
 import LinearProgress from '../layout/LinearProgress';
 import Link from '../Link';
 import sanitizeRestProps from './sanitizeRestProps';
 
-const styles = theme => ({
+const styles = theme => createStyles({
     link: {
         color: theme.palette.primary.main,
     },
 });
+
+// useful to prevent click bubbling in a datagrid with rowClick
+const stopPropagation = e => e.stopPropagation();
 
 export const ReferenceFieldView = ({
     allowEmpty,
@@ -36,8 +39,12 @@ export const ReferenceFieldView = ({
 
     if (resourceLinkPath) {
         return (
-            <Link to={resourceLinkPath} className={className}>
-                {React.cloneElement(children, {
+            <Link
+                to={resourceLinkPath}
+                className={className}
+                onClick={stopPropagation}
+            >
+                {React.cloneElement(Children.only(children), {
                     className: classnames(
                         children.props.className,
                         classes.link // force color override for Typography components
@@ -53,7 +60,7 @@ export const ReferenceFieldView = ({
         );
     }
 
-    return React.cloneElement(children, {
+    return React.cloneElement(Children.only(children), {
         record: referenceRecord,
         resource: reference,
         allowEmpty,
@@ -157,5 +164,7 @@ const EnhancedReferenceField = withStyles(styles)(ReferenceField);
 EnhancedReferenceField.defaultProps = {
     addLabel: true,
 };
+
+EnhancedReferenceField.displayName = 'EnhancedReferenceField';
 
 export default EnhancedReferenceField;

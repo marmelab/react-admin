@@ -3,16 +3,16 @@ import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import SearchIcon from '@material-ui/icons/Search';
 import InputAdornment from '@material-ui/core/InputAdornment';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, createStyles } from '@material-ui/core/styles';
 import { translate } from 'ra-core';
 
 import TextInput from './TextInput';
 
-const searchFilterStyles = {
+const searchFilterStyles = createStyles({
     input: {
         marginTop: 32,
     },
-};
+});
 
 const SearchInput = ({ classes, translate, ...props }) => (
     <TextInput
