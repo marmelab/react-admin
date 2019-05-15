@@ -1,6 +1,6 @@
 import Card from '@material-ui/core/Card';
 import Typography from '@material-ui/core/Typography';
-import { withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 import React from 'react';
 import {
     AutocompleteInput,
@@ -25,7 +25,7 @@ const LinkToRelatedPost = ({ record }) => (
     </Link>
 );
 
-const editStyles = {
+const useEditStyles = makeStyles({
     actions: {
         float: 'right',
     },
@@ -33,63 +33,69 @@ const editStyles = {
         marginTop: '1em',
         maxWidth: '30em',
     },
-};
+});
 
-const CommentEdit = withStyles(editStyles)(({ classes, ...props }) => (
-    <EditController {...props}>
-        {({ resource, record, redirect, save, basePath, version }) => (
-            <div className="edit-page">
-                <Title defaultTitle={`Comment #${record ? record.id : ''}`} />
-                <div className={classes.actions}>
-                    <EditActions
-                        basePath={basePath}
-                        resource={resource}
-                        data={record}
-                        hasShow
-                        hasList
+const CommentEdit = props => {
+    const classes = useEditStyles();
+
+    return (
+        <EditController {...props}>
+            {({ resource, record, redirect, save, basePath, version }) => (
+                <div className="edit-page">
+                    <Title
+                        defaultTitle={`Comment #${record ? record.id : ''}`}
                     />
-                </div>
-                <Card className={classes.card}>
-                    {record && (
-                        <SimpleForm
+                    <div className={classes.actions}>
+                        <EditActions
                             basePath={basePath}
-                            redirect={redirect}
                             resource={resource}
-                            record={record}
-                            save={save}
-                            version={version}
-                        >
-                            <DisabledInput source="id" fullWidth />
-                            <ReferenceInput
-                                source="post_id"
-                                reference="posts"
-                                perPage={15}
-                                sort={{ field: 'title', order: 'ASC' }}
-                                fullWidth
+                            data={record}
+                            hasShow
+                            hasList
+                        />
+                    </div>
+                    <Card className={classes.card}>
+                        {record && (
+                            <SimpleForm
+                                basePath={basePath}
+                                redirect={redirect}
+                                resource={resource}
+                                record={record}
+                                save={save}
+                                version={version}
                             >
-                                <AutocompleteInput
-                                    optionText="title"
-                                    options={{ fullWidth: true }}
+                                <DisabledInput source="id" fullWidth />
+                                <ReferenceInput
+                                    source="post_id"
+                                    reference="posts"
+                                    perPage={15}
+                                    sort={{ field: 'title', order: 'ASC' }}
+                                    fullWidth
+                                >
+                                    <AutocompleteInput
+                                        optionText="title"
+                                        options={{ fullWidth: true }}
+                                    />
+                                </ReferenceInput>
+                                <LinkToRelatedPost />
+                                <TextInput
+                                    source="author.name"
+                                    validate={minLength(10)}
+                                    fullWidth
                                 />
-                            </ReferenceInput>
-                            <LinkToRelatedPost />
-                            <TextInput
-                                source="author.name"
-                                validate={minLength(10)}
-                                fullWidth
-                            />
-                            <DateInput source="created_at" fullWidth />
-                            <LongTextInput
-                                source="body"
-                                validate={minLength(10)}
-                                fullWidth
-                            />
-                        </SimpleForm>
-                    )}
-                </Card>
-            </div>
-        )}
-    </EditController>
-));
+                                <DateInput source="created_at" fullWidth />
+                                <LongTextInput
+                                    source="body"
+                                    validate={minLength(10)}
+                                    fullWidth
+                                />
+                            </SimpleForm>
+                        )}
+                    </Card>
+                </div>
+            )}
+        </EditController>
+    );
+};
 
 export default CommentEdit;
