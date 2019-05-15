@@ -1,7 +1,6 @@
-import { Component, ReactNode } from 'react';
+import { ReactNode, useState, useReducer, useEffect } from 'react';
 import { connect } from 'react-redux';
 import get from 'lodash/get';
-import isEqual from 'lodash/isEqual';
 
 import { crudGetManyReference as crudGetManyReferenceAction } from '../../actions';
 import {
@@ -48,11 +47,18 @@ interface Props {
     total?: number;
 }
 
-interface State {
-    sort: Sort;
-    page: number;
-    perPage: number;
-}
+const sortReducer = (state: Sort, field: string | Sort): Sort => {
+    if (typeof field !== 'string') {
+        return field;
+    }
+    const order =
+        state.field === field && state.order === SORT_ASC
+            ? SORT_DESC
+            : SORT_ASC;
+    return { field, order };
+};
+
+const defaultFilter = {};
 
 /**
  * Render related records to the current one.
@@ -100,108 +106,112 @@ interface State {
  *    ...
  * </ReferenceManyField>
  */
-export class UnconnectedReferenceManyFieldController extends Component<
-    Props,
-    State
-> {
-    public static defaultProps: Partial<Props> = {
-        filter: {},
-        perPage: 25,
-        sort: { field: 'id', order: 'DESC' },
-        source: 'id',
-    };
+export const UnconnectedReferenceManyFieldController = ({
+    resource,
+    reference,
+    record,
+    target,
+    filter = defaultFilter,
+    source,
+    crudGetManyReference,
+    data,
+    ids,
+    children,
+    basePath,
+    total,
+    perPage = 25,
+    sort = { field: 'id', order: 'DESC' },
+}) => {
+    const referenceId = get(record, source);
+    const [page, setPage] = useState(1);
+    const [currentPerPage, setPerPage] = useState(perPage);
+    useEffect(() => setPerPage(perPage), [perPage]);
+    const [currentSort, setSort] = useReducer(sortReducer, sort);
+    useEffect(() => setSort(sort), [sort.field, sort.order]);
 
-    public state: State = {
-        sort: this.props.sort,
-        page: 1,
-        perPage: this.props.perPage,
-    };
-
-    componentDidMount() {
-        this.fetchReferences();
-    }
-
-    componentWillReceiveProps(nextProps: Props) {
-        if (
-            this.props.record.id !== nextProps.record.id ||
-            !isEqual(this.props.filter, nextProps.filter)
-        ) {
-            this.fetchReferences(nextProps);
-        }
-
-        if (!isEqual(this.props.sort, nextProps.sort)) {
-            this.setState({ sort: nextProps.sort }, this.fetchReferences);
-        }
-    }
-
-    setSort = (field: string) => {
-        const order =
-            this.state.sort.field === field &&
-            this.state.sort.order === SORT_ASC
-                ? SORT_DESC
-                : SORT_ASC;
-        this.setState({ sort: { field, order } }, this.fetchReferences);
-    };
-
-    setPage = (page: number) => this.setState({ page }, this.fetchReferences);
-
-    setPerPage = (perPage: number) =>
-        this.setState({ perPage }, this.fetchReferences);
-
-    fetchReferences(
-        { reference, record, resource, target, filter, source } = this.props
-    ) {
-        const { crudGetManyReference } = this.props;
-        const { page, perPage, sort } = this.state;
-        const relatedTo = nameRelatedTo(
+    useEffect(
+        fetchReferences({
             reference,
-            get(record, source),
+            referenceId,
             resource,
             target,
-            filter
-        );
-
-        crudGetManyReference(
-            reference,
-            target,
-            get(record, source),
-            relatedTo,
-            { page, perPage },
-            sort,
             filter,
-            source
-        );
-    }
-
-    render() {
-        const {
-            resource,
-            reference,
-            data,
-            ids,
-            children,
-            basePath,
-            total,
-        } = this.props;
-        const { page, perPage } = this.state;
-
-        const referenceBasePath = basePath.replace(resource, reference);
-
-        return children({
-            currentSort: this.state.sort,
-            data,
-            ids,
-            loadedOnce: typeof ids !== 'undefined',
+            source,
+            crudGetManyReference,
             page,
-            perPage,
-            referenceBasePath,
-            setPage: this.setPage,
-            setPerPage: this.setPerPage,
-            setSort: this.setSort,
-            total,
-        });
-    }
-}
+            perPage: currentPerPage,
+            sort: currentSort,
+        }),
+        [
+            reference,
+            referenceId,
+            resource,
+            target,
+            filter,
+            source,
+            crudGetManyReference,
+            page,
+            currentPerPage,
+            currentSort.field,
+            currentSort.order,
+        ]
+    );
+
+    const referenceBasePath = basePath.replace(resource, reference);
+
+    return children({
+        reference,
+        record,
+        resource,
+        target,
+        filter,
+        source,
+        sort,
+        currentSort,
+        data,
+        ids,
+        loadedOnce: typeof ids !== 'undefined',
+        page,
+        perPage: currentPerPage,
+        referenceBasePath,
+        setPage,
+        setPerPage,
+        setSort,
+        total,
+    });
+};
+
+const fetchReferences = ({
+    reference,
+    referenceId,
+    resource,
+    target,
+    filter,
+    source,
+    crudGetManyReference,
+    page,
+    perPage,
+    sort,
+}) => () => {
+    const relatedTo = nameRelatedTo(
+        reference,
+        referenceId,
+        resource,
+        target,
+        filter
+    );
+
+    crudGetManyReference(
+        reference,
+        target,
+        referenceId,
+        relatedTo,
+        { page, perPage },
+        sort,
+        filter,
+        source
+    );
+};
 
 function mapStateToProps(state, props) {
     const relatedTo = nameRelatedTo(

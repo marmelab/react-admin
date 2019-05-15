@@ -1,14 +1,13 @@
 import React from 'react';
 import assert from 'assert';
-import { shallow } from 'enzyme';
 import { render } from 'react-testing-library';
 import { UnconnectedReferenceManyFieldController as ReferenceManyFieldController } from './ReferenceManyFieldController';
 
 describe('<ReferenceManyFieldController />', () => {
     it('should set loadedOnce to false when related records are not yet fetched', () => {
-        const children = jest.fn();
+        const children = jest.fn().mockReturnValue('children');;
         const crudGetManyReference = jest.fn();
-        shallow(
+        render(
             <ReferenceManyFieldController
                 resource="foo"
                 reference="bar"
@@ -17,20 +16,19 @@ describe('<ReferenceManyFieldController />', () => {
                 crudGetManyReference={crudGetManyReference}
             >
                 {children}
-            </ReferenceManyFieldController>,
-            { disableLifecycleMethods: true }
+            </ReferenceManyFieldController>
         );
         assert.equal(children.mock.calls[0][0].loadedOnce, false);
     });
 
     it('should pass data and ids to children function', () => {
-        const children = jest.fn();
+        const children = jest.fn().mockReturnValue('children');;
         const crudGetManyReference = jest.fn();
         const data = {
             1: { id: 1, title: 'hello' },
             2: { id: 2, title: 'world' },
         };
-        shallow(
+        render(
             <ReferenceManyFieldController
                 resource="foo"
                 reference="bar"
@@ -41,21 +39,20 @@ describe('<ReferenceManyFieldController />', () => {
                 crudGetManyReference={crudGetManyReference}
             >
                 {children}
-            </ReferenceManyFieldController>,
-            { disableLifecycleMethods: true }
+            </ReferenceManyFieldController>
         );
         assert.deepEqual(children.mock.calls[0][0].data, data);
         assert.deepEqual(children.mock.calls[0][0].ids, [1, 2]);
     });
 
     it('should support record with string identifier', () => {
-        const children = jest.fn();
+        const children = jest.fn().mockReturnValue('children');;
         const crudGetManyReference = jest.fn();
         const data = {
             'abc-1': { id: 'abc-1', title: 'hello' },
             'abc-2': { id: 'abc-2', title: 'world' },
         };
-        shallow(
+        render(
             <ReferenceManyFieldController
                 resource="foo"
                 reference="bar"
@@ -66,21 +63,20 @@ describe('<ReferenceManyFieldController />', () => {
                 crudGetManyReference={crudGetManyReference}
             >
                 {children}
-            </ReferenceManyFieldController>,
-            { disableLifecycleMethods: true }
+            </ReferenceManyFieldController>
         );
         assert.deepEqual(children.mock.calls[0][0].data, data);
         assert.deepEqual(children.mock.calls[0][0].ids, ['abc-1', 'abc-2']);
     });
 
     it('should support record with number identifier', () => {
-        const children = jest.fn();
+        const children = jest.fn().mockReturnValue('children');;
         const crudGetManyReference = jest.fn();
         const data = {
             1: { id: 1, title: 'hello' },
             2: { id: 2, title: 'world' },
         };
-        shallow(
+        render(
             <ReferenceManyFieldController
                 resource="foo"
                 reference="bar"
@@ -91,18 +87,17 @@ describe('<ReferenceManyFieldController />', () => {
                 crudGetManyReference={crudGetManyReference}
             >
                 {children}
-            </ReferenceManyFieldController>,
-            { disableLifecycleMethods: true }
+            </ReferenceManyFieldController>
         );
         assert.deepEqual(children.mock.calls[0][0].data, data);
         assert.deepEqual(children.mock.calls[0][0].ids, [1, 2]);
     });
 
     it('should support custom source', () => {
-        const children = jest.fn();
+        const children = jest.fn().mockReturnValue('children');
         const crudGetManyReference = jest.fn();
 
-        shallow(
+        render(
             <ReferenceManyFieldController
                 resource="posts"
                 reference="comments"
@@ -133,15 +128,29 @@ describe('<ReferenceManyFieldController />', () => {
                     2: { id: 2, title: 'world' },
                 }}
                 ids={[1, 2]}
+                source="id"
                 crudGetManyReference={crudGetManyReference}
                 {...props}
             >
-                {() => null}
+                {() => 'null'}
             </ReferenceManyFieldController>
         );
 
         const { rerender } = render(<ControllerWrapper />);
         rerender(<ControllerWrapper sort={{ field: 'id', order: 'ASC' }} />);
+
+        expect(crudGetManyReference).toBeCalledTimes(2);
+
+        assert.deepEqual(crudGetManyReference.mock.calls[0], [
+            'bar',
+            'foo_id',
+            1,
+            'foo_bar@foo_id_1',
+            { page: 1, perPage: 25 },
+            { field: 'id', order: 'DESC' },
+            {},
+            'id',
+        ]);
 
         assert.deepEqual(crudGetManyReference.mock.calls[1], [
             'bar',
