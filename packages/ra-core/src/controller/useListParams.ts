@@ -15,14 +15,12 @@ import queryReducer, {
     SET_SORT,
     SORT_ASC,
 } from '../reducer/admin/resource/list/queryReducer';
-import { crudGetList } from '../actions/dataActions';
 import { changeListParams, ListParams } from '../actions/listActions';
 import { Sort, ReduxState, Identifier, RecordMap } from '../types';
 import removeEmpty from '../util/removeEmpty';
 import removeKey from '../util/removeKey';
 
 interface Props {
-    filter?: object;
     filterDefaultValues?: object;
     perPage?: number;
     sort?: Sort;
@@ -32,7 +30,6 @@ interface Props {
 }
 
 interface Query extends ListParams {
-    data: RecordMap;
     filterValues: object;
     ids: Identifier[];
     total: number;
@@ -61,7 +58,6 @@ const useListParams = ({
         order: SORT_ASC,
     },
     perPage = 10,
-    filter,
     debounce = 500,
 }: Props): [Query, Actions] => {
     const [displayedFilters, setDisplayedFilters] = useState({});
@@ -69,11 +65,6 @@ const useListParams = ({
 
     const { params, ids, total } = useSelector(
         (reduxState: ReduxState) => reduxState.admin.resources[resource].list,
-        [resource]
-    );
-
-    const data = useSelector(
-        (reduxState: ReduxState) => reduxState.admin.resources[resource].data,
         [resource]
     );
 
@@ -153,25 +144,8 @@ const useListParams = ({
         setPage(params.page - 1);
     }
 
-    useEffect(() => {
-        const pagination = {
-            page: query.page,
-            perPage: query.perPage,
-        };
-        const permanentFilter = filter;
-        dispatch(
-            crudGetList(
-                resource,
-                pagination,
-                { field: query.sort, order: query.order },
-                { ...query.filter, ...permanentFilter }
-            )
-        );
-    }, requestSignature);
-
     return [
         {
-            data,
             displayedFilters,
             filterValues,
             ids,

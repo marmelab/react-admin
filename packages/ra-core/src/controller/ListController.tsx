@@ -1,9 +1,16 @@
-import { isValidElement, ReactNode, ReactElement, useCallback } from 'react';
+import {
+    isValidElement,
+    ReactNode,
+    ReactElement,
+    useCallback,
+    useEffect,
+} from 'react';
 // @ts-ignore
 import { useSelector, useDispatch } from 'react-redux';
 import inflection from 'inflection';
 
 import { SORT_ASC } from '../reducer/admin/resource/list/queryReducer';
+import { crudGetList } from '../actions/dataActions';
 import {
     setListSelectedIds,
     toggleListItem,
@@ -166,9 +173,29 @@ const ListController = (props: Props) => {
         filterDefaultValues,
         sort,
         perPage,
-        filter,
         debounce,
     });
+
+    useEffect(() => {
+        const pagination = {
+            page: query.page,
+            perPage: query.perPage,
+        };
+        const permanentFilter = filter;
+        dispatch(
+            crudGetList(
+                resource,
+                pagination,
+                { field: query.sort, order: query.order },
+                { ...query.filter, ...permanentFilter }
+            )
+        );
+    }, query.requestSignature);
+
+    const data = useSelector(
+        (reduxState: ReduxState) => reduxState.admin.resources[resource].data,
+        [resource]
+    );
 
     const handleSelect = useCallback((newIds: Identifier[]) => {
         dispatch(setListSelectedIds(resource, newIds));
@@ -196,7 +223,7 @@ const ListController = (props: Props) => {
             field: query.sort,
             order: query.order,
         },
-        data: query.data,
+        data,
         defaultTitle,
         displayedFilters: query.displayedFilters,
         filterValues: query.filterValues,
