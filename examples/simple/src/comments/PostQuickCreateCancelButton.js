@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 
 import Button from '@material-ui/core/Button';
 import IconCancel from '@material-ui/icons/Cancel';
-import withStyles from '@material-ui/core/styles/withStyles';
+import { makeStyles } from '@material-ui/styles';
 
 import { useTranslate } from 'react-admin';
 
-const styles = {
+const useStyles = makeStyles({
     button: {
         margin: '10px 24px',
         position: 'relative',
@@ -15,10 +15,14 @@ const styles = {
     iconPaddingStyle: {
         paddingRight: '0.5em',
     },
-};
+});
 
-const CancelButtonView = ({ classes, onClick, label = 'ra.action.cancel' }) => {
+const PostQuickCreateCancelButton = ({
+    onClick,
+    label = 'ra.action.cancel',
+}) => {
     const translate = useTranslate();
+    const classes = useStyles();
     return (
         <Button className={classes.button} onClick={onClick}>
             <IconCancel className={classes.iconPaddingStyle} />
@@ -27,10 +31,9 @@ const CancelButtonView = ({ classes, onClick, label = 'ra.action.cancel' }) => {
     );
 };
 
-CancelButtonView.propTypes = {
-    classes: PropTypes.object,
+PostQuickCreateCancelButton.propTypes = {
     label: PropTypes.string,
     onClick: PropTypes.func.isRequired,
 };
 
-export default withStyles(styles)(CancelButtonView);
+export default PostQuickCreateCancelButton;
