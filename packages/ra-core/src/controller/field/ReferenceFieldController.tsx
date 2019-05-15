@@ -1,11 +1,6 @@
-import React, { SFC, ReactNode, useEffect, ReactElement } from 'react';
-// @ts-ignore
-import { useDispatch, useSelector } from 'react-redux';
-import get from 'lodash/get';
-
-import { crudGetManyAccumulate } from '../../actions';
-import { linkToRecord } from '../../util';
-import { Record, Dispatch, ReduxState } from '../../types';
+import { SFC, ReactNode, ReactElement } from 'react';
+import { Record } from '../../types';
+import useReference from './useReference';
 
 interface ChildrenFuncParams {
     isLoading: boolean;
@@ -54,44 +49,10 @@ interface Props {
  * </ReferenceField>
  */
 export const ReferenceFieldController: SFC<Props> = ({
-    allowEmpty = false,
-    basePath,
     children,
-    linkType = 'edit',
-    record = { id: '' },
-    reference,
-    resource,
-    source,
+    ...props
 }) => {
-    const sourceId = get(record, source);
-    const referenceRecord = useSelector(
-        getReferenceRecord(sourceId, reference)
-    );
-    const dispatch = useDispatch();
-    useEffect(fetchReference(sourceId, reference, dispatch), [
-        sourceId,
-        reference,
-    ]);
-    const rootPath = basePath.replace(resource, reference);
-    const resourceLinkPath = !linkType
-        ? false
-        : linkToRecord(rootPath, sourceId, linkType as string);
-
-    return children({
-        isLoading: !referenceRecord && !allowEmpty,
-        referenceRecord,
-        resourceLinkPath,
-    }) as ReactElement<any>;
-};
-
-const getReferenceRecord = (sourceId, reference) => (state: ReduxState) =>
-    state.admin.resources[reference] &&
-    state.admin.resources[reference].data[sourceId];
-
-const fetchReference = (sourceId, reference, dispatch) => () => {
-    if (sourceId !== null && typeof sourceId !== 'undefined') {
-        dispatch(crudGetManyAccumulate(reference, [sourceId]));
-    }
+    return children(useReference(props)) as ReactElement<any>;
 };
 
 export default ReferenceFieldController;
