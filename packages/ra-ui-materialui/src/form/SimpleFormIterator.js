@@ -115,6 +115,7 @@ export class SimpleFormIterator extends Component {
             translate,
             disableAdd,
             disableRemove,
+            TransitionProps,
         } = this.props;
         const records = get(record, source);
         return fields ? (
@@ -128,6 +129,7 @@ export class SimpleFormIterator extends Component {
                             key={this.ids[index]}
                             timeout={500}
                             classNames="fade"
+                            {...TransitionProps}
                         >
                             <li className={classes.line}>
                                 <Typography
@@ -225,6 +227,7 @@ SimpleFormIterator.propTypes = {
     translate: PropTypes.func,
     disableAdd: PropTypes.bool,
     disableRemove: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
+    TransitionProps: PropTypes.shape({}),
 };
 
 export default compose(
