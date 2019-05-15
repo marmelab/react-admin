@@ -1,8 +1,8 @@
 import React, { SFC, ReactNode, useEffect, ReactElement } from 'react';
-import { connect } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import get from 'lodash/get';
 
-import { crudGetManyAccumulate as crudGetManyAccumulateAction } from '../../actions';
+import { crudGetManyAccumulate } from '../../actions';
 import { linkToRecord } from '../../util';
 import { Record, Dispatch, ReduxState } from '../../types';
 
@@ -16,20 +16,12 @@ interface Props {
     allowEmpty?: boolean;
     basePath: string;
     children: (params: ChildrenFuncParams) => ReactNode;
-    crudGetManyAccumulate: Dispatch<typeof crudGetManyAccumulateAction>;
     record?: Record;
     reference: string;
-    referenceRecord?: Record;
     resource: string;
     source: string;
     linkType: string | boolean;
 }
-
-const fetchReference = (source, reference, crudGetManyAccumulate) => () => {
-    if (source !== null && typeof source !== 'undefined') {
-        crudGetManyAccumulate(reference, [source]);
-    }
-};
 
 /**
  * Fetch reference record, and delegate rendering to child component.
@@ -60,28 +52,29 @@ const fetchReference = (source, reference, crudGetManyAccumulate) => () => {
  *     <TextField source="name" />
  * </ReferenceField>
  */
-export const UnconnectedReferenceFieldController: SFC<Props> = ({
+export const ReferenceFieldController: SFC<Props> = ({
     allowEmpty = false,
     basePath,
     children,
     linkType = 'edit',
     record = { id: '' },
     reference,
-    referenceRecord = null,
     resource,
     source,
-    crudGetManyAccumulate,
 }) => {
-    const sourceValue = get(record, source);
-    useEffect(fetchReference(sourceValue, reference, crudGetManyAccumulate), [
-        sourceValue,
+    const sourceId = get(record, source);
+    const referenceRecord = useSelector(
+        getReferenceRecord(sourceId, reference)
+    );
+    const dispatch = useDispatch();
+    useEffect(fetchReference(sourceId, reference, dispatch), [
+        sourceId,
         reference,
-        crudGetManyAccumulate,
     ]);
     const rootPath = basePath.replace(resource, reference);
     const resourceLinkPath = !linkType
         ? false
-        : linkToRecord(rootPath, get(record, source), linkType as string);
+        : linkToRecord(rootPath, sourceId, linkType as string);
 
     return children({
         isLoading: !referenceRecord && !allowEmpty,
@@ -90,19 +83,14 @@ export const UnconnectedReferenceFieldController: SFC<Props> = ({
     }) as ReactElement<any>;
 };
 
-const mapStateToProps = (state, props) => ({
-    referenceRecord:
-        state.admin.resources[props.reference] &&
-        state.admin.resources[props.reference].data[
-            get(props.record, props.source)
-        ],
-});
+const getReferenceRecord = (sourceId, reference) => (state: ReduxState) =>
+    state.admin.resources[reference] &&
+    state.admin.resources[reference].data[sourceId];
 
-const ReferenceFieldController = connect(
-    mapStateToProps,
-    {
-        crudGetManyAccumulate: crudGetManyAccumulateAction,
+const fetchReference = (sourceId, reference, dispatch) => () => {
+    if (sourceId !== null && typeof sourceId !== 'undefined') {
+        dispatch(crudGetManyAccumulate(reference, [sourceId]));
     }
-)(UnconnectedReferenceFieldController);
+};
 
 export default ReferenceFieldController;
