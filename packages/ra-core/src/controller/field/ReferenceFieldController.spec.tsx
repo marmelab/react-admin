@@ -1,15 +1,16 @@
 import React from 'react';
 import assert from 'assert';
-import { shallow } from 'enzyme';
+import { render, cleanup } from 'react-testing-library';
 
 import { UnconnectedReferenceFieldController as ReferenceFieldController } from './ReferenceFieldController';
 
 describe('<ReferenceFieldController />', () => {
+    afterEach(cleanup);
     it('should call crudGetManyAccumulate on componentDidMount if reference source is defined', () => {
         const crudGetManyAccumulate = jest.fn();
-        shallow(
+        render(
             <ReferenceFieldController
-                children={jest.fn()} // eslint-disable-line react/no-children-prop
+                children={jest.fn().mockReturnValue(<span>children</span>)} // eslint-disable-line react/no-children-prop
                 record={{ id: 1, postId: 123 }}
                 source="postId"
                 referenceRecord={{ id: 123, title: 'foo' }}
@@ -20,11 +21,12 @@ describe('<ReferenceFieldController />', () => {
         );
         assert.equal(crudGetManyAccumulate.mock.calls.length, 1);
     });
+
     it('should not call crudGetManyAccumulate on componentDidMount if reference source is null or undefined', () => {
         const crudGetManyAccumulate = jest.fn();
-        shallow(
+        render(
             <ReferenceFieldController
-                children={jest.fn()} // eslint-disable-line react/no-children-prop
+                children={jest.fn().mockReturnValue(<span>children</span>)} // eslint-disable-line react/no-children-prop
                 record={{ id: 1, postId: null }}
                 source="postId"
                 referenceRecord={{ id: 123, title: 'foo' }}
@@ -35,10 +37,11 @@ describe('<ReferenceFieldController />', () => {
         );
         assert.equal(crudGetManyAccumulate.mock.calls.length, 0);
     });
+
     it('should render a link to the Edit page of the related record by default', () => {
-        const children = jest.fn();
+        const children = jest.fn().mockReturnValue(<span>children</span>);
         const crudGetManyAccumulate = jest.fn();
-        shallow(
+        render(
             <ReferenceFieldController
                 record={{ id: 1, postId: 123 }}
                 source="postId"
@@ -53,10 +56,11 @@ describe('<ReferenceFieldController />', () => {
         );
         assert.equal(children.mock.calls[0][0].resourceLinkPath, '/posts/123');
     });
+
     it('should render a link to the Edit page of the related record when the resource contains slashes', () => {
-        const children = jest.fn();
+        const children = jest.fn().mockReturnValue(<span>children</span>);
         const crudGetManyAccumulate = jest.fn();
-        shallow(
+        render(
             <ReferenceFieldController
                 record={{ id: 1, postId: 123 }}
                 source="postId"
@@ -74,10 +78,11 @@ describe('<ReferenceFieldController />', () => {
             '/prefix/posts/123'
         );
     });
+
     it('should render a link to the Edit page of the related record when the resource is named edit or show', () => {
-        const children = jest.fn();
+        const children = jest.fn().mockReturnValue(<span>children</span>);
         const crudGetManyAccumulate = jest.fn();
-        shallow(
+        render(
             <ReferenceFieldController
                 record={{ id: 1, fooId: 123 }}
                 source="fooId"
@@ -92,7 +97,8 @@ describe('<ReferenceFieldController />', () => {
         );
         assert.equal(children.mock.calls[0][0].resourceLinkPath, '/edit/123');
 
-        shallow(
+        cleanup();
+        render(
             <ReferenceFieldController
                 record={{ id: 1, fooId: 123 }}
                 source="fooId"
@@ -107,10 +113,11 @@ describe('<ReferenceFieldController />', () => {
         );
         assert.equal(children.mock.calls[1][0].resourceLinkPath, '/show/123');
     });
+
     it('should render a link to the Show page of the related record when the linkType is show', () => {
-        const children = jest.fn();
+        const children = jest.fn().mockReturnValue(<span>children</span>);
         const crudGetManyAccumulate = jest.fn();
-        shallow(
+        render(
             <ReferenceFieldController
                 record={{ id: 1, postId: 123 }}
                 source="postId"
@@ -129,10 +136,11 @@ describe('<ReferenceFieldController />', () => {
             '/posts/123/show'
         );
     });
+
     it('should render a link to the Show page of the related record when the resource is named edit or show and linkType is show', () => {
-        const children = jest.fn();
+        const children = jest.fn().mockReturnValue(<span>children</span>);
         const crudGetManyAccumulate = jest.fn();
-        shallow(
+        render(
             <ReferenceFieldController
                 record={{ id: 1, fooId: 123 }}
                 source="fooId"
@@ -151,7 +159,9 @@ describe('<ReferenceFieldController />', () => {
             '/edit/123/show'
         );
 
-        shallow(
+        cleanup();
+
+        render(
             <ReferenceFieldController
                 record={{ id: 1, fooId: 123 }}
                 source="fooId"
@@ -171,10 +181,11 @@ describe('<ReferenceFieldController />', () => {
             '/show/123/show'
         );
     });
+
     it('should render no link when the linkType is false', () => {
-        const children = jest.fn();
+        const children = jest.fn().mockReturnValue(<span>children</span>);
         const crudGetManyAccumulate = jest.fn();
-        shallow(
+        render(
             <ReferenceFieldController
                 record={{ id: 1, fooId: 123 }}
                 source="fooId"

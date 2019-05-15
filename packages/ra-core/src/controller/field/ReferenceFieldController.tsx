@@ -1,10 +1,10 @@
-import { Component, ReactNode } from 'react';
+import React, { SFC, ReactNode, useEffect, ReactElement } from 'react';
 import { connect } from 'react-redux';
 import get from 'lodash/get';
 
 import { crudGetManyAccumulate as crudGetManyAccumulateAction } from '../../actions';
 import { linkToRecord } from '../../util';
-import { Record, Dispatch } from '../../types';
+import { Record, Dispatch, ReduxState } from '../../types';
 
 interface ChildrenFuncParams {
     isLoading: boolean;
@@ -24,6 +24,12 @@ interface Props {
     source: string;
     linkType: string | boolean;
 }
+
+const fetchReference = (source, reference, crudGetManyAccumulate) => () => {
+    if (source !== null && typeof source !== 'undefined') {
+        crudGetManyAccumulate(reference, [source]);
+    }
+};
 
 /**
  * Fetch reference record, and delegate rendering to child component.
@@ -54,55 +60,35 @@ interface Props {
  *     <TextField source="name" />
  * </ReferenceField>
  */
-export class UnconnectedReferenceFieldController extends Component<Props> {
-    public static defaultProps: Partial<Props> = {
-        allowEmpty: false,
-        linkType: 'edit',
-        referenceRecord: null,
-        record: { id: '' },
-    };
+export const UnconnectedReferenceFieldController: SFC<Props> = ({
+    allowEmpty = false,
+    basePath,
+    children,
+    linkType = 'edit',
+    record = { id: '' },
+    reference,
+    referenceRecord = null,
+    resource,
+    source,
+    crudGetManyAccumulate,
+}) => {
+    const sourceValue = get(record, source);
+    useEffect(fetchReference(sourceValue, reference, crudGetManyAccumulate), [
+        sourceValue,
+        reference,
+        crudGetManyAccumulate,
+    ]);
+    const rootPath = basePath.replace(resource, reference);
+    const resourceLinkPath = !linkType
+        ? false
+        : linkToRecord(rootPath, get(record, source), linkType as string);
 
-    componentDidMount() {
-        this.fetchReference(this.props);
-    }
-
-    componentWillReceiveProps(nextProps) {
-        if (this.props.record.id !== nextProps.record.id) {
-            this.fetchReference(nextProps);
-        }
-    }
-
-    fetchReference(props) {
-        const source = get(props.record, props.source);
-        if (source !== null && typeof source !== 'undefined') {
-            this.props.crudGetManyAccumulate(props.reference, [source]);
-        }
-    }
-
-    render() {
-        const {
-            allowEmpty,
-            basePath,
-            children,
-            linkType,
-            record,
-            reference,
-            referenceRecord,
-            resource,
-            source,
-        } = this.props;
-        const rootPath = basePath.replace(resource, reference);
-        const resourceLinkPath = !linkType
-            ? false
-            : linkToRecord(rootPath, get(record, source), linkType as string);
-
-        return children({
-            isLoading: !referenceRecord && !allowEmpty,
-            referenceRecord,
-            resourceLinkPath,
-        });
-    }
-}
+    return children({
+        isLoading: !referenceRecord && !allowEmpty,
+        referenceRecord,
+        resourceLinkPath,
+    }) as ReactElement<any>;
+};
 
 const mapStateToProps = (state, props) => ({
     referenceRecord:
