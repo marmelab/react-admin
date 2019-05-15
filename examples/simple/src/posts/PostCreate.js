@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React from 'react';
+import { useDispatch } from 'react-redux';
 
 import RichTextInput from 'ra-input-rich-text';
 import {
@@ -24,31 +24,19 @@ import {
 const saveWithNote = (values, basePath, redirectTo) =>
     crudCreate('posts', { ...values, average_note: 10 }, basePath, redirectTo);
 
-class SaveWithNoteButtonComponent extends Component {
-    handleClick = () => {
-        const { basePath, handleSubmit, redirect, saveWithNote } = this.props;
+const SaveWithNoteButton = props => {
+    const dispatch = useDispatch();
+
+    const handleClick = () => {
+        const { basePath, handleSubmit, redirect } = props;
 
         return handleSubmit(values => {
-            saveWithNote(values, basePath, redirect);
+            dispatch(saveWithNote(values, basePath, redirect));
         });
     };
 
-    render() {
-        const { handleSubmitWithRedirect, saveWithNote, ...props } = this.props;
-
-        return (
-            <SaveButton
-                handleSubmitWithRedirect={this.handleClick}
-                {...props}
-            />
-        );
-    }
-}
-
-const SaveWithNoteButton = connect(
-    undefined,
-    { saveWithNote }
-)(SaveWithNoteButtonComponent);
+    return <SaveButton {...props} handleSubmitWithRedirect={handleClick} />;
+};
 
 const PostCreateToolbar = props => (
     <Toolbar {...props}>
