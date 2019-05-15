@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 // @ts-ignore
 import { useSelector, useDispatch } from 'react-redux';
 import { parse, stringify } from 'query-string';
@@ -31,8 +31,6 @@ interface Props {
 
 interface Query extends ListParams {
     filterValues: object;
-    ids: Identifier[];
-    total: number;
     displayedFilters: {
         [key: string]: boolean;
     };
@@ -49,6 +47,43 @@ interface Actions {
     showFilter: (filterName: string, defaultValue: any) => void;
 }
 
+/**
+ * Returns an array (like useState) with the list params as the first element and actions to modify them in the second.
+ *
+ * @example
+ * const [listParams, listParamsActions] = useListParams({
+ *      resource: 'posts',
+ *      location: location // From react-router. Injected to your component by react-admin inside a List
+ *      filterDefaultValues: {
+ *          published: true
+ *      },
+ *      sort: {
+ *          field: 'published_at',
+ *          order: 'DESC'
+ *      },
+ *      perPage: 25
+ * });
+ *
+ * const {
+ *      page,
+ *      perPage,
+ *      sort,
+ *      order,
+ *      filter,
+ *      filterValues,
+ *      displayedFilters,
+ *      requestSignature
+ * } = listParams;
+ *
+ * const {
+ *      setFilters,
+ *      hideFilter,
+ *      showFilter,
+ *      setPage,
+ *      setPerPage,
+ *      setSort,
+ * } = listParamsActions;
+ */
 const useListParams = ({
     resource,
     location,
@@ -63,7 +98,7 @@ const useListParams = ({
     const [displayedFilters, setDisplayedFilters] = useState({});
     const dispatch = useDispatch();
 
-    const { params, ids, total } = useSelector(
+    const { params } = useSelector(
         (reduxState: ReduxState) => reduxState.admin.resources[resource].list,
         [resource]
     );
@@ -140,16 +175,10 @@ const useListParams = ({
         }
     }, requestSignature);
 
-    if (!query.page && !(ids || []).length && params.page > 1 && total > 0) {
-        setPage(params.page - 1);
-    }
-
     return [
         {
             displayedFilters,
             filterValues,
-            ids,
-            total,
             requestSignature,
             ...query,
         },

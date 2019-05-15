@@ -197,6 +197,15 @@ const ListController = (props: Props) => {
         [resource]
     );
 
+    const { ids, total } = useSelector(
+        (reduxState: ReduxState) => reduxState.admin.resources[resource].list,
+        [resource]
+    );
+
+    if (!query.page && !(ids || []).length && query.page > 1 && total > 0) {
+        actions.setPage(query.page - 1);
+    }
+
     const handleSelect = useCallback((newIds: Identifier[]) => {
         dispatch(setListSelectedIds(resource, newIds));
     }, query.requestSignature);
@@ -228,7 +237,7 @@ const ListController = (props: Props) => {
         displayedFilters: query.displayedFilters,
         filterValues: query.filterValues,
         hasCreate,
-        ids: query.ids,
+        ids,
         isLoading,
         loadedOnce,
         onSelect: handleSelect,
@@ -245,7 +254,7 @@ const ListController = (props: Props) => {
         setPerPage: actions.setPerPage,
         setSort: actions.setSort,
         translate,
-        total: query.total,
+        total,
         version,
     });
 };
