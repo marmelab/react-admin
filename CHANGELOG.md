@@ -2,12 +2,12 @@
 
 ## v2.9.1
 
-* Fix handling of deleted references ([3216](https://github/com/marmelab/react-admin/pull/3216)) ([djhi](https://github.com/djhi))
-* Fix warning in Login page ([3195](https://github/com/marmelab/react-admin/pull/3195)) ([cherniavskii](https://github.com/cherniavskii))
-* Fix improperly named `RejectButton` class name in demo ([3182](https://github/com/marmelab/react-admin/pull/3182)) ([ericwb](https://github.com/ericwb))
-* Fix outdated mention in Authentication documentation ([3177](https://github/com/marmelab/react-admin/pull/3177)) ([joehillen](https://github.com/joehillen))
-* Add link to NextJs Crud dataprovider ([3201](https://github/com/marmelab/react-admin/pull/3201)) ([gganebnyi](https://github.com/gganebnyi))
-* Add markdown input package to the Ecosystem documentation ([3204](https://github/com/marmelab/react-admin/pull/3204)) ([maluramichael](https://github.com/maluramichael))
+* Fix handling of deleted references ([3216](https://github.com/marmelab/react-admin/pull/3216)) ([djhi](https://github.com/djhi))
+* Fix warning in Login page ([3195](https://github.com/marmelab/react-admin/pull/3195)) ([cherniavskii](https://github.com/cherniavskii))
+* Fix improperly named `RejectButton` class name in demo ([3182](https://github.com/marmelab/react-admin/pull/3182)) ([ericwb](https://github.com/ericwb))
+* Fix outdated mention in Authentication documentation ([3177](https://github.com/marmelab/react-admin/pull/3177)) ([joehillen](https://github.com/joehillen))
+* Add link to NextJs Crud dataprovider ([3201](https://github.com/marmelab/react-admin/pull/3201)) ([gganebnyi](https://github.com/gganebnyi))
+* Add markdown input package to the Ecosystem documentation ([3204](https://github.com/marmelab/react-admin/pull/3204)) ([maluramichael](https://github.com/maluramichael))
 
 # v2.9.0
 
