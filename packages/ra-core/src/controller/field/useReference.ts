@@ -54,7 +54,11 @@ export const useReference = ({
     reference,
     resource,
     source,
-}: Props) => {
+}: Props): {
+    isLoading: boolean;
+    referenceRecord: Record;
+    resourceLinkPath: string | false;
+} => {
     const sourceId = get(record, source);
     const referenceRecord = useSelector(
         getReferenceRecord(sourceId, reference)
