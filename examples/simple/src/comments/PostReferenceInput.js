@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useState, useCallback, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Field } from 'redux-form';
 
@@ -31,13 +31,11 @@ const PostReferenceInput = props => {
     const classes = useStyles();
     const dispatch = useDispatch();
 
-    const [state, setState] = React.useState({
-        showCreateDialog: false,
-        showPreviewDialog: false,
-        new_post_id: '',
-    });
+    const [showCreateDialog, setShowCreateDialog] = useState(false);
+    const [showPreviewDialog, setShowPreviewDialog] = useState(false);
+    const [newPostId, setNewPostId] = useState('');
 
-    React.useEffect(
+    useEffect(
         () => {
             //Refresh the choices of the ReferenceInput to ensure our newly created post
             // always appear, even after selecting another post
@@ -51,34 +49,35 @@ const PostReferenceInput = props => {
                 ),
             );
         },
-        [state.new_post_id],
+        [newPostId],
     );
 
-    const handleNewClick = event => {
+    const handleNewClick = useCallback(event => {
         event.preventDefault();
-        setState({ ...state, showCreateDialog: true });
-    };
+        setShowCreateDialog(true);
+    }, []);
 
-    const handleShowClick = event => {
+    const handleShowClick = useCallback(event => {
         event.preventDefault();
-        setState({ ...state, showPreviewDialog: true });
-    };
+        setShowPreviewDialog(true);
+    }, []);
 
-    const handleCloseCreate = () => {
-        setState({ ...state, showCreateDialog: false });
-    };
+    const handleCloseCreate = useCallback(() => {
+        setShowCreateDialog(false);
+    }, []);
 
-    const handleCloseShow = () => {
-        setState({ ...state, showPreviewDialog: false });
-    };
+    const handleCloseShow = useCallback(() => {
+        setShowPreviewDialog(false);
+    }, []);
 
-    const handleSave = post => {
-        setState({ ...state, showCreateDialog: false, new_post_id: post.id });
-    };
+    const handleSave = useCallback(post => {
+        setShowCreateDialog(false);
+        setNewPostId(post.id);
+    }, []);
 
     return (
         <Fragment>
-            <ReferenceInput {...props} defaultValue={state.new_post_id}>
+            <ReferenceInput {...props} defaultValue={newPostId}>
                 <SelectInput optionText="title" />
             </ReferenceInput>
             <Button
@@ -103,7 +102,7 @@ const PostReferenceInput = props => {
                             <Dialog
                                 data-testid="dialog-show-post"
                                 fullWidth
-                                open={state.showPreviewDialog}
+                                open={showPreviewDialog}
                                 onClose={handleCloseShow}
                                 aria-label={translate('simple.create-post')}
                             >
@@ -133,7 +132,7 @@ const PostReferenceInput = props => {
             <Dialog
                 data-testid="dialog-add-post"
                 fullWidth
-                open={state.showCreateDialog}
+                open={showCreateDialog}
                 onClose={handleCloseCreate}
                 aria-label={translate('simple.create-post')}
             >

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 
 import RichTextInput from 'ra-input-rich-text';
@@ -26,14 +26,16 @@ const saveWithNote = (values, basePath, redirectTo) =>
 
 const SaveWithNoteButton = props => {
     const dispatch = useDispatch();
+    const { basePath, handleSubmit, redirect } = props;
 
-    const handleClick = () => {
-        const { basePath, handleSubmit, redirect } = props;
-
-        return handleSubmit(values => {
-            dispatch(saveWithNote(values, basePath, redirect));
-        });
-    };
+    const handleClick = useCallback(
+        () => {
+            return handleSubmit(values => {
+                dispatch(saveWithNote(values, basePath, redirect));
+            });
+        },
+        [basePath, redirect],
+    );
 
     return <SaveButton {...props} handleSubmitWithRedirect={handleClick} />;
 };
