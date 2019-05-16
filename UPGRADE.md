@@ -110,3 +110,31 @@ import {
 
 export default withDataProvider(ApproveButton);
 ```
+
+## `<CardActions>` renamed to `<TopToolbar>`
+
+The `<CardActions>` component, which used to wrap the action buttons in the `Edit`, `Show` and `Create` views, is now named `<TopToolbar>`. That's because actions aren't located inside the `Card` anymore, but above it.
+
+```diff
+import Button from '@material-ui/core/Button';
+-import { CardActions, ShowButton } from 'react-admin';
++import { TopToolbar, ShowButton } from 'react-admin';
+
+const PostEditActions = ({ basePath, data, resource }) => (
+-   <CardActions>
++   <TopToolbar>
+        <ShowButton basePath={basePath} record={data} />
+        {/* Add your custom actions */}
+        <Button color="primary" onClick={customAction}>Custom Action</Button>
+-   </CardActions>
++   </TopToolbar>
+);
+
+export const PostEdit = (props) => (
+    <Edit actions={<PostEditActions />} {...props}>
+        ...
+    </Edit>
+);
+```
+
+But watch out, you can't just replace "CardActions" by "TopToolbar" in your entire codebase, because you probably also use Material-ui's `<CardActions>`, and that component still exists. The fact that react-admin exported a component with the same name but with a different look and feel than the material-iu component was also a motivation to rename it.
