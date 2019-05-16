@@ -30,6 +30,9 @@ export const styles = createStyles(theme => ({
         transition: theme.transitions.create('margin-top'),
         position: 'relative',
         flex: '1 1 auto',
+        [theme.breakpoints.down('xs')]: {
+            boxShadow: 'none',
+        },
     },
     bulkActionsDisplayed: {
         marginTop: -theme.spacing(8),

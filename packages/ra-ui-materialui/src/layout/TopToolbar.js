@@ -4,15 +4,27 @@ import Toolbar from '@material-ui/core/Toolbar';
 import { makeStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
     root: {
         display: 'flex',
         justifyContent: 'flex-end',
-        paddingLeft: 0,
-        paddingRight: 0,
-        minHeight: 70,
+        alignItems: 'flex-start',
+        paddingTop: theme.spacing(3),
+        paddingBottom: theme.spacing(1),
+        minHeight: theme.spacing(5),
+        [theme.breakpoints.up('xs')]: {
+            paddingLeft: 0,
+            paddingRight: 0,
+        },
+        [theme.breakpoints.down('sm')]: {
+            paddingRight: theme.spacing(2),
+        },
+        [theme.breakpoints.down('xs')]: {
+            padding: theme.spacing(1),
+            backgroundColor: theme.palette.background.paper,
+        },
     },
-});
+}));
 
 const TopToolbar = ({ className, children, ...rest }) => {
     const classes = useStyles();
