@@ -4,7 +4,7 @@ import {
     SORT_ASC,
 } from '../reducer/admin/resource/list/queryReducer';
 
-describe('ListController', () => {
+describe('useListParams', () => {
     describe('getQuery', () => {
         it('Returns the values from the location first', () => {
             const query = getQuery({
