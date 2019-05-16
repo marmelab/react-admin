@@ -1,17 +1,12 @@
 import { FunctionComponent, ReactNode, ReactElement } from 'react';
 import { Record } from '../../types';
-import useReference from './useReference';
+import useReference, { UseReferenceProps } from './useReference';
 
-interface ChildrenFuncParams {
-    isLoading: boolean;
-    referenceRecord: Record;
-    resourceLinkPath: string | boolean;
-}
 
 interface Props {
     allowEmpty?: boolean;
     basePath: string;
-    children: (params: ChildrenFuncParams) => ReactNode;
+    children: (params: UseReferenceProps) => ReactNode;
     record?: Record;
     reference: string;
     resource: string;
