@@ -8,7 +8,7 @@ import TestContext from './TestContext';
  * @example
  * const { dispatch, reduxStore, ...otherReactTestingLibraryHelper } = renderWithRedux(
  *     <TestedComponent />,
- *     { initialState: data }
+ *     initialState
  * );
  *
  * @param {ReactNode} component: The component you want to test in jsx
