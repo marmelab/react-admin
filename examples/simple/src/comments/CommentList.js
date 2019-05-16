@@ -124,7 +124,7 @@ const CommentGrid = withStyles(listStyles)(
     ({ classes, ids, data, basePath }) => {
         const translate = useTranslate();
         return (
-            <Grid spacing={2} container style={{ padding: '0 1em' }}>
+            <Grid spacing={2} container>
                 {ids.map(id => (
                     <Grid item key={id} sm={12} md={6} lg={4}>
                         <Card className={classes.card}>
@@ -210,6 +210,7 @@ const CommentList = props => (
         exporter={exporter}
         filters={<CommentFilter />}
         pagination={<CommentPagination />}
+        component="div"
     >
         <Responsive small={<CommentMobileList />} medium={<CommentGrid />} />
     </List>

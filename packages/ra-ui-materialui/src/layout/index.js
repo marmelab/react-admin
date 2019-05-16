@@ -20,6 +20,7 @@ import Responsive from './Responsive';
 import Sidebar from './Sidebar';
 import Title from './Title';
 import TitleForRecord from './TitleForRecord';
+import TopToolbar from './TopToolbar';
 import UserMenu from './UserMenu';
 import ViewTitle from './ViewTitle';
 
@@ -46,6 +47,7 @@ export {
     Sidebar,
     Title,
     TitleForRecord,
+    TopToolbar,
     UserMenu,
     ViewTitle,
 };

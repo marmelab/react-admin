@@ -45,6 +45,8 @@ const styles = theme =>
             flexGrow: 1,
             flexBasis: 0,
             padding: theme.spacing(3),
+            paddingTop: theme.spacing(1),
+            paddingLeft: 0,
             [theme.breakpoints.up('xs')]: {
                 paddingLeft: 5,
             },

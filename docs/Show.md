@@ -91,22 +91,15 @@ export const PostShow = (props) => (
 You can replace the list of default actions by your own element using the `actions` prop:
 
 ```jsx
-import CardActions from '@material-ui/core/CardActions';
 import Button from '@material-ui/core/Button';
-import { EditButton } from 'react-admin';
-
-const cardActionStyle = {
-    zIndex: 2,
-    display: 'inline-block',
-    float: 'right',
-};
+import { EditButton, TopToolbar } from 'react-admin';
 
 const PostShowActions = ({ basePath, data, resource }) => (
-    <CardActions style={cardActionStyle}>
+    <TopToolbar>
         <EditButton basePath={basePath} record={data} />
         {/* Add your custom actions */}
         <Button color="primary" onClick={customAction}>Custom Action</Button>
-    </CardActions>
+    </TopToolbar>
 );
 
 export const PostShow = (props) => (
@@ -285,23 +278,17 @@ Here's an example inside a `Show` view with a `SimpleShowLayout` and a custom `a
 
 {% raw %}
 ```jsx
-import CardActions from '@material-ui/core/CardActions';
+import TopToolbar from '@material-ui/core/TopToolbar';
 import Button from '@material-ui/core/Button';
 import { EditButton, DeleteButton } from 'react-admin';
 
-const cardActionStyle = {
-    zIndex: 2,
-    display: 'inline-block',
-    float: 'right',
-};
-
 const PostShowActions = ({ permissions, basePath, data, resource }) => (
-    <CardActions style={cardActionStyle}>
+    <TopToolbar>
         <EditButton basePath={basePath} record={data} />
         {permissions === 'admin' &&
             <DeleteButton basePath={basePath} record={data} resource={resource} />
         }
-    </CardActions>
+    </TopToolbar>
 );
 
 export const PostShow = ({ permissions, ...props }) => (

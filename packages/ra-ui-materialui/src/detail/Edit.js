@@ -8,11 +8,14 @@ import { EditController } from 'ra-core';
 
 import DefaultActions from './EditActions';
 import TitleForRecord from '../layout/TitleForRecord';
-import CardContentInner from '../layout/CardContentInner';
 
 export const styles = createStyles({
-    root: {
+    root: {},
+    main: {
         display: 'flex',
+    },
+    noActions: {
+        marginTop: '1em',
     },
     card: {
         flex: '1 1 auto',
@@ -48,81 +51,87 @@ const sanitizeRestProps = ({
     ...rest
 }) => rest;
 
-export const EditView = withStyles(styles)(({
-    actions,
-    aside,
-    basePath,
-    children,
-    classes,
-    className,
-    defaultTitle,
-    hasList,
-    hasShow,
-    record,
-    redirect,
-    resource,
-    save,
-    title,
-    undoable,
-    version,
-    ...rest
-}) => {
-    if (typeof actions === 'undefined' && hasShow) {
-        actions = <DefaultActions />;
-    }
-    if (!children) {
-        return null;
-    }
-    return (
-        <div
-            className={classnames('edit-page', classes.root, className)}
-            {...sanitizeRestProps(rest)}
-        >
-            <TitleForRecord
-                title={title}
-                record={record}
-                defaultTitle={defaultTitle}
-            />
-            <Card className={classes.card}>
-                {actions && (
-                    <CardContentInner>
-                        {cloneElement(actions, {
-                            basePath,
-                            data: record,
-                            hasShow,
-                            hasList,
-                            resource,
-                            ...actions.props
-                        })}
-                    </CardContentInner>
-                )}
-                {record ? (
-                    cloneElement(Children.only(children), {
+export const EditView = withStyles(styles)(
+    ({
+        actions,
+        aside,
+        basePath,
+        children,
+        classes,
+        className,
+        defaultTitle,
+        hasList,
+        hasShow,
+        record,
+        redirect,
+        resource,
+        save,
+        title,
+        undoable,
+        version,
+        ...rest
+    }) => {
+        if (typeof actions === 'undefined' && hasShow) {
+            actions = <DefaultActions />;
+        }
+        if (!children) {
+            return null;
+        }
+        return (
+            <div
+                className={classnames('edit-page', classes.root, className)}
+                {...sanitizeRestProps(rest)}
+            >
+                <TitleForRecord
+                    title={title}
+                    record={record}
+                    defaultTitle={defaultTitle}
+                />
+                {actions &&
+                    cloneElement(actions, {
                         basePath,
-                        record,
-                        redirect:
-                            typeof children.props.redirect === 'undefined'
-                                ? redirect
-                                : children.props.redirect,
+                        data: record,
+                        hasShow,
+                        hasList,
                         resource,
-                        save,
-                        undoable,
-                        version,
-                    })
-                ) : (
-                    <CardContent>&nbsp;</CardContent>
-                )}
-            </Card>
-            {aside &&
-                React.cloneElement(aside, {
-                    basePath,
-                    record,
-                    resource,
-                    version,
-                })}
-        </div>
-    );
-});
+                        ...actions.props,
+                    })}
+                <div
+                    className={classnames(classes.main, {
+                        [classes.noActions]: !actions,
+                    })}
+                >
+                    <Card className={classes.card}>
+                        {record ? (
+                            cloneElement(Children.only(children), {
+                                basePath,
+                                record,
+                                redirect:
+                                    typeof children.props.redirect ===
+                                    'undefined'
+                                        ? redirect
+                                        : children.props.redirect,
+                                resource,
+                                save,
+                                undoable,
+                                version,
+                            })
+                        ) : (
+                            <CardContent>&nbsp;</CardContent>
+                        )}
+                    </Card>
+                    {aside &&
+                        React.cloneElement(aside, {
+                            basePath,
+                            record,
+                            resource,
+                            version,
+                        })}
+                </div>
+            </div>
+        );
+    }
+);
 
 EditView.propTypes = {
     actions: PropTypes.element,
