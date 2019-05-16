@@ -1,6 +1,6 @@
 import AppBar from './AppBar';
 import AppBarMobile from './AppBarMobile';
-import TopToolbar from './TopToolbar';
+import CardActions from './CardActions';
 import CardContentInner from './CardContentInner';
 import Confirm from './Confirm';
 import DashboardMenuItem from './DashboardMenuItem';
@@ -20,12 +20,14 @@ import Responsive from './Responsive';
 import Sidebar from './Sidebar';
 import Title from './Title';
 import TitleForRecord from './TitleForRecord';
+import TopToolbar from './TopToolbar';
 import UserMenu from './UserMenu';
 import ViewTitle from './ViewTitle';
 
 export {
     AppBar,
     AppBarMobile,
+    CardActions,
     CardContentInner,
     Confirm,
     DashboardMenuItem,
