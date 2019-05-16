@@ -20,7 +20,7 @@ import { Sort, ReduxState, Identifier, RecordMap } from '../types';
 import removeEmpty from '../util/removeEmpty';
 import removeKey from '../util/removeKey';
 
-interface Props {
+interface Options {
     filterDefaultValues?: object;
     perPage?: number;
     sort?: Sort;
@@ -94,7 +94,7 @@ const useListParams = ({
     },
     perPage = 10,
     debounce = 500,
-}: Props): [Query, Actions] => {
+}: Options): [Query, Actions] => {
     const [displayedFilters, setDisplayedFilters] = useState({});
     const dispatch = useDispatch();
 
