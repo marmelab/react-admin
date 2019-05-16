@@ -8,6 +8,7 @@ import removeEmpty from './removeEmpty';
 import removeKey from './removeKey';
 import resolveRedirectTo from './resolveRedirectTo';
 import TestContext from './TestContext';
+import renderWithRedux from './renderWithRedux';
 import warning from './warning';
 
 export {
@@ -21,5 +22,6 @@ export {
     removeKey,
     resolveRedirectTo,
     TestContext,
+    renderWithRedux,
     warning,
 };

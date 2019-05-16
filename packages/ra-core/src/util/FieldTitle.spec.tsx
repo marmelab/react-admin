@@ -1,11 +1,10 @@
 import assert from 'assert';
 import expect from 'expect';
-import { shallow } from 'enzyme';
 import { render, cleanup } from 'react-testing-library';
 import React from 'react';
 
 import { FieldTitle } from './FieldTitle';
-import TestContext from './TestContext';
+import renderWithRedux from './renderWithRedux';
 
 describe('FieldTitle', () => {
     afterEach(cleanup);
@@ -25,28 +24,22 @@ describe('FieldTitle', () => {
     });
 
     it('should use the label as translate key when translation is available', () => {
-        const { container } = render(
-            <TestContext store={{ i18n: { messages: { foo: 'bar' } } }}>
-                <FieldTitle label="foo" />
-            </TestContext>
-        );
+        const { container } = renderWithRedux(<FieldTitle label="foo" />, {
+            i18n: { messages: { foo: 'bar' } },
+        });
         expect(container.firstChild.textContent).toEqual('bar');
     });
 
     it('should use the humanized source when given', () => {
-        const { container } = render(
-            <TestContext>
-                <FieldTitle resource="posts" source="title" />
-            </TestContext>
+        const { container } = renderWithRedux(
+            <FieldTitle resource="posts" source="title" />
         );
         expect(container.firstChild.textContent).toEqual('Title');
     });
 
     it('should use the humanized source when given with underscores', () => {
-        const { container } = render(
-            <TestContext>
-                <FieldTitle resource="posts" source="title_with_underscore" />
-            </TestContext>
+        const { container } = renderWithRedux(
+            <FieldTitle resource="posts" source="title_with_underscore" />
         );
         expect(container.firstChild.textContent).toEqual(
             'Title with underscore'
@@ -54,10 +47,8 @@ describe('FieldTitle', () => {
     });
 
     it('should use the humanized source when given with camelCase', () => {
-        const { container } = render(
-            <TestContext>
-                <FieldTitle resource="posts" source="titleWithCamelCase" />
-            </TestContext>
+        const { container } = renderWithRedux(
+            <FieldTitle resource="posts" source="titleWithCamelCase" />
         );
         expect(container.firstChild.textContent).toEqual(
             'Title with camel case'
@@ -65,16 +56,13 @@ describe('FieldTitle', () => {
     });
 
     it('should use the source and resource as translate key when translation is available', () => {
-        const { container } = render(
-            <TestContext
-                store={{
-                    i18n: {
-                        messages: { 'resources.posts.fields.title': 'titre' },
-                    },
-                }}
-            >
-                <FieldTitle resource="posts" source="title" />
-            </TestContext>
+        const { container } = renderWithRedux(
+            <FieldTitle resource="posts" source="title" />,
+            {
+                i18n: {
+                    messages: { 'resources.posts.fields.title': 'titre' },
+                },
+            }
         );
         expect(container.firstChild.textContent).toEqual('titre');
     });

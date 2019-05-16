@@ -1,7 +1,7 @@
 import React from 'react';
 import expect from 'expect';
 import { render, cleanup } from 'react-testing-library';
-import { TestContext } from 'ra-core';
+import { renderWithRedux } from 'ra-core';
 
 import Create from './Create';
 
@@ -19,12 +19,10 @@ describe('<Create />', () => {
     it('should display aside component', () => {
         const Dummy = () => <div />;
         const Aside = () => <div id="aside">Hello</div>;
-        const { queryAllByText } = render(
-            <TestContext>
-                <Create {...defaultCreateProps} aside={<Aside />}>
-                    <Dummy />
-                </Create>
-            </TestContext>
+        const { queryAllByText } = renderWithRedux(
+            <Create {...defaultCreateProps} aside={<Aside />}>
+                <Dummy />
+            </Create>
         );
         expect(queryAllByText('Hello')).toHaveLength(1);
     });

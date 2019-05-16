@@ -4,7 +4,7 @@ import { render, cleanup } from 'react-testing-library';
 
 import useTranslate from './useTranslate';
 import { TranslationContext } from './TranslationContext';
-import { TestContext } from '../util';
+import { renderWithRedux } from '../util';
 
 describe('useTranslate', () => {
     afterEach(cleanup);
@@ -32,11 +32,9 @@ describe('useTranslate', () => {
     });
 
     it('should use the messages set in the store', () => {
-        const { queryAllByText } = render(
-            <TestContext store={{ i18n: { messages: { hello: 'bonjour' } } }}>
-                <Component />
-            </TestContext>
-        );
+        const { queryAllByText } = renderWithRedux(<Component />, {
+            i18n: { messages: { hello: 'bonjour' } },
+        });
         expect(queryAllByText('hello')).toHaveLength(0);
         expect(queryAllByText('bonjour')).toHaveLength(1);
     });

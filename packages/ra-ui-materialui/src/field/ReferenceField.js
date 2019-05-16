@@ -2,7 +2,7 @@ import React, { Children } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { withStyles, createStyles } from '@material-ui/core/styles';
-import { ReferenceFieldController } from 'ra-core';
+import { useReference } from 'ra-core';
 
 import LinearProgress from '../layout/LinearProgress';
 import Link from '../Link';
@@ -120,15 +120,16 @@ const ReferenceField = ({ children, ...props }) => {
         throw new Error('<ReferenceField> only accepts a single child');
     }
 
+    const { isLoading, referenceRecord, resourceLinkPath } = useReference(props);
+
     return (
-        <ReferenceFieldController {...props}>
-            {controllerProps => (
-                <ReferenceFieldView
-                    {...props}
-                    {...{ children, ...controllerProps }}
-                />
-            )}
-        </ReferenceFieldController>
+        <ReferenceFieldView
+            {...props}
+            children={children}
+            isLoading={isLoading}
+            referenceRecord={referenceRecord}
+            resourceLinkPath={resourceLinkPath}
+        />
     );
 };
 

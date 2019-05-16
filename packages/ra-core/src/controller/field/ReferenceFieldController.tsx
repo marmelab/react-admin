@@ -1,25 +1,14 @@
-import { Component, ReactNode } from 'react';
-import { connect } from 'react-redux';
-import get from 'lodash/get';
+import { FunctionComponent, ReactNode, ReactElement } from 'react';
+import { Record } from '../../types';
+import useReference, { UseReferenceProps } from './useReference';
 
-import { crudGetManyAccumulate as crudGetManyAccumulateAction } from '../../actions';
-import { linkToRecord } from '../../util';
-import { Record, Dispatch } from '../../types';
-
-interface ChildrenFuncParams {
-    isLoading: boolean;
-    referenceRecord: Record;
-    resourceLinkPath: string | boolean;
-}
 
 interface Props {
     allowEmpty?: boolean;
     basePath: string;
-    children: (params: ChildrenFuncParams) => ReactNode;
-    crudGetManyAccumulate: Dispatch<typeof crudGetManyAccumulateAction>;
+    children: (params: UseReferenceProps) => ReactNode;
     record?: Record;
     reference: string;
-    referenceRecord?: Record;
     resource: string;
     source: string;
     linkType: string | boolean;
@@ -54,69 +43,11 @@ interface Props {
  *     <TextField source="name" />
  * </ReferenceField>
  */
-export class UnconnectedReferenceFieldController extends Component<Props> {
-    public static defaultProps: Partial<Props> = {
-        allowEmpty: false,
-        linkType: 'edit',
-        referenceRecord: null,
-        record: { id: '' },
-    };
-
-    componentDidMount() {
-        this.fetchReference(this.props);
-    }
-
-    componentWillReceiveProps(nextProps) {
-        if (this.props.record.id !== nextProps.record.id) {
-            this.fetchReference(nextProps);
-        }
-    }
-
-    fetchReference(props) {
-        const source = get(props.record, props.source);
-        if (source !== null && typeof source !== 'undefined') {
-            this.props.crudGetManyAccumulate(props.reference, [source]);
-        }
-    }
-
-    render() {
-        const {
-            allowEmpty,
-            basePath,
-            children,
-            linkType,
-            record,
-            reference,
-            referenceRecord,
-            resource,
-            source,
-        } = this.props;
-        const rootPath = basePath.replace(resource, reference);
-        const resourceLinkPath = !linkType
-            ? false
-            : linkToRecord(rootPath, get(record, source), linkType as string);
-
-        return children({
-            isLoading: !referenceRecord && !allowEmpty,
-            referenceRecord,
-            resourceLinkPath,
-        });
-    }
-}
-
-const mapStateToProps = (state, props) => ({
-    referenceRecord:
-        state.admin.resources[props.reference] &&
-        state.admin.resources[props.reference].data[
-            get(props.record, props.source)
-        ],
-});
-
-const ReferenceFieldController = connect(
-    mapStateToProps,
-    {
-        crudGetManyAccumulate: crudGetManyAccumulateAction,
-    }
-)(UnconnectedReferenceFieldController);
+export const ReferenceFieldController: FunctionComponent<Props> = ({
+    children,
+    ...props
+}) => {
+    return children(useReference(props)) as ReactElement<any>;
+};
 
 export default ReferenceFieldController;

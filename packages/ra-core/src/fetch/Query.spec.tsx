@@ -10,20 +10,17 @@ import expect from 'expect';
 import Query from './Query';
 import CoreAdmin from '../CoreAdmin';
 import Resource from '../Resource';
+import renderWithRedux from '../util/renderWithRedux';
 import TestContext from '../util/TestContext';
 
 describe('Query', () => {
     afterEach(cleanup);
 
     it('should render its child', () => {
-        const { getByTestId } = render(
-            <TestContext>
-                {() => (
-                    <Query type="foo" resource="bar">
-                        {() => <div data-testid="test">Hello</div>}
-                    </Query>
-                )}
-            </TestContext>
+        const { getByTestId } = renderWithRedux(
+            <Query type="foo" resource="bar">
+                {() => <div data-testid="test">Hello</div>}
+            </Query>
         );
         expect(getByTestId('test').textContent).toBe('Hello');
     });
@@ -32,22 +29,13 @@ describe('Query', () => {
         let dispatchSpy;
         const myPayload = {};
         act(() => {
-            render(
-                <TestContext>
-                    {({ store }) => {
-                        dispatchSpy = jest.spyOn(store, 'dispatch');
-                        return (
-                            <Query
-                                type="mytype"
-                                resource="myresource"
-                                payload={myPayload}
-                            >
-                                {() => <div>Hello</div>}
-                            </Query>
-                        );
-                    }}
-                </TestContext>
+            const result = renderWithRedux(
+                <Query type="mytype" resource="myresource" payload={myPayload}>
+                    {() => <div>Hello</div>}
+                </Query>
             );
+
+            dispatchSpy = result.dispatch;
         });
 
         const action = dispatchSpy.mock.calls[0][0];
@@ -59,22 +47,12 @@ describe('Query', () => {
 
     it('should set the loading state to loading when mounting', () => {
         const myPayload = {};
-        const { getByText } = render(
-            <TestContext>
-                {() => (
-                    <Query
-                        type="mytype"
-                        resource="myresource"
-                        payload={myPayload}
-                    >
-                        {({ loading }) => (
-                            <div className={loading ? 'loading' : 'idle'}>
-                                Hello
-                            </div>
-                        )}
-                    </Query>
+        const { getByText } = renderWithRedux(
+            <Query type="mytype" resource="myresource" payload={myPayload}>
+                {({ loading }) => (
+                    <div className={loading ? 'loading' : 'idle'}>Hello</div>
                 )}
-            </TestContext>
+            </Query>
         );
         expect(getByText('Hello').className).toEqual('loading');
     });
