@@ -1,8 +1,9 @@
-import { ReactNode, useState, useReducer, useEffect } from 'react';
-import { connect } from 'react-redux';
+import { ReactNode, useState, useReducer, useEffect, useMemo } from 'react';
+// @ts-ignore
+import { useSelector, useDispatch } from 'react-redux';
 import get from 'lodash/get';
 
-import { crudGetManyReference as crudGetManyReferenceAction } from '../../actions';
+import { crudGetManyReference } from '../../actions';
 import {
     SORT_ASC,
     SORT_DESC,
@@ -32,7 +33,6 @@ interface ChildrenFuncParams {
 interface Props {
     basePath: string;
     children: (params: ChildrenFuncParams) => ReactNode;
-    crudGetManyReference: Dispatch<typeof crudGetManyReferenceAction>;
     data?: RecordMap;
     filter?: any;
     ids?: any[];
@@ -106,28 +106,36 @@ const defaultFilter = {};
  *    ...
  * </ReferenceManyField>
  */
-export const UnconnectedReferenceManyFieldController = ({
+export const ReferenceManyFieldController = ({
     resource,
     reference,
     record,
     target,
     filter = defaultFilter,
     source,
-    crudGetManyReference,
-    data,
-    ids,
     children,
     basePath,
-    total,
     perPage = 25,
     sort = { field: 'id', order: 'DESC' },
 }) => {
     const referenceId = get(record, source);
+    const relatedTo = useMemo(
+        () => nameRelatedTo(reference, referenceId, resource, target, filter),
+        [filter, reference, referenceId, resource, target]
+    );
+    const ids = useSelector(selectIds(relatedTo), [relatedTo]);
+    const data = useSelector(selectData(reference, relatedTo), [
+        reference,
+        relatedTo,
+    ]);
+    const total = useSelector(selectTotal(relatedTo), [relatedTo]);
     const [page, setPage] = useState(1);
     const [currentPerPage, setPerPage] = useState(perPage);
     useEffect(() => setPerPage(perPage), [perPage]);
     const [currentSort, setSort] = useReducer(sortReducer, sort);
     useEffect(() => setSort(sort), [sort.field, sort.order]);
+
+    const dispatch = useDispatch();
 
     useEffect(
         fetchReferences({
@@ -137,10 +145,10 @@ export const UnconnectedReferenceManyFieldController = ({
             target,
             filter,
             source,
-            crudGetManyReference,
             page,
             perPage: currentPerPage,
             sort: currentSort,
+            dispatch,
         }),
         [
             reference,
@@ -188,7 +196,7 @@ const fetchReferences = ({
     target,
     filter,
     source,
-    crudGetManyReference,
+    dispatch,
     page,
     perPage,
     sort,
@@ -201,38 +209,24 @@ const fetchReferences = ({
         filter
     );
 
-    crudGetManyReference(
-        reference,
-        target,
-        referenceId,
-        relatedTo,
-        { page, perPage },
-        sort,
-        filter,
-        source
+    dispatch(
+        crudGetManyReference(
+            reference,
+            target,
+            referenceId,
+            relatedTo,
+            { page, perPage },
+            sort,
+            filter,
+            source
+        )
     );
 };
 
-function mapStateToProps(state, props) {
-    const relatedTo = nameRelatedTo(
-        props.reference,
-        get(props.record, props.source),
-        props.resource,
-        props.target,
-        props.filter
-    );
-    return {
-        data: getReferences(state, props.reference, relatedTo),
-        ids: getIds(state, relatedTo),
-        total: getTotal(state, relatedTo),
-    };
-}
+const selectData = (reference, relatedTo) => state =>
+    getReferences(state, reference, relatedTo);
 
-const ReferenceManyFieldController = connect(
-    mapStateToProps,
-    {
-        crudGetManyReference: crudGetManyReferenceAction,
-    }
-)(UnconnectedReferenceManyFieldController);
+const selectIds = relatedTo => state => getIds(state, relatedTo);
+const selectTotal = relatedTo => state => getTotal(state, relatedTo);
 
 export default ReferenceManyFieldController;

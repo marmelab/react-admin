@@ -1,103 +1,157 @@
 import React from 'react';
 import assert from 'assert';
 import { render } from 'react-testing-library';
-import { UnconnectedReferenceManyFieldController as ReferenceManyFieldController } from './ReferenceManyFieldController';
+
+import ReferenceManyFieldController from './ReferenceManyFieldController';
+import renderWithRedux from '../../util/renderWithRedux';
 
 describe('<ReferenceManyFieldController />', () => {
     it('should set loadedOnce to false when related records are not yet fetched', () => {
-        const children = jest.fn().mockReturnValue('children');;
-        const crudGetManyReference = jest.fn();
-        render(
+        const children = jest.fn().mockReturnValue('children');
+        const { dispatch } = renderWithRedux(
             <ReferenceManyFieldController
                 resource="foo"
                 reference="bar"
                 target="foo_id"
                 basePath=""
-                crudGetManyReference={crudGetManyReference}
             >
                 {children}
-            </ReferenceManyFieldController>
+            </ReferenceManyFieldController>,
+            {
+                admin: {
+                    resources: {
+                        bar: {
+                            data: {
+                                1: { id: 1, title: 'hello' },
+                                2: { id: 2, title: 'world' },
+                            },
+                        },
+                    },
+                    references: {
+                        oneToMany: {
+                            'foo_bar@fooId_barId': {
+                                ids: [1, 2],
+                            },
+                        },
+                    },
+                },
+            }
         );
-        assert.equal(children.mock.calls[0][0].loadedOnce, false);
+        assert.deepEqual(dispatch.mock.calls[0], [
+            {
+                meta: {
+                    fetch: 'GET_MANY_REFERENCE',
+                    onFailure: {
+                        notification: {
+                            body: 'ra.notification.http_error',
+                            level: 'warning',
+                        },
+                    },
+                    relatedTo: 'foo_bar@foo_id_undefined',
+                    resource: 'bar',
+                },
+                payload: {
+                    filter: {},
+                    id: undefined,
+                    pagination: { page: 1, perPage: 25 },
+                    sort: { field: 'id', order: 'DESC' },
+                    source: undefined,
+                    target: 'foo_id',
+                },
+                type: 'RA/CRUD_GET_MANY_REFERENCE',
+            },
+        ]);
     });
 
     it('should pass data and ids to children function', () => {
-        const children = jest.fn().mockReturnValue('children');;
-        const crudGetManyReference = jest.fn();
+        const children = jest.fn().mockReturnValue('children');
         const data = {
             1: { id: 1, title: 'hello' },
             2: { id: 2, title: 'world' },
         };
-        render(
+        renderWithRedux(
             <ReferenceManyFieldController
                 resource="foo"
                 reference="bar"
-                target="foo_id"
+                target="fooId"
                 basePath=""
-                data={data}
-                ids={[1, 2]}
-                crudGetManyReference={crudGetManyReference}
+                record={{
+                    source: 'barId',
+                }}
+                source="source"
             >
                 {children}
-            </ReferenceManyFieldController>
+            </ReferenceManyFieldController>,
+            {
+                admin: {
+                    resources: {
+                        bar: {
+                            data: {
+                                1: { id: 1, title: 'hello' },
+                                2: { id: 2, title: 'world' },
+                            },
+                        },
+                    },
+                    references: {
+                        oneToMany: {
+                            'foo_bar@fooId_barId': {
+                                ids: [1, 2],
+                            },
+                        },
+                    },
+                },
+            }
         );
         assert.deepEqual(children.mock.calls[0][0].data, data);
         assert.deepEqual(children.mock.calls[0][0].ids, [1, 2]);
     });
 
     it('should support record with string identifier', () => {
-        const children = jest.fn().mockReturnValue('children');;
-        const crudGetManyReference = jest.fn();
-        const data = {
+        const children = jest.fn().mockReturnValue('children');
+        renderWithRedux(
+            <ReferenceManyFieldController
+                resource="foo"
+                reference="bar"
+                target="fooId"
+                basePath=""
+                record={{
+                    source: 'barId',
+                }}
+                source="source"
+            >
+                {children}
+            </ReferenceManyFieldController>,
+            {
+                admin: {
+                    resources: {
+                        bar: {
+                            data: {
+                                'abc-1': { id: 'abc-1', title: 'hello' },
+                                'abc-2': { id: 'abc-2', title: 'world' },
+                            },
+                        },
+                    },
+                    references: {
+                        oneToMany: {
+                            'foo_bar@fooId_barId': {
+                                ids: ['abc-1', 'abc-2'],
+                            },
+                        },
+                    },
+                },
+            }
+        );
+        assert.deepEqual(children.mock.calls[0][0].data, {
             'abc-1': { id: 'abc-1', title: 'hello' },
             'abc-2': { id: 'abc-2', title: 'world' },
-        };
-        render(
-            <ReferenceManyFieldController
-                resource="foo"
-                reference="bar"
-                target="foo_id"
-                basePath=""
-                data={data}
-                ids={['abc-1', 'abc-2']}
-                crudGetManyReference={crudGetManyReference}
-            >
-                {children}
-            </ReferenceManyFieldController>
-        );
-        assert.deepEqual(children.mock.calls[0][0].data, data);
+        });
         assert.deepEqual(children.mock.calls[0][0].ids, ['abc-1', 'abc-2']);
-    });
-
-    it('should support record with number identifier', () => {
-        const children = jest.fn().mockReturnValue('children');;
-        const crudGetManyReference = jest.fn();
-        const data = {
-            1: { id: 1, title: 'hello' },
-            2: { id: 2, title: 'world' },
-        };
-        render(
-            <ReferenceManyFieldController
-                resource="foo"
-                reference="bar"
-                target="foo_id"
-                basePath=""
-                data={data}
-                ids={[1, 2]}
-                crudGetManyReference={crudGetManyReference}
-            >
-                {children}
-            </ReferenceManyFieldController>
-        );
-        assert.deepEqual(children.mock.calls[0][0].data, data);
-        assert.deepEqual(children.mock.calls[0][0].ids, [1, 2]);
     });
 
     it('should support custom source', () => {
         const children = jest.fn().mockReturnValue('children');
-        const crudGetManyReference = jest.fn();
 
-        render(
+        const { dispatch } = renderWithRedux(
             <ReferenceManyFieldController
                 resource="posts"
                 reference="comments"
@@ -105,17 +159,38 @@ describe('<ReferenceManyFieldController />', () => {
                 basePath=""
                 record={{ id: 'not me', customId: 1 }}
                 source="customId"
-                crudGetManyReference={crudGetManyReference}
             >
                 {children}
             </ReferenceManyFieldController>
         );
 
-        assert.equal(crudGetManyReference.mock.calls[0][2], 1);
+        assert.deepEqual(dispatch.mock.calls[0], [
+            {
+                meta: {
+                    fetch: 'GET_MANY_REFERENCE',
+                    onFailure: {
+                        notification: {
+                            body: 'ra.notification.http_error',
+                            level: 'warning',
+                        },
+                    },
+                    relatedTo: 'posts_comments@post_id_1',
+                    resource: 'comments',
+                },
+                payload: {
+                    filter: {},
+                    id: 1,
+                    pagination: { page: 1, perPage: 25 },
+                    sort: { field: 'id', order: 'DESC' },
+                    source: 'customId',
+                    target: 'post_id',
+                },
+                type: 'RA/CRUD_GET_MANY_REFERENCE',
+            },
+        ]);
     });
 
     it('should call crudGetManyReference when its props changes', () => {
-        const crudGetManyReference = jest.fn();
         const ControllerWrapper = props => (
             <ReferenceManyFieldController
                 record={{ id: 1 }}
@@ -123,44 +198,66 @@ describe('<ReferenceManyFieldController />', () => {
                 reference="bar"
                 target="foo_id"
                 basePath=""
-                data={{
-                    1: { id: 1, title: 'hello' },
-                    2: { id: 2, title: 'world' },
-                }}
-                ids={[1, 2]}
                 source="id"
-                crudGetManyReference={crudGetManyReference}
                 {...props}
             >
                 {() => 'null'}
             </ReferenceManyFieldController>
         );
 
-        const { rerender } = render(<ControllerWrapper />);
+        const { rerender, dispatch } = renderWithRedux(<ControllerWrapper />);
         rerender(<ControllerWrapper sort={{ field: 'id', order: 'ASC' }} />);
 
-        expect(crudGetManyReference).toBeCalledTimes(2);
+        expect(dispatch).toBeCalledTimes(2);
 
-        assert.deepEqual(crudGetManyReference.mock.calls[0], [
-            'bar',
-            'foo_id',
-            1,
-            'foo_bar@foo_id_1',
-            { page: 1, perPage: 25 },
-            { field: 'id', order: 'DESC' },
-            {},
-            'id',
+        assert.deepEqual(dispatch.mock.calls[0], [
+            {
+                meta: {
+                    fetch: 'GET_MANY_REFERENCE',
+                    onFailure: {
+                        notification: {
+                            body: 'ra.notification.http_error',
+                            level: 'warning',
+                        },
+                    },
+                    relatedTo: 'foo_bar@foo_id_1',
+                    resource: 'bar',
+                },
+                payload: {
+                    filter: {},
+                    id: 1,
+                    pagination: { page: 1, perPage: 25 },
+                    sort: { field: 'id', order: 'DESC' },
+                    source: 'id',
+                    target: 'foo_id',
+                },
+                type: 'RA/CRUD_GET_MANY_REFERENCE',
+            },
         ]);
 
-        assert.deepEqual(crudGetManyReference.mock.calls[1], [
-            'bar',
-            'foo_id',
-            1,
-            'foo_bar@foo_id_1',
-            { page: 1, perPage: 25 },
-            { field: 'id', order: 'ASC' },
-            {},
-            'id',
+        assert.deepEqual(dispatch.mock.calls[1], [
+            {
+                meta: {
+                    fetch: 'GET_MANY_REFERENCE',
+                    onFailure: {
+                        notification: {
+                            body: 'ra.notification.http_error',
+                            level: 'warning',
+                        },
+                    },
+                    relatedTo: 'foo_bar@foo_id_1',
+                    resource: 'bar',
+                },
+                payload: {
+                    filter: {},
+                    id: 1,
+                    pagination: { page: 1, perPage: 25 },
+                    sort: { field: 'id', order: 'ASC' },
+                    source: 'id',
+                    target: 'foo_id',
+                },
+                type: 'RA/CRUD_GET_MANY_REFERENCE',
+            },
         ]);
     });
 });
