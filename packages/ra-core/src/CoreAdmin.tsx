@@ -48,6 +48,7 @@ export interface AdminProps {
     menu?: ComponentType;
     theme?: object;
     title?: TitleComponent;
+    onSagaError?(error: Error): void;
 }
 
 interface AdminContext {
@@ -163,6 +164,7 @@ React-admin requires a valid dataProvider function to work.`);
             i18nProvider,
             initialState,
             locale,
+            onSagaError,
         } = this.props;
 
         return this.reduxIsAlreadyInitialized ? (
@@ -178,6 +180,7 @@ React-admin requires a valid dataProvider function to work.`);
                     initialState,
                     locale,
                     history: this.history,
+                    onSagaError,
                 })}
             >
                 {this.renderCore()}

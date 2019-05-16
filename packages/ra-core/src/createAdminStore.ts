@@ -24,6 +24,7 @@ interface Params {
     i18nProvider?: I18nProvider;
     initialState?: object;
     locale?: string;
+    onSagaError?(error: Error): void;
 }
 
 export default ({
@@ -35,6 +36,7 @@ export default ({
     i18nProvider = defaultI18nProvider,
     initialState,
     locale = 'en',
+    onSagaError,
 }: Params) => {
     const messages = i18nProvider(locale);
     const appReducer = createAppReducer(
@@ -54,7 +56,7 @@ export default ({
             ].map(fork)
         );
     };
-    const sagaMiddleware = createSagaMiddleware();
+    const sagaMiddleware = createSagaMiddleware({ onError: onSagaError });
     const typedWindow = window as Window;
 
     const store = createStore(
