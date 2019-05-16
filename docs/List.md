@@ -87,10 +87,10 @@ You can replace the list of default actions by your own element using the `actio
 
 ```jsx
 import Button from '@material-ui/core/Button';
-import { CardActions, CreateButton, ExportButton, RefreshButton } from 'react-admin';
+import { CreateButton, ExportButton, RefreshButton } from 'react-admin';
+import Toolbar from '@material-ui/core/Toolbar';
 
 const PostActions = ({
-    bulkActions,
     basePath,
     currentSort,
     displayedFilters,
@@ -103,14 +103,7 @@ const PostActions = ({
     showFilter,
     total
 }) => (
-    <CardActions>
-        {bulkActions && React.cloneElement(bulkActions, {
-            basePath,
-            filterValues,
-            resource,
-            selectedIds,
-            onUnselectItems,
-        })}
+    <Toolbar>
         {filters && React.cloneElement(filters, {
             resource,
             showFilter,
@@ -126,10 +119,9 @@ const PostActions = ({
             filter={filterValues}
             exporter={exporter}
         />
-        <RefreshButton />
         {/* Add your custom actions */}
         <Button color="primary" onClick={customAction}>Custom Action</Button>
-    </CardActions>
+    </Toolbar>
 );
 
 export const PostList = (props) => (
