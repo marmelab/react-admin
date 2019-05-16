@@ -1,4 +1,5 @@
 const wp = require('@cypress/webpack-preprocessor');
+const task = require('cypress-skip-and-only-ui/task')
 
 module.exports = on => {
     const options = {
@@ -16,4 +17,6 @@ module.exports = on => {
         }
     });
     on('file:preprocessor', wp(options));
+
+    on('task', task);
 };
