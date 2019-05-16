@@ -5,15 +5,23 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import { makeStyles } from '@material-ui/core/styles';
 import { useTranslate, Title } from 'react-admin';
 
 import LinkToRelatedCustomers from './LinkToRelatedCustomers';
 import segments from './data';
 
+const useStyles = makeStyles({
+    root: {
+        marginTop: 16,
+    },
+});
+
 const Segments = () => {
     const translate = useTranslate();
+    const classes = useStyles();
     return (
-        <Card>
+        <Card className={classes.root}>
             <Title title={translate('resources.segments.name')} />
             <Table size="small">
                 <TableHead>
