@@ -12,6 +12,7 @@ import references, {
 import saving from './saving';
 import ui from './ui';
 import auth, { isLoggedIn as authIsLoggedIn } from './auth';
+import { AdminState } from '../../types';
 
 export default combineReducers({
     resources,
@@ -34,5 +35,11 @@ export const getReferenceResource = (state, props) => {
 };
 
 export const isLoggedIn = state => authIsLoggedIn(state.auth);
+
+export const selectViewVersion = (state: AdminState) => state.ui.viewVersion;
+export const selectIsSidebarOpen = (state: AdminState) => state.ui.sidebarOpen;
+export const selectIsOptimistic = (state: AdminState) => state.ui.optimistic;
+
+export const selectIsLoading = (state: AdminState) => state.loading > 0;
 
 export { getPossibleReferences } from './references';

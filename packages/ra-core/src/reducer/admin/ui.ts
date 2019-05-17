@@ -12,6 +12,7 @@ import {
     StopOptimisticModeAction,
 } from '../../actions';
 import { number } from '../../form';
+import { UIState } from '../../types';
 
 type ActionTypes =
     | ToggleSidebarAction
@@ -20,12 +21,6 @@ type ActionTypes =
     | StartOptimisticModeAction
     | StopOptimisticModeAction
     | { type: 'OTHER_ACTION' };
-
-export interface UIState {
-    readonly sidebarOpen: boolean;
-    readonly optimistic: boolean;
-    readonly viewVersion: number;
-}
 
 const defaultState: UIState = {
     sidebarOpen: false,
@@ -60,3 +55,7 @@ const uiReducer: Reducer<UIState> = (
 };
 
 export default uiReducer;
+
+export const selectViewVersion = (state: UIState) => state.viewVersion;
+export const selectIsSidebarOpen = (state: UIState) => state.sidebarOpen;
+export const selectIsOptimistic = (state: UIState) => state.optimistic;

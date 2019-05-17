@@ -42,31 +42,36 @@ export type DataProvider = (
     params: any
 ) => Promise<any>;
 
-export interface ReduxState {
-    admin: {
-        ui: {
-            optimistic: boolean;
-            viewVersion: number;
-        };
-        resources: {
-            [name: string]: {
-                data: any;
-                list: {
-                    params: any;
-                    ids: Identifier[];
-                    loadedOnce: boolean;
-                    selectedIds: Identifier[];
-                    total: number;
-                };
+export interface UIState {
+    readonly sidebarOpen: boolean;
+    readonly optimistic: boolean;
+    readonly viewVersion: number;
+}
+
+export interface AdminState {
+    ui: UIState;
+    resources: {
+        [name: string]: {
+            data: any;
+            list: {
+                params: any;
+                ids: Identifier[];
+                loadedOnce: boolean;
+                selectedIds: Identifier[];
+                total: number;
             };
         };
-        references: {
-            oneToMany: {
-                [relatedTo: string]: { ids: Identifier[]; total: number };
-            };
-        };
-        loading: number;
     };
+    references: {
+        oneToMany: {
+            [relatedTo: string]: { ids: Identifier[]; total: number };
+        };
+    };
+    loading: number;
+}
+
+export interface ReduxState {
+    admin: AdminState;
     i18n: {
         locale: string;
         messages: object;

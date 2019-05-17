@@ -6,9 +6,14 @@ import admin, {
     getReferenceResource as adminGetReferenceResource,
     getPossibleReferenceValues as adminGetPossibleReferenceValues,
     isLoggedIn as adminIsLoggedIn,
+    selectViewVersion as adminSelectViewVersion,
+    selectIsSidebarOpen as adminSelectIsSidebarOpen,
+    selectIsOptimistic as adminSelectIsOptimistic,
+    selectIsLoading as adminSelectIsLoading,
 } from './admin';
 export { getNotification } from './admin/notifications';
 import i18nReducer, { getLocale as adminGetLocale } from './i18n';
+import { ReduxState } from '../types';
 export default (customReducers, locale, messages, history) =>
     combineReducers({
         admin,
@@ -18,11 +23,29 @@ export default (customReducers, locale, messages, history) =>
         ...customReducers,
     });
 
-export const getPossibleReferenceValues = (state, props) =>
+export const getPossibleReferenceValues = (state: ReduxState, props) =>
     adminGetPossibleReferenceValues(state.admin, props);
-export const getResources = state => adminGetResources(state.admin);
-export const getReferenceResource = (state, props) =>
+
+export const getResources = (state: ReduxState) =>
+    adminGetResources(state.admin);
+
+export const getReferenceResource = (state: ReduxState, props) =>
     adminGetReferenceResource(state.admin, props);
-export const isLoggedIn = state => adminIsLoggedIn(state.admin);
-export const getLocale = state => adminGetLocale(state.i18n);
+
+export const isLoggedIn = (state: ReduxState) => adminIsLoggedIn(state.admin);
+
+export const getLocale = (state: ReduxState) => adminGetLocale(state.i18n);
+
+export const selectViewVersion = (state: ReduxState) =>
+    adminSelectViewVersion(state.admin);
+
+export const selectIsSidebarOpen = (state: ReduxState) =>
+    adminSelectIsSidebarOpen(state.admin);
+
+export const selectIsOptimistic = (state: ReduxState) =>
+    adminSelectIsOptimistic(state.admin);
+
+export const selectIsLoading = (state: ReduxState) =>
+    adminSelectIsLoading(state.admin);
+
 export { getPossibleReferences } from './admin';
