@@ -10,9 +10,9 @@ import { reviewReject as reviewRejectAction } from './reviewActions';
 /**
  * This custom button demonstrate using a custom action to update data
  */
-const AcceptButton = ({ record, reviewReject, comment }) => {
+const RejectButton = ({ record, reviewReject, comment }) => {
     const translate = useTranslate();
-    const handleApprove = () => {
+    const handleReject = () => {
         reviewReject(record.id, { ...record, comment });
     };
 
@@ -21,7 +21,7 @@ const AcceptButton = ({ record, reviewReject, comment }) => {
             variant="outlined"
             color="primary"
             size="small"
-            onClick={handleApprove}
+            onClick={handleReject}
         >
             <ThumbDown
                 color="primary"
@@ -34,7 +34,7 @@ const AcceptButton = ({ record, reviewReject, comment }) => {
     );
 };
 
-AcceptButton.propTypes = {
+RejectButton.propTypes = {
     comment: PropTypes.string,
     record: PropTypes.object,
     reviewReject: PropTypes.func,
@@ -49,4 +49,4 @@ export default connect(
     {
         reviewReject: reviewRejectAction,
     }
-)(AcceptButton);
+)(RejectButton);

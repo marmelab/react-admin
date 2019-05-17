@@ -26,7 +26,7 @@ import DefaultLoginForm from './LoginForm';
 interface Props {
     backgroundImage?: string;
     loginForm: ReactElement<any>;
-    staticContext: StaticContext;
+    staticContext?: StaticContext;
     theme: object;
 }
 
@@ -148,6 +148,7 @@ EnhancedLogin.propTypes = {
     backgroundImage: PropTypes.string,
     loginForm: PropTypes.element,
     theme: PropTypes.object,
+    staticContext: PropTypes.object,
 };
 
 EnhancedLogin.defaultProps = {
