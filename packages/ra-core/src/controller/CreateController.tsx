@@ -11,6 +11,7 @@ import { match as Match } from 'react-router';
 import { Record, Translate, ReduxState } from '../types';
 import { RedirectionSideEffect } from '../sideEffect';
 import { useTranslate } from '../i18n';
+import { selectIsLoading } from '../reducer';
 
 interface ChildrenFuncParams {
     isLoading: boolean;
@@ -96,10 +97,7 @@ const CreateController = (props: Props) => {
     const translate = useTranslate();
     const dispatch = useDispatch();
     const recordToUse = getRecord(location, record);
-    const isLoading = useSelector(
-        (state: ReduxState) => state.admin.loading > 0
-    );
-
+    const isLoading = useSelector(selectIsLoading);
     const save = useCallback(
         (data: Partial<Record>, redirect: RedirectionSideEffect) => {
             dispatch(crudCreate(resource, data, basePath, redirect));

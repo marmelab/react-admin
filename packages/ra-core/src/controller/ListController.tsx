@@ -28,6 +28,7 @@ import {
 import { Location } from 'history';
 import { useTranslate } from '../i18n';
 import useListParams from './useListParams';
+import { selectIsLoading, selectViewVersion } from '../reducer';
 
 interface ChildrenFuncParams {
     basePath: string;
@@ -148,13 +149,8 @@ const ListController = (props: Props) => {
 
     const dispatch = useDispatch();
     const translate = useTranslate();
-    const isLoading = useSelector(
-        (reduxState: ReduxState) => reduxState.admin.loading > 0
-    );
-
-    const version = useSelector(
-        (reduxState: ReduxState) => reduxState.admin.ui.viewVersion
-    );
+    const isLoading = useSelector(selectIsLoading);
+    const version = useSelector(selectViewVersion);
 
     const { loadedOnce, selectedIds } = useSelector(
         (reduxState: ReduxState) => reduxState.admin.resources[resource].list,

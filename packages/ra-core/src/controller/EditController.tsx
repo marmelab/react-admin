@@ -9,6 +9,7 @@ import { useCheckMinimumRequiredProps } from './checkMinimumRequiredProps';
 import { Translate, Record, Identifier, ReduxState } from '../types';
 import { RedirectionSideEffect } from '../sideEffect';
 import { useTranslate } from '../i18n';
+import { selectIsLoading, selectViewVersion } from '../reducer';
 
 interface ChildrenFuncParams {
     isLoading: boolean;
@@ -91,13 +92,8 @@ const EditController = (props: Props) => {
             : null
     );
 
-    const isLoading = useSelector(
-        (state: ReduxState) => state.admin.loading > 0
-    );
-
-    const version = useSelector(
-        (state: ReduxState) => state.admin.ui.viewVersion
-    );
+    const isLoading = useSelector(selectIsLoading);
+    const version = useSelector(selectViewVersion);
 
     useEffect(() => {
         dispatch(resetForm(REDUX_FORM_NAME));
