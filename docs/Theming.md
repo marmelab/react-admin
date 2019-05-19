@@ -352,14 +352,14 @@ const App = () => (
 
 ## Using a Custom Layout
 
-Instead of the default layout, you can use your own component as the admin layout. Just use the `appLayout` prop of the `<Admin>` component:
+Instead of the default layout, you can use your own component as the admin layout. Just use the `layout` prop of the `<Admin>` component:
 
 ```jsx
 // in src/App.js
 import MyLayout from './MyLayout';
 
 const App = () => (
-    <Admin appLayout={MyLayout} dataProvider={simpleRestProvider('http://path.to.my.api')}>
+    <Admin layout={MyLayout} dataProvider={simpleRestProvider('http://path.to.my.api')}>
         // ...
     </Admin>
 );
@@ -606,14 +606,14 @@ const MyLayout = (props) => <Layout {...props} appBar={MyAppBar} />;
 export default MyLayout;
 ```
 
-Then, use this layout in the `<Admin>` with the `appLayout` prop:
+Then, use this layout in the `<Admin>` with the `layout` prop:
 
 ```jsx
 // in src/App.js
 import MyLayout from './MyLayout';
 
 const App = () => (
-    <Admin appLayout={MyLayout} dataProvider={simpleRestProvider('http://path.to.my.api')}>
+    <Admin layout={MyLayout} dataProvider={simpleRestProvider('http://path.to.my.api')}>
         // ...
     </Admin>
 );
@@ -710,14 +710,14 @@ const MyLayout = (props) => <Layout {...props} menu={MyMenu} />;
 export default MyLayout;
 ```
 
-Then, use this layout in the `<Admin>` `appLayout` prop:
+Then, use this layout in the `<Admin>` `layout` prop:
 
 ```jsx
 // in src/App.js
 import MyLayout from './MyLayout';
 
 const App = () => (
-    <Admin appLayout={MyLayout} dataProvider={simpleRestProvider('http://path.to.my.api')}>
+    <Admin layout={MyLayout} dataProvider={simpleRestProvider('http://path.to.my.api')}>
         // ...
     </Admin>
 );
@@ -808,14 +808,14 @@ const MyLayout = (props) => <Layout {...props} notification={MyNotification} />;
 export default MyLayout;
 ```
 
-Then, use this layout in the `<Admin>` `applayout` prop:
+Then, use this layout in the `<Admin>` `layout` prop:
 
 ```jsx
 // in src/App.js
 import MyLayout from './MyLayout';
 
 const App = () => (
-    <Admin appLayout={MyLayout} dataProvider={simpleRestProvider('http://path.to.my.api')}>
+    <Admin layout={MyLayout} dataProvider={simpleRestProvider('http://path.to.my.api')}>
         // ...
     </Admin>
 );
@@ -875,14 +875,14 @@ const MyLayout = (props) => <Layout {...props} error={MyError} />;
 export default MyLayout;
 ```
 
-Then, use this layout in the `<Admin>` `applayout` prop:
+Then, use this layout in the `<Admin>` `layout` prop:
 
 ```jsx
 // in src/App.js
 import MyLayout from './MyLayout';
 
 const App = () => (
-    <Admin appLayout={MyLayout} dataProvider={simpleRestProvider('http://path.to.my.api')}>
+    <Admin layout={MyLayout} dataProvider={simpleRestProvider('http://path.to.my.api')}>
         // ...
     </Admin>
 );

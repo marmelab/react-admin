@@ -29,7 +29,8 @@ export type ChildrenFunction = () => ComponentType[];
 const DefaultLayout: SFC<LayoutProps> = ({ children }) => <>{children}</>;
 
 export interface AdminProps {
-    appLayout: LayoutComponent;
+    layout: LayoutComponent;
+    appLayout?: LayoutComponent;
     authProvider?: AuthProvider;
     children?: AdminChildren;
     catchAll: CatchAllComponent;
@@ -61,7 +62,8 @@ class CoreAdminBase extends Component<AdminProps> {
 
     static defaultProps: Partial<AdminProps> = {
         catchAll: () => null,
-        appLayout: DefaultLayout,
+        layout: DefaultLayout,
+        appLayout: undefined,
         loading: () => null,
         loginPage: false,
     };
@@ -90,6 +92,7 @@ React-admin requires a valid dataProvider function to work.`);
 
     renderCore() {
         const {
+            layout,
             appLayout,
             authProvider,
             children,
@@ -106,6 +109,11 @@ React-admin requires a valid dataProvider function to work.`);
 
         const logout = authProvider ? createElement(logoutButton) : null;
 
+        if (appLayout) {
+            console.warn(
+                'You are using deprecated prop "appLayout", it was replaced by "layout", see https://github.com/marmelab/react-admin/issues/2918'
+            );
+        }
         if (loginPage === true && process.env.NODE_ENV !== 'production') {
             console.warn(
                 'You passed true to the loginPage prop. You must either pass false to disable it or a component class to customize it'
@@ -133,7 +141,7 @@ React-admin requires a valid dataProvider function to work.`);
                             path="/"
                             render={props => (
                                 <CoreAdminRouter
-                                    appLayout={appLayout}
+                                    layout={appLayout || layout}
                                     catchAll={catchAll}
                                     customRoutes={customRoutes}
                                     dashboard={dashboard}

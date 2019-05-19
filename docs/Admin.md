@@ -34,7 +34,7 @@ Here are all the props accepted by the component:
     - [`catchAll`](#catchall)
     - [`menu`](#menu)
     - [`theme`](#theme)
-    - [`appLayout`](#applayout)
+    - [`layout`](#layout)
     - [`customReducers`](#customreducers)
     - [`customSagas`](#customsagas)
     - [`customRoutes`](#customroutes)
@@ -153,7 +153,7 @@ const App = () => (
 
 ## `menu`
 
-**Tip**: This prop is deprecated. To override the menu component, use a [custom layout](#applayout) instead.
+**Tip**: This prop is deprecated. To override the menu component, use a [custom layout](#layout) instead.
 
 React-admin uses the list of `<Resource>` components passed as children of `<Admin>` to build a menu to each resource with a `list` component.
 
@@ -243,7 +243,7 @@ const App = () => (
 
 For more details on predefined themes and custom themes, refer to the [Material UI Customization documentation](https://material-ui.com/customization/themes/).
 
-## `appLayout`
+## `layout`
 
 If you want to deeply customize the app header, the menu, or the notifications, the best way is to provide a custom layout component. It must contain a `{children}` placeholder, where react-admin will render the resources. If you use material UI fields and inputs, it should contain a `<ThemeProvider>` element. And finally, if you want to show the spinner in the app header when the app fetches data in the background, the Layout should connect to the redux store.
 
@@ -254,7 +254,7 @@ Use the [default layout](https://github.com/marmelab/react-admin/blob/master/pac
 import MyLayout from './MyLayout';
 
 const App = () => (
-    <Admin appLayout={MyLayout} dataProvider={simpleRestProvider('http://path.to.my.api')}>
+    <Admin layout={MyLayout} dataProvider={simpleRestProvider('http://path.to.my.api')}>
         // ...
     </Admin>
 );
