@@ -34,7 +34,12 @@ const styles = theme =>
         appFrame: {
             display: 'flex',
             flexDirection: 'column',
-            marginTop: theme.spacing(6),
+            [theme.breakpoints.up('xs')]: {
+                marginTop: theme.spacing(6),
+            },
+            [theme.breakpoints.down('xs')]: {
+                marginTop: theme.spacing(7),
+            },
         },
         contentWithSidebar: {
             display: 'flex',
