@@ -6,7 +6,7 @@ import Confirm from './Confirm';
 import DashboardMenuItem from './DashboardMenuItem';
 import Error from './Error';
 import Header from './Header';
-import Headroom from './Headroom';
+import HideOnScroll from './HideOnScroll';
 import Layout from './Layout';
 import Loading from './Loading';
 import LinearProgress from './LinearProgress';
@@ -33,7 +33,7 @@ export {
     DashboardMenuItem,
     Error,
     Header,
-    Headroom,
+    HideOnScroll,
     Layout,
     Loading,
     LinearProgress,

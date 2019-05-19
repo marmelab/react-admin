@@ -14,7 +14,7 @@ import { toggleSidebar as toggleSidebarAction } from 'ra-core';
 
 import LoadingIndicator from './LoadingIndicator';
 import UserMenu from './UserMenu';
-import Headroom from './Headroom';
+import HideOnScroll from './HideOnScroll';
 
 const styles = theme =>
     createStyles({
@@ -60,13 +60,8 @@ const AppBar = ({
     width,
     ...rest
 }) => (
-    <Headroom>
-        <MuiAppBar
-            className={className}
-            color="secondary"
-            position="static"
-            {...rest}
-        >
+    <HideOnScroll>
+        <MuiAppBar className={className} color="secondary" {...rest}>
             <Toolbar
                 disableGutters
                 variant={width === 'xs' ? 'regular' : 'dense'}
@@ -100,7 +95,7 @@ const AppBar = ({
                 {cloneElement(userMenu, { logout })}
             </Toolbar>
         </MuiAppBar>
-    </Headroom>
+    </HideOnScroll>
 );
 
 AppBar.propTypes = {
