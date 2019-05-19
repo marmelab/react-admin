@@ -81,7 +81,22 @@ const ShowController = (props: Props) => {
         (state: ReduxState) => state.admin.ui.viewVersion
     );
 
-    const { record, loading } = useGetOne(resource, id, basePath, version);
+    const { data: record, loading } = useGetOne(
+        resource,
+        id,
+        {
+            basePath,
+            onFailure: {
+                notification: {
+                    body: 'ra.notification.item_doesnt_exist',
+                    level: 'warning',
+                },
+                redirectTo: 'list',
+                refresh: true,
+            },
+        },
+        version
+    );
 
     if (!children) {
         return null;

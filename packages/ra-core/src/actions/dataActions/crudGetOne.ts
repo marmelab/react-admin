@@ -10,23 +10,14 @@ import {
 export const crudGetOne = (
     resource: string,
     id: Identifier,
-    basePath: string,
-    refresh: RefreshSideEffect = true
+    meta: any
 ): CrudGetOneAction => ({
     type: CRUD_GET_ONE,
     payload: { id },
     meta: {
         resource,
         fetch: GET_ONE,
-        basePath,
-        onFailure: {
-            notification: {
-                body: 'ra.notification.item_doesnt_exist',
-                level: 'warning',
-            },
-            redirectTo: 'list',
-            refresh,
-        },
+        ...meta,
     },
 });
 
@@ -41,12 +32,7 @@ export interface CrudGetOneAction {
     readonly meta: {
         resource: string;
         fetch: typeof GET_ONE;
-        basePath: string;
-        onFailure: {
-            notification: NotificationSideEffect;
-            redirectTo: RedirectionSideEffect;
-            refresh: RefreshSideEffect;
-        };
+        [key: string]: any;
     };
 }
 
@@ -68,11 +54,9 @@ export interface CrudGetOneFailureAction {
     readonly requestPayload: RequestPayload;
     readonly meta: {
         resource: string;
-        notification: NotificationSideEffect;
-        redirectTo: RedirectionSideEffect;
-        refresh: RefreshSideEffect;
         fetchResponse: typeof GET_ONE;
         fetchStatus: typeof FETCH_ERROR;
+        [key: string]: any;
     };
 }
 
@@ -87,5 +71,6 @@ export interface CrudGetOneSuccessAction {
         resource: string;
         fetchResponse: typeof GET_ONE;
         fetchStatus: typeof FETCH_END;
+        [key: string]: any;
     };
 }
