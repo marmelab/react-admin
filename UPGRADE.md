@@ -138,3 +138,18 @@ export const PostEdit = (props) => (
 ```
 
 But watch out, you can't just replace "CardActions" by "TopToolbar" in your entire codebase, because you probably also use Material-ui's `<CardActions>`, and that component still exists. The fact that react-admin exported a component with the same name but with a different look and feel than the material-iu component was also a motivation to rename it.
+
+## `<Admin appLayout` prop renamed to `<Admin layout`
+
+You can inject a layout component in the `<Admin>` component to override the default layout. However, this injection used a counterintuitive prop name: `appLayout`. It has been renamed to the more natural `layout`.
+
+You will only have to change your code if you used a custom layout:
+
+```diff
+const App = () => (
+-   <Admin appLayout={MyLayout}>
++   <Admin layout={MyLayout}>
+        <Resource name="posts" list={PostList} edit={PostEdit} />
+    </Admin>
+);
+```
