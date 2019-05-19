@@ -9,6 +9,7 @@ import record from './record';
 import references, {
     getPossibleReferenceValues as referencesGetPossibleReferenceValues,
 } from './references';
+import requests from './requests';
 import saving from './saving';
 import ui from './ui';
 import auth, { isLoggedIn as authIsLoggedIn } from './auth';
@@ -19,6 +20,7 @@ export default combineReducers({
     notifications,
     record,
     references,
+    requests,
     saving,
     ui,
     auth,

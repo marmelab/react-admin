@@ -17,6 +17,7 @@ const primedStore = {
             oneToMany: {},
             possibleValues: {},
         },
+        requests: {},
         resources: {},
         saving: false,
         ui: {

@@ -1,11 +1,12 @@
-import { ReactNode, useEffect } from 'react';
+import { ReactNode } from 'react';
 // @ts-ignore
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import inflection from 'inflection';
-import { crudGetOne } from '../actions';
+
 import { useCheckMinimumRequiredProps } from './checkMinimumRequiredProps';
 import { Translate, Record, Identifier, ReduxState } from '../types';
 import { useTranslate } from '../i18n';
+import useGetOne from './useGetOne';
 
 interface ChildrenFuncParams {
     isLoading: boolean;
@@ -75,25 +76,12 @@ const ShowController = (props: Props) => {
     useCheckMinimumRequiredProps('Show', ['basePath', 'resource'], props);
     const { basePath, children, id, resource } = props;
     const translate = useTranslate();
-    const dispatch = useDispatch();
-
-    const record = useSelector((state: ReduxState) =>
-        state.admin.resources[props.resource]
-            ? state.admin.resources[props.resource].data[props.id]
-            : null
-    );
-
-    const isLoading = useSelector(
-        (state: ReduxState) => state.admin.loading > 0
-    );
 
     const version = useSelector(
         (state: ReduxState) => state.admin.ui.viewVersion
     );
 
-    useEffect(() => {
-        dispatch(crudGetOne(resource, id, basePath));
-    }, [resource, id, basePath, version]);
+    const { record, loading } = useGetOne(resource, id, basePath, version);
 
     if (!children) {
         return null;
@@ -109,7 +97,7 @@ const ShowController = (props: Props) => {
         record,
     });
     return children({
-        isLoading,
+        isLoading: loading,
         defaultTitle,
         resource,
         basePath,

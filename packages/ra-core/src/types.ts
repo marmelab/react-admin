@@ -48,6 +48,13 @@ export interface ReduxState {
             optimistic: boolean;
             viewVersion: number;
         };
+        requests: {
+            [key: string]: {
+                loaded?: boolean;
+                loading?: boolean;
+                error?: string;
+            };
+        };
         resources: {
             [name: string]: {
                 data: any;

@@ -104,7 +104,15 @@ export function* handleFetch(
         }
 
         yield all([
-            put({ type: `${type}_LOADING`, payload, meta }),
+            put({
+                type: `${type}_LOADING`,
+                payload,
+                meta: {
+                    ...meta,
+                    fetchResponse: restType,
+                    fetchStatus: FETCH_START,
+                },
+            }),
             put({ type: FETCH_START }),
         ]);
         const response = yield call(

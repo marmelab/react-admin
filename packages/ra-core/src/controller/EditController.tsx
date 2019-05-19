@@ -3,12 +3,14 @@ import { ReactNode, useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { reset as resetForm } from 'redux-form';
 import inflection from 'inflection';
-import { crudGetOne, crudUpdate, startUndoable } from '../actions';
+
+import { crudUpdate, startUndoable } from '../actions';
 import { REDUX_FORM_NAME } from '../form';
 import { useCheckMinimumRequiredProps } from './checkMinimumRequiredProps';
 import { Translate, Record, Identifier, ReduxState } from '../types';
 import { RedirectionSideEffect } from '../sideEffect';
 import { useTranslate } from '../i18n';
+import useGetOne from './useGetOne';
 
 interface ChildrenFuncParams {
     isLoading: boolean;
@@ -85,23 +87,14 @@ const EditController = (props: Props) => {
 
     const { basePath, children, id, resource, undoable } = props;
 
-    const record = useSelector((state: ReduxState) =>
-        state.admin.resources[props.resource]
-            ? state.admin.resources[props.resource].data[props.id]
-            : null
-    );
-
-    const isLoading = useSelector(
-        (state: ReduxState) => state.admin.loading > 0
-    );
-
     const version = useSelector(
         (state: ReduxState) => state.admin.ui.viewVersion
     );
 
+    const { record, loading } = useGetOne(resource, id, basePath, version);
+
     useEffect(() => {
         dispatch(resetForm(REDUX_FORM_NAME));
-        dispatch(crudGetOne(resource, id, basePath));
     }, [resource, id, basePath, version]);
 
     if (!children) {
@@ -139,7 +132,7 @@ const EditController = (props: Props) => {
     );
 
     return children({
-        isLoading,
+        isLoading: loading,
         defaultTitle,
         save,
         resource,
