@@ -11,7 +11,6 @@ title: "Reference"
 * [`<Admin>`](./Admin.md)
 * `<AdminRoutes>`
 * `<AppBar>`
-* `<AppBarMobile>` (deprecated)
 * [`<ArrayField>`](./Fields.md#arrayfield)
 * [`<ArrayInput>`](./Inputs.md#arrayinput)
 * [`<Authenticated>`](./Authentication.md#restricting-access-to-a-custom-page)
@@ -47,7 +46,6 @@ title: "Reference"
 * [`<FormDataConsumer>`](./Inputs.md#linking-two-inputs)
 * [`<FormTab>`](./CreateEdit.md#the-tabbedform-component)
 * [`<FunctionField>`](./Fields.md#functionfield)
-* `<EditButton>`
 * [`<ImageField>`](./Fields.md#imagefield)
 * [`<ImageInput>`](./Inputs.md#imageinput)
 * [`<ImageInputPreview>`](./Inputs.md#imageinput)
@@ -94,7 +92,6 @@ title: "Reference"
 * `<Title>`
 * `<Toolbar>`
 * [`<UrlField>`](./Fields.md#urlfield)
-* `<ViewTitle>` (deprecated)
 * [`<WithPermissions>`](./Authorization.md#withpermissions)
 
 </div>

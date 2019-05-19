@@ -153,3 +153,11 @@ const App = () => (
     </Admin>
 );
 ```
+
+## Deprecated components were removed
+
+Components deprecated in 2.X have been removed in 3.x. This includes:
+
+* `AppBarMobile` (use `AppBar` instead, which is responsive)
+* `Header` (use `Title` instead)
+* `ViewTitle` (use `Title` instead)
