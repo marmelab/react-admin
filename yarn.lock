@@ -1640,14 +1640,14 @@
     "@types/istanbul-lib-coverage" "^2.0.0"
     "@types/yargs" "^12.0.9"
 
-"@material-ui/core@^4.0.0-beta.0":
-  version "4.0.0-beta.1"
-  resolved "https://registry.yarnpkg.com/@material-ui/core/-/core-4.0.0-beta.1.tgz#5f8f47b66e92f266abbad6cfcc9efa6e5d87e54c"
-  integrity sha512-QuUKg7+myF+UdBs1MrCNo5N02sbXgfji7OQ8ImWzQRcwhB0uVqmGhB7rPiQnq8yb32e1X37btCinjE+gxdY1XA==
+"@material-ui/core@^4.0.0-beta.2":
+  version "4.0.0-beta.2"
+  resolved "https://registry.yarnpkg.com/@material-ui/core/-/core-4.0.0-beta.2.tgz#5efc6f697c6a9c570ca55c6e30a38bef10f27bee"
+  integrity sha512-AcAmd55hRloY2YqDvcwmZK4OiLZ+98nKliRh/YKyQqISEV0Lt98qRxxepluAm4KKr509Bjgg+rEJ+K+FpDTGjw==
   dependencies:
     "@babel/runtime" "^7.2.0"
-    "@material-ui/styles" "^4.0.0-beta.1"
-    "@material-ui/system" "^4.0.0-beta.1"
+    "@material-ui/styles" "^4.0.0-beta.2"
+    "@material-ui/system" "^4.0.0-beta.2"
     "@material-ui/types" "^4.0.0-beta.2"
     "@material-ui/utils" "^4.0.0-beta.1"
     "@types/react-transition-group" "^2.0.16"
@@ -1672,10 +1672,10 @@
   dependencies:
     "@babel/runtime" "^7.2.0"
 
-"@material-ui/styles@^4.0.0-beta.0", "@material-ui/styles@^4.0.0-beta.1":
-  version "4.0.0-beta.1"
-  resolved "https://registry.yarnpkg.com/@material-ui/styles/-/styles-4.0.0-beta.1.tgz#a552fe402763f0579cbd39e79a9e42fbf6762139"
-  integrity sha512-k41Xw6U6CHLNupWMCcc5w7AONNddsZVTUL7qe6nIMWZeBdLxX77N/nNZBq5sU2aFY5sShB8JwXK5X/xhDNfPgg==
+"@material-ui/styles@^4.0.0-beta.2":
+  version "4.0.0-beta.2"
+  resolved "https://registry.yarnpkg.com/@material-ui/styles/-/styles-4.0.0-beta.2.tgz#a2bb580590f9a41cb98e8b76f4a6382703aba790"
+  integrity sha512-fX0pfTtw2f6+AlfzQlsue5AJ18mZbFbC9Og339tx9wwM8aPjk/9dNr9nPugAqFbdB41Lz3t4tn5sGx2Jm/grEg==
   dependencies:
     "@babel/runtime" "^7.2.0"
     "@emotion/hash" "^0.7.1"
@@ -1695,10 +1695,10 @@
     prop-types "^15.7.2"
     warning "^4.0.1"
 
-"@material-ui/system@^4.0.0-beta.1":
-  version "4.0.0-beta.1"
-  resolved "https://registry.yarnpkg.com/@material-ui/system/-/system-4.0.0-beta.1.tgz#6e170d72b8f4944f1d9d915f435967d1a7bcdac3"
-  integrity sha512-SXmS3PYF2SzRLpcGPydqZkxJlQACQWPahKjb7VYkOucKWcHBQNEE2fD5q/A1izaGNAXMnE082butdkyZD2Kf0g==
+"@material-ui/system@^4.0.0-beta.2":
+  version "4.0.0-beta.2"
+  resolved "https://registry.yarnpkg.com/@material-ui/system/-/system-4.0.0-beta.2.tgz#b4a3d418d9f19537384234041aab3a1a789e7efe"
+  integrity sha512-0KkCMZuUDGtx4iKbWxw9G4ncn5ZNgG7aYnHLEebFEPyb9EX66XP2whIUHWhPSaPBXb4QarUWOSCGDFoCX6ecSw==
   dependencies:
     "@babel/runtime" "^7.2.0"
     deepmerge "^3.0.0"
