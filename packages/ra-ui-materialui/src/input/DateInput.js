@@ -72,6 +72,7 @@ export class DateInput extends Component {
                 className={className}
                 type="date"
                 margin="normal"
+                id={`${resource}_${source}_date_input`}
                 error={!!(touched && error)}
                 helperText={touched && error}
                 label={

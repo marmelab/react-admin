@@ -4,7 +4,7 @@ import NodeActions from './NodeActions';
 
 const NodeFormActions = props => (
     <NodeActions {...props}>
-        <SaveButton variant="flat" />
+        <SaveButton variant="text" />
     </NodeActions>
 );
 

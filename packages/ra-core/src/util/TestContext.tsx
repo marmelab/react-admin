@@ -1,4 +1,4 @@
-import React, { SFC } from 'react';
+import React, { Component } from 'react';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import { reducer as formReducer } from 'redux-form';
@@ -19,7 +19,7 @@ export const defaultStore = {
 };
 
 interface Props {
-    store?: object;
+    initialState?: object;
     enableReducers?: boolean;
 }
 
@@ -31,7 +31,7 @@ interface Props {
  * @example
  * // in an enzyme test
  * const wrapper = render(
- *     <TestContext store={{ admin: { resources: { post: { data: { 1: {id: 1, title: 'foo' } } } } } }}>
+ *     <TestContext initialState={{ admin: { resources: { post: { data: { 1: {id: 1, title: 'foo' } } } } } }}>
  *         <Show {...defaultShowProps} />
  *     </TestContext>
  * );
@@ -39,7 +39,7 @@ interface Props {
  * @example
  * // in an enzyme test, using jest.
  * const wrapper = render(
- *     <TestContext store={{ admin: { resources: { post: { data: { 1: {id: 1, title: 'foo' } } } } } }}>
+ *     <TestContext initialState={{ admin: { resources: { post: { data: { 1: {id: 1, title: 'foo' } } } } } }}>
  *         {({ store }) => {
  *              dispatchSpy = jest.spyOn(store, 'dispatch');
  *              return <Show {...defaultShowProps} />
@@ -47,29 +47,37 @@ interface Props {
  *     </TestContext>
  * );
  */
-const TestContext: SFC<Props> = ({
-    store = {},
-    enableReducers = false,
-    children,
-}) => {
-    const storeWithDefault = enableReducers
-        ? createAdminStore({
-              initialState: merge(defaultStore, store),
-              dataProvider: () => Promise.resolve({}),
-              history: createMemoryHistory(),
-          })
-        : createStore(() => merge(defaultStore, store));
+class TestContext extends Component<Props> {
+    storeWithDefault = null;
 
-    const renderChildren = () =>
-        typeof children === 'function'
-            ? children({ store: storeWithDefault })
+    constructor(props) {
+        super(props);
+        const { initialState = {}, enableReducers = false } = props;
+        this.storeWithDefault = enableReducers
+            ? createAdminStore({
+                  initialState: merge(defaultStore, initialState),
+                  dataProvider: () => Promise.resolve({}),
+                  history: createMemoryHistory(),
+              })
+            : createStore(() => merge(defaultStore, initialState));
+    }
+
+    renderChildren = () => {
+        const { children } = this.props;
+        return typeof children === 'function'
+            ? children({ store: this.storeWithDefault })
             : children;
+    };
 
-    return (
-        <Provider store={storeWithDefault}>
-            <TranslationProvider>{renderChildren()}</TranslationProvider>
-        </Provider>
-    );
-};
+    render() {
+        return (
+            <Provider store={this.storeWithDefault}>
+                <TranslationProvider>
+                    {this.renderChildren()}
+                </TranslationProvider>
+            </Provider>
+        );
+    }
+}
 
 export default TestContext;

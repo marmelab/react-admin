@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import onlyUpdateForKeys from 'recompose/onlyUpdateForKeys';
 import { sanitizeListRestProps } from 'ra-core';
 
-import CardActions from '../layout/CardActions';
+import TopToolbar from '../layout/TopToolbar';
 import { CreateButton, ExportButton } from '../button';
 
-const Actions = ({
+const ListActions = ({
     bulkActions,
     currentSort,
     className,
@@ -15,6 +15,7 @@ const Actions = ({
     displayedFilters,
     exporter,
     filterValues,
+    permanentFilter,
     hasCreate,
     basePath,
     selectedIds,
@@ -23,7 +24,7 @@ const Actions = ({
     total,
     ...rest
 }) => (
-    <CardActions className={className} {...sanitizeListRestProps(rest)}>
+    <TopToolbar className={className} {...sanitizeListRestProps(rest)}>
         {bulkActions &&
             cloneElement(bulkActions, {
                 basePath,
@@ -46,14 +47,14 @@ const Actions = ({
                 disabled={total === 0}
                 resource={resource}
                 sort={currentSort}
-                filter={filterValues}
+                filter={{ ...filterValues, ...permanentFilter }}
                 exporter={exporter}
             />
         )}
-    </CardActions>
+    </TopToolbar>
 );
 
-Actions.propTypes = {
+ListActions.propTypes = {
     bulkActions: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
     basePath: PropTypes.string,
     className: PropTypes.string,
@@ -70,8 +71,9 @@ Actions.propTypes = {
     total: PropTypes.number.isRequired,
 };
 
-Actions.defaultProps = {
+ListActions.defaultProps = {
     selectedIds: [],
+    onUnselectItems: () => null,
 };
 
 export default onlyUpdateForKeys([
@@ -80,4 +82,4 @@ export default onlyUpdateForKeys([
     'displayedFilters',
     'filterValues',
     'selectedIds',
-])(Actions);
+])(ListActions);

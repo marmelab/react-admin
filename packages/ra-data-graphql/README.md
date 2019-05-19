@@ -50,7 +50,7 @@ import React, { Component } from 'react';
 import buildGraphQLProvider from 'ra-data-graphql';
 import { Admin, Resource, Delete } from 'react-admin';
 
-import builqQuery from './buildQuery'; // see Specify your queries and mutations section below
+import buildQuery from './buildQuery'; // see Specify your queries and mutations section below
 import { PostCreate, PostEdit, PostList } from '../components/admin/posts';
 
 class App extends Component {

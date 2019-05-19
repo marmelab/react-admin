@@ -13,12 +13,12 @@ import { DROP_TARGET_TYPE } from './constants';
 
 const styles = theme => ({
     root: {
-        paddingLeft: theme.spacing.unit * 6,
+        paddingLeft: theme.spacing(6),
     },
     text: {
-        paddingLeft: theme.spacing.unit * 2,
-        paddingTop: theme.spacing.unit,
-        paddingBottom: theme.spacing.unit,
+        paddingLeft: theme.spacing(2),
+        paddingTop: theme.spacing(1),
+        paddingBottom: theme.spacing(1),
     },
     hover: {
         backgroundColor: theme.palette.action.active,

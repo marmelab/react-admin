@@ -1,4 +1,4 @@
-import { LOCATION_CHANGE } from 'react-router-redux';
+import { LOCATION_CHANGE } from 'connected-react-router';
 import { destroy } from 'redux-form';
 import isEqual from 'lodash/isEqual';
 
@@ -20,7 +20,9 @@ const formMiddleware = () => {
     return next => action => {
         if (
             action.type !== LOCATION_CHANGE ||
-            (action.payload.state && action.payload.state.skipFormReset)
+            (action.payload.location &&
+                action.payload.location.search &&
+                action.payload.location.search === '?skipFormReset') // FIXME use location state when https://github.com/supasate/connected-react-router/issues/301 is fixed
         ) {
             return next(action);
         }

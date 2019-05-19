@@ -236,7 +236,7 @@ export default (type, params) => {
 
 ## Customizing The Login and Logout Components
 
-Using `authProvider` and `checkCredentials` is enough to implement a full-featured authorization system if the authentication relies on a username and password.
+Using `authProvider` is enough to implement a full-featured authorization system if the authentication relies on a username and password.
 
 But what if you want to use an email instead of a username? What if you want to use a Single-Sign-On (SSO) with a third-party authentication service? What if you want to use two-factor authentication?
 
@@ -249,7 +249,7 @@ For all these cases, it's up to you to implement your own `LoginPage` component,
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { userLogin } from 'react-admin';
-import { MuiThemeProvider } from '@material-ui/core/styles';
+import { ThemeProvider } from '@material-ui/styles';
 
 class MyLoginPage extends Component {
     submit = (e) => {
@@ -263,11 +263,11 @@ class MyLoginPage extends Component {
 
     render() {
         return (
-            <MuiThemeProvider theme={this.props.theme}>
+            <ThemeProvider theme={this.props.theme}>
                 <form onSubmit={this.submit}>
                 ...
                 </form>
-            </MuiThemeProvider>
+            </ThemeProvider>
         );
     }
 };

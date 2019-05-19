@@ -56,7 +56,7 @@ class TranslationProviderView extends Component<ViewProps, State> {
     }
 
     componentDidUpdate(prevProps) {
-        if (prevProps.locale !== this.props.locale) {
+        if (prevProps.locale !== this.props.locale || prevProps.messages !== this.props.messages) {
             const { locale, messages } = this.props;
 
             const polyglot = new Polyglot({

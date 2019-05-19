@@ -1,11 +1,12 @@
 import React from 'react';
 import Avatar from '@material-ui/core/Avatar';
 
-const AvatarField = ({ record, size }) => (
+const AvatarField = ({ record, size, className }) => (
     <Avatar
         src={`${record.avatar}?size=${size}x${size}`}
         size={size}
         style={{ width: size, height: size }}
+        className={className}
     />
 );
 

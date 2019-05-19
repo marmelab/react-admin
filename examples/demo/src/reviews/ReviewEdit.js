@@ -46,7 +46,7 @@ const ReviewEdit = ({ classes, onCancel, ...props }) => (
             controllerProps.record ? (
                 <div className={classes.root}>
                     <div className={classes.title}>
-                        <Typography variant="title">
+                        <Typography variant="h6">
                             {controllerProps.translate(
                                 'resources.reviews.detail'
                             )}

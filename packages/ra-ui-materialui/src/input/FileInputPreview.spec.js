@@ -14,7 +14,7 @@ describe('<FileInputPreview />', () => {
             </FileInputPreview>
         );
 
-        const removeButton = wrapper.find('WithStyles(IconButton)');
+        const removeButton = wrapper.find('WithStyles(ForwardRef(IconButton))');
         removeButton.simulate('click');
 
         assert.equal(onRemoveSpy.mock.calls.length, 1);

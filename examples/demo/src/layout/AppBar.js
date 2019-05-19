@@ -1,5 +1,5 @@
 import React from 'react';
-import { AppBar, UserMenu, MenuItemLink, translate } from 'react-admin';
+import { AppBar, UserMenu, MenuItemLink, useTranslate } from 'react-admin';
 import Typography from '@material-ui/core/Typography';
 import SettingsIcon from '@material-ui/icons/Settings';
 import { withStyles } from '@material-ui/core/styles';
@@ -18,20 +18,23 @@ const styles = {
     },
 };
 
-const CustomUserMenu = translate(({ translate, ...props }) => (
-    <UserMenu {...props}>
-        <MenuItemLink
-            to="/configuration"
-            primaryText={translate('pos.configuration')}
-            leftIcon={<SettingsIcon />}
-        />
-    </UserMenu>
-));
+const CustomUserMenu = props => {
+    const translate = useTranslate();
+    return (
+        <UserMenu {...props}>
+            <MenuItemLink
+                to="/configuration"
+                primaryText={translate('pos.configuration')}
+                leftIcon={<SettingsIcon />}
+            />
+        </UserMenu>
+    );
+};
 
 const CustomAppBar = ({ classes, ...props }) => (
     <AppBar {...props} userMenu={<CustomUserMenu />}>
         <Typography
-            variant="title"
+            variant="h6"
             color="inherit"
             className={classes.title}
             id="react-admin-title"

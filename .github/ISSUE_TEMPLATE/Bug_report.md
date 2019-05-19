@@ -18,7 +18,7 @@ about: Something isn't working as expected. Please tell us!
 **Related code:**
 <!-- If you are able to illustrate the bug or feature request with an example, please provide a sample application via one of the following means:
 
-* CodeSandbox (https://codesandbox.io/s/349ovjmlx5)
+* CodeSandbox (https://codesandbox.io/s/github/marmelab/react-admin/tree/master/examples/simple)
 * A sample application via GitHub
 -->
 

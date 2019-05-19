@@ -26,6 +26,8 @@ export const sanitizeRestProps = ({
     startUndoable,
     undoable,
     redirect,
+    submitOnEnter,
+    translate,
     ...rest
 }) => rest;
 

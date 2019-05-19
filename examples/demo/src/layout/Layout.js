@@ -2,11 +2,12 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Layout, Sidebar } from 'react-admin';
 import AppBar from './AppBar';
+import Menu from './Menu';
 import { darkTheme, lightTheme } from './themes';
 
-const CustomSidebar = props => <Sidebar size={200} {...props} />;
+const CustomSidebar = props => <Sidebar {...props} size={200} />;
 const CustomLayout = props => (
-    <Layout appBar={AppBar} sidebar={CustomSidebar} {...props} />
+    <Layout {...props} appBar={AppBar} sidebar={CustomSidebar} menu={Menu} />
 );
 
 export default connect(

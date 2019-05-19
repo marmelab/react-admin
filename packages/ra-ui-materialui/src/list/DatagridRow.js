@@ -2,7 +2,7 @@ import React, { Component, Fragment, isValidElement } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { connect } from 'react-redux';
-import { push } from 'react-router-redux';
+import { push } from 'connected-react-router';
 import IconButton from '@material-ui/core/IconButton';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
@@ -40,7 +40,7 @@ class DatagridRow extends Component {
         };
     }
 
-    coomponentDidUpdate = (prevProps, prevState) => {
+    componentDidUpdate = (prevProps, prevState) => {
         const colSpan = this.computeColSpan(this.props);
         if (colSpan !== prevState.colSpan) {
             this.setState({ colSpan });
@@ -82,10 +82,11 @@ class DatagridRow extends Component {
             push(linkToRecord(basePath, id, 'show'));
             return;
         }
-        if (path == 'expand') {
+        if (path === 'expand') {
             this.handleToggleExpanded(event);
             return;
         }
+        if (!path) return;
 
         push(path);
     };
@@ -165,7 +166,6 @@ class DatagridRow extends Component {
                                     classes.rowCell
                                 )}
                                 record={record}
-                                id={id}
                                 {...{ field, basePath, resource }}
                             />
                         ) : null

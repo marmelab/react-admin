@@ -245,7 +245,7 @@ For more details on predefined themes and custom themes, refer to the [Material 
 
 ## `layout`
 
-If you want to deeply customize the app header, the menu, or the notifications, the best way is to provide a custom layout component. It must contain a `{children}` placeholder, where react-admin will render the resources. If you use material UI fields and inputs, it should contain a `<MuiThemeProvider>` element. And finally, if you want to show the spinner in the app header when the app fetches data in the background, the Layout should connect to the redux store.
+If you want to deeply customize the app header, the menu, or the notifications, the best way is to provide a custom layout component. It must contain a `{children}` placeholder, where react-admin will render the resources. If you use material UI fields and inputs, it should contain a `<ThemeProvider>` element. And finally, if you want to show the spinner in the app header when the app fetches data in the background, the Layout should connect to the redux store.
 
 Use the [default layout](https://github.com/marmelab/react-admin/blob/master/packages/ra-ui-materialui/src/layout/Layout.js) as a starting point, and check [the Theming documentation](./Theming.md#using-a-custom-layout) for examples.
 
@@ -289,7 +289,7 @@ The `<Admin>` app uses [Redux](http://redux.js.org/) to manage state. The state 
 {
     admin: { /*...*/ }, // used by react-admin
     form: { /*...*/ }, // used by redux-form
-    routing: { /*...*/ }, // used by react-router-redux
+    routing: { /*...*/ }, // used by connected-react-router
 }
 ```
 
@@ -331,7 +331,7 @@ Now the state will look like:
 {
     admin: { /*...*/ }, // used by react-admin
     form: { /*...*/ }, // used by redux-form
-    routing: { /*...*/ }, // used by react-router-redux
+    routing: { /*...*/ }, // used by connected-react-router
     bitcoinRate: 123, // managed by rateReducer
 }
 ```
@@ -508,7 +508,7 @@ By default, react-admin creates URLs using a hash sign (e.g. "myadmin.acme.com/#
 You can create your own `history` function (compatible with [the `history` npm package](https://github.com/reacttraining/history)), and pass it to the `<Admin>` component to override the default history strategy. For instance, to use `browserHistory`:
 
 ```js
-import createHistory from 'history/createBrowserHistory';
+import { createBrowserHistory as createHistory } from 'history';
 
 const history = createHistory();
 

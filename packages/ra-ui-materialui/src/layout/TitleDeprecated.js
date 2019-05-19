@@ -1,19 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { translate } from 'ra-core';
+import { useTranslate } from 'ra-core';
 
 /**
  * @deprecated Use Title instead
  */
-const Title = ({
-    className,
-    defaultTitle,
-    record,
-    title,
-    translate,
-    locale,
-    ...rest
-}) => {
+const Title = ({ className, defaultTitle, record, title, ...rest }) => {
+    const translate = useTranslate();
     if (!title) {
         return (
             <span className={className} {...rest}>
@@ -36,8 +29,7 @@ Title.propTypes = {
     className: PropTypes.string,
     locale: PropTypes.string,
     record: PropTypes.object,
-    translate: PropTypes.func.isRequired,
     title: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
 };
 
-export default translate(Title);
+export default Title;

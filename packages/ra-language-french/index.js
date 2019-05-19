@@ -65,7 +65,7 @@ module.exports = {
             bulk_delete_content:
                 'Êtes-vous sûr(e) de vouloir supprimer cet élément ? |||| Êtes-vous sûr(e) de vouloir supprimer ces %{smart_count} éléments ?',
             bulk_delete_title:
-                'Supprimer %{name} |||| Supprimer %{smart_count} %{name} éléments',
+                'Supprimer %{name} |||| Supprimer %{smart_count} %{name}',
             delete_content:
                 'Êtes-vous sûr(e) de vouloir supprimer cet élément ?',
             delete_title: 'Supprimer %{name} #%{id}',
@@ -82,7 +82,8 @@ module.exports = {
         },
         navigation: {
             no_results: 'Aucun résultat',
-            no_more_results: 'La page numéro %{page} est en dehors des limites. Essayez la page précédente.',
+            no_more_results:
+                'La page numéro %{page} est en dehors des limites. Essayez la page précédente.',
             page_out_of_boundaries: 'La page %{page} est en dehors des limites',
             page_out_from_end: 'Fin de la pagination',
             page_out_from_begin: 'La page doit être supérieure à 1',

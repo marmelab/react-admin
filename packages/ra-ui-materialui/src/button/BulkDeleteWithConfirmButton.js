@@ -6,7 +6,7 @@ import ActionDelete from '@material-ui/icons/Delete';
 import { withStyles, createStyles } from '@material-ui/core/styles';
 import { fade } from '@material-ui/core/styles/colorManipulator';
 import inflection from 'inflection';
-import { crudDeleteMany } from 'ra-core';
+import { translate, crudDeleteMany } from 'ra-core';
 
 import Confirm from '../layout/Confirm';
 import Button from './Button';
@@ -87,6 +87,7 @@ class BulkDeleteWithConfirmButton extends Component {
             onClick,
             resource,
             selectedIds,
+            translate,
             ...rest
         } = this.props;
         return (
@@ -106,7 +107,13 @@ class BulkDeleteWithConfirmButton extends Component {
                     translateOptions={{
                         smart_count: selectedIds.length,
                         name: inflection.humanize(
-                            inflection.singularize(resource),
+                            translate(`resources.${resource}.name`, {
+                                smart_count: selectedIds.length,
+                                _: inflection.inflect(
+                                    resource,
+                                    selectedIds.length
+                                ),
+                            }),
                             true
                         ),
                     }}
@@ -123,6 +130,7 @@ const EnhancedBulkDeleteWithConfirmButton = compose(
         undefined,
         { crudDeleteMany }
     ),
+    translate,
     withStyles(styles)
 )(BulkDeleteWithConfirmButton);
 

@@ -48,11 +48,12 @@ const sanitizeRestProps = ({
     ...rest
 }) => rest;
 
-const styles = theme => createStyles({
-    input: {
-        minWidth: theme.spacing.unit * 20,
-    },
-});
+const styles = theme =>
+    createStyles({
+        input: {
+            minWidth: theme.spacing(20),
+        },
+    });
 
 /**
  * An Input component for a select box, using an array of objects for the options
@@ -156,7 +157,10 @@ export class SelectInput extends Component {
 
     addAllowEmpty = choices => {
         if (this.props.allowEmpty) {
-            return [<MenuItem value={this.props.emptyValue} key="null" />, ...choices];
+            return [
+                <MenuItem value={this.props.emptyValue} key="null" />,
+                ...choices,
+            ];
         }
 
         return choices;

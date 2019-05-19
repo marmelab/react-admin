@@ -46,10 +46,18 @@ export interface ReduxState {
     admin: {
         ui: {
             optimistic: boolean;
+            viewVersion: number;
         };
         resources: {
             [name: string]: {
                 data: any;
+                list: {
+                    params: any;
+                    ids: Identifier[];
+                    loadedOnce: boolean;
+                    selectedIds: Identifier[];
+                    total: number;
+                };
             };
         };
         references: {
@@ -57,6 +65,7 @@ export interface ReduxState {
                 [relatedTo: string]: { ids: Identifier[]; total: number };
             };
         };
+        loading: number;
     };
     i18n: {
         locale: string;
@@ -113,7 +122,7 @@ export type ResourceMatch = Match<{
 }>;
 
 export interface ResourceProps {
-    context: 'route' | 'registration';
+    intent: 'route' | 'registration';
     match?: ResourceMatch;
     name: string;
     list?: ComponentType<ReactAdminComponentProps>;

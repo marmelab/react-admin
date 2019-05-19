@@ -6,7 +6,7 @@ const styles = theme => ({
     root: {
         alignItems: 'center',
         marginLeft: 'auto',
-        marginRight: theme.spacing.unit * 4,
+        marginRight: theme.spacing(4),
     },
 });
 

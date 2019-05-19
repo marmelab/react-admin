@@ -21,19 +21,19 @@ type ActionTypes =
     | StopOptimisticModeAction
     | { type: 'OTHER_ACTION' };
 
-interface State {
+export interface UIState {
     readonly sidebarOpen: boolean;
     readonly optimistic: boolean;
     readonly viewVersion: number;
 }
 
-const defaultState: State = {
+const defaultState: UIState = {
     sidebarOpen: false,
     optimistic: false,
     viewVersion: 0,
 };
 
-const uiReducer: Reducer<State> = (
+const uiReducer: Reducer<UIState> = (
     previousState = defaultState,
     action: ActionTypes
 ) => {

@@ -1,6 +1,6 @@
 import expect from 'expect';
 import { put } from 'redux-saga/effects';
-import { push } from 'react-router-redux';
+import { push } from 'connected-react-router';
 import { reset } from 'redux-form';
 
 import { handleRedirection } from './redirection';

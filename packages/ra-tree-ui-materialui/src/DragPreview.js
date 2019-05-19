@@ -11,10 +11,10 @@ const styles = theme => ({
         display: 'inline-flex',
         height: 72,
         minWidth: 72,
-        paddingTop: theme.spacing.unit * 1.5,
-        paddingBottom: theme.spacing.unit * 1.5,
-        paddingLeft: theme.spacing.unit * 6,
-        paddingRight: theme.spacing.unit * 4,
+        paddingTop: theme.spacing(1.5),
+        paddingBottom: theme.spacing(1.5),
+        paddingLeft: theme.spacing(6),
+        paddingRight: theme.spacing(4),
     },
 });
 class DragPreview extends Component {

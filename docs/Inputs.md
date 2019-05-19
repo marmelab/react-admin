@@ -312,6 +312,17 @@ import { AutocompleteArrayInput, ReferenceArrayInput } from 'react-admin'
 </ReferenceArrayInput>
 ```
 
+If you need to override the props of the suggestions container (a `Popper` element), you can specify them using the `options.suggestionsContainerProps`. For example:
+
+{% raw %}
+```jsx
+<AutocompleteArrayInput source="category" options={{
+    suggestionsContainerProps: {
+        disablePortal: true,
+}} />
+```
+{% endraw %}
+
 **Tip**: `<ReferenceArrayInput>` is a stateless component, so it only allows to *filter* the list of choices, not to *extend* it. If you need to populate the list of choices based on the result from a `fetch` call (and if [`<ReferenceArrayInput>`](#referencearrayinput) doesn't cover your need), you'll have to [write your own Input component](#writing-your-own-input-component) based on [material-ui-chip-input](https://github.com/TeamWertarbyte/material-ui-chip-input).
 
 **Tip**: React-admin's `<AutocompleteInput>` has only a capital A, while material-ui's `<AutoComplete>` has a capital A and a capital C. Don't mix up the components!

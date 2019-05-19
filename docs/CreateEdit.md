@@ -119,14 +119,14 @@ You can replace the list of default actions by your own element using the `actio
 
 ```jsx
 import Button from '@material-ui/core/Button';
-import { CardActions, ShowButton } from 'react-admin';
+import { TopToolbar, ShowButton } from 'react-admin';
 
 const PostEditActions = ({ basePath, data, resource }) => (
-    <CardActions>
+    <TopToolbar>
         <ShowButton basePath={basePath} record={data} />
         {/* Add your custom actions */}
         <Button color="primary" onClick={customAction}>Custom Action</Button>
-    </CardActions>
+    </TopToolbar>
 );
 
 export const PostEdit = (props) => (
@@ -144,8 +144,8 @@ You may want to display additional information on the side of the form. Use the 
 ```jsx
 const Aside = () => (
     <div style={{ width: 200, margin: '1em' }}>
-        <Typography variant="title">Post details</Typography>
-        <Typography variant="body1">
+        <Typography variant="h6">Post details</Typography>
+        <Typography variant="body2">
             Posts will only be published one an editor approves them
         </Typography>
     </div>
@@ -164,9 +164,9 @@ The `aside` component receives the same props as the `Edit` or `Create` child co
 ```jsx
 const Aside = ({ record }) => (
     <div style={{ width: 200, margin: '1em' }}>
-        <Typography variant="title">Post details</Typography>
+        <Typography variant="h6">Post details</Typography>
         {record && (
-            <Typography variant="body1">
+            <Typography variant="body2">
                 Creation date: {record.createdAt}
             </Typography>
         )}
@@ -421,6 +421,11 @@ export const PostEdit = (props) => (
 );
 ```
 {% endraw %}
+
+To style the tabs, the `<FormTab>` component accepts two props:
+
+- `className` is passed to the tab *header*
+- `contentClassName` is passed to the tab *content*
 
 ## Default Values
 
@@ -706,7 +711,7 @@ const PostCreateToolbar = props => (
             label="post.action.save_and_add"
             redirect={false}
             submitOnEnter={false}
-            variant="flat"
+            variant="text"
         />
     </Toolbar>
 );
@@ -799,7 +804,7 @@ const UserCreateToolbar = ({ permissions, ...props }) =>
                 label="user.action.save_and_add"
                 redirect={false}
                 submitOnEnter={false}
-                variant="flat"
+                variant="text"
             />}
     </Toolbar>;
 

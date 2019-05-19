@@ -6,7 +6,7 @@ import {
     takeLatest,
     takeEvery,
 } from 'redux-saga/effects';
-import { push, replace } from 'react-router-redux';
+import { push, replace } from 'connected-react-router';
 
 import { AuthProvider } from '../types';
 import {

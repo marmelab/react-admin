@@ -1,18 +1,14 @@
-import { Component, ReactNode, ComponentType } from 'react';
-import { connect } from 'react-redux';
-import compose from 'recompose/compose';
+import { ReactNode, useEffect, useCallback } from 'react';
+// @ts-ignore
+import { useSelector, useDispatch } from 'react-redux';
+import { reset as resetForm } from 'redux-form';
 import inflection from 'inflection';
-import { reset } from 'redux-form';
-import withTranslate from '../i18n/translate';
-import {
-    crudGetOne,
-    crudUpdate,
-    startUndoable as startUndoableAction,
-} from '../actions';
+import { crudGetOne, crudUpdate, startUndoable } from '../actions';
 import { REDUX_FORM_NAME } from '../form';
-import checkMinimumRequiredProps from './checkMinimumRequiredProps';
-import { Translate, Record, Dispatch, Identifier } from '../types';
+import { useCheckMinimumRequiredProps } from './checkMinimumRequiredProps';
+import { Translate, Record, Identifier, ReduxState } from '../types';
 import { RedirectionSideEffect } from '../sideEffect';
+import { useTranslate } from '../i18n';
 
 interface ChildrenFuncParams {
     isLoading: boolean;
@@ -37,16 +33,7 @@ interface Props {
     isLoading: boolean;
     resource: string;
     undoable?: boolean;
-}
-
-interface EnhancedProps {
-    crudGetOne: Dispatch<typeof crudGetOne>;
-    dispatchCrudUpdate: Dispatch<typeof crudUpdate>;
     record?: Record;
-    resetForm: (form: string) => void;
-    startUndoable: Dispatch<typeof startUndoableAction>;
-    translate: Translate;
-    version: number;
 }
 
 /**
@@ -91,123 +78,79 @@ interface EnhancedProps {
  *     );
  *     export default App;
  */
-export class UnconnectedEditController extends Component<
-    Props & EnhancedProps
-> {
-    componentDidMount() {
-        this.updateData();
+const EditController = (props: Props) => {
+    useCheckMinimumRequiredProps('Edit', ['basePath', 'resource'], props);
+    const translate = useTranslate();
+    const dispatch = useDispatch();
+
+    const { basePath, children, id, resource, undoable } = props;
+
+    const record = useSelector((state: ReduxState) =>
+        state.admin.resources[props.resource]
+            ? state.admin.resources[props.resource].data[props.id]
+            : null
+    );
+
+    const isLoading = useSelector(
+        (state: ReduxState) => state.admin.loading > 0
+    );
+
+    const version = useSelector(
+        (state: ReduxState) => state.admin.ui.viewVersion
+    );
+
+    useEffect(() => {
+        dispatch(resetForm(REDUX_FORM_NAME));
+        dispatch(crudGetOne(resource, id, basePath));
+    }, [resource, id, basePath, version]);
+
+    if (!children) {
+        return null;
     }
 
-    componentWillReceiveProps(nextProps: Props & EnhancedProps) {
-        if (
-            this.props.id !== nextProps.id ||
-            nextProps.version !== this.props.version
-        ) {
-            this.props.resetForm(REDUX_FORM_NAME);
-            this.updateData(nextProps.resource, nextProps.id);
-        }
-    }
+    const resourceName = translate(`resources.${resource}.name`, {
+        smart_count: 1,
+        _: inflection.humanize(inflection.singularize(resource)),
+    });
+    const defaultTitle = translate('ra.page.edit', {
+        name: `${resourceName}`,
+        id,
+        record,
+    });
 
-    defaultRedirectRoute() {
-        return 'list';
-    }
-
-    updateData(resource = this.props.resource, id = this.props.id) {
-        this.props.crudGetOne(resource, id, this.props.basePath);
-    }
-
-    save = (data, redirect) => {
-        const {
-            undoable = true,
-            startUndoable,
-            dispatchCrudUpdate,
-        } = this.props;
-        if (undoable) {
-            startUndoable(
-                crudUpdate(
-                    this.props.resource,
-                    this.props.id,
-                    data,
-                    this.props.record,
-                    this.props.basePath,
-                    redirect
-                )
-            );
-        } else {
-            dispatchCrudUpdate(
-                this.props.resource,
-                this.props.id,
+    const save = useCallback(
+        (data: Partial<Record>, redirect: RedirectionSideEffect) => {
+            const updateAction = crudUpdate(
+                resource,
+                id,
                 data,
-                this.props.record,
-                this.props.basePath,
+                record,
+                basePath,
                 redirect
             );
-        }
-    };
 
-    render() {
-        const {
-            basePath,
-            children,
-            id,
-            isLoading,
-            record,
-            resource,
-            translate,
-            version,
-        } = this.props;
+            if (undoable) {
+                dispatch(startUndoable(updateAction));
+            } else {
+                dispatch(updateAction);
+            }
+        },
+        [id, resource, basePath, record]
+    );
 
-        if (!children) {
-            return null;
-        }
+    return children({
+        isLoading,
+        defaultTitle,
+        save,
+        resource,
+        basePath,
+        record,
+        redirect: getDefaultRedirectRoute(),
+        translate,
+        version,
+    });
+};
 
-        const resourceName = translate(`resources.${resource}.name`, {
-            smart_count: 1,
-            _: inflection.humanize(inflection.singularize(resource)),
-        });
-        const defaultTitle = translate('ra.page.edit', {
-            name: `${resourceName}`,
-            id,
-            record,
-        });
+const getDefaultRedirectRoute = () => 'list';
 
-        return children({
-            isLoading,
-            defaultTitle,
-            save: this.save,
-            resource,
-            basePath,
-            record,
-            redirect: this.defaultRedirectRoute(),
-            translate,
-            version,
-        });
-    }
-}
-
-function mapStateToProps(state, props) {
-    return {
-        id: props.id,
-        record: state.admin.resources[props.resource]
-            ? state.admin.resources[props.resource].data[props.id]
-            : null,
-        isLoading: state.admin.loading > 0,
-        version: state.admin.ui.viewVersion,
-    };
-}
-
-const EditController = compose(
-    checkMinimumRequiredProps('Edit', ['basePath', 'resource']),
-    connect(
-        mapStateToProps,
-        {
-            crudGetOne,
-            dispatchCrudUpdate: crudUpdate,
-            startUndoable: startUndoableAction,
-            resetForm: reset,
-        }
-    ),
-    withTranslate
-)(UnconnectedEditController);
-
-export default EditController as ComponentType<Props>;
+export default EditController;

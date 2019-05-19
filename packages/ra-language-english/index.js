@@ -63,7 +63,7 @@ module.exports = {
             bulk_delete_content:
                 'Are you sure you want to delete this %{name}? |||| Are you sure you want to delete these %{smart_count} items?',
             bulk_delete_title:
-                'Delete %{name} |||| Delete %{smart_count} %{name} items',
+                'Delete %{name} |||| Delete %{smart_count} %{name}',
             delete_content: 'Are you sure you want to delete this item?',
             delete_title: 'Delete %{name} #%{id}',
             details: 'Details',

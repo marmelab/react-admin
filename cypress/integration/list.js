@@ -126,7 +126,9 @@ describe('List Page', () => {
         it('should allow to select all items on the current page', () => {
             cy.contains('1-10 of 13'); // wait for data
             ListPagePosts.toggleSelectAll();
-            cy.get(ListPagePosts.elements.bulkActionsToolbar).should('exist');
+            cy.get(ListPagePosts.elements.bulkActionsToolbar).should(
+                'be.visible'
+            );
             cy.contains('10 items selected');
             cy.get(ListPagePosts.elements.selectedItem).should(els =>
                 expect(els).to.have.length(10)
@@ -136,10 +138,12 @@ describe('List Page', () => {
         it('should allow to unselect all items on the current page', () => {
             cy.contains('1-10 of 13'); // wait for data
             ListPagePosts.toggleSelectAll();
-            cy.get(ListPagePosts.elements.bulkActionsToolbar).should('exist');
+            cy.get(ListPagePosts.elements.bulkActionsToolbar).should(
+                'be.visible'
+            );
             ListPagePosts.toggleSelectAll();
             cy.get(ListPagePosts.elements.bulkActionsToolbar).should(
-                'not.exist'
+                'not.be.visible'
             );
             cy.get(ListPagePosts.elements.selectedItem).should(els =>
                 expect(els).to.have.length(0)
@@ -160,7 +164,7 @@ describe('List Page', () => {
             ListPagePosts.toggleSelectAll();
             ListPagePosts.applyUpdateBulkAction();
             cy.get(ListPagePosts.elements.bulkActionsToolbar).should(
-                'not.exist'
+                'not.be.visible'
             );
             cy.get(ListPagePosts.elements.selectedItem).should(els =>
                 expect(els).to.have.length(0)

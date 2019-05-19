@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { propTypes, reduxForm, Field } from 'redux-form';
 import { connect } from 'react-redux';
@@ -10,14 +10,11 @@ import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import TextField from '@material-ui/core/TextField';
-import {
-    MuiThemeProvider,
-    createMuiTheme,
-    withStyles,
-} from '@material-ui/core/styles';
+import { createMuiTheme, withStyles } from '@material-ui/core/styles';
+import { ThemeProvider } from '@material-ui/styles';
 import LockIcon from '@material-ui/icons/Lock';
 
-import { Notification, translate, userLogin } from 'react-admin';
+import { Notification, useTranslate, translate, userLogin } from 'react-admin';
 
 import { lightTheme } from './themes';
 
@@ -76,76 +73,68 @@ const renderInput = ({
     />
 );
 
-class Login extends Component {
-    login = auth =>
-        this.props.userLogin(
-            auth,
-            this.props.location.state
-                ? this.props.location.state.nextPathname
-                : '/'
-        );
+const Login = ({ classes, handleSubmit, isLoading, location, userLogin }) => {
+    const translate = useTranslate();
+    const login = auth =>
+        userLogin(auth, location.state ? location.state.nextPathname : '/');
 
-    render() {
-        const { classes, handleSubmit, isLoading, translate } = this.props;
-        return (
-            <div className={classes.main}>
-                <Card className={classes.card}>
-                    <div className={classes.avatar}>
-                        <Avatar className={classes.icon}>
-                            <LockIcon />
-                        </Avatar>
-                    </div>
-                    <form onSubmit={handleSubmit(this.login)}>
-                        <div className={classes.hint}>Hint: demo / demo</div>
-                        <div className={classes.form}>
-                            <div className={classes.input}>
-                                <Field
-                                    autoFocus
-                                    name="username"
-                                    component={renderInput}
-                                    label={translate('ra.auth.username')}
-                                    disabled={isLoading}
-                                />
-                            </div>
-                            <div className={classes.input}>
-                                <Field
-                                    name="password"
-                                    component={renderInput}
-                                    label={translate('ra.auth.password')}
-                                    type="password"
-                                    disabled={isLoading}
-                                />
-                            </div>
-                        </div>
-                        <CardActions className={classes.actions}>
-                            <Button
-                                variant="raised"
-                                type="submit"
-                                color="primary"
+    return (
+        <div className={classes.main}>
+            <Card className={classes.card}>
+                <div className={classes.avatar}>
+                    <Avatar className={classes.icon}>
+                        <LockIcon />
+                    </Avatar>
+                </div>
+                <form onSubmit={handleSubmit(login)}>
+                    <div className={classes.hint}>Hint: demo / demo</div>
+                    <div className={classes.form}>
+                        <div className={classes.input}>
+                            <Field
+                                autoFocus
+                                name="username"
+                                component={renderInput}
+                                label={translate('ra.auth.username')}
                                 disabled={isLoading}
-                                className={classes.button}
-                                fullWidth
-                            >
-                                {isLoading && (
-                                    <CircularProgress size={25} thickness={2} />
-                                )}
-                                {translate('ra.auth.sign_in')}
-                            </Button>
-                        </CardActions>
-                    </form>
-                </Card>
-                <Notification />
-            </div>
-        );
-    }
-}
+                            />
+                        </div>
+                        <div className={classes.input}>
+                            <Field
+                                name="password"
+                                component={renderInput}
+                                label={translate('ra.auth.password')}
+                                type="password"
+                                disabled={isLoading}
+                            />
+                        </div>
+                    </div>
+                    <CardActions className={classes.actions}>
+                        <Button
+                            variant="contained"
+                            type="submit"
+                            color="primary"
+                            disabled={isLoading}
+                            className={classes.button}
+                            fullWidth
+                        >
+                            {isLoading && (
+                                <CircularProgress size={25} thickness={2} />
+                            )}
+                            {translate('ra.auth.sign_in')}
+                        </Button>
+                    </CardActions>
+                </form>
+            </Card>
+            <Notification />
+        </div>
+    );
+};
 
 Login.propTypes = {
     ...propTypes,
     authProvider: PropTypes.func,
     classes: PropTypes.object,
     previousRoute: PropTypes.string,
-    translate: PropTypes.func.isRequired,
     userLogin: PropTypes.func.isRequired,
 };
 
@@ -176,13 +165,13 @@ const enhance = compose(
 
 const EnhancedLogin = enhance(Login);
 
-// We need to put the MuiThemeProvider decoration in another component
+// We need to put the ThemeProvider decoration in another component
 // Because otherwise the withStyles() HOC used in EnhancedLogin won't get
 // the right theme
 const LoginWithTheme = props => (
-    <MuiThemeProvider theme={createMuiTheme(lightTheme)}>
+    <ThemeProvider theme={createMuiTheme(lightTheme)}>
         <EnhancedLogin {...props} />
-    </MuiThemeProvider>
+    </ThemeProvider>
 );
 
 export default LoginWithTheme;

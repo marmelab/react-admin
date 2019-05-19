@@ -23,6 +23,76 @@ const sanitizeValue = (type, value) => {
     return value;
 };
 
+const castType = (value, type) => {
+    switch (`${type.kind}:${type.name}`) {
+        case "SCALAR:Int":
+            return Number(value);
+
+        case "SCALAR:String":
+            return String(value);
+
+        case "SCALAR:Boolean":
+            return Boolean(value);
+
+        default:
+            return value;
+    }
+};
+
+const prepareParams = (params, queryType, introspectionResults) => {
+    const result = {};
+
+    if (!params) {
+        return params;
+    }
+
+    Object.keys(params).forEach(key => {
+        const param = params[key];
+        let arg = null;
+
+        if (!param) {
+            result[key] = param;
+            return;
+        }
+
+        if (queryType && Array.isArray(queryType.args)) {
+            arg = queryType.args.find(item => item.name === key);
+        }
+
+        if (param instanceof File) {
+            result[key] = param;
+            return;
+        }
+
+        if (
+            param instanceof Object &&
+            !Array.isArray(param) &&
+            arg &&
+            arg.type.kind === "INPUT_OBJECT"
+        ) {
+            const args = introspectionResults.types.find(
+                item => item.kind === arg.type.kind && item.name === arg.type.name
+            ).inputFields;
+            result[key] = prepareParams(param, { args }, introspectionResults);
+            return;
+        }
+
+        if (param instanceof Object && !Array.isArray(param)) {
+            result[key] = prepareParams(param, queryType, introspectionResults);
+            return;
+        }
+
+        if (!arg) {
+            result[key] = param;
+            return;
+        }
+
+        result[key] = castType(param, arg.type, introspectionResults.types);
+    });
+
+    return result;
+};
+
 const buildGetListVariables = introspectionResults => (
     resource,
     aorFetchType,
@@ -154,35 +224,40 @@ export default introspectionResults => (
     params,
     queryType
 ) => {
+    const preparedParams = prepareParams(params, queryType, introspectionResults);
+
     switch (aorFetchType) {
         case GET_LIST: {
             return buildGetListVariables(introspectionResults)(
                 resource,
                 aorFetchType,
-                params,
+                preparedParams,
                 queryType
             );
         }
+
         case GET_MANY:
             return {
-                filter: { ids: params.ids },
+                filter: { ids: preparedParams.ids },
             };
-        case GET_MANY_REFERENCE: {
-            const parts = params.target.split('.');
 
+        case GET_MANY_REFERENCE: {
+            const parts = preparedParams.target.split('.');
             return {
-                filter: { [parts[0]]: { id: params.id } },
+                filter: { [`${parts[0]}Id`]: preparedParams.id },
             };
         }
+
         case GET_ONE:
             return {
-                id: params.id,
+                id: preparedParams.id,
             };
+
         case UPDATE: {
             return buildCreateUpdateVariables(introspectionResults)(
                 resource,
                 aorFetchType,
-                params,
+                preparedParams,
                 queryType
             );
         }
@@ -191,14 +266,14 @@ export default introspectionResults => (
             return buildCreateUpdateVariables(introspectionResults)(
                 resource,
                 aorFetchType,
-                params,
+                preparedParams,
                 queryType
             );
         }
 
         case DELETE:
             return {
-                id: params.id,
+                id: preparedParams.id,
             };
     }
 };

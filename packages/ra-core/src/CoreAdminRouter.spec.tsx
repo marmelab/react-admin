@@ -9,11 +9,12 @@ import Resource from './Resource';
 describe('<AdminRouter>', () => {
     const defaultProps = {
         authProvider: () => Promise.resolve(),
+        userLogout: () => <span />,
         customRoutes: [],
     };
 
     describe('With resources as regular children', () => {
-        it('should render all resources with a registration context', () => {
+        it('should render all resources with a registration intent', () => {
             const wrapper = shallow(
                 <CoreAdminRouter {...defaultProps}>
                     <Resource name="posts" />
@@ -21,18 +22,18 @@ describe('<AdminRouter>', () => {
                 </CoreAdminRouter>
             );
 
-            const resources = wrapper.find('Connect(Resource)');
+            const resources = wrapper.find('ConnectFunction');
 
             assert.equal(resources.length, 2);
             assert.deepEqual(
-                resources.map(resource => resource.prop('context')),
+                resources.map(resource => resource.prop('intent')),
                 ['registration', 'registration']
             );
         });
     });
 
     describe('With resources returned from a function as children', () => {
-        it('should render all resources with a registration context', async () => {
+        it('should render all resources with a registration intent', async () => {
             const wrapper = shallow(
                 <CoreAdminRouter {...defaultProps}>
                     {() => [
@@ -49,10 +50,10 @@ describe('<AdminRouter>', () => {
             });
 
             wrapper.update();
-            const resources = wrapper.find('Connect(Resource)');
+            const resources = wrapper.find('ConnectFunction');
             assert.equal(resources.length, 2);
             assert.deepEqual(
-                resources.map(resource => resource.prop('context')),
+                resources.map(resource => resource.prop('intent')),
                 ['registration', 'registration']
             );
         });

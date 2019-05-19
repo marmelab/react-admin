@@ -18,42 +18,50 @@ import { addField, translate, FieldTitle } from 'ra-core';
 
 import AutocompleteArrayInputChip from './AutocompleteArrayInputChip';
 
-const styles = theme => createStyles({
-    container: {
-        flexGrow: 1,
-        position: 'relative',
-    },
-    root: {},
-    suggestionsContainerOpen: {
-        position: 'absolute',
-        marginBottom: theme.spacing.unit * 3,
-        zIndex: 2,
-    },
-    suggestionsPaper: {
-        maxHeight: '50vh',
-        overflowY: 'auto',
-    },
-    suggestion: {
-        display: 'block',
-        fontFamily: theme.typography.fontFamily,
-    },
-    suggestionText: { fontWeight: 300 },
-    highlightedSuggestionText: { fontWeight: 500 },
-    suggestionsList: {
-        margin: 0,
-        padding: 0,
-        listStyleType: 'none',
-    },
-    chip: {
-        marginRight: theme.spacing.unit,
-    },
-    chipDisabled: {
-        pointerEvents: 'none',
-    },
-    chipFocused: {
-        backgroundColor: blue[300],
-    },
-});
+const styles = theme =>
+    createStyles({
+        container: {
+            flexGrow: 1,
+            position: 'relative',
+        },
+        root: {},
+        suggestionsContainerOpen: {
+            position: 'absolute',
+            marginBottom: theme.spacing(3),
+            zIndex: 2,
+        },
+        suggestionsPaper: {
+            maxHeight: '50vh',
+            overflowY: 'auto',
+        },
+        suggestion: {
+            display: 'block',
+            fontFamily: theme.typography.fontFamily,
+        },
+        suggestionText: { fontWeight: 300 },
+        highlightedSuggestionText: { fontWeight: 500 },
+        suggestionsList: {
+            margin: 0,
+            padding: 0,
+            listStyleType: 'none',
+        },
+        chip: {
+            marginRight: theme.spacing(1),
+            marginTop: theme.spacing(1),
+        },
+        chipDisabled: {
+            pointerEvents: 'none',
+        },
+        chipFocused: {
+            backgroundColor: blue[300],
+        },
+    });
+
+const DefaultSuggestionComponent = React.forwardRef(
+    ({ suggestion, query, isHighlighted, ...props }, ref) => (
+        <div {...props} ref={ref} />
+    )
+);
 
 /**
  * An Input component for an autocomplete field, using an array of objects for the options
@@ -116,7 +124,6 @@ export class AutocompleteArrayInput extends React.Component {
     };
 
     inputEl = null;
-    anchorEl = null;
 
     getInputValue = inputValue =>
         inputValue === '' ? this.initialInputValue : inputValue;
@@ -231,7 +238,7 @@ export class AutocompleteArrayInput extends React.Component {
             source,
             value,
             ref,
-            options: { InputProps, ...options },
+            options: { InputProps, suggestionsContainerProps, ...options },
             ...other
         } = inputProps;
         if (typeof meta === 'undefined') {
@@ -246,7 +253,6 @@ export class AutocompleteArrayInput extends React.Component {
         // but Autosuggest also needs this reference (it provides the ref prop)
         const storeInputRef = input => {
             this.inputEl = input;
-            this.updateAnchorEl();
             ref(input);
         };
 
@@ -340,46 +346,24 @@ export class AutocompleteArrayInput extends React.Component {
         input.onChange(this.state.inputValue.filter(value => value !== chip));
     };
 
-    updateAnchorEl() {
-        if (!this.inputEl) {
-            return;
-        }
-
-        const inputPosition = this.inputEl.getBoundingClientRect();
-
-        if (!this.anchorEl) {
-            this.anchorEl = { getBoundingClientRect: () => inputPosition };
-        } else {
-            const anchorPosition = this.anchorEl.getBoundingClientRect();
-
-            if (
-                anchorPosition.x !== inputPosition.x ||
-                anchorPosition.y !== inputPosition.y
-            ) {
-                this.anchorEl = { getBoundingClientRect: () => inputPosition };
-            }
-        }
-    }
-
     renderSuggestionsContainer = autosuggestOptions => {
         const {
             containerProps: { className, ...containerProps },
             children,
         } = autosuggestOptions;
-        const { classes = {} } = this.props;
-
-        // Force the Popper component to reposition the popup only when this.inputEl is moved to another location
-        this.updateAnchorEl();
+        const { classes = {}, options } = this.props;
 
         return (
             <Popper
                 className={className}
                 open={Boolean(children)}
-                anchorEl={this.anchorEl}
+                anchorEl={this.inputEl}
                 placement="bottom-start"
+                {...options.suggestionsContainerProps}
             >
                 <Paper
                     square
+                    elevation={2}
                     className={classes.suggestionsPaper}
                     {...containerProps}
                 >
@@ -388,13 +372,6 @@ export class AutocompleteArrayInput extends React.Component {
             </Popper>
         );
     };
-
-    renderSuggestionComponent = ({
-        suggestion,
-        query,
-        isHighlighted,
-        ...props
-    }) => <div {...props} />;
 
     renderSuggestion = (suggestion, { query, isHighlighted }) => {
         const label = this.getSuggestionText(suggestion);
@@ -405,9 +382,7 @@ export class AutocompleteArrayInput extends React.Component {
         return (
             <MenuItem
                 selected={isHighlighted}
-                component={
-                    suggestionComponent || this.renderSuggestionComponent
-                }
+                component={suggestionComponent || DefaultSuggestionComponent}
                 suggestion={suggestion}
                 query={query}
                 isHighlighted={isHighlighted}

@@ -7,7 +7,14 @@ import classnames from 'classnames';
 
 import Labeled from '../input/Labeled';
 
-const sanitizeRestProps = ({ label, icon, value, translate, ...rest }) => rest;
+const sanitizeRestProps = ({
+    contentClassName,
+    label,
+    icon,
+    value,
+    translate,
+    ...rest
+}) => rest;
 
 /**
  * Tab element for the SimpleShowLayout.
@@ -65,41 +72,45 @@ class Tab extends Component {
         />
     );
 
-    renderContent = ({ className, children, basePath, record, resource }) => (
-        <span className={className}>
-            {React.Children.map(
-                children,
-                field =>
-                    field && isValidElement(field) ? (
-                        <div
-                            key={field.props.source}
-                            className={classnames(
-                                'ra-field',
-                                `ra-field-${field.props.source}`,
-                                field.props.className
-                            )}
-                        >
-                            {field.props.addLabel ? (
-                                <Labeled
-                                    label={field.props.label}
-                                    source={field.props.source}
-                                    basePath={basePath}
-                                    record={record}
-                                    resource={resource}
-                                >
-                                    {field}
-                                </Labeled>
-                            ) : typeof field.type === 'string' ? (
-                                field
-                            ) : (
-                                React.cloneElement(field, {
-                                    basePath,
-                                    record,
-                                    resource,
-                                })
-                            )}
-                        </div>
-                    ) : null
+    renderContent = ({
+        contentClassName,
+        children,
+        basePath,
+        record,
+        resource,
+    }) => (
+        <span className={contentClassName}>
+            {React.Children.map(children, field =>
+                field && isValidElement(field) ? (
+                    <div
+                        key={field.props.source}
+                        className={classnames(
+                            'ra-field',
+                            `ra-field-${field.props.source}`,
+                            field.props.className
+                        )}
+                    >
+                        {field.props.addLabel ? (
+                            <Labeled
+                                label={field.props.label}
+                                source={field.props.source}
+                                basePath={basePath}
+                                record={record}
+                                resource={resource}
+                            >
+                                {field}
+                            </Labeled>
+                        ) : typeof field.type === 'string' ? (
+                            field
+                        ) : (
+                            React.cloneElement(field, {
+                                basePath,
+                                record,
+                                resource,
+                            })
+                        )}
+                    </div>
+                ) : null
             )}
         </span>
     );
@@ -114,6 +125,7 @@ class Tab extends Component {
 
 Tab.propTypes = {
     className: PropTypes.string,
+    contentClassName: PropTypes.string,
     children: PropTypes.node,
     context: PropTypes.oneOf(['header', 'content']),
     icon: PropTypes.element,

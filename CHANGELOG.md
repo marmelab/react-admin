@@ -1,5 +1,71 @@
 # Changelog
 
+## v2.9.1
+
+* Fix handling of deleted references ([3216](https://github.com/marmelab/react-admin/pull/3216)) ([djhi](https://github.com/djhi))
+* Fix warning in Login page ([3195](https://github.com/marmelab/react-admin/pull/3195)) ([cherniavskii](https://github.com/cherniavskii))
+* Fix improperly named `RejectButton` class name in demo ([3182](https://github.com/marmelab/react-admin/pull/3182)) ([ericwb](https://github.com/ericwb))
+* Fix outdated mention in Authentication documentation ([3177](https://github.com/marmelab/react-admin/pull/3177)) ([joehillen](https://github.com/joehillen))
+* Add link to NextJs Crud dataprovider ([3201](https://github.com/marmelab/react-admin/pull/3201)) ([gganebnyi](https://github.com/gganebnyi))
+* Add markdown input package to the Ecosystem documentation ([3204](https://github.com/marmelab/react-admin/pull/3204)) ([maluramichael](https://github.com/maluramichael))
+
+# v2.9.0
+
+* Add support for styled `<ListView>`, `<EditView>`, `<CreateView>`, and `<ShowView>` components ([3161](https://github.com/marmelab/react-admin/pull/3161)) ([cherniavskii](https://github.com/cherniavskii))
+* Add support for nested records in `source` prop of `<ReferenceManyField>` ([3159](https://github.com/marmelab/react-admin/pull/3159)) ([aramando](https://github.com/aramando))
+* Add ability to reload translation without changing locale ([3152](https://github.com/marmelab/react-admin/pull/3152)) ([nik-lampe](https://github.com/nik-lampe))
+* Add the ability to style the `Tab` contents in `Show` and `Edit` views ([2996](https://github.com/marmelab/react-admin/pull/2996)) ([fzaninotto](https://github.com/fzaninotto))
+* Add ability to sort `<Datagrid>` by descending order by default ([2921](https://github.com/marmelab/react-admin/pull/2921)) ([frankPairs](https://github.com/frankPairs))
+* Fix `propTypes` warning when using `<ArrayField sortable={false} />` ([3164](https://github.com/marmelab/react-admin/pull/3164)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<Datagrid rowClick />` when using a function value returning empty redirect value ([3156](https://github.com/marmelab/react-admin/pull/3156)) ([tunglt1810](https://github.com/tunglt1810))
+* Fix `<AutocompleteArrayInput>` wrapping when there are many selected options ([3131](https://github.com/marmelab/react-admin/pull/3131)) ([cherniavskii](https://github.com/cherniavskii))
+* Fix circular dependency in `ra-data-graphql-simple` data provider  ([3093](https://github.com/marmelab/react-admin/pull/3093)) ([GM-Alex](https://github.com/GM-Alex))
+* Add `ra-cognito` authentication provider to the Ecosystem documentation ([3163](https://github.com/marmelab/react-admin/pull/3163)) ([anthonycmain](https://github.com/anthonycmain))
+
+## v2.8.6
+
+* Fix `<Mutation>` documentation showing wrong `notification` side effect syntax ([3147](https://github.com/marmelab/react-admin/pull/3147)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<Query>` component does not fetch again when updated ([3146](https://github.com/marmelab/react-admin/pull/3146)) ([fzaninotto](https://github.com/fzaninotto))
+* Allow to override `Popper` props in `<AutocompleteArrayInput>` ([3145](https://github.com/marmelab/react-admin/pull/3145)) ([cherniavskii](https://github.com/cherniavskii))
+* Fix history console warnings ([3144](https://github.com/marmelab/react-admin/pull/3144)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix various typos in tutorial ([3135](https://github.com/marmelab/react-admin/pull/3135)) ([pemoreau](https://github.com/pemoreau))
+* Fix undefined id in `<RadioButtonGroupInput>` ([3123](https://github.com/marmelab/react-admin/pull/3123)) ([johncalvinroberts](https://github.com/johncalvinroberts))
+* Fix typo in `ra-input-rich-text` internal component name ([3109](https://github.com/marmelab/react-admin/pull/3109)) ([ruiyangliu](https://github.com/ruiyangliu))
+* Fix unnecessary update of `<RichTextInput>` on edit ([3099](https://github.com/marmelab/react-admin/pull/3099)) ([roychoo](https://github.com/roychoo))
+* Fix filter id applied incorrectly to get many ref in `ra-data-graphql-simple` ([2649](https://github.com/marmelab/react-admin/pull/2649)) ([redorb](https://github.com/redorb))
+* Migrate `ra-ui-materialui` field components to TypeScript ([3091](https://github.com/marmelab/react-admin/pull/3091)) ([Kmaschta](https://github.com/Kmaschta))
+* Migrate `ra-ui-materialui` auth components to TypeScript ([2984](https://github.com/marmelab/react-admin/pull/2984)) ([djhi](https://github.com/djhi))
+* Add license scan report and status ([3100](https://github.com/marmelab/react-admin/pull/3100)) ([fossabot](https://github.com/fossabot))
+* Add Hebrew translation ([3133](https://github.com/marmelab/react-admin/pull/3133)) ([ak-il](https://github.com/ak-il))
+
+## v2.8.5
+
+* Fix links to CodeSandbox become outdated rapidly ([3095](https://github.com/marmelab/react-admin/pull/3095)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix simple example dependencies ([3094](https://github.com/marmelab/react-admin/pull/3094)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix reducer test skipped because of bad suffix ([3092](https://github.com/marmelab/react-admin/pull/3092)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix typo in `<DatagridRow>` ([3089](https://github.com/marmelab/react-admin/pull/3089)) ([romakv4](https://github.com/romakv4))
+* Fix resource translation in delete confirmation dialog ([3086](https://github.com/marmelab/react-admin/pull/3086)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix deprecation warnings for recent react-router releases ([3085](https://github.com/marmelab/react-admin/pull/3085)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix demo uses deprecated menu customization syntax ([3084](https://github.com/marmelab/react-admin/pull/3084)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<ExportButton>` ignores permanent `filter` from `<List>` ([3083](https://github.com/marmelab/react-admin/pull/3083)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<Datagrid>` cells have non unique ids ([3082](https://github.com/marmelab/react-admin/pull/3082)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix delete confirmation dialog triggers `rowClick`([3080](https://github.com/marmelab/react-admin/pull/3080)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix expand icon overlaps actions in tree view ([3064](https://github.com/marmelab/react-admin/pull/3064)) ([macrozone](https://github.com/macrozone))
+* Fix custom actions cannot override `basePath` ([3043](https://github.com/marmelab/react-admin/pull/3043)) ([kopax](https://github.com/kopax))
+* Fix wrong scalar types into variables for `ra-data-graphql-simple` ([3036](https://github.com/marmelab/react-admin/pull/3036)) ([Artexoid](https://github.com/Artexoid))
+* Improve drawer animation of review edition in Posters Galore demo ([2945](https://github.com/marmelab/react-admin/pull/2945)) ([djhi](https://github.com/djhi))
+* Turn data generator for demo into a public repository ([3096](https://github.com/marmelab/react-admin/pull/3096)) ([fzaninotto](https://github.com/fzaninotto))
+
+## v2.8.4
+
+* Fix typo in ra-data-graphql documentation ([3074](https://github.com/marmelab/react-admin/pull/3074)) ([erichgoldman](https://github.com/erichgoldman))
+* Fix missing dependencies breaking installation with pnpm ([3032](https://github.com/marmelab/react-admin/pull/3032)) ([cortopy](https://github.com/cortopy))
+* Fix missing component import in tutorial ([3060](https://github.com/marmelab/react-admin/pull/3060)) ([matimendez88](https://github.com/matimendez88))
+* Fix bad pluralization of the confirmation message in `<BulkDeleteWithConfirmButton>` ([3058](https://github.com/marmelab/react-admin/pull/3058)) ([Luwangel](https://github.com/Luwangel))
+* Fix warning caused by passing `undoable` prop from `<Toolbar>` ([3057](https://github.com/marmelab/react-admin/pull/3057)) ([NikitaVlaznev](https://github.com/NikitaVlaznev))
+* Fix warning caused by passing `submitOnEnter` prop from `<Toolbar>` ([3056](https://github.com/marmelab/react-admin/pull/3056)) ([NikitaVlaznev](https://github.com/NikitaVlaznev))
+* Add links to 4 new advanced tutorials doc ([3063](https://github.com/marmelab/react-admin/pull/3063)) ([djhi](https://github.com/djhi))
+
 ## v2.8.3
 
  * Fix `<Query>` does not pass `total` from `dataProvider` result ([3046](https://github.com/marmelab/react-admin/pull/3046)) ([Kmaschta](https://github.com/Kmaschta))

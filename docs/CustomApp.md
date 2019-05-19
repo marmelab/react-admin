@@ -20,7 +20,7 @@ Here is the default store creation for react-admin:
 ```js
 // in src/createAdminStore.js
 import { applyMiddleware, combineReducers, compose, createStore } from 'redux';
-import { routerMiddleware, routerReducer } from 'react-router-redux';
+import { routerMiddleware, connectRouter } from 'connected-react-router';
 import { reducer as formReducer } from 'redux-form';
 import createSagaMiddleware from 'redux-saga';
 import { all, fork } from 'redux-saga/effects';
@@ -45,7 +45,7 @@ export default ({
         admin: adminReducer,
         i18n: i18nReducer(locale, i18nProvider(locale)),
         form: formReducer,
-        router: routerReducer,
+        router: connectRouter(history),
         { /* add your own reducers here */ },
     });
     const resettableAppReducer = (state, action) =>
@@ -90,7 +90,7 @@ Then, use the `<Admin>` component as you would in a standalone application. Here
 // in src/App.js
 import React from 'react';
 import { Provider } from 'react-redux';
-import createHistory from 'history/createHashHistory';
+import { createHashHistory } from 'history';
 import { Admin, Resource } from 'react-admin';
 import restProvider from 'ra-data-simple-rest';
 import defaultMessages from 'ra-language-english';
@@ -113,7 +113,7 @@ const i18nProvider = locale => {
     }
     return defaultMessages;
 };
-const history = createHistory();
+const history = createHashHistory();
 
 const App = () => (
     <Provider
@@ -151,15 +151,15 @@ Here is the main code for bootstrapping a barebones react-admin application with
 // in src/App.js
 import React from 'react';
 import { Provider } from 'react-redux';
-import createHistory from 'history/createHashHistory';
-+import { ConnectedRouter } from 'react-router-redux';
+import { createHashHistory } from 'history';
++import { ConnectedRouter } from 'connected-react-router';
 +import { Switch, Route } from 'react-router-dom';
 +import withContext from 'recompose/withContext';
 -import { Admin, Resource } from 'react-admin';
 +import { TranslationProvider, Resource } from 'react-admin';
 import restProvider from 'ra-data-simple-rest';
 import defaultMessages from 'ra-language-english';
-+import { MuiThemeProvider } from '@material-ui/core/styles';
++import { ThemeProvider } from '@material-ui/styles';
 +import AppBar from '@material-ui/core/AppBar';
 +import Toolbar from '@material-ui/core/Toolbar';
 +import Typography from '@material-ui/core/Typography';
@@ -182,7 +182,7 @@ const i18nProvider = locale => {
     }
     return defaultMessages;
 };
-const history = createHistory();
+const history = createHashHistory();
 
 const App = () => (
     <Provider
@@ -202,13 +202,13 @@ const App = () => (
 -           <Resource name="comments" list={CommentList} edit={CommentEdit} create={CommentCreate} />
 -           <Resource name="users" list={UserList} edit={UserEdit} create={UserCreate} />
 +       <TranslationProvider>
-+           <MuiThemeProvider>
-+               <Resource name="posts" context="registration" />
-+               <Resource name="comments" context="registration" />
-+               <Resource name="users" context="registration" />
++           <ThemeProvider>
++               <Resource name="posts" intent="registration" />
++               <Resource name="comments" intent="registration" />
++               <Resource name="users" intent="registration" />
 +               <AppBar position="static" color="default">
 +                   <Toolbar>
-+                       <Typography variant="title" color="inherit">
++                       <Typography variant="h6" color="inherit">
 +                           My admin
 +                       </Typography>
 +                   </Toolbar>
@@ -228,7 +228,7 @@ const App = () => (
 +                       <Route exact path="/users/:id" render={(routeProps) => <UsersEdit resource="users" {...routeProps} />} />
 +                   </Switch>
 +               </ConnectedRouter>
-+           </MuiThemeProvider>
++           </ThemeProvider>
 +       </TranslationProvider>
 -       </Admin>
     </Provider>
