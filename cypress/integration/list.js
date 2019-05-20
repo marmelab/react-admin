@@ -16,23 +16,6 @@ describe('List Page', () => {
         });
     });
 
-    describe('Auto-hide AppBar', () => {
-        it('should hide/show the appBar when scroll action appears', () => {
-            // wait for the skeleton to disappear
-            cy.contains('1-10 of 13');
-
-            cy.viewport(1280, 500);
-
-            cy.scrollTo(0, 200);
-            cy.get(ListPagePosts.elements.headroomUnpinned).should(
-                'not.be.visible'
-            );
-
-            cy.scrollTo(0, -100);
-            cy.get(ListPagePosts.elements.headroomUnfixed).should('be.visible');
-        });
-    });
-
     describe('Pagination', () => {
         it('should display paginated list of available posts', () => {
             cy.contains('1-10 of 13');

@@ -1,12 +1,10 @@
 import AppBar from './AppBar';
-import AppBarMobile from './AppBarMobile';
 import CardActions from './CardActions';
 import CardContentInner from './CardContentInner';
 import Confirm from './Confirm';
 import DashboardMenuItem from './DashboardMenuItem';
 import Error from './Error';
-import Header from './Header';
-import Headroom from './Headroom';
+import HideOnScroll from './HideOnScroll';
 import Layout from './Layout';
 import Loading from './Loading';
 import LinearProgress from './LinearProgress';
@@ -22,18 +20,15 @@ import Title from './Title';
 import TitleForRecord from './TitleForRecord';
 import TopToolbar from './TopToolbar';
 import UserMenu from './UserMenu';
-import ViewTitle from './ViewTitle';
 
 export {
     AppBar,
-    AppBarMobile,
     CardActions,
     CardContentInner,
     Confirm,
     DashboardMenuItem,
     Error,
-    Header,
-    Headroom,
+    HideOnScroll,
     Layout,
     Loading,
     LinearProgress,
@@ -49,5 +44,4 @@ export {
     TitleForRecord,
     TopToolbar,
     UserMenu,
-    ViewTitle,
 };

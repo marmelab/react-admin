@@ -26,8 +26,8 @@
         "watch": "rimraf ./lib && tsc --watch"
     },
     "devDependencies": {
-        "@material-ui/core": "^4.0.0-beta.0",
-        "@material-ui/styles": "^4.0.0-beta.0",
+        "@material-ui/core": "^4.0.0-beta.2",
+        "@material-ui/styles": "^4.0.0-beta.2",
         "@material-ui/icons": "^4.0.0-beta.0",
         "cross-env": "^5.2.0",
         "enzyme": "~3.9.0",
@@ -44,8 +44,8 @@
         "react-dom": "^16.8.0"
     },
     "dependencies": {
-        "@material-ui/core": "^4.0.0-beta.0",
-        "@material-ui/styles": "^4.0.0-beta.0",
+        "@material-ui/core": "^4.0.0-beta.2",
+        "@material-ui/styles": "^4.0.0-beta.2",
         "@material-ui/icons": "^4.0.0-beta.0",
         "autosuggest-highlight": "^3.1.1",
         "classnames": "~2.2.5",
@@ -58,7 +58,6 @@
         "ra-core": "^2.9.1",
         "react-autosuggest": "^9.4.2",
         "react-dropzone": "~4.0.1",
-        "react-headroom": "^2.2.4",
         "react-redux": "^7.1.0-alpha.3",
         "react-router": "^4.2.0",
         "react-router-dom": "^4.2.0",
