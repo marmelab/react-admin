@@ -1,20 +1,11 @@
-import { ReactNode, useState, useReducer, useEffect, useMemo } from 'react';
-// @ts-ignore
-import { useSelector, useDispatch } from 'react-redux';
-import get from 'lodash/get';
+import { ReactElement, FunctionComponent } from 'react';
 
-import { crudGetManyReference } from '../../actions';
 import {
     SORT_ASC,
     SORT_DESC,
 } from '../../reducer/admin/resource/list/queryReducer';
-import {
-    getIds,
-    getReferences,
-    getTotal,
-    nameRelatedTo,
-} from '../../reducer/admin/references/oneToMany';
 import { Record, Sort, RecordMap, Identifier, Dispatch } from '../../types';
+import useReferenceMany from './useReferenceMany';
 
 interface ChildrenFuncParams {
     currentSort: Sort;
@@ -32,11 +23,8 @@ interface ChildrenFuncParams {
 
 interface Props {
     basePath: string;
-    children: (params: ChildrenFuncParams) => ReactNode;
-    data?: RecordMap;
+    children: (params: ChildrenFuncParams) => ReactElement<ChildrenFuncParams>;
     filter?: any;
-    ids?: any[];
-    loadedOnce?: boolean;
     perPage?: number;
     record?: Record;
     reference: string;
@@ -57,8 +45,6 @@ const sortReducer = (state: Sort, field: string | Sort): Sort => {
             : SORT_ASC;
     return { field, order };
 };
-
-const defaultFilter = {};
 
 /**
  * Render related records to the current one.
@@ -106,79 +92,47 @@ const defaultFilter = {};
  *    ...
  * </ReferenceManyField>
  */
-export const ReferenceManyFieldController = ({
+export const ReferenceManyFieldController: FunctionComponent<Props> = ({
     resource,
     reference,
     record,
     target,
-    filter = defaultFilter,
+    filter,
     source,
-    children,
     basePath,
-    perPage = 25,
-    sort = { field: 'id', order: 'DESC' },
+    perPage,
+    sort,
+    children,
 }) => {
-    const referenceId = get(record, source);
-    const relatedTo = useMemo(
-        () => nameRelatedTo(reference, referenceId, resource, target, filter),
-        [filter, reference, referenceId, resource, target]
-    );
-    const ids = useSelector(selectIds(relatedTo), [relatedTo]);
-    const data = useSelector(selectData(reference, relatedTo), [
-        reference,
-        relatedTo,
-    ]);
-    const total = useSelector(selectTotal(relatedTo), [relatedTo]);
-    const [page, setPage] = useState(1);
-    const [currentPerPage, setPerPage] = useState(perPage);
-    useEffect(() => setPerPage(perPage), [perPage]);
-    const [currentSort, setSort] = useReducer(sortReducer, sort);
-    useEffect(() => setSort(sort), [sort.field, sort.order]);
-
-    const dispatch = useDispatch();
-
-    useEffect(
-        fetchReferences({
-            reference,
-            referenceId,
-            resource,
-            target,
-            filter,
-            source,
-            page,
-            perPage: currentPerPage,
-            sort: currentSort,
-            dispatch,
-        }),
-        [
-            reference,
-            referenceId,
-            resource,
-            target,
-            filter,
-            source,
-            crudGetManyReference,
-            page,
-            currentPerPage,
-            currentSort.field,
-            currentSort.order,
-        ]
-    );
-
-    const referenceBasePath = basePath.replace(resource, reference);
-
-    return children({
-        reference,
-        record,
-        resource,
-        target,
-        filter,
-        source,
-        sort,
+    const {
         currentSort,
         data,
         ids,
-        loadedOnce: typeof ids !== 'undefined',
+        loadedOnce,
+        page,
+        currentPerPage,
+        referenceBasePath,
+        setPage,
+        setPerPage,
+        setSort,
+        total,
+    } = useReferenceMany({
+        resource,
+        reference,
+        record,
+        target,
+        filter,
+        source,
+        basePath,
+        perPage,
+        sort,
+    });
+
+    return children({
+        currentSort,
+        data,
+        ids,
+        loadedOnce,
         page,
         perPage: currentPerPage,
         referenceBasePath,
@@ -188,45 +142,5 @@ export const ReferenceManyFieldController = ({
         total,
     });
 };
-
-const fetchReferences = ({
-    reference,
-    referenceId,
-    resource,
-    target,
-    filter,
-    source,
-    dispatch,
-    page,
-    perPage,
-    sort,
-}) => () => {
-    const relatedTo = nameRelatedTo(
-        reference,
-        referenceId,
-        resource,
-        target,
-        filter
-    );
-
-    dispatch(
-        crudGetManyReference(
-            reference,
-            target,
-            referenceId,
-            relatedTo,
-            { page, perPage },
-            sort,
-            filter,
-            source
-        )
-    );
-};
-
-const selectData = (reference, relatedTo) => state =>
-    getReferences(state, reference, relatedTo);
-
-const selectIds = relatedTo => state => getIds(state, relatedTo);
-const selectTotal = relatedTo => state => getTotal(state, relatedTo);
 
 export default ReferenceManyFieldController;
