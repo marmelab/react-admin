@@ -1,9 +1,25 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback } from 'react';
+// @ts-ignore
+import { useSelector } from 'react-redux';
+
+import { ReduxState } from '../types';
 import { useSafeSetState } from './hooks';
 import useDataProvider from './useDataProvider';
 
+export interface Query {
+    type: string;
+    resource: string;
+    payload: object;
+}
+
+export interface QueryOptions {
+    meta?: any;
+    action?: string;
+    undoable?: false;
+}
+
 /**
- * Returns a callback to fetch the data provider through Redux, usually for mutations
+ * Get a callback to fetch the data provider through Redux, usually for mutations
  *
  * The request starts when the callback is called.
  *
@@ -14,31 +30,34 @@ import useDataProvider from './useDataProvider';
  * - success: { data: [data from response], total: [total from response], loading: false, loaded: true }
  * - error: { error: [error from response], loading: false, loaded: true }
  *
- * @param type The verb passed to th data provider, e.g. 'UPDATE'
- * @param resource A resource name, e.g. 'posts', 'comments'
- * @param payload The payload object, e.g; { id: 123, data: { isApproved: true } }
- * @param meta Redux action metas, including side effects to be executed upon success of failure, e.g. { onSuccess: { refresh: true } }
+ * @param {Object} query
+ * @param {string} query.type The verb passed to th data provider, e.g. 'UPDATE'
+ * @param {string} query.resource A resource name, e.g. 'posts', 'comments'
+ * @param {Object} query.payload The payload object, e.g. { id: 123, data: { isApproved: true } }
+ * @param {Object} options
+ * @param {string} options.action Redux action type
+ * @param {Object} options.meta Redux action metas, including side effects to be executed upon success of failure, e.g. { onSuccess: { refresh: true } }
+ * @param {function} selector Redux selector to get the result
  *
- * @returns A tuple with the mutation callback and the request state]. Destructure as [mutate,  { data, total, error, loading, loaded }].
+ * @returns A tuple with the mutation callback and the request state]. Destructure as [mutate, { data, total, error, loading, loaded }].
  *
  * @example
  *
  * import { useMutation } from 'react-admin';
  *
  * const ApproveButton = ({ record }) => {
- *     const [approve, { loading }] = useMutation(
- *         'UPDATE',
- *         'comments',
- *          { id: record.id, data: { isApproved: true } }
- *     );
+ *     const [approve, { loading }] = useMutation({
+ *         type: 'UPDATE',
+ *         resource: 'comments',
+ *         payload: { id: record.id, data: { isApproved: true } }
+ *     });
  *     return <FlatButton label="Approve" onClick={approve} disabled={loading} />;
  * };
  */
 const useMutation = (
-    type: string,
-    resource: string,
-    payload?: any,
-    meta?: any
+    query: Query,
+    options: QueryOptions = {},
+    selector?: (state: ReduxState) => any
 ): [
     () => void,
     {
@@ -49,8 +68,9 @@ const useMutation = (
         loaded: boolean;
     }
 ] => {
+    const { type, resource, payload } = query;
     const [state, setState] = useSafeSetState({
-        data: null,
+        data: selector ? useSelector(selector) : null,
         error: null,
         total: null,
         loading: false,
@@ -59,7 +79,7 @@ const useMutation = (
     const dataProvider = useDataProvider();
     const mutate = useCallback(() => {
         setState({ loading: true });
-        dataProvider(type, resource, payload, meta)
+        dataProvider(type, resource, payload, options)
             .then(({ data: dataFromResponse, total: totalFromResponse }) => {
                 setState({
                     data: dataFromResponse,
@@ -75,7 +95,7 @@ const useMutation = (
                     loaded: false,
                 });
             });
-    }, [JSON.stringify({ type, resource, payload, meta })]); // deep equality, see https://github.com/facebook/react/issues/14476#issuecomment-471199055
+    }, [JSON.stringify({ query, options })]); // deep equality, see https://github.com/facebook/react/issues/14476#issuecomment-471199055
 
     return [mutate, state];
 };

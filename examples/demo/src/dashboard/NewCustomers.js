@@ -43,13 +43,17 @@ const NewCustomers = () => {
         return date;
     }, []);
 
-    const { loaded, data: visitors } = useQuery(GET_LIST, 'customers', {
-        filter: {
-            has_ordered: true,
-            first_seen_gte: aMonthAgo.toISOString(),
+    const { loaded, data: visitors } = useQuery({
+        type: GET_LIST,
+        resource: 'customers',
+        payload: {
+            filter: {
+                has_ordered: true,
+                first_seen_gte: aMonthAgo.toISOString(),
+            },
+            sort: { field: 'first_seen', order: 'DESC' },
+            pagination: { page: 1, perPage: 100 },
         },
-        sort: { field: 'first_seen', order: 'DESC' },
-        pagination: { page: 1, perPage: 100 },
     });
 
     if (!loaded) return null;

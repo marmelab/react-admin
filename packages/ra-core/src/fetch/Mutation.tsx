@@ -48,6 +48,6 @@ const Mutation: FunctionComponent<Props> = ({
     resource,
     payload,
     options,
-}) => children(...useMutation(type, resource, payload, options));
+}) => children(...useMutation({ type, resource, payload }, options));
 
 export default Mutation;
