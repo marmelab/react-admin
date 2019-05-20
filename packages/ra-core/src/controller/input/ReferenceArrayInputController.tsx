@@ -4,6 +4,7 @@ import debounce from 'lodash/debounce';
 import compose from 'recompose/compose';
 import { createSelector } from 'reselect';
 import isEqual from 'lodash/isEqual';
+import difference from 'lodash/difference';
 import { WrappedFieldInputProps } from 'redux-form';
 
 import {
@@ -233,7 +234,7 @@ export class UnconnectedReferenceArrayInputController extends Component<
                     'The value of ReferenceArrayInput should be an array'
                 );
             }
-            const idsToFetch = isInitialCall ? ids : ids.filter(id => !this.props.input.value.includes(id))
+            const idsToFetch = isInitialCall ? ids : difference(ids, this.props.input.value)
             crudGetMany(reference, idsToFetch);
         }
     };
