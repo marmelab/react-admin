@@ -113,6 +113,22 @@ describe('ListController', () => {
             expect(props.changeListParams.mock.calls[0][1].filter).toEqual({});
         });
 
+        it('should update pernament filters', () => {
+            const props = {
+                ...defaultProps,
+                debounce: 200,
+                crudGetList: jest.fn(),
+                filter: { foo: 1 },
+                children: fakeComponent,
+            };
+
+            const wrapper = shallow(<ListController {...props} />);
+            wrapper.setProps({ filter: { foo: 2 } });
+            clock.tick(200);
+
+            expect(props.crudGetList.mock.calls[1][3].foo).toEqual(2);
+        });
+
         afterEach(() => {
             clock.uninstall();
         });

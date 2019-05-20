@@ -217,11 +217,15 @@ export class UnconnectedListController extends Component<
             !isEqual(nextProps.sort, this.props.sort) ||
             !isEqual(nextProps.perPage, this.props.perPage)
         ) {
-            this.updateData(
+            const query =
                 Object.keys(nextProps.query).length > 0
                     ? nextProps.query
-                    : nextProps.params
-            );
+                    : nextProps.params;
+            const permanentFilter = nextProps.filter;
+            this.updateData({
+                ...query,
+                filter: { ...query.filter, ...permanentFilter },
+            });
         }
         if (nextProps.version !== this.props.version) {
             this.updateData();
@@ -309,7 +313,7 @@ export class UnconnectedListController extends Component<
             page: parseInt(page, 10),
             perPage: parseInt(perPage, 10),
         };
-        const permanentFilter = this.props.filter;
+        const permanentFilter = query ? query.filter : this.props.filter;
         this.props.crudGetList(
             this.props.resource,
             pagination,
@@ -501,7 +505,6 @@ const selectQuery = createSelector(
 
 function mapStateToProps(state, props) {
     const resourceState = state.admin.resources[props.resource];
-
     return {
         query: selectQuery(props),
         params: resourceState.list.params,
