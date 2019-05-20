@@ -3,11 +3,12 @@ import { ReactNode, useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { reset as resetForm } from 'redux-form';
 import inflection from 'inflection';
-import { crudGetOne, crudUpdate, startUndoable } from '../actions';
+import { crudUpdate, startUndoable } from '../actions';
 import { REDUX_FORM_NAME } from '../form';
 import { useCheckMinimumRequiredProps } from './checkMinimumRequiredProps';
 import { Translate, Record, Identifier, ReduxState } from '../types';
 import { RedirectionSideEffect } from '../sideEffect';
+import useGetOne from './useGetOne';
 import { useTranslate } from '../i18n';
 
 interface ChildrenFuncParams {
@@ -80,33 +81,31 @@ interface Props {
  */
 const EditController = (props: Props) => {
     useCheckMinimumRequiredProps('Edit', ['basePath', 'resource'], props);
-    const translate = useTranslate();
-    const dispatch = useDispatch();
-
     const { basePath, children, id, resource, undoable } = props;
-
-    const record = useSelector((state: ReduxState) =>
-        state.admin.resources[props.resource]
-            ? state.admin.resources[props.resource].data[props.id]
-            : null
-    );
-
-    const isLoading = useSelector(
-        (state: ReduxState) => state.admin.loading > 0
-    );
-
-    const version = useSelector(
-        (state: ReduxState) => state.admin.ui.viewVersion
-    );
-
-    useEffect(() => {
-        dispatch(resetForm(REDUX_FORM_NAME));
-        dispatch(crudGetOne(resource, id, basePath));
-    }, [resource, id, basePath, version]);
-
     if (!children) {
         return null;
     }
+    const translate = useTranslate();
+    const dispatch = useDispatch();
+    const version = useSelector(
+        (state: ReduxState) => state.admin.ui.viewVersion
+    );
+    const { data: record, loading } = useGetOne(resource, id, {
+        basePath,
+        version, // used to force reload
+        onFailure: {
+            notification: {
+                body: 'ra.notification.item_doesnt_exist',
+                level: 'warning',
+            },
+            redirectTo: 'list',
+            refresh: true,
+        },
+    });
+
+    useEffect(() => {
+        dispatch(resetForm(REDUX_FORM_NAME));
+    }, [resource, id, version]);
 
     const resourceName = translate(`resources.${resource}.name`, {
         smart_count: 1,
@@ -139,7 +138,7 @@ const EditController = (props: Props) => {
     );
 
     return children({
-        isLoading,
+        isLoading: loading,
         defaultTitle,
         save,
         resource,
