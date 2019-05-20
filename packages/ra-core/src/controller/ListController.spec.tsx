@@ -113,7 +113,7 @@ describe('ListController', () => {
             expect(props.changeListParams.mock.calls[0][1].filter).toEqual({});
         });
 
-        it('should update pernament filters', () => {
+        it('should update permanent filters', () => {
             const props = {
                 ...defaultProps,
                 debounce: 200,
