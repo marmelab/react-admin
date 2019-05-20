@@ -63,17 +63,17 @@ const useDataProvider = () => {
         ) => {
             const {
                 action = 'CUSTOM_FETCH',
-                meta = {},
                 undoable = false,
                 onSuccess = {},
                 onFailure = {},
+                ...rest
             } = options;
             return new Promise((resolve, reject) => {
                 const queryAction = {
                     type: action,
                     payload,
                     meta: {
-                        ...meta,
+                        ...rest,
                         resource,
                         fetch: type,
                         onSuccess: {
