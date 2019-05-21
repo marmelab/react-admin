@@ -1,15 +1,10 @@
-import { isValidElement, ReactNode, ReactElement, useCallback } from 'react';
+import { isValidElement, ReactNode, ReactElement } from 'react';
 // @ts-ignore
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import inflection from 'inflection';
 
 import { SORT_ASC } from '../reducer/admin/resource/list/queryReducer';
-import { crudGetList } from '../actions/dataActions';
-import {
-    setListSelectedIds,
-    toggleListItem,
-    ListParams,
-} from '../actions/listActions';
+import { ListParams } from '../actions/listActions';
 import { useCheckMinimumRequiredProps } from './checkMinimumRequiredProps';
 import {
     Sort,
@@ -23,6 +18,7 @@ import { Location } from 'history';
 import { useTranslate } from '../i18n';
 import useListParams from './useListParams';
 import useGetList from './useGetList';
+import useSelectItems from './useSelectItems';
 
 interface ChildrenFuncParams {
     basePath: string;
@@ -124,6 +120,11 @@ const ListController = (props: Props) => {
         ['basePath', 'location', 'resource'],
         props
     );
+    if (props.filter && isValidElement(props.filter)) {
+        throw new Error(
+            '<List> received a React element as `filter` props. If you intended to set the list filter elements, use the `filters` (with an s) prop instead. The `filter` prop is internal and should not be set by the developer.'
+        );
+    }
 
     const {
         basePath,
@@ -141,23 +142,11 @@ const ListController = (props: Props) => {
         debounce = 500,
     } = props;
 
-    const dispatch = useDispatch();
     const translate = useTranslate();
 
     const version = useSelector(
         (reduxState: ReduxState) => reduxState.admin.ui.viewVersion
     );
-
-    const { selectedIds } = useSelector(
-        (reduxState: ReduxState) => reduxState.admin.resources[resource].list,
-        [resource]
-    );
-
-    if (filter && isValidElement(filter)) {
-        throw new Error(
-            '<List> received a React element as `filter` props. If you intended to set the list filter elements, use the `filters` (with an s) prop instead. The `filter` prop is internal and should not be set by the developer.'
-        );
-    }
 
     const [query, actions] = useListParams({
         resource,
@@ -167,6 +156,11 @@ const ListController = (props: Props) => {
         perPage,
         debounce,
     });
+
+    const { selectedIds, select, toggle, clearSelection } = useSelectItems(
+        resource,
+        query.requestSignature
+    );
 
     const { data, ids, total, loading, loaded } = useGetList(
         resource,
@@ -191,18 +185,6 @@ const ListController = (props: Props) => {
         actions.setPage(query.page - 1);
     }
 
-    const handleSelect = useCallback((newIds: Identifier[]) => {
-        dispatch(setListSelectedIds(resource, newIds));
-    }, query.requestSignature);
-
-    const handleUnselectItems = useCallback(() => {
-        dispatch(setListSelectedIds(resource, []));
-    }, query.requestSignature);
-
-    const handleToggleItem = useCallback((id: Identifier) => {
-        dispatch(toggleListItem(resource, id));
-    }, query.requestSignature);
-
     const resourceName = translate(`resources.${resource}.name`, {
         smart_count: 2,
         _: inflection.humanize(inflection.pluralize(resource)),
@@ -225,9 +207,9 @@ const ListController = (props: Props) => {
         ids,
         isLoading: loading,
         loadedOnce: loaded,
-        onSelect: handleSelect,
-        onToggleItem: handleToggleItem,
-        onUnselectItems: handleUnselectItems,
+        onSelect: select,
+        onToggleItem: toggle,
+        onUnselectItems: clearSelection,
         page: query.page,
         perPage: query.perPage,
         resource,
