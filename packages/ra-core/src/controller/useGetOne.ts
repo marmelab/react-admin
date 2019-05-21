@@ -1,10 +1,10 @@
 import { CRUD_GET_ONE } from '../actions/dataActions/crudGetOne';
 import { GET_ONE } from '../dataFetchActions';
 import { Identifier, ReduxState } from '../types';
-import useQuery from '../fetch/useQuery';
+import useQueryWithStore from '../fetch/useQueryWithStore';
 
 const useGetOne = (resource: string, id: Identifier, options: any) =>
-    useQuery(
+    useQueryWithStore(
         { type: GET_ONE, resource, payload: { id } },
         { ...options, action: CRUD_GET_ONE },
         (state: ReduxState) =>

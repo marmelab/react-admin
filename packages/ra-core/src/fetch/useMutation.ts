@@ -1,8 +1,5 @@
 import { useCallback } from 'react';
-// @ts-ignore
-import { useSelector } from 'react-redux';
 
-import { ReduxState } from '../types';
 import { useSafeSetState } from './hooks';
 import useDataProvider from './useDataProvider';
 
@@ -37,7 +34,6 @@ export interface QueryOptions {
  * @param {Object} options
  * @param {string} options.action Redux action type
  * @param {Object} options.meta Redux action metas, including side effects to be executed upon success of failure, e.g. { onSuccess: { refresh: true } }
- * @param {function} selector Redux selector to get the result
  *
  * @returns A tuple with the mutation callback and the request state]. Destructure as [mutate, { data, total, error, loading, loaded }].
  *
@@ -56,8 +52,7 @@ export interface QueryOptions {
  */
 const useMutation = (
     query: Query,
-    options: QueryOptions = {},
-    selector?: (state: ReduxState) => any
+    options: QueryOptions = {}
 ): [
     () => void,
     {
@@ -70,7 +65,7 @@ const useMutation = (
 ] => {
     const { type, resource, payload } = query;
     const [state, setState] = useSafeSetState({
-        data: selector ? useSelector(selector) : null,
+        data: null,
         error: null,
         total: null,
         loading: false,
@@ -80,10 +75,10 @@ const useMutation = (
     const mutate = useCallback(() => {
         setState({ loading: true });
         dataProvider(type, resource, payload, options)
-            .then(({ data: dataFromResponse, total: totalFromResponse }) => {
+            .then(({ data, total }) => {
                 setState({
-                    data: dataFromResponse,
-                    total: totalFromResponse,
+                    data,
+                    total,
                     loading: false,
                     loaded: true,
                 });

@@ -1,17 +1,10 @@
-import { useReducer, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import isEqual from 'lodash/isEqual';
 
 // thanks Kent C Dodds for the following helpers
 
-export function useSetState(initialState) {
-    return useReducer(
-        (state, newState) => ({ ...state, ...newState }),
-        initialState
-    );
-}
-
 export function useSafeSetState(initialState) {
-    const [state, setState] = useSetState(initialState);
+    const [state, setState] = useState(initialState);
 
     const mountedRef = useRef(false);
     useEffect(() => {

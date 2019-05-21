@@ -1,5 +1,9 @@
 import { useEffect } from 'react';
+// @ts-ignore
+import { useSelector } from 'react-redux';
+import isEqual from 'lodash/isEqual';
 
+import { ReduxState } from '../types';
 import { useSafeSetState } from './hooks';
 import useDataProvider from './useDataProvider';
 
@@ -31,6 +35,7 @@ export interface QueryOptions {
  * @param {Object} options
  * @param {string} options.action Redux action type
  * @param {Object} options.meta Redux action metas, including side effects to be executed upon success of failure, e.g. { onSuccess: { refresh: true } }
+ * @param {function} selector Redux selector to get the result
  *
  * @returns The current request state. Destructure as { data, total, error, loading, loaded }.
  *
@@ -75,9 +80,11 @@ export interface QueryOptions {
  *     );
  * };
  */
-const useQuery = (
+const useQueryWithStore = (
     query: Query,
-    options: QueryOptions = {}
+    options: QueryOptions = {},
+    dataSelector: (state: ReduxState) => any,
+    totalSelector?: (state: ReduxState) => number
 ): {
     data?: any;
     total?: number;
@@ -86,23 +93,32 @@ const useQuery = (
     loaded: boolean;
 } => {
     const { type, resource, payload } = query;
+    const data = useSelector(dataSelector);
+    const total = totalSelector ? useSelector(totalSelector) : null;
     const [state, setState] = useSafeSetState({
-        data: undefined,
+        data,
+        total,
         error: null,
-        total: null,
         loading: true,
-        loaded: false,
+        loaded: data !== undefined,
     });
+    if (!isEqual(state.data, data) || state.total !== total) {
+        setState({
+            ...state,
+            data,
+            total,
+            loaded: true,
+        });
+    }
     const dataProvider = useDataProvider();
     useEffect(() => {
         dataProvider(type, resource, payload, options)
-            .then(({ data, total }) => {
-                setState({
-                    data,
-                    total,
+            .then(() => {
+                setState(prevState => ({
+                    ...prevState,
                     loading: false,
                     loaded: true,
-                });
+                }));
             })
             .catch(error => {
                 setState({
@@ -116,4 +132,4 @@ const useQuery = (
     return state;
 };
 
-export default useQuery;
+export default useQueryWithStore;
