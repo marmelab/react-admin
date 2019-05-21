@@ -51,7 +51,6 @@ title: "Reference"
 * [`<ImageField>`](./Fields.md#imagefield)
 * [`<ImageInput>`](./Inputs.md#imageinput)
 * [`<ImageInputPreview>`](./Inputs.md#imageinput)
-* [`<FunctionField>`](./Fields.md#functionfield)
 * `<Labeled>`
 * [`<Layout>`](./Theming.md#using-a-custom-layout)
 * [`<Loading>`](./Theming.md#Loading)
