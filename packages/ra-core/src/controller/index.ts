@@ -8,6 +8,8 @@ import ListController from './ListController';
 import ShowController from './ShowController';
 import useRecordSelection from './useRecordSelection';
 import useVersion from './useVersion';
+import useSort from './useSort';
+import usePagination from './usePagination';
 export {
     getListControllerProps,
     sanitizeListRestProps,
@@ -17,6 +19,8 @@ export {
     ShowController,
     useRecordSelection,
     useVersion,
+    useSort,
+    usePagination,
 };
 
 export * from './field';

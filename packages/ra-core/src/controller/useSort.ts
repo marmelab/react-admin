@@ -6,6 +6,11 @@ import {
 } from '../reducer/admin/resource/list/queryReducer';
 import { Sort } from '../types';
 
+interface SortProps {
+    setSort: (field: string) => void;
+    sort: Sort;
+}
+
 const sortReducer = (state: Sort, field: string | Sort): Sort => {
     if (typeof field !== 'string') {
         return field;
@@ -17,7 +22,9 @@ const sortReducer = (state: Sort, field: string | Sort): Sort => {
     return { field, order };
 };
 
-export default (initialSort: Sort = { field: 'id', order: 'DESC' }) => {
+export default (
+    initialSort: Sort = { field: 'id', order: 'DESC' }
+): SortProps => {
     const [sort, dispatch] = useReducer(sortReducer, initialSort);
     useEffect(() => dispatch(initialSort), [
         initialSort.field,
@@ -25,7 +32,7 @@ export default (initialSort: Sort = { field: 'id', order: 'DESC' }) => {
     ]);
 
     return {
-        sortBy: (field: string) => dispatch(field),
+        setSort: (field: string) => dispatch(field),
         sort,
     };
 };

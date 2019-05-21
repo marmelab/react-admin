@@ -1,6 +1,6 @@
 import React, { Fragment, cloneElement, Children } from 'react';
 import PropTypes from 'prop-types';
-import { ReferenceManyFieldController, ComponentPropType } from 'ra-core';
+import { useSort, usePagination, useReferenceMany, ComponentPropType } from 'ra-core';
 
 export const ReferenceManyFieldView = ({
     children,
@@ -106,22 +106,65 @@ ReferenceManyFieldView.propTypes = {
  *    ...
  * </ReferenceManyField>
  */
-export const ReferenceManyField = ({ children, ...props }) => {
+export const ReferenceManyField = ({
+    children,
+    sort: initialSort,
+    perPage: initialPerPage,
+    resource,
+    reference,
+    record,
+    target,
+    filter,
+    source,
+    basePath,
+    ...props
+}) => {
     if (React.Children.count(children) !== 1) {
         throw new Error(
             '<ReferenceManyField> only accepts a single child (like <Datagrid>)'
         );
     }
+    const { sort, setSort } = useSort(initialSort);
+    const { page, perPage, setPage, setPerPage } = usePagination(initialPerPage);
+
+    const {
+        data,
+        ids,
+        loadedOnce,
+        referenceBasePath,
+        total,
+    } = useReferenceMany({
+        resource,
+        reference,
+        record,
+        target,
+        filter,
+        source,
+        basePath,
+        page,
+        perPage,
+        sort,
+    });
 
     return (
-        <ReferenceManyFieldController {...props}>
-            {controllerProps => (
-                <ReferenceManyFieldView
-                    {...props}
-                    {...{ children, ...controllerProps }}
-                />
-            )}
-        </ReferenceManyFieldController>
+        <ReferenceManyFieldView
+            {...props}
+            {...{
+                children,
+                currentSort: sort,
+                data,
+                ids,
+                loadedOnce,
+                page,
+                perPage,
+                reference,
+                setPage,
+                setPerPage,
+                referenceBasePath,
+                total,
+                setSort
+            }}
+        />
     );
 };
 

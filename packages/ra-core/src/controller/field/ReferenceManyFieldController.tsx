@@ -91,7 +91,7 @@ export const ReferenceManyFieldController: FunctionComponent<Props> = ({
     sort: initialSort,
     children,
 }) => {
-    const { sort, sortBy } = useSort(initialSort);
+    const { sort, setSort } = useSort(initialSort);
     const { page, perPage, setPage, setPerPage } = usePagination(
         initialPerPage
     );
@@ -124,7 +124,7 @@ export const ReferenceManyFieldController: FunctionComponent<Props> = ({
         referenceBasePath,
         setPage,
         setPerPage,
-        setSort: sortBy,
+        setSort,
         total,
     });
 };
