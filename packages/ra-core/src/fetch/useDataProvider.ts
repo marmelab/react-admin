@@ -2,7 +2,6 @@ import { useMemo } from 'react';
 import { Dispatch } from 'redux';
 // @ts-ignore
 import { useDispatch } from 'react-redux';
-import get from 'lodash/get';
 
 import { startUndoable } from '../actions/undoActions';
 

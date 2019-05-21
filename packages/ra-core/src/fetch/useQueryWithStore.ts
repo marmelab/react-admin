@@ -16,17 +16,19 @@ export interface Query {
 export interface QueryOptions {
     meta?: any;
     action?: string;
-    undoable?: false;
 }
 
 /**
- * Fetch the data provider through Redux
+ * Fetch the data provider through Redux, return the value from the store.
  *
  * The return value updates according to the request state:
  *
  * - start: { loading: true, loaded: false }
  * - success: { data: [data from response], total: [total from response], loading: false, loaded: true }
  * - error: { error: [error from response], loading: false, loaded: true }
+ *
+ * This hook will return the cached result when called a second time
+ * with the same parameters, until the response arrives.
  *
  * @param {Object} query
  * @param {string} query.type The verb passed to th data provider, e.g. 'GET_LIST', 'GET_ONE'
@@ -35,49 +37,27 @@ export interface QueryOptions {
  * @param {Object} options
  * @param {string} options.action Redux action type
  * @param {Object} options.meta Redux action metas, including side effects to be executed upon success of failure, e.g. { onSuccess: { refresh: true } }
- * @param {function} selector Redux selector to get the result
+ * @param {function} dataSelector Redux selector to get the result. Required.
+ * @param {function} totalSelector Redux selector to get the total (optional, only for LIST queries)
  *
  * @returns The current request state. Destructure as { data, total, error, loading, loaded }.
  *
  * @example
  *
- * import { useQuery } from 'react-admin';
+ * import { useQueryWithStore } from 'react-admin';
  *
  * const UserProfile = ({ record }) => {
- *     const { data, loading, error } = useQuery({
- *         type: 'GET_ONE',
- *         resource: 'users',
- *         payload: { id: record.id }
- *     });
+ *     const { data, loading, error } = useQueryWithStore(
+ *         {
+ *             type: 'GET_ONE',
+ *             resource: 'users',
+ *             payload: { id: record.id }
+ *         },
+ *         state => state.admin.resources.users.data[record.id]
+ *     );
  *     if (loading) { return <Loading />; }
  *     if (error) { return <p>ERROR</p>; }
  *     return <div>User {data.username}</div>;
- * };
- *
- * @example
- *
- * import { useQuery } from 'react-admin';
- *
- * const payload = {
- *    pagination: { page: 1, perPage: 10 },
- *    sort: { field: 'username', order: 'ASC' },
- * };
- * const UserList = () => {
- *     const { data, total, loading, error } = useQuery({
- *         type: 'GET_LIST',
- *         resource: 'users',
- *         payload
- *     });
- *     if (loading) { return <Loading />; }
- *     if (error) { return <p>ERROR</p>; }
- *     return (
- *         <div>
- *             <p>Total users: {total}</p>
- *             <ul>
- *                 {data.map(user => <li key={user.username}>{user.username}</li>)}
- *             </ul>
- *         </div>
- *     );
  * };
  */
 const useQueryWithStore = (
