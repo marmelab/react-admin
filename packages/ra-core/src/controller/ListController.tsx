@@ -158,8 +158,7 @@ const ListController = (props: Props) => {
     });
 
     const { selectedIds, select, toggle, clearSelection } = useSelectItems(
-        resource,
-        query.requestSignature
+        resource
     );
 
     const { data, ids, total, loading, loaded } = useGetList(
