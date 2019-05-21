@@ -91,27 +91,28 @@ const useQuery = (
     loaded: boolean;
 } => {
     const { type, resource, payload } = query;
+    const initialData = selector ? useSelector(selector) : null;
     const [state, setState] = useSafeSetState({
-        data: selector ? useSelector(selector) : null,
+        data: initialData,
         error: null,
         total: null,
         loading: true,
-        loaded: false,
+        loaded: initialData == null ? false : true,
     });
     const dataProvider = useDataProvider();
     useEffect(() => {
         dataProvider(type, resource, payload, options)
-            .then(({ data: dataFromResponse, total: totalFromResponse }) => {
+            .then(({ data, total }) => {
                 setState({
-                    data: dataFromResponse,
-                    total: totalFromResponse,
+                    data,
+                    total,
                     loading: false,
                     loaded: true,
                 });
             })
-            .catch(errorFromResponse => {
+            .catch(error => {
                 setState({
-                    error: errorFromResponse,
+                    error,
                     loading: false,
                     loaded: false,
                 });
