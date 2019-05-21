@@ -35,7 +35,7 @@ export interface QueryOptions {
  * @param {string} options.action Redux action type
  * @param {Object} options.meta Redux action metas, including side effects to be executed upon success of failure, e.g. { onSuccess: { refresh: true } }
  *
- * @returns A tuple with the mutation callback and the request state]. Destructure as [mutate, { data, total, error, loading, loaded }].
+ * @returns A tuple with the mutation callback and the request state. Destructure as [mutate, { data, total, error, loading, loaded }].
  *
  * @example
  *
