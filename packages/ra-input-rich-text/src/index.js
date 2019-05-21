@@ -1,4 +1,5 @@
 import debounce from 'lodash/debounce';
+import isEqual from 'lodash/isEqual';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Quill from 'quill';
@@ -59,7 +60,14 @@ export class RichTextInput extends Component {
     }
 
     shouldComponentUpdate(nextProps) {
-        return nextProps.input.value !== this.lastValueChange;
+        const { input: { value: nextValue = '' } = {} } = nextProps;
+        const currentProps = Object.assign({}, this.props);
+        delete nextProps.input.value;
+        delete currentProps.input.value;
+        return (
+            nextValue !== this.lastValueChange ||
+            !isEqual(nextProps, currentProps)
+        );
     }
 
     componentDidUpdate(prevProps) {
