@@ -1,11 +1,9 @@
 import { ReactElement, FunctionComponent } from 'react';
 
-import {
-    SORT_ASC,
-    SORT_DESC,
-} from '../../reducer/admin/resource/list/queryReducer';
-import { Record, Sort, RecordMap, Identifier, Dispatch } from '../../types';
+import { Record, Sort, RecordMap, Identifier } from '../../types';
 import useReferenceMany from './useReferenceMany';
+import useSort from '../useSort';
+import usePagination from '../usePagination';
 
 interface ChildrenFuncParams {
     currentSort: Sort;
@@ -34,17 +32,6 @@ interface Props {
     target: string;
     total?: number;
 }
-
-const sortReducer = (state: Sort, field: string | Sort): Sort => {
-    if (typeof field !== 'string') {
-        return field;
-    }
-    const order =
-        state.field === field && state.order === SORT_ASC
-            ? SORT_DESC
-            : SORT_ASC;
-    return { field, order };
-};
 
 /**
  * Render related records to the current one.
@@ -100,21 +87,19 @@ export const ReferenceManyFieldController: FunctionComponent<Props> = ({
     filter,
     source,
     basePath,
-    perPage,
-    sort,
+    perPage: initialPerPage,
+    sort: initialSort,
     children,
 }) => {
+    const { sort, sortBy } = useSort(initialSort);
+    const { page, perPage, setPage, setPerPage } = usePagination(
+        initialPerPage
+    );
     const {
-        currentSort,
         data,
         ids,
         loadedOnce,
-        page,
-        currentPerPage,
         referenceBasePath,
-        setPage,
-        setPerPage,
-        setSort,
         total,
     } = useReferenceMany({
         resource,
@@ -125,20 +110,21 @@ export const ReferenceManyFieldController: FunctionComponent<Props> = ({
         source,
         basePath,
         perPage,
+        page,
         sort,
     });
 
     return children({
-        currentSort,
+        currentSort: sort,
         data,
         ids,
         loadedOnce,
         page,
-        perPage: currentPerPage,
+        perPage,
         referenceBasePath,
         setPage,
         setPerPage,
-        setSort,
+        setSort: sortBy,
         total,
     });
 };

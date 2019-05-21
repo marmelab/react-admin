@@ -1,13 +1,9 @@
-import { ReactNode, useState, useReducer, useEffect, useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 // @ts-ignore
 import { useSelector, useDispatch } from 'react-redux';
 import get from 'lodash/get';
 
 import { crudGetManyReference } from '../../actions';
-import {
-    SORT_ASC,
-    SORT_DESC,
-} from '../../reducer/admin/resource/list/queryReducer';
 import {
     getIds,
     getReferences,
@@ -17,16 +13,10 @@ import {
 import { Record, Sort, RecordMap, Identifier, Dispatch } from '../../types';
 
 interface ChildrenFuncParams {
-    currentSort: Sort;
     data: RecordMap;
     ids: Identifier[];
     loadedOnce: boolean;
-    page: number;
-    currentPerPage: number;
     referenceBasePath: string;
-    setPage: (page: number) => void;
-    setPerPage: (perPage: number) => void;
-    setSort: (field: string) => void;
     total: number;
 }
 
@@ -36,7 +26,8 @@ interface Options {
     filter?: any;
     ids?: any[];
     loadedOnce?: boolean;
-    perPage?: number;
+    page: number;
+    perPage: number;
     record?: Record;
     reference: string;
     resource: string;
@@ -45,17 +36,6 @@ interface Options {
     target: string;
     total?: number;
 }
-
-const sortReducer = (state: Sort, field: string | Sort): Sort => {
-    if (typeof field !== 'string') {
-        return field;
-    }
-    const order =
-        state.field === field && state.order === SORT_ASC
-            ? SORT_DESC
-            : SORT_ASC;
-    return { field, order };
-};
 
 const defaultFilter = {};
 
@@ -67,7 +47,8 @@ const useReferenceMany = ({
     filter = defaultFilter,
     source,
     basePath,
-    perPage = 25,
+    page,
+    perPage,
     sort = { field: 'id', order: 'DESC' },
 }: Options): ChildrenFuncParams => {
     const referenceId = get(record, source);
@@ -81,11 +62,6 @@ const useReferenceMany = ({
         relatedTo,
     ]);
     const total = useSelector(selectTotal(relatedTo), [relatedTo]);
-    const [page, setPage] = useState(1);
-    const [currentPerPage, setPerPage] = useState(perPage);
-    useEffect(() => setPerPage(perPage), [perPage]);
-    const [currentSort, setSort] = useReducer(sortReducer, sort);
-    useEffect(() => setSort(sort), [sort.field, sort.order]);
 
     const dispatch = useDispatch();
 
@@ -98,8 +74,8 @@ const useReferenceMany = ({
             filter,
             source,
             page,
-            perPage: currentPerPage,
-            sort: currentSort,
+            perPage,
+            sort,
             dispatch,
         }),
         [
@@ -111,25 +87,19 @@ const useReferenceMany = ({
             source,
             crudGetManyReference,
             page,
-            currentPerPage,
-            currentSort.field,
-            currentSort.order,
+            perPage,
+            sort.field,
+            sort.order,
         ]
     );
 
     const referenceBasePath = basePath.replace(resource, reference);
 
     return {
-        currentSort,
         data,
         ids,
         loadedOnce: typeof ids !== 'undefined',
-        page,
-        currentPerPage,
         referenceBasePath,
-        setPage,
-        setPerPage,
-        setSort,
         total,
     };
 };
