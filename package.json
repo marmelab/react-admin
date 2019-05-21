@@ -12,7 +12,7 @@
         "test-ci": "yarn -s test-unit-ci && yarn -s test-e2e",
         "doc": "cd docs && jekyll server . --watch",
         "lint": "eslint ./packages/**/src",
-        "prettier": "prettier --single-quote --trailing-comma es5 --tab-width 4 --write --list-different \"packages/*/src/**/*.{js,ts,tsx,css,md}\" \"examples/*/src/**/*.{js,ts,tsx,css,md}\"",
+        "prettier": "prettier --config ./.prettierrc --write --list-different \"packages/*/src/**/*.{js,ts,tsx,css,md}\" \"examples/*/src/**/*.{js,ts,tsx,css,md}\"",
         "run-simple": "cd examples/simple && yarn -s start",
         "run-tutorial": "yarn run -s build && cd examples/tutorial && yarn -s start",
         "run-demo": "cd examples/demo && cross-env REACT_APP_DATA_PROVIDER=rest yarn -s start",

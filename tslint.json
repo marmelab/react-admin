@@ -29,7 +29,7 @@
         "variable-name": false,
         "prettier": [
             true,
-            { "singleQuote": true, "tabWidth": 4, "trailingComma": "es5" }
+            "./.prettierrc"
         ],
         "interface-name": [true, "never-prefix"],
         "member-access": false
