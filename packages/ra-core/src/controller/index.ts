@@ -7,6 +7,7 @@ import EditController from './EditController';
 import ListController from './ListController';
 import ShowController from './ShowController';
 import useGetOne from './useGetOne';
+import useGetList from './useGetList';
 export {
     getListControllerProps,
     sanitizeListRestProps,
@@ -15,6 +16,7 @@ export {
     ListController,
     ShowController,
     useGetOne,
+    useGetList,
 };
 
 export * from './field';

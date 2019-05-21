@@ -19,6 +19,15 @@ export interface QueryOptions {
 }
 
 /**
+ * Lists of records are initilized to a particular object,
+ * so detecting if the list is empty requires some work.
+ *
+ * @see src/reducer/admin/data.ts
+ */
+const isEmptyList = data =>
+    data && Object.keys(data).length === 0 && data.hasOwnProperty('fetchedAt');
+
+/**
  * Fetch the data provider through Redux, return the value from the store.
  *
  * The return value updates according to the request state:
@@ -53,6 +62,7 @@ export interface QueryOptions {
  *             resource: 'users',
  *             payload: { id: record.id }
  *         },
+ *         {},
  *         state => state.admin.resources.users.data[record.id]
  *     );
  *     if (loading) { return <Loading />; }
@@ -80,7 +90,7 @@ const useQueryWithStore = (
         total,
         error: null,
         loading: true,
-        loaded: data !== undefined,
+        loaded: data !== undefined && !isEmptyList(data),
     });
     if (!isEqual(state.data, data) || state.total !== total) {
         setState({

@@ -1,10 +1,4 @@
-import {
-    isValidElement,
-    ReactNode,
-    ReactElement,
-    useCallback,
-    useEffect,
-} from 'react';
+import { isValidElement, ReactNode, ReactElement, useCallback } from 'react';
 // @ts-ignore
 import { useSelector, useDispatch } from 'react-redux';
 import inflection from 'inflection';
@@ -28,6 +22,7 @@ import {
 import { Location } from 'history';
 import { useTranslate } from '../i18n';
 import useListParams from './useListParams';
+import useGetList from './useGetList';
 
 interface ChildrenFuncParams {
     basePath: string;
@@ -148,15 +143,12 @@ const ListController = (props: Props) => {
 
     const dispatch = useDispatch();
     const translate = useTranslate();
-    const isLoading = useSelector(
-        (reduxState: ReduxState) => reduxState.admin.loading > 0
-    );
 
     const version = useSelector(
         (reduxState: ReduxState) => reduxState.admin.ui.viewVersion
     );
 
-    const { loadedOnce, selectedIds } = useSelector(
+    const { selectedIds } = useSelector(
         (reduxState: ReduxState) => reduxState.admin.resources[resource].list,
         [resource]
     );
@@ -176,30 +168,23 @@ const ListController = (props: Props) => {
         debounce,
     });
 
-    useEffect(() => {
-        const pagination = {
+    const { data, ids, total, loading, loaded } = useGetList(
+        resource,
+        {
             page: query.page,
             perPage: query.perPage,
-        };
-        const permanentFilter = filter;
-        dispatch(
-            crudGetList(
-                resource,
-                pagination,
-                { field: query.sort, order: query.order },
-                { ...query.filter, ...permanentFilter }
-            )
-        );
-    }, query.requestSignature);
-
-    const data = useSelector(
-        (reduxState: ReduxState) => reduxState.admin.resources[resource].data,
-        [resource]
-    );
-
-    const { ids, total } = useSelector(
-        (reduxState: ReduxState) => reduxState.admin.resources[resource].list,
-        [resource]
+        },
+        { field: query.sort, order: query.order },
+        { ...query.filter, ...filter },
+        {
+            version,
+            onFailure: {
+                notification: {
+                    body: 'ra.notification.http_error',
+                    level: 'warning',
+                },
+            },
+        }
     );
 
     if (!query.page && !(ids || []).length && query.page > 1 && total > 0) {
@@ -238,8 +223,8 @@ const ListController = (props: Props) => {
         filterValues: query.filterValues,
         hasCreate,
         ids,
-        isLoading,
-        loadedOnce,
+        isLoading: loading,
+        loadedOnce: loaded,
         onSelect: handleSelect,
         onToggleItem: handleToggleItem,
         onUnselectItems: handleUnselectItems,
