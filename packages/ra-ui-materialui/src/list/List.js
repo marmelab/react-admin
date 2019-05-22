@@ -244,7 +244,7 @@ ListView.defaultProps = {
  *   - sort
  *   - filter (the permanent filter to apply to the query)
  *   - actions
- *   - filters (a React Element used to display the filter form)
+ *   - filters (a React component used to display the filter form)
  *   - pagination
  *
  * @example
@@ -259,7 +259,7 @@ ListView.defaultProps = {
  *             title="List of posts"
  *             sort={{ field: 'published_at' }}
  *             filter={{ is_published: true }}
- *             filters={<PostFilter />}
+ *             filters={PostFilter}
  *         >
  *             <Datagrid>
  *                 <TextField source="id" />

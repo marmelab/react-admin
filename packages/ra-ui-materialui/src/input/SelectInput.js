@@ -87,7 +87,7 @@ const styles = theme =>
  *    { id: 456, first_name: 'Jane', last_name: 'Austen' },
  * ];
  * const FullNameField = ({ record }) => <span>{record.first_name} {record.last_name}</span>;
- * <SelectInput source="gender" choices={choices} optionText={<FullNameField />}/>
+ * <SelectInput source="gender" choices={choices} optionText={FullNameField}/>
  *
  * The choices are translated by default, so you can use translation identifiers as choices:
  * @example
