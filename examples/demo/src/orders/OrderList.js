@@ -169,7 +169,7 @@ const OrderList = ({ classes, ...props }) => (
         filterDefaultValues={{ status: 'ordered' }}
         sort={{ field: 'date', order: 'DESC' }}
         perPage={25}
-        filters={<OrderFilter />}
+        filters={OrderFilter}
     >
         <StyledTabbedDatagrid />
     </List>

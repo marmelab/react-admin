@@ -1,5 +1,5 @@
 /* eslint no-console: ["error", { allow: ["warn", "error"] }] */
-import React, { isValidElement, Children, cloneElement } from 'react';
+import React, { Children, cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import Card from '@material-ui/core/Card';
 import classnames from 'classnames';
@@ -108,7 +108,21 @@ const sanitizeRestProps = ({
 }) => rest;
 
 export const ListView = withStyles(styles)(({ // component props
-    actions, aside, filter, filters, bulkActions, bulkActionButtons, pagination, children, className, classes, component, exporter, title, ...rest }) => {
+    actions: Actions,
+    aside: Aside,
+    filter,
+    filters: Filters,
+    bulkActions: BulkActions,
+    bulkActionButtons: BulkActionButtons,
+    pagination: Pagination,
+    children,
+    className,
+    classes,
+    component,
+    exporter,
+    title,
+    ...rest
+}) => {
     // overridable by user // deprecated
     const { defaultTitle, version } = rest;
     const controllerProps = getListControllerProps(rest);
@@ -120,12 +134,12 @@ export const ListView = withStyles(styles)(({ // component props
         >
             <Title title={title} defaultTitle={defaultTitle} />
 
-            {(filters || actions) && (
+            {(Filters || Actions) && (
                 <ListToolbar
-                    filters={filters}
+                    filters={Filters}
                     {...controllerProps}
-                    actions={actions}
-                    bulkActions={bulkActions}
+                    actions={Actions}
+                    bulkActions={BulkActions}
                     exporter={exporter}
                     permanentFilter={filter}
                 />
@@ -138,35 +152,35 @@ export const ListView = withStyles(styles)(({ // component props
                     })}
                     key={version}
                 >
-                    {bulkActions !== false &&
-                        bulkActionButtons !== false &&
-                        bulkActionButtons &&
-                        !bulkActions && (
+                    {BulkActions !== false &&
+                        BulkActionButtons !== false &&
+                        BulkActionButtons &&
+                        !BulkActions && (
                             <BulkActionsToolbar {...controllerProps}>
-                                {bulkActionButtons}
+                                <BulkActionButtons />
                             </BulkActionsToolbar>
                         )}
                     {children &&
                         cloneElement(Children.only(children), {
                             ...controllerProps,
                             hasBulkActions:
-                                bulkActions !== false &&
-                                bulkActionButtons !== false,
+                                BulkActions !== false &&
+                                BulkActionButtons !== false,
                         })}
-                    {pagination && cloneElement(pagination, controllerProps)}
+                    {Pagination && <Pagination {...controllerProps} />}
                 </Content>
-                {aside && cloneElement(aside, controllerProps)}
+                {Aside && <Aside {...controllerProps}  />}
             </div>
         </div>
     );
 });
 
 ListView.propTypes = {
-    actions: PropTypes.element,
-    aside: PropTypes.node,
+    actions: ComponentPropType,
+    aside: ComponentPropType,
     basePath: PropTypes.string,
-    bulkActions: PropTypes.oneOfType([PropTypes.bool, PropTypes.element]),
-    bulkActionButtons: PropTypes.oneOfType([PropTypes.bool, PropTypes.element]),
+    bulkActions: PropTypes.oneOfType([PropTypes.bool, ComponentPropType]),
+    bulkActionButtons: PropTypes.oneOfType([PropTypes.bool, ComponentPropType]),
     children: PropTypes.element,
     className: PropTypes.string,
     classes: PropTypes.object,
@@ -180,7 +194,7 @@ ListView.propTypes = {
     displayedFilters: PropTypes.object,
     exporter: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
     filterDefaultValues: PropTypes.object,
-    filters: PropTypes.element,
+    filters: ComponentPropType,
     filterValues: PropTypes.object,
     hasCreate: PropTypes.bool,
     hideFilter: PropTypes.func,
@@ -190,7 +204,7 @@ ListView.propTypes = {
     onToggleItem: PropTypes.func,
     onUnselectItems: PropTypes.func,
     page: PropTypes.number,
-    pagination: PropTypes.oneOfType([PropTypes.bool, PropTypes.element]),
+    pagination: PropTypes.oneOfType([PropTypes.bool, ComponentPropType]),
     perPage: PropTypes.number,
     refresh: PropTypes.func,
     resource: PropTypes.string,
@@ -207,11 +221,11 @@ ListView.propTypes = {
 };
 
 ListView.defaultProps = {
-    actions: <DefaultActions />,
+    actions: DefaultActions,
     classes: {},
     component: Card,
-    bulkActionButtons: <DefaultBulkActionButtons />,
-    pagination: <DefaultPagination />,
+    bulkActionButtons: DefaultBulkActionButtons,
+    pagination: DefaultPagination,
 };
 
 /**
@@ -263,17 +277,17 @@ const List = props => (
 
 List.propTypes = {
     // the props you can change
-    actions: PropTypes.element,
-    aside: PropTypes.node,
-    bulkActions: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
-    bulkActionButtons: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
+    actions: ComponentPropType,
+    aside: ComponentPropType,
+    bulkActions: PropTypes.oneOfType([ComponentPropType, PropTypes.bool]),
+    bulkActionButtons: PropTypes.oneOfType([ComponentPropType, PropTypes.bool]),
     children: PropTypes.node,
     classes: PropTypes.object,
     className: PropTypes.string,
     filter: PropTypes.object,
     filterDefaultValues: PropTypes.object,
-    filters: PropTypes.element,
-    pagination: PropTypes.element,
+    filters: ComponentPropType,
+    pagination: ComponentPropType,
     perPage: PropTypes.number.isRequired,
     sort: PropTypes.shape({
         field: PropTypes.string,

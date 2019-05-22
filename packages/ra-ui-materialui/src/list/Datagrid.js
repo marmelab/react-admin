@@ -1,13 +1,12 @@
-import React, { Component, isValidElement, Children, cloneElement } from 'react';
+import React, { Component, isValidElement, Children } from 'react';
 import PropTypes from 'prop-types';
-import { sanitizeListRestProps } from 'ra-core';
+import { sanitizeListRestProps, ComponentPropType } from 'ra-core';
 import { withStyles, createStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Checkbox from '@material-ui/core/Checkbox';
-
 import classnames from 'classnames';
 
 import DatagridHeaderCell from './DatagridHeaderCell';
@@ -117,7 +116,7 @@ class Datagrid extends Component {
     render() {
         const {
             basePath,
-            body,
+            body: Body,
             children,
             classes,
             className,
@@ -219,27 +218,25 @@ class Datagrid extends Component {
                         )}
                     </TableRow>
                 </TableHead>
-                {cloneElement(
-                    body,
-                    {
-                        basePath,
-                        className: classes.tbody,
-                        classes,
-                        expand,
-                        rowClick,
-                        data,
-                        hasBulkActions,
-                        hover,
-                        ids,
-                        isLoading,
-                        onToggleItem,
-                        resource,
-                        rowStyle,
-                        selectedIds,
-                        version,
-                    },
-                    children
-                )}
+                <Body
+                    basePath={basePath}
+                    className={classes.tbody}
+                    classes={classes}
+                    expand={expand}
+                    rowClick={rowClick}
+                    data={data}
+                    hasBulkActions={hasBulkActions}
+                    hover={hover}
+                    ids={ids}
+                    isLoading={isLoading}
+                    onToggleItem={onToggleItem}
+                    resource={resource}
+                    rowStyle={rowStyle}
+                    selectedIds={selectedIds}
+                    version={version}
+                >
+                    {children}
+                </Body>
             </Table>
         );
     }
@@ -247,7 +244,7 @@ class Datagrid extends Component {
 
 Datagrid.propTypes = {
     basePath: PropTypes.string,
-    body: PropTypes.element.isRequired,
+    body: ComponentPropType,
     children: PropTypes.node.isRequired,
     classes: PropTypes.object,
     className: PropTypes.string,
@@ -256,7 +253,7 @@ Datagrid.propTypes = {
         order: PropTypes.string,
     }),
     data: PropTypes.object.isRequired,
-    expand: PropTypes.node,
+    expand: ComponentPropType,
     hasBulkActions: PropTypes.bool.isRequired,
     hover: PropTypes.bool,
     ids: PropTypes.arrayOf(PropTypes.any).isRequired,
@@ -277,7 +274,7 @@ Datagrid.defaultProps = {
     hasBulkActions: false,
     ids: [],
     selectedIds: [],
-    body: <DatagridBody />,
+    body: DatagridBody,
 };
 
 export default withStyles(styles)(Datagrid);
