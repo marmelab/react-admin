@@ -12,9 +12,11 @@ import references, {
 import saving from './saving';
 import ui from './ui';
 import auth, { isLoggedIn as authIsLoggedIn } from './auth';
+import customQueries from './customQueries';
 
 export default combineReducers({
     resources,
+    customQueries,
     loading,
     notifications,
     record,

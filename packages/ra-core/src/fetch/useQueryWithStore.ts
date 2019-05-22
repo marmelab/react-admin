@@ -19,13 +19,28 @@ export interface QueryOptions {
 }
 
 /**
- * Lists of records are initilized to a particular object,
+ * Lists of records are initialized to a particular object,
  * so detecting if the list is empty requires some work.
  *
  * @see src/reducer/admin/data.ts
  */
 const isEmptyList = data =>
     data && Object.keys(data).length === 0 && data.hasOwnProperty('fetchedAt');
+
+/**
+ * Default cache selector. Allows to cache responses by default.
+ *
+ * By default, custom queries are dispatched as a CUSTOM_QUERY Redux action.
+ * The fetch middleware dispatches a CUSTOM_QUERY_SUCCESS when the response comes,
+ * and the customQueries reducer stores the result in the store. This selector
+ * reads the customQueries store and acts as a response cache.
+ */
+const defaultDataSelector = query => (state: ReduxState) => {
+    const key = JSON.stringify(query);
+    return state.admin.customQueries[key]
+        ? state.admin.customQueries[key].data
+        : undefined;
+};
 
 /**
  * Fetch the data provider through Redux, return the value from the store.
@@ -72,8 +87,8 @@ const isEmptyList = data =>
  */
 const useQueryWithStore = (
     query: Query,
-    options: QueryOptions = {},
-    dataSelector: (state: ReduxState) => any,
+    options: QueryOptions = { action: 'CUSTOM_QUERY' },
+    dataSelector: (state: ReduxState) => any = defaultDataSelector(query),
     totalSelector?: (state: ReduxState) => number
 ): {
     data?: any;
