@@ -34,8 +34,8 @@ const OrderFilter = withStyles(filterStyles)(({ classes, ...props }) => (
         <SearchInput source="q" alwaysOn />
         <ReferenceInput source="customer_id" reference="customers">
             <AutocompleteInput
-                optionText={choice =>
-                    `${choice.first_name} ${choice.last_name}`
+                optionText={({ record }) =>
+                    `${record.first_name} ${record.last_name}`
                 }
             />
         </ReferenceInput>

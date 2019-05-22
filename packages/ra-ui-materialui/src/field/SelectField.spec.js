@@ -85,25 +85,13 @@ describe('<SelectField />', () => {
         expect(queryAllByText('hello')).toHaveLength(1);
     });
 
-    it('should use optionText with a function value as text identifier', () => {
-        const { queryAllByText } = render(
-            <SelectField
-                {...defaultProps}
-                record={{ foo: 0 }}
-                optionText={choice => choice.foobar}
-                choices={[{ id: 0, foobar: 'hello' }]}
-            />
-        );
-        expect(queryAllByText('hello')).toHaveLength(1);
-    });
-
     it('should use optionText with an element value as text identifier', () => {
         const Foobar = ({ record }) => <span>{record.foobar}</span>;
         const { queryAllByText } = render(
             <SelectField
                 {...defaultProps}
                 record={{ foo: 0 }}
-                optionText={<Foobar />}
+                optionText={Foobar}
                 choices={[{ id: 0, foobar: 'hello' }]}
             />
         );

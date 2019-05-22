@@ -71,7 +71,7 @@ const ProductEdit = ({ classes, ...props }) => (
                     reference="reviews"
                     target="product_id"
                     addLabel={false}
-                    pagination={<Pagination />}
+                    pagination={Pagination}
                 >
                     <Datagrid>
                         <DateField source="date" />

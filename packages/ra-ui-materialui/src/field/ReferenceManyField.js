@@ -1,6 +1,6 @@
 import React, { Fragment, cloneElement, Children } from 'react';
 import PropTypes from 'prop-types';
-import { ReferenceManyFieldController } from 'ra-core';
+import { ReferenceManyFieldController, ComponentPropType } from 'ra-core';
 
 export const ReferenceManyFieldView = ({
     children,
@@ -10,7 +10,7 @@ export const ReferenceManyFieldView = ({
     ids,
     loadedOnce,
     page,
-    pagination,
+    pagination: Pagination,
     perPage,
     reference,
     referenceBasePath,
@@ -31,15 +31,16 @@ export const ReferenceManyFieldView = ({
             setSort,
             total,
         })}
-        {pagination &&
+        {Pagination &&
             total !== undefined &&
-            cloneElement(pagination, {
-                page,
-                perPage,
-                setPage,
-                setPerPage,
-                total,
-            })}
+            <Pagination
+                page={page}
+                perPage={perPage}
+                setPage={setPage}
+                setPerPage={setPerPage}
+                total={total}
+            />
+        }
     </Fragment>
 );
 
@@ -53,7 +54,7 @@ ReferenceManyFieldView.propTypes = {
     data: PropTypes.object,
     ids: PropTypes.array,
     loadedOnce: PropTypes.bool,
-    pagination: PropTypes.element,
+    pagination: ComponentPropType,
     reference: PropTypes.string,
     referenceBasePath: PropTypes.string,
     setSort: PropTypes.func,
