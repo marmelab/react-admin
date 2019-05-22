@@ -1,9 +1,8 @@
 import React, {
-    createElement,
     Component,
-    ElementType,
     ComponentType,
     HtmlHTMLAttributes,
+    ReactNode,
 } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
@@ -19,7 +18,6 @@ import {
 import { ThemeProvider } from '@material-ui/styles';
 import LockIcon from '@material-ui/icons/Lock';
 import { StaticContext } from 'react-router';
-import { ComponentPropType } from 'ra-core';
 
 import defaultTheme from '../defaultTheme';
 import Notification from '../layout/Notification';
@@ -27,7 +25,7 @@ import DefaultLoginForm from './LoginForm';
 
 interface Props {
     backgroundImage?: string;
-    loginForm: ElementType<any>;
+    children: ReactNode;
     staticContext?: StaticContext;
     theme: object;
 }
@@ -117,7 +115,7 @@ class Login extends Component<
             backgroundImage,
             classes,
             className,
-            loginForm,
+            children,
             staticContext,
             ...rest
         } = this.props;
@@ -135,7 +133,7 @@ class Login extends Component<
                                 <LockIcon />
                             </Avatar>
                         </div>
-                        {createElement(loginForm)}
+                        {children}
                     </Card>
                     <Notification />
                 </div>
@@ -148,7 +146,7 @@ const EnhancedLogin = withStyles(styles)(Login) as ComponentType<Props>;
 
 EnhancedLogin.propTypes = {
     backgroundImage: PropTypes.string,
-    loginForm: ComponentPropType,
+    children: PropTypes.node,
     theme: PropTypes.object,
     staticContext: PropTypes.object,
 };
@@ -156,6 +154,6 @@ EnhancedLogin.propTypes = {
 EnhancedLogin.defaultProps = {
     backgroundImage: 'https://source.unsplash.com/random/1600x900/daily',
     theme: defaultTheme,
-    loginForm: DefaultLoginForm,
+    children: <DefaultLoginForm />,
 };
 export default EnhancedLogin;
