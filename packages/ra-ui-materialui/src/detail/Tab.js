@@ -64,7 +64,7 @@ class Tab extends Component {
             key={label}
             label={translate(label, { _: label })}
             value={value}
-            icon={<Icon />}
+            icon={Icon ? <Icon /> : null}
             className={classnames('show-tab', className)}
             component={Link}
             to={value}
