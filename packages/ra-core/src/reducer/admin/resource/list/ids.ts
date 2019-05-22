@@ -31,21 +31,21 @@ export const addRecordIdsFactory = getFetchedAtCallback => (
     oldRecordIds: IdentifierArrayWithDate,
     preserveOldIds: boolean = false
 ): IdentifierArrayWithDate => {
-    let newFetchedAt = getFetchedAtCallback(
+    const newFetchedAt = getFetchedAtCallback(
         newRecordIds,
         oldRecordIds.fetchedAt
     );
 
-    if (preserveOldIds) {
-        newFetchedAt = { ...oldRecordIds.fetchedAt, ...newFetchedAt };
-    }
+    const fetchedAt = preserveOldIds
+        ? { ...oldRecordIds.fetchedAt, ...newFetchedAt }
+        : { ...newFetchedAt };
 
     const recordIds = uniq(
-        oldRecordIds.filter(id => !!newFetchedAt[id]).concat(newRecordIds)
+        oldRecordIds.filter(id => !!fetchedAt[id]).concat(newRecordIds)
     );
 
     Object.defineProperty(recordIds, 'fetchedAt', {
-        value: newFetchedAt,
+        value: fetchedAt,
     }); // non enumerable by default
     return recordIds;
 };

@@ -66,7 +66,7 @@ describe('data addRecordIdsFactory', () => {
         assert.deepEqual(newState, ['record3', 'record1', 'record2']);
     });
 
-    it.only('should preserve old records when "preserveOldIds" param is true ', () => {
+    it('should preserve old records when "preserveOldIds" param is true', () => {
         const newRecords = ['record1'];
         const oldRecords = ['record2', 'record3'];
         const getFetchedAt = jest.fn().mockReturnValue({
