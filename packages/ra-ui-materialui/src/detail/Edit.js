@@ -1,4 +1,4 @@
-import React, { Children, cloneElement, createElement } from 'react';
+import React, { Children, cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -54,8 +54,8 @@ const sanitizeRestProps = ({
 
 export const EditView = withStyles(styles)(
     ({
-        actions,
-        aside,
+        actions: Actions,
+        aside: Aside,
         basePath,
         children,
         classes,
@@ -72,8 +72,8 @@ export const EditView = withStyles(styles)(
         version,
         ...rest
     }) => {
-        if (typeof actions === 'undefined' && hasShow) {
-            actions = DefaultActions;
+        if (typeof Actions === 'undefined' && hasShow) {
+            Actions = DefaultActions;
         }
         if (!children) {
             return null;
@@ -88,18 +88,18 @@ export const EditView = withStyles(styles)(
                     record={record}
                     defaultTitle={defaultTitle}
                 />
-                {actions &&
-                    createElement(actions, {
-                        basePath,
-                        data: record,
-                        hasShow,
-                        hasList,
-                        resource,
-                        ...actions.props,
-                    })}
+                {Actions &&
+                    <Actions
+                        basePath={basePath}
+                        data={record}
+                        hasList={hasList}
+                        hasShow={hasShow}
+                        resource={resource}
+                    />
+                }
                 <div
                     className={classnames(classes.main, {
-                        [classes.noActions]: !actions,
+                        [classes.noActions]: !Actions,
                     })}
                 >
                     <Card className={classes.card}>
@@ -121,13 +121,15 @@ export const EditView = withStyles(styles)(
                             <CardContent>&nbsp;</CardContent>
                         )}
                     </Card>
-                    {aside &&
-                        createElement(aside, {
-                            basePath,
-                            record,
-                            resource,
-                            version,
-                        })}
+                    {Aside &&
+                        <Aside
+                            basePath={basePath}
+                            record={record}
+                            resource={resource}
+                            version={version}
+                            save={save}
+                        />
+                    }
                 </div>
             </div>
         );

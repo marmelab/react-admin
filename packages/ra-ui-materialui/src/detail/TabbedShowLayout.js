@@ -1,4 +1,4 @@
-import React, { Component, Children, cloneElement, createElement, isValidElement } from 'react';
+import React, { Component, Children, cloneElement, isValidElement } from 'react';
 import PropTypes from 'prop-types';
 import Divider from '@material-ui/core/Divider';
 import { withRouter, Route } from 'react-router-dom';
@@ -79,7 +79,7 @@ export class TabbedShowLayout extends Component {
             translate,
             version,
             value,
-            tabs,
+            tabs: Tabs,
             ...rest
         } = this.props;
 
@@ -89,16 +89,15 @@ export class TabbedShowLayout extends Component {
                 key={version}
                 {...sanitizeRestProps(rest)}
             >
-                {createElement(
-                    tabs,
-                    {
-                        // The location pathname will contain the page path including the current tab path
-                        // so we can use it as a way to determine the current tab
-                        value: location.pathname,
-                        match,
-                    },
-                    children
-                )}
+                <Tabs
+                    // The location pathname will contain the page path including the current tab path
+                    // so we can use it as a way to determine the current tab
+                    value={location.pathname}
+                    match={match}
+                >
+                    {children}
+                </Tabs>
+                
                 <Divider />
                 <CardContentInner>
                     {Children.map(

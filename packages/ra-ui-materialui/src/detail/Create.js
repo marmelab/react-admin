@@ -1,4 +1,4 @@
-import React, { Children, cloneElement, createElement } from 'react';
+import React, { Children, cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import Card from '@material-ui/core/Card';
 import { withStyles, createStyles } from '@material-ui/core/styles';
@@ -45,8 +45,8 @@ const sanitizeRestProps = ({
 
 export const CreateView = withStyles(styles)(
     ({
-        actions,
-        aside,
+        actions: Actions,
+        aside: Aside,
         basePath,
         children,
         classes,
@@ -70,16 +70,16 @@ export const CreateView = withStyles(styles)(
                 record={record}
                 defaultTitle={defaultTitle}
             />
-            {actions &&
-                createElement(actions, {
-                    basePath,
-                    resource,
-                    hasList,
-                    ...actions.props,
-                })}
+            {Actions &&
+                <Actions
+                    basePath={basePath}
+                    hasList={hasList}
+                    resource={resource}
+                />
+            }
             <div
                 className={classnames(classes.main, {
-                    [classes.noActions]: !actions,
+                    [classes.noActions]: !Actions,
                 })}
             >
                 <Card className={classes.card}>
@@ -94,13 +94,14 @@ export const CreateView = withStyles(styles)(
                         save,
                     })}
                 </Card>
-                {aside &&
-                    createElement(aside, {
-                        basePath,
-                        record,
-                        resource,
-                        save,
-                    })}
+                {Aside &&
+                    <Aside
+                        basePath={basePath}
+                        record={record}
+                        resource={resource}
+                        save={save}
+                    />
+                }
             </div>
         </div>
     )

@@ -1,4 +1,4 @@
-import React, { cloneElement, Children, createElement } from 'react';
+import React, { cloneElement, Children } from 'react';
 import PropTypes from 'prop-types';
 import Card from '@material-ui/core/Card';
 import { withStyles, createStyles } from '@material-ui/core/styles';
@@ -50,8 +50,8 @@ const sanitizeRestProps = ({
 
 export const ShowView = withStyles(styles)(
     ({
-        actions,
-        aside,
+        actions: Actions,
+        aside: Aside,
         basePath,
         children,
         classes,
@@ -66,8 +66,8 @@ export const ShowView = withStyles(styles)(
         version,
         ...rest
     }) => {
-        if (typeof actions === 'undefined' && hasEdit) {
-            actions = DefaultActions;
+        if (typeof Actions === 'undefined' && hasEdit) {
+            Actions = DefaultActions;
         }
         if (!children) {
             return null;
@@ -82,18 +82,18 @@ export const ShowView = withStyles(styles)(
                     record={record}
                     defaultTitle={defaultTitle}
                 />
-                {actions &&
-                    createElement(actions, {
-                        basePath,
-                        data: record,
-                        hasList,
-                        hasEdit,
-                        resource,
-                        ...actions.props,
-                    })}
+                {Actions &&
+                    <Actions
+                        basePath={basePath}
+                        data={record}
+                        hasList={hasList}
+                        hasEdit={hasEdit}
+                        resource={resource}
+                    />
+                }
                 <div
                     className={classnames(classes.main, {
-                        [classes.noActions]: !actions,
+                        [classes.noActions]: !Actions,
                     })}
                 >
                     <Card className={classes.card}>
@@ -105,13 +105,14 @@ export const ShowView = withStyles(styles)(
                                 version,
                             })}
                     </Card>
-                    {aside &&
-                        createElement(aside, {
-                            resource,
-                            basePath,
-                            record,
-                            version,
-                        })}
+                    {Aside &&
+                        <Aside
+                            basePath={basePath}
+                            record={record}
+                            resource={resource}
+                            version={version}
+                        />
+                    }
                 </div>
             </div>
         );
