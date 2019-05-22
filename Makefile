@@ -102,7 +102,7 @@ lint: ## lint the code and check coding conventions
 
 prettier: ## prettify the source code using prettier
 	@echo "Running prettier..."
-	@yarn -s prettier
+	@yarn -s prettier-fix-all
 
 test: build test-unit lint test-e2e ## launch all tests
 
