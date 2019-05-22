@@ -1,9 +1,9 @@
-import React, { Component, Children, cloneElement, isValidElement } from 'react';
+import React, { Component, Children, cloneElement, createElement, isValidElement } from 'react';
 import PropTypes from 'prop-types';
 import Divider from '@material-ui/core/Divider';
 import { withRouter, Route } from 'react-router-dom';
 import compose from 'recompose/compose';
-import { translate } from 'ra-core';
+import { translate, ComponentPropType } from 'ra-core';
 
 import CardContentInner from '../layout/CardContentInner';
 import TabbedShowLayoutTabs from './TabbedShowLayoutTabs';
@@ -89,7 +89,7 @@ export class TabbedShowLayout extends Component {
                 key={version}
                 {...sanitizeRestProps(rest)}
             >
-                {cloneElement(
+                {createElement(
                     tabs,
                     {
                         // The location pathname will contain the page path including the current tab path
@@ -136,11 +136,11 @@ TabbedShowLayout.propTypes = {
     value: PropTypes.number,
     version: PropTypes.number,
     translate: PropTypes.func,
-    tabs: PropTypes.element.isRequired,
+    tabs: ComponentPropType,
 };
 
 TabbedShowLayout.defaultProps = {
-    tabs: <TabbedShowLayoutTabs />,
+    tabs: TabbedShowLayoutTabs,
 };
 
 const enhance = compose(

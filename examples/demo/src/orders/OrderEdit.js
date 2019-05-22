@@ -29,7 +29,7 @@ const editStyles = {
 };
 
 const OrderEdit = props => (
-    <Edit title={<OrderTitle />} aside={<Basket />} {...props}>
+    <Edit title={OrderTitle} aside={Basket} {...props}>
         <SimpleForm>
             <DateInput source="date" />
             <ReferenceInput source="customer_id" reference="customers">

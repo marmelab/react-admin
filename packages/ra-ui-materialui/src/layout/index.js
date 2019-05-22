@@ -16,7 +16,7 @@ import Notification from './Notification';
 import RecordTitle from './RecordTitle';
 import Responsive from './Responsive';
 import Sidebar from './Sidebar';
-import Title from './Title';
+import Title, { TitlePropType } from './Title';
 import TitleForRecord from './TitleForRecord';
 import TopToolbar from './TopToolbar';
 import UserMenu from './UserMenu';
@@ -42,6 +42,7 @@ export {
     Sidebar,
     Title,
     TitleForRecord,
+    TitlePropType,
     TopToolbar,
     UserMenu,
 };

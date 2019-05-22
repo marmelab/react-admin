@@ -1,13 +1,14 @@
-import React, { Children, cloneElement } from 'react';
+import React, { Children, cloneElement, createElement } from 'react';
 import PropTypes from 'prop-types';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import { withStyles, createStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
-import { EditController } from 'ra-core';
+import { EditController, ComponentPropType } from 'ra-core';
 
 import DefaultActions from './EditActions';
 import TitleForRecord from '../layout/TitleForRecord';
+import { TitlePropType } from '../layout';
 
 export const styles = createStyles({
     root: {},
@@ -72,7 +73,7 @@ export const EditView = withStyles(styles)(
         ...rest
     }) => {
         if (typeof actions === 'undefined' && hasShow) {
-            actions = <DefaultActions />;
+            actions = DefaultActions;
         }
         if (!children) {
             return null;
@@ -88,7 +89,7 @@ export const EditView = withStyles(styles)(
                     defaultTitle={defaultTitle}
                 />
                 {actions &&
-                    cloneElement(actions, {
+                    createElement(actions, {
                         basePath,
                         data: record,
                         hasShow,
@@ -121,7 +122,7 @@ export const EditView = withStyles(styles)(
                         )}
                     </Card>
                     {aside &&
-                        React.cloneElement(aside, {
+                        createElement(aside, {
                             basePath,
                             record,
                             resource,
@@ -134,8 +135,8 @@ export const EditView = withStyles(styles)(
 );
 
 EditView.propTypes = {
-    actions: PropTypes.element,
-    aside: PropTypes.node,
+    actions: ComponentPropType,
+    aside: ComponentPropType,
     basePath: PropTypes.string,
     children: PropTypes.element,
     classes: PropTypes.object,
@@ -147,7 +148,7 @@ EditView.propTypes = {
     redirect: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
     resource: PropTypes.string,
     save: PropTypes.func,
-    title: PropTypes.any,
+    title: TitlePropType,
     version: PropTypes.number,
 };
 
@@ -204,8 +205,8 @@ const Edit = props => (
 );
 
 Edit.propTypes = {
-    actions: PropTypes.element,
-    aside: PropTypes.node,
+    actions: ComponentPropType,
+    aside: ComponentPropType,
     children: PropTypes.node,
     classes: PropTypes.object,
     className: PropTypes.string,
@@ -215,7 +216,7 @@ Edit.propTypes = {
     hasList: PropTypes.bool,
     id: PropTypes.any.isRequired,
     resource: PropTypes.string.isRequired,
-    title: PropTypes.any,
+    title: TitlePropType,
 };
 
 export default Edit;

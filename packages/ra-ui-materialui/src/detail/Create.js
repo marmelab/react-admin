@@ -1,11 +1,12 @@
-import React, { Children, cloneElement } from 'react';
+import React, { Children, cloneElement, createElement } from 'react';
 import PropTypes from 'prop-types';
 import Card from '@material-ui/core/Card';
 import { withStyles, createStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
-import { CreateController } from 'ra-core';
+import { CreateController, ComponentPropType } from 'ra-core';
 
 import TitleForRecord from '../layout/TitleForRecord';
+import { TitlePropType } from '../layout';
 
 const styles = createStyles({
     root: {},
@@ -70,7 +71,7 @@ export const CreateView = withStyles(styles)(
                 defaultTitle={defaultTitle}
             />
             {actions &&
-                cloneElement(actions, {
+                createElement(actions, {
                     basePath,
                     resource,
                     hasList,
@@ -94,7 +95,7 @@ export const CreateView = withStyles(styles)(
                     })}
                 </Card>
                 {aside &&
-                    cloneElement(aside, {
+                    createElement(aside, {
                         basePath,
                         record,
                         resource,
@@ -106,8 +107,8 @@ export const CreateView = withStyles(styles)(
 );
 
 CreateView.propTypes = {
-    actions: PropTypes.element,
-    aside: PropTypes.node,
+    actions: ComponentPropType,
+    aside: ComponentPropType,
     basePath: PropTypes.string,
     children: PropTypes.element,
     classes: PropTypes.object,
@@ -119,7 +120,7 @@ CreateView.propTypes = {
     redirect: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
     resource: PropTypes.string,
     save: PropTypes.func,
-    title: PropTypes.any,
+    title: TitlePropType,
 };
 
 CreateView.defaultProps = {
@@ -174,8 +175,8 @@ const Create = props => (
 );
 
 Create.propTypes = {
-    actions: PropTypes.element,
-    aside: PropTypes.node,
+    actions: ComponentPropType,
+    aside: ComponentPropType,
     children: PropTypes.element,
     classes: PropTypes.object,
     className: PropTypes.string,
@@ -183,7 +184,7 @@ Create.propTypes = {
     hasEdit: PropTypes.bool,
     hasShow: PropTypes.bool,
     resource: PropTypes.string.isRequired,
-    title: PropTypes.any,
+    title: TitlePropType,
     record: PropTypes.object,
     hasList: PropTypes.bool,
 };

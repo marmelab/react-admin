@@ -44,7 +44,7 @@ const EditActions = ({ basePath, data, hasShow }) => (
 );
 
 const PostEdit = props => (
-    <Edit title={<PostTitle />} actions={<EditActions />} {...props}>
+    <Edit title={PostTitle} actions={EditActions} {...props}>
         <TabbedForm defaultValue={{ average_note: 0 }}>
             <FormTab label="post.form.summary">
                 <DisabledInput source="id" />

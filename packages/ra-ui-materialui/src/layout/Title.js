@@ -1,7 +1,7 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React, { createElement } from 'react';
+import { createPortal } from 'react-dom';
 import PropTypes from 'prop-types';
-import { useTranslate, warning } from 'ra-core';
+import { useTranslate, warning, ComponentPropType } from 'ra-core';
 
 const Title = ({ className, defaultTitle, locale, record, title, ...rest }) => {
     const translate = useTranslate();
@@ -18,17 +18,19 @@ const Title = ({ className, defaultTitle, locale, record, title, ...rest }) => {
             {translate(title, { _: title })}
         </span>
     ) : (
-        React.cloneElement(title, { className, record, ...rest })
+        createElement(title, { className, record, ...rest })
     );
-    return ReactDOM.createPortal(titleElement, container);
+    return createPortal(titleElement, container);
 };
+
+export const TitlePropType = PropTypes.oneOfType([PropTypes.string, ComponentPropType]);
 
 Title.propTypes = {
     defaultTitle: PropTypes.string,
     className: PropTypes.string,
     locale: PropTypes.string,
     record: PropTypes.object,
-    title: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
+    title: TitlePropType,
 };
 
 export default Title;

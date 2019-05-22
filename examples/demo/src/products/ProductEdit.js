@@ -35,7 +35,7 @@ const styles = {
 };
 
 const ProductEdit = ({ classes, ...props }) => (
-    <Edit {...props} title={<ProductTitle />}>
+    <Edit {...props} title={ProductTitle}>
         <TabbedForm>
             <FormTab label="resources.products.tabs.image">
                 <Poster />

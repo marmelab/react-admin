@@ -32,7 +32,7 @@ const UserEditToolbar = ({ permissions, ...props }) => (
 );
 
 const UserCreate = ({ permissions, ...props }) => (
-    <Create {...props} aside={<Aside />}>
+    <Create {...props} aside={Aside}>
         <TabbedForm toolbar={<UserEditToolbar permissions={permissions} />}>
             <FormTab label="user.form.summary" path="">
                 <TextInput

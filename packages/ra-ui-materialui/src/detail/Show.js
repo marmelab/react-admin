@@ -1,12 +1,13 @@
-import React, { cloneElement, Children } from 'react';
+import React, { cloneElement, Children, createElement } from 'react';
 import PropTypes from 'prop-types';
 import Card from '@material-ui/core/Card';
 import { withStyles, createStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
-import { ShowController } from 'ra-core';
+import { ShowController, ComponentPropType } from 'ra-core';
 
 import DefaultActions from './ShowActions';
 import TitleForRecord from '../layout/TitleForRecord';
+import { TitlePropType } from '../layout';
 
 export const styles = createStyles({
     root: {},
@@ -66,7 +67,7 @@ export const ShowView = withStyles(styles)(
         ...rest
     }) => {
         if (typeof actions === 'undefined' && hasEdit) {
-            actions = <DefaultActions />;
+            actions = DefaultActions;
         }
         if (!children) {
             return null;
@@ -82,7 +83,7 @@ export const ShowView = withStyles(styles)(
                     defaultTitle={defaultTitle}
                 />
                 {actions &&
-                    cloneElement(actions, {
+                    createElement(actions, {
                         basePath,
                         data: record,
                         hasList,
@@ -105,7 +106,7 @@ export const ShowView = withStyles(styles)(
                             })}
                     </Card>
                     {aside &&
-                        cloneElement(aside, {
+                        createElement(aside, {
                             resource,
                             basePath,
                             record,
@@ -118,8 +119,8 @@ export const ShowView = withStyles(styles)(
 );
 
 ShowView.propTypes = {
-    actions: PropTypes.element,
-    aside: PropTypes.node,
+    actions: ComponentPropType,
+    aside: ComponentPropType,
     basePath: PropTypes.string,
     children: PropTypes.element,
     classes: PropTypes.object,
@@ -131,7 +132,7 @@ ShowView.propTypes = {
     record: PropTypes.object,
     resource: PropTypes.string,
     title: PropTypes.any,
-    version: PropTypes.number,
+    version: TitlePropType,
 };
 
 ShowView.defaultProps = {
@@ -187,8 +188,8 @@ const Show = props => (
 );
 
 Show.propTypes = {
-    actions: PropTypes.element,
-    aside: PropTypes.node,
+    actions: ComponentPropType,
+    aside: ComponentPropType,
     children: PropTypes.element,
     classes: PropTypes.object,
     className: PropTypes.string,
@@ -198,7 +199,7 @@ Show.propTypes = {
     hasShow: PropTypes.bool,
     id: PropTypes.any.isRequired,
     resource: PropTypes.string.isRequired,
-    title: PropTypes.any,
+    title: TitlePropType,
 };
 
 export default Show;

@@ -7,7 +7,7 @@ import UserTitle from './UserTitle';
 import Aside from './Aside';
 
 const UserShow = ({ permissions, ...props }) => (
-    <Show title={<UserTitle />} aside={<Aside />} {...props}>
+    <Show title={UserTitle} aside={Aside} {...props}>
         <TabbedShowLayout>
             <Tab label="user.form.summary">
                 <TextField source="id" />
