@@ -165,6 +165,12 @@ If you have coding standards problems, you can fix them automatically using `pre
 make prettier
 ```
 
+Alternatively, you can reformat a single file by calling
+
+```sh
+yarn prettier-fix path/to/file
+```
+
 If you want to contribute to the documentation, install jekyll, then call
 
 ```sh

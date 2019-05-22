@@ -55,6 +55,12 @@ You must follow the coding style of the existing files. React-admin uses eslint 
 make prettier
 ```
 
+Alternatively, you can reformat a single file by calling
+
+```sh
+yarn prettier-fix path/to/file
+```
+
 **Tip**: If possible, enable linting in your editor to get realtime feedback and/or fixes.
 
 ## License

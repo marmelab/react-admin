@@ -202,7 +202,13 @@ make prettier
 or
 
 ```sh
-yarn prettier
+yarn prettier-fix-all
+```
+
+Alternatively, you can reformat a single file by calling
+
+```sh
+yarn prettier-fix path/to/file
 ```
 
 If you want to contribute to the documentation, install [jekyll](https://jekyllrb.com/docs/home/), then call
