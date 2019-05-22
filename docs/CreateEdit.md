@@ -58,7 +58,7 @@ export const PostCreate = (props) => (
 );
 
 export const PostEdit = (props) => (
-    <Edit title={<PostTitle />} {...props}>
+    <Edit title={PostTitle} {...props}>
         <SimpleForm>
             <DisabledInput label="Id" source="id" />
             <TextInput source="title" validate={required()} />
@@ -107,7 +107,7 @@ const PostTitle = ({ record }) => {
     return <span>Post {record ? `"${record.title}"` : ''}</span>;
 };
 export const PostEdit = (props) => (
-    <Edit title={<PostTitle />} {...props}>
+    <Edit title={PostTitle} {...props}>
         ...
     </Edit>
 );
@@ -115,7 +115,7 @@ export const PostEdit = (props) => (
 
 ### Actions
 
-You can replace the list of default actions by your own element using the `actions` prop:
+You can replace the list of default actions by your own component using the `actions` prop:
 
 ```jsx
 import Button from '@material-ui/core/Button';
@@ -130,7 +130,7 @@ const PostEditActions = ({ basePath, data, resource }) => (
 );
 
 export const PostEdit = (props) => (
-    <Edit actions={<PostEditActions />} {...props}>
+    <Edit actions={PostEditActions} {...props}>
         ...
     </Edit>
 );
@@ -152,7 +152,7 @@ const Aside = () => (
 );
 
 const PostEdit = props => (
-    <Edit aside={<Aside />} {...props}>
+    <Edit aside={Aside} {...props}>
         ...
     </Edit>
 ```
@@ -218,7 +218,7 @@ const CustomToolbar = withStyles(toolbarStyles)(props => (
 
 const PostEdit = props => (
     <Edit {...props}>
-        <SimpleForm toolbar={<CustomToolbar />}>
+        <SimpleForm toolbar={CustomToolbar}>
             ...
         </SimpleForm>
     </Edit>
@@ -718,7 +718,7 @@ const PostCreateToolbar = props => (
 
 export const PostCreate = (props) => (
     <Create {...props}>
-        <SimpleForm toolbar={<PostCreateToolbar />} redirect="show">
+        <SimpleForm toolbar={PostCreateToolbar} redirect="show">
             ...
         </SimpleForm>
     </Create>
@@ -738,7 +738,7 @@ const PostEditToolbar = props => (
 
 export const PostEdit = (props) => (
     <Edit {...props}>
-        <SimpleForm toolbar={<PostEditToolbar />}>
+        <SimpleForm toolbar={PostEditToolbar}>
             ...
         </SimpleForm>
     </Edit>
@@ -811,7 +811,7 @@ const UserCreateToolbar = ({ permissions, ...props }) =>
 export const UserCreate = ({ permissions, ...props }) =>
     <Create {...props}>
         <SimpleForm
-            toolbar={<UserCreateToolbar permissions={permissions} />}
+            toolbar={props => <UserCreateToolbar permissions={permissions} {...props} />}
             defaultValue={{ role: 'user' }}
         >
             <TextInput source="name" validate={[required()]} />
@@ -829,7 +829,7 @@ This also works inside an `Edition` view with a `TabbedForm`, and you can hide a
 {% raw %}
 ```jsx
 export const UserEdit = ({ permissions, ...props }) =>
-    <Edit title={<UserTitle />} {...props}>
+    <Edit title={UserTitle} {...props}>
         <TabbedForm defaultValue={{ role: 'user' }}>
             <FormTab label="user.form.summary">
                 {permissions === 'admin' && <DisabledInput source="id" />}

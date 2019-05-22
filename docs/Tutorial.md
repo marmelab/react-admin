@@ -547,7 +547,7 @@ The post editing page has a slight problem: it uses the post id as main title (t
 
 export const PostEdit = props => (
 -   <Edit {...props}>
-+   <Edit title={<PostTitle />} {...props}>
++   <Edit title={PostTitle} {...props}>
         // ...
     </Edit>
 );
@@ -575,7 +575,7 @@ const PostFilter = (props) => (
 );
 
 export const PostList = (props) => (
-    <List filters={<PostFilter />} {...props}>
+    <List filters={PostFilter} {...props}>
         // ...
     </List>
 );
