@@ -110,24 +110,12 @@ describe('<SelectArrayInput />', () => {
         expect(queryByText('Male')).not.toBeNull();
     });
 
-    it('should use optionText with a function value as text identifier', () => {
-        const { getByRole, queryByText } = render(
-            <SelectArrayInput
-                {...defaultProps}
-                optionText={choice => choice.foobar}
-                choices={[{ id: 'M', foobar: 'Male' }]}
-            />
-        );
-        getByRole('button').click();
-        expect(queryByText('Male')).not.toBeNull();
-    });
-
-    it('should use optionText with an element value as text identifier', () => {
+    it('should use optionText with a component value as text identifier', () => {
         const Foobar = ({ record }) => <span>{record.foobar}</span>;
         const { getByRole, queryByText } = render(
             <SelectArrayInput
                 {...defaultProps}
-                optionText={<Foobar />}
+                optionText={Foobar}
                 choices={[{ id: 'M', foobar: 'Male' }]}
             />
         );

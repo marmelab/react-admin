@@ -98,25 +98,14 @@ describe('<CheckboxGroupInput />', () => {
         expect(queryByLabelText('Bar')).not.toBeNull();
     });
 
-    it('should use optionText with a function value as text identifier', () => {
-        const { queryByLabelText } = render(
-            <CheckboxGroupInput
-                {...defaultProps}
-                optionText={choice => choice.foobar}
-                choices={[{ id: 'foo', foobar: 'Bar' }]}
-            />
-        );
-        expect(queryByLabelText('Bar')).not.toBeNull();
-    });
-
-    it('should use optionText with an element value as text identifier', () => {
+    it('should use optionText with a component value as text identifier', () => {
         const Foobar = ({ record }) => (
             <span data-testid="label">{record.foobar}</span>
         );
         const { queryByLabelText, queryByTestId } = render(
             <CheckboxGroupInput
                 {...defaultProps}
-                optionText={<Foobar />}
+                optionText={Foobar}
                 choices={[{ id: 'foo', foobar: 'Bar' }]}
             />
         );
