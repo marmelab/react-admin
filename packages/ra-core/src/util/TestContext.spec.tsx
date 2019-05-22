@@ -22,6 +22,7 @@ const primedStore = {
         ui: {
             viewVersion: 1,
         },
+        customQueries: {},
     },
     form: {},
     i18n: {
