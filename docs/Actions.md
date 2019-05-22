@@ -29,12 +29,12 @@ Here is an implementation of a user profile component using the `useQuery` hook:
 import { useQuery, GET_ONE } from 'react-admin';
 
 const UserProfile = ({ record }) => {
-    const { loading, error, data } = useQuery({
+    const { loaded, error, data } = useQuery({
         type: GET_ONE,
         resource: 'users',
         payload: { id: record.id }
     });
-    if (loading) { return <Loading />; }
+    if (!loaded) { return <Loading />; }
     if (error) { return <p>ERROR</p>; }
     return <div>User {data.username}</div>;
 };
@@ -83,6 +83,29 @@ Type                 | Usage                                           | Params 
 You can destructure the return value of the `useQuery` hook as `{ data, total, error, loading, loaded }`.
 
 **Tip**: Your `dataProvider` should return the `total` value for list queries only, to express the total number of results (which may be higher than the number of returned results if the response is paginated). 
+
+## `useQueryWithStore` Hook
+
+Internally, react-admin uses a more powerful version of `useQuery` called `useQueryWithStore`, which has an internal cache. In practice, `useQueryWithStore` persist the response from the dataProvider in the internal react-admin store, so that result remains available if the hook is called again in the future.  
+
+You can use this hook to avoid showing the loading indicator if the query was already fetched once. 
+
+```diff
+-import { useQuery, GET_ONE } from 'react-admin';
++import { useQueryWithStore, GET_ONE } from 'react-admin';
+
+const UserProfile = ({ record }) => {
+-   const { loaded, error, data } = useQuery({
++   const { loaded, error, data } = useQueryWithStore({
+        type: GET_ONE,
+        resource: 'users',
+        payload: { id: record.id }
+    });
+    if (!loaded) { return <Loading />; }
+    if (error) { return <p>ERROR</p>; }
+    return <div>User {data.username}</div>;
+};
+```
 
 ## `useMutation` Hook
 
