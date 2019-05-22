@@ -10,7 +10,7 @@ import CustomerIcon from '@material-ui/icons/PersonAdd';
 import Divider from '@material-ui/core/Divider';
 import { makeStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
-import { useTranslate, useQuery, GET_LIST } from 'react-admin';
+import { useTranslate, useQueryWithStore, GET_LIST } from 'react-admin';
 
 import CardIcon from './CardIcon';
 
@@ -40,16 +40,24 @@ const NewCustomers = () => {
     const aMonthAgo = useMemo(() => {
         const date = new Date();
         date.setDate(date.getDate() - 30);
+        date.setHours(0);
+        date.setMinutes(0);
+        date.setSeconds(0);
+        date.setMilliseconds(0);
         return date;
     }, []);
 
-    const { loaded, data: visitors } = useQuery(GET_LIST, 'customers', {
-        filter: {
-            has_ordered: true,
-            first_seen_gte: aMonthAgo.toISOString(),
+    const { loaded, data: visitors } = useQueryWithStore({
+        type: GET_LIST,
+        resource: 'customers',
+        payload: {
+            filter: {
+                has_ordered: true,
+                first_seen_gte: aMonthAgo.toISOString(),
+            },
+            sort: { field: 'first_seen', order: 'DESC' },
+            pagination: { page: 1, perPage: 100 },
         },
-        sort: { field: 'first_seen', order: 'DESC' },
-        pagination: { page: 1, perPage: 100 },
     });
 
     if (!loaded) return null;

@@ -66,6 +66,9 @@ export interface ReduxState {
             };
         };
         loading: number;
+        customQueries: {
+            [key: string]: any;
+        };
     };
     i18n: {
         locale: string;

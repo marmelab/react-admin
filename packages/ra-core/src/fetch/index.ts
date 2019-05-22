@@ -5,7 +5,10 @@ import Query from './Query';
 import useDataProvider from './useDataProvider';
 import useMutation from './useMutation';
 import useQuery from './useQuery';
+import useQueryWithStore from './useQueryWithStore';
 import withDataProvider from './withDataProvider';
+import useGetOne from './useGetOne';
+import useGetList from './useGetList';
 
 export {
     fetchUtils,
@@ -15,5 +18,8 @@ export {
     useDataProvider,
     useMutation,
     useQuery,
+    useGetOne,
+    useGetList,
+    useQueryWithStore,
     withDataProvider,
 };

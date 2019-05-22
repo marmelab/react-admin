@@ -1,11 +1,10 @@
-import { ReactNode, useEffect } from 'react';
-// @ts-ignore
-import { useDispatch, useSelector } from 'react-redux';
+import { ReactNode } from 'react';
 import inflection from 'inflection';
-import { crudGetOne } from '../actions';
 import { useCheckMinimumRequiredProps } from './checkMinimumRequiredProps';
-import { Translate, Record, Identifier, ReduxState } from '../types';
+import { Translate, Record, Identifier } from '../types';
+import useGetOne from '../fetch/useGetOne';
 import { useTranslate } from '../i18n';
+import useVersion from './useVersion';
 
 interface ChildrenFuncParams {
     isLoading: boolean;
@@ -74,31 +73,23 @@ interface Props {
 const ShowController = (props: Props) => {
     useCheckMinimumRequiredProps('Show', ['basePath', 'resource'], props);
     const { basePath, children, id, resource } = props;
-    const translate = useTranslate();
-    const dispatch = useDispatch();
-
-    const record = useSelector((state: ReduxState) =>
-        state.admin.resources[props.resource]
-            ? state.admin.resources[props.resource].data[props.id]
-            : null
-    );
-
-    const isLoading = useSelector(
-        (state: ReduxState) => state.admin.loading > 0
-    );
-
-    const version = useSelector(
-        (state: ReduxState) => state.admin.ui.viewVersion
-    );
-
-    useEffect(() => {
-        dispatch(crudGetOne(resource, id, basePath));
-    }, [resource, id, basePath, version]);
-
     if (!children) {
         return null;
     }
-
+    const translate = useTranslate();
+    const version = useVersion();
+    const { data: record, loading } = useGetOne(resource, id, {
+        basePath,
+        version, // used to force reload
+        onFailure: {
+            notification: {
+                body: 'ra.notification.item_doesnt_exist',
+                level: 'warning',
+            },
+            redirectTo: 'list',
+            refresh: true,
+        },
+    });
     const resourceName = translate(`resources.${resource}.name`, {
         smart_count: 1,
         _: inflection.humanize(inflection.singularize(resource)),
@@ -109,7 +100,7 @@ const ShowController = (props: Props) => {
         record,
     });
     return children({
-        isLoading,
+        isLoading: loading,
         defaultTitle,
         resource,
         basePath,

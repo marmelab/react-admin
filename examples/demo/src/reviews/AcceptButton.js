@@ -6,7 +6,7 @@ import Button from '@material-ui/core/Button';
 import ThumbUp from '@material-ui/icons/ThumbUp';
 import { useTranslate, useMutation } from 'react-admin';
 
-const sideEffects = {
+const options = {
     undoable: true,
     onSuccess: {
         notification: {
@@ -29,10 +29,12 @@ const sideEffects = {
 const AcceptButton = ({ record }) => {
     const translate = useTranslate();
     const [approve, { loading }] = useMutation(
-        'UPDATE',
-        'reviews',
-        { id: record.id, data: { status: 'accepted' } },
-        sideEffects
+        {
+            type: 'UPDATE',
+            resource: 'reviews',
+            payload: { id: record.id, data: { status: 'accepted' } },
+        },
+        options
     );
     return record && record.status === 'pending' ? (
         <Button

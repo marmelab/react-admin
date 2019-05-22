@@ -1,33 +1,16 @@
-import {
-    isValidElement,
-    ReactNode,
-    ReactElement,
-    useCallback,
-    useEffect,
-} from 'react';
-// @ts-ignore
-import { useSelector, useDispatch } from 'react-redux';
+import { isValidElement, ReactNode, ReactElement } from 'react';
 import inflection from 'inflection';
 
 import { SORT_ASC } from '../reducer/admin/resource/list/queryReducer';
-import { crudGetList } from '../actions/dataActions';
-import {
-    setListSelectedIds,
-    toggleListItem,
-    ListParams,
-} from '../actions/listActions';
+import { ListParams } from '../actions/listActions';
 import { useCheckMinimumRequiredProps } from './checkMinimumRequiredProps';
-import {
-    Sort,
-    AuthProvider,
-    RecordMap,
-    Identifier,
-    Translate,
-    ReduxState,
-} from '../types';
+import { Sort, AuthProvider, RecordMap, Identifier, Translate } from '../types';
 import { Location } from 'history';
 import { useTranslate } from '../i18n';
 import useListParams from './useListParams';
+import useGetList from './../fetch/useGetList';
+import useRecordSelection from './useRecordSelection';
+import useVersion from './useVersion';
 
 interface ChildrenFuncParams {
     basePath: string;
@@ -129,6 +112,11 @@ const ListController = (props: Props) => {
         ['basePath', 'location', 'resource'],
         props
     );
+    if (props.filter && isValidElement(props.filter)) {
+        throw new Error(
+            '<List> received a React element as `filter` props. If you intended to set the list filter elements, use the `filters` (with an s) prop instead. The `filter` prop is internal and should not be set by the developer.'
+        );
+    }
 
     const {
         basePath,
@@ -146,28 +134,10 @@ const ListController = (props: Props) => {
         debounce = 500,
     } = props;
 
-    const dispatch = useDispatch();
     const translate = useTranslate();
-    const isLoading = useSelector(
-        (reduxState: ReduxState) => reduxState.admin.loading > 0
-    );
+    const version = useVersion();
 
-    const version = useSelector(
-        (reduxState: ReduxState) => reduxState.admin.ui.viewVersion
-    );
-
-    const { loadedOnce, selectedIds } = useSelector(
-        (reduxState: ReduxState) => reduxState.admin.resources[resource].list,
-        [resource]
-    );
-
-    if (filter && isValidElement(filter)) {
-        throw new Error(
-            '<List> received a React element as `filter` props. If you intended to set the list filter elements, use the `filters` (with an s) prop instead. The `filter` prop is internal and should not be set by the developer.'
-        );
-    }
-
-    const [query, actions] = useListParams({
+    const [query, queryModifiers] = useListParams({
         resource,
         location,
         filterDefaultValues,
@@ -176,47 +146,31 @@ const ListController = (props: Props) => {
         debounce,
     });
 
-    useEffect(() => {
-        const pagination = {
+    const [selectedIds, selectionModifiers] = useRecordSelection(resource);
+
+    const { data, ids, total, loading, loaded } = useGetList(
+        resource,
+        {
             page: query.page,
             perPage: query.perPage,
-        };
-        const permanentFilter = filter;
-        dispatch(
-            crudGetList(
-                resource,
-                pagination,
-                { field: query.sort, order: query.order },
-                { ...query.filter, ...permanentFilter }
-            )
-        );
-    }, query.requestSignature);
-
-    const data = useSelector(
-        (reduxState: ReduxState) => reduxState.admin.resources[resource].data,
-        [resource]
-    );
-
-    const { ids, total } = useSelector(
-        (reduxState: ReduxState) => reduxState.admin.resources[resource].list,
-        [resource]
+        },
+        { field: query.sort, order: query.order },
+        { ...query.filter, ...filter },
+        {
+            version,
+            onFailure: {
+                notification: {
+                    body: 'ra.notification.http_error',
+                    level: 'warning',
+                },
+            },
+        }
     );
 
     if (!query.page && !(ids || []).length && query.page > 1 && total > 0) {
-        actions.setPage(query.page - 1);
+        // query for a page that doesn't exist, check the previous page
+        queryModifiers.setPage(query.page - 1);
     }
-
-    const handleSelect = useCallback((newIds: Identifier[]) => {
-        dispatch(setListSelectedIds(resource, newIds));
-    }, query.requestSignature);
-
-    const handleUnselectItems = useCallback(() => {
-        dispatch(setListSelectedIds(resource, []));
-    }, query.requestSignature);
-
-    const handleToggleItem = useCallback((id: Identifier) => {
-        dispatch(toggleListItem(resource, id));
-    }, query.requestSignature);
 
     const resourceName = translate(`resources.${resource}.name`, {
         smart_count: 2,
@@ -238,21 +192,21 @@ const ListController = (props: Props) => {
         filterValues: query.filterValues,
         hasCreate,
         ids,
-        isLoading,
-        loadedOnce,
-        onSelect: handleSelect,
-        onToggleItem: handleToggleItem,
-        onUnselectItems: handleUnselectItems,
+        isLoading: loading,
+        loadedOnce: loaded,
+        onSelect: selectionModifiers.select,
+        onToggleItem: selectionModifiers.toggle,
+        onUnselectItems: selectionModifiers.clearSelection,
         page: query.page,
         perPage: query.perPage,
         resource,
         selectedIds,
-        setFilters: actions.setFilters,
-        hideFilter: actions.hideFilter,
-        showFilter: actions.showFilter,
-        setPage: actions.setPage,
-        setPerPage: actions.setPerPage,
-        setSort: actions.setSort,
+        setFilters: queryModifiers.setFilters,
+        hideFilter: queryModifiers.hideFilter,
+        showFilter: queryModifiers.showFilter,
+        setPage: queryModifiers.setPage,
+        setPerPage: queryModifiers.setPerPage,
+        setSort: queryModifiers.setSort,
         translate,
         total,
         version,

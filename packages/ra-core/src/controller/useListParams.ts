@@ -16,20 +16,20 @@ import queryReducer, {
     SORT_ASC,
 } from '../reducer/admin/resource/list/queryReducer';
 import { changeListParams, ListParams } from '../actions/listActions';
-import { Sort, ReduxState, Identifier, RecordMap } from '../types';
+import { Sort, ReduxState } from '../types';
 import removeEmpty from '../util/removeEmpty';
 import removeKey from '../util/removeKey';
 
-interface Options {
-    filterDefaultValues?: object;
+interface ListParamsOptions {
+    resource: string;
+    location: Location;
     perPage?: number;
     sort?: Sort;
-    location: Location;
-    resource: string;
+    filterDefaultValues?: object;
     debounce?: number;
 }
 
-interface Query extends ListParams {
+interface Parameters extends ListParams {
     filterValues: object;
     displayedFilters: {
         [key: string]: boolean;
@@ -37,7 +37,7 @@ interface Query extends ListParams {
     requestSignature: any[];
 }
 
-interface Actions {
+interface Modifiers {
     changeParams: (action: any) => void;
     setPage: (page: number) => void;
     setPerPage: (pageSize: number) => void;
@@ -48,9 +48,21 @@ interface Actions {
 }
 
 /**
- * Returns an array (like useState) with the list params as the first element and actions to modify them in the second.
+ * Get the list parameters (page, sort, filters) and modifiers.
+ *
+ * These parameters are merged from 3 sources:
+ *   - the query string from the URL
+ *   - the params stored in the state (from previous navigation)
+ *   - the options passed to the hook (including the filter defaultValues)
+ *
+ * @returns {Array} A tuple [parameters, modifiers].
+ * Destructure as [
+ *    { page, perPage, sort, order, filter, filterValues, displayedFilters, requestSignature },
+ *    { setFilters, hideFilter, showFilter, setPage, setPerPage, setSort }
+ * ]
  *
  * @example
+ *
  * const [listParams, listParamsActions] = useListParams({
  *      resource: 'posts',
  *      location: location // From react-router. Injected to your component by react-admin inside a List
@@ -94,7 +106,7 @@ const useListParams = ({
     },
     perPage = 10,
     debounce = 500,
-}: Options): [Query, Actions] => {
+}: ListParamsOptions): [Parameters, Modifiers] => {
     const [displayedFilters, setDisplayedFilters] = useState({});
     const dispatch = useDispatch();
 

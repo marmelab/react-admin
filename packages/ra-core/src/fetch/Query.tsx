@@ -61,6 +61,6 @@ const Query: FunctionComponent<Props> = ({
     resource,
     payload,
     options,
-}) => children(useQuery(type, resource, payload, options));
+}) => children(useQuery({ type, resource, payload }, options));
 
 export default Query;

@@ -11,11 +11,11 @@ React-admin provides special hooks to emit read and write queries to the `dataPr
 
 ## `useQuery` Hook
 
-Use the `useQuery` hook to emit a read query to the API when a component mounts. The parameters are the same as the ones expected by the [`dataProvider`](./DataProviders.md):
+Use the `useQuery` hook to emit a read query to the API when a component mounts. Call it with an object having the same fields as the parameters expected by the [`dataProvider`](./DataProviders.md):
 
 - `type`: The Query type, e.g `GET_LIST`
 - `resource`: The Resource name, e.g. "posts"
-- `params`: Query parameters. Depends on the query type.
+- `payload`: Query parameters. Depends on the query type.
 
 The return value of `useQuery` is an object, which updates according to the request state:
 
@@ -29,12 +29,12 @@ Here is an implementation of a user profile component using the `useQuery` hook:
 import { useQuery, GET_ONE } from 'react-admin';
 
 const UserProfile = ({ record }) => {
-    const { loading, error, data } = useQuery(
-        GET_ONE,
-        'users',
-        { id: record.id }
-    );
-    if (loading) { return <Loading />; }
+    const { loaded, error, data } = useQuery({
+        type: GET_ONE,
+        resource: 'users',
+        payload: { id: record.id }
+    });
+    if (!loaded) { return <Loading />; }
     if (error) { return <p>ERROR</p>; }
     return <div>User {data.username}</div>;
 };
@@ -50,14 +50,14 @@ Here is another example usage of `useQuery`, this time to display a list of user
 import { useQuery, GET_LIST } from 'react-admin';
 
 const UserList = () => {
-    const { loading, error, data, total } = useQuery(
-        GET_LIST,
-        'users',
-        {
+    const { loading, error, data, total } = useQuery({
+        type: GET_LIST,
+        resource: 'users',
+        payload: {
             pagination: { page: 1, perPage: 10 },
             sort: { field: 'username', order: 'ASC' },
         }
-    );
+    });
     if (loading) { return <Loading />; }
     if (error) { return <p>ERROR</p>; }
     return (
@@ -84,9 +84,32 @@ You can destructure the return value of the `useQuery` hook as `{ data, total, e
 
 **Tip**: Your `dataProvider` should return the `total` value for list queries only, to express the total number of results (which may be higher than the number of returned results if the response is paginated). 
 
+## `useQueryWithStore` Hook
+
+Internally, react-admin uses a more powerful version of `useQuery` called `useQueryWithStore`, which has an internal cache. In practice, `useQueryWithStore` persist the response from the dataProvider in the internal react-admin store, so that result remains available if the hook is called again in the future.  
+
+You can use this hook to avoid showing the loading indicator if the query was already fetched once. 
+
+```diff
+-import { useQuery, GET_ONE } from 'react-admin';
++import { useQueryWithStore, GET_ONE } from 'react-admin';
+
+const UserProfile = ({ record }) => {
+-   const { loaded, error, data } = useQuery({
++   const { loaded, error, data } = useQueryWithStore({
+        type: GET_ONE,
+        resource: 'users',
+        payload: { id: record.id }
+    });
+    if (!loaded) { return <Loading />; }
+    if (error) { return <p>ERROR</p>; }
+    return <div>User {data.username}</div>;
+};
+```
+
 ## `useMutation` Hook
 
-`useQuery` emits the request to the `dataProvider` as soon as the component mounts. To emit the request based on a user action, use the `useMutation` hook instead. This hook returns a callback that emits the request when executed, and an object containing the request state:
+`useQuery` emits the request to the `dataProvider` as soon as the component mounts. To emit the request based on a user action, use the `useMutation` hook instead. This hook takes the same arguments as `useQuery`, but returns a callback that emits the request when executed, and an object containing the request state:
 
 - mount: { loading: false, loaded: false }
 - mutate called: { loading: true, loaded: false }
@@ -100,11 +123,11 @@ Here is an implementation of an "Approve" button:
 import { useMutation, UPDATE } from 'react-admin';
 
 const ApproveButton = ({ record }) => {
-    const [approve, { loading }] = useMutation(
-        UPDATE,
-        'comments',
-        { id: record.id, data: { isApproved: true } }
-    );
+    const [approve, { loading }] = useMutation({
+        type: UPDATE,
+        resource: 'comments',
+        payload: { id: record.id, data: { isApproved: true } }
+    });
     return <FlatButton label="Approve" onClick={approve} disabled={loading} />;
 };
 ```
@@ -143,7 +166,7 @@ export const CommentList = (props) =>
 
 ## Handling Side Effects
 
-Fetching data is called a *side effect*, since it calls the outside world, and is asynchronous. Usual actions may have other side effects, like showing a notification, or redirecting the user to another page. Both `useQuery` and `useMutation` hooks accept a fourth parameter, which lets you describe the options of the query, including success and failure side effects. 
+Fetching data is called a *side effect*, since it calls the outside world, and is asynchronous. Usual actions may have other side effects, like showing a notification, or redirecting the user to another page. Both `useQuery` and `useMutation` hooks accept a second parameter in addition to the query, which lets you describe the options of the query, including success and failure side effects. 
 
 Here is how to add notifications and a redirection to the `ApproveButton` component using that fourth parameter:
 
@@ -153,17 +176,22 @@ import { useMutation, UPDATE } from 'react-admin';
 
 const ApproveButton = ({ record }) => {
     const [approve, { loading }] = useMutation(
-        UPDATE,
-        'comments',
-        { id: record.id, data: { isApproved: true } },
+        {
+            type: UPDATE,
+            resource: 'comments',
+            payload: { id: record.id, data: { isApproved: true } },
+        },
 +       {
 +           onSuccess: {
 +               notification: { body: 'Comment approved', level: 'info' },
 +               redirectTo: '/comments',
 +           },
-+           onError: {
-+               notification: { body: 'Error: comment not approved', level: 'warning' }
-+           }
++           onFailure: {
++               notification: {
++                   body: 'Error: comment not approved',
++                   level: 'warning',
++               },
++           },
 +       }
     );
     return <FlatButton label="Approve" onClick={approve} disabled={loading} />;
@@ -195,9 +223,11 @@ import { useMutation, UPDATE } from 'react-admin';
 
 const ApproveButton = ({ record }) => {
     const [approve, { loading }] = useMutation(
-        UPDATE,
-        'comments',
-        { id: record.id, data: { isApproved: true } },
+        {
+            type: UPDATE,
+            resource: 'comments',
+            payload: { id: record.id, data: { isApproved: true } },
+        },
         {
 +           undoable: true,
             onSuccess: {
@@ -269,7 +299,7 @@ const Dashboard = () => {
 }
 ```
 
-`useDataProvider` is more low-level than `useQuery` and `useMutation`, as it doesn't handle loading and error states (even though queries from `useDataProvider` trigger the global loading indicator). The `dataProvider` callback that it returns also accepts a fourth options parameter, just like the two other hoows.
+`useDataProvider` is more low-level than `useQuery` and `useMutation`, as it doesn't handle loading and error states (even though queries from `useDataProvider` trigger the global loading indicator). The `dataProvider` callback that it returns also accepts a fourth options parameter.
 
 ## Legacy Components: `<Query>`, `<Mutation>`, and `withDataProvider`
 

@@ -24,7 +24,7 @@ The `dataProvider` parameter of the `<Admin>` component must be a function with 
  * @param {Object} payload Request parameters. Depends on the action type
  * @returns {Promise} the Promise for a response
  */
-const dataProvider = (type, resource, params) => new Promise();
+const dataProvider = (type, resource, payload) => new Promise();
 ```
 
 You can find a Data Provider example implementation in [`packages/ra-data-simple-rest/src/index.js`](https://github.com/marmelab/react-admin/blob/master/packages/ra-data-simple-rest/src/index.js);
