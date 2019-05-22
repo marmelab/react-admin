@@ -161,3 +161,61 @@ Components deprecated in 2.X have been removed in 3.x. This includes:
 * `AppBarMobile` (use `AppBar` instead, which is responsive)
 * `Header` (use `Title` instead)
 * `ViewTitle` (use `Title` instead)
+* `RecordTitle` (use `TitleForRecord` instead)
+
+## Replace injected elements by injected components
+
+For reference, you can read the [RFC](https://github.com/marmelab/react-admin/issues/3246).
+
+React-Admin used to accept sometimes components and some other time elements. This was a source of confusion so we chose to move all injections in react-admin to components.
+
+All components which accepted elements in their props now requires components.
+
+For example the `title` and `actions` props of the `Create`, `Edit`, `Show` and `List` components:
+
+```diff
+- <Edit title={<PostTitle />} actions={<EditActions />} {...props}>
++ <Edit title={PostTitle} actions={EditActions} {...props}>
+```
+
+You might find the following regular expressions useful for migrating.
+
+`{<(.+)\/>}` which searches for all element injections, for example:
+
+* `{<EditActions />}`
+* `{<EditActions permissions={permissions} />}`
+
+You can then use `{props => <$1{...props} />}` as the replacement pattern:
+
+* `{props => <EditActions {...props} />}`
+* `{props => <EditActions permissions={permissions} {...props} />}`
+
+However, simple cases do not requires the inline function so you might want to use the following regular expressions next.
+
+`{props => <(\w+) {\.\.\.props} \/>}` which searches for simple component injections such as `{props => <EditActions {...props} />}` but will not match `{props => <EditActions permissions={permissions} {...props} />}`.
+
+You can then use `{$1}` as the replacement pattern which will produce `{EditActions}`.
+
+## Deprecate function support for the optionText prop
+
+This is a consequence of the previous point. As we now require components instead of elements, we can't distinguish them from functions. Indeed, they might be functions which accept props.
+
+All components which accepted a function in their `optionText` prop will now try to render the function as a component:
+
+* CheckboxGroupInput
+* SelectArrayInput
+* SelectInput
+* SelectField
+* RadioButtonGroupInput
+
+The migration shouldn't be too hard though:
+
+```diff
+<AutocompleteInput
+-   optionText={choice =>
+-       `${choice.first_name} ${choice.last_name}`
++   optionText={({ record }) =>
++       `${record.first_name} ${record.last_name}`
++   }
+/>
+```
