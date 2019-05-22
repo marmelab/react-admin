@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, createElement } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import FormControl from '@material-ui/core/FormControl';
@@ -82,7 +82,7 @@ export class RadioButtonGroupInput extends Component {
         } = this.props;
         const choiceName = typeof optionText === 'string' // eslint-disable-line no-nested-ternary
             ? get(choice, optionText)
-            : React.cloneElement(optionText, { record: choice });
+            : createElement(optionText, { record: choice });
 
         const nodeId = `${source}_${get(choice, optionValue)}`;
 
