@@ -42,8 +42,8 @@ describe('<List />', () => {
         const Datagrid = () => <div>datagrid</div>;
         const { queryAllByText, debug } = renderWithRedux(
             <ListView
-                filters={<Filters />}
-                pagination={<Pagination />}
+                filters={Filters}
+                pagination={Pagination}
                 {...defaultProps}
             >
                 <Datagrid />
@@ -88,7 +88,7 @@ describe('<List />', () => {
         const Dummy = () => <div />;
         const Aside = () => <div id="aside">Hello</div>;
         const { queryAllByText } = renderWithRedux(
-            <List {...defaultListProps} aside={<Aside />}>
+            <List {...defaultListProps} aside={Aside}>
                 <Dummy />
             </List>,
             defaultStateForList
