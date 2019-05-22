@@ -1,4 +1,4 @@
-import React, { Fragment, Component } from 'react';
+import React, { createElement, Fragment, Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
@@ -7,7 +7,7 @@ import { fade } from '@material-ui/core/styles/colorManipulator';
 import ActionDelete from '@material-ui/icons/Delete';
 import classnames from 'classnames';
 import inflection from 'inflection';
-import { translate, crudDelete } from 'ra-core';
+import { translate, crudDelete, ComponentPropType } from 'ra-core';
 
 import Confirm from '../layout/Confirm';
 import Button from './Button';
@@ -86,7 +86,7 @@ class DeleteWithConfirmButton extends Component {
                     key="button"
                     {...sanitizeRestProps(rest)}
                 >
-                    {icon}
+                    {createElement(icon)}
                 </Button>
                 <Confirm
                     isOpen={this.state.isOpen}
@@ -124,12 +124,12 @@ DeleteWithConfirmButton.propTypes = {
     ]),
     resource: PropTypes.string.isRequired,
     translate: PropTypes.func,
-    icon: PropTypes.element,
+    icon: ComponentPropType,
 };
 
 DeleteWithConfirmButton.defaultProps = {
     redirect: 'list',
-    icon: <ActionDelete />,
+    icon: ActionDelete,
 };
 
 export default compose(

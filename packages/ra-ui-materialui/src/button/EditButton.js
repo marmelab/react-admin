@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { createElement } from 'react';
 import PropTypes from 'prop-types';
 import shouldUpdate from 'recompose/shouldUpdate';
 import ContentCreate from '@material-ui/icons/Create';
 import { Link } from 'react-router-dom';
-import { linkToRecord } from 'ra-core';
+import { linkToRecord, ComponentPropType } from 'ra-core';
 
 import Button from './Button';
 
@@ -14,7 +14,7 @@ const EditButton = ({
     basePath = '',
     label = 'ra.action.edit',
     record = {},
-    icon = <ContentCreate />,
+    icon = ContentCreate,
     ...rest
 }) => (
     <Button
@@ -24,7 +24,7 @@ const EditButton = ({
         onClick={stopPropagation}
         {...rest}
     >
-        {icon}
+        {createElement(icon)}
     </Button>
 );
 
@@ -34,7 +34,7 @@ EditButton.propTypes = {
     classes: PropTypes.object,
     label: PropTypes.string,
     record: PropTypes.object,
-    icon: PropTypes.element,
+    icon: ComponentPropType,
 };
 
 const enhance = shouldUpdate(

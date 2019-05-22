@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
+import React, { createElement, Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import ActionDelete from '@material-ui/icons/Delete';
 import { withStyles, createStyles } from '@material-ui/core/styles';
 import { fade } from '@material-ui/core/styles/colorManipulator';
-import { crudDeleteMany, startUndoable } from 'ra-core';
+import { crudDeleteMany, startUndoable, ComponentPropType } from 'ra-core';
 
 import Button from './Button';
 
@@ -44,13 +44,13 @@ class BulkDeleteWithUndoButton extends Component {
         resource: PropTypes.string.isRequired,
         startUndoable: PropTypes.func,
         selectedIds: PropTypes.arrayOf(PropTypes.any).isRequired,
-        icon: PropTypes.element,
+        icon: ComponentPropType,
     };
 
     static defaultProps = {
         label: 'ra.action.delete',
         undoable: true,
-        icon: <ActionDelete />,
+        icon: ActionDelete,
     };
 
     handleClick = () => {
@@ -78,7 +78,7 @@ class BulkDeleteWithUndoButton extends Component {
                 className={classes.deleteButton}
                 {...sanitizeRestProps(rest)}
             >
-                {icon}
+                {createElement(icon)}
             </Button>
         );
     }
