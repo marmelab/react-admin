@@ -1,4 +1,4 @@
-import React, { createElement, Component } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import GetApp from '@material-ui/icons/GetApp';
@@ -143,7 +143,7 @@ class ExportButton extends Component {
     };
 
     render() {
-        const { label, icon, ...rest } = this.props;
+        const { label, icon: Icon, ...rest } = this.props;
 
         return (
             <Button
@@ -151,7 +151,7 @@ class ExportButton extends Component {
                 label={label}
                 {...sanitizeRestProps(rest)}
             >
-                {createElement(icon)}
+                <Icon />
             </Button>
         );
     }

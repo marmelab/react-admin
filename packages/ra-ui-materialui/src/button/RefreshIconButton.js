@@ -1,4 +1,4 @@
-import React, { createElement, Component } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
@@ -37,7 +37,7 @@ class RefreshButton extends Component {
             label,
             refreshView,
             translate,
-            icon,
+            icon: Icon,
             ...rest
         } = this.props;
 
@@ -50,7 +50,7 @@ class RefreshButton extends Component {
                     onClick={this.handleClick}
                     {...rest}
                 >
-                    {createElement(icon)}
+                    <Icon />
                 </IconButton>
             </Tooltip>
         );

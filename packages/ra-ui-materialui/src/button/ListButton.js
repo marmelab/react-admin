@@ -1,4 +1,4 @@
-import React, { createElement } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import ActionList from '@material-ui/icons/List';
 import { Link } from 'react-router-dom';
@@ -9,11 +9,11 @@ import Button from './Button';
 const ListButton = ({
     basePath = '',
     label = 'ra.action.list',
-    icon = ActionList,
+    icon: Icon = ActionList,
     ...rest
 }) => (
     <Button component={Link} to={basePath} label={label} {...rest}>
-        {createElement(icon)}
+        <Icon />
     </Button>
 );
 

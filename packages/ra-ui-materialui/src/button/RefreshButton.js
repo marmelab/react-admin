@@ -1,4 +1,4 @@
-import React, { createElement, Component } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import NavigationRefresh from '@material-ui/icons/Refresh';
@@ -29,11 +29,11 @@ class RefreshButton extends Component {
     };
 
     render() {
-        const { label, refreshView, icon, ...rest } = this.props;
+        const { label, refreshView, icon: Icon, ...rest } = this.props;
 
         return (
             <Button label={label} onClick={this.handleClick} {...rest}>
-                {createElement(icon)}
+                <Icon />
             </Button>
         );
     }

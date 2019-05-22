@@ -1,4 +1,4 @@
-import React, { createElement } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import shouldUpdate from 'recompose/shouldUpdate';
 import ImageEye from '@material-ui/icons/RemoveRedEye';
@@ -14,7 +14,7 @@ const ShowButton = ({
     basePath = '',
     label = 'ra.action.show',
     record = {},
-    icon = ImageEye,
+    icon: Icon = ImageEye,
     ...rest
 }) => (
     <Button
@@ -24,7 +24,7 @@ const ShowButton = ({
         onClick={stopPropagation}
         {...rest}
     >
-        {createElement(icon)}
+        <Icon />
     </Button>
 );
 

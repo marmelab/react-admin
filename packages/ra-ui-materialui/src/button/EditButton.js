@@ -1,4 +1,4 @@
-import React, { createElement } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import shouldUpdate from 'recompose/shouldUpdate';
 import ContentCreate from '@material-ui/icons/Create';
@@ -14,7 +14,7 @@ const EditButton = ({
     basePath = '',
     label = 'ra.action.edit',
     record = {},
-    icon = ContentCreate,
+    icon: Icon = ContentCreate,
     ...rest
 }) => (
     <Button
@@ -24,7 +24,7 @@ const EditButton = ({
         onClick={stopPropagation}
         {...rest}
     >
-        {createElement(icon)}
+        <Icon />
     </Button>
 );
 

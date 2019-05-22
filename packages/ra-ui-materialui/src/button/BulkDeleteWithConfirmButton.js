@@ -1,4 +1,4 @@
-import React, { createElement, Fragment, Component } from 'react';
+import React, { Fragment, Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
@@ -83,7 +83,7 @@ class BulkDeleteWithConfirmButton extends Component {
         const {
             classes,
             label,
-            icon,
+            icon: Icon,
             onClick,
             resource,
             selectedIds,
@@ -98,7 +98,7 @@ class BulkDeleteWithConfirmButton extends Component {
                     className={classes.deleteButton}
                     {...sanitizeRestProps(rest)}
                 >
-                    {createElement(icon)}
+                    <Icon />
                 </Button>
                 <Confirm
                     isOpen={this.state.isOpen}

@@ -1,4 +1,4 @@
-import React, { createElement } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import onlyUpdateForKeys from 'recompose/onlyUpdateForKeys';
 import Fab from '@material-ui/core/Fab';
@@ -34,7 +34,7 @@ const CreateButton = ({
     className,
     classes = {},
     label = 'ra.action.create',
-    icon = ContentAdd,
+    icon: Icon = ContentAdd,
     ...rest
 }) => {
     const translate = useTranslate();
@@ -49,7 +49,7 @@ const CreateButton = ({
                     aria-label={label && translate(label)}
                     {...rest}
                 >
-                    {createElement(icon)}
+                    <Icon />
                 </Fab>
             }
             medium={
@@ -60,7 +60,7 @@ const CreateButton = ({
                     label={label}
                     {...rest}
                 >
-                    {createElement(icon)}
+                    <Icon />
                 </Button>
             }
         />

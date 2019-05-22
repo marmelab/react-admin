@@ -1,4 +1,4 @@
-import React, { createElement, Fragment, Component } from 'react';
+import React, { Fragment, Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
@@ -65,7 +65,7 @@ class DeleteWithConfirmButton extends Component {
         const {
             classes = {},
             className,
-            icon,
+            icon: Icon,
             label = 'ra.action.delete',
             onClick,
             record,
@@ -86,7 +86,7 @@ class DeleteWithConfirmButton extends Component {
                     key="button"
                     {...sanitizeRestProps(rest)}
                 >
-                    {createElement(icon)}
+                    <Icon />
                 </Button>
                 <Confirm
                     isOpen={this.state.isOpen}

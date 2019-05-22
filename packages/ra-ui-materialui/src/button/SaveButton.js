@@ -1,4 +1,4 @@
-import React, { createElement, Component } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
@@ -106,7 +106,7 @@ export class SaveButton extends Component {
             submitOnEnter,
             translate,
             variant = 'contained',
-            icon,
+            icon: Icon,
             onClick,
             ...rest
         } = this.props;
@@ -128,9 +128,7 @@ export class SaveButton extends Component {
                         className={classes.iconPaddingStyle}
                     />
                 ) : (
-                    createElement(icon, {
-                        className: classes.iconPaddingStyle,
-                    })
+                    <Icon className={classes.iconPaddingStyle} />
                 )}
                 {label && translate(label, { _: label })}
             </Button>

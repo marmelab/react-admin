@@ -1,4 +1,4 @@
-import React, { createElement } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import shouldUpdate from 'recompose/shouldUpdate';
 import Queue from '@material-ui/icons/Queue';
@@ -28,7 +28,7 @@ export const CloneButton = ({
     basePath = '',
     label = 'ra.action.clone',
     record = {},
-    icon = Queue,
+    icon: Icon = Queue,
     ...rest
 }) => (
     <Button
@@ -41,7 +41,7 @@ export const CloneButton = ({
         onClick={stopPropagation}
         {...sanitizeRestProps(rest)}
     >
-        {createElement(icon)}
+        <Icon />
     </Button>
 );
 

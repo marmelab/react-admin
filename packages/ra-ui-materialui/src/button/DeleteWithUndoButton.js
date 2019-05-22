@@ -1,4 +1,4 @@
-import React, { createElement, Component } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
@@ -71,7 +71,7 @@ class DeleteWithUndoButton extends Component {
             label = 'ra.action.delete',
             classes = {},
             className,
-            icon,
+            icon: Icon,
             onClick,
             ...rest
         } = this.props;
@@ -87,7 +87,7 @@ class DeleteWithUndoButton extends Component {
                 key="button"
                 {...sanitizeRestProps(rest)}
             >
-                {createElement(icon)}
+                <Icon />
             </Button>
         );
     }

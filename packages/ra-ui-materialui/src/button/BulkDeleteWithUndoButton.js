@@ -1,4 +1,4 @@
-import React, { createElement, Component } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
@@ -70,7 +70,7 @@ class BulkDeleteWithUndoButton extends Component {
     };
 
     render() {
-        const { classes, label, icon, onClick, ...rest } = this.props;
+        const { classes, label, icon: Icon, onClick, ...rest } = this.props;
         return (
             <Button
                 onClick={this.handleClick}
@@ -78,7 +78,7 @@ class BulkDeleteWithUndoButton extends Component {
                 className={classes.deleteButton}
                 {...sanitizeRestProps(rest)}
             >
-                {createElement(icon)}
+                <Icon />
             </Button>
         );
     }
