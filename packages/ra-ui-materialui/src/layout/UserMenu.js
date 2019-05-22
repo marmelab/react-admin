@@ -1,4 +1,4 @@
-import React, { Children, cloneElement, isValidElement, createElement } from 'react';
+import React, { Children, cloneElement, isValidElement } from 'react';
 import PropTypes from 'prop-types';
 import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
@@ -38,8 +38,8 @@ class UserMenu extends React.Component {
     };
 
     render() {
-        const { children, label, icon, logout, translate } = this.props;
-        if (!logout && !children) return null;
+        const { children, label, icon, logout: Logout, translate } = this.props;
+        if (!Logout && !children) return null;
         const { anchorEl } = this.state;
         const open = Boolean(anchorEl);
 
@@ -74,7 +74,7 @@ class UserMenu extends React.Component {
                         isValidElement(menuItem) ?
                         cloneElement(menuItem, { onClick: this.handleClose }) : null
                     )}
-                    {createElement(logout)}
+                    <Logout />
                 </Menu>
             </div>
         );

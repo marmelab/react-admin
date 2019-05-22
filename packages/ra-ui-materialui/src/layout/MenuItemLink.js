@@ -1,4 +1,4 @@
-import React, { Component, createElement } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { NavLink } from 'react-router-dom';
@@ -43,7 +43,7 @@ export class MenuItemLink extends Component {
             classes,
             className,
             primaryText,
-            leftIcon,
+            leftIcon: LeftIcon,
             staticContext,
             ...props
         } = this.props;
@@ -56,9 +56,9 @@ export class MenuItemLink extends Component {
                 {...props}
                 onClick={this.handleMenuTap}
             >
-                {leftIcon && (
+                {LeftIcon && (
                     <ListItemIcon className={classes.icon}>
-                        {createElement(leftIcon, { titleAccess: primaryText })}
+                        <LeftIcon titleAccess={primaryText} />
                     </ListItemIcon>
                 )}
                 {primaryText}

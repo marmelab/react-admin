@@ -1,4 +1,4 @@
-import React, { Component, createElement } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
@@ -12,11 +12,11 @@ import { ThemeProvider } from '@material-ui/styles';
 import compose from 'recompose/compose';
 import { ComponentPropType } from 'ra-core';
 
-import AppBar from './AppBar';
-import Sidebar from './Sidebar';
-import Menu from './Menu';
-import Notification from './Notification';
-import Error from './Error';
+import DefaultAppBar from './AppBar';
+import DefaultSidebar from './Sidebar';
+import DefaultMenu from './Menu';
+import DefaultNotification from './Notification';
+import DefaultError from './Error';
 import defaultTheme from '../defaultTheme';
 
 const styles = theme =>
@@ -93,18 +93,18 @@ class Layout extends Component {
 
     render() {
         const {
-            appBar,
+            appBar: AppBar,
             children,
             classes,
             className,
             customRoutes,
-            error,
+            error: Error,
             dashboard,
             logout,
-            menu,
-            notification,
+            menu: Menu,
+            notification: Notification,
             open,
-            sidebar,
+            sidebar: Sidebar,
             title,
             ...props
         } = this.props;
@@ -115,25 +115,22 @@ class Layout extends Component {
                 {...sanitizeRestProps(props)}
             >
                 <div className={classes.appFrame}>
-                    {createElement(appBar, { title, open, logout })}
+                    <AppBar title={title} open={open} logout={logout} />
                     <main className={classes.contentWithSidebar}>
-                        {createElement(sidebar, {
-                            children: createElement(menu, {
-                                logout,
-                                hasDashboard: !!dashboard,
-                            }),
-                        })}
+                        <Sidebar>
+                            <Menu logout={logout} hasDashboard={!!dashboard} />
+                        </Sidebar>
                         <div className={classes.content}>
                             {hasError
-                                ? createElement(error, {
-                                      error: errorMessage,
-                                      errorInfo,
-                                      title,
-                                  })
+                                ? <Error
+                                      error={errorMessage}
+                                      errorInfo={errorInfo}
+                                      title={title}
+                                  />
                                 : children}
                         </div>
                     </main>
-                    {createElement(notification)}
+                    <Notification />
                 </div>
             </div>
         );
@@ -158,11 +155,11 @@ Layout.propTypes = {
 };
 
 Layout.defaultProps = {
-    appBar: AppBar,
-    error: Error,
-    menu: Menu,
-    notification: Notification,
-    sidebar: Sidebar,
+    appBar: DefaultAppBar,
+    error: DefaultError,
+    menu: DefaultMenu,
+    notification: DefaultNotification,
+    sidebar: DefaultSidebar,
 };
 
 const mapStateToProps = state => ({

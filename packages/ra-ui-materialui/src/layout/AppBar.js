@@ -1,4 +1,4 @@
-import React, { Children, createElement } from 'react';
+import React, { Children } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
@@ -13,7 +13,7 @@ import compose from 'recompose/compose';
 import { toggleSidebar as toggleSidebarAction, ComponentPropType } from 'ra-core';
 
 import LoadingIndicator from './LoadingIndicator';
-import UserMenu from './UserMenu';
+import DefaultUserMenu from './UserMenu';
 import HideOnScroll from './HideOnScroll';
 
 const styles = theme =>
@@ -56,7 +56,7 @@ const AppBar = ({
     open,
     title,
     toggleSidebar,
-    userMenu,
+    userMenu: UserMenu,
     width,
     ...rest
 }) => (
@@ -92,7 +92,7 @@ const AppBar = ({
                     children
                 )}
                 <LoadingIndicator />
-                {createElement(userMenu, { logout })}
+                <UserMenu logout={logout} />
             </Toolbar>
         </MuiAppBar>
     </HideOnScroll>
@@ -110,7 +110,7 @@ AppBar.propTypes = {
 };
 
 AppBar.defaultProps = {
-    userMenu: UserMenu,
+    userMenu: DefaultUserMenu,
 };
 
 const enhance = compose(

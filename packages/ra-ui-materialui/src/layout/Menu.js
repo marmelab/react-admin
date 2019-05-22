@@ -1,4 +1,4 @@
-import React, { createElement } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import inflection from 'inflection';
@@ -41,7 +41,7 @@ const Menu = ({
     open,
     pathname,
     resources,
-    logout,
+    logout: Logout,
     ...rest
 }) => {
     const translate = useTranslate();
@@ -65,7 +65,7 @@ const Menu = ({
                         dense={dense}
                     />
                 ))}
-            {logout ? <Responsive xsmall={createElement(logout)} medium={null} /> : null}
+            {Logout ? <Responsive xsmall={<Logout />} medium={null} /> : null}
         </div>
     );
 };
