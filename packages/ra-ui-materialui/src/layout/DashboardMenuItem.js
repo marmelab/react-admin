@@ -12,7 +12,7 @@ const DashboardMenuItem = ({ className, locale, onClick, ...props }) => {
             onClick={onClick}
             to="/"
             primaryText={translate('ra.page.dashboard')}
-            leftIcon={<DashboardIcon />}
+            leftIcon={DashboardIcon}
             exact
             {...props}
         />

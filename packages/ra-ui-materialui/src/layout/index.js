@@ -13,7 +13,6 @@ import Menu from './Menu';
 import MenuItemLink from './MenuItemLink';
 import NotFound from './NotFound';
 import Notification from './Notification';
-import RecordTitle from './RecordTitle';
 import Responsive from './Responsive';
 import Sidebar from './Sidebar';
 import Title, { TitlePropType } from './Title';
@@ -37,7 +36,6 @@ export {
     MenuItemLink,
     NotFound,
     Notification,
-    RecordTitle,
     Responsive,
     Sidebar,
     Title,

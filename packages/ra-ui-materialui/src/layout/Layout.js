@@ -149,11 +149,7 @@ Layout.propTypes = {
     dashboard: ComponentPropType,
     error: ComponentPropType,
     history: PropTypes.object.isRequired,
-    logout: PropTypes.oneOfType([
-        PropTypes.node,
-        PropTypes.func,
-        PropTypes.string,
-    ]),
+    logout: ComponentPropType,
     menu: ComponentPropType,
     notification: ComponentPropType,
     open: PropTypes.bool,

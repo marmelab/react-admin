@@ -10,7 +10,7 @@ import {
     getListControllerProps,
 } from 'ra-core';
 
-import Title from '../layout/Title';
+import Title, { TitlePropType } from '../layout/Title';
 import ListToolbar from './ListToolbar';
 import DefaultPagination from './Pagination';
 import BulkDeleteButton from '../button/BulkDeleteButton';
@@ -200,7 +200,7 @@ ListView.propTypes = {
     setPerPage: PropTypes.func,
     setSort: PropTypes.func,
     showFilter: PropTypes.func,
-    title: PropTypes.any,
+    title: TitlePropType,
     total: PropTypes.number,
     translate: PropTypes.func,
     version: PropTypes.number,
@@ -279,7 +279,7 @@ List.propTypes = {
         field: PropTypes.string,
         order: PropTypes.string,
     }),
-    title: PropTypes.any,
+    title: TitlePropType,
     // the props managed by react-admin
     authProvider: PropTypes.func,
     hasCreate: PropTypes.bool.isRequired,

@@ -101,7 +101,7 @@ export type DashboardComponent = ComponentType<WithPermissionsChildrenParams>;
 
 export interface LayoutProps {
     dashboard?: DashboardComponent;
-    logout: ReactNode;
+    logout: ComponentType;
     menu: ComponentType;
     theme: object;
     title?: TitleComponent;

@@ -1,16 +1,16 @@
-import React, { Children, cloneElement, isValidElement } from 'react';
+import React, { Children, cloneElement, isValidElement, createElement } from 'react';
 import PropTypes from 'prop-types';
 import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
-import { translate } from 'ra-core';
+import { translate, ComponentPropType } from 'ra-core';
 
 class UserMenu extends React.Component {
     static propTypes = {
         children: PropTypes.node,
         label: PropTypes.string.isRequired,
-        logout: PropTypes.node,
+        logout: ComponentPropType,
         icon: PropTypes.node,
         translate: PropTypes.func.isRequired,
     };
@@ -74,7 +74,7 @@ class UserMenu extends React.Component {
                         isValidElement(menuItem) ?
                         cloneElement(menuItem, { onClick: this.handleClose }) : null
                     )}
-                    {logout}
+                    {createElement(logout)}
                 </Menu>
             </div>
         );
