@@ -19,11 +19,6 @@ const useSelectItems = (resource: string) => {
         [resource]
     );
     const selectionModifiers = {
-        selectedIds: useSelector(
-            (reduxState: ReduxState) =>
-                reduxState.admin.resources[resource].list.selectedIds,
-            [resource]
-        ),
         select: useCallback(
             (newIds: Identifier[]) => {
                 dispatch(setListSelectedIds(resource, newIds));
