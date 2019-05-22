@@ -28,12 +28,18 @@ type State = IdentifierArrayWithDate;
 
 export const addRecordIdsFactory = getFetchedAtCallback => (
     newRecordIds: IdentifierArrayWithDate = [],
-    oldRecordIds: IdentifierArrayWithDate
+    oldRecordIds: IdentifierArrayWithDate,
+    preserveOldIds: boolean = false
 ): IdentifierArrayWithDate => {
-    const newFetchedAt = getFetchedAtCallback(
+    let newFetchedAt = getFetchedAtCallback(
         newRecordIds,
         oldRecordIds.fetchedAt
     );
+
+    if (preserveOldIds) {
+        newFetchedAt = { ...oldRecordIds.fetchedAt, ...newFetchedAt };
+    }
+
     const recordIds = uniq(
         oldRecordIds.filter(id => !!newFetchedAt[id]).concat(newRecordIds)
     );
@@ -108,7 +114,7 @@ const idsReducer: Reducer<State> = (
         case CRUD_GET_ONE_SUCCESS:
         case CRUD_CREATE_SUCCESS:
         case CRUD_UPDATE_SUCCESS:
-            return addRecordIds([action.payload.data.id], previousState);
+            return addRecordIds([action.payload.data.id], previousState, true);
         default:
             return previousState;
     }
