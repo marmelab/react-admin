@@ -8,7 +8,7 @@ import { REDUX_FORM_NAME } from '../form';
 import { useCheckMinimumRequiredProps } from './checkMinimumRequiredProps';
 import { Translate, Record, Identifier } from '../types';
 import { RedirectionSideEffect } from '../sideEffect';
-import useGetOne from './useGetOne';
+import useGetOne from './../fetch/useGetOne';
 import { useTranslate } from '../i18n';
 import useVersion from './useVersion';
 

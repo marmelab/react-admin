@@ -2,7 +2,7 @@ import { ReactNode } from 'react';
 import inflection from 'inflection';
 import { useCheckMinimumRequiredProps } from './checkMinimumRequiredProps';
 import { Translate, Record, Identifier } from '../types';
-import useGetOne from './useGetOne';
+import useGetOne from '../fetch/useGetOne';
 import { useTranslate } from '../i18n';
 import useVersion from './useVersion';
 

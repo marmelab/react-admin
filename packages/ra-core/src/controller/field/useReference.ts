@@ -72,10 +72,11 @@ export const useReference = ({
         getReferenceRecord(sourceId, reference)
     );
     const dispatch = useDispatch();
-    useEffect(fetchReference(sourceId, reference, dispatch), [
-        sourceId,
-        reference,
-    ]);
+    useEffect(() => {
+        if (sourceId !== null && typeof sourceId !== 'undefined') {
+            dispatch(crudGetManyAccumulate(reference, [sourceId]));
+        }
+    }, [sourceId, reference]);
     const rootPath = basePath.replace(resource, reference);
     const resourceLinkPath = !linkType
         ? false
@@ -91,11 +92,5 @@ export const useReference = ({
 const getReferenceRecord = (sourceId, reference) => (state: ReduxState) =>
     state.admin.resources[reference] &&
     state.admin.resources[reference].data[sourceId];
-
-const fetchReference = (sourceId, reference, dispatch) => () => {
-    if (sourceId !== null && typeof sourceId !== 'undefined') {
-        dispatch(crudGetManyAccumulate(reference, [sourceId]));
-    }
-};
 
 export default useReference;

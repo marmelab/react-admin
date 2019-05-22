@@ -8,7 +8,7 @@ import { Sort, AuthProvider, RecordMap, Identifier, Translate } from '../types';
 import { Location } from 'history';
 import { useTranslate } from '../i18n';
 import useListParams from './useListParams';
-import useGetList from './useGetList';
+import useGetList from './../fetch/useGetList';
 import useRecordSelection from './useRecordSelection';
 import useVersion from './useVersion';
 
