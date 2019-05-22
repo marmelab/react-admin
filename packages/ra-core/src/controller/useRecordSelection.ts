@@ -9,11 +9,16 @@ import { Identifier, ReduxState } from '../types';
  *
  * @param resource The resource name, e.g. 'posts'
  *
- * @returns {Object} Destructure as { selectedIds, select, toggle, clearSelection }.
+ * @returns {Object} Destructure as [selectedIds, { select, toggle, clearSelection }].
  */
 const useSelectItems = (resource: string) => {
     const dispatch = useDispatch();
-    return {
+    const selectedIds = useSelector(
+        (reduxState: ReduxState) =>
+            reduxState.admin.resources[resource].list.selectedIds,
+        [resource]
+    );
+    const selectionModifiers = {
         selectedIds: useSelector(
             (reduxState: ReduxState) =>
                 reduxState.admin.resources[resource].list.selectedIds,
@@ -35,6 +40,7 @@ const useSelectItems = (resource: string) => {
             dispatch(setListSelectedIds(resource, []));
         }, [resource]),
     };
+    return [selectedIds, selectionModifiers];
 };
 
 export default useSelectItems;

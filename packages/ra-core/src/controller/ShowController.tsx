@@ -1,11 +1,10 @@
 import { ReactNode } from 'react';
-// @ts-ignore
-import { useSelector } from 'react-redux';
 import inflection from 'inflection';
 import { useCheckMinimumRequiredProps } from './checkMinimumRequiredProps';
-import { Translate, Record, Identifier, ReduxState } from '../types';
+import { Translate, Record, Identifier } from '../types';
 import useGetOne from './useGetOne';
 import { useTranslate } from '../i18n';
+import useVersion from './useVersion';
 
 interface ChildrenFuncParams {
     isLoading: boolean;
@@ -78,9 +77,7 @@ const ShowController = (props: Props) => {
         return null;
     }
     const translate = useTranslate();
-    const version = useSelector(
-        (state: ReduxState) => state.admin.ui.viewVersion
-    );
+    const version = useVersion();
     const { data: record, loading } = useGetOne(resource, id, {
         basePath,
         version, // used to force reload

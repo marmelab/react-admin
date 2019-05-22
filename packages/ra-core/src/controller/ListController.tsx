@@ -1,24 +1,16 @@
 import { isValidElement, ReactNode, ReactElement } from 'react';
-// @ts-ignore
-import { useSelector } from 'react-redux';
 import inflection from 'inflection';
 
 import { SORT_ASC } from '../reducer/admin/resource/list/queryReducer';
 import { ListParams } from '../actions/listActions';
 import { useCheckMinimumRequiredProps } from './checkMinimumRequiredProps';
-import {
-    Sort,
-    AuthProvider,
-    RecordMap,
-    Identifier,
-    Translate,
-    ReduxState,
-} from '../types';
+import { Sort, AuthProvider, RecordMap, Identifier, Translate } from '../types';
 import { Location } from 'history';
 import { useTranslate } from '../i18n';
 import useListParams from './useListParams';
 import useGetList from './useGetList';
-import useSelectItems from './useSelectItems';
+import useRecordSelection from './useRecordSelection';
+import useVersion from './useVersion';
 
 interface ChildrenFuncParams {
     basePath: string;
@@ -143,12 +135,9 @@ const ListController = (props: Props) => {
     } = props;
 
     const translate = useTranslate();
+    const version = useVersion();
 
-    const version = useSelector(
-        (reduxState: ReduxState) => reduxState.admin.ui.viewVersion
-    );
-
-    const [query, actions] = useListParams({
+    const [query, queryModifiers] = useListParams({
         resource,
         location,
         filterDefaultValues,
@@ -157,9 +146,7 @@ const ListController = (props: Props) => {
         debounce,
     });
 
-    const { selectedIds, select, toggle, clearSelection } = useSelectItems(
-        resource
-    );
+    const [selectedIds, selectionModifiers] = useRecordSelection(resource);
 
     const { data, ids, total, loading, loaded } = useGetList(
         resource,
@@ -181,7 +168,8 @@ const ListController = (props: Props) => {
     );
 
     if (!query.page && !(ids || []).length && query.page > 1 && total > 0) {
-        actions.setPage(query.page - 1);
+        // query for a page that doesn't exist, check the previous page
+        queryModifiers.setPage(query.page - 1);
     }
 
     const resourceName = translate(`resources.${resource}.name`, {
@@ -206,19 +194,19 @@ const ListController = (props: Props) => {
         ids,
         isLoading: loading,
         loadedOnce: loaded,
-        onSelect: select,
-        onToggleItem: toggle,
-        onUnselectItems: clearSelection,
+        onSelect: selectionModifiers.select,
+        onToggleItem: selectionModifiers.toggle,
+        onUnselectItems: selectionModifiers.clearSelection,
         page: query.page,
         perPage: query.perPage,
         resource,
         selectedIds,
-        setFilters: actions.setFilters,
-        hideFilter: actions.hideFilter,
-        showFilter: actions.showFilter,
-        setPage: actions.setPage,
-        setPerPage: actions.setPerPage,
-        setSort: actions.setSort,
+        setFilters: queryModifiers.setFilters,
+        hideFilter: queryModifiers.hideFilter,
+        showFilter: queryModifiers.showFilter,
+        setPage: queryModifiers.setPage,
+        setPerPage: queryModifiers.setPerPage,
+        setSort: queryModifiers.setSort,
         translate,
         total,
         version,

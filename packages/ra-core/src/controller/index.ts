@@ -8,7 +8,8 @@ import ListController from './ListController';
 import ShowController from './ShowController';
 import useGetOne from './useGetOne';
 import useGetList from './useGetList';
-import useSelectItems from './useSelectItems';
+import useRecordSelection from './useRecordSelection';
+import useVersion from './useVersion';
 export {
     getListControllerProps,
     sanitizeListRestProps,
@@ -18,7 +19,8 @@ export {
     ShowController,
     useGetOne,
     useGetList,
-    useSelectItems,
+    useRecordSelection,
+    useVersion,
 };
 
 export * from './field';

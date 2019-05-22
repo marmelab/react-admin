@@ -1,15 +1,16 @@
 import { ReactNode, useEffect, useCallback } from 'react';
 // @ts-ignore
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { reset as resetForm } from 'redux-form';
 import inflection from 'inflection';
 import { crudUpdate, startUndoable } from '../actions';
 import { REDUX_FORM_NAME } from '../form';
 import { useCheckMinimumRequiredProps } from './checkMinimumRequiredProps';
-import { Translate, Record, Identifier, ReduxState } from '../types';
+import { Translate, Record, Identifier } from '../types';
 import { RedirectionSideEffect } from '../sideEffect';
 import useGetOne from './useGetOne';
 import { useTranslate } from '../i18n';
+import useVersion from './useVersion';
 
 interface ChildrenFuncParams {
     isLoading: boolean;
@@ -87,9 +88,7 @@ const EditController = (props: Props) => {
     }
     const translate = useTranslate();
     const dispatch = useDispatch();
-    const version = useSelector(
-        (state: ReduxState) => state.admin.ui.viewVersion
-    );
+    const version = useVersion();
     const { data: record, loading } = useGetOne(resource, id, {
         basePath,
         version, // used to force reload
