@@ -165,8 +165,8 @@ export class UnconnectedReferenceArrayInputController extends Component<
     }
 
     componentDidMount() {
-        this.fetchReferences(this.props, true)
-        this.fetchOptions(this.props)
+        this.fetchReferences(this.props, true);
+        this.fetchOptions(this.props);
     }
 
     componentWillReceiveProps(nextProps: Props & EnhancedProps) {
@@ -234,7 +234,9 @@ export class UnconnectedReferenceArrayInputController extends Component<
                     'The value of ReferenceArrayInput should be an array'
                 );
             }
-            const idsToFetch = isInitialCall ? ids : difference(ids, this.props.input.value)
+            const idsToFetch = isInitialCall
+                ? ids
+                : difference(ids, this.props.input.value);
             crudGetMany(reference, idsToFetch);
         }
     };
