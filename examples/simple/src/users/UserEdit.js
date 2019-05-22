@@ -41,7 +41,7 @@ const UserEdit = ({ permissions, ...props }) => (
     <Edit title={UserTitle} aside={Aside} {...props}>
         <TabbedForm
             defaultValue={{ role: 'user' }}
-            toolbar={<UserEditToolbar />}
+            toolbar={UserEditToolbar}
         >
             <FormTab label="user.form.summary" path="">
                 {permissions === 'admin' && <DisabledInput source="id" />}

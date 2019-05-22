@@ -63,7 +63,7 @@ const ReviewEdit = ({ classes, onCancel, ...props }) => (
                         version={controllerProps.version}
                         redirect="list"
                         resource="reviews"
-                        toolbar={<ReviewEditToolbar />}
+                        toolbar={ReviewEditToolbar}
                     >
                         <CustomerReferenceField
                             formClassName={classes.inlineField}

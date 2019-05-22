@@ -83,7 +83,7 @@ const getDefaultDate = () => new Date();
 const PostCreate = ({ permissions, ...props }) => (
     <Create {...props}>
         <SimpleForm
-            toolbar={<PostCreateToolbar />}
+            toolbar={PostCreateToolbar}
             defaultValue={{ average_note: 0 }}
             validate={values => {
                 const errors = {};

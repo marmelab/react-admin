@@ -67,12 +67,13 @@ class PostQuickCreateView extends Component {
                 save={this.handleSave}
                 saving={submitting}
                 redirect={false}
-                toolbar={
+                toolbar={props => (
                     <PostQuickCreateToolbar
                         onCancel={onCancel}
                         submitting={submitting}
+                        {...props}
                     />
-                }
+                )}
                 classes={{ form: classes.form }}
             >
                 <TextInput source="title" validate={required()} />

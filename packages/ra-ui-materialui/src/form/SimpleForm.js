@@ -4,7 +4,7 @@ import { reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import classnames from 'classnames';
-import { getDefaultValues, translate, REDUX_FORM_NAME } from 'ra-core';
+import { getDefaultValues, translate, REDUX_FORM_NAME, ComponentPropType } from 'ra-core';
 
 import FormInput from './FormInput';
 import Toolbar from './Toolbar';
@@ -69,7 +69,7 @@ export class SimpleForm extends Component {
             resource,
             saving,
             submitOnEnter,
-            toolbar,
+            toolbar: Toolbar,
             undoable,
             version,
             ...rest
@@ -90,20 +90,21 @@ export class SimpleForm extends Component {
                         />
                     ))}
                 </CardContentInner>
-                {toolbar &&
-                    React.cloneElement(toolbar, {
-                        basePath,
-                        handleSubmitWithRedirect: this.handleSubmitWithRedirect,
-                        handleSubmit: this.props.handleSubmit,
-                        invalid,
-                        pristine,
-                        record,
-                        redirect,
-                        resource,
-                        saving,
-                        submitOnEnter,
-                        undoable,
-                    })}
+                {Toolbar &&
+                    <Toolbar
+                        basePath={basePath}
+                        handleSubmitWithRedirect={this.handleSubmitWithRedirect}
+                        handleSubmit={this.props.handleSubmit}
+                        invalid={invalid}
+                        pristine={pristine}
+                        record={record}
+                        redirect={redirect}
+                        resource={resource}
+                        saving={saving}
+                        submitOnEnter={submitOnEnter}
+                        undoable={undoable}
+                    />
+                }
             </form>
         );
     }
@@ -127,7 +128,7 @@ SimpleForm.propTypes = {
     save: PropTypes.func, // the handler defined in the parent, which triggers the REST submission
     saving: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
     submitOnEnter: PropTypes.bool,
-    toolbar: PropTypes.element,
+    toolbar: ComponentPropType,
     undoable: PropTypes.bool,
     validate: PropTypes.func,
     version: PropTypes.number,
@@ -135,7 +136,7 @@ SimpleForm.propTypes = {
 
 SimpleForm.defaultProps = {
     submitOnEnter: true,
-    toolbar: <Toolbar />,
+    toolbar: Toolbar,
 };
 
 const enhance = compose(
