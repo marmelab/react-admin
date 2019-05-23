@@ -31,7 +31,7 @@ const sanitizeRestProps = ({
     ...rest
 }) => rest;
 
-class DatagridRow extends Component {
+export class DatagridRow extends Component {
     constructor(props) {
         super(props);
         this.state = {
