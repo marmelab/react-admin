@@ -45,6 +45,9 @@ describe('<DatagridRow />', () => {
 
             wrapper.instance().handleClick(event);
             expect(wrapper.state('expanded')).toBeTruthy();
+
+            wrapper.instance().handleClick(event);
+            expect(wrapper.state('expanded')).toBeFalsy();
         });
 
         it("should execute the onToggleItem function if the 'toggleSelection' option is selected", () => {
