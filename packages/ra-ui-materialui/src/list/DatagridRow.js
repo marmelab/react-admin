@@ -74,21 +74,22 @@ class DatagridRow extends Component {
     handleRedirection = (path, event) => {
         const { basePath, id, push } = this.props;
 
-        if (path === 'edit') {
-            push(linkToRecord(basePath, id));
-            return;
-        }
-        if (path === 'show') {
-            push(linkToRecord(basePath, id, 'show'));
-            return;
-        }
-        if (path === 'expand') {
-            this.handleToggleExpanded(event);
-            return;
-        }
         if (!path) return;
 
-        push(path);
+        switch (path) {
+            case 'edit':
+                push(linkToRecord(basePath, id));
+                return;
+            case 'show':
+                push(linkToRecord(basePath, id, 'show'));
+                return;
+            case 'expand':
+                this.handleToggleExpanded(event);
+                return;
+            default:
+                push(path);
+                return;
+        }
     };
 
     computeColSpan = props => {
