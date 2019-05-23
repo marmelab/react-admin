@@ -62,13 +62,12 @@ class DatagridRow extends Component {
 
         if (!rowClick) return;
 
-        if (typeof rowClick === 'function') {
-            const path = await rowClick(id, basePath, record);
-            this.handleRedirection(path, event);
-            return;
-        }
+        const path =
+            typeof rowClick === 'function'
+                ? await rowClick(id, basePath, record)
+                : rowClick;
 
-        this.handleRedirection(rowClick, event);
+        this.handleRedirection(path, event);
     };
 
     handleRedirection = (path, event) => {
