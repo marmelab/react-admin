@@ -29,11 +29,10 @@ const SaveWithNoteButton = props => {
     const { basePath, handleSubmit, redirect } = props;
 
     const handleClick = useCallback(
-        () => {
-            return handleSubmit(values => {
+        () =>
+            handleSubmit(values => {
                 dispatch(saveWithNote(values, basePath, redirect));
-            });
-        },
+            }),
         [basePath, redirect],
     );
 

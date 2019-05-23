@@ -116,7 +116,7 @@ const PostList = props => {
                     />
                 }
                 medium={
-                    <Datagrid rowClick={rowClick} expand={<PostPanel />}>
+                    <Datagrid rowClick={rowClick} expand={PostPanel}>
                         <TextField source="id" />
                         <TextField
                             source="title"

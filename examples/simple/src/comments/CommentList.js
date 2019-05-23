@@ -125,7 +125,7 @@ const CommentGrid = ({ ids, data, basePath }) => {
     const classes = useListStyles();
 
     return (
-        <Grid spacing={2} container style={{ padding: '0 1em' }}>
+        <Grid spacing={2} container>
             {ids.map(id => (
                 <Grid item key={id} sm={12} md={6} lg={4}>
                     <Card className={classes.card}>
