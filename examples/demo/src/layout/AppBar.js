@@ -25,14 +25,14 @@ const CustomUserMenu = props => {
             <MenuItemLink
                 to="/configuration"
                 primaryText={translate('pos.configuration')}
-                leftIcon={<SettingsIcon />}
+                leftIcon={SettingsIcon}
             />
         </UserMenu>
     );
 };
 
 const CustomAppBar = ({ classes, ...props }) => (
-    <AppBar {...props} userMenu={<CustomUserMenu />}>
+    <AppBar {...props} userMenu={CustomUserMenu}>
         <Typography
             variant="h6"
             color="inherit"

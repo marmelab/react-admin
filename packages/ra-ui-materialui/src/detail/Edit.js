@@ -4,10 +4,11 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import { withStyles, createStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
-import { EditController } from 'ra-core';
+import { EditController, ComponentPropType } from 'ra-core';
 
 import DefaultActions from './EditActions';
 import TitleForRecord from '../layout/TitleForRecord';
+import { TitlePropType } from '../layout';
 
 export const styles = createStyles({
     root: {},
@@ -53,8 +54,8 @@ const sanitizeRestProps = ({
 
 export const EditView = withStyles(styles)(
     ({
-        actions,
-        aside,
+        actions: Actions,
+        aside: Aside,
         basePath,
         children,
         classes,
@@ -71,8 +72,8 @@ export const EditView = withStyles(styles)(
         version,
         ...rest
     }) => {
-        if (typeof actions === 'undefined' && hasShow) {
-            actions = <DefaultActions />;
+        if (typeof Actions === 'undefined' && hasShow) {
+            Actions = DefaultActions;
         }
         if (!children) {
             return null;
@@ -87,18 +88,18 @@ export const EditView = withStyles(styles)(
                     record={record}
                     defaultTitle={defaultTitle}
                 />
-                {actions &&
-                    cloneElement(actions, {
-                        basePath,
-                        data: record,
-                        hasShow,
-                        hasList,
-                        resource,
-                        ...actions.props,
-                    })}
+                {Actions &&
+                    <Actions
+                        basePath={basePath}
+                        data={record}
+                        hasList={hasList}
+                        hasShow={hasShow}
+                        resource={resource}
+                    />
+                }
                 <div
                     className={classnames(classes.main, {
-                        [classes.noActions]: !actions,
+                        [classes.noActions]: !Actions,
                     })}
                 >
                     <Card className={classes.card}>
@@ -120,13 +121,15 @@ export const EditView = withStyles(styles)(
                             <CardContent>&nbsp;</CardContent>
                         )}
                     </Card>
-                    {aside &&
-                        React.cloneElement(aside, {
-                            basePath,
-                            record,
-                            resource,
-                            version,
-                        })}
+                    {Aside &&
+                        <Aside
+                            basePath={basePath}
+                            record={record}
+                            resource={resource}
+                            version={version}
+                            save={save}
+                        />
+                    }
                 </div>
             </div>
         );
@@ -134,8 +137,8 @@ export const EditView = withStyles(styles)(
 );
 
 EditView.propTypes = {
-    actions: PropTypes.element,
-    aside: PropTypes.node,
+    actions: ComponentPropType,
+    aside: ComponentPropType,
     basePath: PropTypes.string,
     children: PropTypes.element,
     classes: PropTypes.object,
@@ -147,7 +150,7 @@ EditView.propTypes = {
     redirect: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
     resource: PropTypes.string,
     save: PropTypes.func,
-    title: PropTypes.any,
+    title: TitlePropType,
     version: PropTypes.number,
 };
 
@@ -204,8 +207,8 @@ const Edit = props => (
 );
 
 Edit.propTypes = {
-    actions: PropTypes.element,
-    aside: PropTypes.node,
+    actions: ComponentPropType,
+    aside: ComponentPropType,
     children: PropTypes.node,
     classes: PropTypes.object,
     className: PropTypes.string,
@@ -215,7 +218,7 @@ Edit.propTypes = {
     hasList: PropTypes.bool,
     id: PropTypes.any.isRequired,
     resource: PropTypes.string.isRequired,
-    title: PropTypes.any,
+    title: TitlePropType,
 };
 
 export default Edit;

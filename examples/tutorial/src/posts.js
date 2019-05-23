@@ -36,7 +36,7 @@ const PostFilter = props => (
 );
 
 export const PostList = props => (
-    <List {...props} filters={<PostFilter />}>
+    <List {...props} filters={PostFilter}>
         <Datagrid>
             <TextField source="id" />
             <ReferenceField label="User" source="userId" reference="users">
@@ -54,7 +54,7 @@ const PostTitle = ({ record }) => {
 };
 
 export const PostEdit = props => (
-    <Edit title={<PostTitle />} {...props}>
+    <Edit title={PostTitle} {...props}>
         <SimpleForm>
             <DisabledInput source="id" />
             <ReferenceInput label="User" source="userId" reference="users">

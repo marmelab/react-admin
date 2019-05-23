@@ -4,13 +4,13 @@ import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
-import { translate } from 'ra-core';
+import { translate, ComponentPropType } from 'ra-core';
 
 class UserMenu extends React.Component {
     static propTypes = {
         children: PropTypes.node,
         label: PropTypes.string.isRequired,
-        logout: PropTypes.node,
+        logout: ComponentPropType,
         icon: PropTypes.node,
         translate: PropTypes.func.isRequired,
     };
@@ -38,8 +38,8 @@ class UserMenu extends React.Component {
     };
 
     render() {
-        const { children, label, icon, logout, translate } = this.props;
-        if (!logout && !children) return null;
+        const { children, label, icon, logout: Logout, translate } = this.props;
+        if (!Logout && !children) return null;
         const { anchorEl } = this.state;
         const open = Boolean(anchorEl);
 
@@ -74,7 +74,7 @@ class UserMenu extends React.Component {
                         isValidElement(menuItem) ?
                         cloneElement(menuItem, { onClick: this.handleClose }) : null
                     )}
-                    {logout}
+                    <Logout />
                 </Menu>
             </div>
         );

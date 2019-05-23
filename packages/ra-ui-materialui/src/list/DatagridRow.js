@@ -9,7 +9,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Checkbox from '@material-ui/core/Checkbox';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import classnames from 'classnames';
-import { linkToRecord } from 'ra-core';
+import { linkToRecord, ComponentPropType } from 'ra-core';
 
 import DatagridCell from './DatagridCell';
 
@@ -106,7 +106,7 @@ class DatagridRow extends Component {
             children,
             classes,
             className,
-            expand,
+            expand: Expand,
             hasBulkActions,
             hover,
             id,
@@ -128,7 +128,7 @@ class DatagridRow extends Component {
                     onClick={this.handleClick}
                     {...sanitizeRestProps(rest)}
                 >
-                    {expand && (
+                    {Expand && (
                         <TableCell
                             padding="none"
                             className={classes.expandIconCell}
@@ -171,15 +171,15 @@ class DatagridRow extends Component {
                         ) : null
                     )}
                 </TableRow>
-                {expand && expanded && (
+                {Expand && expanded && (
                     <TableRow key={`${id}-expand`}>
                         <TableCell colSpan={colSpan} role="expand-content">
-                            {React.cloneElement(expand, {
-                                record,
-                                basePath,
-                                resource,
-                                id: String(id),
-                            })}
+                            <Expand
+                                record={record}
+                                basePath={basePath}
+                                resource={resource}
+                                id={String(id)}
+                            />
                         </TableCell>
                     </TableRow>
                 )}
@@ -193,7 +193,7 @@ DatagridRow.propTypes = {
     children: PropTypes.node,
     classes: PropTypes.object,
     className: PropTypes.string,
-    expand: PropTypes.node,
+    expand: ComponentPropType,
     hasBulkActions: PropTypes.bool.isRequired,
     hover: PropTypes.bool,
     id: PropTypes.any,

@@ -182,7 +182,7 @@ const Menu = ({ resources, onMenuClick, logout }) => (
         <MenuItemLink
             to="/custom-route"
             primaryText="Miscellaneous"
-            leftIcon={<LabelIcon />}
+            leftIcon={LabelIcon}
             onClick={onMenuClick} />
         <Responsive
             small={logout}

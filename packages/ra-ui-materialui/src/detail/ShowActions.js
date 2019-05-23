@@ -19,7 +19,7 @@ const sanitizeRestProps = ({
  *
  * Internal component. If you want to add or remove actions for a Show view,
  * write your own ShowActions Component. Then, in the <Show> component,
- * use it in the `actions` prop to pas a custom element.
+ * use it in the `actions` prop to pass a custom component.
  *
  * @example
  *     import Button from '@material-ui/core/Button';
@@ -34,7 +34,7 @@ const sanitizeRestProps = ({
  *     );
  *
  *     export const PostShow = (props) => (
- *         <Show actions={<PostShowActions />} {...props}>
+ *         <Show actions={PostShowActions} {...props}>
  *             ...
  *         </Show>
  *     );

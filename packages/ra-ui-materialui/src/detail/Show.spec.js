@@ -19,7 +19,7 @@ describe('<Show />', () => {
     it('should display aside component', () => {
         const Aside = () => <div id="aside">Hello</div>;
         const { queryAllByText } = renderWithRedux(
-            <Show {...defaultShowProps} aside={<Aside />}>
+            <Show {...defaultShowProps} aside={Aside}>
                 <div />
             </Show>
         );

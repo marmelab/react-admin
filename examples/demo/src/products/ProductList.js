@@ -48,7 +48,7 @@ export const ProductFilter = props => (
 const ProductList = props => (
     <List
         {...props}
-        filters={<ProductFilter />}
+        filters={ProductFilter}
         perPage={20}
         sort={{ field: 'id', order: 'ASC' }}
     >

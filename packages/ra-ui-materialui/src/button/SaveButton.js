@@ -7,7 +7,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import { withStyles, createStyles } from '@material-ui/core/styles';
 import ContentSave from '@material-ui/icons/Save';
 import classnames from 'classnames';
-import { showNotification, translate } from 'ra-core';
+import { showNotification, translate, ComponentPropType } from 'ra-core';
 
 const styles = createStyles({
     button: {
@@ -57,12 +57,12 @@ export class SaveButton extends Component {
         submitOnEnter: PropTypes.bool,
         translate: PropTypes.func.isRequired,
         variant: PropTypes.oneOf(['raised', 'flat', 'fab']),
-        icon: PropTypes.element,
+        icon: ComponentPropType,
     };
 
     static defaultProps = {
         handleSubmitWithRedirect: () => () => {},
-        icon: <ContentSave />,
+        icon: ContentSave,
     };
 
     handleClick = e => {
@@ -106,7 +106,7 @@ export class SaveButton extends Component {
             submitOnEnter,
             translate,
             variant = 'contained',
-            icon,
+            icon: Icon,
             onClick,
             ...rest
         } = this.props;
@@ -128,9 +128,7 @@ export class SaveButton extends Component {
                         className={classes.iconPaddingStyle}
                     />
                 ) : (
-                    React.cloneElement(icon, {
-                        className: classes.iconPaddingStyle,
-                    })
+                    <Icon className={classes.iconPaddingStyle} />
                 )}
                 {label && translate(label, { _: label })}
             </Button>

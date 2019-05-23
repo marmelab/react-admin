@@ -438,7 +438,7 @@ const choices = [
    { id: 456, first_name: 'Jane', last_name: 'Austen' },
 ];
 const FullNameField = ({ record }) => <Chip>{record.first_name} {record.last_name}</Chip>;
-<SelectField source="author_id" choices={choices} optionText={<FullNameField />}/>
+<SelectField source="author_id" choices={choices} optionText={FullNameField}/>
 ```
 
 The current choice is translated by default, so you can use translation identifiers as choices:
@@ -619,7 +619,7 @@ And if you want to allow users to paginate the list, pass a `<Pagination>` compo
 ```jsx
 import { Pagination } from 'react-admin';
 
-<ReferenceManyField pagination={<Pagination />} reference="comments" target="post_id">
+<ReferenceManyField pagination={Pagination} reference="comments" target="post_id">
    ...
 </ReferenceManyField>
 ```

@@ -20,7 +20,7 @@ describe('<Create />', () => {
         const Dummy = () => <div />;
         const Aside = () => <div id="aside">Hello</div>;
         const { queryAllByText } = renderWithRedux(
-            <Create {...defaultCreateProps} aside={<Aside />}>
+            <Create {...defaultCreateProps} aside={Aside}>
                 <Dummy />
             </Create>
         );

@@ -35,7 +35,7 @@ const styles = {
 };
 
 const ProductEdit = ({ classes, ...props }) => (
-    <Edit {...props} title={<ProductTitle />}>
+    <Edit {...props} title={ProductTitle}>
         <TabbedForm>
             <FormTab label="resources.products.tabs.image">
                 <Poster />
@@ -71,7 +71,7 @@ const ProductEdit = ({ classes, ...props }) => (
                     reference="reviews"
                     target="product_id"
                     addLabel={false}
-                    pagination={<Pagination />}
+                    pagination={Pagination}
                 >
                     <Datagrid>
                         <DateField source="date" />

@@ -37,9 +37,9 @@ const CreateRelatedComment = ({ record }) => (
 );
 
 const PostShow = props => (
-    <ShowController title={<PostTitle />} {...props}>
+    <ShowController {...props}>
         {controllerProps => (
-            <ShowView {...props} {...controllerProps}>
+            <ShowView {...props} {...controllerProps} title={PostTitle}>
                 <TabbedShowLayout>
                     <Tab label="post.form.summary">
                         <TextField source="id" />

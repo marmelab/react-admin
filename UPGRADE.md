@@ -154,6 +154,74 @@ const App = () => (
 );
 ```
 
+## Injected Elements Replaced By Injected Components
+
+Every time that you used an *element* as a prop in a react-admin component, you must now use a *component*. This basically means removing the enclosing angle brackets in props:
+
+```diff
+const PostEdit = (props) => (
+-   <Edit title={<PostTitle />} actions={<EditActions />} {...props}>
++   <Edit title={PostTitle} actions={EditActions} {...props}>
+```
+
+If an element prop depended on higher props, you must use an inline component instead:
+
+```diff
+const PostEdit = ({ permissions, ...props }) => (
+- <Edit actions={<EditActions permissions={permissions} />} {...props}>
++ <Edit actions={actionProps => <EditActions permissions={permissions} {...actionProps} />} {...props}>
+```
+
+We are aware that this will require many changes in existing codebases. Fortunately, it can be automated for the most part. You might find the following regular expressions useful for migrating.
+
+The first, `{<(.+)\/>}`, searches for all element injections, for instance:
+
+* `{<EditActions />}`
+* `{<EditActions permissions={permissions} />}`
+
+You can then use `{props => <$1{...props} />}` as the replacement pattern. The result will be:
+
+* `{props => <EditActions {...props} />}`
+* `{props => <EditActions permissions={permissions} {...props} />}`
+
+However, in most cases you do not need an inline component, so you might want to use another replacement pattern afterwards: `{props => <(\w+) {\.\.\.props} \/>}`. It searches for simple component injections without extra props, such as `{props => <EditActions {...props} />}`, but will not match more complex cases like `{props => <EditActions permissions={permissions} {...props} />}`. You can then use `{$1}` as the replacement pattern, which will produce `{EditActions}`.
+
+For reference, you can read the [RFC](https://github.com/marmelab/react-admin/issues/3246) about this change to understand the rationale.
+
+## Remove optionText={function} for Input Components
+
+Many Input components for selecting items in a list expose an `optionText` prop. This prop used to accept 3 types of values: a field name, a function, and a React element. Here is an example with `AutocompleteInput` using a function as `optionText` prop:
+
+```jsx
+const choices = [
+   { id: 123, first_name: 'Leo', last_name: 'Tolstoi' },
+   { id: 456, first_name: 'Jane', last_name: 'Austen' },
+];
+const optionRenderer = choice => `${choice.first_name} ${choice.last_name}`;
+<AutocompleteInput source="author_id" choices={choices} optionText={optionRenderer} />
+```
+
+However, as these Input components no longer accept element as props (but components), there is no way react-admin can distinguish simple functions from elements. Indeed, they might be functions accepting props.
+
+So `optionText` still works, but no longer accepts a simple function - only a component.
+
+The migration shouldn't be too hard though. To turn a function into a component, wrap it inside Fragment tags:
+
+```diff
+-const optionRenderer = choice => `${choice.first_name} ${choice.last_name}`;
+-<AutocompleteInput source="author_id" choices={choices} optionText={optionRenderer} />
++const Option = ({ record }) => <>{record.first_name} {record.last_name}</>;
++<AutocompleteInput source="author_id" choices={choices} optionText={Option} />
+```
+
+This change concerns the following components:
+
+* `CheckboxGroupInput`
+* `SelectArrayInput`
+* `SelectInput`
+* `SelectField`
+* `RadioButtonGroupInput`
+
 ## Deprecated components were removed
 
 Components deprecated in 2.X have been removed in 3.x. This includes:
@@ -161,3 +229,5 @@ Components deprecated in 2.X have been removed in 3.x. This includes:
 * `AppBarMobile` (use `AppBar` instead, which is responsive)
 * `Header` (use `Title` instead)
 * `ViewTitle` (use `Title` instead)
+* `RecordTitle` (use `TitleForRecord` instead)
+* `TitleDeprecated` (use `Title` instead)

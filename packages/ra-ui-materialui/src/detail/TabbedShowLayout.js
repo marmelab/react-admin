@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Divider from '@material-ui/core/Divider';
 import { withRouter, Route } from 'react-router-dom';
 import compose from 'recompose/compose';
-import { translate } from 'ra-core';
+import { translate, ComponentPropType } from 'ra-core';
 
 import CardContentInner from '../layout/CardContentInner';
 import TabbedShowLayoutTabs from './TabbedShowLayoutTabs';
@@ -79,7 +79,7 @@ export class TabbedShowLayout extends Component {
             translate,
             version,
             value,
-            tabs,
+            tabs: Tabs,
             ...rest
         } = this.props;
 
@@ -89,16 +89,15 @@ export class TabbedShowLayout extends Component {
                 key={version}
                 {...sanitizeRestProps(rest)}
             >
-                {cloneElement(
-                    tabs,
-                    {
-                        // The location pathname will contain the page path including the current tab path
-                        // so we can use it as a way to determine the current tab
-                        value: location.pathname,
-                        match,
-                    },
-                    children
-                )}
+                <Tabs
+                    // The location pathname will contain the page path including the current tab path
+                    // so we can use it as a way to determine the current tab
+                    value={location.pathname}
+                    match={match}
+                >
+                    {children}
+                </Tabs>
+                
                 <Divider />
                 <CardContentInner>
                     {Children.map(
@@ -136,11 +135,11 @@ TabbedShowLayout.propTypes = {
     value: PropTypes.number,
     version: PropTypes.number,
     translate: PropTypes.func,
-    tabs: PropTypes.element.isRequired,
+    tabs: ComponentPropType,
 };
 
 TabbedShowLayout.defaultProps = {
-    tabs: <TabbedShowLayoutTabs />,
+    tabs: TabbedShowLayoutTabs,
 };
 
 const enhance = compose(

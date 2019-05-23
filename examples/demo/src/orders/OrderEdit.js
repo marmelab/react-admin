@@ -29,13 +29,13 @@ const editStyles = {
 };
 
 const OrderEdit = props => (
-    <Edit title={<OrderTitle />} aside={<Basket />} {...props}>
+    <Edit title={OrderTitle} aside={Basket} {...props}>
         <SimpleForm>
             <DateInput source="date" />
             <ReferenceInput source="customer_id" reference="customers">
                 <AutocompleteInput
-                    optionText={choice =>
-                        `${choice.first_name} ${choice.last_name}`
+                    optionText={({ record }) =>
+                        `${record.first_name} ${record.last_name}`
                     }
                 />
             </ReferenceInput>

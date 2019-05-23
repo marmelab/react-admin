@@ -122,7 +122,7 @@ const UserCreateToolbar = ({ permissions, ...props }) =>
 export const UserCreate = ({ permissions, ...props }) =>
     <Create {...props}>
         <SimpleForm
-            toolbar={<UserCreateToolbar permissions={permissions} />}
+            toolbar={props => <UserCreateToolbar permissions={permissions} {...props} />}
             defaultValue={{ role: 'user' }}
         >
             <TextInput source="name" validate={[required()]} />
@@ -140,7 +140,7 @@ This also works inside an `Edition` view with a `TabbedForm`, and you can hide a
 {% raw %}
 ```jsx
 export const UserEdit = ({ permissions, ...props }) =>
-    <Edit title={<UserTitle />} {...props}>
+    <Edit title={UserTitle} {...props}>
         <TabbedForm defaultValue={{ role: 'user' }}>
             <FormTab label="user.form.summary">
                 {permissions === 'admin' && <DisabledInput source="id" />}
@@ -173,7 +173,7 @@ const UserFilter = ({ permissions, ...props }) =>
 export const UserList = ({ permissions, ...props }) =>
     <List
         {...props}
-        filters={<UserFilter permissions={permissions} />}
+        filters={props => <UserFilter permissions={permissions} {...props} />}
         sort={{ field: 'name', order: 'ASC' }}
     >
         <Responsive

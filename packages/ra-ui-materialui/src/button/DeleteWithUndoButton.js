@@ -6,7 +6,7 @@ import { withStyles, createStyles } from '@material-ui/core/styles';
 import { fade } from '@material-ui/core/styles/colorManipulator';
 import ActionDelete from '@material-ui/icons/Delete';
 import classnames from 'classnames';
-import { translate, crudDelete, startUndoable } from 'ra-core';
+import { translate, crudDelete, startUndoable, ComponentPropType } from 'ra-core';
 
 import Button from './Button';
 
@@ -71,7 +71,7 @@ class DeleteWithUndoButton extends Component {
             label = 'ra.action.delete',
             classes = {},
             className,
-            icon,
+            icon: Icon,
             onClick,
             ...rest
         } = this.props;
@@ -87,7 +87,7 @@ class DeleteWithUndoButton extends Component {
                 key="button"
                 {...sanitizeRestProps(rest)}
             >
-                {icon}
+                <Icon />
             </Button>
         );
     }
@@ -107,13 +107,13 @@ DeleteWithUndoButton.propTypes = {
     resource: PropTypes.string.isRequired,
     startUndoable: PropTypes.func,
     translate: PropTypes.func,
-    icon: PropTypes.element,
+    icon: ComponentPropType,
 };
 
 DeleteWithUndoButton.defaultProps = {
     redirect: 'list',
     undoable: true,
-    icon: <ActionDelete />,
+    icon: ActionDelete,
 };
 
 export default compose(

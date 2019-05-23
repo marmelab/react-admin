@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { createElement, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
@@ -48,7 +48,7 @@ const Menu = ({ onMenuClick, open, logout }) => {
                     primaryText={translate(`resources.commands.name`, {
                         smart_count: 2,
                     })}
-                    leftIcon={<orders.icon />}
+                    leftIcon={orders.icon}
                     onClick={onMenuClick}
                 />
                 <MenuItemLink
@@ -56,7 +56,7 @@ const Menu = ({ onMenuClick, open, logout }) => {
                     primaryText={translate(`resources.invoices.name`, {
                         smart_count: 2,
                     })}
-                    leftIcon={<invoices.icon />}
+                    leftIcon={invoices.icon}
                     onClick={onMenuClick}
                 />
             </SubMenu>
@@ -72,7 +72,7 @@ const Menu = ({ onMenuClick, open, logout }) => {
                     primaryText={translate(`resources.products.name`, {
                         smart_count: 2,
                     })}
-                    leftIcon={<products.icon />}
+                    leftIcon={products.icon}
                     onClick={onMenuClick}
                 />
                 <MenuItemLink
@@ -80,7 +80,7 @@ const Menu = ({ onMenuClick, open, logout }) => {
                     primaryText={translate(`resources.categories.name`, {
                         smart_count: 2,
                     })}
-                    leftIcon={<categories.icon />}
+                    leftIcon={categories.icon}
                     onClick={onMenuClick}
                 />
             </SubMenu>
@@ -96,7 +96,7 @@ const Menu = ({ onMenuClick, open, logout }) => {
                     primaryText={translate(`resources.customers.name`, {
                         smart_count: 2,
                     })}
-                    leftIcon={<visitors.icon />}
+                    leftIcon={visitors.icon}
                     onClick={onMenuClick}
                 />
                 <MenuItemLink
@@ -104,7 +104,7 @@ const Menu = ({ onMenuClick, open, logout }) => {
                     primaryText={translate(`resources.segments.name`, {
                         smart_count: 2,
                     })}
-                    leftIcon={<LabelIcon />}
+                    leftIcon={LabelIcon}
                     onClick={onMenuClick}
                 />
             </SubMenu>
@@ -113,7 +113,7 @@ const Menu = ({ onMenuClick, open, logout }) => {
                 primaryText={translate(`resources.reviews.name`, {
                     smart_count: 2,
                 })}
-                leftIcon={<reviews.icon />}
+                leftIcon={reviews.icon}
                 onClick={onMenuClick}
             />
             <Responsive
@@ -121,14 +121,14 @@ const Menu = ({ onMenuClick, open, logout }) => {
                     <MenuItemLink
                         to="/configuration"
                         primaryText={translate('pos.configuration')}
-                        leftIcon={<SettingsIcon />}
+                        leftIcon={SettingsIcon}
                         onClick={onMenuClick}
                     />
                 }
                 medium={null}
             />
             <Responsive
-                small={logout}
+                small={createElement(logout)}
                 medium={null} // Pass null to render nothing on larger devices
             />
         </div>

@@ -5,7 +5,7 @@ import inflection from 'inflection';
 import compose from 'recompose/compose';
 import { withStyles, createStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
-import { getResources, useTranslate } from 'ra-core';
+import { getResources, useTranslate, ComponentPropType } from 'ra-core';
 import DefaultIcon from '@material-ui/icons/ViewList';
 
 import DashboardMenuItem from './DashboardMenuItem';
@@ -41,7 +41,7 @@ const Menu = ({
     open,
     pathname,
     resources,
-    logout,
+    logout: Logout,
     ...rest
 }) => {
     const translate = useTranslate();
@@ -59,13 +59,13 @@ const Menu = ({
                             translate
                         )}
                         leftIcon={
-                            resource.icon ? <resource.icon /> : <DefaultIcon />
+                            resource.icon ? resource.icon : DefaultIcon
                         }
                         onClick={onMenuClick}
                         dense={dense}
                     />
                 ))}
-            <Responsive xsmall={logout} medium={null} />
+            {Logout ? <Responsive xsmall={<Logout />} medium={null} /> : null}
         </div>
     );
 };
@@ -75,7 +75,7 @@ Menu.propTypes = {
     className: PropTypes.string,
     dense: PropTypes.bool,
     hasDashboard: PropTypes.bool,
-    logout: PropTypes.element,
+    logout: ComponentPropType,
     onMenuClick: PropTypes.func,
     open: PropTypes.bool,
     pathname: PropTypes.string,

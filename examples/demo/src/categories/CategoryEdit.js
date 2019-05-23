@@ -24,7 +24,7 @@ const CategoryTitle = ({ record }) => {
 };
 
 const CategoryEdit = props => (
-    <Edit title={<CategoryTitle />} {...props}>
+    <Edit title={CategoryTitle} {...props}>
         <SimpleForm>
             <TextInput source="name" />
             <ReferenceManyField

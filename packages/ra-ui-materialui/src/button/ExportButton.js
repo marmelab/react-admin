@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import GetApp from '@material-ui/icons/GetApp';
-import { crudGetAll, downloadCSV, CRUD_GET_MANY, GET_MANY } from 'ra-core';
+import { crudGetAll, downloadCSV, CRUD_GET_MANY, GET_MANY, ComponentPropType } from 'ra-core';
 import { unparse as convertToCSV } from 'papaparse/papaparse.min';
 
 import Button from './Button';
@@ -101,13 +101,13 @@ class ExportButton extends Component {
         maxResults: PropTypes.number.isRequired,
         resource: PropTypes.string.isRequired,
         sort: PropTypes.object,
-        icon: PropTypes.element,
+        icon: ComponentPropType,
     };
 
     static defaultProps = {
         label: 'ra.action.export',
         maxResults: 1000,
-        icon: <GetApp />,
+        icon: GetApp,
     };
 
     handleClick = () => {
@@ -143,7 +143,7 @@ class ExportButton extends Component {
     };
 
     render() {
-        const { label, icon, ...rest } = this.props;
+        const { label, icon: Icon, ...rest } = this.props;
 
         return (
             <Button
@@ -151,7 +151,7 @@ class ExportButton extends Component {
                 label={label}
                 {...sanitizeRestProps(rest)}
             >
-                {icon}
+                <Icon />
             </Button>
         );
     }

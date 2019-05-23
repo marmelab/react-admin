@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { ComponentPropType } from 'ra-core';
 import DeleteWithUndoButton from './DeleteWithUndoButton';
 import DeleteWithConfirmButton from './DeleteWithConfirmButton';
 
@@ -21,7 +22,7 @@ DeleteButton.propTypes = {
     ]),
     resource: PropTypes.string,
     undoable: PropTypes.bool,
-    icon: PropTypes.element,
+    icon: ComponentPropType,
 };
 
 DeleteButton.defaultProps = {

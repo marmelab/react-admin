@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
+import React, { Component, createElement } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import MenuItem from '@material-ui/core/MenuItem';
 import { withStyles, createStyles } from '@material-ui/core/styles';
 import compose from 'recompose/compose';
-import { addField, translate, FieldTitle } from 'ra-core';
+import { addField, translate, FieldTitle, ComponentPropType } from 'ra-core';
 import ResettableTextField from './ResettableTextField';
 
 const sanitizeRestProps = ({
@@ -79,16 +79,7 @@ const styles = theme =>
  * ];
  * <SelectInput source="author_id" choices={choices} optionText="full_name" optionValue="_id" />
  *
- * `optionText` also accepts a function, so you can shape the option text at will:
- * @example
- * const choices = [
- *    { id: 123, first_name: 'Leo', last_name: 'Tolstoi' },
- *    { id: 456, first_name: 'Jane', last_name: 'Austen' },
- * ];
- * const optionRenderer = choice => `${choice.first_name} ${choice.last_name}`;
- * <SelectInput source="author_id" choices={choices} optionText={optionRenderer} />
- *
- * `optionText` also accepts a React Element, that will be cloned and receive
+ * `optionText` also accepts a React component, that will be cloned and receive
  * the related choice as the `record` prop. You can use Field components there.
  * @example
  * const choices = [
@@ -96,7 +87,7 @@ const styles = theme =>
  *    { id: 456, first_name: 'Jane', last_name: 'Austen' },
  * ];
  * const FullNameField = ({ record }) => <span>{record.first_name} {record.last_name}</span>;
- * <SelectInput source="gender" choices={choices} optionText={<FullNameField />}/>
+ * <SelectInput source="gender" choices={choices} optionText={FullNameField}/>
  *
  * The choices are translated by default, so you can use translation identifiers as choices:
  * @example
@@ -167,14 +158,12 @@ export class SelectInput extends Component {
     };
     renderMenuItemOption = choice => {
         const { optionText, translate, translateChoice } = this.props;
-        if (React.isValidElement(optionText))
-            return React.cloneElement(optionText, {
+        if (typeof optionText !== 'string')
+            return createElement(optionText, {
                 record: choice,
             });
-        const choiceName =
-            typeof optionText === 'function'
-                ? optionText(choice)
-                : get(choice, optionText);
+
+        const choiceName = get(choice, optionText);
         return translateChoice
             ? translate(choiceName, { _: choiceName })
             : choiceName;
@@ -256,8 +245,7 @@ SelectInput.propTypes = {
     options: PropTypes.object,
     optionText: PropTypes.oneOfType([
         PropTypes.string,
-        PropTypes.func,
-        PropTypes.element,
+        ComponentPropType,
     ]).isRequired,
     optionValue: PropTypes.string.isRequired,
     disableValue: PropTypes.string,

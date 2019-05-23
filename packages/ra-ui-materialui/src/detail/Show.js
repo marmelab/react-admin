@@ -3,10 +3,11 @@ import PropTypes from 'prop-types';
 import Card from '@material-ui/core/Card';
 import { withStyles, createStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
-import { ShowController } from 'ra-core';
+import { ShowController, ComponentPropType } from 'ra-core';
 
 import DefaultActions from './ShowActions';
 import TitleForRecord from '../layout/TitleForRecord';
+import { TitlePropType } from '../layout';
 
 export const styles = createStyles({
     root: {},
@@ -49,8 +50,8 @@ const sanitizeRestProps = ({
 
 export const ShowView = withStyles(styles)(
     ({
-        actions,
-        aside,
+        actions: Actions,
+        aside: Aside,
         basePath,
         children,
         classes,
@@ -65,8 +66,8 @@ export const ShowView = withStyles(styles)(
         version,
         ...rest
     }) => {
-        if (typeof actions === 'undefined' && hasEdit) {
-            actions = <DefaultActions />;
+        if (typeof Actions === 'undefined' && hasEdit) {
+            Actions = DefaultActions;
         }
         if (!children) {
             return null;
@@ -81,18 +82,18 @@ export const ShowView = withStyles(styles)(
                     record={record}
                     defaultTitle={defaultTitle}
                 />
-                {actions &&
-                    cloneElement(actions, {
-                        basePath,
-                        data: record,
-                        hasList,
-                        hasEdit,
-                        resource,
-                        ...actions.props,
-                    })}
+                {Actions &&
+                    <Actions
+                        basePath={basePath}
+                        data={record}
+                        hasList={hasList}
+                        hasEdit={hasEdit}
+                        resource={resource}
+                    />
+                }
                 <div
                     className={classnames(classes.main, {
-                        [classes.noActions]: !actions,
+                        [classes.noActions]: !Actions,
                     })}
                 >
                     <Card className={classes.card}>
@@ -104,13 +105,14 @@ export const ShowView = withStyles(styles)(
                                 version,
                             })}
                     </Card>
-                    {aside &&
-                        cloneElement(aside, {
-                            resource,
-                            basePath,
-                            record,
-                            version,
-                        })}
+                    {Aside &&
+                        <Aside
+                            basePath={basePath}
+                            record={record}
+                            resource={resource}
+                            version={version}
+                        />
+                    }
                 </div>
             </div>
         );
@@ -118,8 +120,8 @@ export const ShowView = withStyles(styles)(
 );
 
 ShowView.propTypes = {
-    actions: PropTypes.element,
-    aside: PropTypes.node,
+    actions: ComponentPropType,
+    aside: ComponentPropType,
     basePath: PropTypes.string,
     children: PropTypes.element,
     classes: PropTypes.object,
@@ -131,7 +133,7 @@ ShowView.propTypes = {
     record: PropTypes.object,
     resource: PropTypes.string,
     title: PropTypes.any,
-    version: PropTypes.number,
+    version: TitlePropType,
 };
 
 ShowView.defaultProps = {
@@ -187,8 +189,8 @@ const Show = props => (
 );
 
 Show.propTypes = {
-    actions: PropTypes.element,
-    aside: PropTypes.node,
+    actions: ComponentPropType,
+    aside: ComponentPropType,
     children: PropTypes.element,
     classes: PropTypes.object,
     className: PropTypes.string,
@@ -198,7 +200,7 @@ Show.propTypes = {
     hasShow: PropTypes.bool,
     id: PropTypes.any.isRequired,
     resource: PropTypes.string.isRequired,
-    title: PropTypes.any,
+    title: TitlePropType,
 };
 
 export default Show;

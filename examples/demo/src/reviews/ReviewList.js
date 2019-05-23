@@ -59,10 +59,8 @@ class ReviewList extends Component {
                                     className={classnames(classes.list, {
                                         [classes.listWithDrawer]: isMatch,
                                     })}
-                                    bulkActionButtons={
-                                        <ReviewsBulkActionButtons />
-                                    }
-                                    filters={<ReviewFilter />}
+                                    bulkActionButtons={ReviewsBulkActionButtons}
+                                    filters={ReviewFilter}
                                     perPage={25}
                                     sort={{ field: 'date', order: 'DESC' }}
                                 >

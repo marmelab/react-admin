@@ -5,7 +5,7 @@ import compose from 'recompose/compose';
 import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
 import NavigationRefresh from '@material-ui/icons/Refresh';
-import { refreshView, translate } from 'ra-core';
+import { refreshView, translate, ComponentPropType } from 'ra-core';
 
 class RefreshButton extends Component {
     static propTypes = {
@@ -13,12 +13,12 @@ class RefreshButton extends Component {
         label: PropTypes.string,
         refreshView: PropTypes.func.isRequired,
         translate: PropTypes.func.isRequired,
-        icon: PropTypes.element,
+        icon: ComponentPropType,
     };
 
     static defaultProps = {
         label: 'ra.action.refresh',
-        icon: <NavigationRefresh />,
+        icon: NavigationRefresh,
     };
 
     handleClick = event => {
@@ -37,7 +37,7 @@ class RefreshButton extends Component {
             label,
             refreshView,
             translate,
-            icon,
+            icon: Icon,
             ...rest
         } = this.props;
 
@@ -50,7 +50,7 @@ class RefreshButton extends Component {
                     onClick={this.handleClick}
                     {...rest}
                 >
-                    {icon}
+                    <Icon />
                 </IconButton>
             </Tooltip>
         );

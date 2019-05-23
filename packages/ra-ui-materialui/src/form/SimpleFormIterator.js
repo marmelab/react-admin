@@ -71,7 +71,7 @@ export class SimpleFormIterator extends Component {
         super(props);
         // we need a unique id for each field for a proper enter/exit animation
         // but redux-form doesn't provide one (cf https://github.com/erikras/redux-form/issues/2735)
-        // so we keep an internal map between the field position and an autoincrement id
+        // so we keep an internal map between the field position and an auto-increment id
         this.nextId = props.fields.length
             ? props.fields.length
             : props.defaultValue
@@ -93,7 +93,7 @@ export class SimpleFormIterator extends Component {
 
     // Returns a boolean to indicate whether to disable the remove button for certain fields.
     // If disableRemove is a function, then call the function with the current record to
-    // determing if the button should be disabled. Otherwise, use a boolean property that
+    // determining if the button should be disabled. Otherwise, use a boolean property that
     // enables or disables the button for all of the fields.
     disableRemoveField = (record, disableRemove) => {
         if (typeof disableRemove === 'boolean') {

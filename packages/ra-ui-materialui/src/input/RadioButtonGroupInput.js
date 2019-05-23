@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, createElement } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import FormControl from '@material-ui/core/FormControl';
@@ -9,7 +9,7 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import Radio from '@material-ui/core/Radio';
 import { withStyles, createStyles } from '@material-ui/core/styles';
 import compose from 'recompose/compose';
-import { addField, translate, FieldTitle } from 'ra-core';
+import { addField, translate, FieldTitle, ComponentPropType } from 'ra-core';
 
 import sanitizeRestProps from './sanitizeRestProps';
 
@@ -43,16 +43,7 @@ const styles = createStyles({
  * ];
  * <RadioButtonGroupInput source="author_id" choices={choices} optionText="full_name" optionValue="_id" />
  *
- * `optionText` also accepts a function, so you can shape the option text at will:
- * @example
- * const choices = [
- *    { id: 123, first_name: 'Leo', last_name: 'Tolstoi' },
- *    { id: 456, first_name: 'Jane', last_name: 'Austen' },
- * ];
- * const optionRenderer = choice => `${choice.first_name} ${choice.last_name}`;
- * <RadioButtonGroupInput source="author_id" choices={choices} optionText={optionRenderer} />
- *
- * `optionText` also accepts a React Element, that will be cloned and receive
+ * `optionText` also accepts a React component, that will be cloned and receive
  * the related choice as the `record` prop. You can use Field components there.
  * @example
  * const choices = [
@@ -60,7 +51,7 @@ const styles = createStyles({
  *    { id: 456, first_name: 'Jane', last_name: 'Austen' },
  * ];
  * const FullNameField = ({ record }) => <span>{record.first_name} {record.last_name}</span>;
- * <RadioButtonGroupInput source="gender" choices={choices} optionText={<FullNameField />}/>
+ * <RadioButtonGroupInput source="gender" choices={choices} optionText={FullNameField}/>
  *
  * The choices are translated by default, so you can use translation identifiers as choices:
  * @example
@@ -89,11 +80,9 @@ export class RadioButtonGroupInput extends Component {
             translateChoice,
             source,
         } = this.props;
-        const choiceName = React.isValidElement(optionText) // eslint-disable-line no-nested-ternary
-            ? React.cloneElement(optionText, { record: choice })
-            : typeof optionText === 'function'
-            ? optionText(choice)
-            : get(choice, optionText);
+        const choiceName = typeof optionText === 'string' // eslint-disable-line no-nested-ternary
+            ? get(choice, optionText)
+            : createElement(optionText, { record: choice });
 
         const nodeId = `${source}_${get(choice, optionValue)}`;
 
@@ -177,8 +166,7 @@ RadioButtonGroupInput.propTypes = {
     options: PropTypes.object,
     optionText: PropTypes.oneOfType([
         PropTypes.string,
-        PropTypes.func,
-        PropTypes.element,
+        ComponentPropType,
     ]).isRequired,
     optionValue: PropTypes.string.isRequired,
     resource: PropTypes.string,

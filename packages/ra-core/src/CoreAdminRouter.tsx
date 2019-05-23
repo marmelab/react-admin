@@ -208,7 +208,7 @@ export class CoreAdminRouter extends Component<
                         path="/"
                         render={() =>
                             createElement(
-                              layout,
+                                layout,
                                 {
                                     dashboard,
                                     logout,

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import shouldUpdate from 'recompose/shouldUpdate';
 import ImageEye from '@material-ui/icons/RemoveRedEye';
 import { Link } from 'react-router-dom';
-import { linkToRecord } from 'ra-core';
+import { linkToRecord, ComponentPropType } from 'ra-core';
 
 import Button from './Button';
 
@@ -14,7 +14,7 @@ const ShowButton = ({
     basePath = '',
     label = 'ra.action.show',
     record = {},
-    icon = <ImageEye />,
+    icon: Icon = ImageEye,
     ...rest
 }) => (
     <Button
@@ -24,7 +24,7 @@ const ShowButton = ({
         onClick={stopPropagation}
         {...rest}
     >
-        {icon}
+        <Icon />
     </Button>
 );
 
@@ -32,7 +32,7 @@ ShowButton.propTypes = {
     basePath: PropTypes.string,
     label: PropTypes.string,
     record: PropTypes.object,
-    icon: PropTypes.element,
+    icon: ComponentPropType,
 };
 
 const enhance = shouldUpdate(

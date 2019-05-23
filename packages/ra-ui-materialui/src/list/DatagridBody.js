@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import shouldUpdate from 'recompose/shouldUpdate';
 import TableBody from '@material-ui/core/TableBody';
 import classnames from 'classnames';
+import { ComponentPropType } from 'ra-core';
 
 import DatagridRow from './DatagridRow';
 
@@ -19,7 +20,7 @@ const DatagridBody = ({
     isLoading,
     onToggleItem,
     resource,
-    row,
+    row: Row,
     rowClick,
     rowStyle,
     selectedIds,
@@ -29,30 +30,28 @@ const DatagridBody = ({
 }) => (
     <TableBody className={classnames('datagrid-body', className)} {...rest}>
         {ids.map((id, rowIndex) =>
-            React.cloneElement(
-                row,
-                {
-                    basePath,
-                    classes,
-                    className: classnames(classes.row, {
-                        [classes.rowEven]: rowIndex % 2 === 0,
-                        [classes.rowOdd]: rowIndex % 2 !== 0,
-                        [classes.clickableRow]: rowClick,
-                    }),
-                    expand,
-                    hasBulkActions,
-                    hover,
-                    id,
-                    key: id,
-                    onToggleItem,
-                    record: data[id],
-                    resource,
-                    rowClick,
-                    selected: selectedIds.includes(id),
-                    style: rowStyle ? rowStyle(data[id], rowIndex) : null,
-                },
-                children
-            )
+            <Row
+                basePath={basePath}
+                classes={classes}
+                className={classnames(classes.row, {
+                    [classes.rowEven]: rowIndex % 2 === 0,
+                    [classes.rowOdd]: rowIndex % 2 !== 0,
+                    [classes.clickableRow]: rowClick,
+                })}
+                expand={expand}
+                hasBulkActions={hasBulkActions}
+                hover={hover}
+                id={id}
+                key={id}
+                onToggleItem={onToggleItem}
+                record={data[id]}
+                resource={resource}
+                rowClick={rowClick}
+                selected={selectedIds.includes(id)}
+                style={rowStyle ? rowStyle(data[id], rowIndex) : null}
+            >
+                {children}
+            </Row>
         )}
     </TableBody>
 );
@@ -63,14 +62,14 @@ DatagridBody.propTypes = {
     className: PropTypes.string,
     children: PropTypes.node,
     data: PropTypes.object.isRequired,
-    expand: PropTypes.node,
+    expand: ComponentPropType,
     hasBulkActions: PropTypes.bool.isRequired,
     hover: PropTypes.bool,
     ids: PropTypes.arrayOf(PropTypes.any).isRequired,
     isLoading: PropTypes.bool,
     onToggleItem: PropTypes.func,
     resource: PropTypes.string,
-    row: PropTypes.element.isRequired,
+    row: ComponentPropType,
     rowClick: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
     rowStyle: PropTypes.func,
     selectedIds: PropTypes.arrayOf(PropTypes.any).isRequired,
@@ -82,7 +81,7 @@ DatagridBody.defaultProps = {
     data: {},
     hasBulkActions: false,
     ids: [],
-    row: <DatagridRow />,
+    row: DatagridRow,
 };
 
 const areArraysEqual = (arr1, arr2) =>

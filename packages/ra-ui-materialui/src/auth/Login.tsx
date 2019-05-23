@@ -1,8 +1,8 @@
 import React, {
     Component,
-    ReactElement,
     ComponentType,
     HtmlHTMLAttributes,
+    ReactNode,
 } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
@@ -25,7 +25,7 @@ import DefaultLoginForm from './LoginForm';
 
 interface Props {
     backgroundImage?: string;
-    loginForm: ReactElement<any>;
+    children: ReactNode;
     staticContext?: StaticContext;
     theme: object;
 }
@@ -115,7 +115,7 @@ class Login extends Component<
             backgroundImage,
             classes,
             className,
-            loginForm,
+            children,
             staticContext,
             ...rest
         } = this.props;
@@ -133,7 +133,7 @@ class Login extends Component<
                                 <LockIcon />
                             </Avatar>
                         </div>
-                        {loginForm}
+                        {children}
                     </Card>
                     <Notification />
                 </div>
@@ -146,7 +146,7 @@ const EnhancedLogin = withStyles(styles)(Login) as ComponentType<Props>;
 
 EnhancedLogin.propTypes = {
     backgroundImage: PropTypes.string,
-    loginForm: PropTypes.element,
+    children: PropTypes.node,
     theme: PropTypes.object,
     staticContext: PropTypes.object,
 };
@@ -154,6 +154,6 @@ EnhancedLogin.propTypes = {
 EnhancedLogin.defaultProps = {
     backgroundImage: 'https://source.unsplash.com/random/1600x900/daily',
     theme: defaultTheme,
-    loginForm: <DefaultLoginForm />,
+    children: <DefaultLoginForm />,
 };
 export default EnhancedLogin;

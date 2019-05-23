@@ -40,11 +40,11 @@ const rowClick = memoize(permissions => (id, basePath, record) => {
 const UserList = ({ permissions, ...props }) => (
     <List
         {...props}
-        filters={<UserFilter permissions={permissions} />}
+        filters={props => <UserFilter permissions={permissions} {...props} />}
         filterDefaultValues={{ role: 'user' }}
         sort={{ field: 'name', order: 'ASC' }}
-        aside={<Aside />}
-        bulkActionButtons={<UserBulkActionButtons />}
+        aside={Aside}
+        bulkActionButtons={UserBulkActionButtons}
     >
         <Responsive
             small={
@@ -58,7 +58,7 @@ const UserList = ({ permissions, ...props }) => (
             medium={
                 <Datagrid
                     rowClick={rowClick(permissions)}
-                    expand={<UserEditEmbedded />}
+                    expand={UserEditEmbedded}
                 >
                     <TextField source="id" />
                     <TextField source="name" />

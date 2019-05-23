@@ -208,8 +208,8 @@ const CommentList = props => (
         {...props}
         perPage={6}
         exporter={exporter}
-        filters={<CommentFilter />}
-        pagination={<CommentPagination />}
+        filters={CommentFilter}
+        pagination={CommentPagination}
         component="div"
     >
         <Responsive small={<CommentMobileList />} medium={<CommentGrid />} />

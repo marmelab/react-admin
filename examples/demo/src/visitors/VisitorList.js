@@ -37,7 +37,7 @@ const styles = {
 const VisitorList = ({ classes, ...props }) => (
     <List
         {...props}
-        filters={<VisitorFilter />}
+        filters={VisitorFilter}
         sort={{ field: 'last_seen', order: 'DESC' }}
         perPage={25}
     >

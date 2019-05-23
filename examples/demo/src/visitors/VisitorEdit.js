@@ -27,7 +27,7 @@ const VisitorTitle = ({ record }) =>
     record ? <FullNameField record={record} size={32} /> : null;
 
 const VisitorEdit = ({ classes, ...props }) => (
-    <Edit title={<VisitorTitle />} {...props}>
+    <Edit title={VisitorTitle} {...props}>
         <TabbedForm>
             <FormTab label="resources.customers.tabs.identity">
                 <TextInput

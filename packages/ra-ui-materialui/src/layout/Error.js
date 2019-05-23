@@ -12,6 +12,7 @@ import History from '@material-ui/icons/History';
 
 import Title from './Title';
 import { useTranslate } from 'ra-core';
+import { TitlePropType } from '.';
 
 const styles = theme =>
     createStyles({
@@ -93,7 +94,7 @@ Error.propTypes = {
     className: PropTypes.string,
     error: PropTypes.object.isRequired,
     errorInfo: PropTypes.object,
-    title: PropTypes.string,
+    title: TitlePropType,
 };
 
 export default withStyles(styles)(Error);

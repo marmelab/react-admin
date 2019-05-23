@@ -202,28 +202,12 @@ describe('<SelectInput />', () => {
         assert.equal(MenuItemElement1.childAt(0).text(), 'Male');
     });
 
-    it('should use optionText with a function value as text identifier', () => {
-        const wrapper = shallow(
-            <SelectInput
-                {...defaultProps}
-                optionText={choice => choice.foobar}
-                choices={[{ id: 'M', foobar: 'Male' }]}
-            />
-        );
-        const MenuItemElements = wrapper.find(
-            'WithStyles(ForwardRef(MenuItem))'
-        );
-        const MenuItemElement1 = MenuItemElements.first();
-        assert.equal(MenuItemElement1.prop('value'), 'M');
-        assert.equal(MenuItemElement1.childAt(0).text(), 'Male');
-    });
-
-    it('should use optionText with an element value as text identifier', () => {
+    it('should use optionText with a component value as text identifier', () => {
         const Foobar = ({ record }) => <span>{record.foobar}</span>;
         const wrapper = shallow(
             <SelectInput
                 {...defaultProps}
-                optionText={<Foobar />}
+                optionText={Foobar}
                 choices={[{ id: 'M', foobar: 'Male' }]}
             />
         );

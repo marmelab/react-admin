@@ -17,7 +17,7 @@ const sanitizeRestProps = ({
  *
  * Internal component. If you want to add or remove actions for a Create view,
  * write your own CreateActions Component. Then, in the <Create> component,
- * use it in the `actions` prop to pas a custom element.
+ * use it in the `actions` prop to pass a custom component.
  *
  * @example
  *     import Button from '@material-ui/core/Button';
@@ -32,7 +32,7 @@ const sanitizeRestProps = ({
  *     );
  *
  *     export const PostCreate = (props) => (
- *         <Create actions={<PostCreateActions />} {...props}>
+ *         <Create actions={PostCreateActions} {...props}>
  *             ...
  *         </Create>
  *     );

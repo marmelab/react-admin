@@ -13,7 +13,7 @@ import React from 'react';
 import { Edit, DisabledInput, LongTextInput, ReferenceInput, SelectInput, SimpleForm, TextInput } from 'react-admin';
 
 export const PostEdit = (props) => (
-    <Edit title={<PostTitle />} {...props}>
+    <Edit title={PostTitle} {...props}>
         <SimpleForm>
             <DisabledInput source="id" />
             <ReferenceInput label="User" source="userId" reference="users">
@@ -433,7 +433,7 @@ const choices = [
    { id: 456, first_name: 'Jane', last_name: 'Austen' },
 ];
 const FullNameField = ({ record }) => <span>{record.first_name} {record.last_name}</span>;
-<CheckboxGroupInput source="gender" choices={choices} optionText={<FullNameField />}/>
+<CheckboxGroupInput source="gender" choices={choices} optionText={FullNameField}/>
 ```
 
 The choices are translated by default, so you can use translation identifiers as choices:
@@ -685,7 +685,7 @@ const choices = [
    { id: 456, first_name: 'Jane', last_name: 'Austen' },
 ];
 const FullNameField = ({ record }) => <span>{record.first_name} {record.last_name}</span>;
-<RadioButtonGroupInput source="gender" choices={choices} optionText={<FullNameField />}/>
+<RadioButtonGroupInput source="gender" choices={choices} optionText={FullNameField}/>
 ```
 
 The choices are translated by default, so you can use translation identifiers as choices:
@@ -1001,7 +1001,7 @@ const choices = [
    { id: 456, first_name: 'Jane', last_name: 'Austen' },
 ];
 const FullNameField = ({ record }) => <span>{record.first_name} {record.last_name}</span>;
-<SelectInput source="gender" choices={choices} optionText={<FullNameField />}/>
+<SelectInput source="gender" choices={choices} optionText={FullNameField}/>
 ```
 
 Enabling the `allowEmpty` props adds an empty choice (with a default `null` value, which you can overwrite with the `emptyValue` prop) on top of the options, and makes the value nullable:

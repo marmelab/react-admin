@@ -1,9 +1,8 @@
-import React, { SFC, ReactElement } from 'react';
+import React, { SFC, createElement, ComponentType } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import pure from 'recompose/pure';
-import compose from 'recompose/compose';
-import { useTranslate } from 'ra-core';
+import { useTranslate, ComponentPropType } from 'ra-core';
 import Typography from '@material-ui/core/Typography';
 
 import sanitizeRestProps from './sanitizeRestProps';
@@ -14,13 +13,12 @@ interface Choice {
     name: string;
 }
 
-type OptionTextElement = ReactElement<{ record: Choice }>;
-type OptionText = (choice: Choice) => string | OptionTextElement;
+type OptionTextElement = ComponentType<{ record: Choice }>;
 
 interface Props extends FieldProps {
     choices: Choice[];
     optionValue: string;
-    optionText: OptionTextElement | OptionText | string;
+    optionText: OptionTextElement | string;
     translateChoice: boolean;
 }
 
@@ -50,16 +48,7 @@ interface Props extends FieldProps {
  * ];
  * <SelectField source="author_id" choices={choices} optionText="full_name" optionValue="_id" />
  *
- * `optionText` also accepts a function, so you can shape the option text at will:
- * @example
- * const choices = [
- *    { id: 123, first_name: 'Leo', last_name: 'Tolstoi' },
- *    { id: 456, first_name: 'Jane', last_name: 'Austen' },
- * ];
- * const optionRenderer = choice => `${choice.first_name} ${choice.last_name}`;
- * <SelectField source="author_id" choices={choices} optionText={optionRenderer} />
- *
- * `optionText` also accepts a React Element, that will be cloned and receive
+ * `optionText` also accepts a React component, that will be cloned and receive
  * the related choice as the `record` prop. You can use Field components there.
  * @example
  * const choices = [
@@ -67,7 +56,7 @@ interface Props extends FieldProps {
  *    { id: 456, first_name: 'Jane', last_name: 'Austen' },
  * ];
  * const FullNameField = ({ record }) => <Chip>{record.first_name} {record.last_name}</Chip>;
- * <SelectField source="gender" choices={choices} optionText={<FullNameField />}/>
+ * <SelectField source="gender" choices={choices} optionText={FullNameField}/>
  *
  * The current choice is translated by default, so you can use translation identifiers as choices:
  * @example
@@ -99,11 +88,10 @@ export const SelectField: SFC<Props & InjectedFieldProps> = ({
     if (!choice) {
         return null;
     }
-    const choiceName = React.isValidElement(optionText) // eslint-disable-line no-nested-ternary
-        ? React.cloneElement(optionText, { record: choice })
-        : typeof optionText === 'function'
-        ? optionText(choice)
-        : choice[optionText];
+    const choiceName =
+        typeof optionText === 'string' // eslint-disable-line no-nested-ternary
+            ? choice[optionText]
+            : createElement(optionText, { record: choice });
     return (
         <Typography
             component="span"
@@ -134,11 +122,7 @@ EnhancedSelectField.propTypes = {
     ...Typography.propTypes,
     ...fieldPropTypes,
     choices: PropTypes.arrayOf(PropTypes.object).isRequired,
-    optionText: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.func,
-        PropTypes.element,
-    ]),
+    optionText: PropTypes.oneOfType([PropTypes.string, ComponentPropType]),
     optionValue: PropTypes.string,
     translateChoice: PropTypes.bool,
 };

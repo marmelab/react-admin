@@ -94,8 +94,8 @@ const PostPanel = ({ id, record, resource }) => (
 const PostList = withStyles(styles)(({ classes, ...props }) => (
     <List
         {...props}
-        bulkActionButtons={<PostListBulkActions />}
-        filters={<PostFilter />}
+        bulkActionButtons={PostListBulkActions}
+        filters={PostFilter}
         sort={{ field: 'published_at', order: 'DESC' }}
     >
         <Responsive
@@ -109,7 +109,7 @@ const PostList = withStyles(styles)(({ classes, ...props }) => (
                 />
             }
             medium={
-                <Datagrid rowClick={rowClick} expand={<PostPanel />}>
+                <Datagrid rowClick={rowClick} expand={PostPanel}>
                     <TextField source="id" />
                     <TextField source="title" cellClassName={classes.title} />
                     <DateField

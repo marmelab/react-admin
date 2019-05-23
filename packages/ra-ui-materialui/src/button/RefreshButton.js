@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import NavigationRefresh from '@material-ui/icons/Refresh';
-import { refreshView as refreshViewAction } from 'ra-core';
+import { refreshView as refreshViewAction, ComponentPropType } from 'ra-core';
 
 import Button from './Button';
 
@@ -10,12 +10,12 @@ class RefreshButton extends Component {
     static propTypes = {
         label: PropTypes.string,
         refreshView: PropTypes.func.isRequired,
-        icon: PropTypes.element,
+        icon: ComponentPropType,
     };
 
     static defaultProps = {
         label: 'ra.action.refresh',
-        icon: <NavigationRefresh />,
+        icon: NavigationRefresh,
     };
 
     handleClick = event => {
@@ -29,11 +29,11 @@ class RefreshButton extends Component {
     };
 
     render() {
-        const { label, refreshView, icon, ...rest } = this.props;
+        const { label, refreshView, icon: Icon, ...rest } = this.props;
 
         return (
             <Button label={label} onClick={this.handleClick} {...rest}>
-                {icon}
+                <Icon />
             </Button>
         );
     }
