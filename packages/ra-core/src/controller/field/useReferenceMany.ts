@@ -10,9 +10,9 @@ import {
     getTotal,
     nameRelatedTo,
 } from '../../reducer/admin/references/oneToMany';
-import { Record, Sort, RecordMap, Identifier, Dispatch } from '../../types';
+import { Record, Sort, RecordMap, Identifier } from '../../types';
 
-interface ChildrenFuncParams {
+interface ReferenceManyProps {
     data: RecordMap;
     ids: Identifier[];
     loadedOnce: boolean;
@@ -39,6 +39,50 @@ interface Options {
 
 const defaultFilter = {};
 
+/**
+ * @typedef ReferenceManyProps
+ * @type {Object}
+ * @property {Object} data: the referenced records dictionary by their ids.
+ * @property {Object} ids: the list of referenced records ids.
+ * @property {boolean} loadedOnce: boolean indicating if the references has already be loaded loaded
+ * @property {string | false} referenceBasePath base path of the related record
+ */
+
+/**
+ * Fetch reference records, and return them when avaliable
+ *
+ * The reference prop sould be the name of one of the <Resource> components
+ * added as <Admin> child.
+ *
+ * @example
+ *
+ * const { isLoading, referenceRecord, resourceLinkPath } = useReferenceMany({
+ *     resource
+ *     reference: 'users',
+ *     record: {
+ *         userId: 7
+ *     }
+ *     target: 'comments',
+ *     source: 'userId',
+ *     basePath: '/comments',
+ *     page: 1,
+ *     perPage: 25,
+ * });
+ *
+ * @param {Object} option
+ * @param {string} option.resource The current resource name
+ * @param {string} option.reference The linked resource name
+ * @param {Object} option.record The current resource record
+ * @param {string} option.target The target resource key
+ * @param {Object} option.filter The filter applied on the recorded records list
+ * @param {string} option.source The key of the linked resource identifier
+ * @param {string} option.basePath basepath to current resource
+ * @param {number} option.page the page number
+ * @param {number} option.perPage the number of item per page
+ * @param {object} option.sort the sort to apply to the referenced records
+ *
+ * @returns {ReferenceManyProps} The reference many props
+ */
 const useReferenceMany = ({
     resource,
     reference,
@@ -50,7 +94,7 @@ const useReferenceMany = ({
     page,
     perPage,
     sort = { field: 'id', order: 'DESC' },
-}: Options): ChildrenFuncParams => {
+}: Options): ReferenceManyProps => {
     const referenceId = get(record, source);
     const relatedTo = useMemo(
         () => nameRelatedTo(reference, referenceId, resource, target, filter),
@@ -69,7 +113,6 @@ const useReferenceMany = ({
         fetchReferences({
             reference,
             referenceId,
-            resource,
             target,
             filter,
             source,
@@ -77,6 +120,7 @@ const useReferenceMany = ({
             perPage,
             sort,
             dispatch,
+            relatedTo,
         }),
         [
             reference,
@@ -107,7 +151,6 @@ const useReferenceMany = ({
 const fetchReferences = ({
     reference,
     referenceId,
-    resource,
     target,
     filter,
     source,
@@ -115,15 +158,8 @@ const fetchReferences = ({
     page,
     perPage,
     sort,
+    relatedTo,
 }) => () => {
-    const relatedTo = nameRelatedTo(
-        reference,
-        referenceId,
-        resource,
-        target,
-        filter
-    );
-
     dispatch(
         crudGetManyReference(
             reference,

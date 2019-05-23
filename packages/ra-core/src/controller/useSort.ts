@@ -22,6 +22,34 @@ const sortReducer = (state: Sort, field: string | Sort): Sort => {
     return { field, order };
 };
 
+/**
+ * set the sort to the given field, swap the order if the field is the same
+ * @name setSort
+ * @function
+ * @param {string} field the name of the field to sort
+ */
+
+/**
+ * @typedef SortProps
+ * @type {Object}
+ * @property {Object} sort: the sort object.
+ * @property {String} sort.field: the sort object.
+ * @property {'ASC' | 'DESC'} sort.order: the sort object.
+ * @property {setSort} setSort
+ */
+
+/**
+ * Hooks to provide sort state
+ *
+ * @example
+ *
+ * const { sort, setSort } = useSort({ field: 'name',order: 'ASC' });
+ *
+ * @param {Object} initialSort
+ * @param {string} initialSort.resource The current resource name
+ * @param {string} initialSort.reference The linked resource name
+ * @returns {SortProps} The sort props
+ */
 export default (
     initialSort: Sort = { field: 'id', order: 'DESC' }
 ): SortProps => {
