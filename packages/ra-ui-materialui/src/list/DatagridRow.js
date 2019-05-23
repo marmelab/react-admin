@@ -85,6 +85,9 @@ class DatagridRow extends Component {
             case 'expand':
                 this.handleToggleExpanded(event);
                 return;
+            case 'toggleSelection':
+                this.handleToggle(event);
+                return;
             default:
                 push(path);
                 return;
