@@ -73,8 +73,6 @@ export class DatagridRow extends Component {
     handleRedirection = (path, event) => {
         const { basePath, id, push } = this.props;
 
-        if (!path) return;
-
         switch (path) {
             case 'edit':
                 push(linkToRecord(basePath, id));
@@ -89,7 +87,7 @@ export class DatagridRow extends Component {
                 this.handleToggle(event);
                 return;
             default:
-                push(path);
+                if (path) push(path);
                 return;
         }
     };

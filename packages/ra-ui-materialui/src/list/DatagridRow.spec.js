@@ -10,9 +10,9 @@ describe('<DatagridRow />', () => {
         basePath: '/blob',
     };
 
-    const event = { preventDefault: () => {}, stopPropagation: () => {} };
+    const event = { preventDefault: () => { }, stopPropagation: () => { } };
 
-    describe('on click event, depending on rowClick prop', () => {
+    describe('rowClick', () => {
         it("should redirect to edit page if the 'edit' option is selected", () => {
             const push = jest.fn();
             const wrapper = shallow(
@@ -90,5 +90,19 @@ describe('<DatagridRow />', () => {
             await wrapper.instance().handleClick(event);
             expect(push.mock.calls).toEqual([['/bar/foo']]);
         });
+
+        it('should not call push if onRowClick is falsy', () => {
+            const push = jest.fn();
+            const wrapper = shallow(
+                <DatagridRow
+                    {...defaultProps}
+                    rowClick=""
+                    push={push}
+                />
+            );
+
+            wrapper.instance().handleClick(event);
+            expect(push.mock.calls.length).toEqual(0);
+        })
     });
 });
