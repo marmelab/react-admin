@@ -31,7 +31,7 @@ const sanitizeRestProps = ({
     ...rest
 }) => rest;
 
-class DatagridRow extends Component {
+export class DatagridRow extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -62,33 +62,34 @@ class DatagridRow extends Component {
 
         if (!rowClick) return;
 
-        if (typeof rowClick === 'function') {
-            const path = await rowClick(id, basePath, record);
-            this.handleRedirection(path, event);
-            return;
-        }
+        const path =
+            typeof rowClick === 'function'
+                ? await rowClick(id, basePath, record)
+                : rowClick;
 
-        this.handleRedirection(rowClick, event);
+        this.handleRedirection(path, event);
     };
 
     handleRedirection = (path, event) => {
         const { basePath, id, push } = this.props;
 
-        if (path === 'edit') {
-            push(linkToRecord(basePath, id));
-            return;
+        switch (path) {
+            case 'edit':
+                push(linkToRecord(basePath, id));
+                return;
+            case 'show':
+                push(linkToRecord(basePath, id, 'show'));
+                return;
+            case 'expand':
+                this.handleToggleExpanded(event);
+                return;
+            case 'toggleSelection':
+                this.handleToggle(event);
+                return;
+            default:
+                if (path) push(path);
+                return;
         }
-        if (path === 'show') {
-            push(linkToRecord(basePath, id, 'show'));
-            return;
-        }
-        if (path === 'expand') {
-            this.handleToggleExpanded(event);
-            return;
-        }
-        if (!path) return;
-
-        push(path);
     };
 
     computeColSpan = props => {
