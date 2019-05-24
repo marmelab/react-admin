@@ -17,7 +17,7 @@ const styles = ({ spacing }) =>
         icon: {
             height: 20,
             width: 20,
-            marginRight: spacing.unit / 2,
+            marginRight: spacing.unit,
         },
     });
 
