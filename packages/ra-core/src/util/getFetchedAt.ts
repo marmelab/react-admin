@@ -38,7 +38,7 @@ const getFetchedAt = (
 ): FetchedOutDates => {
     // prepare new records and timestamp them
     const newFetchedAt = {};
-    newRecordIds.forEach(recordId => newFetchedAt[recordId] = now);
+    newRecordIds.forEach(recordId => (newFetchedAt[recordId] = now));
 
     // remove outdated entry
     const latestValidDate = new Date();
