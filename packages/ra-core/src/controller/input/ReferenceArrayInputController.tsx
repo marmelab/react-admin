@@ -139,9 +139,7 @@ interface EnhancedProps {
  *     <SelectArrayInput optionText="name" />
  * </ReferenceArrayInput>
  */
-export class UnconnectedReferenceArrayInputController extends Component<
-    Props & EnhancedProps
-> {
+export class UnconnectedReferenceArrayInputController extends Component<Props & EnhancedProps> {
     public static defaultProps = {
         allowEmpty: false,
         filter: {},
@@ -237,7 +235,7 @@ export class UnconnectedReferenceArrayInputController extends Component<
             const idsToFetch = isInitialCall
                 ? ids
                 : difference(ids, this.props.input.value);
-            crudGetMany(reference, idsToFetch);
+            if (idsToFetch.length) crudGetMany(reference, idsToFetch);
         }
     };
 

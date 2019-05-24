@@ -436,7 +436,7 @@ describe('<ReferenceArrayInputController />', () => {
         ).toEqual([defaultProps.reference, [6]]);
     });
 
-    it('should call crudGetMany with empty list when already fetched input value changes', () => {
+    it('should not call crudGetMany when already fetched input value changes', () => {
         const crudGetMany = jest.fn();
         const wrapper = shallow(
             <ReferenceArrayInputController
@@ -447,15 +447,15 @@ describe('<ReferenceArrayInputController />', () => {
             />
         );
         expect(
-            crudGetMany.mock.calls[crudGetMany.mock.calls.length - 1]
+            crudGetMany.mock.calls[0]
         ).toEqual([defaultProps.reference, [5, 6]]);
         wrapper.setProps({ input: { value: [6] } });
         expect(
-            crudGetMany.mock.calls[crudGetMany.mock.calls.length - 1]
-        ).toEqual([defaultProps.reference, []]);
+            crudGetMany.mock.calls.length
+        ).toEqual(1);
     });
 
-    it('should call crudGetOne and crudGetMatching when record changes', () => {
+    it('should only call crudGetOne and not crudGetMatching when only the record changes', () => {
         const crudGetMany = jest.fn();
         const crudGetMatching = jest.fn();
         const wrapper = shallow(
@@ -471,6 +471,6 @@ describe('<ReferenceArrayInputController />', () => {
         assert.equal(crudGetMany.mock.calls.length, 1);
         wrapper.setProps({ record: { id: 1 } });
         assert.equal(crudGetMatching.mock.calls.length, 2);
-        assert.equal(crudGetMany.mock.calls.length, 2);
+        assert.equal(crudGetMany.mock.calls.length, 1);
     });
 });
