@@ -71,8 +71,9 @@ const RoutesWithLayout: SFC<Props> = ({
                 />
             ) : null}
             <Route
-                render={() =>
+                render={routeProps =>
                     createElement(catchAll, {
+                        ...routeProps,
                         title,
                     })
                 }

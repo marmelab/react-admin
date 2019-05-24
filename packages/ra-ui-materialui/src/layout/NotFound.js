@@ -6,7 +6,7 @@ import HotTub from '@material-ui/icons/HotTub';
 import History from '@material-ui/icons/History';
 import classnames from 'classnames';
 
-import { useTranslate } from 'ra-core';
+import { useTranslate, Authenticated } from 'ra-core';
 import Title from './Title';
 
 const styles = theme =>
@@ -16,49 +16,51 @@ const styles = theme =>
             flexDirection: 'column',
             justifyContent: 'center',
             [theme.breakpoints.up('md')]: {
-                height: '100%',
+                height: '100%'
             },
             [theme.breakpoints.down('sm')]: {
                 height: '100vh',
-                marginTop: '-3em',
-            },
+                marginTop: '-3em'
+            }
         },
         icon: {
             width: '9em',
-            height: '9em',
+            height: '9em'
         },
         message: {
             textAlign: 'center',
             fontFamily: 'Roboto, sans-serif',
             opacity: 0.5,
-            margin: '0 1em',
+            margin: '0 1em'
         },
         toolbar: {
             textAlign: 'center',
-            marginTop: '2em',
-        },
+            marginTop: '2em'
+        }
     });
 
 function goBack() {
     history.go(-1);
 }
 
-const NotFound = ({ classes, className, title, ...rest }) => {
+const NotFound = ({ classes, className, title, location, ...rest }) => {
     const translate = useTranslate();
     return (
-        <div className={classnames(classes.container, className)} {...rest}>
-            <Title defaultTitle={title} />
-            <div className={classes.message}>
-                <HotTub className={classes.icon} />
-                <h1>{translate('ra.page.not_found')}</h1>
-                <div>{translate('ra.message.not_found')}.</div>
+        <Authenticated location={location}>
+            <div className={classnames(classes.container, className)} {...rest}>
+                <Title defaultTitle={title} />
+                <div className={classes.message}>
+                    <HotTub className={classes.icon} />
+                    <h1>{translate('ra.page.not_found')}</h1>
+                    <div>{translate('ra.message.not_found')}.</div>
+                </div>
+                <div className={classes.toolbar}>
+                    <Button variant="contained" icon={<History />} onClick={goBack}>
+                        {translate('ra.action.back')}
+                    </Button>
+                </div>
             </div>
-            <div className={classes.toolbar}>
-                <Button variant="contained" icon={<History />} onClick={goBack}>
-                    {translate('ra.action.back')}
-                </Button>
-            </div>
-        </div>
+        </Authenticated>
     );
 };
 
@@ -66,6 +68,7 @@ NotFound.propTypes = {
     classes: PropTypes.object,
     className: PropTypes.string,
     title: PropTypes.string,
+    location: PropTypes.object
 };
 
 export default withStyles(styles)(NotFound);
