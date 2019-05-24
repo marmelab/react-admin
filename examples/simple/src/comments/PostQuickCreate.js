@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { connect, useSelector, useDispatch } from 'react-redux';
 import { makeStyles } from '@material-ui/styles';
@@ -33,9 +33,10 @@ const useStyles = makeStyles({
     form: { padding: 0 },
 });
 
-const PostQuickCreateView = ({ submitting, onCancel, onSave }) => {
+const PostQuickCreate = ({ onCancel, onSave }) => {
     const classes = useStyles();
     const dispatch = useDispatch();
+    const submitting = useSelector(state => state.admin.loading > 0);
 
     const handleSave = useCallback(
         values => {
@@ -56,7 +57,7 @@ const PostQuickCreateView = ({ submitting, onCancel, onSave }) => {
                 },
             });
         },
-        [onSave],
+        [onSave]
     );
 
     return (
@@ -65,12 +66,15 @@ const PostQuickCreateView = ({ submitting, onCancel, onSave }) => {
             save={handleSave}
             saving={submitting}
             redirect={false}
-            toolbar={props => (
-                <PostQuickCreateToolbar
-                    onCancel={onCancel}
-                    submitting={submitting}
-                    {...props}
-                />
+            toolbar={useMemo(
+                () => props => (
+                    <PostQuickCreateToolbar
+                        onCancel={onCancel}
+                        submitting={submitting}
+                        {...props}
+                    />
+                ),
+                [onCancel, submitting]
             )}
             classes={{ form: classes.form }}
         >
@@ -80,13 +84,9 @@ const PostQuickCreateView = ({ submitting, onCancel, onSave }) => {
     );
 };
 
-PostQuickCreateView.propTypes = {
+PostQuickCreate.propTypes = {
     onCancel: PropTypes.func.isRequired,
     onSave: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = state => ({
-    submitting: state.admin.loading > 0,
-});
-
-export default connect(mapStateToProps)(PostQuickCreateView);
+export default PostQuickCreate;
