@@ -37,13 +37,9 @@ const getFetchedAt = (
     cacheDuration = defaultCacheDuration
 ): FetchedOutDates => {
     // prepare new records and timestamp them
-    const newFetchedAt = newRecordIds.reduce(
-        (prev, recordId) => ({
-            ...prev,
-            [recordId]: now,
-        }),
-        {}
-    );
+    const newFetchedAt = {};
+    newRecordIds.forEach(recordId => newFetchedAt[recordId] = now);
+
     // remove outdated entry
     const latestValidDate = new Date();
     latestValidDate.setTime(latestValidDate.getTime() - cacheDuration);
