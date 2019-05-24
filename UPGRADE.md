@@ -172,6 +172,28 @@ const PostEdit = ({ permissions, ...props }) => (
 + <Edit actions={actionProps => <EditActions permissions={permissions} {...actionProps} />} {...props}>
 ```
 
+The affected props are:
+
+* `xsmall`, `small`, `mediam` and `large` in `<Responsive>`
+* `logoutButton` in `<Admin>`
+* `appBar`, `error`, `menu`, `notification`, and `sidebar` in `<Layout>`
+* `leftIcon` in `<MenuItemLink>`
+* `userMenu` in `<AppBar>`
+* `title` in `<Error>`
+* `logout` in `<UserMenu>`
+* `icon` in all `<XXXButton>` components
+* `title`, `actions` and `aside` in `<Create>`, `<Edit>`, and `<Show>`
+* `title`, `actions`, `aside`, `filters`, `bulkActionButtons` and `pagination` in `<List>`
+* `bulkActions` and `filters` in `<ListActions>`
+* `body` and `expand` in `<Datagrid>`
+* `row` in `<DatagridBody>`
+* `expand` in `<DatagridRow>`
+* `icon` in `<Tab>`
+* `tabs` in `<TabbedShowLayout>`
+* `pagination` in `<ReferenceManyField>`
+* `toolbar` in `<SimpleForm>` and `<TabbedForm>`
+* `optionText` in * `<CheckboxGroupInput>`, `<SelectArrayInput>`, `<SelectInput>`, `<SelectField>`, and `<RadioButtonGroupInput>`
+
 We are aware that this will require many changes in existing codebases. Fortunately, it can be automated for the most part. You might find the following regular expressions useful for migrating.
 
 The first, `{<(.+)\/>}`, searches for all element injections, for instance:
