@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
-import { useSelector, useDispatch } from 'react-redux';
+import { connect, useSelector, useDispatch } from 'react-redux';
 import { makeStyles } from '@material-ui/styles';
 import {
     CREATE,
@@ -33,10 +33,9 @@ const useStyles = makeStyles({
     form: { padding: 0 },
 });
 
-const PostQuickCreate = ({ onCancel, onSave }) => {
+const PostQuickCreateView = ({ submitting, onCancel, onSave }) => {
     const classes = useStyles();
     const dispatch = useDispatch();
-    const submitting = useSelector(state => state.admin.loading > 0);
 
     const handleSave = useCallback(
         values => {
@@ -81,9 +80,13 @@ const PostQuickCreate = ({ onCancel, onSave }) => {
     );
 };
 
-PostQuickCreate.propTypes = {
+PostQuickCreateView.propTypes = {
     onCancel: PropTypes.func.isRequired,
     onSave: PropTypes.func.isRequired,
 };
 
-export default PostQuickCreate;
+const mapStateToProps = state => ({
+    submitting: state.admin.loading > 0,
+});
+
+export default connect(mapStateToProps)(PostQuickCreateView);
