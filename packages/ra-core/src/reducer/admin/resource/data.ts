@@ -74,7 +74,9 @@ export const addRecords = (
     );
 
     const records = { fetchedAt: newFetchedAt };
-    Object.keys(newFetchedAt).forEach(id => (records[id] = newRecordsById[id] || oldRecords[id]));
+    Object.keys(newFetchedAt).forEach(
+        id => (records[id] = newRecordsById[id] || oldRecords[id])
+    );
 
     return hideFetchedAt(records);
 };
