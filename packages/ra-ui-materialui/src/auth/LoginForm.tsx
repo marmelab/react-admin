@@ -31,7 +31,7 @@ interface EnhancedProps
     isLoading: boolean;
 }
 
-const styles = ({ spacing }: Theme) =>  =>
+const styles = ({ spacing }: Theme) =>
     createStyles({
         form: {
             padding: '0 1em 1em 1em',
@@ -46,7 +46,7 @@ const styles = ({ spacing }: Theme) =>  =>
             height: 20,
             width: 20,
             marginRight: spacing.unit / 2,
-        }
+        },
     });
 
 // see http://redux-form.com/6.4.3/examples/material-ui/
@@ -103,7 +103,13 @@ const LoginForm: SFC<Props & EnhancedProps> = ({
                 disabled={isLoading}
                 className={classes.button}
             >
-                {isLoading && <CircularProgress className={classes.icon} size={18} thickness={2} />}
+                {isLoading && (
+                    <CircularProgress
+                        className={classes.icon}
+                        size={18}
+                        thickness={2}
+                    />
+                )}
                 {translate('ra.auth.sign_in')}
             </Button>
         </CardActions>
