@@ -106,17 +106,18 @@ const PostList = props => {
             sort={{ field: 'published_at', order: 'DESC' }}
         >
             <Responsive
-                small={
+                small={props => (
                     <SimpleList
                         primaryText={record => record.title}
                         secondaryText={record => `${record.views} views`}
                         tertiaryText={record =>
                             new Date(record.published_at).toLocaleDateString()
                         }
+                        {...props}
                     />
-                }
-                medium={
-                    <Datagrid rowClick={rowClick} expand={PostPanel}>
+                )}
+                medium={props => (
+                    <Datagrid rowClick={rowClick} expand={PostPanel} {...props}>
                         <TextField source="id" />
                         <TextField
                             source="title"
@@ -150,7 +151,7 @@ const PostList = props => {
                             <ShowButton />
                         </PostListActionToolbar>
                     </Datagrid>
-                }
+                )}
             />
         </List>
     );

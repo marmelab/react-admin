@@ -746,15 +746,16 @@ import { List, Responsive, SimpleList, Datagrid, TextField, ReferenceField, Edit
 export const PostList = (props) => (
     <List {...props}>
         <Responsive
-            small={
+            small={props =>
                 <SimpleList
                     primaryText={record => record.title}
                     secondaryText={record => `${record.views} views`}
                     tertiaryText={record => new Date(record.published_at).toLocaleDateString()}
+                    {...props}
                 />
             }
-            medium={
-                <Datagrid>
+            medium={props =>
+                <Datagrid {...props}>
                     <TextField source="id" />
                     <ReferenceField label="User" source="userId" reference="users">
                         <TextField source="name" />

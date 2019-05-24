@@ -284,7 +284,7 @@ import ExitIcon from '@material-ui/icons/PowerSettingsNew';
 
 const MyLogoutButton = ({ userLogout, ...rest }) => (
     <Responsive
-        xsmall={
+        xsmall={() =>
             <MenuItem
                 onClick={userLogout}
                 {...sanitizeRestProps(rest)}
@@ -292,7 +292,7 @@ const MyLogoutButton = ({ userLogout, ...rest }) => (
                 <ExitIcon /> Logout
             </MenuItem>
         }
-        medium={
+        medium={() =>
             <Button
                 onClick={userLogout}
                 size="small"

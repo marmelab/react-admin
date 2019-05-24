@@ -212,7 +212,7 @@ const CommentList = props => (
         pagination={CommentPagination}
         component="div"
     >
-        <Responsive small={<CommentMobileList />} medium={<CommentGrid />} />
+        <Responsive small={CommentMobileList} medium={CommentGrid} />
     </List>
 );
 

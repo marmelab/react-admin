@@ -11,15 +11,16 @@ import {
 export const UserList = props => (
     <List title="All users" {...props}>
         <Responsive
-            small={
+            small={props =>
                 <SimpleList
                     primaryText={record => record.name}
                     secondaryText={record => record.username}
                     tertiaryText={record => record.email}
+                    {...props}
                 />
             }
-            medium={
-                <Datagrid>
+            medium={props =>
+                <Datagrid {...props}>
                     <TextField source="id" />
                     <TextField source="name" />
                     <TextField source="username" />

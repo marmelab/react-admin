@@ -177,15 +177,16 @@ export const UserList = ({ permissions, ...props }) =>
         sort={{ field: 'name', order: 'ASC' }}
     >
         <Responsive
-            small={
+            small={props => 
                 <SimpleList
                     primaryText={record => record.name}
                     secondaryText={record =>
                         permissions === 'admin' ? record.role : null}
+                        {...props}
                 />
             }
-            medium={
-                <Datagrid>
+            medium={props =>
+                <Datagrid {...props}>
                     <TextField source="id" />
                     <TextField source="name" />
                     {permissions === 'admin' && <TextField source="role" />}

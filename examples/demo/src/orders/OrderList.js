@@ -92,13 +92,13 @@ class TabbedDatagrid extends React.Component {
                 </Tabs>
                 <Divider />
                 <Responsive
-                    xsmall={
+                    xsmall={() => (
                         <MobileGrid
                             {...props}
                             ids={this.state[filterValues.status]}
                         />
-                    }
-                    medium={
+                    )}
+                    medium={() => (
                         <div>
                             {filterValues.status === 'ordered' && (
                                 <Datagrid {...props} ids={this.state.ordered}>
@@ -154,7 +154,7 @@ class TabbedDatagrid extends React.Component {
                                 </Datagrid>
                             )}
                         </div>
-                    }
+                    )}
                 />
             </Fragment>
         );

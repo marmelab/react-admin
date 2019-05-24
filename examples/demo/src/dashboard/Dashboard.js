@@ -123,7 +123,7 @@ class Dashboard extends Component {
         } = this.state;
         return (
             <Responsive
-                xsmall={
+                xsmall={() => (
                     <div>
                         <div style={styles.flexColumn}>
                             <div style={{ marginBottom: '2em' }}>
@@ -141,8 +141,8 @@ class Dashboard extends Component {
                             </div>
                         </div>
                     </div>
-                }
-                small={
+                )}
+                small={() => (
                     <div style={styles.flexColumn}>
                         <div style={styles.singleCol}>
                             <Welcome />
@@ -158,8 +158,8 @@ class Dashboard extends Component {
                             />
                         </div>
                     </div>
-                }
-                medium={
+                )}
+                medium={() => (
                     <div style={styles.flex}>
                         <div style={styles.leftCol}>
                             <div style={styles.flex}>
@@ -187,7 +187,7 @@ class Dashboard extends Component {
                             </div>
                         </div>
                     </div>
-                }
+                )}
             />
         );
     }

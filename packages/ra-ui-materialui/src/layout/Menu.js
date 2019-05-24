@@ -58,14 +58,12 @@ const Menu = ({
                             resource,
                             translate
                         )}
-                        leftIcon={
-                            resource.icon ? resource.icon : DefaultIcon
-                        }
+                        leftIcon={resource.icon ? resource.icon : DefaultIcon}
                         onClick={onMenuClick}
                         dense={dense}
                     />
                 ))}
-            {Logout ? <Responsive xsmall={<Logout />} medium={null} /> : null}
+            {Logout ? <Responsive xsmall={Logout} medium={null} /> : null}
         </div>
     );
 };

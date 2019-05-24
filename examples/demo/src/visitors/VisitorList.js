@@ -42,9 +42,9 @@ const VisitorList = ({ classes, ...props }) => (
         perPage={25}
     >
         <Responsive
-            xsmall={<MobileGrid />}
-            medium={
-                <Datagrid>
+            xsmall={MobileGrid}
+            medium={props => (
+                <Datagrid {...props}>
                     <CustomerLinkField />
                     <DateField source="last_seen" type="date" />
                     <NumberField
@@ -61,7 +61,7 @@ const VisitorList = ({ classes, ...props }) => (
                     <SegmentsField />
                     <EditButton />
                 </Datagrid>
-            }
+            )}
         />
     </List>
 );

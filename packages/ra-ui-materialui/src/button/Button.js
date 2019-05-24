@@ -45,7 +45,7 @@ const Button = ({
     const translate = useTranslate();
     return (
         <Responsive
-            xsmall={
+            xsmall={() =>
                 label && !disabled ? (
                     <Tooltip title={translate(label, { _: label })}>
                         <IconButton
@@ -68,7 +68,7 @@ const Button = ({
                     </IconButton>
                 )
             }
-            small={
+            small={() => (
                 <MuiButton
                     className={classnames(classes.button, className)}
                     color={color}
@@ -100,7 +100,7 @@ const Button = ({
                             className: classes[`${size}Icon`],
                         })}
                 </MuiButton>
-            }
+            )}
         />
     );
 };

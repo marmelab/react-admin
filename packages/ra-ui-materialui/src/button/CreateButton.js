@@ -40,7 +40,7 @@ const CreateButton = ({
     const translate = useTranslate();
     return (
         <Responsive
-            small={
+            small={() => (
                 <Fab
                     component={Link}
                     color="primary"
@@ -51,8 +51,8 @@ const CreateButton = ({
                 >
                     <Icon />
                 </Fab>
-            }
-            medium={
+            )}
+            medium={() => (
                 <Button
                     component={Link}
                     to={`${basePath}/create`}
@@ -62,7 +62,7 @@ const CreateButton = ({
                 >
                     <Icon />
                 </Button>
-            }
+            )}
         />
     );
 };

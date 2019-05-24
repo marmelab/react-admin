@@ -41,7 +41,7 @@ const Menu = ({ onMenuClick, open, logout }) => {
                 isOpen={state.menuSales}
                 sidebarIsOpen={open}
                 name="pos.menu.sales"
-                icon={<orders.icon />}
+                icon={orders.icon}
             >
                 <MenuItemLink
                     to={`/commands`}
@@ -65,7 +65,7 @@ const Menu = ({ onMenuClick, open, logout }) => {
                 isOpen={state.menuCatalog}
                 sidebarIsOpen={open}
                 name="pos.menu.catalog"
-                icon={<products.icon />}
+                icon={products.icon}
             >
                 <MenuItemLink
                     to={`/products`}
@@ -89,7 +89,7 @@ const Menu = ({ onMenuClick, open, logout }) => {
                 isOpen={state.menuCustomer}
                 sidebarIsOpen={open}
                 name="pos.menu.customers"
-                icon={<visitors.icon />}
+                icon={visitors.icon}
             >
                 <MenuItemLink
                     to={`/customers`}
@@ -117,18 +117,18 @@ const Menu = ({ onMenuClick, open, logout }) => {
                 onClick={onMenuClick}
             />
             <Responsive
-                xsmall={
+                xsmall={() => (
                     <MenuItemLink
                         to="/configuration"
                         primaryText={translate('pos.configuration')}
                         leftIcon={SettingsIcon}
                         onClick={onMenuClick}
                     />
-                }
+                )}
                 medium={null}
             />
             <Responsive
-                small={createElement(logout)}
+                small={logout}
                 medium={null} // Pass null to render nothing on larger devices
             />
         </div>

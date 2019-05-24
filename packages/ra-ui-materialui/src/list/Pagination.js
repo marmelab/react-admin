@@ -72,7 +72,7 @@ export class Pagination extends Component {
         return (
             <Responsive
                 width={width}
-                small={
+                small={() => (
                     <TablePagination
                         count={total}
                         rowsPerPage={perPage}
@@ -83,8 +83,8 @@ export class Pagination extends Component {
                         labelDisplayedRows={this.labelDisplayedRows}
                         {...sanitizeListRestProps(rest)}
                     />
-                }
-                medium={
+                )}
+                medium={() => (
                     <TablePagination
                         count={total}
                         rowsPerPage={perPage}
@@ -100,7 +100,7 @@ export class Pagination extends Component {
                         rowsPerPageOptions={rowsPerPageOptions}
                         {...sanitizeListRestProps(rest)}
                     />
-                }
+                )}
             />
         );
     }

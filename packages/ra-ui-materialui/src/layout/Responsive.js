@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import withWidth from '@material-ui/core/withWidth';
 
+import { ComponentPropType } from 'ra-core';
+
 export const Responsive = ({
     xsmall,
     small,
@@ -10,10 +12,10 @@ export const Responsive = ({
     width,
     ...rest
 }) => {
-    let element;
+    let Component;
     switch (width) {
         case 'xs':
-            element =
+            Component =
                 typeof xsmall !== 'undefined'
                     ? xsmall
                     : typeof small !== 'undefined'
@@ -23,7 +25,7 @@ export const Responsive = ({
                     : large;
             break;
         case 'sm':
-            element =
+            Component =
                 typeof small !== 'undefined'
                     ? small
                     : typeof medium !== 'undefined'
@@ -31,7 +33,7 @@ export const Responsive = ({
                     : large;
             break;
         case 'md':
-            element =
+            Component =
                 typeof medium !== 'undefined'
                     ? medium
                     : typeof large !== 'undefined'
@@ -40,7 +42,7 @@ export const Responsive = ({
             break;
         case 'lg':
         case 'xl':
-            element =
+            Component =
                 typeof large !== 'undefined'
                     ? large
                     : typeof medium !== 'undefined'
@@ -51,14 +53,14 @@ export const Responsive = ({
             throw new Error(`Unknown width ${width}`);
     }
 
-    return element ? React.cloneElement(element, rest) : null;
+    return Component ? <Component {...rest} /> : null;
 };
 
 Responsive.propTypes = {
-    xsmall: PropTypes.element,
-    small: PropTypes.element,
-    medium: PropTypes.element,
-    large: PropTypes.element,
+    xsmall: ComponentPropType,
+    small: ComponentPropType,
+    medium: ComponentPropType,
+    large: ComponentPropType,
     width: PropTypes.string,
 };
 

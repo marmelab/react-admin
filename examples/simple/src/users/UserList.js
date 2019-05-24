@@ -47,24 +47,26 @@ const UserList = ({ permissions, ...props }) => (
         bulkActionButtons={UserBulkActionButtons}
     >
         <Responsive
-            small={
+            small={props => (
                 <SimpleList
                     primaryText={record => record.name}
                     secondaryText={record =>
                         permissions === 'admin' ? record.role : null
                     }
+                    {...props}
                 />
-            }
-            medium={
+            )}
+            medium={props => (
                 <Datagrid
                     rowClick={rowClick(permissions)}
                     expand={UserEditEmbedded}
+                    {...props}
                 >
                     <TextField source="id" />
                     <TextField source="name" />
                     {permissions === 'admin' && <TextField source="role" />}
                 </Datagrid>
-            }
+            )}
         />
     </List>
 );

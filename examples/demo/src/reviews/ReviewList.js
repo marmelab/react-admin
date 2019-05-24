@@ -65,8 +65,8 @@ class ReviewList extends Component {
                                     sort={{ field: 'date', order: 'DESC' }}
                                 >
                                     <Responsive
-                                        xsmall={<ReviewListMobile />}
-                                        medium={<ReviewListDesktop />}
+                                        xsmall={ReviewListMobile}
+                                        medium={ReviewListDesktop}
                                     />
                                 </List>
                                 <Drawer
