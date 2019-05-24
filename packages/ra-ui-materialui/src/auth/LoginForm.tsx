@@ -7,7 +7,12 @@ import CardActions from '@material-ui/core/CardActions';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { withStyles, createStyles, WithStyles } from '@material-ui/core/styles';
+import {
+    withStyles,
+    createStyles,
+    WithStyles,
+    Theme,
+} from '@material-ui/core/styles';
 import {
     withTranslate,
     userLogin,
