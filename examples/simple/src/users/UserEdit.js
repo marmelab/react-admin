@@ -13,7 +13,7 @@ import {
     Toolbar,
     required,
 } from 'react-admin';
-import { makeStyles } from '@material-ui/styles';
+import { makeStyles } from '@material-ui/core/styles';
 
 import UserTitle from './UserTitle';
 import Aside from './Aside';

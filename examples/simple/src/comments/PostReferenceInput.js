@@ -2,7 +2,7 @@ import React, { Fragment, useState, useCallback, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Field } from 'redux-form';
 
-import { makeStyles } from '@material-ui/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';

@@ -1,6 +1,6 @@
 import BookIcon from '@material-ui/icons/Book';
 import Chip from '@material-ui/core/Chip';
-import { makeStyles } from '@material-ui/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import React, { Children, Fragment, cloneElement } from 'react';
 import {
     BooleanField,

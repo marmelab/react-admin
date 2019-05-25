@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo } from 'react';
 import PropTypes from 'prop-types';
-import { connect, useSelector, useDispatch } from 'react-redux';
-import { makeStyles } from '@material-ui/styles';
+import { useSelector, useDispatch } from 'react-redux';
+import { makeStyles } from '@material-ui/core/styles';
 import {
     CREATE,
     LongTextInput,
@@ -57,7 +57,7 @@ const PostQuickCreate = ({ onCancel, onSave }) => {
                 },
             });
         },
-        [onSave]
+        [onSave],
     );
 
     return (
@@ -74,7 +74,7 @@ const PostQuickCreate = ({ onCancel, onSave }) => {
                         {...props}
                     />
                 ),
-                [onCancel, submitting]
+                [onCancel, submitting],
             )}
             classes={{ form: classes.form }}
         >
