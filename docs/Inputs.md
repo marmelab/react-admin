@@ -1257,6 +1257,8 @@ You can find components for react-admin in third-party repositories.
 
 If you need a more specific input type, you can also write it yourself. You'll have to rely on redux-form's [`<Field>`](http://redux-form.com/6.5.0/docs/api/Field.md/) component, so as to handle the value update cycle.
 
+**Tip**: For react-admin version 2.x.x, use redux-form version ~7.4.0 to avoid compatibility issues. 
+
 For instance, let's write a component to edit the latitude and longitude of the current record:
 
 ```jsx
