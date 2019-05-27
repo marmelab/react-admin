@@ -7,6 +7,7 @@ import ContentFilter from '@material-ui/icons/FilterList';
 import classnames from 'classnames';
 import compose from 'recompose/compose';
 import { translate } from 'ra-core';
+import lodashGet from 'lodash/get';
 
 import FilterButtonMenuItem from './FilterButtonMenuItem';
 import Button from '../button/Button';
@@ -32,7 +33,7 @@ export class FilterButton extends Component {
             filterElement =>
                 !filterElement.props.alwaysOn &&
                 !displayedFilters[filterElement.props.source] &&
-                !filterValues[filterElement.props.source]
+                typeof lodashGet(filterValues, filterElement.props.source) === 'undefined'
         );
     }
 
