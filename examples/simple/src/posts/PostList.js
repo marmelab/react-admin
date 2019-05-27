@@ -2,7 +2,7 @@ import BookIcon from '@material-ui/icons/Book';
 import Chip from '@material-ui/core/Chip';
 import { withStyles } from '@material-ui/core/styles';
 import React, { Children, Fragment, cloneElement } from 'react';
-import get from 'lodash/get';
+import lodashGet from 'lodash/get';
 import { unparse as convertToCSV } from 'papaparse/papaparse.min';
 import {
     BooleanField,
@@ -51,7 +51,7 @@ const PostFilter = props => (
 const exporter = (posts) => {
     const data = posts.map(post => ({
         ...post,
-        backlinks: get(post, 'backlinks', []).map(backlink => backlink.url),
+        backlinks: lodashGet(post, 'backlinks', []).map(backlink => backlink.url),
     }))
     return downloadCSV(convertToCSV({ data }), 'posts');
 };
