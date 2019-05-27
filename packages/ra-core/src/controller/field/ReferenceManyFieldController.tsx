@@ -2,8 +2,8 @@ import { ReactElement, FunctionComponent } from 'react';
 
 import { Record, Sort, RecordMap, Identifier } from '../../types';
 import useReferenceMany from './useReferenceMany';
-import useSort from '../useSort';
-import usePagination from '../usePagination';
+import useSortState from '../useSortState';
+import usePaginationState from '../usePaginationState';
 
 interface ChildrenFuncParams {
     currentSort: Sort;
@@ -91,8 +91,8 @@ export const ReferenceManyFieldController: FunctionComponent<Props> = ({
     sort: initialSort,
     children,
 }) => {
-    const { sort, setSort } = useSort(initialSort);
-    const { page, perPage, setPage, setPerPage } = usePagination(
+    const { sort, setSort } = useSortState(initialSort);
+    const { page, perPage, setPage, setPerPage } = usePaginationState(
         initialPerPage
     );
     const {

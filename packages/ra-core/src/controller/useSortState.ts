@@ -1,4 +1,4 @@
-import { useReducer, useEffect } from 'react';
+import { useReducer, useEffect, useRef } from 'react';
 
 import {
     SORT_ASC,
@@ -54,10 +54,14 @@ export default (
     initialSort: Sort = { field: 'id', order: 'DESC' }
 ): SortProps => {
     const [sort, dispatch] = useReducer(sortReducer, initialSort);
-    useEffect(() => dispatch(initialSort), [
-        initialSort.field,
-        initialSort.order,
-    ]);
+    const isFirstRender = useRef(true);
+    useEffect(() => {
+        if (isFirstRender.current) {
+            isFirstRender.current = false;
+            return;
+        }
+        dispatch(initialSort);
+    }, [initialSort.field, initialSort.order]);
 
     return {
         setSort: (field: string) => dispatch(field),

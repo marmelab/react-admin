@@ -1,6 +1,6 @@
 import React, { Fragment, cloneElement, Children } from 'react';
 import PropTypes from 'prop-types';
-import { useSort, usePagination, useReferenceMany, ComponentPropType } from 'ra-core';
+import { useSortState, usePaginationState, useReferenceMany, ComponentPropType } from 'ra-core';
 
 export const ReferenceManyFieldView = ({
     children,
@@ -106,34 +106,28 @@ ReferenceManyFieldView.propTypes = {
  *    ...
  * </ReferenceManyField>
  */
-export const ReferenceManyField = ({
-    children,
-    sort: initialSort,
-    perPage: initialPerPage,
-    resource,
-    reference,
-    record,
-    target,
-    filter,
-    source,
-    basePath,
-    ...props
-}) => {
+export const ReferenceManyField = props => {
+    const {
+        children,
+        sort: initialSort,
+        perPage: initialPerPage,
+        resource,
+        reference,
+        record,
+        target,
+        filter,
+        source,
+        basePath,
+    } = props;
     if (React.Children.count(children) !== 1) {
         throw new Error(
             '<ReferenceManyField> only accepts a single child (like <Datagrid>)'
         );
     }
-    const { sort, setSort } = useSort(initialSort);
-    const { page, perPage, setPage, setPerPage } = usePagination(initialPerPage);
+    const { sort, setSort } = useSortState(initialSort);
+    const { page, perPage, setPage, setPerPage } = usePaginationState(initialPerPage);
 
-    const {
-        data,
-        ids,
-        loadedOnce,
-        referenceBasePath,
-        total,
-    } = useReferenceMany({
+    const useReferenceManyProps = useReferenceMany({
         resource,
         reference,
         record,
@@ -150,19 +144,13 @@ export const ReferenceManyField = ({
         <ReferenceManyFieldView
             {...props}
             {...{
-                children,
                 currentSort: sort,
-                data,
-                ids,
-                loadedOnce,
                 page,
                 perPage,
-                reference,
                 setPage,
                 setPerPage,
-                referenceBasePath,
-                total,
-                setSort
+                setSort,
+                ...useReferenceManyProps
             }}
         />
     );
