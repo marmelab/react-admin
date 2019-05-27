@@ -24,8 +24,14 @@ describe('<FilterForm />', () => {
     });
 
     it('should display correctly passed filters', () => {
-        const filters = [<TextInput source="title" label="Title" />]; // eslint-disable-line react/jsx-key
-        const displayedFilters = { title: true };
+        const filters = [
+            <TextInput source="title" label="Title" />,
+            <TextInput source="customer.name" label="Name" />
+        ]; // eslint-disable-line react/jsx-key
+        const displayedFilters = { 
+            title: true,
+            "customer.name": true,
+         };
 
         const muiTheme = createMuiTheme({ userAgent: false });
         const wrapper = render(
@@ -43,7 +49,7 @@ describe('<FilterForm />', () => {
         );
 
         const titleFilter = wrapper.find('input[type="text"]');
-        assert.equal(titleFilter.length, 1);
+        assert.equal(titleFilter.length, 2);
     });
 
     describe('mergeInitialValuesWithDefaultValues', () => {
