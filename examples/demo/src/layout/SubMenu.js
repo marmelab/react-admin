@@ -27,17 +27,16 @@ const SubMenu = ({
     sidebarIsOpen,
     isOpen,
     name,
-    icon,
+    icon: Icon,
     children,
 }) => {
     const translate = useTranslate();
     const classes = useStyles();
-    const Icon = icon;
     return (
         <Fragment>
             <MenuItem dense button onClick={handleToggle}>
                 <ListItemIcon className={classes.icon}>
-                    {isOpen ? <ExpandMore /> : <Icon/>}
+                    {isOpen ? <ExpandMore /> : <Icon />}
                 </ListItemIcon>
                 <Typography variant="inherit" color="textSecondary">
                     {translate(name)}
