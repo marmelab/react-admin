@@ -48,8 +48,6 @@ const styles = ({ spacing }: Theme) =>
             width: '100%',
         },
         icon: {
-            height: 20,
-            width: 20,
             marginRight: spacing.unit,
         },
     });

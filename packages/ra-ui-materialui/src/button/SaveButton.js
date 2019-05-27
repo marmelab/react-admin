@@ -14,10 +14,11 @@ const styles = ({ spacing }) =>
         button: {
             position: 'relative',
         },
-        icon: {
-            height: 20,
-            width: 20,
+        leftIcon: {
             marginRight: spacing.unit,
+        },
+        icon: {
+            fontSize: 18,
         },
     });
 
@@ -128,11 +129,11 @@ export class SaveButton extends Component {
                     <CircularProgress
                         size={18}
                         thickness={2}
-                        className={classes.icon}
+                        className={classes.leftIcon}
                     />
                 ) : (
                     React.cloneElement(icon, {
-                        className: classes.icon,
+                        className: classnames(classes.leftIcon, classes.icon),
                     })
                 )}
                 {label && translate(label, { _: label })}
