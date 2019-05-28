@@ -287,7 +287,7 @@ const MyLogoutButton = ({ userLogout, ...rest }) => (
         xsmall={
             <MenuItem
                 onClick={userLogout}
-                {...sanitizeRestProps(rest)}
+                {...rest}
             >
                 <ExitIcon /> Logout
             </MenuItem>
@@ -296,7 +296,7 @@ const MyLogoutButton = ({ userLogout, ...rest }) => (
             <Button
                 onClick={userLogout}
                 size="small"
-                {...sanitizeRestProps(rest)}
+                {...rest}
             >
                 <ExitIcon /> Logout
             </Button>
