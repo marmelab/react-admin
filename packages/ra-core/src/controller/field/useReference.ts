@@ -7,6 +7,8 @@ import { crudGetManyAccumulate } from '../../actions';
 import { linkToRecord } from '../../util';
 import { Record, ReduxState } from '../../types';
 
+type linkTypeFunction = () => string;
+
 interface Option {
     allowEmpty?: boolean;
     basePath: string;
@@ -14,7 +16,7 @@ interface Option {
     reference: string;
     resource: string;
     source: string;
-    linkType: string | boolean;
+    linkType: string | boolean | linkTypeFunction;
 }
 
 export interface UseReferenceProps {
@@ -50,7 +52,8 @@ export interface UseReferenceProps {
  * @param {Object} option
  * @param {boolean} option.allowEmpty do we allow for no referenced record (default to false)
  * @param {string} option.basePath basepath to current resource
- * @param {string | false} option.linkType The type of the link toward the referenced record. edit, show of false for no link (default to edit)
+ * @param {string | false | linkTypeFunction} option.linkType The type of the link toward the referenced record. 'edit', 'show' or
+ * false for no link (default to edit). Alternatively a function that returns a string
  * @param {Object} option.record The The current resource record
  * @param {string} option.reference The linked resource name
  * @param {string} option.resource The current resource name
@@ -80,6 +83,8 @@ export const useReference = ({
     const rootPath = basePath.replace(resource, reference);
     const resourceLinkPath = !linkType
         ? false
+        : typeof linkType === 'function'
+        ? linkType()
         : linkToRecord(rootPath, sourceId, linkType as string);
 
     return {

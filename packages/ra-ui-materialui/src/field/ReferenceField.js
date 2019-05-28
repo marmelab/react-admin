@@ -149,7 +149,7 @@ ReferenceField.propTypes = {
     sortBy: PropTypes.string,
     source: PropTypes.string.isRequired,
     translateChoice: PropTypes.func,
-    linkType: PropTypes.oneOfType([PropTypes.string, PropTypes.bool])
+    linkType: PropTypes.oneOfType([PropTypes.string, PropTypes.bool, PropTypes.func])
         .isRequired,
 };
 
