@@ -1,5 +1,17 @@
 # Changelog
 
+## v2.9.2
+
+* Fix spinner position in Login and Save buttons ([3276](https://github.com/marmelab/react-admin/pull/3276)) ([Luwangel](https://github.com/Luwangel))
+* Fix slow List view when fetching lots of rows ([3275](https://github.com/marmelab/react-admin/pull/3275)) ([slecoustre](https://github.com/slecoustre))
+* Fix `<BooleanInput>` does not show errors ([3271](https://github.com/marmelab/react-admin/pull/3271)) ([fargito](https://github.com/fargito))
+* Fix `<Query>` component sending request on every update ([3267](https://github.com/marmelab/react-admin/pull/3267)) ([fargito](https://github.com/fargito))
+* Fix duplicated entry in Reference documentation ([3259](https://github.com/marmelab/react-admin/pull/3259)) ([mabhub](https://github.com/mabhub))
+* Fix duplicated code formatting rules ([3258](https://github.com/marmelab/react-admin/pull/3258)) ([fargito](https://github.com/fargito))
+* Fix empty list after changing the items per page count ([3257](https://github.com/marmelab/react-admin/pull/3257)) ([sagarbakhtar](https://github.com/sagarbakhtar))
+* Fix `<RichTextInput>` does not use theme color to show focus ([3231](https://github.com/marmelab/react-admin/pull/3231)) ([cherniavskii](https://github.com/cherniavskii))
+* Add Bulgarian translation link ([3260](https://github.com/marmelab/react-admin/pull/3260)) ([ptodorov0](https://github.com/ptodorov0))
+
 ## v2.9.1
 
 * Fix handling of deleted references ([3216](https://github.com/marmelab/react-admin/pull/3216)) ([djhi](https://github.com/djhi))
