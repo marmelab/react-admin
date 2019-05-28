@@ -1,6 +1,6 @@
 {
     "name": "ra-input-rich-text",
-    "version": "2.8.6",
+    "version": "2.9.2",
     "description": "<RichTextInput> component for react-admin, useful for editing HTML code in admin GUIs.",
     "main": "lib/index.js",
     "module": "esm/index.js",
