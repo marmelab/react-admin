@@ -520,6 +520,15 @@ You can also prevent `<ReferenceField>` from adding link to children by setting 
 </ReferenceField>
 ```
 
+You can also use a custom `linkType` function to get a custom path for the children.
+
+```jsx
+// Custom path
+<ReferenceField label="User" source="userId" reference="users" linkType={() => '/my/path'}>
+    <TextField source="name" />
+</ReferenceField>
+```
+
 **Tip**: React-admin uses `CRUD_GET_ONE_REFERENCE` action to accumulate and deduplicate the ids of the referenced records to make *one* `GET_MANY` call for the entire list, instead of n `GET_ONE` calls. So for instance, if the API returns the following list of comments:
 
 ```jsx
