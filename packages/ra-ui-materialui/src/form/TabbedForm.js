@@ -11,12 +11,12 @@ import { connect } from 'react-redux';
 import { withRouter, Route } from 'react-router-dom';
 import compose from 'recompose/compose';
 import Divider from '@material-ui/core/Divider';
-import Tabs from '@material-ui/core/Tabs';
 import { withStyles, createStyles } from '@material-ui/core/styles';
 import { getDefaultValues, translate, REDUX_FORM_NAME } from 'ra-core';
 
 import Toolbar from './Toolbar';
 import CardContentInner from '../layout/CardContentInner';
+import TabbedFormTabs from './TabbedFormTabs';
 
 const styles = theme =>
     createStyles({
@@ -67,7 +67,7 @@ const sanitizeRestProps = ({
     ...props
 }) => props;
 
-const getTabFullPath = (tab, index, baseUrl) =>
+export const getTabFullPath = (tab, index, baseUrl) =>
     `${baseUrl}${
         tab.props.path ? `/${tab.props.path}` : index > 0 ? `/${index}` : ''
     }`;
@@ -91,6 +91,7 @@ export class TabbedForm extends Component {
             resource,
             saving,
             submitOnEnter,
+            tabs,
             tabsWithErrors,
             toolbar,
             translate,
@@ -98,22 +99,7 @@ export class TabbedForm extends Component {
             value,
             version,
             ...rest
-        } = this.props;
-
-        const validTabPaths = Children.toArray(children).map((tab, index) =>
-            getTabFullPath(tab, index, match.url)
-        );
-
-        // This ensure we don't get warnings from material-ui Tabs component when
-        // the current location pathname targets a dynamically added Tab
-        // In the case the targeted Tab is not present at first render (when
-        // using permissions for example) we temporarily switch to the first
-        // available tab. The current location will be applied again on the
-        // first render containing the targeted tab. This is almost transparent
-        // for the user who may just see an short tab selection animation
-        const tabsValue = validTabPaths.includes(location.pathname)
-            ? location.pathname
-            : validTabPaths[0];
+        } = this.props;        
 
         return (
             <form
@@ -121,32 +107,15 @@ export class TabbedForm extends Component {
                 key={version}
                 {...sanitizeRestProps(rest)}
             >
-                <Tabs
-                    // The location pathname will contain the page path including the current tab path
-                    // so we can use it as a way to determine the current tab
-                    value={tabsValue}
-                    indicatorColor="primary"
-                >
-                    {Children.map(children, (tab, index) => {
-                        if (!isValidElement(tab)) return null;
-
-                        // Builds the full tab tab which is the concatenation of the last matched route in the
-                        // TabbedShowLayout hierarchy (ex: '/posts/create', '/posts/12', , '/posts/12/show')
-                        // and the tab path.
-                        // This will be used as the Tab's value
-                        const tabPath = getTabFullPath(tab, index, match.url);
-
-                        return React.cloneElement(tab, {
-                            intent: 'header',
-                            value: tabPath,
-                            className:
-                                tabsWithErrors.includes(tab.props.label) &&
-                                location.pathname !== tabPath
-                                    ? classes.errorTabButton
-                                    : null,
-                        });
-                    })}
-                </Tabs>
+                {React.cloneElement(
+                    tabs,
+                    {
+                        currentLocationPath: location.pathname,
+                        match,
+                        tabsWithErrors,
+                    },
+                    children,
+                )}
                 <Divider />
                 <CardContentInner>
                     {/* All tabs are rendered (not only the one in focus), to allow validation
@@ -230,6 +199,7 @@ TabbedForm.propTypes = {
     save: PropTypes.func, // the handler defined in the parent, which triggers the REST submission
     saving: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
     submitOnEnter: PropTypes.bool,
+    tabs: PropTypes.element.isRequired,
     tabsWithErrors: PropTypes.arrayOf(PropTypes.string),
     toolbar: PropTypes.element,
     translate: PropTypes.func,
@@ -241,6 +211,7 @@ TabbedForm.propTypes = {
 
 TabbedForm.defaultProps = {
     submitOnEnter: true,
+    tabs: <TabbedFormTabs />,
     toolbar: <Toolbar />,
 };
 
