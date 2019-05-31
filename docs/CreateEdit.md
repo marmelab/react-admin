@@ -428,9 +428,9 @@ To style the tabs, the `<FormTab>` component accepts two props:
 - `contentClassName` is passed to the tab *content*
 
 ### TabbedFormTabs
-By default `<TabbedForm>` uses, `<TabbedFormTabs>` internal react-admin component to renders tabs. You can pass custom component as the `tabs` prop to override the default component. Also props from `<TabbedFormTabs>` are passed to material-ui's `<Tabs>` component inside `<TabbedFormTabs>`.
+By default `<TabbedForm>` uses, `<TabbedFormTabs>` internal react-admin component to renders tabs. You can pass a custom component as the `tabs` prop to override the default component. Besides, props from `<TabbedFormTabs>` are passed to material-ui's `<Tabs>` component inside `<TabbedFormTabs>`.
 
-Following example shows how to make use to scrollable `<Tabs>`, you can pass scrollable prop to `<TabbedFormTabs>` and pass that as `tabs` prop to `<TabbedForm>`
+Following example shows how to make use of scrollable `<Tabs>`. Pass the `scrollable` prop to `<TabbedFormTabs>` and pass that as the `tabs` prop to `<TabbedForm>`
 
 ```jsx
 import {

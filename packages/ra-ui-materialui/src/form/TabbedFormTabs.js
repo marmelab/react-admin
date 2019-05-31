@@ -36,7 +36,7 @@ const TabbedFormTabs = ({ children, classes, currentLocationPath, match, tabsWit
                 const tabPath = getTabFullPath(tab, index, match.url);
 
                 return cloneElement(tab, {
-                    context: 'header',
+                    intent: 'header',
                     value: tabPath,
                     className:
                         tabsWithErrors.includes(tab.props.label) &&
