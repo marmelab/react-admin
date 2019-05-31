@@ -64,52 +64,6 @@ describe('<TabbedForm />', () => {
         assert.strictEqual(button2.prop('submitOnEnter'), true);
     });
 
-    it('should set the style of an inactive Tab button with errors', () => {
-        const wrapper = shallow(
-            <TabbedForm
-                location={{ pathname: '/posts/12' }}
-                match={{ url: '/posts/12' }}
-                translate={translate}
-                muiTheme={muiTheme}
-                tabsWithErrors={['tab2']}
-                classes={{ errorTabButton: 'error' }}
-            >
-                <FormTab label="tab1" />
-                <FormTab label="tab2" />
-            </TabbedForm>
-        );
-
-        const tabs = wrapper.find('translate(FormTab)');
-        const tab1 = tabs.at(0);
-        const tab2 = tabs.at(1);
-
-        assert.equal(tab1.prop('className'), null);
-        assert.equal(tab2.prop('className'), 'error');
-    });
-
-    it('should not set the style of an active Tab button with errors', () => {
-        const wrapper = shallow(
-            <TabbedForm
-                location={{ pathname: '/posts/12' }}
-                match={{ url: '/posts/12' }}
-                translate={translate}
-                muiTheme={muiTheme}
-                tabsWithErrors={['tab1']}
-                classes={{ errorTabButton: 'error' }}
-            >
-                <FormTab label="tab1" />
-                <FormTab label="tab2" />
-            </TabbedForm>
-        );
-
-        const tabs = wrapper.find('translate(FormTab)');
-        const tab1 = tabs.at(0);
-        const tab2 = tabs.at(1);
-
-        assert.equal(tab1.prop('className'), null);
-        assert.equal(tab2.prop('className'), null);
-    });
-
     describe('findTabsWithErrors', () => {
         it('should find the tabs containing errors', () => {
             const collectErrors = () => ({

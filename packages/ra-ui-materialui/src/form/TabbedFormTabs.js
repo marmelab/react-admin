@@ -1,9 +1,13 @@
 import React, { Children, cloneElement, isValidElement } from 'react';
 import PropTypes from 'prop-types';
 import Tabs from '@material-ui/core/Tabs';
-import { getTabFullPath } from './TabbedForm';
 
-const TabbedFormTabs = ({ children, currentLocationPath, match, tabsWithErrors, ...rest }) => {
+const getTabFullPath = (tab, index, baseUrl) =>
+    `${baseUrl}${
+        tab.props.path ? `/${tab.props.path}` : index > 0 ? `/${index}` : ''
+    }`;
+
+const TabbedFormTabs = ({ children, classes, currentLocationPath, match, tabsWithErrors, ...rest }) => {
 
     const validTabPaths = Children.toArray(children).map((tab, index) =>
         getTabFullPath(tab, index, match.url)
@@ -47,6 +51,7 @@ const TabbedFormTabs = ({ children, currentLocationPath, match, tabsWithErrors, 
 
 TabbedFormTabs.propTypes = {
     children: PropTypes.node,
+    classes: PropTypes.object,
     currentLocationPath: PropTypes.string,
     match: PropTypes.object,
     tabsWithErrors: PropTypes.arrayOf(PropTypes.string),

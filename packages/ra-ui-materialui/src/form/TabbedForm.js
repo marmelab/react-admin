@@ -110,6 +110,7 @@ export class TabbedForm extends Component {
                 {React.cloneElement(
                     tabs,
                     {
+                        classes,
                         currentLocationPath: location.pathname,
                         match,
                         tabsWithErrors,
