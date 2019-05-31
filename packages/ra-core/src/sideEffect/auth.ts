@@ -29,6 +29,12 @@ const nextPathnameSelector = state => {
 };
 
 const currentPathnameSelector = state => state.router.location;
+const errorMessageSelector = (error, defaultMessage) =>
+    typeof error === 'string'
+        ? error
+        : typeof error === 'undefined' || !error.message
+        ? defaultMessage
+        : error.message;
 
 export default (authProvider?: AuthProvider) => {
     if (!authProvider) {
@@ -58,12 +64,10 @@ export default (authProvider?: AuthProvider) => {
                         error: e,
                         meta: { auth: true },
                     });
-                    const errorMessage =
-                        typeof e === 'string'
-                            ? e
-                            : typeof e === 'undefined' || !e.message
-                            ? 'ra.auth.sign_in_error'
-                            : e.message;
+                    const errorMessage = errorMessageSelector(
+                        e,
+                        'ra.auth.sign_in_error'
+                    );
                     yield put(showNotification(errorMessage, 'warning'));
                 }
                 break;
@@ -79,6 +83,11 @@ export default (authProvider?: AuthProvider) => {
                             state: { nextPathname: meta.pathName },
                         })
                     );
+                    const errorMessage = errorMessageSelector(
+                        error,
+                        'ra.auth.auth_check_error'
+                    );
+                    yield put(showNotification(errorMessage, 'warning'));
                 }
                 break;
             }
