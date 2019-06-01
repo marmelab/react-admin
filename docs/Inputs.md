@@ -456,13 +456,16 @@ Lastly, use the `options` attribute if you want to override any of Material UI's
 
 {% raw %}
 ```jsx
+import { FavoriteBorder, Favorite } from '@material-ui/icons';
+
 <CheckboxGroupInput source="category" options={{
-    labelPosition: 'right'
+    icon: <FavoriteBorder />,
+    checkedIcon: <Favorite />
 }} />
 ```
 {% endraw %}
 
-Refer to [Material UI Checkbox documentation](http://www.material-ui.com/#/components/checkbox) for more details.
+Refer to [Material UI Checkbox documentation](https://v1-5-0.material-ui.com/api/checkbox/) for more details.
 
 ## `<DateInput>`
 
