@@ -29,7 +29,7 @@ const nextPathnameSelector = state => {
 };
 
 const currentPathnameSelector = state => state.router.location;
-const errorMessageSelector = (error, defaultMessage) =>
+const getErrorMessage = (error, defaultMessage) =>
     typeof error === 'string'
         ? error
         : typeof error === 'undefined' || !error.message
@@ -64,7 +64,7 @@ export default (authProvider?: AuthProvider) => {
                         error: e,
                         meta: { auth: true },
                     });
-                    const errorMessage = errorMessageSelector(
+                    const errorMessage = getErrorMessage(
                         e,
                         'ra.auth.sign_in_error'
                     );
@@ -83,7 +83,7 @@ export default (authProvider?: AuthProvider) => {
                             state: { nextPathname: meta.pathName },
                         })
                     );
-                    const errorMessage = errorMessageSelector(
+                    const errorMessage = getErrorMessage(
                         error,
                         'ra.auth.auth_check_error'
                     );
