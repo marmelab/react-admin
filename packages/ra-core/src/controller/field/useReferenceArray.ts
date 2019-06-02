@@ -1,8 +1,13 @@
 import { FunctionComponent, ReactNode, useEffect, ReactElement } from 'react';
+// @ts-ignore
+import { useDispatch, useSelector } from 'react-redux';
+import get from 'lodash/get';
 
-import useReferenceArray from './useReferenceArray'
+import { crudGetManyAccumulate } from '../../actions';
+import { getReferencesByIds } from '../../reducer/admin/references/oneToMany';
+import { ReduxState, Record, RecordMap, Sort, Identifier } from '../../types';
 
-interface ChildrenFuncParams {
+interface ReferenceArrayProps {
     loadedOnce: boolean;
     ids: Identifier[];
     data: RecordMap;
@@ -10,11 +15,8 @@ interface ChildrenFuncParams {
     currentSort: Sort;
 }
 
-interface Props {
+interface Option {
     basePath: string;
-    children: (params: ChildrenFuncParams) => ReactNode;
-    data?: RecordMap;
-    ids: Identifier[];
     record?: Record;
     reference: string;
     resource: string;
@@ -53,20 +55,45 @@ interface Props {
  * </ReferenceArrayField>
  *
  */
-const ReferenceArrayFieldController: FunctionComponent<Props> = ({
+const useReferenceArray = ({
     resource,
     reference,
     basePath,
     record,
     source,
-}) => {
-    return children(useReferenceArray({
-        resource,
-        reference,
-        basePath,
-        record,
-        source,
-    })) as ReactElement<any>;
+}: Option): ReferenceArrayProps => {
+    const dispatch = useDispatch();
+    const { data, ids } = useSelector(
+        getReferenceArray({ record, source, reference }),
+        [record, source, reference]
+    );
+    useEffect(() => {
+        dispatch(crudGetManyAccumulate(reference, ids));
+    }, [reference, ids, record.id]);
+
+    const referenceBasePath = basePath.replace(resource, reference); // FIXME obviously very weak
+
+    return {
+        // tslint:disable-next-line:triple-equals
+        loadedOnce: data != undefined,
+        ids,
+        data,
+        referenceBasePath,
+        currentSort: {
+            field: 'id',
+            order: 'ASC',
+        },
+    };
 };
 
-export default ReferenceArrayFieldController;
+const getReferenceArray = ({ record, source, reference }) => (
+    state: ReduxState
+) => {
+    const ids = get(record, source) || [];
+    return {
+        data: getReferencesByIds(state, reference, ids),
+        ids,
+    };
+};
+
+export default useReferenceArray;
