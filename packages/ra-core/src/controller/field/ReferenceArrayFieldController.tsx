@@ -1,4 +1,4 @@
-import { Component, ReactNode } from 'react';
+import { FunctionComponent, ReactNode, useEffect, ReactElement } from 'react';
 import { connect } from 'react-redux';
 import get from 'lodash/get';
 
@@ -65,49 +65,36 @@ interface Props {
  * </ReferenceArrayField>
  *
  */
-export class UnconnectedReferenceArrayFieldController extends Component<Props> {
-    componentDidMount() {
-        this.fetchReferences();
-    }
-
-    componentWillReceiveProps(nextProps) {
-        if (
-            (this.props.record || { id: undefined }).id !==
-            (nextProps.record || {}).id
-        ) {
-            this.fetchReferences(nextProps);
-        }
-    }
-
-    fetchReferences({ crudGetManyAccumulate, reference, ids } = this.props) {
+export const UnconnectedReferenceArrayFieldController: FunctionComponent<
+    Props
+> = ({
+    resource,
+    reference,
+    data,
+    ids,
+    children,
+    basePath,
+    crudGetManyAccumulate,
+    record,
+}) => {
+    useEffect(() => {
         crudGetManyAccumulate(reference, ids);
-    }
+    }, [reference, ids, crudGetManyAccumulate, record.id]);
 
-    render() {
-        const {
-            resource,
-            reference,
-            data,
-            ids,
-            children,
-            basePath,
-        } = this.props;
+    const referenceBasePath = basePath.replace(resource, reference); // FIXME obviously very weak
 
-        const referenceBasePath = basePath.replace(resource, reference); // FIXME obviously very weak
-
-        return children({
-            // tslint:disable-next-line:triple-equals
-            loadedOnce: data != undefined,
-            ids,
-            data,
-            referenceBasePath,
-            currentSort: {
-                field: 'id',
-                order: 'ASC',
-            },
-        });
-    }
-}
+    return children({
+        // tslint:disable-next-line:triple-equals
+        loadedOnce: data != undefined,
+        ids,
+        data,
+        referenceBasePath,
+        currentSort: {
+            field: 'id',
+            order: 'ASC',
+        },
+    }) as ReactElement<any>;
+};
 
 const mapStateToProps = (state: ReduxState, props: Props) => {
     const { record, source, reference } = props;
