@@ -13,8 +13,6 @@ interface ChildrenFuncParams {
 interface Props {
     basePath: string;
     children: (params: ChildrenFuncParams) => ReactNode;
-    data?: RecordMap;
-    ids: Identifier[];
     record?: Record;
     reference: string;
     resource: string;
@@ -59,6 +57,7 @@ const ReferenceArrayFieldController: FunctionComponent<Props> = ({
     basePath,
     record,
     source,
+    children,
 }) => {
     return children(useReferenceArray({
         resource,
