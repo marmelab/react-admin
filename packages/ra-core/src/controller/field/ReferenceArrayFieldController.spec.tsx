@@ -59,7 +59,7 @@ describe('<ReferenceArrayFieldController />', () => {
                             data: {
                                 2: {
                                     id: 2,
-                                    value: 'reference2',
+                                    title: 'hello',
                                 },
                             },
                         },
@@ -75,7 +75,7 @@ describe('<ReferenceArrayFieldController />', () => {
             data: {
                 2: {
                     id: 2,
-                    value: 'reference2',
+                    title: 'hello',
                 },
             },
             ids: [1, 2],

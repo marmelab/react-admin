@@ -12,7 +12,6 @@ interface ReferenceArrayProps {
     ids: Identifier[];
     data: RecordMap;
     referenceBasePath: string;
-    currentSort: Sort;
 }
 
 interface Option {
@@ -24,36 +23,38 @@ interface Option {
 }
 
 /**
- * A container component that fetches records from another resource specified
+ * @typedef ReferenceArrayProps
+ * @type {Object}
+ * @property {boolean} loadedOnce: boolean indicating if the reference has already beeen loaded
+ * @property {Array} ids: the list of ids.
+ * @property {Object} data: Object holding the reference data by their ids
+ * @property {string} referenceBasePath basePath of the reference
+ */
+
+/**
+ * Hook that fetches records from another resource specified
  * by an array of *ids* in current record.
  *
- * You must define the fields to be passed to the iterator component as children.
+ * @example
  *
- * @example Display all the products of the current order as datagrid
- * // order = {
- * //   id: 123,
- * //   product_ids: [456, 457, 458],
- * // }
- * <ReferenceArrayField label="Products" reference="products" source="product_ids">
- *     <Datagrid>
- *         <TextField source="id" />
- *         <TextField source="description" />
- *         <NumberField source="price" options={{ style: 'currency', currency: 'USD' }} />
- *         <EditButton />
- *     </Datagrid>
- * </ReferenceArrayField>
+ * const { loadedOnce, data, ids, referenceBasePath, currentSort } = useReferenceArray({
+ *      basePath: 'resource';
+ *      record: { referenceIds: ['id1', 'id2']};
+ *      reference: 'reference';
+ *      resource: 'resource';
+ *      source: 'referenceIds';
+ * });
  *
- * @example Display all the categories of the current product as a list of chips
- * // product = {
- * //   id: 456,
- * //   category_ids: [11, 22, 33],
- * // }
- * <ReferenceArrayField label="Categories" reference="categories" source="category_ids">
- *     <SingleFieldList>
- *         <ChipField source="name" />
- *     </SingleFieldList>
- * </ReferenceArrayField>
+ * @param {Object} option
+ * @param {boolean} option.allowEmpty do we allow for no referenced record (default to false)
+ * @param {string} option.basePath basepath to current resource
+ * @param {string | false} option.linkType The type of the link toward the referenced record. edit, show of false for no link (default to edit)
+ * @param {Object} option.record The The current resource record
+ * @param {string} option.reference The linked resource name
+ * @param {string} option.resource The current resource name
+ * @param {string} option.source The key of the linked resource identifier
  *
+ * @returns {ReferenceProps} The reference props
  */
 const useReferenceArray = ({
     resource,
@@ -79,10 +80,6 @@ const useReferenceArray = ({
         ids,
         data,
         referenceBasePath,
-        currentSort: {
-            field: 'id',
-            order: 'ASC',
-        },
     };
 };
 

@@ -1,6 +1,7 @@
-import { FunctionComponent, ReactNode, useEffect, ReactElement } from 'react';
+import { FunctionComponent, ReactNode, ReactElement } from 'react';
 
-import useReferenceArray from './useReferenceArray'
+import useReferenceArray from './useReferenceArray';
+import { Identifier, RecordMap, Record, Sort } from '../..';
 
 interface ChildrenFuncParams {
     loadedOnce: boolean;
@@ -59,13 +60,19 @@ const ReferenceArrayFieldController: FunctionComponent<Props> = ({
     source,
     children,
 }) => {
-    return children(useReferenceArray({
-        resource,
-        reference,
-        basePath,
-        record,
-        source,
-    })) as ReactElement<any>;
+    return children({
+        currentSort: {
+            field: 'id',
+            order: 'ASC',
+        },
+        ...useReferenceArray({
+            resource,
+            reference,
+            basePath,
+            record,
+            source,
+        }),
+    }) as ReactElement<any>;
 };
 
 export default ReferenceArrayFieldController;
