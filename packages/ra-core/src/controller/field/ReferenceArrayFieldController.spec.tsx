@@ -7,80 +7,80 @@ import { crudGetManyAccumulate } from '../../actions';
 
 describe('<ReferenceArrayFieldController />', () => {
     afterEach(cleanup);
-    // it('should set the loadedOnce prop to false when related records are not yet fetched', () => {
-    //     const children = jest.fn().mockReturnValue('child');
+    it('should set the loadedOnce prop to false when related records are not yet fetched', () => {
+        const children = jest.fn().mockReturnValue('child');
 
-    //     renderWithRedux(
-    //         <ReferenceArrayFieldController
-    //             resource="foo"
-    //             reference="bar"
-    //             basePath=""
-    //             record={{ id: 1, barIds: [1, 2] }}
-    //             source="barIds"
-    //         >
-    //             {children}
-    //         </ReferenceArrayFieldController>,
-    //         {
-    //             admin: {
-    //                 resources: {
-    //                     bar: {
-    //                         data: {},
-    //                     },
-    //                 },
-    //             },
-    //         }
-    //     );
-    //     expect(children.mock.calls[0][0]).toEqual({
-    //         currentSort: { field: 'id', order: 'ASC' },
-    //         loadedOnce: false,
-    //         referenceBasePath: '',
-    //         data: null,
-    //         ids: [1, 2],
-    //     });
-    // });
+        renderWithRedux(
+            <ReferenceArrayFieldController
+                resource="foo"
+                reference="bar"
+                basePath=""
+                record={{ id: 1, barIds: [1, 2] }}
+                source="barIds"
+            >
+                {children}
+            </ReferenceArrayFieldController>,
+            {
+                admin: {
+                    resources: {
+                        bar: {
+                            data: {},
+                        },
+                    },
+                },
+            }
+        );
+        expect(children.mock.calls[0][0]).toEqual({
+            currentSort: { field: 'id', order: 'ASC' },
+            loadedOnce: false,
+            referenceBasePath: '',
+            data: null,
+            ids: [1, 2],
+        });
+    });
 
-    // it('should set the loadedOnce prop to true when at least one related record is found', () => {
-    //     const children = jest.fn().mockReturnValue('child');
+    it('should set the loadedOnce prop to true when at least one related record is found', () => {
+        const children = jest.fn().mockReturnValue('child');
 
-    //     renderWithRedux(
-    //         <ReferenceArrayFieldController
-    //             record={{ id: 1, barIds: [1, 2] }}
-    //             resource="foo"
-    //             reference="bar"
-    //             source="barIds"
-    //             basePath=""
-    //         >
-    //             {children}
-    //         </ReferenceArrayFieldController>,
-    //         {
-    //             admin: {
-    //                 resources: {
-    //                     bar: {
-    //                         data: {
-    //                             2: {
-    //                                 id: 2,
-    //                                 value: 'reference2',
-    //                             },
-    //                         },
-    //                     },
-    //                 },
-    //             },
-    //         }
-    //     );
+        renderWithRedux(
+            <ReferenceArrayFieldController
+                record={{ id: 1, barIds: [1, 2] }}
+                resource="foo"
+                reference="bar"
+                source="barIds"
+                basePath=""
+            >
+                {children}
+            </ReferenceArrayFieldController>,
+            {
+                admin: {
+                    resources: {
+                        bar: {
+                            data: {
+                                2: {
+                                    id: 2,
+                                    value: 'reference2',
+                                },
+                            },
+                        },
+                    },
+                },
+            }
+        );
 
-    //     expect(children.mock.calls[0][0]).toEqual({
-    //         currentSort: { field: 'id', order: 'ASC' },
-    //         loadedOnce: true,
-    //         referenceBasePath: '',
-    //         data: {
-    //             2: {
-    //                 id: 2,
-    //                 value: 'reference2',
-    //             },
-    //         },
-    //         ids: [1, 2],
-    //     });
-    // });
+        expect(children.mock.calls[0][0]).toEqual({
+            currentSort: { field: 'id', order: 'ASC' },
+            loadedOnce: true,
+            referenceBasePath: '',
+            data: {
+                2: {
+                    id: 2,
+                    value: 'reference2',
+                },
+            },
+            ids: [1, 2],
+        });
+    });
 
     it('should set the data prop to the loaded data when it has been fetched', () => {
         const children = jest.fn().mockReturnValue('child');
