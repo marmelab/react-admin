@@ -1,17 +1,11 @@
 import { FunctionComponent, ReactNode, useEffect, ReactElement } from 'react';
-import { connect } from 'react-redux';
+// @ts-ignore
+import { useDispatch, useSelector } from 'react-redux';
 import get from 'lodash/get';
 
-import { crudGetManyAccumulate as crudGetManyAccumulateAction } from '../../actions';
+import { crudGetManyAccumulate } from '../../actions';
 import { getReferencesByIds } from '../../reducer/admin/references/oneToMany';
-import {
-    ReduxState,
-    Record,
-    RecordMap,
-    Dispatch,
-    Sort,
-    Identifier,
-} from '../../types';
+import { ReduxState, Record, RecordMap, Sort, Identifier } from '../../types';
 
 interface ChildrenFuncParams {
     loadedOnce: boolean;
@@ -24,7 +18,6 @@ interface ChildrenFuncParams {
 interface Props {
     basePath: string;
     children: (params: ChildrenFuncParams) => ReactNode;
-    crudGetManyAccumulate: Dispatch<typeof crudGetManyAccumulateAction>;
     data?: RecordMap;
     ids: Identifier[];
     record?: Record;
@@ -65,21 +58,22 @@ interface Props {
  * </ReferenceArrayField>
  *
  */
-export const UnconnectedReferenceArrayFieldController: FunctionComponent<
-    Props
-> = ({
+export const ReferenceArrayFieldController: FunctionComponent<Props> = ({
     resource,
     reference,
-    data,
-    ids,
     children,
     basePath,
-    crudGetManyAccumulate,
     record,
+    source,
 }) => {
+    const dispatch = useDispatch();
+    const { data, ids } = useSelector(
+        getReferenceArray({ record, source, reference }),
+        [record, source, reference]
+    );
     useEffect(() => {
-        crudGetManyAccumulate(reference, ids);
-    }, [reference, ids, crudGetManyAccumulate, record.id]);
+        dispatch(crudGetManyAccumulate(reference, ids));
+    }, [reference, ids, record.id]);
 
     const referenceBasePath = basePath.replace(resource, reference); // FIXME obviously very weak
 
@@ -96,20 +90,14 @@ export const UnconnectedReferenceArrayFieldController: FunctionComponent<
     }) as ReactElement<any>;
 };
 
-const mapStateToProps = (state: ReduxState, props: Props) => {
-    const { record, source, reference } = props;
+const getReferenceArray = ({ record, source, reference }) => (
+    state: ReduxState
+) => {
     const ids = get(record, source) || [];
     return {
         data: getReferencesByIds(state, reference, ids),
         ids,
     };
 };
-
-const ReferenceArrayFieldController = connect(
-    mapStateToProps,
-    {
-        crudGetManyAccumulate: crudGetManyAccumulateAction,
-    }
-)(UnconnectedReferenceArrayFieldController);
 
 export default ReferenceArrayFieldController;
