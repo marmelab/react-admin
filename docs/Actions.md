@@ -288,7 +288,7 @@ React-admin can handle the following side effects:
 - `basePath`: This is not a side effect, but it's used internally to compute redirection paths. Set it when you have a redirection side effect.
 - `refresh`: Force a rerender of the current view (equivalent to pressing the Refresh button). Set to true to enable.
 - `unselectAll`: Unselect all lines in the current datagrid. Set to true to enable.
-- `callback`: Execute an arbitrary function. The value should be the function to execute. React-admin will call the function with an object as parameter (`{ requestPayload, payload, error }`). The `payload` contains the decoded response body when it's successfull. When it's failed, the response body is passed in the `error`.
+- `callback`: Execute an arbitrary function. The value should be the function to execute. React-admin will call the function with an object as parameter (`{ requestPayload, payload, error }`). The `payload` contains the decoded response body when it's successful. When it's failed, the response body is passed in the `error`.
 
 ## Optimistic Rendering and Undo
 
@@ -511,7 +511,7 @@ The side effects accepted in the `meta` field of the action are the same as in t
 - `redirectTo`: Redirect the user to another page. The property value should be the path to redirect the user to.
 - `refresh`: Force a rerender of the current view (equivalent to pressing the Refresh button). Set to true to enable.
 - `unselectAll`: Unselect all lines in the current datagrid. Set to true to enable.
-- `callback`: Execute an arbitrary function. The value should be the function to execute. React-admin will call the function with an object as parameter (`{ requestPayload, payload, error }`). The `payload` contains the decoded response body when it's successfull. When it's failed, the response body is passed in the `error`.
+- `callback`: Execute an arbitrary function. The value should be the function to execute. React-admin will call the function with an object as parameter (`{ requestPayload, payload, error }`). The `payload` contains the decoded response body when it's successful. When it's failed, the response body is passed in the `error`.
 - `basePath`: This is not a side effect, but it's used internally to compute redirection paths. Set it when you have a redirection side effect.
 
 ## Making An Action Undoable
