@@ -33,6 +33,17 @@ export default (component, initialState = {}) => {
 
     return {
         ...renderResult,
+        rerender: newComponent => {
+            return renderResult.rerender(
+                <TestContext initialState={initialState} enableReducers>
+                    {({ store }) => {
+                        dispatch = jest.spyOn(store, 'dispatch');
+                        reduxStore = store;
+                        return newComponent;
+                    }}
+                </TestContext>
+            );
+        },
         dispatch,
         reduxStore,
     };
