@@ -520,11 +520,11 @@ You can also prevent `<ReferenceField>` from adding link to children by setting 
 </ReferenceField>
 ```
 
-You can also use a custom `linkType` function to get a custom path for the children.
+You can also use a custom `linkType` function to get a custom path for the children. This function must accept sourceId and reference as arguments.
 
 ```jsx
 // Custom path
-<ReferenceField label="User" source="userId" reference="users" linkType={() => '/my/path'}>
+<ReferenceField label="User" source="userId" reference="users" linkType={(sourceId, reference) => `/my/path/to/${reference}/${sourceId}`}>
     <TextField source="name" />
 </ReferenceField>
 ```
