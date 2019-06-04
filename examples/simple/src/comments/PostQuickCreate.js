@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { withStyles } from '@material-ui/core/styles';
+import { useSelector, useDispatch } from 'react-redux';
+import { makeStyles } from '@material-ui/core/styles';
 import {
     CREATE,
     LongTextInput,
@@ -10,6 +10,7 @@ import {
     TextInput,
     Toolbar,
     required,
+    showNotification,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
 
 import CancelButton from './PostQuickCreateCancelButton';
@@ -28,65 +29,64 @@ PostQuickCreateToolbar.propTypes = {
     onCancel: PropTypes.func.isRequired,
 };
 
-const styles = {
+const useStyles = makeStyles({
     form: { padding: 0 },
-};
+});
 
-class PostQuickCreateView extends Component {
-    static propTypes = {
-        dispatch: PropTypes.func.isRequired,
-        onCancel: PropTypes.func.isRequired,
-        onSave: PropTypes.func.isRequired,
-        submitting: PropTypes.bool.isRequired,
-    };
+const PostQuickCreate = ({ onCancel, onSave }) => {
+    const classes = useStyles();
+    const dispatch = useDispatch();
+    const submitting = useSelector(state => state.admin.loading > 0);
 
-    handleSave = values => {
-        const { dispatch, onSave } = this.props;
-        dispatch({
-            type: 'QUICK_CREATE',
-            payload: { data: values },
-            meta: {
-                fetch: CREATE,
-                resource: 'posts',
-                onSuccess: {
-                    callback: ({ payload: { data } }) => onSave(data),
+    const handleSave = useCallback(
+        values => {
+            dispatch({
+                type: 'QUICK_CREATE',
+                payload: { data: values },
+                meta: {
+                    fetch: CREATE,
+                    resource: 'posts',
+                    onSuccess: {
+                        callback: ({ payload: { data } }) => onSave(data),
+                    },
+                    onError: {
+                        callback: ({ error }) => {
+                            dispatch(showNotification(error.message, 'error'));
+                        },
+                    },
                 },
-                onError: {
-                    callback: ({ error }) => this.setState({ error }),
-                },
-            },
-        });
-    };
+            });
+        },
+        [onSave],
+    );
 
-    render() {
-        const { classes, submitting, onCancel } = this.props;
-
-        return (
-            <SimpleForm
-                form="post-create"
-                save={this.handleSave}
-                saving={submitting}
-                redirect={false}
-                toolbar={props => (
+    return (
+        <SimpleForm
+            form="post-create"
+            save={handleSave}
+            saving={submitting}
+            redirect={false}
+            toolbar={useMemo(
+                () => props => (
                     <PostQuickCreateToolbar
                         onCancel={onCancel}
                         submitting={submitting}
                         {...props}
                     />
-                )}
-                classes={{ form: classes.form }}
-            >
-                <TextInput source="title" validate={required()} />
-                <LongTextInput source="teaser" validate={required()} />
-            </SimpleForm>
-        );
-    }
-}
+                ),
+                [onCancel, submitting],
+            )}
+            classes={{ form: classes.form }}
+        >
+            <TextInput source="title" validate={required()} />
+            <LongTextInput source="teaser" validate={required()} />
+        </SimpleForm>
+    );
+};
 
-const mapStateToProps = state => ({
-    submitting: state.admin.loading > 0,
-});
+PostQuickCreate.propTypes = {
+    onCancel: PropTypes.func.isRequired,
+    onSave: PropTypes.func.isRequired,
+};
 
-export default connect(mapStateToProps)(
-    withStyles(styles)(PostQuickCreateView)
-);
+export default PostQuickCreate;

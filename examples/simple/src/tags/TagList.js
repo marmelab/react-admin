@@ -5,13 +5,11 @@ import {
     List,
     SaveButton,
     ShowButton,
-    TextField,
     TextInput,
 } from 'react-admin';
 import {
     DragPreview,
     IgnoreFormProps,
-    NodeView,
     NodeForm,
     Tree,
     NodeActions,

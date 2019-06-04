@@ -1,6 +1,6 @@
 import React, { Fragment, cloneElement, Children } from 'react';
 import PropTypes from 'prop-types';
-import { ReferenceManyFieldController, ComponentPropType } from 'ra-core';
+import { useSortState, usePaginationState, useReferenceMany, ComponentPropType } from 'ra-core';
 
 export const ReferenceManyFieldView = ({
     children,
@@ -106,22 +106,53 @@ ReferenceManyFieldView.propTypes = {
  *    ...
  * </ReferenceManyField>
  */
-export const ReferenceManyField = ({ children, ...props }) => {
+export const ReferenceManyField = props => {
+    const {
+        children,
+        sort: initialSort,
+        perPage: initialPerPage,
+        resource,
+        reference,
+        record,
+        target,
+        filter,
+        source,
+        basePath,
+    } = props;
     if (React.Children.count(children) !== 1) {
         throw new Error(
             '<ReferenceManyField> only accepts a single child (like <Datagrid>)'
         );
     }
+    const { sort, setSort } = useSortState(initialSort);
+    const { page, perPage, setPage, setPerPage } = usePaginationState(initialPerPage);
+
+    const useReferenceManyProps = useReferenceMany({
+        resource,
+        reference,
+        record,
+        target,
+        filter,
+        source,
+        basePath,
+        page,
+        perPage,
+        sort,
+    });
 
     return (
-        <ReferenceManyFieldController {...props}>
-            {controllerProps => (
-                <ReferenceManyFieldView
-                    {...props}
-                    {...{ children, ...controllerProps }}
-                />
-            )}
-        </ReferenceManyFieldController>
+        <ReferenceManyFieldView
+            {...props}
+            {...{
+                currentSort: sort,
+                page,
+                perPage,
+                setPage,
+                setPerPage,
+                setSort,
+                ...useReferenceManyProps
+            }}
+        />
     );
 };
 
