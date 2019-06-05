@@ -2,7 +2,7 @@ import React, { Component, isValidElement } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import MuiTab from '@material-ui/core/Tab';
-import { translate, ComponentPropType } from 'ra-core';
+import { translate } from 'ra-core';
 import classnames from 'classnames';
 
 import Labeled from '../input/Labeled';
@@ -34,11 +34,11 @@ const sanitizeRestProps = ({
  *     export const PostShow = (props) => (
  *         <Show {...props}>
  *             <TabbedShowLayout>
- *                 <Tab label="Content" icon={FavoriteIcon}>
+ *                 <Tab label="Content" icon={<FavoriteIcon />}>
  *                     <TextField source="title" />
  *                     <TextField source="subtitle" />
  *                </Tab>
- *                 <Tab label="Metadata" icon={PersonIcon}>
+ *                 <Tab label="Metadata" icon={<PersonIcon />}>
  *                     <TextField source="category" />
  *                </Tab>
  *             </TabbedShowLayout>
@@ -59,12 +59,12 @@ const sanitizeRestProps = ({
  *     export default App;
  */
 class Tab extends Component {
-    renderHeader = ({ className, label, icon: Icon, value, translate, ...rest }) => (
+    renderHeader = ({ className, label, icon, value, translate, ...rest }) => (
         <MuiTab
             key={label}
             label={translate(label, { _: label })}
             value={value}
-            icon={Icon ? <Icon /> : null}
+            icon={icon}
             className={classnames('show-tab', className)}
             component={Link}
             to={value}
@@ -128,7 +128,7 @@ Tab.propTypes = {
     contentClassName: PropTypes.string,
     children: PropTypes.node,
     context: PropTypes.oneOf(['header', 'content']),
-    icon: ComponentPropType,
+    icon: PropTypes.element,
     label: PropTypes.string.isRequired,
     translate: PropTypes.func.isRequired,
     value: PropTypes.string,
