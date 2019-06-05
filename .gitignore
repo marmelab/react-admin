@@ -5,8 +5,6 @@ node_modules
 lib
 esm
 es6
-docs/_site/
-docs/.jekyll-metadata
 packages/react-admin/docs
 examples/**/static
 examples/**/dist
