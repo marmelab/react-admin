@@ -7,7 +7,9 @@ import { crudGetManyAccumulate } from '../../actions';
 import { linkToRecord } from '../../util';
 import { Record, ReduxState } from '../../types';
 
-type LinkToFunctionType = (record: Record, reference: string) => string;
+export type LinkToFunctionType = (record: Record, reference: string) => string;
+
+type LinkToType = string | boolean | LinkToFunctionType;
 
 interface Option {
     allowEmpty?: boolean;
@@ -16,8 +18,8 @@ interface Option {
     reference: string;
     resource: string;
     source: string;
-    linkTo: string | boolean | LinkToFunctionType;
-    linkType?: string | boolean | LinkToFunctionType;
+    link: LinkToType;
+    linkType?: LinkToType; // deprecated, use link instead
 }
 
 export interface UseReferenceProps {
@@ -31,7 +33,7 @@ export interface UseReferenceProps {
  * @type {Object}
  * @property {boolean} isLoading: boolean indicating if the reference has loaded
  * @property {Object} referenceRecord: the referenced record.
- * @property {string | false} resourceLinkPath link to the page of the related record (depends on linkTo) (false is no link)
+ * @property {string | false} resourceLinkPath link to the page of the related record (depends on link) (false is no link)
  */
 
 /**
@@ -53,8 +55,8 @@ export interface UseReferenceProps {
  * @param {Object} option
  * @param {boolean} option.allowEmpty do we allow for no referenced record (default to false)
  * @param {string} option.basePath basepath to current resource
- * @param {string | false | LinkToFunctionType} option.linkTo="edit" The link toward the referenced record. 'edit', 'show' or false for no link (default to edit). Alternatively a function that returns a string
- * @param {string | false | LinkToFunctionType} [option.linkType] DEPRECATED : old name for linkTo
+ * @param {string | false | LinkToFunctionType} option.link="edit" The link toward the referenced record. 'edit', 'show' or false for no link (default to edit). Alternatively a function that returns a string
+ * @param {string | false | LinkToFunctionType} [option.linkType] DEPRECATED : old name for link
  * @param {Object} option.record The The current resource record
  * @param {string} option.reference The linked resource name
  * @param {string} option.resource The current resource name
@@ -65,7 +67,7 @@ export interface UseReferenceProps {
 export const useReference = ({
     allowEmpty = false,
     basePath,
-    linkTo = 'edit',
+    link = 'edit',
     linkType,
     record = { id: '' },
     reference,
@@ -83,23 +85,23 @@ export const useReference = ({
         }
     }, [sourceId, reference]);
     const rootPath = basePath.replace(resource, reference);
-    // backcompatibility : keep linkType but with warning
-    const getResourceLinkPath = (linkTo, linkType) => {
-        if (linkType !== undefined) {
-            console.warn("DEPRECATED : argument 'linkType' should be replaced by 'linkTo' in <ReferenceField />")
-            if (!linkType) return false;
-            return typeof linkType === 'function'
-                ? linkType(record, reference)
-                : linkToRecord(rootPath, sourceId, linkType as string);
-        }
-        else if (linkTo) {
-            return typeof linkTo === 'function'
-                ? linkTo(record, reference)
-                : linkToRecord(rootPath, sourceId, linkTo as string);
-        }
-        else return false;
+    // Backward compatibility: keep linkType but with warning
+    const getResourceLinkPath = (linkTo: LinkToType) =>
+        !linkTo
+            ? false
+            : typeof linkTo === 'function'
+            ? linkTo(record, reference)
+            : linkToRecord(rootPath, sourceId, linkTo as string);
+
+    if (linkType !== undefined) {
+        console.warn(
+            "The 'linkType' prop is deprecated and should be named to 'link' in <ReferenceField />"
+        );
     }
-    const resourceLinkPath = getResourceLinkPath(linkTo, linkType)
+
+    const resourceLinkPath = getResourceLinkPath(
+        linkType !== undefined ? linkType : link
+    );
 
     return {
         isLoading: !referenceRecord && !allowEmpty,

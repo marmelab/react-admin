@@ -101,33 +101,33 @@ ReferenceFieldView.propTypes = {
  * By default, includes a link to the <Edit> page of the related record
  * (`/users/:userId` in the previous example).
  *
- * Set the `linkTo` prop to "show" to link to the <Show> page instead.
+ * Set the `link` prop to "show" to link to the <Show> page instead.
  *
  * @example
- * <ReferenceField label="User" source="userId" reference="users" linkTo="show">
+ * <ReferenceField label="User" source="userId" reference="users" link="show">
  *     <TextField source="name" />
  * </ReferenceField>
  *
  * @default
  * You can also prevent `<ReferenceField>` from adding link to children by setting
- * `linkTo` to false.
+ * `link` to false.
  *
  * @example
- * <ReferenceField label="User" source="userId" reference="users" linkTo={false}>
+ * <ReferenceField label="User" source="userId" reference="users" link={false}>
  *     <TextField source="name" />
  * </ReferenceField>
  * 
  * @default
- * Alternatively, you can also pass a custom function to `LinkTo`. It must take reference and record
+ * Alternatively, you can also pass a custom function to `link`. It must take reference and record
  * as arguments and return a string
  * 
  * @example
- * <ReferenceField label="User" source="userId" reference="users" linkTo={(reference, record) => "/path/to/${reference}/${record}"}>
+ * <ReferenceField label="User" source="userId" reference="users" link={(reference, record) => "/path/to/${reference}/${record}"}>
  *     <TextField source="name" />
  * </ReferenceField>
  * 
  * @default
- * In previous versions of React-Admin, the prop `linkType` was used. It is now deprecated and replaced with `linkTo`. However
+ * In previous versions of React-Admin, the prop `linkType` was used. It is now deprecated and replaced with `link`. However
  * backward-compatibility is still kept
  */
 
@@ -166,13 +166,13 @@ ReferenceField.propTypes = {
     source: PropTypes.string.isRequired,
     translateChoice: PropTypes.func,
     linkType: PropTypes.oneOfType([PropTypes.string, PropTypes.bool, PropTypes.func]),
-    linkTo: PropTypes.oneOfType([PropTypes.string, PropTypes.bool, PropTypes.func]).isRequired,
+    link: PropTypes.oneOfType([PropTypes.string, PropTypes.bool, PropTypes.func]).isRequired,
 };
 
 ReferenceField.defaultProps = {
     allowEmpty: false,
     classes: {},
-    linkTo: 'edit',
+    link: 'edit',
     record: {},
 };
 
