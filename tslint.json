@@ -29,7 +29,7 @@
         "variable-name": false,
         "prettier": [
             true,
-            "./.prettierrc"
+            "./.prettierrc.js"
         ],
         "interface-name": [true, "never-prefix"],
         "member-access": false
