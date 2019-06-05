@@ -15,33 +15,34 @@ import classnames from 'classnames';
 
 import { addField, translate, FieldTitle } from 'ra-core';
 
-const styles = theme => createStyles({
-    container: {
-        flexGrow: 1,
-        position: 'relative',
-    },
-    root: {},
-    suggestionsContainerOpen: {
-        position: 'absolute',
-        marginBottom: theme.spacing.unit * 3,
-        zIndex: 2,
-    },
-    suggestionsPaper: {
-        maxHeight: '50vh',
-        overflowY: 'auto',
-    },
-    suggestion: {
-        display: 'block',
-        fontFamily: theme.typography.fontFamily,
-    },
-    suggestionText: { fontWeight: 300 },
-    highlightedSuggestionText: { fontWeight: 500 },
-    suggestionsList: {
-        margin: 0,
-        padding: 0,
-        listStyleType: 'none',
-    },
-});
+const styles = theme =>
+    createStyles({
+        container: {
+            flexGrow: 1,
+            position: 'relative',
+        },
+        root: {},
+        suggestionsContainerOpen: {
+            position: 'absolute',
+            marginBottom: theme.spacing.unit * 3,
+            zIndex: 2,
+        },
+        suggestionsPaper: {
+            maxHeight: '50vh',
+            overflowY: 'auto',
+        },
+        suggestion: {
+            display: 'block',
+            fontFamily: theme.typography.fontFamily,
+        },
+        suggestionText: { fontWeight: 300 },
+        highlightedSuggestionText: { fontWeight: 500 },
+        suggestionsList: {
+            margin: 0,
+            padding: 0,
+            listStyleType: 'none',
+        },
+    });
 
 /**
  * An Input component for an autocomplete field, using an array of objects for the options
@@ -193,7 +194,16 @@ export class AutocompleteInput extends React.Component {
 
         const inputValue = this.getSuggestionValue(suggestion);
         if (input && input.onChange) {
-            input.onChange(inputValue);
+            this.setState(
+                {
+                    dirty: false,
+                    inputValue,
+                    selectedItem: suggestion,
+                },
+                () => {
+                    input.onChange(inputValue);
+                }
+            );
         }
 
         if (method === 'enter') {
@@ -222,6 +232,7 @@ export class AutocompleteInput extends React.Component {
     handleChange = (event, { newValue, method }) => {
         switch (method) {
             case 'type':
+            case 'click':
             case 'escape':
                 {
                     this.handleMatchSuggestionOrFilter(newValue);
@@ -510,6 +521,7 @@ AutocompleteInput.propTypes = {
     choices: PropTypes.arrayOf(PropTypes.object),
     classes: PropTypes.object,
     className: PropTypes.string,
+    focusInputOnSuggestionClick: PropTypes.bool,
     InputProps: PropTypes.object,
     input: PropTypes.object,
     isRequired: PropTypes.bool,
@@ -531,6 +543,7 @@ AutocompleteInput.propTypes = {
 
 AutocompleteInput.defaultProps = {
     choices: [],
+    focusInputOnSuggestionClick: false,
     options: {},
     optionText: 'name',
     optionValue: 'id',
