@@ -242,13 +242,10 @@ export class UnconnectedListController extends Component<
     getQuery(props = this.props) {
         const query: Partial<ListParams> =
             Object.keys(props.query).length > 0
-                ? mergeWithDefaultFilters(props.query, props.filter)
+                ? props.query
                 : hasCustomParams(props.params)
-                ? mergeWithDefaultFilters(props.params, props.filter)
-                : mergeWithDefaultFilters(
-                      { filter: props.filterDefaultValues || {} },
-                      props.filter
-                  );
+                ? props.params
+                : { filter: props.filterDefaultValues || {} };
 
         if (!query.sort) {
             query.sort = props.sort.field;
@@ -280,7 +277,7 @@ export class UnconnectedListController extends Component<
             this.props.resource,
             pagination,
             { field: sort, order },
-            filter
+            { ...filter, ...props.filter }
         );
     }
 
@@ -415,14 +412,6 @@ const hasCustomParams = (params: ListParams) =>
         params.page !== 1 ||
         params.perPage != null ||
         params.sort != null);
-
-const mergeWithDefaultFilters = (
-    params: Partial<ListParams>,
-    defaultFilters: any
-) => ({
-    ...params,
-    filter: { ...params.filter, ...defaultFilters },
-});
 
 const injectedProps = [
     'basePath',
