@@ -96,7 +96,7 @@ export class RichTextInput extends Component {
                 className="ra-rich-text-input"
             >
                 <div data-testid="quill" ref={this.updateDivRef} />
-                {touched && error && <FormHelperText error>{error}</FormHelperText>}
+                {touched && error && <FormHelperText error className="ra-rich-text-input-error">{error}</FormHelperText>}
                 {helperText && <FormHelperText>{helperText}</FormHelperText>}
             </FormControl>
         );
