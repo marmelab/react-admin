@@ -1,4 +1,3 @@
-/* eslint no-console: ["error", { allow: ["warn", "error"] }] */
 import {
     Component,
     isValidElement,
@@ -207,24 +206,14 @@ export class UnconnectedListController extends Component<
 
     componentWillReceiveProps(nextProps: Props & EnhancedProps) {
         if (
+            nextProps.version !== this.props.version ||
             nextProps.resource !== this.props.resource ||
-            nextProps.query.sort !== this.props.query.sort ||
-            nextProps.query.order !== this.props.query.order ||
-            nextProps.query.page !== this.props.query.page ||
-            nextProps.query.perPage !== this.props.query.perPage ||
-            !isEqual(nextProps.query.filter, this.props.query.filter) ||
+            !isEqual(nextProps.query, this.props.query) ||
             !isEqual(nextProps.filter, this.props.filter) ||
             !isEqual(nextProps.sort, this.props.sort) ||
             !isEqual(nextProps.perPage, this.props.perPage)
         ) {
-            this.updateData(
-                Object.keys(nextProps.query).length > 0
-                    ? nextProps.query
-                    : nextProps.params
-            );
-        }
-        if (nextProps.version !== this.props.version) {
-            this.updateData();
+            this.updateData(nextProps);
         }
     }
 
@@ -245,51 +234,28 @@ export class UnconnectedListController extends Component<
     }
 
     /**
-     * Check if user has already set custom sort, page, or filters for this list
-     *
-     * User params come from the Redux store as the params props. By default,
-     * this object is:
-     *
-     * { filter: {}, order: null, page: 1, perPage: null, sort: null }
-     *
-     * To check if the user has custom params, we must compare the params
-     * to these initial values.
-     *
-     * @param {object} params
-     */
-    hasCustomParams(params: ListParams) {
-        return (
-            params &&
-            params.filter &&
-            (Object.keys(params.filter).length > 0 ||
-                params.order != null ||
-                params.page !== 1 ||
-                params.perPage != null ||
-                params.sort != null)
-        );
-    }
-
-    /**
      * Merge list params from 4 different sources:
      *   - the query string
      *   - the params stored in the state (from previous navigation)
-     *   - the filter defaultValues
      *   - the props passed to the List component
      */
-    getQuery() {
+    getQuery(props = this.props) {
         const query: Partial<ListParams> =
-            Object.keys(this.props.query).length > 0
-                ? this.props.query
-                : this.hasCustomParams(this.props.params)
-                ? { ...this.props.params }
-                : { filter: this.props.filterDefaultValues || {} };
+            Object.keys(props.query).length > 0
+                ? mergeWithDefaultFilters(props.query, props.filter)
+                : hasCustomParams(props.params)
+                ? mergeWithDefaultFilters(props.params, props.filter)
+                : mergeWithDefaultFilters(
+                      { filter: props.filterDefaultValues || {} },
+                      props.filter
+                  );
 
         if (!query.sort) {
-            query.sort = this.props.sort.field;
-            query.order = this.props.sort.order;
+            query.sort = props.sort.field;
+            query.order = props.sort.order;
         }
         if (!query.perPage) {
-            query.perPage = this.props.perPage;
+            query.perPage = props.perPage;
         }
         if (!query.page) {
             query.page = 1;
@@ -302,19 +268,19 @@ export class UnconnectedListController extends Component<
         return query.filter || {};
     }
 
-    updateData(query?: any) {
-        const params = query || this.getQuery();
-        const { sort, order, page = 1, perPage, filter } = params;
+    updateData(props = this.props) {
+        const query = this.getQuery(props);
+
+        const { sort, order, page = 1, perPage, filter } = query;
         const pagination = {
-            page: parseInt(page, 10),
-            perPage: parseInt(perPage, 10),
+            page,
+            perPage,
         };
-        const permanentFilter = this.props.filter;
         this.props.crudGetList(
             this.props.resource,
             pagination,
             { field: sort, order },
-            { ...filter, ...permanentFilter }
+            filter
         );
     }
 
@@ -428,6 +394,35 @@ export class UnconnectedListController extends Component<
         });
     }
 }
+
+/**
+ * Check if user has already set custom sort, page, or filters for this list
+ *
+ * User params come from the Redux store as the params props. By default,
+ * this object is:
+ *
+ * { filter: {}, order: null, page: 1, perPage: null, sort: null }
+ *
+ * To check if the user has custom params, we must compare the params
+ * to these initial values.
+ *
+ * @param {object} params
+ */
+const hasCustomParams = (params: ListParams) =>
+    params &&
+    ((params.filter && Object.keys(params.filter).length > 0) ||
+        params.order != null ||
+        params.page !== 1 ||
+        params.perPage != null ||
+        params.sort != null);
+
+const mergeWithDefaultFilters = (
+    params: Partial<ListParams>,
+    defaultFilters: any
+) => ({
+    ...params,
+    filter: { ...params.filter, ...defaultFilters },
+});
 
 const injectedProps = [
     'basePath',
