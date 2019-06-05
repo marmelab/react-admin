@@ -495,10 +495,10 @@ With this configuration, `<ReferenceField>` wraps the user's name in a link to t
 </Admin>
 ```
 
-To change the link from the `<Edit>` page to the `<Show>` page, set the `linkType` prop to "show".
+To change the link from the `<Edit>` page to the `<Show>` page, set the `linkTo` prop to "show".
 
 ```jsx
-<ReferenceField label="User" source="userId" reference="users" linkType="show">
+<ReferenceField label="User" source="userId" reference="users" linkTo="show">
     <TextField source="name" />
 </ReferenceField>
 ```
@@ -511,20 +511,20 @@ By default, `<ReferenceField>` is sorted by its `source`. To specify another att
 </ReferenceField>
 ```
 
-You can also prevent `<ReferenceField>` from adding link to children by setting `linkType` to `false`.
+You can also prevent `<ReferenceField>` from adding link to children by setting `linkTo` to `false`.
 
 ```jsx
 // No link
-<ReferenceField label="User" source="userId" reference="users" linkType={false}>
+<ReferenceField label="User" source="userId" reference="users" linkTo={false}>
     <TextField source="name" />
 </ReferenceField>
 ```
 
-You can also use a custom `linkType` function to get a custom path for the children. This function must accept sourceId and reference as arguments.
+You can also use a custom `linkTo` function to get a custom path for the children. This function must accept `record` and `reference` as arguments. On previous versions of React-Admin, this prop was named `LinkType`, however you should migrate it to `linkTo`.
 
 ```jsx
 // Custom path
-<ReferenceField label="User" source="userId" reference="users" linkType={(sourceId, reference) => `/my/path/to/${reference}/${sourceId}`}>
+<ReferenceField label="User" source="userId" reference="users" linkTo={(record, reference) => `/my/path/to/${reference}/${record.id}`}>
     <TextField source="name" />
 </ReferenceField>
 ```
