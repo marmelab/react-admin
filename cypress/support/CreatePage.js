@@ -9,6 +9,7 @@ export default url => ({
             return `.create-page ${type}[name='${name}']`
         },
         inputs: `.ra-input`,
+        richTextInputError: '.create-page .ra-rich-text-input-error',
         snackbar: 'div[role="alertdialog"]',
         submitButton: ".create-page div[role='toolbar'] button[type='submit']",
         submitAndShowButton:
