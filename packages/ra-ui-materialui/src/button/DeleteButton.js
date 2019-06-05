@@ -22,7 +22,7 @@ DeleteButton.propTypes = {
     ]),
     resource: PropTypes.string,
     undoable: PropTypes.bool,
-    icon: ComponentPropType,
+    icon: PropTypes.element,
 };
 
 DeleteButton.defaultProps = {

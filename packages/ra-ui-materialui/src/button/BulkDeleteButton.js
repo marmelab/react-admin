@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ComponentPropType } from 'ra-core';
 import BulkDeleteWithConfirmButton from './BulkDeleteWithConfirmButton';
 import BulkDeleteWithUndoButton from './BulkDeleteWithUndoButton';
 
@@ -17,7 +16,7 @@ BulkDeleteButton.propTypes = {
     resource: PropTypes.string.isRequired,
     selectedIds: PropTypes.arrayOf(PropTypes.any).isRequired,
     undoable: PropTypes.bool,
-    icon: ComponentPropType,
+    icon: PropTypes.element,
 };
 
 BulkDeleteButton.defaultProps = {

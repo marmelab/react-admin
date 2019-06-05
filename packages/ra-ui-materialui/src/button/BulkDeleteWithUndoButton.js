@@ -5,7 +5,7 @@ import compose from 'recompose/compose';
 import ActionDelete from '@material-ui/icons/Delete';
 import { withStyles, createStyles } from '@material-ui/core/styles';
 import { fade } from '@material-ui/core/styles/colorManipulator';
-import { crudDeleteMany, startUndoable, ComponentPropType } from 'ra-core';
+import { crudDeleteMany, startUndoable } from 'ra-core';
 
 import Button from './Button';
 
@@ -44,7 +44,7 @@ class BulkDeleteWithUndoButton extends Component {
         resource: PropTypes.string.isRequired,
         startUndoable: PropTypes.func,
         selectedIds: PropTypes.arrayOf(PropTypes.any).isRequired,
-        icon: ComponentPropType,
+        icon: PropTypes.element,
     };
 
     static defaultProps = {
@@ -70,7 +70,7 @@ class BulkDeleteWithUndoButton extends Component {
     };
 
     render() {
-        const { classes, label, icon: Icon, onClick, ...rest } = this.props;
+        const { classes, label, icon, onClick, ...rest } = this.props;
         return (
             <Button
                 onClick={this.handleClick}
@@ -78,7 +78,7 @@ class BulkDeleteWithUndoButton extends Component {
                 className={classes.deleteButton}
                 {...sanitizeRestProps(rest)}
             >
-                <Icon />
+                {icon}
             </Button>
         );
     }

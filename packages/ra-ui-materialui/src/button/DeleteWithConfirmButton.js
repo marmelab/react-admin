@@ -7,7 +7,7 @@ import { fade } from '@material-ui/core/styles/colorManipulator';
 import ActionDelete from '@material-ui/icons/Delete';
 import classnames from 'classnames';
 import inflection from 'inflection';
-import { translate, crudDelete, ComponentPropType } from 'ra-core';
+import { translate, crudDelete } from 'ra-core';
 
 import Confirm from '../layout/Confirm';
 import Button from './Button';
@@ -65,7 +65,7 @@ class DeleteWithConfirmButton extends Component {
         const {
             classes = {},
             className,
-            icon: Icon,
+            icon,
             label = 'ra.action.delete',
             onClick,
             record,
@@ -86,7 +86,7 @@ class DeleteWithConfirmButton extends Component {
                     key="button"
                     {...sanitizeRestProps(rest)}
                 >
-                    <Icon />
+                    {icon}
                 </Button>
                 <Confirm
                     isOpen={this.state.isOpen}
@@ -124,12 +124,12 @@ DeleteWithConfirmButton.propTypes = {
     ]),
     resource: PropTypes.string.isRequired,
     translate: PropTypes.func,
-    icon: ComponentPropType,
+    icon: PropTypes.element,
 };
 
 DeleteWithConfirmButton.defaultProps = {
     redirect: 'list',
-    icon: ActionDelete,
+    icon: <ActionDelete />,
 };
 
 export default compose(
