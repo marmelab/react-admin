@@ -1,7 +1,7 @@
-import React, { createElement } from 'react';
+import React, { cloneElement } from 'react';
 import { createPortal } from 'react-dom';
 import PropTypes from 'prop-types';
-import { useTranslate, warning, ComponentPropType } from 'ra-core';
+import { useTranslate, warning } from 'ra-core';
 
 const Title = ({ className, defaultTitle, locale, record, title, ...rest }) => {
     const translate = useTranslate();
@@ -18,12 +18,12 @@ const Title = ({ className, defaultTitle, locale, record, title, ...rest }) => {
             {translate(title, { _: title })}
         </span>
     ) : (
-        createElement(title, { className, record, ...rest })
+        cloneElement(title, { className, record, ...rest })
     );
     return createPortal(titleElement, container);
 };
 
-export const TitlePropType = PropTypes.oneOfType([PropTypes.string, ComponentPropType]);
+export const TitlePropType = PropTypes.oneOfType([PropTypes.string, PropTypes.element]);
 
 Title.propTypes = {
     defaultTitle: PropTypes.string,

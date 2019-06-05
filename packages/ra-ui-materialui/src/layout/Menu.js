@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import inflection from 'inflection';
 import compose from 'recompose/compose';
 import { withStyles, createStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
-import { getResources, useTranslate, ComponentPropType } from 'ra-core';
+import { getResources, useTranslate } from 'ra-core';
 import DefaultIcon from '@material-ui/icons/ViewList';
 
 import DashboardMenuItem from './DashboardMenuItem';
@@ -41,7 +41,7 @@ const Menu = ({
     open,
     pathname,
     resources,
-    logout: Logout,
+    logout,
     ...rest
 }) => {
     const translate = useTranslate();
@@ -65,7 +65,7 @@ const Menu = ({
                         dense={dense}
                     />
                 ))}
-            {Logout ? <Responsive xsmall={<Logout />} medium={null} /> : null}
+            <Responsive xsmall={logout} medium={null} />
         </div>
     );
 };
@@ -75,7 +75,7 @@ Menu.propTypes = {
     className: PropTypes.string,
     dense: PropTypes.bool,
     hasDashboard: PropTypes.bool,
-    logout: ComponentPropType,
+    logout: PropTypes.element,
     onMenuClick: PropTypes.func,
     open: PropTypes.bool,
     pathname: PropTypes.string,
