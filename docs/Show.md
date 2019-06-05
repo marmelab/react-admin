@@ -80,7 +80,7 @@ const PostTitle = ({ record }) => {
     return <span>Post {record ? `"${record.title}"` : ''}</span>;
 };
 export const PostShow = (props) => (
-    <Show title={PostTitle} {...props}>
+    <Show title={<PostTitle />} {...props}>
         ...
     </Show>
 );
@@ -103,7 +103,7 @@ const PostShowActions = ({ basePath, data, resource }) => (
 );
 
 export const PostShow = (props) => (
-    <Show actions={PostShowActions} {...props}>
+    <Show actions={<PostShowActions />} {...props}>
         ...
     </Show>
 );
@@ -128,6 +128,7 @@ const PostShow = props => (
     <Show aside={Aside} {...props}>
         ...
     </Show>
+);
 ```
 {% endraw %}
 
@@ -258,7 +259,7 @@ import {
 
 const ScrollableTabbedShowLayout = props => (
     <Show{...props}>
-        <TabbedShowLayout tabs={props => <TabbedShowLayoutTabs scrollable={true}{...props} />}>
+        <TabbedShowLayout tabs={<TabbedShowLayoutTabs scrollable={true}{...props} />}>
             ...
         </TabbedShowLayout>
     </Show>
@@ -292,7 +293,7 @@ const PostShowActions = ({ permissions, basePath, data, resource }) => (
 );
 
 export const PostShow = ({ permissions, ...props }) => (
-    <Show actions={props => <PostShowActions permissions={permissions} {...props} />} {...props}>
+    <Show actions={<PostShowActions permissions={permissions} />} {...props}>
         <SimpleShowLayout>
             <TextField source="title" />
             <RichTextField source="body" />
