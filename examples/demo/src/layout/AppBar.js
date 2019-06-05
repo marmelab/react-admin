@@ -20,22 +20,13 @@ const styles = {
 
 const CustomUserMenu = translate(({ translate, ...props }) => (
     <UserMenu {...props}>
-        <MenuItemLink
-            to="/configuration"
-            primaryText={translate('pos.configuration')}
-            leftIcon={<SettingsIcon />}
-        />
+        <MenuItemLink to="/configuration" primaryText={translate('pos.configuration')} leftIcon={<SettingsIcon />} />
     </UserMenu>
 ));
 
 const CustomAppBar = ({ classes, ...props }) => (
     <AppBar {...props} userMenu={<CustomUserMenu />}>
-        <Typography
-            variant="title"
-            color="inherit"
-            className={classes.title}
-            id="react-admin-title"
-        />
+        <Typography variant="title" color="inherit" className={classes.title} id="react-admin-title" />
         <Logo />
         <span className={classes.spacer} />
     </AppBar>

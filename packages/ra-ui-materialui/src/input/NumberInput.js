@@ -23,9 +23,7 @@ export class NumberInput extends Component {
          * Necessary because of a React bug on <input type="number">
          * @see https://github.com/facebook/react/issues/1425
          */
-        const numericValue = isNaN(parseFloat(event.target.value))
-            ? null
-            : parseFloat(event.target.value);
+        const numericValue = isNaN(parseFloat(event.target.value)) ? null : parseFloat(event.target.value);
         this.props.onBlur(numericValue);
         this.props.input.onBlur(numericValue);
     };
@@ -40,26 +38,13 @@ export class NumberInput extends Component {
          * Necessary because of a React bug on <input type="number">
          * @see https://github.com/facebook/react/issues/1425
          */
-        const numericValue = isNaN(parseFloat(event.target.value))
-            ? null
-            : parseFloat(event.target.value);
+        const numericValue = isNaN(parseFloat(event.target.value)) ? null : parseFloat(event.target.value);
         this.props.onChange(numericValue);
         this.props.input.onChange(numericValue);
     };
 
     render() {
-        const {
-            className,
-            input,
-            isRequired,
-            label,
-            meta,
-            options,
-            source,
-            step,
-            resource,
-            ...rest
-        } = this.props;
+        const { className, input, isRequired, label, meta, options, source, step, resource, ...rest } = this.props;
         if (typeof meta === 'undefined') {
             throw new Error(
                 "The NumberInput component wasn't called within a redux-form <Field>. Did you decorate it and forget to add the addField prop to your component? See https://marmelab.com/react-admin/Inputs.html#writing-your-own-input-component for details."
@@ -74,14 +59,7 @@ export class NumberInput extends Component {
                 error={!!(touched && error)}
                 helperText={touched && error}
                 step={step}
-                label={
-                    <FieldTitle
-                        label={label}
-                        source={source}
-                        resource={resource}
-                        isRequired={isRequired}
-                    />
-                }
+                label={<FieldTitle label={label} source={source} resource={resource} isRequired={isRequired} />}
                 className={className}
                 {...options}
                 {...sanitizeRestProps(rest)}
@@ -108,10 +86,7 @@ NumberInput.propTypes = {
     resource: PropTypes.string,
     source: PropTypes.string,
     step: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-    validate: PropTypes.oneOfType([
-        PropTypes.func,
-        PropTypes.arrayOf(PropTypes.func),
-    ]),
+    validate: PropTypes.oneOfType([PropTypes.func, PropTypes.arrayOf(PropTypes.func)]),
 };
 
 NumberInput.defaultProps = {

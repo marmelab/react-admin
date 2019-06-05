@@ -23,9 +23,7 @@ const sanitizeRestProps = ({
 }) => rest;
 
 const getTabFullPath = (tab, index, baseUrl) =>
-    `${baseUrl}${
-        tab.props.path ? `/${tab.props.path}` : index > 0 ? `/${index}` : ''
-    }`;
+    `${baseUrl}${tab.props.path ? `/${tab.props.path}` : index > 0 ? `/${index}` : ''}`;
 
 /**
  * Tabbed Layout for a Show view, showing fields grouped in tabs.
@@ -84,11 +82,7 @@ export class TabbedShowLayout extends Component {
         } = this.props;
 
         return (
-            <div
-                className={className}
-                key={version}
-                {...sanitizeRestProps(rest)}
-            >
+            <div className={className} key={version} {...sanitizeRestProps(rest)}>
                 {cloneElement(
                     tabs,
                     {
@@ -101,23 +95,21 @@ export class TabbedShowLayout extends Component {
                 )}
                 <Divider />
                 <CardContentInner>
-                    {Children.map(
-                        children,
-                        (tab, index) =>
-                            tab && isValidElement(tab) ? (
-                                <Route
-                                    exact
-                                    path={getTabFullPath(tab, index, match.url)}
-                                    render={() =>
-                                        cloneElement(tab, {
-                                            context: 'content',
-                                            resource,
-                                            record,
-                                            basePath,
-                                        })
-                                    }
-                                />
-                            ) : null
+                    {Children.map(children, (tab, index) =>
+                        tab && isValidElement(tab) ? (
+                            <Route
+                                exact
+                                path={getTabFullPath(tab, index, match.url)}
+                                render={() =>
+                                    cloneElement(tab, {
+                                        context: 'content',
+                                        resource,
+                                        record,
+                                        basePath,
+                                    })
+                                }
+                            />
+                        ) : null
                     )}
                 </CardContentInner>
             </div>

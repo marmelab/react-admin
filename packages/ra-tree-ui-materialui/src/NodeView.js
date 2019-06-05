@@ -51,15 +51,7 @@ export class NodeView extends Component {
     };
 
     render() {
-        const {
-            actions,
-            basePath,
-            children,
-            classes,
-            node,
-            resource,
-            ...props
-        } = this.props;
+        const { actions, basePath, children, classes, node, resource, ...props } = this.props;
 
         return (
             <div

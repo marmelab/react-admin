@@ -12,44 +12,38 @@ import { translate } from 'ra-core';
 import Button from '../button/Button';
 import BulkDeleteAction from './BulkDeleteAction';
 
-const styles = theme => createStyles({
-    bulkActionsButton: {
-        opacity: 1,
-        transition: theme.transitions.create('opacity', {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.leavingScreen,
-        }),
-        '&.fade-enter': {
-            opacity: 0,
-        },
-        '&.fade-enter-done': {
+const styles = theme =>
+    createStyles({
+        bulkActionsButton: {
             opacity: 1,
+            transition: theme.transitions.create('opacity', {
+                easing: theme.transitions.easing.sharp,
+                duration: theme.transitions.duration.leavingScreen,
+            }),
+            '&.fade-enter': {
+                opacity: 0,
+            },
+            '&.fade-enter-done': {
+                opacity: 1,
+            },
+            '&.fade-exit': {
+                opacity: 0,
+            },
+            '&.fade-exit-done': {
+                opacity: 0,
+            },
         },
-        '&.fade-exit': {
-            opacity: 0,
+        icon: {
+            marginRight: theme.spacing.unit,
         },
-        '&.fade-exit-done': {
-            opacity: 0,
-        },
-    },
-    icon: {
-        marginRight: theme.spacing.unit,
-    },
-});
+    });
 
 const timeoutDurations = {
     enter: 0,
     exit: 300,
 };
 
-const sanitizeRestProps = ({
-    basePath,
-    classes,
-    filterValues,
-    resource,
-    onUnselectItems,
-    ...rest
-}) => rest;
+const sanitizeRestProps = ({ basePath, classes, filterValues, resource, onUnselectItems, ...rest }) => rest;
 
 /**
  * @deprecated pass a Fragment with button children as bulkActionButtons props instead
@@ -63,9 +57,7 @@ class BulkActions extends Component {
     componentDidMount() {
         if (process.env.NODE_ENV !== 'production') {
             // eslint-disable-next-line no-console
-            console.warn(
-                '<BulkActions> is deprecated. Use the bulkActionButtons prop instead.'
-            );
+            console.warn('<BulkActions> is deprecated. Use the bulkActionButtons prop instead.');
         }
     }
 
@@ -128,38 +120,30 @@ class BulkActions extends Component {
                     >
                         <FilterNoneIcon className={classes.icon} />
                     </Button>
-                    <Menu
-                        id="bulk-actions-menu"
-                        anchorEl={this.anchorElement}
-                        onClose={this.handleClose}
-                        open={isOpen}
-                    >
-                        {Children.map(children, (child, index) => isValidElement(child) ? (
-                            <MenuItem
-                                key={index}
-                                className={classnames(
-                                    'bulk-actions-menu-item',
-                                    child.props.className
-                                )}
-                                onClick={() => this.handleLaunchAction(index)}
-                                {...sanitizeRestProps(rest)}
-                            >
-                                {translate(child.props.label)}
-                            </MenuItem>
-                        ) : null)}
+                    <Menu id="bulk-actions-menu" anchorEl={this.anchorElement} onClose={this.handleClose} open={isOpen}>
+                        {Children.map(children, (child, index) =>
+                            isValidElement(child) ? (
+                                <MenuItem
+                                    key={index}
+                                    className={classnames('bulk-actions-menu-item', child.props.className)}
+                                    onClick={() => this.handleLaunchAction(index)}
+                                    {...sanitizeRestProps(rest)}
+                                >
+                                    {translate(child.props.label)}
+                                </MenuItem>
+                            ) : null
+                        )}
                     </Menu>
-                    {Children.map(
-                        children,
-                        (child, index) =>
-                            isValidElement(child) &&
-                            this.state.activeAction === index ?
-                            cloneElement(child, {
-                                basePath,
-                                filterValues,
-                                onExit: this.handleExitAction,
-                                resource,
-                                selectedIds,
-                            }) : null
+                    {Children.map(children, (child, index) =>
+                        isValidElement(child) && this.state.activeAction === index
+                            ? cloneElement(child, {
+                                  basePath,
+                                  filterValues,
+                                  onExit: this.handleExitAction,
+                                  resource,
+                                  selectedIds,
+                              })
+                            : null
                     )}
                 </div>
             </CSSTransition>

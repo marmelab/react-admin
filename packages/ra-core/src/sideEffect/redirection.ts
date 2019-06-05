@@ -5,11 +5,7 @@ import { reset } from 'redux-form';
 import { Identifier } from '../types';
 import resolveRedirectTo from '../util/resolveRedirectTo';
 
-type RedirectToFunction = (
-    basePath: string,
-    id: Identifier,
-    data: any
-) => string;
+type RedirectToFunction = (basePath: string, id: Identifier, data: any) => string;
 
 export type RedirectionSideEffect = string | false | RedirectToFunction;
 
@@ -36,11 +32,7 @@ interface ActionWithSideEffect {
 /**
  * Redirection Side Effects
  */
-export function* handleRedirection({
-    payload,
-    requestPayload,
-    meta: { basePath, redirectTo },
-}: ActionWithSideEffect) {
+export function* handleRedirection({ payload, requestPayload, meta: { basePath, redirectTo } }: ActionWithSideEffect) {
     return redirectTo
         ? yield put(
               push(
@@ -48,8 +40,7 @@ export function* handleRedirection({
                       redirectTo,
                       basePath,
                       payload
-                          ? payload.id ||
-                                (payload.data ? payload.data.id : null)
+                          ? payload.id || (payload.data ? payload.data.id : null)
                           : requestPayload
                           ? requestPayload.id
                           : null,

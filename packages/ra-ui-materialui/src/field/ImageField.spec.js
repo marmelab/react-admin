@@ -5,7 +5,7 @@ import { ImageField } from './ImageField';
 
 const defaultProps = {
     classes: {},
-    source: 'url'
+    source: 'url',
 };
 
 describe('<ImageField />', () => {
@@ -19,7 +19,7 @@ describe('<ImageField />', () => {
                 {...defaultProps}
                 record={{
                     url: 'http://foo.com/bar.jpg',
-                    title: 'Hello world!'
+                    title: 'Hello world!',
                 }}
                 title="title"
             />
@@ -38,8 +38,8 @@ describe('<ImageField />', () => {
                 record={{
                     picture: {
                         url: 'http://foo.com/bar.jpg',
-                        title: 'Hello world!'
-                    }
+                        title: 'Hello world!',
+                    },
                 }}
                 source="picture.url"
                 title="picture.title"
@@ -57,7 +57,7 @@ describe('<ImageField />', () => {
             <ImageField
                 {...defaultProps}
                 record={{
-                    url: 'http://foo.com/bar.jpg'
+                    url: 'http://foo.com/bar.jpg',
                 }}
                 title="Hello world!"
             />
@@ -76,13 +76,13 @@ describe('<ImageField />', () => {
                     pictures: [
                         {
                             url: 'http://foo.com/bar.jpg',
-                            title: 'Hello world!'
+                            title: 'Hello world!',
                         },
                         {
                             url: 'http://bar.com/foo.jpg',
-                            title: 'Bye world!'
-                        }
-                    ]
+                            title: 'Bye world!',
+                        },
+                    ],
                 }}
                 source="pictures"
                 src="url"

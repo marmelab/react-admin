@@ -3,15 +3,7 @@ import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import { translate, warning } from 'ra-core';
 
-const Title = ({
-    className,
-    defaultTitle,
-    locale,
-    record,
-    title,
-    translate,
-    ...rest
-}) => {
+const Title = ({ className, defaultTitle, locale, record, title, translate, ...rest }) => {
     const container = document.getElementById('react-admin-title');
     if (!container) return null;
     warning(!defaultTitle && !title, 'Missing title prop in <Title> element');

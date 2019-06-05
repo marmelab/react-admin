@@ -7,9 +7,7 @@ module.exports = on => {
     on('before:browser:launch', (browser = {}, args) => {
         if (browser.name === 'chrome') {
             return [
-                ...args.filter(
-                    arg => arg !== '--disable-blink-features=RootLayerScrolling'
-                ),
+                ...args.filter(arg => arg !== '--disable-blink-features=RootLayerScrolling'),
                 '--disable-gpu',
                 '--proxy-bypass-list=<-loopback>',
             ];

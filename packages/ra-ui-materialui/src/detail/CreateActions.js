@@ -4,13 +4,7 @@ import PropTypes from 'prop-types';
 import CardActions from '../layout/CardActions';
 import { ListButton } from '../button';
 
-const sanitizeRestProps = ({
-    basePath,
-    className,
-    hasList,
-    resource,
-    ...rest
-}) => rest;
+const sanitizeRestProps = ({ basePath, className, hasList, resource, ...rest }) => rest;
 
 /**
  * Action Toolbar for the Create view

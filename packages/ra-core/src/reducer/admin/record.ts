@@ -1,10 +1,5 @@
 import { Reducer } from 'redux';
-import {
-    INITIALIZE_FORM,
-    InitializeFormAction,
-    RESET_FORM,
-    ResetFormAction,
-} from '../../actions/formActions';
+import { INITIALIZE_FORM, InitializeFormAction, RESET_FORM, ResetFormAction } from '../../actions/formActions';
 import set from 'lodash/set';
 
 const initialState = {};
@@ -13,15 +8,9 @@ interface State {
     [key: string]: any;
 }
 
-type ActionTypes =
-    | InitializeFormAction
-    | ResetFormAction
-    | { type: 'OTHER_ACTION' };
+type ActionTypes = InitializeFormAction | ResetFormAction | { type: 'OTHER_ACTION' };
 
-const recordReducer: Reducer<State> = (
-    previousState = initialState,
-    action: ActionTypes
-) => {
+const recordReducer: Reducer<State> = (previousState = initialState, action: ActionTypes) => {
     if (action.type === RESET_FORM) {
         return initialState;
     }

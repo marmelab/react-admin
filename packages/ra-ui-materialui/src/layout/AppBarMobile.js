@@ -36,40 +36,18 @@ const styles = createStyles({
 /**
  * @deprecated
  */
-const AppBarMobile = ({
-    classes,
-    className,
-    title,
-    toggleSidebar,
-    ...rest
-}) => {
+const AppBarMobile = ({ classes, className, title, toggleSidebar, ...rest }) => {
     if (process.env.NODE_ENV !== 'production') {
         // eslint-disable-next-line no-console
-        console.warn(
-            '<AppBarMobile> is deprecated, please use <AppBar>, which is now responsive'
-        );
+        console.warn('<AppBarMobile> is deprecated, please use <AppBar>, which is now responsive');
     }
     return (
-        <MuiAppBar
-            className={className}
-            color="secondary"
-            position="fixed"
-            {...rest}
-        >
+        <MuiAppBar className={className} color="secondary" position="fixed" {...rest}>
             <Toolbar>
-                <IconButton
-                    color="inherit"
-                    aria-label="open drawer"
-                    onClick={toggleSidebar}
-                    className={classes.icon}
-                >
+                <IconButton color="inherit" aria-label="open drawer" onClick={toggleSidebar} className={classes.icon}>
                     <MenuIcon />
                 </IconButton>
-                <Typography
-                    className={classes.title}
-                    variant="title"
-                    color="inherit"
-                >
+                <Typography className={classes.title} variant="title" color="inherit">
                     {title}
                 </Typography>
                 <LoadingIndicator />
@@ -81,8 +59,7 @@ const AppBarMobile = ({
 AppBarMobile.propTypes = {
     classes: PropTypes.object,
     className: PropTypes.string,
-    title: PropTypes.oneOfType([PropTypes.string, PropTypes.element])
-        .isRequired,
+    title: PropTypes.oneOfType([PropTypes.string, PropTypes.element]).isRequired,
     toggleSidebar: PropTypes.func.isRequired,
 };
 

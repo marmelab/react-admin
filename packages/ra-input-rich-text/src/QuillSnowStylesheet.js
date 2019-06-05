@@ -43,8 +43,7 @@ export default {
     '.ql-editor p, .ql-editor ol, .ql-editor ul, .ql-editor pre, .ql-editor blockquote, .ql-editor h1, .ql-editor h2, .ql-editor h3, .ql-editor h4, .ql-editor h5, .ql-editor h6': {
         margin: '0',
         padding: '0',
-        counterReset:
-            'list-1 list-2 list-3 list-4 list-5 list-6 list-7 list-8 list-9',
+        counterReset: 'list-1 list-2 list-3 list-4 list-5 list-6 list-7 list-8 list-9',
     },
     '.ql-editor ol, .ql-editor ul': {
         paddingLeft: '1.5em',
@@ -93,8 +92,7 @@ export default {
         paddingRight: '1.5em',
     },
     '.ql-editor ol li': {
-        counterReset:
-            'list-1 list-2 list-3 list-4 list-5 list-6 list-7 list-8 list-9',
+        counterReset: 'list-1 list-2 list-3 list-4 list-5 list-6 list-7 list-8 list-9',
         counterIncrement: 'list-0',
     },
     '.ql-editor ol li:before': {

@@ -51,11 +51,7 @@ export class SaveButton extends Component {
         invalid: PropTypes.bool,
         label: PropTypes.string,
         pristine: PropTypes.bool,
-        redirect: PropTypes.oneOfType([
-            PropTypes.string,
-            PropTypes.bool,
-            PropTypes.func,
-        ]),
+        redirect: PropTypes.oneOfType([PropTypes.string, PropTypes.bool, PropTypes.func]),
         saving: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
         showNotification: PropTypes.func,
         submitOnEnter: PropTypes.bool,
@@ -70,14 +66,7 @@ export class SaveButton extends Component {
     };
 
     handleClick = e => {
-        const {
-            handleSubmitWithRedirect,
-            invalid,
-            redirect,
-            saving,
-            showNotification,
-            onClick,
-        } = this.props;
+        const { handleSubmitWithRedirect, invalid, redirect, saving, showNotification, onClick } = this.props;
 
         if (saving) {
             // prevent double submission
@@ -126,11 +115,7 @@ export class SaveButton extends Component {
                 {...sanitizeRestProps(rest)}
             >
                 {saving && saving.redirect === redirect ? (
-                    <CircularProgress
-                        size={18}
-                        thickness={2}
-                        className={classes.leftIcon}
-                    />
+                    <CircularProgress size={18} thickness={2} className={classes.leftIcon} />
                 ) : (
                     React.cloneElement(icon, {
                         className: classnames(classes.leftIcon, classes.icon),

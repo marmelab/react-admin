@@ -6,12 +6,13 @@ import { withStyles, createStyles } from '@material-ui/core/styles';
 import RemoveCircle from '@material-ui/icons/RemoveCircle';
 import { translate } from 'ra-core';
 
-const styles = theme => createStyles({
-    removeButton: {},
-    removeIcon: {
-        color: theme.palette.accent1Color,
-    },
-});
+const styles = theme =>
+    createStyles({
+        removeButton: {},
+        removeIcon: {
+            color: theme.palette.accent1Color,
+        },
+    });
 
 export class FileInputPreview extends Component {
     static propTypes = {
@@ -32,31 +33,16 @@ export class FileInputPreview extends Component {
         const { file, revokeObjectURL } = this.props;
 
         if (file.preview) {
-            revokeObjectURL
-                ? revokeObjectURL(file.preview)
-                : window.URL.revokeObjectURL(file.preview);
+            revokeObjectURL ? revokeObjectURL(file.preview) : window.URL.revokeObjectURL(file.preview);
         }
     }
 
     render() {
-        const {
-            children,
-            classes = {},
-            className,
-            onRemove,
-            revokeObjectURL,
-            file,
-            translate,
-            ...rest
-        } = this.props;
+        const { children, classes = {}, className, onRemove, revokeObjectURL, file, translate, ...rest } = this.props;
 
         return (
             <div className={className} {...rest}>
-                <IconButton
-                    className={classes.removeButton}
-                    onClick={onRemove}
-                    title={translate('ra.action.delete')}
-                >
+                <IconButton className={classes.removeButton} onClick={onRemove} title={translate('ra.action.delete')}>
                     <RemoveCircle className={classes.removeIcon} />
                 </IconButton>
                 {children}

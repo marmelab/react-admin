@@ -29,23 +29,9 @@ const styles = {
     },
 };
 
-const SubMenu = ({
-    handleToggle,
-    sidebarIsOpen,
-    isOpen,
-    name,
-    icon,
-    classes,
-    children,
-    translate,
-}) => (
+const SubMenu = ({ handleToggle, sidebarIsOpen, isOpen, name, icon, classes, children, translate }) => (
     <Fragment>
-        <ListItem
-            dense
-            button
-            onClick={handleToggle}
-            className={classes.listItem}
-        >
+        <ListItem dense button onClick={handleToggle} className={classes.listItem}>
             <ListItemIcon>{isOpen ? <ExpandMore /> : icon}</ListItemIcon>
             <ListItemText
                 inset
@@ -59,11 +45,7 @@ const SubMenu = ({
                 dense
                 component="div"
                 disablePadding
-                className={
-                    sidebarIsOpen
-                        ? classes.sidebarIsOpen
-                        : classes.sidebarIsClosed
-                }
+                className={sidebarIsOpen ? classes.sidebarIsOpen : classes.sidebarIsClosed}
             >
                 {children}
             </List>

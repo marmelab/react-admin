@@ -1,7 +1,4 @@
-import {
-    getPossibleReferenceValues,
-    getPossibleReferences,
-} from './possibleValues';
+import { getPossibleReferenceValues, getPossibleReferences } from './possibleValues';
 
 describe('possibleValues reducer', () => {
     describe('getPossibleReferenceValues selector', () => {
@@ -29,10 +26,7 @@ describe('possibleValues reducer', () => {
             },
         };
         it('should return null if there is no possibleValues available in state', () => {
-            const possibleReferences = getPossibleReferences(
-                referenceState,
-                null
-            );
+            const possibleReferences = getPossibleReferences(referenceState, null);
             expect(possibleReferences).toEqual(null);
         });
 
@@ -44,19 +38,12 @@ describe('possibleValues reducer', () => {
         });
 
         it('should return a empty array if the possibleValues in state is empty', () => {
-            const possibleReferences = getPossibleReferences(
-                referenceState,
-                []
-            );
+            const possibleReferences = getPossibleReferences(referenceState, []);
             expect(possibleReferences).toEqual([]);
         });
 
         it('should return all formated possibleValues in state if selectedIds param is not set', () => {
-            const possibleReferences = getPossibleReferences(referenceState, [
-                1,
-                2,
-                4,
-            ]);
+            const possibleReferences = getPossibleReferences(referenceState, [1, 2, 4]);
             expect(possibleReferences).toEqual([
                 { name: 'object name 1' },
                 { name: 'object name 2' },
@@ -65,11 +52,7 @@ describe('possibleValues reducer', () => {
         });
 
         it('should return all formated possibleValues in state if selectedIds param is an empty array', () => {
-            const possibleReferences = getPossibleReferences(
-                referenceState,
-                [1, 2, 4],
-                []
-            );
+            const possibleReferences = getPossibleReferences(referenceState, [1, 2, 4], []);
             expect(possibleReferences).toEqual([
                 { name: 'object name 1' },
                 { name: 'object name 2' },
@@ -78,11 +61,7 @@ describe('possibleValues reducer', () => {
         });
 
         it('should add selectedIds to the formated possibleValues in state if it is not already in', () => {
-            const possibleReferences = getPossibleReferences(
-                referenceState,
-                [1, 2, 4],
-                [1, 5]
-            );
+            const possibleReferences = getPossibleReferences(referenceState, [1, 2, 4], [1, 5]);
             expect(possibleReferences).toEqual([
                 { name: 'object name 5' },
                 { name: 'object name 1' },

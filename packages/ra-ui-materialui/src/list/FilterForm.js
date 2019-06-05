@@ -9,19 +9,20 @@ import lodashSet from 'lodash/set';
 
 import FilterFormInput from './FilterFormInput';
 
-const styles = theme => createStyles({
-    form: {
-        marginTop: '-10px',
-        paddingTop: 0,
-        display: 'flex',
-        alignItems: 'flex-end',
-        flexWrap: 'wrap',
-    },
-    body: { display: 'flex', alignItems: 'flex-end' },
-    spacer: { width: '1em' },
-    icon: { color: theme.palette.primary1Color || '#00bcd4', paddingBottom: 0 },
-    clearFix: { clear: 'right' },
-});
+const styles = theme =>
+    createStyles({
+        form: {
+            marginTop: '-10px',
+            paddingTop: 0,
+            display: 'flex',
+            alignItems: 'flex-end',
+            flexWrap: 'wrap',
+        },
+        body: { display: 'flex', alignItems: 'flex-end' },
+        spacer: { width: '1em' },
+        icon: { color: theme.palette.primary1Color || '#00bcd4', paddingBottom: 0 },
+        clearFix: { clear: 'right' },
+    });
 
 const sanitizeRestProps = ({
     anyTouched,
@@ -86,17 +87,13 @@ export class FilterForm extends Component {
         );
     }
 
-    handleHide = event =>
-        this.props.hideFilter(event.currentTarget.dataset.key);
+    handleHide = event => this.props.hideFilter(event.currentTarget.dataset.key);
 
     render() {
         const { classes = {}, className, resource, ...rest } = this.props;
 
         return (
-            <div
-                className={classnames(className, classes.form)}
-                {...sanitizeRestProps(rest)}
-            >
+            <div className={classnames(className, classes.form)} {...sanitizeRestProps(rest)}>
                 {this.getShownFilters().map(filterElement => (
                     <FilterFormInput
                         key={filterElement.props.source}
@@ -122,24 +119,13 @@ FilterForm.propTypes = {
     className: PropTypes.string,
 };
 
-export const mergeInitialValuesWithDefaultValues = ({
-    initialValues,
-    filters,
-}) => ({
+export const mergeInitialValuesWithDefaultValues = ({ initialValues, filters }) => ({
     initialValues: {
         ...filters
-            .filter(
-                filterElement =>
-                    filterElement.props.alwaysOn &&
-                    filterElement.props.defaultValue
-            )
+            .filter(filterElement => filterElement.props.alwaysOn && filterElement.props.defaultValue)
             .reduce(
                 (acc, filterElement) =>
-                    lodashSet(
-                        { ...acc },
-                        filterElement.props.source,
-                        filterElement.props.defaultValue
-                    ),
+                    lodashSet({ ...acc }, filterElement.props.source, filterElement.props.defaultValue),
                 {}
             ),
         ...initialValues,
@@ -153,8 +139,7 @@ const enhance = compose(
         form: 'filterForm',
         enableReinitialize: true,
         destroyOnUnmount: false, // do not destroy to preserve state across navigation
-        onChange: (values, dispatch, props) =>
-            props && props.setFilters(values),
+        onChange: (values, dispatch, props) => props && props.setFilters(values),
     })
 );
 

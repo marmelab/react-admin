@@ -37,13 +37,9 @@ interface Props extends FieldProps {
     valueLabelFalse?: string;
 }
 
-interface EnhancedProps
-    extends TranslationContextProps,
-        WithStyles<typeof styles> {}
+interface EnhancedProps extends TranslationContextProps, WithStyles<typeof styles> {}
 
-export const BooleanField: SFC<
-    Props & InjectedFieldProps & EnhancedProps & TypographyProps
-> = ({
+export const BooleanField: SFC<Props & InjectedFieldProps & EnhancedProps & TypographyProps> = ({
     className,
     classes,
     source,
@@ -62,15 +58,8 @@ export const BooleanField: SFC<
 
     if (value === false) {
         return (
-            <Typography
-                component="span"
-                variant="body1"
-                className={className}
-                {...sanitizeRestProps(rest)}
-            >
-                <span className={classes.label}>
-                    {translate(ariaLabel, { _: ariaLabel })}
-                </span>
+            <Typography component="span" variant="body1" className={className} {...sanitizeRestProps(rest)}>
+                <span className={classes.label}>{translate(ariaLabel, { _: ariaLabel })}</span>
                 <FalseIcon data-testid="false" />
             </Typography>
         );
@@ -78,28 +67,14 @@ export const BooleanField: SFC<
 
     if (value === true) {
         return (
-            <Typography
-                component="span"
-                variant="body1"
-                className={className}
-                {...sanitizeRestProps(rest)}
-            >
-                <span className={classes.label}>
-                    {translate(ariaLabel, { _: ariaLabel })}
-                </span>
+            <Typography component="span" variant="body1" className={className} {...sanitizeRestProps(rest)}>
+                <span className={classes.label}>{translate(ariaLabel, { _: ariaLabel })}</span>
                 <TrueIcon data-testid="true" />
             </Typography>
         );
     }
 
-    return (
-        <Typography
-            component="span"
-            variant="body1"
-            className={className}
-            {...sanitizeRestProps(rest)}
-        />
-    );
+    return <Typography component="span" variant="body1" className={className} {...sanitizeRestProps(rest)} />;
 };
 
 const EnhancedBooleanField = compose<

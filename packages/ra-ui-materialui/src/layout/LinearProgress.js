@@ -4,12 +4,13 @@ import PropTypes from 'prop-types';
 import { withStyles, createStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
 
-const styles = theme => createStyles({
-    root: {
-        margin: `${theme.spacing.unit}px 0`,
-        width: `${theme.spacing.unit * 20}px`,
-    },
-});
+const styles = theme =>
+    createStyles({
+        root: {
+            margin: `${theme.spacing.unit}px 0`,
+            width: `${theme.spacing.unit * 20}px`,
+        },
+    });
 
 /**
  * Progress bar formatted to replace an input or a field in a form layout

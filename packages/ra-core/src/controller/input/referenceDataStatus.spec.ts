@@ -19,11 +19,7 @@ describe('References data status', () => {
 
         it('should indicate whether the data are ready or not', () => {
             const test = (params, waiting, explanation) =>
-                assert.equal(
-                    getStatusForInput(params).waiting,
-                    waiting,
-                    explanation
-                );
+                assert.equal(getStatusForInput(params).waiting, waiting, explanation);
             test(
                 data,
                 true,
@@ -214,10 +210,7 @@ describe('References data status', () => {
     describe('getSelectedReferencesStatus', () => {
         it('should return ready if input value has no references', () => {
             const test = (input, referenceRecords) =>
-                assert.equal(
-                    getSelectedReferencesStatus(input, referenceRecords),
-                    REFERENCES_STATUS_READY
-                );
+                assert.equal(getSelectedReferencesStatus(input, referenceRecords), REFERENCES_STATUS_READY);
 
             test({}, []);
             test({ value: null }, []);
@@ -226,25 +219,16 @@ describe('References data status', () => {
         });
 
         it('should return empty if there is some input values but the referenceRecords is empty', () => {
-            assert.equal(
-                getSelectedReferencesStatus({ value: [1, 2] }, []),
-                REFERENCES_STATUS_EMPTY
-            );
+            assert.equal(getSelectedReferencesStatus({ value: [1, 2] }, []), REFERENCES_STATUS_EMPTY);
         });
 
         it('should return incomplete if there is less data in the referenceRecords than values in the input value', () => {
-            assert.equal(
-                getSelectedReferencesStatus({ value: [1, 2] }, [{ id: 1 }]),
-                REFERENCES_STATUS_INCOMPLETE
-            );
+            assert.equal(getSelectedReferencesStatus({ value: [1, 2] }, [{ id: 1 }]), REFERENCES_STATUS_INCOMPLETE);
         });
 
         it('should return ready if there is as much data in the referenceRecords as there are values in the input value', () => {
             assert.equal(
-                getSelectedReferencesStatus({ value: [1, 2] }, [
-                    { id: 1 },
-                    { id: 2 },
-                ]),
+                getSelectedReferencesStatus({ value: [1, 2] }, [{ id: 1 }, { id: 2 }]),
                 REFERENCES_STATUS_READY
             );
         });
@@ -260,11 +244,7 @@ describe('References data status', () => {
 
         it('should indicate whether the data are ready or not', () => {
             const test = (params, waiting, explanation) =>
-                assert.equal(
-                    getStatusForArrayInput(params).waiting,
-                    waiting,
-                    explanation
-                );
+                assert.equal(getStatusForArrayInput(params).waiting, waiting, explanation);
             test(
                 data,
                 true,
@@ -445,12 +425,7 @@ describe('References data status', () => {
             test(
                 {
                     ...data,
-                    matchingReferences: [
-                        { id: 1 },
-                        { id: 2 },
-                        { id: 3 },
-                        { id: 4 },
-                    ],
+                    matchingReferences: [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }],
                     input: { value: [1, 2] },
                     referenceRecords: [{ id: 1 }, { id: 2 }],
                 },

@@ -132,23 +132,15 @@ export class Tree extends Component {
               )('div')
             : Fragment;
 
-        const TreeNode = enableDragAndDrop
-            ? droppable(treeNodeComponent)
-            : treeNodeComponent;
+        const TreeNode = enableDragAndDrop ? droppable(treeNodeComponent) : treeNodeComponent;
 
-        const TreeNodeContent = enableDragAndDrop
-            ? draggable(treeNodeContentComponent)
-            : treeNodeContentComponent;
+        const TreeNodeContent = enableDragAndDrop ? draggable(treeNodeContentComponent) : treeNodeContentComponent;
 
         return (
             <TreeController parentSource={parentSource} {...props}>
                 {({ getTreeState, tree, ...controllerProps }) => (
                     <Container>
-                        {enableDragAndDrop ? (
-                            <DragLayer
-                                dragPreviewComponent={dragPreviewComponent}
-                            />
-                        ) : null}
+                        {enableDragAndDrop ? <DragLayer dragPreviewComponent={dragPreviewComponent} /> : null}
                         <List
                             classes={{
                                 root: classes.root,
@@ -169,9 +161,7 @@ export class Tree extends Component {
                                     getTreeState={getTreeState}
                                     node={node}
                                     treeNodeComponent={TreeNode}
-                                    treeNodeWithChildrenComponent={
-                                        treeNodeWithChildrenComponent
-                                    }
+                                    treeNodeWithChildrenComponent={treeNodeWithChildrenComponent}
                                     treeNodeContentComponent={TreeNodeContent}
                                     {...sanitizeRestProps(controllerProps)}
                                 >
@@ -195,19 +185,10 @@ Tree.propTypes = {
     getTreeFromArray: PropTypes.func,
     parentSource: PropTypes.string,
     resource: PropTypes.string.isRequired,
-    dragPreviewComponent: PropTypes.oneOfType([
-        PropTypes.element,
-        PropTypes.func,
-    ]),
+    dragPreviewComponent: PropTypes.oneOfType([PropTypes.element, PropTypes.func]),
     treeNodeComponent: PropTypes.oneOfType([PropTypes.element, PropTypes.func]),
-    treeNodeContentComponent: PropTypes.oneOfType([
-        PropTypes.element,
-        PropTypes.func,
-    ]),
-    treeNodeWithChildrenComponent: PropTypes.oneOfType([
-        PropTypes.element,
-        PropTypes.func,
-    ]),
+    treeNodeContentComponent: PropTypes.oneOfType([PropTypes.element, PropTypes.func]),
+    treeNodeWithChildrenComponent: PropTypes.oneOfType([PropTypes.element, PropTypes.func]),
 };
 
 Tree.defaultProps = {

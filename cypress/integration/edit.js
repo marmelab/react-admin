@@ -9,9 +9,7 @@ describe('Edit Page', () => {
     describe('Title', () => {
         it('should show the correct title in the appBar', () => {
             EditPostPage.navigate();
-            cy.get(EditPostPage.elements.title).contains(
-                'Post "Sed quo et et fugiat modi"'
-            );
+            cy.get(EditPostPage.elements.title).contains('Post "Sed quo et et fugiat modi"');
         });
     });
 
@@ -28,9 +26,7 @@ describe('Edit Page', () => {
             EditPostPage.setInputValue('title', 'Lorem Ipsum');
             EditPostPage.submit();
             EditPostPage.navigate();
-            cy.get(EditPostPage.elements.input('title')).should(el =>
-                expect(el).to.have.value('Lorem Ipsum')
-            );
+            cy.get(EditPostPage.elements.input('title')).should(el => expect(el).to.have.value('Lorem Ipsum'));
         });
 
         it('should redirect to list page after edit success', () => {
@@ -41,31 +37,23 @@ describe('Edit Page', () => {
 
         it('should allow to switch tabs', () => {
             EditPostPage.gotoTab(3);
-            cy.get(EditPostPage.elements.input('average_note')).should(el =>
-                expect(el).to.have.value('3')
-            );
+            cy.get(EditPostPage.elements.input('average_note')).should(el => expect(el).to.have.value('3'));
         });
 
         it('should keep DateInput value after opening datapicker', () => {
             EditPostPage.gotoTab(3);
             const date = new Date('2012-08-05').toISOString().slice(0, 10);
-            cy.get(EditPostPage.elements.input('published_at')).should(el =>
-                expect(el).to.have.value(date)
-            );
+            cy.get(EditPostPage.elements.input('published_at')).should(el => expect(el).to.have.value(date));
 
             EditPostPage.clickInput('published_at');
 
-            cy.get(EditPostPage.elements.input('published_at')).should(el =>
-                expect(el).to.have.value(date)
-            );
+            cy.get(EditPostPage.elements.input('published_at')).should(el => expect(el).to.have.value(date));
         });
     });
 
     it('should fill form correctly even when switching from one form type to another', () => {
         EditCommentPage.navigate();
-        cy.get(EditPostPage.elements.input('author.name')).should(el =>
-            expect(el).to.have.value('Edmond Schulist')
-        );
+        cy.get(EditPostPage.elements.input('author.name')).should(el => expect(el).to.have.value('Edmond Schulist'));
 
         // This validate that the current redux form values are not kept after we navigate
         EditCommentPage.setInputValue('body', 'Test');
@@ -80,7 +68,9 @@ describe('Edit Page', () => {
 
     it('should allow to select an item from the AutocompleteInput without showing the choices again after', () => {
         EditCommentPage.navigate();
-        cy.get(EditCommentPage.elements.input('post_id')).clear().type('Sed quo');
+        cy.get(EditCommentPage.elements.input('post_id'))
+            .clear()
+            .type('Sed quo');
         cy.get('[role="tooltip"]').within(() => {
             cy.contains('Accusantium qui nihil voluptatum quia voluptas maxime ab similique');
             cy.contains('Sed quo et et fugiat modi').click();
@@ -92,13 +82,14 @@ describe('Edit Page', () => {
         cy.get('[role="tooltip"]').should(el => expect(el).to.not.exist);
 
         // Ensure they still appear when needed though
-        cy.get(EditCommentPage.elements.input('post_id')).clear().type('architecto aut');
+        cy.get(EditCommentPage.elements.input('post_id'))
+            .clear()
+            .type('architecto aut');
         cy.get('[role="tooltip"]').within(() => {
             cy.contains('Sed quo et et fugiat modi');
             cy.contains('Sint dignissimos in architecto aut');
             cy.contains('A voluptas eius eveniet ut commodi dolor');
         });
-
     });
 
     it('should reset the form correctly when switching from edit to create', () => {
@@ -111,17 +102,13 @@ describe('Edit Page', () => {
         EditPostPage.setInputValue('title', 'Another title');
 
         CreatePostPage.navigate();
-        cy.get(CreatePostPage.elements.input('title')).should(el =>
-            expect(el).to.have.value('')
-        );
+        cy.get(CreatePostPage.elements.input('title')).should(el => expect(el).to.have.value(''));
 
         // This validate the old record values are not kept after we navigated
         const currentDate = new Date();
         const currentDateString = currentDate.toISOString().slice(0, 10);
 
-        cy.get(CreatePostPage.elements.input('published_at')).should(el =>
-            expect(el).to.have.value(currentDateString)
-        );
+        cy.get(CreatePostPage.elements.input('published_at')).should(el => expect(el).to.have.value(currentDateString));
     });
 
     it('should intialize the form correctly when cloning from edit', () => {
@@ -137,8 +124,6 @@ describe('Edit Page', () => {
         );
 
         const date = new Date('2012-08-05').toISOString().slice(0, 10);
-        cy.get(CreatePostPage.elements.input('published_at')).should(el =>
-            expect(el).to.have.value(date)
-        );
+        cy.get(CreatePostPage.elements.input('published_at')).should(el => expect(el).to.have.value(date));
     });
 });

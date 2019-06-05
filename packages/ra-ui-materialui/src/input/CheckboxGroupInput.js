@@ -12,19 +12,19 @@ import compose from 'recompose/compose';
 import { addField, translate, FieldTitle } from 'ra-core';
 
 import defaultSanitizeRestProps from './sanitizeRestProps';
-const sanitizeRestProps = ({ setFilter, setPagination, setSort, ...rest }) =>
-    defaultSanitizeRestProps(rest);
+const sanitizeRestProps = ({ setFilter, setPagination, setSort, ...rest }) => defaultSanitizeRestProps(rest);
 
-const styles = theme => createStyles({
-    root: {},
-    label: {
-        transform: 'translate(0, 1.5px) scale(0.75)',
-        transformOrigin: `top ${theme.direction === 'ltr' ? 'left' : 'right'}`,
-    },
-    checkbox: {
-        height: 32,
-    },
-});
+const styles = theme =>
+    createStyles({
+        root: {},
+        label: {
+            transform: 'translate(0, 1.5px) scale(0.75)',
+            transformOrigin: `top ${theme.direction === 'ltr' ? 'left' : 'right'}`,
+        },
+        checkbox: {
+            height: 32,
+        },
+    });
 
 /**
  * An Input component for a checkbox group, using an array of objects for the options
@@ -128,12 +128,7 @@ export class CheckboxGroupInput extends Component {
             <FormControlLabel
                 htmlFor={`${id}_${get(choice, optionValue)}`}
                 key={get(choice, optionValue)}
-                checked={
-                    value
-                        ? value.find(v => v == get(choice, optionValue)) !==
-                          undefined
-                        : false
-                }
+                checked={value ? value.find(v => v == get(choice, optionValue)) !== undefined : false}
                 onChange={this.handleCheck}
                 value={String(get(choice, optionValue))}
                 control={
@@ -144,11 +139,7 @@ export class CheckboxGroupInput extends Component {
                         {...options}
                     />
                 }
-                label={
-                    translateChoice
-                        ? translate(choiceName, { _: choiceName })
-                        : choiceName
-                }
+                label={translateChoice ? translate(choiceName, { _: choiceName }) : choiceName}
             />
         );
     };
@@ -175,24 +166,12 @@ export class CheckboxGroupInput extends Component {
         const { touched, error, helperText = false } = meta;
 
         return (
-            <FormControl
-                className={className}
-                component="fieldset"
-                margin="normal"
-                {...sanitizeRestProps(rest)}
-            >
+            <FormControl className={className} component="fieldset" margin="normal" {...sanitizeRestProps(rest)}>
                 <FormLabel component="legend" className={classes.label}>
-                    <FieldTitle
-                        label={label}
-                        source={source}
-                        resource={resource}
-                        isRequired={isRequired}
-                    />
+                    <FieldTitle label={label} source={source} resource={resource} isRequired={isRequired} />
                 </FormLabel>
                 <FormGroup row>{choices.map(this.renderCheckbox)}</FormGroup>
-                {touched && error && (
-                    <FormHelperText error>{error}</FormHelperText>
-                )}
+                {touched && error && <FormHelperText error>{error}</FormHelperText>}
                 {helperText && <FormHelperText>{helperText}</FormHelperText>}
             </FormControl>
         );
@@ -211,11 +190,7 @@ CheckboxGroupInput.propTypes = {
         onChange: PropTypes.func.isRequired,
     }),
     isRequired: PropTypes.bool,
-    optionText: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.func,
-        PropTypes.element,
-    ]).isRequired,
+    optionText: PropTypes.oneOfType([PropTypes.string, PropTypes.func, PropTypes.element]).isRequired,
     optionValue: PropTypes.string.isRequired,
     resource: PropTypes.string,
     translate: PropTypes.func.isRequired,

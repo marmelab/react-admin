@@ -2,8 +2,7 @@ export default {
     posts: [
         {
             id: 1,
-            title:
-                'Accusantium qui nihil voluptatum quia voluptas maxime ab similique',
+            title: 'Accusantium qui nihil voluptatum quia voluptas maxime ab similique',
             teaser:
                 'In facilis aut aut odit hic doloribus. Fugit possimus perspiciatis sit molestias in. Sunt dignissimos sed quis at vitae veniam amet. Sint sunt perspiciatis quis doloribus aperiam numquam consequatur et. Blanditiis aut earum incidunt eos magnam et voluptatem. Minima iure voluptatum autem. At eaque sit aperiam minima aut in illum.',
             body:
@@ -155,8 +154,7 @@ export default {
         },
         {
             id: 8,
-            title:
-                'Culpa possimus quibusdam nostrum enim tempore rerum odit excepturi',
+            title: 'Culpa possimus quibusdam nostrum enim tempore rerum odit excepturi',
             teaser:
                 'Qui quos exercitationem itaque quia. Repellat libero ut recusandae quidem repudiandae ipsam laudantium. Eveniet quos et quo omnis aut commodi incidunt.',
             body:
@@ -271,8 +269,7 @@ export default {
             id: 1,
             author: {},
             post_id: 6,
-            body:
-                "Queen, tossing her head through the wood. 'If it had lost something; and she felt sure it.",
+            body: "Queen, tossing her head through the wood. 'If it had lost something; and she felt sure it.",
             created_at: new Date('2012-08-02'),
         },
         {
@@ -292,8 +289,7 @@ export default {
                 name: 'Justina Hegmann',
             },
             post_id: 3,
-            body:
-                "I'm not Ada,' she said, 'and see whether it's marked \"poison\" or.",
+            body: "I'm not Ada,' she said, 'and see whether it's marked \"poison\" or.",
             created_at: new Date('2012-08-02'),
         },
         {
@@ -312,8 +308,7 @@ export default {
                 name: 'Edmond Schulist',
             },
             post_id: 1,
-            body:
-                "I ought to tell me your history, you know,' the Hatter and the happy summer days. THE.",
+            body: "I ought to tell me your history, you know,' the Hatter and the happy summer days. THE.",
             created_at: new Date('2012-08-07'),
         },
         {
@@ -332,8 +327,7 @@ export default {
                 name: 'Luciano Berge',
             },
             post_id: 5,
-            body:
-                "While the Panther were sharing a pie--' [later editions continued as follows.",
+            body: "While the Panther were sharing a pie--' [later editions continued as follows.",
             created_at: new Date('2012-09-06'),
         },
         {
@@ -342,8 +336,7 @@ export default {
                 name: 'Annamarie Mayer',
             },
             post_id: 5,
-            body:
-                "I tell you, you coward!' and at once and put it more clearly,' Alice.",
+            body: "I tell you, you coward!' and at once and put it more clearly,' Alice.",
             created_at: new Date('2012-10-03'),
         },
         {

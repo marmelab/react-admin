@@ -20,16 +20,8 @@ class RejectButton extends Component {
     render() {
         const { record, translate } = this.props;
         return record && record.status === 'pending' ? (
-            <Button
-                variant="outlined"
-                color="primary"
-                size="small"
-                onClick={this.handleReject}
-            >
-                <ThumbDown
-                    color="primary"
-                    style={{ paddingRight: '0.5em', color: 'red' }}
-                />
+            <Button variant="outlined" color="primary" size="small" onClick={this.handleReject}>
+                <ThumbDown color="primary" style={{ paddingRight: '0.5em', color: 'red' }} />
                 {translate('resources.reviews.action.reject')}
             </Button>
         ) : (

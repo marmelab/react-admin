@@ -5,23 +5,24 @@ import FormControl from '@material-ui/core/FormControl';
 import { withStyles, createStyles } from '@material-ui/core/styles';
 import { FieldTitle } from 'ra-core';
 
-const styles = theme => createStyles({
-    label: {
-        position: 'relative',
-    },
-    value: {
-        fontFamily: theme.typography.fontFamily,
-        color: 'currentColor',
-        padding: `${theme.spacing.unit}px 0 ${theme.spacing.unit / 2}px`,
-        border: 0,
-        boxSizing: 'content-box',
-        verticalAlign: 'middle',
-        background: 'none',
-        margin: 0, // Reset for Safari
-        display: 'block',
-        width: '100%',
-    },
-});
+const styles = theme =>
+    createStyles({
+        label: {
+            position: 'relative',
+        },
+        value: {
+            fontFamily: theme.typography.fontFamily,
+            color: 'currentColor',
+            padding: `${theme.spacing.unit}px 0 ${theme.spacing.unit / 2}px`,
+            border: 0,
+            boxSizing: 'content-box',
+            verticalAlign: 'middle',
+            background: 'none',
+            margin: 0, // Reset for Safari
+            display: 'block',
+            width: '100%',
+        },
+    });
 
 /**
  * Use any component as read-only Input, labeled just like other Inputs.
@@ -70,12 +71,7 @@ export const Labeled = ({
             error={meta && meta.touched && !!meta.error}
         >
             <InputLabel htmlFor={id} shrink className={classes.label}>
-                <FieldTitle
-                    label={label}
-                    source={source}
-                    resource={resource}
-                    isRequired={isRequired}
-                />
+                <FieldTitle label={label} source={source} resource={resource} isRequired={isRequired} />
             </InputLabel>
             <div className={classes.value}>
                 {children && typeof children.type !== 'string'

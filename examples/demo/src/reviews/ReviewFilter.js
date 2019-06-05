@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-    AutocompleteInput,
-    DateInput,
-    Filter,
-    ReferenceInput,
-    SearchInput,
-    SelectInput,
-} from 'react-admin';
+import { AutocompleteInput, DateInput, Filter, ReferenceInput, SearchInput, SelectInput } from 'react-admin';
 import withStyles from '@material-ui/core/styles/withStyles';
 
 const filterStyles = {
@@ -26,11 +19,7 @@ const ReviewFilter = ({ classes, ...props }) => (
             className={classes.status}
         />
         <ReferenceInput source="customer_id" reference="customers">
-            <AutocompleteInput
-                optionText={choice =>
-                    `${choice.first_name} ${choice.last_name}`
-                }
-            />
+            <AutocompleteInput optionText={choice => `${choice.first_name} ${choice.last_name}`} />
         </ReferenceInput>
         <ReferenceInput source="product_id" reference="products">
             <AutocompleteInput optionText="reference" />

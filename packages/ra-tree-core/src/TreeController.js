@@ -27,17 +27,13 @@ export class TreeControllerView extends Component {
         treeState: PropTypes.object,
     };
 
-    handleGetIsNodeExpanded = nodeId =>
-        getIsNodeExpanded(this.props.treeState, this.props.resource, nodeId);
+    handleGetIsNodeExpanded = nodeId => getIsNodeExpanded(this.props.treeState, this.props.resource, nodeId);
 
-    handleCloseNode = nodeId =>
-        this.props.closeNode(this.props.resource, nodeId);
+    handleCloseNode = nodeId => this.props.closeNode(this.props.resource, nodeId);
 
-    handleExpandNode = nodeId =>
-        this.props.expandNode(this.props.resource, nodeId);
+    handleExpandNode = nodeId => this.props.expandNode(this.props.resource, nodeId);
 
-    handleToggleNode = nodeId =>
-        this.props.toggleNode(this.props.resource, nodeId);
+    handleToggleNode = nodeId => this.props.toggleNode(this.props.resource, nodeId);
 
     render() {
         const {
@@ -55,10 +51,7 @@ export class TreeControllerView extends Component {
             ...props
         } = this.props;
         const availableData = ids.reduce((acc, id) => [...acc, data[id]], []);
-        const tree = getTreeFromArray(
-            Object.values(availableData),
-            parentSource
-        );
+        const tree = getTreeFromArray(Object.values(availableData), parentSource);
 
         return children({
             getIsNodeExpanded: this.handleGetIsNodeExpanded,

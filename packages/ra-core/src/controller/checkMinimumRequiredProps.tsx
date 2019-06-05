@@ -1,13 +1,10 @@
 import React, { ComponentType } from 'react';
 
-const checkMinimumRequiredProps = (
-    displayName: string,
-    requiredProps: string[]
-) => (WrappedComponent: ComponentType) => (props: any) => {
+const checkMinimumRequiredProps = (displayName: string, requiredProps: string[]) => (
+    WrappedComponent: ComponentType
+) => (props: any) => {
     const propNames = Object.keys(props);
-    const missingProps = requiredProps.filter(
-        prop => !propNames.includes(prop)
-    );
+    const missingProps = requiredProps.filter(prop => !propNames.includes(prop));
 
     if (missingProps.length > 0) {
         throw new Error(

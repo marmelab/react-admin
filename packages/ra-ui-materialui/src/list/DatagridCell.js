@@ -15,14 +15,7 @@ const sanitizeRestProps = ({
     ...rest
 }) => rest;
 
-export const DatagridCell = ({
-    className,
-    field,
-    record,
-    basePath,
-    resource,
-    ...rest
-}) => (
+export const DatagridCell = ({ className, field, record, basePath, resource, ...rest }) => (
     <TableCell
         className={classnames(className, field.props.cellClassName)}
         numeric={field.props.textAlign === 'right'}

@@ -14,10 +14,7 @@ export interface CrudGetManyAccumulateAction {
     };
 }
 
-export const crudGetManyAccumulate = (
-    resource: string,
-    ids: Identifier[]
-): CrudGetManyAccumulateAction => ({
+export const crudGetManyAccumulate = (resource: string, ids: Identifier[]): CrudGetManyAccumulateAction => ({
     type: CRUD_GET_MANY_ACCUMULATE,
     payload: { resource, ids },
     meta: { accumulate: crudGetMany },
@@ -41,13 +38,7 @@ export const crudGetMatchingAccumulate = (
     sort: Sort,
     filter: object
 ): CrudGetMatchingAccumulateAction => {
-    const action = crudGetMatching(
-        reference,
-        relatedTo,
-        pagination,
-        sort,
-        filter
-    );
+    const action = crudGetMatching(reference, relatedTo, pagination, sort, filter);
 
     return {
         type: CRUD_GET_MATCHING_ACCUMULATE,

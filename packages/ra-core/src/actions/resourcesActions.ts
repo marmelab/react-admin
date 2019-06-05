@@ -15,9 +15,7 @@ export interface RegisterResourceAction {
     readonly payload: ResourceDefinition;
 }
 
-export const registerResource = (
-    resource: ResourceDefinition
-): RegisterResourceAction => ({
+export const registerResource = (resource: ResourceDefinition): RegisterResourceAction => ({
     type: REGISTER_RESOURCE,
     payload: resource,
 });
@@ -29,9 +27,7 @@ export interface UnregisterResourceAction {
     readonly payload: string;
 }
 
-export const unregisterResource = (
-    resourceName: string
-): UnregisterResourceAction => ({
+export const unregisterResource = (resourceName: string): UnregisterResourceAction => ({
     type: UNREGISTER_RESOURCE,
     payload: resourceName,
 });

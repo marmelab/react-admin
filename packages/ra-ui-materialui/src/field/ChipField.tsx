@@ -13,15 +13,13 @@ const styles = createStyles({
     chip: { margin: 4 },
 });
 
-export const ChipField: SFC<
-    FieldProps & InjectedFieldProps & WithStyles<typeof styles> & ChipProps
-> = ({ className, classes, source, record = {}, ...rest }) => (
-    <Chip
-        className={classnames(classes.chip, className)}
-        label={get(record, source)}
-        {...sanitizeRestProps(rest)}
-    />
-);
+export const ChipField: SFC<FieldProps & InjectedFieldProps & WithStyles<typeof styles> & ChipProps> = ({
+    className,
+    classes,
+    source,
+    record = {},
+    ...rest
+}) => <Chip className={classnames(classes.chip, className)} label={get(record, source)} {...sanitizeRestProps(rest)} />;
 
 const EnhancedChipField = compose<
     FieldProps & InjectedFieldProps & WithStyles<typeof styles> & ChipProps,

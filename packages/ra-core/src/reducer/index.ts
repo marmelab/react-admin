@@ -18,11 +18,9 @@ export default (customReducers, locale, messages) =>
         ...customReducers,
     });
 
-export const getPossibleReferenceValues = (state, props) =>
-    adminGetPossibleReferenceValues(state.admin, props);
+export const getPossibleReferenceValues = (state, props) => adminGetPossibleReferenceValues(state.admin, props);
 export const getResources = state => adminGetResources(state.admin);
-export const getReferenceResource = (state, props) =>
-    adminGetReferenceResource(state.admin, props);
+export const getReferenceResource = (state, props) => adminGetReferenceResource(state.admin, props);
 export const isLoggedIn = state => adminIsLoggedIn(state.admin);
 export const getLocale = state => adminGetLocale(state.i18n);
 export { getPossibleReferences } from './admin';

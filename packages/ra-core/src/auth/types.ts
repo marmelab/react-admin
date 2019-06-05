@@ -1,10 +1,6 @@
 import { AuthActionType } from '../types';
 
-export type UserCheck = (
-    payload: object,
-    pathName: string,
-    routeParams?: object
-) => void;
+export type UserCheck = (payload: object, pathName: string, routeParams?: object) => void;
 
 export const AUTH_LOGIN: AuthActionType = 'AUTH_LOGIN';
 export const AUTH_CHECK: AuthActionType = 'AUTH_CHECK';

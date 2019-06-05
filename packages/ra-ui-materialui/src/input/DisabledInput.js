@@ -5,17 +5,7 @@ import { addField, FieldTitle } from 'ra-core';
 
 import sanitizeRestProps from './sanitizeRestProps';
 
-const DisabledInput = ({
-    classes,
-    className,
-    record,
-    input: { value },
-    label,
-    resource,
-    source,
-    options,
-    ...rest
-}) => (
+const DisabledInput = ({ classes, className, record, input: { value }, label, resource, source, options, ...rest }) => (
     <TextField
         disabled
         margin="normal"

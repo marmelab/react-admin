@@ -18,10 +18,7 @@ import { REDUX_FORM_NAME } from './constants';
 const formMiddleware = () => {
     let previousLocation;
     return next => action => {
-        if (
-            action.type !== LOCATION_CHANGE ||
-            (action.payload.state && action.payload.state.skipFormReset)
-        ) {
+        if (action.type !== LOCATION_CHANGE || (action.payload.state && action.payload.state.skipFormReset)) {
             return next(action);
         }
 

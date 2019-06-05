@@ -51,9 +51,7 @@ describe('<ReferenceArrayField />', () => {
         );
         const ProgressElements = wrapper.find('WithStyles(LinearProgress)');
         assert.equal(ProgressElements.length, 0);
-        const SingleFieldListElement = wrapper.find(
-            'WithStyles(SingleFieldList)'
-        );
+        const SingleFieldListElement = wrapper.find('WithStyles(SingleFieldList)');
         assert.equal(SingleFieldListElement.length, 1);
         assert.equal(SingleFieldListElement.at(0).prop('resource'), 'bar');
         assert.deepEqual(SingleFieldListElement.at(0).prop('data'), data);
@@ -78,9 +76,7 @@ describe('<ReferenceArrayField />', () => {
         );
         const ProgressElements = wrapper.find('WithStyles(LinearProgress)');
         assert.equal(ProgressElements.length, 0);
-        const SingleFieldListElement = wrapper.find(
-            'WithStyles(SingleFieldList)'
-        );
+        const SingleFieldListElement = wrapper.find('WithStyles(SingleFieldList)');
         assert.equal(SingleFieldListElement.length, 1);
         assert.equal(SingleFieldListElement.at(0).prop('resource'), 'bar');
         assert.deepEqual(SingleFieldListElement.at(0).prop('data'), {});
@@ -109,16 +105,11 @@ describe('<ReferenceArrayField />', () => {
         );
         const ProgressElements = wrapper.find('WithStyles(LinearProgress)');
         assert.equal(ProgressElements.length, 0);
-        const SingleFieldListElement = wrapper.find(
-            'WithStyles(SingleFieldList)'
-        );
+        const SingleFieldListElement = wrapper.find('WithStyles(SingleFieldList)');
         assert.equal(SingleFieldListElement.length, 1);
         assert.equal(SingleFieldListElement.at(0).prop('resource'), 'bar');
         assert.deepEqual(SingleFieldListElement.at(0).prop('data'), data);
-        assert.deepEqual(SingleFieldListElement.at(0).prop('ids'), [
-            'abc-1',
-            'abc-2',
-        ]);
+        assert.deepEqual(SingleFieldListElement.at(0).prop('ids'), ['abc-1', 'abc-2']);
     });
 
     it('should support record with number identifier', () => {
@@ -143,9 +134,7 @@ describe('<ReferenceArrayField />', () => {
         );
         const ProgressElements = wrapper.find('WithStyles(LinearProgress)');
         assert.equal(ProgressElements.length, 0);
-        const SingleFieldListElement = wrapper.find(
-            'WithStyles(SingleFieldList)'
-        );
+        const SingleFieldListElement = wrapper.find('WithStyles(SingleFieldList)');
         assert.equal(SingleFieldListElement.length, 1);
         assert.equal(SingleFieldListElement.at(0).prop('resource'), 'bar');
         assert.deepEqual(SingleFieldListElement.at(0).prop('data'), data);
@@ -175,9 +164,7 @@ describe('<ReferenceArrayField />', () => {
         );
         const ProgressElements = wrapper.find('WithStyles(LinearProgress)');
         assert.equal(ProgressElements.length, 0);
-        const SingleFieldListElement = wrapper.find(
-            'WithStyles(SingleFieldList)'
-        );
+        const SingleFieldListElement = wrapper.find('WithStyles(SingleFieldList)');
         assert.equal(SingleFieldListElement.at(0).prop('className'), 'myClass');
     });
 });

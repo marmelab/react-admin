@@ -10,9 +10,7 @@ describe('InferredElement', () => {
             const DummyComponent = () => <span />;
             const dummyType = { component: DummyComponent };
             const ie = new InferredElement(dummyType, { source: 'foo' });
-            expect(ie.getRepresentation()).toBe(
-                '<DummyComponent source="foo" />'
-            );
+            expect(ie.getRepresentation()).toBe('<DummyComponent source="foo" />');
         });
         it('should return a representation based on the representation type property', () => {
             const DummyComponent = () => <span />;

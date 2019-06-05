@@ -10,53 +10,32 @@ import Checkbox from '@material-ui/core/Checkbox';
 import classnames from 'classnames';
 import { withStyles, createStyles } from '@material-ui/core/styles';
 
-const RawPlaceholder = ({ classes }) => (
-    <div className={classes.root}>&nbsp;</div>
-);
+const RawPlaceholder = ({ classes }) => <div className={classes.root}>&nbsp;</div>;
 
-const styles = theme => createStyles({
-    root: {
-        backgroundColor: theme.palette.grey[300],
-        display: 'flex',
-    },
-});
+const styles = theme =>
+    createStyles({
+        root: {
+            backgroundColor: theme.palette.grey[300],
+            display: 'flex',
+        },
+    });
 
 const Placeholder = withStyles(styles)(RawPlaceholder);
 
-const times = (nbChildren, fn) =>
-    Array.from({ length: nbChildren }, (_, key) => fn(key));
+const times = (nbChildren, fn) => Array.from({ length: nbChildren }, (_, key) => fn(key));
 
-export default ({
-    classes,
-    className,
-    expand,
-    hasBulkActions,
-    nbChildren,
-    nbFakeLines = 5,
-}) => (
+export default ({ classes, className, expand, hasBulkActions, nbChildren, nbFakeLines = 5 }) => (
     <Table className={classnames(classes.table, className)}>
         <TableHead>
             <TableRow className={classes.row}>
                 {expand && <TableCell className={classes.expandHeader} />}
                 {hasBulkActions && (
-                    <TableCell
-                        padding="none"
-                        className={classes.expandIconCell}
-                    >
-                        <Checkbox
-                            className="select-all"
-                            color="primary"
-                            checked={false}
-                        />
+                    <TableCell padding="none" className={classes.expandIconCell}>
+                        <Checkbox className="select-all" color="primary" checked={false} />
                     </TableCell>
                 )}
                 {times(nbChildren, key => (
-                    <TableCell
-                        padding="none"
-                        variant="head"
-                        className={classes.headerCell}
-                        key={key}
-                    >
+                    <TableCell padding="none" variant="head" className={classes.headerCell} key={key}>
                         <Placeholder />
                     </TableCell>
                 ))}
@@ -66,38 +45,19 @@ export default ({
             {times(nbFakeLines, key1 => (
                 <TableRow key={key1} style={{ opacity: 1 / (key1 + 1) }}>
                     {expand && (
-                        <TableCell
-                            padding="none"
-                            className={classes.expandIconCell}
-                        >
-                            <IconButton
-                                className={classes.expandIcon}
-                                component="div"
-                                aria-hidden="true"
-                                role="expand"
-                            >
+                        <TableCell padding="none" className={classes.expandIconCell}>
+                            <IconButton className={classes.expandIcon} component="div" aria-hidden="true" role="expand">
                                 <ExpandMoreIcon />
                             </IconButton>
                         </TableCell>
                     )}
                     {hasBulkActions && (
-                        <TableCell
-                            padding="none"
-                            className={classes.expandIconCell}
-                        >
-                            <Checkbox
-                                className="select-all"
-                                color="primary"
-                                checked={false}
-                            />
+                        <TableCell padding="none" className={classes.expandIconCell}>
+                            <Checkbox className="select-all" color="primary" checked={false} />
                         </TableCell>
                     )}
                     {times(nbChildren, key2 => (
-                        <TableCell
-                            padding="none"
-                            className={classes.rowCell}
-                            key={key2}
-                        >
+                        <TableCell padding="none" className={classes.rowCell} key={key2}>
                             <Placeholder />
                         </TableCell>
                     ))}

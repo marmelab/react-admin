@@ -107,19 +107,12 @@ ReferenceManyFieldView.propTypes = {
  */
 export const ReferenceManyField = ({ children, ...props }) => {
     if (React.Children.count(children) !== 1) {
-        throw new Error(
-            '<ReferenceManyField> only accepts a single child (like <Datagrid>)'
-        );
+        throw new Error('<ReferenceManyField> only accepts a single child (like <Datagrid>)');
     }
 
     return (
         <ReferenceManyFieldController {...props}>
-            {controllerProps => (
-                <ReferenceManyFieldView
-                    {...props}
-                    {...{ children, ...controllerProps }}
-                />
-            )}
+            {controllerProps => <ReferenceManyFieldView {...props} {...{ children, ...controllerProps }} />}
         </ReferenceManyFieldController>
     );
 };

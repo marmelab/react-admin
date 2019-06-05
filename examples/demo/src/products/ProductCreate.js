@@ -25,25 +25,12 @@ const ProductCreate = ({ classes, ...props }) => (
     <Create {...props}>
         <TabbedForm>
             <FormTab label="resources.products.tabs.image">
-                <TextInput
-                    autoFocus
-                    source="image"
-                    options={{ fullWidth: true }}
-                    validate={required()}
-                />
-                <TextInput
-                    source="thumbnail"
-                    options={{ fullWidth: true }}
-                    validate={required()}
-                />
+                <TextInput autoFocus source="image" options={{ fullWidth: true }} validate={required()} />
+                <TextInput source="thumbnail" options={{ fullWidth: true }} validate={required()} />
             </FormTab>
             <FormTab label="resources.products.tabs.details" path="details">
                 <TextInput source="reference" validate={required()} />
-                <NumberInput
-                    source="price"
-                    validate={required()}
-                    className={classes.price}
-                />
+                <NumberInput source="price" validate={required()} className={classes.price} />
                 <NumberInput
                     source="width"
                     validate={required()}
@@ -56,23 +43,12 @@ const ProductCreate = ({ classes, ...props }) => (
                     className={classes.height}
                     formClassName={classes.heightFormGroup}
                 />
-                <ReferenceInput
-                    source="category_id"
-                    reference="categories"
-                    allowEmpty
-                >
+                <ReferenceInput source="category_id" reference="categories" allowEmpty>
                     <SelectInput source="name" />
                 </ReferenceInput>
-                <NumberInput
-                    source="stock"
-                    validate={required()}
-                    className={classes.stock}
-                />
+                <NumberInput source="stock" validate={required()} className={classes.stock} />
             </FormTab>
-            <FormTab
-                label="resources.products.tabs.description"
-                path="description"
-            >
+            <FormTab label="resources.products.tabs.description" path="description">
                 <RichTextInput source="description" addLabel={false} />
             </FormTab>
         </TabbedForm>

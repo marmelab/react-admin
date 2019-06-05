@@ -38,12 +38,7 @@ describe('<DatagridHeaderCell />', () => {
 
         it('should be disabled when field has no sortby and no source', () => {
             const wrapper = shallow(
-                <DatagridHeaderCell
-                    currentSort={{}}
-                    field={<Field />}
-                    updateSort={() => true}
-                    translate={() => ''}
-                />
+                <DatagridHeaderCell currentSort={{}} field={<Field />} updateSort={() => true} translate={() => ''} />
             );
 
             assert.equal(wrapper.find('WithStyles(TableSortLabel)').length, 0);

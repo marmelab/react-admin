@@ -44,18 +44,9 @@ export class BooleanInput extends Component {
                             {...options}
                         />
                     }
-                    label={
-                        <FieldTitle
-                            label={label}
-                            source={source}
-                            resource={resource}
-                            isRequired={isRequired}
-                        />
-                    }
+                    label={<FieldTitle label={label} source={source} resource={resource} isRequired={isRequired} />}
                 />
-                {meta.error && (
-                    <FormHelperText error>{meta.error}</FormHelperText>
-                )}
+                {meta.error && <FormHelperText error>{meta.error}</FormHelperText>}
             </FormGroup>
         );
     }

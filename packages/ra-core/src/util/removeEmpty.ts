@@ -1,11 +1,7 @@
 import { shallowEqual } from 'recompose';
 
-const isObject = obj =>
-    obj && Object.prototype.toString.call(obj) === '[object Object]';
-const isEmpty = obj =>
-    obj instanceof Date
-        ? false
-        : obj === '' || obj === null || shallowEqual(obj, {});
+const isObject = obj => obj && Object.prototype.toString.call(obj) === '[object Object]';
+const isEmpty = obj => (obj instanceof Date ? false : obj === '' || obj === null || shallowEqual(obj, {}));
 
 const removeEmpty = object =>
     Object.keys(object).reduce((acc, key) => {

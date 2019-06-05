@@ -1,13 +1,8 @@
 import { all, put, takeEvery } from 'redux-saga/effects';
-import {
-    CRUD_GET_ONE_SUCCESS,
-    CrudGetOneSuccessAction,
-} from '../actions/dataActions';
+import { CRUD_GET_ONE_SUCCESS, CrudGetOneSuccessAction } from '../actions/dataActions';
 import { showNotification } from '../actions/notificationActions';
 
-type ActionTypes =
-    | CrudGetOneSuccessAction
-    | { type: 'OTHER_TYPE'; requestPayload?: any; payload?: any };
+type ActionTypes = CrudGetOneSuccessAction | { type: 'OTHER_TYPE'; requestPayload?: any; payload?: any };
 
 /**
  * Side effects for fetch responses
@@ -22,9 +17,7 @@ function* handleResponse(action: ActionTypes) {
                 !('id' in payload.data) ||
                 payload.data.id != requestPayload.id // tslint:disable-line triple-equals
             ) {
-                return yield put(
-                    showNotification('ra.notification.bad_item', 'warning')
-                );
+                return yield put(showNotification('ra.notification.bad_item', 'warning'));
             }
             break;
         default:
@@ -33,8 +26,5 @@ function* handleResponse(action: ActionTypes) {
 }
 
 export default function*() {
-    yield takeEvery(
-        action => action.meta && action.meta.fetchResponse,
-        handleResponse
-    );
+    yield takeEvery(action => action.meta && action.meta.fetchResponse, handleResponse);
 }

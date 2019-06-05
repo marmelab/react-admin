@@ -71,8 +71,7 @@ class UserMenu extends React.Component {
                     onClose={this.handleClose}
                 >
                     {Children.map(children, menuItem =>
-                        isValidElement(menuItem) ?
-                        cloneElement(menuItem, { onClick: this.handleClose }) : null
+                        isValidElement(menuItem) ? cloneElement(menuItem, { onClick: this.handleClose }) : null
                     )}
                     {logout}
                 </Menu>

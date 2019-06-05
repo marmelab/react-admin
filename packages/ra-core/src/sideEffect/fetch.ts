@@ -1,18 +1,6 @@
-import {
-    all,
-    call,
-    cancelled,
-    put,
-    select,
-    takeEvery,
-} from 'redux-saga/effects';
+import { all, call, cancelled, put, select, takeEvery } from 'redux-saga/effects';
 import { DataProvider, ReduxState } from '../types';
-import {
-    FETCH_CANCEL,
-    FETCH_END,
-    FETCH_ERROR,
-    FETCH_START,
-} from '../actions/fetchActions';
+import { FETCH_CANCEL, FETCH_END, FETCH_ERROR, FETCH_START } from '../actions/fetchActions';
 import {
     fetchActionsWithRecordResponse,
     fetchActionsWithArrayOfIdentifiedRecordsResponse,
@@ -31,10 +19,7 @@ function validateResponseFormat(
         );
         throw new Error('ra.notification.data_provider_error');
     }
-    if (
-        fetchActionsWithArrayOfRecordsResponse.includes(type) &&
-        !Array.isArray(response.data)
-    ) {
+    if (fetchActionsWithArrayOfRecordsResponse.includes(type) && !Array.isArray(response.data)) {
         logger(
             `The response to '${type}' must be like { data : [...] }, but the received data is not an array. The dataProvider is probably wrong for '${type}'`
         );
@@ -51,19 +36,13 @@ function validateResponseFormat(
         );
         throw new Error('ra.notification.data_provider_error');
     }
-    if (
-        fetchActionsWithRecordResponse.includes(type) &&
-        !response.data.hasOwnProperty('id')
-    ) {
+    if (fetchActionsWithRecordResponse.includes(type) && !response.data.hasOwnProperty('id')) {
         logger(
             `The response to '${type}' must be like { data: { id: 123, ... } }, but the received data does not have an 'id' key. The dataProvider is probably wrong for '${type}'`
         );
         throw new Error('ra.notification.data_provider_error');
     }
-    if (
-        fetchActionsWithTotalResponse.includes(type) &&
-        !response.hasOwnProperty('total')
-    ) {
+    if (fetchActionsWithTotalResponse.includes(type) && !response.hasOwnProperty('total')) {
         logger(
             `The response to '${type}' must be like  { data: [...], total: 123 }, but the received response does not have a 'total' key. The dataProvider is probably wrong for '${type}'`
         );
@@ -82,10 +61,7 @@ interface ActionWithSideEffect {
     };
 }
 
-export function* handleFetch(
-    dataProvider: DataProvider,
-    action: ActionWithSideEffect
-) {
+export function* handleFetch(dataProvider: DataProvider, action: ActionWithSideEffect) {
     const {
         type,
         payload,
@@ -94,25 +70,15 @@ export function* handleFetch(
     const restType = fetchMeta;
 
     try {
-        const isOptimistic = yield select(
-            (state: ReduxState) => state.admin.ui.optimistic
-        );
+        const isOptimistic = yield select((state: ReduxState) => state.admin.ui.optimistic);
         if (isOptimistic) {
             // in optimistic mode, all fetch actions are canceled,
             // so the admin uses the store without synchronization
             return;
         }
 
-        yield all([
-            put({ type: `${type}_LOADING`, payload, meta }),
-            put({ type: FETCH_START }),
-        ]);
-        const response = yield call(
-            dataProvider,
-            restType,
-            meta.resource,
-            payload
-        );
+        yield all([put({ type: `${type}_LOADING`, payload, meta }), put({ type: FETCH_START })]);
+        const response = yield call(dataProvider, restType, meta.resource, payload);
         if (process.env.NODE_ENV !== 'production') {
             validateResponseFormat(response, restType);
         }

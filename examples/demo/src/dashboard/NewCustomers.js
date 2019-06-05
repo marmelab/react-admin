@@ -47,26 +47,14 @@ const NewCustomers = ({ visitors = [], nb, translate, classes }) => (
             <Typography className={classes.title} color="textSecondary">
                 {translate('pos.dashboard.new_customers')}
             </Typography>
-            <Typography
-                variant="headline"
-                component="h2"
-                className={classes.value}
-            >
+            <Typography variant="headline" component="h2" className={classes.value}>
                 {nb}
             </Typography>
             <Divider />
             <List>
                 {visitors.map(record => (
-                    <ListItem
-                        button
-                        to={`/customers/${record.id}`}
-                        component={Link}
-                        key={record.id}
-                    >
-                        <Avatar
-                            src={`${record.avatar}?size=32x32`}
-                            className={classes.avatar}
-                        />
+                    <ListItem button to={`/customers/${record.id}`} component={Link} key={record.id}>
+                        <Avatar src={`${record.avatar}?size=32x32`} className={classes.avatar} />
                         <ListItemText
                             primary={`${record.first_name} ${record.last_name}`}
                             className={classes.listItemText}

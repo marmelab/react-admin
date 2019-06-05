@@ -1,25 +1,10 @@
 import { TypeKind, print } from 'graphql';
-import {
-    GET_LIST,
-    GET_ONE,
-    GET_MANY,
-    GET_MANY_REFERENCE,
-    UPDATE,
-    CREATE,
-    DELETE,
-} from 'react-admin';
-import buildGqlQuery, {
-    buildApolloArgs,
-    buildArgs,
-    buildFields,
-    getArgType,
-} from './buildGqlQuery';
+import { GET_LIST, GET_ONE, GET_MANY, GET_MANY_REFERENCE, UPDATE, CREATE, DELETE } from 'react-admin';
+import buildGqlQuery, { buildApolloArgs, buildArgs, buildFields, getArgType } from './buildGqlQuery';
 
 describe('getArgType', () => {
     it('returns the arg type', () => {
-        expect(
-            print(getArgType({ type: { kind: TypeKind.SCALAR, name: 'foo' } }))
-        ).toEqual('foo');
+        expect(print(getArgType({ type: { kind: TypeKind.SCALAR, name: 'foo' } }))).toEqual('foo');
     });
     it('returns the arg type for NON_NULL types', () => {
         expect(
@@ -71,14 +56,9 @@ describe('buildArgs', () => {
     });
 
     it('returns an array of args correctly filtered when query has arguments', () => {
-        expect(
-            print(
-                buildArgs(
-                    { args: [{ name: 'foo' }, { name: 'bar' }] },
-                    { foo: 'foo_value' }
-                )
-            )
-        ).toEqual(['foo: $foo']);
+        expect(print(buildArgs({ args: [{ name: 'foo' }, { name: 'bar' }] }, { foo: 'foo_value' }))).toEqual([
+            'foo: $foo',
+        ]);
     });
 });
 
@@ -232,16 +212,7 @@ describe('buildGqlQuery', () => {
     const params = { foo: 'foo_value' };
 
     it('returns the correct query for GET_LIST', () => {
-        expect(
-            print(
-                buildGqlQuery(introspectionResults)(
-                    resource,
-                    GET_LIST,
-                    queryType,
-                    params
-                )
-            )
-        ).toEqual(
+        expect(print(buildGqlQuery(introspectionResults)(resource, GET_LIST, queryType, params))).toEqual(
             `query allCommand($foo: Int!) {
   items: allCommand(foo: $foo) {
     foo
@@ -260,16 +231,7 @@ describe('buildGqlQuery', () => {
         );
     });
     it('returns the correct query for GET_MANY', () => {
-        expect(
-            print(
-                buildGqlQuery(introspectionResults)(
-                    resource,
-                    GET_MANY,
-                    queryType,
-                    params
-                )
-            )
-        ).toEqual(
+        expect(print(buildGqlQuery(introspectionResults)(resource, GET_MANY, queryType, params))).toEqual(
             `query allCommand($foo: Int!) {
   items: allCommand(foo: $foo) {
     foo
@@ -288,16 +250,7 @@ describe('buildGqlQuery', () => {
         );
     });
     it('returns the correct query for GET_MANY_REFERENCE', () => {
-        expect(
-            print(
-                buildGqlQuery(introspectionResults)(
-                    resource,
-                    GET_MANY_REFERENCE,
-                    queryType,
-                    params
-                )
-            )
-        ).toEqual(
+        expect(print(buildGqlQuery(introspectionResults)(resource, GET_MANY_REFERENCE, queryType, params))).toEqual(
             `query allCommand($foo: Int!) {
   items: allCommand(foo: $foo) {
     foo
@@ -317,14 +270,7 @@ describe('buildGqlQuery', () => {
     });
     it('returns the correct query for GET_ONE', () => {
         expect(
-            print(
-                buildGqlQuery(introspectionResults)(
-                    resource,
-                    GET_ONE,
-                    { ...queryType, name: 'getCommand' },
-                    params
-                )
-            )
+            print(buildGqlQuery(introspectionResults)(resource, GET_ONE, { ...queryType, name: 'getCommand' }, params))
         ).toEqual(
             `query getCommand($foo: Int!) {
   data: getCommand(foo: $foo) {
@@ -343,12 +289,7 @@ describe('buildGqlQuery', () => {
     it('returns the correct query for UPDATE', () => {
         expect(
             print(
-                buildGqlQuery(introspectionResults)(
-                    resource,
-                    UPDATE,
-                    { ...queryType, name: 'updateCommand' },
-                    params
-                )
+                buildGqlQuery(introspectionResults)(resource, UPDATE, { ...queryType, name: 'updateCommand' }, params)
             )
         ).toEqual(
             `mutation updateCommand($foo: Int!) {
@@ -368,12 +309,7 @@ describe('buildGqlQuery', () => {
     it('returns the correct query for CREATE', () => {
         expect(
             print(
-                buildGqlQuery(introspectionResults)(
-                    resource,
-                    CREATE,
-                    { ...queryType, name: 'createCommand' },
-                    params
-                )
+                buildGqlQuery(introspectionResults)(resource, CREATE, { ...queryType, name: 'createCommand' }, params)
             )
         ).toEqual(
             `mutation createCommand($foo: Int!) {
@@ -393,12 +329,7 @@ describe('buildGqlQuery', () => {
     it('returns the correct query for DELETE', () => {
         expect(
             print(
-                buildGqlQuery(introspectionResults)(
-                    resource,
-                    DELETE,
-                    { ...queryType, name: 'deleteCommand' },
-                    params
-                )
+                buildGqlQuery(introspectionResults)(resource, DELETE, { ...queryType, name: 'deleteCommand' }, params)
             )
         ).toEqual(
             `mutation deleteCommand($foo: Int!) {

@@ -18,8 +18,7 @@ const styles = theme => ({
         margin: 0,
     },
     tileBar: {
-        background:
-            'linear-gradient(to top, rgba(0,0,0,0.8) 0%,rgba(0,0,0,0.4) 70%,rgba(0,0,0,0) 100%)',
+        background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%,rgba(0,0,0,0.4) 70%,rgba(0,0,0,0) 100%)',
     },
     placeholder: {
         backgroundColor: theme.palette.grey[300],
@@ -42,16 +41,11 @@ const getColsForWidth = width => {
     return 6;
 };
 
-const times = (nbChildren, fn) =>
-    Array.from({ length: nbChildren }, (_, key) => fn(key));
+const times = (nbChildren, fn) => Array.from({ length: nbChildren }, (_, key) => fn(key));
 
 const LoadingGridList = ({ width, classes, nbItems = 10 }) => (
     <div className={classes.root}>
-        <MuiGridList
-            cellHeight={180}
-            cols={getColsForWidth(width)}
-            className={classes.gridList}
-        >
+        <MuiGridList cellHeight={180} cols={getColsForWidth(width)} className={classes.gridList}>
             {' '}
             {times(nbItems, key => (
                 <GridListTile key={key}>
@@ -64,17 +58,9 @@ const LoadingGridList = ({ width, classes, nbItems = 10 }) => (
 
 const LoadedGridList = ({ classes, ids, data, basePath, width }) => (
     <div className={classes.root}>
-        <MuiGridList
-            cellHeight={180}
-            cols={getColsForWidth(width)}
-            className={classes.gridList}
-        >
+        <MuiGridList cellHeight={180} cols={getColsForWidth(width)} className={classes.gridList}>
             {ids.map(id => (
-                <GridListTile
-                    component={Link}
-                    key={id}
-                    to={linkToRecord(basePath, data[id].id)}
-                >
+                <GridListTile component={Link} key={id} to={linkToRecord(basePath, data[id].id)}>
                     <img src={data[id].thumbnail} alt="" />
                     <GridListTileBar
                         className={classes.tileBar}

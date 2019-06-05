@@ -7,11 +7,7 @@ import Typography, { TypographyProps } from '@material-ui/core/Typography';
 import sanitizeRestProps from './sanitizeRestProps';
 import { FieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 
-const hasNumberFormat = !!(
-    typeof Intl === 'object' &&
-    Intl &&
-    typeof Intl.NumberFormat === 'function'
-);
+const hasNumberFormat = !!(typeof Intl === 'object' && Intl && typeof Intl.NumberFormat === 'function');
 
 interface Props extends FieldProps {
     locales?: string | string[];
@@ -64,24 +60,14 @@ export const NumberField: SFC<Props & InjectedFieldProps & TypographyProps> = ({
     }
     if (!hasNumberFormat) {
         return (
-            <Typography
-                component="span"
-                variant="body1"
-                className={className}
-                {...sanitizeRestProps(rest)}
-            >
+            <Typography component="span" variant="body1" className={className} {...sanitizeRestProps(rest)}>
                 {value}
             </Typography>
         );
     }
 
     return (
-        <Typography
-            component="span"
-            variant="body1"
-            className={className}
-            {...sanitizeRestProps(rest)}
-        >
+        <Typography component="span" variant="body1" className={className} {...sanitizeRestProps(rest)}>
             {value.toLocaleString(locales, options)}
         </Typography>
     );
@@ -100,10 +86,7 @@ EnhancedNumberField.defaultProps = {
 EnhancedNumberField.propTypes = {
     ...Typography.propTypes,
     ...fieldPropTypes,
-    locales: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.arrayOf(PropTypes.string),
-    ]),
+    locales: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
     options: PropTypes.object,
 };
 

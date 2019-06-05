@@ -29,11 +29,7 @@ const sanitizeRestProps = ({
  * );
  */
 const IgnoreFormProps = ({ children, ...props }) => (
-    <Fragment>
-        {Children.map(children, child =>
-            cloneElement(child, sanitizeRestProps(props))
-        )}
-    </Fragment>
+    <Fragment>{Children.map(children, child => cloneElement(child, sanitizeRestProps(props)))}</Fragment>
 );
 
 IgnoreFormProps.propTypes = {

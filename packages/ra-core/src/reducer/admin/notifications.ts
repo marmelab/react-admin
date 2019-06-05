@@ -8,18 +8,11 @@ import {
 } from '../../actions/notificationActions';
 import { UNDO, UndoAction } from '../../actions/undoActions';
 
-type ActionTypes =
-    | ShowNotificationAction
-    | HideNotificationAction
-    | UndoAction
-    | { type: 'OTHER_TYPE' };
+type ActionTypes = ShowNotificationAction | HideNotificationAction | UndoAction | { type: 'OTHER_TYPE' };
 
 type State = Notification[];
 
-const notificationsReducer: Reducer<State> = (
-    previousState = [],
-    action: ActionTypes
-) => {
+const notificationsReducer: Reducer<State> = (previousState = [], action: ActionTypes) => {
     switch (action.type) {
         case SHOW_NOTIFICATION:
             return previousState.concat(action.payload);

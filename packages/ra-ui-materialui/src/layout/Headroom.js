@@ -7,9 +7,7 @@ const defaultStyle = {
     zIndex: 1300,
 };
 
-const HeadroomCustom = ({ children }) => (
-    <Headroom style={defaultStyle}>{children}</Headroom>
-);
+const HeadroomCustom = ({ children }) => <Headroom style={defaultStyle}>{children}</Headroom>;
 
 HeadroomCustom.propTypes = {
     children: PropTypes.node.isRequired,

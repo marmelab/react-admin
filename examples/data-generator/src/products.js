@@ -23,26 +23,11 @@ export default db => {
                         random.arrayElement('ABCDEFGHIJKLMNOPQRSTUVWXYZ'),
                     width: width,
                     height: height,
-                    price: randomFloat(
-                        (width * height) / 20,
-                        (width * height) / 15
-                    ),
-                    thumbnail:
-                        'https://marmelab.com/posters/' +
-                        category.name +
-                        '-' +
-                        (index + 1) +
-                        '.jpeg',
-                    image:
-                        'https://marmelab.com/posters/' +
-                        category.name +
-                        '-' +
-                        (index + 1) +
-                        '.jpeg',
+                    price: randomFloat((width * height) / 20, (width * height) / 15),
+                    thumbnail: 'https://marmelab.com/posters/' + category.name + '-' + (index + 1) + '.jpeg',
+                    image: 'https://marmelab.com/posters/' + category.name + '-' + (index + 1) + '.jpeg',
                     description: lorem.paragraph(),
-                    stock: weightedBoolean(20)
-                        ? 0
-                        : random.number({ min: 0, max: 250 }),
+                    stock: weightedBoolean(20) ? 0 : random.number({ min: 0, max: 250 }),
                 };
             }),
         ],

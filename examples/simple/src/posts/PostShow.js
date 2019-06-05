@@ -57,12 +57,7 @@ const PostShow = props => (
                         </ArrayField>
                     </Tab>
                     <Tab label="post.form.body">
-                        <RichTextField
-                            source="body"
-                            stripTags={false}
-                            label=""
-                            addLabel={false}
-                        />
+                        <RichTextField source="body" stripTags={false} label="" addLabel={false} />
                     </Tab>
                     <Tab label="post.form.miscellaneous">
                         <ReferenceArrayField reference="tags" source="tags">
@@ -73,10 +68,7 @@ const PostShow = props => (
                         <DateField source="published_at" />
                         <SelectField
                             source="category"
-                            choices={[
-                                { name: 'Tech', id: 'tech' },
-                                { name: 'Lifestyle', id: 'lifestyle' },
-                            ]}
+                            choices={[{ name: 'Tech', id: 'tech' }, { name: 'Lifestyle', id: 'lifestyle' }]}
                         />
                         <NumberField source="average_note" />
                         <BooleanField source="commentable" />

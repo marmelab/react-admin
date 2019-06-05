@@ -35,16 +35,8 @@ const AcceptButton = ({ record, translate }) =>
             options={sideEffects}
         >
             {approve => (
-                <Button
-                    variant="outlined"
-                    color="primary"
-                    size="small"
-                    onClick={approve}
-                >
-                    <ThumbUp
-                        color="primary"
-                        style={{ paddingRight: '0.5em', color: 'green' }}
-                    />
+                <Button variant="outlined" color="primary" size="small" onClick={approve}>
+                    <ThumbUp color="primary" style={{ paddingRight: '0.5em', color: 'green' }} />
                     {translate('resources.reviews.action.accept')}
                 </Button>
             )}

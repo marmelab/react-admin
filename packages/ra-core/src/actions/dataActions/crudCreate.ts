@@ -1,10 +1,7 @@
 import { Record } from '../../types';
 import { CREATE } from '../../dataFetchActions';
 import { FETCH_END, FETCH_ERROR } from '../fetchActions';
-import {
-    NotificationSideEffect,
-    RedirectionSideEffect,
-} from '../../sideEffect';
+import { NotificationSideEffect, RedirectionSideEffect } from '../../sideEffect';
 
 export const crudCreate = (
     resource: string,

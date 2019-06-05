@@ -10,18 +10,8 @@ const emptyRecord = {};
 
 const sanitizeRestProps = ({ alwaysOn, ...props }) => props;
 
-const FilterFormInput = ({
-    filterElement,
-    handleHide,
-    classes,
-    resource,
-    translate,
-    locale,
-}) => (
-    <div
-        data-source={filterElement.props.source}
-        className={classnames('filter-field', classes.body)}
-    >
+const FilterFormInput = ({ filterElement, handleHide, classes, resource, translate, locale }) => (
+    <div data-source={filterElement.props.source} className={classnames('filter-field', classes.body)}>
         {!filterElement.props.alwaysOn && (
             <IconButton
                 className="hide-filter"

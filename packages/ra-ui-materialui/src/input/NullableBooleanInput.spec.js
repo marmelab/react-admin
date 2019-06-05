@@ -12,9 +12,7 @@ describe('<NullableBooleanInput />', () => {
     };
 
     it('should give three different choices for true, false or unknown', () => {
-        const wrapper = shallow(
-            <NullableBooleanInput source="foo" {...defaultProps} />
-        );
+        const wrapper = shallow(<NullableBooleanInput source="foo" {...defaultProps} />);
         const MenuItemElements = wrapper.find('WithStyles(MenuItem)');
         expect(MenuItemElements.length).toEqual(3);
 

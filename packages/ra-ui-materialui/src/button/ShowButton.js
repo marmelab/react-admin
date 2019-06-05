@@ -10,13 +10,7 @@ import Button from './Button';
 // useful to prevent click bubbling in a datagrid with rowClick
 const stopPropagation = e => e.stopPropagation();
 
-const ShowButton = ({
-    basePath = '',
-    label = 'ra.action.show',
-    record = {},
-    icon = <ImageEye />,
-    ...rest
-}) => (
+const ShowButton = ({ basePath = '', label = 'ra.action.show', record = {}, icon = <ImageEye />, ...rest }) => (
     <Button
         component={Link}
         to={`${linkToRecord(basePath, record.id)}/show`}
@@ -38,9 +32,7 @@ ShowButton.propTypes = {
 const enhance = shouldUpdate(
     (props, nextProps) =>
         props.translate !== nextProps.translate ||
-        (props.record &&
-            nextProps.record &&
-            props.record.id !== nextProps.record.id) ||
+        (props.record && nextProps.record && props.record.id !== nextProps.record.id) ||
         props.basePath !== nextProps.basePath ||
         (props.record == null && nextProps.record != null)
 );

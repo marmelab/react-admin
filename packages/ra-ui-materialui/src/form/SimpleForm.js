@@ -74,18 +74,10 @@ export class SimpleForm extends Component {
         } = this.props;
 
         return (
-            <form
-                className={classnames('simple-form', className)}
-                {...sanitizeRestProps(rest)}
-            >
+            <form className={classnames('simple-form', className)} {...sanitizeRestProps(rest)}>
                 <CardContentInner key={version}>
                     {Children.map(children, input => (
-                        <FormInput
-                            basePath={basePath}
-                            input={input}
-                            record={record}
-                            resource={resource}
-                        />
+                        <FormInput basePath={basePath} input={input} record={record} resource={resource} />
                     ))}
                 </CardContentInner>
                 {toolbar &&
@@ -117,11 +109,7 @@ SimpleForm.propTypes = {
     pristine: PropTypes.bool,
     record: PropTypes.object,
     resource: PropTypes.string,
-    redirect: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.bool,
-        PropTypes.func,
-    ]),
+    redirect: PropTypes.oneOfType([PropTypes.string, PropTypes.bool, PropTypes.func]),
     save: PropTypes.func, // the handler defined in the parent, which triggers the REST submission
     saving: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
     submitOnEnter: PropTypes.bool,

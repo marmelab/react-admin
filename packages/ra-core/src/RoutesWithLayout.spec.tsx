@@ -65,9 +65,7 @@ describe('<RoutesWithLayout>', () => {
     });
 
     it('should accept custom routes', () => {
-        const customRoutes = [
-            <Route key="custom" path="/custom" component={Custom} />,
-        ]; // eslint-disable-line react/jsx-key
+        const customRoutes = [<Route key="custom" path="/custom" component={Custom} />]; // eslint-disable-line react/jsx-key
         const wrapper = mount(
             <Provider store={store}>
                 <MemoryRouter initialEntries={['/custom']}>

@@ -6,22 +6,14 @@ import { createSelector } from 'reselect';
 import isEqual from 'lodash/isEqual';
 import { WrappedFieldInputProps } from 'redux-form';
 
-import {
-    crudGetMany as crudGetManyAction,
-    crudGetMatching as crudGetMatchingAction,
-} from '../../actions/dataActions';
-import {
-    getPossibleReferences,
-    getPossibleReferenceValues,
-    getReferenceResource,
-} from '../../reducer';
+import { crudGetMany as crudGetManyAction, crudGetMatching as crudGetMatchingAction } from '../../actions/dataActions';
+import { getPossibleReferences, getPossibleReferenceValues, getReferenceResource } from '../../reducer';
 import { getStatusForArrayInput as getDataStatus } from './referenceDataStatus';
 import withTranslate from '../../i18n/translate';
 import { Record, Sort, Translate, Pagination, Dispatch } from '../../types';
 import { MatchingReferencesError } from './types';
 
-const defaultReferenceSource = (resource: string, source: string) =>
-    `${resource}@${source}`;
+const defaultReferenceSource = (resource: string, source: string) => `${resource}@${source}`;
 
 interface ChildrenFuncParams {
     choices: Record[];
@@ -138,9 +130,7 @@ interface EnhancedProps {
  *     <SelectArrayInput optionText="name" />
  * </ReferenceArrayInput>
  */
-export class UnconnectedReferenceArrayInputController extends Component<
-    Props & EnhancedProps
-> {
+export class UnconnectedReferenceArrayInputController extends Component<Props & EnhancedProps> {
     public static defaultProps = {
         allowEmpty: false,
         filter: {},
@@ -170,10 +160,7 @@ export class UnconnectedReferenceArrayInputController extends Component<
     componentWillReceiveProps(nextProps: Props & EnhancedProps) {
         let shouldFetchOptions = false;
 
-        if (
-            (this.props.record || { id: undefined }).id !==
-            (nextProps.record || { id: undefined }).id
-        ) {
+        if ((this.props.record || { id: undefined }).id !== (nextProps.record || { id: undefined }).id) {
             this.fetchReferencesAndOptions(nextProps);
         } else if (this.props.input.value !== nextProps.input.value) {
             this.fetchReferences(nextProps);
@@ -228,31 +215,19 @@ export class UnconnectedReferenceArrayInputController extends Component<
         const ids = input.value;
         if (ids) {
             if (!Array.isArray(ids)) {
-                throw Error(
-                    'The value of ReferenceArrayInput should be an array'
-                );
+                throw Error('The value of ReferenceArrayInput should be an array');
             }
             crudGetMany(reference, ids);
         }
     };
 
     fetchOptions = (props = this.props) => {
-        const {
-            crudGetMatching,
-            reference,
-            source,
-            resource,
-            referenceSource,
-            filter: defaultFilter,
-        } = props;
+        const { crudGetMatching, reference, source, resource, referenceSource, filter: defaultFilter } = props;
         const { pagination, sort, filter } = this.params;
-        crudGetMatching(
-            reference,
-            referenceSource(resource, source),
-            pagination,
-            sort,
-            { ...filter, ...defaultFilter }
-        );
+        crudGetMatching(reference, referenceSource(resource, source), pagination, sort, {
+            ...filter,
+            ...defaultFilter,
+        });
     };
 
     fetchReferencesAndOptions(nextProps) {
@@ -261,14 +236,7 @@ export class UnconnectedReferenceArrayInputController extends Component<
     }
 
     render() {
-        const {
-            input,
-            referenceRecords,
-            matchingReferences,
-            onChange,
-            children,
-            translate,
-        } = this.props;
+        const { input, referenceRecords, matchingReferences, onChange, children, translate } = this.props;
 
         const dataStatus = getDataStatus({
             input,
@@ -298,11 +266,7 @@ const makeMapStateToProps = () =>
             (_, { input: { value: referenceIds } }) => referenceIds || [],
         ],
         (referenceState, possibleValues, inputIds) => ({
-            matchingReferences: getPossibleReferences(
-                referenceState,
-                possibleValues,
-                inputIds
-            ),
+            matchingReferences: getPossibleReferences(referenceState, possibleValues, inputIds),
             referenceRecords:
                 referenceState &&
                 inputIds.reduce((references, referenceId) => {

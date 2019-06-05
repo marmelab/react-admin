@@ -7,17 +7,8 @@ import { unparse as convertToCSV } from 'papaparse/papaparse.min';
 
 import Button from './Button';
 
-const sanitizeRestProps = ({
-    basePath,
-    crudGetAll,
-    dispatch,
-    exporter,
-    filter,
-    maxResults,
-    resource,
-    sort,
-    ...rest
-}) => rest;
+const sanitizeRestProps = ({ basePath, crudGetAll, dispatch, exporter, filter, maxResults, resource, sort, ...rest }) =>
+    rest;
 
 /**
  * Extracts, aggregates and deduplicates the ids of related records
@@ -111,29 +102,12 @@ class ExportButton extends Component {
     };
 
     handleClick = () => {
-        const {
-            dispatch,
-            exporter,
-            filter,
-            maxResults,
-            sort,
-            resource,
-            onClick,
-        } = this.props;
+        const { dispatch, exporter, filter, maxResults, sort, resource, onClick } = this.props;
         dispatch(
-            crudGetAll(
-                resource,
-                sort,
-                filter,
-                maxResults,
-                ({ payload: { data } }) =>
-                    exporter
-                        ? exporter(
-                              data,
-                              fetchRelatedRecords(dispatch),
-                              dispatch
-                          )
-                        : downloadCSV(convertToCSV(data), resource)
+            crudGetAll(resource, sort, filter, maxResults, ({ payload: { data } }) =>
+                exporter
+                    ? exporter(data, fetchRelatedRecords(dispatch), dispatch)
+                    : downloadCSV(convertToCSV(data), resource)
             )
         );
 
@@ -146,11 +120,7 @@ class ExportButton extends Component {
         const { label, icon, ...rest } = this.props;
 
         return (
-            <Button
-                onClick={this.handleClick}
-                label={label}
-                {...sanitizeRestProps(rest)}
-            >
+            <Button onClick={this.handleClick} label={label} {...sanitizeRestProps(rest)}>
                 {icon}
             </Button>
         );

@@ -69,10 +69,7 @@ describe('<ReferenceFieldController />', () => {
                 {children}
             </ReferenceFieldController>
         );
-        assert.equal(
-            children.mock.calls[0][0].resourceLinkPath,
-            '/prefix/posts/123'
-        );
+        assert.equal(children.mock.calls[0][0].resourceLinkPath, '/prefix/posts/123');
     });
     it('should render a link to the Edit page of the related record when the resource is named edit or show', () => {
         const children = jest.fn();
@@ -124,10 +121,7 @@ describe('<ReferenceFieldController />', () => {
                 {children}
             </ReferenceFieldController>
         );
-        assert.equal(
-            children.mock.calls[0][0].resourceLinkPath,
-            '/posts/123/show'
-        );
+        assert.equal(children.mock.calls[0][0].resourceLinkPath, '/posts/123/show');
     });
     it('should render a link to the Show page of the related record when the resource is named edit or show and linkType is show', () => {
         const children = jest.fn();
@@ -146,10 +140,7 @@ describe('<ReferenceFieldController />', () => {
                 {children}
             </ReferenceFieldController>
         );
-        assert.equal(
-            children.mock.calls[0][0].resourceLinkPath,
-            '/edit/123/show'
-        );
+        assert.equal(children.mock.calls[0][0].resourceLinkPath, '/edit/123/show');
 
         shallow(
             <ReferenceFieldController
@@ -166,10 +157,7 @@ describe('<ReferenceFieldController />', () => {
             </ReferenceFieldController>
         );
 
-        assert.equal(
-            children.mock.calls[1][0].resourceLinkPath,
-            '/show/123/show'
-        );
+        assert.equal(children.mock.calls[1][0].resourceLinkPath, '/show/123/show');
     });
     it('should render no link when the linkType is false', () => {
         const children = jest.fn();

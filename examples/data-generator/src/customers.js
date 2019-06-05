@@ -20,8 +20,7 @@ export default (db, { serializeDate }) =>
             zipcode: has_ordered ? address.zipCode() : null,
             city: has_ordered ? address.city() : null,
             avatar: internet.avatar(),
-            birthday:
-                serializeDate && birthday ? birthday.toISOString() : birthday,
+            birthday: serializeDate && birthday ? birthday.toISOString() : birthday,
             first_seen: serializeDate ? first_seen.toISOString() : first_seen,
             last_seen: serializeDate ? last_seen.toISOString() : last_seen,
             has_ordered: has_ordered,

@@ -7,14 +7,7 @@ import { translate } from 'ra-core';
 
 import FormInput from './FormInput';
 
-const sanitizeRestProps = ({
-    contentClassName,
-    label,
-    icon,
-    value,
-    translate,
-    ...rest
-}) => rest;
+const sanitizeRestProps = ({ contentClassName, label, icon, value, translate, ...rest }) => rest;
 
 const hiddenStyle = { display: 'none' };
 
@@ -36,35 +29,18 @@ class FormTab extends Component {
         );
     };
 
-    renderContent = ({
-        contentClassName,
-        children,
-        hidden,
-        basePath,
-        record,
-        resource,
-    }) => (
+    renderContent = ({ contentClassName, children, hidden, basePath, record, resource }) => (
         <span style={hidden ? hiddenStyle : null} className={contentClassName}>
             {React.Children.map(
                 children,
-                input =>
-                    input && (
-                        <FormInput
-                            basePath={basePath}
-                            input={input}
-                            record={record}
-                            resource={resource}
-                        />
-                    )
+                input => input && <FormInput basePath={basePath} input={input} record={record} resource={resource} />
             )}
         </span>
     );
 
     render() {
         const { children, context, ...rest } = this.props;
-        return context === 'header'
-            ? this.renderHeader(rest)
-            : this.renderContent({ children, ...rest });
+        return context === 'header' ? this.renderHeader(rest) : this.renderContent({ children, ...rest });
     }
 }
 

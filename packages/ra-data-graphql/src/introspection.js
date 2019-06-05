@@ -41,28 +41,18 @@ export default async (client, options) => {
               .then(({ data: { __schema } }) => __schema);
 
     const queries = schema.types.reduce((acc, type) => {
-        if (
-            type.name !== schema.queryType.name &&
-            type.name !== schema.mutationType.name
-        )
-            return acc;
+        if (type.name !== schema.queryType.name && type.name !== schema.mutationType.name) return acc;
 
         return [...acc, ...type.fields];
     }, []);
 
     const types = schema.types.filter(
-        type =>
-            type.name !== schema.queryType.name &&
-            type.name !== schema.mutationType.name
+        type => type.name !== schema.queryType.name && type.name !== schema.mutationType.name
     );
 
     const isResource = type =>
-        queries.some(
-            query => query.name === options.operationNames[GET_LIST](type)
-        ) &&
-        queries.some(
-            query => query.name === options.operationNames[GET_ONE](type)
-        );
+        queries.some(query => query.name === options.operationNames[GET_LIST](type)) &&
+        queries.some(query => query.name === options.operationNames[GET_ONE](type));
 
     const buildResource = type =>
         ALL_TYPES.reduce(
@@ -70,17 +60,14 @@ export default async (client, options) => {
                 ...acc,
                 [aorFetchType]: queries.find(
                     query =>
-                        options.operationNames[aorFetchType] &&
-                        query.name == options.operationNames[aorFetchType](type)
+                        options.operationNames[aorFetchType] && query.name == options.operationNames[aorFetchType](type)
                 ),
             }),
             { type }
         );
 
     const potentialResources = types.filter(isResource);
-    const filteredResources = potentialResources.filter(
-        filterTypesByIncludeExclude(options)
-    );
+    const filteredResources = potentialResources.filter(filterTypesByIncludeExclude(options));
     const resources = filteredResources.map(buildResource);
 
     return {

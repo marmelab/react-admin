@@ -28,16 +28,12 @@ describe('getTreeFromArray', () => {
         ];
 
         const tree = getTreeFromArray(data, 'parent_id');
-        expect(tree.map(getNode)).toEqual([
-            getNodeFromData(data.find(d => d.id === 1), 2),
-        ]);
+        expect(tree.map(getNode)).toEqual([getNodeFromData(data.find(d => d.id === 1), 2)]);
         expect(tree[0].children.map(getNode)).toEqual([
             getNodeFromData(data.find(d => d.id === 2), 1),
             getNodeFromData(data.find(d => d.id === 6), 3),
         ]);
-        expect(tree[0].children[0].children.map(getNode)).toEqual([
-            getNodeFromData(data.find(d => d.id === 3), 2),
-        ]);
+        expect(tree[0].children[0].children.map(getNode)).toEqual([getNodeFromData(data.find(d => d.id === 3), 2)]);
         expect(tree[0].children[0].children[0].children.map(getNode)).toEqual([
             getNodeFromData(data.find(d => d.id === 4), 0),
             getNodeFromData(data.find(d => d.id === 5), 0),

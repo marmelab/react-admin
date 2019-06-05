@@ -26,11 +26,7 @@ class FilterButtonMenuItem extends Component {
                 key={filter.source}
                 onClick={this.handleShow}
             >
-                <FieldTitle
-                    label={filter.label}
-                    source={filter.source}
-                    resource={resource}
-                />
+                <FieldTitle label={filter.label} source={filter.source} resource={resource} />
             </MenuItem>
         );
     }

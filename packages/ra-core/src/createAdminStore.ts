@@ -39,15 +39,9 @@ export default ({
     const messages = i18nProvider(locale);
     const appReducer = createAppReducer(customReducers, locale, messages);
 
-    const resettableAppReducer = (state, action) =>
-        appReducer(action.type !== USER_LOGOUT ? state : undefined, action);
+    const resettableAppReducer = (state, action) => appReducer(action.type !== USER_LOGOUT ? state : undefined, action);
     const saga = function* rootSaga() {
-        yield all(
-            [
-                adminSaga(dataProvider, authProvider, i18nProvider),
-                ...customSagas,
-            ].map(fork)
-        );
+        yield all([adminSaga(dataProvider, authProvider, i18nProvider), ...customSagas].map(fork));
     };
     const sagaMiddleware = createSagaMiddleware();
     const typedWindow = window as Window;
@@ -56,13 +50,8 @@ export default ({
         resettableAppReducer,
         initialState,
         compose(
-            applyMiddleware(
-                sagaMiddleware,
-                formMiddleware,
-                routerMiddleware(history)
-            ),
-            typeof typedWindow !== 'undefined' &&
-                typedWindow.__REDUX_DEVTOOLS_EXTENSION__
+            applyMiddleware(sagaMiddleware, formMiddleware, routerMiddleware(history)),
+            typeof typedWindow !== 'undefined' && typedWindow.__REDUX_DEVTOOLS_EXTENSION__
                 ? typedWindow.__REDUX_DEVTOOLS_EXTENSION__()
                 : f => f
         )

@@ -54,9 +54,7 @@ const Menu = ({
                     key={resource.name}
                     to={`/${resource.name}`}
                     primaryText={translatedResourceName(resource, translate)}
-                    leftIcon={
-                        resource.icon ? <resource.icon /> : <DefaultIcon />
-                    }
+                    leftIcon={resource.icon ? <resource.icon /> : <DefaultIcon />}
                     onClick={onMenuClick}
                     dense={dense}
                 />

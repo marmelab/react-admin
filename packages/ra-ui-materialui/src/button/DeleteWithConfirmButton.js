@@ -78,11 +78,7 @@ class DeleteWithConfirmButton extends Component {
                 <Button
                     onClick={this.handleClick}
                     label={label}
-                    className={classnames(
-                        'ra-delete-button',
-                        classes.deleteButton,
-                        className
-                    )}
+                    className={classnames('ra-delete-button', classes.deleteButton, className)}
                     key="button"
                     {...sanitizeRestProps(rest)}
                 >
@@ -117,11 +113,7 @@ DeleteWithConfirmButton.propTypes = {
     crudDelete: PropTypes.func.isRequired,
     label: PropTypes.string,
     record: PropTypes.object,
-    redirect: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.bool,
-        PropTypes.func,
-    ]),
+    redirect: PropTypes.oneOfType([PropTypes.string, PropTypes.bool, PropTypes.func]),
     resource: PropTypes.string.isRequired,
     translate: PropTypes.func,
     icon: PropTypes.element,

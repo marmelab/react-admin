@@ -10,11 +10,7 @@ import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import TextField from '@material-ui/core/TextField';
-import {
-    MuiThemeProvider,
-    createMuiTheme,
-    withStyles,
-} from '@material-ui/core/styles';
+import { MuiThemeProvider, createMuiTheme, withStyles } from '@material-ui/core/styles';
 import LockIcon from '@material-ui/icons/Lock';
 
 import { Notification, translate, userLogin } from 'react-admin';
@@ -62,28 +58,13 @@ const styles = theme => ({
 });
 
 // see http://redux-form.com/6.4.3/examples/material-ui/
-const renderInput = ({
-    meta: { touched, error } = {},
-    input: { ...inputProps },
-    ...props
-}) => (
-    <TextField
-        error={!!(touched && error)}
-        helperText={touched && error}
-        {...inputProps}
-        {...props}
-        fullWidth
-    />
+const renderInput = ({ meta: { touched, error } = {}, input: { ...inputProps }, ...props }) => (
+    <TextField error={!!(touched && error)} helperText={touched && error} {...inputProps} {...props} fullWidth />
 );
 
 class Login extends Component {
     login = auth =>
-        this.props.userLogin(
-            auth,
-            this.props.location.state
-                ? this.props.location.state.nextPathname
-                : '/'
-        );
+        this.props.userLogin(auth, this.props.location.state ? this.props.location.state.nextPathname : '/');
 
     render() {
         const { classes, handleSubmit, isLoading, translate } = this.props;
@@ -126,9 +107,7 @@ class Login extends Component {
                                 className={classes.button}
                                 fullWidth
                             >
-                                {isLoading && (
-                                    <CircularProgress size={25} thickness={2} />
-                                )}
+                                {isLoading && <CircularProgress size={25} thickness={2} />}
                                 {translate('ra.auth.sign_in')}
                             </Button>
                         </CardActions>

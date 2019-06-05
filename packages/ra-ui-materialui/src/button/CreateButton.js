@@ -53,13 +53,7 @@ const CreateButton = ({
             </MuiButton>
         }
         medium={
-            <Button
-                component={Link}
-                to={`${basePath}/create`}
-                className={className}
-                label={label}
-                {...rest}
-            >
+            <Button component={Link} to={`${basePath}/create`} className={className} label={label} {...rest}>
                 {icon}
             </Button>
         }

@@ -23,12 +23,7 @@ const listStyles = {
 };
 
 const ReviewListDesktop = ({ classes, ...props }) => (
-    <Datagrid
-        rowClick="edit"
-        rowStyle={rowStyle}
-        classes={{ headerRow: classes.headerRow }}
-        {...props}
-    >
+    <Datagrid rowClick="edit" rowStyle={rowStyle} classes={{ headerRow: classes.headerRow }} {...props}>
         <DateField source="date" />
         <CustomerReferenceField linkType={false} />
         <ProductReferenceField linkType={false} />

@@ -39,63 +39,55 @@ const sanitizeRestProps = ({
     ...rest
 }) => rest;
 
-export const CreateView = withStyles(styles)(({
-    actions,
-    aside,
-    basePath,
-    children,
-    classes,
-    className,
-    defaultTitle,
-    hasList,
-    hasShow,
-    record = {},
-    redirect,
-    resource,
-    save,
-    title,
-    ...rest
-}) => (
-    <div
-        className={classnames('create-page', classes.root, className)}
-        {...sanitizeRestProps(rest)}
-    >
-        <TitleForRecord
-            title={title}
-            record={record}
-            defaultTitle={defaultTitle}
-        />
-        <Card className={classes.card}>
-            {actions && (
-                <CardContentInner>
-                    {cloneElement(actions, {
-                        basePath,
-                        resource,
-                        hasList,
-                        ...actions.props,
-                    })}
-                </CardContentInner>
-            )}
-            {cloneElement(Children.only(children), {
-                basePath,
-                record,
-                redirect:
-                    typeof children.props.redirect === 'undefined'
-                        ? redirect
-                        : children.props.redirect,
-                resource,
-                save,
-            })}
-        </Card>
-        {aside &&
-            cloneElement(aside, {
-                basePath,
-                record,
-                resource,
-                save,
-            })}
-    </div>
-));
+export const CreateView = withStyles(styles)(
+    ({
+        actions,
+        aside,
+        basePath,
+        children,
+        classes,
+        className,
+        defaultTitle,
+        hasList,
+        hasShow,
+        record = {},
+        redirect,
+        resource,
+        save,
+        title,
+        ...rest
+    }) => (
+        <div className={classnames('create-page', classes.root, className)} {...sanitizeRestProps(rest)}>
+            <TitleForRecord title={title} record={record} defaultTitle={defaultTitle} />
+            <Card className={classes.card}>
+                {actions && (
+                    <CardContentInner>
+                        {cloneElement(actions, {
+                            basePath,
+                            resource,
+                            hasList,
+                            ...actions.props,
+                        })}
+                    </CardContentInner>
+                )}
+                {cloneElement(Children.only(children), {
+                    basePath,
+                    record,
+                    redirect: typeof children.props.redirect === 'undefined' ? redirect : children.props.redirect,
+                    resource,
+                    save,
+                })}
+            </Card>
+            {aside &&
+                cloneElement(aside, {
+                    basePath,
+                    record,
+                    resource,
+                    save,
+                })}
+        </div>
+    )
+);
 
 CreateView.propTypes = {
     actions: PropTypes.element,
@@ -160,9 +152,7 @@ CreateView.defaultProps = {
  *     export default App;
  */
 const Create = props => (
-    <CreateController {...props}>
-        {controllerProps => <CreateView {...props} {...controllerProps} />}
-    </CreateController>
+    <CreateController {...props}>{controllerProps => <CreateView {...props} {...controllerProps} />}</CreateController>
 );
 
 Create.propTypes = {

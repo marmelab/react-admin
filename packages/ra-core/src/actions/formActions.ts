@@ -25,13 +25,7 @@ export interface BeforeLocationChangeAction {
     readonly payload: any;
     readonly meta: any;
 }
-export const beforeLocationChange = ({
-    payload,
-    meta,
-}: {
-    payload: any;
-    meta: any;
-}): BeforeLocationChangeAction => ({
+export const beforeLocationChange = ({ payload, meta }: { payload: any; meta: any }): BeforeLocationChangeAction => ({
     type: BEFORE_LOCATION_CHANGE,
     payload,
     meta,

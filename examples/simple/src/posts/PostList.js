@@ -26,22 +26,13 @@ import {
 import ResetViewsButton from './ResetViewsButton';
 export const PostIcon = BookIcon;
 
-const QuickFilter = translate(({ label, translate }) => (
-    <Chip style={{ marginBottom: 8 }} label={translate(label)} />
-));
+const QuickFilter = translate(({ label, translate }) => <Chip style={{ marginBottom: 8 }} label={translate(label)} />);
 
 const PostFilter = props => (
     <Filter {...props}>
         <SearchInput source="q" alwaysOn />
-        <TextInput
-            source="title"
-            defaultValue="Qui tempore rerum et voluptates"
-        />
-        <QuickFilter
-            label="resources.posts.fields.commentable"
-            source="commentable"
-            defaultValue
-        />
+        <TextInput source="title" defaultValue="Qui tempore rerum et voluptates" />
+        <QuickFilter label="resources.posts.fields.commentable" source="commentable" defaultValue />
     </Filter>
 );
 
@@ -73,9 +64,7 @@ const PostListActionToolbar = withStyles({
         display: 'flex',
     },
 })(({ classes, children, ...props }) => (
-    <div className={classes.toolbar}>
-        {Children.map(children, button => cloneElement(button, props))}
-    </div>
+    <div className={classes.toolbar}>{Children.map(children, button => cloneElement(button, props))}</div>
 ));
 
 const rowClick = (id, basePath, record) => {
@@ -86,9 +75,7 @@ const rowClick = (id, basePath, record) => {
     return 'show';
 };
 
-const PostPanel = ({ id, record, resource }) => (
-    <div dangerouslySetInnerHTML={{ __html: record.body }} />
-);
+const PostPanel = ({ id, record, resource }) => <div dangerouslySetInnerHTML={{ __html: record.body }} />;
 
 const PostList = withStyles(styles)(({ classes, ...props }) => (
     <List
@@ -102,19 +89,14 @@ const PostList = withStyles(styles)(({ classes, ...props }) => (
                 <SimpleList
                     primaryText={record => record.title}
                     secondaryText={record => `${record.views} views`}
-                    tertiaryText={record =>
-                        new Date(record.published_at).toLocaleDateString()
-                    }
+                    tertiaryText={record => new Date(record.published_at).toLocaleDateString()}
                 />
             }
             medium={
                 <Datagrid rowClick={rowClick} expand={<PostPanel />}>
                     <TextField source="id" />
                     <TextField source="title" cellClassName={classes.title} />
-                    <DateField
-                        source="published_at"
-                        cellClassName={classes.publishedAt}
-                    />
+                    <DateField source="published_at" cellClassName={classes.publishedAt} />
 
                     <BooleanField
                         source="commentable"

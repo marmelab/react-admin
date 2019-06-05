@@ -15,17 +15,11 @@ describe('data addRecordIdsFactory', () => {
             record2: date2,
         });
 
-        const newState = addRecordIdsFactory(getFetchedAt)(
-            newRecords,
-            oldRecords
-        );
+        const newState = addRecordIdsFactory(getFetchedAt)(newRecords, oldRecords);
 
         assert.deepEqual(newState, ['record1', 'record2']);
 
-        assert.deepEqual(getFetchedAt.mock.calls[0], [
-            ['record1', 'record2'],
-            date0,
-        ]);
+        assert.deepEqual(getFetchedAt.mock.calls[0], [['record1', 'record2'], date0]);
 
         assert.deepEqual(newState.fetchedAt, {
             record1: date1,
@@ -41,10 +35,7 @@ describe('data addRecordIdsFactory', () => {
             record2: 'date',
         });
 
-        const newState = addRecordIdsFactory(getFetchedAt)(
-            newRecords,
-            oldRecords
-        );
+        const newState = addRecordIdsFactory(getFetchedAt)(newRecords, oldRecords);
 
         assert.deepEqual(newState, ['record1', 'record2']);
     });
@@ -58,10 +49,7 @@ describe('data addRecordIdsFactory', () => {
             record3: 'date',
         });
 
-        const newState = addRecordIdsFactory(getFetchedAt)(
-            newRecords,
-            oldRecords
-        );
+        const newState = addRecordIdsFactory(getFetchedAt)(newRecords, oldRecords);
 
         assert.deepEqual(newState, ['record3', 'record1', 'record2']);
     });

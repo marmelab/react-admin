@@ -48,11 +48,12 @@ const sanitizeRestProps = ({
     ...rest
 }) => rest;
 
-const styles = theme => createStyles({
-    input: {
-        minWidth: theme.spacing.unit * 20,
-    },
-});
+const styles = theme =>
+    createStyles({
+        input: {
+            minWidth: theme.spacing.unit * 20,
+        },
+    });
 
 /**
  * An Input component for a select box, using an array of objects for the options
@@ -144,9 +145,7 @@ export class SelectInput extends Component {
     }
 
     handleChange = eventOrValue => {
-        const value = eventOrValue.target
-            ? eventOrValue.target.value
-            : eventOrValue;
+        const value = eventOrValue.target ? eventOrValue.target.value : eventOrValue;
         this.props.input.onChange(value);
 
         // HACK: For some reason, redux-form does not consider this input touched without calling onBlur manually
@@ -167,13 +166,8 @@ export class SelectInput extends Component {
             return React.cloneElement(optionText, {
                 record: choice,
             });
-        const choiceName =
-            typeof optionText === 'function'
-                ? optionText(choice)
-                : get(choice, optionText);
-        return translateChoice
-            ? translate(choiceName, { _: choiceName })
-            : choiceName;
+        const choiceName = typeof optionText === 'function' ? optionText(choice) : get(choice, optionText);
+        return translateChoice ? translate(choiceName, { _: choiceName }) : choiceName;
     };
 
     renderMenuItem = choice => {
@@ -216,14 +210,7 @@ export class SelectInput extends Component {
                 select
                 margin="normal"
                 value={this.state.value}
-                label={
-                    <FieldTitle
-                        label={label}
-                        source={source}
-                        resource={resource}
-                        isRequired={isRequired}
-                    />
-                }
+                label={<FieldTitle label={label} source={source} resource={resource} isRequired={isRequired} />}
                 name={input.name}
                 className={`${classes.input} ${className}`}
                 clearAlwaysVisible
@@ -250,11 +237,7 @@ SelectInput.propTypes = {
     label: PropTypes.string,
     meta: PropTypes.object,
     options: PropTypes.object,
-    optionText: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.func,
-        PropTypes.element,
-    ]).isRequired,
+    optionText: PropTypes.oneOfType([PropTypes.string, PropTypes.func, PropTypes.element]).isRequired,
     optionValue: PropTypes.string.isRequired,
     disableValue: PropTypes.string,
     resource: PropTypes.string,

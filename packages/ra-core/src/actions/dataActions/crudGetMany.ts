@@ -3,10 +3,7 @@ import { GET_MANY } from '../../dataFetchActions';
 import { FETCH_END, FETCH_ERROR } from '../fetchActions';
 import { NotificationSideEffect } from '../../sideEffect';
 
-export const crudGetMany = (
-    resource: string,
-    ids: Identifier[]
-): CrudGetManyAction => ({
+export const crudGetMany = (resource: string, ids: Identifier[]): CrudGetManyAction => ({
     type: CRUD_GET_MANY,
     payload: { ids },
     meta: {

@@ -49,28 +49,13 @@ const sanitizeRestProps = ({
  *     );
  *     export default App;
  */
-export const SimpleShowLayout = ({
-    basePath,
-    className,
-    children,
-    record,
-    resource,
-    version,
-    ...rest
-}) => (
-    <CardContentInner
-        className={className}
-        key={version}
-        {...sanitizeRestProps(rest)}
-    >
+export const SimpleShowLayout = ({ basePath, className, children, record, resource, version, ...rest }) => (
+    <CardContentInner className={className} key={version} {...sanitizeRestProps(rest)}>
         {Children.map(children, field =>
             field && isValidElement(field) ? (
                 <div
                     key={field.props.source}
-                    className={classnames(
-                        `ra-field ra-field-${field.props.source}`,
-                        field.props.className
-                    )}
+                    className={classnames(`ra-field ra-field-${field.props.source}`, field.props.className)}
                 >
                     {field.props.addLabel ? (
                         <Labeled

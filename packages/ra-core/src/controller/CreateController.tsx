@@ -83,9 +83,7 @@ interface EnhancedProps {
  *     );
  *     export default App;
  */
-export class UnconnectedCreateController extends Component<
-    Props & EnhancedProps
-> {
+export class UnconnectedCreateController extends Component<Props & EnhancedProps> {
     public static defaultProps: Partial<Props> = {
         record: {},
     };
@@ -99,11 +97,7 @@ export class UnconnectedCreateController extends Component<
             record,
         } = this.props;
         this.record =
-            state && state.record
-                ? state.record
-                : search
-                ? parse(search, { arrayFormat: 'bracket' })
-                : record;
+            state && state.record ? state.record : search ? parse(search, { arrayFormat: 'bracket' }) : record;
     }
 
     defaultRedirectRoute() {
@@ -118,22 +112,11 @@ export class UnconnectedCreateController extends Component<
     }
 
     save = (record: Partial<Record>, redirect: RedirectionSideEffect) => {
-        this.props.crudCreate(
-            this.props.resource,
-            record,
-            this.props.basePath,
-            redirect
-        );
+        this.props.crudCreate(this.props.resource, record, this.props.basePath, redirect);
     };
 
     render() {
-        const {
-            basePath,
-            children,
-            isLoading,
-            resource,
-            translate,
-        } = this.props;
+        const { basePath, children, isLoading, resource, translate } = this.props;
 
         if (!children) {
             return null;

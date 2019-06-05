@@ -25,10 +25,7 @@ class CustomDragLayer extends Component {
     static propTypes = {
         beingDragged: PropTypes.bool,
         classes: PropTypes.object.isRequired,
-        dragPreviewComponent: PropTypes.oneOfType([
-            PropTypes.element,
-            PropTypes.func,
-        ]).isRequired,
+        dragPreviewComponent: PropTypes.oneOfType([PropTypes.element, PropTypes.func]).isRequired,
         itemBeingDragged: PropTypes.object,
         offset: PropTypes.object,
     };
@@ -38,13 +35,7 @@ class CustomDragLayer extends Component {
     }
 
     render() {
-        const {
-            classes,
-            beingDragged,
-            dragPreviewComponent: DragPreview,
-            itemBeingDragged,
-            offset,
-        } = this.props;
+        const { classes, beingDragged, dragPreviewComponent: DragPreview, itemBeingDragged, offset } = this.props;
         if (!beingDragged || !offset) return null;
 
         return (

@@ -1,11 +1,4 @@
-import React, {
-    Children,
-    Component,
-    cloneElement,
-    createElement,
-    ComponentType,
-    CSSProperties,
-} from 'react';
+import React, { Children, Component, cloneElement, createElement, ComponentType, CSSProperties } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
@@ -53,10 +46,7 @@ interface State {
     children: ResourceElement[];
 }
 
-export class CoreAdminRouter extends Component<
-    AdminRouterProps & EnhancedProps,
-    State
-> {
+export class CoreAdminRouter extends Component<AdminRouterProps & EnhancedProps, State> {
     static defaultProps: Partial<AdminRouterProps> = {
         customRoutes: [],
     };
@@ -73,9 +63,7 @@ export class CoreAdminRouter extends Component<
         }
     };
 
-    initializeResourcesAsync = async (
-        props: AdminRouterProps & EnhancedProps
-    ) => {
+    initializeResourcesAsync = async (props: AdminRouterProps & EnhancedProps) => {
         const { authProvider } = props;
         try {
             const permissions = await authProvider(AUTH_GET_PERMISSIONS);
@@ -83,26 +71,22 @@ export class CoreAdminRouter extends Component<
 
             const childrenFuncResult = resolveChildren(permissions);
             if ((childrenFuncResult as Promise<ResourceElement[]>).then) {
-                (childrenFuncResult as Promise<ResourceElement[]>).then(
-                    resolvedChildren => {
-                        this.setState({
-                            children: resolvedChildren
-                                .filter(child => child)
-                                .map(child => ({
-                                    ...child,
-                                    props: {
-                                        ...child.props,
-                                        key: child.props.name,
-                                    },
-                                })),
-                        });
-                    }
-                );
+                (childrenFuncResult as Promise<ResourceElement[]>).then(resolvedChildren => {
+                    this.setState({
+                        children: resolvedChildren
+                            .filter(child => child)
+                            .map(child => ({
+                                ...child,
+                                props: {
+                                    ...child.props,
+                                    key: child.props.name,
+                                },
+                            })),
+                    });
+                });
             } else {
                 this.setState({
-                    children: (childrenFuncResult as ResourceElement[]).filter(
-                        child => child
-                    ),
+                    children: (childrenFuncResult as ResourceElement[]).filter(child => child),
                 });
             }
         } catch (error) {
@@ -150,44 +134,33 @@ export class CoreAdminRouter extends Component<
             title,
         } = this.props;
 
-        if (
-            process.env.NODE_ENV !== 'production' &&
-            typeof children !== 'function' &&
-            !children
-        ) {
+        if (process.env.NODE_ENV !== 'production' && typeof children !== 'function' && !children) {
             return (
                 <div style={welcomeStyles}>
                     React-admin is properly configured.
                     <br />
-                    Now you can add a first &lt;Resource&gt; as child of
-                    &lt;Admin&gt;.
+                    Now you can add a first &lt;Resource&gt; as child of &lt;Admin&gt;.
                 </div>
             );
         }
 
-        if (
-            typeof children === 'function' &&
-            (!this.state.children || this.state.children.length === 0)
-        ) {
+        if (typeof children === 'function' && (!this.state.children || this.state.children.length === 0)) {
             return <Route path="/" key="loading" component={loading} />;
         }
 
-        const childrenToRender =
-            typeof children === 'function' ? this.state.children : children;
+        const childrenToRender = typeof children === 'function' ? this.state.children : children;
 
         return (
             <div>
                 {// Render every resources children outside the React Router Switch
                 // as we need all of them and not just the one rendered
-                Children.map(
-                    childrenToRender,
-                    (child: React.ReactElement<ResourceProps>) =>
-                        cloneElement(child, {
-                            key: child.props.name,
-                            // The context prop instructs the Resource component to not render anything
-                            // but simply to register itself as a known resource
-                            context: 'registration',
-                        })
+                Children.map(childrenToRender, (child: React.ReactElement<ResourceProps>) =>
+                    cloneElement(child, {
+                        key: child.props.name,
+                        // The context prop instructs the Resource component to not render anything
+                        // but simply to register itself as a known resource
+                        context: 'registration',
+                    })
                 )}
                 <Switch>
                     {customRoutes
@@ -195,11 +168,7 @@ export class CoreAdminRouter extends Component<
                         .map((route, key) =>
                             cloneElement(route, {
                                 key,
-                                render: props =>
-                                    this.renderCustomRoutesWithoutLayout(
-                                        route,
-                                        props
-                                    ),
+                                render: props => this.renderCustomRoutesWithoutLayout(route, props),
                             })
                         )}
                     <Route
@@ -216,23 +185,15 @@ export class CoreAdminRouter extends Component<
                                 },
                                 <RoutesWithLayout
                                     catchAll={catchAll}
-                                    customRoutes={customRoutes.filter(
-                                        route => !route.props.noLayout
-                                    )}
+                                    customRoutes={customRoutes.filter(route => !route.props.noLayout)}
                                     dashboard={dashboard}
                                     title={title}
                                 >
-                                    {Children.map(
-                                        childrenToRender,
-                                        (
-                                            child: React.ReactElement<
-                                                ResourceProps
-                                            >
-                                        ) =>
-                                            cloneElement(child, {
-                                                key: child.props.name,
-                                                context: 'route',
-                                            })
+                                    {Children.map(childrenToRender, (child: React.ReactElement<ResourceProps>) =>
+                                        cloneElement(child, {
+                                            key: child.props.name,
+                                            context: 'route',
+                                        })
                                     )}
                                 </RoutesWithLayout>
                             )

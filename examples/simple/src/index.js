@@ -24,12 +24,7 @@ render(
         locale="en"
         customReducers={{ tree }}
         customRoutes={[
-            <Route
-                exact
-                path="/custom"
-                component={CustomRouteNoLayout}
-                noLayout
-            />,
+            <Route exact path="/custom" component={CustomRouteNoLayout} noLayout />,
             <Route exact path="/custom2" component={CustomRouteLayout} />,
         ]}
     >

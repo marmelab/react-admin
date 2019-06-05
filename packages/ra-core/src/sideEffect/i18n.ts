@@ -1,12 +1,6 @@
 import { all, call, put, takeLatest } from 'redux-saga/effects';
 import { I18nProvider } from '../types';
-import {
-    CHANGE_LOCALE,
-    changeLocaleSuccess,
-    changeLocaleFailure,
-    fetchStart,
-    fetchEnd,
-} from '../actions';
+import { CHANGE_LOCALE, changeLocaleSuccess, changeLocaleFailure, fetchStart, fetchEnd } from '../actions';
 
 /**
  * The i18n side effect reacts to the CHANGE_LOCALE actions, calls

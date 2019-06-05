@@ -1,10 +1,4 @@
-import {
-    AUTH_GET_PERMISSIONS,
-    AUTH_LOGIN,
-    AUTH_LOGOUT,
-    AUTH_ERROR,
-    AUTH_CHECK,
-} from 'react-admin'; // eslint-disable-line import/no-unresolved
+import { AUTH_GET_PERMISSIONS, AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR, AUTH_CHECK } from 'react-admin'; // eslint-disable-line import/no-unresolved
 
 // Authenticatd by default
 export default (type, params) => {
@@ -35,14 +29,10 @@ export default (type, params) => {
     }
     if (type === AUTH_ERROR) {
         const { status } = params;
-        return status === 401 || status === 403
-            ? Promise.reject()
-            : Promise.resolve();
+        return status === 401 || status === 403 ? Promise.reject() : Promise.resolve();
     }
     if (type === AUTH_CHECK) {
-        return localStorage.getItem('not_authenticated')
-            ? Promise.reject()
-            : Promise.resolve();
+        return localStorage.getItem('not_authenticated') ? Promise.reject() : Promise.resolve();
     }
     if (type === AUTH_GET_PERMISSIONS) {
         const role = localStorage.getItem('role');

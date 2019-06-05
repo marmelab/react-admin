@@ -10,34 +10,35 @@ import classnames from 'classnames';
 import { translate } from 'ra-core';
 import Title from './Title';
 
-const styles = theme => createStyles({
-    container: {
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        [theme.breakpoints.up('md')]: {
-            height: '100%',
+const styles = theme =>
+    createStyles({
+        container: {
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            [theme.breakpoints.up('md')]: {
+                height: '100%',
+            },
+            [theme.breakpoints.down('sm')]: {
+                height: '100vh',
+                marginTop: '-3em',
+            },
         },
-        [theme.breakpoints.down('sm')]: {
-            height: '100vh',
-            marginTop: '-3em',
+        icon: {
+            width: '9em',
+            height: '9em',
         },
-    },
-    icon: {
-        width: '9em',
-        height: '9em',
-    },
-    message: {
-        textAlign: 'center',
-        fontFamily: 'Roboto, sans-serif',
-        opacity: 0.5,
-        margin: '0 1em',
-    },
-    toolbar: {
-        textAlign: 'center',
-        marginTop: '2em',
-    },
-});
+        message: {
+            textAlign: 'center',
+            fontFamily: 'Roboto, sans-serif',
+            opacity: 0.5,
+            margin: '0 1em',
+        },
+        toolbar: {
+            textAlign: 'center',
+            marginTop: '2em',
+        },
+    });
 
 function goBack() {
     history.go(-1);

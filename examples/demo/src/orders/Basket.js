@@ -38,25 +38,15 @@ class Basket extends Component {
                 <Table>
                     <TableHead>
                         <TableRow>
-                            <TableCell>
-                                {translate(
-                                    'resources.commands.fields.basket.reference'
-                                )}
+                            <TableCell>{translate('resources.commands.fields.basket.reference')}</TableCell>
+                            <TableCell className={classes.rightAlignedCell}>
+                                {translate('resources.commands.fields.basket.unit_price')}
                             </TableCell>
                             <TableCell className={classes.rightAlignedCell}>
-                                {translate(
-                                    'resources.commands.fields.basket.unit_price'
-                                )}
+                                {translate('resources.commands.fields.basket.quantity')}
                             </TableCell>
                             <TableCell className={classes.rightAlignedCell}>
-                                {translate(
-                                    'resources.commands.fields.basket.quantity'
-                                )}
-                            </TableCell>
-                            <TableCell className={classes.rightAlignedCell}>
-                                {translate(
-                                    'resources.commands.fields.basket.total'
-                                )}
+                                {translate('resources.commands.fields.basket.total')}
                             </TableCell>
                         </TableRow>
                     </TableHead>
@@ -66,81 +56,49 @@ class Basket extends Component {
                                 products[item.product_id] && (
                                     <TableRow key={item.product_id}>
                                         <TableCell>
-                                            <Link
-                                                to={`/products/${
-                                                    item.product_id
-                                                }`}
-                                            >
-                                                {
-                                                    products[item.product_id]
-                                                        .reference
-                                                }
+                                            <Link to={`/products/${item.product_id}`}>
+                                                {products[item.product_id].reference}
                                             </Link>
                                         </TableCell>
-                                        <TableCell
-                                            className={classes.rightAlignedCell}
-                                        >
-                                            {products[
-                                                item.product_id
-                                            ].price.toLocaleString(undefined, {
+                                        <TableCell className={classes.rightAlignedCell}>
+                                            {products[item.product_id].price.toLocaleString(undefined, {
                                                 style: 'currency',
                                                 currency: 'USD',
                                             })}
                                         </TableCell>
-                                        <TableCell
-                                            className={classes.rightAlignedCell}
-                                        >
-                                            {item.quantity}
-                                        </TableCell>
-                                        <TableCell
-                                            className={classes.rightAlignedCell}
-                                        >
-                                            {(
-                                                products[item.product_id]
-                                                    .price * item.quantity
-                                            ).toLocaleString(undefined, {
-                                                style: 'currency',
-                                                currency: 'USD',
-                                            })}
+                                        <TableCell className={classes.rightAlignedCell}>{item.quantity}</TableCell>
+                                        <TableCell className={classes.rightAlignedCell}>
+                                            {(products[item.product_id].price * item.quantity).toLocaleString(
+                                                undefined,
+                                                {
+                                                    style: 'currency',
+                                                    currency: 'USD',
+                                                }
+                                            )}
                                         </TableCell>
                                     </TableRow>
                                 )
                         )}
                         <TableRow>
                             <TableCell colSpan={2} />
-                            <TableCell>
-                                {translate(
-                                    'resources.commands.fields.basket.sum'
-                                )}
-                            </TableCell>
+                            <TableCell>{translate('resources.commands.fields.basket.sum')}</TableCell>
                             <TableCell className={classes.rightAlignedCell}>
-                                {record.total_ex_taxes.toLocaleString(
-                                    undefined,
-                                    { style: 'currency', currency: 'USD' }
-                                )}
+                                {record.total_ex_taxes.toLocaleString(undefined, {
+                                    style: 'currency',
+                                    currency: 'USD',
+                                })}
                             </TableCell>
                         </TableRow>
                         <TableRow>
                             <TableCell colSpan={2} />
-                            <TableCell>
-                                {translate(
-                                    'resources.commands.fields.basket.delivery'
-                                )}
-                            </TableCell>
+                            <TableCell>{translate('resources.commands.fields.basket.delivery')}</TableCell>
                             <TableCell className={classes.rightAlignedCell}>
-                                {record.delivery_fees.toLocaleString(
-                                    undefined,
-                                    { style: 'currency', currency: 'USD' }
-                                )}
+                                {record.delivery_fees.toLocaleString(undefined, { style: 'currency', currency: 'USD' })}
                             </TableCell>
                         </TableRow>
                         <TableRow>
                             <TableCell colSpan={2} />
-                            <TableCell>
-                                {translate(
-                                    'resources.commands.fields.basket.tax_rate'
-                                )}
-                            </TableCell>
+                            <TableCell>{translate('resources.commands.fields.basket.tax_rate')}</TableCell>
                             <TableCell className={classes.rightAlignedCell}>
                                 {record.tax_rate.toLocaleString(undefined, {
                                     style: 'percent',
@@ -150,16 +108,9 @@ class Basket extends Component {
                         <TableRow>
                             <TableCell colSpan={2} />
                             <TableCell className={classes.boldCell}>
-                                {translate(
-                                    'resources.commands.fields.basket.total'
-                                )}
+                                {translate('resources.commands.fields.basket.total')}
                             </TableCell>
-                            <TableCell
-                                className={classnames(
-                                    classes.boldCell,
-                                    classes.rightAlignedCell
-                                )}
-                            >
+                            <TableCell className={classnames(classes.boldCell, classes.rightAlignedCell)}>
                                 {record.total.toLocaleString(undefined, {
                                     style: 'currency',
                                     currency: 'USD',

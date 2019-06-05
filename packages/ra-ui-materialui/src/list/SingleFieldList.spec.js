@@ -22,10 +22,7 @@ describe('<SingleFieldList />', () => {
         );
         const linkElements = wrapper.find('WithStyles(Link)');
         assert.equal(linkElements.length, 2);
-        assert.deepEqual(linkElements.map(link => link.prop('to')), [
-            '/posts/1',
-            '/posts/2',
-        ]);
+        assert.deepEqual(linkElements.map(link => link.prop('to')), ['/posts/1', '/posts/2']);
     });
 
     it('should render a link to the Edit page of the related record when the resource contains slashes', () => {
@@ -44,10 +41,7 @@ describe('<SingleFieldList />', () => {
         );
         const linkElements = wrapper.find('WithStyles(Link)');
         assert.equal(linkElements.length, 2);
-        assert.deepEqual(linkElements.map(link => link.prop('to')), [
-            '/posts/1',
-            '/posts/2',
-        ]);
+        assert.deepEqual(linkElements.map(link => link.prop('to')), ['/posts/1', '/posts/2']);
     });
 
     it('should render a link to the Edit page of the related record when the resource is named edit or show', () => {
@@ -66,10 +60,7 @@ describe('<SingleFieldList />', () => {
         );
         let linkElements = wrapper.find('WithStyles(Link)');
         assert.equal(linkElements.length, 2);
-        assert.deepEqual(linkElements.map(link => link.prop('to')), [
-            '/edit/1',
-            '/edit/2',
-        ]);
+        assert.deepEqual(linkElements.map(link => link.prop('to')), ['/edit/1', '/edit/2']);
 
         wrapper = shallow(
             <SingleFieldList
@@ -86,10 +77,7 @@ describe('<SingleFieldList />', () => {
         );
         linkElements = wrapper.find('WithStyles(Link)');
         assert.equal(linkElements.length, 2);
-        assert.deepEqual(linkElements.map(link => link.prop('to')), [
-            '/show/1',
-            '/show/2',
-        ]);
+        assert.deepEqual(linkElements.map(link => link.prop('to')), ['/show/1', '/show/2']);
     });
 
     it('should render a link to the Show page of the related record when the linkType is show', () => {
@@ -110,10 +98,7 @@ describe('<SingleFieldList />', () => {
 
         const linkElements = wrapper.find('WithStyles(Link)');
         assert.equal(linkElements.length, 2);
-        assert.deepEqual(linkElements.map(link => link.prop('to')), [
-            '/prefix/bar/1/show',
-            '/prefix/bar/2/show',
-        ]);
+        assert.deepEqual(linkElements.map(link => link.prop('to')), ['/prefix/bar/1/show', '/prefix/bar/2/show']);
     });
 
     it('should render a link to the Edit page of the related record when the resource is named edit or show and linkType is show', () => {
@@ -133,10 +118,7 @@ describe('<SingleFieldList />', () => {
         );
         let linkElements = wrapper.find('WithStyles(Link)');
         assert.equal(linkElements.length, 2);
-        assert.deepEqual(linkElements.map(link => link.prop('to')), [
-            '/edit/1/show',
-            '/edit/2/show',
-        ]);
+        assert.deepEqual(linkElements.map(link => link.prop('to')), ['/edit/1/show', '/edit/2/show']);
 
         wrapper = shallow(
             <SingleFieldList
@@ -154,10 +136,7 @@ describe('<SingleFieldList />', () => {
         );
         linkElements = wrapper.find('WithStyles(Link)');
         assert.equal(linkElements.length, 2);
-        assert.deepEqual(linkElements.map(link => link.prop('to')), [
-            '/show/1/show',
-            '/show/2/show',
-        ]);
+        assert.deepEqual(linkElements.map(link => link.prop('to')), ['/show/1/show', '/show/2/show']);
     });
 
     it('should render no link when the linkType is false', () => {

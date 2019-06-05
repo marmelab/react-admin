@@ -1,9 +1,5 @@
 import assert from 'assert';
-import {
-    HIDE_NOTIFICATION,
-    SHOW_NOTIFICATION,
-    NotificationType,
-} from '../../actions/notificationActions';
+import { HIDE_NOTIFICATION, SHOW_NOTIFICATION, NotificationType } from '../../actions/notificationActions';
 import reducer from './notifications';
 
 describe('notifications reducer', () => {

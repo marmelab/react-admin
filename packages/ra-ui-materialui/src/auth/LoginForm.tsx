@@ -7,18 +7,8 @@ import CardActions from '@material-ui/core/CardActions';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import {
-    withStyles,
-    createStyles,
-    WithStyles,
-    Theme,
-} from '@material-ui/core/styles';
-import {
-    withTranslate,
-    userLogin,
-    TranslationContextProps,
-    ReduxState,
-} from 'ra-core';
+import { withStyles, createStyles, WithStyles, Theme } from '@material-ui/core/styles';
+import { withTranslate, userLogin, TranslationContextProps, ReduxState } from 'ra-core';
 
 interface Props {
     redirectTo?: string;
@@ -29,10 +19,7 @@ interface FormData {
     password: string;
 }
 
-interface EnhancedProps
-    extends TranslationContextProps,
-        InjectedFormProps<FormData>,
-        WithStyles<typeof styles> {
+interface EnhancedProps extends TranslationContextProps, InjectedFormProps<FormData>, WithStyles<typeof styles> {
     isLoading: boolean;
 }
 
@@ -57,24 +44,10 @@ const renderInput = ({
     meta: { touched, error } = { touched: false, error: '' }, // eslint-disable-line react/prop-types
     input: { ...inputProps }, // eslint-disable-line react/prop-types
     ...props
-}) => (
-    <TextField
-        error={!!(touched && error)}
-        helperText={touched && error}
-        {...inputProps}
-        {...props}
-        fullWidth
-    />
-);
-const login = (auth, dispatch, { redirectTo }) =>
-    dispatch(userLogin(auth, redirectTo));
+}) => <TextField error={!!(touched && error)} helperText={touched && error} {...inputProps} {...props} fullWidth />;
+const login = (auth, dispatch, { redirectTo }) => dispatch(userLogin(auth, redirectTo));
 
-const LoginForm: SFC<Props & EnhancedProps> = ({
-    classes,
-    isLoading,
-    handleSubmit,
-    translate,
-}) => (
+const LoginForm: SFC<Props & EnhancedProps> = ({ classes, isLoading, handleSubmit, translate }) => (
     <form onSubmit={handleSubmit(login)}>
         <div className={classes.form}>
             <div className={classes.input}>
@@ -99,20 +72,8 @@ const LoginForm: SFC<Props & EnhancedProps> = ({
             </div>
         </div>
         <CardActions>
-            <Button
-                variant="raised"
-                type="submit"
-                color="primary"
-                disabled={isLoading}
-                className={classes.button}
-            >
-                {isLoading && (
-                    <CircularProgress
-                        className={classes.icon}
-                        size={18}
-                        thickness={2}
-                    />
-                )}
+            <Button variant="raised" type="submit" color="primary" disabled={isLoading} className={classes.button}>
+                {isLoading && <CircularProgress className={classes.icon} size={18} thickness={2} />}
                 {translate('ra.auth.sign_in')}
             </Button>
         </CardActions>

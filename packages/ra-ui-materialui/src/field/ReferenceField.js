@@ -8,11 +8,12 @@ import LinearProgress from '../layout/LinearProgress';
 import Link from '../Link';
 import sanitizeRestProps from './sanitizeRestProps';
 
-const styles = theme => createStyles({
-    link: {
-        color: theme.palette.primary.main,
-    },
-});
+const styles = theme =>
+    createStyles({
+        link: {
+            color: theme.palette.primary.main,
+        },
+    });
 
 // useful to prevent click bubbling in a datagrid with rowClick
 const stopPropagation = e => e.stopPropagation();
@@ -39,11 +40,7 @@ export const ReferenceFieldView = ({
 
     if (resourceLinkPath) {
         return (
-            <Link
-                to={resourceLinkPath}
-                className={className}
-                onClick={stopPropagation}
-            >
+            <Link to={resourceLinkPath} className={className} onClick={stopPropagation}>
                 {React.cloneElement(Children.only(children), {
                     className: classnames(
                         children.props.className,
@@ -122,12 +119,7 @@ const ReferenceField = ({ children, ...props }) => {
 
     return (
         <ReferenceFieldController {...props}>
-            {controllerProps => (
-                <ReferenceFieldView
-                    {...props}
-                    {...{ children, ...controllerProps }}
-                />
-            )}
+            {controllerProps => <ReferenceFieldView {...props} {...{ children, ...controllerProps }} />}
         </ReferenceFieldController>
     );
 };
@@ -148,8 +140,7 @@ ReferenceField.propTypes = {
     sortBy: PropTypes.string,
     source: PropTypes.string.isRequired,
     translateChoice: PropTypes.func,
-    linkType: PropTypes.oneOfType([PropTypes.string, PropTypes.bool])
-        .isRequired,
+    linkType: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]).isRequired,
 };
 
 ReferenceField.defaultProps = {

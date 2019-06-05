@@ -2,12 +2,7 @@ import { Component, ReactNode } from 'react';
 import isEqual from 'lodash/isEqual';
 import withDataProvider from './withDataProvider';
 
-type DataProviderCallback = (
-    type: string,
-    resource: string,
-    payload?: any,
-    options?: any
-) => Promise<any>;
+type DataProviderCallback = (type: string, resource: string, payload?: any, options?: any) => Promise<any>;
 
 interface ChildrenFuncParams {
     data?: any;

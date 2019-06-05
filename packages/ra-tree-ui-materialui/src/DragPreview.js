@@ -22,14 +22,7 @@ class DragPreview extends Component {
         return false;
     }
     render() {
-        const {
-            children,
-            className,
-            classes,
-            node,
-            style,
-            translate,
-        } = this.props;
+        const { children, className, classes, node, style, translate } = this.props;
         return (
             <div className={className || classes.item} style={style}>
                 {children

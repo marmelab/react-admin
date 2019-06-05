@@ -14,51 +14,44 @@ import History from '@material-ui/icons/History';
 import Title from './Title';
 import { translate } from 'ra-core';
 
-const styles = theme => createStyles({
-    container: {
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        [theme.breakpoints.down('sm')]: {
-            padding: '1em',
+const styles = theme =>
+    createStyles({
+        container: {
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            [theme.breakpoints.down('sm')]: {
+                padding: '1em',
+            },
+            fontFamily: 'Roboto, sans-serif',
+            opacity: 0.5,
         },
-        fontFamily: 'Roboto, sans-serif',
-        opacity: 0.5,
-    },
-    title: {
-        display: 'flex',
-        alignItems: 'center',
-    },
-    icon: {
-        width: '2em',
-        height: '2em',
-        marginRight: '0.5em',
-    },
-    panel: {
-        marginTop: '1em',
-    },
-    panelDetails: {
-        whiteSpace: 'pre-wrap',
-    },
-    toolbar: {
-        marginTop: '2em',
-    },
-});
+        title: {
+            display: 'flex',
+            alignItems: 'center',
+        },
+        icon: {
+            width: '2em',
+            height: '2em',
+            marginRight: '0.5em',
+        },
+        panel: {
+            marginTop: '1em',
+        },
+        panelDetails: {
+            whiteSpace: 'pre-wrap',
+        },
+        toolbar: {
+            marginTop: '2em',
+        },
+    });
 
 function goBack() {
     history.go(-1);
 }
 
-const Error = ({
-    error,
-    errorInfo,
-    classes,
-    className,
-    title,
-    translate,
-    ...rest
-}) => (
+const Error = ({ error, errorInfo, classes, className, title, translate, ...rest }) => (
     <Fragment>
         <Title defaultTitle={title} />
         <div className={classnames(classes.container, className)} {...rest}>

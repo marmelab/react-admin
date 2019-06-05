@@ -30,9 +30,7 @@ describe('<ReferenceInput />', () => {
         );
         const MyComponentElement = wrapper.find('MyComponent');
         assert.equal(MyComponentElement.length, 0);
-        const LinearProgressElement = wrapper.find(
-            'WithStyles(LinearProgress)'
-        );
+        const LinearProgressElement = wrapper.find('WithStyles(LinearProgress)');
         assert.equal(LinearProgressElement.length, 1);
     });
 
@@ -48,9 +46,7 @@ describe('<ReferenceInput />', () => {
                 <MyComponent />
             </ReferenceInputView>
         );
-        const LinearProgressElement = wrapper.find(
-            'WithStyles(LinearProgress)'
-        );
+        const LinearProgressElement = wrapper.find('WithStyles(LinearProgress)');
         assert.equal(LinearProgressElement.length, 0);
         const MyComponentElement = wrapper.find('MyComponent');
         assert.equal(MyComponentElement.length, 1);
@@ -89,9 +85,7 @@ describe('<ReferenceInput />', () => {
                 <MyComponent />
             </ReferenceInputView>
         );
-        const ReferenceLoadingProgressElement = wrapper.find(
-            'ReferenceLoadingProgress'
-        );
+        const ReferenceLoadingProgressElement = wrapper.find('ReferenceLoadingProgress');
         assert.equal(ReferenceLoadingProgressElement.length, 0);
         const ErrorElement = wrapper.find('ReferenceError');
         assert.equal(ErrorElement.length, 0);
@@ -106,11 +100,7 @@ describe('<ReferenceInput />', () => {
     it('should pass onChange down to child component', () => {
         const onChange = jest.fn();
         const wrapper = shallow(
-            <ReferenceInputView
-                {...defaultProps}
-                allowEmpty
-                onChange={onChange}
-            >
+            <ReferenceInputView {...defaultProps} allowEmpty onChange={onChange}>
                 <MyComponent />
             </ReferenceInputView>
         );
@@ -120,11 +110,7 @@ describe('<ReferenceInput />', () => {
 
     it('should pass meta down to child component', () => {
         const wrapper = shallow(
-            <ReferenceInputView
-                {...defaultProps}
-                allowEmpty
-                meta={{ touched: false }}
-            >
+            <ReferenceInputView {...defaultProps} allowEmpty meta={{ touched: false }}>
                 <MyComponent />
             </ReferenceInputView>
         );

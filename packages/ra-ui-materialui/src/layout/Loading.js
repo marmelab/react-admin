@@ -6,30 +6,31 @@ import classnames from 'classnames';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { translate } from 'ra-core';
 
-const styles = theme => createStyles({
-    container: {
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        [theme.breakpoints.up('md')]: {
-            height: '100%',
+const styles = theme =>
+    createStyles({
+        container: {
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            [theme.breakpoints.up('md')]: {
+                height: '100%',
+            },
+            [theme.breakpoints.down('sm')]: {
+                height: '100vh',
+                marginTop: '-3em',
+            },
         },
-        [theme.breakpoints.down('sm')]: {
-            height: '100vh',
-            marginTop: '-3em',
+        icon: {
+            width: '9em',
+            height: '9em',
         },
-    },
-    icon: {
-        width: '9em',
-        height: '9em',
-    },
-    message: {
-        textAlign: 'center',
-        fontFamily: 'Roboto, sans-serif',
-        opacity: 0.5,
-        margin: '0 1em',
-    },
-});
+        message: {
+            textAlign: 'center',
+            fontFamily: 'Roboto, sans-serif',
+            opacity: 0.5,
+            margin: '0 1em',
+        },
+    });
 
 const Loading = ({
     classes,

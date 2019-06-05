@@ -27,20 +27,11 @@ export interface Pagination {
 export type I18nProvider = (locale: string) => object | Promise<object>;
 export type Translate = (id: string, options?: any) => string;
 
-export type AuthActionType =
-    | 'AUTH_LOGIN'
-    | 'AUTH_LOGOUT'
-    | 'AUTH_ERROR'
-    | 'AUTH_CHECK'
-    | 'AUTH_GET_PERMISSIONS';
+export type AuthActionType = 'AUTH_LOGIN' | 'AUTH_LOGOUT' | 'AUTH_ERROR' | 'AUTH_CHECK' | 'AUTH_GET_PERMISSIONS';
 
 export type AuthProvider = (type: AuthActionType, params?: any) => Promise<any>;
 
-export type DataProvider = (
-    type: string,
-    resource: string,
-    params: any
-) => Promise<any>;
+export type DataProvider = (type: string, resource: string, params: any) => Promise<any>;
 
 export interface ReduxState {
     admin: {
@@ -65,14 +56,10 @@ export interface ReduxState {
     };
 }
 
-export type Dispatch<T> = T extends (...args: infer A) => any
-    ? (...args: A) => void
-    : never;
+export type Dispatch<T> = T extends (...args: infer A) => any ? (...args: A) => void : never;
 
 export type ResourceElement = ReactElement<ResourceProps>;
-export type RenderResourcesFunction = (
-    permissions: any
-) => ResourceElement[] | Promise<ResourceElement[]>;
+export type RenderResourcesFunction = (permissions: any) => ResourceElement[] | Promise<ResourceElement[]>;
 export type AdminChildren = RenderResourcesFunction | ReactNode;
 
 export interface CustomRoute extends RouteProps {

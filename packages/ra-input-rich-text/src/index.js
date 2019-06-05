@@ -65,9 +65,7 @@ export class RichTextInput extends Component {
     componentDidUpdate(prevProps) {
         if (prevProps.input.value !== this.props.input.value) {
             const selection = this.quill.getSelection();
-            this.quill.setContents(
-                this.quill.clipboard.convert(this.props.input.value)
-            );
+            this.quill.setContents(this.quill.clipboard.convert(this.props.input.value));
             if (selection && this.quill.hasFocus()) {
                 this.quill.setSelection(selection);
             }
@@ -80,8 +78,7 @@ export class RichTextInput extends Component {
     }
 
     onTextChange = () => {
-        const value =
-            this.editor.innerHTML == '<p><br></p>' ? '' : this.editor.innerHTML;
+        const value = this.editor.innerHTML == '<p><br></p>' ? '' : this.editor.innerHTML;
         this.lastValueChange = value;
         this.props.input.onChange(value);
     };

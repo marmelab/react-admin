@@ -4,15 +4,7 @@ import PropTypes from 'prop-types';
 import { EditButton } from '../button';
 import CardActions from '../layout/CardActions';
 
-const sanitizeRestProps = ({
-    basePath,
-    className,
-    record,
-    hasEdit,
-    hasList,
-    resource,
-    ...rest
-}) => rest;
+const sanitizeRestProps = ({ basePath, className, record, hasEdit, hasList, resource, ...rest }) => rest;
 
 /**
  * Action Toolbar for the Show view
@@ -39,14 +31,7 @@ const sanitizeRestProps = ({
  *         </Show>
  *     );
  */
-const ShowActions = ({
-    basePath,
-    className,
-    data,
-    hasEdit,
-    resource,
-    ...rest
-}) => (
+const ShowActions = ({ basePath, className, data, hasEdit, resource, ...rest }) => (
     <CardActions className={className} {...sanitizeRestProps(rest)}>
         {hasEdit && <EditButton basePath={basePath} record={data} />}
     </CardActions>

@@ -18,8 +18,7 @@ export default {
             new_customers: 'Nouveaux clients',
             pending_orders: 'Commandes à traiter',
             order: {
-                items:
-                    'par %{customer_name}, un poster |||| par %{customer_name}, %{nb_items} posters',
+                items: 'par %{customer_name}, un poster |||| par %{customer_name}, %{nb_items} posters',
             },
             welcome: {
                 title: 'Bienvenue sur la démo de react-admin',

@@ -19,18 +19,10 @@ interface ActionWithSideEffect {
 /**
  * Callback Side Effects
  */
-function* handleCallback({
-    payload,
-    requestPayload,
-    error,
-    meta: { callback },
-}: ActionWithSideEffect) {
+function* handleCallback({ payload, requestPayload, error, meta: { callback } }: ActionWithSideEffect) {
     yield call(callback, { payload, requestPayload, error });
 }
 
 export default function*() {
-    yield takeEvery(
-        action => action.meta && action.meta.callback,
-        handleCallback
-    );
+    yield takeEvery(action => action.meta && action.meta.callback, handleCallback);
 }

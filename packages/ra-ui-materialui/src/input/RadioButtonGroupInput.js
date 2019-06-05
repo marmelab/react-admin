@@ -82,13 +82,7 @@ export class RadioButtonGroupInput extends Component {
     };
 
     renderRadioButton = choice => {
-        const {
-            optionText,
-            optionValue,
-            translate,
-            translateChoice,
-            source,
-        } = this.props;
+        const { optionText, optionValue, translate, translateChoice, source } = this.props;
         const choiceName = React.isValidElement(optionText) // eslint-disable-line no-nested-ternary
             ? React.cloneElement(optionText, { record: choice })
             : typeof optionText === 'function'
@@ -103,11 +97,7 @@ export class RadioButtonGroupInput extends Component {
                 key={get(choice, optionValue)}
                 value={get(choice, optionValue)}
                 control={<Radio id={nodeId} color="primary" />}
-                label={
-                    translateChoice
-                        ? translate(choiceName, { _: choiceName })
-                        : choiceName
-                }
+                label={translateChoice ? translate(choiceName, { _: choiceName }) : choiceName}
             />
         );
     };
@@ -135,32 +125,15 @@ export class RadioButtonGroupInput extends Component {
         const { touched, error, helperText = false } = meta;
 
         return (
-            <FormControl
-                component="fieldset"
-                className={className}
-                margin="normal"
-                {...sanitizeRestProps(rest)}
-            >
+            <FormControl component="fieldset" className={className} margin="normal" {...sanitizeRestProps(rest)}>
                 <InputLabel component="legend" shrink className={classes.label}>
-                    <FieldTitle
-                        label={label}
-                        source={source}
-                        resource={resource}
-                        isRequired={isRequired}
-                    />
+                    <FieldTitle label={label} source={source} resource={resource} isRequired={isRequired} />
                 </InputLabel>
 
-                <RadioGroup
-                    name={source}
-                    value={input.value}
-                    onChange={this.handleChange}
-                    {...options}
-                >
+                <RadioGroup name={source} value={input.value} onChange={this.handleChange} {...options}>
                     {choices.map(this.renderRadioButton)}
                 </RadioGroup>
-                {touched && error && (
-                    <FormHelperText error>{error}</FormHelperText>
-                )}
+                {touched && error && <FormHelperText error>{error}</FormHelperText>}
                 {helperText && <FormHelperText>{helperText}</FormHelperText>}
             </FormControl>
         );
@@ -175,11 +148,7 @@ RadioButtonGroupInput.propTypes = {
     isRequired: PropTypes.bool,
     label: PropTypes.string,
     options: PropTypes.object,
-    optionText: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.func,
-        PropTypes.element,
-    ]).isRequired,
+    optionText: PropTypes.oneOfType([PropTypes.string, PropTypes.func, PropTypes.element]).isRequired,
     optionValue: PropTypes.string.isRequired,
     resource: PropTypes.string,
     source: PropTypes.string,

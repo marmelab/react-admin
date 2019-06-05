@@ -132,25 +132,13 @@ describe('<ImageInput />', () => {
             assert.equal(previewImages.length, 2);
             assert.equal(previewImages.at(0).prop('source'), 'url');
             assert.equal(previewImages.at(0).prop('title'), 'title');
-            assert.deepEqual(
-                previewImages.at(0).prop('record').title,
-                'Hello world!'
-            );
-            assert.deepEqual(
-                previewImages.at(0).prop('record').url,
-                'http://foo.com/bar.jpg'
-            );
+            assert.deepEqual(previewImages.at(0).prop('record').title, 'Hello world!');
+            assert.deepEqual(previewImages.at(0).prop('record').url, 'http://foo.com/bar.jpg');
 
             assert.equal(previewImages.at(1).prop('source'), 'url');
             assert.equal(previewImages.at(1).prop('title'), 'title');
-            assert.deepEqual(
-                previewImages.at(1).prop('record').title,
-                'A good old Bitmap!'
-            );
-            assert.deepEqual(
-                previewImages.at(1).prop('record').url,
-                'http://foo.com/qux.bmp'
-            );
+            assert.deepEqual(previewImages.at(1).prop('record').title, 'A good old Bitmap!');
+            assert.deepEqual(previewImages.at(1).prop('record').url, 'http://foo.com/qux.bmp');
         });
 
         it('should update previews when updating input value', () => {
@@ -228,15 +216,11 @@ describe('<ImageInput />', () => {
             </ImageInput>
         );
 
-        const inputPreview = wrapper.find(
-            'WithStyles(translate(FileInputPreview))'
-        ); // FileInputPreview is an muiThemable component
+        const inputPreview = wrapper.find('WithStyles(translate(FileInputPreview))'); // FileInputPreview is an muiThemable component
         inputPreview.at(1).prop('onRemove')();
         wrapper.update();
 
-        const previewImages = wrapper
-            .find('ImageField')
-            .map(f => f.prop('record'));
+        const previewImages = wrapper.find('ImageField').map(f => f.prop('record'));
         assert.deepEqual(previewImages, [
             { url: 'http://static.acme.com/foo.jpg' },
             { url: 'http://static.acme.com/quz.jpg' },

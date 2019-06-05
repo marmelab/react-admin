@@ -47,18 +47,9 @@ const styles = theme =>
 class DeleteWithUndoButton extends Component {
     handleDelete = event => {
         event.stopPropagation();
-        const {
-            startUndoable,
-            resource,
-            record,
-            basePath,
-            redirect,
-            onClick,
-        } = this.props;
+        const { startUndoable, resource, record, basePath, redirect, onClick } = this.props;
 
-        startUndoable(
-            crudDelete(resource, record.id, record, basePath, redirect)
-        );
+        startUndoable(crudDelete(resource, record.id, record, basePath, redirect));
 
         if (typeof onClick === 'function') {
             onClick();
@@ -66,23 +57,12 @@ class DeleteWithUndoButton extends Component {
     };
 
     render() {
-        const {
-            label = 'ra.action.delete',
-            classes = {},
-            className,
-            icon,
-            onClick,
-            ...rest
-        } = this.props;
+        const { label = 'ra.action.delete', classes = {}, className, icon, onClick, ...rest } = this.props;
         return (
             <Button
                 onClick={this.handleDelete}
                 label={label}
-                className={classnames(
-                    'ra-delete-button',
-                    classes.deleteButton,
-                    className
-                )}
+                className={classnames('ra-delete-button', classes.deleteButton, className)}
                 key="button"
                 {...sanitizeRestProps(rest)}
             >
@@ -98,11 +78,7 @@ DeleteWithUndoButton.propTypes = {
     className: PropTypes.string,
     label: PropTypes.string,
     record: PropTypes.object,
-    redirect: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.bool,
-        PropTypes.func,
-    ]),
+    redirect: PropTypes.oneOfType([PropTypes.string, PropTypes.bool, PropTypes.func]),
     resource: PropTypes.string.isRequired,
     startUndoable: PropTypes.func,
     translate: PropTypes.func,

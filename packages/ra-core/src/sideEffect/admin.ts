@@ -15,11 +15,7 @@ import unload from './unload';
 /**
  * @param {Object} dataProvider A Data Provider function
  */
-export default (
-    dataProvider: DataProvider,
-    authProvider: AuthProvider | null,
-    i18nProvider: I18nProvider
-) =>
+export default (dataProvider: DataProvider, authProvider: AuthProvider | null, i18nProvider: I18nProvider) =>
     function* admin() {
         yield all([
             i18n(i18nProvider)(),

@@ -77,11 +77,7 @@ const hasType = (type, types) => typeof types[type] !== 'undefined';
  *
  * @return InferredElement
  */
-const inferElementFromValues = (
-    name,
-    values = [],
-    types: InferredTypeMap = defaultTypes
-) => {
+const inferElementFromValues = (name, values = [], types: InferredTypeMap = defaultTypes) => {
     if (name === 'id' && hasType('id', types)) {
         return new InferredElement(types.id, { source: name });
     }
@@ -113,10 +109,7 @@ const inferElementFromValues = (
             )
         );
     }
-    if (
-        name.substr(name.length - 4) === '_ids' &&
-        hasType('referenceArray', types)
-    ) {
+    if (name.substr(name.length - 4) === '_ids' && hasType('referenceArray', types)) {
         const reference = inflection.pluralize(name.substr(0, name.length - 4));
         return (
             types.referenceArray &&
@@ -130,10 +123,7 @@ const inferElementFromValues = (
             )
         );
     }
-    if (
-        name.substr(name.length - 3) === 'Ids' &&
-        hasType('referenceArray', types)
-    ) {
+    if (name.substr(name.length - 3) === 'Ids' && hasType('referenceArray', types)) {
         const reference = inflection.pluralize(name.substr(0, name.length - 3));
         return (
             types.referenceArray &&
@@ -153,9 +143,7 @@ const inferElementFromValues = (
     }
     if (valuesAreArray(values)) {
         if (isObject(values[0][0]) && hasType('array', types)) {
-            const leafValues = getValuesFromRecords(
-                values.reduce((acc, vals) => acc.concat(vals), [])
-            );
+            const leafValues = getValuesFromRecords(values.reduce((acc, vals) => acc.concat(vals), []));
             // FIXME bad visual representation
             return (
                 types.array &&
@@ -165,11 +153,7 @@ const inferElementFromValues = (
                         source: name,
                     },
                     Object.keys(leafValues).map(leafName =>
-                        inferElementFromValues(
-                            leafName,
-                            leafValues[leafName],
-                            types
-                        )
+                        inferElementFromValues(leafName, leafValues[leafName], types)
                     )
                 )
             );
@@ -198,10 +182,7 @@ const inferElementFromValues = (
         }
         return new InferredElement(types.string, { source: name });
     }
-    if (
-        (valuesAreInteger(values) || valuesAreNumeric(values)) &&
-        hasType('number', types)
-    ) {
+    if ((valuesAreInteger(values) || valuesAreNumeric(values)) && hasType('number', types)) {
         return new InferredElement(types.number, { source: name });
     }
     if (valuesAreObject(values)) {

@@ -17,9 +17,7 @@ describe('<SelectArrayInput />', () => {
     afterEach(cleanup);
 
     it('should use a mui Select', () => {
-        const { queryByTestId } = render(
-            <SelectArrayInput {...defaultProps} input={{}} />
-        );
+        const { queryByTestId } = render(<SelectArrayInput {...defaultProps} input={{}} />);
         expect(queryByTestId('selectArray')).not.toBeNull();
     });
 
@@ -35,9 +33,7 @@ describe('<SelectArrayInput />', () => {
                 ]}
             />
         );
-        expect(getByLabelText('resources.bar.fields.foo').value).toBe(
-            'programming,lifestyle'
-        );
+        expect(getByLabelText('resources.bar.fields.foo').value).toBe('programming,lifestyle');
     });
 
     it('should reveal choices on click', () => {
@@ -62,11 +58,7 @@ describe('<SelectArrayInput />', () => {
 
     it('should use optionValue as value identifier', () => {
         const { getByRole, getByText, getByLabelText } = render(
-            <SelectArrayInput
-                {...defaultProps}
-                optionValue="foobar"
-                choices={[{ foobar: 'M', name: 'Male' }]}
-            />
+            <SelectArrayInput {...defaultProps} optionValue="foobar" choices={[{ foobar: 'M', name: 'Male' }]} />
         );
         getByRole('button').click();
         getByText('Male').click();
@@ -88,11 +80,7 @@ describe('<SelectArrayInput />', () => {
 
     it('should use optionText with a string value as text identifier', () => {
         const { getByRole, queryByText } = render(
-            <SelectArrayInput
-                {...defaultProps}
-                optionText="foobar"
-                choices={[{ id: 'M', foobar: 'Male' }]}
-            />
+            <SelectArrayInput {...defaultProps} optionText="foobar" choices={[{ id: 'M', foobar: 'Male' }]} />
         );
         getByRole('button').click();
         expect(queryByText('Male')).not.toBeNull();
@@ -125,11 +113,7 @@ describe('<SelectArrayInput />', () => {
     it('should use optionText with an element value as text identifier', () => {
         const Foobar = ({ record }) => <span>{record.foobar}</span>;
         const { getByRole, queryByText } = render(
-            <SelectArrayInput
-                {...defaultProps}
-                optionText={<Foobar />}
-                choices={[{ id: 'M', foobar: 'Male' }]}
-            />
+            <SelectArrayInput {...defaultProps} optionText={<Foobar />} choices={[{ id: 'M', foobar: 'Male' }]} />
         );
         getByRole('button').click();
         expect(queryByText('Male')).not.toBeNull();
@@ -139,10 +123,7 @@ describe('<SelectArrayInput />', () => {
         const { getByRole, queryByText } = render(
             <SelectArrayInput
                 {...defaultProps}
-                choices={[
-                    { id: 'M', name: 'Male' },
-                    { id: 'F', name: 'Female' },
-                ]}
+                choices={[{ id: 'M', name: 'Male' }, { id: 'F', name: 'Female' }]}
                 translate={x => `**${x}**`}
             />
         );
@@ -152,39 +133,24 @@ describe('<SelectArrayInput />', () => {
     });
 
     it('should displayed helperText if prop is present in meta', () => {
-        const { queryByText } = render(
-            <SelectArrayInput
-                {...defaultProps}
-                meta={{ helperText: 'Can I help you?' }}
-            />
-        );
+        const { queryByText } = render(<SelectArrayInput {...defaultProps} meta={{ helperText: 'Can I help you?' }} />);
         expect(queryByText('Can I help you?')).not.toBeNull();
     });
 
     describe('error message', () => {
         it('should not be displayed if field is pristine', () => {
-            const { container } = render(
-                <SelectArrayInput {...defaultProps} meta={{ touched: false }} />
-            );
+            const { container } = render(<SelectArrayInput {...defaultProps} meta={{ touched: false }} />);
             expect(container.querySelector('p')).toBeNull();
         });
 
         it('should not be displayed if field has been touched but is valid', () => {
-            const { container } = render(
-                <SelectArrayInput
-                    {...defaultProps}
-                    meta={{ touched: true, error: false }}
-                />
-            );
+            const { container } = render(<SelectArrayInput {...defaultProps} meta={{ touched: true, error: false }} />);
             expect(container.querySelector('p')).toBeNull();
         });
 
         it('should be displayed if field has been touched and is invalid', () => {
             const { container, queryByText } = render(
-                <SelectArrayInput
-                    {...defaultProps}
-                    meta={{ touched: true, error: 'Required field.' }}
-                />
+                <SelectArrayInput {...defaultProps} meta={{ touched: true, error: 'Required field.' }} />
             );
             expect(container.querySelector('p')).not.toBeNull();
             expect(queryByText('Required field.')).not.toBeNull();

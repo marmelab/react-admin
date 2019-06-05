@@ -9,11 +9,7 @@ describe('FormDataConsumerView', () => {
         const formData = { id: 123, title: 'A title' };
 
         shallow(
-            <FormDataConsumerView
-                form="a-form"
-                formData={formData}
-                source="a-field"
-            >
+            <FormDataConsumerView form="a-form" formData={formData} source="a-field">
                 {children}
             </FormDataConsumerView>
         );
@@ -30,20 +26,13 @@ describe('FormDataConsumerView', () => {
         const formData = { id: 123, title: 'A title', authors: [{ id: 0 }] };
 
         shallow(
-            <FormDataConsumerView
-                form="a-form"
-                source="authors[0]"
-                index={0}
-                formData={formData}
-            >
+            <FormDataConsumerView form="a-form" source="authors[0]" index={0} formData={formData}>
                 {children}
             </FormDataConsumerView>
         );
 
         expect(children.mock.calls[0][0].formData).toEqual(formData);
         expect(children.mock.calls[0][0].scopedFormData).toEqual({ id: 0 });
-        expect(children.mock.calls[0][0].getSource('id')).toEqual(
-            'authors[0].id'
-        );
+        expect(children.mock.calls[0][0].getSource('id')).toEqual('authors[0].id');
     });
 });

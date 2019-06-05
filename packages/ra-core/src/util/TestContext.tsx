@@ -64,17 +64,13 @@ class TestContext extends Component<Props> {
 
     renderChildren = () => {
         const { children } = this.props;
-        return typeof children === 'function'
-            ? children({ store: this.storeWithDefault })
-            : children;
+        return typeof children === 'function' ? children({ store: this.storeWithDefault }) : children;
     };
 
     render() {
         return (
             <Provider store={this.storeWithDefault}>
-                <TranslationProvider>
-                    {this.renderChildren()}
-                </TranslationProvider>
+                <TranslationProvider>{this.renderChildren()}</TranslationProvider>
             </Provider>
         );
     }

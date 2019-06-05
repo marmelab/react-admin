@@ -15,19 +15,10 @@ const styles = createStyles({
 /**
  * @deprecated
  */
-export const Header = ({
-    classes,
-    className,
-    title,
-    actions,
-    actionProps,
-    ...rest
-}) => {
+export const Header = ({ classes, className, title, actions, actionProps, ...rest }) => {
     if (process.env.NODE_ENV !== 'production') {
         // eslint-disable-next-line no-console
-        console.warn(
-            '<Header> is deprecated, please use <Title> directly instead'
-        );
+        console.warn('<Header> is deprecated, please use <Title> directly instead');
     }
     return (
         <div className={classnames(classes.root, className)} {...rest}>

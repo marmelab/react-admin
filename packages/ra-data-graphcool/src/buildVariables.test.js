@@ -1,11 +1,4 @@
-import {
-    GET_LIST,
-    GET_MANY,
-    GET_MANY_REFERENCE,
-    CREATE,
-    UPDATE,
-    DELETE,
-} from 'ra-core';
+import { GET_LIST, GET_MANY, GET_MANY_REFERENCE, CREATE, UPDATE, DELETE } from 'ra-core';
 import buildVariables from './buildVariables';
 
 describe('buildVariables', () => {
@@ -30,14 +23,7 @@ describe('buildVariables', () => {
                 sort: { field: 'sortField', order: 'DESC' },
             };
 
-            expect(
-                buildVariables(introspectionResult)(
-                    { type: { name: 'Post' } },
-                    GET_LIST,
-                    params,
-                    {}
-                )
-            ).toEqual({
+            expect(buildVariables(introspectionResult)({ type: { name: 'Post' } }, GET_LIST, params, {})).toEqual({
                 filter: {
                     id_in: ['foo1', 'foo2'],
                     tags_some: { id_in: ['tag1', 'tag2'] },
@@ -64,14 +50,7 @@ describe('buildVariables', () => {
                 args: [{ name: 'tagsIds' }, { name: 'authorId' }],
             };
 
-            expect(
-                buildVariables()(
-                    { type: { name: 'Post' } },
-                    CREATE,
-                    params,
-                    queryType
-                )
-            ).toEqual({
+            expect(buildVariables()({ type: { name: 'Post' } }, CREATE, params, queryType)).toEqual({
                 authorId: 'author1',
                 tagsIds: ['tag1', 'tag2'],
                 title: 'Foo',
@@ -92,14 +71,7 @@ describe('buildVariables', () => {
                 args: [{ name: 'tagsIds' }, { name: 'authorId' }],
             };
 
-            expect(
-                buildVariables()(
-                    { type: { name: 'Post' } },
-                    UPDATE,
-                    params,
-                    queryType
-                )
-            ).toEqual({
+            expect(buildVariables()({ type: { name: 'Post' } }, UPDATE, params, queryType)).toEqual({
                 authorId: 'author1',
                 tagsIds: ['tag1', 'tag2'],
                 title: 'Foo',
@@ -113,14 +85,7 @@ describe('buildVariables', () => {
                 ids: ['tag1', 'tag2'],
             };
 
-            expect(
-                buildVariables()(
-                    { type: { name: 'Post' } },
-                    GET_MANY,
-                    params,
-                    {}
-                )
-            ).toEqual({
+            expect(buildVariables()({ type: { name: 'Post' } }, GET_MANY, params, {})).toEqual({
                 filter: { id_in: ['tag1', 'tag2'] },
             });
         });
@@ -133,14 +98,7 @@ describe('buildVariables', () => {
                 id: 'author1',
             };
 
-            expect(
-                buildVariables()(
-                    { type: { name: 'Post' } },
-                    GET_MANY_REFERENCE,
-                    params,
-                    {}
-                )
-            ).toEqual({
+            expect(buildVariables()({ type: { name: 'Post' } }, GET_MANY_REFERENCE, params, {})).toEqual({
                 filter: { author: { id: 'author1' } },
             });
         });
@@ -152,14 +110,7 @@ describe('buildVariables', () => {
                 id: 'post1',
             };
 
-            expect(
-                buildVariables()(
-                    { type: { name: 'Post', inputFields: [] } },
-                    DELETE,
-                    params,
-                    {}
-                )
-            ).toEqual({
+            expect(buildVariables()({ type: { name: 'Post', inputFields: [] } }, DELETE, params, {})).toEqual({
                 id: 'post1',
             });
         });

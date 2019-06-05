@@ -15,9 +15,7 @@ export interface SetSidebarVisibilityAction {
     readonly payload: boolean;
 }
 
-export const setSidebarVisibility = (
-    isOpen: boolean
-): SetSidebarVisibilityAction => ({
+export const setSidebarVisibility = (isOpen: boolean): SetSidebarVisibilityAction => ({
     type: SET_SIDEBAR_VISIBILITY,
     payload: isOpen,
 });

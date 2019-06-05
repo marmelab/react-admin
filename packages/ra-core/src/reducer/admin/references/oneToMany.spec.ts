@@ -7,14 +7,8 @@ import { UNDOABLE } from '../../../actions';
 describe('oneToMany', () => {
     describe('oneToMany', () => {
         it('should name relation based on reference, id, resource and target', () => {
-            assert.equal(
-                nameRelatedTo('reference', 'id', 'resource', 'target'),
-                'resource_reference@target_id'
-            );
-            assert.equal(
-                nameRelatedTo('comments', '6', 'posts', 'id'),
-                'posts_comments@id_6'
-            );
+            assert.equal(nameRelatedTo('reference', 'id', 'resource', 'target'), 'resource_reference@target_id');
+            assert.equal(nameRelatedTo('comments', '6', 'posts', 'id'), 'posts_comments@id_6');
         });
 
         it('should incorporate filter to the name if any', () => {

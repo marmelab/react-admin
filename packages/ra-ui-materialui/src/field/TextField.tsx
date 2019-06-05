@@ -15,12 +15,7 @@ const TextField: SFC<FieldProps & InjectedFieldProps & TypographyProps> = ({
 }) => {
     const value = get(record, source);
     return (
-        <Typography
-            component="span"
-            variant="body1"
-            className={className}
-            {...sanitizeRestProps(rest)}
-        >
+        <Typography component="span" variant="body1" className={className} {...sanitizeRestProps(rest)}>
             {value && typeof value !== 'string' ? JSON.stringify(value) : value}
         </Typography>
     );

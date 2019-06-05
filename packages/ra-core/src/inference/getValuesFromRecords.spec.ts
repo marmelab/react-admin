@@ -7,10 +7,7 @@ describe('getValuesFromRecords', () => {
 
     it('should return a list of values indexed by key', () => {
         const now = new Date();
-        const records = [
-            { id: 1, foo: 'bar', dob: now },
-            { id: 2, foo: 'baz', dob: now },
-        ];
+        const records = [{ id: 1, foo: 'bar', dob: now }, { id: 2, foo: 'baz', dob: now }];
         expect(getValuesFromRecords(records)).toEqual({
             id: [1, 2],
             foo: ['bar', 'baz'],

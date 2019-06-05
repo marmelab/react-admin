@@ -20,10 +20,7 @@ describe('<RadioButtonGroupInput />', () => {
             <RadioButtonGroupInput
                 {...defaultProps}
                 label="hello"
-                choices={[
-                    { id: 'M', name: 'Male' },
-                    { id: 'F', name: 'Female' },
-                ]}
+                choices={[{ id: 'M', name: 'Male' }, { id: 'F', name: 'Female' }]}
             />
         );
         expect(queryByText('hello')).not.toBeNull();
@@ -41,10 +38,7 @@ describe('<RadioButtonGroupInput />', () => {
         const { getByLabelText } = render(
             <RadioButtonGroupInput
                 {...defaultProps}
-                choices={[
-                    { id: 'M', name: 'Male' },
-                    { id: 'F', name: 'Female' },
-                ]}
+                choices={[{ id: 'M', name: 'Male' }, { id: 'F', name: 'Female' }]}
                 input={{ value: 'F' }}
             />
         );
@@ -54,11 +48,7 @@ describe('<RadioButtonGroupInput />', () => {
 
     it('should use optionValue as value identifier', () => {
         const { getByLabelText } = render(
-            <RadioButtonGroupInput
-                {...defaultProps}
-                optionValue="foobar"
-                choices={[{ foobar: 'M', name: 'Male' }]}
-            />
+            <RadioButtonGroupInput {...defaultProps} optionValue="foobar" choices={[{ foobar: 'M', name: 'Male' }]} />
         );
         expect(getByLabelText('Male').value).toBe('M');
     });
@@ -76,11 +66,7 @@ describe('<RadioButtonGroupInput />', () => {
 
     it('should use optionText with a string value as text identifier', () => {
         const { queryByText } = render(
-            <RadioButtonGroupInput
-                {...defaultProps}
-                optionText="foobar"
-                choices={[{ id: 'M', foobar: 'Male' }]}
-            />
+            <RadioButtonGroupInput {...defaultProps} optionText="foobar" choices={[{ id: 'M', foobar: 'Male' }]} />
         );
         expect(queryByText('Male')).not.toBeNull();
     });
@@ -110,11 +96,7 @@ describe('<RadioButtonGroupInput />', () => {
     it('should use optionText with an element value as text identifier', () => {
         const Foobar = ({ record }) => <span>{record.foobar}</span>;
         const { queryByText } = render(
-            <RadioButtonGroupInput
-                {...defaultProps}
-                optionText={<Foobar />}
-                choices={[{ id: 'M', foobar: 'Male' }]}
-            />
+            <RadioButtonGroupInput {...defaultProps} optionText={<Foobar />} choices={[{ id: 'M', foobar: 'Male' }]} />
         );
         expect(queryByText('Male')).not.toBeNull();
     });
@@ -145,41 +127,27 @@ describe('<RadioButtonGroupInput />', () => {
 
     it('should displayed helperText if prop is present in meta', () => {
         const { queryByText } = render(
-            <RadioButtonGroupInput
-                {...defaultProps}
-                meta={{ helperText: 'Can I help you?' }}
-            />
+            <RadioButtonGroupInput {...defaultProps} meta={{ helperText: 'Can I help you?' }} />
         );
         expect(queryByText('Can I help you?')).not.toBeNull();
     });
 
     describe('error message', () => {
         it('should not be displayed if field is pristine', () => {
-            const { container } = render(
-                <RadioButtonGroupInput
-                    {...defaultProps}
-                    meta={{ touched: false }}
-                />
-            );
+            const { container } = render(<RadioButtonGroupInput {...defaultProps} meta={{ touched: false }} />);
             expect(container.querySelector('p')).toBeNull();
         });
 
         it('should not be displayed if field has been touched but is valid', () => {
             const { container } = render(
-                <RadioButtonGroupInput
-                    {...defaultProps}
-                    meta={{ touched: true, error: false }}
-                />
+                <RadioButtonGroupInput {...defaultProps} meta={{ touched: true, error: false }} />
             );
             expect(container.querySelector('p')).toBeNull();
         });
 
         it('should be displayed if field has been touched and is invalid', () => {
             const { container, queryByText } = render(
-                <RadioButtonGroupInput
-                    {...defaultProps}
-                    meta={{ touched: true, error: 'Required field.' }}
-                />
+                <RadioButtonGroupInput {...defaultProps} meta={{ touched: true, error: 'Required field.' }} />
             );
             expect(container.querySelector('p')).not.toBeNull();
             expect(queryByText('Required field.')).not.toBeNull();

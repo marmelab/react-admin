@@ -4,10 +4,7 @@ export default function(db) {
     // set latest purchase date
     db.commands.forEach(command => {
         let customer = db.customers[command.customer_id];
-        if (
-            !customer.latest_purchase ||
-            customer.latest_purchase < command.date
-        ) {
+        if (!customer.latest_purchase || customer.latest_purchase < command.date) {
             customer.latest_purchase = command.date;
         }
         customer.total_spent += command.total;
@@ -39,18 +36,13 @@ export default function(db) {
         .forEach(customer => customer.groups.push('compulsive'));
 
     // add 'regular' group
-    db.customers
-        .filter(() => weightedBoolean(20))
-        .forEach(customer => customer.groups.push('regular'));
+    db.customers.filter(() => weightedBoolean(20)).forEach(customer => customer.groups.push('regular'));
 
     // add 'returns' group
     db.commands
         .filter(command => command.returned)
         .forEach(command => {
-            if (
-                db.customers[command.customer_id].groups.indexOf('returns') ===
-                -1
-            ) {
+            if (db.customers[command.customer_id].groups.indexOf('returns') === -1) {
                 db.customers[command.customer_id].groups.push('returns');
             }
         });
@@ -79,16 +71,7 @@ export default function(db) {
                         },
                     },
                 },
-                file_type_whiltelist: [
-                    'txt',
-                    'doc',
-                    'docx',
-                    'xls',
-                    'xlsx',
-                    'pdf',
-                    'png',
-                    'jpg',
-                ],
+                file_type_whiltelist: ['txt', 'doc', 'docx', 'xls', 'xlsx', 'pdf', 'png', 'jpg'],
             },
         },
     ];

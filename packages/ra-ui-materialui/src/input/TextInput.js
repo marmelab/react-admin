@@ -36,18 +36,7 @@ export class TextInput extends Component {
     };
 
     render() {
-        const {
-            className,
-            input,
-            isRequired,
-            label,
-            meta,
-            options,
-            resource,
-            source,
-            type,
-            ...rest
-        } = this.props;
+        const { className, input, isRequired, label, meta, options, resource, source, type, ...rest } = this.props;
         if (typeof meta === 'undefined') {
             throw new Error(
                 "The TextInput component wasn't called within a redux-form <Field>. Did you decorate it and forget to add the addField prop to your component? See https://marmelab.com/react-admin/Inputs.html#writing-your-own-input-component for details."
@@ -63,12 +52,7 @@ export class TextInput extends Component {
                     label === false ? (
                         label
                     ) : (
-                        <FieldTitle
-                            label={label}
-                            source={source}
-                            resource={resource}
-                            isRequired={isRequired}
-                        />
+                        <FieldTitle label={label} source={source} resource={resource} isRequired={isRequired} />
                     )
                 }
                 error={!!(touched && error)}

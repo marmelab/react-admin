@@ -15,33 +15,34 @@ import classnames from 'classnames';
 
 import { addField, translate, FieldTitle } from 'ra-core';
 
-const styles = theme => createStyles({
-    container: {
-        flexGrow: 1,
-        position: 'relative',
-    },
-    root: {},
-    suggestionsContainerOpen: {
-        position: 'absolute',
-        marginBottom: theme.spacing.unit * 3,
-        zIndex: 2,
-    },
-    suggestionsPaper: {
-        maxHeight: '50vh',
-        overflowY: 'auto',
-    },
-    suggestion: {
-        display: 'block',
-        fontFamily: theme.typography.fontFamily,
-    },
-    suggestionText: { fontWeight: 300 },
-    highlightedSuggestionText: { fontWeight: 500 },
-    suggestionsList: {
-        margin: 0,
-        padding: 0,
-        listStyleType: 'none',
-    },
-});
+const styles = theme =>
+    createStyles({
+        container: {
+            flexGrow: 1,
+            position: 'relative',
+        },
+        root: {},
+        suggestionsContainerOpen: {
+            position: 'absolute',
+            marginBottom: theme.spacing.unit * 3,
+            zIndex: 2,
+        },
+        suggestionsPaper: {
+            maxHeight: '50vh',
+            overflowY: 'auto',
+        },
+        suggestion: {
+            display: 'block',
+            fontFamily: theme.typography.fontFamily,
+        },
+        suggestionText: { fontWeight: 300 },
+        highlightedSuggestionText: { fontWeight: 500 },
+        suggestionsList: {
+            margin: 0,
+            padding: 0,
+            listStyleType: 'none',
+        },
+    });
 
 /**
  * An Input component for an autocomplete field, using an array of objects for the options
@@ -107,18 +108,12 @@ export class AutocompleteInput extends React.Component {
     anchorEl = null;
 
     componentWillMount() {
-        const selectedItem = this.getSelectedItem(
-            this.props,
-            this.props.input.value
-        );
+        const selectedItem = this.getSelectedItem(this.props, this.props.input.value);
         this.setState({
             selectedItem,
             inputValue: this.props.input.value,
             searchText: this.getSuggestionText(selectedItem),
-            suggestions:
-                this.props.limitChoicesToValue && selectedItem
-                    ? [selectedItem]
-                    : this.props.choices,
+            suggestions: this.props.limitChoicesToValue && selectedItem ? [selectedItem] : this.props.choices,
         });
     }
 
@@ -131,10 +126,7 @@ export class AutocompleteInput extends React.Component {
                 inputValue: input.value,
                 searchText: this.getSuggestionText(selectedItem),
                 dirty: false,
-                suggestions:
-                    limitChoicesToValue && selectedItem
-                        ? [selectedItem]
-                        : this.props.choices,
+                suggestions: limitChoicesToValue && selectedItem ? [selectedItem] : this.props.choices,
                 prevSuggestions: false,
             });
             // Avoid displaying the suggestions again when one just has been selected
@@ -146,30 +138,18 @@ export class AutocompleteInput extends React.Component {
                 this.ignoreNextChoicesUpdate = false;
                 return;
             }
-            const selectedItem = this.getSelectedItem(
-                nextProps,
-                this.state.inputValue
-            );
+            const selectedItem = this.getSelectedItem(nextProps, this.state.inputValue);
             this.setState(({ dirty, searchText }) => ({
                 selectedItem,
-                searchText: dirty
-                    ? searchText
-                    : this.getSuggestionText(selectedItem),
-                suggestions:
-                    limitChoicesToValue && !dirty && selectedItem
-                        ? [selectedItem]
-                        : choices,
+                searchText: dirty ? searchText : this.getSuggestionText(selectedItem),
+                suggestions: limitChoicesToValue && !dirty && selectedItem ? [selectedItem] : choices,
                 prevSuggestions: false,
             }));
         }
     }
 
     getSelectedItem = ({ choices }, inputValue) =>
-        choices && inputValue
-            ? choices.find(
-                  choice => this.getSuggestionValue(choice) === inputValue
-              )
-            : null;
+        choices && inputValue ? choices.find(choice => this.getSuggestionValue(choice) === inputValue) : null;
 
     getSuggestionValue = suggestion => get(suggestion, this.props.optionValue);
 
@@ -178,9 +158,7 @@ export class AutocompleteInput extends React.Component {
 
         const { optionText, translate, translateChoice } = this.props;
         const suggestionLabel =
-            typeof optionText === 'function'
-                ? optionText(suggestion)
-                : get(suggestion, optionText, '');
+            typeof optionText === 'function' ? optionText(suggestion) : get(suggestion, optionText, '');
 
         // We explicitly call toString here because AutoSuggest expect a string
         return translateChoice
@@ -265,14 +243,7 @@ export class AutocompleteInput extends React.Component {
 
         return (
             <TextField
-                label={
-                    <FieldTitle
-                        label={label}
-                        source={source}
-                        resource={resource}
-                        isRequired={isRequired}
-                    />
-                }
+                label={<FieldTitle label={label} source={source} resource={resource} isRequired={isRequired} />}
                 value={value}
                 onChange={onChange}
                 autoFocus={autoFocus}
@@ -306,10 +277,7 @@ export class AutocompleteInput extends React.Component {
         } else {
             const anchorPosition = this.anchorEl.getBoundingClientRect();
 
-            if (
-                anchorPosition.x !== inputPosition.x ||
-                anchorPosition.y !== inputPosition.y
-            ) {
+            if (anchorPosition.x !== inputPosition.x || anchorPosition.y !== inputPosition.y) {
                 this.anchorEl = { getBoundingClientRect: () => inputPosition };
             }
         }
@@ -333,23 +301,14 @@ export class AutocompleteInput extends React.Component {
                 placement="bottom-start"
                 {...options.suggestionsContainerProps}
             >
-                <Paper
-                    square
-                    className={classes.suggestionsPaper}
-                    {...containerProps}
-                >
+                <Paper square className={classes.suggestionsPaper} {...containerProps}>
                     {children}
                 </Paper>
             </Popper>
         );
     };
 
-    renderSuggestionComponent = ({
-        suggestion,
-        query,
-        isHighlighted,
-        ...props
-    }) => <div {...props} />;
+    renderSuggestionComponent = ({ suggestion, query, isHighlighted, ...props }) => <div {...props} />;
 
     renderSuggestion = (suggestion, { query, isHighlighted }) => {
         const label = this.getSuggestionText(suggestion);
@@ -360,9 +319,7 @@ export class AutocompleteInput extends React.Component {
         return (
             <MenuItem
                 selected={isHighlighted}
-                component={
-                    suggestionComponent || this.renderSuggestionComponent
-                }
+                component={suggestionComponent || this.renderSuggestionComponent}
                 suggestion={suggestion}
                 query={query}
                 isHighlighted={isHighlighted}
@@ -370,17 +327,11 @@ export class AutocompleteInput extends React.Component {
                 <div>
                     {parts.map((part, index) => {
                         return part.highlight ? (
-                            <span
-                                key={index}
-                                className={classes.highlightedSuggestionText}
-                            >
+                            <span key={index} className={classes.highlightedSuggestionText}>
                                 {part.text}
                             </span>
                         ) : (
-                            <strong
-                                key={index}
-                                className={classes.suggestionText}
-                            >
+                            <strong key={index} className={classes.suggestionText}>
                                 {part.text}
                             </strong>
                         );
@@ -401,10 +352,7 @@ export class AutocompleteInput extends React.Component {
                 this.setState({
                     dirty: false,
                     searchText: this.getSuggestionText(selectedItem),
-                    suggestions:
-                        this.props.limitChoicesToValue && selectedItem
-                            ? [selectedItem]
-                            : this.props.choices,
+                    suggestions: this.props.limitChoicesToValue && selectedItem ? [selectedItem] : this.props.choices,
                 });
             }
         } else {
@@ -437,10 +385,7 @@ export class AutocompleteInput extends React.Component {
 
     shouldRenderSuggestions = val => {
         const { shouldRenderSuggestions } = this.props;
-        if (
-            shouldRenderSuggestions !== undefined &&
-            typeof shouldRenderSuggestions === 'function'
-        ) {
+        if (shouldRenderSuggestions !== undefined && typeof shouldRenderSuggestions === 'function') {
             return shouldRenderSuggestions(val);
         }
 
@@ -474,12 +419,8 @@ export class AutocompleteInput extends React.Component {
                 suggestions={suggestions}
                 alwaysRenderSuggestions={alwaysRenderSuggestions}
                 onSuggestionSelected={this.handleSuggestionSelected}
-                onSuggestionsFetchRequested={
-                    this.handleSuggestionsFetchRequested
-                }
-                onSuggestionsClearRequested={
-                    this.handleSuggestionsClearRequested
-                }
+                onSuggestionsFetchRequested={this.handleSuggestionsFetchRequested}
+                onSuggestionsClearRequested={this.handleSuggestionsClearRequested}
                 renderSuggestionsContainer={this.renderSuggestionsContainer}
                 getSuggestionValue={this.getSuggestionText}
                 renderSuggestion={this.renderSuggestion}
@@ -517,8 +458,7 @@ AutocompleteInput.propTypes = {
     limitChoicesToValue: PropTypes.bool,
     meta: PropTypes.object,
     options: PropTypes.object,
-    optionText: PropTypes.oneOfType([PropTypes.string, PropTypes.func])
-        .isRequired,
+    optionText: PropTypes.oneOfType([PropTypes.string, PropTypes.func]).isRequired,
     optionValue: PropTypes.string.isRequired,
     resource: PropTypes.string,
     setFilter: PropTypes.func,

@@ -44,70 +44,65 @@ const sanitizeRestProps = ({
     ...rest
 }) => rest;
 
-export const ShowView = withStyles(styles)(({
-    actions,
-    aside,
-    basePath,
-    children,
-    classes,
-    className,
-    defaultTitle,
-    hasEdit,
-    hasList,
-    isLoading,
-    record,
-    resource,
-    title,
-    version,
-    ...rest
-}) => {
-    if (typeof actions === 'undefined' && hasEdit) {
-        actions = <DefaultActions />;
-    }
-    if (!children) {
-        return null;
-    }
-    return (
-        <div
-            className={classnames('show-page', classes.root, className)}
-            {...sanitizeRestProps(rest)}
-        >
-            <TitleForRecord
-                title={title}
-                record={record}
-                defaultTitle={defaultTitle}
-            />
-            <Card className={classes.card}>
-                {actions && (
-                    <CardContentInner>
-                        {cloneElement(actions, {
-                            basePath,
-                            data: record,
-                            hasList,
-                            hasEdit,
+export const ShowView = withStyles(styles)(
+    ({
+        actions,
+        aside,
+        basePath,
+        children,
+        classes,
+        className,
+        defaultTitle,
+        hasEdit,
+        hasList,
+        isLoading,
+        record,
+        resource,
+        title,
+        version,
+        ...rest
+    }) => {
+        if (typeof actions === 'undefined' && hasEdit) {
+            actions = <DefaultActions />;
+        }
+        if (!children) {
+            return null;
+        }
+        return (
+            <div className={classnames('show-page', classes.root, className)} {...sanitizeRestProps(rest)}>
+                <TitleForRecord title={title} record={record} defaultTitle={defaultTitle} />
+                <Card className={classes.card}>
+                    {actions && (
+                        <CardContentInner>
+                            {cloneElement(actions, {
+                                basePath,
+                                data: record,
+                                hasList,
+                                hasEdit,
+                                resource,
+                                ...actions.props,
+                            })}
+                        </CardContentInner>
+                    )}
+                    {record &&
+                        cloneElement(Children.only(children), {
                             resource,
-                            ...actions.props
+                            basePath,
+                            record,
+                            version,
                         })}
-                    </CardContentInner>
-                )}
-                {record &&
-                    cloneElement(Children.only(children), {
+                </Card>
+                {aside &&
+                    cloneElement(aside, {
                         resource,
                         basePath,
                         record,
                         version,
                     })}
-            </Card>
-            {aside &&
-                cloneElement(aside, {
-                    resource,
-                    basePath,
-                    record,
-                    version,
-                })}
-        </div>
-    );
-});
+            </div>
+        );
+    }
+);
 
 ShowView.propTypes = {
     actions: PropTypes.element,
@@ -173,9 +168,7 @@ ShowView.defaultProps = {
  *     export default App;
  */
 const Show = props => (
-    <ShowController {...props}>
-        {controllerProps => <ShowView {...props} {...controllerProps} />}
-    </ShowController>
+    <ShowController {...props}>{controllerProps => <ShowView {...props} {...controllerProps} />}</ShowController>
 );
 
 Show.propTypes = {

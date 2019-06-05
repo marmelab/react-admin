@@ -2,15 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
-import {
-    CREATE,
-    LongTextInput,
-    SaveButton,
-    SimpleForm,
-    TextInput,
-    Toolbar,
-    required,
-} from 'react-admin'; // eslint-disable-line import/no-unresolved
+import { CREATE, LongTextInput, SaveButton, SimpleForm, TextInput, Toolbar, required } from 'react-admin'; // eslint-disable-line import/no-unresolved
 
 import CancelButton from './PostQuickCreateCancelButton';
 
@@ -67,12 +59,7 @@ class PostQuickCreateView extends Component {
                 save={this.handleSave}
                 saving={submitting}
                 redirect={false}
-                toolbar={
-                    <PostQuickCreateToolbar
-                        onCancel={onCancel}
-                        submitting={submitting}
-                    />
-                }
+                toolbar={<PostQuickCreateToolbar onCancel={onCancel} submitting={submitting} />}
                 classes={{ form: classes.form }}
             >
                 <TextInput source="title" validate={required()} />
@@ -86,6 +73,4 @@ const mapStateToProps = state => ({
     submitting: state.admin.loading > 0,
 });
 
-export default connect(mapStateToProps)(
-    withStyles(styles)(PostQuickCreateView)
-);
+export default connect(mapStateToProps)(withStyles(styles)(PostQuickCreateView));

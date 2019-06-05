@@ -14,9 +14,7 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import Basket from './Basket';
 
 const OrderTitle = translate(({ record, translate }) => (
-    <span>
-        {translate('resources.commands.title', { reference: record.reference })}
-    </span>
+    <span>{translate('resources.commands.title', { reference: record.reference })}</span>
 ));
 
 const editStyles = {
@@ -28,11 +26,7 @@ const OrderEdit = props => (
         <SimpleForm>
             <DateInput source="date" />
             <ReferenceInput source="customer_id" reference="customers">
-                <AutocompleteInput
-                    optionText={choice =>
-                        `${choice.first_name} ${choice.last_name}`
-                    }
-                />
+                <AutocompleteInput optionText={choice => `${choice.first_name} ${choice.last_name}`} />
             </ReferenceInput>
             <SelectInput
                 source="status"

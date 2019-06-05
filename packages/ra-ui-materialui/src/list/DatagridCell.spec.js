@@ -23,17 +23,13 @@ describe('<DatagridCell />', () => {
     });
 
     it('should pass the Datagrid basePath by default', () => {
-        const wrapper = shallow(
-            <DatagridCell basePath="default" field={<Field />} />
-        );
+        const wrapper = shallow(<DatagridCell basePath="default" field={<Field />} />);
         const col = wrapper.find('Field');
         assert.equal(col.prop('basePath'), 'default');
     });
 
     it('should allow to overwrite the `basePath` field', () => {
-        const wrapper = shallow(
-            <DatagridCell basePath="default" field={<Field basePath="new" />} />
-        );
+        const wrapper = shallow(<DatagridCell basePath="default" field={<Field basePath="new" />} />);
         const col = wrapper.find('Field');
         assert.equal(col.prop('basePath'), 'new');
     });

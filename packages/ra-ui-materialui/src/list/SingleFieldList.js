@@ -14,13 +14,7 @@ const styles = createStyles({
 // useful to prevent click bubbling in a datagrid with rowClick
 const stopPropagation = e => e.stopPropagation();
 
-const sanitizeRestProps = ({
-    currentSort,
-    setSort,
-    isLoading,
-    loadedOnce,
-    ...props
-}) => props;
+const sanitizeRestProps = ({ currentSort, setSort, isLoading, loadedOnce, ...props }) => props;
 
 /**
  * Iterator component to be used to display a list of entities, using a single field
@@ -78,14 +72,9 @@ export class SingleFieldList extends Component {
         }
 
         return (
-            <div
-                className={classnames(classes.root, className)}
-                {...sanitizeRestProps(rest)}
-            >
+            <div className={classnames(classes.root, className)} {...sanitizeRestProps(rest)}>
                 {ids.map(id => {
-                    const resourceLinkPath = !linkType
-                        ? false
-                        : linkToRecord(basePath, id, linkType);
+                    const resourceLinkPath = !linkType ? false : linkToRecord(basePath, id, linkType);
 
                     if (resourceLinkPath) {
                         return (
@@ -125,8 +114,7 @@ SingleFieldList.propTypes = {
     className: PropTypes.string,
     data: PropTypes.object,
     ids: PropTypes.array,
-    linkType: PropTypes.oneOfType([PropTypes.string, PropTypes.bool])
-        .isRequired,
+    linkType: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]).isRequired,
     resource: PropTypes.string,
 };
 

@@ -13,22 +13,14 @@ interface State {
     [relatedTo: string]: { error?: string | object } | Identifier[];
 }
 
-type ActionTypes =
-    | CrudGetMatchingSuccessAction
-    | CrudGetMatchingFailureAction
-    | { type: 'OTHER_ACTION' };
+type ActionTypes = CrudGetMatchingSuccessAction | CrudGetMatchingFailureAction | { type: 'OTHER_ACTION' };
 
-const possibleValuesreducer: Reducer<State> = (
-    previousState = initialState,
-    action: ActionTypes
-) => {
+const possibleValuesreducer: Reducer<State> = (previousState = initialState, action: ActionTypes) => {
     switch (action.type) {
         case CRUD_GET_MATCHING_SUCCESS:
             return {
                 ...previousState,
-                [action.meta.relatedTo]: action.payload.data.map(
-                    record => record.id
-                ),
+                [action.meta.relatedTo]: action.payload.data.map(record => record.id),
             };
         case CRUD_GET_MATCHING_FAILURE:
             return {
@@ -40,14 +32,9 @@ const possibleValuesreducer: Reducer<State> = (
     }
 };
 
-export const getPossibleReferenceValues = (state, props) =>
-    state[props.referenceSource(props.resource, props.source)];
+export const getPossibleReferenceValues = (state, props) => state[props.referenceSource(props.resource, props.source)];
 
-export const getPossibleReferences = (
-    referenceState,
-    possibleValues,
-    selectedIds = []
-) => {
+export const getPossibleReferences = (referenceState, possibleValues, selectedIds = []) => {
     if (!possibleValues) {
         return null;
     }
@@ -56,14 +43,8 @@ export const getPossibleReferences = (
         return possibleValues;
     }
     possibleValues = Array.from(possibleValues);
-    selectedIds.forEach(
-        id =>
-            possibleValues.some(value => value === id) ||
-            possibleValues.unshift(id)
-    );
-    return possibleValues
-        .map(id => referenceState.data[id])
-        .filter(r => typeof r !== 'undefined');
+    selectedIds.forEach(id => possibleValues.some(value => value === id) || possibleValues.unshift(id));
+    return possibleValues.map(id => referenceState.data[id]).filter(r => typeof r !== 'undefined');
 };
 
 export default possibleValuesreducer;

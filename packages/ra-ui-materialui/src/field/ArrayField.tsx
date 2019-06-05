@@ -78,25 +78,15 @@ const initialState = {
  *     )
  *     TagsField.defaultProps = { addLabel: true };
  */
-export class ArrayField extends Component<
-    FieldProps & InjectedFieldProps,
-    State
-> {
+export class ArrayField extends Component<FieldProps & InjectedFieldProps, State> {
     constructor(props: FieldProps & InjectedFieldProps) {
         super(props);
-        this.state = props.record
-            ? this.getDataAndIds(props.record, props.source)
-            : initialState;
+        this.state = props.record ? this.getDataAndIds(props.record, props.source) : initialState;
     }
 
-    componentWillReceiveProps(
-        nextProps: FieldProps & InjectedFieldProps,
-        prevProps: FieldProps & InjectedFieldProps
-    ) {
+    componentWillReceiveProps(nextProps: FieldProps & InjectedFieldProps, prevProps: FieldProps & InjectedFieldProps) {
         if (nextProps.record !== prevProps.record) {
-            this.setState(
-                this.getDataAndIds(nextProps.record, nextProps.source)
-            );
+            this.setState(this.getDataAndIds(nextProps.record, nextProps.source));
         }
     }
 
@@ -114,15 +104,7 @@ export class ArrayField extends Component<
     }
 
     render() {
-        const {
-            addLabel,
-            basePath,
-            children,
-            record,
-            sortable,
-            source,
-            ...rest
-        } = this.props;
+        const { addLabel, basePath, children, record, sortable, source, ...rest } = this.props;
         const { ids, data } = this.state;
 
         return cloneElement(Children.only(children), {

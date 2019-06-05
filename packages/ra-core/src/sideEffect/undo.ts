@@ -1,13 +1,7 @@
 import { take, takeEvery, put, race } from 'redux-saga/effects';
 
 import { showNotification } from '../actions/notificationActions';
-import {
-    UNDOABLE,
-    UNDO,
-    COMPLETE,
-    startOptimisticMode,
-    stopOptimisticMode,
-} from '../actions/undoActions';
+import { UNDOABLE, UNDO, COMPLETE, startOptimisticMode, stopOptimisticMode } from '../actions/undoActions';
 import { refreshView } from '../actions/uiActions';
 
 export function* handleUndoRace(undoableAction: { payload: { action: any } }) {

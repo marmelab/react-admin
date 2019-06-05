@@ -16,9 +16,7 @@ const Segments = ({ translate }) => (
         <Table>
             <TableHead>
                 <TableRow>
-                    <TableCell>
-                        {translate('resources.segments.fields.name')}
-                    </TableCell>
+                    <TableCell>{translate('resources.segments.fields.name')}</TableCell>
                     <TableCell />
                 </TableRow>
             </TableHead>

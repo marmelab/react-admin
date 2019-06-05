@@ -71,9 +71,7 @@ export class Filter extends Component {
     }
 
     render() {
-        return this.props.context === 'button'
-            ? this.renderButton()
-            : this.renderForm();
+        return this.props.context === 'button' ? this.renderButton() : this.renderForm();
     }
 }
 

@@ -10,11 +10,7 @@ describe('withDefaultValue', () => {
         it('should not initialize the form if no default value', () => {
             const initializeForm = jest.fn();
             shallow(
-                <DefaultValueView
-                    initializeForm={initializeForm}
-                    decoratedComponent={BaseComponent}
-                    source="title"
-                />
+                <DefaultValueView initializeForm={initializeForm} decoratedComponent={BaseComponent} source="title" />
             );
             assert.equal(initializeForm.mock.calls.length, 0);
         });

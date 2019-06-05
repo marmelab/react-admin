@@ -59,10 +59,7 @@ export const ReferenceArrayInputView = ({
     warning,
     ...rest
 }) => {
-    const translatedLabel = translate(
-        label || `resources.${resource}.fields.${source}`,
-        { _: label }
-    );
+    const translatedLabel = translate(label || `resources.${resource}.fields.${source}`, { _: label });
 
     if (isLoading) {
         return (
@@ -210,19 +207,12 @@ ReferenceArrayInputView.propTypes = {
  */
 export const ReferenceArrayInput = ({ children, ...props }) => {
     if (React.Children.count(children) !== 1) {
-        throw new Error(
-            '<ReferenceArrayInput> only accepts a single child (like <Datagrid>)'
-        );
+        throw new Error('<ReferenceArrayInput> only accepts a single child (like <Datagrid>)');
     }
 
     return (
         <ReferenceArrayInputController {...props}>
-            {controllerProps => (
-                <ReferenceArrayInputView
-                    {...props}
-                    {...{ children, ...controllerProps }}
-                />
-            )}
+            {controllerProps => <ReferenceArrayInputView {...props} {...{ children, ...controllerProps }} />}
         </ReferenceArrayInputController>
     );
 };

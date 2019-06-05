@@ -79,9 +79,7 @@ describe('<Resource>', () => {
                 unregisterResource={unregisterResource}
             />
         );
-        assert.ok(
-            wrapper.containsMatchingElement(<Route path="posts/create" />)
-        );
+        assert.ok(wrapper.containsMatchingElement(<Route path="posts/create" />));
     });
     it('renders edit route if specified', () => {
         const wrapper = shallow(
@@ -105,8 +103,6 @@ describe('<Resource>', () => {
                 unregisterResource={unregisterResource}
             />
         );
-        assert.ok(
-            wrapper.containsMatchingElement(<Route path="posts/:id/show" />)
-        );
+        assert.ok(wrapper.containsMatchingElement(<Route path="posts/:id/show" />));
     });
 });

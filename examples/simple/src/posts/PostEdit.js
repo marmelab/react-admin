@@ -32,21 +32,9 @@ import {
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
 import PostTitle from './PostTitle';
 
-const EditActions = ({
-    basePath,
-    className,
-    data,
-    hasShow,
-    hasList,
-    resource,
-    ...rest
-}) => (
+const EditActions = ({ basePath, className, data, hasShow, hasList, resource, ...rest }) => (
     <CardActions className={className} {...rest}>
-        <CloneButton
-            className="button-clone"
-            basePath={basePath}
-            record={data}
-        />
+        <CloneButton className="button-clone" basePath={basePath} record={data} />
         {hasShow && <ShowButton basePath={basePath} record={data} />}
     </CardActions>
 );
@@ -57,11 +45,7 @@ const PostEdit = props => (
             <FormTab label="post.form.summary">
                 <DisabledInput source="id" />
                 <TextInput source="title" validate={required()} resettable />
-                <LongTextInput
-                    source="teaser"
-                    validate={required()}
-                    resettable
-                />
+                <LongTextInput source="teaser" validate={required()} resettable />
                 <CheckboxGroupInput
                     source="notifications"
                     choices={[
@@ -75,19 +59,10 @@ const PostEdit = props => (
                 </ImageInput>
             </FormTab>
             <FormTab label="post.form.body">
-                <RichTextInput
-                    source="body"
-                    label=""
-                    validate={required()}
-                    addLabel={false}
-                />
+                <RichTextInput source="body" label="" validate={required()} addLabel={false} />
             </FormTab>
             <FormTab label="post.form.miscellaneous">
-                <ReferenceArrayInput
-                    reference="tags"
-                    source="tags"
-                    filter={{ published: true }}
-                >
+                <ReferenceArrayInput reference="tags" source="tags" filter={{ published: true }}>
                     <AutocompleteArrayInput />
                 </ReferenceArrayInput>
                 <ArrayInput source="backlinks">
@@ -100,24 +75,14 @@ const PostEdit = props => (
                 <SelectInput
                     resettable
                     source="category"
-                    choices={[
-                        { name: 'Tech', id: 'tech' },
-                        { name: 'Lifestyle', id: 'lifestyle' },
-                    ]}
+                    choices={[{ name: 'Tech', id: 'tech' }, { name: 'Lifestyle', id: 'lifestyle' }]}
                 />
-                <NumberInput
-                    source="average_note"
-                    validate={[required(), number(), minValue(0)]}
-                />
+                <NumberInput source="average_note" validate={[required(), number(), minValue(0)]} />
                 <BooleanInput source="commentable" defaultValue />
                 <DisabledInput source="views" />
             </FormTab>
             <FormTab label="post.form.comments">
-                <ReferenceManyField
-                    reference="comments"
-                    target="post_id"
-                    addLabel={false}
-                >
+                <ReferenceManyField reference="comments" target="post_id" addLabel={false}>
                     <Datagrid>
                         <DateField source="created_at" />
                         <TextField source="author.name" />

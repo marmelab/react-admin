@@ -35,12 +35,7 @@ const styles = {
 };
 
 const VisitorList = ({ classes, ...props }) => (
-    <List
-        {...props}
-        filters={<VisitorFilter />}
-        sort={{ field: 'last_seen', order: 'DESC' }}
-        perPage={25}
-    >
+    <List {...props} filters={<VisitorFilter />} sort={{ field: 'last_seen', order: 'DESC' }} perPage={25}>
         <Responsive
             xsmall={<MobileGrid />}
             medium={
@@ -52,10 +47,7 @@ const VisitorList = ({ classes, ...props }) => (
                         label="resources.customers.fields.commands"
                         className={classes.nb_commands}
                     />
-                    <ColoredNumberField
-                        source="total_spent"
-                        options={{ style: 'currency', currency: 'USD' }}
-                    />
+                    <ColoredNumberField source="total_spent" options={{ style: 'currency', currency: 'USD' }} />
                     <DateField source="latest_purchase" showTime />
                     <BooleanField source="has_newsletter" label="News." />
                     <SegmentsField />

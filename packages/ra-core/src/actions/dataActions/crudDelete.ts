@@ -1,11 +1,7 @@
 import { Identifier, Record } from '../../types';
 import { DELETE } from '../../dataFetchActions';
 import { FETCH_END, FETCH_ERROR } from '../fetchActions';
-import {
-    NotificationSideEffect,
-    RedirectionSideEffect,
-    RefreshSideEffect,
-} from '../../sideEffect';
+import { NotificationSideEffect, RedirectionSideEffect, RefreshSideEffect } from '../../sideEffect';
 
 export const crudDelete = (
     resource: string,

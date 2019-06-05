@@ -45,25 +45,14 @@ const ProductEdit = ({ classes, ...props }) => (
             <FormTab label="resources.products.tabs.details" path="details">
                 <TextInput source="reference" />
                 <NumberInput source="price" className={classes.price} />
-                <NumberInput
-                    source="width"
-                    className={classes.width}
-                    formClassName={classes.widthFormGroup}
-                />
-                <NumberInput
-                    source="height"
-                    className={classes.height}
-                    formClassName={classes.heightFormGroup}
-                />
+                <NumberInput source="width" className={classes.width} formClassName={classes.widthFormGroup} />
+                <NumberInput source="height" className={classes.height} formClassName={classes.heightFormGroup} />
                 <ReferenceInput source="category_id" reference="categories">
                     <SelectInput source="name" />
                 </ReferenceInput>
                 <NumberInput source="stock" className={classes.stock} />
             </FormTab>
-            <FormTab
-                label="resources.products.tabs.description"
-                path="description"
-            >
+            <FormTab label="resources.products.tabs.description" path="description">
                 <RichTextInput source="description" addLabel={false} />
             </FormTab>
             <FormTab label="resources.products.tabs.reviews" path="reviews">
@@ -77,10 +66,7 @@ const ProductEdit = ({ classes, ...props }) => (
                         <DateField source="date" />
                         <CustomerReferenceField />
                         <StarRatingField />
-                        <TextField
-                            source="comment"
-                            cellClassName={classes.comment}
-                        />
+                        <TextField source="comment" cellClassName={classes.comment} />
                         <TextField source="status" />
                         <EditButton />
                     </Datagrid>

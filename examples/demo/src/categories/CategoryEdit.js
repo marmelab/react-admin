@@ -33,18 +33,9 @@ const CategoryEdit = props => (
                 <Datagrid>
                     <ThumbnailField />
                     <ProductRefField source="reference" />
-                    <NumberField
-                        source="price"
-                        options={{ style: 'currency', currency: 'USD' }}
-                    />
-                    <NumberField
-                        source="width"
-                        options={{ minimumFractionDigits: 2 }}
-                    />
-                    <NumberField
-                        source="height"
-                        options={{ minimumFractionDigits: 2 }}
-                    />
+                    <NumberField source="price" options={{ style: 'currency', currency: 'USD' }} />
+                    <NumberField source="width" options={{ minimumFractionDigits: 2 }} />
+                    <NumberField source="height" options={{ minimumFractionDigits: 2 }} />
                     <NumberField source="stock" />
                     <EditButton />
                 </Datagrid>

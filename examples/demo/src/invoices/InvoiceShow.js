@@ -30,11 +30,7 @@ const InvoiceShow = props => (
                                 </Typography>
                             </Grid>
                             <Grid item xs={6}>
-                                <Typography
-                                    variant="title"
-                                    gutterBottom
-                                    align="right"
-                                >
+                                <Typography variant="title" gutterBottom align="right">
                                     Invoice {record.id}
                                 </Typography>
                             </Grid>
@@ -56,11 +52,7 @@ const InvoiceShow = props => (
                         <div style={{ height: 20 }}>&nbsp;</div>
                         <Grid container spacing={16}>
                             <Grid item xs={6}>
-                                <Typography
-                                    variant="title"
-                                    gutterBottom
-                                    align="center"
-                                >
+                                <Typography variant="title" gutterBottom align="center">
                                     Date{' '}
                                 </Typography>
                                 <Typography gutterBottom align="center">
@@ -69,11 +61,7 @@ const InvoiceShow = props => (
                             </Grid>
 
                             <Grid item xs={5}>
-                                <Typography
-                                    variant="title"
-                                    gutterBottom
-                                    align="center"
-                                >
+                                <Typography variant="title" gutterBottom align="center">
                                     Order
                                 </Typography>
                                 <Typography gutterBottom align="center">

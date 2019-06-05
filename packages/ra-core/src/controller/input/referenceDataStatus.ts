@@ -10,9 +10,7 @@ interface GetStatusForInputParams {
     translate: Translate;
 }
 
-const isMatchingReferencesError = (
-    matchingReferences?: any
-): matchingReferences is MatchingReferencesError =>
+const isMatchingReferencesError = (matchingReferences?: any): matchingReferences is MatchingReferencesError =>
     matchingReferences && matchingReferences.error !== undefined;
 
 export const getStatusForInput = ({
@@ -21,9 +19,7 @@ export const getStatusForInput = ({
     referenceRecord,
     translate = x => x,
 }: GetStatusForInputParams) => {
-    const matchingReferencesError = isMatchingReferencesError(
-        matchingReferences
-    )
+    const matchingReferencesError = isMatchingReferencesError(matchingReferences)
         ? translate(matchingReferences.error, {
               _: matchingReferences.error,
           })
@@ -37,21 +33,16 @@ export const getStatusForInput = ({
 
     return {
         waiting:
-            (input.value && selectedReferenceError && !matchingReferences) ||
-            (!input.value && !matchingReferences),
+            (input.value && selectedReferenceError && !matchingReferences) || (!input.value && !matchingReferences),
         error:
-            (input.value &&
-                selectedReferenceError &&
-                matchingReferencesError) ||
+            (input.value && selectedReferenceError && matchingReferencesError) ||
             (!input.value && matchingReferencesError)
                 ? input.value
                     ? selectedReferenceError
                     : matchingReferencesError
                 : null,
         warning: selectedReferenceError || matchingReferencesError,
-        choices: Array.isArray(matchingReferences)
-            ? matchingReferences
-            : [referenceRecord].filter(choice => choice),
+        choices: Array.isArray(matchingReferences) ? matchingReferences : [referenceRecord].filter(choice => choice),
     };
 };
 
@@ -89,14 +80,9 @@ export const getStatusForArrayInput = ({
     // selectedReferencesData can be "empty" (no data was found for references from input.value)
     // or "incomplete" (Not all of the reference data was found)
     // or "ready" (all references data was found or there is no references from input.value)
-    const selectedReferencesData = getSelectedReferencesStatus(
-        input,
-        referenceRecords
-    );
+    const selectedReferencesData = getSelectedReferencesStatus(input, referenceRecords);
 
-    const matchingReferencesError = isMatchingReferencesError(
-        matchingReferences
-    )
+    const matchingReferencesError = isMatchingReferencesError(matchingReferences)
         ? translate(matchingReferences.error, {
               _: matchingReferences.error,
           })
@@ -104,29 +90,22 @@ export const getStatusForArrayInput = ({
 
     return {
         waiting:
-            (!matchingReferences &&
-                input.value &&
-                selectedReferencesData === REFERENCES_STATUS_EMPTY) ||
+            (!matchingReferences && input.value && selectedReferencesData === REFERENCES_STATUS_EMPTY) ||
             (!matchingReferences && !input.value),
         error:
             matchingReferencesError &&
-            (!input.value ||
-                (input.value &&
-                    selectedReferencesData === REFERENCES_STATUS_EMPTY))
+            (!input.value || (input.value && selectedReferencesData === REFERENCES_STATUS_EMPTY))
                 ? translate('ra.input.references.all_missing', {
                       _: 'ra.input.references.all_missing',
                   })
                 : null,
         warning:
-            matchingReferencesError ||
-            (input.value && selectedReferencesData !== REFERENCES_STATUS_READY)
+            matchingReferencesError || (input.value && selectedReferencesData !== REFERENCES_STATUS_READY)
                 ? matchingReferencesError ||
                   translate('ra.input.references.many_missing', {
                       _: 'ra.input.references.many_missing',
                   })
                 : null,
-        choices: Array.isArray(matchingReferences)
-            ? matchingReferences
-            : referenceRecords,
+        choices: Array.isArray(matchingReferences) ? matchingReferences : referenceRecords,
     };
 };

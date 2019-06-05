@@ -1,23 +1,11 @@
 import assert from 'assert';
-import {
-    required,
-    minLength,
-    maxLength,
-    minValue,
-    maxValue,
-    number,
-    regex,
-    email,
-    choices,
-} from './validate';
+import { required, minLength, maxLength, minValue, maxValue, number, regex, email, choices } from './validate';
 
 describe('Validators', () => {
     const translate = x => x;
     const test = (validator, inputs, message) =>
         assert.deepEqual(
-            inputs
-                .map(input => validator(input, null, { translate }))
-                .filter(m => m === message),
+            inputs.map(input => validator(input, null, { translate })).filter(m => m === message),
             Array(...Array(inputs.length)).map(() => message)
         );
     describe('required', () => {
@@ -32,11 +20,7 @@ describe('Validators', () => {
         });
         it('should allow message to be a callback', () => {
             const message = jest.fn(() => 'ra.validation.required');
-            test(
-                required(message),
-                [undefined, '', null],
-                'ra.validation.required'
-            );
+            test(required(message), [undefined, '', null], 'ra.validation.required');
             expect(message).toHaveBeenCalledTimes(3);
             expect(message).toHaveBeenLastCalledWith({
                 args: undefined,
@@ -61,11 +45,7 @@ describe('Validators', () => {
         });
         it('should allow message to be a callback', () => {
             const message = jest.fn(() => 'ra.validation.minLength');
-            test(
-                minLength(5, message),
-                ['1234', '12'],
-                'ra.validation.minLength'
-            );
+            test(minLength(5, message), ['1234', '12'], 'ra.validation.minLength');
             expect(message).toHaveBeenCalledTimes(2);
             expect(message).toHaveBeenLastCalledWith({
                 args: { min: 5 },
@@ -90,11 +70,7 @@ describe('Validators', () => {
         });
         it('should allow message to be a callback', () => {
             const message = jest.fn(() => 'ra.validation.maxLength');
-            test(
-                maxLength(10, message),
-                ['12345678901'],
-                'ra.validation.maxLength'
-            );
+            test(maxLength(10, message), ['12345678901'], 'ra.validation.maxLength');
             expect(message).toHaveBeenCalledTimes(1);
             expect(message).toHaveBeenLastCalledWith({
                 args: { max: 10 },
@@ -144,11 +120,7 @@ describe('Validators', () => {
         });
         it('should allow message to be a callback', () => {
             const message = jest.fn(() => 'ra.validation.maxValue');
-            test(
-                maxValue(10, message),
-                [11, 10.5, '11'],
-                'ra.validation.maxValue'
-            );
+            test(maxValue(10, message), [11, 10.5, '11'], 'ra.validation.maxValue');
             expect(message).toHaveBeenCalledTimes(3);
             expect(message).toHaveBeenLastCalledWith({
                 args: { max: 10 },
@@ -188,36 +160,22 @@ describe('Validators', () => {
             test(regex(/foo/, 'not foo'), [1234, new Date()], undefined);
         });
         it('should return undefined if the value matches the pattern', () => {
-            test(
-                regex(/foo/, 'not foo'),
-                ['foobar', 'barfoo', 'barfoobar', 'foofoo'],
-                undefined
-            );
+            test(regex(/foo/, 'not foo'), ['foobar', 'barfoo', 'barfoobar', 'foofoo'], undefined);
         });
         it('should return an error message if the value does not match the pattern', () => {
-            test(
-                regex(/foo/, 'not foo'),
-                ['bar', 'barfo', 'hello, world'],
-                'not foo'
-            );
+            test(regex(/foo/, 'not foo'), ['bar', 'barfo', 'hello, world'], 'not foo');
         });
 
         it('should memoize the validator when the regex pattren and message are the same', () => {
-            expect(regex(/foo/, 'placeholder')).toBe(
-                regex(/foo/, 'placeholder')
-            );
+            expect(regex(/foo/, 'placeholder')).toBe(regex(/foo/, 'placeholder'));
         });
 
         it('should create new validator when the regex pattren is different', () => {
-            expect(regex(/foo/, 'placeholder')).not.toBe(
-                regex(/notfoo/, 'placeholder')
-            );
+            expect(regex(/foo/, 'placeholder')).not.toBe(regex(/notfoo/, 'placeholder'));
         });
 
         it('should create new validator when message is different', () => {
-            expect(regex(/foo/, 'placeholder')).not.toBe(
-                regex(/foo/, 'another placeholder')
-            );
+            expect(regex(/foo/, 'placeholder')).not.toBe(regex(/foo/, 'another placeholder'));
         });
     });
     describe('email', () => {
@@ -228,11 +186,7 @@ describe('Validators', () => {
             test(email(), [1234, new Date()], undefined);
         });
         it('should return undefined if the value is a valid email', () => {
-            test(
-                email(),
-                ['foo@bar.com', 'john.doe@mydomain.co.uk'],
-                undefined
-            );
+            test(email(), ['foo@bar.com', 'john.doe@mydomain.co.uk'], undefined);
         });
         it('should return an error if the value is not a valid email', () => {
             test(email(), ['foo@bar', 'hello, world'], 'ra.validation.email');

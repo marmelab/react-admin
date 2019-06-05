@@ -27,14 +27,10 @@ const UserFilter = ({ permissions, ...props }) => (
     </Filter>
 );
 
-const UserBulkActionButtons = props => (
-    <BulkDeleteWithConfirmButton {...props} />
-);
+const UserBulkActionButtons = props => <BulkDeleteWithConfirmButton {...props} />;
 
 const rowClick = memoize(permissions => (id, basePath, record) => {
-    return permissions === 'admin'
-        ? Promise.resolve('edit')
-        : Promise.resolve('show');
+    return permissions === 'admin' ? Promise.resolve('edit') : Promise.resolve('show');
 });
 
 const UserList = ({ permissions, ...props }) => (
@@ -50,16 +46,11 @@ const UserList = ({ permissions, ...props }) => (
             small={
                 <SimpleList
                     primaryText={record => record.name}
-                    secondaryText={record =>
-                        permissions === 'admin' ? record.role : null
-                    }
+                    secondaryText={record => (permissions === 'admin' ? record.role : null)}
                 />
             }
             medium={
-                <Datagrid
-                    rowClick={rowClick(permissions)}
-                    expand={<UserEditEmbedded />}
-                >
+                <Datagrid rowClick={rowClick(permissions)} expand={<UserEditEmbedded />}>
                     <TextField source="id" />
                     <TextField source="name" />
                     {permissions === 'admin' && <TextField source="role" />}

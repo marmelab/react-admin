@@ -15,11 +15,7 @@ describe('<AutocompleteInput />', () => {
 
     it('should use a react Autosuggest', () => {
         const wrapper = shallow(
-            <AutocompleteInput
-                {...defaultProps}
-                input={{ value: 1 }}
-                choices={[{ id: 1, name: 'hello' }]}
-            />
+            <AutocompleteInput {...defaultProps} input={{ value: 1 }} choices={[{ id: 1, name: 'hello' }]} />
         );
         const AutoCompleteElement = wrapper.find('Autosuggest');
         assert.equal(AutoCompleteElement.length, 1);
@@ -27,11 +23,7 @@ describe('<AutocompleteInput />', () => {
 
     it('should use the input parameter value as the initial state and input searchText', () => {
         const wrapper = shallow(
-            <AutocompleteInput
-                {...defaultProps}
-                input={{ value: 2 }}
-                choices={[{ id: 2, name: 'foo' }]}
-            />
+            <AutocompleteInput {...defaultProps} input={{ value: 2 }} choices={[{ id: 2, name: 'foo' }]} />
         );
         const AutoCompleteElement = wrapper.find('Autosuggest').first();
         assert.equal(AutoCompleteElement.prop('inputProps').value, 'foo');
@@ -40,18 +32,9 @@ describe('<AutocompleteInput />', () => {
 
     it('should extract suggestions from choices', () => {
         const wrapper = shallow(
-            <AutocompleteInput
-                {...defaultProps}
-                choices={[
-                    { id: 'M', name: 'Male' },
-                    { id: 'F', name: 'Female' },
-                ]}
-            />
+            <AutocompleteInput {...defaultProps} choices={[{ id: 'M', name: 'Male' }, { id: 'F', name: 'Female' }]} />
         );
-        expect(wrapper.state('suggestions')).toEqual([
-            { id: 'M', name: 'Male' },
-            { id: 'F', name: 'Female' },
-        ]);
+        expect(wrapper.state('suggestions')).toEqual([{ id: 'M', name: 'Male' }, { id: 'F', name: 'Female' }]);
     });
 
     it('should use optionValue as value identifier', () => {
@@ -90,19 +73,16 @@ describe('<AutocompleteInput />', () => {
     };
 
     it('should use optionText with a string value as text identifier', () => {
-        const wrapper = shallow(
-            <AutocompleteInput {...defaultProps} optionText="foobar" />,
-            { context, childContextTypes }
-        );
+        const wrapper = shallow(<AutocompleteInput {...defaultProps} optionText="foobar" />, {
+            context,
+            childContextTypes,
+        });
 
         // This is necesary because we use the material-ui Popper element which does not includes
         // its children in the AutocompleteInput dom hierarchy
         const menuItem = wrapper
             .instance()
-            .renderSuggestion(
-                { id: 'M', foobar: 'Male' },
-                { query: '', highlighted: false }
-            );
+            .renderSuggestion({ id: 'M', foobar: 'Male' }, { query: '', highlighted: false });
 
         const MenuItem = render(menuItem);
         assert.equal(MenuItem.text(), 'Male');
@@ -123,10 +103,7 @@ describe('<AutocompleteInput />', () => {
         // its children in the AutocompleteInput dom hierarchy
         const menuItem = wrapper
             .instance()
-            .renderSuggestion(
-                { id: 'M', foobar: { name: 'Male' } },
-                { query: '', highlighted: false }
-            );
+            .renderSuggestion({ id: 'M', foobar: { name: 'Male' } }, { query: '', highlighted: false });
 
         const MenuItem = render(menuItem);
         assert.equal(MenuItem.text(), 'Male');
@@ -147,10 +124,7 @@ describe('<AutocompleteInput />', () => {
         // its children in the AutocompleteInput dom hierarchy
         const menuItem = wrapper
             .instance()
-            .renderSuggestion(
-                { id: 'M', foobar: 'Male' },
-                { query: '', highlighted: false }
-            );
+            .renderSuggestion({ id: 'M', foobar: 'Male' }, { query: '', highlighted: false });
 
         const MenuItem = render(menuItem);
         assert.equal(MenuItem.text(), 'Male');
@@ -170,10 +144,7 @@ describe('<AutocompleteInput />', () => {
         // its children in the AutocompleteInput dom hierarchy
         const menuItem = wrapper
             .instance()
-            .renderSuggestion(
-                { id: 'M', name: 'Male' },
-                { query: '', highlighted: false }
-            );
+            .renderSuggestion({ id: 'M', name: 'Male' }, { query: '', highlighted: false });
 
         const MenuItem = render(menuItem);
         assert.equal(MenuItem.text(), '**Male**');
@@ -194,10 +165,7 @@ describe('<AutocompleteInput />', () => {
         // its children in the AutocompleteInput dom hierarchy
         const menuItem = wrapper
             .instance()
-            .renderSuggestion(
-                { id: 'M', name: 'Male' },
-                { query: '', highlighted: false }
-            );
+            .renderSuggestion({ id: 'M', name: 'Male' }, { query: '', highlighted: false });
 
         const MenuItem = render(menuItem);
         assert.equal(MenuItem.text(), 'Male');
@@ -223,11 +191,7 @@ describe('<AutocompleteInput />', () => {
     describe('Fix issue #1410', () => {
         it('should not fail when value is null and new choices are applied', () => {
             const wrapper = shallow(
-                <AutocompleteInput
-                    {...defaultProps}
-                    input={{ value: null }}
-                    choices={[{ id: 'M', name: 'Male' }]}
-                />
+                <AutocompleteInput {...defaultProps} input={{ value: null }} choices={[{ id: 'M', name: 'Male' }]} />
             );
             wrapper.setProps({
                 choices: [{ id: 'M', name: 'Male' }],
@@ -246,9 +210,7 @@ describe('<AutocompleteInput />', () => {
                 { context, childContextTypes }
             );
             wrapper.find('input').simulate('focus');
-            wrapper
-                .find('input')
-                .simulate('change', { target: { value: 'foo' } });
+            wrapper.find('input').simulate('change', { target: { value: 'foo' } });
             expect(wrapper.state('searchText')).toBe('foo');
             expect(wrapper.state('suggestions')).toHaveLength(0);
             wrapper.find('input').simulate('blur');
@@ -289,15 +251,10 @@ describe('<AutocompleteInput />', () => {
                 />,
                 { context, childContextTypes }
             );
-            wrapper
-                .find('input')
-                .simulate('change', { target: { value: 'foo' } });
+            wrapper.find('input').simulate('change', { target: { value: 'foo' } });
 
             wrapper.setProps({
-                choices: [
-                    { id: 'M', name: 'Male' },
-                    { id: 'F', name: 'Female' },
-                ],
+                choices: [{ id: 'M', name: 'Male' }, { id: 'F', name: 'Female' }],
             });
             expect(wrapper.state('searchText')).toBe('foo');
         });
@@ -313,9 +270,7 @@ describe('<AutocompleteInput />', () => {
                 />,
                 { context, childContextTypes }
             );
-            wrapper
-                .find('input')
-                .simulate('change', { target: { value: 'foo' } });
+            wrapper.find('input').simulate('change', { target: { value: 'foo' } });
 
             wrapper.find('input').simulate('blur');
             expect(onBlur).toHaveBeenCalledTimes(1);
@@ -331,31 +286,22 @@ describe('<AutocompleteInput />', () => {
 
         it('should revert the searchText when allowEmpty is false', () => {
             const wrapper = mount(
-                <AutocompleteInput
-                    {...defaultProps}
-                    input={{ value: 'M' }}
-                    choices={[{ id: 'M', name: 'Male' }]}
-                />,
+                <AutocompleteInput {...defaultProps} input={{ value: 'M' }} choices={[{ id: 'M', name: 'Male' }]} />,
                 { context, childContextTypes }
             );
-            wrapper
-                .find('input')
-                .simulate('change', { target: { value: 'foo' } });
+            wrapper.find('input').simulate('change', { target: { value: 'foo' } });
             expect(wrapper.state('searchText')).toBe('foo');
             wrapper.find('input').simulate('blur');
             expect(wrapper.state('searchText')).toBe('Male');
         });
 
         it('should show the suggestions when the input value is null and the input is focussed and choices arrived late', () => {
-            const wrapper = mount(
-                <AutocompleteInput {...defaultProps} input={{ value: '' }} />,
-                { context, childContextTypes }
-            );
+            const wrapper = mount(<AutocompleteInput {...defaultProps} input={{ value: '' }} />, {
+                context,
+                childContextTypes,
+            });
             wrapper.setProps({
-                choices: [
-                    { id: 'M', name: 'Male' },
-                    { id: 'F', name: 'Female' },
-                ],
+                choices: [{ id: 'M', name: 'Male' }, { id: 'F', name: 'Female' }],
             });
             wrapper.find('input').simulate('focus');
             expect(wrapper.find('ListItem')).toHaveLength(2);
@@ -363,17 +309,11 @@ describe('<AutocompleteInput />', () => {
 
         it('should reset filter when input value changed', () => {
             const setFilter = jest.fn();
-            const wrapper = mount(
-                <AutocompleteInput
-                    {...defaultProps}
-                    input={{ value: 1 }}
-                    setFilter={setFilter}
-                />,
-                { context, childContextTypes }
-            );
-            wrapper
-                .find('input')
-                .simulate('change', { target: { value: 'de' } });
+            const wrapper = mount(<AutocompleteInput {...defaultProps} input={{ value: 1 }} setFilter={setFilter} />, {
+                context,
+                childContextTypes,
+            });
+            wrapper.find('input').simulate('change', { target: { value: 'de' } });
             expect(setFilter).toHaveBeenCalledTimes(1);
             expect(setFilter).toHaveBeenCalledWith('de');
             wrapper.setProps({
@@ -388,17 +328,11 @@ describe('<AutocompleteInput />', () => {
                 <AutocompleteInput
                     {...defaultProps}
                     input={{ value: 1 }}
-                    choices={[
-                        { id: 'M', name: 'Male' },
-                        { id: 'F', name: 'Female' },
-                    ]}
+                    choices={[{ id: 'M', name: 'Male' }, { id: 'F', name: 'Female' }]}
                     alwaysRenderSuggestions
-                    suggestionComponent={({
-                        suggestion,
-                        query,
-                        isHighlighted,
-                        ...props
-                    }) => <div {...props} data-field={suggestion.name} />}
+                    suggestionComponent={({ suggestion, query, isHighlighted, ...props }) => (
+                        <div {...props} data-field={suggestion.name} />
+                    )}
                 />,
                 { context, childContextTypes }
             );
@@ -407,12 +341,7 @@ describe('<AutocompleteInput />', () => {
     });
 
     it('should displayed helperText if prop is present in meta', () => {
-        const wrapper = shallow(
-            <AutocompleteInput
-                {...defaultProps}
-                meta={{ helperText: 'Can i help you?' }}
-            />
-        );
+        const wrapper = shallow(<AutocompleteInput {...defaultProps} meta={{ helperText: 'Can i help you?' }} />);
         const AutoCompleteElement = wrapper.find('Autosuggest').first();
         assert.deepEqual(AutoCompleteElement.prop('inputProps').meta, {
             helperText: 'Can i help you?',
@@ -421,12 +350,7 @@ describe('<AutocompleteInput />', () => {
 
     describe('error message', () => {
         it('should not be displayed if field is pristine', () => {
-            const wrapper = shallow(
-                <AutocompleteInput
-                    {...defaultProps}
-                    meta={{ touched: false }}
-                />
-            );
+            const wrapper = shallow(<AutocompleteInput {...defaultProps} meta={{ touched: false }} />);
             const AutoCompleteElement = wrapper.find('Autosuggest').first();
             assert.deepEqual(AutoCompleteElement.prop('inputProps').meta, {
                 touched: false,
@@ -434,12 +358,7 @@ describe('<AutocompleteInput />', () => {
         });
 
         it('should not be displayed if field has been touched but is valid', () => {
-            const wrapper = shallow(
-                <AutocompleteInput
-                    {...defaultProps}
-                    meta={{ touched: true, error: false }}
-                />
-            );
+            const wrapper = shallow(<AutocompleteInput {...defaultProps} meta={{ touched: true, error: false }} />);
             const AutoCompleteElement = wrapper.find('Autosuggest').first();
             assert.deepEqual(AutoCompleteElement.prop('inputProps').meta, {
                 touched: true,
@@ -449,10 +368,7 @@ describe('<AutocompleteInput />', () => {
 
         it('should be displayed if field has been touched and is invalid', () => {
             const wrapper = shallow(
-                <AutocompleteInput
-                    {...defaultProps}
-                    meta={{ touched: true, error: 'Required field.' }}
-                />
+                <AutocompleteInput {...defaultProps} meta={{ touched: true, error: 'Required field.' }} />
             );
             const AutoCompleteElement = wrapper.find('Autosuggest').first();
             assert.deepEqual(AutoCompleteElement.prop('inputProps').meta, {
@@ -468,24 +384,16 @@ describe('<AutocompleteInput />', () => {
                 <AutocompleteInput
                     {...defaultProps}
                     input={{ value: null }}
-                    choices={[
-                        { id: 1, name: 'ab' },
-                        { id: 2, name: 'abc' },
-                        { id: 3, name: '123' },
-                    ]}
+                    choices={[{ id: 1, name: 'ab' }, { id: 2, name: 'abc' }, { id: 3, name: '123' }]}
                 />,
                 { context, childContextTypes }
             );
             wrapper.find('input').simulate('focus');
-            wrapper
-                .find('input')
-                .simulate('change', { target: { value: 'a' } });
+            wrapper.find('input').simulate('change', { target: { value: 'a' } });
             expect(wrapper.state('suggestions')).toHaveLength(2);
             wrapper.find('input').simulate('blur');
             wrapper.find('input').simulate('focus');
-            wrapper
-                .find('input')
-                .simulate('change', { target: { value: 'a' } });
+            wrapper.find('input').simulate('change', { target: { value: 'a' } });
             expect(wrapper.state('suggestions')).toHaveLength(2);
         });
     });
@@ -495,11 +403,7 @@ describe('<AutocompleteInput />', () => {
             <AutocompleteInput
                 {...defaultProps}
                 input={{ value: null }}
-                choices={[
-                    { id: 1, name: 'ab' },
-                    { id: 2, name: 'abc' },
-                    { id: 3, name: '123' },
-                ]}
+                choices={[{ id: 1, name: 'ab' }, { id: 2, name: 'abc' }, { id: 3, name: '123' }]}
             />,
             { context, childContextTypes }
         );
@@ -515,11 +419,7 @@ describe('<AutocompleteInput />', () => {
             <AutocompleteInput
                 {...defaultProps}
                 input={{ value: null, onChange }}
-                choices={[
-                    { id: 1, name: 'ab' },
-                    { id: 2, name: 'abc' },
-                    { id: 3, name: '123' },
-                ]}
+                choices={[{ id: 1, name: 'ab' }, { id: 2, name: 'abc' }, { id: 3, name: '123' }]}
             />,
             { context, childContextTypes }
         );
@@ -535,11 +435,7 @@ describe('<AutocompleteInput />', () => {
             <AutocompleteInput
                 {...defaultProps}
                 input={{ value: null, onChange }}
-                choices={[
-                    { id: 1, name: 'ab' },
-                    { id: 2, name: 'abc' },
-                    { id: 3, name: '123' },
-                ]}
+                choices={[{ id: 1, name: 'ab' }, { id: 2, name: 'abc' }, { id: 3, name: '123' }]}
                 options={{
                     suggestionsContainerProps: {
                         disablePortal: true,

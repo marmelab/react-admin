@@ -39,17 +39,10 @@ const UserEditToolbar = withStyles(toolbarStyles)(props => (
 
 const UserEdit = ({ permissions, ...props }) => (
     <Edit title={<UserTitle />} aside={<Aside />} {...props}>
-        <TabbedForm
-            defaultValue={{ role: 'user' }}
-            toolbar={<UserEditToolbar />}
-        >
+        <TabbedForm defaultValue={{ role: 'user' }} toolbar={<UserEditToolbar />}>
             <FormTab label="user.form.summary" path="">
                 {permissions === 'admin' && <DisabledInput source="id" />}
-                <TextInput
-                    source="name"
-                    defaultValue="slim shady"
-                    validate={required()}
-                />
+                <TextInput source="name" defaultValue="slim shady" validate={required()} />
             </FormTab>
             {permissions === 'admin' && (
                 <FormTab label="user.form.security" path="security">

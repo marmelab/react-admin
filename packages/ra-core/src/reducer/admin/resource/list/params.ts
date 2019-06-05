@@ -1,8 +1,5 @@
 import { Reducer } from 'redux';
-import {
-    CRUD_CHANGE_LIST_PARAMS,
-    ChangeListParamsAction,
-} from '../../../../actions/listActions';
+import { CRUD_CHANGE_LIST_PARAMS, ChangeListParamsAction } from '../../../../actions/listActions';
 
 const defaultState = {
     sort: null,
@@ -20,14 +17,9 @@ interface State {
     filter: any;
 }
 
-type ActionTypes =
-    | ChangeListParamsAction
-    | { type: 'OTHER_ACTION'; payload: any };
+type ActionTypes = ChangeListParamsAction | { type: 'OTHER_ACTION'; payload: any };
 
-const paramsReducer: Reducer<State> = (
-    previousState = defaultState,
-    action: ActionTypes
-) => {
+const paramsReducer: Reducer<State> = (previousState = defaultState, action: ActionTypes) => {
     switch (action.type) {
         case CRUD_CHANGE_LIST_PARAMS:
             return action.payload;

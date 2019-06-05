@@ -9,10 +9,7 @@ export interface UserLoginAction {
     readonly meta: { auth: boolean; pathName: string };
 }
 
-export const userLogin = (
-    payload: object,
-    pathName: string
-): UserLoginAction => ({
+export const userLogin = (payload: object, pathName: string): UserLoginAction => ({
     type: USER_LOGIN,
     payload,
     meta: { auth: true, pathName },
@@ -27,11 +24,7 @@ export interface UserCheckAction {
     readonly meta: { auth: boolean; pathName: string };
 }
 
-export const userCheck = (
-    payload: object,
-    pathName: string,
-    routeParams
-): UserCheckAction => ({
+export const userCheck = (payload: object, pathName: string, routeParams): UserCheckAction => ({
     type: USER_CHECK,
     payload: {
         ...payload,

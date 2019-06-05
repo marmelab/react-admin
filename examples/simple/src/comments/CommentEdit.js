@@ -41,13 +41,7 @@ const CommentEdit = withStyles(editStyles)(({ classes, ...props }) => (
             <div className="edit-page">
                 <Title defaultTitle={`Comment #${record ? record.id : ''}`} />
                 <div className={classes.actions}>
-                    <EditActions
-                        basePath={basePath}
-                        resource={resource}
-                        data={record}
-                        hasShow
-                        hasList
-                    />
+                    <EditActions basePath={basePath} resource={resource} data={record} hasShow hasList />
                 </div>
                 <Card className={classes.card}>
                     {record && (
@@ -67,23 +61,12 @@ const CommentEdit = withStyles(editStyles)(({ classes, ...props }) => (
                                 sort={{ field: 'title', order: 'ASC' }}
                                 fullWidth
                             >
-                                <AutocompleteInput
-                                    optionText="title"
-                                    options={{ fullWidth: true }}
-                                />
+                                <AutocompleteInput optionText="title" options={{ fullWidth: true }} />
                             </ReferenceInput>
                             <LinkToRelatedPost />
-                            <TextInput
-                                source="author.name"
-                                validate={minLength(10)}
-                                fullWidth
-                            />
+                            <TextInput source="author.name" validate={minLength(10)} fullWidth />
                             <DateInput source="created_at" fullWidth />
-                            <LongTextInput
-                                source="body"
-                                validate={minLength(10)}
-                                fullWidth
-                            />
+                            <LongTextInput source="body" validate={minLength(10)} fullWidth />
                         </SimpleForm>
                     )}
                 </Card>

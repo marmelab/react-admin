@@ -14,10 +14,7 @@ export interface ChangeListParamsAction {
     readonly meta: { resource: string };
 }
 
-export const changeListParams = (
-    resource: string,
-    params: ListParams
-): ChangeListParamsAction => ({
+export const changeListParams = (resource: string, params: ListParams): ChangeListParamsAction => ({
     type: CRUD_CHANGE_LIST_PARAMS,
     payload: params,
     meta: { resource },
@@ -30,10 +27,7 @@ export interface SetListSelectedIdsAction {
     readonly payload: [];
     readonly meta: { resource: string };
 }
-export const setListSelectedIds = (
-    resource: string,
-    ids: []
-): SetListSelectedIdsAction => ({
+export const setListSelectedIds = (resource: string, ids: []): SetListSelectedIdsAction => ({
     type: SET_LIST_SELECTED_IDS,
     payload: ids,
     meta: { resource },
@@ -47,10 +41,7 @@ export interface ToggleListItemAction {
     readonly meta: { resource: string };
 }
 
-export const toggleListItem = (
-    resource: string,
-    id: any
-): ToggleListItemAction => ({
+export const toggleListItem = (resource: string, id: any): ToggleListItemAction => ({
     type: TOGGLE_LIST_ITEM,
     payload: id,
     meta: { resource },

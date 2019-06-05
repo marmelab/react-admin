@@ -12,30 +12,31 @@ import Responsive from './Responsive';
 export const DRAWER_WIDTH = 240;
 export const CLOSED_DRAWER_WIDTH = 55;
 
-const styles = theme => createStyles({
-    drawerPaper: {
-        position: 'relative',
-        height: 'auto',
-        overflowX: 'hidden',
-        transition: theme.transitions.create('width', {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.leavingScreen,
-        }),
-        backgroundColor: 'transparent',
-        marginTop: '0.5em',
-        borderRight: 'none',
-        [theme.breakpoints.only('xs')]: {
-            marginTop: 0,
-            height: '100vh',
-            position: 'inherit',
-            backgroundColor: theme.palette.background.default,
+const styles = theme =>
+    createStyles({
+        drawerPaper: {
+            position: 'relative',
+            height: 'auto',
+            overflowX: 'hidden',
+            transition: theme.transitions.create('width', {
+                easing: theme.transitions.easing.sharp,
+                duration: theme.transitions.duration.leavingScreen,
+            }),
+            backgroundColor: 'transparent',
+            marginTop: '0.5em',
+            borderRight: 'none',
+            [theme.breakpoints.only('xs')]: {
+                marginTop: 0,
+                height: '100vh',
+                position: 'inherit',
+                backgroundColor: theme.palette.background.default,
+            },
+            [theme.breakpoints.up('md')]: {
+                border: 'none',
+                marginTop: '1.5em',
+            },
         },
-        [theme.breakpoints.up('md')]: {
-            border: 'none',
-            marginTop: '1.5em',
-        },
-    },
-});
+    });
 
 // We shouldn't need PureComponent here as it's connected
 // but for some reason it keeps rendering even though mapStateToProps returns the same object
@@ -52,16 +53,7 @@ class Sidebar extends PureComponent {
     toggleSidebar = () => this.props.setSidebarVisibility(!this.props.open);
 
     render() {
-        const {
-            children,
-            classes,
-            closedSize,
-            open,
-            setSidebarVisibility,
-            size,
-            width,
-            ...rest
-        } = this.props;
+        const { children, classes, closedSize, open, setSidebarVisibility, size, width, ...rest } = this.props;
 
         return (
             <Responsive

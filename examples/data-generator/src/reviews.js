@@ -24,14 +24,8 @@ export default (db, { serializeDate }) => {
                     .map(product => {
                         const date = randomDate(command.date);
                         const status = isAfter(aMonthAgo, date)
-                            ? weightedArrayElement(
-                                  ['accepted', 'rejected'],
-                                  [3, 1]
-                              )
-                            : weightedArrayElement(
-                                  ['pending', 'accepted', 'rejected'],
-                                  [5, 3, 1]
-                              );
+                            ? weightedArrayElement(['accepted', 'rejected'], [3, 1])
+                            : weightedArrayElement(['pending', 'accepted', 'rejected'], [5, 3, 1]);
 
                         return {
                             id: id++,
@@ -41,10 +35,7 @@ export default (db, { serializeDate }) => {
                             product_id: product.product_id,
                             customer_id: command.customer_id,
                             rating: random.number({ min: 1, max: 5 }),
-                            comment: Array.apply(
-                                null,
-                                Array(random.number({ min: 1, max: 5 }))
-                            )
+                            comment: Array.apply(null, Array(random.number({ min: 1, max: 5 })))
                                 .map(() => lorem.sentences())
                                 .join('\n \r'),
                         };

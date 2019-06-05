@@ -1,10 +1,5 @@
 import React from 'react';
-import {
-    EditController,
-    LongTextInput,
-    SimpleForm,
-    DateField,
-} from 'react-admin';
+import { EditController, LongTextInput, SimpleForm, DateField } from 'react-admin';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
@@ -46,11 +41,7 @@ const ReviewEdit = ({ classes, onCancel, ...props }) => (
             controllerProps.record ? (
                 <div className={classes.root}>
                     <div className={classes.title}>
-                        <Typography variant="title">
-                            {controllerProps.translate(
-                                'resources.reviews.detail'
-                            )}
-                        </Typography>
+                        <Typography variant="title">{controllerProps.translate('resources.reviews.detail')}</Typography>
                         <IconButton onClick={onCancel}>
                             <CloseIcon />
                         </IconButton>
@@ -65,17 +56,10 @@ const ReviewEdit = ({ classes, onCancel, ...props }) => (
                         resource="reviews"
                         toolbar={<ReviewEditToolbar />}
                     >
-                        <CustomerReferenceField
-                            formClassName={classes.inlineField}
-                        />
+                        <CustomerReferenceField formClassName={classes.inlineField} />
 
-                        <ProductReferenceField
-                            formClassName={classes.inlineField}
-                        />
-                        <DateField
-                            source="date"
-                            formClassName={classes.inlineField}
-                        />
+                        <ProductReferenceField formClassName={classes.inlineField} />
+                        <DateField source="date" formClassName={classes.inlineField} />
                         <StarRatingField formClassName={classes.inlineField} />
                         <LongTextInput source="comment" rowsMax={15} />
                     </SimpleForm>

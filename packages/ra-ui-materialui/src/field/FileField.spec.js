@@ -5,7 +5,7 @@ import { FileField } from './FileField';
 
 const defaultProps = {
     classes: {},
-    source: 'url'
+    source: 'url',
 };
 
 describe('<FileField />', () => {
@@ -19,7 +19,7 @@ describe('<FileField />', () => {
                 {...defaultProps}
                 record={{
                     url: 'http://foo.com/bar.jpg',
-                    title: 'Hello world!'
+                    title: 'Hello world!',
                 }}
                 title="title"
             />
@@ -37,8 +37,8 @@ describe('<FileField />', () => {
                 record={{
                     file: {
                         url: 'http://foo.com/bar.jpg',
-                        title: 'Hello world!'
-                    }
+                        title: 'Hello world!',
+                    },
                 }}
                 source="file.url"
                 title="file.title"
@@ -55,7 +55,7 @@ describe('<FileField />', () => {
             <FileField
                 {...defaultProps}
                 record={{
-                    url: 'http://foo.com/bar.jpg'
+                    url: 'http://foo.com/bar.jpg',
                 }}
                 title="Hello world!"
             />
@@ -70,7 +70,7 @@ describe('<FileField />', () => {
             <FileField
                 {...defaultProps}
                 record={{
-                    url: 'http://foo.com/bar.jpg'
+                    url: 'http://foo.com/bar.jpg',
                 }}
                 target="_blank"
             />
@@ -88,13 +88,13 @@ describe('<FileField />', () => {
                     files: [
                         {
                             url: 'http://foo.com/bar.jpg',
-                            title: 'Hello world!'
+                            title: 'Hello world!',
                         },
                         {
                             url: 'http://bar.com/foo.jpg',
-                            title: 'Bye world!'
-                        }
-                    ]
+                            title: 'Bye world!',
+                        },
+                    ],
                 }}
                 source="files"
                 src="url"

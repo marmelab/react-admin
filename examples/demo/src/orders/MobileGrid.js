@@ -5,14 +5,7 @@ import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
 import { withStyles } from '@material-ui/core/styles';
-import {
-    DateField,
-    EditButton,
-    translate,
-    NumberField,
-    TextField,
-    BooleanField,
-} from 'react-admin';
+import { DateField, EditButton, translate, NumberField, TextField, BooleanField } from 'react-admin';
 
 import CustomerReferenceField from '../visitors/CustomerReferenceField';
 
@@ -47,26 +40,16 @@ const MobileGrid = ({ classes, ids, data, basePath, translate }) => (
                         <div className={classes.cardTitleContent}>
                             <span>
                                 {translate('resources.commands.name', 1)}:&nbsp;
-                                <TextField
-                                    record={data[id]}
-                                    source="reference"
-                                />
+                                <TextField record={data[id]} source="reference" />
                             </span>
-                            <EditButton
-                                resource="commands"
-                                basePath={basePath}
-                                record={data[id]}
-                            />
+                            <EditButton resource="commands" basePath={basePath} record={data[id]} />
                         </div>
                     }
                 />
                 <CardContent className={classes.cardContent}>
                     <span className={classes.cardContentRow}>
                         {translate('resources.customers.name', 1)}:&nbsp;
-                        <CustomerReferenceField
-                            record={data[id]}
-                            basePath={basePath}
-                        />
+                        <CustomerReferenceField record={data[id]} basePath={basePath} />
                     </span>
                     <span className={classes.cardContentRow}>
                         {translate('resources.reviews.fields.date')}:&nbsp;

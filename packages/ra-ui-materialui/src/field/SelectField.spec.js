@@ -14,48 +14,27 @@ describe('<SelectField />', () => {
         assert.equal(shallow(<SelectField {...defaultProps} />).html(), null));
 
     it('should return null when the record has no value for the source', () =>
-        assert.equal(
-            shallow(<SelectField {...defaultProps} record={{}} />).html(),
-            null
-        ));
+        assert.equal(shallow(<SelectField {...defaultProps} record={{}} />).html(), null));
 
     it('should return null when the record has a value for the source not in the choices', () =>
-        assert.equal(
-            shallow(
-                <SelectField {...defaultProps} record={{ foo: 2 }} />
-            ).html(),
-            null
-        ));
+        assert.equal(shallow(<SelectField {...defaultProps} record={{ foo: 2 }} />).html(), null));
 
     it('should render the choice', () => {
-        const wrapper = shallow(
-            <SelectField {...defaultProps} record={{ foo: 0 }} />
-        );
+        const wrapper = shallow(<SelectField {...defaultProps} record={{ foo: 0 }} />);
         const chipElement = wrapper.find('WithStyles(Typography)');
         assert.equal(chipElement.children().text(), 'hello');
     });
 
     it('should use custom className', () => {
         const wrapper = shallow(
-            <SelectField
-                {...defaultProps}
-                record={{ foo: 1 }}
-                elStyle={{ margin: 1 }}
-                className="foo"
-            />
+            <SelectField {...defaultProps} record={{ foo: 1 }} elStyle={{ margin: 1 }} className="foo" />
         );
         const chipElement = wrapper.find('WithStyles(Typography)');
         assert.deepEqual(chipElement.prop('className'), 'foo');
     });
 
     it('should handle deep fields', () => {
-        const wrapper = shallow(
-            <SelectField
-                {...defaultProps}
-                record={{ foo: { bar: 0 } }}
-                source="foo.bar"
-            />
-        );
+        const wrapper = shallow(<SelectField {...defaultProps} record={{ foo: { bar: 0 } }} source="foo.bar" />);
         const chipElement = wrapper.find('WithStyles(Typography)');
         assert.equal(chipElement.children().text(), 'hello');
     });
@@ -117,25 +96,14 @@ describe('<SelectField />', () => {
     });
 
     it('should translate the choice by default', () => {
-        const wrapper = shallow(
-            <SelectField
-                {...defaultProps}
-                record={{ foo: 0 }}
-                translate={x => `**${x}**`}
-            />
-        );
+        const wrapper = shallow(<SelectField {...defaultProps} record={{ foo: 0 }} translate={x => `**${x}**`} />);
         const chipElement = wrapper.find('WithStyles(Typography)');
         assert.equal(chipElement.children().text(), '**hello**');
     });
 
     it('should not translate the choice if translateChoice is false', () => {
         const wrapper = shallow(
-            <SelectField
-                {...defaultProps}
-                record={{ foo: 0 }}
-                translate={x => `**${x}**`}
-                translateChoice={false}
-            />
+            <SelectField {...defaultProps} record={{ foo: 0 }} translate={x => `**${x}**`} translateChoice={false} />
         );
         const chipElement = wrapper.find('WithStyles(Typography)');
         assert.equal(chipElement.children().text(), 'hello');

@@ -36,17 +36,11 @@ describe('<List />', () => {
         const Pagination = () => <div>pagination</div>;
         const Datagrid = () => <div>datagrid</div>;
         const wrapper = shallow(
-            <ListView
-                filters={<Filters />}
-                pagination={<Pagination />}
-                {...defaultProps}
-            >
+            <ListView filters={<Filters />} pagination={<Pagination />} {...defaultProps}>
                 <Datagrid />
             </ListView>
         ).dive();
-        expect(
-            wrapper.find('translate(WithStyles(BulkActionsToolbar))')
-        ).toHaveLength(1);
+        expect(wrapper.find('translate(WithStyles(BulkActionsToolbar))')).toHaveLength(1);
         expect(wrapper.find('Datagrid')).toHaveLength(1);
         expect(wrapper.find('Pagination')).toHaveLength(1);
     });

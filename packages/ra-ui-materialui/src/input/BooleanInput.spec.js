@@ -13,52 +13,27 @@ describe('<BooleanInput />', () => {
     };
 
     it('should render as a checkbox', () => {
-        const { getByLabelText } = render(
-            <BooleanInput {...defaultProps} source="bar" input={{}} />
-        );
-        expect(getByLabelText('resources.foo.fields.bar').type).toBe(
-            'checkbox'
-        );
+        const { getByLabelText } = render(<BooleanInput {...defaultProps} source="bar" input={{}} />);
+        expect(getByLabelText('resources.foo.fields.bar').type).toBe('checkbox');
     });
 
     it('should be checked if the value is true', () => {
-        const { getByLabelText } = render(
-            <BooleanInput
-                {...defaultProps}
-                source="bar"
-                input={{ value: true }}
-            />
-        );
+        const { getByLabelText } = render(<BooleanInput {...defaultProps} source="bar" input={{ value: true }} />);
         expect(getByLabelText('resources.foo.fields.bar').checked).toBe(true);
     });
 
     it('should not be checked if the value is false', () => {
-        const { getByLabelText } = render(
-            <BooleanInput
-                {...defaultProps}
-                source="bar"
-                input={{ value: false }}
-            />
-        );
+        const { getByLabelText } = render(<BooleanInput {...defaultProps} source="bar" input={{ value: false }} />);
         expect(getByLabelText('resources.foo.fields.bar').checked).toBe(false);
     });
 
     it('should not be checked if the value is undefined', () => {
-        const { getByLabelText } = render(
-            <BooleanInput {...defaultProps} source="bar" input={{}} />
-        );
+        const { getByLabelText } = render(<BooleanInput {...defaultProps} source="bar" input={{}} />);
         expect(getByLabelText('resources.foo.fields.bar').checked).toBe(false);
     });
 
     it('should displays errors', () => {
-        const wrapper = shallow(
-            <BooleanInput
-                {...defaultProps}
-                source="foo"
-                input={{}}
-                meta={{ error: 'foobar' }}
-            />
-        )
+        const wrapper = shallow(<BooleanInput {...defaultProps} source="foo" input={{}} meta={{ error: 'foobar' }} />)
             .find('WithStyles(FormGroup)')
             .shallow()
             .dive();

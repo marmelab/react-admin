@@ -80,14 +80,7 @@ export const DateTimeInput = ({
         margin="normal"
         error={!!(touched && error)}
         helperText={touched && error}
-        label={
-            <FieldTitle
-                label={label}
-                source={source}
-                resource={resource}
-                isRequired={isRequired}
-            />
-        }
+        label={<FieldTitle label={label} source={source} resource={resource} isRequired={isRequired} />}
         InputLabelProps={{
             shrink: true,
         }}

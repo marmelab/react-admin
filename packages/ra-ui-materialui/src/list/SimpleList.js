@@ -19,22 +19,18 @@ const styles = createStyles({
     tertiary: { float: 'right', opacity: 0.541176 },
 });
 
-const LinkOrNot = withStyles(styles)(
-    ({ classes, linkType, basePath, id, children }) =>
-        linkType === 'edit' || linkType === true ? (
-            <Link to={linkToRecord(basePath, id)} className={classes.link}>
-                {children}
-            </Link>
-        ) : linkType === 'show' ? (
-            <Link
-                to={`${linkToRecord(basePath, id)}/show`}
-                className={classes.link}
-            >
-                {children}
-            </Link>
-        ) : (
-            <span>{children}</span>
-        )
+const LinkOrNot = withStyles(styles)(({ classes, linkType, basePath, id, children }) =>
+    linkType === 'edit' || linkType === true ? (
+        <Link to={linkToRecord(basePath, id)} className={classes.link}>
+            {children}
+        </Link>
+    ) : linkType === 'show' ? (
+        <Link to={`${linkToRecord(basePath, id)}/show`} className={classes.link}>
+            {children}
+        </Link>
+    ) : (
+        <span>{children}</span>
+    )
 );
 
 const SimpleList = ({
@@ -61,18 +57,9 @@ const SimpleList = ({
     (isLoading || total > 0) && (
         <List className={className} {...sanitizeListRestProps(rest)}>
             {ids.map(id => (
-                <LinkOrNot
-                    linkType={linkType}
-                    basePath={basePath}
-                    id={id}
-                    key={id}
-                >
+                <LinkOrNot linkType={linkType} basePath={basePath} id={id} key={id}>
                     <ListItem button>
-                        {leftIcon && (
-                            <ListItemIcon>
-                                {leftIcon(data[id], id)}
-                            </ListItemIcon>
-                        )}
+                        {leftIcon && <ListItemIcon>{leftIcon(data[id], id)}</ListItemIcon>}
                         {leftAvatar && (
                             <ListItemAvatar>
                                 <Avatar>{leftAvatar(data[id], id)}</Avatar>
@@ -83,26 +70,16 @@ const SimpleList = ({
                                 <div>
                                     {primaryText(data[id], id)}
                                     {tertiaryText && (
-                                        <span className={classes.tertiary}>
-                                            {tertiaryText(data[id], id)}
-                                        </span>
+                                        <span className={classes.tertiary}>{tertiaryText(data[id], id)}</span>
                                     )}
                                 </div>
                             }
-                            secondary={
-                                secondaryText && secondaryText(data[id], id)
-                            }
+                            secondary={secondaryText && secondaryText(data[id], id)}
                         />
                         {(rightAvatar || rightIcon) && (
                             <ListItemSecondaryAction>
-                                {rightAvatar && (
-                                    <Avatar>{rightAvatar(data[id], id)}</Avatar>
-                                )}
-                                {rightIcon && (
-                                    <ListItemIcon>
-                                        {rightIcon(data[id], id)}
-                                    </ListItemIcon>
-                                )}
+                                {rightAvatar && <Avatar>{rightAvatar(data[id], id)}</Avatar>}
+                                {rightIcon && <ListItemIcon>{rightIcon(data[id], id)}</ListItemIcon>}
                             </ListItemSecondaryAction>
                         )}
                     </ListItem>
@@ -120,8 +97,7 @@ SimpleList.propTypes = {
     ids: PropTypes.array,
     leftAvatar: PropTypes.func,
     leftIcon: PropTypes.func,
-    linkType: PropTypes.oneOfType([PropTypes.string, PropTypes.bool])
-        .isRequired,
+    linkType: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]).isRequired,
     onToggleItem: PropTypes.func,
     primaryText: PropTypes.func,
     rightAvatar: PropTypes.func,

@@ -7,25 +7,20 @@ import { withStyles, createStyles } from '@material-ui/core/styles';
 import compose from 'recompose/compose';
 import classnames from 'classnames';
 
-import {
-    hideNotification,
-    getNotification,
-    translate,
-    undo,
-    complete,
-} from 'ra-core';
+import { hideNotification, getNotification, translate, undo, complete } from 'ra-core';
 
-const styles = theme => createStyles({
-    confirm: {
-        backgroundColor: theme.palette.background.default,
-    },
-    warning: {
-        backgroundColor: theme.palette.error.light,
-    },
-    undo: {
-        color: theme.palette.primary.light,
-    },
-});
+const styles = theme =>
+    createStyles({
+        confirm: {
+            backgroundColor: theme.palette.background.default,
+        },
+        warning: {
+            backgroundColor: theme.palette.error.light,
+        },
+        undo: {
+            color: theme.palette.primary.light,
+        },
+    });
 
 class Notification extends React.Component {
     state = {
@@ -81,33 +76,18 @@ class Notification extends React.Component {
             <Snackbar
                 open={this.state.open}
                 message={
-                    notification &&
-                    notification.message &&
-                    translate(notification.message, notification.messageArgs)
+                    notification && notification.message && translate(notification.message, notification.messageArgs)
                 }
-                autoHideDuration={
-                    (notification && notification.autoHideDuration) ||
-                    autoHideDuration
-                }
-                disableWindowBlurListener={
-                    notification && notification.undoable
-                }
+                autoHideDuration={(notification && notification.autoHideDuration) || autoHideDuration}
+                disableWindowBlurListener={notification && notification.undoable}
                 onExited={this.handleExited}
                 onClose={this.handleRequestClose}
                 ContentProps={{
-                    className: classnames(
-                        classes[(notification && notification.type) || type],
-                        className
-                    ),
+                    className: classnames(classes[(notification && notification.type) || type], className),
                 }}
                 action={
                     notification && notification.undoable ? (
-                        <Button
-                            color="primary"
-                            className={undoClass}
-                            size="small"
-                            onClick={undo}
-                        >
+                        <Button color="primary" className={undoClass} size="small" onClick={undo}>
                             {translate('ra.action.undo')}
                         </Button>
                     ) : null

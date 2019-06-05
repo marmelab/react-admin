@@ -64,13 +64,7 @@ class BulkDeleteWithConfirmButton extends Component {
     };
 
     handleDelete = () => {
-        const {
-            basePath,
-            crudDeleteMany,
-            resource,
-            selectedIds,
-            onClick,
-        } = this.props;
+        const { basePath, crudDeleteMany, resource, selectedIds, onClick } = this.props;
 
         crudDeleteMany(resource, selectedIds, basePath);
 
@@ -80,16 +74,7 @@ class BulkDeleteWithConfirmButton extends Component {
     };
 
     render() {
-        const {
-            classes,
-            label,
-            icon,
-            onClick,
-            resource,
-            selectedIds,
-            translate,
-            ...rest
-        } = this.props;
+        const { classes, label, icon, onClick, resource, selectedIds, translate, ...rest } = this.props;
         return (
             <Fragment>
                 <Button
@@ -109,10 +94,7 @@ class BulkDeleteWithConfirmButton extends Component {
                         name: inflection.humanize(
                             translate(`resources.${resource}.name`, {
                                 smart_count: selectedIds.length,
-                                _: inflection.inflect(
-                                    resource,
-                                    selectedIds.length
-                                ),
+                                _: inflection.inflect(resource, selectedIds.length),
                             }),
                             true
                         ),

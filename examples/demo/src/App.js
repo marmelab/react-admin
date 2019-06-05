@@ -34,13 +34,9 @@ class App extends Component {
     state = { dataProvider: null };
 
     async componentWillMount() {
-        this.restoreFetch = await fakeServerFactory(
-            process.env.REACT_APP_DATA_PROVIDER
-        );
+        this.restoreFetch = await fakeServerFactory(process.env.REACT_APP_DATA_PROVIDER);
 
-        const dataProvider = await dataProviderFactory(
-            process.env.REACT_APP_DATA_PROVIDER
-        );
+        const dataProvider = await dataProviderFactory(process.env.REACT_APP_DATA_PROVIDER);
 
         this.setState({ dataProvider });
     }
@@ -75,11 +71,7 @@ class App extends Component {
                 i18nProvider={i18nProvider}
             >
                 <Resource name="customers" {...visitors} />
-                <Resource
-                    name="commands"
-                    {...orders}
-                    options={{ label: 'Orders' }}
-                />
+                <Resource name="commands" {...orders} options={{ label: 'Orders' }} />
                 <Resource name="invoices" {...invoices} />
                 <Resource name="products" {...products} />
                 <Resource name="categories" {...categories} />

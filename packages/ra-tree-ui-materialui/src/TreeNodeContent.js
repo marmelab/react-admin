@@ -8,11 +8,7 @@ class TreeNodeContent extends Component {
         cancelDropOnChildren: PropTypes.bool,
         connectDragPreview: PropTypes.func,
         connectDragSource: PropTypes.func,
-        containerElement: PropTypes.oneOfType([
-            PropTypes.element,
-            PropTypes.func,
-            PropTypes.string,
-        ]),
+        containerElement: PropTypes.oneOfType([PropTypes.element, PropTypes.func, PropTypes.string]),
         children: PropTypes.node,
         classes: PropTypes.object.isRequired,
         expandNode: PropTypes.func,

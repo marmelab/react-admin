@@ -27,11 +27,7 @@ export const FormFieldView: SFC<Props> = ({ input, ...props }) =>
     input ? ( // An ancestor is already decorated by Field
         React.createElement(props.component, { input, ...props })
     ) : (
-        <Field
-            {...props}
-            name={props.source}
-            isRequired={isRequired(props.validate)}
-        />
+        <Field {...props} name={props.source} isRequired={isRequired(props.validate)} />
     );
 
 FormFieldView.propTypes = {

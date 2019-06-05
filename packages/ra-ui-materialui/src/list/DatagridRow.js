@@ -129,10 +129,7 @@ class DatagridRow extends Component {
                     {...sanitizeRestProps(rest)}
                 >
                     {expand && (
-                        <TableCell
-                            padding="none"
-                            className={classes.expandIconCell}
-                        >
+                        <TableCell padding="none" className={classes.expandIconCell}>
                             <IconButton
                                 className={classNames(classes.expandIcon, {
                                     [classes.expanded]: expanded,
@@ -161,10 +158,7 @@ class DatagridRow extends Component {
                         isValidElement(field) ? (
                             <DatagridCell
                                 key={`${id}-${field.props.source || index}`}
-                                className={classnames(
-                                    `column-${field.props.source}`,
-                                    classes.rowCell
-                                )}
+                                className={classnames(`column-${field.props.source}`, classes.rowCell)}
                                 record={record}
                                 {...{ field, basePath, resource }}
                             />

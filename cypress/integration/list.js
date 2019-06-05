@@ -24,9 +24,7 @@ describe('List Page', () => {
             cy.viewport(1280, 500);
 
             cy.scrollTo(0, 200);
-            cy.get(ListPagePosts.elements.headroomUnpinned).should(
-                'not.be.visible'
-            );
+            cy.get(ListPagePosts.elements.headroomUnpinned).should('not.be.visible');
 
             cy.scrollTo(0, -100);
             cy.get(ListPagePosts.elements.headroomUnfixed).should('be.visible');
@@ -52,16 +50,12 @@ describe('List Page', () => {
 
     describe('Filtering', () => {
         it('should display `alwaysOn` filters by default', () => {
-            cy.get(ListPagePosts.elements.filter('q')).should(
-                el => expect(el).to.exist
-            );
+            cy.get(ListPagePosts.elements.filter('q')).should(el => expect(el).to.exist);
         });
 
         it('should filter directly while typing (with some debounce)', () => {
             ListPagePosts.setFilterValue('q', 'quis culpa impedit');
-            cy.get(ListPagePosts.elements.recordRows).should(el =>
-                expect(el).to.have.length(1)
-            );
+            cy.get(ListPagePosts.elements.recordRows).should(el => expect(el).to.have.length(1));
             cy.contains('Omnis voluptate enim similique est possimus');
             cy.contains('1-1 of 1');
             ListPagePosts.setFilterValue('q', '', true);
@@ -71,9 +65,7 @@ describe('List Page', () => {
         it('should display new filter when clicking on "Add Filter"', () => {
             ListPagePosts.showFilter('title');
 
-            cy.get(ListPagePosts.elements.filter('title')).should(
-                el => expect(el).to.exist
-            );
+            cy.get(ListPagePosts.elements.filter('title')).should(el => expect(el).to.exist);
 
             cy.contains('1-1 of 1');
 
@@ -85,9 +77,7 @@ describe('List Page', () => {
             ListPagePosts.showFilter('title');
             ListPagePosts.hideFilter('title');
 
-            cy.get(ListPagePosts.elements.filter('title')).should(
-                el => expect(el).to.not.exist
-            );
+            cy.get(ListPagePosts.elements.filter('title')).should(el => expect(el).to.not.exist);
             cy.contains('1-10 of 13');
         });
 
@@ -105,9 +95,7 @@ describe('List Page', () => {
 
             cy.get('[href="#/posts"]').click();
 
-            cy.get(ListPagePosts.elements.filter('q')).should(el =>
-                expect(el).to.have.value('quis culpa impedit')
-            );
+            cy.get(ListPagePosts.elements.filter('q')).should(el => expect(el).to.have.value('quis culpa impedit'));
             cy.contains('1-1 of 1');
             ListPagePosts.setFilterValue('q', '');
         });
@@ -128,9 +116,7 @@ describe('List Page', () => {
             ListPagePosts.toggleSelectAll();
             cy.get(ListPagePosts.elements.bulkActionsToolbar).should('exist');
             cy.contains('10 items selected');
-            cy.get(ListPagePosts.elements.selectedItem).should(els =>
-                expect(els).to.have.length(10)
-            );
+            cy.get(ListPagePosts.elements.selectedItem).should(els => expect(els).to.have.length(10));
         });
 
         it('should allow to unselect all items on the current page', () => {
@@ -138,41 +124,29 @@ describe('List Page', () => {
             ListPagePosts.toggleSelectAll();
             cy.get(ListPagePosts.elements.bulkActionsToolbar).should('exist');
             ListPagePosts.toggleSelectAll();
-            cy.get(ListPagePosts.elements.bulkActionsToolbar).should(
-                'not.exist'
-            );
-            cy.get(ListPagePosts.elements.selectedItem).should(els =>
-                expect(els).to.have.length(0)
-            );
+            cy.get(ListPagePosts.elements.bulkActionsToolbar).should('not.exist');
+            cy.get(ListPagePosts.elements.selectedItem).should(els => expect(els).to.have.length(0));
         });
 
         it('should allow to trigger a custom bulk action on selected items', () => {
             cy.contains('1-10 of 13'); // wait for data
             ListPagePosts.toggleSelectAll();
             ListPagePosts.applyUpdateBulkAction();
-            cy.get(ListPagePosts.elements.viewsColumn).should(els =>
-                expect(els).to.have.text('0000000000')
-            );
+            cy.get(ListPagePosts.elements.viewsColumn).should(els => expect(els).to.have.text('0000000000'));
         });
 
         it('should have unselected all items after bulk action', () => {
             cy.contains('1-10 of 13'); // wait for data
             ListPagePosts.toggleSelectAll();
             ListPagePosts.applyUpdateBulkAction();
-            cy.get(ListPagePosts.elements.bulkActionsToolbar).should(
-                'not.exist'
-            );
-            cy.get(ListPagePosts.elements.selectedItem).should(els =>
-                expect(els).to.have.length(0)
-            );
+            cy.get(ListPagePosts.elements.bulkActionsToolbar).should('not.exist');
+            cy.get(ListPagePosts.elements.selectedItem).should(els => expect(els).to.have.length(0));
         });
 
         it('should allow to select multiple items on the current page', () => {
             cy.contains('1-10 of 13'); // wait for data
             ListPagePosts.toggleSelectSomeItems(3);
-            cy.get(ListPagePosts.elements.selectedItem).should(els =>
-                expect(els).to.have.length(3)
-            );
+            cy.get(ListPagePosts.elements.selectedItem).should(els => expect(els).to.have.length(3));
         });
 
         it('should allow to trigger the delete bulk action on selected items', () => {
@@ -185,9 +159,7 @@ describe('List Page', () => {
 
     describe('rowClick', () => {
         it('should accept a function', () => {
-            cy.contains(
-                'Fusce massa lorem, pulvinar a posuere ut, accumsan ac nisi'
-            )
+            cy.contains('Fusce massa lorem, pulvinar a posuere ut, accumsan ac nisi')
                 .parents('tr')
                 .click();
             cy.contains('Summary').should(el => expect(el).to.exist);
@@ -215,9 +187,7 @@ describe('List Page', () => {
                     'Curabitur eu odio ullamcorper, pretium sem at, blandit libero. Nulla sodales facilisis libero, eu gravida tellus ultrices nec. In ut gravida mi. Vivamus finibus tortor tempus egestas lacinia. Cras eu arcu nisl. Donec pretium dolor ipsum, eget feugiat urna iaculis ut.'
                 )
             );
-            cy.get('.datagrid-body').should(el =>
-                expect(el).to.not.contain('[role="expand-content"]')
-            );
+            cy.get('.datagrid-body').should(el => expect(el).to.not.contain('[role="expand-content"]'));
         });
 
         it('should accept multiple expands', () => {
@@ -228,9 +198,7 @@ describe('List Page', () => {
             cy.get('[role="expand"]')
                 .eq(1)
                 .click();
-            cy.get('[role="expand-content"]').should(el =>
-                expect(el).to.have.length(2)
-            );
+            cy.get('[role="expand-content"]').should(el => expect(el).to.have.length(2));
         });
     });
 
@@ -240,9 +208,7 @@ describe('List Page', () => {
             cy.get(ListPagePosts.elements.svg('id')).should('be.visible');
 
             ListPagePosts.toggleColumnSort('tags.name');
-            cy.get(ListPagePosts.elements.svg('tags.name')).should(
-                'be.visible'
-            );
+            cy.get(ListPagePosts.elements.svg('tags.name')).should('be.visible');
         });
 
         it('should hide the sort arrow when clicking on another sortable column header', () => {
@@ -254,20 +220,10 @@ describe('List Page', () => {
         it('should reverse the sort arrow when clicking on an already sorted column header', () => {
             ListPagePosts.toggleColumnSort('published_at');
             ListPagePosts.toggleColumnSort('tags.name');
-            cy.get(
-                ListPagePosts.elements.svg(
-                    'tags.name',
-                    '[class*=iconDirectionAsc]'
-                )
-            ).should('exist');
+            cy.get(ListPagePosts.elements.svg('tags.name', '[class*=iconDirectionAsc]')).should('exist');
 
             ListPagePosts.toggleColumnSort('tags.name');
-            cy.get(
-                ListPagePosts.elements.svg(
-                    'tags.name',
-                    '[class*=iconDirectionDesc]'
-                )
-            ).should('exist');
+            cy.get(ListPagePosts.elements.svg('tags.name', '[class*=iconDirectionDesc]')).should('exist');
         });
     });
 });

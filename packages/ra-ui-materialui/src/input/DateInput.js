@@ -47,17 +47,7 @@ export class DateInput extends Component {
     };
 
     render() {
-        const {
-            className,
-            meta,
-            input,
-            isRequired,
-            label,
-            options,
-            source,
-            resource,
-            ...rest
-        } = this.props;
+        const { className, meta, input, isRequired, label, options, source, resource, ...rest } = this.props;
         if (typeof meta === 'undefined') {
             throw new Error(
                 "The DateInput component wasn't called within a redux-form <Field>. Did you decorate it and forget to add the addField prop to your component? See https://marmelab.com/react-admin/Inputs.html#writing-your-own-input-component for details."
@@ -75,14 +65,7 @@ export class DateInput extends Component {
                 id={`${resource}_${source}_date_input`}
                 error={!!(touched && error)}
                 helperText={touched && error}
-                label={
-                    <FieldTitle
-                        label={label}
-                        source={source}
-                        resource={resource}
-                        isRequired={isRequired}
-                    />
-                }
+                label={<FieldTitle label={label} source={source} resource={resource} isRequired={isRequired} />}
                 InputLabelProps={{
                     shrink: true,
                 }}

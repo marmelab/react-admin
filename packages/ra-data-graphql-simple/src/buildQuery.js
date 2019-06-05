@@ -10,9 +10,7 @@ export const buildQueryFactory = (
     const knownResources = introspectionResults.resources.map(r => r.type.name);
 
     return (aorFetchType, resourceName, params) => {
-        const resource = introspectionResults.resources.find(
-            r => r.type.name === resourceName
-        );
+        const resource = introspectionResults.resources.find(r => r.type.name === resourceName);
 
         if (!resource) {
             throw new Error(
@@ -32,23 +30,9 @@ export const buildQueryFactory = (
             );
         }
 
-        const variables = buildVariablesImpl(introspectionResults)(
-            resource,
-            aorFetchType,
-            params,
-            queryType
-        );
-        const query = buildGqlQueryImpl(introspectionResults)(
-            resource,
-            aorFetchType,
-            queryType,
-            variables
-        );
-        const parseResponse = getResponseParserImpl(introspectionResults)(
-            aorFetchType,
-            resource,
-            queryType
-        );
+        const variables = buildVariablesImpl(introspectionResults)(resource, aorFetchType, params, queryType);
+        const query = buildGqlQueryImpl(introspectionResults)(resource, aorFetchType, queryType, variables);
+        const parseResponse = getResponseParserImpl(introspectionResults)(aorFetchType, resource, queryType);
 
         return {
             query,
@@ -58,8 +42,4 @@ export const buildQueryFactory = (
     };
 };
 
-export default buildQueryFactory(
-    buildVariables,
-    buildGqlQuery,
-    getResponseParser
-);
+export default buildQueryFactory(buildVariables, buildGqlQuery, getResponseParser);

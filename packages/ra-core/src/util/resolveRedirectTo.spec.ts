@@ -14,11 +14,7 @@ describe('resolveRedirectTo', () => {
     });
 
     it('should accept a function as parameter', () => {
-        const redirect = (basePath, id, data) =>
-            `/related/${data.related_id}/show`;
-        assert.equal(
-            resolveRedirectTo(redirect, 'books', 1, { related_id: 3 }),
-            '/related/3/show'
-        );
+        const redirect = (basePath, id, data) => `/related/${data.related_id}/show`;
+        assert.equal(resolveRedirectTo(redirect, 'books', 1, { related_id: 3 }), '/related/3/show');
     });
 });

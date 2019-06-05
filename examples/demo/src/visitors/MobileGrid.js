@@ -38,14 +38,8 @@ const MobileGrid = ({ classes, ids, data, basePath, translate }) => (
                 <CardHeader
                     title={
                         <div className={classes.cardTitleContent}>
-                            <h2>{`${data[id].first_name} ${
-                                data[id].last_name
-                            }`}</h2>
-                            <EditButton
-                                resource="visitors"
-                                basePath={basePath}
-                                record={data[id]}
-                            />
+                            <h2>{`${data[id].first_name} ${data[id].last_name}`}</h2>
+                            <EditButton resource="visitors" basePath={basePath} record={data[id]} />
                         </div>
                     }
                     avatar={<AvatarField record={data[id]} size="45" />}
@@ -54,17 +48,10 @@ const MobileGrid = ({ classes, ids, data, basePath, translate }) => (
                     <div>
                         {translate('resources.customers.fields.last_seen_gte')}
                         &nbsp;
-                        <DateField
-                            record={data[id]}
-                            source="last_seen"
-                            type="date"
-                        />
+                        <DateField record={data[id]} source="last_seen" type="date" />
                     </div>
                     <div>
-                        {translate(
-                            'resources.commands.name',
-                            parseInt(data[id].nb_commands, 10) || 1
-                        )}
+                        {translate('resources.commands.name', parseInt(data[id].nb_commands, 10) || 1)}
                         &nbsp;:&nbsp;
                         <NumberField
                             record={data[id]}

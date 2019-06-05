@@ -18,12 +18,8 @@ describe('<Filter />', () => {
         });
 
         it('should pass `filterValues` as `initialValues` props', () => {
-            const wrapper = shallow(
-                <Filter {...defaultProps} filterValues={{ q: 'Lorem' }} />
-            );
-            const form = wrapper
-                .find('WithStyles(withProps(ReduxForm))')
-                .first(); // FilterForm is an muiThemable component
+            const wrapper = shallow(<Filter {...defaultProps} filterValues={{ q: 'Lorem' }} />);
+            const form = wrapper.find('WithStyles(withProps(ReduxForm))').first(); // FilterForm is an muiThemable component
             assert.deepEqual(form.prop('initialValues'), { q: 'Lorem' });
         });
     });

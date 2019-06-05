@@ -35,20 +35,11 @@ class RootDropTarget extends Component {
     };
 
     shouldComponentUpdate(nextProps) {
-        return (
-            this.props.canDrop !== nextProps.canDrop ||
-            this.props.isOverCurrent !== nextProps.isOverCurrent
-        );
+        return this.props.canDrop !== nextProps.canDrop || this.props.isOverCurrent !== nextProps.isOverCurrent;
     }
 
     render() {
-        const {
-            canDrop,
-            classes,
-            connectDropTarget,
-            isOverCurrent,
-            translate,
-        } = this.props;
+        const { canDrop, classes, connectDropTarget, isOverCurrent, translate } = this.props;
         return (
             <ListItem
                 className={classNames(classes.root, {
@@ -59,9 +50,7 @@ class RootDropTarget extends Component {
                 <IconGetApp />
                 {connectDropTarget(
                     <div>
-                        <Typography className={classes.text}>
-                            {translate('ra.tree.root_target')}
-                        </Typography>
+                        <Typography className={classes.text}>{translate('ra.tree.root_target')}</Typography>
                     </div>
                 )}
             </ListItem>

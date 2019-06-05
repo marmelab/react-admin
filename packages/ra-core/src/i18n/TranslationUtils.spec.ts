@@ -1,9 +1,5 @@
 import expect from 'expect';
-import {
-    resolveBrowserLocale,
-    mergeTranslations,
-    DEFAULT_LOCALE,
-} from './index';
+import { resolveBrowserLocale, mergeTranslations, DEFAULT_LOCALE } from './index';
 
 describe('TranslationUtils', () => {
     describe('resolveBrowserLocale', () => {
@@ -38,13 +34,7 @@ describe('TranslationUtils', () => {
                     action: { edit: 'Modify', saveAndAdd: 'Save and add' },
                 },
             };
-            expect(
-                mergeTranslations(
-                    defaultMessages,
-                    addonMessages,
-                    customPackageWithOverrides
-                )
-            ).toEqual({
+            expect(mergeTranslations(defaultMessages, addonMessages, customPackageWithOverrides)).toEqual({
                 ra: {
                     action: {
                         save: 'Save',

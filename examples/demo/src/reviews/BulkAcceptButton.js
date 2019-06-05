@@ -7,22 +7,12 @@ import { Button, startUndoable, crudUpdateMany } from 'react-admin';
 class BulkAcceptButton extends Component {
     handleClick = () => {
         const { basePath, startUndoable, resource, selectedIds } = this.props;
-        startUndoable(
-            crudUpdateMany(
-                resource,
-                selectedIds,
-                { status: 'accepted' },
-                basePath
-            )
-        );
+        startUndoable(crudUpdateMany(resource, selectedIds, { status: 'accepted' }, basePath));
     };
 
     render() {
         return (
-            <Button
-                label="resources.reviews.action.accept"
-                onClick={this.handleClick}
-            >
+            <Button label="resources.reviews.action.accept" onClick={this.handleClick}>
                 <ThumbUp />
             </Button>
         );

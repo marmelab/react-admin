@@ -15,9 +15,7 @@ export default (type, params) => {
         return Promise.resolve();
     }
     if (type === AUTH_CHECK) {
-        return localStorage.getItem('username')
-            ? Promise.resolve()
-            : Promise.reject();
+        return localStorage.getItem('username') ? Promise.resolve() : Promise.reject();
     }
     return Promise.reject('Unkown method');
 };

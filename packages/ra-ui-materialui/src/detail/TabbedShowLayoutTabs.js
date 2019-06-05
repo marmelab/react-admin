@@ -3,9 +3,7 @@ import PropTypes from 'prop-types';
 import Tabs from '@material-ui/core/Tabs';
 
 const getTabFullPath = (tab, index, baseUrl) =>
-    `${baseUrl}${
-        tab.props.path ? `/${tab.props.path}` : index > 0 ? `/${index}` : ''
-    }`;
+    `${baseUrl}${tab.props.path ? `/${tab.props.path}` : index > 0 ? `/${index}` : ''}`;
 
 const TabbedShowLayoutTabs = ({ children, match, value, ...rest }) => (
     <Tabs indicatorColor="primary" value={value} {...rest}>

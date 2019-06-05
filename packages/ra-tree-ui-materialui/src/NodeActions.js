@@ -23,9 +23,7 @@ export class NodeActions extends Component {
         const { children, classes, ...props } = this.props;
         return (
             <span className={classes.root}>
-                {Children.map(children, action =>
-                    action ? cloneElement(action, props) : null
-                )}
+                {Children.map(children, action => (action ? cloneElement(action, props) : null))}
             </span>
         );
     }

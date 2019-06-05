@@ -1,10 +1,7 @@
 import React, { ComponentType, Component, ComponentClass } from 'react';
 import { default as wrapDisplayName } from 'recompose/wrapDisplayName';
 import { default as warning } from '../util/warning';
-import {
-    TranslationContextProps,
-    TranslationContext,
-} from './TranslationContext';
+import { TranslationContextProps, TranslationContext } from './TranslationContext';
 
 /**
  * Higher-Order Component for getting access to the `translate` function in props.
@@ -37,10 +34,7 @@ const MyHelloButton = ({ translate }) => (
     );
 
     // tslint:disable-next-line:no-shadowed-variable
-    const {
-        translate: translateToDiscard,
-        ...defaultProps
-    } = (BaseComponent.defaultProps || {}) as any;
+    const { translate: translateToDiscard, ...defaultProps } = (BaseComponent.defaultProps || {}) as any;
 
     class TranslatedComponent extends Component<OriginalProps> {
         static defaultProps = defaultProps;
@@ -50,13 +44,7 @@ const MyHelloButton = ({ translate }) => (
         render() {
             return (
                 <TranslationContext.Consumer>
-                    {({ translate, locale }) => (
-                        <BaseComponent
-                            translate={translate}
-                            locale={locale}
-                            {...this.props}
-                        />
-                    )}
+                    {({ translate, locale }) => <BaseComponent translate={translate} locale={locale} {...this.props} />}
                 </TranslationContext.Consumer>
             );
         }

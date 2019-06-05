@@ -9,22 +9,14 @@ describe('<TextField />', () => {
             title: "I'm sorry, Dave. I'm afraid I can't do that.",
         };
         const wrapper = render(<TextField record={record} source="title" />);
-        assert.equal(
-            wrapper.text(),
-            "I'm sorry, Dave. I'm afraid I can't do that."
-        );
+        assert.equal(wrapper.text(), "I'm sorry, Dave. I'm afraid I can't do that.");
     });
 
     it('should handle deep fields', () => {
         const record = {
             foo: { title: "I'm sorry, Dave. I'm afraid I can't do that." },
         };
-        const wrapper = render(
-            <TextField record={record} source="foo.title" />
-        );
-        assert.equal(
-            wrapper.text(),
-            "I'm sorry, Dave. I'm afraid I can't do that."
-        );
+        const wrapper = render(<TextField record={record} source="foo.title" />);
+        assert.equal(wrapper.text(), "I'm sorry, Dave. I'm afraid I can't do that.");
     });
 });

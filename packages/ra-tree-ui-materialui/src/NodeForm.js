@@ -4,10 +4,7 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import { withStyles } from '@material-ui/core/styles';
 import { reduxForm } from 'redux-form';
-import {
-    crudUpdate as crudUpdateAction,
-    startUndoable as startUndoableAction,
-} from 'ra-core';
+import { crudUpdate as crudUpdateAction, startUndoable as startUndoableAction } from 'ra-core';
 
 import NodeFormActions from './NodeFormActions';
 
@@ -125,23 +122,9 @@ class NodeForm extends Component {
         return handleSubmit(values =>
             undoable
                 ? startUndoable(
-                      crudUpdateAction(
-                          resource,
-                          record.id,
-                          { ...record, ...values },
-                          record,
-                          basePath,
-                          false
-                      )
+                      crudUpdateAction(resource, record.id, { ...record, ...values }, record, basePath, false)
                   )
-                : dispatchCrudUpdate(
-                      resource,
-                      record.id,
-                      { ...record, ...values },
-                      record,
-                      basePath,
-                      false
-                  )
+                : dispatchCrudUpdate(resource, record.id, { ...record, ...values }, record, basePath, false)
         );
     };
 
@@ -162,11 +145,7 @@ class NodeForm extends Component {
         } = this.props;
 
         return (
-            <form
-                className={classes.root}
-                onClick={this.handleClick}
-                {...sanitizeRestProps(props)}
-            >
+            <form className={classes.root} onClick={this.handleClick} {...sanitizeRestProps(props)}>
                 {Children.map(children, field =>
                     field
                         ? cloneElement(field, {

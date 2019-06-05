@@ -52,24 +52,14 @@ const location = {
     query: { filter: JSON.stringify({ status: 'pending' }) },
 };
 
-const PendingReviews = ({
-    reviews = [],
-    customers = {},
-    nb,
-    translate,
-    classes,
-}) => (
+const PendingReviews = ({ reviews = [], customers = {}, nb, translate, classes }) => (
     <div className={classes.main}>
         <CardIcon Icon={CommentIcon} bgColor="#f44336" />
         <Card className={classes.card}>
             <Typography className={classes.title} color="textSecondary">
                 {translate('pos.dashboard.pending_reviews')}
             </Typography>
-            <Typography
-                variant="headline"
-                component="h2"
-                className={classes.value}
-            >
+            <Typography variant="headline" component="h2" className={classes.value}>
                 <Link to={location} className={classes.titleLink}>
                     {nb}
                 </Link>
@@ -77,17 +67,10 @@ const PendingReviews = ({
             <Divider />
             <List>
                 {reviews.map(record => (
-                    <ListItem
-                        key={record.id}
-                        button
-                        component={Link}
-                        to={`/reviews/${record.id}`}
-                    >
+                    <ListItem key={record.id} button component={Link} to={`/reviews/${record.id}`}>
                         {customers[record.customer_id] ? (
                             <Avatar
-                                src={`${
-                                    customers[record.customer_id].avatar
-                                }?size=32x32`}
+                                src={`${customers[record.customer_id].avatar}?size=32x32`}
                                 className={classes.avatar}
                             />
                         ) : (

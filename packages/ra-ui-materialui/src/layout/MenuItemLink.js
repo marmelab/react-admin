@@ -5,17 +5,18 @@ import { NavLink } from 'react-router-dom';
 import MenuItem from '@material-ui/core/MenuItem';
 import { withStyles, createStyles } from '@material-ui/core/styles';
 
-const styles = theme => createStyles({
-    root: {
-        color: theme.palette.text.secondary,
-        display: 'flex',
-        alignItems: 'flex-start',
-    },
-    active: {
-        color: theme.palette.text.primary,
-    },
-    icon: { paddingRight: '1.2em' },
-});
+const styles = theme =>
+    createStyles({
+        root: {
+            color: theme.palette.text.secondary,
+            display: 'flex',
+            alignItems: 'flex-start',
+        },
+        active: {
+            color: theme.palette.text.primary,
+        },
+        icon: { paddingRight: '1.2em' },
+    });
 
 export class MenuItemLink extends Component {
     static propTypes = {
@@ -25,8 +26,7 @@ export class MenuItemLink extends Component {
         onClick: PropTypes.func,
         primaryText: PropTypes.node,
         staticContext: PropTypes.object,
-        to: PropTypes.oneOfType([PropTypes.string, PropTypes.object])
-            .isRequired,
+        to: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
     };
 
     handleMenuTap = e => {
@@ -34,14 +34,7 @@ export class MenuItemLink extends Component {
     };
 
     render() {
-        const {
-            classes,
-            className,
-            primaryText,
-            leftIcon,
-            staticContext,
-            ...props
-        } = this.props;
+        const { classes, className, primaryText, leftIcon, staticContext, ...props } = this.props;
 
         return (
             <MenuItem
@@ -52,9 +45,7 @@ export class MenuItemLink extends Component {
                 onClick={this.handleMenuTap}
             >
                 {leftIcon && (
-                    <span className={classes.icon}>
-                        {cloneElement(leftIcon, { titleAccess: primaryText })}
-                    </span>
+                    <span className={classes.icon}>{cloneElement(leftIcon, { titleAccess: primaryText })}</span>
                 )}
                 {primaryText}
             </MenuItem>

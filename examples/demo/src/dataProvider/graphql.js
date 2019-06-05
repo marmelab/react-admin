@@ -42,27 +42,24 @@ const customBuildQuery = introspectionResults => {
                     }
 
                     throw new Error(`Could not delete ${resource}`);
-                }
-            }
+                },
+            };
         }
 
         return buildQuery(type, resource, params);
-    }
-}
+    };
+};
 
 export default () => {
-
     return buildApolloClient({
         clientOptions: {
             uri: 'http://localhost:4000/graphql',
         },
         introspection: {
             operationNames: {
-                [DELETE]: resource => `remove${resource.name}`
-            }
+                [DELETE]: resource => `remove${resource.name}`,
+            },
         },
-        buildQuery: customBuildQuery
-    }).then(dataProvider => (type, resource, params) =>
-        dataProvider(type, getGqlResource(resource), params)
-    );
+        buildQuery: customBuildQuery,
+    }).then(dataProvider => (type, resource, params) => dataProvider(type, getGqlResource(resource), params));
 };

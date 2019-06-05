@@ -17,37 +17,32 @@ interface Props extends FieldProps {
     target?: string;
 }
 
-export const FileField: SFC<
-    Props & InjectedFieldProps & WithStyles<typeof styles>
-> = ({ classes, className, record, source, title, src, target, ...rest }) => {
+export const FileField: SFC<Props & InjectedFieldProps & WithStyles<typeof styles>> = ({
+    classes,
+    className,
+    record,
+    source,
+    title,
+    src,
+    target,
+    ...rest
+}) => {
     const sourceValue = get(record, source);
 
     if (!sourceValue) {
-        return (
-            <div
-                className={classnames(classes.root, className)}
-                {...sanitizeRestProps(rest)}
-            />
-        );
+        return <div className={classnames(classes.root, className)} {...sanitizeRestProps(rest)} />;
     }
 
     if (Array.isArray(sourceValue)) {
         return (
-            <ul
-                className={classnames(classes.root, className)}
-                {...sanitizeRestProps(rest)}
-            >
+            <ul className={classnames(classes.root, className)} {...sanitizeRestProps(rest)}>
                 {sourceValue.map((file, index) => {
                     const fileTitleValue = get(file, title) || title;
                     const srcValue = get(file, src) || title;
 
                     return (
                         <li key={index}>
-                            <a
-                                href={srcValue}
-                                title={fileTitleValue}
-                                target={target}
-                            >
+                            <a href={srcValue} title={fileTitleValue} target={target}>
                                 {fileTitleValue}
                             </a>
                         </li>
@@ -60,10 +55,7 @@ export const FileField: SFC<
     const titleValue = get(record, title) || title;
 
     return (
-        <div
-            className={classnames(classes.root, className)}
-            {...sanitizeRestProps(rest)}
-        >
+        <div className={classnames(classes.root, className)} {...sanitizeRestProps(rest)}>
             <a href={sourceValue} title={titleValue} target={target}>
                 {titleValue}
             </a>

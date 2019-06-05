@@ -1,8 +1,5 @@
 import { put, takeEvery } from 'redux-saga/effects';
-import {
-    showNotification,
-    NotificationType,
-} from '../actions/notificationActions';
+import { showNotification, NotificationType } from '../actions/notificationActions';
 
 export interface NotificationSideEffect {
     body: string;
@@ -23,21 +20,14 @@ interface ActionWithSideEffect {
 /**
  * Notification Side Effects
  */
-function* handleNotification({
-    error,
-    meta: { notification, optimistic },
-}: ActionWithSideEffect) {
+function* handleNotification({ error, meta: { notification, optimistic } }: ActionWithSideEffect) {
     const { body, level, messageArgs = {} } = notification;
     if (error) {
         return yield put(
-            showNotification(
-                typeof error === 'string' ? error : error.message || body,
-                level || 'warning',
-                {
-                    messageArgs,
-                    undoable: false,
-                }
-            )
+            showNotification(typeof error === 'string' ? error : error.message || body, level || 'warning', {
+                messageArgs,
+                undoable: false,
+            })
         );
     }
     yield put(

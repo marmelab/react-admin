@@ -24,18 +24,13 @@ ${children.map(child => `            ${child.getRepresentation()}`).join('\n')}
         component: ({ children, ...props }) => (
             <ArrayField {...props}>
                 <SingleFieldList>
-                    <ChipField
-                        source={children.length > 0 && children[0].props.source}
-                    />
+                    <ChipField source={children.length > 0 && children[0].props.source} />
                 </SingleFieldList>
             </ArrayField>
         ),
         representation: (props, children) =>
-            `<ArrayField source="${
-                props.source
-            }"><SingleFieldList><ChipField source="${children.length > 0 &&
-                children[0].getProps()
-                    .source}" /></SingleFieldList></ArrayField>`,
+            `<ArrayField source="${props.source}"><SingleFieldList><ChipField source="${children.length > 0 &&
+                children[0].getProps().source}" /></SingleFieldList></ArrayField>`,
     },
     boolean: {
         component: BooleanField,

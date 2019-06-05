@@ -18,12 +18,7 @@ const styles = {
     },
 };
 
-const CancelButtonView = ({
-    classes,
-    onClick,
-    label = 'ra.action.cancel',
-    translate,
-}) => (
+const CancelButtonView = ({ classes, onClick, label = 'ra.action.cancel', translate }) => (
     <Button className={classes.button} onClick={onClick}>
         <IconCancel className={classes.iconPaddingStyle} />
         {label && translate(label, { _: label })}

@@ -7,9 +7,7 @@ import { startUndoable, crudUpdateMany, Button } from 'react-admin';
 class ResetViewsAction extends Component {
     handleClick = () => {
         const { basePath, startUndoable, resource, selectedIds } = this.props;
-        startUndoable(
-            crudUpdateMany(resource, selectedIds, { views: 0 }, basePath)
-        );
+        startUndoable(crudUpdateMany(resource, selectedIds, { views: 0 }, basePath));
     };
 
     render() {

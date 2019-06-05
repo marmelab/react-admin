@@ -10,20 +10,8 @@ import Button from './Button';
 // useful to prevent click bubbling in a datagrid with rowClick
 const stopPropagation = e => e.stopPropagation();
 
-const EditButton = ({
-    basePath = '',
-    label = 'ra.action.edit',
-    record = {},
-    icon = <ContentCreate />,
-    ...rest
-}) => (
-    <Button
-        component={Link}
-        to={linkToRecord(basePath, record.id)}
-        label={label}
-        onClick={stopPropagation}
-        {...rest}
-    >
+const EditButton = ({ basePath = '', label = 'ra.action.edit', record = {}, icon = <ContentCreate />, ...rest }) => (
+    <Button component={Link} to={linkToRecord(basePath, record.id)} label={label} onClick={stopPropagation} {...rest}>
         {icon}
     </Button>
 );
@@ -40,9 +28,7 @@ EditButton.propTypes = {
 const enhance = shouldUpdate(
     (props, nextProps) =>
         props.translate !== nextProps.translate ||
-        (props.record &&
-            nextProps.record &&
-            props.record.id !== nextProps.record.id) ||
+        (props.record && nextProps.record && props.record.id !== nextProps.record.id) ||
         props.basePath !== nextProps.basePath ||
         (props.record == null && nextProps.record != null)
 );

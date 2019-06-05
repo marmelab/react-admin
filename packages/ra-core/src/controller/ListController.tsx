@@ -1,11 +1,5 @@
 /* eslint no-console: ["error", { allow: ["warn", "error"] }] */
-import {
-    Component,
-    isValidElement,
-    ReactNode,
-    ReactElement,
-    ComponentType,
-} from 'react';
+import { Component, isValidElement, ReactNode, ReactElement, ComponentType } from 'react';
 import { connect } from 'react-redux';
 import { parse, stringify } from 'query-string';
 import { push as pushAction } from 'react-router-redux';
@@ -34,14 +28,7 @@ import {
 import withTranslate from '../i18n/translate';
 import removeKey from '../util/removeKey';
 import checkMinimumRequiredProps from './checkMinimumRequiredProps';
-import {
-    Sort,
-    AuthProvider,
-    RecordMap,
-    Identifier,
-    Translate,
-    Dispatch,
-} from '../types';
+import { Sort, AuthProvider, RecordMap, Identifier, Translate, Dispatch } from '../types';
 import { Location, LocationDescriptorObject, LocationState } from 'history';
 
 interface ChildrenFuncParams {
@@ -154,9 +141,7 @@ interface EnhancedProps {
  *         </List>
  *     );
  */
-export class UnconnectedListController extends Component<
-    Props & EnhancedProps
-> {
+export class UnconnectedListController extends Component<Props & EnhancedProps> {
     public static defaultProps: Partial<Props> = {
         debounce: 500,
         filter: {},
@@ -217,11 +202,7 @@ export class UnconnectedListController extends Component<
             !isEqual(nextProps.sort, this.props.sort) ||
             !isEqual(nextProps.perPage, this.props.perPage)
         ) {
-            this.updateData(
-                Object.keys(nextProps.query).length > 0
-                    ? nextProps.query
-                    : nextProps.params
-            );
+            this.updateData(Object.keys(nextProps.query).length > 0 ? nextProps.query : nextProps.params);
         }
         if (nextProps.version !== this.props.version) {
             this.updateData();
@@ -322,8 +303,7 @@ export class UnconnectedListController extends Component<
 
     setPage = page => this.changeParams({ type: SET_PAGE, payload: page });
 
-    setPerPage = perPage =>
-        this.changeParams({ type: SET_PER_PAGE, payload: perPage });
+    setPerPage = perPage => this.changeParams({ type: SET_PER_PAGE, payload: perPage });
 
     showFilter = (filterName: string, defaultValue: any) => {
         this.setState({ [filterName]: true });
@@ -407,14 +387,8 @@ export class UnconnectedListController extends Component<
             onSelect: this.handleSelect,
             onToggleItem: this.handleToggleItem,
             onUnselectItems: this.handleUnselectItems,
-            page:
-                (typeof query.page === 'string'
-                    ? parseInt(query.page, 10)
-                    : query.page) || 1,
-            perPage:
-                (typeof query.perPage === 'string'
-                    ? parseInt(query.perPage, 10)
-                    : query.perPage) || 10,
+            page: (typeof query.page === 'string' ? parseInt(query.page, 10) : query.page) || 1,
+            perPage: (typeof query.perPage === 'string' ? parseInt(query.perPage, 10) : query.perPage) || 10,
             resource,
             selectedIds,
             setFilters: this.setFilters,
@@ -464,8 +438,7 @@ const injectedProps = [
  * to be passed to the List children need
  * This is an implementation of pick()
  */
-export const getListControllerProps = props =>
-    injectedProps.reduce((acc, key) => ({ ...acc, [key]: props[key] }), {});
+export const getListControllerProps = props => injectedProps.reduce((acc, key) => ({ ...acc, [key]: props[key] }), {});
 
 /**
  * Select the props not injected by the ListController
@@ -484,10 +457,7 @@ const selectQuery = createSelector(
     getLocationPath,
     getLocationSearch,
     (path, search) => {
-        const query = pickBy(
-            parse(search),
-            (v, k) => validQueryParams.indexOf(k) !== -1
-        );
+        const query = pickBy(parse(search), (v, k) => validQueryParams.indexOf(k) !== -1);
         if (query.filter && typeof query.filter === 'string') {
             try {
                 query.filter = JSON.parse(query.filter);

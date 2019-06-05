@@ -3,10 +3,7 @@ import { connect } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
 import WithPermissions from './auth/WithPermissions';
 
-import {
-    registerResource as registerResourceAction,
-    unregisterResource as unregisterResourceAction,
-} from './actions';
+import { registerResource as registerResourceAction, unregisterResource as unregisterResourceAction } from './actions';
 import { Dispatch, ResourceProps, ResourceMatch } from './types';
 
 interface ConnectedProps {
@@ -21,17 +18,7 @@ export class Resource extends Component<ResourceProps & ConnectedProps> {
     };
 
     componentWillMount() {
-        const {
-            context,
-            name,
-            list,
-            create,
-            edit,
-            show,
-            options,
-            icon,
-            registerResource,
-        } = this.props;
+        const { context, name, list, create, edit, show, options, icon, registerResource } = this.props;
 
         if (context === 'registration') {
             const resource = {
@@ -56,16 +43,7 @@ export class Resource extends Component<ResourceProps & ConnectedProps> {
     }
 
     render() {
-        const {
-            match,
-            context,
-            name,
-            list,
-            create,
-            edit,
-            show,
-            options,
-        } = this.props;
+        const { match, context, name, list, create, edit, show, options } = this.props;
 
         if (context === 'registration') {
             return null;
@@ -109,10 +87,7 @@ export class Resource extends Component<ResourceProps & ConnectedProps> {
                                 render={props =>
                                     createElement(show, {
                                         basePath,
-                                        id: decodeURIComponent(
-                                            (props.match as ResourceMatch)
-                                                .params.id
-                                        ),
+                                        id: decodeURIComponent((props.match as ResourceMatch).params.id),
                                         ...props,
                                     })
                                 }
@@ -130,10 +105,7 @@ export class Resource extends Component<ResourceProps & ConnectedProps> {
                                 render={props =>
                                     createElement(edit, {
                                         basePath,
-                                        id: decodeURIComponent(
-                                            (props.match as ResourceMatch)
-                                                .params.id
-                                        ),
+                                        id: decodeURIComponent((props.match as ResourceMatch).params.id),
                                         ...props,
                                     })
                                 }

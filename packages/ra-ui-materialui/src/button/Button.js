@@ -58,12 +58,7 @@ const Button = ({
                     </IconButton>
                 </Tooltip>
             ) : (
-                <IconButton
-                    className={className}
-                    color={color}
-                    disabled={disabled}
-                    {...rest}
-                >
+                <IconButton className={className} color={color} disabled={disabled} {...rest}>
                     {children}
                 </IconButton>
             )
@@ -116,8 +111,8 @@ Button.propTypes = {
 
 Button.defaultProps = {
     color: 'primary',
-    size: 'small'
-}
+    size: 'small',
+};
 
 const enhance = compose(
     withStyles(styles),

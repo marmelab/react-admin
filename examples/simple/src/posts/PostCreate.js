@@ -36,12 +36,7 @@ class SaveWithNoteButtonComponent extends Component {
     render() {
         const { handleSubmitWithRedirect, saveWithNote, ...props } = this.props;
 
-        return (
-            <SaveButton
-                handleSubmitWithRedirect={this.handleClick}
-                {...props}
-            />
-        );
+        return <SaveButton handleSubmitWithRedirect={this.handleClick} {...props} />;
     }
 }
 
@@ -52,23 +47,9 @@ const SaveWithNoteButton = connect(
 
 const PostCreateToolbar = props => (
     <Toolbar {...props}>
-        <SaveButton
-            label="post.action.save_and_edit"
-            redirect="edit"
-            submitOnEnter={true}
-        />
-        <SaveButton
-            label="post.action.save_and_show"
-            redirect="show"
-            submitOnEnter={false}
-            variant="flat"
-        />
-        <SaveButton
-            label="post.action.save_and_add"
-            redirect={false}
-            submitOnEnter={false}
-            variant="flat"
-        />
+        <SaveButton label="post.action.save_and_edit" redirect="edit" submitOnEnter={true} />
+        <SaveButton label="post.action.save_and_show" redirect="show" submitOnEnter={false} variant="flat" />
+        <SaveButton label="post.action.save_and_add" redirect={false} submitOnEnter={false} variant="flat" />
         <SaveWithNoteButton
             label="post.action.save_with_average_note"
             redirect="show"
@@ -105,13 +86,7 @@ const PostCreate = ({ permissions, ...props }) => (
             <RichTextInput source="body" />
             <FormDataConsumer>
                 {({ formData, ...rest }) =>
-                    formData.title && (
-                        <NumberInput
-                            source="average_note"
-                            defaultValue={5}
-                            {...rest}
-                        />
-                    )
+                    formData.title && <NumberInput source="average_note" defaultValue={5} {...rest} />
                 }
             </FormDataConsumer>
             <DateInput source="published_at" defaultValue={getDefaultDate} />
@@ -133,20 +108,11 @@ const PostCreate = ({ permissions, ...props }) => (
             {permissions === 'admin' && (
                 <ArrayInput source="authors">
                     <SimpleFormIterator>
-                        <ReferenceInput
-                            label="User"
-                            source="user_id"
-                            reference="users"
-                        >
+                        <ReferenceInput label="User" source="user_id" reference="users">
                             <AutocompleteInput />
                         </ReferenceInput>
                         <FormDataConsumer>
-                            {({
-                                formData,
-                                scopedFormData,
-                                getSource,
-                                ...rest
-                            }) =>
+                            {({ formData, scopedFormData, getSource, ...rest }) =>
                                 scopedFormData.user_id ? (
                                     <SelectInput
                                         label="Role"

@@ -1,6 +1,6 @@
 import React from 'react';
 import debounce from 'lodash/debounce';
-import {render, fireEvent, waitForElement, cleanup, getByTestId} from 'react-testing-library'
+import { render, fireEvent, waitForElement, cleanup, getByTestId } from 'react-testing-library';
 
 import { RichTextInput } from './index';
 
@@ -9,15 +9,15 @@ let container;
 jest.mock('lodash/debounce');
 describe('RichTextInput', () => {
     beforeEach(() => {
-      container = document.createElement('div');
-      document.body.appendChild(container);
-      // required as quilljs uses getSelection api
-      document.getSelection = () => {
-          return {
-            removeAllRanges: () => {},
-            getRangeAt: function() {}, 
-          };
-      };
+        container = document.createElement('div');
+        document.body.appendChild(container);
+        // required as quilljs uses getSelection api
+        document.getSelection = () => {
+            return {
+                removeAllRanges: () => {},
+                getRangeAt: function() {},
+            };
+        };
     });
 
     afterEach(() => {
@@ -30,31 +30,35 @@ describe('RichTextInput', () => {
         const handleChange = jest.fn();
         debounce.mockImplementation(fn => fn);
         const { getByTestId, rerender } = render(
-        <RichTextInput
-            input={{
-              value: '<p>test</p>',
-                onChange: handleChange
-            }}
-            meta={{error: null}} />);
+            <RichTextInput
+                input={{
+                    value: '<p>test</p>',
+                    onChange: handleChange,
+                }}
+                meta={{ error: null }}
+            />
+        );
         const quillNode = await waitForElement(() => {
-            return getByTestId('quill')
+            return getByTestId('quill');
         });
         const node = quillNode.querySelector('.ql-editor');
         fireEvent.input(node, {
-          target: { innerHTML: '<p>test1</p>' }
+            target: { innerHTML: '<p>test1</p>' },
         });
 
         // ensuring the first 'text-change' event had been handled
         jest.runOnlyPendingTimers();
 
         rerender(
-          <RichTextInput
-            input={{
-              value: '<p>test1</p>',
-                onChange: handleChange
-            }}
-            meta={{error: null}} />)
+            <RichTextInput
+                input={{
+                    value: '<p>test1</p>',
+                    onChange: handleChange,
+                }}
+                meta={{ error: null }}
+            />
+        );
 
         expect(handleChange).toHaveBeenCalledTimes(1);
     });
-})
+});

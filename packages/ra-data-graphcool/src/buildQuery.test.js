@@ -13,17 +13,13 @@ describe('buildQuery', () => {
     };
 
     it('throws an error if resource is unknown', () => {
-        expect(() =>
-            buildQueryFactory()(introspectionResults)('GET_LIST', 'Comment')
-        ).toThrow(
+        expect(() => buildQueryFactory()(introspectionResults)('GET_LIST', 'Comment')).toThrow(
             'Unknown resource Comment. Make sure it has been declared on your server side schema. Known resources are Post'
         );
     });
 
     it('throws an error if resource does not have a query or mutation for specified AOR fetch type', () => {
-        expect(() =>
-            buildQueryFactory()(introspectionResults)('CREATE', 'Post')
-        ).toThrow(
+        expect(() => buildQueryFactory()(introspectionResults)('CREATE', 'Post')).toThrow(
             'No query or mutation matching fetch type CREATE could be found for resource Post'
         );
     });
@@ -44,11 +40,9 @@ describe('buildQuery', () => {
         const getResponseParserFactory = jest.fn(() => getResponseParser);
 
         expect(
-            buildQueryFactory(
-                buildVariablesFactory,
-                buildGqlQueryFactory,
-                getResponseParserFactory
-            )(introspectionResults)('GET_LIST', 'Post', { foo: 'bar' })
+            buildQueryFactory(buildVariablesFactory, buildGqlQueryFactory, getResponseParserFactory)(
+                introspectionResults
+            )('GET_LIST', 'Post', { foo: 'bar' })
         ).toEqual({
             query: gql`
                 query {
@@ -59,30 +53,12 @@ describe('buildQuery', () => {
             parseResponse: 'parseResponseFunction',
         });
 
-        expect(buildVariablesFactory).toHaveBeenCalledWith(
-            introspectionResults
-        );
+        expect(buildVariablesFactory).toHaveBeenCalledWith(introspectionResults);
         expect(buildGqlQueryFactory).toHaveBeenCalledWith(introspectionResults);
-        expect(getResponseParserFactory).toHaveBeenCalledWith(
-            introspectionResults
-        );
+        expect(getResponseParserFactory).toHaveBeenCalledWith(introspectionResults);
 
-        expect(buildVariables).toHaveBeenCalledWith(
-            resource,
-            'GET_LIST',
-            { foo: 'bar' },
-            queryType
-        );
-        expect(buildGqlQuery).toHaveBeenCalledWith(
-            resource,
-            'GET_LIST',
-            queryType,
-            { foo: true }
-        );
-        expect(getResponseParser).toHaveBeenCalledWith(
-            'GET_LIST',
-            resource,
-            queryType
-        );
+        expect(buildVariables).toHaveBeenCalledWith(resource, 'GET_LIST', { foo: 'bar' }, queryType);
+        expect(buildGqlQuery).toHaveBeenCalledWith(resource, 'GET_LIST', queryType, { foo: true });
+        expect(getResponseParser).toHaveBeenCalledWith('GET_LIST', resource, queryType);
     });
 });

@@ -79,19 +79,12 @@ ReferenceArrayFieldView.propTypes = {
  */
 export const ReferenceArrayField = ({ children, ...props }) => {
     if (React.Children.count(children) !== 1) {
-        throw new Error(
-            '<ReferenceArrayField> only accepts a single child (like <Datagrid>)'
-        );
+        throw new Error('<ReferenceArrayField> only accepts a single child (like <Datagrid>)');
     }
 
     return (
         <ReferenceArrayFieldController {...props}>
-            {controllerProps => (
-                <ReferenceArrayFieldView
-                    {...props}
-                    {...{ children, ...controllerProps }}
-                />
-            )}
+            {controllerProps => <ReferenceArrayFieldView {...props} {...{ children, ...controllerProps }} />}
         </ReferenceArrayFieldController>
     );
 };

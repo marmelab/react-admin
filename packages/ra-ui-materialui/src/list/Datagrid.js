@@ -14,51 +14,52 @@ import DatagridHeaderCell from './DatagridHeaderCell';
 import DatagridBody from './DatagridBody';
 import DatagridLoading from './DatagridLoading';
 
-const styles = theme => createStyles({
-    table: {
-        tableLayout: 'auto',
-    },
-    thead: {},
-    tbody: {
-        height: 'inherit',
-    },
-    headerRow: {},
-    headerCell: {
-        padding: '0 12px',
-        '&:last-child': {
-            padding: '0 12px',
+const styles = theme =>
+    createStyles({
+        table: {
+            tableLayout: 'auto',
         },
-    },
-    checkbox: {},
-    row: {},
-    clickableRow: {
-        cursor: 'pointer',
-    },
-    rowEven: {},
-    rowOdd: {},
-    rowCell: {
-        padding: '0 12px',
-        '&:last-child': {
-            padding: '0 12px',
+        thead: {},
+        tbody: {
+            height: 'inherit',
         },
-    },
-    expandHeader: {
-        padding: 0,
-        width: 48,
-    },
-    expandIconCell: {
-        width: 48,
-    },
-    expandIcon: {
-        transform: 'rotate(-90deg)',
-        transition: theme.transitions.create('transform', {
-            duration: theme.transitions.duration.shortest,
-        }),
-    },
-    expanded: {
-        transform: 'rotate(0deg)',
-    },
-});
+        headerRow: {},
+        headerCell: {
+            padding: '0 12px',
+            '&:last-child': {
+                padding: '0 12px',
+            },
+        },
+        checkbox: {},
+        row: {},
+        clickableRow: {
+            cursor: 'pointer',
+        },
+        rowEven: {},
+        rowOdd: {},
+        rowCell: {
+            padding: '0 12px',
+            '&:last-child': {
+                padding: '0 12px',
+            },
+        },
+        expandHeader: {
+            padding: 0,
+            width: 48,
+        },
+        expandIconCell: {
+            width: 48,
+        },
+        expandIcon: {
+            transform: 'rotate(-90deg)',
+            transition: theme.transitions.create('transform', {
+                duration: theme.transitions.duration.shortest,
+            }),
+        },
+        expanded: {
+            transform: 'rotate(0deg)',
+        },
+    });
 
 /**
  * The Datagrid component renders a list of records as a table.
@@ -103,8 +104,7 @@ class Datagrid extends Component {
         if (event.target.checked) {
             onSelect(
                 ids.reduce(
-                    (idList, id) =>
-                        idList.includes(id) ? idList : idList.concat(id),
+                    (idList, id) => (idList.includes(id) ? idList : idList.concat(id)),
 
                     selectedIds
                 )
@@ -173,17 +173,10 @@ class Datagrid extends Component {
          * the datagrid displays the current data.
          */
         return (
-            <Table
-                className={classnames(classes.table, className)}
-                {...sanitizeListRestProps(rest)}
-            >
+            <Table className={classnames(classes.table, className)} {...sanitizeListRestProps(rest)}>
                 <TableHead className={classes.thead}>
-                    <TableRow
-                        className={classnames(classes.row, classes.headerRow)}
-                    >
-                        {expand && (
-                            <TableCell className={classes.expandHeader} />
-                        )}
+                    <TableRow className={classnames(classes.row, classes.headerRow)}>
+                        {expand && <TableCell className={classes.expandHeader} />}
                         {hasBulkActions && (
                             <TableCell padding="none">
                                 <Checkbox
@@ -192,9 +185,7 @@ class Datagrid extends Component {
                                     checked={
                                         selectedIds.length > 0 &&
                                         ids.length > 0 &&
-                                        !ids.find(
-                                            it => selectedIds.indexOf(it) === -1
-                                        )
+                                        !ids.find(it => selectedIds.indexOf(it) === -1)
                                     }
                                     onChange={this.handleSelectAll}
                                 />
@@ -206,11 +197,7 @@ class Datagrid extends Component {
                                     className={classes.headerCell}
                                     currentSort={currentSort}
                                     field={field}
-                                    isSorting={
-                                        currentSort.field ===
-                                        (field.props.sortBy ||
-                                            field.props.source)
-                                    }
+                                    isSorting={currentSort.field === (field.props.sortBy || field.props.source)}
                                     key={field.props.source || index}
                                     resource={resource}
                                     updateSort={this.updateSort}

@@ -60,30 +60,12 @@ export class ArrayInput extends Component {
     };
 
     render() {
-        const {
-            className,
-            defaultValue,
-            label,
-            source,
-            resource,
-            validate,
-            ...rest
-        } = this.props;
+        const { className, defaultValue, label, source, resource, validate, ...rest } = this.props;
 
         return (
-            <FormControl
-                fullWidth
-                margin="normal"
-                className={className}
-                {...sanitizeRestProps(rest)}
-            >
+            <FormControl fullWidth margin="normal" className={className} {...sanitizeRestProps(rest)}>
                 <InputLabel htmlFor={source} shrink>
-                    <FieldTitle
-                        label={label}
-                        source={source}
-                        resource={resource}
-                        isRequired={isRequired(validate)}
-                    />
+                    <FieldTitle label={label} source={source} resource={resource} isRequired={isRequired(validate)} />
                 </InputLabel>
                 <FieldArray
                     name={source}
@@ -107,10 +89,7 @@ ArrayInput.propTypes = {
     source: PropTypes.string,
     record: PropTypes.object,
     options: PropTypes.object,
-    validate: PropTypes.oneOfType([
-        PropTypes.func,
-        PropTypes.arrayOf(PropTypes.func),
-    ]),
+    validate: PropTypes.oneOfType([PropTypes.func, PropTypes.arrayOf(PropTypes.func)]),
 };
 
 ArrayInput.defaultProps = {

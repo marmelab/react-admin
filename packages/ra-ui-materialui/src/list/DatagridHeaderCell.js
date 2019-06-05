@@ -39,40 +39,24 @@ export const DatagridHeaderCell = ({
         variant="head"
         {...rest}
     >
-        {field.props.sortable !== false &&
-        (field.props.sortBy || field.props.source) ? (
+        {field.props.sortable !== false && (field.props.sortBy || field.props.source) ? (
             <Tooltip
                 title={translate('ra.action.sort')}
-                placement={
-                    field.props.textAlign === 'right'
-                        ? 'bottom-end'
-                        : 'bottom-start'
-                }
+                placement={field.props.textAlign === 'right' ? 'bottom-end' : 'bottom-start'}
                 enterDelay={300}
             >
                 <TableSortLabel
-                    active={
-                        currentSort.field ===
-                        (field.props.sortBy || field.props.source)
-                    }
+                    active={currentSort.field === (field.props.sortBy || field.props.source)}
                     direction={currentSort.order === 'ASC' ? 'asc' : 'desc'}
                     data-sort={field.props.sortBy || field.props.source}
                     onClick={updateSort}
                     classes={classes}
                 >
-                    <FieldTitle
-                        label={field.props.label}
-                        source={field.props.source}
-                        resource={resource}
-                    />
+                    <FieldTitle label={field.props.label} source={field.props.source} resource={resource} />
                 </TableSortLabel>
             </Tooltip>
         ) : (
-            <FieldTitle
-                label={field.props.label}
-                source={field.props.source}
-                resource={resource}
-            />
+            <FieldTitle label={field.props.label} source={field.props.source} resource={resource} />
         )}
     </TableCell>
 );
@@ -96,8 +80,7 @@ const enhance = compose(
     shouldUpdate(
         (props, nextProps) =>
             props.isSorting !== nextProps.isSorting ||
-            (nextProps.isSorting &&
-                props.currentSort.order !== nextProps.currentSort.order)
+            (nextProps.isSorting && props.currentSort.order !== nextProps.currentSort.order)
     ),
     translate,
     withStyles(styles)

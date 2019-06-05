@@ -4,16 +4,8 @@ import get from 'lodash/get';
 import isEqual from 'lodash/isEqual';
 
 import { crudGetManyReference as crudGetManyReferenceAction } from '../../actions';
-import {
-    SORT_ASC,
-    SORT_DESC,
-} from '../../reducer/admin/resource/list/queryReducer';
-import {
-    getIds,
-    getReferences,
-    getTotal,
-    nameRelatedTo,
-} from '../../reducer/admin/references/oneToMany';
+import { SORT_ASC, SORT_DESC } from '../../reducer/admin/resource/list/queryReducer';
+import { getIds, getReferences, getTotal, nameRelatedTo } from '../../reducer/admin/references/oneToMany';
 import { Record, Sort, RecordMap, Identifier, Dispatch } from '../../types';
 
 interface ChildrenFuncParams {
@@ -100,10 +92,7 @@ interface State {
  *    ...
  * </ReferenceManyField>
  */
-export class UnconnectedReferenceManyFieldController extends Component<
-    Props,
-    State
-> {
+export class UnconnectedReferenceManyFieldController extends Component<Props, State> {
     public static defaultProps: Partial<Props> = {
         filter: {},
         perPage: 25,
@@ -122,10 +111,7 @@ export class UnconnectedReferenceManyFieldController extends Component<
     }
 
     componentWillReceiveProps(nextProps: Props) {
-        if (
-            this.props.record.id !== nextProps.record.id ||
-            !isEqual(this.props.filter, nextProps.filter)
-        ) {
+        if (this.props.record.id !== nextProps.record.id || !isEqual(this.props.filter, nextProps.filter)) {
             this.fetchReferences(nextProps);
         }
 
@@ -135,31 +121,18 @@ export class UnconnectedReferenceManyFieldController extends Component<
     }
 
     setSort = (field: string) => {
-        const order =
-            this.state.sort.field === field &&
-            this.state.sort.order === SORT_ASC
-                ? SORT_DESC
-                : SORT_ASC;
+        const order = this.state.sort.field === field && this.state.sort.order === SORT_ASC ? SORT_DESC : SORT_ASC;
         this.setState({ sort: { field, order } }, this.fetchReferences);
     };
 
     setPage = (page: number) => this.setState({ page }, this.fetchReferences);
 
-    setPerPage = (perPage: number) =>
-        this.setState({ perPage }, this.fetchReferences);
+    setPerPage = (perPage: number) => this.setState({ perPage }, this.fetchReferences);
 
-    fetchReferences(
-        { reference, record, resource, target, filter, source } = this.props
-    ) {
+    fetchReferences({ reference, record, resource, target, filter, source } = this.props) {
         const { crudGetManyReference } = this.props;
         const { page, perPage, sort } = this.state;
-        const relatedTo = nameRelatedTo(
-            reference,
-            get(record, source),
-            resource,
-            target,
-            filter
-        );
+        const relatedTo = nameRelatedTo(reference, get(record, source), resource, target, filter);
 
         crudGetManyReference(
             reference,
@@ -174,15 +147,7 @@ export class UnconnectedReferenceManyFieldController extends Component<
     }
 
     render() {
-        const {
-            resource,
-            reference,
-            data,
-            ids,
-            children,
-            basePath,
-            total,
-        } = this.props;
+        const { resource, reference, data, ids, children, basePath, total } = this.props;
         const { page, perPage } = this.state;
 
         const referenceBasePath = basePath.replace(resource, reference);

@@ -7,8 +7,7 @@ export default url => ({
         filterMenuItems: `.new-filter-item`,
         menuItems: `[role=menuitem`,
         filterMenuItem: source => `.new-filter-item[data-key="${source}"]`,
-        hideFilterButton: source =>
-            `.filter-field[data-source="${source}"] .hide-filter`,
+        hideFilterButton: source => `.filter-field[data-source="${source}"] .hide-filter`,
         nextPage: '.next-page',
         pageNumber: n => `.page-number[data-page='${n - 1}']`,
         previousPage: '.previous-page',
@@ -19,10 +18,8 @@ export default url => ({
         svg: (name, criteria = '') => `th span[data-sort=\"${name}\"] svg${criteria}`,
         logout: '.logout',
         bulkActionsToolbar: '[data-test=bulk-actions-toolbar]',
-        customBulkActionsButton:
-            '[data-test=bulk-actions-toolbar] button:first-child',
-        deleteBulkActionsButton:
-            '[data-test=bulk-actions-toolbar] button:last-child',
+        customBulkActionsButton: '[data-test=bulk-actions-toolbar] button:first-child',
+        deleteBulkActionsButton: '[data-test=bulk-actions-toolbar] button:last-child',
         selectAll: '.select-all',
         selectedItem: '.select-item input:checked',
         selectItem: '.select-item input',
@@ -107,5 +104,5 @@ export default url => ({
 
     toggleColumnSort(name) {
         cy.get(this.elements.sortBy(name)).click();
-    }
+    },
 });

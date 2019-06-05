@@ -24,18 +24,14 @@ const defaultProps = {
 describe('UserShow', () => {
     describe('As User', () => {
         it('should display one tab', () => {
-            const wrapper = shallow(
-                <UserShow {...defaultProps} permissions="user" />
-            );
+            const wrapper = shallow(<UserShow {...defaultProps} permissions="user" />);
 
             const tab = wrapper.find(Tab);
             expect(tab.length).toBe(1);
         });
 
         it('should show the user identity in the first tab', () => {
-            const wrapper = shallow(
-                <UserShow {...defaultProps} permissions="user" />
-            );
+            const wrapper = shallow(<UserShow {...defaultProps} permissions="user" />);
 
             const tab = wrapper.find(Tab);
             const fields = tab.find(TextField);
@@ -47,18 +43,14 @@ describe('UserShow', () => {
 
     describe('As Admin', () => {
         it('should display two tabs', () => {
-            const wrapper = shallow(
-                <UserShow {...defaultProps} permissions="admin" />
-            );
+            const wrapper = shallow(<UserShow {...defaultProps} permissions="admin" />);
 
             const tabs = wrapper.find(Tab);
             expect(tabs.length).toBe(2);
         });
 
         it('should show the user identity in the first tab', () => {
-            const wrapper = shallow(
-                <UserShow {...defaultProps} permissions="admin" />
-            );
+            const wrapper = shallow(<UserShow {...defaultProps} permissions="admin" />);
 
             const tabs = wrapper.find(Tab);
             const fields = tabs.at(0).find(TextField);
@@ -68,9 +60,7 @@ describe('UserShow', () => {
         });
 
         it('should show the user role in the second tab', () => {
-            const wrapper = shallow(
-                <UserShow {...defaultProps} permissions="admin" />
-            );
+            const wrapper = shallow(<UserShow {...defaultProps} permissions="admin" />);
 
             const tabs = wrapper.find(Tab);
             const fields = tabs.at(1).find(TextField);

@@ -23,9 +23,7 @@ describe('Create Page', () => {
     it('should put the current date in the field by default', () => {
         const currentDate = new Date();
         const currentDateString = currentDate.toISOString().slice(0, 10);
-        cy.get(CreatePage.elements.input('published_at')).should(el =>
-            expect(el).to.have.value(currentDateString)
-        );
+        cy.get(CreatePage.elements.input('published_at')).should(el => expect(el).to.have.value(currentDateString));
     });
 
     it('should put the ArrayInput default value', () => {
@@ -41,12 +39,8 @@ describe('Create Page', () => {
 
     it('should have a working array input with references', () => {
         cy.get(CreatePage.elements.addAuthor).click();
-        cy.get(CreatePage.elements.input('authors[0].user_id')).should(
-            el => expect(el).to.exist
-        );
-        cy.get(CreatePage.elements.input('authors[0].role')).should(
-            el => expect(el).to.not.exist
-        );
+        cy.get(CreatePage.elements.input('authors[0].user_id')).should(el => expect(el).to.exist);
+        cy.get(CreatePage.elements.input('authors[0].role')).should(el => expect(el).to.not.exist);
     });
 
     it('should have a working array input with a scoped FormDataConsumer', () => {
@@ -59,9 +53,7 @@ describe('Create Page', () => {
             },
         ]);
         cy.contains('Annamarie Mayer').click();
-        cy.get(CreatePage.elements.input('authors[0].role')).should(
-            el => expect(el).to.exist
-        );
+        cy.get(CreatePage.elements.input('authors[0].role')).should(el => expect(el).to.exist);
     });
 
     it('should redirect to edit page after create success', () => {
@@ -81,12 +73,8 @@ describe('Create Page', () => {
         CreatePage.setValues(values);
         CreatePage.submit();
         EditPage.waitUntilVisible();
-        cy.get(EditPage.elements.input('title')).should(el =>
-            expect(el).to.have.value('Test title')
-        );
-        cy.get(EditPage.elements.input('teaser')).should(el =>
-            expect(el).to.have.value('Test teaser')
-        );
+        cy.get(EditPage.elements.input('title')).should(el => expect(el).to.have.value('Test title'));
+        cy.get(EditPage.elements.input('teaser')).should(el => expect(el).to.have.value('Test teaser'));
 
         EditPage.delete();
     });
@@ -128,9 +116,7 @@ describe('Create Page', () => {
         CreatePage.setValues(values);
         CreatePage.submitAndAdd();
         cy.url().then(url => expect(url).to.contain('/#/posts/create'));
-        cy.get(CreatePage.elements.input('title')).should(el =>
-            expect(el).to.have.value('')
-        ); // new empty form
+        cy.get(CreatePage.elements.input('title')).should(el => expect(el).to.have.value('')); // new empty form
 
         EditPage.navigate();
         EditPage.delete();
@@ -186,12 +172,8 @@ describe('Create Page', () => {
             },
         ];
         CreatePage.setValues(values);
-        cy.get(CreatePage.elements.input('average_note')).should(el =>
-            expect(el).to.have.value('5')
-        );
-        cy.get(CreatePage.elements.input('title')).should(el =>
-            expect(el).to.have.value('Test title')
-        );
+        cy.get(CreatePage.elements.input('average_note')).should(el => expect(el).to.have.value('5'));
+        cy.get(CreatePage.elements.input('title')).should(el => expect(el).to.have.value('Test title'));
     });
 
     it('should not reset the form value when switching tabs', () => {
@@ -208,8 +190,6 @@ describe('Create Page', () => {
         ]);
         CreatePage.gotoTab(2);
         CreatePage.gotoTab(1);
-        cy.get(CreatePage.elements.input('name')).should(el =>
-            expect(el).to.have.value('The real Slim Shady!')
-        );
+        cy.get(CreatePage.elements.input('name')).should(el => expect(el).to.have.value('The real Slim Shady!'));
     });
 });

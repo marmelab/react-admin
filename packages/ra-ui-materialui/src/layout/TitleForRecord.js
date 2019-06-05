@@ -3,11 +3,7 @@ import PropTypes from 'prop-types';
 import Title from './Title';
 
 const TitleForRecord = ({ defaultTitle, record, title }) =>
-    record ? (
-        <Title title={title} record={record} defaultTitle={defaultTitle} />
-    ) : (
-        ''
-    );
+    record ? <Title title={title} record={record} defaultTitle={defaultTitle} /> : '';
 
 TitleForRecord.propTypes = {
     defaultTitle: PropTypes.any,

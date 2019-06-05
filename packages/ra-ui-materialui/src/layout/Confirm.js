@@ -77,14 +77,8 @@ class Confirm extends Component {
         const { loading } = this.state;
 
         return (
-            <Dialog
-                open={isOpen}
-                onClose={onClose}
-                aria-labelledby="alert-dialog-title"
-            >
-                <DialogTitle id="alert-dialog-title">
-                    {translate(title, { _: title, ...translateOptions })}
-                </DialogTitle>
+            <Dialog open={isOpen} onClose={onClose} aria-labelledby="alert-dialog-title">
+                <DialogTitle id="alert-dialog-title">{translate(title, { _: title, ...translateOptions })}</DialogTitle>
                 <DialogContent>
                     <DialogContentText className={classes.contentText}>
                         {translate(content, {
@@ -102,10 +96,8 @@ class Confirm extends Component {
                         disabled={loading}
                         onClick={this.handleConfirm}
                         className={classnames('ra-confirm', {
-                            [classes.confirmWarning]:
-                                confirmColor === 'warning',
-                            [classes.confirmPrimary]:
-                                confirmColor === 'primary',
+                            [classes.confirmWarning]: confirmColor === 'warning',
+                            [classes.confirmPrimary]: confirmColor === 'primary',
                         })}
                         autoFocus
                     >

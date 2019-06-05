@@ -36,11 +36,7 @@ describe('<FileInputPreview />', () => {
         const revokeObjectURL = jest.fn();
 
         const wrapper = shallow(
-            <FileInputPreview
-                onRemove={() => true}
-                file={file}
-                revokeObjectURL={revokeObjectURL}
-            >
+            <FileInputPreview onRemove={() => true} file={file} revokeObjectURL={revokeObjectURL}>
                 <div id="child">Child</div>
             </FileInputPreview>
         );
@@ -54,11 +50,7 @@ describe('<FileInputPreview />', () => {
         const revokeObjectURL = jest.fn();
 
         const wrapper = shallow(
-            <FileInputPreview
-                onRemove={() => true}
-                file={file}
-                revokeObjectURL={revokeObjectURL}
-            >
+            <FileInputPreview onRemove={() => true} file={file} revokeObjectURL={revokeObjectURL}>
                 <div id="child">Child</div>
             </FileInputPreview>
         );

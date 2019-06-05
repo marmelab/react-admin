@@ -5,11 +5,7 @@ import BulkDeleteWithUndoButton from './BulkDeleteWithUndoButton';
 import Button from './Button';
 
 const BulkDeleteButton = ({ undoable, ...props }) =>
-    undoable ? (
-        <BulkDeleteWithUndoButton {...props} />
-    ) : (
-        <BulkDeleteWithConfirmButton {...props} />
-    );
+    undoable ? <BulkDeleteWithUndoButton {...props} /> : <BulkDeleteWithConfirmButton {...props} />;
 
 BulkDeleteButton.propTypes = {
     basePath: PropTypes.string,

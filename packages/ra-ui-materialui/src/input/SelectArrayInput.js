@@ -149,22 +149,14 @@ export class SelectArrayInput extends Component {
             return React.cloneElement(optionText, {
                 record: choice,
             });
-        const choiceName =
-            typeof optionText === 'function'
-                ? optionText(choice)
-                : get(choice, optionText);
-        return translateChoice
-            ? translate(choiceName, { _: choiceName })
-            : choiceName;
+        const choiceName = typeof optionText === 'function' ? optionText(choice) : get(choice, optionText);
+        return translateChoice ? translate(choiceName, { _: choiceName }) : choiceName;
     };
 
     renderMenuItem = choice => {
         const { optionValue } = this.props;
         return (
-            <MenuItem
-                key={get(choice, optionValue)}
-                value={get(choice, optionValue)}
-            >
+            <MenuItem key={get(choice, optionValue)} value={get(choice, optionValue)}>
                 {this.renderMenuItemOption(choice)}
             </MenuItem>
         );
@@ -200,12 +192,7 @@ export class SelectArrayInput extends Component {
                 {...sanitizeRestProps(rest)}
             >
                 <InputLabel htmlFor={source}>
-                    <FieldTitle
-                        label={label}
-                        source={source}
-                        resource={resource}
-                        isRequired={isRequired}
-                    />
+                    <FieldTitle label={label} source={source} resource={resource} isRequired={isRequired} />
                 </InputLabel>
                 <Select
                     autoWidth
@@ -216,12 +203,7 @@ export class SelectArrayInput extends Component {
                     renderValue={selected => (
                         <div className={classes.chips}>
                             {selected
-                                .map(item =>
-                                    choices.find(
-                                        choice =>
-                                            get(choice, optionValue) === item
-                                    )
-                                )
+                                .map(item => choices.find(choice => get(choice, optionValue) === item))
                                 .map(item => (
                                     <Chip
                                         key={get(item, optionValue)}
@@ -237,9 +219,7 @@ export class SelectArrayInput extends Component {
                 >
                     {choices.map(this.renderMenuItem)}
                 </Select>
-                {touched && error && (
-                    <FormHelperText error>{error}</FormHelperText>
-                )}
+                {touched && error && <FormHelperText error>{error}</FormHelperText>}
                 {helperText && <FormHelperText>{helperText}</FormHelperText>}
             </FormControl>
         );
@@ -256,11 +236,7 @@ SelectArrayInput.propTypes = {
     label: PropTypes.string,
     meta: PropTypes.object,
     options: PropTypes.object,
-    optionText: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.func,
-        PropTypes.element,
-    ]).isRequired,
+    optionText: PropTypes.oneOfType([PropTypes.string, PropTypes.func, PropTypes.element]).isRequired,
     optionValue: PropTypes.string.isRequired,
     resource: PropTypes.string,
     source: PropTypes.string,

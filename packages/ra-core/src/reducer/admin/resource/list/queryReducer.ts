@@ -9,16 +9,12 @@ export const SET_PER_PAGE = 'SET_PER_PAGE';
 
 export const SET_FILTER = 'SET_FILTER';
 
-const oppositeOrder = direction =>
-    direction === SORT_DESC ? SORT_ASC : SORT_DESC;
+const oppositeOrder = direction => (direction === SORT_DESC ? SORT_ASC : SORT_DESC);
 
 /**
  * This reducer is for the react-router query string, NOT for redux.
  */
-const queryReducer: Reducer<ListParams> = (
-    previousState,
-    { type, payload }
-) => {
+const queryReducer: Reducer<ListParams> = (previousState, { type, payload }) => {
     switch (type) {
         case SET_SORT:
             if (payload.sort === previousState.sort) {

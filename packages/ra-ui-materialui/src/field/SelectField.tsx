@@ -83,9 +83,7 @@ interface Props extends FieldProps {
  *
  * **Tip**: <ReferenceField> sets `translateChoice` to false by default.
  */
-export const SelectField: SFC<
-    Props & InjectedFieldProps & TranslationContextProps
-> = ({
+export const SelectField: SFC<Props & InjectedFieldProps & TranslationContextProps> = ({
     className,
     source,
     record,
@@ -107,15 +105,8 @@ export const SelectField: SFC<
         ? optionText(choice)
         : choice[optionText];
     return (
-        <Typography
-            component="span"
-            variant="body1"
-            className={className}
-            {...sanitizeRestProps(rest)}
-        >
-            {translateChoice
-                ? translate(choiceName, { _: choiceName })
-                : choiceName}
+        <Typography component="span" variant="body1" className={className} {...sanitizeRestProps(rest)}>
+            {translateChoice ? translate(choiceName, { _: choiceName }) : choiceName}
         </Typography>
     );
 };
@@ -126,10 +117,7 @@ SelectField.defaultProps = {
     translateChoice: true,
 };
 
-const enhance = compose<
-    Props & InjectedFieldProps & TranslationContextProps,
-    Props & TranslationContextProps
->(
+const enhance = compose<Props & InjectedFieldProps & TranslationContextProps, Props & TranslationContextProps>(
     pure,
     withTranslate
 );
@@ -144,11 +132,7 @@ EnhancedSelectField.propTypes = {
     ...Typography.propTypes,
     ...fieldPropTypes,
     choices: PropTypes.arrayOf(PropTypes.object).isRequired,
-    optionText: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.func,
-        PropTypes.element,
-    ]),
+    optionText: PropTypes.oneOfType([PropTypes.string, PropTypes.func, PropTypes.element]),
     optionValue: PropTypes.string,
     translateChoice: PropTypes.bool,
 };

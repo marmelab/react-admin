@@ -20,10 +20,7 @@ export interface ChangeLocaleSuccessAction {
     };
 }
 
-export const changeLocaleSuccess = (
-    locale: string,
-    messages: any
-): ChangeLocaleSuccessAction => ({
+export const changeLocaleSuccess = (locale: string, messages: any): ChangeLocaleSuccessAction => ({
     type: CHANGE_LOCALE_SUCCESS,
     payload: {
         locale,
@@ -40,10 +37,7 @@ export interface ChangeLocaleFailureAction {
         locale: string;
     };
 }
-export const changeLocaleFailure = (
-    locale: string,
-    error: any
-): ChangeLocaleFailureAction => ({
+export const changeLocaleFailure = (locale: string, error: any): ChangeLocaleFailureAction => ({
     type: CHANGE_LOCALE_FAILURE,
     error,
     payload: {

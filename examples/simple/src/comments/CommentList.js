@@ -47,53 +47,36 @@ const exporter = (records, fetchRelatedRecords) =>
             recordForExport.post_title = posts[record.post_id].title;
             return recordForExport;
         });
-        const fields = [
-            'id',
-            'author_name',
-            'post_id',
-            'post_title',
-            'created_at',
-            'body',
-        ];
+        const fields = ['id', 'author_name', 'post_id', 'post_title', 'created_at', 'body'];
         downloadCSV(convertToCSV({ data, fields }), 'comments');
     });
 
-const CommentPagination = translate(
-    ({ isLoading, ids, page, perPage, total, setPage, translate }) => {
-        const nbPages = Math.ceil(total / perPage) || 1;
-        if (!isLoading && (total === 0 || (ids && !ids.length))) {
-            return <PaginationLimit total={total} page={page} ids={ids} />;
-        }
-
-        return (
-            nbPages > 1 && (
-                <Toolbar>
-                    {page > 1 && (
-                        <Button
-                            color="primary"
-                            key="prev"
-                            onClick={() => setPage(page - 1)}
-                        >
-                            <ChevronLeft />
-                            &nbsp;
-                            {translate('ra.navigation.prev')}
-                        </Button>
-                    )}
-                    {page !== nbPages && (
-                        <Button
-                            color="primary"
-                            key="next"
-                            onClick={() => setPage(page + 1)}
-                        >
-                            {translate('ra.navigation.next')}&nbsp;
-                            <ChevronRight />
-                        </Button>
-                    )}
-                </Toolbar>
-            )
-        );
+const CommentPagination = translate(({ isLoading, ids, page, perPage, total, setPage, translate }) => {
+    const nbPages = Math.ceil(total / perPage) || 1;
+    if (!isLoading && (total === 0 || (ids && !ids.length))) {
+        return <PaginationLimit total={total} page={page} ids={ids} />;
     }
-);
+
+    return (
+        nbPages > 1 && (
+            <Toolbar>
+                {page > 1 && (
+                    <Button color="primary" key="prev" onClick={() => setPage(page - 1)}>
+                        <ChevronLeft />
+                        &nbsp;
+                        {translate('ra.navigation.prev')}
+                    </Button>
+                )}
+                {page !== nbPages && (
+                    <Button color="primary" key="next" onClick={() => setPage(page + 1)}>
+                        {translate('ra.navigation.next')}&nbsp;
+                        <ChevronRight />
+                    </Button>
+                )}
+            </Toolbar>
+        )
+    );
+});
 
 const listStyles = theme => ({
     card: {
@@ -122,18 +105,8 @@ const CommentGrid = withStyles(listStyles)(
                     <Card className={classes.card}>
                         <CardHeader
                             className="comment"
-                            title={
-                                <TextField
-                                    record={data[id]}
-                                    source="author.name"
-                                />
-                            }
-                            subheader={
-                                <DateField
-                                    record={data[id]}
-                                    source="created_at"
-                                />
-                            }
+                            title={<TextField record={data[id]} source="author.name" />}
+                            subheader={<DateField record={data[id]} source="created_at" />}
                             avatar={
                                 <Avatar>
                                     <PersonIcon />
@@ -152,23 +125,12 @@ const CommentGrid = withStyles(listStyles)(
                                 reference="posts"
                                 basePath={basePath}
                             >
-                                <TextField
-                                    source="title"
-                                    className={classes.cardLinkLink}
-                                />
+                                <TextField source="title" className={classes.cardLinkLink} />
                             </ReferenceField>
                         </CardContent>
                         <CardActions className={classes.cardActions}>
-                            <EditButton
-                                resource="posts"
-                                basePath={basePath}
-                                record={data[id]}
-                            />
-                            <ShowButton
-                                resource="posts"
-                                basePath={basePath}
-                                record={data[id]}
-                            />
+                            <EditButton resource="posts" basePath={basePath} record={data[id]} />
+                            <ShowButton resource="posts" basePath={basePath} record={data[id]} />
                         </CardActions>
                     </Card>
                 </Grid>
@@ -186,22 +148,14 @@ const CommentMobileList = props => (
     <SimpleList
         primaryText={record => record.author.name}
         secondaryText={record => record.body}
-        tertiaryText={record =>
-            new Date(record.created_at).toLocaleDateString()
-        }
+        tertiaryText={record => new Date(record.created_at).toLocaleDateString()}
         leftAvatar={() => <PersonIcon />}
         {...props}
     />
 );
 
 const CommentList = props => (
-    <List
-        {...props}
-        perPage={6}
-        exporter={exporter}
-        filters={<CommentFilter />}
-        pagination={<CommentPagination />}
-    >
+    <List {...props} perPage={6} exporter={exporter} filters={<CommentFilter />} pagination={<CommentPagination />}>
         <Responsive small={<CommentMobileList />} medium={<CommentGrid />} />
     </List>
 );

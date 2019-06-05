@@ -22,21 +22,22 @@ const ReviewsBulkActionButtons = props => (
     </Fragment>
 );
 
-const styles = theme => createStyles({
-    root: {
-        display: 'flex',
-    },
-    list: {
-        flexGrow: 1,
-        transition: theme.transitions.create(['all'], {
-            duration: theme.transitions.duration.enteringScreen,
-        }),
-        marginRight: 0,
-    },
-    listWithDrawer: {
-        marginRight: 400,
-    },
-});
+const styles = theme =>
+    createStyles({
+        root: {
+            display: 'flex',
+        },
+        list: {
+            flexGrow: 1,
+            transition: theme.transitions.create(['all'], {
+                duration: theme.transitions.duration.enteringScreen,
+            }),
+            marginRight: 0,
+        },
+        listWithDrawer: {
+            marginRight: 400,
+        },
+    });
 
 class ReviewList extends Component {
     render() {
@@ -45,27 +46,21 @@ class ReviewList extends Component {
             <div className={classes.root}>
                 <Route path="/reviews/:id">
                     {({ match }) => {
-                        const isMatch =
-                            !!(match &&
-                            match.params &&
-                            match.params.id !== 'create');
+                        const isMatch = !!(match && match.params && match.params.id !== 'create');
 
                         return (
                             <Fragment>
                                 <List
                                     {...props}
                                     className={classnames(classes.list, {
-                                        [classes.listWithDrawer]: isMatch
+                                        [classes.listWithDrawer]: isMatch,
                                     })}
                                     bulkActionButtons={<ReviewsBulkActionButtons />}
                                     filters={<ReviewFilter />}
                                     perPage={25}
                                     sort={{ field: 'date', order: 'DESC' }}
                                 >
-                                    <Responsive
-                                        xsmall={<ReviewListMobile />}
-                                        medium={<ReviewListDesktop />}
-                                    />
+                                    <Responsive xsmall={<ReviewListMobile />} medium={<ReviewListDesktop />} />
                                 </List>
                                 <Drawer
                                     variant="persistent"
@@ -73,16 +68,12 @@ class ReviewList extends Component {
                                     anchor="right"
                                     onClose={this.handleClose}
                                     classes={{
-                                        paper: classes.drawerPaper
+                                        paper: classes.drawerPaper,
                                     }}
                                 >
                                     {/* To avoid any errors if the route does not match, we don't render at all the component in this case */}
                                     {isMatch ? (
-                                        <ReviewEdit
-                                            id={match.params.id}
-                                            onCancel={this.handleClose}
-                                            {...props}
-                                        />
+                                        <ReviewEdit id={match.params.id} onCancel={this.handleClose} {...props} />
                                     ) : null}
                                 </Drawer>
                             </Fragment>
@@ -99,6 +90,9 @@ class ReviewList extends Component {
 }
 
 export default compose(
-    connect(undefined, { push }),
+    connect(
+        undefined,
+        { push }
+    ),
     withStyles(styles)
 )(ReviewList);
