@@ -59,7 +59,7 @@ const Menu = ({
                             translate
                         )}
                         leftIcon={
-                            resource.icon ? resource.icon : DefaultIcon
+                            resource.icon ? <resource.icon /> : <DefaultIcon />
                         }
                         onClick={onMenuClick}
                         dense={dense}

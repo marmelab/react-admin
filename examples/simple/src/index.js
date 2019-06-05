@@ -27,10 +27,14 @@ render(
             <Route
                 exact
                 path="/custom"
-                component={CustomRouteNoLayout}
+                component={props => <CustomRouteNoLayout {...props} />}
                 noLayout
             />,
-            <Route exact path="/custom2" component={CustomRouteLayout} />,
+            <Route
+                exact
+                path="/custom2"
+                component={props => <CustomRouteLayout {...props} />}
+            />,
         ]}
     >
         {permissions => [

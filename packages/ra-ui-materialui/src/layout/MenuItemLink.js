@@ -42,7 +42,7 @@ export class MenuItemLink extends Component {
             classes,
             className,
             primaryText,
-            leftIcon: LeftIcon,
+            leftIcon,
             staticContext,
             ...props
         } = this.props;

@@ -6,6 +6,7 @@ import { withStyles, createStyles } from '@material-ui/core/styles';
 import {
     ListController,
     getListControllerProps,
+    ComponentPropType,
 } from 'ra-core';
 
 import Title, { TitlePropType } from '../layout/Title';
@@ -182,7 +183,7 @@ ListView.propTypes = {
     children: PropTypes.element,
     className: PropTypes.string,
     classes: PropTypes.object,
-    component: PropTypes.element,
+    component: ComponentPropType,
     currentSort: PropTypes.shape({
         field: PropTypes.string,
         order: PropTypes.string,

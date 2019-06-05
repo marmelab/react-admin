@@ -132,7 +132,7 @@ class Layout extends Component {
                                 : children}
                         </div>
                     </main>
-                    <Notification />
+                    {cloneElement(notification)}
                 </div>
             </div>
         );
