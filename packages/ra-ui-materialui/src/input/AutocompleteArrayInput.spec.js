@@ -570,11 +570,97 @@ describe('<AutocompleteArrayInput />', () => {
                 options={{
                     suggestionsContainerProps: {
                         disablePortal: true,
-                    }
+                    },
                 }}
             />,
             { context, childContextTypes }
         );
         expect(wrapper.find('Popper').props().disablePortal).toEqual(true);
+    });
+
+    it('should filter already selected suggestions if filterSelectedFromSuggestions is true', () => {
+        const onChange = jest.fn();
+        const wrapper = mount(
+            <AutocompleteArrayInput
+                {...defaultProps}
+                input={{ value: [], onChange }}
+                choices={[
+                    { id: 1, name: 'a' },
+                    { id: 2, name: 'b' },
+                    { id: 3, name: 'c' },
+                ]}
+                filterSelectedFromSuggestions={true}
+            />,
+            { context, childContextTypes }
+        );
+
+        wrapper.find('input').simulate('focus');
+        expect(wrapper.state('suggestions')).toHaveLength(3);
+
+        wrapper.find('input').simulate('change', { target: { value: 'a' } });
+        wrapper.find('input').simulate('blur');
+
+        wrapper.setState({ inputValue: [1], dirty: true });
+
+        wrapper.find('input').simulate('focus');
+        expect(wrapper.state('suggestions')).toHaveLength(2);
+        expect(wrapper.find('ListItem')).toHaveLength(2);
+    });
+
+    it('should not filter already selected suggestions if filterSelectedFromSuggestions is false', () => {
+        const onChange = jest.fn();
+        const wrapper = mount(
+            <AutocompleteArrayInput
+                {...defaultProps}
+                input={{ value: [], onChange }}
+                choices={[
+                    { id: 1, name: 'a' },
+                    { id: 2, name: 'b' },
+                    { id: 3, name: 'c' },
+                ]}
+                filterSelectedFromSuggestions={false}
+            />,
+            { context, childContextTypes }
+        );
+
+        wrapper.find('input').simulate('focus');
+        expect(wrapper.state('suggestions')).toHaveLength(3);
+
+        wrapper.find('input').simulate('change', { target: { value: 'a' } });
+        wrapper.find('input').simulate('blur');
+
+        wrapper.setState({ inputValue: [1], dirty: true });
+
+        wrapper.find('input').simulate('focus');
+        expect(wrapper.state('suggestions')).toHaveLength(3);
+        expect(wrapper.find('ListItem')).toHaveLength(3);
+    });
+
+    it('should not filter already selected suggestions if filterSelectedFromSuggestions is not defined', () => {
+        const onChange = jest.fn();
+        const wrapper = mount(
+            <AutocompleteArrayInput
+                {...defaultProps}
+                input={{ value: [], onChange }}
+                choices={[
+                    { id: 1, name: 'a' },
+                    { id: 2, name: 'b' },
+                    { id: 3, name: 'c' },
+                ]}
+            />,
+            { context, childContextTypes }
+        );
+
+        wrapper.find('input').simulate('focus');
+        expect(wrapper.state('suggestions')).toHaveLength(3);
+
+        wrapper.find('input').simulate('change', { target: { value: 'a' } });
+        wrapper.find('input').simulate('blur');
+
+        wrapper.setState({ inputValue: [1], dirty: true });
+
+        wrapper.find('input').simulate('focus');
+        expect(wrapper.state('suggestions')).toHaveLength(3);
+        expect(wrapper.find('ListItem')).toHaveLength(3);
     });
 });

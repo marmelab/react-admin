@@ -183,7 +183,8 @@ export class AutocompleteArrayInput extends React.Component {
     };
 
     handleSuggestionsFetchRequested = () => {
-        const { choices, inputValueMatcher } = this.props;
+        const { choices, inputValueMatcher, filterSelectedFromSuggestions, optionValue } = this.props;
+        const { inputValue } = this.state;
 
         this.setState(({ searchText }) => ({
             suggestions: choices.filter(suggestion =>
@@ -191,6 +192,10 @@ export class AutocompleteArrayInput extends React.Component {
                     searchText,
                     suggestion,
                     this.getSuggestionText
+                ) && (
+                    filterSelectedFromSuggestions
+                    ? inputValue.includes(suggestion[optionValue]) === false
+                    : true
                 )
             ),
         }));
@@ -538,6 +543,7 @@ AutocompleteArrayInput.propTypes = {
     input: PropTypes.object,
     inputValueMatcher: PropTypes.func,
     isRequired: PropTypes.bool,
+    filterSelectedFromSuggestions: PropTypes.bool,
     label: PropTypes.string,
     limitChoicesToValue: PropTypes.bool,
     meta: PropTypes.object,
@@ -559,6 +565,7 @@ AutocompleteArrayInput.defaultProps = {
     options: {},
     optionText: 'name',
     optionValue: 'id',
+    filterSelectedFromSuggestions: false,
     limitChoicesToValue: false,
     translateChoice: true,
     inputValueMatcher: (input, suggestion, getOptionText) =>
