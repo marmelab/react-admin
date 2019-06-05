@@ -1,0 +1,31 @@
+{
+  "docs": {
+    "Introduction": [
+      "readme",
+      "tutorial",
+      "dataprovider",
+      "authentication",
+      "authorization",
+      "actions",
+      "translation"
+    ],
+    "Components": [
+      "admin",
+      "resource",
+      "list",
+      "show",
+      "fields",
+      "createandedit",
+      "inputs",
+      "reference"
+    ],
+    "Misc": [
+      "customapp",
+      "faq",
+      "ecosystem",
+      "unittesting",
+      "advancedtutorials",
+      "labs"
+    ]
+  }
+}

@@ -10,7 +10,7 @@
         "test-e2e-local": "cd cypress && yarn -s start",
         "test": "yarn -s test-unit && yarn -s test-e2e",
         "test-ci": "yarn -s test-unit-ci && yarn -s test-e2e",
-        "doc": "cd docs && jekyll server . --watch",
+        "doc": "cd documentation/website && yarn start",
         "lint": "eslint ./packages/**/src",
         "prettier": "prettier --single-quote --trailing-comma es5 --tab-width 4 --write --list-different \"packages/*/src/**/*.{js,ts,tsx,css,md}\" \"examples/*/src/**/*.{js,ts,tsx,css,md}\"",
         "run-simple": "cd examples/simple && yarn -s start",
@@ -63,7 +63,8 @@
     "workspaces": [
         "packages/*",
         "examples/*",
-        "cypress"
+        "cypress",
+        "documentation/website"
     ],
     "dependencies": {
         "typescript": "^3.4.5"

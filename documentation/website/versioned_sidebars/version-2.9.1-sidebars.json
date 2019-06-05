@@ -1,0 +1,27 @@
+{
+  "version-2.9.1-docs": {
+    "Table of contents": [
+      "version-2.9.1-readme",
+      "version-2.9.1-tutorial",
+      "version-2.9.1-dataprovider",
+      "version-2.9.1-admin",
+      "version-2.9.1-resource",
+      "version-2.9.1-list",
+      "version-2.9.1-show",
+      "version-2.9.1-fields",
+      "version-2.9.1-createandedit",
+      "version-2.9.1-inputs",
+      "version-2.9.1-authentication",
+      "version-2.9.1-authorization",
+      "version-2.9.1-actions",
+      "version-2.9.1-translation",
+      "version-2.9.1-customapp",
+      "version-2.9.1-reference",
+      "version-2.9.1-faq",
+      "version-2.9.1-ecosystem",
+      "version-2.9.1-unittesting",
+      "version-2.9.1-advancedtutorials",
+      "version-2.9.1-labs"
+    ]
+  }
+}
