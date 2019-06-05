@@ -70,7 +70,6 @@ const PostQuickCreate = ({ onCancel, onSave }) => {
                 <PostQuickCreateToolbar
                     onCancel={onCancel}
                     submitting={submitting}
-                    {...props}
                 />
             }
             classes={{ form: classes.form }}

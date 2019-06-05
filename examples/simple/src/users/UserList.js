@@ -40,7 +40,7 @@ const rowClick = memoize(permissions => (id, basePath, record) => {
 const UserList = ({ permissions, ...props }) => (
     <List
         {...props}
-        filters={<UserFilter permissions={permissions} {...props} />}
+        filters={<UserFilter permissions={permissions} />}
         filterDefaultValues={{ role: 'user' }}
         sort={{ field: 'name', order: 'ASC' }}
         aside={<Aside />}

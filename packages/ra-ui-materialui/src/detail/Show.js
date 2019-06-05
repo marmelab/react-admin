@@ -66,7 +66,7 @@ export const ShowView = withStyles(styles)(
         ...rest
     }) => {
         if (typeof actions === 'undefined' && hasEdit) {
-            actions = DefaultActions;
+            actions = <DefaultActions />;
         }
         if (!children) {
             return null;

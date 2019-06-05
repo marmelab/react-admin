@@ -74,7 +74,7 @@ class UserMenu extends React.Component {
                         isValidElement(menuItem) ?
                         cloneElement(menuItem, { onClick: this.handleClose }) : null
                     )}
-                    [logout]
+                    {logout}
                 </Menu>
             </div>
         );
