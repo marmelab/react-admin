@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Toolbar from '@material-ui/core/Toolbar';
 import { makeStyles } from '@material-ui/core/styles';
-import { ComponentPropType } from 'ra-core';
 
 const useStyles = makeStyles(theme => ({
     toolbar: {
@@ -29,10 +28,10 @@ const useStyles = makeStyles(theme => ({
 
 const ListToolbar = ({
     classes = {},
-    filters: Filters,
+    filters,
     filterValues, // dynamically set via the UI by the user
     permanentFilter, // set in the List component by the developer
-    actions: Actions,
+    actions,
     bulkActions,
     exporter,
     ...rest
@@ -40,33 +39,34 @@ const ListToolbar = ({
     const styles = useStyles({ classes });
     return (
         <Toolbar className={styles.toolbar}>
-            {Filters &&
-                <Filters {...rest}
-                    filterValues={filterValues}
-                    context="form"
-                />
-            }
+            {filters &&
+                React.cloneElement(filters, {
+                    ...rest,
+                    filterValues,
+                    context: 'form',
+                })}
             <span />
-            {Actions &&
-                <Actions {...rest}
-                    className={styles.actions}
-                    bulkActions={bulkActions}
-                    exporter={exporter}
-                    filters={Filters}
-                    filterValues={filterValues}
-                    permanentFilter={permanentFilter}
-                />
-            }
+            {actions &&
+                React.cloneElement(actions, {
+                    ...rest,
+                    className: styles.actions,
+                    bulkActions,
+                    exporter,
+                    filters,
+                    filterValues,
+                    permanentFilter,
+                    ...actions.props,
+                })}
         </Toolbar>
     );
 };
 
 ListToolbar.propTypes = {
     classes: PropTypes.object,
-    filters: ComponentPropType,
+    filters: PropTypes.element,
     permanentFilter: PropTypes.object,
-    actions: ComponentPropType,
-    bulkActions: PropTypes.oneOfType([ComponentPropType, PropTypes.bool]),
+    actions: PropTypes.element,
+    bulkActions: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
     exporter: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
 };
 

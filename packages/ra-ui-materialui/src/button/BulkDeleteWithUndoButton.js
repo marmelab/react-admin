@@ -50,7 +50,7 @@ class BulkDeleteWithUndoButton extends Component {
     static defaultProps = {
         label: 'ra.action.delete',
         undoable: true,
-        icon: ActionDelete,
+        icon: <ActionDelete />,
     };
 
     handleClick = () => {
