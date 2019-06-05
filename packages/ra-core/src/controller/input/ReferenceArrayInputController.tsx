@@ -3,7 +3,9 @@ import { connect } from 'react-redux';
 import debounce from 'lodash/debounce';
 import compose from 'recompose/compose';
 import { createSelector } from 'reselect';
+import get from 'lodash/get';
 import isEqual from 'lodash/isEqual';
+import difference from 'lodash/difference';
 import { WrappedFieldInputProps } from 'redux-form';
 
 import {
@@ -138,9 +140,7 @@ interface EnhancedProps {
  *     <SelectArrayInput optionText="name" />
  * </ReferenceArrayInput>
  */
-export class UnconnectedReferenceArrayInputController extends Component<
-    Props & EnhancedProps
-> {
+export class UnconnectedReferenceArrayInputController extends Component<Props & EnhancedProps> {
     public static defaultProps = {
         allowEmpty: false,
         filter: {},
@@ -164,7 +164,7 @@ export class UnconnectedReferenceArrayInputController extends Component<
     }
 
     componentDidMount() {
-        this.fetchReferencesAndOptions(this.props);
+        this.fetchReferencesAndOptions(this.props, {} as Props & EnhancedProps);
     }
 
     componentWillReceiveProps(nextProps: Props & EnhancedProps) {
@@ -223,8 +223,8 @@ export class UnconnectedReferenceArrayInputController extends Component<
         }
     };
 
-    fetchReferences = (props = this.props) => {
-        const { crudGetMany, input, reference } = props;
+    fetchReferences = (nextProps, currentProps = this.props) => {
+        const { crudGetMany, input, reference } = nextProps;
         const ids = input.value;
         if (ids) {
             if (!Array.isArray(ids)) {
@@ -232,7 +232,8 @@ export class UnconnectedReferenceArrayInputController extends Component<
                     'The value of ReferenceArrayInput should be an array'
                 );
             }
-            crudGetMany(reference, ids);
+            const idsToFetch = difference(ids, get(currentProps, 'input.value', []));
+            if (idsToFetch.length) crudGetMany(reference, idsToFetch);
         }
     };
 
@@ -255,8 +256,8 @@ export class UnconnectedReferenceArrayInputController extends Component<
         );
     };
 
-    fetchReferencesAndOptions(nextProps) {
-        this.fetchReferences(nextProps);
+    fetchReferencesAndOptions(nextProps, currentProps = this.props) {
+        this.fetchReferences(nextProps, currentProps);
         this.fetchOptions(nextProps);
     }
 
