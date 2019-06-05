@@ -12,7 +12,7 @@ import React from 'react';
 import { Edit, DisabledInput, LongTextInput, ReferenceInput, SelectInput, SimpleForm, TextInput } from 'react-admin';
 
 export const PostEdit = (props) => (
-    <Edit title={<PostTitle />} {...props}>
+    <Edit title={PostTitle} {...props}>
         <SimpleForm>
             <DisabledInput source="id" />
             <ReferenceInput label="User" source="userId" reference="users">
@@ -76,7 +76,7 @@ import { ArrayInput, SimpleFormIterator, DateInput, TextInput } from 'react-admi
 </ArrayInput>
 ```
 
-![ArrayInput](/ra-doc-usaurus/img/array-input.png)
+![ArrayInput](/react-admin/img/array-input.png)
 
  `<ArrayInput>` allows editing of embedded arrays, like the `backlinks` field in the following `post` record:
 
@@ -352,7 +352,7 @@ import { BooleanInput } from 'react-admin';
 ```
 
 
-![BooleanInput](/ra-doc-usaurus/img/boolean-input.png)
+![BooleanInput](/react-admin/img/boolean-input.png)
 
 This input does not handle `null` values. You would need the `<NullableBooleanInput />` component if you have to handle non-set booleans.
 
@@ -372,7 +372,7 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 ```
 {% endraw %}
 
-![CustomBooleanInputCheckIcon](/ra-doc-usaurus/img/custom-switch-icon.png)
+![CustomBooleanInputCheckIcon](/react-admin/img/custom-switch-icon.png)
 
 
 Refer to [Material UI Switch documentation](http://www.material-ui.com/#/components/switch) for more details.
@@ -385,7 +385,7 @@ import { NullableBooleanInput } from 'react-admin';
 <NullableBooleanInput label="Commentable" source="commentable" />
 ```
 
-![NullableBooleanInput](/ra-doc-usaurus/img/nullable-boolean-input.png)
+![NullableBooleanInput](/react-admin/img/nullable-boolean-input.png)
 
 ## `<CheckboxGroupInput>`
 
@@ -401,7 +401,7 @@ import { CheckboxGroupInput } from 'react-admin';
 ]} />
 ```
 
-![CheckboxGroupInput](/ra-doc-usaurus/img/checkbox-group-input.png)
+![CheckboxGroupInput](/react-admin/img/checkbox-group-input.png)
 
 You can also customize the properties to use for the option name and value, thanks to the `optionText` and `optionValue` attributes:
 
@@ -432,7 +432,7 @@ const choices = [
    { id: 456, first_name: 'Jane', last_name: 'Austen' },
 ];
 const FullNameField = ({ record }) => <span>{record.first_name} {record.last_name}</span>;
-<CheckboxGroupInput source="gender" choices={choices} optionText={<FullNameField />}/>
+<CheckboxGroupInput source="gender" choices={choices} optionText={FullNameField}/>
 ```
 
 The choices are translated by default, so you can use translation identifiers as choices:
@@ -473,7 +473,7 @@ import { DateInput } from 'react-admin';
 <DateInput source="published_at" />
 ```
 
-![DateInput](/ra-doc-usaurus/img/date-input.gif)
+![DateInput](/react-admin/img/date-input.gif)
 
 **Tip**: For a material-ui styled `<DateInput>` component, check out [vascofg/react-admin-date-inputs](https://github.com/vascofg/react-admin-date-inputs).
 
@@ -499,7 +499,7 @@ import { DisabledInput } from 'react-admin';
 <DisabledInput source="id" />
 ```
 
-![DisabledInput](/ra-doc-usaurus/img/disabled-input.png)
+![DisabledInput](/react-admin/img/disabled-input.png)
 
 **Tip**: To add non-editable fields to the `<Edit>` view, you can also use one of react-admin `Field` components:
 
@@ -544,7 +544,7 @@ export const PostEdit = (props) => (
 
 `<ImageInput>` allows to upload some pictures using [react-dropzone](https://github.com/okonet/react-dropzone).
 
-![ImageInput](/ra-doc-usaurus/img/image-input.png)
+![ImageInput](/react-admin/img/image-input.png)
 
 Previews are enabled using `<ImageInput>` children, as following:
 
@@ -574,7 +574,7 @@ Note that the image upload returns a [File](https://developer.mozilla.org/en/doc
 
 `<FileInput>` allows to upload some files using [react-dropzone](https://github.com/okonet/react-dropzone).
 
-![FileInput](/ra-doc-usaurus/img/file-input.png)
+![FileInput](/react-admin/img/file-input.png)
 
 Previews (actually a simple list of files names) are enabled using `<FileField>` children, as following:
 
@@ -610,7 +610,7 @@ import { LongTextInput } from 'react-admin';
 <LongTextInput source="teaser" />
 ```
 
-![LongTextInput](/ra-doc-usaurus/img/long-text-input.png)
+![LongTextInput](/react-admin/img/long-text-input.png)
 
 You can make the `LongTextInput` component resettable using the `resettable` prop. This will add a reset button which will be displayed only when the field has a value and is focused.
 
@@ -620,7 +620,7 @@ import { LongTextInput } from 'react-admin';
 <LongTextInput source="title" resettable />
 ```
 
-![resettable LongTextInput](/ra-doc-usaurus/img/resettable-long-text-input.png)
+![resettable LongTextInput](/react-admin/img/resettable-long-text-input.png)
 
 
 ## `<NumberInput>`
@@ -653,7 +653,7 @@ import { RadioButtonGroupInput } from 'react-admin';
 ]} />
 ```
 
-![RadioButtonGroupInput](/ra-doc-usaurus/img/radio-button-group-input.png)
+![RadioButtonGroupInput](/react-admin/img/radio-button-group-input.png)
 
 You can also customize the properties to use for the option name and value, thanks to the `optionText` and `optionValue` attributes:
 
@@ -684,7 +684,7 @@ const choices = [
    { id: 456, first_name: 'Jane', last_name: 'Austen' },
 ];
 const FullNameField = ({ record }) => <span>{record.first_name} {record.last_name}</span>;
-<RadioButtonGroupInput source="gender" choices={choices} optionText={<FullNameField />}/>
+<RadioButtonGroupInput source="gender" choices={choices} optionText={FullNameField}/>
 ```
 
 The choices are translated by default, so you can use translation identifiers as choices:
@@ -761,7 +761,7 @@ import { ReferenceArrayInput, SelectArrayInput } from 'react-admin'
 </ReferenceArrayInput>
 ```
 
-![SelectArrayInput](/ra-doc-usaurus/img/select-array-input.gif)
+![SelectArrayInput](/react-admin/img/select-array-input.gif)
 
 **Note**: You **must** add a `<Resource>` for the reference resource - react-admin needs it to fetch the reference data. You can omit the list prop in this reference if you want to hide it in the sidebar menu.
 
@@ -834,7 +834,7 @@ import { ReferenceInput, SelectInput } from 'react-admin'
 </ReferenceInput>
 ```
 
-![ReferenceInput](/ra-doc-usaurus/img/reference-input.gif)
+![ReferenceInput](/react-admin/img/reference-input.gif)
 
 **Note**: You **must** add a `<Resource>` for the reference resource - react-admin needs it to fetch the reference data. You *can* omit the `list` prop in this reference if you want to hide it in the sidebar menu.
 
@@ -947,7 +947,7 @@ import RichTextInput from 'ra-input-rich-text';
 <RichTextInput source="body" />
 ```
 
-![RichTextInput](/ra-doc-usaurus/img/rich-text-input.png)
+![RichTextInput](/react-admin/img/rich-text-input.png)
 
 You can customize the rich text editor toolbar using the `toolbar` attribute, as described on the [Quill official toolbar documentation](https://quilljs.com/docs/modules/toolbar/).
 
@@ -969,7 +969,7 @@ import { SelectInput } from 'react-admin';
 ]} />
 ```
 
-![SelectInput](/ra-doc-usaurus/img/select-input.gif)
+![SelectInput](/react-admin/img/select-input.gif)
 
 You can also customize the properties to use for the option name and value, thanks to the `optionText` and `optionValue` attributes:
 
@@ -1000,7 +1000,7 @@ const choices = [
    { id: 456, first_name: 'Jane', last_name: 'Austen' },
 ];
 const FullNameField = ({ record }) => <span>{record.first_name} {record.last_name}</span>;
-<SelectInput source="gender" choices={choices} optionText={<FullNameField />}/>
+<SelectInput source="gender" choices={choices} optionText={FullNameField}/>
 ```
 
 Enabling the `allowEmpty` props adds an empty choice (with a default `null` value, which you can overwrite with the `emptyValue` prop) on top of the options, and makes the value nullable:
@@ -1056,7 +1056,7 @@ If, instead of showing choices as a dropdown list, you prefer to display them as
 
 You can make the `SelectInput` component resettable using the `resettable` prop. This will add a reset button which will be displayed only when the field has a value.
 
-![resettable SelectInput](/ra-doc-usaurus/img/resettable-select-input.png)
+![resettable SelectInput](/react-admin/img/resettable-select-input.png)
 
 You can set disabled values by setting the `disabled` property of one item: 
 
@@ -1096,7 +1096,7 @@ import { SelectArrayInput } from 'react-admin';
 ]} />
 ```
 
-![SelectArrayInput](/ra-doc-usaurus/img/select-array-input.gif)
+![SelectArrayInput](/react-admin/img/select-array-input.gif)
 
 You can also customize the properties to use for the option name and value,
 thanks to the `optionText` and `optionValue` attributes.
@@ -1184,7 +1184,7 @@ import { TextInput } from 'react-admin';
 <TextInput source="title" />
 ```
 
-![TextInput](/ra-doc-usaurus/img/text-input.png)
+![TextInput](/react-admin/img/text-input.png)
 
 You can choose a specific input type using the `type` attribute, for instance `text` (the default), `email`, `url`, or `password`:
 
@@ -1200,7 +1200,7 @@ import { TextInput } from 'react-admin';
 <TextInput source="title" resettable />
 ```
 
-![resettable TextInput](/ra-doc-usaurus/img/resettable-text-input.png)
+![resettable TextInput](/react-admin/img/resettable-text-input.png)
 
 
 **Warning**: Do not use `type="number"`, or you'll receive a string as value (this is a [known React bug](https://github.com/facebook/react/issues/1425)). Instead, use [`<NumberInput>`](#numberinput).

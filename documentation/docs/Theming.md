@@ -103,7 +103,7 @@ export const VisitorList = withStyles(listStyles)(({ classes, ...props }) => (
     <List
         classes={classes}
         {...props}
-        filters={<VisitorFilter />}
+        filters={VisitorFilter}
         sort={{ field: 'last_seen', order: 'DESC' }}
         perPage={25}
     >
@@ -128,7 +128,7 @@ export const VisitorList = withStyles(listStyles)(({ classes, ...props }) => (
 
 This example results in:
 
-![Visitor List with customized CSS classes](/ra-doc-usaurus/img/list_with_customized_css.png)
+![Visitor List with customized CSS classes](/react-admin/img/list_with_customized_css.png)
 
 Take a look at a component documentation and source code to know which classes are available for styling. For instance, you can have a look at the [Datagrid CSS documentation](./List.md#the-datagrid-component).
 
@@ -283,7 +283,7 @@ const App = () => (
 );
 ```
 
-![Dark theme](/ra-doc-usaurus/img/dark-theme.png)
+![Dark theme](/react-admin/img/dark-theme.png)
 
 ## Writing a Custom Theme
 
@@ -398,12 +398,12 @@ const MyUserMenu = props => (
         <MenuItemLink
             to="/configuration"
             primaryText="Configuration"
-            leftIcon={<SettingsIcon />}
+            leftIcon={SettingsIcon}
         />
     </UserMenu>
 );
 
-const MyAppBar = props => <AppBar {...props} userMenu={<MyUserMenu />} />;
+const MyAppBar = props => <AppBar {...props} userMenu={MyUserMenu} />;
 
 const MyLayout = props => <Layout {...props} appBar={MyAppBar} />;
 ```
@@ -432,9 +432,9 @@ const MyCustomIcon = withStyles(myCustomIconStyle)(
     )
 );
 
-const MyUserMenu = props => (<UserMenu {...props} icon={<MyCustomIcon />} />);
+const MyUserMenu = props => (<UserMenu {...props} icon={MyCustomIcon} />);
 
-const MyAppBar = props => <AppBar {...props} userMenu={<MyUserMenu />} />;
+const MyAppBar = props => <AppBar {...props} userMenu={MyUserMenu} />;
 ```
 {% endraw %}
 
@@ -618,7 +618,7 @@ const App = () => (
 );
 ```
 
-![custom AppBar](/ra-doc-usaurus/img/custom_appbar.png)
+![custom AppBar](/react-admin/img/custom_appbar.png)
 
 ## Replacing The AppBar
 
@@ -850,7 +850,7 @@ const MyError = ({
         <div>
             <Button
                 variant="contained"
-                icon={<History />}
+                icon={History}
                 onClick={() => history.go(-1)}
             >
                 Back

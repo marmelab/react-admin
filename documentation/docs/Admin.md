@@ -110,13 +110,13 @@ const App = () => (
 );
 ```
 
-![Custom home page](/ra-doc-usaurus/img/dashboard.png)
+![Custom home page](/react-admin/img/dashboard.png)
 
 ## `catchAll`
 
 When users type URLs that don't match any of the children `<Resource>` components, they see a default "Not Found" page.
 
-![Not Found](/ra-doc-usaurus/img/not-found.png)
+![Not Found](/react-admin/img/not-found.png)
 
 You can customize this page to use the component of your choice by passing it as the `catchAll` prop. To fit in the general design, use Material UI's `<Card>` component, and react-admin's `<Title>` component:
 
@@ -181,7 +181,7 @@ const Menu = ({ resources, onMenuClick, logout }) => (
         <MenuItemLink
             to="/custom-route"
             primaryText="Miscellaneous"
-            leftIcon={<LabelIcon />}
+            leftIcon={LabelIcon}
             onClick={onMenuClick} />
         <Responsive
             small={logout}
@@ -238,7 +238,7 @@ const App = () => (
 );
 ```
 
-![Dark theme](/ra-doc-usaurus/img/dark-theme.png)
+![Dark theme](/react-admin/img/dark-theme.png)
 
 For more details on predefined themes and custom themes, refer to the [Material UI Customization documentation](https://material-ui.com/customization/themes/).
 

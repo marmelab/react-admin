@@ -8,7 +8,7 @@ This section references some projects we're working which are not ready yet for 
 
 ## ra-tree
 
-![ra-tree demo](/ra-doc-usaurus/img/ra-tree.gif)
+![ra-tree demo](/react-admin/img/ra-tree.gif)
 
 `ra-tree` is a set of components allowing to work with tree data. It is composed of two packages:
 

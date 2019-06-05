@@ -6,9 +6,9 @@ sidebar_label: <Create> and <Edit> Views
 
 The Create and Edit views both display a form, initialized with an empty record (for the Create view) or with a record fetched from the API (for the Edit view). The `<Create>` and `<Edit>` components then delegate the actual rendering of the form to a form component - usually `<SimpleForm>`. This form component uses its children ([`<Input>`](./Inputs.md) components) to render each form input.
 
-![post creation form](/ra-doc-usaurus/img/create-view.png)
+![post creation form](/react-admin/img/create-view.png)
 
-![post edition form](/ra-doc-usaurus/img/edit-view.png)
+![post edition form](/react-admin/img/edit-view.png)
 
 ## The `<Create>` and `<Edit>` components
 
@@ -57,7 +57,7 @@ export const PostCreate = (props) => (
 );
 
 export const PostEdit = (props) => (
-    <Edit title={<PostTitle />} {...props}>
+    <Edit title={PostTitle} {...props}>
         <SimpleForm>
             <DisabledInput label="Id" source="id" />
             <TextInput source="title" validate={required()} />
@@ -79,7 +79,7 @@ export const PostEdit = (props) => (
 
 That's enough to display the post edit form:
 
-![post edition form](/ra-doc-usaurus/img/post-edition.png)
+![post edition form](/react-admin/img/post-edition.png)
 
 **Tip**: You might find it cumbersome to repeat the same input components for both the `<Create>` and the `<Edit>` view. In practice, these two views almost never have exactly the same form inputs. For instance, in the previous snippet, the `<Edit>` views shows related comments to the current post, which makes no sense for a new post. Having two separate sets of input components for the two views is therefore a deliberate choice. However, if you have the same set of input components, export them as a custom Form component to avoid repetition.
 
@@ -106,7 +106,7 @@ const PostTitle = ({ record }) => {
     return <span>Post {record ? `"${record.title}"` : ''}</span>;
 };
 export const PostEdit = (props) => (
-    <Edit title={<PostTitle />} {...props}>
+    <Edit title={PostTitle} {...props}>
         ...
     </Edit>
 );
@@ -114,7 +114,7 @@ export const PostEdit = (props) => (
 
 ### Actions
 
-You can replace the list of default actions by your own element using the `actions` prop:
+You can replace the list of default actions by your own component using the `actions` prop:
 
 ```jsx
 import Button from '@material-ui/core/Button';
@@ -129,7 +129,7 @@ const PostEditActions = ({ basePath, data, resource }) => (
 );
 
 export const PostEdit = (props) => (
-    <Edit actions={<PostEditActions />} {...props}>
+    <Edit actions={PostEditActions} {...props}>
         ...
     </Edit>
 );
@@ -151,7 +151,7 @@ const Aside = () => (
 );
 
 const PostEdit = props => (
-    <Edit aside={<Aside />} {...props}>
+    <Edit aside={Aside} {...props}>
         ...
     </Edit>
 ```
@@ -217,7 +217,7 @@ const CustomToolbar = withStyles(toolbarStyles)(props => (
 
 const PostEdit = props => (
     <Edit {...props}>
-        <SimpleForm toolbar={<CustomToolbar />}>
+        <SimpleForm toolbar={CustomToolbar}>
             ...
         </SimpleForm>
     </Edit>
@@ -324,7 +324,7 @@ const App = () => (
 
 Just like `Edit`, `EditGuesser` fetches the data. It then analyzes the response, and guesses the inputs it should use to display a basic form with the data. It also dumps the components it has guessed in the console, where you can copy it into your own code. Use this feature to quickly bootstrap an `Edit` on top of an existing API, without adding the inputs one by one.
 
-![Guessed Edit](/ra-doc-usaurus/img/guessed-edit.png)
+![Guessed Edit](/react-admin/img/guessed-edit.png)
 
 React-admin provides guessers for the `List` view (`ListGuesser`), the `Edit` view (`EditGuesser`), and the `Show` view (`ShowGuesser`).
 
@@ -336,7 +336,7 @@ The `<SimpleForm>` component receives the `record` as prop from its parent compo
 
 The `<SimpleForm>` renders its child components line by line (within `<div>` components). It uses `redux-form`.
 
-![post edition form](/ra-doc-usaurus/img/post-edition.png)
+![post edition form](/react-admin/img/post-edition.png)
 
 By default the `<SimpleForm>` submits the form when the user presses `ENTER`. If you want
 to change this behaviour you can pass `false` for the `submitOnEnter` property, and the user will only be able to submit by pressing the save button. This can be useful e.g. if you have an input widget using `ENTER` for a special function.
@@ -368,7 +368,7 @@ export const PostCreate = (props) => (
 
 Just like `<SimpleForm>`, `<TabbedForm>` receives the `record` prop, renders the actual form, and handles form validation on submit. However, the `<TabbedForm>` component renders inputs grouped by tab. The tabs are set by using `<FormTab>` components, which expect a `label` and an `icon` prop.
 
-![tabbed form](/ra-doc-usaurus/img/tabbed-form.gif)
+![tabbed form](/react-admin/img/tabbed-form.gif)
 
 By default the `<TabbedForm>` submits the form when the user presses `ENTER`, if you want
 to change this behaviour you can pass `false` for the `submitOnEnter` property.
@@ -468,7 +468,7 @@ export const PostCreate = (props) => (
 
 ## Validation
 
-React-admin relies on [redux-form](http://redux-form.com/) for the validation.
+React-admin relies on [redux-form](https://redux-form.com/) for the validation.
 
 To validate values submitted by a form, you can add a `validate` prop to the form component, to individual inputs, or even mix both approaches.
 
@@ -500,7 +500,7 @@ export const UserCreate = (props) => (
 );
 ```
 
-**Tip**: The props you pass to `<SimpleForm>` and `<TabbedForm>` end up as `reduxForm()` parameters. This means that, in addition to `validate`, you can also pass `warn` or `asyncValidate` functions. Read the [`reduxForm()` documentation](https://redux-form.com/6.5.0/docs/api/) for details.
+**Tip**: The props you pass to `<SimpleForm>` and `<TabbedForm>` end up as `reduxForm()` parameters. This means that, in addition to `validate`, you can also pass `warn` or `asyncValidate` functions. Read the [`reduxForm()` documentation](https://redux-form.com/6.5.0/docs/api/ReduxForm.md/) for details.
 
 ### Per Input Validation: Function Validator
 
@@ -692,7 +692,7 @@ The most common use case is to display two submit buttons in the `<Create>` view
 - one that creates and redirects to the `<Show>` view of the new resource, and
 - one that redirects to a blank `<Create>` view after creation (allowing bulk creation)
 
-![Form toolbar](/ra-doc-usaurus/img/form-toolbar.png)
+![Form toolbar](/react-admin/img/form-toolbar.png)
 
 For that use case, use the `<SaveButton>` component with a custom `redirect` prop:
 
@@ -717,7 +717,7 @@ const PostCreateToolbar = props => (
 
 export const PostCreate = (props) => (
     <Create {...props}>
-        <SimpleForm toolbar={<PostCreateToolbar />} redirect="show">
+        <SimpleForm toolbar={PostCreateToolbar} redirect="show">
             ...
         </SimpleForm>
     </Create>
@@ -737,7 +737,7 @@ const PostEditToolbar = props => (
 
 export const PostEdit = (props) => (
     <Edit {...props}>
-        <SimpleForm toolbar={<PostEditToolbar />}>
+        <SimpleForm toolbar={PostEditToolbar}>
             ...
         </SimpleForm>
     </Edit>
@@ -810,7 +810,7 @@ const UserCreateToolbar = ({ permissions, ...props }) =>
 export const UserCreate = ({ permissions, ...props }) =>
     <Create {...props}>
         <SimpleForm
-            toolbar={<UserCreateToolbar permissions={permissions} />}
+            toolbar={props => <UserCreateToolbar permissions={permissions} {...props} />}
             defaultValue={{ role: 'user' }}
         >
             <TextInput source="name" validate={[required()]} />
@@ -828,7 +828,7 @@ This also works inside an `Edition` view with a `TabbedForm`, and you can hide a
 {% raw %}
 ```jsx
 export const UserEdit = ({ permissions, ...props }) =>
-    <Edit title={<UserTitle />} {...props}>
+    <Edit title={UserTitle} {...props}>
         <TabbedForm defaultValue={{ role: 'user' }}>
             <FormTab label="user.form.summary">
                 {permissions === 'admin' && <DisabledInput source="id" />}

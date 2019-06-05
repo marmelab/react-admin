@@ -6,7 +6,7 @@ sidebar_label: <Show> View
 
 The Show view displays a record fetched from the API in a read-only fashion. It delegates the actual rendering of the record to a layout component - usually `<SimpleShowLayout>`. This layout component uses its children ([`<Fields>`](./Fields.md) components) to render each record field.
 
-![post show view](/ra-doc-usaurus/img/show-view.png)
+![post show view](/react-admin/img/show-view.png)
 
 ## The `<Show>` component
 
@@ -56,7 +56,7 @@ export const PostShow = (props) => (
 
 That's enough to display the post show view:
 
-![post show view](/ra-doc-usaurus/img/post-show.png)
+![post show view](/react-admin/img/post-show.png)
 
 ### Page Title
 
@@ -79,7 +79,7 @@ const PostTitle = ({ record }) => {
     return <span>Post {record ? `"${record.title}"` : ''}</span>;
 };
 export const PostShow = (props) => (
-    <Show title={<PostTitle />} {...props}>
+    <Show title={PostTitle} {...props}>
         ...
     </Show>
 );
@@ -87,7 +87,7 @@ export const PostShow = (props) => (
 
 ### Actions
 
-You can replace the list of default actions by your own element using the `actions` prop:
+You can replace the list of default actions by your own component using the `actions` prop:
 
 ```jsx
 import Button from '@material-ui/core/Button';
@@ -102,7 +102,7 @@ const PostShowActions = ({ basePath, data, resource }) => (
 );
 
 export const PostShow = (props) => (
-    <Show actions={<PostShowActions />} {...props}>
+    <Show actions={PostShowActions} {...props}>
         ...
     </Show>
 );
@@ -124,7 +124,7 @@ const Aside = () => (
 );
 
 const PostShow = props => (
-    <Show aside={<Aside />} {...props}>
+    <Show aside={Aside} {...props}>
         ...
     </Show>
 ```
@@ -168,7 +168,7 @@ const App = () => (
 
 Just like `Show`, `ShowGuesser` fetches the data. It then analyzes the response, and guesses the fields it should use to display a basic page with the data. It also dumps the components it has guessed in the console, where you can copy it into your own code. Use this feature to quickly bootstrap a `Show` on top of an existing API, without adding the inputs one by one.
 
-![Guessed Show](/ra-doc-usaurus/img/guessed-show.png)
+![Guessed Show](/react-admin/img/guessed-show.png)
 
 React-admin provides guessers for the `List` view (`ListGuesser`), the `Edit` view (`EditGuesser`), and the `Show` view (`ShowGuesser`).
 
@@ -198,7 +198,7 @@ It accepts a `className` prop to let you override the style of the `<CardContent
 
 Just like `<SimpleShowLayout>`, `<TabbedShowLayout>` receives the `record` prop and renders the actual view. However, the `<TabbedShowLayout>` component renders fields grouped by tab. The tabs are set by using `<Tab>` components, which expect a `label` and an optional `icon` prop. Switching tabs will update the current url. By default, it uses the tabs indexes and the first tab will be displayed at the root url. You can customize the path by providing a `path` prop to each `Tab` component. If you'd like the first one to act as an index page, just omit the `path` prop.
 
-![tabbed show](/ra-doc-usaurus/img/tabbed-show.gif)
+![tabbed show](/react-admin/img/tabbed-show.gif)
 
 {% raw %}
 ```jsx
@@ -257,7 +257,7 @@ import {
 
 const ScrollableTabbedShowLayout = props => (
     <Show{...props}>
-        <TabbedShowLayout tabs={<TabbedShowLayoutTabs scrollable={true}/>}>
+        <TabbedShowLayout tabs={props => <TabbedShowLayoutTabs scrollable={true}{...props} />}>
             ...
         </TabbedShowLayout>
     </Show>
@@ -291,7 +291,7 @@ const PostShowActions = ({ permissions, basePath, data, resource }) => (
 );
 
 export const PostShow = ({ permissions, ...props }) => (
-    <Show actions={<PostShowActions permissions={permissions} />} {...props}>
+    <Show actions={props => <PostShowActions permissions={permissions} {...props} />} {...props}>
         <SimpleShowLayout>
             <TextField source="title" />
             <RichTextField source="body" />

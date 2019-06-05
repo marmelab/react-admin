@@ -62,7 +62,7 @@ const PostTitle = ({ record }) => {
 };
 
 export const PostEdit = (props) => (
-    <Edit title={<PostTitle />} {...props}>
+    <Edit title={PostTitle} {...props}>
         <SimpleForm>
             <DisabledInput source="id" />
             <TextInput source="title" />
@@ -95,7 +95,7 @@ Yes.
 
 React-admin uses an adapter approach, with a concept called *Data Providers*. Existing providers can be used as a blueprint to design your API, or you can write your own Data Provider to query an existing API. Writing a custom Data Provider is a matter of hours.
 
-![Data Provider architecture](/ra-doc-usaurus/img/data-provider.png)
+![Data Provider architecture](/react-admin/img/data-provider.png)
 
 See the [Data Providers documentation](./DataProviders.md) for details.
 

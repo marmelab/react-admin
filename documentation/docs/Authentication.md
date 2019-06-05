@@ -4,7 +4,7 @@ title: Authentication
 sidebar_label: Authentication
 ---
 
-![Logout button](/ra-doc-usaurus/img/login.gif)
+![Logout button](/react-admin/img/login.gif)
 
 React-admin lets you secure your admin app with the authentication strategy of your choice. Since there are many different possible strategies (Basic Auth, JWT, OAuth, etc.), react-admin simply provides hooks to execute your own authentication code.
 
@@ -14,7 +14,7 @@ By default, react-admin apps don't require authentication. Here are the steps to
 
 By default, the `/login` route renders a special component called `Login`, which displays a login form asking for username and password.
 
-![Default Login Form](/ra-doc-usaurus/img/login-form.png)
+![Default Login Form](/react-admin/img/login-form.png)
 
 What this form does upon submission depends on the `authProvider` prop of the `<Admin>` component. This function receives authentication requests `(type, params)`, and should return a Promise. `Login` calls `authProvider` with the `AUTH_LOGIN` type, and `{ login, password }` as parameters. It's the ideal place to authenticate the user, and store their credentials.
 
@@ -115,7 +115,7 @@ export default (type, params) => {
 };
 ```
 
-![Logout button](/ra-doc-usaurus/img/logout.gif)
+![Logout button](/react-admin/img/logout.gif)
 
 The `authProvider` is also a good place to notify the authentication API that the user credentials are no longer valid after logout.
 

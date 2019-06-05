@@ -146,7 +146,7 @@ import { BooleanField } from 'react-admin';
 <BooleanField source="commentable" />
 ```
 
-![BooleanField](/ra-doc-usaurus/img/boolean-field.png)
+![BooleanField](/react-admin/img/boolean-field.png)
 
 The `BooleanField` also includes an hidden text for accessibility (or to query in end to end tests). By default, it includes the translated label and the translated value, for example `Published: false`.
 
@@ -170,7 +170,7 @@ import { ChipField } from 'react-admin';
 <ChipField source="category" />
 ```
 
-![ChipField](/ra-doc-usaurus/img/chip-field.png)
+![ChipField](/react-admin/img/chip-field.png)
 
 This field type is especially useful for one to many relationships, e.g. to display a list of books for a given author:
 
@@ -437,7 +437,7 @@ const choices = [
    { id: 456, first_name: 'Jane', last_name: 'Austen' },
 ];
 const FullNameField = ({ record }) => <Chip>{record.first_name} {record.last_name}</Chip>;
-<SelectField source="author_id" choices={choices} optionText={<FullNameField />}/>
+<SelectField source="author_id" choices={choices} optionText={FullNameField}/>
 ```
 
 The current choice is translated by default, so you can use translation identifiers as choices:
@@ -481,7 +481,7 @@ export const PostList = (props) => (
 
 With this configuration, `<ReferenceField>` wraps the user's name in a link to the related user `<Edit>` page.
 
-![ReferenceField](/ra-doc-usaurus/img/reference-field.png)
+![ReferenceField](/react-admin/img/reference-field.png)
 
 `<ReferenceField>` accepts a `reference` attribute, which specifies the resource to fetch for the related record. Also, you can use any `Field` component as child.
 
@@ -569,7 +569,7 @@ export const PostList = (props) => (
 );
 ```
 
-![ReferenceManyFieldSingleFieldList](/ra-doc-usaurus/img/reference-many-field-single-field-list.png)
+![ReferenceManyFieldSingleFieldList](/react-admin/img/reference-many-field-single-field-list.png)
 
 `<ReferenceManyField>` accepts a `reference` attribute, which specifies the resource to fetch for the related record. It also accepts a `source` attribute which define the field containing the value to look for in the `target` field of the referenced resource. By default this is the `id` of the resource (`post.id` in the previous example).
 
@@ -603,7 +603,7 @@ export const PostEdit = (props) => (
 );
 ```
 
-![ReferenceManyFieldDatagrid](/ra-doc-usaurus/img/reference-many-field-datagrid.png)
+![ReferenceManyFieldDatagrid](/react-admin/img/reference-many-field-datagrid.png)
 
 By default, react-admin restricts the possible values to 25 and displays no pagination control. You can change the limit by setting the `perPage` prop:
 
@@ -618,7 +618,7 @@ And if you want to allow users to paginate the list, pass a `<Pagination>` compo
 ```jsx
 import { Pagination } from 'react-admin';
 
-<ReferenceManyField pagination={<Pagination />} reference="comments" target="post_id">
+<ReferenceManyField pagination={Pagination} reference="comments" target="post_id">
    ...
 </ReferenceManyField>
 ```
@@ -736,7 +736,7 @@ import { RichTextField } from 'react-admin';
 <RichTextField source="body" />
 ```
 
-![RichTextField](/ra-doc-usaurus/img/rich-text-field.png)
+![RichTextField](/react-admin/img/rich-text-field.png)
 
 The `stripTags` attribute (`false` by default) allows you to remove any HTML markup, preventing some display glitches (which is especially useful in list views).
 
