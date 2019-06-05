@@ -156,7 +156,7 @@ describe('<ReferenceFieldController />', () => {
         });
     });
 
-    it('should render a link to the Show page of the related record when the linkType is show', () => {
+    it('should render a link to the Show page of the related record when the link is show', () => {
         const children = jest.fn().mockReturnValue(<span>children</span>);
         renderWithRedux(
             <ReferenceFieldController
@@ -165,7 +165,7 @@ describe('<ReferenceFieldController />', () => {
                 resource="comments"
                 reference="posts"
                 basePath="/comments"
-                linkType="show"
+                link="show"
             >
                 {children}
             </ReferenceFieldController>,
@@ -179,7 +179,7 @@ describe('<ReferenceFieldController />', () => {
         });
     });
 
-    it('should accept edit as resource name when linkType is show', () => {
+    it('should accept edit as resource name when link is show', () => {
         const children = jest.fn().mockReturnValue(<span>children</span>);
         renderWithRedux(
             <ReferenceFieldController
@@ -188,7 +188,7 @@ describe('<ReferenceFieldController />', () => {
                 reference="edit"
                 resource="show"
                 basePath="/show"
-                linkType="show"
+                link="show"
             >
                 {children}
             </ReferenceFieldController>,
@@ -210,7 +210,7 @@ describe('<ReferenceFieldController />', () => {
         });
     });
 
-    it('should accept show as resource name when linkType is show', () => {
+    it('should accept show as resource name when link is show', () => {
         const children = jest.fn().mockReturnValue(<span>children</span>);
         renderWithRedux(
             <ReferenceFieldController
@@ -220,7 +220,7 @@ describe('<ReferenceFieldController />', () => {
                 resource="edit"
                 basePath="/edit"
                 crudGetManyAccumulate={crudGetManyAccumulate}
-                linkType="show"
+                link="show"
             >
                 {children}
             </ReferenceFieldController>,
@@ -242,7 +242,7 @@ describe('<ReferenceFieldController />', () => {
         });
     });
 
-    it('should set resourceLinkPath to false when the linkType is false', () => {
+    it('should set resourceLinkPath to false when the link is false', () => {
         const children = jest.fn().mockReturnValue(<span>children</span>);
         renderWithRedux(
             <ReferenceFieldController
@@ -250,7 +250,7 @@ describe('<ReferenceFieldController />', () => {
                 source="postId"
                 reference="posts"
                 basePath="/foo"
-                linkType={false}
+                link={false}
             >
                 {children}
             </ReferenceFieldController>,
