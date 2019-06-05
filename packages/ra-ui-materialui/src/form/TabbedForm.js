@@ -13,7 +13,7 @@ import compose from 'recompose/compose';
 import Divider from '@material-ui/core/Divider';
 import Tabs from '@material-ui/core/Tabs';
 import { withStyles, createStyles } from '@material-ui/core/styles';
-import { getDefaultValues, translate, REDUX_FORM_NAME, ComponentPropType } from 'ra-core';
+import { getDefaultValues, translate, REDUX_FORM_NAME } from 'ra-core';
 
 import Toolbar from './Toolbar';
 import CardContentInner from '../layout/CardContentInner';
@@ -92,7 +92,7 @@ export class TabbedForm extends Component {
             saving,
             submitOnEnter,
             tabsWithErrors,
-            toolbar: Toolbar,
+            toolbar,
             translate,
             undoable,
             value,
@@ -189,22 +189,21 @@ export class TabbedForm extends Component {
                             )
                     )}
                 </CardContentInner>
-                {Toolbar &&
-                    <Toolbar
-                        basePath={basePath}
-                        className="toolbar"
-                        handleSubmitWithRedirect={this.handleSubmitWithRedirect}
-                        handleSubmit={this.props.handleSubmit}
-                        invalid={invalid}
-                        pristine={pristine}
-                        record={record}
-                        redirect={redirect}
-                        resource={resource}
-                        saving={saving}
-                        submitOnEnter={submitOnEnter}
-                        undoable={undoable}
-                    />
-                }
+                {toolbar &&
+                    React.cloneElement(toolbar, {
+                        basePath,
+                        className: 'toolbar',
+                        handleSubmitWithRedirect: this.handleSubmitWithRedirect,
+                        handleSubmit: this.props.handleSubmit,
+                        invalid,
+                        pristine,
+                        record,
+                        redirect,
+                        resource,
+                        saving,
+                        submitOnEnter,
+                        undoable,
+                    })}
             </form>
         );
     }
@@ -232,7 +231,7 @@ TabbedForm.propTypes = {
     saving: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
     submitOnEnter: PropTypes.bool,
     tabsWithErrors: PropTypes.arrayOf(PropTypes.string),
-    toolbar: ComponentPropType,
+    toolbar: PropTypes.element,
     translate: PropTypes.func,
     undoable: PropTypes.bool,
     validate: PropTypes.func,
@@ -242,7 +241,7 @@ TabbedForm.propTypes = {
 
 TabbedForm.defaultProps = {
     submitOnEnter: true,
-    toolbar: Toolbar,
+    toolbar: <Toolbar />,
 };
 
 const collectErrors = (state, props) => {
