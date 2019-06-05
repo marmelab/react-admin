@@ -96,7 +96,7 @@ interface Props {
  *             title="List of posts"
  *             sort={{ field: 'published_at' }}
  *             filter={{ is_published: true }}
- *             filters={PostFilter}
+ *             filters={<PostFilter />}
  *         >
  *             <Datagrid>
  *                 <TextField source="id" />
