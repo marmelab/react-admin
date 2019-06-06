@@ -89,6 +89,7 @@ module.exports = {
             prev: 'Prev',
         },
         auth: {
+            auth_check_error: 'Please login to continue',
             user_menu: 'Profile',
             username: 'Username',
             password: 'Password',
