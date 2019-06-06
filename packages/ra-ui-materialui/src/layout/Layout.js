@@ -1,4 +1,4 @@
-import React, { Component, cloneElement } from 'react';
+import React, { Component, createElement } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
@@ -17,6 +17,7 @@ import DefaultMenu from './Menu';
 import DefaultNotification from './Notification';
 import DefaultError from './Error';
 import defaultTheme from '../defaultTheme';
+import { ComponentPropType } from 'ra-core';
 
 const styles = theme =>
     createStyles({
@@ -114,17 +115,17 @@ class Layout extends Component {
                 {...sanitizeRestProps(props)}
             >
                 <div className={classes.appFrame}>
-                    {cloneElement(appBar, { title, open, logout })}
+                    {createElement(appBar, { title, open, logout })}
                     <main className={classes.contentWithSidebar}>
-                        {cloneElement(sidebar, {
-                            children: cloneElement(menu, {
+                        {createElement(sidebar, {
+                            children: createElement(menu, {
                                 logout,
                                 hasDashboard: !!dashboard,
                             }),
                         })}
                         <div className={classes.content}>
                             {hasError
-                                ? cloneElement(error, {
+                                ? createElement(error, {
                                     error: errorMessage,
                                     errorInfo,
                                     title,
@@ -132,7 +133,7 @@ class Layout extends Component {
                                 : children}
                         </div>
                     </main>
-                    {cloneElement(notification)}
+                    {createElement(notification)}
                 </div>
             </div>
         );
@@ -140,28 +141,28 @@ class Layout extends Component {
 }
 
 Layout.propTypes = {
-    appBar: PropTypes.element,
+    appBar: ComponentPropType,
     children: PropTypes.oneOfType([PropTypes.func, PropTypes.node]),
     classes: PropTypes.object,
     className: PropTypes.string,
     customRoutes: PropTypes.array,
-    dashboard: PropTypes.element,
-    error: PropTypes.element,
+    dashboard: ComponentPropType,
+    error: ComponentPropType,
     history: PropTypes.object.isRequired,
     logout: PropTypes.element,
-    menu: PropTypes.element,
-    notification: PropTypes.element,
+    menu: ComponentPropType,
+    notification: ComponentPropType,
     open: PropTypes.bool,
-    sidebar: PropTypes.element,
+    sidebar: ComponentPropType,
     title: PropTypes.node.isRequired,
 };
 
 Layout.defaultProps = {
-    appBar: <DefaultAppBar />,
-    error: <DefaultError />,
-    menu: <DefaultMenu />,
-    notification: <DefaultNotification />,
-    sidebar: <DefaultSidebar />,
+    appBar: DefaultAppBar,
+    error: DefaultError,
+    menu: DefaultMenu,
+    notification: DefaultNotification,
+    sidebar: DefaultSidebar,
 };
 
 const mapStateToProps = state => ({
