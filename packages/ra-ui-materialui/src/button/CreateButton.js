@@ -7,7 +7,7 @@ import ContentAdd from '@material-ui/icons/Add';
 import compose from 'recompose/compose';
 import classnames from 'classnames';
 import { Link } from 'react-router-dom';
-import { useTranslate, ComponentPropType } from 'ra-core';
+import { useTranslate } from 'ra-core';
 
 import Button from './Button';
 import Responsive from '../layout/Responsive';
@@ -34,7 +34,7 @@ const CreateButton = ({
     className,
     classes = {},
     label = 'ra.action.create',
-    icon: Icon = ContentAdd,
+    icon = <ContentAdd />,
     ...rest
 }) => {
     const translate = useTranslate();
@@ -49,7 +49,7 @@ const CreateButton = ({
                     aria-label={label && translate(label)}
                     {...rest}
                 >
-                    <Icon />
+                    {icon}
                 </Fab>
             }
             medium={
@@ -60,7 +60,7 @@ const CreateButton = ({
                     label={label}
                     {...rest}
                 >
-                    <Icon />
+                    {icon}
                 </Button>
             }
         />
@@ -73,7 +73,7 @@ CreateButton.propTypes = {
     classes: PropTypes.object,
     label: PropTypes.string,
     size: PropTypes.string,
-    icon: ComponentPropType,
+    icon: PropTypes.element,
 };
 
 const enhance = compose(

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
@@ -10,7 +10,6 @@ import {
 } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
 import compose from 'recompose/compose';
-import { ComponentPropType } from 'ra-core';
 
 import DefaultAppBar from './AppBar';
 import DefaultSidebar from './Sidebar';
@@ -93,18 +92,18 @@ class Layout extends Component {
 
     render() {
         const {
-            appBar: AppBar,
+            appBar,
             children,
             classes,
             className,
             customRoutes,
-            error: Error,
+            error,
             dashboard,
             logout,
-            menu: Menu,
-            notification: Notification,
+            menu,
+            notification,
             open,
-            sidebar: Sidebar,
+            sidebar,
             title,
             ...props
         } = this.props;
@@ -115,22 +114,25 @@ class Layout extends Component {
                 {...sanitizeRestProps(props)}
             >
                 <div className={classes.appFrame}>
-                    <AppBar title={title} open={open} logout={logout} />
+                    {cloneElement(appBar, { title, open, logout })}
                     <main className={classes.contentWithSidebar}>
-                        <Sidebar>
-                            <Menu logout={logout} hasDashboard={!!dashboard} />
-                        </Sidebar>
+                        {cloneElement(sidebar, {
+                            children: cloneElement(menu, {
+                                logout,
+                                hasDashboard: !!dashboard,
+                            }),
+                        })}
                         <div className={classes.content}>
                             {hasError
-                                ? <Error
-                                      error={errorMessage}
-                                      errorInfo={errorInfo}
-                                      title={title}
-                                  />
+                                ? cloneElement(error, {
+                                    error: errorMessage,
+                                    errorInfo,
+                                    title,
+                                })
                                 : children}
                         </div>
                     </main>
-                    <Notification />
+                    {cloneElement(notification)}
                 </div>
             </div>
         );
@@ -138,28 +140,28 @@ class Layout extends Component {
 }
 
 Layout.propTypes = {
-    appBar: ComponentPropType,
+    appBar: PropTypes.element,
     children: PropTypes.oneOfType([PropTypes.func, PropTypes.node]),
     classes: PropTypes.object,
     className: PropTypes.string,
     customRoutes: PropTypes.array,
-    dashboard: ComponentPropType,
-    error: ComponentPropType,
+    dashboard: PropTypes.element,
+    error: PropTypes.element,
     history: PropTypes.object.isRequired,
-    logout: ComponentPropType,
-    menu: ComponentPropType,
-    notification: ComponentPropType,
+    logout: PropTypes.element,
+    menu: PropTypes.element,
+    notification: PropTypes.element,
     open: PropTypes.bool,
-    sidebar: ComponentPropType,
+    sidebar: PropTypes.element,
     title: PropTypes.node.isRequired,
 };
 
 Layout.defaultProps = {
-    appBar: DefaultAppBar,
-    error: DefaultError,
-    menu: DefaultMenu,
-    notification: DefaultNotification,
-    sidebar: DefaultSidebar,
+    appBar: <DefaultAppBar />,
+    error: <DefaultError />,
+    menu: <DefaultMenu />,
+    notification: <DefaultNotification />,
+    sidebar: <DefaultSidebar />,
 };
 
 const mapStateToProps = state => ({

@@ -101,8 +101,8 @@ const PostList = props => {
     return (
         <List
             {...props}
-            bulkActionButtons={PostListBulkActions}
-            filters={PostFilter}
+            bulkActionButtons={<PostListBulkActions />}
+            filters={<PostFilter />}
             sort={{ field: 'published_at', order: 'DESC' }}
         >
             <Responsive
@@ -116,7 +116,7 @@ const PostList = props => {
                     />
                 }
                 medium={
-                    <Datagrid rowClick={rowClick} expand={PostPanel}>
+                    <Datagrid rowClick={rowClick} expand={<PostPanel />}>
                         <TextField source="id" />
                         <TextField
                             source="title"

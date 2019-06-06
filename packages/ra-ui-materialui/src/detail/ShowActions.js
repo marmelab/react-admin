@@ -34,7 +34,7 @@ const sanitizeRestProps = ({
  *     );
  *
  *     export const PostShow = (props) => (
- *         <Show actions={PostShowActions} {...props}>
+ *         <Show actions={<PostShowActions />} {...props}>
  *             ...
  *         </Show>
  *     );

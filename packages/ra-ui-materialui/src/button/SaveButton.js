@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
@@ -7,7 +7,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import { withStyles, createStyles } from '@material-ui/core/styles';
 import ContentSave from '@material-ui/icons/Save';
 import classnames from 'classnames';
-import { showNotification, translate, ComponentPropType } from 'ra-core';
+import { showNotification, translate } from 'ra-core';
 
 const styles = createStyles({
     button: {
@@ -57,12 +57,12 @@ export class SaveButton extends Component {
         submitOnEnter: PropTypes.bool,
         translate: PropTypes.func.isRequired,
         variant: PropTypes.oneOf(['raised', 'flat', 'fab']),
-        icon: ComponentPropType,
+        icon: PropTypes.element,
     };
 
     static defaultProps = {
         handleSubmitWithRedirect: () => () => {},
-        icon: ContentSave,
+        icon: <ContentSave />,
     };
 
     handleClick = e => {
@@ -106,7 +106,7 @@ export class SaveButton extends Component {
             submitOnEnter,
             translate,
             variant = 'contained',
-            icon: Icon,
+            icon,
             onClick,
             ...rest
         } = this.props;
@@ -127,9 +127,7 @@ export class SaveButton extends Component {
                         thickness={2}
                         className={classes.iconPaddingStyle}
                     />
-                ) : (
-                    <Icon className={classes.iconPaddingStyle} />
-                )}
+                ) : cloneElement(icon, { className: classes.iconPaddingStyle })}
                 {label && translate(label, { _: label })}
             </Button>
         );

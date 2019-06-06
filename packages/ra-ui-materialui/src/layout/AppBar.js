@@ -1,4 +1,4 @@
-import React, { Children } from 'react';
+import React, { Children, cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
@@ -10,7 +10,7 @@ import { withStyles, createStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
 import withWidth from '@material-ui/core/withWidth';
 import compose from 'recompose/compose';
-import { toggleSidebar as toggleSidebarAction, ComponentPropType } from 'ra-core';
+import { toggleSidebar as toggleSidebarAction } from 'ra-core';
 
 import LoadingIndicator from './LoadingIndicator';
 import DefaultUserMenu from './UserMenu';
@@ -56,7 +56,7 @@ const AppBar = ({
     open,
     title,
     toggleSidebar,
-    userMenu: UserMenu,
+    userMenu,
     width,
     ...rest
 }) => (
@@ -92,7 +92,7 @@ const AppBar = ({
                     children
                 )}
                 <LoadingIndicator />
-                <UserMenu logout={logout} />
+                {cloneElement(userMenu, { logout })}
             </Toolbar>
         </MuiAppBar>
     </HideOnScroll>
@@ -102,15 +102,15 @@ AppBar.propTypes = {
     children: PropTypes.node,
     classes: PropTypes.object,
     className: PropTypes.string,
-    logout: ComponentPropType,
+    logout: PropTypes.element,
     open: PropTypes.bool,
     toggleSidebar: PropTypes.func.isRequired,
-    userMenu: ComponentPropType,
+    userMenu: PropTypes.element,
     width: PropTypes.string,
 };
 
 AppBar.defaultProps = {
-    userMenu: DefaultUserMenu,
+    userMenu: <DefaultUserMenu />,
 };
 
 const enhance = compose(

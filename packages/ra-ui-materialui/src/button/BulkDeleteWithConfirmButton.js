@@ -6,7 +6,7 @@ import ActionDelete from '@material-ui/icons/Delete';
 import { withStyles, createStyles } from '@material-ui/core/styles';
 import { fade } from '@material-ui/core/styles/colorManipulator';
 import inflection from 'inflection';
-import { translate, crudDeleteMany, ComponentPropType } from 'ra-core';
+import { translate, crudDeleteMany } from 'ra-core';
 
 import Confirm from '../layout/Confirm';
 import Button from './Button';
@@ -44,12 +44,12 @@ class BulkDeleteWithConfirmButton extends Component {
         label: PropTypes.string,
         resource: PropTypes.string.isRequired,
         selectedIds: PropTypes.arrayOf(PropTypes.any).isRequired,
-        icon: ComponentPropType,
+        icon: PropTypes.element,
     };
 
     static defaultProps = {
         label: 'ra.action.delete',
-        icon: ActionDelete,
+        icon: <ActionDelete />,
     };
 
     state = { isOpen: false };
@@ -83,7 +83,7 @@ class BulkDeleteWithConfirmButton extends Component {
         const {
             classes,
             label,
-            icon: Icon,
+            icon,
             onClick,
             resource,
             selectedIds,
@@ -98,7 +98,7 @@ class BulkDeleteWithConfirmButton extends Component {
                     className={classes.deleteButton}
                     {...sanitizeRestProps(rest)}
                 >
-                    <Icon />
+                    {icon}
                 </Button>
                 <Confirm
                     isOpen={this.state.isOpen}

@@ -4,7 +4,6 @@ import shouldUpdate from 'recompose/shouldUpdate';
 import Queue from '@material-ui/icons/Queue';
 import { Link } from 'react-router-dom';
 import { stringify } from 'query-string'
-import { ComponentPropType } from 'ra-core';
 
 import Button from './Button';
 
@@ -28,7 +27,7 @@ export const CloneButton = ({
     basePath = '',
     label = 'ra.action.clone',
     record = {},
-    icon: Icon = Queue,
+    icon = <Queue />,
     ...rest
 }) => (
     <Button
@@ -41,7 +40,7 @@ export const CloneButton = ({
         onClick={stopPropagation}
         {...sanitizeRestProps(rest)}
     >
-        <Icon />
+        {icon}
     </Button>
 );
 
@@ -51,7 +50,7 @@ CloneButton.propTypes = {
     classes: PropTypes.object,
     label: PropTypes.string,
     record: PropTypes.object,
-    icon: ComponentPropType,
+    icon: PropTypes.element,
 };
 
 const enhance = shouldUpdate(

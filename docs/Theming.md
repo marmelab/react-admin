@@ -104,7 +104,7 @@ export const VisitorList = withStyles(listStyles)(({ classes, ...props }) => (
     <List
         classes={classes}
         {...props}
-        filters={VisitorFilter}
+        filters={<VisitorFilter />}
         sort={{ field: 'last_seen', order: 'DESC' }}
         perPage={25}
     >
@@ -399,14 +399,14 @@ const MyUserMenu = props => (
         <MenuItemLink
             to="/configuration"
             primaryText="Configuration"
-            leftIcon={SettingsIcon}
+            leftIcon={<SettingsIcon />}
         />
     </UserMenu>
 );
 
-const MyAppBar = props => <AppBar {...props} userMenu={MyUserMenu} />;
+const MyAppBar = props => <AppBar {...props} userMenu={<MyUserMenu />} />;
 
-const MyLayout = props => <Layout {...props} appBar={MyAppBar} />;
+const MyLayout = props => <Layout {...props} appBar={<MyAppBar />} />;
 ```
 
 You can also customize the default icon by setting the `icon` prop to the `<UserMenu />` component.
@@ -851,7 +851,7 @@ const MyError = ({
         <div>
             <Button
                 variant="contained"
-                icon={History}
+                icon={<History />}
                 onClick={() => history.go(-1)}
             >
                 Back

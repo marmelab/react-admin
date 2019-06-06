@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
@@ -66,16 +66,12 @@ const PostQuickCreate = ({ onCancel, onSave }) => {
             save={handleSave}
             saving={submitting}
             redirect={false}
-            toolbar={useMemo(
-                () => props => (
-                    <PostQuickCreateToolbar
-                        onCancel={onCancel}
-                        submitting={submitting}
-                        {...props}
-                    />
-                ),
-                [onCancel, submitting],
-            )}
+            toolbar={
+                <PostQuickCreateToolbar
+                    onCancel={onCancel}
+                    submitting={submitting}
+                />
+            }
             classes={{ form: classes.form }}
         >
             <TextInput source="title" validate={required()} />

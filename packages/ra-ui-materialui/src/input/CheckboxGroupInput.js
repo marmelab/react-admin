@@ -1,4 +1,4 @@
-import React, { Component, createElement } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import FormLabel from '@material-ui/core/FormLabel';
@@ -9,7 +9,7 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import Checkbox from '@material-ui/core/Checkbox';
 import { withStyles, createStyles } from '@material-ui/core/styles';
 import compose from 'recompose/compose';
-import { addField, translate, FieldTitle, ComponentPropType } from 'ra-core';
+import { addField, translate, FieldTitle } from 'ra-core';
 
 import defaultSanitizeRestProps from './sanitizeRestProps';
 const sanitizeRestProps = ({ setFilter, setPagination, setSort, ...rest }) =>
@@ -54,7 +54,16 @@ const styles = theme => createStyles({
  * ];
  * <CheckboxGroupInput source="recipients" choices={choices} optionText="full_name" optionValue="_id" />
  *
- * `optionText` also accepts a React component, that will be cloned and receive
+ * `optionText` also accepts a function, so you can shape the option text at will:
+ * @example
+ * const choices = [
+ *    { id: 123, first_name: 'Leo', last_name: 'Tolstoi' },
+ *    { id: 456, first_name: 'Jane', last_name: 'Austen' },
+ * ];
+ * const optionRenderer = choice => `${choice.first_name} ${choice.last_name}`;
+ * <CheckboxGroupInput source="recipients" choices={choices} optionText={optionRenderer} />
+ *
+ * `optionText` also accepts a React Element, that will be cloned and receive
  * the related choice as the `record` prop. You can use Field components there.
  * @example
  * const choices = [
@@ -62,7 +71,7 @@ const styles = theme => createStyles({
  *    { id: 456, first_name: 'Jane', last_name: 'Austen' },
  * ];
  * const FullNameField = ({ record }) => <span>{record.first_name} {record.last_name}</span>;
- * <CheckboxGroupInput source="recipients" choices={choices} optionText={FullNameField}/>
+ * <CheckboxGroupInput source="recipients" choices={choices} optionText={<FullNameField />}/>
  *
  * The choices are translated by default, so you can use translation identifiers as choices:
  * @example
@@ -110,9 +119,13 @@ export class CheckboxGroupInput extends Component {
             translateChoice,
             classes,
         } = this.props;
-        const choiceName = typeof optionText === 'string' // eslint-disable-line no-nested-ternary
-            ? get(choice, optionText)
-            : createElement(optionText, { record: choice });
+
+        const choiceName = React.isValidElement(optionText)
+            ? React.cloneElement(optionText, { record: choice })
+            : typeof optionText === 'function'
+            ? optionText(choice)
+            : get(choice, optionText);
+            
         return (
             <FormControlLabel
                 htmlFor={`${id}_${get(choice, optionValue)}`}
@@ -202,7 +215,8 @@ CheckboxGroupInput.propTypes = {
     isRequired: PropTypes.bool,
     optionText: PropTypes.oneOfType([
         PropTypes.string,
-        ComponentPropType,
+        PropTypes.func,
+        PropTypes.element,
     ]).isRequired,
     optionValue: PropTypes.string.isRequired,
     resource: PropTypes.string,

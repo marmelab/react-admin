@@ -10,9 +10,8 @@ import ErrorIcon from '@material-ui/icons/Report';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import History from '@material-ui/icons/History';
 
-import Title from './Title';
+import Title, { TitlePropType } from './Title';
 import { useTranslate } from 'ra-core';
-import { TitlePropType } from '.';
 
 const styles = theme =>
     createStyles({

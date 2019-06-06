@@ -438,7 +438,7 @@ const choices = [
    { id: 456, first_name: 'Jane', last_name: 'Austen' },
 ];
 const FullNameField = ({ record }) => <Chip>{record.first_name} {record.last_name}</Chip>;
-<SelectField source="author_id" choices={choices} optionText={FullNameField}/>
+<SelectField source="author_id" choices={choices} optionText={<FullNameField />}/>
 ```
 
 The current choice is translated by default, so you can use translation identifiers as choices:
@@ -614,12 +614,12 @@ By default, react-admin restricts the possible values to 25 and displays no pagi
 </ReferenceManyField>
 ```
 
-And if you want to allow users to paginate the list, pass a `<Pagination>` component as the `pagination` prop:
+And if you want to allow users to paginate the list, pass a `<Pagination>` element as the `pagination` prop:
 
 ```jsx
 import { Pagination } from 'react-admin';
 
-<ReferenceManyField pagination={Pagination} reference="comments" target="post_id">
+<ReferenceManyField pagination={<Pagination />} reference="comments" target="post_id">
    ...
 </ReferenceManyField>
 ```

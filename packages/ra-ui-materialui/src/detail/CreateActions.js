@@ -32,7 +32,7 @@ const sanitizeRestProps = ({
  *     );
  *
  *     export const PostCreate = (props) => (
- *         <Create actions={PostCreateActions} {...props}>
+ *         <Create actions={<PostCreateActions />} {...props}>
  *             ...
  *         </Create>
  *     );

@@ -34,7 +34,7 @@ const sanitizeRestProps = ({
  *     );
  *
  *     export const PostEdit = (props) => (
- *         <Edit actions={PostEditActions} {...props}>
+ *         <Edit actions={<PostEditActions />} {...props}>
  *             ...
  *         </Edit>
  *     );

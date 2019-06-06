@@ -3,10 +3,9 @@ import PropTypes from 'prop-types';
 import Card from '@material-ui/core/Card';
 import { withStyles, createStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
-import { CreateController, ComponentPropType } from 'ra-core';
+import { CreateController } from 'ra-core';
 
 import TitleForRecord from '../layout/TitleForRecord';
-import { TitlePropType } from '../layout';
 
 const styles = createStyles({
     root: {},
@@ -45,8 +44,8 @@ const sanitizeRestProps = ({
 
 export const CreateView = withStyles(styles)(
     ({
-        actions: Actions,
-        aside: Aside,
+        actions,
+        aside,
         basePath,
         children,
         classes,
@@ -70,16 +69,17 @@ export const CreateView = withStyles(styles)(
                 record={record}
                 defaultTitle={defaultTitle}
             />
-            {Actions &&
-                <Actions
-                    basePath={basePath}
-                    hasList={hasList}
-                    resource={resource}
-                />
-            }
+            {actions &&
+                cloneElement(actions, {
+                    basePath,
+                    resource,
+                    hasList,
+                    //  Ensure we don't override any user provided props
+                    ...actions.props,
+                })}
             <div
                 className={classnames(classes.main, {
-                    [classes.noActions]: !Actions,
+                    [classes.noActions]: !actions,
                 })}
             >
                 <Card className={classes.card}>
@@ -94,22 +94,21 @@ export const CreateView = withStyles(styles)(
                         save,
                     })}
                 </Card>
-                {Aside &&
-                    <Aside
-                        basePath={basePath}
-                        record={record}
-                        resource={resource}
-                        save={save}
-                    />
-                }
+                {aside &&
+                    cloneElement(aside, {
+                        basePath,
+                        record,
+                        resource,
+                        save,
+                    })}
             </div>
         </div>
     )
 );
 
 CreateView.propTypes = {
-    actions: ComponentPropType,
-    aside: ComponentPropType,
+    actions: PropTypes.element,
+    aside: PropTypes.element,
     basePath: PropTypes.string,
     children: PropTypes.element,
     classes: PropTypes.object,
@@ -121,7 +120,7 @@ CreateView.propTypes = {
     redirect: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
     resource: PropTypes.string,
     save: PropTypes.func,
-    title: TitlePropType,
+    title: PropTypes.node,
 };
 
 CreateView.defaultProps = {
@@ -176,8 +175,8 @@ const Create = props => (
 );
 
 Create.propTypes = {
-    actions: ComponentPropType,
-    aside: ComponentPropType,
+    actions: PropTypes.element,
+    aside: PropTypes.element,
     children: PropTypes.element,
     classes: PropTypes.object,
     className: PropTypes.string,
@@ -185,7 +184,7 @@ Create.propTypes = {
     hasEdit: PropTypes.bool,
     hasShow: PropTypes.bool,
     resource: PropTypes.string.isRequired,
-    title: TitlePropType,
+    title: PropTypes.node,
     record: PropTypes.object,
     hasList: PropTypes.bool,
 };

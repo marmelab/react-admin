@@ -21,7 +21,7 @@ Here are all the props accepted by the `<List>` component:
 * [`actions`](#actions)
 * [`exporter`](#exporter)
 * [`bulkActionButtons`](#bulk-action-buttons)
-* [`filters`](#filters) (a React component used to display the filter form)
+* [`filters`](#filters) (a React element used to display the filter form)
 * [`perPage`](#records-per-page)
 * [`sort`](#default-sort-field)
 * [`filter`](#permanent-filter) (the permanent filter used in the REST request)
@@ -79,11 +79,11 @@ export const PostList = (props) => (
 );
 ```
 
-The title can be either a string, or a component of your own.
+The title can be either a string, or an element of your own.
 
 ### Actions
 
-You can replace the list of default actions by your own component using the `actions` prop:
+You can replace the list of default actions by your own element using the `actions` prop:
 
 ```jsx
 import Button from '@material-ui/core/Button';
@@ -95,7 +95,7 @@ const PostActions = ({
     currentSort,
     displayedFilters,
     exporter,
-    filters: Filters,
+    filters,
     filterValues,
     onUnselectItems,
     resource,
@@ -104,15 +104,13 @@ const PostActions = ({
     total
 }) => (
     <Toolbar>
-        {Filters &&
-            <Filters
-                resource={resource}
-                showFilter={showFilter}
-                displayedFilters={displayedFilters}
-                filterValues={filterValues}
-                context="button"
-            />
-        }
+        {filters && React.cloneElement(filters, {
+            resource,
+            showFilter,
+            displayedFilters,
+            filterValues,
+            context: 'button',
+        })}
         <CreateButton basePath={basePath} />
         <ExportButton
             disabled={total === 0}
@@ -127,7 +125,7 @@ const PostActions = ({
 );
 
 export const PostList = (props) => (
-    <List {...props} actions={PostActions}>
+    <List {...props} actions={<PostActions />}>
         ...
     </List>
 );
@@ -137,7 +135,7 @@ You can also use such a custom `ListActions` prop to omit or reorder buttons bas
 
 ```jsx
 export const PostList = ({ permissions, ...props }) => (
-    <List {...props} actions={props => <PostActions permissions={permissions} {...props} />}>
+    <List {...props} actions={<PostActions permissions={permissions} {...props} />}>
         ...
     </List>
 );
@@ -226,7 +224,7 @@ Under the hood, `fetchRelatedRecords()` uses react-admin's sagas, which trigger 
 
 ### Bulk Action Buttons
 
-Bulk action buttons are buttons that affect several records at once, like mass deletion for instance. In the `<Datagrid>` component, the bulk actions toolbar appears when a user ticks the checkboxes in the first column of the table. The user can then choose a button from the bulk actions toolbar. By default, all list views have a single bulk action button, the bulk delete button. You can add other bulk action buttons by passing a custom component as the `bulkActionButtons` prop of the `<List>` component:
+Bulk action buttons are buttons that affect several records at once, like mass deletion for instance. In the `<Datagrid>` component, the bulk actions toolbar appears when a user ticks the checkboxes in the first column of the table. The user can then choose a button from the bulk actions toolbar. By default, all list views have a single bulk action button, the bulk delete button. You can add other bulk action buttons by passing a custom element as the `bulkActionButtons` prop of the `<List>` component:
 
 ```jsx
 import React, { Fragment } from 'react';
@@ -243,7 +241,7 @@ const PostBulkActionButtons = props => (
 );
 
 export const PostList = (props) => (
-    <List {...props} bulkActionButtons={PostBulkActionButtons}>
+    <List {...props} bulkActionButtons={<PostBulkActionButtons />}>
         ...
     </List>
 );
@@ -377,7 +375,7 @@ const PostFilter = (props) => (
 );
 
 export const PostList = (props) => (
-    <List {...props} filters={PostFilter}>
+    <List {...props} filters={<PostFilter />}>
         ...
     </List>
 );
@@ -392,7 +390,7 @@ The filter component must be a `<Filter>` with `<Input>` children.
 
 It does so by inspecting its `context` prop.
 
-**Tip**: Don't mix up this `filters` prop, expecting a React component, with the `filter` props, which expects an object to define permanent filters (see below).
+**Tip**: Don't mix up this `filters` prop, expecting a React element, with the `filter` props, which expects an object to define permanent filters (see below).
 
 The `Filter` component accepts the usual `className` prop but you can override many class names injected to the inner components by React-admin thanks to the `classes` property (as most Material UI components, see their [documentation about it](https://material-ui.com/customization/overrides/#overriding-with-classes)). This property accepts the following keys:
 
@@ -518,7 +516,7 @@ const PostFilter = (props) => (
 );
 
 export const PostList = (props) => (
-    <List {...props} filters={PostFilter} filterDefaultValues={{ is_published: true }}>
+    <List {...props} filters={<PostFilter />} filterDefaultValues={{ is_published: true }}>
         ...
     </List>
 );
@@ -533,7 +531,7 @@ const filterSentToDataProvider = { ...filterDefaultValues, ...filterChosenByUser
 
 ### Pagination
 
-You can replace the default pagination component by your own, using the `pagination` prop. The pagination element receives the current page, the number of records per page, the total number of records, as well as a `setPage()` function that changes the page.
+You can replace the default pagination element by your own, using the `pagination` prop. The pagination element receives the current page, the number of records per page, the total number of records, as well as a `setPage()` function that changes the page.
 
 For instance, you can modify the default pagination by adjusting the "rows per page" selector.
 
@@ -544,7 +542,7 @@ import { Pagination } from 'react-admin';
 const PostPagination = props => <Pagination rowsPerPageOptions={[10, 25, 50, 100]} {...props} />
 
 export const PostList = (props) => (
-    <List {...props} pagination={PostPagination}>
+    <List {...props} pagination={<PostPagination />}>
         ...
     </List>
 );
@@ -580,7 +578,7 @@ const PostPagination = ({ page, perPage, total, setPage }) => {
 }
 
 export const PostList = (props) => (
-    <List {...props} pagination={PostPagination}>
+    <List {...props} pagination={<PostPagination />}>
         ...
     </List>
 );
@@ -602,7 +600,7 @@ const Aside = () => (
 );
 
 const PostList = props => (
-    <List aside={Aside} {...props}>
+    <List aside={<Aside />} {...props}>
         ...
     </List>
 ```
@@ -763,8 +761,8 @@ const MyDatagridRow = ({ record, resource, id, onToggleItem, children, selected,
     </TableRow>
 )
 
-const MyDatagridBody = props => <DatagridBody {...props} row={MyDatagridRow} />;
-const MyDatagrid = props => <Datagrid {...props} body={MyDatagridBody} />;
+const MyDatagridBody = props => <DatagridBody {...props} row={<MyDatagridRow />} />;
+const MyDatagrid = props => <Datagrid {...props} body={<MyDatagridBody />} />;
 
 const PostList = props => (
     <List {...props}>
@@ -845,7 +843,7 @@ const PostPanel = ({ id, record, resource }) => (
 
 const PostList = props => (
     <List {...props}>
-        <Datagrid expand={PostPanel}>
+        <Datagrid expand={<PostPanel />}>
             <TextField source="id" />
             <TextField source="title" />
             <DateField source="published_at" />
@@ -878,7 +876,7 @@ const PostShow = props => (
 
 const PostList = props => (
     <List {...props}>
-        <Datagrid expand={PostShow}>
+        <Datagrid expand={<PostShow />}>
             <TextField source="id" />
             <TextField source="title" />
             <DateField source="published_at" />
@@ -911,7 +909,7 @@ const PostEdit = props => (
 
 const PostList = props => (
     <List {...props}>
-        <Datagrid expand={PostEdit}>
+        <Datagrid expand={<PostEdit />}>
             <TextField source="id" />
             <TextField source="title" />
             <DateField source="published_at" />
@@ -1130,7 +1128,7 @@ const CategoriesActions = props => (
 export const CategoriesList = (props) => (
     <List {...props} perPage={10000}>
         <Tree>
-            <NodeView actions={CategoriesActions}>
+            <NodeView actions={<CategoriesActions />}>
                 <TextField source="name" />
             </NodeView>
         </Tree>
@@ -1146,7 +1144,7 @@ export const CategoriesList = (props) => (
 export const CategoriesList = (props) => (
     <List {...props} perPage={10000}>
         <Tree enableDragAndDrop>
-            <NodeView actions={CategoriesActions}>
+            <NodeView actions={<CategoriesActions />}>
                 <TextField source="name" />
             </NodeView>
         </Tree>
@@ -1189,9 +1187,9 @@ const CommentGrid = ({ ids, data, basePath }) => (
     {ids.map(id =>
         <Card key={id} style={cardStyle}>
             <CardHeader
-                title={props => <TextField record={data[id]} source="author.name" {...props} />}
-                subheader={props => <DateField record={data[id]} source="created_at" {...props} />}
-                avatar={props => <Avatar icon={<PersonIcon />} {...props} />}
+                title={<TextField record={data[id]} source="author.name" />}
+                subheader={<DateField record={data[id]} source="created_at" />}
+                avatar={<Avatar icon={<PersonIcon />} />}
             />
             <CardContent>
                 <TextField record={data[id]} source="body" />
@@ -1246,7 +1244,7 @@ const UserFilter = ({ permissions, ...props }) =>
 export const UserList = ({ permissions, ...props }) =>
     <List
         {...props}
-        filters={props => <UserFilter permissions={permissions} {...props} />}
+        filters={<UserFilter permissions={permissions} {...props} />}
         sort={{ field: 'name', order: 'ASC' }}
     >
         <Responsive

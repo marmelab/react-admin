@@ -107,7 +107,7 @@ React-admin requires a valid dataProvider function to work.`);
             logoutButton,
         } = this.props;
 
-        const logout = authProvider ? logoutButton : null;
+        const logout = authProvider ? createElement(logoutButton) : null;
 
         if (appLayout) {
             console.warn(

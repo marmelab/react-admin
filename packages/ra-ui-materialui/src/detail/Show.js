@@ -3,11 +3,10 @@ import PropTypes from 'prop-types';
 import Card from '@material-ui/core/Card';
 import { withStyles, createStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
-import { ShowController, ComponentPropType } from 'ra-core';
+import { ShowController } from 'ra-core';
 
 import DefaultActions from './ShowActions';
 import TitleForRecord from '../layout/TitleForRecord';
-import { TitlePropType } from '../layout';
 
 export const styles = createStyles({
     root: {},
@@ -50,8 +49,8 @@ const sanitizeRestProps = ({
 
 export const ShowView = withStyles(styles)(
     ({
-        actions: Actions,
-        aside: Aside,
+        actions,
+        aside,
         basePath,
         children,
         classes,
@@ -66,8 +65,8 @@ export const ShowView = withStyles(styles)(
         version,
         ...rest
     }) => {
-        if (typeof Actions === 'undefined' && hasEdit) {
-            Actions = DefaultActions;
+        if (typeof actions === 'undefined' && hasEdit) {
+            actions = <DefaultActions />;
         }
         if (!children) {
             return null;
@@ -82,18 +81,19 @@ export const ShowView = withStyles(styles)(
                     record={record}
                     defaultTitle={defaultTitle}
                 />
-                {Actions &&
-                    <Actions
-                        basePath={basePath}
-                        data={record}
-                        hasList={hasList}
-                        hasEdit={hasEdit}
-                        resource={resource}
-                    />
-                }
+                {actions &&
+                    cloneElement(actions, {
+                        basePath,
+                        data: record,
+                        hasList,
+                        hasEdit,
+                        resource,
+                        //  Ensure we don't override any user provided props
+                        ...actions.props,
+                    })}
                 <div
                     className={classnames(classes.main, {
-                        [classes.noActions]: !Actions,
+                        [classes.noActions]: !actions,
                     })}
                 >
                     <Card className={classes.card}>
@@ -105,14 +105,13 @@ export const ShowView = withStyles(styles)(
                                 version,
                             })}
                     </Card>
-                    {Aside &&
-                        <Aside
-                            basePath={basePath}
-                            record={record}
-                            resource={resource}
-                            version={version}
-                        />
-                    }
+                    {aside &&
+                        cloneElement(aside, {
+                            resource,
+                            basePath,
+                            record,
+                            version,
+                        })}
                 </div>
             </div>
         );
@@ -120,8 +119,8 @@ export const ShowView = withStyles(styles)(
 );
 
 ShowView.propTypes = {
-    actions: ComponentPropType,
-    aside: ComponentPropType,
+    actions: PropTypes.element,
+    aside: PropTypes.element,
     basePath: PropTypes.string,
     children: PropTypes.element,
     classes: PropTypes.object,
@@ -133,7 +132,7 @@ ShowView.propTypes = {
     record: PropTypes.object,
     resource: PropTypes.string,
     title: PropTypes.any,
-    version: TitlePropType,
+    version: PropTypes.node,
 };
 
 ShowView.defaultProps = {
@@ -189,8 +188,8 @@ const Show = props => (
 );
 
 Show.propTypes = {
-    actions: ComponentPropType,
-    aside: ComponentPropType,
+    actions: PropTypes.element,
+    aside: PropTypes.element,
     children: PropTypes.element,
     classes: PropTypes.object,
     className: PropTypes.string,
@@ -200,7 +199,7 @@ Show.propTypes = {
     hasShow: PropTypes.bool,
     id: PropTypes.any.isRequired,
     resource: PropTypes.string.isRequired,
-    title: TitlePropType,
+    title: PropTypes.node,
 };
 
 export default Show;
