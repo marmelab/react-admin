@@ -1,10 +1,18 @@
-import { Component, ReactNode, ComponentType } from 'react';
+import {
+    ReactNode,
+    ComponentType,
+    FunctionComponent,
+    useState,
+    ReactElement,
+    useEffect,
+    useRef,
+} from 'react';
 import { connect } from 'react-redux';
 import debounce from 'lodash/debounce';
 import compose from 'recompose/compose';
 import { createSelector } from 'reselect';
-import isEqual from 'lodash/isEqual';
 import { WrappedFieldInputProps } from 'redux-form';
+import isEqual from 'lodash/isEqual';
 
 import {
     crudGetManyAccumulate as crudGetManyAccumulateAction,
@@ -19,6 +27,8 @@ import { getStatusForInput as getDataStatus } from './referenceDataStatus';
 import withTranslate from '../../i18n/translate';
 import { Sort, Translate, Record, Pagination, Dispatch } from '../../types';
 import { MatchingReferencesError } from './types';
+import usePaginationState from '../usePaginationState';
+import useSortState from '../useSortState';
 
 const defaultReferenceSource = (resource: string, source: string) =>
     `${resource}@${source}`;
@@ -62,11 +72,46 @@ interface EnhancedProps {
     translate: Translate;
 }
 
-interface State {
-    pagination: Pagination;
-    sort: Sort;
-    filter: any;
-}
+const usePrevious = value => {
+    const ref = useRef();
+
+    useEffect(() => {
+        ref.current = value;
+    }, [value]);
+
+    return ref.current;
+};
+
+const useFilterState = ({
+    filterToQuery = v => v,
+    initialFilter,
+    debounceTime = 500,
+}) => {
+    const previousInitialFilter = usePrevious(initialFilter);
+    const [filter, setFilterValue] = useState(filterToQuery(initialFilter));
+
+    const setFilter = debounce(
+        value => setFilterValue(filterToQuery(value)),
+        debounceTime
+    );
+    const isFirstRender = useRef(true);
+
+    useEffect(() => {
+        if (isFirstRender.current) {
+            isFirstRender.current = false;
+            return;
+        }
+        if (isEqual(initialFilter, previousInitialFilter)) {
+            return;
+        }
+        setFilter(initialFilter);
+    }, [initialFilter]);
+
+    return {
+        filter,
+        setFilter,
+    };
+};
 
 /**
  * An Input component for choosing a reference record. Useful for foreign keys.
@@ -147,152 +192,113 @@ interface State {
  *     <SelectInput optionText="title" />
  * </ReferenceInput>
  */
-export class UnconnectedReferenceInputController extends Component<
-    Props & EnhancedProps,
-    State
-> {
-    public static defaultProps = {
-        allowEmpty: false,
-        filter: {},
-        filterToQuery: searchText => ({ q: searchText }),
-        matchingReferences: null,
-        perPage: 25,
-        sort: { field: 'id', order: 'DESC' },
-        referenceRecord: null,
-        referenceSource: defaultReferenceSource, // used in tests
-    };
+export const UnconnectedReferenceInputController: FunctionComponent<
+    Props & EnhancedProps
+> = ({
+    input,
+    referenceRecord,
+    matchingReferences,
+    onChange,
+    children,
+    translate,
+    perPage,
+    filter: initialFilter,
+    crudGetManyAccumulate,
+    reference,
+    crudGetMatchingAccumulate,
+    filterToQuery,
+    referenceSource,
+    resource,
+    source,
+}) => {
+    const dataStatus = getDataStatus({
+        input,
+        matchingReferences,
+        referenceRecord,
+        translate,
+    });
 
-    public state: State;
-    private debouncedSetFilter;
+    const { pagination, setPagination } = usePaginationState(perPage);
+    const { sort, setSort } = useSortState();
+    const { filter, setFilter } = useFilterState({
+        initialFilter,
+        filterToQuery,
+    });
 
-    constructor(props) {
-        super(props);
-        const { perPage, sort, filter } = props;
-        this.state = { pagination: { page: 1, perPage }, sort, filter };
-        this.debouncedSetFilter = debounce(this.setFilter.bind(this), 500);
-    }
+    useEffect(
+        () =>
+            fetchReference({
+                crudGetManyAccumulate,
+                id: input.value,
+                reference,
+            }),
+        [input.value, reference]
+    );
 
-    componentDidMount() {
-        this.fetchReferenceAndOptions(this.props);
-    }
-
-    componentWillReceiveProps(nextProps: Props & EnhancedProps) {
-        if (
-            (this.props.record || { id: undefined }).id !==
-            (nextProps.record || { id: undefined }).id
-        ) {
-            this.fetchReferenceAndOptions(nextProps);
-        } else if (this.props.input.value !== nextProps.input.value) {
-            this.fetchReference(nextProps);
-        } else if (
-            !isEqual(nextProps.filter, this.props.filter) ||
-            !isEqual(nextProps.sort, this.props.sort) ||
-            nextProps.perPage !== this.props.perPage
-        ) {
-            this.setState(
-                state => ({
-                    filter: nextProps.filter,
-                    pagination: {
-                        ...state.pagination,
-                        perPage: nextProps.perPage,
-                    },
-                    sort: nextProps.sort,
-                }),
-                this.fetchOptions
-            );
-        }
-    }
-
-    setFilter = (filter: any) => {
-        if (filter !== this.state.filter) {
-            this.setState(
-                { filter: this.props.filterToQuery(filter) },
-                this.fetchOptions
-            );
-        }
-    };
-
-    setPagination = (pagination: Pagination) => {
-        if (pagination !== this.state.pagination) {
-            this.setState({ pagination }, this.fetchOptions);
-        }
-    };
-
-    setSort = (sort: Sort) => {
-        if (sort !== this.state.sort) {
-            this.setState({ sort }, this.fetchOptions);
-        }
-    };
-
-    fetchReference = (props = this.props) => {
-        const { crudGetManyAccumulate, input, reference } = props;
-        const id = input.value;
-        if (id) {
-            crudGetManyAccumulate(reference, [id]);
-        }
-    };
-
-    fetchOptions = (props = this.props) => {
-        const {
-            crudGetMatchingAccumulate,
-            filter: filterFromProps,
+    useEffect(
+        () =>
+            fetchOptions({
+                crudGetMatchingAccumulate,
+                filter,
+                reference,
+                referenceSource,
+                resource,
+                source,
+                pagination,
+                sort,
+            }),
+        [
+            filter,
             reference,
             referenceSource,
             resource,
             source,
-        } = props;
-        const { pagination, sort, filter } = this.state;
+            pagination.page,
+            pagination.perPage,
+            sort.field,
+            sort.order,
+        ]
+    );
 
-        crudGetMatchingAccumulate(
-            reference,
-            referenceSource(resource, source),
-            pagination,
-            sort,
-            {
-                ...filterFromProps,
-                ...filter,
-            }
-        );
-    };
+    return children({
+        choices: dataStatus.choices,
+        error: dataStatus.error,
+        isLoading: dataStatus.waiting,
+        onChange,
+        filter,
+        setFilter,
+        pagination,
+        setPagination,
+        sort,
+        setSort,
+        warning: dataStatus.warning,
+    }) as ReactElement;
+};
 
-    fetchReferenceAndOptions(props) {
-        this.fetchReference(props);
-        this.fetchOptions(props);
+const fetchReference = ({ crudGetManyAccumulate, id, reference }) => {
+    if (id) {
+        crudGetManyAccumulate(reference, [id]);
     }
+};
 
-    render() {
-        const {
-            input,
-            referenceRecord,
-            matchingReferences,
-            onChange,
-            children,
-            translate,
-        } = this.props;
-        const { pagination, sort, filter } = this.state;
-
-        const dataStatus = getDataStatus({
-            input,
-            matchingReferences,
-            referenceRecord,
-            translate,
-        });
-
-        return children({
-            choices: dataStatus.choices,
-            error: dataStatus.error,
-            isLoading: dataStatus.waiting,
-            onChange,
-            filter,
-            setFilter: this.debouncedSetFilter,
-            pagination,
-            setPagination: this.setPagination,
-            sort,
-            setSort: this.setSort,
-            warning: dataStatus.warning,
-        });
-    }
-}
+const fetchOptions = ({
+    crudGetMatchingAccumulate,
+    filter,
+    reference,
+    referenceSource,
+    resource,
+    source,
+    pagination,
+    sort,
+}) => {
+    crudGetMatchingAccumulate(
+        reference,
+        referenceSource(resource, source),
+        pagination,
+        sort,
+        filter
+    );
+};
 
 const makeMapStateToProps = () =>
     createSelector(

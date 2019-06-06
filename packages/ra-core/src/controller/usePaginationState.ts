@@ -1,10 +1,13 @@
 import { useState, useEffect } from 'react';
+import { Pagination } from '../types';
 
 interface PaginationProps {
     page: number;
     perPage: number;
+    pagination: Pagination;
     setPage: (page: number) => void;
     setPerPage: (perPage: number) => void;
+    setPagination: (pagination: Pagination) => void;
 }
 
 /**
@@ -36,12 +39,23 @@ interface PaginationProps {
 export default (initialPerPage: number = 25): PaginationProps => {
     const [page, setPage] = useState(1);
     const [perPage, setPerPage] = useState(initialPerPage);
+
+    const setPagination = (pagination: Pagination) => {
+        setPage(pagination.page);
+        setPerPage(pagination.perPage);
+    };
+
     useEffect(() => setPerPage(initialPerPage), [initialPerPage]);
 
     return {
         page,
         perPage,
+        pagination: {
+            page,
+            perPage,
+        },
         setPage,
         setPerPage,
+        setPagination,
     };
 };
