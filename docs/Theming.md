@@ -661,7 +661,13 @@ import { withRouter } from 'react-router-dom';
 const MyMenu = ({ resources, onMenuClick, logout }) => (
     <div>
         {resources.map(resource => (
-            <MenuItemLink key={resource.name} to={`/${resource.name}`} primaryText={resource.name} onClick={onMenuClick} />
+            <MenuItemLink
+                key={resource.name}
+                to={`/${resource.name}`}
+                primaryText={resource.options && resource.options.label || resource.name}
+                leftIcon={createElement(resource.icon)}
+                onClick={onMenuClick}
+            />
         ))}
         <MenuItemLink to="/custom-route" primaryText="Miscellaneous" onClick={onMenuClick} />
         <Responsive
@@ -745,7 +751,14 @@ const styles = {
 const MyMenu = ({ classes, resources, onMenuClick, logout }) => (
     <div>
         {resources.map(resource => (
-            <MenuItemLink classes={classes} key={resource.name} to={`/${resource.name}`} primaryText={resource.name} onClick={onMenuClick} />
+            <MenuItemLink
+                key={resource.name}
+                classes={classes}
+                to={`/${resource.name}`}
+                primaryText={resource.options && resource.options.label || resource.name}
+                leftIcon={createElement(resource.icon)}
+                onClick={onMenuClick}
+            />
         ))}
         <MenuItemLink classes={classes} to="/custom-route" primaryText="Miscellaneous" onClick={onMenuClick} />
         <Responsive
