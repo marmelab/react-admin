@@ -5,7 +5,15 @@ import { translate } from 'ra-core';
 /**
  * @deprecated Use Title instead
  */
-const Title = ({ className, defaultTitle, record, title, translate, locale, ...rest }) => {
+const Title = ({
+    className,
+    defaultTitle,
+    record,
+    title,
+    translate,
+    locale,
+    ...rest
+}) => {
     if (!title) {
         return (
             <span className={className} {...rest}>

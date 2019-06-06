@@ -22,7 +22,13 @@ const sanitizeRestProps = ({
     ...rest
 }) => rest;
 
-export const CloneButton = ({ basePath = '', label = 'ra.action.clone', record = {}, icon = <Queue />, ...rest }) => (
+export const CloneButton = ({
+    basePath = '',
+    label = 'ra.action.clone',
+    record = {},
+    icon = <Queue />,
+    ...rest
+}) => (
     <Button
         component={Link}
         to={{
@@ -49,7 +55,9 @@ CloneButton.propTypes = {
 const enhance = shouldUpdate(
     (props, nextProps) =>
         props.translate !== nextProps.translate ||
-        (props.record && nextProps.record && props.record !== nextProps.record) ||
+        (props.record &&
+            nextProps.record &&
+            props.record !== nextProps.record) ||
         props.basePath !== nextProps.basePath ||
         (props.record == null && nextProps.record != null)
 );

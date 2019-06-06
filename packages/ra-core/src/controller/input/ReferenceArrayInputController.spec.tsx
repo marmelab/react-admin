@@ -83,7 +83,10 @@ describe('<ReferenceArrayInputController />', () => {
                 {children}
             </ReferenceArrayInputController>
         );
-        assert.equal(children.mock.calls[0][0].error, '*ra.input.references.all_missing*');
+        assert.equal(
+            children.mock.calls[0][0].error,
+            '*ra.input.references.all_missing*'
+        );
     });
 
     it('should set error in case of references fetch error and there are no data found for the references already selected', () => {
@@ -100,7 +103,10 @@ describe('<ReferenceArrayInputController />', () => {
                 {children}
             </ReferenceArrayInputController>
         );
-        assert.equal(children.mock.calls[0][0].error, '*ra.input.references.all_missing*');
+        assert.equal(
+            children.mock.calls[0][0].error,
+            '*ra.input.references.all_missing*'
+        );
     });
 
     it('should not display an error in case of references fetch error but data from at least one selected reference was found', () => {
@@ -152,7 +158,10 @@ describe('<ReferenceArrayInputController />', () => {
                 {children}
             </ReferenceArrayInputController>
         );
-        assert.equal(children.mock.calls[0][0].warning, '*ra.input.references.many_missing*');
+        assert.equal(
+            children.mock.calls[0][0].warning,
+            '*ra.input.references.many_missing*'
+        );
     });
 
     it('should set warning if references were found but selected references are empty', () => {
@@ -169,7 +178,10 @@ describe('<ReferenceArrayInputController />', () => {
                 {children}
             </ReferenceArrayInputController>
         );
-        assert.equal(children.mock.calls[0][0].warning, '*ra.input.references.many_missing*');
+        assert.equal(
+            children.mock.calls[0][0].warning,
+            '*ra.input.references.many_missing*'
+        );
     });
 
     it('should not set warning if all references were found', () => {
@@ -193,7 +205,11 @@ describe('<ReferenceArrayInputController />', () => {
         const onChange = jest.fn();
         const children = jest.fn();
         shallow(
-            <ReferenceArrayInputController {...defaultProps} allowEmpty onChange={onChange}>
+            <ReferenceArrayInputController
+                {...defaultProps}
+                allowEmpty
+                onChange={onChange}
+            >
                 {children}
             </ReferenceArrayInputController>
         );
@@ -202,7 +218,13 @@ describe('<ReferenceArrayInputController />', () => {
 
     it('should call crudGetMatching on mount with default fetch values', () => {
         const crudGetMatching = jest.fn();
-        shallow(<ReferenceArrayInputController {...defaultProps} allowEmpty crudGetMatching={crudGetMatching} />);
+        shallow(
+            <ReferenceArrayInputController
+                {...defaultProps}
+                allowEmpty
+                crudGetMatching={crudGetMatching}
+            />
+        );
         assert.deepEqual(crudGetMatching.mock.calls[0], [
             'tags',
             'posts@tag_ids',
@@ -250,7 +272,11 @@ describe('<ReferenceArrayInputController />', () => {
     it('should call crudGetMatching when setFilter is called', () => {
         const crudGetMatching = jest.fn();
         const wrapper = shallow(
-            <ReferenceArrayInputController {...defaultProps} allowEmpty crudGetMatching={crudGetMatching} />
+            <ReferenceArrayInputController
+                {...defaultProps}
+                allowEmpty
+                crudGetMatching={crudGetMatching}
+            />
         );
         wrapper.instance().setFilter('bar');
         assert.deepEqual(crudGetMatching.mock.calls[1], [

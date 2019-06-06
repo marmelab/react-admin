@@ -4,8 +4,10 @@ export default url => ({
         body: 'body',
         input: (name, type = 'input') => `${type}[name='${name}']`,
         modalCloseButton: "[data-testid='button-close-modal']",
-        modalSubmitButton: "[data-testid='dialog-add-post'] button[type='submit']",
-        submitAndAddButton: ".create-page form>div:last-child button[type='button']",
+        modalSubmitButton:
+            "[data-testid='dialog-add-post'] button[type='submit']",
+        submitAndAddButton:
+            ".create-page form>div:last-child button[type='button']",
         postSelect: '.ra-input-post_id [role="button"]',
         postItem: id => `li[data-value="${id}"]`,
         showPostCreateModalButton: '[data-testid="button-add-post"]',

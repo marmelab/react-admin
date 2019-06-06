@@ -1,7 +1,16 @@
 import { Reducer } from 'redux';
-import { FETCH_START, FETCH_END, FETCH_ERROR, FETCH_CANCEL } from '../../actions/fetchActions';
+import {
+    FETCH_START,
+    FETCH_END,
+    FETCH_ERROR,
+    FETCH_CANCEL,
+} from '../../actions/fetchActions';
 
-import { USER_LOGIN_LOADING, USER_LOGIN_SUCCESS, USER_LOGIN_FAILURE } from '../../actions/authActions';
+import {
+    USER_LOGIN_LOADING,
+    USER_LOGIN_SUCCESS,
+    USER_LOGIN_FAILURE,
+} from '../../actions/authActions';
 
 type State = number;
 

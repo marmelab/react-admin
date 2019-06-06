@@ -26,7 +26,9 @@ export class NullableBooleanInput extends Component {
     }
 
     handleChange = event => {
-        this.props.input.onChange(this.getBooleanFromString(event.target.value));
+        this.props.input.onChange(
+            this.getBooleanFromString(event.target.value)
+        );
         this.setState({ value: event.target.value });
     };
 
@@ -61,7 +63,14 @@ export class NullableBooleanInput extends Component {
                 select
                 margin="normal"
                 value={this.getStringFromBoolean(this.state.value)}
-                label={<FieldTitle label={label} source={source} resource={resource} isRequired={isRequired} />}
+                label={
+                    <FieldTitle
+                        label={label}
+                        source={source}
+                        resource={resource}
+                        isRequired={isRequired}
+                    />
+                }
                 error={!!(touched && error)}
                 helperText={touched && error}
                 className={classnames(classes.input, className)}
@@ -70,7 +79,9 @@ export class NullableBooleanInput extends Component {
                 onChange={this.handleChange}
             >
                 <MenuItem value="" />
-                <MenuItem value="false">{translate('ra.boolean.false')}</MenuItem>
+                <MenuItem value="false">
+                    {translate('ra.boolean.false')}
+                </MenuItem>
                 <MenuItem value="true">{translate('ra.boolean.true')}</MenuItem>
             </TextField>
         );

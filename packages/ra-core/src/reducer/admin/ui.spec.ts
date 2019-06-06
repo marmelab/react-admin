@@ -1,5 +1,9 @@
 import assert from 'assert';
-import { toggleSidebar, setSidebarVisibility, refreshView } from '../../actions/uiActions';
+import {
+    toggleSidebar,
+    setSidebarVisibility,
+    refreshView,
+} from '../../actions/uiActions';
 import reducer from './ui';
 
 describe('ui reducer', () => {
@@ -24,22 +28,37 @@ describe('ui reducer', () => {
     it('should set sidebar visibility upon SET_SIDEBAR_VISIBILITY', () => {
         assert.deepEqual(
             { ...defaultState, sidebarOpen: false },
-            reducer({ ...defaultState, sidebarOpen: true }, setSidebarVisibility(false))
+            reducer(
+                { ...defaultState, sidebarOpen: true },
+                setSidebarVisibility(false)
+            )
         );
         assert.deepEqual(
             { ...defaultState, sidebarOpen: true },
-            reducer({ ...defaultState, sidebarOpen: true }, setSidebarVisibility(true))
+            reducer(
+                { ...defaultState, sidebarOpen: true },
+                setSidebarVisibility(true)
+            )
         );
         assert.deepEqual(
             { ...defaultState, sidebarOpen: false },
-            reducer({ ...defaultState, sidebarOpen: false }, setSidebarVisibility(false))
+            reducer(
+                { ...defaultState, sidebarOpen: false },
+                setSidebarVisibility(false)
+            )
         );
         assert.deepEqual(
             { ...defaultState, sidebarOpen: true },
-            reducer({ ...defaultState, sidebarOpen: false }, setSidebarVisibility(true))
+            reducer(
+                { ...defaultState, sidebarOpen: false },
+                setSidebarVisibility(true)
+            )
         );
     });
     it('should increment the viewVersion upon REFRESH_VIEW', () => {
-        assert.deepEqual({ optimistic: false, sidebarOpen: false, viewVersion: 1 }, reducer(undefined, refreshView()));
+        assert.deepEqual(
+            { optimistic: false, sidebarOpen: false, viewVersion: 1 },
+            reducer(undefined, refreshView())
+        );
     });
 });

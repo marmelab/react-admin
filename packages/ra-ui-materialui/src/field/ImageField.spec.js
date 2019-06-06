@@ -10,7 +10,10 @@ const defaultProps = {
 
 describe('<ImageField />', () => {
     it('should return an empty div when record is not set', () => {
-        assert.equal(shallow(<ImageField {...defaultProps} />).html(), '<div></div>');
+        assert.equal(
+            shallow(<ImageField {...defaultProps} />).html(),
+            '<div></div>'
+        );
     });
 
     it('should render an image with correct attributes based on `source` and `title`', () => {
@@ -101,9 +104,14 @@ describe('<ImageField />', () => {
 
     it('should use custom className', () =>
         assert.deepEqual(
-            shallow(<ImageField {...defaultProps} source="foo" record={{ foo: true }} className="foo" />).prop(
-                'className'
-            ),
+            shallow(
+                <ImageField
+                    {...defaultProps}
+                    source="foo"
+                    record={{ foo: true }}
+                    className="foo"
+                />
+            ).prop('className'),
             'foo'
         ));
 });

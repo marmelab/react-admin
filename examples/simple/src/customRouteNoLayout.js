@@ -4,7 +4,11 @@ import { crudGetList as crudGetListAction } from 'react-admin'; // eslint-disabl
 
 class CustomRouteNoLayout extends Component {
     componentWillMount() {
-        this.props.crudGetList('posts', { page: 0, perPage: 10 }, { field: 'id', order: 'ASC' });
+        this.props.crudGetList(
+            'posts',
+            { page: 0, perPage: 10 },
+            { field: 'id', order: 'ASC' }
+        );
     }
 
     render() {
@@ -25,8 +29,12 @@ class CustomRouteNoLayout extends Component {
 }
 
 const mapStateToProps = state => ({
-    loaded: state.admin.resources.posts && state.admin.resources.posts.list.total > 0,
-    total: state.admin.resources.posts ? state.admin.resources.posts.list.total : 0,
+    loaded:
+        state.admin.resources.posts &&
+        state.admin.resources.posts.list.total > 0,
+    total: state.admin.resources.posts
+        ? state.admin.resources.posts.list.total
+        : 0,
 });
 
 export default connect(

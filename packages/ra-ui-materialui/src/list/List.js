@@ -99,16 +99,25 @@ const sanitizeRestProps = ({
 }) => rest;
 
 export const ListView = withStyles(styles)(({ // component props
-    actions, aside, filter, filters, bulkActions, bulkActionButtons, pagination, children, className, classes, exporter, title, ...rest }) => { // overridable by user // deprecated
+    actions, aside, filter, filters, bulkActions, bulkActionButtons, pagination, children, className, classes, exporter, title, ...rest }) => {
+    // overridable by user // deprecated
     const { defaultTitle, version } = rest;
     const controllerProps = getListControllerProps(rest);
     return (
-        <div className={classnames('list-page', classes.root, className)} {...sanitizeRestProps(rest)}>
+        <div
+            className={classnames('list-page', classes.root, className)}
+            {...sanitizeRestProps(rest)}
+        >
             <Title title={title} defaultTitle={defaultTitle} />
             <Card className={classes.card}>
-                {bulkActions !== false && bulkActionButtons !== false && bulkActionButtons && !bulkActions && (
-                    <BulkActionsToolbar {...controllerProps}>{bulkActionButtons}</BulkActionsToolbar>
-                )}
+                {bulkActions !== false &&
+                    bulkActionButtons !== false &&
+                    bulkActionButtons &&
+                    !bulkActions && (
+                        <BulkActionsToolbar {...controllerProps}>
+                            {bulkActionButtons}
+                        </BulkActionsToolbar>
+                    )}
                 {(filters || actions) && (
                     <ListToolbar
                         filters={filters}
@@ -123,7 +132,9 @@ export const ListView = withStyles(styles)(({ // component props
                     {children &&
                         cloneElement(Children.only(children), {
                             ...controllerProps,
-                            hasBulkActions: bulkActions !== false && bulkActionButtons !== false,
+                            hasBulkActions:
+                                bulkActions !== false &&
+                                bulkActionButtons !== false,
                         })}
                     {pagination && cloneElement(pagination, controllerProps)}
                 </div>
@@ -226,7 +237,9 @@ ListView.defaultProps = {
  *     );
  */
 const List = props => (
-    <ListController {...props}>{controllerProps => <ListView {...props} {...controllerProps} />}</ListController>
+    <ListController {...props}>
+        {controllerProps => <ListView {...props} {...controllerProps} />}
+    </ListController>
 );
 
 List.propTypes = {

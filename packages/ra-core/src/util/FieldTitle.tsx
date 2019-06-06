@@ -23,7 +23,9 @@ export const FieldTitle: SFC<Props> = ({
     translate = (name: string, options) => name,
 }) => (
     <span>
-        {translate(...getFieldLabelTranslationArgs({ label, resource, source }))}
+        {translate(
+            ...getFieldLabelTranslationArgs({ label, resource, source })
+        )}
         {isRequired && ' *'}
     </span>
 );

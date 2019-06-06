@@ -59,18 +59,23 @@ export class PaginationActions extends Component {
         return input;
     }
 
-    getNbPages = () => Math.ceil(this.props.count / this.props.rowsPerPage) || 1;
+    getNbPages = () =>
+        Math.ceil(this.props.count / this.props.rowsPerPage) || 1;
 
     prevPage = event => {
         if (this.props.page === 0) {
-            throw new Error(this.props.translate('ra.navigation.page_out_from_begin'));
+            throw new Error(
+                this.props.translate('ra.navigation.page_out_from_begin')
+            );
         }
         this.props.onChangePage(event, this.props.page - 1);
     };
 
     nextPage = event => {
         if (this.props.page > this.getNbPages() - 1) {
-            throw new Error(this.props.translate('ra.navigation.page_out_from_end'));
+            throw new Error(
+                this.props.translate('ra.navigation.page_out_from_end')
+            );
         }
         this.props.onChangePage(event, this.props.page + 1);
     };
@@ -98,7 +103,9 @@ export class PaginationActions extends Component {
             ) : (
                 <Button
                     className="page-number"
-                    color={pageNum === this.props.page + 1 ? 'default' : 'primary'}
+                    color={
+                        pageNum === this.props.page + 1 ? 'default' : 'primary'
+                    }
                     key={pageNum}
                     data-page={pageNum - 1}
                     onClick={this.gotoPage}
@@ -118,14 +125,26 @@ export class PaginationActions extends Component {
         return (
             <div className={classes.actions}>
                 {page > 0 && (
-                    <Button color="primary" key="prev" onClick={this.prevPage} className="previous-page" size="small">
+                    <Button
+                        color="primary"
+                        key="prev"
+                        onClick={this.prevPage}
+                        className="previous-page"
+                        size="small"
+                    >
                         <ChevronLeft />
                         {translate('ra.navigation.prev')}
                     </Button>
                 )}
                 {this.renderPageNums()}
                 {page !== nbPages - 1 && (
-                    <Button color="primary" key="next" onClick={this.nextPage} className="next-page" size="small">
+                    <Button
+                        color="primary"
+                        key="next"
+                        onClick={this.nextPage}
+                        className="next-page"
+                        size="small"
+                    >
                         {translate('ra.navigation.next')}
                         <ChevronRight />
                     </Button>

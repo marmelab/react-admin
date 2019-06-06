@@ -49,7 +49,9 @@ describe('ListController', () => {
 
         beforeEach(() => {
             clock = lolex.install();
-            fakeComponent = ({ setFilters }) => <TextField onChange={setFilters} />;
+            fakeComponent = ({ setFilters }) => (
+                <TextField onChange={setFilters} />
+            );
         });
 
         it('should take only last change in case of a burst of changes (case of inputs being currently edited)', () => {

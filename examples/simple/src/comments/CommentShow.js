@@ -1,5 +1,11 @@
 import React from 'react';
-import { DateField, ReferenceField, Show, SimpleShowLayout, TextField } from 'react-admin'; // eslint-disable-line import/no-unresolved
+import {
+    DateField,
+    ReferenceField,
+    Show,
+    SimpleShowLayout,
+    TextField,
+} from 'react-admin'; // eslint-disable-line import/no-unresolved
 
 const CommentShow = props => (
     <Show {...props}>

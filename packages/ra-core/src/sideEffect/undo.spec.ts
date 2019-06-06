@@ -2,7 +2,10 @@ import expect from 'expect';
 import { put } from 'redux-saga/effects';
 
 import { showNotification } from '../actions/notificationActions';
-import { startOptimisticMode, stopOptimisticMode } from '../actions/undoActions';
+import {
+    startOptimisticMode,
+    stopOptimisticMode,
+} from '../actions/undoActions';
 import { refreshView } from '../actions/uiActions';
 
 import { handleUndoRace } from './undo';
@@ -46,10 +49,14 @@ describe('undo saga', () => {
             expect(generator.next().value).toHaveProperty('RACE');
         });
         it('should stop the optimistic mode', () => {
-            expect(generator.next({ undo: true }).value).toEqual(put(stopOptimisticMode()));
+            expect(generator.next({ undo: true }).value).toEqual(
+                put(stopOptimisticMode())
+            );
         });
         it('should display the notification', () => {
-            expect(generator.next().value).toEqual(put(showNotification('ra.notification.canceled')));
+            expect(generator.next().value).toEqual(
+                put(showNotification('ra.notification.canceled'))
+            );
         });
         it('should send a refresh', () => {
             expect(generator.next().value).toEqual(put(refreshView()));
@@ -81,7 +88,9 @@ describe('undo saga', () => {
             expect(generator.next().value).toHaveProperty('RACE');
         });
         it('should stop the optimistic mode', () => {
-            expect(generator.next({ complete: true }).value).toEqual(put(stopOptimisticMode()));
+            expect(generator.next({ complete: true }).value).toEqual(
+                put(stopOptimisticMode())
+            );
         });
         it('should put the action in non-optimistic mode', () => {
             expect(generator.next().value).toEqual(

@@ -40,7 +40,11 @@ export const ReferenceFieldView = ({
 
     if (resourceLinkPath) {
         return (
-            <Link to={resourceLinkPath} className={className} onClick={stopPropagation}>
+            <Link
+                to={resourceLinkPath}
+                className={className}
+                onClick={stopPropagation}
+            >
                 {React.cloneElement(Children.only(children), {
                     className: classnames(
                         children.props.className,
@@ -119,7 +123,12 @@ const ReferenceField = ({ children, ...props }) => {
 
     return (
         <ReferenceFieldController {...props}>
-            {controllerProps => <ReferenceFieldView {...props} {...{ children, ...controllerProps }} />}
+            {controllerProps => (
+                <ReferenceFieldView
+                    {...props}
+                    {...{ children, ...controllerProps }}
+                />
+            )}
         </ReferenceFieldController>
     );
 };
@@ -140,7 +149,8 @@ ReferenceField.propTypes = {
     sortBy: PropTypes.string,
     source: PropTypes.string.isRequired,
     translateChoice: PropTypes.func,
-    linkType: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]).isRequired,
+    linkType: PropTypes.oneOfType([PropTypes.string, PropTypes.bool])
+        .isRequired,
 };
 
 ReferenceField.defaultProps = {

@@ -4,7 +4,14 @@ import get from 'lodash/get';
 
 import { crudGetManyAccumulate as crudGetManyAccumulateAction } from '../../actions';
 import { getReferencesByIds } from '../../reducer/admin/references/oneToMany';
-import { ReduxState, Record, RecordMap, Dispatch, Sort, Identifier } from '../../types';
+import {
+    ReduxState,
+    Record,
+    RecordMap,
+    Dispatch,
+    Sort,
+    Identifier,
+} from '../../types';
 
 interface ChildrenFuncParams {
     loadedOnce: boolean;
@@ -64,7 +71,10 @@ export class UnconnectedReferenceArrayFieldController extends Component<Props> {
     }
 
     componentWillReceiveProps(nextProps) {
-        if ((this.props.record || { id: undefined }).id !== (nextProps.record || {}).id) {
+        if (
+            (this.props.record || { id: undefined }).id !==
+            (nextProps.record || {}).id
+        ) {
             this.fetchReferences(nextProps);
         }
     }
@@ -74,7 +84,14 @@ export class UnconnectedReferenceArrayFieldController extends Component<Props> {
     }
 
     render() {
-        const { resource, reference, data, ids, children, basePath } = this.props;
+        const {
+            resource,
+            reference,
+            data,
+            ids,
+            children,
+            basePath,
+        } = this.props;
 
         const referenceBasePath = basePath.replace(resource, reference); // FIXME obviously very weak
 

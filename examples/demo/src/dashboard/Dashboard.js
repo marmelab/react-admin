@@ -42,11 +42,15 @@ class Dashboard extends Component {
         const { dataProvider } = this.props;
         const aMonthAgo = new Date();
         aMonthAgo.setDate(aMonthAgo.getDate() - 30);
-        const { data: recentOrders } = await dataProvider(GET_LIST, 'commands', {
-            filter: { date_gte: aMonthAgo.toISOString() },
-            sort: { field: 'date', order: 'DESC' },
-            pagination: { page: 1, perPage: 50 },
-        });
+        const { data: recentOrders } = await dataProvider(
+            GET_LIST,
+            'commands',
+            {
+                filter: { date_gte: aMonthAgo.toISOString() },
+                sort: { field: 'date', order: 'DESC' },
+                pagination: { page: 1, perPage: 50 },
+            }
+        );
         const aggregations = recentOrders
             .filter(order => order.status !== 'cancelled')
             .reduce(
@@ -112,14 +116,18 @@ class Dashboard extends Component {
         const { dataProvider } = this.props;
         const aMonthAgo = new Date();
         aMonthAgo.setDate(aMonthAgo.getDate() - 30);
-        const { data: newCustomers } = await dataProvider(GET_LIST, 'customers', {
-            filter: {
-                has_ordered: true,
-                first_seen_gte: aMonthAgo.toISOString(),
-            },
-            sort: { field: 'first_seen', order: 'DESC' },
-            pagination: { page: 1, perPage: 100 },
-        });
+        const { data: newCustomers } = await dataProvider(
+            GET_LIST,
+            'customers',
+            {
+                filter: {
+                    has_ordered: true,
+                    first_seen_gte: aMonthAgo.toISOString(),
+                },
+                sort: { field: 'first_seen', order: 'DESC' },
+                pagination: { page: 1, perPage: 100 },
+            }
+        );
         this.setState({
             newCustomers,
             nbNewCustomers: newCustomers.reduce(nb => ++nb, 0),
@@ -151,7 +159,10 @@ class Dashboard extends Component {
                                 <NbNewOrders value={nbNewOrders} />
                             </div>
                             <div style={styles.singleCol}>
-                                <PendingOrders orders={pendingOrders} customers={pendingOrdersCustomers} />
+                                <PendingOrders
+                                    orders={pendingOrders}
+                                    customers={pendingOrdersCustomers}
+                                />
                             </div>
                         </div>
                     </div>
@@ -166,7 +177,10 @@ class Dashboard extends Component {
                             <NbNewOrders value={nbNewOrders} />
                         </div>
                         <div style={styles.singleCol}>
-                            <PendingOrders orders={pendingOrders} customers={pendingOrdersCustomers} />
+                            <PendingOrders
+                                orders={pendingOrders}
+                                customers={pendingOrdersCustomers}
+                            />
                         </div>
                     </div>
                 }
@@ -181,7 +195,10 @@ class Dashboard extends Component {
                                 <Welcome />
                             </div>
                             <div style={styles.singleCol}>
-                                <PendingOrders orders={pendingOrders} customers={pendingOrdersCustomers} />
+                                <PendingOrders
+                                    orders={pendingOrders}
+                                    customers={pendingOrdersCustomers}
+                                />
                             </div>
                         </div>
                         <div style={styles.rightCol}>
@@ -191,7 +208,10 @@ class Dashboard extends Component {
                                     reviews={pendingReviews}
                                     customers={pendingReviewsCustomers}
                                 />
-                                <NewCustomers nb={nbNewCustomers} visitors={newCustomers} />
+                                <NewCustomers
+                                    nb={nbNewCustomers}
+                                    visitors={newCustomers}
+                                />
                             </div>
                         </div>
                     </div>

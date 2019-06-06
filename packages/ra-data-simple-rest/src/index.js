@@ -41,7 +41,10 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson) => {
                 const { field, order } = params.sort;
                 const query = {
                     sort: JSON.stringify([field, order]),
-                    range: JSON.stringify([(page - 1) * perPage, page * perPage - 1]),
+                    range: JSON.stringify([
+                        (page - 1) * perPage,
+                        page * perPage - 1,
+                    ]),
                     filter: JSON.stringify(params.filter),
                 };
                 url = `${apiUrl}/${resource}?${stringify(query)}`;
@@ -62,7 +65,10 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson) => {
                 const { field, order } = params.sort;
                 const query = {
                     sort: JSON.stringify([field, order]),
-                    range: JSON.stringify([(page - 1) * perPage, page * perPage - 1]),
+                    range: JSON.stringify([
+                        (page - 1) * perPage,
+                        page * perPage - 1,
+                    ]),
                     filter: JSON.stringify({
                         ...params.filter,
                         [params.target]: params.id,
@@ -158,7 +164,13 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson) => {
             }));
         }
 
-        const { url, options } = convertDataRequestToHTTP(type, resource, params);
-        return httpClient(url, options).then(response => convertHTTPResponse(response, type, resource, params));
+        const { url, options } = convertDataRequestToHTTP(
+            type,
+            resource,
+            params
+        );
+        return httpClient(url, options).then(response =>
+            convertHTTPResponse(response, type, resource, params)
+        );
     };
 };

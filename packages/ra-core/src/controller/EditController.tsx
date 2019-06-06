@@ -4,7 +4,11 @@ import compose from 'recompose/compose';
 import inflection from 'inflection';
 import { reset } from 'redux-form';
 import withTranslate from '../i18n/translate';
-import { crudGetOne, crudUpdate, startUndoable as startUndoableAction } from '../actions';
+import {
+    crudGetOne,
+    crudUpdate,
+    startUndoable as startUndoableAction,
+} from '../actions';
 import { REDUX_FORM_NAME } from '../form';
 import checkMinimumRequiredProps from './checkMinimumRequiredProps';
 import { Translate, Record, Dispatch, Identifier } from '../types';
@@ -87,13 +91,18 @@ interface EnhancedProps {
  *     );
  *     export default App;
  */
-export class UnconnectedEditController extends Component<Props & EnhancedProps> {
+export class UnconnectedEditController extends Component<
+    Props & EnhancedProps
+> {
     componentDidMount() {
         this.updateData();
     }
 
     componentWillReceiveProps(nextProps: Props & EnhancedProps) {
-        if (this.props.id !== nextProps.id || nextProps.version !== this.props.version) {
+        if (
+            this.props.id !== nextProps.id ||
+            nextProps.version !== this.props.version
+        ) {
             this.props.resetForm(REDUX_FORM_NAME);
             this.updateData(nextProps.resource, nextProps.id);
         }
@@ -108,10 +117,21 @@ export class UnconnectedEditController extends Component<Props & EnhancedProps> 
     }
 
     save = (data, redirect) => {
-        const { undoable = true, startUndoable, dispatchCrudUpdate } = this.props;
+        const {
+            undoable = true,
+            startUndoable,
+            dispatchCrudUpdate,
+        } = this.props;
         if (undoable) {
             startUndoable(
-                crudUpdate(this.props.resource, this.props.id, data, this.props.record, this.props.basePath, redirect)
+                crudUpdate(
+                    this.props.resource,
+                    this.props.id,
+                    data,
+                    this.props.record,
+                    this.props.basePath,
+                    redirect
+                )
             );
         } else {
             dispatchCrudUpdate(
@@ -126,7 +146,16 @@ export class UnconnectedEditController extends Component<Props & EnhancedProps> 
     };
 
     render() {
-        const { basePath, children, id, isLoading, record, resource, translate, version } = this.props;
+        const {
+            basePath,
+            children,
+            id,
+            isLoading,
+            record,
+            resource,
+            translate,
+            version,
+        } = this.props;
 
         if (!children) {
             return null;
@@ -159,7 +188,9 @@ export class UnconnectedEditController extends Component<Props & EnhancedProps> 
 function mapStateToProps(state, props) {
     return {
         id: props.id,
-        record: state.admin.resources[props.resource] ? state.admin.resources[props.resource].data[props.id] : null,
+        record: state.admin.resources[props.resource]
+            ? state.admin.resources[props.resource].data[props.id]
+            : null,
         isLoading: state.admin.loading > 0,
         version: state.admin.ui.viewVersion,
     };

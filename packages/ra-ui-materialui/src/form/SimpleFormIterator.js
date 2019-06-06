@@ -1,4 +1,9 @@
-import React, { Children, cloneElement, Component, isValidElement } from 'react';
+import React, {
+    Children,
+    cloneElement,
+    Component,
+    isValidElement,
+} from 'react';
 import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
@@ -67,7 +72,11 @@ export class SimpleFormIterator extends Component {
         // we need a unique id for each field for a proper enter/exit animation
         // but redux-form doesn't provide one (cf https://github.com/erikras/redux-form/issues/2735)
         // so we keep an internal map between the field position and an autoincrement id
-        this.nextId = props.fields.length ? props.fields.length : props.defaultValue ? props.defaultValue.length : 0;
+        this.nextId = props.fields.length
+            ? props.fields.length
+            : props.defaultValue
+            ? props.defaultValue.length
+            : 0;
 
         // We check whether we have a defaultValue (which must be an array) before checking
         // the fields prop which will always be empty for a new record.
@@ -116,40 +125,70 @@ export class SimpleFormIterator extends Component {
         const records = get(record, source);
         return fields ? (
             <ul className={classes.root}>
-                {submitFailed && error && <FormHelperText error>{error}</FormHelperText>}
+                {submitFailed && error && (
+                    <FormHelperText error>{error}</FormHelperText>
+                )}
                 <TransitionGroup>
                     {fields.map((member, index) => (
-                        <CSSTransition key={this.ids[index]} timeout={500} classNames="fade">
+                        <CSSTransition
+                            key={this.ids[index]}
+                            timeout={500}
+                            classNames="fade"
+                        >
                             <li className={classes.line}>
-                                <Typography variant="body1" className={classes.index}>
+                                <Typography
+                                    variant="body1"
+                                    className={classes.index}
+                                >
                                     {index + 1}
                                 </Typography>
                                 <section className={classes.form}>
                                     {Children.map(children, (input, index2) =>
                                         isValidElement(input) ? (
                                             <FormInput
-                                                basePath={input.props.basePath || basePath}
+                                                basePath={
+                                                    input.props.basePath ||
+                                                    basePath
+                                                }
                                                 input={cloneElement(input, {
                                                     source: input.props.source
-                                                        ? `${member}.${input.props.source}`
+                                                        ? `${member}.${
+                                                              input.props.source
+                                                          }`
                                                         : member,
-                                                    index: input.props.source ? undefined : index2,
-                                                    label: input.props.label || input.props.source,
+                                                    index: input.props.source
+                                                        ? undefined
+                                                        : index2,
+                                                    label:
+                                                        input.props.label ||
+                                                        input.props.source,
                                                 })}
-                                                record={(records && records[index]) || {}}
+                                                record={
+                                                    (records &&
+                                                        records[index]) ||
+                                                    {}
+                                                }
                                                 resource={resource}
                                             />
                                         ) : null
                                     )}
                                 </section>
-                                {!this.disableRemoveField((records && records[index]) || {}, disableRemove) && (
+                                {!this.disableRemoveField(
+                                    (records && records[index]) || {},
+                                    disableRemove
+                                ) && (
                                     <span className={classes.action}>
                                         <Button
-                                            className={classNames('button-remove', `button-remove-${source}-${index}`)}
+                                            className={classNames(
+                                                'button-remove',
+                                                `button-remove-${source}-${index}`
+                                            )}
                                             size="small"
                                             onClick={this.removeField(index)}
                                         >
-                                            <CloseIcon className={classes.leftIcon} />
+                                            <CloseIcon
+                                                className={classes.leftIcon}
+                                            />
                                             {translate('ra.action.remove')}
                                         </Button>
                                     </span>
@@ -162,7 +201,10 @@ export class SimpleFormIterator extends Component {
                     <li className={classes.line}>
                         <span className={classes.action}>
                             <Button
-                                className={classNames('button-add', `button-add-${source}`)}
+                                className={classNames(
+                                    'button-add',
+                                    `button-add-${source}`
+                                )}
                                 size="small"
                                 onClick={this.addField}
                             >

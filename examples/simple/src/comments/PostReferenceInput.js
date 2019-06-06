@@ -11,7 +11,12 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 
-import { crudGetMatching, ReferenceInput, SelectInput, translate } from 'react-admin'; // eslint-disable-line import/no-unresolved
+import {
+    crudGetMatching,
+    ReferenceInput,
+    SelectInput,
+    translate,
+} from 'react-admin'; // eslint-disable-line import/no-unresolved
 
 import PostQuickCreate from './PostQuickCreate';
 import PostPreview from './PostPreview';
@@ -60,7 +65,13 @@ class PostReferenceInputView extends React.Component {
         this.setState({ showCreateDialog: false, new_post_id: post.id }, () => {
             // Refresh the choices of the ReferenceInput to ensure our newly created post
             // always appear, even after selecting another post
-            crudGetMatching('posts', 'comments@post_id', { page: 1, perPage: 25 }, { field: 'id', order: 'DESC' }, {});
+            crudGetMatching(
+                'posts',
+                'comments@post_id',
+                { page: 1, perPage: 25 },
+                { field: 'id', order: 'DESC' },
+                {}
+            );
         });
     };
 
@@ -73,7 +84,11 @@ class PostReferenceInputView extends React.Component {
                 <ReferenceInput {...props} defaultValue={new_post_id}>
                     <SelectInput optionText="title" />
                 </ReferenceInput>
-                <Button data-testid="button-add-post" className={classes.button} onClick={this.handleNewClick}>
+                <Button
+                    data-testid="button-add-post"
+                    className={classes.button}
+                    onClick={this.handleNewClick}
+                >
                     {translate('ra.action.create')}
                 </Button>
                 <Field
@@ -95,12 +110,21 @@ class PostReferenceInputView extends React.Component {
                                     onClose={this.handleCloseShow}
                                     aria-label={translate('simple.create-post')}
                                 >
-                                    <DialogTitle>{translate('simple.create-post')}</DialogTitle>
+                                    <DialogTitle>
+                                        {translate('simple.create-post')}
+                                    </DialogTitle>
                                     <DialogContent>
-                                        <PostPreview id={input.value} basePath="/posts" resource="posts" />
+                                        <PostPreview
+                                            id={input.value}
+                                            basePath="/posts"
+                                            resource="posts"
+                                        />
                                     </DialogContent>
                                     <DialogActions>
-                                        <Button data-testid="button-close-modal" onClick={this.handleCloseShow}>
+                                        <Button
+                                            data-testid="button-close-modal"
+                                            onClick={this.handleCloseShow}
+                                        >
                                             {translate('simple.action.close')}
                                         </Button>
                                     </DialogActions>

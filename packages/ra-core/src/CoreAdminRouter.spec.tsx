@@ -24,7 +24,10 @@ describe('<AdminRouter>', () => {
             const resources = wrapper.find('Connect(Resource)');
 
             assert.equal(resources.length, 2);
-            assert.deepEqual(resources.map(resource => resource.prop('context')), ['registration', 'registration']);
+            assert.deepEqual(
+                resources.map(resource => resource.prop('context')),
+                ['registration', 'registration']
+            );
         });
     });
 
@@ -32,7 +35,11 @@ describe('<AdminRouter>', () => {
         it('should render all resources with a registration context', async () => {
             const wrapper = shallow(
                 <CoreAdminRouter {...defaultProps}>
-                    {() => [<Resource key="posts" name="posts" />, <Resource key="comments" name="comments" />, null]}
+                    {() => [
+                        <Resource key="posts" name="posts" />,
+                        <Resource key="comments" name="comments" />,
+                        null,
+                    ]}
                 </CoreAdminRouter>
             );
 
@@ -44,7 +51,10 @@ describe('<AdminRouter>', () => {
             wrapper.update();
             const resources = wrapper.find('Connect(Resource)');
             assert.equal(resources.length, 2);
-            assert.deepEqual(resources.map(resource => resource.prop('context')), ['registration', 'registration']);
+            assert.deepEqual(
+                resources.map(resource => resource.prop('context')),
+                ['registration', 'registration']
+            );
         });
     });
 
@@ -54,8 +64,20 @@ describe('<AdminRouter>', () => {
         const wrapper = shallow(
             <CoreAdminRouter
                 customRoutes={[
-                    <Route key="custom" noLayout exact path="/custom" render={() => <div>Foo</div>} />,
-                    <Route key="custom2" noLayout exact path="/custom2" component={Bar} />,
+                    <Route
+                        key="custom"
+                        noLayout
+                        exact
+                        path="/custom"
+                        render={() => <div>Foo</div>}
+                    />,
+                    <Route
+                        key="custom2"
+                        noLayout
+                        exact
+                        path="/custom2"
+                        component={Bar}
+                    />,
                 ]}
                 location={{ pathname: '/custom' }}
             >

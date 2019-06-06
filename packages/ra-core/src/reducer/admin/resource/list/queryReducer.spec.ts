@@ -59,7 +59,10 @@ describe('Query Reducer', () => {
         });
 
         it('should reset page to 1', () => {
-            const updatedState = queryReducer({ page: 3 }, { type: 'SET_FILTER', payload: {} });
+            const updatedState = queryReducer(
+                { page: 3 },
+                { type: 'SET_FILTER', payload: {} }
+            );
             assert.equal(updatedState.page, 1);
         });
     });

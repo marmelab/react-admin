@@ -89,9 +89,18 @@ class TreeNode extends Component {
         node: PropTypes.object.isRequired,
         resource: PropTypes.string.isRequired,
         toggleNode: PropTypes.func,
-        treeNodeComponent: PropTypes.oneOfType([PropTypes.element, PropTypes.func]),
-        treeNodeContentComponent: PropTypes.oneOfType([PropTypes.element, PropTypes.func]).isRequired,
-        treeNodeWithChildrenComponent: PropTypes.oneOfType([PropTypes.element, PropTypes.func]),
+        treeNodeComponent: PropTypes.oneOfType([
+            PropTypes.element,
+            PropTypes.func,
+        ]),
+        treeNodeContentComponent: PropTypes.oneOfType([
+            PropTypes.element,
+            PropTypes.func,
+        ]).isRequired,
+        treeNodeWithChildrenComponent: PropTypes.oneOfType([
+            PropTypes.element,
+            PropTypes.func,
+        ]),
     };
 
     static defaultProps = {

@@ -4,7 +4,10 @@ import { connect, MapStateToProps } from 'react-redux';
 import defaultMessages from 'ra-language-english';
 import defaultsDeep from 'lodash/defaultsDeep';
 import { ReduxState } from '../types';
-import { TranslationContextProps, TranslationContext } from './TranslationContext';
+import {
+    TranslationContextProps,
+    TranslationContext,
+} from './TranslationContext';
 
 interface MappedProps {
     locale: string;
@@ -53,7 +56,10 @@ class TranslationProviderView extends Component<ViewProps, State> {
     }
 
     componentDidUpdate(prevProps) {
-        if (prevProps.locale !== this.props.locale || prevProps.messages !== this.props.messages) {
+        if (
+            prevProps.locale !== this.props.locale ||
+            prevProps.messages !== this.props.messages
+        ) {
             const { locale, messages } = this.props;
 
             const polyglot = new Polyglot({
@@ -75,12 +81,18 @@ class TranslationProviderView extends Component<ViewProps, State> {
         const { contextValues } = this.state;
 
         return (
-            <TranslationContext.Provider value={contextValues}>{Children.only(children)}</TranslationContext.Provider>
+            <TranslationContext.Provider value={contextValues}>
+                {Children.only(children)}
+            </TranslationContext.Provider>
         );
     }
 }
 
-const mapStateToProps: MapStateToProps<MappedProps, any, ReduxState> = state => ({
+const mapStateToProps: MapStateToProps<
+    MappedProps,
+    any,
+    ReduxState
+> = state => ({
     locale: state.i18n.locale,
     messages: state.i18n.messages,
 });

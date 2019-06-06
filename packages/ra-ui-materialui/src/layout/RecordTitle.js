@@ -6,7 +6,15 @@ import TitleDeprecated from './TitleDeprecated';
  * @deprecated Use TitleForRecord instead
  */
 const RecordTitle = ({ defaultTitle, record, title }) =>
-    record ? <TitleDeprecated title={title} record={record} defaultTitle={defaultTitle} /> : '';
+    record ? (
+        <TitleDeprecated
+            title={title}
+            record={record}
+            defaultTitle={defaultTitle}
+        />
+    ) : (
+        ''
+    );
 
 RecordTitle.propTypes = {
     defaultTitle: PropTypes.any,

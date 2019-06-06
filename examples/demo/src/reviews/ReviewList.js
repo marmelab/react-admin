@@ -46,7 +46,11 @@ class ReviewList extends Component {
             <div className={classes.root}>
                 <Route path="/reviews/:id">
                     {({ match }) => {
-                        const isMatch = !!(match && match.params && match.params.id !== 'create');
+                        const isMatch = !!(
+                            match &&
+                            match.params &&
+                            match.params.id !== 'create'
+                        );
 
                         return (
                             <Fragment>
@@ -55,12 +59,17 @@ class ReviewList extends Component {
                                     className={classnames(classes.list, {
                                         [classes.listWithDrawer]: isMatch,
                                     })}
-                                    bulkActionButtons={<ReviewsBulkActionButtons />}
+                                    bulkActionButtons={
+                                        <ReviewsBulkActionButtons />
+                                    }
                                     filters={<ReviewFilter />}
                                     perPage={25}
                                     sort={{ field: 'date', order: 'DESC' }}
                                 >
-                                    <Responsive xsmall={<ReviewListMobile />} medium={<ReviewListDesktop />} />
+                                    <Responsive
+                                        xsmall={<ReviewListMobile />}
+                                        medium={<ReviewListDesktop />}
+                                    />
                                 </List>
                                 <Drawer
                                     variant="persistent"
@@ -73,7 +82,11 @@ class ReviewList extends Component {
                                 >
                                     {/* To avoid any errors if the route does not match, we don't render at all the component in this case */}
                                     {isMatch ? (
-                                        <ReviewEdit id={match.params.id} onCancel={this.handleClose} {...props} />
+                                        <ReviewEdit
+                                            id={match.params.id}
+                                            onCancel={this.handleClose}
+                                            {...props}
+                                        />
                                     ) : null}
                                 </Drawer>
                             </Fragment>

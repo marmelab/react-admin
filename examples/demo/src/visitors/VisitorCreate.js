@@ -1,5 +1,12 @@
 import React from 'react';
-import { Create, DateInput, FormTab, LongTextInput, TabbedForm, TextInput } from 'react-admin';
+import {
+    Create,
+    DateInput,
+    FormTab,
+    LongTextInput,
+    TabbedForm,
+    TextInput,
+} from 'react-admin';
 import withStyles from '@material-ui/core/styles/withStyles';
 
 export const styles = {
@@ -21,8 +28,15 @@ const VisitorCreate = ({ classes, ...props }) => (
     <Create {...props}>
         <TabbedForm>
             <FormTab label="resources.customers.tabs.identity">
-                <TextInput autoFocus source="first_name" formClassName={classes.first_name} />
-                <TextInput source="last_name" formClassName={classes.last_name} />
+                <TextInput
+                    autoFocus
+                    source="first_name"
+                    formClassName={classes.first_name}
+                />
+                <TextInput
+                    source="last_name"
+                    formClassName={classes.last_name}
+                />
                 <TextInput
                     type="email"
                     source="email"
@@ -33,7 +47,10 @@ const VisitorCreate = ({ classes, ...props }) => (
                 <DateInput source="birthday" />
             </FormTab>
             <FormTab label="resources.customers.tabs.address" path="address">
-                <LongTextInput source="address" formClassName={classes.address} />
+                <LongTextInput
+                    source="address"
+                    formClassName={classes.address}
+                />
                 <TextInput source="zipcode" formClassName={classes.zipcode} />
                 <TextInput source="city" formClassName={classes.city} />
             </FormTab>

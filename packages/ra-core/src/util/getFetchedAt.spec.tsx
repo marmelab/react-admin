@@ -26,12 +26,15 @@ describe('getFetchedAt', () => {
             4: validDate,
         };
 
-        assert.deepEqual(getFetchedAt(newRecordIds, oldFetchedData, now, cacheDuration), {
-            1: now,
-            2: now,
-            3: now,
-            4: validDate,
-        });
+        assert.deepEqual(
+            getFetchedAt(newRecordIds, oldFetchedData, now, cacheDuration),
+            {
+                1: now,
+                2: now,
+                3: now,
+                4: validDate,
+            }
+        );
     });
 
     it('should discard old date if it is not valid anymore', () => {
@@ -45,11 +48,14 @@ describe('getFetchedAt', () => {
             4: invalidDate,
         };
 
-        assert.deepEqual(getFetchedAt(newRecordIds, oldFetchedData, now, cacheDuration), {
-            1: now,
-            2: now,
-            3: now,
-        });
+        assert.deepEqual(
+            getFetchedAt(newRecordIds, oldFetchedData, now, cacheDuration),
+            {
+                1: now,
+                2: now,
+                3: now,
+            }
+        );
     });
 
     it('should update old date if id present in newRecordsId even if not valid anymore', () => {
@@ -66,10 +72,13 @@ describe('getFetchedAt', () => {
             2: invalidDate,
         };
 
-        assert.deepEqual(getFetchedAt(newRecordIds, oldFetchedData, now, cacheDuration), {
-            1: now,
-            2: now,
-            3: now,
-        });
+        assert.deepEqual(
+            getFetchedAt(newRecordIds, oldFetchedData, now, cacheDuration),
+            {
+                1: now,
+                2: now,
+                3: now,
+            }
+        );
     });
 });

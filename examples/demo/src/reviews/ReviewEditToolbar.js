@@ -14,7 +14,15 @@ const styles = {
     },
 };
 
-const ReviewEditToolbar = ({ basePath, classes, handleSubmitWithRedirect, invalid, record, resource, saving }) => (
+const ReviewEditToolbar = ({
+    basePath,
+    classes,
+    handleSubmitWithRedirect,
+    invalid,
+    record,
+    resource,
+    saving,
+}) => (
     <MuiToolbar className={classes.root}>
         {record.status === 'pending' ? (
             <Fragment>
@@ -30,7 +38,11 @@ const ReviewEditToolbar = ({ basePath, classes, handleSubmitWithRedirect, invali
                     redirect="list"
                     submitOnEnter={true}
                 />
-                <DeleteButton basePath={basePath} record={record} resource={resource} />
+                <DeleteButton
+                    basePath={basePath}
+                    record={record}
+                    resource={resource}
+                />
             </Fragment>
         )}
     </MuiToolbar>

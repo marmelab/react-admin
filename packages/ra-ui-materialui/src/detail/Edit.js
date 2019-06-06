@@ -75,8 +75,15 @@ export const EditView = withStyles(styles)(
             return null;
         }
         return (
-            <div className={classnames('edit-page', classes.root, className)} {...sanitizeRestProps(rest)}>
-                <TitleForRecord title={title} record={record} defaultTitle={defaultTitle} />
+            <div
+                className={classnames('edit-page', classes.root, className)}
+                {...sanitizeRestProps(rest)}
+            >
+                <TitleForRecord
+                    title={title}
+                    record={record}
+                    defaultTitle={defaultTitle}
+                />
                 <Card className={classes.card}>
                     {actions && (
                         <CardContentInner>
@@ -95,7 +102,9 @@ export const EditView = withStyles(styles)(
                             basePath,
                             record,
                             redirect:
-                                typeof children.props.redirect === 'undefined' ? redirect : children.props.redirect,
+                                typeof children.props.redirect === 'undefined'
+                                    ? redirect
+                                    : children.props.redirect,
                             resource,
                             save,
                             undoable,
@@ -182,7 +191,9 @@ EditView.defaultProps = {
  *     export default App;
  */
 const Edit = props => (
-    <EditController {...props}>{controllerProps => <EditView {...props} {...controllerProps} />}</EditController>
+    <EditController {...props}>
+        {controllerProps => <EditView {...props} {...controllerProps} />}
+    </EditController>
 );
 
 Edit.propTypes = {

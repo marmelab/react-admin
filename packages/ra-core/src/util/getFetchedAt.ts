@@ -44,7 +44,10 @@ const getFetchedAt = (
     const latestValidDate = new Date();
     latestValidDate.setTime(latestValidDate.getTime() - cacheDuration);
 
-    const stillValidFetchedAt = pickBy(oldRecordFetchedAt, date => date > latestValidDate);
+    const stillValidFetchedAt = pickBy(
+        oldRecordFetchedAt,
+        date => date > latestValidDate
+    );
 
     return {
         ...stillValidFetchedAt,

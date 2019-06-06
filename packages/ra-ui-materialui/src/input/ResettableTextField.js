@@ -77,7 +77,13 @@ class ResettableTextField extends Component {
             ...props
         } = this.props;
         const { showClear } = this.state;
-        const { clearButton, clearIcon, visibleClearButton, visibleClearIcon, ...restClasses } = classes;
+        const {
+            clearButton,
+            clearIcon,
+            visibleClearButton,
+            visibleClearIcon,
+            ...restClasses
+        } = classes;
 
         return (
             <MuiTextField
@@ -88,9 +94,12 @@ class ResettableTextField extends Component {
                         <InputAdornment position="end">
                             <IconButton
                                 className={classNames(clearButton, {
-                                    [visibleClearButton]: clearAlwaysVisible || showClear,
+                                    [visibleClearButton]:
+                                        clearAlwaysVisible || showClear,
                                 })}
-                                aria-label={translate('ra.action.clear_input_value')}
+                                aria-label={translate(
+                                    'ra.action.clear_input_value'
+                                )}
                                 title={translate('ra.action.clear_input_value')}
                                 disableRipple
                                 onClick={this.handleClickClearButton}
@@ -99,7 +108,8 @@ class ResettableTextField extends Component {
                             >
                                 <ClearIcon
                                     className={classNames(clearIcon, {
-                                        [visibleClearIcon]: clearAlwaysVisible || showClear,
+                                        [visibleClearIcon]:
+                                            clearAlwaysVisible || showClear,
                                     })}
                                 />
                             </IconButton>

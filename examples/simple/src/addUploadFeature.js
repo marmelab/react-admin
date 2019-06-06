@@ -11,8 +11,12 @@ const addUploadCapabilities = requestHandler => (type, resource, params) => {
     if (type === 'UPDATE' && resource === 'posts') {
         if (params.data.pictures && params.data.pictures.length) {
             // only freshly dropped pictures are instance of File
-            const formerPictures = params.data.pictures.filter(p => !(p.rawFile instanceof File));
-            const newPictures = params.data.pictures.filter(p => p.rawFile instanceof File);
+            const formerPictures = params.data.pictures.filter(
+                p => !(p.rawFile instanceof File)
+            );
+            const newPictures = params.data.pictures.filter(
+                p => p.rawFile instanceof File
+            );
 
             return Promise.all(newPictures.map(convertFileToBase64))
                 .then(base64Pictures =>
@@ -26,7 +30,10 @@ const addUploadCapabilities = requestHandler => (type, resource, params) => {
                         ...params,
                         data: {
                             ...params.data,
-                            pictures: [...transformedNewPictures, ...formerPictures],
+                            pictures: [
+                                ...transformedNewPictures,
+                                ...formerPictures,
+                            ],
                         },
                     })
                 );

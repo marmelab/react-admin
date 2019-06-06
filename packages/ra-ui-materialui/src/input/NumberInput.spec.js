@@ -19,7 +19,9 @@ describe('<NumberInput />', () => {
     };
 
     it('should use a mui TextField', () => {
-        const wrapper = shallow(<NumberInput {...defaultProps} input={{ value: 12 }} />);
+        const wrapper = shallow(
+            <NumberInput {...defaultProps} input={{ value: 12 }} />
+        );
         const TextFieldElement = wrapper.find('TextField');
         assert.equal(TextFieldElement.length, 1);
         assert.equal(TextFieldElement.prop('value'), 12);
@@ -31,25 +33,40 @@ describe('<NumberInput />', () => {
             const onChange = jest.fn();
 
             const props = { ...defaultProps };
-            const wrapper = shallow(<NumberInput {...props} onChange={onChange} />);
+            const wrapper = shallow(
+                <NumberInput {...props} onChange={onChange} />
+            );
 
-            wrapper.find('TextField').simulate('change', { target: { value: 3 } });
+            wrapper
+                .find('TextField')
+                .simulate('change', { target: { value: 3 } });
             assert.equal(onChange.mock.calls[0][0], 3);
         });
 
         it('should keep calling redux-form original event', () => {
             const onChange = jest.fn();
 
-            const wrapper = shallow(<NumberInput {...defaultProps} input={{ value: 2, onChange }} />);
-            wrapper.find('TextField').simulate('change', { target: { value: 3 } });
+            const wrapper = shallow(
+                <NumberInput {...defaultProps} input={{ value: 2, onChange }} />
+            );
+            wrapper
+                .find('TextField')
+                .simulate('change', { target: { value: 3 } });
             assert.equal(onChange.mock.calls[0][0], 3);
         });
 
         it('should cast value as a numeric one', () => {
             const onChange = jest.fn();
-            const wrapper = shallow(<NumberInput {...defaultProps} input={{ value: '2', onChange }} />);
+            const wrapper = shallow(
+                <NumberInput
+                    {...defaultProps}
+                    input={{ value: '2', onChange }}
+                />
+            );
 
-            wrapper.find('TextField').simulate('change', { target: { value: '2' } });
+            wrapper
+                .find('TextField')
+                .simulate('change', { target: { value: '2' } });
             assert.equal(onChange.mock.calls[0][0], 2);
         });
     });
@@ -59,7 +76,9 @@ describe('<NumberInput />', () => {
             const onFocus = jest.fn();
 
             const props = { ...defaultProps };
-            const wrapper = shallow(<NumberInput {...props} onFocus={onFocus} />);
+            const wrapper = shallow(
+                <NumberInput {...props} onFocus={onFocus} />
+            );
 
             wrapper.find('TextField').simulate('focus', 3);
             assert.equal(onFocus.mock.calls[0][0], 3);
@@ -68,8 +87,12 @@ describe('<NumberInput />', () => {
         it('should keep calling redux-form original event', () => {
             const onFocus = jest.fn();
 
-            const wrapper = shallow(<NumberInput {...defaultProps} input={{ value: 2, onFocus }} />);
-            wrapper.find('TextField').simulate('focus', { target: { value: 3 } });
+            const wrapper = shallow(
+                <NumberInput {...defaultProps} input={{ value: 2, onFocus }} />
+            );
+            wrapper
+                .find('TextField')
+                .simulate('focus', { target: { value: 3 } });
             assert.deepEqual(onFocus.mock.calls[0][0], {
                 target: { value: 3 },
             });
@@ -83,7 +106,9 @@ describe('<NumberInput />', () => {
             const props = { ...defaultProps };
             const wrapper = shallow(<NumberInput {...props} onBlur={onBlur} />);
 
-            wrapper.find('TextField').simulate('blur', { target: { value: 3 } });
+            wrapper
+                .find('TextField')
+                .simulate('blur', { target: { value: 3 } });
             assert.equal(onBlur.mock.calls[0][0], 3);
         });
 
@@ -99,7 +124,9 @@ describe('<NumberInput />', () => {
             };
 
             const wrapper = shallow(<NumberInput {...props} />);
-            wrapper.find('TextField').simulate('blur', { target: { value: 3 } });
+            wrapper
+                .find('TextField')
+                .simulate('blur', { target: { value: 3 } });
             assert.equal(onBlur.mock.calls[0][0], 3);
         });
 
@@ -115,7 +142,9 @@ describe('<NumberInput />', () => {
                 />
             );
 
-            wrapper.find('TextField').simulate('blur', { target: { value: '2' } });
+            wrapper
+                .find('TextField')
+                .simulate('blur', { target: { value: '2' } });
             assert.equal(onBlur.mock.calls[0][0], 2);
         });
     });

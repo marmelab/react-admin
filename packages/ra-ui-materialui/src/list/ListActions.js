@@ -75,4 +75,10 @@ Actions.defaultProps = {
     selectedIds: [],
 };
 
-export default onlyUpdateForKeys(['resource', 'filters', 'displayedFilters', 'filterValues', 'selectedIds'])(Actions);
+export default onlyUpdateForKeys([
+    'resource',
+    'filters',
+    'displayedFilters',
+    'filterValues',
+    'selectedIds',
+])(Actions);

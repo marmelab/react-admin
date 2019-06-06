@@ -10,7 +10,10 @@ const defaultProps = {
 
 describe('<FileField />', () => {
     it('should return an empty div when record is not set', () => {
-        assert.equal(shallow(<FileField {...defaultProps} />).html(), '<div class=""></div>');
+        assert.equal(
+            shallow(<FileField {...defaultProps} />).html(),
+            '<div class=""></div>'
+        );
     });
 
     it('should render a link with correct attributes based on `source` and `title`', () => {
@@ -111,9 +114,14 @@ describe('<FileField />', () => {
 
     it('should use custom className', () =>
         assert.deepEqual(
-            shallow(<FileField {...defaultProps} record={{ foo: true }} source="email" className="foo" />).prop(
-                'className'
-            ),
+            shallow(
+                <FileField
+                    {...defaultProps}
+                    record={{ foo: true }}
+                    source="email"
+                    className="foo"
+                />
+            ).prop('className'),
             'foo'
         ));
 });

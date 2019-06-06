@@ -6,7 +6,8 @@ import Typography, { TypographyProps } from '@material-ui/core/Typography';
 import sanitizeRestProps from './sanitizeRestProps';
 import { InjectedFieldProps, FieldProps, fieldPropTypes } from './types';
 
-export const removeTags = (input: string) => (input ? input.replace(/<[^>]+>/gm, '') : '');
+export const removeTags = (input: string) =>
+    input ? input.replace(/<[^>]+>/gm, '') : '';
 
 interface Props extends FieldProps {
     stripTags: boolean;
@@ -22,14 +23,22 @@ const RichTextField: SFC<Props & InjectedFieldProps & TypographyProps> = ({
     const value = get(record, source);
     if (stripTags) {
         return (
-            <Typography className={className} component="span" {...sanitizeRestProps(rest)}>
+            <Typography
+                className={className}
+                component="span"
+                {...sanitizeRestProps(rest)}
+            >
                 {removeTags(value)}
             </Typography>
         );
     }
 
     return (
-        <Typography className={className} component="span" {...sanitizeRestProps(rest)}>
+        <Typography
+            className={className}
+            component="span"
+            {...sanitizeRestProps(rest)}
+        >
             <span dangerouslySetInnerHTML={{ __html: value }} />
         </Typography>
     );

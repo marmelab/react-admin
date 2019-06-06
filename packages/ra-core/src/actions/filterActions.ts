@@ -6,7 +6,10 @@ export interface ShowFilterAction {
     readonly meta: { resource: string };
 }
 
-export const showFilter = (resource: string, field: string): ShowFilterAction => ({
+export const showFilter = (
+    resource: string,
+    field: string
+): ShowFilterAction => ({
     type: CRUD_SHOW_FILTER,
     payload: { field },
     meta: { resource },
@@ -20,7 +23,10 @@ export interface HideFilterAction {
     readonly meta: { resource: string };
 }
 
-export const hideFilter = (resource: string, field: string): HideFilterAction => ({
+export const hideFilter = (
+    resource: string,
+    field: string
+): HideFilterAction => ({
     type: CRUD_HIDE_FILTER,
     payload: { field },
     meta: { resource },
@@ -34,7 +40,11 @@ export interface SetFilterAction {
     readonly meta: { resource: string };
 }
 
-export const setFilter = (resource: string, field: string, value: any): SetFilterAction => ({
+export const setFilter = (
+    resource: string,
+    field: string,
+    value: any
+): SetFilterAction => ({
     type: CRUD_SET_FILTER,
     payload: { field, value },
     meta: { resource },

@@ -1,7 +1,8 @@
 import { createSelector } from 'reselect';
 
 const getDefaultValues = (data = {}, defaultValue = {}, defaultValues = {}) => {
-    const globalDefaultValue = typeof defaultValue === 'function' ? defaultValue() : defaultValue;
+    const globalDefaultValue =
+        typeof defaultValue === 'function' ? defaultValue() : defaultValue;
     return { ...globalDefaultValue, ...defaultValues, ...data };
 };
 
@@ -13,5 +14,6 @@ export default createSelector(
     getRecord,
     getDefaultValue,
     getDefaultValuesFromState,
-    (record, defaultValue, defaultValues) => getDefaultValues(record, defaultValue, defaultValues)
+    (record, defaultValue, defaultValues) =>
+        getDefaultValues(record, defaultValue, defaultValues)
 );

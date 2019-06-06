@@ -1,7 +1,15 @@
 import merge from 'lodash/merge';
 import get from 'lodash/get';
 import pluralize from 'pluralize';
-import { GET_LIST, GET_ONE, GET_MANY, GET_MANY_REFERENCE, CREATE, UPDATE, DELETE } from 'ra-core';
+import {
+    GET_LIST,
+    GET_ONE,
+    GET_MANY,
+    GET_MANY_REFERENCE,
+    CREATE,
+    UPDATE,
+    DELETE,
+} from 'ra-core';
 
 import buildApolloClient from './buildApolloClient';
 import {
@@ -61,13 +69,19 @@ export default async options => {
 
     let introspectionResults;
     if (introspection) {
-        introspectionResults = await resolveIntrospection(client, introspection);
+        introspectionResults = await resolveIntrospection(
+            client,
+            introspection
+        );
     }
 
     const buildQuery = buildQueryFactory(introspectionResults, otherOptions);
 
     const raDataProvider = (aorFetchType, resource, params) => {
-        const overriddenBuildQuery = get(override, `${resource}.${aorFetchType}`);
+        const overriddenBuildQuery = get(
+            override,
+            `${resource}.${aorFetchType}`
+        );
 
         const { parseResponse, ...query } = overriddenBuildQuery
             ? {
@@ -96,7 +110,11 @@ export default async options => {
     };
 
     raDataProvider.observeRequest = (aorFetchType, resource, params) => {
-        const { parseResponse, ...query } = buildQuery(aorFetchType, resource, params);
+        const { parseResponse, ...query } = buildQuery(
+            aorFetchType,
+            resource,
+            params
+        );
 
         const apolloQuery = {
             ...query,

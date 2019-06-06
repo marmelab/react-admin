@@ -61,8 +61,17 @@ const AppBar = ({
     ...rest
 }) => (
     <Headroom>
-        <MuiAppBar className={className} color="secondary" position="static" {...rest}>
-            <Toolbar disableGutters variant={width === 'xs' ? 'regular' : 'dense'} className={classes.toolbar}>
+        <MuiAppBar
+            className={className}
+            color="secondary"
+            position="static"
+            {...rest}
+        >
+            <Toolbar
+                disableGutters
+                variant={width === 'xs' ? 'regular' : 'dense'}
+                className={classes.toolbar}
+            >
                 <IconButton
                     color="inherit"
                     aria-label="open drawer"
@@ -71,12 +80,19 @@ const AppBar = ({
                 >
                     <MenuIcon
                         classes={{
-                            root: open ? classes.menuButtonIconOpen : classes.menuButtonIconClosed,
+                            root: open
+                                ? classes.menuButtonIconOpen
+                                : classes.menuButtonIconClosed,
                         }}
                     />
                 </IconButton>
                 {Children.count(children) === 0 ? (
-                    <Typography variant="title" color="inherit" className={classes.title} id="react-admin-title" />
+                    <Typography
+                        variant="title"
+                        color="inherit"
+                        className={classes.title}
+                        id="react-admin-title"
+                    />
                 ) : (
                     children
                 )}
@@ -93,7 +109,8 @@ AppBar.propTypes = {
     className: PropTypes.string,
     logout: PropTypes.element,
     open: PropTypes.bool,
-    title: PropTypes.oneOfType([PropTypes.string, PropTypes.element]).isRequired,
+    title: PropTypes.oneOfType([PropTypes.string, PropTypes.element])
+        .isRequired,
     toggleSidebar: PropTypes.func.isRequired,
     userMenu: PropTypes.node,
     width: PropTypes.string,

@@ -12,7 +12,10 @@ export interface DefaultValueProps extends InputProps {
 
 export class DefaultValueView extends Component<DefaultValueProps> {
     static propTypes = {
-        decoratedComponent: PropTypes.oneOfType([PropTypes.element, PropTypes.func]),
+        decoratedComponent: PropTypes.oneOfType([
+            PropTypes.element,
+            PropTypes.func,
+        ]),
         defaultValue: PropTypes.any,
         initializeForm: PropTypes.func.isRequired,
         input: PropTypes.object,
@@ -26,7 +29,10 @@ export class DefaultValueView extends Component<DefaultValueProps> {
             return;
         }
         initializeForm({
-            [source]: typeof defaultValue === 'function' ? defaultValue() : defaultValue,
+            [source]:
+                typeof defaultValue === 'function'
+                    ? defaultValue()
+                    : defaultValue,
         });
     }
 
@@ -38,7 +44,10 @@ export class DefaultValueView extends Component<DefaultValueProps> {
 
         if (defaultValue !== prevProps.defaultValue) {
             initializeForm({
-                [source]: typeof defaultValue === 'function' ? defaultValue() : defaultValue,
+                [source]:
+                    typeof defaultValue === 'function'
+                        ? defaultValue()
+                        : defaultValue,
             });
         }
     }

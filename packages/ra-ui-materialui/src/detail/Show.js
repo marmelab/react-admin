@@ -69,8 +69,15 @@ export const ShowView = withStyles(styles)(
             return null;
         }
         return (
-            <div className={classnames('show-page', classes.root, className)} {...sanitizeRestProps(rest)}>
-                <TitleForRecord title={title} record={record} defaultTitle={defaultTitle} />
+            <div
+                className={classnames('show-page', classes.root, className)}
+                {...sanitizeRestProps(rest)}
+            >
+                <TitleForRecord
+                    title={title}
+                    record={record}
+                    defaultTitle={defaultTitle}
+                />
                 <Card className={classes.card}>
                     {actions && (
                         <CardContentInner>
@@ -168,7 +175,9 @@ ShowView.defaultProps = {
  *     export default App;
  */
 const Show = props => (
-    <ShowController {...props}>{controllerProps => <ShowView {...props} {...controllerProps} />}</ShowController>
+    <ShowController {...props}>
+        {controllerProps => <ShowView {...props} {...controllerProps} />}
+    </ShowController>
 );
 
 Show.propTypes = {

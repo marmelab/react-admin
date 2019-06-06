@@ -16,7 +16,10 @@ type ActionTypes =
 
 type State = boolean;
 
-const loadingReducer: Reducer<State> = (loading = false, action: ActionTypes) => {
+const loadingReducer: Reducer<State> = (
+    loading = false,
+    action: ActionTypes
+) => {
     switch (action.type) {
         case CHANGE_LOCALE:
             return true;

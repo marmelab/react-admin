@@ -1,6 +1,9 @@
 import { takeEvery } from 'redux-saga/effects';
 
-import { START_OPTIMISTIC_MODE, STOP_OPTIMISTIC_MODE } from '../actions/undoActions';
+import {
+    START_OPTIMISTIC_MODE,
+    STOP_OPTIMISTIC_MODE,
+} from '../actions/undoActions';
 
 /**
  * Unload saga

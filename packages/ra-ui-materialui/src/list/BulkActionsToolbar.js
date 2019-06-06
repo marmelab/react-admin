@@ -17,7 +17,10 @@ const styles = theme =>
             left: 0,
             right: 0,
             zIndex: 3,
-            color: theme.palette.type === 'light' ? theme.palette.primary.main : theme.palette.text.primary,
+            color:
+                theme.palette.type === 'light'
+                    ? theme.palette.primary.main
+                    : theme.palette.text.primary,
             justifyContent: 'space-between',
             backgroundColor:
                 theme.palette.type === 'light'
@@ -25,7 +28,9 @@ const styles = theme =>
                     : theme.palette.primary.dark,
             minHeight: 64,
             height: 64,
-            transition: `${theme.transitions.create('height')}, ${theme.transitions.create('min-height')}`,
+            transition: `${theme.transitions.create(
+                'height'
+            )}, ${theme.transitions.create('min-height')}`,
         },
         toolbarCollapsed: {
             position: 'absolute',
@@ -55,7 +60,11 @@ const BulkActionsToolbar = ({
     ...rest
 }) =>
     selectedIds.length > 0 ? (
-        <Toolbar data-test="bulk-actions-toolbar" className={classes.toolbar} {...sanitizeListRestProps(rest)}>
+        <Toolbar
+            data-test="bulk-actions-toolbar"
+            className={classes.toolbar}
+            {...sanitizeListRestProps(rest)}
+        >
             <div className={classes.title}>
                 <Typography color="inherit" variant="subheading">
                     {translate(label, {

@@ -24,7 +24,10 @@ describe('data addRecordsFactory', () => {
         const newState = addRecords(newRecords, oldRecords);
 
         // @ts-ignore
-        assert.deepEqual(getFetchedAt.mock.calls[0], [['record1', 'record2'], oldFetchedAt]);
+        assert.deepEqual(getFetchedAt.mock.calls[0], [
+            ['record1', 'record2'],
+            oldFetchedAt,
+        ]);
 
         assert.deepEqual(newState, {
             record1: { id: 'record1' },
@@ -81,7 +84,10 @@ describe('data addRecordsFactory', () => {
     });
 
     it('should replace oldRecord by new record', () => {
-        const newRecords = [{ id: 'record1', title: 'new title' }, { id: 'record2' }];
+        const newRecords = [
+            { id: 'record1', title: 'new title' },
+            { id: 'record2' },
+        ];
         const oldRecords = {
             record1: { id: 'record1', title: 'old title' },
             fetchedAt: { record1: new Date() },

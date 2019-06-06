@@ -1,4 +1,9 @@
-import React, { Component, ReactElement, ComponentType, HtmlHTMLAttributes } from 'react';
+import React, {
+    Component,
+    ReactElement,
+    ComponentType,
+    HtmlHTMLAttributes,
+} from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import Card from '@material-ui/core/Card';
@@ -69,7 +74,9 @@ const styles = (theme: Theme) =>
  *        </Admin>
  *     );
  */
-class Login extends Component<Props & WithStyles<typeof styles> & HtmlHTMLAttributes<HTMLDivElement>> {
+class Login extends Component<
+    Props & WithStyles<typeof styles> & HtmlHTMLAttributes<HTMLDivElement>
+> {
     theme = createMuiTheme(this.props.theme);
     containerRef = React.createRef<HTMLDivElement>();
     backgroundImageLoaded = false;
@@ -104,11 +111,22 @@ class Login extends Component<Props & WithStyles<typeof styles> & HtmlHTMLAttrib
     }
 
     render() {
-        const { backgroundImage, classes, className, loginForm, staticContext, ...rest } = this.props;
+        const {
+            backgroundImage,
+            classes,
+            className,
+            loginForm,
+            staticContext,
+            ...rest
+        } = this.props;
 
         return (
             <MuiThemeProvider theme={this.theme}>
-                <div className={classnames(classes.main, className)} {...rest} ref={this.containerRef}>
+                <div
+                    className={classnames(classes.main, className)}
+                    {...rest}
+                    ref={this.containerRef}
+                >
                     <Card className={classes.card}>
                         <div className={classes.avatar}>
                             <Avatar className={classes.icon}>

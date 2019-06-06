@@ -92,7 +92,9 @@ export class UnconnectedReferenceFieldController extends Component<Props> {
             source,
         } = this.props;
         const rootPath = basePath.replace(resource, reference);
-        const resourceLinkPath = !linkType ? false : linkToRecord(rootPath, get(record, source), linkType as string);
+        const resourceLinkPath = !linkType
+            ? false
+            : linkToRecord(rootPath, get(record, source), linkType as string);
 
         return children({
             isLoading: !referenceRecord && !allowEmpty,
@@ -105,7 +107,9 @@ export class UnconnectedReferenceFieldController extends Component<Props> {
 const mapStateToProps = (state, props) => ({
     referenceRecord:
         state.admin.resources[props.reference] &&
-        state.admin.resources[props.reference].data[get(props.record, props.source)],
+        state.admin.resources[props.reference].data[
+            get(props.record, props.source)
+        ],
 });
 
 const ReferenceFieldController = connect(

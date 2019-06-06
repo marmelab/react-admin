@@ -43,7 +43,9 @@ interface RecordSetWithDate {
 /**
  * Make the fetchedAt property non enumerable
  */
-export const hideFetchedAt = (records: RecordSetWithDate): RecordSetWithDate => {
+export const hideFetchedAt = (
+    records: RecordSetWithDate
+): RecordSetWithDate => {
     Object.defineProperty(records, 'fetchedAt', {
         enumerable: false,
         configurable: false,
@@ -59,14 +61,22 @@ export const hideFetchedAt = (records: RecordSetWithDate): RecordSetWithDate => 
  * The cached data is displayed before fetching, and stale data is removed
  * only once fresh data is fetched.
  */
-export const addRecords = (newRecords: Record[] = [], oldRecords: RecordSetWithDate): RecordSetWithDate => {
+export const addRecords = (
+    newRecords: Record[] = [],
+    oldRecords: RecordSetWithDate
+): RecordSetWithDate => {
     const newRecordsById = {};
     newRecords.forEach(record => (newRecordsById[record.id] = record));
 
-    const newFetchedAt = getFetchedAt(newRecords.map(({ id }) => id), oldRecords.fetchedAt);
+    const newFetchedAt = getFetchedAt(
+        newRecords.map(({ id }) => id),
+        oldRecords.fetchedAt
+    );
 
     const records = { fetchedAt: newFetchedAt };
-    Object.keys(newFetchedAt).forEach(id => (records[id] = newRecordsById[id] || oldRecords[id]));
+    Object.keys(newFetchedAt).forEach(
+        id => (records[id] = newRecordsById[id] || oldRecords[id])
+    );
 
     return hideFetchedAt(records);
 };
@@ -74,7 +84,10 @@ export const addRecords = (newRecords: Record[] = [], oldRecords: RecordSetWithD
 /**
  * Remove records from the pool
  */
-const removeRecords = (removedRecordIds: Identifier[] = [], oldRecords: RecordSetWithDate): RecordSetWithDate => {
+const removeRecords = (
+    removedRecordIds: Identifier[] = [],
+    oldRecords: RecordSetWithDate
+): RecordSetWithDate => {
     const records = Object.entries(oldRecords)
         .filter(([key]) => !removedRecordIds.includes(key))
         .reduce((obj, [key, val]) => ({ ...obj, [key]: val }), {
@@ -89,7 +102,10 @@ const removeRecords = (removedRecordIds: Identifier[] = [], oldRecords: RecordSe
 
 const initialState = hideFetchedAt({ fetchedAt: {} });
 
-const dataReducer: Reducer<RecordSetWithDate> = (previousState = initialState, { payload, meta }) => {
+const dataReducer: Reducer<RecordSetWithDate> = (
+    previousState = initialState,
+    { payload, meta }
+) => {
     if (meta && meta.optimistic) {
         if (meta.fetch === UPDATE) {
             const updatedRecord = {

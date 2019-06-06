@@ -26,7 +26,8 @@ export class MenuItemLink extends Component {
         onClick: PropTypes.func,
         primaryText: PropTypes.node,
         staticContext: PropTypes.object,
-        to: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
+        to: PropTypes.oneOfType([PropTypes.string, PropTypes.object])
+            .isRequired,
     };
 
     handleMenuTap = e => {
@@ -34,7 +35,14 @@ export class MenuItemLink extends Component {
     };
 
     render() {
-        const { classes, className, primaryText, leftIcon, staticContext, ...props } = this.props;
+        const {
+            classes,
+            className,
+            primaryText,
+            leftIcon,
+            staticContext,
+            ...props
+        } = this.props;
 
         return (
             <MenuItem
@@ -45,7 +53,9 @@ export class MenuItemLink extends Component {
                 onClick={this.handleMenuTap}
             >
                 {leftIcon && (
-                    <span className={classes.icon}>{cloneElement(leftIcon, { titleAccess: primaryText })}</span>
+                    <span className={classes.icon}>
+                        {cloneElement(leftIcon, { titleAccess: primaryText })}
+                    </span>
                 )}
                 {primaryText}
             </MenuItem>

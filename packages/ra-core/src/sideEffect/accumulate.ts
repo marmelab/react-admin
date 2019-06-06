@@ -117,6 +117,10 @@ export default function*() {
 
     yield takeEvery(
         action => action.meta && action.meta.accumulate,
-        accumulateFactory(tasks, accumulations, finalizeFactory(tasks, accumulations))
+        accumulateFactory(
+            tasks,
+            accumulations,
+            finalizeFactory(tasks, accumulations)
+        )
     );
 }

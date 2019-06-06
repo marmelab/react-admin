@@ -7,6 +7,8 @@ export default (
         [key: string]: any;
     } = {}
 ) => {
-    const WithFormField = props => <FormField component={BaseComponent} {...fieldProps} {...props} />;
+    const WithFormField = props => (
+        <FormField component={BaseComponent} {...fieldProps} {...props} />
+    );
     return WithFormField;
 };

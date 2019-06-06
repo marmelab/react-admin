@@ -1,7 +1,10 @@
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import { DragSource } from 'react-dnd';
-import { crudUpdate as crudUpdateAction, startUndoable as startUndoableAction } from 'ra-core';
+import {
+    crudUpdate as crudUpdateAction,
+    startUndoable as startUndoableAction,
+} from 'ra-core';
 import { expandNode as expandNodeAction } from 'ra-tree-core';
 
 import { DROP_TARGET_TYPE } from './constants';
@@ -28,7 +31,10 @@ const dragSourceSpecs = {
         }
 
         const droppedOnNode = monitor.getDropResult();
-        if (typeof droppedOnNode.id === 'undefined' || droppedOnNode.id === node.record[parentSource]) {
+        if (
+            typeof droppedOnNode.id === 'undefined' ||
+            droppedOnNode.id === node.record[parentSource]
+        ) {
             return;
         }
 

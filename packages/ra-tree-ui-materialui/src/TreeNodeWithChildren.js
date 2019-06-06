@@ -19,9 +19,18 @@ export class TreeNodeWithChildren extends Component {
         node: PropTypes.object.isRequired,
         resource: PropTypes.string.isRequired,
         toggleNode: PropTypes.func,
-        treeNodeComponent: PropTypes.oneOfType([PropTypes.element, PropTypes.func]),
-        treeNodeContentComponent: PropTypes.oneOfType([PropTypes.element, PropTypes.func]).isRequired,
-        treeNodeWithChildrenComponent: PropTypes.oneOfType([PropTypes.element, PropTypes.func]),
+        treeNodeComponent: PropTypes.oneOfType([
+            PropTypes.element,
+            PropTypes.func,
+        ]),
+        treeNodeContentComponent: PropTypes.oneOfType([
+            PropTypes.element,
+            PropTypes.func,
+        ]).isRequired,
+        treeNodeWithChildrenComponent: PropTypes.oneOfType([
+            PropTypes.element,
+            PropTypes.func,
+        ]),
     };
 
     handleChange = () => {
@@ -96,7 +105,9 @@ export class TreeNodeWithChildren extends Component {
                                 getIsNodeExpanded={getIsNodeExpanded}
                                 resource={resource}
                                 treeNodeComponent={TreeNode}
-                                treeNodeWithChildrenComponent={treeNodeWithChildrenComponent}
+                                treeNodeWithChildrenComponent={
+                                    treeNodeWithChildrenComponent
+                                }
                                 treeNodeContentComponent={TreeNodeContent}
                                 toggleNode={toggleNode}
                                 closeNode={closeNode}

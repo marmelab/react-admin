@@ -7,7 +7,14 @@ import classnames from 'classnames';
 
 import Labeled from '../input/Labeled';
 
-const sanitizeRestProps = ({ contentClassName, label, icon, value, translate, ...rest }) => rest;
+const sanitizeRestProps = ({
+    contentClassName,
+    label,
+    icon,
+    value,
+    translate,
+    ...rest
+}) => rest;
 
 /**
  * Tab element for the SimpleShowLayout.
@@ -65,13 +72,23 @@ class Tab extends Component {
         />
     );
 
-    renderContent = ({ contentClassName, children, basePath, record, resource }) => (
+    renderContent = ({
+        contentClassName,
+        children,
+        basePath,
+        record,
+        resource,
+    }) => (
         <span className={contentClassName}>
             {React.Children.map(children, field =>
                 field && isValidElement(field) ? (
                     <div
                         key={field.props.source}
-                        className={classnames('ra-field', `ra-field-${field.props.source}`, field.props.className)}
+                        className={classnames(
+                            'ra-field',
+                            `ra-field-${field.props.source}`,
+                            field.props.className
+                        )}
                     >
                         {field.props.addLabel ? (
                             <Labeled
@@ -100,7 +117,9 @@ class Tab extends Component {
 
     render() {
         const { children, context, ...rest } = this.props;
-        return context === 'header' ? this.renderHeader(rest) : this.renderContent({ children, ...rest });
+        return context === 'header'
+            ? this.renderHeader(rest)
+            : this.renderContent({ children, ...rest });
     }
 }
 

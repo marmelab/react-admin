@@ -19,12 +19,19 @@ const ViewTitle = ({ className = undefined, title, ...rest }) => {
         <Responsive
             xsmall={
                 <Fragment>
-                    <AppBarMobile className={classnames('title', className)} title={title} {...rest} />
+                    <AppBarMobile
+                        className={classnames('title', className)}
+                        title={title}
+                        {...rest}
+                    />
                     <span> </span>
                 </Fragment>
             }
             medium={
-                <CardContent className={classnames('title', className)} {...rest}>
+                <CardContent
+                    className={classnames('title', className)}
+                    {...rest}
+                >
                     <Typography variant="title">{title}</Typography>
                 </CardContent>
             }
@@ -34,7 +41,8 @@ const ViewTitle = ({ className = undefined, title, ...rest }) => {
 
 ViewTitle.propTypes = {
     className: PropTypes.string,
-    title: PropTypes.oneOfType([PropTypes.string, PropTypes.element]).isRequired,
+    title: PropTypes.oneOfType([PropTypes.string, PropTypes.element])
+        .isRequired,
 };
 
 export default ViewTitle;

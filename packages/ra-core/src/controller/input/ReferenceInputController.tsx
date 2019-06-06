@@ -10,13 +10,18 @@ import {
     crudGetManyAccumulate as crudGetManyAccumulateAction,
     crudGetMatchingAccumulate as crudGetMatchingAccumulateAction,
 } from '../../actions/accumulateActions';
-import { getPossibleReferences, getPossibleReferenceValues, getReferenceResource } from '../../reducer';
+import {
+    getPossibleReferences,
+    getPossibleReferenceValues,
+    getReferenceResource,
+} from '../../reducer';
 import { getStatusForInput as getDataStatus } from './referenceDataStatus';
 import withTranslate from '../../i18n/translate';
 import { Sort, Translate, Record, Pagination, Dispatch } from '../../types';
 import { MatchingReferencesError } from './types';
 
-const defaultReferenceSource = (resource: string, source: string) => `${resource}@${source}`;
+const defaultReferenceSource = (resource: string, source: string) =>
+    `${resource}@${source}`;
 
 interface ChildrenFuncParams {
     choices: Record[];
@@ -142,7 +147,10 @@ interface State {
  *     <SelectInput optionText="title" />
  * </ReferenceInput>
  */
-export class UnconnectedReferenceInputController extends Component<Props & EnhancedProps, State> {
+export class UnconnectedReferenceInputController extends Component<
+    Props & EnhancedProps,
+    State
+> {
     public static defaultProps = {
         allowEmpty: false,
         filter: {},
@@ -169,7 +177,10 @@ export class UnconnectedReferenceInputController extends Component<Props & Enhan
     }
 
     componentWillReceiveProps(nextProps: Props & EnhancedProps) {
-        if ((this.props.record || { id: undefined }).id !== (nextProps.record || { id: undefined }).id) {
+        if (
+            (this.props.record || { id: undefined }).id !==
+            (nextProps.record || { id: undefined }).id
+        ) {
             this.fetchReferenceAndOptions(nextProps);
         } else if (this.props.input.value !== nextProps.input.value) {
             this.fetchReference(nextProps);
@@ -194,7 +205,10 @@ export class UnconnectedReferenceInputController extends Component<Props & Enhan
 
     setFilter = (filter: any) => {
         if (filter !== this.state.filter) {
-            this.setState({ filter: this.props.filterToQuery(filter) }, this.fetchOptions);
+            this.setState(
+                { filter: this.props.filterToQuery(filter) },
+                this.fetchOptions
+            );
         }
     };
 
@@ -229,10 +243,16 @@ export class UnconnectedReferenceInputController extends Component<Props & Enhan
         } = props;
         const { pagination, sort, filter } = this.state;
 
-        crudGetMatchingAccumulate(reference, referenceSource(resource, source), pagination, sort, {
-            ...filterFromProps,
-            ...filter,
-        });
+        crudGetMatchingAccumulate(
+            reference,
+            referenceSource(resource, source),
+            pagination,
+            sort,
+            {
+                ...filterFromProps,
+                ...filter,
+            }
+        );
     };
 
     fetchReferenceAndOptions(props) {
@@ -241,7 +261,14 @@ export class UnconnectedReferenceInputController extends Component<Props & Enhan
     }
 
     render() {
-        const { input, referenceRecord, matchingReferences, onChange, children, translate } = this.props;
+        const {
+            input,
+            referenceRecord,
+            matchingReferences,
+            onChange,
+            children,
+            translate,
+        } = this.props;
         const { pagination, sort, filter } = this.state;
 
         const dataStatus = getDataStatus({
@@ -269,9 +296,17 @@ export class UnconnectedReferenceInputController extends Component<Props & Enhan
 
 const makeMapStateToProps = () =>
     createSelector(
-        [getReferenceResource, getPossibleReferenceValues, (_, props) => props.input.value],
+        [
+            getReferenceResource,
+            getPossibleReferenceValues,
+            (_, props) => props.input.value,
+        ],
         (referenceState, possibleValues, inputId) => ({
-            matchingReferences: getPossibleReferences(referenceState, possibleValues, [inputId]),
+            matchingReferences: getPossibleReferences(
+                referenceState,
+                possibleValues,
+                [inputId]
+            ),
             referenceRecord: referenceState && referenceState.data[inputId],
         })
     );

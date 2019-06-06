@@ -1,5 +1,14 @@
 import React from 'react';
-import { List, Datagrid, TextField, DateField, ReferenceField, NumberField, Filter, DateInput } from 'react-admin';
+import {
+    List,
+    Datagrid,
+    TextField,
+    DateField,
+    ReferenceField,
+    NumberField,
+    Filter,
+    DateInput,
+} from 'react-admin';
 
 import FullNameField from '../visitors/FullNameField';
 import AddressField from '../visitors/AddressField';

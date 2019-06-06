@@ -102,7 +102,10 @@ describe('<ReferenceInputController />', () => {
                 {children}
             </ReferenceInputController>
         );
-        assert.equal(children.mock.calls[0][0].error, '*ra.input.references.single_missing*');
+        assert.equal(
+            children.mock.calls[0][0].error,
+            '*ra.input.references.single_missing*'
+        );
     });
 
     it('should set error in case of references fetch error and there is no reference already selected', () => {
@@ -187,7 +190,10 @@ describe('<ReferenceInputController />', () => {
                 {children}
             </ReferenceInputController>
         );
-        assert.equal(children.mock.calls[0][0].warning, '*ra.input.references.single_missing*');
+        assert.equal(
+            children.mock.calls[0][0].warning,
+            '*ra.input.references.single_missing*'
+        );
     });
 
     it('should not set warning if all references were found', () => {
@@ -365,7 +371,11 @@ describe('<ReferenceInputController />', () => {
         const children = jest.fn();
         const onChange = jest.fn();
         shallow(
-            <ReferenceInputController {...defaultProps} allowEmpty onChange={onChange}>
+            <ReferenceInputController
+                {...defaultProps}
+                allowEmpty
+                onChange={onChange}
+            >
                 {children}
             </ReferenceInputController>
         );
@@ -423,7 +433,12 @@ describe('<ReferenceInputController />', () => {
             { foo: 'bar' },
         ]);
 
-        rerender(<ControllerWrapper filter={{ foo: 'bar' }} sort={{ field: 'foo', order: 'ASC' }} />);
+        rerender(
+            <ControllerWrapper
+                filter={{ foo: 'bar' }}
+                sort={{ field: 'foo', order: 'ASC' }}
+            />
+        );
 
         assert.equal(crudGetManyAccumulate.mock.calls.length, 1);
         assert.deepEqual(crudGetMatchingAccumulate.mock.calls[2], [
@@ -434,7 +449,13 @@ describe('<ReferenceInputController />', () => {
             { foo: 'bar' },
         ]);
 
-        rerender(<ControllerWrapper filter={{ foo: 'bar' }} sort={{ field: 'foo', order: 'ASC' }} perPage={42} />);
+        rerender(
+            <ControllerWrapper
+                filter={{ foo: 'bar' }}
+                sort={{ field: 'foo', order: 'ASC' }}
+                perPage={42}
+            />
+        );
 
         assert.equal(crudGetManyAccumulate.mock.calls.length, 1);
         assert.deepEqual(crudGetMatchingAccumulate.mock.calls[3], [

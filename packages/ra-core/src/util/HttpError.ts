@@ -1,5 +1,9 @@
 class HttpError extends Error {
-    constructor(public readonly message, public readonly status, public readonly body = null) {
+    constructor(
+        public readonly message,
+        public readonly status,
+        public readonly body = null
+    ) {
         super(message);
         this.name = this.constructor.name;
         if (typeof Error.captureStackTrace === 'function') {

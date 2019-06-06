@@ -93,7 +93,9 @@ export class FileInput extends Component {
     };
 
     onRemove = file => () => {
-        const filteredFiles = this.state.files.filter(stateFile => !shallowEqual(stateFile, file));
+        const filteredFiles = this.state.files.filter(
+            stateFile => !shallowEqual(stateFile, file)
+        );
 
         this.setState({ files: filteredFiles });
 
@@ -126,7 +128,12 @@ export class FileInput extends Component {
     };
 
     label() {
-        const { translate, placeholder, labelMultiple, labelSingle } = this.props;
+        const {
+            translate,
+            placeholder,
+            labelMultiple,
+            labelSingle,
+        } = this.props;
 
         if (placeholder) {
             return placeholder;
@@ -202,7 +209,9 @@ export class FileInput extends Component {
                             ))}
                         </div>
                     )}
-                    {meta && meta.touched && meta.error && <FormHelperText>{translate(meta.error)}</FormHelperText>}
+                    {meta && meta.touched && meta.error && (
+                        <FormHelperText>{translate(meta.error)}</FormHelperText>
+                    )}
                 </span>
             </Labeled>
         );

@@ -14,6 +14,11 @@ const sometimesFailsDataProvider = (type, resource, params) =>
         return resolve(uploadCapableDataProvider(type, resource, params));
     });
 const delayedDataProvider = (type, resource, params) =>
-    new Promise(resolve => setTimeout(() => resolve(sometimesFailsDataProvider(type, resource, params)), 1000));
+    new Promise(resolve =>
+        setTimeout(
+            () => resolve(sometimesFailsDataProvider(type, resource, params)),
+            1000
+        )
+    );
 
 export default delayedDataProvider;

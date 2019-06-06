@@ -1,4 +1,9 @@
-import React, { cloneElement, Children, Component, isValidElement } from 'react';
+import React, {
+    cloneElement,
+    Children,
+    Component,
+    isValidElement,
+} from 'react';
 import PropTypes from 'prop-types';
 import { CSSTransition } from 'react-transition-group';
 import Menu from '@material-ui/core/Menu';
@@ -43,7 +48,14 @@ const timeoutDurations = {
     exit: 300,
 };
 
-const sanitizeRestProps = ({ basePath, classes, filterValues, resource, onUnselectItems, ...rest }) => rest;
+const sanitizeRestProps = ({
+    basePath,
+    classes,
+    filterValues,
+    resource,
+    onUnselectItems,
+    ...rest
+}) => rest;
 
 /**
  * @deprecated pass a Fragment with button children as bulkActionButtons props instead
@@ -57,7 +69,9 @@ class BulkActions extends Component {
     componentDidMount() {
         if (process.env.NODE_ENV !== 'production') {
             // eslint-disable-next-line no-console
-            console.warn('<BulkActions> is deprecated. Use the bulkActionButtons prop instead.');
+            console.warn(
+                '<BulkActions> is deprecated. Use the bulkActionButtons prop instead.'
+            );
         }
     }
 
@@ -120,13 +134,23 @@ class BulkActions extends Component {
                     >
                         <FilterNoneIcon className={classes.icon} />
                     </Button>
-                    <Menu id="bulk-actions-menu" anchorEl={this.anchorElement} onClose={this.handleClose} open={isOpen}>
+                    <Menu
+                        id="bulk-actions-menu"
+                        anchorEl={this.anchorElement}
+                        onClose={this.handleClose}
+                        open={isOpen}
+                    >
                         {Children.map(children, (child, index) =>
                             isValidElement(child) ? (
                                 <MenuItem
                                     key={index}
-                                    className={classnames('bulk-actions-menu-item', child.props.className)}
-                                    onClick={() => this.handleLaunchAction(index)}
+                                    className={classnames(
+                                        'bulk-actions-menu-item',
+                                        child.props.className
+                                    )}
+                                    onClick={() =>
+                                        this.handleLaunchAction(index)
+                                    }
                                     {...sanitizeRestProps(rest)}
                                 >
                                     {translate(child.props.label)}
@@ -135,7 +159,8 @@ class BulkActions extends Component {
                         )}
                     </Menu>
                     {Children.map(children, (child, index) =>
-                        isValidElement(child) && this.state.activeAction === index
+                        isValidElement(child) &&
+                        this.state.activeAction === index
                             ? cloneElement(child, {
                                   basePath,
                                   filterValues,

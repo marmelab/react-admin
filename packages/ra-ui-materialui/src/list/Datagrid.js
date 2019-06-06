@@ -1,4 +1,9 @@
-import React, { Component, isValidElement, Children, cloneElement } from 'react';
+import React, {
+    Component,
+    isValidElement,
+    Children,
+    cloneElement,
+} from 'react';
 import PropTypes from 'prop-types';
 import { sanitizeListRestProps } from 'ra-core';
 import { withStyles, createStyles } from '@material-ui/core/styles';
@@ -104,7 +109,8 @@ class Datagrid extends Component {
         if (event.target.checked) {
             onSelect(
                 ids.reduce(
-                    (idList, id) => (idList.includes(id) ? idList : idList.concat(id)),
+                    (idList, id) =>
+                        idList.includes(id) ? idList : idList.concat(id),
 
                     selectedIds
                 )
@@ -173,10 +179,17 @@ class Datagrid extends Component {
          * the datagrid displays the current data.
          */
         return (
-            <Table className={classnames(classes.table, className)} {...sanitizeListRestProps(rest)}>
+            <Table
+                className={classnames(classes.table, className)}
+                {...sanitizeListRestProps(rest)}
+            >
                 <TableHead className={classes.thead}>
-                    <TableRow className={classnames(classes.row, classes.headerRow)}>
-                        {expand && <TableCell className={classes.expandHeader} />}
+                    <TableRow
+                        className={classnames(classes.row, classes.headerRow)}
+                    >
+                        {expand && (
+                            <TableCell className={classes.expandHeader} />
+                        )}
                         {hasBulkActions && (
                             <TableCell padding="none">
                                 <Checkbox
@@ -185,7 +198,9 @@ class Datagrid extends Component {
                                     checked={
                                         selectedIds.length > 0 &&
                                         ids.length > 0 &&
-                                        !ids.find(it => selectedIds.indexOf(it) === -1)
+                                        !ids.find(
+                                            it => selectedIds.indexOf(it) === -1
+                                        )
                                     }
                                     onChange={this.handleSelectAll}
                                 />
@@ -197,7 +212,11 @@ class Datagrid extends Component {
                                     className={classes.headerCell}
                                     currentSort={currentSort}
                                     field={field}
-                                    isSorting={currentSort.field === (field.props.sortBy || field.props.source)}
+                                    isSorting={
+                                        currentSort.field ===
+                                        (field.props.sortBy ||
+                                            field.props.source)
+                                    }
                                     key={field.props.source || index}
                                     resource={resource}
                                     updateSort={this.updateSort}

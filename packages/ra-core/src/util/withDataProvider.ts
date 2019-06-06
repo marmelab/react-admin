@@ -26,12 +26,17 @@ const mapDispatchToProps = (dispatch): DispatchProps => ({
                     },
                     onFailure: {
                         ...get(meta, 'onFailure', {}),
-                        callback: ({ error }) => reject(new Error(error.message ? error.message : error)),
+                        callback: ({ error }) =>
+                            reject(
+                                new Error(error.message ? error.message : error)
+                            ),
                     },
                 },
             };
 
-            return meta.undoable ? dispatch(startUndoable(action)) : dispatch(action);
+            return meta.undoable
+                ? dispatch(startUndoable(action))
+                : dispatch(action);
         }),
     dispatch,
 });

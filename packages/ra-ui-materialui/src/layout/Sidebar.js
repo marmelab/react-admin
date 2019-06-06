@@ -53,7 +53,16 @@ class Sidebar extends PureComponent {
     toggleSidebar = () => this.props.setSidebarVisibility(!this.props.open);
 
     render() {
-        const { children, classes, closedSize, open, setSidebarVisibility, size, width, ...rest } = this.props;
+        const {
+            children,
+            classes,
+            closedSize,
+            open,
+            setSidebarVisibility,
+            size,
+            width,
+            ...rest
+        } = this.props;
 
         return (
             <Responsive

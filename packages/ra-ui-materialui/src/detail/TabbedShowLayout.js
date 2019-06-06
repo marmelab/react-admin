@@ -1,4 +1,9 @@
-import React, { Component, Children, cloneElement, isValidElement } from 'react';
+import React, {
+    Component,
+    Children,
+    cloneElement,
+    isValidElement,
+} from 'react';
 import PropTypes from 'prop-types';
 import Divider from '@material-ui/core/Divider';
 import { withRouter, Route } from 'react-router-dom';
@@ -23,7 +28,9 @@ const sanitizeRestProps = ({
 }) => rest;
 
 const getTabFullPath = (tab, index, baseUrl) =>
-    `${baseUrl}${tab.props.path ? `/${tab.props.path}` : index > 0 ? `/${index}` : ''}`;
+    `${baseUrl}${
+        tab.props.path ? `/${tab.props.path}` : index > 0 ? `/${index}` : ''
+    }`;
 
 /**
  * Tabbed Layout for a Show view, showing fields grouped in tabs.
@@ -82,7 +89,11 @@ export class TabbedShowLayout extends Component {
         } = this.props;
 
         return (
-            <div className={className} key={version} {...sanitizeRestProps(rest)}>
+            <div
+                className={className}
+                key={version}
+                {...sanitizeRestProps(rest)}
+            >
                 {cloneElement(
                     tabs,
                     {

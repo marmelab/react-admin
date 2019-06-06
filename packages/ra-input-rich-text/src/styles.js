@@ -20,7 +20,8 @@ export default theme => ({
                     height: 1,
                     content: '""',
                     position: 'absolute',
-                    transition: 'background-color 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
+                    transition:
+                        'background-color 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
                     backgroundColor: 'rgba(0, 0, 0, 0.42)',
                 },
 
@@ -32,7 +33,8 @@ export default theme => ({
                     content: '""',
                     position: 'absolute',
                     transform: 'scaleX(0)',
-                    transition: 'transform 200ms cubic-bezier(0, 0, 0.2, 1) 0ms',
+                    transition:
+                        'transform 200ms cubic-bezier(0, 0, 0.2, 1) 0ms',
                     backgroundColor: theme.palette.primary.main,
                 },
 

@@ -6,7 +6,12 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import ListItemText from '@material-ui/core/ListItemText';
 import { withStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
-import { linkToRecord, ReferenceField, FunctionField, TextField } from 'react-admin';
+import {
+    linkToRecord,
+    ReferenceField,
+    FunctionField,
+    TextField,
+} from 'react-admin';
 
 import AvatarField from '../visitors/AvatarField';
 
@@ -23,11 +28,23 @@ const styles = {
     },
 };
 
-const ReviewMobileList = ({ basePath, classes = {}, className, data, ids, isLoading, total }) =>
+const ReviewMobileList = ({
+    basePath,
+    classes = {},
+    className,
+    data,
+    ids,
+    isLoading,
+    total,
+}) =>
     (isLoading || total > 0) && (
         <List className={classes.root}>
             {ids.map(id => (
-                <Link to={linkToRecord(basePath, id)} className={classes.link} key={id}>
+                <Link
+                    to={linkToRecord(basePath, id)}
+                    className={classes.link}
+                    key={id}
+                >
                     <ListItem button>
                         <ListItemAvatar>
                             <ReferenceField
@@ -51,7 +68,11 @@ const ReviewMobileList = ({ basePath, classes = {}, className, data, ids, isLoad
                                         linkType={false}
                                     >
                                         <FunctionField
-                                            render={record => `${record.first_name} ${record.last_name}`}
+                                            render={record =>
+                                                `${record.first_name} ${
+                                                    record.last_name
+                                                }`
+                                            }
                                             variant="subheading"
                                             className={classes.inline}
                                         />
@@ -64,7 +85,11 @@ const ReviewMobileList = ({ basePath, classes = {}, className, data, ids, isLoad
                                         basePath={basePath}
                                         linkType={false}
                                     >
-                                        <TextField source="reference" variant="subheading" className={classes.inline} />
+                                        <TextField
+                                            source="reference"
+                                            variant="subheading"
+                                            className={classes.inline}
+                                        />
                                     </ReferenceField>
                                 </Fragment>
                             }
@@ -86,7 +111,8 @@ ReviewMobileList.propTypes = {
     ids: PropTypes.array,
     leftAvatar: PropTypes.func,
     leftIcon: PropTypes.func,
-    linkType: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]).isRequired,
+    linkType: PropTypes.oneOfType([PropTypes.string, PropTypes.bool])
+        .isRequired,
     onToggleItem: PropTypes.func,
     primaryText: PropTypes.func,
     rightAvatar: PropTypes.func,

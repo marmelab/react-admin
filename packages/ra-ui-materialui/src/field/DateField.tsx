@@ -74,7 +74,12 @@ export const DateField: SFC<Props & InjectedFieldProps & TypographyProps> = ({
         : date.toLocaleDateString();
 
     return (
-        <Typography component="span" variant="body1" className={className} {...sanitizeRestProps(rest)}>
+        <Typography
+            component="span"
+            variant="body1"
+            className={className}
+            {...sanitizeRestProps(rest)}
+        >
             {dateString}
         </Typography>
     );
@@ -89,7 +94,10 @@ EnhancedDateField.defaultProps = {
 EnhancedDateField.propTypes = {
     ...Typography.propTypes,
     ...fieldPropTypes,
-    locales: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
+    locales: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.arrayOf(PropTypes.string),
+    ]),
     options: PropTypes.object,
     showTime: PropTypes.bool,
 };

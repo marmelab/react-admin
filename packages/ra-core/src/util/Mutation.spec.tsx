@@ -53,7 +53,11 @@ describe('Mutation', () => {
                 {({ store }) => {
                     dispatchSpy = jest.spyOn(store, 'dispatch');
                     return (
-                        <Mutation type="mytype" resource="myresource" payload={myPayload}>
+                        <Mutation
+                            type="mytype"
+                            resource="myresource"
+                            payload={myPayload}
+                        >
                             {mutate => <button onClick={mutate}>Hello</button>}
                         </Mutation>
                     );
@@ -73,9 +77,16 @@ describe('Mutation', () => {
         const { getByText } = render(
             <TestContext>
                 {() => (
-                    <Mutation type="mytype" resource="myresource" payload={myPayload}>
+                    <Mutation
+                        type="mytype"
+                        resource="myresource"
+                        payload={myPayload}
+                    >
                         {(mutate, { loading }) => (
-                            <button className={loading ? 'loading' : 'idle'} onClick={mutate}>
+                            <button
+                                className={loading ? 'loading' : 'idle'}
+                                onClick={mutate}
+                            >
                                 Hello
                             </button>
                         )}
@@ -90,7 +101,9 @@ describe('Mutation', () => {
 
     it('should update the data state after a success response', async () => {
         const dataProvider = jest.fn();
-        dataProvider.mockImplementationOnce(() => Promise.resolve({ data: { foo: 'bar' } }));
+        dataProvider.mockImplementationOnce(() =>
+            Promise.resolve({ data: { foo: 'bar' } })
+        );
         const Foo = () => (
             <Mutation type="mytype" resource="foo">
                 {(mutate, { data }) => (
@@ -114,7 +127,9 @@ describe('Mutation', () => {
 
     it('should update the error state after an error response', async () => {
         const dataProvider = jest.fn();
-        dataProvider.mockImplementationOnce(() => Promise.reject({ message: 'provider error' }));
+        dataProvider.mockImplementationOnce(() =>
+            Promise.reject({ message: 'provider error' })
+        );
         const Foo = () => (
             <Mutation type="mytype" resource="foo">
                 {(mutate, { error }) => (

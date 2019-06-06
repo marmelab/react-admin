@@ -23,14 +23,21 @@ import FullNameField from './FullNameField';
 import SegmentsInput from './SegmentsInput';
 import { styles } from './VisitorCreate';
 
-const VisitorTitle = ({ record }) => (record ? <FullNameField record={record} size={32} /> : null);
+const VisitorTitle = ({ record }) =>
+    record ? <FullNameField record={record} size={32} /> : null;
 
 const VisitorEdit = ({ classes, ...props }) => (
     <Edit title={<VisitorTitle />} {...props}>
         <TabbedForm>
             <FormTab label="resources.customers.tabs.identity">
-                <TextInput source="first_name" formClassName={classes.first_name} />
-                <TextInput source="last_name" formClassName={classes.last_name} />
+                <TextInput
+                    source="first_name"
+                    formClassName={classes.first_name}
+                />
+                <TextInput
+                    source="last_name"
+                    formClassName={classes.last_name}
+                />
                 <TextInput
                     type="email"
                     source="email"
@@ -41,7 +48,10 @@ const VisitorEdit = ({ classes, ...props }) => (
                 <DateInput source="birthday" />
             </FormTab>
             <FormTab label="resources.customers.tabs.address" path="address">
-                <LongTextInput source="address" formClassName={classes.address} />
+                <LongTextInput
+                    source="address"
+                    formClassName={classes.address}
+                />
                 <TextInput source="zipcode" formClassName={classes.zipcode} />
                 <TextInput source="city" formClassName={classes.city} />
             </FormTab>
@@ -56,7 +66,10 @@ const VisitorEdit = ({ classes, ...props }) => (
                         <DateField source="date" />
                         <TextField source="reference" />
                         <NbItemsField />
-                        <NumberField source="total" options={{ style: 'currency', currency: 'USD' }} />
+                        <NumberField
+                            source="total"
+                            options={{ style: 'currency', currency: 'USD' }}
+                        />
                         <TextField source="status" />
                         <EditButton />
                     </Datagrid>
@@ -73,7 +86,10 @@ const VisitorEdit = ({ classes, ...props }) => (
                         <DateField source="date" />
                         <ProductReferenceField />
                         <StarRatingField />
-                        <TextField source="comment" cellClassName={classes.comment} />
+                        <TextField
+                            source="comment"
+                            cellClassName={classes.comment}
+                        />
                         <EditButton style={{ padding: 0 }} />
                     </Datagrid>
                 </ReferenceManyField>
@@ -81,9 +97,18 @@ const VisitorEdit = ({ classes, ...props }) => (
             <FormTab label="resources.customers.tabs.stats" path="stats">
                 <SegmentsInput />
                 <NullableBooleanInput source="has_newsletter" />
-                <DateField source="first_seen" style={{ width: 128, display: 'inline-block' }} />
-                <DateField source="latest_purchase" style={{ width: 128, display: 'inline-block' }} />
-                <DateField source="last_seen" style={{ width: 128, display: 'inline-block' }} />
+                <DateField
+                    source="first_seen"
+                    style={{ width: 128, display: 'inline-block' }}
+                />
+                <DateField
+                    source="latest_purchase"
+                    style={{ width: 128, display: 'inline-block' }}
+                />
+                <DateField
+                    source="last_seen"
+                    style={{ width: 128, display: 'inline-block' }}
+                />
             </FormTab>
         </TabbedForm>
     </Edit>

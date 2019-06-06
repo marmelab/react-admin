@@ -21,7 +21,10 @@ describe('<CheckboxGroupInput />', () => {
         const { getByLabelText } = render(
             <CheckboxGroupInput
                 {...defaultProps}
-                choices={[{ id: 'ang', name: 'Angular' }, { id: 'rct', name: 'React' }]}
+                choices={[
+                    { id: 'ang', name: 'Angular' },
+                    { id: 'rct', name: 'React' },
+                ]}
             />
         );
         const input1 = getByLabelText('Angular');
@@ -38,7 +41,10 @@ describe('<CheckboxGroupInput />', () => {
         const { getByLabelText } = render(
             <CheckboxGroupInput
                 {...defaultProps}
-                choices={[{ id: 'ang', name: 'Angular' }, { id: 'rct', name: 'React' }]}
+                choices={[
+                    { id: 'ang', name: 'Angular' },
+                    { id: 'rct', name: 'React' },
+                ]}
                 input={{ value: ['ang'], onChange: () => {} }}
             />
         );
@@ -50,7 +56,11 @@ describe('<CheckboxGroupInput />', () => {
 
     it('should use optionValue as value identifier', () => {
         const { getByLabelText } = render(
-            <CheckboxGroupInput {...defaultProps} optionValue="foobar" choices={[{ foobar: 'foo', name: 'Bar' }]} />
+            <CheckboxGroupInput
+                {...defaultProps}
+                optionValue="foobar"
+                choices={[{ foobar: 'foo', name: 'Bar' }]}
+            />
         );
         expect(getByLabelText('Bar').value).toBe('foo');
     });
@@ -68,7 +78,11 @@ describe('<CheckboxGroupInput />', () => {
 
     it('should use optionText with a string value as text identifier', () => {
         const { queryByLabelText } = render(
-            <CheckboxGroupInput {...defaultProps} optionText="foobar" choices={[{ id: 'foo', foobar: 'Bar' }]} />
+            <CheckboxGroupInput
+                {...defaultProps}
+                optionText="foobar"
+                choices={[{ id: 'foo', foobar: 'Bar' }]}
+            />
         );
         expect(queryByLabelText('Bar')).not.toBeNull();
     });
@@ -96,22 +110,34 @@ describe('<CheckboxGroupInput />', () => {
     });
 
     it('should use optionText with an element value as text identifier', () => {
-        const Foobar = ({ record }) => <span data-testid="label">{record.foobar}</span>;
+        const Foobar = ({ record }) => (
+            <span data-testid="label">{record.foobar}</span>
+        );
         const { queryByLabelText, queryByTestId } = render(
-            <CheckboxGroupInput {...defaultProps} optionText={<Foobar />} choices={[{ id: 'foo', foobar: 'Bar' }]} />
+            <CheckboxGroupInput
+                {...defaultProps}
+                optionText={<Foobar />}
+                choices={[{ id: 'foo', foobar: 'Bar' }]}
+            />
         );
         expect(queryByLabelText('Bar')).not.toBeNull();
         expect(queryByTestId('label')).not.toBeNull();
     });
 
     it('should translate the choices by default', () => {
-        const { queryByLabelText } = render(<CheckboxGroupInput {...defaultProps} translate={x => `**${x}**`} />);
+        const { queryByLabelText } = render(
+            <CheckboxGroupInput {...defaultProps} translate={x => `**${x}**`} />
+        );
         expect(queryByLabelText('**John doe**')).not.toBeNull();
     });
 
     it('should not translate the choices if translateChoice is false', () => {
         const { queryByLabelText } = render(
-            <CheckboxGroupInput {...defaultProps} translate={x => `**${x}**`} translateChoice={false} />
+            <CheckboxGroupInput
+                {...defaultProps}
+                translate={x => `**${x}**`}
+                translateChoice={false}
+            />
         );
         expect(queryByLabelText('**John doe**')).toBeNull();
         expect(queryByLabelText('John doe')).not.toBeNull();
@@ -119,7 +145,10 @@ describe('<CheckboxGroupInput />', () => {
 
     it('should displayed helperText if prop is present in meta', () => {
         const { queryByText } = render(
-            <CheckboxGroupInput {...defaultProps} meta={{ helperText: 'Can I help you?' }} />
+            <CheckboxGroupInput
+                {...defaultProps}
+                meta={{ helperText: 'Can I help you?' }}
+            />
         );
         expect(queryByText('Can I help you?')).not.toBeNull();
     });
@@ -127,21 +156,30 @@ describe('<CheckboxGroupInput />', () => {
     describe('error message', () => {
         it('should not be displayed if field is pristine', () => {
             const { container } = render(
-                <CheckboxGroupInput {...defaultProps} meta={{ touched: false, error: 'Required field.' }} />
+                <CheckboxGroupInput
+                    {...defaultProps}
+                    meta={{ touched: false, error: 'Required field.' }}
+                />
             );
             expect(container.querySelector('p')).toBeNull();
         });
 
         it('should not be displayed if field has been touched but is valid', () => {
             const { container } = render(
-                <CheckboxGroupInput {...defaultProps} meta={{ touched: true, error: false }} />
+                <CheckboxGroupInput
+                    {...defaultProps}
+                    meta={{ touched: true, error: false }}
+                />
             );
             expect(container.querySelector('p')).toBeNull();
         });
 
         it('should be displayed if field has been touched and is invalid', () => {
             const { container, queryByText } = render(
-                <CheckboxGroupInput {...defaultProps} meta={{ touched: true, error: 'Required field.' }} />
+                <CheckboxGroupInput
+                    {...defaultProps}
+                    meta={{ touched: true, error: 'Required field.' }}
+                />
             );
             expect(container.querySelector('p')).not.toBeNull();
             expect(queryByText('Required field.')).not.toBeNull();

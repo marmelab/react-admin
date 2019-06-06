@@ -58,7 +58,12 @@ const Button = ({
                     </IconButton>
                 </Tooltip>
             ) : (
-                <IconButton className={className} color={color} disabled={disabled} {...rest}>
+                <IconButton
+                    className={className}
+                    color={color}
+                    disabled={disabled}
+                    {...rest}
+                >
                     {children}
                 </IconButton>
             )

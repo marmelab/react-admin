@@ -54,7 +54,13 @@ class BulkDeleteWithUndoButton extends Component {
     };
 
     handleClick = () => {
-        const { basePath, resource, selectedIds, startUndoable, onClick } = this.props;
+        const {
+            basePath,
+            resource,
+            selectedIds,
+            startUndoable,
+            onClick,
+        } = this.props;
 
         startUndoable(crudDeleteMany(resource, selectedIds, basePath));
 

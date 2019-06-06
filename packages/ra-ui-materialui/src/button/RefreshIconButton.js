@@ -32,7 +32,14 @@ class RefreshButton extends Component {
     };
 
     render() {
-        const { className, label, refreshView, translate, icon, ...rest } = this.props;
+        const {
+            className,
+            label,
+            refreshView,
+            translate,
+            icon,
+            ...rest
+        } = this.props;
 
         return (
             <Tooltip title={label && translate(label, { _: label })}>

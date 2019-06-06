@@ -70,7 +70,13 @@ export const ReferenceInputView = ({
 }) => {
     if (isLoading) {
         return (
-            <Labeled label={label} source={source} resource={resource} className={className} isRequired={isRequired}>
+            <Labeled
+                label={label}
+                source={source}
+                resource={resource}
+                className={className}
+                isRequired={isRequired}
+            >
                 <LinearProgress />
             </Labeled>
         );
@@ -212,7 +218,12 @@ export const ReferenceInput = ({ children, ...props }) => {
 
     return (
         <ReferenceInputController {...props}>
-            {controllerProps => <ReferenceInputView {...props} {...{ children, ...controllerProps }} />}
+            {controllerProps => (
+                <ReferenceInputView
+                    {...props}
+                    {...{ children, ...controllerProps }}
+                />
+            )}
         </ReferenceInputController>
     );
 };

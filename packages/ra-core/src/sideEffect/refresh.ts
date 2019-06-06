@@ -11,5 +11,8 @@ function* handleRefresh() {
 }
 
 export default function*() {
-    yield takeEvery(action => action.meta && action.meta.refresh, handleRefresh);
+    yield takeEvery(
+        action => action.meta && action.meta.refresh,
+        handleRefresh
+    );
 }

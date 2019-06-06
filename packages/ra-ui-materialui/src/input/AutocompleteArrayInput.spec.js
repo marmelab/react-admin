@@ -15,7 +15,11 @@ describe('<AutocompleteArrayInput />', () => {
 
     it('should use a react Autosuggest', () => {
         const wrapper = shallow(
-            <AutocompleteArrayInput {...defaultProps} input={{ value: [1] }} choices={[{ id: 1, name: 'hello' }]} />
+            <AutocompleteArrayInput
+                {...defaultProps}
+                input={{ value: [1] }}
+                choices={[{ id: 1, name: 'hello' }]}
+            />
         );
         const AutoCompleteElement = wrapper.find('Autosuggest');
         assert.equal(AutoCompleteElement.length, 1);
@@ -25,10 +29,16 @@ describe('<AutocompleteArrayInput />', () => {
         const wrapper = shallow(
             <AutocompleteArrayInput
                 {...defaultProps}
-                choices={[{ id: 'M', name: 'Male' }, { id: 'F', name: 'Female' }]}
+                choices={[
+                    { id: 'M', name: 'Male' },
+                    { id: 'F', name: 'Female' },
+                ]}
             />
         );
-        expect(wrapper.state('suggestions')).toEqual([{ id: 'M', name: 'Male' }, { id: 'F', name: 'Female' }]);
+        expect(wrapper.state('suggestions')).toEqual([
+            { id: 'M', name: 'Male' },
+            { id: 'F', name: 'Female' },
+        ]);
     });
 
     const context = {
@@ -41,16 +51,22 @@ describe('<AutocompleteArrayInput />', () => {
     };
 
     it('should use optionText with a string value as text identifier', () => {
-        const wrapper = shallow(<AutocompleteArrayInput {...defaultProps} optionText="foobar" />, {
-            context,
-            childContextTypes,
-        });
+        const wrapper = shallow(
+            <AutocompleteArrayInput {...defaultProps} optionText="foobar" />,
+            {
+                context,
+                childContextTypes,
+            }
+        );
 
         // This is necesary because we use the material-ui Popper element which does not includes
         // its children in the AutocompleteArrayInput dom hierarchy
         const menuItem = wrapper
             .instance()
-            .renderSuggestion({ id: 'M', foobar: 'Male' }, { query: '', highlighted: false });
+            .renderSuggestion(
+                { id: 'M', foobar: 'Male' },
+                { query: '', highlighted: false }
+            );
 
         const MenuItem = render(menuItem);
         assert.equal(MenuItem.text(), 'Male');
@@ -71,7 +87,10 @@ describe('<AutocompleteArrayInput />', () => {
         // its children in the AutocompleteArrayInput dom hierarchy
         const menuItem = wrapper
             .instance()
-            .renderSuggestion({ id: 'M', foobar: { name: 'Male' } }, { query: '', highlighted: false });
+            .renderSuggestion(
+                { id: 'M', foobar: { name: 'Male' } },
+                { query: '', highlighted: false }
+            );
 
         const MenuItem = render(menuItem);
         assert.equal(MenuItem.text(), 'Male');
@@ -92,7 +111,10 @@ describe('<AutocompleteArrayInput />', () => {
         // its children in the AutocompleteArrayInput dom hierarchy
         const menuItem = wrapper
             .instance()
-            .renderSuggestion({ id: 'M', foobar: 'Male' }, { query: '', highlighted: false });
+            .renderSuggestion(
+                { id: 'M', foobar: 'Male' },
+                { query: '', highlighted: false }
+            );
 
         const MenuItem = render(menuItem);
         assert.equal(MenuItem.text(), 'Male');
@@ -112,7 +134,10 @@ describe('<AutocompleteArrayInput />', () => {
         // its children in the AutocompleteArrayInput dom hierarchy
         const menuItem = wrapper
             .instance()
-            .renderSuggestion({ id: 'M', name: 'Male' }, { query: '', highlighted: false });
+            .renderSuggestion(
+                { id: 'M', name: 'Male' },
+                { query: '', highlighted: false }
+            );
 
         const MenuItem = render(menuItem);
         assert.equal(MenuItem.text(), '**Male**');
@@ -133,7 +158,10 @@ describe('<AutocompleteArrayInput />', () => {
         // its children in the AutocompleteArrayInput dom hierarchy
         const menuItem = wrapper
             .instance()
-            .renderSuggestion({ id: 'M', name: 'Male' }, { query: '', highlighted: false });
+            .renderSuggestion(
+                { id: 'M', name: 'Male' },
+                { query: '', highlighted: false }
+            );
 
         const MenuItem = render(menuItem);
         assert.equal(MenuItem.text(), 'Male');
@@ -185,7 +213,9 @@ describe('<AutocompleteArrayInput />', () => {
                 { context, childContextTypes }
             );
             wrapper.find('input').simulate('focus');
-            wrapper.find('input').simulate('change', { target: { value: 'foo' } });
+            wrapper
+                .find('input')
+                .simulate('change', { target: { value: 'foo' } });
             expect(wrapper.state('searchText')).toBe('foo');
             expect(wrapper.state('suggestions')).toHaveLength(0);
             wrapper.find('input').simulate('blur');
@@ -226,10 +256,15 @@ describe('<AutocompleteArrayInput />', () => {
                 />,
                 { context, childContextTypes }
             );
-            wrapper.find('input').simulate('change', { target: { value: 'foo' } });
+            wrapper
+                .find('input')
+                .simulate('change', { target: { value: 'foo' } });
 
             wrapper.setProps({
-                choices: [{ id: 'M', name: 'Male' }, { id: 'F', name: 'Female' }],
+                choices: [
+                    { id: 'M', name: 'Male' },
+                    { id: 'F', name: 'Female' },
+                ],
             });
             expect(wrapper.state('searchText')).toBe('foo');
         });
@@ -245,7 +280,9 @@ describe('<AutocompleteArrayInput />', () => {
                 { context, childContextTypes }
             );
 
-            wrapper.find('input').simulate('change', { target: { value: 'foo' } });
+            wrapper
+                .find('input')
+                .simulate('change', { target: { value: 'foo' } });
             wrapper.find('input').simulate('blur');
             expect(wrapper.state('searchText')).toBe('');
 
@@ -263,7 +300,9 @@ describe('<AutocompleteArrayInput />', () => {
                 />,
                 { context, childContextTypes }
             );
-            wrapper.find('input').simulate('change', { target: { value: 'foo' } });
+            wrapper
+                .find('input')
+                .simulate('change', { target: { value: 'foo' } });
             expect(wrapper.state('searchText')).toBe('foo');
             wrapper.find('input').simulate('blur');
             expect(wrapper.state('searchText')).toBe('');
@@ -271,11 +310,17 @@ describe('<AutocompleteArrayInput />', () => {
 
         it('should show the suggestions when the input value is empty and the input is focussed and choices arrived late', () => {
             const wrapper = mount(
-                <AutocompleteArrayInput {...defaultProps} input={{ value: [], onChange: () => {} }} />,
+                <AutocompleteArrayInput
+                    {...defaultProps}
+                    input={{ value: [], onChange: () => {} }}
+                />,
                 { context, childContextTypes }
             );
             wrapper.setProps({
-                choices: [{ id: 'M', name: 'Male' }, { id: 'F', name: 'Female' }],
+                choices: [
+                    { id: 'M', name: 'Male' },
+                    { id: 'F', name: 'Female' },
+                ],
             });
             wrapper.find('input').simulate('focus');
             expect(wrapper.find('ListItem')).toHaveLength(2);
@@ -283,14 +328,22 @@ describe('<AutocompleteArrayInput />', () => {
 
         it('should resolve value from input value', () => {
             const onChange = jest.fn();
-            const wrapper = mount(<AutocompleteArrayInput {...defaultProps} input={{ value: [], onChange }} />, {
-                context,
-                childContextTypes,
-            });
+            const wrapper = mount(
+                <AutocompleteArrayInput
+                    {...defaultProps}
+                    input={{ value: [], onChange }}
+                />,
+                {
+                    context,
+                    childContextTypes,
+                }
+            );
             wrapper.setProps({
                 choices: [{ id: 'M', name: 'Male' }],
             });
-            wrapper.find('input').simulate('change', { target: { value: 'male' } });
+            wrapper
+                .find('input')
+                .simulate('change', { target: { value: 'male' } });
             wrapper.find('input').simulate('blur');
 
             expect.assertions(2);
@@ -318,7 +371,9 @@ describe('<AutocompleteArrayInput />', () => {
                 />,
                 { context, childContextTypes }
             );
-            wrapper.find('input').simulate('change', { target: { value: 'de' } });
+            wrapper
+                .find('input')
+                .simulate('change', { target: { value: 'de' } });
             expect(setFilter).toHaveBeenCalledTimes(1);
             expect(setFilter).toHaveBeenCalledWith('de');
             wrapper.setProps({
@@ -333,11 +388,17 @@ describe('<AutocompleteArrayInput />', () => {
                 <AutocompleteArrayInput
                     {...defaultProps}
                     input={{ value: [1] }}
-                    choices={[{ id: 'M', name: 'Male' }, { id: 'F', name: 'Female' }]}
+                    choices={[
+                        { id: 'M', name: 'Male' },
+                        { id: 'F', name: 'Female' },
+                    ]}
                     alwaysRenderSuggestions
-                    suggestionComponent={({ suggestion, query, isHighlighted, ...props }) => (
-                        <div {...props} data-field={suggestion.name} />
-                    )}
+                    suggestionComponent={({
+                        suggestion,
+                        query,
+                        isHighlighted,
+                        ...props
+                    }) => <div {...props} data-field={suggestion.name} />}
                 />,
                 { context, childContextTypes }
             );
@@ -346,7 +407,12 @@ describe('<AutocompleteArrayInput />', () => {
     });
 
     it('should displayed helperText if prop is present in meta', () => {
-        const wrapper = shallow(<AutocompleteArrayInput {...defaultProps} meta={{ helperText: 'Can i help you?' }} />);
+        const wrapper = shallow(
+            <AutocompleteArrayInput
+                {...defaultProps}
+                meta={{ helperText: 'Can i help you?' }}
+            />
+        );
         const AutoCompleteElement = wrapper.find('Autosuggest').first();
         assert.deepEqual(AutoCompleteElement.prop('inputProps').meta, {
             helperText: 'Can i help you?',
@@ -355,7 +421,12 @@ describe('<AutocompleteArrayInput />', () => {
 
     describe('error message', () => {
         it('should not be displayed if field is pristine', () => {
-            const wrapper = shallow(<AutocompleteArrayInput {...defaultProps} meta={{ touched: false }} />);
+            const wrapper = shallow(
+                <AutocompleteArrayInput
+                    {...defaultProps}
+                    meta={{ touched: false }}
+                />
+            );
             const AutoCompleteElement = wrapper.find('Autosuggest').first();
             assert.deepEqual(AutoCompleteElement.prop('inputProps').meta, {
                 touched: false,
@@ -364,7 +435,10 @@ describe('<AutocompleteArrayInput />', () => {
 
         it('should not be displayed if field has been touched but is valid', () => {
             const wrapper = shallow(
-                <AutocompleteArrayInput {...defaultProps} meta={{ touched: true, error: false }} />
+                <AutocompleteArrayInput
+                    {...defaultProps}
+                    meta={{ touched: true, error: false }}
+                />
             );
             const AutoCompleteElement = wrapper.find('Autosuggest').first();
             assert.deepEqual(AutoCompleteElement.prop('inputProps').meta, {
@@ -375,7 +449,10 @@ describe('<AutocompleteArrayInput />', () => {
 
         it('should be displayed if field has been touched and is invalid', () => {
             const wrapper = shallow(
-                <AutocompleteArrayInput {...defaultProps} meta={{ touched: true, error: 'Required field.' }} />
+                <AutocompleteArrayInput
+                    {...defaultProps}
+                    meta={{ touched: true, error: 'Required field.' }}
+                />
             );
             const AutoCompleteElement = wrapper.find('Autosuggest').first();
             assert.deepEqual(AutoCompleteElement.prop('inputProps').meta, {
@@ -391,16 +468,24 @@ describe('<AutocompleteArrayInput />', () => {
                 <AutocompleteArrayInput
                     {...defaultProps}
                     input={{ value: [], onChange: () => {} }}
-                    choices={[{ id: 1, name: 'ab' }, { id: 2, name: 'abc' }, { id: 3, name: '123' }]}
+                    choices={[
+                        { id: 1, name: 'ab' },
+                        { id: 2, name: 'abc' },
+                        { id: 3, name: '123' },
+                    ]}
                 />,
                 { context, childContextTypes }
             );
             wrapper.find('input').simulate('focus');
-            wrapper.find('input').simulate('change', { target: { value: 'a' } });
+            wrapper
+                .find('input')
+                .simulate('change', { target: { value: 'a' } });
             expect(wrapper.state('suggestions')).toHaveLength(2);
             wrapper.find('input').simulate('blur');
             wrapper.find('input').simulate('focus');
-            wrapper.find('input').simulate('change', { target: { value: 'a' } });
+            wrapper
+                .find('input')
+                .simulate('change', { target: { value: 'a' } });
             expect(wrapper.state('suggestions')).toHaveLength(2);
         });
     });
@@ -410,7 +495,11 @@ describe('<AutocompleteArrayInput />', () => {
             <AutocompleteArrayInput
                 {...defaultProps}
                 input={{ value: [], onChange: () => {} }}
-                choices={[{ id: 1, name: 'ab' }, { id: 2, name: 'abc' }, { id: 3, name: '123' }]}
+                choices={[
+                    { id: 1, name: 'ab' },
+                    { id: 2, name: 'abc' },
+                    { id: 3, name: '123' },
+                ]}
             />,
             { context, childContextTypes }
         );
@@ -426,7 +515,11 @@ describe('<AutocompleteArrayInput />', () => {
             <AutocompleteArrayInput
                 {...defaultProps}
                 input={{ value: [], onChange }}
-                choices={[{ id: 1, name: 'ab' }, { id: 2, name: 'abc' }, { id: 3, name: '123' }]}
+                choices={[
+                    { id: 1, name: 'ab' },
+                    { id: 2, name: 'abc' },
+                    { id: 3, name: '123' },
+                ]}
             />,
             { context, childContextTypes }
         );
@@ -443,7 +536,11 @@ describe('<AutocompleteArrayInput />', () => {
             <AutocompleteArrayInput
                 {...defaultProps}
                 input={{ value: [], onChange }}
-                choices={[{ id: 1, name: 'ab' }, { id: 2, name: 'abc' }, { id: 3, name: '123' }]}
+                choices={[
+                    { id: 1, name: 'ab' },
+                    { id: 2, name: 'abc' },
+                    { id: 3, name: '123' },
+                ]}
             />,
             { context, childContextTypes }
         );
@@ -471,7 +568,11 @@ describe('<AutocompleteArrayInput />', () => {
             <AutocompleteArrayInput
                 {...defaultProps}
                 input={{ value: [], onChange }}
-                choices={[{ id: 1, name: 'ab' }, { id: 2, name: 'abc' }, { id: 3, name: '123' }]}
+                choices={[
+                    { id: 1, name: 'ab' },
+                    { id: 2, name: 'abc' },
+                    { id: 3, name: '123' },
+                ]}
                 options={{
                     suggestionsContainerProps: {
                         disablePortal: true,

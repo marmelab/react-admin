@@ -23,15 +23,9 @@ interface Props extends FieldProps {
     title?: string;
 }
 
-export const ImageField: SFC<Props & InjectedFieldProps & WithStyles<typeof styles>> = ({
-    className,
-    classes,
-    record,
-    source,
-    src,
-    title,
-    ...rest
-}) => {
+export const ImageField: SFC<
+    Props & InjectedFieldProps & WithStyles<typeof styles>
+> = ({ className, classes, record, source, src, title, ...rest }) => {
     const sourceValue = get(record, source);
     if (!sourceValue) {
         return <div className={className} {...sanitizeRestProps(rest)} />;
@@ -39,14 +33,22 @@ export const ImageField: SFC<Props & InjectedFieldProps & WithStyles<typeof styl
 
     if (Array.isArray(sourceValue)) {
         return (
-            <ul className={classnames(classes.list, className)} {...sanitizeRestProps(rest)}>
+            <ul
+                className={classnames(classes.list, className)}
+                {...sanitizeRestProps(rest)}
+            >
                 {sourceValue.map((file, index) => {
                     const fileTitleValue = get(file, title) || title;
                     const srcValue = get(file, src) || title;
 
                     return (
                         <li key={index}>
-                            <img alt={fileTitleValue} title={fileTitleValue} src={srcValue} className={classes.image} />
+                            <img
+                                alt={fileTitleValue}
+                                title={fileTitleValue}
+                                src={srcValue}
+                                className={classes.image}
+                            />
                         </li>
                     );
                 })}
@@ -58,7 +60,12 @@ export const ImageField: SFC<Props & InjectedFieldProps & WithStyles<typeof styl
 
     return (
         <div className={className} {...sanitizeRestProps(rest)}>
-            <img title={titleValue} alt={titleValue} src={sourceValue} className={classes.image} />
+            <img
+                title={titleValue}
+                alt={titleValue}
+                src={sourceValue}
+                className={classes.image}
+            />
         </div>
     );
 };
@@ -66,7 +73,9 @@ export const ImageField: SFC<Props & InjectedFieldProps & WithStyles<typeof styl
 // wat? TypeScript looses the displayName if we don't set it explicitly
 ImageField.displayName = 'ImageField';
 
-const EnhancedImageField = withStyles(styles)(ImageField) as ComponentType<Props>;
+const EnhancedImageField = withStyles(styles)(ImageField) as ComponentType<
+    Props
+>;
 
 EnhancedImageField.defaultProps = {
     addLabel: true,

@@ -18,7 +18,10 @@ type ActionTypes =
 
 type State = number;
 
-const totalReducer: Reducer<State> = (previousState = 0, action: ActionTypes) => {
+const totalReducer: Reducer<State> = (
+    previousState = 0,
+    action: ActionTypes
+) => {
     if (action.type === CRUD_GET_ONE_SUCCESS) {
         return previousState === 0 ? 1 : previousState;
     }

@@ -19,7 +19,9 @@ export const buildFields = (introspectionResults, path = []) => fields =>
             return [...acc, gqlTypes.field(gqlTypes.name(field.name))];
         }
 
-        const linkedResource = introspectionResults.resources.find(r => r.type.name === type.name);
+        const linkedResource = introspectionResults.resources.find(
+            r => r.type.name === type.name
+        );
 
         if (linkedResource) {
             return [
@@ -34,7 +36,9 @@ export const buildFields = (introspectionResults, path = []) => fields =>
             ];
         }
 
-        const linkedType = introspectionResults.types.find(t => t.name === type.name);
+        const linkedType = introspectionResults.types.find(
+            t => t.name === type.name
+        );
 
         if (linkedType && !path.includes(linkedType.name)) {
             path.push(linkedType.name);
@@ -46,7 +50,11 @@ export const buildFields = (introspectionResults, path = []) => fields =>
                     null,
                     null,
                     null,
-                    gqlTypes.selectionSet(buildFields(introspectionResults, path)(linkedType.fields))
+                    gqlTypes.selectionSet(
+                        buildFields(introspectionResults, path)(
+                            linkedType.fields
+                        )
+                    )
                 ),
             ];
         }
@@ -63,13 +71,19 @@ export const getArgType = arg => {
 
     if (list) {
         if (required) {
-            return gqlTypes.listType(gqlTypes.nonNullType(gqlTypes.namedType(gqlTypes.name(type.name))));
+            return gqlTypes.listType(
+                gqlTypes.nonNullType(
+                    gqlTypes.namedType(gqlTypes.name(type.name))
+                )
+            );
         }
         return gqlTypes.listType(gqlTypes.namedType(gqlTypes.name(type.name)));
     }
 
     if (required) {
-        return gqlTypes.nonNullType(gqlTypes.namedType(gqlTypes.name(type.name)));
+        return gqlTypes.nonNullType(
+            gqlTypes.namedType(gqlTypes.name(type.name))
+        );
     }
 
     return gqlTypes.namedType(gqlTypes.name(type.name));
@@ -80,13 +94,18 @@ export const buildArgs = (query, variables) => {
         return [];
     }
 
-    const validVariables = Object.keys(variables).filter(k => typeof variables[k] !== 'undefined');
+    const validVariables = Object.keys(variables).filter(
+        k => typeof variables[k] !== 'undefined'
+    );
     let args = query.args
         .filter(a => validVariables.includes(a.name))
         .reduce(
             (acc, arg) => [
                 ...acc,
-                gqlTypes.argument(gqlTypes.name(arg.name), gqlTypes.variable(gqlTypes.name(arg.name))),
+                gqlTypes.argument(
+                    gqlTypes.name(arg.name),
+                    gqlTypes.variable(gqlTypes.name(arg.name))
+                ),
             ],
             []
         );
@@ -99,24 +118,41 @@ export const buildApolloArgs = (query, variables) => {
         return [];
     }
 
-    const validVariables = Object.keys(variables).filter(k => typeof variables[k] !== 'undefined');
+    const validVariables = Object.keys(variables).filter(
+        k => typeof variables[k] !== 'undefined'
+    );
 
     let args = query.args
         .filter(a => validVariables.includes(a.name))
         .reduce((acc, arg) => {
-            return [...acc, gqlTypes.variableDefinition(gqlTypes.variable(gqlTypes.name(arg.name)), getArgType(arg))];
+            return [
+                ...acc,
+                gqlTypes.variableDefinition(
+                    gqlTypes.variable(gqlTypes.name(arg.name)),
+                    getArgType(arg)
+                ),
+            ];
         }, []);
 
     return args;
 };
 
-export default introspectionResults => (resource, aorFetchType, queryType, variables) => {
+export default introspectionResults => (
+    resource,
+    aorFetchType,
+    queryType,
+    variables
+) => {
     const { sortField, sortOrder, ...metaVariables } = variables;
     const apolloArgs = buildApolloArgs(queryType, variables);
     const args = buildArgs(queryType, variables);
     const metaArgs = buildArgs(queryType, metaVariables);
     const fields = buildFields(introspectionResults)(resource.type.fields);
-    if (aorFetchType === GET_LIST || aorFetchType === GET_MANY || aorFetchType === GET_MANY_REFERENCE) {
+    if (
+        aorFetchType === GET_LIST ||
+        aorFetchType === GET_MANY ||
+        aorFetchType === GET_MANY_REFERENCE
+    ) {
         return gqlTypes.document([
             gqlTypes.operationDefinition(
                 'query',
@@ -133,7 +169,9 @@ export default introspectionResults => (resource, aorFetchType, queryType, varia
                         gqlTypes.name('total'),
                         metaArgs,
                         null,
-                        gqlTypes.selectionSet([gqlTypes.field(gqlTypes.name('count'))])
+                        gqlTypes.selectionSet([
+                            gqlTypes.field(gqlTypes.name('count')),
+                        ])
                     ),
                 ]),
                 gqlTypes.name(queryType.name),
@@ -152,7 +190,9 @@ export default introspectionResults => (resource, aorFetchType, queryType, varia
                         gqlTypes.name('data'),
                         args,
                         null,
-                        gqlTypes.selectionSet([gqlTypes.field(gqlTypes.name('id'))])
+                        gqlTypes.selectionSet([
+                            gqlTypes.field(gqlTypes.name('id')),
+                        ])
                     ),
                 ]),
                 gqlTypes.name(queryType.name),

@@ -33,7 +33,9 @@ describe('CreateController', () => {
             };
 
             shallow(<CreateController {...props} />);
-            expect(childrenMock).toHaveBeenCalledWith(expect.objectContaining({ record: {} }));
+            expect(childrenMock).toHaveBeenCalledWith(
+                expect.objectContaining({ record: {} })
+            );
         });
 
         it('should return location state record when set', () => {
@@ -48,7 +50,9 @@ describe('CreateController', () => {
             };
 
             shallow(<CreateController {...props} />);
-            expect(childrenMock).toHaveBeenCalledWith(expect.objectContaining({ record: { foo: 'bar' } }));
+            expect(childrenMock).toHaveBeenCalledWith(
+                expect.objectContaining({ record: { foo: 'bar' } })
+            );
         });
 
         it('should return location search when set', () => {
@@ -83,7 +87,9 @@ describe('CreateController', () => {
             };
 
             shallow(<CreateController {...props} />);
-            expect(childrenMock).toHaveBeenCalledWith(expect.objectContaining({ record: { foo: 'bar' } }));
+            expect(childrenMock).toHaveBeenCalledWith(
+                expect.objectContaining({ record: { foo: 'bar' } })
+            );
         });
     });
 });

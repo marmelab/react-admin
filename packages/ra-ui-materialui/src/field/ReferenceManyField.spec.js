@@ -12,7 +12,13 @@ describe('<ReferenceManyField />', () => {
             2: { id: 2, title: 'world' },
         };
         const wrapper = shallow(
-            <ReferenceManyFieldView resource="foo" reference="bar" basePath="" data={data} ids={[1, 2]}>
+            <ReferenceManyFieldView
+                resource="foo"
+                reference="bar"
+                basePath=""
+                data={data}
+                ids={[1, 2]}
+            >
                 <SingleFieldList>
                     <TextField source="title" />
                 </SingleFieldList>
@@ -21,7 +27,9 @@ describe('<ReferenceManyField />', () => {
         );
         const ProgressElements = wrapper.find('WithStyles(LinearProgress)');
         assert.equal(ProgressElements.length, 0);
-        const SingleFieldListElement = wrapper.find('WithStyles(SingleFieldList)');
+        const SingleFieldListElement = wrapper.find(
+            'WithStyles(SingleFieldList)'
+        );
         assert.equal(SingleFieldListElement.length, 1);
         assert.equal(SingleFieldListElement.at(0).prop('resource'), 'bar');
         assert.deepEqual(SingleFieldListElement.at(0).prop('data'), data);
@@ -30,7 +38,13 @@ describe('<ReferenceManyField />', () => {
 
     it('should render nothing when there are no related records', () => {
         const wrapper = shallow(
-            <ReferenceManyFieldView resource="foo" reference="bar" basePath="" data={{}} ids={[]}>
+            <ReferenceManyFieldView
+                resource="foo"
+                reference="bar"
+                basePath=""
+                data={{}}
+                ids={[]}
+            >
                 <SingleFieldList>
                     <TextField source="title" />
                 </SingleFieldList>
@@ -39,7 +53,9 @@ describe('<ReferenceManyField />', () => {
         );
         const ProgressElements = wrapper.find('WithStyles(LinearProgress)');
         assert.equal(ProgressElements.length, 0);
-        const SingleFieldListElement = wrapper.find('WithStyles(SingleFieldList)');
+        const SingleFieldListElement = wrapper.find(
+            'WithStyles(SingleFieldList)'
+        );
         assert.equal(SingleFieldListElement.length, 1);
         assert.equal(SingleFieldListElement.at(0).prop('resource'), 'bar');
         assert.deepEqual(SingleFieldListElement.at(0).prop('data'), {});
@@ -52,7 +68,13 @@ describe('<ReferenceManyField />', () => {
             'abc-2': { id: 'abc-2', title: 'world' },
         };
         const wrapper = shallow(
-            <ReferenceManyFieldView resource="foo" reference="bar" basePath="" data={data} ids={['abc-1', 'abc-2']}>
+            <ReferenceManyFieldView
+                resource="foo"
+                reference="bar"
+                basePath=""
+                data={data}
+                ids={['abc-1', 'abc-2']}
+            >
                 <SingleFieldList>
                     <TextField source="title" />
                 </SingleFieldList>
@@ -61,11 +83,16 @@ describe('<ReferenceManyField />', () => {
         );
         const ProgressElements = wrapper.find('widthStyles(LinearProgress)');
         assert.equal(ProgressElements.length, 0);
-        const SingleFieldListElement = wrapper.find('WithStyles(SingleFieldList)');
+        const SingleFieldListElement = wrapper.find(
+            'WithStyles(SingleFieldList)'
+        );
         assert.equal(SingleFieldListElement.length, 1);
         assert.equal(SingleFieldListElement.at(0).prop('resource'), 'bar');
         assert.deepEqual(SingleFieldListElement.at(0).prop('data'), data);
-        assert.deepEqual(SingleFieldListElement.at(0).prop('ids'), ['abc-1', 'abc-2']);
+        assert.deepEqual(SingleFieldListElement.at(0).prop('ids'), [
+            'abc-1',
+            'abc-2',
+        ]);
     });
 
     it('should support record with number identifier', () => {
@@ -74,7 +101,13 @@ describe('<ReferenceManyField />', () => {
             2: { id: 2, title: 'world' },
         };
         const wrapper = shallow(
-            <ReferenceManyFieldView resource="foo" reference="bar" basePath="" data={data} ids={[1, 2]}>
+            <ReferenceManyFieldView
+                resource="foo"
+                reference="bar"
+                basePath=""
+                data={data}
+                ids={[1, 2]}
+            >
                 <SingleFieldList>
                     <TextField source="title" />
                 </SingleFieldList>
@@ -83,7 +116,9 @@ describe('<ReferenceManyField />', () => {
         );
         const ProgressElements = wrapper.find('WithStyles(LinearProgress)');
         assert.equal(ProgressElements.length, 0);
-        const SingleFieldListElement = wrapper.find('WithStyles(SingleFieldList)');
+        const SingleFieldListElement = wrapper.find(
+            'WithStyles(SingleFieldList)'
+        );
         assert.equal(SingleFieldListElement.length, 1);
         assert.equal(SingleFieldListElement.at(0).prop('resource'), 'bar');
         assert.deepEqual(SingleFieldListElement.at(0).prop('data'), data);

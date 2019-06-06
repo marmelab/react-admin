@@ -17,7 +17,9 @@ const sanitizeResource = (introspectionResults, resource) => data => {
 
         // FIXME: We might have to handle linked types which are not resources but will have to be careful about
         // endless circular dependencies
-        const linkedResource = introspectionResults.resources.find(r => r.type.name === type.name);
+        const linkedResource = introspectionResults.resources.find(
+            r => r.type.name === type.name
+        );
 
         if (linkedResource) {
             const linkedResourceData = data[field.name];
@@ -25,16 +27,22 @@ const sanitizeResource = (introspectionResults, resource) => data => {
             if (Array.isArray(linkedResourceData)) {
                 return {
                     ...acc,
-                    [field.name]: data[field.name].map(sanitizeResource(introspectionResults, linkedResource)),
+                    [field.name]: data[field.name].map(
+                        sanitizeResource(introspectionResults, linkedResource)
+                    ),
                     [`${field.name}Ids`]: data[field.name].map(d => d.id),
                 };
             }
 
             return {
                 ...acc,
-                [`${field.name}.id`]: linkedResourceData ? data[field.name].id : undefined,
+                [`${field.name}.id`]: linkedResourceData
+                    ? data[field.name].id
+                    : undefined,
                 [field.name]: linkedResourceData
-                    ? sanitizeResource(introspectionResults, linkedResource)(data[field.name])
+                    ? sanitizeResource(introspectionResults, linkedResource)(
+                          data[field.name]
+                      )
                     : undefined,
             };
         }
@@ -49,7 +57,11 @@ export default introspectionResults => (aorFetchType, resource) => response => {
     const sanitize = sanitizeResource(introspectionResults, resource);
     const data = response.data;
 
-    if (aorFetchType === GET_LIST || aorFetchType === GET_MANY || aorFetchType === GET_MANY_REFERENCE) {
+    if (
+        aorFetchType === GET_LIST ||
+        aorFetchType === GET_MANY ||
+        aorFetchType === GET_MANY_REFERENCE
+    ) {
         return {
             data: response.data.items.map(sanitize),
             total: response.data.total.count,

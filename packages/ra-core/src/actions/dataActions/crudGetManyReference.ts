@@ -51,7 +51,8 @@ export interface CrudGetManyReferenceAction {
     };
 }
 
-export const CRUD_GET_MANY_REFERENCE_LOADING = 'RA/CRUD_GET_MANY_REFERENCE_LOADING';
+export const CRUD_GET_MANY_REFERENCE_LOADING =
+    'RA/CRUD_GET_MANY_REFERENCE_LOADING';
 export interface CrudGetManyReferenceLoadingAction {
     readonly type: typeof CRUD_GET_MANY_REFERENCE_LOADING;
     readonly payload: RequestPayload;
@@ -61,7 +62,8 @@ export interface CrudGetManyReferenceLoadingAction {
     };
 }
 
-export const CRUD_GET_MANY_REFERENCE_FAILURE = 'RA/CRUD_GET_MANY_REFERENCE_FAILURE';
+export const CRUD_GET_MANY_REFERENCE_FAILURE =
+    'RA/CRUD_GET_MANY_REFERENCE_FAILURE';
 export interface CrudGetManyReferenceFailureAction {
     readonly type: typeof CRUD_GET_MANY_REFERENCE_FAILURE;
     readonly error: string | object;
@@ -76,7 +78,8 @@ export interface CrudGetManyReferenceFailureAction {
     };
 }
 
-export const CRUD_GET_MANY_REFERENCE_SUCCESS = 'RA/CRUD_GET_MANY_REFERENCE_SUCCESS';
+export const CRUD_GET_MANY_REFERENCE_SUCCESS =
+    'RA/CRUD_GET_MANY_REFERENCE_SUCCESS';
 export interface CrudGetManyReferenceSuccessAction {
     readonly type: typeof CRUD_GET_MANY_REFERENCE_SUCCESS;
     readonly payload: {

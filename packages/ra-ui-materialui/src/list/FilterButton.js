@@ -88,7 +88,11 @@ export class FilterButton extends Component {
                     >
                         <ContentFilter />
                     </Button>
-                    <Menu open={open} anchorEl={anchorEl} onClose={this.handleRequestClose}>
+                    <Menu
+                        open={open}
+                        anchorEl={anchorEl}
+                        onClose={this.handleRequestClose}
+                    >
                         {hiddenFilters.map(filterElement => (
                             <FilterButtonMenuItem
                                 key={filterElement.props.source}

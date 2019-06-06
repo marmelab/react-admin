@@ -57,8 +57,15 @@ export const CreateView = withStyles(styles)(
         title,
         ...rest
     }) => (
-        <div className={classnames('create-page', classes.root, className)} {...sanitizeRestProps(rest)}>
-            <TitleForRecord title={title} record={record} defaultTitle={defaultTitle} />
+        <div
+            className={classnames('create-page', classes.root, className)}
+            {...sanitizeRestProps(rest)}
+        >
+            <TitleForRecord
+                title={title}
+                record={record}
+                defaultTitle={defaultTitle}
+            />
             <Card className={classes.card}>
                 {actions && (
                     <CardContentInner>
@@ -73,7 +80,10 @@ export const CreateView = withStyles(styles)(
                 {cloneElement(Children.only(children), {
                     basePath,
                     record,
-                    redirect: typeof children.props.redirect === 'undefined' ? redirect : children.props.redirect,
+                    redirect:
+                        typeof children.props.redirect === 'undefined'
+                            ? redirect
+                            : children.props.redirect,
                     resource,
                     save,
                 })}
@@ -152,7 +162,9 @@ CreateView.defaultProps = {
  *     export default App;
  */
 const Create = props => (
-    <CreateController {...props}>{controllerProps => <CreateView {...props} {...controllerProps} />}</CreateController>
+    <CreateController {...props}>
+        {controllerProps => <CreateView {...props} {...controllerProps} />}
+    </CreateController>
 );
 
 Create.propTypes = {

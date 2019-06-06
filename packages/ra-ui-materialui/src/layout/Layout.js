@@ -3,7 +3,12 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { withRouter } from 'react-router';
-import { MuiThemeProvider, createMuiTheme, withStyles, createStyles } from '@material-ui/core/styles';
+import {
+    MuiThemeProvider,
+    createMuiTheme,
+    withStyles,
+    createStyles,
+} from '@material-ui/core/styles';
 import compose from 'recompose/compose';
 
 import AppBar from './AppBar';
@@ -48,7 +53,13 @@ const styles = theme =>
         },
     });
 
-const sanitizeRestProps = ({ staticContext, history, location, match, ...props }) => props;
+const sanitizeRestProps = ({
+    staticContext,
+    history,
+    location,
+    match,
+    ...props
+}) => props;
 
 class Layout extends Component {
     state = { hasError: false, errorMessage: null, errorInfo: null };
@@ -90,7 +101,10 @@ class Layout extends Component {
         } = this.props;
         const { hasError, errorMessage, errorInfo } = this.state;
         return (
-            <div className={classnames('layout', classes.root, className)} {...sanitizeRestProps(props)}>
+            <div
+                className={classnames('layout', classes.root, className)}
+                {...sanitizeRestProps(props)}
+            >
                 <div className={classes.appFrame}>
                     {createElement(appBar, { title, open, logout })}
                     <main className={classes.contentWithSidebar}>
@@ -117,7 +131,10 @@ class Layout extends Component {
     }
 }
 
-const componentPropType = PropTypes.oneOfType([PropTypes.func, PropTypes.string]);
+const componentPropType = PropTypes.oneOfType([
+    PropTypes.func,
+    PropTypes.string,
+]);
 
 Layout.propTypes = {
     appBar: componentPropType,
@@ -128,7 +145,11 @@ Layout.propTypes = {
     dashboard: componentPropType,
     error: componentPropType,
     history: PropTypes.object.isRequired,
-    logout: PropTypes.oneOfType([PropTypes.node, PropTypes.func, PropTypes.string]),
+    logout: PropTypes.oneOfType([
+        PropTypes.node,
+        PropTypes.func,
+        PropTypes.string,
+    ]),
     menu: componentPropType,
     notification: componentPropType,
     open: PropTypes.bool,

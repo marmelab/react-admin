@@ -1,4 +1,7 @@
-import { getListControllerProps, sanitizeListRestProps } from './ListController';
+import {
+    getListControllerProps,
+    sanitizeListRestProps,
+} from './ListController';
 import CreateController from './CreateController';
 import EditController from './EditController';
 import ListController from './ListController';

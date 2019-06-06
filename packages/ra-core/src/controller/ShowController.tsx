@@ -78,13 +78,18 @@ interface EnhancedProps {
  *     );
  *     export default App;
  */
-export class UnconnectedShowController extends Component<Props & EnhancedProps> {
+export class UnconnectedShowController extends Component<
+    Props & EnhancedProps
+> {
     componentDidMount() {
         this.updateData();
     }
 
     componentWillReceiveProps(nextProps: Props & EnhancedProps) {
-        if (this.props.id !== nextProps.id || nextProps.version !== this.props.version) {
+        if (
+            this.props.id !== nextProps.id ||
+            nextProps.version !== this.props.version
+        ) {
             this.updateData(nextProps.resource, nextProps.id);
         }
     }
@@ -94,7 +99,16 @@ export class UnconnectedShowController extends Component<Props & EnhancedProps> 
     }
 
     render() {
-        const { basePath, children, id, isLoading, record, resource, translate, version } = this.props;
+        const {
+            basePath,
+            children,
+            id,
+            isLoading,
+            record,
+            resource,
+            translate,
+            version,
+        } = this.props;
 
         if (!children) {
             return null;
@@ -124,7 +138,9 @@ export class UnconnectedShowController extends Component<Props & EnhancedProps> 
 function mapStateToProps(state, props) {
     return {
         id: props.id,
-        record: state.admin.resources[props.resource] ? state.admin.resources[props.resource].data[props.id] : null,
+        record: state.admin.resources[props.resource]
+            ? state.admin.resources[props.resource].data[props.id]
+            : null,
         isLoading: state.admin.loading > 0,
         version: state.admin.ui.viewVersion,
     };

@@ -12,7 +12,14 @@ class BulkDeleteAction extends Component {
                 '<BulkDeleteAction> is deprecated. Use the <BulkDeleteButton> component instead, via the bulkActionButton props.'
             );
         }
-        const { basePath, dispatchCrudDeleteMany, resource, selectedIds, startUndoable, undoable } = this.props;
+        const {
+            basePath,
+            dispatchCrudDeleteMany,
+            resource,
+            selectedIds,
+            startUndoable,
+            undoable,
+        } = this.props;
         if (undoable) {
             startUndoable(crudDeleteMany(resource, selectedIds, basePath));
         } else {

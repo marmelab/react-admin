@@ -20,7 +20,9 @@ export interface WithPermissionsChildrenParams {
     permissions: any;
 }
 
-type WithPermissionsChildren = (params: WithPermissionsChildrenParams) => ReactNode;
+type WithPermissionsChildren = (
+    params: WithPermissionsChildrenParams
+) => ReactNode;
 
 interface Props {
     authParams?: object;
@@ -82,7 +84,9 @@ export class WithPermissions extends Component<Props & EnhancedProps> {
 
     componentWillMount() {
         warning(
-            this.props.render && this.props.children && !isEmptyChildren(this.props.children),
+            this.props.render &&
+                this.props.children &&
+                !isEmptyChildren(this.props.children),
             'You should not use both <WithPermissions render> and <WithPermissions children>; <WithPermissions children> will be ignored'
         );
         this.checkAuthentication(this.props);
@@ -134,7 +138,15 @@ export class WithPermissions extends Component<Props & EnhancedProps> {
     // render even though the AUTH_GET_PERMISSIONS
     // isn't finished (optimistic rendering)
     render() {
-        const { authProvider, userCheck, isLoggedIn, render, children, staticContext, ...props } = this.props;
+        const {
+            authProvider,
+            userCheck,
+            isLoggedIn,
+            render,
+            children,
+            staticContext,
+            ...props
+        } = this.props;
         const { permissions } = this.state;
 
         if (render) {

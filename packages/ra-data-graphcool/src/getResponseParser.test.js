@@ -1,5 +1,12 @@
 import { TypeKind } from 'graphql';
-import { GET_LIST, GET_MANY, GET_MANY_REFERENCE, CREATE, UPDATE, DELETE } from 'ra-core';
+import {
+    GET_LIST,
+    GET_MANY,
+    GET_MANY_REFERENCE,
+    CREATE,
+    UPDATE,
+    DELETE,
+} from 'ra-core';
 import getResponseParser from './getResponseParser';
 
 const testListTypes = type => {
@@ -80,7 +87,10 @@ const testListTypes = type => {
                         title: 'title1',
                         author: { id: 'author1', firstName: 'Toto' },
                         coauthor: null,
-                        tags: [{ id: 'tag1', name: 'tag1 name' }, { id: 'tag2', name: 'tag2 name' }],
+                        tags: [
+                            { id: 'tag1', name: 'tag1 name' },
+                            { id: 'tag2', name: 'tag2 name' },
+                        ],
                         embeddedJson: { foo: 'bar' },
                     },
                     {
@@ -89,7 +99,10 @@ const testListTypes = type => {
                         title: 'title2',
                         author: { id: 'author1', firstName: 'Toto' },
                         coauthor: null,
-                        tags: [{ id: 'tag1', name: 'tag1 name' }, { id: 'tag3', name: 'tag3 name' }],
+                        tags: [
+                            { id: 'tag1', name: 'tag1 name' },
+                            { id: 'tag3', name: 'tag3 name' },
+                        ],
                         embeddedJson: { foo: 'bar' },
                     },
                 ],
@@ -97,14 +110,19 @@ const testListTypes = type => {
             },
         };
 
-        expect(getResponseParser(introspectionResults)(type, resource)(response)).toEqual({
+        expect(
+            getResponseParser(introspectionResults)(type, resource)(response)
+        ).toEqual({
             data: [
                 {
                     id: 'post1',
                     title: 'title1',
                     'author.id': 'author1',
                     author: { id: 'author1', firstName: 'Toto' },
-                    tags: [{ id: 'tag1', name: 'tag1 name' }, { id: 'tag2', name: 'tag2 name' }],
+                    tags: [
+                        { id: 'tag1', name: 'tag1 name' },
+                        { id: 'tag2', name: 'tag2 name' },
+                    ],
                     tagsIds: ['tag1', 'tag2'],
                     embeddedJson: { foo: 'bar' },
                 },
@@ -113,7 +131,10 @@ const testListTypes = type => {
                     title: 'title2',
                     'author.id': 'author1',
                     author: { id: 'author1', firstName: 'Toto' },
-                    tags: [{ id: 'tag1', name: 'tag1 name' }, { id: 'tag3', name: 'tag3 name' }],
+                    tags: [
+                        { id: 'tag1', name: 'tag1 name' },
+                        { id: 'tag3', name: 'tag3 name' },
+                    ],
                     tagsIds: ['tag1', 'tag3'],
                     embeddedJson: { foo: 'bar' },
                 },
@@ -200,18 +221,26 @@ const testSingleTypes = type => {
                     title: 'title1',
                     author: { id: 'author1', firstName: 'Toto' },
                     coauthor: null,
-                    tags: [{ id: 'tag1', name: 'tag1 name' }, { id: 'tag2', name: 'tag2 name' }],
+                    tags: [
+                        { id: 'tag1', name: 'tag1 name' },
+                        { id: 'tag2', name: 'tag2 name' },
+                    ],
                     embeddedJson: { foo: 'bar' },
                 },
             },
         };
-        expect(getResponseParser(introspectionResults)(type, resource)(response)).toEqual({
+        expect(
+            getResponseParser(introspectionResults)(type, resource)(response)
+        ).toEqual({
             data: {
                 id: 'post1',
                 title: 'title1',
                 'author.id': 'author1',
                 author: { id: 'author1', firstName: 'Toto' },
-                tags: [{ id: 'tag1', name: 'tag1 name' }, { id: 'tag2', name: 'tag2 name' }],
+                tags: [
+                    { id: 'tag1', name: 'tag1 name' },
+                    { id: 'tag2', name: 'tag2 name' },
+                ],
                 tagsIds: ['tag1', 'tag2'],
                 embeddedJson: { foo: 'bar' },
             },

@@ -13,7 +13,14 @@ const styles = {
     button: { margin: '1em' },
 };
 
-const Configuration = ({ classes, theme, locale, changeTheme, changeLocale, translate }) => (
+const Configuration = ({
+    classes,
+    theme,
+    locale,
+    changeTheme,
+    changeLocale,
+    translate,
+}) => (
     <Card>
         <Title title={translate('pos.configuration')} />
         <CardContent>

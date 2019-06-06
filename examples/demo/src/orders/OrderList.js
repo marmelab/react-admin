@@ -33,7 +33,11 @@ const OrderFilter = withStyles(filterStyles)(({ classes, ...props }) => (
     <Filter {...props}>
         <SearchInput source="q" alwaysOn />
         <ReferenceInput source="customer_id" reference="customers">
-            <AutocompleteInput optionText={choice => `${choice.first_name} ${choice.last_name}`} />
+            <AutocompleteInput
+                optionText={choice =>
+                    `${choice.first_name} ${choice.last_name}`
+                }
+            />
         </ReferenceInput>
         <DateInput source="date_gte" />
         <DateInput source="date_lte" />
@@ -79,12 +83,21 @@ class TabbedDatagrid extends React.Component {
                     onChange={this.handleChange}
                 >
                     {this.tabs.map(choice => (
-                        <Tab key={choice.id} label={choice.name} value={choice.id} />
+                        <Tab
+                            key={choice.id}
+                            label={choice.name}
+                            value={choice.id}
+                        />
                     ))}
                 </Tabs>
                 <Divider />
                 <Responsive
-                    xsmall={<MobileGrid {...props} ids={this.state[filterValues.status]} />}
+                    xsmall={
+                        <MobileGrid
+                            {...props}
+                            ids={this.state[filterValues.status]}
+                        />
+                    }
                     medium={
                         <div>
                             {filterValues.status === 'ordered' && (

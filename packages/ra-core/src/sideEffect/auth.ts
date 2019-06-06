@@ -1,8 +1,18 @@
-import { all, put, call, select, takeLatest, takeEvery } from 'redux-saga/effects';
+import {
+    all,
+    put,
+    call,
+    select,
+    takeLatest,
+    takeEvery,
+} from 'redux-saga/effects';
 import { push, replace } from 'react-router-redux';
 
 import { AuthProvider } from '../types';
-import { showNotification, hideNotification } from '../actions/notificationActions';
+import {
+    showNotification,
+    hideNotification,
+} from '../actions/notificationActions';
 import {
     USER_LOGIN,
     USER_LOGIN_LOADING,
@@ -30,12 +40,17 @@ export default (authProvider?: AuthProvider) => {
             case USER_LOGIN: {
                 try {
                     yield put({ type: USER_LOGIN_LOADING });
-                    const authPayload = yield call(authProvider, AUTH_LOGIN, payload);
+                    const authPayload = yield call(
+                        authProvider,
+                        AUTH_LOGIN,
+                        payload
+                    );
                     yield put({
                         type: USER_LOGIN_SUCCESS,
                         payload: authPayload,
                     });
-                    const redirectTo = yield meta.pathName || select(nextPathnameSelector);
+                    const redirectTo = yield meta.pathName ||
+                        select(nextPathnameSelector);
                     yield put(push(redirectTo || '/'));
                 } catch (e) {
                     yield put({
@@ -68,7 +83,12 @@ export default (authProvider?: AuthProvider) => {
                 break;
             }
             case USER_LOGOUT: {
-                yield put(push((action.payload && action.payload.redirectTo) || '/login'));
+                yield put(
+                    push(
+                        (action.payload && action.payload.redirectTo) ||
+                            '/login'
+                    )
+                );
                 yield call(authProvider, AUTH_LOGOUT);
                 break;
             }
@@ -85,7 +105,12 @@ export default (authProvider?: AuthProvider) => {
                         })
                     );
                     yield put(hideNotification());
-                    yield put(showNotification('ra.notification.logged_out', 'warning'));
+                    yield put(
+                        showNotification(
+                            'ra.notification.logged_out',
+                            'warning'
+                        )
+                    );
                 }
                 break;
         }

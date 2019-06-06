@@ -88,7 +88,9 @@ export class Pagination extends Component {
                         onChangeRowsPerPage={this.handlePerPageChange}
                         ActionsComponent={PaginationActions}
                         component="span"
-                        labelRowsPerPage={translate('ra.navigation.page_rows_per_page')}
+                        labelRowsPerPage={translate(
+                            'ra.navigation.page_rows_per_page'
+                        )}
                         labelDisplayedRows={this.labelDisplayedRows}
                         rowsPerPageOptions={rowsPerPageOptions}
                         {...sanitizeListRestProps(rest)}

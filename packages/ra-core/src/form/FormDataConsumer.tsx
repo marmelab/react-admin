@@ -64,7 +64,14 @@ interface Props extends ConnectedProps {
  *     </Edit>
  * );
  */
-export const FormDataConsumerView: SFC<Props> = ({ children, form, formData, source, index, ...rest }) => {
+export const FormDataConsumerView: SFC<Props> = ({
+    children,
+    form,
+    formData,
+    source,
+    index,
+    ...rest
+}) => {
     let scopedFormData = formData;
     let getSource;
     let getSourceHasBeenCalled = false;
@@ -113,14 +120,21 @@ export const FormDataConsumerView: SFC<Props> = ({ children, form, formData, sou
     return ret === undefined ? null : ret;
 };
 
-const mapStateToProps = (state: ReduxState, { form, record }: ConnectedProps) => ({
+const mapStateToProps = (
+    state: ReduxState,
+    { form, record }: ConnectedProps
+) => ({
     formData: getFormValues(form)(state) || record,
 });
 
-const ConnectedFormDataConsumerView = connect(mapStateToProps)(FormDataConsumerView);
+const ConnectedFormDataConsumerView = connect(mapStateToProps)(
+    FormDataConsumerView
+);
 
 const FormDataConsumer = (props: ConnectedProps) => (
-    <FormName>{({ form }) => <ConnectedFormDataConsumerView form={form} {...props} />}</FormName>
+    <FormName>
+        {({ form }) => <ConnectedFormDataConsumerView form={form} {...props} />}
+    </FormName>
 );
 
 export default FormDataConsumer;

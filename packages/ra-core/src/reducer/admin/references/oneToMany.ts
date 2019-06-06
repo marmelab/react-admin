@@ -18,16 +18,28 @@ type ActionTypes =
     | CrudDeleteSuccessAction
     | { type: 'OTHER_ACTION'; payload: any; meta?: any };
 
-const oneToManyReducer: Reducer<State> = (previousState = initialState, action: ActionTypes) => {
+const oneToManyReducer: Reducer<State> = (
+    previousState = initialState,
+    action: ActionTypes
+) => {
     if (action.meta && action.meta.optimistic) {
-        const relatedTo = getRelatedReferences(previousState, action.meta.resource);
+        const relatedTo = getRelatedReferences(
+            previousState,
+            action.meta.resource
+        );
 
         if (action.meta.fetch === DELETE) {
-            return relatedTo.reduce(removeDeletedReferences([action.payload.id]), previousState);
+            return relatedTo.reduce(
+                removeDeletedReferences([action.payload.id]),
+                previousState
+            );
         }
 
         if (action.meta.fetch === DELETE_MANY) {
-            return relatedTo.reduce(removeDeletedReferences(action.payload.ids), previousState);
+            return relatedTo.reduce(
+                removeDeletedReferences(action.payload.ids),
+                previousState
+            );
         }
     }
     switch (action.type) {
@@ -46,10 +58,12 @@ const oneToManyReducer: Reducer<State> = (previousState = initialState, action: 
 };
 
 export const getIds = (state: ReduxState, relatedTo: string) =>
-    state.admin.references.oneToMany[relatedTo] && state.admin.references.oneToMany[relatedTo].ids;
+    state.admin.references.oneToMany[relatedTo] &&
+    state.admin.references.oneToMany[relatedTo].ids;
 
 export const getTotal = (state: ReduxState, relatedTo: string) =>
-    state.admin.references.oneToMany[relatedTo] && state.admin.references.oneToMany[relatedTo].total;
+    state.admin.references.oneToMany[relatedTo] &&
+    state.admin.references.oneToMany[relatedTo].total;
 
 export const getReferences = (state: ReduxState, reference, relatedTo) => {
     const ids = getIds(state, relatedTo);
@@ -85,7 +99,11 @@ export const getReferences = (state: ReduxState, reference, relatedTo) => {
         }, {});
 };
 
-export const getReferencesByIds = (state: ReduxState, reference: string, ids: Identifier[]) => {
+export const getReferencesByIds = (
+    state: ReduxState,
+    reference: string,
+    ids: Identifier[]
+) => {
     if (ids.length === 0) {
         return {};
     }
@@ -123,8 +141,13 @@ export const getReferencesByIds = (state: ReduxState, reference: string, ids: Id
 const getRelatedReferences = (previousState: State, resource: string) =>
     Object.keys(previousState).filter(key => key.includes(resource));
 
-const removeDeletedReferences = (removedIds: Identifier[]) => (previousState: State, key: string) => {
-    const idsToKeep = previousState[key].ids.filter(id => !removedIds.includes(id));
+const removeDeletedReferences = (removedIds: Identifier[]) => (
+    previousState: State,
+    key: string
+) => {
+    const idsToKeep = previousState[key].ids.filter(
+        id => !removedIds.includes(id)
+    );
 
     if (idsToKeep.length === previousState[key].ids.length) {
         return previousState;

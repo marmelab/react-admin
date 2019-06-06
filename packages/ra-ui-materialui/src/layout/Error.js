@@ -51,7 +51,15 @@ function goBack() {
     history.go(-1);
 }
 
-const Error = ({ error, errorInfo, classes, className, title, translate, ...rest }) => (
+const Error = ({
+    error,
+    errorInfo,
+    classes,
+    className,
+    title,
+    translate,
+    ...rest
+}) => (
     <Fragment>
         <Title defaultTitle={title} />
         <div className={classnames(classes.container, className)} {...rest}>

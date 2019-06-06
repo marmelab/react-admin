@@ -36,7 +36,11 @@ describe('Query', () => {
                 {({ store }) => {
                     dispatchSpy = jest.spyOn(store, 'dispatch');
                     return (
-                        <Query type="mytype" resource="myresource" payload={myPayload}>
+                        <Query
+                            type="mytype"
+                            resource="myresource"
+                            payload={myPayload}
+                        >
                             {() => <div>Hello</div>}
                         </Query>
                     );
@@ -55,8 +59,16 @@ describe('Query', () => {
         const { getByText } = render(
             <TestContext>
                 {() => (
-                    <Query type="mytype" resource="myresource" payload={myPayload}>
-                        {({ loading }) => <div className={loading ? 'loading' : 'idle'}>Hello</div>}
+                    <Query
+                        type="mytype"
+                        resource="myresource"
+                        payload={myPayload}
+                    >
+                        {({ loading }) => (
+                            <div className={loading ? 'loading' : 'idle'}>
+                                Hello
+                            </div>
+                        )}
                     </Query>
                 )}
             </TestContext>
@@ -66,11 +78,16 @@ describe('Query', () => {
 
     it('should update the data state after a success response', async () => {
         const dataProvider = jest.fn();
-        dataProvider.mockImplementationOnce(() => Promise.resolve({ data: { foo: 'bar' } }));
+        dataProvider.mockImplementationOnce(() =>
+            Promise.resolve({ data: { foo: 'bar' } })
+        );
         const Foo = () => (
             <Query type="mytype" resource="foo">
                 {({ loading, data }) => (
-                    <div data-testid="test" className={loading ? 'loading' : 'idle'}>
+                    <div
+                        data-testid="test"
+                        className={loading ? 'loading' : 'idle'}
+                    >
                         {data ? data.foo : 'no data'}
                     </div>
                 )}
@@ -91,12 +108,17 @@ describe('Query', () => {
 
     it('should return the total prop if available', async () => {
         const dataProvider = jest.fn();
-        dataProvider.mockImplementationOnce(() => Promise.resolve({ data: [{ foo: 'bar' }], total: 42 }));
+        dataProvider.mockImplementationOnce(() =>
+            Promise.resolve({ data: [{ foo: 'bar' }], total: 42 })
+        );
 
         const Foo = () => (
             <Query type="mytype" resource="foo">
                 {({ loading, data, total }) => (
-                    <div data-testid="test" className={loading ? 'loading' : 'idle'}>
+                    <div
+                        data-testid="test"
+                        className={loading ? 'loading' : 'idle'}
+                    >
                         {loading ? 'no data' : total}
                     </div>
                 )}
@@ -120,11 +142,16 @@ describe('Query', () => {
 
     it('should update the error state after an error response', async () => {
         const dataProvider = jest.fn();
-        dataProvider.mockImplementationOnce(() => Promise.reject({ message: 'provider error' }));
+        dataProvider.mockImplementationOnce(() =>
+            Promise.reject({ message: 'provider error' })
+        );
         const Foo = () => (
             <Query type="mytype" resource="foo">
                 {({ loading, error }) => (
-                    <div data-testid="test" className={loading ? 'loading' : 'idle'}>
+                    <div
+                        data-testid="test"
+                        className={loading ? 'loading' : 'idle'}
+                    >
                         {error ? error.message : 'no data'}
                     </div>
                 )}
@@ -151,7 +178,11 @@ describe('Query', () => {
                 {({ store }) => {
                     dispatchSpy = jest.spyOn(store, 'dispatch');
                     return (
-                        <Query type="mytype" resource="myresource" payload={myPayload}>
+                        <Query
+                            type="mytype"
+                            resource="myresource"
+                            payload={myPayload}
+                        >
                             {() => <div>Hello</div>}
                         </Query>
                     );
@@ -162,7 +193,11 @@ describe('Query', () => {
         rerender(
             <TestContext>
                 {() => (
-                    <Query type="mytype" resource="myresource" payload={mySecondPayload}>
+                    <Query
+                        type="mytype"
+                        resource="myresource"
+                        payload={mySecondPayload}
+                    >
                         {() => <div>Hello</div>}
                     </Query>
                 )}
@@ -188,7 +223,11 @@ describe('Query', () => {
                         },
                     };
                     return (
-                        <Query type="mytype" resource="myresource" payload={myPayload}>
+                        <Query
+                            type="mytype"
+                            resource="myresource"
+                            payload={myPayload}
+                        >
                             {() => <div>Hello</div>}
                         </Query>
                     );
@@ -204,7 +243,11 @@ describe('Query', () => {
                         },
                     };
                     return (
-                        <Query type="mytype" resource="myresource" payload={myPayload}>
+                        <Query
+                            type="mytype"
+                            resource="myresource"
+                            payload={myPayload}
+                        >
                             {() => <div>Hello</div>}
                         </Query>
                     );

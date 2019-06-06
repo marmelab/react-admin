@@ -12,7 +12,12 @@ export const watchCrudActionsFactory = observeRequest =>
             payload: params,
             meta: { fetch: fetchType, resource },
         } = action;
-        const observer = yield call(observeRequest, fetchType, resource, params);
+        const observer = yield call(
+            observeRequest,
+            fetchType,
+            resource,
+            params
+        );
 
         if (!observer) return;
 
@@ -54,5 +59,8 @@ export const watchLocationChangeFactory = watchCrudActions =>
 export default observeQuery =>
     function* realtimeSaga() {
         const watchCrudActions = watchCrudActionsFactory(observeQuery);
-        yield takeLatest(LOCATION_CHANGE, watchLocationChangeFactory(watchCrudActions));
+        yield takeLatest(
+            LOCATION_CHANGE,
+            watchLocationChangeFactory(watchCrudActions)
+        );
     };

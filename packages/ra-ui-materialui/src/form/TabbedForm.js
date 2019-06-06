@@ -1,7 +1,12 @@
 import React, { Children, Component, isValidElement } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { reduxForm, getFormAsyncErrors, getFormSyncErrors, getFormSubmitErrors } from 'redux-form';
+import {
+    reduxForm,
+    getFormAsyncErrors,
+    getFormSyncErrors,
+    getFormSubmitErrors,
+} from 'redux-form';
 import { connect } from 'react-redux';
 import { withRouter, Route } from 'react-router-dom';
 import compose from 'recompose/compose';
@@ -61,7 +66,9 @@ const sanitizeRestProps = ({
 }) => props;
 
 const getTabFullPath = (tab, index, baseUrl) =>
-    `${baseUrl}${tab.props.path ? `/${tab.props.path}` : index > 0 ? `/${index}` : ''}`;
+    `${baseUrl}${
+        tab.props.path ? `/${tab.props.path}` : index > 0 ? `/${index}` : ''
+    }`;
 
 export class TabbedForm extends Component {
     handleSubmitWithRedirect = (redirect = this.props.redirect) =>
@@ -91,7 +98,9 @@ export class TabbedForm extends Component {
             ...rest
         } = this.props;
 
-        const validTabPaths = Children.toArray(children).map((tab, index) => getTabFullPath(tab, index, match.url));
+        const validTabPaths = Children.toArray(children).map((tab, index) =>
+            getTabFullPath(tab, index, match.url)
+        );
 
         // This ensure we don't get warnings from material-ui Tabs component when
         // the current location pathname targets a dynamically added Tab
@@ -100,10 +109,16 @@ export class TabbedForm extends Component {
         // available tab. The current location will be applied again on the
         // first render containing the targeted tab. This is almost transparent
         // for the user who may just see an short tab selection animation
-        const tabsValue = validTabPaths.includes(location.pathname) ? location.pathname : validTabPaths[0];
+        const tabsValue = validTabPaths.includes(location.pathname)
+            ? location.pathname
+            : validTabPaths[0];
 
         return (
-            <form className={classnames('tabbed-form', className)} key={version} {...sanitizeRestProps(rest)}>
+            <form
+                className={classnames('tabbed-form', className)}
+                key={version}
+                {...sanitizeRestProps(rest)}
+            >
                 <Tabs
                     // The location pathname will contain the page path including the current tab path
                     // so we can use it as a way to determine the current tab
@@ -123,7 +138,8 @@ export class TabbedForm extends Component {
                             context: 'header',
                             value: tabPath,
                             className:
-                                tabsWithErrors.includes(tab.props.label) && location.pathname !== tabPath
+                                tabsWithErrors.includes(tab.props.label) &&
+                                location.pathname !== tabPath
                                     ? classes.errorTabButton
                                     : null,
                         });
@@ -139,7 +155,10 @@ export class TabbedForm extends Component {
                         children,
                         (tab, index) =>
                             tab && (
-                                <Route exact path={getTabFullPath(tab, index, match.url)}>
+                                <Route
+                                    exact
+                                    path={getTabFullPath(tab, index, match.url)}
+                                >
                                     {routeProps =>
                                         isValidElement(tab)
                                             ? React.cloneElement(tab, {
@@ -200,7 +219,11 @@ TabbedForm.propTypes = {
     match: PropTypes.object,
     pristine: PropTypes.bool,
     record: PropTypes.object,
-    redirect: PropTypes.oneOfType([PropTypes.string, PropTypes.bool, PropTypes.func]),
+    redirect: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.bool,
+        PropTypes.func,
+    ]),
     resource: PropTypes.string,
     save: PropTypes.func, // the handler defined in the parent, which triggers the REST submission
     saving: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
@@ -231,7 +254,11 @@ const collectErrors = (state, props) => {
     };
 };
 
-export const findTabsWithErrors = (state, props, collectErrorsImpl = collectErrors) => {
+export const findTabsWithErrors = (
+    state,
+    props,
+    collectErrorsImpl = collectErrors
+) => {
     const errors = collectErrorsImpl(state, props);
 
     return Children.toArray(props.children).reduce((acc, child) => {
@@ -241,7 +268,11 @@ export const findTabsWithErrors = (state, props, collectErrorsImpl = collectErro
 
         const inputs = Children.toArray(child.props.children);
 
-        if (inputs.some(input => isValidElement(input) && errors[input.props.source])) {
+        if (
+            inputs.some(
+                input => isValidElement(input) && errors[input.props.source]
+            )
+        ) {
             return [...acc, child.props.label];
         }
 
@@ -253,7 +284,12 @@ const enhance = compose(
     withRouter,
     connect((state, props) => {
         const children = Children.toArray(props.children).reduce(
-            (acc, child) => [...acc, ...(isValidElement(child) ? Children.toArray(child.props.children) : [])],
+            (acc, child) => [
+                ...acc,
+                ...(isValidElement(child)
+                    ? Children.toArray(child.props.children)
+                    : []),
+            ],
             []
         );
 

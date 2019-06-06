@@ -5,7 +5,17 @@ import ResettableTextField from './ResettableTextField';
 
 import sanitizeRestProps from './sanitizeRestProps';
 
-export const LongTextInput = ({ className, input, meta, isRequired, label, options, source, resource, ...rest }) => {
+export const LongTextInput = ({
+    className,
+    input,
+    meta,
+    isRequired,
+    label,
+    options,
+    source,
+    resource,
+    ...rest
+}) => {
     if (typeof meta === 'undefined') {
         throw new Error(
             "The LongTextInput component wasn't called within a redux-form <Field>. Did you decorate it and forget to add the addField prop to your component? See https://marmelab.com/react-admin/Inputs.html#writing-your-own-input-component for details."
@@ -18,7 +28,14 @@ export const LongTextInput = ({ className, input, meta, isRequired, label, optio
             className={className}
             multiline
             margin="normal"
-            label={<FieldTitle label={label} source={source} resource={resource} isRequired={isRequired} />}
+            label={
+                <FieldTitle
+                    label={label}
+                    source={source}
+                    resource={resource}
+                    isRequired={isRequired}
+                />
+            }
             error={!!(touched && error)}
             helperText={touched && error}
             {...sanitizeRestProps(rest)}
@@ -38,7 +55,10 @@ LongTextInput.propTypes = {
     options: PropTypes.object,
     resource: PropTypes.string,
     source: PropTypes.string,
-    validate: PropTypes.oneOfType([PropTypes.func, PropTypes.arrayOf(PropTypes.func)]),
+    validate: PropTypes.oneOfType([
+        PropTypes.func,
+        PropTypes.arrayOf(PropTypes.func),
+    ]),
 };
 
 const EnhancedLongTextInput = addField(LongTextInput);

@@ -37,7 +37,14 @@ export default (records: any[], types: InferredTypeMap) => {
     const fieldValues = getValuesFromRecords(records);
     return Object.keys(fieldValues)
         .reduce(
-            (fields, fieldName) => fields.concat(inferElementFromValues(fieldName, fieldValues[fieldName], types)),
+            (fields, fieldName) =>
+                fields.concat(
+                    inferElementFromValues(
+                        fieldName,
+                        fieldValues[fieldName],
+                        types
+                    )
+                ),
             []
         )
         .filter(inferredElement => inferredElement.isDefined());

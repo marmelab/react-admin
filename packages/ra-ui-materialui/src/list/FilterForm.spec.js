@@ -32,7 +32,11 @@ describe('<FilterForm />', () => {
             <Provider store={store}>
                 <TranslationProvider>
                     <MuiThemeProvider theme={muiTheme}>
-                        <FilterForm {...defaultProps} filters={filters} displayedFilters={displayedFilters} />
+                        <FilterForm
+                            {...defaultProps}
+                            filters={filters}
+                            displayedFilters={displayedFilters}
+                        />
                     </MuiThemeProvider>
                 </TranslationProvider>
             </Provider>
@@ -73,13 +77,16 @@ describe('<FilterForm />', () => {
                 { props: { source: 'notMeEither' } },
             ];
 
-            assert.deepEqual(mergeInitialValuesWithDefaultValues({ initialValues, filters }), {
-                initialValues: {
-                    title: 'initial title',
-                    url: 'default url',
-                    author: { name: 'default author' },
-                },
-            });
+            assert.deepEqual(
+                mergeInitialValuesWithDefaultValues({ initialValues, filters }),
+                {
+                    initialValues: {
+                        title: 'initial title',
+                        url: 'default url',
+                        author: { name: 'default author' },
+                    },
+                }
+            );
         });
     });
 });

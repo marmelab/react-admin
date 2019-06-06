@@ -3,16 +3,27 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import MenuItem, { MenuItemProps } from '@material-ui/core/MenuItem';
-import { withStyles, createStyles, Theme, WithStyles } from '@material-ui/core/styles';
+import {
+    withStyles,
+    createStyles,
+    Theme,
+    WithStyles,
+} from '@material-ui/core/styles';
 import ExitIcon from '@material-ui/icons/PowerSettingsNew';
 import classnames from 'classnames';
-import { withTranslate, userLogout as userLogoutAction, TranslationContextProps } from 'ra-core';
+import {
+    withTranslate,
+    userLogout as userLogoutAction,
+    TranslationContextProps,
+} from 'ra-core';
 
 interface Props {
     redirectTo?: string;
 }
 
-interface EnhancedProps extends TranslationContextProps, WithStyles<typeof styles> {
+interface EnhancedProps
+    extends TranslationContextProps,
+        WithStyles<typeof styles> {
     userLogout: () => void;
 }
 
@@ -43,7 +54,11 @@ const Logout: SFC<Props & EnhancedProps & MenuItemProps> = ({
     userLogout,
     ...rest
 }) => (
-    <MenuItem className={classnames('logout', classes.menuItem, className)} onClick={userLogout} {...rest}>
+    <MenuItem
+        className={classnames('logout', classes.menuItem, className)}
+        onClick={userLogout}
+        {...rest}
+    >
         <span className={classes.iconMenuPaddingStyle}>
             <ExitIcon />
         </span>
@@ -55,7 +70,10 @@ const mapDispatchToProps = (dispatch, { redirectTo }) => ({
     userLogout: () => dispatch(userLogoutAction(redirectTo)),
 });
 
-const enhance = compose<Props & EnhancedProps & MenuItemProps, Props & MenuItemProps>(
+const enhance = compose<
+    Props & EnhancedProps & MenuItemProps,
+    Props & MenuItemProps
+>(
     withTranslate,
     connect(
         undefined,

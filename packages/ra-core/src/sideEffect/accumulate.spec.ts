@@ -18,7 +18,9 @@ describe('accumulate saga', () => {
                 meta: { accumulate: crudGetMany },
             });
 
-            expect(saga.next().value).toEqual(fork(finalize, 'posts', crudGetMany));
+            expect(saga.next().value).toEqual(
+                fork(finalize, 'posts', crudGetMany)
+            );
 
             expect(accumulations).toEqual({
                 posts: [1, 2],
@@ -40,7 +42,9 @@ describe('accumulate saga', () => {
 
             expect(saga.next().value).toEqual(cancel(task));
 
-            expect(saga.next().value).toEqual(fork(finalize, 'posts', crudGetMany));
+            expect(saga.next().value).toEqual(
+                fork(finalize, 'posts', crudGetMany)
+            );
 
             expect(accumulations).toEqual({
                 posts: [1, 2, 3],
@@ -51,11 +55,16 @@ describe('accumulate saga', () => {
             const task = createMockTask();
             const tasks = { posts: task };
             const accumulations = { posts: [1, 2] };
-            const saga = finalizeFactory(tasks, accumulations)('posts', crudGetMany);
+            const saga = finalizeFactory(tasks, accumulations)(
+                'posts',
+                crudGetMany
+            );
 
             expect(saga.next().value).toEqual(call(delay, 50));
 
-            expect(saga.next().value).toEqual(put(crudGetMany('posts', [1, 2])));
+            expect(saga.next().value).toEqual(
+                put(crudGetMany('posts', [1, 2]))
+            );
 
             saga.next(); // Ends the saga
             expect(tasks).toEqual({});
@@ -74,12 +83,17 @@ describe('accumulate saga', () => {
                 payload: { ids: [1, 2] },
                 meta: {
                     accumulate: crudGetMany,
-                    accumulateValues: (accumulations2, action) => [...(accumulations2 || []), ...action.payload.ids],
+                    accumulateValues: (accumulations2, action) => [
+                        ...(accumulations2 || []),
+                        ...action.payload.ids,
+                    ],
                     accumulateKey: 'posts',
                 },
             });
 
-            expect(saga.next().value).toEqual(fork(finalize, 'posts', crudGetMany));
+            expect(saga.next().value).toEqual(
+                fork(finalize, 'posts', crudGetMany)
+            );
 
             expect(accumulations).toEqual({
                 posts: [1, 2],
@@ -97,14 +111,19 @@ describe('accumulate saga', () => {
                 payload: { ids: [3, 4] },
                 meta: {
                     accumulate: crudGetMany,
-                    accumulateValues: (accumulations2, action) => [...(accumulations2 || []), ...action.payload.ids],
+                    accumulateValues: (accumulations2, action) => [
+                        ...(accumulations2 || []),
+                        ...action.payload.ids,
+                    ],
                     accumulateKey: 'posts',
                 },
             });
 
             expect(saga.next().value).toEqual(cancel(task));
 
-            expect(saga.next().value).toEqual(fork(finalize, 'posts', crudGetMany));
+            expect(saga.next().value).toEqual(
+                fork(finalize, 'posts', crudGetMany)
+            );
 
             expect(accumulations).toEqual({
                 posts: [1, 2, 3, 4],

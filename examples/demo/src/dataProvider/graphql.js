@@ -1,4 +1,6 @@
-import buildApolloClient, { buildQuery as buildQueryFactory } from 'ra-data-graphql-simple';
+import buildApolloClient, {
+    buildQuery as buildQueryFactory,
+} from 'ra-data-graphql-simple';
 import { DELETE } from 'ra-core';
 import gql from 'graphql-tag';
 const getGqlResource = resource => {
@@ -61,5 +63,7 @@ export default () => {
             },
         },
         buildQuery: customBuildQuery,
-    }).then(dataProvider => (type, resource, params) => dataProvider(type, getGqlResource(resource), params));
+    }).then(dataProvider => (type, resource, params) =>
+        dataProvider(type, getGqlResource(resource), params)
+    );
 };

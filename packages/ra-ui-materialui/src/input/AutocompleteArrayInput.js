@@ -120,7 +120,8 @@ export class AutocompleteArrayInput extends React.Component {
     inputEl = null;
     anchorEl = null;
 
-    getInputValue = inputValue => (inputValue === '' ? this.initialInputValue : inputValue);
+    getInputValue = inputValue =>
+        inputValue === '' ? this.initialInputValue : inputValue;
 
     componentWillMount() {
         this.setState({
@@ -142,7 +143,11 @@ export class AutocompleteArrayInput extends React.Component {
         } else if (!isEqual(choices, this.props.choices)) {
             this.setState(({ searchText }) => ({
                 suggestions: choices.filter(suggestion =>
-                    inputValueMatcher(searchText, suggestion, this.getSuggestionText)
+                    inputValueMatcher(
+                        searchText,
+                        suggestion,
+                        this.getSuggestionText
+                    )
                 ),
             }));
         }
@@ -154,7 +159,10 @@ export class AutocompleteArrayInput extends React.Component {
         if (!suggestion) return '';
 
         const { optionText, translate, translateChoice } = this.props;
-        const suggestionLabel = typeof optionText === 'function' ? optionText(suggestion) : get(suggestion, optionText);
+        const suggestionLabel =
+            typeof optionText === 'function'
+                ? optionText(suggestion)
+                : get(suggestion, optionText);
 
         // We explicitly call toString here because AutoSuggest expect a string
         return translateChoice
@@ -165,7 +173,10 @@ export class AutocompleteArrayInput extends React.Component {
     handleSuggestionSelected = (event, { suggestion, method }) => {
         const { input } = this.props;
 
-        input.onChange([...(this.state.inputValue || []), this.getSuggestionValue(suggestion)]);
+        input.onChange([
+            ...(this.state.inputValue || []),
+            this.getSuggestionValue(suggestion),
+        ]);
 
         if (method === 'enter') {
             event.preventDefault();
@@ -177,7 +188,11 @@ export class AutocompleteArrayInput extends React.Component {
 
         this.setState(({ searchText }) => ({
             suggestions: choices.filter(suggestion =>
-                inputValueMatcher(searchText, suggestion, this.getSuggestionText)
+                inputValueMatcher(
+                    searchText,
+                    suggestion,
+                    this.getSuggestionText
+                )
             ),
         }));
     };
@@ -248,17 +263,29 @@ export class AutocompleteArrayInput extends React.Component {
                 error={touched && error}
                 helperText={touched && error && helperText}
                 chipRenderer={this.renderChip}
-                label={<FieldTitle label={label} source={source} resource={resource} isRequired={isRequired} />}
+                label={
+                    <FieldTitle
+                        label={label}
+                        source={source}
+                        resource={resource}
+                        isRequired={isRequired}
+                    />
+                }
                 {...other}
                 {...options}
             />
         );
     };
 
-    renderChip = ({ value, isFocused, isDisabled, handleClick, handleDelete }, key) => {
+    renderChip = (
+        { value, isFocused, isDisabled, handleClick, handleDelete },
+        key
+    ) => {
         const { classes = {}, choices } = this.props;
 
-        const suggestion = choices.find(choice => this.getSuggestionValue(choice) === value);
+        const suggestion = choices.find(
+            choice => this.getSuggestionValue(choice) === value
+        );
 
         return (
             <Chip
@@ -275,17 +302,29 @@ export class AutocompleteArrayInput extends React.Component {
     };
 
     handleAdd = chip => {
-        const { choices, input, limitChoicesToValue, inputValueMatcher } = this.props;
+        const {
+            choices,
+            input,
+            limitChoicesToValue,
+            inputValueMatcher,
+        } = this.props;
 
-        const filteredChoices = choices.filter(choice => inputValueMatcher(chip, choice, this.getSuggestionText));
+        const filteredChoices = choices.filter(choice =>
+            inputValueMatcher(chip, choice, this.getSuggestionText)
+        );
 
         const choice =
             filteredChoices.length === 1
                 ? filteredChoices[0]
-                : filteredChoices.find(c => this.getSuggestionValue(c) === chip);
+                : filteredChoices.find(
+                      c => this.getSuggestionValue(c) === chip
+                  );
 
         if (choice) {
-            return input.onChange([...(this.state.inputValue || []), this.getSuggestionValue(choice)]);
+            return input.onChange([
+                ...(this.state.inputValue || []),
+                this.getSuggestionValue(choice),
+            ]);
         }
 
         if (limitChoicesToValue) {
@@ -315,7 +354,10 @@ export class AutocompleteArrayInput extends React.Component {
         } else {
             const anchorPosition = this.anchorEl.getBoundingClientRect();
 
-            if (anchorPosition.x !== inputPosition.x || anchorPosition.y !== inputPosition.y) {
+            if (
+                anchorPosition.x !== inputPosition.x ||
+                anchorPosition.y !== inputPosition.y
+            ) {
                 this.anchorEl = { getBoundingClientRect: () => inputPosition };
             }
         }
@@ -339,14 +381,23 @@ export class AutocompleteArrayInput extends React.Component {
                 placement="bottom-start"
                 {...options.suggestionsContainerProps}
             >
-                <Paper square className={classes.suggestionsPaper} {...containerProps}>
+                <Paper
+                    square
+                    className={classes.suggestionsPaper}
+                    {...containerProps}
+                >
                     {children}
                 </Paper>
             </Popper>
         );
     };
 
-    renderSuggestionComponent = ({ suggestion, query, isHighlighted, ...props }) => <div {...props} />;
+    renderSuggestionComponent = ({
+        suggestion,
+        query,
+        isHighlighted,
+        ...props
+    }) => <div {...props} />;
 
     renderSuggestion = (suggestion, { query, isHighlighted }) => {
         const label = this.getSuggestionText(suggestion);
@@ -357,7 +408,9 @@ export class AutocompleteArrayInput extends React.Component {
         return (
             <MenuItem
                 selected={isHighlighted}
-                component={suggestionComponent || this.renderSuggestionComponent}
+                component={
+                    suggestionComponent || this.renderSuggestionComponent
+                }
                 suggestion={suggestion}
                 query={query}
                 isHighlighted={isHighlighted}
@@ -365,11 +418,17 @@ export class AutocompleteArrayInput extends React.Component {
                 <div>
                     {parts.map((part, index) => {
                         return part.highlight ? (
-                            <span key={index} className={classes.highlightedSuggestionText}>
+                            <span
+                                key={index}
+                                className={classes.highlightedSuggestionText}
+                            >
                                 {part.text}
                             </span>
                         ) : (
-                            <strong key={index} className={classes.suggestionText}>
+                            <strong
+                                key={index}
+                                className={classes.suggestionText}
+                            >
                                 {part.text}
                             </strong>
                         );
@@ -405,7 +464,10 @@ export class AutocompleteArrayInput extends React.Component {
 
     shouldRenderSuggestions = val => {
         const { shouldRenderSuggestions } = this.props;
-        if (shouldRenderSuggestions !== undefined && typeof shouldRenderSuggestions === 'function') {
+        if (
+            shouldRenderSuggestions !== undefined &&
+            typeof shouldRenderSuggestions === 'function'
+        ) {
             return shouldRenderSuggestions(val);
         }
 
@@ -438,8 +500,12 @@ export class AutocompleteArrayInput extends React.Component {
                 suggestions={suggestions}
                 alwaysRenderSuggestions={alwaysRenderSuggestions}
                 onSuggestionSelected={this.handleSuggestionSelected}
-                onSuggestionsFetchRequested={this.handleSuggestionsFetchRequested}
-                onSuggestionsClearRequested={this.handleSuggestionsClearRequested}
+                onSuggestionsFetchRequested={
+                    this.handleSuggestionsFetchRequested
+                }
+                onSuggestionsClearRequested={
+                    this.handleSuggestionsClearRequested
+                }
                 renderSuggestionsContainer={this.renderSuggestionsContainer}
                 getSuggestionValue={this.getSuggestionText}
                 renderSuggestion={this.renderSuggestion}
@@ -477,7 +543,8 @@ AutocompleteArrayInput.propTypes = {
     limitChoicesToValue: PropTypes.bool,
     meta: PropTypes.object,
     options: PropTypes.object,
-    optionText: PropTypes.oneOfType([PropTypes.string, PropTypes.func]).isRequired,
+    optionText: PropTypes.oneOfType([PropTypes.string, PropTypes.func])
+        .isRequired,
     optionValue: PropTypes.string.isRequired,
     resource: PropTypes.string,
     setFilter: PropTypes.func,

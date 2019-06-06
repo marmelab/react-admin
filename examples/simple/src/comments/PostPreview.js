@@ -11,7 +11,9 @@ const PostPreviewView = ({ isLoading, ...props }) => (
 );
 
 const mapStateToProps = (state, props) => ({
-    record: state.admin.resources[props.resource] ? state.admin.resources[props.resource].data[props.id] : null,
+    record: state.admin.resources[props.resource]
+        ? state.admin.resources[props.resource].data[props.id]
+        : null,
     isLoading: state.admin.loading > 0,
     version: state.admin.ui.viewVersion,
 });

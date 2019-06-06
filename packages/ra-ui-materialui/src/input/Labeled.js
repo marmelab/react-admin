@@ -71,7 +71,12 @@ export const Labeled = ({
             error={meta && meta.touched && !!meta.error}
         >
             <InputLabel htmlFor={id} shrink className={classes.label}>
-                <FieldTitle label={label} source={source} resource={resource} isRequired={isRequired} />
+                <FieldTitle
+                    label={label}
+                    source={source}
+                    resource={resource}
+                    isRequired={isRequired}
+                />
             </InputLabel>
             <div className={classes.value}>
                 {children && typeof children.type !== 'string'

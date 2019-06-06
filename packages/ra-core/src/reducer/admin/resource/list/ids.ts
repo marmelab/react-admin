@@ -30,8 +30,13 @@ export const addRecordIdsFactory = getFetchedAtCallback => (
     newRecordIds: IdentifierArrayWithDate = [],
     oldRecordIds: IdentifierArrayWithDate
 ): IdentifierArrayWithDate => {
-    const newFetchedAt = getFetchedAtCallback(newRecordIds, oldRecordIds.fetchedAt);
-    const recordIds = uniq(oldRecordIds.filter(id => !!newFetchedAt[id]).concat(newRecordIds));
+    const newFetchedAt = getFetchedAtCallback(
+        newRecordIds,
+        oldRecordIds.fetchedAt
+    );
+    const recordIds = uniq(
+        oldRecordIds.filter(id => !!newFetchedAt[id]).concat(newRecordIds)
+    );
 
     Object.defineProperty(recordIds, 'fetchedAt', {
         value: newFetchedAt,
@@ -54,7 +59,10 @@ type ActionTypes =
           meta: any;
       };
 
-const idsReducer: Reducer<State> = (previousState = [], action: ActionTypes) => {
+const idsReducer: Reducer<State> = (
+    previousState = [],
+    action: ActionTypes
+) => {
     if (action.meta && action.meta.optimistic) {
         if (action.meta.fetch === DELETE) {
             const index = previousState
@@ -63,7 +71,10 @@ const idsReducer: Reducer<State> = (previousState = [], action: ActionTypes) => 
             if (index === -1) {
                 return previousState;
             }
-            const newState = [...previousState.slice(0, index), ...previousState.slice(index + 1)];
+            const newState = [
+                ...previousState.slice(0, index),
+                ...previousState.slice(index + 1),
+            ];
 
             Object.defineProperty(newState, 'fetchedAt', {
                 value: previousState.fetchedAt,
@@ -72,7 +83,9 @@ const idsReducer: Reducer<State> = (previousState = [], action: ActionTypes) => 
             return newState;
         }
         if (action.meta.fetch === DELETE_MANY) {
-            const newState = previousState.filter(el => !action.payload.ids.includes(el));
+            const newState = previousState.filter(
+                el => !action.payload.ids.includes(el)
+            );
             Object.defineProperty(newState, 'fetchedAt', {
                 value: previousState.fetchedAt,
             });
@@ -87,7 +100,9 @@ const idsReducer: Reducer<State> = (previousState = [], action: ActionTypes) => 
         case CRUD_GET_MANY_SUCCESS:
         case CRUD_GET_MANY_REFERENCE_SUCCESS:
             return addRecordIds(
-                action.payload.data.map(({ id }) => id).filter(id => previousState.indexOf(id) !== -1),
+                action.payload.data
+                    .map(({ id }) => id)
+                    .filter(id => previousState.indexOf(id) !== -1),
                 previousState
             );
         case CRUD_GET_ONE_SUCCESS:

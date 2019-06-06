@@ -11,7 +11,10 @@ import { SaveButton, DeleteButton } from '../button';
 const styles = theme =>
     createStyles({
         toolbar: {
-            backgroundColor: theme.palette.type === 'light' ? theme.palette.grey[100] : theme.palette.grey[900],
+            backgroundColor:
+                theme.palette.type === 'light'
+                    ? theme.palette.grey[100]
+                    : theme.palette.grey[900],
         },
         desktopToolbar: {
             marginTop: theme.spacing.unit * 2,
@@ -39,7 +42,8 @@ const styles = theme =>
         },
     });
 
-const valueOrDefault = (value, defaultValue) => (typeof value === 'undefined' ? defaultValue : value);
+const valueOrDefault = (value, defaultValue) =>
+    typeof value === 'undefined' ? defaultValue : value;
 
 const Toolbar = ({
     basePath,
@@ -82,7 +86,12 @@ const Toolbar = ({
                         submitOnEnter={submitOnEnter}
                     />
                     {record && typeof record.id !== 'undefined' && (
-                        <DeleteButton basePath={basePath} record={record} resource={resource} undoable={undoable} />
+                        <DeleteButton
+                            basePath={basePath}
+                            record={record}
+                            resource={resource}
+                            undoable={undoable}
+                        />
                     )}
                 </div>
             ) : (
@@ -90,7 +99,10 @@ const Toolbar = ({
                     button && isValidElement(button)
                         ? React.cloneElement(button, {
                               basePath,
-                              handleSubmit: valueOrDefault(button.props.handleSubmit, handleSubmit),
+                              handleSubmit: valueOrDefault(
+                                  button.props.handleSubmit,
+                                  handleSubmit
+                              ),
                               handleSubmitWithRedirect: valueOrDefault(
                                   button.props.handleSubmitWithRedirect,
                                   handleSubmitWithRedirect
@@ -100,8 +112,14 @@ const Toolbar = ({
                               record,
                               resource,
                               saving,
-                              submitOnEnter: valueOrDefault(button.props.submitOnEnter, submitOnEnter),
-                              undoable: valueOrDefault(button.props.undoable, undoable),
+                              submitOnEnter: valueOrDefault(
+                                  button.props.submitOnEnter,
+                                  submitOnEnter
+                              ),
+                              undoable: valueOrDefault(
+                                  button.props.undoable,
+                                  undoable
+                              ),
                           })
                         : null
                 )
@@ -121,7 +139,11 @@ Toolbar.propTypes = {
     invalid: PropTypes.bool,
     pristine: PropTypes.bool,
     record: PropTypes.object,
-    redirect: PropTypes.oneOfType([PropTypes.string, PropTypes.bool, PropTypes.func]),
+    redirect: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.bool,
+        PropTypes.func,
+    ]),
     resource: PropTypes.string,
     saving: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
     submitOnEnter: PropTypes.bool,

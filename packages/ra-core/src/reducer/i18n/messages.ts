@@ -1,5 +1,8 @@
 import { Reducer } from 'redux';
-import { CHANGE_LOCALE_SUCCESS, ChangeLocaleSuccessAction } from '../../actions/index';
+import {
+    CHANGE_LOCALE_SUCCESS,
+    ChangeLocaleSuccessAction,
+} from '../../actions/index';
 
 type ActionTypes = ChangeLocaleSuccessAction | { type: 'OTHER_ACTION' };
 

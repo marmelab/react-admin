@@ -29,7 +29,9 @@ var styles = theme =>
  * wasted space. Use this component as a CardContent alternative.
  */
 const CardContentInner = ({ classes, className, children }) => (
-    <CardContent className={classnames(classes.root, className)}>{children}</CardContent>
+    <CardContent className={classnames(classes.root, className)}>
+        {children}
+    </CardContent>
 );
 
 CardContentInner.propTypes = {
