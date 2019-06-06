@@ -119,17 +119,22 @@ describe('ListController', () => {
         });
 
         it('should update data if permanent filters change', () => {
-            expect.assertions(2);
+            expect.assertions(4);
+
+            const children = jest.fn();
             const props = {
                 ...defaultProps,
                 debounce: 200,
                 crudGetList: jest.fn(),
                 filter: { foo: 1 },
-                children: fakeComponent,
+                children,
             };
 
             const wrapper = shallow(<ListController {...props} />);
+
             expect(props.crudGetList.mock.calls[0][3]).toEqual({ foo: 1 });
+            expect(children.mock.calls[0][0].displayedFilters).toEqual({});
+            expect(children.mock.calls[0][0].filterValues).toEqual({});
 
             wrapper.setProps({ filter: { foo: 2 } });
             expect(props.crudGetList.mock.calls[1][3]).toEqual({ foo: 2 });
