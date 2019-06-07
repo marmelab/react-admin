@@ -8,14 +8,15 @@ import ChevronRight from '@material-ui/icons/ChevronRight';
 import compose from 'recompose/compose';
 import { translate } from 'ra-core';
 
-const styles = theme => createStyles({
-    actions: {
-        flexShrink: 0,
-        color: theme.palette.text.secondary,
-        marginLeft: 20,
-    },
-    hellip: { padding: '1.2em' },
-});
+const styles = theme =>
+    createStyles({
+        actions: {
+            flexShrink: 0,
+            color: theme.palette.text.secondary,
+            marginLeft: 20,
+        },
+        hellip: { padding: '1.2em' },
+    });
 
 export class PaginationActions extends Component {
     /**

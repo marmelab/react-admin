@@ -15,16 +15,19 @@ import defaultSanitizeRestProps from './sanitizeRestProps';
 const sanitizeRestProps = ({ setFilter, setPagination, setSort, ...rest }) =>
     defaultSanitizeRestProps(rest);
 
-const styles = theme => createStyles({
-    root: {},
-    label: {
-        transform: 'translate(0, 1.5px) scale(0.75)',
-        transformOrigin: `top ${theme.direction === 'ltr' ? 'left' : 'right'}`,
-    },
-    checkbox: {
-        height: 32,
-    },
-});
+const styles = theme =>
+    createStyles({
+        root: {},
+        label: {
+            transform: 'translate(0, 1.5px) scale(0.75)',
+            transformOrigin: `top ${
+                theme.direction === 'ltr' ? 'left' : 'right'
+            }`,
+        },
+        checkbox: {
+            height: 32,
+        },
+    });
 
 /**
  * An Input component for a checkbox group, using an array of objects for the options
@@ -125,7 +128,7 @@ export class CheckboxGroupInput extends Component {
             : typeof optionText === 'function'
             ? optionText(choice)
             : get(choice, optionText);
-            
+
         return (
             <FormControlLabel
                 htmlFor={`${id}_${get(choice, optionValue)}`}

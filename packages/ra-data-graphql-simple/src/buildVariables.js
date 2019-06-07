@@ -25,13 +25,13 @@ const sanitizeValue = (type, value) => {
 
 const castType = (value, type) => {
     switch (`${type.kind}:${type.name}`) {
-        case "SCALAR:Int":
+        case 'SCALAR:Int':
             return Number(value);
 
-        case "SCALAR:String":
+        case 'SCALAR:String':
             return String(value);
 
-        case "SCALAR:Boolean":
+        case 'SCALAR:Boolean':
             return Boolean(value);
 
         default:
@@ -68,10 +68,11 @@ const prepareParams = (params, queryType, introspectionResults) => {
             param instanceof Object &&
             !Array.isArray(param) &&
             arg &&
-            arg.type.kind === "INPUT_OBJECT"
+            arg.type.kind === 'INPUT_OBJECT'
         ) {
             const args = introspectionResults.types.find(
-                item => item.kind === arg.type.kind && item.name === arg.type.name
+                item =>
+                    item.kind === arg.type.kind && item.name === arg.type.name
             ).inputFields;
             result[key] = prepareParams(param, { args }, introspectionResults);
             return;
@@ -224,7 +225,11 @@ export default introspectionResults => (
     params,
     queryType
 ) => {
-    const preparedParams = prepareParams(params, queryType, introspectionResults);
+    const preparedParams = prepareParams(
+        params,
+        queryType,
+        introspectionResults
+    );
 
     switch (aorFetchType) {
         case GET_LIST: {

@@ -106,73 +106,75 @@ const sanitizeRestProps = ({
     ...rest
 }) => rest;
 
-export const ListView = withStyles(styles)(({ // component props
-    actions,
-    aside,
-    filter,
-    filters,
-    bulkActions,
-    bulkActionButtons,
-    pagination,
-    children,
-    className,
-    classes,
-    component,
-    exporter,
-    title,
-    ...rest
-}) => {
-    // overridable by user // deprecated
-    const { defaultTitle, version } = rest;
-    const controllerProps = getListControllerProps(rest);
-    const Content = component;
-    return (
-        <div
-            className={classnames('list-page', classes.root, className)}
-            {...sanitizeRestProps(rest)}
-        >
-            <Title title={title} defaultTitle={defaultTitle} />
+export const ListView = withStyles(styles)(
+    ({
+        actions,
+        aside,
+        filter,
+        filters,
+        bulkActions,
+        bulkActionButtons,
+        pagination,
+        children,
+        className,
+        classes,
+        component,
+        exporter,
+        title,
+        ...rest
+    }) => {
+        const { defaultTitle, version } = rest;
+        const controllerProps = getListControllerProps(rest);
+        const Content = component;
+        return (
+            <div
+                className={classnames('list-page', classes.root, className)}
+                {...sanitizeRestProps(rest)}
+            >
+                <Title title={title} defaultTitle={defaultTitle} />
 
-            {(filters || actions) && (
-                <ListToolbar
-                    filters={filters}
-                    {...controllerProps}
-                    actions={actions}
-                    bulkActions={bulkActions}
-                    exporter={exporter}
-                    permanentFilter={filter}
-                />
-            )}
-            <div className={classes.main}>
-                <Content
-                    className={classnames(classes.content, {
-                        [classes.bulkActionsDisplayed]:
-                            controllerProps.selectedIds.length > 0,
-                    })}
-                    key={version}
-                >
-                    {bulkActions !== false &&
-                        bulkActionButtons !== false &&
-                        bulkActionButtons &&
-                        !bulkActions && (
-                            <BulkActionsToolbar {...controllerProps}>
-                                {bulkActionButtons}
-                            </BulkActionsToolbar>
-                        )}
-                    {children &&
-                        cloneElement(Children.only(children), {
-                            ...controllerProps,
-                            hasBulkActions:
-                                bulkActions !== false &&
-                                bulkActionButtons !== false,
+                {(filters || actions) && (
+                    <ListToolbar
+                        filters={filters}
+                        {...controllerProps}
+                        actions={actions}
+                        bulkActions={bulkActions}
+                        exporter={exporter}
+                        permanentFilter={filter}
+                    />
+                )}
+                <div className={classes.main}>
+                    <Content
+                        className={classnames(classes.content, {
+                            [classes.bulkActionsDisplayed]:
+                                controllerProps.selectedIds.length > 0,
                         })}
-                    {pagination && cloneElement(pagination, controllerProps)}
-                </Content>
-                {aside && cloneElement(aside, controllerProps)}
+                        key={version}
+                    >
+                        {bulkActions !== false &&
+                            bulkActionButtons !== false &&
+                            bulkActionButtons &&
+                            !bulkActions && (
+                                <BulkActionsToolbar {...controllerProps}>
+                                    {bulkActionButtons}
+                                </BulkActionsToolbar>
+                            )}
+                        {children &&
+                            cloneElement(Children.only(children), {
+                                ...controllerProps,
+                                hasBulkActions:
+                                    bulkActions !== false &&
+                                    bulkActionButtons !== false,
+                            })}
+                        {pagination &&
+                            cloneElement(pagination, controllerProps)}
+                    </Content>
+                    {aside && cloneElement(aside, controllerProps)}
+                </div>
             </div>
-        </div>
-    );
-});
+        );
+    }
+);
 
 ListView.propTypes = {
     actions: PropTypes.element,

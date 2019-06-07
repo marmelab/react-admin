@@ -127,7 +127,9 @@ export class SaveButton extends Component {
                         thickness={2}
                         className={classes.iconPaddingStyle}
                     />
-                ) : cloneElement(icon, { className: classes.iconPaddingStyle })}
+                ) : (
+                    cloneElement(icon, { className: classes.iconPaddingStyle })
+                )}
                 {label && translate(label, { _: label })}
             </Button>
         );

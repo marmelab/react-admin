@@ -5,12 +5,15 @@ import { FileField } from './FileField';
 
 const defaultProps = {
     classes: {},
-    source: 'url'
+    source: 'url',
 };
 
 describe('<FileField />', () => {
     it('should return an empty div when record is not set', () => {
-        assert.equal(shallow(<FileField {...defaultProps} />).html(), '<div class=""></div>');
+        assert.equal(
+            shallow(<FileField {...defaultProps} />).html(),
+            '<div class=""></div>'
+        );
     });
 
     it('should render a link with correct attributes based on `source` and `title`', () => {
@@ -19,7 +22,7 @@ describe('<FileField />', () => {
                 {...defaultProps}
                 record={{
                     url: 'http://foo.com/bar.jpg',
-                    title: 'Hello world!'
+                    title: 'Hello world!',
                 }}
                 title="title"
             />
@@ -37,8 +40,8 @@ describe('<FileField />', () => {
                 record={{
                     file: {
                         url: 'http://foo.com/bar.jpg',
-                        title: 'Hello world!'
-                    }
+                        title: 'Hello world!',
+                    },
                 }}
                 source="file.url"
                 title="file.title"
@@ -55,7 +58,7 @@ describe('<FileField />', () => {
             <FileField
                 {...defaultProps}
                 record={{
-                    url: 'http://foo.com/bar.jpg'
+                    url: 'http://foo.com/bar.jpg',
                 }}
                 title="Hello world!"
             />
@@ -70,7 +73,7 @@ describe('<FileField />', () => {
             <FileField
                 {...defaultProps}
                 record={{
-                    url: 'http://foo.com/bar.jpg'
+                    url: 'http://foo.com/bar.jpg',
                 }}
                 target="_blank"
             />
@@ -88,13 +91,13 @@ describe('<FileField />', () => {
                     files: [
                         {
                             url: 'http://foo.com/bar.jpg',
-                            title: 'Hello world!'
+                            title: 'Hello world!',
                         },
                         {
                             url: 'http://bar.com/foo.jpg',
-                            title: 'Bye world!'
-                        }
-                    ]
+                            title: 'Bye world!',
+                        },
+                    ],
                 }}
                 source="files"
                 src="url"
@@ -111,9 +114,14 @@ describe('<FileField />', () => {
 
     it('should use custom className', () =>
         assert.deepEqual(
-            shallow(<FileField {...defaultProps} record={{ foo: true }} source="email" className="foo" />).prop(
-                'className'
-            ),
+            shallow(
+                <FileField
+                    {...defaultProps}
+                    record={{ foo: true }}
+                    source="email"
+                    className="foo"
+                />
+            ).prop('className'),
             'foo'
         ));
 });

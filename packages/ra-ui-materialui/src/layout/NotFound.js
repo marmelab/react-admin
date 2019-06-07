@@ -16,27 +16,27 @@ const styles = theme =>
             flexDirection: 'column',
             justifyContent: 'center',
             [theme.breakpoints.up('md')]: {
-                height: '100%'
+                height: '100%',
             },
             [theme.breakpoints.down('sm')]: {
                 height: '100vh',
-                marginTop: '-3em'
-            }
+                marginTop: '-3em',
+            },
         },
         icon: {
             width: '9em',
-            height: '9em'
+            height: '9em',
         },
         message: {
             textAlign: 'center',
             fontFamily: 'Roboto, sans-serif',
             opacity: 0.5,
-            margin: '0 1em'
+            margin: '0 1em',
         },
         toolbar: {
             textAlign: 'center',
-            marginTop: '2em'
-        }
+            marginTop: '2em',
+        },
     });
 
 function goBack() {
@@ -55,7 +55,11 @@ const NotFound = ({ classes, className, title, location, ...rest }) => {
                     <div>{translate('ra.message.not_found')}.</div>
                 </div>
                 <div className={classes.toolbar}>
-                    <Button variant="contained" icon={<History />} onClick={goBack}>
+                    <Button
+                        variant="contained"
+                        icon={<History />}
+                        onClick={goBack}
+                    >
                         {translate('ra.action.back')}
                     </Button>
                 </div>
@@ -68,7 +72,7 @@ NotFound.propTypes = {
     classes: PropTypes.object,
     className: PropTypes.string,
     title: PropTypes.string,
-    location: PropTypes.object
+    location: PropTypes.object,
 };
 
 export default withStyles(styles)(NotFound);

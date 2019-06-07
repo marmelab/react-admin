@@ -8,11 +8,12 @@ import LinearProgress from '../layout/LinearProgress';
 import Link from '../Link';
 import sanitizeRestProps from './sanitizeRestProps';
 
-const styles = theme => createStyles({
-    link: {
-        color: theme.palette.primary.main,
-    },
-});
+const styles = theme =>
+    createStyles({
+        link: {
+            color: theme.palette.primary.main,
+        },
+    });
 
 // useful to prevent click bubbling in a datagrid with rowClick
 const stopPropagation = e => e.stopPropagation();
@@ -120,7 +121,9 @@ const ReferenceField = ({ children, ...props }) => {
         throw new Error('<ReferenceField> only accepts a single child');
     }
 
-    const { isLoading, referenceRecord, resourceLinkPath } = useReference(props);
+    const { isLoading, referenceRecord, resourceLinkPath } = useReference(
+        props
+    );
 
     return (
         <ReferenceFieldView

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import shouldUpdate from 'recompose/shouldUpdate';
 import Queue from '@material-ui/icons/Queue';
 import { Link } from 'react-router-dom';
-import { stringify } from 'query-string'
+import { stringify } from 'query-string';
 
 import Button from './Button';
 

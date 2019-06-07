@@ -33,7 +33,7 @@ const SaveWithNoteButton = props => {
             handleSubmit(values => {
                 dispatch(saveWithNote(values, basePath, redirect));
             }),
-        [basePath, redirect],
+        [basePath, redirect]
     );
 
     return <SaveButton {...props} handleSubmitWithRedirect={handleClick} />;
