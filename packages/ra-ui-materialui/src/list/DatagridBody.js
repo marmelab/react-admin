@@ -81,7 +81,7 @@ DatagridBody.propTypes = {
     row: PropTypes.element,
     rowClick: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
     rowStyle: PropTypes.func,
-    selectedIds: PropTypes.arrayOf(PropTypes.any).isRequired,
+    selectedIds: PropTypes.arrayOf(PropTypes.any),
     styles: PropTypes.object,
     version: PropTypes.number,
 };
