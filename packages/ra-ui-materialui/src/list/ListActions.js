@@ -1,6 +1,5 @@
-import React, { cloneElement } from 'react';
+import React, { cloneElement, useMemo } from 'react';
 import PropTypes from 'prop-types';
-import onlyUpdateForKeys from 'recompose/onlyUpdateForKeys';
 import { sanitizeListRestProps } from 'ra-core';
 
 import TopToolbar from '../layout/TopToolbar';
@@ -23,36 +22,40 @@ const ListActions = ({
     showFilter,
     total,
     ...rest
-}) => (
-    <TopToolbar className={className} {...sanitizeListRestProps(rest)}>
-        {bulkActions &&
-            cloneElement(bulkActions, {
-                basePath,
-                filterValues,
-                resource,
-                selectedIds,
-                onUnselectItems,
-            })}
-        {filters &&
-            cloneElement(filters, {
-                resource,
-                showFilter,
-                displayedFilters,
-                filterValues,
-                context: 'button',
-            })}
-        {hasCreate && <CreateButton basePath={basePath} />}
-        {exporter !== false && (
-            <ExportButton
-                disabled={total === 0}
-                resource={resource}
-                sort={currentSort}
-                filter={{ ...filterValues, ...permanentFilter }}
-                exporter={exporter}
-            />
-        )}
-    </TopToolbar>
-);
+}) =>
+    useMemo(
+        () => (
+            <TopToolbar className={className} {...sanitizeListRestProps(rest)}>
+                {bulkActions &&
+                    cloneElement(bulkActions, {
+                        basePath,
+                        filterValues,
+                        resource,
+                        selectedIds,
+                        onUnselectItems,
+                    })}
+                {filters &&
+                    cloneElement(filters, {
+                        resource,
+                        showFilter,
+                        displayedFilters,
+                        filterValues,
+                        context: 'button',
+                    })}
+                {hasCreate && <CreateButton basePath={basePath} />}
+                {exporter !== false && (
+                    <ExportButton
+                        disabled={total === 0}
+                        resource={resource}
+                        sort={currentSort}
+                        filter={{ ...filterValues, ...permanentFilter }}
+                        exporter={exporter}
+                    />
+                )}
+            </TopToolbar>
+        ),
+        [resource, displayedFilters, filterValues, selectedIds, filters]
+    );
 
 ListActions.propTypes = {
     bulkActions: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
@@ -76,10 +79,4 @@ ListActions.defaultProps = {
     onUnselectItems: () => null,
 };
 
-export default onlyUpdateForKeys([
-    'resource',
-    'filters',
-    'displayedFilters',
-    'filterValues',
-    'selectedIds',
-])(ListActions);
+export default ListActions;
