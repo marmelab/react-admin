@@ -37,6 +37,9 @@ const styles = theme =>
         listWithDrawer: {
             marginRight: 400,
         },
+        drawerPaper: {
+            zIndex: 100,
+        },
     });
 
 class ReviewList extends Component {
