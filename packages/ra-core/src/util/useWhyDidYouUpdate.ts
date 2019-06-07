@@ -1,5 +1,16 @@
 import { useRef, useEffect } from 'react';
 
+/**
+ * Debug hook showing which props updated between two renders
+ * @example
+ *
+ * const MyComponent = React.memo(props => {
+ *   useWhyDidYouUpdate('MyComponent', props);
+ *   return <div...;
+ * });
+ *
+ * @link https://usehooks.com/useWhyDidYouUpdate/
+ */
 export default function useWhyDidYouUpdate(name, props) {
     // Get a mutable ref object where we can store props ...
     // ... for comparison next time this hook runs.
