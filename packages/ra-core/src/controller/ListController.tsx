@@ -65,6 +65,10 @@ interface Props {
     [key: string]: any;
 }
 
+const defaultSort = {
+    field: 'id',
+    order: SORT_ASC,
+};
 /**
  * List page component
  *
@@ -125,10 +129,7 @@ const ListController = (props: Props) => {
         hasCreate,
         location,
         filterDefaultValues,
-        sort = {
-            field: 'id',
-            order: SORT_ASC,
-        },
+        sort = defaultSort,
         perPage = 10,
         filter,
         debounce = 500,
