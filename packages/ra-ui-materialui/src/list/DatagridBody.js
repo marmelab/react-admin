@@ -62,7 +62,7 @@ const DatagridBody = ({
                 )}
             </TableBody>
         ),
-        [version, isLoading, data, JSON.stringify(ids)]
+        [version, isLoading, data, selectedIds, JSON.stringify(ids)]
     );
 
 DatagridBody.propTypes = {
