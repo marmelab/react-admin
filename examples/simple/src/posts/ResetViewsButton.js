@@ -8,21 +8,13 @@ const ResetViewsButton = props => {
     const dispatch = useDispatch();
     const { basePath, resource, selectedIds } = props;
 
-    const handleClick = useCallback(
-        () => {
-            dispatch(
-                startUndoable(
-                    crudUpdateMany(
-                        resource,
-                        selectedIds,
-                        { views: 0 },
-                        basePath,
-                    ),
-                ),
-            );
-        },
-        [basePath, resource, selectedIds],
-    );
+    const handleClick = useCallback(() => {
+        dispatch(
+            startUndoable(
+                crudUpdateMany(resource, selectedIds, { views: 0 }, basePath)
+            )
+        );
+    }, [basePath, resource, selectedIds]);
 
     return (
         <Button label="simple.action.resetViews" onClick={handleClick}>

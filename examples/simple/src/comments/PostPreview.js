@@ -8,7 +8,7 @@ const PostPreview = props => {
             state.admin.resources[props.resource]
                 ? state.admin.resources[props.resource].data[props.id]
                 : null,
-        [props.resource, props.id],
+        [props.resource, props.id]
     );
     const version = useSelector(state => state.admin.ui.viewVersion);
     const isLoading = useSelector(state => state.admin.loading > 0);

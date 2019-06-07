@@ -1,4 +1,9 @@
-import React, { Component, Fragment, isValidElement, cloneElement } from 'react';
+import React, {
+    Component,
+    Fragment,
+    isValidElement,
+    cloneElement,
+} from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { connect } from 'react-redux';

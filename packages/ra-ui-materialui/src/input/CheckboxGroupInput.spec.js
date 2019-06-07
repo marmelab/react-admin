@@ -87,7 +87,6 @@ describe('<CheckboxGroupInput />', () => {
         expect(queryByLabelText('Bar')).not.toBeNull();
     });
 
-    
     it('should use optionText with a string value including "." as text identifier', () => {
         const { queryByLabelText } = render(
             <CheckboxGroupInput

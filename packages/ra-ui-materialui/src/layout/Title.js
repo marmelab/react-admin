@@ -23,7 +23,10 @@ const Title = ({ className, defaultTitle, locale, record, title, ...rest }) => {
     return createPortal(titleElement, container);
 };
 
-export const TitlePropType = PropTypes.oneOfType([PropTypes.string, PropTypes.element]);
+export const TitlePropType = PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.element,
+]);
 
 Title.propTypes = {
     defaultTitle: PropTypes.string,

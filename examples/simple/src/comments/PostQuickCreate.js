@@ -57,7 +57,7 @@ const PostQuickCreate = ({ onCancel, onSave }) => {
                 },
             });
         },
-        [onSave],
+        [onSave]
     );
 
     return (

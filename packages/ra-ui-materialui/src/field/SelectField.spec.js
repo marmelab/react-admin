@@ -96,7 +96,7 @@ describe('<SelectField />', () => {
         );
         expect(queryAllByText('hello')).toHaveLength(1);
     });
-    
+
     it('should use optionText with an element value as text identifier', () => {
         const Foobar = ({ record }) => <span>{record.foobar}</span>;
         const { queryAllByText } = render(

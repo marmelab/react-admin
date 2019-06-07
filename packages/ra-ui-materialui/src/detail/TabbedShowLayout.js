@@ -1,4 +1,9 @@
-import React, { Component, Children, cloneElement, isValidElement } from 'react';
+import React, {
+    Component,
+    Children,
+    cloneElement,
+    isValidElement,
+} from 'react';
 import PropTypes from 'prop-types';
 import Divider from '@material-ui/core/Divider';
 import { withRouter, Route } from 'react-router-dom';
@@ -99,26 +104,24 @@ export class TabbedShowLayout extends Component {
                     },
                     children
                 )}
-                
+
                 <Divider />
                 <CardContentInner>
-                    {Children.map(
-                        children,
-                        (tab, index) =>
-                            tab && isValidElement(tab) ? (
-                                <Route
-                                    exact
-                                    path={getTabFullPath(tab, index, match.url)}
-                                    render={() =>
-                                        cloneElement(tab, {
-                                            context: 'content',
-                                            resource,
-                                            record,
-                                            basePath,
-                                        })
-                                    }
-                                />
-                            ) : null
+                    {Children.map(children, (tab, index) =>
+                        tab && isValidElement(tab) ? (
+                            <Route
+                                exact
+                                path={getTabFullPath(tab, index, match.url)}
+                                render={() =>
+                                    cloneElement(tab, {
+                                        context: 'content',
+                                        resource,
+                                        record,
+                                        basePath,
+                                    })
+                                }
+                            />
+                        ) : null
                     )}
                 </CardContentInner>
             </div>

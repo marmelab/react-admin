@@ -16,7 +16,8 @@ export default url => ({
         viewsColumn: '.datagrid-body tr td:nth-child(7)',
         datagridHeaders: 'th',
         sortBy: name => `th span[data-sort=\"${name}\"]`,
-        svg: (name, criteria = '') => `th span[data-sort=\"${name}\"] svg${criteria}`,
+        svg: (name, criteria = '') =>
+            `th span[data-sort=\"${name}\"] svg${criteria}`,
         logout: '.logout',
         bulkActionsToolbar: '[data-test=bulk-actions-toolbar]',
         customBulkActionsButton:
@@ -107,5 +108,5 @@ export default url => ({
 
     toggleColumnSort(name) {
         cy.get(this.elements.sortBy(name)).click();
-    }
+    },
 });

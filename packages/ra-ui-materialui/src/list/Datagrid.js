@@ -1,4 +1,9 @@
-import React, { Component, isValidElement, Children, cloneElement } from 'react';
+import React, {
+    Component,
+    isValidElement,
+    Children,
+    cloneElement,
+} from 'react';
 import PropTypes from 'prop-types';
 import { sanitizeListRestProps } from 'ra-core';
 import { withStyles, createStyles } from '@material-ui/core/styles';
@@ -13,51 +18,52 @@ import DatagridHeaderCell from './DatagridHeaderCell';
 import DatagridBody from './DatagridBody';
 import DatagridLoading from './DatagridLoading';
 
-const styles = theme => createStyles({
-    table: {
-        tableLayout: 'auto',
-    },
-    thead: {},
-    tbody: {
-        height: 'inherit',
-    },
-    headerRow: {},
-    headerCell: {
-        padding: '0 12px',
-        '&:last-child': {
-            padding: '0 12px',
+const styles = theme =>
+    createStyles({
+        table: {
+            tableLayout: 'auto',
         },
-    },
-    checkbox: {},
-    row: {},
-    clickableRow: {
-        cursor: 'pointer',
-    },
-    rowEven: {},
-    rowOdd: {},
-    rowCell: {
-        padding: '0 12px',
-        '&:last-child': {
-            padding: '0 12px',
+        thead: {},
+        tbody: {
+            height: 'inherit',
         },
-    },
-    expandHeader: {
-        padding: 0,
-        width: 48,
-    },
-    expandIconCell: {
-        width: 48,
-    },
-    expandIcon: {
-        transform: 'rotate(-90deg)',
-        transition: theme.transitions.create('transform', {
-            duration: theme.transitions.duration.shortest,
-        }),
-    },
-    expanded: {
-        transform: 'rotate(0deg)',
-    },
-});
+        headerRow: {},
+        headerCell: {
+            padding: '0 12px',
+            '&:last-child': {
+                padding: '0 12px',
+            },
+        },
+        checkbox: {},
+        row: {},
+        clickableRow: {
+            cursor: 'pointer',
+        },
+        rowEven: {},
+        rowOdd: {},
+        rowCell: {
+            padding: '0 12px',
+            '&:last-child': {
+                padding: '0 12px',
+            },
+        },
+        expandHeader: {
+            padding: 0,
+            width: 48,
+        },
+        expandIconCell: {
+            width: 48,
+        },
+        expandIcon: {
+            transform: 'rotate(-90deg)',
+            transition: theme.transitions.create('transform', {
+                duration: theme.transitions.duration.shortest,
+            }),
+        },
+        expanded: {
+            transform: 'rotate(0deg)',
+        },
+    });
 
 /**
  * The Datagrid component renders a list of records as a table.

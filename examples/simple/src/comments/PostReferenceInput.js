@@ -35,22 +35,19 @@ const PostReferenceInput = props => {
     const [showPreviewDialog, setShowPreviewDialog] = useState(false);
     const [newPostId, setNewPostId] = useState('');
 
-    useEffect(
-        () => {
-            //Refresh the choices of the ReferenceInput to ensure our newly created post
-            // always appear, even after selecting another post
-            dispatch(
-                crudGetMatching(
-                    'posts',
-                    'comments@post_id',
-                    { page: 1, perPage: 25 },
-                    { field: 'id', order: 'DESC' },
-                    {},
-                ),
-            );
-        },
-        [newPostId],
-    );
+    useEffect(() => {
+        //Refresh the choices of the ReferenceInput to ensure our newly created post
+        // always appear, even after selecting another post
+        dispatch(
+            crudGetMatching(
+                'posts',
+                'comments@post_id',
+                { page: 1, perPage: 25 },
+                { field: 'id', order: 'DESC' },
+                {}
+            )
+        );
+    }, [newPostId]);
 
     const handleNewClick = useCallback(event => {
         event.preventDefault();

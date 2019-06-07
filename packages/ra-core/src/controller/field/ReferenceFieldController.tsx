@@ -2,7 +2,6 @@ import { FunctionComponent, ReactNode, ReactElement } from 'react';
 import { Record } from '../../types';
 import useReference, { UseReferenceProps } from './useReference';
 
-
 interface Props {
     allowEmpty?: boolean;
     basePath: string;

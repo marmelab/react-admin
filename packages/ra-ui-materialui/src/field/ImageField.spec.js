@@ -5,12 +5,15 @@ import { ImageField } from './ImageField';
 
 const defaultProps = {
     classes: {},
-    source: 'url'
+    source: 'url',
 };
 
 describe('<ImageField />', () => {
     it('should return an empty div when record is not set', () => {
-        assert.equal(shallow(<ImageField {...defaultProps} />).html(), '<div></div>');
+        assert.equal(
+            shallow(<ImageField {...defaultProps} />).html(),
+            '<div></div>'
+        );
     });
 
     it('should render an image with correct attributes based on `source` and `title`', () => {
@@ -19,7 +22,7 @@ describe('<ImageField />', () => {
                 {...defaultProps}
                 record={{
                     url: 'http://foo.com/bar.jpg',
-                    title: 'Hello world!'
+                    title: 'Hello world!',
                 }}
                 title="title"
             />
@@ -38,8 +41,8 @@ describe('<ImageField />', () => {
                 record={{
                     picture: {
                         url: 'http://foo.com/bar.jpg',
-                        title: 'Hello world!'
-                    }
+                        title: 'Hello world!',
+                    },
                 }}
                 source="picture.url"
                 title="picture.title"
@@ -57,7 +60,7 @@ describe('<ImageField />', () => {
             <ImageField
                 {...defaultProps}
                 record={{
-                    url: 'http://foo.com/bar.jpg'
+                    url: 'http://foo.com/bar.jpg',
                 }}
                 title="Hello world!"
             />
@@ -76,13 +79,13 @@ describe('<ImageField />', () => {
                     pictures: [
                         {
                             url: 'http://foo.com/bar.jpg',
-                            title: 'Hello world!'
+                            title: 'Hello world!',
                         },
                         {
                             url: 'http://bar.com/foo.jpg',
-                            title: 'Bye world!'
-                        }
-                    ]
+                            title: 'Bye world!',
+                        },
+                    ],
                 }}
                 source="pictures"
                 src="url"
@@ -101,9 +104,14 @@ describe('<ImageField />', () => {
 
     it('should use custom className', () =>
         assert.deepEqual(
-            shallow(<ImageField {...defaultProps} source="foo" record={{ foo: true }} className="foo" />).prop(
-                'className'
-            ),
+            shallow(
+                <ImageField
+                    {...defaultProps}
+                    source="foo"
+                    record={{ foo: true }}
+                    className="foo"
+                />
+            ).prop('className'),
             'foo'
         ));
 });
