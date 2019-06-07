@@ -1,4 +1,6 @@
-import buildApolloClient, { buildQuery as buildQueryFactory } from 'ra-data-graphql-simple';
+import buildApolloClient, {
+    buildQuery as buildQueryFactory,
+} from 'ra-data-graphql-simple';
 import { DELETE } from 'ra-core';
 import gql from 'graphql-tag';
 const getGqlResource = resource => {
@@ -42,26 +44,25 @@ const customBuildQuery = introspectionResults => {
                     }
 
                     throw new Error(`Could not delete ${resource}`);
-                }
-            }
+                },
+            };
         }
 
         return buildQuery(type, resource, params);
-    }
-}
+    };
+};
 
 export default () => {
-
     return buildApolloClient({
         clientOptions: {
             uri: 'http://localhost:4000/graphql',
         },
         introspection: {
             operationNames: {
-                [DELETE]: resource => `remove${resource.name}`
-            }
+                [DELETE]: resource => `remove${resource.name}`,
+            },
         },
-        buildQuery: customBuildQuery
+        buildQuery: customBuildQuery,
     }).then(dataProvider => (type, resource, params) =>
         dataProvider(type, getGqlResource(resource), params)
     );

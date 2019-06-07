@@ -53,7 +53,10 @@ describe('<AutocompleteArrayInput />', () => {
     it('should use optionText with a string value as text identifier', () => {
         const wrapper = shallow(
             <AutocompleteArrayInput {...defaultProps} optionText="foobar" />,
-            { context, childContextTypes }
+            {
+                context,
+                childContextTypes,
+            }
         );
 
         // This is necesary because we use the material-ui Popper element which does not includes
@@ -330,7 +333,10 @@ describe('<AutocompleteArrayInput />', () => {
                     {...defaultProps}
                     input={{ value: [], onChange }}
                 />,
-                { context, childContextTypes }
+                {
+                    context,
+                    childContextTypes,
+                }
             );
             wrapper.setProps({
                 choices: [{ id: 'M', name: 'Male' }],
@@ -570,7 +576,7 @@ describe('<AutocompleteArrayInput />', () => {
                 options={{
                     suggestionsContainerProps: {
                         disablePortal: true,
-                    }
+                    },
                 }}
             />,
             { context, childContextTypes }

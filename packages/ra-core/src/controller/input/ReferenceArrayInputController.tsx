@@ -252,7 +252,10 @@ export class UnconnectedReferenceArrayInputController extends Component<Props & 
             referenceSource(resource, source),
             pagination,
             sort,
-            { ...filter, ...defaultFilter }
+            {
+                ...filter,
+                ...defaultFilter,
+            }
         );
     };
 

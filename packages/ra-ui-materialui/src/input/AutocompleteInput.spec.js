@@ -92,7 +92,10 @@ describe('<AutocompleteInput />', () => {
     it('should use optionText with a string value as text identifier', () => {
         const wrapper = shallow(
             <AutocompleteInput {...defaultProps} optionText="foobar" />,
-            { context, childContextTypes }
+            {
+                context,
+                childContextTypes,
+            }
         );
 
         // This is necesary because we use the material-ui Popper element which does not includes
@@ -349,7 +352,10 @@ describe('<AutocompleteInput />', () => {
         it('should show the suggestions when the input value is null and the input is focussed and choices arrived late', () => {
             const wrapper = mount(
                 <AutocompleteInput {...defaultProps} input={{ value: '' }} />,
-                { context, childContextTypes }
+                {
+                    context,
+                    childContextTypes,
+                }
             );
             wrapper.setProps({
                 choices: [
@@ -369,7 +375,10 @@ describe('<AutocompleteInput />', () => {
                     input={{ value: 1 }}
                     setFilter={setFilter}
                 />,
-                { context, childContextTypes }
+                {
+                    context,
+                    childContextTypes,
+                }
             );
             wrapper
                 .find('input')
