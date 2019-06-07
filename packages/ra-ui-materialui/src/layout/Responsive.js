@@ -1,16 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useTheme } from '@material-ui/styles';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
+import withWidth from '@material-ui/core/withWidth';
 
-export const Responsive = ({ xsmall, small, medium, large, ...rest }) => {
-    const theme = useTheme();
-    const width =
-        [...theme.breakpoints.keys].reverse().reduce((output, key) => {
-            // eslint-disable-next-line react-hooks/rules-of-hooks
-            const matches = useMediaQuery(theme.breakpoints.only(key));
-            return !output && matches ? key : output;
-        }, null) || 'xs';
+export const Responsive = ({
+    xsmall,
+    small,
+    medium,
+    large,
+    width,
+    ...rest
+}) => {
     let element;
     switch (width) {
         case 'xs':
@@ -60,6 +59,7 @@ Responsive.propTypes = {
     small: PropTypes.element,
     medium: PropTypes.element,
     large: PropTypes.element,
+    width: PropTypes.string,
 };
 
-export default Responsive;
+export default withWidth()(Responsive);
