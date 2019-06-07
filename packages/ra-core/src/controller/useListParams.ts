@@ -119,6 +119,15 @@ const useListParams = ({
         [resource]
     );
 
+    const requestSignature = [
+        location.search,
+        resource,
+        params,
+        filterDefaultValues,
+        JSON.stringify(sort),
+        perPage,
+    ];
+
     const query = useMemo(
         () =>
             getQuery({
@@ -128,10 +137,8 @@ const useListParams = ({
                 sort,
                 perPage,
             }),
-        [location.search, params, filterDefaultValues, sort, perPage]
+        requestSignature
     );
-
-    const requestSignature = [resource, JSON.stringify(query)];
 
     const changeParams = useCallback(action => {
         const newParams = queryReducer(query, action);
