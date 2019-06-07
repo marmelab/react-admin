@@ -10,7 +10,7 @@ import DatagridCell from './DatagridCell';
 import Filter from './Filter';
 import FilterButton from './FilterButton';
 import FilterForm from './FilterForm';
-import List from './List';
+import List, { ListView } from './List';
 import ListActions from './ListActions';
 import ListGuesser from './ListGuesser';
 import ListToolbar from './ListToolbar';
@@ -33,6 +33,7 @@ export {
     FilterButton,
     FilterForm,
     List,
+    ListView,
     ListActions,
     ListGuesser,
     ListToolbar,
