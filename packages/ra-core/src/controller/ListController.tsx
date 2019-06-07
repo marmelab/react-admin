@@ -1,4 +1,4 @@
-import { isValidElement, ReactNode, ReactElement } from 'react';
+import { isValidElement, ReactNode, ReactElement, useMemo } from 'react';
 import inflection from 'inflection';
 
 import { SORT_ASC } from '../reducer/admin/resource/list/queryReducer';
@@ -172,6 +172,14 @@ const ListController = (props: Props) => {
         queryModifiers.setPage(query.page - 1);
     }
 
+    const currentSort = useMemo(
+        () => ({
+            field: query.sort,
+            order: query.order,
+        }),
+        [query.sort, query.order]
+    );
+
     const resourceName = translate(`resources.${resource}.name`, {
         smart_count: 2,
         _: inflection.humanize(inflection.pluralize(resource)),
@@ -182,10 +190,7 @@ const ListController = (props: Props) => {
 
     return children({
         basePath,
-        currentSort: {
-            field: query.sort,
-            order: query.order,
-        },
+        currentSort,
         data,
         defaultTitle,
         displayedFilters: query.displayedFilters,
