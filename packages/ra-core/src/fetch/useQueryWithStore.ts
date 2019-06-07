@@ -25,7 +25,11 @@ export interface QueryOptions {
  * @see src/reducer/admin/data.ts
  */
 const isEmptyList = data =>
-    data && Object.keys(data).length === 0 && data.hasOwnProperty('fetchedAt');
+    Array.isArray(data)
+        ? data.length === 0
+        : data &&
+          Object.keys(data).length === 0 &&
+          data.hasOwnProperty('fetchedAt');
 
 /**
  * Default cache selector. Allows to cache responses by default.
