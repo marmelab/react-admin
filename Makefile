@@ -107,8 +107,18 @@ prettier: ## prettify the source code using prettier
 test: build test-unit lint test-e2e ## launch all tests
 
 test-unit: ## launch unit tests
-	echo "Running unit tests...";
-	yarn -s test-unit;
+	@if [ "$(CI)" != "true" ]; then \
+		echo "Running unit tests..."; \
+		yarn -s test-unit; \
+	fi
+	@if [ "$(CI)" = "true" ]; then \
+		echo "Running unit tests in CI..."; \
+		yarn -s test-unit-ci; \
+	fi
+
+test-unit-watch: ## launch unit tests and watch for changes
+	echo "Running unit tests in CI..."; \
+	yarn -s test-unit; \
 
 test-e2e: ## launch end-to-end tests
 	@if [ "$(build)" != "false" ]; then \
