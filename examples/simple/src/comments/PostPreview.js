@@ -11,6 +11,7 @@ const PostPreview = props => {
         [props.resource, props.id]
     );
     const version = useSelector(state => state.admin.ui.viewVersion);
+    useSelector(state => state.admin.loading > 0);
 
     return (
         <SimpleShowLayout version={version} record={record} {...props}>
