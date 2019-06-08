@@ -140,21 +140,18 @@ const useListParams = ({
         requestSignature
     );
 
-    const changeParams = useCallback(
-        action => {
-            const newParams = queryReducer(query, action);
-            dispatch(
-                push({
-                    search: `?${stringify({
-                        ...newParams,
-                        filter: JSON.stringify(newParams.filter),
-                    })}`,
-                })
-            );
-            dispatch(changeListParams(resource, newParams));
-        },
-        [query, resource]
-    );
+    const changeParams = useCallback(action => {
+        const newParams = queryReducer(query, action);
+        dispatch(
+            push({
+                search: `?${stringify({
+                    ...newParams,
+                    filter: JSON.stringify(newParams.filter),
+                })}`,
+            })
+        );
+        dispatch(changeListParams(resource, newParams));
+    }, requestSignature);
 
     const setSort = useCallback(
         newSort => changeParams({ type: SET_SORT, payload: { sort: newSort } }),

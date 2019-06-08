@@ -61,7 +61,7 @@ export default (
             return;
         }
         dispatch(initialSort);
-    }, [JSON.stringify(initialSort)]);
+    }, [initialSort.field, initialSort.order]);
 
     return {
         setSort: (field: string) => dispatch(field),
