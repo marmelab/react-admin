@@ -1,0 +1,20 @@
+{
+    "extends": [
+        "react-app",
+        "plugin:prettier/recommended",
+        "prettier/@typescript-eslint",
+        "prettier/babel",
+        "prettier/react"
+    ],
+    "plugins": [
+        "import",
+        "jsx-a11y",
+        "prettier",
+        "react",
+        "react-hooks"
+    ],
+    "rules": {
+        "no-use-before-define": "off",
+        "prettier/prettier": "error"
+    }
+}
