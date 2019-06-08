@@ -117,7 +117,7 @@ test-unit: ## launch unit tests
 	fi
 
 test-unit-watch: ## launch unit tests and watch for changes
-	echo "Running unit tests in CI..."; \
+	echo "Running unit tests..."; \
 	yarn -s test-unit; \
 
 test-e2e: ## launch end-to-end tests
