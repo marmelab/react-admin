@@ -26,8 +26,10 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
+const defaultClasses = {}; // avoid needless updates
+
 const ListToolbar = ({
-    classes = {},
+    classes = defaultClasses,
     filters,
     filterValues, // dynamically set via the UI by the user
     permanentFilter, // set in the List component by the developer
@@ -70,4 +72,4 @@ ListToolbar.propTypes = {
     exporter: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
 };
 
-export default ListToolbar;
+export default React.memo(ListToolbar);

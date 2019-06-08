@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useState, useMemo } from 'react';
 // @ts-ignore
 import { useSelector, useDispatch } from 'react-redux';
 import { parse, stringify } from 'query-string';
@@ -46,6 +46,13 @@ interface Modifiers {
     hideFilter: (filterName: string) => void;
     showFilter: (filterName: string, defaultValue: any) => void;
 }
+
+const emptyObject = {};
+
+const defaultSort = {
+    field: 'id',
+    order: SORT_ASC,
+};
 
 /**
  * Get the list parameters (page, sort, filters) and modifiers.
@@ -100,10 +107,7 @@ const useListParams = ({
     resource,
     location,
     filterDefaultValues,
-    sort = {
-        field: 'id',
-        order: SORT_ASC,
-    },
+    sort = defaultSort,
     perPage = 10,
     debounce = 500,
 }: ListParamsOptions): [Parameters, Modifiers] => {
@@ -115,15 +119,26 @@ const useListParams = ({
         [resource]
     );
 
-    const query = getQuery({
-        location,
+    const requestSignature = [
+        location.search,
+        resource,
         params,
         filterDefaultValues,
-        sort,
+        JSON.stringify(sort),
         perPage,
-    });
+    ];
 
-    const requestSignature = [resource, JSON.stringify(query)];
+    const query = useMemo(
+        () =>
+            getQuery({
+                location,
+                params,
+                filterDefaultValues,
+                sort,
+                perPage,
+            }),
+        requestSignature
+    );
 
     const changeParams = useCallback(action => {
         const newParams = queryReducer(query, action);
@@ -153,7 +168,7 @@ const useListParams = ({
         requestSignature
     );
 
-    const filterValues = query.filter || {};
+    const filterValues = query.filter || emptyObject;
 
     const setFilters = useCallback(
         lodashDebounce(filters => {
