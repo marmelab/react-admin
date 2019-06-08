@@ -111,7 +111,7 @@ const useQuery = (
                     loaded: false,
                 });
             });
-    }, [dataProvider, options, payload, resource, setState, type]); // deep equality, see https://github.com/facebook/react/issues/14476#issuecomment-471199055
+    }, [JSON.stringify({ query, options })]); // deep equality, see https://github.com/facebook/react/issues/14476#issuecomment-471199055
 
     return state;
 };

@@ -101,7 +101,7 @@ const EditController = (props: Props) => {
 
     useEffect(() => {
         dispatch(resetForm(REDUX_FORM_NAME));
-    }, [resource, id, version, dispatch]);
+    }, [resource, id, version]);
 
     const resourceName = translate(`resources.${resource}.name`, {
         smart_count: 1,
@@ -130,7 +130,7 @@ const EditController = (props: Props) => {
                 dispatch(updateAction);
             }
         },
-        [resource, id, record, basePath, undoable, dispatch]
+        [resource, id, record, basePath, undoable]
     );
 
     if (!children) {

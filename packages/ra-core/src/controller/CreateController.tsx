@@ -104,7 +104,7 @@ const CreateController = (props: Props) => {
         (data: Partial<Record>, redirect: RedirectionSideEffect) => {
             dispatch(crudCreate(resource, data, basePath, redirect));
         },
-        [dispatch, resource, basePath]
+        [resource, basePath]
     );
 
     if (!children) {

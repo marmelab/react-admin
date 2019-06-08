@@ -137,7 +137,7 @@ const useListParams = ({
                 sort,
                 perPage,
             }),
-        [filterDefaultValues, location, params, perPage, sort]
+        [requestSignature]
     );
 
     const changeParams = useCallback(
@@ -153,22 +153,22 @@ const useListParams = ({
             );
             dispatch(changeListParams(resource, newParams));
         },
-        [dispatch, query, resource]
+        [query, resource]
     );
 
     const setSort = useCallback(
         newSort => changeParams({ type: SET_SORT, payload: { sort: newSort } }),
-        [changeParams]
+        [requestSignature]
     );
 
     const setPage = useCallback(
         newPage => changeParams({ type: SET_PAGE, payload: newPage }),
-        [changeParams]
+        [requestSignature]
     );
 
     const setPerPage = useCallback(
         newPerPage => changeParams({ type: SET_PER_PAGE, payload: newPerPage }),
-        [changeParams]
+        [requestSignature]
     );
 
     const filterValues = query.filter || emptyObject;
@@ -195,7 +195,7 @@ const useListParams = ({
             const newFilters = removeKey(filterValues, filterName);
             setFilters(newFilters);
         },
-        [filterValues, setFilters]
+        [requestSignature]
     );
 
     const showFilter = useCallback(
@@ -208,7 +208,7 @@ const useListParams = ({
                 });
             }
         },
-        [filterValues, setFilters]
+        [requestSignature]
     );
 
     return [

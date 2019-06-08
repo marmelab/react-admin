@@ -39,7 +39,6 @@ const LogoutWithRef: FunctionComponent<
     const translate = useTranslate();
     const dispatch = useDispatch();
     const logout = useCallback(() => dispatch(userLogout(redirectTo)), [
-        dispatch,
         redirectTo,
     ]);
     return (
