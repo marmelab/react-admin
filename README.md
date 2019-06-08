@@ -191,18 +191,6 @@ or
 yarn test
 ```
 
-To start a full test run without watching changes, call:
-
-```sh
-CI=true make test
-```
-
-or
-
-```sh
-CI=true yarn test
-```
-
 Besides, tests related to the modified files are ran automatically at commit.
 
 When working on the end to end tests, you can leverage [cypress](https://www.cypress.io/) runner by starting the simple example yourself (`make run-simple` or `yarn run-simple`) and starting cypress in another terminal (`make test-e2e-local` or `yarn test-e2e-local`).
