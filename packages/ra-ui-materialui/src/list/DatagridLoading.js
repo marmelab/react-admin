@@ -72,10 +72,10 @@ export default ({
                             className={classes.expandIconCell}
                         >
                             <IconButton
+                                // TODO: add an aria-label
                                 className={classes.expandIcon}
                                 component="div"
                                 aria-hidden="true"
-                                role="expand"
                             >
                                 <ExpandMoreIcon />
                             </IconButton>

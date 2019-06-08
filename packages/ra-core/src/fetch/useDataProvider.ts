@@ -106,7 +106,7 @@ const useDataProvider = () => {
             });
         },
 
-        []
+        [dispatch]
     );
 };
 

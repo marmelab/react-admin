@@ -14,10 +14,6 @@ const styles = theme => ({
 });
 
 export class Filter extends Component {
-    constructor(props) {
-        super(props);
-    }
-
     renderButton() {
         const {
             classes = {},

@@ -1,5 +1,4 @@
 import inflection from 'inflection';
-import { string } from 'prop-types';
 
 interface Args {
     label: string;

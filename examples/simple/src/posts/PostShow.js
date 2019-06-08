@@ -45,7 +45,7 @@ const PostShow = props => (
                         <TextField source="id" />
                         <TextField source="title" />
                         {controllerProps.record &&
-                            controllerProps.record.title ==
+                            controllerProps.record.title ===
                                 'Fusce massa lorem, pulvinar a posuere ut, accumsan ac nisi' && (
                                 <TextField source="teaser" />
                             )}

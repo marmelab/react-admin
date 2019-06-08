@@ -46,6 +46,8 @@ const defaultDataSelector = query => (state: ReduxState) => {
         : undefined;
 };
 
+const defaultTotalSelector = () => null;
+
 /**
  * Fetch the data provider through Redux, return the value from the store.
  *
@@ -103,7 +105,7 @@ const useQueryWithStore = (
 } => {
     const { type, resource, payload } = query;
     const data = useSelector(dataSelector);
-    const total = totalSelector ? useSelector(totalSelector) : null;
+    const total = useSelector(totalSelector || defaultTotalSelector);
     const [state, setState] = useSafeSetState({
         data,
         total,
@@ -136,7 +138,7 @@ const useQueryWithStore = (
                     loaded: false,
                 });
             });
-    }, [JSON.stringify({ query, options })]); // deep equality, see https://github.com/facebook/react/issues/14476#issuecomment-471199055
+    }, [dataProvider, options, payload, resource, setState, type]); // deep equality, see https://github.com/facebook/react/issues/14476#issuecomment-471199055
 
     return state;
 };

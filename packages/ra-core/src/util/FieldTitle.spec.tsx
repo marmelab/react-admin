@@ -1,4 +1,3 @@
-import assert from 'assert';
 import expect from 'expect';
 import { render, cleanup } from 'react-testing-library';
 import React from 'react';
@@ -8,9 +7,6 @@ import renderWithRedux from './renderWithRedux';
 
 describe('FieldTitle', () => {
     afterEach(cleanup);
-
-    const translateMock = dictionary => (term, options) =>
-        dictionary[term] || options._ || '';
 
     it('should return empty span by default', () => {
         const { container } = render(<FieldTitle />);

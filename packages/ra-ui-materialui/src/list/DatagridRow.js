@@ -140,13 +140,13 @@ export class DatagridRow extends Component {
                             className={classes.expandIconCell}
                         >
                             <IconButton
+                                // TODO: add an aria-label
                                 className={classNames(classes.expandIcon, {
                                     [classes.expanded]: expanded,
                                 })}
                                 component="div"
                                 tabIndex={-1}
                                 aria-hidden="true"
-                                role="expand"
                                 onClick={this.handleToggleExpanded}
                             >
                                 <ExpandMoreIcon />
@@ -177,9 +177,10 @@ export class DatagridRow extends Component {
                         ) : null
                     )}
                 </TableRow>
-                {expand && expanded && (
+                {// TODO: add proper aria attributes (aria-expanded)
+                expand && expanded && (
                     <TableRow key={`${id}-expand`}>
-                        <TableCell colSpan={colSpan} role="expand-content">
+                        <TableCell colSpan={colSpan}>
                             {cloneElement(expand, {
                                 record,
                                 basePath,

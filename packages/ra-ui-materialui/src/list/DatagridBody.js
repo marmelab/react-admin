@@ -62,7 +62,24 @@ const DatagridBody = ({
                 )}
             </TableBody>
         ),
-        [version, isLoading, data, selectedIds, JSON.stringify(ids)]
+        [
+            className,
+            rest,
+            ids,
+            row,
+            basePath,
+            classes,
+            rowClick,
+            expand,
+            hasBulkActions,
+            hover,
+            onToggleItem,
+            data,
+            resource,
+            selectedIds,
+            rowStyle,
+            children,
+        ]
     );
 
 DatagridBody.propTypes = {

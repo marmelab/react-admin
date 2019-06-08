@@ -1,4 +1,4 @@
-import React, { Children, ReactElement, createContext, Component } from 'react';
+import React, { Children, ReactElement, Component } from 'react';
 import Polyglot from 'node-polyglot';
 import { connect, MapStateToProps } from 'react-redux';
 import defaultMessages from 'ra-language-english';

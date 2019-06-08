@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, fireEvent, cleanup } from 'react-testing-library';
+import { fireEvent, cleanup } from 'react-testing-library';
 import lolex from 'lolex';
 import TextField from '@material-ui/core/TextField/TextField';
 

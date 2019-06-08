@@ -229,9 +229,9 @@ export class AutocompleteInput extends React.Component {
         switch (method) {
             case 'type':
             case 'escape':
-                {
-                    this.handleMatchSuggestionOrFilter(newValue);
-                }
+                this.handleMatchSuggestionOrFilter(newValue);
+                break;
+            default:
                 break;
         }
     };

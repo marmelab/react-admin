@@ -23,17 +23,17 @@ const useSelectItems = (resource: string) => {
             (newIds: Identifier[]) => {
                 dispatch(setListSelectedIds(resource, newIds));
             },
-            [resource]
+            [dispatch, resource]
         ),
         toggle: useCallback(
             (id: Identifier) => {
                 dispatch(toggleListItem(resource, id));
             },
-            [resource]
+            [dispatch, resource]
         ),
         clearSelection: useCallback(() => {
             dispatch(setListSelectedIds(resource, []));
-        }, [resource]),
+        }, [dispatch, resource]),
     };
     return [selectedIds, selectionModifiers];
 };

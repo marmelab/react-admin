@@ -1,4 +1,4 @@
-import React, { SFC, createElement, ReactElement, cloneElement } from 'react';
+import React, { SFC, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import pure from 'recompose/pure';

@@ -1,5 +1,4 @@
 import React, { ReactNode, SFC } from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { getFormValues, FormName } from 'redux-form';
 import get from 'lodash/get';

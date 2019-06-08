@@ -47,7 +47,7 @@ const PostReferenceInput = props => {
                 {}
             )
         );
-    }, [newPostId]);
+    }, [dispatch, newPostId]);
 
     const handleNewClick = useCallback(event => {
         event.preventDefault();

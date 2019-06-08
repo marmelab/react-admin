@@ -1,5 +1,5 @@
 import expect from 'expect';
-import { call, cancel, delay, fork, put } from 'redux-saga/effects';
+import { cancel, delay, fork, put } from 'redux-saga/effects';
 import { createMockTask } from '@redux-saga/testing-utils';
 
 import { accumulateFactory, finalizeFactory } from './accumulate';

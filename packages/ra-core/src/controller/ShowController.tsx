@@ -73,9 +73,6 @@ interface Props {
 const ShowController = (props: Props) => {
     useCheckMinimumRequiredProps('Show', ['basePath', 'resource'], props);
     const { basePath, children, id, resource } = props;
-    if (!children) {
-        return null;
-    }
     const translate = useTranslate();
     const version = useVersion();
     const { data: record, loading } = useGetOne(resource, id, {
@@ -99,6 +96,9 @@ const ShowController = (props: Props) => {
         id,
         record,
     });
+    if (!children) {
+        return null;
+    }
     return children({
         isLoading: loading,
         defaultTitle,

@@ -137,35 +137,38 @@ const useListParams = ({
                 sort,
                 perPage,
             }),
-        requestSignature
+        [filterDefaultValues, location, params, perPage, sort]
     );
 
-    const changeParams = useCallback(action => {
-        const newParams = queryReducer(query, action);
-        dispatch(
-            push({
-                search: `?${stringify({
-                    ...newParams,
-                    filter: JSON.stringify(newParams.filter),
-                })}`,
-            })
-        );
-        dispatch(changeListParams(resource, newParams));
-    }, requestSignature);
+    const changeParams = useCallback(
+        action => {
+            const newParams = queryReducer(query, action);
+            dispatch(
+                push({
+                    search: `?${stringify({
+                        ...newParams,
+                        filter: JSON.stringify(newParams.filter),
+                    })}`,
+                })
+            );
+            dispatch(changeListParams(resource, newParams));
+        },
+        [dispatch, query, resource]
+    );
 
     const setSort = useCallback(
         newSort => changeParams({ type: SET_SORT, payload: { sort: newSort } }),
-        requestSignature
+        [changeParams]
     );
 
     const setPage = useCallback(
         newPage => changeParams({ type: SET_PAGE, payload: newPage }),
-        requestSignature
+        [changeParams]
     );
 
     const setPerPage = useCallback(
         newPerPage => changeParams({ type: SET_PER_PAGE, payload: newPerPage }),
-        requestSignature
+        [changeParams]
     );
 
     const filterValues = query.filter || emptyObject;
@@ -186,21 +189,27 @@ const useListParams = ({
         requestSignature
     );
 
-    const hideFilter = useCallback((filterName: string) => {
-        setDisplayedFilters({ [filterName]: false });
-        const newFilters = removeKey(filterValues, filterName);
-        setFilters(newFilters);
-    }, requestSignature);
+    const hideFilter = useCallback(
+        (filterName: string) => {
+            setDisplayedFilters({ [filterName]: false });
+            const newFilters = removeKey(filterValues, filterName);
+            setFilters(newFilters);
+        },
+        [filterValues, setFilters]
+    );
 
-    const showFilter = useCallback((filterName: string, defaultValue: any) => {
-        setDisplayedFilters({ [filterName]: true });
-        if (typeof defaultValue !== 'undefined') {
-            setFilters({
-                ...filterValues,
-                [filterName]: defaultValue,
-            });
-        }
-    }, requestSignature);
+    const showFilter = useCallback(
+        (filterName: string, defaultValue: any) => {
+            setDisplayedFilters({ [filterName]: true });
+            if (typeof defaultValue !== 'undefined') {
+                setFilters({
+                    ...filterValues,
+                    [filterName]: defaultValue,
+                });
+            }
+        },
+        [filterValues, setFilters]
+    );
 
     return [
         {

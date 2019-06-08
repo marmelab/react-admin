@@ -54,7 +54,7 @@ const ListActions = ({
                 )}
             </TopToolbar>
         ),
-        [resource, displayedFilters, filterValues, selectedIds, filters, total]
+        [resource, displayedFilters, filterValues, selectedIds, filters, total] // eslint-disable-line react-hooks/exhaustive-deps
     );
 
 ListActions.propTypes = {
