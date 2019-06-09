@@ -98,7 +98,7 @@ serve-github-pages: ## Serve the doc from a Github Pages docker container
 
 lint: ## lint the code and check coding conventions
 	@echo "Running linter..."
-	@yarn -s tslint 'packages/*/src/**/*.*s'
+	@yarn -s lint
 
 prettier: ## prettify the source code using prettier
 	@echo "Running prettier..."

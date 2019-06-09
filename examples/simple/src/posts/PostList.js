@@ -48,11 +48,13 @@ const PostFilter = props => (
     </Filter>
 );
 
-const exporter = (posts) => {
+const exporter = posts => {
     const data = posts.map(post => ({
         ...post,
-        backlinks: lodashGet(post, 'backlinks', []).map(backlink => backlink.url),
-    }))
+        backlinks: lodashGet(post, 'backlinks', []).map(
+            backlink => backlink.url
+        ),
+    }));
     return downloadCSV(convertToCSV({ data }), 'posts');
 };
 

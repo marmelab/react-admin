@@ -1,10 +1,10 @@
 import assert from 'assert';
 
 import { DELETE, DELETE_MANY } from '../../../dataFetchActions';
-
-jest.mock('../../../util/getFetchedAt');
 import getFetchedAt from '../../../util/getFetchedAt';
 import dataReducer, { addRecords } from './data';
+
+jest.mock('../../../util/getFetchedAt');
 
 describe('data addRecordsFactory', () => {
     it('should call getFetchedAt with newRecords ids and oldRecordFetchedAt and return records returned by getFetchedAt', () => {

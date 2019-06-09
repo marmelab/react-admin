@@ -1,7 +1,6 @@
 {
   "*.{js,jsx,ts,tsx}": [
-      "prettier",
-      "tslint --fix",
+      "eslint --fix",
       "git add",
       "jest --findRelatedTests"
     ]
