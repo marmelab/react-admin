@@ -223,7 +223,7 @@ describe('List Page', () => {
                 .should(el => expect(el).to.have.attr('aria-expanded', 'true'))
                 .should(el => expect(el).to.have.attr('aria-label', 'Close'));
 
-            cy.get('#13-expand').should(el => expect(el).to.exist);
+            cy.get('#12-expand').should(el => expect(el).to.exist);
         });
     });
 
