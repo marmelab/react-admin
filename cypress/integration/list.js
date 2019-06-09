@@ -194,30 +194,36 @@ describe('List Page', () => {
     describe('expand panel', () => {
         it('should show an expand button opening the expand element', () => {
             cy.contains('1-10 of 13'); // wait for data
-            cy.get('[role="expand"]')
+            cy.get('[aria-label="Expand"]')
                 .eq(0)
-                .click();
-            cy.get('[role="expand-content"]').should(el =>
+                .click()
+                .should(el => expect(el).to.have.attr('aria-expanded', 'true'))
+                .should(el => expect(el).to.have.attr('aria-label', 'Close'));
+
+            cy.get('#13-expand').should(el =>
                 expect(el).to.contain(
                     'Curabitur eu odio ullamcorper, pretium sem at, blandit libero. Nulla sodales facilisis libero, eu gravida tellus ultrices nec. In ut gravida mi. Vivamus finibus tortor tempus egestas lacinia. Cras eu arcu nisl. Donec pretium dolor ipsum, eget feugiat urna iaculis ut.'
                 )
-            );
-            cy.get('.datagrid-body').should(el =>
-                expect(el).to.not.contain('[role="expand-content"]')
             );
         });
 
         it('should accept multiple expands', () => {
             cy.contains('1-10 of 13'); // wait for data
-            cy.get('[role="expand"]')
+            cy.get('[aria-label="Expand"]')
                 .eq(0)
-                .click();
-            cy.get('[role="expand"]')
-                .eq(1)
-                .click();
-            cy.get('[role="expand-content"]').should(el =>
-                expect(el).to.have.length(2)
-            );
+                .click()
+                .should(el => expect(el).to.have.attr('aria-expanded', 'true'))
+                .should(el => expect(el).to.have.attr('aria-label', 'Close'));
+
+            cy.get('#13-expand').should(el => expect(el).to.exist);
+
+            cy.get('[aria-label="Expand"]')
+                .eq(0) // We still targets the first button labeled Expand because the previous one should now have a Close label
+                .click()
+                .should(el => expect(el).to.have.attr('aria-expanded', 'true'))
+                .should(el => expect(el).to.have.attr('aria-label', 'Close'));
+
+            cy.get('#13-expand').should(el => expect(el).to.exist);
         });
     });
 
