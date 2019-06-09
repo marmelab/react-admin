@@ -14,7 +14,7 @@ import { linkToRecord } from 'ra-core';
 import classNames from 'classnames';
 
 import DatagridCell from './DatagridCell';
-import ExpandRowButton from '../button/ExpandRowButton';
+import ExpandRowButton from './ExpandRowButton';
 
 const sanitizeRestProps = ({
     basePath,
