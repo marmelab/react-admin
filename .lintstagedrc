@@ -2,6 +2,6 @@
   "*.{js,jsx,ts,tsx}": [
       "eslint --fix",
       "git add",
-      "jest --findRelatedTests"
+      "cross-env BABEL_ENV=cjs NODE_ICU_DATA=node_modules/full-icu jest --findRelatedTests"
     ]
 }

@@ -23,6 +23,8 @@ module.exports = {
             show: 'Afficher',
             sort: 'Trier',
             undo: 'Annuler',
+            expand: 'Étendre',
+            close: 'Close',
         },
         boolean: {
             true: 'Oui',

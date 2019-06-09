@@ -135,6 +135,7 @@ class DatagridRow extends Component {
                                 classes={classes}
                                 expanded={expanded}
                                 expandContentId={`${id}-expand`}
+                                onClick={this.handleToggleExpanded}
                             />
                         </TableCell>
                     )}
