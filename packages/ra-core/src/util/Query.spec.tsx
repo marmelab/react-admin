@@ -2,7 +2,6 @@ import React from 'react';
 import {
     render,
     cleanup,
-    fireEvent,
     // @ts-ignore
     waitForDomChange,
 } from 'react-testing-library';

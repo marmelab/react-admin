@@ -1,5 +1,4 @@
 import React, { SFC } from 'react';
-import inflection from 'inflection';
 import pure from 'recompose/pure';
 import compose from 'recompose/compose';
 

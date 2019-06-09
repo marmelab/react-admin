@@ -78,7 +78,9 @@ export class RichTextInput extends Component {
 
     onTextChange = debounce(() => {
         const value =
-            this.editor.innerHTML == '<p><br></p>' ? '' : this.editor.innerHTML;
+            this.editor.innerHTML === '<p><br></p>'
+                ? ''
+                : this.editor.innerHTML;
         this.lastValueChange = value;
         this.props.input.onChange(value);
     }, 500);
@@ -96,7 +98,11 @@ export class RichTextInput extends Component {
                 className="ra-rich-text-input"
             >
                 <div data-testid="quill" ref={this.updateDivRef} />
-                {touched && error && <FormHelperText error className="ra-rich-text-input-error">{error}</FormHelperText>}
+                {touched && error && (
+                    <FormHelperText error className="ra-rich-text-input-error">
+                        {error}
+                    </FormHelperText>
+                )}
                 {helperText && <FormHelperText>{helperText}</FormHelperText>}
             </FormControl>
         );

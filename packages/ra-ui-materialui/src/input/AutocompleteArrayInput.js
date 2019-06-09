@@ -209,13 +209,8 @@ export class AutocompleteArrayInput extends React.Component {
         this.updateFilter(inputValue);
     };
     handleChange = (event, { newValue, method }) => {
-        switch (method) {
-            case 'type':
-            case 'escape':
-                {
-                    this.handleMatchSuggestionOrFilter(newValue);
-                }
-                break;
+        if (['type', 'escape'].includes(method)) {
+            this.handleMatchSuggestionOrFilter(newValue);
         }
     };
 

@@ -127,7 +127,7 @@ const buildGetListVariables = introspectionResults => (
         const parts = key.split('.');
 
         if (parts.length > 1) {
-            if (parts[1] == 'id') {
+            if (parts[1] === 'id') {
                 const type = introspectionResults.types.find(
                     t => t.name === `${resource.type.name}Filter`
                 );
@@ -240,24 +240,20 @@ export default introspectionResults => (
                 queryType
             );
         }
-
         case GET_MANY:
             return {
                 filter: { ids: preparedParams.ids },
             };
-
         case GET_MANY_REFERENCE: {
             const parts = preparedParams.target.split('.');
             return {
                 filter: { [`${parts[0]}Id`]: preparedParams.id },
             };
         }
-
         case GET_ONE:
             return {
                 id: preparedParams.id,
             };
-
         case UPDATE: {
             return buildCreateUpdateVariables(introspectionResults)(
                 resource,
@@ -266,7 +262,6 @@ export default introspectionResults => (
                 queryType
             );
         }
-
         case CREATE: {
             return buildCreateUpdateVariables(introspectionResults)(
                 resource,
@@ -275,10 +270,11 @@ export default introspectionResults => (
                 queryType
             );
         }
-
         case DELETE:
             return {
                 id: preparedParams.id,
             };
+        default:
+            console.log('Unknown fetch verb');
     }
 };

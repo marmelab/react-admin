@@ -86,7 +86,7 @@ DatagridBody.defaultProps = {
 };
 
 const areArraysEqual = (arr1, arr2) =>
-    arr1.length == arr2.length && arr1.every((v, i) => v === arr2[i]);
+    arr1.length === arr2.length && arr1.every((v, i) => v === arr2[i]);
 
 const PureDatagridBody = shouldUpdate(
     (props, nextProps) =>
