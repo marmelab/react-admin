@@ -1,6 +1,5 @@
 import React from 'react';
 import assert from 'assert';
-import { render } from 'react-testing-library';
 
 import ReferenceManyFieldController from './ReferenceManyFieldController';
 import renderWithRedux from '../../util/renderWithRedux';

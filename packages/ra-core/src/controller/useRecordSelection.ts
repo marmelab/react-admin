@@ -23,17 +23,17 @@ const useSelectItems = (resource: string) => {
             (newIds: Identifier[]) => {
                 dispatch(setListSelectedIds(resource, newIds));
             },
-            [resource]
+            [resource] // eslint-disable-line react-hooks/exhaustive-deps
         ),
         toggle: useCallback(
             (id: Identifier) => {
                 dispatch(toggleListItem(resource, id));
             },
-            [resource]
+            [resource] // eslint-disable-line react-hooks/exhaustive-deps
         ),
         clearSelection: useCallback(() => {
             dispatch(setListSelectedIds(resource, []));
-        }, [resource]),
+        }, [resource]), // eslint-disable-line react-hooks/exhaustive-deps
     };
     return [selectedIds, selectionModifiers];
 };

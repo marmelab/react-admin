@@ -104,7 +104,7 @@ const CreateController = (props: Props) => {
         (data: Partial<Record>, redirect: RedirectionSideEffect) => {
             dispatch(crudCreate(resource, data, basePath, redirect));
         },
-        [resource, basePath]
+        [resource, basePath] // eslint-disable-line react-hooks/exhaustive-deps
     );
 
     if (!children) {

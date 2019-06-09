@@ -87,7 +87,7 @@ export const getReferences = (state: ReduxState, reference, relatedTo) => {
             const resource = state.admin.resources[reference];
 
             if (!resource) {
-                return;
+                return undefined;
             }
 
             return resource.data[id];
@@ -124,7 +124,7 @@ export const getReferencesByIds = (
             const resource = state.admin.resources[reference];
 
             if (!resource) {
-                return;
+                return undefined;
             }
 
             return resource.data[id];
