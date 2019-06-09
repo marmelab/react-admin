@@ -1,11 +1,27 @@
-import React from 'react';
+import React, { SFC } from 'react';
 import IconButton from '@material-ui/core/IconButton';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import classNames from 'classnames';
-import { useTranslate } from 'ra-core';
+import { withTranslate, Translate } from 'ra-core';
 
-const ExpandRowButton = ({ classes, expanded, expandContentId, ...props }) => {
-    const translate = useTranslate();
+interface Props {
+    classes: {
+        expandIcon: string;
+        expanded: string;
+    };
+    expanded: boolean;
+    expandContentId: string;
+    translate: Translate;
+    locale: string;
+}
+
+const ExpandRowButton: SFC<Props> = ({
+    classes,
+    expanded,
+    expandContentId,
+    translate,
+    ...props
+}) => {
     return (
         <IconButton
             aria-label={translate(
@@ -26,4 +42,4 @@ const ExpandRowButton = ({ classes, expanded, expandContentId, ...props }) => {
     );
 };
 
-export default ExpandRowButton;
+export default withTranslate<Props>(ExpandRowButton);
