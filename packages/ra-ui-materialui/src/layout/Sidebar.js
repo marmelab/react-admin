@@ -6,11 +6,8 @@ import Drawer from '@material-ui/core/Drawer';
 import { withStyles, createStyles } from '@material-ui/core/styles';
 import withWidth from '@material-ui/core/withWidth';
 import { setSidebarVisibility } from 'ra-core';
-
+import lodashGet from 'lodash/get';
 import Responsive from './Responsive';
-
-export const DRAWER_WIDTH = 240;
-export const CLOSED_DRAWER_WIDTH = 55;
 
 const styles = theme =>
     createStyles({
@@ -18,7 +15,9 @@ const styles = theme =>
             position: 'relative',
             height: 'auto',
             overflowX: 'hidden',
-            width: props => props.open ? theme.sidebar.width : theme.sidebar.closedWidth,
+            width: props => props.open
+                ? lodashGet(theme, 'sidebar.width', DRAWER_WIDTH)
+                : lodashGet(theme, 'sidebar.closedWidth', CLOSED_DRAWER_WIDTH),
             transition: theme.transitions.create('width', {
                 easing: theme.transitions.easing.sharp,
                 duration: theme.transitions.duration.leavingScreen,

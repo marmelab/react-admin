@@ -269,7 +269,7 @@ export const PostList = (props) => (
 Material UI also supports [complete theming](http://www.material-ui.com/#/customization/themes) out of the box. Material UI ships two base themes: light and dark. React-admin uses the light one by default. To use the dark one, pass it to the `<Admin>` component, in the `theme` prop (along with `createMuiTheme()`).
 
 ```jsx
-import { createMuiTheme } from 'react-admin';
+import { createMuiTheme } from '@material-ui/core/styles';
 
 const theme = createMuiTheme({
   palette: {
@@ -284,8 +284,6 @@ const App = () => (
 );
 ```
 
-Note that we use `createMuiTheme` from `react-admin`. This ensures your theme contains the custom values needed for some `react-admin` components such as the `<SideBar>`.
-
 ![Dark theme](./img/dark-theme.png)
 
 ## Writing a Custom Theme
@@ -293,7 +291,7 @@ Note that we use `createMuiTheme` from `react-admin`. This ensures your theme co
 If you need more fine tuning, you'll need to write your own `theme` object, following [Material UI themes documentation](https://material-ui.com/customization/themes/). Material UI merges custom theme objects with the default theme.
 
 ```jsx
-import { createMuiTheme } from 'react-admin';
+import { createMuiTheme } from '@material-ui/core/styles';
 import indigo from '@material-ui/core/colors/indigo';
 import pink from '@material-ui/core/colors/pink';
 import red from '@material-ui/core/colors/red';
@@ -339,9 +337,7 @@ The `myTheme` object contains the following keys:
 * `transitions`
 * `spacing`
 * `zIndex`
-* `sidebar.width`
-* `sidebar.closedWidth`
-
+* 
 **Tip**: Check [Material UI default theme documentation](https://material-ui.com/customization/default-theme/) to see the default values and meaning for these keys.
 
 Once your theme is defined, pass it to the `<Admin>` component, in the `theme` prop.
@@ -448,7 +444,7 @@ const MyAppBar = props => <AppBar {...props} userMenu={MyUserMenu} />;
 You can specify the `Sidebar` width by setting the `width` and `closedWidth` property on your custom material-ui them:
 
 ```jsx
-import { createMuiTheme } from 'react-admin';
+import { createMuiTheme } from '@material-ui/core/styles';
 
 const theme = createMuiTheme({
     sidebar: {

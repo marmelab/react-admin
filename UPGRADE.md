@@ -195,7 +195,7 @@ The `<SideBar>` component used to accept `size` and `closedSize` prop to control
 You can now customize those values by providing a custom material-ui theme.
 
 ```jsx
-import { createMuiTheme } from 'react-admin';
+import { createMuiTheme } from '@material-ui/core/styles';
 
 const theme = createMuiTheme({
     sidebar: {
