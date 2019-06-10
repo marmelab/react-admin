@@ -269,7 +269,7 @@ export const PostList = (props) => (
 Material UI also supports [complete theming](http://www.material-ui.com/#/customization/themes) out of the box. Material UI ships two base themes: light and dark. React-admin uses the light one by default. To use the dark one, pass it to the `<Admin>` component, in the `theme` prop (along with `createMuiTheme()`).
 
 ```jsx
-import { createMuiTheme } from '@material-ui/core/styles';
+import { createMuiTheme } from 'react-admin';
 
 const theme = createMuiTheme({
   palette: {
@@ -284,6 +284,8 @@ const App = () => (
 );
 ```
 
+Note that we use `createMuiTheme` from `react-admin`. This ensures your theme contains the custom values needed for some `react-admin` components such as the `<SideBar>`.
+
 ![Dark theme](./img/dark-theme.png)
 
 ## Writing a Custom Theme
@@ -291,7 +293,7 @@ const App = () => (
 If you need more fine tuning, you'll need to write your own `theme` object, following [Material UI themes documentation](https://material-ui.com/customization/themes/). Material UI merges custom theme objects with the default theme.
 
 ```jsx
-import { createMuiTheme } from '@material-ui/core/styles';
+import { createMuiTheme } from 'react-admin';
 import indigo from '@material-ui/core/colors/indigo';
 import pink from '@material-ui/core/colors/pink';
 import red from '@material-ui/core/colors/red';
@@ -324,7 +326,7 @@ const myTheme = createMuiTheme({
 });
 ```
 
-The `muiTheme` object contains the following keys:
+The `myTheme` object contains the following keys:
 
 * `breakpoints`
 * `direction`
@@ -337,6 +339,8 @@ The `muiTheme` object contains the following keys:
 * `transitions`
 * `spacing`
 * `zIndex`
+* `sidebar.width`
+* `sidebar.closedWidth`
 
 **Tip**: Check [Material UI default theme documentation](https://material-ui.com/customization/default-theme/) to see the default values and meaning for these keys.
 
@@ -441,17 +445,23 @@ const MyAppBar = props => <AppBar {...props} userMenu={MyUserMenu} />;
 
 ### Sidebar Customization
 
-You can specify the `Sidebar` size by setting the `size` property:
+You can specify the `Sidebar` width by setting the `width` and `closedWidth` property on your custom material-ui them:
 
 ```jsx
-import { Sidebar } from 'react-admin';
+import { createMuiTheme } from 'react-admin';
 
-const MySidebar = props => <Sidebar {...props} size={200} />;
-const MyLayout = props => <Layout
-    {...props}
-    sidebar={MySidebar}
-/>;
+const theme = createMuiTheme({
+    sidebar: {
+        width: 300, // The default value is 240
+        closedWidth: 70, // The default value is 55
+    },
+});
 
+const App = () => (
+    <Admin theme={theme} dataProvider={simpleRestProvider('http://path.to.my.api')}>
+        // ...
+    </Admin>
+);
 ```
 
 ### Layout From Scratch

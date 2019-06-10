@@ -12,4 +12,8 @@ export default {
             fontWeight: 400,
         },
     },
+    sidebar: {
+        width: 240,
+        closedWidth: 55,
+    },
 };
