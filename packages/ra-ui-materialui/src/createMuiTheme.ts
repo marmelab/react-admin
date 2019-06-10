@@ -8,4 +8,3 @@ const createMuiTheme = customTheme => {
 };
 
 export default createMuiTheme;
-
