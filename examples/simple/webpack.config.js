@@ -2,7 +2,8 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 const IgnoreNotFoundExportPlugin = require('ignore-not-found-export-plugin');
-
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+ 
 module.exports = {
     devtool: 'cheap-module-source-map',
     module: {
@@ -31,6 +32,7 @@ module.exports = {
             'RedirectionSideEffect',
             'RefreshSideEffect',
         ]),
+        new BundleAnalyzerPlugin(),
     ],
     resolve: {
         extensions: ['.ts', '.js', '.tsx', '.json'],
