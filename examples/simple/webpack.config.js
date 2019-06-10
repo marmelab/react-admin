@@ -32,8 +32,9 @@ module.exports = {
             'RedirectionSideEffect',
             'RefreshSideEffect',
         ]),
-        new BundleAnalyzerPlugin(),
-    ],
+    ].concat(
+        process.env.NODE_ENV === 'development' ? [new BundleAnalyzerPlugin()] : [],
+    ),
     resolve: {
         extensions: ['.ts', '.js', '.tsx', '.json'],
         alias: {
