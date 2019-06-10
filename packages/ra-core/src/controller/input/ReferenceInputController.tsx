@@ -7,16 +7,16 @@ import {
     useEffect,
     useRef,
 } from 'react';
-import { connect } from 'react-redux';
+// @ts-ignore
+import { useSelector, useDispatch } from 'react-redux';
 import debounce from 'lodash/debounce';
-import compose from 'recompose/compose';
 import { createSelector } from 'reselect';
 import { WrappedFieldInputProps } from 'redux-form';
 import isEqual from 'lodash/isEqual';
 
 import {
-    crudGetManyAccumulate as crudGetManyAccumulateAction,
-    crudGetMatchingAccumulate as crudGetMatchingAccumulateAction,
+    crudGetManyAccumulate,
+    crudGetMatchingAccumulate,
 } from '../../actions/accumulateActions';
 import {
     getPossibleReferences,
@@ -24,9 +24,8 @@ import {
     getReferenceResource,
 } from '../../reducer';
 import { getStatusForInput as getDataStatus } from './referenceDataStatus';
-import withTranslate from '../../i18n/translate';
-import { Sort, Translate, Record, Pagination, Dispatch } from '../../types';
-import { MatchingReferencesError } from './types';
+import useTranslate from '../../i18n/useTranslate';
+import { Sort, Record, Pagination, Dispatch } from '../../types';
 import usePaginationState from '../usePaginationState';
 import useSortState from '../useSortState';
 
@@ -61,15 +60,7 @@ interface Props {
     resource: string;
     sort?: Sort;
     source: string;
-}
-
-interface EnhancedProps {
-    crudGetMatchingAccumulate: Dispatch<typeof crudGetMatchingAccumulateAction>;
-    crudGetManyAccumulate: Dispatch<typeof crudGetManyAccumulateAction>;
-    matchingReferences?: Record[] | MatchingReferencesError;
     onChange: () => void;
-    referenceRecord?: Record;
-    translate: Translate;
 }
 
 const usePrevious = value => {
@@ -192,25 +183,36 @@ const useFilterState = ({
  *     <SelectInput optionText="title" />
  * </ReferenceInput>
  */
-export const UnconnectedReferenceInputController: FunctionComponent<
-    Props & EnhancedProps
-> = ({
+export const ReferenceInputController: FunctionComponent<Props> = ({
     input,
-    referenceRecord,
-    matchingReferences,
     onChange,
     children,
-    translate,
     perPage,
     filter: initialFilter,
-    crudGetManyAccumulate,
     reference,
-    crudGetMatchingAccumulate,
     filterToQuery,
-    referenceSource,
+    referenceSource = defaultReferenceSource,
     resource,
     source,
 }) => {
+    const translate = useTranslate();
+    const dispatch = useDispatch();
+    const matchingReferences = useSelector(
+        getMatchingReferences({
+            referenceSource,
+            input,
+            reference,
+            resource,
+            source,
+        }),
+        [input.value, referenceSource, reference, source, resource]
+    );
+
+    const referenceRecord = useSelector(
+        getSelectedeference({ input, reference }),
+        [input.value, reference]
+    );
+
     const dataStatus = getDataStatus({
         input,
         matchingReferences,
@@ -228,7 +230,7 @@ export const UnconnectedReferenceInputController: FunctionComponent<
     useEffect(
         () =>
             fetchReference({
-                crudGetManyAccumulate,
+                dispatch,
                 id: input.value,
                 reference,
             }),
@@ -238,7 +240,7 @@ export const UnconnectedReferenceInputController: FunctionComponent<
     useEffect(
         () =>
             fetchOptions({
-                crudGetMatchingAccumulate,
+                dispatch,
                 filter,
                 reference,
                 referenceSource,
@@ -275,14 +277,14 @@ export const UnconnectedReferenceInputController: FunctionComponent<
     }) as ReactElement;
 };
 
-const fetchReference = ({ crudGetManyAccumulate, id, reference }) => {
+const fetchReference = ({ dispatch, id, reference }) => {
     if (id) {
-        crudGetManyAccumulate(reference, [id]);
+        dispatch(crudGetManyAccumulate(reference, [id]));
     }
 };
 
 const fetchOptions = ({
-    crudGetMatchingAccumulate,
+    dispatch,
     filter,
     reference,
     referenceSource,
@@ -291,45 +293,36 @@ const fetchOptions = ({
     pagination,
     sort,
 }) => {
-    crudGetMatchingAccumulate(
-        reference,
-        referenceSource(resource, source),
-        pagination,
-        sort,
-        filter
+    dispatch(
+        crudGetMatchingAccumulate(
+            reference,
+            referenceSource(resource, source),
+            pagination,
+            sort,
+            filter
+        )
     );
 };
 
-const makeMapStateToProps = () =>
-    createSelector(
-        [
-            getReferenceResource,
-            getPossibleReferenceValues,
-            (_, props) => props.input.value,
-        ],
-        (referenceState, possibleValues, inputId) => ({
-            matchingReferences: getPossibleReferences(
-                referenceState,
-                possibleValues,
-                [inputId]
-            ),
-            referenceRecord: referenceState && referenceState.data[inputId],
-        })
-    );
+const matchingReferencesSelector = createSelector(
+    [
+        getReferenceResource,
+        getPossibleReferenceValues,
+        (_, props) => props.input.value,
+    ],
+    (referenceState, possibleValues, inputId) =>
+        getPossibleReferences(referenceState, possibleValues, [inputId])
+);
 
-const ReferenceInputController = compose(
-    withTranslate,
-    connect(
-        makeMapStateToProps(),
-        {
-            crudGetManyAccumulate: crudGetManyAccumulateAction,
-            crudGetMatchingAccumulate: crudGetMatchingAccumulateAction,
-        }
-    )
-)(UnconnectedReferenceInputController);
+const getMatchingReferences = props => state =>
+    matchingReferencesSelector(state, props);
 
-ReferenceInputController.defaultProps = {
-    referenceSource: defaultReferenceSource, // used in makeMapStateToProps
-};
+const selectedReferenceSelector = createSelector(
+    [getReferenceResource, (_, props) => props.input.value],
+    (referenceState, inputId) => referenceState && referenceState.data[inputId]
+);
+
+const getSelectedeference = props => state =>
+    selectedReferenceSelector(state, props);
 
 export default ReferenceInputController as ComponentType<Props>;
