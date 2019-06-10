@@ -9,6 +9,9 @@ import { setSidebarVisibility } from 'ra-core';
 import lodashGet from 'lodash/get';
 import Responsive from './Responsive';
 
+export const DRAWER_WIDTH = 240;
+export const CLOSED_DRAWER_WIDTH = 55;
+
 const styles = theme =>
     createStyles({
         drawerPaper: {
