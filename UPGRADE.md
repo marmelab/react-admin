@@ -163,3 +163,27 @@ Components deprecated in 2.X have been removed in 3.x. This includes:
 * `ViewTitle` (use `Title` instead)
 * `RecordTitle` (use `TitleForRecord` instead)
 * `TitleDeprecated` (use `Title` instead)
+
+## Replace papaparse with a lighter library
+
+React-admin used to bundle the `papaparse` library for converting JSON to CSV. But 90% of the `papaparse` code is used to convert CSV to JSON. 
+
+We decided to replace it by a lighter library: [jsonexport](https://github.com/kauegimenes/jsonexport).
+
+If you had custom exporter on `List` components, here's how to migrate:
+
+```diff
+-import { unparse as convertToCSV } from 'papaparse/papaparse.min';
++import jsonExport from 'jsonexport/dist';
+
+-const csv = convertToCSV({
+-    data: postsForExport,
+-    fields: ['id', 'title', 'author_name', 'body']
+-});
+-downloadCSV(csv, 'posts');
++jsonExport(postsForExport, {
++    headers: ['id', 'title', 'author_name', 'body']
++}, (err, csv) => {
++    downloadCSV(csv, 'posts');
++});
+```
