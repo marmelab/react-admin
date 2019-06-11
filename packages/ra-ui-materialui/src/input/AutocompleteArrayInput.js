@@ -131,7 +131,7 @@ export class AutocompleteArrayInput extends React.Component {
     componentWillMount() {
         this.setState({
             inputValue: this.getInputValue(this.props.input.value),
-            suggestions: this.props.choices,
+            suggestions: this.limitSuggestions(this.props.choices),
         });
     }
 
@@ -141,19 +141,19 @@ export class AutocompleteArrayInput extends React.Component {
             this.setState({
                 inputValue: this.getInputValue(input.value),
                 dirty: false,
-                suggestions: this.props.choices,
+                suggestions: this.limitSuggestions(this.props.choices),
             });
             // Ensure to reset the filter
             this.updateFilter('');
         } else if (!isEqual(choices, this.props.choices)) {
             this.setState(({ searchText }) => ({
-                suggestions: choices.filter(suggestion =>
+                suggestions: this.limitSuggestions(choices.filter(suggestion =>
                     inputValueMatcher(
                         searchText,
                         suggestion,
                         this.getSuggestionText
                     )
-                ),
+                )),
             }));
         }
     }
@@ -192,13 +192,13 @@ export class AutocompleteArrayInput extends React.Component {
         const { choices, inputValueMatcher } = this.props;
 
         this.setState(({ searchText }) => ({
-            suggestions: choices.filter(suggestion =>
+            suggestions: this.limitSuggestions(choices.filter(suggestion =>
                 inputValueMatcher(
                     searchText,
                     suggestion,
                     this.getSuggestionText
                 )
-            ),
+            )),
         }));
     };
 
@@ -423,11 +423,11 @@ export class AutocompleteArrayInput extends React.Component {
             } else {
                 this.setState({
                     searchText: value,
-                    suggestions: choices.filter(choice =>
+                    suggestions: this.limitSuggestions(choices.filter(choice =>
                         this.getSuggestionText(choice)
                             .toLowerCase()
                             .includes(value.toLowerCase())
-                    ),
+                    )),
                 });
             }
         }
@@ -444,6 +444,14 @@ export class AutocompleteArrayInput extends React.Component {
         }
 
         return true;
+    };
+
+    limitSuggestions = suggestions => {
+        const { suggestionLimit = 0 } = this.props;
+        if (Number.isInteger(suggestionLimit) && suggestionLimit > 0) {
+            return suggestions.slice(0, suggestionLimit);
+        }
+        return suggestions;
     };
 
     render() {
@@ -523,6 +531,7 @@ AutocompleteArrayInput.propTypes = {
     shouldRenderSuggestions: PropTypes.func,
     source: PropTypes.string,
     suggestionComponent: PropTypes.func,
+    suggestionLimit: PropTypes.number,
     translate: PropTypes.func.isRequired,
     translateChoice: PropTypes.bool.isRequired,
 };
