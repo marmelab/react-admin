@@ -324,7 +324,7 @@ const myTheme = createMuiTheme({
 });
 ```
 
-The `muiTheme` object contains the following keys:
+The `myTheme` object contains the following keys:
 
 * `breakpoints`
 * `direction`
@@ -337,7 +337,7 @@ The `muiTheme` object contains the following keys:
 * `transitions`
 * `spacing`
 * `zIndex`
-
+* 
 **Tip**: Check [Material UI default theme documentation](https://material-ui.com/customization/default-theme/) to see the default values and meaning for these keys.
 
 Once your theme is defined, pass it to the `<Admin>` component, in the `theme` prop.
@@ -441,17 +441,23 @@ const MyAppBar = props => <AppBar {...props} userMenu={MyUserMenu} />;
 
 ### Sidebar Customization
 
-You can specify the `Sidebar` size by setting the `size` property:
+You can specify the `Sidebar` width by setting the `width` and `closedWidth` property on your custom material-ui them:
 
 ```jsx
-import { Sidebar } from 'react-admin';
+import { createMuiTheme } from '@material-ui/core/styles';
 
-const MySidebar = props => <Sidebar {...props} size={200} />;
-const MyLayout = props => <Layout
-    {...props}
-    sidebar={MySidebar}
-/>;
+const theme = createMuiTheme({
+    sidebar: {
+        width: 300, // The default value is 240
+        closedWidth: 70, // The default value is 55
+    },
+});
 
+const App = () => (
+    <Admin theme={theme} dataProvider={simpleRestProvider('http://path.to.my.api')}>
+        // ...
+    </Admin>
+);
 ```
 
 ### Layout From Scratch

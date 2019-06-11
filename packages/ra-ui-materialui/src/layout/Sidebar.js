@@ -6,7 +6,7 @@ import Drawer from '@material-ui/core/Drawer';
 import { withStyles, createStyles } from '@material-ui/core/styles';
 import withWidth from '@material-ui/core/withWidth';
 import { setSidebarVisibility } from 'ra-core';
-
+import lodashGet from 'lodash/get';
 import Responsive from './Responsive';
 
 export const DRAWER_WIDTH = 240;
@@ -18,6 +18,9 @@ const styles = theme =>
             position: 'relative',
             height: 'auto',
             overflowX: 'hidden',
+            width: props => props.open
+                ? lodashGet(theme, 'sidebar.width', DRAWER_WIDTH)
+                : lodashGet(theme, 'sidebar.closedWidth', CLOSED_DRAWER_WIDTH),
             transition: theme.transitions.create('width', {
                 easing: theme.transitions.easing.sharp,
                 duration: theme.transitions.duration.leavingScreen,
@@ -56,10 +59,8 @@ class Sidebar extends PureComponent {
         const {
             children,
             classes,
-            closedSize,
             open,
             setSidebarVisibility,
-            size,
             width,
             ...rest
         } = this.props;
@@ -72,7 +73,6 @@ class Sidebar extends PureComponent {
                         open={open}
                         PaperProps={{
                             className: classes.drawerPaper,
-                            style: { width: size },
                         }}
                         onClose={this.toggleSidebar}
                         {...rest}
@@ -88,9 +88,6 @@ class Sidebar extends PureComponent {
                         open={open}
                         PaperProps={{
                             className: classes.drawerPaper,
-                            style: {
-                                width: open ? size : closedSize,
-                            },
                         }}
                         onClose={this.toggleSidebar}
                         {...rest}
@@ -107,9 +104,6 @@ class Sidebar extends PureComponent {
                         open={open}
                         PaperProps={{
                             className: classes.drawerPaper,
-                            style: {
-                                width: open ? size : closedSize,
-                            },
                         }}
                         onClose={this.toggleSidebar}
                         {...rest}
@@ -125,16 +119,9 @@ class Sidebar extends PureComponent {
 Sidebar.propTypes = {
     children: PropTypes.node.isRequired,
     classes: PropTypes.object,
-    closedSize: PropTypes.number,
     open: PropTypes.bool.isRequired,
     setSidebarVisibility: PropTypes.func.isRequired,
-    size: PropTypes.number,
     width: PropTypes.string,
-};
-
-Sidebar.defaultProps = {
-    size: DRAWER_WIDTH,
-    closedSize: CLOSED_DRAWER_WIDTH,
 };
 
 const mapStateToProps = state => ({

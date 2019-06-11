@@ -187,3 +187,26 @@ If you had custom exporter on `List` components, here's how to migrate:
 +    downloadCSV(csv, 'posts');
 +});
 ```
+
+## Customizing the SideBar size is done through theme
+
+The `<SideBar>` component used to accept `size` and `closedSize` prop to control its width.
+
+You can now customize those values by providing a custom material-ui theme.
+
+```jsx
+import { createMuiTheme } from '@material-ui/core/styles';
+
+const theme = createMuiTheme({
+    sidebar: {
+        width: 300, // The default value is 240
+        closedWidth: 70, // The default value is 55
+    },
+});
+
+const App = () => (
+    <Admin theme={theme} dataProvider={simpleRestProvider('http://path.to.my.api')}>
+        // ...
+    </Admin>
+);
+```
