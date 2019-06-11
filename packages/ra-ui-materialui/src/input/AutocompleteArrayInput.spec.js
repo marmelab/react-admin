@@ -585,4 +585,18 @@ describe('<AutocompleteArrayInput />', () => {
             wrapper.find('ForwardRef(Popper)').props().disablePortal
         ).toEqual(true);
     });
+
+    it('should limit suggestions when suggestionLimit is passed', () => {
+        const wrapper = shallow(
+            <AutocompleteArrayInput
+                {...defaultProps}
+                choices={[
+                    { id: 'M', name: 'Male' },
+                    { id: 'F', name: 'Female' },
+                ]}
+                suggestionLimit={1}
+            />
+        );
+        expect(wrapper.state('suggestions')).toHaveLength(1);
+    });
 });
