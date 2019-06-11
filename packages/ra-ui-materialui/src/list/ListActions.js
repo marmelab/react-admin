@@ -54,7 +54,7 @@ const ListActions = ({
                 )}
             </TopToolbar>
         ),
-        [resource, displayedFilters, filterValues, selectedIds, filters]
+        [resource, displayedFilters, filterValues, selectedIds, filters, total]
     );
 
 ListActions.propTypes = {

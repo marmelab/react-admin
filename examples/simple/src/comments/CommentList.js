@@ -11,7 +11,7 @@ import CardHeader from '@material-ui/core/CardHeader';
 import Grid from '@material-ui/core/Grid';
 import Toolbar from '@material-ui/core/Toolbar';
 import { makeStyles } from '@material-ui/core/styles';
-import { unparse as convertToCSV } from 'papaparse/papaparse.min';
+import jsonExport from 'jsonexport/dist';
 import {
     DateField,
     EditButton,
@@ -47,7 +47,7 @@ const exporter = (records, fetchRelatedRecords) =>
             recordForExport.post_title = posts[record.post_id].title;
             return recordForExport;
         });
-        const fields = [
+        const headers = [
             'id',
             'author_name',
             'post_id',
@@ -55,7 +55,13 @@ const exporter = (records, fetchRelatedRecords) =>
             'created_at',
             'body',
         ];
-        downloadCSV(convertToCSV({ data, fields }), 'comments');
+
+        jsonExport(data, { headers }, (error, csv) => {
+            if (error) {
+                console.error(error);
+            }
+            downloadCSV(csv, 'comments');
+        })
     });
 
 const CommentPagination = ({

@@ -118,14 +118,14 @@ export const ListView = withStyles(styles)(
         children,
         className,
         classes,
-        component,
+        component :Content,
         exporter,
         title,
         ...rest
     }) => {
         const { defaultTitle, version } = rest;
         const controllerProps = getListControllerProps(rest);
-        const Content = component;
+
         return (
             <div
                 className={classnames('list-page', classes.root, className)}

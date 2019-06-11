@@ -153,7 +153,7 @@ By default, clicking this button will:
 
 The columns of the CSV file match all the fields of the records in the `dataProvider` response. That means that the export doesn't take into account the selection and ordering of fields in your `<List>` via `Field` components. If you want to customize the result, pass a custom `exporter` function to the `<List>`. This function will receive the data from the `dataProvider` (after step 1), and replace steps 2-3 (i.e. it's in charge of transforming, converting, and downloading the file).
 
-**Tip**: For CSV conversion, you can import [Papaparse](https://www.papaparse.com/), a CSV parser and stringifier which is already a react-admin dependency. And for CSV download, take advantage of react-admin's `downloadCSV` function.
+**Tip**: For CSV conversion, you can import [jsonexport](https://github.com/kauegimenes/jsonexport#browser-import-examples), a CSV to JSON converter which is already a react-admin dependency. And for CSV download, take advantage of react-admin's `downloadCSV` function.
 
 **Tip**: You may also remove the `<ExportButton>` by passing `false` to the `exporter` prop: `exporter={false}`
 
@@ -162,7 +162,7 @@ Here is an example for a Posts exporter, omitting, adding, and reordering fields
 ```jsx
 // in PostList.js
 import { List, downloadCSV } from 'react-admin';
-import { unparse as convertToCSV } from 'papaparse/papaparse.min';
+import jsonExport from 'jsonexport/dist';
 
 const exporter = posts => {
     const postsForExport = posts.map(post => {
@@ -170,11 +170,11 @@ const exporter = posts => {
         postForExport.author_name = post.author.name; // add a field
         return postForExport;
     });
-    const csv = convertToCSV({
-        data: postsForExport,
-        fields: ['id', 'title', 'author_name', 'body'] // order fields in the export
+    jsonExport(postsForExport, {
+        headers: ['id', 'title', 'author_name', 'body'] // order fields in the export
+    }, (err, csv) => {
+        downloadCSV(csv, 'posts'); // download as 'posts.csv` file
     });
-    downloadCSV(csv, 'posts'); // download as 'posts.csv` file
 })
 
 const PostList = props => (
@@ -191,7 +191,7 @@ Here is an example for a Comments exporter, fetching related Posts:
 ```jsx
 // in CommentList.js
 import { List, downloadCSV } from 'react-admin';
-import { unparse as convertToCSV } from 'papaparse/papaparse.min';
+import jsonExport from 'jsonexport/dist';
 
 const exporter = (records, fetchRelatedRecords) => {
     fetchRelatedRecords(records, 'post_id', 'posts').then(posts => {
@@ -199,11 +199,11 @@ const exporter = (records, fetchRelatedRecords) => {
                 ...record,
                 post_title: posts[record.post_id].title,
         }));
-        const csv = convertToCSV({
-            data,
-            fields: ['id', 'post_id', 'post_title', 'body'],
+        jsonExport(data, {
+            headers: ['id', 'post_id', 'post_title', 'body'],
+        }, (err, csv) => {;
+            downloadCSV(csv, 'comments');
         });
-        downloadCSV(csv, 'comments');
     });
 };
 

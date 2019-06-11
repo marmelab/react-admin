@@ -25,9 +25,11 @@
         "react-scripts": "^3.0.0",
         "recompose": "~0.26.0",
         "redux-form": "~8.2.0",
-        "redux-saga": "^1.0.0"
+        "redux-saga": "^1.0.0",
+        "source-map-explorer": "^2.0.0"
     },
     "scripts": {
+        "analyze": "source-map-explorer 'build/static/js/*.js'",
         "start": "react-scripts start",
         "build": "react-scripts build",
         "eject": "react-scripts eject"
