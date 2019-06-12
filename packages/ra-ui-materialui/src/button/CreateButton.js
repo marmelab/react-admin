@@ -10,7 +10,7 @@ import { Link } from 'react-router-dom';
 import { useTranslate } from 'ra-core';
 
 import Button from './Button';
-import Responsive from '../layout/Responsive';
+import { useMediaIsSmall } from '../layout/mediaQueries';
 
 const styles = theme =>
     createStyles({
@@ -38,32 +38,28 @@ const CreateButton = ({
     ...rest
 }) => {
     const translate = useTranslate();
-    return (
-        <Responsive
-            small={
-                <Fab
-                    component={Link}
-                    color="primary"
-                    className={classnames(classes.floating, className)}
-                    to={`${basePath}/create`}
-                    aria-label={label && translate(label)}
-                    {...rest}
-                >
-                    {icon}
-                </Fab>
-            }
-            medium={
-                <Button
-                    component={Link}
-                    to={`${basePath}/create`}
-                    className={className}
-                    label={label}
-                    {...rest}
-                >
-                    {icon}
-                </Button>
-            }
-        />
+    const isSmall = useMediaIsSmall();
+    return isSmall ? (
+        <Fab
+            component={Link}
+            color="primary"
+            className={classnames(classes.floating, className)}
+            to={`${basePath}/create`}
+            aria-label={label && translate(label)}
+            {...rest}
+        >
+            {icon}
+        </Fab>
+    ) : (
+        <Button
+            component={Link}
+            to={`${basePath}/create`}
+            className={className}
+            label={label}
+            {...rest}
+        >
+            {icon}
+        </Button>
     );
 };
 

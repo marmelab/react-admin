@@ -16,13 +16,13 @@ import {
     List,
     NumberField,
     ReferenceArrayField,
-    Responsive,
     SearchInput,
     ShowButton,
     SimpleList,
     SingleFieldList,
     TextField,
     TextInput,
+    useMediaIsSmall,
     useTranslate,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
 
@@ -117,6 +117,7 @@ const PostPanel = ({ id, record, resource }) => (
 
 const PostList = props => {
     const classes = useStyles();
+    const isSmall = useMediaIsSmall();
     return (
         <List
             {...props}
@@ -125,53 +126,47 @@ const PostList = props => {
             sort={{ field: 'published_at', order: 'DESC' }}
             exporter={exporter}
         >
-            <Responsive
-                small={
-                    <SimpleList
-                        primaryText={record => record.title}
-                        secondaryText={record => `${record.views} views`}
-                        tertiaryText={record =>
-                            new Date(record.published_at).toLocaleDateString()
-                        }
+            {isSmall ? (
+                <SimpleList
+                    primaryText={record => record.title}
+                    secondaryText={record => `${record.views} views`}
+                    tertiaryText={record =>
+                        new Date(record.published_at).toLocaleDateString()
+                    }
+                />
+            ) : (
+                <Datagrid rowClick={rowClick} expand={<PostPanel />}>
+                    <TextField source="id" />
+                    <TextField source="title" cellClassName={classes.title} />
+                    <DateField
+                        source="published_at"
+                        cellClassName={classes.publishedAt}
                     />
-                }
-                medium={
-                    <Datagrid rowClick={rowClick} expand={<PostPanel />}>
-                        <TextField source="id" />
-                        <TextField
-                            source="title"
-                            cellClassName={classes.title}
-                        />
-                        <DateField
-                            source="published_at"
-                            cellClassName={classes.publishedAt}
-                        />
 
-                        <BooleanField
-                            source="commentable"
-                            label="resources.posts.fields.commentable_short"
-                            sortable={false}
-                        />
-                        <NumberField source="views" />
-                        <ReferenceArrayField
-                            label="Tags"
-                            reference="tags"
-                            source="tags"
-                            sortBy="tags.name"
-                            cellClassName={classes.hiddenOnSmallScreens}
-                            headerClassName={classes.hiddenOnSmallScreens}
-                        >
-                            <SingleFieldList>
-                                <ChipField source="name" />
-                            </SingleFieldList>
-                        </ReferenceArrayField>
-                        <PostListActionToolbar>
-                            <EditButton />
-                            <ShowButton />
-                        </PostListActionToolbar>
-                    </Datagrid>
-                }
-            />
+                    <BooleanField
+                        source="commentable"
+                        label="resources.posts.fields.commentable_short"
+                        sortable={false}
+                    />
+                    <NumberField source="views" />
+                    <ReferenceArrayField
+                        label="Tags"
+                        reference="tags"
+                        source="tags"
+                        sortBy="tags.name"
+                        cellClassName={classes.hiddenOnSmallScreens}
+                        headerClassName={classes.hiddenOnSmallScreens}
+                    >
+                        <SingleFieldList>
+                            <ChipField source="name" />
+                        </SingleFieldList>
+                    </ReferenceArrayField>
+                    <PostListActionToolbar>
+                        <EditButton />
+                        <ShowButton />
+                    </PostListActionToolbar>
+                </Datagrid>
+            )}
         </List>
     );
 };

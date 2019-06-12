@@ -9,6 +9,11 @@ import Layout from './Layout';
 import Loading from './Loading';
 import LinearProgress from './LinearProgress';
 import LoadingIndicator from './LoadingIndicator';
+import {
+    useMediaIsSmall,
+    useMediaIsXSmall,
+    useMediaIsDesktop,
+} from './mediaQueries';
 import Menu from './Menu';
 import MenuItemLink from './MenuItemLink';
 import NotFound from './NotFound';
@@ -43,4 +48,7 @@ export {
     TitlePropType,
     TopToolbar,
     UserMenu,
+    useMediaIsDesktop,
+    useMediaIsSmall,
+    useMediaIsXSmall,
 };

@@ -20,7 +20,6 @@ import {
     PaginationLimit,
     ReferenceField,
     ReferenceInput,
-    Responsive,
     SearchInput,
     SelectInput,
     ShowButton,
@@ -28,6 +27,7 @@ import {
     TextField,
     downloadCSV,
     useTranslate,
+    useMediaIsSmall,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
 
 const CommentFilter = props => (
@@ -209,17 +209,21 @@ const CommentMobileList = props => (
     />
 );
 
-const CommentList = props => (
-    <List
-        {...props}
-        perPage={6}
-        exporter={exporter}
-        filters={<CommentFilter />}
-        pagination={<CommentPagination />}
-        component="div"
-    >
-        <Responsive small={<CommentMobileList />} medium={<CommentGrid />} />
-    </List>
-);
+const CommentList = props => {
+    const isSmall = useMediaIsSmall();
+
+    return (
+        <List
+            {...props}
+            perPage={6}
+            exporter={exporter}
+            filters={<CommentFilter />}
+            pagination={<CommentPagination />}
+            component="div"
+        >
+            {isSmall ? <CommentMobileList /> : <CommentGrid />}
+        </List>
+    );
+};
 
 export default CommentList;

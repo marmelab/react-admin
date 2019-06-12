@@ -10,7 +10,7 @@ import DefaultIcon from '@material-ui/icons/ViewList';
 
 import DashboardMenuItem from './DashboardMenuItem';
 import MenuItemLink from './MenuItemLink';
-import Responsive from '../layout/Responsive';
+import { useMediaIsXSmall } from '../layout/mediaQueries';
 
 const styles = createStyles({
     main: {
@@ -45,6 +45,7 @@ const Menu = ({
     ...rest
 }) => {
     const translate = useTranslate();
+    const isXSmall = useMediaIsXSmall();
     return (
         <div className={classnames(classes.main, className)} {...rest}>
             {hasDashboard && (
@@ -68,7 +69,7 @@ const Menu = ({
                         sidebarIsOpen={open}
                     />
                 ))}
-            <Responsive xsmall={logout} medium={null} />
+            {isXSmall && logout}
         </div>
     );
 };
