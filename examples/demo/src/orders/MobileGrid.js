@@ -3,7 +3,7 @@ import React from 'react';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
-import { withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import {
     DateField,
     EditButton,
@@ -15,7 +15,7 @@ import {
 
 import CustomerReferenceField from '../visitors/CustomerReferenceField';
 
-const listStyles = theme => ({
+const useListStyles = makeStyles(theme => ({
     card: {
         height: '100%',
         display: 'flex',
@@ -35,10 +35,11 @@ const listStyles = theme => ({
         alignItems: 'center',
         margin: '0.5rem 0',
     },
-});
+}));
 
-const MobileGrid = ({ classes, ids, data, basePath }) => {
+const MobileGrid = ({ ids, data, basePath }) => {
     const translate = useTranslate();
+    const classes = useListStyles();
     return (
         <div style={{ margin: '1em' }}>
             {ids.map(id => (
@@ -112,4 +113,4 @@ MobileGrid.defaultProps = {
     ids: [],
 };
 
-export default withStyles(listStyles)(MobileGrid);
+export default MobileGrid;

@@ -1,22 +1,23 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
-import { withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
 import { useTranslate } from 'react-admin';
 import { stringify } from 'query-string';
 
 import visitors from '../visitors';
 
-const styles = {
+const useStyles = makeStyles({
     icon: { paddingRight: '0.5em' },
     link: {
         display: 'inline-flex',
         alignItems: 'center',
     },
-};
+});
 
-const LinkToRelatedCustomers = ({ classes, segment }) => {
+const LinkToRelatedCustomers = ({ segment }) => {
     const translate = useTranslate();
+    const classes = useStyles();
     return (
         <Button
             size="small"
@@ -38,4 +39,4 @@ const LinkToRelatedCustomers = ({ classes, segment }) => {
     );
 };
 
-export default withStyles(styles)(LinkToRelatedCustomers);
+export default LinkToRelatedCustomers;

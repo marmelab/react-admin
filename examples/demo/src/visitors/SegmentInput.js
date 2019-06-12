@@ -1,18 +1,19 @@
 import React from 'react';
 import { useTranslate, SelectInput } from 'react-admin';
-import withStyles from '@material-ui/core/styles/withStyles';
+import { makeStyles } from '@material-ui/core/styles';
 
 import segments from '../segments/data';
 
-const styles = {
+const useStyles = makeStyles({
     input: { width: 150 },
-};
+});
 
-const SegmentInput = ({ classes, ...rest }) => {
+const SegmentInput = props => {
     const translate = useTranslate();
+    const classes = useStyles();
     return (
         <SelectInput
-            {...rest}
+            {...props}
             choices={segments.map(segment => ({
                 id: segment.id,
                 name: translate(segment.name),
@@ -22,10 +23,8 @@ const SegmentInput = ({ classes, ...rest }) => {
     );
 };
 
-const TranslatedSegmentInput = withStyles(styles)(SegmentInput);
-
-TranslatedSegmentInput.defaultProps = {
+SegmentInput.defaultProps = {
     source: 'groups',
 };
 
-export default TranslatedSegmentInput;
+export default SegmentInput;

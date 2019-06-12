@@ -3,14 +3,15 @@ import React from 'react';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
-import { withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
+
 import { DateField, EditButton, useTranslate, NumberField } from 'react-admin';
 
 import AvatarField from './AvatarField';
 import ColoredNumberField from './ColoredNumberField';
 import SegmentsField from './SegmentsField';
 
-const styles = theme => ({
+const useStyles = makeStyles(theme => ({
     card: {
         height: '100%',
         display: 'flex',
@@ -28,10 +29,11 @@ const styles = theme => ({
         display: 'flex',
         flexDirection: 'column',
     },
-});
+}));
 
-const MobileGrid = ({ classes, ids, data, basePath }) => {
+const MobileGrid = ({ ids, data, basePath }) => {
     const translate = useTranslate();
+    const classes = useStyles();
     return (
         <div style={{ margin: '1em' }}>
             {ids.map(id => (
@@ -104,4 +106,4 @@ MobileGrid.defaultProps = {
     ids: [],
 };
 
-export default withStyles(styles)(MobileGrid);
+export default MobileGrid;

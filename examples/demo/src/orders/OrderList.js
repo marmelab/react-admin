@@ -16,7 +16,7 @@ import {
     TextField,
     TextInput,
 } from 'react-admin';
-import withStyles from '@material-ui/core/styles/withStyles';
+import { makeStyles } from '@material-ui/core/styles';
 import Divider from '@material-ui/core/Divider';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
@@ -25,11 +25,7 @@ import NbItemsField from './NbItemsField';
 import CustomerReferenceField from '../visitors/CustomerReferenceField';
 import MobileGrid from './MobileGrid';
 
-const filterStyles = {
-    status: { width: 150 },
-};
-
-const OrderFilter = withStyles(filterStyles)(({ classes, ...props }) => (
+const OrderFilter = props => (
     <Filter {...props}>
         <SearchInput source="q" alwaysOn />
         <ReferenceInput source="customer_id" reference="customers">
@@ -44,11 +40,11 @@ const OrderFilter = withStyles(filterStyles)(({ classes, ...props }) => (
         <TextInput source="total_gte" />
         <NullableBooleanInput source="returned" />
     </Filter>
-));
+);
 
-const datagridStyles = {
+const useDatagridStyles = makeStyles({
     total: { fontWeight: 'bold' },
-};
+});
 
 class TabbedDatagrid extends React.Component {
     tabs = [
@@ -161,7 +157,10 @@ class TabbedDatagrid extends React.Component {
     }
 }
 
-const StyledTabbedDatagrid = withStyles(datagridStyles)(TabbedDatagrid);
+const StyledTabbedDatagrid = props => {
+    const classes = useDatagridStyles();
+    return <TabbedDatagrid classes={classes} {...props} />;
+};
 
 const OrderList = ({ classes, ...props }) => (
     <List

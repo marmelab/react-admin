@@ -7,22 +7,23 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import HomeIcon from '@material-ui/icons/Home';
 import CodeIcon from '@material-ui/icons/Code';
-import { withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import { useTranslate } from 'react-admin';
 
-const styles = {
+const useStyles = makeStyles({
     media: {
         height: '18em',
     },
-};
+});
 
 const mediaUrl = `https://marmelab.com/posters/beard-${parseInt(
     Math.random() * 10,
     10
 ) + 1}.jpeg`;
 
-const Welcome = ({ classes }) => {
+const Welcome = () => {
     const translate = useTranslate();
+    const classes = useStyles();
     return (
         <Card>
             <CardMedia image={mediaUrl} className={classes.media} />
@@ -48,4 +49,4 @@ const Welcome = ({ classes }) => {
     );
 };
 
-export default withStyles(styles)(Welcome);
+export default Welcome;

@@ -1,13 +1,13 @@
 import React from 'react';
 import Card from '@material-ui/core/Card';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
-import { withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import { useTranslate } from 'react-admin';
 
 import CardIcon from './CardIcon';
 
-const styles = {
+const useStyles = makeStyles({
     main: {
         flex: '1',
         marginLeft: '1em',
@@ -19,10 +19,11 @@ const styles = {
         padding: 16,
         minHeight: 52,
     },
-};
+});
 
-const NbNewOrders = ({ value, classes }) => {
+const NbNewOrders = ({ value }) => {
     const translate = useTranslate();
+    const classes = useStyles();
     return (
         <div className={classes.main}>
             <CardIcon Icon={ShoppingCartIcon} bgColor="#ff9800" />
@@ -38,4 +39,4 @@ const NbNewOrders = ({ value, classes }) => {
     );
 };
 
-export default withStyles(styles)(NbNewOrders);
+export default NbNewOrders;
