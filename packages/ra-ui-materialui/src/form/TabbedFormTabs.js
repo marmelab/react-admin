@@ -1,6 +1,7 @@
 import React, { Children, cloneElement, isValidElement } from 'react';
 import PropTypes from 'prop-types';
 import Tabs from '@material-ui/core/Tabs';
+import compose from 'recompose/compose';
 
 const getTabFullPath = (tab, index, baseUrl) =>
     `${baseUrl}${
