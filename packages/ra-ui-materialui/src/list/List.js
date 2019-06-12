@@ -118,7 +118,7 @@ export const ListView = withStyles(styles)(
         children,
         className,
         classes,
-        component :Content,
+        component: Content,
         exporter,
         title,
         ...rest

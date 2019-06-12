@@ -61,7 +61,7 @@ const exporter = (records, fetchRelatedRecords) =>
                 console.error(error);
             }
             downloadCSV(csv, 'comments');
-        })
+        });
     });
 
 const CommentPagination = ({

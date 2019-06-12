@@ -18,9 +18,14 @@ const styles = theme =>
             position: 'relative',
             height: 'auto',
             overflowX: 'hidden',
-            width: props => props.open
-                ? lodashGet(theme, 'sidebar.width', DRAWER_WIDTH)
-                : lodashGet(theme, 'sidebar.closedWidth', CLOSED_DRAWER_WIDTH),
+            width: props =>
+                props.open
+                    ? lodashGet(theme, 'sidebar.width', DRAWER_WIDTH)
+                    : lodashGet(
+                          theme,
+                          'sidebar.closedWidth',
+                          CLOSED_DRAWER_WIDTH
+                      ),
             transition: theme.transitions.create('width', {
                 easing: theme.transitions.easing.sharp,
                 duration: theme.transitions.duration.leavingScreen,
