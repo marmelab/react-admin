@@ -260,8 +260,8 @@ export class AutocompleteArrayInput extends React.Component {
                 onDelete={this.handleDelete}
                 value={this.getInputValue(input.value)}
                 inputRef={storeInputRef}
-                error={touched && error}
-                helperText={touched && error && helperText}
+                error={!!(touched && error)}
+                helperText={(touched && error) || helperText}
                 chipRenderer={this.renderChip}
                 label={
                     <FieldTitle
