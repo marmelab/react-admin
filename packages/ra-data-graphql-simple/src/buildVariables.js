@@ -1,3 +1,4 @@
+/* eslint-disable default-case */
 import {
     GET_LIST,
     GET_ONE,
@@ -274,7 +275,5 @@ export default introspectionResults => (
             return {
                 id: preparedParams.id,
             };
-        default:
-            console.log('Unknown fetch verb');
     }
 };
