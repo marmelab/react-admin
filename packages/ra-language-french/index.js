@@ -24,7 +24,7 @@ module.exports = {
             sort: 'Trier',
             undo: 'Annuler',
             expand: 'Étendre',
-            close: 'Close',
+            close: 'Fermer',
         },
         boolean: {
             true: 'Oui',
