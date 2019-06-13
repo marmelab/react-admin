@@ -10,10 +10,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { createSelector } from 'reselect';
 import { WrappedFieldInputProps } from 'redux-form';
 
-import {
-    crudGetManyAccumulate,
-    crudGetMatchingAccumulate,
-} from '../../actions/accumulateActions';
+import { crudGetMatchingAccumulate } from '../../actions/accumulateActions';
 import {
     getPossibleReferences,
     getPossibleReferenceValues,
@@ -25,6 +22,7 @@ import { Sort, Record, Pagination } from '../../types';
 import usePaginationState from '../usePaginationState';
 import useSortState from '../useSortState';
 import useFilterState, { Filter } from '../useFilterState';
+import useReference from '../useReference';
 
 const defaultReferenceSource = (resource: string, source: string) =>
     `${resource}@${source}`;
@@ -164,10 +162,11 @@ export const ReferenceInputController: FunctionComponent<Props> = ({
         [input.value, referenceSource, reference, source, resource]
     );
 
-    const referenceRecord = useSelector(
-        getSelectedeference({ input, reference }),
-        [input.value, reference]
-    );
+    const { referenceRecord } = useReference({
+        id: input.value,
+        reference,
+        allowEmpty: true,
+    });
 
     const dataStatus = getDataStatus({
         input,
@@ -182,16 +181,6 @@ export const ReferenceInputController: FunctionComponent<Props> = ({
         initialFilter,
         filterToQuery,
     });
-
-    useEffect(
-        () =>
-            fetchReference({
-                dispatch,
-                id: input.value,
-                reference,
-            }),
-        [input.value, reference]
-    );
 
     useEffect(
         () =>
@@ -233,12 +222,6 @@ export const ReferenceInputController: FunctionComponent<Props> = ({
     }) as ReactElement;
 };
 
-const fetchReference = ({ dispatch, id, reference }) => {
-    if (id) {
-        dispatch(crudGetManyAccumulate(reference, [id]));
-    }
-};
-
 const fetchOptions = ({
     dispatch,
     filter,
@@ -272,13 +255,5 @@ const matchingReferencesSelector = createSelector(
 
 const getMatchingReferences = props => state =>
     matchingReferencesSelector(state, props);
-
-const selectedReferenceSelector = createSelector(
-    [getReferenceResource, (_, props) => props.input.value],
-    (referenceState, inputId) => referenceState && referenceState.data[inputId]
-);
-
-const getSelectedeference = props => state =>
-    selectedReferenceSelector(state, props);
 
 export default ReferenceInputController as ComponentType<Props>;

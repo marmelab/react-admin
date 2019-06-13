@@ -1,11 +1,8 @@
-import { useEffect } from 'react';
-// @ts-ignore
-import { useDispatch, useSelector } from 'react-redux';
 import get from 'lodash/get';
 
-import { crudGetManyAccumulate } from '../../actions';
 import { linkToRecord } from '../../util';
-import { Record, ReduxState } from '../../types';
+import { Record } from '../../types';
+import useReference from '../useReference';
 
 export type LinkToFunctionType = (record: Record, reference: string) => string;
 
@@ -15,9 +12,9 @@ interface Option {
     allowEmpty?: boolean;
     basePath: string;
     record?: Record;
+    source: string;
     reference: string;
     resource: string;
-    source: string;
     link: LinkToType;
     linkType?: LinkToType; // deprecated, use link instead
 }
@@ -64,26 +61,22 @@ export interface UseReferenceProps {
  *
  * @returns {ReferenceProps} The reference props
  */
-export const useReference = ({
+export const useReferenceField = ({
     allowEmpty = false,
     basePath,
     link = 'edit',
     linkType,
-    record = { id: '' },
     reference,
+    record = { id: '' },
     resource,
     source,
 }: Option): UseReferenceProps => {
     const sourceId = get(record, source);
-    const referenceRecord = useSelector(
-        getReferenceRecord(sourceId, reference)
-    );
-    const dispatch = useDispatch();
-    useEffect(() => {
-        if (sourceId !== null && typeof sourceId !== 'undefined') {
-            dispatch(crudGetManyAccumulate(reference, [sourceId]));
-        }
-    }, [sourceId, reference]); // eslint-disable-line react-hooks/exhaustive-deps
+    const { referenceRecord, isLoading } = useReference({
+        id: sourceId,
+        reference,
+        allowEmpty,
+    });
     const rootPath = basePath.replace(resource, reference);
     // Backward compatibility: keep linkType but with warning
     const getResourceLinkPath = (linkTo: LinkToType) =>
@@ -104,14 +97,10 @@ export const useReference = ({
     );
 
     return {
-        isLoading: !referenceRecord && !allowEmpty,
+        isLoading,
         referenceRecord,
         resourceLinkPath,
     };
 };
 
-const getReferenceRecord = (sourceId, reference) => (state: ReduxState) =>
-    state.admin.resources[reference] &&
-    state.admin.resources[reference].data[sourceId];
-
-export default useReference;
+export default useReferenceField;
