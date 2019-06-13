@@ -1,6 +1,6 @@
 import { FunctionComponent, ReactNode, ReactElement } from 'react';
 import { Record } from '../../types';
-import useReference, { UseReferenceProps } from './useReference';
+import useReference, { UseReferenceProps, LinkToFunctionType } from './useReference';
 
 interface Props {
     allowEmpty?: boolean;
@@ -10,7 +10,7 @@ interface Props {
     reference: string;
     resource: string;
     source: string;
-    linkType: string | boolean;
+    link: string | boolean | LinkToFunctionType;
 }
 
 /**
@@ -27,18 +27,18 @@ interface Props {
  * By default, includes a link to the <Edit> page of the related record
  * (`/users/:userId` in the previous example).
  *
- * Set the linkType prop to "show" to link to the <Show> page instead.
+ * Set the link prop to "show" to link to the <Show> page instead.
  *
  * @example
- * <ReferenceField label="User" source="userId" reference="users" linkType="show">
+ * <ReferenceField label="User" source="userId" reference="users" link="show">
  *     <TextField source="name" />
  * </ReferenceField>
  *
  * You can also prevent `<ReferenceField>` from adding link to children by setting
- * `linkType` to false.
+ * `link` to false.
  *
  * @example
- * <ReferenceField label="User" source="userId" reference="users" linkType={false}>
+ * <ReferenceField label="User" source="userId" reference="users" link={false}>
  *     <TextField source="name" />
  * </ReferenceField>
  */

@@ -78,6 +78,16 @@ If you're using a Custom App, you had to render Resource components with the reg
 +               <Resource name="users" intent="registration" />
 ```
 
+## ReferenceField prop `linkType` renamed to `link`
+
+When using the ReferenceField component, you should rename your `linkType` props to `link`. This prop now also accepts custom functions to return a link, see the Fields documentation.
+
+```diff
+- <ReferenceField resource="comments" record={data[id]} source="post_id" reference="posts" basePath={basePath} linkType="show">
++ <ReferenceField resource="comments" record={data[id]} source="post_id" reference="posts" basePath={basePath} link="show">
+```
+
+
 ## `withDataProvider` no longer injects `dispatch`
 
 The `withDataProvider` HOC used to inject two props: `dataProvider`, and redux' `dispatch`. This last prop is now easy to get via the `useDispatch` hook from Redux, so `withDataProvider` no longer injects it.

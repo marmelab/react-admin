@@ -7,6 +7,10 @@ import { crudGetManyAccumulate } from '../../actions';
 import { linkToRecord } from '../../util';
 import { Record, ReduxState } from '../../types';
 
+export type LinkToFunctionType = (record: Record, reference: string) => string;
+
+type LinkToType = string | boolean | LinkToFunctionType;
+
 interface Option {
     allowEmpty?: boolean;
     basePath: string;
@@ -14,7 +18,8 @@ interface Option {
     reference: string;
     resource: string;
     source: string;
-    linkType: string | boolean;
+    link: LinkToType;
+    linkType?: LinkToType; // deprecated, use link instead
 }
 
 export interface UseReferenceProps {
@@ -28,7 +33,7 @@ export interface UseReferenceProps {
  * @type {Object}
  * @property {boolean} isLoading: boolean indicating if the reference has loaded
  * @property {Object} referenceRecord: the referenced record.
- * @property {string | false} resourceLinkPath link to the page of the related record (depends on linkType) (false is no link)
+ * @property {string | false} resourceLinkPath link to the page of the related record (depends on link) (false is no link)
  */
 
 /**
@@ -50,7 +55,8 @@ export interface UseReferenceProps {
  * @param {Object} option
  * @param {boolean} option.allowEmpty do we allow for no referenced record (default to false)
  * @param {string} option.basePath basepath to current resource
- * @param {string | false} option.linkType The type of the link toward the referenced record. edit, show of false for no link (default to edit)
+ * @param {string | false | LinkToFunctionType} option.link="edit" The link toward the referenced record. 'edit', 'show' or false for no link (default to edit). Alternatively a function that returns a string
+ * @param {string | false | LinkToFunctionType} [option.linkType] DEPRECATED : old name for link
  * @param {Object} option.record The The current resource record
  * @param {string} option.reference The linked resource name
  * @param {string} option.resource The current resource name
@@ -61,7 +67,8 @@ export interface UseReferenceProps {
 export const useReference = ({
     allowEmpty = false,
     basePath,
-    linkType = 'edit',
+    link = 'edit',
+    linkType,
     record = { id: '' },
     reference,
     resource,
@@ -78,9 +85,23 @@ export const useReference = ({
         }
     }, [sourceId, reference]);
     const rootPath = basePath.replace(resource, reference);
-    const resourceLinkPath = !linkType
-        ? false
-        : linkToRecord(rootPath, sourceId, linkType as string);
+    // Backward compatibility: keep linkType but with warning
+    const getResourceLinkPath = (linkTo: LinkToType) =>
+        !linkTo
+            ? false
+            : typeof linkTo === 'function'
+            ? linkTo(record, reference)
+            : linkToRecord(rootPath, sourceId, linkTo as string);
+
+    if (linkType !== undefined) {
+        console.warn(
+            "The 'linkType' prop is deprecated and should be named to 'link' in <ReferenceField />"
+        );
+    }
+
+    const resourceLinkPath = getResourceLinkPath(
+        linkType !== undefined ? linkType : link
+    );
 
     return {
         isLoading: !referenceRecord && !allowEmpty,
