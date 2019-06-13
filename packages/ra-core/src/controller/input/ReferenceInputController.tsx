@@ -2,17 +2,13 @@ import {
     ReactNode,
     ComponentType,
     FunctionComponent,
-    useState,
     ReactElement,
     useEffect,
-    useRef,
 } from 'react';
 // @ts-ignore
 import { useSelector, useDispatch } from 'react-redux';
-import debounce from 'lodash/debounce';
 import { createSelector } from 'reselect';
 import { WrappedFieldInputProps } from 'redux-form';
-import isEqual from 'lodash/isEqual';
 
 import {
     crudGetManyAccumulate,
@@ -25,9 +21,10 @@ import {
 } from '../../reducer';
 import { getStatusForInput as getDataStatus } from './referenceDataStatus';
 import useTranslate from '../../i18n/useTranslate';
-import { Sort, Record, Pagination, Dispatch } from '../../types';
+import { Sort, Record, Pagination } from '../../types';
 import usePaginationState from '../usePaginationState';
 import useSortState from '../useSortState';
+import useFilterState, { Filter } from '../useFilterState';
 
 const defaultReferenceSource = (resource: string, source: string) =>
     `${resource}@${source}`;
@@ -39,7 +36,7 @@ interface ChildrenFuncParams {
     isLoading: boolean;
     onChange: (value: any) => void;
     pagination: Pagination;
-    setFilter: (filter: any) => void;
+    setFilter: (filter: string) => void;
     setPagination: (pagination: Pagination) => void;
     setSort: (sort: Sort) => void;
     sort: Sort;
@@ -50,8 +47,8 @@ interface Props {
     allowEmpty?: boolean;
     basePath: string;
     children: (params: ChildrenFuncParams) => ReactNode;
-    filter?: object;
-    filterToQuery: (filter: {}) => any;
+    filter?: Filter;
+    filterToQuery: (filter: string) => any;
     input?: WrappedFieldInputProps;
     perPage: number;
     record?: Record;
@@ -62,47 +59,6 @@ interface Props {
     source: string;
     onChange: () => void;
 }
-
-const usePrevious = value => {
-    const ref = useRef();
-
-    useEffect(() => {
-        ref.current = value;
-    }, [value]);
-
-    return ref.current;
-};
-
-const useFilterState = ({
-    filterToQuery = v => v,
-    initialFilter,
-    debounceTime = 500,
-}) => {
-    const previousInitialFilter = usePrevious(initialFilter);
-    const [filter, setFilterValue] = useState(filterToQuery(initialFilter));
-
-    const setFilter = debounce(
-        value => setFilterValue(filterToQuery(value)),
-        debounceTime
-    );
-    const isFirstRender = useRef(true);
-
-    useEffect(() => {
-        if (isFirstRender.current) {
-            isFirstRender.current = false;
-            return;
-        }
-        if (isEqual(initialFilter, previousInitialFilter)) {
-            return;
-        }
-        setFilter(initialFilter);
-    }, [initialFilter]);
-
-    return {
-        filter,
-        setFilter,
-    };
-};
 
 /**
  * An Input component for choosing a reference record. Useful for foreign keys.
@@ -267,8 +223,8 @@ export const ReferenceInputController: FunctionComponent<Props> = ({
         error: dataStatus.error,
         isLoading: dataStatus.waiting,
         onChange,
-        filter,
         setFilter,
+        filter,
         pagination,
         setPagination,
         sort,
