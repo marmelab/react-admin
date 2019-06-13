@@ -239,13 +239,19 @@ describe('Create Page', () => {
 
     it('should show rich text input error message when form is submitted', () => {
         CreatePage.submit();
-        cy.get(CreatePage.elements.richTextInputError).should('exist').contains('Required');
+        cy.get(CreatePage.elements.richTextInputError)
+            .should('exist')
+            .contains('Required');
     });
 
     it('should not show rich text input error message when form is submitted and input is filled with text', () => {
         CreatePage.submit();
-        cy.get(CreatePage.elements.richTextInputError).should('exist').contains('Required');
-        cy.get(CreatePage.elements.input('body', 'rich-text-input')).type('text');
+        cy.get(CreatePage.elements.richTextInputError)
+            .should('exist')
+            .contains('Required');
+        cy.get(CreatePage.elements.input('body', 'rich-text-input')).type(
+            'text'
+        );
         cy.get(CreatePage.elements.richTextInputError).should('not.exist');
     });
 
@@ -271,6 +277,8 @@ describe('Create Page', () => {
         CreatePage.setValues(values);
         CreatePage.submit();
         EditPage.gotoTab(2);
-        cy.get(EditPage.elements.input('body', 'rich-text-input')).contains('Test body');
+        cy.get(EditPage.elements.input('body', 'rich-text-input')).contains(
+            'Test body'
+        );
     });
 });
