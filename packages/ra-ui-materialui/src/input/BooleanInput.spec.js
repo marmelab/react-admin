@@ -71,4 +71,16 @@ describe('<BooleanInput />', () => {
                 .text()
         ).toBe('foobar');
     });
+
+    it('should display helperText if prop is present in meta', () => {
+        const { queryByText } = render(
+            <BooleanInput
+                {...defaultProps}
+                source="bar"
+                input={{ value: true }}
+                meta={{ helperText: 'Can I help you?' }}
+            />
+        );
+        expect(queryByText('Can I help you?')).not.toBeNull();
+    });
 });

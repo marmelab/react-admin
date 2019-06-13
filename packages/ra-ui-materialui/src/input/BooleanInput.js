@@ -29,6 +29,7 @@ export class BooleanInput extends Component {
         } = this.props;
 
         const { value, ...inputProps } = input;
+        const { error, helperText = false } = meta;
 
         return (
             <FormGroup className={className} {...sanitizeRestProps(rest)}>
@@ -53,9 +54,10 @@ export class BooleanInput extends Component {
                         />
                     }
                 />
-                {meta.error && (
-                    <FormHelperText error>{meta.error}</FormHelperText>
+                {error && (
+                    <FormHelperText error>{error}</FormHelperText>
                 )}
+                {helperText && <FormHelperText>{helperText}</FormHelperText>}
             </FormGroup>
         );
     }
