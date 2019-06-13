@@ -81,7 +81,7 @@ interface Props {
  *     export default App;
  */
 const EditController = (props: Props) => {
-    useCheckMinimumRequiredProps('Edit', ['basePath', 'resource'], props);
+    useCheckMinimumRequiredProps('Edit', ['basePath', 'resource', 'children'], props);
     const { basePath, children, id, resource, undoable } = props;
     const translate = useTranslate();
     const dispatch = useDispatch();
@@ -132,10 +132,6 @@ const EditController = (props: Props) => {
         },
         [resource, id, record, basePath, undoable] // eslint-disable-line react-hooks/exhaustive-deps
     );
-
-    if (!children) {
-        return null;
-    }
 
     return children({
         isLoading: loading,

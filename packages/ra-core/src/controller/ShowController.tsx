@@ -71,7 +71,7 @@ interface Props {
  *     export default App;
  */
 const ShowController = (props: Props) => {
-    useCheckMinimumRequiredProps('Show', ['basePath', 'resource'], props);
+    useCheckMinimumRequiredProps('Show', ['basePath', 'resource', 'children'], props);
     const { basePath, children, id, resource } = props;
     const translate = useTranslate();
     const version = useVersion();
@@ -96,9 +96,7 @@ const ShowController = (props: Props) => {
         id,
         record,
     });
-    if (!children) {
-        return null;
-    }
+
     return children({
         isLoading: loading,
         defaultTitle,

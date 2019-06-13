@@ -113,7 +113,7 @@ const defaultSort = {
 const ListController = (props: Props) => {
     useCheckMinimumRequiredProps(
         'List',
-        ['basePath', 'location', 'resource'],
+        ['basePath', 'location', 'resource', 'children'],
         props
     );
     if (props.filter && isValidElement(props.filter)) {
