@@ -97,8 +97,9 @@ export class TabbedForm extends Component {
             ...rest
         } = this.props;
 
+        const url = match ? match.url : location.pathname;
         const validTabPaths = Children.toArray(children).map((tab, index) =>
-            getTabFullPath(tab, index, match.url)
+            getTabFullPath(tab, index, url)
         );
 
         // This ensure we don't get warnings from material-ui Tabs component when
@@ -131,7 +132,7 @@ export class TabbedForm extends Component {
                         // TabbedShowLayout hierarchy (ex: '/posts/create', '/posts/12', , '/posts/12/show')
                         // and the tab path.
                         // This will be used as the Tab's value
-                        const tabPath = getTabFullPath(tab, index, match.url);
+                        const tabPath = getTabFullPath(tab, index, url);
 
                         return React.cloneElement(tab, {
                             context: 'header',
@@ -156,7 +157,7 @@ export class TabbedForm extends Component {
                             tab && (
                                 <Route
                                     exact
-                                    path={getTabFullPath(tab, index, match.url)}
+                                    path={getTabFullPath(tab, index, url)}
                                 >
                                     {routeProps =>
                                         isValidElement(tab) ?
