@@ -3,26 +3,14 @@ import {
     ComponentType,
     FunctionComponent,
     ReactElement,
-    useEffect,
 } from 'react';
-// @ts-ignore
-import { useSelector, useDispatch } from 'react-redux';
-import { createSelector } from 'reselect';
 import { WrappedFieldInputProps } from 'redux-form';
 
-import { crudGetMatchingAccumulate } from '../../actions/accumulateActions';
-import {
-    getPossibleReferences,
-    getPossibleReferenceValues,
-    getReferenceResource,
-} from '../../reducer';
 import { getStatusForInput as getDataStatus } from './referenceDataStatus';
 import useTranslate from '../../i18n/useTranslate';
 import { Sort, Record, Pagination } from '../../types';
-import usePaginationState from '../usePaginationState';
-import useSortState from '../useSortState';
-import useFilterState, { Filter } from '../useFilterState';
 import useReference from '../useReference';
+import useReferenceSearch from './useReferenceSearch';
 
 const defaultReferenceSource = (resource: string, source: string) =>
     `${resource}@${source}`;
@@ -45,7 +33,7 @@ interface Props {
     allowEmpty?: boolean;
     basePath: string;
     children: (params: ChildrenFuncParams) => ReactNode;
-    filter?: Filter;
+    filter?: any;
     filterToQuery: (filter: string) => any;
     input?: WrappedFieldInputProps;
     perPage: number;
@@ -142,7 +130,7 @@ export const ReferenceInputController: FunctionComponent<Props> = ({
     onChange,
     children,
     perPage,
-    filter: initialFilter,
+    filter: permanentFilter,
     reference,
     filterToQuery,
     referenceSource = defaultReferenceSource,
@@ -150,17 +138,25 @@ export const ReferenceInputController: FunctionComponent<Props> = ({
     source,
 }) => {
     const translate = useTranslate();
-    const dispatch = useDispatch();
-    const matchingReferences = useSelector(
-        getMatchingReferences({
-            referenceSource,
-            input,
-            reference,
-            resource,
-            source,
-        }),
-        [input.value, referenceSource, reference, source, resource]
-    );
+
+    const {
+        matchingReferences,
+        filter,
+        setFilter,
+        pagination,
+        setPagination,
+        sort,
+        setSort,
+    } = useReferenceSearch({
+        reference,
+        referenceSource,
+        filterToQuery,
+        filterValue: input.value,
+        permanentFilter,
+        perPage,
+        resource,
+        source,
+    });
 
     const { referenceRecord } = useReference({
         id: input.value,
@@ -174,38 +170,6 @@ export const ReferenceInputController: FunctionComponent<Props> = ({
         referenceRecord,
         translate,
     });
-
-    const { pagination, setPagination } = usePaginationState(perPage);
-    const { sort, setSort } = useSortState();
-    const { filter, setFilter } = useFilterState({
-        initialFilter,
-        filterToQuery,
-    });
-
-    useEffect(
-        () =>
-            fetchOptions({
-                dispatch,
-                filter,
-                reference,
-                referenceSource,
-                resource,
-                source,
-                pagination,
-                sort,
-            }),
-        [
-            filter,
-            reference,
-            referenceSource,
-            resource,
-            source,
-            pagination.page,
-            pagination.perPage,
-            sort.field,
-            sort.order,
-        ]
-    );
 
     return children({
         choices: dataStatus.choices,
@@ -221,39 +185,5 @@ export const ReferenceInputController: FunctionComponent<Props> = ({
         warning: dataStatus.warning,
     }) as ReactElement;
 };
-
-const fetchOptions = ({
-    dispatch,
-    filter,
-    reference,
-    referenceSource,
-    resource,
-    source,
-    pagination,
-    sort,
-}) => {
-    dispatch(
-        crudGetMatchingAccumulate(
-            reference,
-            referenceSource(resource, source),
-            pagination,
-            sort,
-            filter
-        )
-    );
-};
-
-const matchingReferencesSelector = createSelector(
-    [
-        getReferenceResource,
-        getPossibleReferenceValues,
-        (_, props) => props.input.value,
-    ],
-    (referenceState, possibleValues, inputId) =>
-        getPossibleReferences(referenceState, possibleValues, [inputId])
-);
-
-const getMatchingReferences = props => state =>
-    matchingReferencesSelector(state, props);
 
 export default ReferenceInputController as ComponentType<Props>;
