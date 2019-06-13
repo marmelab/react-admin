@@ -427,6 +427,27 @@ To style the tabs, the `<FormTab>` component accepts two props:
 - `className` is passed to the tab *header*
 - `contentClassName` is passed to the tab *content*
 
+### TabbedFormTabs
+By default `<TabbedForm>` uses `<TabbedFormTabs>`, an internal react-admin component to renders tabs. You can pass a custom component as the `tabs` prop to override the default component. Besides, props from `<TabbedFormTabs>` are passed to material-ui's `<Tabs>` component inside `<TabbedFormTabs>`.
+
+The following example shows how to make use of scrollable `<Tabs>`. Pass the `scrollable` prop to `<TabbedFormTabs>` and pass that as the `tabs` prop to `<TabbedForm>`
+
+```jsx
+import {
+    Edit,
+    TabbedForm,
+    TabbedFormTabs,
+} from 'react-admin';
+
+export const PostEdit = (props) => (
+    <Edit {...props}>
+        <TabbedForm tabs={<TabbedFormTabs scrollable={true} />}>
+            ...
+        </TabbedForm>
+    </Edit>
+);
+```
+
 ## Default Values
 
 To define default values, you can add a `defaultValue` prop to form components (`<SimpleForm>`, `<Tabbedform>`, etc.), or add a `defaultValue` to individual input components. Let's see each of these options.
