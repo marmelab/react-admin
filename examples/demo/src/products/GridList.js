@@ -1,5 +1,4 @@
 import React from 'react';
-import compose from 'recompose/compose';
 import MuiGridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
@@ -110,6 +109,4 @@ const LoadedGridList = ({ ids, data, basePath, width }) => {
 const GridList = ({ loadedOnce, ...props }) =>
     loadedOnce ? <LoadedGridList {...props} /> : <LoadingGridList {...props} />;
 
-const enhance = compose(withWidth());
-
-export default enhance(GridList);
+export default withWidth()(GridList);
