@@ -6,7 +6,7 @@ export default url => ({
             if (type === 'rich-text-input') {
                 return `.ra-input-${name} .ql-editor`;
             }
-            return `.create-page ${type}[name='${name}']`
+            return `.create-page ${type}[name='${name}']`;
         },
         inputs: `.ra-input`,
         richTextInputError: '.create-page .ra-rich-text-input-error',
