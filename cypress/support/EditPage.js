@@ -2,7 +2,12 @@ export default url => ({
     elements: {
         body: 'body',
         deleteButton: '.ra-delete-button',
-        input: name => `.edit-page [name='${name}']`,
+        input: (name, type = 'input') => {
+            if (type === 'rich-text-input') {
+                return `.ra-input-${name} .ql-editor`;
+            }
+            return `.edit-page [name='${name}']`
+        },
         inputs: `.ra-input`,
         tabs: `.form-tab`,
         snackbar: 'div[role="alertdialog"]',
@@ -20,11 +25,14 @@ export default url => ({
         return cy.get(this.elements.title);
     },
 
-    setInputValue(name, value, clearPreviousValue = true) {
+    setInputValue(type, name, value, clearPreviousValue = true) {
         if (clearPreviousValue) {
             cy.get(this.elements.input(name)).clear();
         }
-        return cy.get(this.elements.input(name)).type(value);
+        cy.get(this.elements.input(name)).type(value);
+        if (type === 'rich-text-input') {
+            cy.wait(500);
+        }
     },
 
     clickInput(name) {
