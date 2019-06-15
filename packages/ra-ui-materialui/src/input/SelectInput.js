@@ -4,7 +4,7 @@ import get from 'lodash/get';
 import MenuItem from '@material-ui/core/MenuItem';
 import { withStyles, createStyles } from '@material-ui/core/styles';
 import compose from 'recompose/compose';
-import { addField, translate, FieldTitle } from 'ra-core';
+import { addField, translate, FieldTitle, ValidationError } from 'ra-core';
 import ResettableTextField from './ResettableTextField';
 
 const sanitizeRestProps = ({
@@ -209,6 +209,7 @@ export class SelectInput extends Component {
             options,
             resource,
             source,
+            helperText,
             ...rest
         } = this.props;
         if (typeof meta === 'undefined') {
@@ -216,7 +217,7 @@ export class SelectInput extends Component {
                 "The SelectInput component wasn't called within a redux-form <Field>. Did you decorate it and forget to add the addField prop to your component? See https://marmelab.com/react-admin/Inputs.html#writing-your-own-input-component for details."
             );
         }
-        const { touched, error, helperText = false } = meta;
+        const { touched, error } = meta;
 
         return (
             <ResettableTextField
@@ -235,7 +236,10 @@ export class SelectInput extends Component {
                 className={`${classes.input} ${className}`}
                 clearAlwaysVisible
                 error={!!(touched && error)}
-                helperText={(touched && error) || helperText}
+                helperText={touched && error
+                    ? <ValidationError error={error} />
+                    : helperText
+                }
                 {...options}
                 {...sanitizeRestProps(rest)}
                 onChange={this.handleChange}
