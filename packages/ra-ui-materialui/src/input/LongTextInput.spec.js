@@ -1,48 +1,53 @@
 import React from 'react';
 import assert from 'assert';
-import { shallow } from 'enzyme';
+import { render, cleanup } from 'react-testing-library';
 
 import { LongTextInput } from './LongTextInput';
 
 describe('<LongTextInput />', () => {
+    afterEach(cleanup);
+    const defaultProps = {
+        source: 'foo',
+        resource: 'bar',
+        meta: {},
+        input: {
+            value: '',
+        },
+        onChange: jest.fn(),
+    };
+
     describe('error message', () => {
         it('should not be displayed if field is pristine', () => {
-            const wrapper = shallow(
-                <LongTextInput source="foo" meta={{ touched: false }} />
+            const { queryByText } = render(
+                <LongTextInput
+                    {...defaultProps}
+                    meta={{ touched: false, error: 'Required field.' }}
+                />
             );
-            const TextFieldElement = wrapper.find(
-                'translate(WithStyles(ResettableTextField))'
-            );
-            assert.equal(TextFieldElement.prop('helperText'), false);
+            const error = queryByText('Required field.');
+            assert.ok(!error);
         });
 
         it('should not be displayed if field has been touched but is valid', () => {
-            const wrapper = shallow(
+            const { queryByText } = render(
                 <LongTextInput
-                    source="foo"
+                    {...defaultProps}
                     meta={{ touched: true, error: false }}
                 />
             );
-            const TextFieldElement = wrapper.find(
-                'translate(WithStyles(ResettableTextField))'
-            );
-            assert.equal(TextFieldElement.prop('helperText'), false);
+            const error = queryByText('Required field.');
+            assert.ok(!error);
         });
 
         it('should be displayed if field has been touched and is invalid', () => {
-            const wrapper = shallow(
+            const { getByText } = render(
                 <LongTextInput
-                    source="foo"
+                    {...defaultProps}
                     meta={{ touched: true, error: 'Required field.' }}
                 />
             );
-            const TextFieldElement = wrapper.find(
-                'translate(WithStyles(ResettableTextField))'
-            );
-            assert.equal(
-                TextFieldElement.prop('helperText'),
-                'Required field.'
-            );
+            const error = getByText('Required field.');
+            assert.ok(error);
         });
     });
 });

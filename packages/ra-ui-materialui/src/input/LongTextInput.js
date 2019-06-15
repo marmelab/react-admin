@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { addField, FieldTitle } from 'ra-core';
+import { addField, FieldTitle, ValidationError } from 'ra-core';
 import ResettableTextField from './ResettableTextField';
 
 import sanitizeRestProps from './sanitizeRestProps';
@@ -14,6 +14,7 @@ export const LongTextInput = ({
     options,
     source,
     resource,
+    helperText,
     ...rest
 }) => {
     if (typeof meta === 'undefined') {
@@ -37,7 +38,10 @@ export const LongTextInput = ({
                 />
             }
             error={!!(touched && error)}
-            helperText={touched && error}
+            helperText={touched && error
+                ? <ValidationError error={error} />
+                : helperText
+            }
             {...sanitizeRestProps(rest)}
             {...options}
         />
