@@ -1,5 +1,4 @@
 import lodashMemoize from 'lodash/memoize';
-import { Translate } from '../types';
 
 /* eslint-disable no-underscore-dangle */
 /* @link http://stackoverflow.com/questions/46155/validate-email-address-in-javascript */
@@ -8,42 +7,47 @@ const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"
 const isEmpty = (value: any) =>
     typeof value === 'undefined' || value === null || value === '';
 
+export interface ValidationErrorMessage {
+    message: string;
+    args: {
+        [key: string]: ValidationErrorMessage | any;
+    };
+}
+
+export type ValidationError = string | ValidationErrorMessage;
+
 export type Validator = (
     value: any,
     values: any,
     props: any
-) => string | null | undefined;
+) => ValidationError | null | undefined;
 
 interface MessageFuncParams {
     args: any;
     value: any;
     values: any;
-    translate: Translate;
-    [key: string]: any;
 }
 
-type MessageFunc = (params: MessageFuncParams) => string;
+type MessageFunc = (params: MessageFuncParams) => ValidationError;
 
 const getMessage = (
     message: string | MessageFunc,
     messageArgs: any,
     value: any,
     values: any,
-    props: {
-        translate: Translate;
-    }
 ) =>
     typeof message === 'function'
         ? message({
               args: messageArgs,
               value,
               values,
-              ...props,
           })
-        : props.translate(message, {
-              _: message,
-              ...messageArgs,
-          });
+        : messageArgs
+        ? ({
+            message,
+            args: messageArgs,
+        })
+        : message;
 
 type Memoize = <T extends (...args: any[]) => any>(
     func: T,
@@ -70,9 +74,9 @@ const memoize: Memoize = (fn: any) =>
  */
 export const required = memoize((message = 'ra.validation.required') =>
     Object.assign(
-        (value, values, props) =>
+        (value, values) =>
             isEmpty(value)
-                ? getMessage(message, undefined, value, values, props)
+                ? getMessage(message, undefined, value, values)
                 : undefined,
         { isRequired: true }
     )
@@ -92,9 +96,9 @@ export const required = memoize((message = 'ra.validation.required') =>
  * <TextInput type="password" name="password" validate={passwordValidators} />
  */
 export const minLength = memoize(
-    (min, message = 'ra.validation.minLength') => (value, values, props) =>
+    (min, message = 'ra.validation.minLength') => (value, values) =>
         !isEmpty(value) && value.length < min
-            ? getMessage(message, { min }, value, values, props)
+            ? getMessage(message, { min }, value, values)
             : undefined
 );
 
@@ -112,9 +116,9 @@ export const minLength = memoize(
  * <TextInput name="name" validate={nameValidators} />
  */
 export const maxLength = memoize(
-    (max, message = 'ra.validation.maxLength') => (value, values, props) =>
+    (max, message = 'ra.validation.maxLength') => (value, values) =>
         !isEmpty(value) && value.length > max
-            ? getMessage(message, { max }, value, values, props)
+            ? getMessage(message, { max }, value, values)
             : undefined
 );
 
@@ -132,9 +136,9 @@ export const maxLength = memoize(
  * <NumberInput name="foo" validate={fooValidators} />
  */
 export const minValue = memoize(
-    (min, message = 'ra.validation.minValue') => (value, values, props) =>
+    (min, message = 'ra.validation.minValue') => (value, values) =>
         !isEmpty(value) && value < min
-            ? getMessage(message, { min }, value, values, props)
+            ? getMessage(message, { min }, value, values)
             : undefined
 );
 
@@ -152,9 +156,9 @@ export const minValue = memoize(
  * <NumberInput name="foo" validate={fooValidators} />
  */
 export const maxValue = memoize(
-    (max, message = 'ra.validation.maxValue') => (value, values, props) =>
+    (max, message = 'ra.validation.maxValue') => (value, values) =>
         !isEmpty(value) && value > max
-            ? getMessage(message, { max }, value, values, props)
+            ? getMessage(message, { max }, value, values)
             : undefined
 );
 
@@ -171,9 +175,9 @@ export const maxValue = memoize(
  * <TextInput name="age" validate={ageValidators} />
  */
 export const number = memoize(
-    (message = 'ra.validation.number') => (value, values, props) =>
+    (message = 'ra.validation.number') => (value, values) =>
         !isEmpty(value) && isNaN(Number(value))
-            ? getMessage(message, undefined, value, values, props)
+            ? getMessage(message, undefined, value, values)
             : undefined
 );
 
@@ -191,9 +195,9 @@ export const number = memoize(
  * <TextInput name="zip" validate={zipValidators} />
  */
 export const regex = lodashMemoize(
-    (pattern, message = 'ra.validation.regex') => (value, values, props) =>
+    (pattern, message = 'ra.validation.regex') => (value, values) =>
         !isEmpty(value) && typeof value === 'string' && !pattern.test(value)
-            ? getMessage(message, { pattern }, value, values, props)
+            ? getMessage(message, { pattern }, value, values)
             : undefined,
     (pattern, message) => {
         return pattern.toString() + message;
@@ -216,10 +220,10 @@ export const email = memoize((message = 'ra.validation.email') =>
     regex(EMAIL_REGEX, message)
 );
 
-const oneOfTypeMessage: MessageFunc = ({ list, value, values, translate }) =>
-    translate('ra.validation.oneOf', {
-        options: list.join(', '),
-    });
+const oneOfTypeMessage: MessageFunc = ({ args }) => ({
+    message: 'ra.validation.oneOf',
+    args,
+});
 
 /**
  * Choices validator
@@ -235,8 +239,8 @@ const oneOfTypeMessage: MessageFunc = ({ list, value, values, translate }) =>
  * <TextInput name="gender" validate={genderValidators} />
  */
 export const choices = memoize(
-    (list, message = oneOfTypeMessage) => (value, values, props) =>
+    (list, message = oneOfTypeMessage) => (value, values) =>
         !isEmpty(value) && list.indexOf(value) === -1
-            ? getMessage(message, { list }, value, values, props)
+            ? getMessage(message, { list }, value, values)
             : undefined
 );
