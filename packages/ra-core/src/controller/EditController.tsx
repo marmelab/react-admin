@@ -81,7 +81,11 @@ interface Props {
  *     export default App;
  */
 const EditController = (props: Props) => {
-    useCheckMinimumRequiredProps('Edit', ['basePath', 'resource', 'children'], props);
+    useCheckMinimumRequiredProps(
+        'Edit',
+        ['basePath', 'resource', 'children'],
+        props
+    );
     const { basePath, children, id, resource, undoable } = props;
     const translate = useTranslate();
     const dispatch = useDispatch();

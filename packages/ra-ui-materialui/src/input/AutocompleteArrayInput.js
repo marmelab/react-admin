@@ -147,13 +147,15 @@ export class AutocompleteArrayInput extends React.Component {
             this.updateFilter('');
         } else if (!isEqual(choices, this.props.choices)) {
             this.setState(({ searchText }) => ({
-                suggestions: this.limitSuggestions(choices.filter(suggestion =>
-                    inputValueMatcher(
-                        searchText,
-                        suggestion,
-                        this.getSuggestionText
+                suggestions: this.limitSuggestions(
+                    choices.filter(suggestion =>
+                        inputValueMatcher(
+                            searchText,
+                            suggestion,
+                            this.getSuggestionText
+                        )
                     )
-                )),
+                ),
             }));
         }
     }
@@ -192,13 +194,15 @@ export class AutocompleteArrayInput extends React.Component {
         const { choices, inputValueMatcher } = this.props;
 
         this.setState(({ searchText }) => ({
-            suggestions: this.limitSuggestions(choices.filter(suggestion =>
-                inputValueMatcher(
-                    searchText,
-                    suggestion,
-                    this.getSuggestionText
+            suggestions: this.limitSuggestions(
+                choices.filter(suggestion =>
+                    inputValueMatcher(
+                        searchText,
+                        suggestion,
+                        this.getSuggestionText
+                    )
                 )
-            )),
+            ),
         }));
     };
 
@@ -418,11 +422,13 @@ export class AutocompleteArrayInput extends React.Component {
             } else {
                 this.setState({
                     searchText: value,
-                    suggestions: this.limitSuggestions(choices.filter(choice =>
-                        this.getSuggestionText(choice)
-                            .toLowerCase()
-                            .includes(value.toLowerCase())
-                    )),
+                    suggestions: this.limitSuggestions(
+                        choices.filter(choice =>
+                            this.getSuggestionText(choice)
+                                .toLowerCase()
+                                .includes(value.toLowerCase())
+                        )
+                    ),
                 });
             }
         }

@@ -71,7 +71,11 @@ interface Props {
  *     export default App;
  */
 const ShowController = (props: Props) => {
-    useCheckMinimumRequiredProps('Show', ['basePath', 'resource', 'children'], props);
+    useCheckMinimumRequiredProps(
+        'Show',
+        ['basePath', 'resource', 'children'],
+        props
+    );
     const { basePath, children, id, resource } = props;
     const translate = useTranslate();
     const version = useVersion();

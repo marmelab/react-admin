@@ -99,7 +99,7 @@ export class TabbedForm extends Component {
             value,
             version,
             ...rest
-        } = this.props;        
+        } = this.props;
 
         return (
             <form
@@ -115,7 +115,7 @@ export class TabbedForm extends Component {
                         match,
                         tabsWithErrors,
                     },
-                    children,
+                    children
                 )}
                 <Divider />
                 <CardContentInner>
