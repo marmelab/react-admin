@@ -79,12 +79,12 @@ const PostCreate = ({ permissions, ...props }) => (
                 const errors = {};
                 ['title', 'teaser'].forEach(field => {
                     if (!values[field]) {
-                        errors[field] = ['Required field'];
+                        errors[field] = 'Required field';
                     }
                 });
 
                 if (values.average_note < 0 || values.average_note > 5) {
-                    errors.average_note = ['Should be between 0 and 5'];
+                    errors.average_note = 'Should be between 0 and 5';
                 }
 
                 return errors;
