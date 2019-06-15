@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { addField, FieldTitle } from 'ra-core';
+import { addField, FieldTitle, ValidationError } from 'ra-core';
 
 import ResettableTextField from './ResettableTextField';
 import sanitizeRestProps from './sanitizeRestProps';
@@ -46,6 +46,7 @@ export class TextInput extends Component {
             resource,
             source,
             type,
+            helperText,
             ...rest
         } = this.props;
         if (typeof meta === 'undefined') {
@@ -72,7 +73,10 @@ export class TextInput extends Component {
                     )
                 }
                 error={!!(touched && error)}
-                helperText={touched && error}
+                helperText={touched && error
+                    ? <ValidationError error={error} />
+                    : helperText
+                }
                 className={className}
                 {...options}
                 {...sanitizeRestProps(rest)}

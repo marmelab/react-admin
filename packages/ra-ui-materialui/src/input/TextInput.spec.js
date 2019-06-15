@@ -1,90 +1,84 @@
-import { shallow } from 'enzyme';
 import assert from 'assert';
 import React from 'react';
+import { render, cleanup, fireEvent } from 'react-testing-library';
 
 import { TextInput } from './TextInput';
 
 describe('<TextInput />', () => {
     const defaultProps = {
+        // We have to specify the id ourselves here because the
+        // TextInput is not wrapped inside a FormInput
+        id: 'foo',
         source: 'foo',
+        resource: 'bar',
         meta: {},
-        input: {},
+        input: {
+            value: '',
+        },
     };
 
+    afterEach(cleanup);
+
     it('should use a ResettableTextField when type is text', () => {
-        const wrapper = shallow(
+        const { getByLabelText } = render(
             <TextInput {...defaultProps} input={{ value: 'hello' }} />
         );
-        const TextFieldElement = wrapper.find(
-            'translate(WithStyles(ResettableTextField))'
-        );
-        assert.equal(TextFieldElement.length, 1);
-        assert.equal(TextFieldElement.prop('value'), 'hello');
-        assert.equal(TextFieldElement.prop('type'), 'text');
+        const TextFieldElement = getByLabelText('resources.bar.fields.foo');
+        assert.equal(TextFieldElement.getAttribute('value'), 'hello');
+        assert.equal(TextFieldElement.getAttribute('type'), 'text');
     });
 
     it('should use a ResettableTextField when type is password', () => {
-        const wrapper = shallow(
+        const { getByLabelText } = render(
             <TextInput {...defaultProps} type="password" />
         );
-        const TextFieldElement = wrapper.find(
-            'translate(WithStyles(ResettableTextField))'
-        );
-        assert.equal(TextFieldElement.length, 1);
-        assert.equal(TextFieldElement.prop('type'), 'password');
+        const TextFieldElement = getByLabelText('resources.bar.fields.foo');
+        assert.equal(TextFieldElement.getAttribute('type'), 'password');
     });
 
     it('should call redux-form onBlur handler when blurred', () => {
         const onBlur = jest.fn();
-        const wrapper = shallow(
-            <TextInput {...defaultProps} input={{ onBlur }} />
+        const { getByLabelText } = render(
+            <TextInput {...defaultProps} input={{ onBlur, value: '' }} />
         );
 
-        const TextFieldElement = wrapper
-            .find('translate(WithStyles(ResettableTextField))')
-            .first();
-        TextFieldElement.simulate('blur', 'event');
-        assert.equal(onBlur.mock.calls[0][0], 'event');
+        const TextFieldElement = getByLabelText('resources.bar.fields.foo');
+        fireEvent.blur(TextFieldElement);
+        assert.equal(onBlur.mock.calls.length, 1);
     });
 
     describe('error message', () => {
         it('should not be displayed if field is pristine', () => {
-            const wrapper = shallow(
-                <TextInput {...defaultProps} meta={{ touched: false }} />
+            const { queryByText } = render(
+                <TextInput
+                    {...defaultProps}
+                    meta={{ touched: false, error: 'Required field.' }}
+                />
             );
-            const TextFieldElement = wrapper.find(
-                'translate(WithStyles(ResettableTextField))'
-            );
-            assert.equal(TextFieldElement.prop('helperText'), false);
+            const error = queryByText('Required field.');
+            assert.ok(!error);
         });
 
         it('should not be displayed if field has been touched but is valid', () => {
-            const wrapper = shallow(
+            const { queryByText } = render(
                 <TextInput
                     {...defaultProps}
                     meta={{ touched: true, error: false }}
                 />
             );
-            const TextFieldElement = wrapper.find(
-                'translate(WithStyles(ResettableTextField))'
-            );
-            assert.equal(TextFieldElement.prop('helperText'), false);
+            const error = queryByText('Required field.');
+            assert.ok(!error);
         });
 
         it('should be displayed if field has been touched and is invalid', () => {
-            const wrapper = shallow(
+            const { getByText } = render(
                 <TextInput
                     {...defaultProps}
                     meta={{ touched: true, error: 'Required field.' }}
                 />
             );
-            const TextFieldElement = wrapper.find(
-                'translate(WithStyles(ResettableTextField))'
-            );
-            assert.equal(
-                TextFieldElement.prop('helperText'),
-                'Required field.'
-            );
+            const error = getByText('Required field.');
+            assert.ok(error);
         });
     });
 });
