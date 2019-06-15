@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import TextField from '@material-ui/core/TextField';
-import { addField, FieldTitle } from 'ra-core';
+import { addField, FieldTitle, ValidationError } from 'ra-core';
 
 import sanitizeRestProps from './sanitizeRestProps';
 
@@ -58,6 +58,7 @@ export class NumberInput extends Component {
             source,
             step,
             resource,
+            helperText,
             ...rest
         } = this.props;
         if (typeof meta === 'undefined') {
@@ -72,7 +73,10 @@ export class NumberInput extends Component {
                 type="number"
                 margin="normal"
                 error={!!(touched && error)}
-                helperText={touched && error}
+                helperText={touched && error
+                    ? <ValidationError error={error} />
+                    : helperText
+                }
                 step={step}
                 label={
                     <FieldTitle
