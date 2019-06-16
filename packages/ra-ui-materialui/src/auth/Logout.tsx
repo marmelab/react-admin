@@ -38,6 +38,7 @@ const LogoutWithRef: FunctionComponent<
     const classes = useStyles();
     const translate = useTranslate();
     const dispatch = useDispatch();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const logout = useCallback(() => dispatch(userLogout(redirectTo)), [
         redirectTo,
     ]);

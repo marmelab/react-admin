@@ -1,6 +1,6 @@
 import React from 'react';
 import expect from 'expect';
-import { render, cleanup } from 'react-testing-library';
+import { cleanup } from 'react-testing-library';
 import { renderWithRedux } from 'ra-core';
 
 import Create from './Create';

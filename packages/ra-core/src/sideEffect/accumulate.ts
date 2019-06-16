@@ -1,4 +1,4 @@
-import { call, cancel, delay, fork, put, takeEvery } from 'redux-saga/effects';
+import { cancel, delay, fork, put, takeEvery } from 'redux-saga/effects';
 
 /**
  * Distinct reducer on ids

@@ -1,7 +1,7 @@
 import React from 'react';
 import expect from 'expect';
 import { cleanup } from 'react-testing-library';
-import { renderWithRedux, TestContext } from 'ra-core';
+import { renderWithRedux } from 'ra-core';
 
 import List, { ListView } from './List';
 

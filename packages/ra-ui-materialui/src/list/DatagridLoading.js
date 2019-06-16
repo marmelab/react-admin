@@ -75,7 +75,6 @@ export default ({
                                 className={classes.expandIcon}
                                 component="div"
                                 aria-hidden="true"
-                                role="expand"
                             >
                                 <ExpandMoreIcon />
                             </IconButton>

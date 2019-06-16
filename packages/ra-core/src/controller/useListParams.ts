@@ -137,7 +137,7 @@ const useListParams = ({
                 sort,
                 perPage,
             }),
-        requestSignature
+        requestSignature // eslint-disable-line react-hooks/exhaustive-deps
     );
 
     const changeParams = useCallback(action => {
@@ -151,21 +151,21 @@ const useListParams = ({
             })
         );
         dispatch(changeListParams(resource, newParams));
-    }, requestSignature);
+    }, requestSignature); // eslint-disable-line react-hooks/exhaustive-deps
 
     const setSort = useCallback(
         newSort => changeParams({ type: SET_SORT, payload: { sort: newSort } }),
-        requestSignature
+        requestSignature // eslint-disable-line react-hooks/exhaustive-deps
     );
 
     const setPage = useCallback(
         newPage => changeParams({ type: SET_PAGE, payload: newPage }),
-        requestSignature
+        requestSignature // eslint-disable-line react-hooks/exhaustive-deps
     );
 
     const setPerPage = useCallback(
         newPerPage => changeParams({ type: SET_PER_PAGE, payload: newPerPage }),
-        requestSignature
+        requestSignature // eslint-disable-line react-hooks/exhaustive-deps
     );
 
     const filterValues = query.filter || emptyObject;
@@ -190,7 +190,7 @@ const useListParams = ({
         setDisplayedFilters({ [filterName]: false });
         const newFilters = removeKey(filterValues, filterName);
         setFilters(newFilters);
-    }, requestSignature);
+    }, requestSignature); // eslint-disable-line react-hooks/exhaustive-deps
 
     const showFilter = useCallback((filterName: string, defaultValue: any) => {
         setDisplayedFilters({ [filterName]: true });
@@ -200,7 +200,7 @@ const useListParams = ({
                 [filterName]: defaultValue,
             });
         }
-    }, requestSignature);
+    }, requestSignature); // eslint-disable-line react-hooks/exhaustive-deps
 
     return [
         {

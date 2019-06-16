@@ -1,15 +1,20 @@
 import React, { Children, cloneElement, isValidElement } from 'react';
 import PropTypes from 'prop-types';
 import Tabs from '@material-ui/core/Tabs';
-import compose from 'recompose/compose';
 
 const getTabFullPath = (tab, index, baseUrl) =>
     `${baseUrl}${
         tab.props.path ? `/${tab.props.path}` : index > 0 ? `/${index}` : ''
     }`;
 
-const TabbedFormTabs = ({ children, classes, currentLocationPath, match, tabsWithErrors, ...rest }) => {
-
+const TabbedFormTabs = ({
+    children,
+    classes,
+    currentLocationPath,
+    match,
+    tabsWithErrors,
+    ...rest
+}) => {
     const validTabPaths = Children.toArray(children).map((tab, index) =>
         getTabFullPath(tab, index, match.url)
     );
@@ -26,7 +31,7 @@ const TabbedFormTabs = ({ children, classes, currentLocationPath, match, tabsWit
         : validTabPaths[0];
 
     return (
-        <Tabs value={tabValue} indicatorColor="primary" {...rest} >
+        <Tabs value={tabValue} indicatorColor="primary" {...rest}>
             {Children.map(children, (tab, index) => {
                 if (!isValidElement(tab)) return null;
 
@@ -41,7 +46,7 @@ const TabbedFormTabs = ({ children, classes, currentLocationPath, match, tabsWit
                     value: tabPath,
                     className:
                         tabsWithErrors.includes(tab.props.label) &&
-                            currentLocationPath !== tabPath
+                        currentLocationPath !== tabPath
                             ? classes.errorTabButton
                             : null,
                 });

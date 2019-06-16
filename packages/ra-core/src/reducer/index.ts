@@ -7,8 +7,8 @@ import admin, {
     getPossibleReferenceValues as adminGetPossibleReferenceValues,
     isLoggedIn as adminIsLoggedIn,
 } from './admin';
-export { getNotification } from './admin/notifications';
 import i18nReducer, { getLocale as adminGetLocale } from './i18n';
+export { getNotification } from './admin/notifications';
 export default (customReducers, locale, messages, history) =>
     combineReducers({
         admin,

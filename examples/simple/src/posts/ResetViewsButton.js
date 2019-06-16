@@ -14,7 +14,7 @@ const ResetViewsButton = props => {
                 crudUpdateMany(resource, selectedIds, { views: 0 }, basePath)
             )
         );
-    }, [basePath, resource, selectedIds]);
+    }, [basePath, dispatch, resource, selectedIds]);
 
     return (
         <Button label="simple.action.resetViews" onClick={handleClick}>

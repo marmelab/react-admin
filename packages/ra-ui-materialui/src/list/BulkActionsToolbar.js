@@ -54,7 +54,7 @@ const BulkActionsToolbar = ({
         <Toolbar
             data-test="bulk-actions-toolbar"
             className={classnames(classes.toolbar, {
-                [classes.collapsed]: selectedIds.length == 0,
+                [classes.collapsed]: selectedIds.length === 0,
             })}
             {...sanitizeListRestProps(rest)}
         >

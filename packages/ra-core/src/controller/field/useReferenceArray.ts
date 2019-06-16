@@ -1,11 +1,11 @@
-import { FunctionComponent, ReactNode, useEffect, ReactElement } from 'react';
+import { useEffect } from 'react';
 // @ts-ignore
 import { useDispatch, useSelector } from 'react-redux';
 import get from 'lodash/get';
 
 import { crudGetManyAccumulate } from '../../actions';
 import { getReferencesByIds } from '../../reducer/admin/references/oneToMany';
-import { ReduxState, Record, RecordMap, Sort, Identifier } from '../../types';
+import { ReduxState, Record, RecordMap, Identifier } from '../../types';
 
 interface ReferenceArrayProps {
     loadedOnce: boolean;
@@ -70,12 +70,12 @@ const useReferenceArray = ({
     );
     useEffect(() => {
         dispatch(crudGetManyAccumulate(reference, ids));
-    }, [reference, ids, record.id]);
+    }, [reference, ids, record.id]); // eslint-disable-line react-hooks/exhaustive-deps
 
     const referenceBasePath = basePath.replace(resource, reference); // FIXME obviously very weak
 
     return {
-        // tslint:disable-next-line:triple-equals
+        // eslint-disable-next-line eqeqeq
         loadedOnce: data != undefined,
         ids,
         data,

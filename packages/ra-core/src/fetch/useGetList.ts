@@ -4,7 +4,6 @@ import { CRUD_GET_LIST } from '../actions/dataActions/crudGetList';
 import { GET_LIST } from '../dataFetchActions';
 import { Pagination, Sort, ReduxState } from '../types';
 import useQueryWithStore from '../fetch/useQueryWithStore';
-import { ObjectMethod } from '@babel/types';
 
 /**
  * Call the dataProvider with a GET_LIST verb and return the result as well as the loading state.

@@ -90,7 +90,8 @@ const useMutation = (
                     loaded: false,
                 });
             });
-    }, [JSON.stringify({ query, options })]); // deep equality, see https://github.com/facebook/react/issues/14476#issuecomment-471199055
+        // deep equality, see https://github.com/facebook/react/issues/14476#issuecomment-471199055
+    }, [JSON.stringify({ query, options })]); // eslint-disable-line react-hooks/exhaustive-deps
 
     return [mutate, state];
 };

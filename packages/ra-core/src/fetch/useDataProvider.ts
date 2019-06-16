@@ -105,8 +105,7 @@ const useDataProvider = () => {
                     : dispatch(queryAction);
             });
         },
-
-        []
+        [] // eslint-disable-line react-hooks/exhaustive-deps
     );
 };
 

@@ -117,16 +117,16 @@ ReferenceFieldView.propTypes = {
  * <ReferenceField label="User" source="userId" reference="users" link={false}>
  *     <TextField source="name" />
  * </ReferenceField>
- * 
+ *
  * @default
  * Alternatively, you can also pass a custom function to `link`. It must take reference and record
  * as arguments and return a string
- * 
+ *
  * @example
  * <ReferenceField label="User" source="userId" reference="users" link={(reference, record) => "/path/to/${reference}/${record}"}>
  *     <TextField source="name" />
  * </ReferenceField>
- * 
+ *
  * @default
  * In previous versions of React-Admin, the prop `linkType` was used. It is now deprecated and replaced with `link`. However
  * backward-compatibility is still kept
@@ -168,8 +168,16 @@ ReferenceField.propTypes = {
     sortBy: PropTypes.string,
     source: PropTypes.string.isRequired,
     translateChoice: PropTypes.func,
-    linkType: PropTypes.oneOfType([PropTypes.string, PropTypes.bool, PropTypes.func]),
-    link: PropTypes.oneOfType([PropTypes.string, PropTypes.bool, PropTypes.func]).isRequired,
+    linkType: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.bool,
+        PropTypes.func,
+    ]),
+    link: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.bool,
+        PropTypes.func,
+    ]).isRequired,
 };
 
 ReferenceField.defaultProps = {

@@ -81,7 +81,9 @@ export class RichTextInput extends Component {
 
     onTextChange = () => {
         const value =
-            this.editor.innerHTML == '<p><br></p>' ? '' : this.editor.innerHTML;
+            this.editor.innerHTML === '<p><br></p>'
+                ? ''
+                : this.editor.innerHTML;
         this.lastValueChange = value;
         this.props.input.onChange(value);
     };
@@ -94,7 +96,7 @@ export class RichTextInput extends Component {
         const { error, helperText = false } = this.props.meta;
         return (
             <FormControl
-                error={error !== null && error != undefined}
+                error={error !== null && error != undefined} // eslint-disable-line eqeqeq
                 fullWidth={this.props.fullWidth}
                 className="ra-rich-text-input"
             >

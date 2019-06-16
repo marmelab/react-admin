@@ -5,18 +5,16 @@ import React, {
     cloneElement,
 } from 'react';
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
 import { connect } from 'react-redux';
 import { push } from 'connected-react-router';
-import IconButton from '@material-ui/core/IconButton';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import Checkbox from '@material-ui/core/Checkbox';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import classnames from 'classnames';
 import { linkToRecord } from 'ra-core';
+import classNames from 'classnames';
 
 import DatagridCell from './DatagridCell';
+import ExpandRowButton from './ExpandRowButton';
 
 const sanitizeRestProps = ({
     basePath,
@@ -139,18 +137,12 @@ export class DatagridRow extends Component {
                             padding="none"
                             className={classes.expandIconCell}
                         >
-                            <IconButton
-                                className={classNames(classes.expandIcon, {
-                                    [classes.expanded]: expanded,
-                                })}
-                                component="div"
-                                tabIndex={-1}
-                                aria-hidden="true"
-                                role="expand"
+                            <ExpandRowButton
+                                classes={classes}
+                                expanded={expanded}
                                 onClick={this.handleToggleExpanded}
-                            >
-                                <ExpandMoreIcon />
-                            </IconButton>
+                                expandContentId={`${id}-expand`}
+                            />
                         </TableCell>
                     )}
                     {hasBulkActions && (
@@ -167,7 +159,7 @@ export class DatagridRow extends Component {
                         isValidElement(field) ? (
                             <DatagridCell
                                 key={`${id}-${field.props.source || index}`}
-                                className={classnames(
+                                className={classNames(
                                     `column-${field.props.source}`,
                                     classes.rowCell
                                 )}
@@ -178,8 +170,8 @@ export class DatagridRow extends Component {
                     )}
                 </TableRow>
                 {expand && expanded && (
-                    <TableRow key={`${id}-expand`}>
-                        <TableCell colSpan={colSpan} role="expand-content">
+                    <TableRow key={`${id}-expand`} id={`${id}-expand`}>
+                        <TableCell colSpan={colSpan}>
                             {cloneElement(expand, {
                                 record,
                                 basePath,

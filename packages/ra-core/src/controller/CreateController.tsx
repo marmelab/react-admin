@@ -80,7 +80,7 @@ interface Props {
 const CreateController = (props: Props) => {
     useCheckMinimumRequiredProps(
         'Create',
-        ['basePath', 'location', 'resource'],
+        ['basePath', 'location', 'resource', 'children'],
         props
     );
     const {
@@ -104,12 +104,8 @@ const CreateController = (props: Props) => {
         (data: Partial<Record>, redirect: RedirectionSideEffect) => {
             dispatch(crudCreate(resource, data, basePath, redirect));
         },
-        [resource, basePath]
+        [resource, basePath] // eslint-disable-line react-hooks/exhaustive-deps
     );
-
-    if (!children) {
-        return null;
-    }
 
     const resourceName = translate(`resources.${resource}.name`, {
         smart_count: 1,

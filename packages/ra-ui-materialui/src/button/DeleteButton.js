@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ComponentPropType } from 'ra-core';
 import DeleteWithUndoButton from './DeleteWithUndoButton';
 import DeleteWithConfirmButton from './DeleteWithConfirmButton';
 

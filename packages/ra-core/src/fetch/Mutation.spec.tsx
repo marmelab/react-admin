@@ -3,7 +3,6 @@ import {
     render,
     cleanup,
     fireEvent,
-    // @ts-ignore
     waitForDomChange,
 } from 'react-testing-library';
 import expect from 'expect';
@@ -39,7 +38,7 @@ describe('Mutation', () => {
 
     it('should dispatch a fetch action when the mutation callback is triggered', () => {
         const myPayload = {};
-        const { getByText, reduxStore, dispatch } = renderWithRedux(
+        const { getByText, dispatch } = renderWithRedux(
             <Mutation type="mytype" resource="myresource" payload={myPayload}>
                 {mutate => <button onClick={mutate}>Hello</button>}
             </Mutation>

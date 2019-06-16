@@ -61,7 +61,7 @@ export default (
             return;
         }
         dispatch(initialSort);
-    }, [initialSort.field, initialSort.order]);
+    }, [initialSort.field, initialSort.order]); // eslint-disable-line react-hooks/exhaustive-deps
 
     return {
         setSort: (field: string) => dispatch(field),

@@ -81,11 +81,12 @@ interface Props {
  *     export default App;
  */
 const EditController = (props: Props) => {
-    useCheckMinimumRequiredProps('Edit', ['basePath', 'resource'], props);
+    useCheckMinimumRequiredProps(
+        'Edit',
+        ['basePath', 'resource', 'children'],
+        props
+    );
     const { basePath, children, id, resource, undoable } = props;
-    if (!children) {
-        return null;
-    }
     const translate = useTranslate();
     const dispatch = useDispatch();
     const version = useVersion();
@@ -104,7 +105,7 @@ const EditController = (props: Props) => {
 
     useEffect(() => {
         dispatch(resetForm(REDUX_FORM_NAME));
-    }, [resource, id, version]);
+    }, [resource, id, version]); // eslint-disable-line react-hooks/exhaustive-deps
 
     const resourceName = translate(`resources.${resource}.name`, {
         smart_count: 1,
@@ -133,7 +134,7 @@ const EditController = (props: Props) => {
                 dispatch(updateAction);
             }
         },
-        [id, resource, basePath, record]
+        [resource, id, record, basePath, undoable] // eslint-disable-line react-hooks/exhaustive-deps
     );
 
     return children({
