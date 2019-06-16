@@ -1,22 +1,23 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
-import { withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
 import { useTranslate } from 'react-admin';
 import { stringify } from 'query-string';
 
 import products from '../products';
 
-const styles = {
+const useStyles = makeStyles({
     icon: { paddingRight: '0.5em' },
     link: {
         display: 'inline-flex',
         alignItems: 'center',
     },
-};
+});
 
-const LinkToRelatedProducts = ({ classes, record }) => {
+const LinkToRelatedProducts = ({ record }) => {
     const translate = useTranslate();
+    const classes = useStyles();
     return (
         <Button
             size="small"
@@ -40,4 +41,4 @@ const LinkToRelatedProducts = ({ classes, record }) => {
     );
 };
 
-export default withStyles(styles)(LinkToRelatedProducts);
+export default LinkToRelatedProducts;

@@ -9,19 +9,20 @@ import {
     useTranslate,
 } from 'react-admin';
 import Chip from '@material-ui/core/Chip';
-import withStyles from '@material-ui/core/styles/withStyles';
+import { makeStyles } from '@material-ui/core/styles';
 import GridList from './GridList';
 
-const quickFilterStyles = {
+const useQuickFilterStyles = makeStyles({
     root: {
         marginBottom: '0.7em',
     },
-};
-
-const QuickFilter = withStyles(quickFilterStyles)(({ classes, label }) => {
-    const translate = useTranslate();
-    return <Chip className={classes.root} label={translate(label)} />;
 });
+
+const QuickFilter = ({ label }) => {
+    const translate = useTranslate();
+    const classes = useQuickFilterStyles();
+    return <Chip className={classes.root} label={translate(label)} />;
+};
 
 export const ProductFilter = props => (
     <Filter {...props}>
