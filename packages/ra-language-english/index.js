@@ -22,6 +22,8 @@ module.exports = {
             show: 'Show',
             sort: 'Sort',
             undo: 'Undo',
+            expand: 'Expand',
+            close: 'Close',
         },
         boolean: {
             true: 'Yes',

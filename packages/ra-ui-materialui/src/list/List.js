@@ -1,5 +1,4 @@
-/* eslint no-console: ["error", { allow: ["warn", "error"] }] */
-import React, { isValidElement, Children, cloneElement } from 'react';
+import React, { Children, cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import Card from '@material-ui/core/Card';
 import classnames from 'classnames';

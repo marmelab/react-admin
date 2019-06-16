@@ -1,5 +1,5 @@
 import assert from 'assert';
-import { shallow, mount } from 'enzyme';
+import { shallow } from 'enzyme';
 import React from 'react';
 import { submit } from 'redux-form';
 

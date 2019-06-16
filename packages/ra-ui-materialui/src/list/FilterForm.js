@@ -87,7 +87,8 @@ export class FilterForm extends Component {
             filterElement =>
                 filterElement.props.alwaysOn ||
                 displayedFilters[filterElement.props.source] ||
-                typeof lodashGet(initialValues, filterElement.props.source) !== 'undefined'
+                typeof lodashGet(initialValues, filterElement.props.source) !==
+                    'undefined'
         );
     }
 

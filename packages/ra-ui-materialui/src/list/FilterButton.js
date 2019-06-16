@@ -33,7 +33,8 @@ export class FilterButton extends Component {
             filterElement =>
                 !filterElement.props.alwaysOn &&
                 !displayedFilters[filterElement.props.source] &&
-                typeof lodashGet(filterValues, filterElement.props.source) === 'undefined'
+                typeof lodashGet(filterValues, filterElement.props.source) ===
+                    'undefined'
         );
     }
 

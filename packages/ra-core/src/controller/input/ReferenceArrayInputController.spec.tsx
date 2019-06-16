@@ -446,13 +446,12 @@ describe('<ReferenceArrayInputController />', () => {
                 crudGetMany={crudGetMany}
             />
         );
-        expect(
-            crudGetMany.mock.calls[0]
-        ).toEqual([defaultProps.reference, [5, 6]]);
+        expect(crudGetMany.mock.calls[0]).toEqual([
+            defaultProps.reference,
+            [5, 6],
+        ]);
         wrapper.setProps({ input: { value: [6] } });
-        expect(
-            crudGetMany.mock.calls.length
-        ).toEqual(1);
+        expect(crudGetMany.mock.calls.length).toEqual(1);
     });
 
     it('should only call crudGetOne and not crudGetMatching when only the record changes', () => {

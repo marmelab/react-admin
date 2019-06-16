@@ -11,7 +11,6 @@ import {
     STOP_OPTIMISTIC_MODE,
     StopOptimisticModeAction,
 } from '../../actions';
-import { number } from '../../form';
 
 type ActionTypes =
     | ToggleSidebarAction

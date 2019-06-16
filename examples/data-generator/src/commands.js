@@ -58,7 +58,7 @@ export default (db, { serializeDate }) => {
                 (total_ex_taxes + delivery_fees + taxes).toFixed(2)
             ),
             status: status,
-            returned: status == 'delivered' ? weightedBoolean(10) : false,
+            returned: status === 'delivered' ? weightedBoolean(10) : false,
         };
     });
 };

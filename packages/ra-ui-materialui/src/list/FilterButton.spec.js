@@ -12,9 +12,9 @@ describe('<FilterButton />', () => {
             <TextInput source="title" label="Title" />,
             <TextInput source="customer.name" label="Name" />,
         ],
-        displayedFilters: { 
+        displayedFilters: {
             title: true,
-            "customer.name": true,
+            'customer.name': true,
         },
         showFilter: () => {},
         translate: () => {},
@@ -25,19 +25,16 @@ describe('<FilterButton />', () => {
 
     describe('filter button', () => {
         it('should not be rendered, if all filters are already being displayed', () => {
-            const { queryByText } = render(
-                <FilterButton
-                    {...defaultProps}
-                />
-            );
+            const { queryByText } = render(<FilterButton {...defaultProps} />);
             expect(queryByText('ra.action.add_filter')).toBeNull();
         });
-
     });
 
     describe('filter selection menu', () => {
         it('should display only hidden filters', () => {
-            const hiddenFilter = <TextInput source="Returned" label="Returned" />;
+            const hiddenFilter = (
+                <TextInput source="Returned" label="Returned" />
+            );
             const { queryByText } = render(
                 <FilterButton
                     {...defaultProps}

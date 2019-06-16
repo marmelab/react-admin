@@ -22,7 +22,7 @@ export default function(db) {
         customers[command.customer_id].nbProducts += command.basket.length;
         return customers;
     }, {});
-    Object.keys(customersBySpending).map(customer_id => {
+    Object.keys(customersBySpending).forEach(customer_id => {
         if (customersBySpending[customer_id].nbProducts > 10) {
             db.customers[customer_id].groups.push('collector');
         }
@@ -30,7 +30,7 @@ export default function(db) {
 
     // add 'ordered_once' group
     db.customers
-        .filter(customer => customer.nb_commands == 1)
+        .filter(customer => customer.nb_commands === 1)
         .forEach(customer => customer.groups.push('ordered_once'));
 
     // add 'compulsive' group

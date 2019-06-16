@@ -107,7 +107,7 @@ export class CheckboxGroupInput extends Component {
         if (isChecked) {
             onChange([...(value || []), ...[newValue]]);
         } else {
-            onChange(value.filter(v => v != newValue));
+            onChange(value.filter(v => v != newValue)); // eslint-disable-line eqeqeq
         }
     };
 
@@ -122,7 +122,7 @@ export class CheckboxGroupInput extends Component {
             translateChoice,
             classes,
         } = this.props;
-        const choiceName = React.isValidElement(optionText) // eslint-disable-line no-nested-ternary
+        const choiceName = React.isValidElement(optionText)
             ? React.cloneElement(optionText, { record: choice })
             : typeof optionText === 'function'
             ? optionText(choice)
@@ -133,7 +133,7 @@ export class CheckboxGroupInput extends Component {
                 key={get(choice, optionValue)}
                 checked={
                     value
-                        ? value.find(v => v == get(choice, optionValue)) !==
+                        ? value.find(v => v == get(choice, optionValue)) !== // eslint-disable-line eqeqeq
                           undefined
                         : false
                 }

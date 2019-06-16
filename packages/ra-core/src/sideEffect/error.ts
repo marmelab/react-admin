@@ -20,7 +20,7 @@ function* handleResponse(action: ActionTypes) {
         case CRUD_GET_ONE_SUCCESS:
             if (
                 !('id' in payload.data) ||
-                payload.data.id != requestPayload.id // tslint:disable-line triple-equals
+                payload.data.id != requestPayload.id // eslint-disable-line eqeqeq
             ) {
                 return yield put(
                     showNotification('ra.notification.bad_item', 'warning')
