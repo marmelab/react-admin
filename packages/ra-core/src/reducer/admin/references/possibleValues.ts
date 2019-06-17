@@ -40,8 +40,9 @@ const possibleValuesreducer: Reducer<PossibleValuesState> = (
     }
 };
 
-export const getPossibleReferenceValues = (state, props) =>
-    state[props.referenceSource(props.resource, props.source)];
+export const getPossibleReferenceValues = (state, props) => {
+    return state[props.referenceSource(props.resource, props.source)];
+};
 
 export const getPossibleReferences = (
     referenceState,

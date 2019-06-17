@@ -3,45 +3,38 @@ import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { createSelector } from 'reselect';
 
-import usePaginationState from '../usePaginationState';
-import useSortState from '../useSortState';
-import useFilterState, { Filter } from '../useFilterState';
+import { Filter } from '../useFilterState';
 import { crudGetMatchingAccumulate } from '../../actions/accumulateActions';
 import {
     getPossibleReferences,
     getPossibleReferenceValues,
     getReferenceResource,
 } from '../../reducer';
+import { Pagination, Sort } from '../../types';
 
 interface UseReferenceSearchOption {
     reference: string;
     referenceSource: (resource: string, source: string) => string;
     resource: string;
     source: string;
-    permanentFilter: Filter;
-    filterToQuery: (v: string) => Filter;
-    perPage: number;
-    filterValue: string;
+    filter: Filter;
+    pagination: Pagination;
+    sort: Sort;
 }
+
+const defaultReferenceSource = (resource: string, source: string) =>
+    `${resource}@${source}`;
 
 export default ({
     reference,
-    referenceSource,
+    referenceSource = defaultReferenceSource,
     resource,
     source,
-    permanentFilter,
-    filterToQuery,
-    perPage,
-    filterValue,
+    filter,
+    pagination,
+    sort,
 }: UseReferenceSearchOption) => {
     const dispatch = useDispatch();
-
-    const { pagination, setPagination } = usePaginationState(perPage);
-    const { sort, setSort } = useSortState();
-    const { filter, setFilter } = useFilterState({
-        permanentFilter,
-        filterToQuery,
-    });
 
     useEffect(
         () =>
@@ -71,23 +64,15 @@ export default ({
     const matchingReferences = useSelector(
         getMatchingReferences({
             referenceSource,
-            filterValue,
+            filter,
             reference,
             resource,
             source,
         }),
-        [filterValue, referenceSource, reference, source, resource]
+        [filter, referenceSource, reference, source, resource]
     );
 
-    return {
-        matchingReferences,
-        setFilter,
-        filter,
-        pagination,
-        setPagination,
-        sort,
-        setSort,
-    };
+    return matchingReferences;
 };
 
 const fetchOptions = ({
@@ -117,8 +102,9 @@ const matchingReferencesSelector = createSelector(
         getPossibleReferenceValues,
         (_, props) => props.filterValue,
     ],
-    (referenceState, possibleValues, inputId) =>
-        getPossibleReferences(referenceState, possibleValues, [inputId])
+    (referenceState, possibleValues, inputId) => {
+        return getPossibleReferences(referenceState, possibleValues, [inputId]);
+    }
 );
 
 const getMatchingReferences = props => state =>

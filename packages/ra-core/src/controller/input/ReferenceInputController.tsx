@@ -11,6 +11,9 @@ import useTranslate from '../../i18n/useTranslate';
 import { Sort, Record, Pagination } from '../../types';
 import useReference from '../useReference';
 import useReferenceSearch from './useReferenceSearch';
+import usePaginationState from '../usePaginationState';
+import { useSortState } from '..';
+import useFilterState from '../useFilterState';
 
 const defaultReferenceSource = (resource: string, source: string) =>
     `${resource}@${source}`;
@@ -34,12 +37,12 @@ interface Props {
     basePath: string;
     children: (params: ChildrenFuncParams) => ReactNode;
     filter?: any;
-    filterToQuery: (filter: string) => any;
+    filterToQuery?: (filter: string) => any;
     input?: WrappedFieldInputProps;
-    perPage: number;
+    perPage?: number;
     record?: Record;
     reference: string;
-    referenceSource: typeof defaultReferenceSource;
+    referenceSource?: typeof defaultReferenceSource;
     resource: string;
     sort?: Sort;
     source: string;
@@ -129,7 +132,7 @@ export const ReferenceInputController: FunctionComponent<Props> = ({
     input,
     onChange,
     children,
-    perPage,
+    perPage = 25,
     filter: permanentFilter,
     reference,
     filterToQuery,
@@ -139,21 +142,19 @@ export const ReferenceInputController: FunctionComponent<Props> = ({
 }) => {
     const translate = useTranslate();
 
-    const {
-        matchingReferences,
-        filter,
-        setFilter,
-        pagination,
-        setPagination,
-        sort,
-        setSort,
-    } = useReferenceSearch({
+    const { pagination, setPagination } = usePaginationState(perPage);
+    const { sort, setSort } = useSortState();
+    const { filter, setFilter } = useFilterState({
+        permanentFilter,
+        filterToQuery,
+    });
+
+    const { matchingReferences } = useReferenceSearch({
         reference,
         referenceSource,
-        filterToQuery,
-        filterValue: input.value,
-        permanentFilter,
-        perPage,
+        filter,
+        pagination,
+        sort,
         resource,
         source,
     });
