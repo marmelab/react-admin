@@ -22,6 +22,7 @@ describe('<List />', () => {
         refresh: () => {},
         resource: 'post',
         selectedIds: [],
+        setPage: () => null,
         total: 100,
         translate: x => x,
         version: 1,
