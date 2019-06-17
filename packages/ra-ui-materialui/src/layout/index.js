@@ -3,6 +3,7 @@ import CardActions from './CardActions';
 import CardContentInner from './CardContentInner';
 import Confirm from './Confirm';
 import DashboardMenuItem from './DashboardMenuItem';
+import DeviceTestWrapper from './DeviceTestWrapper';
 import Error from './Error';
 import HideOnScroll from './HideOnScroll';
 import Layout from './Layout';
@@ -31,6 +32,7 @@ export {
     CardContentInner,
     Confirm,
     DashboardMenuItem,
+    DeviceTestWrapper,
     Error,
     HideOnScroll,
     Layout,

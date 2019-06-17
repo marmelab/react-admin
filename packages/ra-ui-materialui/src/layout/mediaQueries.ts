@@ -1,17 +1,17 @@
 import { useTheme } from '@material-ui/core/styles';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
+import useMediaQueryTheme from '@material-ui/core/useMediaQuery/useMediaQueryTheme';
 
 export const useMediaIsXSmall = () => {
     const theme = useTheme();
-    return useMediaQuery(theme.breakpoints.down('xs'));
+    return useMediaQueryTheme(theme.breakpoints.down('xs'));
 };
 
 export const useMediaIsSmall = () => {
     const theme = useTheme();
-    return useMediaQuery(theme.breakpoints.down('sm'));
+    return useMediaQueryTheme(theme.breakpoints.down('sm'));
 };
 
 export const useMediaIsDesktop = () => {
     const theme = useTheme();
-    return useMediaQuery(theme.breakpoints.up('md'));
+    return useMediaQueryTheme(theme.breakpoints.up('md'));
 };
