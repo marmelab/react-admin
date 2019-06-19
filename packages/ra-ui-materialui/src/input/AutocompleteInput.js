@@ -14,6 +14,7 @@ import compose from 'recompose/compose';
 import classnames from 'classnames';
 
 import { addField, translate, FieldTitle } from 'ra-core';
+import InputHelperText from './InputHelperText';
 
 const styles = theme =>
     createStyles({
@@ -289,7 +290,13 @@ export class AutocompleteInput extends React.Component {
                 className={classnames(classes.root, className)}
                 inputRef={storeInputRef}
                 error={!!(touched && error)}
-                helperText={(touched && error) || helperText}
+                helperText={
+                    <InputHelperText
+                        touched={touched}
+                        error={error}
+                        helperText={helperText}
+                    />
+                }
                 name={input.name}
                 {...options}
                 InputProps={{
@@ -502,7 +509,10 @@ AutocompleteInput.propTypes = {
     setFilter: PropTypes.func,
     shouldRenderSuggestions: PropTypes.func,
     source: PropTypes.string,
-    suggestionComponent: PropTypes.func,
+    suggestionComponent: PropTypes.oneOfType([
+        PropTypes.element,
+        PropTypes.func,
+    ]),
     translate: PropTypes.func.isRequired,
     translateChoice: PropTypes.bool.isRequired,
 };
