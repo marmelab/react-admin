@@ -142,7 +142,7 @@ export const ReferenceInputController: FunctionComponent<Props> = ({
 }) => {
     const translate = useTranslate();
 
-    const { pagination, setPagination } = usePaginationState(perPage);
+    const { pagination, setPagination } = usePaginationState({ perPage });
     const { sort, setSort } = useSortState();
     const { filter, setFilter } = useFilterState({
         permanentFilter,

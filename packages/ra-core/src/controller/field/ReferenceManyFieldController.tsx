@@ -93,7 +93,7 @@ export const ReferenceManyFieldController: FunctionComponent<Props> = ({
 }) => {
     const { sort, setSortField } = useSortState(initialSort);
     const { page, perPage, setPage, setPerPage } = usePaginationState(
-        initialPerPage
+        { perPage: initialPerPage }
     );
     const {
         data,
