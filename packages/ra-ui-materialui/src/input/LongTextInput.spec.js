@@ -7,6 +7,10 @@ import { LongTextInput } from './LongTextInput';
 describe('<LongTextInput />', () => {
     afterEach(cleanup);
     const defaultProps = {
+        // We have to specify the id ourselves here because the
+        // TextInput is not wrapped inside a FormInput.
+        // This is needed to link the label to the input
+        id: 'foo',
         source: 'foo',
         resource: 'bar',
         meta: {},
@@ -15,6 +19,15 @@ describe('<LongTextInput />', () => {
         },
         onChange: jest.fn(),
     };
+
+    it('should render the input as a textarea', () => {
+        const { getByLabelText } = render(
+            <LongTextInput {...defaultProps} input={{ value: 'hello' }} />
+        );
+        const TextFieldElement = getByLabelText('resources.bar.fields.foo');
+        assert.equal(TextFieldElement.tagName, 'TEXTAREA');
+        assert.equal(TextFieldElement.value, 'hello');
+    });
 
     describe('error message', () => {
         it('should not be displayed if field is pristine', () => {
