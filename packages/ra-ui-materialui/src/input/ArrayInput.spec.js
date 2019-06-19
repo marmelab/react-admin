@@ -1,45 +1,17 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
+import { render, waitForDomChange } from 'react-testing-library';
 import { reduxForm } from 'redux-form';
 import { TestContext } from 'ra-core';
 
-import ArrayInput, { ArrayInput as ArrayInputView } from './ArrayInput';
+import ArrayInput from './ArrayInput';
 import NumberInput from './NumberInput';
 import TextInput from './TextInput';
 import SimpleFormIterator from '../form/SimpleFormIterator';
 
 describe('<ArrayInput />', () => {
-    it('should render a FieldArray', () => {
-        const wrapper = shallow(<ArrayInputView source="arr" record={{}} />);
-        expect(wrapper.find('pure(FieldTitle)').length).toBe(1);
-        expect(wrapper.find('FieldArray').length).toBe(1);
-    });
-
-    it('should pass an undefined fields to child when initialized with an undefined value', () => {
-        const MockChild = () => <span />;
-        const DummyForm = () => (
-            <form>
-                <ArrayInput source="foo">
-                    <MockChild />
-                </ArrayInput>
-            </form>
-        );
-        const DummyFormRF = reduxForm({ form: 'record-form' })(DummyForm);
-        const wrapper = mount(
-            <TestContext>
-                <DummyFormRF />
-            </TestContext>
-        );
-        expect(
-            wrapper
-                .find('MockChild')
-                .prop('fields')
-                .getAll()
-        ).toBeUndefined();
-    });
-
     it('should pass its record props to its child', () => {
-        const MockChild = () => <span />;
+        const MockChild = jest.fn(() => <span />);
         const DummyForm = () => (
             <form>
                 <ArrayInput source="foo" record={{ iAmRecord: true }}>
@@ -48,18 +20,18 @@ describe('<ArrayInput />', () => {
             </form>
         );
         const DummyFormRF = reduxForm({ form: 'record-form' })(DummyForm);
-        const wrapper = mount(
+        render(
             <TestContext>
                 <DummyFormRF />
             </TestContext>
         );
-        expect(wrapper.find(MockChild).props().record).toEqual({
+        expect(MockChild.mock.calls[0][0].record).toEqual({
             iAmRecord: true,
         });
     });
 
     it('should pass redux-form fields to child', () => {
-        const MockChild = () => <span />;
+        const MockChild = jest.fn(() => <span />);
         const DummyForm = () => (
             <form>
                 <ArrayInput source="foo">
@@ -68,7 +40,7 @@ describe('<ArrayInput />', () => {
             </form>
         );
         const DummyFormRF = reduxForm({ form: 'record-form' })(DummyForm);
-        const wrapper = mount(
+        render(
             <TestContext enableReducers={true}>
                 <DummyFormRF
                     initialValues={{
@@ -78,12 +50,10 @@ describe('<ArrayInput />', () => {
             </TestContext>
         );
 
-        expect(
-            wrapper
-                .find('MockChild')
-                .prop('fields')
-                .getAll()
-        ).toEqual([{ id: 1 }, { id: 2 }]);
+        expect(MockChild.mock.calls[0][0].fields.getAll()).toEqual([
+            { id: 1 },
+            { id: 2 },
+        ]);
     });
 
     it('should not create any section subform when the value is undefined', () => {
@@ -95,12 +65,12 @@ describe('<ArrayInput />', () => {
             </form>
         );
         const DummyFormRF = reduxForm({ form: 'record-form' })(DummyForm);
-        const wrapper = mount(
+        const { baseElement } = render(
             <TestContext>
                 <DummyFormRF />
             </TestContext>
         );
-        expect(wrapper.find('section').length).toBe(0);
+        expect(baseElement.querySelectorAll('section')).toHaveLength(0);
     });
 
     it('should create one section subform per value in the array', () => {
@@ -112,7 +82,7 @@ describe('<ArrayInput />', () => {
             </form>
         );
         const DummyFormRF = reduxForm({ form: 'record-form' })(DummyForm);
-        const wrapper = mount(
+        const { baseElement } = render(
             <TestContext enableReducers={true}>
                 <DummyFormRF
                     initialValues={{
@@ -121,13 +91,13 @@ describe('<ArrayInput />', () => {
                 />
             </TestContext>
         );
-        expect(wrapper.find('section').length).toBe(3);
+        expect(baseElement.querySelectorAll('section')).toHaveLength(3);
     });
 
     it('should clone each input once per value in the array', () => {
         const DummyForm = () => (
             <form>
-                <ArrayInput source="arr">
+                <ArrayInput resource="bar" source="arr">
                     <SimpleFormIterator>
                         <NumberInput source="id" />
                         <TextInput source="foo" />
@@ -136,7 +106,7 @@ describe('<ArrayInput />', () => {
             </form>
         );
         const DummyFormRF = reduxForm({ form: 'record-form' })(DummyForm);
-        const wrapper = mount(
+        const { queryAllByLabelText } = render(
             <TestContext enableReducers={true}>
                 <DummyFormRF
                     initialValues={{
@@ -145,31 +115,15 @@ describe('<ArrayInput />', () => {
                 />
             </TestContext>
         );
-        expect(wrapper.find('NumberInput').length).toBe(2);
-        expect(
-            wrapper
-                .find('NumberInput')
-                .at(0)
-                .prop('input').value
-        ).toBe(123);
-        expect(
-            wrapper
-                .find('NumberInput')
-                .at(1)
-                .prop('input').value
-        ).toBe(456);
-        expect(wrapper.find('TextInput').length).toBe(2);
-        expect(
-            wrapper
-                .find('TextInput')
-                .at(0)
-                .prop('input').value
-        ).toBe('bar');
-        expect(
-            wrapper
-                .find('TextInput')
-                .at(1)
-                .prop('input').value
-        ).toBe('baz');
+        expect(queryAllByLabelText('id')).toHaveLength(2);
+        expect(queryAllByLabelText('id').map(input => input.value)).toEqual([
+            '123',
+            '456',
+        ]);
+        expect(queryAllByLabelText('foo')).toHaveLength(2);
+        expect(queryAllByLabelText('foo').map(input => input.value)).toEqual([
+            'bar',
+            'baz',
+        ]);
     });
 });
