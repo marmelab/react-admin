@@ -163,31 +163,23 @@ describe('<SelectArrayInput />', () => {
 
     describe('error message', () => {
         it('should not be displayed if field is pristine', () => {
-            const { container } = render(
-                <SelectArrayInput {...defaultProps} meta={{ touched: false }} />
-            );
-            expect(container.querySelector('p')).toBeNull();
-        });
-
-        it('should not be displayed if field has been touched but is valid', () => {
-            const { container } = render(
+            const { queryByText } = render(
                 <SelectArrayInput
                     {...defaultProps}
-                    meta={{ touched: true, error: false }}
+                    meta={{ touched: false, error: 'Required field.' }}
                 />
             );
-            expect(container.querySelector('p')).toBeNull();
+            expect(queryByText('Required field.')).toBeNull();
         });
 
         it('should be displayed if field has been touched and is invalid', () => {
-            const { container, queryByText } = render(
+            const { queryByText } = render(
                 <SelectArrayInput
                     {...defaultProps}
                     meta={{ touched: true, error: 'Required field.' }}
                 />
             );
-            expect(container.querySelector('p')).not.toBeNull();
-            expect(queryByText('Required field.')).not.toBeNull();
+            expect(queryByText('Required field.')).toBeDefined();
         });
 
         it('should be displayed with an helper Text', () => {
@@ -201,8 +193,8 @@ describe('<SelectArrayInput />', () => {
                     }}
                 />
             );
-            expect(queryByText('Required field.')).not.toBeNull();
-            expect(queryByText('Can I help you?')).not.toBeNull();
+            expect(queryByText('Required field.')).toBeDefined();
+            expect(queryByText('Can I help you?')).toBeNull();
         });
     });
 });
