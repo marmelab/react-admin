@@ -182,7 +182,7 @@ describe('<SelectArrayInput />', () => {
             expect(queryByText('Required field.')).toBeDefined();
         });
 
-        it('should be displayed with an helper Text', () => {
+        it('should be displayed even with an helper Text', () => {
             const { queryByText } = render(
                 <SelectArrayInput
                     {...defaultProps}

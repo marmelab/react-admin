@@ -3,6 +3,7 @@ import expect from 'expect';
 import { render, cleanup } from 'react-testing-library';
 
 import { RadioButtonGroupInput } from './RadioButtonGroupInput';
+import { TranslationContext } from 'ra-core';
 
 describe('<RadioButtonGroupInput />', () => {
     const defaultProps = {
@@ -121,23 +122,33 @@ describe('<RadioButtonGroupInput />', () => {
 
     it('should translate the choices by default', () => {
         const { queryByText } = render(
-            <RadioButtonGroupInput
-                {...defaultProps}
-                choices={[{ id: 'M', name: 'Male' }]}
-                translate={x => `**${x}**`}
-            />
+            <TranslationContext.Provider
+                value={{
+                    translate: x => `**${x}**`,
+                }}
+            >
+                <RadioButtonGroupInput
+                    {...defaultProps}
+                    choices={[{ id: 'M', name: 'Male' }]}
+                />
+            </TranslationContext.Provider>
         );
         expect(queryByText('**Male**')).not.toBeNull();
     });
 
     it('should not translate the choices if translateChoice is false', () => {
         const { queryByText } = render(
-            <RadioButtonGroupInput
-                {...defaultProps}
-                choices={[{ id: 'M', name: 'Male' }]}
-                translate={x => `**${x}**`}
-                translateChoice={false}
-            />
+            <TranslationContext.Provider
+                value={{
+                    translate: x => `**${x}**`,
+                }}
+            >
+                <RadioButtonGroupInput
+                    {...defaultProps}
+                    choices={[{ id: 'M', name: 'Male' }]}
+                    translateChoice={false}
+                />
+            </TranslationContext.Provider>
         );
         expect(queryByText('**Male**')).toBeNull();
         expect(queryByText('Male')).not.toBeNull();
@@ -147,7 +158,7 @@ describe('<RadioButtonGroupInput />', () => {
         const { queryByText } = render(
             <RadioButtonGroupInput
                 {...defaultProps}
-                meta={{ helperText: 'Can I help you?' }}
+                helperText="Can I help you?"
             />
         );
         expect(queryByText('Can I help you?')).not.toBeNull();
@@ -155,49 +166,38 @@ describe('<RadioButtonGroupInput />', () => {
 
     describe('error message', () => {
         it('should not be displayed if field is pristine', () => {
-            const { container } = render(
+            const { queryByText } = render(
                 <RadioButtonGroupInput
                     {...defaultProps}
-                    meta={{ touched: false }}
+                    meta={{ touched: false, error: 'Required field.' }}
                 />
             );
-            expect(container.querySelector('p')).toBeNull();
-        });
-
-        it('should not be displayed if field has been touched but is valid', () => {
-            const { container } = render(
-                <RadioButtonGroupInput
-                    {...defaultProps}
-                    meta={{ touched: true, error: false }}
-                />
-            );
-            expect(container.querySelector('p')).toBeNull();
+            expect(queryByText('Required field.')).toBeNull();
         });
 
         it('should be displayed if field has been touched and is invalid', () => {
-            const { container, queryByText } = render(
+            const { getByText } = render(
                 <RadioButtonGroupInput
                     {...defaultProps}
                     meta={{ touched: true, error: 'Required field.' }}
                 />
             );
-            expect(container.querySelector('p')).not.toBeNull();
-            expect(queryByText('Required field.')).not.toBeNull();
+            expect(getByText('Required field.')).toBeDefined();
         });
 
-        it('should display the error and help text if helperText is present', () => {
-            const { queryByText } = render(
+        it('should be displayed even with an helper Text', () => {
+            const { getByText, queryByText } = render(
                 <RadioButtonGroupInput
                     {...defaultProps}
                     meta={{
                         touched: true,
                         error: 'Required field.',
-                        helperText: 'Can I help you?',
                     }}
+                    helperText="Can I help you?"
                 />
             );
-            expect(queryByText('Required field.')).not.toBeNull();
-            expect(queryByText('Can I help you?')).not.toBeNull();
+            expect(getByText('Required field.')).toBeDefined();
+            expect(queryByText('Can I help you?')).toBeNull();
         });
     });
 });
