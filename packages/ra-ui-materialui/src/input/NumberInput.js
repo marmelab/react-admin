@@ -1,8 +1,9 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import TextField from '@material-ui/core/TextField';
-import { addField, FieldTitle, ValidationError } from 'ra-core';
+import { addField, FieldTitle } from 'ra-core';
 
+import InputHelperText from './InputHelperText';
 import sanitizeRestProps from './sanitizeRestProps';
 
 /**
@@ -17,8 +18,23 @@ import sanitizeRestProps from './sanitizeRestProps';
  *
  * The object passed as `options` props is passed to the material-ui <TextField> component
  */
-export class NumberInput extends Component {
-    handleBlur = event => {
+export const NumberInput = ({
+    className,
+    input,
+    isRequired,
+    label,
+    meta,
+    options,
+    source,
+    step,
+    resource,
+    helperText,
+    onBlur,
+    onFocus,
+    onChange,
+    ...rest
+}) => {
+    const handleBlur = event => {
         /**
          * Necessary because of a React bug on <input type="number">
          * @see https://github.com/facebook/react/issues/1425
@@ -26,16 +42,16 @@ export class NumberInput extends Component {
         const numericValue = isNaN(parseFloat(event.target.value))
             ? null
             : parseFloat(event.target.value);
-        this.props.onBlur(numericValue);
-        this.props.input.onBlur(numericValue);
+        onBlur(numericValue);
+        input.onBlur(numericValue);
     };
 
-    handleFocus = event => {
-        this.props.onFocus(event);
-        this.props.input.onFocus(event);
+    const handleFocus = event => {
+        onFocus(event);
+        input.onFocus(event);
     };
 
-    handleChange = event => {
+    const handleChange = event => {
         /**
          * Necessary because of a React bug on <input type="number">
          * @see https://github.com/facebook/react/issues/1425
@@ -43,60 +59,48 @@ export class NumberInput extends Component {
         const numericValue = isNaN(parseFloat(event.target.value))
             ? null
             : parseFloat(event.target.value);
-        this.props.onChange(numericValue);
-        this.props.input.onChange(numericValue);
+        onChange(numericValue);
+        input.onChange(numericValue);
     };
 
-    render() {
-        const {
-            className,
-            input,
-            isRequired,
-            label,
-            meta,
-            options,
-            source,
-            step,
-            resource,
-            helperText,
-            ...rest
-        } = this.props;
-        if (typeof meta === 'undefined') {
-            throw new Error(
-                "The NumberInput component wasn't called within a redux-form <Field>. Did you decorate it and forget to add the addField prop to your component? See https://marmelab.com/react-admin/Inputs.html#writing-your-own-input-component for details."
-            );
-        }
-        const { touched, error } = meta;
-
-        return (
-            <TextField
-                type="number"
-                margin="normal"
-                error={!!(touched && error)}
-                helperText={touched && error
-                    ? <ValidationError error={error} />
-                    : helperText
-                }
-                step={step}
-                label={
-                    <FieldTitle
-                        label={label}
-                        source={source}
-                        resource={resource}
-                        isRequired={isRequired}
-                    />
-                }
-                className={className}
-                {...options}
-                {...sanitizeRestProps(rest)}
-                {...input}
-                onBlur={this.handleBlur}
-                onFocus={this.handleFocus}
-                onChange={this.handleChange}
-            />
+    if (typeof meta === 'undefined') {
+        throw new Error(
+            "The NumberInput component wasn't called within a redux-form <Field>. Did you decorate it and forget to add the addField prop to your component? See https://marmelab.com/react-admin/Inputs.html#writing-your-own-input-component for details."
         );
     }
-}
+    const { touched, error } = meta;
+
+    return (
+        <TextField
+            type="number"
+            margin="normal"
+            error={!!(touched && error)}
+            helperText={
+                <InputHelperText
+                    touched={touched}
+                    error={error}
+                    helperText={helperText}
+                />
+            }
+            step={step}
+            label={
+                <FieldTitle
+                    label={label}
+                    source={source}
+                    resource={resource}
+                    isRequired={isRequired}
+                />
+            }
+            className={className}
+            {...options}
+            {...sanitizeRestProps(rest)}
+            {...input}
+            onBlur={handleBlur}
+            onFocus={handleFocus}
+            onChange={handleChange}
+        />
+    );
+};
 
 NumberInput.propTypes = {
     className: PropTypes.string,

@@ -29,7 +29,7 @@ describe('<NumberInput />', () => {
             <NumberInput {...defaultProps} input={{ value: 12 }} />
         );
         const TextFieldElement = getByLabelText('resources.bar.fields.foo');
-        assert.equal(TextFieldElement.getAttribute('value'), '12');
+        assert.equal(TextFieldElement.value, '12');
         assert.equal(TextFieldElement.getAttribute('type'), 'number');
     });
 
