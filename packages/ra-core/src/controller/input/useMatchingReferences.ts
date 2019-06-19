@@ -76,8 +76,7 @@ export default ({
             reference,
             resource,
             source,
-        }),
-        [filter, referenceSource, reference, source, resource]
+        })
     );
 
     if (!matchingReferences) {

@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { crudGetManyAccumulate } from '../actions';
 import { Record } from '../types';
 import { getReferenceResource } from '../reducer';
-import { createSelector } from 'reselect';
 
 interface Option {
     id: string;
@@ -50,9 +49,18 @@ export const useReference = ({
     reference,
     id,
 }: Option): UseReferenceProps => {
-    const getReferenceRecord = useMemo(makeSelectedReferenceSelector, []);
-    const referenceRecord = useSelector(getReferenceRecord({ id, reference }));
     const dispatch = useDispatch();
+    const getReferenceRecord = useMemo(
+        () => makeGetReferenceRecord({ id, reference }),
+        [id, reference]
+    );
+    const referenceRecord = useSelector(
+        getReferenceRecord,
+        (newState, latestState) => {
+            console.log({ newState, latestState });
+            return newState === latestState;
+        }
+    );
     useEffect(() => {
         if (id !== null && typeof id !== 'undefined') {
             dispatch(crudGetManyAccumulate(reference, [id]));
@@ -65,13 +73,10 @@ export const useReference = ({
     };
 };
 
-const makeSelectedReferenceSelector = () => {
-    const selectedReferenceSelector = createSelector(
-        [getReferenceResource, (_, props) => props.id],
-        (referenceState, id) => referenceState && referenceState.data[id]
-    );
-
-    return props => state => selectedReferenceSelector(state, props);
+const makeGetReferenceRecord = props => state => {
+    const referenceState = getReferenceResource(state, props);
+    console.log({ referenceState });
+    return referenceState && referenceState.data[props.id];
 };
 
 export default useReference;

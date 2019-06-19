@@ -19,7 +19,7 @@ describe('useMatchingReferences', () => {
     afterEach(cleanup);
 
     it('should fetch matchingReferences on mount', () => {
-        const { dispatch, rerender } = renderHookWithRedux(() => {
+        const { dispatch } = renderHookWithRedux(() => {
             return useMatchingReferences(defaultProps);
         });
 
@@ -80,5 +80,30 @@ describe('useMatchingReferences', () => {
 
         expect(childrenProps.loading).toBe(false);
         expect(childrenProps.error).toBe('Something bad happened');
+    });
+
+    it('should pass loading true if no matching reference yet', () => {
+        const { childrenProps } = renderHookWithRedux(
+            () => {
+                return useMatchingReferences(defaultProps);
+            },
+            {
+                admin: {
+                    resources: {
+                        posts: { data: {} },
+                    },
+                    references: {
+                        possibleValues: {
+                            'comments@post_id': null,
+                        },
+                    },
+                },
+            }
+        );
+
+        expect(childrenProps.matchingReferences).toBe(null);
+
+        expect(childrenProps.loading).toBe(true);
+        expect(childrenProps.error).toBe(null);
     });
 });
