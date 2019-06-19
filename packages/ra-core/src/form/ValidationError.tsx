@@ -1,38 +1,45 @@
-import React, { SFC } from 'react';
+import React, { FunctionComponent } from 'react';
 import {
     ValidationErrorMessage,
     ValidationErrorMessageWithArgs,
 } from './validate';
 import { useTranslate } from '../i18n';
+import { Translate } from '../types';
 
 interface Props {
     error: ValidationErrorMessage;
 }
 
-const ValidationError: SFC<Props> = ({ error }) => {
+const translateArrayArgValue = (translate: Translate, values: any[]) =>
+    values
+        .map(value => translate(value.toString(), { _: value.toString() }))
+        .join(', ');
+
+const translateArgValue = (translate: Translate, argValue: any) => {
+    if (Array.isArray(argValue)) {
+        return translateArrayArgValue(translate, argValue);
+    }
+
+    return translate(argValue.toString(), { _: argValue.toString() });
+};
+
+const translateArgs = (translate: Translate, args: { [key: string]: any }) =>
+    Object.keys(args).reduce(
+        (acc, key) => ({
+            ...acc,
+            [key]: translateArgValue(translate, args[key]),
+        }),
+        {}
+    );
+
+const ValidationError: FunctionComponent<Props> = ({ error }) => {
     const translate = useTranslate();
 
     if ((error as ValidationErrorMessageWithArgs).message) {
         const { message, args } = error as ValidationErrorMessageWithArgs;
         const { _, ...allArgsButDefault } = args;
 
-        const translatedArgs = Object.keys(allArgsButDefault).reduce(
-            (acc, key) => {
-                const arg = Array.isArray(allArgsButDefault[key])
-                    ? allArgsButDefault[key]
-                          .map(item =>
-                              translate(item.toString(), { _: item.toString() })
-                          )
-                          .join(', ')
-                    : allArgsButDefault[key].toString();
-
-                return {
-                    ...acc,
-                    [key]: translate(arg.toString(), { _: arg.toString() }),
-                };
-            },
-            {}
-        );
+        const translatedArgs = translateArgs(translate, allArgsButDefault);
 
         return <>{translate(message, translatedArgs)}</>;
     }
