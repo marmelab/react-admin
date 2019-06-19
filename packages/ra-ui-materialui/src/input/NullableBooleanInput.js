@@ -8,6 +8,7 @@ import classnames from 'classnames';
 import { addField, translate, FieldTitle } from 'ra-core';
 
 import sanitizeRestProps from './sanitizeRestProps';
+import InputHelperText from './InputHelperText';
 
 const styles = theme =>
     createStyles({
@@ -55,6 +56,7 @@ export class NullableBooleanInput extends Component {
             resource,
             source,
             translate,
+            helperText,
             ...rest
         } = this.props;
         const { touched, error } = meta;
@@ -72,7 +74,13 @@ export class NullableBooleanInput extends Component {
                     />
                 }
                 error={!!(touched && error)}
-                helperText={touched && error}
+                helperText={
+                    <InputHelperText
+                        touched={touched}
+                        error={error}
+                        helperText={helperText}
+                    />
+                }
                 className={classnames(classes.input, className)}
                 {...options}
                 {...sanitizeRestProps(rest)}
