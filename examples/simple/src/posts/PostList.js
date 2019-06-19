@@ -3,7 +3,7 @@ import Chip from '@material-ui/core/Chip';
 import { makeStyles } from '@material-ui/core/styles';
 import React, { Children, Fragment, cloneElement } from 'react';
 import lodashGet from 'lodash/get';
-import { unparse as convertToCSV } from 'papaparse/papaparse.min';
+import jsonExport from 'jsonexport/dist';
 import {
     BooleanField,
     BulkDeleteButton,
@@ -56,7 +56,7 @@ const exporter = posts => {
             backlink => backlink.url
         ),
     }));
-    return downloadCSV(convertToCSV({ data }), 'posts');
+    jsonExport(data, (err, csv) => downloadCSV(csv, 'posts'));
 };
 
 const useStyles = makeStyles(theme => ({
