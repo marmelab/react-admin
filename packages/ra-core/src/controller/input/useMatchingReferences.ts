@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 // @ts-ignore
 import { useSelector, useDispatch } from 'react-redux';
 import { createSelector } from 'reselect';
@@ -10,9 +10,9 @@ import {
     getPossibleReferenceValues,
     getReferenceResource,
 } from '../../reducer';
-import { Pagination, Sort } from '../../types';
+import { Pagination, Sort, Record } from '../../types';
 
-interface UseReferenceSearchOption {
+interface UseMAtchingReferencesOption {
     reference: string;
     referenceSource: (resource: string, source: string) => string;
     resource: string;
@@ -20,6 +20,12 @@ interface UseReferenceSearchOption {
     filter: Filter;
     pagination: Pagination;
     sort: Sort;
+}
+
+interface UseMatchingReferencesProps {
+    error?: string;
+    matchingReferences?: Record[];
+    loading: boolean;
 }
 
 const defaultReferenceSource = (resource: string, source: string) =>
@@ -33,8 +39,10 @@ export default ({
     filter,
     pagination,
     sort,
-}: UseReferenceSearchOption) => {
+}: UseMAtchingReferencesOption): UseMatchingReferencesProps => {
     const dispatch = useDispatch();
+
+    const getMatchingReferences = useMemo(makeMatchingReferencesSelector, []);
 
     useEffect(
         () =>
@@ -72,7 +80,27 @@ export default ({
         [filter, referenceSource, reference, source, resource]
     );
 
-    return matchingReferences;
+    if (!matchingReferences) {
+        return {
+            loading: true,
+            error: null,
+            matchingReferences: null,
+        };
+    }
+
+    if (matchingReferences.error) {
+        return {
+            loading: false,
+            matchingReferences: null,
+            error: matchingReferences.error,
+        };
+    }
+
+    return {
+        loading: false,
+        error: null,
+        matchingReferences,
+    };
 };
 
 const fetchOptions = ({
@@ -96,16 +124,19 @@ const fetchOptions = ({
     );
 };
 
-const matchingReferencesSelector = createSelector(
-    [
-        getReferenceResource,
-        getPossibleReferenceValues,
-        (_, props) => props.filterValue,
-    ],
-    (referenceState, possibleValues, inputId) => {
-        return getPossibleReferences(referenceState, possibleValues, [inputId]);
-    }
-);
+const makeMatchingReferencesSelector = () => {
+    const matchingReferencesSelector = createSelector(
+        [
+            getReferenceResource,
+            getPossibleReferenceValues,
+            (_, props) => props.filterValue,
+        ],
+        (referenceState, possibleValues, inputId) => {
+            return getPossibleReferences(referenceState, possibleValues, [
+                inputId,
+            ]);
+        }
+    );
 
-const getMatchingReferences = props => state =>
-    matchingReferencesSelector(state, props);
+    return props => state => matchingReferencesSelector(state, props);
+};

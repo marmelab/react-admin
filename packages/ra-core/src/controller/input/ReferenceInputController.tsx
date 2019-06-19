@@ -149,7 +149,7 @@ export const ReferenceInputController: FunctionComponent<Props> = ({
         filterToQuery,
     });
 
-    const matchingReferences = useMatchingReferences({
+    const { matchingReferences } = useMatchingReferences({
         reference,
         referenceSource,
         filter,

@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 // @ts-ignore
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -50,6 +50,7 @@ export const useReference = ({
     reference,
     id,
 }: Option): UseReferenceProps => {
+    const getReferenceRecord = useMemo(makeSelectedReferenceSelector, []);
     const referenceRecord = useSelector(getReferenceRecord({ id, reference }));
     const dispatch = useDispatch();
     useEffect(() => {
@@ -64,12 +65,13 @@ export const useReference = ({
     };
 };
 
-const selectedReferenceSelector = createSelector(
-    [getReferenceResource, (_, props) => props.id],
-    (referenceState, id) => referenceState && referenceState.data[id]
-);
+const makeSelectedReferenceSelector = () => {
+    const selectedReferenceSelector = createSelector(
+        [getReferenceResource, (_, props) => props.id],
+        (referenceState, id) => referenceState && referenceState.data[id]
+    );
 
-const getReferenceRecord = props => state =>
-    selectedReferenceSelector(state, props);
+    return props => state => selectedReferenceSelector(state, props);
+};
 
 export default useReference;

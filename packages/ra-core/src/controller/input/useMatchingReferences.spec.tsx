@@ -19,8 +19,8 @@ describe('useMatchingReferences', () => {
     afterEach(cleanup);
 
     it('should fetch matchingReferences on mount', () => {
-        const { dispatch } = renderHookWithRedux(() => {
-            return { matchingReferences: useMatchingReferences(defaultProps) };
+        const { dispatch, rerender } = renderHookWithRedux(() => {
+            return useMatchingReferences(defaultProps);
         });
 
         expect(dispatch).toBeCalledTimes(1);
@@ -32,7 +32,7 @@ describe('useMatchingReferences', () => {
     it('should pass matching references from redux state to its children', () => {
         const { childrenProps } = renderHookWithRedux(
             () => {
-                return { matchingReferences: useMatchingReferences(defaultProps) };
+                return useMatchingReferences(defaultProps);
             },
             {
                 admin: {
@@ -50,5 +50,35 @@ describe('useMatchingReferences', () => {
             { id: 2 },
             { id: 1 },
         ]);
+
+        expect(childrenProps.loading).toBe(false);
+        expect(childrenProps.error).toBe(null);
+    });
+
+    it('should pass an error if an error is in redux state', () => {
+        const { childrenProps } = renderHookWithRedux(
+            () => {
+                return useMatchingReferences(defaultProps);
+            },
+            {
+                admin: {
+                    resources: {
+                        posts: { data: { 1: { id: 1 }, 2: { id: 2 } } },
+                    },
+                    references: {
+                        possibleValues: {
+                            'comments@post_id': {
+                                error: 'Something bad happened',
+                            },
+                        },
+                    },
+                },
+            }
+        );
+
+        expect(childrenProps.matchingReferences).toBe(null);
+
+        expect(childrenProps.loading).toBe(false);
+        expect(childrenProps.error).toBe('Something bad happened');
     });
 });
