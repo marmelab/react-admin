@@ -4,6 +4,7 @@ import TextField from '@material-ui/core/TextField';
 import { addField, FieldTitle } from 'ra-core';
 
 import sanitizeRestProps from './sanitizeRestProps';
+import InputHelperText from './InputHelperText';
 
 const leftPad = (nb = 2) => value => ('0'.repeat(nb) + value).slice(-nb);
 const leftPad4 = leftPad(4);
@@ -71,6 +72,7 @@ export const DateTimeInput = ({
     options,
     source,
     resource,
+    helperText,
     ...rest
 }) => (
     <TextField
@@ -79,7 +81,13 @@ export const DateTimeInput = ({
         type="datetime-local"
         margin="normal"
         error={!!(touched && error)}
-        helperText={touched && error}
+        helperText={
+            <InputHelperText
+                touched={touched}
+                error={error}
+                helperText={helperText}
+            />
+        }
         label={
             <FieldTitle
                 label={label}
