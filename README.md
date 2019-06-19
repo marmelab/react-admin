@@ -191,7 +191,9 @@ or
 yarn test
 ```
 
-When working on the end to end tests, you can leverage [cypress](https://www.cypress.io/) runner by starting the simple example yourself (`make run-simple`) and starting cypress in another terminal (`make test-e2e-local` or `yarn test-e2e-local`).
+Besides, tests related to the modified files are ran automatically at commit.
+
+When working on the end to end tests, you can leverage [cypress](https://www.cypress.io/) runner by starting the simple example yourself (`make run-simple` or `yarn run-simple`) and starting cypress in another terminal (`make test-e2e-local` or `yarn test-e2e-local`).
 
 If you have coding standards problems, you can fix them automatically using `prettier` by calling
 
@@ -204,6 +206,8 @@ or
 ```sh
 yarn prettier
 ```
+
+However, these commands are ran automatically at each commit so you shouldn't have to worry about them.
 
 If you want to contribute to the documentation, install [jekyll](https://jekyllrb.com/docs/home/), then call
 

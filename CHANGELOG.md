@@ -1,5 +1,37 @@
 # Changelog
 
+## v2.9.3
+
+* Fix issue with `<TabbedForm>` when used inside a dialog ([3335](https://github.com/marmelab/react-admin/pull/3335)) ([griiettner](https://github.com/griiettner))
+* Fix `<AutoCompleteArrayInput>` not showing error message ([3327](https://github.com/marmelab/react-admin/pull/3327)) ([hithacker](https://github.com/hithacker))
+* Fix `<ListView>` component isn't exported ([3319](https://github.com/marmelab/react-admin/pull/3319)) ([cherniavskii](https://github.com/cherniavskii))
+* Fix `<MenuItemLink>` `primaryText` documentation ([3316](https://github.com/marmelab/react-admin/pull/3316)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix typo in `callback` side effect documentation ([3297](https://github.com/marmelab/react-admin/pull/3297)) ([0xflotus](https://github.com/0xflotus))
+* Fix `<SelectInput>` is resettable even when it's disabled ([3293](https://github.com/marmelab/react-admin/pull/3293)) ([sagarbakhtar](https://github.com/sagarbakhtar))
+* Fix `<CheckboxGroupInput>` `options` documentation ([3292](https://github.com/marmelab/react-admin/pull/3292)) ([sagarbakhtar](https://github.com/sagarbakhtar))
+* Fix custom `<LogoutButton>` documentation ([3283](https://github.com/marmelab/react-admin/pull/3283)) ([sagarbakhtar](https://github.com/sagarbakhtar))
+* Fix posts list export in demo app ([3279](https://github.com/marmelab/react-admin/pull/3279)) ([fargito](https://github.com/fargito))
+* Fix nested property filter is hidden on location change but still applied ([3274](https://github.com/marmelab/react-admin/pull/3274)) ([donatascn](https://github.com/donatascn))
+* Fix duplicate API call in `<ReferenceArrayInput>` ([3252](https://github.com/marmelab/react-admin/pull/3252)) ([fargito](https://github.com/fargito))
+* Fix `<RichTextInput>` validation bugs ([3223](https://github.com/marmelab/react-admin/pull/3223)) ([cherniavskii](https://github.com/cherniavskii))
+* Fix `<AutocompleteInput>` popup re-renders after choice is selected ([3190](https://github.com/marmelab/react-admin/pull/3190)) ([FACOLOMBANI](https://github.com/FACOLOMBANI))
+* Replace tslint with eslint (because tslint is deprecated) ([3322](https://github.com/marmelab/react-admin/pull/3322)) ([djhi](https://github.com/djhi))
+* Update Prettier ([3304](https://github.com/marmelab/react-admin/pull/3304)) ([djhi](https://github.com/djhi))
+* Add `ra-auth-acl` to the ecosystem ([3301](https://github.com/marmelab/react-admin/pull/3301)) ([Kmaschta](https://github.com/Kmaschta))
+* Add pre-commit hooks to ensure code style is consistent on commits ([3306](https://github.com/marmelab/react-admin/pull/3306)) ([3334](https://github.com/marmelab/react-admin/pull/3334)) ([djhi](https://github.com/djhi))
+
+## v2.9.2
+
+* Fix spinner position in Login and Save buttons ([3276](https://github.com/marmelab/react-admin/pull/3276)) ([Luwangel](https://github.com/Luwangel))
+* Fix slow List view when fetching lots of rows ([3275](https://github.com/marmelab/react-admin/pull/3275)) ([slecoustre](https://github.com/slecoustre))
+* Fix `<BooleanInput>` does not show errors ([3271](https://github.com/marmelab/react-admin/pull/3271)) ([fargito](https://github.com/fargito))
+* Fix `<Query>` component sending request on every update ([3267](https://github.com/marmelab/react-admin/pull/3267)) ([fargito](https://github.com/fargito))
+* Fix duplicated entry in Reference documentation ([3259](https://github.com/marmelab/react-admin/pull/3259)) ([mabhub](https://github.com/mabhub))
+* Fix duplicated code formatting rules ([3258](https://github.com/marmelab/react-admin/pull/3258)) ([fargito](https://github.com/fargito))
+* Fix empty list after changing the items per page count ([3257](https://github.com/marmelab/react-admin/pull/3257)) ([sagarbakhtar](https://github.com/sagarbakhtar))
+* Fix `<RichTextInput>` does not use theme color to show focus ([3231](https://github.com/marmelab/react-admin/pull/3231)) ([cherniavskii](https://github.com/cherniavskii))
+* Add Bulgarian translation link ([3260](https://github.com/marmelab/react-admin/pull/3260)) ([ptodorov0](https://github.com/ptodorov0))
+
 ## v2.9.1
 
 * Fix handling of deleted references ([3216](https://github.com/marmelab/react-admin/pull/3216)) ([djhi](https://github.com/djhi))

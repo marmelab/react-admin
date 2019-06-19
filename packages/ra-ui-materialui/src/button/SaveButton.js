@@ -9,14 +9,18 @@ import ContentSave from '@material-ui/icons/Save';
 import classnames from 'classnames';
 import { showNotification, translate } from 'ra-core';
 
-const styles = createStyles({
-    button: {
-        position: 'relative',
-    },
-    iconPaddingStyle: {
-        marginRight: '0.5em',
-    },
-});
+const styles = theme =>
+    createStyles({
+        button: {
+            position: 'relative',
+        },
+        leftIcon: {
+            marginRight: theme.spacing(),
+        },
+        icon: {
+            fontSize: 18,
+        },
+    });
 
 const sanitizeRestProps = ({
     basePath,
@@ -123,12 +127,14 @@ export class SaveButton extends Component {
             >
                 {saving && saving.redirect === redirect ? (
                     <CircularProgress
-                        size={25}
+                        size={18}
                         thickness={2}
-                        className={classes.iconPaddingStyle}
+                        className={classes.leftIcon}
                     />
                 ) : (
-                    cloneElement(icon, { className: classes.iconPaddingStyle })
+                    cloneElement(icon, {
+                        className: classnames(classes.leftIcon, classes.icon),
+                    })
                 )}
                 {label && translate(label, { _: label })}
             </Button>

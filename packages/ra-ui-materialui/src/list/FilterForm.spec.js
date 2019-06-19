@@ -17,8 +17,14 @@ describe('<FilterForm />', () => {
     };
 
     it('should display correctly passed filters', () => {
-        const filters = [<TextInput source="title" label="Title" />]; // eslint-disable-line react/jsx-key
-        const displayedFilters = { title: true };
+        const filters = [
+            <TextInput source="title" label="Title" />,
+            <TextInput source="customer.name" label="Name" />,
+        ]; // eslint-disable-line react/jsx-key
+        const displayedFilters = {
+            title: true,
+            'customer.name': true,
+        };
 
         const { queryAllByLabelText } = renderWithRedux(
             <FilterForm
@@ -28,6 +34,7 @@ describe('<FilterForm />', () => {
             />
         );
         expect(queryAllByLabelText('Title')).toHaveLength(1);
+        expect(queryAllByLabelText('Name')).toHaveLength(1);
         cleanup();
     });
 

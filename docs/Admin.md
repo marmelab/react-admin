@@ -173,8 +173,9 @@ const Menu = ({ resources, onMenuClick, logout }) => (
     <div>
         {resources.map(resource => (
             <MenuItemLink
+                key={resource.name}
                 to={`/${resource.name}`}
-                primaryText={resource.name}
+                primaryText={resource.options && resource.options.label || resource.name}
                 leftIcon={createElement(resource.icon)}
                 onClick={onMenuClick}
             />

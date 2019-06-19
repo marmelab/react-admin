@@ -208,11 +208,15 @@ describe('Query', () => {
 
     it('should not dispatch a new fetch action when updating with the same query props', () => {
         let dispatchSpy;
-        const myPayload = {};
         const { rerender } = render(
             <TestContext>
                 {({ store }) => {
                     dispatchSpy = jest.spyOn(store, 'dispatch');
+                    const myPayload = {
+                        foo: {
+                            bar: 1,
+                        },
+                    };
                     return (
                         <Query
                             type="mytype"
@@ -226,6 +230,11 @@ describe('Query', () => {
             </TestContext>
         );
         act(() => {
+            const myPayload = {
+                foo: {
+                    bar: 1,
+                },
+            };
             rerender(
                 <TestContext>
                     {() => (

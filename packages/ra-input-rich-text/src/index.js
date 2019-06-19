@@ -55,15 +55,11 @@ export class RichTextInput extends Component {
         this.quill.setContents(this.quill.clipboard.convert(value));
 
         this.editor = this.divRef.querySelector('.ql-editor');
-        this.quill.on('text-change', debounce(this.onTextChange, 500));
+        this.quill.on('text-change', this.onTextChange);
     }
 
-    shouldComponentUpdate(nextProps) {
-        return nextProps.input.value !== this.lastValueChange;
-    }
-
-    componentDidUpdate(prevProps) {
-        if (prevProps.input.value !== this.props.input.value) {
+    componentDidUpdate() {
+        if (this.lastValueChange !== this.props.input.value) {
             const selection = this.quill.getSelection();
             this.quill.setContents(
                 this.quill.clipboard.convert(this.props.input.value)
@@ -76,32 +72,37 @@ export class RichTextInput extends Component {
 
     componentWillUnmount() {
         this.quill.off('text-change', this.onTextChange);
+        this.onTextChange.cancel();
         this.quill = null;
     }
 
-    onTextChange = () => {
+    onTextChange = debounce(() => {
         const value =
             this.editor.innerHTML === '<p><br></p>'
                 ? ''
                 : this.editor.innerHTML;
         this.lastValueChange = value;
         this.props.input.onChange(value);
-    };
+    }, 500);
 
     updateDivRef = ref => {
         this.divRef = ref;
     };
 
     render() {
-        const { error, helperText = false } = this.props.meta;
+        const { touched, error, helperText = false } = this.props.meta;
         return (
             <FormControl
-                error={error !== null && error != undefined} // eslint-disable-line eqeqeq
+                error={!!(touched && error)}
                 fullWidth={this.props.fullWidth}
                 className="ra-rich-text-input"
             >
                 <div data-testid="quill" ref={this.updateDivRef} />
-                {error && <FormHelperText error>{error}</FormHelperText>}
+                {touched && error && (
+                    <FormHelperText error className="ra-rich-text-input-error">
+                        {error}
+                    </FormHelperText>
+                )}
                 {helperText && <FormHelperText>{helperText}</FormHelperText>}
             </FormControl>
         );

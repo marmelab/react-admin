@@ -7,7 +7,10 @@ title: "Ecosystem"
 
 - [Inputs and Fields](#inputs-and-fields)
 - [Translations](#translations)
+- [Authentication Providers](#authentication-providers)
+- [Authorization Management](#authorization-management)
 - [Data Providers](#data-providers)
+- [User Interface](#ui)
 - [Miscellaneous](#miscellaneous)
 
 ## Inputs and Fields
@@ -24,6 +27,10 @@ See the [translation](./Translation.md#available-locales) page.
 ## Authentication Providers
 
 * **[AWS Cognito](https://docs.aws.amazon.com/cognito/latest/developerguide/setting-up-the-javascript-sdk.html)**: [thedistance/ra-cognito](https://github.com/thedistance/ra-cognito)
+
+## Authorization Management
+
+* **[Access Control List (ACL) for Resources](https://github.com/marmelab/ra-auth-acl)**: [marmelab/ra-auth-acl](https://github.com/marmelab/ra-auth-acl)
 
 ## Data Providers
 

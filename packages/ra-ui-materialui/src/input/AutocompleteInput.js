@@ -199,7 +199,16 @@ export class AutocompleteInput extends React.Component {
 
         const inputValue = this.getSuggestionValue(suggestion);
         if (input && input.onChange) {
-            input.onChange(inputValue);
+            this.setState(
+                {
+                    dirty: false,
+                    inputValue,
+                    selectedItem: suggestion,
+                },
+                () => {
+                    input.onChange(inputValue);
+                }
+            );
         }
 
         if (method === 'enter') {
@@ -226,7 +235,7 @@ export class AutocompleteInput extends React.Component {
     };
 
     handleChange = (event, { newValue, method }) => {
-        if (['type', 'escape'].includes(method)) {
+        if (['type', 'click', 'escape'].includes(method)) {
             this.handleMatchSuggestionOrFilter(newValue);
         }
     };
@@ -478,6 +487,7 @@ AutocompleteInput.propTypes = {
     choices: PropTypes.arrayOf(PropTypes.object),
     classes: PropTypes.object,
     className: PropTypes.string,
+    focusInputOnSuggestionClick: PropTypes.bool,
     InputProps: PropTypes.object,
     input: PropTypes.object,
     isRequired: PropTypes.bool,
@@ -499,6 +509,7 @@ AutocompleteInput.propTypes = {
 
 AutocompleteInput.defaultProps = {
     choices: [],
+    focusInputOnSuggestionClick: false,
     options: {},
     optionText: 'name',
     optionValue: 'id',
