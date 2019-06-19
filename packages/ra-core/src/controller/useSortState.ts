@@ -17,11 +17,13 @@ const sortReducer = (state: Sort, field: string | Sort): Sort => {
         return field;
     }
     const order =
-        state.field === field && state.order === SORT_ASC
+        state.field === field ? state.order === SORT_ASC
             ? SORT_DESC
-            : SORT_ASC;
+            : SORT_ASC : SORT_ASC;
     return { field, order };
 };
+
+export const defaultSort = { field: 'id', order: 'DESC' };
 
 /**
  * set the sort to the given field, swap the order if the field is the same
@@ -52,7 +54,7 @@ const sortReducer = (state: Sort, field: string | Sort): Sort => {
  * @returns {SortProps} The sort props
  */
 export default (
-    initialSort: Sort = { field: 'id', order: 'DESC' }
+    initialSort: Sort = defaultSort
 ): SortProps => {
     const [sort, dispatch] = useReducer(sortReducer, initialSort);
     const isFirstRender = useRef(true);
