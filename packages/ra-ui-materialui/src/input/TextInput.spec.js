@@ -7,7 +7,8 @@ import { TextInput } from './TextInput';
 describe('<TextInput />', () => {
     const defaultProps = {
         // We have to specify the id ourselves here because the
-        // TextInput is not wrapped inside a FormInput
+        // TextInput is not wrapped inside a FormInput.
+        // This is needed to link the label to the input
         id: 'foo',
         source: 'foo',
         resource: 'bar',
@@ -19,12 +20,12 @@ describe('<TextInput />', () => {
 
     afterEach(cleanup);
 
-    it('should use a ResettableTextField when type is text', () => {
+    it('should render the input correctly', () => {
         const { getByLabelText } = render(
             <TextInput {...defaultProps} input={{ value: 'hello' }} />
         );
         const TextFieldElement = getByLabelText('resources.bar.fields.foo');
-        assert.equal(TextFieldElement.getAttribute('value'), 'hello');
+        assert.equal(TextFieldElement.value, 'hello');
         assert.equal(TextFieldElement.getAttribute('type'), 'text');
     });
 

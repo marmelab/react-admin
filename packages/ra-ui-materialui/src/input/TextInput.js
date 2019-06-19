@@ -1,8 +1,9 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import { addField, FieldTitle, ValidationError } from 'ra-core';
+import { addField, FieldTitle } from 'ra-core';
 
 import ResettableTextField from './ResettableTextField';
+import InputHelperText from './InputHelperText';
 import sanitizeRestProps from './sanitizeRestProps';
 
 /**
@@ -19,75 +20,79 @@ import sanitizeRestProps from './sanitizeRestProps';
  *
  * The object passed as `options` props is passed to the <ResettableTextField> component
  */
-export class TextInput extends Component {
-    handleBlur = eventOrValue => {
-        this.props.onBlur(eventOrValue);
-        this.props.input.onBlur(eventOrValue);
+export const TextInput = ({
+    className,
+    input,
+    isRequired,
+    label,
+    meta,
+    options,
+    resource,
+    source,
+    type,
+    helperText,
+    FormHelperTextProps,
+    onBlur,
+    onFocus,
+    onChange,
+    ...rest
+}) => {
+    const handleBlur = eventOrValue => {
+        onBlur(eventOrValue);
+        input.onBlur(eventOrValue);
     };
 
-    handleFocus = event => {
-        this.props.onFocus(event);
-        this.props.input.onFocus(event);
+    const handleFocus = event => {
+        onFocus(event);
+        input.onFocus(event);
     };
 
-    handleChange = eventOrValue => {
-        this.props.onChange(eventOrValue);
-        this.props.input.onChange(eventOrValue);
+    const handleChange = eventOrValue => {
+        onChange(eventOrValue);
+        input.onChange(eventOrValue);
     };
 
-    render() {
-        const {
-            className,
-            input,
-            isRequired,
-            label,
-            meta,
-            options,
-            resource,
-            source,
-            type,
-            helperText,
-            ...rest
-        } = this.props;
-        if (typeof meta === 'undefined') {
-            throw new Error(
-                "The TextInput component wasn't called within a redux-form <Field>. Did you decorate it and forget to add the addField prop to your component? See https://marmelab.com/react-admin/Inputs.html#writing-your-own-input-component for details."
-            );
-        }
-        const { touched, error } = meta;
-
-        return (
-            <ResettableTextField
-                margin="normal"
-                type={type}
-                label={
-                    label === false ? (
-                        label
-                    ) : (
-                        <FieldTitle
-                            label={label}
-                            source={source}
-                            resource={resource}
-                            isRequired={isRequired}
-                        />
-                    )
-                }
-                error={!!(touched && error)}
-                helperText={touched && error
-                    ? <ValidationError error={error} />
-                    : helperText
-                }
-                className={className}
-                {...options}
-                {...sanitizeRestProps(rest)}
-                {...input}
-                onBlur={this.handleBlur}
-                onFocus={this.handleFocus}
-                onChange={this.handleChange}
-            />
+    if (typeof meta === 'undefined') {
+        throw new Error(
+            "The TextInput component wasn't called within a redux-form <Field>. Did you decorate it and forget to add the addField prop to your component? See https://marmelab.com/react-admin/Inputs.html#writing-your-own-input-component for details."
         );
     }
-}
+    const { touched, error } = meta;
+
+    return (
+        <ResettableTextField
+            margin="normal"
+            type={type}
+            label={
+                label === false ? (
+                    label
+                ) : (
+                    <FieldTitle
+                        label={label}
+                        source={source}
+                        resource={resource}
+                        isRequired={isRequired}
+                    />
+                )
+            }
+            error={!!(touched && error)}
+            helperText={
+                <InputHelperText
+                    touched={touched}
+                    error={error}
+                    helperText={helperText}
+                />
+            }
+            className={className}
+            {...options}
+            {...sanitizeRestProps(rest)}
+            {...input}
+            onBlur={handleBlur}
+            onFocus={handleFocus}
+            onChange={handleChange}
+        />
+    );
+};
 
 TextInput.propTypes = {
     className: PropTypes.string,
