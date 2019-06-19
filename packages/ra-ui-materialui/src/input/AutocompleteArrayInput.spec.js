@@ -43,28 +43,7 @@ describe('<AutocompleteArrayInput />', () => {
         expect(getByText('Female')).toBeDefined();
     });
 
-    const context = {
-        translate: () => 'translated',
-        locale: 'en',
-    };
-    const childContextTypes = {
-        translate: PropTypes.func.isRequired,
-        locale: PropTypes.string.isRequired,
-    };
-
     it('should use optionText with a string value as text identifier', () => {
-<<<<<<< HEAD
-        const wrapper = shallow(
-            <AutocompleteArrayInput {...defaultProps} optionText="foobar" />,
-            {
-                context,
-                childContextTypes,
-            }
-||||||| merged common ancestors
-        const wrapper = shallow(
-            <AutocompleteArrayInput {...defaultProps} optionText="foobar" />,
-            { context, childContextTypes }
-=======
         const { getByLabelText, getByText, queryAllByRole } = render(
             <AutocompleteArrayInput
                 {...defaultProps}
@@ -74,7 +53,6 @@ describe('<AutocompleteArrayInput />', () => {
                     { id: 'F', foobar: 'Female' },
                 ]}
             />
->>>>>>> Migrated AutocompleteArrayInput
         );
 
         fireEvent.click(getByLabelText('resources.bar.fields.foo'));
