@@ -11,6 +11,7 @@ import { addField, translate } from 'ra-core';
 import Labeled from './Labeled';
 import FileInputPreview from './FileInputPreview';
 import sanitizeRestProps from './sanitizeRestProps';
+import InputHelperText from './InputHelperText';
 
 const styles = createStyles({
     dropZone: {
@@ -164,8 +165,11 @@ export class FileInput extends Component {
             source,
             translate,
             options = {},
+            helperText,
             ...rest
         } = this.props;
+
+        const { touched, error } = meta;
 
         return (
             <Labeled
@@ -209,9 +213,15 @@ export class FileInput extends Component {
                             ))}
                         </div>
                     )}
-                    {meta && meta.touched && meta.error && (
-                        <FormHelperText>{translate(meta.error)}</FormHelperText>
-                    )}
+                    {helperText || (touched && error) ? (
+                        <FormHelperText>
+                            <InputHelperText
+                                touched={touched}
+                                error={error}
+                                helperText={helperText}
+                            />
+                        </FormHelperText>
+                    ) : null}
                 </span>
             </Labeled>
         );
