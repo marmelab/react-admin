@@ -1,8 +1,8 @@
 import renderHookWithRedux from '../../util/renderHookWithRedux';
-import useReferenceSearch from './useReferenceSearch';
+import useMatchingReferences from './useMatchingReferences';
 import { cleanup } from 'react-testing-library';
 
-describe('useReferenceSearch', () => {
+describe('useMatchingReferences', () => {
     const defaultProps = {
         reference: 'posts',
         resource: 'comments',
@@ -20,7 +20,7 @@ describe('useReferenceSearch', () => {
 
     it('should fetch matchingReferences on mount', () => {
         const { dispatch } = renderHookWithRedux(() => {
-            return { matchingReferences: useReferenceSearch(defaultProps) };
+            return { matchingReferences: useMatchingReferences(defaultProps) };
         });
 
         expect(dispatch).toBeCalledTimes(1);
@@ -32,7 +32,7 @@ describe('useReferenceSearch', () => {
     it('should pass matching references from redux state to its children', () => {
         const { childrenProps } = renderHookWithRedux(
             () => {
-                return { matchingReferences: useReferenceSearch(defaultProps) };
+                return { matchingReferences: useMatchingReferences(defaultProps) };
             },
             {
                 admin: {

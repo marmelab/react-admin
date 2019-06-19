@@ -10,7 +10,7 @@ import { getStatusForInput as getDataStatus } from './referenceDataStatus';
 import useTranslate from '../../i18n/useTranslate';
 import { Sort, Record, Pagination } from '../../types';
 import useReference from '../useReference';
-import useReferenceSearch from './useReferenceSearch';
+import useMatchingReferences from './useMatchingReferences';
 import usePaginationState from '../usePaginationState';
 import { useSortState } from '..';
 import useFilterState from '../useFilterState';
@@ -133,7 +133,7 @@ export const ReferenceInputController: FunctionComponent<Props> = ({
     onChange,
     children,
     perPage = 25,
-    filter: permanentFilter,
+    filter: permanentFilter = {},
     reference,
     filterToQuery,
     referenceSource = defaultReferenceSource,
@@ -149,7 +149,7 @@ export const ReferenceInputController: FunctionComponent<Props> = ({
         filterToQuery,
     });
 
-    const { matchingReferences } = useReferenceSearch({
+    const matchingReferences = useMatchingReferences({
         reference,
         referenceSource,
         filter,
