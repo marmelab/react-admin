@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { propTypes, reduxForm, Field } from 'redux-form';
-import { connect } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import compose from 'recompose/compose';
 
 import Avatar from '@material-ui/core/Avatar';
@@ -10,7 +10,7 @@ import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import TextField from '@material-ui/core/TextField';
-import { createMuiTheme, withStyles } from '@material-ui/core/styles';
+import { createMuiTheme, makeStyles } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
 import LockIcon from '@material-ui/icons/Lock';
 
@@ -18,7 +18,7 @@ import { Notification, useTranslate, translate, userLogin } from 'react-admin';
 
 import { lightTheme } from './themes';
 
-const styles = theme => ({
+const useStyles = makeStyles(theme => ({
     main: {
         display: 'flex',
         flexDirection: 'column',
@@ -56,7 +56,7 @@ const styles = theme => ({
     actions: {
         padding: '0 1em 1em 1em',
     },
-});
+}));
 
 // see http://redux-form.com/6.4.3/examples/material-ui/
 const renderInput = ({
@@ -73,10 +73,16 @@ const renderInput = ({
     />
 );
 
-const Login = ({ classes, handleSubmit, isLoading, location, userLogin }) => {
+const Login = ({ handleSubmit, location }) => {
     const translate = useTranslate();
+    const classes = useStyles();
+    const dispatch = useDispatch();
+    const isLoading = useSelector(state => state.admin.loading > 0);
+
     const login = auth =>
-        userLogin(auth, location.state ? location.state.nextPathname : '/');
+        dispatch(
+            userLogin(auth, location.state ? location.state.nextPathname : '/')
+        );
 
     return (
         <div className={classes.main}>
@@ -133,12 +139,8 @@ const Login = ({ classes, handleSubmit, isLoading, location, userLogin }) => {
 Login.propTypes = {
     ...propTypes,
     authProvider: PropTypes.func,
-    classes: PropTypes.object,
     previousRoute: PropTypes.string,
-    userLogin: PropTypes.func.isRequired,
 };
-
-const mapStateToProps = state => ({ isLoading: state.admin.loading > 0 });
 
 const enhance = compose(
     translate,
@@ -155,12 +157,7 @@ const enhance = compose(
             }
             return errors;
         },
-    }),
-    connect(
-        mapStateToProps,
-        { userLogin }
-    ),
-    withStyles(styles)
+    })
 );
 
 const EnhancedLogin = enhance(Login);
