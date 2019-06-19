@@ -1,11 +1,13 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import MenuItem from '@material-ui/core/MenuItem';
 import { withStyles, createStyles } from '@material-ui/core/styles';
 import compose from 'recompose/compose';
-import { addField, translate, FieldTitle, ValidationError } from 'ra-core';
+import { addField, translate, FieldTitle, useTranslate } from 'ra-core';
+
 import ResettableTextField from './ResettableTextField';
+import InputHelperText from './InputHelperText';
 
 const sanitizeRestProps = ({
     addLabel,
@@ -129,44 +131,45 @@ const styles = theme =>
  * <SelectInput source="gender" choices={choices} disableValue="not_available" />
  *
  */
-export class SelectInput extends Component {
+export const SelectInput = ({
+    allowEmpty,
+    choices,
+    classes,
+    className,
+    disableValue,
+    emptyValue,
+    helperText,
+    input,
+    isRequired,
+    label,
+    meta,
+    options,
+    optionText,
+    optionValue,
+    resource,
+    source,
+    translateChoice,
+    ...rest
+}) => {
     /*
      * Using state to bypass a redux-form comparison but which prevents re-rendering
      * @see https://github.com/erikras/redux-form/issues/2456
      */
-    state = {
-        value: this.props.input.value,
-    };
+    const [value, setValue] = useState(input.value);
+    const translate = useTranslate();
 
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.input.value !== this.props.input.value) {
-            this.setState({ value: nextProps.input.value });
-        }
-    }
-
-    handleChange = eventOrValue => {
+    const handleChange = eventOrValue => {
         const value = eventOrValue.target
             ? eventOrValue.target.value
             : eventOrValue;
-        this.props.input.onChange(value);
+        input.onChange(value);
 
         // HACK: For some reason, redux-form does not consider this input touched without calling onBlur manually
-        this.props.input.onBlur(value);
-        this.setState({ value });
+        input.onBlur(value);
+        setValue(value);
     };
 
-    addAllowEmpty = choices => {
-        if (this.props.allowEmpty) {
-            return [
-                <MenuItem value={this.props.emptyValue} key="null" />,
-                ...choices,
-            ];
-        }
-
-        return choices;
-    };
-    renderMenuItemOption = choice => {
-        const { optionText, translate, translateChoice } = this.props;
+    const renderMenuItemOption = choice => {
         if (React.isValidElement(optionText)) {
             return React.cloneElement(optionText, {
                 record: choice,
@@ -183,72 +186,54 @@ export class SelectInput extends Component {
             : choiceName;
     };
 
-    renderMenuItem = choice => {
-        const { optionValue, disableValue } = this.props;
-        return (
-            <MenuItem
-                key={get(choice, optionValue)}
-                value={get(choice, optionValue)}
-                disabled={get(choice, disableValue)}
-            >
-                {this.renderMenuItemOption(choice)}
-            </MenuItem>
-        );
-    };
-
-    render() {
-        const {
-            allowEmpty,
-            choices,
-            classes,
-            className,
-            input,
-            isRequired,
-            label,
-            meta,
-            options,
-            resource,
-            source,
-            helperText,
-            ...rest
-        } = this.props;
-        if (typeof meta === 'undefined') {
-            throw new Error(
-                "The SelectInput component wasn't called within a redux-form <Field>. Did you decorate it and forget to add the addField prop to your component? See https://marmelab.com/react-admin/Inputs.html#writing-your-own-input-component for details."
-            );
-        }
-        const { touched, error } = meta;
-
-        return (
-            <ResettableTextField
-                select
-                margin="normal"
-                value={this.state.value}
-                label={
-                    <FieldTitle
-                        label={label}
-                        source={source}
-                        resource={resource}
-                        isRequired={isRequired}
-                    />
-                }
-                name={input.name}
-                className={`${classes.input} ${className}`}
-                clearAlwaysVisible
-                error={!!(touched && error)}
-                helperText={touched && error
-                    ? <ValidationError error={error} />
-                    : helperText
-                }
-                {...options}
-                {...sanitizeRestProps(rest)}
-                onChange={this.handleChange}
-            >
-                {this.addAllowEmpty(choices.map(this.renderMenuItem))}
-            </ResettableTextField>
+    if (typeof meta === 'undefined') {
+        throw new Error(
+            "The SelectInput component wasn't called within a redux-form <Field>. Did you decorate it and forget to add the addField prop to your component? See https://marmelab.com/react-admin/Inputs.html#writing-your-own-input-component for details."
         );
     }
-}
+    const { touched, error } = meta;
+
+    return (
+        <ResettableTextField
+            select
+            margin="normal"
+            value={value}
+            label={
+                <FieldTitle
+                    label={label}
+                    source={source}
+                    resource={resource}
+                    isRequired={isRequired}
+                />
+            }
+            name={input.name}
+            className={`${classes.input} ${className}`}
+            clearAlwaysVisible
+            error={!!(touched && error)}
+            helperText={
+                <InputHelperText
+                    touched={touched}
+                    error={error}
+                    helperText={helperText}
+                />
+            }
+            {...options}
+            {...sanitizeRestProps(rest)}
+            onChange={handleChange}
+        >
+            {allowEmpty ? <MenuItem value={emptyValue} key="null" /> : null}
+            {choices.map(choice => (
+                <MenuItem
+                    key={get(choice, optionValue)}
+                    value={get(choice, optionValue)}
+                    disabled={get(choice, disableValue)}
+                >
+                    {renderMenuItemOption(choice)}
+                </MenuItem>
+            ))}
+        </ResettableTextField>
+    );
+};
 
 SelectInput.propTypes = {
     allowEmpty: PropTypes.bool.isRequired,

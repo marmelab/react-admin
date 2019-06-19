@@ -1,9 +1,9 @@
 import React from 'react';
 import assert from 'assert';
-import { shallow } from 'enzyme';
-import { render, cleanup, fireEvent, within } from 'react-testing-library';
+import { render, cleanup, fireEvent } from 'react-testing-library';
 
 import { SelectInput } from './SelectInput';
+import { TranslationContext } from 'ra-core';
 
 describe('<SelectInput />', () => {
     afterEach(cleanup);
@@ -16,7 +16,6 @@ describe('<SelectInput />', () => {
         resource: 'bar',
         meta: {},
         input: { value: '' },
-        translate: x => x,
     };
 
     it('should use the input parameter value as the initial input value', () => {
@@ -24,7 +23,7 @@ describe('<SelectInput />', () => {
             <SelectInput {...defaultProps} input={{ value: 2 }} />
         );
         const TextFieldElement = getByLabelText('resources.bar.fields.foo');
-        assert.equal(TextFieldElement.getAttribute('value'), '2');
+        assert.equal(TextFieldElement.value, '2');
     });
 
     it('should render choices as mui MenuItem components', () => {
@@ -45,8 +44,8 @@ describe('<SelectInput />', () => {
         const optionMale = getByText('Male');
         assert.equal(optionMale.getAttribute('data-value'), 'M');
 
-        const optionMale = getByText('Female');
-        assert.equal(optionMale.getAttribute('data-value'), 'F');
+        const optionFemale = getByText('Female');
+        assert.equal(optionFemale.getAttribute('data-value'), 'F');
     });
 
     it('should render disable choices marked so', () => {
@@ -81,7 +80,7 @@ describe('<SelectInput />', () => {
         const { getByRole, queryAllByRole } = render(
             <SelectInput
                 {...defaultProps}
-                allowEmpty 
+                allowEmpty
                 choices={[
                     { id: 'M', name: 'Male' },
                     { id: 'F', name: 'Female' },
@@ -210,7 +209,9 @@ describe('<SelectInput />', () => {
     });
 
     it('should use optionText with an element value as text identifier', () => {
-        const Foobar = ({ record }) => <span data-value={record.id} aria-label={record.foobar} />;
+        const Foobar = ({ record }) => (
+            <span data-value={record.id} aria-label={record.foobar} />
+        );
 
         const { getByRole, getByLabelText } = render(
             <SelectInput
@@ -228,14 +229,19 @@ describe('<SelectInput />', () => {
 
     it('should translate the choices by default', () => {
         const { getByRole, getByText, queryAllByRole } = render(
-            <SelectInput
-                {...defaultProps}
-                choices={[
-                    { id: 'M', name: 'Male' },
-                    { id: 'F', name: 'Female' },
-                ]}
-                translate={x => `**${x}**`}
-            />
+            <TranslationContext.Provider
+                value={{
+                    translate: x => `**${x}**`,
+                }}
+            >
+                <SelectInput
+                    {...defaultProps}
+                    choices={[
+                        { id: 'M', name: 'Male' },
+                        { id: 'F', name: 'Female' },
+                    ]}
+                />
+            </TranslationContext.Provider>
         );
         const TextFieldElement = getByRole('button');
         fireEvent.click(TextFieldElement);
@@ -245,21 +251,26 @@ describe('<SelectInput />', () => {
         const optionMale = getByText('**Male**');
         assert.equal(optionMale.getAttribute('data-value'), 'M');
 
-        const optionMale = getByText('**Female**');
-        assert.equal(optionMale.getAttribute('data-value'), 'F');
+        const optionFemale = getByText('**Female**');
+        assert.equal(optionFemale.getAttribute('data-value'), 'F');
     });
 
     it('should not translate the choices if translateChoice is false', () => {
         const { getByRole, getByText, queryAllByRole } = render(
-            <SelectInput
-                {...defaultProps}
-                choices={[
-                    { id: 'M', name: 'Male' },
-                    { id: 'F', name: 'Female' },
-                ]}
-                translate={x => `**${x}**`}
-                translateChoice={false}
-            />
+            <TranslationContext.Provider
+                value={{
+                    translate: x => `**${x}**`,
+                }}
+            >
+                <SelectInput
+                    {...defaultProps}
+                    choices={[
+                        { id: 'M', name: 'Male' },
+                        { id: 'F', name: 'Female' },
+                    ]}
+                    translateChoice={false}
+                />
+            </TranslationContext.Provider>
         );
         const TextFieldElement = getByRole('button');
         fireEvent.click(TextFieldElement);
@@ -269,18 +280,15 @@ describe('<SelectInput />', () => {
         const optionMale = getByText('Male');
         assert.equal(optionMale.getAttribute('data-value'), 'M');
 
-        const optionMale = getByText('Female');
-        assert.equal(optionMale.getAttribute('data-value'), 'F');
+        const optionFemale = getByText('Female');
+        assert.equal(optionFemale.getAttribute('data-value'), 'F');
     });
 
     it('should displayed helperText if prop is present in meta', () => {
         const { getByText } = render(
-            <SelectInput
-                {...defaultProps}
-                helperText="Can i help you?"
-            />
+            <SelectInput {...defaultProps} helperText="Can I help you?" />
         );
-        const helperText = getByText('Can i help you?');
+        const helperText = getByText('Can I help you?');
         assert.ok(helperText);
     });
 
@@ -289,7 +297,8 @@ describe('<SelectInput />', () => {
             const { queryAllByText } = render(
                 <SelectInput
                     {...defaultProps}
-                    meta={{ touched: false, error: 'Required field.' }} />
+                    meta={{ touched: false, error: 'Required field.' }}
+                />
             );
             const error = queryAllByText('Required field.');
             assert.equal(error.length, 0);
@@ -318,18 +327,18 @@ describe('<SelectInput />', () => {
         });
 
         it('should display the error even if helperText is present', () => {
-            const { getByText } = render(
+            const { getByText, queryByText } = render(
                 <SelectInput
                     {...defaultProps}
-                    helperText="Can i help you?"
+                    helperText="Can I help you?"
                     meta={{
                         touched: true,
                         error: 'Required field.',
                     }}
                 />
             );
-            const error = getByText('Required field.');
-            assert.ok(error);
-         });
+            assert.ok(getByText('Required field.'));
+            assert.ok(!queryByText('Can I help you?'));
+        });
     });
 });
