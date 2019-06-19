@@ -1288,7 +1288,7 @@ const ItemEdit = (props) => (
 
 ```html
 <span>
-    <input type="number" placeholder="longitude" value={record.lat} />
+    <input type="number" placeholder="latitude" value={record.lat} />
     <input type="number" placeholder="longitude" value={record.lng} />
 </span>
 ```
