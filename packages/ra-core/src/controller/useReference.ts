@@ -54,13 +54,7 @@ export const useReference = ({
         () => makeGetReferenceRecord({ id, reference }),
         [id, reference]
     );
-    const referenceRecord = useSelector(
-        getReferenceRecord,
-        (newState, latestState) => {
-            console.log({ newState, latestState });
-            return newState === latestState;
-        }
-    );
+    const referenceRecord = useSelector(getReferenceRecord);
     useEffect(() => {
         if (id !== null && typeof id !== 'undefined') {
             dispatch(crudGetManyAccumulate(reference, [id]));
@@ -75,7 +69,7 @@ export const useReference = ({
 
 const makeGetReferenceRecord = props => state => {
     const referenceState = getReferenceResource(state, props);
-    console.log({ referenceState });
+    
     return referenceState && referenceState.data[props.id];
 };
 

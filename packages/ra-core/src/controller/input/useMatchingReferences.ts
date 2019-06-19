@@ -2,6 +2,7 @@ import { useEffect, useMemo } from 'react';
 // @ts-ignore
 import { useSelector, useDispatch } from 'react-redux';
 import { createSelector } from 'reselect';
+import isEqual from 'lodash.isequal';
 
 import { Filter } from '../useFilterState';
 import { crudGetMatchingAccumulate } from '../../actions/accumulateActions';
@@ -11,6 +12,7 @@ import {
     getReferenceResource,
 } from '../../reducer';
 import { Pagination, Sort, Record } from '../../types';
+import usePrevious  from '../../util/usePrevious';
 
 interface UseMAtchingReferencesOption {
     reference: string;
@@ -44,8 +46,25 @@ export default ({
 
     const getMatchingReferences = useMemo(makeMatchingReferencesSelector, []);
 
+    const options = {
+        dispatch,
+        filter,
+        reference,
+        referenceSource,
+        resource,
+        source,
+        pagination,
+        sort,
+    };
+
+    const previousOption = usePrevious(options);
+
     useEffect(
-        () =>
+        () => {
+            if (isEqual(options, previousOption)) {
+                return;
+            }
+
             fetchOptions({
                 dispatch,
                 filter,
@@ -55,18 +74,8 @@ export default ({
                 source,
                 pagination,
                 sort,
-            }),
-        [
-            filter,
-            reference,
-            referenceSource,
-            resource,
-            source,
-            pagination.page,
-            pagination.perPage,
-            sort.field,
-            sort.order,
-        ]
+            })
+        }
     );
 
     const matchingReferences = useSelector(

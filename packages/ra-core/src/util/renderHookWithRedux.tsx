@@ -15,5 +15,9 @@ export default (hookProps, reduxState?) => {
         reduxState
     );
 
-    return { ...result, childrenProps };
+    return { ...result, childrenProps, rerender: newHook => {
+        return result.rerender(
+            <TestHook children={children} hookProps={newHook} />,
+        );
+    }, };
 };
