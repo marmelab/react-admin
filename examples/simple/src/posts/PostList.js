@@ -2,12 +2,15 @@ import BookIcon from '@material-ui/icons/Book';
 import Chip from '@material-ui/core/Chip';
 import { makeStyles } from '@material-ui/core/styles';
 import React, { Children, Fragment, cloneElement } from 'react';
+import lodashGet from 'lodash/get';
+import jsonExport from 'jsonexport/dist';
 import {
     BooleanField,
     BulkDeleteButton,
     ChipField,
     Datagrid,
     DateField,
+    downloadCSV,
     EditButton,
     Filter,
     List,
@@ -45,6 +48,16 @@ const PostFilter = props => (
         />
     </Filter>
 );
+
+const exporter = posts => {
+    const data = posts.map(post => ({
+        ...post,
+        backlinks: lodashGet(post, 'backlinks', []).map(
+            backlink => backlink.url
+        ),
+    }));
+    jsonExport(data, (err, csv) => downloadCSV(csv, 'posts'));
+};
 
 const useStyles = makeStyles(theme => ({
     title: {
@@ -104,6 +117,7 @@ const PostList = props => {
             bulkActionButtons={<PostListBulkActions />}
             filters={<PostFilter />}
             sort={{ field: 'published_at', order: 'DESC' }}
+            exporter={exporter}
         >
             <Responsive
                 small={

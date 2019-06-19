@@ -73,6 +73,7 @@ const App = () => (
 You can find translation packages for the following languages:
 
 - Arabic (`ar`): [developerium/ra-language-arabic](https://github.com/developerium/ra-language-arabic)
+- Bulgarian (`bg`): [ptodorov0/ra-language-bulgarian](https://github.com/ptodorov0/ra-language-bulgarian)
 - Catalan (`ca`): [sergioedo/ra-language-catalan](https://github.com/sergioedo/ra-language-catalan)
 - Chinese (`zh-TW`): [areyliu6/ra-language-chinese-traditional](https://github.com/areyliu6/ra-language-chinese-traditional)
 - Chinese (`zh`): [chen4w/ra-language-chinese](https://github.com/chen4w/ra-language-chinese)

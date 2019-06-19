@@ -6,6 +6,7 @@ import { withStyles, createStyles } from '@material-ui/core/styles';
 import compose from 'recompose/compose';
 import withProps from 'recompose/withProps';
 import lodashSet from 'lodash/set';
+import lodashGet from 'lodash/get';
 
 import FilterFormInput from './FilterFormInput';
 
@@ -88,7 +89,8 @@ export class FilterForm extends Component {
             filterElement =>
                 filterElement.props.alwaysOn ||
                 displayedFilters[filterElement.props.source] ||
-                typeof initialValues[filterElement.props.source] !== 'undefined'
+                typeof lodashGet(initialValues, filterElement.props.source) !==
+                    'undefined'
         );
     }
 

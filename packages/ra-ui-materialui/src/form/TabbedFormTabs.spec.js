@@ -11,7 +11,7 @@ describe('<TabbedFormTabs />', () => {
             <TabbedFormTabs
                 classes={{ errorTabButton: 'error' }}
                 currentLocationPath={'/posts/12'}
-                match={{ url: '/posts/12' }}
+                url="/posts/12"
                 tabsWithErrors={['tab2']}
             >
                 <FormTab label="tab1" />
@@ -32,7 +32,7 @@ describe('<TabbedFormTabs />', () => {
             <TabbedFormTabs
                 classes={{ errorTabButton: 'error' }}
                 currentLocationPath={'/posts/12'}
-                match={{ url: '/posts/12' }}
+                url="/posts/12"
                 tabsWithErrors={['tab1']}
             >
                 <FormTab label="tab1" />

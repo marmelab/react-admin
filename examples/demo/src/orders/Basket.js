@@ -116,7 +116,10 @@ class Basket extends Component {
                             <TableCell className={classes.rightAlignedCell}>
                                 {record.total_ex_taxes.toLocaleString(
                                     undefined,
-                                    { style: 'currency', currency: 'USD' }
+                                    {
+                                        style: 'currency',
+                                        currency: 'USD',
+                                    }
                                 )}
                             </TableCell>
                         </TableRow>

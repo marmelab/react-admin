@@ -40,7 +40,7 @@ const queryReducer: Reducer<ListParams> = (
             return { ...previousState, page: payload };
 
         case SET_PER_PAGE:
-            return { ...previousState, perPage: payload };
+            return { ...previousState, page: 1, perPage: payload };
 
         case SET_FILTER: {
             return { ...previousState, page: 1, filter: payload };

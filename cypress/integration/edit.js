@@ -25,7 +25,7 @@ describe('Edit Page', () => {
         });
 
         it('should allow to update elements', () => {
-            EditPostPage.setInputValue('title', 'Lorem Ipsum');
+            EditPostPage.setInputValue('input', 'title', 'Lorem Ipsum');
             EditPostPage.submit();
             // Ensure react-admin has handled the update as it will redirect to the list page
             // once done
@@ -37,7 +37,7 @@ describe('Edit Page', () => {
         });
 
         it('should redirect to list page after edit success', () => {
-            EditPostPage.setInputValue('title', 'Lorem Ipsum +');
+            EditPostPage.setInputValue('input', 'title', 'Lorem Ipsum +');
             EditPostPage.submit();
             cy.url().then(url => expect(url).to.contain('/#/posts'));
         });
@@ -71,13 +71,14 @@ describe('Edit Page', () => {
         );
 
         // This validate that the current redux form values are not kept after we navigate
-        EditCommentPage.setInputValue('body', 'Test');
+        EditCommentPage.setInputValue('input', 'body', 'Test');
 
         CreatePostPage.navigate();
 
-        cy.get(CreatePostPage.elements.bodyInput).should(el =>
-            // When the Quill editor is empty, it add the "ql-blank" CSS class
-            expect(el).to.have.class('ql-blank')
+        cy.get(CreatePostPage.elements.input('body', 'rich-text-input')).should(
+            el =>
+                // When the Quill editor is empty, it add the "ql-blank" CSS class
+                expect(el).to.have.class('ql-blank')
         );
     });
 
@@ -116,7 +117,7 @@ describe('Edit Page', () => {
         );
 
         // This validate that the current redux form values are not kept after we navigate
-        EditPostPage.setInputValue('title', 'Another title');
+        EditPostPage.setInputValue('input', 'title', 'Another title');
 
         CreatePostPage.navigate();
         cy.get(CreatePostPage.elements.input('title')).should(el =>

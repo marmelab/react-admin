@@ -94,7 +94,6 @@ DatagridBody.defaultProps = {
 };
 
 // trick material-ui Table into thinking this is one of the child type it supports
-// @ts-ignore
 DatagridBody.muiName = 'TableBody';
 
 export default DatagridBody;

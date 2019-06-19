@@ -11,12 +11,12 @@ const TabbedFormTabs = ({
     children,
     classes,
     currentLocationPath,
-    match,
+    url,
     tabsWithErrors,
     ...rest
 }) => {
     const validTabPaths = Children.toArray(children).map((tab, index) =>
-        getTabFullPath(tab, index, match.url)
+        getTabFullPath(tab, index, url)
     );
 
     // This ensure we don't get warnings from material-ui Tabs component when
@@ -39,7 +39,7 @@ const TabbedFormTabs = ({
                 // TabbedShowLayout hierarchy (ex: '/posts/create', '/posts/12', , '/posts/12/show')
                 // and the tab path.
                 // This will be used as the Tab's value
-                const tabPath = getTabFullPath(tab, index, match.url);
+                const tabPath = getTabFullPath(tab, index, url);
 
                 return cloneElement(tab, {
                     intent: 'header',
@@ -59,7 +59,7 @@ TabbedFormTabs.propTypes = {
     children: PropTypes.node,
     classes: PropTypes.object,
     currentLocationPath: PropTypes.string,
-    match: PropTypes.object,
+    url: PropTypes.string,
     tabsWithErrors: PropTypes.arrayOf(PropTypes.string),
 };
 

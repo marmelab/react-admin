@@ -218,7 +218,7 @@ describe('List Page', () => {
             cy.get('#13-expand').should(el => expect(el).to.exist);
 
             cy.get('[aria-label="Expand"]')
-                .eq(0) // We still targets the first button labeled Expand because the previous one should now have a Close label
+                .eq(0) // We still target the first button labeled Expand because the previous one should now have a Close label
                 .click()
                 .should(el => expect(el).to.have.attr('aria-expanded', 'true'))
                 .should(el => expect(el).to.have.attr('aria-label', 'Close'));

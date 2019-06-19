@@ -117,7 +117,8 @@ test-unit: ## launch unit tests
 	fi
 
 test-unit-watch: ## launch unit tests and watch for changes
-	yarn -s test-unit --watch
+	echo "Running unit tests..."; \
+	yarn -s test-unit; \
 
 test-e2e: ## launch end-to-end tests
 	@if [ "$(build)" != "false" ]; then \

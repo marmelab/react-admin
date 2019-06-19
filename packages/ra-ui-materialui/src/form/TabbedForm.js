@@ -101,6 +101,7 @@ export class TabbedForm extends Component {
             ...rest
         } = this.props;
 
+        const url = match ? match.url : location.pathname;
         return (
             <form
                 className={classnames('tabbed-form', className)}
@@ -112,7 +113,7 @@ export class TabbedForm extends Component {
                     {
                         classes,
                         currentLocationPath: location.pathname,
-                        match,
+                        url,
                         tabsWithErrors,
                     },
                     children
@@ -129,7 +130,7 @@ export class TabbedForm extends Component {
                             tab && (
                                 <Route
                                     exact
-                                    path={getTabFullPath(tab, index, match.url)}
+                                    path={getTabFullPath(tab, index, url)}
                                 >
                                     {routeProps =>
                                         isValidElement(tab)
