@@ -1,6 +1,5 @@
 import React from 'react';
-import { shallow, mount } from 'enzyme';
-import { render, waitForDomChange } from 'react-testing-library';
+import { render } from 'react-testing-library';
 import { reduxForm } from 'redux-form';
 import { TestContext } from 'ra-core';
 

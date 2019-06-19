@@ -1,7 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import assert from 'assert';
-import { shallow, mount } from 'enzyme';
 import {
     cleanup,
     fireEvent,
