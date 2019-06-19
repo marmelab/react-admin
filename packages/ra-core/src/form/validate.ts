@@ -34,7 +34,7 @@ const getMessage = (
     message: string | MessageFunc,
     messageArgs: any,
     value: any,
-    values: any,
+    values: any
 ) =>
     typeof message === 'function'
         ? message({
@@ -43,10 +43,10 @@ const getMessage = (
               values,
           })
         : messageArgs
-        ? ({
-            message,
-            args: messageArgs,
-        })
+        ? {
+              message,
+              args: messageArgs,
+          }
         : message;
 
 type Memoize = <T extends (...args: any[]) => any>(

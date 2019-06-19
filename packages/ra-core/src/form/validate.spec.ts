@@ -1,5 +1,4 @@
 import assert from 'assert';
-import isEqual from 'lodash/isEqual';
 
 import {
     required,
@@ -19,7 +18,7 @@ describe('Validators', () => {
             inputs
                 .map(input => validator(input, null))
                 .filter(error => error === message || error.message === message)
-                .map(error => error && error.message ? error.message : error),
+                .map(error => (error && error.message ? error.message : error)),
             Array(...Array(inputs.length)).map(() => message)
         );
     describe('required', () => {

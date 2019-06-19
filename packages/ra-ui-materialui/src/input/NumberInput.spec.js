@@ -60,7 +60,10 @@ describe('<NumberInput />', () => {
             const onChange = jest.fn();
 
             const { getByLabelText } = render(
-                <NumberInput {...defaultProps} input={{ value: '1', onChange }} />
+                <NumberInput
+                    {...defaultProps}
+                    input={{ value: '1', onChange }}
+                />
             );
             const TextFieldElement = getByLabelText('resources.bar.fields.foo');
             fireEvent.change(TextFieldElement, { target: { value: '2' } });
