@@ -20,7 +20,7 @@ describe('<SelectArrayInput />', () => {
         const { queryByTestId } = render(
             <SelectArrayInput {...defaultProps} input={{}} />
         );
-        expect(queryByTestId('selectArray')).not.toBeNull();
+        expect(queryByTestId('selectArray')).toBeDefined();
     });
 
     it('should use the input parameter value as the initial input value', () => {
@@ -153,12 +153,9 @@ describe('<SelectArrayInput />', () => {
 
     it('should displayed helperText if prop is present in meta', () => {
         const { queryByText } = render(
-            <SelectArrayInput
-                {...defaultProps}
-                meta={{ helperText: 'Can I help you?' }}
-            />
+            <SelectArrayInput {...defaultProps} helperText="Can I help you?" />
         );
-        expect(queryByText('Can I help you?')).not.toBeNull();
+        expect(queryByText('Can I help you?')).toBeDefined();
     });
 
     describe('error message', () => {
@@ -186,10 +183,10 @@ describe('<SelectArrayInput />', () => {
             const { queryByText } = render(
                 <SelectArrayInput
                     {...defaultProps}
+                    helperText="Can I help you?"
                     meta={{
                         touched: true,
                         error: 'Required field.',
-                        helperText: 'Can I help you?',
                     }}
                 />
             );
