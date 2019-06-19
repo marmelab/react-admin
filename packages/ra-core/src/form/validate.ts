@@ -7,20 +7,20 @@ const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"
 const isEmpty = (value: any) =>
     typeof value === 'undefined' || value === null || value === '';
 
-export interface ValidationErrorMessage {
+export interface ValidationErrorMessageWithArgs {
     message: string;
     args: {
-        [key: string]: ValidationErrorMessage | any;
+        [key: string]: ValidationErrorMessageWithArgs | any;
     };
 }
 
-export type ValidationError = string | ValidationErrorMessage;
+export type ValidationErrorMessage = string | ValidationErrorMessageWithArgs;
 
 export type Validator = (
     value: any,
     values: any,
     props: any
-) => ValidationError | null | undefined;
+) => ValidationErrorMessage | null | undefined;
 
 interface MessageFuncParams {
     args: any;
@@ -28,7 +28,7 @@ interface MessageFuncParams {
     values: any;
 }
 
-type MessageFunc = (params: MessageFuncParams) => ValidationError;
+type MessageFunc = (params: MessageFuncParams) => ValidationErrorMessage;
 
 const getMessage = (
     message: string | MessageFunc,

@@ -1,37 +1,43 @@
 import React, { SFC } from 'react';
-import { ValidationError, ValidationErrorMessage } from './validate';
+import {
+    ValidationErrorMessage,
+    ValidationErrorMessageWithArgs,
+} from './validate';
 import { useTranslate } from '../i18n';
 
 interface Props {
-    error: ValidationError;
-};
+    error: ValidationErrorMessage;
+}
 
-const Error: SFC<Props> = ({ error }) => {
+const ValidationError: SFC<Props> = ({ error }) => {
     const translate = useTranslate();
 
-    if ((error as ValidationErrorMessage).message) {
-        const { message, args } = error as ValidationErrorMessage;
+    if ((error as ValidationErrorMessageWithArgs).message) {
+        const { message, args } = error as ValidationErrorMessageWithArgs;
         const { _, ...allArgsButDefault } = args;
 
-        const translatedArgs = Object
-            .keys(allArgsButDefault)
-            .reduce((acc, key) => {
+        const translatedArgs = Object.keys(allArgsButDefault).reduce(
+            (acc, key) => {
                 const arg = Array.isArray(allArgsButDefault[key])
                     ? allArgsButDefault[key]
-                        .map(item =>translate(item, { _: item.toString() }))
-                        .join(', ')
-                    : allArgsButDefault[key];
+                          .map(item =>
+                              translate(item.toString(), { _: item.toString() })
+                          )
+                          .join(', ')
+                    : allArgsButDefault[key].toString();
 
-                return ({
+                return {
                     ...acc,
-                    [key]: translate(arg, { _: arg.toString() }),
-                });
-            }, {});
+                    [key]: translate(arg.toString(), { _: arg.toString() }),
+                };
+            },
+            {}
+        );
 
         return <>{translate(message, translatedArgs)}</>;
-    } 
-    
+    }
+
     return <>{translate(error as string, { _: error })}</>;
 };
 
-export default Error;
+export default ValidationError;
