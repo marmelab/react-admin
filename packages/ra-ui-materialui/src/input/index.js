@@ -8,6 +8,7 @@ import DateTimeInput from './DateTimeInput';
 import DisabledInput from './DisabledInput';
 import FileInput from './FileInput';
 import ImageInput from './ImageInput';
+import InputHelperText from './InputHelperText';
 import Labeled from './Labeled';
 import LongTextInput from './LongTextInput';
 import NullableBooleanInput from './NullableBooleanInput';
@@ -32,6 +33,7 @@ export {
     DisabledInput,
     FileInput,
     ImageInput,
+    InputHelperText,
     Labeled,
     LongTextInput,
     NullableBooleanInput,
