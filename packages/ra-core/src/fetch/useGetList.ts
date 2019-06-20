@@ -1,5 +1,5 @@
 // @ts-ignore
-import { useSelector } from 'react-redux';
+import { useSelector, shallowEqual } from 'react-redux';
 import { CRUD_GET_LIST } from '../actions/dataActions/crudGetList';
 import { GET_LIST } from '../dataFetchActions';
 import { Pagination, Sort, ReduxState } from '../types';
@@ -66,7 +66,7 @@ const useGetList = (
             state.admin.resources[resource]
                 ? state.admin.resources[resource].data
                 : null,
-        [resource]
+        shallowEqual
     );
     return { data, ids, total, error, loading, loaded };
 };

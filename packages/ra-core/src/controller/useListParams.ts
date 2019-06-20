@@ -1,6 +1,6 @@
 import { useCallback, useState, useMemo } from 'react';
 // @ts-ignore
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import { parse, stringify } from 'query-string';
 import { push } from 'connected-react-router';
 import lodashDebounce from 'lodash/debounce';
@@ -116,7 +116,7 @@ const useListParams = ({
 
     const { params } = useSelector(
         (reduxState: ReduxState) => reduxState.admin.resources[resource].list,
-        [resource]
+        shallowEqual
     );
 
     const requestSignature = [
