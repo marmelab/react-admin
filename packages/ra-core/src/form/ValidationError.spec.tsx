@@ -2,12 +2,43 @@ import React from 'react';
 import { render, cleanup } from 'react-testing-library';
 
 import ValidationError from './ValidationError';
+import { TranslationProvider } from '../i18n';
+import TestContext from '../util/TestContext';
 
 const translate = jest.fn(key => key);
 
-jest.mock('../i18n', () => ({
-    useTranslate: () => translate,
-}));
+const renderWithTranslations = content =>
+    render(
+        <TestContext
+            initialState={{
+                i18n: {
+                    locale: 'en',
+                    messages: {
+                        ra: {
+                            validation: {
+                                required: 'Required',
+                                minValue: 'Min Value %{value}',
+                                oneOf: 'Must be one of %{list}',
+                            },
+                        },
+                        myapp: {
+                            validation: {
+                                match: 'Must match %{match}',
+                            },
+                            constants: {
+                                match: 'IAmMatch',
+                            },
+                            targets: {
+                                foo: 'Foo',
+                            },
+                        },
+                    },
+                },
+            }}
+        >
+            <TranslationProvider>{content}</TranslationProvider>
+        </TestContext>
+    );
 
 describe('ValidationError', () => {
     afterEach(() => {
@@ -16,18 +47,15 @@ describe('ValidationError', () => {
     });
 
     it('It renders the error message translated if it is a string', () => {
-        const { getByText } = render(
+        const { getByText } = renderWithTranslations(
             <ValidationError error="ra.validation.required" />
         );
 
-        expect(getByText('ra.validation.required')).toBeTruthy();
-        expect(translate).toHaveBeenCalledWith('ra.validation.required', {
-            _: 'ra.validation.required',
-        });
+        expect(getByText('Required')).toBeTruthy();
     });
 
-    it('It renders the error message translated if it is an object, with all its arguments translated as well', () => {
-        const { getByText } = render(
+    it('It renders the error message translated if it is an object, with all its arguments translated as well, fallbacking to the arg value', () => {
+        const { getByText } = renderWithTranslations(
             <ValidationError
                 error={{
                     message: 'ra.validation.minValue',
@@ -36,10 +64,32 @@ describe('ValidationError', () => {
             />
         );
 
-        expect(getByText('ra.validation.minValue')).toBeDefined();
-        expect(translate).toHaveBeenCalledWith('ra.validation.minValue', {
-            value: '10',
-        });
-        expect(translate).toHaveBeenCalledWith('10', { _: '10' });
+        expect(getByText('Min Value 10')).toBeDefined();
+    });
+
+    it('It renders the error message translated if it is an object, with all its arguments translated as well', () => {
+        const { getByText } = renderWithTranslations(
+            <ValidationError
+                error={{
+                    message: 'myapp.validation.match',
+                    args: { match: 'myapp.constants.match' },
+                }}
+            />
+        );
+
+        expect(getByText('Must match IAmMatch')).toBeDefined();
+    });
+
+    it('It renders the error message translated if it is an object, translating array arguments as well, fallbacking to the arg value', () => {
+        const { getByText } = renderWithTranslations(
+            <ValidationError
+                error={{
+                    message: 'ra.validation.oneOf',
+                    args: { list: ['myapp.targets.foo', 'bar'] },
+                }}
+            />
+        );
+
+        expect(getByText('Must be one of Foo, bar')).toBeDefined();
     });
 });
