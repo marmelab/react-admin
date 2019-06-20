@@ -1,10 +1,9 @@
 import React, { useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { TablePagination, Toolbar } from '@material-ui/core';
-import useMediaQueryTheme from '@material-ui/core/useMediaQuery/useMediaQueryTheme';
-import { useTheme } from '@material-ui/core/styles';
 import { useTranslate, sanitizeListRestProps } from 'ra-core';
 
+import { useMediaQuery } from '../layout';
 import PaginationActions from './PaginationActions';
 import PaginationLimit from './PaginationLimit';
 
@@ -26,8 +25,7 @@ const Pagination = ({
         }
     }, [page, setPage]);
     const translate = useTranslate();
-    const theme = useTheme();
-    const isSmall = useMediaQueryTheme(theme.breakpoints.down('sm'));
+    const isSmall = useMediaQuery(theme => theme.breakpoints.down('sm'));
 
     const getNbPages = () => Math.ceil(total / perPage) || 1;
 

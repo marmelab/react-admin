@@ -27,7 +27,7 @@ import {
     TextField,
     downloadCSV,
     useTranslate,
-    useMediaIsSmall,
+    useMediaQuery,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
 
 const CommentFilter = props => (
@@ -210,7 +210,7 @@ const CommentMobileList = props => (
 );
 
 const CommentList = props => {
-    const isSmall = useMediaIsSmall();
+    const isSmall = useMediaQuery(theme => theme.breakpoints.down('sm'));
 
     return (
         <List

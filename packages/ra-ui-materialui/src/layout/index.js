@@ -15,6 +15,7 @@ import {
     useMediaIsXSmall,
     useMediaIsDesktop,
 } from './mediaQueries';
+import useMediaQuery from './useMediaQuery';
 import Menu from './Menu';
 import MenuItemLink from './MenuItemLink';
 import NotFound from './NotFound';
@@ -53,4 +54,5 @@ export {
     useMediaIsDesktop,
     useMediaIsSmall,
     useMediaIsXSmall,
+    useMediaQuery,
 };

@@ -3,10 +3,11 @@ import PropTypes from 'prop-types';
 import MuiButton from '@material-ui/core/Button';
 import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import useMediaQueryTheme from '@material-ui/core/useMediaQuery/useMediaQueryTheme';
+import { makeStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
 import { useTranslate } from 'ra-core';
+
+import { useMediaQuery } from '../layout';
 
 const useStyles = makeStyles({
     button: {
@@ -43,8 +44,8 @@ const Button = ({
 }) => {
     const translate = useTranslate();
     const classes = useStyles({ classes: classesOverride });
-    const theme = useTheme();
-    const isXSmall = useMediaQueryTheme(theme.breakpoints.down('xs'));
+    const isXSmall = useMediaQuery(theme => theme.breakpoints.down('xs'));
+
     return isXSmall ? (
         label && !disabled ? (
             <Tooltip title={translate(label, { _: label })}>

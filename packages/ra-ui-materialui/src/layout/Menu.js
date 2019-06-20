@@ -3,13 +3,12 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import inflection from 'inflection';
 import compose from 'recompose/compose';
-import useMediaQueryTheme from '@material-ui/core/useMediaQuery/useMediaQueryTheme';
-import { withStyles, createStyles, useTheme } from '@material-ui/core/styles';
-
+import { withStyles, createStyles } from '@material-ui/core';
 import DefaultIcon from '@material-ui/icons/ViewList';
 import classnames from 'classnames';
 import { getResources, useTranslate } from 'ra-core';
 
+import { useMediaQuery } from '../layout';
 import DashboardMenuItem from './DashboardMenuItem';
 import MenuItemLink from './MenuItemLink';
 
@@ -46,8 +45,7 @@ const Menu = ({
     ...rest
 }) => {
     const translate = useTranslate();
-    const theme = useTheme();
-    const isXSmall = useMediaQueryTheme(theme.breakpoints.down('xs'));
+    const isXSmall = useMediaQuery(theme => theme.breakpoints.down('xs'));
 
     return (
         <div className={classnames(classes.main, className)} {...rest}>

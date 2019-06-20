@@ -1,11 +1,11 @@
 import React, { useEffect, Children, cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
-import { Drawer, useMediaQuery } from '@material-ui/core';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-
+import { Drawer, makeStyles } from '@material-ui/core';
 import lodashGet from 'lodash/get';
 import { setSidebarVisibility } from 'ra-core';
+
+import { useMediaQuery } from '../layout';
 
 export const DRAWER_WIDTH = 240;
 export const CLOSED_DRAWER_WIDTH = 55;
@@ -41,13 +41,12 @@ const useStyles = makeStyles(theme => ({
 
 const Sidebar = ({ children, closedSize, size, ...rest }) => {
     const dispatch = useDispatch();
-    const theme = useTheme();
-    const isXSmall = useMediaQuery(theme.breakpoints.down('xs'));
-    const isSmall = useMediaQuery(theme.breakpoints.down('sm'));
+    const isXSmall = useMediaQuery(theme => theme.breakpoints.down('xs'));
+    const isSmall = useMediaQuery(theme => theme.breakpoints.down('sm'));
     // FIXME negating isXSmall and isSmall should be enough, but unfortunately
     // mui media queries use a two pass system and are always false at first
     // see https://github.com/mui-org/material-ui/issues/14336
-    const isDesktop = useMediaQuery(theme.breakpoints.up('md'))();
+    const isDesktop = useMediaQuery(theme => theme.breakpoints.up('md'));
     useEffect(() => {
         if (isDesktop) {
             dispatch(setSidebarVisibility(true)); // FIXME renders with a closed sidebar at first
