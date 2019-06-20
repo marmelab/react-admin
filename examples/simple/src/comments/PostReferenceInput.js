@@ -49,28 +49,37 @@ const PostReferenceInput = props => {
         );
     }, [dispatch, newPostId]);
 
-    const handleNewClick = useCallback(event => {
-        event.preventDefault();
-        setShowCreateDialog(true);
-    }, []);
+    const handleNewClick = useCallback(
+        event => {
+            event.preventDefault();
+            setShowCreateDialog(true);
+        },
+        [setShowCreateDialog]
+    );
 
-    const handleShowClick = useCallback(event => {
-        event.preventDefault();
-        setShowPreviewDialog(true);
-    }, []);
+    const handleShowClick = useCallback(
+        event => {
+            event.preventDefault();
+            setShowPreviewDialog(true);
+        },
+        [setShowPreviewDialog]
+    );
 
     const handleCloseCreate = useCallback(() => {
         setShowCreateDialog(false);
-    }, []);
+    }, [setShowCreateDialog]);
 
     const handleCloseShow = useCallback(() => {
         setShowPreviewDialog(false);
-    }, []);
+    }, [setShowPreviewDialog]);
 
-    const handleSave = useCallback(post => {
-        setShowCreateDialog(false);
-        setNewPostId(post.id);
-    }, []);
+    const handleSave = useCallback(
+        post => {
+            setShowCreateDialog(false);
+            setNewPostId(post.id);
+        },
+        [setShowCreateDialog, setNewPostId]
+    );
 
     return (
         <Fragment>

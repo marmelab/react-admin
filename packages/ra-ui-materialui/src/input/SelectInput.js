@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -157,6 +157,10 @@ export const SelectInput = ({
      */
     const [value, setValue] = useState(input.value);
     const translate = useTranslate();
+
+    useEffect(() => {
+        setValue(input.value);
+    }, [input]);
 
     const handleChange = useCallback(
         eventOrValue => {
