@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import onlyUpdateForKeys from 'recompose/onlyUpdateForKeys';
-import Fab from '@material-ui/core/Fab';
-import { withStyles, createStyles } from '@material-ui/core/styles';
+import { Fab } from '@material-ui/core';
+import useMediaQueryTheme from '@material-ui/core/useMediaQuery/useMediaQueryTheme';
+import { createStyles, useTheme, withStyles } from '@material-ui/core/styles';
 import ContentAdd from '@material-ui/icons/Add';
 import compose from 'recompose/compose';
 import classnames from 'classnames';
@@ -10,7 +11,6 @@ import { Link } from 'react-router-dom';
 import { useTranslate } from 'ra-core';
 
 import Button from './Button';
-import { useMediaIsSmall } from '../layout/mediaQueries';
 
 const styles = theme =>
     createStyles({
@@ -38,7 +38,8 @@ const CreateButton = ({
     ...rest
 }) => {
     const translate = useTranslate();
-    const isSmall = useMediaIsSmall();
+    const theme = useTheme();
+    const isSmall = useMediaQueryTheme(theme.breakpoints.down('sm'));
     return isSmall ? (
         <Fab
             component={Link}

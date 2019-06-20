@@ -3,14 +3,15 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import inflection from 'inflection';
 import compose from 'recompose/compose';
-import { withStyles, createStyles } from '@material-ui/core/styles';
+import useMediaQueryTheme from '@material-ui/core/useMediaQuery/useMediaQueryTheme';
+import { withStyles, createStyles, useTheme } from '@material-ui/core/styles';
+
+import DefaultIcon from '@material-ui/icons/ViewList';
 import classnames from 'classnames';
 import { getResources, useTranslate } from 'ra-core';
-import DefaultIcon from '@material-ui/icons/ViewList';
 
 import DashboardMenuItem from './DashboardMenuItem';
 import MenuItemLink from './MenuItemLink';
-import { useMediaIsXSmall } from '../layout/mediaQueries';
 
 const styles = createStyles({
     main: {
@@ -45,7 +46,9 @@ const Menu = ({
     ...rest
 }) => {
     const translate = useTranslate();
-    const isXSmall = useMediaIsXSmall();
+    const theme = useTheme();
+    const isXSmall = useMediaQueryTheme(theme.breakpoints.down('xs'));
+
     return (
         <div className={classnames(classes.main, className)} {...rest}>
             {hasDashboard && (
