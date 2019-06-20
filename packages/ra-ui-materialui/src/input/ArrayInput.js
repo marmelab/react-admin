@@ -1,4 +1,4 @@
-import React, { cloneElement, Children } from 'react';
+import React, { cloneElement, Children, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { isRequired, FieldTitle, withDefaultValue } from 'ra-core';
 import { FieldArray } from 'redux-form';
@@ -59,14 +59,17 @@ export const ArrayInput = ({
     validate,
     ...rest
 }) => {
-    const renderFieldArray = fieldProps => {
-        return cloneElement(Children.only(children), {
-            ...fieldProps,
-            record,
-            resource,
-            source,
-        });
-    };
+    const renderFieldArray = useCallback(
+        fieldProps => {
+            return cloneElement(Children.only(children), {
+                ...fieldProps,
+                record,
+                resource,
+                source,
+            });
+        },
+        [resource, source, JSON.stringify(record), children] // eslint-disable-line
+    );
 
     return (
         <FormControl
