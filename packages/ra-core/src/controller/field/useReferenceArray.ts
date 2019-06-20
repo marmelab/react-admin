@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 // @ts-ignore
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import get from 'lodash/get';
 
 import { crudGetManyAccumulate } from '../../actions';
@@ -66,7 +66,7 @@ const useReferenceArray = ({
     const dispatch = useDispatch();
     const { data, ids } = useSelector(
         getReferenceArray({ record, source, reference }),
-        [record, source, reference]
+        shallowEqual
     );
     useEffect(() => {
         dispatch(crudGetManyAccumulate(reference, ids));

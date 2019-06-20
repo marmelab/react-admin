@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 // @ts-ignore
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import { setListSelectedIds, toggleListItem } from '../actions/listActions';
 import { Identifier, ReduxState } from '../types';
 
@@ -16,7 +16,7 @@ const useSelectItems = (resource: string) => {
     const selectedIds = useSelector(
         (reduxState: ReduxState) =>
             reduxState.admin.resources[resource].list.selectedIds,
-        [resource]
+        shallowEqual
     );
     const selectionModifiers = {
         select: useCallback(

@@ -1,6 +1,6 @@
 import { useEffect, useMemo } from 'react';
 // @ts-ignore
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import get from 'lodash/get';
 
 import { crudGetManyReference } from '../../actions';
@@ -100,12 +100,9 @@ const useReferenceMany = ({
         () => nameRelatedTo(reference, referenceId, resource, target, filter),
         [filter, reference, referenceId, resource, target]
     );
-    const ids = useSelector(selectIds(relatedTo), [relatedTo]);
-    const data = useSelector(selectData(reference, relatedTo), [
-        reference,
-        relatedTo,
-    ]);
-    const total = useSelector(selectTotal(relatedTo), [relatedTo]);
+    const ids = useSelector(selectIds(relatedTo), shallowEqual);
+    const data = useSelector(selectData(reference, relatedTo), shallowEqual);
+    const total = useSelector(selectTotal(relatedTo));
 
     const dispatch = useDispatch();
 
