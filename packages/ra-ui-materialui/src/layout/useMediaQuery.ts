@@ -9,7 +9,10 @@ function useMediaQuery(query: (theme: Theme) => string, options) {
         props: {},
     });
 
-    return useMuiMediaQuery(query(theme), { ...props, ...options });
+    return useMuiMediaQuery(theme ? query(theme) : '', {
+        ...props,
+        ...options,
+    });
 }
 
 export default useMediaQuery;
