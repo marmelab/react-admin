@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import FormControl from '@material-ui/core/FormControl';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import FormGroup from '@material-ui/core/FormGroup';
@@ -35,40 +34,38 @@ export class BooleanInput extends Component {
         const { touched, error } = meta;
 
         return (
-            <FormControl className={className} {...sanitizeRestProps(rest)}>
-                <FormGroup>
-                    <FormControlLabel
-                        htmlFor={id}
-                        control={
-                            <Switch
-                                id={id}
-                                color="primary"
-                                checked={!!value}
-                                onChange={this.handleChange}
-                                {...inputProps}
-                                {...options}
-                            />
-                        }
-                        label={
-                            <FieldTitle
-                                label={label}
-                                source={source}
-                                resource={resource}
-                                isRequired={isRequired}
-                            />
-                        }
-                    />
-                    {helperText || (touched && error) ? (
-                        <FormHelperText>
-                            <InputHelperText
-                                touched={touched}
-                                error={error}
-                                helperText={helperText}
-                            />
-                        </FormHelperText>
-                    ) : null}
-                </FormGroup>
-            </FormControl>
+            <FormGroup className={className} {...sanitizeRestProps(rest)}>
+                <FormControlLabel
+                    htmlFor={id}
+                    control={
+                        <Switch
+                            id={id}
+                            color="primary"
+                            checked={!!value}
+                            onChange={this.handleChange}
+                            {...inputProps}
+                            {...options}
+                        />
+                    }
+                    label={
+                        <FieldTitle
+                            label={label}
+                            source={source}
+                            resource={resource}
+                            isRequired={isRequired}
+                        />
+                    }
+                />
+                {helperText || (touched && !!error) ? (
+                    <FormHelperText error={!!error}>
+                        <InputHelperText
+                            touched={touched}
+                            error={error}
+                            helperText={helperText}
+                        />
+                    </FormHelperText>
+                ) : null}
+            </FormGroup>
         );
     }
 }
