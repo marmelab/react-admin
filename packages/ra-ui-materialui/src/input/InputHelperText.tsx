@@ -1,4 +1,4 @@
-import React, { SFC } from 'react';
+import React, { FunctionComponent } from 'react';
 import { useTranslate, ValidationError, ValidationErrorMessage } from 'ra-core';
 
 interface Props {
@@ -7,7 +7,11 @@ interface Props {
     touched: boolean;
 }
 
-const InputHelperText: SFC<Props> = ({ helperText, touched, error }) => {
+const InputHelperText: FunctionComponent<Props> = ({
+    helperText,
+    touched,
+    error,
+}) => {
     const translate = useTranslate();
 
     return touched && error ? (

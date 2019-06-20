@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import TextField from '@material-ui/core/TextField';
 import { addField, FieldTitle } from 'ra-core';
@@ -34,34 +34,43 @@ export const NumberInput = ({
     onChange,
     ...rest
 }) => {
-    const handleBlur = event => {
-        /**
-         * Necessary because of a React bug on <input type="number">
-         * @see https://github.com/facebook/react/issues/1425
-         */
-        const numericValue = isNaN(parseFloat(event.target.value))
-            ? null
-            : parseFloat(event.target.value);
-        onBlur(numericValue);
-        input.onBlur(numericValue);
-    };
+    const handleBlur = useCallback(
+        event => {
+            /**
+             * Necessary because of a React bug on <input type="number">
+             * @see https://github.com/facebook/react/issues/1425
+             */
+            const numericValue = isNaN(parseFloat(event.target.value))
+                ? null
+                : parseFloat(event.target.value);
+            onBlur(numericValue);
+            input.onBlur(numericValue);
+        },
+        [input, onBlur]
+    );
 
-    const handleFocus = event => {
-        onFocus(event);
-        input.onFocus(event);
-    };
+    const handleFocus = useCallback(
+        event => {
+            onFocus(event);
+            input.onFocus(event);
+        },
+        [input, onFocus]
+    );
 
-    const handleChange = event => {
-        /**
-         * Necessary because of a React bug on <input type="number">
-         * @see https://github.com/facebook/react/issues/1425
-         */
-        const numericValue = isNaN(parseFloat(event.target.value))
-            ? null
-            : parseFloat(event.target.value);
-        onChange(numericValue);
-        input.onChange(numericValue);
-    };
+    const handleChange = useCallback(
+        event => {
+            /**
+             * Necessary because of a React bug on <input type="number">
+             * @see https://github.com/facebook/react/issues/1425
+             */
+            const numericValue = isNaN(parseFloat(event.target.value))
+                ? null
+                : parseFloat(event.target.value);
+            onChange(numericValue);
+            input.onChange(numericValue);
+        },
+        [input, onChange]
+    );
 
     if (typeof meta === 'undefined') {
         throw new Error(

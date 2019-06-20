@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import TextField from '@material-ui/core/TextField';
 import { addField, FieldTitle } from 'ra-core';
@@ -54,9 +54,12 @@ export const DateInput = ({
     helperText,
     ...rest
 }) => {
-    const handleChange = event => {
-        input.onChange(event.target.value);
-    };
+    const handleChange = useCallback(
+        event => {
+            input.onChange(event.target.value);
+        },
+        [input]
+    );
 
     if (typeof meta === 'undefined') {
         throw new Error(

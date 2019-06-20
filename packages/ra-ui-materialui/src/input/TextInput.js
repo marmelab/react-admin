@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { addField, FieldTitle } from 'ra-core';
 
@@ -37,20 +37,29 @@ export const TextInput = ({
     onChange,
     ...rest
 }) => {
-    const handleBlur = eventOrValue => {
-        onBlur(eventOrValue);
-        input.onBlur(eventOrValue);
-    };
+    const handleBlur = useCallback(
+        eventOrValue => {
+            onBlur(eventOrValue);
+            input.onBlur(eventOrValue);
+        },
+        [input, onBlur]
+    );
 
-    const handleFocus = event => {
-        onFocus(event);
-        input.onFocus(event);
-    };
+    const handleFocus = useCallback(
+        event => {
+            onFocus(event);
+            input.onFocus(event);
+        },
+        [input, onFocus]
+    );
 
-    const handleChange = eventOrValue => {
-        onChange(eventOrValue);
-        input.onChange(eventOrValue);
-    };
+    const handleChange = useCallback(
+        eventOrValue => {
+            onChange(eventOrValue);
+            input.onChange(eventOrValue);
+        },
+        [input, onChange]
+    );
 
     if (typeof meta === 'undefined') {
         throw new Error(

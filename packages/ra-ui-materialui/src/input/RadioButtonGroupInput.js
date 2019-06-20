@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import FormControl from '@material-ui/core/FormControl';
@@ -96,33 +96,39 @@ export const RadioButtonGroupInput = ({
 }) => {
     const translate = useTranslate();
 
-    const handleChange = (event, value) => {
-        input.onChange(value);
-    };
+    const handleChange = useCallback(
+        (event, value) => {
+            input.onChange(value);
+        },
+        [input]
+    );
 
-    const renderRadioButton = choice => {
-        const choiceName = React.isValidElement(optionText) // eslint-disable-line no-nested-ternary
-            ? React.cloneElement(optionText, { record: choice })
-            : typeof optionText === 'function'
-            ? optionText(choice)
-            : get(choice, optionText);
+    const renderRadioButton = useCallback(
+        choice => {
+            const choiceName = React.isValidElement(optionText) // eslint-disable-line no-nested-ternary
+                ? React.cloneElement(optionText, { record: choice })
+                : typeof optionText === 'function'
+                ? optionText(choice)
+                : get(choice, optionText);
 
-        const nodeId = `${source}_${get(choice, optionValue)}`;
+            const nodeId = `${source}_${get(choice, optionValue)}`;
 
-        return (
-            <FormControlLabel
-                htmlFor={nodeId}
-                key={get(choice, optionValue)}
-                value={get(choice, optionValue)}
-                control={<Radio id={nodeId} color="primary" />}
-                label={
-                    translateChoice
-                        ? translate(choiceName, { _: choiceName })
-                        : choiceName
-                }
-            />
-        );
-    };
+            return (
+                <FormControlLabel
+                    htmlFor={nodeId}
+                    key={get(choice, optionValue)}
+                    value={get(choice, optionValue)}
+                    control={<Radio id={nodeId} color="primary" />}
+                    label={
+                        translateChoice
+                            ? translate(choiceName, { _: choiceName })
+                            : choiceName
+                    }
+                />
+            );
+        },
+        [optionText, optionValue, source, translate, translateChoice]
+    );
 
     if (typeof meta === 'undefined') {
         throw new Error(

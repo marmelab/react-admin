@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -158,33 +158,39 @@ export const SelectInput = ({
     const [value, setValue] = useState(input.value);
     const translate = useTranslate();
 
-    const handleChange = eventOrValue => {
-        const value = eventOrValue.target
-            ? eventOrValue.target.value
-            : eventOrValue;
-        input.onChange(value);
+    const handleChange = useCallback(
+        eventOrValue => {
+            const value = eventOrValue.target
+                ? eventOrValue.target.value
+                : eventOrValue;
+            input.onChange(value);
 
-        // HACK: For some reason, redux-form does not consider this input touched without calling onBlur manually
-        input.onBlur(value);
-        setValue(value);
-    };
+            // HACK: For some reason, redux-form does not consider this input touched without calling onBlur manually
+            input.onBlur(value);
+            setValue(value);
+        },
+        [input, setValue]
+    );
 
-    const renderMenuItemOption = choice => {
-        if (React.isValidElement(optionText)) {
-            return React.cloneElement(optionText, {
-                record: choice,
-            });
-        }
+    const renderMenuItemOption = useCallback(
+        choice => {
+            if (React.isValidElement(optionText)) {
+                return React.cloneElement(optionText, {
+                    record: choice,
+                });
+            }
 
-        const choiceName =
-            typeof optionText === 'function'
-                ? optionText(choice)
-                : get(choice, optionText);
+            const choiceName =
+                typeof optionText === 'function'
+                    ? optionText(choice)
+                    : get(choice, optionText);
 
-        return translateChoice
-            ? translate(choiceName, { _: choiceName })
-            : choiceName;
-    };
+            return translateChoice
+                ? translate(choiceName, { _: choiceName })
+                : choiceName;
+        },
+        [optionText, translate, translateChoice]
+    );
 
     if (typeof meta === 'undefined') {
         throw new Error(
