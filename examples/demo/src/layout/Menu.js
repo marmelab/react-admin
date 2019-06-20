@@ -9,7 +9,7 @@ import {
     useTranslate,
     DashboardMenuItem,
     MenuItemLink,
-    Responsive,
+    useMediaQuery,
 } from 'react-admin';
 
 import visitors from '../visitors';
@@ -27,6 +27,7 @@ const Menu = ({ onMenuClick, open, logout }) => {
         menuCustomers: false,
     });
     const translate = useTranslate();
+    const isXsmall = useMediaQuery(theme => theme.breakpoints.down('xs'));
 
     const handleToggle = menu => {
         setState(state => ({ ...state, [menu]: !state[menu] }));
@@ -123,22 +124,16 @@ const Menu = ({ onMenuClick, open, logout }) => {
                 onClick={onMenuClick}
                 sidebarIsOpen={open}
             />
-            <Responsive
-                xsmall={
-                    <MenuItemLink
-                        to="/configuration"
-                        primaryText={translate('pos.configuration')}
-                        leftIcon={<SettingsIcon />}
-                        onClick={onMenuClick}
-                        sidebarIsOpen={open}
-                    />
-                }
-                medium={null}
-            />
-            <Responsive
-                small={logout}
-                medium={null} // Pass null to render nothing on larger devices
-            />
+            {isXsmall && (
+                <MenuItemLink
+                    to="/configuration"
+                    primaryText={translate('pos.configuration')}
+                    leftIcon={<SettingsIcon />}
+                    onClick={onMenuClick}
+                    sidebarIsOpen={open}
+                />
+            )}
+            {isXsmall && logout}
         </div>
     );
 };
