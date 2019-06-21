@@ -32,15 +32,15 @@
         "watch": "rimraf ./lib && tsc --watch"
     },
     "dependencies": {
-        "apollo-client": "^2.5.1",
+        "apollo-client": "^2.6.3",
         "apollo-client-preset": "^1.0.8",
         "graphql-tag": "^2.10.1",
         "lodash": "~4.17.5",
         "pluralize": "~7.0.0"
     },
     "peerDependencies": {
-        "graphql": "^0.13.2",
-        "ra-core": "^3.0.0-alpha.0"
+        "ra-core": "^3.0.0-alpha.0",
+        "graphql": "^14.1.1"
     },
     "devDependencies": {
         "cross-env": "^5.2.0",
