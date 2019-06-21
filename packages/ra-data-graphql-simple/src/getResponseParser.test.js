@@ -165,6 +165,69 @@ const testSingleTypes = type => {
         );
     });
 
+    it('returns the response expected by AOR for GET_LIST', () => {
+        const introspectionResults = {
+            resources: [
+                {
+                    type: {
+                        name: 'User',
+                        fields: [
+                            { name: 'id', type: { kind: TypeKind.SCALAR } },
+                            {
+                                name: 'firstName',
+                                type: { kind: TypeKind.SCALAR },
+                            },
+                        ],
+                    },
+                },
+                {
+                    type: {
+                        name: 'Tag',
+                        fields: [
+                            { name: 'id', type: { kind: TypeKind.SCALAR } },
+                            { name: 'name', type: { kind: TypeKind.SCALAR } },
+                        ],
+                    },
+                },
+            ],
+            types: [{ name: 'User' }, { name: 'Tag' }],
+        };
+        const response = {
+            data: {
+                data: {
+                    _typeName: 'Post',
+                    id: 'post1',
+                    title: 'title1',
+                    author: { id: 'author1', firstName: 'Toto' },
+                    coauthor: null,
+                    tags: [
+                        { id: 'tag1', name: 'tag1 name' },
+                        { id: 'tag2', name: 'tag2 name' },
+                    ],
+                    features: ['feature1', 'feature2'],
+                    embeddedJson: { foo: 'bar' },
+                },
+            },
+        };
+        expect(getResponseParser(introspectionResults)(type)(response)).toEqual(
+            {
+                data: {
+                    id: 'post1',
+                    title: 'title1',
+                    'author.id': 'author1',
+                    author: { id: 'author1', firstName: 'Toto' },
+                    tags: [
+                        { id: 'tag1', name: 'tag1 name' },
+                        { id: 'tag2', name: 'tag2 name' },
+                    ],
+                    features: ['feature1', 'feature2'],
+                    tagsIds: ['tag1', 'tag2'],
+                    embeddedJson: { foo: 'bar' },
+                },
+            }
+        );
+    });
+
     it('returns the response expected by AOR for GET_LIST with aliases', () => {
         const introspectionResults = {
             resources: [

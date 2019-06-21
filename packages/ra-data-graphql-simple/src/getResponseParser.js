@@ -13,11 +13,15 @@ const sanitizeResource = data => {
         }
 
         if (Array.isArray(dataKey)) {
-            return {
-                ...acc,
-                [key]: dataKey.map(sanitizeResource),
-                [`${key}Ids`]: dataKey.map(d => d.id),
-            };
+            if (typeof dataKey[0] === 'object') {
+                return {
+                    ...acc,
+                    [key]: dataKey.map(sanitizeResource),
+                    [`${key}Ids`]: dataKey.map(d => d.id),
+                };
+            } else {
+                return { ...acc, [key]: dataKey };
+            }
         }
 
         if (typeof dataKey === 'object') {
