@@ -83,13 +83,13 @@ export default (authProvider?: AuthProvider) => {
                 break;
             }
             case USER_LOGOUT: {
+                yield call(authProvider, AUTH_LOGOUT);
                 yield put(
                     push(
                         (action.payload && action.payload.redirectTo) ||
                             '/login'
                     )
                 );
-                yield call(authProvider, AUTH_LOGOUT);
                 break;
             }
             case FETCH_ERROR:
