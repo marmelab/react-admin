@@ -1,9 +1,15 @@
 import React from 'react';
+import expect from 'expect';
 import { render, cleanup } from 'react-testing-library';
 import InputHelperText from './InputHelperText';
 
 describe('InputHelperText', () => {
     afterEach(cleanup);
+
+    it('does not render anything when the input has not been touched yet and has no helper text', () => {
+        const { container } = render(<InputHelperText error="Crap!" />);
+        expect(container.innerHTML).toBe('');
+    });
 
     it('renders the helperText when there is no error', () => {
         const { getByText } = render(
