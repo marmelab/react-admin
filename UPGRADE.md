@@ -220,3 +220,56 @@ const App = () => (
     </Admin>
 );
 ```
+
+## Validators Should Return Non-Translated Messages
+
+Form validators used to return translated error messages - that's why they received the field `props` as argument, including the `translate` function. They don't receive these props anymore, and they must return unstranslated messages instead - react-admin translates validation messages afterwards.
+
+```diff
+// in validators/required.js
+-const required = () => (value, allValues, props) =>
++const required = () => (value, allValues) =>
+    value
+        ? undefined
+-       : props.translate('myroot.validation.required');
++       : 'myroot.validation.required';
+```
+
+In case the error message depends on a variable, you can return an object `{ message, args }` instead of a message string:
+
+```diff
+-const minLength = (min) => (value, allValues, props) => 
++const minLength = (min) => (value, allValues) => 
+    value.length >= min
+        ? undefined
+-       : props.translate('myroot.validation.minLength', { min });
++       : { message: 'myroot.validation.minLength', args: { min } };
+```
+
+React-admin core validators have been modified so you don't have to change anything when using them.
+
+```jsx
+import {
+    required,
+    minLength,
+    maxLength,
+    minValue,
+    number,
+    email,
+} from 'react-admin';
+
+// no change vs 2.x
+const validateFirstName = [required(), minLength(2), maxLength(15)];
+const validateEmail = email();
+const validateAge = [number(), minValue(18)];
+
+export const UserCreate = (props) => (
+    <Create {...props}>
+        <SimpleForm>
+            <TextInput label="First Name" source="firstName" validate={validateFirstName} />
+            <TextInput label="Email" source="email" validate={validateEmail} />
+            <TextInput label="Age" source="age" validate={validateAge}/>
+        </SimpleForm>
+    </Create>
+);
+```
