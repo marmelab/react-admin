@@ -266,7 +266,7 @@ export const PostList = (props) => (
 
 ## Using a Predefined Theme
 
-Material UI also supports [complete theming](http://www.material-ui.com/#/customization/themes) out of the box. Material UI ships two base themes: light and dark. React-admin uses the light one by default. To use the dark one, pass it to the `<Admin>` component, in the `theme` prop (along with `createMuiTheme()`).
+Material UI also supports [complete theming](http://v1.material-ui.com/customization/themes) out of the box. Material UI ships two base themes: light and dark. React-admin uses the light one by default. To use the dark one, pass it to the `<Admin>` component, in the `theme` prop (along with `createMuiTheme()`).
 
 ```jsx
 import { createMuiTheme } from '@material-ui/core/styles';
@@ -288,7 +288,7 @@ const App = () => (
 
 ## Writing a Custom Theme
 
-If you need more fine tuning, you'll need to write your own `theme` object, following [Material UI themes documentation](https://material-ui.com/customization/themes/). Material UI merges custom theme objects with the default theme.
+If you need more fine tuning, you'll need to write your own `theme` object, following [Material UI themes documentation](https://v1.material-ui.com/customization/themes/). Material UI merges custom theme objects with the default theme.
 
 ```jsx
 import { createMuiTheme } from '@material-ui/core/styles';
@@ -338,7 +338,7 @@ The `muiTheme` object contains the following keys:
 * `spacing`
 * `zIndex`
 
-**Tip**: Check [Material UI default theme documentation](https://material-ui.com/customization/default-theme/) to see the default values and meaning for these keys.
+**Tip**: Check [Material UI default theme documentation](https://v1.material-ui.com/customization/default-theme/) to see the default values and meaning for these keys.
 
 Once your theme is defined, pass it to the `<Admin>` component, in the `theme` prop.
 
@@ -624,7 +624,7 @@ const App = () => (
 
 For more drastic changes of the top component, you will probably want to create an `<AppBar>` from scratch instead of just passing children to react-admin's `<AppBar>`. 
 
-By default, React-admin uses [Material-ui's `<AppBar>` component](https://material-ui.com/api/app-bar/) together with [react-headroom](https://github.com/KyleAMathews/react-headroom) to hide the `AppBar` on scroll. Here is an example top bar rebuilt from scratch to remove the "headroom" effect:
+By default, React-admin uses [Material-ui's `<AppBar>` component](https://v1.material-ui.com/api/app-bar/) together with [react-headroom](https://github.com/KyleAMathews/react-headroom) to hide the `AppBar` on scroll. Here is an example top bar rebuilt from scratch to remove the "headroom" effect:
 
 ```jsx
 // in src/MyAppBar.js
