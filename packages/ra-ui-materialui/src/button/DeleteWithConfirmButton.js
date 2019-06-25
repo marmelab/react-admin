@@ -52,8 +52,8 @@ class DeleteWithConfirmButton extends Component {
         this.setState({ isOpen: true });
     };
 
-    handleDialogClose = evt => {
-        evt.stopPropagation();
+    handleDialogClose = e => {
+        e.stopPropagation();
         this.setState({ isOpen: false });
     };
 
