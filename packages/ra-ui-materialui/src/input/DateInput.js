@@ -1,9 +1,10 @@
-import React, { Component } from 'react';
+import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import TextField from '@material-ui/core/TextField';
 import { addField, FieldTitle } from 'ra-core';
 
 import sanitizeRestProps from './sanitizeRestProps';
+import InputHelperText from './InputHelperText';
 
 /**
  * Convert Date object to String
@@ -41,59 +42,66 @@ const sanitizeValue = value => {
     return dateFormatter(new Date(value));
 };
 
-export class DateInput extends Component {
-    onChange = event => {
-        this.props.input.onChange(event.target.value);
-    };
+export const DateInput = ({
+    className,
+    meta,
+    input,
+    isRequired,
+    label,
+    options,
+    source,
+    resource,
+    helperText,
+    ...rest
+}) => {
+    const handleChange = useCallback(
+        event => {
+            input.onChange(event.target.value);
+        },
+        [input]
+    );
 
-    render() {
-        const {
-            className,
-            meta,
-            input,
-            isRequired,
-            label,
-            options,
-            source,
-            resource,
-            ...rest
-        } = this.props;
-        if (typeof meta === 'undefined') {
-            throw new Error(
-                "The DateInput component wasn't called within a redux-form <Field>. Did you decorate it and forget to add the addField prop to your component? See https://marmelab.com/react-admin/Inputs.html#writing-your-own-input-component for details."
-            );
-        }
-        const { touched, error } = meta;
-        const value = sanitizeValue(input.value);
-
-        return (
-            <TextField
-                {...input}
-                className={className}
-                type="date"
-                margin="normal"
-                id={`${resource}_${source}_date_input`}
-                error={!!(touched && error)}
-                helperText={touched && error}
-                label={
-                    <FieldTitle
-                        label={label}
-                        source={source}
-                        resource={resource}
-                        isRequired={isRequired}
-                    />
-                }
-                InputLabelProps={{
-                    shrink: true,
-                }}
-                {...options}
-                {...sanitizeRestProps(rest)}
-                value={value}
-                onChange={this.onChange}
-            />
+    if (typeof meta === 'undefined') {
+        throw new Error(
+            "The DateInput component wasn't called within a redux-form <Field>. Did you decorate it and forget to add the addField prop to your component? See https://marmelab.com/react-admin/Inputs.html#writing-your-own-input-component for details."
         );
     }
-}
+    const { touched, error } = meta;
+    const value = sanitizeValue(input.value);
+
+    return (
+        <TextField
+            {...input}
+            className={className}
+            type="date"
+            margin="normal"
+            id={`${resource}_${source}_date_input`}
+            error={!!(touched && error)}
+            helperText={
+                <InputHelperText
+                    touched={touched}
+                    error={error}
+                    helperText={helperText}
+                />
+            }
+            label={
+                <FieldTitle
+                    label={label}
+                    source={source}
+                    resource={resource}
+                    isRequired={isRequired}
+                />
+            }
+            InputLabelProps={{
+                shrink: true,
+            }}
+            {...options}
+            {...sanitizeRestProps(rest)}
+            value={value}
+            onChange={handleChange}
+        />
+    );
+};
 
 DateInput.propTypes = {
     classes: PropTypes.object,

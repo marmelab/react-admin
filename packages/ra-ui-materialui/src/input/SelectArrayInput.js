@@ -12,6 +12,7 @@ import { withStyles, createStyles } from '@material-ui/core/styles';
 import compose from 'recompose/compose';
 import classnames from 'classnames';
 import { addField, translate, FieldTitle } from 'ra-core';
+import InputHelperText from './InputHelperText';
 
 const sanitizeRestProps = ({
     addLabel,
@@ -163,14 +164,14 @@ export class SelectArrayInput extends Component {
 
     renderMenuItem = choice => {
         const { optionValue } = this.props;
-        return (
+        return choice ? (
             <MenuItem
                 key={get(choice, optionValue)}
                 value={get(choice, optionValue)}
             >
                 {this.renderMenuItemOption(choice)}
             </MenuItem>
-        );
+        ) : null;
     };
 
     render() {
@@ -186,6 +187,7 @@ export class SelectArrayInput extends Component {
             source,
             optionText,
             optionValue,
+            helperText,
             ...rest
         } = this.props;
         if (typeof meta === 'undefined') {
@@ -193,13 +195,13 @@ export class SelectArrayInput extends Component {
                 "The SelectInput component wasn't called within a redux-form <Field>. Did you decorate it and forget to add the addField prop to your component? See https://marmelab.com/react-admin/Inputs.html#writing-your-own-input-component for details."
             );
         }
-        const { touched, error, helperText = false } = meta;
+        const { touched, error } = meta;
 
         return (
             <FormControl
                 margin="normal"
                 className={classnames(classes.root, className)}
-                error={!!(touched && error)}
+                error={touched && !!error}
                 {...sanitizeRestProps(rest)}
             >
                 <InputLabel htmlFor={source}>
@@ -240,10 +242,15 @@ export class SelectArrayInput extends Component {
                 >
                     {choices.map(this.renderMenuItem)}
                 </Select>
-                {touched && error && (
-                    <FormHelperText error>{error}</FormHelperText>
-                )}
-                {helperText && <FormHelperText>{helperText}</FormHelperText>}
+                {helperText || (touched && error) ? (
+                    <FormHelperText>
+                        <InputHelperText
+                            touched={touched}
+                            error={error}
+                            helperText={helperText}
+                        />
+                    </FormHelperText>
+                ) : null}
             </FormControl>
         );
     }

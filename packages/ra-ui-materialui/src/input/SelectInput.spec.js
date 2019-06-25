@@ -1,40 +1,33 @@
 import React from 'react';
 import assert from 'assert';
-import { shallow } from 'enzyme';
+import { render, cleanup, fireEvent } from 'react-testing-library';
+
 import { SelectInput } from './SelectInput';
+import { TranslationContext } from 'ra-core';
 
 describe('<SelectInput />', () => {
+    afterEach(cleanup);
+
     const defaultProps = {
+        // We have to specify the id ourselves here because the
+        // TextInput is not wrapped inside a FormInput
+        id: 'foo',
         source: 'foo',
+        resource: 'bar',
         meta: {},
-        input: {},
-        translate: x => x,
+        input: { value: '' },
     };
 
-    it('should use a ResettableTextField', () => {
-        const wrapper = shallow(
-            <SelectInput {...defaultProps} input={{ value: 'hello' }} />
-        );
-        const SelectFieldElement = wrapper.find(
-            'translate(WithStyles(ResettableTextField))'
-        );
-
-        assert.equal(SelectFieldElement.length, 1);
-        assert.equal(SelectFieldElement.prop('value'), 'hello');
-    });
-
     it('should use the input parameter value as the initial input value', () => {
-        const wrapper = shallow(
+        const { getByLabelText } = render(
             <SelectInput {...defaultProps} input={{ value: 2 }} />
         );
-        const SelectFieldElement = wrapper
-            .find('translate(WithStyles(ResettableTextField))')
-            .first();
-        assert.equal(SelectFieldElement.prop('value'), '2');
+        const TextFieldElement = getByLabelText('resources.bar.fields.foo');
+        assert.equal(TextFieldElement.value, '2');
     });
 
     it('should render choices as mui MenuItem components', () => {
-        const wrapper = shallow(
+        const { getByRole, getByText, queryAllByRole } = render(
             <SelectInput
                 {...defaultProps}
                 choices={[
@@ -43,87 +36,89 @@ describe('<SelectInput />', () => {
                 ]}
             />
         );
-        const MenuItemElements = wrapper.find(
-            'WithStyles(ForwardRef(MenuItem))'
-        );
-        assert.equal(MenuItemElements.length, 2);
-        const MenuItemElement1 = MenuItemElements.first();
-        assert.equal(MenuItemElement1.prop('value'), 'M');
-        assert.equal(MenuItemElement1.childAt(0).text(), 'Male');
-        const MenuItemElement2 = MenuItemElements.at(1);
-        assert.equal(MenuItemElement2.prop('value'), 'F');
-        assert.equal(MenuItemElement2.childAt(0).text(), 'Female');
+        const TextFieldElement = getByRole('button');
+        fireEvent.click(TextFieldElement);
+        const options = queryAllByRole('option');
+        assert.equal(options.length, 2);
+
+        const optionMale = getByText('Male');
+        assert.equal(optionMale.getAttribute('data-value'), 'M');
+
+        const optionFemale = getByText('Female');
+        assert.equal(optionFemale.getAttribute('data-value'), 'F');
     });
 
     it('should render disable choices marked so', () => {
-        const wrapper = shallow(
+        const { getByRole, getByText } = render(
             <SelectInput
                 {...defaultProps}
                 choices={[
-                    { id: 123, full_name: 'Leo Tolstoi', sex: 'M' },
-                    { id: 456, full_name: 'Jane Austen', sex: 'F' },
+                    { id: 123, name: 'Leo Tolstoi', sex: 'M' },
+                    { id: 456, name: 'Jane Austen', sex: 'F' },
                     {
                         id: 1,
-                        full_name: 'System Administrator',
+                        name: 'System Administrator',
                         sex: 'F',
                         disabled: true,
                     },
                 ]}
             />
         );
-        const MenuItemElements = wrapper.find(
-            'WithStyles(ForwardRef(MenuItem))'
-        );
-        const MenuItemElement = MenuItemElements.at(1);
-        assert.equal(!!MenuItemElement.prop('disabled'), false);
-        const MenuItemElement2 = MenuItemElements.at(2);
-        assert.equal(MenuItemElement2.prop('disabled'), true);
+        const TextFieldElement = getByRole('button');
+        fireEvent.click(TextFieldElement);
+        const option1 = getByText('Leo Tolstoi');
+        assert.equal(option1.getAttribute('aria-disabled'), 'false');
+
+        const option2 = getByText('Jane Austen');
+        assert.equal(option2.getAttribute('aria-disabled'), 'false');
+
+        const option3 = getByText('System Administrator');
+        assert.equal(option3.getAttribute('aria-disabled'), 'true');
     });
 
     it('should add an empty menu when allowEmpty is true', () => {
-        const wrapper = shallow(
+        const { getByRole, queryAllByRole } = render(
             <SelectInput
-                allowEmpty
                 {...defaultProps}
+                allowEmpty
                 choices={[
                     { id: 'M', name: 'Male' },
                     { id: 'F', name: 'Female' },
                 ]}
             />
         );
-        const MenuItemElements = wrapper.find(
-            'WithStyles(ForwardRef(MenuItem))'
-        );
-        assert.equal(MenuItemElements.length, 3);
-        const MenuItemElement1 = MenuItemElements.first();
-        assert.equal(MenuItemElement1.prop('value'), '');
-        assert.equal(MenuItemElement1.children().length, 0);
+        const TextFieldElement = getByRole('button');
+        fireEvent.click(TextFieldElement);
+
+        const options = queryAllByRole('option');
+        assert.equal(options.length, 3);
+        assert.equal(options[0].getAttribute('data-value'), '');
     });
 
     it('should add an empty menu with custom value when allowEmpty is true', () => {
         const emptyValue = 'test';
-        const wrapper = shallow(
+
+        const { getByRole, queryAllByRole } = render(
             <SelectInput
+                {...defaultProps}
                 allowEmpty
                 emptyValue={emptyValue}
-                {...defaultProps}
                 choices={[
                     { id: 'M', name: 'Male' },
                     { id: 'F', name: 'Female' },
                 ]}
             />
         );
-        const MenuItemElements = wrapper.find(
-            'WithStyles(ForwardRef(MenuItem))'
-        );
-        assert.equal(MenuItemElements.length, 3);
-        const MenuItemElement1 = MenuItemElements.first();
-        assert.equal(MenuItemElement1.prop('value'), emptyValue);
-        assert.equal(MenuItemElement1.children().length, 0);
+        const TextFieldElement = getByRole('button');
+        fireEvent.click(TextFieldElement);
+
+        const options = queryAllByRole('option');
+        assert.equal(options.length, 3);
+        assert.equal(options[0].getAttribute('data-value'), emptyValue);
     });
 
     it('should not add a falsy (null or false) element when allowEmpty is false', () => {
-        const wrapper = shallow(
+        const { getByRole, queryAllByRole } = render(
             <SelectInput
                 {...defaultProps}
                 choices={[
@@ -132,223 +127,218 @@ describe('<SelectInput />', () => {
                 ]}
             />
         );
-        const MenuItemElements = wrapper.find(
-            'WithStyles(ForwardRef(MenuItem))'
-        );
-        assert.equal(MenuItemElements.length, 2);
+        const TextFieldElement = getByRole('button');
+        fireEvent.click(TextFieldElement);
+        const options = queryAllByRole('option');
+        assert.equal(options.length, 2);
     });
 
     it('should use optionValue as value identifier', () => {
-        const wrapper = shallow(
+        const { getByRole, getByText } = render(
             <SelectInput
                 {...defaultProps}
                 optionValue="foobar"
                 choices={[{ foobar: 'M', name: 'Male' }]}
             />
         );
-        const MenuItemElements = wrapper.find(
-            'WithStyles(ForwardRef(MenuItem))'
-        );
-        const MenuItemElement1 = MenuItemElements.first();
-        assert.equal(MenuItemElement1.prop('value'), 'M');
-        assert.equal(MenuItemElement1.childAt(0).text(), 'Male');
+        const TextFieldElement = getByRole('button');
+        fireEvent.click(TextFieldElement);
+
+        const optionMale = getByText('Male');
+        assert.equal(optionMale.getAttribute('data-value'), 'M');
     });
 
     it('should use optionValue including "." as value identifier', () => {
-        const wrapper = shallow(
+        const { getByRole, getByText } = render(
             <SelectInput
                 {...defaultProps}
                 optionValue="foobar.id"
                 choices={[{ foobar: { id: 'M' }, name: 'Male' }]}
             />
         );
-        const MenuItemElements = wrapper.find(
-            'WithStyles(ForwardRef(MenuItem))'
-        );
-        const MenuItemElement1 = MenuItemElements.first();
-        assert.equal(MenuItemElement1.prop('value'), 'M');
-        assert.equal(MenuItemElement1.childAt(0).text(), 'Male');
+        const TextFieldElement = getByRole('button');
+        fireEvent.click(TextFieldElement);
+
+        const optionMale = getByText('Male');
+        assert.equal(optionMale.getAttribute('data-value'), 'M');
     });
 
     it('should use optionText with a string value as text identifier', () => {
-        const wrapper = shallow(
+        const { getByRole, getByText } = render(
             <SelectInput
                 {...defaultProps}
                 optionText="foobar"
                 choices={[{ id: 'M', foobar: 'Male' }]}
             />
         );
-        const MenuItemElements = wrapper.find(
-            'WithStyles(ForwardRef(MenuItem))'
-        );
-        const MenuItemElement1 = MenuItemElements.first();
-        assert.equal(MenuItemElement1.prop('value'), 'M');
-        assert.equal(MenuItemElement1.childAt(0).text(), 'Male');
+        const TextFieldElement = getByRole('button');
+        fireEvent.click(TextFieldElement);
+
+        const optionMale = getByText('Male');
+        assert.equal(optionMale.getAttribute('data-value'), 'M');
     });
 
     it('should use optionText with a string value including "." as text identifier', () => {
-        const wrapper = shallow(
+        const { getByRole, getByText } = render(
             <SelectInput
                 {...defaultProps}
                 optionText="foobar.name"
                 choices={[{ id: 'M', foobar: { name: 'Male' } }]}
             />
         );
-        const MenuItemElements = wrapper.find(
-            'WithStyles(ForwardRef(MenuItem))'
-        );
-        const MenuItemElement1 = MenuItemElements.first();
-        assert.equal(MenuItemElement1.prop('value'), 'M');
-        assert.equal(MenuItemElement1.childAt(0).text(), 'Male');
+        const TextFieldElement = getByRole('button');
+        fireEvent.click(TextFieldElement);
+
+        const optionMale = getByText('Male');
+        assert.equal(optionMale.getAttribute('data-value'), 'M');
     });
 
     it('should use optionText with a function value as text identifier', () => {
-        const wrapper = shallow(
+        const { getByRole, getByText } = render(
             <SelectInput
                 {...defaultProps}
                 optionText={choice => choice.foobar}
                 choices={[{ id: 'M', foobar: 'Male' }]}
             />
         );
-        const MenuItemElements = wrapper.find(
-            'WithStyles(ForwardRef(MenuItem))'
-        );
-        const MenuItemElement1 = MenuItemElements.first();
-        assert.equal(MenuItemElement1.prop('value'), 'M');
-        assert.equal(MenuItemElement1.childAt(0).text(), 'Male');
+        const TextFieldElement = getByRole('button');
+        fireEvent.click(TextFieldElement);
+
+        const optionMale = getByText('Male');
+        assert.equal(optionMale.getAttribute('data-value'), 'M');
     });
 
     it('should use optionText with an element value as text identifier', () => {
-        const Foobar = ({ record }) => <span>{record.foobar}</span>;
-        const wrapper = shallow(
+        const Foobar = ({ record }) => (
+            <span data-value={record.id} aria-label={record.foobar} />
+        );
+
+        const { getByRole, getByLabelText } = render(
             <SelectInput
                 {...defaultProps}
                 optionText={<Foobar />}
                 choices={[{ id: 'M', foobar: 'Male' }]}
             />
         );
-        const MenuItemElements = wrapper.find(
-            'WithStyles(ForwardRef(MenuItem))'
-        );
-        const MenuItemElement1 = MenuItemElements.first();
-        assert.equal(MenuItemElement1.prop('value'), 'M');
-        assert.equal(MenuItemElement1.childAt(0).type(), Foobar);
-        assert.deepEqual(MenuItemElement1.childAt(0).prop('record'), {
-            id: 'M',
-            foobar: 'Male',
-        });
+        const TextFieldElement = getByRole('button');
+        fireEvent.click(TextFieldElement);
+
+        const optionMale = getByLabelText('Male');
+        assert.equal(optionMale.getAttribute('data-value'), 'M');
     });
 
     it('should translate the choices by default', () => {
-        const wrapper = shallow(
-            <SelectInput
-                {...defaultProps}
-                choices={[
-                    { id: 'M', name: 'Male' },
-                    { id: 'F', name: 'Female' },
-                ]}
-                translate={x => `**${x}**`}
-            />
+        const { getByRole, getByText, queryAllByRole } = render(
+            <TranslationContext.Provider
+                value={{
+                    translate: x => `**${x}**`,
+                }}
+            >
+                <SelectInput
+                    {...defaultProps}
+                    choices={[
+                        { id: 'M', name: 'Male' },
+                        { id: 'F', name: 'Female' },
+                    ]}
+                />
+            </TranslationContext.Provider>
         );
-        const MenuItemElements = wrapper.find(
-            'WithStyles(ForwardRef(MenuItem))'
-        );
-        const MenuItemElement1 = MenuItemElements.first();
-        assert.equal(MenuItemElement1.prop('value'), 'M');
-        assert.equal(MenuItemElement1.childAt(0).text(), '**Male**');
+        const TextFieldElement = getByRole('button');
+        fireEvent.click(TextFieldElement);
+        const options = queryAllByRole('option');
+        assert.equal(options.length, 2);
+
+        const optionMale = getByText('**Male**');
+        assert.equal(optionMale.getAttribute('data-value'), 'M');
+
+        const optionFemale = getByText('**Female**');
+        assert.equal(optionFemale.getAttribute('data-value'), 'F');
     });
 
     it('should not translate the choices if translateChoice is false', () => {
-        const wrapper = shallow(
-            <SelectInput
-                {...defaultProps}
-                choices={[
-                    { id: 'M', name: 'Male' },
-                    { id: 'F', name: 'Female' },
-                ]}
-                translate={x => `**${x}**`}
-                translateChoice={false}
-            />
+        const { getByRole, getByText, queryAllByRole } = render(
+            <TranslationContext.Provider
+                value={{
+                    translate: x => `**${x}**`,
+                }}
+            >
+                <SelectInput
+                    {...defaultProps}
+                    choices={[
+                        { id: 'M', name: 'Male' },
+                        { id: 'F', name: 'Female' },
+                    ]}
+                    translateChoice={false}
+                />
+            </TranslationContext.Provider>
         );
-        const MenuItemElements = wrapper.find(
-            'WithStyles(ForwardRef(MenuItem))'
-        );
-        const MenuItemElement1 = MenuItemElements.first();
-        assert.equal(MenuItemElement1.prop('value'), 'M');
-        assert.equal(MenuItemElement1.childAt(0).text(), 'Male');
+        const TextFieldElement = getByRole('button');
+        fireEvent.click(TextFieldElement);
+        const options = queryAllByRole('option');
+        assert.equal(options.length, 2);
+
+        const optionMale = getByText('Male');
+        assert.equal(optionMale.getAttribute('data-value'), 'M');
+
+        const optionFemale = getByText('Female');
+        assert.equal(optionFemale.getAttribute('data-value'), 'F');
     });
 
     it('should displayed helperText if prop is present in meta', () => {
-        const wrapper = shallow(
-            <SelectInput
-                {...defaultProps}
-                meta={{ helperText: 'Can i help you?' }}
-            />
+        const { getByText } = render(
+            <SelectInput {...defaultProps} helperText="Can I help you?" />
         );
-        const SelectFieldElement = wrapper.find(
-            'translate(WithStyles(ResettableTextField))'
-        );
-        assert.equal(SelectFieldElement.prop('helperText'), 'Can i help you?');
+        const helperText = getByText('Can I help you?');
+        assert.ok(helperText);
     });
 
     describe('error message', () => {
         it('should not be displayed if field is pristine', () => {
-            const wrapper = shallow(
-                <SelectInput {...defaultProps} meta={{ touched: false }} />
+            const { queryAllByText } = render(
+                <SelectInput
+                    {...defaultProps}
+                    meta={{ touched: false, error: 'Required field.' }}
+                />
             );
-            const SelectFieldElement = wrapper.find(
-                'translate(WithStyles(ResettableTextField))'
-            );
-            assert.equal(SelectFieldElement.prop('helperText'), false);
+            const error = queryAllByText('Required field.');
+            assert.equal(error.length, 0);
         });
 
         it('should not be displayed if field has been touched but is valid', () => {
-            const wrapper = shallow(
+            const { queryAllByText } = render(
                 <SelectInput
                     {...defaultProps}
                     meta={{ touched: true, error: false }}
                 />
             );
-            const SelectFieldElement = wrapper.find(
-                'translate(WithStyles(ResettableTextField))'
-            );
-            assert.equal(SelectFieldElement.prop('helperText'), false);
+            const error = queryAllByText('Required field.');
+            assert.equal(error.length, 0);
         });
 
         it('should be displayed if field has been touched and is invalid', () => {
-            const wrapper = shallow(
+            const { getByText } = render(
                 <SelectInput
                     {...defaultProps}
                     meta={{ touched: true, error: 'Required field.' }}
                 />
             );
-            const SelectFieldElement = wrapper.find(
-                'translate(WithStyles(ResettableTextField))'
-            );
-            assert.equal(
-                SelectFieldElement.prop('helperText'),
-                'Required field.'
-            );
+            const error = getByText('Required field.');
+            assert.ok(error);
         });
 
         it('should display the error even if helperText is present', () => {
-            const wrapper = shallow(
+            const { getByText, queryByText } = render(
                 <SelectInput
                     {...defaultProps}
+                    helperText="Can I help you?"
                     meta={{
                         touched: true,
                         error: 'Required field.',
-                        helperText: 'Can i help you?',
                     }}
                 />
             );
-            const SelectFieldElement = wrapper.find(
-                'translate(WithStyles(ResettableTextField))'
-            );
-            assert.equal(
-                SelectFieldElement.prop('helperText'),
-                'Required field.'
-            );
+            assert.ok(getByText('Required field.'));
+            assert.ok(!queryByText('Can I help you?'));
         });
     });
 });

@@ -276,6 +276,46 @@ const App = () => (
 );
 ```
 
+## Translating Error Messages
+
+In Create and Edit views, forms can use custom validators. These validator functions should return translation keys rather than translated messages. React-admin automatically passes these identifiers to the translation function: 
+
+```jsx
+// in validators/required.js
+const required = () => (value, allValues, props) =>
+    value
+        ? undefined
+        : 'myroot.validation.required';
+
+// in i18n/en.json
+export default {
+    myroot: {
+        validation: {
+            required: 'Required field',
+        }
+    }
+}
+```
+
+If the translation depends on a variable, the validator can return an object rather than a translation identifier:
+
+```jsx
+// in validators/minLength.js
+const minLength = (min) => (value, allValues, props) => 
+    value.length >= min
+        ? undefined
+        : { message: 'myroot.validation.minLength', args: { min } };
+
+// in i18n/en.js
+export default {
+    myroot: {
+        validation: {
+            minLength: 'Must be %{min} characters at least',
+        }
+    }
+}
+```
+
 ## `useTranslate` Hook
 
 If you need to translate messages in your own components, React-admin provides a `useTranslate` hook, which returns the `translate` function:

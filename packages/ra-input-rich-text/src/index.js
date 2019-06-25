@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Quill from 'quill';
 import { addField } from 'ra-core';
+import { InputHelperText } from 'ra-ui-materialui';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import { withStyles } from '@material-ui/core/styles';
@@ -98,12 +99,18 @@ export class RichTextInput extends Component {
                 className="ra-rich-text-input"
             >
                 <div data-testid="quill" ref={this.updateDivRef} />
-                {touched && error && (
-                    <FormHelperText error className="ra-rich-text-input-error">
-                        {error}
+                {helperText || (touched && error) ? (
+                    <FormHelperText
+                        error={!!error}
+                        className={!!error ? 'ra-rich-text-input-error' : ''}
+                    >
+                        <InputHelperText
+                            error={error}
+                            helperText={helperText}
+                            touched={touched}
+                        />
                     </FormHelperText>
-                )}
-                {helperText && <FormHelperText>{helperText}</FormHelperText>}
+                ) : null}
             </FormControl>
         );
     }

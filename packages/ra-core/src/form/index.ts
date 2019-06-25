@@ -4,6 +4,7 @@ import FormField from './FormField';
 import formMiddleware from './formMiddleware';
 import getDefaultValues from './getDefaultValues';
 import withDefaultValue from './withDefaultValue';
+import ValidationError from './ValidationError';
 
 export {
     addField,
@@ -12,6 +13,7 @@ export {
     formMiddleware,
     getDefaultValues,
     withDefaultValue,
+    ValidationError,
 };
 export { isRequired } from './FormField';
 export * from './validate';

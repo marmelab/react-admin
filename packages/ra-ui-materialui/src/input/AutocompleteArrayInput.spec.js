@@ -1,32 +1,29 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import assert from 'assert';
-import { shallow, render, mount } from 'enzyme';
+import {
+    cleanup,
+    fireEvent,
+    render,
+    waitForDomChange,
+} from 'react-testing-library';
 
 import { AutocompleteArrayInput } from './AutocompleteArrayInput';
 
 describe('<AutocompleteArrayInput />', () => {
+    afterEach(cleanup);
+
     const defaultProps = {
+        // We have to specify the id ourselves here because the
+        // TextInput is not wrapped inside a FormInput
+        id: 'foo',
         source: 'foo',
+        resource: 'bar',
         meta: {},
         input: { onChange: () => {} },
         translate: x => x,
     };
 
-    it('should use a react Autosuggest', () => {
-        const wrapper = shallow(
-            <AutocompleteArrayInput
-                {...defaultProps}
-                input={{ value: [1] }}
-                choices={[{ id: 1, name: 'hello' }]}
-            />
-        );
-        const AutoCompleteElement = wrapper.find('Autosuggest');
-        assert.equal(AutoCompleteElement.length, 1);
-    });
-
     it('should extract suggestions from choices', () => {
-        const wrapper = shallow(
+        const { getByLabelText, getByText, queryAllByRole } = render(
             <AutocompleteArrayInput
                 {...defaultProps}
                 choices={[
@@ -35,215 +32,172 @@ describe('<AutocompleteArrayInput />', () => {
                 ]}
             />
         );
-        expect(wrapper.state('suggestions')).toEqual([
-            { id: 'M', name: 'Male' },
-            { id: 'F', name: 'Female' },
-        ]);
+
+        fireEvent.click(getByLabelText('resources.bar.fields.foo'));
+
+        expect(queryAllByRole('option')).toHaveLength(2);
+        expect(getByText('Male')).toBeDefined();
+        expect(getByText('Female')).toBeDefined();
     });
 
-    const context = {
-        translate: () => 'translated',
-        locale: 'en',
-    };
-    const childContextTypes = {
-        translate: PropTypes.func.isRequired,
-        locale: PropTypes.string.isRequired,
-    };
-
     it('should use optionText with a string value as text identifier', () => {
-        const wrapper = shallow(
-            <AutocompleteArrayInput {...defaultProps} optionText="foobar" />,
-            {
-                context,
-                childContextTypes,
-            }
+        const { getByLabelText, getByText, queryAllByRole } = render(
+            <AutocompleteArrayInput
+                {...defaultProps}
+                optionText="foobar"
+                choices={[
+                    { id: 'M', foobar: 'Male' },
+                    { id: 'F', foobar: 'Female' },
+                ]}
+            />
         );
 
-        // This is necesary because we use the material-ui Popper element which does not includes
-        // its children in the AutocompleteArrayInput dom hierarchy
-        const menuItem = wrapper
-            .instance()
-            .renderSuggestion(
-                { id: 'M', foobar: 'Male' },
-                { query: '', highlighted: false }
-            );
+        fireEvent.click(getByLabelText('resources.bar.fields.foo'));
 
-        const MenuItem = render(menuItem);
-        assert.equal(MenuItem.text(), 'Male');
+        expect(queryAllByRole('option')).toHaveLength(2);
+        expect(getByText('Male')).toBeDefined();
+        expect(getByText('Female')).toBeDefined();
     });
 
     it('should use optionText with a string value including "." as text identifier', () => {
-        const wrapper = shallow(
+        const { getByLabelText, getByText, queryAllByRole } = render(
             <AutocompleteArrayInput
                 {...defaultProps}
                 optionText="foobar.name"
-                choices={[{ id: 'M', foobar: { name: 'Male' } }]}
-                alwaysRenderSuggestions={true}
-            />,
-            { context, childContextTypes }
+                choices={[
+                    { id: 'M', foobar: { name: 'Male' } },
+                    { id: 'F', foobar: { name: 'Female' } },
+                ]}
+            />
         );
 
-        // This is necesary because we use the material-ui Popper element which does not includes
-        // its children in the AutocompleteArrayInput dom hierarchy
-        const menuItem = wrapper
-            .instance()
-            .renderSuggestion(
-                { id: 'M', foobar: { name: 'Male' } },
-                { query: '', highlighted: false }
-            );
+        fireEvent.click(getByLabelText('resources.bar.fields.foo'));
 
-        const MenuItem = render(menuItem);
-        assert.equal(MenuItem.text(), 'Male');
+        expect(queryAllByRole('option')).toHaveLength(2);
+        expect(getByText('Male')).toBeDefined();
+        expect(getByText('Female')).toBeDefined();
     });
 
     it('should use optionText with a function value as text identifier', () => {
-        const wrapper = shallow(
+        const { getByLabelText, getByText, queryAllByRole } = render(
             <AutocompleteArrayInput
                 {...defaultProps}
                 optionText={choice => choice.foobar}
-                choices={[{ id: 'M', foobar: 'Male' }]}
-                alwaysRenderSuggestions={true}
-            />,
-            { context, childContextTypes }
+                choices={[
+                    { id: 'M', foobar: 'Male' },
+                    { id: 'F', foobar: 'Female' },
+                ]}
+            />
         );
 
-        // This is necesary because we use the material-ui Popper element which does not includes
-        // its children in the AutocompleteArrayInput dom hierarchy
-        const menuItem = wrapper
-            .instance()
-            .renderSuggestion(
-                { id: 'M', foobar: 'Male' },
-                { query: '', highlighted: false }
-            );
+        fireEvent.click(getByLabelText('resources.bar.fields.foo'));
 
-        const MenuItem = render(menuItem);
-        assert.equal(MenuItem.text(), 'Male');
+        expect(queryAllByRole('option')).toHaveLength(2);
+        expect(getByText('Male')).toBeDefined();
+        expect(getByText('Female')).toBeDefined();
     });
 
     it('should translate the choices by default', () => {
-        const wrapper = shallow(
+        const { getByLabelText, getByText, queryAllByRole } = render(
             <AutocompleteArrayInput
                 {...defaultProps}
-                choices={[{ id: 'M', name: 'Male' }]}
                 translate={x => `**${x}**`}
-                alwaysRenderSuggestions={true}
-            />,
-            { context, childContextTypes }
+                choices={[
+                    { id: 'M', name: 'Male' },
+                    { id: 'F', name: 'Female' },
+                ]}
+            />
         );
-        // This is necesary because we use the material-ui Popper element which does not includes
-        // its children in the AutocompleteArrayInput dom hierarchy
-        const menuItem = wrapper
-            .instance()
-            .renderSuggestion(
-                { id: 'M', name: 'Male' },
-                { query: '', highlighted: false }
-            );
 
-        const MenuItem = render(menuItem);
-        assert.equal(MenuItem.text(), '**Male**');
+        fireEvent.click(getByLabelText('resources.bar.fields.foo'));
+
+        expect(queryAllByRole('option')).toHaveLength(2);
+        expect(getByText('**Male**')).toBeDefined();
+        expect(getByText('**Female**')).toBeDefined();
     });
 
     it('should not translate the choices if translateChoice is false', () => {
-        const wrapper = shallow(
+        const { getByLabelText, getByText, queryAllByRole } = render(
             <AutocompleteArrayInput
                 {...defaultProps}
-                choices={[{ id: 'M', name: 'Male' }]}
                 translate={x => `**${x}**`}
+                choices={[
+                    { id: 'M', name: 'Male' },
+                    { id: 'F', name: 'Female' },
+                ]}
                 translateChoice={false}
-                alwaysRenderSuggestions={true}
-            />,
-            { context, childContextTypes }
+            />
         );
-        // This is necesary because we use the material-ui Popper element which does not includes
-        // its children in the AutocompleteArrayInput dom hierarchy
-        const menuItem = wrapper
-            .instance()
-            .renderSuggestion(
-                { id: 'M', name: 'Male' },
-                { query: '', highlighted: false }
-            );
 
-        const MenuItem = render(menuItem);
-        assert.equal(MenuItem.text(), 'Male');
+        fireEvent.click(getByLabelText('resources.bar.fields.foo'));
+
+        expect(queryAllByRole('option')).toHaveLength(2);
+        expect(getByText('Male')).toBeDefined();
+        expect(getByText('Female')).toBeDefined();
     });
 
-    it('should respect shouldRenderSuggestions over default if passed in', () => {
-        const wrapper = mount(
+    it('should respect shouldRenderSuggestions over default if passed in', async () => {
+        const { getByLabelText, queryAllByRole } = render(
             <AutocompleteArrayInput
                 {...defaultProps}
                 input={{ value: ['M'], onChange: () => {} }}
                 choices={[{ id: 'M', name: 'Male' }]}
                 shouldRenderSuggestions={v => v.length > 2}
-            />,
-            { context, childContextTypes }
+            />
         );
-        wrapper.find('input').simulate('focus');
-        wrapper.find('input').simulate('change', { target: { value: 'Ma' } });
-        expect(wrapper.state('suggestions')).toHaveLength(1);
-        expect(wrapper.find('ForwardRef(ListItem)')).toHaveLength(0);
+        const input = getByLabelText('resources.bar.fields.foo');
+        fireEvent.focus(input);
+        fireEvent.change(input, { target: { value: 'Ma' } });
+        expect(queryAllByRole('option')).toHaveLength(0);
 
-        wrapper.find('input').simulate('change', { target: { value: 'Mal' } });
-        expect(wrapper.state('suggestions')).toHaveLength(1);
-        expect(wrapper.find('ForwardRef(ListItem)')).toHaveLength(1);
+        fireEvent.change(input, { target: { value: 'Mal' } });
+        expect(queryAllByRole('option')).toHaveLength(1);
     });
 
     describe('Fix issue #1410', () => {
         it('should not fail when value is empty and new choices are applied', () => {
-            const wrapper = shallow(
+            const { getByLabelText, rerender } = render(
                 <AutocompleteArrayInput
                     {...defaultProps}
                     input={{ value: [], onChange: () => {} }}
                     choices={[{ id: 'M', name: 'Male' }]}
                 />
             );
-            wrapper.setProps({
-                choices: [{ id: 'M', name: 'Male' }],
-            });
-            expect(wrapper.state('searchText')).toBe('');
-        });
 
-        it('should repopulate the suggestions after the suggestions are dismissed', () => {
-            const wrapper = mount(
+            rerender(
                 <AutocompleteArrayInput
                     {...defaultProps}
                     input={{ value: [], onChange: () => {} }}
                     choices={[{ id: 'M', name: 'Male' }]}
-                    alwaysRenderSuggestions
-                />,
-                { context, childContextTypes }
+                />
             );
-            wrapper.find('input').simulate('focus');
-            wrapper
-                .find('input')
-                .simulate('change', { target: { value: 'foo' } });
-            expect(wrapper.state('searchText')).toBe('foo');
-            expect(wrapper.state('suggestions')).toHaveLength(0);
-            wrapper.find('input').simulate('blur');
-            wrapper.find('input').simulate('change', { target: { value: '' } });
-            expect(wrapper.state('suggestions')).toHaveLength(1);
+            const input = getByLabelText('resources.bar.fields.foo');
+            expect(input.value).toEqual('');
         });
 
-        it('should allow optionText to be a function', () => {
-            const optionText = jest.fn();
-            mount(
+        it('should repopulate the suggestions after the suggestions are dismissed', () => {
+            const { getByLabelText, queryAllByRole } = render(
                 <AutocompleteArrayInput
                     {...defaultProps}
-                    input={{ value: ['M'], onChange: () => {} }}
                     choices={[{ id: 'M', name: 'Male' }]}
-                    optionText={v => {
-                        optionText(v);
-                        return v.name;
-                    }}
-                />,
-                { context, childContextTypes }
+                />
             );
-            expect(optionText).toHaveBeenCalledTimes(1);
-            expect(optionText).toHaveBeenCalledWith({ id: 'M', name: 'Male' });
+
+            const input = getByLabelText('resources.bar.fields.foo');
+
+            fireEvent.focus(input);
+            fireEvent.change(input, { target: { value: 'foo' } });
+            expect(queryAllByRole('option')).toHaveLength(0);
+
+            fireEvent.blur(input);
+            fireEvent.focus(input);
+            fireEvent.change(input, { target: { value: '' } });
+            expect(queryAllByRole('option')).toHaveLength(1);
         });
 
         it('should not rerender searchtext while having focus and new choices arrive', () => {
             const optionText = jest.fn();
-            const wrapper = mount(
+            const { getByLabelText, queryAllByRole, rerender } = render(
                 <AutocompleteArrayInput
                     {...defaultProps}
                     input={{ value: ['M'], onChange: () => {} }}
@@ -253,138 +207,148 @@ describe('<AutocompleteArrayInput />', () => {
                         optionText(v);
                         return v.name;
                     }}
-                />,
-                { context, childContextTypes }
+                />
             );
-            wrapper
-                .find('input')
-                .simulate('change', { target: { value: 'foo' } });
+            const input = getByLabelText('resources.bar.fields.foo');
 
-            wrapper.setProps({
-                choices: [
-                    { id: 'M', name: 'Male' },
-                    { id: 'F', name: 'Female' },
-                ],
-            });
-            expect(wrapper.state('searchText')).toBe('foo');
+            fireEvent.focus(input);
+            fireEvent.change(input, { target: { value: 'foo' } });
+            expect(queryAllByRole('option')).toHaveLength(0);
+
+            rerender(
+                <AutocompleteArrayInput
+                    {...defaultProps}
+                    input={{ value: ['M'], onChange: () => {} }}
+                    meta={{ active: true }}
+                    choices={[
+                        { id: 'M', name: 'Male' },
+                        { id: 'F', name: 'Female' },
+                    ]}
+                    optionText={v => {
+                        optionText(v);
+                        return v.name;
+                    }}
+                />
+            );
+            expect(getByLabelText('resources.bar.fields.foo').value).toEqual(
+                'foo'
+            );
         });
 
         it('should allow input value to be cleared when allowEmpty is true and input text is empty', () => {
-            const wrapper = mount(
+            const { getByLabelText, queryAllByRole } = render(
                 <AutocompleteArrayInput
                     {...defaultProps}
                     allowEmpty
                     input={{ value: ['M'], onChange: () => {} }}
                     choices={[{ id: 'M', name: 'Male' }]}
-                />,
-                { context, childContextTypes }
+                />
             );
 
-            wrapper
-                .find('input')
-                .simulate('change', { target: { value: 'foo' } });
-            wrapper.find('input').simulate('blur');
-            expect(wrapper.state('searchText')).toBe('');
+            const input = getByLabelText('resources.bar.fields.foo');
 
-            wrapper.find('input').simulate('change', { target: { value: '' } });
-            wrapper.find('input').simulate('blur');
-            expect(wrapper.state('searchText')).toBe('');
+            fireEvent.focus(input);
+            fireEvent.change(input, { target: { value: 'foo' } });
+            expect(queryAllByRole('option')).toHaveLength(0);
+            fireEvent.blur(input);
+
+            fireEvent.focus(input);
+            fireEvent.change(input, { target: { value: '' } });
+            expect(queryAllByRole('option')).toHaveLength(1);
         });
 
-        it('should revert the searchText when allowEmpty is false', () => {
-            const wrapper = mount(
+        it('should revert the searchText when allowEmpty is false', async () => {
+            const { getByLabelText, queryAllByRole } = render(
                 <AutocompleteArrayInput
                     {...defaultProps}
                     input={{ value: ['M'], onChange: () => {} }}
                     choices={[{ id: 'M', name: 'Male' }]}
-                />,
-                { context, childContextTypes }
+                />
             );
-            wrapper
-                .find('input')
-                .simulate('change', { target: { value: 'foo' } });
-            expect(wrapper.state('searchText')).toBe('foo');
-            wrapper.find('input').simulate('blur');
-            expect(wrapper.state('searchText')).toBe('');
+
+            const input = getByLabelText('resources.bar.fields.foo');
+
+            fireEvent.focus(input);
+            fireEvent.change(input, { target: { value: 'foo' } });
+            expect(queryAllByRole('option')).toHaveLength(0);
+            fireEvent.blur(input);
+            await waitForDomChange();
+            expect(getByLabelText('resources.bar.fields.foo').value).toEqual(
+                ''
+            );
         });
 
         it('should show the suggestions when the input value is empty and the input is focussed and choices arrived late', () => {
-            const wrapper = mount(
+            const { getByLabelText, queryAllByRole, rerender } = render(
                 <AutocompleteArrayInput
                     {...defaultProps}
                     input={{ value: [], onChange: () => {} }}
-                />,
-                { context, childContextTypes }
+                />
             );
-            wrapper.setProps({
-                choices: [
-                    { id: 'M', name: 'Male' },
-                    { id: 'F', name: 'Female' },
-                ],
-            });
-            wrapper.find('input').simulate('focus');
-            expect(wrapper.find('ForwardRef(ListItem)')).toHaveLength(2);
+            rerender(
+                <AutocompleteArrayInput
+                    {...defaultProps}
+                    input={{ value: [], onChange: () => {} }}
+                    choices={[
+                        { id: 'M', name: 'Male' },
+                        { id: 'F', name: 'Female' },
+                    ]}
+                />
+            );
+
+            fireEvent.focus(getByLabelText('resources.bar.fields.foo'));
+            expect(queryAllByRole('option')).toHaveLength(2);
         });
 
-        it('should resolve value from input value', () => {
+        it('should resolve value from input value', async () => {
             const onChange = jest.fn();
-            const wrapper = mount(
+            const { getByLabelText } = render(
                 <AutocompleteArrayInput
                     {...defaultProps}
                     input={{ value: [], onChange }}
-                />,
-                {
-                    context,
-                    childContextTypes,
-                }
+                    choices={[{ id: 'M', name: 'Male' }]}
+                />
             );
-            wrapper.setProps({
-                choices: [{ id: 'M', name: 'Male' }],
-            });
-            wrapper
-                .find('input')
-                .simulate('change', { target: { value: 'male' } });
-            wrapper.find('input').simulate('blur');
 
-            expect.assertions(2);
-            return new Promise((resolve, reject) => {
-                setTimeout(() => {
-                    try {
-                        expect(onChange).toHaveBeenCalledTimes(1);
-                        expect(onChange).toHaveBeenCalledWith(['M']);
-                    } catch (error) {
-                        return reject(error);
-                    }
-                    resolve();
-                }, 250);
-            });
+            const input = getByLabelText('resources.bar.fields.foo');
+
+            fireEvent.focus(input);
+            fireEvent.change(input, { target: { value: 'male' } });
+            fireEvent.blur(input);
+
+            await waitForDomChange();
+            expect(onChange).toHaveBeenCalledTimes(1);
+            expect(onChange).toHaveBeenCalledWith(['M']);
         });
 
         it('should reset filter when input value changed', () => {
             const setFilter = jest.fn();
-            const wrapper = mount(
+            const { getByLabelText, rerender } = render(
                 <AutocompleteArrayInput
                     {...defaultProps}
                     input={{ value: [1] }}
                     choices={[{ id: 'M', name: 'Male' }]}
                     setFilter={setFilter}
-                />,
-                { context, childContextTypes }
+                />
             );
-            wrapper
-                .find('input')
-                .simulate('change', { target: { value: 'de' } });
+            const input = getByLabelText('resources.bar.fields.foo');
+            fireEvent.change(input, { target: { value: 'de' } });
             expect(setFilter).toHaveBeenCalledTimes(1);
             expect(setFilter).toHaveBeenCalledWith('de');
-            wrapper.setProps({
-                input: { value: [2] },
-            });
+
+            rerender(
+                <AutocompleteArrayInput
+                    {...defaultProps}
+                    input={{ value: [2] }}
+                    choices={[{ id: 'M', name: 'Male' }]}
+                    setFilter={setFilter}
+                />
+            );
             expect(setFilter).toHaveBeenCalledTimes(2);
-            expect(setFilter).toHaveBeenLastCalledWith('');
         });
 
         it('should allow customized rendering of suggesting item', () => {
-            const wrapper = mount(
+            const { getByLabelText } = render(
                 <AutocompleteArrayInput
                     {...defaultProps}
                     input={{ value: [1] }}
@@ -392,7 +356,6 @@ describe('<AutocompleteArrayInput />', () => {
                         { id: 'M', name: 'Male' },
                         { id: 'F', name: 'Female' },
                     ]}
-                    alwaysRenderSuggestions
                     suggestionComponent={React.forwardRef(
                         (
                             { suggestion, query, isHighlighted, ...props },
@@ -401,76 +364,53 @@ describe('<AutocompleteArrayInput />', () => {
                             <div
                                 {...props}
                                 ref={ref}
-                                data-field={suggestion.name}
+                                aria-label={suggestion.name}
                             />
                         )
                     )}
-                />,
-                { context, childContextTypes }
+                />
             );
-            expect(wrapper.find('div[data-field]')).toHaveLength(2);
+            fireEvent.focus(getByLabelText('resources.bar.fields.foo'));
+            expect(getByLabelText('Male')).toBeDefined();
+            expect(getByLabelText('Female')).toBeDefined();
         });
     });
 
-    it('should displayed helperText if prop is present in meta', () => {
-        const wrapper = shallow(
+    it('should display helperText', () => {
+        const { getByText } = render(
             <AutocompleteArrayInput
                 {...defaultProps}
-                meta={{ helperText: 'Can i help you?' }}
+                helperText="Can I help you?"
             />
         );
-        const AutoCompleteElement = wrapper.find('Autosuggest').first();
-        assert.deepEqual(AutoCompleteElement.prop('inputProps').meta, {
-            helperText: 'Can i help you?',
-        });
+        expect(getByText('Can I help you?')).toBeDefined();
     });
 
     describe('error message', () => {
         it('should not be displayed if field is pristine', () => {
-            const wrapper = shallow(
+            const { queryByText } = render(
                 <AutocompleteArrayInput
                     {...defaultProps}
-                    meta={{ touched: false }}
+                    meta={{ touched: false, error: 'Required' }}
                 />
             );
-            const AutoCompleteElement = wrapper.find('Autosuggest').first();
-            assert.deepEqual(AutoCompleteElement.prop('inputProps').meta, {
-                touched: false,
-            });
-        });
-
-        it('should not be displayed if field has been touched but is valid', () => {
-            const wrapper = shallow(
-                <AutocompleteArrayInput
-                    {...defaultProps}
-                    meta={{ touched: true, error: false }}
-                />
-            );
-            const AutoCompleteElement = wrapper.find('Autosuggest').first();
-            assert.deepEqual(AutoCompleteElement.prop('inputProps').meta, {
-                touched: true,
-                error: false,
-            });
+            expect(queryByText('Required')).toBeNull();
         });
 
         it('should be displayed if field has been touched and is invalid', () => {
-            const wrapper = shallow(
+            const { queryByText } = render(
                 <AutocompleteArrayInput
                     {...defaultProps}
-                    meta={{ touched: true, error: 'Required field.' }}
+                    meta={{ touched: true, error: 'Required' }}
                 />
             );
-            const AutoCompleteElement = wrapper.find('Autosuggest').first();
-            assert.deepEqual(AutoCompleteElement.prop('inputProps').meta, {
-                touched: true,
-                error: 'Required field.',
-            });
+            expect(queryByText('Required')).toBeDefined();
         });
     });
 
     describe('Fix issue #2121', () => {
-        it('updates suggestions when input is blurred and refocused', () => {
-            const wrapper = mount(
+        it('updates suggestions when input is blurred and refocused', async () => {
+            const { getByLabelText, queryAllByRole } = render(
                 <AutocompleteArrayInput
                     {...defaultProps}
                     input={{ value: [], onChange: () => {} }}
@@ -479,25 +419,24 @@ describe('<AutocompleteArrayInput />', () => {
                         { id: 2, name: 'abc' },
                         { id: 3, name: '123' },
                     ]}
-                />,
-                { context, childContextTypes }
+                />
             );
-            wrapper.find('input').simulate('focus');
-            wrapper
-                .find('input')
-                .simulate('change', { target: { value: 'a' } });
-            expect(wrapper.state('suggestions')).toHaveLength(2);
-            wrapper.find('input').simulate('blur');
-            wrapper.find('input').simulate('focus');
-            wrapper
-                .find('input')
-                .simulate('change', { target: { value: 'a' } });
-            expect(wrapper.state('suggestions')).toHaveLength(2);
+            const input = getByLabelText('resources.bar.fields.foo');
+
+            fireEvent.focus(input);
+            fireEvent.change(input, { target: { value: 'ab' } });
+            expect(queryAllByRole('option')).toHaveLength(2);
+            fireEvent.blur(input);
+            await waitForDomChange();
+
+            fireEvent.focus(input);
+            fireEvent.change(input, { target: { value: 'ab' } });
+            expect(queryAllByRole('option')).toHaveLength(2);
         });
     });
 
     it('does not automatically select a matched choice if there are more than one', () => {
-        const wrapper = mount(
+        const { getByLabelText, queryAllByRole } = render(
             <AutocompleteArrayInput
                 {...defaultProps}
                 input={{ value: [], onChange: () => {} }}
@@ -506,18 +445,19 @@ describe('<AutocompleteArrayInput />', () => {
                     { id: 2, name: 'abc' },
                     { id: 3, name: '123' },
                 ]}
-            />,
-            { context, childContextTypes }
+            />
         );
-        wrapper.find('input').simulate('focus');
-        wrapper.find('input').simulate('change', { target: { value: 'ab' } });
-        expect(wrapper.state('suggestions')).toHaveLength(2);
+
+        const input = getByLabelText('resources.bar.fields.foo');
+        fireEvent.focus(input);
+        fireEvent.change(input, { target: { value: 'ab' } });
+        expect(queryAllByRole('option')).toHaveLength(2);
     });
 
-    it('does not automatically select a matched choice if there is only one', () => {
+    it('does not automatically select a matched choice if there is only one', async () => {
         const onChange = jest.fn();
 
-        const wrapper = mount(
+        const { getByLabelText, queryAllByRole } = render(
             <AutocompleteArrayInput
                 {...defaultProps}
                 input={{ value: [], onChange }}
@@ -526,19 +466,20 @@ describe('<AutocompleteArrayInput />', () => {
                     { id: 2, name: 'abc' },
                     { id: 3, name: '123' },
                 ]}
-            />,
-            { context, childContextTypes }
+            />
         );
-        wrapper.find('input').simulate('focus');
-        wrapper.find('input').simulate('change', { target: { value: 'abc' } });
-        expect(wrapper.state('suggestions')).toHaveLength(1);
+        const input = getByLabelText('resources.bar.fields.foo');
+        fireEvent.focus(input);
+        fireEvent.change(input, { target: { value: 'abc' } });
+        expect(queryAllByRole('option')).toHaveLength(1);
+
         expect(onChange).not.toHaveBeenCalled();
     });
 
-    it('automatically selects a matched choice on blur if there is only one', () => {
+    it('automatically selects a matched choice on blur if there is only one', async () => {
         const onChange = jest.fn();
 
-        const wrapper = mount(
+        const { getByLabelText } = render(
             <AutocompleteArrayInput
                 {...defaultProps}
                 input={{ value: [], onChange }}
@@ -547,53 +488,37 @@ describe('<AutocompleteArrayInput />', () => {
                     { id: 2, name: 'abc' },
                     { id: 3, name: '123' },
                 ]}
-            />,
-            { context, childContextTypes }
+            />
         );
-        wrapper.find('input').simulate('focus');
-        wrapper.find('input').simulate('change', { target: { value: 'abc' } });
-        wrapper.find('input').simulate('blur');
+        const input = getByLabelText('resources.bar.fields.foo');
+        fireEvent.focus(input);
+        fireEvent.change(input, { target: { value: 'abc' } });
+        fireEvent.blur(input);
+        await waitForDomChange();
 
-        expect.assertions(1);
-        return new Promise((resolve, reject) => {
-            setTimeout(() => {
-                try {
-                    expect(onChange).toHaveBeenCalledWith([2]);
-                } catch (error) {
-                    return reject(error);
-                }
-                resolve();
-            }, 250);
-        });
+        expect(onChange).toHaveBeenCalled();
     });
 
     it('passes options.suggestionsContainerProps to the suggestions container', () => {
-        const onChange = jest.fn();
-
-        const wrapper = mount(
+        const { getByLabelText } = render(
             <AutocompleteArrayInput
                 {...defaultProps}
-                input={{ value: [], onChange }}
-                choices={[
-                    { id: 1, name: 'ab' },
-                    { id: 2, name: 'abc' },
-                    { id: 3, name: '123' },
-                ]}
+                choices={[{ id: 1, name: 'ab' }]}
                 options={{
                     suggestionsContainerProps: {
-                        disablePortal: true,
+                        'aria-label': 'Me',
                     },
                 }}
-            />,
-            { context, childContextTypes }
+            />
         );
-        expect(
-            wrapper.find('ForwardRef(Popper)').props().disablePortal
-        ).toEqual(true);
+        const input = getByLabelText('resources.bar.fields.foo');
+        fireEvent.focus(input);
+
+        expect(getByLabelText('Me')).toBeDefined();
     });
 
     it('should limit suggestions when suggestionLimit is passed', () => {
-        const wrapper = shallow(
+        const { getByLabelText, queryAllByRole } = render(
             <AutocompleteArrayInput
                 {...defaultProps}
                 choices={[
@@ -603,6 +528,8 @@ describe('<AutocompleteArrayInput />', () => {
                 suggestionLimit={1}
             />
         );
-        expect(wrapper.state('suggestions')).toHaveLength(1);
+        const input = getByLabelText('resources.bar.fields.foo');
+        fireEvent.focus(input);
+        expect(queryAllByRole('option')).toHaveLength(1);
     });
 });

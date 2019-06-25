@@ -17,18 +17,19 @@ describe('<FileInput />', () => {
         delete global.FileReader;
     });
 
+    const defautProps = {
+        input: {
+            value: {
+                picture: null,
+            },
+        },
+        meta: {},
+        translate: x => x,
+        source: 'src',
+    };
+
     it('should display a dropzone', () => {
-        const wrapper = shallow(
-            <FileInput
-                input={{
-                    value: {
-                        picture: null,
-                    },
-                }}
-                translate={x => x}
-                source="picture"
-            />
-        );
+        const wrapper = shallow(<FileInput {...defautProps} />);
 
         assert.equal(wrapper.find('Dropzone').length, 1);
     });
@@ -38,14 +39,13 @@ describe('<FileInput />', () => {
 
         const wrapper = shallow(
             <FileInput
+                {...defautProps}
                 input={{
                     value: {
                         src: 'b64_picture',
                     },
                     onBlur,
                 }}
-                translate={x => x}
-                source="src"
             />
         );
 
@@ -61,14 +61,13 @@ describe('<FileInput />', () => {
 
         const wrapper = shallow(
             <FileInput
+                {...defautProps}
                 input={{
                     value: {
                         src: 'b64_picture',
                     },
                     onBlur,
                 }}
-                translate={x => x}
-                source="src"
             />
         );
 
@@ -81,6 +80,7 @@ describe('<FileInput />', () => {
 
         const wrapper = shallow(
             <FileInput
+                {...defautProps}
                 input={{
                     value: [
                         { src: 'b64_picture' },
@@ -88,8 +88,6 @@ describe('<FileInput />', () => {
                     ],
                     onBlur,
                 }}
-                translate={x => x}
-                source="pictures"
                 multiple
             />
         );
@@ -108,6 +106,7 @@ describe('<FileInput />', () => {
 
         const wrapper = shallow(
             <FileInput
+                {...defautProps}
                 input={{
                     value: [
                         { src: 'b64_picture' },
@@ -115,8 +114,6 @@ describe('<FileInput />', () => {
                     ],
                     onBlur,
                 }}
-                translate={x => x}
-                source="pictures"
                 multiple
             />
         );
@@ -130,14 +127,13 @@ describe('<FileInput />', () => {
         const test = (multiple, expectedLabel) => {
             const wrapper = shallow(
                 <FileInput
+                    {...defautProps}
                     multiple={multiple}
                     input={{
                         value: {
                             picture: null,
                         },
                     }}
-                    translate={x => x}
-                    source="picture"
                 />
             );
 
@@ -151,16 +147,7 @@ describe('<FileInput />', () => {
     it('should display correct custom label', () => {
         const test = expectedLabel => {
             const wrapper = shallow(
-                <FileInput
-                    placeholder={expectedLabel}
-                    input={{
-                        value: {
-                            picture: null,
-                        },
-                    }}
-                    translate={x => x}
-                    source="picture"
-                />
+                <FileInput {...defautProps} placeholder={expectedLabel} />
             );
 
             assert.ok(wrapper.find('Dropzone').contains(expectedLabel));
@@ -176,13 +163,13 @@ describe('<FileInput />', () => {
         it('should display file preview using child as preview component', () => {
             const wrapper = shallow(
                 <FileInput
+                    {...defautProps}
                     input={{
                         value: {
                             url: 'http://foo.com/bar.jpg',
                             title: 'Hello world!',
                         },
                     }}
-                    translate={x => x}
                 >
                     <ImageField source="url" title="title" />
                 </FileInput>
@@ -202,6 +189,7 @@ describe('<FileInput />', () => {
         it('should display all files (when several) previews using child as preview component', () => {
             const wrapper = shallow(
                 <FileInput
+                    {...defautProps}
                     input={{
                         value: [
                             {
@@ -214,7 +202,6 @@ describe('<FileInput />', () => {
                             },
                         ],
                     }}
-                    translate={x => x}
                 >
                     <ImageField source="url" title="title" />
                 </FileInput>
@@ -249,8 +236,7 @@ describe('<FileInput />', () => {
         it('should update previews when updating input value', () => {
             const wrapper = shallow(
                 <FileInput
-                    source="picture"
-                    translate={x => x}
+                    {...defautProps}
                     input={{
                         value: {
                             url: 'http://static.acme.com/foo.jpg',
@@ -282,7 +268,7 @@ describe('<FileInput />', () => {
 
         it('should update previews when dropping a file', () => {
             const wrapper = shallow(
-                <FileInput source="picture" translate={x => x} input={{}}>
+                <FileInput {...defautProps} input={{}}>
                     <ImageField source="url" />
                 </FileInput>
             );
@@ -306,8 +292,7 @@ describe('<FileInput />', () => {
     it('should allow to remove an image from the input with `FileInputPreview.onRemove`', () => {
         const wrapper = shallow(
             <FileInput
-                source="picture"
-                translate={x => x}
+                {...defautProps}
                 input={{
                     onBlur: () => {},
                     value: [

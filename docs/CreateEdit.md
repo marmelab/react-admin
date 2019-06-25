@@ -565,12 +565,45 @@ React-admin will combine all the input-level functions into a single function lo
 
 Input validation functions receive the current field value, and the values of all fields of the current record. This allows for complex validation scenarios (e.g. validate that two passwords are the same).
 
-**Tip**: Validator functions receive the form `props` as third parameter, including the `translate` function. This lets you build internationalized validators:
+**Tip**: If your admin has multi-language support, validator functions should return message *identifiers* rather than messages themselves. React-admin automatically passes these identifiers to the translation function: 
 
 ```jsx
-const required = (message = 'myroot.validation.required') =>
-    (value, allValues, props) => value ? undefined : props.translate(message);
+// in validators/required.js
+const required = () => (value, allValues, props) =>
+    value
+        ? undefined
+        : 'myroot.validation.required';
+
+// in i18n/en.json
+export default {
+    myroot: {
+        validation: {
+            required: 'Required field',
+        }
+    }
+}
 ```
+
+If the translation depends on a variable, the validator can return an object rather than a translation identifier:
+
+```jsx
+// in validators/minLength.js
+const minLength = (min) => (value, allValues, props) => 
+    value.length >= min
+        ? undefined
+        : { message: 'myroot.validation.minLength', args: { min } };
+
+// in i18n/en.js
+export default {
+    myroot: {
+        validation: {
+            minLength: 'Must be %{min} characters at least',
+        }
+    }
+}
+```
+
+See the [Translation documentation](Translation.md#translating-error-messages) for details.
 
 **Tip**: Make sure to define validation functions or array of functions in a variable, instead of defining them directly in JSX. This can result in a new function or array at every render, and trigger infinite rerender.
 

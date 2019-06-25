@@ -7,14 +7,15 @@ describe('<BooleanInput />', () => {
     afterEach(cleanup);
 
     const defaultProps = {
+        id: 'bar',
         resource: 'foo',
+        source: 'bar',
+        input: {},
         meta: {},
     };
 
     it('should render as a checkbox', () => {
-        const { getByLabelText } = render(
-            <BooleanInput {...defaultProps} source="bar" input={{}} />
-        );
+        const { getByLabelText } = render(<BooleanInput {...defaultProps} />);
         expect(getByLabelText('resources.foo.fields.bar').type).toBe(
             'checkbox'
         );
@@ -22,29 +23,21 @@ describe('<BooleanInput />', () => {
 
     it('should be checked if the value is true', () => {
         const { getByLabelText } = render(
-            <BooleanInput
-                {...defaultProps}
-                source="bar"
-                input={{ value: true }}
-            />
+            <BooleanInput {...defaultProps} input={{ value: true }} />
         );
         expect(getByLabelText('resources.foo.fields.bar').checked).toBe(true);
     });
 
     it('should not be checked if the value is false', () => {
         const { getByLabelText } = render(
-            <BooleanInput
-                {...defaultProps}
-                source="bar"
-                input={{ value: false }}
-            />
+            <BooleanInput {...defaultProps} input={{ value: false }} />
         );
         expect(getByLabelText('resources.foo.fields.bar').checked).toBe(false);
     });
 
     it('should not be checked if the value is undefined', () => {
         const { getByLabelText } = render(
-            <BooleanInput {...defaultProps} source="bar" input={{}} />
+            <BooleanInput {...defaultProps} input={{}} />
         );
         expect(getByLabelText('resources.foo.fields.bar').checked).toBe(false);
     });
@@ -55,7 +48,7 @@ describe('<BooleanInput />', () => {
                 {...defaultProps}
                 source="foo"
                 input={{}}
-                meta={{ error: 'foobar' }}
+                meta={{ touched: true, error: 'foobar' }}
             />
         );
         expect(queryAllByText('foobar')).toHaveLength(1);

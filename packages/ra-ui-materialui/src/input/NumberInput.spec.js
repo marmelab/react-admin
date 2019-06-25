@@ -1,12 +1,18 @@
 import React from 'react';
 import assert from 'assert';
-import { shallow } from 'enzyme';
+import { render, cleanup, fireEvent } from 'react-testing-library';
 
 import { NumberInput } from './NumberInput';
 
 describe('<NumberInput />', () => {
+    afterEach(cleanup);
+
     const defaultProps = {
+        // We have to specify the id ourselves here because the
+        // TextInput is not wrapped inside a FormInput
+        id: 'foo',
         source: 'foo',
+        resource: 'bar',
         meta: {},
         input: {
             onBlur: () => {},
@@ -19,57 +25,49 @@ describe('<NumberInput />', () => {
     };
 
     it('should use a mui TextField', () => {
-        const wrapper = shallow(
+        const { getByLabelText } = render(
             <NumberInput {...defaultProps} input={{ value: 12 }} />
         );
-        const TextFieldElement = wrapper.find(
-            'WithStyles(ForwardRef(TextField))'
-        );
-        assert.equal(TextFieldElement.length, 1);
-        assert.equal(TextFieldElement.prop('value'), 12);
-        assert.equal(TextFieldElement.prop('type'), 'number');
+        const TextFieldElement = getByLabelText('resources.bar.fields.foo');
+        assert.equal(TextFieldElement.value, '12');
+        assert.equal(TextFieldElement.getAttribute('type'), 'number');
     });
 
     describe('onChange event', () => {
         it('should be customizable via the `onChange` prop', () => {
             const onChange = jest.fn();
 
-            const props = { ...defaultProps };
-            const wrapper = shallow(
-                <NumberInput {...props} onChange={onChange} />
+            const { getByLabelText } = render(
+                <NumberInput {...defaultProps} onChange={onChange} />
             );
-
-            wrapper
-                .find('WithStyles(ForwardRef(TextField))')
-                .simulate('change', { target: { value: 3 } });
+            const TextFieldElement = getByLabelText('resources.bar.fields.foo');
+            fireEvent.change(TextFieldElement, { target: { value: 3 } });
             assert.equal(onChange.mock.calls[0][0], 3);
         });
 
         it('should keep calling redux-form original event', () => {
             const onChange = jest.fn();
 
-            const wrapper = shallow(
+            const { getByLabelText } = render(
                 <NumberInput {...defaultProps} input={{ value: 2, onChange }} />
             );
-            wrapper
-                .find('WithStyles(ForwardRef(TextField))')
-                .simulate('change', { target: { value: 3 } });
+            const TextFieldElement = getByLabelText('resources.bar.fields.foo');
+            fireEvent.change(TextFieldElement, { target: { value: 3 } });
             assert.equal(onChange.mock.calls[0][0], 3);
         });
 
         it('should cast value as a numeric one', () => {
             const onChange = jest.fn();
-            const wrapper = shallow(
+
+            const { getByLabelText } = render(
                 <NumberInput
                     {...defaultProps}
-                    input={{ value: '2', onChange }}
+                    input={{ value: '1', onChange }}
                 />
             );
-
-            wrapper
-                .find('WithStyles(ForwardRef(TextField))')
-                .simulate('change', { target: { value: '2' } });
-            assert.equal(onChange.mock.calls[0][0], 2);
+            const TextFieldElement = getByLabelText('resources.bar.fields.foo');
+            fireEvent.change(TextFieldElement, { target: { value: '2' } });
+            assert.equal(onChange.mock.calls[0][0], '2');
         });
     });
 
@@ -77,29 +75,23 @@ describe('<NumberInput />', () => {
         it('should be customizable via the `onFocus` prop', () => {
             const onFocus = jest.fn();
 
-            const props = { ...defaultProps };
-            const wrapper = shallow(
-                <NumberInput {...props} onFocus={onFocus} />
+            const { getByLabelText } = render(
+                <NumberInput {...defaultProps} onFocus={onFocus} />
             );
-
-            wrapper
-                .find('WithStyles(ForwardRef(TextField))')
-                .simulate('focus', 3);
-            assert.equal(onFocus.mock.calls[0][0], 3);
+            const TextFieldElement = getByLabelText('resources.bar.fields.foo');
+            fireEvent.focus(TextFieldElement);
+            assert.equal(onFocus.mock.calls.length, 1);
         });
 
         it('should keep calling redux-form original event', () => {
             const onFocus = jest.fn();
 
-            const wrapper = shallow(
+            const { getByLabelText } = render(
                 <NumberInput {...defaultProps} input={{ value: 2, onFocus }} />
             );
-            wrapper
-                .find('WithStyles(ForwardRef(TextField))')
-                .simulate('focus', { target: { value: 3 } });
-            assert.deepEqual(onFocus.mock.calls[0][0], {
-                target: { value: 3 },
-            });
+            const TextFieldElement = getByLabelText('resources.bar.fields.foo');
+            fireEvent.focus(TextFieldElement);
+            assert.equal(onFocus.mock.calls.length, 1);
         });
     });
 
@@ -107,49 +99,69 @@ describe('<NumberInput />', () => {
         it('should be customizable via the `onBlur` prop', () => {
             const onBlur = jest.fn();
 
-            const props = { ...defaultProps };
-            const wrapper = shallow(<NumberInput {...props} onBlur={onBlur} />);
-
-            wrapper
-                .find('WithStyles(ForwardRef(TextField))')
-                .simulate('blur', { target: { value: 3 } });
+            const { getByLabelText } = render(
+                <NumberInput {...defaultProps} onBlur={onBlur} />
+            );
+            const TextFieldElement = getByLabelText('resources.bar.fields.foo');
+            fireEvent.blur(TextFieldElement, { target: { value: 3 } });
             assert.equal(onBlur.mock.calls[0][0], 3);
         });
 
         it('should keep calling redux-form original event', () => {
             const onBlur = jest.fn();
 
-            const props = {
-                ...defaultProps,
-                input: {
-                    ...defaultProps.input,
-                    onBlur,
-                },
-            };
-
-            const wrapper = shallow(<NumberInput {...props} />);
-            wrapper
-                .find('WithStyles(ForwardRef(TextField))')
-                .simulate('blur', { target: { value: 3 } });
+            const { getByLabelText } = render(
+                <NumberInput {...defaultProps} input={{ value: 2, onBlur }} />
+            );
+            const TextFieldElement = getByLabelText('resources.bar.fields.foo');
+            fireEvent.blur(TextFieldElement, { target: { value: 3 } });
             assert.equal(onBlur.mock.calls[0][0], 3);
         });
 
         it('should cast value as a numeric one', () => {
             const onBlur = jest.fn();
-            const wrapper = shallow(
+
+            const { getByLabelText } = render(
+                <NumberInput {...defaultProps} input={{ value: '1', onBlur }} />
+            );
+            const TextFieldElement = getByLabelText('resources.bar.fields.foo');
+            fireEvent.blur(TextFieldElement, { target: { value: '2' } });
+            assert.equal(onBlur.mock.calls[0][0], '2');
+        });
+    });
+
+    describe('error message', () => {
+        it('should not be displayed if field is pristine', () => {
+            const { queryByText } = render(
                 <NumberInput
                     {...defaultProps}
-                    input={{
-                        value: '2',
-                        onBlur,
-                    }}
+                    meta={{ touched: false, error: 'Required field.' }}
                 />
             );
+            const error = queryByText('Required field.');
+            assert.ok(!error);
+        });
 
-            wrapper
-                .find('WithStyles(ForwardRef(TextField))')
-                .simulate('blur', { target: { value: '2' } });
-            assert.equal(onBlur.mock.calls[0][0], 2);
+        it('should not be displayed if field has been touched but is valid', () => {
+            const { queryByText } = render(
+                <NumberInput
+                    {...defaultProps}
+                    meta={{ touched: true, error: false }}
+                />
+            );
+            const error = queryByText('Required field.');
+            assert.ok(!error);
+        });
+
+        it('should be displayed if field has been touched and is invalid', () => {
+            const { getByText } = render(
+                <NumberInput
+                    {...defaultProps}
+                    meta={{ touched: true, error: 'Required field.' }}
+                />
+            );
+            const error = getByText('Required field.');
+            assert.ok(error);
         });
     });
 });

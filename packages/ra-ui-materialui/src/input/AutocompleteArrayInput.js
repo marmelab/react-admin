@@ -17,6 +17,7 @@ import classNames from 'classnames';
 import { addField, translate, FieldTitle } from 'ra-core';
 
 import AutocompleteArrayInputChip from './AutocompleteArrayInputChip';
+import InputHelperText from './InputHelperText';
 
 const styles = theme =>
     createStyles({
@@ -224,7 +225,7 @@ export class AutocompleteArrayInput extends React.Component {
     };
 
     renderInput = inputProps => {
-        const { input } = this.props;
+        const { id, input, helperText } = this.props;
         const {
             autoFocus,
             className,
@@ -246,9 +247,9 @@ export class AutocompleteArrayInput extends React.Component {
             );
         }
 
-        const { touched, error, helperText = false } = meta;
+        const { touched, error } = meta;
 
-        // We need to store the input reference for our Popper element containg the suggestions
+        // We need to store the input reference for our Popper element containing the suggestions
         // but Autosuggest also needs this reference (it provides the ref prop)
         const storeInputRef = input => {
             this.inputEl = input;
@@ -257,14 +258,21 @@ export class AutocompleteArrayInput extends React.Component {
 
         return (
             <AutocompleteArrayInputChip
+                id={id}
                 clearInputValueOnChange
                 onUpdateInput={onChange}
                 onAdd={this.handleAdd}
                 onDelete={this.handleDelete}
                 value={this.getInputValue(input.value)}
                 inputRef={storeInputRef}
-                error={!!(touched && error)}
-                helperText={(touched && error) || helperText}
+                error={touched && !!error}
+                helperText={
+                    <InputHelperText
+                        touched={touched}
+                        error={error}
+                        helperText={helperText}
+                    />
+                }
                 chipRenderer={this.renderChip}
                 label={
                     <FieldTitle
@@ -531,7 +539,10 @@ AutocompleteArrayInput.propTypes = {
     setFilter: PropTypes.func,
     shouldRenderSuggestions: PropTypes.func,
     source: PropTypes.string,
-    suggestionComponent: PropTypes.func,
+    suggestionComponent: PropTypes.oneOfType([
+        PropTypes.element,
+        PropTypes.func,
+    ]),
     suggestionLimit: PropTypes.number,
     translate: PropTypes.func.isRequired,
     translateChoice: PropTypes.bool.isRequired,

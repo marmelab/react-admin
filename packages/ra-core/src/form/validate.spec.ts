@@ -1,4 +1,5 @@
 import assert from 'assert';
+
 import {
     required,
     minLength,
@@ -12,12 +13,11 @@ import {
 } from './validate';
 
 describe('Validators', () => {
-    const translate = x => x;
     const test = (validator, inputs, message) =>
         assert.deepEqual(
             inputs
-                .map(input => validator(input, null, { translate }))
-                .filter(m => m === message),
+                .map(input => validator(input, null))
+                .map(error => (error && error.message ? error.message : error)),
             Array(...Array(inputs.length)).map(() => message)
         );
     describe('required', () => {
@@ -42,7 +42,6 @@ describe('Validators', () => {
                 args: undefined,
                 value: null,
                 values: null,
-                translate,
             });
         });
     });
@@ -71,7 +70,6 @@ describe('Validators', () => {
                 args: { min: 5 },
                 value: '12',
                 values: null,
-                translate,
             });
         });
     });
@@ -100,7 +98,6 @@ describe('Validators', () => {
                 args: { max: 10 },
                 value: '12345678901',
                 values: null,
-                translate,
             });
         });
     });
@@ -125,7 +122,6 @@ describe('Validators', () => {
                 args: { min: 10 },
                 value: 0,
                 values: null,
-                translate,
             });
         });
     });
@@ -154,7 +150,6 @@ describe('Validators', () => {
                 args: { max: 10 },
                 value: '11',
                 values: null,
-                translate,
             });
         });
     });
@@ -176,7 +171,6 @@ describe('Validators', () => {
                 args: undefined,
                 value: 'foo',
                 values: null,
-                translate,
             });
         });
     });

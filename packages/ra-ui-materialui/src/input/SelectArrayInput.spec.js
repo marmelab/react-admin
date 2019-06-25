@@ -20,7 +20,7 @@ describe('<SelectArrayInput />', () => {
         const { queryByTestId } = render(
             <SelectArrayInput {...defaultProps} input={{}} />
         );
-        expect(queryByTestId('selectArray')).not.toBeNull();
+        expect(queryByTestId('selectArray')).toBeDefined();
     });
 
     it('should use the input parameter value as the initial input value', () => {
@@ -153,56 +153,45 @@ describe('<SelectArrayInput />', () => {
 
     it('should displayed helperText if prop is present in meta', () => {
         const { queryByText } = render(
-            <SelectArrayInput
-                {...defaultProps}
-                meta={{ helperText: 'Can I help you?' }}
-            />
+            <SelectArrayInput {...defaultProps} helperText="Can I help you?" />
         );
-        expect(queryByText('Can I help you?')).not.toBeNull();
+        expect(queryByText('Can I help you?')).toBeDefined();
     });
 
     describe('error message', () => {
         it('should not be displayed if field is pristine', () => {
-            const { container } = render(
-                <SelectArrayInput {...defaultProps} meta={{ touched: false }} />
-            );
-            expect(container.querySelector('p')).toBeNull();
-        });
-
-        it('should not be displayed if field has been touched but is valid', () => {
-            const { container } = render(
+            const { queryByText } = render(
                 <SelectArrayInput
                     {...defaultProps}
-                    meta={{ touched: true, error: false }}
+                    meta={{ touched: false, error: 'Required field.' }}
                 />
             );
-            expect(container.querySelector('p')).toBeNull();
+            expect(queryByText('Required field.')).toBeNull();
         });
 
         it('should be displayed if field has been touched and is invalid', () => {
-            const { container, queryByText } = render(
+            const { queryByText } = render(
                 <SelectArrayInput
                     {...defaultProps}
                     meta={{ touched: true, error: 'Required field.' }}
                 />
             );
-            expect(container.querySelector('p')).not.toBeNull();
-            expect(queryByText('Required field.')).not.toBeNull();
+            expect(queryByText('Required field.')).toBeDefined();
         });
 
-        it('should be displayed with an helper Text', () => {
+        it('should be displayed even with an helper Text', () => {
             const { queryByText } = render(
                 <SelectArrayInput
                     {...defaultProps}
+                    helperText="Can I help you?"
                     meta={{
                         touched: true,
                         error: 'Required field.',
-                        helperText: 'Can I help you?',
                     }}
                 />
             );
-            expect(queryByText('Required field.')).not.toBeNull();
-            expect(queryByText('Can I help you?')).not.toBeNull();
+            expect(queryByText('Required field.')).toBeDefined();
+            expect(queryByText('Can I help you?')).toBeNull();
         });
     });
 });

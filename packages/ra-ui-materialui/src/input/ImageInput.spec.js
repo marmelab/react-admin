@@ -17,18 +17,19 @@ describe('<ImageInput />', () => {
         delete global.FileReader;
     });
 
+    const defautProps = {
+        input: {
+            value: {
+                picture: null,
+            },
+        },
+        meta: {},
+        translate: x => x,
+        source: 'picture',
+    };
+
     it('should display a dropzone', () => {
-        const wrapper = shallow(
-            <ImageInput
-                input={{
-                    value: {
-                        picture: null,
-                    },
-                }}
-                translate={x => x}
-                source="picture"
-            />
-        );
+        const wrapper = shallow(<ImageInput {...defautProps} />);
 
         assert.equal(wrapper.find('Dropzone').length, 1);
     });
@@ -36,16 +37,7 @@ describe('<ImageInput />', () => {
     it('should display correct label depending multiple property', () => {
         const test = (multiple, expectedLabel) => {
             const wrapper = shallow(
-                <ImageInput
-                    multiple={multiple}
-                    input={{
-                        value: {
-                            picture: null,
-                        },
-                    }}
-                    translate={x => x}
-                    source="picture"
-                />
+                <ImageInput {...defautProps} multiple={multiple} />
             );
 
             assert.equal(wrapper.find('Dropzone p').text(), expectedLabel);
@@ -58,16 +50,7 @@ describe('<ImageInput />', () => {
     it('should display correct custom label', () => {
         const test = expectedLabel => {
             const wrapper = shallow(
-                <ImageInput
-                    placeholder={expectedLabel}
-                    input={{
-                        value: {
-                            picture: null,
-                        },
-                    }}
-                    translate={x => x}
-                    source="picture"
-                />
+                <ImageInput {...defautProps} placeholder={expectedLabel} />
             );
 
             assert.ok(wrapper.find('Dropzone').contains(expectedLabel));
@@ -83,13 +66,13 @@ describe('<ImageInput />', () => {
         it('should display file preview using child as preview component', () => {
             const wrapper = shallow(
                 <ImageInput
+                    {...defautProps}
                     input={{
                         value: {
                             url: 'http://foo.com/bar.jpg',
                             title: 'Hello world!',
                         },
                     }}
-                    translate={x => x}
                 >
                     <ImageField source="url" title="title" />
                 </ImageInput>
@@ -109,6 +92,7 @@ describe('<ImageInput />', () => {
         it('should display all files (when several) previews using child as preview component', () => {
             const wrapper = shallow(
                 <ImageInput
+                    {...defautProps}
                     input={{
                         value: [
                             {
@@ -121,7 +105,6 @@ describe('<ImageInput />', () => {
                             },
                         ],
                     }}
-                    translate={x => x}
                 >
                     <ImageField source="url" title="title" />
                 </ImageInput>
@@ -156,8 +139,7 @@ describe('<ImageInput />', () => {
         it('should update previews when updating input value', () => {
             const wrapper = shallow(
                 <ImageInput
-                    source="picture"
-                    translate={x => x}
+                    {...defautProps}
                     input={{
                         value: {
                             url: 'http://static.acme.com/foo.jpg',
@@ -189,7 +171,7 @@ describe('<ImageInput />', () => {
 
         it('should update previews when dropping a file', () => {
             const wrapper = shallow(
-                <ImageInput source="picture" translate={x => x} input={{}}>
+                <ImageInput {...defautProps} input={{}}>
                     <ImageField source="url" />
                 </ImageInput>
             );
@@ -213,8 +195,7 @@ describe('<ImageInput />', () => {
     it('should allow to remove an image from the input with `FileInputPreview.onRemove`', () => {
         const wrapper = shallow(
             <ImageInput
-                source="picture"
-                translate={x => x}
+                {...defautProps}
                 input={{
                     onBlur: () => {},
                     value: [
