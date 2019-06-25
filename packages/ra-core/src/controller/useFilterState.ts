@@ -6,8 +6,8 @@ export interface Filter {
 }
 
 interface UseFilterStateOptions {
-    filterToQuery: (v: string) => Filter;
-    permanentFilter: Filter;
+    filterToQuery?: (v: string) => Filter;
+    permanentFilter?: Filter;
     debounceTime?: number;
 }
 
@@ -18,10 +18,13 @@ interface UseFilterStateProps {
 
 export default ({
     filterToQuery = v => ({ q: v }),
-    permanentFilter,
+    permanentFilter = {},
     debounceTime = 500,
 }: UseFilterStateOptions): UseFilterStateProps => {
-    const [filter, setFilterValue] = useState(permanentFilter);
+    const [filter, setFilterValue] = useState({
+        ...permanentFilter,
+        ...filterToQuery(''),
+    });
 
     const setFilter = debounce(
         value =>
