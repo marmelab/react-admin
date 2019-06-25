@@ -25,12 +25,6 @@ const renderWithTranslations = content =>
                             validation: {
                                 match: 'Must match %{match}',
                             },
-                            constants: {
-                                match: 'IAmMatch',
-                            },
-                            targets: {
-                                foo: 'Foo',
-                            },
                         },
                     },
                 },
@@ -46,7 +40,15 @@ describe('ValidationError', () => {
         translate.mockClear();
     });
 
-    it('It renders the error message translated if it is a string', () => {
+    it('renders the error message if it is a string and no translation is found', () => {
+        const { getByText } = renderWithTranslations(
+            <ValidationError error="message_missing" />
+        );
+
+        expect(getByText('message_missing')).toBeTruthy();
+    });
+
+    it('renders the error message translated if it is a string', () => {
         const { getByText } = renderWithTranslations(
             <ValidationError error="ra.validation.required" />
         );
@@ -54,7 +56,20 @@ describe('ValidationError', () => {
         expect(getByText('Required')).toBeTruthy();
     });
 
-    it('It renders the error message translated if it is an object, with all its arguments translated as well, fallbacking to the arg value', () => {
+    it('renders the error message if it is an object and no translation is found', () => {
+        const { getByText } = renderWithTranslations(
+            <ValidationError
+                error={{
+                    message: 'message_missing',
+                    args: { foo: 123 },
+                }}
+            />
+        );
+
+        expect(getByText('message_missing')).toBeTruthy();
+    });
+
+    it('renders the error message translated if it is an object, interpolating numbers', () => {
         const { getByText } = renderWithTranslations(
             <ValidationError
                 error={{
@@ -67,12 +82,12 @@ describe('ValidationError', () => {
         expect(getByText('Min Value 10')).toBeDefined();
     });
 
-    it('It renders the error message translated if it is an object, with all its arguments translated as well', () => {
+    it('renders the error message translated if it is an object, interpolating strings', () => {
         const { getByText } = renderWithTranslations(
             <ValidationError
                 error={{
                     message: 'myapp.validation.match',
-                    args: { match: 'myapp.constants.match' },
+                    args: { match: 'IAmMatch' },
                 }}
             />
         );
@@ -80,16 +95,16 @@ describe('ValidationError', () => {
         expect(getByText('Must match IAmMatch')).toBeDefined();
     });
 
-    it('It renders the error message translated if it is an object, translating array arguments as well, fallbacking to the arg value', () => {
+    it('renders the error message translated if it is an object, interpolating arrays', () => {
         const { getByText } = renderWithTranslations(
             <ValidationError
                 error={{
                     message: 'ra.validation.oneOf',
-                    args: { list: ['myapp.targets.foo', 'bar'] },
+                    args: { list: ['foo', 'bar'] },
                 }}
             />
         );
 
-        expect(getByText('Must be one of Foo, bar')).toBeDefined();
+        expect(getByText('Must be one of foo,bar')).toBeDefined();
     });
 });
