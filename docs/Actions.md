@@ -791,7 +791,7 @@ Almost everything we saw before about custom actions is true for custom `List` b
 * Bulk action button components receive the following props: `resource`, `selectedIds` and `filterValues`
 * They do not receive the current record in the `record` prop as there are many of them.
 
-You can find a complete example of a custom Bulk Action button in the `List` documentation, in the [Bulk Action Buttons](/List.html#bulk-action-buttons) section.
+You can find a complete example of a custom Bulk Action button in the `List` documentation, in the [Bulk Action Buttons](./List.md#bulk-action-buttons) section.
 
 ## Conclusion
 
