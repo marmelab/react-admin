@@ -66,7 +66,7 @@ Bootstrap the admin app by replacing the `src/App.js` by the following code:
 ```jsx
 // in src/App.js
 import React from 'react';
-import { Admin, Resource } from 'react-admin';
+import { Admin } from 'react-admin';
 import jsonServerProvider from 'ra-data-json-server';
 
 const dataProvider = jsonServerProvider('http://jsonplaceholder.typicode.com');
