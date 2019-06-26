@@ -73,6 +73,10 @@ const useAuth = (authParams = emptyParams, logoutOnFailure = true) => {
     const authProvider = useContext(AuthContext);
     const dispatch = useDispatch();
     useEffect(() => {
+        if (!authProvider) {
+            setState({ loading: false, loaded: true, authenticated: true });
+            return;
+        }
         authProvider(AUTH_CHECK, authParams)
             .then(() => {
                 setState({ loading: false, loaded: true, authenticated: true });

@@ -4,31 +4,39 @@ import { cleanup } from 'react-testing-library';
 
 import Authenticated from './Authenticated';
 import { userCheck } from '../actions/authActions';
+import AuthContext from './AuthContext';
 import renderWithRedux from '../util/renderWithRedux';
 
 describe('<Authenticated>', () => {
     afterEach(cleanup);
     const Foo = () => <div>Foo</div>;
-    it('should call userCheck on mount', () => {
-        const { dispatch } = renderWithRedux(
-            <Authenticated>
-                <Foo />
-            </Authenticated>
+    it('should call authProvider on mount', () => {
+        const authProvider = jest.fn(() => Promise.resolve());
+        renderWithRedux(
+            <AuthContext.Provider value={authProvider}>
+                <Authenticated>
+                    <Foo />
+                </Authenticated>
+            </AuthContext.Provider>
         );
-        expect(dispatch).toBeCalledWith(userCheck({}, '/'));
+        expect(authProvider).toBeCalledWith('AUTH_CHECK', {});
     });
     it('should call userCheck on update', () => {
+        const authProvider = jest.fn(() => Promise.resolve());
         const FooWrapper = props => (
-            <Authenticated {...props}>
-                <Foo />
-            </Authenticated>
+            <AuthContext.Provider value={authProvider}>
+                <Authenticated {...props}>
+                    <Foo />
+                </Authenticated>
+            </AuthContext.Provider>
         );
-        const { dispatch, rerender } = renderWithRedux(<FooWrapper />);
+        const { rerender } = renderWithRedux(<FooWrapper />);
         rerender(<FooWrapper authParams={{ foo: 'bar' }} />);
-        expect(dispatch).toBeCalledTimes(2);
-        expect(dispatch.mock.calls[1][0]).toEqual(
-            userCheck({ foo: 'bar' }, '/')
-        );
+        expect(authProvider).toBeCalledTimes(2);
+        expect(authProvider.mock.calls[1]).toEqual([
+            'AUTH_CHECK',
+            { foo: 'bar' },
+        ]);
     });
     it('should render its child by default', () => {
         const { queryByText } = renderWithRedux(
