@@ -90,7 +90,7 @@ The `<Admin>` component expects one or more `<Resource>` child components. Each 
 ```diff
 // in src/App.js
 import React from 'react';
--import { Admin, Resource } from 'react-admin';
+-import { Admin } from 'react-admin';
 +import { Admin, Resource, ListGuesser } from 'react-admin';
 import jsonServerProvider from 'ra-data-json-server';
 
