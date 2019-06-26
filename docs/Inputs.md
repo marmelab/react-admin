@@ -376,7 +376,7 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 ![CustomBooleanInputCheckIcon](./img/custom-switch-icon.png)
 
 
-Refer to [Material UI Switch documentation](http://www.material-ui.com/#/components/switch) for more details.
+Refer to [Material UI Switch documentation](http://v1.material-ui.com/api/switch) for more details.
 
 `<NullableBooleanInput />` renders as a dropdown list, allowing to choose between true, false, and null values.
 
@@ -465,11 +465,11 @@ import { FavoriteBorder, Favorite } from '@material-ui/icons';
 ```
 {% endraw %}
 
-Refer to [Material UI Checkbox documentation](https://v1-5-0.material-ui.com/api/checkbox/) for more details.
+Refer to [Material UI Checkbox documentation](https://v1.material-ui.com/api/checkbox/) for more details.
 
 ## `<DateInput>`
 
-Ideal for editing dates, `<DateInput>` renders a standard browser [Date Picker](https://material-ui.com/demos/pickers/#date-pickers), so the appearance depends on the browser (and falls back to a text input on safari).
+Ideal for editing dates, `<DateInput>` renders a standard browser [Date Picker](https://v1.material-ui.com/demos/pickers/#date-pickers), so the appearance depends on the browser (and falls back to a text input on safari).
 
 ```jsx
 import { DateInput } from 'react-admin';
@@ -483,7 +483,7 @@ import { DateInput } from 'react-admin';
 
 ## `<DateTimeInput>`
 
-An input for editing dates with time. `<DateTimeInput>` renders a standard browser [Date and Time Picker](https://material-ui.com/demos/pickers/#date-amp-time-pickers), so the appearance depends on the browser (and falls back to a text input on safari).
+An input for editing dates with time. `<DateTimeInput>` renders a standard browser [Date and Time Picker](https://v1.material-ui.com/demos/pickers/#date-amp-time-pickers), so the appearance depends on the browser (and falls back to a text input on safari).
 
 ```jsx
 import { DateTimeInput } from 'react-admin';
@@ -716,7 +716,7 @@ Lastly, use the `options` attribute if you want to override any of Material UI's
 ```
 {% endraw %}
 
-Refer to [Material UI RadioGroup documentation](http://www.material-ui.com/#/components/radio-button) for more details.
+Refer to [Material UI RadioGroup documentation](http://v1.material-ui.com/api/radio-group) for more details.
 
 **Tip**: If you want to populate the `choices` attribute with a list of related records, you should decorate `<RadioButtonGroupInput>` with [`<ReferenceInput>`](#referenceinput), and leave the `choices` empty:
 
@@ -961,7 +961,7 @@ You can customize the rich text editor toolbar using the `toolbar` attribute, as
 
 ## `<SelectInput>`
 
-To let users choose a value in a list using a dropdown, use `<SelectInput>`. It renders using [Material ui's `<SelectField>`](http://www.material-ui.com/#/components/select-field). Set the `choices` attribute to determine the options (with `id`, `name` tuples):
+To let users choose a value in a list using a dropdown, use `<SelectInput>`. It renders using [Material ui's `<Select>`](http://v1.material-ui.com/api/select). Set the `choices` attribute to determine the options (with `id`, `name` tuples):
 
 ```jsx
 import { SelectInput } from 'react-admin';
@@ -1044,7 +1044,7 @@ Lastly, use the `options` attribute if you want to override any of Material UI's
 ```
 {% endraw %}
 
-Refer to [Material UI SelectField documentation](http://www.material-ui.com/#/components/select-field) for more details.
+Refer to [Material UI Select documentation](http://v1.material-ui.com/api/select) for more details.
 
 **Tip**: If you want to populate the `choices` attribute with a list of related records, you should decorate `<SelectInput>` with [`<ReferenceInput>`](#referenceinput), and leave the `choices` empty:
 
@@ -1086,7 +1086,7 @@ const choices = [
 
 ## `<SelectArrayInput>`
 
-To let users choose several values in a list using a dropdown, use `<SelectArrayInput>`. It renders using [Material ui's `<Select>`](http://www.material-ui.com/#/components/select). Set the `choices` attribute to determine the options (with `id`, `name` tuples):
+To let users choose several values in a list using a dropdown, use `<SelectArrayInput>`. It renders using [Material ui's `<Select>`](http://v1.material-ui.com/api/select). Set the `choices` attribute to determine the options (with `id`, `name` tuples):
 
 ```js
 import { SelectArrayInput } from 'react-admin';
@@ -1143,7 +1143,7 @@ Lastly, use the `options` attribute if you want to override any of the `<Select>
 ```
 {% endraw %}
 
-Refer to [the Select documentation](http://www.material-ui.com/#/components/select) for more details.
+Refer to [the Select documentation](http://v1.material-ui.com/api/select) for more details.
 
 The `SelectArrayInput` component **cannot** be used inside a `ReferenceInput` but can be used inside a `ReferenceArrayInput`.
 
