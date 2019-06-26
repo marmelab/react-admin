@@ -48,9 +48,13 @@ const emptyParams = {};
  *
  *     const CustomRoutes = [
  *         <Route path="/foo" render={() => {
- *              useAuth({ myContext: 'foobar' });
+ *              useAuth();
  *              return <Foo />;
- *          }} />
+ *          }} />,
+ *         <Route path="/bar" render={() => {
+ *              const { authenticated } = useAuth({ myContext: 'foobar' }, false);
+ *              return authenticated ? <Bar /> : <BarNotAuthenticated />;
+ *          }} />,
  *     ];
  *     const App = () => (
  *         <Admin customRoutes={customRoutes}>
