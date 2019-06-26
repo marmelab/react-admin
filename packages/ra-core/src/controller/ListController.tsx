@@ -244,19 +244,19 @@ export class UnconnectedListController extends Component<
             Object.keys(props.query).length > 0
                 ? props.query
                 : hasCustomParams(props.params)
-                ? props.params
+                ? { ...props.params }
                 : { filter: props.filterDefaultValues || {} };
 
         if (!query.sort) {
             query.sort = props.sort.field;
             query.order = props.sort.order;
         }
-        if (!query.perPage) {
-            query.perPage = props.perPage;
-        }
-        if (!query.page) {
-            query.page = 1;
-        }
+
+        // @ts-ignore
+        query.perPage = parseInt(query.perPage ? query.perPage : props.perPage, 10);
+        // @ts-ignore
+        query.page = query.page ? parseInt(query.page, 10) : 1;
+
         return query as ListParams;
     }
 
