@@ -252,8 +252,11 @@ export class UnconnectedListController extends Component<
             query.order = props.sort.order;
         }
 
-        // @ts-ignore
-        query.perPage = parseInt(query.perPage ? query.perPage : props.perPage, 10);
+        query.perPage = parseInt(
+            // @ts-ignore
+            query.perPage ? query.perPage : props.perPage,
+            10
+        );
         // @ts-ignore
         query.page = query.page ? parseInt(query.page, 10) : 1;
 
