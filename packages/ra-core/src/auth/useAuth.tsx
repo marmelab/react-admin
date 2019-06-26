@@ -7,6 +7,11 @@ import { userCheck } from '../actions/authActions';
 /**
  * Hook for restricting access to authenticated users
  *
+ * Calls the authProvider asynchronously with the AUTH_CHECK verb.
+ * If the authProvider returns a failed promise, logs the user out.
+ *
+ * The hook returns nothing.
+ *
  * Useful for Route components ; used internally by Resource.
  * To be called in custom page components to require authentication.
  *
@@ -27,6 +32,8 @@ import { userCheck } from '../actions/authActions';
  *             ...
  *         </Admin>
  *     );
+ *
+ * @returns void
  */
 const useAuth = authParams => {
     const location = useSelector((state: ReduxState) => state.router.location);

@@ -1,17 +1,13 @@
 import { Children, Component, ReactNode, ComponentType } from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import compose from 'recompose/compose';
-import getContext from 'recompose/getContext';
-
-import { userCheck as userCheckAction } from '../actions/authActions';
-import { AUTH_GET_PERMISSIONS } from './types';
-import { isLoggedIn as getIsLoggedIn } from '../reducer';
-import warning from '../util/warning';
-import { AuthProvider } from '../types';
-import { UserCheck } from './types';
 import { Location } from 'history';
 import { match as Match } from 'react-router';
+
+import { AUTH_GET_PERMISSIONS, UserCheck } from './types';
+import AuthContext from './AuthContext';
+import { userCheck as userCheckAction } from '../actions/authActions';
+import { isLoggedIn as getIsLoggedIn } from '../reducer';
+import warning from '../util/warning';
 
 export interface WithPermissionsChildrenParams {
     authParams?: object;
@@ -34,7 +30,6 @@ interface Props {
 }
 
 interface EnhancedProps {
-    authProvider: AuthProvider;
     isLoggedIn: boolean;
     userCheck: UserCheck;
 }
@@ -78,6 +73,7 @@ const isEmptyChildren = children => Children.count(children) === 0;
  *     );
  */
 export class WithPermissions extends Component<Props & EnhancedProps> {
+    static contextType = AuthContext;
     cancelled = false;
 
     state = { permissions: null };
@@ -117,7 +113,8 @@ export class WithPermissions extends Component<Props & EnhancedProps> {
     }
 
     async checkPermissions(params: Props & EnhancedProps) {
-        const { authProvider, authParams, location, match } = params;
+        const authProvider = this.context;
+        const { authParams, location, match } = params;
         try {
             const permissions = await authProvider(AUTH_GET_PERMISSIONS, {
                 ...authParams,
@@ -138,8 +135,8 @@ export class WithPermissions extends Component<Props & EnhancedProps> {
     // render even though the AUTH_GET_PERMISSIONS
     // isn't finished (optimistic rendering)
     render() {
+        const authProvider = this.context;
         const {
-            authProvider,
             userCheck,
             isLoggedIn,
             render,
@@ -162,14 +159,9 @@ const mapStateToProps = state => ({
     isLoggedIn: getIsLoggedIn(state),
 });
 
-const EnhancedWithPermissions = compose(
-    getContext({
-        authProvider: PropTypes.func,
-    }),
-    connect(
-        mapStateToProps,
-        { userCheck: userCheckAction }
-    )
+const EnhancedWithPermissions = connect(
+    mapStateToProps,
+    { userCheck: userCheckAction }
 )(WithPermissions);
 
 export default EnhancedWithPermissions as ComponentType<Props>;

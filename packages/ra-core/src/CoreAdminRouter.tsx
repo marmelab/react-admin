@@ -7,19 +7,16 @@ import React, {
     CSSProperties,
     ReactElement,
 } from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
-import compose from 'recompose/compose';
-import getContext from 'recompose/getContext';
 
 import { AUTH_GET_PERMISSIONS } from './auth/types';
 import { isLoggedIn } from './reducer';
 import { userLogout as userLogoutAction } from './actions/authActions';
 import RoutesWithLayout from './RoutesWithLayout';
+import AuthContext from './auth/AuthContext';
 import {
     Dispatch,
-    AuthProvider,
     AdminChildren,
     CustomRoutes,
     CatchAllComponent,
@@ -45,7 +42,6 @@ export interface AdminRouterProps extends LayoutProps {
 }
 
 interface EnhancedProps {
-    authProvider?: AuthProvider;
     isLoggedIn?: boolean;
     userLogout: Dispatch<typeof userLogoutAction>;
 }
@@ -61,7 +57,7 @@ export class CoreAdminRouter extends Component<
     static defaultProps: Partial<AdminRouterProps> = {
         customRoutes: [],
     };
-
+    static contextType = AuthContext;
     state: State = { children: [] };
 
     componentWillMount() {
@@ -77,7 +73,7 @@ export class CoreAdminRouter extends Component<
     initializeResourcesAsync = async (
         props: AdminRouterProps & EnhancedProps
     ) => {
-        const { authProvider } = props;
+        const authProvider = this.context;
         try {
             const permissions = await authProvider(AUTH_GET_PERMISSIONS);
             const resolveChildren = props.children as RenderResourcesFunction;
@@ -250,12 +246,7 @@ const mapStateToProps = state => ({
     isLoggedIn: isLoggedIn(state),
 });
 
-export default compose(
-    getContext({
-        authProvider: PropTypes.func,
-    }),
-    connect(
-        mapStateToProps,
-        { userLogout: userLogoutAction }
-    )
+export default connect(
+    mapStateToProps,
+    { userLogout: userLogoutAction }
 )(CoreAdminRouter) as ComponentType<AdminRouterProps>;

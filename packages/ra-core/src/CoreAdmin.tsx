@@ -7,6 +7,7 @@ import { Switch, Route } from 'react-router-dom';
 import { ConnectedRouter } from 'connected-react-router';
 import withContext from 'recompose/withContext';
 
+import AuthContext from './auth/AuthContext';
 import createAdminStore from './createAdminStore';
 import TranslationProvider from './i18n/TranslationProvider';
 import CoreAdminRouter from './CoreAdminRouter';
@@ -55,11 +56,7 @@ interface AdminContext {
     authProvider: AuthProvider;
 }
 
-class CoreAdminBase extends Component<AdminProps> {
-    static contextTypes = {
-        store: PropTypes.object,
-    };
-
+class CoreAdmin extends Component<AdminProps> {
     static defaultProps: Partial<AdminProps> = {
         catchAll: () => null,
         layout: DefaultLayout,
@@ -174,31 +171,28 @@ React-admin requires a valid dataProvider function to work.`);
         } = this.props;
 
         return this.reduxIsAlreadyInitialized ? (
-            this.renderCore()
-        ) : (
-            <Provider
-                store={createAdminStore({
-                    authProvider,
-                    customReducers,
-                    customSagas,
-                    dataProvider,
-                    i18nProvider,
-                    initialState,
-                    locale,
-                    history: this.history,
-                })}
-            >
+            <AuthContext.Provider value={authProvider}>
                 {this.renderCore()}
-            </Provider>
+            </AuthContext.Provider>
+        ) : (
+            <AuthContext.Provider value={authProvider}>
+                <Provider
+                    store={createAdminStore({
+                        authProvider,
+                        customReducers,
+                        customSagas,
+                        dataProvider,
+                        i18nProvider,
+                        initialState,
+                        locale,
+                        history: this.history,
+                    })}
+                >
+                    {this.renderCore()}
+                </Provider>
+            </AuthContext.Provider>
         );
     }
 }
-
-const CoreAdmin = withContext<AdminContext, AdminProps>(
-    {
-        authProvider: PropTypes.func,
-    },
-    ({ authProvider }) => ({ authProvider })
-)(CoreAdminBase) as ComponentType<AdminProps>;
 
 export default CoreAdmin;

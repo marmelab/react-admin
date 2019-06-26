@@ -1,94 +1,115 @@
 import React from 'react';
-import { shallow } from 'enzyme';
-import assert from 'assert';
-import { Route } from 'react-router-dom';
+import { cleanup, wait } from 'react-testing-library';
+import expect from 'expect';
+import { Router, Route } from 'react-router-dom';
+import { createMemoryHistory } from 'history';
 
+import renderWithRedux from './util/renderWithRedux';
 import { CoreAdminRouter } from './CoreAdminRouter';
+import AuthContext from './auth/AuthContext';
 import Resource from './Resource';
 
+const Layout = ({ children }) => <div>Layout {children}</div>;
+
 describe('<AdminRouter>', () => {
+    afterEach(cleanup);
+
     const defaultProps = {
-        authProvider: () => Promise.resolve(),
         userLogout: () => <span />,
         customRoutes: [],
     };
 
     describe('With resources as regular children', () => {
-        it('should render all resources with a registration intent', () => {
-            const wrapper = shallow(
-                <CoreAdminRouter {...defaultProps}>
-                    <Resource name="posts" />
-                    <Resource name="comments" />
-                </CoreAdminRouter>
+        it('should render all resources in routes', () => {
+            const history = createMemoryHistory();
+            const { getByText } = renderWithRedux(
+                <Router history={history}>
+                    <CoreAdminRouter {...defaultProps} layout={Layout}>
+                        <Resource
+                            name="posts"
+                            list={() => <span>PostList</span>}
+                        />
+                        <Resource
+                            name="comments"
+                            list={() => <span>CommentList</span>}
+                        />
+                    </CoreAdminRouter>
+                </Router>
             );
-
-            const resources = wrapper.find('ConnectFunction');
-
-            assert.equal(resources.length, 2);
-            assert.deepEqual(
-                resources.map(resource => resource.prop('intent')),
-                ['registration', 'registration']
-            );
+            expect(getByText('Layout')).toBeDefined();
+            history.push('/posts');
+            expect(getByText('PostList')).toBeDefined();
+            history.push('/comments');
+            expect(getByText('CommentList')).toBeDefined();
         });
     });
 
     describe('With resources returned from a function as children', () => {
         it('should render all resources with a registration intent', async () => {
-            const wrapper = shallow(
-                <CoreAdminRouter {...defaultProps}>
-                    {() => [
-                        <Resource key="posts" name="posts" />,
-                        <Resource key="comments" name="comments" />,
-                        null,
-                    ]}
-                </CoreAdminRouter>
+            const history = createMemoryHistory();
+            const { getByText } = renderWithRedux(
+                <AuthContext.Provider value={() => Promise.resolve()}>
+                    <Router history={history}>
+                        <CoreAdminRouter {...defaultProps} layout={Layout}>
+                            {() => [
+                                <Resource
+                                    key="posts"
+                                    name="posts"
+                                    list={() => <span>PostList</span>}
+                                />,
+                                <Resource
+                                    key="comments"
+                                    name="comments"
+                                    list={() => <span>CommentList</span>}
+                                />,
+                                null,
+                            ]}
+                        </CoreAdminRouter>
+                    </Router>
+                </AuthContext.Provider>
             );
-
             // Timeout needed because of the authProvider call
-            await new Promise(resolve => {
-                setTimeout(resolve, 10);
-            });
-
-            wrapper.update();
-            const resources = wrapper.find('ConnectFunction');
-            assert.equal(resources.length, 2);
-            assert.deepEqual(
-                resources.map(resource => resource.prop('intent')),
-                ['registration', 'registration']
-            );
+            await wait();
+            expect(getByText('Layout')).toBeDefined();
+            history.push('/posts');
+            expect(getByText('PostList')).toBeDefined();
+            history.push('/comments');
+            expect(getByText('CommentList')).toBeDefined();
         });
     });
 
-    it('should render the custom routes which do not need a layout', () => {
-        const Bar = () => <div>Bar</div>;
-
-        const wrapper = shallow(
-            <CoreAdminRouter
-                customRoutes={[
-                    <Route
-                        key="custom"
-                        noLayout
-                        exact
-                        path="/custom"
-                        render={() => <div>Foo</div>}
-                    />,
-                    <Route
-                        key="custom2"
-                        noLayout
-                        exact
-                        path="/custom2"
-                        component={Bar}
-                    />,
-                ]}
-                location={{ pathname: '/custom' }}
-            >
-                <Resource name="posts" />
-                <Resource name="comments" />
-            </CoreAdminRouter>
+    it('should render the custom routes with and withoutayout', () => {
+        const history = createMemoryHistory();
+        const { getByText, queryByText } = renderWithRedux(
+            <Router history={history}>
+                <CoreAdminRouter
+                    layout={Layout}
+                    customRoutes={[
+                        <Route
+                            key="foo"
+                            noLayout
+                            exact
+                            path="/foo"
+                            render={() => <div>Foo</div>}
+                        />,
+                        <Route
+                            key="bar"
+                            exact
+                            path="/bar"
+                            component={() => <div>Bar</div>}
+                        />,
+                    ]}
+                    location={{ pathname: '/custom' }}
+                >
+                    <Resource name="posts" />
+                </CoreAdminRouter>
+            </Router>
         );
-
-        const routes = wrapper.find('Route');
-        assert.equal(routes.at(0).prop('path'), '/custom');
-        assert.equal(routes.at(1).prop('path'), '/custom2');
+        history.push('/foo');
+        expect(queryByText('Layout')).toBeNull();
+        expect(getByText('Foo')).toBeDefined();
+        history.push('/bar');
+        expect(getByText('Layout')).toBeDefined();
+        expect(getByText('Bar')).toBeDefined();
     });
 });
