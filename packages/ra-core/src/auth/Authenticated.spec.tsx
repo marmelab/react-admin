@@ -1,38 +1,41 @@
 import React from 'react';
 import expect from 'expect';
-import { shallow, render } from 'enzyme';
-import { html } from 'cheerio';
+import { cleanup } from 'react-testing-library';
 
-import { Authenticated } from './Authenticated';
+import Authenticated from './Authenticated';
+import { userCheck } from '../actions/authActions';
+import renderWithRedux from '../util/renderWithRedux';
 
 describe('<Authenticated>', () => {
+    afterEach(cleanup);
     const Foo = () => <div>Foo</div>;
     it('should call userCheck on mount', () => {
-        const userCheck = jest.fn();
-        shallow(
-            <Authenticated location={{}} userCheck={userCheck}>
+        const { dispatch } = renderWithRedux(
+            <Authenticated>
                 <Foo />
             </Authenticated>
         );
-        expect(userCheck.mock.calls.length).toEqual(1);
+        expect(dispatch).toBeCalledWith(userCheck({}, '/'));
     });
     it('should call userCheck on update', () => {
-        const userCheck = jest.fn();
-        const wrapper = shallow(
-            <Authenticated location={{}} userCheck={userCheck}>
+        const FooWrapper = props => (
+            <Authenticated {...props}>
                 <Foo />
             </Authenticated>
         );
-        wrapper.setProps({ location: { pathname: 'foo' }, userCheck });
-        expect(userCheck.mock.calls.length).toEqual(2);
+        const { dispatch, rerender } = renderWithRedux(<FooWrapper />);
+        rerender(<FooWrapper authParams={{ foo: 'bar' }} />);
+        expect(dispatch).toBeCalledTimes(2);
+        expect(dispatch.mock.calls[1][0]).toEqual(
+            userCheck({ foo: 'bar' }, '/')
+        );
     });
     it('should render its child by default', () => {
-        const userCheck = jest.fn();
-        const wrapper = render(
-            <Authenticated location={{}} userCheck={userCheck}>
+        const { queryByText } = renderWithRedux(
+            <Authenticated>
                 <Foo />
             </Authenticated>
         );
-        expect(html(wrapper)).toEqual('<div>Foo</div>');
+        expect(queryByText('Foo')).toBeDefined();
     });
 });

@@ -30,7 +30,7 @@ export interface UserCheckAction {
 export const userCheck = (
     payload: object,
     pathName: string,
-    routeParams
+    routeParams: object = {}
 ): UserCheckAction => ({
     type: USER_CHECK,
     payload: {
