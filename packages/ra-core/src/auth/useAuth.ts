@@ -18,7 +18,7 @@ const getErrorMessage = (error, defaultMessage) =>
 interface State {
     loading: boolean;
     loaded: boolean;
-    authenticated: boolean;
+    authenticated?: boolean;
     error?: any;
 }
 
@@ -76,7 +76,10 @@ const useAuth = (authParams = emptyParams, logoutOnFailure = true) => {
             setState({ loading: false, loaded: true, authenticated: true });
             return;
         }
-        authProvider(AUTH_CHECK, authParams)
+        authProvider(AUTH_CHECK, {
+            location: location ? location.pathname : undefined,
+            ...authParams,
+        })
             .then(() => {
                 setState({ loading: false, loaded: true, authenticated: true });
             })
