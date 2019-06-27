@@ -78,7 +78,7 @@ describe('<AdminRouter>', () => {
         });
     });
 
-    it('should render the custom routes with and withoutayout', () => {
+    it('should render the custom routes with and without layout', () => {
         const history = createMemoryHistory();
         const { getByText, queryByText } = renderWithRedux(
             <Router history={history}>

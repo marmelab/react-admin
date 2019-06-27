@@ -1,6 +1,6 @@
 import { useEffect, useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { push, replace } from 'connected-react-router';
+import { replace } from 'connected-react-router';
 
 import AuthContext from './AuthContext';
 import { AUTH_CHECK, AUTH_LOGOUT } from './types';
@@ -66,7 +66,6 @@ const useAuth = (authParams = emptyParams, logoutOnFailure = true) => {
     const [state, setState] = useSafeSetState<State>({
         loading: true,
         loaded: false,
-        authenticated: false,
     });
     const location = useSelector((state: ReduxState) => state.router.location);
     const nextPathname = location && location.pathname;

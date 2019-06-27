@@ -3,7 +3,6 @@ import expect from 'expect';
 import { cleanup } from 'react-testing-library';
 
 import Authenticated from './Authenticated';
-import { userCheck } from '../actions/authActions';
 import AuthContext from './AuthContext';
 import renderWithRedux from '../util/renderWithRedux';
 
@@ -21,7 +20,7 @@ describe('<Authenticated>', () => {
         );
         expect(authProvider).toBeCalledWith('AUTH_CHECK', {});
     });
-    it('should call userCheck on update', () => {
+    it('should call authProvider on update', () => {
         const authProvider = jest.fn(() => Promise.resolve());
         const FooWrapper = props => (
             <AuthContext.Provider value={authProvider}>
