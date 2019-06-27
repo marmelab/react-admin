@@ -18,7 +18,7 @@ describe('<Authenticated>', () => {
                 </Authenticated>
             </AuthContext.Provider>
         );
-        expect(authProvider).toBeCalledWith('AUTH_CHECK', {});
+        expect(authProvider).toBeCalledWith('AUTH_CHECK', { location: '/' });
     });
     it('should call authProvider on update', () => {
         const authProvider = jest.fn(() => Promise.resolve());
@@ -34,7 +34,7 @@ describe('<Authenticated>', () => {
         expect(authProvider).toBeCalledTimes(2);
         expect(authProvider.mock.calls[1]).toEqual([
             'AUTH_CHECK',
-            { foo: 'bar' },
+            { foo: 'bar', location: '/' },
         ]);
     });
     it('should render its child by default', () => {
