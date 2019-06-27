@@ -89,12 +89,8 @@ export class Resource extends Component<ResourceProps & ConnectedProps> {
                         path={`${match.url}/create`}
                         render={routeProps => (
                             <WithPermissions
-                                render={props =>
-                                    createElement(create, {
-                                        basePath,
-                                        ...props,
-                                    })
-                                }
+                                component={create}
+                                basePath={basePath}
                                 {...routeProps}
                                 {...resource}
                             />
@@ -106,16 +102,12 @@ export class Resource extends Component<ResourceProps & ConnectedProps> {
                         path={`${match.url}/:id/show`}
                         render={routeProps => (
                             <WithPermissions
-                                render={props =>
-                                    createElement(show, {
-                                        basePath,
-                                        id: decodeURIComponent(
-                                            (props.match as ResourceMatch)
-                                                .params.id
-                                        ),
-                                        ...props,
-                                    })
-                                }
+                                component={show}
+                                basePath={basePath}
+                                id={decodeURIComponent(
+                                    (routeProps.match as ResourceMatch).params
+                                        .id
+                                )}
                                 {...routeProps}
                                 {...resource}
                             />
@@ -127,16 +119,12 @@ export class Resource extends Component<ResourceProps & ConnectedProps> {
                         path={`${match.url}/:id`}
                         render={routeProps => (
                             <WithPermissions
-                                render={props =>
-                                    createElement(edit, {
-                                        basePath,
-                                        id: decodeURIComponent(
-                                            (props.match as ResourceMatch)
-                                                .params.id
-                                        ),
-                                        ...props,
-                                    })
-                                }
+                                component={edit}
+                                basePath={basePath}
+                                id={decodeURIComponent(
+                                    (routeProps.match as ResourceMatch).params
+                                        .id
+                                )}
                                 {...routeProps}
                                 {...resource}
                             />
@@ -148,12 +136,8 @@ export class Resource extends Component<ResourceProps & ConnectedProps> {
                         path={`${match.url}`}
                         render={routeProps => (
                             <WithPermissions
-                                render={props =>
-                                    createElement(list, {
-                                        basePath,
-                                        ...props,
-                                    })
-                                }
+                                component={list}
+                                basePath={basePath}
                                 {...routeProps}
                                 {...resource}
                             />

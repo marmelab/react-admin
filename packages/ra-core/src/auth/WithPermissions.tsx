@@ -3,6 +3,7 @@ import {
     FunctionComponent,
     ReactElement,
     ComponentType,
+    createElement,
 } from 'react';
 import { Location } from 'history';
 
@@ -21,9 +22,11 @@ type WithPermissionsChildren = (
 interface Props {
     authParams?: object;
     children?: WithPermissionsChildren;
+    component?: ComponentType<any>;
     location?: Location;
     render?: WithPermissionsChildren;
     staticContext?: object;
+    [key: string]: any;
 }
 
 const isEmptyChildren = children => Children.count(children) === 0;
@@ -66,22 +69,29 @@ const WithPermissions: FunctionComponent<Props> = ({
     authParams,
     children,
     render,
+    component,
     staticContext,
     ...props
 }) => {
     warning(
-        render && children && !isEmptyChildren(children),
-        'You should not use both <WithPermissions render> and <WithPermissions children>; <WithPermissions children> will be ignored'
+        (render && children && !isEmptyChildren(children)) ||
+            (render && component) ||
+            (component && children && !isEmptyChildren(children)),
+        'You should only use one of the `component`, `render` and `children` props in <WithPermissions>'
     );
 
     useAuth(authParams);
     const { permissions } = usePermissions(authParams);
     // render even though the AUTH_GET_PERMISSIONS
     // isn't finished (optimistic rendering)
+    if (component) {
+        return createElement(component, { permissions, ...props });
+    }
+    // @deprecated
     if (render) {
         return render({ permissions, ...props });
     }
-
+    // @deprecated
     if (children) {
         return children({ permissions, ...props });
     }

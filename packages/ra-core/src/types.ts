@@ -116,12 +116,14 @@ export interface LayoutProps {
 
 export type LayoutComponent = ComponentType<LayoutProps>;
 
-interface ReactAdminComponentProps {
+export interface ReactAdminComponentProps {
     basePath: string;
+    permissions?: any;
 }
-interface ReactAdminComponentPropsWithId {
-    id: Identifier;
+export interface ReactAdminComponentPropsWithId {
     basePath: string;
+    permissions?: any;
+    id: Identifier;
 }
 
 export type ResourceMatch = Match<{
