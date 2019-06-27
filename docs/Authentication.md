@@ -352,7 +352,7 @@ const App = () => (
                 </MenuItem>
 ```
 
-## Restricting Access To A Custom Page
+## `useAuth()` Hook
 
 If you add [custom pages](./Actions.md), of if you [create an admin app from scratch](./CustomApp.md), you may need to secure access to pages manually. That's the purpose of the `useAuth()` hook, which calls the `authProvider` with the `AUTH_CHECK` type on mount, and redirects to login if it returns a rejected Promise.
 
