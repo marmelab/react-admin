@@ -1,37 +1,29 @@
-import { Children, Component, ReactNode, ComponentType } from 'react';
-import { connect } from 'react-redux';
+import {
+    Children,
+    FunctionComponent,
+    ReactElement,
+    ComponentType,
+} from 'react';
 import { Location } from 'history';
-import { match as Match } from 'react-router';
 
-import { AUTH_GET_PERMISSIONS, UserCheck } from './types';
-import AuthContext from './AuthContext';
-import { userCheck as userCheckAction } from '../actions/authActions';
-import { isLoggedIn as getIsLoggedIn } from '../reducer';
 import warning from '../util/warning';
+import useAuth from './useAuth';
+import usePermissions from './usePermissions';
 
 export interface WithPermissionsChildrenParams {
-    authParams?: object;
-    location?: Location;
-    match: Match;
     permissions: any;
 }
 
 type WithPermissionsChildren = (
     params: WithPermissionsChildrenParams
-) => ReactNode;
+) => ReactElement;
 
 interface Props {
     authParams?: object;
     children?: WithPermissionsChildren;
-    location: Location;
-    match: Match;
+    location?: Location;
     render?: WithPermissionsChildren;
     staticContext?: object;
-}
-
-interface EnhancedProps {
-    isLoggedIn: boolean;
-    userCheck: UserCheck;
 }
 
 const isEmptyChildren = children => Children.count(children) === 0;
@@ -45,7 +37,6 @@ const isEmptyChildren = children => Children.count(children) === 0;
  * a custom role. It will pass the permissions as a prop to your
  * component.
  *
- * Pass the `location` from the `routeParams` as `location` prop.
  * You can set additional `authParams` at will if your authProvider
  * requires it.
  *
@@ -58,11 +49,10 @@ const isEmptyChildren = children => Children.count(children) === 0;
  *     );
  *
  *     const customRoutes = [
- *         <Route path="/foo" render={routeParams =>
+ *         <Route path="/foo" render={() =>
  *             <WithPermissions
- *                  location={routeParams.location}
  *                  authParams={{ foo: 'bar' }}
- *                  render={props => <Foo {...props} />}
+ *                  render={({ permissions, ...props }) => <Foo permissions={permissions} {...props} />}
  *              />
  *         } />
  *     ];
@@ -72,96 +62,29 @@ const isEmptyChildren = children => Children.count(children) === 0;
  *         </Admin>
  *     );
  */
-export class WithPermissions extends Component<Props & EnhancedProps> {
-    static contextType = AuthContext;
-    cancelled = false;
+const WithPermissions: FunctionComponent<Props> = ({
+    authParams,
+    children,
+    render,
+    staticContext,
+    ...props
+}) => {
+    warning(
+        render && children && !isEmptyChildren(children),
+        'You should not use both <WithPermissions render> and <WithPermissions children>; <WithPermissions children> will be ignored'
+    );
 
-    state = { permissions: null };
-
-    componentWillMount() {
-        warning(
-            this.props.render &&
-                this.props.children &&
-                !isEmptyChildren(this.props.children),
-            'You should not use both <WithPermissions render> and <WithPermissions children>; <WithPermissions children> will be ignored'
-        );
-        this.checkAuthentication(this.props);
-    }
-
-    async componentDidMount() {
-        await this.checkPermissions(this.props);
-    }
-
-    componentWillUnmount() {
-        this.cancelled = true;
-    }
-
-    componentWillReceiveProps(nextProps) {
-        if (
-            nextProps.location !== this.props.location ||
-            nextProps.authParams !== this.props.authParams ||
-            nextProps.isLoggedIn !== this.props.isLoggedIn
-        ) {
-            this.checkAuthentication(nextProps);
-            this.checkPermissions(this.props);
-        }
-    }
-
-    checkAuthentication(params: Props & EnhancedProps) {
-        const { userCheck, authParams, location } = params;
-        userCheck(authParams, location && location.pathname);
-    }
-
-    async checkPermissions(params: Props & EnhancedProps) {
-        const authProvider = this.context;
-        const { authParams, location, match } = params;
-        try {
-            const permissions = await authProvider(AUTH_GET_PERMISSIONS, {
-                ...authParams,
-                routeParams: match ? match.params : undefined,
-                location: location ? location.pathname : undefined,
-            });
-
-            if (!this.cancelled) {
-                this.setState({ permissions });
-            }
-        } catch (error) {
-            if (!this.cancelled) {
-                this.setState({ permissions: null });
-            }
-        }
-    }
-
+    useAuth(authParams);
+    const { permissions } = usePermissions(authParams);
     // render even though the AUTH_GET_PERMISSIONS
     // isn't finished (optimistic rendering)
-    render() {
-        const authProvider = this.context;
-        const {
-            userCheck,
-            isLoggedIn,
-            render,
-            children,
-            staticContext,
-            ...props
-        } = this.props;
-        const { permissions } = this.state;
-
-        if (render) {
-            return render({ permissions, ...props });
-        }
-
-        if (children) {
-            return children({ permissions, ...props });
-        }
+    if (render) {
+        return render({ permissions, ...props });
     }
-}
-const mapStateToProps = state => ({
-    isLoggedIn: getIsLoggedIn(state),
-});
 
-const EnhancedWithPermissions = connect(
-    mapStateToProps,
-    { userCheck: userCheckAction }
-)(WithPermissions);
+    if (children) {
+        return children({ permissions, ...props });
+    }
+};
 
-export default EnhancedWithPermissions as ComponentType<Props>;
+export default WithPermissions as ComponentType<Props>;
