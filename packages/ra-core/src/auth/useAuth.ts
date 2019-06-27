@@ -24,6 +24,13 @@ interface State {
 
 const emptyParams = {};
 
+interface Options {
+    logoutOnFailure: boolean;
+}
+const defaultOptions = {
+    logoutOnFailure: true,
+};
+
 /**
  * Hook for restricting access to authenticated users
  *
@@ -39,7 +46,8 @@ const emptyParams = {};
  * Useful in custom page components that require authentication.
  *
  * @param {Object} authParams Any params you want to pass to the authProvider
- * @param {boolean} logoutOnFailure Whether the user should be logged out if the authProvider fails to authenticatde them. True by default.
+ * @param {Object} options
+ * @param {boolean} options.logoutOnFailure Whether the user should be logged out if the authProvider fails to authenticatde them. True by default.
  *
  * @returns The current auth check state. Destructure as { authenticated, error, loading, loaded }.
  *
@@ -52,7 +60,10 @@ const emptyParams = {};
  *              return <Foo />;
  *          }} />,
  *         <Route path="/bar" render={() => {
- *              const { authenticated } = useAuth({ myContext: 'foobar' }, false);
+ *              const { authenticated } = useAuth(
+ *                  { myContext: 'foobar' },
+ *                  { logoutOnFailure: false }
+ *              );
  *              return authenticated ? <Bar /> : <BarNotAuthenticated />;
  *          }} />,
  *     ];
@@ -62,7 +73,10 @@ const emptyParams = {};
  *         </Admin>
  *     );
  */
-const useAuth = (authParams = emptyParams, logoutOnFailure = true) => {
+const useAuth = (
+    authParams: object = emptyParams,
+    options: Options = defaultOptions
+) => {
     const [state, setState] = useSafeSetState<State>({
         loading: true,
         loaded: false,
@@ -90,7 +104,7 @@ const useAuth = (authParams = emptyParams, logoutOnFailure = true) => {
                     authenticated: false,
                     error,
                 });
-                if (logoutOnFailure) {
+                if (options.logoutOnFailure) {
                     authProvider(AUTH_LOGOUT);
                     dispatch(
                         replace({
@@ -105,7 +119,15 @@ const useAuth = (authParams = emptyParams, logoutOnFailure = true) => {
                 );
                 dispatch(showNotification(errorMessage, 'warning'));
             });
-    }, [authParams, authProvider, dispatch, nextPathname, logoutOnFailure]); // eslint-disable-line react-hooks/exhaustive-deps
+    }, [
+        authParams,
+        authProvider,
+        dispatch,
+        location,
+        nextPathname,
+        options.logoutOnFailure,
+        setState,
+    ]); // eslint-disable-line react-hooks/exhaustive-deps
     return state;
 };
 

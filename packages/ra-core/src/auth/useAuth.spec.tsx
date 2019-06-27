@@ -8,8 +8,8 @@ import AuthContext from './AuthContext';
 import { showNotification } from '../actions/notificationActions';
 import renderWithRedux from '../util/renderWithRedux';
 
-const UseAuth = ({ children, authParams, logoutOnFailure }: any) => {
-    const res = useAuth(authParams, logoutOnFailure);
+const UseAuth = ({ children, authParams, options }: any) => {
+    const res = useAuth(authParams, options);
     return children(res);
 };
 
@@ -69,7 +69,9 @@ describe('useAuth', () => {
         const authProvider = () => Promise.reject('not good');
         const { queryByText } = renderWithRedux(
             <AuthContext.Provider value={authProvider}>
-                <UseAuth logoutOnFailure={false}>{stateInpector}</UseAuth>
+                <UseAuth options={{ logoutOnFailure: false }}>
+                    {stateInpector}
+                </UseAuth>
             </AuthContext.Provider>
         );
         await wait();
