@@ -273,3 +273,39 @@ export const UserCreate = (props) => (
     </Create>
 );
 ```
+
+## `authProvider` No Longer Uses Legacy React Context
+
+When you provide an `authProvider` to the `<Admin>` component, react-admin creates a context to make it available everywhere in the application. In version 2.x, this used the [legacy React context API](https://reactjs.org/docs/legacy-context.html). In 3.0, this uses the normal context API. That means that any context consumer will need to use the new context API.
+
+```diff
+-import React from 'react';
++import React, { useContext } from 'react';
++import { AuthContext } from 'react-admin';
+
+-const MyComponentWithAuthProvider = (props, context) => {
++const MyComponentWithAuthProvider = (props) => {
++   const authProvider = useContext(AuthContext);
+    authProvider('AUTH_CHECK');
+    return <div>I'm authenticated</div>;
+}
+
+-MyComponentWithAuthProvider.contextTypes = { authProvider: PropTypes.object }
+```
+
+If you didn't access the `authProvider` context manually, you have nothing to change. All react-admin components have been updated to use the new context API.
+
+Note that direct access to the `authProvider` from the context is discouraged (and not documented). If you need to interact with the `authProvider`, use the new `useAuth()` and `usePermissions()` hooks, or the auth-related action creators (`userLogin`, `userLogout`, `userCheck`).
+
+## `authProvider` No Longer Receives `match` in Params
+
+Whenever it called the `authProvider`, react-admin used to pass both the `location` and the `match` object from react-router. In v3, the `match` object is no longer passed as argument. There is no legitimate usage of this parameter we can think about, and it forced passing down that object across several components for nothing, so it's been removed. Upgrade your `authProvider` to remove that param.
+
+```diff
+// in src/authProvider
+export default (type, params) => {
+-   const { location, match } = params;
++   const { location } = params;
+    // ...
+}
+```
