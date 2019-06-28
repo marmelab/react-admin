@@ -1,0 +1,22 @@
+{
+    "name": "ra-language-german",
+    "version": "2.9.3",
+    "description": "German messages for react-admin, the frontend framework for building admin applications on top of REST/GraphQL services",
+    "main": "index.js",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/marmelab/react-admin.git"
+    },
+    "keywords": [
+        "react",
+        "react-admin",
+        "react-admin",
+        "translation"
+    ],
+    "author": "Pascal Jufer",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/marmelab/react-admin/issues"
+    },
+    "homepage": "https://github.com/marmelab/react-admin#readme"
+}

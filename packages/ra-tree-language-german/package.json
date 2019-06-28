@@ -1,0 +1,22 @@
+{
+    "name": "ra-tree-language-english",
+    "version": "2.3.0",
+    "description": "English messages for ra-tree, an addon providing tree components for react-admin, the frontend framework for building admin applications on top of REST/GraphQL services",
+    "main": "index.js",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/marmelab/react-admin.git"
+    },
+    "keywords": [
+        "react",
+        "react-admin",
+        "ra-tree",
+        "translation"
+    ],
+    "author": "Gildas Garcia",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/marmelab/react-admin/issues"
+    },
+    "homepage": "https://github.com/marmelab/react-admin#readme"
+}
