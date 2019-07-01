@@ -58,8 +58,8 @@ const RoutesWithLayout: SFC<Props> = ({
                             authParams={{
                                 route: 'dashboard',
                             }}
+                            component={dashboard}
                             {...routeProps}
-                            render={props => createElement(dashboard, props)}
                         />
                     )}
                 />

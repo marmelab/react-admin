@@ -1,9 +1,9 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import isEqual from 'lodash/isEqual';
 
 // thanks Kent C Dodds for the following helpers
 
-export function useSafeSetState(initialState) {
+export function useSafeSetState<T>(initialState): [T, (args: any) => void] {
     const [state, setState] = useState(initialState);
 
     const mountedRef = useRef(false);
@@ -11,7 +11,10 @@ export function useSafeSetState(initialState) {
         mountedRef.current = true;
         return () => (mountedRef.current = false);
     }, []);
-    const safeSetState = args => mountedRef.current && setState(args);
+    const safeSetState = useCallback(
+        args => mountedRef.current && setState(args),
+        [mountedRef, setState]
+    );
 
     return [state, safeSetState];
 }

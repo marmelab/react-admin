@@ -1,5 +1,6 @@
 import { ReactNode, ReactElement, ComponentType } from 'react';
 import { RouteProps, RouteComponentProps, match as Match } from 'react-router';
+import { Location } from 'history';
 
 import { WithPermissionsChildrenParams } from './auth/WithPermissions';
 
@@ -74,6 +75,9 @@ export interface ReduxState {
         locale: string;
         messages: object;
     };
+    router: {
+        location: Location;
+    };
 }
 
 export type Dispatch<T> = T extends (...args: infer A) => any
@@ -112,12 +116,14 @@ export interface LayoutProps {
 
 export type LayoutComponent = ComponentType<LayoutProps>;
 
-interface ReactAdminComponentProps {
+export interface ReactAdminComponentProps {
     basePath: string;
+    permissions?: any;
 }
-interface ReactAdminComponentPropsWithId {
-    id: Identifier;
+export interface ReactAdminComponentPropsWithId {
     basePath: string;
+    permissions?: any;
+    id: Identifier;
 }
 
 export type ResourceMatch = Match<{
@@ -125,7 +131,7 @@ export type ResourceMatch = Match<{
 }>;
 
 export interface ResourceProps {
-    intent: 'route' | 'registration';
+    intent?: 'route' | 'registration';
     match?: ResourceMatch;
     name: string;
     list?: ComponentType<ReactAdminComponentProps>;
@@ -133,5 +139,5 @@ export interface ResourceProps {
     edit?: ComponentType<ReactAdminComponentPropsWithId>;
     show?: ComponentType<ReactAdminComponentPropsWithId>;
     icon?: ComponentType<any>;
-    options: object;
+    options?: object;
 }

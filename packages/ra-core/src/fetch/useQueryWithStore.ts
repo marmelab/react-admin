@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import isEqual from 'lodash/isEqual';
 
 import { ReduxState } from '../types';
-import { useSafeSetState } from './hooks';
+import { useSafeSetState } from '../util/hooks';
 import useDataProvider from './useDataProvider';
 
 export interface Query {
