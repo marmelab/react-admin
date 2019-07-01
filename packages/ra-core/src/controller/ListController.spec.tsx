@@ -3,10 +3,11 @@ import { fireEvent, cleanup } from 'react-testing-library';
 import lolex from 'lolex';
 import TextField from '@material-ui/core/TextField/TextField';
 
-import ListController, {
+import ListController from './ListController';
+import {
     getListControllerProps,
     sanitizeListRestProps,
-} from './ListController';
+} from './useListController';
 
 import renderWithRedux from '../util/renderWithRedux';
 import { CRUD_CHANGE_LIST_PARAMS } from '../actions';

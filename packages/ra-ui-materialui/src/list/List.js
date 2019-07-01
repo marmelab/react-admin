@@ -2,9 +2,10 @@ import React, { Children, cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import Card from '@material-ui/core/Card';
 import classnames from 'classnames';
-import { withStyles, createStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import {
-    ListController,
+    useCheckMinimumRequiredProps,
+    useListController,
     getListControllerProps,
     ComponentPropType,
 } from 'ra-core';
@@ -19,7 +20,7 @@ import defaultTheme from '../defaultTheme';
 
 const DefaultBulkActionButtons = props => <BulkDeleteButton {...props} />;
 
-export const styles = createStyles(theme => ({
+export const useStyles = makeStyles(theme => ({
     root: {},
     main: {
         display: 'flex',
@@ -101,13 +102,12 @@ const sanitizeRestProps = ({
     title,
     toggleItem,
     total,
-    translate,
     version,
     ...rest
 }) => rest;
 
-export const ListView = withStyles(styles)(
-    ({
+export const ListView = props => {
+    const {
         actions,
         aside,
         filter,
@@ -117,64 +117,64 @@ export const ListView = withStyles(styles)(
         pagination,
         children,
         className,
-        classes,
+        classes: classesOverride,
         component: Content,
         exporter,
         title,
         ...rest
-    }) => {
-        const { defaultTitle, version } = rest;
-        const controllerProps = getListControllerProps(rest);
+    } = props;
+    useCheckMinimumRequiredProps('List', ['children'], props);
+    const classes = useStyles({ classes: classesOverride });
+    const { defaultTitle, version } = rest;
+    const controllerProps = getListControllerProps(rest);
 
-        return (
-            <div
-                className={classnames('list-page', classes.root, className)}
-                {...sanitizeRestProps(rest)}
-            >
-                <Title title={title} defaultTitle={defaultTitle} />
+    return (
+        <div
+            className={classnames('list-page', classes.root, className)}
+            {...sanitizeRestProps(rest)}
+        >
+            <Title title={title} defaultTitle={defaultTitle} />
 
-                {(filters || actions) && (
-                    <ListToolbar
-                        filters={filters}
-                        {...controllerProps}
-                        actions={actions}
-                        bulkActions={bulkActions}
-                        exporter={exporter}
-                        permanentFilter={filter}
-                    />
-                )}
-                <div className={classes.main}>
-                    <Content
-                        className={classnames(classes.content, {
-                            [classes.bulkActionsDisplayed]:
-                                controllerProps.selectedIds.length > 0,
+            {(filters || actions) && (
+                <ListToolbar
+                    filters={filters}
+                    {...controllerProps}
+                    actions={actions}
+                    bulkActions={bulkActions}
+                    exporter={exporter}
+                    permanentFilter={filter}
+                />
+            )}
+            <div className={classes.main}>
+                <Content
+                    className={classnames(classes.content, {
+                        [classes.bulkActionsDisplayed]:
+                            controllerProps.selectedIds.length > 0,
+                    })}
+                    key={version}
+                >
+                    {bulkActions !== false &&
+                        bulkActionButtons !== false &&
+                        bulkActionButtons &&
+                        !bulkActions && (
+                            <BulkActionsToolbar {...controllerProps}>
+                                {bulkActionButtons}
+                            </BulkActionsToolbar>
+                        )}
+                    {children &&
+                        cloneElement(Children.only(children), {
+                            ...controllerProps,
+                            hasBulkActions:
+                                bulkActions !== false &&
+                                bulkActionButtons !== false,
                         })}
-                        key={version}
-                    >
-                        {bulkActions !== false &&
-                            bulkActionButtons !== false &&
-                            bulkActionButtons &&
-                            !bulkActions && (
-                                <BulkActionsToolbar {...controllerProps}>
-                                    {bulkActionButtons}
-                                </BulkActionsToolbar>
-                            )}
-                        {children &&
-                            cloneElement(Children.only(children), {
-                                ...controllerProps,
-                                hasBulkActions:
-                                    bulkActions !== false &&
-                                    bulkActionButtons !== false,
-                            })}
-                        {pagination &&
-                            cloneElement(pagination, controllerProps)}
-                    </Content>
-                    {aside && cloneElement(aside, controllerProps)}
-                </div>
+                    {pagination && cloneElement(pagination, controllerProps)}
+                </Content>
+                {aside && cloneElement(aside, controllerProps)}
             </div>
-        );
-    }
-);
+        </div>
+    );
+};
 
 ListView.propTypes = {
     actions: PropTypes.element,
@@ -217,7 +217,6 @@ ListView.propTypes = {
     showFilter: PropTypes.func,
     title: TitlePropType,
     total: PropTypes.number,
-    translate: PropTypes.func,
     version: PropTypes.number,
 };
 
@@ -270,11 +269,10 @@ ListView.defaultProps = {
  *         </List>
  *     );
  */
-const List = props => (
-    <ListController {...props}>
-        {controllerProps => <ListView {...props} {...controllerProps} />}
-    </ListController>
-);
+const List = props => {
+    const controllerProps = useListController(props);
+    return <ListView {...props} {...controllerProps} />;
+};
 
 List.propTypes = {
     // the props you can change
