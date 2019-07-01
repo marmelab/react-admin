@@ -188,7 +188,7 @@ export default ({ permissions }) => (
 
 ## `usePermissions()` Hook
 
-You might want to check user permissions inside a [custom page](./Admin.md#customroutes). That's the purpose of the `usePermissions()` hook,which calls the `authProvider` with the `AUTH_GT_PERMISSIONS` type on mount, and returns the result when available:
+You might want to check user permissions inside a [custom page](./Admin.md#customroutes). That's the purpose of the `usePermissions()` hook,which calls the `authProvider` with the `AUTH_GET_PERMISSIONS` type on mount, and returns the result when available:
 
 ```jsx
 // in src/MyPage.js
