@@ -2,7 +2,7 @@
 
 ## v2.9.4
 
-* Fix closing elete confirmation modal triggers datagrid rowClick event ([3360](https://github.com/marmelab/react-admin/pull/3360)) ([Kmaschta](https://github.com/Kmaschta))
+* Fix closing delete confirmation modal triggers datagrid rowClick event ([3360](https://github.com/marmelab/react-admin/pull/3360)) ([Kmaschta](https://github.com/Kmaschta))
 * Fix `<DashboardMenuItem>` does not use `className` prop ([3357](https://github.com/marmelab/react-admin/pull/3357)) ([Kmaschta](https://github.com/Kmaschta))
 * Fix unused import in tutorial ([3366](https://github.com/marmelab/react-admin/pull/3366)) ([jesseshieh](https://github.com/jesseshieh))
 * Fix broken links to material-ui v1 documentation ([3365](https://github.com/marmelab/react-admin/pull/3365)) ([fzaninotto](https://github.com/fzaninotto))
