@@ -1,17 +1,17 @@
-import React, { cloneElement, Children, Component } from 'react';
+import React, { Component, cloneElement } from 'react';
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
+import { Card, CardHeader, IconButton, createStyles } from '@material-ui/core';
+import DragHandleIcon from '@material-ui/icons/DragHandle';
+import ExpandLessIcon from '@material-ui/icons/ExpandLess';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
-const CONTAINER_CLASS = 'treenode-content';
-
-const styles = {
-    root: {
-        alignItems: 'center',
-        display: 'flex',
-        flexGrow: 1,
-    },
-};
+const styles = theme =>
+    createStyles({
+        root: {
+            marginBottom: theme.spacing.unit,
+        },
+    });
 
 const sanitizeRestProps = ({
     cancelDropOnChildren,
@@ -36,53 +36,66 @@ export class NodeView extends Component {
         basePath: PropTypes.string.isRequired,
         children: PropTypes.node,
         classes: PropTypes.object,
-        node: PropTypes.object.isRequired,
+        item: PropTypes.object.isRequired,
         resource: PropTypes.string.isRequired,
     };
 
-    handleClick = event => {
-        event.persist();
-        // This ensure clicking on a button does not collapse/expand a node
-        // When clicking on the form (empty spaces around buttons) however, it should
-        // propagate to the parent
-        if (!event.target.matches(`.${CONTAINER_CLASS}`)) {
-            event.stopPropagation();
-        }
+    handleCollapse = () => {
+        const { onCollapse, item } = this.props;
+        onCollapse(item.id);
+    };
+
+    handleExpand = () => {
+        const { onExpand, item } = this.props;
+        onExpand(item.id);
     };
 
     render() {
         const {
             actions,
-            basePath,
             children,
             classes,
-            node,
-            resource,
+            item,
+            provided,
+            onCollapse,
+            onExpand,
             ...props
         } = this.props;
 
         return (
-            <div
-                className={classNames(CONTAINER_CLASS, classes.root)}
-                onClick={this.handleClick}
-                {...sanitizeRestProps(props)}
-            >
-                {Children.map(children, field =>
-                    field
-                        ? cloneElement(field, {
-                              basePath: field.props.basePath || basePath,
-                              record: node.record,
-                              resource,
-                          })
-                        : null
-                )}
-                {actions &&
-                    cloneElement(actions, {
-                        basePath,
-                        record: node.record,
-                        resource,
-                    })}
-            </div>
+            <Card className={classes.root}>
+                <CardHeader
+                    avatar={
+                        <div {...provided.dragHandleProps}>
+                            <DragHandleIcon />
+                        </div>
+                    }
+                    action={
+                        <>
+                            {actions
+                                ? cloneElement(actions, {
+                                      record: item.data,
+                                      ...props,
+                                  })
+                                : null}
+                            {item.hasChildren ? (
+                                item.isExpanded ? (
+                                    <IconButton onClick={this.handleCollapse}>
+                                        <ExpandLessIcon />
+                                    </IconButton>
+                                ) : (
+                                    <IconButton onClick={this.handleExpand}>
+                                        <ExpandMoreIcon />
+                                    </IconButton>
+                                )
+                            ) : (
+                                <IconButton disabled /> // Used as spacer to ensure actions buttons are aligned
+                            )}
+                        </>
+                    }
+                    title={item.data.name}
+                />
+            </Card>
         );
     }
 }

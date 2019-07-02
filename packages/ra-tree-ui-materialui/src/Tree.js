@@ -1,24 +1,15 @@
-import React, { Children, Component, Fragment } from 'react';
+import React, { Children, Component, cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import List from '@material-ui/core/List';
 import { TreeController } from 'ra-tree-core';
-import { DragDropContext } from 'react-dnd';
-import TouchBackend from 'react-dnd-touch-backend';
-
-import draggable from './draggable';
-import droppable from './droppable';
-import DragLayer from './DragLayer';
-import DefaultDragPreview from './DragPreview';
-import DefaultTreeNode from './TreeNode';
-import DefaultTreeNodeContent from './TreeNodeContent';
-import DefaultTreeNodeWithChildren from './TreeNodeWithChildren';
-import RootDropTarget from './RootDropTarget';
 
 export const styles = {
     root: {
         display: 'flex',
         flexDirection: 'column',
+    },
+    draggable: {
+        overflow: 'auto',
     },
 };
 
@@ -41,13 +32,18 @@ const sanitizeRestProps = ({
     setSelectedIds,
     setSort,
     showFilter,
+    toggleNode,
+    expandNode,
+    closeNode,
+    onUnselectItems,
+    onToggleItem,
     ...rest
 }) => rest;
 
 const warnAboutChildren = () =>
     console.warn(
         // eslint-disable-line
-        `You passed multiple children to the Tree component. You must either pass it a NodeView or a NodeForm component as its only child:
+        `You passed multiple children to the Tree component. You must pass a single child such as the NodeView:
 
     <Tree>
         <NodeView>
@@ -55,15 +51,7 @@ const warnAboutChildren = () =>
         </NodeView>
     </Tree>
 
-    // Or
-
-    <Tree>
-        <NodeForm>
-            <TextInput source="name" />
-        </NodeForm>
-    </Tree>
-
-If you need actions on each node, use the actions prop on either the NodeView or NodeForm component:
+If you need actions on each node, use the actions prop on the NodeView component:
 
     const MyNodeActions = props => (
         <NodeActions {...props}>
@@ -78,25 +66,6 @@ If you need actions on each node, use the actions prop on either the NodeView or
             <TextField source="name" />
         </NodeView>
     </Tree>
-
-    // Or
-
-    const MyNodeActions = props => (
-        <NodeActions {...props}>
-            <SaveButton variant="flat" />
-            <IgnoreFormProps>
-                <EditButton />
-                <ShowButton />
-                <DeleteButton />
-            </IgnoreFormProps>
-        </NodeActions>
-    );
-
-    <Tree>
-        <NodeForm actions={<MyNodeActions />}>
-            <TextInput source="name" />
-        </NodeForm>
-    </Tree>
 `
     );
 
@@ -110,84 +79,29 @@ export class Tree extends Component {
     }
 
     render() {
-        const {
-            allowDropOnRoot,
-            children,
-            classes,
-            dragPreviewComponent,
-            enableDragAndDrop,
-            parentSource,
-            treeNodeComponent,
-            treeNodeWithChildrenComponent,
-            treeNodeContentComponent,
-            ...props
-        } = this.props;
-        const Container = enableDragAndDrop
-            ? DragDropContext(
-                  TouchBackend({
-                      enableKeyboardEvents: true,
-                      enableMouseEvents: true,
-                      enableTouchEvents: true,
-                  })
-              )('div')
-            : Fragment;
-
-        const TreeNode = enableDragAndDrop
-            ? droppable(treeNodeComponent)
-            : treeNodeComponent;
-
-        const TreeNodeContent = enableDragAndDrop
-            ? draggable(treeNodeContentComponent)
-            : treeNodeContentComponent;
+        const { children, classes, ...props } = this.props;
 
         return (
-            <TreeController parentSource={parentSource} {...props}>
-                {({ getTreeState, tree, ...controllerProps }) => (
-                    <Container>
-                        {enableDragAndDrop ? (
-                            <DragLayer
-                                dragPreviewComponent={dragPreviewComponent}
-                            />
-                        ) : null}
-                        <List
-                            classes={{
-                                root: classes.root,
-                            }}
-                            dense
-                            disablePadding
+            <div>
+                <TreeController {...props}>
+                    {({ itemProps, controllerProps }) => (
+                        <div
+                            ref={itemProps.provided.innerRef}
+                            {...itemProps.provided.draggableProps}
                         >
-                            {enableDragAndDrop && allowDropOnRoot ? (
-                                <RootDropTarget parentSource={parentSource} />
-                            ) : null}
-                            {tree.map(node => (
-                                <TreeNode
-                                    key={`TreeNode_${node.id}`}
-                                    classes={{
-                                        ...classes,
-                                        root: classes.node || undefined,
-                                    }}
-                                    getTreeState={getTreeState}
-                                    node={node}
-                                    treeNodeComponent={TreeNode}
-                                    treeNodeWithChildrenComponent={
-                                        treeNodeWithChildrenComponent
-                                    }
-                                    treeNodeContentComponent={TreeNodeContent}
-                                    {...sanitizeRestProps(controllerProps)}
-                                >
-                                    {children}
-                                </TreeNode>
-                            ))}
-                        </List>
-                    </Container>
-                )}
-            </TreeController>
+                            {cloneElement(children, {
+                                ...itemProps,
+                                ...sanitizeRestProps(controllerProps),
+                            })}
+                        </div>
+                    )}
+                </TreeController>
+            </div>
         );
     }
 }
 
 Tree.propTypes = {
-    allowDropOnRoot: PropTypes.bool,
     basePath: PropTypes.string.isRequired,
     children: PropTypes.node,
     classes: PropTypes.object,
@@ -213,10 +127,6 @@ Tree.propTypes = {
 Tree.defaultProps = {
     classes: {},
     parentSource: 'parent_id',
-    dragPreviewComponent: DefaultDragPreview,
-    treeNodeComponent: DefaultTreeNode,
-    treeNodeContentComponent: DefaultTreeNodeContent,
-    treeNodeWithChildrenComponent: DefaultTreeNodeWithChildren,
 };
 
 export default withStyles(styles)(Tree);
