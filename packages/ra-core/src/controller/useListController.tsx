@@ -1,18 +1,18 @@
 import { isValidElement, ReactElement, useMemo } from 'react';
 import inflection from 'inflection';
-
-import { SORT_ASC } from '../reducer/admin/resource/list/queryReducer';
-import { ListParams } from '../actions/listActions';
-import { useCheckMinimumRequiredProps } from './checkMinimumRequiredProps';
-import { Sort } from '../types';
 import { Location } from 'history';
-import { useTranslate } from '../i18n';
+
+import { useCheckMinimumRequiredProps } from './checkMinimumRequiredProps';
 import useListParams from './useListParams';
-import useGetList from './../fetch/useGetList';
 import useRecordSelection from './useRecordSelection';
 import useVersion from './useVersion';
+import { useTranslate } from '../i18n';
+import { SORT_ASC } from '../reducer/admin/resource/list/queryReducer';
+import { ListParams } from '../actions/listActions';
+import { Sort, RecordMap, Identifier } from '../types';
+import useGetList from './../fetch/useGetList';
 
-export interface Props {
+export interface ListProps {
     // the props you can change
     filter?: object;
     filters?: ReactElement<any>;
@@ -39,26 +39,52 @@ const defaultSort = {
     order: SORT_ASC,
 };
 
+export interface ListControllerProps {
+    basePath: string;
+    currentSort: Sort;
+    data: RecordMap;
+    defaultTitle: string;
+    displayedFilters: any;
+    filterValues: any;
+    hasCreate: boolean;
+    hideFilter: (filterName: string) => void;
+    ids: Identifier[];
+    isLoading: boolean;
+    loadedOnce: boolean;
+    onSelect: (ids: Identifier[]) => void;
+    onToggleItem: (id: Identifier) => void;
+    onUnselectItems: () => void;
+    page: number;
+    perPage: number;
+    resource: string;
+    selectedIds: Identifier[];
+    setFilters: (filters: any) => void;
+    setPage: (page: number) => void;
+    setPerPage: (page: number) => void;
+    setSort: (sort: Sort) => void;
+    showFilter: (filterName: string, defaultValue: any) => void;
+    total: number;
+    version: number;
+}
+
 /**
  * Prepare data for the List view
  *
- * @param {Object} props The props passed to the Lsit component.
- *
- * Props should contain:
- *   - title
- *   - perPage
- *   - sort
- *   - filter (the permanent filter to apply to the query)
- *   - actions
- *   - filters (a React component used to display the filter form)
- *   - pagination
+ * @param {Object} props The props passed to the List component.
  *
  * @return {Object} controllerProps Fetched and computed data for the List view
  *
- * controllerProps contain:
+ * @example
  *
+ * import {useListController } from 'react-admin';
+ * import ListView from './ListView';
+ *
+ * const MyList = props => {
+ *     const controllerProps = useListController(props);
+ *     return <ListView {...controllerProps} {...props} />;
+ * }
  */
-const useListController = (props: Props) => {
+const useListController = (props: ListProps): ListControllerProps => {
     useCheckMinimumRequiredProps(
         'List',
         ['basePath', 'location', 'resource'],

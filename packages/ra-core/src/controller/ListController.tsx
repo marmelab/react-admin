@@ -1,40 +1,18 @@
 import { ReactNode } from 'react';
 
-import useListController, { Props } from './useListController';
+import useListController, {
+    ListProps,
+    ListControllerProps,
+} from './useListController';
 import { useTranslate } from '../i18n';
-import { Sort, RecordMap, Identifier, Translate } from '../types';
+import { Translate } from '../types';
 
-interface ChildrenFuncParams {
-    basePath: string;
-    currentSort: Sort;
-    data: RecordMap;
-    defaultTitle: string;
-    displayedFilters: any;
-    filterValues: any;
-    hasCreate: boolean;
-    hideFilter: (filterName: string) => void;
-    ids: Identifier[];
-    isLoading: boolean;
-    loadedOnce: boolean;
-    onSelect: (ids: Identifier[]) => void;
-    onToggleItem: (id: Identifier) => void;
-    onUnselectItems: () => void;
-    page: number;
-    perPage: number;
-    resource: string;
-    selectedIds: Identifier[];
-    setFilters: (filters: any) => void;
-    setPage: (page: number) => void;
-    setPerPage: (page: number) => void;
-    setSort: (sort: Sort) => void;
-    showFilter: (filterName: string, defaultValue: any) => void;
+interface ListControllerComponentProps extends ListControllerProps {
     translate: Translate;
-    total: number;
-    version: number;
 }
 
-interface ListControllerProps extends Props {
-    children: (params: ChildrenFuncParams) => ReactNode;
+interface Props extends ListProps {
+    children: (params: ListControllerComponentProps) => ReactNode;
 }
 
 /**
@@ -50,9 +28,9 @@ interface ListControllerProps extends Props {
  *     </ListController>
  * )
  */
-const ListController = ({ children, ...props }: ListControllerProps) => {
+const ListController = ({ children, ...props }: Props) => {
     const controllerProps = useListController(props);
-    const translate = useTranslate();
+    const translate = useTranslate(); // injected for backwards compatibility
     return children({ translate, ...controllerProps });
 };
 

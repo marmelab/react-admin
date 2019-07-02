@@ -1,11 +1,11 @@
-import {
-    getListControllerProps,
-    sanitizeListRestProps,
-} from './useListController';
 import CreateController from './CreateController';
 import EditController from './EditController';
 import ListController from './ListController';
 import ShowController from './ShowController';
+import {
+    getListControllerProps,
+    sanitizeListRestProps,
+} from './useListController';
 import useRecordSelection from './useRecordSelection';
 import useVersion from './useVersion';
 import useSortState from './useSortState';
