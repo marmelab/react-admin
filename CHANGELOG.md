@@ -1,5 +1,15 @@
 # Changelog
 
+## v2.9.4
+
+* Fix closing elete confirmation modal triggers datagrid rowClick event ([3360](https://github.com/marmelab/react-admin/pull/3360)) ([Kmaschta](https://github.com/Kmaschta))
+* Fix `<DashboardMenuItem>` does not use `className` prop ([3357](https://github.com/marmelab/react-admin/pull/3357)) ([Kmaschta](https://github.com/Kmaschta))
+* Fix unused import in tutorial ([3366](https://github.com/marmelab/react-admin/pull/3366)) ([jesseshieh](https://github.com/jesseshieh))
+* Fix broken links to material-ui v1 documentation ([3365](https://github.com/marmelab/react-admin/pull/3365)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix broken link to Bulk Action Buttons in docs ([3361](https://github.com/marmelab/react-admin/pull/3361)) ([bmuthoga](https://github.com/bmuthoga))
+* Fix dead link to material-ui doc in List customization ([3353](https://github.com/marmelab/react-admin/pull/3353)) ([Kmaschta](https://github.com/Kmaschta))
+* Fix typo in Custom Input documentation ([3346](https://github.com/marmelab/react-admin/pull/3346)) ([CrossEye](https://github.com/CrossEye))
+
 ## v2.9.3
 
 * Fix issue with `<TabbedForm>` when used inside a dialog ([3335](https://github.com/marmelab/react-admin/pull/3335)) ([griiettner](https://github.com/griiettner))
