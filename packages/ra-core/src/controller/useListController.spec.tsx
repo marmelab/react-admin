@@ -12,7 +12,7 @@ import {
 import renderWithRedux from '../util/renderWithRedux';
 import { CRUD_CHANGE_LIST_PARAMS } from '../actions';
 
-describe('ListController', () => {
+describe('useListController', () => {
     const defaultProps = {
         basePath: '',
         children: jest.fn(),
