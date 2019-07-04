@@ -33,6 +33,8 @@ interface Props {
     total?: number;
 }
 
+const defaultPerPage = 25;
+
 /**
  * Render related records to the current one.
  *
@@ -92,9 +94,9 @@ export const ReferenceManyFieldController: FunctionComponent<Props> = ({
     children,
 }) => {
     const { sort, setSortField } = useSortState(initialSort);
-    const { page, perPage, setPage, setPerPage } = usePaginationState(
-        { perPage: initialPerPage }
-    );
+    const { page, perPage, setPage, setPerPage } = usePaginationState({
+        perPage: initialPerPage || defaultPerPage,
+    });
     const {
         data,
         ids,
