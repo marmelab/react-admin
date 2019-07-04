@@ -11,7 +11,7 @@ import {
     getReferenceResource,
 } from '../../reducer';
 import { Pagination, Sort, Record } from '../../types';
-import { useDeepCompareEffect }  from '../../util/hooks';
+import { useDeepCompareEffect } from '../../util/hooks';
 
 interface UseMAtchingReferencesOption {
     reference: string;
@@ -56,20 +56,8 @@ export default ({
         sort,
     };
 
-    useDeepCompareEffect(
-        () => {
-            fetchOptions({
-                dispatch,
-                filter,
-                reference,
-                referenceSource,
-                resource,
-                source,
-                pagination,
-                sort,
-            })
-        },
-        [
+    useDeepCompareEffect(() => {
+        fetchOptions({
             dispatch,
             filter,
             reference,
@@ -78,8 +66,17 @@ export default ({
             source,
             pagination,
             sort,
-        ]
-    );
+        });
+    }, [
+        dispatch,
+        filter,
+        reference,
+        referenceSource,
+        resource,
+        source,
+        pagination,
+        sort,
+    ]);
 
     const matchingReferences = useSelector(
         getMatchingReferences({

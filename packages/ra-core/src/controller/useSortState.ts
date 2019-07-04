@@ -17,9 +17,11 @@ const sortReducer = (state: Sort, field: string | Sort): Sort => {
         return field;
     }
     const order =
-        state.field === field ? state.order === SORT_ASC
-            ? SORT_DESC
-            : SORT_ASC : SORT_ASC;
+        state.field === field
+            ? state.order === SORT_ASC
+                ? SORT_DESC
+                : SORT_ASC
+            : SORT_ASC;
     return { field, order };
 };
 
@@ -53,9 +55,7 @@ export const defaultSort = { field: 'id', order: 'DESC' };
  * @param {string} initialSort.reference The linked resource name
  * @returns {SortProps} The sort props
  */
-export default (
-    initialSort: Sort = defaultSort
-): SortProps => {
+export default (initialSort: Sort = defaultSort): SortProps => {
     const [sort, dispatch] = useReducer(sortReducer, initialSort);
     const isFirstRender = useRef(true);
     useEffect(() => {

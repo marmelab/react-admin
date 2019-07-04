@@ -4,7 +4,7 @@ import { render } from 'react-testing-library';
 const TestHook = ({ children, hookProps }) => {
     return children(hookProps());
 };
-export default (hookProps) => {
+export default hookProps => {
     let childrenProps = null;
     const children = props => {
         childrenProps = props;
@@ -12,15 +12,17 @@ export default (hookProps) => {
     };
     const childrenMock = jest.fn().mockImplementation(children);
     const result = render(
-        <TestHook children={childrenMock} hookProps={hookProps} />,
+        <TestHook children={childrenMock} hookProps={hookProps} />
     );
 
-    return { 
-        ...result, 
-        childrenProps, 
-        childrenMock, 
-        rerender: (newHook) => {
-            result.rerender(<TestHook children={childrenMock} hookProps={newHook} />)
-        }
+    return {
+        ...result,
+        childrenProps,
+        childrenMock,
+        rerender: newHook => {
+            result.rerender(
+                <TestHook children={childrenMock} hookProps={newHook} />
+            );
+        },
     };
 };

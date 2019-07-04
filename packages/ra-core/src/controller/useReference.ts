@@ -59,7 +59,7 @@ export const useReference = ({
         if (id !== null && typeof id !== 'undefined') {
             dispatch(crudGetManyAccumulate(reference, [id]));
         }
-    }, [id, reference]);
+    }, [dispatch, id, reference]);
 
     return {
         isLoading: !referenceRecord && !allowEmpty,
@@ -69,7 +69,7 @@ export const useReference = ({
 
 const makeGetReferenceRecord = props => state => {
     const referenceState = getReferenceResource(state, props);
-    
+
     return referenceState && referenceState.data[props.id];
 };
 

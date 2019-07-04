@@ -137,7 +137,9 @@ const ReferenceField = ({ children, ...props }) => {
         throw new Error('<ReferenceField> only accepts a single child');
     }
 
-    const { isLoading, referenceRecord, resourceLinkPath } = useReferenceField(props);
+    const { isLoading, referenceRecord, resourceLinkPath } = useReferenceField(
+        props
+    );
 
     return (
         <ReferenceFieldView

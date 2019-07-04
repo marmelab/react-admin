@@ -1,4 +1,3 @@
-
 import renderHook from '../util/renderHook';
 import usePaginationState from './usePaginationState';
 import { act } from 'react-testing-library';
@@ -10,14 +9,18 @@ describe('usePaginationState', () => {
     });
 
     it('should take given page and perpage to initalise', () => {
-        const { childrenProps } = renderHook(() => usePaginationState({ perPage:  50, page: 10 }));
+        const { childrenProps } = renderHook(() =>
+            usePaginationState({ perPage: 50, page: 10 })
+        );
         expect(childrenProps.pagination).toEqual({ page: 10, perPage: 50 });
     });
 
     it('should update perPage if its props update', () => {
-        const { childrenProps, childrenMock, rerender } = renderHook(() => usePaginationState({ perPage:  50, page: 10 }));
+        const { childrenProps, childrenMock, rerender } = renderHook(() =>
+            usePaginationState({ perPage: 50, page: 10 })
+        );
         expect(childrenProps.pagination).toEqual({ page: 10, perPage: 50 });
-        rerender(() => usePaginationState({ perPage:  100, page: 10 }));
+        rerender(() => usePaginationState({ perPage: 100, page: 10 }));
 
         expect(childrenMock).toBeCalledTimes(3);
 
@@ -28,7 +31,9 @@ describe('usePaginationState', () => {
     });
 
     it('should provide setPagination to setPaginationState', () => {
-        const { childrenProps, childrenMock } = renderHook(() => usePaginationState());
+        const { childrenProps, childrenMock } = renderHook(() =>
+            usePaginationState()
+        );
         expect(childrenProps.pagination).toEqual({ page: 1, perPage: 25 });
 
         act(() => childrenProps.setPagination({ perPage: 100, page: 20 }));
@@ -42,7 +47,9 @@ describe('usePaginationState', () => {
     });
 
     it('should provide setPage to set only the page', () => {
-        const { childrenProps, childrenMock } = renderHook(() => usePaginationState());
+        const { childrenProps, childrenMock } = renderHook(() =>
+            usePaginationState()
+        );
         expect(childrenProps.pagination).toEqual({ page: 1, perPage: 25 });
 
         act(() => childrenProps.setPage(20));
@@ -56,7 +63,9 @@ describe('usePaginationState', () => {
     });
 
     it('should provide setPerPage to set only perPage', () => {
-        const { childrenProps, childrenMock } = renderHook(() => usePaginationState());
+        const { childrenProps, childrenMock } = renderHook(() =>
+            usePaginationState()
+        );
         expect(childrenProps.pagination).toEqual({ page: 1, perPage: 25 });
 
         act(() => childrenProps.setPerPage(100));

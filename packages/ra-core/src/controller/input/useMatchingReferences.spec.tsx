@@ -32,17 +32,17 @@ describe('useMatchingReferences', () => {
         ).toEqual({
             resource: 'posts',
             relatedTo: 'comments@post_id',
-            pagination:{
-                perPage:25,
-                page:1
+            pagination: {
+                perPage: 25,
+                page: 1,
             },
-            sort:{
+            sort: {
                 field: 'id',
-                order: 'DESC'
+                order: 'DESC',
             },
-            filter:{
-                q: ''
-            }
+            filter: {
+                q: '',
+            },
         });
 
         rerender(() => {
@@ -76,23 +76,27 @@ describe('useMatchingReferences', () => {
         ).toEqual({
             resource: 'posts',
             relatedTo: 'comments@post_id',
-            pagination:{
-                perPage:25,
-                page:1
+            pagination: {
+                perPage: 25,
+                page: 1,
             },
-            sort:{
+            sort: {
                 field: 'id',
-                order: 'DESC'
+                order: 'DESC',
             },
-            filter:{
-                q: ''
-            }
+            filter: {
+                q: '',
+            },
         });
 
         rerender(() => {
-            return useMatchingReferences({...defaultProps, filter: { q: 'typing' } });
+            return useMatchingReferences({
+                ...defaultProps,
+                filter: { q: 'typing' },
+            });
         });
-        expect(dispatch).toBeCalledTimes(2);expect(dispatch.mock.calls[1][0].type).toBe(
+        expect(dispatch).toBeCalledTimes(2);
+        expect(dispatch.mock.calls[1][0].type).toBe(
             'RA/CRUD_GET_MATCHING_ACCUMULATE'
         );
         expect(
@@ -100,17 +104,17 @@ describe('useMatchingReferences', () => {
         ).toEqual({
             resource: 'posts',
             relatedTo: 'comments@post_id',
-            pagination:{
-                perPage:25,
-                page:1
+            pagination: {
+                perPage: 25,
+                page: 1,
             },
-            sort:{
+            sort: {
                 field: 'id',
-                order: 'DESC'
+                order: 'DESC',
             },
-            filter:{
-                q: 'typing'
-            }
+            filter: {
+                q: 'typing',
+            },
         });
     });
 
@@ -128,23 +132,27 @@ describe('useMatchingReferences', () => {
         ).toEqual({
             resource: 'posts',
             relatedTo: 'comments@post_id',
-            pagination:{
-                perPage:25,
-                page:1
+            pagination: {
+                perPage: 25,
+                page: 1,
             },
-            sort:{
+            sort: {
                 field: 'id',
-                order: 'DESC'
+                order: 'DESC',
             },
-            filter:{
-                q: ''
-            }
+            filter: {
+                q: '',
+            },
         });
 
         rerender(() => {
-            return useMatchingReferences({...defaultProps, reference: 'blog_posts' });
+            return useMatchingReferences({
+                ...defaultProps,
+                reference: 'blog_posts',
+            });
         });
-        expect(dispatch).toBeCalledTimes(2);expect(dispatch.mock.calls[1][0].type).toBe(
+        expect(dispatch).toBeCalledTimes(2);
+        expect(dispatch.mock.calls[1][0].type).toBe(
             'RA/CRUD_GET_MATCHING_ACCUMULATE'
         );
         expect(
@@ -152,17 +160,17 @@ describe('useMatchingReferences', () => {
         ).toEqual({
             resource: 'blog_posts',
             relatedTo: 'comments@post_id',
-            pagination:{
-                perPage:25,
-                page:1
+            pagination: {
+                perPage: 25,
+                page: 1,
             },
-            sort:{
+            sort: {
                 field: 'id',
-                order: 'DESC'
+                order: 'DESC',
             },
-            filter:{
-                q: ''
-            }
+            filter: {
+                q: '',
+            },
         });
     });
 
@@ -180,23 +188,24 @@ describe('useMatchingReferences', () => {
         ).toEqual({
             resource: 'posts',
             relatedTo: 'comments@post_id',
-            pagination:{
-                perPage:25,
-                page:1
+            pagination: {
+                perPage: 25,
+                page: 1,
             },
-            sort:{
+            sort: {
                 field: 'id',
-                order: 'DESC'
+                order: 'DESC',
             },
-            filter:{
-                q: ''
-            }
+            filter: {
+                q: '',
+            },
         });
 
         rerender(() => {
-            return useMatchingReferences({...defaultProps, resource: 'note' });
+            return useMatchingReferences({ ...defaultProps, resource: 'note' });
         });
-        expect(dispatch).toBeCalledTimes(2);expect(dispatch.mock.calls[1][0].type).toBe(
+        expect(dispatch).toBeCalledTimes(2);
+        expect(dispatch.mock.calls[1][0].type).toBe(
             'RA/CRUD_GET_MATCHING_ACCUMULATE'
         );
         expect(
@@ -204,17 +213,17 @@ describe('useMatchingReferences', () => {
         ).toEqual({
             resource: 'posts',
             relatedTo: 'note@post_id',
-            pagination:{
-                perPage:25,
-                page:1
+            pagination: {
+                perPage: 25,
+                page: 1,
             },
-            sort:{
+            sort: {
                 field: 'id',
-                order: 'DESC'
+                order: 'DESC',
             },
-            filter:{
-                q: ''
-            }
+            filter: {
+                q: '',
+            },
         });
     });
 
@@ -232,23 +241,27 @@ describe('useMatchingReferences', () => {
         ).toEqual({
             resource: 'posts',
             relatedTo: 'comments@post_id',
-            pagination:{
-                perPage:25,
-                page:1
+            pagination: {
+                perPage: 25,
+                page: 1,
             },
-            sort:{
+            sort: {
                 field: 'id',
-                order: 'DESC'
+                order: 'DESC',
             },
-            filter:{
-                q: ''
-            }
+            filter: {
+                q: '',
+            },
         });
 
         rerender(() => {
-            return useMatchingReferences({...defaultProps, source: 'blog_posts_id' });
+            return useMatchingReferences({
+                ...defaultProps,
+                source: 'blog_posts_id',
+            });
         });
-        expect(dispatch).toBeCalledTimes(2);expect(dispatch.mock.calls[1][0].type).toBe(
+        expect(dispatch).toBeCalledTimes(2);
+        expect(dispatch.mock.calls[1][0].type).toBe(
             'RA/CRUD_GET_MATCHING_ACCUMULATE'
         );
         expect(
@@ -256,17 +269,17 @@ describe('useMatchingReferences', () => {
         ).toEqual({
             resource: 'posts',
             relatedTo: 'comments@blog_posts_id',
-            pagination:{
-                perPage:25,
-                page:1
+            pagination: {
+                perPage: 25,
+                page: 1,
             },
-            sort:{
+            sort: {
                 field: 'id',
-                order: 'DESC'
+                order: 'DESC',
             },
-            filter:{
-                q: ''
-            }
+            filter: {
+                q: '',
+            },
         });
     });
 
@@ -284,26 +297,30 @@ describe('useMatchingReferences', () => {
         ).toEqual({
             resource: 'posts',
             relatedTo: 'comments@post_id',
-            pagination:{
-                perPage:25,
-                page:1
+            pagination: {
+                perPage: 25,
+                page: 1,
             },
-            sort:{
+            sort: {
                 field: 'id',
-                order: 'DESC'
+                order: 'DESC',
             },
-            filter:{
-                q: ''
-            }
+            filter: {
+                q: '',
+            },
         });
 
         rerender(() => {
-            return useMatchingReferences({...defaultProps, pagination: {
-                perPage: 25,
-                page: 2,
-            } });
+            return useMatchingReferences({
+                ...defaultProps,
+                pagination: {
+                    perPage: 25,
+                    page: 2,
+                },
+            });
         });
-        expect(dispatch).toBeCalledTimes(2);expect(dispatch.mock.calls[1][0].type).toBe(
+        expect(dispatch).toBeCalledTimes(2);
+        expect(dispatch.mock.calls[1][0].type).toBe(
             'RA/CRUD_GET_MATCHING_ACCUMULATE'
         );
         expect(
@@ -311,17 +328,17 @@ describe('useMatchingReferences', () => {
         ).toEqual({
             resource: 'posts',
             relatedTo: 'comments@post_id',
-            pagination:{
-                perPage:25,
+            pagination: {
+                perPage: 25,
                 page: 2,
             },
-            sort:{
+            sort: {
                 field: 'id',
-                order: 'DESC'
+                order: 'DESC',
             },
-            filter:{
-                q: ''
-            }
+            filter: {
+                q: '',
+            },
         });
     });
 
@@ -339,26 +356,30 @@ describe('useMatchingReferences', () => {
         ).toEqual({
             resource: 'posts',
             relatedTo: 'comments@post_id',
-            pagination:{
-                perPage:25,
-                page:1
+            pagination: {
+                perPage: 25,
+                page: 1,
             },
-            sort:{
+            sort: {
                 field: 'id',
-                order: 'DESC'
+                order: 'DESC',
             },
-            filter:{
-                q: ''
-            }
+            filter: {
+                q: '',
+            },
         });
 
         rerender(() => {
-            return useMatchingReferences({...defaultProps, pagination: {
-                perPage: 50,
-                page: 1,
-            } });
+            return useMatchingReferences({
+                ...defaultProps,
+                pagination: {
+                    perPage: 50,
+                    page: 1,
+                },
+            });
         });
-        expect(dispatch).toBeCalledTimes(2);expect(dispatch.mock.calls[1][0].type).toBe(
+        expect(dispatch).toBeCalledTimes(2);
+        expect(dispatch.mock.calls[1][0].type).toBe(
             'RA/CRUD_GET_MATCHING_ACCUMULATE'
         );
         expect(
@@ -366,17 +387,17 @@ describe('useMatchingReferences', () => {
         ).toEqual({
             resource: 'posts',
             relatedTo: 'comments@post_id',
-            pagination:{
-                perPage:50,
+            pagination: {
+                perPage: 50,
                 page: 1,
             },
-            sort:{
+            sort: {
                 field: 'id',
-                order: 'DESC'
+                order: 'DESC',
             },
-            filter:{
-                q: ''
-            }
+            filter: {
+                q: '',
+            },
         });
     });
 
@@ -394,26 +415,30 @@ describe('useMatchingReferences', () => {
         ).toEqual({
             resource: 'posts',
             relatedTo: 'comments@post_id',
-            pagination:{
-                perPage:25,
-                page:1
+            pagination: {
+                perPage: 25,
+                page: 1,
             },
-            sort:{
+            sort: {
                 field: 'id',
-                order: 'DESC'
+                order: 'DESC',
             },
-            filter:{
-                q: ''
-            }
+            filter: {
+                q: '',
+            },
         });
 
         rerender(() => {
-            return useMatchingReferences({...defaultProps, sort:{
-                field: 'uid',
-                order: 'DESC'
-            } });
+            return useMatchingReferences({
+                ...defaultProps,
+                sort: {
+                    field: 'uid',
+                    order: 'DESC',
+                },
+            });
         });
-        expect(dispatch).toBeCalledTimes(2);expect(dispatch.mock.calls[1][0].type).toBe(
+        expect(dispatch).toBeCalledTimes(2);
+        expect(dispatch.mock.calls[1][0].type).toBe(
             'RA/CRUD_GET_MATCHING_ACCUMULATE'
         );
         expect(
@@ -421,17 +446,17 @@ describe('useMatchingReferences', () => {
         ).toEqual({
             resource: 'posts',
             relatedTo: 'comments@post_id',
-            pagination:{
+            pagination: {
                 perPage: 25,
                 page: 1,
             },
-            sort:{
+            sort: {
                 field: 'uid',
-                order: 'DESC'
+                order: 'DESC',
             },
-            filter:{
-                q: ''
-            }
+            filter: {
+                q: '',
+            },
         });
     });
 
@@ -449,26 +474,30 @@ describe('useMatchingReferences', () => {
         ).toEqual({
             resource: 'posts',
             relatedTo: 'comments@post_id',
-            pagination:{
-                perPage:25,
-                page:1
+            pagination: {
+                perPage: 25,
+                page: 1,
             },
-            sort:{
+            sort: {
                 field: 'id',
-                order: 'DESC'
+                order: 'DESC',
             },
-            filter:{
-                q: ''
-            }
+            filter: {
+                q: '',
+            },
         });
 
         rerender(() => {
-            return useMatchingReferences({ ...defaultProps, sort: {
-                field: 'id',
-                order: 'ASC'
-            } });
+            return useMatchingReferences({
+                ...defaultProps,
+                sort: {
+                    field: 'id',
+                    order: 'ASC',
+                },
+            });
         });
-        expect(dispatch).toBeCalledTimes(2);expect(dispatch.mock.calls[1][0].type).toBe(
+        expect(dispatch).toBeCalledTimes(2);
+        expect(dispatch.mock.calls[1][0].type).toBe(
             'RA/CRUD_GET_MATCHING_ACCUMULATE'
         );
         expect(
@@ -476,17 +505,17 @@ describe('useMatchingReferences', () => {
         ).toEqual({
             resource: 'posts',
             relatedTo: 'comments@post_id',
-            pagination:{
+            pagination: {
                 perPage: 25,
                 page: 1,
             },
-            sort:{
+            sort: {
                 field: 'id',
-                order: 'ASC'
+                order: 'ASC',
             },
-            filter:{
-                q: ''
-            }
+            filter: {
+                q: '',
+            },
         });
     });
 

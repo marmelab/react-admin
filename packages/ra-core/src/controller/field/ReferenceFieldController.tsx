@@ -1,7 +1,10 @@
 import { FunctionComponent, ReactNode, ReactElement } from 'react';
 import { Record } from '../../types';
 
-import useReferenceField, { UseReferenceProps, LinkToFunctionType } from './useReferenceField';
+import useReferenceField, {
+    UseReferenceProps,
+    LinkToFunctionType,
+} from './useReferenceField';
 
 interface Props {
     allowEmpty?: boolean;

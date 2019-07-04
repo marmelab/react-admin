@@ -48,7 +48,9 @@ const defaultPagination = {
  * @param {numper} initialPerPage the initial value per page
  * @returns {PaginationProps} The pagination props
  */
-export default (initialPagination: { perPage?: number, page?: number } = {}): PaginationProps => {
+export default (
+    initialPagination: { perPage?: number; page?: number } = {}
+): PaginationProps => {
     const [pagination, setPagination] = useReducer(paginationReducer, {
         ...defaultPagination,
         ...initialPagination,
@@ -64,7 +66,7 @@ export default (initialPagination: { perPage?: number, page?: number } = {}): Pa
             return;
         }
         setPerPage(initialPagination.perPage || 25);
-    }, [initialPagination.perPage || 25]);
+    }, [initialPagination.perPage, setPerPage]);
 
     return {
         page: pagination.page,

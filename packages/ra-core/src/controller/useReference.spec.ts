@@ -36,20 +36,22 @@ describe('useReference', () => {
         expect(dispatch.mock.calls[0][0].type).toBe(
             'RA/CRUD_GET_MANY_ACCUMULATE'
         );
-        expect(dispatch.mock.calls[0][0].payload).toEqual(
-            { ids: ['1'], resource: 'posts' }
-        );
+        expect(dispatch.mock.calls[0][0].payload).toEqual({
+            ids: ['1'],
+            resource: 'posts',
+        });
         rerender(() => {
             return useReference({ ...defaultProps, id: '2' });
-        })
+        });
 
         expect(dispatch).toBeCalledTimes(2);
         expect(dispatch.mock.calls[1][0].type).toBe(
             'RA/CRUD_GET_MANY_ACCUMULATE'
         );
-        expect(dispatch.mock.calls[1][0].payload).toEqual(
-            { ids: ['2'], resource: 'posts' }
-        );
+        expect(dispatch.mock.calls[1][0].payload).toEqual({
+            ids: ['2'],
+            resource: 'posts',
+        });
     });
 
     it('should refetch reference when reference prop change', () => {
@@ -61,20 +63,22 @@ describe('useReference', () => {
         expect(dispatch.mock.calls[0][0].type).toBe(
             'RA/CRUD_GET_MANY_ACCUMULATE'
         );
-        expect(dispatch.mock.calls[0][0].payload).toEqual(
-            { ids: ['1'], resource: 'posts' }
-        );
+        expect(dispatch.mock.calls[0][0].payload).toEqual({
+            ids: ['1'],
+            resource: 'posts',
+        });
         rerender(() => {
             return useReference({ ...defaultProps, reference: 'comments' });
-        })
+        });
 
         expect(dispatch).toBeCalledTimes(2);
         expect(dispatch.mock.calls[1][0].type).toBe(
             'RA/CRUD_GET_MANY_ACCUMULATE'
         );
-        expect(dispatch.mock.calls[1][0].payload).toEqual(
-            { ids: ['1'], resource: 'comments' }
-        );
+        expect(dispatch.mock.calls[1][0].payload).toEqual({
+            ids: ['1'],
+            resource: 'comments',
+        });
     });
 
     it('should pass referenceRecord from redux state to its children', () => {
