@@ -637,7 +637,7 @@ const Aside = ({ data, ids }) => (
     <div style={{ width: 200, margin: '1em' }}>
         <Typography variant="title">Posts stats</Typography>
         <Typography variant="body1">
-            Total views: {ids.map(id => data[id]).reduce((sum, post) => sum + post.views)}
+            Total views: {ids.map(id => data[id]).reduce((sum, post) => sum + post.views, 0)}
         </Typography>
     </div>
 );
