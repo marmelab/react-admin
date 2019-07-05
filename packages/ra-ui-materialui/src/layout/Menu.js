@@ -47,7 +47,9 @@ const Menu = ({
     const translate = useTranslate();
     return (
         <div className={classnames(classes.main, className)} {...rest}>
-            {hasDashboard && <DashboardMenuItem onClick={onMenuClick} />}
+            {hasDashboard && (
+                <DashboardMenuItem onClick={onMenuClick} sidebarIsOpen={open} />
+            )}
             {resources
                 .filter(r => r.hasList)
                 .map(resource => (
@@ -63,6 +65,7 @@ const Menu = ({
                         }
                         onClick={onMenuClick}
                         dense={dense}
+                        sidebarIsOpen={open}
                     />
                 ))}
             <Responsive xsmall={logout} medium={null} />
