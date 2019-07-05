@@ -6,6 +6,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import Collapse from '@material-ui/core/Collapse';
+import Tooltip from '@material-ui/core/Tooltip';
 import { makeStyles } from '@material-ui/core/styles';
 
 import { useTranslate } from 'react-admin';
@@ -32,16 +33,27 @@ const SubMenu = ({
 }) => {
     const translate = useTranslate();
     const classes = useStyles();
+
+    const header = (
+        <MenuItem dense button onClick={handleToggle}>
+            <ListItemIcon className={classes.icon}>
+                {isOpen ? <ExpandMore /> : icon}
+            </ListItemIcon>
+            <Typography variant="inherit" color="textSecondary">
+                {translate(name)}
+            </Typography>
+        </MenuItem>
+    );
+
     return (
         <Fragment>
-            <MenuItem dense button onClick={handleToggle}>
-                <ListItemIcon className={classes.icon}>
-                    {isOpen ? <ExpandMore /> : icon}
-                </ListItemIcon>
-                <Typography variant="inherit" color="textSecondary">
-                    {translate(name)}
-                </Typography>
-            </MenuItem>
+            {sidebarIsOpen || isOpen ? (
+                header
+            ) : (
+                <Tooltip title={translate(name)} placement="right">
+                    {header}
+                </Tooltip>
+            )}
             <Collapse in={isOpen} timeout="auto" unmountOnExit>
                 <List
                     dense
