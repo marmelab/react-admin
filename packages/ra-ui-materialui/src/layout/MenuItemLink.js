@@ -4,6 +4,7 @@ import classnames from 'classnames';
 import { NavLink } from 'react-router-dom';
 import MenuItem from '@material-ui/core/MenuItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
+import Tooltip from '@material-ui/core/Tooltip';
 import { withStyles, createStyles } from '@material-ui/core/styles';
 
 const NavLinkRef = React.forwardRef((props, ref) => (
@@ -37,7 +38,7 @@ export class MenuItemLink extends Component {
         this.props.onClick && this.props.onClick(e);
     };
 
-    render() {
+    renderMenuItem() {
         const {
             classes,
             className,
@@ -62,6 +63,20 @@ export class MenuItemLink extends Component {
                 )}
                 {primaryText}
             </MenuItem>
+        );
+    }
+
+    render() {
+        const { sidebarIsOpen, primaryText } = this.props;
+
+        if (sidebarIsOpen) {
+            return this.renderMenuItem();
+        }
+
+        return (
+            <Tooltip title={primaryText} placement="right">
+                {this.renderMenuItem()}
+            </Tooltip>
         );
     }
 }

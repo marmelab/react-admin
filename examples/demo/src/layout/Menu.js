@@ -35,7 +35,7 @@ const Menu = ({ onMenuClick, open, logout }) => {
     return (
         <div>
             {' '}
-            <DashboardMenuItem onClick={onMenuClick} />
+            <DashboardMenuItem onClick={onMenuClick} sidebarIsOpen={open} />
             <SubMenu
                 handleToggle={() => handleToggle('menuSales')}
                 isOpen={state.menuSales}
@@ -50,6 +50,7 @@ const Menu = ({ onMenuClick, open, logout }) => {
                     })}
                     leftIcon={<orders.icon />}
                     onClick={onMenuClick}
+                    sidebarIsOpen={open}
                 />
                 <MenuItemLink
                     to={`/invoices`}
@@ -58,6 +59,7 @@ const Menu = ({ onMenuClick, open, logout }) => {
                     })}
                     leftIcon={<invoices.icon />}
                     onClick={onMenuClick}
+                    sidebarIsOpen={open}
                 />
             </SubMenu>
             <SubMenu
@@ -74,6 +76,7 @@ const Menu = ({ onMenuClick, open, logout }) => {
                     })}
                     leftIcon={<products.icon />}
                     onClick={onMenuClick}
+                    sidebarIsOpen={open}
                 />
                 <MenuItemLink
                     to={`/categories`}
@@ -82,6 +85,7 @@ const Menu = ({ onMenuClick, open, logout }) => {
                     })}
                     leftIcon={<categories.icon />}
                     onClick={onMenuClick}
+                    sidebarIsOpen={open}
                 />
             </SubMenu>
             <SubMenu
@@ -98,6 +102,7 @@ const Menu = ({ onMenuClick, open, logout }) => {
                     })}
                     leftIcon={<visitors.icon />}
                     onClick={onMenuClick}
+                    sidebarIsOpen={open}
                 />
                 <MenuItemLink
                     to={`/segments`}
@@ -106,6 +111,7 @@ const Menu = ({ onMenuClick, open, logout }) => {
                     })}
                     leftIcon={<LabelIcon />}
                     onClick={onMenuClick}
+                    sidebarIsOpen={open}
                 />
             </SubMenu>
             <MenuItemLink
@@ -115,6 +121,7 @@ const Menu = ({ onMenuClick, open, logout }) => {
                 })}
                 leftIcon={<reviews.icon />}
                 onClick={onMenuClick}
+                sidebarIsOpen={open}
             />
             <Responsive
                 xsmall={
@@ -123,6 +130,7 @@ const Menu = ({ onMenuClick, open, logout }) => {
                         primaryText={translate('pos.configuration')}
                         leftIcon={<SettingsIcon />}
                         onClick={onMenuClick}
+                        sidebarIsOpen={open}
                     />
                 }
                 medium={null}
