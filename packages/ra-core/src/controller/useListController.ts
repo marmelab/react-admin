@@ -76,7 +76,7 @@ export interface ListControllerProps {
  *
  * @example
  *
- * import {useListController } from 'react-admin';
+ * import { useListController } from 'react-admin';
  * import ListView from './ListView';
  *
  * const MyList = props => {
