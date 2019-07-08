@@ -1,21 +1,19 @@
-import React, { Component } from 'react';
+import React, { useEffect, useState } from 'react';
 import inflection from 'inflection';
-import { withStyles } from '@material-ui/core/styles';
 import {
-    EditController,
+    useEditController,
     InferredElement,
     getElementsFromRecords,
 } from 'ra-core';
-import { EditView, styles } from './Edit';
+
+import { EditView } from './Edit';
 import editFieldTypes from './editFieldTypes';
 
-export class EditViewGuesser extends Component {
-    state = {
-        inferredChild: null,
-    };
-    componentDidUpdate() {
-        const { record, resource } = this.props;
-        if (record && !this.state.inferredChild) {
+const EditViewGuesser = props => {
+    const { record, resource } = props;
+    const [inferredChild, setInferredChild] = useState(null);
+    useEffect(() => {
+        if (record && !inferredChild) {
             const inferredElements = getElementsFromRecords(
                 [record],
                 editFieldTypes
@@ -39,21 +37,17 @@ ${inferredChild.getRepresentation()}
     </Edit>
 );`
                 );
-            this.setState({ inferredChild: inferredChild.getElement() });
+            setInferredChild(inferredChild.getElement());
         }
-    }
+    }, [record, inferredChild, resource]);
 
-    render() {
-        return <EditView {...this.props}>{this.state.inferredChild}</EditView>;
-    }
-}
+    return <EditView {...props}>{inferredChild}</EditView>;
+};
 
 EditViewGuesser.propTypes = EditView.propTypes;
 
 const EditGuesser = props => (
-    <EditController {...props}>
-        {controllerProps => <EditViewGuesser {...props} {...controllerProps} />}
-    </EditController>
+    <EditViewGuesser {...props} {...useEditController(props)} />
 );
 
-export default withStyles(styles)(EditGuesser);
+export default EditGuesser;

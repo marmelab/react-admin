@@ -2,14 +2,14 @@ import React, { Children, cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
-import { withStyles, createStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
-import { EditController } from 'ra-core';
+import { useEditController } from 'ra-core';
 
 import DefaultActions from './EditActions';
 import TitleForRecord from '../layout/TitleForRecord';
 
-export const styles = createStyles({
+export const useStyles = makeStyles({
     root: {},
     main: {
         display: 'flex',
@@ -36,10 +36,10 @@ const sanitizeRestProps = ({
     hasShow,
     id,
     isLoading,
+    isSaving,
     resetForm,
     resource,
     title,
-    translate,
     version,
     match,
     location,
@@ -51,89 +51,87 @@ const sanitizeRestProps = ({
     ...rest
 }) => rest;
 
-export const EditView = withStyles(styles)(
-    ({
-        actions,
-        aside,
-        basePath,
-        children,
-        classes,
-        className,
-        defaultTitle,
-        hasList,
-        hasShow,
-        record,
-        redirect,
-        resource,
-        save,
-        title,
-        undoable,
-        version,
-        ...rest
-    }) => {
-        if (typeof actions === 'undefined' && hasShow) {
-            actions = <DefaultActions />;
-        }
-        if (!children) {
-            return null;
-        }
-        return (
+export const EditView = ({
+    actions,
+    aside,
+    basePath,
+    children,
+    classes: classesOverride,
+    className,
+    defaultTitle,
+    hasList,
+    hasShow,
+    record,
+    redirect,
+    resource,
+    save,
+    title,
+    undoable,
+    version,
+    ...rest
+}) => {
+    const classes = useStyles({ classes: classesOverride });
+    if (typeof actions === 'undefined' && hasShow) {
+        actions = <DefaultActions />;
+    }
+    if (!children) {
+        return null;
+    }
+    return (
+        <div
+            className={classnames('edit-page', classes.root, className)}
+            {...sanitizeRestProps(rest)}
+        >
+            <TitleForRecord
+                title={title}
+                record={record}
+                defaultTitle={defaultTitle}
+            />
+            {actions &&
+                cloneElement(actions, {
+                    basePath,
+                    data: record,
+                    hasShow,
+                    hasList,
+                    resource,
+                    //  Ensure we don't override any user provided props
+                    ...actions.props,
+                })}
             <div
-                className={classnames('edit-page', classes.root, className)}
-                {...sanitizeRestProps(rest)}
+                className={classnames(classes.main, {
+                    [classes.noActions]: !actions,
+                })}
             >
-                <TitleForRecord
-                    title={title}
-                    record={record}
-                    defaultTitle={defaultTitle}
-                />
-                {actions &&
-                    cloneElement(actions, {
-                        basePath,
-                        data: record,
-                        hasShow,
-                        hasList,
-                        resource,
-                        //  Ensure we don't override any user provided props
-                        ...actions.props,
-                    })}
-                <div
-                    className={classnames(classes.main, {
-                        [classes.noActions]: !actions,
-                    })}
-                >
-                    <Card className={classes.card}>
-                        {record ? (
-                            cloneElement(Children.only(children), {
-                                basePath,
-                                record,
-                                redirect:
-                                    typeof children.props.redirect ===
-                                    'undefined'
-                                        ? redirect
-                                        : children.props.redirect,
-                                resource,
-                                save,
-                                undoable,
-                                version,
-                            })
-                        ) : (
-                            <CardContent>&nbsp;</CardContent>
-                        )}
-                    </Card>
-                    {aside &&
-                        React.cloneElement(aside, {
+                <Card className={classes.card}>
+                    {record ? (
+                        cloneElement(Children.only(children), {
                             basePath,
                             record,
+                            redirect:
+                                typeof children.props.redirect === 'undefined'
+                                    ? redirect
+                                    : children.props.redirect,
                             resource,
-                            version,
                             save,
-                        })}
-                </div>
+                            undoable,
+                            version,
+                        })
+                    ) : (
+                        <CardContent>&nbsp;</CardContent>
+                    )}
+                </Card>
+                {aside &&
+                    React.cloneElement(aside, {
+                        basePath,
+                        record,
+                        resource,
+                        version,
+                        save,
+                    })}
             </div>
-        );
-    }
-);
+        </div>
+    );
+};
 
 EditView.propTypes = {
     actions: PropTypes.element,
@@ -199,11 +197,7 @@ EditView.defaultProps = {
  *     );
  *     export default App;
  */
-const Edit = props => (
-    <EditController {...props}>
-        {controllerProps => <EditView {...props} {...controllerProps} />}
-    </EditController>
-);
+const Edit = props => <EditView {...props} {...useEditController(props)} />;
 
 Edit.propTypes = {
     actions: PropTypes.element,
