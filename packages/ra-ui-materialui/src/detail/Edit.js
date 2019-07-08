@@ -9,6 +9,66 @@ import { useEditController } from 'ra-core';
 import DefaultActions from './EditActions';
 import TitleForRecord from '../layout/TitleForRecord';
 
+/**
+ * Page component for the Edit view
+ *
+ * The `<Edit>` component renders the page title and actions,
+ * fetches the record from the data provider.
+ * It is not responsible for rendering the actual form -
+ * that's the job of its child component (usually `<SimpleForm>`),
+ * to which it passes pass the `record` as prop.
+ *
+ * The `<Edit>` component accepts the following props:
+ *
+ * - aside
+ * - title
+ * - actions
+ *
+ * They all expect an element for value.
+ *
+ * @example
+ *     // in src/posts.js
+ *     import React from 'react';
+ *     import { Edit, SimpleForm, TextInput } from 'react-admin';
+ *
+ *     export const PostEdit = (props) => (
+ *         <Edit {...props}>
+ *             <SimpleForm>
+ *                 <TextInput source="title" />
+ *             </SimpleForm>
+ *         </Edit>
+ *     );
+ *
+ *     // in src/App.js
+ *     import React from 'react';
+ *     import { Admin, Resource } from 'react-admin';
+ *
+ *     import { PostEdit } from './posts';
+ *
+ *     const App = () => (
+ *         <Admin dataProvider={...}>
+ *             <Resource name="posts" edit={PostEdit} />
+ *         </Admin>
+ *     );
+ *     export default App;
+ */
+const Edit = props => <EditView {...props} {...useEditController(props)} />;
+
+Edit.propTypes = {
+    actions: PropTypes.element,
+    aside: PropTypes.element,
+    children: PropTypes.node,
+    classes: PropTypes.object,
+    className: PropTypes.string,
+    hasCreate: PropTypes.bool,
+    hasEdit: PropTypes.bool,
+    hasShow: PropTypes.bool,
+    hasList: PropTypes.bool,
+    id: PropTypes.any.isRequired,
+    resource: PropTypes.string.isRequired,
+    title: PropTypes.node,
+};
+
 export const useStyles = makeStyles({
     root: {},
     main: {
@@ -23,12 +83,6 @@ export const useStyles = makeStyles({
 });
 
 const sanitizeRestProps = ({
-    actions,
-    aside,
-    children,
-    className,
-    crudGetOne,
-    crudUpdate,
     data,
     hasCreate,
     hasEdit,
@@ -37,7 +91,6 @@ const sanitizeRestProps = ({
     id,
     isLoading,
     isSaving,
-    resetForm,
     resource,
     title,
     version,
@@ -153,65 +206,6 @@ EditView.propTypes = {
 
 EditView.defaultProps = {
     classes: {},
-};
-
-/**
- * Page component for the Edit view
- *
- * The `<Edit>` component renders the page title and actions,
- * fetches the record from the data provider.
- * It is not responsible for rendering the actual form -
- * that's the job of its child component (usually `<SimpleForm>`),
- * to which it passes pass the `record` as prop.
- *
- * The `<Edit>` component accepts the following props:
- *
- * - title
- * - actions
- *
- * Both expect an element for value.
- *
- * @example
- *     // in src/posts.js
- *     import React from 'react';
- *     import { Edit, SimpleForm, TextInput } from 'react-admin';
- *
- *     export const PostEdit = (props) => (
- *         <Edit {...props}>
- *             <SimpleForm>
- *                 <TextInput source="title" />
- *             </SimpleForm>
- *         </Edit>
- *     );
- *
- *     // in src/App.js
- *     import React from 'react';
- *     import { Admin, Resource } from 'react-admin';
- *
- *     import { PostEdit } from './posts';
- *
- *     const App = () => (
- *         <Admin dataProvider={...}>
- *             <Resource name="posts" edit={PostEdit} />
- *         </Admin>
- *     );
- *     export default App;
- */
-const Edit = props => <EditView {...props} {...useEditController(props)} />;
-
-Edit.propTypes = {
-    actions: PropTypes.element,
-    aside: PropTypes.element,
-    children: PropTypes.node,
-    classes: PropTypes.object,
-    className: PropTypes.string,
-    hasCreate: PropTypes.bool,
-    hasEdit: PropTypes.bool,
-    hasShow: PropTypes.bool,
-    hasList: PropTypes.bool,
-    id: PropTypes.any.isRequired,
-    resource: PropTypes.string.isRequired,
-    title: PropTypes.node,
 };
 
 export default Edit;
