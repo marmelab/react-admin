@@ -25,7 +25,7 @@ describe('useFilterState', () => {
         expect(childrenProps.filter).toEqual({ search: '' });
     });
 
-    it('should provide setFilter to update filter value after given debounceTime', async () => {
+    it('should return a setFilter function to update the filter value after a given debounceTime', async () => {
         const { childrenProps, childrenMock } = renderHook(() =>
             useFilterState({ debounceTime: 10 })
         );
