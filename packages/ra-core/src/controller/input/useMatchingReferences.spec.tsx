@@ -118,7 +118,7 @@ describe('useMatchingReferences', () => {
         });
     });
 
-    it('should refetch matchingReferences when reference change', () => {
+    it('should refetch matchingReferences when the reference prop changes', () => {
         const { dispatch, rerender } = renderHookWithRedux(() => {
             return useMatchingReferences(defaultProps);
         });
