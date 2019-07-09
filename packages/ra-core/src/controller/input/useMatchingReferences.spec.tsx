@@ -62,7 +62,7 @@ describe('useMatchingReferences', () => {
         expect(dispatch).toBeCalledTimes(1);
     });
 
-    it('should fetch matchingReferences when filter change', () => {
+    it('should fetch matchingReferences when the filter prop changes', () => {
         const { dispatch, rerender } = renderHookWithRedux(() => {
             return useMatchingReferences(defaultProps);
         });
