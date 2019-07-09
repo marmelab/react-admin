@@ -45,6 +45,7 @@ export class MenuItemLink extends Component {
             primaryText,
             leftIcon,
             staticContext,
+            sidebarIsOpen,
             ...props
         } = this.props;
 
