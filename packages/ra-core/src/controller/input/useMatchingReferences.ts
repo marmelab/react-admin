@@ -40,7 +40,7 @@ export default ({
     filter,
     pagination,
     sort,
-}: UseMAtchingReferencesOption): UseMatchingReferencesProps => {
+}: UseMatchingReferencesOption): UseMatchingReferencesProps => {
     const dispatch = useDispatch();
 
     const getMatchingReferences = useMemo(makeMatchingReferencesSelector, []);
