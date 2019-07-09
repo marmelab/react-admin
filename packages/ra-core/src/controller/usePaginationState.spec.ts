@@ -8,7 +8,7 @@ describe('usePaginationState', () => {
         expect(childrenProps.pagination).toEqual({ page: 1, perPage: 25 });
     });
 
-    it('should take given page and perpage to initalise', () => {
+    it('should take given page and perPage props to initalize', () => {
         const { childrenProps } = renderHook(() =>
             usePaginationState({ perPage: 50, page: 10 })
         );
