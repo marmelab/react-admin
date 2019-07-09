@@ -54,7 +54,7 @@ describe('useReference', () => {
         });
     });
 
-    it('should refetch reference when reference prop change', () => {
+    it('should refetch reference when reference prop changes', () => {
         const { dispatch, rerender } = renderHookWithRedux(() => {
             return useReference(defaultProps);
         });
