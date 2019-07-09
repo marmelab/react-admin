@@ -21,7 +21,7 @@ describe('<ReferenceInputController />', () => {
 
     afterEach(cleanup);
 
-    it('should fetch reference matchingReferences, and provice filter pagination and sort', () => {
+    it('should fetch reference matchingReferences, and provide filter pagination and sort', () => {
         const children = jest.fn().mockReturnValue(<p>child</p>);
         const { dispatch } = renderWithRedux(
             <ReferenceInputController
