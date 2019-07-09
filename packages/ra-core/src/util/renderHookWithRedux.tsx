@@ -1,26 +1,26 @@
 import React from 'react';
 import renderWithRedux from './renderWithRedux';
 
-const TestHook = ({ children, hookProps }) => {
-    return children(hookProps());
+const TestHook = ({ children, hook }) => {
+    return children(hook());
 };
-export default (hookProps, reduxState?) => {
-    let childrenProps = null;
+export default (hook, reduxState?) => {
+    let hookValue = null;
     const children = props => {
-        childrenProps = props;
+        hookValue = props;
         return <p>child</p>;
     };
     const result = renderWithRedux(
-        <TestHook children={children} hookProps={hookProps} />,
+        <TestHook children={children} hook={hook} />,
         reduxState
     );
 
     return {
         ...result,
-        childrenProps,
+        hookValue,
         rerender: newHook => {
             return result.rerender(
-                <TestHook children={children} hookProps={newHook} />
+                <TestHook children={children} hook={newHook} />
             );
         },
     };

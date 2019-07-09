@@ -14,7 +14,7 @@ interface Props {
     reference: string;
     resource: string;
     source: string;
-    link: string | boolean | LinkToFunctionType;
+    link?: string | boolean | LinkToFunctionType;
 }
 
 /**

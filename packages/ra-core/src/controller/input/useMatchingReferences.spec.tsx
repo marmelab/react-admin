@@ -520,7 +520,7 @@ describe('useMatchingReferences', () => {
     });
 
     it('should pass matching references from redux state to its children', () => {
-        const { childrenProps } = renderHookWithRedux(
+        const { hookValue } = renderHookWithRedux(
             () => {
                 return useMatchingReferences(defaultProps);
             },
@@ -536,17 +536,14 @@ describe('useMatchingReferences', () => {
             }
         );
 
-        expect(childrenProps.matchingReferences).toEqual([
-            { id: 2 },
-            { id: 1 },
-        ]);
+        expect(hookValue.matchingReferences).toEqual([{ id: 2 }, { id: 1 }]);
 
-        expect(childrenProps.loading).toBe(false);
-        expect(childrenProps.error).toBe(null);
+        expect(hookValue.loading).toBe(false);
+        expect(hookValue.error).toBe(null);
     });
 
     it('should pass an error if an error is in redux state', () => {
-        const { childrenProps } = renderHookWithRedux(
+        const { hookValue } = renderHookWithRedux(
             () => {
                 return useMatchingReferences(defaultProps);
             },
@@ -566,14 +563,14 @@ describe('useMatchingReferences', () => {
             }
         );
 
-        expect(childrenProps.matchingReferences).toBe(null);
+        expect(hookValue.matchingReferences).toBe(null);
 
-        expect(childrenProps.loading).toBe(false);
-        expect(childrenProps.error).toBe('Something bad happened');
+        expect(hookValue.loading).toBe(false);
+        expect(hookValue.error).toBe('Something bad happened');
     });
 
     it('should pass loading true if no matching reference yet', () => {
-        const { childrenProps } = renderHookWithRedux(
+        const { hookValue } = renderHookWithRedux(
             () => {
                 return useMatchingReferences(defaultProps);
             },
@@ -589,9 +586,9 @@ describe('useMatchingReferences', () => {
             }
         );
 
-        expect(childrenProps.matchingReferences).toBe(null);
+        expect(hookValue.matchingReferences).toBe(null);
 
-        expect(childrenProps.loading).toBe(true);
-        expect(childrenProps.error).toBe(null);
+        expect(hookValue.loading).toBe(true);
+        expect(hookValue.error).toBe(null);
     });
 });

@@ -81,8 +81,28 @@ describe('useReference', () => {
         });
     });
 
-    it('should pass referenceRecord from redux state to its children', () => {
-        const { childrenProps } = renderHookWithRedux(
+    it('it should not refetch reference when allowEmpty change', () => {
+        const { dispatch, rerender } = renderHookWithRedux(() => {
+            return useReference(defaultProps);
+        });
+
+        expect(dispatch).toBeCalledTimes(1);
+        expect(dispatch.mock.calls[0][0].type).toBe(
+            'RA/CRUD_GET_MANY_ACCUMULATE'
+        );
+        expect(dispatch.mock.calls[0][0].payload).toEqual({
+            ids: ['1'],
+            resource: 'posts',
+        });
+        rerender(() => {
+            return useReference({ ...defaultProps, allowEmpty: true });
+        });
+
+        expect(dispatch).toBeCalledTimes(1);
+    });
+
+    it('should retrieve referenceRecord from redux state', () => {
+        const { hookValue } = renderHookWithRedux(
             () => {
                 return useReference(defaultProps);
             },
@@ -95,14 +115,15 @@ describe('useReference', () => {
             }
         );
 
-        expect(childrenProps).toEqual({
+        expect(hookValue).toEqual({
             referenceRecord: { id: 1 },
-            isLoading: false,
+            loading: false,
+            loaded: true,
         });
     });
 
-    it('should set isLoading to true if no referenceRecord yet', () => {
-        const { childrenProps } = renderHookWithRedux(
+    it('should set loading to true if no referenceRecord yet', () => {
+        const { hookValue } = renderHookWithRedux(
             () => {
                 return useReference(defaultProps);
             },
@@ -115,14 +136,15 @@ describe('useReference', () => {
             }
         );
 
-        expect(childrenProps).toEqual({
+        expect(hookValue).toEqual({
             referenceRecord: undefined,
-            isLoading: true,
+            loading: true,
+            loaded: false,
         });
     });
 
-    it('should set isLoading to false even if no referenceRecord yet when allowEmpty is true', () => {
-        const { childrenProps } = renderHookWithRedux(
+    it('should set loading to false even if no referenceRecord yet when allowEmpty is true', () => {
+        const { hookValue } = renderHookWithRedux(
             () => {
                 return useReference({ ...defaultProps, allowEmpty: true });
             },
@@ -135,9 +157,10 @@ describe('useReference', () => {
             }
         );
 
-        expect(childrenProps).toEqual({
+        expect(hookValue).toEqual({
             referenceRecord: undefined,
-            isLoading: false,
+            loading: false,
+            loaded: true,
         });
     });
 });

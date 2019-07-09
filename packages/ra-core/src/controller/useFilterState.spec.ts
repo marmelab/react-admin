@@ -4,35 +4,35 @@ import { act } from 'react-testing-library';
 
 describe('useFilterState', () => {
     it('should initialize filterState with default filter', () => {
-        const { childrenProps } = renderHook(() => useFilterState({}));
+        const { hookValue } = renderHook(() => useFilterState({}));
 
-        expect(childrenProps.filter).toEqual({ q: '' });
+        expect(hookValue.filter).toEqual({ q: '' });
     });
 
     it('should initialize filterState with permanent filter', () => {
-        const { childrenProps } = renderHook(() =>
+        const { hookValue } = renderHook(() =>
             useFilterState({ permanentFilter: { type: 'thisOne' } })
         );
 
-        expect(childrenProps.filter).toEqual({ q: '', type: 'thisOne' });
+        expect(hookValue.filter).toEqual({ q: '', type: 'thisOne' });
     });
 
     it('should initialize using filterToQuery if provided', () => {
-        const { childrenProps } = renderHook(() =>
+        const { hookValue } = renderHook(() =>
             useFilterState({ filterToQuery: v => ({ search: v }) })
         );
 
-        expect(childrenProps.filter).toEqual({ search: '' });
+        expect(hookValue.filter).toEqual({ search: '' });
     });
 
     it('should return a setFilter function to update the filter value after a given debounceTime', async () => {
-        const { childrenProps, childrenMock } = renderHook(() =>
+        const { hookValue, childrenMock } = renderHook(() =>
             useFilterState({ debounceTime: 10 })
         );
 
-        expect(childrenProps.filter).toEqual({ q: '' });
+        expect(hookValue.filter).toEqual({ q: '' });
 
-        act(() => childrenProps.setFilter('needle in a haystack'));
+        act(() => hookValue.setFilter('needle in a haystack'));
 
         expect(childrenMock).toBeCalledTimes(1);
         await new Promise(resolve => setTimeout(resolve, 10));
@@ -45,7 +45,7 @@ describe('useFilterState', () => {
     });
 
     it('should provide setFilter to update filter value after given debounceTime preserving permanentFilter and filterToQuery', async () => {
-        const { childrenProps, childrenMock } = renderHook(() =>
+        const { hookValue, childrenMock } = renderHook(() =>
             useFilterState({
                 debounceTime: 10,
                 permanentFilter: { type: 'thisOne' },
@@ -53,7 +53,7 @@ describe('useFilterState', () => {
             })
         );
 
-        act(() => childrenProps.setFilter('needle in a haystack'));
+        act(() => hookValue.setFilter('needle in a haystack'));
 
         expect(childrenMock).toBeCalledTimes(1);
         await new Promise(resolve => setTimeout(resolve, 10));

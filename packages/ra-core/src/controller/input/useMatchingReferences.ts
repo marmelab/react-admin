@@ -57,16 +57,15 @@ export default ({
     };
 
     useDeepCompareEffect(() => {
-        fetchOptions({
-            dispatch,
-            filter,
-            reference,
-            referenceSource,
-            resource,
-            source,
-            pagination,
-            sort,
-        });
+        dispatch(
+            crudGetMatchingAccumulate(
+                reference,
+                referenceSource(resource, source),
+                pagination,
+                sort,
+                filter
+            )
+        );
     }, [
         dispatch,
         filter,
@@ -109,27 +108,6 @@ export default ({
         error: null,
         matchingReferences,
     };
-};
-
-const fetchOptions = ({
-    dispatch,
-    filter,
-    reference,
-    referenceSource,
-    resource,
-    source,
-    pagination,
-    sort,
-}) => {
-    dispatch(
-        crudGetMatchingAccumulate(
-            reference,
-            referenceSource(resource, source),
-            pagination,
-            sort,
-            filter
-        )
-    );
 };
 
 const makeMatchingReferencesSelector = () => {

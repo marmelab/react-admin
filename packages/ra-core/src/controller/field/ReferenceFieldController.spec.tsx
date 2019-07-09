@@ -20,6 +20,7 @@ describe('<ReferenceFieldController />', () => {
                 record={{ id: 1, postId: 123 }}
                 source="postId"
                 reference="posts"
+                resource="comments"
                 basePath=""
             />,
             defaultState
@@ -35,6 +36,7 @@ describe('<ReferenceFieldController />', () => {
                 record={{ id: 1, postId: null }}
                 source="postId"
                 reference="posts"
+                resource="comments"
                 basePath=""
             />,
             defaultState
@@ -51,7 +53,6 @@ describe('<ReferenceFieldController />', () => {
                 reference="posts"
                 resource="comments"
                 basePath="/comments"
-                crudGetManyAccumulate={crudGetManyAccumulate}
             >
                 {children}
             </ReferenceFieldController>,
@@ -59,7 +60,8 @@ describe('<ReferenceFieldController />', () => {
         );
 
         expect(children).toBeCalledWith({
-            isLoading: false,
+            loading: false,
+            loaded: true,
             referenceRecord: { id: 123, title: 'foo' },
             resourceLinkPath: '/posts/123',
         });
@@ -89,7 +91,8 @@ describe('<ReferenceFieldController />', () => {
         );
 
         expect(children).toBeCalledWith({
-            isLoading: false,
+            loading: false,
+            loaded: true,
             referenceRecord: { id: 123, title: 'foo' },
             resourceLinkPath: '/prefix/posts/123',
         });
@@ -119,7 +122,8 @@ describe('<ReferenceFieldController />', () => {
         );
 
         expect(children).toBeCalledWith({
-            isLoading: false,
+            loading: false,
+            loaded: true,
             referenceRecord: { id: 123, title: 'foo' },
             resourceLinkPath: '/edit/123',
         });
@@ -134,7 +138,6 @@ describe('<ReferenceFieldController />', () => {
                 reference="show"
                 resource="edit"
                 basePath="/edit"
-                crudGetManyAccumulate={crudGetManyAccumulate}
             >
                 {children}
             </ReferenceFieldController>,
@@ -150,7 +153,8 @@ describe('<ReferenceFieldController />', () => {
         );
 
         expect(children).toBeCalledWith({
-            isLoading: false,
+            loading: false,
+            loaded: true,
             referenceRecord: { id: 123, title: 'foo' },
             resourceLinkPath: '/show/123',
         });
@@ -173,7 +177,8 @@ describe('<ReferenceFieldController />', () => {
         );
 
         expect(children).toBeCalledWith({
-            isLoading: false,
+            loading: false,
+            loaded: true,
             referenceRecord: { id: 123, title: 'foo' },
             resourceLinkPath: '/posts/123/show',
         });
@@ -204,7 +209,8 @@ describe('<ReferenceFieldController />', () => {
         );
 
         expect(children).toBeCalledWith({
-            isLoading: false,
+            loading: false,
+            loaded: true,
             referenceRecord: { id: 123, title: 'foo' },
             resourceLinkPath: '/edit/123/show',
         });
@@ -219,7 +225,6 @@ describe('<ReferenceFieldController />', () => {
                 reference="show"
                 resource="edit"
                 basePath="/edit"
-                crudGetManyAccumulate={crudGetManyAccumulate}
                 link="show"
             >
                 {children}
@@ -236,7 +241,8 @@ describe('<ReferenceFieldController />', () => {
         );
 
         expect(children).toBeCalledWith({
-            isLoading: false,
+            loading: false,
+            loaded: true,
             referenceRecord: { id: 123, title: 'foo' },
             resourceLinkPath: '/show/123/show',
         });
@@ -249,6 +255,7 @@ describe('<ReferenceFieldController />', () => {
                 record={{ id: 1, postId: 123 }}
                 source="postId"
                 reference="posts"
+                resource="comments"
                 basePath="/foo"
                 link={false}
             >
@@ -258,7 +265,8 @@ describe('<ReferenceFieldController />', () => {
         );
 
         expect(children).toBeCalledWith({
-            isLoading: false,
+            loading: false,
+            loaded: true,
             referenceRecord: { id: 123, title: 'foo' },
             resourceLinkPath: false,
         });

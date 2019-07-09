@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react';
+import { useEffect, useCallback } from 'react';
 // @ts-ignore
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -13,14 +13,16 @@ interface Option {
 }
 
 export interface UseReferenceProps {
-    isLoading: boolean;
+    loading: boolean;
+    loaded: boolean;
     referenceRecord: Record;
 }
 
 /**
  * @typedef ReferenceProps
  * @type {Object}
- * @property {boolean} isLoading: boolean indicating if the reference has loaded
+ * @property {boolean} loading: boolean indicating if the reference is loading
+ * @property {boolean} loaded: boolean indicating if the reference has loaded
  * @property {Object} referenceRecord: the referenced record.
  */
 
@@ -32,7 +34,7 @@ export interface UseReferenceProps {
  *
  * @example
  *
- * const { isLoading, referenceRecord } = useReference({
+ * const { loading, loaded, referenceRecord } = useReference({
  *     id: 7,
  *     reference: 'users',
  * });
@@ -50,27 +52,32 @@ export const useReference = ({
     id,
 }: Option): UseReferenceProps => {
     const dispatch = useDispatch();
-    const getReferenceRecord = useMemo(
-        () => makeGetReferenceRecord({ id, reference }),
-        [id, reference]
-    );
-    const referenceRecord = useSelector(getReferenceRecord);
     useEffect(() => {
         if (id !== null && typeof id !== 'undefined') {
             dispatch(crudGetManyAccumulate(reference, [id]));
         }
     }, [dispatch, id, reference]);
 
+    const referenceRecord = useReferenceSelector({ reference, id });
+
     return {
-        isLoading: !referenceRecord && !allowEmpty,
+        loading: !referenceRecord && !allowEmpty,
+        loaded: !!referenceRecord || allowEmpty,
         referenceRecord,
     };
 };
 
-const makeGetReferenceRecord = props => state => {
-    const referenceState = getReferenceResource(state, props);
+const useReferenceSelector = ({ id, reference }) => {
+    const getReferenceRecord = useCallback(
+        state => {
+            const referenceState = getReferenceResource(state, { reference });
 
-    return referenceState && referenceState.data[props.id];
+            return referenceState && referenceState.data[id];
+        },
+        [id, reference]
+    );
+
+    return useSelector(getReferenceRecord);
 };
 
 export default useReference;

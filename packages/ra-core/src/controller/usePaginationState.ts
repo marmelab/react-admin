@@ -23,7 +23,6 @@ const defaultPagination = {
 };
 
 /**
- * set the sort to the given field, swap the order if the field is the same
  * @name setNumber
  * @function
  * @param {number} state the state value

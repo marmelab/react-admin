@@ -15,12 +15,13 @@ interface Option {
     source: string;
     reference: string;
     resource: string;
-    link: LinkToType;
+    link?: LinkToType;
     linkType?: LinkToType; // deprecated, use link instead
 }
 
 export interface UseReferenceProps {
-    isLoading: boolean;
+    loading: boolean;
+    loaded: boolean;
     referenceRecord: Record;
     resourceLinkPath: string | false;
 }
@@ -28,7 +29,8 @@ export interface UseReferenceProps {
 /**
  * @typedef ReferenceProps
  * @type {Object}
- * @property {boolean} isLoading: boolean indicating if the reference has loaded
+ * @property {boolean} loading: boolean indicating if the reference is loading
+ * @property {boolean} loaded: boolean indicating if the reference has loaded
  * @property {Object} referenceRecord: the referenced record.
  * @property {string | false} resourceLinkPath link to the page of the related record (depends on link) (false is no link)
  */
@@ -72,7 +74,7 @@ export const useReferenceField = ({
     source,
 }: Option): UseReferenceProps => {
     const sourceId = get(record, source);
-    const { referenceRecord, isLoading } = useReference({
+    const { referenceRecord, loading, loaded } = useReference({
         id: sourceId,
         reference,
         allowEmpty,
@@ -97,7 +99,8 @@ export const useReferenceField = ({
     );
 
     return {
-        isLoading,
+        loading,
+        loaded,
         referenceRecord,
         resourceLinkPath,
     };
