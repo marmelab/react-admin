@@ -27,7 +27,7 @@ describe('useReference', () => {
         expect(dispatch).toBeCalledTimes(1);
     });
 
-    it('should refetch reference when id change', () => {
+    it('should refetch reference when id changes', () => {
         const { dispatch, rerender } = renderHookWithRedux(() => {
             return useReference(defaultProps);
         });
