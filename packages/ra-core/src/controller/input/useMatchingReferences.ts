@@ -13,7 +13,7 @@ import {
 import { Pagination, Sort, Record } from '../../types';
 import { useDeepCompareEffect } from '../../util/hooks';
 
-interface UseMAtchingReferencesOption {
+interface UseMatchingReferencesOption {
     reference: string;
     referenceSource: (resource: string, source: string) => string;
     resource: string;
