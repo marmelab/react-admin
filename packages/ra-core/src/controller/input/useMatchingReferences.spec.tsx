@@ -283,7 +283,7 @@ describe('useMatchingReferences', () => {
         });
     });
 
-    it('should refetch matchingReferences when pagination.page change', () => {
+    it('should refetch matchingReferences when the pagination.page prop changes', () => {
         const { dispatch, rerender } = renderHookWithRedux(() => {
             return useMatchingReferences(defaultProps);
         });
