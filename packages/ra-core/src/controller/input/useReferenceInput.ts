@@ -4,7 +4,7 @@ import { getStatusForInput as getDataStatus } from './referenceDataStatus';
 import useTranslate from '../../i18n/useTranslate';
 import { Sort, Record, Pagination } from '../../types';
 import useReference from '../useReference';
-import useMatchingReferences from './useMatchingReferences';
+import useGetMatchingReferences from './useGetMatchingReferences';
 import usePaginationState from '../usePaginationState';
 import { useSortState } from '..';
 import useFilterState from '../useFilterState';
@@ -18,6 +18,7 @@ interface ReferenceInputValue {
     loading: boolean;
     pagination: Pagination;
     setFilter: (filter: string) => void;
+    filter: any;
     setPagination: (pagination: Pagination) => void;
     setSort: (sort: Sort) => void;
     sort: Sort;
@@ -95,7 +96,7 @@ export default ({
         filterToQuery,
     });
 
-    const { matchingReferences } = useMatchingReferences({
+    const { matchingReferences } = useGetMatchingReferences({
         reference,
         referenceSource,
         filter,
@@ -122,6 +123,7 @@ export default ({
         choices: dataStatus.choices,
         error: dataStatus.error,
         loading: dataStatus.waiting,
+        filter,
         setFilter,
         pagination,
         setPagination,

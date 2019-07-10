@@ -1,4 +1,4 @@
-import renderHookWithRedux from '../util/renderHookWithRedux';
+import renderHook from '../util/renderHook';
 import useReference from './useReference';
 import { cleanup } from 'react-testing-library';
 
@@ -12,7 +12,7 @@ describe('useReference', () => {
     afterEach(cleanup);
 
     it('should fetch reference on mount', () => {
-        const { dispatch, rerender } = renderHookWithRedux(() => {
+        const { dispatch, rerender } = renderHook(() => {
             return useReference(defaultProps);
         });
 
@@ -28,7 +28,7 @@ describe('useReference', () => {
     });
 
     it('should refetch reference when id changes', () => {
-        const { dispatch, rerender } = renderHookWithRedux(() => {
+        const { dispatch, rerender } = renderHook(() => {
             return useReference(defaultProps);
         });
 
@@ -55,7 +55,7 @@ describe('useReference', () => {
     });
 
     it('should refetch reference when reference prop changes', () => {
-        const { dispatch, rerender } = renderHookWithRedux(() => {
+        const { dispatch, rerender } = renderHook(() => {
             return useReference(defaultProps);
         });
 
@@ -82,7 +82,7 @@ describe('useReference', () => {
     });
 
     it('it should not refetch reference when allowEmpty change', () => {
-        const { dispatch, rerender } = renderHookWithRedux(() => {
+        const { dispatch, rerender } = renderHook(() => {
             return useReference(defaultProps);
         });
 
@@ -102,10 +102,11 @@ describe('useReference', () => {
     });
 
     it('should retrieve referenceRecord from redux state', () => {
-        const { hookValue } = renderHookWithRedux(
+        const { hookValue } = renderHook(
             () => {
                 return useReference(defaultProps);
             },
+            true,
             {
                 admin: {
                     resources: {
@@ -123,10 +124,11 @@ describe('useReference', () => {
     });
 
     it('should set loading to true if no referenceRecord yet', () => {
-        const { hookValue } = renderHookWithRedux(
+        const { hookValue } = renderHook(
             () => {
                 return useReference(defaultProps);
             },
+            true,
             {
                 admin: {
                     resources: {
@@ -144,10 +146,11 @@ describe('useReference', () => {
     });
 
     it('should set loading to false even if no referenceRecord yet when allowEmpty is true', () => {
-        const { hookValue } = renderHookWithRedux(
+        const { hookValue } = renderHook(
             () => {
                 return useReference({ ...defaultProps, allowEmpty: true });
             },
+            true,
             {
                 admin: {
                     resources: {

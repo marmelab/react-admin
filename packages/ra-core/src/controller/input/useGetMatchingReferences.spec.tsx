@@ -1,5 +1,5 @@
 import renderHook from '../../util/renderHook';
-import useMatchingReferences from './useMatchingReferences';
+import useMatchingReferences from './useGetMatchingReferences';
 import { cleanup } from 'react-testing-library';
 
 describe('useMatchingReferences', () => {

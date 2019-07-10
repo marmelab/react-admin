@@ -10,13 +10,11 @@ describe('<ReferenceInputController />', () => {
     const defaultProps = {
         basePath: '/comments',
         children: jest.fn(),
-        meta: {},
         input: { value: undefined } as WrappedFieldInputProps,
         onChange: jest.fn(),
         reference: 'posts',
         resource: 'comments',
         source: 'post_id',
-        translate: x => `*${x}*`,
     };
 
     afterEach(cleanup);
@@ -28,7 +26,7 @@ describe('<ReferenceInputController />', () => {
                 {...{
                     ...defaultProps,
                     input: { value: 1 } as WrappedFieldInputProps,
-                    isLoading: true,
+                    loading: true,
                 }}
             >
                 {children}
@@ -54,10 +52,11 @@ describe('<ReferenceInputController />', () => {
             choices: [{ id: 1 }],
             error: null,
             filter: { q: '' },
-            isLoading: false,
+            loading: false,
             pagination: { page: 1, perPage: 25 },
             sort: { field: 'id', order: 'DESC' },
             warning: null,
+            basePath: '/comments',
         });
 
         expect(dispatch).toBeCalledTimes(2);

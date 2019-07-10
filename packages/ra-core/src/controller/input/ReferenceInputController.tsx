@@ -136,6 +136,7 @@ export const ReferenceInputController: FunctionComponent<Props> = ({
     ...props
 }) => {
     return children({
+        ...props,
         ...useReferenceInput({
             input,
             perPage,
@@ -146,7 +147,6 @@ export const ReferenceInputController: FunctionComponent<Props> = ({
             resource,
             source,
         }),
-        ...props,
     }) as ReactElement;
 };
 
