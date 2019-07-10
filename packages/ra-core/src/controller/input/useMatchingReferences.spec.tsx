@@ -1,4 +1,4 @@
-import renderHookWithRedux from '../../util/renderHookWithRedux';
+import renderHook from '../../util/renderHook';
 import useMatchingReferences from './useMatchingReferences';
 import { cleanup } from 'react-testing-library';
 
@@ -19,7 +19,7 @@ describe('useMatchingReferences', () => {
     afterEach(cleanup);
 
     it('should fetch matchingReferences on mount', () => {
-        const { dispatch, rerender } = renderHookWithRedux(() => {
+        const { dispatch, rerender } = renderHook(() => {
             return useMatchingReferences(defaultProps);
         });
 
@@ -63,7 +63,7 @@ describe('useMatchingReferences', () => {
     });
 
     it('should fetch matchingReferences when the filter prop changes', () => {
-        const { dispatch, rerender } = renderHookWithRedux(() => {
+        const { dispatch, rerender } = renderHook(() => {
             return useMatchingReferences(defaultProps);
         });
 
@@ -119,7 +119,7 @@ describe('useMatchingReferences', () => {
     });
 
     it('should refetch matchingReferences when the reference prop changes', () => {
-        const { dispatch, rerender } = renderHookWithRedux(() => {
+        const { dispatch, rerender } = renderHook(() => {
             return useMatchingReferences(defaultProps);
         });
 
@@ -175,7 +175,7 @@ describe('useMatchingReferences', () => {
     });
 
     it('should refetch matchingReferences when the resource prop changes', () => {
-        const { dispatch, rerender } = renderHookWithRedux(() => {
+        const { dispatch, rerender } = renderHook(() => {
             return useMatchingReferences(defaultProps);
         });
 
@@ -228,7 +228,7 @@ describe('useMatchingReferences', () => {
     });
 
     it('should refetch matchingReferences when the source prop changes', () => {
-        const { dispatch, rerender } = renderHookWithRedux(() => {
+        const { dispatch, rerender } = renderHook(() => {
             return useMatchingReferences(defaultProps);
         });
 
@@ -284,7 +284,7 @@ describe('useMatchingReferences', () => {
     });
 
     it('should refetch matchingReferences when the pagination.page prop changes', () => {
-        const { dispatch, rerender } = renderHookWithRedux(() => {
+        const { dispatch, rerender } = renderHook(() => {
             return useMatchingReferences(defaultProps);
         });
 
@@ -343,7 +343,7 @@ describe('useMatchingReferences', () => {
     });
 
     it('should refetch matchingReferences when the pagination.pagination prop changes', () => {
-        const { dispatch, rerender } = renderHookWithRedux(() => {
+        const { dispatch, rerender } = renderHook(() => {
             return useMatchingReferences(defaultProps);
         });
 
@@ -402,7 +402,7 @@ describe('useMatchingReferences', () => {
     });
 
     it('should refetch matchingReferences when the sort.field prop changes', () => {
-        const { dispatch, rerender } = renderHookWithRedux(() => {
+        const { dispatch, rerender } = renderHook(() => {
             return useMatchingReferences(defaultProps);
         });
 
@@ -461,7 +461,7 @@ describe('useMatchingReferences', () => {
     });
 
     it('should refetch matchingReferences when the sort.order prop changes', () => {
-        const { dispatch, rerender } = renderHookWithRedux(() => {
+        const { dispatch, rerender } = renderHook(() => {
             return useMatchingReferences(defaultProps);
         });
 
@@ -520,10 +520,11 @@ describe('useMatchingReferences', () => {
     });
 
     it('should pass matching references from redux state to its children', () => {
-        const { hookValue } = renderHookWithRedux(
+        const { hookValue } = renderHook(
             () => {
                 return useMatchingReferences(defaultProps);
             },
+            true,
             {
                 admin: {
                     resources: {
@@ -543,10 +544,11 @@ describe('useMatchingReferences', () => {
     });
 
     it('should pass an error if an error is in redux state', () => {
-        const { hookValue } = renderHookWithRedux(
+        const { hookValue } = renderHook(
             () => {
                 return useMatchingReferences(defaultProps);
             },
+            true,
             {
                 admin: {
                     resources: {
@@ -570,10 +572,11 @@ describe('useMatchingReferences', () => {
     });
 
     it('should pass loading true if no matching reference yet', () => {
-        const { hookValue } = renderHookWithRedux(
+        const { hookValue } = renderHook(
             () => {
                 return useMatchingReferences(defaultProps);
             },
+            true,
             {
                 admin: {
                     resources: {
