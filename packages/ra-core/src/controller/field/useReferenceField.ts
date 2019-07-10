@@ -36,14 +36,14 @@ export interface UseReferenceProps {
  */
 
 /**
- * Fetch reference record, and return it when avaliable
+ * Fetch reference record, and return it when available also provide link toward the referenced resource
  *
  * The reference prop sould be the name of one of the <Resource> components
  * added as <Admin> child.
  *
  * @example
  *
- * const { isLoading, referenceRecord, resourceLinkPath } = useReference({
+ * const { loading, loaded, referenceRecord, resourceLinkPath } = useReference({
  *     source: 'userId',
  *     reference: 'users',
  *     record: {
