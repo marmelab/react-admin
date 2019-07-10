@@ -57,12 +57,12 @@ class TestContext extends Component<Props> {
         const { initialState = {}, enableReducers = false } = props;
         this.storeWithDefault = enableReducers
             ? createAdminStore({
-                  initialState: merge(defaultStore, initialState),
+                  initialState: merge({}, defaultStore, initialState),
                   dataProvider: () =>
                       Promise.resolve(dataProviderDefaultResponse),
                   history: createMemoryHistory(),
               })
-            : createStore(() => merge(defaultStore, initialState));
+            : createStore(() => merge({}, defaultStore, initialState));
     }
 
     renderChildren = () => {

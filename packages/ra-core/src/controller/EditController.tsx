@@ -1,4 +1,3 @@
-import { ReactNode } from 'react';
 import { Translate } from '../types';
 import { useTranslate } from '../i18n';
 import useEditController, {
@@ -11,7 +10,7 @@ interface EditControllerComponentProps extends EditControllerProps {
 }
 
 interface Props extends EditProps {
-    children: (params: EditControllerComponentProps) => ReactNode;
+    children: (params: EditControllerComponentProps) => JSX.Element;
 }
 
 /**

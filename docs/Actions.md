@@ -570,7 +570,7 @@ The side effects accepted in the `meta` field of the action are the same as in t
 
 ## Making An Action Undoable
 
-when using the `useMutation` hook, you could trigger optimistic rendering and get an undo button for free. The same feature is possible using custom actions. You need to decorate the action with the `startUndoable` action creator:
+When using the `useMutation` hook, you could trigger optimistic rendering and get an undo button for free. The same feature is possible using custom actions. You need to decorate the action with the `startUndoable` action creator:
 
 ```diff
 // in src/comments/ApproveButton.js
