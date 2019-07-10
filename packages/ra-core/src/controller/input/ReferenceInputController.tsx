@@ -6,14 +6,9 @@ import {
 } from 'react';
 import { WrappedFieldInputProps } from 'redux-form';
 
-import { getStatusForInput as getDataStatus } from './referenceDataStatus';
-import useTranslate from '../../i18n/useTranslate';
 import { Sort, Record, Pagination } from '../../types';
-import useReference from '../useReference';
-import useMatchingReferences from './useMatchingReferences';
-import usePaginationState from '../usePaginationState';
-import { useSortState } from '..';
-import useFilterState from '../useFilterState';
+import useReferenceInput from './useReferenceInput';
+import { filter } from 'async';
 
 const defaultReferenceSource = (resource: string, source: string) =>
     `${resource}@${source}`;
@@ -22,7 +17,7 @@ interface ChildrenFuncParams {
     choices: Record[];
     error?: string;
     filter?: any;
-    isLoading: boolean;
+    loading: boolean;
     onChange: (value: any) => void;
     pagination: Pagination;
     setFilter: (filter: string) => void;
@@ -130,7 +125,6 @@ interface Props {
  */
 export const ReferenceInputController: FunctionComponent<Props> = ({
     input,
-    onChange,
     children,
     perPage = 25,
     filter: permanentFilter = {},
@@ -139,51 +133,20 @@ export const ReferenceInputController: FunctionComponent<Props> = ({
     referenceSource = defaultReferenceSource,
     resource,
     source,
+    ...props
 }) => {
-    const translate = useTranslate();
-
-    const { pagination, setPagination } = usePaginationState({ perPage });
-    const { sort, setSort } = useSortState();
-    const { filter, setFilter } = useFilterState({
-        permanentFilter,
-        filterToQuery,
-    });
-
-    const { matchingReferences } = useMatchingReferences({
-        reference,
-        referenceSource,
-        filter,
-        pagination,
-        sort,
-        resource,
-        source,
-    });
-
-    const { referenceRecord } = useReference({
-        id: input.value,
-        reference,
-        allowEmpty: true,
-    });
-
-    const dataStatus = getDataStatus({
-        input,
-        matchingReferences,
-        referenceRecord,
-        translate,
-    });
-
     return children({
-        choices: dataStatus.choices,
-        error: dataStatus.error,
-        isLoading: dataStatus.waiting,
-        onChange,
-        setFilter,
-        filter,
-        pagination,
-        setPagination,
-        sort,
-        setSort,
-        warning: dataStatus.warning,
+        ...useReferenceInput({
+            input,
+            perPage,
+            permanentFilter: filter,
+            reference,
+            filterToQuery,
+            referenceSource,
+            resource,
+            source,
+        }),
+        ...props,
     }) as ReactElement;
 };
 
