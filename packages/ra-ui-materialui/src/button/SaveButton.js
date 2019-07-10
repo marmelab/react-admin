@@ -15,7 +15,7 @@ const styles = theme =>
             position: 'relative',
         },
         leftIcon: {
-            marginRight: theme.spacing(),
+            marginRight: theme.spacing(1),
         },
         icon: {
             fontSize: 18,

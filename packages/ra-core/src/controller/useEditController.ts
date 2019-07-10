@@ -6,11 +6,10 @@ import inflection from 'inflection';
 
 import useVersion from './useVersion';
 import { useCheckMinimumRequiredProps } from './checkMinimumRequiredProps';
-import { crudUpdate, startUndoable } from '../actions';
 import { REDUX_FORM_NAME } from '../form';
 import { Record, Identifier } from '../types';
 import { RedirectionSideEffect } from '../sideEffect';
-import useGetOne from '../fetch/useGetOne';
+import { useGetOne, useUpdate } from '../fetch';
 import { useTranslate } from '../i18n';
 
 export interface EditProps {
@@ -20,20 +19,19 @@ export interface EditProps {
     hasShow?: boolean;
     hasList?: boolean;
     id: Identifier;
-    isLoading: boolean;
     resource: string;
     undoable?: boolean;
-    record?: Record;
+    [key: string]: any;
 }
 
 export interface EditControllerProps {
     isLoading: boolean;
+    isSaving: boolean;
     defaultTitle: string;
-    save: (data: Record, redirect: RedirectionSideEffect) => void;
+    save: (data: Record, redirect?: RedirectionSideEffect) => void;
     resource: string;
     basePath: string;
     record?: Record;
-    redirect: RedirectionSideEffect;
     version: number;
 }
 
@@ -56,7 +54,7 @@ export interface EditControllerProps {
  */
 const useEditController = (props: EditProps): EditControllerProps => {
     useCheckMinimumRequiredProps('Edit', ['basePath', 'resource'], props);
-    const { basePath, id, resource, undoable } = props;
+    const { basePath, id, resource, undoable = true } = props;
     const translate = useTranslate();
     const dispatch = useDispatch();
     const version = useVersion();
@@ -87,38 +85,48 @@ const useEditController = (props: EditProps): EditControllerProps => {
         record,
     });
 
-    const save = useCallback(
-        (data: Partial<Record>, redirect: RedirectionSideEffect) => {
-            const updateAction = crudUpdate(
-                resource,
-                id,
-                data,
-                record,
+    const [update, { loading: isSaving }] = useUpdate(
+        resource,
+        id,
+        {}, // set by the caller
+        record,
+        {
+            onSuccess: {
+                notification: {
+                    body: 'ra.notification.updated',
+                    level: 'info',
+                    messageArgs: {
+                        smart_count: 1,
+                    },
+                },
                 basePath,
-                redirect
-            );
+            },
+            onFailure: {
+                notification: {
+                    body: 'ra.notification.http_error',
+                    level: 'warning',
+                },
+            },
+            undoable,
+        }
+    );
 
-            if (undoable) {
-                dispatch(startUndoable(updateAction));
-            } else {
-                dispatch(updateAction);
-            }
-        },
-        [resource, id, record, basePath, undoable] // eslint-disable-line react-hooks/exhaustive-deps
+    const save = useCallback(
+        (data: Partial<Record>, redirectTo = 'list') =>
+            update(null, { data }, { onSuccess: { redirectTo } }),
+        [update]
     );
 
     return {
         isLoading: loading,
+        isSaving,
         defaultTitle,
         save,
         resource,
         basePath,
         record,
-        redirect: getDefaultRedirectRoute(),
         version,
     };
 };
-
-const getDefaultRedirectRoute = () => 'list';
 
 export default useEditController;

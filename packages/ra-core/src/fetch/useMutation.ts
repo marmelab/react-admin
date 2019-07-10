@@ -1,4 +1,5 @@
 import { useCallback } from 'react';
+import deepmerge from 'deepmerge';
 
 import { useSafeSetState } from '../util/hooks';
 import useDataProvider from './useDataProvider';
@@ -12,7 +13,7 @@ export interface Query {
 export interface QueryOptions {
     meta?: any;
     action?: string;
-    undoable?: false;
+    undoable?: boolean;
 }
 
 /**
@@ -54,7 +55,7 @@ const useMutation = (
     query: Query,
     options: QueryOptions = {}
 ): [
-    () => void,
+    (event?: any, callTimePayload?: any, callTimeOptions?: any) => void,
     {
         data?: any;
         total?: number;
@@ -72,26 +73,34 @@ const useMutation = (
         loaded: false,
     });
     const dataProvider = useDataProvider();
-    const mutate = useCallback(() => {
-        setState({ loading: true });
-        dataProvider(type, resource, payload, options)
-            .then(({ data, total }) => {
-                setState({
-                    data,
-                    total,
-                    loading: false,
-                    loaded: true,
+    const mutate = useCallback(
+        (event, callTimePayload = {}, callTimeOptions = {}): void => {
+            setState({ loading: true });
+            dataProvider(
+                type,
+                resource,
+                deepmerge(payload, callTimePayload),
+                deepmerge(options, callTimeOptions)
+            )
+                .then(({ data, total }) => {
+                    setState({
+                        data,
+                        total,
+                        loading: false,
+                        loaded: true,
+                    });
+                })
+                .catch(errorFromResponse => {
+                    setState({
+                        error: errorFromResponse,
+                        loading: false,
+                        loaded: false,
+                    });
                 });
-            })
-            .catch(errorFromResponse => {
-                setState({
-                    error: errorFromResponse,
-                    loading: false,
-                    loaded: false,
-                });
-            });
+        },
         // deep equality, see https://github.com/facebook/react/issues/14476#issuecomment-471199055
-    }, [JSON.stringify({ query, options })]); // eslint-disable-line react-hooks/exhaustive-deps
+        [JSON.stringify({ query, options })] // eslint-disable-line react-hooks/exhaustive-deps
+    );
 
     return [mutate, state];
 };

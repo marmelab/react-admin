@@ -23,6 +23,8 @@ interface Props {
     enableReducers?: boolean;
 }
 
+const dataProviderDefaultResponse = { data: null };
+
 /**
  * Simulate a react-admin context in unit tests
  *
@@ -56,7 +58,8 @@ class TestContext extends Component<Props> {
         this.storeWithDefault = enableReducers
             ? createAdminStore({
                   initialState: merge(defaultStore, initialState),
-                  dataProvider: () => Promise.resolve({}),
+                  dataProvider: () =>
+                      Promise.resolve(dataProviderDefaultResponse),
                   history: createMemoryHistory(),
               })
             : createStore(() => merge(defaultStore, initialState));
