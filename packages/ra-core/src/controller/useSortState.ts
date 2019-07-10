@@ -51,10 +51,24 @@ const sortReducer = (state: Sort, action: Action): Sort => {
 export const defaultSort = { field: 'id', order: 'DESC' };
 
 /**
- * set the sort to the given field, swap the order if the field is the same
+ * set the sort { field, order }
  * @name setSort
  * @function
- * @param {string} field the name of the field to sort
+ * @param {Sort} sort the sort object
+ */
+
+/**
+ * set the sort field, swap the order if the field is the same
+ * @name setSortField
+ * @function
+ * @param {string} field the sort field
+ */
+
+/**
+ * set the sort order
+ * @name setSortOrder
+ * @function
+ * @param {string} order the sort order eiather ASC or DESC
  */
 
 /**
@@ -64,6 +78,8 @@ export const defaultSort = { field: 'id', order: 'DESC' };
  * @property {String} sort.field: the sort object.
  * @property {'ASC' | 'DESC'} sort.order: the sort object.
  * @property {setSort} setSort
+ * @property {setSortField} setSortField
+ * @property {setSortOrder} setSortOrder
  */
 
 /**
@@ -71,11 +87,19 @@ export const defaultSort = { field: 'id', order: 'DESC' };
  *
  * @example
  *
- * const { sort, setSort } = useSort({ field: 'name',order: 'ASC' });
+ * const { sort, setSort, setSortField, setSortOrder } = useSort({
+ *      field: 'name',
+ *      order: 'ASC',
+ * });
+ *
+ * setSort({ field: 'name', order: 'ASC' });
+ * // is the same as
+ * setSortField('name');
+ * setSortOrder('ASC');
  *
  * @param {Object} initialSort
- * @param {string} initialSort.resource The current resource name
- * @param {string} initialSort.reference The linked resource name
+ * @param {string} initialSort.field The initial sort field
+ * @param {string} initialSort.order The initial sort order
  * @returns {SortProps} The sort props
  */
 export default (initialSort: Sort = defaultSort): SortProps => {
