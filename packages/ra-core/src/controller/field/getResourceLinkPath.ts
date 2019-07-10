@@ -2,7 +2,6 @@ import get from 'lodash/get';
 
 import { linkToRecord } from '../../util';
 import { Record } from '../../types';
-import useReference from '../useReference';
 
 export type LinkToFunctionType = (record: Record, reference: string) => string;
 
@@ -17,13 +16,6 @@ interface Option {
     resource: string;
     link?: LinkToType;
     linkType?: LinkToType; // deprecated, use link instead
-}
-
-export interface UseReferenceProps {
-    loading: boolean;
-    loaded: boolean;
-    referenceRecord: Record;
-    resourceLinkPath: string | false;
 }
 
 /**
@@ -63,8 +55,7 @@ export interface UseReferenceProps {
  *
  * @returns {ReferenceProps} The reference props
  */
-export const useReferenceField = ({
-    allowEmpty = false,
+export const getResourceLinkPath = ({
     basePath,
     link = 'edit',
     linkType,
@@ -72,13 +63,8 @@ export const useReferenceField = ({
     record = { id: '' },
     resource,
     source,
-}: Option): UseReferenceProps => {
+}: Option): string | false => {
     const sourceId = get(record, source);
-    const { referenceRecord, loading, loaded } = useReference({
-        id: sourceId,
-        reference,
-        allowEmpty,
-    });
     const rootPath = basePath.replace(resource, reference);
     // Backward compatibility: keep linkType but with warning
     const getResourceLinkPath = (linkTo: LinkToType) =>
@@ -98,12 +84,7 @@ export const useReferenceField = ({
         linkType !== undefined ? linkType : link
     );
 
-    return {
-        loading,
-        loaded,
-        referenceRecord,
-        resourceLinkPath,
-    };
+    return resourceLinkPath;
 };
 
-export default useReferenceField;
+export default getResourceLinkPath;
