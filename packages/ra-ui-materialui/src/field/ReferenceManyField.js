@@ -125,7 +125,7 @@ export const ReferenceManyField = props => {
     }
     const { sort, setSort } = useSortState(initialSort);
     const { page, perPage, setPage, setPerPage } = usePaginationState({
-        page: initialPerPage,
+        perPage: initialPerPage,
     });
 
     const useReferenceManyProps = useReferenceMany({
