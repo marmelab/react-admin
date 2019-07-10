@@ -1,4 +1,4 @@
-import { useState, useEffect, useReducer, useMemo, useRef } from 'react';
+import { useState, useEffect, useReducer, useCallback, useRef } from 'react';
 import { Pagination } from '../types';
 
 interface PaginationProps {
@@ -10,7 +10,10 @@ interface PaginationProps {
     setPagination: (pagination: Pagination) => void;
 }
 
-const paginationReducer = (prevState, nextState) => {
+const paginationReducer = (
+    prevState: Pagination,
+    nextState: Partial<Pagination>
+): Pagination => {
     return {
         ...prevState,
         ...nextState,
@@ -56,8 +59,8 @@ export default (
     });
     const isFirstRender = useRef(true);
 
-    const setPerPage = useMemo(() => perPage => setPagination({ perPage }), []);
-    const setPage = useMemo(() => page => setPagination({ page }), []);
+    const setPerPage = useCallback(perPage => setPagination({ perPage }), []);
+    const setPage = useCallback(page => setPagination({ page }), []);
 
     useEffect(() => {
         if (isFirstRender.current) {

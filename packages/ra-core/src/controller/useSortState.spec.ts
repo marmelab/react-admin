@@ -34,7 +34,7 @@ describe('useSortState', () => {
         });
     });
 
-    describe('should provide setSortField method that', () => {
+    describe('setSortField in return value', () => {
         it('should just change the order if receiving the current field', () => {
             const { hookValue, childrenMock } = renderHook(() =>
                 useSortState({ field: 'id', order: 'DESC' })
