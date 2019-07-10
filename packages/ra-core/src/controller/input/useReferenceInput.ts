@@ -104,6 +104,7 @@ export default ({
         sort,
         resource,
         source,
+        id: input.value,
     });
 
     const { referenceRecord } = useReference({

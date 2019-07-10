@@ -1,7 +1,6 @@
-import { useMemo } from 'react';
+import { useMemo, useCallback } from 'react';
 // @ts-ignore
 import { useSelector, useDispatch } from 'react-redux';
-import { createSelector } from 'reselect';
 
 import { Filter } from '../useFilterState';
 import { crudGetMatchingAccumulate } from '../../actions/accumulateActions';
@@ -21,6 +20,7 @@ interface UseMatchingReferencesOption {
     filter: Filter;
     pagination: Pagination;
     sort: Sort;
+    id: string;
 }
 
 interface UseMatchingReferencesProps {
@@ -40,21 +40,9 @@ export default ({
     filter,
     pagination,
     sort,
+    id,
 }: UseMatchingReferencesOption): UseMatchingReferencesProps => {
     const dispatch = useDispatch();
-
-    const getMatchingReferences = useMemo(makeMatchingReferencesSelector, []);
-
-    const options = {
-        dispatch,
-        filter,
-        reference,
-        referenceSource,
-        resource,
-        source,
-        pagination,
-        sort,
-    };
 
     useDeepCompareEffect(() => {
         dispatch(
@@ -77,15 +65,14 @@ export default ({
         sort,
     ]);
 
-    const matchingReferences = useSelector(
-        getMatchingReferences({
-            referenceSource,
-            filter,
-            reference,
-            resource,
-            source,
-        })
-    );
+    const matchingReferences = useGetMatchingReferenceSelector({
+        referenceSource,
+        filter,
+        reference,
+        resource,
+        source,
+        id,
+    });
 
     if (!matchingReferences) {
         return {
@@ -110,19 +97,31 @@ export default ({
     };
 };
 
-const makeMatchingReferencesSelector = () => {
-    const matchingReferencesSelector = createSelector(
-        [
-            getReferenceResource,
-            getPossibleReferenceValues,
-            (_, props) => props.filterValue,
-        ],
-        (referenceState, possibleValues, inputId) => {
-            return getPossibleReferences(referenceState, possibleValues, [
-                inputId,
+const useGetMatchingReferenceSelector = ({
+    referenceSource,
+    filter,
+    reference,
+    resource,
+    source,
+    id,
+}) => {
+    const getMatchingReferences = useCallback(
+        state => {
+            const referenceResource = getReferenceResource(state, {
+                reference,
+            });
+            const possibleValues = getPossibleReferenceValues(state, {
+                referenceSource,
+                resource,
+                source,
+            });
+
+            return getPossibleReferences(referenceResource, possibleValues, [
+                id,
             ]);
-        }
+        },
+        [referenceSource, reference, resource, source, id]
     );
 
-    return props => state => matchingReferencesSelector(state, props);
+    return useSelector(getMatchingReferences);
 };
