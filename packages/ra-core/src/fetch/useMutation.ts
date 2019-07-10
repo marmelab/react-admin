@@ -40,15 +40,37 @@ export interface QueryOptions {
  *
  * @example
  *
- * import { useMutation } from 'react-admin';
+ * import { useMutation, UPDATE } from 'react-admin';
  *
  * const ApproveButton = ({ record }) => {
  *     const [approve, { loading }] = useMutation({
- *         type: 'UPDATE',
+ *         type: UPDATE,
  *         resource: 'comments',
  *         payload: { id: record.id, data: { isApproved: true } }
  *     });
  *     return <FlatButton label="Approve" onClick={approve} disabled={loading} />;
+ * };
+ *
+ * @example
+ *
+ * import { useMutation, UPDATE } from 'react-admin';
+ *
+ * const MarkDateButton = ({ record }) => {
+ *     // the mutation data can be passed at call time
+ *     const [approve, { loading }] = useMutation({
+ *         type: UPDATE,
+ *         resource: 'posts',
+ *         payload: { id: record.id } // no data
+ *     });
+ *     // the mutation callback expects call time payload as second parameter
+ *     // and merges it with the initial payload when called
+ *     return <FlatButton
+ *          label="Mark Date"
+ *          onClick={() => approve(null, {
+ *              data: { updatedAt: new Date() } // data defined here
+ *          })}
+ *          disabled={loading}
+ *     />;
  * };
  */
 const useMutation = (

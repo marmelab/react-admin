@@ -18,16 +18,17 @@ import useMutation from './useMutation';
  * @param previousData The record before the update is applied
  * @param options Options object to pass to the dataProvider. May include side effects to be executed upon success of failure, e.g. { onSuccess: { refresh: true } }
  *
- * @returns The current request state. Destructure as [updateOne, { data, error, loading, loaded }].
+ * @returns The current request state. Destructure as [update, { data, error, loading, loaded }].
  *
  * @example
  *
- * import { useUpdateOne } from 'react-admin';
+ * import { useUpdate } from 'react-admin';
  *
  * const IncreaseLikeButton = ({ record }) => {
- *     const [updateOne, { loading, error }] = useUpdateOne('posts', record.id, { likes: record.likes + 1 }, record);
+ *     const diff = { likes: record.likes + 1 };
+ *     const [update, { loading, error }] = useUpdate('posts', record.id, diff, record);
  *     if (error) { return <p>ERROR</p>; }
- *     return <button disabled={{loading}} onClick={updateOne}>Like</div>;
+ *     return <button disabled={loading} onClick={update}>Like</div>;
  * };
  */
 const useUpdate = (
