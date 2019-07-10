@@ -18,6 +18,15 @@ interface RenderHookWithReduxResult extends RenderWithReduxResult {
     rerender: (f: any) => any;
 }
 
+/**
+ * render given hook using react-testing-library and return hook value
+ * @param hook the hook to render
+ * @param withRedux should we provide a redux context default to true
+ * @param reduxState optional initial state for redux context
+ *
+ * @returns {RenderHookResult}
+ * @returns {RenderHookWithReduxResult}
+ */
 function renderHook(
     hook: Function,
     withRedux?: true,
