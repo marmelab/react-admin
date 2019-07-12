@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import deepmerge from 'deepmerge';
+import merge from 'lodash/merge';
 
 import { useSafeSetState } from '../util/hooks';
 import useDataProvider from './useDataProvider';
@@ -101,8 +101,8 @@ const useMutation = (
             dataProvider(
                 type,
                 resource,
-                deepmerge(payload, callTimePayload),
-                deepmerge(options, callTimeOptions)
+                merge({}, payload, callTimePayload),
+                merge({}, options, callTimeOptions)
             )
                 .then(({ data, total }) => {
                     setState({
