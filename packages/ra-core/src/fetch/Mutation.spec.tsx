@@ -1,20 +1,13 @@
 import React from 'react';
-import {
-    render,
-    cleanup,
-    fireEvent,
-    waitForDomChange,
-} from 'react-testing-library';
+import { cleanup } from 'react-testing-library';
 import expect from 'expect';
 import Mutation from './Mutation';
-import CoreAdmin from '../CoreAdmin';
-import Resource from '../Resource';
 import renderWithRedux from '../util/renderWithRedux';
 
 describe('Mutation', () => {
     afterEach(cleanup);
 
-    it('should render its child', () => {
+    it('should render its child function', () => {
         const { getByTestId } = renderWithRedux(
             <Mutation type="foo" resource="bar">
                 {() => <div data-testid="test">Hello</div>}
@@ -23,102 +16,25 @@ describe('Mutation', () => {
         expect(getByTestId('test').textContent).toBe('Hello');
     });
 
-    it('should pass a callback to trigger the mutation', () => {
+    it('should pass useEditController return value to child', () => {
         let callback = null;
+        let state = null;
         renderWithRedux(
             <Mutation type="foo" resource="bar">
-                {mutate => {
+                {(mutate, controllerState) => {
                     callback = mutate;
+                    state = controllerState;
                     return <div data-testid="test">Hello</div>;
                 }}
             </Mutation>
         );
         expect(callback).toBeInstanceOf(Function);
-    });
-
-    it('should dispatch a fetch action when the mutation callback is triggered', () => {
-        const myPayload = {};
-        const { getByText, dispatch } = renderWithRedux(
-            <Mutation type="mytype" resource="myresource" payload={myPayload}>
-                {mutate => <button onClick={mutate}>Hello</button>}
-            </Mutation>
-        );
-        fireEvent.click(getByText('Hello'));
-        const action = dispatch.mock.calls[0][0];
-        expect(action.type).toEqual('CUSTOM_FETCH');
-        expect(action.payload).toEqual(myPayload);
-        expect(action.meta.fetch).toEqual('mytype');
-        expect(action.meta.resource).toEqual('myresource');
-    });
-
-    it('should update the loading state when the mutation callback is triggered', () => {
-        const myPayload = {};
-        const { getByText } = renderWithRedux(
-            <Mutation type="mytype" resource="myresource" payload={myPayload}>
-                {(mutate, { loading }) => (
-                    <button
-                        className={loading ? 'loading' : 'idle'}
-                        onClick={mutate}
-                    >
-                        Hello
-                    </button>
-                )}
-            </Mutation>
-        );
-        expect(getByText('Hello').className).toEqual('idle');
-        fireEvent.click(getByText('Hello'));
-        expect(getByText('Hello').className).toEqual('loading');
-    });
-
-    it('should update the data state after a success response', async () => {
-        const dataProvider = jest.fn();
-        dataProvider.mockImplementationOnce(() =>
-            Promise.resolve({ data: { foo: 'bar' } })
-        );
-        const Foo = () => (
-            <Mutation type="mytype" resource="foo">
-                {(mutate, { data }) => (
-                    <button data-testid="test" onClick={mutate}>
-                        {data ? data.foo : 'no data'}
-                    </button>
-                )}
-            </Mutation>
-        );
-        const { getByTestId } = render(
-            <CoreAdmin dataProvider={dataProvider}>
-                <Resource name="foo" list={Foo} />
-            </CoreAdmin>
-        );
-        const testElement = getByTestId('test');
-        expect(testElement.textContent).toBe('no data');
-        fireEvent.click(testElement);
-        await waitForDomChange({ container: testElement });
-        expect(testElement.textContent).toEqual('bar');
-    });
-
-    it('should update the error state after an error response', async () => {
-        const dataProvider = jest.fn();
-        dataProvider.mockImplementationOnce(() =>
-            Promise.reject({ message: 'provider error' })
-        );
-        const Foo = () => (
-            <Mutation type="mytype" resource="foo">
-                {(mutate, { error }) => (
-                    <button data-testid="test" onClick={mutate}>
-                        {error ? error.message : 'no data'}
-                    </button>
-                )}
-            </Mutation>
-        );
-        const { getByTestId } = render(
-            <CoreAdmin dataProvider={dataProvider}>
-                <Resource name="foo" list={Foo} />
-            </CoreAdmin>
-        );
-        const testElement = getByTestId('test');
-        expect(testElement.textContent).toBe('no data');
-        fireEvent.click(testElement);
-        await waitForDomChange({ container: testElement });
-        expect(testElement.textContent).toEqual('provider error');
+        expect(state).toEqual({
+            data: null,
+            error: null,
+            total: null,
+            loaded: false,
+            loading: false,
+        });
     });
 });

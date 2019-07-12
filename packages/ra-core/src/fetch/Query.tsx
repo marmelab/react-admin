@@ -1,4 +1,4 @@
-import { FunctionComponent, ReactElement } from 'react';
+import { FunctionComponent } from 'react';
 import useQuery from './useQuery';
 
 interface ChildrenFuncParams {
@@ -10,7 +10,7 @@ interface ChildrenFuncParams {
 }
 
 interface Props {
-    children: (params: ChildrenFuncParams) => ReactElement<any, any>;
+    children: (params: ChildrenFuncParams) => JSX.Element;
     type: string;
     resource: string;
     payload?: any;

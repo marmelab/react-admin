@@ -1,4 +1,5 @@
 import { useCallback } from 'react';
+import merge from 'lodash/merge';
 
 import { useSafeSetState } from '../util/hooks';
 import useDataProvider from './useDataProvider';
@@ -12,7 +13,7 @@ export interface Query {
 export interface QueryOptions {
     meta?: any;
     action?: string;
-    undoable?: false;
+    undoable?: boolean;
 }
 
 /**
@@ -39,22 +40,44 @@ export interface QueryOptions {
  *
  * @example
  *
- * import { useMutation } from 'react-admin';
+ * import { useMutation, UPDATE } from 'react-admin';
  *
  * const ApproveButton = ({ record }) => {
  *     const [approve, { loading }] = useMutation({
- *         type: 'UPDATE',
+ *         type: UPDATE,
  *         resource: 'comments',
  *         payload: { id: record.id, data: { isApproved: true } }
  *     });
  *     return <FlatButton label="Approve" onClick={approve} disabled={loading} />;
+ * };
+ *
+ * @example
+ *
+ * import { useMutation, UPDATE } from 'react-admin';
+ *
+ * const MarkDateButton = ({ record }) => {
+ *     // the mutation data can be passed at call time
+ *     const [approve, { loading }] = useMutation({
+ *         type: UPDATE,
+ *         resource: 'posts',
+ *         payload: { id: record.id } // no data
+ *     });
+ *     // the mutation callback expects call time payload as second parameter
+ *     // and merges it with the initial payload when called
+ *     return <FlatButton
+ *          label="Mark Date"
+ *          onClick={() => approve(null, {
+ *              data: { updatedAt: new Date() } // data defined here
+ *          })}
+ *          disabled={loading}
+ *     />;
  * };
  */
 const useMutation = (
     query: Query,
     options: QueryOptions = {}
 ): [
-    () => void,
+    (event?: any, callTimePayload?: any, callTimeOptions?: any) => void,
     {
         data?: any;
         total?: number;
@@ -72,26 +95,34 @@ const useMutation = (
         loaded: false,
     });
     const dataProvider = useDataProvider();
-    const mutate = useCallback(() => {
-        setState({ loading: true });
-        dataProvider(type, resource, payload, options)
-            .then(({ data, total }) => {
-                setState({
-                    data,
-                    total,
-                    loading: false,
-                    loaded: true,
+    const mutate = useCallback(
+        (event, callTimePayload = {}, callTimeOptions = {}): void => {
+            setState({ loading: true });
+            dataProvider(
+                type,
+                resource,
+                merge({}, payload, callTimePayload),
+                merge({}, options, callTimeOptions)
+            )
+                .then(({ data, total }) => {
+                    setState({
+                        data,
+                        total,
+                        loading: false,
+                        loaded: true,
+                    });
+                })
+                .catch(errorFromResponse => {
+                    setState({
+                        error: errorFromResponse,
+                        loading: false,
+                        loaded: false,
+                    });
                 });
-            })
-            .catch(errorFromResponse => {
-                setState({
-                    error: errorFromResponse,
-                    loading: false,
-                    loaded: false,
-                });
-            });
+        },
         // deep equality, see https://github.com/facebook/react/issues/14476#issuecomment-471199055
-    }, [JSON.stringify({ query, options })]); // eslint-disable-line react-hooks/exhaustive-deps
+        [JSON.stringify({ query, options })] // eslint-disable-line react-hooks/exhaustive-deps
+    );
 
     return [mutate, state];
 };

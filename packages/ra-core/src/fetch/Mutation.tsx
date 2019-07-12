@@ -1,24 +1,23 @@
-import { FunctionComponent, ReactElement } from 'react';
+import { FunctionComponent } from 'react';
 import useMutation from './useMutation';
-
-type DataProviderCallback = (
-    type: string,
-    resource: string,
-    payload?: any,
-    options?: any
-) => Promise<any>;
 
 interface ChildrenFuncParams {
     data?: any;
-    loading: boolean;
+    total?: number;
     error?: any;
+    loading: boolean;
+    loaded: boolean;
 }
 
 interface Props {
     children: (
-        mutate: () => void,
+        mutate: (
+            event?: any,
+            callTimePayload?: any,
+            callTimeOptions?: any
+        ) => void,
         params: ChildrenFuncParams
-    ) => ReactElement<any, any>;
+    ) => JSX.Element;
     type: string;
     resource: string;
     payload?: any;

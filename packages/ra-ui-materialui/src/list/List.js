@@ -269,10 +269,7 @@ ListView.defaultProps = {
  *         </List>
  *     );
  */
-const List = props => {
-    const controllerProps = useListController(props);
-    return <ListView {...props} {...controllerProps} />;
-};
+const List = props => <ListView {...props} {...useListController(props)} />;
 
 List.propTypes = {
     // the props you can change

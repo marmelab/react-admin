@@ -5,6 +5,7 @@ import {
     getElementsFromRecords,
     InferredElement,
 } from 'ra-core';
+
 import { ListView } from './List';
 import listFieldTypes from './listFieldTypes';
 
@@ -45,9 +46,8 @@ ${inferredChild.getRepresentation()}
 
 ListViewGuesser.propTypes = ListView.propTypes;
 
-const ListGuesser = props => {
-    const controllerProps = useListController(props);
-    return <ListViewGuesser {...props} {...controllerProps} />;
-};
+const ListGuesser = props => (
+    <ListViewGuesser {...props} {...useListController(props)} />
+);
 
 export default ListGuesser;

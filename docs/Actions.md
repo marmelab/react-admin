@@ -164,6 +164,40 @@ export const CommentList = (props) =>
     </List>;
 ```
 
+**Tip**: For simple mutations, you can use a specialised hook like `useUpdate` instead of the more generic `useMutation`. The main benefit is that `useUpdate` will update the recod in Redux store first, allowing optimistic rendering of the UI:
+
+```jsx
+import { useUpdate } from 'react-admin';
+
+const ApproveButton = ({ record }) => {
+    const [approve, { loading }] = useUpdate('comments', record.id, { isApproved: true }, record);
+    return <FlatButton label="Approve" onClick={approve} disabled={loading} />;
+};
+```
+
+**Tip**: The mutation data can also be passed at call time, using the second parameter of the `mutate` callback:
+
+```jsx
+import { useMutation, UPDATE } from 'react-admin';
+
+const MarkDateButton = ({ record }) => {
+    const [approve, { loading }] = useMutation({
+        type: UPDATE,
+        resource: 'posts',
+        payload: { id: record.id } // no data
+    });
+    // the mutation callback expects call time payload as second parameter
+    // and merges it with the initial payload when called
+    return <FlatButton
+        label="Mark Date"
+        onClick={() => approve(null, {
+            data: { updatedAt: new Date() } // data defined here
+        })}
+        disabled={loading}
+    />;
+};
+```
+
 ## Handling Side Effects
 
 Fetching data is called a *side effect*, since it calls the outside world, and is asynchronous. Usual actions may have other side effects, like showing a notification, or redirecting the user to another page. Both `useQuery` and `useMutation` hooks accept a second parameter in addition to the query, which lets you describe the options of the query, including success and failure side effects. 
@@ -570,7 +604,7 @@ The side effects accepted in the `meta` field of the action are the same as in t
 
 ## Making An Action Undoable
 
-when using the `useMutation` hook, you could trigger optimistic rendering and get an undo button for free. The same feature is possible using custom actions. You need to decorate the action with the `startUndoable` action creator:
+When using the `useMutation` hook, you could trigger optimistic rendering and get an undo button for free. The same feature is possible using custom actions. You need to decorate the action with the `startUndoable` action creator:
 
 ```diff
 // in src/comments/ApproveButton.js

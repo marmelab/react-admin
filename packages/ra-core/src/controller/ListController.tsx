@@ -1,5 +1,3 @@
-import { ReactNode } from 'react';
-
 import useListController, {
     ListProps,
     ListControllerProps,
@@ -12,7 +10,7 @@ interface ListControllerComponentProps extends ListControllerProps {
 }
 
 interface Props extends ListProps {
-    children: (params: ListControllerComponentProps) => ReactNode;
+    children: (params: ListControllerComponentProps) => JSX.Element;
 }
 
 /**
