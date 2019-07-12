@@ -1,5 +1,4 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React from 'react';
 import classnames from 'classnames';
 
 import Table from '@material-ui/core/Table';
@@ -8,7 +7,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import { Link, useTranslate, crudGetMany } from 'react-admin';
+import { Link, useTranslate, useQueryWithStore, GET_MANY } from 'react-admin';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles({
@@ -20,26 +19,33 @@ const useStyles = makeStyles({
 const Basket = ({ record }) => {
     const classes = useStyles();
     const translate = useTranslate();
-    const dispatch = useDispatch();
-    const admin = useSelector(state => state.admin);
-
-    useEffect(() => {
-        const { basket } = record;
-        dispatch(crudGetMany('products', basket.map(item => item.product_id)));
-    }, [dispatch, record]);
-
-    if (!record) return null;
 
     const { basket } = record;
 
-    const productIds = basket.map(item => item.product_id);
-    const products = productIds
-        .map(productId => admin.resources.products.data[productId])
-        .filter(r => typeof r !== 'undefined')
-        .reduce((prev, next) => {
-            prev[next.id] = next;
-            return prev;
-        }, {});
+    const { loaded, data: products } = useQueryWithStore(
+        {
+            type: GET_MANY,
+            resource: 'products',
+            payload: {
+                ids: basket.map(item => item.product_id),
+            },
+        },
+        {},
+        state => {
+            const productIds = basket.map(item => item.product_id);
+            return productIds
+                .map(
+                    productId => state.admin.resources.products.data[productId]
+                )
+                .filter(r => typeof r !== 'undefined')
+                .reduce((prev, next) => {
+                    prev[next.id] = next;
+                    return prev;
+                }, {});
+        }
+    );
+
+    if (!loaded) return null;
 
     return (
         <Paper className={classes.container} elevation={2}>

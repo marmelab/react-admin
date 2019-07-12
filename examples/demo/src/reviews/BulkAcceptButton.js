@@ -1,34 +1,47 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
 import ThumbUp from '@material-ui/icons/ThumbUp';
-import { Button, startUndoable, crudUpdateMany } from 'react-admin';
+import { Button, useMutation, UPDATE_MANY } from 'react-admin';
 
-const BulkAcceptButton = ({ basePath, resource, selectedIds }) => {
-    const dispatch = useDispatch();
+const options = {
+    undoable: true,
+    onSuccess: {
+        notification: {
+            body: 'resources.reviews.notification.approved_success',
+            level: 'info',
+        },
+        redirectTo: '/reviews',
+    },
+    onFailure: {
+        notification: {
+            body: 'resources.reviews.notification.approved_error',
+            level: 'warning',
+        },
+    },
+};
 
-    const handleClick = useCallback(() => {
-        dispatch(
-            startUndoable(
-                crudUpdateMany(
-                    resource,
-                    selectedIds,
-                    { status: 'accepted' },
-                    basePath
-                )
-            )
-        );
-    }, [basePath, dispatch, resource, selectedIds]);
+const BulkAcceptButton = ({ selectedIds }) => {
+    const [approve, { loading }] = useMutation(
+        {
+            type: UPDATE_MANY,
+            resource: 'reviews',
+            payload: { ids: selectedIds, data: { status: 'accepted' } },
+        },
+        options
+    );
 
     return (
-        <Button label="resources.reviews.action.accept" onClick={handleClick}>
+        <Button
+            label="resources.reviews.action.accept"
+            onClick={approve}
+            disabled={loading}
+        >
             <ThumbUp />
         </Button>
     );
 };
 
 BulkAcceptButton.propTypes = {
-    resource: PropTypes.string.isRequired,
     selectedIds: PropTypes.arrayOf(PropTypes.any).isRequired,
 };
 

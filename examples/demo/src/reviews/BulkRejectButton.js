@@ -1,34 +1,46 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
 import ThumbDown from '@material-ui/icons/ThumbDown';
-import { Button, startUndoable, crudUpdateMany } from 'react-admin';
+import { Button, useMutation, UPDATE_MANY } from 'react-admin';
 
-const BulkRejectButton = ({ basePath, resource, selectedIds }) => {
-    const dispatch = useDispatch();
-
-    const handleClick = useCallback(() => {
-        dispatch(
-            startUndoable(
-                crudUpdateMany(
-                    resource,
-                    selectedIds,
-                    { status: 'rejected' },
-                    basePath
-                )
-            )
-        );
-    }, [basePath, dispatch, resource, selectedIds]);
+const options = {
+    undoable: true,
+    onSuccess: {
+        notification: {
+            body: 'resources.reviews.notification.approved_success',
+            level: 'info',
+        },
+        redirectTo: '/reviews',
+    },
+    onFailure: {
+        notification: {
+            body: 'resources.reviews.notification.approved_error',
+            level: 'warning',
+        },
+    },
+};
+const BulkRejectButton = ({ selectedIds }) => {
+    const [reject, { loading }] = useMutation(
+        {
+            type: UPDATE_MANY,
+            resource: 'reviews',
+            payload: { ids: selectedIds, data: { status: 'rejected' } },
+        },
+        options
+    );
 
     return (
-        <Button label="resources.reviews.action.reject" onClick={handleClick}>
+        <Button
+            label="resources.reviews.action.reject"
+            onClick={reject}
+            disabled={loading}
+        >
             <ThumbDown />
         </Button>
     );
 };
 
 BulkRejectButton.propTypes = {
-    resource: PropTypes.string.isRequired,
     selectedIds: PropTypes.arrayOf(PropTypes.any).isRequired,
 };
 
