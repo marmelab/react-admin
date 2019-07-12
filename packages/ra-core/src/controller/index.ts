@@ -12,6 +12,7 @@ import useSortState from './useSortState';
 import usePaginationState from './usePaginationState';
 import useListController from './useListController';
 import useEditController from './useEditController';
+import useShowController from './useShowController';
 import { useCheckMinimumRequiredProps } from './checkMinimumRequiredProps';
 export {
     getListControllerProps,
@@ -23,6 +24,7 @@ export {
     useCheckMinimumRequiredProps,
     useListController,
     useEditController,
+    useShowController,
     useRecordSelection,
     useVersion,
     useSortState,

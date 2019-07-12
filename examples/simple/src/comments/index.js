@@ -3,11 +3,12 @@ import CommentCreate from './CommentCreate';
 import CommentEdit from './CommentEdit';
 import CommentList from './CommentList';
 import CommentShow from './CommentShow';
+import { ShowGuesser } from 'react-admin';
 
 export default {
     list: CommentList,
     create: CommentCreate,
     edit: CommentEdit,
-    show: CommentShow,
+    show: ShowGuesser,
     icon: ChatBubbleIcon,
 };
