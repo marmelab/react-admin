@@ -1,143 +1,12 @@
 import React, { cloneElement, Children } from 'react';
 import PropTypes from 'prop-types';
 import Card from '@material-ui/core/Card';
-import { withStyles, createStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
-import { ShowController } from 'ra-core';
+import { useShowController } from 'ra-core';
 
 import DefaultActions from './ShowActions';
 import TitleForRecord from '../layout/TitleForRecord';
-
-export const styles = createStyles({
-    root: {},
-    main: {
-        display: 'flex',
-    },
-    noActions: {
-        marginTop: '1em',
-    },
-    card: {
-        flex: '1 1 auto',
-    },
-});
-
-const sanitizeRestProps = ({
-    actions,
-    aside,
-    title,
-    children,
-    className,
-    crudGetOne,
-    id,
-    data,
-    isLoading,
-    resource,
-    hasCreate,
-    hasEdit,
-    hasList,
-    hasShow,
-    translate,
-    version,
-    match,
-    location,
-    history,
-    options,
-    locale,
-    permissions,
-    ...rest
-}) => rest;
-
-export const ShowView = withStyles(styles)(
-    ({
-        actions,
-        aside,
-        basePath,
-        children,
-        classes,
-        className,
-        defaultTitle,
-        hasEdit,
-        hasList,
-        isLoading,
-        record,
-        resource,
-        title,
-        version,
-        ...rest
-    }) => {
-        if (typeof actions === 'undefined' && hasEdit) {
-            actions = <DefaultActions />;
-        }
-        if (!children) {
-            return null;
-        }
-        return (
-            <div
-                className={classnames('show-page', classes.root, className)}
-                {...sanitizeRestProps(rest)}
-            >
-                <TitleForRecord
-                    title={title}
-                    record={record}
-                    defaultTitle={defaultTitle}
-                />
-                {actions &&
-                    cloneElement(actions, {
-                        basePath,
-                        data: record,
-                        hasList,
-                        hasEdit,
-                        resource,
-                        //  Ensure we don't override any user provided props
-                        ...actions.props,
-                    })}
-                <div
-                    className={classnames(classes.main, {
-                        [classes.noActions]: !actions,
-                    })}
-                >
-                    <Card className={classes.card}>
-                        {record &&
-                            cloneElement(Children.only(children), {
-                                resource,
-                                basePath,
-                                record,
-                                version,
-                            })}
-                    </Card>
-                    {aside &&
-                        cloneElement(aside, {
-                            resource,
-                            basePath,
-                            record,
-                            version,
-                        })}
-                </div>
-            </div>
-        );
-    }
-);
-
-ShowView.propTypes = {
-    actions: PropTypes.element,
-    aside: PropTypes.element,
-    basePath: PropTypes.string,
-    children: PropTypes.element,
-    classes: PropTypes.object,
-    className: PropTypes.string,
-    defaultTitle: PropTypes.any,
-    hasEdit: PropTypes.bool,
-    hasList: PropTypes.bool,
-    isLoading: PropTypes.bool,
-    record: PropTypes.object,
-    resource: PropTypes.string,
-    title: PropTypes.any,
-    version: PropTypes.node,
-};
-
-ShowView.defaultProps = {
-    classes: {},
-};
 
 /**
  * Page component for the Show view
@@ -181,11 +50,7 @@ ShowView.defaultProps = {
  *     );
  *     export default App;
  */
-const Show = props => (
-    <ShowController {...props}>
-        {controllerProps => <ShowView {...props} {...controllerProps} />}
-    </ShowController>
-);
+const Show = props => <ShowView {...props} {...useShowController(props)} />;
 
 Show.propTypes = {
     actions: PropTypes.element,
@@ -200,6 +65,134 @@ Show.propTypes = {
     id: PropTypes.any.isRequired,
     resource: PropTypes.string.isRequired,
     title: PropTypes.node,
+};
+
+export const useStyles = makeStyles({
+    root: {},
+    main: {
+        display: 'flex',
+    },
+    noActions: {
+        marginTop: '1em',
+    },
+    card: {
+        flex: '1 1 auto',
+    },
+});
+
+const sanitizeRestProps = ({
+    actions,
+    aside,
+    title,
+    children,
+    className,
+    id,
+    data,
+    isLoading,
+    resource,
+    hasCreate,
+    hasEdit,
+    hasList,
+    hasShow,
+    version,
+    match,
+    location,
+    history,
+    options,
+    locale,
+    permissions,
+    ...rest
+}) => rest;
+
+export const ShowView = ({
+    actions,
+    aside,
+    basePath,
+    children,
+    classes: classesOverride,
+    className,
+    defaultTitle,
+    hasEdit,
+    hasList,
+    isLoading,
+    record,
+    resource,
+    title,
+    version,
+    ...rest
+}) => {
+    const classes = useStyles({ classes: classesOverride });
+    if (typeof actions === 'undefined' && hasEdit) {
+        actions = <DefaultActions />;
+    }
+    if (!children) {
+        return null;
+    }
+    return (
+        <div
+            className={classnames('show-page', classes.root, className)}
+            {...sanitizeRestProps(rest)}
+        >
+            <TitleForRecord
+                title={title}
+                record={record}
+                defaultTitle={defaultTitle}
+            />
+            {actions &&
+                cloneElement(actions, {
+                    basePath,
+                    data: record,
+                    hasList,
+                    hasEdit,
+                    resource,
+                    //  Ensure we don't override any user provided props
+                    ...actions.props,
+                })}
+            <div
+                className={classnames(classes.main, {
+                    [classes.noActions]: !actions,
+                })}
+            >
+                <Card className={classes.card}>
+                    {record &&
+                        cloneElement(Children.only(children), {
+                            resource,
+                            basePath,
+                            record,
+                            version,
+                        })}
+                </Card>
+                {aside &&
+                    cloneElement(aside, {
+                        resource,
+                        basePath,
+                        record,
+                        version,
+                    })}
+            </div>
+        </div>
+    );
+};
+
+ShowView.propTypes = {
+    actions: PropTypes.element,
+    aside: PropTypes.element,
+    basePath: PropTypes.string,
+    children: PropTypes.element,
+    classes: PropTypes.object,
+    className: PropTypes.string,
+    defaultTitle: PropTypes.any,
+    hasEdit: PropTypes.bool,
+    hasList: PropTypes.bool,
+    isLoading: PropTypes.bool,
+    record: PropTypes.object,
+    resource: PropTypes.string,
+    title: PropTypes.any,
+    version: PropTypes.node,
+};
+
+ShowView.defaultProps = {
+    classes: {},
 };
 
 export default Show;
