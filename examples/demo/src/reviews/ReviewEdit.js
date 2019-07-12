@@ -1,6 +1,7 @@
 import React from 'react';
 import {
-    EditController,
+    useEditController,
+    useTranslate,
     LongTextInput,
     SimpleForm,
     DateField,
@@ -15,7 +16,7 @@ import CustomerReferenceField from '../visitors/CustomerReferenceField';
 import StarRatingField from './StarRatingField';
 import ReviewEditToolbar from './ReviewEditToolbar';
 
-const useEditStyle = makeStyles(theme => ({
+const useStyles = makeStyles(theme => ({
     root: {
         paddingTop: 40,
     },
@@ -41,52 +42,40 @@ const useEditStyle = makeStyles(theme => ({
 }));
 
 const ReviewEdit = ({ onCancel, ...props }) => {
-    const classes = useEditStyle();
+    const classes = useStyles();
+    const controllerProps = useEditController(props);
+    const translate = useTranslate();
+    if (!controllerProps.record) {
+        return null;
+    }
     return (
-        <EditController {...props}>
-            {controllerProps =>
-                controllerProps.record ? (
-                    <div className={classes.root}>
-                        <div className={classes.title}>
-                            <Typography variant="h6">
-                                {controllerProps.translate(
-                                    'resources.reviews.detail'
-                                )}
-                            </Typography>
-                            <IconButton onClick={onCancel}>
-                                <CloseIcon />
-                            </IconButton>
-                        </div>
-                        <SimpleForm
-                            className={classes.form}
-                            basePath={controllerProps.basePath}
-                            record={controllerProps.record}
-                            save={controllerProps.save}
-                            version={controllerProps.version}
-                            redirect="list"
-                            resource="reviews"
-                            toolbar={<ReviewEditToolbar />}
-                        >
-                            <CustomerReferenceField
-                                formClassName={classes.inlineField}
-                            />
+        <div className={classes.root}>
+            <div className={classes.title}>
+                <Typography variant="h6">
+                    {translate('resources.reviews.detail')}
+                </Typography>
+                <IconButton onClick={onCancel}>
+                    <CloseIcon />
+                </IconButton>
+            </div>
+            <SimpleForm
+                className={classes.form}
+                basePath={controllerProps.basePath}
+                record={controllerProps.record}
+                save={controllerProps.save}
+                version={controllerProps.version}
+                redirect="list"
+                resource="reviews"
+                toolbar={<ReviewEditToolbar />}
+            >
+                <CustomerReferenceField formClassName={classes.inlineField} />
 
-                            <ProductReferenceField
-                                formClassName={classes.inlineField}
-                            />
-                            <DateField
-                                source="date"
-                                formClassName={classes.inlineField}
-                            />
-                            <StarRatingField
-                                formClassName={classes.inlineField}
-                            />
-                            <LongTextInput source="comment" rowsMax={15} />
-                        </SimpleForm>
-                    </div>
-                ) : null
-            }
-        </EditController>
+                <ProductReferenceField formClassName={classes.inlineField} />
+                <DateField source="date" formClassName={classes.inlineField} />
+                <StarRatingField formClassName={classes.inlineField} />
+                <LongTextInput source="comment" rowsMax={15} />
+            </SimpleForm>
+        </div>
     );
 };
 

@@ -7,7 +7,7 @@ import {
     DateInput,
     DisabledInput,
     EditActions,
-    EditController,
+    useEditController,
     Link,
     LongTextInput,
     ReferenceInput,
@@ -37,64 +37,65 @@ const useEditStyles = makeStyles({
 
 const CommentEdit = props => {
     const classes = useEditStyles();
-
+    const {
+        resource,
+        record,
+        redirect,
+        save,
+        basePath,
+        version,
+    } = useEditController(props);
     return (
-        <EditController {...props}>
-            {({ resource, record, redirect, save, basePath, version }) => (
-                <div className="edit-page">
-                    <Title
-                        defaultTitle={`Comment #${record ? record.id : ''}`}
-                    />
-                    <div className={classes.actions}>
-                        <EditActions
-                            basePath={basePath}
-                            resource={resource}
-                            data={record}
-                            hasShow
-                            hasList
+        <div className="edit-page">
+            <Title defaultTitle={`Comment #${record ? record.id : ''}`} />
+            <div className={classes.actions}>
+                <EditActions
+                    basePath={basePath}
+                    resource={resource}
+                    data={record}
+                    hasShow
+                    hasList
+                />
+            </div>
+            <Card className={classes.card}>
+                {record && (
+                    <SimpleForm
+                        basePath={basePath}
+                        redirect={redirect}
+                        resource={resource}
+                        record={record}
+                        save={save}
+                        version={version}
+                    >
+                        <DisabledInput source="id" fullWidth />
+                        <ReferenceInput
+                            source="post_id"
+                            reference="posts"
+                            perPage={15}
+                            sort={{ field: 'title', order: 'ASC' }}
+                            fullWidth
+                        >
+                            <AutocompleteInput
+                                optionText="title"
+                                options={{ fullWidth: true }}
+                            />
+                        </ReferenceInput>
+                        <LinkToRelatedPost />
+                        <TextInput
+                            source="author.name"
+                            validate={minLength(10)}
+                            fullWidth
                         />
-                    </div>
-                    <Card className={classes.card}>
-                        {record && (
-                            <SimpleForm
-                                basePath={basePath}
-                                redirect={redirect}
-                                resource={resource}
-                                record={record}
-                                save={save}
-                                version={version}
-                            >
-                                <DisabledInput source="id" fullWidth />
-                                <ReferenceInput
-                                    source="post_id"
-                                    reference="posts"
-                                    perPage={15}
-                                    sort={{ field: 'title', order: 'ASC' }}
-                                    fullWidth
-                                >
-                                    <AutocompleteInput
-                                        optionText="title"
-                                        options={{ fullWidth: true }}
-                                    />
-                                </ReferenceInput>
-                                <LinkToRelatedPost />
-                                <TextInput
-                                    source="author.name"
-                                    validate={minLength(10)}
-                                    fullWidth
-                                />
-                                <DateInput source="created_at" fullWidth />
-                                <LongTextInput
-                                    source="body"
-                                    validate={minLength(10)}
-                                    fullWidth
-                                />
-                            </SimpleForm>
-                        )}
-                    </Card>
-                </div>
-            )}
-        </EditController>
+                        <DateInput source="created_at" fullWidth />
+                        <LongTextInput
+                            source="body"
+                            validate={minLength(10)}
+                            fullWidth
+                        />
+                    </SimpleForm>
+                )}
+            </Card>
+        </div>
     );
 };
 
