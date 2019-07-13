@@ -1,6 +1,6 @@
-import { getRecord } from './CreateController';
+import { getRecord } from './useCreateController';
 
-describe('CreateController', () => {
+describe('useCreateController', () => {
     describe('getRecord', () => {
         const location = {
             pathname: '/foo',
