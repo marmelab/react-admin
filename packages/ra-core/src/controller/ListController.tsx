@@ -237,7 +237,8 @@ export class UnconnectedListController extends Component<
             nextState === this.state &&
             nextProps.data === this.props.data &&
             nextProps.selectedIds === this.props.selectedIds &&
-            nextProps.total === this.props.total
+            nextProps.total === this.props.total &&
+            nextProps.permissions === this.props.permissions
         ) {
             return false;
         }
