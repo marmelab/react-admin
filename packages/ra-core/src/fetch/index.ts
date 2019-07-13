@@ -10,6 +10,7 @@ import withDataProvider from './withDataProvider';
 import useGetOne from './useGetOne';
 import useGetList from './useGetList';
 import useUpdate from './useUpdate';
+import useCreate from './useCreate';
 
 export {
     fetchUtils,
@@ -22,6 +23,7 @@ export {
     useGetOne,
     useGetList,
     useUpdate,
+    useCreate,
     useQueryWithStore,
     withDataProvider,
 };
