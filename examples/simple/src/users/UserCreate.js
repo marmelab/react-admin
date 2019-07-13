@@ -13,7 +13,14 @@ import {
 
 import Aside from './Aside';
 
-const UserEditToolbar = ({ permissions, ...props }) => (
+const UserEditToolbar = ({
+    permissions,
+    hasList,
+    hasEdit,
+    hasShow,
+    hasCreate,
+    ...props
+}) => (
     <Toolbar {...props}>
         <SaveButton
             label="user.action.save_and_show"
