@@ -1,19 +1,19 @@
 import { useCallback } from 'react';
 // @ts-ignore
-import { useDispatch, useSelector } from 'react-redux';
 import inflection from 'inflection';
 import { parse } from 'query-string';
 
-import { crudCreate } from '../actions';
+import { useCreate } from '../fetch';
 import { useCheckMinimumRequiredProps } from './checkMinimumRequiredProps';
 import { Location } from 'history';
 import { match as Match } from 'react-router';
-import { Record, ReduxState } from '../types';
+import { Record } from '../types';
 import { RedirectionSideEffect } from '../sideEffect';
 import { useTranslate } from '../i18n';
 
 export interface CreateControllerProps {
     isLoading: boolean;
+    isSaving: boolean;
     defaultTitle: string;
     save: (record: Partial<Record>, redirect: RedirectionSideEffect) => void;
     resource: string;
@@ -67,17 +67,35 @@ const useCreateController = (props: CreateProps): CreateControllerProps => {
     } = props;
 
     const translate = useTranslate();
-    const dispatch = useDispatch();
     const recordToUse = getRecord(location, record);
-    const isLoading = useSelector(
-        (state: ReduxState) => state.admin.loading > 0
+
+    const [create, { loading: isSaving }] = useCreate(
+        resource,
+        {}, // set by the caller
+        {
+            onSuccess: {
+                notification: {
+                    body: 'ra.notification.created',
+                    level: 'info',
+                    messageArgs: {
+                        smart_count: 1,
+                    },
+                },
+                basePath,
+            },
+            onFailure: {
+                notification: {
+                    body: 'ra.notification.http_error',
+                    level: 'warning',
+                },
+            },
+        }
     );
 
     const save = useCallback(
-        (data: Partial<Record>, redirect: RedirectionSideEffect) => {
-            dispatch(crudCreate(resource, data, basePath, redirect));
-        },
-        [resource, basePath] // eslint-disable-line react-hooks/exhaustive-deps
+        (data: Partial<Record>, redirectTo = 'list') =>
+            create(null, { data }, { onSuccess: { redirectTo } }),
+        [create]
     );
 
     const resourceName = translate(`resources.${resource}.name`, {
@@ -89,7 +107,8 @@ const useCreateController = (props: CreateProps): CreateControllerProps => {
     });
 
     return {
-        isLoading,
+        isLoading: false,
+        isSaving,
         defaultTitle,
         save,
         resource,

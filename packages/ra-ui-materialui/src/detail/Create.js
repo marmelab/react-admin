@@ -86,6 +86,7 @@ const sanitizeRestProps = ({
     className,
     crudCreate,
     isLoading,
+    isSaving,
     resource,
     title,
     hasCreate,
