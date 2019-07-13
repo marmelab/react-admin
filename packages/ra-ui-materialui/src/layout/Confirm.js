@@ -61,6 +61,10 @@ class Confirm extends Component {
         this.props.onConfirm();
     };
 
+    handleClick = e => {
+        e.stopPropagation();
+    };
+
     render() {
         const {
             isOpen,
@@ -80,6 +84,7 @@ class Confirm extends Component {
             <Dialog
                 open={isOpen}
                 onClose={onClose}
+                onClick={this.handleClick}
                 aria-labelledby="alert-dialog-title"
             >
                 <DialogTitle id="alert-dialog-title">
