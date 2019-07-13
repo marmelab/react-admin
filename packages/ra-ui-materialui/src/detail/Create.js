@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Card from '@material-ui/core/Card';
 import { makeStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
-import { useCreateController } from 'ra-core';
+import { useCheckMinimumRequiredProps, useCreateController } from 'ra-core';
 
 import TitleForRecord from '../layout/TitleForRecord';
 
@@ -102,23 +102,25 @@ const sanitizeRestProps = ({
     ...rest
 }) => rest;
 
-export const CreateView = ({
-    actions,
-    aside,
-    basePath,
-    children,
-    classes: classesOverride,
-    className,
-    defaultTitle,
-    hasList,
-    hasShow,
-    record = {},
-    redirect,
-    resource,
-    save,
-    title,
-    ...rest
-}) => {
+export const CreateView = props => {
+    const {
+        actions,
+        aside,
+        basePath,
+        children,
+        classes: classesOverride,
+        className,
+        defaultTitle,
+        hasList,
+        hasShow,
+        record = {},
+        redirect,
+        resource,
+        save,
+        title,
+        ...rest
+    } = props;
+    useCheckMinimumRequiredProps('Create', ['children'], props);
     const classes = useStyles({ classes: classesOverride });
     return (
         <div
