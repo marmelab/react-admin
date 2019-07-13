@@ -60,7 +60,7 @@ export class SaveButton extends Component {
         showNotification: PropTypes.func,
         submitOnEnter: PropTypes.bool,
         translate: PropTypes.func.isRequired,
-        variant: PropTypes.oneOf(['raised', 'flat', 'fab']),
+        variant: PropTypes.oneOf(['text', 'raised', 'flat', 'fab']),
         icon: PropTypes.element,
     };
 
