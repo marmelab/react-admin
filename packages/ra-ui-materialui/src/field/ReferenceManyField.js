@@ -40,7 +40,6 @@ export const ReferenceManyFieldView = ({
                 setPerPage,
                 total,
             })}
-        }
     </Fragment>
 );
 

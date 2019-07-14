@@ -1,41 +1,47 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import ThumbDown from '@material-ui/icons/ThumbDown';
-import { Button, startUndoable, crudUpdateMany } from 'react-admin';
+import { Button, useMutation, UPDATE_MANY } from 'react-admin';
 
-class BulkRejectButton extends Component {
-    handleClick = () => {
-        const { basePath, startUndoable, resource, selectedIds } = this.props;
-        startUndoable(
-            crudUpdateMany(
-                resource,
-                selectedIds,
-                { status: 'rejected' },
-                basePath
-            )
-        );
-    };
+const options = {
+    undoable: true,
+    onSuccess: {
+        notification: {
+            body: 'resources.reviews.notification.approved_success',
+            level: 'info',
+        },
+        redirectTo: '/reviews',
+    },
+    onFailure: {
+        notification: {
+            body: 'resources.reviews.notification.approved_error',
+            level: 'warning',
+        },
+    },
+};
+const BulkRejectButton = ({ selectedIds }) => {
+    const [reject, { loading }] = useMutation(
+        {
+            type: UPDATE_MANY,
+            resource: 'reviews',
+            payload: { ids: selectedIds, data: { status: 'rejected' } },
+        },
+        options
+    );
 
-    render() {
-        return (
-            <Button
-                label="resources.reviews.action.reject"
-                onClick={this.handleClick}
-            >
-                <ThumbDown />
-            </Button>
-        );
-    }
-}
-
-BulkRejectButton.propTypes = {
-    resource: PropTypes.string.isRequired,
-    selectedIds: PropTypes.arrayOf(PropTypes.any).isRequired,
-    startUndoable: PropTypes.func.isRequired,
+    return (
+        <Button
+            label="resources.reviews.action.reject"
+            onClick={reject}
+            disabled={loading}
+        >
+            <ThumbDown />
+        </Button>
+    );
 };
 
-export default connect(
-    undefined,
-    { startUndoable }
-)(BulkRejectButton);
+BulkRejectButton.propTypes = {
+    selectedIds: PropTypes.arrayOf(PropTypes.any).isRequired,
+};
+
+export default BulkRejectButton;

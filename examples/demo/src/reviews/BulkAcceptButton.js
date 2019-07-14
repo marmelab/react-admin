@@ -1,41 +1,48 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import ThumbUp from '@material-ui/icons/ThumbUp';
-import { Button, startUndoable, crudUpdateMany } from 'react-admin';
+import { Button, useMutation, UPDATE_MANY } from 'react-admin';
 
-class BulkAcceptButton extends Component {
-    handleClick = () => {
-        const { basePath, startUndoable, resource, selectedIds } = this.props;
-        startUndoable(
-            crudUpdateMany(
-                resource,
-                selectedIds,
-                { status: 'accepted' },
-                basePath
-            )
-        );
-    };
-
-    render() {
-        return (
-            <Button
-                label="resources.reviews.action.accept"
-                onClick={this.handleClick}
-            >
-                <ThumbUp />
-            </Button>
-        );
-    }
-}
-
-BulkAcceptButton.propTypes = {
-    resource: PropTypes.string.isRequired,
-    selectedIds: PropTypes.arrayOf(PropTypes.any).isRequired,
-    startUndoable: PropTypes.func.isRequired,
+const options = {
+    undoable: true,
+    onSuccess: {
+        notification: {
+            body: 'resources.reviews.notification.approved_success',
+            level: 'info',
+        },
+        redirectTo: '/reviews',
+    },
+    onFailure: {
+        notification: {
+            body: 'resources.reviews.notification.approved_error',
+            level: 'warning',
+        },
+    },
 };
 
-export default connect(
-    undefined,
-    { startUndoable }
-)(BulkAcceptButton);
+const BulkAcceptButton = ({ selectedIds }) => {
+    const [approve, { loading }] = useMutation(
+        {
+            type: UPDATE_MANY,
+            resource: 'reviews',
+            payload: { ids: selectedIds, data: { status: 'accepted' } },
+        },
+        options
+    );
+
+    return (
+        <Button
+            label="resources.reviews.action.accept"
+            onClick={approve}
+            disabled={loading}
+        >
+            <ThumbUp />
+        </Button>
+    );
+};
+
+BulkAcceptButton.propTypes = {
+    selectedIds: PropTypes.arrayOf(PropTypes.any).isRequired,
+};
+
+export default BulkAcceptButton;
