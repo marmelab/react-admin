@@ -145,7 +145,7 @@ export function* handleFetch(
     } finally {
         if (yield cancelled()) {
             yield put({ type: FETCH_CANCEL });
-            return; /* tslint:disable-line no-unsafe-finally */
+            return;
         }
     }
 }

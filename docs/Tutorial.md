@@ -66,7 +66,7 @@ Bootstrap the admin app by replacing the `src/App.js` by the following code:
 ```jsx
 // in src/App.js
 import React from 'react';
-import { Admin, Resource } from 'react-admin';
+import { Admin } from 'react-admin';
 import jsonServerProvider from 'ra-data-json-server';
 
 const dataProvider = jsonServerProvider('http://jsonplaceholder.typicode.com');
@@ -90,7 +90,7 @@ The `<Admin>` component expects one or more `<Resource>` child components. Each 
 ```diff
 // in src/App.js
 import React from 'react';
--import { Admin, Resource } from 'react-admin';
+-import { Admin } from 'react-admin';
 +import { Admin, Resource, ListGuesser } from 'react-admin';
 import jsonServerProvider from 'ra-data-json-server';
 
@@ -266,7 +266,7 @@ Yes, you can replace any of react-admin's components with your own! That means r
 
 ## Customizing Styles
 
-The `MyUrlField` component is a perfect opportunity to illustrate how to customize styles. React-admin relies on [material-ui](https://material-ui.com/), a set of React components modeled after Google's [Material Design UI Guidelines](https://material.io/). Material-ui uses [JSS](https://github.com/cssinjs/jss), a CSS-in-JS solution, for styling components. Let's take advantage of the capabilities of JSS to remove the underline from the link and add an icon:
+The `MyUrlField` component is a perfect opportunity to illustrate how to customize styles. React-admin relies on [material-ui](https://v1.material-ui.com/), a set of React components modeled after Google's [Material Design UI Guidelines](https://material.io/). Material-ui uses [JSS](https://github.com/cssinjs/jss), a CSS-in-JS solution, for styling components. Let's take advantage of the capabilities of JSS to remove the underline from the link and add an icon:
 
 ```jsx
 // in src/MyUrlField.js
@@ -297,7 +297,7 @@ export default withStyles(styles)(MyUrlField);
 
 In JSS, you define styles as a JavaScript object, using the JS variants of the CSS property names (e.g. `textDecoration` instead of `text-decoration`). To pass these styles to the component, wrap it inside a call to `withStyles(styles)`. JSS will create new class names for these styles, insert them (once) in the HTML document, and pass the new class names as a new `classes` property. Then, use these names in a `className` prop, as you would with a regular CSS class.
 
-**Tip**: There is much more to JSS than what this tutorial covers. Read the [material-ui documentation](https://material-ui.com/) to learn more about theming, vendor prefixes, responsive utilities, etc.
+**Tip**: There is much more to JSS than what this tutorial covers. Read the [material-ui documentation](https://v1.material-ui.com/) to learn more about theming, vendor prefixes, responsive utilities, etc.
 
 
 ## Handling Relationships
@@ -732,7 +732,7 @@ export const PostList = (props) => (
 
 ![Mobile post list](./img/tutorial_mobile_post_list.gif)
 
-The `<SimpleList>` component uses [material-ui's `<List>` and `<ListItem>` components](http://www.material-ui.com/#/components/list), and expects functions as `primaryText`, `secondaryText`, and `tertiaryText` props.
+The `<SimpleList>` component uses [material-ui's `<List>` and `<ListItem>` components](http://v1.material-ui.com/demos/lists), and expects functions as `primaryText`, `secondaryText`, and `tertiaryText` props.
 
 **Note:** Since JSONRestServer doesn't provide `views` or `published_at` values for posts, we switched to a custom API for those screenshots in order to demonstrate how to use some of the `SimpleList` component props.
 
@@ -921,4 +921,4 @@ const App = () => (
 
 React-admin was built with customization in mind. You can replace any react-admin component with a component of your own, for instance to display a custom list layout, or a different edit form for a given resource.
 
-Now that you've completed the tutorial, continue reading the [react-admin documentation](http://marmelab.com/react-admin/), and read the [Material UI components documentation](http://www.material-ui.com/#/).
+Now that you've completed the tutorial, continue reading the [react-admin documentation](http://marmelab.com/react-admin/), and read the [Material UI components documentation](http://v1.material-ui.com/).

@@ -5,17 +5,18 @@ import { NavLink } from 'react-router-dom';
 import MenuItem from '@material-ui/core/MenuItem';
 import { withStyles, createStyles } from '@material-ui/core/styles';
 
-const styles = theme => createStyles({
-    root: {
-        color: theme.palette.text.secondary,
-        display: 'flex',
-        alignItems: 'flex-start',
-    },
-    active: {
-        color: theme.palette.text.primary,
-    },
-    icon: { paddingRight: '1.2em' },
-});
+const styles = theme =>
+    createStyles({
+        root: {
+            color: theme.palette.text.secondary,
+            display: 'flex',
+            alignItems: 'flex-start',
+        },
+        active: {
+            color: theme.palette.text.primary,
+        },
+        icon: { paddingRight: '1.2em' },
+    });
 
 export class MenuItemLink extends Component {
     static propTypes = {

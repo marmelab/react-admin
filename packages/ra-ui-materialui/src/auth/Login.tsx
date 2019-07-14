@@ -17,7 +17,6 @@ import {
     Theme,
 } from '@material-ui/core/styles';
 import LockIcon from '@material-ui/icons/Lock';
-import { StaticContext } from 'react-router';
 
 import defaultTheme from '../defaultTheme';
 import Notification from '../layout/Notification';

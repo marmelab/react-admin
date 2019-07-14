@@ -6,12 +6,13 @@ import { withStyles, createStyles } from '@material-ui/core/styles';
 import RemoveCircle from '@material-ui/icons/RemoveCircle';
 import { translate } from 'ra-core';
 
-const styles = theme => createStyles({
-    removeButton: {},
-    removeIcon: {
-        color: theme.palette.accent1Color,
-    },
-});
+const styles = theme =>
+    createStyles({
+        removeButton: {},
+        removeIcon: {
+            color: theme.palette.accent1Color,
+        },
+    });
 
 export class FileInputPreview extends Component {
     static propTypes = {

@@ -173,8 +173,9 @@ const Menu = ({ resources, onMenuClick, logout }) => (
     <div>
         {resources.map(resource => (
             <MenuItemLink
+                key={resource.name}
                 to={`/${resource.name}`}
-                primaryText={resource.name}
+                primaryText={resource.options && resource.options.label || resource.name}
                 leftIcon={createElement(resource.icon)}
                 onClick={onMenuClick}
             />
@@ -221,7 +222,7 @@ See the [Theming documentation](./Theming.md#using-a-custom-menu) for more detai
 
 ## `theme`
 
-Material UI supports [theming](http://www.material-ui.com/#/customization/themes). This lets you customize the look and feel of an admin by overriding fonts, colors, and spacing. You can provide a custom material ui theme by using the `theme` prop:
+Material UI supports [theming](http://v1.material-ui.com/customization/themes). This lets you customize the look and feel of an admin by overriding fonts, colors, and spacing. You can provide a custom material ui theme by using the `theme` prop:
 
 ```jsx
 import { createMuiTheme } from '@material-ui/core/styles';
@@ -241,7 +242,7 @@ const App = () => (
 
 ![Dark theme](./img/dark-theme.png)
 
-For more details on predefined themes and custom themes, refer to the [Material UI Customization documentation](https://material-ui.com/customization/themes/).
+For more details on predefined themes and custom themes, refer to the [Material UI Customization documentation](https://v1.material-ui.com/customization/themes/).
 
 ## `appLayout`
 

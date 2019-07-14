@@ -6,22 +6,27 @@ import { withStyles, createStyles } from '@material-ui/core/styles';
 import compose from 'recompose/compose';
 import withProps from 'recompose/withProps';
 import lodashSet from 'lodash/set';
+import lodashGet from 'lodash/get';
 
 import FilterFormInput from './FilterFormInput';
 
-const styles = theme => createStyles({
-    form: {
-        marginTop: '-10px',
-        paddingTop: 0,
-        display: 'flex',
-        alignItems: 'flex-end',
-        flexWrap: 'wrap',
-    },
-    body: { display: 'flex', alignItems: 'flex-end' },
-    spacer: { width: '1em' },
-    icon: { color: theme.palette.primary1Color || '#00bcd4', paddingBottom: 0 },
-    clearFix: { clear: 'right' },
-});
+const styles = theme =>
+    createStyles({
+        form: {
+            marginTop: '-10px',
+            paddingTop: 0,
+            display: 'flex',
+            alignItems: 'flex-end',
+            flexWrap: 'wrap',
+        },
+        body: { display: 'flex', alignItems: 'flex-end' },
+        spacer: { width: '1em' },
+        icon: {
+            color: theme.palette.primary1Color || '#00bcd4',
+            paddingBottom: 0,
+        },
+        clearFix: { clear: 'right' },
+    });
 
 const sanitizeRestProps = ({
     anyTouched,
@@ -82,7 +87,8 @@ export class FilterForm extends Component {
             filterElement =>
                 filterElement.props.alwaysOn ||
                 displayedFilters[filterElement.props.source] ||
-                typeof initialValues[filterElement.props.source] !== 'undefined'
+                typeof lodashGet(initialValues, filterElement.props.source) !==
+                    'undefined'
         );
     }
 

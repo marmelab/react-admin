@@ -18,43 +18,44 @@ import { addField, translate, FieldTitle } from 'ra-core';
 
 import AutocompleteArrayInputChip from './AutocompleteArrayInputChip';
 
-const styles = theme => createStyles({
-    container: {
-        flexGrow: 1,
-        position: 'relative',
-    },
-    root: {},
-    suggestionsContainerOpen: {
-        position: 'absolute',
-        marginBottom: theme.spacing.unit * 3,
-        zIndex: 2,
-    },
-    suggestionsPaper: {
-        maxHeight: '50vh',
-        overflowY: 'auto',
-    },
-    suggestion: {
-        display: 'block',
-        fontFamily: theme.typography.fontFamily,
-    },
-    suggestionText: { fontWeight: 300 },
-    highlightedSuggestionText: { fontWeight: 500 },
-    suggestionsList: {
-        margin: 0,
-        padding: 0,
-        listStyleType: 'none',
-    },
-    chip: {
-        marginRight: theme.spacing.unit,
-        marginTop: theme.spacing.unit,
-    },
-    chipDisabled: {
-        pointerEvents: 'none',
-    },
-    chipFocused: {
-        backgroundColor: blue[300],
-    },
-});
+const styles = theme =>
+    createStyles({
+        container: {
+            flexGrow: 1,
+            position: 'relative',
+        },
+        root: {},
+        suggestionsContainerOpen: {
+            position: 'absolute',
+            marginBottom: theme.spacing.unit * 3,
+            zIndex: 2,
+        },
+        suggestionsPaper: {
+            maxHeight: '50vh',
+            overflowY: 'auto',
+        },
+        suggestion: {
+            display: 'block',
+            fontFamily: theme.typography.fontFamily,
+        },
+        suggestionText: { fontWeight: 300 },
+        highlightedSuggestionText: { fontWeight: 500 },
+        suggestionsList: {
+            margin: 0,
+            padding: 0,
+            listStyleType: 'none',
+        },
+        chip: {
+            marginRight: theme.spacing.unit,
+            marginTop: theme.spacing.unit,
+        },
+        chipDisabled: {
+            pointerEvents: 'none',
+        },
+        chipFocused: {
+            backgroundColor: blue[300],
+        },
+    });
 
 /**
  * An Input component for an autocomplete field, using an array of objects for the options
@@ -208,13 +209,8 @@ export class AutocompleteArrayInput extends React.Component {
         this.updateFilter(inputValue);
     };
     handleChange = (event, { newValue, method }) => {
-        switch (method) {
-            case 'type':
-            case 'escape':
-                {
-                    this.handleMatchSuggestionOrFilter(newValue);
-                }
-                break;
+        if (['type', 'escape'].includes(method)) {
+            this.handleMatchSuggestionOrFilter(newValue);
         }
     };
 
@@ -259,8 +255,8 @@ export class AutocompleteArrayInput extends React.Component {
                 onDelete={this.handleDelete}
                 value={this.getInputValue(input.value)}
                 inputRef={storeInputRef}
-                error={touched && error}
-                helperText={touched && error && helperText}
+                error={!!(touched && error)}
+                helperText={(touched && error) || helperText}
                 chipRenderer={this.renderChip}
                 label={
                     <FieldTitle

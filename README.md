@@ -9,7 +9,7 @@ A frontend Framework for building admin applications running in the browser on t
 ## Features
 
 * Adapts to any backend (REST, GraphQL, SOAP, etc.)
-* Powered by [material-ui](https://material-ui.com/), [redux](https://redux.js.org/), [redux-form](https://redux-form.com/7.3.0/), [redux-saga](https://redux-saga.js.org/), [react-router](https://reacttraining.com/react-router/), [recompose](https://github.com/acdlite/recompose), [reselect](https://github.com/reduxjs/reselect) and a few more
+* Powered by [material-ui](https://v1.material-ui.com/), [redux](https://redux.js.org/), [redux-form](https://redux-form.com/7.3.0/), [redux-saga](https://redux-saga.js.org/), [react-router](https://reacttraining.com/react-router/), [recompose](https://github.com/acdlite/recompose), [reselect](https://github.com/reduxjs/reselect) and a few more
 * Super-fast UI thanks to optimistic rendering (renders before the server returns)
 * Undo updates and deletes for a few seconds
 * Complete documentation
@@ -144,7 +144,7 @@ See the [Data Providers documentation](https://marmelab.com/react-admin/DataProv
 
 ## Batteries Included But Removable
 
-React-admin is designed as a library of loosely coupled React components built on top of [material-ui](http://www.material-ui.com/#/), in addition to controller functions implemented the Redux way. It is very easy to replace one part of react-admin with your own, e.g. to use a custom datagrid, GraphQL instead of REST, or bootstrap instead of Material Design.
+React-admin is designed as a library of loosely coupled React components built on top of [material-ui](http://v1.material-ui.com/), in addition to controller functions implemented the Redux way. It is very easy to replace one part of react-admin with your own, e.g. to use a custom datagrid, GraphQL instead of REST, or bootstrap instead of Material Design.
 
 ## Examples
 
@@ -191,7 +191,9 @@ or
 yarn test
 ```
 
-When working on the end to end tests, you can leverage [cypress](https://www.cypress.io/) runner by starting the simple example yourself (`make run-simple`) and starting cypress in another terminal (`make test-e2e-local` or `yarn test-e2e-local`).
+Besides, tests related to the modified files are ran automatically at commit.
+
+When working on the end to end tests, you can leverage [cypress](https://www.cypress.io/) runner by starting the simple example yourself (`make run-simple` or `yarn run-simple`) and starting cypress in another terminal (`make test-e2e-local` or `yarn test-e2e-local`).
 
 If you have coding standards problems, you can fix them automatically using `prettier` by calling
 
@@ -204,6 +206,8 @@ or
 ```sh
 yarn prettier
 ```
+
+However, these commands are ran automatically at each commit so you shouldn't have to worry about them.
 
 If you want to contribute to the documentation, install [jekyll](https://jekyllrb.com/docs/home/), then call
 

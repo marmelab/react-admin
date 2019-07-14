@@ -1,4 +1,4 @@
-import { Identifier, Record } from '../../types';
+import { Identifier } from '../../types';
 import { UPDATE_MANY } from '../../dataFetchActions';
 import { FETCH_END, FETCH_ERROR } from '../fetchActions';
 import { NotificationSideEffect, RefreshSideEffect } from '../../sideEffect';

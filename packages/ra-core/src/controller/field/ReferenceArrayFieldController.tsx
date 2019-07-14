@@ -96,8 +96,7 @@ export class UnconnectedReferenceArrayFieldController extends Component<Props> {
         const referenceBasePath = basePath.replace(resource, reference); // FIXME obviously very weak
 
         return children({
-            // tslint:disable-next-line:triple-equals
-            loadedOnce: data != undefined,
+            loadedOnce: data != undefined, // eslint-disable-line eqeqeq
             ids,
             data,
             referenceBasePath,

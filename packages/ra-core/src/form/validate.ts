@@ -170,7 +170,6 @@ export const maxValue = memoize(
  * const ageValidators = [number('Must be a number')];
  * <TextInput name="age" validate={ageValidators} />
  */
-// tslint:disable-next-line:variable-name
 export const number = memoize(
     (message = 'ra.validation.number') => (value, values, props) =>
         !isEmpty(value) && isNaN(Number(value))

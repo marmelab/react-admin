@@ -51,7 +51,9 @@ export const buildFields = (introspectionResults, path = []) => fields =>
                     null,
                     null,
                     gqlTypes.selectionSet(
-                        buildFields(introspectionResults, path)(linkedType.fields)
+                        buildFields(introspectionResults, path)(
+                            linkedType.fields
+                        )
                     )
                 ),
             ];

@@ -2,7 +2,6 @@ import React from 'react';
 import {
     render,
     cleanup,
-    fireEvent,
     // @ts-ignore
     waitForDomChange,
 } from 'react-testing-library';
@@ -213,11 +212,15 @@ describe('Query', () => {
 
     it('should not dispatch a new fetch action when updating with the same query props', () => {
         let dispatchSpy;
-        const myPayload = {};
         const { rerender } = render(
             <TestContext>
                 {({ store }) => {
                     dispatchSpy = jest.spyOn(store, 'dispatch');
+                    const myPayload = {
+                        foo: {
+                            bar: 1,
+                        },
+                    };
                     return (
                         <Query
                             type="mytype"
@@ -232,15 +235,22 @@ describe('Query', () => {
         );
         rerender(
             <TestContext>
-                {() => (
-                    <Query
-                        type="mytype"
-                        resource="myresource"
-                        payload={myPayload}
-                    >
-                        {() => <div>Hello</div>}
-                    </Query>
-                )}
+                {() => {
+                    const myPayload = {
+                        foo: {
+                            bar: 1,
+                        },
+                    };
+                    return (
+                        <Query
+                            type="mytype"
+                            resource="myresource"
+                            payload={myPayload}
+                        >
+                            {() => <div>Hello</div>}
+                        </Query>
+                    );
+                }}
             </TestContext>
         );
         expect(dispatchSpy.mock.calls.length).toEqual(1);

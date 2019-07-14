@@ -163,7 +163,7 @@ If you need to override it, you can use the `valueLabelTrue` and `valueLabelFals
 
 ## `<ChipField>`
 
-Displays a value inside a ["Chip"](http://www.material-ui.com/#/components/chip), which is Material UI's term for a label.
+Displays a value inside a ["Chip"](http://v1.material-ui.com/demos/chip), which is Material UI's term for a label.
 
 ```jsx
 import { ChipField } from 'react-admin';
@@ -406,8 +406,6 @@ By default, the text is built by
 
 - finding a choice where the 'id' property equals the field value
 - using the 'name' property an the option text
-
-**Warning**: This component name may conflict with material-ui's [`<SelectField>`](http://www.material-ui.com/#/components/select-field) if you import both.
 
 You can also customize the properties to use for the lookup value and text, thanks to the 'optionValue' and 'optionText' attributes.
 
@@ -769,7 +767,7 @@ import { UrlField } from 'react-admin';
 
 ## Styling Fields
 
-All field components accept a `className` prop, allowing you to customize their style to your liking. We advise you to use the Material UI styling solution, JSS, to generate those classes. See their [documentation](https://material-ui.com/customization/css-in-js/#api) about that.
+All field components accept a `className` prop, allowing you to customize their style to your liking. We advise you to use the Material UI styling solution, JSS, to generate those classes. See their [documentation](https://v1.material-ui.com/customization/css-in-js/#api) about that.
 
 {% raw %}
 ```jsx

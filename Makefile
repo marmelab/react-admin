@@ -98,7 +98,7 @@ serve-github-pages: ## Serve the doc from a Github Pages docker container
 
 lint: ## lint the code and check coding conventions
 	@echo "Running linter..."
-	@yarn -s tslint 'packages/*/src/**/*.*s'
+	@yarn -s lint
 
 prettier: ## prettify the source code using prettier
 	@echo "Running prettier..."
@@ -117,7 +117,8 @@ test-unit: ## launch unit tests
 	fi
 
 test-unit-watch: ## launch unit tests and watch for changes
-	yarn -s test-unit --watch
+	echo "Running unit tests..."; \
+	yarn -s test-unit; \
 
 test-e2e: ## launch end-to-end tests
 	@if [ "$(build)" != "false" ]; then \

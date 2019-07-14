@@ -14,12 +14,13 @@ const RawPlaceholder = ({ classes }) => (
     <div className={classes.root}>&nbsp;</div>
 );
 
-const styles = theme => createStyles({
-    root: {
-        backgroundColor: theme.palette.grey[300],
-        display: 'flex',
-    },
-});
+const styles = theme =>
+    createStyles({
+        root: {
+            backgroundColor: theme.palette.grey[300],
+            display: 'flex',
+        },
+    });
 
 const Placeholder = withStyles(styles)(RawPlaceholder);
 
@@ -74,7 +75,6 @@ export default ({
                                 className={classes.expandIcon}
                                 component="div"
                                 aria-hidden="true"
-                                role="expand"
                             >
                                 <ExpandMoreIcon />
                             </IconButton>

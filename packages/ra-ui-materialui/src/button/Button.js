@@ -116,8 +116,8 @@ Button.propTypes = {
 
 Button.defaultProps = {
     color: 'primary',
-    size: 'small'
-}
+    size: 'small',
+};
 
 const enhance = compose(
     withStyles(styles),

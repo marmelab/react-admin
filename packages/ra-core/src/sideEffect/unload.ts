@@ -1,3 +1,4 @@
+/* eslint-disable require-yield */
 import { takeEvery } from 'redux-saga/effects';
 
 import {

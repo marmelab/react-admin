@@ -13,6 +13,9 @@ interface DispatchProps {
 const mapDispatchToProps = (dispatch): DispatchProps => ({
     dataProvider: (type, resource: string, payload: any, meta: any = {}) =>
         new Promise((resolve, reject) => {
+            const onSuccess = get(meta, 'onSuccess', {});
+            const onFailure = get(meta, 'onFailure', {});
+
             const action = {
                 type: 'CUSTOM_FETCH',
                 payload,
@@ -21,15 +24,28 @@ const mapDispatchToProps = (dispatch): DispatchProps => ({
                     resource,
                     fetch: type,
                     onSuccess: {
-                        ...get(meta, 'onSuccess', {}),
-                        callback: ({ payload: response }) => resolve(response),
+                        ...onSuccess,
+                        callback: ({ payload: response }) => {
+                            if (onSuccess.callback) {
+                                onSuccess.callback(response);
+                            }
+
+                            resolve(response);
+                        },
                     },
                     onFailure: {
                         ...get(meta, 'onFailure', {}),
-                        callback: ({ error }) =>
-                            reject(
-                                new Error(error.message ? error.message : error)
-                            ),
+                        callback: ({ error }) => {
+                            const sanitizedError = new Error(
+                                error.message ? error.message : error
+                            );
+
+                            if (onFailure.callback) {
+                                onFailure.callback(sanitizedError);
+                            }
+
+                            reject(sanitizedError);
+                        },
                     },
                 },
             };

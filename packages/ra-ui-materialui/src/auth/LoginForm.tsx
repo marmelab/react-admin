@@ -7,7 +7,12 @@ import CardActions from '@material-ui/core/CardActions';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { withStyles, createStyles, WithStyles } from '@material-ui/core/styles';
+import {
+    withStyles,
+    createStyles,
+    WithStyles,
+    Theme,
+} from '@material-ui/core/styles';
 import {
     withTranslate,
     userLogin,
@@ -31,7 +36,7 @@ interface EnhancedProps
     isLoading: boolean;
 }
 
-const styles = () =>
+const styles = ({ spacing }: Theme) =>
     createStyles({
         form: {
             padding: '0 1em 1em 1em',
@@ -41,6 +46,9 @@ const styles = () =>
         },
         button: {
             width: '100%',
+        },
+        icon: {
+            marginRight: spacing.unit,
         },
     });
 
@@ -98,7 +106,13 @@ const LoginForm: SFC<Props & EnhancedProps> = ({
                 disabled={isLoading}
                 className={classes.button}
             >
-                {isLoading && <CircularProgress size={25} thickness={2} />}
+                {isLoading && (
+                    <CircularProgress
+                        className={classes.icon}
+                        size={18}
+                        thickness={2}
+                    />
+                )}
                 {translate('ra.auth.sign_in')}
             </Button>
         </CardActions>

@@ -18,9 +18,10 @@ import { getDefaultValues, translate, REDUX_FORM_NAME } from 'ra-core';
 import Toolbar from './Toolbar';
 import CardContentInner from '../layout/CardContentInner';
 
-const styles = theme => createStyles({
-    errorTabButton: { color: theme.palette.error.main },
-});
+const styles = theme =>
+    createStyles({
+        errorTabButton: { color: theme.palette.error.main },
+    });
 
 const sanitizeRestProps = ({
     anyTouched,
@@ -97,8 +98,9 @@ export class TabbedForm extends Component {
             ...rest
         } = this.props;
 
+        const url = match ? match.url : location.pathname;
         const validTabPaths = Children.toArray(children).map((tab, index) =>
-            getTabFullPath(tab, index, match.url)
+            getTabFullPath(tab, index, url)
         );
 
         // This ensure we don't get warnings from material-ui Tabs component when
@@ -131,7 +133,7 @@ export class TabbedForm extends Component {
                         // TabbedShowLayout hierarchy (ex: '/posts/create', '/posts/12', , '/posts/12/show')
                         // and the tab path.
                         // This will be used as the Tab's value
-                        const tabPath = getTabFullPath(tab, index, match.url);
+                        const tabPath = getTabFullPath(tab, index, url);
 
                         return React.cloneElement(tab, {
                             context: 'header',
@@ -156,30 +158,31 @@ export class TabbedForm extends Component {
                             tab && (
                                 <Route
                                     exact
-                                    path={getTabFullPath(tab, index, match.url)}
+                                    path={getTabFullPath(tab, index, url)}
                                 >
                                     {routeProps =>
-                                        isValidElement(tab) ?
-                                        React.cloneElement(tab, {
-                                            context: 'content',
-                                            resource,
-                                            record,
-                                            basePath,
-                                            hidden: !routeProps.match,
-                                            /**
-                                             * Force redraw when the tab becomes active
-                                             *
-                                             * This is because the fields, decorated by redux-form and connect,
-                                             * aren't redrawn by default when the tab becomes active.
-                                             * Unfortunately, some material-ui fields (like multiline TextField)
-                                             * compute their size based on the scrollHeight of a dummy DOM element,
-                                             * and scrollHeight is 0 in a hidden div. So they must be redrawn
-                                             * once the tab becomes active.
-                                             *
-                                             * @ref https://github.com/marmelab/react-admin/issues/1956
-                                             */
-                                            key: `${index}_${!routeProps.match}`,
-                                        }) : null
+                                        isValidElement(tab)
+                                            ? React.cloneElement(tab, {
+                                                  context: 'content',
+                                                  resource,
+                                                  record,
+                                                  basePath,
+                                                  hidden: !routeProps.match,
+                                                  /**
+                                                   * Force redraw when the tab becomes active
+                                                   *
+                                                   * This is because the fields, decorated by redux-form and connect,
+                                                   * aren't redrawn by default when the tab becomes active.
+                                                   * Unfortunately, some material-ui fields (like multiline TextField)
+                                                   * compute their size based on the scrollHeight of a dummy DOM element,
+                                                   * and scrollHeight is 0 in a hidden div. So they must be redrawn
+                                                   * once the tab becomes active.
+                                                   *
+                                                   * @ref https://github.com/marmelab/react-admin/issues/1956
+                                                   */
+                                                  key: `${index}_${!routeProps.match}`,
+                                              })
+                                            : null
                                     }
                                 </Route>
                             )
@@ -266,7 +269,11 @@ export const findTabsWithErrors = (
 
         const inputs = Children.toArray(child.props.children);
 
-        if (inputs.some(input => isValidElement(input) && errors[input.props.source])) {
+        if (
+            inputs.some(
+                input => isValidElement(input) && errors[input.props.source]
+            )
+        ) {
             return [...acc, child.props.label];
         }
 
@@ -278,7 +285,12 @@ const enhance = compose(
     withRouter,
     connect((state, props) => {
         const children = Children.toArray(props.children).reduce(
-            (acc, child) => [...acc, ...(isValidElement(child) ? Children.toArray(child.props.children): [])],
+            (acc, child) => [
+                ...acc,
+                ...(isValidElement(child)
+                    ? Children.toArray(child.props.children)
+                    : []),
+            ],
             []
         );
 

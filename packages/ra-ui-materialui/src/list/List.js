@@ -1,5 +1,4 @@
-/* eslint no-console: ["error", { allow: ["warn", "error"] }] */
-import React, { isValidElement, Children, cloneElement } from 'react';
+import React, { Children, cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import Card from '@material-ui/core/Card';
 import classnames from 'classnames';
@@ -98,65 +97,66 @@ const sanitizeRestProps = ({
     ...rest
 }) => rest;
 
-export const ListView = withStyles(styles)(({
-    // component props
-    actions,
-    aside,
-    filter,
-    filters,
-    bulkActions, // deprecated
-    bulkActionButtons,
-    pagination,
-    // overridable by user
-    children,
-    className,
-    classes,
-    exporter,
-    title,
-    ...rest
-}) => {
-    const { defaultTitle, version } = rest;
-    const controllerProps = getListControllerProps(rest);
-    return (
-        <div
-            className={classnames('list-page', classes.root, className)}
-            {...sanitizeRestProps(rest)}
-        >
-            <Title title={title} defaultTitle={defaultTitle} />
-            <Card className={classes.card}>
-                {bulkActions !== false &&
-                    bulkActionButtons !== false &&
-                    bulkActionButtons &&
-                    !bulkActions && (
-                        <BulkActionsToolbar {...controllerProps}>
-                            {bulkActionButtons}
-                        </BulkActionsToolbar>
+export const ListView = withStyles(styles)(
+    ({
+        actions,
+        aside,
+        filter,
+        filters,
+        bulkActions,
+        bulkActionButtons,
+        pagination,
+        children,
+        className,
+        classes,
+        exporter,
+        title,
+        ...rest
+    }) => {
+        const { defaultTitle, version } = rest;
+        const controllerProps = getListControllerProps(rest);
+        return (
+            <div
+                className={classnames('list-page', classes.root, className)}
+                {...sanitizeRestProps(rest)}
+            >
+                <Title title={title} defaultTitle={defaultTitle} />
+                <Card className={classes.card}>
+                    {bulkActions !== false &&
+                        bulkActionButtons !== false &&
+                        bulkActionButtons &&
+                        !bulkActions && (
+                            <BulkActionsToolbar {...controllerProps}>
+                                {bulkActionButtons}
+                            </BulkActionsToolbar>
+                        )}
+                    {(filters || actions) && (
+                        <ListToolbar
+                            filters={filters}
+                            {...controllerProps}
+                            actions={actions}
+                            bulkActions={bulkActions}
+                            exporter={exporter}
+                            permanentFilter={filter}
+                        />
                     )}
-                {(filters || actions) && (
-                    <ListToolbar
-                        filters={filters}
-                        {...controllerProps}
-                        actions={actions}
-                        bulkActions={bulkActions}
-                        exporter={exporter}
-                        permanentFilter={filter}
-                    />
-                )}
-                <div key={version}>
-                    {children &&
-                        cloneElement(Children.only(children), {
-                            ...controllerProps,
-                            hasBulkActions:
-                                bulkActions !== false &&
-                                bulkActionButtons !== false,
-                        })}
-                    {pagination && cloneElement(pagination, controllerProps)}
-                </div>
-            </Card>
-            {aside && cloneElement(aside, controllerProps)}
-        </div>
-    );
-});
+                    <div key={version}>
+                        {children &&
+                            cloneElement(Children.only(children), {
+                                ...controllerProps,
+                                hasBulkActions:
+                                    bulkActions !== false &&
+                                    bulkActionButtons !== false,
+                            })}
+                        {pagination &&
+                            cloneElement(pagination, controllerProps)}
+                    </div>
+                </Card>
+                {aside && cloneElement(aside, controllerProps)}
+            </div>
+        );
+    }
+);
 
 ListView.propTypes = {
     actions: PropTypes.element,
