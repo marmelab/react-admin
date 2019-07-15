@@ -248,6 +248,10 @@ export default introspectionResults => (
         case GET_MANY_REFERENCE: {
             const parts = preparedParams.target.split('.');
             return {
+                page: parseInt(preparedParams.pagination.page, 10) - 1,
+                perPage: parseInt(preparedParams.pagination.perPage, 10),
+                sortField: preparedParams.sort.field,
+                sortOrder: preparedParams.sort.order,
                 filter: { [`${parts[0]}Id`]: preparedParams.id },
             };
         }
