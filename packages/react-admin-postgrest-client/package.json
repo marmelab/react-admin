@@ -1,0 +1,30 @@
+{
+  "name": "react-admin-postgrest-client",
+  "version": "0.5.2",
+  "private": false,
+  "description": "dataProvider for [react-admin](https://marmelab.com/react-admin/) ( admin-on-rest 2.0 ) to access [postgrest](https://postgrest.com) REST service",
+  "main": "src/index.js",
+  "repository": "https://github.com/wellers0n/react-admin-postgrest-client",
+  "author": "Wellerson <wellerson.coffee@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "build": "rm -rf lib/* && babel src --extensions \".es6,.js,.es,.jsx,.mjs,.ts,.tsx\" --ignore __test__,__testfixtures__,*.spec.ts --out-dir lib",
+    "prepublish": "npm run build"
+  },
+  "dependencies": {
+    "ra-core": "^2.0.0-RC2",
+    "react-admin": "^2.0.0-RC2"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.18.0",
+    "babel-eslint": "^7.2.3",
+    "babel-plugin-add-module-exports": "^0.2.1",
+    "babel-preset-es2015": "^6.18.0",
+    "babel-preset-stage-0": "^6.16.0",
+    "eslint": "^6.0.1",
+    "eslint-config-airbnb": "^15.0.1",
+    "eslint-plugin-import": "^2.3.0",
+    "eslint-plugin-jsx-a11y": "^5.0.3",
+    "eslint-plugin-react": "^7.0.1"
+  }
+}
