@@ -10,7 +10,78 @@ import {
     UPDATE_MANY,
     DELETE,
     DELETE_MANY,
-} from 'react-admin';
+} from 'ra-core';
+
+interface Pagenation {
+    page: number;
+    perPage: number;
+}
+
+interface Sort {
+    field: string;
+    order: 'ASC' | 'DESC';
+}
+
+interface GetListRequestParams {
+    pagination: Pagenation;
+    sort: Sort;
+    filter: {
+        [key: string]: any;
+    };
+}
+
+interface IdParams {
+    id: number | string;
+}
+interface IdsParams {
+    ids: (number | string)[];
+}
+
+interface GetOneRequestParams extends IdParams {}
+
+interface GetManyRequestParams extends IdsParams {}
+
+interface GetManyReferenceRequestParams extends IdParams {
+    pagination: Pagenation;
+    sort: Sort;
+    filter: {
+        [key: string]: any;
+    };
+    target: string;
+}
+interface UpdateRequestParams extends IdParams {
+    data: any;
+}
+interface UpdateManyRequestParams extends IdsParams {
+    data: any;
+}
+interface CreateRequestParams {
+    data: any;
+}
+interface DeleteRequestParams extends IdParams {}
+interface DeleteManyRequestParams extends IdsParams {}
+type RequestParams =
+    | GetOneRequestParams
+    | GetManyRequestParams
+    | GetManyReferenceRequestParams
+    | UpdateRequestParams
+    | UpdateManyRequestParams
+    | DeleteRequestParams
+    | DeleteManyRequestParams;
+
+interface RequestOptions {
+    method?: string;
+    body?: string;
+}
+
+interface Response {
+    headers: Headers;
+    json: any;
+}
+export type HTTPClient = (
+    url: string,
+    options: RequestOptions
+) => Promise<Response>;
 
 /**
  * Maps react-admin queries to a simple REST API
@@ -25,44 +96,60 @@ import {
  * CREATE       => POST http://my.api.url/posts
  * DELETE       => DELETE http://my.api.url/posts/123
  */
-export default (apiUrl, httpClient = fetchUtils.fetchJson) => {
+export default (
+    apiUrl: string,
+    httpClient: HTTPClient = fetchUtils.fetchJson
+) => {
     /**
      * @param {String} type One of the constants appearing at the top if this file, e.g. 'UPDATE'
      * @param {String} resource Name of the resource to fetch, e.g. 'posts'
      * @param {Object} params The data request params, depending on the type
      * @returns {Object} { url, options } The HTTP request parameters
      */
-    const convertDataRequestToHTTP = (type, resource, params) => {
+    const convertDataRequestToHTTP = (
+        type: string,
+        resource: string,
+        params: RequestParams
+    ) => {
         let url = '';
-        const options = {};
+        const options: RequestOptions = {};
         switch (type) {
             case GET_LIST: {
-                const { page, perPage } = params.pagination;
-                const { field, order } = params.sort;
+                const params_ = params as GetListRequestParams;
+                const { page, perPage } = params_.pagination;
+                const { field, order } = params_.sort;
                 const query = {
                     sort: JSON.stringify([field, order]),
                     range: JSON.stringify([
                         (page - 1) * perPage,
                         page * perPage - 1,
                     ]),
-                    filter: JSON.stringify(params.filter),
+                    filter: JSON.stringify(params_.filter),
                 };
                 url = `${apiUrl}/${resource}?${stringify(query)}`;
                 break;
             }
-            case GET_ONE:
-                url = `${apiUrl}/${resource}/${params.id}`;
+            case GET_ONE: {
+                const params_ = params as GetOneRequestParams;
+
+                url = `${apiUrl}/${resource}/${params_.id}`;
                 break;
+            }
+
             case GET_MANY: {
+                const params_ = params as GetManyRequestParams;
+
                 const query = {
-                    filter: JSON.stringify({ id: params.ids }),
+                    filter: JSON.stringify({ id: params_.ids }),
                 };
                 url = `${apiUrl}/${resource}?${stringify(query)}`;
                 break;
             }
             case GET_MANY_REFERENCE: {
-                const { page, perPage } = params.pagination;
-                const { field, order } = params.sort;
+                const params_ = params as GetManyReferenceRequestParams;
+
+                const { page, perPage } = params_.pagination;
+                const { field, order } = params_.sort;
                 const query = {
                     sort: JSON.stringify([field, order]),
                     range: JSON.stringify([
@@ -70,27 +157,38 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson) => {
                         page * perPage - 1,
                     ]),
                     filter: JSON.stringify({
-                        ...params.filter,
-                        [params.target]: params.id,
+                        ...params_.filter,
+                        [params_.target]: params_.id,
                     }),
                 };
                 url = `${apiUrl}/${resource}?${stringify(query)}`;
                 break;
             }
-            case UPDATE:
-                url = `${apiUrl}/${resource}/${params.id}`;
+            case UPDATE: {
+                const params_ = params as UpdateRequestParams;
+
+                url = `${apiUrl}/${resource}/${params_.id}`;
                 options.method = 'PUT';
-                options.body = JSON.stringify(params.data);
+                options.body = JSON.stringify(params_.data);
                 break;
-            case CREATE:
+            }
+
+            case CREATE: {
+                const params_ = params as CreateRequestParams;
+
                 url = `${apiUrl}/${resource}`;
                 options.method = 'POST';
-                options.body = JSON.stringify(params.data);
+                options.body = JSON.stringify(params_.data);
                 break;
-            case DELETE:
-                url = `${apiUrl}/${resource}/${params.id}`;
+            }
+
+            case DELETE: {
+                const params_ = params as DeleteRequestParams;
+
+                url = `${apiUrl}/${resource}/${params_.id}`;
                 options.method = 'DELETE';
                 break;
+            }
             default:
                 throw new Error(`Unsupported fetch action type ${type}`);
         }
@@ -104,7 +202,12 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson) => {
      * @param {Object} params The data request params, depending on the type
      * @returns {Object} Data response
      */
-    const convertHTTPResponse = (response, type, resource, params) => {
+    const convertHTTPResponse = (
+        response: Response,
+        type: string,
+        resource: string,
+        params
+    ) => {
         const { headers, json } = response;
         switch (type) {
             case GET_LIST:
@@ -137,14 +240,15 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson) => {
      * @param {Object} payload Request parameters. Depends on the request type
      * @returns {Promise} the Promise for a data response
      */
-    return (type, resource, params) => {
+    return (type: string, resource: string, params: RequestParams) => {
         // simple-rest doesn't handle filters on UPDATE route, so we fallback to calling UPDATE n times instead
         if (type === UPDATE_MANY) {
+            const params_ = params as UpdateManyRequestParams;
             return Promise.all(
-                params.ids.map(id =>
+                params_.ids.map(id =>
                     httpClient(`${apiUrl}/${resource}/${id}`, {
                         method: 'PUT',
-                        body: JSON.stringify(params.data),
+                        body: JSON.stringify(params_.data),
                     })
                 )
             ).then(responses => ({
@@ -153,8 +257,9 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson) => {
         }
         // simple-rest doesn't handle filters on DELETE route, so we fallback to calling DELETE n times instead
         if (type === DELETE_MANY) {
+            const params_ = params as DeleteManyRequestParams;
             return Promise.all(
-                params.ids.map(id =>
+                params_.ids.map(id =>
                     httpClient(`${apiUrl}/${resource}/${id}`, {
                         method: 'DELETE',
                     })
