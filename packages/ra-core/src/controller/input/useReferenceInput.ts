@@ -12,7 +12,7 @@ import useFilterState from '../useFilterState';
 const defaultReferenceSource = (resource: string, source: string) =>
     `${resource}@${source}`;
 
-interface ReferenceInputValue {
+export interface ReferenceInputValue {
     choices: Record[];
     error?: string;
     loading: boolean;
@@ -56,7 +56,7 @@ interface Option {
  *      source: 'post_id',
  * });
  *
- * The hook alos allow to filter results. it returns a `setFilter`
+ * The hook also allow to filter results. It returns a `setFilter`
  * function. It uses the value to create a filter
  * for the query - by default { q: [searchText] }. You can customize the mapping
  * searchText => searchQuery by setting a custom `filterToQuery` function option

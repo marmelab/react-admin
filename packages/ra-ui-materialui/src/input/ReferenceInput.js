@@ -55,7 +55,7 @@ export const ReferenceInputView = ({
     error,
     input,
     isRequired,
-    isLoading,
+    loading,
     label,
     meta,
     onChange,
@@ -68,7 +68,7 @@ export const ReferenceInputView = ({
     warning,
     ...rest
 }) => {
-    if (isLoading) {
+    if (loading) {
         return (
             <Labeled
                 label={label}
@@ -119,7 +119,7 @@ ReferenceInputView.propTypes = {
     className: PropTypes.string,
     error: PropTypes.string,
     input: PropTypes.object.isRequired,
-    isLoading: PropTypes.bool,
+    loading: PropTypes.bool,
     label: PropTypes.string,
     meta: PropTypes.object,
     onChange: PropTypes.func,

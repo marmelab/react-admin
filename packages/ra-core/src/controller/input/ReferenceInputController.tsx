@@ -6,31 +6,17 @@ import {
 } from 'react';
 import { WrappedFieldInputProps } from 'redux-form';
 
-import { Sort, Record, Pagination } from '../../types';
-import useReferenceInput from './useReferenceInput';
+import { Sort, Record } from '../../types';
+import useReferenceInput, { ReferenceInputValue } from './useReferenceInput';
 import { filter } from 'async';
 
 const defaultReferenceSource = (resource: string, source: string) =>
     `${resource}@${source}`;
 
-interface ChildrenFuncParams {
-    choices: Record[];
-    error?: string;
-    filter?: any;
-    loading: boolean;
-    onChange: (value: any) => void;
-    pagination: Pagination;
-    setFilter: (filter: string) => void;
-    setPagination: (pagination: Pagination) => void;
-    setSort: (sort: Sort) => void;
-    sort: Sort;
-    warning?: string;
-}
-
 interface Props {
     allowEmpty?: boolean;
     basePath: string;
-    children: (params: ChildrenFuncParams) => ReactNode;
+    children: (params: ReferenceInputValue) => ReactNode;
     filter?: any;
     filterToQuery?: (filter: string) => any;
     input?: WrappedFieldInputProps;
@@ -133,11 +119,9 @@ export const ReferenceInputController: FunctionComponent<Props> = ({
     referenceSource = defaultReferenceSource,
     resource,
     source,
-    ...props
 }) => {
-    return children({
-        ...props,
-        ...useReferenceInput({
+    return children(
+        useReferenceInput({
             input,
             perPage,
             permanentFilter: filter,
@@ -146,8 +130,8 @@ export const ReferenceInputController: FunctionComponent<Props> = ({
             referenceSource,
             resource,
             source,
-        }),
-    }) as ReactElement;
+        })
+    ) as ReactElement;
 };
 
 export default ReferenceInputController as ComponentType<Props>;

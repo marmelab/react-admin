@@ -56,7 +56,6 @@ describe('<ReferenceInputController />', () => {
             pagination: { page: 1, perPage: 25 },
             sort: { field: 'id', order: 'DESC' },
             warning: null,
-            basePath: '/comments',
         });
 
         expect(dispatch).toBeCalledTimes(2);

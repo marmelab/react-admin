@@ -18,7 +18,7 @@ describe('useMatchingReferences', () => {
 
     afterEach(cleanup);
 
-    it('should fetch matchingReferences on mount', () => {
+    it('should fetch matchingReferences only on mount', () => {
         const { dispatch, rerender } = renderHook(() => {
             return useMatchingReferences(defaultProps);
         });
@@ -43,6 +43,12 @@ describe('useMatchingReferences', () => {
             filter: {
                 q: '',
             },
+        });
+    });
+
+    it('should not fetch matchingReferences on subsequent rerender', () => {
+        const { dispatch, rerender } = renderHook(() => {
+            return useMatchingReferences(defaultProps);
         });
 
         rerender(() => {
