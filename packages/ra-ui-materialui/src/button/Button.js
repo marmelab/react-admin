@@ -3,13 +3,13 @@ import PropTypes from 'prop-types';
 import MuiButton from '@material-ui/core/Button';
 import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
-import { withStyles, createStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
 import { useTranslate } from 'ra-core';
 
 import Responsive from '../layout/Responsive';
 
-const styles = createStyles({
+const useStyles = makeStyles({
     button: {
         display: 'inline-flex',
         alignItems: 'center',
@@ -34,7 +34,7 @@ const styles = createStyles({
 const Button = ({
     alignIcon = 'left',
     children,
-    classes = {},
+    classes: classesOverride,
     className,
     color,
     disabled,
@@ -43,6 +43,7 @@ const Button = ({
     ...rest
 }) => {
     const translate = useTranslate();
+    const classes = useStyles({ classes: classesOverride });
     return (
         <Responsive
             xsmall={
@@ -121,4 +122,4 @@ Button.defaultProps = {
     size: 'small',
 };
 
-export default withStyles(styles)(Button);
+export default Button;

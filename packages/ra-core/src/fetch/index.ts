@@ -11,6 +11,7 @@ import useGetOne from './useGetOne';
 import useGetList from './useGetList';
 import useUpdate from './useUpdate';
 import useCreate from './useCreate';
+import useDelete from './useDelete';
 
 export {
     fetchUtils,
@@ -24,6 +25,7 @@ export {
     useGetList,
     useUpdate,
     useCreate,
+    useDelete,
     useQueryWithStore,
     withDataProvider,
 };

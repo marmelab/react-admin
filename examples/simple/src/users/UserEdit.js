@@ -35,7 +35,7 @@ const UserEditToolbar = props => {
     return (
         <Toolbar {...props} classes={classes}>
             <SaveButton />
-            <DeleteWithConfirmButton />
+            <DeleteWithConfirmButton {...props} />
         </Toolbar>
     );
 };
