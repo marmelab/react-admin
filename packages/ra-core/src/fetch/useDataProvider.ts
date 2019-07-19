@@ -13,6 +13,17 @@ interface UseDataProviderOptions {
     onFailure?: any;
 }
 
+const getSideEffects = (effects): [(args: any) => void, any] => {
+    let functionSideEffect = () => null;
+    let objectSideEffect = {};
+    if (effects instanceof Function) {
+        functionSideEffect = effects;
+    } else {
+        objectSideEffect = effects;
+    }
+    return [functionSideEffect, objectSideEffect];
+};
+
 /**
  * Hook for getting an instance of the dataProvider as prop
  *
@@ -67,6 +78,8 @@ const useDataProvider = () => {
                 onFailure = {},
                 ...rest
             } = options;
+            const [successFunc, successObj] = getSideEffects(onSuccess);
+            const [failureFunc, failureObj] = getSideEffects(onFailure);
             return new Promise((resolve, reject) => {
                 const queryAction = {
                     type: action,
@@ -76,25 +89,28 @@ const useDataProvider = () => {
                         resource,
                         fetch: type,
                         onSuccess: {
-                            ...onSuccess,
+                            ...successObj,
                             callback: ({ payload: response }) => {
-                                if (onSuccess.callback) {
-                                    onSuccess.callback({ payload: response });
+                                resolve(response);
+                                if (successObj.callback) {
+                                    successObj.callback({ payload: response });
                                 }
-                                return resolve(response);
+                                successFunc(response);
+                                return;
                             },
                         },
                         onFailure: {
-                            ...onFailure,
+                            ...failureObj,
                             callback: ({ error }) => {
-                                if (onFailure.callback) {
-                                    onFailure.callback({ error });
-                                }
-                                return reject(
-                                    new Error(
-                                        error.message ? error.message : error
-                                    )
+                                const exception = new Error(
+                                    error.message ? error.message : error
                                 );
+                                reject(exception);
+                                if (failureObj.callback) {
+                                    failureObj.callback({ error });
+                                }
+                                failureFunc(exception);
+                                return;
                             },
                         },
                     },

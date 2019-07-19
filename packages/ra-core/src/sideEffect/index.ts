@@ -10,6 +10,9 @@ import refreshSaga, { RefreshSideEffect } from './refresh';
 import i18nSaga from './i18n';
 import undoSaga from './undo';
 import unloadSaga from './unload';
+import useRedirect from './useRedirect';
+import useNotify from './useNotify';
+import useRefresh from './useRefresh';
 
 export {
     adminSaga,
@@ -28,4 +31,7 @@ export {
     i18nSaga,
     undoSaga,
     unloadSaga,
+    useRedirect,
+    useNotify,
+    useRefresh,
 };

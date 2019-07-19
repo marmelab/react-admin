@@ -28,7 +28,7 @@ import useMutation from './useMutation';
  *     return <button disabled={loading} onClick={create}>Like</div>;
  * };
  */
-const useCreate = (resource: string, data?: any, options?: any) =>
+const useCreate = (resource: string, data: any = {}, options?: any) =>
     useMutation(
         { type: CREATE, resource, payload: { data } },
         { ...options, action: CRUD_CREATE }

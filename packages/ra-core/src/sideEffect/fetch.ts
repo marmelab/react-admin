@@ -92,6 +92,8 @@ export function* handleFetch(
         meta: { fetch: fetchMeta, onSuccess, onFailure, ...meta },
     } = action;
     const restType = fetchMeta;
+    const successSideEffects = onSuccess instanceof Function ? {} : onSuccess;
+    const failureSideEffects = onFailure instanceof Function ? {} : onFailure;
 
     try {
         const isOptimistic = yield select(
@@ -122,7 +124,7 @@ export function* handleFetch(
             requestPayload: payload,
             meta: {
                 ...meta,
-                ...onSuccess,
+                ...successSideEffects,
                 fetchResponse: restType,
                 fetchStatus: FETCH_END,
             },
@@ -136,7 +138,7 @@ export function* handleFetch(
             requestPayload: payload,
             meta: {
                 ...meta,
-                ...onFailure,
+                ...failureSideEffects,
                 fetchResponse: restType,
                 fetchStatus: FETCH_ERROR,
             },

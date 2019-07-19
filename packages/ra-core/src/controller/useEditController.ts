@@ -8,7 +8,12 @@ import useVersion from './useVersion';
 import { useCheckMinimumRequiredProps } from './checkMinimumRequiredProps';
 import { REDUX_FORM_NAME } from '../form';
 import { Record, Identifier } from '../types';
-import { RedirectionSideEffect } from '../sideEffect';
+import {
+    useNotify,
+    useRedirect,
+    useRefresh,
+    RedirectionSideEffect,
+} from '../sideEffect';
 import { useGetOne, useUpdate } from '../fetch';
 import { useTranslate } from '../i18n';
 
@@ -56,18 +61,17 @@ const useEditController = (props: EditProps): EditControllerProps => {
     useCheckMinimumRequiredProps('Edit', ['basePath', 'resource'], props);
     const { basePath, id, resource, undoable = true } = props;
     const translate = useTranslate();
+    const notify = useNotify();
+    const redirect = useRedirect();
+    const refresh = useRefresh();
     const dispatch = useDispatch();
     const version = useVersion();
     const { data: record, loading } = useGetOne(resource, id, {
-        basePath,
         version, // used to force reload
-        onFailure: {
-            notification: {
-                body: 'ra.notification.item_doesnt_exist',
-                level: 'warning',
-            },
-            redirectTo: 'list',
-            refresh: true,
+        onFailure: () => {
+            notify('ra.notification.item_doesnt_exist', 'warning');
+            redirect('list', basePath);
+            refresh();
         },
     });
 
@@ -89,32 +93,37 @@ const useEditController = (props: EditProps): EditControllerProps => {
         resource,
         id,
         {}, // set by the caller
-        record,
-        {
-            onSuccess: {
-                notification: {
-                    body: 'ra.notification.updated',
-                    level: 'info',
-                    messageArgs: {
-                        smart_count: 1,
-                    },
-                },
-                basePath,
-            },
-            onFailure: {
-                notification: {
-                    body: 'ra.notification.http_error',
-                    level: 'warning',
-                },
-            },
-            undoable,
-        }
+        record
     );
 
     const save = useCallback(
         (data: Partial<Record>, redirectTo = 'list') =>
-            update(null, { data }, { onSuccess: { redirectTo } }),
-        [update]
+            update(
+                null,
+                { data },
+                {
+                    onSuccess: () => {
+                        notify(
+                            'ra.notification.updated',
+                            'info',
+                            {
+                                smart_count: 1,
+                            },
+                            undoable
+                        );
+                        redirect(redirectTo, basePath, data.id, data);
+                    },
+                    onFailure: error =>
+                        notify(
+                            typeof error === 'string'
+                                ? error
+                                : error.message || 'ra.notification.http_error',
+                            'warning'
+                        ),
+                    undoable,
+                }
+            ),
+        [basePath, notify, redirect, undoable, update]
     );
 
     return {
