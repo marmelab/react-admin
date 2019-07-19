@@ -7,7 +7,7 @@ import { Identifier, Record } from '../types';
 import resolveRedirectTo from '../util/resolveRedirectTo';
 
 type RedirectToFunction = (
-    basePath: string,
+    basePath?: string,
     id?: Identifier,
     data?: Record
 ) => string;
@@ -34,7 +34,7 @@ const useRedirect = () => {
     return useCallback(
         (
             redirectTo: RedirectionSideEffect,
-            basePath: string,
+            basePath: string = '',
             id?: Identifier,
             data?: Partial<Record>
         ) =>

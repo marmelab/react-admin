@@ -13,6 +13,7 @@ import unloadSaga from './unload';
 import useRedirect from './useRedirect';
 import useNotify from './useNotify';
 import useRefresh from './useRefresh';
+import useUnselectAll from './useUnselectAll';
 
 export {
     adminSaga,
@@ -34,4 +35,5 @@ export {
     useRedirect,
     useNotify,
     useRefresh,
+    useUnselectAll,
 };
