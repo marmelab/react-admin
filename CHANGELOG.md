@@ -1,5 +1,17 @@
 # Changelog
 
+## v2.9.5
+
+* Fix data generator usage example ([3429](https://github.com/marmelab/react-admin/pull/3429)) ([mchaffotte](https://github.com/mchaffotte))
+* Fix `<ReferenceArrayInput>` error message when given bad data ([3415](https://github.com/marmelab/react-admin/pull/3415)) ([Kmaschta](https://github.com/Kmaschta))
+* Fix List does not update if `AUTH_GET_PERMISSIONS` is slow ([3408](https://github.com/marmelab/react-admin/pull/3408)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix click on `<EmailField>` triggers `rowClick` in `<Datagrid>` ([3426](https://github.com/marmelab/react-admin/pull/3426)) ([despatates](https://github.com/despatates))
+* Fix click on confirmation dialog text triggers `rowClick` in `<Datagrid>` ([3407](https://github.com/marmelab/react-admin/pull/3407)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix missing id requirement for Reference fields in `ra-data-graphql-simple` documentation ([3391](https://github.com/marmelab/react-admin/pull/3391)) ([esistgut](https://github.com/esistgut))
+* Fix type in `<Lists aside>` documentation ([3388](https://github.com/marmelab/react-admin/pull/3388)) ([firepol](https://github.com/firepol))
+* Fix `callback` side effect is not called when using `withDataProvider` ([3385](https://github.com/marmelab/react-admin/pull/3385)) ([djhi](https://github.com/djhi))
+* Add mention of `react-admin-google-maps` component library in the Ecosystem documentation ([3410](https://github.com/marmelab/react-admin/pull/3410)) ([gganebnyi](https://github.com/gganebnyi))
+
 ## v2.9.4
 
 * Fix closing delete confirmation modal triggers datagrid rowClick event ([3360](https://github.com/marmelab/react-admin/pull/3360)) ([Kmaschta](https://github.com/Kmaschta))
