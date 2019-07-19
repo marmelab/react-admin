@@ -138,7 +138,6 @@ class TreeNode extends Component {
         return connectDropTarget(
             <div className={classes.root}>
                 <ListItem
-                    button
                     classes={{
                         root: classNames({
                             [classes.node]: node.children.length > 0,
