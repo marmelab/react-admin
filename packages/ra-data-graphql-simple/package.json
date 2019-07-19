@@ -1,6 +1,6 @@
 {
     "name": "ra-data-graphql-simple",
-    "version": "2.9.3",
+    "version": "2.9.5",
     "description": "A GraphQL simple data provider for react-admin",
     "main": "lib/index.js",
     "module": "esm/index.js",
