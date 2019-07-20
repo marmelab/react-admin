@@ -1,5 +1,50 @@
 # Changelog
 
+## v3.0.0-alpha.1
+
+* Add pagination and sorting params to GET_MANY_REFERENCE ([3412](https://github.com/marmelab/react-admin/pull/3412)) ([m4theushw](https://github.gom/m4theushw))
+* Use hooks on demo (last PR) ([3345](https://github.com/marmelab/react-admin/pull/3345)) ([zyhou](https://github.gom/zyhou))
+* Add `useCreateController` hook ([3409](https://github.com/marmelab/react-admin/pull/3409)) ([fzaninotto](https://github.gom/fzaninotto))
+* Add `useShowController` hook ([3406](https://github.com/marmelab/react-admin/pull/3406)) ([fzaninotto](https://github.gom/fzaninotto))
+* Add `useEditController` hook ([3398](https://github.com/marmelab/react-admin/pull/3398)) ([fzaninotto](https://github.gom/fzaninotto))
+* Prevents passing the `sidebarIsOpen` prop to the `<MenuItem>` component ([3393](https://github.com/marmelab/react-admin/pull/3393)) ([m4theushw](https://github.gom/m4theushw))
+* Add tooltip to menu entries on the sidebar ([3390](https://github.com/marmelab/react-admin/pull/3390)) ([m4theushw](https://github.gom/m4theushw))
+* Add `useListController` hook ([3377](https://github.com/marmelab/react-admin/pull/3377)) ([fzaninotto](https://github.gom/fzaninotto))
+* Add auth hooks (`useAuth` and `usePermissions`) ([3368](https://github.com/marmelab/react-admin/pull/3368)) ([fzaninotto](https://github.gom/fzaninotto))
+* Refactor validators to not return translated errors ([3339](https://github.com/marmelab/react-admin/pull/3339)) ([djhi](https://github.gom/djhi))
+* Upgrade `react-redux` to version 7.1 ([3349](https://github.com/marmelab/react-admin/pull/3349)) ([fzaninotto](https://github.gom/fzaninotto))
+* Backport changes from 2.9.2 and 2.9.3 to next ([3344](https://github.com/marmelab/react-admin/pull/3344)) ([fzaninotto](https://github.gom/fzaninotto))
+* Use `makeStyles` hook on examples demo ([3328](https://github.com/marmelab/react-admin/pull/3328)) ([zyhou](https://github.gom/zyhou))
+* Replace `tslint` with `eslint` ([3321](https://github.com/marmelab/react-admin/pull/3321)) ([djhi](https://github.gom/djhi))
+* Add link function to `<ReferenceField>` ([3282](https://github.com/marmelab/react-admin/pull/3282)) ([fargito](https://github.gom/fargito))
+* Add tabs prop to `<TabbedForm>` to allow injecting custom Tabs component([3288](https://github.com/marmelab/react-admin/pull/3288)) ([sagarbakhtar](https://github.gom/sagarbakhtar))
+* Add `suggestionLimit` prop to `<AutocompleteArrayInput>` ([3326](https://github.com/marmelab/react-admin/pull/3326)) ([sagarbakhtar](https://github.gom/sagarbakhtar))
+* Use theme to store sidebar width  (breaking change) ([3323](https://github.com/marmelab/react-admin/pull/3323)) ([djhi](https://github.gom/djhi)
+* Replace `papaparse` with a lighter library (breaking change) ([3324](https://github.com/marmelab/react-admin/pull/3324)) ([djhi](https://github.gom/djhi)
+* Add `List` performance optimizations ([3320](https://github.com/marmelab/react-admin/pull/3320)) ([fzaninotto](https://github.gom/fzaninotto))
+* Upgrade, Configure & Apply `prettier` ([3317](https://github.com/marmelab/react-admin/pull/3317)) ([djhi](https://github.gom/djhi)
+* Add notification on `USER_CHECK` error ([3291](https://github.com/marmelab/react-admin/pull/3291)) ([sagarbakhtar](https://github.gom/sagarbakhtar))
+* Fix `Layout` component injection ([3315](https://github.com/marmelab/react-admin/pull/3315)) ([djhi](https://github.gom/djhi)
+* Add `useReferenceArrayField` hook ([3294](https://github.com/marmelab/react-admin/pull/3294)) ([ThieryMichel](https://github.gom/ThieryMichel))
+* Add `useReferenceMany` hook ([3236](https://github.com/marmelab/react-admin/pull/3236)) ([ThieryMichel](https://github.gom/ThieryMichel))Approved  5 of 5
+* Migrate simple example to hooks ([3225](https://github.com/marmelab/react-admin/pull/3225)) ([zyhou](https://github.gom/zyhou))
+* Authenticate `NotFound` page ([3243](https://github.com/marmelab/react-admin/pull/3243)) ([Kmaschta](https://github.gom/Kmaschta))
+* Add support for `<Datagrid rowClick="toggleSelection">` ([3270](https://github.com/marmelab/react-admin/pull/3270)) ([fargito](https://github.gom/fargito))
+* Add Crud hooks (`useQuery`, `usequeryWithStore`, `useMutation`, `useGetOne`, `useGetList`) ([3253](https://github.com/marmelab/react-admin/pull/3253)) ([fzaninotto](https://github.gom/fzaninotto))of 10
+* Replace Headroom by native Material-ui solution for hiding the app bar on scroll ([3247](https://github.com/marmelab/react-admin/pull/3247)) ([fzaninotto](https://github.gom/fzaninotto))
+* Rename `appLayout` prop to `layout` in `<Admin>` component ([3055](https://github.com/marmelab/react-admin/pull/3055)) ([kopax](https://github.gom/kopax))
+* Upgrade cypress and add ability to run single test ([3235](https://github.com/marmelab/react-admin/pull/3235)) ([cherniavskii](https://github.gom/cherniavskii))
+* Add `useReference` hook ([3228](https://github.com/marmelab/react-admin/pull/3228)) ([ThieryMichel](https://github.gom/ThieryMichel))Approved
+* Move Actions out of the Card ([3214](https://github.com/marmelab/react-admin/pull/3214)) ([fzaninotto](https://github.gom/fzaninotto))
+* Fix `useListParams` hook ([3233](https://github.com/marmelab/react-admin/pull/3233)) ([djhi](https://github.gom/djhi)
+* Add `useListParams` ([3217](https://github.com/marmelab/react-admin/pull/3217)) ([djhi](https://github.gom/djhi)
+* Use hooks in controllers ([3213](https://github.com/marmelab/react-admin/pull/3213)) ([djhi](https://github.gom/djhi))
+* Upgrade `redux-saga` (breaking change) ([3212](https://github.com/marmelab/react-admin/pull/3212)) ([djhi](https://github.gom/djhi))
+* Upgrade `material-ui` to v4 (breaking change) ([3191](https://github.com/marmelab/react-admin/pull/3191)) ([fzaninotto](https://github.gom/fzaninotto))of 7
+* Add `useTranslate` hook ([3188](https://github.com/marmelab/react-admin/pull/3188)) ([fzaninotto](https://github.gom/fzaninotto))of 7
+* Add `useDataProvider` hook (breaking change) ([3181](https://github.com/marmelab/react-admin/pull/3181)) ([fzaninotto](https://github.gom/fzaninotto))of 5
+* Upgrade dependencies (breaking change) ([3170](https://github.com/marmelab/react-admin/pull/3170)) ([fzaninotto](https://github.gom/fzaninotto))of 11
+
 ## v2.9.3
 
 * Fix issue with `<TabbedForm>` when used inside a dialog ([3335](https://github.com/marmelab/react-admin/pull/3335)) ([griiettner](https://github.com/griiettner))
