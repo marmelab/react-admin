@@ -1,6 +1,6 @@
 # Changelog
 
-## v3.0.0-alpha.1
+## v3.0.0-alpha.0
 
 * Add pagination and sorting params to GET_MANY_REFERENCE ([3412](https://github.com/marmelab/react-admin/pull/3412)) ([m4theushw](https://github.gom/m4theushw))
 * Use hooks on demo (last PR) ([3345](https://github.com/marmelab/react-admin/pull/3345)) ([zyhou](https://github.gom/zyhou))
