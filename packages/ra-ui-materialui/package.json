@@ -1,6 +1,6 @@
 {
     "name": "ra-ui-materialui",
-    "version": "2.9.3",
+    "version": "3.0.0-alpha.0",
     "description": "UI Components for react-admin with MaterialUI",
     "files": [
         "*.md",
@@ -27,8 +27,8 @@
     },
     "devDependencies": {
         "@material-ui/core": "^4.0.0-beta.2",
-        "@material-ui/styles": "^4.0.0-beta.2",
         "@material-ui/icons": "^4.0.0-beta.0",
+        "@material-ui/styles": "^4.0.0-beta.2",
         "cross-env": "^5.2.0",
         "enzyme": "~3.9.0",
         "enzyme-adapter-react-16": "~1.12.1",
@@ -46,8 +46,8 @@
     },
     "dependencies": {
         "@material-ui/core": "^4.0.0-beta.2",
-        "@material-ui/styles": "^4.0.0-beta.2",
         "@material-ui/icons": "^4.0.0-beta.0",
+        "@material-ui/styles": "^4.0.0-beta.2",
         "autosuggest-highlight": "^3.1.1",
         "classnames": "~2.2.5",
         "connected-react-router": "^6.4.0",
@@ -56,7 +56,7 @@
         "lodash": "~4.17.5",
         "material-ui-chip-input": "1.0.0-beta.6 - 1.0.0-beta.8",
         "prop-types": "^15.6.1",
-        "ra-core": "^2.9.3",
+        "ra-core": "^3.0.0-alpha.0",
         "react-autosuggest": "^9.4.2",
         "react-dropzone": "~4.0.1",
         "react-redux": "^7.1.0",
