@@ -32,8 +32,8 @@ const ReviewListDesktop = props => {
             {...props}
         >
             <DateField source="date" />
-            <CustomerReferenceField linkType={false} />
-            <ProductReferenceField linkType={false} />
+            <CustomerReferenceField link={false} />
+            <ProductReferenceField link={false} />
             <StarRatingField />
             <TextField source="comment" cellClassName={classes.comment} />
             <TextField source="status" />

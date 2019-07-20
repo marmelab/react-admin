@@ -2,7 +2,7 @@ import React from 'react';
 import {
     useEditController,
     useTranslate,
-    LongTextInput,
+    TextInput,
     SimpleForm,
     DateField,
 } from 'react-admin';
@@ -73,7 +73,7 @@ const ReviewEdit = ({ onCancel, ...props }) => {
                 <ProductReferenceField formClassName={classes.inlineField} />
                 <DateField source="date" formClassName={classes.inlineField} />
                 <StarRatingField formClassName={classes.inlineField} />
-                <LongTextInput source="comment" rowsMax={15} />
+                <TextInput source="comment" rowsMax={15} multiline fullWidth />
             </SimpleForm>
         </div>
     );

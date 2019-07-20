@@ -70,7 +70,7 @@ class App extends Component {
                 authProvider={authProvider}
                 dashboard={Dashboard}
                 loginPage={Login}
-                appLayout={Layout}
+                layout={Layout}
                 locale="en"
                 i18nProvider={i18nProvider}
             >
