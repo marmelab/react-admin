@@ -64,18 +64,21 @@ const InvoiceShow = props => {
                         <Typography variant="h6" gutterBottom align="center">
                             Order
                         </Typography>
-                        <Typography gutterBottom align="center">
-                            <ReferenceField
-                                resource="invoices"
-                                reference="commands"
-                                source="command_id"
-                                basePath="/invoices"
-                                record={record}
-                                linkType={false}
-                            >
-                                <TextField source="reference" />
-                            </ReferenceField>
-                        </Typography>
+                        <ReferenceField
+                            resource="invoices"
+                            reference="commands"
+                            source="command_id"
+                            basePath="/invoices"
+                            record={record}
+                            linkType={false}
+                        >
+                            <TextField
+                                source="reference"
+                                align="center"
+                                component="p"
+                                gutterBottom
+                            />
+                        </ReferenceField>
                     </Grid>
                 </Grid>
                 <div style={{ margin: '10px 0' }}>
