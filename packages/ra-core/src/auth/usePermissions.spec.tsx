@@ -1,10 +1,10 @@
 import React from 'react';
 import expect from 'expect';
 import { cleanup, wait } from 'react-testing-library';
+import { renderWithRedux } from 'ra-test-utils';
 
 import usePermissions from './usePermissions';
 import AuthContext from './AuthContext';
-import renderWithRedux from '../util/renderWithRedux';
 
 const UsePermissions = ({ children, authParams }: any) => {
     const res = usePermissions(authParams);

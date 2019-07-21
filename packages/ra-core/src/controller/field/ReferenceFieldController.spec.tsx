@@ -1,8 +1,8 @@
 import React from 'react';
 import { cleanup } from 'react-testing-library';
+import { renderWithRedux } from 'ra-test-utils';
 
 import ReferenceFieldController from './ReferenceFieldController';
-import renderWithRedux from '../../util/renderWithRedux';
 import { crudGetManyAccumulate } from '../../actions';
 
 const defaultState = {

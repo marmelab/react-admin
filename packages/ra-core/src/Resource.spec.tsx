@@ -3,10 +3,10 @@ import expect from 'expect';
 import { cleanup, wait } from 'react-testing-library';
 import { Router } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
+import { renderWithRedux } from 'ra-test-utils';
 
 import Resource from './Resource';
 import { registerResource, unregisterResource } from './actions';
-import renderWithRedux from './util/renderWithRedux';
 import AuthContext from './auth/AuthContext';
 
 const PostList = () => <div>PostList</div>;

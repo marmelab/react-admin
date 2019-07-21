@@ -1,8 +1,8 @@
 import React from 'react';
 import expect from 'expect';
 import { render, cleanup } from 'react-testing-library';
+import { renderWithRedux } from 'ra-test-utils';
 
-import { renderWithRedux } from 'ra-core';
 import { SelectField } from './SelectField';
 
 describe('<SelectField />', () => {

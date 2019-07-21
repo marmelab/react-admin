@@ -7,10 +7,11 @@ import {
     waitForDomChange,
 } from 'react-testing-library';
 import expect from 'expect';
+import { renderWithRedux } from 'ra-test-utils';
+
 import Query from './Query';
 import CoreAdmin from '../CoreAdmin';
 import Resource from '../Resource';
-import renderWithRedux from '../util/renderWithRedux';
 import TestContext from '../util/TestContext';
 
 describe('Query', () => {

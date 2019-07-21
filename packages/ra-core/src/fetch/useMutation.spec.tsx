@@ -6,10 +6,11 @@ import {
     waitForDomChange,
 } from 'react-testing-library';
 import expect from 'expect';
+import { renderWithRedux } from 'ra-test-utils';
+
 import Mutation from './Mutation';
 import CoreAdmin from '../CoreAdmin';
 import Resource from '../Resource';
-import renderWithRedux from '../util/renderWithRedux';
 
 describe('useMutation', () => {
     afterEach(cleanup);

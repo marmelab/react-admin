@@ -1,10 +1,10 @@
 import React from 'react';
 import expect from 'expect';
 import { cleanup } from 'react-testing-library';
+import { renderWithRedux } from 'ra-test-utils';
 
 import Authenticated from './Authenticated';
 import AuthContext from './AuthContext';
-import renderWithRedux from '../util/renderWithRedux';
 
 describe('<Authenticated>', () => {
     afterEach(cleanup);

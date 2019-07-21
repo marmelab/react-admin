@@ -1,10 +1,10 @@
 import React from 'react';
 import expect from 'expect';
 import { render, cleanup } from 'react-testing-library';
+import { renderWithRedux } from 'ra-test-utils';
 
 import useTranslate from './useTranslate';
 import { TranslationContext } from './TranslationContext';
-import { renderWithRedux } from '../util';
 
 describe('useTranslate', () => {
     afterEach(cleanup);

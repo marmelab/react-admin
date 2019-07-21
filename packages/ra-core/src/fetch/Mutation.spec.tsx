@@ -1,8 +1,9 @@
 import React from 'react';
 import { cleanup } from 'react-testing-library';
 import expect from 'expect';
+import { renderWithRedux } from 'ra-test-utils';
+
 import Mutation from './Mutation';
-import renderWithRedux from '../util/renderWithRedux';
 
 describe('Mutation', () => {
     afterEach(cleanup);

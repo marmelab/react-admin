@@ -34,6 +34,7 @@
         "enzyme-adapter-react-16": "~1.12.1",
         "file-api": "~0.10.4",
         "ignore-styles": "~5.0.1",
+        "ra-test-utils": "^3.0.0-alpha.0",
         "react": "~16.8.0",
         "react-dom": "~16.8.0",
         "react-test-renderer": "~16.8.6",

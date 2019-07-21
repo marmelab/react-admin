@@ -1,9 +1,9 @@
 import expect from 'expect';
 import { render, cleanup } from 'react-testing-library';
 import React from 'react';
+import { renderWithRedux } from 'ra-test-utils';
 
 import { FieldTitle } from './FieldTitle';
-import renderWithRedux from './renderWithRedux';
 
 describe('FieldTitle', () => {
     afterEach(cleanup);

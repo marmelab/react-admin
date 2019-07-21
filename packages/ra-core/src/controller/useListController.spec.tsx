@@ -3,6 +3,7 @@ import expect from 'expect';
 import { fireEvent, cleanup } from 'react-testing-library';
 import lolex from 'lolex';
 import TextField from '@material-ui/core/TextField/TextField';
+import { renderWithRedux } from 'ra-test-utils';
 
 import ListController from './ListController';
 import {
@@ -10,7 +11,6 @@ import {
     sanitizeListRestProps,
 } from './useListController';
 
-import renderWithRedux from '../util/renderWithRedux';
 import { CRUD_CHANGE_LIST_PARAMS } from '../actions';
 
 describe('useListController', () => {

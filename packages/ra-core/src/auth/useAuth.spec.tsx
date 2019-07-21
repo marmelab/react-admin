@@ -2,11 +2,11 @@ import React from 'react';
 import expect from 'expect';
 import { cleanup, wait } from 'react-testing-library';
 import { replace } from 'connected-react-router';
+import { renderWithRedux } from 'ra-test-utils';
 
 import useAuth from './useAuth';
 import AuthContext from './AuthContext';
 import { showNotification } from '../actions/notificationActions';
-import renderWithRedux from '../util/renderWithRedux';
 
 const UseAuth = ({ children, authParams, options }: any) => {
     const res = useAuth(authParams, options);

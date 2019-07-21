@@ -1,8 +1,8 @@
 import React from 'react';
 import assert from 'assert';
+import { renderWithRedux } from 'ra-test-utils';
 
 import ReferenceManyFieldController from './ReferenceManyFieldController';
-import renderWithRedux from '../../util/renderWithRedux';
 
 describe('<ReferenceManyFieldController />', () => {
     it('should set loadedOnce to false when related records are not yet fetched', () => {

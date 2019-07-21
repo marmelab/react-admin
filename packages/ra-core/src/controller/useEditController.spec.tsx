@@ -1,9 +1,9 @@
 import React from 'react';
 import expect from 'expect';
 import { act, cleanup } from 'react-testing-library';
+import { renderWithRedux } from 'ra-test-utils';
 
 import EditController from './EditController';
-import renderWithRedux from '../util/renderWithRedux';
 
 describe('useEditController', () => {
     afterEach(cleanup);
