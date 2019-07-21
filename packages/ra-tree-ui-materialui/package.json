@@ -37,7 +37,7 @@
         "watch": "rimraf ./lib && tsc --watch"
     },
     "peerDependencies": {
-        "ra-core": "^2.5.0",
+        "ra-core": "^3.0.0-alpha.0",
         "ra-ui-materialui": "^2.5.0",
         "react": "^16.8.0",
         "react-dom": "^16.8.0"
