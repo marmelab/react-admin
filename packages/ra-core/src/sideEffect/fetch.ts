@@ -25,6 +25,10 @@ function validateResponseFormat(
     type,
     logger = console.error // eslint-disable-line no-console
 ) {
+    if (type === 'DELETE' && !response) {
+        // Some API return a 204 HTTP error with empty response when a delete has been successful
+        return;
+    }
     if (!response.hasOwnProperty('data')) {
         logger(
             `The response to '${type}' must be like { data: ... }, but the received response does not have a 'data' key. The dataProvider is probably wrong for '${type}'.`
