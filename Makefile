@@ -70,6 +70,10 @@ build-ra-realtime:
 	@echo "Transpiling ra-realtime files...";
 	@cd ./packages/ra-realtime && yarn -s build
 
+build-ra-test-utils:
+	@echo "Transpiling ra-test-utils files...";
+	@cd ./packages/ra-test-utils && yarn -s build
+
 build-ra-tree-core:
 	@echo "Transpiling ra-tree-core files...";
 	@cd ./packages/ra-tree-core && yarn -s build
