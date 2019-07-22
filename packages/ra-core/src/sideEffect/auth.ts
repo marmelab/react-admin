@@ -91,12 +91,14 @@ export const handleCheck = (authProvider: AuthProvider) =>
                     state: { nextPathname: meta.pathName },
                 })
             );
+            // Clear the state before showing a notification as it would be dismissed immediately otherwise
+            yield put(clearState());
+
             const errorMessage = getErrorMessage(
                 error,
                 'ra.auth.auth_check_error'
             );
             yield put(showNotification(errorMessage, 'warning'));
-            yield put(clearState());
         }
     };
 
@@ -124,7 +126,9 @@ export const handleFetchError = (authProvider: AuthProvider) =>
                     state: { nextPathname },
                 })
             );
+            // Clear the state before showing a notification as it would be dismissed immediately otherwise
             yield put(clearState());
+
             yield put(hideNotification());
             yield put(
                 showNotification('ra.notification.logged_out', 'warning')
