@@ -9,6 +9,7 @@ import useVersion from './useVersion';
 import { useTranslate } from '../i18n';
 import { SORT_ASC } from '../reducer/admin/resource/list/queryReducer';
 import { ListParams } from '../actions/listActions';
+import { useNotify } from '../sideEffect';
 import { Sort, RecordMap, Identifier } from '../types';
 import useGetList from './../fetch/useGetList';
 
@@ -109,6 +110,7 @@ const useListController = (props: ListProps): ListControllerProps => {
         );
     }
     const translate = useTranslate();
+    const notify = useNotify();
     const version = useVersion();
 
     const [query, queryModifiers] = useListParams({
@@ -132,12 +134,13 @@ const useListController = (props: ListProps): ListControllerProps => {
         { ...query.filter, ...filter },
         {
             version,
-            onFailure: {
-                notification: {
-                    body: 'ra.notification.http_error',
-                    level: 'warning',
-                },
-            },
+            onFailure: error =>
+                notify(
+                    typeof error === 'string'
+                        ? error
+                        : error.message || 'ra.notification.http_error',
+                    'warning'
+                ),
         }
     );
 

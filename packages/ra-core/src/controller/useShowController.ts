@@ -5,6 +5,7 @@ import { useCheckMinimumRequiredProps } from './checkMinimumRequiredProps';
 import { Record, Identifier } from '../types';
 import { useGetOne } from '../fetch';
 import { useTranslate } from '../i18n';
+import { useNotify, useRedirect, useRefresh } from '../sideEffect';
 
 export interface ShowProps {
     basePath: string;
@@ -48,17 +49,16 @@ const useShowController = (props: ShowProps): ShowControllerProps => {
     useCheckMinimumRequiredProps('Show', ['basePath', 'resource'], props);
     const { basePath, id, resource, undoable = true } = props;
     const translate = useTranslate();
+    const notify = useNotify();
+    const redirect = useRedirect();
+    const refresh = useRefresh();
     const version = useVersion();
     const { data: record, loading } = useGetOne(resource, id, {
-        basePath,
         version, // used to force reload
-        onFailure: {
-            notification: {
-                body: 'ra.notification.item_doesnt_exist',
-                level: 'warning',
-            },
-            redirectTo: 'list',
-            refresh: true,
+        onFailure: () => {
+            notify('ra.notification.item_doesnt_exist', 'warning');
+            redirect('list', basePath);
+            refresh();
         },
     });
 

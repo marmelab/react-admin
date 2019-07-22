@@ -8,7 +8,8 @@ import { useCheckMinimumRequiredProps } from './checkMinimumRequiredProps';
 import { Location } from 'history';
 import { match as Match } from 'react-router';
 import { Record } from '../types';
-import { RedirectionSideEffect } from '../sideEffect';
+import { useNotify, useRedirect, RedirectionSideEffect } from '../sideEffect';
+
 import { useTranslate } from '../i18n';
 
 export interface CreateControllerProps {
@@ -67,35 +68,34 @@ const useCreateController = (props: CreateProps): CreateControllerProps => {
     } = props;
 
     const translate = useTranslate();
+    const notify = useNotify();
+    const redirect = useRedirect();
     const recordToUse = getRecord(location, record);
 
-    const [create, { loading: isSaving }] = useCreate(
-        resource,
-        {}, // set by the caller
-        {
-            onSuccess: {
-                notification: {
-                    body: 'ra.notification.created',
-                    level: 'info',
-                    messageArgs: {
-                        smart_count: 1,
-                    },
-                },
-                basePath,
-            },
-            onFailure: {
-                notification: {
-                    body: 'ra.notification.http_error',
-                    level: 'warning',
-                },
-            },
-        }
-    );
+    const [create, { loading: isSaving }] = useCreate(resource);
 
     const save = useCallback(
         (data: Partial<Record>, redirectTo = 'list') =>
-            create(null, { data }, { onSuccess: { redirectTo } }),
-        [create]
+            create(
+                null,
+                { data },
+                {
+                    onSuccess: ({ data: newRecord }) => {
+                        notify('ra.notification.created', 'info', {
+                            smart_count: 1,
+                        });
+                        redirect(redirectTo, basePath, newRecord.id, newRecord);
+                    },
+                    onFailure: error =>
+                        notify(
+                            typeof error === 'string'
+                                ? error
+                                : error.message || 'ra.notification.http_error',
+                            'warning'
+                        ),
+                }
+            ),
+        [basePath, create, notify, redirect]
     );
 
     const resourceName = translate(`resources.${resource}.name`, {
