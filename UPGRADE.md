@@ -312,7 +312,7 @@ export default (type, params) => {
 
 ## ReferenceInputController isLoading injected props renamed to loading
 
-When using custom component with ReferenceInputController, you should rename the component `isLoading` props to `loading`.
+When using custom component with ReferenceInputController, you should rename the component `isLoading` prop to `loading`.
 
 ```diff
 - <ReferenceInputController {...props}>
