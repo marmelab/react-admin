@@ -83,10 +83,11 @@ export const handleCheck = (authProvider: AuthProvider) =>
         try {
             yield call(authProvider, AUTH_CHECK, payload);
         } catch (error) {
-            yield call(authProvider, AUTH_LOGOUT);
+            const redirectTo = yield call(authProvider, AUTH_LOGOUT);
             yield put(
                 replace({
-                    pathname: (error && error.redirectTo) || '/login',
+                    pathname:
+                        (error && error.redirectTo) || redirectTo || '/login',
                     state: { nextPathname: meta.pathName },
                 })
             );
