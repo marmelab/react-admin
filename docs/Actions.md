@@ -230,7 +230,7 @@ const ApproveButton = ({ record }) => {
 };
 ```
 
-The `onSuccess` function is called with the response from the `dataProvider` as argument. The `onError` function is called wit hthe error returned by the `dataProvider`.
+The `onSuccess` function is called with the response from the `dataProvider` as argument. The `onError` function is called with the error returned by the `dataProvider`.
 
 React-admin provides the following hooks to handle most common side effects:
 

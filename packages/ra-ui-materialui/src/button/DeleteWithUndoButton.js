@@ -107,7 +107,7 @@ DeleteWithUndoButton.propTypes = {
         PropTypes.bool,
         PropTypes.func,
     ]),
-    resource: PropTypes.string.isRequired,
+    resource: PropTypes.string,
     icon: PropTypes.element,
 };
 
