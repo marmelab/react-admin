@@ -5,11 +5,11 @@ import { all, fork } from 'redux-saga/effects';
 import { History } from 'history';
 
 import { AuthProvider, DataProvider, I18nProvider } from './types';
-import { USER_LOGOUT } from './actions/authActions';
 import createAppReducer from './reducer';
 import { adminSaga } from './sideEffect';
 import { defaultI18nProvider } from './i18n';
 import formMiddleware from './form/formMiddleware';
+import { CLEAR_STATE } from './actions/clearActions';
 
 interface Window {
     __REDUX_DEVTOOLS_EXTENSION__?: () => () => void;
@@ -45,7 +45,7 @@ export default ({
     );
 
     const resettableAppReducer = (state, action) =>
-        appReducer(action.type !== USER_LOGOUT ? state : undefined, action);
+        appReducer(action.type !== CLEAR_STATE ? state : undefined, action);
     const saga = function* rootSaga() {
         yield all(
             [
