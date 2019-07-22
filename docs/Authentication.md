@@ -136,6 +136,8 @@ export default (type, params) => {
 
 The `authProvider` is also a good place to notify the authentication API that the user credentials are no longer valid after logout.
 
+Note that the `authProvider` can return the url to which the user will be redirected once logged out. By default, this is the `/login` route.
+
 ## Catching Authentication Errors On The API
 
 If the API requires authentication, and the user credentials are missing in the request or invalid, the API usually answers with an HTTP error code 401 or 403.
@@ -166,6 +168,8 @@ export default (type, params) => {
     return Promise.resolve();
 };
 ```
+
+Note that react-admin will call the `authProvider` with the `AUTH_LOGOUT` type before redirecting when you reject the promise and will use the url which may have been return by the call to `AUTH_LOGOUT`.
 
 ## Checking Credentials During Navigation
 
@@ -220,6 +224,8 @@ export default (type, params) => {
     return Promise.resolve();
 };
 ```
+
+Note that react-admin will call the `authProvider` with the `AUTH_LOGOUT` type before redirecting. If you specify the `redirectTo` here, it will override the url which may have been return by the call to `AUTH_LOGOUT`.
 
 **Tip**: For the `AUTH_CHECK` call, the `params` argument contains the `resource` name, so you can implement different checks for different resources:
 
