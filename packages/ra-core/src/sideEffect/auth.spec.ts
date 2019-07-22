@@ -49,6 +49,42 @@ describe('Auth saga', () => {
             expect(dispatch).toHaveBeenCalledWith(push('/posts'));
         });
 
+        test('Handle successful login with redirection from previous state', async () => {
+            const dispatch = jest.fn();
+            const authProvider = jest.fn().mockResolvedValue({ role: 'admin' });
+            const action = {
+                payload: {
+                    login: 'user',
+                    password: 'password123',
+                },
+                meta: {},
+            };
+
+            await runSaga(
+                {
+                    dispatch,
+                    getState: () => ({
+                        router: {
+                            location: { state: { nextPathname: '/posts/1' } },
+                        },
+                    }),
+                },
+                handleLogin(authProvider),
+                action
+            );
+
+            expect(authProvider).toHaveBeenCalledWith(AUTH_LOGIN, {
+                login: 'user',
+                password: 'password123',
+            });
+            expect(dispatch).toHaveBeenCalledWith({ type: USER_LOGIN_LOADING });
+            expect(dispatch).toHaveBeenCalledWith({
+                type: USER_LOGIN_SUCCESS,
+                payload: { role: 'admin' },
+            });
+            expect(dispatch).toHaveBeenCalledWith(push('/posts/1'));
+        });
+
         test('Handle failed login', async () => {
             const dispatch = jest.fn();
             const error = { message: 'Bazinga!' };
