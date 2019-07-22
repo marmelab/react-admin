@@ -1,19 +1,24 @@
 import { FunctionComponent, ReactNode, ReactElement } from 'react';
+import get from 'lodash/get';
+
 import { Record } from '../../types';
-import useReference, {
-    UseReferenceProps,
-    LinkToFunctionType,
-} from './useReference';
+
+import getResourceLinkPath, { LinkToFunctionType } from './getResourceLinkPath';
+import useReference, { UseReferenceProps } from '../useReference';
+
+interface childrenParams extends UseReferenceProps {
+    resourceLinkPath: string | false;
+}
 
 interface Props {
     allowEmpty?: boolean;
     basePath: string;
-    children: (params: UseReferenceProps) => ReactNode;
+    children: (params: childrenParams) => ReactNode;
     record?: Record;
     reference: string;
     resource: string;
     source: string;
-    link: string | boolean | LinkToFunctionType;
+    link?: string | boolean | LinkToFunctionType;
 }
 
 /**
@@ -47,9 +52,15 @@ interface Props {
  */
 export const ReferenceFieldController: FunctionComponent<Props> = ({
     children,
+    record,
+    source,
     ...props
 }) => {
-    return children(useReference(props)) as ReactElement<any>;
+    const id = get(record, source);
+    return children({
+        ...useReference({ ...props, id }),
+        resourceLinkPath: getResourceLinkPath({ ...props, record, source }),
+    }) as ReactElement<any>;
 };
 
 export default ReferenceFieldController;

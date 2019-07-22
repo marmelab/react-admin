@@ -22,7 +22,7 @@ describe('<ReferenceInput />', () => {
                 {...{
                     ...defaultProps,
                     input: { value: 1 },
-                    isLoading: true,
+                    loading: true,
                 }}
             >
                 <MyComponent />

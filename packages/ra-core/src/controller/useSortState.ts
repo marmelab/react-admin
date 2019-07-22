@@ -7,26 +7,68 @@ import {
 import { Sort } from '../types';
 
 interface SortProps {
-    setSort: (field: string) => void;
+    setSortField: (field: string) => void;
+    setSortOrder: (order: string) => void;
+    setSort: (sort: Sort) => void;
     sort: Sort;
 }
 
-const sortReducer = (state: Sort, field: string | Sort): Sort => {
-    if (typeof field !== 'string') {
-        return field;
+interface Action {
+    type: 'SET_SORT' | 'SET_SORT_FIELD' | 'SET_SORT_ORDER';
+    payload: {
+        sort?: Sort;
+        field?: string;
+        order?: string;
+    };
+}
+
+const sortReducer = (state: Sort, action: Action): Sort => {
+    switch (action.type) {
+        case 'SET_SORT':
+            return action.payload.sort;
+        case 'SET_SORT_FIELD': {
+            const { field } = action.payload;
+            const order =
+                state.field === field
+                    ? state.order === SORT_ASC
+                        ? SORT_DESC
+                        : SORT_ASC
+                    : SORT_ASC;
+            return { field, order };
+        }
+        case 'SET_SORT_ORDER': {
+            const { order } = action.payload;
+            return {
+                ...state,
+                order,
+            };
+        }
+        default:
+            return state;
     }
-    const order =
-        state.field === field && state.order === SORT_ASC
-            ? SORT_DESC
-            : SORT_ASC;
-    return { field, order };
 };
 
+export const defaultSort = { field: 'id', order: 'DESC' };
+
 /**
- * set the sort to the given field, swap the order if the field is the same
+ * set the sort { field, order }
  * @name setSort
  * @function
- * @param {string} field the name of the field to sort
+ * @param {Sort} sort the sort object
+ */
+
+/**
+ * set the sort field, swap the order if the field is the same
+ * @name setSortField
+ * @function
+ * @param {string} field the sort field
+ */
+
+/**
+ * set the sort order
+ * @name setSortOrder
+ * @function
+ * @param {string} order the sort order eiather ASC or DESC
  */
 
 /**
@@ -36,6 +78,8 @@ const sortReducer = (state: Sort, field: string | Sort): Sort => {
  * @property {String} sort.field: the sort object.
  * @property {'ASC' | 'DESC'} sort.order: the sort object.
  * @property {setSort} setSort
+ * @property {setSortField} setSortField
+ * @property {setSortOrder} setSortOrder
  */
 
 /**
@@ -43,16 +87,22 @@ const sortReducer = (state: Sort, field: string | Sort): Sort => {
  *
  * @example
  *
- * const { sort, setSort } = useSort({ field: 'name',order: 'ASC' });
+ * const { sort, setSort, setSortField, setSortOrder } = useSort({
+ *      field: 'name',
+ *      order: 'ASC',
+ * });
+ *
+ * setSort({ field: 'name', order: 'ASC' });
+ * // is the same as
+ * setSortField('name');
+ * setSortOrder('ASC');
  *
  * @param {Object} initialSort
- * @param {string} initialSort.resource The current resource name
- * @param {string} initialSort.reference The linked resource name
+ * @param {string} initialSort.field The initial sort field
+ * @param {string} initialSort.order The initial sort order
  * @returns {SortProps} The sort props
  */
-export default (
-    initialSort: Sort = { field: 'id', order: 'DESC' }
-): SortProps => {
+export default (initialSort: Sort = defaultSort): SortProps => {
     const [sort, dispatch] = useReducer(sortReducer, initialSort);
     const isFirstRender = useRef(true);
     useEffect(() => {
@@ -60,11 +110,16 @@ export default (
             isFirstRender.current = false;
             return;
         }
-        dispatch(initialSort);
+        dispatch({ type: 'SET_SORT', payload: { sort: initialSort } });
     }, [initialSort.field, initialSort.order]); // eslint-disable-line react-hooks/exhaustive-deps
 
     return {
-        setSort: (field: string) => dispatch(field),
+        setSort: (sort: Sort) =>
+            dispatch({ type: 'SET_SORT', payload: { sort } }),
+        setSortField: (field: string) =>
+            dispatch({ type: 'SET_SORT_FIELD', payload: { field } }),
+        setSortOrder: (order: string) =>
+            dispatch({ type: 'SET_SORT_ORDER', payload: { order } }),
         sort,
     };
 };

@@ -1,14 +1,31 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useReducer, useCallback, useRef } from 'react';
+import { Pagination } from '../types';
 
 interface PaginationProps {
     page: number;
     perPage: number;
+    pagination: Pagination;
     setPage: (page: number) => void;
     setPerPage: (perPage: number) => void;
+    setPagination: (pagination: Pagination) => void;
 }
 
+const paginationReducer = (
+    prevState: Pagination,
+    nextState: Partial<Pagination>
+): Pagination => {
+    return {
+        ...prevState,
+        ...nextState,
+    };
+};
+
+const defaultPagination = {
+    page: 1,
+    perPage: 25,
+};
+
 /**
- * set the sort to the given field, swap the order if the field is the same
  * @name setNumber
  * @function
  * @param {number} state the state value
@@ -33,15 +50,32 @@ interface PaginationProps {
  * @param {numper} initialPerPage the initial value per page
  * @returns {PaginationProps} The pagination props
  */
-export default (initialPerPage: number = 25): PaginationProps => {
-    const [page, setPage] = useState(1);
-    const [perPage, setPerPage] = useState(initialPerPage);
-    useEffect(() => setPerPage(initialPerPage), [initialPerPage]);
+export default (
+    initialPagination: { perPage?: number; page?: number } = {}
+): PaginationProps => {
+    const [pagination, setPagination] = useReducer(paginationReducer, {
+        ...defaultPagination,
+        ...initialPagination,
+    });
+    const isFirstRender = useRef(true);
+
+    const setPerPage = useCallback(perPage => setPagination({ perPage }), []);
+    const setPage = useCallback(page => setPagination({ page }), []);
+
+    useEffect(() => {
+        if (isFirstRender.current) {
+            isFirstRender.current = false;
+            return;
+        }
+        setPerPage(initialPagination.perPage || 25);
+    }, [initialPagination.perPage, setPerPage]);
 
     return {
-        page,
-        perPage,
+        page: pagination.page,
+        perPage: pagination.perPage,
+        pagination,
         setPage,
         setPerPage,
+        setPagination,
     };
 };

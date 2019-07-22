@@ -922,7 +922,7 @@ The child component may further filter results (that's the case, for instance, f
 
 The child component receives the following props from `<ReferenceInput>`:
 
-- `isLoading`: whether the request for possible values is loading or not
+- `loading`: whether the request for possible values is loading or not
 - `filter`: the current filter of the request for possible values. Defaults to `{}`.
 - `pagination`: the current pagination of the request for possible values. Defaults to `{ page: 1, perPage: 25 }`.
 - `sort`: the current sorting of the request for possible values. Defaults to `{ field: 'id', order: 'DESC' }`.

@@ -1,71 +1,33 @@
-import { Component, ReactNode, ComponentType } from 'react';
-import { connect } from 'react-redux';
-import debounce from 'lodash/debounce';
-import compose from 'recompose/compose';
-import { createSelector } from 'reselect';
-import isEqual from 'lodash/isEqual';
+import {
+    ReactNode,
+    ComponentType,
+    FunctionComponent,
+    ReactElement,
+} from 'react';
 import { WrappedFieldInputProps } from 'redux-form';
 
-import {
-    crudGetManyAccumulate as crudGetManyAccumulateAction,
-    crudGetMatchingAccumulate as crudGetMatchingAccumulateAction,
-} from '../../actions/accumulateActions';
-import {
-    getPossibleReferences,
-    getPossibleReferenceValues,
-    getReferenceResource,
-} from '../../reducer';
-import { getStatusForInput as getDataStatus } from './referenceDataStatus';
-import withTranslate from '../../i18n/translate';
-import { Sort, Translate, Record, Pagination, Dispatch } from '../../types';
-import { MatchingReferencesError } from './types';
+import { Sort, Record } from '../../types';
+import useReferenceInput, { ReferenceInputValue } from './useReferenceInput';
+import { filter } from 'async';
 
 const defaultReferenceSource = (resource: string, source: string) =>
     `${resource}@${source}`;
 
-interface ChildrenFuncParams {
-    choices: Record[];
-    error?: string;
-    filter?: any;
-    isLoading: boolean;
-    onChange: (value: any) => void;
-    pagination: Pagination;
-    setFilter: (filter: any) => void;
-    setPagination: (pagination: Pagination) => void;
-    setSort: (sort: Sort) => void;
-    sort: Sort;
-    warning?: string;
-}
-
 interface Props {
     allowEmpty?: boolean;
     basePath: string;
-    children: (params: ChildrenFuncParams) => ReactNode;
-    filter?: object;
-    filterToQuery: (filter: {}) => any;
+    children: (params: ReferenceInputValue) => ReactNode;
+    filter?: any;
+    filterToQuery?: (filter: string) => any;
     input?: WrappedFieldInputProps;
-    perPage: number;
+    perPage?: number;
     record?: Record;
     reference: string;
-    referenceSource: typeof defaultReferenceSource;
+    referenceSource?: typeof defaultReferenceSource;
     resource: string;
     sort?: Sort;
     source: string;
-}
-
-interface EnhancedProps {
-    crudGetMatchingAccumulate: Dispatch<typeof crudGetMatchingAccumulateAction>;
-    crudGetManyAccumulate: Dispatch<typeof crudGetManyAccumulateAction>;
-    matchingReferences?: Record[] | MatchingReferencesError;
     onChange: () => void;
-    referenceRecord?: Record;
-    translate: Translate;
-}
-
-interface State {
-    pagination: Pagination;
-    sort: Sort;
-    filter: any;
 }
 
 /**
@@ -147,183 +109,29 @@ interface State {
  *     <SelectInput optionText="title" />
  * </ReferenceInput>
  */
-export class UnconnectedReferenceInputController extends Component<
-    Props & EnhancedProps,
-    State
-> {
-    public static defaultProps = {
-        allowEmpty: false,
-        filter: {},
-        filterToQuery: searchText => ({ q: searchText }),
-        matchingReferences: null,
-        perPage: 25,
-        sort: { field: 'id', order: 'DESC' },
-        referenceRecord: null,
-        referenceSource: defaultReferenceSource, // used in tests
-    };
-
-    public state: State;
-    private debouncedSetFilter;
-
-    constructor(props) {
-        super(props);
-        const { perPage, sort, filter } = props;
-        this.state = { pagination: { page: 1, perPage }, sort, filter };
-        this.debouncedSetFilter = debounce(this.setFilter.bind(this), 500);
-    }
-
-    componentDidMount() {
-        this.fetchReferenceAndOptions(this.props);
-    }
-
-    componentWillReceiveProps(nextProps: Props & EnhancedProps) {
-        if (
-            (this.props.record || { id: undefined }).id !==
-            (nextProps.record || { id: undefined }).id
-        ) {
-            this.fetchReferenceAndOptions(nextProps);
-        } else if (this.props.input.value !== nextProps.input.value) {
-            this.fetchReference(nextProps);
-        } else if (
-            !isEqual(nextProps.filter, this.props.filter) ||
-            !isEqual(nextProps.sort, this.props.sort) ||
-            nextProps.perPage !== this.props.perPage
-        ) {
-            this.setState(
-                state => ({
-                    filter: nextProps.filter,
-                    pagination: {
-                        ...state.pagination,
-                        perPage: nextProps.perPage,
-                    },
-                    sort: nextProps.sort,
-                }),
-                this.fetchOptions
-            );
-        }
-    }
-
-    setFilter = (filter: any) => {
-        if (filter !== this.state.filter) {
-            this.setState(
-                { filter: this.props.filterToQuery(filter) },
-                this.fetchOptions
-            );
-        }
-    };
-
-    setPagination = (pagination: Pagination) => {
-        if (pagination !== this.state.pagination) {
-            this.setState({ pagination }, this.fetchOptions);
-        }
-    };
-
-    setSort = (sort: Sort) => {
-        if (sort !== this.state.sort) {
-            this.setState({ sort }, this.fetchOptions);
-        }
-    };
-
-    fetchReference = (props = this.props) => {
-        const { crudGetManyAccumulate, input, reference } = props;
-        const id = input.value;
-        if (id) {
-            crudGetManyAccumulate(reference, [id]);
-        }
-    };
-
-    fetchOptions = (props = this.props) => {
-        const {
-            crudGetMatchingAccumulate,
-            filter: filterFromProps,
+export const ReferenceInputController: FunctionComponent<Props> = ({
+    input,
+    children,
+    perPage = 25,
+    filter: permanentFilter = {},
+    reference,
+    filterToQuery,
+    referenceSource = defaultReferenceSource,
+    resource,
+    source,
+}) => {
+    return children(
+        useReferenceInput({
+            input,
+            perPage,
+            permanentFilter: filter,
             reference,
+            filterToQuery,
             referenceSource,
             resource,
             source,
-        } = props;
-        const { pagination, sort, filter } = this.state;
-
-        crudGetMatchingAccumulate(
-            reference,
-            referenceSource(resource, source),
-            pagination,
-            sort,
-            {
-                ...filterFromProps,
-                ...filter,
-            }
-        );
-    };
-
-    fetchReferenceAndOptions(props) {
-        this.fetchReference(props);
-        this.fetchOptions(props);
-    }
-
-    render() {
-        const {
-            input,
-            referenceRecord,
-            matchingReferences,
-            onChange,
-            children,
-            translate,
-        } = this.props;
-        const { pagination, sort, filter } = this.state;
-
-        const dataStatus = getDataStatus({
-            input,
-            matchingReferences,
-            referenceRecord,
-            translate,
-        });
-
-        return children({
-            choices: dataStatus.choices,
-            error: dataStatus.error,
-            isLoading: dataStatus.waiting,
-            onChange,
-            filter,
-            setFilter: this.debouncedSetFilter,
-            pagination,
-            setPagination: this.setPagination,
-            sort,
-            setSort: this.setSort,
-            warning: dataStatus.warning,
-        });
-    }
-}
-
-const makeMapStateToProps = () =>
-    createSelector(
-        [
-            getReferenceResource,
-            getPossibleReferenceValues,
-            (_, props) => props.input.value,
-        ],
-        (referenceState, possibleValues, inputId) => ({
-            matchingReferences: getPossibleReferences(
-                referenceState,
-                possibleValues,
-                [inputId]
-            ),
-            referenceRecord: referenceState && referenceState.data[inputId],
         })
-    );
-
-const ReferenceInputController = compose(
-    withTranslate,
-    connect(
-        makeMapStateToProps(),
-        {
-            crudGetManyAccumulate: crudGetManyAccumulateAction,
-            crudGetMatchingAccumulate: crudGetMatchingAccumulateAction,
-        }
-    )
-)(UnconnectedReferenceInputController);
-
-ReferenceInputController.defaultProps = {
-    referenceSource: defaultReferenceSource, // used in makeMapStateToProps
+    ) as ReactElement;
 };
 
 export default ReferenceInputController as ComponentType<Props>;

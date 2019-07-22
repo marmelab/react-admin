@@ -1,7 +1,12 @@
 import React from 'react';
-import { render } from 'react-testing-library';
+import { render, RenderResult } from 'react-testing-library';
 
 import TestContext from './TestContext';
+
+export interface RenderWithReduxResult extends RenderResult {
+    dispatch: jest.Mock;
+    reduxStore: any;
+}
 
 /**
  * render with react-testing library adding redux context for unit test.
@@ -18,7 +23,7 @@ import TestContext from './TestContext';
  * dispatch: spy on the redux stroe dispatch method
  * reduxStore: the redux store used by the tested component
  */
-export default (component, initialState = {}) => {
+export default (component, initialState = {}): RenderWithReduxResult => {
     let dispatch;
     let reduxStore;
     const renderResult = render(
