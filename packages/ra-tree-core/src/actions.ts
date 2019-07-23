@@ -1,4 +1,4 @@
-import { Identifier, GET_LIST } from 'ra-core';
+import { Identifier } from 'ra-core';
 import { GET_ROOT_NODES, GET_LEAF_NODES } from './fetch';
 
 export const TOGGLE_NODE = 'RA/TREE/TOGGLE_NODE';
