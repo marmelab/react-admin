@@ -1,6 +1,13 @@
+import { Identifier, Record } from 'ra-core';
+
 export const DEFAULT_TREE_ROOT_ID = 'RA/DEFAULT_TREE_ROOT_ID';
 
-const getItem = (parentSource, expandedNodeIds, item, items) => {
+const getTreeItem = (
+    parentSource: string,
+    expandedNodeIds: Identifier[],
+    item: Record,
+    items: Record[]
+) => {
     const children = items.filter(child => child[parentSource] === item.id);
     const childrenIds = children.map(child => child.id);
 
@@ -17,11 +24,15 @@ const getItem = (parentSource, expandedNodeIds, item, items) => {
 /**
  * Build a tree representation of the data returned by the List component for usage with @atlaskit/tree
  */
-export default (data, parentSource, expandedNodeIds) => {
+export default (
+    data: Record[],
+    parentSource: string,
+    expandedNodeIds: Identifier[]
+) => {
     const roots = data.filter(item => item[parentSource] == undefined);
     const rootId = roots.length === 1 ? roots[0].id : DEFAULT_TREE_ROOT_ID;
     const items = data.reduce((acc, item) => {
-        acc[item.id] = getItem(parentSource, expandedNodeIds, item, data);
+        acc[item.id] = getTreeItem(parentSource, expandedNodeIds, item, data);
         return acc;
     }, {});
 

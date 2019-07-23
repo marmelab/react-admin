@@ -1,11 +1,13 @@
 import React, { Component, ReactNode } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Identifier, RecordMap } from 'ra-core';
+import { Identifier, RecordMap, Record } from 'ra-core';
 
 import Tree from '@atlaskit/tree';
 
-import defaultGetTreeFromArray from './getTreeFromArray';
+import defaultGetTreeFromArray, {
+    DEFAULT_TREE_ROOT_ID,
+} from './getTreeFromArray';
 import { getIsNodeExpanded, getExpandedNodeIds } from './selectors';
 import {
     closeNode as closeNodeAction,
@@ -49,7 +51,9 @@ interface Props {
     ) => any;
     getTreeState: (state: any) => any;
     parentSource: string;
+    positionSource?: string;
     children: TreeControllerChildren;
+    onDragEnd: (record: Record, originalData: Record) => void;
 }
 
 export class TreeControllerView extends Component<Props> {
@@ -84,8 +88,16 @@ export class TreeControllerView extends Component<Props> {
         if (!destination) {
             return;
         }
+        const { ids, data, parentSource } = this.props;
+        const availableData = ids.reduce((acc, id) => acc.concat(data[id]), []);
+        const parentId =
+            source.parentId === DEFAULT_TREE_ROOT_ID
+                ? undefined
+                : source.parentId;
 
-        console.log({ source, destination });
+        const draggedItem = availableData.filter(
+            item => item[parentSource] == parentId
+        )[source.index];
     };
 
     renderItem = itemProps => {
@@ -118,7 +130,7 @@ export class TreeControllerView extends Component<Props> {
             ...props
         } = this.props;
 
-        const availableData = ids.reduce((acc, id) => [...acc, data[id]], []);
+        const availableData = ids.reduce((acc, id) => acc.concat(data[id]), []);
 
         const tree = getTreeFromArray(
             Object.values(availableData),
@@ -134,7 +146,8 @@ export class TreeControllerView extends Component<Props> {
                 onCollapse={this.handleCollapseNode}
                 onDragEnd={this.onDragEnd}
                 isDragEnabled={enableDragAndDrop}
-                isNestingEnabled
+                isNestingEnabled={enableDragAndDrop}
+                {...props}
             />
         );
     }
@@ -157,6 +170,7 @@ TreeController.defaultProps = {
     getTreeFromArray: defaultGetTreeFromArray,
     getTreeState: defaultGetTreeState,
     parentSource: 'parent_id',
+    positionSource: 'position',
 };
 
 export default TreeController;
