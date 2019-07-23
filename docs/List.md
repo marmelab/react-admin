@@ -258,109 +258,149 @@ Bulk action button components receive several props allowing them to perform the
 * `filterValues`: the filter values. This can be useful if you want to apply your action on all items matching the filter.
 * `selectedIds`: the identifiers of the currently selected items.
 
-Here is an example leveraging the `UPDATE_MANY` crud action, which will set the `views` property of all posts to `0`:
+Here is an example leveraging the `useUpdateMany` hook, which sets the `views` property of all posts to `0`:
 
 ```jsx
 // in ./ResetViewsButton.js
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { Button, crudUpdateMany } from 'react-admin';
+import React from 'react';
+import {
+    Button,
+    useUpdateMany,
+    useRefresh,
+    useNotify,
+    useUnselectAll,
+} from 'react-admin';
 
-class ResetViewsButton extends Component {
-    handleClick = () => {
-        const { basePath, crudUpdateMany, resource, selectedIds } = this.props;
-        crudUpdateMany(resource, selectedIds, { views: 0 }, basePath);
-    };
+const ResetViewsButton = ({ selectedIds }) => {
+    const refresh = useRefresh();
+    const notify = useNotify();
+    const unselectAll = useUnselectAll();
+    const [updateMany, { loading }] = useUpdateMany(
+        'posts',
+        selectedIds,
+        { views: 0 },
+        {
+            onSuccess: () => {
+                refresh();
+                notify('Posts updated');
+                unselectAll(resource);
+            },
+            onFailure: error => notify('Error: posts not updated', 'warning'),
+        }
+    );
 
-    render() {
-        return (
-            <Button label="Reset Views" onClick={this.handleClick} />
-        );
-    }
-}
+    return (
+        <Button
+            label="simple.action.resetViews"
+            disabled={loading}
+            onClick={updateMany}
+        >
+            <VisibilityOff />
+        </Button>
+    );
+};
 
-export default connect(undefined, { crudUpdateMany })(ResetViewsButton);
+export default ResetViewsButton;
 ```
 
 But most of the time, bulk actions are mini-applications with a standalone user interface (in a Dialog). Here is the same `ResetViewsAction` implemented behind a confirmation dialog:
 
 ```jsx
 // in ./ResetViewsButton.js
-import React, { Fragment, Component } from 'react';
-import { connect } from 'react-redux';
-import { Button, Confirm, crudUpdateMany } from 'react-admin';
+import React, { Fragment, useState } from 'react';
+import {
+    Button,
+    Confirm,
+    useUpdateMany,
+    useRefresh,
+    useNotify,
+    useUnselectAll,
+} from 'react-admin';
 
-class ResetViewsButton extends Component {
-    state = {
-        isOpen: false,
-    }
+const ResetViewsButton = ({ selectedIds }) => {
+    const [open, setOpen] = useState(false);
+    const refresh = useRefresh();
+    const notify = useNotify();
+    const unselectAll = useUnselectAll();
+    const [updateMany, { loading }] = useUpdateMany(
+        'posts',
+        selectedIds,
+        { views: 0 },
+        {
+            onSuccess: () => {
+                refresh();
+                notify('Posts updated');
+                unselectAll(resource);
+            },
+            onFailure: error => notify('Error: posts not updated', 'warning'),
+        }
+    );
+    const handleClick = () => setOpen(true);
+    const handleDialogClose = () => setOpen(false);
 
-    handleClick = () => {
-        this.setState({ isOpen: true });
-    }
-
-    handleDialogClose = () => {
-        this.setState({ isOpen: false });
+    const handleConfirm = () => {
+        updateMany();
+        setOpen(false);
     };
 
-    handleConfirm = () => {
-        const { basePath, crudUpdateMany, resource, selectedIds } = this.props;
-        crudUpdateMany(resource, selectedIds, { views: 0 }, basePath);
-        this.setState({ isOpen: true });
-    };
-
-    render() {
-        return (
-            <Fragment>
-                <Button label="Reset Views" onClick={this.handleClick} />
-                <Confirm
-                    isOpen={this.state.isOpen}
-                    title="Update View Count"
-                    content="Are you sure you want to reset the views for these items?"
-                    onConfirm={this.handleConfirm}
-                    onClose={this.handleDialogClose}
-                />
-            </Fragment>
-        );
-    }
+    return (
+        <Fragment>
+            <Button label="Reset Views" onClick={handleClick} />
+            <Confirm
+                isOpen={open}
+                title="Update View Count"
+                content="Are you sure you want to reset the views for these items?"
+                onConfirm={handleConfirm}
+                onClose={handleDialogClose}
+            />
+        </Fragment>
+    );
 }
 
-export default connect(undefined, { crudUpdateMany })(ResetViewsButton);
+export default ResetViewsButton;
 ```
 
 **Tip**: `<Confirm>` leverages material-ui's `<Dialog>` component to implement a confirmation popup. Feel free to use it in your admins!
 
-**Tip**: `<Confirm>` text props such as `title` and `content` are translatable. You can pass them translation keys.
+**Tip**: `<Confirm>` text props such as `title` and `content` are translatable. You can pass use translation keys in these props.
 
 **Tip**: You can customize the text of the two `<Confirm>` component buttons using the `cancel` and `confirm` prop which accepts translation keys too.
 
-**Tip**: React-admin doesn't use the `<Confirm>` component internally, because deletes and updates are applied locally immediately, then dispatched to the server after a few seconds, unless the user chooses to undo the modification. That's what we call optimistic rendering. You can do the same for the `ResetViewsButton` by wrapping the `crudUpdateMany()` action creator inside a `startUndoable()` action creator, as follows:
+**Tip**: React-admin doesn't use the `<Confirm>` component internally, because deletes and updates are applied locally immediately, then dispatched to the server after a few seconds, unless the user chooses to undo the modification. That's what we call optimistic rendering. You can do the same for the `ResetViewsButton` by setting `undoable: true` in the last argument of `useUpdateMany()`, as follows:
 
-```jsx
+```diff
 // in ./ResetViewsButton.js
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { Button, crudUpdateMany, startUndoable } from 'react-admin';
+const ResetViewsButton = ({ selectedIds }) => {
+    const refresh = useRefresh();
+    const notify = useNotify();
+    const unselectAll = useUnselectAll();
+    const [updateMany, { loading }] = useUpdateMany(
+        'posts',
+        selectedIds,
+        { views: 0 },
+        {
+            onSuccess: () => {
+                refresh();
+-               notify('Posts updated');
++               notify('Posts updated', 'info', '{}, true); // the last argument forces the display of 'undo' in the notification
+                unselectAll(resource);
+            },
+            onFailure: error => notify('Error: posts not updated', 'warning'),
++           undoable: true
+        }
+    );
 
-class ResetViewsButton extends Component {
-    handleClick = () => {
-        const {  basePath, resource, selectedIds, startUndoable } = this.props;
-        startUndoable(
-            crudUpdateMany(resource, selectedIds, { views: 0 }, basePath)
-        );
-    };
-
-    render() {
-        return (
-            <Button label="Reset Views" onClick={this.handleClick} />
-        );
-    }
-}
-
-export default connect(undefined, { startUndoable })(ResetViewsButton);
+    return (
+        <Button
+            label="simple.action.resetViews"
+            disabled={loading}
+            onClick={updateMany}
+        >
+            <VisibilityOff />
+        </Button>
+    );
+};
 ```
-
-Note that the `crudUpdateMany` action creator is *not* present in the `mapDispatchToProps` argument of `connect()` in that case. Only `startUndoable` needs to be dispatched in this case, using the result of the `crudUpdateMany()` call as parameter.
 
 ### Filters
 

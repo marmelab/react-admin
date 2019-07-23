@@ -23,10 +23,10 @@ import { Identifier } from '../types';
  *
  * import { useDeleteMany } from 'react-admin';
  *
- * const BulkDeletePostsButton = ({ ids }) => {
- *     const [deleteMany, { loading, error }] = useDeleteMany('posts', ids);
+ * const BulkDeletePostsButton = ({ selectedIds }) => {
+ *     const [deleteMany, { loading, error }] = useDeleteMany('posts', selectedIds);
  *     if (error) { return <p>ERROR</p>; }
- *     return <button disabled={loading} onClick={deleteMany}>Delete selected posts</div>;
+ *     return <button disabled={loading} onClick={deleteMany}>Delete selected posts</button>;
  * };
  */
 const useDeleteMany = (resource: string, ids: [Identifier], options?: any) =>

@@ -1,23 +1,50 @@
 import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
-import { startUndoable, crudUpdateMany, Button } from 'react-admin';
+import {
+    useUpdateMany,
+    useRefresh,
+    useNotify,
+    useUnselectAll,
+    Button,
+} from 'react-admin';
 
-const ResetViewsButton = props => {
-    const dispatch = useDispatch();
-    const { basePath, resource, selectedIds } = props;
-
-    const handleClick = useCallback(() => {
-        dispatch(
-            startUndoable(
-                crudUpdateMany(resource, selectedIds, { views: 0 }, basePath)
-            )
-        );
-    }, [basePath, dispatch, resource, selectedIds]);
+const ResetViewsButton = ({ resource, selectedIds }) => {
+    const notify = useNotify();
+    const unselectAll = useUnselectAll();
+    const refresh = useRefresh();
+    const [updateMany, { loading }] = useUpdateMany(
+        resource,
+        selectedIds,
+        { views: 0 },
+        {
+            onSuccess: () => {
+                notify(
+                    'ra.notification.updated',
+                    'info',
+                    { smart_count: selectedIds.length },
+                    true
+                );
+                unselectAll(resource);
+                refresh();
+            },
+            onFailure: error =>
+                notify(
+                    typeof error === 'string'
+                        ? error
+                        : error.message || 'ra.notification.http_error',
+                    'warning'
+                ),
+            undoable: true,
+        }
+    );
 
     return (
-        <Button label="simple.action.resetViews" onClick={handleClick}>
+        <Button
+            label="simple.action.resetViews"
+            disabled={loading}
+            onClick={updateMany}
+        >
             <VisibilityOff />
         </Button>
     );

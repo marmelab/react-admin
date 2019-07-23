@@ -10,6 +10,7 @@ import withDataProvider from './withDataProvider';
 import useGetOne from './useGetOne';
 import useGetList from './useGetList';
 import useUpdate from './useUpdate';
+import useUpdateMany from './useUpdateMany';
 import useCreate from './useCreate';
 import useDelete from './useDelete';
 import useDeleteMany from './useDeleteMany';
@@ -25,6 +26,7 @@ export {
     useGetOne,
     useGetList,
     useUpdate,
+    useUpdateMany,
     useCreate,
     useDelete,
     useDeleteMany,
