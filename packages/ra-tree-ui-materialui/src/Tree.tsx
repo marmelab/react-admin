@@ -111,6 +111,7 @@ Tree.defaultProps = {
 // @ts-ignore
 const EnhancedTree = withStyles(styles)(Tree);
 
+// @ts-ignore
 EnhancedTree.propTypes = {
     children: PropTypes.element,
     parentSource: PropTypes.string,
