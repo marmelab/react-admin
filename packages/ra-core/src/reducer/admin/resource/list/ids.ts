@@ -15,8 +15,9 @@ import {
     CrudUpdateSuccessAction,
 } from '../../../../actions/dataActions';
 import getFetchedAt from '../../../../util/getFetchedAt';
-import { DELETE, DELETE_MANY } from '../../../../dataFetchActions';
+import { DELETE, DELETE_MANY, GET_LIST } from '../../../../dataFetchActions';
 import { Identifier } from '../../../../types';
+import { FETCH_END } from '../../../../actions';
 
 type IdentifierArray = Identifier[];
 
@@ -94,9 +95,16 @@ const idsReducer: Reducer<State> = (
         }
     }
 
+    if (
+        action.type === CRUD_GET_LIST_SUCCESS ||
+        (action.meta &&
+            action.meta.fetchResponse === GET_LIST &&
+            action.meta.fetchStatus === FETCH_END)
+    ) {
+        return addRecordIds(action.payload.data.map(({ id }) => id), []);
+    }
+
     switch (action.type) {
-        case CRUD_GET_LIST_SUCCESS:
-            return addRecordIds(action.payload.data.map(({ id }) => id), []);
         case CRUD_GET_MANY_SUCCESS:
         case CRUD_GET_MANY_REFERENCE_SUCCESS:
             return addRecordIds(

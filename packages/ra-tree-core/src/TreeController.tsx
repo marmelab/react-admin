@@ -1,21 +1,20 @@
 import React, { Component, ReactNode } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Identifier, RecordMap, Record } from 'ra-core';
+import { Identifier, Record, Dispatch } from 'ra-core';
 
-import Tree from '@atlaskit/tree';
+import TreeUI from '@atlaskit/tree';
 
-import defaultGetTreeFromArray, {
-    DEFAULT_TREE_ROOT_ID,
-} from './getTreeFromArray';
-import { getIsNodeExpanded, getExpandedNodeIds } from './selectors';
+import defaultGetTreeFromArray from './getTreeFromArray';
+import { getIsNodeExpanded, getTree } from './selectors';
 import {
     closeNode as closeNodeAction,
     expandNode as expandNodeAction,
     toggleNode as toggleNodeAction,
+    crudGetRootNodes as crudGetRootNodesAction,
+    crudGetLeafNodes as crudGetLeafNodesAction,
 } from './actions';
-
-const defaultGetTreeState = state => state.tree;
+import { Tree } from './types';
 
 interface TreeControllerChildrenProps {
     itemProps: any;
@@ -26,19 +25,13 @@ type TreeControllerChildren = (props: TreeControllerChildrenProps) => ReactNode;
 
 interface Props {
     basePath: string;
-    data: RecordMap;
+    className: string;
     defaultTitle: string;
-    displayedFilters: any;
     enableDragAndDrop: boolean;
-    filterValues: any;
     hasCreate: boolean;
-    hideFilter: (filterName: string) => void;
-    ids: Identifier[];
     expandedNodeIds: Identifier[];
     isLoading: boolean;
     loadedOnce: boolean;
-    page: number;
-    perPage: number;
     resource: string;
     treeState: any;
     closeNode: (resource: string, id: Identifier) => void;
@@ -56,21 +49,46 @@ interface Props {
     onDragEnd: (record: Record, originalData: Record) => void;
 }
 
-export class TreeControllerView extends Component<Props> {
+interface EnhancedProps {
+    crudGetRootNodes: Dispatch<typeof crudGetRootNodesAction>;
+    crudGetLeafNodes: Dispatch<typeof crudGetLeafNodesAction>;
+    isLoading: boolean;
+    loadedOnce?: boolean;
+    tree: Tree;
+    version?: number;
+}
+
+export class TreeControllerView extends Component<Props & EnhancedProps> {
     static propTypes = {
         basePath: PropTypes.string.isRequired,
         children: PropTypes.func.isRequired,
         closeNode: PropTypes.func.isRequired,
         expandNode: PropTypes.func.isRequired,
-        ids: PropTypes.array.isRequired,
-        data: PropTypes.object.isRequired,
         getTreeFromArray: PropTypes.func,
         getTreeState: PropTypes.func,
         parentSource: PropTypes.string,
         resource: PropTypes.string.isRequired,
         toggleNode: PropTypes.func.isRequired,
         treeState: PropTypes.object,
+        tree: PropTypes.object,
     };
+
+    componentDidMount() {
+        this.updateData();
+    }
+
+    componentWillReceiveProps(nextProps: Props & EnhancedProps) {
+        if (
+            nextProps.resource !== this.props.resource ||
+            nextProps.version !== this.props.version
+        ) {
+            this.updateData();
+        }
+    }
+
+    updateData() {
+        this.props.crudGetRootNodes(this.props.resource);
+    }
 
     handleGetIsNodeExpanded = nodeId =>
         getIsNodeExpanded(this.props.treeState, this.props.resource, nodeId);
@@ -78,26 +96,27 @@ export class TreeControllerView extends Component<Props> {
     handleCollapseNode = nodeId =>
         this.props.closeNode(this.props.resource, nodeId);
 
-    handleExpandNode = nodeId =>
+    handleExpandNode = nodeId => {
         this.props.expandNode(this.props.resource, nodeId);
+        this.props.crudGetLeafNodes(this.props.resource, nodeId);
+    };
 
     handleToggleNode = nodeId =>
         this.props.toggleNode(this.props.resource, nodeId);
 
     onDragEnd = (source, destination) => {
-        if (!destination) {
-            return;
-        }
-        const { ids, data, parentSource } = this.props;
-        const availableData = ids.reduce((acc, id) => acc.concat(data[id]), []);
-        const parentId =
-            source.parentId === DEFAULT_TREE_ROOT_ID
-                ? undefined
-                : source.parentId;
-
-        const draggedItem = availableData.filter(
-            item => item[parentSource] == parentId
-        )[source.index];
+        // if (!destination) {
+        //     return;
+        // }
+        // const { ids, data, parentSource } = this.props;
+        // const availableData = ids.reduce((acc, id) => acc.concat(data[id]), []);
+        // const parentId =
+        //     source.parentId === DEFAULT_TREE_ROOT_ID
+        //         ? undefined
+        //         : source.parentId;
+        // const draggedItem = availableData.filter(
+        //     item => item[parentSource] == parentId
+        // )[source.index];
     };
 
     renderItem = itemProps => {
@@ -107,6 +126,8 @@ export class TreeControllerView extends Component<Props> {
             getTreeFromArray,
             parentSource,
             enableDragAndDrop,
+            crudGetLeafNodes,
+            crudGetRootNodes,
             ...props
         } = this.props;
         return children({ itemProps, controllerProps: props });
@@ -116,30 +137,26 @@ export class TreeControllerView extends Component<Props> {
         const {
             children,
             closeNode,
+            crudGetRootNodes,
             expandNode,
-            data: { fetchedAt, ...data },
             enableDragAndDrop,
             expandedNodeIds,
             getTreeFromArray,
             getTreeState,
-            ids,
             parentSource,
             resource,
             toggleNode,
             treeState,
+            tree,
             ...props
         } = this.props;
 
-        const availableData = ids.reduce((acc, id) => acc.concat(data[id]), []);
-
-        const tree = getTreeFromArray(
-            Object.values(availableData),
-            parentSource,
-            expandedNodeIds
-        );
+        if (!tree) {
+            return null;
+        }
 
         return (
-            <Tree
+            <TreeUI
                 tree={tree}
                 renderItem={this.renderItem}
                 onExpand={this.handleExpandNode}
@@ -153,13 +170,22 @@ export class TreeControllerView extends Component<Props> {
     }
 }
 
-const mapStateToProps = (state, { getTreeState, resource }) => ({
-    expandedNodeIds: getExpandedNodeIds(getTreeState(state), resource),
-});
+const mapStateToProps = (
+    state,
+    { getTreeFromArray, parentSource, resource }
+) => {
+    return {
+        tree: getTree(state, resource, parentSource, getTreeFromArray),
+        isLoading: state.admin.loading > 0,
+        version: state.admin.ui.viewVersion,
+    };
+};
 
 const TreeController = connect(
     mapStateToProps,
     {
+        crudGetRootNodes: crudGetRootNodesAction,
+        crudGetLeafNodes: crudGetLeafNodesAction,
         closeNode: closeNodeAction,
         expandNode: expandNodeAction,
         toggleNode: toggleNodeAction,
@@ -168,7 +194,6 @@ const TreeController = connect(
 
 TreeController.defaultProps = {
     getTreeFromArray: defaultGetTreeFromArray,
-    getTreeState: defaultGetTreeState,
     parentSource: 'parent_id',
     positionSource: 'position',
 };

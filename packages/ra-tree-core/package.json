@@ -41,7 +41,7 @@
         "react-dom": "^16.3.0"
     },
     "dependencies": {
-        "@atlaskit/tree": "^6.0.4",
+        "@atlaskit/tree": "^6.0.5",
         "prop-types": "^15.6.1"
     },
     "devDependencies": {

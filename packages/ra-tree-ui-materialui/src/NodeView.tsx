@@ -1,29 +1,33 @@
-import React, { Component, cloneElement, ReactElement } from 'react';
+import React, { Component, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import {
     Card,
     CardHeader,
-    IconButton,
+    Divider,
     createStyles,
     Theme,
     WithStyles,
 } from '@material-ui/core';
 import DragHandleIcon from '@material-ui/icons/DragHandle';
-import ExpandLessIcon from '@material-ui/icons/ExpandLess';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { Identifier, Record, Translate } from 'ra-core';
 import { TreeItem } from 'ra-tree-core';
+import NodeViewActions from './NodeViewActions';
 
 const styles = (theme: Theme) =>
     createStyles({
         root: {
-            marginBottom: theme.spacing.unit,
+            marginBottom: 0,
+        },
+        header: {
+            paddingBottom: theme.spacing.unit,
+            paddingTop: theme.spacing.unit * 2,
         },
     });
 
 interface Props {
     basePath: string;
+    resource: string;
     onCollapse: (itemId: Identifier) => void;
     onExpand: (itemId: Identifier) => void;
     item: TreeItem;
@@ -34,6 +38,10 @@ interface Props {
     positionSource: string;
     provided: any;
     translate: Translate;
+    hasCreate: boolean;
+    hasEdit: boolean;
+    hasShow: boolean;
+    hasList: boolean;
 }
 
 export class NodeView extends Component<Props & WithStyles<typeof styles>> {
@@ -46,65 +54,48 @@ export class NodeView extends Component<Props & WithStyles<typeof styles>> {
         resource: PropTypes.string.isRequired,
     };
 
-    handleCollapse = () => {
-        const { onCollapse, item } = this.props;
-        onCollapse(item.id);
-    };
-
-    handleExpand = () => {
-        const { onExpand, item } = this.props;
-        onExpand(item.id);
-    };
-
     render() {
         const {
             actions,
             basePath,
             children,
             classes,
+            hasCreate,
+            hasEdit,
+            hasShow,
+            hasList,
             item,
             provided,
             onCollapse,
             onExpand,
             positionSource,
             translate,
+            resource,
             ...props
         } = this.props;
 
         return (
-            <Card className={classes.root} {...props}>
+            <Card className={classes.root} elevation={0} {...props}>
                 <CardHeader
+                    className={classes.header}
                     avatar={
                         <div {...provided.dragHandleProps}>
                             <DragHandleIcon />
                         </div>
                     }
                     action={
-                        <>
-                            {actions
-                                ? cloneElement(actions, {
-                                      basePath,
-                                      record: item.data,
-                                      ...props,
-                                  })
-                                : null}
-                            {item.hasChildren ? (
-                                item.isExpanded ? (
-                                    <IconButton onClick={this.handleCollapse}>
-                                        <ExpandLessIcon />
-                                    </IconButton>
-                                ) : (
-                                    <IconButton onClick={this.handleExpand}>
-                                        <ExpandMoreIcon />
-                                    </IconButton>
-                                )
-                            ) : (
-                                <IconButton disabled /> // Used as spacer to ensure actions buttons are aligned
-                            )}
-                        </>
+                        <NodeViewActions
+                            basePath={basePath}
+                            resource={resource}
+                            actions={actions}
+                            onExpand={onExpand}
+                            onCollapse={onCollapse}
+                            item={item}
+                        />
                     }
                     title={item.data.name}
                 />
+                <Divider />
             </Card>
         );
     }

@@ -76,6 +76,7 @@ interface ActionWithSideEffect {
     payload: any;
     meta: {
         fetch: string;
+        fetchResponse?: string;
         resource: string;
         onSuccess?: any;
         onFailure?: any;
@@ -89,10 +90,8 @@ export function* handleFetch(
     const {
         type,
         payload,
-        meta: { fetch: fetchMeta, onSuccess, onFailure, ...meta },
+        meta: { fetch: restType, onSuccess, onFailure, ...meta },
     } = action;
-    const restType = fetchMeta;
-
     try {
         const isOptimistic = yield select(
             (state: ReduxState) => state.admin.ui.optimistic
@@ -123,7 +122,7 @@ export function* handleFetch(
             meta: {
                 ...meta,
                 ...onSuccess,
-                fetchResponse: restType,
+                fetchResponse: meta.fetchResponse || restType,
                 fetchStatus: FETCH_END,
             },
         });
@@ -137,7 +136,7 @@ export function* handleFetch(
             meta: {
                 ...meta,
                 ...onFailure,
-                fetchResponse: restType,
+                fetchResponse: meta.fetchResponse || restType,
                 fetchStatus: FETCH_ERROR,
             },
         });

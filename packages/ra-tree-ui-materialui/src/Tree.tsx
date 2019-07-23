@@ -85,21 +85,19 @@ export const Tree: SFC<WithStyles<typeof styles>> = ({
     }
 
     return (
-        <div>
-            <TreeController {...props}>
-                {({ itemProps, controllerProps }) => (
-                    <div
-                        ref={itemProps.provided.innerRef}
-                        {...itemProps.provided.draggableProps}
-                    >
-                        {cloneElement(children, {
-                            ...itemProps,
-                            ...sanitizeRestProps(controllerProps),
-                        })}
-                    </div>
-                )}
-            </TreeController>
-        </div>
+        <TreeController {...props}>
+            {({ itemProps, controllerProps }) => (
+                <div
+                    ref={itemProps.provided.innerRef}
+                    {...itemProps.provided.draggableProps}
+                >
+                    {cloneElement(children, {
+                        ...itemProps,
+                        ...sanitizeRestProps(controllerProps),
+                    })}
+                </div>
+            )}
+        </TreeController>
     );
 };
 

@@ -15,7 +15,7 @@ const getTreeItem = (
     return {
         id: item.id,
         children: childrenIds,
-        hasChildren: children.length > 0,
+        hasChildren: item.hasChildren || children.length > 0,
         isExpanded: expandedNodeIds.some(id => id == item.id),
         isChildrenLoading: false,
         data: item,

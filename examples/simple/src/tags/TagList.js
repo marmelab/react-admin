@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-    DeleteButton,
-    EditButton,
-    List,
-    ShowButton,
-    TextInput,
-} from 'react-admin';
+import { DeleteButton, EditButton, ShowButton, TextInput } from 'react-admin';
 import { NodeView, Tree, NodeActions } from 'ra-tree-ui-materialui';
 
 const CustomNodeActions = props => (
@@ -16,16 +10,12 @@ const CustomNodeActions = props => (
     </NodeActions>
 );
 
-const sort = { field: 'position', order: 'ASC' };
-
 const TagList = props => (
-    <List {...props} perPage={1000} sort={sort}>
-        <Tree enableDragAndDrop parentSource="parent_id">
-            <NodeView actions={<CustomNodeActions />}>
-                <TextInput source="name" />
-            </NodeView>
-        </Tree>
-    </List>
+    <Tree enableDragAndDrop parentSource="parent_id" {...props}>
+        <NodeView actions={<CustomNodeActions />}>
+            <TextInput source="name" />
+        </NodeView>
+    </Tree>
 );
 
 export default TagList;
