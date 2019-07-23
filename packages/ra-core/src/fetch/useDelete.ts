@@ -15,7 +15,6 @@ import { Identifier } from '../types';
  *
  * @param resource The resource name, e.g. 'posts'
  * @param id The resource identifier, e.g. 123
- * @param data The data to initialize the new record with, e.g. { title: 'hello, world" }
  * @param previousData The record before the delete is applied
  * @param options Options object to pass to the dataProvider. May include side effects to be executed upon success of failure, e.g. { onSuccess: { refresh: true } }
  *
