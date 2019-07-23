@@ -14,6 +14,7 @@ import i18nProvider from './i18nProvider';
 import posts from './posts';
 import users from './users';
 import tags from './tags';
+import Layout from './Layout';
 
 render(
     <Admin
@@ -32,6 +33,7 @@ render(
             />,
             <Route exact path="/custom2" component={CustomRouteLayout} />,
         ]}
+        appLayout={Layout}
     >
         {permissions => [
             <Resource name="posts" {...posts} />,

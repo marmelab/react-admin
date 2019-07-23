@@ -16,8 +16,10 @@ const CustomNodeActions = props => (
     </NodeActions>
 );
 
+const sort = { field: 'position', order: 'ASC' };
+
 const TagList = props => (
-    <List style={{ overflow: 'auto' }} {...props} perPage={1000}>
+    <List {...props} perPage={1000} sort={sort}>
         <Tree enableDragAndDrop parentSource="parent_id">
             <NodeView actions={<CustomNodeActions />}>
                 <TextInput source="name" />
