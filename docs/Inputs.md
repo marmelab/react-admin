@@ -174,7 +174,7 @@ By default the component matches choices with the current input searchText: if i
 
 If you want to limit the initial choices shown to the current value only, you can set the `limitChoicesToValue` prop.
 
-When dealing with a large amount of `choices` you may need to limit the number of suggestions that are rendered in order to maintain usable performance. The `shouldRenderSuggestions` is an optional prop that allows you to set conditions on when to render suggestions. An easy way to improve performance would be to skip rendering until the user has entered 2 or 3 characters in the search box. This lowers the result set significantly, and might be all you need (depending on your data set). 
+When dealing with a large amount of `choices` you may need to limit the number of suggestions that are rendered in order to maintain usable performance. The `shouldRenderSuggestions` is an optional prop that allows you to set conditions on when to render suggestions. An easy way to improve performance would be to skip rendering until the user has entered 2 or 3 characters in the search box. This lowers the result set significantly, and might be all you need (depending on your data set).
 Ex. `<AutocompleteInput shouldRenderSuggestions={(val) => { return val.trim().length > 2 }} />` would not render any suggestions until the 3rd character was entered. This prop is passed to the underlying `react-autosuggest` component and is documented [here](https://github.com/moroshko/react-autosuggest#should-render-suggestions-prop).
 
 `<AutocompleteInput>` renders a material-ui `<TextField>` component. Use the `options` attribute to override any of the `<TextField>` attributes:
@@ -289,7 +289,7 @@ By default the component matches choices with the current input searchText. For 
 
 If you want to limit the initial choices shown to the current value only, you can set the `limitChoicesToValue` prop.
 
-When dealing with a large amount of `choices` you may need to limit the number of suggestions that are rendered in order to maintain usable performance. The `shouldRenderSuggestions` is an optional prop that allows you to set conditions on when to render suggestions. An easy way to improve performance would be to skip rendering until the user has entered 2 or 3 characters in the search box. This lowers the result set significantly, and might be all you need (depending on your data set). 
+When dealing with a large amount of `choices` you may need to limit the number of suggestions that are rendered in order to maintain usable performance. The `shouldRenderSuggestions` is an optional prop that allows you to set conditions on when to render suggestions. An easy way to improve performance would be to skip rendering until the user has entered 2 or 3 characters in the search box. This lowers the result set significantly, and might be all you need (depending on your data set).
 Ex. `<AutocompleteArrayInput shouldRenderSuggestions={(val) => { return val.trim().length > 2 }} />` would not render any suggestions until the 3rd character was entered. This prop is passed to the underlying `react-autosuggest` component and is documented [here](https://github.com/moroshko/react-autosuggest#should-render-suggestions-prop).
 
 Lastly, `<AutocompleteArrayInput>` renders a [material-ui-chip-input](https://github.com/TeamWertarbyte/material-ui-chip-input) component. Use the `options` attribute to override any of the `<ChipInput>` attributes:
@@ -1008,8 +1008,7 @@ const FullNameField = ({ record }) => <span>{record.first_name} {record.last_nam
 <SelectInput source="gender" choices={choices} optionText={<FullNameField />}/>
 ```
 
-Enabling the `allowEmpty` props adds an empty choice (with a default `null` value, which you can overwrite with the `emptyValue` prop) on top of the options, and makes the value nullable:
-
+Enabling the `allowEmpty` props adds an empty choice (with a default `null` value, which you can overwrite with the `emptyValue` prop) on top of the options, and makes the value nullable. You can furthermore customize the `MenuItem` for the empty choice by using the `emptyText` prop, which can receive either a string or a React Element, which doesn't receive any props.
 ```jsx
 <SelectInput source="category" allowEmpty emptyValue="" choices={[
     { id: 'programming', name: 'Programming' },
@@ -1063,7 +1062,7 @@ You can make the `SelectInput` component resettable using the `resettable` prop.
 
 ![resettable SelectInput](./img/resettable-select-input.png)
 
-You can set disabled values by setting the `disabled` property of one item: 
+You can set disabled values by setting the `disabled` property of one item:
 
 ```jsx
 const choices = [
@@ -1074,7 +1073,7 @@ const choices = [
 <SelectInput source="author_id" choices={choices} optionText="full_name" optionValue="_id" />
 ```
 
-You can use a custom field name by setting `disableValue` prop: 
+You can use a custom field name by setting `disableValue` prop:
 
 ```jsx
 const choices = [

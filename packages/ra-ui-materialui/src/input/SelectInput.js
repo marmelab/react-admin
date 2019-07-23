@@ -137,6 +137,7 @@ export const SelectInput = ({
     classes,
     className,
     disableValue,
+    emptyText,
     emptyValue,
     helperText,
     input,
@@ -174,6 +175,15 @@ export const SelectInput = ({
             setValue(value);
         },
         [input, setValue]
+    );
+
+    const renderEmptyItemOption = useCallback(
+        emptyText => {
+            return React.isValidElement(emptyText)
+                ? React.cloneElement(emptyText)
+                : translate(emptyText, { _: emptyText });
+        },
+        [emptyText, translate]
     );
 
     const renderMenuItemOption = useCallback(
@@ -231,7 +241,11 @@ export const SelectInput = ({
             {...sanitizeRestProps(rest)}
             onChange={handleChange}
         >
-            {allowEmpty ? <MenuItem value={emptyValue} key="null" /> : null}
+            {allowEmpty ? (
+                <MenuItem value={emptyValue} key="null">
+                    {renderEmptyItemOption(emptyText)}
+                </MenuItem>
+            ) : null}
             {choices.map(choice => (
                 <MenuItem
                     key={get(choice, optionValue)}
@@ -247,6 +261,7 @@ export const SelectInput = ({
 
 SelectInput.propTypes = {
     allowEmpty: PropTypes.bool.isRequired,
+    emptyText: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
     emptyValue: PropTypes.any,
     choices: PropTypes.arrayOf(PropTypes.object),
     classes: PropTypes.object,
@@ -271,6 +286,7 @@ SelectInput.propTypes = {
 
 SelectInput.defaultProps = {
     allowEmpty: false,
+    emptyText: '',
     emptyValue: '',
     classes: {},
     choices: [],
