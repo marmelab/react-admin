@@ -4,7 +4,7 @@ import { withStyles, createStyles } from '@material-ui/core/styles';
 
 const styles = createStyles({
     root: {
-        overflow: 'auto', // Required for expanding nodes on hover when dragging elements in ra-tree
+        overflowX: 'auto', // Required for expanding nodes on hover when dragging elements in ra-tree
     },
 });
 
