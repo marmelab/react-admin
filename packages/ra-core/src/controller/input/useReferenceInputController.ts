@@ -50,7 +50,7 @@ interface Option {
  * @example
  * const {
  *      choices, // the available reference resource
- * } = useReferenceInput({
+ * } = useReferenceInputController({
  *      input, // the input props
  *      resource: 'comments',
  *      reference: 'posts',
@@ -67,7 +67,7 @@ interface Option {
  * const {
  *      choices, // the available reference resource
  *      setFilter,
- * } = useReferenceInput({
+ * } = useReferenceInputController({
  *      input, // the input props
  *      resource: 'comments',
  *      reference: 'posts',

@@ -37,7 +37,7 @@ interface Option {
  *
  * @example
  *
- * const { loadedOnce, data, ids, referenceBasePath, currentSort } = useReferenceArray({
+ * const { loadedOnce, data, ids, referenceBasePath, currentSort } = useReferenceArrayFieldController({
  *      basePath: 'resource';
  *      record: { referenceIds: ['id1', 'id2']};
  *      reference: 'reference';
@@ -56,7 +56,7 @@ interface Option {
  *
  * @returns {ReferenceProps} The reference props
  */
-const useReferenceArray = ({
+const useReferenceArrayFieldController = ({
     resource,
     reference,
     basePath,
@@ -93,4 +93,4 @@ const getReferenceArray = ({ record, source, reference }) => (
     };
 };
 
-export default useReferenceArray;
+export default useReferenceArrayFieldController;

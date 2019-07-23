@@ -2,7 +2,7 @@ import React, { Children } from 'react';
 import PropTypes from 'prop-types';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import { withStyles, createStyles } from '@material-ui/core/styles';
-import { useReferenceArray } from 'ra-core';
+import { useReferenceArrayFieldController } from 'ra-core';
 import { fieldPropTypes } from './types';
 
 const styles = createStyles({
@@ -87,7 +87,7 @@ export const ReferenceArrayField = ({ children, ...props }) => {
     return (
         <ReferenceArrayFieldView
             {...props}
-            {...useReferenceArray(props)}
+            {...useReferenceArrayFieldController(props)}
             children={children}
         />
     );
