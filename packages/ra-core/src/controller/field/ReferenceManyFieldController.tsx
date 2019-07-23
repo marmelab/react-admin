@@ -9,7 +9,7 @@ interface ChildrenFuncParams {
     currentSort: Sort;
     data: RecordMap;
     ids: Identifier[];
-    loadedOnce: boolean;
+    loaded: boolean;
     page: number;
     perPage: number;
     referenceBasePath: string;
@@ -59,7 +59,7 @@ export const ReferenceManyFieldController: FunctionComponent<Props> = ({
     const {
         data,
         ids,
-        loadedOnce,
+        loaded,
         referenceBasePath,
         total,
     } = useReferenceManyFieldController({
@@ -79,7 +79,7 @@ export const ReferenceManyFieldController: FunctionComponent<Props> = ({
         currentSort: sort,
         data,
         ids,
-        loadedOnce,
+        loaded,
         page,
         perPage,
         referenceBasePath,

@@ -7,7 +7,7 @@ import { crudGetManyAccumulate } from '../../actions';
 
 describe('<ReferenceArrayFieldController />', () => {
     afterEach(cleanup);
-    it('should set the loadedOnce prop to false when related records are not yet fetched', () => {
+    it('should set the loaded prop to false when related records are not yet fetched', () => {
         const children = jest.fn().mockReturnValue('child');
 
         renderWithRedux(
@@ -32,14 +32,14 @@ describe('<ReferenceArrayFieldController />', () => {
         );
         expect(children.mock.calls[0][0]).toEqual({
             currentSort: { field: 'id', order: 'ASC' },
-            loadedOnce: false,
+            loaded: false,
             referenceBasePath: '',
             data: null,
             ids: [1, 2],
         });
     });
 
-    it('should set the loadedOnce prop to true when at least one related record is found', () => {
+    it('should set the loaded prop to true when at least one related record is found', () => {
         const children = jest.fn().mockReturnValue('child');
 
         renderWithRedux(
@@ -70,7 +70,7 @@ describe('<ReferenceArrayFieldController />', () => {
 
         expect(children.mock.calls[0][0]).toEqual({
             currentSort: { field: 'id', order: 'ASC' },
-            loadedOnce: true,
+            loaded: true,
             referenceBasePath: '',
             data: {
                 2: {
@@ -109,7 +109,7 @@ describe('<ReferenceArrayFieldController />', () => {
         );
         expect(children.mock.calls[0][0]).toEqual({
             currentSort: { field: 'id', order: 'ASC' },
-            loadedOnce: true,
+            loaded: true,
             referenceBasePath: '',
             data: {
                 1: { id: 1, title: 'hello' },
@@ -146,7 +146,7 @@ describe('<ReferenceArrayFieldController />', () => {
         );
         expect(children.mock.calls[0][0]).toEqual({
             currentSort: { field: 'id', order: 'ASC' },
-            loadedOnce: true,
+            loaded: true,
             referenceBasePath: '',
             data: {
                 'abc-1': { id: 'abc-1', title: 'hello' },

@@ -4,7 +4,7 @@ import useReferenceArrayFieldController from './useReferenceArrayFieldController
 import { Identifier, RecordMap, Record, Sort } from '../..';
 
 interface ChildrenFuncParams {
-    loadedOnce: boolean;
+    loaded: boolean;
     ids: Identifier[];
     data: RecordMap;
     referenceBasePath: string;

@@ -18,7 +18,7 @@ const sanitizeRestProps = ({
     currentSort,
     setSort,
     isLoading,
-    loadedOnce,
+    loaded,
     ...props
 }) => props;
 
@@ -65,7 +65,7 @@ export class SingleFieldList extends Component {
             className,
             ids,
             data,
-            loadedOnce,
+            loaded,
             resource,
             basePath,
             children,
@@ -73,7 +73,7 @@ export class SingleFieldList extends Component {
             ...rest
         } = this.props;
 
-        if (loadedOnce === false) {
+        if (loaded === false) {
             return <LinearProgress />;
         }
 
@@ -90,7 +90,7 @@ export class SingleFieldList extends Component {
                     if (resourceLinkPath) {
                         return (
                             <Link
-                                className={classnames(classes.link, className)}
+                                className={classes.link}
                                 key={id}
                                 to={resourceLinkPath}
                                 onClick={stopPropagation}

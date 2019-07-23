@@ -51,7 +51,7 @@ export interface ListControllerProps {
     hideFilter: (filterName: string) => void;
     ids: Identifier[];
     isLoading: boolean;
-    loadedOnce: boolean;
+    loaded: boolean;
     onSelect: (ids: Identifier[]) => void;
     onToggleItem: (id: Identifier) => void;
     onUnselectItems: () => void;
@@ -175,7 +175,7 @@ const useListController = (props: ListProps): ListControllerProps => {
         hasCreate,
         ids,
         isLoading: loading,
-        loadedOnce: loaded,
+        loaded,
         onSelect: selectionModifiers.select,
         onToggleItem: selectionModifiers.toggle,
         onUnselectItems: selectionModifiers.clearSelection,
@@ -205,7 +205,7 @@ export const injectedProps = [
     'hideFilter',
     'ids',
     'isLoading',
-    'loadedOnce',
+    'loaded',
     'onSelect',
     'onToggleItem',
     'onUnselectItems',

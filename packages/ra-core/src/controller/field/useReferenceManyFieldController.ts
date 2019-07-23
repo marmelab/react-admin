@@ -15,7 +15,7 @@ import { Record, Sort, RecordMap, Identifier } from '../../types';
 interface ReferenceManyProps {
     data: RecordMap;
     ids: Identifier[];
-    loadedOnce: boolean;
+    loaded: boolean;
     referenceBasePath: string;
     total: number;
 }
@@ -25,7 +25,7 @@ interface Options {
     data?: RecordMap;
     filter?: any;
     ids?: any[];
-    loadedOnce?: boolean;
+    loaded?: boolean;
     page: number;
     perPage: number;
     record?: Record;
@@ -44,7 +44,7 @@ const defaultFilter = {};
  * @type {Object}
  * @property {Object} data: the referenced records dictionary by their ids.
  * @property {Object} ids: the list of referenced records ids.
- * @property {boolean} loadedOnce: boolean indicating if the references has already be loaded loaded
+ * @property {boolean} loaded: boolean indicating if the references has already be loaded loaded
  * @property {string | false} referenceBasePath base path of the related record
  */
 
@@ -139,7 +139,7 @@ const useReferenceManyFieldController = ({
     return {
         data,
         ids,
-        loadedOnce: typeof ids !== 'undefined',
+        loaded: typeof ids !== 'undefined',
         referenceBasePath,
         total,
     };

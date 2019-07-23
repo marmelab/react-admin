@@ -8,7 +8,7 @@ import { getReferencesByIds } from '../../reducer/admin/references/oneToMany';
 import { ReduxState, Record, RecordMap, Identifier } from '../../types';
 
 interface ReferenceArrayProps {
-    loadedOnce: boolean;
+    loaded: boolean;
     ids: Identifier[];
     data: RecordMap;
     referenceBasePath: string;
@@ -25,7 +25,7 @@ interface Option {
 /**
  * @typedef ReferenceArrayProps
  * @type {Object}
- * @property {boolean} loadedOnce: boolean indicating if the reference has already beeen loaded
+ * @property {boolean} loaded: boolean indicating if the reference has already beeen loaded
  * @property {Array} ids: the list of ids.
  * @property {Object} data: Object holding the reference data by their ids
  * @property {string} referenceBasePath basePath of the reference
@@ -37,7 +37,7 @@ interface Option {
  *
  * @example
  *
- * const { loadedOnce, data, ids, referenceBasePath, currentSort } = useReferenceArrayFieldController({
+ * const { loaded, data, ids, referenceBasePath, currentSort } = useReferenceArrayFieldController({
  *      basePath: 'resource';
  *      record: { referenceIds: ['id1', 'id2']};
  *      reference: 'reference';
@@ -76,7 +76,7 @@ const useReferenceArrayFieldController = ({
 
     return {
         // eslint-disable-next-line eqeqeq
-        loadedOnce: data != undefined,
+        loaded: data != undefined,
         ids,
         data,
         referenceBasePath,

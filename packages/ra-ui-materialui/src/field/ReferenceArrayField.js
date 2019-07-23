@@ -82,12 +82,12 @@ export const ReferenceArrayFieldView = ({
     classes: classesOverride,
     data,
     ids,
-    loadedOnce,
+    loaded,
     reference,
     referenceBasePath,
 }) => {
     const classes = useStyles({ classes: classesOverride });
-    if (loadedOnce === false) {
+    if (loaded === false) {
         return <LinearProgress className={classes.progress} />;
     }
 
@@ -96,7 +96,7 @@ export const ReferenceArrayFieldView = ({
         resource: reference,
         ids,
         data,
-        loadedOnce,
+        loaded,
         basePath: referenceBasePath,
         currentSort: {},
     });
@@ -107,7 +107,7 @@ ReferenceArrayFieldView.propTypes = {
     className: PropTypes.string,
     data: PropTypes.object,
     ids: PropTypes.array,
-    loadedOnce: PropTypes.bool,
+    loaded: PropTypes.bool,
     children: PropTypes.element.isRequired,
     reference: PropTypes.string.isRequired,
     referenceBasePath: PropTypes.string,
