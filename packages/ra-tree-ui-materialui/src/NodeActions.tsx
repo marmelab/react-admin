@@ -1,4 +1,9 @@
-import React, { cloneElement, Children, Component } from 'react';
+import React, {
+    cloneElement,
+    Children,
+    Component,
+    isValidElement,
+} from 'react';
 import PropTypes from 'prop-types';
 
 export class NodeActions extends Component {
@@ -14,7 +19,9 @@ export class NodeActions extends Component {
         return (
             <>
                 {Children.map(children, action =>
-                    action ? cloneElement(action, props) : null
+                    action && isValidElement(action)
+                        ? cloneElement(action, props)
+                        : null
                 )}
             </>
         );

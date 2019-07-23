@@ -1,4 +1,5 @@
 import { Identifier, Record } from 'ra-core';
+import { TreeItem, Tree } from './types';
 
 export const DEFAULT_TREE_ROOT_ID = 'RA/DEFAULT_TREE_ROOT_ID';
 
@@ -7,7 +8,7 @@ const getTreeItem = (
     expandedNodeIds: Identifier[],
     item: Record,
     items: Record[]
-) => {
+): TreeItem => {
     const children = items.filter(child => child[parentSource] === item.id);
     const childrenIds = children.map(child => child.id);
 
@@ -28,7 +29,7 @@ export default (
     data: Record[],
     parentSource: string,
     expandedNodeIds: Identifier[]
-) => {
+): Tree => {
     const roots = data.filter(item => item[parentSource] == undefined);
     const rootId = roots.length === 1 ? roots[0].id : DEFAULT_TREE_ROOT_ID;
     const items = data.reduce((acc, item) => {

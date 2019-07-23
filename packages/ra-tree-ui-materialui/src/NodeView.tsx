@@ -1,36 +1,42 @@
-import React, { Component, cloneElement } from 'react';
+import React, { Component, cloneElement, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import { Card, CardHeader, IconButton, createStyles } from '@material-ui/core';
+import {
+    Card,
+    CardHeader,
+    IconButton,
+    createStyles,
+    Theme,
+    WithStyles,
+} from '@material-ui/core';
 import DragHandleIcon from '@material-ui/icons/DragHandle';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import { Identifier, Record, Translate } from 'ra-core';
+import { TreeItem } from 'ra-tree-core';
 
-const styles = theme =>
+const styles = (theme: Theme) =>
     createStyles({
         root: {
             marginBottom: theme.spacing.unit,
         },
     });
 
-const sanitizeRestProps = ({
-    cancelDropOnChildren,
-    crudUpdate,
-    dispatchCrudUpdate,
-    getTreeState,
-    isDragging,
-    onSelect,
-    onToggleItem,
-    onUnselectItems,
-    parentSource,
-    startUndoable,
-    translate,
-    undoable,
-    undoableDragDrop,
-    ...rest
-}) => rest;
+interface Props {
+    basePath: string;
+    onCollapse: (itemId: Identifier) => void;
+    onExpand: (itemId: Identifier) => void;
+    item: TreeItem;
+    actions?: ReactElement<{
+        basePath: string;
+        record: Record;
+    }>;
+    positionSource: string;
+    provided: any;
+    translate: Translate;
+}
 
-export class NodeView extends Component {
+export class NodeView extends Component<Props & WithStyles<typeof styles>> {
     static propTypes = {
         actions: PropTypes.node,
         basePath: PropTypes.string.isRequired,
@@ -53,17 +59,20 @@ export class NodeView extends Component {
     render() {
         const {
             actions,
+            basePath,
             children,
             classes,
             item,
             provided,
             onCollapse,
             onExpand,
+            positionSource,
+            translate,
             ...props
         } = this.props;
 
         return (
-            <Card className={classes.root}>
+            <Card className={classes.root} {...props}>
                 <CardHeader
                     avatar={
                         <div {...provided.dragHandleProps}>
@@ -74,6 +83,7 @@ export class NodeView extends Component {
                         <>
                             {actions
                                 ? cloneElement(actions, {
+                                      basePath,
                                       record: item.data,
                                       ...props,
                                   })

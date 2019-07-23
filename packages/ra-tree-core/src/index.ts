@@ -3,3 +3,4 @@ import reducer from './reducer';
 export { TreeController, reducer };
 export * from './actions';
 export * from './selectors';
+export * from './types';
