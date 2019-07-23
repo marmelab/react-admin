@@ -679,7 +679,7 @@ export default (type, resource, params) => {
                 case CREATE:
                     return { data: { ...params.data, id: json.id } };
                 case DELETE_MANY:
-                    return { data: json ? json : [] };
+                    return { data: json || [] };
                 default:
                     return { data: json };
             }
