@@ -1,7 +1,7 @@
 import React, { Component, ReactNode } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Identifier, Record, Dispatch } from 'ra-core';
+import { Identifier, Record, Dispatch, RecordMap } from 'ra-core';
 
 import TreeUI from '@atlaskit/tree';
 
@@ -13,6 +13,7 @@ import {
     toggleNode as toggleNodeAction,
     crudGetRootNodes as crudGetRootNodesAction,
     crudGetLeafNodes as crudGetLeafNodesAction,
+    crudMoveNode as crudMoveNodeAction,
 } from './actions';
 import { Tree } from './types';
 
@@ -26,6 +27,7 @@ type TreeControllerChildren = (props: TreeControllerChildrenProps) => ReactNode;
 interface Props {
     basePath: string;
     className: string;
+    data: RecordMap;
     defaultTitle: string;
     enableDragAndDrop: boolean;
     hasCreate: boolean;
@@ -44,12 +46,13 @@ interface Props {
     ) => any;
     getTreeState: (state: any) => any;
     parentSource: string;
-    positionSource?: string;
+    positionSource: string;
     children: TreeControllerChildren;
     onDragEnd: (record: Record, originalData: Record) => void;
 }
 
 interface EnhancedProps {
+    crudMoveNode: Dispatch<typeof crudMoveNodeAction>;
     crudGetRootNodes: Dispatch<typeof crudGetRootNodesAction>;
     crudGetLeafNodes: Dispatch<typeof crudGetLeafNodesAction>;
     isLoading: boolean;
@@ -87,7 +90,11 @@ export class TreeControllerView extends Component<Props & EnhancedProps> {
     }
 
     updateData() {
-        this.props.crudGetRootNodes(this.props.resource);
+        this.props.crudGetRootNodes(
+            this.props.resource,
+            this.props.parentSource,
+            this.props.positionSource
+        );
     }
 
     handleGetIsNodeExpanded = nodeId =>
@@ -98,25 +105,67 @@ export class TreeControllerView extends Component<Props & EnhancedProps> {
 
     handleExpandNode = nodeId => {
         this.props.expandNode(this.props.resource, nodeId);
-        this.props.crudGetLeafNodes(this.props.resource, nodeId);
+        this.props.crudGetLeafNodes(
+            this.props.resource,
+            nodeId,
+            this.props.parentSource,
+            this.props.positionSource
+        );
     };
 
     handleToggleNode = nodeId =>
         this.props.toggleNode(this.props.resource, nodeId);
 
     onDragEnd = (source, destination) => {
-        // if (!destination) {
-        //     return;
-        // }
-        // const { ids, data, parentSource } = this.props;
-        // const availableData = ids.reduce((acc, id) => acc.concat(data[id]), []);
-        // const parentId =
-        //     source.parentId === DEFAULT_TREE_ROOT_ID
-        //         ? undefined
-        //         : source.parentId;
-        // const draggedItem = availableData.filter(
-        //     item => item[parentSource] == parentId
-        // )[source.index];
+        if (!destination) {
+            return;
+        }
+        const {
+            tree,
+            parentSource,
+            positionSource,
+            crudMoveNode,
+            resource,
+            basePath,
+        } = this.props;
+        const parent = tree.items[source.parentId];
+
+        if (!parent || !parent.children) {
+            return;
+        }
+
+        const draggedItemId = parent.children[source.index];
+
+        if (!draggedItemId) {
+            return;
+        }
+
+        const draggedItem = tree.items[draggedItemId];
+        crudMoveNode(
+            resource,
+            draggedItem.data.id as string,
+            {
+                ...draggedItem.data,
+                [parentSource]: destination.parentId,
+                [positionSource]: destination.index,
+            },
+            draggedItem.data,
+            basePath,
+            () => {
+                this.props.crudGetLeafNodes(
+                    this.props.resource,
+                    source.parentId,
+                    this.props.parentSource,
+                    this.props.positionSource
+                );
+                this.props.crudGetLeafNodes(
+                    this.props.resource,
+                    destination.parentId,
+                    this.props.parentSource,
+                    this.props.positionSource
+                );
+            }
+        );
     };
 
     renderItem = itemProps => {
@@ -126,6 +175,7 @@ export class TreeControllerView extends Component<Props & EnhancedProps> {
             getTreeFromArray,
             parentSource,
             enableDragAndDrop,
+            crudMoveNode,
             crudGetLeafNodes,
             crudGetRootNodes,
             ...props
@@ -137,7 +187,9 @@ export class TreeControllerView extends Component<Props & EnhancedProps> {
         const {
             children,
             closeNode,
+            crudMoveNode,
             crudGetRootNodes,
+            crudGetLeafNodes,
             expandNode,
             enableDragAndDrop,
             expandedNodeIds,
@@ -184,6 +236,7 @@ const mapStateToProps = (
 const TreeController = connect(
     mapStateToProps,
     {
+        crudMoveNode: crudMoveNodeAction,
         crudGetRootNodes: crudGetRootNodesAction,
         crudGetLeafNodes: crudGetLeafNodesAction,
         closeNode: closeNodeAction,

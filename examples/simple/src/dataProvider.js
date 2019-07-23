@@ -24,38 +24,50 @@ const delayedDataProvider = (type, resource, params) =>
 
 export default (type, resource, params) => {
     if (type === 'GET_ROOT_NODES') {
-        return new Promise(resolve =>
-            setTimeout(() => {
-                const items = data.tags.filter(item => !item.parent_id);
-                resolve({
-                    data: items.map(item => ({
+        return dataProvider('GET_LIST', resource, {
+            filter: { parent_id: null },
+            sort: { field: params.positionField, order: 'ASC' },
+            pagination: { page: 1, perPage: 1000 },
+        }).then(({ data, total }) =>
+            Promise.all(
+                data.map(item =>
+                    dataProvider('GET_LIST', resource, {
+                        filter: { parent_id: item.id },
+                        sort: { field: params.positionField, order: 'ASC' },
+                        pagination: { page: 1, perPage: 1 },
+                    }).then(({ total }) => ({
                         ...item,
-                        hasChildren:
-                            data.tags.filter(
-                                child => child.parent_id === item.id
-                            ).length > 0,
-                    })),
-                });
-            }, 1000)
+                        hasChildren: total > 0,
+                    }))
+                )
+            ).then(nodes => ({
+                data: nodes,
+                total,
+            }))
         );
     }
 
     if (type === 'GET_LEAF_NODES') {
-        return new Promise(resolve =>
-            setTimeout(() => {
-                const items = data.tags.filter(
-                    item => item.parent_id === params.parentId
-                );
-                resolve({
-                    data: items.map(item => ({
+        return dataProvider('GET_LIST', resource, {
+            filter: { parent_id: params.parentId },
+            sort: { field: params.positionField, order: 'ASC' },
+            pagination: { page: 1, perPage: 1000 },
+        }).then(({ data, total }) =>
+            Promise.all(
+                data.map(item =>
+                    dataProvider('GET_LIST', resource, {
+                        filter: { parent_id: item.id },
+                        sort: { field: params.positionField, order: 'ASC' },
+                        pagination: { page: 1, perPage: 1 },
+                    }).then(({ total }) => ({
                         ...item,
-                        hasChildren:
-                            data.tags.filter(
-                                child => child.parent_id === item.id
-                            ).length > 0,
-                    })),
-                });
-            }, 1000)
+                        hasChildren: total > 0,
+                    }))
+                )
+            ).then(nodes => ({
+                data: nodes,
+                total,
+            }))
         );
     }
 
