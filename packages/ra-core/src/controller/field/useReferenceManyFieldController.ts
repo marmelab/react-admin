@@ -56,7 +56,7 @@ const defaultFilter = {};
  *
  * @example
  *
- * const { isLoading, referenceRecord, resourceLinkPath } = useReferenceMany({
+ * const { isLoading, referenceRecord, resourceLinkPath } = useReferenceManyFieldController({
  *     resource
  *     reference: 'users',
  *     record: {
@@ -83,7 +83,7 @@ const defaultFilter = {};
  *
  * @returns {ReferenceManyProps} The reference many props
  */
-const useReferenceMany = ({
+const useReferenceManyFieldController = ({
     resource,
     reference,
     record,
@@ -177,4 +177,4 @@ const selectData = (reference, relatedTo) => state =>
 const selectIds = relatedTo => state => getIds(state, relatedTo);
 const selectTotal = relatedTo => state => getTotal(state, relatedTo);
 
-export default useReferenceMany;
+export default useReferenceManyFieldController;

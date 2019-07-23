@@ -1,63 +1,10 @@
 import React, { Fragment, cloneElement, Children } from 'react';
 import PropTypes from 'prop-types';
-import { useSortState, usePaginationState, useReferenceMany } from 'ra-core';
-
-export const ReferenceManyFieldView = ({
-    children,
-    className,
-    currentSort,
-    data,
-    ids,
-    loadedOnce,
-    page,
-    pagination,
-    perPage,
-    reference,
-    referenceBasePath,
-    setPage,
-    setPerPage,
-    setSort,
-    total,
-}) => (
-    <Fragment>
-        {cloneElement(Children.only(children), {
-            className,
-            resource: reference,
-            ids,
-            loadedOnce,
-            data,
-            basePath: referenceBasePath,
-            currentSort,
-            setSort,
-            total,
-        })}
-        {pagination &&
-            total !== undefined &&
-            cloneElement(pagination, {
-                page,
-                perPage,
-                setPage,
-                setPerPage,
-                total,
-            })}
-    </Fragment>
-);
-
-ReferenceManyFieldView.propTypes = {
-    children: PropTypes.element,
-    className: PropTypes.string,
-    currentSort: PropTypes.shape({
-        field: PropTypes.string,
-        order: PropTypes.string,
-    }),
-    data: PropTypes.object,
-    ids: PropTypes.array,
-    loadedOnce: PropTypes.bool,
-    pagination: PropTypes.element,
-    reference: PropTypes.string,
-    referenceBasePath: PropTypes.string,
-    setSort: PropTypes.func,
-};
+import {
+    useSortState,
+    usePaginationState,
+    useReferenceManyFieldController,
+} from 'ra-core';
 
 /**
  * Render related records to the current one.
@@ -128,7 +75,7 @@ export const ReferenceManyField = props => {
         perPage: initialPerPage,
     });
 
-    const useReferenceManyProps = useReferenceMany({
+    const controllerProps = useReferenceManyFieldController({
         resource,
         reference,
         record,
@@ -151,7 +98,7 @@ export const ReferenceManyField = props => {
                 setPage,
                 setPerPage,
                 setSort,
-                ...useReferenceManyProps,
+                ...controllerProps,
             }}
         />
     );
@@ -184,6 +131,63 @@ ReferenceManyField.defaultProps = {
     sort: { field: 'id', order: 'DESC' },
     source: 'id',
     addLabel: true,
+};
+
+export const ReferenceManyFieldView = ({
+    children,
+    className,
+    currentSort,
+    data,
+    ids,
+    loadedOnce,
+    page,
+    pagination,
+    perPage,
+    reference,
+    referenceBasePath,
+    setPage,
+    setPerPage,
+    setSort,
+    total,
+}) => (
+    <Fragment>
+        {cloneElement(Children.only(children), {
+            className,
+            resource: reference,
+            ids,
+            loadedOnce,
+            data,
+            basePath: referenceBasePath,
+            currentSort,
+            setSort,
+            total,
+        })}
+        {pagination &&
+            total !== undefined &&
+            cloneElement(pagination, {
+                page,
+                perPage,
+                setPage,
+                setPerPage,
+                total,
+            })}
+    </Fragment>
+);
+
+ReferenceManyFieldView.propTypes = {
+    children: PropTypes.element,
+    className: PropTypes.string,
+    currentSort: PropTypes.shape({
+        field: PropTypes.string,
+        order: PropTypes.string,
+    }),
+    data: PropTypes.object,
+    ids: PropTypes.array,
+    loadedOnce: PropTypes.bool,
+    pagination: PropTypes.element,
+    reference: PropTypes.string,
+    referenceBasePath: PropTypes.string,
+    setSort: PropTypes.func,
 };
 
 export default ReferenceManyField;
