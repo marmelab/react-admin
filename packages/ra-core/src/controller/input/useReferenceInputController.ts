@@ -11,6 +11,7 @@ import useFilterState from '../useFilterState';
 
 const defaultReferenceSource = (resource: string, source: string) =>
     `${resource}@${source}`;
+const defaultFilter = {};
 
 export interface ReferenceInputValue {
     choices: Record[];
@@ -27,7 +28,7 @@ export interface ReferenceInputValue {
 
 interface Option {
     allowEmpty?: boolean;
-    permanentFilter?: any;
+    filter?: any;
     filterToQuery?: (filter: string) => any;
     input?: WrappedFieldInputProps;
     perPage?: number;
@@ -77,10 +78,10 @@ interface Option {
  *      filterToQuery: searchText => ({ title: searchText })
  * });
  */
-export default ({
+const useReferenceInputController = ({
     input,
     perPage = 25,
-    permanentFilter = {},
+    filter = defaultFilter,
     reference,
     filterToQuery,
     referenceSource = defaultReferenceSource,
@@ -91,15 +92,15 @@ export default ({
 
     const { pagination, setPagination } = usePaginationState({ perPage });
     const { sort, setSort } = useSortState();
-    const { filter, setFilter } = useFilterState({
-        permanentFilter,
+    const { filter: filterValue, setFilter } = useFilterState({
+        permanentFilter: filter,
         filterToQuery,
     });
 
     const { matchingReferences } = useGetMatchingReferences({
         reference,
         referenceSource,
-        filter,
+        filter: filterValue,
         pagination,
         sort,
         resource,
@@ -124,7 +125,7 @@ export default ({
         choices: dataStatus.choices,
         error: dataStatus.error,
         loading: dataStatus.waiting,
-        filter,
+        filter: filterValue,
         setFilter,
         pagination,
         setPagination,
@@ -133,3 +134,5 @@ export default ({
         warning: dataStatus.warning,
     };
 };
+
+export default useReferenceInputController;
