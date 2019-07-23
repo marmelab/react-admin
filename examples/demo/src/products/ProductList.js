@@ -12,11 +12,11 @@ import Chip from '@material-ui/core/Chip';
 import { makeStyles } from '@material-ui/core/styles';
 import GridList from './GridList';
 
-const useQuickFilterStyles = makeStyles({
+const useQuickFilterStyles = makeStyles(theme => ({
     root: {
-        marginBottom: '0.7em',
+        marginBottom: theme.spacing(3),
     },
-});
+}));
 
 const QuickFilter = ({ label }) => {
     const translate = useTranslate();
