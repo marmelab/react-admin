@@ -63,7 +63,7 @@ const ReferenceField = ({ children, record, source, ...props }) => {
         id,
         ...props,
     });
-    const resourceLinkPath = getResourceLinkPath(props);
+    const resourceLinkPath = getResourceLinkPath({ record, source, ...props });
 
     return (
         <ReferenceFieldView
