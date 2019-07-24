@@ -19,12 +19,6 @@ const styles = theme =>
             alignItems: 'flex-end',
             flexWrap: 'wrap',
         },
-        body: { display: 'flex', alignItems: 'flex-end' },
-        spacer: { width: '1em' },
-        icon: {
-            color: theme.palette.primary1Color || '#00bcd4',
-            paddingBottom: 0,
-        },
         clearFix: { clear: 'right' },
     });
 
@@ -110,7 +104,6 @@ export class FilterForm extends Component {
                         key={filterElement.props.source}
                         filterElement={filterElement}
                         handleHide={this.handleHide}
-                        classes={classes}
                         resource={resource}
                     />
                 ))}

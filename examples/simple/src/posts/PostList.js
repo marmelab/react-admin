@@ -29,9 +29,15 @@ import {
 import ResetViewsButton from './ResetViewsButton';
 export const PostIcon = BookIcon;
 
+const useQuickFilterStyles = makeStyles(theme => ({
+    chip: {
+        marginBottom: theme.spacing(3),
+    },
+}));
 const QuickFilter = ({ label }) => {
     const translate = useTranslate();
-    return <Chip style={{ marginBottom: 8 }} label={translate(label)} />;
+    const classes = useQuickFilterStyles();
+    return <Chip className={classes.chip} label={translate(label)} />;
 };
 
 const PostFilter = props => (

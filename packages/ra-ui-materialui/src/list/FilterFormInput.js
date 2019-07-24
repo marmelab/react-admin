@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
 import IconButton from '@material-ui/core/IconButton';
 import ActionHide from '@material-ui/icons/HighlightOff';
+import { makeStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
 import { useTranslate } from 'ra-core';
 
@@ -10,8 +11,22 @@ const emptyRecord = {};
 
 const sanitizeRestProps = ({ alwaysOn, ...props }) => props;
 
-const FilterFormInput = ({ filterElement, handleHide, classes, resource }) => {
+const useStyles = makeStyles(theme => ({
+    body: { display: 'flex', alignItems: 'flex-end' },
+    spacer: { width: theme.spacing(2) },
+    hideButton: {
+        marginBottom: theme.spacing(2),
+    },
+}));
+
+const FilterFormInput = ({
+    filterElement,
+    handleHide,
+    classes: classesOverride,
+    resource,
+}) => {
     const translate = useTranslate();
+    const classes = useStyles({ classes: classesOverride });
     return (
         <div
             data-source={filterElement.props.source}
@@ -19,7 +34,7 @@ const FilterFormInput = ({ filterElement, handleHide, classes, resource }) => {
         >
             {!filterElement.props.alwaysOn && (
                 <IconButton
-                    className="hide-filter"
+                    className={classnames('hide-filter', classes.hideButton)}
                     onClick={handleHide}
                     data-key={filterElement.props.source}
                     title={translate('ra.action.remove_filter')}
