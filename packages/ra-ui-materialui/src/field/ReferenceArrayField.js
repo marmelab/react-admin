@@ -1,4 +1,4 @@
-import React, { Children } from 'react';
+import React, { Children, cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import { makeStyles } from '@material-ui/core/styles';
@@ -72,9 +72,9 @@ ReferenceArrayField.defaultProps = {
     addLabel: true,
 };
 
-const useStyles = makeStyles({
-    progress: { marginTop: '1em' },
-});
+const useStyles = makeStyles(theme => ({
+    progress: { marginTop: theme.spacing(2) },
+}));
 
 export const ReferenceArrayFieldView = ({
     children,
@@ -91,7 +91,7 @@ export const ReferenceArrayFieldView = ({
         return <LinearProgress className={classes.progress} />;
     }
 
-    return React.cloneElement(Children.only(children), {
+    return cloneElement(Children.only(children), {
         className,
         resource: reference,
         ids,

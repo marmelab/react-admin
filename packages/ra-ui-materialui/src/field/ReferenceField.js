@@ -1,4 +1,4 @@
-import React, { Children } from 'react';
+import React, { Children, cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import get from 'lodash/get';
@@ -149,7 +149,7 @@ export const ReferenceFieldView = ({
                 className={className}
                 onClick={stopPropagation}
             >
-                {React.cloneElement(Children.only(children), {
+                {cloneElement(Children.only(children), {
                     className: classnames(
                         children.props.className,
                         classes.link // force color override for Typography components
@@ -165,7 +165,7 @@ export const ReferenceFieldView = ({
         );
     }
 
-    return React.cloneElement(Children.only(children), {
+    return cloneElement(Children.only(children), {
         record: referenceRecord,
         resource: reference,
         allowEmpty,

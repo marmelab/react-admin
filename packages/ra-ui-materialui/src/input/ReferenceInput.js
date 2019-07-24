@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Children, cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import { addField, useReferenceInputController } from 'ra-core';
 
@@ -181,7 +181,7 @@ export const ReferenceInputView = ({
     warning,
     ...rest
 }) => {
-    if (React.Children.count(children) !== 1) {
+    if (Children.count(children) !== 1) {
         throw new Error('<ReferenceInput> only accepts a single child');
     }
 
@@ -203,7 +203,7 @@ export const ReferenceInputView = ({
         return <ReferenceError label={label} error={error} />;
     }
 
-    return React.cloneElement(children, {
+    return cloneElement(children, {
         allowEmpty,
         classes,
         className,
