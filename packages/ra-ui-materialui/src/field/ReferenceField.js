@@ -60,8 +60,8 @@ const ReferenceField = ({ children, record, source, ...props }) => {
     }
     const id = get(record, source);
     const { loading, referenceRecord } = useReference({
-        id,
         ...props,
+        id,
     });
     const resourceLinkPath = getResourceLinkPath({ record, source, ...props });
 
