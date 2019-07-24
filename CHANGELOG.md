@@ -1,5 +1,18 @@
 # Changelog
 
+## v3.0.0-alpha.1
+
+* Fix `ReferenceField` link ([3452](https://github.com/marmelab/react-admin/pull/3452)) ([fzaninotto](https://github.com/fzaninotto))
+* Reference hooks cleanup (breaking change) ([3446](https://github.com/marmelab/react-admin/pull/3446)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix hide filter button isn't aligned with field ([3449](https://github.com/marmelab/react-admin/pull/3449)) ([fzaninotto](https://github.com/fzaninotto))
+* Add `useDeleteMany` and useUpdateMany hooks ([3448](https://github.com/marmelab/react-admin/pull/3448)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `LongTextInput` isn't so long ([3450](https://github.com/marmelab/react-admin/pull/3450)) ([fzaninotto](https://github.com/fzaninotto))
+* Declare `fetch` side effects as function ([3425](https://github.com/marmelab/react-admin/pull/3425)) ([fzaninotto](https://github.com/fzaninotto))
+* Promoting `react-testing-library` as a dependency ([3442](https://github.com/marmelab/react-admin/pull/3442)) ([fzaninotto](https://github.com/fzaninotto))
+* Delegate the redirection after logout to `authProvider` (breaking change)([3269](https://github.com/marmelab/react-admin/pull/3269)) ([djhi](https://github.com/djhi))
+* Add `useReferenceInput` ([3313](https://github.com/marmelab/react-admin/pull/3313)) ([ThieryMichel](https://github.com/ThieryMichel))
+* Fix dependencies to 3.0.0 ([3440](https://github.com/marmelab/react-admin/pull/3440)) ([fzaninotto](https://github.com/fzaninotto))
+
 ## v3.0.0-alpha.0
 
 * Add pagination and sorting params to GET_MANY_REFERENCE ([3412](https://github.com/marmelab/react-admin/pull/3412)) ([m4theushw](https://github.gom/m4theushw))
