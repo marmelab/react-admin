@@ -271,10 +271,10 @@ The `MyUrlField` component is a perfect opportunity to illustrate how to customi
 ```jsx
 // in src/MyUrlField.js
 import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import LaunchIcon from '@material-ui/icons/Launch';
 
-const styles = {
+const useStyles = makeStyles({
     link: {
         textDecoration: 'none',
     },
@@ -282,23 +282,28 @@ const styles = {
         width: '0.5em',
         paddingLeft: 2,
     },
-};
+});
 
-const MyUrlField = ({ record = {}, source, classes }) =>
-    <a href={record[source]} className={classes.link}>
-        {record[source]}
-        <LaunchIcon className={classes.icon} />
-    </a>;
+const MyUrlField = ({ record = {}, source }) => {
+    const classes = useStyles();
+    return (
+        <a href={record[source]} className={classes.link}>
+            {record[source]}
+            <LaunchIcon className={classes.icon} />
+        </a>;
+    );
+}
 
-export default withStyles(styles)(MyUrlField);
+export default MyUrlField;
 ```
 
 ![Custom styles](./img/tutorial_custom_styles.png)
 
-In JSS, you define styles as a JavaScript object, using the JS variants of the CSS property names (e.g. `textDecoration` instead of `text-decoration`). To pass these styles to the component, wrap it inside a call to `withStyles(styles)`. JSS will create new class names for these styles, insert them (once) in the HTML document, and pass the new class names as a new `classes` property. Then, use these names in a `className` prop, as you would with a regular CSS class.
+In JSS, you define styles as a JavaScript object, using the JS variants of the CSS property names (e.g. `textDecoration` instead of `text-decoration`). To pass these styles to the component, use `makeStyles` to build a React hook. The hook will create new class names for these styles, and return the new class names in the `classes` object. Then, use these names in a `className` prop, as you would with a regular CSS class.
 
-**Tip**: There is much more to JSS than what this tutorial covers. Read the [material-ui documentation](https://material-ui.com/) to learn more about theming, vendor prefixes, responsive utilities, etc.
+**Tip**: There is much more to JSS than what this tutorial covers. Read the [material-ui documentation](https://material-ui.com/styles/basics) to learn more about theming, vendor prefixes, responsive utilities, etc.
 
+**Tip**: Material-ui supports other CSS-in-JS solutions, including [Styled components](https://material-ui.com/styles/basics/#styled-components-api).
 
 ## Handling Relationships
 
