@@ -200,17 +200,17 @@ import {
     Edit,
     SimpleForm,
 } from 'react-admin';
-import { withStyles } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 
-const toolbarStyles = {
+const useStyles = makeStyles({
     toolbar: {
         display: 'flex',
         justifyContent: 'space-between',
     },
-};
+});
 
-const CustomToolbar = withStyles(toolbarStyles)(props => (
-    <Toolbar {...props}>
+const CustomToolbar = props => (
+    <Toolbar {...props} classes={useStyles()}>
         <SaveButton />
         <DeleteButton undoable={false} />
     </Toolbar>
@@ -819,22 +819,25 @@ Here are the props received by the `Toolbar` component when passed as the `toolb
 
 The input components are wrapped inside a `div` to ensure a good looking form by default. You can pass a `formClassName` prop to the input components to customize the style of this `div`. For example, here is how to display two inputs on the same line:
 
-{% raw %}
 ```jsx
-const styles = {
+const useStyles = makeStyles({
     inlineBlock: { display: 'inline-flex', marginRight: '1rem' },
-};
-export const UserEdit = withStyles(styles)(({ classes, ...props }) => (
-    <Edit {...props}>
-        <SimpleForm>
-            <TextInput source="first_name" formClassName={classes.inlineBlock} />
-            <TextInput source="last_name" formClassName={classes.inlineBlock} />
-            {/* This input will be display below the two first ones */}
-            <TextInput source="email" type="email" />
-        </SimpleForm>
-    </Edit>
+});
+
+export const UserEdit = props => {
+    const classes = useStyles();
+    return (
+        <Edit {...props}>
+            <SimpleForm>
+                <TextInput source="first_name" formClassName={classes.inlineBlock} />
+                <TextInput source="last_name" formClassName={classes.inlineBlock} />
+                {/* This input will be display below the two first ones */}
+                <TextInput source="email" type="email" />
+            </SimpleForm>
+        </Edit>
+    )
+}
 ```
-{% endraw %}
 
 ## Displaying Fields or Inputs depending on the user permissions
 
