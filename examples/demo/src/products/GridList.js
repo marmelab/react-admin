@@ -106,7 +106,7 @@ const LoadedGridList = ({ ids, data, basePath, width }) => {
     );
 };
 
-const GridList = ({ loadedOnce, ...props }) =>
-    loadedOnce ? <LoadedGridList {...props} /> : <LoadingGridList {...props} />;
+const GridList = ({ loaded, ...props }) =>
+    loaded ? <LoadedGridList {...props} /> : <LoadingGridList {...props} />;
 
 export default withWidth()(GridList);

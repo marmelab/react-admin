@@ -133,7 +133,7 @@ class Datagrid extends Component {
             hover,
             ids,
             isLoading,
-            loadedOnce,
+            loaded,
             onSelect,
             onToggleItem,
             resource,
@@ -147,11 +147,11 @@ class Datagrid extends Component {
         } = this.props;
 
         /**
-         * if loadedOnce is false, the list displays for the first time, and the dataProvider hasn't answered yet
-         * if loadedOnce is true, the data for the list has at least been returned once by the dataProvider
-         * if loadedOnce is undefined, the Datagrid parent doesn't track loading state (e.g. ReferenceArrayField)
+         * if loaded is false, the list displays for the first time, and the dataProvider hasn't answered yet
+         * if loaded is true, the data for the list has at least been returned once by the dataProvider
+         * if loaded is undefined, the Datagrid parent doesn't track loading state (e.g. ReferenceArrayField)
          */
-        if (loadedOnce === false) {
+        if (loaded === false) {
             return (
                 <DatagridLoading
                     classes={classes}

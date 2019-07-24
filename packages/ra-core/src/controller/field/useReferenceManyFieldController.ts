@@ -15,7 +15,7 @@ import { Record, Sort, RecordMap, Identifier } from '../../types';
 interface ReferenceManyProps {
     data: RecordMap;
     ids: Identifier[];
-    loadedOnce: boolean;
+    loaded: boolean;
     referenceBasePath: string;
     total: number;
 }
@@ -25,7 +25,7 @@ interface Options {
     data?: RecordMap;
     filter?: any;
     ids?: any[];
-    loadedOnce?: boolean;
+    loaded?: boolean;
     page: number;
     perPage: number;
     record?: Record;
@@ -44,7 +44,7 @@ const defaultFilter = {};
  * @type {Object}
  * @property {Object} data: the referenced records dictionary by their ids.
  * @property {Object} ids: the list of referenced records ids.
- * @property {boolean} loadedOnce: boolean indicating if the references has already be loaded loaded
+ * @property {boolean} loaded: boolean indicating if the references has already be loaded loaded
  * @property {string | false} referenceBasePath base path of the related record
  */
 
@@ -56,7 +56,7 @@ const defaultFilter = {};
  *
  * @example
  *
- * const { isLoading, referenceRecord, resourceLinkPath } = useReferenceMany({
+ * const { isLoading, referenceRecord, resourceLinkPath } = useReferenceManyFieldController({
  *     resource
  *     reference: 'users',
  *     record: {
@@ -83,7 +83,7 @@ const defaultFilter = {};
  *
  * @returns {ReferenceManyProps} The reference many props
  */
-const useReferenceMany = ({
+const useReferenceManyFieldController = ({
     resource,
     reference,
     record,
@@ -139,7 +139,7 @@ const useReferenceMany = ({
     return {
         data,
         ids,
-        loadedOnce: typeof ids !== 'undefined',
+        loaded: typeof ids !== 'undefined',
         referenceBasePath,
         total,
     };
@@ -177,4 +177,4 @@ const selectData = (reference, relatedTo) => state =>
 const selectIds = relatedTo => state => getIds(state, relatedTo);
 const selectTotal = relatedTo => state => getTotal(state, relatedTo);
 
-export default useReferenceMany;
+export default useReferenceManyFieldController;

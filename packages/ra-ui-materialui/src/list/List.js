@@ -73,7 +73,7 @@ const sanitizeRestProps = ({
     history,
     ids,
     isLoading,
-    loadedOnce,
+    loaded,
     locale,
     location,
     match,

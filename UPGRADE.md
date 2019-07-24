@@ -332,3 +332,26 @@ When using custom component with ReferenceInputController, you should rename the
 +     )}
 + </ReferenceInputController>
 ```
+
+## `loadedOnce` prop renamed as `loaded`
+
+The `List`, `ReferenceArrayfield` and `ReferenceManyField` used to inject an `loadedOnce` prop to their child. This prop has been renamed to `loaded`.
+
+As a consequence, the components usually used as children of these 3 components now accept a `loaded` prop instead of `loadedOnce`. This concerns `Datagrid`, `SingleFieldList`, and `GridList`.
+
+This change is transparent unless you use a custom view component inside a `List`, `ReferenceArrayfield` or `ReferenceManyField`.
+
+```diff
+const PostList = props => (
+    <List {...props}>
+        <MyListView />
+    </List>
+)
+
+-const MyListView = ({ loadedOnce, ...props }) => (
++const MyListView = ({ loaded, ...props }) => (
+-   if (!loadedOnce) return null;
++   if (!loaded) return null;
+    // rest of the view
+);
+```

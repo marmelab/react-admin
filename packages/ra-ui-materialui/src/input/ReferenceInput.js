@@ -1,136 +1,10 @@
-import React from 'react';
+import React, { Children, cloneElement } from 'react';
 import PropTypes from 'prop-types';
-import compose from 'recompose/compose';
-import { addField, translate, ReferenceInputController } from 'ra-core';
+import { addField, useReferenceInputController } from 'ra-core';
 
 import LinearProgress from '../layout/LinearProgress';
 import Labeled from './Labeled';
 import ReferenceError from './ReferenceError';
-
-const sanitizeRestProps = ({
-    allowEmpty,
-    basePath,
-    choices,
-    className,
-    component,
-    crudGetMatching,
-    crudGetOne,
-    defaultValue,
-    filter,
-    filterToQuery,
-    formClassName,
-    initializeForm,
-    input,
-    isRequired,
-    label,
-    locale,
-    meta,
-    onChange,
-    optionValue,
-    optionText,
-    perPage,
-    record,
-    reference,
-    referenceSource,
-    resource,
-    setFilter,
-    setPagination,
-    setSort,
-    sort,
-    source,
-    textAlign,
-    translate,
-    translateChoice,
-    validation,
-    ...rest
-}) => rest;
-
-export const ReferenceInputView = ({
-    allowEmpty,
-    basePath,
-    children,
-    choices,
-    classes,
-    className,
-    error,
-    input,
-    isRequired,
-    loading,
-    label,
-    meta,
-    onChange,
-    resource,
-    setFilter,
-    setPagination,
-    setSort,
-    source,
-    translate,
-    warning,
-    ...rest
-}) => {
-    if (loading) {
-        return (
-            <Labeled
-                label={label}
-                source={source}
-                resource={resource}
-                className={className}
-                isRequired={isRequired}
-            >
-                <LinearProgress />
-            </Labeled>
-        );
-    }
-
-    if (error) {
-        return <ReferenceError label={label} error={error} />;
-    }
-
-    return React.cloneElement(children, {
-        allowEmpty,
-        classes,
-        className,
-        input,
-        isRequired,
-        label,
-        resource,
-        meta: {
-            ...meta,
-            helperText: warning || false,
-        },
-        source,
-        choices,
-        basePath,
-        onChange,
-        setFilter,
-        setPagination,
-        setSort,
-        translateChoice: false,
-        ...sanitizeRestProps(rest),
-    });
-};
-
-ReferenceInputView.propTypes = {
-    allowEmpty: PropTypes.bool,
-    basePath: PropTypes.string,
-    children: PropTypes.element,
-    choices: PropTypes.array,
-    classes: PropTypes.object,
-    className: PropTypes.string,
-    error: PropTypes.string,
-    input: PropTypes.object.isRequired,
-    loading: PropTypes.bool,
-    label: PropTypes.string,
-    meta: PropTypes.object,
-    onChange: PropTypes.func,
-    resource: PropTypes.string.isRequired,
-    setFilter: PropTypes.func,
-    setPagination: PropTypes.func,
-    setSort: PropTypes.func,
-    source: PropTypes.string,
-    translate: PropTypes.func.isRequired,
-    warning: PropTypes.string,
-};
 
 /**
  * An Input component for choosing a reference record. Useful for foreign keys.
@@ -211,22 +85,9 @@ ReferenceInputView.propTypes = {
  *     <SelectInput optionText="title" />
  * </ReferenceInput>
  */
-export const ReferenceInput = ({ children, ...props }) => {
-    if (React.Children.count(children) !== 1) {
-        throw new Error('<ReferenceInput> only accepts a single child');
-    }
-
-    return (
-        <ReferenceInputController {...props}>
-            {controllerProps => (
-                <ReferenceInputView
-                    {...props}
-                    {...{ children, ...controllerProps }}
-                />
-            )}
-        </ReferenceInputController>
-    );
-};
+export const ReferenceInput = props => (
+    <ReferenceInputView {...props} {...useReferenceInputController(props)} />
+);
 
 ReferenceInput.propTypes = {
     allowEmpty: PropTypes.bool.isRequired,
@@ -249,7 +110,6 @@ ReferenceInput.propTypes = {
         order: PropTypes.oneOf(['ASC', 'DESC']),
     }),
     source: PropTypes.string,
-    translate: PropTypes.func.isRequired,
 };
 
 ReferenceInput.defaultProps = {
@@ -260,9 +120,132 @@ ReferenceInput.defaultProps = {
     sort: { field: 'id', order: 'DESC' },
 };
 
-const EnhancedReferenceInput = compose(
-    addField,
-    translate
-)(ReferenceInput);
+const EnhancedReferenceInput = addField(ReferenceInput);
+
+const sanitizeRestProps = ({
+    allowEmpty,
+    basePath,
+    choices,
+    className,
+    component,
+    crudGetMatching,
+    crudGetOne,
+    defaultValue,
+    filter,
+    filterToQuery,
+    formClassName,
+    initializeForm,
+    input,
+    isRequired,
+    label,
+    locale,
+    meta,
+    onChange,
+    optionValue,
+    optionText,
+    perPage,
+    record,
+    reference,
+    referenceSource,
+    resource,
+    setFilter,
+    setPagination,
+    setSort,
+    sort,
+    source,
+    textAlign,
+    translateChoice,
+    validation,
+    ...rest
+}) => rest;
+
+export const ReferenceInputView = ({
+    allowEmpty,
+    basePath,
+    children,
+    choices,
+    classes,
+    className,
+    error,
+    input,
+    isRequired,
+    loading,
+    label,
+    meta,
+    onChange,
+    resource,
+    setFilter,
+    setPagination,
+    setSort,
+    source,
+    warning,
+    ...rest
+}) => {
+    if (Children.count(children) !== 1) {
+        throw new Error('<ReferenceInput> only accepts a single child');
+    }
+
+    if (loading) {
+        return (
+            <Labeled
+                label={label}
+                source={source}
+                resource={resource}
+                className={className}
+                isRequired={isRequired}
+            >
+                <LinearProgress />
+            </Labeled>
+        );
+    }
+
+    if (error) {
+        return <ReferenceError label={label} error={error} />;
+    }
+
+    return cloneElement(children, {
+        allowEmpty,
+        classes,
+        className,
+        input,
+        isRequired,
+        label,
+        resource,
+        meta: {
+            ...meta,
+            helperText: warning || false,
+        },
+        source,
+        choices,
+        basePath,
+        onChange,
+        setFilter,
+        setPagination,
+        setSort,
+        translateChoice: false,
+        ...sanitizeRestProps(rest),
+    });
+};
+
+ReferenceInputView.propTypes = {
+    allowEmpty: PropTypes.bool,
+    basePath: PropTypes.string,
+    children: PropTypes.element,
+    choices: PropTypes.array,
+    classes: PropTypes.object,
+    className: PropTypes.string,
+    error: PropTypes.string,
+    input: PropTypes.object.isRequired,
+    loading: PropTypes.bool,
+    label: PropTypes.string,
+    meta: PropTypes.object,
+    onChange: PropTypes.func,
+    resource: PropTypes.string.isRequired,
+    setFilter: PropTypes.func,
+    setPagination: PropTypes.func,
+    setSort: PropTypes.func,
+    source: PropTypes.string,
+    warning: PropTypes.string,
+};
 
 export default EnhancedReferenceInput;

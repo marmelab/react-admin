@@ -5,7 +5,7 @@ import ReferenceManyFieldController from './ReferenceManyFieldController';
 import renderWithRedux from '../../util/renderWithRedux';
 
 describe('<ReferenceManyFieldController />', () => {
-    it('should set loadedOnce to false when related records are not yet fetched', () => {
+    it('should set loaded to false when related records are not yet fetched', () => {
         const children = jest.fn().mockReturnValue('children');
         const { dispatch } = renderWithRedux(
             <ReferenceManyFieldController

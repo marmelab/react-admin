@@ -2,14 +2,14 @@ import ReferenceArrayFieldController from './ReferenceArrayFieldController';
 import ReferenceFieldController from './ReferenceFieldController';
 import ReferenceManyFieldController from './ReferenceManyFieldController';
 import getResourceLinkPath from './getResourceLinkPath';
-import useReferenceArray from './useReferenceArray';
-import useReferenceMany from './useReferenceMany';
+import useReferenceArrayFieldController from './useReferenceArrayFieldController';
+import useReferenceManyFieldController from './useReferenceManyFieldController';
 
 export {
-    useReferenceArray,
+    useReferenceArrayFieldController,
     ReferenceArrayFieldController,
     ReferenceFieldController,
     getResourceLinkPath,
-    useReferenceMany,
+    useReferenceManyFieldController,
     ReferenceManyFieldController,
 };

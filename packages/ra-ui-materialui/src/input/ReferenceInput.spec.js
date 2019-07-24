@@ -12,7 +12,6 @@ describe('<ReferenceInput />', () => {
         reference: 'posts',
         resource: 'comments',
         source: 'post_id',
-        translate: x => `*${x}*`,
     };
     const MyComponent = () => <span id="mycomponent" />;
 

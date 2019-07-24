@@ -1,30 +1,35 @@
 import React from 'react';
-import assert from 'assert';
-import { shallow } from 'enzyme';
+import expect from 'expect';
+import { render } from 'react-testing-library';
+import { MemoryRouter } from 'react-router';
 
 import { ReferenceFieldView } from './ReferenceField';
 import TextField from './TextField';
 
 describe('<ReferenceField />', () => {
     it('should render a link to specified resourceLinkPath', () => {
-        const wrapper = shallow(
-            <ReferenceFieldView
-                record={{ postId: 123 }}
-                source="postId"
-                referenceRecord={{ id: 123, title: 'foo' }}
-                reference="posts"
-                resource="comments"
-                resourceLinkPath="/posts/123"
-                basePath="/comments"
-            >
-                <TextField source="title" />
-            </ReferenceFieldView>
+        const { container } = render(
+            <MemoryRouter>
+                <ReferenceFieldView
+                    record={{ postId: 123 }}
+                    source="postId"
+                    referenceRecord={{ id: 123, title: 'foo' }}
+                    reference="posts"
+                    resource="comments"
+                    resourceLinkPath="/posts/123"
+                    basePath="/comments"
+                >
+                    <TextField source="title" />
+                </ReferenceFieldView>
+            </MemoryRouter>
         );
-        const linkElement = wrapper.find('WithStyles(Link)');
-        assert.equal(linkElement.prop('to'), '/posts/123');
+        const links = container.getElementsByTagName('a');
+        expect(links).toHaveLength(1);
+        expect(links.item(0).href).toBe('http://localhost/posts/123');
     });
+
     it('should render no link when resourceLinkPath is not specified', () => {
-        const wrapper = shallow(
+        const { container } = render(
             <ReferenceFieldView
                 record={{ fooId: 123 }}
                 source="fooId"
@@ -36,7 +41,7 @@ describe('<ReferenceField />', () => {
                 <TextField source="title" />
             </ReferenceFieldView>
         );
-        const linkElement = wrapper.find('WithStyles(Link)');
-        assert.equal(linkElement.length, 0);
+        const links = container.getElementsByTagName('a');
+        expect(links).toHaveLength(0);
     });
 });
