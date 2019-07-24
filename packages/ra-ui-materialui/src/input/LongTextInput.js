@@ -7,7 +7,7 @@ import { TextInput } from './TextInput';
  */
 export const LongTextInput = props => {
     console.warn(
-        'The LongTextInput component is deprecated. You should instead use the TextInput component and set its multiline prop to true.'
+        'The LongTextInput component is deprecated. You should instead use the TextInput component and set its multiline and fullWidth props to true.'
     );
 
     return <TextInput {...props} />;
@@ -17,6 +17,10 @@ LongTextInput.defaultProps = {
     multiline: true,
 };
 
-LongTextInput.displayName = 'LongTextInput';
+const EnhancedLongTextInput = addField(LongTextInput);
 
-export default addField(LongTextInput);
+EnhancedLongTextInput.defaultProps = {
+    fullWidth: true,
+};
+
+export default EnhancedLongTextInput;
