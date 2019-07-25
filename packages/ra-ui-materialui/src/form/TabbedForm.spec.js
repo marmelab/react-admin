@@ -1,67 +1,67 @@
-import assert from 'assert';
-import { shallow } from 'enzyme';
+import { render, cleanup } from 'react-testing-library';
 import React, { createElement } from 'react';
+import { MemoryRouter } from 'react-router';
 
 import { TabbedForm, findTabsWithErrors } from './TabbedForm';
 import FormTab from './FormTab';
 
 const translate = label => label;
-const muiTheme = { textField: { errorColor: 'red' } };
 
 describe('<TabbedForm />', () => {
-    it('should display <Toolbar />', () => {
-        const wrapper = shallow(
-            <TabbedForm
-                location={{}}
-                match={{}}
-                translate={translate}
-                muiTheme={muiTheme}
-                tabsWithErrors={[]}
-            >
-                <FormTab />
-                <FormTab />
-            </TabbedForm>
+    afterEach(cleanup);
+
+    it('should display the tabs', () => {
+        const { queryAllByRole } = render(
+            <MemoryRouter initialEntries={['/']}>
+                <TabbedForm
+                    location={{}}
+                    match={{}}
+                    translate={translate}
+                    tabsWithErrors={[]}
+                >
+                    <FormTab label="tab1" />
+                    <FormTab label="tab2" />
+                </TabbedForm>
+            </MemoryRouter>
         );
 
-        const toolbar = wrapper.find(
-            'WithTheme(WithWidth(WithStyles(Toolbar)))'
-        );
-        assert.equal(toolbar.length, 1);
+        const tabs = queryAllByRole('tab');
+        expect(tabs.length).toEqual(2);
     });
 
     it('should pass submitOnEnter to <Toolbar />', () => {
         const handleSubmit = () => {};
-        const wrapper1 = shallow(
+        const Toolbar = ({ submitOnEnter }) => (
+            <p>submitOnEnter: {submitOnEnter.toString()}</p>
+        );
+
+        const { queryByText, rerender } = render(
             <TabbedForm
                 location={{}}
                 match={{}}
                 translate={translate}
                 submitOnEnter={false}
                 handleSubmit={handleSubmit}
-                muiTheme={muiTheme}
                 tabsWithErrors={[]}
+                toolbar={<Toolbar />}
             />
         );
-        const button1 = wrapper1.find(
-            'WithTheme(WithWidth(WithStyles(Toolbar)))'
-        );
-        assert.equal(button1.prop('submitOnEnter'), false);
 
-        const wrapper2 = shallow(
+        expect(queryByText('submitOnEnter: false')).not.toBeNull();
+
+        rerender(
             <TabbedForm
                 location={{}}
                 match={{}}
                 translate={translate}
                 submitOnEnter
                 handleSubmit={handleSubmit}
-                muiTheme={muiTheme}
                 tabsWithErrors={[]}
+                toolbar={<Toolbar />}
             />
         );
-        const button2 = wrapper2.find(
-            'WithTheme(WithWidth(WithStyles(Toolbar)))'
-        );
-        assert.strictEqual(button2.prop('submitOnEnter'), true);
+
+        expect(queryByText('submitOnEnter: true')).not.toBeNull();
     });
 
     describe('findTabsWithErrors', () => {
@@ -95,7 +95,7 @@ describe('<TabbedForm />', () => {
             };
 
             const tabs = findTabsWithErrors(state, props, collectErrors);
-            assert.deepEqual(tabs, ['tab1', 'tab3']);
+            expect(tabs).toEqual(['tab1', 'tab3']);
         });
     });
 });

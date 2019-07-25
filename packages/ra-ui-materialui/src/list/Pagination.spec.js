@@ -6,6 +6,7 @@ import { Pagination } from './Pagination';
 
 describe('<Pagination />', () => {
     const defaultProps = {
+        width: 'lg',
         perPage: 10,
         translate: x => x,
     };
