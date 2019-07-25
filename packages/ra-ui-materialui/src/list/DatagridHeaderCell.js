@@ -2,27 +2,27 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import shouldUpdate from 'recompose/shouldUpdate';
-import compose from 'recompose/compose';
 import TableCell from '@material-ui/core/TableCell';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Tooltip from '@material-ui/core/Tooltip';
-import { withStyles, createStyles } from '@material-ui/core/styles';
+import { makeStyles, createStyles } from '@material-ui/core/styles';
 import { FieldTitle, useTranslate } from 'ra-core';
 
 // remove the sort icons when not active
-const styles = createStyles({
-    icon: {
-        display: 'none',
-    },
-    active: {
-        '& $icon': {
-            display: 'inline',
+const useStyles = makeStyles(
+    createStyles({
+        icon: {
+            display: 'none',
         },
-    },
-});
+        active: {
+            '& $icon': {
+                display: 'inline',
+            },
+        },
+    })
+);
 
 export const DatagridHeaderCell = ({
-    classes,
     className,
     field,
     currentSort,
@@ -31,7 +31,9 @@ export const DatagridHeaderCell = ({
     isSorting,
     ...rest
 }) => {
+    const classes = useStyles();
     const translate = useTranslate();
+
     return (
         <TableCell
             className={classnames(className, field.props.headerClassName)}
@@ -80,7 +82,6 @@ export const DatagridHeaderCell = ({
 };
 
 DatagridHeaderCell.propTypes = {
-    classes: PropTypes.object,
     className: PropTypes.string,
     field: PropTypes.element,
     currentSort: PropTypes.shape({
@@ -93,14 +94,9 @@ DatagridHeaderCell.propTypes = {
     updateSort: PropTypes.func.isRequired,
 };
 
-const enhance = compose(
-    shouldUpdate(
-        (props, nextProps) =>
-            props.isSorting !== nextProps.isSorting ||
-            (nextProps.isSorting &&
-                props.currentSort.order !== nextProps.currentSort.order)
-    ),
-    withStyles(styles)
-);
-
-export default enhance(DatagridHeaderCell);
+export default shouldUpdate(
+    (props, nextProps) =>
+        props.isSorting !== nextProps.isSorting ||
+        (nextProps.isSorting &&
+            props.currentSort.order !== nextProps.currentSort.order)
+)(DatagridHeaderCell);

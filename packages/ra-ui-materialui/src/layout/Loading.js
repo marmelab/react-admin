@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles, createStyles } from '@material-ui/core/styles';
+import { makeStyles, createStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { useTranslate } from 'ra-core';
 
-const styles = theme =>
+const useStyles = makeStyles(theme =>
     createStyles({
         container: {
             display: 'flex',
@@ -29,15 +29,17 @@ const styles = theme =>
             opacity: 0.5,
             margin: '0 1em',
         },
-    });
+    })
+);
 
 const Loading = ({
-    classes,
     className,
     loadingPrimary = 'ra.page.loading',
     loadingSecondary = 'ra.message.loading',
 }) => {
+    const classes = useStyles();
     const translate = useTranslate();
+
     return (
         <div className={classnames(classes.container, className)}>
             <div className={classes.message}>
@@ -50,7 +52,6 @@ const Loading = ({
 };
 
 Loading.propTypes = {
-    classes: PropTypes.object,
     className: PropTypes.string,
     loadingPrimary: PropTypes.string,
     loadingSecondary: PropTypes.string,
@@ -61,4 +62,4 @@ Loading.defaultProps = {
     loadingSecondary: 'ra.message.loading',
 };
 
-export default withStyles(styles)(Loading);
+export default Loading;

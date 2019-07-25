@@ -2,9 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import onlyUpdateForKeys from 'recompose/onlyUpdateForKeys';
 import Fab from '@material-ui/core/Fab';
-import { withStyles, createStyles } from '@material-ui/core/styles';
+import { makeStyles, createStyles } from '@material-ui/core/styles';
 import ContentAdd from '@material-ui/icons/Add';
-import compose from 'recompose/compose';
 import classnames from 'classnames';
 import { Link } from 'react-router-dom';
 import { useTranslate } from 'ra-core';
@@ -12,7 +11,7 @@ import { useTranslate } from 'ra-core';
 import Button from './Button';
 import Responsive from '../layout/Responsive';
 
-const styles = theme =>
+const useStyles = makeStyles(theme =>
     createStyles({
         floating: {
             color: theme.palette.getContrastText(theme.palette.primary.main),
@@ -27,17 +26,19 @@ const styles = theme =>
         floatingLink: {
             color: 'inherit',
         },
-    });
+    })
+);
 
 const CreateButton = ({
     basePath = '',
     className,
-    classes = {},
     label = 'ra.action.create',
     icon = <ContentAdd />,
     ...rest
 }) => {
+    const classes = useStyles();
     const translate = useTranslate();
+
     return (
         <Responsive
             small={
@@ -70,15 +71,11 @@ const CreateButton = ({
 CreateButton.propTypes = {
     basePath: PropTypes.string,
     className: PropTypes.string,
-    classes: PropTypes.object,
     label: PropTypes.string,
     size: PropTypes.string,
     icon: PropTypes.element,
 };
 
-const enhance = compose(
-    onlyUpdateForKeys(['basePath', 'label', 'translate']),
-    withStyles(styles)
+export default onlyUpdateForKeys(['basePath', 'label', 'translate'])(
+    CreateButton
 );
-
-export default enhance(CreateButton);

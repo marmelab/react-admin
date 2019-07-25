@@ -1,20 +1,23 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import SearchIcon from '@material-ui/icons/Search';
 import InputAdornment from '@material-ui/core/InputAdornment';
-import { withStyles, createStyles } from '@material-ui/core/styles';
+import { makeStyles, createStyles } from '@material-ui/core/styles';
 import { useTranslate } from 'ra-core';
 
 import TextInput from './TextInput';
 
-const searchFilterStyles = createStyles({
-    input: {
-        marginTop: 32,
-    },
-});
+const useStyles = makeStyles(
+    createStyles({
+        input: {
+            marginTop: 32,
+        },
+    })
+);
 
-const SearchInput = ({ classes, ...props }) => {
+const SearchInput = props => {
+    const classes = useStyles();
     const translate = useTranslate();
+
     return (
         <TextInput
             label={false}
@@ -32,8 +35,4 @@ const SearchInput = ({ classes, ...props }) => {
     );
 };
 
-SearchInput.propTypes = {
-    classes: PropTypes.object,
-};
-
-export default withStyles(searchFilterStyles)(SearchInput);
+export default SearchInput;

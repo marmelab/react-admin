@@ -7,18 +7,19 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import InputLabel from '@material-ui/core/InputLabel';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import Radio from '@material-ui/core/Radio';
-import { withStyles, createStyles } from '@material-ui/core/styles';
-import compose from 'recompose/compose';
+import { makeStyles, createStyles } from '@material-ui/core/styles';
 import { addField, FieldTitle, useTranslate } from 'ra-core';
 
 import sanitizeRestProps from './sanitizeRestProps';
 import InputHelperText from './InputHelperText';
 
-const styles = createStyles({
-    label: {
-        position: 'relative',
-    },
-});
+const useStyles = makeStyles(
+    createStyles({
+        label: {
+            position: 'relative',
+        },
+    })
+);
 
 /**
  * An Input component for a radio button group, using an array of objects for the options
@@ -78,7 +79,6 @@ const styles = createStyles({
  * The object passed as `options` props is passed to the material-ui <RadioButtonGroup> component
  */
 export const RadioButtonGroupInput = ({
-    classes,
     className,
     label,
     resource,
@@ -94,6 +94,7 @@ export const RadioButtonGroupInput = ({
     translateChoice,
     ...rest
 }) => {
+    const classes = useStyles();
     const translate = useTranslate();
 
     const handleChange = useCallback(
@@ -177,7 +178,6 @@ export const RadioButtonGroupInput = ({
 
 RadioButtonGroupInput.propTypes = {
     choices: PropTypes.arrayOf(PropTypes.object),
-    classes: PropTypes.object,
     className: PropTypes.string,
     input: PropTypes.object,
     isRequired: PropTypes.bool,
@@ -197,7 +197,6 @@ RadioButtonGroupInput.propTypes = {
 };
 
 RadioButtonGroupInput.defaultProps = {
-    classes: {},
     choices: [],
     options: {},
     optionText: 'name',
@@ -205,7 +204,4 @@ RadioButtonGroupInput.defaultProps = {
     translateChoice: true,
 };
 
-export default compose(
-    addField,
-    withStyles(styles)
-)(RadioButtonGroupInput);
+export default addField()(RadioButtonGroupInput);

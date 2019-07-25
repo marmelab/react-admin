@@ -5,7 +5,7 @@ import Button from '@material-ui/core/Button';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import { withStyles, createStyles } from '@material-ui/core/styles';
+import { makeStyles, createStyles } from '@material-ui/core/styles';
 import ErrorIcon from '@material-ui/icons/Report';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import History from '@material-ui/icons/History';
@@ -13,7 +13,7 @@ import History from '@material-ui/icons/History';
 import Title, { TitlePropType } from './Title';
 import { useTranslate } from 'ra-core';
 
-const styles = theme =>
+const useStyles = makeStyles(theme =>
     createStyles({
         container: {
             display: 'flex',
@@ -44,14 +44,17 @@ const styles = theme =>
         toolbar: {
             marginTop: '2em',
         },
-    });
+    })
+);
 
 function goBack() {
     window.history.go(-1);
 }
 
-const Error = ({ error, errorInfo, classes, className, title, ...rest }) => {
+const Error = ({ error, errorInfo, className, title, ...rest }) => {
+    const classes = useStyles();
     const translate = useTranslate();
+
     return (
         <Fragment>
             <Title defaultTitle={title} />
@@ -89,11 +92,10 @@ const Error = ({ error, errorInfo, classes, className, title, ...rest }) => {
 };
 
 Error.propTypes = {
-    classes: PropTypes.object,
     className: PropTypes.string,
     error: PropTypes.object.isRequired,
     errorInfo: PropTypes.object,
     title: TitlePropType,
 };
 
-export default withStyles(styles)(Error);
+export default Error;

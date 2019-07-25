@@ -3,13 +3,13 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import { withStyles, createStyles } from '@material-ui/core/styles';
+import { makeStyles, createStyles } from '@material-ui/core/styles';
 import { lighten } from '@material-ui/core/styles/colorManipulator';
 import { useTranslate, sanitizeListRestProps } from 'ra-core';
 
 import TopToolbar from '../layout/TopToolbar';
 
-const styles = theme =>
+const useStyles = makeStyles(theme =>
     createStyles({
         toolbar: {
             zIndex: 3,
@@ -36,10 +36,10 @@ const styles = theme =>
         title: {
             flex: '0 0 auto',
         },
-    });
+    })
+);
 
 const BulkActionsToolbar = ({
-    classes,
     basePath,
     filterValues,
     label,
@@ -48,6 +48,7 @@ const BulkActionsToolbar = ({
     children,
     ...rest
 }) => {
+    const classes = useStyles();
     const translate = useTranslate();
 
     return (
@@ -82,7 +83,6 @@ const BulkActionsToolbar = ({
 
 BulkActionsToolbar.propTypes = {
     children: PropTypes.node,
-    classes: PropTypes.object,
     basePath: PropTypes.string,
     filterValues: PropTypes.object,
     label: PropTypes.string,
@@ -94,4 +94,4 @@ BulkActionsToolbar.defaultProps = {
     label: 'ra.action.bulk_actions',
 };
 
-export default withStyles(styles)(BulkActionsToolbar);
+export default BulkActionsToolbar;
