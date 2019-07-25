@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import onlyUpdateForKeys from 'recompose/onlyUpdateForKeys';
 import Fab from '@material-ui/core/Fab';
-import { makeStyles, createStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import ContentAdd from '@material-ui/icons/Add';
 import classnames from 'classnames';
 import { Link } from 'react-router-dom';
@@ -11,8 +11,8 @@ import { useTranslate } from 'ra-core';
 import Button from './Button';
 import Responsive from '../layout/Responsive';
 
-const useStyles = makeStyles(theme =>
-    createStyles({
+const useStyles = makeStyles(theme => {
+    return {
         floating: {
             color: theme.palette.getContrastText(theme.palette.primary.main),
             margin: 0,
@@ -26,8 +26,8 @@ const useStyles = makeStyles(theme =>
         floatingLink: {
             color: 'inherit',
         },
-    })
-);
+    };
+});
 
 const CreateButton = ({
     basePath = '',

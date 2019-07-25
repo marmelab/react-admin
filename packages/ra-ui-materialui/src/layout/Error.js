@@ -5,7 +5,7 @@ import Button from '@material-ui/core/Button';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import { makeStyles, createStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import ErrorIcon from '@material-ui/icons/Report';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import History from '@material-ui/icons/History';
@@ -13,39 +13,37 @@ import History from '@material-ui/icons/History';
 import Title, { TitlePropType } from './Title';
 import { useTranslate } from 'ra-core';
 
-const useStyles = makeStyles(theme =>
-    createStyles({
-        container: {
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            [theme.breakpoints.down('sm')]: {
-                padding: '1em',
-            },
-            fontFamily: 'Roboto, sans-serif',
-            opacity: 0.5,
+const useStyles = makeStyles(theme => ({
+    container: {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        [theme.breakpoints.down('sm')]: {
+            padding: '1em',
         },
-        title: {
-            display: 'flex',
-            alignItems: 'center',
-        },
-        icon: {
-            width: '2em',
-            height: '2em',
-            marginRight: '0.5em',
-        },
-        panel: {
-            marginTop: '1em',
-        },
-        panelDetails: {
-            whiteSpace: 'pre-wrap',
-        },
-        toolbar: {
-            marginTop: '2em',
-        },
-    })
-);
+        fontFamily: 'Roboto, sans-serif',
+        opacity: 0.5,
+    },
+    title: {
+        display: 'flex',
+        alignItems: 'center',
+    },
+    icon: {
+        width: '2em',
+        height: '2em',
+        marginRight: '0.5em',
+    },
+    panel: {
+        marginTop: '1em',
+    },
+    panelDetails: {
+        whiteSpace: 'pre-wrap',
+    },
+    toolbar: {
+        marginTop: '2em',
+    },
+}));
 
 function goBack() {
     window.history.go(-1);

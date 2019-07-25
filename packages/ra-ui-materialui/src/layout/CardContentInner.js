@@ -2,25 +2,23 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import CardContent from '@material-ui/core/CardContent';
-import { makeStyles, createStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 
-var useStyles = makeStyles(theme =>
-    createStyles({
-        root: {
-            paddingTop: 0,
-            paddingBottom: 0,
-            '&:first-child': {
-                paddingTop: 16,
-            },
-            '&:last-child': {
-                paddingBottom: 16,
-                [theme.breakpoints.only('xs')]: {
-                    paddingBottom: 70,
-                },
+var useStyles = makeStyles(theme => ({
+    root: {
+        paddingTop: 0,
+        paddingBottom: 0,
+        '&:first-child': {
+            paddingTop: 16,
+        },
+        '&:last-child': {
+            paddingBottom: 16,
+            [theme.breakpoints.only('xs')]: {
+                paddingBottom: 70,
             },
         },
-    })
-);
+    },
+}));
 
 /**
  * Overrides material-ui CardContent to allow inner content

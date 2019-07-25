@@ -6,7 +6,7 @@ import MuiAppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles, createStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
 import withWidth from '@material-ui/core/withWidth';
 import compose from 'recompose/compose';
@@ -16,37 +16,35 @@ import LoadingIndicator from './LoadingIndicator';
 import DefaultUserMenu from './UserMenu';
 import HideOnScroll from './HideOnScroll';
 
-const useStyles = makeStyles(theme =>
-    createStyles({
-        toolbar: {
-            paddingRight: 24,
-        },
-        menuButton: {
-            marginLeft: '0.5em',
-            marginRight: '0.5em',
-        },
-        menuButtonIconClosed: {
-            transition: theme.transitions.create(['transform'], {
-                easing: theme.transitions.easing.sharp,
-                duration: theme.transitions.duration.leavingScreen,
-            }),
-            transform: 'rotate(0deg)',
-        },
-        menuButtonIconOpen: {
-            transition: theme.transitions.create(['transform'], {
-                easing: theme.transitions.easing.sharp,
-                duration: theme.transitions.duration.leavingScreen,
-            }),
-            transform: 'rotate(180deg)',
-        },
-        title: {
-            flex: 1,
-            textOverflow: 'ellipsis',
-            whiteSpace: 'nowrap',
-            overflow: 'hidden',
-        },
-    })
-);
+const useStyles = makeStyles(theme => ({
+    toolbar: {
+        paddingRight: 24,
+    },
+    menuButton: {
+        marginLeft: '0.5em',
+        marginRight: '0.5em',
+    },
+    menuButtonIconClosed: {
+        transition: theme.transitions.create(['transform'], {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.leavingScreen,
+        }),
+        transform: 'rotate(0deg)',
+    },
+    menuButtonIconOpen: {
+        transition: theme.transitions.create(['transform'], {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.leavingScreen,
+        }),
+        transform: 'rotate(180deg)',
+    },
+    title: {
+        flex: 1,
+        textOverflow: 'ellipsis',
+        whiteSpace: 'nowrap',
+        overflow: 'hidden',
+    },
+}));
 
 const AppBar = ({
     children,

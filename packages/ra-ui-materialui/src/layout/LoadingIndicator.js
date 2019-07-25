@@ -2,18 +2,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { connect } from 'react-redux';
-import { makeStyles, createStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 import RefreshIconButton from '../button/RefreshIconButton';
 
-const useStyles = makeStyles(
-    createStyles({
-        loader: {
-            margin: 14,
-        },
-    })
-);
+const useStyles = makeStyles({
+    loader: {
+        margin: 14,
+    },
+});
 
 export const LoadingIndicator = ({ className, isLoading, ...rest }) => {
     const classes = useStyles();

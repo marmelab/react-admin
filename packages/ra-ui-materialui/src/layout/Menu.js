@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import inflection from 'inflection';
-import { makeStyles, createStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
 import { getResources, useTranslate } from 'ra-core';
 import DefaultIcon from '@material-ui/icons/ViewList';
@@ -11,15 +11,13 @@ import DashboardMenuItem from './DashboardMenuItem';
 import MenuItemLink from './MenuItemLink';
 import Responsive from '../layout/Responsive';
 
-const useStyles = makeStyles(
-    createStyles({
-        main: {
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'flex-start',
-        },
-    })
-);
+const useStyles = makeStyles({
+    main: {
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'flex-start',
+    },
+});
 
 const translatedResourceName = (resource, translate) =>
     translate(`resources.${resource.name}.name`, {

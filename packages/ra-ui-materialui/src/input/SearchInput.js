@@ -1,18 +1,16 @@
 import React from 'react';
 import SearchIcon from '@material-ui/icons/Search';
 import InputAdornment from '@material-ui/core/InputAdornment';
-import { makeStyles, createStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import { useTranslate } from 'ra-core';
 
 import TextInput from './TextInput';
 
-const useStyles = makeStyles(
-    createStyles({
-        input: {
-            marginTop: 32,
-        },
-    })
-);
+const useStyles = makeStyles({
+    input: {
+        marginTop: 32,
+    },
+});
 
 const SearchInput = props => {
     const classes = useStyles();

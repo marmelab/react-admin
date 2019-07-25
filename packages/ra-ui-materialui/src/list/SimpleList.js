@@ -7,19 +7,17 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
-import { makeStyles, createStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
 import { linkToRecord, sanitizeListRestProps } from 'ra-core';
 
-const useStyles = makeStyles(
-    createStyles({
-        link: {
-            textDecoration: 'none',
-            color: 'inherit',
-        },
-        tertiary: { float: 'right', opacity: 0.541176 },
-    })
-);
+const useStyles = makeStyles({
+    link: {
+        textDecoration: 'none',
+        color: 'inherit',
+    },
+    tertiary: { float: 'right', opacity: 0.541176 },
+});
 
 const LinkOrNot = ({ linkType, basePath, id, children }) => {
     const classes = useStyles();

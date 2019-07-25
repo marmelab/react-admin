@@ -2,7 +2,7 @@ import React, { useState, useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import MenuItem from '@material-ui/core/MenuItem';
-import { makeStyles, createStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import compose from 'recompose/compose';
 import { addField, translate, FieldTitle, useTranslate } from 'ra-core';
 
@@ -50,13 +50,11 @@ const sanitizeRestProps = ({
     ...rest
 }) => rest;
 
-const useStyles = makeStyles(theme =>
-    createStyles({
-        input: {
-            minWidth: theme.spacing(20),
-        },
-    })
-);
+const useStyles = makeStyles(theme => ({
+    input: {
+        minWidth: theme.spacing(20),
+    },
+}));
 
 /**
  * An Input component for a select box, using an array of objects for the options

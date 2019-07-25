@@ -7,19 +7,16 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import InputLabel from '@material-ui/core/InputLabel';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import Radio from '@material-ui/core/Radio';
-import { makeStyles, createStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import { addField, FieldTitle, useTranslate } from 'ra-core';
-
 import sanitizeRestProps from './sanitizeRestProps';
 import InputHelperText from './InputHelperText';
 
-const useStyles = makeStyles(
-    createStyles({
-        label: {
-            position: 'relative',
-        },
-    })
-);
+const useStyles = makeStyles({
+    label: {
+        position: 'relative',
+    },
+});
 
 /**
  * An Input component for a radio button group, using an array of objects for the options

@@ -5,22 +5,20 @@ import shouldUpdate from 'recompose/shouldUpdate';
 import TableCell from '@material-ui/core/TableCell';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Tooltip from '@material-ui/core/Tooltip';
-import { makeStyles, createStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import { FieldTitle, useTranslate } from 'ra-core';
 
 // remove the sort icons when not active
-const useStyles = makeStyles(
-    createStyles({
-        icon: {
-            display: 'none',
+const useStyles = makeStyles({
+    icon: {
+        display: 'none',
+    },
+    active: {
+        '& $icon': {
+            display: 'inline',
         },
-        active: {
-            '& $icon': {
-                display: 'inline',
-            },
-        },
-    })
-);
+    },
+});
 
 export const DatagridHeaderCell = ({
     className,
