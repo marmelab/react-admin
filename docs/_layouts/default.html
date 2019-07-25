@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="css/syntax.css">
     <link rel="stylesheet" href="css/prism.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/octicons/4.4.0/font/octicons.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" /> 
 </head>
 
 <body>
@@ -23,7 +24,7 @@
         <div id="book-summary" class="book-summary">
             <nav role="navigation">
                 <div class="search">
-                        <form action="#" onsubmit="search();return false;">
+                        <form action="#" onsubmit="return false;">
                             <div style="display:flex;align-items:center;">
                                 <i class="octicon octicon-search"></i>
                                 <input type="text" name="q" id="query" size="31" maxlength="255" value="" placeholder="Search...">
@@ -878,6 +879,14 @@
         </script>
         <script src="js/prism.js"></script>
         <script src="js/menu.js"></script>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"></script> 
+        <script type="text/javascript"> docsearch({ 
+            apiKey: '32f254b1de6a25a96665d1229b6eb8f7', 
+            indexName: 'marmelab-react-admin', 
+            inputSelector: '#query', 
+            debug: false // Set debug to true if you want to inspect the dropdown 
+        }); 
+        </script> 
 </body>
 
 </html>
