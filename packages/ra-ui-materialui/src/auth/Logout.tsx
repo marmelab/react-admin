@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme: Theme) => ({
  * Used for the Logout Menu item in the sidebar
  */
 const LogoutWithRef: FunctionComponent<
-    Props & MenuItemProps
+    Props & MenuItemProps<'li', { button: true }> // HACK: https://github.com/mui-org/material-ui/issues/16245
 > = React.forwardRef(function Logout(props, ref) {
     const { className, redirectTo, ...rest } = props;
     const classes = useStyles();
