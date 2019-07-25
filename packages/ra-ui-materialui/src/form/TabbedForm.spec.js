@@ -23,9 +23,7 @@ describe('<TabbedForm />', () => {
             </TabbedForm>
         );
 
-        const toolbar = wrapper.find(
-            'WithTheme(WithWidth(WithStyles(Toolbar)))'
-        );
+        const toolbar = wrapper.find('WithTheme(WithWidth(Toolbar))');
         assert.equal(toolbar.length, 1);
     });
 
@@ -42,9 +40,7 @@ describe('<TabbedForm />', () => {
                 tabsWithErrors={[]}
             />
         );
-        const button1 = wrapper1.find(
-            'WithTheme(WithWidth(WithStyles(Toolbar)))'
-        );
+        const button1 = wrapper1.find('WithTheme(WithWidth(Toolbar))');
         assert.equal(button1.prop('submitOnEnter'), false);
 
         const wrapper2 = shallow(
@@ -58,9 +54,7 @@ describe('<TabbedForm />', () => {
                 tabsWithErrors={[]}
             />
         );
-        const button2 = wrapper2.find(
-            'WithTheme(WithWidth(WithStyles(Toolbar)))'
-        );
+        const button2 = wrapper2.find('WithTheme(WithWidth(Toolbar))');
         assert.strictEqual(button2.prop('submitOnEnter'), true);
     });
 

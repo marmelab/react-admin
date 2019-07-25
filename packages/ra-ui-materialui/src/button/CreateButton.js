@@ -11,23 +11,21 @@ import { useTranslate } from 'ra-core';
 import Button from './Button';
 import Responsive from '../layout/Responsive';
 
-const useStyles = makeStyles(theme => {
-    return {
-        floating: {
-            color: theme.palette.getContrastText(theme.palette.primary.main),
-            margin: 0,
-            top: 'auto',
-            right: 20,
-            bottom: 60,
-            left: 'auto',
-            position: 'fixed',
-            zIndex: 1000,
-        },
-        floatingLink: {
-            color: 'inherit',
-        },
-    };
-});
+const useStyles = makeStyles(theme => ({
+    floating: {
+        color: theme.palette.getContrastText(theme.palette.primary.main),
+        margin: 0,
+        top: 'auto',
+        right: 20,
+        bottom: 60,
+        left: 'auto',
+        position: 'fixed',
+        zIndex: 1000,
+    },
+    floatingLink: {
+        color: 'inherit',
+    },
+}));
 
 const CreateButton = ({
     basePath = '',
