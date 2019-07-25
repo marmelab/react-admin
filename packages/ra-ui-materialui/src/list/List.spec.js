@@ -4,6 +4,7 @@ import { cleanup } from 'react-testing-library';
 import { renderWithRedux } from 'ra-core';
 
 import List, { ListView } from './List';
+import { MemoryRouter } from 'react-router';
 
 describe('<List />', () => {
     afterEach(cleanup);
@@ -40,17 +41,20 @@ describe('<List />', () => {
         const Filters = () => <div>filters</div>;
         const Pagination = () => <div>pagination</div>;
         const Datagrid = () => <div>datagrid</div>;
-        const { queryAllByText } = renderWithRedux(
-            <ListView
-                filters={<Filters />}
-                pagination={<Pagination />}
-                {...defaultProps}
-            >
-                <Datagrid />
-            </ListView>
+        const { queryAllByText, queryAllByLabelText } = renderWithRedux(
+            <MemoryRouter initialEntries={['/']}>
+                <ListView
+                    filters={<Filters />}
+                    pagination={<Pagination />}
+                    {...defaultProps}
+                    hasCreate
+                >
+                    <Datagrid />
+                </ListView>
+            </MemoryRouter>
         );
         expect(queryAllByText('filters')).toHaveLength(2);
-        expect(queryAllByText('Export')).toHaveLength(1);
+        expect(queryAllByLabelText('Export')).toHaveLength(1);
         expect(queryAllByText('pagination')).toHaveLength(1);
         expect(queryAllByText('datagrid')).toHaveLength(1);
     });
