@@ -26,9 +26,6 @@
         "watch": "rimraf ./lib && tsc --watch"
     },
     "devDependencies": {
-        "@material-ui/core": "^4.2.1",
-        "@material-ui/icons": "^4.2.1",
-        "@material-ui/styles": "^4.2.1",
         "cross-env": "^5.2.0",
         "enzyme": "~3.9.0",
         "enzyme-adapter-react-16": "~1.12.1",
