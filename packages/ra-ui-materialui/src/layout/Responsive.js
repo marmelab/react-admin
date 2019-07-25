@@ -62,4 +62,4 @@ Responsive.propTypes = {
     width: PropTypes.string,
 };
 
-export default withWidth()(Responsive);
+export default withWidth({ initialWidth: 'xs' })(Responsive);

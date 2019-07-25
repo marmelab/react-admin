@@ -35,13 +35,14 @@ describe('<FilterButton />', () => {
             const hiddenFilter = (
                 <TextInput source="Returned" label="Returned" />
             );
-            const { queryByText } = render(
+            const { getByLabelText, queryByText } = render(
                 <FilterButton
                     {...defaultProps}
                     filters={defaultProps.filters.concat(hiddenFilter)}
                 />
             );
-            fireEvent.click(queryByText('ra.action.add_filter'));
+
+            fireEvent.click(getByLabelText('ra.action.add_filter'));
 
             expect(queryByText('Returned')).not.toBeNull();
             expect(queryByText('Name')).toBeNull();

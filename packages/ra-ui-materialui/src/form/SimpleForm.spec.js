@@ -1,13 +1,15 @@
-import assert from 'assert';
-import { shallow } from 'enzyme';
+import { render, cleanup } from 'react-testing-library';
 import React from 'react';
+import { renderWithRedux } from 'ra-core';
 
-import { SimpleForm } from './SimpleForm';
+import SimpleForm, { SimpleForm as SimpleFormView } from './SimpleForm';
 import TextInput from '../input/TextInput';
 
 describe('<SimpleForm />', () => {
+    afterEach(cleanup);
+
     it('should embed a form with given component children', () => {
-        const wrapper = shallow(
+        const { queryByLabelText } = renderWithRedux(
             <SimpleForm>
                 <TextInput source="name" />
                 <TextInput source="city" />
@@ -40,10 +42,12 @@ describe('<SimpleForm />', () => {
         const button1 = wrapper1.find('WithTheme(WithWidth(Toolbar))');
         assert.equal(button1.prop('submitOnEnter'), false);
 
-        const wrapper2 = shallow(
-            <SimpleForm submitOnEnter={true} handleSubmit={handleSubmit}>
-                <TextInput source="name" />
-            </SimpleForm>
+        const { queryByText, rerender } = render(
+            <SimpleFormView
+                submitOnEnter={false}
+                handleSubmit={handleSubmit}
+                toolbar={<Toolbar />}
+            />
         );
         const button2 = wrapper2.find('WithTheme(WithWidth(Toolbar))');
         assert.equal(button2.prop('submitOnEnter'), true);
