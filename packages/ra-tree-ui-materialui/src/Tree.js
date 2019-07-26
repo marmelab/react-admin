@@ -117,7 +117,7 @@ const Tree = ({
         if (childrenCount > 1 && process.env.NODE_ENV !== 'production') {
             warnAboutChildren();
         }
-    });
+    }, [children]);
 
     const classes = useStyles();
 
