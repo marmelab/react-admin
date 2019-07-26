@@ -1,5 +1,4 @@
 import { useEffect, useCallback } from 'react';
-// @ts-ignore
 import { useDispatch, useSelector } from 'react-redux';
 
 import { crudGetManyAccumulate } from '../actions';

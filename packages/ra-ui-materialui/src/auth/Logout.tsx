@@ -1,6 +1,5 @@
 import React, { useCallback, FunctionComponent } from 'react';
 import PropTypes from 'prop-types';
-// @ts-ignore
 import { useDispatch } from 'react-redux';
 import MenuItem, { MenuItemProps } from '@material-ui/core/MenuItem';
 import { makeStyles, Theme } from '@material-ui/core/styles';
@@ -35,7 +34,7 @@ const LogoutWithRef: FunctionComponent<
     Props & MenuItemProps<'li', { button: true }> // HACK: https://github.com/mui-org/material-ui/issues/16245
 > = React.forwardRef(function Logout(props, ref) {
     const { className, redirectTo, ...rest } = props;
-    const classes = useStyles();
+    const classes = useStyles({});
     const translate = useTranslate();
     const dispatch = useDispatch();
     // eslint-disable-next-line react-hooks/exhaustive-deps

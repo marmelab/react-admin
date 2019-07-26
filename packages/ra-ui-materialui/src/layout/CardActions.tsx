@@ -20,7 +20,7 @@ const CardActions = ({ className, children, ...rest }) => {
         true,
         '<CardActions> is deprecated. Please use the <TopToolbar> component instead to wrap your action buttons'
     );
-    const classes = useStyles();
+    const classes = useStyles({});
     return (
         <div className={classnames(classes.cardActions, className)} {...rest}>
             {children}

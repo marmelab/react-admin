@@ -1,5 +1,4 @@
 import { useEffect, useCallback } from 'react';
-// @ts-ignore
 import { useDispatch } from 'react-redux';
 import { reset as resetForm } from 'redux-form';
 import inflection from 'inflection';
