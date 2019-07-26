@@ -1,5 +1,4 @@
 import { useEffect, useMemo } from 'react';
-// @ts-ignore
 import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import get from 'lodash/get';
 

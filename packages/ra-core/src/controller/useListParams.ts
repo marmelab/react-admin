@@ -1,5 +1,4 @@
 import { useCallback, useState, useMemo } from 'react';
-// @ts-ignore
 import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import { parse, stringify } from 'query-string';
 import { push } from 'connected-react-router';

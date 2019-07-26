@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-// @ts-ignore
 import { useSelector } from 'react-redux';
 import isEqual from 'lodash/isEqual';
 

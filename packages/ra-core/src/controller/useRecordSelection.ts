@@ -1,5 +1,4 @@
 import { useCallback } from 'react';
-// @ts-ignore
 import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import { setListSelectedIds, toggleListItem } from '../actions/listActions';
 import { Identifier, ReduxState } from '../types';

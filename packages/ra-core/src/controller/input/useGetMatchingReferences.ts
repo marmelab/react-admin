@@ -1,5 +1,4 @@
 import { useMemo, useCallback } from 'react';
-// @ts-ignore
 import { useSelector, useDispatch } from 'react-redux';
 
 import { Filter } from '../useFilterState';

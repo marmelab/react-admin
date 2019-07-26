@@ -20,7 +20,7 @@ const CardActions = ({ className, children, ...rest }) => {
         true,
         '<CardActions> is deprecated. Please use the <TopToolbar> component instead to wrap your action buttons'
     );
-    const classes = useStyles();
+    const classes = useStyles({}); // the empty {} is a temp fix for https://github.com/mui-org/material-ui/issues/15942
     return (
         <div className={classnames(classes.cardActions, className)} {...rest}>
             {children}
