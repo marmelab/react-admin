@@ -15,32 +15,25 @@ describe('<SimpleForm />', () => {
                 <TextInput source="city" />
             </SimpleForm>
         );
-        const inputs = wrapper.find('FormInput');
-        assert.deepEqual(inputs.map(i => i.prop('input').props.source), [
-            'name',
-            'city',
-        ]);
+
+        expect(queryByLabelText('Name')).not.toBeNull();
+        expect(queryByLabelText('City')).not.toBeNull();
     });
 
     it('should display <Toolbar />', () => {
-        const wrapper = shallow(
-            <SimpleForm>
-                <TextInput source="name" />
-            </SimpleForm>
+        const Toolbar = () => <p>TOOLBAR</p>;
+
+        const { queryByText } = render(
+            <SimpleFormView toolbar={<Toolbar />} />
         );
-        const button = wrapper.find('WithTheme(WithWidth(Toolbar))');
-        assert.equal(button.length, 1);
+        expect(queryByText('TOOLBAR')).not.toBeNull();
     });
 
     it('should pass submitOnEnter to <Toolbar />', () => {
         const handleSubmit = () => {};
-        const wrapper1 = shallow(
-            <SimpleForm submitOnEnter={false} handleSubmit={handleSubmit}>
-                <TextInput source="name" />
-            </SimpleForm>
+        const Toolbar = ({ submitOnEnter }) => (
+            <p>submitOnEnter: {submitOnEnter.toString()}</p>
         );
-        const button1 = wrapper1.find('WithTheme(WithWidth(Toolbar))');
-        assert.equal(button1.prop('submitOnEnter'), false);
 
         const { queryByText, rerender } = render(
             <SimpleFormView
@@ -49,7 +42,17 @@ describe('<SimpleForm />', () => {
                 toolbar={<Toolbar />}
             />
         );
-        const button2 = wrapper2.find('WithTheme(WithWidth(Toolbar))');
-        assert.equal(button2.prop('submitOnEnter'), true);
+
+        expect(queryByText('submitOnEnter: false')).not.toBeNull();
+
+        rerender(
+            <SimpleFormView
+                submitOnEnter
+                handleSubmit={handleSubmit}
+                toolbar={<Toolbar />}
+            />
+        );
+
+        expect(queryByText('submitOnEnter: true')).not.toBeNull();
     });
 });

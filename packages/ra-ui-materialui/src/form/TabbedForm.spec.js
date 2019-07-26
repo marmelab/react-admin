@@ -10,8 +10,23 @@ const translate = label => label;
 describe('<TabbedForm />', () => {
     afterEach(cleanup);
 
-        const toolbar = wrapper.find('WithTheme(WithWidth(Toolbar))');
-        assert.equal(toolbar.length, 1);
+    it('should display the tabs', () => {
+        const { queryAllByRole } = render(
+            <MemoryRouter initialEntries={['/']}>
+                <TabbedForm
+                    location={{}}
+                    match={{}}
+                    translate={translate}
+                    tabsWithErrors={[]}
+                >
+                    <FormTab label="tab1" />
+                    <FormTab label="tab2" />
+                </TabbedForm>
+            </MemoryRouter>
+        );
+
+        const tabs = queryAllByRole('tab');
+        expect(tabs.length).toEqual(2);
     });
 
     it('should pass submitOnEnter to <Toolbar />', () => {
@@ -31,8 +46,6 @@ describe('<TabbedForm />', () => {
                 toolbar={<Toolbar />}
             />
         );
-        const button1 = wrapper1.find('WithTheme(WithWidth(Toolbar))');
-        assert.equal(button1.prop('submitOnEnter'), false);
 
         expect(queryByText('submitOnEnter: false')).not.toBeNull();
 
@@ -47,8 +60,8 @@ describe('<TabbedForm />', () => {
                 toolbar={<Toolbar />}
             />
         );
-        const button2 = wrapper2.find('WithTheme(WithWidth(Toolbar))');
-        assert.strictEqual(button2.prop('submitOnEnter'), true);
+
+        expect(queryByText('submitOnEnter: true')).not.toBeNull();
     });
 
     describe('findTabsWithErrors', () => {
