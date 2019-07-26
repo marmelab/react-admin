@@ -68,6 +68,9 @@ export default url => ({
         }
         if (value) {
             cy.get(this.elements.filter(name)).type(value);
+        } else {
+            // Workaround to ensure the change event is triggered after emptying the input
+            cy.get(this.elements.filter(name)).type('{enter}');
         }
     },
 

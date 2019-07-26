@@ -169,20 +169,24 @@ const useListParams = ({
 
     const filterValues = query.filter || emptyObject;
 
+    const debouncedSetFilters = lodashDebounce(
+        newFilters =>
+            changeParams({
+                type: SET_FILTER,
+                payload: removeEmpty(newFilters),
+            }),
+        debounce
+    );
+
     const setFilters = useCallback(
-        lodashDebounce(filters => {
+        filters => {
             if (isEqual(filters, filterValues)) {
                 return;
             }
 
-            // fix for redux-form bug with onChange and enableReinitialize
-            const filtersWithoutEmpty = removeEmpty(filters);
-            changeParams({
-                type: SET_FILTER,
-                payload: filtersWithoutEmpty,
-            });
-        }, debounce),
-        requestSignature
+            debouncedSetFilters(filters);
+        },
+        [debouncedSetFilters, filterValues]
     );
 
     const hideFilter = useCallback((filterName: string) => {
