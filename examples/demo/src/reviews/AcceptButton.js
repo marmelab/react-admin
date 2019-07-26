@@ -56,7 +56,6 @@ const AcceptButton = ({ record }) => {
 
 AcceptButton.propTypes = {
     record: PropTypes.object,
-    comment: PropTypes.string,
 };
 
 export default AcceptButton;

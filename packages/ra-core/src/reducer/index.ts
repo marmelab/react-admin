@@ -1,5 +1,4 @@
 import { combineReducers } from 'redux';
-import { reducer as formReducer } from 'redux-form';
 import { connectRouter } from 'connected-react-router';
 import admin, {
     getResources as adminGetResources,
@@ -13,7 +12,6 @@ export default (customReducers, locale, messages, history) =>
     combineReducers({
         admin,
         i18n: i18nReducer(locale, messages),
-        form: formReducer,
         router: connectRouter(history),
         ...customReducers,
     });

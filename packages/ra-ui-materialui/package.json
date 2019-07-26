@@ -48,6 +48,8 @@
         "autosuggest-highlight": "^3.1.1",
         "classnames": "~2.2.5",
         "connected-react-router": "^6.4.0",
+        "final-form": "^4.18.2",
+        "final-form-arrays": "^3.0.1",
         "inflection": "~1.12.0",
         "jsonexport": "^2.4.1",
         "lodash": "~4.17.5",
@@ -56,12 +58,13 @@
         "ra-core": "^3.0.0-alpha.1",
         "react-autosuggest": "^9.4.2",
         "react-dropzone": "~4.0.1",
+        "react-final-form": "^6.3.0",
+        "react-final-form-arrays": "^3.1.0",
         "react-redux": "^7.1.0",
         "react-router": "^5.0.1",
         "react-router-dom": "^5.0.1",
         "react-transition-group": "^2.2.1",
         "recompose": "~0.26.0",
-        "redux": "^3.7.2 || ^4.0.0",
-        "redux-form": "~8.2.0"
+        "redux": "^3.7.2 || ^4.0.0"
     }
 }

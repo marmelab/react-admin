@@ -1,11 +1,8 @@
-import { useEffect, useCallback } from 'react';
-import { useDispatch } from 'react-redux';
-import { reset as resetForm } from 'redux-form';
+import { useCallback } from 'react';
 import inflection from 'inflection';
 
 import useVersion from './useVersion';
 import { useCheckMinimumRequiredProps } from './checkMinimumRequiredProps';
-import { REDUX_FORM_NAME } from '../form';
 import { Record, Identifier } from '../types';
 import {
     useNotify,
@@ -63,7 +60,6 @@ const useEditController = (props: EditProps): EditControllerProps => {
     const notify = useNotify();
     const redirect = useRedirect();
     const refresh = useRefresh();
-    const dispatch = useDispatch();
     const version = useVersion();
     const { data: record, loading } = useGetOne(resource, id, {
         version, // used to force reload
@@ -73,10 +69,6 @@ const useEditController = (props: EditProps): EditControllerProps => {
             refresh();
         },
     });
-
-    useEffect(() => {
-        dispatch(resetForm(REDUX_FORM_NAME));
-    }, [resource, id, version]); // eslint-disable-line react-hooks/exhaustive-deps
 
     const resourceName = translate(`resources.${resource}.name`, {
         smart_count: 1,

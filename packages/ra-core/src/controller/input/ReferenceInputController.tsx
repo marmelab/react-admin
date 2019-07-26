@@ -4,7 +4,6 @@ import {
     FunctionComponent,
     ReactElement,
 } from 'react';
-import { WrappedFieldInputProps } from 'redux-form';
 
 import { Sort, Record } from '../../types';
 import useReferenceInputController, {
@@ -17,7 +16,7 @@ interface Props {
     children: (params: ReferenceInputValue) => ReactNode;
     filter?: any;
     filterToQuery?: (filter: string) => any;
-    input?: WrappedFieldInputProps;
+    input?: any;
     perPage?: number;
     record?: Record;
     reference: string;

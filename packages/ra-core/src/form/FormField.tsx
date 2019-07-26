@@ -1,9 +1,7 @@
-import React, { ComponentType, SFC } from 'react';
+import React, { SFC } from 'react';
 import PropTypes from 'prop-types';
-import { Field } from 'redux-form';
-import withDefaultValue from './withDefaultValue';
-import { Validator } from './validate';
-import { InputProps } from './types';
+import { Field, FieldProps } from 'react-final-form';
+import { Validator, composeValidators } from './validate';
 
 export const isRequired = validate => {
     if (validate && validate.isRequired) {
@@ -15,32 +13,34 @@ export const isRequired = validate => {
     return false;
 };
 
-interface Props {
-    component: ComponentType<InputProps>;
-    defaultValue: any;
+interface Props extends Omit<FieldProps<any, HTMLElement>, 'validate'> {
+    defaultValue?: any;
     input?: any;
     source: string;
-    validate: Validator | Validator[];
+    validate?: Validator | Validator[];
 }
 
-export const FormFieldView: SFC<Props> = ({ input, ...props }) =>
-    input ? ( // An ancestor is already decorated by Field
+export const FormField: SFC<Props> = ({ input, validate, ...props }) => {
+    const sanitizedValidate = Array.isArray(validate)
+        ? composeValidators(validate)
+        : validate;
+
+    return input ? ( // An ancestor is already decorated by Field
         React.createElement(props.component, { input, ...props })
     ) : (
         <Field
             {...props}
             name={props.source}
-            isRequired={isRequired(props.validate)}
+            isRequired={isRequired(validate)}
+            validate={sanitizedValidate}
         />
     );
+};
 
-FormFieldView.propTypes = {
-    component: PropTypes.any.isRequired,
+FormField.propTypes = {
     defaultValue: PropTypes.any,
-    input: PropTypes.object,
     source: PropTypes.string,
     validate: PropTypes.oneOfType([PropTypes.func, PropTypes.array]),
 };
 
-const FormField = withDefaultValue(FormFieldView);
 export default FormField;

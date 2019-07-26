@@ -1,10 +1,10 @@
-import React, { Children, Component } from 'react';
+import React, { Children, useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { reduxForm } from 'redux-form';
-import { connect } from 'react-redux';
-import compose from 'recompose/compose';
+import { Form } from 'react-final-form';
+import arrayMutators from 'final-form-arrays';
+import { useSelector } from 'react-redux';
 import classnames from 'classnames';
-import { getDefaultValues, translate, REDUX_FORM_NAME } from 'ra-core';
+import { useTranslate } from 'ra-core';
 
 import FormInput from './FormInput';
 import Toolbar from './Toolbar';
@@ -25,9 +25,13 @@ const sanitizeRestProps = ({
     clearSubmitErrors,
     destroy,
     dirty,
+    dirtyFields,
+    dirtySinceLastSubmit,
     dispatch,
     form,
     handleSubmit,
+    hasSubmitErrors,
+    hasValidationErrors,
     initialize,
     initialized,
     initialValues,
@@ -37,7 +41,10 @@ const sanitizeRestProps = ({
     reset,
     resetSection,
     save,
+    setRedirect,
     submit,
+    submitError,
+    submitErrors,
     submitAsSideEffect,
     submitFailed,
     submitSucceeded,
@@ -49,72 +56,85 @@ const sanitizeRestProps = ({
     untouch,
     valid,
     validate,
+    validating,
     _reduxForm,
     ...props
 }) => props;
 
-export class SimpleForm extends Component {
-    handleSubmitWithRedirect = (redirect = this.props.redirect) =>
-        this.props.handleSubmit(values => this.props.save(values, redirect));
+export const SimpleForm = ({
+    basePath,
+    children,
+    className,
+    invalid,
+    form,
+    pristine,
+    record,
+    redirect: defaultRedirect,
+    resource,
+    saving,
+    setRedirect,
+    submitOnEnter,
+    toolbar,
+    undoable,
+    version,
+    handleSubmit,
+    ...rest
+}) => {
+    useEffect(() => {
+        form.batch(() => {
+            Object.keys(record).forEach(key => {
+                form.change(key, record[key]);
+            });
+        });
+    }, []); // eslint-disable-line
 
-    render() {
-        const {
-            basePath,
-            children,
-            className,
-            invalid,
-            pristine,
-            record,
-            redirect,
-            resource,
-            saving,
-            submitOnEnter,
-            toolbar,
-            undoable,
-            version,
-            ...rest
-        } = this.props;
+    const handleSubmitWithRedirect = useCallback(
+        (redirect = defaultRedirect) => () => {
+            setRedirect(redirect);
+            handleSubmit();
+        },
+        [setRedirect, defaultRedirect, handleSubmit]
+    );
 
-        return (
-            <form
-                className={classnames('simple-form', className)}
-                {...sanitizeRestProps(rest)}
-            >
-                <CardContentInner key={version}>
-                    {Children.map(children, input => (
-                        <FormInput
-                            basePath={basePath}
-                            input={input}
-                            record={record}
-                            resource={resource}
-                        />
-                    ))}
-                </CardContentInner>
-                {toolbar &&
-                    React.cloneElement(toolbar, {
-                        basePath,
-                        handleSubmitWithRedirect: this.handleSubmitWithRedirect,
-                        handleSubmit: this.props.handleSubmit,
-                        invalid,
-                        pristine,
-                        record,
-                        redirect,
-                        resource,
-                        saving,
-                        submitOnEnter,
-                        undoable,
-                    })}
-            </form>
-        );
-    }
-}
+    return (
+        <form
+            className={classnames('simple-form', className)}
+            {...sanitizeRestProps(rest)}
+        >
+            <CardContentInner key={version}>
+                {Children.map(children, input => (
+                    <FormInput
+                        basePath={basePath}
+                        input={input}
+                        record={record}
+                        resource={resource}
+                    />
+                ))}
+            </CardContentInner>
+            {toolbar &&
+                React.cloneElement(toolbar, {
+                    basePath,
+                    handleSubmitWithRedirect,
+                    handleSubmit,
+                    invalid,
+                    pristine,
+                    record,
+                    redirect: defaultRedirect,
+                    resource,
+                    saving,
+                    submitOnEnter,
+                    undoable,
+                })}
+        </form>
+    );
+};
 
 SimpleForm.propTypes = {
     basePath: PropTypes.string,
     children: PropTypes.node,
     className: PropTypes.string,
     defaultValue: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
-    handleSubmit: PropTypes.func, // passed by redux-form
+    handleSubmit: PropTypes.func, // passed by react-final-form
     invalid: PropTypes.bool,
     pristine: PropTypes.bool,
     record: PropTypes.object,
@@ -138,18 +158,48 @@ SimpleForm.defaultProps = {
     toolbar: <Toolbar />,
 };
 
-const enhance = compose(
-    connect((state, props) => ({
-        form: props.form || REDUX_FORM_NAME,
-        initialValues: getDefaultValues(state, props),
-        saving: props.saving || state.admin.saving,
-    })),
-    translate, // Must be before reduxForm so that it can be used in validation
-    reduxForm({
-        destroyOnUnmount: false,
-        enableReinitialize: true,
-        keepDirtyOnReinitialize: true,
-    })
-);
+const EnhancedSimpleForm = ({ initialValues, ...props }) => {
+    let redirect;
+    // We don't use state here for two reasons:
+    // 1. There no way to execute code only after the state has been updated
+    // 2. We don't want the form to rerender when redirect is changed
+    const setRedirect = newRedirect => {
+        redirect = newRedirect;
+    };
 
-export default enhance(SimpleForm);
+    const saving = useSelector(state => state.admin.saving);
+    const translate = useTranslate();
+    const submit = values => {
+        const finalRedirect =
+            typeof redirect === undefined ? props.redirect : redirect;
+        props.save(values, finalRedirect);
+    };
+
+    const finalInitialValues = {
+        ...initialValues,
+        ...props.record,
+    };
+
+    return (
+        <Form
+            key={props.version}
+            initialValues={finalInitialValues}
+            onSubmit={submit}
+            mutators={{ ...arrayMutators }}
+            keepDirtyOnReinitialize
+            destroyOnUnregister
+            {...props}
+            render={({ submitting, ...formProps }) => (
+                <SimpleForm
+                    saving={submitting || saving}
+                    translate={translate}
+                    setRedirect={setRedirect}
+                    {...props}
+                    {...formProps}
+                />
+            )}
+        />
+    );
+};
+
+export default EnhancedSimpleForm;

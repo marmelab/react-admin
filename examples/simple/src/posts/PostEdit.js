@@ -29,6 +29,7 @@ import {
     minValue,
     number,
     required,
+    composeValidators,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
 import PostTitle from './PostTitle';
 
@@ -99,7 +100,11 @@ const PostEdit = props => (
                 />
                 <NumberInput
                     source="average_note"
-                    validate={[required(), number(), minValue(0)]}
+                    validate={composeValidators(
+                        required(),
+                        number(),
+                        minValue(0)
+                    )}
                 />
                 <BooleanInput source="commentable" defaultValue />
                 <DisabledInput source="views" />

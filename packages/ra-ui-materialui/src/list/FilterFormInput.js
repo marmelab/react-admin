@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Field } from 'redux-form';
+import { Field } from 'react-final-form';
 import IconButton from '@material-ui/core/IconButton';
 import ActionHide from '@material-ui/icons/HighlightOff';
 import { makeStyles } from '@material-ui/core/styles';

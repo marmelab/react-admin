@@ -1,6 +1,6 @@
 import React, { ReactNode, SFC } from 'react';
 import { connect } from 'react-redux';
-import { getFormValues, FormName } from 'redux-form';
+import { FormSpy } from 'react-final-form';
 import get from 'lodash/get';
 
 import warning from '../util/warning';
@@ -119,21 +119,13 @@ export const FormDataConsumerView: SFC<Props> = ({
     return ret === undefined ? null : ret;
 };
 
-const mapStateToProps = (
-    state: ReduxState,
-    { form, record }: ConnectedProps
-) => ({
-    formData: getFormValues(form)(state) || record,
-});
-
-const ConnectedFormDataConsumerView = connect(mapStateToProps)(
-    FormDataConsumerView
-);
-
 const FormDataConsumer = (props: ConnectedProps) => (
-    <FormName>
-        {({ form }) => <ConnectedFormDataConsumerView form={form} {...props} />}
-    </FormName>
+    <FormSpy
+        render={({ form }) => {
+            const formData = form.getState().values;
+            return <FormDataConsumerView formData={formData} {...props} />;
+        }}
+    />
 );
 
 export default FormDataConsumer;

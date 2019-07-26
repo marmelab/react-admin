@@ -1,6 +1,6 @@
 import React, { Fragment, useState, useCallback, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { Field } from 'redux-form';
+import { Field } from 'react-final-form';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';

@@ -1,7 +1,7 @@
 import React, { cloneElement, Children, useCallback } from 'react';
 import PropTypes from 'prop-types';
-import { isRequired, FieldTitle, withDefaultValue } from 'ra-core';
-import { FieldArray } from 'redux-form';
+import { isRequired, FieldTitle } from 'ra-core';
+import { FieldArray } from 'react-final-form-arrays';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 
@@ -40,7 +40,7 @@ import sanitizeRestProps from './sanitizeRestProps';
  *
  * <ArrayInput> expects a single child, which must be a *form iterator* component.
  * A form iterator is a component accepting a fields object
- * as passed by redux-form's <FieldArray> component, and defining a layout for
+ * as passed by react-final-form's <FieldArray> component, and defining a layout for
  * an array of fields. For instance, the <SimpleFormIterator> component
  * displays an array of fields in an unordered list (<ul>), one sub-form by
  * list item (<li>). It also provides controls for adding and removing
@@ -60,14 +60,14 @@ export const ArrayInput = ({
     ...rest
 }) => {
     const renderFieldArray = useCallback(
-        fieldProps => {
-            return cloneElement(Children.only(children), {
+        fieldProps =>
+            cloneElement(Children.only(children), {
                 ...fieldProps,
                 record,
                 resource,
                 source,
-            });
-        },
+                ...children.props,
+            }),
         [resource, source, JSON.stringify(record), children] // eslint-disable-line
     );
 
@@ -117,4 +117,4 @@ ArrayInput.defaultProps = {
     options: {},
     fullWidth: true,
 };
-export default withDefaultValue(ArrayInput);
+export default ArrayInput;

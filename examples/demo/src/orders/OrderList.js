@@ -69,6 +69,7 @@ class TabbedDatagrid extends React.Component {
 
     render() {
         const { classes, filterValues, ...props } = this.props;
+        console.log({ filterValues });
         return (
             <Fragment>
                 <Tabs

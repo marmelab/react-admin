@@ -1,5 +1,4 @@
 import React from 'react';
-import { WrappedFieldInputProps } from 'redux-form';
 import { cleanup } from 'react-testing-library';
 import omit from 'lodash/omit';
 
@@ -10,7 +9,7 @@ describe('<ReferenceInputController />', () => {
     const defaultProps = {
         basePath: '/comments',
         children: jest.fn(),
-        input: { value: undefined } as WrappedFieldInputProps,
+        input: { value: undefined } as any,
         onChange: jest.fn(),
         reference: 'posts',
         resource: 'comments',
@@ -25,7 +24,7 @@ describe('<ReferenceInputController />', () => {
             <ReferenceInputController
                 {...{
                     ...defaultProps,
-                    input: { value: 1 } as WrappedFieldInputProps,
+                    input: { value: 1 } as any,
                     loading: true,
                 }}
             >

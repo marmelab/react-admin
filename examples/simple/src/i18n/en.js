@@ -1,6 +1,4 @@
 import englishMessages from 'ra-language-english';
-import treeEnglishMessages from 'ra-tree-language-english';
-import { mergeTranslations } from 'react-admin';
 
 export const messages = {
     simple: {
@@ -10,7 +8,7 @@ export const messages = {
         },
         'create-post': 'New post',
     },
-    ...mergeTranslations(englishMessages, treeEnglishMessages),
+    ...englishMessages,
     resources: {
         posts: {
             name: 'Post |||| Posts',

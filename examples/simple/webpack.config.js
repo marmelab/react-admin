@@ -2,8 +2,9 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 const IgnoreNotFoundExportPlugin = require('ignore-not-found-export-plugin');
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
- 
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
+    .BundleAnalyzerPlugin;
+
 module.exports = {
     devtool: 'cheap-module-source-map',
     module: {
@@ -33,7 +34,9 @@ module.exports = {
             'RefreshSideEffect',
         ]),
     ].concat(
-        process.env.NODE_ENV === 'development' ? [new BundleAnalyzerPlugin()] : [],
+        process.env.NODE_ENV === 'development'
+            ? [new BundleAnalyzerPlugin()]
+            : []
     ),
     resolve: {
         extensions: ['.ts', '.js', '.tsx', '.json'],
@@ -77,36 +80,6 @@ module.exports = {
                 'packages',
                 'ra-input-rich-text',
                 'src'
-            ),
-            'ra-tree-core': path.join(
-                __dirname,
-                '..',
-                '..',
-                'packages',
-                'ra-tree-core',
-                'src'
-            ),
-            'ra-tree-ui-materialui': path.join(
-                __dirname,
-                '..',
-                '..',
-                'packages',
-                'ra-tree-ui-materialui',
-                'src'
-            ),
-            'ra-tree-language-english': path.join(
-                __dirname,
-                '..',
-                '..',
-                'packages',
-                'ra-tree-language-english'
-            ),
-            'ra-tree-language-french': path.join(
-                __dirname,
-                '..',
-                '..',
-                'packages',
-                'ra-tree-language-french'
             ),
         },
     },

@@ -260,7 +260,7 @@ export class AutocompleteInput extends React.Component {
         } = inputProps;
         if (typeof meta === 'undefined') {
             throw new Error(
-                "The TextInput component wasn't called within a redux-form <Field>. Did you decorate it and forget to add the addField prop to your component? See https://marmelab.com/react-admin/Inputs.html#writing-your-own-input-component for details."
+                "The TextInput component wasn't called within a react-final-form <Field>. Did you decorate it and forget to add the addField prop to your component? See https://marmelab.com/react-admin/Inputs.html#writing-your-own-input-component for details."
             );
         }
 

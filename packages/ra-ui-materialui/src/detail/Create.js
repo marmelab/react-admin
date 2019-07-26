@@ -118,6 +118,7 @@ export const CreateView = props => {
         resource,
         save,
         title,
+        version,
         ...rest
     } = props;
     useCheckMinimumRequiredProps('Create', ['children'], props);
@@ -155,6 +156,7 @@ export const CreateView = props => {
                                 : children.props.redirect,
                         resource,
                         save,
+                        version,
                     })}
                 </Card>
                 {aside &&
@@ -163,6 +165,7 @@ export const CreateView = props => {
                         record,
                         resource,
                         save,
+                        version,
                     })}
             </div>
         </div>
