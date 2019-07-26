@@ -1,4 +1,3 @@
-// @ts-ignore
 import { useSelector, shallowEqual } from 'react-redux';
 import { CRUD_GET_LIST } from '../actions/dataActions/crudGetList';
 import { GET_LIST } from '../dataFetchActions';

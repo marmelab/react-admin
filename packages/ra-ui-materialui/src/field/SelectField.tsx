@@ -2,15 +2,14 @@ import React, { SFC, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import pure from 'recompose/pure';
-import { useTranslate } from 'ra-core';
+import { useTranslate, Identifier } from 'ra-core';
 import Typography from '@material-ui/core/Typography';
 
 import sanitizeRestProps from './sanitizeRestProps';
 import { FieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 
 interface Choice {
-    id: string;
-    name: string;
+    [key: string]: string | Identifier;
 }
 
 type OptionTextElement = ReactElement<{ record: Choice }>;
@@ -98,11 +97,17 @@ export const SelectField: SFC<Props & InjectedFieldProps> = ({
     if (!choice) {
         return null;
     }
-    const choiceName = React.isValidElement(optionText)
-        ? React.cloneElement(optionText, { record: choice })
-        : typeof optionText === 'function'
-        ? optionText(choice)
-        : choice[optionText];
+    let choiceIsElement = false;
+    let choiceName;
+    if (React.isValidElement(optionText)) {
+        choiceIsElement = true;
+        choiceName = React.cloneElement(optionText, { record: choice });
+    } else {
+        choiceName =
+            typeof optionText === 'function'
+                ? optionText(choice)
+                : choice[optionText];
+    }
 
     return (
         <Typography
@@ -111,7 +116,7 @@ export const SelectField: SFC<Props & InjectedFieldProps> = ({
             className={className}
             {...sanitizeRestProps(rest)}
         >
-            {translateChoice
+            {translateChoice && !choiceIsElement
                 ? translate(choiceName, { _: choiceName })
                 : choiceName}
         </Typography>
@@ -133,7 +138,7 @@ EnhancedSelectField.defaultProps = {
 EnhancedSelectField.propTypes = {
     ...Typography.propTypes,
     ...fieldPropTypes,
-    choices: PropTypes.arrayOf(PropTypes.object).isRequired,
+    choices: PropTypes.arrayOf(PropTypes.any).isRequired,
     optionText: PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.func,
