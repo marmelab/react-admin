@@ -1,4 +1,4 @@
-import React, { Children, Component } from 'react';
+import React, { Children } from 'react';
 import PropTypes from 'prop-types';
 import { reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
@@ -53,61 +53,59 @@ const sanitizeRestProps = ({
     ...props
 }) => props;
 
-export class SimpleForm extends Component {
-    handleSubmitWithRedirect = (redirect = this.props.redirect) =>
-        this.props.handleSubmit(values => this.props.save(values, redirect));
+const SimpleForm = ({
+    basePath,
+    children,
+    className,
+    invalid,
+    pristine,
+    record,
+    redirect,
+    resource,
+    saving,
+    submitOnEnter,
+    toolbar,
+    undoable,
+    version,
+    save,
+    handleSubmit,
+    ...rest
+}) => {
+    const handleSubmitWithRedirect = (redirect = redirect) =>
+        handleSubmit(values => save(values, redirect));
 
-    render() {
-        const {
-            basePath,
-            children,
-            className,
-            invalid,
-            pristine,
-            record,
-            redirect,
-            resource,
-            saving,
-            submitOnEnter,
-            toolbar,
-            undoable,
-            version,
-            ...rest
-        } = this.props;
-
-        return (
-            <form
-                className={classnames('simple-form', className)}
-                {...sanitizeRestProps(rest)}
-            >
-                <CardContentInner key={version}>
-                    {Children.map(children, input => (
-                        <FormInput
-                            basePath={basePath}
-                            input={input}
-                            record={record}
-                            resource={resource}
-                        />
-                    ))}
-                </CardContentInner>
-                {toolbar &&
-                    React.cloneElement(toolbar, {
-                        basePath,
-                        handleSubmitWithRedirect: this.handleSubmitWithRedirect,
-                        handleSubmit: this.props.handleSubmit,
-                        invalid,
-                        pristine,
-                        record,
-                        redirect,
-                        resource,
-                        saving,
-                        submitOnEnter,
-                        undoable,
-                    })}
-            </form>
-        );
-    }
-}
+    return (
+        <form
+            className={classnames('simple-form', className)}
+            {...sanitizeRestProps(rest)}
+        >
+            <CardContentInner key={version}>
+                {Children.map(children, input => (
+                    <FormInput
+                        basePath={basePath}
+                        input={input}
+                        record={record}
+                        resource={resource}
+                    />
+                ))}
+            </CardContentInner>
+            {toolbar &&
+                React.cloneElement(toolbar, {
+                    basePath,
+                    handleSubmitWithRedirect,
+                    handleSubmit,
+                    invalid,
+                    pristine,
+                    record,
+                    redirect,
+                    resource,
+                    saving,
+                    submitOnEnter,
+                    undoable,
+                })}
+        </form>
+    );
+};
 
 SimpleForm.propTypes = {
     basePath: PropTypes.string,

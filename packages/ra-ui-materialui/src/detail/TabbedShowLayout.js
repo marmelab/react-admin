@@ -1,9 +1,4 @@
-import React, {
-    Component,
-    Children,
-    cloneElement,
-    isValidElement,
-} from 'react';
+import React, { Children, cloneElement, isValidElement } from 'react';
 import PropTypes from 'prop-types';
 import Divider from '@material-ui/core/Divider';
 import { withRouter, Route } from 'react-router-dom';
@@ -71,63 +66,54 @@ const getTabFullPath = (tab, index, baseUrl) =>
  *     );
  *     export default App;
  */
-export class TabbedShowLayout extends Component {
-    render() {
-        const {
-            basePath,
-            children,
-            className,
-            location,
-            match,
-            record,
-            resource,
-            translate,
-            version,
-            value,
+
+const TabbedShowLayout = ({
+    basePath,
+    children,
+    className,
+    location,
+    match,
+    record,
+    resource,
+    translate,
+    version,
+    value,
+    tabs,
+    ...rest
+}) => (
+    <div className={className} key={version} {...sanitizeRestProps(rest)}>
+        {cloneElement(
             tabs,
-            ...rest
-        } = this.props;
+            {
+                // The location pathname will contain the page path including the current tab path
+                // so we can use it as a way to determine the current tab
+                value: location.pathname,
+                match,
+            },
+            children
+        )}
 
-        return (
-            <div
-                className={className}
-                key={version}
-                {...sanitizeRestProps(rest)}
-            >
-                {cloneElement(
-                    tabs,
-                    {
-                        // The location pathname will contain the page path including the current tab path
-                        // so we can use it as a way to determine the current tab
-                        value: location.pathname,
-                        match,
-                    },
-                    children
-                )}
-
-                <Divider />
-                <CardContentInner>
-                    {Children.map(children, (tab, index) =>
-                        tab && isValidElement(tab) ? (
-                            <Route
-                                exact
-                                path={getTabFullPath(tab, index, match.url)}
-                                render={() =>
-                                    cloneElement(tab, {
-                                        context: 'content',
-                                        resource,
-                                        record,
-                                        basePath,
-                                    })
-                                }
-                            />
-                        ) : null
-                    )}
-                </CardContentInner>
-            </div>
-        );
-    }
-}
+        <Divider />
+        <CardContentInner>
+            {Children.map(children, (tab, index) =>
+                tab && isValidElement(tab) ? (
+                    <Route
+                        exact
+                        path={getTabFullPath(tab, index, match.url)}
+                        render={() =>
+                            cloneElement(tab, {
+                                context: 'content',
+                                resource,
+                                record,
+                                basePath,
+                            })
+                        }
+                    />
+                ) : null
+            )}
+        </CardContentInner>
+    </div>
+);
 
 TabbedShowLayout.propTypes = {
     children: PropTypes.node,

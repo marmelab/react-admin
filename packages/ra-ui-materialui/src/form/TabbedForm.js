@@ -1,4 +1,4 @@
-import React, { Children, Component, isValidElement } from 'react';
+import React, { Children, isValidElement } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import {
@@ -72,113 +72,109 @@ export const getTabFullPath = (tab, index, baseUrl) =>
         tab.props.path ? `/${tab.props.path}` : index > 0 ? `/${index}` : ''
     }`;
 
-export class TabbedForm extends Component {
-    handleSubmitWithRedirect = (redirect = this.props.redirect) =>
-        this.props.handleSubmit(values => this.props.save(values, redirect));
+const TabbedForm = ({
+    basePath,
+    children,
+    className,
+    classes = {},
+    invalid,
+    location,
+    match,
+    pristine,
+    record,
+    redirect,
+    resource,
+    saving,
+    submitOnEnter,
+    tabs,
+    tabsWithErrors,
+    toolbar,
+    translate,
+    undoable,
+    value,
+    version,
+    save,
+    handleSubmit,
+    ...rest
+}) => {
+    const handleSubmitWithRedirect = (redirect = redirect) =>
+        handleSubmit(values => save(values, redirect));
 
-    render() {
-        const {
-            basePath,
-            children,
-            className,
-            classes = {},
-            invalid,
-            location,
-            match,
-            pristine,
-            record,
-            redirect,
-            resource,
-            saving,
-            submitOnEnter,
-            tabs,
-            tabsWithErrors,
-            toolbar,
-            translate,
-            undoable,
-            value,
-            version,
-            ...rest
-        } = this.props;
+    const url = match ? match.url : location.pathname;
 
-        const url = match ? match.url : location.pathname;
-        return (
-            <form
-                className={classnames('tabbed-form', className)}
-                key={version}
-                {...sanitizeRestProps(rest)}
-            >
-                {React.cloneElement(
-                    tabs,
-                    {
-                        classes,
-                        currentLocationPath: location.pathname,
-                        url,
-                        tabsWithErrors,
-                    },
-                    children
+    return (
+        <form
+            className={classnames('tabbed-form', className)}
+            key={version}
+            {...sanitizeRestProps(rest)}
+        >
+            {React.cloneElement(
+                tabs,
+                {
+                    classes,
+                    currentLocationPath: location.pathname,
+                    url,
+                    tabsWithErrors,
+                },
+                children
+            )}
+            <Divider />
+            <CardContentInner>
+                {/* All tabs are rendered (not only the one in focus), to allow validation
+                on tabs not in focus. The tabs receive a `hidden` property, which they'll
+                use to hide the tab using CSS if it's not the one in focus.
+                See https://github.com/marmelab/react-admin/issues/1866 */}
+                {Children.map(
+                    children,
+                    (tab, index) =>
+                        tab && (
+                            <Route exact path={getTabFullPath(tab, index, url)}>
+                                {routeProps =>
+                                    isValidElement(tab)
+                                        ? React.cloneElement(tab, {
+                                              intent: 'content',
+                                              resource,
+                                              record,
+                                              basePath,
+                                              hidden: !routeProps.match,
+                                              /**
+                                               * Force redraw when the tab becomes active
+                                               *
+                                               * This is because the fields, decorated by redux-form and connect,
+                                               * aren't redrawn by default when the tab becomes active.
+                                               * Unfortunately, some material-ui fields (like multiline TextField)
+                                               * compute their size based on the scrollHeight of a dummy DOM element,
+                                               * and scrollHeight is 0 in a hidden div. So they must be redrawn
+                                               * once the tab becomes active.
+                                               *
+                                               * @ref https://github.com/marmelab/react-admin/issues/1956
+                                               */
+                                              key: `${index}_${!routeProps.match}`,
+                                          })
+                                        : null
+                                }
+                            </Route>
+                        )
                 )}
-                <Divider />
-                <CardContentInner>
-                    {/* All tabs are rendered (not only the one in focus), to allow validation
-                    on tabs not in focus. The tabs receive a `hidden` property, which they'll
-                    use to hide the tab using CSS if it's not the one in focus.
-                    See https://github.com/marmelab/react-admin/issues/1866 */}
-                    {Children.map(
-                        children,
-                        (tab, index) =>
-                            tab && (
-                                <Route
-                                    exact
-                                    path={getTabFullPath(tab, index, url)}
-                                >
-                                    {routeProps =>
-                                        isValidElement(tab)
-                                            ? React.cloneElement(tab, {
-                                                  intent: 'content',
-                                                  resource,
-                                                  record,
-                                                  basePath,
-                                                  hidden: !routeProps.match,
-                                                  /**
-                                                   * Force redraw when the tab becomes active
-                                                   *
-                                                   * This is because the fields, decorated by redux-form and connect,
-                                                   * aren't redrawn by default when the tab becomes active.
-                                                   * Unfortunately, some material-ui fields (like multiline TextField)
-                                                   * compute their size based on the scrollHeight of a dummy DOM element,
-                                                   * and scrollHeight is 0 in a hidden div. So they must be redrawn
-                                                   * once the tab becomes active.
-                                                   *
-                                                   * @ref https://github.com/marmelab/react-admin/issues/1956
-                                                   */
-                                                  key: `${index}_${!routeProps.match}`,
-                                              })
-                                            : null
-                                    }
-                                </Route>
-                            )
-                    )}
-                </CardContentInner>
-                {toolbar &&
-                    React.cloneElement(toolbar, {
-                        basePath,
-                        className: 'toolbar',
-                        handleSubmitWithRedirect: this.handleSubmitWithRedirect,
-                        handleSubmit: this.props.handleSubmit,
-                        invalid,
-                        pristine,
-                        record,
-                        redirect,
-                        resource,
-                        saving,
-                        submitOnEnter,
-                        undoable,
-                    })}
-            </form>
-        );
-    }
-}
+            </CardContentInner>
+            {toolbar &&
+                React.cloneElement(toolbar, {
+                    basePath,
+                    className: 'toolbar',
+                    handleSubmitWithRedirect,
+                    handleSubmit,
+                    invalid,
+                    pristine,
+                    record,
+                    redirect,
+                    resource,
+                    saving,
+                    submitOnEnter,
+                    undoable,
+                })}
+        </form>
+    );
+};
 
 TabbedForm.propTypes = {
     basePath: PropTypes.string,

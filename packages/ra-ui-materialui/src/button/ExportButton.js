@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import GetApp from '@material-ui/icons/GetApp';
@@ -91,35 +91,19 @@ const fetchRelatedRecords = dispatch => (data, field, resource) =>
         });
     });
 
-class ExportButton extends Component {
-    static propTypes = {
-        basePath: PropTypes.string,
-        dispatch: PropTypes.func,
-        exporter: PropTypes.func,
-        filter: PropTypes.object,
-        label: PropTypes.string,
-        maxResults: PropTypes.number.isRequired,
-        resource: PropTypes.string.isRequired,
-        sort: PropTypes.object,
-        icon: PropTypes.element,
-    };
-
-    static defaultProps = {
-        label: 'ra.action.export',
-        maxResults: 1000,
-        icon: <GetApp />,
-    };
-
-    handleClick = () => {
-        const {
-            dispatch,
-            exporter,
-            filter,
-            maxResults,
-            sort,
-            resource,
-            onClick,
-        } = this.props;
+const ExportButton = ({
+    dispatch,
+    icon,
+    exporter,
+    filter,
+    label,
+    maxResults,
+    sort,
+    resource,
+    onClick,
+    ...rest
+}) => {
+    const handleClick = () => {
         dispatch(
             crudGetAll(
                 resource,
@@ -144,19 +128,33 @@ class ExportButton extends Component {
         }
     };
 
-    render() {
-        const { label, icon, ...rest } = this.props;
+    return (
+        <Button
+            onClick={handleClick}
+            label={label}
+            {...sanitizeRestProps(rest)}
+        >
+            {icon}
+        </Button>
+    );
+};
 
-        return (
-            <Button
-                onClick={this.handleClick}
-                label={label}
-                {...sanitizeRestProps(rest)}
-            >
-                {icon}
-            </Button>
-        );
-    }
-}
+ExportButton.propTypes = {
+    basePath: PropTypes.string,
+    dispatch: PropTypes.func,
+    exporter: PropTypes.func,
+    filter: PropTypes.object,
+    label: PropTypes.string,
+    maxResults: PropTypes.number.isRequired,
+    resource: PropTypes.string.isRequired,
+    sort: PropTypes.object,
+    icon: PropTypes.element,
+};
+
+ExportButton.defaultProps = {
+    label: 'ra.action.export',
+    maxResults: 1000,
+    icon: <GetApp />,
+};
 
 export default connect()(ExportButton); // inject redux dispatch

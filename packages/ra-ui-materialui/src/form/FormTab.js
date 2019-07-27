@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import MuiTab from '@material-ui/core/Tab';
@@ -18,55 +18,59 @@ const sanitizeRestProps = ({
 
 const hiddenStyle = { display: 'none' };
 
-class FormTab extends Component {
-    renderHeader = ({ className, label, icon, value, translate, ...rest }) => {
-        const to = { pathname: value, search: 'skipFormReset' }; // FIXME use location state when https://github.com/supasate/connected-react-router/issues/301 is fixed
+const renderHeader = ({
+    className,
+    label,
+    icon,
+    value,
+    translate,
+    ...rest
+}) => {
+    const to = { pathname: value, search: 'skipFormReset' }; // FIXME use location state when https://github.com/supasate/connected-react-router/issues/301 is fixed
 
-        return (
-            <MuiTab
-                key={label}
-                label={translate(label, { _: label })}
-                value={value}
-                icon={icon}
-                className={classnames('form-tab', className)}
-                component={Link}
-                to={to}
-                {...sanitizeRestProps(rest)}
-            />
-        );
-    };
-
-    renderContent = ({
-        contentClassName,
-        children,
-        hidden,
-        basePath,
-        record,
-        resource,
-    }) => (
-        <span style={hidden ? hiddenStyle : null} className={contentClassName}>
-            {React.Children.map(
-                children,
-                input =>
-                    input && (
-                        <FormInput
-                            basePath={basePath}
-                            input={input}
-                            record={record}
-                            resource={resource}
-                        />
-                    )
-            )}
-        </span>
+    return (
+        <MuiTab
+            key={label}
+            label={translate(label, { _: label })}
+            value={value}
+            icon={icon}
+            className={classnames('form-tab', className)}
+            component={Link}
+            to={to}
+            {...sanitizeRestProps(rest)}
+        />
     );
+};
 
-    render() {
-        const { children, intent, ...rest } = this.props;
-        return intent === 'header'
-            ? this.renderHeader(rest)
-            : this.renderContent({ children, ...rest });
-    }
-}
+const renderContent = ({
+    contentClassName,
+    children,
+    hidden,
+    basePath,
+    record,
+    resource,
+}) => (
+    <span style={hidden ? hiddenStyle : null} className={contentClassName}>
+        {React.Children.map(
+            children,
+            input =>
+                input && (
+                    <FormInput
+                        basePath={basePath}
+                        input={input}
+                        record={record}
+                        resource={resource}
+                    />
+                )
+        )}
+    </span>
+);
+
+const FormTab = ({ children, intent, ...rest }) => {
+    return intent === 'header'
+        ? renderHeader(rest)
+        : renderContent({ children, ...rest });
+};
 
 FormTab.propTypes = {
     className: PropTypes.string,
