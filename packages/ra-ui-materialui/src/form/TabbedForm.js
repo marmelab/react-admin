@@ -11,17 +11,16 @@ import { connect } from 'react-redux';
 import { withRouter, Route } from 'react-router-dom';
 import compose from 'recompose/compose';
 import Divider from '@material-ui/core/Divider';
-import { withStyles, createStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import { getDefaultValues, translate, REDUX_FORM_NAME } from 'ra-core';
 
 import Toolbar from './Toolbar';
 import CardContentInner from '../layout/CardContentInner';
 import TabbedFormTabs from './TabbedFormTabs';
 
-const styles = theme =>
-    createStyles({
-        errorTabButton: { color: theme.palette.error.main },
-    });
+const useStyles = makeStyles(theme => ({
+    errorTabButton: { color: theme.palette.error.main },
+}));
 
 const sanitizeRestProps = ({
     anyTouched,
@@ -76,7 +75,6 @@ const TabbedForm = ({
     basePath,
     children,
     className,
-    classes = {},
     invalid,
     location,
     match,
@@ -97,6 +95,7 @@ const TabbedForm = ({
     handleSubmit,
     ...rest
 }) => {
+    const classes = useStyles();
     const handleSubmitWithRedirect = (redirect = redirect) =>
         handleSubmit(values => save(values, redirect));
 
@@ -180,7 +179,6 @@ TabbedForm.propTypes = {
     basePath: PropTypes.string,
     children: PropTypes.node,
     className: PropTypes.string,
-    classes: PropTypes.object,
     defaultValue: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
     handleSubmit: PropTypes.func, // passed by redux-form
     invalid: PropTypes.bool,
@@ -279,8 +277,7 @@ const enhance = compose(
         destroyOnUnmount: false,
         enableReinitialize: true,
         keepDirtyOnReinitialize: true,
-    }),
-    withStyles(styles)
+    })
 );
 
 export default enhance(TabbedForm);
