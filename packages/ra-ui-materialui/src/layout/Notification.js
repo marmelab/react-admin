@@ -13,6 +13,7 @@ import {
     translate,
     undo,
     complete,
+    undoableEventEmitter,
 } from 'ra-core';
 
 const styles = theme =>
@@ -55,8 +56,15 @@ class Notification extends React.Component {
         const { notification, hideNotification, complete } = this.props;
         if (notification && notification.undoable) {
             complete();
+            undoableEventEmitter.emit('end', { isUndo: false });
         }
         hideNotification();
+    };
+
+    handleUndo = () => {
+        const { undo } = this.props;
+        undo();
+        undoableEventEmitter.emit('end', { isUndo: true });
     };
 
     render() {
@@ -107,7 +115,7 @@ class Notification extends React.Component {
                             color="primary"
                             className={undoClass}
                             size="small"
-                            onClick={undo}
+                            onClick={this.handleUndo}
                         >
                             {translate('ra.action.undo')}
                         </Button>

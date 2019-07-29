@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import DataProviderContext from './DataProviderContext';
 import validateResponseFormat from './validateResponseFormat';
+import undoableEventEmitter from './undoableEventEmitter';
 import {
     startOptimisticMode,
     stopOptimisticMode,
@@ -12,8 +13,6 @@ import { FETCH_END, FETCH_ERROR, FETCH_START } from '../actions/fetchActions';
 import { showNotification } from '../actions/notificationActions';
 import { refreshView } from '../actions/uiActions';
 import { ReduxState, DataProvider } from '../types';
-
-let userDidUndo = false;
 
 type DataProviderHookFunction = (
     type: string,
@@ -76,10 +75,6 @@ const useDataProvider = (): DataProviderHookFunction => {
     const isOptimistic = useSelector(
         (state: ReduxState) => state.admin.ui.optimistic
     );
-    const isUndo = useSelector((state: ReduxState) => state.admin.isUndo);
-    if (isUndo) {
-        userDidUndo = true;
-    }
 
     return useCallback(
         (
@@ -117,7 +112,7 @@ const useDataProvider = (): DataProviderHookFunction => {
                 ? performUndoableQuery(params)
                 : performQuery(params);
         },
-        [] // eslint-disable-line react-hooks/exhaustive-deps
+        [dataProvider, dispatch, isOptimistic]
     );
 };
 
@@ -155,57 +150,59 @@ const performUndoableQuery = ({
         },
     });
     successFunc({});
-    Promise.race([
-        new Promise(resolve => setTimeout(() => resolve('complete'), 1000)),
-        new Promise(resolve => setTimeout(() => resolve('cancel'), 1100)),
-    ]).then(outcome => {
-        if (outcome === 'complete') {
-            dispatch(stopOptimisticMode());
-            dispatch({
-                type: `${action}_LOADING`,
-                payload,
-                meta: { resource, ...rest },
-            });
-            dispatch({ type: FETCH_START });
-            dataProvider(type, resource, payload)
-                .then(response => {
-                    if (process.env.NODE_ENV !== 'production') {
-                        validateResponseFormat(response, type);
-                    }
-                    dispatch({
-                        type: `${action}_SUCCESS`,
-                        payload: response,
-                        requestPayload: payload,
-                        meta: {
-                            ...rest,
-                            resource,
-                            fetchResponse: type,
-                            fetchStatus: FETCH_END,
-                        },
-                    });
-                    dispatch({ type: FETCH_END });
-                })
-                .catch(error => {
-                    dispatch({
-                        type: `${action}_FAILURE`,
-                        error: error.message ? error.message : error,
-                        payload: error.body ? error.body : null,
-                        requestPayload: payload,
-                        meta: {
-                            ...rest,
-                            resource,
-                            fetchResponse: type,
-                            fetchStatus: FETCH_ERROR,
-                        },
-                    });
-                    dispatch({ type: FETCH_ERROR, error });
-                    failureFunc(error);
-                    throw new Error(error.message ? error.message : error);
-                });
-        } else {
+    undoableEventEmitter.once('end', ({ isUndo }) => {
+        dispatch(stopOptimisticMode());
+        if (isUndo) {
             dispatch(showNotification('ra.notification.canceled'));
             dispatch(refreshView());
+            return;
         }
+        dispatch({
+            type: action,
+            payload,
+            meta: { resource },
+        });
+        dispatch({
+            type: `${action}_LOADING`,
+            payload,
+            meta: { resource, ...rest },
+        });
+        dispatch({ type: FETCH_START });
+        dataProvider(type, resource, payload)
+            .then(response => {
+                if (process.env.NODE_ENV !== 'production') {
+                    validateResponseFormat(response, type);
+                }
+                dispatch({
+                    type: `${action}_SUCCESS`,
+                    payload: response,
+                    requestPayload: payload,
+                    meta: {
+                        ...rest,
+                        resource,
+                        fetchResponse: type,
+                        fetchStatus: FETCH_END,
+                    },
+                });
+                dispatch({ type: FETCH_END });
+            })
+            .catch(error => {
+                dispatch({
+                    type: `${action}_FAILURE`,
+                    error: error.message ? error.message : error,
+                    payload: error.body ? error.body : null,
+                    requestPayload: payload,
+                    meta: {
+                        ...rest,
+                        resource,
+                        fetchResponse: type,
+                        fetchStatus: FETCH_ERROR,
+                    },
+                });
+                dispatch({ type: FETCH_ERROR, error });
+                failureFunc(error);
+                throw new Error(error.message ? error.message : error);
+            });
     });
     return Promise.resolve({});
 };
@@ -227,6 +224,11 @@ const performQuery = ({
     dataProvider,
     dispatch,
 }: QueryFunctionParams) => {
+    dispatch({
+        type: action,
+        payload,
+        meta: { resource },
+    });
     dispatch({
         type: `${action}_LOADING`,
         payload,

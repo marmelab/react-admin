@@ -2,6 +2,7 @@ import HttpError from './HttpError';
 import * as fetchUtils from './fetch';
 import Mutation from './Mutation';
 import Query from './Query';
+import undoableEventEmitter from './undoableEventEmitter';
 import useDataProvider from './useDataProvider';
 import useMutation from './useMutation';
 import useQuery from './useQuery';
@@ -20,6 +21,7 @@ export {
     HttpError,
     Mutation,
     Query,
+    undoableEventEmitter,
     useDataProvider,
     useMutation,
     useQuery,
