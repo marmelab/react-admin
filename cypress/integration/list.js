@@ -40,7 +40,7 @@ describe('List Page', () => {
             );
         });
 
-        it.only('should filter directly while typing (with some debounce)', () => {
+        it('should filter directly while typing (with some debounce)', () => {
             ListPagePosts.setFilterValue('q', 'quis culpa impedit');
             cy.get(ListPagePosts.elements.recordRows).should(el =>
                 expect(el).to.have.length(1)

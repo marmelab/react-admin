@@ -3,7 +3,6 @@ import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import { parse, stringify } from 'query-string';
 import { push } from 'connected-react-router';
 import lodashDebounce from 'lodash/debounce';
-import isEqual from 'lodash/isEqual';
 import pickBy from 'lodash/pickBy';
 import { Location } from 'history';
 
@@ -180,13 +179,9 @@ const useListParams = ({
 
     const setFilters = useCallback(
         filters => {
-            if (isEqual(filters, filterValues)) {
-                return;
-            }
-
             debouncedSetFilters(filters);
         },
-        [debouncedSetFilters, filterValues]
+        [debouncedSetFilters]
     );
 
     const hideFilter = useCallback((filterName: string) => {
