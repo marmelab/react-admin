@@ -66,7 +66,6 @@ export const ArrayInput = ({
                 record,
                 resource,
                 source,
-                ...children.props,
             }),
         [resource, source, JSON.stringify(record), children] // eslint-disable-line
     );
@@ -88,8 +87,7 @@ export const ArrayInput = ({
             </InputLabel>
             <FieldArray
                 name={source}
-                defaultValue={defaultValue}
-                component={renderFieldArray}
+                render={renderFieldArray}
                 validate={validate}
                 isRequired={isRequired(validate)}
             />
