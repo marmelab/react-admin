@@ -88,37 +88,6 @@ describe('useListController', () => {
             });
         });
 
-        it('should not call filtering function if filters are unchanged', () => {
-            expect.assertions(1);
-
-            const props = {
-                ...defaultProps,
-                location: {
-                    ...defaultProps.location,
-                    search: `?filter=${JSON.stringify({ q: 'hello' })}`,
-                },
-                children: fakeComponent,
-            };
-
-            const { getByLabelText, dispatch } = renderWithRedux(
-                <ListController {...props} />,
-                {
-                    admin: {
-                        resources: { posts: { list: { params: {} } } },
-                    },
-                }
-            );
-            const searchInput = getByLabelText('search');
-
-            fireEvent.change(searchInput, { target: { value: 'hello' } });
-            clock.tick(210);
-
-            const changeParamsCalls = dispatch.mock.calls.filter(
-                call => call[0].type === CRUD_CHANGE_LIST_PARAMS
-            );
-            expect(changeParamsCalls).toHaveLength(0);
-        });
-
         it.skip('should remove empty filters', () => {
             const props = {
                 ...defaultProps,
