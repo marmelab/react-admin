@@ -1,7 +1,7 @@
 import { CRUD_GET_ONE } from '../actions/dataActions/crudGetOne';
 import { GET_ONE } from '../dataFetchActions';
 import { Identifier, ReduxState } from '../types';
-import useQueryWithStore from '../fetch/useQueryWithStore';
+import useQueryWithStore from './useQueryWithStore';
 
 /**
  * Call the dataProvider with a GET_ONE verb and return the result as well as the loading state.
