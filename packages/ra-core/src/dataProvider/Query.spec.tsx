@@ -41,7 +41,6 @@ describe('Query', () => {
         const action = dispatchSpy.mock.calls[0][0];
         expect(action.type).toEqual('CUSTOM_FETCH');
         expect(action.payload).toEqual(myPayload);
-        expect(action.meta.fetch).toEqual('mytype');
         expect(action.meta.resource).toEqual('myresource');
     });
 
@@ -182,6 +181,7 @@ describe('Query', () => {
                 }}
             </TestContext>
         );
+        expect(dispatchSpy.mock.calls.length).toEqual(3);
         const mySecondPayload = { foo: 1 };
         act(() => {
             rerender(
@@ -198,11 +198,10 @@ describe('Query', () => {
                 </TestContext>
             );
         });
-        expect(dispatchSpy.mock.calls.length).toEqual(2);
-        const action = dispatchSpy.mock.calls[1][0];
+        expect(dispatchSpy.mock.calls.length).toEqual(6);
+        const action = dispatchSpy.mock.calls[3][0];
         expect(action.type).toEqual('CUSTOM_FETCH');
         expect(action.payload).toEqual(mySecondPayload);
-        expect(action.meta.fetch).toEqual('mytype');
         expect(action.meta.resource).toEqual('myresource');
     });
 
@@ -229,6 +228,7 @@ describe('Query', () => {
                 }}
             </TestContext>
         );
+        expect(dispatchSpy.mock.calls.length).toEqual(3);
         act(() => {
             const myPayload = {
                 foo: {
@@ -249,6 +249,6 @@ describe('Query', () => {
                 </TestContext>
             );
         });
-        expect(dispatchSpy.mock.calls.length).toEqual(1);
+        expect(dispatchSpy.mock.calls.length).toEqual(3);
     });
 });

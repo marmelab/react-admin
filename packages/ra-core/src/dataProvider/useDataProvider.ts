@@ -29,6 +29,8 @@ interface UseDataProviderOptions {
     onFailure?: any;
 }
 
+const defaultDataProvider = () => Promise.resolve(); // avoids adding a context in tests
+
 /**
  * Hook for getting an instance of the dataProvider as prop
  *
@@ -71,7 +73,7 @@ interface UseDataProviderOptions {
  */
 const useDataProvider = (): DataProviderHookFunction => {
     const dispatch = useDispatch() as Dispatch;
-    const dataProvider = useContext(DataProviderContext);
+    const dataProvider = useContext(DataProviderContext) || defaultDataProvider;
     const isOptimistic = useSelector(
         (state: ReduxState) => state.admin.ui.optimistic
     );
@@ -160,7 +162,7 @@ const performUndoableQuery = ({
         dispatch({
             type: action,
             payload,
-            meta: { resource },
+            meta: { resource, ...rest },
         });
         dispatch({
             type: `${action}_LOADING`,
@@ -227,7 +229,7 @@ const performQuery = ({
     dispatch({
         type: action,
         payload,
-        meta: { resource },
+        meta: { resource, ...rest },
     });
     dispatch({
         type: `${action}_LOADING`,
