@@ -33,7 +33,7 @@ const useStyles = makeStyles({
     form: { padding: 0 },
 });
 
-const PostQuickCreate = ({ onCancel, onSave }) => {
+const PostQuickCreate = ({ onCancel, onSave, ...props }) => {
     const classes = useStyles();
     const dispatch = useDispatch();
     const submitting = useSelector(state => state.admin.loading > 0);
@@ -62,7 +62,6 @@ const PostQuickCreate = ({ onCancel, onSave }) => {
 
     return (
         <SimpleForm
-            form="post-create"
             save={handleSave}
             saving={submitting}
             redirect={false}
@@ -73,6 +72,7 @@ const PostQuickCreate = ({ onCancel, onSave }) => {
                 />
             }
             classes={{ form: classes.form }}
+            {...props}
         >
             <TextInput source="title" validate={required()} />
             <LongTextInput source="teaser" validate={required()} />

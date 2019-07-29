@@ -148,7 +148,6 @@ const PostReferenceInput = props => {
                         onCancel={handleCloseCreate}
                         onSave={handleSave}
                         basePath="/posts"
-                        form="post-create"
                         resource="posts"
                     />
                 </DialogContent>
