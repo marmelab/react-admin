@@ -1,8 +1,8 @@
-import { render, cleanup } from 'react-testing-library';
+import { cleanup } from 'react-testing-library';
 import React from 'react';
 import { renderWithRedux } from 'ra-core';
 
-import SimpleForm, { SimpleForm as SimpleFormView } from './SimpleForm';
+import SimpleForm from './SimpleForm';
 import TextInput from '../input/TextInput';
 
 describe('<SimpleForm />', () => {
@@ -21,12 +21,13 @@ describe('<SimpleForm />', () => {
     });
 
     it('should display <Toolbar />', () => {
-        const Toolbar = () => <p>TOOLBAR</p>;
-
-        const { queryByText } = render(
-            <SimpleFormView toolbar={<Toolbar />} />
+        const { queryByLabelText } = renderWithRedux(
+            <SimpleForm>
+                <TextInput source="name" />
+                <TextInput source="city" />
+            </SimpleForm>
         );
-        expect(queryByText('TOOLBAR')).not.toBeNull();
+        expect(queryByLabelText('Save')).not.toBeNull();
     });
 
     it('should pass submitOnEnter to <Toolbar />', () => {
@@ -35,8 +36,8 @@ describe('<SimpleForm />', () => {
             <p>submitOnEnter: {submitOnEnter.toString()}</p>
         );
 
-        const { queryByText, rerender } = render(
-            <SimpleFormView
+        const { queryByText, rerender } = renderWithRedux(
+            <SimpleForm
                 submitOnEnter={false}
                 handleSubmit={handleSubmit}
                 toolbar={<Toolbar />}
@@ -46,7 +47,7 @@ describe('<SimpleForm />', () => {
         expect(queryByText('submitOnEnter: false')).not.toBeNull();
 
         rerender(
-            <SimpleFormView
+            <SimpleForm
                 submitOnEnter
                 handleSubmit={handleSubmit}
                 toolbar={<Toolbar />}

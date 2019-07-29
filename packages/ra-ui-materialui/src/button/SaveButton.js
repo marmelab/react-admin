@@ -123,6 +123,7 @@ export class SaveButton extends Component {
                 type={type}
                 onClick={this.handleClick}
                 color={saving ? 'default' : 'primary'}
+                aria-label={label && translate(label, { _: label })}
                 {...sanitizeRestProps(rest)}
             >
                 {saving && saving.redirect === redirect ? (

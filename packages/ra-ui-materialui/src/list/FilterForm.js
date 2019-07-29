@@ -3,8 +3,6 @@ import PropTypes from 'prop-types';
 import { Form, FormSpy } from 'react-final-form';
 import classnames from 'classnames';
 import { makeStyles } from '@material-ui/core/styles';
-import compose from 'recompose/compose';
-import withProps from 'recompose/withProps';
 import lodashSet from 'lodash/set';
 import lodashGet from 'lodash/get';
 
@@ -133,32 +131,36 @@ export const mergeInitialValuesWithDefaultValues = ({
     initialValues,
     filters,
 }) => ({
-    initialValues: {
-        ...filters
-            .filter(
-                filterElement =>
-                    filterElement.props.alwaysOn &&
+    ...filters
+        .filter(
+            filterElement =>
+                filterElement.props.alwaysOn && filterElement.props.defaultValue
+        )
+        .reduce(
+            (acc, filterElement) =>
+                lodashSet(
+                    { ...acc },
+                    filterElement.props.source,
                     filterElement.props.defaultValue
-            )
-            .reduce(
-                (acc, filterElement) =>
-                    lodashSet(
-                        { ...acc },
-                        filterElement.props.source,
-                        filterElement.props.defaultValue
-                    ),
-                {}
-            ),
-        ...initialValues,
-    },
+                ),
+            {}
+        ),
+    ...initialValues,
 });
 
 const EnhancedFilterForm = props => {
     const classes = useStyles();
 
+    const mergedInitialValuesWithDefaultValues = mergeInitialValuesWithDefaultValues(
+        props
+    );
+
+    const { initialValues, ...rest } = props;
+
     return (
         <Form
             onSubmit={() => {}}
+            initialValues={mergedInitialValuesWithDefaultValues}
             render={formProps => (
                 <>
                     <FormSpy
@@ -166,13 +168,11 @@ const EnhancedFilterForm = props => {
                             props && props.setFilters(values);
                         }}
                     />
-                    <FilterForm classes={classes} {...formProps} {...props} />
+                    <FilterForm classes={classes} {...formProps} {...rest} />
                 </>
             )}
         />
     );
 };
 
-export default withProps(mergeInitialValuesWithDefaultValues)(
-    EnhancedFilterForm
-);
+export default EnhancedFilterForm;

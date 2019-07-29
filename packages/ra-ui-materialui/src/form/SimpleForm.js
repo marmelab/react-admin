@@ -81,6 +81,10 @@ export const SimpleForm = ({
     ...rest
 }) => {
     useEffect(() => {
+        if (!record) {
+            return;
+        }
+
         form.batch(() => {
             Object.keys(record).forEach(key => {
                 form.change(key, record[key]);

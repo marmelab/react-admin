@@ -91,7 +91,6 @@ export const TabbedForm = ({
     setRedirect,
     submitOnEnter,
     tabs,
-    tabsWithErrors = [],
     toolbar,
     translate,
     undoable,
@@ -100,6 +99,10 @@ export const TabbedForm = ({
     ...rest
 }) => {
     useEffect(() => {
+        if (!record) {
+            return;
+        }
+
         form.batch(() => {
             Object.keys(record).forEach(key => {
                 form.change(key, record[key]);
@@ -114,6 +117,8 @@ export const TabbedForm = ({
         },
         [setRedirect, defaultRedirect, handleSubmit]
     );
+
+    const tabsWithErrors = findTabsWithErrors(children, form.getState().errors);
 
     const url = match ? match.url : location.pathname;
     return (
@@ -214,39 +219,25 @@ TabbedForm.defaultProps = {
     toolbar: <Toolbar />,
 };
 
-// const collectErrors = (state, props) => {
-//     const syncErrors = getFormSyncErrors(props.form)(state);
-//     const asyncErrors = getFormAsyncErrors(props.form)(state);
-//     const submitErrors = getFormSubmitErrors(props.form)(state);
+export const findTabsWithErrors = (children, errors) => {
+    return Children.toArray(children).reduce((acc, child) => {
+        if (!isValidElement(child)) {
+            return acc;
+        }
 
-//     return {
-//         ...syncErrors,
-//         ...asyncErrors,
-//         ...submitErrors,
-//     };
-// };
+        const inputs = Children.toArray(child.props.children);
 
-// export const findTabsWithErrors = (state, props) => {
-//     // const errors = collectErrorsImpl(state, props);
+        if (
+            inputs.some(
+                input => isValidElement(input) && errors[input.props.source]
+            )
+        ) {
+            return [...acc, child.props.label];
+        }
 
-//     return Children.toArray(props.children).reduce((acc, child) => {
-//         if (!isValidElement(child)) {
-//             return acc;
-//         }
-
-//         const inputs = Children.toArray(child.props.children);
-
-//         if (
-//             inputs.some(
-//                 input => isValidElement(input) && errors[input.props.source]
-//             )
-//         ) {
-//             return [...acc, child.props.label];
-//         }
-
-//         return acc;
-//     }, []);
-// };
+        return acc;
+    }, []);
+};
 
 const EnhancedTabbedForm = ({ initialValues, ...props }) => {
     let redirect;
