@@ -114,7 +114,7 @@ class Confirm extends Component {
                         })}
                         autoFocus
                     >
-                        <ActionCheck className={classes.iconPaddingStyle} />
+                        {confirmIcon}
                         {translate(confirm, { _: confirm })}
                     </Button>
                 </DialogActions>
@@ -128,6 +128,7 @@ Confirm.propTypes = {
     classes: PropTypes.object.isRequired,
     confirm: PropTypes.string.isRequired,
     confirmColor: PropTypes.string.isRequired,
+    confirmIcon: PropTypes.element.isRequired,
     content: PropTypes.string.isRequired,
     isOpen: PropTypes.bool,
     onClose: PropTypes.func.isRequired,
@@ -141,6 +142,7 @@ Confirm.defaultProps = {
     classes: {},
     confirm: 'ra.action.confirm',
     confirmColor: 'primary',
+    confirmIcon: <ActionCheck className={classes.iconPaddingStyle} />
     isOpen: false,
 };
 
