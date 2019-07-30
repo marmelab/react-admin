@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import ThumbDown from '@material-ui/icons/ThumbDown';
-import { useTranslate, useMutation } from 'react-admin';
+import { useTranslate, useUpdate } from 'react-admin';
 
 const options = {
     undoable: true,
@@ -26,12 +26,11 @@ const options = {
 const RejectButton = ({ record }) => {
     const translate = useTranslate();
 
-    const [reject, { loading }] = useMutation(
-        {
-            type: 'UPDATE',
-            resource: 'reviews',
-            payload: { id: record.id, data: { status: 'rejected' } },
-        },
+    const [reject, { loading }] = useUpdate(
+        'reviews',
+        record.id,
+        { status: 'rejected' },
+        record,
         options
     );
 

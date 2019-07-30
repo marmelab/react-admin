@@ -30,6 +30,7 @@
         "@redux-saga/testing-utils": "^1.0.2",
         "@types/history": "^4.7.2",
         "@types/node-polyglot": "^0.4.31",
+        "@types/react-redux": "^7.1.0",
         "@types/react-router": "^5.0.1",
         "@types/react-router-dom": "^4.3.1",
         "@types/recompose": "^0.27.0",
@@ -65,7 +66,7 @@
         "react-router-dom": "^5.0.1",
         "react-testing-library": "^7.0.0",
         "recompose": "~0.26.0",
-        "redux": "^3.7.2 || ^4.0.0",
+        "redux": "^3.7.2 || ^4.0.3",
         "redux-saga": "^1.0.0",
         "reselect": "~3.0.0"
     }

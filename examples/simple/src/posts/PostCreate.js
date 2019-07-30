@@ -1,6 +1,4 @@
 import React, { useCallback, useMemo } from 'react';
-import { useDispatch } from 'react-redux';
-
 import RichTextInput from 'ra-input-rich-text';
 import {
     ArrayInput,
@@ -18,24 +16,36 @@ import {
     SimpleFormIterator,
     TextInput,
     Toolbar,
-    crudCreate,
     required,
+    useCreate,
+    useRedirect,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
 import { useForm } from 'react-final-form';
 
-const saveWithNote = (values, basePath, redirectTo) =>
-    crudCreate('posts', { ...values, average_note: 10 }, basePath, redirectTo);
-
 const SaveWithNoteButton = props => {
-    const dispatch = useDispatch();
+    const [create] = useCreate('posts');
+    const redirectTo = useRedirect();
     const { basePath, redirect } = props;
 
     const form = useForm();
-    const values = form.getState().values;
-    const handleClick = useCallback(
-        () => () => dispatch(saveWithNote(values, basePath, redirect)),
-        [basePath, dispatch, redirect, values]
-    );
+    const handleClick = useCallback(() => {
+        const formState = form.getState();
+        if (!formState.valid) {
+            return;
+        }
+
+        create(
+            null,
+            {
+                data: { ...formState.values, average_note: 10 },
+            },
+            {
+                onSuccess: ({ data: newRecord }) => {
+                    redirectTo(redirect, basePath, newRecord.id, newRecord);
+                },
+            }
+        );
+    }, [create, form, redirect, redirectTo, basePath]);
 
     return <SaveButton {...props} handleSubmitWithRedirect={handleClick} />;
 };

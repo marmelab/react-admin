@@ -93,7 +93,7 @@ export const SimpleForm = ({
     }, []); // eslint-disable-line
 
     const handleSubmitWithRedirect = useCallback(
-        (redirect = defaultRedirect) => () => {
+        (redirect = defaultRedirect) => {
             setRedirect(redirect);
             handleSubmit();
         },

@@ -5,7 +5,7 @@ import ThumbUp from '@material-ui/icons/ThumbUp';
 import { useTranslate, useMutation, useNotify, useRedirect } from 'react-admin';
 
 /**
- * This custom button demonstrate using useMutation to update data
+ * This custom button demonstrate using useUpdate to update data
  */
 const AcceptButton = ({ record }) => {
     const translate = useTranslate();
