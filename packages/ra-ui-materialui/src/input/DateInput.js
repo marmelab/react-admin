@@ -48,6 +48,7 @@ export class DateInput extends Component {
 
     render() {
         const {
+            allowEmpty,
             className,
             meta,
             input,
@@ -64,7 +65,15 @@ export class DateInput extends Component {
             );
         }
         const { touched, error } = meta;
-        const value = sanitizeValue(input.value);
+
+        const getValue = value => {
+            if (allowEmpty && (value === null || value === '')) {
+                return null;
+            }
+            return sanitizeValue(value);
+        };
+
+        const value = getValue(input.value);
 
         return (
             <TextField
