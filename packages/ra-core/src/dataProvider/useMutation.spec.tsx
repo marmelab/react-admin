@@ -38,7 +38,6 @@ describe('useMutation', () => {
         const action = dispatch.mock.calls[0][0];
         expect(action.type).toEqual('CUSTOM_FETCH');
         expect(action.payload).toEqual(myPayload);
-        expect(action.meta.fetch).toEqual('mytype');
         expect(action.meta.resource).toEqual('myresource');
     });
 

@@ -1,7 +1,9 @@
+import DataProviderContext from './DataProviderContext';
 import HttpError from './HttpError';
 import * as fetchUtils from './fetch';
 import Mutation from './Mutation';
 import Query from './Query';
+import undoableEventEmitter from './undoableEventEmitter';
 import useDataProvider from './useDataProvider';
 import useMutation from './useMutation';
 import useQuery from './useQuery';
@@ -16,10 +18,12 @@ import useDelete from './useDelete';
 import useDeleteMany from './useDeleteMany';
 
 export {
-    fetchUtils,
+    DataProviderContext,
     HttpError,
+    fetchUtils,
     Mutation,
     Query,
+    undoableEventEmitter,
     useDataProvider,
     useMutation,
     useQuery,

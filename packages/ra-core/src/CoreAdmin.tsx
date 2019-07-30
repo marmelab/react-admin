@@ -5,9 +5,9 @@ import { History } from 'history';
 import { createHashHistory } from 'history';
 import { Switch, Route } from 'react-router-dom';
 import { ConnectedRouter } from 'connected-react-router';
-import withContext from 'recompose/withContext';
 
 import AuthContext from './auth/AuthContext';
+import DataProviderContext from './dataProvider/DataProviderContext';
 import createAdminStore from './createAdminStore';
 import TranslationProvider from './i18n/TranslationProvider';
 import CoreAdminRouter from './CoreAdminRouter';
@@ -92,6 +92,7 @@ React-admin requires a valid dataProvider function to work.`);
             layout,
             appLayout,
             authProvider,
+            dataProvider,
             children,
             customRoutes = [],
             dashboard,
@@ -118,44 +119,46 @@ React-admin requires a valid dataProvider function to work.`);
         }
 
         return (
-            <TranslationProvider>
-                <ConnectedRouter history={this.history}>
-                    <Switch>
-                        {loginPage !== false && loginPage !== true ? (
+            <DataProviderContext.Provider value={dataProvider}>
+                <TranslationProvider>
+                    <ConnectedRouter history={this.history}>
+                        <Switch>
+                            {loginPage !== false && loginPage !== true ? (
+                                <Route
+                                    exact
+                                    path="/login"
+                                    render={props =>
+                                        createElement(loginPage, {
+                                            ...props,
+                                            title,
+                                            theme,
+                                        })
+                                    }
+                                />
+                            ) : null}
                             <Route
-                                exact
-                                path="/login"
-                                render={props =>
-                                    createElement(loginPage, {
-                                        ...props,
-                                        title,
-                                        theme,
-                                    })
-                                }
+                                path="/"
+                                render={props => (
+                                    <CoreAdminRouter
+                                        layout={appLayout || layout}
+                                        catchAll={catchAll}
+                                        customRoutes={customRoutes}
+                                        dashboard={dashboard}
+                                        loading={loading}
+                                        logout={logout}
+                                        menu={menu}
+                                        theme={theme}
+                                        title={title}
+                                        {...props}
+                                    >
+                                        {children}
+                                    </CoreAdminRouter>
+                                )}
                             />
-                        ) : null}
-                        <Route
-                            path="/"
-                            render={props => (
-                                <CoreAdminRouter
-                                    layout={appLayout || layout}
-                                    catchAll={catchAll}
-                                    customRoutes={customRoutes}
-                                    dashboard={dashboard}
-                                    loading={loading}
-                                    logout={logout}
-                                    menu={menu}
-                                    theme={theme}
-                                    title={title}
-                                    {...props}
-                                >
-                                    {children}
-                                </CoreAdminRouter>
-                            )}
-                        />
-                    </Switch>
-                </ConnectedRouter>
-            </TranslationProvider>
+                        </Switch>
+                    </ConnectedRouter>
+                </TranslationProvider>
+            </DataProviderContext.Provider>
         );
     }
 

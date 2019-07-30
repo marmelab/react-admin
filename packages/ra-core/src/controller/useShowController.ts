@@ -3,7 +3,7 @@ import inflection from 'inflection';
 import useVersion from './useVersion';
 import { useCheckMinimumRequiredProps } from './checkMinimumRequiredProps';
 import { Record, Identifier } from '../types';
-import { useGetOne } from '../fetch';
+import { useGetOne } from '../dataProvider';
 import { useTranslate } from '../i18n';
 import { useNotify, useRedirect, useRefresh } from '../sideEffect';
 

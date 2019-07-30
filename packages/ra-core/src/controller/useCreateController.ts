@@ -3,7 +3,7 @@ import { useCallback } from 'react';
 import inflection from 'inflection';
 import { parse } from 'query-string';
 
-import { useCreate } from '../fetch';
+import { useCreate } from '../dataProvider';
 import { useCheckMinimumRequiredProps } from './checkMinimumRequiredProps';
 import { Location } from 'history';
 import { match as Match } from 'react-router';

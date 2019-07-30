@@ -13,7 +13,7 @@ import {
     useRefresh,
     RedirectionSideEffect,
 } from '../sideEffect';
-import { useGetOne, useUpdate } from '../fetch';
+import { useGetOne, useUpdate } from '../dataProvider';
 import { useTranslate } from '../i18n';
 
 export interface EditProps {
