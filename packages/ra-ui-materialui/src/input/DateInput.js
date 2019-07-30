@@ -105,6 +105,7 @@ export class DateInput extends Component {
 }
 
 DateInput.propTypes = {
+    allowEmpty: PropTypes.bool,
     classes: PropTypes.object,
     className: PropTypes.string,
     input: PropTypes.object,
