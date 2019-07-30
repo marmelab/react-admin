@@ -1,10 +1,8 @@
 import React, { ReactNode, SFC } from 'react';
-import { connect } from 'react-redux';
-import { FormSpy } from 'react-final-form';
+import { useFormState } from 'react-final-form';
 import get from 'lodash/get';
 
 import warning from '../util/warning';
-import { ReduxState } from '../types';
 
 interface ChildrenFunctionParams {
     formData: any;
@@ -119,13 +117,10 @@ export const FormDataConsumerView: SFC<Props> = ({
     return ret === undefined ? null : ret;
 };
 
-const FormDataConsumer = (props: ConnectedProps) => (
-    <FormSpy
-        render={({ form }) => {
-            const formData = form.getState().values;
-            return <FormDataConsumerView formData={formData} {...props} />;
-        }}
-    />
-);
+const FormDataConsumer = (props: ConnectedProps) => {
+    const formState = useFormState();
+
+    return <FormDataConsumerView formData={formState.values} {...props} />;
+};
 
 export default FormDataConsumer;

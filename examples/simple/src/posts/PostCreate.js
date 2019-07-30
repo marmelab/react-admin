@@ -20,16 +20,15 @@ import {
     useCreate,
     useRedirect,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
-import { useForm } from 'react-final-form';
+import { useFormState } from 'react-final-form';
 
 const SaveWithNoteButton = props => {
     const [create] = useCreate('posts');
     const redirectTo = useRedirect();
     const { basePath, redirect } = props;
 
-    const form = useForm();
+    const formState = useFormState();
     const handleClick = useCallback(() => {
-        const formState = form.getState();
         if (!formState.valid) {
             return;
         }
@@ -45,7 +44,7 @@ const SaveWithNoteButton = props => {
                 },
             }
         );
-    }, [create, form, redirect, redirectTo, basePath]);
+    }, [create, formState, redirect, redirectTo, basePath]);
 
     return <SaveButton {...props} handleSubmitWithRedirect={handleClick} />;
 };
