@@ -148,7 +148,6 @@ export const mergeInitialValuesWithDefaultValues = ({
     ...initialValues,
 });
 
-const FormSpySubscription = { values: true, pristine: true };
 const EnhancedFilterForm = props => {
     const classes = useStyles();
 
@@ -179,5 +178,8 @@ const EnhancedFilterForm = props => {
         />
     );
 };
+
+// Options to instruct the FormSpy that it should only listen to the values and pristine changes
+const FormSpySubscription = { values: true, pristine: true };
 
 export default EnhancedFilterForm;
