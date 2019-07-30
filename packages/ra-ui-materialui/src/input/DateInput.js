@@ -118,6 +118,7 @@ DateInput.propTypes = {
 };
 
 DateInput.defaultProps = {
+    allowEmpty: false,
     options: {},
 };
 
