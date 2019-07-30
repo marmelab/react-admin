@@ -143,6 +143,11 @@ const performUndoableQuery = ({
 }: QueryFunctionParams) => {
     dispatch(startOptimisticMode());
     dispatch({
+        type: action,
+        payload,
+        meta: { resource, ...rest },
+    });
+    dispatch({
         type: `${action}_OPTIMISTIC`,
         payload,
         meta: {
@@ -159,11 +164,6 @@ const performUndoableQuery = ({
             dispatch(refreshView());
             return;
         }
-        dispatch({
-            type: action,
-            payload,
-            meta: { resource, ...rest },
-        });
         dispatch({
             type: `${action}_LOADING`,
             payload,
