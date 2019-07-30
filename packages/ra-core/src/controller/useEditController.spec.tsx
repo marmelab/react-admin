@@ -4,7 +4,6 @@ import { act, cleanup } from 'react-testing-library';
 
 import EditController from './EditController';
 import renderWithRedux from '../util/renderWithRedux';
-import { DataProviderContext } from '../dataProvider';
 
 describe('useEditController', () => {
     afterEach(cleanup);
