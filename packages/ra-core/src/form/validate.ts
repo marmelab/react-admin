@@ -66,7 +66,7 @@ export const composeValidators = (...validators) => (value, values, meta) => {
         ? validators[0]
         : validators;
 
-    allValidators.reduce(
+    return allValidators.reduce(
         (error, validator) =>
             error ||
             (typeof validator === 'function' && validator(value, values, meta)),
