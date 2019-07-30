@@ -111,7 +111,7 @@ export const TabbedForm = ({
     }, []); // eslint-disable-line
 
     const handleSubmitWithRedirect = useCallback(
-        (redirect = defaultRedirect) => () => {
+        (redirect = defaultRedirect) => {
             setRedirect(redirect);
             handleSubmit();
         },
