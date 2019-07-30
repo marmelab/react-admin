@@ -3,23 +3,21 @@ import PropTypes from 'prop-types';
 import ThumbDown from '@material-ui/icons/ThumbDown';
 import {
     Button,
-    useMutation,
+    useUpdateMany,
     useNotify,
     useRedirect,
     useUnselectAll,
-    UPDATE_MANY,
 } from 'react-admin';
 
 const BulkRejectButton = ({ selectedIds }) => {
     const notify = useNotify();
-    const redirect = useRedirect();
+    const redirectTo = useRedirect();
     const unselectAll = useUnselectAll('reviews');
-    const [reject, { loading }] = useMutation(
-        {
-            type: UPDATE_MANY,
-            resource: 'reviews',
-            payload: { ids: selectedIds, data: { status: 'rejected' } },
-        },
+
+    const [reject, { loading }] = useUpdateMany(
+        'reviews',
+        selectedIds,
+        { status: 'rejected' },
         {
             undoable: true,
             onSuccess: () => {
@@ -29,14 +27,15 @@ const BulkRejectButton = ({ selectedIds }) => {
                     {},
                     true
                 );
-                redirect('/reviews');
+                redirectTo('/reviews');
                 unselectAll();
             },
-            onFailure: () =>
+            onFailure: () => {
                 notify(
                     'resources.reviews.notification.approved_error',
                     'warning'
-                ),
+                );
+            },
         }
     );
 
