@@ -1,4 +1,4 @@
-import React, { Children, useCallback, useEffect, isValidElement } from 'react';
+import React, { Children, useCallback, isValidElement, useRef } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { Form } from 'react-final-form';
@@ -12,6 +12,7 @@ import { useTranslate } from 'ra-core';
 import Toolbar from './Toolbar';
 import CardContentInner from '../layout/CardContentInner';
 import TabbedFormTabs from './TabbedFormTabs';
+import useInitializeFormWithRecord from './useInitializeFormWithRecord';
 
 const useStyles = makeStyles(theme => ({
     errorTabButton: { color: theme.palette.error.main },
@@ -98,17 +99,7 @@ export const TabbedForm = ({
     version,
     ...rest
 }) => {
-    useEffect(() => {
-        if (!record) {
-            return;
-        }
-
-        form.batch(() => {
-            Object.keys(record).forEach(key => {
-                form.change(key, record[key]);
-            });
-        });
-    }, []); // eslint-disable-line
+    useInitializeFormWithRecord(form, record);
 
     const handleSubmitWithRedirect = useCallback(
         (redirect = defaultRedirect) => {
@@ -240,12 +231,12 @@ export const findTabsWithErrors = (children, errors) => {
 };
 
 const EnhancedTabbedForm = ({ initialValues, ...props }) => {
-    let redirect;
+    let redirect = useRef(props.redirect);
     // We don't use state here for two reasons:
     // 1. There no way to execute code only after the state has been updated
     // 2. We don't want the form to rerender when redirect is changed
     const setRedirect = newRedirect => {
-        redirect = newRedirect;
+        redirect.current = newRedirect;
     };
     const saving = useSelector(state => state.admin.saving);
     const translate = useTranslate();
@@ -253,7 +244,7 @@ const EnhancedTabbedForm = ({ initialValues, ...props }) => {
 
     const submit = values => {
         const finalRedirect =
-            typeof redirect === undefined ? props.redirect : redirect;
+            typeof redirect === undefined ? props.redirect : redirect.current;
         props.save(values, finalRedirect);
     };
 
