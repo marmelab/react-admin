@@ -53,7 +53,7 @@ describe('useEditController', () => {
                 {({ record }) => <div>{record && record.title}</div>}
             </EditController>
         );
-        const formResetAction = dispatch.mock.calls[1][0];
+        const formResetAction = dispatch.mock.calls[3][0];
         expect(formResetAction.type).toEqual('@@redux-form/RESET');
         expect(formResetAction.meta).toEqual({ form: 'record-form' });
     });
@@ -69,15 +69,17 @@ describe('useEditController', () => {
             </EditController>
         );
         act(() => saveCallback({ foo: 'bar' }));
-        const crudUpdateAction = dispatch.mock.calls[2][0];
-        expect(crudUpdateAction.type).toEqual('RA/UNDOABLE');
-        expect(crudUpdateAction.payload.action.type).toEqual('RA/CRUD_UPDATE');
-        expect(crudUpdateAction.payload.action.payload).toEqual({
+        const call = dispatch.mock.calls.find(
+            params => params[0].type === 'RA/CRUD_UPDATE_OPTIMISTIC'
+        );
+        expect(call).not.toBeUndefined();
+        const crudUpdateAction = call[0];
+        expect(crudUpdateAction.payload).toEqual({
             id: 12,
             data: { foo: 'bar' },
             previousData: null,
         });
-        expect(crudUpdateAction.payload.action.meta.resource).toEqual('posts');
+        expect(crudUpdateAction.meta.resource).toEqual('posts');
     });
 
     it('should return a save callback when undoable is false', () => {
@@ -91,8 +93,15 @@ describe('useEditController', () => {
             </EditController>
         );
         act(() => saveCallback({ foo: 'bar' }));
-        const crudUpdateAction = dispatch.mock.calls[2][0];
-        expect(crudUpdateAction.type).toEqual('RA/CRUD_UPDATE');
+        const call = dispatch.mock.calls.find(
+            params => params[0].type === 'RA/CRUD_UPDATE_OPTIMISTIC'
+        );
+        expect(call).toBeUndefined();
+        const call2 = dispatch.mock.calls.find(
+            params => params[0].type === 'RA/CRUD_UPDATE'
+        );
+        expect(call2).not.toBeUndefined();
+        const crudUpdateAction = call2[0];
         expect(crudUpdateAction.payload).toEqual({
             id: 12,
             data: { foo: 'bar' },

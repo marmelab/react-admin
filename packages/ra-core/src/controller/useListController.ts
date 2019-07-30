@@ -11,7 +11,7 @@ import { SORT_ASC } from '../reducer/admin/resource/list/queryReducer';
 import { ListParams } from '../actions/listActions';
 import { useNotify } from '../sideEffect';
 import { Sort, RecordMap, Identifier } from '../types';
-import useGetList from './../fetch/useGetList';
+import useGetList from '../dataProvider/useGetList';
 
 export interface ListProps {
     // the props you can change

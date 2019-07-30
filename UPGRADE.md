@@ -355,3 +355,167 @@ const PostList = props => (
     // rest of the view
 );
 ```
+
+## New DataProviderContext Requires Custom App Modification
+
+The new dataProvider-related hooks (`useQuery`, `useMutation`, `useDataProvider`, etc.) grab the `dataProvider` instance from a new React context. If you use the `<Admin>` component, your app will continue to work and there is nothing to do, as `<Admin>` now provides that context. But if you use a Custom App, you'll need to set the value of that new `DataProvider` context:
+
+```diff
+-import { TranslationProvider, Resource } from 'react-admin';
++import { TranslationProvider, DataProviderContext, Resource } from 'react-admin';
+
+const App = () => (
+    <Provider
+        store={createAdminStore({
+            authProvider,
+            dataProvider,
+            i18nProvider,
+            history,
+        })}
+    >
+        <TranslationProvider>
++           <DataProviderContext.Provider valuse={dataProvider} />
+                <ThemeProvider>
+                    <Resource name="posts" intent="registration" />
+                    ...
+                    <AppBar position="static" color="default">
+                        <Toolbar>
+                            <Typography variant="h6" color="inherit">
+                                My admin
+                            </Typography>
+                        </Toolbar>
+                    </AppBar>
+                    <ConnectedRouter history={history}>
+                        <Switch>
+                            <Route exact path="/" component={Dashboard} />
+                            <Route exact path="/posts" hasCreate render={(routeProps) => <PostList resource="posts" {...routeProps} />} />
+                            <Route exact path="/posts/create" render={(routeProps) => <PostCreate resource="posts" {...routeProps} />} />
+                            <Route exact path="/posts/:id" hasShow render={(routeProps) => <PostEdit resource="posts" {...routeProps} />} />
+                            <Route exact path="/posts/:id/show" hasEdit render={(routeProps) => <PostShow resource="posts" {...routeProps} />} />
+                            ...
+                        </Switch>
+                    </ConnectedRouter>
+                </ThemeProvider>
++           </DataProviderContext.Provider>
+        </TranslationProvider>
+    </Provider>
+);
+```
+
+Note that if you were unit testing controller components, you'll probably need to add a mock `dataProvider` via `<DataProviderContext>` in your tests, too.
+
+## Custom Notification Must Emit UndoEvents
+
+The undo feature is partially implemented in the `Notification` component. If you've overridden that component, you'll have to add a call to `undoableEventEmitter` in case of confirmation and undo:
+
+```diff
+// in src/MyNotification.js
+import {
+    hideNotification,
+    getNotification,
+    translate,
+    undo,
+    complete,
++   undoableEventEmitter,
+} from 'ra-core';
+
+class Notification extends React.Component {
+    state = {
+        open: false,
+    };
+    componentWillMount = () => {
+        this.setOpenState(this.props);
+    };
+    componentWillReceiveProps = nextProps => {
+        this.setOpenState(nextProps);
+    };
+
+    setOpenState = ({ notification }) => {
+        this.setState({
+            open: !!notification,
+        });
+    };
+
+    handleRequestClose = () => {
+        this.setState({
+            open: false,
+        });
+    };
+
+    handleExited = () => {
+        const { notification, hideNotification, complete } = this.props;
+        if (notification && notification.undoable) {
+            complete();
++           undoableEventEmitter.emit('end', { isUndo: false });
+        }
+        hideNotification();
+    };
+
+    handleUndo = () => {
+        const { undo } = this.props;
+        undo();
++       undoableEventEmitter.emit('end', { isUndo: true });
+    };
+
+    render() {
+        const {
+            undo,
+            complete,
+            classes,
+            className,
+            type,
+            translate,
+            notification,
+            autoHideDuration,
+            hideNotification,
+            ...rest
+        } = this.props;
+        const {
+            warning,
+            confirm,
+            undo: undoClass, // Rename classes.undo to undoClass in this scope to avoid name conflicts
+            ...snackbarClasses
+        } = classes;
+        return (
+            <Snackbar
+                open={this.state.open}
+                message={
+                    notification &&
+                    notification.message &&
+                    translate(notification.message, notification.messageArgs)
+                }
+                autoHideDuration={
+                    (notification && notification.autoHideDuration) ||
+                    autoHideDuration
+                }
+                disableWindowBlurListener={
+                    notification && notification.undoable
+                }
+                onExited={this.handleExited}
+                onClose={this.handleRequestClose}
+                ContentProps={{
+                    className: classnames(
+                        classes[(notification && notification.type) || type],
+                        className
+                    ),
+                }}
+                action={
+                    notification && notification.undoable ? (
+                        <Button
+                            color="primary"
+                            className={undoClass}
+                            size="small"
+-                           onClick={undo}
++                           onClick={this.handleUndo}
+                        >
+                            {translate('ra.action.undo')}
+                        </Button>
+                    ) : null
+                }
+                classes={snackbarClasses}
+                {...rest}
+            />
+        );
+    }
+}
+```

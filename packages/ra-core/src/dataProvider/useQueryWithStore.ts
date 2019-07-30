@@ -124,6 +124,12 @@ const useQueryWithStore = (
     useEffect(() => {
         dataProvider(type, resource, payload, options)
             .then(() => {
+                // We don't care about the dataProvider response here, because
+                // it was already passed to SUCCESS reducers by the dataProvider
+                // hook, and the result is available from the Redux store
+                // through the data and total selectors.
+                // In addition, if the query is optimistic, the response
+                // will be empty, so it should not be used at all.
                 setState(prevState => ({
                     ...prevState,
                     loading: false,
