@@ -142,7 +142,7 @@ Confirm.defaultProps = {
     classes: {},
     confirm: 'ra.action.confirm',
     confirmColor: 'primary',
-    confirmIcon: <ActionCheck className={classes.iconPaddingStyle} />
+    confirmIcon: <ActionCheck className={classes.iconPaddingStyle} />,
     isOpen: false,
 };
 
