@@ -97,7 +97,7 @@ import { ArrayInput, SimpleFormIterator, DateInput, TextInput } from 'react-admi
 }
 ```
 
-`<ArrayInput>` expects a single child, which must be a *form iterator* component. A form iterator is a component accepting a `fields` object as passed by [redux-form's `<FieldArray>` component](https://redux-form.com/7.3.0/examples/fieldarrays/), and defining a layout for an array of fields. For instance, the `<SimpleFormIterator>` component displays an array of fields in an unordered list (`<ul>`), one sub-form by list item (`<li>`). It also provides controls for adding and removing a sub-record (a backlink in this example).
+`<ArrayInput>` expects a single child, which must be a *form iterator* component. A form iterator is a component accepting a `fields` object as passed by [react-final-form-array](https://github.com/final-form/react-final-form-arrays#fieldarrayrenderprops), and defining a layout for an array of fields. For instance, the `<SimpleFormIterator>` component displays an array of fields in an unordered list (`<ul>`), one sub-form by list item (`<li>`). It also provides controls for adding and removing a sub-record (a backlink in this example).
 
 You can pass `disableAdd` and `disableRemove` as props of `SimpleFormIterator`, to disable `ADD` and `REMOVE` button respectively. Default value of both is `false`.
 
@@ -1212,7 +1212,7 @@ import { TextInput } from 'react-admin';
 
 ## Transforming Input Value to/from Record
 
-The data format returned by the input component may not be what your API desires. Since React-admin uses Redux Form, we can use its `parse()` and `format()` functions to transform the input value when saving to and loading from the record. It's better to understand the [input value's lifecycle](http://redux-form.com/6.5.0/docs/ValueLifecycle.md/) before you start.
+The data format returned by the input component may not be what your API desires. Since React-admin uses react-final-form, we can use its [`parse()`](https://github.com/final-form/react-final-form#parse-value-any-name-string--any) and [`format()`](https://github.com/final-form/react-final-form#format-value-any-name-string--any) functions to transform the input value when saving to and loading from the record.
 
 Mnemonic for the two functions:
 - `parse()`: input -> record
@@ -1259,13 +1259,13 @@ You can find components for react-admin in third-party repositories.
 
 ## Writing Your Own Input Component
 
-If you need a more specific input type, you can also write it yourself. You'll have to rely on redux-form's [`<Field>`](http://redux-form.com/6.5.0/docs/api/Field.md/) component, so as to handle the value update cycle.
+If you need a more specific input type, you can also write it yourself. You'll have to rely on react-final-form's [`<Field>`](https://github.com/final-form/react-final-form#field--reactcomponenttypefieldprops) component or [`useField`](https://github.com/final-form/react-final-form#usefield) hook, so as to handle the value update cycle.
 
 For instance, let's write a component to edit the latitude and longitude of the current record:
 
 ```jsx
 // in LatLongInput.js
-import { Field } from 'redux-form';
+import { Field } from 'react-final-form';
 const LatLngInput = () => (
     <span>
         <Field name="lat" component="input" type="number" placeholder="latitude" />
@@ -1310,7 +1310,7 @@ This component lacks a label. React-admin provides the `<Labeled>` component for
 
 ```jsx
 // in LatLongInput.js
-import { Field } from 'redux-form';
+import { Field } from 'react-final-form';
 import { Labeled } from 'react-admin';
 
 const LatLngInput = () => (
@@ -1335,12 +1335,12 @@ Now the component will render with a label:
 </span>
 ```
 
-Instead of HTML `input` elements, you can use a material-ui component. To compose material-ui and `Field`, use a [field renderer function](http://redux-form.com/6.5.0/examples/material-ui/) to map the props:
+Instead of HTML `input` elements, you can use a material-ui component. To compose material-ui and `Field`, use a [field renderer function](https://github.com/final-form/react-final-form#render-props-fieldrenderprops--reactnode) to map the props:
 
 ```jsx
 // in LatLongInput.js
 import TextField from '@material-ui/core/TextField';
-import { Field } from 'redux-form';
+import { Field } from 'react-final-form';
 const renderTextField = ({ input, label, meta: { touched, error }, ...custom }) => (
     <TextField
         label={label}
@@ -1359,7 +1359,7 @@ const LatLngInput = () => (
 );
 ```
 
-Material-ui's `<TextField>` component already includes a label, so you don't need to use `<Labeled>` in this case. `<Field>` injects two props to its child component: `input` and `meta`. To learn more about these props, please refer to [the `<Field>` component documentation](http://redux-form.com/6.5.0/docs/api/Field.md/#props) in the redux-form website.
+Material-ui's `<TextField>` component already includes a label, so you don't need to use `<Labeled>` in this case. `<Field>` injects two props to its child component: `input` and `meta`. To learn more about these props, please refer to [the `<Field>` component documentation](https://github.com/final-form/react-final-form#fieldrenderprops) in the react-final-form documentation.
 
 **Tip**: If you only need one `<Field>` component in a custom input, you can let react-admin do the `<Field>` decoration for you by using the `addField` Higher-order component:
 
@@ -1379,12 +1379,12 @@ const SexInput = ({ input, meta: { touched, error } }) => (
         <MenuItem value="F" primaryText="Female" />
     </SelectField>
 );
-export default addField(SexInput); // decorate with redux-form's <Field>
+export default addField(SexInput); // decorate with react-final-form's <Field>
 
 // equivalent of
 import SelectField from '@material-ui/core/SelectField';
 import MenuItem from '@material-ui/core/MenuItem';
-import { Field } from 'redux-form';
+import { Field } from 'react-final-form';
 
 const renderSexInput = ({ input, meta: { touched, error } }) => (
     <SelectField
@@ -1400,7 +1400,7 @@ const SexInput = ({ source }) => <Field name={source} component={renderSexInput}
 export default SexInput;
 ```
 
-**Tip**: `addField` takes a list of props as second argument, so you can set `<Field>` props there. It's useful for instance if you need to set the [`format`](https://redux-form.com/7.4.2/docs/api/field.md/#-code-format-value-name-gt-formattedvalue-code-optional-) and [`parse`](https://redux-form.com/7.4.2/docs/api/field.md/#-code-parse-value-name-gt-parsedvalue-code-optional-) props of the field:
+**Tip**: `addField` takes a list of props as second argument, so you can set `<Field>` props there. It's useful for instance if you need to set the [`format`](https://github.com/final-form/react-final-form#format-value-any-name-string--any) and [`parse`](https://github.com/final-form/react-final-form#parse-value-any-name-string--any) props of the field:
 
 ```jsx
 const parse = value => // ...
@@ -1411,7 +1411,7 @@ const MyDateInput = props => // ...
 export default addField(MyDateInput, { parse, format });
 ```
 
-For more details on how to use redux-form's `<Field>` component, please refer to [the redux-form doc](http://redux-form.com/6.5.0/docs/api/Field.md/).
+For more details on how to use react-final-form's `<Field>` component, please refer to [the react-final-form doc](https://github.com/final-form/react-final-form#field--reactcomponenttypefieldprops).
 
 Instead of HTML `input` elements or material-ui components, you can use react-admin input components, like `<NumberInput>` for instance. React-admin components are already decorated by `<Field>`, and already include a label, so you don't need either `<Field>` or `<Labeled>` when using them:
 
@@ -1442,7 +1442,7 @@ const ItemEdit = (props) => (
 
 Edition forms often contain linked inputs, e.g. country and city (the choices of the latter depending on the value of the former).
 
-React-admin relies on redux-form, so you can grab the current form values using redux-form [formValueSelector()](https://redux-form.com/7.3.0/docs/api/formvalueselector.md/). Alternatively, you can use the react-admin `<FormDataConsumer>` component, which grabs the form values, and passes them to a child function.
+React-admin relies on react-final-form, so you can grab the current form values using react-final-form [useFormState](https://github.com/final-form/react-final-form#useformstate) hook. Alternatively, you can use the react-admin `<FormDataConsumer>` component, which grabs the form values, and passes them to a child function.
 
 This facilitates the implementation of linked inputs:
 
@@ -1471,37 +1471,42 @@ const OrderEdit = (props) => (
 
 - `scopedFormData`: an object containing the current values of the currently rendered item from the `ArrayInput`
 - `getSource`: a function which will translate the source into a valid one for the `ArrayInput`
-- `dispatch`: Redux' function to dispatch an action. Useful to update another input value.
 
-Here is an example usage for `dispatch`: A country input that resets a city input on change.
+Would you need to update an input when another one changes, use the `useForm` hook from `react-final-form`. For example, a country input that resets a city input on change.
 
 ```jsx
 
 import React, { Fragment } from 'react'
-import { change } from 'redux-form'
+import { useForm } from 'react-final-form'
 import { FormDataConsumer, REDUX_FORM_NAME } from 'react-admin';
+
+const OrderOrigin = ({ formData, ...rest }) => {
+    const form = useForm();
+
+    return (
+        <Fragment>
+            <SelectInput
+                source="country"
+                choices={countries}
+                onChange={value => form.change('city', null)}
+                {...rest}
+            />
+            <SelectInput
+                source="city"
+                choices={getCitiesFor(formData.country)}
+                {...rest}
+            />
+        </Fragment>
+    );
+};
 
 const OrderEdit = (props) => (
     <Edit {...props}>
         <SimpleForm>
             <FormDataConsumer>
-                {({ formData, dispatch, ...rest }) => (
-                    <Fragment>
-                        <SelectInput
-                            source="country"
-                            choices={countries}
-                            onChange={value => dispatch(
-                                change(REDUX_FORM_NAME, 'city', null)
-                            )}
-                             {...rest}
-                        />
-                        <SelectInput
-                            source="city"
-                            choices={getCitiesFor(formData.country)}
-                             {...rest}
-                        />
-                    </Fragment>
-                )}
+                {formDataProps => {
+                    <OrderOrigin {...formDataProps} />
+                }}
             </FormDataConsumer>
         </SimpleForm>
     </Edit>

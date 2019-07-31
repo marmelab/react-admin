@@ -28,25 +28,24 @@ export default App;
 Here are all the props accepted by the component:
 
 - [The `<Admin>` Component](#the-admin-component)
-    - [`dataProvider`](#dataprovider)
-    - [`title`](#title)
-    - [`dashboard`](#dashboard)
-    - [`catchAll`](#catchall)
-    - [`menu`](#menu)
-    - [`theme`](#theme)
-    - [`layout`](#layout)
-    - [`customReducers`](#customreducers)
-    - [`customSagas`](#customsagas)
-    - [`customRoutes`](#customroutes)
-    - [`authProvider`](#authprovider)
-    - [`loginPage`](#loginpage)
-    - [`logoutButton`](#logoutbutton)
-    - [`initialState`](#initialstate)
-    - [`history`](#history)
-    - [`locale`](#internationalization)
-    - [`i18nProvider`](#internationalization)
-    - [Declaring resources at runtime](#declaring-resources-at-runtime)
-    - [Using react-admin without `<Admin>` and `<Resource>`](#using-react-admin-without-admin-and-resource)
+  - [`dataProvider`](#dataprovider)
+  - [`title`](#title)
+  - [`dashboard`](#dashboard)
+  - [`catchAll`](#catchall)
+  - [`menu`](#menu)
+  - [`theme`](#theme)
+  - [`layout`](#layout)
+  - [`customReducers`](#customreducers)
+  - [`customSagas`](#customsagas)
+  - [`customRoutes`](#customroutes)
+  - [`authProvider`](#authprovider)
+  - [`loginPage`](#loginpage)
+  - [`logoutButton`](#logoutbutton)
+  - [`initialState`](#initialstate)
+  - [`history`](#history)
+  - [Internationalization](#internationalization)
+  - [Declaring resources at runtime](#declaring-resources-at-runtime)
+  - [Using react-admin without `<Admin>` and `<Resource>`](#using-react-admin-without-admin-and-resource)
 
 ## `dataProvider`
 
@@ -289,7 +288,6 @@ The `<Admin>` app uses [Redux](http://redux.js.org/) to manage state. The state 
 ```jsx
 {
     admin: { /*...*/ }, // used by react-admin
-    form: { /*...*/ }, // used by redux-form
     routing: { /*...*/ }, // used by connected-react-router
 }
 ```
@@ -331,7 +329,6 @@ Now the state will look like:
 ```jsx
 {
     admin: { /*...*/ }, // used by react-admin
-    form: { /*...*/ }, // used by redux-form
     routing: { /*...*/ }, // used by connected-react-router
     bitcoinRate: 123, // managed by rateReducer
 }

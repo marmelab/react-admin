@@ -519,3 +519,226 @@ class Notification extends React.Component {
     }
 }
 ```
+
+## Migration to react-final-form Requires Custom App Modification
+
+We used to implement some black magic in `formMiddleware` to handle `redux-form` correctly.
+It is no longer necessary now that we migrated to `react-final-form`.
+Besides, `redux-form` required a reducer which is no longer needed as well.
+
+If you had your own custom redux store, you can migrate it by following this diff:
+
+```diff
+// in src/createAdminStore.js
+import { applyMiddleware, combineReducers, compose, createStore } from 'redux';
+import { routerMiddleware, connectRouter } from 'connected-react-router';
+-import { reducer as formReducer } from 'redux-form';
+import createSagaMiddleware from 'redux-saga';
+import { all, fork } from 'redux-saga/effects';
+import {
+    adminReducer,
+    adminSaga,
+    createAppReducer,
+    defaultI18nProvider,
+    i18nReducer,
+-    formMiddleware,
+    USER_LOGOUT,
+} from 'react-admin';
+
+export default ({
+    authProvider,
+    dataProvider,
+    i18nProvider = defaultI18nProvider,
+    history,
+    locale = 'en',
+}) => {
+    const reducer = combineReducers({
+        admin: adminReducer,
+        i18n: i18nReducer(locale, i18nProvider(locale)),
+-        form: formReducer,
+        router: connectRouter(history),
+        { /* add your own reducers here */ },
+    });
+    const resettableAppReducer = (state, action) =>
+        reducer(action.type !== USER_LOGOUT ? state : undefined, action);
+
+    const saga = function* rootSaga() {
+        yield all(
+            [
+                adminSaga(dataProvider, authProvider, i18nProvider),
+                // add your own sagas here
+            ].map(fork)
+        );
+    };
+    const sagaMiddleware = createSagaMiddleware();
+
+    const store = createStore(
+        resettableAppReducer,
+        { /* set your initial state here */ },
+        compose(
+            applyMiddleware(
+                sagaMiddleware,
+-                formMiddleware,
+                routerMiddleware(history),
+                // add your own middlewares here
+            ),
+            typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION__
+                ? window.__REDUX_DEVTOOLS_EXTENSION__()
+                : f => f
+            // add your own enhancers here
+        )
+    );
+    sagaMiddleware.run(saga);
+    return store;
+};
+```
+
+## Migration to react-final-form Requires Changes to Custom Toolbar or Buttons
+
+In `react-admin` v2, the toolbar and its buttons used to receive `handleSubmit` and `handleSubmitWithRedirect` props.
+Those props accepted functions which were called with the form values.
+
+The migration to `react-final-form` change their signatures and behaviors to the following:
+
+- `handleSubmit`: accepts no arguments and will submit the form with its current values immediately
+- `handleSubmitWithRedirect` accept a custom redirect and will submit the form with its current values immediately
+
+If you were using custom buttons (to alter the form values before submit for example), you'll need to update your code.
+Here's how to migrate the *Altering the Form Values before Submitting* example from the documentation, in two variants:
+
+1. Using react-final-form API to send change events
+
+```jsx
+import React, { useCallback } from 'react';
+import { useForm } from 'react-final-form';
+import { SaveButton, Toolbar, useCreate, useRedirect, useNotify } from 'react-admin';
+
+const SaveWithNoteButton = ({ handleSubmit, handleSubmitWithRedirect, ...props }) => {
+    const [create] = useCreate('posts');
+    const redirectTo = useRedirect();
+    const notify = useNotify();
+    const { basePath, redirect } = props;
+
+    const form = useForm();
+
+    const handleClick = useCallback(() => {
+        form.change('average_note', 10);
+
+        handleSubmitWithRedirect('edit');
+    }, [form]);
+
+    return <SaveButton {...props} handleSubmitWithRedirect={handleClick} />;
+};
+```
+
+2. Using react-admin hooks to run custom mutations
+
+For instance, in the `simple` example:
+
+```jsx
+import React, { useCallback } from 'react';
+import { useFormState } from 'react-final-form';
+import { SaveButton, Toolbar, useCreate, useRedirect, useNotify } from 'react-admin';
+
+const SaveWithNoteButton = props => {
+    const [create] = useCreate('posts');
+    const redirectTo = useRedirect();
+    const notify = useNotify();
+    const { basePath, redirect } = props;
+
+    const formState = useFormState();
+    const handleClick = useCallback(() => {
+        if (!formState.valid) {
+            return;
+        }
+
+        create(
+            null,
+            {
+                data: { ...formState.values, average_note: 10 },
+            },
+            {
+                onSuccess: ({ data: newRecord }) => {
+                    notify('ra.notification.created', 'info', {
+                        smart_count: 1,
+                    });
+                    redirectTo(redirect, basePath, newRecord.id, newRecord);
+                },
+            }
+        );
+    }, [
+        formState.valid,
+        formState.values,
+        create,
+        notify,
+        redirectTo,
+        redirect,
+        basePath,
+    ]);
+
+    return <SaveButton {...props} handleSubmitWithRedirect={handleClick} />;
+};
+```
+
+## Migration to react-final-form Requires Changes for Linked Inputs
+
+In `react-admin` v2, one could link two inputs using the `FormDataConsumer` component and use the `dispatch` function passed to the render prop function to trigger form changes.
+
+The migration to `react-final-form` changes this render prop signature a little as it will no longer receive a `dispatch` function.
+However, it's possible to use the `useForm` hook from `react-final-form` to achieve the same behavior:
+
+```diff
+import React, { Fragment } from 'react';
+-import { change } from 'redux-form';
++import { useForm } from 'react-final-form';
+import { FormDataConsumer, REDUX_FORM_NAME } from 'react-admin';
+
++const OrderOrigin = ({ formData, ...rest }) => {
++    const form = useForm();
++
++    return (
++        <Fragment>
++            <SelectInput
++                source="country"
++                choices={countries}
++                onChange={value => form.change('city', null)}
++                {...rest}
++            />
++            <SelectInput
++                source="city"
++                choices={getCitiesFor(formData.country)}
++                {...rest}
++            />
++        </Fragment>
++    );
++};
+
+const OrderEdit = (props) => (
+    <Edit {...props}>
+        <SimpleForm>
+            <FormDataConsumer>
+-                {({ formData, dispatch, ...rest }) => (
+-                    <Fragment>
+-                        <SelectInput
+-                            source="country"
+-                            choices={countries}
+-                            onChange={value => dispatch(
+-                                change(REDUX_FORM_NAME, 'city', null)
+-                            )}
+-                             {...rest}
+-                        />
+-                        <SelectInput
+-                            source="city"
+-                            choices={getCitiesFor(formData.country)}
+-                             {...rest}
+-                        />
+-                    </Fragment>
+-                )}
++                {formDataProps => {
++                    <OrderOrigin {...formDataProps} />
++                }}
+            </FormDataConsumer>
+        </SimpleForm>
+    </Edit>
+);
+```
