@@ -3,6 +3,7 @@ import { render, cleanup } from 'react-testing-library';
 import React from 'react';
 
 import TestContext, { defaultStore } from './TestContext';
+import { refreshView } from '../actions';
 
 const primedStore = {
     admin: {
@@ -23,7 +24,6 @@ const primedStore = {
         },
         customQueries: {},
     },
-    form: {},
     i18n: {
         loading: false,
         locale: 'en',
@@ -69,48 +69,50 @@ describe('TestContext.js', () => {
         expect(testStore.getState()).toEqual(defaultStore);
     });
 
-    // describe('enableReducers options', () => {
-    //     it('should update the state when set to TRUE', () => {
-    //         let testStore;
-    //         render(
-    //             <TestContext enableReducers={true}>
-    //                 {({ store }) => {
-    //                     testStore = store;
-    //                     return <span>foo</span>;
-    //                 }}
-    //             </TestContext>
-    //         );
-    //         const initialstate = testStore.getState();
-    //         initialstate.router.location.key = ''; // react-router initializes the state with a random key
-    //         expect(initialstate).toEqual(primedStore);
+    describe('enableReducers options', () => {
+        it('should update the state when set to TRUE', () => {
+            let testStore;
+            render(
+                <TestContext enableReducers={true}>
+                    {({ store }) => {
+                        testStore = store;
+                        return <span>foo</span>;
+                    }}
+                </TestContext>
+            );
+            const initialstate = testStore.getState();
+            initialstate.router.location.key = ''; // react-router initializes the state with a random key
+            expect(initialstate).toEqual(primedStore);
 
-    //         testStore.dispatch(submit('foo'));
+            testStore.dispatch(refreshView());
 
-    //         expect(testStore.getState()).toEqual({
-    //             ...primedStore,
-    //             form: {
-    //                 foo: {
-    //                     triggerSubmit: true,
-    //                 },
-    //             },
-    //         });
-    //     });
+            expect(testStore.getState()).toEqual({
+                ...primedStore,
+                admin: {
+                    ...primedStore.admin,
+                    ui: {
+                        ...primedStore.admin.ui,
+                        viewVersion: 2,
+                    },
+                },
+            });
+        });
 
-    //     it('should NOT update the state when set to FALSE (default)', () => {
-    //         let testStore;
-    //         render(
-    //             <TestContext>
-    //                 {({ store }) => {
-    //                     testStore = store;
-    //                     return <span>foo</span>;
-    //                 }}
-    //             </TestContext>
-    //         );
-    //         expect(testStore.getState()).toEqual(defaultStore);
+        it('should NOT update the state when set to FALSE (default)', () => {
+            let testStore;
+            render(
+                <TestContext>
+                    {({ store }) => {
+                        testStore = store;
+                        return <span>foo</span>;
+                    }}
+                </TestContext>
+            );
+            expect(testStore.getState()).toEqual(defaultStore);
 
-    //         testStore.dispatch(submit('foo'));
+            testStore.dispatch(refreshView());
 
-    //         expect(testStore.getState()).toEqual(defaultStore);
-    //     });
-    // });
+            expect(testStore.getState()).toEqual(defaultStore);
+        });
+    });
 });
