@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
 }));
 
-const renderInput = ({
+const Input = ({
     meta: { touched, error }, // eslint-disable-line react/prop-types
     input: inputProps, // eslint-disable-line react/prop-types
     ...props
@@ -83,7 +83,7 @@ const LoginForm: SFC<Props> = ({ redirectTo }) => {
                                 autoFocus
                                 id="username"
                                 name="username"
-                                component={renderInput}
+                                component={Input}
                                 label={translate('ra.auth.username')}
                                 disabled={isLoading}
                             />
@@ -92,7 +92,7 @@ const LoginForm: SFC<Props> = ({ redirectTo }) => {
                             <Field
                                 id="password"
                                 name="password"
-                                component={renderInput}
+                                component={Input}
                                 label={translate('ra.auth.password')}
                                 type="password"
                                 disabled={isLoading}
