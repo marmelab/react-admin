@@ -11,58 +11,53 @@ import Toolbar from './Toolbar';
 import CardContentInner from '../layout/CardContentInner';
 import useInitializeFormWithRecord from './useInitializeFormWithRecord';
 
-const sanitizeRestProps = ({
-    anyTouched,
-    array,
-    asyncBlurFields,
-    asyncValidate,
-    asyncValidating,
-    autofill,
-    blur,
-    change,
-    clearAsyncError,
-    clearFields,
-    clearSubmit,
-    clearSubmitErrors,
-    destroy,
-    dirty,
-    dirtyFields,
-    dirtySinceLastSubmit,
-    dispatch,
-    form,
-    handleSubmit,
-    hasSubmitErrors,
-    hasValidationErrors,
-    initialize,
-    initialized,
-    initialValues,
-    pristine,
-    pure,
-    redirect,
-    reset,
-    resetSection,
-    save,
-    setRedirect,
-    submit,
-    submitError,
-    submitErrors,
-    submitAsSideEffect,
-    submitFailed,
-    submitSucceeded,
-    submitting,
-    touch,
-    translate,
-    triggerSubmit,
-    undoable,
-    untouch,
-    valid,
-    validate,
-    validating,
-    _reduxForm,
-    ...props
-}) => props;
+const SimpleForm = ({ initialValues, ...props }) => {
+    let redirect = useRef(props.redirect);
+    // We don't use state here for two reasons:
+    // 1. There no way to execute code only after the state has been updated
+    // 2. We don't want the form to rerender when redirect is changed
+    const setRedirect = newRedirect => {
+        redirect.current = newRedirect;
+    };
 
-export const SimpleForm = ({
+    const saving = useSelector(state => state.admin.saving);
+    const translate = useTranslate();
+    const submit = values => {
+        const finalRedirect =
+            typeof redirect === undefined ? props.redirect : redirect.current;
+        props.save(values, finalRedirect);
+    };
+
+    const finalInitialValues = {
+        ...initialValues,
+        ...props.record,
+    };
+
+    return (
+        <Form
+            key={props.version}
+            initialValues={finalInitialValues}
+            onSubmit={submit}
+            mutators={{ ...arrayMutators }}
+            keepDirtyOnReinitialize
+            destroyOnUnregister
+            {...props}
+            render={({ submitting, ...formProps }) => (
+                <SimpleFormView
+                    saving={submitting || saving}
+                    translate={translate}
+                    setRedirect={setRedirect}
+                    {...props}
+                    {...formProps}
+                />
+            )}
+        />
+    );
+};
+
+export default SimpleForm;
+
+const SimpleFormView = ({
     basePath,
     children,
     className,
@@ -124,7 +119,7 @@ export const SimpleForm = ({
     );
 };
 
-SimpleForm.propTypes = {
+SimpleFormView.propTypes = {
     basePath: PropTypes.string,
     children: PropTypes.node,
     className: PropTypes.string,
@@ -148,53 +143,58 @@ SimpleForm.propTypes = {
     version: PropTypes.number,
 };
 
-SimpleForm.defaultProps = {
+SimpleFormView.defaultProps = {
     submitOnEnter: true,
     toolbar: <Toolbar />,
 };
 
-const EnhancedSimpleForm = ({ initialValues, ...props }) => {
-    let redirect = useRef(props.redirect);
-    // We don't use state here for two reasons:
-    // 1. There no way to execute code only after the state has been updated
-    // 2. We don't want the form to rerender when redirect is changed
-    const setRedirect = newRedirect => {
-        redirect.current = newRedirect;
-    };
-
-    const saving = useSelector(state => state.admin.saving);
-    const translate = useTranslate();
-    const submit = values => {
-        const finalRedirect =
-            typeof redirect === undefined ? props.redirect : redirect.current;
-        props.save(values, finalRedirect);
-    };
-
-    const finalInitialValues = {
-        ...initialValues,
-        ...props.record,
-    };
-
-    return (
-        <Form
-            key={props.version}
-            initialValues={finalInitialValues}
-            onSubmit={submit}
-            mutators={{ ...arrayMutators }}
-            keepDirtyOnReinitialize
-            destroyOnUnregister
-            {...props}
-            render={({ submitting, ...formProps }) => (
-                <SimpleForm
-                    saving={submitting || saving}
-                    translate={translate}
-                    setRedirect={setRedirect}
-                    {...props}
-                    {...formProps}
-                />
-            )}
-        />
-    );
-};
-
-export default EnhancedSimpleForm;
+const sanitizeRestProps = ({
+    anyTouched,
+    array,
+    asyncBlurFields,
+    asyncValidate,
+    asyncValidating,
+    autofill,
+    blur,
+    change,
+    clearAsyncError,
+    clearFields,
+    clearSubmit,
+    clearSubmitErrors,
+    destroy,
+    dirty,
+    dirtyFields,
+    dirtySinceLastSubmit,
+    dispatch,
+    form,
+    handleSubmit,
+    hasSubmitErrors,
+    hasValidationErrors,
+    initialize,
+    initialized,
+    initialValues,
+    pristine,
+    pure,
+    redirect,
+    reset,
+    resetSection,
+    save,
+    setRedirect,
+    submit,
+    submitError,
+    submitErrors,
+    submitAsSideEffect,
+    submitFailed,
+    submitSucceeded,
+    submitting,
+    touch,
+    translate,
+    triggerSubmit,
+    undoable,
+    untouch,
+    valid,
+    validate,
+    validating,
+    _reduxForm,
+    ...props
+}) => props;

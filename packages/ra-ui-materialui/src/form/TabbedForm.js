@@ -18,63 +18,55 @@ const useStyles = makeStyles(theme => ({
     errorTabButton: { color: theme.palette.error.main },
 }));
 
-const sanitizeRestProps = ({
-    anyTouched,
-    array,
-    asyncBlurFields,
-    asyncValidate,
-    asyncValidating,
-    autofill,
-    blur,
-    change,
-    clearAsyncError,
-    clearFields,
-    clearSubmit,
-    clearSubmitErrors,
-    destroy,
-    dirty,
-    dirtyFields,
-    dirtySinceLastSubmit,
-    dispatch,
-    form,
-    handleSubmit,
-    hasSubmitErrors,
-    hasValidationErrors,
-    initialize,
-    initialized,
-    initialValues,
-    pristine,
-    pure,
-    redirect,
-    reset,
-    resetSection,
-    save,
-    staticContext,
-    submit,
-    submitAsSideEffect,
-    submitError,
-    submitErrors,
-    submitFailed,
-    submitSucceeded,
-    submitting,
-    touch,
-    translate,
-    triggerSubmit,
-    undoable,
-    untouch,
-    valid,
-    validate,
-    validating,
-    _reduxForm,
-    ...props
-}) => props;
+const TabbedForm = ({ initialValues, ...props }) => {
+    let redirect = useRef(props.redirect);
+    // We don't use state here for two reasons:
+    // 1. There no way to execute code only after the state has been updated
+    // 2. We don't want the form to rerender when redirect is changed
+    const setRedirect = newRedirect => {
+        redirect.current = newRedirect;
+    };
+    const saving = useSelector(state => state.admin.saving);
+    const translate = useTranslate();
+    const classes = useStyles();
 
-export const getTabFullPath = (tab, index, baseUrl) =>
-    `${baseUrl}${
-        tab.props.path ? `/${tab.props.path}` : index > 0 ? `/${index}` : ''
-    }`;
+    const submit = values => {
+        const finalRedirect =
+            typeof redirect === undefined ? props.redirect : redirect.current;
+        props.save(values, finalRedirect);
+    };
 
-export const TabbedForm = ({
+    const finalInitialValues = {
+        ...initialValues,
+        ...props.record,
+    };
+
+    return (
+        <Form
+            key={props.version}
+            initialValues={finalInitialValues}
+            onSubmit={submit}
+            mutators={{ ...arrayMutators }}
+            setRedirect={setRedirect}
+            keepDirtyOnReinitialize
+            destroyOnUnregister
+            {...props}
+            render={({ submitting, ...formProps }) => (
+                <TabbedFormView
+                    classes={classes}
+                    saving={submitting || saving}
+                    translate={translate}
+                    {...props}
+                    {...formProps}
+                />
+            )}
+        />
+    );
+};
+
+export default withRouter(TabbedForm);
+
+export const TabbedFormView = ({
     basePath,
     children,
     className,
@@ -173,7 +165,7 @@ export const TabbedForm = ({
     );
 };
 
-TabbedForm.propTypes = {
+TabbedFormView.propTypes = {
     basePath: PropTypes.string,
     children: PropTypes.node,
     className: PropTypes.string,
@@ -204,11 +196,67 @@ TabbedForm.propTypes = {
     version: PropTypes.number,
 };
 
-TabbedForm.defaultProps = {
+TabbedFormView.defaultProps = {
     submitOnEnter: true,
     tabs: <TabbedFormTabs />,
     toolbar: <Toolbar />,
 };
+
+const sanitizeRestProps = ({
+    anyTouched,
+    array,
+    asyncBlurFields,
+    asyncValidate,
+    asyncValidating,
+    autofill,
+    blur,
+    change,
+    clearAsyncError,
+    clearFields,
+    clearSubmit,
+    clearSubmitErrors,
+    destroy,
+    dirty,
+    dirtyFields,
+    dirtySinceLastSubmit,
+    dispatch,
+    form,
+    handleSubmit,
+    hasSubmitErrors,
+    hasValidationErrors,
+    initialize,
+    initialized,
+    initialValues,
+    pristine,
+    pure,
+    redirect,
+    reset,
+    resetSection,
+    save,
+    staticContext,
+    submit,
+    submitAsSideEffect,
+    submitError,
+    submitErrors,
+    submitFailed,
+    submitSucceeded,
+    submitting,
+    touch,
+    translate,
+    triggerSubmit,
+    undoable,
+    untouch,
+    valid,
+    validate,
+    validating,
+    _reduxForm,
+    ...props
+}) => props;
+
+export const getTabFullPath = (tab, index, baseUrl) =>
+    `${baseUrl}${
+        tab.props.path ? `/${tab.props.path}` : index > 0 ? `/${index}` : ''
+    }`;
 
 export const findTabsWithErrors = (children, errors) => {
     return Children.toArray(children).reduce((acc, child) => {
@@ -229,51 +277,3 @@ export const findTabsWithErrors = (children, errors) => {
         return acc;
     }, []);
 };
-
-const EnhancedTabbedForm = ({ initialValues, ...props }) => {
-    let redirect = useRef(props.redirect);
-    // We don't use state here for two reasons:
-    // 1. There no way to execute code only after the state has been updated
-    // 2. We don't want the form to rerender when redirect is changed
-    const setRedirect = newRedirect => {
-        redirect.current = newRedirect;
-    };
-    const saving = useSelector(state => state.admin.saving);
-    const translate = useTranslate();
-    const classes = useStyles();
-
-    const submit = values => {
-        const finalRedirect =
-            typeof redirect === undefined ? props.redirect : redirect.current;
-        props.save(values, finalRedirect);
-    };
-
-    const finalInitialValues = {
-        ...initialValues,
-        ...props.record,
-    };
-
-    return (
-        <Form
-            key={props.version}
-            initialValues={finalInitialValues}
-            onSubmit={submit}
-            mutators={{ ...arrayMutators }}
-            setRedirect={setRedirect}
-            keepDirtyOnReinitialize
-            destroyOnUnregister
-            {...props}
-            render={({ submitting, ...formProps }) => (
-                <TabbedForm
-                    classes={classes}
-                    saving={submitting || saving}
-                    translate={translate}
-                    {...props}
-                    {...formProps}
-                />
-            )}
-        />
-    );
-};
-
-export default withRouter(EnhancedTabbedForm);
