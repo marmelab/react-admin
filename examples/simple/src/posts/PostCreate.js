@@ -90,16 +90,16 @@ const PostCreateToolbar = props => (
     </Toolbar>
 );
 
+const backlinksDefaultValue = [
+    {
+        date: new Date().toISOString(),
+        url: 'http://google.com',
+    },
+];
 const PostCreate = ({ permissions, ...props }) => {
     const initialValues = useMemo(
         () => ({
             average_note: 0,
-            backlinks: [
-                {
-                    date: new Date().toISOString(),
-                    url: 'http://google.com',
-                },
-            ],
         }),
         []
     );
@@ -145,7 +145,10 @@ const PostCreate = ({ permissions, ...props }) => {
                     defaultValue={dateDefaultValue}
                 />
                 <BooleanInput source="commentable" defaultValue />
-                <ArrayInput source="backlinks">
+                <ArrayInput
+                    source="backlinks"
+                    defaultValue={backlinksDefaultValue}
+                >
                     <SimpleFormIterator>
                         <DateInput source="date" />
                         <TextInput source="url" />
