@@ -19,12 +19,14 @@ import {
     required,
     useCreate,
     useRedirect,
+    useNotify,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
 import { useFormState } from 'react-final-form';
 
 const SaveWithNoteButton = props => {
     const [create] = useCreate('posts');
     const redirectTo = useRedirect();
+    const notify = useNotify();
     const { basePath, redirect } = props;
 
     const formState = useFormState();
@@ -40,11 +42,22 @@ const SaveWithNoteButton = props => {
             },
             {
                 onSuccess: ({ data: newRecord }) => {
+                    notify('ra.notification.created', 'info', {
+                        smart_count: 1,
+                    });
                     redirectTo(redirect, basePath, newRecord.id, newRecord);
                 },
             }
         );
-    }, [create, formState, redirect, redirectTo, basePath]);
+    }, [
+        formState.valid,
+        formState.values,
+        create,
+        notify,
+        redirectTo,
+        redirect,
+        basePath,
+    ]);
 
     return <SaveButton {...props} handleSubmitWithRedirect={handleClick} />;
 };
