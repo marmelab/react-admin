@@ -12,6 +12,7 @@ import {
 
 import renderWithRedux from '../util/renderWithRedux';
 import { CRUD_CHANGE_LIST_PARAMS } from '../actions';
+import { SORT_ASC } from '../reducer/admin/resource/list/queryReducer';
 
 describe('useListController', () => {
     const defaultProps = {
@@ -30,6 +31,10 @@ describe('useListController', () => {
         },
         query: {
             page: 1,
+            perPage: 10,
+            sort: 'id',
+            order: SORT_ASC,
+            filter: {},
         },
         resource: 'posts',
         debounce: 200,
@@ -37,20 +42,20 @@ describe('useListController', () => {
 
     describe('setFilters', () => {
         let clock;
-        let fakeComponent;
+        let fakeComponent = ({ setFilters, filterValues }) => (
+            <TextField
+                inputProps={{
+                    'aria-label': 'search',
+                }}
+                value={filterValues.q}
+                onChange={event => {
+                    setFilters({ q: event.target.value });
+                }}
+            />
+        );
 
         beforeEach(() => {
             clock = lolex.install();
-            fakeComponent = ({ setFilters }) => (
-                <TextField
-                    inputProps={{
-                        'aria-label': 'search',
-                    }}
-                    onChange={event => {
-                        setFilters({ q: event.target.value });
-                    }}
-                />
-            );
         });
 
         it('should take only last change in case of a burst of changes (case of inputs being currently edited)', () => {
@@ -88,7 +93,7 @@ describe('useListController', () => {
             });
         });
 
-        it.skip('should remove empty filters', () => {
+        it('should remove empty filters', () => {
             const props = {
                 ...defaultProps,
                 location: {
@@ -114,7 +119,7 @@ describe('useListController', () => {
             );
             const searchInput = getByLabelText('search');
 
-            // FIXME: For some reason, trigerring the change event with an empty string
+            // FIXME: For some reason, triggering the change event with an empty string
             // does not call the event handler on fakeComponent
             fireEvent.change(searchInput, { target: { value: '' } });
             clock.tick(210);

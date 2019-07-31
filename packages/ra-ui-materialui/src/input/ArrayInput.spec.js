@@ -93,12 +93,10 @@ describe('<ArrayInput />', () => {
         expect(baseElement.querySelectorAll('section')).toHaveLength(3);
     });
 
-    // FIXME
-    it.skip('should clone each input once per value in the array', () => {
+    it('should clone each input once per value in the array', () => {
         const initialValues = {
             arr: [{ id: 123, foo: 'bar' }, { id: 456, foo: 'baz' }],
         };
-
         const { queryAllByLabelText } = render(
             <FinalForm
                 initialValues={initialValues}
