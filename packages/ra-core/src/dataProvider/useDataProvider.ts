@@ -88,11 +88,21 @@ const useDataProvider = (): DataProviderHookFunction => {
             const {
                 action = 'CUSTOM_FETCH',
                 undoable = false,
-                onSuccess = {},
-                onFailure = {},
+                onSuccess,
+                onFailure,
                 ...rest
             } = options;
-
+            if (onSuccess && typeof onSuccess !== 'function') {
+                throw new Error('The onSuccess option must be a function');
+            }
+            if (onFailure && typeof onFailure !== 'function') {
+                throw new Error('The onFailure option must be a function');
+            }
+            if (undoable && !onSuccess) {
+                throw new Error(
+                    'You must pass an onSuccess callback calling notify() to use the undoable mode'
+                );
+            }
             if (isOptimistic) {
                 // in optimistic mode, all fetch actions are canceled,
                 // so the admin uses the store without synchronization
@@ -105,8 +115,8 @@ const useDataProvider = (): DataProviderHookFunction => {
                 resource,
                 action,
                 rest,
-                successFunc: getSideEffectFunc(onSuccess),
-                failureFunc: getSideEffectFunc(onFailure),
+                onSuccess,
+                onFailure,
                 dataProvider,
                 dispatch,
             };
@@ -117,9 +127,6 @@ const useDataProvider = (): DataProviderHookFunction => {
         [dataProvider, dispatch, isOptimistic]
     );
 };
-
-const getSideEffectFunc = (effect): ((args: any) => void) =>
-    effect instanceof Function ? effect : () => null;
 
 /**
  * In undoable mode, the hook dispatches an optimistic action and executes
@@ -136,8 +143,8 @@ const performUndoableQuery = ({
     resource,
     action,
     rest,
-    successFunc,
-    failureFunc,
+    onSuccess,
+    onFailure,
     dataProvider,
     dispatch,
 }: QueryFunctionParams) => {
@@ -156,7 +163,7 @@ const performUndoableQuery = ({
             optimistic: true,
         },
     });
-    successFunc({});
+    onSuccess && onSuccess({});
     undoableEventEmitter.once('end', ({ isUndo }) => {
         dispatch(stopOptimisticMode());
         if (isUndo) {
@@ -202,7 +209,7 @@ const performUndoableQuery = ({
                     },
                 });
                 dispatch({ type: FETCH_ERROR, error });
-                failureFunc(error);
+                onFailure && onFailure(error);
                 throw new Error(error.message ? error.message : error);
             });
     });
@@ -221,8 +228,8 @@ const performQuery = ({
     resource,
     action,
     rest,
-    successFunc,
-    failureFunc,
+    onSuccess,
+    onFailure,
     dataProvider,
     dispatch,
 }: QueryFunctionParams) => {
@@ -255,7 +262,7 @@ const performQuery = ({
                 },
             });
             dispatch({ type: FETCH_END });
-            successFunc(response);
+            onSuccess && onSuccess(response);
             return response;
         })
         .catch(error => {
@@ -272,7 +279,7 @@ const performQuery = ({
                 },
             });
             dispatch({ type: FETCH_ERROR, error });
-            failureFunc(error);
+            onFailure && onFailure(error);
             throw new Error(error.message ? error.message : error);
         });
 };
@@ -285,8 +292,8 @@ interface QueryFunctionParams {
     /** The root action name, e.g. `CRUD_GET_MANY` */
     action: string;
     rest: any;
-    successFunc: (args?: any) => void;
-    failureFunc: (error: any) => void;
+    onSuccess?: (args?: any) => void;
+    onFailure?: (error: any) => void;
     dataProvider: DataProvider;
     dispatch: Dispatch;
 }

@@ -1,32 +1,43 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ThumbDown from '@material-ui/icons/ThumbDown';
-import { Button, useMutation, UPDATE_MANY } from 'react-admin';
+import {
+    Button,
+    useMutation,
+    useNotify,
+    useRedirect,
+    useUnselectAll,
+    UPDATE_MANY,
+} from 'react-admin';
 
-const options = {
-    undoable: true,
-    onSuccess: {
-        notification: {
-            body: 'resources.reviews.notification.approved_success',
-            level: 'info',
-        },
-        redirectTo: '/reviews',
-    },
-    onFailure: {
-        notification: {
-            body: 'resources.reviews.notification.approved_error',
-            level: 'warning',
-        },
-    },
-};
 const BulkRejectButton = ({ selectedIds }) => {
+    const notify = useNotify();
+    const redirect = useRedirect();
+    const unselectAll = useUnselectAll('reviews');
     const [reject, { loading }] = useMutation(
         {
             type: UPDATE_MANY,
             resource: 'reviews',
             payload: { ids: selectedIds, data: { status: 'rejected' } },
         },
-        options
+        {
+            undoable: true,
+            onSuccess: () => {
+                notify(
+                    'resources.reviews.notification.approved_success',
+                    'info',
+                    {},
+                    true
+                );
+                redirect('/reviews');
+                unselectAll();
+            },
+            onFailure: () =>
+                notify(
+                    'resources.reviews.notification.approved_error',
+                    'warning'
+                ),
+        }
     );
 
     return (

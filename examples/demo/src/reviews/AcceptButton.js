@@ -1,40 +1,39 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { formValueSelector } from 'redux-form';
 import Button from '@material-ui/core/Button';
 import ThumbUp from '@material-ui/icons/ThumbUp';
-import { useTranslate, useMutation } from 'react-admin';
-
-const options = {
-    undoable: true,
-    onSuccess: {
-        notification: {
-            body: 'resources.reviews.notification.approved_success',
-            level: 'info',
-        },
-        redirectTo: '/reviews',
-    },
-    onFailure: {
-        notification: {
-            body: 'resources.reviews.notification.approved_error',
-            level: 'warning',
-        },
-    },
-};
+import { useTranslate, useMutation, useNotify, useRedirect } from 'react-admin';
 
 /**
  * This custom button demonstrate using useMutation to update data
  */
 const AcceptButton = ({ record }) => {
     const translate = useTranslate();
+    const notify = useNotify();
+    const redirect = useRedirect();
     const [approve, { loading }] = useMutation(
         {
             type: 'UPDATE',
             resource: 'reviews',
             payload: { id: record.id, data: { status: 'accepted' } },
         },
-        options
+        {
+            undoable: true,
+            onSuccess: () => {
+                notify(
+                    'resources.reviews.notification.approved_success',
+                    'info',
+                    {},
+                    true
+                );
+                redirect('/reviews');
+            },
+            onFailure: () =>
+                notify(
+                    'resources.reviews.notification.approved_error',
+                    'warning'
+                ),
+        }
     );
     return record && record.status === 'pending' ? (
         <Button
@@ -60,8 +59,4 @@ AcceptButton.propTypes = {
     comment: PropTypes.string,
 };
 
-const selector = formValueSelector('record-form');
-
-export default connect(state => ({
-    comment: selector(state, 'comment'),
-}))(AcceptButton);
+export default AcceptButton;
