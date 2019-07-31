@@ -10,6 +10,7 @@ import {
     regex,
     email,
     choices,
+    composeValidators,
 } from './validate';
 
 describe('Validators', () => {
@@ -20,6 +21,45 @@ describe('Validators', () => {
                 .map(error => (error && error.message ? error.message : error)),
             Array(...Array(inputs.length)).map(() => message)
         );
+
+    describe('composeValidators', () => {
+        it('Correctly compose validators passed as an array', () => {
+            test(
+                composeValidators([required(), minLength(5)]),
+                [''],
+                'ra.validation.required'
+            );
+            test(
+                composeValidators([required(), minLength(5)]),
+                ['abcd'],
+                'ra.validation.minLength'
+            );
+            test(
+                composeValidators([required(), minLength(5)]),
+                ['abcde'],
+                undefined
+            );
+        });
+
+        it('Correctly compose validators passed as many arguments', () => {
+            test(
+                composeValidators(required(), minLength(5)),
+                [''],
+                'ra.validation.required'
+            );
+            test(
+                composeValidators(required(), minLength(5)),
+                ['abcd'],
+                'ra.validation.minLength'
+            );
+            test(
+                composeValidators(required(), minLength(5)),
+                ['abcde'],
+                undefined
+            );
+        });
+    });
+
     describe('required', () => {
         it('should return undefined if the value is not empty', () => {
             test(required(), ['foo', 12], undefined);
