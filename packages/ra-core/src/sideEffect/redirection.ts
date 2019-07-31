@@ -3,6 +3,7 @@ import { push } from 'connected-react-router';
 
 import { Identifier } from '../types';
 import resolveRedirectTo from '../util/resolveRedirectTo';
+import { refreshView } from '../actions/uiActions';
 
 type RedirectToFunction = (
     basePath: string,
@@ -41,6 +42,7 @@ export function* handleRedirection({
     meta: { basePath, redirectTo },
 }: ActionWithSideEffect) {
     if (!redirectTo) {
+        yield put(refreshView());
         return;
     }
 
