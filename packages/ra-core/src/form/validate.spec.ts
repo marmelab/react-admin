@@ -23,7 +23,7 @@ describe('Validators', () => {
         );
 
     describe('composeValidators', () => {
-        it('Correctly compose validators passed as an array', () => {
+        it('Correctly composes validators passed as an array', () => {
             test(
                 composeValidators([required(), minLength(5)]),
                 [''],
@@ -41,7 +41,7 @@ describe('Validators', () => {
             );
         });
 
-        it('Correctly compose validators passed as many arguments', () => {
+        it('Correctly composes validators passed as many arguments', () => {
             test(
                 composeValidators(required(), minLength(5)),
                 [''],
