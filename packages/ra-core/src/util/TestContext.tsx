@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
-import { reducer as formReducer } from 'redux-form';
 import TranslationProvider from '../i18n/TranslationProvider';
 import merge from 'lodash/merge';
 import { createMemoryHistory } from 'history';
@@ -14,7 +13,6 @@ export const defaultStore = {
         references: { possibleValues: {} },
         ui: { viewVersion: 1 },
     },
-    form: formReducer({}, { type: '@@FOO' }), // Call the reducer with an unknown type to initialize it
     i18n: { locale: 'en', messages: {} },
 };
 

@@ -534,37 +534,86 @@ And that's all it takes to make a fetch action optimistic.
 
 ## Altering the Form Values before Submitting
 
-Sometimes, you may want your custom action to alter the form values before actually sending them to the `dataProvider`. For those cases, you should know that every buttons inside a form [Toolbar](/CreateEdit.md#toolbar) receive two props:
+Sometimes, you may want your custom action to alter the form values before actually sending them to the `dataProvider`.
+For those cases, you should know that every buttons inside a form [Toolbar](/CreateEdit.md#toolbar) receive two props:
 
-- `handleSubmitWithRedirect` which calls the default form save methods
-- `handleSubmit` which is the same prop as in [`react-form`](https://redux-form.com/7.4.2/docs/api/props.md/#-code-handlesubmit-eventorsubmit-function-code-)
+- `handleSubmit` which calls the default form save method
+- `handleSubmitWithRedirect` which calls the default form save method but allows to specify a custom redirection
 
-Knowing this, you can dispatch a custom action with a button and still benefit from the default crud action side effects (notifications, optimistic ui, undo, etc.). For instance, in the `simple` example:
+Knowing this, there are two ways to alter the form values before submit:
+
+1. Using react-final-form API to send change events
 
 ```jsx
-import React, { Component } from 'react';
-import { dispatch } from 'react-redux';
-import { crudCreate, SaveButton, Toolbar } from 'react-admin';
+import React, { useCallback } from 'react';
+import { useForm } from 'react-final-form';
+import { SaveButton, Toolbar, useCreate, useRedirect, useNotify } from 'react-admin';
 
-// A custom action creator which modifies the values before calling the default crudCreate action creator
-const addComment = (values, basePath, redirectTo) =>
-    crudCreate('posts', { ...values, average_note: 10 }, basePath, redirectTo);
+const SaveWithNoteButton = ({ handleSubmitWithRedirect, ...props }) => {
+    const [create] = useCreate('posts');
+    const redirectTo = useRedirect();
+    const notify = useNotify();
+    const { basePath, redirect } = props;
 
-const SaveWithNoteButtonView = ({ handleSubmitWithRedirect, ...props }) => {
-    const handleClick = () => {
-        const { basePath, handleSubmit, redirect } = props;
-        return handleSubmit(values => {
-            dispatch(addComment(values, basePath, redirect));
-        });
-    };
+    const form = useForm();
 
-    return (
-        <SaveButton
-            handleSubmitWithRedirect={handleClick}
-            {...props}
-        />
-    );
-}
+    const handleClick = useCallback(() => {
+        form.change('average_note', 10);
+
+        handleSubmitWithRedirect('edit');
+    }, [form]);
+
+    return <SaveButton {...props} handleSubmitWithRedirect={handleClick} />;
+};
+```
+
+2. Using react-admin hooks to run custom mutations
+
+For instance, in the `simple` example:
+
+```jsx
+import React, { useCallback } from 'react';
+import { useFormState } from 'react-final-form';
+import { SaveButton, Toolbar, useCreate, useRedirect, useNotify } from 'react-admin';
+
+const SaveWithNoteButton = props => {
+    const [create] = useCreate('posts');
+    const redirectTo = useRedirect();
+    const notify = useNotify();
+    const { basePath, redirect } = props;
+
+    const formState = useFormState();
+    const handleClick = useCallback(() => {
+        if (!formState.valid) {
+            return;
+        }
+
+        create(
+            null,
+            {
+                data: { ...formState.values, average_note: 10 },
+            },
+            {
+                onSuccess: ({ data: newRecord }) => {
+                    notify('ra.notification.created', 'info', {
+                        smart_count: 1,
+                    });
+                    redirectTo(redirect, basePath, newRecord.id, newRecord);
+                },
+            }
+        );
+    }, [
+        formState.valid,
+        formState.values,
+        create,
+        notify,
+        redirectTo,
+        redirect,
+        basePath,
+    ]);
+
+    return <SaveButton {...props} handleSubmitWithRedirect={handleClick} />;
+};
 ```
 
 This button can be used in the `PostCreateToolbar` component:

@@ -1,6 +1,4 @@
-import React, { useCallback } from 'react';
-import { useDispatch } from 'react-redux';
-
+import React, { useCallback, useMemo } from 'react';
 import RichTextInput from 'ra-input-rich-text';
 import {
     ArrayInput,
@@ -18,24 +16,48 @@ import {
     SimpleFormIterator,
     TextInput,
     Toolbar,
-    crudCreate,
     required,
+    useCreate,
+    useRedirect,
+    useNotify,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
-
-const saveWithNote = (values, basePath, redirectTo) =>
-    crudCreate('posts', { ...values, average_note: 10 }, basePath, redirectTo);
+import { useFormState } from 'react-final-form';
 
 const SaveWithNoteButton = props => {
-    const dispatch = useDispatch();
-    const { basePath, handleSubmit, redirect } = props;
+    const [create] = useCreate('posts');
+    const redirectTo = useRedirect();
+    const notify = useNotify();
+    const { basePath, redirect } = props;
 
-    const handleClick = useCallback(
-        () =>
-            handleSubmit(values => {
-                dispatch(saveWithNote(values, basePath, redirect));
-            }),
-        [basePath, dispatch, handleSubmit, redirect]
-    );
+    const formState = useFormState();
+    const handleClick = useCallback(() => {
+        if (!formState.valid) {
+            return;
+        }
+
+        create(
+            null,
+            {
+                data: { ...formState.values, average_note: 10 },
+            },
+            {
+                onSuccess: ({ data: newRecord }) => {
+                    notify('ra.notification.created', 'info', {
+                        smart_count: 1,
+                    });
+                    redirectTo(redirect, basePath, newRecord.id, newRecord);
+                },
+            }
+        );
+    }, [
+        formState.valid,
+        formState.values,
+        create,
+        notify,
+        redirectTo,
+        redirect,
+        basePath,
+    ]);
 
     return <SaveButton {...props} handleSubmitWithRedirect={handleClick} />;
 };
@@ -68,103 +90,116 @@ const PostCreateToolbar = props => (
     </Toolbar>
 );
 
-const getDefaultDate = () => new Date();
+const backlinksDefaultValue = [
+    {
+        date: new Date().toISOString(),
+        url: 'http://google.com',
+    },
+];
+const PostCreate = ({ permissions, ...props }) => {
+    const initialValues = useMemo(
+        () => ({
+            average_note: 0,
+        }),
+        []
+    );
 
-const PostCreate = ({ permissions, ...props }) => (
-    <Create {...props}>
-        <SimpleForm
-            toolbar={<PostCreateToolbar />}
-            defaultValue={{ average_note: 0 }}
-            validate={values => {
-                const errors = {};
-                ['title', 'teaser'].forEach(field => {
-                    if (!values[field]) {
-                        errors[field] = 'Required field';
+    const dateDefaultValue = useMemo(() => new Date(), []);
+
+    return (
+        <Create {...props}>
+            <SimpleForm
+                toolbar={<PostCreateToolbar />}
+                initialValues={initialValues}
+                validate={values => {
+                    const errors = {};
+                    ['title', 'teaser'].forEach(field => {
+                        if (!values[field]) {
+                            errors[field] = 'Required field';
+                        }
+                    });
+
+                    if (values.average_note < 0 || values.average_note > 5) {
+                        errors.average_note = 'Should be between 0 and 5';
                     }
-                });
 
-                if (values.average_note < 0 || values.average_note > 5) {
-                    errors.average_note = 'Should be between 0 and 5';
-                }
-
-                return errors;
-            }}
-        >
-            <TextInput autoFocus source="title" />
-            <LongTextInput source="teaser" />
-            <RichTextInput source="body" validate={[required()]} />
-            <FormDataConsumer>
-                {({ formData, ...rest }) =>
-                    formData.title && (
-                        <NumberInput
-                            source="average_note"
-                            defaultValue={5}
-                            {...rest}
-                        />
-                    )
-                }
-            </FormDataConsumer>
-            <DateInput source="published_at" defaultValue={getDefaultDate} />
-            <BooleanInput source="commentable" defaultValue />
-            <ArrayInput
-                source="backlinks"
-                defaultValue={[
-                    {
-                        date: new Date().toISOString(),
-                        url: 'http://google.com',
-                    },
-                ]}
+                    return errors;
+                }}
             >
-                <SimpleFormIterator>
-                    <DateInput source="date" />
-                    <TextInput source="url" />
-                </SimpleFormIterator>
-            </ArrayInput>
-            {permissions === 'admin' && (
-                <ArrayInput source="authors">
+                <TextInput autoFocus source="title" />
+                <LongTextInput source="teaser" />
+                <RichTextInput source="body" validate={required()} />
+                <FormDataConsumer>
+                    {({ formData, ...rest }) =>
+                        formData.title && (
+                            <NumberInput
+                                source="average_note"
+                                defaultValue={5}
+                                {...rest}
+                            />
+                        )
+                    }
+                </FormDataConsumer>
+                <DateInput
+                    source="published_at"
+                    defaultValue={dateDefaultValue}
+                />
+                <BooleanInput source="commentable" defaultValue />
+                <ArrayInput
+                    source="backlinks"
+                    defaultValue={backlinksDefaultValue}
+                >
                     <SimpleFormIterator>
-                        <ReferenceInput
-                            label="User"
-                            source="user_id"
-                            reference="users"
-                        >
-                            <AutocompleteInput />
-                        </ReferenceInput>
-                        <FormDataConsumer>
-                            {({
-                                formData,
-                                scopedFormData,
-                                getSource,
-                                ...rest
-                            }) =>
-                                scopedFormData.user_id ? (
-                                    <SelectInput
-                                        label="Role"
-                                        source={getSource('role')}
-                                        choices={[
-                                            {
-                                                id: 'headwriter',
-                                                name: 'Head Writer',
-                                            },
-                                            {
-                                                id: 'proofreader',
-                                                name: 'Proof reader',
-                                            },
-                                            {
-                                                id: 'cowriter',
-                                                name: 'Co-Writer',
-                                            },
-                                        ]}
-                                        {...rest}
-                                    />
-                                ) : null
-                            }
-                        </FormDataConsumer>
+                        <DateInput source="date" />
+                        <TextInput source="url" />
                     </SimpleFormIterator>
                 </ArrayInput>
-            )}
-        </SimpleForm>
-    </Create>
-);
+                {permissions === 'admin' && (
+                    <ArrayInput source="authors">
+                        <SimpleFormIterator>
+                            <ReferenceInput
+                                label="User"
+                                source="user_id"
+                                reference="users"
+                            >
+                                <AutocompleteInput />
+                            </ReferenceInput>
+                            <FormDataConsumer>
+                                {({
+                                    formData,
+                                    scopedFormData,
+                                    getSource,
+                                    ...rest
+                                }) =>
+                                    scopedFormData.user_id ? (
+                                        <SelectInput
+                                            label="Role"
+                                            source={getSource('role')}
+                                            choices={[
+                                                {
+                                                    id: 'headwriter',
+                                                    name: 'Head Writer',
+                                                },
+                                                {
+                                                    id: 'proofreader',
+                                                    name: 'Proof reader',
+                                                },
+                                                {
+                                                    id: 'cowriter',
+                                                    name: 'Co-Writer',
+                                                },
+                                            ]}
+                                            {...rest}
+                                        />
+                                    ) : null
+                                }
+                            </FormDataConsumer>
+                        </SimpleFormIterator>
+                    </ArrayInput>
+                )}
+            </SimpleForm>
+        </Create>
+    );
+};
 
 export default PostCreate;

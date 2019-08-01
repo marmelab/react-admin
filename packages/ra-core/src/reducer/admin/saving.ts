@@ -1,4 +1,3 @@
-import { actionTypes } from 'redux-form';
 import { LOCATION_CHANGE } from 'connected-react-router';
 import {
     CRUD_CREATE,
@@ -17,7 +16,6 @@ export default (previousState = false, { type, meta }) => {
                 redirect: meta.onSuccess && meta.onSuccess.redirectTo,
             };
         case LOCATION_CHANGE:
-        case actionTypes.SET_SUBMIT_FAILED:
         case CRUD_CREATE_SUCCESS:
         case CRUD_CREATE_FAILURE:
         case CRUD_UPDATE_SUCCESS:

@@ -47,17 +47,6 @@ describe('useEditController', () => {
         expect(getByText('hello')).toBeDefined();
     });
 
-    it('should reset the redux form', () => {
-        const { dispatch } = renderWithRedux(
-            <EditController {...defaultProps}>
-                {({ record }) => <div>{record && record.title}</div>}
-            </EditController>
-        );
-        const formResetAction = dispatch.mock.calls[3][0];
-        expect(formResetAction.type).toEqual('@@redux-form/RESET');
-        expect(formResetAction.meta).toEqual({ form: 'record-form' });
-    });
-
     it('should return an undoable save callback by default', () => {
         let saveCallback;
         const { dispatch } = renderWithRedux(

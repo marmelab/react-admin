@@ -60,7 +60,7 @@ export class SaveButton extends Component {
         showNotification: PropTypes.func,
         submitOnEnter: PropTypes.bool,
         translate: PropTypes.func.isRequired,
-        variant: PropTypes.oneOf(['text', 'raised', 'flat', 'fab']),
+        variant: PropTypes.oneOf(['text', 'outlined', 'contained']),
         icon: PropTypes.element,
     };
 
@@ -90,7 +90,7 @@ export class SaveButton extends Component {
             if (e) {
                 e.preventDefault();
             }
-            handleSubmitWithRedirect(redirect)();
+            handleSubmitWithRedirect(redirect);
         }
 
         if (typeof onClick === 'function') {
@@ -123,6 +123,7 @@ export class SaveButton extends Component {
                 type={type}
                 onClick={this.handleClick}
                 color={saving ? 'default' : 'primary'}
+                aria-label={label && translate(label, { _: label })}
                 {...sanitizeRestProps(rest)}
             >
                 {saving && saving.redirect === redirect ? (

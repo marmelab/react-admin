@@ -6,7 +6,6 @@ import { createSelector } from 'reselect';
 import get from 'lodash/get';
 import isEqual from 'lodash/isEqual';
 import difference from 'lodash/difference';
-import { WrappedFieldInputProps } from 'redux-form';
 
 import {
     crudGetMany as crudGetManyAction,
@@ -42,7 +41,7 @@ interface Props {
     children: (params: ChildrenFuncParams) => ReactNode;
     filter?: object;
     filterToQuery: (filter: {}) => any;
-    input?: WrappedFieldInputProps;
+    input?: any;
     meta?: object;
     perPage?: number;
     record?: Record;

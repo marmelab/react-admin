@@ -2,21 +2,21 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import ThumbUp from '@material-ui/icons/ThumbUp';
-import { useTranslate, useMutation, useNotify, useRedirect } from 'react-admin';
+import { useTranslate, useUpdate, useNotify, useRedirect } from 'react-admin';
 
 /**
- * This custom button demonstrate using useMutation to update data
+ * This custom button demonstrate using useUpdate to update data
  */
 const AcceptButton = ({ record }) => {
     const translate = useTranslate();
     const notify = useNotify();
-    const redirect = useRedirect();
-    const [approve, { loading }] = useMutation(
-        {
-            type: 'UPDATE',
-            resource: 'reviews',
-            payload: { id: record.id, data: { status: 'accepted' } },
-        },
+    const redirectTo = useRedirect();
+
+    const [approve, { loading }] = useUpdate(
+        'reviews',
+        record.id,
+        { status: 'accepted' },
+        record,
         {
             undoable: true,
             onSuccess: () => {
@@ -26,13 +26,14 @@ const AcceptButton = ({ record }) => {
                     {},
                     true
                 );
-                redirect('/reviews');
+                redirectTo('/reviews');
             },
-            onFailure: () =>
+            onFailure: () => {
                 notify(
                     'resources.reviews.notification.approved_error',
                     'warning'
-                ),
+                );
+            },
         }
     );
     return record && record.status === 'pending' ? (
@@ -56,7 +57,6 @@ const AcceptButton = ({ record }) => {
 
 AcceptButton.propTypes = {
     record: PropTypes.object,
-    comment: PropTypes.string,
 };
 
 export default AcceptButton;

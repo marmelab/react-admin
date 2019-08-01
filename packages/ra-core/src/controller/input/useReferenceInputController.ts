@@ -1,5 +1,3 @@
-import { WrappedFieldInputProps } from 'redux-form';
-
 import { getStatusForInput as getDataStatus } from './referenceDataStatus';
 import useTranslate from '../../i18n/useTranslate';
 import { Sort, Record, Pagination } from '../../types';
@@ -30,7 +28,7 @@ interface Option {
     allowEmpty?: boolean;
     filter?: any;
     filterToQuery?: (filter: string) => any;
-    input?: WrappedFieldInputProps;
+    input?: any;
     perPage?: number;
     record?: Record;
     reference: string;

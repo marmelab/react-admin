@@ -335,7 +335,7 @@ React-admin provides guessers for the `List` view (`ListGuesser`), the `Edit` vi
 
 The `<SimpleForm>` component receives the `record` as prop from its parent component. It is responsible for rendering the actual form. It is also responsible for validating the form data. Finally, it receives a `handleSubmit` function as prop, to be called with the updated record as argument when the user submits the form.
 
-The `<SimpleForm>` renders its child components line by line (within `<div>` components). It uses `redux-form`.
+The `<SimpleForm>` renders its child components line by line (within `<div>` components). It uses `react-final-form`.
 
 ![post edition form](./img/post-edition.png)
 
@@ -351,7 +351,6 @@ Here are all the props accepted by the `<SimpleForm>` component:
 * [`toolbar`](#toolbar)
 * `save`: The function invoked when the form is submitted. This is passed automatically by `react-admin` when the form component is used inside `Create` and `Edit` components.
 * `saving`: A boolean indicating whether a save operation is ongoing. This is passed automatically by `react-admin` when the form component is used inside `Create` and `Edit` components.
-* `form`: The name of the [`redux-form`](https://redux-form.com/7.4.2/docs/api/reduxform.md/#-code-form-string-code-required-). It defaults to `record-form` and should only be modified when using the `SimpleForm` outside of a `Create` or `Edit` component.
 
 ```jsx
 export const PostCreate = (props) => (
@@ -383,7 +382,6 @@ Here are all the props accepted by the `<TabbedForm>` component:
 * [`toolbar`](#toolbar)
 * `save`: The function invoked when the form is submitted. This is passed automatically by `react-admin` when the form component is used inside `Create` and `Edit` components.
 * `saving`: A boolean indicating whether a save operation is ongoing. This is passed automatically by `react-admin` when the form component is used inside `Create` and `Edit` components.
-* `form`: The name of the [`redux-form`](https://redux-form.com/7.4.2/docs/api/reduxform.md/#-code-form-string-code-required-). It defaults to `record-form` and should only be modified when using the `TabbedForm` outside of a `Create` or `Edit` component.
 
 {% raw %}
 ```jsx
@@ -490,7 +488,7 @@ export const PostCreate = (props) => (
 
 ## Validation
 
-React-admin relies on [redux-form](http://redux-form.com/) for the validation.
+React-admin relies on [react-final-form](https://github.com/final-form/react-final-form) for the validation.
 
 To validate values submitted by a form, you can add a `validate` prop to the form component, to individual inputs, or even mix both approaches.
 
@@ -522,7 +520,7 @@ export const UserCreate = (props) => (
 );
 ```
 
-**Tip**: The props you pass to `<SimpleForm>` and `<TabbedForm>` end up as `reduxForm()` parameters. This means that, in addition to `validate`, you can also pass `warn` or `asyncValidate` functions. Read the [`reduxForm()` documentation](http://redux-form.com/6.5.0/docs/api/ReduxForm.md/) for details.
+**Tip**: The props you pass to `<SimpleForm>` and `<TabbedForm>` are passed to the `<Form>` of `react-final-form`.
 
 ### Per Input Validation: Function Validator
 
@@ -626,7 +624,7 @@ export const ProductEdit = ({ ...props }) => (
 ```
 {% endraw %}
 
-**Tip**: The props of your Input components are passed to a redux-form `<Field>` component. So in addition to `validate`, you can also use `warn`.
+**Tip**: The props of your Input components are passed to a `react-final-form` `<Field>` component.
 
 **Tip**: You can use *both* Form validation and input validation.
 
@@ -802,7 +800,7 @@ export const PostEdit = (props) => (
 Here are the props received by the `Toolbar` component when passed as the `toolbar` prop of the `SimpleForm` or `TabbedForm` components:
 
 * `handleSubmitWithRedirect`: The function to call in order to submit the form. It accepts a single parameter overriding the form's default redirect.
-* `handleSubmit` which is the same prop as in [`react-form`](https://redux-form.com/7.4.2/docs/api/props.md/#-code-handlesubmit-eventorsubmit-function-code-)
+* `handleSubmit` which is the same prop as in [`react-final-form`](https://github.com/final-form/react-final-form#handlesubmit-syntheticeventhtmlformelement--promiseobject)
 * `invalid`: A boolean indicating whether the form is invalid
 * `pristine`: A boolean indicating whether the form is pristine (eg: no inputs have been changed yet)
 * `redirect`: The default form's redirect

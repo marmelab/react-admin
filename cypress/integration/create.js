@@ -164,9 +164,9 @@ describe('Create Page', () => {
                 value: 'Test teaser',
             },
             {
-                type: 'checkbox',
+                type: 'input',
                 name: 'commentable',
-                value: false,
+                value: 'false',
             },
             {
                 type: 'rich-text-input',

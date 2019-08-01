@@ -11,6 +11,7 @@ import { Record } from '../types';
 import { useNotify, useRedirect, RedirectionSideEffect } from '../sideEffect';
 
 import { useTranslate } from '../i18n';
+import { useVersion } from '.';
 
 export interface CreateControllerProps {
     isLoading: boolean;
@@ -21,6 +22,7 @@ export interface CreateControllerProps {
     basePath: string;
     record?: Partial<Record>;
     redirect: RedirectionSideEffect;
+    version: number;
 }
 
 export interface CreateProps {
@@ -71,28 +73,44 @@ const useCreateController = (props: CreateProps): CreateControllerProps => {
     const notify = useNotify();
     const redirect = useRedirect();
     const recordToUse = getRecord(location, record);
+    const version = useVersion();
 
     const [create, { loading: isSaving }] = useCreate(resource);
 
     const save = useCallback(
-        (data: Partial<Record>, redirectTo = 'list') =>
+        (
+            data: Partial<Record>,
+            redirectTo = 'list',
+            { onSuccess, onFailure } = {}
+        ) =>
             create(
                 null,
                 { data },
                 {
-                    onSuccess: ({ data: newRecord }) => {
-                        notify('ra.notification.created', 'info', {
-                            smart_count: 1,
-                        });
-                        redirect(redirectTo, basePath, newRecord.id, newRecord);
-                    },
-                    onFailure: error =>
-                        notify(
-                            typeof error === 'string'
-                                ? error
-                                : error.message || 'ra.notification.http_error',
-                            'warning'
-                        ),
+                    onSuccess: onSuccess
+                        ? onSuccess
+                        : ({ data: newRecord }) => {
+                              notify('ra.notification.created', 'info', {
+                                  smart_count: 1,
+                              });
+                              redirect(
+                                  redirectTo,
+                                  basePath,
+                                  newRecord.id,
+                                  newRecord
+                              );
+                          },
+                    onFailure: onFailure
+                        ? onFailure
+                        : error => {
+                              notify(
+                                  typeof error === 'string'
+                                      ? error
+                                      : error.message ||
+                                            'ra.notification.http_error',
+                                  'warning'
+                              );
+                          },
                 }
             ),
         [basePath, create, notify, redirect]
@@ -115,6 +133,7 @@ const useCreateController = (props: CreateProps): CreateControllerProps => {
         basePath,
         record: recordToUse,
         redirect: getDefaultRedirectRoute(hasShow, hasEdit),
+        version,
     };
 };
 

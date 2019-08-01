@@ -1,10 +1,10 @@
 import { useCallback } from 'react';
 import { push } from 'connected-react-router';
 import { useDispatch } from 'react-redux';
-import { reset } from 'redux-form';
 
 import { Identifier, Record } from '../types';
 import resolveRedirectTo from '../util/resolveRedirectTo';
+import { refreshView } from '../actions/uiActions';
 
 type RedirectToFunction = (
     basePath?: string,
@@ -37,12 +37,14 @@ const useRedirect = () => {
             basePath: string = '',
             id?: Identifier,
             data?: Partial<Record>
-        ) =>
-            redirectTo
-                ? dispatch(
-                      push(resolveRedirectTo(redirectTo, basePath, id, data))
-                  )
-                : dispatch(reset('record-form')), // explicit no redirection, reset the form
+        ) => {
+            if (!redirectTo) {
+                dispatch(refreshView());
+                return;
+            }
+
+            dispatch(push(resolveRedirectTo(redirectTo, basePath, id, data)));
+        },
         [dispatch]
     );
 };

@@ -1,11 +1,13 @@
-import React, { cloneElement, Children, useCallback } from 'react';
+import React, { cloneElement, Children, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { isRequired, FieldTitle, withDefaultValue } from 'ra-core';
-import { FieldArray } from 'redux-form';
+import { isRequired, FieldTitle } from 'ra-core';
+import { useFieldArray } from 'react-final-form-arrays';
+import lodashIsEqual from 'lodash/isEqual';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 
 import sanitizeRestProps from './sanitizeRestProps';
+import { useForm } from 'react-final-form';
 
 /**
  * To edit arrays of data embedded inside a record, <ArrayInput> creates a list of sub-forms.
@@ -40,7 +42,7 @@ import sanitizeRestProps from './sanitizeRestProps';
  *
  * <ArrayInput> expects a single child, which must be a *form iterator* component.
  * A form iterator is a component accepting a fields object
- * as passed by redux-form's <FieldArray> component, and defining a layout for
+ * as passed by react-final-form's <FieldArray> component, and defining a layout for
  * an array of fields. For instance, the <SimpleFormIterator> component
  * displays an array of fields in an unordered list (<ul>), one sub-form by
  * list item (<li>). It also provides controls for adding and removing
@@ -59,17 +61,32 @@ export const ArrayInput = ({
     validate,
     ...rest
 }) => {
-    const renderFieldArray = useCallback(
-        fieldProps => {
-            return cloneElement(Children.only(children), {
-                ...fieldProps,
-                record,
-                resource,
-                source,
+    const form = useForm();
+    const fieldProps = useFieldArray(source);
+
+    // HACK: This useEffect runs only once and will emulate defaultValue support on the ArrayInput
+    // This is needed because defaultValue is not supported on FieldArray in react-final-form
+    // NOTE: This can probably be better implemented with a mutator
+    useEffect(() => {
+        if (
+            fieldProps.meta.pristine &&
+            defaultValue &&
+            !lodashIsEqual(fieldProps.fields.value, defaultValue)
+        ) {
+            if (
+                !Array.isArray(defaultValue) &&
+                process.env.NODE_ENV !== 'production'
+            ) {
+                console.warn('<ArrayInput> defaultValue must be an array');
+                return;
+            }
+
+            // As we may have multiple items in the defaultValue, we batch the form changes for better performances
+            form.batch(() => {
+                defaultValue.forEach(value => fieldProps.fields.push(value));
             });
-        },
-        [resource, source, JSON.stringify(record), children] // eslint-disable-line
-    );
+        }
+    }, []); // eslint-disable-line
 
     return (
         <FormControl
@@ -86,13 +103,12 @@ export const ArrayInput = ({
                     isRequired={isRequired(validate)}
                 />
             </InputLabel>
-            <FieldArray
-                name={source}
-                defaultValue={defaultValue}
-                component={renderFieldArray}
-                validate={validate}
-                isRequired={isRequired(validate)}
-            />
+            {cloneElement(Children.only(children), {
+                ...fieldProps,
+                record,
+                resource,
+                source,
+            })}
         </FormControl>
     );
 };
@@ -117,4 +133,4 @@ ArrayInput.defaultProps = {
     options: {},
     fullWidth: true,
 };
-export default withDefaultValue(ArrayInput);
+export default ArrayInput;

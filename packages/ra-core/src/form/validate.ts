@@ -60,6 +60,20 @@ type Memoize = <T extends (...args: any[]) => any>(
 const memoize: Memoize = (fn: any) =>
     lodashMemoize(fn, (...args) => JSON.stringify(args));
 
+// Compose multiple validators into a single one for use with final-form
+export const composeValidators = (...validators) => (value, values, meta) => {
+    const allValidators = Array.isArray(validators[0])
+        ? validators[0]
+        : validators;
+
+    return allValidators.reduce(
+        (error, validator) =>
+            error ||
+            (typeof validator === 'function' && validator(value, values, meta)),
+        undefined
+    );
+};
+
 /**
  * Required validator
  *

@@ -8,7 +8,6 @@ import { AuthProvider, DataProvider, I18nProvider } from './types';
 import createAppReducer from './reducer';
 import { adminSaga } from './sideEffect';
 import { defaultI18nProvider } from './i18n';
-import formMiddleware from './form/formMiddleware';
 import { CLEAR_STATE } from './actions/clearActions';
 
 interface Window {
@@ -61,11 +60,7 @@ export default ({
         resettableAppReducer,
         initialState,
         compose(
-            applyMiddleware(
-                sagaMiddleware,
-                formMiddleware,
-                routerMiddleware(history)
-            ),
+            applyMiddleware(sagaMiddleware, routerMiddleware(history)),
             typeof typedWindow !== 'undefined' &&
                 typedWindow.__REDUX_DEVTOOLS_EXTENSION__
                 ? typedWindow.__REDUX_DEVTOOLS_EXTENSION__()

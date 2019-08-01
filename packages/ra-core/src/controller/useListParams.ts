@@ -3,7 +3,6 @@ import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import { parse, stringify } from 'query-string';
 import { push } from 'connected-react-router';
 import lodashDebounce from 'lodash/debounce';
-import isEqual from 'lodash/isEqual';
 import pickBy from 'lodash/pickBy';
 import { Location } from 'history';
 
@@ -169,20 +168,20 @@ const useListParams = ({
 
     const filterValues = query.filter || emptyObject;
 
-    const setFilters = useCallback(
-        lodashDebounce(filters => {
-            if (isEqual(filters, filterValues)) {
-                return;
-            }
-
-            // fix for redux-form bug with onChange and enableReinitialize
-            const filtersWithoutEmpty = removeEmpty(filters);
+    const debouncedSetFilters = lodashDebounce(
+        newFilters =>
             changeParams({
                 type: SET_FILTER,
-                payload: filtersWithoutEmpty,
-            });
-        }, debounce),
-        requestSignature
+                payload: removeEmpty(newFilters),
+            }),
+        debounce
+    );
+
+    const setFilters = useCallback(
+        filters => {
+            debouncedSetFilters(filters);
+        },
+        [debouncedSetFilters]
     );
 
     const hideFilter = useCallback((filterName: string) => {

@@ -10,7 +10,7 @@ describe('<FilterForm />', () => {
     const defaultProps = {
         resource: 'post',
         filters: [],
-        setFilter: () => {},
+        setFilters: () => {},
         hideFilter: () => {},
         displayedFilters: {},
         filterValues: {},
@@ -72,11 +72,9 @@ describe('<FilterForm />', () => {
             expect(
                 mergeInitialValuesWithDefaultValues({ initialValues, filters })
             ).toEqual({
-                initialValues: {
-                    title: 'initial title',
-                    url: 'default url',
-                    author: { name: 'default author' },
-                },
+                title: 'initial title',
+                url: 'default url',
+                author: { name: 'default author' },
             });
         });
     });

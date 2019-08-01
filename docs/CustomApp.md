@@ -13,7 +13,7 @@ Fortunately, the `<Admin>` component detects when it's used inside an existing R
 
 Beware that you need to know about [redux](http://redux.js.org/), [react-router](https://github.com/reactjs/react-router), and [redux-saga](https://github.com/yelouafi/redux-saga) to go further.
 
-React-admin requires that the redux state contains at least 4 reducers: `admin`, `i18n`, `form`, and `router`. You can add more, or replace some of them with your own, but you can't remove or rename them. As it relies on redux-form, react-router, and redux-saga, react-admin also expects the store to use their middlewares.
+React-admin requires that the redux state contains at least 3 reducers: `admin`, `i18n` and `router`. You can add more, or replace some of them with your own, but you can't remove or rename them. As it relies on `connected-react-router` and `redux-saga`, react-admin also expects the store to use their middlewares.
 
 Here is the default store creation for react-admin:
 
@@ -21,7 +21,6 @@ Here is the default store creation for react-admin:
 // in src/createAdminStore.js
 import { applyMiddleware, combineReducers, compose, createStore } from 'redux';
 import { routerMiddleware, connectRouter } from 'connected-react-router';
-import { reducer as formReducer } from 'redux-form';
 import createSagaMiddleware from 'redux-saga';
 import { all, fork } from 'redux-saga/effects';
 import {
@@ -30,7 +29,6 @@ import {
     createAppReducer,
     defaultI18nProvider,
     i18nReducer,
-    formMiddleware,
     USER_LOGOUT,
 } from 'react-admin';
 
@@ -44,7 +42,6 @@ export default ({
     const reducer = combineReducers({
         admin: adminReducer,
         i18n: i18nReducer(locale, i18nProvider(locale)),
-        form: formReducer,
         router: connectRouter(history),
         { /* add your own reducers here */ },
     });
@@ -67,7 +64,6 @@ export default ({
         compose(
             applyMiddleware(
                 sagaMiddleware,
-                formMiddleware,
                 routerMiddleware(history),
                 // add your own middlewares here
             ),

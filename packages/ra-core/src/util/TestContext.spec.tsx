@@ -1,9 +1,9 @@
 import expect from 'expect';
 import { render, cleanup } from 'react-testing-library';
 import React from 'react';
-import { submit } from 'redux-form';
 
 import TestContext, { defaultStore } from './TestContext';
+import { refreshView } from '../actions';
 
 const primedStore = {
     admin: {
@@ -24,7 +24,6 @@ const primedStore = {
         },
         customQueries: {},
     },
-    form: {},
     i18n: {
         loading: false,
         locale: 'en',
@@ -85,13 +84,15 @@ describe('TestContext.js', () => {
             initialstate.router.location.key = ''; // react-router initializes the state with a random key
             expect(initialstate).toEqual(primedStore);
 
-            testStore.dispatch(submit('foo'));
+            testStore.dispatch(refreshView());
 
             expect(testStore.getState()).toEqual({
                 ...primedStore,
-                form: {
-                    foo: {
-                        triggerSubmit: true,
+                admin: {
+                    ...primedStore.admin,
+                    ui: {
+                        ...primedStore.admin.ui,
+                        viewVersion: 2,
                     },
                 },
             });
@@ -109,7 +110,7 @@ describe('TestContext.js', () => {
             );
             expect(testStore.getState()).toEqual(defaultStore);
 
-            testStore.dispatch(submit('foo'));
+            testStore.dispatch(refreshView());
 
             expect(testStore.getState()).toEqual(defaultStore);
         });

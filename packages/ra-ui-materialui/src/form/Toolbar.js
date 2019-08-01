@@ -156,7 +156,7 @@ Toolbar.defaultProps = {
 };
 
 const enhance = compose(
-    withWidth(),
+    withWidth({ initialWidth: 'xs' }),
     withStyles(styles)
 );
 export default enhance(Toolbar);
