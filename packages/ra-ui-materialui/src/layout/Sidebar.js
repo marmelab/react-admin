@@ -1,11 +1,9 @@
 import React, { useEffect, Children, cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
-import { Drawer, makeStyles } from '@material-ui/core';
+import { Drawer, makeStyles, useMediaQuery } from '@material-ui/core';
 import lodashGet from 'lodash/get';
 import { setSidebarVisibility } from 'ra-core';
-
-import { useMediaQuery } from '../layout';
 
 export const DRAWER_WIDTH = 240;
 export const CLOSED_DRAWER_WIDTH = 55;

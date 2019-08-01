@@ -1,12 +1,6 @@
 import React from 'react';
-import {
-    SimpleList,
-    List,
-    Datagrid,
-    EmailField,
-    TextField,
-    useMediaQuery,
-} from 'react-admin';
+import { useMediaQuery } from '@material-ui/core';
+import { SimpleList, List, Datagrid, EmailField, TextField } from 'react-admin';
 
 export const UserList = props => (
     <List title="All users" {...props}>

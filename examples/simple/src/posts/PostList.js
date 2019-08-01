@@ -1,6 +1,6 @@
 import BookIcon from '@material-ui/icons/Book';
 import Chip from '@material-ui/core/Chip';
-import { makeStyles } from '@material-ui/core/styles';
+import { useMediaQuery, makeStyles } from '@material-ui/core';
 import React, { Children, Fragment, cloneElement } from 'react';
 import lodashGet from 'lodash/get';
 import jsonExport from 'jsonexport/dist';
@@ -22,7 +22,6 @@ import {
     SingleFieldList,
     TextField,
     TextInput,
-    useMediaQuery,
     useTranslate,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
 

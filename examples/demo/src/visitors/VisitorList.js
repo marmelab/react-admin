@@ -10,9 +10,8 @@ import {
     NullableBooleanInput,
     NumberField,
     SearchInput,
-    useMediaQuery,
 } from 'react-admin';
-import { makeStyles } from '@material-ui/core/styles';
+import { useMediaQuery, makeStyles } from '@material-ui/core';
 
 import SegmentsField from './SegmentsField';
 import SegmentInput from './SegmentInput';

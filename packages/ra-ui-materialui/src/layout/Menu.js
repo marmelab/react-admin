@@ -3,12 +3,11 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import inflection from 'inflection';
 import compose from 'recompose/compose';
-import { withStyles, createStyles } from '@material-ui/core';
+import { withStyles, createStyles, useMediaQuery } from '@material-ui/core';
 import DefaultIcon from '@material-ui/icons/ViewList';
 import classnames from 'classnames';
 import { getResources, useTranslate } from 'ra-core';
 
-import { useMediaQuery } from '../layout';
 import DashboardMenuItem from './DashboardMenuItem';
 import MenuItemLink from './MenuItemLink';
 

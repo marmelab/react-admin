@@ -1,7 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import onlyUpdateForKeys from 'recompose/onlyUpdateForKeys';
-import { Fab, createStyles, withStyles } from '@material-ui/core';
+import {
+    Fab,
+    createStyles,
+    withStyles,
+    useMediaQuery,
+} from '@material-ui/core';
 import ContentAdd from '@material-ui/icons/Add';
 import compose from 'recompose/compose';
 import classnames from 'classnames';
@@ -9,7 +14,6 @@ import { Link } from 'react-router-dom';
 import { useTranslate } from 'ra-core';
 
 import Button from './Button';
-import { useMediaQuery } from '../layout';
 
 const styles = theme =>
     createStyles({

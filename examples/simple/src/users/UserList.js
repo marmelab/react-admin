@@ -1,7 +1,7 @@
 /* eslint react/jsx-key: off */
 import PeopleIcon from '@material-ui/icons/People';
 import memoize from 'lodash/memoize';
-
+import { useMediaQuery } from '@material-ui/core';
 import React from 'react';
 import {
     BulkDeleteWithConfirmButton,
@@ -12,7 +12,6 @@ import {
     SimpleList,
     TextField,
     TextInput,
-    useMediaQuery,
 } from 'react-admin';
 
 import Aside from './Aside';

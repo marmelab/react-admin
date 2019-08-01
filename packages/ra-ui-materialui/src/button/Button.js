@@ -1,13 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import MuiButton from '@material-ui/core/Button';
-import Tooltip from '@material-ui/core/Tooltip';
-import IconButton from '@material-ui/core/IconButton';
-import { makeStyles } from '@material-ui/core/styles';
+import {
+    Button as MuiButton,
+    Tooltip,
+    IconButton,
+    useMediaQuery,
+    makeStyles,
+} from '@material-ui/core';
 import classnames from 'classnames';
 import { useTranslate } from 'ra-core';
-
-import { useMediaQuery } from '../layout';
 
 const useStyles = makeStyles({
     button: {
