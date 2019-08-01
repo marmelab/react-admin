@@ -128,8 +128,8 @@ describe('<SelectInput />', () => {
                 choices={[]}
             />
         );
-        const TextFieldElement = getByRole('button');
-        fireEvent.click(TextFieldElement);
+        const EmptyMenuElement = getByRole('button');
+        fireEvent.click(EmptyMenuElement);
 
         const options = queryAllByRole('option');
         assert.equal(options.length, 1);
@@ -152,8 +152,8 @@ describe('<SelectInput />', () => {
                 choices={[]}
             />
         );
-        const TextFieldElement = getByRole('button');
-        fireEvent.click(TextFieldElement);
+        const EmptyMenuElement = getByRole('button');
+        fireEvent.click(EmptyMenuElement);
 
         const options = queryAllByRole('option');
         assert.equal(options.length, 1);
