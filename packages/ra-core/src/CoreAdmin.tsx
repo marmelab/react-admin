@@ -1,6 +1,5 @@
 import React, { createElement, Component, ComponentType, SFC } from 'react';
-import PropTypes from 'prop-types';
-import { Provider } from 'react-redux';
+import { Provider, ReactReduxContext } from 'react-redux';
 import { History } from 'history';
 import { createHashHistory } from 'history';
 import { Switch, Route } from 'react-router-dom';
@@ -52,10 +51,6 @@ export interface AdminProps {
     title?: TitleComponent;
 }
 
-interface AdminContext {
-    authProvider: AuthProvider;
-}
-
 class CoreAdmin extends Component<AdminProps> {
     static defaultProps: Partial<AdminProps> = {
         catchAll: () => null,
@@ -64,6 +59,8 @@ class CoreAdmin extends Component<AdminProps> {
         loading: () => null,
         loginPage: false,
     };
+
+    static contextType = ReactReduxContext;
 
     reduxIsAlreadyInitialized = false;
     history = null;
