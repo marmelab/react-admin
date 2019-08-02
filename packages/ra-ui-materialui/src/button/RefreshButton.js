@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import NavigationRefresh from '@material-ui/icons/Refresh';
@@ -6,20 +6,8 @@ import { refreshView as refreshViewAction } from 'ra-core';
 
 import Button from './Button';
 
-class RefreshButton extends Component {
-    static propTypes = {
-        label: PropTypes.string,
-        refreshView: PropTypes.func.isRequired,
-        icon: PropTypes.element,
-    };
-
-    static defaultProps = {
-        label: 'ra.action.refresh',
-        icon: <NavigationRefresh />,
-    };
-
-    handleClick = event => {
-        const { refreshView, onClick } = this.props;
+const RefreshButton = ({ label, refreshView, icon, onClick, ...rest }) => {
+    const handleClick = event => {
         event.preventDefault();
         refreshView();
 
@@ -28,16 +16,23 @@ class RefreshButton extends Component {
         }
     };
 
-    render() {
-        const { label, refreshView, icon, ...rest } = this.props;
+    return (
+        <Button label={label} onClick={handleClick} {...rest}>
+            {icon}
+        </Button>
+    );
+};
 
-        return (
-            <Button label={label} onClick={this.handleClick} {...rest}>
-                {icon}
-            </Button>
-        );
-    }
-}
+RefreshButton.propTypes = {
+    label: PropTypes.string,
+    refreshView: PropTypes.func.isRequired,
+    icon: PropTypes.element,
+};
+
+RefreshButton.defaultProps = {
+    label: 'ra.action.refresh',
+    icon: <NavigationRefresh />,
+};
 
 const enhance = connect(
     null,
