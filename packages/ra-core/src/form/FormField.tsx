@@ -1,7 +1,8 @@
 import React, { SFC } from 'react';
 import PropTypes from 'prop-types';
-import { Field, FieldProps } from 'react-final-form';
-import { Validator, composeValidators } from './validate';
+import { FieldProps } from 'react-final-form';
+import useField from './useField';
+import { Validator } from './validate';
 
 export const isRequired = validate => {
     if (validate && validate.isRequired) {
@@ -21,20 +22,11 @@ interface Props extends Omit<FieldProps<any, HTMLElement>, 'validate'> {
 }
 
 export const FormField: SFC<Props> = ({ input, validate, ...props }) => {
-    const sanitizedValidate = Array.isArray(validate)
-        ? composeValidators(validate)
-        : validate;
+    const fieldProps = useField({ validate, ...props });
 
-    return input ? ( // An ancestor is already decorated by Field
-        React.createElement(props.component, { input, ...props })
-    ) : (
-        <Field
-            {...props}
-            name={props.source}
-            isRequired={isRequired(validate)}
-            validate={sanitizedValidate}
-        />
-    );
+    return input // An ancestor is already decorated by Field
+        ? React.createElement(props.component, { input, ...props })
+        : React.createElement(props.component, { ...fieldProps, ...props });
 };
 
 FormField.propTypes = {

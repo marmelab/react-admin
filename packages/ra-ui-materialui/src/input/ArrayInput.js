@@ -48,7 +48,7 @@ import { useForm } from 'react-final-form';
  * list item (<li>). It also provides controls for adding and removing
  * a sub-record (a backlink in this example).
  *
- * @see https://redux-form.com/7.3.0/examples/fieldarrays/
+ * @see https://github.com/final-form/react-final-form-arrays
  */
 export const ArrayInput = ({
     className,

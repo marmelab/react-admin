@@ -10,7 +10,7 @@ describe('<SelectArrayInput />', () => {
         resource: 'bar',
         source: 'foo',
         meta: {},
-        input: { onChange: () => null, onBlur: () => null },
+        input: { value: [], onChange: () => null, onBlur: () => null },
         translate: x => x,
     };
 
@@ -18,7 +18,7 @@ describe('<SelectArrayInput />', () => {
 
     it('should use a mui Select', () => {
         const { queryByTestId } = render(
-            <SelectArrayInput {...defaultProps} input={{}} />
+            <SelectArrayInput {...defaultProps} />
         );
         expect(queryByTestId('selectArray')).toBeDefined();
     });

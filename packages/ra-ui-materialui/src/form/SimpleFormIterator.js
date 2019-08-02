@@ -70,7 +70,7 @@ export class SimpleFormIterator extends Component {
     constructor(props) {
         super(props);
         // we need a unique id for each field for a proper enter/exit animation
-        // but redux-form doesn't provide one (cf https://github.com/erikras/redux-form/issues/2735)
+        // but react-final-form doesn't provide one (cf https://github.com/final-form/react-final-form-arrays/issues/16)
         // so we keep an internal map between the field position and an auto-increment id
         this.nextId = props.fields.length
             ? props.fields.length
