@@ -1,10 +1,9 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import compose from 'recompose/compose';
-import { withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import { translate } from 'ra-core';
 
-const styles = theme => ({
+const useStyles = makeStyles(theme => ({
     item: {
         alignItems: 'center',
         backgroundColor: theme.palette.action.active,
@@ -16,45 +15,35 @@ const styles = theme => ({
         paddingLeft: theme.spacing(6),
         paddingRight: theme.spacing(4),
     },
-});
-class DragPreview extends Component {
-    shouldComponentUpdate() {
-        return false;
-    }
-    render() {
-        const {
-            children,
-            className,
-            classes,
-            node,
-            style,
-            translate,
-        } = this.props;
-        return (
-            <div className={className || classes.item} style={style}>
-                {children
-                    ? typeof children === 'function'
-                        ? children({ node, translate })
-                        : children
-                    : translate('ra.tree.drag_preview', {
-                          id: node.id,
-                          smart_count: node.children.length,
-                      })}
-            </div>
-        );
-    }
-}
+}));
+
+const DragPreview = ({ children, className, node, style, translate }) => {
+    const classes = useStyles();
+
+    return (
+        <div className={className || classes.item} style={style}>
+            {children
+                ? typeof children === 'function'
+                    ? children({ node, translate })
+                    : children
+                : translate('ra.tree.drag_preview', {
+                      id: node.id,
+                      smart_count: node.children.length,
+                  })}
+        </div>
+    );
+};
 
 DragPreview.propTypes = {
     children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
     className: PropTypes.string,
-    classes: PropTypes.object,
     node: PropTypes.object,
     style: PropTypes.object,
     translate: PropTypes.func.isRequired,
 };
 
-export default compose(
-    translate,
-    withStyles(styles)
-)(DragPreview);
+export default translate()(
+    React.memo(DragPreview, () => {
+        return false;
+    })
+);

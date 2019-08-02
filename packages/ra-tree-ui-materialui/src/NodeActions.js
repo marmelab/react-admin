@@ -1,34 +1,32 @@
-import React, { cloneElement, Children, Component } from 'react';
+import React, { cloneElement, Children } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 
-const styles = theme => ({
+const useStyles = makeStyles(theme => ({
     root: {
         alignItems: 'center',
         marginLeft: 'auto',
         marginRight: theme.spacing(4),
     },
-});
+}));
 
-export class NodeActions extends Component {
-    static propTypes = {
-        classes: PropTypes.object.isRequired,
-        basePath: PropTypes.string.isRequired,
-        children: PropTypes.node,
-        record: PropTypes.object.isRequired,
-        resource: PropTypes.string.isRequired,
-    };
+const NodeActions = ({ children, ...props }) => {
+    const classes = useStyles();
 
-    render() {
-        const { children, classes, ...props } = this.props;
-        return (
-            <span className={classes.root}>
-                {Children.map(children, action =>
-                    action ? cloneElement(action, props) : null
-                )}
-            </span>
-        );
-    }
-}
+    return (
+        <span className={classes.root}>
+            {Children.map(children, action =>
+                action ? cloneElement(action, props) : null
+            )}
+        </span>
+    );
+};
 
-export default withStyles(styles)(NodeActions);
+NodeActions.propTypes = {
+    basePath: PropTypes.string.isRequired,
+    children: PropTypes.node,
+    record: PropTypes.object.isRequired,
+    resource: PropTypes.string.isRequired,
+};
+
+export default NodeActions;
