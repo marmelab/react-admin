@@ -42,7 +42,7 @@ const sanitizeRestProps = ({
     ...rest
 }) => rest;
 
-const SaveButton = ({
+export const SaveButton = ({
     className,
     invalid,
     label = 'ra.action.save',
