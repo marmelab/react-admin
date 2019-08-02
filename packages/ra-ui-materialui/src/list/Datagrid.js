@@ -29,10 +29,8 @@ const styles = theme =>
         },
         headerRow: {},
         headerCell: {
-            padding: '0 12px',
-            '&:last-child': {
-                padding: '0 12px',
-            },
+            height: 42,
+            minHeight: 42,
         },
         checkbox: {},
         row: {},
@@ -41,18 +39,16 @@ const styles = theme =>
         },
         rowEven: {},
         rowOdd: {},
-        rowCell: {
-            padding: '0 12px',
-            '&:last-child': {
-                padding: '0 12px',
-            },
-        },
+        rowCell: {},
         expandHeader: {
             padding: 0,
-            width: 48,
+            width: theme.spacing(6),
+        },
+        expandButton: {
+            padding: theme.spacing.unit,
         },
         expandIconCell: {
-            width: 48,
+            width: theme.spacing(6),
         },
         expandIcon: {
             transform: 'rotate(-90deg)',
@@ -187,7 +183,10 @@ class Datagrid extends Component {
                         className={classnames(classes.row, classes.headerRow)}
                     >
                         {expand && (
-                            <TableCell className={classes.expandHeader} />
+                            <TableCell
+                                padding="none"
+                                className={classes.expandHeader}
+                            />
                         )}
                         {hasBulkActions && (
                             <TableCell padding="none">
@@ -219,6 +218,7 @@ class Datagrid extends Component {
                                     key={field.props.source || index}
                                     resource={resource}
                                     updateSort={this.updateSort}
+                                    padding="none"
                                 />
                             ) : null
                         )}

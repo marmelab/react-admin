@@ -38,7 +38,12 @@ export default ({
     <Table className={classnames(classes.table, className)}>
         <TableHead>
             <TableRow className={classes.row}>
-                {expand && <TableCell className={classes.expandHeader} />}
+                {expand && (
+                    <TableCell
+                        padding="none"
+                        className={classes.expandHeader}
+                    />
+                )}
                 {hasBulkActions && (
                     <TableCell
                         padding="none"
@@ -53,10 +58,12 @@ export default ({
                 )}
                 {times(nbChildren, key => (
                     <TableCell
-                        padding="none"
                         variant="head"
                         className={classes.headerCell}
                         key={key}
+                        padding={
+                            !!expand || hasBulkActions ? 'none' : undefined
+                        }
                     >
                         <Placeholder />
                     </TableCell>
@@ -94,7 +101,9 @@ export default ({
                     )}
                     {times(nbChildren, key2 => (
                         <TableCell
-                            padding="none"
+                            padding={
+                                !!expand || hasBulkActions ? 'none' : undefined
+                            }
                             className={classes.rowCell}
                             key={key2}
                         >

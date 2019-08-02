@@ -36,7 +36,6 @@ export const DatagridHeaderCell = ({
         <TableCell
             className={classnames(className, field.props.headerClassName)}
             align={field.props.textAlign}
-            padding="none"
             variant="head"
             {...rest}
         >
