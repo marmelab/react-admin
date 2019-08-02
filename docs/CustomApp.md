@@ -135,7 +135,7 @@ const App = () => (
 export default App;
 ```
 
-**Tip**: One thing to pay attention to is that you must pass the same `history` and `authProvider` to both the redux Store creator and the `<Admin>` component. But you don't need to pass the `i18nProvider`.
+**Tip**: One thing to pay attention to is that you must pass the same `history`, `dataProvider` and `authProvider` to both the redux Store creator and the `<Admin>` component. But you don't need to pass the `i18nProvider`.
 
 ## Not Using the `<Admin>` Components
 

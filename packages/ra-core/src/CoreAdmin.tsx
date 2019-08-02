@@ -1,4 +1,9 @@
-import React, { createElement, Component, ComponentType, SFC } from 'react';
+import React, {
+    createElement,
+    FunctionComponent,
+    ComponentType,
+    useContext,
+} from 'react';
 import { Provider, ReactReduxContext } from 'react-redux';
 import { History } from 'history';
 import { createHashHistory } from 'history';
@@ -26,7 +31,9 @@ import {
 
 export type ChildrenFunction = () => ComponentType[];
 
-const DefaultLayout: SFC<LayoutProps> = ({ children }) => <>{children}</>;
+const DefaultLayout: FunctionComponent<LayoutProps> = ({ children }) => (
+    <>{children}</>
+);
 
 export interface AdminProps {
     layout: LayoutComponent;
@@ -51,57 +58,31 @@ export interface AdminProps {
     title?: TitleComponent;
 }
 
-class CoreAdmin extends Component<AdminProps> {
-    static defaultProps: Partial<AdminProps> = {
-        catchAll: () => null,
-        layout: DefaultLayout,
-        appLayout: undefined,
-        loading: () => null,
-        loginPage: false,
-    };
+const CoreAdmin: FunctionComponent<AdminProps> = ({
+    layout,
+    appLayout,
+    authProvider,
+    dataProvider,
+    children,
+    customRoutes = [],
+    dashboard,
+    menu, // deprecated, use a custom layout instead
+    catchAll,
+    theme,
+    title = 'React Admin',
+    loading,
+    loginPage,
+    logoutButton,
+    history: customHistory,
+    customReducers,
+    customSagas,
+    i18nProvider,
+    initialState,
+    locale,
+}) => {
+    const reduxIsAlreadyInitialized = !!useContext(ReactReduxContext);
 
-    static contextType = ReactReduxContext;
-
-    reduxIsAlreadyInitialized = false;
-    history = null;
-
-    constructor(props, context) {
-        super(props, context);
-        if (context.store) {
-            this.reduxIsAlreadyInitialized = true;
-            if (!props.history) {
-                throw new Error(`Missing history prop.
-When integrating react-admin inside an existing redux Provider, you must provide the same 'history' prop to the <Admin> as the one used to bootstrap your routerMiddleware.
-React-admin uses this history for its own ConnectedRouter.`);
-            }
-            this.history = props.history;
-        } else {
-            if (!props.dataProvider) {
-                throw new Error(`Missing dataProvider prop.
-React-admin requires a valid dataProvider function to work.`);
-            }
-            this.history = props.history || createHashHistory();
-        }
-    }
-
-    renderCore() {
-        const {
-            layout,
-            appLayout,
-            authProvider,
-            dataProvider,
-            children,
-            customRoutes = [],
-            dashboard,
-            menu, // deprecated, use a custom layout instead
-            catchAll,
-            theme,
-            title = 'React Admin',
-            loading,
-            loginPage,
-            logoutButton,
-        } = this.props;
-
+    const renderCore = history => {
         const logout = authProvider ? createElement(logoutButton) : null;
 
         if (appLayout) {
@@ -118,7 +99,7 @@ React-admin requires a valid dataProvider function to work.`);
         return (
             <DataProviderContext.Provider value={dataProvider}>
                 <TranslationProvider>
-                    <ConnectedRouter history={this.history}>
+                    <ConnectedRouter history={history}>
                         <Switch>
                             {loginPage !== false && loginPage !== true ? (
                                 <Route
@@ -157,24 +138,31 @@ React-admin requires a valid dataProvider function to work.`);
                 </TranslationProvider>
             </DataProviderContext.Provider>
         );
-    }
+    };
 
-    render() {
-        const {
-            authProvider,
-            customReducers,
-            customSagas,
-            dataProvider,
-            i18nProvider,
-            initialState,
-            locale,
-        } = this.props;
+    let finalHistory = customHistory;
 
-        return this.reduxIsAlreadyInitialized ? (
+    if (reduxIsAlreadyInitialized) {
+        if (!customHistory) {
+            throw new Error(`Missing history prop.
+When integrating react-admin inside an existing redux Provider, you must provide the same 'history' prop to the <Admin> as the one used to bootstrap your routerMiddleware.
+React-admin uses this history for its own ConnectedRouter.`);
+        }
+
+        return (
             <AuthContext.Provider value={authProvider}>
-                {this.renderCore()}
+                {renderCore(customHistory)}
             </AuthContext.Provider>
-        ) : (
+        );
+    } else {
+        if (!dataProvider) {
+            throw new Error(`Missing dataProvider prop.
+React-admin requires a valid dataProvider function to work.`);
+        }
+
+        finalHistory = customHistory || createHashHistory();
+
+        return (
             <AuthContext.Provider value={authProvider}>
                 <Provider
                     store={createAdminStore({
@@ -185,14 +173,22 @@ React-admin requires a valid dataProvider function to work.`);
                         i18nProvider,
                         initialState,
                         locale,
-                        history: this.history,
+                        history: finalHistory,
                     })}
                 >
-                    {this.renderCore()}
+                    {renderCore(finalHistory)}
                 </Provider>
             </AuthContext.Provider>
         );
     }
-}
+};
+
+CoreAdmin.defaultProps = {
+    catchAll: () => null,
+    layout: DefaultLayout,
+    appLayout: undefined,
+    loading: () => null,
+    loginPage: false,
+};
 
 export default CoreAdmin;
