@@ -1,21 +1,36 @@
-import assert from 'assert';
-import { shallow } from 'enzyme';
 import React from 'react';
+import { Form } from 'react-final-form';
+import { render, cleanup } from 'react-testing-library';
 import FormField from './FormField';
 
 describe('<FormField>', () => {
-    const Foo = () => <div />;
-    it('should render a <Field/> component for the input component', () => {
-        const wrapper = shallow(<FormField source="title" component={Foo} />);
-        const component = wrapper.find('Field');
-        assert.equal(component.length, 1);
-        assert.equal(wrapper.prop('component'), Foo);
-    });
-    it('should not render a <Field /> component the field has an input', () => {
-        const wrapper = shallow(
-            <FormField source="title" component={Foo} input={{}} />
+    afterEach(cleanup);
+
+    const Foo = ({ input }) => <div aria-label={input.name} />;
+    it('should inject input props if not already specified', () => {
+        const { queryByLabelText } = render(
+            <Form
+                onSubmit={jest.fn()}
+                render={() => <FormField source="title" component={Foo} />}
+            />
         );
-        const component = wrapper.find('Field');
-        assert.equal(component.length, 0);
+        expect(queryByLabelText('title')).not.toBeNull();
+    });
+
+    it('should inject input props if already specified', () => {
+        const { queryByLabelText } = render(
+            <Form
+                onSubmit={jest.fn()}
+                render={() => (
+                    <FormField
+                        source="title"
+                        component={Foo}
+                        input={{ name: 'foo' }}
+                    />
+                )}
+            />
+        );
+        expect(queryByLabelText('title')).toBeNull();
+        expect(queryByLabelText('foo')).not.toBeNull();
     });
 });
