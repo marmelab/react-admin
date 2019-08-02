@@ -1,7 +1,6 @@
-import React, { Component } from 'react';
-import { GET_LIST, GET_MANY, Responsive, withDataProvider } from 'react-admin';
-import compose from 'recompose/compose';
-import { connect } from 'react-redux';
+import React, { useState, useEffect, useCallback } from 'react';
+import { GET_LIST, GET_MANY, useVersion, useDataProvider } from 'react-admin';
+import { useMediaQuery } from '@material-ui/core';
 
 import Welcome from './Welcome';
 import MonthlyRevenue from './MonthlyRevenue';
@@ -18,27 +17,14 @@ const styles = {
     singleCol: { marginTop: '2em', marginBottom: '2em' },
 };
 
-class Dashboard extends Component {
-    state = {};
+const Dashboard = () => {
+    const [state, setState] = useState({});
+    const version = useVersion();
+    const dataProvider = useDataProvider();
+    const isXSmall = useMediaQuery(theme => theme.breakpoints.down('xs'));
+    const isSmall = useMediaQuery(theme => theme.breakpoints.down('sm'));
 
-    componentDidMount() {
-        this.fetchData();
-    }
-
-    componentDidUpdate(prevProps) {
-        // handle refresh
-        if (this.props.version !== prevProps.version) {
-            this.fetchData();
-        }
-    }
-
-    fetchData() {
-        this.fetchOrders();
-        this.fetchReviews();
-    }
-
-    async fetchOrders() {
-        const { dataProvider } = this.props;
+    const fetchOrders = useCallback(async () => {
         const aMonthAgo = new Date();
         aMonthAgo.setDate(aMonthAgo.getDate() - 30);
         const { data: recentOrders } = await dataProvider(
@@ -69,7 +55,8 @@ class Dashboard extends Component {
                     pendingOrders: [],
                 }
             );
-        this.setState({
+        setState(state => ({
+            ...state,
             revenue: aggregations.revenue.toLocaleString(undefined, {
                 style: 'currency',
                 currency: 'USD',
@@ -78,20 +65,20 @@ class Dashboard extends Component {
             }),
             nbNewOrders: aggregations.nbNewOrders,
             pendingOrders: aggregations.pendingOrders,
-        });
+        }));
         const { data: customers } = await dataProvider(GET_MANY, 'customers', {
             ids: aggregations.pendingOrders.map(order => order.customer_id),
         });
-        this.setState({
+        setState(state => ({
+            ...state,
             pendingOrdersCustomers: customers.reduce((prev, customer) => {
                 prev[customer.id] = customer; // eslint-disable-line no-param-reassign
                 return prev;
             }, {}),
-        });
-    }
+        }));
+    }, [dataProvider]);
 
-    async fetchReviews() {
-        const { dataProvider } = this.props;
+    const fetchReviews = useCallback(async () => {
         const { data: reviews } = await dataProvider(GET_LIST, 'reviews', {
             filter: { status: 'pending' },
             sort: { field: 'date', order: 'DESC' },
@@ -99,105 +86,96 @@ class Dashboard extends Component {
         });
         const nbPendingReviews = reviews.reduce(nb => ++nb, 0);
         const pendingReviews = reviews.slice(0, Math.min(10, reviews.length));
-        this.setState({ pendingReviews, nbPendingReviews });
+        setState(state => ({ ...state, pendingReviews, nbPendingReviews }));
         const { data: customers } = await dataProvider(GET_MANY, 'customers', {
             ids: pendingReviews.map(review => review.customer_id),
         });
-        this.setState({
+        setState(state => ({
+            ...state,
             pendingReviewsCustomers: customers.reduce((prev, customer) => {
                 prev[customer.id] = customer; // eslint-disable-line no-param-reassign
                 return prev;
             }, {}),
-        });
-    }
+        }));
+    }, [dataProvider]);
 
-    render() {
-        const {
-            nbNewOrders,
-            nbPendingReviews,
-            pendingOrders,
-            pendingOrdersCustomers,
-            pendingReviews,
-            pendingReviewsCustomers,
-            revenue,
-        } = this.state;
-        return (
-            <Responsive
-                xsmall={
-                    <div>
-                        <div style={styles.flexColumn}>
-                            <div style={{ marginBottom: '2em' }}>
-                                <Welcome />
-                            </div>
-                            <div style={styles.flex}>
-                                <MonthlyRevenue value={revenue} />
-                                <NbNewOrders value={nbNewOrders} />
-                            </div>
-                            <div style={styles.singleCol}>
-                                <PendingOrders
-                                    orders={pendingOrders}
-                                    customers={pendingOrdersCustomers}
-                                />
-                            </div>
-                        </div>
-                    </div>
-                }
-                small={
-                    <div style={styles.flexColumn}>
-                        <div style={styles.singleCol}>
-                            <Welcome />
-                        </div>
-                        <div style={styles.flex}>
-                            <MonthlyRevenue value={revenue} />
-                            <NbNewOrders value={nbNewOrders} />
-                        </div>
-                        <div style={styles.singleCol}>
-                            <PendingOrders
-                                orders={pendingOrders}
-                                customers={pendingOrdersCustomers}
-                            />
-                        </div>
-                    </div>
-                }
-                medium={
-                    <div style={styles.flex}>
-                        <div style={styles.leftCol}>
-                            <div style={styles.flex}>
-                                <MonthlyRevenue value={revenue} />
-                                <NbNewOrders value={nbNewOrders} />
-                            </div>
-                            <div style={styles.singleCol}>
-                                <Welcome />
-                            </div>
-                            <div style={styles.singleCol}>
-                                <PendingOrders
-                                    orders={pendingOrders}
-                                    customers={pendingOrdersCustomers}
-                                />
-                            </div>
-                        </div>
-                        <div style={styles.rightCol}>
-                            <div style={styles.flex}>
-                                <PendingReviews
-                                    nb={nbPendingReviews}
-                                    reviews={pendingReviews}
-                                    customers={pendingReviewsCustomers}
-                                />
-                                <NewCustomers />
-                            </div>
-                        </div>
-                    </div>
-                }
-            />
-        );
-    }
-}
+    useEffect(() => {
+        fetchOrders();
+        fetchReviews();
+    }, [version]); // eslint-disable-line react-hooks/exhaustive-deps
 
-const mapStateToProps = state => ({
-    version: state.admin.ui.viewVersion,
-});
+    const {
+        nbNewOrders,
+        nbPendingReviews,
+        pendingOrders,
+        pendingOrdersCustomers,
+        pendingReviews,
+        pendingReviewsCustomers,
+        revenue,
+    } = state;
+    return isXSmall ? (
+        <div>
+            <div style={styles.flexColumn}>
+                <div style={{ marginBottom: '2em' }}>
+                    <Welcome />
+                </div>
+                <div style={styles.flex}>
+                    <MonthlyRevenue value={revenue} />
+                    <NbNewOrders value={nbNewOrders} />
+                </div>
+                <div style={styles.singleCol}>
+                    <PendingOrders
+                        orders={pendingOrders}
+                        customers={pendingOrdersCustomers}
+                    />
+                </div>
+            </div>
+        </div>
+    ) : isSmall ? (
+        <div style={styles.flexColumn}>
+            <div style={styles.singleCol}>
+                <Welcome />
+            </div>
+            <div style={styles.flex}>
+                <MonthlyRevenue value={revenue} />
+                <NbNewOrders value={nbNewOrders} />
+            </div>
+            <div style={styles.singleCol}>
+                <PendingOrders
+                    orders={pendingOrders}
+                    customers={pendingOrdersCustomers}
+                />
+            </div>
+        </div>
+    ) : (
+        <div style={styles.flex}>
+            <div style={styles.leftCol}>
+                <div style={styles.flex}>
+                    <MonthlyRevenue value={revenue} />
+                    <NbNewOrders value={nbNewOrders} />
+                </div>
+                <div style={styles.singleCol}>
+                    <Welcome />
+                </div>
+                <div style={styles.singleCol}>
+                    <PendingOrders
+                        orders={pendingOrders}
+                        customers={pendingOrdersCustomers}
+                    />
+                </div>
+            </div>
+            <div style={styles.rightCol}>
+                <div style={styles.flex}>
+                    <PendingReviews
+                        nb={nbPendingReviews}
+                        reviews={pendingReviews}
+                        customers={pendingReviewsCustomers}
+                    />
+                    <NewCustomers />
+                </div>
+            </div>
+        </div>
+    );
+};
 
-export default compose(
-    connect(mapStateToProps),
-    withDataProvider
-)(Dashboard);
+export default Dashboard;
