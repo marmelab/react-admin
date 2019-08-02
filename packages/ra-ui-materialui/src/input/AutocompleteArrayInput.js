@@ -70,7 +70,7 @@ const styles = theme =>
  *    { id: 'M', name: 'Male' },
  *    { id: 'F', name: 'Female' },
  * ];
- * <AutocompleteInput source="gender" choices={choices} />
+ * <AutocompleteArrayInput source="gender" choices={choices} />
  *
  * You can also customize the properties to use for the option name and value,
  * thanks to the 'optionText' and 'optionValue' attributes.
@@ -79,7 +79,7 @@ const styles = theme =>
  *    { _id: 123, full_name: 'Leo Tolstoi', sex: 'M' },
  *    { _id: 456, full_name: 'Jane Austen', sex: 'F' },
  * ];
- * <AutocompleteInput source="author_id" choices={choices} optionText="full_name" optionValue="_id" />
+ * <AutocompleteArrayInput source="author_id" choices={choices} optionText="full_name" optionValue="_id" />
  *
  * `optionText` also accepts a function, so you can shape the option text at will:
  * @example
@@ -88,7 +88,7 @@ const styles = theme =>
  *    { id: 456, first_name: 'Jane', last_name: 'Austen' },
  * ];
  * const optionRenderer = choice => `${choice.first_name} ${choice.last_name}`;
- * <AutocompleteInput source="author_id" choices={choices} optionText={optionRenderer} />
+ * <AutocompleteArrayInput source="author_id" choices={choices} optionText={optionRenderer} />
  *
  * The choices are translated by default, so you can use translation identifiers as choices:
  * @example
@@ -100,12 +100,12 @@ const styles = theme =>
  * However, in some cases (e.g. inside a `<ReferenceInput>`), you may not want
  * the choice to be translated. In that case, set the `translateChoice` prop to false.
  * @example
- * <AutocompleteInput source="gender" choices={choices} translateChoice={false}/>
+ * <AutocompleteArrayInput source="gender" choices={choices} translateChoice={false}/>
  *
  * The object passed as `options` props is passed to the material-ui <AutoComplete> component
  *
  * @example
- * <AutocompleteInput source="author_id" options={{ fullWidth: true }} />
+ * <AutocompleteArrayInput source="author_id" options={{ fullWidthInput: true }} />
  */
 export class AutocompleteArrayInput extends React.Component {
     initialInputValue = [];
@@ -215,7 +215,11 @@ export class AutocompleteArrayInput extends React.Component {
     };
 
     renderInput = inputProps => {
-        const { input } = this.props;
+        const {
+            input,
+            fullWidth,
+            options: { InputProps, suggestionsContainerProps, ...options },
+        } = this.props;
         const {
             autoFocus,
             className,
@@ -228,7 +232,6 @@ export class AutocompleteArrayInput extends React.Component {
             source,
             value,
             ref,
-            options: { InputProps, suggestionsContainerProps, ...options },
             ...other
         } = inputProps;
         if (typeof meta === 'undefined') {
@@ -245,6 +248,11 @@ export class AutocompleteArrayInput extends React.Component {
             this.inputEl = input;
             this.updateAnchorEl();
             ref(input);
+        };
+
+        const finalOptions = {
+            fullWidth,
+            ...options,
         };
 
         return (
@@ -267,7 +275,7 @@ export class AutocompleteArrayInput extends React.Component {
                     />
                 }
                 {...other}
-                {...options}
+                {...finalOptions}
             />
         );
     };
