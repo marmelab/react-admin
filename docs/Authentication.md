@@ -300,37 +300,25 @@ const MyLoginPage = ({ theme }) => {
 export default MyLoginPage;
 
 // in src/MyLogoutButton.js
-import React from 'react';
+import React, { forwardRef } from 'react';
 import { useDispatch } from 'react-redux';
-import { Responsive, userLogout } from 'react-admin';
+import { userLogout } from 'react-admin';
 import MenuItem from '@material-ui/core/MenuItem';
-import Button from '@material-ui/core/Button';
 import ExitIcon from '@material-ui/icons/PowerSettingsNew';
 
-const MyLogoutButton = props => {
+const MyLogoutButton = forwardRef((props, ref) => {
     const dispatch = useDispatch();
+    const logout = () => dispatch(userLogout(redirectTo));
     return (
-        <Responsive
-            xsmall={
-                <MenuItem
-                    onClick={() => dispatch(userLogout())}
-                    {...props}
-                >
-                    <ExitIcon /> Logout
-                </MenuItem>
-            }
-            medium={
-                <Button
-                    onClick={() => dispatch(userLogout())}
-                    size="small"
-                    {...props}
-                >
-                    <ExitIcon /> Logout
-                </Button>
-            }
-        />
+        <MenuItem
+            onClick={logout}
+            ref={ref}
+        >
+            <ExitIcon /> Logout
+        </MenuItem>
     );
-};
+});
+
 export default MyLogoutButton;
 
 // in src/App.js

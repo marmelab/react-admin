@@ -1048,31 +1048,32 @@ export const PostList = (props) => (
 
 `<SimpleList>` iterates over the list data. For each record, it executes the `primaryText`, `secondaryText`, `leftAvatar`, `leftIcon`, `rightAvatar`, and `rightIcon` props function, and passes the result as the corresponding `<ListItem>` prop.
 
-**Tip**: To use a `<SimpleList>` on small screens and a `<Datagrid>` on larger screens, use the `<Responsive>` component:
+**Tip**: To use a `<SimpleList>` on small screens and a `<Datagrid>` on larger screens, use material-ui's `useMediaQuery` hook:
 
 ```jsx
 // in src/posts.js
 import React from 'react';
-import { List, Responsive, SimpleList, Datagrid, TextField, ReferenceField, EditButton } from 'react-admin';
+import { useMediaQuery } from '@material-ui/core';
+import { List, SimpleList, Datagrid, TextField, ReferenceField, EditButton } from 'react-admin';
 
-export const PostList = (props) => (
-    <List {...props}>
-        <Responsive
-            small={
+export const PostList = (props) => {
+    const isSmall = useMediaQuery(theme => theme.breakpoints.down('sm'));
+    return (
+        <List {...props}>
+            {isSmall ? (
                 <SimpleList
                     primaryText={record => record.title}
                     secondaryText={record => `${record.views} views`}
                     tertiaryText={record => new Date(record.published_at).toLocaleDateString()}
                 />
-            }
-            medium={
+            ) : (
                 <Datagrid>
                     ...
                 </Datagrid>
-            }
-        />
-    </List>
-);
+            )}
+        </List>
+    );
+}
 ```
 
 **Tip**: The `<SimpleList>` items link to the edition page by default. You can set the `linkType` prop to `show` to link to the `<Show>` page instead.
@@ -1281,21 +1282,21 @@ const UserFilter = ({ permissions, ...props }) =>
         {permissions === 'admin' ? <TextInput source="role" /> : null}
     </Filter>;
 
-export const UserList = ({ permissions, ...props }) =>
-    <List
-        {...props}
-        filters={<UserFilter permissions={permissions} {...props} />}
-        sort={{ field: 'name', order: 'ASC' }}
-    >
-        <Responsive
-            small={
+export const UserList = ({ permissions, ...props }) => {
+    const isSmall = useMediaQuery(theme => theme.breakpoints.down('sm'));
+    return (
+        <List
+            {...props}
+            filters={<UserFilter permissions={permissions} {...props} />}
+            sort={{ field: 'name', order: 'ASC' }}
+        >
+            {isSmall ? (
                 <SimpleList
                     primaryText={record => record.name}
                     secondaryText={record =>
                         permissions === 'admin' ? record.role : null}
                 />
-            }
-            medium={
+            ): (
                 <Datagrid>
                     <TextField source="id" />
                     <TextField source="name" />
@@ -1303,9 +1304,10 @@ export const UserList = ({ permissions, ...props }) =>
                     {permissions === 'admin' && <EditButton />}
                     <ShowButton />
                 </Datagrid>
-            }
-        />
-    </List>;
+            )}
+        </List>;
+    )
+}
 ```
 {% endraw %}
 

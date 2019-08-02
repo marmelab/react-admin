@@ -741,24 +741,25 @@ The `<SimpleList>` component uses [material-ui's `<List>` and `<ListItem>` compo
 
 **Note:** Since JSONRestServer doesn't provide `views` or `published_at` values for posts, we switched to a custom API for those screenshots in order to demonstrate how to use some of the `SimpleList` component props.
 
-That works fine on mobile, but now the desktop user experience is worse. The best compromise would be to use `<SimpleList>` on small screens, and `<Datagrid>` on other screens. That's where the `<Responsive>` component comes in:
+That works fine on mobile, but now the desktop user experience is worse. The best compromise would be to use `<SimpleList>` on small screens, and `<Datagrid>` on other screens. That's where the `useMediaQuery` hook comes in:
 
 ```jsx
 // in src/posts.js
 import React from 'react';
-import { List, Responsive, SimpleList, Datagrid, TextField, ReferenceField, EditButton } from 'react-admin';
+import { useMediaQuery } from '@material-ui/core';
+import { List, SimpleList, Datagrid, TextField, ReferenceField, EditButton } from 'react-admin';
 
-export const PostList = (props) => (
-    <List {...props}>
-        <Responsive
-            small={
+export const PostList = (props) => {
+    const isSmall = useMediaQuery(theme => theme.breakpoints.down('sm'));
+    return (
+        <List {...props}>
+            {isSmall ? (
                 <SimpleList
                     primaryText={record => record.title}
                     secondaryText={record => `${record.views} views`}
                     tertiaryText={record => new Date(record.published_at).toLocaleDateString()}
                 />
-            }
-            medium={
+            ) : (
                 <Datagrid>
                     <TextField source="id" />
                     <ReferenceField label="User" source="userId" reference="users">
@@ -768,13 +769,13 @@ export const PostList = (props) => (
                     <TextField source="body" />
                     <EditButton />
                 </Datagrid>
-            }
-        />
-    </List>
-);
+            )}
+        </List>
+    );
+}
 ```
 
-This works exactly the way you expect. The lesson here is that react-admin takes care of responsive web design for the layout, but it's your job to use `<Responsive>` in pages.
+This works exactly the way you expect. The lesson here is that react-admin takes care of responsive web design for the layout, but it's your job to use `useMediaQuery()` in pages.
 
 ![Responsive List](./img/responsive-list.gif)
 

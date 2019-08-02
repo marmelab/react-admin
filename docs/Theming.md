@@ -221,28 +221,43 @@ export const PostList = (props) => (
 
 If you want to read more about higher-order components, check out this SitePoint tutorial: [Higher Order Components: A React Application Design Pattern](https://www.sitepoint.com/react-higher-order-components/)
 
-## Responsive Utility
+## useMediaQuery Hook
 
-To provide an optimized experience on mobile, tablet, and desktop devices, you often need to display different components depending on the screen size. That's the purpose of the `<Responsive>` component, which offers a declarative approach to responsive web design.
+To provide an optimized experience on mobile, tablet, and desktop devices, you often need to display different components depending on the screen size. Material-ui provides a hook dedicated to help such responsive layouts: [`useMediaQuery`](https://material-ui.com/components/use-media-query/#usemediaquery).
 
-It expects element props named `small`, `medium`, and `large`. It displays the element that matches the screen size (with breakpoints at 768 and 992 pixels):
+It expects a function receiving the material-ui theme as a parameter, and returning a media query. Use the theme breakpoints to check for common screen sizes. The hook returns a boolean indicating if the current screen matches the media query or not.
+
+```jsx
+const isXSmall = useMediaQuery(theme => theme.breakpoints.down('xs'));
+const isSmall = useMediaQuery(theme => theme.breakpoints.down('sm'));
+const isDesktop = useMediaQuery(theme => theme.breakpoints.up('md'));
+```
+
+You can also pass a custom media query as a screen. 
+
+```jsx
+const isSmall = useMediaQuery('(min-width:600px)');
+```
+
+Here is an example for a responsive list of posts, displaying a `SimpleList` on mobile, and a `Datagrid` otherwise:
 
 ```jsx
 // in src/posts.js
 import React from 'react';
-import { List, Responsive, SimpleList, Datagrid, TextField, ReferenceField, EditButton } from 'react-admin';
+import { useMediaQuery } from '@material-ui/core';
+import { List, SimpleList, Datagrid, TextField, ReferenceField, EditButton } from 'react-admin';
 
-export const PostList = (props) => (
-    <List {...props}>
-        <Responsive
-            small={
+export const PostList = (props) => {
+    const isSmall = useMediaQuery(theme => theme.breakpoints.down('sm'));
+    return (
+        <List {...props}>
+            {isSmall ? (
                 <SimpleList
                     primaryText={record => record.title}
                     secondaryText={record => `${record.views} views`}
                     tertiaryText={record => new Date(record.published_at).toLocaleDateString()}
                 />
-            }
-            medium={
+            ) : (
                 <Datagrid>
                     <TextField source="id" />
                     <ReferenceField label="User" source="userId" reference="users">
@@ -252,17 +267,13 @@ export const PostList = (props) => (
                     <TextField source="body" />
                     <EditButton />
                 </Datagrid>
-            }
-        />
-    </List>
-);
+            )}
+        </List>
+    );
+}
 ```
 
-**Tip**: If you only provide `small` and `medium`, the `medium` element will also be used on large screens. The same kind of smart default exists for when you omit `small` or `medium`.
-
-**Tip**: You can specify `null` as the value for `small`, `medium` or `large` to avoid rendering something on a specific size without falling back to others.
-
-**Tip**: You can also use [material-ui's `withWidth()` higher order component](https://github.com/callemall/material-ui/blob/master/src/utils/withWidth.js) to have the `with` prop injected in your own components.
+**Tip**: Previous versions of react-admin shipped a `<Responsive>` component to do media queries. This component us now deprecated. Use `useMediaQuery` instead.
 
 ## Using a Predefined Theme
 
@@ -659,37 +670,46 @@ By default, React-admin uses the list of `<Resource>` components passed as child
 If you want to add or remove menu items, for instance to link to non-resources pages, you can create your own menu component:
 
 ```jsx
-// in src/MyMenu.js
-import React from 'react';
+// in src/Menu.js
+import React, { createElement } from 'react';
 import { connect } from 'react-redux';
-import { MenuItemLink, getResources, Responsive } from 'react-admin';
+import { useMediaQuery } from '@material-ui/core';
+import { MenuItemLink, getResources } from 'react-admin';
 import { withRouter } from 'react-router-dom';
+import LabelIcon from '@material-ui/icons/Label';
 
-const MyMenu = ({ resources, onMenuClick, logout }) => (
-    <div>
-        {resources.map(resource => (
+const Menu = ({ resources, onMenuClick, open, logout }) => {
+    const isXSmall = useMediaQuery(theme => theme.breakpoints.down('xs'));
+    return (
+        <div>
+            {resources.map(resource => (
+                <MenuItemLink
+                    key={resource.name}
+                    to={`/${resource.name}`}
+                    primaryText={resource.options && resource.options.label || resource.name}
+                    leftIcon={createElement(resource.icon)}
+                    onClick={onMenuClick}
+                    sidebarIsOpen={open}
+                />
+            ))}
             <MenuItemLink
-                key={resource.name}
-                to={`/${resource.name}`}
-                primaryText={resource.options && resource.options.label || resource.name}
-                leftIcon={createElement(resource.icon)}
+                to="/custom-route"
+                primaryText="Miscellaneous"
+                leftIcon={LabelIcon}
                 onClick={onMenuClick}
+                sidebarIsOpen={open}
             />
-        ))}
-        <MenuItemLink to="/custom-route" primaryText="Miscellaneous" onClick={onMenuClick} />
-        <Responsive
-            small={logout}
-            medium={null} // Pass null to render nothing on larger devices
-        />
-    </div>
-);
+            {isXSmall && logout}
+        </div>
+    );
+}
 
 const mapStateToProps = state => ({
+    open: state.admin.ui.sidebarOpen,
     resources: getResources(state),
 });
 
-export default withRouter(connect(mapStateToProps)(MyMenu));
-
+export default withRouter(connect(mapStateToProps)(Menu));
 ```
 
 **Tip**: Note the `MenuItemLink` component. It must be used to avoid unwanted side effects in mobile views.
@@ -742,44 +762,46 @@ The `MenuItemLink` component make use of the React Router [`NavLink`](https://re
 If the default active style does not suit your tastes, you can override it by passing your own `classes`:
 
 ```jsx
-// in src/MyMenu.js
-import React from 'react';
+// in src/Menu.js
+import React, { createElement } from 'react';
 import { connect } from 'react-redux';
-import { MenuItemLink, getResources, Responsive } from 'react-admin';
-import { withStyles } from '@material-ui/core/styles';
+import { useMediaQuery } from '@material-ui/core';
+import { MenuItemLink, getResources } from 'react-admin';
 import { withRouter } from 'react-router-dom';
+import LabelIcon from '@material-ui/icons/Label';
 
-const styles = {
-    root: {}, // Style applied to the MenuItem from material-ui
-    active: { fontWeight: 'bold' }, // Style applied when the menu item is the active one
-    icon: {}, // Style applied to the icon
-};
-
-const MyMenu = ({ classes, resources, onMenuClick, logout }) => (
-    <div>
-        {resources.map(resource => (
+const Menu = ({ resources, onMenuClick, open, logout }) => {
+    const isXSmall = useMediaQuery(theme => theme.breakpoints.down('xs'));
+    return (
+        <div>
+            {resources.map(resource => (
+                <MenuItemLink
+                    key={resource.name}
+                    to={`/${resource.name}`}
+                    primaryText={resource.options && resource.options.label || resource.name}
+                    leftIcon={createElement(resource.icon)}
+                    onClick={onMenuClick}
+                    sidebarIsOpen={open}
+                />
+            ))}
             <MenuItemLink
-                key={resource.name}
-                classes={classes}
-                to={`/${resource.name}`}
-                primaryText={resource.options && resource.options.label || resource.name}
-                leftIcon={createElement(resource.icon)}
+                to="/custom-route"
+                primaryText="Miscellaneous"
+                leftIcon={LabelIcon}
                 onClick={onMenuClick}
+                sidebarIsOpen={open}
             />
-        ))}
-        <MenuItemLink classes={classes} to="/custom-route" primaryText="Miscellaneous" onClick={onMenuClick} />
-        <Responsive
-            small={logout}
-            medium={null} // Pass null to render nothing on larger devices
-        />
-    </div>
-);
+            {isXSmall && logout}
+        </div>
+    );
+}
 
 const mapStateToProps = state => ({
+    open: state.admin.ui.sidebarOpen,
     resources: getResources(state),
 });
 
-export default withRouter(connect(mapStateToProps)(withStyles(styles)(Menu)));
+export default withRouter(connect(mapStateToProps)(Menu));
 ```
 
 ## Using a Custom Login Page
