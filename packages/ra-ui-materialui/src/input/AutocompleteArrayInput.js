@@ -248,7 +248,7 @@ export class AutocompleteArrayInput extends React.Component {
     };
 
     renderInput = inputProps => {
-        const { input } = this.props;
+        const { id, input, helperText } = this.props;
         const {
             autoFocus,
             className,
