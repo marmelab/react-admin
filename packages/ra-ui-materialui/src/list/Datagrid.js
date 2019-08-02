@@ -31,6 +31,10 @@ const styles = theme =>
         headerCell: {
             height: 42,
             minHeight: 42,
+            padding: '0 12px',
+            '&:last-child': {
+                padding: '0 12px',
+            },
         },
         checkbox: {},
         row: {},
@@ -39,7 +43,12 @@ const styles = theme =>
         },
         rowEven: {},
         rowOdd: {},
-        rowCell: {},
+        rowCell: {
+            padding: '0 12px',
+            '&:last-child': {
+                padding: '0 12px',
+            },
+        },
         expandHeader: {
             padding: 0,
             width: theme.spacing(6),
