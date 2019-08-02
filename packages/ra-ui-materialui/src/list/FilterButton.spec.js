@@ -1,9 +1,13 @@
 import React from 'react';
 import expect from 'expect';
-import { render, cleanup, fireEvent } from '@testing-library/react';
+import { render, cleanup, fireEvent } from 'react-testing-library';
+import { ThemeProvider } from '@material-ui/styles';
+import { createMuiTheme } from '@material-ui/core';
 
 import { FilterButton } from './FilterButton';
 import TextInput from '../input/TextInput';
+
+const theme = createMuiTheme();
 
 describe('<FilterButton />', () => {
     const defaultProps = {
@@ -36,10 +40,12 @@ describe('<FilterButton />', () => {
                 <TextInput source="Returned" label="Returned" />
             );
             const { getByLabelText, queryByText } = render(
-                <FilterButton
-                    {...defaultProps}
-                    filters={defaultProps.filters.concat(hiddenFilter)}
-                />
+                <ThemeProvider theme={theme}>
+                    <FilterButton
+                        {...defaultProps}
+                        filters={defaultProps.filters.concat(hiddenFilter)}
+                    />
+                </ThemeProvider>
             );
 
             fireEvent.click(getByLabelText('ra.action.add_filter'));
