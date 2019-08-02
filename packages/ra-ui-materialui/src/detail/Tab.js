@@ -1,4 +1,4 @@
-import React, { Component, isValidElement } from 'react';
+import React, { isValidElement } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import MuiTab from '@material-ui/core/Tab';
@@ -58,70 +58,74 @@ const sanitizeRestProps = ({
  *     );
  *     export default App;
  */
-class Tab extends Component {
-    renderHeader = ({ className, label, icon, value, translate, ...rest }) => (
-        <MuiTab
-            key={label}
-            label={translate(label, { _: label })}
-            value={value}
-            icon={icon}
-            className={classnames('show-tab', className)}
-            component={Link}
-            to={value}
-            {...sanitizeRestProps(rest)}
-        />
-    );
 
-    renderContent = ({
-        contentClassName,
-        children,
-        basePath,
-        record,
-        resource,
-    }) => (
-        <span className={contentClassName}>
-            {React.Children.map(children, field =>
-                field && isValidElement(field) ? (
-                    <div
-                        key={field.props.source}
-                        className={classnames(
-                            'ra-field',
-                            `ra-field-${field.props.source}`,
-                            field.props.className
-                        )}
-                    >
-                        {field.props.addLabel ? (
-                            <Labeled
-                                label={field.props.label}
-                                source={field.props.source}
-                                basePath={basePath}
-                                record={record}
-                                resource={resource}
-                            >
-                                {field}
-                            </Labeled>
-                        ) : typeof field.type === 'string' ? (
-                            field
-                        ) : (
-                            React.cloneElement(field, {
-                                basePath,
-                                record,
-                                resource,
-                            })
-                        )}
-                    </div>
-                ) : null
-            )}
-        </span>
-    );
+const renderHeader = ({
+    className,
+    label,
+    icon,
+    value,
+    translate,
+    ...rest
+}) => (
+    <MuiTab
+        key={label}
+        label={translate(label, { _: label })}
+        value={value}
+        icon={icon}
+        className={classnames('show-tab', className)}
+        component={Link}
+        to={value}
+        {...sanitizeRestProps(rest)}
+    />
+);
 
-    render() {
-        const { children, context, ...rest } = this.props;
-        return context === 'header'
-            ? this.renderHeader(rest)
-            : this.renderContent({ children, ...rest });
-    }
-}
+const renderContent = ({
+    contentClassName,
+    children,
+    basePath,
+    record,
+    resource,
+}) => (
+    <span className={contentClassName}>
+        {React.Children.map(children, field =>
+            field && isValidElement(field) ? (
+                <div
+                    key={field.props.source}
+                    className={classnames(
+                        'ra-field',
+                        `ra-field-${field.props.source}`,
+                        field.props.className
+                    )}
+                >
+                    {field.props.addLabel ? (
+                        <Labeled
+                            label={field.props.label}
+                            source={field.props.source}
+                            basePath={basePath}
+                            record={record}
+                            resource={resource}
+                        >
+                            {field}
+                        </Labeled>
+                    ) : typeof field.type === 'string' ? (
+                        field
+                    ) : (
+                        React.cloneElement(field, {
+                            basePath,
+                            record,
+                            resource,
+                        })
+                    )}
+                </div>
+            ) : null
+        )}
+    </span>
+);
+
+const Tab = ({ children, context, ...rest }) =>
+    context === 'header'
+        ? renderHeader(rest)
+        : renderContent({ children, ...rest });
 
 Tab.propTypes = {
     className: PropTypes.string,
