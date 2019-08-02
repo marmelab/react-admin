@@ -88,6 +88,7 @@ export const SaveButton = ({
             type={type}
             onClick={handleClick}
             color={saving ? 'default' : 'primary'}
+            aria-label={label && translate(label, { _: label })}
             {...sanitizeRestProps(rest)}
         >
             {saving && saving.redirect === redirect ? (
