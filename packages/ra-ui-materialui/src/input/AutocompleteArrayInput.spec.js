@@ -140,6 +140,7 @@ describe('<AutocompleteArrayInput />', () => {
         const { getByLabelText, queryAllByRole } = render(
             <AutocompleteArrayInput
                 {...defaultProps}
+                allowDuplicates={true}
                 input={{ value: ['M'], onChange: () => {} }}
                 choices={[{ id: 'M', name: 'Male' }]}
                 shouldRenderSuggestions={v => v.length > 2}

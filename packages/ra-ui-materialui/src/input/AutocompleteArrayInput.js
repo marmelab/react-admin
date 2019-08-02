@@ -138,25 +138,39 @@ export class AutocompleteArrayInput extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         const { choices, input, inputValueMatcher } = nextProps;
+        const { allowDuplicates } = this.props;
+        const { inputValue } = this.state;
         if (!isEqual(this.getInputValue(input.value), this.state.inputValue)) {
             this.setState({
                 inputValue: this.getInputValue(input.value),
                 dirty: false,
-                suggestions: this.limitSuggestions(this.props.choices),
+                suggestions: this.props.choices.filter(suggestion => {
+                    if (allowDuplicates) {
+                        return suggestion;
+                    }
+                    return suggestion && !inputValue.includes(suggestion.id);
+                }),
             });
             // Ensure to reset the filter
             this.updateFilter('');
         } else if (!isEqual(choices, this.props.choices)) {
             this.setState(({ searchText }) => ({
-                suggestions: this.limitSuggestions(
-                    choices.filter(suggestion =>
+                suggestions: choices.filter(suggestion => {
+                    if (allowDuplicates) {
+                        return inputValueMatcher(
+                            searchText,
+                            suggestion,
+                            this.getSuggestionText
+                        );
+                    }
+                    return (
                         inputValueMatcher(
                             searchText,
                             suggestion,
                             this.getSuggestionText
-                        )
-                    )
-                ),
+                        ) && !inputValue.includes(suggestion.id)
+                    );
+                }),
             }));
         }
     }
@@ -192,18 +206,27 @@ export class AutocompleteArrayInput extends React.Component {
     };
 
     handleSuggestionsFetchRequested = () => {
-        const { choices, inputValueMatcher } = this.props;
+        const { choices, inputValueMatcher, allowDuplicates } = this.props;
+        const { inputValue } = this.state;
 
         this.setState(({ searchText }) => ({
-            suggestions: this.limitSuggestions(
-                choices.filter(suggestion =>
+            suggestions: choices.filter(suggestion => {
+                if (allowDuplicates) {
+                    return inputValueMatcher(
+                        searchText,
+                        suggestion,
+                        this.getSuggestionText
+                    );
+                }
+                return (
+                    !inputValue.includes(suggestion.id) &&
                     inputValueMatcher(
                         searchText,
                         suggestion,
                         this.getSuggestionText
                     )
-                )
-            ),
+                );
+            }),
         }));
     };
 
@@ -225,7 +248,7 @@ export class AutocompleteArrayInput extends React.Component {
     };
 
     renderInput = inputProps => {
-        const { id, input, helperText } = this.props;
+        const { input } = this.props;
         const {
             autoFocus,
             className,
@@ -423,20 +446,27 @@ export class AutocompleteArrayInput extends React.Component {
     };
 
     updateFilter = value => {
-        const { setFilter, choices } = this.props;
+        const { setFilter, choices, allowDuplicates } = this.props;
+        const { inputValue } = this.state;
         if (this.previousFilterValue !== value) {
             if (setFilter) {
                 setFilter(value);
             } else {
                 this.setState({
                     searchText: value,
-                    suggestions: this.limitSuggestions(
-                        choices.filter(choice =>
+                    suggestions: choices.filter(choice => {
+                        if (allowDuplicates) {
+                            return this.getSuggestionText(choice)
+                                .toLowerCase()
+                                .includes(value.toLowerCase());
+                        }
+                        return (
+                            !inputValue.includes(choice.id) &&
                             this.getSuggestionText(choice)
                                 .toLowerCase()
                                 .includes(value.toLowerCase())
-                        )
-                    ),
+                        );
+                    }),
                 });
             }
         }
@@ -519,6 +549,7 @@ export class AutocompleteArrayInput extends React.Component {
 }
 
 AutocompleteArrayInput.propTypes = {
+    allowDuplicates: PropTypes.bool,
     allowEmpty: PropTypes.bool,
     alwaysRenderSuggestions: PropTypes.bool, // used only for unit tests
     choices: PropTypes.arrayOf(PropTypes.object),
@@ -549,6 +580,7 @@ AutocompleteArrayInput.propTypes = {
 };
 
 AutocompleteArrayInput.defaultProps = {
+    allowDuplicates: false,
     choices: [],
     options: {},
     optionText: 'name',
