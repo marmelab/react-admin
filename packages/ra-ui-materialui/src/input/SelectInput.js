@@ -3,8 +3,7 @@ import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import MenuItem from '@material-ui/core/MenuItem';
 import { makeStyles } from '@material-ui/core/styles';
-import compose from 'recompose/compose';
-import { addField, translate, FieldTitle, useTranslate } from 'ra-core';
+import { addField, FieldTitle, useTranslate } from 'ra-core';
 
 import ResettableTextField from './ResettableTextField';
 import InputHelperText from './InputHelperText';
@@ -44,7 +43,6 @@ const sanitizeRestProps = ({
     sort,
     source,
     textAlign,
-    translate,
     translateChoice,
     validation,
     ...rest
@@ -263,7 +261,6 @@ SelectInput.propTypes = {
     disableValue: PropTypes.string,
     resource: PropTypes.string,
     source: PropTypes.string,
-    translate: PropTypes.func.isRequired,
     translateChoice: PropTypes.bool,
 };
 
@@ -278,7 +275,4 @@ SelectInput.defaultProps = {
     disableValue: 'disabled',
 };
 
-export default compose(
-    addField,
-    translate
-)(SelectInput);
+export default addField(SelectInput);
