@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import Snackbar from '@material-ui/core/Snackbar';
 import Button from '@material-ui/core/Button';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import classnames from 'classnames';
 
 import {
@@ -15,7 +15,13 @@ import {
     useTranslate,
 } from 'ra-core';
 
-const useStyles = makeStyles(theme => ({
+interface Props {
+    type?: string;
+    className?: string;
+    autoHideDuration?: number;
+}
+
+const useStyles = makeStyles((theme: Theme) => ({
     confirm: {
         backgroundColor: theme.palette.background.default,
     },
@@ -27,18 +33,17 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const Notification = ({
-    autoHideDuration,
+const Notification: React.SFC<Props> = ({
     type,
-    classes,
     className,
+    autoHideDuration,
     ...rest
 }) => {
     const [open, setOpen] = useState(false);
     const notification = useSelector(getNotification);
     const dispatch = useDispatch();
     const translate = useTranslate();
-    const styles = useStyles();
+    const styles = useStyles({});
 
     useEffect(() => {
         setOpen(!!notification);
@@ -94,16 +99,14 @@ const Notification = ({
                     </Button>
                 ) : null
             }
-            classes={classes}
             {...rest}
         />
     );
 };
 
 Notification.propTypes = {
-    classes: PropTypes.object,
-    className: PropTypes.string,
     type: PropTypes.string,
+    className: PropTypes.string,
     autoHideDuration: PropTypes.number,
 };
 
