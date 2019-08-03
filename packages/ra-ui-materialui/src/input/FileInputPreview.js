@@ -12,7 +12,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const FileInputPreview = ({
+export const FileInputPreview = ({
     children,
     className,
     onRemove,
