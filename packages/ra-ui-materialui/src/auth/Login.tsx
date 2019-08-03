@@ -1,20 +1,9 @@
-import React, {
-    Component,
-    ComponentType,
-    HtmlHTMLAttributes,
-    ReactNode,
-} from 'react';
+import React, { HtmlHTMLAttributes, ReactNode, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import Card from '@material-ui/core/Card';
 import Avatar from '@material-ui/core/Avatar';
-import {
-    createMuiTheme,
-    withStyles,
-    createStyles,
-    WithStyles,
-    Theme,
-} from '@material-ui/core/styles';
+import { createMuiTheme, makeStyles, Theme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
 import LockIcon from '@material-ui/icons/Lock';
 import { StaticContext } from 'react-router';
@@ -30,31 +19,30 @@ interface Props {
     theme: object;
 }
 
-const styles = (theme: Theme) =>
-    createStyles({
-        main: {
-            display: 'flex',
-            flexDirection: 'column',
-            minHeight: '100vh',
-            height: '1px',
-            alignItems: 'center',
-            justifyContent: 'flex-start',
-            backgroundRepeat: 'no-repeat',
-            backgroundSize: 'cover',
-        },
-        card: {
-            minWidth: 300,
-            marginTop: '6em',
-        },
-        avatar: {
-            margin: '1em',
-            display: 'flex',
-            justifyContent: 'center',
-        },
-        icon: {
-            backgroundColor: theme.palette.secondary[500],
-        },
-    });
+const useStyles = makeStyles((theme: Theme) => ({
+    main: {
+        display: 'flex',
+        flexDirection: 'column',
+        minHeight: '100vh',
+        height: '1px',
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+        backgroundRepeat: 'no-repeat',
+        backgroundSize: 'cover',
+    },
+    card: {
+        minWidth: 300,
+        marginTop: '6em',
+    },
+    avatar: {
+        margin: '1em',
+        display: 'flex',
+        justifyContent: 'center',
+    },
+    icon: {
+        backgroundColor: theme.palette.secondary[500],
+    },
+}));
 
 /**
  * A standalone login page, to serve as authentication gate to the admin
@@ -74,86 +62,72 @@ const styles = (theme: Theme) =>
  *        </Admin>
  *     );
  */
-class Login extends Component<
-    Props & WithStyles<typeof styles> & HtmlHTMLAttributes<HTMLDivElement>
-> {
-    theme = createMuiTheme(this.props.theme);
-    containerRef = React.createRef<HTMLDivElement>();
-    backgroundImageLoaded = false;
+const Login: React.SFC<Props & HtmlHTMLAttributes<HTMLDivElement>> = ({
+    theme,
+    className,
+    children,
+    staticContext,
+    backgroundImage,
+    ...rest
+}) => {
+    const containerRef = useRef<HTMLDivElement>();
+    const styles = useStyles({});
+    let backgroundImageLoaded = false;
 
-    updateBackgroundImage = () => {
-        if (!this.backgroundImageLoaded && this.containerRef.current) {
-            const { backgroundImage } = this.props;
-            this.containerRef.current.style.backgroundImage = `url(${backgroundImage})`;
-            this.backgroundImageLoaded = true;
+    const updateBackgroundImage = () => {
+        if (!backgroundImageLoaded && containerRef.current) {
+            containerRef.current.style.backgroundImage = `url(${backgroundImage})`;
+            backgroundImageLoaded = true;
         }
     };
 
     // Load background image asynchronously to speed up time to interactive
-    lazyLoadBackgroundImage() {
-        const { backgroundImage } = this.props;
-
+    const lazyLoadBackgroundImage = () => {
         if (backgroundImage) {
             const img = new Image();
-            img.onload = this.updateBackgroundImage;
+            img.onload = updateBackgroundImage;
             img.src = backgroundImage;
         }
-    }
+    };
 
-    componentDidMount() {
-        this.lazyLoadBackgroundImage();
-    }
-
-    componentDidUpdate() {
-        if (!this.backgroundImageLoaded) {
-            this.lazyLoadBackgroundImage();
+    useEffect(() => {
+        if (!backgroundImageLoaded) {
+            lazyLoadBackgroundImage();
         }
-    }
+    });
 
-    render() {
-        const {
-            backgroundImage,
-            classes,
-            className,
-            children,
-            staticContext,
-            ...rest
-        } = this.props;
+    return (
+        <ThemeProvider theme={createMuiTheme(theme)}>
+            <div
+                className={classnames(styles.main, className)}
+                {...rest}
+                ref={containerRef}
+            >
+                <Card className={styles.card}>
+                    <div className={styles.avatar}>
+                        <Avatar className={styles.icon}>
+                            <LockIcon />
+                        </Avatar>
+                    </div>
+                    {children}
+                </Card>
+                <Notification />
+            </div>
+        </ThemeProvider>
+    );
+};
 
-        return (
-            <ThemeProvider theme={this.theme}>
-                <div
-                    className={classnames(classes.main, className)}
-                    {...rest}
-                    ref={this.containerRef}
-                >
-                    <Card className={classes.card}>
-                        <div className={classes.avatar}>
-                            <Avatar className={classes.icon}>
-                                <LockIcon />
-                            </Avatar>
-                        </div>
-                        {children}
-                    </Card>
-                    <Notification />
-                </div>
-            </ThemeProvider>
-        );
-    }
-}
-
-const EnhancedLogin = withStyles(styles)(Login) as ComponentType<Props>;
-
-EnhancedLogin.propTypes = {
+Login.propTypes = {
     backgroundImage: PropTypes.string,
     children: PropTypes.node,
     theme: PropTypes.object,
     staticContext: PropTypes.object,
 };
 
-EnhancedLogin.defaultProps = {
+Login.defaultProps = {
     backgroundImage: 'https://source.unsplash.com/random/1600x900/daily',
     theme: defaultTheme,
     children: <DefaultLoginForm />,
 };
-export default EnhancedLogin;
+
+export default Login;
