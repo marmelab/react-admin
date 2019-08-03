@@ -1,148 +1,110 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import Snackbar from '@material-ui/core/Snackbar';
 import Button from '@material-ui/core/Button';
-import { withStyles, createStyles } from '@material-ui/core/styles';
-import compose from 'recompose/compose';
+import { makeStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
 
 import {
     hideNotification,
     getNotification,
-    translate,
     undo,
     complete,
     undoableEventEmitter,
+    useTranslate,
 } from 'ra-core';
 
-const styles = theme =>
-    createStyles({
-        confirm: {
-            backgroundColor: theme.palette.background.default,
-        },
-        warning: {
-            backgroundColor: theme.palette.error.light,
-        },
-        undo: {
-            color: theme.palette.primary.light,
-        },
-    });
+const useStyles = makeStyles(theme => ({
+    confirm: {
+        backgroundColor: theme.palette.background.default,
+    },
+    warning: {
+        backgroundColor: theme.palette.error.light,
+    },
+    undo: {
+        color: theme.palette.primary.light,
+    },
+}));
 
-class Notification extends React.Component {
-    state = {
-        open: false,
-    };
-    componentWillMount = () => {
-        this.setOpenState(this.props);
-    };
-    componentWillReceiveProps = nextProps => {
-        this.setOpenState(nextProps);
-    };
+const Notification = ({
+    autoHideDuration,
+    type,
+    classes,
+    className,
+    ...rest
+}) => {
+    const [open, setOpen] = useState(false);
+    const notification = useSelector(getNotification);
+    const dispatch = useDispatch();
+    const translate = useTranslate();
+    const styles = useStyles();
 
-    setOpenState = ({ notification }) => {
-        this.setState({
-            open: !!notification,
-        });
-    };
+    useEffect(() => {
+        setOpen(!!notification);
+    }, [notification]);
 
-    handleRequestClose = () => {
-        this.setState({
-            open: false,
-        });
+    const handleRequestClose = () => {
+        setOpen(false);
     };
 
-    handleExited = () => {
-        const { notification, hideNotification, complete } = this.props;
+    const handleExited = () => {
         if (notification && notification.undoable) {
-            complete();
+            dispatch(complete());
             undoableEventEmitter.emit('end', { isUndo: false });
         }
-        hideNotification();
+        dispatch(hideNotification());
     };
 
-    handleUndo = () => {
-        const { undo } = this.props;
-        undo();
+    const handleUndo = () => {
+        dispatch(undo());
         undoableEventEmitter.emit('end', { isUndo: true });
     };
 
-    render() {
-        const {
-            undo,
-            complete,
-            classes,
-            className,
-            type,
-            translate,
-            notification,
-            autoHideDuration,
-            hideNotification,
-            ...rest
-        } = this.props;
-        const {
-            warning,
-            confirm,
-            undo: undoClass, // Rename classes.undo to undoClass in this scope to avoid name conflicts
-            ...snackbarClasses
-        } = classes;
-        return (
-            <Snackbar
-                open={this.state.open}
-                message={
-                    notification &&
-                    notification.message &&
-                    translate(notification.message, notification.messageArgs)
-                }
-                autoHideDuration={
-                    (notification && notification.autoHideDuration) ||
-                    autoHideDuration
-                }
-                disableWindowBlurListener={
-                    notification && notification.undoable
-                }
-                onExited={this.handleExited}
-                onClose={this.handleRequestClose}
-                ContentProps={{
-                    className: classnames(
-                        classes[(notification && notification.type) || type],
-                        className
-                    ),
-                }}
-                action={
-                    notification && notification.undoable ? (
-                        <Button
-                            color="primary"
-                            className={undoClass}
-                            size="small"
-                            onClick={this.handleUndo}
-                        >
-                            {translate('ra.action.undo')}
-                        </Button>
-                    ) : null
-                }
-                classes={snackbarClasses}
-                {...rest}
-            />
-        );
-    }
-}
+    return (
+        <Snackbar
+            open={open}
+            message={
+                notification &&
+                notification.message &&
+                translate(notification.message, notification.messageArgs)
+            }
+            autoHideDuration={
+                (notification && notification.autoHideDuration) ||
+                autoHideDuration
+            }
+            disableWindowBlurListener={notification && notification.undoable}
+            onExited={handleExited}
+            onClose={handleRequestClose}
+            ContentProps={{
+                className: classnames(
+                    styles[(notification && notification.type) || type],
+                    className
+                ),
+            }}
+            action={
+                notification && notification.undoable ? (
+                    <Button
+                        color="primary"
+                        className={styles.undo}
+                        size="small"
+                        onClick={handleUndo}
+                    >
+                        {translate('ra.action.undo')}
+                    </Button>
+                ) : null
+            }
+            classes={classes}
+            {...rest}
+        />
+    );
+};
 
 Notification.propTypes = {
-    complete: PropTypes.func,
     classes: PropTypes.object,
     className: PropTypes.string,
-    notification: PropTypes.shape({
-        message: PropTypes.string,
-        type: PropTypes.string,
-        autoHideDuration: PropTypes.number,
-        messageArgs: PropTypes.object,
-    }),
     type: PropTypes.string,
-    hideNotification: PropTypes.func.isRequired,
     autoHideDuration: PropTypes.number,
-    translate: PropTypes.func.isRequired,
-    undo: PropTypes.func,
 };
 
 Notification.defaultProps = {
@@ -150,19 +112,4 @@ Notification.defaultProps = {
     autoHideDuration: 4000,
 };
 
-const mapStateToProps = state => ({
-    notification: getNotification(state),
-});
-
-export default compose(
-    withStyles(styles),
-    translate,
-    connect(
-        mapStateToProps,
-        {
-            complete,
-            hideNotification,
-            undo,
-        }
-    )
-)(Notification);
+export default Notification;
