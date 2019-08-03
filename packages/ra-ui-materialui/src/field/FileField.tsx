@@ -1,13 +1,13 @@
 import React, { SFC, ComponentType } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
-import { makeStyles } from '@material-ui/core/styles';
+import { withStyles, WithStyles, createStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
 
 import sanitizeRestProps from './sanitizeRestProps';
 import { FieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 
-const useStyles = makeStyles({
+const styles = createStyles({
     root: { display: 'inline-block' },
 });
 
@@ -17,16 +17,9 @@ interface Props extends FieldProps {
     target?: string;
 }
 
-export const FileField: SFC<Props & InjectedFieldProps> = ({
-    className,
-    record,
-    source,
-    title,
-    src,
-    target,
-    ...rest
-}) => {
-    const classes = useStyles({});
+export const FileField: SFC<
+    Props & InjectedFieldProps & WithStyles<typeof styles>
+> = ({ classes, className, record, source, title, src, target, ...rest }) => {
     const sourceValue = get(record, source);
 
     if (!sourceValue) {
@@ -78,7 +71,7 @@ export const FileField: SFC<Props & InjectedFieldProps> = ({
     );
 };
 
-const EnhancedFileField = FileField as ComponentType<Props>;
+const EnhancedFileField = withStyles(styles)(FileField) as ComponentType<Props>;
 
 EnhancedFileField.defaultProps = {
     addLabel: true,
