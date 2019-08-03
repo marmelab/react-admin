@@ -8,8 +8,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import Checkbox from '@material-ui/core/Checkbox';
 import { makeStyles } from '@material-ui/core/styles';
-import compose from 'recompose/compose';
-import { addField, translate, FieldTitle } from 'ra-core';
+import { addField, useTranslate, FieldTitle } from 'ra-core';
 
 import defaultSanitizeRestProps from './sanitizeRestProps';
 const sanitizeRestProps = ({ setFilter, setPagination, setSort, ...rest }) =>
@@ -103,7 +102,6 @@ const CheckboxGroupInput = ({
     optionText,
     optionValue,
     options,
-    translate,
     translateChoice,
     ...rest
 }) => {
@@ -114,6 +112,7 @@ const CheckboxGroupInput = ({
     }
 
     const classes = useStyles();
+    const translate = useTranslate();
     const { touched, error, helperText = false } = meta;
 
     const handleCheck = (event, isChecked) => {
@@ -208,7 +207,6 @@ CheckboxGroupInput.propTypes = {
     ]).isRequired,
     optionValue: PropTypes.string.isRequired,
     resource: PropTypes.string,
-    translate: PropTypes.func.isRequired,
     translateChoice: PropTypes.bool.isRequired,
     meta: PropTypes.object,
 };
@@ -221,10 +219,7 @@ CheckboxGroupInput.defaultProps = {
     translateChoice: true,
 };
 
-const EnhancedCheckboxGroupInput = compose(
-    addField,
-    translate
-)(CheckboxGroupInput);
+const EnhancedCheckboxGroupInput = addField()(CheckboxGroupInput);
 
 EnhancedCheckboxGroupInput.defaultProps = {
     fullWidth: true,
