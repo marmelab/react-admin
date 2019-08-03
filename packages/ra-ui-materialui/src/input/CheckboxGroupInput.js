@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import FormLabel from '@material-ui/core/FormLabel';
@@ -7,7 +7,7 @@ import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import Checkbox from '@material-ui/core/Checkbox';
-import { withStyles, createStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import compose from 'recompose/compose';
 import { addField, translate, FieldTitle } from 'ra-core';
 
@@ -15,19 +15,16 @@ import defaultSanitizeRestProps from './sanitizeRestProps';
 const sanitizeRestProps = ({ setFilter, setPagination, setSort, ...rest }) =>
     defaultSanitizeRestProps(rest);
 
-const styles = theme =>
-    createStyles({
-        root: {},
-        label: {
-            transform: 'translate(0, 1.5px) scale(0.75)',
-            transformOrigin: `top ${
-                theme.direction === 'ltr' ? 'left' : 'right'
-            }`,
-        },
-        checkbox: {
-            height: 32,
-        },
-    });
+const useStyles = makeStyles(theme => ({
+    root: {},
+    label: {
+        transform: 'translate(0, 1.5px) scale(0.75)',
+        transformOrigin: `top ${theme.direction === 'ltr' ? 'left' : 'right'}`,
+    },
+    checkbox: {
+        height: 32,
+    },
+}));
 
 /**
  * An Input component for a checkbox group, using an array of objects for the options
@@ -91,11 +88,35 @@ const styles = theme =>
  *
  * The object passed as `options` props is passed to the material-ui <Checkbox> components
  */
-export class CheckboxGroupInput extends Component {
-    handleCheck = (event, isChecked) => {
-        const {
-            input: { value, onChange },
-        } = this.props;
+
+const CheckboxGroupInput = ({
+    choices,
+    className,
+    isRequired,
+    label,
+    meta,
+    resource,
+    source,
+    input,
+    id,
+    input: { value, onChange },
+    optionText,
+    optionValue,
+    options,
+    translate,
+    translateChoice,
+    ...rest
+}) => {
+    if (typeof meta === 'undefined') {
+        throw new Error(
+            "The CheckboxGroupInput component wasn't called within a redux-form <Field>. Did you decorate it and forget to add the addField prop to your component? See https://marmelab.com/react-admin/Inputs.html#writing-your-own-input-component for details."
+        );
+    }
+
+    const classes = useStyles();
+    const { touched, error, helperText = false } = meta;
+
+    const handleCheck = (event, isChecked) => {
         let newValue;
         try {
             // try to convert string value to number, e.g. '123'
@@ -111,18 +132,7 @@ export class CheckboxGroupInput extends Component {
         }
     };
 
-    renderCheckbox = choice => {
-        const {
-            id,
-            input: { value },
-            optionText,
-            optionValue,
-            options,
-            translate,
-            translateChoice,
-            classes,
-        } = this.props;
-
+    const renderCheckbox = choice => {
         const choiceName = React.isValidElement(optionText)
             ? React.cloneElement(optionText, { record: choice })
             : typeof optionText === 'function'
@@ -139,7 +149,7 @@ export class CheckboxGroupInput extends Component {
                           undefined
                         : false
                 }
-                onChange={this.handleCheck}
+                onChange={handleCheck}
                 value={String(get(choice, optionValue))}
                 control={
                     <Checkbox
@@ -158,55 +168,30 @@ export class CheckboxGroupInput extends Component {
         );
     };
 
-    render() {
-        const {
-            choices,
-            className,
-            classes = {},
-            isRequired,
-            label,
-            meta,
-            resource,
-            source,
-            input,
-            ...rest
-        } = this.props;
-        if (typeof meta === 'undefined') {
-            throw new Error(
-                "The CheckboxGroupInput component wasn't called within a react-final-form <Field>. Did you decorate it and forget to add the addField prop to your component? See https://marmelab.com/react-admin/Inputs.html#writing-your-own-input-component for details."
-            );
-        }
-
-        const { touched, error, helperText = false } = meta;
-
-        return (
-            <FormControl
-                className={className}
-                component="fieldset"
-                margin="normal"
-                {...sanitizeRestProps(rest)}
-            >
-                <FormLabel component="legend" className={classes.label}>
-                    <FieldTitle
-                        label={label}
-                        source={source}
-                        resource={resource}
-                        isRequired={isRequired}
-                    />
-                </FormLabel>
-                <FormGroup row>{choices.map(this.renderCheckbox)}</FormGroup>
-                {touched && error && (
-                    <FormHelperText error>{error}</FormHelperText>
-                )}
-                {helperText && <FormHelperText>{helperText}</FormHelperText>}
-            </FormControl>
-        );
-    }
-}
+    return (
+        <FormControl
+            className={className}
+            component="fieldset"
+            margin="normal"
+            {...sanitizeRestProps(rest)}
+        >
+            <FormLabel component="legend" className={classes.label}>
+                <FieldTitle
+                    label={label}
+                    source={source}
+                    resource={resource}
+                    isRequired={isRequired}
+                />
+            </FormLabel>
+            <FormGroup row>{choices.map(renderCheckbox)}</FormGroup>
+            {touched && error && <FormHelperText error>{error}</FormHelperText>}
+            {helperText && <FormHelperText>{helperText}</FormHelperText>}
+        </FormControl>
+    );
+};
 
 CheckboxGroupInput.propTypes = {
     choices: PropTypes.arrayOf(PropTypes.object),
-    classes: PropTypes.object,
     className: PropTypes.string,
     label: PropTypes.string,
     source: PropTypes.string,
@@ -230,7 +215,6 @@ CheckboxGroupInput.propTypes = {
 
 CheckboxGroupInput.defaultProps = {
     choices: [],
-    classes: {},
     options: {},
     optionText: 'name',
     optionValue: 'id',
@@ -239,8 +223,7 @@ CheckboxGroupInput.defaultProps = {
 
 const EnhancedCheckboxGroupInput = compose(
     addField,
-    translate,
-    withStyles(styles)
+    translate
 )(CheckboxGroupInput);
 
 EnhancedCheckboxGroupInput.defaultProps = {
