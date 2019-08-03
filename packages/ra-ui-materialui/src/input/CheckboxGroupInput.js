@@ -219,7 +219,7 @@ CheckboxGroupInput.defaultProps = {
     translateChoice: true,
 };
 
-const EnhancedCheckboxGroupInput = addField()(CheckboxGroupInput);
+const EnhancedCheckboxGroupInput = addField(CheckboxGroupInput);
 
 EnhancedCheckboxGroupInput.defaultProps = {
     fullWidth: true,
