@@ -1,72 +1,62 @@
-import React, { Component } from 'react';
-import compose from 'recompose/compose';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import IconButton from '@material-ui/core/IconButton';
-import { withStyles, createStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import RemoveCircle from '@material-ui/icons/RemoveCircle';
-import { translate } from 'ra-core';
+import { useTranslate } from 'ra-core';
 
-const styles = theme =>
-    createStyles({
-        removeButton: {},
-        removeIcon: {
-            color: theme.palette.accent1Color,
-        },
-    });
+const useStyles = makeStyles(theme => ({
+    removeButton: {},
+    removeIcon: {
+        color: theme.palette.accent1Color,
+    },
+}));
 
-export class FileInputPreview extends Component {
-    static propTypes = {
-        children: PropTypes.element.isRequired,
-        classes: PropTypes.object,
-        className: PropTypes.string,
-        file: PropTypes.object,
-        onRemove: PropTypes.func.isRequired,
-        revokeObjectURL: PropTypes.func,
-    };
+const FileInputPreview = ({
+    children,
+    className,
+    onRemove,
+    revokeObjectURL,
+    file,
+    ...rest
+}) => {
+    useEffect(() => {
+        return () => {
+            if (file.preview) {
+                revokeObjectURL
+                    ? revokeObjectURL(file.preview)
+                    : window.URL.revokeObjectURL(file.preview);
+            }
+        };
+    }, [file.preview, revokeObjectURL]);
 
-    static defaultProps = {
-        file: undefined,
-        translate: id => id,
-    };
+    const classes = useStyles();
+    const translate = useTranslate();
 
-    componentWillUnmount() {
-        const { file, revokeObjectURL } = this.props;
+    return (
+        <div className={className} {...rest}>
+            <IconButton
+                className={classes.removeButton}
+                onClick={onRemove}
+                title={translate('ra.action.delete')}
+            >
+                <RemoveCircle className={classes.removeIcon} />
+            </IconButton>
+            {children}
+        </div>
+    );
+};
 
-        if (file.preview) {
-            revokeObjectURL
-                ? revokeObjectURL(file.preview)
-                : window.URL.revokeObjectURL(file.preview);
-        }
-    }
+FileInputPreview.propTypes = {
+    children: PropTypes.element.isRequired,
+    className: PropTypes.string,
+    file: PropTypes.object,
+    onRemove: PropTypes.func.isRequired,
+    revokeObjectURL: PropTypes.func,
+};
 
-    render() {
-        const {
-            children,
-            classes = {},
-            className,
-            onRemove,
-            revokeObjectURL,
-            file,
-            translate,
-            ...rest
-        } = this.props;
+FileInputPreview.defaultProps = {
+    file: undefined,
+};
 
-        return (
-            <div className={className} {...rest}>
-                <IconButton
-                    className={classes.removeButton}
-                    onClick={onRemove}
-                    title={translate('ra.action.delete')}
-                >
-                    <RemoveCircle className={classes.removeIcon} />
-                </IconButton>
-                {children}
-            </div>
-        );
-    }
-}
-
-export default compose(
-    withStyles(styles),
-    translate
-)(FileInputPreview);
+export default FileInputPreview;

@@ -25,7 +25,7 @@ describe('<ReferenceManyField />', () => {
             </ReferenceManyFieldView>,
             { disableLifecycleMethods: true }
         );
-        const ProgressElements = wrapper.find('WithStyles(LinearProgress)');
+        const ProgressElements = wrapper.find('LinearProgress');
         assert.equal(ProgressElements.length, 0);
         const SingleFieldListElement = wrapper.find(
             'WithStyles(SingleFieldList)'
@@ -51,7 +51,7 @@ describe('<ReferenceManyField />', () => {
             </ReferenceManyFieldView>,
             { disableLifecycleMethods: true }
         );
-        const ProgressElements = wrapper.find('WithStyles(LinearProgress)');
+        const ProgressElements = wrapper.find('LinearProgress');
         assert.equal(ProgressElements.length, 0);
         const SingleFieldListElement = wrapper.find(
             'WithStyles(SingleFieldList)'
@@ -114,7 +114,7 @@ describe('<ReferenceManyField />', () => {
             </ReferenceManyFieldView>,
             { disableLifecycleMethods: true }
         );
-        const ProgressElements = wrapper.find('WithStyles(LinearProgress)');
+        const ProgressElements = wrapper.find('LinearProgress');
         assert.equal(ProgressElements.length, 0);
         const SingleFieldListElement = wrapper.find(
             'WithStyles(SingleFieldList)'

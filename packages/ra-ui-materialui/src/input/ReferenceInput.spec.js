@@ -29,9 +29,7 @@ describe('<ReferenceInput />', () => {
         );
         const MyComponentElement = wrapper.find('MyComponent');
         assert.equal(MyComponentElement.length, 0);
-        const LinearProgressElement = wrapper.find(
-            'WithStyles(LinearProgress)'
-        );
+        const LinearProgressElement = wrapper.find('LinearProgress');
         assert.equal(LinearProgressElement.length, 1);
     });
 
@@ -47,9 +45,7 @@ describe('<ReferenceInput />', () => {
                 <MyComponent />
             </ReferenceInputView>
         );
-        const LinearProgressElement = wrapper.find(
-            'WithStyles(LinearProgress)'
-        );
+        const LinearProgressElement = wrapper.find('LinearProgress');
         assert.equal(LinearProgressElement.length, 0);
         const MyComponentElement = wrapper.find('MyComponent');
         assert.equal(MyComponentElement.length, 1);
