@@ -138,6 +138,7 @@ export class DatagridRow extends Component {
                             className={classes.expandIconCell}
                         >
                             <ExpandRowButton
+                                className={classes.expandButton}
                                 classes={classes}
                                 expanded={expanded}
                                 onClick={this.handleToggleExpanded}
@@ -164,6 +165,11 @@ export class DatagridRow extends Component {
                                     classes.rowCell
                                 )}
                                 record={record}
+                                padding={
+                                    !!expand || hasBulkActions
+                                        ? 'none'
+                                        : undefined
+                                }
                                 {...{ field, basePath, resource }}
                             />
                         ) : null

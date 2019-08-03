@@ -26,7 +26,6 @@ import { all, fork } from 'redux-saga/effects';
 import {
     adminReducer,
     adminSaga,
-    createAppReducer,
     defaultI18nProvider,
     i18nReducer,
     USER_LOGOUT,
@@ -122,6 +121,7 @@ const App = () => (
     >
         <Admin
             authProvider={authProvider}
+            dataProvider={dataProvider}
             history={history}
             title="My Admin"
         >
@@ -135,7 +135,7 @@ const App = () => (
 export default App;
 ```
 
-**Tip**: One thing to pay attention to is that you must pass the same `history` and `authProvider` to both the redux Store creator and the `<Admin>` component. But you don't need to pass the `dataProvider` or the `i18nProvider`.
+**Tip**: One thing to pay attention to is that you must pass the same `history`, `dataProvider` and `authProvider` to both the redux Store creator and the `<Admin>` component. But you don't need to pass the `i18nProvider`.
 
 ## Not Using the `<Admin>` Components
 

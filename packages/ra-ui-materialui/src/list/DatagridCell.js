@@ -26,7 +26,6 @@ export const DatagridCell = ({
     <TableCell
         className={classnames(className, field.props.cellClassName)}
         align={field.props.textAlign}
-        padding="none"
         {...sanitizeRestProps(rest)}
     >
         {React.cloneElement(field, {
