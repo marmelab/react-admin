@@ -88,7 +88,7 @@ const useStyles = makeStyles(theme => ({
  * The object passed as `options` props is passed to the material-ui <Checkbox> components
  */
 
-const CheckboxGroupInput = ({
+export const CheckboxGroupInput = ({
     choices,
     className,
     isRequired,
