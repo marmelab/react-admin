@@ -2,7 +2,7 @@ import React, { useState, useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import MenuItem from '@material-ui/core/MenuItem';
-import { withStyles, createStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import compose from 'recompose/compose';
 import { addField, translate, FieldTitle, useTranslate } from 'ra-core';
 
@@ -50,12 +50,11 @@ const sanitizeRestProps = ({
     ...rest
 }) => rest;
 
-const styles = theme =>
-    createStyles({
-        input: {
-            minWidth: theme.spacing(20),
-        },
-    });
+const useStyles = makeStyles(theme => ({
+    input: {
+        minWidth: theme.spacing(20),
+    },
+}));
 
 /**
  * An Input component for a select box, using an array of objects for the options
@@ -134,7 +133,6 @@ const styles = theme =>
 export const SelectInput = ({
     allowEmpty,
     choices,
-    classes,
     className,
     disableValue,
     emptyValue,
@@ -156,6 +154,7 @@ export const SelectInput = ({
      * @see https://github.com/erikras/redux-form/issues/2456
      */
     const [value, setValue] = useState(input.value);
+    const classes = useStyles();
     const translate = useTranslate();
 
     useEffect(() => {
@@ -249,7 +248,6 @@ SelectInput.propTypes = {
     allowEmpty: PropTypes.bool.isRequired,
     emptyValue: PropTypes.any,
     choices: PropTypes.arrayOf(PropTypes.object),
-    classes: PropTypes.object,
     className: PropTypes.string,
     input: PropTypes.object,
     isRequired: PropTypes.bool,
@@ -272,7 +270,6 @@ SelectInput.propTypes = {
 SelectInput.defaultProps = {
     allowEmpty: false,
     emptyValue: '',
-    classes: {},
     choices: [],
     options: {},
     optionText: 'name',
@@ -283,6 +280,5 @@ SelectInput.defaultProps = {
 
 export default compose(
     addField,
-    translate,
-    withStyles(styles)
+    translate
 )(SelectInput);
