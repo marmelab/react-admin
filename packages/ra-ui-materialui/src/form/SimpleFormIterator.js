@@ -8,7 +8,7 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import { makeStyles } from '@material-ui/core/styles';
 import CloseIcon from '@material-ui/icons/RemoveCircleOutline';
 import AddIcon from '@material-ui/icons/AddCircleOutline';
-import { translate } from 'ra-core';
+import { useTranslate } from 'ra-core';
 import classNames from 'classnames';
 
 import FormInput from '../form/FormInput';
@@ -67,12 +67,12 @@ const SimpleFormIterator = ({
     record,
     resource,
     source,
-    translate,
     disableAdd,
     disableRemove,
     defaultValue,
 }) => {
     const classes = useStyles();
+    const translate = useTranslate();
     // we need a unique id for each field for a proper enter/exit animation
     // but redux-form doesn't provide one (cf https://github.com/erikras/redux-form/issues/2735)
     // so we keep an internal map between the field position and an auto-increment id
@@ -218,9 +218,8 @@ SimpleFormIterator.propTypes = {
     record: PropTypes.object,
     source: PropTypes.string,
     resource: PropTypes.string,
-    translate: PropTypes.func,
     disableAdd: PropTypes.bool,
     disableRemove: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
 };
 
-export default translate()(SimpleFormIterator);
+export default SimpleFormIterator;
