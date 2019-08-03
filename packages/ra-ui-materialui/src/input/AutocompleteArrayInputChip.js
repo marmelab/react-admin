@@ -1,8 +1,8 @@
 import React from 'react';
 import ChipInput from 'material-ui-chip-input';
-import { withStyles, createStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 
-const chipInputStyles = createStyles({
+const useStyles = makeStyles({
     label: {
         top: 18,
     },
@@ -21,6 +21,10 @@ const chipInputStyles = createStyles({
     },
 });
 
-const AutocompleteArrayInputChip = props => <ChipInput {...props} />;
+const AutocompleteArrayInputChip = props => {
+    const classes = useStyles();
 
-export default withStyles(chipInputStyles)(AutocompleteArrayInputChip);
+    return <ChipInput classes={classes} {...props} />;
+};
+
+export default AutocompleteArrayInputChip;
