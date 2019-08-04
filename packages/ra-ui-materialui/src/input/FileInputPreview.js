@@ -22,13 +22,13 @@ export const FileInputPreview = ({
 }) => {
     useEffect(() => {
         return () => {
-            if (file.preview) {
+            if (file && file.preview) {
                 revokeObjectURL
                     ? revokeObjectURL(file.preview)
                     : window.URL.revokeObjectURL(file.preview);
             }
         };
-    }, [file.preview, revokeObjectURL]);
+    }, [file, revokeObjectURL]);
 
     const classes = useStyles();
     const translate = useTranslate();
