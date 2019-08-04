@@ -4,7 +4,7 @@ about: Something isn't working as expected. Please tell us!
 
 ---
 
-<!-- Please do not submit support requests or "How to" questions here. For that, go to [StackOverflow](http://stackoverflow.com/questions/tagged/react-admin). -->
+<!-- Please do not submit support requests or "How to" questions here. For that, go to [Stack Overflow](http://stackoverflow.com/questions/tagged/react-admin). -->
 
 **What you were expecting:**
 <!-- Describe what the behavior would be without the bug. -->
@@ -16,11 +16,11 @@ about: Something isn't working as expected. Please tell us!
 <!--  Please explain the steps required to duplicate the issue, especially if you are able to provide a sample application. -->
 
 **Related code:**
-<!-- If you are able to illustrate the bug or feature request with an example, please provide a sample application via one of the following means:
+<!-- If you are able to illustrate the bug or feature request with an example, please provide a sample application via one of the following means: -->
 
-* CodeSandbox (https://codesandbox.io/s/github/marmelab/react-admin/tree/master/examples/simple)
-* A sample application via GitHub
--->
+* Preferably, a CodeSandbox you can fork this one: https://codesandbox.io/s/github/marmelab/react-admin/tree/master/examples/simple
+* A link to a GitHub repo with the minimal codebase to reproduce the issue
+
 
 ```
 insert short code snippets here
