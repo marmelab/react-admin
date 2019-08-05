@@ -21,9 +21,11 @@ describe('<DateInput />', () => {
                 render={() => <DateInput {...defaultProps} />}
             />
         );
-        expect(getByLabelText('resources.posts.fields.publishedAt').type).toBe(
-            'date'
-        );
+        expect(
+            getByLabelText('resources.posts.fields.publishedAt').getAttribute(
+                'type'
+            )
+        ).toBe('date');
     });
 
     it('should propagate value when changed', () => {

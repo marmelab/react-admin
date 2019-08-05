@@ -1,6 +1,6 @@
 import React, { useCallback, FunctionComponent } from 'react';
 import PropTypes from 'prop-types';
-import TextField from '@material-ui/core/TextField';
+import TextField, { TextFieldProps } from '@material-ui/core/TextField';
 import { useField, FieldTitle } from 'ra-core';
 
 import sanitizeRestProps from './sanitizeRestProps';
@@ -43,7 +43,9 @@ const sanitizeValue = value => {
     return convertDateToString(new Date(value));
 };
 
-const DateInput: FunctionComponent<InputProps> = ({
+const DateInput: FunctionComponent<
+    InputProps<TextFieldProps> & TextFieldProps
+> = ({
     className,
     label,
     options,
@@ -105,10 +107,8 @@ const DateInput: FunctionComponent<InputProps> = ({
 DateInput.propTypes = {
     classes: PropTypes.object,
     className: PropTypes.string,
-    input: PropTypes.object,
     isRequired: PropTypes.bool,
     label: PropTypes.string,
-    meta: PropTypes.object,
     options: PropTypes.object,
     resource: PropTypes.string,
     source: PropTypes.string,

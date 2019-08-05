@@ -30,13 +30,13 @@ describe('<CheckboxGroupInput />', () => {
             />
         );
         const input1 = getByLabelText('Angular');
-        expect(input1.type).toBe('checkbox');
-        expect(input1.value).toBe('ang');
-        expect(input1.checked).toBe(false);
+        expect(input1.getAttribute('type')).toBe('checkbox');
+        expect(input1.getAttribute('value')).toBe('ang');
+        expect(input1.getAttribute('checked')).toBe(false);
         const input2 = getByLabelText('React');
-        expect(input2.type).toBe('checkbox');
-        expect(input2.value).toBe('rct');
-        expect(input2.checked).toBe(false);
+        expect(input2.getAttribute('type')).toBe('checkbox');
+        expect(input2.getAttribute('value')).toBe('rct');
+        expect(input2.getAttribute('checked')).toBe(false);
     });
 
     it('should use the input parameter value as the initial input value', () => {
@@ -56,9 +56,9 @@ describe('<CheckboxGroupInput />', () => {
             />
         );
         const input1 = getByLabelText('Angular');
-        expect(input1.checked).toBe(true);
+        expect(input1.getAttribute('checked')).toBe(true);
         const input2 = getByLabelText('React');
-        expect(input2.checked).toBe(false);
+        expect(input2.getAttribute('checked')).toBe(false);
     });
 
     it('should use optionValue as value identifier', () => {
@@ -74,7 +74,7 @@ describe('<CheckboxGroupInput />', () => {
                 )}
             />
         );
-        expect(getByLabelText('Bar').value).toBe('foo');
+        expect(getByLabelText('Bar').getAttribute('value')).toBe('foo');
     });
 
     it('should use optionValue including "." as value identifier', () => {
@@ -90,7 +90,7 @@ describe('<CheckboxGroupInput />', () => {
                 )}
             />
         );
-        expect(getByLabelText('Bar').value).toBe('foo');
+        expect(getByLabelText('Bar').getAttribute('value')).toBe('foo');
     });
 
     it('should use optionText with a string value as text identifier', () => {
@@ -166,8 +166,7 @@ describe('<CheckboxGroupInput />', () => {
             <Form
                 onSubmit={jest.fn()}
                 render={() => <CheckboxGroupInput {...defaultProps} />}
-            />,
-            { i18n: { messages: { 'John doe': '**John doe**' } } }
+            />
         );
         expect(queryByLabelText('**John doe**')).not.toBeNull();
     });
@@ -182,8 +181,7 @@ describe('<CheckboxGroupInput />', () => {
                         translateChoice={false}
                     />
                 )}
-            />,
-            { i18n: { messages: { 'John doe': '**John doe**' } } }
+            />
         );
         expect(queryByLabelText('**John doe**')).toBeNull();
         expect(queryByLabelText('John doe')).not.toBeNull();

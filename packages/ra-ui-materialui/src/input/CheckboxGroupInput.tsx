@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import FormLabel from '@material-ui/core/FormLabel';
 import FormControl from '@material-ui/core/FormControl';
-import FormGroup from '@material-ui/core/FormGroup';
+import FormGroup, { FormGroupProps } from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
-import Checkbox from '@material-ui/core/Checkbox';
+import Checkbox, { CheckboxProps } from '@material-ui/core/Checkbox';
 import { makeStyles } from '@material-ui/core/styles';
 import { useField, useTranslate, FieldTitle } from 'ra-core';
 
@@ -101,7 +101,9 @@ interface Props {
  *
  * The object passed as `options` props is passed to the material-ui <Checkbox> components
  */
-const CheckboxGroupInput: FunctionComponent<Props & InputProps> = ({
+const CheckboxGroupInput: FunctionComponent<
+    Props & InputProps<CheckboxProps> & FormGroupProps
+> = ({
     choices,
     className,
     helperText,
@@ -237,7 +239,6 @@ CheckboxGroupInput.propTypes = {
     optionValue: PropTypes.string.isRequired,
     resource: PropTypes.string,
     translateChoice: PropTypes.bool.isRequired,
-    meta: PropTypes.object,
 };
 
 CheckboxGroupInput.defaultProps = {

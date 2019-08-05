@@ -2,15 +2,17 @@ import React, { FunctionComponent, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
-import FormGroup from '@material-ui/core/FormGroup';
-import Switch from '@material-ui/core/Switch';
+import FormGroup, { FormGroupProps } from '@material-ui/core/FormGroup';
+import Switch, { SwitchProps } from '@material-ui/core/Switch';
 import { FieldTitle, useField } from 'ra-core';
 
 import sanitizeRestProps from './sanitizeRestProps';
 import InputHelperText from './InputHelperText';
 import { InputProps } from './types';
 
-const BooleanInput: FunctionComponent<InputProps> = ({
+const BooleanInput: FunctionComponent<
+    InputProps<SwitchProps> & Omit<FormGroupProps, 'defaultValue'>
+> = ({
     className,
     label,
     source,
@@ -22,11 +24,10 @@ const BooleanInput: FunctionComponent<InputProps> = ({
     ...rest
 }) => {
     const {
-        input,
+        input: { value, onChange, type, ...inputProps },
         isRequired,
         meta: { touched, error },
-    } = useField({ source, type: 'checkbox', validate, ...rest });
-    const { value, onChange, ...inputProps } = input;
+    } = useField({ source, type: 'button', validate, ...rest });
 
     const handleChange = useCallback(
         event => {
@@ -72,7 +73,6 @@ const BooleanInput: FunctionComponent<InputProps> = ({
 BooleanInput.propTypes = {
     className: PropTypes.string,
     id: PropTypes.string,
-    input: PropTypes.object,
     isRequired: PropTypes.bool,
     label: PropTypes.string,
     resource: PropTypes.string,
