@@ -41,6 +41,11 @@ describe('ListController', () => {
         toggleItem: jest.fn(),
         total: 100,
         translate: jest.fn(),
+        perPage: 25,
+        sort: {
+            field: 'id',
+            order: 'ASC',
+        },
     };
 
     describe('setFilters', () => {
@@ -111,6 +116,34 @@ describe('ListController', () => {
             clock.tick(200);
 
             expect(props.changeListParams.mock.calls[0][1].filter).toEqual({});
+        });
+
+        it('should update data if permanent filters change', () => {
+            const children = jest.fn();
+            const props = {
+                ...defaultProps,
+                debounce: 200,
+                crudGetList: jest.fn(),
+                filter: { foo: 1 },
+                children,
+            };
+
+            const wrapper = shallow(<ListController {...props} />);
+
+            // Check that the permanent filter was used in the query
+            expect(props.crudGetList.mock.calls[0][3]).toEqual({ foo: 1 });
+            // Check that the permanent filter is not included in the displayedFilters (passed to Filter form and button)
+            expect(children.mock.calls[0][0].displayedFilters).toEqual({});
+            // Check that the permanent filter is not included in the filterValues (passed to Filter form and button)
+            expect(children.mock.calls[0][0].filterValues).toEqual({});
+
+            wrapper.setProps({ filter: { foo: 2 } });
+            // Check that the permanent filter was used in the query
+            expect(props.crudGetList.mock.calls[1][3]).toEqual({ foo: 2 });
+            // Check that the permanent filter is not included in the displayedFilters (passed to Filter form and button)
+            expect(children.mock.calls[0][0].displayedFilters).toEqual({});
+            // Check that the permanent filter is not included in the filterValues (passed to Filter form and button)
+            expect(children.mock.calls[0][0].filterValues).toEqual({});
         });
 
         afterEach(() => {
