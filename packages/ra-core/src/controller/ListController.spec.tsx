@@ -119,8 +119,6 @@ describe('ListController', () => {
         });
 
         it('should update data if permanent filters change', () => {
-            expect.assertions(4);
-
             const children = jest.fn();
             const props = {
                 ...defaultProps,
@@ -132,12 +130,20 @@ describe('ListController', () => {
 
             const wrapper = shallow(<ListController {...props} />);
 
+            // Check that the permanent filter was used in the query
             expect(props.crudGetList.mock.calls[0][3]).toEqual({ foo: 1 });
+            // Check that the permanent filter is not included in the displayedFilters (passed to Filter form and button)
             expect(children.mock.calls[0][0].displayedFilters).toEqual({});
+            // Check that the permanent filter is not included in the filterValues (passed to Filter form and button)
             expect(children.mock.calls[0][0].filterValues).toEqual({});
 
             wrapper.setProps({ filter: { foo: 2 } });
+            // Check that the permanent filter was used in the query
             expect(props.crudGetList.mock.calls[1][3]).toEqual({ foo: 2 });
+            // Check that the permanent filter is not included in the displayedFilters (passed to Filter form and button)
+            expect(children.mock.calls[0][0].displayedFilters).toEqual({});
+            // Check that the permanent filter is not included in the filterValues (passed to Filter form and button)
+            expect(children.mock.calls[0][0].filterValues).toEqual({});
         });
 
         afterEach(() => {
