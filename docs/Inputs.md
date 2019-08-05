@@ -297,11 +297,12 @@ Lastly, `<AutocompleteArrayInput>` renders a [material-ui-chip-input](https://gi
 {% raw %}
 ```jsx
 <AutocompleteArrayInput source="category" options={{
-    fullWidth: true,
+    fullWidthInput: true,
 }} />
 ```
 {% endraw %}
 
+**Tip**: Like many other inputs, `<AutocompleteArrayInput>` accept a `fullWidth` prop.
 **Tip**: If you want to populate the `choices` attribute with a list of related records, you should decorate `<AutocompleteArrayInput>` with [`<ReferenceArrayInput>`](#referenceinput), and leave the `choices` empty:
 
 ```jsx
@@ -341,6 +342,7 @@ If you need to override the props of the suggestions container (a `Popper` eleme
 | `setFilter` | Optional | `Function` | null | A callback to inform the `searchText` has changed and new `choices` can be retrieved based on this `searchText`. Signature `searchText => void`. This function is automatically setup when using `ReferenceInput`.  |
 | `suggestionComponent` | Optional | Function | `({ suggestion, query, isHighlighted, props }) => <div {...props} />` | Allows to override how the item is rendered.  |
 | `shouldRenderSuggestions` | Optional | Function | `() => true` | A function that returns a `boolean` to determine whether or not suggestions are rendered. Use this when working with large collections of data to improve performance and user experience. This function is passed into the underlying react-autosuggest component. Ex.`(value) => value.trim() > 2` |
+| `fullWith` | Optional | Boolean | If `true`, the input will take all the form width
 
 ## `<BooleanInput>` and `<NullableBooleanInput>`
 
