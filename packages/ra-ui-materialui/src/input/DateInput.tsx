@@ -1,4 +1,4 @@
-import React, { useCallback, FunctionComponent } from 'react';
+import React, { FunctionComponent } from 'react';
 import PropTypes from 'prop-types';
 import TextField, { TextFieldProps } from '@material-ui/core/TextField';
 import { useField, FieldTitle } from 'ra-core';
@@ -24,7 +24,7 @@ const convertDateToString = v => {
 
 const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
 
-const sanitizeValue = value => {
+const format = value => {
     // null, undefined and empty string values should not go through convertDateToString
     // otherwise, it returns undefined and will make the input an uncontrolled one.
     if (value == null || value === '') {
@@ -43,6 +43,15 @@ const sanitizeValue = value => {
     return convertDateToString(new Date(value));
 };
 
+/**
+ * Converts a datetime string without timezone to a date object
+ * with timezone, using the browser timezone.
+ *
+ * @param {String} value Date string, formatted as yyyy-MM-ddThh:mm
+ * @return {Date}
+ */
+const parse = value => (value ? new Date(value) : '');
+
 const DateInput: FunctionComponent<
     InputProps<TextFieldProps> & TextFieldProps
 > = ({
@@ -59,16 +68,7 @@ const DateInput: FunctionComponent<
         input,
         isRequired,
         meta: { touched, error },
-    } = useField({ source, validate, ...rest });
-
-    const handleChange = useCallback(
-        event => {
-            input.onChange(event.target.value);
-        },
-        [input]
-    );
-
-    const value = sanitizeValue(input.value);
+    } = useField({ source, validate, parse, format, ...rest });
 
     return (
         <TextField
@@ -98,8 +98,6 @@ const DateInput: FunctionComponent<
             }}
             {...options}
             {...sanitizeRestProps(rest)}
-            value={value}
-            onChange={handleChange}
         />
     );
 };

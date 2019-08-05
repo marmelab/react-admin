@@ -47,7 +47,7 @@ describe('<DateInput />', () => {
         });
         fireEvent.submit(getByLabelText('Save'));
         expect(onSubmit.mock.calls[0][0]).toEqual({
-            publishedAt: '2010-01-04',
+            publishedAt: new Date('2010-01-04'),
         });
     });
 

@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 import PropTypes from 'prop-types';
-import TextField from '@material-ui/core/TextField';
-import { addField, FieldTitle } from 'ra-core';
+import TextField, { TextFieldProps } from '@material-ui/core/TextField';
+import { useField, FieldTitle } from 'ra-core';
 
 import sanitizeRestProps from './sanitizeRestProps';
 import InputHelperText from './InputHelperText';
+import { InputProps } from './types';
 
 const leftPad = (nb = 2) => value => ('0'.repeat(nb) + value).slice(-nb);
 const leftPad4 = leftPad(4);
@@ -58,52 +59,59 @@ const format = value => {
  * @param {String} value Date string, formatted as yyyy-MM-ddThh:mm
  * @return {Date}
  */
-const parse = value => new Date(value);
+const parse = value => (value ? new Date(value) : '');
 
 /**
  * Input component for entering a date and a time with timezone, using the browser locale
  */
-export const DateTimeInput = ({
+export const DateTimeInput: FunctionComponent<
+    InputProps<TextFieldProps> & TextFieldProps
+> = ({
     className,
-    meta: { touched, error },
-    input,
-    isRequired,
     label,
     options,
     source,
     resource,
     helperText,
+    validate,
     ...rest
-}) => (
-    <TextField
-        {...input}
-        className={className}
-        type="datetime-local"
-        margin="normal"
-        error={!!(touched && error)}
-        helperText={
-            <InputHelperText
-                touched={touched}
-                error={error}
-                helperText={helperText}
-            />
-        }
-        label={
-            <FieldTitle
-                label={label}
-                source={source}
-                resource={resource}
-                isRequired={isRequired}
-            />
-        }
-        InputLabelProps={{
-            shrink: true,
-        }}
-        {...options}
-        {...sanitizeRestProps(rest)}
-        value={input.value}
-    />
-);
+}) => {
+    const {
+        input,
+        isRequired,
+        meta: { touched, error },
+    } = useField({ source, validate, parse, format, ...rest });
+
+    return (
+        <TextField
+            {...input}
+            className={className}
+            type="datetime-local"
+            margin="normal"
+            error={!!(touched && error)}
+            helperText={
+                <InputHelperText
+                    touched={touched}
+                    error={error}
+                    helperText={helperText}
+                />
+            }
+            label={
+                <FieldTitle
+                    label={label}
+                    source={source}
+                    resource={resource}
+                    isRequired={isRequired}
+                />
+            }
+            InputLabelProps={{
+                shrink: true,
+            }}
+            {...options}
+            {...sanitizeRestProps(rest)}
+        />
+    );
+};
 
 DateTimeInput.propTypes = {
     classes: PropTypes.object,
@@ -121,4 +129,4 @@ DateTimeInput.defaultProps = {
     options: {},
 };
 
-export default addField(DateTimeInput, { format, parse });
+export default DateTimeInput;
