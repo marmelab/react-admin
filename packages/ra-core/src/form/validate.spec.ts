@@ -62,10 +62,14 @@ describe('Validators', () => {
 
     describe('required', () => {
         it('should return undefined if the value is not empty', () => {
-            test(required(), ['foo', 12], undefined);
+            test(required(), ['foo', 12, ['bar']], undefined);
         });
         it('should return an error message if the value is empty', () => {
-            test(required(), [undefined, '', null], 'ra.validation.required');
+            test(
+                required(),
+                [undefined, '', null, []],
+                'ra.validation.required'
+            );
         });
         it('should have a `isRequired` prop for allowing the UI to add a required marker', () => {
             expect(required().isRequired).toEqual(true);
