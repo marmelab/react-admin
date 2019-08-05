@@ -233,7 +233,7 @@ To let users choose multiple values in a list using a dropdown with autocompleti
 
 ```jsx
 import { AutocompleteArrayInput } from 'react-admin';
-œ
+
 <AutocompleteArrayInput source="category" choices={[
     { id: 'programming', name: 'Programming' },
     { id: 'lifestyle', name: 'Lifestyle' },
