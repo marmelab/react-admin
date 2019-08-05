@@ -55,7 +55,7 @@ const sanitizeRestProps = ({
  * </ReferenceManyField>
  */
 
-const SingleFieldList = ({
+export const SingleFieldList = ({
     className,
     ids,
     data,
