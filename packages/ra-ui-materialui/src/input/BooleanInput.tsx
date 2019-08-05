@@ -22,8 +22,8 @@ const BooleanInput: FunctionComponent<InputProps> = ({
     ...rest
 }) => {
     const {
-        isRequired,
         input,
+        isRequired,
         meta: { touched, error },
     } = useField({ source, type: 'checkbox', validate, ...rest });
     const { value, onChange, ...inputProps } = input;
