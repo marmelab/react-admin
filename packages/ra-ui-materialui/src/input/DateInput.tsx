@@ -1,10 +1,11 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, FunctionComponent } from 'react';
 import PropTypes from 'prop-types';
 import TextField from '@material-ui/core/TextField';
-import { addField, FieldTitle } from 'ra-core';
+import { useField, FieldTitle } from 'ra-core';
 
 import sanitizeRestProps from './sanitizeRestProps';
 import InputHelperText from './InputHelperText';
+import { InputProps } from './types';
 
 /**
  * Convert Date object to String
@@ -12,7 +13,7 @@ import InputHelperText from './InputHelperText';
  * @param {Date} v value to convert
  * @returns {String} A standardized date (yyyy-MM-dd), to be passed to an <input type="date" />
  */
-const dateFormatter = v => {
+const convertDateToString = v => {
     if (!(v instanceof Date) || isNaN(v.getDate())) return;
     const pad = '00';
     const yyyy = v.getFullYear().toString();
@@ -24,14 +25,14 @@ const dateFormatter = v => {
 const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
 
 const sanitizeValue = value => {
-    // null, undefined and empty string values should not go through dateFormatter
+    // null, undefined and empty string values should not go through convertDateToString
     // otherwise, it returns undefined and will make the input an uncontrolled one.
     if (value == null || value === '') {
         return '';
     }
 
     if (value instanceof Date) {
-        return dateFormatter(value);
+        return convertDateToString(value);
     }
 
     // valid dates should not be converted
@@ -39,21 +40,25 @@ const sanitizeValue = value => {
         return value;
     }
 
-    return dateFormatter(new Date(value));
+    return convertDateToString(new Date(value));
 };
 
-export const DateInput = ({
+const DateInput: FunctionComponent<InputProps> = ({
     className,
-    meta,
-    input,
-    isRequired,
     label,
     options,
     source,
     resource,
     helperText,
+    validate,
     ...rest
 }) => {
+    const {
+        input,
+        isRequired,
+        meta: { touched, error },
+    } = useField({ source, validate, ...rest });
+
     const handleChange = useCallback(
         event => {
             input.onChange(event.target.value);
@@ -61,12 +66,6 @@ export const DateInput = ({
         [input]
     );
 
-    if (typeof meta === 'undefined') {
-        throw new Error(
-            "The DateInput component wasn't called within a react-final-form <Field>. Did you decorate it and forget to add the addField prop to your component? See https://marmelab.com/react-admin/Inputs.html#writing-your-own-input-component for details."
-        );
-    }
-    const { touched, error } = meta;
     const value = sanitizeValue(input.value);
 
     return (
@@ -119,4 +118,4 @@ DateInput.defaultProps = {
     options: {},
 };
 
-export default addField(DateInput);
+export default DateInput;
