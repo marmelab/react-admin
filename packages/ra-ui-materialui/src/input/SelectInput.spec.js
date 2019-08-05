@@ -117,6 +117,50 @@ describe('<SelectInput />', () => {
         assert.equal(options[0].getAttribute('data-value'), emptyValue);
     });
 
+    it('should add an empty menu with proper text when emptyText is a string', () => {
+        const emptyText = 'Default';
+
+        const { getByRole, getByText, queryAllByRole } = render(
+            <SelectInput
+                allowEmpty
+                emptyText={emptyText}
+                {...defaultProps}
+                choices={[]}
+            />
+        );
+        const EmptyMenuElement = getByRole('button');
+        fireEvent.click(EmptyMenuElement);
+
+        const options = queryAllByRole('option');
+        assert.equal(options.length, 1);
+
+        assert.ok(getByText('Default'));
+    });
+
+    it('should add an empty menu with proper text when emptyText is a React element', () => {
+        const emptyText = (
+            <div>
+                <em>Empty choice</em>
+            </div>
+        );
+
+        const { getByRole, getByText, queryAllByRole } = render(
+            <SelectInput
+                allowEmpty
+                emptyText={emptyText}
+                {...defaultProps}
+                choices={[]}
+            />
+        );
+        const EmptyMenuElement = getByRole('button');
+        fireEvent.click(EmptyMenuElement);
+
+        const options = queryAllByRole('option');
+        assert.equal(options.length, 1);
+
+        assert.ok(getByText('Empty choice'));
+    });
+
     it('should not add a falsy (null or false) element when allowEmpty is false', () => {
         const { getByRole, queryAllByRole } = render(
             <SelectInput
