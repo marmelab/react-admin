@@ -1,4 +1,10 @@
-import React, { HtmlHTMLAttributes, ReactNode, useRef, useEffect } from 'react';
+import React, {
+    HtmlHTMLAttributes,
+    ReactNode,
+    useRef,
+    useEffect,
+    useMemo,
+} from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import Card from '@material-ui/core/Card';
@@ -62,7 +68,9 @@ const useStyles = makeStyles((theme: Theme) => ({
  *        </Admin>
  *     );
  */
-const Login: React.SFC<Props & HtmlHTMLAttributes<HTMLDivElement>> = ({
+const Login: React.FunctionComponent<
+    Props & HtmlHTMLAttributes<HTMLDivElement>
+> = ({
     theme,
     className,
     children,
@@ -72,6 +80,7 @@ const Login: React.SFC<Props & HtmlHTMLAttributes<HTMLDivElement>> = ({
 }) => {
     const containerRef = useRef<HTMLDivElement>();
     const styles = useStyles({});
+    const muiTheme = useMemo(() => createMuiTheme(theme), [theme]);
     let backgroundImageLoaded = false;
 
     const updateBackgroundImage = () => {
@@ -97,7 +106,7 @@ const Login: React.SFC<Props & HtmlHTMLAttributes<HTMLDivElement>> = ({
     });
 
     return (
-        <ThemeProvider theme={createMuiTheme(theme)}>
+        <ThemeProvider theme={muiTheme}>
             <div
                 className={classnames(styles.main, className)}
                 {...rest}

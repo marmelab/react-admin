@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import Snackbar from '@material-ui/core/Snackbar';
@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
 }));
 
-const Notification: React.SFC<Props> = ({
+const Notification: React.FunctionComponent<Props> = ({
     type,
     className,
     autoHideDuration,
@@ -49,22 +49,22 @@ const Notification: React.SFC<Props> = ({
         setOpen(!!notification);
     }, [notification]);
 
-    const handleRequestClose = () => {
+    const handleRequestClose = useCallback(() => {
         setOpen(false);
-    };
+    }, []);
 
-    const handleExited = () => {
+    const handleExited = useCallback(() => {
         if (notification && notification.undoable) {
             dispatch(complete());
             undoableEventEmitter.emit('end', { isUndo: false });
         }
         dispatch(hideNotification());
-    };
+    }, [dispatch, notification]);
 
-    const handleUndo = () => {
+    const handleUndo = useCallback(() => {
         dispatch(undo());
         undoableEventEmitter.emit('end', { isUndo: true });
-    };
+    }, [dispatch]);
 
     return (
         <Snackbar
