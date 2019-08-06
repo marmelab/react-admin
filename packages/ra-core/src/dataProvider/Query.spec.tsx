@@ -5,7 +5,7 @@ import {
     act,
     // @ts-ignore
     waitForDomChange,
-} from 'react-testing-library';
+} from '@testing-library/react';
 import expect from 'expect';
 import Query from './Query';
 import CoreAdmin from '../CoreAdmin';

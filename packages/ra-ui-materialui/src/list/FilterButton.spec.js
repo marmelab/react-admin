@@ -1,6 +1,6 @@
 import React from 'react';
 import expect from 'expect';
-import { render, cleanup, fireEvent } from 'react-testing-library';
+import { render, cleanup, fireEvent } from '@testing-library/react';
 
 import { FilterButton } from './FilterButton';
 import TextInput from '../input/TextInput';

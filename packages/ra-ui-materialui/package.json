@@ -34,7 +34,7 @@
         "react": "~16.8.0",
         "react-dom": "~16.8.0",
         "react-test-renderer": "~16.8.6",
-        "react-testing-library": "^7.0.0",
+        "@testing-library/react": "^8.0.7",
         "rimraf": "^2.6.3"
     },
     "peerDependencies": {
@@ -65,6 +65,6 @@
         "react-router-dom": "^5.0.1",
         "react-transition-group": "^2.2.1",
         "recompose": "~0.26.0",
-        "redux": "^3.7.2 || ^4.0.0"
+        "redux": "^3.7.2 || ^4.0.3"
     }
 }

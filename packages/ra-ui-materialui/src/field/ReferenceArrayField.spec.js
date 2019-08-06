@@ -1,6 +1,6 @@
 import React from 'react';
 import expect from 'expect';
-import { render, cleanup } from 'react-testing-library';
+import { render, cleanup } from '@testing-library/react';
 import { MemoryRouter } from 'react-router';
 
 import { ReferenceArrayFieldView } from './ReferenceArrayField';

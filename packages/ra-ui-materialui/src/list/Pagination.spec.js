@@ -1,12 +1,13 @@
 import React from 'react';
 import expect from 'expect';
-import { render, cleanup } from 'react-testing-library';
+import { render, cleanup } from '@testing-library/react';
 
 import { Pagination } from './Pagination';
 
 describe('<Pagination />', () => {
     const defaultProps = {
         width: 'lg',
+        page: 1,
         perPage: 10,
         translate: x => x,
     };

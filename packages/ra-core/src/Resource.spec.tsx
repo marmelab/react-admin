@@ -1,6 +1,6 @@
 import React from 'react';
 import expect from 'expect';
-import { cleanup, wait } from 'react-testing-library';
+import { cleanup, wait } from '@testing-library/react';
 import { Router } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
 

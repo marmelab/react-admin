@@ -1,4 +1,4 @@
-import { cleanup } from 'react-testing-library';
+import { cleanup } from '@testing-library/react';
 import React, { createElement } from 'react';
 import { MemoryRouter } from 'react-router';
 import { renderWithRedux } from 'ra-core';

@@ -1,6 +1,6 @@
 import renderHook from '../util/renderHook';
 import useFilterState from './useFilterState';
-import { act } from 'react-testing-library';
+import { act } from '@testing-library/react';
 
 describe('useFilterState', () => {
     it('should initialize filterState with default filter', () => {

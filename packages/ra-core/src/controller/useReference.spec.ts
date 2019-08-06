@@ -1,6 +1,6 @@
 import renderHook from '../util/renderHook';
 import useReference from './useReference';
-import { cleanup } from 'react-testing-library';
+import { cleanup } from '@testing-library/react';
 
 describe('useReference', () => {
     const defaultProps = {

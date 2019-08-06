@@ -1,6 +1,6 @@
 import React from 'react';
 import assert from 'assert';
-import { render, cleanup } from 'react-testing-library';
+import { render, cleanup } from '@testing-library/react';
 
 import { LongTextInput } from './LongTextInput';
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import expect from 'expect';
-import { cleanup, wait } from 'react-testing-library';
+import { cleanup, wait } from '@testing-library/react';
 import { replace } from 'connected-react-router';
 
 import useAuth from './useAuth';

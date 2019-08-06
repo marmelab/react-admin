@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, RenderResult } from 'react-testing-library';
+import { render, RenderResult } from '@testing-library/react';
 
 import TestContext from './TestContext';
 
@@ -19,7 +19,7 @@ export interface RenderWithReduxResult extends RenderResult {
  * @param {ReactNode} component: The component you want to test in jsx
  * @param {Object} initialstate: Optional initial state of the redux store
  * @return {{ dispatch, reduxStore, ...rest }} helper function to test rendered component.
- * Same as react-testing-library render method with added dispatch and reduxStore helper
+ * Same as @testing-library/react render method with added dispatch and reduxStore helper
  * dispatch: spy on the redux stroe dispatch method
  * reduxStore: the redux store used by the tested component
  */

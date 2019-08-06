@@ -1,6 +1,6 @@
 import expect from 'expect';
 import React from 'react';
-import { render, cleanup } from 'react-testing-library';
+import { render, cleanup } from '@testing-library/react';
 
 import { DatagridHeaderCell } from './DatagridHeaderCell';
 

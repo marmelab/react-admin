@@ -1,5 +1,5 @@
 import React from 'react';
-import { cleanup } from 'react-testing-library';
+import { cleanup } from '@testing-library/react';
 
 import ReferenceArrayFieldController from './ReferenceArrayFieldController';
 import renderWithRedux from '../../util/renderWithRedux';

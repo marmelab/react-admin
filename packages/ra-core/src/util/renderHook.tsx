@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, RenderResult } from 'react-testing-library';
+import { render, RenderResult } from '@testing-library/react';
 
 import renderWithRedux, { RenderWithReduxResult } from './renderWithRedux';
 
@@ -19,7 +19,7 @@ interface RenderHookWithReduxResult extends RenderWithReduxResult {
 }
 
 /**
- * render given hook using react-testing-library and return hook value
+ * render given hook using @testing-library/react and return hook value
  * @param hook the hook to render
  * @param withRedux should we provide a redux context default to true
  * @param reduxState optional initial state for redux context

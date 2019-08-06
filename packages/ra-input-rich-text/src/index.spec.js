@@ -1,6 +1,6 @@
 import React from 'react';
 import debounce from 'lodash/debounce';
-import { render, fireEvent, waitForElement } from 'react-testing-library';
+import { render, fireEvent, waitForElement } from '@testing-library/react';
 
 import { RichTextInput } from './index';
 
