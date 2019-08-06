@@ -13,7 +13,7 @@ const useStyles = makeStyles({
     root: { display: 'inline-block' },
 });
 
-const FilterButton = ({
+export const FilterButton = ({
     className,
     resource,
     showFilter,

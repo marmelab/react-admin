@@ -130,4 +130,6 @@ SingleFieldList.defaultProps = {
     linkType: 'edit',
 };
 
+SingleFieldList.displayName = 'SingleFieldList';
+
 export default SingleFieldList;
