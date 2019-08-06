@@ -16,7 +16,7 @@ const leftPad2 = leftPad(2);
  * @returns {String} A standardized datetime (yyyy-MM-ddThh:mm), to be passed to an <input type="datetime-local" />
  */
 const convertDateToString = v => {
-    if (!(v instanceof Date) || isNaN(v)) return '';
+    if (!(v instanceof Date) || isNaN(v.getDate())) return '';
     const yyyy = leftPad4(v.getFullYear());
     const MM = leftPad2(v.getMonth() + 1);
     const dd = leftPad2(v.getDate());
