@@ -31,7 +31,7 @@ describe('<ImageInput />', () => {
             />
         );
 
-        expect(queryByText('ra.input.file.upload_single')).not.toBeNull();
+        expect(queryByText('ra.input.image.upload_single')).not.toBeNull();
     });
 
     it('should display a dropzone for multiple files dropping', () => {
@@ -46,7 +46,7 @@ describe('<ImageInput />', () => {
             />
         );
 
-        expect(queryByText('ra.input.file.upload_several')).not.toBeNull();
+        expect(queryByText('ra.input.image.upload_several')).not.toBeNull();
     });
 
     // Skipped until https://github.com/jsdom/jsdom/issues/1568 is fixed
@@ -130,7 +130,7 @@ describe('<ImageInput />', () => {
         });
     });
 
-    it.only('should correctly update upon removal when allowing a single file', () => {
+    it('should correctly update upon removal when allowing a single file', () => {
         const onSubmit = jest.fn();
 
         const { getByLabelText, getByTitle } = render(
@@ -318,7 +318,7 @@ describe('<ImageInput />', () => {
                         ],
                     }}
                     render={() => (
-                        <ImageInput {...defautProps}>
+                        <ImageInput {...defautPropsMultiple}>
                             <ImageField source="url" title="title" />
                         </ImageInput>
                     )}

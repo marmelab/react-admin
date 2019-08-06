@@ -131,7 +131,7 @@ describe('<FileInput />', () => {
         });
     });
 
-    it.only('should correctly update upon removal when allowing a single file', () => {
+    it('should correctly update upon removal when allowing a single file', () => {
         const onSubmit = jest.fn();
 
         const { getByLabelText, getByTitle } = render(
@@ -316,7 +316,7 @@ describe('<FileInput />', () => {
                         ],
                     }}
                     render={() => (
-                        <FileInput {...defautProps}>
+                        <FileInput {...defautPropsMultiple}>
                             <ImageField source="url" title="title" />
                         </FileInput>
                     )}

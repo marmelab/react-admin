@@ -25,6 +25,7 @@ const BooleanInput: FunctionComponent<
     ...rest
 }) => {
     const {
+        id,
         input: { value, onChange, type, ...inputProps },
         isRequired,
         meta: { touched, error },
@@ -42,11 +43,11 @@ const BooleanInput: FunctionComponent<
             <FormControlLabel
                 control={
                     <Switch
+                        id={id}
                         color="primary"
                         checked={!!value}
                         onChange={handleChange}
                         {...inputProps}
-                        type="button"
                         {...options}
                     />
                 }

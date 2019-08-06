@@ -112,7 +112,6 @@ const CheckboxGroupInput: FunctionComponent<
     label,
     resource,
     source,
-    id,
     optionText,
     optionValue,
     options,
@@ -123,6 +122,7 @@ const CheckboxGroupInput: FunctionComponent<
     const classes = useStyles({});
     const translate = useTranslate();
     const {
+        id,
         input: { value, onChange, onBlur },
         isRequired,
         meta,

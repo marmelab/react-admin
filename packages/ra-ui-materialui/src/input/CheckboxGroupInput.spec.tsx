@@ -3,7 +3,7 @@ import expect from 'expect';
 import CheckboxGroupInput from './CheckboxGroupInput';
 import { cleanup, fireEvent, render } from '@testing-library/react';
 import { Form } from 'react-final-form';
-import { required } from 'ra-core';
+import { required, renderWithRedux } from 'ra-core';
 
 describe('<CheckboxGroupInput />', () => {
     const defaultProps = {
@@ -17,6 +17,9 @@ describe('<CheckboxGroupInput />', () => {
     it('should render choices as checkbox components', () => {
         const { getByLabelText } = render(
             <Form
+                initialValues={{
+                    tags: ['ang'],
+                }}
                 onSubmit={jest.fn()}
                 render={() => (
                     <CheckboxGroupInput
@@ -32,11 +35,11 @@ describe('<CheckboxGroupInput />', () => {
         const input1 = getByLabelText('Angular');
         expect(input1.getAttribute('type')).toBe('checkbox');
         expect(input1.getAttribute('value')).toBe('ang');
-        expect(input1.getAttribute('checked')).toBe(false);
+        expect(input1.getAttribute('checked')).toBeDefined();
         const input2 = getByLabelText('React');
         expect(input2.getAttribute('type')).toBe('checkbox');
         expect(input2.getAttribute('value')).toBe('rct');
-        expect(input2.getAttribute('checked')).toBe(false);
+        expect(input2.getAttribute('checked')).toBeNull();
     });
 
     it('should use the input parameter value as the initial input value', () => {
@@ -56,9 +59,9 @@ describe('<CheckboxGroupInput />', () => {
             />
         );
         const input1 = getByLabelText('Angular');
-        expect(input1.getAttribute('checked')).toBe(true);
+        expect(input1.getAttribute('checked')).toBeDefined();
         const input2 = getByLabelText('React');
-        expect(input2.getAttribute('checked')).toBe(false);
+        expect(input2.getAttribute('checked')).toBeNull();
     });
 
     it('should use optionValue as value identifier', () => {
@@ -162,29 +165,68 @@ describe('<CheckboxGroupInput />', () => {
     });
 
     it('should translate the choices by default', () => {
-        const { queryByLabelText } = render(
+        const { queryByLabelText } = renderWithRedux(
             <Form
                 onSubmit={jest.fn()}
-                render={() => <CheckboxGroupInput {...defaultProps} />}
-            />
+                render={() => (
+                    <CheckboxGroupInput
+                        {...defaultProps}
+                        choices={[
+                            { id: 'ang', name: 'app.choices.ang' },
+                            { id: 'rct', name: 'app.choices.rct' },
+                        ]}
+                    />
+                )}
+            />,
+            {
+                i18n: {
+                    messages: {
+                        app: {
+                            choices: {
+                                ang: 'Angular',
+                                rct: 'React',
+                            },
+                        },
+                    },
+                },
+            }
         );
-        expect(queryByLabelText('**John doe**')).not.toBeNull();
+        expect(queryByLabelText('Angular')).not.toBeNull();
+        expect(queryByLabelText('React')).not.toBeNull();
     });
 
     it('should not translate the choices if translateChoice is false', () => {
-        const { queryByLabelText } = render(
+        const { queryByLabelText } = renderWithRedux(
             <Form
                 onSubmit={jest.fn()}
                 render={() => (
                     <CheckboxGroupInput
                         {...defaultProps}
                         translateChoice={false}
+                        choices={[
+                            { id: 'ang', name: 'app.choices.ang' },
+                            { id: 'rct', name: 'app.choices.rct' },
+                        ]}
                     />
                 )}
-            />
+            />,
+            {
+                i18n: {
+                    messages: {
+                        app: {
+                            choices: {
+                                ang: 'Angular',
+                                rct: 'React',
+                            },
+                        },
+                    },
+                },
+            }
         );
-        expect(queryByLabelText('**John doe**')).toBeNull();
-        expect(queryByLabelText('John doe')).not.toBeNull();
+        expect(queryByLabelText('Angular')).toBeNull();
+        expect(queryByLabelText('React')).toBeNull();
+        expect(queryByLabelText('app.choices.ang')).not.toBeNull();
+        expect(queryByLabelText('app.choices.rct')).not.toBeNull();
     });
 
     it('should displayed helperText', () => {
@@ -237,7 +279,7 @@ describe('<CheckboxGroupInput />', () => {
             expect(queryByText('ra.validation.required')).toBeNull();
         });
 
-        it.only('should be displayed if field has been touched and is invalid', () => {
+        it('should be displayed if field has been touched and is invalid', () => {
             const { getByLabelText, getByText } = render(
                 <Form
                     validateOnBlur
