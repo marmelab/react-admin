@@ -1,61 +1,68 @@
 import React from 'react';
-import assert from 'assert';
-import { shallow } from 'enzyme';
+import { render, cleanup, fireEvent } from '@testing-library/react';
 
-import { FileInputPreview } from './FileInputPreview';
+import FileInputPreview from './FileInputPreview';
 
 describe('<FileInputPreview />', () => {
+    afterEach(cleanup);
+
+    const file = {
+        preview: 'previewUrl',
+    };
+
+    const defaultProps = {
+        file,
+        onRemove: jest.fn(),
+        revokeObjectURL: jest.fn(),
+    };
+
     it('should call `onRemove` prop when clicking on remove button', () => {
         const onRemoveSpy = jest.fn();
 
-        const wrapper = shallow(
-            <FileInputPreview onRemove={onRemoveSpy}>
+        const { getByLabelText } = render(
+            <FileInputPreview {...defaultProps} onRemove={onRemoveSpy}>
                 <div>Child</div>
             </FileInputPreview>
         );
 
-        const removeButton = wrapper.find('WithStyles(ForwardRef(IconButton))');
-        removeButton.simulate('click');
+        fireEvent.click(getByLabelText('ra.action.delete'));
 
-        assert.equal(onRemoveSpy.mock.calls.length, 1);
+        expect(onRemoveSpy).toHaveBeenCalled();
     });
 
     it('should render passed children', () => {
-        const wrapper = shallow(
-            <FileInputPreview onRemove={() => true}>
+        const { queryByText } = render(
+            <FileInputPreview {...defaultProps}>
                 <div id="child">Child</div>
             </FileInputPreview>
         );
 
-        const child = wrapper.find('#child');
-        assert.equal(child.length, 1);
+        expect(queryByText('Child')).not.toBeNull();
     });
 
     it('should clean up generated URLs for preview', () => {
-        const file = { preview: 'previewUrl' };
         const revokeObjectURL = jest.fn();
 
-        const wrapper = shallow(
+        const { unmount } = render(
             <FileInputPreview
-                onRemove={() => true}
-                file={file}
+                {...defaultProps}
                 revokeObjectURL={revokeObjectURL}
             >
                 <div id="child">Child</div>
             </FileInputPreview>
         );
 
-        wrapper.unmount();
-        assert.equal(revokeObjectURL.mock.calls[0][0], 'previewUrl');
+        unmount();
+        expect(revokeObjectURL).toHaveBeenCalledWith('previewUrl');
     });
 
     it('should not try to clean up preview urls if not passed a File object with a preview', () => {
         const file = {};
         const revokeObjectURL = jest.fn();
 
-        const wrapper = shallow(
+        const { unmount } = render(
             <FileInputPreview
-                onRemove={() => true}
+                {...defaultProps}
                 file={file}
                 revokeObjectURL={revokeObjectURL}
             >
@@ -63,7 +70,7 @@ describe('<FileInputPreview />', () => {
             </FileInputPreview>
         );
 
-        wrapper.unmount();
-        assert.equal(revokeObjectURL.mock.calls.length, 0);
+        unmount();
+        expect(revokeObjectURL).not.toHaveBeenCalled();
     });
 });

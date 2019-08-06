@@ -27,6 +27,7 @@ export const ImageField: SFC<
     Props & InjectedFieldProps & WithStyles<typeof styles>
 > = ({ className, classes, record, source, src, title, ...rest }) => {
     const sourceValue = get(record, source);
+
     if (!sourceValue) {
         return <div className={className} {...sanitizeRestProps(rest)} />;
     }
