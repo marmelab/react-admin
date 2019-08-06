@@ -5,6 +5,7 @@ import {
 } from 'react-final-form';
 import { Validator, composeValidators } from './validate';
 import isRequired from './isRequired';
+import { useCallback, ChangeEvent } from 'react';
 
 interface Options
     extends Omit<FinalFormFieldProps<any, HTMLElement>, 'validate'> {
@@ -13,6 +14,9 @@ interface Options
     id?: string;
     defaultValue?: any;
     validate?: Validator | Validator[];
+    onBlur?: (event: FocusEvent) => void;
+    onChange?: (event: ChangeEvent | any) => void;
+    onFocus?: (event: FocusEvent) => void;
 }
 
 interface FieldProps extends FieldRenderProps<any, HTMLElement> {
@@ -26,6 +30,9 @@ const useField = ({
     name,
     source,
     validate,
+    onBlur: customOnBlur,
+    onChange: customOnChange,
+    onFocus: customOnFocus,
     ...options
 }: Options): FieldProps => {
     const finalName = name || source;
@@ -34,15 +41,56 @@ const useField = ({
         ? composeValidators(validate)
         : validate;
 
-    const fieldProps = useFinalFormField(finalName, {
+    const { input, meta } = useFinalFormField(finalName, {
         initialValue: defaultValue,
         validate: sanitizedValidate,
         ...options,
     });
 
+    // Extract the event handlers so that we can provide ours
+    // allowing users to provide theirs without breaking the form
+    const { onBlur, onChange, onFocus, ...inputProps } = input;
+
+    const handleBlur = useCallback(
+        event => {
+            onBlur(event);
+
+            if (typeof customOnBlur === 'function') {
+                customOnBlur(event);
+            }
+        },
+        [onBlur, customOnBlur]
+    );
+
+    const handleChange = useCallback(
+        event => {
+            onChange(event);
+            if (typeof customOnChange === 'function') {
+                customOnChange(event);
+            }
+        },
+        [onChange, customOnChange]
+    );
+
+    const handleFocus = useCallback(
+        event => {
+            onFocus(event);
+            if (typeof customOnFocus === 'function') {
+                customOnFocus(event);
+            }
+        },
+        [onFocus, customOnFocus]
+    );
+
     return {
-        ...fieldProps,
         id: id || source,
+        input: {
+            ...inputProps,
+            onBlur: handleBlur,
+            onChange: handleChange,
+            onFocus: handleFocus,
+        },
+        meta,
         isRequired: isRequired(validate),
     };
 };

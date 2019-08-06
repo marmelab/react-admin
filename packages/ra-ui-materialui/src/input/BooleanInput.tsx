@@ -11,7 +11,8 @@ import InputHelperText from './InputHelperText';
 import { InputProps } from './types';
 
 const BooleanInput: FunctionComponent<
-    InputProps<SwitchProps> & Omit<FormGroupProps, 'defaultValue'>
+    InputProps<SwitchProps> &
+        Omit<FormGroupProps, 'defaultValue' | 'onChange' | 'onBlur' | 'onFocus'>
 > = ({
     className,
     label,
@@ -27,7 +28,7 @@ const BooleanInput: FunctionComponent<
         input: { value, onChange, type, ...inputProps },
         isRequired,
         meta: { touched, error },
-    } = useField({ source, type: 'button', validate, ...rest });
+    } = useField({ source, validate, ...rest });
 
     const handleChange = useCallback(
         event => {
@@ -45,6 +46,7 @@ const BooleanInput: FunctionComponent<
                         checked={!!value}
                         onChange={handleChange}
                         {...inputProps}
+                        type="button"
                         {...options}
                     />
                 }

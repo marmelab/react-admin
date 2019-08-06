@@ -102,7 +102,9 @@ interface Props {
  * The object passed as `options` props is passed to the material-ui <Checkbox> components
  */
 const CheckboxGroupInput: FunctionComponent<
-    Props & InputProps<CheckboxProps> & FormGroupProps
+    Props &
+        InputProps<CheckboxProps> &
+        Omit<FormGroupProps, 'defaultValue' | 'onChange' | 'onBlur' | 'onFocus'>
 > = ({
     choices,
     className,
