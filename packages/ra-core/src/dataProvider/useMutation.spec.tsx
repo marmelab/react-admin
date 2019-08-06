@@ -4,7 +4,7 @@ import {
     cleanup,
     fireEvent,
     waitForDomChange,
-} from 'react-testing-library';
+} from '@testing-library/react';
 import expect from 'expect';
 import Mutation from './Mutation';
 import CoreAdmin from '../CoreAdmin';

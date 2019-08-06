@@ -1,6 +1,6 @@
 import renderHook from '../util/renderHook';
 import usePaginationState from './usePaginationState';
-import { act } from 'react-testing-library';
+import { act } from '@testing-library/react';
 
 describe('usePaginationState', () => {
     it('should initialize pagination state with default', () => {

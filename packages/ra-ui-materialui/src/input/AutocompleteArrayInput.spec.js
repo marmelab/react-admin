@@ -4,7 +4,7 @@ import {
     fireEvent,
     render,
     waitForDomChange,
-} from 'react-testing-library';
+} from '@testing-library/react';
 
 import { AutocompleteArrayInput } from './AutocompleteArrayInput';
 

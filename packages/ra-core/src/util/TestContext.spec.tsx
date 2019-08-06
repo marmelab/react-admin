@@ -1,5 +1,5 @@
 import expect from 'expect';
-import { render, cleanup } from 'react-testing-library';
+import { render, cleanup } from '@testing-library/react';
 import React from 'react';
 
 import TestContext, { defaultStore } from './TestContext';

@@ -64,7 +64,7 @@
         "react-redux": "^7.1.0",
         "react-router": "^5.0.1",
         "react-router-dom": "^5.0.1",
-        "react-testing-library": "^7.0.0",
+        "@testing-library/react": "^8.0.7",
         "recompose": "~0.26.0",
         "redux": "^3.7.2 || ^4.0.3",
         "redux-saga": "^1.0.0",

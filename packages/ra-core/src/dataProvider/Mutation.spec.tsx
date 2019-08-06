@@ -1,5 +1,5 @@
 import React from 'react';
-import { cleanup } from 'react-testing-library';
+import { cleanup } from '@testing-library/react';
 import expect from 'expect';
 import Mutation from './Mutation';
 import renderWithRedux from '../util/renderWithRedux';

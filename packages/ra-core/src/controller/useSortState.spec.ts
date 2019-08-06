@@ -1,6 +1,6 @@
 import renderHook from '../util/renderHook';
 import useSortState, { defaultSort } from './useSortState';
-import { act } from 'react-testing-library';
+import { act } from '@testing-library/react';
 
 describe('useSortState', () => {
     it('should initialize sortState with default sort', () => {

@@ -1,6 +1,6 @@
 import React from 'react';
 import expect from 'expect';
-import { cleanup, wait } from 'react-testing-library';
+import { cleanup, wait } from '@testing-library/react';
 
 import usePermissions from './usePermissions';
 import AuthContext from './AuthContext';
@@ -43,13 +43,12 @@ describe('usePermissions', () => {
 
     it('should return the permissions after a tick', async () => {
         const authProvider = () => Promise.resolve('admin');
-        const { queryByText, debug } = renderWithRedux(
+        const { queryByText } = renderWithRedux(
             <AuthContext.Provider value={authProvider}>
                 <UsePermissions>{stateInpector}</UsePermissions>
             </AuthContext.Provider>
         );
         await wait();
-        debug();
         expect(queryByText('LOADING')).toBeNull();
         expect(queryByText('LOADED')).not.toBeNull();
         expect(queryByText('PERMISSIONS: admin')).not.toBeNull();

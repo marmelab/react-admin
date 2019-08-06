@@ -1,4 +1,4 @@
-import { render, cleanup, fireEvent } from 'react-testing-library';
+import { render, cleanup, fireEvent } from '@testing-library/react';
 import React from 'react';
 
 import { SaveButton } from './SaveButton';

@@ -1,6 +1,6 @@
 import React from 'react';
 import expect from 'expect';
-import { fireEvent, cleanup } from 'react-testing-library';
+import { fireEvent, cleanup } from '@testing-library/react';
 import lolex from 'lolex';
 import TextField from '@material-ui/core/TextField/TextField';
 

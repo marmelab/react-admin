@@ -1,6 +1,6 @@
 import React from 'react';
 import expect from 'expect';
-import { act, cleanup } from 'react-testing-library';
+import { act, cleanup } from '@testing-library/react';
 
 import EditController from './EditController';
 import renderWithRedux from '../util/renderWithRedux';

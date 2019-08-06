@@ -1,6 +1,6 @@
 import React from 'react';
 import expect from 'expect';
-import { cleanup } from 'react-testing-library';
+import { cleanup } from '@testing-library/react';
 
 import Authenticated from './Authenticated';
 import AuthContext from './AuthContext';

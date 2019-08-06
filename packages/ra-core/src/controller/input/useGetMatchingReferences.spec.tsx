@@ -1,6 +1,6 @@
 import renderHook from '../../util/renderHook';
 import useMatchingReferences from './useGetMatchingReferences';
-import { cleanup } from 'react-testing-library';
+import { cleanup } from '@testing-library/react';
 
 describe('useMatchingReferences', () => {
     const defaultProps = {

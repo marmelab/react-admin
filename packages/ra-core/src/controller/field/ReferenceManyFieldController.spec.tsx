@@ -10,6 +10,7 @@ describe('<ReferenceManyFieldController />', () => {
         const { dispatch } = renderWithRedux(
             <ReferenceManyFieldController
                 resource="foo"
+                source="items"
                 reference="bar"
                 target="foo_id"
                 basePath=""
@@ -54,7 +55,7 @@ describe('<ReferenceManyFieldController />', () => {
                     id: undefined,
                     pagination: { page: 1, perPage: 25 },
                     sort: { field: 'id', order: 'DESC' },
-                    source: undefined,
+                    source: 'items',
                     target: 'foo_id',
                 },
                 type: 'RA/CRUD_GET_MANY_REFERENCE',
@@ -75,6 +76,7 @@ describe('<ReferenceManyFieldController />', () => {
                 target="fooId"
                 basePath=""
                 record={{
+                    id: 'fooId',
                     source: 'barId',
                 }}
                 source="source"
@@ -114,6 +116,7 @@ describe('<ReferenceManyFieldController />', () => {
                 target="fooId"
                 basePath=""
                 record={{
+                    id: 'fooId',
                     source: 'barId',
                 }}
                 source="source"
