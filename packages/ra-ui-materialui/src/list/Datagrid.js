@@ -54,7 +54,7 @@ const styles = theme =>
             width: theme.spacing(6),
         },
         expandButton: {
-            padding: theme.spacing.unit,
+            padding: theme.spacing(1),
         },
         expandIconCell: {
             width: theme.spacing(6),
