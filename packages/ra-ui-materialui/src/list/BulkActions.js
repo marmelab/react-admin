@@ -12,7 +12,6 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { makeStyles } from '@material-ui/core/styles';
 import FilterNoneIcon from '@material-ui/icons/FilterNone';
-import compose from 'recompose/compose';
 import classnames from 'classnames';
 import { useTranslate } from 'ra-core';
 
@@ -68,7 +67,6 @@ const BulkActions = ({
     label,
     resource,
     selectedIds,
-    translate,
     ...rest
 }) => {
     const [isOpen, setOpen] = useState(false);
@@ -177,7 +175,6 @@ BulkActions.propTypes = {
     label: PropTypes.string,
     resource: PropTypes.string,
     selectedIds: PropTypes.arrayOf(PropTypes.any),
-    translate: PropTypes.func.isRequired,
 };
 
 BulkActions.defaultProps = {
