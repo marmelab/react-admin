@@ -181,7 +181,7 @@ When developing, most of the time we use the simple example to do visual check. 
 
 However, the simple example is sometimes too limited. You can use the demo example, which is more complete, to test your changes. Unfortunately, due to the fact that we use Create React App for this demo, the `make run-demo` command doesn't watch the changes made in the packages. You'll have to rebuild the packages after a change (using `make build`, or the more targeted `make build-ra-core`, `make build-ra-ui-materialui`, etc) to see the effect in the demo app. 
 
-Automated tests are also crusial in our development process. You can run all the tests (linting, unit and functional tests) by calling:
+Automated tests are also crucial in our development process. You can run all the tests (linting, unit and functional tests) by calling:
 
 ```sh
 make test
