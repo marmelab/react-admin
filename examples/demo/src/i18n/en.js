@@ -24,7 +24,7 @@ export default {
             welcome: {
                 title: 'Welcome to react-admin demo',
                 subtitle:
-                    "This is the admin of an imaginary poster shop. Fell free to explore and modify the data - it's local to your computer, and will reset each time you reload.",
+                    "This is the admin of an imaginary poster shop. Feel free to explore and modify the data - it's local to your computer, and will reset each time you reload.",
                 aor_button: 'react-admin site',
                 demo_button: 'Source for this demo',
             },
