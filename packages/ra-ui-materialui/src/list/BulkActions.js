@@ -86,24 +86,24 @@ const BulkActions = ({
 
     const storeButtonRef = useCallback(node => {
         setAnchorElement(node);
-    });
+    }, []);
 
     const handleClick = useCallback(() => {
         setOpen(true);
-    });
+    }, []);
 
     const handleClose = useCallback(() => {
         setOpen(false);
-    });
+    }, []);
 
     const handleLaunchAction = useCallback(action => {
         setActiveAction(action);
         setOpen(false);
-    });
+    }, []);
 
     const handleExitAction = useCallback(() => {
         setActiveAction(null);
-    });
+    }, []);
 
     return (
         <CSSTransition
