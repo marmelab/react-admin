@@ -3,7 +3,7 @@ const isRequired = validate => {
         return true;
     }
     if (Array.isArray(validate)) {
-        return !!validate.find(it => it.isRequired);
+        return validate.some(it => it.isRequired);
     }
     return false;
 };
