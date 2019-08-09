@@ -1,30 +1,24 @@
 import React from 'react';
 import expect from 'expect';
-import { CheckboxGroupInput } from './CheckboxGroupInput';
-import { render, cleanup } from '@testing-library/react';
+import CheckboxGroupInput from './CheckboxGroupInput';
+import { render, cleanup, fireEvent } from '@testing-library/react';
+import { Form } from 'react-final-form';
+import { renderWithRedux } from 'ra-core';
 
 describe('<CheckboxGroupInput />', () => {
     const defaultProps = {
-        source: 'foo',
-        meta: {},
-        choices: [{ id: 1, name: 'John doe' }],
-        input: {
-            onChange: () => {},
-            value: [],
-        },
-        translate: x => x,
+        source: 'tags',
+        resource: 'posts',
+        choices: [{ id: 'ang', name: 'Angular' }, { id: 'rct', name: 'React' }],
     };
 
     afterEach(cleanup);
 
     it('should render choices as checkbox components', () => {
         const { getByLabelText } = render(
-            <CheckboxGroupInput
-                {...defaultProps}
-                choices={[
-                    { id: 'ang', name: 'Angular' },
-                    { id: 'rct', name: 'React' },
-                ]}
+            <Form
+                onSubmit={jest.fn}
+                render={() => <CheckboxGroupInput {...defaultProps} />}
             />
         );
         const input1 = getByLabelText('Angular');
@@ -39,27 +33,39 @@ describe('<CheckboxGroupInput />', () => {
 
     it('should use the input parameter value as the initial input value', () => {
         const { getByLabelText } = render(
-            <CheckboxGroupInput
-                {...defaultProps}
-                choices={[
-                    { id: 'ang', name: 'Angular' },
-                    { id: 'rct', name: 'React' },
-                ]}
-                input={{ value: ['ang'], onChange: () => {} }}
+            <Form
+                onSubmit={jest.fn}
+                initialValues={{
+                    tags: ['ang'],
+                }}
+                render={() => (
+                    <CheckboxGroupInput
+                        {...defaultProps}
+                        choices={[
+                            { id: 'ang', name: 'Angular' },
+                            { id: 'rct', name: 'React' },
+                        ]}
+                    />
+                )}
             />
         );
         const input1 = getByLabelText('Angular');
-        expect(input1.checked).toBe(true);
+        expect(input1.checked).toEqual(true);
         const input2 = getByLabelText('React');
-        expect(input2.checked).toBe(false);
+        expect(input2.checked).toEqual(false);
     });
 
     it('should use optionValue as value identifier', () => {
         const { getByLabelText } = render(
-            <CheckboxGroupInput
-                {...defaultProps}
-                optionValue="foobar"
-                choices={[{ foobar: 'foo', name: 'Bar' }]}
+            <Form
+                onSubmit={jest.fn}
+                render={() => (
+                    <CheckboxGroupInput
+                        {...defaultProps}
+                        optionValue="foobar"
+                        choices={[{ foobar: 'foo', name: 'Bar' }]}
+                    />
+                )}
             />
         );
         expect(getByLabelText('Bar').value).toBe('foo');
@@ -67,10 +73,15 @@ describe('<CheckboxGroupInput />', () => {
 
     it('should use optionValue including "." as value identifier', () => {
         const { getByLabelText } = render(
-            <CheckboxGroupInput
-                {...defaultProps}
-                optionValue="foobar.id"
-                choices={[{ foobar: { id: 'foo' }, name: 'Bar' }]}
+            <Form
+                onSubmit={jest.fn}
+                render={() => (
+                    <CheckboxGroupInput
+                        {...defaultProps}
+                        optionValue="foobar.id"
+                        choices={[{ foobar: { id: 'foo' }, name: 'Bar' }]}
+                    />
+                )}
             />
         );
         expect(getByLabelText('Bar').value).toBe('foo');
@@ -78,10 +89,15 @@ describe('<CheckboxGroupInput />', () => {
 
     it('should use optionText with a string value as text identifier', () => {
         const { queryByLabelText } = render(
-            <CheckboxGroupInput
-                {...defaultProps}
-                optionText="foobar"
-                choices={[{ id: 'foo', foobar: 'Bar' }]}
+            <Form
+                onSubmit={jest.fn}
+                render={() => (
+                    <CheckboxGroupInput
+                        {...defaultProps}
+                        optionText="foobar"
+                        choices={[{ id: 'foo', foobar: 'Bar' }]}
+                    />
+                )}
             />
         );
         expect(queryByLabelText('Bar')).not.toBeNull();
@@ -89,10 +105,15 @@ describe('<CheckboxGroupInput />', () => {
 
     it('should use optionText with a string value including "." as text identifier', () => {
         const { queryByLabelText } = render(
-            <CheckboxGroupInput
-                {...defaultProps}
-                optionText="foobar.name"
-                choices={[{ id: 'foo', foobar: { name: 'Bar' } }]}
+            <Form
+                onSubmit={jest.fn}
+                render={() => (
+                    <CheckboxGroupInput
+                        {...defaultProps}
+                        optionText="foobar.name"
+                        choices={[{ id: 'foo', foobar: { name: 'Bar' } }]}
+                    />
+                )}
             />
         );
         expect(queryByLabelText('Bar')).not.toBeNull();
@@ -100,10 +121,15 @@ describe('<CheckboxGroupInput />', () => {
 
     it('should use optionText with a function value as text identifier', () => {
         const { queryByLabelText } = render(
-            <CheckboxGroupInput
-                {...defaultProps}
-                optionText={choice => choice.foobar}
-                choices={[{ id: 'foo', foobar: 'Bar' }]}
+            <Form
+                onSubmit={jest.fn}
+                render={() => (
+                    <CheckboxGroupInput
+                        {...defaultProps}
+                        optionText={choice => choice.foobar}
+                        choices={[{ id: 'foo', foobar: 'Bar' }]}
+                    />
+                )}
             />
         );
         expect(queryByLabelText('Bar')).not.toBeNull();
@@ -114,10 +140,15 @@ describe('<CheckboxGroupInput />', () => {
             <span data-testid="label">{record.foobar}</span>
         );
         const { queryByLabelText, queryByTestId } = render(
-            <CheckboxGroupInput
-                {...defaultProps}
-                optionText={<Foobar />}
-                choices={[{ id: 'foo', foobar: 'Bar' }]}
+            <Form
+                onSubmit={jest.fn}
+                render={() => (
+                    <CheckboxGroupInput
+                        {...defaultProps}
+                        optionText={<Foobar />}
+                        choices={[{ id: 'foo', foobar: 'Bar' }]}
+                    />
+                )}
             />
         );
         expect(queryByLabelText('Bar')).not.toBeNull();
@@ -125,29 +156,60 @@ describe('<CheckboxGroupInput />', () => {
     });
 
     it('should translate the choices by default', () => {
-        const { queryByLabelText } = render(
-            <CheckboxGroupInput {...defaultProps} translate={x => `**${x}**`} />
+        const { queryByLabelText } = renderWithRedux(
+            <Form
+                onSubmit={jest.fn}
+                render={() => <CheckboxGroupInput {...defaultProps} />}
+            />,
+            {
+                i18n: {
+                    messages: {
+                        Angular: 'Angular **',
+                        React: 'React **',
+                    },
+                },
+            }
         );
-        expect(queryByLabelText('**John doe**')).not.toBeNull();
+        expect(queryByLabelText('Angular **')).not.toBeNull();
+        expect(queryByLabelText('React **')).not.toBeNull();
     });
 
     it('should not translate the choices if translateChoice is false', () => {
-        const { queryByLabelText } = render(
-            <CheckboxGroupInput
-                {...defaultProps}
-                translate={x => `**${x}**`}
-                translateChoice={false}
-            />
+        const { queryByLabelText } = renderWithRedux(
+            <Form
+                onSubmit={jest.fn}
+                render={() => (
+                    <CheckboxGroupInput
+                        {...defaultProps}
+                        translateChoice={false}
+                    />
+                )}
+            />,
+            {
+                i18n: {
+                    messages: {
+                        Angular: 'Angular **',
+                        React: 'React **',
+                    },
+                },
+            }
         );
-        expect(queryByLabelText('**John doe**')).toBeNull();
-        expect(queryByLabelText('John doe')).not.toBeNull();
+        expect(queryByLabelText('Angular **')).toBeNull();
+        expect(queryByLabelText('React **')).toBeNull();
+        expect(queryByLabelText('Angular')).not.toBeNull();
+        expect(queryByLabelText('React')).not.toBeNull();
     });
 
-    it('should displayed helperText if prop is present in meta', () => {
+    it('should display helperText', () => {
         const { queryByText } = render(
-            <CheckboxGroupInput
-                {...defaultProps}
-                meta={{ helperText: 'Can I help you?' }}
+            <Form
+                onSubmit={jest.fn}
+                render={() => (
+                    <CheckboxGroupInput
+                        {...defaultProps}
+                        helperText="Can I help you?"
+                    />
+                )}
             />
         );
         expect(queryByText('Can I help you?')).not.toBeNull();
@@ -156,9 +218,9 @@ describe('<CheckboxGroupInput />', () => {
     describe('error message', () => {
         it('should not be displayed if field is pristine', () => {
             const { container } = render(
-                <CheckboxGroupInput
-                    {...defaultProps}
-                    meta={{ touched: false, error: 'Required field.' }}
+                <Form
+                    onSubmit={jest.fn}
+                    render={() => <CheckboxGroupInput {...defaultProps} />}
                 />
             );
             expect(container.querySelector('p')).toBeNull();
@@ -166,38 +228,36 @@ describe('<CheckboxGroupInput />', () => {
 
         it('should not be displayed if field has been touched but is valid', () => {
             const { container } = render(
-                <CheckboxGroupInput
-                    {...defaultProps}
-                    meta={{ touched: true, error: false }}
+                <Form
+                    onSubmit={jest.fn}
+                    render={() => <CheckboxGroupInput {...defaultProps} />}
                 />
             );
             expect(container.querySelector('p')).toBeNull();
         });
 
         it('should be displayed if field has been touched and is invalid', () => {
-            const { container, queryByText } = render(
-                <CheckboxGroupInput
-                    {...defaultProps}
-                    meta={{ touched: true, error: 'Required field.' }}
-                />
-            );
-            expect(container.querySelector('p')).not.toBeNull();
-            expect(queryByText('Required field.')).not.toBeNull();
-        });
+            // This validator always returns an error
+            const validate = () => 'ra.validation.error';
 
-        it('should display the error and help text if helperText is present', () => {
-            const { queryByText } = render(
-                <CheckboxGroupInput
-                    {...defaultProps}
-                    meta={{
-                        touched: true,
-                        error: 'Required field.',
-                        helperText: 'Can I help you?',
-                    }}
+            const { queryByLabelText, queryByText } = render(
+                <Form
+                    onSubmit={jest.fn}
+                    validateOnBlur
+                    render={() => (
+                        <CheckboxGroupInput
+                            {...defaultProps}
+                            validate={validate}
+                        />
+                    )}
                 />
             );
-            expect(queryByText('Required field.')).not.toBeNull();
-            expect(queryByText('Can I help you?')).not.toBeNull();
+            const input = queryByLabelText('Angular');
+            fireEvent.click(input);
+            expect(input.checked).toBe(true);
+
+            fireEvent.blur(input);
+            expect(queryByText('ra.validation.error')).not.toBeNull();
         });
     });
 });
