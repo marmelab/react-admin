@@ -11,7 +11,8 @@ import InputHelperText from './InputHelperText';
 import InputPropTypes from './InputPropTypes';
 
 const BooleanInput: FunctionComponent<
-    InputProps<SwitchProps> & FormGroupProps
+    InputProps<SwitchProps> &
+        Omit<FormGroupProps, 'defaultValue' | 'onChange' | 'onBlur' | 'onFocus'>
 > = ({
     label,
     fullWidth,
@@ -27,7 +28,7 @@ const BooleanInput: FunctionComponent<
 }) => {
     const {
         id,
-        input: { onChange: finalFormOnChange, value, ...inputProps },
+        input: { onChange: finalFormOnChange, type, value, ...inputProps },
         isRequired,
         meta: { error, touched },
     } = useInput({
@@ -85,7 +86,6 @@ const BooleanInput: FunctionComponent<
 
 BooleanInput.propTypes = {
     ...InputPropTypes,
-    ...FormGroup.propTypes,
     options: PropTypes.shape(Switch.propTypes),
 };
 
