@@ -2,9 +2,14 @@ import React from 'react';
 import expect from 'expect';
 import { cleanup } from '@testing-library/react';
 import { renderWithRedux } from 'ra-core';
-
-import List, { ListView } from './List';
+import { ThemeProvider } from '@material-ui/styles';
+import { createMuiTheme } from '@material-ui/core/styles';
 import { MemoryRouter } from 'react-router';
+
+import defaultTheme from '../defaultTheme.ts';
+import List, { ListView } from './List';
+
+const theme = createMuiTheme(defaultTheme);
 
 describe('<List />', () => {
     afterEach(cleanup);
@@ -31,9 +36,11 @@ describe('<List />', () => {
     it('should render a list page', () => {
         const Datagrid = () => <div>datagrid</div>;
         const { container } = renderWithRedux(
-            <ListView {...defaultProps}>
-                <Datagrid />
-            </ListView>
+            <ThemeProvider theme={theme}>
+                <ListView {...defaultProps}>
+                    <Datagrid />
+                </ListView>
+            </ThemeProvider>
         );
         expect(container.querySelectorAll('.list-page')).toHaveLength(1);
     });
@@ -43,16 +50,18 @@ describe('<List />', () => {
         const Pagination = () => <div>pagination</div>;
         const Datagrid = () => <div>datagrid</div>;
         const { queryAllByText, queryAllByLabelText } = renderWithRedux(
-            <MemoryRouter initialEntries={['/']}>
-                <ListView
-                    filters={<Filters />}
-                    pagination={<Pagination />}
-                    {...defaultProps}
-                    hasCreate
-                >
-                    <Datagrid />
-                </ListView>
-            </MemoryRouter>
+            <ThemeProvider theme={theme}>
+                <MemoryRouter initialEntries={['/']}>
+                    <ListView
+                        filters={<Filters />}
+                        pagination={<Pagination />}
+                        {...defaultProps}
+                        hasCreate
+                    >
+                        <Datagrid />
+                    </ListView>
+                </MemoryRouter>
+            </ThemeProvider>
         );
         expect(queryAllByText('filters')).toHaveLength(2);
         expect(queryAllByLabelText('Export')).toHaveLength(1);
@@ -89,13 +98,15 @@ describe('<List />', () => {
         },
     };
 
-    it.skip('should display aside component', () => {
+    it('should display aside component', () => {
         const Dummy = () => <div />;
         const Aside = () => <div id="aside">Hello</div>;
         const { queryAllByText } = renderWithRedux(
-            <List {...defaultListProps} aside={<Aside />}>
-                <Dummy />
-            </List>,
+            <ThemeProvider theme={theme}>
+                <List {...defaultListProps} aside={<Aside />}>
+                    <Dummy />
+                </List>
+            </ThemeProvider>,
             defaultStateForList
         );
         expect(queryAllByText('Hello')).toHaveLength(1);
