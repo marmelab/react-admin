@@ -20,16 +20,23 @@ interface Props extends Omit<FieldProps<any, HTMLElement>, 'validate'> {
     validate?: Validator | Validator[];
 }
 
-export const FormField: SFC<Props> = ({ input, validate, ...props }) => {
+export const FormField: SFC<Props> = ({ id, input, validate, ...props }) => {
+    if (process.env.NODE_ENV !== 'production') {
+        console.log('FormField is deprecated, use the useInput hook instead.');
+    }
+
     const sanitizedValidate = Array.isArray(validate)
         ? composeValidators(validate)
         : validate;
 
+    const finalId = id || props.source;
+
     return input ? ( // An ancestor is already decorated by Field
-        React.createElement(props.component, { input, ...props })
+        React.createElement(props.component, { input, id: finalId, ...props })
     ) : (
         <Field
             {...props}
+            id={finalId}
             name={props.source}
             isRequired={isRequired(validate)}
             validate={sanitizedValidate}
