@@ -9,12 +9,12 @@ const TitleField = ({ record }) => <span>{record.title}</span>;
 const ExpandPanel = () => <span>expanded</span>;
 
 // remove validateDomNesting warnings by react-testing-library
-const table = document.createElement('tbody');
 const render = element =>
     renderWithRedux(
-        element,
-        {},
-        { container: document.body.appendChild(table) }
+        <table>
+            <tbody>{element}</tbody>
+        </table>,
+        {}
     );
 
 describe('<DatagridRow />', () => {
