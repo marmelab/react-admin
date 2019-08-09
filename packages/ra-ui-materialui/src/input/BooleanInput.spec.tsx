@@ -19,9 +19,12 @@ describe('<BooleanInput />', () => {
                 render={() => <BooleanInput {...defaultProps} />}
             />
         );
-        expect(getByLabelText('resources.posts.fields.isPublished').type).toBe(
-            'checkbox'
-        );
+
+        const input = getByLabelText(
+            'resources.posts.fields.isPublished'
+        ) as HTMLInputElement;
+
+        expect(input.type).toBe('checkbox');
     });
 
     it('should be checked if the value is true', () => {
@@ -32,9 +35,12 @@ describe('<BooleanInput />', () => {
                 render={() => <BooleanInput {...defaultProps} />}
             />
         );
-        expect(
-            getByLabelText('resources.posts.fields.isPublished').checked
-        ).toBe(true);
+
+        const input = getByLabelText(
+            'resources.posts.fields.isPublished'
+        ) as HTMLInputElement;
+
+        expect(input.checked).toBe(true);
     });
 
     it('should not be checked if the value is false', () => {
@@ -45,9 +51,12 @@ describe('<BooleanInput />', () => {
                 render={() => <BooleanInput {...defaultProps} />}
             />
         );
-        expect(
-            getByLabelText('resources.posts.fields.isPublished').checked
-        ).toBe(false);
+
+        const input = getByLabelText(
+            'resources.posts.fields.isPublished'
+        ) as HTMLInputElement;
+
+        expect(input.checked).toBe(false);
     });
 
     it('should not be checked if the value is undefined', () => {
@@ -57,9 +66,12 @@ describe('<BooleanInput />', () => {
                 render={() => <BooleanInput {...defaultProps} />}
             />
         );
-        expect(
-            getByLabelText('resources.posts.fields.isPublished').checked
-        ).toBe(false);
+
+        const input = getByLabelText(
+            'resources.posts.fields.isPublished'
+        ) as HTMLInputElement;
+
+        expect(input.checked).toBe(false);
     });
 
     it('should displays errors', () => {
@@ -76,7 +88,10 @@ describe('<BooleanInput />', () => {
                 )}
             />
         );
-        const input = getByLabelText('resources.posts.fields.isPublished');
+        const input = getByLabelText(
+            'resources.posts.fields.isPublished'
+        ) as HTMLInputElement;
+
         fireEvent.click(input);
         expect(input.checked).toBe(false);
 

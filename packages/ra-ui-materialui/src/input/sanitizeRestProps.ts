@@ -22,4 +22,4 @@ export default ({
     translate,
     translateChoice,
     ...rest
-}) => rest;
+}: any) => rest;

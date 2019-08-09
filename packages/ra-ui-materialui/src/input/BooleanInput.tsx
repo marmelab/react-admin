@@ -1,16 +1,19 @@
-import React, { useCallback } from 'react';
+import React, { FunctionComponent, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
-import FormGroup from '@material-ui/core/FormGroup';
-import Switch from '@material-ui/core/Switch';
-import { FieldTitle, useInput } from 'ra-core';
+import FormGroup, { FormGroupProps } from '@material-ui/core/FormGroup';
+import Switch, { SwitchProps } from '@material-ui/core/Switch';
+import { FieldTitle, useInput, InputProps } from 'ra-core';
 
 import sanitizeRestProps from './sanitizeRestProps';
 import InputHelperText from './InputHelperText';
 import InputPropTypes from './InputPropTypes';
 
-const BooleanInput = ({
+const BooleanInput: FunctionComponent<
+    InputProps<SwitchProps> &
+        Omit<FormGroupProps, 'defaultValue' | 'onChange' | 'onBlur' | 'onFocus'>
+> = ({
     label,
     fullWidth,
     helperText,
@@ -25,7 +28,7 @@ const BooleanInput = ({
 }) => {
     const {
         id,
-        input: { onChange: finalFormOnChange, value, ...inputProps },
+        input: { onChange: finalFormOnChange, type, value, ...inputProps },
         isRequired,
         meta: { error, touched },
     } = useInput({
@@ -83,7 +86,6 @@ const BooleanInput = ({
 
 BooleanInput.propTypes = {
     ...InputPropTypes,
-    ...FormGroup.propTypes,
     options: PropTypes.shape(Switch.propTypes),
 };
 
