@@ -7,7 +7,7 @@ import { Validator, composeValidators } from './validate';
 import isRequired from './isRequired';
 import { useCallback, ChangeEvent } from 'react';
 
-export interface InputProps
+export interface InputProps<T = any>
     extends Omit<
         FinalFormFieldProps<any, HTMLElement>,
         'validate' | 'children'
@@ -20,6 +20,7 @@ export interface InputProps
     onBlur?: (event: FocusEvent) => void;
     onChange?: (event: ChangeEvent | any) => void;
     onFocus?: (event: FocusEvent) => void;
+    options?: T;
 }
 
 interface ComputedInputProps extends FieldRenderProps<any, HTMLElement> {
