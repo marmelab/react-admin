@@ -4,13 +4,9 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import SettingsIcon from '@material-ui/icons/Settings';
 import LabelIcon from '@material-ui/icons/Label';
+import { useMediaQuery } from '@material-ui/core';
 import { withRouter } from 'react-router-dom';
-import {
-    useTranslate,
-    DashboardMenuItem,
-    MenuItemLink,
-    Responsive,
-} from 'react-admin';
+import { useTranslate, DashboardMenuItem, MenuItemLink } from 'react-admin';
 
 import visitors from '../visitors';
 import orders from '../orders';
@@ -27,6 +23,7 @@ const Menu = ({ onMenuClick, open, logout }) => {
         menuCustomers: false,
     });
     const translate = useTranslate();
+    const isXsmall = useMediaQuery(theme => theme.breakpoints.down('xs'));
 
     const handleToggle = menu => {
         setState(state => ({ ...state, [menu]: !state[menu] }));
@@ -123,22 +120,16 @@ const Menu = ({ onMenuClick, open, logout }) => {
                 onClick={onMenuClick}
                 sidebarIsOpen={open}
             />
-            <Responsive
-                xsmall={
-                    <MenuItemLink
-                        to="/configuration"
-                        primaryText={translate('pos.configuration')}
-                        leftIcon={<SettingsIcon />}
-                        onClick={onMenuClick}
-                        sidebarIsOpen={open}
-                    />
-                }
-                medium={null}
-            />
-            <Responsive
-                small={logout}
-                medium={null} // Pass null to render nothing on larger devices
-            />
+            {isXsmall && (
+                <MenuItemLink
+                    to="/configuration"
+                    primaryText={translate('pos.configuration')}
+                    leftIcon={<SettingsIcon />}
+                    onClick={onMenuClick}
+                    sidebarIsOpen={open}
+                />
+            )}
+            {isXsmall && logout}
         </div>
     );
 };

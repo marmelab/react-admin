@@ -1,11 +1,10 @@
 import React, { Fragment, useCallback } from 'react';
 import classnames from 'classnames';
-import { BulkDeleteButton, List, Responsive } from 'react-admin';
+import { BulkDeleteButton, List } from 'react-admin';
 import { useDispatch } from 'react-redux';
 import { push } from 'connected-react-router';
 import { Route } from 'react-router';
-import Drawer from '@material-ui/core/Drawer';
-import { makeStyles } from '@material-ui/core/styles';
+import { Drawer, useMediaQuery, makeStyles } from '@material-ui/core';
 import BulkAcceptButton from './BulkAcceptButton';
 import BulkRejectButton from './BulkRejectButton';
 import ReviewListMobile from './ReviewListMobile';
@@ -43,6 +42,7 @@ const useStyles = makeStyles(theme => ({
 const ReviewList = props => {
     const classes = useStyles();
     const dispatch = useDispatch();
+    const isXSmall = useMediaQuery(theme => theme.breakpoints.down('xs'));
 
     const handleClose = useCallback(() => {
         dispatch(push('/reviews'));
@@ -70,10 +70,11 @@ const ReviewList = props => {
                                 perPage={25}
                                 sort={{ field: 'date', order: 'DESC' }}
                             >
-                                <Responsive
-                                    xsmall={<ReviewListMobile />}
-                                    medium={<ReviewListDesktop />}
-                                />
+                                {isXSmall ? (
+                                    <ReviewListMobile />
+                                ) : (
+                                    <ReviewListDesktop />
+                                )}
                             </List>
                             <Drawer
                                 variant="persistent"

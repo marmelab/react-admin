@@ -2,15 +2,18 @@ import React from 'react';
 import ChevronLeft from '@material-ui/icons/ChevronLeft';
 import ChevronRight from '@material-ui/icons/ChevronRight';
 import PersonIcon from '@material-ui/icons/Person';
-import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import CardHeader from '@material-ui/core/CardHeader';
-import Grid from '@material-ui/core/Grid';
-import Toolbar from '@material-ui/core/Toolbar';
-import { makeStyles } from '@material-ui/core/styles';
+import {
+    Avatar,
+    Button,
+    Card,
+    CardActions,
+    CardContent,
+    CardHeader,
+    Grid,
+    Toolbar,
+    useMediaQuery,
+    makeStyles,
+} from '@material-ui/core';
 import jsonExport from 'jsonexport/dist';
 import {
     DateField,
@@ -20,7 +23,6 @@ import {
     PaginationLimit,
     ReferenceField,
     ReferenceInput,
-    Responsive,
     SearchInput,
     SelectInput,
     ShowButton,
@@ -209,17 +211,21 @@ const CommentMobileList = props => (
     />
 );
 
-const CommentList = props => (
-    <List
-        {...props}
-        perPage={6}
-        exporter={exporter}
-        filters={<CommentFilter />}
-        pagination={<CommentPagination />}
-        component="div"
-    >
-        <Responsive small={<CommentMobileList />} medium={<CommentGrid />} />
-    </List>
-);
+const CommentList = props => {
+    const isSmall = useMediaQuery(theme => theme.breakpoints.down('sm'));
+
+    return (
+        <List
+            {...props}
+            perPage={6}
+            exporter={exporter}
+            filters={<CommentFilter />}
+            pagination={<CommentPagination />}
+            component="div"
+        >
+            {isSmall ? <CommentMobileList /> : <CommentGrid />}
+        </List>
+    );
+};
 
 export default CommentList;

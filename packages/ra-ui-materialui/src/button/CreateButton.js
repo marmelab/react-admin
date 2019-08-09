@@ -1,8 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import onlyUpdateForKeys from 'recompose/onlyUpdateForKeys';
-import Fab from '@material-ui/core/Fab';
-import { withStyles, createStyles } from '@material-ui/core/styles';
+import {
+    Fab,
+    createStyles,
+    withStyles,
+    useMediaQuery,
+} from '@material-ui/core';
 import ContentAdd from '@material-ui/icons/Add';
 import compose from 'recompose/compose';
 import classnames from 'classnames';
@@ -10,7 +14,6 @@ import { Link } from 'react-router-dom';
 import { useTranslate } from 'ra-core';
 
 import Button from './Button';
-import Responsive from '../layout/Responsive';
 
 const styles = theme =>
     createStyles({
@@ -38,32 +41,28 @@ const CreateButton = ({
     ...rest
 }) => {
     const translate = useTranslate();
-    return (
-        <Responsive
-            small={
-                <Fab
-                    component={Link}
-                    color="primary"
-                    className={classnames(classes.floating, className)}
-                    to={`${basePath}/create`}
-                    aria-label={label && translate(label)}
-                    {...rest}
-                >
-                    {icon}
-                </Fab>
-            }
-            medium={
-                <Button
-                    component={Link}
-                    to={`${basePath}/create`}
-                    className={className}
-                    label={label}
-                    {...rest}
-                >
-                    {icon}
-                </Button>
-            }
-        />
+    const isSmall = useMediaQuery(theme => theme.breakpoints.down('sm'));
+    return isSmall ? (
+        <Fab
+            component={Link}
+            color="primary"
+            className={classnames(classes.floating, className)}
+            to={`${basePath}/create`}
+            aria-label={label && translate(label)}
+            {...rest}
+        >
+            {icon}
+        </Fab>
+    ) : (
+        <Button
+            component={Link}
+            to={`${basePath}/create`}
+            className={className}
+            label={label}
+            {...rest}
+        >
+            {icon}
+        </Button>
     );
 };
 

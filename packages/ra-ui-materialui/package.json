@@ -27,6 +27,7 @@
     },
     "devDependencies": {
         "cross-env": "^5.2.0",
+        "css-mediaquery": "^0.1.2",
         "enzyme": "~3.9.0",
         "enzyme-adapter-react-16": "~1.12.1",
         "file-api": "~0.10.4",

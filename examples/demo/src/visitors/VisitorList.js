@@ -9,10 +9,9 @@ import {
     List,
     NullableBooleanInput,
     NumberField,
-    Responsive,
     SearchInput,
 } from 'react-admin';
-import { makeStyles } from '@material-ui/core/styles';
+import { useMediaQuery, makeStyles } from '@material-ui/core';
 
 import SegmentsField from './SegmentsField';
 import SegmentInput from './SegmentInput';
@@ -36,6 +35,7 @@ const useStyles = makeStyles({
 
 const VisitorList = props => {
     const classes = useStyles();
+    const isXsmall = useMediaQuery(theme => theme.breakpoints.down('xs'));
     return (
         <List
             {...props}
@@ -43,28 +43,27 @@ const VisitorList = props => {
             sort={{ field: 'last_seen', order: 'DESC' }}
             perPage={25}
         >
-            <Responsive
-                xsmall={<MobileGrid />}
-                medium={
-                    <Datagrid>
-                        <CustomerLinkField />
-                        <DateField source="last_seen" type="date" />
-                        <NumberField
-                            source="nb_commands"
-                            label="resources.customers.fields.commands"
-                            className={classes.nb_commands}
-                        />
-                        <ColoredNumberField
-                            source="total_spent"
-                            options={{ style: 'currency', currency: 'USD' }}
-                        />
-                        <DateField source="latest_purchase" showTime />
-                        <BooleanField source="has_newsletter" label="News." />
-                        <SegmentsField />
-                        <EditButton />
-                    </Datagrid>
-                }
-            />
+            {isXsmall ? (
+                <MobileGrid />
+            ) : (
+                <Datagrid>
+                    <CustomerLinkField />
+                    <DateField source="last_seen" type="date" />
+                    <NumberField
+                        source="nb_commands"
+                        label="resources.customers.fields.commands"
+                        className={classes.nb_commands}
+                    />
+                    <ColoredNumberField
+                        source="total_spent"
+                        options={{ style: 'currency', currency: 'USD' }}
+                    />
+                    <DateField source="latest_purchase" showTime />
+                    <BooleanField source="has_newsletter" label="News." />
+                    <SegmentsField />
+                    <EditButton />
+                </Datagrid>
+            )}
         </List>
     );
 };

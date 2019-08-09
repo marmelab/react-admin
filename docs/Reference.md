@@ -68,7 +68,6 @@ title: "Reference"
 * [`<ReferenceManyField>`](./Fields.md#referencemanyfield)
 * `<RefreshButton>`
 * [`<Resource>`](./Resource.md#the-resource-component)
-* [`<Responsive>`](./Theming.md#responsive-utility)
 * [`<RichTextField>`](./Fields.md#richtextfield)
 * [`<RichTextInput>`](./Inputs.md#richtextinput)
 * `<SaveButton>`

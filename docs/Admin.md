@@ -162,36 +162,39 @@ If you want to add or remove menu items, for instance to link to non-resources p
 // in src/Menu.js
 import React, { createElement } from 'react';
 import { connect } from 'react-redux';
+import { useMediaQuery } from '@material-ui/core';
 import { MenuItemLink, getResources } from 'react-admin';
 import { withRouter } from 'react-router-dom';
 import LabelIcon from '@material-ui/icons/Label';
 
-import Responsive from '../layout/Responsive';
-
-const Menu = ({ resources, onMenuClick, logout }) => (
-    <div>
-        {resources.map(resource => (
+const Menu = ({ resources, onMenuClick, open, logout }) => {
+    const isXSmall = useMediaQuery(theme => theme.breakpoints.down('xs'));
+    return (
+        <div>
+            {resources.map(resource => (
+                <MenuItemLink
+                    key={resource.name}
+                    to={`/${resource.name}`}
+                    primaryText={resource.options && resource.options.label || resource.name}
+                    leftIcon={createElement(resource.icon)}
+                    onClick={onMenuClick}
+                    sidebarIsOpen={open}
+                />
+            ))}
             <MenuItemLink
-                key={resource.name}
-                to={`/${resource.name}`}
-                primaryText={resource.options && resource.options.label || resource.name}
-                leftIcon={createElement(resource.icon)}
+                to="/custom-route"
+                primaryText="Miscellaneous"
+                leftIcon={LabelIcon}
                 onClick={onMenuClick}
+                sidebarIsOpen={open}
             />
-        ))}
-        <MenuItemLink
-            to="/custom-route"
-            primaryText="Miscellaneous"
-            leftIcon={LabelIcon}
-            onClick={onMenuClick} />
-        <Responsive
-            small={logout}
-            medium={null} // Pass null to render nothing on larger devices
-        />
-    </div>
-);
+            {isXSmall && logout}
+        </div>
+    );
+}
 
 const mapStateToProps = state => ({
+    open: state.admin.ui.sidebarOpen,
     resources: getResources(state),
 });
 
