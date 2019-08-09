@@ -273,7 +273,7 @@ export const PostList = (props) => {
 }
 ```
 
-**Tip**: Previous versions of react-admin shipped a `<Responsive>` component to do media queries. This component us now deprecated. Use `useMediaQuery` instead.
+**Tip**: Previous versions of react-admin shipped a `<Responsive>` component to do media queries. This component is now deprecated. Use `useMediaQuery` instead.
 
 ## Using a Predefined Theme
 
