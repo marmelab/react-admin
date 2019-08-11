@@ -12,7 +12,7 @@ import { ConnectedRouter } from 'connected-react-router';
 
 import AuthContext from './auth/AuthContext';
 import DataProviderContext from './dataProvider/DataProviderContext';
-import createAdminStore from './createAdminStore';
+import createAdminStore, { InitialState } from './createAdminStore';
 import TranslationProvider from './i18n/TranslationProvider';
 import CoreAdminRouter from './CoreAdminRouter';
 import {
@@ -48,7 +48,7 @@ export interface AdminProps {
     dataProvider: DataProvider;
     history: History;
     i18nProvider?: I18nProvider;
-    initialState?: object;
+    initialState?: InitialState;
     loading: ComponentType;
     locale?: string;
     loginPage: LoginComponent | boolean;

@@ -502,6 +502,35 @@ const App = () => (
 
 The `initialState` prop lets you pass preloaded state to Redux. See the [Redux Documentation](http://redux.js.org/docs/api/createStore.html#createstorereducer-preloadedstate-enhancer) for more details.
 
+It accepts either a function or an object:
+
+```jsx
+const initialState = {
+    theme: 'dark',
+    grid: 5,
+};
+
+const App = () => (
+    <Admin initialState={initialState} dataProvider={simpleRestProvider('http://path.to.my.api')}>
+        // ...
+    </Admin>
+);
+```
+
+```jsx
+const initialState = () => ({
+    theme: localStorage.getItem('theme'),
+    grid: localStorage.getItem('grid'),
+});
+
+const App = () => (
+    <Admin initialState={initialState} dataProvider={simpleRestProvider('http://path.to.my.api')}>
+        // ...
+    </Admin>
+);
+```
+
+
 ## `history`
 
 By default, react-admin creates URLs using a hash sign (e.g. "myadmin.acme.com/#/posts/123"). The hash portion of the URL (i.e. `#/posts/123` in the example) contains the main application route. This strategy has the benefit of working without a server, and with legacy web browsers. But you may want to use another routing strategy, e.g. to allow server-side rendering.
