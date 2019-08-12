@@ -4,6 +4,7 @@ import { FETCH_END, FETCH_ERROR } from '../fetchActions';
 import {
     NotificationSideEffect,
     RedirectionSideEffect,
+    RefreshSideEffect,
 } from '../../sideEffect';
 
 export const crudUpdate = (
@@ -12,7 +13,8 @@ export const crudUpdate = (
     data: any,
     previousData: any,
     basePath: string,
-    redirectTo: RedirectionSideEffect = 'show'
+    redirectTo: RedirectionSideEffect = 'show',
+    refresh: RefreshSideEffect = true
 ): CrudUpdateAction => ({
     type: CRUD_UPDATE,
     payload: { id, data, previousData },
@@ -27,6 +29,7 @@ export const crudUpdate = (
                     smart_count: 1,
                 },
             },
+            refresh,
             redirectTo,
             basePath,
         },
@@ -55,6 +58,7 @@ export interface CrudUpdateAction {
         onSuccess: {
             notification: NotificationSideEffect;
             redirectTo: RedirectionSideEffect;
+            refresh: RefreshSideEffect;
             basePath: string;
         };
         onFailure: {
@@ -97,6 +101,7 @@ export interface CrudUpdateSuccessAction {
         resource: string;
         notification: NotificationSideEffect;
         redirectTo: RedirectionSideEffect;
+        refresh: RefreshSideEffect;
         basePath: string;
         fetchResponse: typeof UPDATE;
         fetchStatus: typeof FETCH_END;
