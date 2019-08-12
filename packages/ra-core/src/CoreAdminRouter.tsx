@@ -80,7 +80,7 @@ export class CoreAdminRouter extends Component<
         try {
             const permissions = authProvider
                 ? await authProvider(AUTH_GET_PERMISSIONS)
-                : null;
+                : undefined;
             const resolveChildren = props.children as RenderResourcesFunction;
 
             const childrenFuncResult = resolveChildren(permissions);
