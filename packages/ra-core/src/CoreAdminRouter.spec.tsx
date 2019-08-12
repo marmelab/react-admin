@@ -31,6 +31,44 @@ describe('<AdminRouter>', () => {
         });
     });
 
+    describe('With no authProvider defined', () => {
+        it('should render all resources', () => {
+            const wrapper = shallow(
+                <CoreAdminRouter customRoutes={[]}>
+                    <Resource name="posts" />
+                    <Resource name="comments" />
+                </CoreAdminRouter>
+            );
+
+            const resources = wrapper.find('Connect(Resource)');
+
+            assert.equal(resources.length, 2);
+            assert.deepEqual(
+                resources.map(resource => resource.prop('context')),
+                ['registration', 'registration']
+            );
+        });
+
+        it('should render all resources with a render prop', () => {
+            const wrapper = shallow(
+                <CoreAdminRouter>
+                    {() => [
+                        <Resource name="posts" />,
+                        <Resource name="comments" />,
+                    ]}
+                </CoreAdminRouter>
+            );
+
+            const resources = wrapper.find('Connect(Resource)');
+
+            assert.equal(resources.length, 2);
+            assert.deepEqual(
+                resources.map(resource => resource.prop('context')),
+                ['registration', 'registration']
+            );
+        });
+    });
+
     describe('With resources returned from a function as children', () => {
         it('should render all resources with a registration context', async () => {
             const wrapper = shallow(
