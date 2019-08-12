@@ -81,6 +81,22 @@ module.exports = {
                 'ra-input-rich-text',
                 'src'
             ),
+            'ra-tree-core': path.join(
+                __dirname,
+                '..',
+                '..',
+                'packages',
+                'ra-tree-core',
+                'src'
+            ),
+            'ra-tree-ui-materialui': path.join(
+                __dirname,
+                '..',
+                '..',
+                'packages',
+                'ra-tree-ui-materialui',
+                'src'
+            ),
         },
     },
     devServer: {
