@@ -1,7 +1,7 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import TextField from '@material-ui/core/TextField';
-import { addField, FieldTitle } from 'ra-core';
+import { useInput, FieldTitle } from 'ra-core';
 
 import sanitizeRestProps from './sanitizeRestProps';
 import InputHelperText from './InputHelperText';
@@ -43,36 +43,36 @@ const sanitizeValue = value => {
 };
 
 export const DateInput = ({
-    className,
-    meta,
-    input,
-    isRequired,
     label,
     options,
     source,
     resource,
     helperText,
+    onBlur,
+    onChange,
+    onFocus,
+    validate,
     ...rest
 }) => {
-    const handleChange = useCallback(
-        event => {
-            input.onChange(event.target.value);
-        },
-        [input]
-    );
-
-    if (typeof meta === 'undefined') {
-        throw new Error(
-            "The DateInput component wasn't called within a react-final-form <Field>. Did you decorate it and forget to add the addField prop to your component? See https://marmelab.com/react-admin/Inputs.html#writing-your-own-input-component for details."
-        );
-    }
-    const { touched, error } = meta;
-    const value = sanitizeValue(input.value);
+    const {
+        id,
+        input,
+        isRequired,
+        meta: { error, touched },
+    } = useInput({
+        format: sanitizeValue,
+        onBlur,
+        onChange,
+        onFocus,
+        resource,
+        source,
+        type: 'checkbox',
+        validate,
+    });
 
     return (
         <TextField
             {...input}
-            className={className}
             type="date"
             margin="normal"
             id={`${resource}_${source}_date_input`}
@@ -97,19 +97,13 @@ export const DateInput = ({
             }}
             {...options}
             {...sanitizeRestProps(rest)}
-            value={value}
-            onChange={handleChange}
         />
     );
 };
 
 DateInput.propTypes = {
-    classes: PropTypes.object,
     className: PropTypes.string,
-    input: PropTypes.object,
-    isRequired: PropTypes.bool,
     label: PropTypes.string,
-    meta: PropTypes.object,
     options: PropTypes.object,
     resource: PropTypes.string,
     source: PropTypes.string,
@@ -119,4 +113,4 @@ DateInput.defaultProps = {
     options: {},
 };
 
-export default addField(DateInput);
+export default DateInput;

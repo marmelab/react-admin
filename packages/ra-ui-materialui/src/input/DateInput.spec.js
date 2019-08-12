@@ -2,53 +2,74 @@ import React from 'react';
 import expect from 'expect';
 import { render, fireEvent, cleanup } from '@testing-library/react';
 
-import { DateInput } from './DateInput';
+import DateInput from './DateInput';
+import { Form } from 'react-final-form';
+import { required } from 'ra-core';
 
 describe('<DateInput />', () => {
     const defaultProps = {
-        resource: 'bar',
-        source: 'foo',
-        meta: {},
-        input: {},
-        translate: x => x,
+        resource: 'posts',
+        source: 'publishedAt',
     };
 
     afterEach(cleanup);
 
     it('should render a date input', () => {
-        const { getByLabelText } = render(<DateInput {...defaultProps} />);
-        expect(getByLabelText('resources.bar.fields.foo').type).toBe('date');
+        const { getByLabelText } = render(
+            <Form
+                onSubmit={jest.fn}
+                render={() => <DateInput {...defaultProps} />}
+            />
+        );
+        expect(getByLabelText('resources.posts.fields.publishedAt').type).toBe(
+            'date'
+        );
     });
 
     it('should call `input.onChange` method when changed', () => {
-        const onChange = jest.fn();
+        let formApi;
         const { getByLabelText } = render(
-            <DateInput {...defaultProps} input={{ onChange }} />
+            <Form
+                onSubmit={jest.fn()}
+                render={({ form }) => {
+                    formApi = form;
+                    return <DateInput {...defaultProps} />;
+                }}
+            />
         );
-        const input = getByLabelText('resources.bar.fields.foo');
+        const input = getByLabelText('resources.posts.fields.publishedAt');
         fireEvent.change(input, { target: { value: '2010-01-04' } });
-        expect(onChange.mock.calls[0][0]).toBe('2010-01-04');
+        expect(formApi.getState().values.publishedAt).toBe('2010-01-04');
     });
 
     describe('error message', () => {
         it('should not be displayed if field is pristine', () => {
             const { queryByText } = render(
-                <DateInput
-                    {...defaultProps}
-                    meta={{ touched: false, error: 'Required field.' }}
+                <Form
+                    onSubmit={jest.fn}
+                    render={() => (
+                        <DateInput {...defaultProps} validate={required()} />
+                    )}
                 />
             );
-            expect(queryByText('Required field.')).toBeNull();
+            expect(queryByText('ra.validation.required')).toBeNull();
         });
 
         it('should be displayed if field has been touched and is invalid', () => {
-            const { queryByText } = render(
-                <DateInput
-                    {...defaultProps}
-                    meta={{ touched: true, error: 'Required field.' }}
+            const { getByLabelText, queryByText } = render(
+                <Form
+                    onSubmit={jest.fn}
+                    validateOnBlur
+                    render={() => (
+                        <DateInput {...defaultProps} validate={required()} />
+                    )}
                 />
             );
-            expect(queryByText('Required field.')).toBeDefined();
+            const input = getByLabelText(
+                'resources.posts.fields.publishedAt *'
+            );
+            fireEvent.blur(input);
+            expect(queryByText('ra.validation.required')).not.toBeNull();
         });
     });
 });
