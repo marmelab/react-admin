@@ -12,7 +12,7 @@ import InputHelperText from './InputHelperText';
  * @param {Date} v value to convert
  * @returns {String} A standardized date (yyyy-MM-dd), to be passed to an <input type="date" />
  */
-const dateFormatter = v => {
+const convertDateToString = v => {
     if (!(v instanceof Date) || isNaN(v.getDate())) return;
     const pad = '00';
     const yyyy = v.getFullYear().toString();
@@ -23,7 +23,7 @@ const dateFormatter = v => {
 
 const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
 
-const sanitizeValue = value => {
+const format = value => {
     // null, undefined and empty string values should not go through dateFormatter
     // otherwise, it returns undefined and will make the input an uncontrolled one.
     if (value == null || value === '') {
@@ -31,7 +31,7 @@ const sanitizeValue = value => {
     }
 
     if (value instanceof Date) {
-        return dateFormatter(value);
+        return convertDateToString(value);
     }
 
     // valid dates should not be converted
@@ -39,8 +39,17 @@ const sanitizeValue = value => {
         return value;
     }
 
-    return dateFormatter(new Date(value));
+    return convertDateToString(new Date(value));
 };
+
+/**
+ * Converts a datetime string without timezone to a date object
+ * with timezone, using the browser timezone.
+ *
+ * @param {String} value Date string, formatted as yyyy-MM-ddThh:mm
+ * @return {Date}
+ */
+const parse = value => (value ? new Date(value) : '');
 
 export const DateInput = ({
     label,
@@ -60,7 +69,8 @@ export const DateInput = ({
         isRequired,
         meta: { error, touched },
     } = useInput({
-        format: sanitizeValue,
+        format,
+        parse,
         onBlur,
         onChange,
         onFocus,
@@ -72,6 +82,7 @@ export const DateInput = ({
 
     return (
         <TextField
+            id={id}
             {...input}
             type="date"
             margin="normal"
