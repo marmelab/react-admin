@@ -48,7 +48,7 @@ describe('<AdminRouter>', () => {
                 ['registration', 'registration']
             );
         });
-        
+
         it('should render all resources with a render prop', () => {
             const wrapper = shallow(
                 <CoreAdminRouter>
