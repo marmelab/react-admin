@@ -19,7 +19,6 @@ const DisabledInput = ({
     } = useInput({
         resource,
         source,
-        type: 'checkbox',
     });
 
     return (
