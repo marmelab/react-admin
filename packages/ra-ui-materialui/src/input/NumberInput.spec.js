@@ -2,72 +2,94 @@ import React from 'react';
 import assert from 'assert';
 import { render, cleanup, fireEvent } from '@testing-library/react';
 
-import { NumberInput } from './NumberInput';
+import NumberInput from './NumberInput';
+import { Form } from 'react-final-form';
+import { required } from 'ra-core/lib';
 
 describe('<NumberInput />', () => {
     afterEach(cleanup);
 
     const defaultProps = {
-        // We have to specify the id ourselves here because the
-        // TextInput is not wrapped inside a FormInput
-        id: 'foo',
-        source: 'foo',
-        resource: 'bar',
-        meta: {},
-        input: {
-            onBlur: () => {},
-            onChange: () => {},
-            onFocus: () => {},
-        },
-        onChange: () => {},
-        onBlur: () => {},
-        onFocus: () => {},
+        source: 'views',
+        resource: 'posts',
     };
 
     it('should use a mui TextField', () => {
         const { getByLabelText } = render(
-            <NumberInput {...defaultProps} input={{ value: 12 }} />
+            <Form
+                onSubmit={jest.fn}
+                initialValues={{ views: 12 }}
+                render={() => <NumberInput {...defaultProps} />}
+            />
         );
-        const TextFieldElement = getByLabelText('resources.bar.fields.foo');
-        assert.equal(TextFieldElement.value, '12');
-        assert.equal(TextFieldElement.getAttribute('type'), 'number');
+        const input = getByLabelText('resources.posts.fields.views');
+        expect(input.value).toEqual('12');
+        expect(input.getAttribute('type')).toEqual('number');
     });
 
     describe('onChange event', () => {
         it('should be customizable via the `onChange` prop', () => {
-            const onChange = jest.fn();
+            let value;
+            const onChange = jest.fn(event => {
+                value = event.target.value;
+            });
 
             const { getByLabelText } = render(
-                <NumberInput {...defaultProps} onChange={onChange} />
+                <Form
+                    onSubmit={jest.fn}
+                    render={() => (
+                        <NumberInput {...defaultProps} onChange={onChange} />
+                    )}
+                />
             );
-            const TextFieldElement = getByLabelText('resources.bar.fields.foo');
-            fireEvent.change(TextFieldElement, { target: { value: 3 } });
-            assert.equal(onChange.mock.calls[0][0], 3);
+            const input = getByLabelText('resources.posts.fields.views');
+            fireEvent.change(input, { target: { value: 3 } });
+            expect(value).toEqual('3');
         });
 
         it('should keep calling redux-form original event', () => {
-            const onChange = jest.fn();
+            let value;
+            const onChange = jest.fn(event => {
+                value = event.target.value;
+            });
+            let formApi;
 
             const { getByLabelText } = render(
-                <NumberInput {...defaultProps} input={{ value: 2, onChange }} />
+                <Form
+                    onSubmit={jest.fn}
+                    render={({ form }) => {
+                        formApi = form;
+                        return (
+                            <NumberInput
+                                {...defaultProps}
+                                onChange={onChange}
+                            />
+                        );
+                    }}
+                />
             );
-            const TextFieldElement = getByLabelText('resources.bar.fields.foo');
-            fireEvent.change(TextFieldElement, { target: { value: 3 } });
-            assert.equal(onChange.mock.calls[0][0], 3);
+            const input = getByLabelText('resources.posts.fields.views');
+            fireEvent.change(input, { target: { value: 3 } });
+            expect(value).toEqual('3');
+            expect(formApi.getState().values.views).toEqual(3);
         });
 
         it('should cast value as a numeric one', () => {
-            const onChange = jest.fn();
+            let formApi;
 
             const { getByLabelText } = render(
-                <NumberInput
-                    {...defaultProps}
-                    input={{ value: '1', onChange }}
+                <Form
+                    onSubmit={jest.fn}
+                    render={({ form }) => {
+                        formApi = form;
+                        return <NumberInput {...defaultProps} />;
+                    }}
                 />
             );
-            const TextFieldElement = getByLabelText('resources.bar.fields.foo');
-            fireEvent.change(TextFieldElement, { target: { value: '2' } });
-            assert.equal(onChange.mock.calls[0][0], '2');
+            const input = getByLabelText('resources.posts.fields.views');
+            fireEvent.change(input, { target: { value: '3' } });
+            expect(formApi.getState().values.views).toEqual(3);
+            expect(typeof formApi.getState().values.views).toEqual('number');
         });
     });
 
@@ -76,22 +98,36 @@ describe('<NumberInput />', () => {
             const onFocus = jest.fn();
 
             const { getByLabelText } = render(
-                <NumberInput {...defaultProps} onFocus={onFocus} />
+                <Form
+                    onSubmit={jest.fn}
+                    render={() => (
+                        <NumberInput {...defaultProps} onFocus={onFocus} />
+                    )}
+                />
             );
-            const TextFieldElement = getByLabelText('resources.bar.fields.foo');
-            fireEvent.focus(TextFieldElement);
-            assert.equal(onFocus.mock.calls.length, 1);
+            const input = getByLabelText('resources.posts.fields.views');
+            fireEvent.focus(input);
+            expect(onFocus).toHaveBeenCalled();
         });
 
         it('should keep calling redux-form original event', () => {
             const onFocus = jest.fn();
+            let formApi;
 
             const { getByLabelText } = render(
-                <NumberInput {...defaultProps} input={{ value: 2, onFocus }} />
+                <Form
+                    onSubmit={jest.fn}
+                    render={({ form }) => {
+                        formApi = form;
+                        return (
+                            <NumberInput {...defaultProps} onFocus={onFocus} />
+                        );
+                    }}
+                />
             );
-            const TextFieldElement = getByLabelText('resources.bar.fields.foo');
-            fireEvent.focus(TextFieldElement);
-            assert.equal(onFocus.mock.calls.length, 1);
+            const input = getByLabelText('resources.posts.fields.views');
+            fireEvent.focus(input);
+            expect(formApi.getState().active).toEqual('views');
         });
     });
 
@@ -100,68 +136,89 @@ describe('<NumberInput />', () => {
             const onBlur = jest.fn();
 
             const { getByLabelText } = render(
-                <NumberInput {...defaultProps} onBlur={onBlur} />
+                <Form
+                    onSubmit={jest.fn}
+                    render={() => (
+                        <NumberInput {...defaultProps} onBlur={onBlur} />
+                    )}
+                />
             );
-            const TextFieldElement = getByLabelText('resources.bar.fields.foo');
-            fireEvent.blur(TextFieldElement, { target: { value: 3 } });
-            assert.equal(onBlur.mock.calls[0][0], 3);
+            const input = getByLabelText('resources.posts.fields.views');
+            fireEvent.blur(input);
+            expect(onBlur).toHaveBeenCalled();
         });
 
         it('should keep calling redux-form original event', () => {
             const onBlur = jest.fn();
+            let formApi;
 
             const { getByLabelText } = render(
-                <NumberInput {...defaultProps} input={{ value: 2, onBlur }} />
+                <Form
+                    onSubmit={jest.fn}
+                    render={({ form }) => {
+                        formApi = form;
+                        return (
+                            <NumberInput {...defaultProps} onBlur={onBlur} />
+                        );
+                    }}
+                />
             );
-            const TextFieldElement = getByLabelText('resources.bar.fields.foo');
-            fireEvent.blur(TextFieldElement, { target: { value: 3 } });
-            assert.equal(onBlur.mock.calls[0][0], 3);
-        });
-
-        it('should cast value as a numeric one', () => {
-            const onBlur = jest.fn();
-
-            const { getByLabelText } = render(
-                <NumberInput {...defaultProps} input={{ value: '1', onBlur }} />
-            );
-            const TextFieldElement = getByLabelText('resources.bar.fields.foo');
-            fireEvent.blur(TextFieldElement, { target: { value: '2' } });
-            assert.equal(onBlur.mock.calls[0][0], '2');
+            const input = getByLabelText('resources.posts.fields.views');
+            fireEvent.focus(input);
+            expect(formApi.getState().active).toEqual('views');
+            fireEvent.blur(input);
+            expect(onBlur).toHaveBeenCalled();
+            expect(formApi.getState().active).toBeUndefined();
         });
     });
 
     describe('error message', () => {
         it('should not be displayed if field is pristine', () => {
             const { queryByText } = render(
-                <NumberInput
-                    {...defaultProps}
-                    meta={{ touched: false, error: 'Required field.' }}
+                <Form
+                    onSubmit={jest.fn}
+                    render={() => (
+                        <NumberInput {...defaultProps} validate={required()} />
+                    )}
                 />
             );
-            const error = queryByText('Required field.');
-            assert.ok(!error);
+            const error = queryByText('ra.validation.required');
+            expect(error).toBeNull();
         });
 
         it('should not be displayed if field has been touched but is valid', () => {
-            const { queryByText } = render(
-                <NumberInput
-                    {...defaultProps}
-                    meta={{ touched: true, error: false }}
+            const { getByLabelText, queryByText } = render(
+                <Form
+                    onSubmit={jest.fn}
+                    validateOnBlur
+                    render={() => (
+                        <NumberInput {...defaultProps} validate={required()} />
+                    )}
                 />
             );
-            const error = queryByText('Required field.');
-            assert.ok(!error);
+            const input = getByLabelText('resources.posts.fields.views *');
+            fireEvent.change(input, { target: { value: '3' } });
+            fireEvent.blur(input);
+
+            const error = queryByText('ra.validation.required');
+            expect(error).toBeNull();
         });
 
         it('should be displayed if field has been touched and is invalid', () => {
-            const { getByText } = render(
-                <NumberInput
-                    {...defaultProps}
-                    meta={{ touched: true, error: 'Required field.' }}
+            const { getByLabelText, getByText } = render(
+                <Form
+                    onSubmit={jest.fn}
+                    validateOnBlur
+                    render={() => (
+                        <NumberInput {...defaultProps} validate={required()} />
+                    )}
                 />
             );
-            const error = getByText('Required field.');
-            assert.ok(error);
+            const input = getByLabelText('resources.posts.fields.views *');
+            fireEvent.blur(input);
+
+            const error = getByText('ra.validation.required');
+            expect(error).not.toBeNull();
         });
     });
 });
