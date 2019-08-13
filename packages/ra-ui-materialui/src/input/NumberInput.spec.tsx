@@ -1,9 +1,9 @@
 import React from 'react';
 import { render, cleanup, fireEvent } from '@testing-library/react';
-
-import NumberInput from './NumberInput';
 import { Form } from 'react-final-form';
 import { required } from 'ra-core/lib';
+
+import NumberInput from './NumberInput';
 
 describe('<NumberInput />', () => {
     afterEach(cleanup);
@@ -21,7 +21,9 @@ describe('<NumberInput />', () => {
                 render={() => <NumberInput {...defaultProps} />}
             />
         );
-        const input = getByLabelText('resources.posts.fields.views');
+        const input = getByLabelText(
+            'resources.posts.fields.views'
+        ) as HTMLInputElement;
         expect(input.value).toEqual('12');
         expect(input.getAttribute('type')).toEqual('number');
     });

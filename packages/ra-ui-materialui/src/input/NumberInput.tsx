@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 import PropTypes from 'prop-types';
-import TextField from '@material-ui/core/TextField';
-import { useInput, FieldTitle } from 'ra-core';
+import TextField, { TextFieldProps } from '@material-ui/core/TextField';
+import { useInput, FieldTitle, InputProps } from 'ra-core';
 
 import InputHelperText from './InputHelperText';
 import sanitizeRestProps from './sanitizeRestProps';
@@ -24,7 +24,9 @@ const parse = value => {
  *
  * The object passed as `options` props is passed to the material-ui <TextField> component
  */
-const NumberInput = ({
+const NumberInput: FunctionComponent<
+    InputProps<TextFieldProps> & Omit<TextFieldProps, 'label' | 'helperText'>
+> = ({
     helperText,
     label,
     options,
