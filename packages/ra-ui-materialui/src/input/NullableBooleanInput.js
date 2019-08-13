@@ -1,118 +1,100 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
-import { withStyles, createStyles } from '@material-ui/core/styles';
-import compose from 'recompose/compose';
+import { makeStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
-import { addField, translate, FieldTitle } from 'ra-core';
+import { useInput, useTranslate, FieldTitle } from 'ra-core';
 
 import sanitizeRestProps from './sanitizeRestProps';
 import InputHelperText from './InputHelperText';
 
-const styles = theme =>
-    createStyles({
-        input: { width: theme.spacing(16) },
+const useStyles = makeStyles(theme => ({
+    input: { width: theme.spacing(16) },
+}));
+
+const getBooleanFromString = value => {
+    if (value === 'true') return true;
+    if (value === 'false') return false;
+    return null;
+};
+
+const getStringFromBoolean = value => {
+    if (value === true) return 'true';
+    if (value === false) return 'false';
+    return '';
+};
+
+const NullableBooleanInput = ({
+    className,
+    helperText,
+    label,
+    onBlur,
+    onChange,
+    onFocus,
+    options,
+    resource,
+    source,
+    validate,
+    ...rest
+}) => {
+    const classes = useStyles();
+    const translate = useTranslate();
+
+    const {
+        id,
+        input,
+        isRequired,
+        meta: { error, touched },
+    } = useInput({
+        format: getStringFromBoolean,
+        onBlur,
+        onChange,
+        onFocus,
+        parse: getBooleanFromString,
+        resource,
+        source,
+        type: 'checkbox',
+        validate,
     });
-
-export class NullableBooleanInput extends Component {
-    state = {
-        value: this.props.input.value,
-    };
-
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.input.value !== this.props.input.value) {
-            this.setState({ value: nextProps.input.value });
-        }
-    }
-
-    handleChange = event => {
-        this.props.input.onChange(
-            this.getBooleanFromString(event.target.value)
-        );
-        this.setState({ value: event.target.value });
-    };
-
-    getBooleanFromString = value => {
-        if (value === 'true') return true;
-        if (value === 'false') return false;
-        return null;
-    };
-
-    getStringFromBoolean = value => {
-        if (value === true) return 'true';
-        if (value === false) return 'false';
-        return '';
-    };
-
-    render() {
-        const {
-            classes,
-            className,
-            isRequired,
-            label,
-            meta,
-            options,
-            resource,
-            source,
-            translate,
-            helperText,
-            ...rest
-        } = this.props;
-        const { touched, error } = meta;
-        return (
-            <TextField
-                select
-                margin="normal"
-                value={this.getStringFromBoolean(this.state.value)}
-                label={
-                    <FieldTitle
-                        label={label}
-                        source={source}
-                        resource={resource}
-                        isRequired={isRequired}
-                    />
-                }
-                error={!!(touched && error)}
-                helperText={
-                    <InputHelperText
-                        touched={touched}
-                        error={error}
-                        helperText={helperText}
-                    />
-                }
-                className={classnames(classes.input, className)}
-                {...options}
-                {...sanitizeRestProps(rest)}
-                onChange={this.handleChange}
-            >
-                <MenuItem value="" />
-                <MenuItem value="false">
-                    {translate('ra.boolean.false')}
-                </MenuItem>
-                <MenuItem value="true">{translate('ra.boolean.true')}</MenuItem>
-            </TextField>
-        );
-    }
-}
+    return (
+        <TextField
+            id={id}
+            {...input}
+            select
+            margin="normal"
+            label={
+                <FieldTitle
+                    label={label}
+                    source={source}
+                    resource={resource}
+                    isRequired={isRequired}
+                />
+            }
+            error={!!(touched && error)}
+            helperText={
+                <InputHelperText
+                    touched={touched}
+                    error={error}
+                    helperText={helperText}
+                />
+            }
+            className={classnames(classes.input, className)}
+            {...options}
+            {...sanitizeRestProps(rest)}
+        >
+            <MenuItem value="" />
+            <MenuItem value="false">{translate('ra.boolean.false')}</MenuItem>
+            <MenuItem value="true">{translate('ra.boolean.true')}</MenuItem>
+        </TextField>
+    );
+};
 
 NullableBooleanInput.propTypes = {
-    classes: PropTypes.object,
-    className: PropTypes.string,
-    input: PropTypes.object,
-    isRequired: PropTypes.bool,
     label: PropTypes.string,
-    meta: PropTypes.object,
     options: PropTypes.object,
     resource: PropTypes.string,
     source: PropTypes.string,
-    translate: PropTypes.func.isRequired,
 };
 
-const enhance = compose(
-    addField,
-    translate,
-    withStyles(styles)
-);
-
-export default enhance(NullableBooleanInput);
+export default NullableBooleanInput;
