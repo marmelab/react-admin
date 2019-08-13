@@ -89,7 +89,7 @@ NumberInput.propTypes = {
     options: PropTypes.object,
     resource: PropTypes.string,
     source: PropTypes.string,
-    step: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+    step: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 };
 
 NumberInput.defaultProps = {
