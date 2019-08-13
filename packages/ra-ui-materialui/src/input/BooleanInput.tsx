@@ -39,6 +39,7 @@ const BooleanInput: FunctionComponent<
         source,
         type: 'checkbox',
         validate,
+        ...rest,
     });
 
     const handleChange = useCallback(

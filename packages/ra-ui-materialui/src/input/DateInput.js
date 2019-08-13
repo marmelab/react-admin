@@ -76,8 +76,8 @@ export const DateInput = ({
         onFocus,
         resource,
         source,
-        type: 'checkbox',
         validate,
+        ...rest,
     });
 
     return (
@@ -86,7 +86,6 @@ export const DateInput = ({
             {...input}
             type="date"
             margin="normal"
-            id={`${resource}_${source}_date_input`}
             error={!!(touched && error)}
             helperText={
                 <InputHelperText
