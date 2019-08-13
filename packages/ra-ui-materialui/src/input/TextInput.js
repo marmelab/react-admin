@@ -1,6 +1,6 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import { addField, FieldTitle } from 'ra-core';
+import { useInput, FieldTitle } from 'ra-core';
 
 import ResettableTextField from './ResettableTextField';
 import InputHelperText from './InputHelperText';
@@ -21,68 +21,45 @@ import sanitizeRestProps from './sanitizeRestProps';
  * The object passed as `options` props is passed to the <ResettableTextField> component
  */
 export const TextInput = ({
-    className,
-    input,
-    isRequired,
     label,
-    meta,
     options,
     resource,
     source,
-    type,
     helperText,
-    FormHelperTextProps,
     onBlur,
     onFocus,
     onChange,
+    validate,
     ...rest
 }) => {
-    const handleBlur = useCallback(
-        eventOrValue => {
-            onBlur(eventOrValue);
-            input.onBlur(eventOrValue);
-        },
-        [input, onBlur]
-    );
-
-    const handleFocus = useCallback(
-        event => {
-            onFocus(event);
-            input.onFocus(event);
-        },
-        [input, onFocus]
-    );
-
-    const handleChange = useCallback(
-        eventOrValue => {
-            onChange(eventOrValue);
-            input.onChange(eventOrValue);
-        },
-        [input, onChange]
-    );
-
-    if (typeof meta === 'undefined') {
-        throw new Error(
-            "The TextInput component wasn't called within a redux-form <Field>. Did you decorate it and forget to add the addField prop to your component? See https://marmelab.com/react-admin/Inputs.html#writing-your-own-input-component for details."
-        );
-    }
-    const { touched, error } = meta;
+    const {
+        id,
+        input,
+        isRequired,
+        meta: { error, touched },
+    } = useInput({
+        onBlur,
+        onChange,
+        onFocus,
+        resource,
+        source,
+        type: 'text',
+        validate,
+        ...rest,
+    });
 
     return (
         <ResettableTextField
+            id={id}
+            {...input}
             margin="normal"
-            type={type}
             label={
-                label === false ? (
-                    label
-                ) : (
-                    <FieldTitle
-                        label={label}
-                        source={source}
-                        resource={resource}
-                        isRequired={isRequired}
-                    />
-                )
+                <FieldTitle
+                    label={label}
+                    source={source}
+                    resource={resource}
+                    isRequired={isRequired}
+                />
             }
             error={!!(touched && error)}
             helperText={
@@ -92,39 +69,22 @@ export const TextInput = ({
                     helperText={helperText}
                 />
             }
-            className={className}
             {...options}
             {...sanitizeRestProps(rest)}
-            {...input}
-            onBlur={handleBlur}
-            onFocus={handleFocus}
-            onChange={handleChange}
         />
     );
 };
 
 TextInput.propTypes = {
     className: PropTypes.string,
-    input: PropTypes.object,
-    isRequired: PropTypes.bool,
     label: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
-    meta: PropTypes.object,
-    name: PropTypes.string,
-    onBlur: PropTypes.func,
-    onChange: PropTypes.func,
-    onFocus: PropTypes.func,
     options: PropTypes.object,
     resource: PropTypes.string,
     source: PropTypes.string,
-    type: PropTypes.string,
 };
 
 TextInput.defaultProps = {
-    onBlur: () => {},
-    onChange: () => {},
-    onFocus: () => {},
     options: {},
-    type: 'text',
 };
 
-export default addField(TextInput);
+export default TextInput;

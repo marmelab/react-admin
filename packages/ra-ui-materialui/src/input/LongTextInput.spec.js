@@ -1,66 +1,84 @@
 import React from 'react';
-import assert from 'assert';
-import { render, cleanup } from '@testing-library/react';
+import { render, cleanup, fireEvent } from '@testing-library/react';
+import { Form } from 'react-final-form';
+import { required } from 'ra-core';
 
-import { LongTextInput } from './LongTextInput';
+import LongTextInput from './LongTextInput';
 
 describe('<LongTextInput />', () => {
     afterEach(cleanup);
     const defaultProps = {
-        // We have to specify the id ourselves here because the
-        // TextInput is not wrapped inside a FormInput.
-        // This is needed to link the label to the input
-        id: 'foo',
-        source: 'foo',
-        resource: 'bar',
-        meta: {},
-        input: {
-            value: '',
-        },
-        onChange: jest.fn(),
+        source: 'body',
+        resource: 'posts',
     };
 
     it('should render the input as a textarea', () => {
         const { getByLabelText } = render(
-            <LongTextInput {...defaultProps} input={{ value: 'hello' }} />
+            <Form
+                initialValues={{ body: 'hello' }}
+                onSubmit={jest.fn}
+                render={() => <LongTextInput {...defaultProps} />}
+            />
         );
-        const TextFieldElement = getByLabelText('resources.bar.fields.foo');
-        assert.equal(TextFieldElement.tagName, 'TEXTAREA');
-        assert.equal(TextFieldElement.value, 'hello');
+        const input = getByLabelText('resources.posts.fields.body');
+        expect(input.tagName).toEqual('TEXTAREA');
+        expect(input.value).toEqual('hello');
     });
 
     describe('error message', () => {
         it('should not be displayed if field is pristine', () => {
             const { queryByText } = render(
-                <LongTextInput
-                    {...defaultProps}
-                    meta={{ touched: false, error: 'Required field.' }}
+                <Form
+                    onSubmit={jest.fn}
+                    render={() => (
+                        <LongTextInput
+                            {...defaultProps}
+                            validate={required()}
+                        />
+                    )}
                 />
             );
-            const error = queryByText('Required field.');
-            assert.ok(!error);
+            const error = queryByText('ra.validation.required');
+            expect(error).toBeNull();
         });
 
         it('should not be displayed if field has been touched but is valid', () => {
-            const { queryByText } = render(
-                <LongTextInput
-                    {...defaultProps}
-                    meta={{ touched: true, error: false }}
+            // Validator which always return undefined so the field is valid
+            const { getByLabelText, queryByText } = render(
+                <Form
+                    onSubmit={jest.fn}
+                    render={() => (
+                        <LongTextInput
+                            {...defaultProps}
+                            validate={required()}
+                        />
+                    )}
                 />
             );
-            const error = queryByText('Required field.');
-            assert.ok(!error);
+            const input = getByLabelText('resources.posts.fields.body *');
+            fireEvent.change(input, { target: { value: 'test' } });
+            fireEvent.blur(input);
+            const error = queryByText('ra.validation.required');
+            expect(error).toBeNull();
         });
 
         it('should be displayed if field has been touched and is invalid', () => {
-            const { getByText } = render(
-                <LongTextInput
-                    {...defaultProps}
-                    meta={{ touched: true, error: 'Required field.' }}
+            const { getByLabelText, queryByText } = render(
+                <Form
+                    validateOnBlur
+                    onSubmit={jest.fn}
+                    render={() => (
+                        <LongTextInput
+                            {...defaultProps}
+                            validate={required()}
+                        />
+                    )}
                 />
             );
-            const error = getByText('Required field.');
-            assert.ok(error);
+            const input = getByLabelText('resources.posts.fields.body *');
+            fireEvent.blur(input);
+            const error = queryByText('ra.validation.required');
+            expect(error).not.toBeNull();
         });
     });
 });
