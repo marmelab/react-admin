@@ -91,9 +91,6 @@ NumberInput.propTypes = {
 };
 
 NumberInput.defaultProps = {
-    onBlur: () => {},
-    onChange: () => {},
-    onFocus: () => {},
     options: {},
     step: 'any',
     textAlign: 'right',

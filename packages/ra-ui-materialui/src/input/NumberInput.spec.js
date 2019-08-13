@@ -1,5 +1,4 @@
 import React from 'react';
-import assert from 'assert';
 import { render, cleanup, fireEvent } from '@testing-library/react';
 
 import NumberInput from './NumberInput';
