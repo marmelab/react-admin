@@ -15,17 +15,17 @@ const CheckboxGroupInputItem = ({
     id,
     choice,
     onChange,
-    options,
     optionText,
     optionValue,
     translateChoice,
     value,
+    ...rest
 }) => {
-    const classes = useStyles();
+    const classes = useStyles({});
     const translate = useTranslate();
 
-    const choiceName = React.isValidElement(optionText)
-        ? React.cloneElement(optionText, { record: choice })
+    const choiceName = React.isValidElement<{ record: any }>(optionText)
+        ? React.cloneElement<{ record: any }>(optionText, { record: choice })
         : typeof optionText === 'function'
         ? optionText(choice)
         : get(choice, optionText);
@@ -47,7 +47,7 @@ const CheckboxGroupInputItem = ({
                             : false
                     }
                     value={String(get(choice, optionValue))}
-                    {...options}
+                    {...rest}
                 />
             }
             label={

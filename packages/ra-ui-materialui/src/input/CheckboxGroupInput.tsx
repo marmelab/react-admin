@@ -1,17 +1,22 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, FunctionComponent } from 'react';
 import PropTypes from 'prop-types';
 import FormLabel from '@material-ui/core/FormLabel';
-import FormControl from '@material-ui/core/FormControl';
+import FormControl, { FormControlProps } from '@material-ui/core/FormControl';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import { makeStyles } from '@material-ui/core/styles';
-import { FieldTitle, useInput } from 'ra-core';
+import { FieldTitle, useInput, InputProps } from 'ra-core';
 
 import defaultSanitizeRestProps from './sanitizeRestProps';
 import CheckboxGroupInputItem from './CheckboxGroupInputItem';
+import { CheckboxProps } from '@material-ui/core/Checkbox';
 
-const sanitizeRestProps = ({ setFilter, setPagination, setSort, ...rest }) =>
-    defaultSanitizeRestProps(rest);
+const sanitizeRestProps = ({
+    setFilter,
+    setPagination,
+    setSort,
+    ...rest
+}: any) => defaultSanitizeRestProps(rest);
 
 const useStyles = makeStyles(theme => ({
     root: {},
@@ -83,7 +88,9 @@ const useStyles = makeStyles(theme => ({
  *
  * The object passed as `options` props is passed to the material-ui <Checkbox> components
  */
-const CheckboxGroupInput = ({
+const CheckboxGroupInput: FunctionComponent<
+    InputProps<CheckboxProps> & FormControlProps
+> = ({
     choices,
     helperText,
     label,
@@ -100,7 +107,7 @@ const CheckboxGroupInput = ({
     validate,
     ...rest
 }) => {
-    const classes = useStyles();
+    const classes = useStyles({});
 
     const {
         id,
@@ -114,6 +121,7 @@ const CheckboxGroupInput = ({
         resource,
         source,
         validate,
+        ...rest,
     });
 
     const handleCheck = useCallback(
