@@ -121,6 +121,7 @@ const CheckboxGroupInput: FunctionComponent<
         resource,
         source,
         validate,
+        ...rest,
     });
 
     const handleCheck = useCallback(
