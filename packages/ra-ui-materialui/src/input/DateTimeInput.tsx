@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 import PropTypes from 'prop-types';
-import TextField from '@material-ui/core/TextField';
-import { useInput, FieldTitle } from 'ra-core';
+import TextField, { TextFieldProps } from '@material-ui/core/TextField';
+import { useInput, FieldTitle, InputProps } from 'ra-core';
 
 import sanitizeRestProps from './sanitizeRestProps';
 import InputHelperText from './InputHelperText';
@@ -14,8 +14,8 @@ const leftPad2 = leftPad(2);
  * @param {Date} value value to convert
  * @returns {String} A standardized datetime (yyyy-MM-ddThh:mm), to be passed to an <input type="datetime-local" />
  */
-const convertDateToString = value => {
-    if (!(value instanceof Date) || isNaN(value)) return '';
+const convertDateToString = (value: Date) => {
+    if (!(value instanceof Date) || isNaN(value.getDate())) return '';
     const yyyy = leftPad4(value.getFullYear());
     const MM = leftPad2(value.getMonth() + 1);
     const dd = leftPad2(value.getDate());
@@ -33,7 +33,7 @@ const dateTimeRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/;
  *
  * @param {Date | String} value date string or object
  */
-const format = value => {
+const format = (value: string | Date) => {
     // null, undefined and empty string values should not go through convertDateToString
     // otherwise, it returns undefined and will make the input an uncontrolled one.
     if (value == null || value === '') {
@@ -58,12 +58,14 @@ const format = value => {
  * @param {String} value Date string, formatted as yyyy-MM-ddThh:mm
  * @return {Date}
  */
-const parse = value => new Date(value);
+const parse = (value: string) => new Date(value);
 
 /**
  * Input component for entering a date and a time with timezone, using the browser locale
  */
-export const DateTimeInput = ({
+export const DateTimeInput: FunctionComponent<
+    InputProps<TextFieldProps> & Omit<TextFieldProps, 'helperText' | 'label'>
+> = ({
     label,
     helperText,
     onBlur,
