@@ -92,7 +92,7 @@ const PostCreateToolbar = props => (
 
 const backlinksDefaultValue = [
     {
-        date: new Date().toISOString(),
+        date: new Date(),
         url: 'http://google.com',
     },
 ];
