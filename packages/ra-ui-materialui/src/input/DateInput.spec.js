@@ -41,9 +41,7 @@ describe('<DateInput />', () => {
         fireEvent.change(input, {
             target: { value: '2010-01-04' },
         });
-        expect(formApi.getState().values.publishedAt).toEqual(
-            new Date('2010-01-04')
-        );
+        expect(formApi.getState().values.publishedAt).toEqual('2010-01-04');
     });
 
     describe('error message', () => {
