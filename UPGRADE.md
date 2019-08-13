@@ -173,6 +173,7 @@ Components deprecated in 2.X have been removed in 3.x. This includes:
 * `ViewTitle` (use `Title` instead)
 * `RecordTitle` (use `TitleForRecord` instead)
 * `TitleDeprecated` (use `Title` instead)
+* `BulkActions` (use `BulkActionButtons` props instead)
 
 ## Replace papaparse with a lighter library
 
