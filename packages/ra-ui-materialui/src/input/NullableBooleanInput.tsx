@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 import PropTypes from 'prop-types';
-import TextField from '@material-ui/core/TextField';
+import TextField, { TextFieldProps } from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
 import { makeStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
-import { useInput, useTranslate, FieldTitle } from 'ra-core';
+import { useInput, useTranslate, FieldTitle, InputProps } from 'ra-core';
 
 import sanitizeRestProps from './sanitizeRestProps';
 import InputHelperText from './InputHelperText';
@@ -13,19 +13,21 @@ const useStyles = makeStyles(theme => ({
     input: { width: theme.spacing(16) },
 }));
 
-const getBooleanFromString = value => {
+const getBooleanFromString = (value: string): boolean | null => {
     if (value === 'true') return true;
     if (value === 'false') return false;
     return null;
 };
 
-const getStringFromBoolean = value => {
+const getStringFromBoolean = (value?: boolean | null): string => {
     if (value === true) return 'true';
     if (value === false) return 'false';
     return '';
 };
 
-const NullableBooleanInput = ({
+const NullableBooleanInput: FunctionComponent<
+    InputProps<TextFieldProps> & Omit<TextFieldProps, 'label' | 'helperText'>
+> = ({
     className,
     helperText,
     label,
@@ -38,7 +40,7 @@ const NullableBooleanInput = ({
     validate,
     ...rest
 }) => {
-    const classes = useStyles();
+    const classes = useStyles({});
     const translate = useTranslate();
 
     const {
