@@ -42,15 +42,6 @@ const format = value => {
     return convertDateToString(new Date(value));
 };
 
-/**
- * Converts a datetime string without timezone to a date object
- * with timezone, using the browser timezone.
- *
- * @param {String} value Date string, formatted as yyyy-MM-ddThh:mm
- * @return {Date}
- */
-const parse = value => (value ? new Date(value) : '');
-
 export const DateInput = ({
     label,
     options,
@@ -70,7 +61,6 @@ export const DateInput = ({
         meta: { error, touched },
     } = useInput({
         format,
-        parse,
         onBlur,
         onChange,
         onFocus,
