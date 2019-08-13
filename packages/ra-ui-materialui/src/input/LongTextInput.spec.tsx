@@ -20,7 +20,9 @@ describe('<LongTextInput />', () => {
                 render={() => <LongTextInput {...defaultProps} />}
             />
         );
-        const input = getByLabelText('resources.posts.fields.body');
+        const input = getByLabelText(
+            'resources.posts.fields.body'
+        ) as HTMLInputElement;
         expect(input.tagName).toEqual('TEXTAREA');
         expect(input.value).toEqual('hello');
     });

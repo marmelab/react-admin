@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 import PropTypes from 'prop-types';
-import { useInput, FieldTitle } from 'ra-core';
+import { useInput, FieldTitle, InputProps } from 'ra-core';
+import { TextFieldProps } from '@material-ui/core/TextField';
 
 import ResettableTextField from './ResettableTextField';
 import InputHelperText from './InputHelperText';
@@ -20,7 +21,9 @@ import sanitizeRestProps from './sanitizeRestProps';
  *
  * The object passed as `options` props is passed to the <ResettableTextField> component
  */
-export const TextInput = ({
+export const TextInput: FunctionComponent<
+    InputProps<TextFieldProps> & Omit<TextFieldProps, 'label' | 'helperText'>
+> = ({
     label,
     options,
     resource,

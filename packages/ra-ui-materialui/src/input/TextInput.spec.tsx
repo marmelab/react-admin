@@ -21,7 +21,9 @@ describe('<TextInput />', () => {
                 render={() => <TextInput {...defaultProps} />}
             />
         );
-        const TextFieldElement = getByLabelText('resources.posts.fields.title');
+        const TextFieldElement = getByLabelText(
+            'resources.posts.fields.title'
+        ) as HTMLInputElement;
         expect(TextFieldElement.value).toEqual('hello');
         expect(TextFieldElement.getAttribute('type')).toEqual('text');
     });
