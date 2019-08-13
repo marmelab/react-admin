@@ -38,8 +38,12 @@ describe('<DateInput />', () => {
             />
         );
         const input = getByLabelText('resources.posts.fields.publishedAt');
-        fireEvent.change(input, { target: { value: '2010-01-04' } });
-        expect(formApi.getState().values.publishedAt).toBe('2010-01-04');
+        fireEvent.change(input, {
+            target: { value: '2010-01-04' },
+        });
+        expect(formApi.getState().values.publishedAt).toEqual(
+            new Date('2010-01-04T00:00:00.000Z')
+        );
     });
 
     describe('error message', () => {
