@@ -83,7 +83,7 @@ const NullableBooleanInput = ({
             {...options}
             {...sanitizeRestProps(rest)}
         >
-            <MenuItem value="" />
+            <MenuItem value="">{translate('ra.boolean.null')}</MenuItem>
             <MenuItem value="false">{translate('ra.boolean.false')}</MenuItem>
             <MenuItem value="true">{translate('ra.boolean.true')}</MenuItem>
         </TextField>

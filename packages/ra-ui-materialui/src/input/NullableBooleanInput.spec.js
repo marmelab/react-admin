@@ -26,7 +26,7 @@ describe('<NullableBooleanInput />', () => {
         const options = getAllByRole('option');
         expect(options.length).toEqual(3);
 
-        fireEvent.click(options[0]);
+        fireEvent.click(getByText('ra.boolean.null'));
         expect(formApi.getState().values.isPublished).toBeNull();
 
         fireEvent.click(select);
