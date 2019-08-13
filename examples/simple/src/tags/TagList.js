@@ -3,14 +3,13 @@ import {
     DeleteButton,
     EditButton,
     List,
-    SaveButton,
     ShowButton,
-    TextInput,
+    TextField,
 } from 'react-admin';
 import {
     DragPreview,
     IgnoreFormProps,
-    NodeForm,
+    NodeView,
     Tree,
     NodeActions,
 } from 'ra-tree-ui-materialui';
@@ -21,7 +20,6 @@ const TagDragPreview = props => (
 
 const CustomNodeActions = props => (
     <NodeActions {...props}>
-        <SaveButton variant="text" />
         <IgnoreFormProps>
             <EditButton />
             <ShowButton />
@@ -38,9 +36,9 @@ const TagList = props => (
             parentSource="parent_id"
             dragPreviewComponent={TagDragPreview}
         >
-            <NodeForm actions={<CustomNodeActions />}>
-                <TextInput source="name" />
-            </NodeForm>
+            <NodeView actions={<CustomNodeActions />}>
+                <TextField source="name" />
+            </NodeView>
         </Tree>
     </List>
 );

@@ -32,6 +32,7 @@ const sanitizeRestProps = ({
     hasCreate,
     hideFilter,
     isLoading,
+    loaded,
     loadedOnce,
     perPage,
     selectedIds,
