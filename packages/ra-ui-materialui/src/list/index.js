@@ -1,4 +1,3 @@
-import BulkActions from './BulkActions';
 import BulkActionsToolbar from './BulkActionsToolbar';
 import BulkDeleteAction from './BulkDeleteAction';
 import Datagrid from './Datagrid';
@@ -20,7 +19,6 @@ import SimpleList from './SimpleList';
 import SingleFieldList from './SingleFieldList';
 
 export {
-    BulkActions,
     BulkActionsToolbar,
     BulkDeleteAction,
     Datagrid,
