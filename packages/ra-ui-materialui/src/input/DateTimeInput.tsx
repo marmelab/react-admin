@@ -126,12 +126,7 @@ export const DateTimeInput: FunctionComponent<
 };
 
 DateTimeInput.propTypes = {
-    classes: PropTypes.object,
-    className: PropTypes.string,
-    input: PropTypes.object,
-    isRequired: PropTypes.bool,
     label: PropTypes.string,
-    meta: PropTypes.object,
     options: PropTypes.object,
     resource: PropTypes.string,
     source: PropTypes.string,
