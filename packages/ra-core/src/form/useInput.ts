@@ -90,6 +90,7 @@ const useInput = ({
     );
 
     // If there is an input prop, this input has already been enhanced by final-form
+    // This is required in for inputs used inside other inputs (such as the SelectInput inside a ReferenceInput)
     if (options.input) {
         return {
             id: id || source,
