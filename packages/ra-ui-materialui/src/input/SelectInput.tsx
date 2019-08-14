@@ -1,12 +1,13 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, FunctionComponent } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import MenuItem from '@material-ui/core/MenuItem';
 import { makeStyles } from '@material-ui/core/styles';
-import { useInput, FieldTitle, useTranslate } from 'ra-core';
+import { useInput, FieldTitle, useTranslate, InputProps } from 'ra-core';
 
 import ResettableTextField from './ResettableTextField';
 import InputHelperText from './InputHelperText';
+import { TextFieldProps } from '@material-ui/core/TextField';
 
 const sanitizeRestProps = ({
     addLabel,
@@ -47,7 +48,7 @@ const sanitizeRestProps = ({
     translateChoice,
     validation,
     ...rest
-}) => rest;
+}: any) => rest;
 
 const useStyles = makeStyles(theme => ({
     input: {
@@ -129,7 +130,9 @@ const useStyles = makeStyles(theme => ({
  * <SelectInput source="gender" choices={choices} disableValue="not_available" />
  *
  */
-const SelectInput = ({
+const SelectInput: FunctionComponent<
+    InputProps<TextFieldProps> & Omit<TextFieldProps, 'label' | 'helperText'>
+> = ({
     allowEmpty,
     choices,
     className,
@@ -176,8 +179,8 @@ const SelectInput = ({
 
     const renderMenuItemOption = useCallback(
         choice => {
-            if (React.isValidElement(optionText)) {
-                return React.cloneElement(optionText, {
+            if (React.isValidElement<{ record: any }>(optionText)) {
+                return React.cloneElement<{ record: any }>(optionText, {
                     record: choice,
                 });
             }
