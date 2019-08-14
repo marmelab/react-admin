@@ -1,140 +1,136 @@
 import React from 'react';
 import assert from 'assert';
 import { render, cleanup, fireEvent } from '@testing-library/react';
-
-import { SelectInput } from './SelectInput';
+import { Form } from 'react-final-form';
 import { TranslationContext } from 'ra-core';
+
+import SelectInput from './SelectInput';
+import { required } from 'ra-core';
 
 describe('<SelectInput />', () => {
     afterEach(cleanup);
 
     const defaultProps = {
-        // We have to specify the id ourselves here because the
-        // TextInput is not wrapped inside a FormInput
-        id: 'foo',
-        source: 'foo',
-        resource: 'bar',
-        meta: {},
-        input: { value: '' },
+        source: 'language',
+        resource: 'posts',
+        choices: [{ id: 'ang', name: 'Angular' }, { id: 'rea', name: 'React' }],
     };
 
     it('should use the input parameter value as the initial input value', () => {
         const { getByLabelText } = render(
-            <SelectInput {...defaultProps} input={{ value: 2 }} />
+            <Form
+                initialValues={{ language: 'ang' }}
+                onSubmit={jest.fn()}
+                render={() => <SelectInput {...defaultProps} />}
+            />
         );
-        const TextFieldElement = getByLabelText('resources.bar.fields.foo');
-        assert.equal(TextFieldElement.value, '2');
+        const input = getByLabelText('resources.posts.fields.language');
+        expect(input.value).toEqual('ang');
     });
 
     it('should render choices as mui MenuItem components', () => {
         const { getByRole, getByText, queryAllByRole } = render(
-            <SelectInput
-                {...defaultProps}
-                choices={[
-                    { id: 'M', name: 'Male' },
-                    { id: 'F', name: 'Female' },
-                ]}
+            <Form
+                onSubmit={jest.fn()}
+                render={() => <SelectInput {...defaultProps} />}
             />
         );
-        const TextFieldElement = getByRole('button');
-        fireEvent.click(TextFieldElement);
+        const select = getByRole('button');
+        fireEvent.click(select);
         const options = queryAllByRole('option');
-        assert.equal(options.length, 2);
+        expect(options.length).toEqual(2);
 
-        const optionMale = getByText('Male');
-        assert.equal(optionMale.getAttribute('data-value'), 'M');
+        const option1 = getByText('Angular');
+        expect(option1.getAttribute('data-value')).toEqual('ang');
 
-        const optionFemale = getByText('Female');
-        assert.equal(optionFemale.getAttribute('data-value'), 'F');
+        const option2 = getByText('React');
+        expect(option2.getAttribute('data-value')).toEqual('rea');
     });
 
     it('should render disable choices marked so', () => {
         const { getByRole, getByText } = render(
-            <SelectInput
-                {...defaultProps}
-                choices={[
-                    { id: 123, name: 'Leo Tolstoi', sex: 'M' },
-                    { id: 456, name: 'Jane Austen', sex: 'F' },
-                    {
-                        id: 1,
-                        name: 'System Administrator',
-                        sex: 'F',
-                        disabled: true,
-                    },
-                ]}
+            <Form
+                onSubmit={jest.fn()}
+                render={() => (
+                    <SelectInput
+                        {...defaultProps}
+                        choices={[
+                            { id: 'ang', name: 'Angular' },
+                            { id: 'rea', name: 'React', disabled: true },
+                        ]}
+                    />
+                )}
             />
         );
-        const TextFieldElement = getByRole('button');
-        fireEvent.click(TextFieldElement);
-        const option1 = getByText('Leo Tolstoi');
-        assert.equal(option1.getAttribute('aria-disabled'), 'false');
+        const select = getByRole('button');
+        fireEvent.click(select);
+        const option1 = getByText('Angular');
+        expect(option1.getAttribute('aria-disabled')).toEqual('false');
 
-        const option2 = getByText('Jane Austen');
-        assert.equal(option2.getAttribute('aria-disabled'), 'false');
-
-        const option3 = getByText('System Administrator');
-        assert.equal(option3.getAttribute('aria-disabled'), 'true');
+        const option2 = getByText('React');
+        expect(option2.getAttribute('aria-disabled')).toEqual('true');
     });
 
     it('should add an empty menu when allowEmpty is true', () => {
         const { getByRole, queryAllByRole } = render(
-            <SelectInput
-                {...defaultProps}
-                allowEmpty
-                choices={[
-                    { id: 'M', name: 'Male' },
-                    { id: 'F', name: 'Female' },
-                ]}
+            <Form
+                onSubmit={jest.fn()}
+                render={() => <SelectInput {...defaultProps} allowEmpty />}
             />
         );
-        const TextFieldElement = getByRole('button');
-        fireEvent.click(TextFieldElement);
+        const select = getByRole('button');
+        fireEvent.click(select);
 
         const options = queryAllByRole('option');
-        assert.equal(options.length, 3);
-        assert.equal(options[0].getAttribute('data-value'), '');
+        expect(options.length).toEqual(3);
+        expect(options[0].getAttribute('data-value')).toEqual('');
     });
 
     it('should add an empty menu with custom value when allowEmpty is true', () => {
         const emptyValue = 'test';
 
         const { getByRole, queryAllByRole } = render(
-            <SelectInput
-                {...defaultProps}
-                allowEmpty
-                emptyValue={emptyValue}
-                choices={[
-                    { id: 'M', name: 'Male' },
-                    { id: 'F', name: 'Female' },
-                ]}
+            <Form
+                onSubmit={jest.fn()}
+                render={() => (
+                    <SelectInput
+                        {...defaultProps}
+                        allowEmpty
+                        emptyValue={emptyValue}
+                    />
+                )}
             />
         );
-        const TextFieldElement = getByRole('button');
-        fireEvent.click(TextFieldElement);
+        const select = getByRole('button');
+        fireEvent.click(select);
 
         const options = queryAllByRole('option');
-        assert.equal(options.length, 3);
-        assert.equal(options[0].getAttribute('data-value'), emptyValue);
+        expect(options.length).toEqual(3);
+        expect(options[0].getAttribute('data-value')).toEqual(emptyValue);
     });
 
     it('should add an empty menu with proper text when emptyText is a string', () => {
         const emptyText = 'Default';
 
         const { getByRole, getByText, queryAllByRole } = render(
-            <SelectInput
-                allowEmpty
-                emptyText={emptyText}
-                {...defaultProps}
-                choices={[]}
+            <Form
+                onSubmit={jest.fn()}
+                render={() => (
+                    <SelectInput
+                        allowEmpty
+                        emptyText={emptyText}
+                        {...defaultProps}
+                    />
+                )}
             />
         );
-        const EmptyMenuElement = getByRole('button');
-        fireEvent.click(EmptyMenuElement);
+        const emptyOption = getByRole('button');
+        fireEvent.click(emptyOption);
 
         const options = queryAllByRole('option');
-        assert.equal(options.length, 1);
+        expect(options.length).toEqual(3);
 
-        assert.ok(getByText('Default'));
+        expect(getByText('Default')).not.toBeNull();
     });
 
     it('should add an empty menu with proper text when emptyText is a React element', () => {
@@ -145,111 +141,152 @@ describe('<SelectInput />', () => {
         );
 
         const { getByRole, getByText, queryAllByRole } = render(
-            <SelectInput
-                allowEmpty
-                emptyText={emptyText}
-                {...defaultProps}
-                choices={[]}
+            <Form
+                onSubmit={jest.fn()}
+                render={() => (
+                    <SelectInput
+                        allowEmpty
+                        emptyText={emptyText}
+                        {...defaultProps}
+                    />
+                )}
             />
         );
-        const EmptyMenuElement = getByRole('button');
-        fireEvent.click(EmptyMenuElement);
+        const emptyOption = getByRole('button');
+        fireEvent.click(emptyOption);
 
         const options = queryAllByRole('option');
-        assert.equal(options.length, 1);
+        expect(options.length).toEqual(3);
 
-        assert.ok(getByText('Empty choice'));
+        expect(getByText('Empty choice')).not.toBeNull();
     });
 
     it('should not add a falsy (null or false) element when allowEmpty is false', () => {
         const { getByRole, queryAllByRole } = render(
-            <SelectInput
-                {...defaultProps}
-                choices={[
-                    { id: 'M', name: 'Male' },
-                    { id: 'F', name: 'Female' },
-                ]}
+            <Form
+                onSubmit={jest.fn()}
+                render={() => <SelectInput {...defaultProps} />}
             />
         );
-        const TextFieldElement = getByRole('button');
-        fireEvent.click(TextFieldElement);
+        const select = getByRole('button');
+        fireEvent.click(select);
         const options = queryAllByRole('option');
-        assert.equal(options.length, 2);
+        expect(options.length).toEqual(2);
     });
 
     it('should use optionValue as value identifier', () => {
         const { getByRole, getByText } = render(
-            <SelectInput
-                {...defaultProps}
-                optionValue="foobar"
-                choices={[{ foobar: 'M', name: 'Male' }]}
+            <Form
+                onSubmit={jest.fn()}
+                render={() => (
+                    <SelectInput
+                        {...defaultProps}
+                        optionValue="foobar"
+                        choices={[
+                            { foobar: 'ang', name: 'Angular' },
+                            { foobar: 'rea', name: 'React' },
+                        ]}
+                    />
+                )}
             />
         );
-        const TextFieldElement = getByRole('button');
-        fireEvent.click(TextFieldElement);
+        const select = getByRole('button');
+        fireEvent.click(select);
 
-        const optionMale = getByText('Male');
-        assert.equal(optionMale.getAttribute('data-value'), 'M');
+        const option = getByText('Angular');
+        expect(option.getAttribute('data-value')).toEqual('ang');
     });
 
     it('should use optionValue including "." as value identifier', () => {
         const { getByRole, getByText } = render(
-            <SelectInput
-                {...defaultProps}
-                optionValue="foobar.id"
-                choices={[{ foobar: { id: 'M' }, name: 'Male' }]}
+            <Form
+                onSubmit={jest.fn()}
+                render={() => (
+                    <SelectInput
+                        {...defaultProps}
+                        optionValue="foobar.id"
+                        choices={[
+                            { foobar: { id: 'ang' }, name: 'Angular' },
+                            { foobar: { id: 'rea' }, name: 'React' },
+                        ]}
+                    />
+                )}
             />
         );
-        const TextFieldElement = getByRole('button');
-        fireEvent.click(TextFieldElement);
+        const select = getByRole('button');
+        fireEvent.click(select);
 
-        const optionMale = getByText('Male');
-        assert.equal(optionMale.getAttribute('data-value'), 'M');
+        const option = getByText('Angular');
+        expect(option.getAttribute('data-value')).toEqual('ang');
     });
 
     it('should use optionText with a string value as text identifier', () => {
         const { getByRole, getByText } = render(
-            <SelectInput
-                {...defaultProps}
-                optionText="foobar"
-                choices={[{ id: 'M', foobar: 'Male' }]}
+            <Form
+                onSubmit={jest.fn()}
+                render={() => (
+                    <SelectInput
+                        {...defaultProps}
+                        optionText="foobar"
+                        choices={[
+                            { id: 'ang', foobar: 'Angular' },
+                            { id: 'rea', foobar: 'React' },
+                        ]}
+                    />
+                )}
             />
         );
-        const TextFieldElement = getByRole('button');
-        fireEvent.click(TextFieldElement);
+        const select = getByRole('button');
+        fireEvent.click(select);
 
-        const optionMale = getByText('Male');
-        assert.equal(optionMale.getAttribute('data-value'), 'M');
+        const option = getByText('Angular');
+        expect(option.getAttribute('data-value')).toEqual('ang');
     });
 
     it('should use optionText with a string value including "." as text identifier', () => {
         const { getByRole, getByText } = render(
-            <SelectInput
-                {...defaultProps}
-                optionText="foobar.name"
-                choices={[{ id: 'M', foobar: { name: 'Male' } }]}
+            <Form
+                onSubmit={jest.fn()}
+                render={() => (
+                    <SelectInput
+                        {...defaultProps}
+                        optionText="foobar.name"
+                        choices={[
+                            { id: 'ang', foobar: { name: 'Angular' } },
+                            { id: 'rea', foobar: { name: 'React' } },
+                        ]}
+                    />
+                )}
             />
         );
-        const TextFieldElement = getByRole('button');
-        fireEvent.click(TextFieldElement);
+        const select = getByRole('button');
+        fireEvent.click(select);
 
-        const optionMale = getByText('Male');
-        assert.equal(optionMale.getAttribute('data-value'), 'M');
+        const option = getByText('Angular');
+        expect(option.getAttribute('data-value')).toEqual('ang');
     });
 
     it('should use optionText with a function value as text identifier', () => {
         const { getByRole, getByText } = render(
-            <SelectInput
-                {...defaultProps}
-                optionText={choice => choice.foobar}
-                choices={[{ id: 'M', foobar: 'Male' }]}
+            <Form
+                onSubmit={jest.fn()}
+                render={() => (
+                    <SelectInput
+                        {...defaultProps}
+                        optionText={choice => choice.foobar}
+                        choices={[
+                            { id: 'ang', foobar: 'Angular' },
+                            { id: 'rea', foobar: 'React' },
+                        ]}
+                    />
+                )}
             />
         );
-        const TextFieldElement = getByRole('button');
-        fireEvent.click(TextFieldElement);
+        const select = getByRole('button');
+        fireEvent.click(select);
 
-        const optionMale = getByText('Male');
-        assert.equal(optionMale.getAttribute('data-value'), 'M');
+        const option = getByText('Angular');
+        expect(option.getAttribute('data-value')).toEqual('ang');
     });
 
     it('should use optionText with an element value as text identifier', () => {
@@ -258,17 +295,25 @@ describe('<SelectInput />', () => {
         );
 
         const { getByRole, getByLabelText } = render(
-            <SelectInput
-                {...defaultProps}
-                optionText={<Foobar />}
-                choices={[{ id: 'M', foobar: 'Male' }]}
+            <Form
+                onSubmit={jest.fn()}
+                render={() => (
+                    <SelectInput
+                        {...defaultProps}
+                        optionText={<Foobar />}
+                        choices={[
+                            { id: 'ang', foobar: 'Angular' },
+                            { id: 'rea', foobar: 'React' },
+                        ]}
+                    />
+                )}
             />
         );
-        const TextFieldElement = getByRole('button');
-        fireEvent.click(TextFieldElement);
+        const select = getByRole('button');
+        fireEvent.click(select);
 
-        const optionMale = getByLabelText('Male');
-        assert.equal(optionMale.getAttribute('data-value'), 'M');
+        const option = getByLabelText('Angular');
+        expect(option.getAttribute('data-value')).toEqual('ang');
     });
 
     it('should translate the choices by default', () => {
@@ -278,25 +323,22 @@ describe('<SelectInput />', () => {
                     translate: x => `**${x}**`,
                 }}
             >
-                <SelectInput
-                    {...defaultProps}
-                    choices={[
-                        { id: 'M', name: 'Male' },
-                        { id: 'F', name: 'Female' },
-                    ]}
+                <Form
+                    onSubmit={jest.fn()}
+                    render={() => <SelectInput {...defaultProps} />}
                 />
             </TranslationContext.Provider>
         );
-        const TextFieldElement = getByRole('button');
-        fireEvent.click(TextFieldElement);
+        const select = getByRole('button');
+        fireEvent.click(select);
         const options = queryAllByRole('option');
-        assert.equal(options.length, 2);
+        expect(options.length).toEqual(2);
 
-        const optionMale = getByText('**Male**');
-        assert.equal(optionMale.getAttribute('data-value'), 'M');
+        const option1 = getByText('**Angular**');
+        expect(option1.getAttribute('data-value')).toEqual('ang');
 
-        const optionFemale = getByText('**Female**');
-        assert.equal(optionFemale.getAttribute('data-value'), 'F');
+        const option2 = getByText('**React**');
+        expect(option2.getAttribute('data-value')).toEqual('rea');
     });
 
     it('should not translate the choices if translateChoice is false', () => {
@@ -306,83 +348,109 @@ describe('<SelectInput />', () => {
                     translate: x => `**${x}**`,
                 }}
             >
-                <SelectInput
-                    {...defaultProps}
-                    choices={[
-                        { id: 'M', name: 'Male' },
-                        { id: 'F', name: 'Female' },
-                    ]}
-                    translateChoice={false}
+                <Form
+                    onSubmit={jest.fn()}
+                    render={() => (
+                        <SelectInput
+                            {...defaultProps}
+                            translateChoice={false}
+                        />
+                    )}
                 />
             </TranslationContext.Provider>
         );
-        const TextFieldElement = getByRole('button');
-        fireEvent.click(TextFieldElement);
+        const select = getByRole('button');
+        fireEvent.click(select);
         const options = queryAllByRole('option');
-        assert.equal(options.length, 2);
+        expect(options.length).toEqual(2);
 
-        const optionMale = getByText('Male');
-        assert.equal(optionMale.getAttribute('data-value'), 'M');
+        const option1 = getByText('Angular');
+        expect(option1.getAttribute('data-value')).toEqual('ang');
 
-        const optionFemale = getByText('Female');
-        assert.equal(optionFemale.getAttribute('data-value'), 'F');
+        const option2 = getByText('React');
+        expect(option2.getAttribute('data-value')).toEqual('rea');
     });
 
-    it('should displayed helperText if prop is present in meta', () => {
+    it('should displayed helperText if prop is present', () => {
         const { getByText } = render(
-            <SelectInput {...defaultProps} helperText="Can I help you?" />
+            <Form
+                onSubmit={jest.fn()}
+                render={() => (
+                    <SelectInput
+                        {...defaultProps}
+                        helperText="Can I help you?"
+                    />
+                )}
+            />
         );
         const helperText = getByText('Can I help you?');
-        assert.ok(helperText);
+        expect(helperText).not.toBeNull();
     });
 
     describe('error message', () => {
         it('should not be displayed if field is pristine', () => {
             const { queryAllByText } = render(
-                <SelectInput
-                    {...defaultProps}
-                    meta={{ touched: false, error: 'Required field.' }}
+                <Form
+                    onSubmit={jest.fn()}
+                    render={() => (
+                        <SelectInput {...defaultProps} validate={required()} />
+                    )}
                 />
             );
-            const error = queryAllByText('Required field.');
-            assert.equal(error.length, 0);
+            const error = queryAllByText('ra.validation.required');
+            expect(error.length).toEqual(0);
         });
 
         it('should not be displayed if field has been touched but is valid', () => {
-            const { queryAllByText } = render(
-                <SelectInput
-                    {...defaultProps}
-                    meta={{ touched: true, error: false }}
+            const { getByLabelText, queryAllByText } = render(
+                <Form
+                    validateOnBlur
+                    initialValues={{ language: 'ang' }}
+                    onSubmit={jest.fn()}
+                    render={() => (
+                        <SelectInput {...defaultProps} validate={required()} />
+                    )}
                 />
             );
-            const error = queryAllByText('Required field.');
-            assert.equal(error.length, 0);
+            const input = getByLabelText('resources.posts.fields.language *');
+            fireEvent.blur(input);
+
+            const error = queryAllByText('ra.validation.required');
+            expect(error.length).toEqual(0);
         });
 
         it('should be displayed if field has been touched and is invalid', () => {
-            const { getByText } = render(
-                <SelectInput
-                    {...defaultProps}
-                    meta={{ touched: true, error: 'Required field.' }}
+            const { getByLabelText, getByRole, getByText } = render(
+                <Form
+                    validateOnBlur
+                    onSubmit={jest.fn()}
+                    render={() => (
+                        <SelectInput
+                            {...defaultProps}
+                            allowEmpty
+                            emptyText="Empty"
+                            validate={required()}
+                        />
+                    )}
                 />
             );
-            const error = getByText('Required field.');
-            assert.ok(error);
-        });
+            const input = getByLabelText('resources.posts.fields.language *');
 
-        it('should display the error even if helperText is present', () => {
-            const { getByText, queryByText } = render(
-                <SelectInput
-                    {...defaultProps}
-                    helperText="Can I help you?"
-                    meta={{
-                        touched: true,
-                        error: 'Required field.',
-                    }}
-                />
-            );
-            assert.ok(getByText('Required field.'));
-            assert.ok(!queryByText('Can I help you?'));
+            const select = getByRole('button');
+            fireEvent.click(select);
+
+            const optionAngular = getByText('Angular');
+            fireEvent.click(optionAngular);
+            fireEvent.blur(input);
+            fireEvent.blur(select);
+
+            const optionEmpty = getByText('Empty');
+            fireEvent.click(optionEmpty);
+            fireEvent.blur(input);
+            fireEvent.blur(select);
+
+            const error = getByText('ra.validation.required');
+            expect(error).not.toBeNull();
         });
     });
 });

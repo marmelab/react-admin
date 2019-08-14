@@ -2,6 +2,7 @@ import {
     useField as useFinalFormField,
     FieldProps as FinalFormFieldProps,
     FieldRenderProps,
+    FieldInputProps,
 } from 'react-final-form';
 import { Validator, composeValidators } from './validate';
 import isRequired from './isRequired';
@@ -21,6 +22,8 @@ export interface InputProps<T = any>
     onChange?: (event: ChangeEvent | any) => void;
     onFocus?: (event: FocusEvent) => void;
     options?: T;
+    input?: FieldInputProps<any, HTMLElement>;
+    meta?: any;
 }
 
 interface ComputedInputProps extends FieldRenderProps<any, HTMLElement> {
@@ -85,6 +88,17 @@ const useInput = ({
         },
         [onFocus, customOnFocus]
     );
+
+    // If there is an input prop, this input has already been enhanced by final-form
+    // This is required in for inputs used inside other inputs (such as the SelectInput inside a ReferenceInput)
+    if (options.input) {
+        return {
+            id: id || source,
+            input: options.input,
+            meta: options.meta,
+            isRequired: isRequired(validate),
+        };
+    }
 
     return {
         id: id || source,
