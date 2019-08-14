@@ -1,10 +1,9 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import MenuItem from '@material-ui/core/MenuItem';
-import { withStyles, createStyles } from '@material-ui/core/styles';
-import compose from 'recompose/compose';
-import { addField, translate, FieldTitle, useTranslate } from 'ra-core';
+import { makeStyles } from '@material-ui/core/styles';
+import { useInput, FieldTitle, useTranslate } from 'ra-core';
 
 import ResettableTextField from './ResettableTextField';
 import InputHelperText from './InputHelperText';
@@ -50,12 +49,11 @@ const sanitizeRestProps = ({
     ...rest
 }) => rest;
 
-const styles = theme =>
-    createStyles({
-        input: {
-            minWidth: theme.spacing(20),
-        },
-    });
+const useStyles = makeStyles(theme => ({
+    input: {
+        minWidth: theme.spacing(20),
+    },
+}));
 
 /**
  * An Input component for a select box, using an array of objects for the options
@@ -131,60 +129,50 @@ const styles = theme =>
  * <SelectInput source="gender" choices={choices} disableValue="not_available" />
  *
  */
-export const SelectInput = ({
+const SelectInput = ({
     allowEmpty,
     choices,
-    classes,
     className,
     disableValue,
     emptyText,
     emptyValue,
     helperText,
-    input,
-    isRequired,
     label,
-    meta,
+    onBlur,
+    onChange,
+    onFocus,
     options,
     optionText,
     optionValue,
     resource,
     source,
     translateChoice,
+    validate,
     ...rest
 }) => {
-    /*
-     * Using state to bypass a redux-form comparison but which prevents re-rendering
-     * @see https://github.com/erikras/redux-form/issues/2456
-     */
-    const [value, setValue] = useState(input.value);
     const translate = useTranslate();
+    const classes = useStyles({});
 
-    useEffect(() => {
-        setValue(input.value);
-    }, [input]);
+    const {
+        id,
+        input,
+        isRequired,
+        meta: { error, touched },
+    } = useInput({
+        onBlur,
+        onChange,
+        onFocus,
+        resource,
+        source,
+        validate,
+        ...rest,
+    });
 
-    const handleChange = useCallback(
-        eventOrValue => {
-            const value = eventOrValue.target
-                ? eventOrValue.target.value
-                : eventOrValue;
-            input.onChange(value);
-
-            // HACK: For some reason, redux-form does not consider this input touched without calling onBlur manually
-            input.onBlur(value);
-            setValue(value);
-        },
-        [input, setValue]
-    );
-
-    const renderEmptyItemOption = useCallback(
-        emptyText => {
-            return React.isValidElement(emptyText)
-                ? React.cloneElement(emptyText)
-                : translate(emptyText, { _: emptyText });
-        },
-        [emptyText, translate]
-    );
+    const renderEmptyItemOption = useCallback(() => {
+        return React.isValidElement(emptyText)
+            ? React.cloneElement(emptyText)
+            : translate(emptyText, { _: emptyText });
+    }, [emptyText, translate]);
 
     const renderMenuItemOption = useCallback(
         choice => {
@@ -206,18 +194,12 @@ export const SelectInput = ({
         [optionText, translate, translateChoice]
     );
 
-    if (typeof meta === 'undefined') {
-        throw new Error(
-            "The SelectInput component wasn't called within a redux-form <Field>. Did you decorate it and forget to add the addField prop to your component? See https://marmelab.com/react-admin/Inputs.html#writing-your-own-input-component for details."
-        );
-    }
-    const { touched, error } = meta;
-
     return (
         <ResettableTextField
+            id={id}
+            {...input}
             select
             margin="normal"
-            value={value}
             label={
                 <FieldTitle
                     label={label}
@@ -226,7 +208,6 @@ export const SelectInput = ({
                     isRequired={isRequired}
                 />
             }
-            name={input.name}
             className={`${classes.input} ${className}`}
             clearAlwaysVisible
             error={!!(touched && error)}
@@ -239,11 +220,10 @@ export const SelectInput = ({
             }
             {...options}
             {...sanitizeRestProps(rest)}
-            onChange={handleChange}
         >
             {allowEmpty ? (
                 <MenuItem value={emptyValue} key="null">
-                    {renderEmptyItemOption(emptyText)}
+                    {renderEmptyItemOption()}
                 </MenuItem>
             ) : null}
             {choices.map(choice => (
@@ -266,10 +246,7 @@ SelectInput.propTypes = {
     choices: PropTypes.arrayOf(PropTypes.object),
     classes: PropTypes.object,
     className: PropTypes.string,
-    input: PropTypes.object,
-    isRequired: PropTypes.bool,
     label: PropTypes.string,
-    meta: PropTypes.object,
     options: PropTypes.object,
     optionText: PropTypes.oneOfType([
         PropTypes.string,
@@ -280,7 +257,6 @@ SelectInput.propTypes = {
     disableValue: PropTypes.string,
     resource: PropTypes.string,
     source: PropTypes.string,
-    translate: PropTypes.func.isRequired,
     translateChoice: PropTypes.bool,
 };
 
@@ -288,7 +264,6 @@ SelectInput.defaultProps = {
     allowEmpty: false,
     emptyText: '',
     emptyValue: '',
-    classes: {},
     choices: [],
     options: {},
     optionText: 'name',
@@ -297,8 +272,4 @@ SelectInput.defaultProps = {
     disableValue: 'disabled',
 };
 
-export default compose(
-    addField,
-    translate,
-    withStyles(styles)
-)(SelectInput);
+export default SelectInput;
