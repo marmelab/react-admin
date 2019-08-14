@@ -1,6 +1,6 @@
 import React, { Fragment, useState, useCallback, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { Field } from 'react-final-form';
+import { FormSpy } from 'react-final-form';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
@@ -93,10 +93,10 @@ const PostReferenceInput = props => {
             >
                 {translate('ra.action.create')}
             </Button>
-            <Field
-                name="post_id"
-                component={({ input }) =>
-                    input.value && (
+            <FormSpy
+                subscription={{ values: true }}
+                render={({ values }) =>
+                    values.post_id ? (
                         <Fragment>
                             <Button
                                 data-testid="button-show-post"
@@ -117,7 +117,7 @@ const PostReferenceInput = props => {
                                 </DialogTitle>
                                 <DialogContent>
                                     <PostPreview
-                                        id={input.value}
+                                        id={values.post_id}
                                         basePath="/posts"
                                         resource="posts"
                                     />
@@ -132,7 +132,7 @@ const PostReferenceInput = props => {
                                 </DialogActions>
                             </Dialog>
                         </Fragment>
-                    )
+                    ) : null
                 }
             />
             <Dialog
