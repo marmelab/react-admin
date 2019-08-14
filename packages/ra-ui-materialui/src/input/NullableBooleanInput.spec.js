@@ -1,35 +1,40 @@
-import { shallow } from 'enzyme';
 import React from 'react';
+import { fireEvent, render } from '@testing-library/react';
+import { Form } from 'react-final-form';
 
-import { NullableBooleanInput } from './NullableBooleanInput';
+import NullableBooleanInput from './NullableBooleanInput';
 
 describe('<NullableBooleanInput />', () => {
     const defaultProps = {
-        input: {},
-        meta: {},
-        classes: {},
-        translate: x => x,
+        source: 'isPublished',
+        resource: 'posts',
     };
 
     it('should give three different choices for true, false or unknown', () => {
-        const wrapper = shallow(
-            <NullableBooleanInput source="foo" {...defaultProps} />
+        let formApi;
+        const { getByText, getByRole, getAllByRole } = render(
+            <Form
+                onSubmit={jest.fn}
+                render={({ form }) => {
+                    formApi = form;
+                    return <NullableBooleanInput {...defaultProps} />;
+                }}
+            />
         );
-        const MenuItemElements = wrapper.find(
-            'WithStyles(ForwardRef(MenuItem))'
-        );
-        expect(MenuItemElements.length).toEqual(3);
+        const select = getByRole('button');
+        fireEvent.click(select);
+        const options = getAllByRole('option');
+        expect(options.length).toEqual(3);
 
-        const MenuItemElement1 = MenuItemElements.at(0);
-        expect(MenuItemElement1.prop('value')).toEqual('');
-        expect(MenuItemElement1.children().length).toEqual(0);
+        fireEvent.click(getByText('ra.boolean.null'));
+        expect(formApi.getState().values.isPublished).toBeNull();
 
-        const MenuItemElement2 = MenuItemElements.at(1);
-        expect(MenuItemElement2.prop('value')).toEqual('false');
-        expect(MenuItemElement2.childAt(0).text()).toEqual('ra.boolean.false');
+        fireEvent.click(select);
+        fireEvent.click(getByText('ra.boolean.false'));
+        expect(formApi.getState().values.isPublished).toEqual(false);
 
-        const MenuItemElement3 = MenuItemElements.at(2);
-        expect(MenuItemElement3.prop('value')).toEqual('true');
-        expect(MenuItemElement3.childAt(0).text()).toEqual('ra.boolean.true');
+        fireEvent.click(select);
+        fireEvent.click(getByText('ra.boolean.true'));
+        expect(formApi.getState().values.isPublished).toEqual(true);
     });
 });
