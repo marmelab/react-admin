@@ -1,5 +1,4 @@
 import React from 'react';
-import assert from 'assert';
 import { render, cleanup, fireEvent } from '@testing-library/react';
 import { Form } from 'react-final-form';
 import { TranslationContext } from 'ra-core';
