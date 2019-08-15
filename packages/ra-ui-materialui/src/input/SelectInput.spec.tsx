@@ -1,5 +1,4 @@
 import React from 'react';
-import assert from 'assert';
 import { render, cleanup, fireEvent } from '@testing-library/react';
 import { Form } from 'react-final-form';
 import { TranslationContext } from 'ra-core';
@@ -24,7 +23,9 @@ describe('<SelectInput />', () => {
                 render={() => <SelectInput {...defaultProps} />}
             />
         );
-        const input = getByLabelText('resources.posts.fields.language');
+        const input = getByLabelText(
+            'resources.posts.fields.language'
+        ) as HTMLInputElement;
         expect(input.value).toEqual('ang');
     });
 
@@ -290,7 +291,7 @@ describe('<SelectInput />', () => {
     });
 
     it('should use optionText with an element value as text identifier', () => {
-        const Foobar = ({ record }) => (
+        const Foobar = ({ record }: { record?: any }) => (
             <span data-value={record.id} aria-label={record.foobar} />
         );
 
