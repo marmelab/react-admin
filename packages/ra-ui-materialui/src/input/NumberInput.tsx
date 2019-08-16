@@ -12,6 +12,10 @@ const parse = value => {
     return isNaN(float) ? null : float;
 };
 
+interface Props {
+    step: string | number;
+}
+
 /**
  * An Input component for a number
  *
@@ -25,7 +29,9 @@ const parse = value => {
  * The object passed as `options` props is passed to the material-ui <TextField> component
  */
 const NumberInput: FunctionComponent<
-    InputProps<TextFieldProps> & Omit<TextFieldProps, 'label' | 'helperText'>
+    Props &
+        InputProps<TextFieldProps> &
+        Omit<TextFieldProps, 'label' | 'helperText'>
 > = ({
     helperText,
     label,
