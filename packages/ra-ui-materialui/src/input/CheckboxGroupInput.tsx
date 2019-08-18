@@ -1,5 +1,6 @@
 import React, { useCallback, FunctionComponent } from 'react';
 import PropTypes from 'prop-types';
+import get from 'lodash/get';
 import FormLabel from '@material-ui/core/FormLabel';
 import FormControl, { FormControlProps } from '@material-ui/core/FormControl';
 import FormGroup from '@material-ui/core/FormGroup';
@@ -161,7 +162,7 @@ const CheckboxGroupInput: FunctionComponent<
             <FormGroup row>
                 {choices.map(choice => (
                     <CheckboxGroupInputItem
-                        key={choice.id}
+                        key={get(choice, optionValue)}
                         choice={choice.id}
                         id={id}
                         onChange={handleCheck}
