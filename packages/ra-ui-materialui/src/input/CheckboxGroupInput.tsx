@@ -163,7 +163,7 @@ const CheckboxGroupInput: FunctionComponent<
                 {choices.map(choice => (
                     <CheckboxGroupInputItem
                         key={get(choice, optionValue)}
-                        choice={choice.id}
+                        choice={choice}
                         id={id}
                         onChange={handleCheck}
                         options={options}
