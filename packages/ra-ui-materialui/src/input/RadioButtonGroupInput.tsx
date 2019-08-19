@@ -1,18 +1,15 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 import PropTypes from 'prop-types';
-import {
-    makeStyles,
-    FormControl,
-    FormHelperText,
-    InputLabel,
-    RadioGroup,
-} from '@material-ui/core';
+import { makeStyles, FormControl, FormHelperText, FormLabel, RadioGroup } from '@material-ui/core';
+import { RadioGroupProps } from '@material-ui/core/RadioGroup';
+import { FormControlProps } from '@material-ui/core/FormControl';
 import get from 'lodash/get';
-import { useInput, FieldTitle } from 'ra-core';
+import { useInput, FieldTitle, InputProps } from 'ra-core';
 
 import sanitizeRestProps from './sanitizeRestProps';
 import InputHelperText from './InputHelperText';
 import RadioButtonGroupInputItem from './RadioButtonGroupInputItem';
+import { InputWithOptionsProps } from './InputWithOptions';
 
 const useStyles = makeStyles({
     label: {
@@ -77,7 +74,9 @@ const useStyles = makeStyles({
  *
  * The object passed as `options` props is passed to the material-ui <RadioButtonGroup> component
  */
-export const RadioButtonGroupInput = ({
+export const RadioButtonGroupInput: FunctionComponent<
+    InputWithOptionsProps & InputProps<RadioGroupProps> & FormControlProps
+> = ({
     choices,
     classes: classesOverride,
     helperText,
@@ -94,62 +93,62 @@ export const RadioButtonGroupInput = ({
     validate,
     ...rest
 }) => {
-    const classes = useStyles(classesOverride);
+        const classes = useStyles(classesOverride);
 
-    const {
-        id,
-        input,
-        isRequired,
-        meta: { error, touched },
-    } = useInput({
-        onBlur,
-        onChange,
-        onFocus,
-        resource,
-        source,
-        validate,
-        ...rest,
-    });
+        const {
+            id,
+            input,
+            isRequired,
+            meta: { error, touched },
+        } = useInput({
+            onBlur,
+            onChange,
+            onFocus,
+            resource,
+            source,
+            validate,
+            ...rest,
+        });
 
-    return (
-        <FormControl
-            component="fieldset"
-            margin="normal"
-            {...sanitizeRestProps(rest)}
-        >
-            <InputLabel component="legend" shrink className={classes.label}>
-                <FieldTitle
-                    label={label}
-                    source={source}
-                    resource={resource}
-                    isRequired={isRequired}
-                />
-            </InputLabel>
-
-            <RadioGroup id={id} {...input} {...options}>
-                {choices.map(choice => (
-                    <RadioButtonGroupInputItem
-                        key={get(choice, optionValue)}
-                        choice={choice}
-                        optionText={optionText}
-                        optionValue={optionValue}
+        return (
+            <FormControl
+                component="fieldset"
+                margin="normal"
+                {...sanitizeRestProps(rest)}
+            >
+                <FormLabel component="legend" className={classes.label}>
+                    <FieldTitle
+                        label={label}
                         source={source}
-                        translateChoice={translateChoice}
+                        resource={resource}
+                        isRequired={isRequired}
                     />
-                ))}
-            </RadioGroup>
-            {helperText || (touched && error) ? (
-                <FormHelperText>
-                    <InputHelperText
-                        touched={touched}
-                        error={error}
-                        helperText={helperText}
-                    />
-                </FormHelperText>
-            ) : null}
-        </FormControl>
-    );
-};
+                </FormLabel>
+
+                <RadioGroup id={id} {...input} {...options}>
+                    {choices.map(choice => (
+                        <RadioButtonGroupInputItem
+                            key={get(choice, optionValue)}
+                            choice={choice}
+                            optionText={optionText}
+                            optionValue={optionValue}
+                            source={source}
+                            translateChoice={translateChoice}
+                        />
+                    ))}
+                </RadioGroup>
+                {helperText || (touched && error) ? (
+                    <FormHelperText>
+                        <InputHelperText
+                            touched={touched}
+                            error={error}
+                            helperText={helperText}
+                        />
+                    </FormHelperText>
+                ) : null}
+            </FormControl>
+        );
+    };
 
 RadioButtonGroupInput.propTypes = {
     choices: PropTypes.arrayOf(PropTypes.object),

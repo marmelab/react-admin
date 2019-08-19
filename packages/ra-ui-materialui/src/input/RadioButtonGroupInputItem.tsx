@@ -13,7 +13,7 @@ const RadioButtonGroupInputItem = ({
 }) => {
     const translate = useTranslate();
 
-    const choiceName = isValidElement(optionText) // eslint-disable-line no-nested-ternary
+    const choiceName = isValidElement<{ record: any }>(optionText)
         ? cloneElement(optionText, { record: choice })
         : typeof optionText === 'function'
         ? optionText(choice)

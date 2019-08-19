@@ -11,6 +11,7 @@ import { FieldTitle, useInput, InputProps } from 'ra-core';
 import defaultSanitizeRestProps from './sanitizeRestProps';
 import CheckboxGroupInputItem from './CheckboxGroupInputItem';
 import { CheckboxProps } from '@material-ui/core/Checkbox';
+import { InputWithOptionsProps } from './InputWithOptions';
 
 const sanitizeRestProps = ({
     setFilter,
@@ -90,7 +91,7 @@ const useStyles = makeStyles(theme => ({
  * The object passed as `options` props is passed to the material-ui <Checkbox> components
  */
 const CheckboxGroupInput: FunctionComponent<
-    InputProps<CheckboxProps> & FormControlProps
+    InputWithOptionsProps & InputProps<CheckboxProps> & FormControlProps
 > = ({
     choices,
     helperText,
