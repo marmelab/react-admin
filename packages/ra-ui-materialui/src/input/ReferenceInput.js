@@ -1,6 +1,6 @@
 import React, { Children, cloneElement } from 'react';
 import PropTypes from 'prop-types';
-import { addField, useReferenceInputController } from 'ra-core';
+import { useInput, useReferenceInputController } from 'ra-core';
 
 import LinearProgress from '../layout/LinearProgress';
 import Labeled from './Labeled';
@@ -85,9 +85,28 @@ import ReferenceError from './ReferenceError';
  *     <SelectInput optionText="title" />
  * </ReferenceInput>
  */
-export const ReferenceInput = props => (
-    <ReferenceInputView {...props} {...useReferenceInputController(props)} />
-);
+export const ReferenceInput = ({
+    onBlur,
+    onChange,
+    onFocus,
+    validate,
+    ...props
+}) => {
+    const inputProps = useInput({
+        onBlur,
+        onChange,
+        onFocus,
+        validate,
+        ...props,
+    });
+    return (
+        <ReferenceInputView
+            {...inputProps}
+            {...props}
+            {...useReferenceInputController({ ...props, ...inputProps })}
+        />
+    );
+};
 
 ReferenceInput.propTypes = {
     allowEmpty: PropTypes.bool.isRequired,
@@ -97,14 +116,12 @@ ReferenceInput.propTypes = {
     classes: PropTypes.object,
     filter: PropTypes.object,
     filterToQuery: PropTypes.func.isRequired,
-    input: PropTypes.object.isRequired,
     label: PropTypes.string,
-    meta: PropTypes.object,
     onChange: PropTypes.func,
     perPage: PropTypes.number,
     record: PropTypes.object,
     reference: PropTypes.string.isRequired,
-    resource: PropTypes.string.isRequired,
+    resource: PropTypes.string,
     sort: PropTypes.shape({
         field: PropTypes.string,
         order: PropTypes.oneOf(['ASC', 'DESC']),
@@ -119,8 +136,6 @@ ReferenceInput.defaultProps = {
     perPage: 25,
     sort: { field: 'id', order: 'DESC' },
 };
-
-const EnhancedReferenceInput = addField(ReferenceInput);
 
 const sanitizeRestProps = ({
     allowEmpty,
@@ -248,4 +263,4 @@ ReferenceInputView.propTypes = {
     warning: PropTypes.string,
 };
 
-export default EnhancedReferenceInput;
+export default ReferenceInput;
