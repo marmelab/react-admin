@@ -41,7 +41,7 @@ describe('<RadioButtonGroupInput />', () => {
         expect(input2.checked).toBeFalsy();
     });
 
-    it('should use the input parameter value as the initial input value', () => {
+    it('should use the value provided by final-form as the initial input value', () => {
         const { getByLabelText } = render(
             <Form
                 onSubmit={jest.fn}
