@@ -1,11 +1,27 @@
-import React, { Children, cloneElement } from 'react';
+import React, {
+    Children,
+    cloneElement,
+    FunctionComponent,
+    ReactElement,
+} from 'react';
 import PropTypes from 'prop-types';
-import { useInput, useReferenceInputController } from 'ra-core';
+import { useInput, useReferenceInputController, InputProps } from 'ra-core';
 
 import LinearProgress from '../layout/LinearProgress';
 import Labeled from './Labeled';
 import ReferenceError from './ReferenceError';
 
+interface Props {
+    allowEmpty: boolean;
+    basePath: string;
+    children: ReactElement;
+    classes: any;
+    className: string;
+    label: string;
+    reference: string;
+    resource: string;
+    [key: string]: any;
+}
 /**
  * An Input component for choosing a reference record. Useful for foreign keys.
  *
@@ -85,7 +101,7 @@ import ReferenceError from './ReferenceError';
  *     <SelectInput optionText="title" />
  * </ReferenceInput>
  */
-export const ReferenceInput = ({
+export const ReferenceInput: FunctionComponent<Props & InputProps> = ({
     onBlur,
     onChange,
     onFocus,
@@ -172,7 +188,7 @@ const sanitizeRestProps = ({
     translateChoice,
     validation,
     ...rest
-}) => rest;
+}: any) => rest;
 
 export const ReferenceInputView = ({
     allowEmpty,
@@ -181,19 +197,19 @@ export const ReferenceInputView = ({
     choices,
     classes,
     className,
-    error,
+    error = undefined,
+    helperText = undefined,
     input,
     isRequired,
     loading,
     label,
     meta,
-    onChange,
     resource,
     setFilter,
     setPagination,
     setSort,
     source,
-    warning,
+    warning = undefined,
     ...rest
 }) => {
     if (Children.count(children) !== 1) {
@@ -226,14 +242,11 @@ export const ReferenceInputView = ({
         isRequired,
         label,
         resource,
-        meta: {
-            ...meta,
-            helperText: warning || false,
-        },
+        helperText: warning || helperText,
+        meta,
         source,
         choices,
         basePath,
-        onChange,
         setFilter,
         setPagination,
         setSort,
