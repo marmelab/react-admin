@@ -34,7 +34,7 @@ import {
 
 const CommentFilter = props => (
     <Filter {...props}>
-        <SearchInput source="q" alwaysOn />
+        <SearchInput label="" source="q" alwaysOn />
         <ReferenceInput source="post_id" reference="posts">
             <SelectInput optionText="title" />
         </ReferenceInput>

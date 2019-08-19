@@ -21,7 +21,7 @@ import MobileGrid from './MobileGrid';
 
 const VisitorFilter = props => (
     <Filter {...props}>
-        <SearchInput source="q" alwaysOn />
+        <SearchInput label="" source="q" alwaysOn />
         <DateInput source="last_seen_gte" />
         <NullableBooleanInput source="has_ordered" />
         <NullableBooleanInput source="has_newsletter" defaultValue />

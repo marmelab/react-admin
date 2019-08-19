@@ -26,7 +26,7 @@ const QuickFilter = ({ label }) => {
 
 export const ProductFilter = props => (
     <Filter {...props}>
-        <SearchInput source="q" alwaysOn />
+        <SearchInput label="" source="q" alwaysOn />
         <ReferenceInput
             source="category_id"
             reference="categories"
