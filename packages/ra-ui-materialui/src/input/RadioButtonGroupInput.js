@@ -1,10 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import FormControl from '@material-ui/core/FormControl';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import InputLabel from '@material-ui/core/InputLabel';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import { makeStyles } from '@material-ui/core/styles';
+import {
+    makeStyles,
+    FormControl,
+    FormHelperText,
+    InputLabel,
+    RadioGroup,
+} from '@material-ui/core';
 import get from 'lodash/get';
 import { useInput, FieldTitle } from 'ra-core';
 
@@ -77,6 +79,7 @@ const useStyles = makeStyles({
  */
 export const RadioButtonGroupInput = ({
     choices,
+    classes: classesOverride,
     helperText,
     label,
     onBlur,
@@ -91,7 +94,7 @@ export const RadioButtonGroupInput = ({
     validate,
     ...rest
 }) => {
-    const classes = useStyles({});
+    const classes = useStyles(classesOverride);
 
     const {
         id,
