@@ -198,7 +198,7 @@ describe('<RadioButtonGroupInput />', () => {
         expect(queryByText('Mastercard')).not.toBeNull();
     });
 
-    it('should displayed helperText if prop is present in meta', () => {
+    it('should display helperText if prop is present in meta', () => {
         const { queryByText } = render(
             <Form
                 onSubmit={jest.fn}
