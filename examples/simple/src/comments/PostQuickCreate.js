@@ -4,7 +4,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import {
     CREATE,
-    LongTextInput,
     SaveButton,
     SimpleForm,
     TextInput,
@@ -75,7 +74,12 @@ const PostQuickCreate = ({ onCancel, onSave, ...props }) => {
             {...props}
         >
             <TextInput source="title" validate={required()} />
-            <LongTextInput source="teaser" validate={required()} />
+            <TextInput
+                source="teaser"
+                validate={required()}
+                fullWidth={true}
+                multiline={true}
+            />
         </SimpleForm>
     );
 };

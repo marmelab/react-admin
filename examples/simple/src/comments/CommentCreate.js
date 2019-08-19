@@ -4,7 +4,6 @@ import {
     Create,
     DateInput,
     TextInput,
-    LongTextInput,
     SimpleForm,
     required,
     minLength,
@@ -28,7 +27,7 @@ const CommentCreate = props => (
                 fullWidth
             />
             <DateInput source="created_at" />
-            <LongTextInput source="body" />
+            <TextInput source="body" fullWidth={true} multiline={true} />
         </SimpleForm>
     </Create>
 );
