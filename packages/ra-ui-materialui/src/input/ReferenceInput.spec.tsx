@@ -92,25 +92,8 @@ describe('<ReferenceInput />', () => {
         assert.equal(ErrorElement.length, 0);
         const MyComponentElement = wrapper.find('MyComponent');
         assert.equal(MyComponentElement.length, 1);
-        assert.deepEqual(MyComponentElement.prop('meta'), {
-            helperText: 'fetch error',
-        });
+        assert.deepEqual(MyComponentElement.prop('helperText'), 'fetch error');
         assert.deepEqual(MyComponentElement.prop('choices'), [{ id: 1 }]);
-    });
-
-    it('should pass onChange down to child component', () => {
-        const onChange = jest.fn();
-        const wrapper = shallow(
-            <ReferenceInputView
-                {...defaultProps}
-                allowEmpty
-                onChange={onChange}
-            >
-                <MyComponent />
-            </ReferenceInputView>
-        );
-        wrapper.find('MyComponent').simulate('change', 'foo');
-        assert.deepEqual(onChange.mock.calls[0], ['foo']);
     });
 
     it('should pass meta down to child component', () => {
