@@ -4,7 +4,6 @@ import expect from 'expect';
 
 import ReferenceFieldController from './ReferenceFieldController';
 import renderWithRedux from '../../util/renderWithRedux';
-import { crudGetManyAccumulate } from '../../actions';
 import { DataProviderContext } from '../../dataProvider';
 
 const defaultState = {
@@ -66,7 +65,7 @@ describe('<ReferenceFieldController />', () => {
         expect(dispatch).toBeCalledTimes(0);
     });
 
-    it('should pass resourceLinkPath and referenceRecord to its children', () => {
+    it('should pass resourceLinkPath and referenceRecord to its children', async () => {
         const children = jest.fn().mockReturnValue(<span>children</span>);
         renderWithRedux(
             <ReferenceFieldController
@@ -80,7 +79,6 @@ describe('<ReferenceFieldController />', () => {
             </ReferenceFieldController>,
             defaultState
         );
-
         expect(children).toBeCalledWith({
             loading: true,
             loaded: true,
