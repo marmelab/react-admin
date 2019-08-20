@@ -72,6 +72,8 @@ let dataProvider: DataProviderHookFunction;
  * };
  */
 const useGetMany = (resource: string, ids: Identifier[], options: any = {}) => {
+    // we can't use useQueryWithStore here because we're aggregating queries first
+    // therefore part of the usequeryWithStore logic will have to be repeated below
     const selectMany = useMemo(makeGetManySelector, []);
     const data = useSelector((state: ReduxState) =>
         selectMany(state, resource, ids)
@@ -89,23 +91,42 @@ const useGetMany = (resource: string, ids: Identifier[], options: any = {}) => {
             loaded: true,
         });
     }
-    dataProvider = useDataProvider();
+    dataProvider = useDataProvider(); // not the best way to pass the dataProvider to a function outside the hook, but I couldn't find a better one
     useEffect(() => {
         if (!queriesToCall[resource]) {
             queriesToCall[resource] = [];
         }
+        /**
+         * queriesToCall stores the queries to call under the following shape:
+         *
+         * {
+         *   'posts': [
+         *     { ids: [1, 2], setState }
+         *     { ids: [2, 3], setState, onSuccess }
+         *     { ids: [4, 5], setState }
+         *   ],
+         *   'comments': [
+         *     { ids: [345], setState, onFailure }
+         *   ]
+         * }
+         */
         queriesToCall[resource] = queriesToCall[resource].concat({
             ids,
             setState,
             onSuccess: options && options.onSuccess,
             onFailure: options && options.onFailure,
         });
-        callQueries();
+        callQueries(); // debounced by lodash
     }, [JSON.stringify({ resource, ids, options }), dataProvider]); // eslint-disable-line react-hooks/exhaustive-deps
 
     return state;
 };
 
+/**
+ * Memoized selector for getting an array of resources based on an array of ids
+ *
+ * @see https://react-redux.js.org/next/api/hooks#using-memoizing-selectors
+ */
 const makeGetManySelector = () =>
     createSelector(
         (state: ReduxState) => state.admin.resources,
@@ -117,14 +138,20 @@ const makeGetManySelector = () =>
                 : ids.map(id => undefined)
     );
 
+/**
+ * Call the dataProvider once per resource
+ */
 const callQueries = debounce(() => {
     const resources = Object.keys(queriesToCall);
     resources.forEach(resource => {
-        const queries = [...queriesToCall[resource]];
+        const queries = [...queriesToCall[resource]]; // cloneing to avoid side effects
         const accumulatedIds = queries
             .reduce((acc, { ids }) => union(acc, ids), []) // concat + unique
-            .filter(v => v != null);
-        if (accumulatedIds.length === 0) return;
+            .filter(v => v != null); // remove null values
+        if (accumulatedIds.length === 0) {
+            // no need to call the data provider if all the ids are null
+            return;
+        }
         dataProvider(
             GET_MANY,
             resource,
@@ -133,17 +160,17 @@ const callQueries = debounce(() => {
         )
             .then(response => {
                 queries.forEach(({ ids, setState, onSuccess }) => {
-                    const subData = {
-                        data: ids.map(id =>
-                            response.data.find(datum => datum.id == id)
-                        ),
-                    };
                     setState(prevState => ({
                         ...prevState,
                         loading: false,
                         loaded: true,
                     }));
-                    onSuccess && onSuccess(subData);
+                    if (onSuccess) {
+                        const subData = ids.map(id =>
+                            response.data.find(datum => datum.id == id)
+                        );
+                        onSuccess({ data: subData });
+                    }
                 });
             })
             .catch(error => {
