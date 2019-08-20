@@ -98,7 +98,7 @@ const useGetMany = (resource: string, ids: Identifier[], options: any = {}) => {
             ids,
             setState,
             onSuccess: options && options.onSuccess,
-            onFailure: options && options.onfailure,
+            onFailure: options && options.onFailure,
         });
         callQueries();
     }, [JSON.stringify({ resource, ids, options }), dataProvider]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -129,31 +129,29 @@ const callQueries = debounce(() => {
             GET_MANY,
             resource,
             { ids: accumulatedIds },
-            {
-                action: CRUD_GET_MANY,
-                onSuccess: response => {
-                    queries.forEach(({ ids, setState, onSuccess }) => {
-                        const subData = {
-                            data: ids.map(id =>
-                                response.data.find(datum => datum.id == id)
-                            ),
-                        };
-                        setState(prevState => ({
-                            ...prevState,
-                            loading: false,
-                            loaded: true,
-                        }));
-                        onSuccess && onSuccess(subData);
-                    });
-                },
-                onFailure: error => {
-                    queries.forEach(({ setState, onFailure }) => {
-                        setState({ error, loading: false, loaded: false });
-                        onFailure && onFailure(error);
-                    });
-                },
-            }
-        );
+            { action: CRUD_GET_MANY }
+        )
+            .then(response => {
+                queries.forEach(({ ids, setState, onSuccess }) => {
+                    const subData = {
+                        data: ids.map(id =>
+                            response.data.find(datum => datum.id == id)
+                        ),
+                    };
+                    setState(prevState => ({
+                        ...prevState,
+                        loading: false,
+                        loaded: true,
+                    }));
+                    onSuccess && onSuccess(subData);
+                });
+            })
+            .catch(error => {
+                queries.forEach(({ setState, onFailure }) => {
+                    setState({ error, loading: false, loaded: false });
+                    onFailure && onFailure(error);
+                });
+            });
         delete queriesToCall[resource];
     });
 });
