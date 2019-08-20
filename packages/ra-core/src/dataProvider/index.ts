@@ -11,6 +11,7 @@ import useQueryWithStore from './useQueryWithStore';
 import withDataProvider from './withDataProvider';
 import useGetOne from './useGetOne';
 import useGetList from './useGetList';
+import useGetMany from './useGetMany';
 import useUpdate from './useUpdate';
 import useUpdateMany from './useUpdateMany';
 import useCreate from './useCreate';
@@ -29,6 +30,7 @@ export {
     useQuery,
     useGetOne,
     useGetList,
+    useGetMany,
     useUpdate,
     useUpdateMany,
     useCreate,

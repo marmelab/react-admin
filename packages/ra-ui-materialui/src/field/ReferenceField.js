@@ -59,7 +59,7 @@ const ReferenceField = ({ children, record, source, ...props }) => {
         throw new Error('<ReferenceField> only accepts a single child');
     }
     const id = get(record, source);
-    const { loading, referenceRecord } = useReference({
+    const { loaded, referenceRecord } = useReference({
         ...props,
         id,
     });
@@ -69,7 +69,7 @@ const ReferenceField = ({ children, record, source, ...props }) => {
         <ReferenceFieldView
             {...props}
             children={children}
-            loading={loading}
+            loaded={loaded}
             referenceRecord={referenceRecord}
             resourceLinkPath={resourceLinkPath}
         />
@@ -127,7 +127,7 @@ export const ReferenceFieldView = ({
     children,
     className,
     classes: classesOverride,
-    loading,
+    loaded,
     record,
     reference,
     referenceRecord,
@@ -138,7 +138,7 @@ export const ReferenceFieldView = ({
     ...rest
 }) => {
     const classes = useStyles({ classes: classesOverride });
-    if (loading) {
+    if (!loaded) {
         return <LinearProgress />;
     }
 
