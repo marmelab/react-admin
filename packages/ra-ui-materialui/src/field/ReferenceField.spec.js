@@ -10,6 +10,105 @@ import TextField from './TextField';
 describe('<ReferenceField />', () => {
     afterEach(cleanup);
 
+    describe('Progress bar', () => {
+        it('should display a loader on mount if the reference is not in the store', () => {
+            const { queryByRole, container } = renderWithRedux(
+                <ReferenceField
+                    record={{ postId: 123 }}
+                    resource="comments"
+                    source="postId"
+                    reference="posts"
+                    basePath="/comments"
+                >
+                    <TextField source="title" />
+                </ReferenceField>
+            );
+            expect(queryByRole('progressbar')).not.toBeNull();
+            const links = container.getElementsByTagName('a');
+            expect(links).toHaveLength(0);
+        });
+
+        it('should not display a loader on mount if the reference is in the store', () => {
+            const { queryByRole, container } = renderWithRedux(
+                <MemoryRouter>
+                    <ReferenceField
+                        record={{ postId: 123 }}
+                        resource="comments"
+                        source="postId"
+                        reference="posts"
+                        basePath="/comments"
+                    >
+                        <TextField source="title" />
+                    </ReferenceField>
+                </MemoryRouter>,
+                {
+                    admin: {
+                        resources: {
+                            posts: {
+                                data: { 123: { id: 123, title: 'hello' } },
+                            },
+                        },
+                    },
+                }
+            );
+            expect(queryByRole('progressbar')).toBeNull();
+            const links = container.getElementsByTagName('a');
+            expect(links).toHaveLength(1);
+        });
+
+        it('should not display a loader if the dataProvider query completes', async () => {
+            const dataProvider = jest.fn();
+            dataProvider.mockReturnValueOnce(
+                Promise.resolve({ data: [{ id: 123, title: 'foo' }] })
+            );
+            const { queryByRole, container } = renderWithRedux(
+                <DataProviderContext.Provider value={dataProvider}>
+                    <MemoryRouter>
+                        <ReferenceField
+                            record={{ postId: 123 }}
+                            resource="comments"
+                            source="postId"
+                            reference="posts"
+                            basePath="/comments"
+                        >
+                            <TextField source="title" />
+                        </ReferenceField>
+                    </MemoryRouter>
+                </DataProviderContext.Provider>
+            );
+            await new Promise(resolve => setTimeout(resolve, 10));
+            expect(queryByRole('progressbar')).toBeNull();
+            const links = container.getElementsByTagName('a');
+            expect(links).toHaveLength(1);
+        });
+
+        it('should not display a loader if the dataProvider query fails', async () => {
+            const dataProvider = jest.fn();
+            dataProvider.mockImplementationOnce(() =>
+                Promise.reject(new Error())
+            );
+            const { queryByRole, container } = renderWithRedux(
+                <DataProviderContext.Provider value={dataProvider}>
+                    <MemoryRouter>
+                        <ReferenceField
+                            record={{ postId: 123 }}
+                            resource="comments"
+                            source="postId"
+                            reference="posts"
+                            basePath="/comments"
+                        >
+                            <TextField source="title" />
+                        </ReferenceField>
+                    </MemoryRouter>
+                </DataProviderContext.Provider>
+            );
+            await new Promise(resolve => setTimeout(resolve, 10));
+            expect(queryByRole('progressbar')).toBeNull();
+            const links = container.getElementsByTagName('a');
+            expect(links).toHaveLength(0);
+        });
+    });
+
     it('should use the reference from the store if available', () => {
         const { container, getByText } = renderWithRedux(
             <MemoryRouter>
@@ -59,11 +158,34 @@ describe('<ReferenceField />', () => {
                 </MemoryRouter>
             </DataProviderContext.Provider>
         );
-        await new Promise(resolve => setTimeout(resolve));
+        await new Promise(resolve => setTimeout(resolve, 10));
         const action = dispatch.mock.calls[0][0];
         expect(action.type).toBe('RA/CRUD_GET_MANY');
         expect(action.payload).toEqual({ ids: [123] });
     });
+
+    it('should display an error icon if the dataProvider call fails', async () => {
+        const dataProvider = jest.fn();
+        dataProvider.mockImplementationOnce(() => Promise.reject());
+        const { getByRole } = renderWithRedux(
+            <DataProviderContext.Provider value={dataProvider}>
+                <ReferenceField
+                    record={{ postId: 123 }}
+                    resource="comments"
+                    source="postId"
+                    reference="posts"
+                    basePath="/comments"
+                >
+                    <TextField source="title" />
+                </ReferenceField>
+            </DataProviderContext.Provider>
+        );
+        await new Promise(resolve => setTimeout(resolve, 10));
+        const ErrorIcon = getByRole('presentation');
+        expect(ErrorIcon).toBeDefined();
+        expect(ErrorIcon.getAttribute('aria-errormessage')).toBe('Error');
+    });
+
     describe('ReferenceFieldView', () => {
         it('should render a link to specified resourceLinkPath', () => {
             const { container } = render(

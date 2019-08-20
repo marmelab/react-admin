@@ -138,6 +138,7 @@ describe('useReference', () => {
             referenceRecord: { id: 1 },
             loading: true,
             loaded: true,
+            error: null,
         });
     });
 
@@ -164,6 +165,7 @@ describe('useReference', () => {
             referenceRecord: undefined,
             loading: true,
             loaded: false,
+            error: null,
         });
     });
 });

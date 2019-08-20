@@ -84,6 +84,7 @@ describe('<ReferenceFieldController />', () => {
             loaded: true,
             referenceRecord: { id: 123, title: 'foo' },
             resourceLinkPath: '/posts/123',
+            error: null,
         });
     });
 
@@ -115,6 +116,7 @@ describe('<ReferenceFieldController />', () => {
             loaded: true,
             referenceRecord: { id: 123, title: 'foo' },
             resourceLinkPath: '/prefix/posts/123',
+            error: null,
         });
     });
 
@@ -146,6 +148,7 @@ describe('<ReferenceFieldController />', () => {
             loaded: true,
             referenceRecord: { id: 123, title: 'foo' },
             resourceLinkPath: '/edit/123',
+            error: null,
         });
     });
 
@@ -177,6 +180,7 @@ describe('<ReferenceFieldController />', () => {
             loaded: true,
             referenceRecord: { id: 123, title: 'foo' },
             resourceLinkPath: '/show/123',
+            error: null,
         });
     });
 
@@ -201,6 +205,7 @@ describe('<ReferenceFieldController />', () => {
             loaded: true,
             referenceRecord: { id: 123, title: 'foo' },
             resourceLinkPath: '/posts/123/show',
+            error: null,
         });
     });
 
@@ -233,6 +238,7 @@ describe('<ReferenceFieldController />', () => {
             loaded: true,
             referenceRecord: { id: 123, title: 'foo' },
             resourceLinkPath: '/edit/123/show',
+            error: null,
         });
     });
 
@@ -265,6 +271,7 @@ describe('<ReferenceFieldController />', () => {
             loaded: true,
             referenceRecord: { id: 123, title: 'foo' },
             resourceLinkPath: '/show/123/show',
+            error: null,
         });
     });
 
@@ -289,6 +296,7 @@ describe('<ReferenceFieldController />', () => {
             loaded: true,
             referenceRecord: { id: 123, title: 'foo' },
             resourceLinkPath: false,
+            error: null,
         });
     });
 });

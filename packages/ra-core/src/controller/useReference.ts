@@ -9,7 +9,8 @@ interface Option {
 export interface UseReferenceProps {
     loading: boolean;
     loaded: boolean;
-    referenceRecord: Record;
+    referenceRecord?: Record;
+    error?: any;
 }
 
 /**
@@ -41,10 +42,12 @@ export interface UseReferenceProps {
  */
 export const useReference = ({ reference, id }: Option): UseReferenceProps => {
     const { data, error, loading, loaded } = useGetMany(reference, [id]);
-    if (error) {
-        console.log(error); // FIXME what should we do?
-    }
-    return { referenceRecord: error ? undefined : data[0], loading, loaded };
+    return {
+        referenceRecord: error ? undefined : data[0],
+        error,
+        loading,
+        loaded,
+    };
 };
 
 export default useReference;

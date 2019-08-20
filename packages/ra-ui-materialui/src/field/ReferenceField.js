@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import get from 'lodash/get';
 import { makeStyles } from '@material-ui/core/styles';
+import { Error } from '@material-ui/icons';
 import { useReference, getResourceLinkPath } from 'ra-core';
 
 import LinearProgress from '../layout/LinearProgress';
@@ -59,7 +60,7 @@ const ReferenceField = ({ children, record, source, ...props }) => {
         throw new Error('<ReferenceField> only accepts a single child');
     }
     const id = get(record, source);
-    const { loaded, referenceRecord } = useReference({
+    const { loaded, error, referenceRecord } = useReference({
         ...props,
         id,
     });
@@ -70,6 +71,7 @@ const ReferenceField = ({ children, record, source, ...props }) => {
             {...props}
             children={children}
             loaded={loaded}
+            error={error}
             referenceRecord={referenceRecord}
             resourceLinkPath={resourceLinkPath}
         />
@@ -124,6 +126,7 @@ export const ReferenceFieldView = ({
     children,
     className,
     classes: classesOverride,
+    error,
     loaded,
     record,
     reference,
@@ -137,6 +140,11 @@ export const ReferenceFieldView = ({
     const classes = useStyles({ classes: classesOverride });
     if (!loaded) {
         return <LinearProgress />;
+    }
+    if (error) {
+        return (
+            <Error aria-errormessage="Error" color="error" fontSize="small" />
+        );
     }
 
     if (resourceLinkPath) {
