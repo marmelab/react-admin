@@ -2,10 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
-import { withStyles, createStyles } from '@material-ui/core/styles';
+import { makeStyles, createStyles } from '@material-ui/core/styles';
 import { FieldTitle } from 'ra-core';
 
-const styles = theme =>
+const useStyles = makeStyles(theme =>
     createStyles({
         label: {
             position: 'relative',
@@ -22,7 +22,8 @@ const styles = theme =>
             display: 'block',
             width: '100%',
         },
-    });
+    })
+);
 
 /**
  * Use any component as read-only Input, labeled just like other Inputs.
@@ -41,7 +42,6 @@ const styles = theme =>
  */
 export const Labeled = ({
     children,
-    classes,
     className,
     fullWidth,
     id,
@@ -53,6 +53,7 @@ export const Labeled = ({
     source,
     ...rest
 }) => {
+    const classes = useStyles();
     if (!label && !source) {
         throw new Error(
             `Cannot create label for component <${children &&
@@ -94,7 +95,6 @@ export const Labeled = ({
 Labeled.propTypes = {
     basePath: PropTypes.string,
     children: PropTypes.element,
-    classes: PropTypes.object,
     className: PropTypes.string,
     fullWidth: PropTypes.bool,
     id: PropTypes.string,
@@ -109,4 +109,4 @@ Labeled.propTypes = {
     labelStyle: PropTypes.object,
 };
 
-export default withStyles(styles)(Labeled);
+export default Labeled;

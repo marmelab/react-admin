@@ -1,19 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { withStyles, createStyles } from '@material-ui/core/styles';
+import { makeStyles, createStyles } from '@material-ui/core/styles';
 
 import Labeled from '../input/Labeled';
 
 const sanitizeRestProps = ({ basePath, record, ...rest }) => rest;
 
-const styles = theme =>
+const useStyles = makeStyles(theme =>
     createStyles({
         input: { width: theme.spacing(32) },
-    });
+    })
+);
 
-export const FormInput = ({ classes, input, ...rest }) =>
-    input ? (
+export const FormInput = ({ input, ...rest }) => {
+    const classes = useStyles();
+    return input ? (
         <div
             className={classnames(
                 'ra-input',
@@ -52,14 +54,14 @@ export const FormInput = ({ classes, input, ...rest }) =>
             )}
         </div>
     ) : null;
+};
 
 FormInput.propTypes = {
     className: PropTypes.string,
-    classes: PropTypes.object,
     input: PropTypes.object,
 };
 
 // wat? TypeScript looses the displayName if we don't set it explicitly
 FormInput.displayName = 'FormInput';
 
-export default withStyles(styles)(FormInput);
+export default FormInput;

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
-import { withStyles, createStyles } from '@material-ui/core/styles';
+import { makeStyles, createStyles } from '@material-ui/core/styles';
 import HotTub from '@material-ui/icons/HotTub';
 import History from '@material-ui/icons/History';
 import classnames from 'classnames';
@@ -9,7 +9,7 @@ import classnames from 'classnames';
 import { useTranslate, Authenticated } from 'ra-core';
 import Title from './Title';
 
-const styles = theme =>
+const useStyles = makeStyles(theme =>
     createStyles({
         container: {
             display: 'flex',
@@ -37,13 +37,15 @@ const styles = theme =>
             textAlign: 'center',
             marginTop: '2em',
         },
-    });
+    })
+);
 
 function goBack() {
     window.history.go(-1);
 }
 
-const NotFound = ({ classes, className, title, location, ...rest }) => {
+const NotFound = ({ className, title, location, ...rest }) => {
+    const classes = useStyles();
     const translate = useTranslate();
     return (
         <Authenticated location={location}>
@@ -69,10 +71,9 @@ const NotFound = ({ classes, className, title, location, ...rest }) => {
 };
 
 NotFound.propTypes = {
-    classes: PropTypes.object,
     className: PropTypes.string,
     title: PropTypes.string,
     location: PropTypes.object,
 };
 
-export default withStyles(styles)(NotFound);
+export default NotFound;
