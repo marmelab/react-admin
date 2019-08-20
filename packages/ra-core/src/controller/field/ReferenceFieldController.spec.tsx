@@ -1,9 +1,11 @@
 import React from 'react';
 import { cleanup } from '@testing-library/react';
+import expect from 'expect';
 
 import ReferenceFieldController from './ReferenceFieldController';
 import renderWithRedux from '../../util/renderWithRedux';
 import { crudGetManyAccumulate } from '../../actions';
+import { DataProviderContext } from '../../dataProvider';
 
 const defaultState = {
     admin: {
@@ -13,23 +15,42 @@ const defaultState = {
 
 describe('<ReferenceFieldController />', () => {
     afterEach(cleanup);
-    it('should call crudGetManyAccumulate on componentDidMount if reference source is defined', () => {
+    it('should call the CRUD_GET_MANY action on mount if reference source is defined', async () => {
+        const dataProvider = jest.fn();
+        dataProvider.mockImplementationOnce(() =>
+            Promise.resolve({ data: [{ id: 123, title: 'foo' }] })
+        );
         const { dispatch } = renderWithRedux(
-            <ReferenceFieldController
-                children={jest.fn().mockReturnValue(<span>children</span>)} // eslint-disable-line react/no-children-prop
-                record={{ id: 1, postId: 123 }}
-                source="postId"
-                reference="posts"
-                resource="comments"
-                basePath=""
-            />,
+            <DataProviderContext.Provider value={dataProvider}>
+                <ReferenceFieldController
+                    children={jest.fn().mockReturnValue(<span>children</span>)} // eslint-disable-line react/no-children-prop
+                    record={{ id: 1, postId: 123 }}
+                    source="postId"
+                    reference="posts"
+                    resource="comments"
+                    basePath=""
+                />
+            </DataProviderContext.Provider>,
             defaultState
         );
-        expect(dispatch).toBeCalledTimes(1);
-        expect(dispatch).toBeCalledWith(crudGetManyAccumulate('posts', [123]));
+        await new Promise(resolve => setTimeout(resolve));
+        expect(dispatch).toBeCalledTimes(5);
+        const call = dispatch.mock.calls.find(
+            params => params[0].type === 'RA/CRUD_GET_MANY'
+        );
+        expect(call).not.toBeUndefined();
+        const crudGetManyAction = call[0];
+        expect(crudGetManyAction.payload).toEqual({
+            ids: [123],
+        });
+        expect(crudGetManyAction.meta.resource).toEqual('posts');
+        expect(dataProvider).toBeCalledTimes(1);
+        expect(dataProvider).toBeCalledWith('GET_MANY', 'posts', {
+            ids: [123],
+        });
     });
 
-    it('should not call crudGetManyAccumulate on componentDidMount if reference source is null or undefined', () => {
+    it('should not call CRUD_GET_MANY action on mount if reference source is null or undefined', async () => {
         const { dispatch } = renderWithRedux(
             <ReferenceFieldController
                 children={jest.fn().mockReturnValue(<span>children</span>)} // eslint-disable-line react/no-children-prop
@@ -41,6 +62,7 @@ describe('<ReferenceFieldController />', () => {
             />,
             defaultState
         );
+        await new Promise(resolve => setTimeout(resolve));
         expect(dispatch).toBeCalledTimes(0);
     });
 
@@ -60,7 +82,7 @@ describe('<ReferenceFieldController />', () => {
         );
 
         expect(children).toBeCalledWith({
-            loading: false,
+            loading: true,
             loaded: true,
             referenceRecord: { id: 123, title: 'foo' },
             resourceLinkPath: '/posts/123',
@@ -91,7 +113,7 @@ describe('<ReferenceFieldController />', () => {
         );
 
         expect(children).toBeCalledWith({
-            loading: false,
+            loading: true,
             loaded: true,
             referenceRecord: { id: 123, title: 'foo' },
             resourceLinkPath: '/prefix/posts/123',
@@ -122,7 +144,7 @@ describe('<ReferenceFieldController />', () => {
         );
 
         expect(children).toBeCalledWith({
-            loading: false,
+            loading: true,
             loaded: true,
             referenceRecord: { id: 123, title: 'foo' },
             resourceLinkPath: '/edit/123',
@@ -153,7 +175,7 @@ describe('<ReferenceFieldController />', () => {
         );
 
         expect(children).toBeCalledWith({
-            loading: false,
+            loading: true,
             loaded: true,
             referenceRecord: { id: 123, title: 'foo' },
             resourceLinkPath: '/show/123',
@@ -177,7 +199,7 @@ describe('<ReferenceFieldController />', () => {
         );
 
         expect(children).toBeCalledWith({
-            loading: false,
+            loading: true,
             loaded: true,
             referenceRecord: { id: 123, title: 'foo' },
             resourceLinkPath: '/posts/123/show',
@@ -209,7 +231,7 @@ describe('<ReferenceFieldController />', () => {
         );
 
         expect(children).toBeCalledWith({
-            loading: false,
+            loading: true,
             loaded: true,
             referenceRecord: { id: 123, title: 'foo' },
             resourceLinkPath: '/edit/123/show',
@@ -241,7 +263,7 @@ describe('<ReferenceFieldController />', () => {
         );
 
         expect(children).toBeCalledWith({
-            loading: false,
+            loading: true,
             loaded: true,
             referenceRecord: { id: 123, title: 'foo' },
             resourceLinkPath: '/show/123/show',
@@ -265,7 +287,7 @@ describe('<ReferenceFieldController />', () => {
         );
 
         expect(children).toBeCalledWith({
-            loading: false,
+            loading: true,
             loaded: true,
             referenceRecord: { id: 123, title: 'foo' },
             resourceLinkPath: false,

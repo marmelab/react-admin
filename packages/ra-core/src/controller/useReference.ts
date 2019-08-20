@@ -40,8 +40,11 @@ export interface UseReferenceProps {
  * @returns {ReferenceProps} The reference record
  */
 export const useReference = ({ reference, id }: Option): UseReferenceProps => {
-    const { data, loading, loaded } = useGetMany(reference, [id]);
-    return { referenceRecord: data[0], loading, loaded };
+    const { data, error, loading, loaded } = useGetMany(reference, [id]);
+    if (error) {
+        console.log(error); // FIXME what should we do?
+    }
+    return { referenceRecord: error ? undefined : data[0], loading, loaded };
 };
 
 export default useReference;

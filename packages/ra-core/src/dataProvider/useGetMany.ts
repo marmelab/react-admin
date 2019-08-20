@@ -90,17 +90,16 @@ const useGetMany = (resource: string, ids: Identifier[], options: any = {}) => {
         });
     }
     dataProvider = useDataProvider();
-    if (!queriesToCall[resource]) {
-        queriesToCall[resource] = [];
-    }
-    queriesToCall[resource] = queriesToCall[resource].concat({
-        ids,
-        setState,
-        onSuccess: options && options.onSuccess,
-        onFailure: options && options.onfailure,
-    });
-
     useEffect(() => {
+        if (!queriesToCall[resource]) {
+            queriesToCall[resource] = [];
+        }
+        queriesToCall[resource] = queriesToCall[resource].concat({
+            ids,
+            setState,
+            onSuccess: options && options.onSuccess,
+            onFailure: options && options.onfailure,
+        });
         callQueries();
     }, [JSON.stringify({ resource, ids, options }), dataProvider]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -115,17 +114,17 @@ const makeGetManySelector = () =>
         (resources, resource, ids) =>
             resources[resource]
                 ? ids.map(id => resources[resource].data[id])
-                : []
+                : ids.map(id => undefined)
     );
 
 const callQueries = debounce(() => {
     const resources = Object.keys(queriesToCall);
     resources.forEach(resource => {
         const queries = [...queriesToCall[resource]];
-        const accumulatedIds = queries.reduce(
-            (acc, { ids }) => union(acc, ids),
-            []
-        ); // concat + unique
+        const accumulatedIds = queries
+            .reduce((acc, { ids }) => union(acc, ids), []) // concat + unique
+            .filter(v => v != null);
+        if (accumulatedIds.length === 0) return;
         dataProvider(
             GET_MANY,
             resource,
@@ -150,7 +149,7 @@ const callQueries = debounce(() => {
                 onFailure: error => {
                     queries.forEach(({ setState, onFailure }) => {
                         setState({ error, loading: false, loaded: false });
-                        onFailure(error);
+                        onFailure && onFailure(error);
                     });
                 },
             }
