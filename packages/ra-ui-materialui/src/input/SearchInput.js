@@ -17,7 +17,6 @@ const SearchInput = ({ classes, ...props }) => {
     const translate = useTranslate();
     return (
         <TextInput
-            label={false}
             placeholder={translate('ra.action.search')}
             InputProps={{
                 endAdornment: (
