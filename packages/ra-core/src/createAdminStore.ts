@@ -14,6 +14,8 @@ interface Window {
     __REDUX_DEVTOOLS_EXTENSION__?: () => () => void;
 }
 
+export type InitialState = object | (() => object);
+
 interface Params {
     dataProvider: DataProvider;
     history: History;
@@ -21,7 +23,7 @@ interface Params {
     customReducers?: any;
     customSagas?: any[];
     i18nProvider?: I18nProvider;
-    initialState?: object;
+    initialState?: InitialState;
     locale?: string;
 }
 
@@ -44,7 +46,14 @@ export default ({
     );
 
     const resettableAppReducer = (state, action) =>
-        appReducer(action.type !== CLEAR_STATE ? state : undefined, action);
+        appReducer(
+            action.type !== CLEAR_STATE
+                ? state
+                : typeof initialState === 'function'
+                ? initialState()
+                : initialState,
+            action
+        );
     const saga = function* rootSaga() {
         yield all(
             [
@@ -58,7 +67,7 @@ export default ({
 
     const store = createStore(
         resettableAppReducer,
-        initialState,
+        typeof initialState === 'function' ? initialState() : initialState,
         compose(
             applyMiddleware(sagaMiddleware, routerMiddleware(history)),
             typeof typedWindow !== 'undefined' &&
