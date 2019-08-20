@@ -6,7 +6,6 @@ import TopToolbar from '../layout/TopToolbar';
 import { CreateButton, ExportButton } from '../button';
 
 const ListActions = ({
-    bulkActions,
     currentSort,
     className,
     resource,
@@ -26,14 +25,6 @@ const ListActions = ({
     useMemo(
         () => (
             <TopToolbar className={className} {...sanitizeListRestProps(rest)}>
-                {bulkActions &&
-                    cloneElement(bulkActions, {
-                        basePath,
-                        filterValues,
-                        resource,
-                        selectedIds,
-                        onUnselectItems,
-                    })}
                 {filters &&
                     cloneElement(filters, {
                         resource,
@@ -58,7 +49,6 @@ const ListActions = ({
     );
 
 ListActions.propTypes = {
-    bulkActions: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
     basePath: PropTypes.string,
     className: PropTypes.string,
     currentSort: PropTypes.object,

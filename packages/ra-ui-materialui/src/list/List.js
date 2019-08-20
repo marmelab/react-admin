@@ -50,7 +50,6 @@ export const useStyles = makeStyles(theme => ({
 const sanitizeRestProps = ({
     actions,
     basePath,
-    bulkActions,
     changeListParams,
     children,
     classes,
@@ -112,7 +111,6 @@ export const ListView = props => {
         aside,
         filter,
         filters,
-        bulkActions,
         bulkActionButtons,
         pagination,
         children,
@@ -140,7 +138,6 @@ export const ListView = props => {
                     filters={filters}
                     {...controllerProps}
                     actions={actions}
-                    bulkActions={bulkActions}
                     exporter={exporter}
                     permanentFilter={filter}
                 />
@@ -153,20 +150,15 @@ export const ListView = props => {
                     })}
                     key={version}
                 >
-                    {bulkActions !== false &&
-                        bulkActionButtons !== false &&
-                        bulkActionButtons &&
-                        !bulkActions && (
-                            <BulkActionsToolbar {...controllerProps}>
-                                {bulkActionButtons}
-                            </BulkActionsToolbar>
-                        )}
+                    {bulkActionButtons !== false && bulkActionButtons && (
+                        <BulkActionsToolbar {...controllerProps}>
+                            {bulkActionButtons}
+                        </BulkActionsToolbar>
+                    )}
                     {children &&
                         cloneElement(Children.only(children), {
                             ...controllerProps,
-                            hasBulkActions:
-                                bulkActions !== false &&
-                                bulkActionButtons !== false,
+                            hasBulkActions: bulkActionButtons !== false,
                         })}
                     {pagination && cloneElement(pagination, controllerProps)}
                 </Content>
@@ -180,7 +172,6 @@ ListView.propTypes = {
     actions: PropTypes.element,
     aside: PropTypes.element,
     basePath: PropTypes.string,
-    bulkActions: PropTypes.oneOfType([PropTypes.bool, PropTypes.element]),
     bulkActionButtons: PropTypes.oneOfType([PropTypes.bool, PropTypes.element]),
     children: PropTypes.element,
     className: PropTypes.string,
@@ -275,7 +266,6 @@ List.propTypes = {
     // the props you can change
     actions: PropTypes.element,
     aside: PropTypes.element,
-    bulkActions: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
     bulkActionButtons: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
     children: PropTypes.node,
     classes: PropTypes.object,
