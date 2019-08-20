@@ -7,7 +7,6 @@ import {
     Create,
     DateInput,
     FormDataConsumer,
-    LongTextInput,
     NumberInput,
     ReferenceInput,
     SaveButton,
@@ -127,7 +126,7 @@ const PostCreate = ({ permissions, ...props }) => {
                 }}
             >
                 <TextInput autoFocus source="title" />
-                <LongTextInput source="teaser" />
+                <TextInput source="teaser" fullWidth={true} multiline={true} />
                 <RichTextInput source="body" validate={required()} />
                 <FormDataConsumer>
                     {({ formData, ...rest }) =>

@@ -9,7 +9,6 @@ import {
     EditActions,
     useEditController,
     Link,
-    LongTextInput,
     ReferenceInput,
     SimpleForm,
     TextInput,
@@ -87,10 +86,11 @@ const CommentEdit = props => {
                             fullWidth
                         />
                         <DateInput source="created_at" fullWidth />
-                        <LongTextInput
+                        <TextInput
                             source="body"
                             validate={minLength(10)}
-                            fullWidth
+                            fullWidth={true}
+                            multiline={true}
                         />
                     </SimpleForm>
                 )}

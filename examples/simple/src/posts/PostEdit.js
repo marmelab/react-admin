@@ -17,7 +17,6 @@ import {
     FormTab,
     ImageField,
     ImageInput,
-    LongTextInput,
     NumberInput,
     ReferenceArrayInput,
     ReferenceManyField,
@@ -49,7 +48,9 @@ const PostEdit = props => (
             <FormTab label="post.form.summary">
                 <DisabledInput source="id" />
                 <TextInput source="title" validate={required()} resettable />
-                <LongTextInput
+                <TextInput
+                    multiline={true}
+                    fullWidth={true}
                     source="teaser"
                     validate={required()}
                     resettable
