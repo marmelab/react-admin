@@ -2,7 +2,6 @@ import React from 'react';
 import { cleanup } from '@testing-library/react';
 import expect from 'expect';
 
-import renderHook from '../util/renderHook';
 import renderWithRedux from '../util/renderWithRedux';
 import useReference from './useReference';
 import { DataProviderContext } from '../dataProvider';
