@@ -41,7 +41,7 @@ const QuickFilter = ({ label }) => {
 
 const PostFilter = props => (
     <Filter {...props}>
-        <SearchInput label="" source="q" alwaysOn />
+        <SearchInput source="q" alwaysOn />
         <TextInput
             source="title"
             defaultValue="Qui tempore rerum et voluptates"

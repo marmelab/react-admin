@@ -17,7 +17,7 @@ const ReviewFilter = props => {
     const classes = useFilterStyles();
     return (
         <Filter {...props}>
-            <SearchInput label="" source="q" alwaysOn />
+            <SearchInput source="q" alwaysOn />
             <SelectInput
                 source="status"
                 choices={[
