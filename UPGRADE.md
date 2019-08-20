@@ -175,6 +175,32 @@ Components deprecated in 2.X have been removed in 3.x. This includes:
 * `TitleDeprecated` (use `Title` instead)
 * `BulkActions` (use the [`bulkActionButtons` prop](https://marmelab.com/react-admin/List.html#bulk-action-buttons) instead)
 
+```diff
+- const PostBulkActions = props => (
+-     <BulkActions {...props}>
+-         <CustomBulkMenuItem />
+-         {/* Add the default bulk delete action */}
+-         <BulkDeleteMenuItem />
+-     </BulkActions>
+- );
++ const PostBulkActionButtons = props => (
++     <Fragment>
++         <ResetViewsButton label="Reset Views" {...props} />
++         {/* Add the default bulk delete action */}
++         <BulkDeleteButton {...props} />
++     </Fragment>
++ );
+
+export const PostList = (props) => (
+    <List 
+        {...props} 
+-       bulkActions={<PostBulkActions />}
++       bulkActionButtons={<PostBulkActionButtons />}>
+        ...
+    </List>
+);
+```
+
 ## Replace papaparse with a lighter library
 
 React-admin used to bundle the `papaparse` library for converting JSON to CSV. But 90% of the `papaparse` code is used to convert CSV to JSON. 
