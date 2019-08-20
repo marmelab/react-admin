@@ -5,7 +5,6 @@ import BooleanInput from './BooleanInput';
 import CheckboxGroupInput from './CheckboxGroupInput';
 import DateInput from './DateInput';
 import DateTimeInput from './DateTimeInput';
-import DisabledInput from './DisabledInput';
 import FileInput from './FileInput';
 import ImageInput from './ImageInput';
 import InputHelperText from './InputHelperText';
@@ -31,7 +30,6 @@ export {
     CheckboxGroupInput,
     DateInput,
     DateTimeInput,
-    DisabledInput,
     FileInput,
     ImageInput,
     InputHelperText,
