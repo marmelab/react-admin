@@ -74,12 +74,41 @@ describe('<ReferenceField />', () => {
                             <TextField source="title" />
                         </ReferenceField>
                     </MemoryRouter>
-                </DataProviderContext.Provider>
+                </DataProviderContext.Provider>,
+                {
+                    admin: {
+                        resources: {
+                            posts: { data: {} },
+                        },
+                    },
+                }
             );
             await new Promise(resolve => setTimeout(resolve, 10));
             expect(queryByRole('progressbar')).toBeNull();
             const links = container.getElementsByTagName('a');
             expect(links).toHaveLength(1);
+        });
+
+        it('should not display a loader if the dataProvider query completes without finding the reference', async () => {
+            const dataProvider = jest.fn();
+            dataProvider.mockReturnValueOnce(Promise.resolve({ data: [] }));
+            const { queryByRole, container } = renderWithRedux(
+                <DataProviderContext.Provider value={dataProvider}>
+                    <ReferenceField
+                        record={{ postId: 123 }}
+                        resource="comments"
+                        source="postId"
+                        reference="posts"
+                        basePath="/comments"
+                    >
+                        <TextField source="title" />
+                    </ReferenceField>
+                </DataProviderContext.Provider>
+            );
+            await new Promise(resolve => setTimeout(resolve, 10));
+            expect(queryByRole('progressbar')).toBeNull();
+            const links = container.getElementsByTagName('a');
+            expect(links).toHaveLength(0);
         });
 
         it('should not display a loader if the dataProvider query fails', async () => {
@@ -89,17 +118,15 @@ describe('<ReferenceField />', () => {
             );
             const { queryByRole, container } = renderWithRedux(
                 <DataProviderContext.Provider value={dataProvider}>
-                    <MemoryRouter>
-                        <ReferenceField
-                            record={{ postId: 123 }}
-                            resource="comments"
-                            source="postId"
-                            reference="posts"
-                            basePath="/comments"
-                        >
-                            <TextField source="title" />
-                        </ReferenceField>
-                    </MemoryRouter>
+                    <ReferenceField
+                        record={{ postId: 123 }}
+                        resource="comments"
+                        source="postId"
+                        reference="posts"
+                        basePath="/comments"
+                    >
+                        <TextField source="title" />
+                    </ReferenceField>
                 </DataProviderContext.Provider>
             );
             await new Promise(resolve => setTimeout(resolve, 10));

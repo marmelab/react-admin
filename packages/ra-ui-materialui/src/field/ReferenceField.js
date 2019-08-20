@@ -146,6 +146,9 @@ export const ReferenceFieldView = ({
             <Error aria-errormessage="Error" color="error" fontSize="small" />
         );
     }
+    if (!referenceRecord) {
+        return null;
+    }
 
     if (resourceLinkPath) {
         return (
