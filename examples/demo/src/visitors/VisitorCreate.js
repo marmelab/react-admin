@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-    Create,
-    DateInput,
-    FormTab,
-    LongTextInput,
-    TabbedForm,
-    TextInput,
-} from 'react-admin';
+import { Create, DateInput, FormTab, TabbedForm, TextInput } from 'react-admin';
 import { makeStyles } from '@material-ui/core/styles';
 
 export const styles = {
@@ -54,9 +47,11 @@ const VisitorCreate = props => {
                     label="resources.customers.tabs.address"
                     path="address"
                 >
-                    <LongTextInput
+                    <TextInput
                         source="address"
                         formClassName={classes.address}
+                        multiline={true}
+                        fullWidth={true}
                     />
                     <TextInput
                         source="zipcode"

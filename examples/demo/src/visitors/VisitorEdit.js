@@ -6,7 +6,6 @@ import {
     Edit,
     EditButton,
     FormTab,
-    LongTextInput,
     NullableBooleanInput,
     NumberField,
     ReferenceManyField,
@@ -55,9 +54,11 @@ const VisitorEdit = props => {
                     label="resources.customers.tabs.address"
                     path="address"
                 >
-                    <LongTextInput
+                    <TextInput
                         source="address"
                         formClassName={classes.address}
+                        multiline={true}
+                        fullWidth={true}
                     />
                     <TextInput
                         source="zipcode"
