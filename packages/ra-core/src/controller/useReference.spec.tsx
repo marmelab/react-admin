@@ -16,7 +16,6 @@ describe('useReference', () => {
     const defaultProps = {
         id: '1',
         reference: 'posts',
-        allowEmpty: false,
     };
 
     afterEach(cleanup);
@@ -96,7 +95,7 @@ describe('useReference', () => {
         expect(dispatch).toBeCalledTimes(10);
     });
 
-    it('it should not refetch reference when allowEmpty change', async () => {
+    it('it should not refetch reference when other props change change', async () => {
         const dataProvider = jest.fn();
         dataProvider.mockImplementation(() =>
             Promise.resolve({ data: [{ id: 1, title: 'foo' }] })
@@ -109,7 +108,7 @@ describe('useReference', () => {
         await new Promise(resolve => setTimeout(resolve));
         rerender(
             <DataProviderContext.Provider value={dataProvider}>
-                <UseReference {...defaultProps} allowEmpty={true} />
+                <UseReference {...defaultProps} className="foobar" />
             </DataProviderContext.Provider>
         );
         await new Promise(resolve => setTimeout(resolve));

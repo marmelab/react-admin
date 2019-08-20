@@ -6,6 +6,14 @@ import { crudGetManyAccumulate } from '../../actions';
 import { getReferencesByIds } from '../../reducer/admin/references/oneToMany';
 import { ReduxState, Record, RecordMap, Identifier } from '../../types';
 
+/**
+ * @typedef ReferenceArrayProps
+ * @type {Object}
+ * @property {boolean} loaded: boolean indicating if the reference has already beeen loaded
+ * @property {Array} ids: the list of ids.
+ * @property {Object} data: Object holding the reference data by their ids
+ * @property {string} referenceBasePath basePath of the reference
+ */
 interface ReferenceArrayProps {
     loaded: boolean;
     ids: Identifier[];
@@ -20,15 +28,6 @@ interface Option {
     resource: string;
     source: string;
 }
-
-/**
- * @typedef ReferenceArrayProps
- * @type {Object}
- * @property {boolean} loaded: boolean indicating if the reference has already beeen loaded
- * @property {Array} ids: the list of ids.
- * @property {Object} data: Object holding the reference data by their ids
- * @property {string} referenceBasePath basePath of the reference
- */
 
 /**
  * Hook that fetches records from another resource specified

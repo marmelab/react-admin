@@ -73,7 +73,7 @@ let dataProvider: DataProviderHookFunction;
  */
 const useGetMany = (resource: string, ids: Identifier[], options: any = {}) => {
     // we can't use useQueryWithStore here because we're aggregating queries first
-    // therefore part of the usequeryWithStore logic will have to be repeated below
+    // therefore part of the useQueryWithStore logic will have to be repeated below
     const selectMany = useMemo(makeGetManySelector, []);
     const data = useSelector((state: ReduxState) =>
         selectMany(state, resource, ids)
@@ -144,7 +144,12 @@ const makeGetManySelector = () =>
 const callQueries = debounce(() => {
     const resources = Object.keys(queriesToCall);
     resources.forEach(resource => {
-        const queries = [...queriesToCall[resource]]; // cloneing to avoid side effects
+        const queries = [...queriesToCall[resource]]; // cloning to avoid side effects
+        /**
+         * Extract ids from queries, aggregate and deduplicate them
+         *
+         * @example from [[1, 2], [2, null, 3], [4, null]] to [1, 2, 3, 4]
+         */
         const accumulatedIds = queries
             .reduce((acc, { ids }) => union(acc, ids), []) // concat + unique
             .filter(v => v != null); // remove null values

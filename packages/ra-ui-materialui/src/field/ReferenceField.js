@@ -78,7 +78,6 @@ const ReferenceField = ({ children, record, source, ...props }) => {
 
 ReferenceField.propTypes = {
     addLabel: PropTypes.bool,
-    allowEmpty: PropTypes.bool.isRequired,
     basePath: PropTypes.string.isRequired,
     children: PropTypes.element.isRequired,
     classes: PropTypes.object,
@@ -106,7 +105,6 @@ ReferenceField.propTypes = {
 
 ReferenceField.defaultProps = {
     addLabel: true,
-    allowEmpty: false,
     classes: {},
     link: 'edit',
     record: {},
@@ -122,7 +120,6 @@ const useStyles = makeStyles(theme => ({
 const stopPropagation = e => e.stopPropagation();
 
 export const ReferenceFieldView = ({
-    allowEmpty,
     basePath,
     children,
     className,
@@ -156,7 +153,6 @@ export const ReferenceFieldView = ({
                     ),
                     record: referenceRecord,
                     resource: reference,
-                    allowEmpty,
                     basePath,
                     translateChoice,
                     ...sanitizeRestProps(rest),
@@ -168,7 +164,6 @@ export const ReferenceFieldView = ({
     return cloneElement(Children.only(children), {
         record: referenceRecord,
         resource: reference,
-        allowEmpty,
         basePath,
         translateChoice,
         ...sanitizeRestProps(rest),
@@ -176,7 +171,6 @@ export const ReferenceFieldView = ({
 };
 
 ReferenceFieldView.propTypes = {
-    allowEmpty: PropTypes.bool,
     basePath: PropTypes.string,
     children: PropTypes.element,
     className: PropTypes.string,

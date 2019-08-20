@@ -8,7 +8,6 @@ export type LinkToFunctionType = (record: Record, reference: string) => string;
 type LinkToType = string | boolean | LinkToFunctionType;
 
 interface Option {
-    allowEmpty?: boolean;
     basePath: string;
     record?: Record;
     source: string;

@@ -11,7 +11,6 @@ interface childrenParams extends UseReferenceProps {
 }
 
 interface Props {
-    allowEmpty?: boolean;
     basePath: string;
     children: (params: childrenParams) => ReactNode;
     record?: Record;
