@@ -1,123 +1,157 @@
 import React from 'react';
 import expect from 'expect';
-import { render, cleanup } from '@testing-library/react';
-
-import { RadioButtonGroupInput } from './RadioButtonGroupInput';
+import { render, cleanup, fireEvent } from '@testing-library/react';
+import { Form } from 'react-final-form';
 import { TranslationContext } from 'ra-core';
+
+import RadioButtonGroupInput from './RadioButtonGroupInput';
 
 describe('<RadioButtonGroupInput />', () => {
     const defaultProps = {
-        resource: 'bar',
-        source: 'foo',
-        meta: {},
-        input: {},
-        translate: x => x,
+        resource: 'creditcards',
+        source: 'type',
+        choices: [
+            { id: 'visa', name: 'VISA' },
+            { id: 'mastercard', name: 'Mastercard' },
+        ],
     };
 
     afterEach(cleanup);
 
     it('should render choices as radio inputs', () => {
         const { getByLabelText, queryByText } = render(
-            <RadioButtonGroupInput
-                {...defaultProps}
-                label="hello"
-                choices={[
-                    { id: 'M', name: 'Male' },
-                    { id: 'F', name: 'Female' },
-                ]}
+            <Form
+                onSubmit={jest.fn}
+                render={() => (
+                    <RadioButtonGroupInput
+                        {...defaultProps}
+                        label="Credit card"
+                    />
+                )}
             />
         );
-        expect(queryByText('hello')).not.toBeNull();
-        const input1 = getByLabelText('Male');
+        expect(queryByText('Credit card')).not.toBeNull();
+        const input1 = getByLabelText('VISA');
         expect(input1.type).toBe('radio');
-        expect(input1.name).toBe('foo');
+        expect(input1.name).toBe('type');
         expect(input1.checked).toBeFalsy();
-        const input2 = getByLabelText('Female');
+        const input2 = getByLabelText('Mastercard');
         expect(input2.type).toBe('radio');
-        expect(input2.name).toBe('foo');
+        expect(input2.name).toBe('type');
         expect(input2.checked).toBeFalsy();
     });
 
-    it('should use the input parameter value as the initial input value', () => {
+    it('should use the value provided by final-form as the initial input value', () => {
         const { getByLabelText } = render(
-            <RadioButtonGroupInput
-                {...defaultProps}
-                choices={[
-                    { id: 'M', name: 'Male' },
-                    { id: 'F', name: 'Female' },
-                ]}
-                input={{ value: 'F' }}
+            <Form
+                onSubmit={jest.fn}
+                initialValues={{ type: 'mastercard' }}
+                render={() => <RadioButtonGroupInput {...defaultProps} />}
             />
         );
-        expect(getByLabelText('Male').checked).toBeFalsy();
-        expect(getByLabelText('Female').checked).toBeTruthy();
+        expect(getByLabelText('VISA').checked).toBeFalsy();
+        expect(getByLabelText('Mastercard').checked).toBeTruthy();
     });
 
     it('should use optionValue as value identifier', () => {
         const { getByLabelText } = render(
-            <RadioButtonGroupInput
-                {...defaultProps}
-                optionValue="foobar"
-                choices={[{ foobar: 'M', name: 'Male' }]}
+            <Form
+                onSubmit={jest.fn}
+                render={() => (
+                    <RadioButtonGroupInput
+                        {...defaultProps}
+                        optionValue="short"
+                        choices={[{ short: 'mc', name: 'Mastercard' }]}
+                    />
+                )}
             />
         );
-        expect(getByLabelText('Male').value).toBe('M');
+        expect(getByLabelText('Mastercard').value).toBe('mc');
     });
 
     it('should use optionValue including "." as value identifier', () => {
         const { getByLabelText } = render(
-            <RadioButtonGroupInput
-                {...defaultProps}
-                optionValue="foobar.id"
-                choices={[{ foobar: { id: 'M' }, name: 'Male' }]}
+            <Form
+                onSubmit={jest.fn}
+                render={() => (
+                    <RadioButtonGroupInput
+                        {...defaultProps}
+                        optionValue="details.id"
+                        choices={[
+                            { details: { id: 'mc' }, name: 'Mastercard' },
+                        ]}
+                    />
+                )}
             />
         );
-        expect(getByLabelText('Male').value).toBe('M');
+        expect(getByLabelText('Mastercard').value).toBe('mc');
     });
 
     it('should use optionText with a string value as text identifier', () => {
         const { queryByText } = render(
-            <RadioButtonGroupInput
-                {...defaultProps}
-                optionText="foobar"
-                choices={[{ id: 'M', foobar: 'Male' }]}
+            <Form
+                onSubmit={jest.fn}
+                render={() => (
+                    <RadioButtonGroupInput
+                        {...defaultProps}
+                        optionText="longname"
+                        choices={[{ id: 'mc', longname: 'Mastercard' }]}
+                    />
+                )}
             />
         );
-        expect(queryByText('Male')).not.toBeNull();
+        expect(queryByText('Mastercard')).not.toBeNull();
     });
 
     it('should use optionText with a string value including "." as text identifier', () => {
         const { queryByText } = render(
-            <RadioButtonGroupInput
-                {...defaultProps}
-                optionText="foobar.name"
-                choices={[{ id: 'M', foobar: { name: 'Male' } }]}
+            <Form
+                onSubmit={jest.fn}
+                render={() => (
+                    <RadioButtonGroupInput
+                        {...defaultProps}
+                        optionText="details.name"
+                        choices={[
+                            { id: 'mc', details: { name: 'Mastercard' } },
+                        ]}
+                    />
+                )}
             />
         );
-        expect(queryByText('Male')).not.toBeNull();
+        expect(queryByText('Mastercard')).not.toBeNull();
     });
 
     it('should use optionText with a function value as text identifier', () => {
         const { queryByText } = render(
-            <RadioButtonGroupInput
-                {...defaultProps}
-                optionText={choice => choice.foobar}
-                choices={[{ id: 'M', foobar: 'Male' }]}
+            <Form
+                onSubmit={jest.fn}
+                render={() => (
+                    <RadioButtonGroupInput
+                        {...defaultProps}
+                        optionText={choice => choice.longname}
+                        choices={[{ id: 'mc', longname: 'Mastercard' }]}
+                    />
+                )}
             />
         );
-        expect(queryByText('Male')).not.toBeNull();
+        expect(queryByText('Mastercard')).not.toBeNull();
     });
 
     it('should use optionText with an element value as text identifier', () => {
-        const Foobar = ({ record }) => <span>{record.foobar}</span>;
+        const Foobar = ({ record }) => <span>{record.longname}</span>;
         const { queryByText } = render(
-            <RadioButtonGroupInput
-                {...defaultProps}
-                optionText={<Foobar />}
-                choices={[{ id: 'M', foobar: 'Male' }]}
+            <Form
+                onSubmit={jest.fn}
+                render={() => (
+                    <RadioButtonGroupInput
+                        {...defaultProps}
+                        optionText={<Foobar />}
+                        choices={[{ id: 'mc', longname: 'Mastercard' }]}
+                    />
+                )}
             />
         );
-        expect(queryByText('Male')).not.toBeNull();
+        expect(queryByText('Mastercard')).not.toBeNull();
     });
 
     it('should translate the choices by default', () => {
@@ -127,13 +161,18 @@ describe('<RadioButtonGroupInput />', () => {
                     translate: x => `**${x}**`,
                 }}
             >
-                <RadioButtonGroupInput
-                    {...defaultProps}
-                    choices={[{ id: 'M', name: 'Male' }]}
+                <Form
+                    onSubmit={jest.fn}
+                    render={() => (
+                        <RadioButtonGroupInput
+                            {...defaultProps}
+                            choices={[{ id: 'mc', name: 'Mastercard' }]}
+                        />
+                    )}
                 />
             </TranslationContext.Provider>
         );
-        expect(queryByText('**Male**')).not.toBeNull();
+        expect(queryByText('**Mastercard**')).not.toBeNull();
     });
 
     it('should not translate the choices if translateChoice is false', () => {
@@ -143,22 +182,32 @@ describe('<RadioButtonGroupInput />', () => {
                     translate: x => `**${x}**`,
                 }}
             >
-                <RadioButtonGroupInput
-                    {...defaultProps}
-                    choices={[{ id: 'M', name: 'Male' }]}
-                    translateChoice={false}
+                <Form
+                    onSubmit={jest.fn}
+                    render={() => (
+                        <RadioButtonGroupInput
+                            {...defaultProps}
+                            choices={[{ id: 'mc', name: 'Mastercard' }]}
+                            translateChoice={false}
+                        />
+                    )}
                 />
             </TranslationContext.Provider>
         );
-        expect(queryByText('**Male**')).toBeNull();
-        expect(queryByText('Male')).not.toBeNull();
+        expect(queryByText('**Mastercard**')).toBeNull();
+        expect(queryByText('Mastercard')).not.toBeNull();
     });
 
-    it('should displayed helperText if prop is present in meta', () => {
+    it('should display helperText if prop is present in meta', () => {
         const { queryByText } = render(
-            <RadioButtonGroupInput
-                {...defaultProps}
-                helperText="Can I help you?"
+            <Form
+                onSubmit={jest.fn}
+                render={() => (
+                    <RadioButtonGroupInput
+                        {...defaultProps}
+                        helperText="Can I help you?"
+                    />
+                )}
             />
         );
         expect(queryByText('Can I help you?')).not.toBeNull();
@@ -166,37 +215,74 @@ describe('<RadioButtonGroupInput />', () => {
 
     describe('error message', () => {
         it('should not be displayed if field is pristine', () => {
+            // This validator always returns an error
+            const validate = () => 'ra.validation.error';
+
             const { queryByText } = render(
-                <RadioButtonGroupInput
-                    {...defaultProps}
-                    meta={{ touched: false, error: 'Required field.' }}
+                <Form
+                    onSubmit={jest.fn}
+                    validateOnBlur
+                    render={() => (
+                        <RadioButtonGroupInput
+                            {...defaultProps}
+                            validate={validate}
+                        />
+                    )}
                 />
             );
-            expect(queryByText('Required field.')).toBeNull();
+            expect(queryByText('ra.validation.required')).toBeNull();
         });
 
         it('should be displayed if field has been touched and is invalid', () => {
-            const { getByText } = render(
-                <RadioButtonGroupInput
-                    {...defaultProps}
-                    meta={{ touched: true, error: 'Required field.' }}
+            // This validator always returns an error
+            const validate = () => 'ra.validation.error';
+
+            const { getByLabelText, getByText } = render(
+                <Form
+                    onSubmit={jest.fn}
+                    validateOnBlur
+                    render={() => (
+                        <RadioButtonGroupInput
+                            {...defaultProps}
+                            validate={validate}
+                        />
+                    )}
                 />
             );
-            expect(getByText('Required field.')).toBeDefined();
+
+            const input = getByLabelText('Mastercard');
+            fireEvent.click(input);
+            expect(input.checked).toBe(true);
+
+            fireEvent.blur(input);
+
+            expect(getByText('ra.validation.error')).toBeDefined();
         });
 
         it('should be displayed even with an helper Text', () => {
-            const { getByText, queryByText } = render(
-                <RadioButtonGroupInput
-                    {...defaultProps}
-                    meta={{
-                        touched: true,
-                        error: 'Required field.',
-                    }}
-                    helperText="Can I help you?"
+            // This validator always returns an error
+            const validate = () => 'ra.validation.error';
+
+            const { getByLabelText, getByText, queryByText } = render(
+                <Form
+                    onSubmit={jest.fn}
+                    validateOnBlur
+                    render={() => (
+                        <RadioButtonGroupInput
+                            {...defaultProps}
+                            validate={validate}
+                            helperText="Can I help you?"
+                        />
+                    )}
                 />
             );
-            expect(getByText('Required field.')).toBeDefined();
+            const input = getByLabelText('Mastercard');
+            fireEvent.click(input);
+            expect(input.checked).toBe(true);
+
+            fireEvent.blur(input);
+
+            expect(getByText('ra.validation.error')).toBeDefined();
             expect(queryByText('Can I help you?')).toBeNull();
         });
     });
