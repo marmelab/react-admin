@@ -2,8 +2,7 @@ import React, { cloneElement, Children } from 'react';
 import PropTypes from 'prop-types';
 import { isRequired, FieldTitle } from 'ra-core';
 import { useFieldArray } from 'react-final-form-arrays';
-import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
+import { InputLabel, FormControl } from '@material-ui/core';
 
 import sanitizeRestProps from './sanitizeRestProps';
 
