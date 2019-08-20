@@ -5,25 +5,24 @@ import shouldUpdate from 'recompose/shouldUpdate';
 import TableCell from '@material-ui/core/TableCell';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Tooltip from '@material-ui/core/Tooltip';
-import { makeStyles, createStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import { FieldTitle, useTranslate } from 'ra-core';
 
 // remove the sort icons when not active
-const useStyles = makeStyles(
-    createStyles({
-        icon: {
-            display: 'none',
+const useStyles = makeStyles({
+    icon: {
+        display: 'none',
+    },
+    active: {
+        '& $icon': {
+            display: 'inline',
         },
-        active: {
-            '& $icon': {
-                display: 'inline',
-            },
-        },
-    })
-);
+    },
+});
 
 export const DatagridHeaderCell = ({
     className,
+    classes: classesOverride,
     field,
     currentSort,
     updateSort,
@@ -31,7 +30,7 @@ export const DatagridHeaderCell = ({
     isSorting,
     ...rest
 }) => {
-    const classes = useStyles();
+    const classes = useStyles({ classes: classesOverride });
     const translate = useTranslate();
     return (
         <TableCell
@@ -81,6 +80,7 @@ export const DatagridHeaderCell = ({
 
 DatagridHeaderCell.propTypes = {
     className: PropTypes.string,
+    classes: PropTypes.object,
     field: PropTypes.element,
     currentSort: PropTypes.shape({
         sort: PropTypes.string,
@@ -92,11 +92,9 @@ DatagridHeaderCell.propTypes = {
     updateSort: PropTypes.func.isRequired,
 };
 
-const enhance = shouldUpdate(
+export default shouldUpdate(
     (props, nextProps) =>
         props.isSorting !== nextProps.isSorting ||
         (nextProps.isSorting &&
             props.currentSort.order !== nextProps.currentSort.order)
-);
-
-export default enhance(DatagridHeaderCell);
+)(DatagridHeaderCell);

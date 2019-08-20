@@ -1,20 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { makeStyles, createStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 
 import Labeled from '../input/Labeled';
 
 const sanitizeRestProps = ({ basePath, record, ...rest }) => rest;
 
-const useStyles = makeStyles(theme =>
-    createStyles({
-        input: { width: theme.spacing(32) },
-    })
-);
+const useStyles = makeStyles(theme => ({
+    input: { width: theme.spacing(32) },
+}));
 
-export const FormInput = ({ input, ...rest }) => {
-    const classes = useStyles();
+export const FormInput = ({ input, classes: classesOverride, ...rest }) => {
+    const classes = useStyles({ classes: classesOverride });
     return input ? (
         <div
             className={classnames(
@@ -58,6 +56,7 @@ export const FormInput = ({ input, ...rest }) => {
 
 FormInput.propTypes = {
     className: PropTypes.string,
+    classes: PropTypes.object,
     input: PropTypes.object,
 };
 

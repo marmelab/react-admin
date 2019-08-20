@@ -2,45 +2,43 @@ import React, { Children, Fragment, isValidElement } from 'react';
 import PropTypes from 'prop-types';
 import MuiToolbar from '@material-ui/core/Toolbar';
 import withWidth from '@material-ui/core/withWidth';
-import { makeStyles, createStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
 
 import { SaveButton, DeleteButton } from '../button';
 
-const useStyles = makeStyles(theme =>
-    createStyles({
-        toolbar: {
-            backgroundColor:
-                theme.palette.type === 'light'
-                    ? theme.palette.grey[100]
-                    : theme.palette.grey[900],
+const useStyles = makeStyles(theme => ({
+    toolbar: {
+        backgroundColor:
+            theme.palette.type === 'light'
+                ? theme.palette.grey[100]
+                : theme.palette.grey[900],
+    },
+    desktopToolbar: {
+        marginTop: theme.spacing(2),
+    },
+    mobileToolbar: {
+        position: 'fixed',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        padding: '16px',
+        width: '100%',
+        boxSizing: 'border-box',
+        flexShrink: 0,
+        zIndex: 2,
+    },
+    defaultToolbar: {
+        flex: 1,
+        display: 'flex',
+        justifyContent: 'space-between',
+    },
+    spacer: {
+        [theme.breakpoints.down('xs')]: {
+            height: '5em',
         },
-        desktopToolbar: {
-            marginTop: theme.spacing(2),
-        },
-        mobileToolbar: {
-            position: 'fixed',
-            bottom: 0,
-            left: 0,
-            right: 0,
-            padding: '16px',
-            width: '100%',
-            boxSizing: 'border-box',
-            flexShrink: 0,
-            zIndex: 2,
-        },
-        defaultToolbar: {
-            flex: 1,
-            display: 'flex',
-            justifyContent: 'space-between',
-        },
-        spacer: {
-            [theme.breakpoints.down('xs')]: {
-                height: '5em',
-            },
-        },
-    })
-);
+    },
+}));
 
 const valueOrDefault = (value, defaultValue) =>
     typeof value === 'undefined' ? defaultValue : value;
@@ -49,6 +47,7 @@ const Toolbar = ({
     basePath,
     children,
     className,
+    classes: classesOverride,
     handleSubmit,
     handleSubmitWithRedirect,
     invalid,
@@ -62,7 +61,7 @@ const Toolbar = ({
     width,
     ...rest
 }) => {
-    const classes = useStyles();
+    const classes = useStyles({ classes: classesOverride });
     return (
         <Fragment>
             <MuiToolbar
@@ -157,5 +156,4 @@ Toolbar.defaultProps = {
     submitOnEnter: true,
 };
 
-const enhance = withWidth({ initialWidth: 'xs' });
-export default enhance(Toolbar);
+export default withWidth({ initialWidth: 'xs' })(Toolbar);

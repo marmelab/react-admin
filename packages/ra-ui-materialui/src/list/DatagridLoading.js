@@ -8,19 +8,17 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import IconButton from '@material-ui/core/IconButton';
 import Checkbox from '@material-ui/core/Checkbox';
 import classnames from 'classnames';
-import { makeStyles, createStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 
-const useStyles = makeStyles(theme =>
-    createStyles({
-        root: {
-            backgroundColor: theme.palette.grey[300],
-            display: 'flex',
-        },
-    })
-);
+const useStyles = makeStyles(theme => ({
+    root: {
+        backgroundColor: theme.palette.grey[300],
+        display: 'flex',
+    },
+}));
 
-const Placeholder = () => {
-    const classes = useStyles();
+const Placeholder = ({ classes: classesOverride }) => {
+    const classes = useStyles({ classes: classesOverride });
     return <div className={classes.root}>&nbsp;</div>;
 };
 

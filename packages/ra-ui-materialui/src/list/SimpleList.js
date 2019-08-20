@@ -7,22 +7,26 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
-import { makeStyles, createStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
 import { linkToRecord, sanitizeListRestProps } from 'ra-core';
 
-const useStyles = makeStyles(
-    createStyles({
-        link: {
-            textDecoration: 'none',
-            color: 'inherit',
-        },
-        tertiary: { float: 'right', opacity: 0.541176 },
-    })
-);
+const useStyles = makeStyles({
+    link: {
+        textDecoration: 'none',
+        color: 'inherit',
+    },
+    tertiary: { float: 'right', opacity: 0.541176 },
+});
 
-const LinkOrNot = ({ linkType, basePath, id, children }) => {
-    const classes = useStyles();
+const LinkOrNot = ({
+    classes: classesOverride,
+    linkType,
+    basePath,
+    id,
+    children,
+}) => {
+    const classes = useStyles({ classes: classesOverride });
     return linkType === 'edit' || linkType === true ? (
         <Link to={linkToRecord(basePath, id)} className={classes.link}>
             {children}
@@ -42,6 +46,7 @@ const LinkOrNot = ({ linkType, basePath, id, children }) => {
 const SimpleList = ({
     basePath,
     className,
+    classes: classesOverride,
     data,
     hasBulkActions,
     ids,
@@ -59,7 +64,7 @@ const SimpleList = ({
     total,
     ...rest
 }) => {
-    const classes = useStyles();
+    const classes = useStyles({ classes: classesOverride });
     return (
         (isLoading || total > 0) && (
             <List className={className} {...sanitizeListRestProps(rest)}>
@@ -121,6 +126,7 @@ const SimpleList = ({
 SimpleList.propTypes = {
     basePath: PropTypes.string,
     className: PropTypes.string,
+    classes: PropTypes.object,
     data: PropTypes.object,
     hasBulkActions: PropTypes.bool.isRequired,
     ids: PropTypes.array,

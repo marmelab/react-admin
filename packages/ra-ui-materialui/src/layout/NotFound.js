@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
-import { makeStyles, createStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import HotTub from '@material-ui/icons/HotTub';
 import History from '@material-ui/icons/History';
 import classnames from 'classnames';
@@ -9,43 +9,47 @@ import classnames from 'classnames';
 import { useTranslate, Authenticated } from 'ra-core';
 import Title from './Title';
 
-const useStyles = makeStyles(theme =>
-    createStyles({
-        container: {
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            [theme.breakpoints.up('md')]: {
-                height: '100%',
-            },
-            [theme.breakpoints.down('sm')]: {
-                height: '100vh',
-                marginTop: '-3em',
-            },
+const useStyles = makeStyles(theme => ({
+    container: {
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        [theme.breakpoints.up('md')]: {
+            height: '100%',
         },
-        icon: {
-            width: '9em',
-            height: '9em',
+        [theme.breakpoints.down('sm')]: {
+            height: '100vh',
+            marginTop: '-3em',
         },
-        message: {
-            textAlign: 'center',
-            fontFamily: 'Roboto, sans-serif',
-            opacity: 0.5,
-            margin: '0 1em',
-        },
-        toolbar: {
-            textAlign: 'center',
-            marginTop: '2em',
-        },
-    })
-);
+    },
+    icon: {
+        width: '9em',
+        height: '9em',
+    },
+    message: {
+        textAlign: 'center',
+        fontFamily: 'Roboto, sans-serif',
+        opacity: 0.5,
+        margin: '0 1em',
+    },
+    toolbar: {
+        textAlign: 'center',
+        marginTop: '2em',
+    },
+}));
 
 function goBack() {
     window.history.go(-1);
 }
 
-const NotFound = ({ className, title, location, ...rest }) => {
-    const classes = useStyles();
+const NotFound = ({
+    className,
+    classes: classesOverride,
+    title,
+    location,
+    ...rest
+}) => {
+    const classes = useStyles({ classes: classesOverride });
     const translate = useTranslate();
     return (
         <Authenticated location={location}>
@@ -72,6 +76,7 @@ const NotFound = ({ className, title, location, ...rest }) => {
 
 NotFound.propTypes = {
     className: PropTypes.string,
+    classes: PropTypes.object,
     title: PropTypes.string,
     location: PropTypes.object,
 };

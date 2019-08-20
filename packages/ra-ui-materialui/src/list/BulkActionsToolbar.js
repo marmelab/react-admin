@@ -3,44 +3,43 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles, createStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import { lighten } from '@material-ui/core/styles/colorManipulator';
 import { useTranslate, sanitizeListRestProps } from 'ra-core';
 
 import TopToolbar from '../layout/TopToolbar';
 
-const useStyles = makeStyles(theme =>
-    createStyles({
-        toolbar: {
-            zIndex: 3,
-            color:
-                theme.palette.type === 'light'
-                    ? theme.palette.primary.main
-                    : theme.palette.text.primary,
-            justifyContent: 'space-between',
-            backgroundColor:
-                theme.palette.type === 'light'
-                    ? lighten(theme.palette.primary.light, 0.85)
-                    : theme.palette.primary.dark,
-            minHeight: theme.spacing(8),
-            height: theme.spacing(8),
-            transition: `${theme.transitions.create(
-                'height'
-            )}, ${theme.transitions.create('min-height')}`,
-        },
-        collapsed: {
-            minHeight: 0,
-            height: 0,
-            overflowY: 'hidden',
-        },
-        title: {
-            flex: '0 0 auto',
-        },
-    })
-);
+const useStyles = makeStyles(theme => ({
+    toolbar: {
+        zIndex: 3,
+        color:
+            theme.palette.type === 'light'
+                ? theme.palette.primary.main
+                : theme.palette.text.primary,
+        justifyContent: 'space-between',
+        backgroundColor:
+            theme.palette.type === 'light'
+                ? lighten(theme.palette.primary.light, 0.85)
+                : theme.palette.primary.dark,
+        minHeight: theme.spacing(8),
+        height: theme.spacing(8),
+        transition: `${theme.transitions.create(
+            'height'
+        )}, ${theme.transitions.create('min-height')}`,
+    },
+    collapsed: {
+        minHeight: 0,
+        height: 0,
+        overflowY: 'hidden',
+    },
+    title: {
+        flex: '0 0 auto',
+    },
+}));
 
 const BulkActionsToolbar = ({
     basePath,
+    classes: classesOverride,
     filterValues,
     label,
     resource,
@@ -48,7 +47,7 @@ const BulkActionsToolbar = ({
     children,
     ...rest
 }) => {
-    const classes = useStyles();
+    const classes = useStyles({ classes: classesOverride });
     const translate = useTranslate();
 
     return (
@@ -83,6 +82,7 @@ const BulkActionsToolbar = ({
 
 BulkActionsToolbar.propTypes = {
     children: PropTypes.node,
+    classes: PropTypes.object,
     basePath: PropTypes.string,
     filterValues: PropTypes.object,
     label: PropTypes.string,
