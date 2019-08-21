@@ -138,7 +138,6 @@ export const ReferenceFieldView = ({
     translateChoice = false,
     ...rest
 }) => {
-    console.log('render');
     const classes = useStyles({ classes: classesOverride });
     if (!loaded) {
         return <LinearProgress />;
