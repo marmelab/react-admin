@@ -1,7 +1,8 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
-import FileInput from './FileInput';
+import FileInput, { FileInputProps, FileInputOptions } from './FileInput';
+import { InputProps } from 'ra-core';
 
 const useStyles = makeStyles(theme => ({
     root: { width: '100%' },
@@ -32,7 +33,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const ImageInput = props => {
+const ImageInput = (props: FileInputProps & InputProps<FileInputOptions>) => {
     const classes = useStyles(props);
 
     return (

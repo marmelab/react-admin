@@ -4,7 +4,21 @@ import { render, cleanup, fireEvent } from '@testing-library/react';
 import FileInputPreview from './FileInputPreview';
 
 describe('<FileInputPreview />', () => {
-    afterEach(cleanup);
+    beforeAll(() => {
+        // @ts-ignore
+        global.URL.revokeObjectURL = jest.fn();
+    });
+
+    afterAll(() => {
+        // @ts-ignore
+        delete global.URL.revokeObjectURL;
+    });
+
+    afterEach(() => {
+        // @ts-ignore
+        global.URL.revokeObjectURL.mockClear();
+        cleanup();
+    });
 
     const file = {
         preview: 'previewUrl',
@@ -13,7 +27,6 @@ describe('<FileInputPreview />', () => {
     const defaultProps = {
         file,
         onRemove: jest.fn(),
-        revokeObjectURL: jest.fn(),
     };
 
     it('should call `onRemove` prop when clicking on remove button', () => {
@@ -41,36 +54,28 @@ describe('<FileInputPreview />', () => {
     });
 
     it('should clean up generated URLs for preview', () => {
-        const revokeObjectURL = jest.fn();
-
         const { unmount } = render(
-            <FileInputPreview
-                {...defaultProps}
-                revokeObjectURL={revokeObjectURL}
-            >
+            <FileInputPreview {...defaultProps}>
                 <div id="child">Child</div>
             </FileInputPreview>
         );
 
         unmount();
-        expect(revokeObjectURL).toHaveBeenCalledWith('previewUrl');
+        // @ts-ignore
+        expect(global.URL.revokeObjectURL).toHaveBeenCalledWith('previewUrl');
     });
 
     it('should not try to clean up preview urls if not passed a File object with a preview', () => {
         const file = {};
-        const revokeObjectURL = jest.fn();
 
         const { unmount } = render(
-            <FileInputPreview
-                {...defaultProps}
-                file={file}
-                revokeObjectURL={revokeObjectURL}
-            >
+            <FileInputPreview {...defaultProps} file={file}>
                 <div id="child">Child</div>
             </FileInputPreview>
         );
 
         unmount();
-        expect(revokeObjectURL).not.toHaveBeenCalled();
+        // @ts-ignore
+        expect(global.URL.revokeObjectURL).not.toHaveBeenCalled();
     });
 });
