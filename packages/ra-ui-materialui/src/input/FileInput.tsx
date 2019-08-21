@@ -1,11 +1,17 @@
-import React, { Children, cloneElement, isValidElement } from 'react';
+import React, {
+    FunctionComponent,
+    Children,
+    cloneElement,
+    isValidElement,
+    ReactElement,
+} from 'react';
 import PropTypes from 'prop-types';
 import { shallowEqual } from 'recompose';
-import { useDropzone } from 'react-dropzone';
+import { useDropzone, DropzoneOptions } from 'react-dropzone';
 import { makeStyles } from '@material-ui/core/styles';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import classnames from 'classnames';
-import { useInput, useTranslate } from 'ra-core';
+import { useInput, useTranslate, InputProps } from 'ra-core';
 
 import Labeled from './Labeled';
 import FileInputPreview from './FileInputPreview';
@@ -25,20 +31,34 @@ const useStyles = makeStyles(theme => ({
     root: { width: '100%' },
 }));
 
-const FileInput = ({
+export interface FileInputProps {
+    accept?: string;
+    labelMultiple?: string;
+    labelSingle?: string;
+    maxSize?: number;
+    minSize?: number;
+    multiple?: boolean;
+}
+
+export interface FileInputOptions extends DropzoneOptions {
+    inputProps?: any;
+}
+
+const FileInput: FunctionComponent<
+    FileInputProps & InputProps<FileInputOptions>
+> = ({
     accept,
     children,
-    classes: classesOverride,
     className,
-    disableClick,
+    classes: classesOverride,
     helperText,
     label,
-    labelMultiple,
-    labelSingle,
+    labelMultiple = 'ra.input.file.upload_several',
+    labelSingle = 'ra.input.file.upload_single',
     maxSize,
     minSize,
-    multiple,
-    options = {},
+    multiple = false,
+    options: { inputProps: inputPropsOptions, ...options } = {},
     placeholder,
     resource,
     source,
@@ -54,7 +74,9 @@ const FileInput = ({
             return file;
         }
 
-        const { source, title } = Children.only(children).props;
+        const { source, title } = (Children.only(children) as ReactElement<
+            any
+        >).props;
 
         const preview = URL.createObjectURL(file);
         const transformedFile = {
@@ -69,7 +91,7 @@ const FileInput = ({
         return transformedFile;
     };
 
-    const transformFiles = files => {
+    const transformFiles = (files: any[]) => {
         if (!files) {
             return multiple ? [] : null;
         }
@@ -111,14 +133,14 @@ const FileInput = ({
             const filteredFiles = files.filter(
                 stateFile => !shallowEqual(stateFile, file)
             );
-            onChange(filteredFiles);
+            onChange(filteredFiles as any);
         } else {
             onChange(null);
         }
     };
 
     const childrenElement = isValidElement(Children.only(children))
-        ? Children.only(children)
+        ? (Children.only(children) as ReactElement<any>)
         : undefined;
 
     const { getRootProps, getInputProps } = useDropzone({
@@ -148,9 +170,10 @@ const FileInput = ({
                 >
                     <input
                         id={id}
-                        {...inputProps}
-                        {...options.inputProps}
-                        {...getInputProps()}
+                        {...getInputProps({
+                            ...inputProps,
+                            ...inputPropsOptions,
+                        })}
                     />
                     {placeholder ? (
                         placeholder
@@ -196,7 +219,6 @@ FileInput.propTypes = {
     children: PropTypes.element,
     classes: PropTypes.object,
     className: PropTypes.string,
-    disableClick: PropTypes.bool,
     id: PropTypes.string,
     isRequired: PropTypes.bool,
     label: PropTypes.string,
@@ -209,13 +231,6 @@ FileInput.propTypes = {
     resource: PropTypes.string,
     source: PropTypes.string,
     placeholder: PropTypes.node,
-};
-
-FileInput.defaultProps = {
-    labelMultiple: 'ra.input.file.upload_several',
-    labelSingle: 'ra.input.file.upload_single',
-    multiple: false,
-    onUpload: () => {},
 };
 
 export default FileInput;
