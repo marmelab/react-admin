@@ -155,6 +155,16 @@ const callQueries = debounce(() => {
             .filter(v => v != null); // remove null values
         if (accumulatedIds.length === 0) {
             // no need to call the data provider if all the ids are null
+            queries.forEach(({ ids, setState, onSuccess }) => {
+                setState({
+                    data: emptyArray,
+                    loading: false,
+                    loaded: true,
+                });
+                if (onSuccess) {
+                    onSuccess({ data: emptyArray });
+                }
+            });
             return;
         }
         dataProvider(
@@ -187,5 +197,7 @@ const callQueries = debounce(() => {
         delete queriesToCall[resource];
     });
 });
+
+const emptyArray = [];
 
 export default useGetMany;

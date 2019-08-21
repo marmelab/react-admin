@@ -1,4 +1,4 @@
-import React, { Children, cloneElement } from 'react';
+import React, { Children, cloneElement, memo } from 'react';
 import PropTypes from 'prop-types';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import { makeStyles } from '@material-ui/core/styles';
@@ -45,11 +45,12 @@ export const ReferenceArrayField = ({ children, ...props }) => {
     }
 
     return (
-        <ReferenceArrayFieldView
+        <PureReferenceArrayFieldView
             {...props}
             {...useReferenceArrayFieldController(props)}
-            children={children}
-        />
+        >
+            {children}
+        </PureReferenceArrayFieldView>
     );
 };
 
@@ -87,7 +88,7 @@ export const ReferenceArrayFieldView = ({
     referenceBasePath,
 }) => {
     const classes = useStyles({ classes: classesOverride });
-    if (loaded === false) {
+    if (!loaded) {
         return <LinearProgress className={classes.progress} />;
     }
 
@@ -112,5 +113,7 @@ ReferenceArrayFieldView.propTypes = {
     reference: PropTypes.string.isRequired,
     referenceBasePath: PropTypes.string,
 };
+
+const PureReferenceArrayFieldView = memo(ReferenceArrayFieldView);
 
 export default ReferenceArrayField;
