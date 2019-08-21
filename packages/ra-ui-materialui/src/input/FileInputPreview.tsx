@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, ReactNode, FunctionComponent } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core';
 import RemoveCircle from '@material-ui/icons/RemoveCircle';
@@ -12,11 +12,17 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const FileInputPreview = ({
+interface Props {
+    children: ReactNode;
+    className?: string;
+    onRemove: () => void;
+    file: any;
+}
+
+const FileInputPreview: FunctionComponent<Props> = ({
     children,
     className,
     onRemove,
-    revokeObjectURL,
     file,
     ...rest
 }) => {
@@ -28,12 +34,10 @@ const FileInputPreview = ({
             const preview = file.rawFile ? file.rawFile.preview : file.preview;
 
             if (preview) {
-                revokeObjectURL
-                    ? revokeObjectURL(preview)
-                    : window.URL.revokeObjectURL(preview);
+                window.URL.revokeObjectURL(preview);
             }
         };
-    }, [file, revokeObjectURL]);
+    }, [file]);
 
     return (
         <div className={className} {...rest}>
@@ -55,7 +59,6 @@ FileInputPreview.propTypes = {
     className: PropTypes.string,
     file: PropTypes.object,
     onRemove: PropTypes.func.isRequired,
-    revokeObjectURL: PropTypes.func,
 };
 
 FileInputPreview.defaultProps = {
