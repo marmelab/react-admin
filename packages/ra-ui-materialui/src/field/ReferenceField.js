@@ -1,4 +1,4 @@
-import React, { Children, cloneElement } from 'react';
+import React, { Children, cloneElement, memo } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import get from 'lodash/get';
@@ -67,14 +67,15 @@ const ReferenceField = ({ children, record, source, ...props }) => {
     const resourceLinkPath = getResourceLinkPath({ record, source, ...props });
 
     return (
-        <ReferenceFieldView
+        <PureReferenceFieldView
             {...props}
-            children={children}
             loaded={loaded}
             error={error}
             referenceRecord={referenceRecord}
             resourceLinkPath={resourceLinkPath}
-        />
+        >
+            {children}
+        </PureReferenceFieldView>
     );
 };
 
@@ -137,6 +138,7 @@ export const ReferenceFieldView = ({
     translateChoice = false,
     ...rest
 }) => {
+    console.log('render');
     const classes = useStyles({ classes: classesOverride });
     if (!loaded) {
         return <LinearProgress />;
@@ -195,5 +197,7 @@ ReferenceFieldView.propTypes = {
     source: PropTypes.string,
     translateChoice: PropTypes.bool,
 };
+
+const PureReferenceFieldView = memo(ReferenceFieldView);
 
 export default ReferenceField;
