@@ -1,7 +1,7 @@
 import React from 'react';
-import assert from 'assert';
-import { shallow } from 'enzyme';
+import expect from 'expect';
 import { FileField } from './FileField';
+import { render, cleanup } from '@testing-library/react';
 
 const defaultProps = {
     classes: {},
@@ -9,15 +9,15 @@ const defaultProps = {
 };
 
 describe('<FileField />', () => {
+    afterEach(cleanup);
+
     it('should return an empty div when record is not set', () => {
-        assert.equal(
-            shallow(<FileField {...defaultProps} />).html(),
-            '<div class=""></div>'
-        );
+        const { container } = render(<FileField {...defaultProps} />);
+        expect(container.firstChild.textContent).toEqual('');
     });
 
     it('should render a link with correct attributes based on `source` and `title`', () => {
-        const wrapper = shallow(
+        const { getByRole } = render(
             <FileField
                 {...defaultProps}
                 record={{
@@ -28,13 +28,13 @@ describe('<FileField />', () => {
             />
         );
 
-        const link = wrapper.find('a');
-        assert.equal(link.prop('href'), 'http://foo.com/bar.jpg');
-        assert.equal(link.prop('title'), 'Hello world!');
+        const link = getByRole('a');
+        expect(link.href).toEqual('http://foo.com/bar.jpg');
+        expect(link.title).toEqual('Hello world!');
     });
 
     it('should support deep linking', () => {
-        const wrapper = shallow(
+        const { getByRole } = render(
             <FileField
                 {...defaultProps}
                 record={{
@@ -48,13 +48,13 @@ describe('<FileField />', () => {
             />
         );
 
-        const link = wrapper.find('a');
-        assert.equal(link.prop('href'), 'http://foo.com/bar.jpg');
-        assert.equal(link.prop('title'), 'Hello world!');
+        const link = getByRole('a');
+        expect(link.href).toEqual('http://foo.com/bar.jpg');
+        expect(link.title).toEqual('Hello world!');
     });
 
     it('should allow setting static string as title', () => {
-        const wrapper = shallow(
+        const { getByRole } = render(
             <FileField
                 {...defaultProps}
                 record={{
@@ -64,12 +64,12 @@ describe('<FileField />', () => {
             />
         );
 
-        const link = wrapper.find('a');
-        assert.equal(link.prop('title'), 'Hello world!');
+        const link = getByRole('a');
+        expect(link.title).toEqual('Hello world!');
     });
 
     it('should allow setting target string', () => {
-        const wrapper = shallow(
+        const { getByRole } = render(
             <FileField
                 {...defaultProps}
                 record={{
@@ -79,12 +79,12 @@ describe('<FileField />', () => {
             />
         );
 
-        const link = wrapper.find('a');
-        assert.equal(link.prop('target'), '_blank');
+        const link = getByRole('a');
+        expect(link.target).toEqual('_blank');
     });
 
     it('should render a list of links with correct attributes based on `src` and `title`', () => {
-        const wrapper = shallow(
+        const { getByRole } = render(
             <FileField
                 {...defaultProps}
                 record={{
@@ -105,23 +105,22 @@ describe('<FileField />', () => {
             />
         );
 
-        const links = wrapper.find('a');
-        assert.equal(links.at(0).prop('href'), 'http://foo.com/bar.jpg');
-        assert.equal(links.at(0).prop('title'), 'Hello world!');
-        assert.equal(links.at(1).prop('href'), 'http://bar.com/foo.jpg');
-        assert.equal(links.at(1).prop('title'), 'Bye world!');
+        const links = getByRole('a');
+        expect(links[0].href).toEqual('http://foo.com/bar.jpg');
+        expect(links[0].title).toEqual('Hello world!');
+        expect(links[1].href).toEqual('http://bar.com/foo.jpg');
+        expect(links[1].title).toEqual('Bye world!');
     });
 
-    it('should use custom className', () =>
-        assert.deepEqual(
-            shallow(
-                <FileField
-                    {...defaultProps}
-                    record={{ foo: true }}
-                    source="email"
-                    className="foo"
-                />
-            ).prop('className'),
-            'foo'
-        ));
+    it('should use custom className', () => {
+        const { container } = render(
+            <FileField
+                {...defaultProps}
+                record={{ foo: true }}
+                source="email"
+                className="foo"
+            />
+        );
+        expect(container.firstChild.classList.contains('foo')).toBe(true);
+    });
 });
