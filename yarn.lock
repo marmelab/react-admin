@@ -6618,17 +6618,17 @@ final-form-arrays@^3.0.1:
   resolved "https://registry.yarnpkg.com/final-form-arrays/-/final-form-arrays-3.0.1.tgz#862e5e946d391039ebcdfadbe55fc3a63849e559"
   integrity sha512-GKXecufCNCjDcz1+3peL21LuuTlApoxCcnpOnmfeJfC3xAlFKGdytYMfifP7W1IEWTGC8twTv3zItESkej8qpg==
 
-final-form@^4.18.2:
-  version "4.18.2"
-  resolved "https://registry.yarnpkg.com/final-form/-/final-form-4.18.2.tgz#3e7447ba36049a747d4becc61eb35e65a90f22a1"
-  integrity sha512-VQx/5x9M4CiC8fG678Dm1IS3mXvBl7ZNIUx5tUZCk00lFImJzQix4KO0+eGtl49sha2bYOxuYn8jRJiq6sazXA==
-  dependencies:
-    "@babel/runtime" "^7.3.1"
-
 final-form@^4.18.4:
   version "4.18.4"
   resolved "https://registry.yarnpkg.com/final-form/-/final-form-4.18.4.tgz#55f6dfb1463045a6e9248d928e573459a8cd97f3"
   integrity sha512-UUymL6UykjwO2yUN3EhBdw8ajaa448/CczgXvLcyXwbHRjWbA3Yjdxm6WSHQBx4pLv4iEqkvmPRnQ+xmS9GUcA==
+  dependencies:
+    "@babel/runtime" "^7.3.1"
+
+final-form@^4.18.5:
+  version "4.18.5"
+  resolved "https://registry.yarnpkg.com/final-form/-/final-form-4.18.5.tgz#e359cfaf2892ef135d92fcf22e06b475dda3a885"
+  integrity sha512-DH/I2W7fWxU8J8ZsbYJ5jLvUbhbatCvLhIKlsU17MvY6W3QnetPEyuX5mcxXgIGFNFKxfvqsG3pDy/1/VwOiTw==
   dependencies:
     "@babel/runtime" "^7.3.1"
 
@@ -12785,10 +12785,10 @@ react-error-overlay@^5.1.6:
   resolved "https://registry.yarnpkg.com/react-error-overlay/-/react-error-overlay-5.1.6.tgz#0cd73407c5d141f9638ae1e0c63e7b2bf7e9929d"
   integrity sha512-X1Y+0jR47ImDVr54Ab6V9eGk0Hnu7fVWGeHQSOXHf/C2pF9c6uy3gef8QUeuUiWlNb0i08InPSE5a/KJzNzw1Q==
 
-react-final-form-arrays@^3.1.0:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/react-final-form-arrays/-/react-final-form-arrays-3.1.0.tgz#8ebaab391a665e7e17e463b88cdf3b1078e3f4f0"
-  integrity sha512-eJdAlhTKzlDD/d1wedD592a99eJNGO0e9GzY++RLN99P23cMGKSzCmsiGWLPwpY0H/C/LmNSL4XzWyH/aZembA==
+react-final-form-arrays@^3.1.1:
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/react-final-form-arrays/-/react-final-form-arrays-3.1.1.tgz#39d23e7ede966e418cad209e8fde46da1d603e99"
+  integrity sha512-e6S1x9597cvI4QPniOPmllXXandDAqCCuBo4AvXstZYgcV8whsqzk8aCrmQEy6eEfy2tEhvn6f4VI1GY+JBRsg==
   dependencies:
     "@babel/runtime" "^7.4.5"
 

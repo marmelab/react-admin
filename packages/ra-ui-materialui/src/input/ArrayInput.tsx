@@ -1,13 +1,10 @@
-import React, { cloneElement, Children, useEffect } from 'react';
+import React, { cloneElement, Children } from 'react';
 import PropTypes from 'prop-types';
 import { isRequired, FieldTitle } from 'ra-core';
 import { useFieldArray } from 'react-final-form-arrays';
-import lodashIsEqual from 'lodash/isEqual';
-import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
+import { InputLabel, FormControl } from '@material-ui/core';
 
 import sanitizeRestProps from './sanitizeRestProps';
-import { useForm } from 'react-final-form';
 
 /**
  * To edit arrays of data embedded inside a record, <ArrayInput> creates a list of sub-forms.
@@ -61,32 +58,11 @@ export const ArrayInput = ({
     validate,
     ...rest
 }) => {
-    const form = useForm();
-    const fieldProps = useFieldArray(source);
-
-    // HACK: This useEffect runs only once and will emulate defaultValue support on the ArrayInput
-    // This is needed because defaultValue is not supported on FieldArray in react-final-form
-    // NOTE: This can probably be better implemented with a mutator
-    useEffect(() => {
-        if (
-            fieldProps.meta.pristine &&
-            defaultValue &&
-            !lodashIsEqual(fieldProps.fields.value, defaultValue)
-        ) {
-            if (
-                !Array.isArray(defaultValue) &&
-                process.env.NODE_ENV !== 'production'
-            ) {
-                console.warn('<ArrayInput> defaultValue must be an array');
-                return;
-            }
-
-            // As we may have multiple items in the defaultValue, we batch the form changes for better performances
-            form.batch(() => {
-                defaultValue.forEach(value => fieldProps.fields.push(value));
-            });
-        }
-    }, []); // eslint-disable-line
+    const fieldProps = useFieldArray(source, {
+        initialValue: defaultValue,
+        validate,
+        ...rest,
+    });
 
     return (
         <FormControl
