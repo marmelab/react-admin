@@ -174,6 +174,22 @@ Components deprecated in 2.X have been removed in 3.x. This includes:
 * `RecordTitle` (use `TitleForRecord` instead)
 * `TitleDeprecated` (use `Title` instead)
 
+## Some components were removed
+
+* `Disablednput`: see [RFC 3518](https://github.com/marmelab/react-admin/issues/3518).
+
+You can replace it with a disabled or readonly `TextInput`. For example, the `disabled` prop:
+
+```diff
+-import { DisabledInput } from 'react-admin';
++import { TextInput } from 'react-admin';
+
+-<DisabledInput source="id" />
++<TextInput source="id" disabled />
+```
+
+See material-ui [`TextField` documentation](https://material-ui.com/components/text-fields/#textfield) for available options.
+
 ## Replace papaparse with a lighter library
 
 React-admin used to bundle the `papaparse` library for converting JSON to CSV. But 90% of the `papaparse` code is used to convert CSV to JSON. 
