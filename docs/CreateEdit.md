@@ -60,7 +60,7 @@ export const PostCreate = (props) => (
 export const PostEdit = (props) => (
     <Edit title={<PostTitle />} {...props}>
         <SimpleForm>
-            <TextInput readOnly label="Id" source="id" />
+            <TextInput disabled label="Id" source="id" />
             <TextInput source="title" validate={required()} />
             <LongTextInput source="teaser" validate={required()} />
             <RichTextInput source="body" validate={required()} />
@@ -391,7 +391,7 @@ export const PostEdit = (props) => (
     <Edit {...props}>
         <TabbedForm>
             <FormTab label="summary">
-                <TextInput readOnly label="Id" source="id" />
+                <TextInput disabled label="Id" source="id" />
                 <TextInput source="title" validate={required()} />
                 <LongTextInput source="teaser" validate={required()} />
             </FormTab>
@@ -403,7 +403,7 @@ export const PostEdit = (props) => (
                 <DateInput label="Publication date" source="published_at" />
                 <NumberInput source="average_note" validate={[ number(), minValue(0) ]} />
                 <BooleanInput label="Allow comments?" source="commentable" defaultValue />
-                <TextInput readOnly label="Nb views" source="views" />
+                <TextInput disabled label="Nb views" source="views" />
             </FormTab>
             <FormTab label="comments">
                 <ReferenceManyField reference="comments" target="post_id" addLabel={false}>
@@ -477,7 +477,7 @@ Alternatively, you can specify a `defaultValue` prop directly in `<Input>` compo
 export const PostCreate = (props) => (
     <Create {...props}>
         <SimpleForm>
-            <TextInput readOnly source="id" defaultValue={() => uuid()}/>
+            <TextInput disabled source="id" defaultValue={() => uuid()}/>
             <TextInput source="title" />
             <RichTextInput source="body" />
             <NumberInput source="nb_views" defaultValue={0} />
@@ -887,7 +887,7 @@ export const UserEdit = ({ permissions, ...props }) =>
     <Edit title={<UserTitle />} {...props}>
         <TabbedForm defaultValue={{ role: 'user' }}>
             <FormTab label="user.form.summary">
-                {permissions === 'admin' && <TextInput readOnly source="id" />}
+                {permissions === 'admin' && <TextInput disabled source="id" />}
                 <TextInput source="name" validate={required()} />
             </FormTab>
             {permissions === 'admin' &&

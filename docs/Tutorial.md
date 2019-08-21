@@ -464,7 +464,7 @@ You can now adjust the `PostEdit` component to disable the edition of the primar
 export const PostEdit = props => (
     <Edit {...props}>
         <SimpleForm>
-+           <TextInput readOnly source="id" />
++           <TextInput disabled source="id" />
             <ReferenceInput source="userId" reference="users">
 -               <SelectInput optionText="id" />
 +               <SelectInput optionText="name" />

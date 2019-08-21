@@ -65,7 +65,7 @@ const CommentEdit = props => {
                         save={save}
                         version={version}
                     >
-                        <TextInput readOnly source="id" fullWidth />
+                        <TextInput disabled source="id" fullWidth />
                         <ReferenceInput
                             source="post_id"
                             reference="posts"

@@ -46,7 +46,7 @@ const UserEdit = ({ permissions, ...props }) => (
             toolbar={<UserEditToolbar />}
         >
             <FormTab label="user.form.summary" path="">
-                {permissions === 'admin' && <TextInput readOnly source="id" />}
+                {permissions === 'admin' && <TextInput disabled source="id" />}
                 <TextInput
                     source="name"
                     defaultValue="slim shady"

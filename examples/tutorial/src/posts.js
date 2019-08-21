@@ -55,7 +55,7 @@ const PostTitle = ({ record }) => {
 export const PostEdit = props => (
     <Edit title={<PostTitle />} {...props}>
         <SimpleForm>
-            <TextInput readOnly source="id" />
+            <TextInput disabled source="id" />
             <ReferenceInput label="User" source="userId" reference="users">
                 <SelectInput optionText="name" />
             </ReferenceInput>

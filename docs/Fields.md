@@ -594,7 +594,7 @@ import { Edit, Datagrid, SimpleForm, DateField, EditButton, ReferenceManyField, 
 export const PostEdit = (props) => (
     <Edit {...props}>
         <SimpleForm>
-            <TextInput readOnly label="Id" source="id" />
+            <TextInput disabled label="Id" source="id" />
             <TextInput source="title" />
             <ReferenceManyField
                 label="Comments"

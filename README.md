@@ -108,13 +108,13 @@ const PostTitle = ({ record }) => {
 export const PostEdit = (props) => (
     <Edit title={<PostTitle />} {...props}>
         <SimpleForm>
-            <TextInput readOnly source="id" />
+            <TextInput disabled source="id" />
             <TextInput source="title" />
             <TextInput source="teaser" options={{ multiLine: true }} />
             <LongTextInput source="body" />
             <DateInput label="Publication date" source="published_at" />
             <TextInput source="average_note" />
-            <TextInput readOnly label="Nb views" source="views" />
+            <TextInput disabled label="Nb views" source="views" />
         </SimpleForm>
     </Edit>
 );
