@@ -466,6 +466,12 @@ import { FavoriteBorder, Favorite } from '@material-ui/icons';
 ```
 {% endraw %}
 
+### Properties
+
+| Prop | Type | Default | Description |
+| ---|---|---|--- |
+| `row` | `boolean` | true | Display group of elements in a compact row. |
+
 Refer to [Material UI Checkbox documentation](https://v1-5-0.material-ui.com/api/checkbox/) for more details.
 
 ## `<DateInput>`
