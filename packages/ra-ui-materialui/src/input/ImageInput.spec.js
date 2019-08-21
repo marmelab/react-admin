@@ -1,100 +1,312 @@
 import React from 'react';
-import assert from 'assert';
-import { shallow } from 'enzyme';
-import { File, FileReader } from 'file-api';
+import { render, cleanup, fireEvent } from '@testing-library/react';
+import { Form } from 'react-final-form';
 
-import { ImageField } from '../field/ImageField';
-import { ImageInput } from './ImageInput';
+import ImageField from '../field/ImageField';
+import ImageInput from './ImageInput';
 
 describe('<ImageInput />', () => {
-    beforeAll(() => {
-        global.File = File;
-        global.FileReader = FileReader;
-    });
-
-    afterAll(() => {
-        delete global.File;
-        delete global.FileReader;
-    });
+    afterEach(cleanup);
 
     const defautProps = {
-        input: {
-            value: {
-                picture: null,
-            },
-        },
-        meta: {},
-        translate: x => x,
-        source: 'picture',
+        source: 'image',
+        resource: 'posts',
     };
 
-    it('should display a dropzone', () => {
-        const wrapper = shallow(<ImageInput {...defautProps} />);
+    const defautPropsMultiple = {
+        source: 'images',
+        resource: 'posts',
+        multiple: true,
+    };
 
-        assert.equal(wrapper.find('Dropzone').length, 1);
+    it('should display a dropzone for single file dropping', () => {
+        const { queryByText } = render(
+            <Form
+                onSubmit={jest.fn()}
+                render={() => (
+                    <ImageInput {...defautProps}>
+                        <div />
+                    </ImageInput>
+                )}
+            />
+        );
+
+        expect(queryByText('ra.input.image.upload_single')).not.toBeNull();
     });
 
-    it('should display correct label depending multiple property', () => {
-        const test = (multiple, expectedLabel) => {
-            const wrapper = shallow(
-                <ImageInput {...defautProps} multiple={multiple} />
-            );
+    it('should display a dropzone for multiple files dropping', () => {
+        const { queryByText } = render(
+            <Form
+                onSubmit={jest.fn()}
+                render={() => (
+                    <ImageInput {...defautProps} multiple>
+                        <div />
+                    </ImageInput>
+                )}
+            />
+        );
 
-            assert.equal(wrapper.find('Dropzone p').text(), expectedLabel);
-        };
+        expect(queryByText('ra.input.image.upload_several')).not.toBeNull();
+    });
 
-        test(false, 'ra.input.image.upload_single');
-        test(true, 'ra.input.image.upload_several');
+    // Skipped until https://github.com/jsdom/jsdom/issues/1568 is fixed
+    it.skip('should correctly update upon drop when allowing a single file', async () => {
+        const onSubmit = jest.fn();
+
+        const { getByTestId, getByLabelText } = render(
+            <Form
+                initialValues={{
+                    image: undefined,
+                }}
+                onSubmit={onSubmit}
+                render={({ handleSubmit }) => (
+                    <form onSubmit={handleSubmit}>
+                        <ImageInput {...defautProps}>
+                            <div />
+                        </ImageInput>
+                        <button type="submit" aria-label="Save" />
+                    </form>
+                )}
+            />
+        );
+
+        const file = createFile('cats.gif', 1234, 'image/gif');
+        fireEvent.drop(getByTestId('dropzone'), createDataTransfer([file]));
+        // Required because react-dropzone handle drag & drop operations asynchronously
+        await new Promise(resolve => setImmediate(resolve));
+
+        fireEvent.click(getByLabelText('Save'));
+
+        expect(onSubmit.mock.calls[0][0]).toEqual({
+            images: [
+                {
+                    src: 'cats.gif',
+                },
+            ],
+        });
+    });
+
+    // Skipped until https://github.com/jsdom/jsdom/issues/1568 is fixed
+    it.skip('should correctly update upon drop when allowing multiple files', async () => {
+        const onSubmit = jest.fn();
+
+        const { getByTestId, getByLabelText } = render(
+            <Form
+                initialValues={{
+                    images: [],
+                }}
+                onSubmit={onSubmit}
+                render={({ handleSubmit }) => (
+                    <form onSubmit={handleSubmit}>
+                        <ImageInput {...defautPropsMultiple}>
+                            <div />
+                        </ImageInput>
+                        <button type="submit" aria-label="Save" />
+                    </form>
+                )}
+            />
+        );
+
+        const file1 = createFile('cats.gif', 1234, 'image/gif');
+        const file2 = createFile('cats2.gif', 1234, 'image/gif');
+        fireEvent.drop(
+            getByTestId('dropzone'),
+            createDataTransfer([file1, file2])
+        );
+        // Required because react-dropzone handle drag & drop operations asynchronously
+        await new Promise(resolve => setImmediate(resolve));
+
+        fireEvent.click(getByLabelText('Save'));
+
+        expect(onSubmit.mock.calls[0][0]).toEqual({
+            images: [
+                {
+                    src: 'cats.gif',
+                },
+                {
+                    src: 'cats2.gif',
+                },
+            ],
+        });
+    });
+
+    it('should correctly update upon removal when allowing a single file', () => {
+        const onSubmit = jest.fn();
+
+        const { getByLabelText, getByTitle } = render(
+            <Form
+                initialValues={{
+                    image: {
+                        src: 'test.png',
+                        title: 'cats',
+                    },
+                }}
+                onSubmit={onSubmit}
+                render={({ handleSubmit }) => (
+                    <form onSubmit={handleSubmit}>
+                        <ImageInput {...defautProps}>
+                            <ImageField source="src" title="title" />
+                        </ImageInput>
+                        <button type="submit" aria-label="Save" />
+                    </form>
+                )}
+            />
+        );
+
+        expect(getByTitle('cats')).not.toBeNull();
+        fireEvent.click(getByLabelText('ra.action.delete'));
+        fireEvent.click(getByLabelText('Save'));
+
+        expect(onSubmit.mock.calls[0][0]).toEqual({
+            image: null,
+        });
+    });
+
+    it('should correctly update upon removal when allowing multiple file (removing first file)', () => {
+        const onSubmit = jest.fn();
+
+        const { getByLabelText, getAllByLabelText, getByTitle } = render(
+            <Form
+                initialValues={{
+                    images: [
+                        {
+                            src: 'test.png',
+                            title: 'cats',
+                        },
+                        {
+                            src: 'test2.png',
+                            title: 'cats2',
+                        },
+                    ],
+                }}
+                onSubmit={onSubmit}
+                render={({ handleSubmit }) => (
+                    <form onSubmit={handleSubmit}>
+                        <ImageInput {...defautPropsMultiple}>
+                            <ImageField source="src" title="title" />
+                        </ImageInput>
+                        <button type="submit" aria-label="Save" />
+                    </form>
+                )}
+            />
+        );
+
+        expect(getByTitle('cats')).not.toBeNull();
+        fireEvent.click(getAllByLabelText('ra.action.delete')[0]);
+        fireEvent.click(getByLabelText('Save'));
+
+        expect(onSubmit.mock.calls[0][0]).toEqual({
+            images: [
+                {
+                    src: 'test2.png',
+                    title: 'cats2',
+                },
+            ],
+        });
+    });
+
+    it('should correctly update upon removal when allowing multiple files (removing second file)', () => {
+        const onSubmit = jest.fn();
+
+        const { getAllByLabelText, getByLabelText, getByTitle } = render(
+            <Form
+                initialValues={{
+                    images: [
+                        {
+                            src: 'test.png',
+                            title: 'cats',
+                        },
+                        {
+                            src: 'test2.png',
+                            title: 'cats 2',
+                        },
+                    ],
+                }}
+                onSubmit={onSubmit}
+                render={({ handleSubmit }) => (
+                    <form onSubmit={handleSubmit}>
+                        <ImageInput {...defautPropsMultiple}>
+                            <ImageField source="src" title="title" />
+                        </ImageInput>
+                        <button type="submit" aria-label="Save" />
+                    </form>
+                )}
+            />
+        );
+
+        expect(getByTitle('cats')).not.toBeNull();
+        expect(getByTitle('cats 2')).not.toBeNull();
+        fireEvent.click(getAllByLabelText('ra.action.delete')[1]);
+        fireEvent.click(getByLabelText('Save'));
+
+        expect(onSubmit.mock.calls[0][0]).toEqual({
+            images: [
+                {
+                    src: 'test.png',
+                    title: 'cats',
+                },
+            ],
+        });
     });
 
     it('should display correct custom label', () => {
-        const test = expectedLabel => {
-            const wrapper = shallow(
-                <ImageInput {...defautProps} placeholder={expectedLabel} />
+        const test = (expectedLabel, expectedLabelText = expectedLabel) => {
+            const { getByText } = render(
+                <Form
+                    onSubmit={jest.fn()}
+                    render={() => (
+                        <ImageInput
+                            {...defautProps}
+                            placeholder={expectedLabel}
+                        >
+                            <div />
+                        </ImageInput>
+                    )}
+                />
             );
 
-            assert.ok(wrapper.find('Dropzone').contains(expectedLabel));
+            expect(getByText(expectedLabelText)).not.toBeNull();
+            cleanup();
         };
-        const CustomLabel = () => <div>Custom label</div>;
 
+        const CustomLabel = () => <div>Custom label in component</div>;
         test('custom label');
-        test(<h1>Custom label</h1>);
-        test(<CustomLabel />);
+        test(<h1>Custom label</h1>, 'Custom label');
+        test(<CustomLabel />, 'Custom label in component');
     });
 
     describe('Image Preview', () => {
         it('should display file preview using child as preview component', () => {
-            const wrapper = shallow(
-                <ImageInput
-                    {...defautProps}
-                    input={{
-                        value: {
+            const { queryByTitle } = render(
+                <Form
+                    initialValues={{
+                        image: {
                             url: 'http://foo.com/bar.jpg',
                             title: 'Hello world!',
                         },
                     }}
-                >
-                    <ImageField source="url" title="title" />
-                </ImageInput>
+                    onSubmit={jest.fn()}
+                    render={() => (
+                        <ImageInput {...defautProps} source="image">
+                            <ImageField source="url" title="title" />
+                        </ImageInput>
+                    )}
+                />
             );
 
-            const previewImage = wrapper.find('ImageField');
-
-            assert.equal(previewImage.length, 1);
-            assert.equal(previewImage.prop('source'), 'url');
-            assert.equal(previewImage.prop('title'), 'title');
-            assert.deepEqual(previewImage.prop('record'), {
-                title: 'Hello world!',
-                url: 'http://foo.com/bar.jpg',
-            });
+            const previewImage = queryByTitle('Hello world!');
+            expect(previewImage).not.toBeNull();
+            expect(previewImage.getAttribute('src')).toEqual(
+                'http://foo.com/bar.jpg'
+            );
         });
 
         it('should display all files (when several) previews using child as preview component', () => {
-            const wrapper = shallow(
-                <ImageInput
-                    {...defautProps}
-                    input={{
-                        value: [
+            const { queryByTitle } = render(
+                <Form
+                    onSubmit={jest.fn()}
+                    initialValues={{
+                        images: [
                             {
                                 url: 'http://foo.com/bar.jpg',
                                 title: 'Hello world!',
@@ -105,122 +317,126 @@ describe('<ImageInput />', () => {
                             },
                         ],
                     }}
-                >
-                    <ImageField source="url" title="title" />
-                </ImageInput>
+                    render={() => (
+                        <ImageInput {...defautPropsMultiple}>
+                            <ImageField source="url" title="title" />
+                        </ImageInput>
+                    )}
+                />
             );
 
-            const previewImages = wrapper.find('ImageField');
-
-            assert.equal(previewImages.length, 2);
-            assert.equal(previewImages.at(0).prop('source'), 'url');
-            assert.equal(previewImages.at(0).prop('title'), 'title');
-            assert.deepEqual(
-                previewImages.at(0).prop('record').title,
-                'Hello world!'
-            );
-            assert.deepEqual(
-                previewImages.at(0).prop('record').url,
+            const previewImage1 = queryByTitle('Hello world!');
+            expect(previewImage1).not.toBeNull();
+            expect(previewImage1.getAttribute('src')).toEqual(
                 'http://foo.com/bar.jpg'
             );
 
-            assert.equal(previewImages.at(1).prop('source'), 'url');
-            assert.equal(previewImages.at(1).prop('title'), 'title');
-            assert.deepEqual(
-                previewImages.at(1).prop('record').title,
-                'A good old Bitmap!'
-            );
-            assert.deepEqual(
-                previewImages.at(1).prop('record').url,
+            const previewImage2 = queryByTitle('A good old Bitmap!');
+            expect(previewImage2).not.toBeNull();
+            expect(previewImage2.getAttribute('src')).toEqual(
                 'http://foo.com/qux.bmp'
             );
         });
 
         it('should update previews when updating input value', () => {
-            const wrapper = shallow(
-                <ImageInput
-                    {...defautProps}
-                    input={{
-                        value: {
+            const { queryByTitle, rerender } = render(
+                <Form
+                    onSubmit={jest.fn()}
+                    initialValues={{
+                        image: {
+                            title: 'Hello world!',
                             url: 'http://static.acme.com/foo.jpg',
                         },
                     }}
-                >
-                    <ImageField source="url" />
-                </ImageInput>
+                    render={() => (
+                        <ImageInput {...defautProps} source="image">
+                            <ImageField source="url" title="title" />
+                        </ImageInput>
+                    )}
+                />
             );
 
-            const previewImage = wrapper.find('ImageField');
-            const previewUrl = previewImage.prop('record').url;
-            assert.equal(previewUrl, 'http://static.acme.com/foo.jpg');
-
-            wrapper.setProps({
-                input: {
-                    value: {
-                        url: 'http://static.acme.com/bar.jpg',
-                    },
-                },
-            });
-
-            wrapper.update();
-
-            const updatedPreviewImage = wrapper.find('ImageField');
-            const updatedPreviewUrl = updatedPreviewImage.prop('record').url;
-            assert.equal(updatedPreviewUrl, 'http://static.acme.com/bar.jpg');
-        });
-
-        it('should update previews when dropping a file', () => {
-            const wrapper = shallow(
-                <ImageInput {...defautProps} input={{}}>
-                    <ImageField source="url" />
-                </ImageInput>
+            const previewImage = queryByTitle('Hello world!');
+            expect(previewImage).not.toBeNull();
+            expect(previewImage.getAttribute('src')).toEqual(
+                'http://static.acme.com/foo.jpg'
             );
 
-            wrapper.setProps({
-                input: {
-                    value: {
-                        url: 'blob:http://localhost:8080/1234-5678',
-                    },
-                },
-            });
+            rerender(
+                <Form
+                    onSubmit={jest.fn()}
+                    initialValues={{
+                        image: {
+                            title: 'Hello world!',
+                            url: 'http://static.acme.com/bar.jpg',
+                        },
+                    }}
+                    render={() => (
+                        <ImageInput {...defautProps} source="image">
+                            <ImageField source="url" title="title" />
+                        </ImageInput>
+                    )}
+                />
+            );
 
-            wrapper.update();
-
-            const imagePreview = wrapper.find('ImageField');
-            const previewUrl = imagePreview.prop('record').url;
-            assert.equal(previewUrl, 'blob:http://localhost:8080/1234-5678');
+            const updatedPreviewImage = queryByTitle('Hello world!');
+            expect(updatedPreviewImage).not.toBeNull();
+            expect(updatedPreviewImage.getAttribute('src')).toEqual(
+                'http://static.acme.com/bar.jpg'
+            );
         });
-    });
 
-    it('should allow to remove an image from the input with `FileInputPreview.onRemove`', () => {
-        const wrapper = shallow(
-            <ImageInput
-                {...defautProps}
-                input={{
-                    onBlur: () => {},
-                    value: [
-                        { url: 'http://static.acme.com/foo.jpg' },
-                        { url: 'http://static.acme.com/bar.jpg' },
-                        { url: 'http://static.acme.com/quz.jpg' },
-                    ],
-                }}
-            >
-                <ImageField source="url" />
-            </ImageInput>
-        );
+        // Skipped until https://github.com/jsdom/jsdom/issues/1568 is fixed
+        it.skip('should update previews when dropping a file', async () => {
+            const onSubmit = jest.fn();
 
-        const inputPreview = wrapper.find(
-            'WithStyles(translate(FileInputPreview))'
-        ); // FileInputPreview is an muiThemable component
-        inputPreview.at(1).prop('onRemove')();
-        wrapper.update();
+            const { getByTestId, queryByRole } = render(
+                <Form
+                    initialValues={{
+                        images: [],
+                    }}
+                    onSubmit={onSubmit}
+                    render={({ handleSubmit }) => (
+                        <form onSubmit={handleSubmit}>
+                            <ImageInput {...defautPropsMultiple}>
+                                <ImageField source="url" />
+                            </ImageInput>
+                            <button type="submit" aria-label="Save" />
+                        </form>
+                    )}
+                />
+            );
 
-        const previewImages = wrapper
-            .find('ImageField')
-            .map(f => f.prop('record'));
-        assert.deepEqual(previewImages, [
-            { url: 'http://static.acme.com/foo.jpg' },
-            { url: 'http://static.acme.com/quz.jpg' },
-        ]);
+            const file = createFile('cats.gif', 1234, 'image/gif');
+            fireEvent.drop(getByTestId('dropzone'), createDataTransfer([file]));
+            // Required because react-dropzone handle drag & drop operations asynchronously
+            await new Promise(resolve => setImmediate(resolve));
+
+            const previewImage = queryByRole('image');
+            expect(previewImage).not.toBeNull();
+            expect(previewImage.getAttribute('src')).toMatch(/blob:.*/);
+        });
     });
 });
+
+const createDataTransfer = (files = []) => ({
+    dataTransfer: {
+        files,
+        items: files.map(file => ({
+            kind: 'file',
+            type: file.type,
+            getAsFile: () => file,
+        })),
+        types: ['Files'],
+    },
+});
+
+const createFile = (name, size, type) => {
+    const file = new File([], name, { type });
+    Object.defineProperty(file, 'size', {
+        get() {
+            return size;
+        },
+    });
+    return file;
+};

@@ -1,46 +1,48 @@
-import compose from 'recompose/compose';
-import { withStyles, createStyles } from '@material-ui/core/styles';
-import { addField, translate } from 'ra-core';
+import React from 'react';
+import { makeStyles } from '@material-ui/core/styles';
 
-import { FileInput } from './FileInput';
+import FileInput from './FileInput';
 
-const styles = createStyles({
+const useStyles = makeStyles(theme => ({
     root: { width: '100%' },
     dropZone: {
-        background: '#efefef',
+        background: theme.palette.background.default,
         cursor: 'pointer',
-        padding: '1rem',
+        padding: theme.spacing(1),
         textAlign: 'center',
-        color: '#999',
+        color: theme.palette.getContrastText(theme.palette.background.default),
     },
-    preview: {},
+    preview: {
+        display: 'inline-block',
+    },
     removeButton: {
         display: 'inline-block',
         position: 'relative',
         float: 'left',
         '& button': {
             position: 'absolute',
-            top: '0.5rem',
-            right: '0.5rem',
-            minWidth: '2rem',
+            top: theme.spacing(1),
+            right: theme.spacing(1),
+            minWidth: theme.spacing(2),
             opacity: 0,
         },
         '&:hover button': {
             opacity: 1,
         },
     },
-});
+}));
 
-export class ImageInput extends FileInput {
-    static defaultProps = {
-        ...FileInput.defaultProps,
-        labelMultiple: 'ra.input.image.upload_several',
-        labelSingle: 'ra.input.image.upload_single',
-    };
-}
+const ImageInput = props => {
+    const classes = useStyles(props);
 
-export default compose(
-    addField,
-    translate,
-    withStyles(styles)
-)(ImageInput);
+    return (
+        <FileInput
+            labelMultiple="ra.input.image.upload_several"
+            labelSingle="ra.input.image.upload_single"
+            classes={classes}
+            {...props}
+        />
+    );
+};
+
+export default ImageInput;
