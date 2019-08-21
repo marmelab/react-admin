@@ -8,21 +8,19 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import IconButton from '@material-ui/core/IconButton';
 import Checkbox from '@material-ui/core/Checkbox';
 import classnames from 'classnames';
-import { withStyles, createStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 
-const RawPlaceholder = ({ classes }) => (
-    <div className={classes.root}>&nbsp;</div>
-);
+const useStyles = makeStyles(theme => ({
+    root: {
+        backgroundColor: theme.palette.grey[300],
+        display: 'flex',
+    },
+}));
 
-const styles = theme =>
-    createStyles({
-        root: {
-            backgroundColor: theme.palette.grey[300],
-            display: 'flex',
-        },
-    });
-
-const Placeholder = withStyles(styles)(RawPlaceholder);
+const Placeholder = ({ classes: classesOverride }) => {
+    const classes = useStyles({ classes: classesOverride });
+    return <div className={classes.root}>&nbsp;</div>;
+};
 
 const times = (nbChildren, fn) =>
     Array.from({ length: nbChildren }, (_, key) => fn(key));
