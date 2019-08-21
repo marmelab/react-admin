@@ -1,6 +1,12 @@
 import React, { FunctionComponent } from 'react';
 import PropTypes from 'prop-types';
-import { makeStyles, FormControl, FormHelperText, FormLabel, RadioGroup } from '@material-ui/core';
+import {
+    makeStyles,
+    FormControl,
+    FormHelperText,
+    FormLabel,
+    RadioGroup,
+} from '@material-ui/core';
 import { RadioGroupProps } from '@material-ui/core/RadioGroup';
 import { FormControlProps } from '@material-ui/core/FormControl';
 import get from 'lodash/get';
@@ -93,62 +99,62 @@ export const RadioButtonGroupInput: FunctionComponent<
     validate,
     ...rest
 }) => {
-        const classes = useStyles(classesOverride);
+    const classes = useStyles(classesOverride);
 
-        const {
-            id,
-            input,
-            isRequired,
-            meta: { error, touched },
-        } = useInput({
-            onBlur,
-            onChange,
-            onFocus,
-            resource,
-            source,
-            validate,
-            ...rest,
-        });
+    const {
+        id,
+        input,
+        isRequired,
+        meta: { error, touched },
+    } = useInput({
+        onBlur,
+        onChange,
+        onFocus,
+        resource,
+        source,
+        validate,
+        ...rest,
+    });
 
-        return (
-            <FormControl
-                component="fieldset"
-                margin="normal"
-                {...sanitizeRestProps(rest)}
-            >
-                <FormLabel component="legend" className={classes.label}>
-                    <FieldTitle
-                        label={label}
+    return (
+        <FormControl
+            component="fieldset"
+            margin="normal"
+            {...sanitizeRestProps(rest)}
+        >
+            <FormLabel component="legend" className={classes.label}>
+                <FieldTitle
+                    label={label}
+                    source={source}
+                    resource={resource}
+                    isRequired={isRequired}
+                />
+            </FormLabel>
+
+            <RadioGroup id={id} {...input} {...options}>
+                {choices.map(choice => (
+                    <RadioButtonGroupInputItem
+                        key={get(choice, optionValue)}
+                        choice={choice}
+                        optionText={optionText}
+                        optionValue={optionValue}
                         source={source}
-                        resource={resource}
-                        isRequired={isRequired}
+                        translateChoice={translateChoice}
                     />
-                </FormLabel>
-
-                <RadioGroup id={id} {...input} {...options}>
-                    {choices.map(choice => (
-                        <RadioButtonGroupInputItem
-                            key={get(choice, optionValue)}
-                            choice={choice}
-                            optionText={optionText}
-                            optionValue={optionValue}
-                            source={source}
-                            translateChoice={translateChoice}
-                        />
-                    ))}
-                </RadioGroup>
-                {helperText || (touched && error) ? (
-                    <FormHelperText>
-                        <InputHelperText
-                            touched={touched}
-                            error={error}
-                            helperText={helperText}
-                        />
-                    </FormHelperText>
-                ) : null}
-            </FormControl>
-        );
-    };
+                ))}
+            </RadioGroup>
+            {helperText || (touched && error) ? (
+                <FormHelperText>
+                    <InputHelperText
+                        touched={touched}
+                        error={error}
+                        helperText={helperText}
+                    />
+                </FormHelperText>
+            ) : null}
+        </FormControl>
+    );
+};
 
 RadioButtonGroupInput.propTypes = {
     choices: PropTypes.arrayOf(PropTypes.object),
