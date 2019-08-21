@@ -144,7 +144,11 @@ export const ReferenceFieldView = ({
     }
     if (error) {
         return (
-            <Error aria-errormessage="Error" color="error" fontSize="small" />
+            <Error
+                aria-errormessage={error.message ? error.message : error}
+                color="error"
+                fontSize="small"
+            />
         );
     }
     if (!referenceRecord) {

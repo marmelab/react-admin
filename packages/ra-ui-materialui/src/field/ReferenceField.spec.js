@@ -193,7 +193,7 @@ describe('<ReferenceField />', () => {
 
     it('should display an error icon if the dataProvider call fails', async () => {
         const dataProvider = jest.fn();
-        dataProvider.mockImplementationOnce(() => Promise.reject());
+        dataProvider.mockImplementationOnce(() => Promise.reject('boo'));
         const { getByRole } = renderWithRedux(
             <DataProviderContext.Provider value={dataProvider}>
                 <ReferenceField
@@ -210,7 +210,7 @@ describe('<ReferenceField />', () => {
         await new Promise(resolve => setTimeout(resolve, 10));
         const ErrorIcon = getByRole('presentation');
         expect(ErrorIcon).toBeDefined();
-        expect(ErrorIcon.getAttribute('aria-errormessage')).toBe('Error');
+        expect(ErrorIcon.getAttribute('aria-errormessage')).toBe('boo');
     });
 
     describe('ReferenceFieldView', () => {
