@@ -1,5 +1,22 @@
 # Changelog
 
+## v2.9.6
+
+* Fix too drastic validation of `DELETE` and `DELETE_MANY` dataProvider responses ([3441](https://gihub.com/marmelab/react-admin/pull/3441)) ([Kmaschta](https://github.com/Kmaschta))
+* Fix `SimpleList` showing `ListItem` as button even though `linkType` is false ([3543](https://gihub.com/marmelab/react-admin/pull/3543)) ([b-raines](https://github.com/b-raines))
+* Fix infinite loading when declaring resource at runtime with no `authProvider` ([3505](https://gihub.com/marmelab/react-admin/pull/3505)) ([Kunnu01](https://github.com/Kunnu01))
+* Fix typo in `ra-data-graphql` README ([3508](https://gihub.com/marmelab/react-admin/pull/3508)) ([bookvik](https://github.com/bookvik))
+* Fix `<DeleteButton undoable={false} />` does not refresh `List` ([3506](https://gihub.com/marmelab/react-admin/pull/3506)) ([natrim](https://github.com/natrim))
+* Fix typo in Readme ([3497](https://gihub.com/marmelab/react-admin/pull/3497)) ([arturcarvalho](https://github.com/arturcarvalho))
+* Fix various typos in documentation and demo ([3493](https://gihub.com/marmelab/react-admin/pull/3493)) ([yumi2011](https://github.com/yumi2011))
+* Fix `sortable` update has no effect in `Field` components ([3494](https://gihub.com/marmelab/react-admin/pull/3494)) ([Kunnu01](https://github.com/Kunnu01))
+* Fix `AutocompleteArrayInput` not accepting options ([3479](https://gihub.com/marmelab/react-admin/pull/3479)) ([djhi](https://github.com/djhi))
+* Fix `List` data does not update when default `filters` Change ([3308](https://gihub.com/marmelab/react-admin/pull/3308)) ([djhi](https://github.com/djhi))
+* Fix missing imports in `List` documentation ([3469](https://gihub.com/marmelab/react-admin/pull/3469)) ([Kunnu01](https://github.com/Kunnu01))
+* Add link to Swedish translation ([3466](https://gihub.com/marmelab/react-admin/pull/3466)) ([Kladdy](https://github.com/Kladdy))
+* Improve bug report template ([3488](https://gihub.com/marmelab/react-admin/pull/3488)) ([Kmaschta](https://github.com/Kmaschta))
+* Change documentation search engine to Algolia ([3459](https://gihub.com/marmelab/react-admin/pull/3459)) ([fzaninotto](https://github.com/fzaninotto))
+
 ## v2.9.5
 
 * Fix data generator usage example ([3429](https://github.com/marmelab/react-admin/pull/3429)) ([mchaffotte](https://github.com/mchaffotte))
