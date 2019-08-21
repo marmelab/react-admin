@@ -589,12 +589,12 @@ You can use a `<Datagrid>` instead of a `<SingleFieldList>` - but not inside ano
 
 ```jsx
 import React from 'react';
-import { Edit, Datagrid, SimpleForm, DisabledInput, DateField, EditButton, ReferenceManyField, TextField, TextInput } from 'react-admin';
+import { Edit, Datagrid, SimpleForm, DateField, EditButton, ReferenceManyField, TextField, TextInput } from 'react-admin';
 
 export const PostEdit = (props) => (
     <Edit {...props}>
         <SimpleForm>
-            <DisabledInput label="Id" source="id" />
+            <TextInput disabled label="Id" source="id" />
             <TextInput source="title" />
             <ReferenceManyField
                 label="Comments"

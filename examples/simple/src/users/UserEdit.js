@@ -3,7 +3,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {
     DeleteWithConfirmButton,
-    DisabledInput,
     Edit,
     FormTab,
     SaveButton,
@@ -47,7 +46,7 @@ const UserEdit = ({ permissions, ...props }) => (
             toolbar={<UserEditToolbar />}
         >
             <FormTab label="user.form.summary" path="">
-                {permissions === 'admin' && <DisabledInput source="id" />}
+                {permissions === 'admin' && <TextInput disabled source="id" />}
                 <TextInput
                     source="name"
                     defaultValue="slim shady"

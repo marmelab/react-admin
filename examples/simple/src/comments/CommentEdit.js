@@ -5,7 +5,6 @@ import React from 'react';
 import {
     AutocompleteInput,
     DateInput,
-    DisabledInput,
     EditActions,
     useEditController,
     Link,
@@ -66,7 +65,7 @@ const CommentEdit = props => {
                         save={save}
                         version={version}
                     >
-                        <DisabledInput source="id" fullWidth />
+                        <TextInput disabled source="id" fullWidth />
                         <ReferenceInput
                             source="post_id"
                             reference="posts"

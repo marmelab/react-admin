@@ -9,7 +9,6 @@ import {
     Datagrid,
     DateField,
     DateInput,
-    DisabledInput,
     Edit,
     CloneButton,
     ShowButton,
@@ -46,7 +45,7 @@ const PostEdit = props => (
     <Edit title={<PostTitle />} actions={<EditActions />} {...props}>
         <TabbedForm defaultValue={{ average_note: 0 }}>
             <FormTab label="post.form.summary">
-                <DisabledInput source="id" />
+                <TextInput disabled source="id" />
                 <TextInput source="title" validate={required()} resettable />
                 <TextInput
                     multiline={true}
@@ -103,7 +102,7 @@ const PostEdit = props => (
                     validate={[required(), number(), minValue(0)]}
                 />
                 <BooleanInput source="commentable" defaultValue />
-                <DisabledInput source="views" />
+                <TextInput disabled source="views" />
             </FormTab>
             <FormTab label="post.form.comments">
                 <ReferenceManyField

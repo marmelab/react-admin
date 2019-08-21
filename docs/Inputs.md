@@ -10,12 +10,12 @@ An `Input` component displays an input, or a dropdown list, a list of radio butt
 ```jsx
 // in src/posts.js
 import React from 'react';
-import { Edit, DisabledInput, LongTextInput, ReferenceInput, SelectInput, SimpleForm, TextInput } from 'react-admin';
+import { Edit, LongTextInput, ReferenceInput, SelectInput, SimpleForm, TextInput } from 'react-admin';
 
 export const PostEdit = (props) => (
     <Edit title={<PostTitle />} {...props}>
         <SimpleForm>
-            <DisabledInput source="id" />
+            <TextInput disabled source="id" />
             <ReferenceInput label="User" source="userId" reference="users">
                 <SelectInput optionText="name" />
             </ReferenceInput>
@@ -493,57 +493,6 @@ import { DateTimeInput } from 'react-admin';
 ```
 
 **Tip**: For a material-ui styled `<DateTimeInput>` component, check out [vascofg/react-admin-date-inputs](https://github.com/vascofg/react-admin-date-inputs).
-
-## `<DisabledInput>`
-
-When you want to display a record property in an `<Edit>` form without letting users update it (such as for auto-incremented primary keys), use the `<DisabledInput>`:
-
-```jsx
-import { DisabledInput } from 'react-admin';
-
-<DisabledInput source="id" />
-```
-
-![DisabledInput](./img/disabled-input.png)
-
-**Tip**: To add non-editable fields to the `<Edit>` view, you can also use one of react-admin `Field` components:
-
-```jsx
-// in src/posts.js
-import { Edit, LongTextInput, SimpleForm, TextField } from 'react-admin';
-
-export const PostEdit = (props) => (
-    <Edit {...props}>
-        <SimpleForm>
-            <TextField source="title" /> {/* NOT EDITABLE */}
-            <LongTextInput source="body" />
-        </SimpleForm>
-    </Edit>
-);
-```
-
-**Tip**: You can even use a component of your own, provided it accepts a `record` prop:
-
-```jsx
-// in src/posts.js
-import { Edit, Labeled, LongTextInput, SimpleForm } from 'react-admin';
-
-const titleStyle = { textOverflow: 'ellipsis', overflow: 'hidden', maxWidth: '20em' };
-const Title = ({ record, label }) => (
-    <Labeled label={label}>
-        <span style={titleStyle}>{record.title}</span>
-    </Labeled>
-);
-
-export const PostEdit = (props) => (
-    <Edit {...props}>
-        <SimpleForm>
-            <Title label="Title" />
-            <LongTextInput source="body" />
-        </SimpleForm>
-    </Edit>
-);
-```
 
 ## `<ImageInput>`
 
@@ -1430,7 +1379,7 @@ export default LatLngInput;
 const ItemEdit = (props) => (
     <Edit {...props}>
         <SimpleForm>
-            <DisabledInput source="id" />
+            <TextInput disabled source="id" />
             <LatLngInput />
         </SimpleForm>
     </Edit>

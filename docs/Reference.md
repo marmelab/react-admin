@@ -33,7 +33,6 @@ title: "Reference"
 * [`<DateField>`](./Fields.md#datefield)
 * [`<DateInput>`](./Inputs.md#dateinput)
 * `<DeleteButton>`
-* [`<DisabledInput>`](./Inputs.md#disabledinput)
 * [`<Edit>`](./CreateEdit.md#the-create-and-edit-components)
 * `<EditActions>`
 * `<EditButton>`
