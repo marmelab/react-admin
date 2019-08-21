@@ -103,6 +103,7 @@ const CheckboxGroupInput: FunctionComponent<
     optionValue,
     options,
     resource,
+    row,
     source,
     translate,
     translateChoice,
@@ -160,7 +161,7 @@ const CheckboxGroupInput: FunctionComponent<
                     isRequired={isRequired}
                 />
             </FormLabel>
-            <FormGroup row>
+            <FormGroup row={row}>
                 {choices.map(choice => (
                     <CheckboxGroupInputItem
                         key={get(choice, optionValue)}
@@ -193,6 +194,7 @@ CheckboxGroupInput.propTypes = {
         PropTypes.element,
     ]).isRequired,
     optionValue: PropTypes.string.isRequired,
+    row: PropTypes.bool,
     resource: PropTypes.string,
     translateChoice: PropTypes.bool.isRequired,
 };
@@ -204,6 +206,7 @@ CheckboxGroupInput.defaultProps = {
     optionValue: 'id',
     translateChoice: true,
     fullWidth: true,
+    row: true,
 };
 
 export default CheckboxGroupInput;
