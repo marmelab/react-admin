@@ -1,18 +1,21 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 import PropTypes from 'prop-types';
 import {
     makeStyles,
     FormControl,
     FormHelperText,
-    InputLabel,
+    FormLabel,
     RadioGroup,
 } from '@material-ui/core';
+import { RadioGroupProps } from '@material-ui/core/RadioGroup';
+import { FormControlProps } from '@material-ui/core/FormControl';
 import get from 'lodash/get';
-import { useInput, FieldTitle } from 'ra-core';
+import { useInput, FieldTitle, InputProps } from 'ra-core';
 
 import sanitizeRestProps from './sanitizeRestProps';
 import InputHelperText from './InputHelperText';
 import RadioButtonGroupInputItem from './RadioButtonGroupInputItem';
+import { InputWithOptionsProps } from './InputWithOptions';
 
 const useStyles = makeStyles({
     label: {
@@ -77,7 +80,9 @@ const useStyles = makeStyles({
  *
  * The object passed as `options` props is passed to the material-ui <RadioButtonGroup> component
  */
-export const RadioButtonGroupInput = ({
+export const RadioButtonGroupInput: FunctionComponent<
+    InputWithOptionsProps & InputProps<RadioGroupProps> & FormControlProps
+> = ({
     choices,
     classes: classesOverride,
     helperText,
@@ -117,14 +122,14 @@ export const RadioButtonGroupInput = ({
             margin="normal"
             {...sanitizeRestProps(rest)}
         >
-            <InputLabel component="legend" shrink className={classes.label}>
+            <FormLabel component="legend" className={classes.label}>
                 <FieldTitle
                     label={label}
                     source={source}
                     resource={resource}
                     isRequired={isRequired}
                 />
-            </InputLabel>
+            </FormLabel>
 
             <RadioGroup id={id} {...input} {...options}>
                 {choices.map(choice => (
