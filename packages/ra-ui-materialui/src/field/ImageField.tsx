@@ -1,13 +1,13 @@
 import React, { SFC, ComponentType } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
-import { withStyles, WithStyles, createStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
 
 import sanitizeRestProps from './sanitizeRestProps';
 import { FieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 
-const styles = createStyles({
+const useStyles = makeStyles({
     list: {
         display: 'flex',
         listStyleType: 'none',
@@ -23,10 +23,16 @@ interface Props extends FieldProps {
     title?: string;
 }
 
-export const ImageField: SFC<
-    Props & InjectedFieldProps & WithStyles<typeof styles>
-> = ({ className, classes, record, source, src, title, ...rest }) => {
+export const ImageField: SFC<Props & InjectedFieldProps> = ({
+    className,
+    record,
+    source,
+    src,
+    title,
+    ...rest
+}) => {
     const sourceValue = get(record, source);
+    const classes = useStyles({});
     if (!sourceValue) {
         return <div className={className} {...sanitizeRestProps(rest)} />;
     }
@@ -73,20 +79,14 @@ export const ImageField: SFC<
 // wat? TypeScript looses the displayName if we don't set it explicitly
 ImageField.displayName = 'ImageField';
 
-const EnhancedImageField = withStyles(styles)(ImageField) as ComponentType<
-    Props
->;
-
-EnhancedImageField.defaultProps = {
+ImageField.defaultProps = {
     addLabel: true,
 };
 
-EnhancedImageField.propTypes = {
+ImageField.propTypes = {
     ...fieldPropTypes,
     src: PropTypes.string,
     title: PropTypes.string,
 };
 
-EnhancedImageField.displayName = 'EnhancedImageField';
-
-export default EnhancedImageField;
+export default ImageField;
