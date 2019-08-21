@@ -59,14 +59,7 @@ export function SaveButton({
 }) {
     const classes = useStyles({ classes: classesOverride });
     const handleClick = e => {
-        const {
-            handleSubmitWithRedirect,
-            invalid,
-            redirect,
-            saving,
-            showNotification,
-            onClick,
-        } = this.props;
+        const { handleSubmitWithRedirect, showNotification, onClick } = rest;
 
         if (saving) {
             // prevent double submission
