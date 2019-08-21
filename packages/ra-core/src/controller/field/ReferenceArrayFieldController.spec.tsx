@@ -1,9 +1,10 @@
 import React from 'react';
 import { cleanup } from '@testing-library/react';
+import expect from 'expect';
 
 import ReferenceArrayFieldController from './ReferenceArrayFieldController';
+import { DataProviderContext } from '../../dataProvider';
 import renderWithRedux from '../../util/renderWithRedux';
-import { crudGetManyAccumulate } from '../../actions';
 
 describe('<ReferenceArrayFieldController />', () => {
     afterEach(cleanup);
@@ -33,13 +34,15 @@ describe('<ReferenceArrayFieldController />', () => {
         expect(children.mock.calls[0][0]).toEqual({
             currentSort: { field: 'id', order: 'ASC' },
             loaded: false,
+            loading: true,
             referenceBasePath: '',
-            data: null,
+            data: {},
             ids: [1, 2],
+            error: null,
         });
     });
 
-    it('should set the loaded prop to true when at least one related record is found', () => {
+    it('should set the loaded prop to false when at least one related record is not found', () => {
         const children = jest.fn().mockReturnValue('child');
 
         renderWithRedux(
@@ -70,7 +73,8 @@ describe('<ReferenceArrayFieldController />', () => {
 
         expect(children.mock.calls[0][0]).toEqual({
             currentSort: { field: 'id', order: 'ASC' },
-            loaded: true,
+            loaded: false,
+            loading: true,
             referenceBasePath: '',
             data: {
                 2: {
@@ -79,6 +83,7 @@ describe('<ReferenceArrayFieldController />', () => {
                 },
             },
             ids: [1, 2],
+            error: null,
         });
     });
 
@@ -110,12 +115,14 @@ describe('<ReferenceArrayFieldController />', () => {
         expect(children.mock.calls[0][0]).toEqual({
             currentSort: { field: 'id', order: 'ASC' },
             loaded: true,
+            loading: true,
             referenceBasePath: '',
             data: {
                 1: { id: 1, title: 'hello' },
                 2: { id: 2, title: 'world' },
             },
             ids: [1, 2],
+            error: null,
         });
     });
 
@@ -147,27 +154,37 @@ describe('<ReferenceArrayFieldController />', () => {
         expect(children.mock.calls[0][0]).toEqual({
             currentSort: { field: 'id', order: 'ASC' },
             loaded: true,
+            loading: true,
             referenceBasePath: '',
             data: {
                 'abc-1': { id: 'abc-1', title: 'hello' },
                 'abc-2': { id: 'abc-2', title: 'world' },
             },
             ids: ['abc-1', 'abc-2'],
+            error: null,
         });
     });
 
-    it('should dispatch crudGetManyAccumulate', () => {
+    it('should call the dataProvider with GET_MANY on mount', async () => {
         const children = jest.fn().mockReturnValue('child');
+        const dataProvider = jest.fn();
+        dataProvider.mockReturnValueOnce(
+            Promise.resolve({
+                data: [{ id: 1, title: 'foo' }, { id: 2, title: 'bar' }],
+            })
+        );
         const { dispatch } = renderWithRedux(
-            <ReferenceArrayFieldController
-                record={{ id: 1, barIds: [1, 2] }}
-                resource="foo"
-                reference="bar"
-                source="barIds"
-                basePath=""
-            >
-                {children}
-            </ReferenceArrayFieldController>,
+            <DataProviderContext.Provider value={dataProvider}>
+                <ReferenceArrayFieldController
+                    record={{ id: 1, barIds: [1, 2] }}
+                    resource="foo"
+                    reference="bar"
+                    source="barIds"
+                    basePath=""
+                >
+                    {children}
+                </ReferenceArrayFieldController>
+            </DataProviderContext.Provider>,
             {
                 admin: {
                     resources: {
@@ -178,6 +195,9 @@ describe('<ReferenceArrayFieldController />', () => {
                 },
             }
         );
-        expect(dispatch).toBeCalledWith(crudGetManyAccumulate('bar', [1, 2]));
+        await new Promise(resolve => setTimeout(resolve, 10));
+        expect(dispatch).toBeCalledTimes(5);
+        expect(dispatch.mock.calls[0][0].type).toBe('RA/CRUD_GET_MANY');
+        expect(dataProvider).toBeCalledTimes(1);
     });
 });
