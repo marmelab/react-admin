@@ -16,22 +16,20 @@ Here is an example customizing an `EditButton` component inside a `Datagrid`, us
 {% raw %}
 ```jsx
 import { NumberField, List, Datagrid, EditButton } from 'react-admin';
-import { withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 
-const styles = {
+const useStyles = makeStyles({
     button: {
         fontWeight: 'bold',
         // This is JSS syntax to target a deeper element using css selector, here the svg icon for this button
         '& svg': { color: 'orange' }
     },
-};
+});
 
-const MyEditButton = withStyles(styles)(({ classes, ...props }) => (
-    <EditButton
-        className={classes.button}
-        {...props}
-    />
-));
+const MyEditButton = props => {
+    const classes = useStyles();
+    return <EditButton className={classes.button} {...props} />;
+};
 
 export const ProductList = (props) => (
     <List {...props}>
@@ -65,65 +63,71 @@ import {
     TextInput,
 } from 'react-admin';
 import Icon from '@material-ui/icons/Person';
-import { withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 
 export const VisitorIcon = Icon;
 
 // The Filter component supports the `form` and `button` CSS classes. Here we override the `form` class
-const filterStyles = {
+const useStyles = makeStyles({
     form: {
         backgroundColor: 'Lavender',
     },
+});
+
+const VisitorFilter = props => {
+    const classes = useStyles();
+    return (
+        <Filter classes={classes} {...props}>
+            <TextInput
+                className={classes.searchInput}
+                label="pos.search"
+                source="q"
+                alwaysOn
+            />
+            <DateInput source="last_seen_gte" />
+            <NullableBooleanInput source="has_ordered" />
+            <NullableBooleanInput source="has_newsletter" defaultValue />
+        </Filter>
+    );
 };
 
-const VisitorFilter = withStyles(filterStyles)(({ classes, ...props }) => (
-    <Filter classes={classes} {...props}>
-        <TextInput
-            className={classes.searchInput}
-            label="pos.search"
-            source="q"
-            alwaysOn
-        />
-        <DateInput source="last_seen_gte" />
-        <NullableBooleanInput source="has_ordered" />
-        <NullableBooleanInput source="has_newsletter" defaultValue />
-    </Filter>
-));
-
 // The List component supports the `root`, `header`, `actions` and `noResults` CSS classes. Here we override the `header` and `actions` classes
-const listStyles = {
+const useStyles = makeStyles({
     actions: {
         backgroundColor: 'Lavender',
     },
     header: {
         backgroundColor: 'Lavender',
     },
-};
+});
 
-export const VisitorList = withStyles(listStyles)(({ classes, ...props }) => (
-    <List
-        classes={classes}
-        {...props}
-        filters={<VisitorFilter />}
-        sort={{ field: 'last_seen', order: 'DESC' }}
-        perPage={25}
-    >
-        <Datagrid classes={classes} {...props}>
-            <DateField source="last_seen" type="date" />
-            <NumberField
-                source="nb_commands"
-                label="resources.customers.fields.commands"
-            />
-            <NumberField
-                source="total_spent"
-                options={{ style: 'currency', currency: 'USD' }}
-            />
-            <DateField source="latest_purchase" showTime />
-            <BooleanField source="has_newsletter" label="News." />
-            <EditButton />
-        </Datagrid>
-    </List>
-));
+export const VisitorList = props => {
+    const classes = useStyles();
+    return (
+        <List
+            classes={classes}
+            {...props}
+            filters={<VisitorFilter />}
+            sort={{ field: 'last_seen', order: 'DESC' }}
+            perPage={25}
+        >
+            <Datagrid classes={classes} {...props}>
+                <DateField source="last_seen" type="date" />
+                <NumberField
+                    source="nb_commands"
+                    label="resources.customers.fields.commands"
+                />
+                <NumberField
+                    source="total_spent"
+                    options={{ style: 'currency', currency: 'USD' }}
+                />
+                <DateField source="latest_purchase" showTime />
+                <BooleanField source="has_newsletter" label="News." />
+                <EditButton />
+            </Datagrid>
+        </List>
+    )
+};
 ```
 {% endraw %}
 
@@ -142,16 +146,17 @@ Sometimes you want the format to depend on the value. The following example show
 {% raw %}
 ```jsx
 import { NumberField, List, Datagrid, EditButton } from 'react-admin';
-import { withStyles } from '@material-ui/core/styles';
+import { makeStyle } from '@material-ui/core/styles';
 import classnames from 'classnames';
 
-const coloredStyles = {
+const useStyles = makeStyles({
     small: { color: 'black' },
     big: { color: 'red' },
-};
+});
 
-const ColoredNumberField = withStyles(coloredStyles)(
-    ({ classes, ...props }) => (
+const ColoredNumberField = props => {
+    const classes = useStyles();
+    return (
         <NumberField
             className={classnames({
                 [classes.small]: props.record[props.source] < 100,
@@ -159,7 +164,8 @@ const ColoredNumberField = withStyles(coloredStyles)(
             })}
             {...props}
         />
-    ));
+    );
+};
 
 // Ensure the original component defaultProps are still applied as they may be used by its parents (such as the `Show` component):
 ColoredNumberField.defaultProps = NumberField.defaultProps;
@@ -182,16 +188,17 @@ Furthermore, you may extract this highlighting strategy into an Higher Order Com
 {% raw %}
 ```jsx
 import { NumberField, List, Datagrid, EditButton } from 'react-admin';
-import { withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
 
-const coloredStyles = {
+const useStyles = makeStyles({
     small: { color: 'black' },
     big: { color: 'red' },
-};
+});
 
-const colored = WrappedComponent => withStyles(coloredStyles)(
-    ({ classes, ...props }) => (
+const colored = WrappedComponent => props => {
+    const classes = useStyles();
+    return (
         <WrappedComponent
             className={classnames({
                 [classes.small]: props.record[props.source] < 500,
@@ -199,7 +206,8 @@ const colored = WrappedComponent => withStyles(coloredStyles)(
             })}
             {...props}
         />
-    ));
+    )
+};
 
 
 const ColoredNumberField = colored(NumberField);
@@ -425,7 +433,7 @@ You can also customize the default icon by setting the `icon` prop to the `<User
 {% raw %}
 ``` jsx
 import { AppBar, UserMenu } from 'react-admin';
-import { withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
 
 const myCustomIconStyle = {
@@ -477,10 +485,10 @@ For more custom layouts, write a component from scratch. It must contain a `{chi
 
 ```jsx
 // in src/MyLayout.js
-import React, { Component } from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { withStyles, createMuiTheme } from '@material-ui/core/styles';
+import { useSelector, useDispatch } from 'react-redux';
+import { makeStyles, createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
 import {
     AppBar,
@@ -490,7 +498,7 @@ import {
     setSidebarVisibility,
 } from 'react-admin';
 
-const styles = theme => ({
+const useStyles = makeStyles(theme => ({
     root: {
         display: 'flex',
         flexDirection: 'column',
@@ -516,40 +524,41 @@ const styles = theme => ({
         marginTop: '4em',
         paddingLeft: 5,
     },
-});
+}));
 
-class MyLayout extends Component {
-    componentWillMount() {
-        this.props.setSidebarVisibility(true);
-    }
-
-    render() {
-        const {
-            children,
-            classes,
-            dashboard,
-            isLoading,
-            logout,
-            open,
-            title,
-        } = this.props;
-        return (
-            <div className={classes.root}>
-                <div className={classes.appFrame}>
-                    <AppBar title={title} open={open} logout={logout} />
-                    <main className={classes.contentWithSidebar}>
-                        <Sidebar>
-                            <Menu logout={logout} hasDashboard={!!dashboard} />
-                        </Sidebar>
-                        <div className={classes.content}>
-                            {children}
-                        </div>
-                    </main>
-                    <Notification />
-                </div>
+const MyLayout = ({ 
+    children,
+    classes,
+    dashboard,
+    isLoading,
+    logout,
+    open,
+    title,
+}) => {
+    const classes = useStyles();
+    const dispatch = useDispatch();
+    const isLoading = useSelector(state => state.admin.loading > 0);
+    
+    useEffect(() => {
+        dispatch(setSidebarVisibility(true));
+    }, [setSidebarVisibility]);
+    
+    return (
+        <div className={classes.root}>
+            <div className={classes.appFrame}>
+                <AppBar title={title} open={open} logout={logout} />
+                <main className={classes.contentWithSidebar}>
+                    <Sidebar>
+                        <Menu logout={logout} hasDashboard={!!dashboard} />
+                    </Sidebar>
+                    <div className={classes.content}>
+                        {children}
+                    </div>
+                </main>
+                <Notification />
             </div>
-        );
-    }
+        </div>
+    );
 }
 
 MyLayout.propTypes = {
@@ -558,14 +567,11 @@ MyLayout.propTypes = {
         PropTypes.func,
         PropTypes.string,
     ]),
-    isLoading: PropTypes.bool.isRequired,
     logout: componentPropType,
-    setSidebarVisibility: PropTypes.func.isRequired,
     title: PropTypes.string.isRequired,
 };
 
-const mapStateToProps = state => ({ isLoading: state.admin.loading > 0 });
-export default connect(mapStateToProps, { setSidebarVisibility })(withStyles(styles)(MyLayout));
+export default MyLayout
 ```
 
 ## Customizing the AppBar Content
@@ -579,7 +585,7 @@ Here is an example customization for `<AppBar>` to include a company logo in the
 import React from 'react';
 import { AppBar } from 'react-admin';
 import Typography from '@material-ui/core/Typography';
-import { withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 
 import Logo from './Logo';
 
