@@ -1,13 +1,13 @@
-import React, { cloneElement, Component, Children } from 'react';
+import React, { cloneElement, Children } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import LinearProgress from '@material-ui/core/LinearProgress';
-import { createStyles, withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import { linkToRecord } from 'ra-core';
 
 import Link from '../Link';
 
-const styles = createStyles({
+const useStyles = makeStyles({
     root: { display: 'flex', flexWrap: 'wrap' },
 });
 
@@ -54,68 +54,67 @@ const sanitizeRestProps = ({
  *     </SingleFieldList>
  * </ReferenceManyField>
  */
-export class SingleFieldList extends Component {
+function SingleFieldList({
+    classes: classesOverride,
+    className,
+    ids,
+    data,
+    loaded,
+    resource,
+    basePath,
+    children,
+    linkType,
+    ...rest
+}) {
+    const classes = useStyles({ classes: classesOverride });
+
     // Our handleClick does nothing as we wrap the children inside a Link but it is
     // required fo ChipField which uses a Chip from material-ui.
     // The material-ui Chip requires an onClick handler to behave like a clickable element
-    handleClick = () => {};
-    render() {
-        const {
-            classes = {},
-            className,
-            ids,
-            data,
-            loaded,
-            resource,
-            basePath,
-            children,
-            linkType,
-            ...rest
-        } = this.props;
+    const handleClick = () => {};
 
-        if (loaded === false) {
-            return <LinearProgress />;
-        }
-
-        return (
-            <div
-                className={classnames(classes.root, className)}
-                {...sanitizeRestProps(rest)}
-            >
-                {ids.map(id => {
-                    const resourceLinkPath = !linkType
-                        ? false
-                        : linkToRecord(basePath, id, linkType);
-
-                    if (resourceLinkPath) {
-                        return (
-                            <Link
-                                className={classes.link}
-                                key={id}
-                                to={resourceLinkPath}
-                                onClick={stopPropagation}
-                            >
-                                {cloneElement(Children.only(children), {
-                                    record: data[id],
-                                    resource,
-                                    basePath,
-                                    // Workaround to force ChipField to be clickable
-                                    onClick: this.handleClick,
-                                })}
-                            </Link>
-                        );
-                    }
-
-                    return cloneElement(Children.only(children), {
-                        key: id,
-                        record: data[id],
-                        resource,
-                        basePath,
-                    });
-                })}
-            </div>
-        );
+    if (loaded === false) {
+        return <LinearProgress />;
     }
+
+    return (
+        <div
+            className={classnames(classes.root, className)}
+            {...sanitizeRestProps(rest)}
+        >
+            {ids.map(id => {
+                const resourceLinkPath = !linkType
+                    ? false
+                    : linkToRecord(basePath, id, linkType);
+
+                if (resourceLinkPath) {
+                    return (
+                        <Link
+                            className={classes.link}
+                            key={id}
+                            to={resourceLinkPath}
+                            onClick={stopPropagation}
+                        >
+                            {cloneElement(Children.only(children), {
+                                record: data[id],
+                                resource,
+                                basePath,
+                                // Workaround to force ChipField to be clickable
+                                onClick: handleClick,
+                            })}
+                        </Link>
+                    );
+                }
+
+                return cloneElement(Children.only(children), {
+                    key: id,
+                    record: data[id],
+                    resource,
+                    basePath,
+                });
+            })}
+        </div>
+    );
 }
 
 SingleFieldList.propTypes = {
@@ -135,4 +134,4 @@ SingleFieldList.defaultProps = {
     linkType: 'edit',
 };
 
-export default withStyles(styles)(SingleFieldList);
+export default SingleFieldList;
