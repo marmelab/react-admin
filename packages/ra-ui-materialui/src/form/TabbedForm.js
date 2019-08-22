@@ -50,6 +50,7 @@ const TabbedForm = ({ initialValues, ...props }) => {
             setRedirect={setRedirect}
             keepDirtyOnReinitialize
             destroyOnUnregister
+            subscription={defaultSubscription}
             {...props}
             render={({ submitting, ...formProps }) => (
                 <TabbedFormView
@@ -62,6 +63,11 @@ const TabbedForm = ({ initialValues, ...props }) => {
             )}
         />
     );
+};
+
+const defaultSubscription = {
+    submitting: true,
+    pristine: true,
 };
 
 export default withRouter(TabbedForm);

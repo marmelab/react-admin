@@ -41,6 +41,7 @@ const SimpleForm = ({ initialValues, ...props }) => {
             mutators={{ ...arrayMutators }}
             keepDirtyOnReinitialize
             destroyOnUnregister
+            subscription={defaultSubscription}
             {...props}
             render={({ submitting, ...formProps }) => (
                 <SimpleFormView
@@ -53,6 +54,11 @@ const SimpleForm = ({ initialValues, ...props }) => {
             )}
         />
     );
+};
+
+const defaultSubscription = {
+    submitting: true,
+    pristine: true,
 };
 
 export default SimpleForm;
