@@ -42,7 +42,7 @@ const CardContentInner = ({
 
 CardContentInner.propTypes = {
     className: PropTypes.string,
-    classes: PropTypes.object.isRequired,
+    classes: PropTypes.object,
     children: PropTypes.node,
 };
 
