@@ -1,17 +1,17 @@
-import React, { cloneElement, Children, Component } from 'react';
+import React, { cloneElement, Children } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 
 const CONTAINER_CLASS = 'treenode-content';
 
-const styles = {
+const useStyles = makeStyles({
     root: {
         alignItems: 'center',
         display: 'flex',
         flexGrow: 1,
     },
-};
+});
 
 const sanitizeRestProps = ({
     cancelDropOnChildren,
@@ -30,17 +30,18 @@ const sanitizeRestProps = ({
     ...rest
 }) => rest;
 
-export class NodeView extends Component {
-    static propTypes = {
-        actions: PropTypes.node,
-        basePath: PropTypes.string.isRequired,
-        children: PropTypes.node,
-        classes: PropTypes.object,
-        node: PropTypes.object.isRequired,
-        resource: PropTypes.string.isRequired,
-    };
+function NodeView({
+    actions,
+    basePath,
+    children,
+    classes: classesOverride,
+    node,
+    resource,
+    ...props
+}) {
+    const classes = useStyles({ classes: classesOverride });
 
-    handleClick = event => {
+    const handleClick = event => {
         event.persist();
         // This ensure clicking on a button does not collapse/expand a node
         // When clicking on the form (empty spaces around buttons) however, it should
@@ -50,41 +51,38 @@ export class NodeView extends Component {
         }
     };
 
-    render() {
-        const {
-            actions,
-            basePath,
-            children,
-            classes,
-            node,
-            resource,
-            ...props
-        } = this.props;
-
-        return (
-            <div
-                className={classNames(CONTAINER_CLASS, classes.root)}
-                onClick={this.handleClick}
-                {...sanitizeRestProps(props)}
-            >
-                {Children.map(children, field =>
-                    field
-                        ? cloneElement(field, {
-                              basePath: field.props.basePath || basePath,
-                              record: node.record,
-                              resource,
-                          })
-                        : null
-                )}
-                {actions &&
-                    cloneElement(actions, {
-                        basePath,
-                        record: node.record,
-                        resource,
-                    })}
-            </div>
-        );
-    }
+    return (
+        <div
+            className={classNames(CONTAINER_CLASS, classes.root)}
+            onClick={handleClick}
+            {...sanitizeRestProps(props)}
+        >
+            {Children.map(children, field =>
+                field
+                    ? cloneElement(field, {
+                          basePath: field.props.basePath || basePath,
+                          record: node.record,
+                          resource,
+                      })
+                    : null
+            )}
+            {actions &&
+                cloneElement(actions, {
+                    basePath,
+                    record: node.record,
+                    resource,
+                })}
+        </div>
+    );
 }
 
-export default withStyles(styles)(NodeView);
+NodeView.propTypes = {
+    actions: PropTypes.node,
+    basePath: PropTypes.string.isRequired,
+    children: PropTypes.node,
+    classes: PropTypes.object,
+    node: PropTypes.object.isRequired,
+    resource: PropTypes.string.isRequired,
+};
+
+export default NodeView;
