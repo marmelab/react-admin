@@ -81,8 +81,10 @@ const useGetMany = (resource: string, ids: Identifier[], options: any = {}) => {
     const [state, setState] = useSafeSetState({
         data,
         error: null,
-        loading: true,
-        loaded: data.length !== 0 && !data.includes(undefined),
+        loading: ids.length !== 0,
+        loaded:
+            ids.length === 0 ||
+            (data.length !== 0 && !data.includes(undefined)),
     });
     if (!isEqual(state.data, data)) {
         setState({
