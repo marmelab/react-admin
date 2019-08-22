@@ -35,6 +35,7 @@ export interface CreateProps {
     match: Match;
     record?: Partial<Record>;
     resource: string;
+    successMessage?: string;
 }
 
 /**
@@ -67,6 +68,7 @@ const useCreateController = (props: CreateProps): CreateControllerProps => {
         record = {},
         hasShow,
         hasEdit,
+        successMessage,
     } = props;
 
     const translate = useTranslate();
@@ -90,9 +92,13 @@ const useCreateController = (props: CreateProps): CreateControllerProps => {
                     onSuccess: onSuccess
                         ? onSuccess
                         : ({ data: newRecord }) => {
-                              notify('ra.notification.created', 'info', {
-                                  smart_count: 1,
-                              });
+                              notify(
+                                  successMessage || 'ra.notification.created',
+                                  'info',
+                                  {
+                                      smart_count: 1,
+                                  }
+                              );
                               redirect(
                                   redirectTo,
                                   basePath,
@@ -113,7 +119,7 @@ const useCreateController = (props: CreateProps): CreateControllerProps => {
                           },
                 }
             ),
-        [basePath, create, notify, redirect]
+        [create, notify, successMessage, redirect, basePath]
     );
 
     const resourceName = translate(`resources.${resource}.name`, {

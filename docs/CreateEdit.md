@@ -20,6 +20,7 @@ Here are all the props accepted by the `<Create>` and `<Edit>` components:
 * [`title`](#page-title)
 * [`actions`](#actions)
 * [`aside`](#aside-component)
+* [`successMessage`](#success-message)
 * [`undoable`](#undoable) (`<Edit>` only)
 
 Here is the minimal code necessary to display a form to create and edit comments:
@@ -176,6 +177,19 @@ const Aside = ({ record }) => (
 {% endraw %}
 
 **Tip**: Always test that the `record` is defined before using it, as react-admin starts rendering the UI before the API call is over.
+
+### Success message
+
+Once the `dataProvider` returns successfully after save, users see a generic notification ("Element created" / "Element updated"). You can customize this message by passing a `successMessage` prop:
+
+```jsx
+const PostEdit = props => (
+    <Edit successMessage="messages.post_saved" {...props}>
+        ...
+    </Edit>
+```
+
+**Tip**: The message will be translated.
 
 ### Undoable
 

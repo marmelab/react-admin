@@ -67,6 +67,7 @@ Edit.propTypes = {
     id: PropTypes.any.isRequired,
     resource: PropTypes.string.isRequired,
     title: PropTypes.node,
+    successMessage: PropTypes.string,
 };
 
 export const useStyles = makeStyles({
@@ -101,6 +102,7 @@ const sanitizeRestProps = ({
     locale,
     permissions,
     undoable,
+    successMessage,
     ...rest
 }) => rest;
 

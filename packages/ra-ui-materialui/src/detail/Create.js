@@ -65,6 +65,7 @@ Create.propTypes = {
     title: PropTypes.node,
     record: PropTypes.object,
     hasList: PropTypes.bool,
+    successMessage: PropTypes.string,
 };
 
 const useStyles = makeStyles({
@@ -99,6 +100,7 @@ const sanitizeRestProps = ({
     options,
     locale,
     permissions,
+    successMessage,
     ...rest
 }) => rest;
 
