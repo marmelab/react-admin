@@ -159,15 +159,6 @@ const SelectArrayInput = ({
         ...rest,
     });
 
-    const handleChange = useCallback(
-        event => {
-            input.onChange(event.target.value);
-            // HACK: For some reason, redux-form does not consider this input touched without calling onBlur manually
-            input.onBlur(event.target.value);
-        },
-        [input]
-    );
-
     const renderMenuItemOption = useCallback(
         choice => {
             if (React.isValidElement(optionText)) {
@@ -221,7 +212,6 @@ const SelectArrayInput = ({
                 autoWidth
                 multiple
                 input={<Input id={id} />}
-                value={input.value || []}
                 error={!!(touched && error)}
                 renderValue={selected => (
                     <div className={classes.chips}>
@@ -241,8 +231,9 @@ const SelectArrayInput = ({
                     </div>
                 )}
                 data-testid="selectArray"
+                {...input}
+                value={input.value || []}
                 {...options}
-                onChange={handleChange}
             >
                 {choices.map(renderMenuItem)}
             </Select>
