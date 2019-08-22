@@ -180,10 +180,7 @@ const Aside = ({ record }) => (
 
 ### Success message
 
-Once the `dataProvider` returns successfully after save, users see a generic notification ("Element creatd" / "Element updated"). You can customize this message by passing a `successMessage` prop.
-You can use this prop to change the success message.
-
-**Tip**: The message will be translated.
+Once the `dataProvider` returns successfully after save, users see a generic notification ("Element created" / "Element updated"). You can customize this message by passing a `successMessage` prop:
 
 ```jsx
 const PostEdit = props => (
@@ -191,6 +188,8 @@ const PostEdit = props => (
         ...
     </Edit>
 ```
+
+**Tip**: The message will be translated.
 
 ### Undoable
 
