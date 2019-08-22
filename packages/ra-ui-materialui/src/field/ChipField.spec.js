@@ -7,7 +7,7 @@ describe('<ChipField />', () => {
     afterEach(cleanup);
 
     it('should display the record value added as source', () => {
-        const { getByAttribute } = render(
+        const { getAttribute } = render(
             <ChipField
                 className="className"
                 classes={{}}
@@ -16,11 +16,11 @@ describe('<ChipField />', () => {
             />
         );
 
-        expect(getByAttribute('label')).toEqual('foo');
+        expect(getAttribute('label')).toEqual('foo');
     });
 
     it('should not display any label added as props', () => {
-        const { getByAttribute } = render(
+        const { getAttribute } = render(
             <ChipField
                 className="className"
                 classes={{}}
@@ -30,6 +30,6 @@ describe('<ChipField />', () => {
             />
         );
 
-        expect(getByAttribute('label')).toEqual('foo');
+        expect(getAttribute('label')).toEqual('foo');
     });
 });
