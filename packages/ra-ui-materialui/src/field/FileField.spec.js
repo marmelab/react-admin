@@ -17,7 +17,7 @@ describe('<FileField />', () => {
     });
 
     it('should render a link with correct attributes based on `source` and `title`', () => {
-        const { getByRole } = render(
+        const { getByTitle } = render(
             <FileField
                 {...defaultProps}
                 record={{
@@ -28,13 +28,13 @@ describe('<FileField />', () => {
             />
         );
 
-        const link = getByRole('a');
+        const link = getByTitle('file.title');
         expect(link.href).toEqual('http://foo.com/bar.jpg');
         expect(link.title).toEqual('Hello world!');
     });
 
     it('should support deep linking', () => {
-        const { getByRole } = render(
+        const { getByTitle } = render(
             <FileField
                 {...defaultProps}
                 record={{
@@ -48,13 +48,13 @@ describe('<FileField />', () => {
             />
         );
 
-        const link = getByRole('a');
+        const link = getByTitle('file.title');
         expect(link.href).toEqual('http://foo.com/bar.jpg');
         expect(link.title).toEqual('Hello world!');
     });
 
     it('should allow setting static string as title', () => {
-        const { getByRole } = render(
+        const { getByTitle } = render(
             <FileField
                 {...defaultProps}
                 record={{
@@ -64,12 +64,12 @@ describe('<FileField />', () => {
             />
         );
 
-        const link = getByRole('a');
+        const link = getByTitle('file.title');
         expect(link.title).toEqual('Hello world!');
     });
 
     it('should allow setting target string', () => {
-        const { getByRole } = render(
+        const { getByTitle } = render(
             <FileField
                 {...defaultProps}
                 record={{
@@ -79,12 +79,12 @@ describe('<FileField />', () => {
             />
         );
 
-        const link = getByRole('a');
+        const link = getByTitle('file.title');
         expect(link.target).toEqual('_blank');
     });
 
     it('should render a list of links with correct attributes based on `src` and `title`', () => {
-        const { getByRole } = render(
+        const { getByTitle } = render(
             <FileField
                 {...defaultProps}
                 record={{
@@ -105,7 +105,7 @@ describe('<FileField />', () => {
             />
         );
 
-        const links = getByRole('a');
+        const links = getByTitle('file.title');
         expect(links[0].href).toEqual('http://foo.com/bar.jpg');
         expect(links[0].title).toEqual('Hello world!');
         expect(links[1].href).toEqual('http://bar.com/foo.jpg');
