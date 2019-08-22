@@ -1,53 +1,35 @@
-import React, { Component, cloneElement } from 'react';
+import React, { cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { NavLink } from 'react-router-dom';
 import MenuItem from '@material-ui/core/MenuItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import Tooltip from '@material-ui/core/Tooltip';
-import { withStyles, createStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 
 const NavLinkRef = React.forwardRef((props, ref) => (
     <NavLink innerRef={ref} {...props} />
 ));
 
-const styles = theme =>
-    createStyles({
-        root: {
-            color: theme.palette.text.secondary,
-        },
-        active: {
-            color: theme.palette.text.primary,
-        },
-        icon: { minWidth: theme.spacing(5) },
-    });
+const useStyles = makeStyles(theme => ({
+    root: {
+        color: theme.palette.text.secondary,
+    },
+    active: {
+        color: theme.palette.text.primary,
+    },
+    icon: { minWidth: theme.spacing(5) },
+}));
 
-export class MenuItemLink extends Component {
-    static propTypes = {
-        classes: PropTypes.object.isRequired,
-        className: PropTypes.string,
-        leftIcon: PropTypes.element,
-        onClick: PropTypes.func,
-        primaryText: PropTypes.node,
-        staticContext: PropTypes.object,
-        to: PropTypes.oneOfType([PropTypes.string, PropTypes.object])
-            .isRequired,
+export function MenuItemLink({ classes: classesOverride, ...props }) {
+    const classes = useStyles({ classes: classesOverride });
+
+    const handleMenuTap = e => {
+        props.onClick && props.onClick(e);
     };
 
-    handleMenuTap = e => {
-        this.props.onClick && this.props.onClick(e);
-    };
-
-    renderMenuItem() {
-        const {
-            classes,
-            className,
-            primaryText,
-            leftIcon,
-            staticContext,
-            sidebarIsOpen,
-            ...props
-        } = this.props;
+    const renderMenuItem = () => {
+        const { className, primaryText, leftIcon } = props;
 
         return (
             <MenuItem
@@ -55,7 +37,7 @@ export class MenuItemLink extends Component {
                 activeClassName={classes.active}
                 component={NavLinkRef}
                 {...props}
-                onClick={this.handleMenuTap}
+                onClick={handleMenuTap}
             >
                 {leftIcon && (
                     <ListItemIcon className={classes.icon}>
@@ -65,21 +47,29 @@ export class MenuItemLink extends Component {
                 {primaryText}
             </MenuItem>
         );
+    };
+
+    const { sidebarIsOpen, primaryText } = props;
+
+    if (sidebarIsOpen) {
+        return renderMenuItem();
     }
 
-    render() {
-        const { sidebarIsOpen, primaryText } = this.props;
-
-        if (sidebarIsOpen) {
-            return this.renderMenuItem();
-        }
-
-        return (
-            <Tooltip title={primaryText} placement="right">
-                {this.renderMenuItem()}
-            </Tooltip>
-        );
-    }
+    return (
+        <Tooltip title={primaryText} placement="right">
+            {renderMenuItem()}
+        </Tooltip>
+    );
 }
 
-export default withStyles(styles)(MenuItemLink);
+MenuItemLink.propTypes = {
+    classes: PropTypes.object,
+    className: PropTypes.string,
+    leftIcon: PropTypes.element,
+    onClick: PropTypes.func,
+    primaryText: PropTypes.node,
+    staticContext: PropTypes.object,
+    to: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
+};
+
+export default MenuItemLink;
