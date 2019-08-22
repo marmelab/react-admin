@@ -41,13 +41,14 @@ export const BooleanField: SFC<
     Props & InjectedFieldProps & TypographyProps
 > = ({
     className,
+    classes: classesOverride,
     source,
     record = {},
     valueLabelTrue,
     valueLabelFalse,
     ...rest
 }) => {
-    const classes = useStyles({});
+    const classes = useStyles({ classes: classesOverride });
     const translate = useTranslate();
     const value = get(record, source);
     let ariaLabel = value ? valueLabelTrue : valueLabelFalse;

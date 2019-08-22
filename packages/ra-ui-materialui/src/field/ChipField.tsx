@@ -15,11 +15,12 @@ const useStyles = makeStyles({
 
 export const ChipField: SFC<FieldProps & InjectedFieldProps & ChipProps> = ({
     className,
+    classes: classesOverride,
     source,
     record = {},
     ...rest
 }) => {
-    const classes = useStyles({});
+    const classes = useStyles({ classes: classesOverride });
 
     return (
         <Chip
