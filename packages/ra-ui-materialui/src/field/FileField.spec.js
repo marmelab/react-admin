@@ -28,7 +28,7 @@ describe('<FileField />', () => {
             />
         );
 
-        const link = getByTitle('file.title');
+        const link = getByTitle('Hello world!');
         expect(link.href).toEqual('http://foo.com/bar.jpg');
         expect(link.title).toEqual('Hello world!');
     });
@@ -48,7 +48,7 @@ describe('<FileField />', () => {
             />
         );
 
-        const link = getByTitle('file.title');
+        const link = getByTitle('Hello world!');
         expect(link.href).toEqual('http://foo.com/bar.jpg');
         expect(link.title).toEqual('Hello world!');
     });
@@ -64,7 +64,7 @@ describe('<FileField />', () => {
             />
         );
 
-        const link = getByTitle('file.title');
+        const link = getByTitle('Hello world!');
         expect(link.title).toEqual('Hello world!');
     });
 
@@ -79,7 +79,7 @@ describe('<FileField />', () => {
             />
         );
 
-        const link = getByTitle('file.title');
+        const link = getByTitle('Hello world!');
         expect(link.target).toEqual('_blank');
     });
 
@@ -105,11 +105,12 @@ describe('<FileField />', () => {
             />
         );
 
-        const links = getByTitle('file.title');
-        expect(links[0].href).toEqual('http://foo.com/bar.jpg');
-        expect(links[0].title).toEqual('Hello world!');
-        expect(links[1].href).toEqual('http://bar.com/foo.jpg');
-        expect(links[1].title).toEqual('Bye world!');
+        const firstLink = getByTitle('Hello world!');
+        const secondLink = getByTitle('Bye world!');
+        expect(firstLink.href).toEqual('http://foo.com/bar.jpg');
+        expect(firstLink.title).toEqual('Hello world!');
+        expect(secondLink.href).toEqual('http://bar.com/foo.jpg');
+        expect(secondLink.title).toEqual('Bye world!');
     });
 
     it('should use custom className', () => {
