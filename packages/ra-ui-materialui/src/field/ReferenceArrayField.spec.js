@@ -93,6 +93,7 @@ describe('<ReferenceArrayField />', () => {
                     source="barIds"
                     basePath=""
                     data={data}
+                    loaded={true}
                     ids={['abc-1', 'abc-2']}
                 >
                     <SingleFieldList>
@@ -121,6 +122,7 @@ describe('<ReferenceArrayField />', () => {
                     source="barIds"
                     basePath=""
                     data={data}
+                    loaded={true}
                     ids={[1, 2]}
                 >
                     <SingleFieldList>
@@ -151,6 +153,7 @@ describe('<ReferenceArrayField />', () => {
                     basePath=""
                     data={data}
                     ids={[1, 2]}
+                    loaded={true}
                 >
                     <SingleFieldList>
                         <TextField source="title" />

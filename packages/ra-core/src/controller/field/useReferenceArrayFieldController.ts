@@ -1,15 +1,25 @@
-import { useEffect } from 'react';
-import { useDispatch, useSelector, shallowEqual } from 'react-redux';
+import { useMemo } from 'react';
 import get from 'lodash/get';
 
-import { crudGetManyAccumulate } from '../../actions';
-import { getReferencesByIds } from '../../reducer/admin/references/oneToMany';
-import { ReduxState, Record, RecordMap, Identifier } from '../../types';
+import { Record, RecordMap, Identifier } from '../../types';
+import { useGetMany } from '../../dataProvider';
 
+/**
+ * @typedef ReferenceArrayProps
+ * @type {Object}
+ * @property {Array} ids the list of ids.
+ * @property {Object} data Object holding the reference data by their ids
+ * @property {Object} error the error returned by the dataProvider
+ * @property {boolean} loading is the reference currently loading
+ * @property {boolean} loaded has the reference already been loaded
+ * @property {string} referenceBasePath basePath of the reference
+ */
 interface ReferenceArrayProps {
-    loaded: boolean;
     ids: Identifier[];
     data: RecordMap;
+    error?: any;
+    loading: boolean;
+    loaded: boolean;
     referenceBasePath: string;
 }
 
@@ -22,21 +32,12 @@ interface Option {
 }
 
 /**
- * @typedef ReferenceArrayProps
- * @type {Object}
- * @property {boolean} loaded: boolean indicating if the reference has already beeen loaded
- * @property {Array} ids: the list of ids.
- * @property {Object} data: Object holding the reference data by their ids
- * @property {string} referenceBasePath basePath of the reference
- */
-
-/**
  * Hook that fetches records from another resource specified
  * by an array of *ids* in current record.
  *
  * @example
  *
- * const { loaded, data, ids, referenceBasePath, currentSort } = useReferenceArrayFieldController({
+ * const { ids, data, error, loaded, loading, referenceBasePath } = useReferenceArrayFieldController({
  *      basePath: 'resource';
  *      record: { referenceIds: ['id1', 'id2']};
  *      reference: 'reference';
@@ -62,34 +63,25 @@ const useReferenceArrayFieldController = ({
     record,
     source,
 }: Option): ReferenceArrayProps => {
-    const dispatch = useDispatch();
-    const { data, ids } = useSelector(
-        getReferenceArray({ record, source, reference }),
-        shallowEqual
-    );
-    useEffect(() => {
-        dispatch(crudGetManyAccumulate(reference, ids));
-    }, [reference, ids, record.id]); // eslint-disable-line react-hooks/exhaustive-deps
-
+    const ids = get(record, source) || [];
+    const { data, error, loading, loaded } = useGetMany(reference, ids);
     const referenceBasePath = basePath.replace(resource, reference); // FIXME obviously very weak
-
     return {
-        // eslint-disable-next-line eqeqeq
-        loaded: data != undefined,
         ids,
-        data,
+        data: useMemo(() => indexById(data), [data]),
+        error,
+        loaded,
+        loading,
         referenceBasePath,
     };
 };
 
-const getReferenceArray = ({ record, source, reference }) => (
-    state: ReduxState
-) => {
-    const ids = get(record, source) || [];
-    return {
-        data: getReferencesByIds(state, reference, ids),
-        ids,
-    };
-};
+const indexById = (records: Record[]) =>
+    records
+        .filter(r => typeof r !== 'undefined')
+        .reduce((prev, current) => {
+            prev[current.id] = current;
+            return prev;
+        }, {});
 
 export default useReferenceArrayFieldController;

@@ -109,7 +109,6 @@ const useReferenceInputController = ({
     const { referenceRecord } = useReference({
         id: input.value,
         reference,
-        allowEmpty: true,
     });
 
     const dataStatus = getDataStatus({

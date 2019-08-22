@@ -178,10 +178,8 @@ const useListParams = ({
     );
 
     const setFilters = useCallback(
-        filters => {
-            debouncedSetFilters(filters);
-        },
-        [debouncedSetFilters]
+        filters => debouncedSetFilters(filters),
+        requestSignature // eslint-disable-line react-hooks/exhaustive-deps
     );
 
     const hideFilter = useCallback((filterName: string) => {

@@ -14,7 +14,7 @@ import { showNotification } from '../actions/notificationActions';
 import { refreshView } from '../actions/uiActions';
 import { ReduxState, DataProvider } from '../types';
 
-type DataProviderHookFunction = (
+export type DataProviderHookFunction = (
     type: string,
     resource: string,
     params: any,

@@ -1,20 +1,16 @@
-import { useEffect, useCallback } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-
-import { crudGetManyAccumulate } from '../actions';
 import { Record } from '../types';
-import { getReferenceResource } from '../reducer';
+import { useGetMany } from '../dataProvider';
 
 interface Option {
     id: string;
     reference: string;
-    allowEmpty?: boolean;
 }
 
 export interface UseReferenceProps {
     loading: boolean;
     loaded: boolean;
-    referenceRecord: Record;
+    referenceRecord?: Record;
+    error?: any;
 }
 
 /**
@@ -39,44 +35,19 @@ export interface UseReferenceProps {
  * });
  *
  * @param {Object} option
- * @param {boolean} option.allowEmpty do we allow for no referenced record (default to false)
  * @param {string} option.reference The linked resource name
  * @param {string} option.id The id of the reference
  *
  * @returns {ReferenceProps} The reference record
  */
-export const useReference = ({
-    allowEmpty = false,
-    reference,
-    id,
-}: Option): UseReferenceProps => {
-    const dispatch = useDispatch();
-    useEffect(() => {
-        if (id !== null && typeof id !== 'undefined') {
-            dispatch(crudGetManyAccumulate(reference, [id]));
-        }
-    }, [dispatch, id, reference]);
-
-    const referenceRecord = useReferenceSelector({ reference, id });
-
+export const useReference = ({ reference, id }: Option): UseReferenceProps => {
+    const { data, error, loading, loaded } = useGetMany(reference, [id]);
     return {
-        loading: !referenceRecord && !allowEmpty,
-        loaded: !!referenceRecord || allowEmpty,
-        referenceRecord,
+        referenceRecord: error ? undefined : data[0],
+        error,
+        loading,
+        loaded,
     };
-};
-
-const useReferenceSelector = ({ id, reference }) => {
-    const getReferenceRecord = useCallback(
-        state => {
-            const referenceState = getReferenceResource(state, { reference });
-
-            return referenceState && referenceState.data[id];
-        },
-        [id, reference]
-    );
-
-    return useSelector(getReferenceRecord);
 };
 
 export default useReference;

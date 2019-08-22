@@ -1,8 +1,9 @@
-import React, { Children, cloneElement } from 'react';
+import React, { Children, cloneElement, memo } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import get from 'lodash/get';
 import { makeStyles } from '@material-ui/core/styles';
+import { Error } from '@material-ui/icons';
 import { useReference, getResourceLinkPath } from 'ra-core';
 
 import LinearProgress from '../layout/LinearProgress';
@@ -59,26 +60,27 @@ const ReferenceField = ({ children, record, source, ...props }) => {
         throw new Error('<ReferenceField> only accepts a single child');
     }
     const id = get(record, source);
-    const { loading, referenceRecord } = useReference({
+    const { loaded, error, referenceRecord } = useReference({
         ...props,
         id,
     });
     const resourceLinkPath = getResourceLinkPath({ record, source, ...props });
 
     return (
-        <ReferenceFieldView
+        <PureReferenceFieldView
             {...props}
-            children={children}
-            loading={loading}
+            loaded={loaded}
+            error={error}
             referenceRecord={referenceRecord}
             resourceLinkPath={resourceLinkPath}
-        />
+        >
+            {children}
+        </PureReferenceFieldView>
     );
 };
 
 ReferenceField.propTypes = {
     addLabel: PropTypes.bool,
-    allowEmpty: PropTypes.bool.isRequired,
     basePath: PropTypes.string.isRequired,
     children: PropTypes.element.isRequired,
     classes: PropTypes.object,
@@ -106,7 +108,6 @@ ReferenceField.propTypes = {
 
 ReferenceField.defaultProps = {
     addLabel: true,
-    allowEmpty: false,
     classes: {},
     link: 'edit',
     record: {},
@@ -122,12 +123,12 @@ const useStyles = makeStyles(theme => ({
 const stopPropagation = e => e.stopPropagation();
 
 export const ReferenceFieldView = ({
-    allowEmpty,
     basePath,
     children,
     className,
     classes: classesOverride,
-    loading,
+    error,
+    loaded,
     record,
     reference,
     referenceRecord,
@@ -138,8 +139,20 @@ export const ReferenceFieldView = ({
     ...rest
 }) => {
     const classes = useStyles({ classes: classesOverride });
-    if (loading) {
+    if (!loaded) {
         return <LinearProgress />;
+    }
+    if (error) {
+        return (
+            <Error
+                aria-errormessage={error.message ? error.message : error}
+                color="error"
+                fontSize="small"
+            />
+        );
+    }
+    if (!referenceRecord) {
+        return null;
     }
 
     if (resourceLinkPath) {
@@ -156,7 +169,6 @@ export const ReferenceFieldView = ({
                     ),
                     record: referenceRecord,
                     resource: reference,
-                    allowEmpty,
                     basePath,
                     translateChoice,
                     ...sanitizeRestProps(rest),
@@ -168,7 +180,6 @@ export const ReferenceFieldView = ({
     return cloneElement(Children.only(children), {
         record: referenceRecord,
         resource: reference,
-        allowEmpty,
         basePath,
         translateChoice,
         ...sanitizeRestProps(rest),
@@ -176,7 +187,6 @@ export const ReferenceFieldView = ({
 };
 
 ReferenceFieldView.propTypes = {
-    allowEmpty: PropTypes.bool,
     basePath: PropTypes.string,
     children: PropTypes.element,
     className: PropTypes.string,
@@ -190,5 +200,7 @@ ReferenceFieldView.propTypes = {
     source: PropTypes.string,
     translateChoice: PropTypes.bool,
 };
+
+const PureReferenceFieldView = memo(ReferenceFieldView);
 
 export default ReferenceField;

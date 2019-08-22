@@ -1,9 +1,11 @@
 import React from 'react';
 import { cleanup } from '@testing-library/react';
 import omit from 'lodash/omit';
+import expect from 'expect';
 
 import renderWithRedux from '../../util/renderWithRedux';
 import ReferenceInputController from './ReferenceInputController';
+import { DataProviderContext } from '../../dataProvider';
 
 describe('<ReferenceInputController />', () => {
     const defaultProps = {
@@ -18,18 +20,24 @@ describe('<ReferenceInputController />', () => {
 
     afterEach(cleanup);
 
-    it('should fetch reference matchingReferences, and provide filter pagination and sort', () => {
+    it('should fetch reference matchingReferences, and provide filter pagination and sort', async () => {
         const children = jest.fn().mockReturnValue(<p>child</p>);
+        const dataProvider = jest.fn();
+        dataProvider.mockImplementationOnce(() =>
+            Promise.resolve({ data: [{ id: 1, title: 'foo' }] })
+        );
         const { dispatch } = renderWithRedux(
-            <ReferenceInputController
-                {...{
-                    ...defaultProps,
-                    input: { value: 1 } as any,
-                    loading: true,
-                }}
-            >
-                {children}
-            </ReferenceInputController>,
+            <DataProviderContext.Provider value={dataProvider}>
+                <ReferenceInputController
+                    {...{
+                        ...defaultProps,
+                        input: { value: 1 } as any,
+                        loading: true,
+                    }}
+                >
+                    {children}
+                </ReferenceInputController>
+            </DataProviderContext.Provider>,
             {
                 admin: {
                     resources: { posts: { data: { 1: { id: 1 } } } },
@@ -56,13 +64,11 @@ describe('<ReferenceInputController />', () => {
             sort: { field: 'id', order: 'DESC' },
             warning: null,
         });
-
-        expect(dispatch).toBeCalledTimes(2);
+        await new Promise(resolve => setTimeout(resolve));
+        expect(dispatch).toBeCalledTimes(6);
         expect(dispatch.mock.calls[0][0].type).toBe(
             'RA/CRUD_GET_MATCHING_ACCUMULATE'
         );
-        expect(dispatch.mock.calls[1][0].type).toBe(
-            'RA/CRUD_GET_MANY_ACCUMULATE'
-        );
+        expect(dispatch.mock.calls[1][0].type).toBe('RA/CRUD_GET_MANY');
     });
 });
