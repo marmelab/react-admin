@@ -170,6 +170,7 @@ Components deprecated in 2.X have been removed in 3.x. This includes:
 
 * `AppBarMobile` (use `AppBar` instead, which is responsive)
 * `Header` (use `Title` instead)
+* `Link` (use `react-router-dom`'s `Link` instead)
 * `ViewTitle` (use `Title` instead)
 * `RecordTitle` (use `TitleForRecord` instead)
 * `TitleDeprecated` (use `Title` instead)
