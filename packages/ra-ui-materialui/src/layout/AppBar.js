@@ -6,7 +6,7 @@ import MuiAppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import { withStyles, createStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
 import withWidth from '@material-ui/core/withWidth';
 import compose from 'recompose/compose';
@@ -16,40 +16,39 @@ import LoadingIndicator from './LoadingIndicator';
 import DefaultUserMenu from './UserMenu';
 import HideOnScroll from './HideOnScroll';
 
-const styles = theme =>
-    createStyles({
-        toolbar: {
-            paddingRight: 24,
-        },
-        menuButton: {
-            marginLeft: '0.5em',
-            marginRight: '0.5em',
-        },
-        menuButtonIconClosed: {
-            transition: theme.transitions.create(['transform'], {
-                easing: theme.transitions.easing.sharp,
-                duration: theme.transitions.duration.leavingScreen,
-            }),
-            transform: 'rotate(0deg)',
-        },
-        menuButtonIconOpen: {
-            transition: theme.transitions.create(['transform'], {
-                easing: theme.transitions.easing.sharp,
-                duration: theme.transitions.duration.leavingScreen,
-            }),
-            transform: 'rotate(180deg)',
-        },
-        title: {
-            flex: 1,
-            textOverflow: 'ellipsis',
-            whiteSpace: 'nowrap',
-            overflow: 'hidden',
-        },
-    });
+const useStyles = makeStyles(theme => ({
+    toolbar: {
+        paddingRight: 24,
+    },
+    menuButton: {
+        marginLeft: '0.5em',
+        marginRight: '0.5em',
+    },
+    menuButtonIconClosed: {
+        transition: theme.transitions.create(['transform'], {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.leavingScreen,
+        }),
+        transform: 'rotate(0deg)',
+    },
+    menuButtonIconOpen: {
+        transition: theme.transitions.create(['transform'], {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.leavingScreen,
+        }),
+        transform: 'rotate(180deg)',
+    },
+    title: {
+        flex: 1,
+        textOverflow: 'ellipsis',
+        whiteSpace: 'nowrap',
+        overflow: 'hidden',
+    },
+}));
 
 const AppBar = ({
     children,
-    classes,
+    classes: classesOverride,
     className,
     logo,
     logout,
@@ -59,44 +58,47 @@ const AppBar = ({
     userMenu,
     width,
     ...rest
-}) => (
-    <HideOnScroll>
-        <MuiAppBar className={className} color="secondary" {...rest}>
-            <Toolbar
-                disableGutters
-                variant={width === 'xs' ? 'regular' : 'dense'}
-                className={classes.toolbar}
-            >
-                <IconButton
-                    color="inherit"
-                    aria-label="open drawer"
-                    onClick={toggleSidebar}
-                    className={classNames(classes.menuButton)}
+}) => {
+    const classes = useStyles({ classes: classesOverride });
+    return (
+        <HideOnScroll>
+            <MuiAppBar className={className} color="secondary" {...rest}>
+                <Toolbar
+                    disableGutters
+                    variant={width === 'xs' ? 'regular' : 'dense'}
+                    className={classes.toolbar}
                 >
-                    <MenuIcon
-                        classes={{
-                            root: open
-                                ? classes.menuButtonIconOpen
-                                : classes.menuButtonIconClosed,
-                        }}
-                    />
-                </IconButton>
-                {Children.count(children) === 0 ? (
-                    <Typography
-                        variant="h6"
+                    <IconButton
                         color="inherit"
-                        className={classes.title}
-                        id="react-admin-title"
-                    />
-                ) : (
-                    children
-                )}
-                <LoadingIndicator />
-                {cloneElement(userMenu, { logout })}
-            </Toolbar>
-        </MuiAppBar>
-    </HideOnScroll>
-);
+                        aria-label="open drawer"
+                        onClick={toggleSidebar}
+                        className={classNames(classes.menuButton)}
+                    >
+                        <MenuIcon
+                            classes={{
+                                root: open
+                                    ? classes.menuButtonIconOpen
+                                    : classes.menuButtonIconClosed,
+                            }}
+                        />
+                    </IconButton>
+                    {Children.count(children) === 0 ? (
+                        <Typography
+                            variant="h6"
+                            color="inherit"
+                            className={classes.title}
+                            id="react-admin-title"
+                        />
+                    ) : (
+                        children
+                    )}
+                    <LoadingIndicator />
+                    {cloneElement(userMenu, { logout })}
+                </Toolbar>
+            </MuiAppBar>
+        </HideOnScroll>
+    );
+};
 
 AppBar.propTypes = {
     children: PropTypes.node,
@@ -122,7 +124,6 @@ const enhance = compose(
             toggleSidebar: toggleSidebarAction,
         }
     ),
-    withStyles(styles),
     withWidth()
 );
 
