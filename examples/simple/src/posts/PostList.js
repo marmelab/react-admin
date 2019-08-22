@@ -134,7 +134,7 @@ const PostList = props => {
                     }
                 />
             ) : (
-                <Datagrid rowClick={rowClick} expand={<PostPanel />}>
+                <Datagrid rowClick={rowClick} expand={PostPanel}>
                     <TextField source="id" />
                     <TextField source="title" cellClassName={classes.title} />
                     <DateField
