@@ -3,33 +3,38 @@ import compose from 'recompose/compose';
 import get from 'lodash/get';
 import pure from 'recompose/pure';
 import Chip, { ChipProps } from '@material-ui/core/Chip';
-import { withStyles, WithStyles, createStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
 
 import sanitizeRestProps from './sanitizeRestProps';
 import { FieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 
-const styles = createStyles({
+const useStyles = makeStyles({
     chip: { margin: 4 },
 });
 
-export const ChipField: SFC<
-    FieldProps & InjectedFieldProps & WithStyles<typeof styles> & ChipProps
-> = ({ className, classes, source, record = {}, ...rest }) => (
-    <Chip
-        className={classnames(classes.chip, className)}
-        label={get(record, source)}
-        {...sanitizeRestProps(rest)}
-    />
-);
+export const ChipField: SFC<FieldProps & InjectedFieldProps & ChipProps> = ({
+    className,
+    classes: classesOverride,
+    source,
+    record = {},
+    ...rest
+}) => {
+    const classes = useStyles({ classes: classesOverride });
+
+    return (
+        <Chip
+            className={classnames(classes.chip, className)}
+            label={get(record, source)}
+            {...sanitizeRestProps(rest)}
+        />
+    );
+};
 
 const EnhancedChipField = compose<
-    FieldProps & InjectedFieldProps & WithStyles<typeof styles> & ChipProps,
+    FieldProps & InjectedFieldProps & ChipProps,
     FieldProps & ChipProps
->(
-    withStyles(styles),
-    pure
-)(ChipField);
+>(pure)(ChipField);
 
 EnhancedChipField.defaultProps = {
     addLabel: true,

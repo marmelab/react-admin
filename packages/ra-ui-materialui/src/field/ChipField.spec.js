@@ -1,33 +1,33 @@
 import React from 'react';
-import assert from 'assert';
-import { shallow } from 'enzyme';
+import expect from 'expect';
 import { ChipField } from './ChipField';
+import { render, cleanup } from '@testing-library/react';
 
 describe('<ChipField />', () => {
-    it('should display the record value added as source', () =>
-        assert.equal(
-            shallow(
-                <ChipField
-                    className="className"
-                    classes={{}}
-                    source="name"
-                    record={{ name: 'foo' }}
-                />
-            ).prop('label'),
-            'foo'
-        ));
+    afterEach(cleanup);
 
-    it('should not display any label added as props', () =>
-        assert.equal(
-            shallow(
-                <ChipField
-                    className="className"
-                    classes={{}}
-                    source="name"
-                    record={{ name: 'foo' }}
-                    label="bar"
-                />
-            ).prop('label'),
-            'foo'
-        ));
+    it('should display the record value added as source', () => {
+        const { getByText } = render(
+            <ChipField
+                className="className"
+                classes={{}}
+                source="name"
+                record={{ name: 'foo' }}
+            />
+        );
+        expect(getByText('foo')).not.toBeNull();
+    });
+
+    it('should not display any label added as props', () => {
+        const { getByText } = render(
+            <ChipField
+                className="className"
+                classes={{}}
+                source="name"
+                record={{ name: 'foo' }}
+                label="bar"
+            />
+        );
+        expect(getByText('foo')).not.toBeNull();
+    });
 });

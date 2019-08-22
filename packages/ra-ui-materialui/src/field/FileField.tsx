@@ -1,13 +1,13 @@
 import React, { SFC, ComponentType } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
-import { withStyles, WithStyles, createStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
 
 import sanitizeRestProps from './sanitizeRestProps';
 import { FieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 
-const styles = createStyles({
+const useStyles = makeStyles({
     root: { display: 'inline-block' },
 });
 
@@ -15,12 +15,21 @@ interface Props extends FieldProps {
     src?: string;
     title?: string;
     target?: string;
+    classes?: object;
 }
 
-export const FileField: SFC<
-    Props & InjectedFieldProps & WithStyles<typeof styles>
-> = ({ classes, className, record, source, title, src, target, ...rest }) => {
+export const FileField: SFC<Props & InjectedFieldProps> = ({
+    className,
+    classes: classesOverride,
+    record,
+    source,
+    title,
+    src,
+    target,
+    ...rest
+}) => {
     const sourceValue = get(record, source);
+    const classes = useStyles({ classes: classesOverride });
 
     if (!sourceValue) {
         return (
@@ -71,19 +80,15 @@ export const FileField: SFC<
     );
 };
 
-const EnhancedFileField = withStyles(styles)(FileField) as ComponentType<Props>;
-
-EnhancedFileField.defaultProps = {
+FileField.defaultProps = {
     addLabel: true,
 };
 
-EnhancedFileField.propTypes = {
+FileField.propTypes = {
     ...fieldPropTypes,
     src: PropTypes.string,
     title: PropTypes.string,
     target: PropTypes.string,
 };
 
-EnhancedFileField.displayName = 'EnhancedFileField';
-
-export default EnhancedFileField;
+export default FileField;
