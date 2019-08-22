@@ -15,7 +15,6 @@ describe('<ChipField />', () => {
                 record={{ name: 'foo' }}
             />
         );
-
         expect(getByLabelText('foo')).toBeDefined();
     });
 
@@ -29,7 +28,6 @@ describe('<ChipField />', () => {
                 label="bar"
             />
         );
-
         expect(getByLabelText('foo')).toBeDefined();
     });
 });
