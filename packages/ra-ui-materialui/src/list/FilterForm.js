@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Form, FormSpy } from 'react-final-form';
 import classnames from 'classnames';
@@ -70,62 +70,63 @@ const sanitizeRestProps = ({
     ...props
 }) => props;
 
-export class FilterForm extends Component {
-    componentDidMount() {
-        this.props.filters.forEach(filter => {
+const FilterForm = ({
+    filters,
+    displayedFilters,
+    initialValues,
+    hideFilter,
+    className,
+    classes,
+    resource,
+    margin,
+    variant,
+    ...rest
+}) => {
+    useEffect(() => {
+        filters.forEach(filter => {
             if (filter.props.alwaysOn && filter.props.defaultValue) {
                 throw new Error(
                     'Cannot use alwaysOn and defaultValue on a filter input. Please set the filterDefaultValues props on the <List> element instead.'
                 );
             }
         });
-    }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
-    getShownFilters() {
-        const { filters, displayedFilters, initialValues } = this.props;
+    const shownFilters = filters.filter(
+        filterElement =>
+            filterElement.props.alwaysOn ||
+            displayedFilters[filterElement.props.source] ||
+            typeof lodashGet(initialValues, filterElement.props.source) !==
+                'undefined'
+    );
 
-        return filters.filter(
-            filterElement =>
-                filterElement.props.alwaysOn ||
-                displayedFilters[filterElement.props.source] ||
-                typeof lodashGet(initialValues, filterElement.props.source) !==
-                    'undefined'
-        );
-    }
+    const handleHide = useCallback(
+        event => {
+            hideFilter(event.currentTarget.dataset.key);
+        },
+        [hideFilter]
+    );
 
-    handleHide = event =>
-        this.props.hideFilter(event.currentTarget.dataset.key);
-
-    render() {
-        const {
-            classes = {},
-            className,
-            resource,
-            margin,
-            variant,
-            ...rest
-        } = this.props;
-
-        return (
-            <form
-                className={classnames(className, classes.form)}
-                {...sanitizeRestProps(rest)}
-            >
-                {this.getShownFilters().map(filterElement => (
-                    <FilterFormInput
-                        key={filterElement.props.source}
-                        filterElement={filterElement}
-                        handleHide={this.handleHide}
-                        resource={resource}
-                        margin={margin}
-                        variant={variant}
-                    />
-                ))}
-                <div className={classes.clearFix} />
-            </form>
-        );
-    }
-}
+    return (
+        <form
+            className={classnames(className, classes.form)}
+            {...sanitizeRestProps(rest)}
+        >
+            {shownFilters.map(filterElement => (
+                <FilterFormInput
+                    key={filterElement.props.source}
+                    filterElement={filterElement}
+                    handleHide={handleHide}
+                    resource={resource}
+                    margin={margin}
+                    variant={variant}
+                />
+            ))}
+            <div className={classes.clearFix} />
+        </form>
+    );
+};
 
 FilterForm.propTypes = {
     resource: PropTypes.string.isRequired,
