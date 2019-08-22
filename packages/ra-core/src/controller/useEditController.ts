@@ -34,6 +34,7 @@ export interface EditControllerProps {
     basePath: string;
     record?: Record;
     version: number;
+    successMessage?: string;
 }
 
 /**
@@ -55,7 +56,7 @@ export interface EditControllerProps {
  */
 const useEditController = (props: EditProps): EditControllerProps => {
     useCheckMinimumRequiredProps('Edit', ['basePath', 'resource'], props);
-    const { basePath, id, resource, undoable = true } = props;
+    const { basePath, id, resource, successMessage, undoable = true } = props;
     const translate = useTranslate();
     const notify = useNotify();
     const redirect = useRedirect();
@@ -95,7 +96,7 @@ const useEditController = (props: EditProps): EditControllerProps => {
                 {
                     onSuccess: () => {
                         notify(
-                            'ra.notification.updated',
+                            successMessage || 'ra.notification.updated',
                             'info',
                             {
                                 smart_count: 1,
@@ -114,7 +115,7 @@ const useEditController = (props: EditProps): EditControllerProps => {
                     undoable,
                 }
             ),
-        [basePath, notify, redirect, undoable, update]
+        [basePath, notify, redirect, undoable, update, successMessage]
     );
 
     return {
