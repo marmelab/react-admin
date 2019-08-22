@@ -785,3 +785,8 @@ const OrderEdit = (props) => (
     </Edit>
 );
 ```
+
+## helperText is handled the same way in all components
+
+Some components (such as `<SelectArrayInput />`) accepted the `helperText` in their `meta` prop. They now receive it directly in their props.
+Besides, all components now display their error or their helperText, but not both at the same time.

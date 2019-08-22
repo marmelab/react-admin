@@ -1,54 +1,52 @@
 import React from 'react';
 import expect from 'expect';
 import { render, cleanup } from '@testing-library/react';
+import { Form } from 'react-final-form';
+import { TranslationContext } from 'ra-core';
 
-import { SelectArrayInput } from './SelectArrayInput';
+import SelectArrayInput from './SelectArrayInput';
 
 describe('<SelectArrayInput />', () => {
     const defaultProps = {
-        classes: {},
-        resource: 'bar',
-        source: 'foo',
-        meta: {},
-        input: { onChange: () => null, onBlur: () => null },
-        translate: x => x,
+        resource: 'posts',
+        source: 'categories',
+        choices: [
+            { id: 'programming', name: 'Programming' },
+            { id: 'lifestyle', name: 'Lifestyle' },
+            { id: 'photography', name: 'Photography' },
+        ],
     };
 
     afterEach(cleanup);
 
     it('should use a mui Select', () => {
         const { queryByTestId } = render(
-            <SelectArrayInput {...defaultProps} input={{}} />
+            <Form
+                onSubmit={jest.fn()}
+                render={() => <SelectArrayInput {...defaultProps} />}
+            />
         );
         expect(queryByTestId('selectArray')).toBeDefined();
     });
 
     it('should use the input parameter value as the initial input value', () => {
         const { getByLabelText } = render(
-            <SelectArrayInput
-                {...defaultProps}
-                input={{ value: ['programming', 'lifestyle'] }}
-                choices={[
-                    { id: 'programming', name: 'Programming' },
-                    { id: 'lifestyle', name: 'Lifestyle' },
-                    { id: 'lorem', name: 'Lorem' },
-                ]}
+            <Form
+                initialValues={{ categories: ['programming', 'lifestyle'] }}
+                onSubmit={jest.fn()}
+                render={() => <SelectArrayInput {...defaultProps} />}
             />
         );
-        expect(getByLabelText('resources.bar.fields.foo').value).toBe(
+        expect(getByLabelText('resources.posts.fields.categories').value).toBe(
             'programming,lifestyle'
         );
     });
 
     it('should reveal choices on click', () => {
         const { getByRole, queryByText } = render(
-            <SelectArrayInput
-                {...defaultProps}
-                choices={[
-                    { id: 'programming', name: 'Programming' },
-                    { id: 'lifestyle', name: 'Lifestyle' },
-                    { id: 'photography', name: 'Photography' },
-                ]}
+            <Form
+                onSubmit={jest.fn()}
+                render={() => <SelectArrayInput {...defaultProps} />}
             />
         );
         expect(queryByText('Programming')).toBeNull();
@@ -62,136 +60,189 @@ describe('<SelectArrayInput />', () => {
 
     it('should use optionValue as value identifier', () => {
         const { getByRole, getByText, getByLabelText } = render(
-            <SelectArrayInput
-                {...defaultProps}
-                optionValue="foobar"
-                choices={[{ foobar: 'M', name: 'Male' }]}
+            <Form
+                onSubmit={jest.fn()}
+                render={() => (
+                    <SelectArrayInput
+                        {...defaultProps}
+                        optionValue="foobar"
+                        choices={[
+                            { foobar: 'programming', name: 'Programming' },
+                        ]}
+                    />
+                )}
             />
         );
         getByRole('button').click();
-        getByText('Male').click();
-        expect(getByLabelText('resources.bar.fields.foo').value).toBe('M');
+        getByText('Programming').click();
+        expect(getByLabelText('resources.posts.fields.categories').value).toBe(
+            'programming'
+        );
     });
 
     it('should use optionValue including "." as value identifier', () => {
         const { getByRole, getByText, getByLabelText } = render(
-            <SelectArrayInput
-                {...defaultProps}
-                optionValue="foobar.id"
-                choices={[{ foobar: { id: 'M' }, name: 'Male' }]}
+            <Form
+                onSubmit={jest.fn()}
+                render={() => (
+                    <SelectArrayInput
+                        {...defaultProps}
+                        optionValue="foobar.id"
+                        choices={[
+                            {
+                                foobar: { id: 'programming' },
+                                name: 'Programming',
+                            },
+                        ]}
+                    />
+                )}
             />
         );
         getByRole('button').click();
-        getByText('Male').click();
-        expect(getByLabelText('resources.bar.fields.foo').value).toBe('M');
+        getByText('Programming').click();
+        expect(getByLabelText('resources.posts.fields.categories').value).toBe(
+            'programming'
+        );
     });
 
     it('should use optionText with a string value as text identifier', () => {
         const { getByRole, queryByText } = render(
-            <SelectArrayInput
-                {...defaultProps}
-                optionText="foobar"
-                choices={[{ id: 'M', foobar: 'Male' }]}
+            <Form
+                onSubmit={jest.fn()}
+                render={() => (
+                    <SelectArrayInput
+                        {...defaultProps}
+                        optionText="foobar"
+                        choices={[{ id: 'programming', foobar: 'Programming' }]}
+                    />
+                )}
             />
         );
         getByRole('button').click();
-        expect(queryByText('Male')).not.toBeNull();
+        expect(queryByText('Programming')).not.toBeNull();
     });
 
     it('should use optionText with a string value including "." as text identifier', () => {
         const { getByRole, queryByText } = render(
-            <SelectArrayInput
-                {...defaultProps}
-                optionText="foobar.name"
-                choices={[{ id: 'M', foobar: { name: 'Male' } }]}
+            <Form
+                onSubmit={jest.fn()}
+                render={() => (
+                    <SelectArrayInput
+                        {...defaultProps}
+                        optionText="foobar.name"
+                        choices={[
+                            {
+                                id: 'programming',
+                                foobar: { name: 'Programming' },
+                            },
+                        ]}
+                    />
+                )}
             />
         );
         getByRole('button').click();
-        expect(queryByText('Male')).not.toBeNull();
+        expect(queryByText('Programming')).not.toBeNull();
     });
 
     it('should use optionText with a function value as text identifier', () => {
         const { getByRole, queryByText } = render(
-            <SelectArrayInput
-                {...defaultProps}
-                optionText={choice => choice.foobar}
-                choices={[{ id: 'M', foobar: 'Male' }]}
+            <Form
+                onSubmit={jest.fn()}
+                render={() => (
+                    <SelectArrayInput
+                        {...defaultProps}
+                        optionText={choice => choice.foobar}
+                        choices={[{ id: 'programming', foobar: 'Programming' }]}
+                    />
+                )}
             />
         );
         getByRole('button').click();
-        expect(queryByText('Male')).not.toBeNull();
+        expect(queryByText('Programming')).not.toBeNull();
     });
 
     it('should use optionText with an element value as text identifier', () => {
         const Foobar = ({ record }) => <span>{record.foobar}</span>;
         const { getByRole, queryByText } = render(
-            <SelectArrayInput
-                {...defaultProps}
-                optionText={<Foobar />}
-                choices={[{ id: 'M', foobar: 'Male' }]}
+            <Form
+                onSubmit={jest.fn()}
+                render={() => (
+                    <SelectArrayInput
+                        {...defaultProps}
+                        optionText={<Foobar />}
+                        choices={[{ id: 'programming', foobar: 'Programming' }]}
+                    />
+                )}
             />
         );
         getByRole('button').click();
-        expect(queryByText('Male')).not.toBeNull();
+        expect(queryByText('Programming')).not.toBeNull();
     });
 
     it('should translate the choices', () => {
         const { getByRole, queryByText } = render(
-            <SelectArrayInput
-                {...defaultProps}
-                choices={[
-                    { id: 'M', name: 'Male' },
-                    { id: 'F', name: 'Female' },
-                ]}
-                translate={x => `**${x}**`}
-            />
+            <TranslationContext.Provider
+                value={{
+                    translate: x => `**${x}**`,
+                }}
+            >
+                <Form
+                    onSubmit={jest.fn()}
+                    render={() => <SelectArrayInput {...defaultProps} />}
+                />
+            </TranslationContext.Provider>
         );
         getByRole('button').click();
-        expect(queryByText('**Male**')).not.toBeNull();
-        expect(queryByText('**Female**')).not.toBeNull();
+        expect(queryByText('**Programming**')).not.toBeNull();
+        expect(queryByText('**Lifestyle**')).not.toBeNull();
     });
 
-    it('should displayed helperText if prop is present in meta', () => {
+    it('should display helperText if prop is specified', () => {
         const { queryByText } = render(
-            <SelectArrayInput {...defaultProps} helperText="Can I help you?" />
+            <Form
+                onSubmit={jest.fn()}
+                render={() => (
+                    <SelectArrayInput
+                        {...defaultProps}
+                        helperText="Can I help you?"
+                    />
+                )}
+            />
         );
         expect(queryByText('Can I help you?')).toBeDefined();
     });
 
     describe('error message', () => {
         it('should not be displayed if field is pristine', () => {
+            const validate = () => 'Required field.';
             const { queryByText } = render(
-                <SelectArrayInput
-                    {...defaultProps}
-                    meta={{ touched: false, error: 'Required field.' }}
+                <Form
+                    onSubmit={jest.fn()}
+                    render={() => (
+                        <SelectArrayInput
+                            {...defaultProps}
+                            validate={validate}
+                        />
+                    )}
                 />
             );
-            expect(queryByText('Required field.')).toBeNull();
+            expect(queryByText('ra.validation.required')).toBeNull();
         });
 
         it('should be displayed if field has been touched and is invalid', () => {
+            const validate = () => 'Required field.';
             const { queryByText } = render(
-                <SelectArrayInput
-                    {...defaultProps}
-                    meta={{ touched: true, error: 'Required field.' }}
+                <Form
+                    onSubmit={jest.fn()}
+                    render={() => (
+                        <SelectArrayInput
+                            {...defaultProps}
+                            validate={validate}
+                        />
+                    )}
                 />
             );
             expect(queryByText('Required field.')).toBeDefined();
-        });
-
-        it('should be displayed even with an helper Text', () => {
-            const { queryByText } = render(
-                <SelectArrayInput
-                    {...defaultProps}
-                    helperText="Can I help you?"
-                    meta={{
-                        touched: true,
-                        error: 'Required field.',
-                    }}
-                />
-            );
-            expect(queryByText('Required field.')).toBeDefined();
-            expect(queryByText('Can I help you?')).toBeNull();
         });
     });
 });
