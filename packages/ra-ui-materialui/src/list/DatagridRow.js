@@ -207,7 +207,13 @@ DatagridRow.defaultProps = {
     selected: false,
 };
 
-const PureDatagridRow = memo(DatagridRow, isEqual);
+const areEqual = (prevProps, nextProps) => {
+    const { children: _, ...prevPropsWithoutChildren } = prevProps;
+    const { children: __, ...nextPropsWithoutChildren } = nextProps;
+    return isEqual(prevPropsWithoutChildren, nextPropsWithoutChildren);
+};
+
+const PureDatagridRow = memo(DatagridRow, areEqual);
 
 PureDatagridRow.displayName = 'PureDatagridRow';
 
