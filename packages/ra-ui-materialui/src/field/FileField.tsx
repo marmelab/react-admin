@@ -15,10 +15,12 @@ interface Props extends FieldProps {
     src?: string;
     title?: string;
     target?: string;
+    classes?: object;
 }
 
 export const FileField: SFC<Props & InjectedFieldProps> = ({
     className,
+    classes: classesOverride,
     record,
     source,
     title,
@@ -27,7 +29,7 @@ export const FileField: SFC<Props & InjectedFieldProps> = ({
     ...rest
 }) => {
     const sourceValue = get(record, source);
-    const classes = useStyles({});
+    const classes = useStyles({ classes: classesOverride });
 
     if (!sourceValue) {
         return (

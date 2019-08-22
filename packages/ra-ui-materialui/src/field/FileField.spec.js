@@ -77,6 +77,7 @@ describe('<FileField />', () => {
                     title: 'Hello world!',
                 }}
                 target="_blank"
+                title="title"
             />
         );
 

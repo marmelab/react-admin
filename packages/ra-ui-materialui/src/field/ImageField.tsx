@@ -21,10 +21,12 @@ const useStyles = makeStyles({
 interface Props extends FieldProps {
     src?: string;
     title?: string;
+    classes?: object;
 }
 
 export const ImageField: SFC<Props & InjectedFieldProps> = ({
     className,
+    classes: classesOverride,
     record,
     source,
     src,
@@ -32,7 +34,7 @@ export const ImageField: SFC<Props & InjectedFieldProps> = ({
     ...rest
 }) => {
     const sourceValue = get(record, source);
-    const classes = useStyles({});
+    const classes = useStyles({ classes: classesOverride });
     if (!sourceValue) {
         return <div className={className} {...sanitizeRestProps(rest)} />;
     }

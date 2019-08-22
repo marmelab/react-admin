@@ -15,7 +15,7 @@ describe('<ChipField />', () => {
                 record={{ name: 'foo' }}
             />
         );
-        expect(getByText('foo')).toBeDefined();
+        expect(getByText('foo')).not.toBeNull();
     });
 
     it('should not display any label added as props', () => {
@@ -28,6 +28,6 @@ describe('<ChipField />', () => {
                 label="bar"
             />
         );
-        expect(getByText('foo')).toBeDefined();
+        expect(getByText('foo')).not.toBeNull();
     });
 });
