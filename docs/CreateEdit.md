@@ -473,64 +473,6 @@ React-admin relies on [redux-form](http://redux-form.com/) for the validation.
 
 To validate values submitted by a form, you can add a `validate` prop to the form component, to individual inputs, or even mix both approaches.
 
-### Built-in Field Validators
-
-React-admin already bundles a few validator functions, that you can just require, and use as input-level validators:
-
-* `required(message)` if the field is mandatory,
-* `minValue(min, message)` to specify a minimum value for integers,
-* `maxValue(max, message)` to specify a maximum value for integers,
-* `minLength(min, message)` to specify a minimum length for strings,
-* `maxLength(max, message)` to specify a maximum length for strings,
-* `number(message)` to check that the input is a valid number,
-* `email(message)` to check that the input is a valid email address,
-* `regex(pattern, message)` to validate that the input matches a regex,
-* `choices(list, message)` to validate that the input is within a given list,
-
-Example usage:
-
-```jsx
-import {
-    required,
-    minLength,
-    maxLength,
-    minValue,
-    maxValue,
-    number,
-    regex,
-    email,
-    choices
-} from 'react-admin';
-
-const validateFirstName = [required(), minLength(2), maxLength(15)];
-const validateEmail = email();
-const validateAge = [number(), minValue(18)];
-const validateZipCode = regex(/^\d{5}$/, 'Must be a valid Zip Code');
-const validateSex = choices(['m', 'f'], 'Must be Male or Female');
-
-export const UserCreate = (props) => (
-    <Create {...props}>
-        <SimpleForm>
-            <TextInput label="First Name" source="firstName" validate={validateFirstName} />
-            <TextInput label="Email" source="email" validate={validateEmail} />
-            <TextInput label="Age" source="age" validate={validateAge}/>
-            <TextInput label="Zip Code" source="zip" validate={validateZipCode}/>
-            <SelectInput label="Sex" source="sex" choices={[
-                { id: 'm', name: 'Male' },
-                { id: 'f', name: 'Female' },
-            ]} validate={validateSex}/>
-        </SimpleForm>
-    </Create>
-);
-```
-
-**Tip**: If you pass a function as a message, react-admin calls this function with `{ args, value, values,translate, ...props }` as argument. For instance:
-
-```jsx
-const message = ({ translate }) => translate('myroot.validation.email_invalid');
-const validateEmail = email(message);
-```
-
 ### Global Validation
 
 The value of the form `validate` prop must be a function taking the record as input, and returning an object with error messages indexed by field. For instance:
