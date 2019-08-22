@@ -53,13 +53,11 @@ const styles = theme =>
             padding: 0,
             width: theme.spacing(6),
         },
-        expandButton: {
-            padding: theme.spacing(1),
-        },
         expandIconCell: {
             width: theme.spacing(6),
         },
         expandIcon: {
+            padding: theme.spacing(1),
             transform: 'rotate(-90deg)',
             transition: theme.transitions.create('transform', {
                 duration: theme.transitions.duration.shortest,
@@ -173,7 +171,7 @@ class Datagrid extends Component {
          * displaying the table header with zero data rows,
          * the datagrid displays nothing in this case.
          */
-        if (!isLoading && (ids.length === 0 || total === 0)) {
+        if (loaded && (ids.length === 0 || total === 0)) {
             return null;
         }
 
@@ -245,7 +243,6 @@ class Datagrid extends Component {
                         hasBulkActions,
                         hover,
                         ids,
-                        isLoading,
                         onToggleItem,
                         resource,
                         rowStyle,
@@ -270,7 +267,7 @@ Datagrid.propTypes = {
         order: PropTypes.string,
     }),
     data: PropTypes.object.isRequired,
-    expand: PropTypes.element,
+    expand: PropTypes.oneOfType([PropTypes.element, PropTypes.elementType]),
     hasBulkActions: PropTypes.bool.isRequired,
     hover: PropTypes.bool,
     ids: PropTypes.arrayOf(PropTypes.any).isRequired,

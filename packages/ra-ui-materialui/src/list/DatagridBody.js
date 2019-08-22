@@ -15,7 +15,6 @@ const DatagridBody = ({
     hasBulkActions,
     hover,
     ids,
-    isLoading,
     onToggleItem,
     resource,
     row,
@@ -62,7 +61,7 @@ const DatagridBody = ({
                 )}
             </TableBody>
         ),
-        [version, isLoading, data, selectedIds, JSON.stringify(ids)] // eslint-disable-line
+        [version, data, selectedIds, JSON.stringify(ids)] // eslint-disable-line
     );
 
 DatagridBody.propTypes = {
@@ -71,11 +70,10 @@ DatagridBody.propTypes = {
     className: PropTypes.string,
     children: PropTypes.node,
     data: PropTypes.object.isRequired,
-    expand: PropTypes.element,
+    expand: PropTypes.oneOfType([PropTypes.element, PropTypes.elementType]),
     hasBulkActions: PropTypes.bool.isRequired,
     hover: PropTypes.bool,
     ids: PropTypes.arrayOf(PropTypes.any).isRequired,
-    isLoading: PropTypes.bool,
     onToggleItem: PropTypes.func,
     resource: PropTypes.string,
     row: PropTypes.element,

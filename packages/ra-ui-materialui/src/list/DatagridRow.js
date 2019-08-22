@@ -2,16 +2,18 @@ import React, {
     Fragment,
     isValidElement,
     cloneElement,
+    createElement,
     useState,
     useEffect,
+    useCallback,
+    memo,
 } from 'react';
+import isEqual from 'lodash/isEqual';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { useDispatch } from 'react-redux';
 import { push } from 'connected-react-router';
-import TableCell from '@material-ui/core/TableCell';
-import TableRow from '@material-ui/core/TableRow';
-import Checkbox from '@material-ui/core/Checkbox';
+import { TableCell, TableRow, Checkbox } from '@material-ui/core';
 import { linkToRecord } from 'ra-core';
 
 import DatagridCell from './DatagridCell';
@@ -58,38 +60,55 @@ const DatagridRow = ({
     }, [expand, nbColumns, children, hasBulkActions]);
     const dispatch = useDispatch();
 
-    const handleToggleExpand = event => {
-        setExpanded(!expanded);
-        event.stopPropagation();
-    };
-    const handleToggleSelection = event => {
-        onToggleItem(id);
-        event.stopPropagation();
-    };
-    const handleClick = async event => {
-        if (!rowClick) return;
-        const effect =
-            typeof rowClick === 'function'
-                ? await rowClick(id, basePath, record)
-                : rowClick;
-        switch (effect) {
-            case 'edit':
-                dispatch(push(linkToRecord(basePath, id)));
-                return;
-            case 'show':
-                dispatch(push(linkToRecord(basePath, id, 'show')));
-                return;
-            case 'expand':
-                handleToggleExpand(event);
-                return;
-            case 'toggleSelection':
-                handleToggleSelection(event);
-                return;
-            default:
-                if (effect) dispatch(push(effect));
-                return;
-        }
-    };
+    const handleToggleExpand = useCallback(
+        event => {
+            setExpanded(!expanded);
+            event.stopPropagation();
+        },
+        [expanded]
+    );
+    const handleToggleSelection = useCallback(
+        event => {
+            onToggleItem(id);
+            event.stopPropagation();
+        },
+        [id, onToggleItem]
+    );
+    const handleClick = useCallback(
+        async event => {
+            if (!rowClick) return;
+            const effect =
+                typeof rowClick === 'function'
+                    ? await rowClick(id, basePath, record)
+                    : rowClick;
+            switch (effect) {
+                case 'edit':
+                    dispatch(push(linkToRecord(basePath, id)));
+                    return;
+                case 'show':
+                    dispatch(push(linkToRecord(basePath, id, 'show')));
+                    return;
+                case 'expand':
+                    handleToggleExpand(event);
+                    return;
+                case 'toggleSelection':
+                    handleToggleSelection(event);
+                    return;
+                default:
+                    if (effect) dispatch(push(effect));
+                    return;
+            }
+        },
+        [
+            basePath,
+            dispatch,
+            handleToggleExpand,
+            handleToggleSelection,
+            id,
+            record,
+            rowClick,
+        ]
+    );
 
     return (
         <Fragment>
@@ -107,7 +126,6 @@ const DatagridRow = ({
                         className={classes.expandIconCell}
                     >
                         <ExpandRowButton
-                            className={classes.expandButton}
                             classes={classes}
                             expanded={expanded}
                             onClick={handleToggleExpand}
@@ -145,12 +163,19 @@ const DatagridRow = ({
             {expand && expanded && (
                 <TableRow key={`${id}-expand`} id={`${id}-expand`}>
                     <TableCell colSpan={nbColumns}>
-                        {cloneElement(expand, {
-                            record,
-                            basePath,
-                            resource,
-                            id: String(id),
-                        })}
+                        {isValidElement(expand)
+                            ? cloneElement(expand, {
+                                  record,
+                                  basePath,
+                                  resource,
+                                  id: String(id),
+                              })
+                            : createElement(expand, {
+                                  record,
+                                  basePath,
+                                  resource,
+                                  id: String(id),
+                              })}
                     </TableCell>
                 </TableRow>
             )}
@@ -163,7 +188,7 @@ DatagridRow.propTypes = {
     children: PropTypes.node,
     classes: PropTypes.object,
     className: PropTypes.string,
-    expand: PropTypes.element,
+    expand: PropTypes.oneOfType([PropTypes.element, PropTypes.elementType]),
     hasBulkActions: PropTypes.bool.isRequired,
     hover: PropTypes.bool,
     id: PropTypes.any,
@@ -182,7 +207,14 @@ DatagridRow.defaultProps = {
     selected: false,
 };
 
-// wat? TypeScript looses the displayName if we don't set it explicitly
-DatagridRow.displayName = 'DatagridRow';
+const areEqual = (prevProps, nextProps) => {
+    const { children: _, ...prevPropsWithoutChildren } = prevProps;
+    const { children: __, ...nextPropsWithoutChildren } = nextProps;
+    return isEqual(prevPropsWithoutChildren, nextPropsWithoutChildren);
+};
 
-export default DatagridRow;
+const PureDatagridRow = memo(DatagridRow, areEqual);
+
+PureDatagridRow.displayName = 'PureDatagridRow';
+
+export default PureDatagridRow;

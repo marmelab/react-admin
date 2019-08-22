@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import ReactDOM from 'react-dom';
 import { useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
 import debounce from 'lodash/debounce';
@@ -81,8 +82,10 @@ const useGetMany = (resource: string, ids: Identifier[], options: any = {}) => {
     const [state, setState] = useSafeSetState({
         data,
         error: null,
-        loading: true,
-        loaded: data.length !== 0 && !data.includes(undefined),
+        loading: ids.length !== 0,
+        loaded:
+            ids.length === 0 ||
+            (data.length !== 0 && !data.includes(undefined)),
     });
     if (!isEqual(state.data, data)) {
         setState({
@@ -173,27 +176,32 @@ const callQueries = debounce(() => {
             { ids: accumulatedIds },
             { action: CRUD_GET_MANY }
         )
-            .then(response => {
-                queries.forEach(({ ids, setState, onSuccess }) => {
-                    setState(prevState => ({
-                        ...prevState,
-                        loading: false,
-                        loaded: true,
-                    }));
-                    if (onSuccess) {
-                        const subData = ids.map(id =>
-                            response.data.find(datum => datum.id == id)
-                        );
-                        onSuccess({ data: subData });
-                    }
-                });
-            })
-            .catch(error => {
-                queries.forEach(({ setState, onFailure }) => {
-                    setState({ error, loading: false, loaded: false });
-                    onFailure && onFailure(error);
-                });
-            });
+            .then(response =>
+                // Forces batching, see https://stackoverflow.com/questions/48563650/does-react-keep-the-order-for-state-updates/48610973#48610973
+                ReactDOM.unstable_batchedUpdates(() =>
+                    queries.forEach(({ ids, setState, onSuccess }) => {
+                        setState(prevState => ({
+                            ...prevState,
+                            loading: false,
+                            loaded: true,
+                        }));
+                        if (onSuccess) {
+                            const subData = ids.map(id =>
+                                response.data.find(datum => datum.id == id)
+                            );
+                            onSuccess({ data: subData });
+                        }
+                    })
+                )
+            )
+            .catch(error =>
+                ReactDOM.unstable_batchedUpdates(() =>
+                    queries.forEach(({ setState, onFailure }) => {
+                        setState({ error, loading: false, loaded: false });
+                        onFailure && onFailure(error);
+                    })
+                )
+            );
         delete queriesToCall[resource];
     });
 });

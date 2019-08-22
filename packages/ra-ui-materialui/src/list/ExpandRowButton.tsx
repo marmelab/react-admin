@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import IconButton from '@material-ui/core/IconButton';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import classNames from 'classnames';
@@ -26,4 +26,4 @@ const ExpandRowButton = ({ classes, expanded, expandContentId, ...props }) => {
     );
 };
 
-export default ExpandRowButton;
+export default memo(ExpandRowButton);

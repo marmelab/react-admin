@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import Table from '@material-ui/core/Table';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
@@ -25,7 +25,7 @@ const Placeholder = ({ classes: classesOverride }) => {
 const times = (nbChildren, fn) =>
     Array.from({ length: nbChildren }, (_, key) => fn(key));
 
-export default ({
+const DatagridLoading = ({
     classes,
     className,
     expand,
@@ -113,3 +113,5 @@ export default ({
         </TableBody>
     </Table>
 );
+
+export default memo(DatagridLoading);

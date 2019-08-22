@@ -1,9 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { shallowEqual, useSelector } from 'react-redux';
 import inflection from 'inflection';
-import compose from 'recompose/compose';
-import { withStyles, createStyles, useMediaQuery } from '@material-ui/core';
+import { makeStyles, useMediaQuery } from '@material-ui/core';
 import DefaultIcon from '@material-ui/icons/ViewList';
 import classnames from 'classnames';
 import { getResources, useTranslate } from 'ra-core';
@@ -11,7 +10,7 @@ import { getResources, useTranslate } from 'ra-core';
 import DashboardMenuItem from './DashboardMenuItem';
 import MenuItemLink from './MenuItemLink';
 
-const styles = createStyles({
+const useStyles = makeStyles({
     main: {
         display: 'flex',
         flexDirection: 'column',
@@ -32,19 +31,20 @@ const translatedResourceName = (resource, translate) =>
     });
 
 const Menu = ({
-    classes,
+    classes: classesOverride,
     className,
     dense,
     hasDashboard,
     onMenuClick,
-    open,
-    pathname,
-    resources,
     logout,
     ...rest
 }) => {
     const translate = useTranslate();
+    const classes = useStyles({ classes: classesOverride });
     const isXSmall = useMediaQuery(theme => theme.breakpoints.down('xs'));
+    const open = useSelector(state => state.admin.ui.sidebarOpen);
+    const resources = useSelector(getResources, shallowEqual);
+    useSelector(state => state.router.location.pathname); // used to force redraw on navigation
 
     return (
         <div className={classnames(classes.main, className)} {...rest}>
@@ -81,36 +81,10 @@ Menu.propTypes = {
     hasDashboard: PropTypes.bool,
     logout: PropTypes.element,
     onMenuClick: PropTypes.func,
-    open: PropTypes.bool,
-    pathname: PropTypes.string,
-    resources: PropTypes.array.isRequired,
 };
 
 Menu.defaultProps = {
     onMenuClick: () => null,
 };
 
-const mapStateToProps = state => ({
-    open: state.admin.ui.sidebarOpen,
-    resources: getResources(state),
-    pathname: state.router.location.pathname, // used to force redraw on navigation
-});
-
-const enhance = compose(
-    connect(
-        mapStateToProps,
-        {}, // Avoid connect passing dispatch in props,
-        null,
-        {
-            areStatePropsEqual: (prev, next) =>
-                prev.resources.every(
-                    (value, index) => value === next.resources[index] // shallow compare resources
-                ) &&
-                prev.pathname === next.pathname &&
-                prev.open === next.open,
-        }
-    ),
-    withStyles(styles)
-);
-
-export default enhance(Menu);
+export default Menu;
