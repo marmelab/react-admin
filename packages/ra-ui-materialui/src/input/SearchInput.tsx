@@ -1,20 +1,24 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 import PropTypes from 'prop-types';
 import SearchIcon from '@material-ui/icons/Search';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import { withStyles, createStyles } from '@material-ui/core/styles';
-import { useTranslate } from 'ra-core';
+import { makeStyles, InputAdornment } from '@material-ui/core';
+import { TextFieldProps } from '@material-ui/core/TextField';
+import { useTranslate, InputProps } from 'ra-core';
 
 import TextInput from './TextInput';
 
-const searchFilterStyles = createStyles({
+const useStyles = makeStyles({
     input: {
         marginTop: 32,
     },
 });
 
-const SearchInput = ({ classes, ...props }) => {
+const SearchInput: FunctionComponent<
+    InputProps<TextFieldProps> & Omit<TextFieldProps, 'label' | 'helperText'>
+> = ({ classes: classesOverride, ...props }) => {
     const translate = useTranslate();
+    const classes = useStyles({ classes: classesOverride });
+
     return (
         <TextInput
             label={false}
@@ -36,4 +40,4 @@ SearchInput.propTypes = {
     classes: PropTypes.object,
 };
 
-export default withStyles(searchFilterStyles)(SearchInput);
+export default SearchInput;
