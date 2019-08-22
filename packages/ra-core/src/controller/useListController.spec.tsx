@@ -133,6 +133,58 @@ describe('useListController', () => {
             expect(state.admin.resources.posts.list.params.filter).toEqual({});
         });
 
+        it('should update data if permanent filters change', () => {
+            const children = jest.fn().mockReturnValue(<span>children</span>);
+            const props = {
+                ...defaultProps,
+                debounce: 200,
+                crudGetList: jest.fn(),
+                children,
+            };
+
+            const { dispatch, rerender } = renderWithRedux(
+                <ListController {...props} filter={{ foo: 1 }} />,
+                {
+                    admin: {
+                        resources: {
+                            posts: {
+                                list: {
+                                    params: {},
+                                },
+                            },
+                        },
+                    },
+                }
+            );
+            const crudGetListCalls = dispatch.mock.calls.filter(
+                call => call[0].type === 'RA/CRUD_GET_LIST'
+            );
+            expect(crudGetListCalls).toHaveLength(1);
+            // Check that the permanent filter was used in the query
+            expect(crudGetListCalls[0][0].payload.filter).toEqual({ foo: 1 });
+            // Check that the permanent filter is not included in the displayedFilters (passed to Filter form and button)
+            expect(children).toBeCalledTimes(3);
+            expect(children.mock.calls[0][0].displayedFilters).toEqual({});
+            // Check that the permanent filter is not included in the filterValues (passed to Filter form and button)
+            expect(children.mock.calls[0][0].filterValues).toEqual({});
+
+            rerender(<ListController {...props} filter={{ foo: 2 }} />);
+
+            const updatedCrudGetListCalls = dispatch.mock.calls.filter(
+                call => call[0].type === 'RA/CRUD_GET_LIST'
+            );
+            expect(updatedCrudGetListCalls).toHaveLength(2);
+            // Check that the permanent filter was used in the query
+            expect(updatedCrudGetListCalls[1][0].payload.filter).toEqual({
+                foo: 2,
+            });
+            expect(children).toBeCalledTimes(4);
+            // Check that the permanent filter is not included in the displayedFilters (passed to Filter form and button)
+            expect(children.mock.calls[3][0].displayedFilters).toEqual({});
+            // Check that the permanent filter is not included in the filterValues (passed to Filter form and button)
+            expect(children.mock.calls[3][0].filterValues).toEqual({});
+        });
+
         afterEach(() => {
             clock.uninstall();
             cleanup();

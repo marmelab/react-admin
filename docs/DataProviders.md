@@ -470,8 +470,8 @@ Request Type         | Response format
 `CREATE`             | `{ data: {Record} }`
 `UPDATE`             | `{ data: {Record} }`
 `UPDATE_MANY`        | `{ data: {mixed[]} }` The ids which have been updated
-`DELETE`             | `{ data: {Record} }`
-`DELETE_MANY`        | `{ data: {mixed[]} }` The ids which have been deleted
+`DELETE`             | `{ data: {Record|null} }` The record that has been deleted (optional)
+`DELETE_MANY`        | `{ data: {mixed[]} }` The ids of the deleted records (optional)
 `GET_MANY`           | `{ data: {Record[]} }`
 `GET_MANY_REFERENCE` | `{ data: {Record[]}, total: {int} }`
 
@@ -681,6 +681,8 @@ export default (type, resource, params) => {
                     };
                 case CREATE:
                     return { data: { ...params.data, id: json.id } };
+                case DELETE_MANY:
+                    return { data: json || [] };
                 default:
                     return { data: json };
             }

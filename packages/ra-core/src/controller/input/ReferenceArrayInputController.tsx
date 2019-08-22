@@ -303,7 +303,23 @@ const makeMapStateToProps = () =>
         [
             getReferenceResource,
             getPossibleReferenceValues,
-            (_, { input: { value: referenceIds } }) => referenceIds || [],
+            (_, { resource, input }) => {
+                const { value: referenceIds } = input;
+
+                if (!referenceIds) {
+                    return [];
+                }
+
+                if (Array.isArray(referenceIds)) {
+                    return referenceIds;
+                }
+
+                throw new Error(
+                    `<ReferenceArrayInput> expects value to be an array, but the value passed as '${resource}.${
+                        input.name
+                    }' is type '${typeof referenceIds}': ${referenceIds}`
+                );
+            },
         ],
         (referenceState, possibleValues, inputIds) => ({
             matchingReferences: getPossibleReferences(

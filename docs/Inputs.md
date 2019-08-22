@@ -297,11 +297,12 @@ Lastly, `<AutocompleteArrayInput>` renders a [material-ui-chip-input](https://gi
 {% raw %}
 ```jsx
 <AutocompleteArrayInput source="category" options={{
-    fullWidth: true,
+    fullWidthInput: true,
 }} />
 ```
 {% endraw %}
 
+**Tip**: Like many other inputs, `<AutocompleteArrayInput>` accept a `fullWidth` prop.
 **Tip**: If you want to populate the `choices` attribute with a list of related records, you should decorate `<AutocompleteArrayInput>` with [`<ReferenceArrayInput>`](#referenceinput), and leave the `choices` empty:
 
 ```jsx
@@ -342,6 +343,7 @@ If you need to override the props of the suggestions container (a `Popper` eleme
 | `suggestionComponent` | Optional | Function | `({ suggestion, query, isHighlighted, props }) => <div {...props} />` | Allows to override how the item is rendered.  |
 | `suggestionLimit` | Optional | Number | null | Limits the numbers of suggestions that are shown in the dropdown list |
 | `shouldRenderSuggestions` | Optional | Function | `() => true` | A function that returns a `boolean` to determine whether or not suggestions are rendered. Use this when working with large collections of data to improve performance and user experience. This function is passed into the underlying react-autosuggest component. Ex.`(value) => value.trim() > 2` |
+| `fullWith` | Optional | Boolean | If `true`, the input will take all the form width
 
 ## `<BooleanInput>` and `<NullableBooleanInput>`
 
@@ -377,7 +379,7 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 ![CustomBooleanInputCheckIcon](./img/custom-switch-icon.png)
 
 
-Refer to [Material UI Switch documentation](http://www.material-ui.com/#/components/switch) for more details.
+Refer to [Material UI Switch documentation](http://material-ui.com/api/switch) for more details.
 
 `<NullableBooleanInput />` renders as a dropdown list, allowing to choose between true, false, and null values.
 
@@ -472,7 +474,7 @@ import { FavoriteBorder, Favorite } from '@material-ui/icons';
 | ---|---|---|--- |
 | `row` | `boolean` | true | Display group of elements in a compact row. |
 
-Refer to [Material UI Checkbox documentation](https://v1-5-0.material-ui.com/api/checkbox/) for more details.
+Refer to [Material UI Checkbox documentation](https://material-ui.com/api/checkbox/) for more details.
 
 ## `<DateInput>`
 
@@ -672,7 +674,7 @@ Lastly, use the `options` attribute if you want to override any of Material UI's
 ```
 {% endraw %}
 
-Refer to [Material UI RadioGroup documentation](http://www.material-ui.com/#/components/radio-button) for more details.
+Refer to [Material UI RadioGroup documentation](http://material-ui.com/api/radio-group) for more details.
 
 **Tip**: If you want to populate the `choices` attribute with a list of related records, you should decorate `<RadioButtonGroupInput>` with [`<ReferenceInput>`](#referenceinput), and leave the `choices` empty:
 
@@ -917,7 +919,7 @@ You can customize the rich text editor toolbar using the `toolbar` attribute, as
 
 ## `<SelectInput>`
 
-To let users choose a value in a list using a dropdown, use `<SelectInput>`. It renders using [Material ui's `<SelectField>`](http://www.material-ui.com/#/components/select-field). Set the `choices` attribute to determine the options (with `id`, `name` tuples):
+To let users choose a value in a list using a dropdown, use `<SelectInput>`. It renders using [Material ui's `<Select>`](http://material-ui.com/api/select). Set the `choices` attribute to determine the options (with `id`, `name` tuples):
 
 ```jsx
 import { SelectInput } from 'react-admin';
@@ -999,7 +1001,7 @@ Lastly, use the `options` attribute if you want to override any of Material UI's
 ```
 {% endraw %}
 
-Refer to [Material UI SelectField documentation](http://www.material-ui.com/#/components/select-field) for more details.
+Refer to [Material UI Select documentation](http://material-ui.com/api/select) for more details.
 
 **Tip**: If you want to populate the `choices` attribute with a list of related records, you should decorate `<SelectInput>` with [`<ReferenceInput>`](#referenceinput), and leave the `choices` empty:
 
@@ -1041,7 +1043,7 @@ const choices = [
 
 ## `<SelectArrayInput>`
 
-To let users choose several values in a list using a dropdown, use `<SelectArrayInput>`. It renders using [Material ui's `<Select>`](http://www.material-ui.com/#/components/select). Set the `choices` attribute to determine the options (with `id`, `name` tuples):
+To let users choose several values in a list using a dropdown, use `<SelectArrayInput>`. It renders using [Material ui's `<Select>`](http://material-ui.com/api/select). Set the `choices` attribute to determine the options (with `id`, `name` tuples):
 
 ```js
 import { SelectArrayInput } from 'react-admin';
@@ -1098,7 +1100,7 @@ Lastly, use the `options` attribute if you want to override any of the `<Select>
 ```
 {% endraw %}
 
-Refer to [the Select documentation](http://www.material-ui.com/#/components/select) for more details.
+Refer to [the Select documentation](http://material-ui.com/api/select) for more details.
 
 The `SelectArrayInput` component **cannot** be used inside a `ReferenceInput` but can be used inside a `ReferenceArrayInput`.
 
@@ -1243,7 +1245,7 @@ const ItemEdit = (props) => (
 
 ```html
 <span>
-    <input type="number" placeholder="longitude" value={record.lat} />
+    <input type="number" placeholder="latitude" value={record.lat} />
     <input type="number" placeholder="longitude" value={record.lng} />
 </span>
 ```

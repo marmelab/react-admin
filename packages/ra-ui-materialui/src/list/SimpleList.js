@@ -75,7 +75,7 @@ const SimpleList = ({
                         id={id}
                         key={id}
                     >
-                        <ListItem button>
+                        <ListItem button={!!linkType}>
                             {leftIcon && (
                                 <ListItemIcon>
                                     {leftIcon(data[id], id)}

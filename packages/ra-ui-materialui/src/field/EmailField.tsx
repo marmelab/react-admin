@@ -5,12 +5,16 @@ import pure from 'recompose/pure';
 import sanitizeRestProps from './sanitizeRestProps';
 import { FieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 
+// useful to prevent click bubbling in a datagrid with rowClick
+const stopPropagation = e => e.stopPropagation();
+
 const EmailField: SFC<
     FieldProps & InjectedFieldProps & HtmlHTMLAttributes<HTMLAnchorElement>
 > = ({ className, source, record = {}, ...rest }) => (
     <a
         className={className}
         href={`mailto:${get(record, source)}`}
+        onClick={stopPropagation}
         {...sanitizeRestProps(rest)}
     >
         {get(record, source)}

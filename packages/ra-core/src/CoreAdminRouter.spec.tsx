@@ -44,6 +44,34 @@ describe('<AdminRouter>', () => {
         });
     });
 
+    describe('With no authProvider defined', () => {
+        it('should render all resources with a render prop', async () => {
+            const history = createMemoryHistory();
+            const { getByText } = renderWithRedux(
+                <Router history={history}>
+                    <CoreAdminRouter {...defaultProps} layout={Layout}>
+                        {() => [
+                            <Resource
+                                name="posts"
+                                list={() => <span>PostList</span>}
+                            />,
+                            <Resource
+                                name="comments"
+                                list={() => <span>CommentList</span>}
+                            />,
+                        ]}
+                    </CoreAdminRouter>
+                </Router>
+            );
+            await new Promise(resolve => setTimeout(resolve, 10));
+            expect(getByText('Layout')).toBeDefined();
+            history.push('/posts');
+            expect(getByText('PostList')).toBeDefined();
+            history.push('/comments');
+            expect(getByText('CommentList')).toBeDefined();
+        });
+    });
+
     describe('With resources returned from a function as children', () => {
         it('should render all resources with a registration intent', async () => {
             const history = createMemoryHistory();

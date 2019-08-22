@@ -80,7 +80,7 @@ const PostEdit = props => (
                     source="tags"
                     filter={{ published: true }}
                 >
-                    <AutocompleteArrayInput />
+                    <AutocompleteArrayInput fullWidth />
                 </ReferenceArrayInput>
                 <ArrayInput source="backlinks">
                     <SimpleFormIterator>

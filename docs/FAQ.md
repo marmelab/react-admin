@@ -64,7 +64,7 @@ Some use cases:
 
 - Show/hide some inputs if another input has a value
 - Show/hide some inputs if another input has a specific value
-- Show/hide some inputs if the current form values matches specific constraints
+- Show/hide some inputs if the current form value matches specific constraints
 
 For all those cases, you can use the [aor-dependent-input](https://github.com/marmelab/aor-dependent-input) addon.
 

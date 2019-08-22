@@ -96,5 +96,6 @@ export default shouldUpdate(
     (props, nextProps) =>
         props.isSorting !== nextProps.isSorting ||
         (nextProps.isSorting &&
-            props.currentSort.order !== nextProps.currentSort.order)
+            props.currentSort.order !== nextProps.currentSort.order) ||
+        (nextProps.isSorting && props.sortable !== nextProps.sortable)
 )(DatagridHeaderCell);

@@ -75,10 +75,15 @@ const Confirm = ({
         [onConfirm]
     );
 
+    const handleClick = useCallback(e => {
+        e.stopPropagation();
+    }, []);
+
     return (
         <Dialog
             open={isOpen}
             onClose={onClose}
+            onClick={handleClick}
             aria-labelledby="alert-dialog-title"
         >
             <DialogTitle id="alert-dialog-title">

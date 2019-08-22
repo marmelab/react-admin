@@ -1,5 +1,22 @@
 # Changelog
 
+## v2.9.6
+
+* Fix too drastic validation of `DELETE` and `DELETE_MANY` dataProvider responses ([3441](https://github.com/marmelab/react-admin/pull/3441)) ([Kmaschta](https://github.com/Kmaschta))
+* Fix `SimpleList` showing `ListItem` as button even though `linkType` is false ([3543](https://github.com/marmelab/react-admin/pull/3543)) ([b-raines](https://github.com/b-raines))
+* Fix infinite loading when declaring resource at runtime with no `authProvider` ([3505](https://github.com/marmelab/react-admin/pull/3505)) ([Kunnu01](https://github.com/Kunnu01))
+* Fix typo in `ra-data-graphql` README ([3508](https://github.com/marmelab/react-admin/pull/3508)) ([bookvik](https://github.com/bookvik))
+* Fix `<DeleteButton undoable={false} />` does not refresh `List` ([3506](https://github.com/marmelab/react-admin/pull/3506)) ([natrim](https://github.com/natrim))
+* Fix typo in Readme ([3497](https://github.com/marmelab/react-admin/pull/3497)) ([arturcarvalho](https://github.com/arturcarvalho))
+* Fix various typos in documentation and demo ([3493](https://github.com/marmelab/react-admin/pull/3493)) ([yumi2011](https://github.com/yumi2011))
+* Fix `sortable` update has no effect in `Field` components ([3494](https://github.com/marmelab/react-admin/pull/3494)) ([Kunnu01](https://github.com/Kunnu01))
+* Fix `AutocompleteArrayInput` not accepting options ([3479](https://github.com/marmelab/react-admin/pull/3479)) ([djhi](https://github.com/djhi))
+* Fix `List` data does not update when default `filters` Change ([3308](https://github.com/marmelab/react-admin/pull/3308)) ([djhi](https://github.com/djhi))
+* Fix missing imports in `List` documentation ([3469](https://github.com/marmelab/react-admin/pull/3469)) ([Kunnu01](https://github.com/Kunnu01))
+* Add link to Swedish translation ([3466](https://github.com/marmelab/react-admin/pull/3466)) ([Kladdy](https://github.com/Kladdy))
+* Improve bug report template ([3488](https://github.com/marmelab/react-admin/pull/3488)) ([Kmaschta](https://github.com/Kmaschta))
+* Change documentation search engine to Algolia ([3459](https://github.com/marmelab/react-admin/pull/3459)) ([fzaninotto](https://github.com/fzaninotto))
+
 ## v3.0.0-alpha.2
 
 * Fix regression in ability to inject a Redux store in `<Admin>` ([3482](https://github.com/marmelab/react-admin/pull/3482)) ([djhi](https://github.com/djhi))
@@ -54,7 +71,7 @@
 * Migrate simple example to hooks ([3225](https://github.com/marmelab/react-admin/pull/3225)) ([zyhou](https://github.gom/zyhou))
 * Authenticate `NotFound` page ([3243](https://github.com/marmelab/react-admin/pull/3243)) ([Kmaschta](https://github.gom/Kmaschta))
 * Add support for `<Datagrid rowClick="toggleSelection">` ([3270](https://github.com/marmelab/react-admin/pull/3270)) ([fargito](https://github.gom/fargito))
-* Add Crud hooks (`useQuery`, `usequeryWithStore`, `useMutation`, `useGetOne`, `useGetList`) ([3253](https://github.com/marmelab/react-admin/pull/3253)) ([fzaninotto](https://github.gom/fzaninotto))of 10
+* Add Crud hooks (`useQuery`, `usequeryWithStore`, `useMutation`, `useGetOne`, `useGetList`) ([3253](https://github.com/marmelab/react-admin/pull/3253)) ([fzaninotto](https://github.gom/fzaninotto))
 * Replace Headroom by native Material-ui solution for hiding the app bar on scroll ([3247](https://github.com/marmelab/react-admin/pull/3247)) ([fzaninotto](https://github.gom/fzaninotto))
 * Rename `appLayout` prop to `layout` in `<Admin>` component ([3055](https://github.com/marmelab/react-admin/pull/3055)) ([kopax](https://github.gom/kopax))
 * Upgrade cypress and add ability to run single test ([3235](https://github.com/marmelab/react-admin/pull/3235)) ([cherniavskii](https://github.gom/cherniavskii))
@@ -64,10 +81,32 @@
 * Add `useListParams` ([3217](https://github.com/marmelab/react-admin/pull/3217)) ([djhi](https://github.gom/djhi)
 * Use hooks in controllers ([3213](https://github.com/marmelab/react-admin/pull/3213)) ([djhi](https://github.gom/djhi))
 * [BC Break] Upgrade `redux-saga` ([3212](https://github.com/marmelab/react-admin/pull/3212)) ([djhi](https://github.gom/djhi))
-* [BC Break] Upgrade `material-ui` to v4 ([3191](https://github.com/marmelab/react-admin/pull/3191)) ([fzaninotto](https://github.gom/fzaninotto))of 7
+* [BC Break] Upgrade `material-ui` to v4 ([3191](https://github.com/marmelab/react-admin/pull/3191)) ([fzaninotto](https://github.gom/fzaninotto))
 * Add `useTranslate` hook ([3188](https://github.com/marmelab/react-admin/pull/3188)) ([fzaninotto](https://github.gom/fzaninotto))of 7
-* [BC Break] Add `useDataProvider` hook ([3181](https://github.com/marmelab/react-admin/pull/3181)) ([fzaninotto](https://github.gom/fzaninotto))of 5
-* [BC Break] Upgrade dependencies ([3170](https://github.com/marmelab/react-admin/pull/3170)) ([fzaninotto](https://github.gom/fzaninotto))of 11
+* [BC Break] Add `useDataProvider` hook ([3181](https://github.com/marmelab/react-admin/pull/3181)) ([fzaninotto](https://github.gom/fzaninotto))
+* [BC Break] Upgrade dependencies ([3170](https://github.com/marmelab/react-admin/pull/3170)) ([fzaninotto](https://github.gom/fzaninotto))
+
+## v2.9.5
+
+* Fix data generator usage example ([3429](https://github.com/marmelab/react-admin/pull/3429)) ([mchaffotte](https://github.com/mchaffotte))
+* Fix `<ReferenceArrayInput>` error message when given bad data ([3415](https://github.com/marmelab/react-admin/pull/3415)) ([Kmaschta](https://github.com/Kmaschta))
+* Fix List does not update if `AUTH_GET_PERMISSIONS` is slow ([3408](https://github.com/marmelab/react-admin/pull/3408)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix click on `<EmailField>` triggers `rowClick` in `<Datagrid>` ([3426](https://github.com/marmelab/react-admin/pull/3426)) ([despatates](https://github.com/despatates))
+* Fix click on confirmation dialog text triggers `rowClick` in `<Datagrid>` ([3407](https://github.com/marmelab/react-admin/pull/3407)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix missing id requirement for Reference fields in `ra-data-graphql-simple` documentation ([3391](https://github.com/marmelab/react-admin/pull/3391)) ([esistgut](https://github.com/esistgut))
+* Fix type in `<Lists aside>` documentation ([3388](https://github.com/marmelab/react-admin/pull/3388)) ([firepol](https://github.com/firepol))
+* Fix `callback` side effect is not called when using `withDataProvider` ([3385](https://github.com/marmelab/react-admin/pull/3385)) ([djhi](https://github.com/djhi))
+* Add mention of `react-admin-google-maps` component library in the Ecosystem documentation ([3410](https://github.com/marmelab/react-admin/pull/3410)) ([gganebnyi](https://github.com/gganebnyi))
+
+## v2.9.4
+
+* Fix closing delete confirmation modal triggers datagrid rowClick event ([3360](https://github.com/marmelab/react-admin/pull/3360)) ([Kmaschta](https://github.com/Kmaschta))
+* Fix `<DashboardMenuItem>` does not use `className` prop ([3357](https://github.com/marmelab/react-admin/pull/3357)) ([Kmaschta](https://github.com/Kmaschta))
+* Fix unused import in tutorial ([3366](https://github.com/marmelab/react-admin/pull/3366)) ([jesseshieh](https://github.com/jesseshieh))
+* Fix broken links to material-ui v1 documentation ([3365](https://github.com/marmelab/react-admin/pull/3365)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix broken link to Bulk Action Buttons in docs ([3361](https://github.com/marmelab/react-admin/pull/3361)) ([bmuthoga](https://github.com/bmuthoga))
+* Fix dead link to material-ui doc in List customization ([3353](https://github.com/marmelab/react-admin/pull/3353)) ([Kmaschta](https://github.com/Kmaschta))
+* Fix typo in Custom Input documentation ([3346](https://github.com/marmelab/react-admin/pull/3346)) ([CrossEye](https://github.com/CrossEye))
 
 ## v2.9.3
 
