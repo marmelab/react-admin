@@ -74,6 +74,7 @@ describe('<FileField />', () => {
                 {...defaultProps}
                 record={{
                     url: 'http://foo.com/bar.jpg',
+                    title: 'Hello world!',
                 }}
                 target="_blank"
             />

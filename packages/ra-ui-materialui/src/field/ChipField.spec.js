@@ -7,7 +7,7 @@ describe('<ChipField />', () => {
     afterEach(cleanup);
 
     it('should display the record value added as source', () => {
-        const { getByLabelText } = render(
+        const { getByText } = render(
             <ChipField
                 className="className"
                 classes={{}}
@@ -15,11 +15,11 @@ describe('<ChipField />', () => {
                 record={{ name: 'foo' }}
             />
         );
-        expect(getByLabelText('foo')).toBeDefined();
+        expect(getByText('foo')).toBeDefined();
     });
 
     it('should not display any label added as props', () => {
-        const { getByLabelText } = render(
+        const { getByText } = render(
             <ChipField
                 className="className"
                 classes={{}}
@@ -28,6 +28,6 @@ describe('<ChipField />', () => {
                 label="bar"
             />
         );
-        expect(getByLabelText('foo')).toBeDefined();
+        expect(getByText('foo')).toBeDefined();
     });
 });
