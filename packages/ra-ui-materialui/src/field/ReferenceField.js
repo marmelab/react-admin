@@ -6,7 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { useReference, getResourceLinkPath } from 'ra-core';
 
 import LinearProgress from '../layout/LinearProgress';
-import Link from '../Link';
+import { Link } from 'react-router-dom';
 import sanitizeRestProps from './sanitizeRestProps';
 
 /**

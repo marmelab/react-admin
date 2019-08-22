@@ -5,7 +5,7 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 import { createStyles, withStyles } from '@material-ui/core/styles';
 import { linkToRecord } from 'ra-core';
 
-import Link from '../Link';
+import { Link } from 'react-router-dom';
 
 const styles = createStyles({
     root: { display: 'flex', flexWrap: 'wrap' },
