@@ -1,5 +1,36 @@
 # Changelog
 
+## v3.0.0-alpha.3
+
+* Migrate `SelectArrayInput` to hooks ([3576](https://github.com/marmelab/react-admin/pull/3576)) ([djhi](https://github.com/djhi))
+* Migrate `SelectArrayInput` to TypeScript ([3592](https://github.com/marmelab/react-admin/pull/3592)) ([djhi](https://github.com/djhi))
+* Improve form performance ([3577](https://github.com/marmelab/react-admin/pull/3577)) ([fzaninotto](https://github.com/fzaninotto))
+* Improve list performance ([3572](https://github.com/marmelab/react-admin/pull/3572)) ([fzaninotto](https://github.com/fzaninotto))
+* Migrate `Inputs` To TypeScript/hooks ([3575](https://github.com/marmelab/react-admin/pull/3575)) ([djhi](https://github.com/djhi))
+* Migrate `Field` Components ([3574](https://github.com/marmelab/react-admin/pull/3574)) ([djhi](https://github.com/djhi))
+* Create/Edit allow changing success message ([3573](https://github.com/marmelab/react-admin/pull/3573)) ([natrim](https://github.com/natrim))
+* Migrate `GET_MANY` accumulate saga to hooks ([3550](https://github.com/marmelab/react-admin/pull/3550)) ([fzaninotto](https://github.com/fzaninotto))
+* Migrate `DragPreview`, `AppBar`, `Loading`, `TreeNode`, `Tree` and `NodeView` to hooks ([3589](https://github.com/marmelab/react-admin/pull/3589)) ([3582](https://github.com/marmelab/react-admin/pull/3582)) ([3583](https://github.com/marmelab/react-admin/pull/3583)) ([3570](https://github.com/marmelab/react-admin/pull/3570)) ([3569](https://github.com/marmelab/react-admin/pull/3569)) ([3568](https://github.com/marmelab/react-admin/pull/3568)) ([jaytula](https://github.com/jaytula))
+* Fix typos in DataProvider's documentation ([3565](https://github.com/marmelab/react-admin/pull/3565)) ([pemoreau](https://github.com/pemoreau))
+* Add `row` prop to `CheckboxGroupInput` ([3561](https://github.com/marmelab/react-admin/pull/3561)) ([Kunnu01](https://github.com/Kunnu01))
+* Fix typo in comment ([3564](https://github.com/marmelab/react-admin/pull/3564)) ([pemoreau](https://github.com/pemoreau))
+* [BC Break] Remove `DisabledInput` ([3549](https://github.com/marmelab/react-admin/pull/3549)) ([djhi](https://github.com/djhi))
+* Migrate `SaveButton`, `Confirm`, `LinearProgress`, `CardContentInner`, `Error`, `NodeActions`, `LoadingIndicator`, and 10 other components to hooks ([3554](https://github.com/marmelab/react-admin/pull/3554)) ([3546](https://github.com/marmelab/react-admin/pull/3546)) ([3557](https://github.com/marmelab/react-admin/pull/3557)) ([3560](https://github.com/marmelab/react-admin/pull/3560)) ([3559](https://github.com/marmelab/react-admin/pull/3559)) ([3558](https://github.com/marmelab/react-admin/pull/3558)) ([3556](https://github.com/marmelab/react-admin/pull/3556)) ([3555](https://github.com/marmelab/react-admin/pull/3555)) ([jaytula](https://github.com/jaytula))
+* `createAdminStore` - set initialState on logout ([3507](https://github.com/marmelab/react-admin/pull/3507)) ([natrim](https://github.com/natrim))
+* Change `LongTextInput` to `TextInput` in examples/demo and example / simple ([3553](https://github.com/marmelab/react-admin/pull/3553)) ([3544](https://github.com/marmelab/react-admin/pull/3544)) ([jaytula](https://github.com/jaytula))
+* [BC Break] Remove `BulkActions` in V3 ([3517](https://github.com/marmelab/react-admin/pull/3517)) ([Kunnu01](https://github.com/Kunnu01))
+* Fix Login on Demo ([3537](https://github.com/marmelab/react-admin/pull/3537)) 
+* Migrate `Input` components to `useInput` and TypeScript ([3566](https://github.com/marmelab/react-admin/pull/3566)) ([3563](https://github.com/marmelab/react-admin/pull/3563)) ([3548](https://github.com/marmelab/react-admin/pull/3548)) ([3539](https://github.com/marmelab/react-admin/pull/3539)) ([3538](https://github.com/marmelab/react-admin/pull/3538)) ([3540](https://github.com/marmelab/react-admin/pull/3540)) ([3523](https://github.com/marmelab/react-admin/pull/3523)) ([3512](https://github.com/marmelab/react-admin/pull/3512)) ([3525](https://github.com/marmelab/react-admin/pull/3525)) ([3527](https://github.com/marmelab/react-admin/pull/3527)) ([3526](https://github.com/marmelab/react-admin/pull/3526)) ([3524](https://github.com/marmelab/react-admin/pull/3524)) ([3522](https://github.com/marmelab/react-admin/pull/3522)) ([3520](https://github.com/marmelab/react-admin/pull/3520)) ([3516](https://github.com/marmelab/react-admin/pull/3516)) ([3511](https://github.com/marmelab/react-admin/pull/3511)) ([3514](https://github.com/marmelab/react-admin/pull/3514)) ([3504](https://github.com/marmelab/react-admin/pull/3504)) ([3513](https://github.com/marmelab/react-admin/pull/3513)) ([3515](https://github.com/marmelab/react-admin/pull/3515)) ([3502](https://github.com/marmelab/react-admin/pull/3502)) ([3501](https://github.com/marmelab/react-admin/pull/3501)) ([3500](https://github.com/marmelab/react-admin/pull/3500)) ([djhi](https://github.com/djhi))
+* Temporary migration of `ra-tree` to v3 ([3510](https://github.com/marmelab/react-admin/pull/3510)) ([djhi](https://github.com/djhi))
+* Introduce `useInput` hook ([3499](https://github.com/marmelab/react-admin/pull/3499)) ([djhi](https://github.com/djhi))
+* Upgrade Cypress ([3528](https://github.com/marmelab/react-admin/pull/3528)) ([djhi](https://github.com/djhi))
+* Set key prop on `CheckboxGroupInputItem` ([3536](https://github.com/marmelab/react-admin/pull/3536)) ([jaytula](https://github.com/jaytula))
+* Fix typo in `package.json` ([3498](https://github.com/marmelab/react-admin/pull/3498)) ([Kmaschta](https://github.com/Kmaschta))
+* Replace `withStyles` with `useStyles` ([3485](https://github.com/marmelab/react-admin/pull/3485)) ([m4theushw](https://github.com/m4theushw))
+* Fix `theme.spacing` warning ([3492](https://github.com/marmelab/react-admin/pull/3492)) ([Luwangel](https://github.com/Luwangel))
+* Update to `@testing-library/react` ([3489](https://github.com/marmelab/react-admin/pull/3489)) ([djhi](https://github.com/djhi))
+* Add `emptyText` prop to `SelectInput` ([3444](https://github.com/marmelab/react-admin/pull/3444)) ([tdeo](https://github.com/tdeo))
+
 ## v2.9.6
 
 * Fix too drastic validation of `DELETE` and `DELETE_MANY` dataProvider responses ([3441](https://github.com/marmelab/react-admin/pull/3441)) ([Kmaschta](https://github.com/Kmaschta))
