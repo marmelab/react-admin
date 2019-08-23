@@ -21,16 +21,22 @@ const useStyles = makeStyles(theme => ({
     icon: { minWidth: theme.spacing(5) },
 }));
 
-export function MenuItemLink({ classes: classesOverride, ...props }) {
+function MenuItemLink({
+    classes: classesOverride,
+    className,
+    primaryText,
+    leftIcon,
+    onClick,
+    sidebarIsOpen,
+    ...props
+}) {
     const classes = useStyles({ classes: classesOverride });
 
     const handleMenuTap = e => {
-        props.onClick && props.onClick(e);
+        onClick && onClick(e);
     };
 
     const renderMenuItem = () => {
-        const { className, primaryText, leftIcon } = props;
-
         return (
             <MenuItem
                 className={classnames(classes.root, className)}
@@ -48,8 +54,6 @@ export function MenuItemLink({ classes: classesOverride, ...props }) {
             </MenuItem>
         );
     };
-
-    const { sidebarIsOpen, primaryText } = props;
 
     if (sidebarIsOpen) {
         return renderMenuItem();
