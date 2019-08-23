@@ -8,12 +8,30 @@ import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
-import withWidth from '@material-ui/core/withWidth';
+import { useTheme } from '@material-ui/styles';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { toggleSidebar } from 'ra-core';
 
 import LoadingIndicator from './LoadingIndicator';
 import DefaultUserMenu from './UserMenu';
 import HideOnScroll from './HideOnScroll';
+
+/**
+ * Be careful using this hook. It only works because the number of
+ * breakpoints in theme is static. It will break once you change the number of
+ * breakpoints. See https://reactjs.org/docs/hooks-rules.html#only-call-hooks-at-the-top-level
+ */
+function useWidth() {
+    const theme = useTheme();
+    const keys = [...theme.breakpoints.keys].reverse();
+    return (
+        keys.reduce((output, key) => {
+            // eslint-disable-next-line react-hooks/rules-of-hooks
+            const matches = useMediaQuery(theme.breakpoints.up(key));
+            return !output && matches ? key : output;
+        }, null) || 'xs'
+    );
+}
 
 const useStyles = makeStyles(theme => ({
     toolbar: {
@@ -54,12 +72,12 @@ const AppBar = ({
     open,
     title,
     userMenu,
-    width,
     ...rest
 }) => {
     const classes = useStyles({ classes: classesOverride });
     const dispatch = useDispatch();
     const locale = useSelector(state => state.i18n.locale);
+    const width = useWidth();
 
     return (
         <HideOnScroll>
@@ -113,11 +131,10 @@ AppBar.propTypes = {
     logout: PropTypes.element,
     open: PropTypes.bool,
     userMenu: PropTypes.element,
-    width: PropTypes.string,
 };
 
 AppBar.defaultProps = {
     userMenu: <DefaultUserMenu />,
 };
 
-export default withWidth()(AppBar);
+export default AppBar;
