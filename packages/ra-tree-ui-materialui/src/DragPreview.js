@@ -49,4 +49,4 @@ DragPreview.propTypes = {
     translate: PropTypes.func.isRequired,
 };
 
-export default DragPreview;
+export default React.memo(DragPreview, () => true);
