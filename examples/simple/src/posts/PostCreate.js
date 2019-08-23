@@ -20,7 +20,7 @@ import {
     useRedirect,
     useNotify,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
-import { useFormState } from 'react-final-form';
+import { useFormState, FormSpy } from 'react-final-form';
 
 const SaveWithNoteButton = props => {
     const [create] = useCreate('posts');
@@ -128,17 +128,17 @@ const PostCreate = ({ permissions, ...props }) => {
                 <TextInput autoFocus source="title" />
                 <TextInput source="teaser" fullWidth={true} multiline={true} />
                 <RichTextInput source="body" validate={required()} />
-                <FormDataConsumer>
-                    {({ formData, ...rest }) =>
-                        formData.title && (
+                <FormSpy subscription={{ values: true }}>
+                    {({ values }) =>
+                        values.title ? (
                             <NumberInput
                                 source="average_note"
                                 defaultValue={5}
-                                {...rest}
                             />
-                        )
+                        ) : null
                     }
-                </FormDataConsumer>
+                </FormSpy>
+
                 <DateInput
                     source="published_at"
                     defaultValue={dateDefaultValue}
