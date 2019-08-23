@@ -1,4 +1,4 @@
-import React, { cloneElement } from 'react';
+import React, { cloneElement, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { NavLink } from 'react-router-dom';
@@ -32,9 +32,12 @@ function MenuItemLink({
 }) {
     const classes = useStyles({ classes: classesOverride });
 
-    const handleMenuTap = e => {
-        onClick && onClick(e);
-    };
+    const handleMenuTap = useCallback(
+        e => {
+            onClick && onClick(e);
+        },
+        [onClick]
+    );
 
     const renderMenuItem = () => {
         return (
