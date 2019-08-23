@@ -1,42 +1,42 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles, createStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { useTranslate } from 'ra-core';
 
-const styles = theme =>
-    createStyles({
-        container: {
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            [theme.breakpoints.up('md')]: {
-                height: '100%',
-            },
-            [theme.breakpoints.down('sm')]: {
-                height: '100vh',
-                marginTop: '-3em',
-            },
+const useStyles = makeStyles(theme => ({
+    container: {
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        [theme.breakpoints.up('md')]: {
+            height: '100%',
         },
-        icon: {
-            width: '9em',
-            height: '9em',
+        [theme.breakpoints.down('sm')]: {
+            height: '100vh',
+            marginTop: '-3em',
         },
-        message: {
-            textAlign: 'center',
-            fontFamily: 'Roboto, sans-serif',
-            opacity: 0.5,
-            margin: '0 1em',
-        },
-    });
+    },
+    icon: {
+        width: '9em',
+        height: '9em',
+    },
+    message: {
+        textAlign: 'center',
+        fontFamily: 'Roboto, sans-serif',
+        opacity: 0.5,
+        margin: '0 1em',
+    },
+}));
 
 const Loading = ({
-    classes,
+    classes: classesOverride,
     className,
     loadingPrimary = 'ra.page.loading',
     loadingSecondary = 'ra.message.loading',
 }) => {
+    const classes = useStyles({ classes: classesOverride });
     const translate = useTranslate();
     return (
         <div className={classnames(classes.container, className)}>
@@ -61,4 +61,4 @@ Loading.defaultProps = {
     loadingSecondary: 'ra.message.loading',
 };
 
-export default withStyles(styles)(Loading);
+export default Loading;
