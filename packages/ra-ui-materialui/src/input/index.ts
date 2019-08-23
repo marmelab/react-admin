@@ -10,7 +10,6 @@ import ImageInput from './ImageInput';
 import InputHelperText from './InputHelperText';
 import InputPropTypes from './InputPropTypes';
 import Labeled from './Labeled';
-import LongTextInput from './LongTextInput';
 import NullableBooleanInput from './NullableBooleanInput';
 import NumberInput from './NumberInput';
 import RadioButtonGroupInput from './RadioButtonGroupInput';
@@ -35,7 +34,6 @@ export {
     InputHelperText,
     InputPropTypes,
     Labeled,
-    LongTextInput,
     NullableBooleanInput,
     NumberInput,
     RadioButtonGroupInput,

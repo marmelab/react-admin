@@ -44,7 +44,7 @@ export default App;
 
 // in src/posts.js
 import React from 'react';
-import { Create, Edit, SimpleForm, TextInput, DateInput, LongTextInput, ReferenceManyField, Datagrid, TextField, DateField, EditButton } from 'react-admin';
+import { Create, Edit, SimpleForm, TextInput, DateInput, ReferenceManyField, Datagrid, TextField, DateField, EditButton } from 'react-admin';
 import RichTextInput from 'ra-input-rich-text';
 
 export const PostCreate = (props) => (
@@ -63,7 +63,7 @@ export const PostEdit = (props) => (
         <SimpleForm>
             <TextInput disabled label="Id" source="id" />
             <TextInput source="title" validate={required()} />
-            <LongTextInput source="teaser" validate={required()} />
+            <TextInput multiline source="teaser" validate={required()} />
             <RichTextInput source="body" validate={required()} />
             <DateInput label="Publication date" source="published_at" />
             <ReferenceManyField label="Comments" reference="comments" target="post_id">
@@ -407,7 +407,7 @@ export const PostEdit = (props) => (
             <FormTab label="summary">
                 <TextInput disabled label="Id" source="id" />
                 <TextInput source="title" validate={required()} />
-                <LongTextInput source="teaser" validate={required()} />
+                <TextInput multiline source="teaser" validate={required()} />
             </FormTab>
             <FormTab label="body">
                 <RichTextInput source="body" validate={required()} addLabel={false} />

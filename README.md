@@ -80,7 +80,7 @@ The `<Resource>` component is a configuration component that allows to define su
 ```jsx
 // in posts.js
 import React from 'react';
-import { List, Datagrid, Edit, Create, SimpleForm, DateField, TextField, EditButton, TextInput, LongTextInput, DateInput } from 'react-admin';
+import { List, Datagrid, Edit, Create, SimpleForm, DateField, TextField, EditButton, TextInput, DateInput } from 'react-admin';
 import BookIcon from '@material-ui/core/svg-icons/action/book';
 export const PostIcon = BookIcon;
 
@@ -107,7 +107,7 @@ export const PostEdit = (props) => (
             <TextInput disabled source="id" />
             <TextInput source="title" />
             <TextInput source="teaser" options={{ multiLine: true }} />
-            <LongTextInput source="body" />
+            <TextInput multiline source="body" />
             <DateInput label="Publication date" source="published_at" />
             <TextInput source="average_note" />
             <TextInput disabled label="Nb views" source="views" />
@@ -120,7 +120,7 @@ export const PostCreate = (props) => (
         <SimpleForm>
             <TextInput source="title" />
             <TextInput source="teaser" options={{ multiLine: true }} />
-            <LongTextInput source="body" />
+            <TextInput multiline source="body" />
             <TextInput label="Publication date" source="published_at" />
             <TextInput source="average_note" />
         </SimpleForm>

@@ -53,7 +53,6 @@ title: "Reference"
 * [`<Loading>`](./Theming.md#Loading)
 * [`<List>`](./List.md#the-list-component)
 * `<ListButton>`
-* [`<LongTextInput>`](./Inputs.md#longtextinput)
 * [`<Menu>`](./Theming.md#using-a-custom-menu)
 * `<Notification>`
 * [`<NullableBooleanInput>`](./Inputs.md#booleaninput-and-nullablebooleaninput)

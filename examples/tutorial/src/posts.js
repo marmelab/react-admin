@@ -12,7 +12,6 @@ import {
     ReferenceField,
     TextField,
     EditButton,
-    LongTextInput,
     ReferenceInput,
     SelectInput,
     SimpleForm,
@@ -60,7 +59,7 @@ export const PostEdit = props => (
                 <SelectInput optionText="name" />
             </ReferenceInput>
             <TextInput source="title" />
-            <LongTextInput source="body" />
+            <TextInput multiline source="body" />
         </SimpleForm>
     </Edit>
 );
@@ -72,7 +71,7 @@ export const PostCreate = props => (
                 <SelectInput optionText="name" />
             </ReferenceInput>
             <TextInput source="title" />
-            <LongTextInput source="body" />
+            <TextInput multiline source="body" />
         </SimpleForm>
     </Create>
 );

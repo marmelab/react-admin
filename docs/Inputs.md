@@ -10,7 +10,7 @@ An `Input` component displays an input, or a dropdown list, a list of radio butt
 ```jsx
 // in src/posts.js
 import React from 'react';
-import { Edit, LongTextInput, ReferenceInput, SelectInput, SimpleForm, TextInput } from 'react-admin';
+import { Edit, ReferenceInput, SelectInput, SimpleForm, TextInput } from 'react-admin';
 
 export const PostEdit = (props) => (
     <Edit title={<PostTitle />} {...props}>
@@ -20,7 +20,7 @@ export const PostEdit = (props) => (
                 <SelectInput optionText="name" />
             </ReferenceInput>
             <TextInput source="title" />
-            <LongTextInput source="body" />
+            <TextInput multiline source="body" />
         </SimpleForm>
     </Edit>
 );
@@ -562,29 +562,6 @@ If the default Dropzone label doesn't fit with your need, you can pass a `placeh
 
 Note that the file upload returns a [File](https://developer.mozilla.org/en/docs/Web/API/File) object. It is your responsibility to handle it depending on your API behavior. You can for instance encode it in base64, or send it as a multi-part form data. Check [this example](./DataProviders.md#decorating-your-rest-client-example-of-file-upload) for base64 encoding data by extending the REST Client.
 
-## `<LongTextInput>`
-
-`<LongTextInput>` is the best choice for multiline text values. It renders as an auto expandable textarea.
-
-```jsx
-import { LongTextInput } from 'react-admin';
-
-<LongTextInput source="teaser" />
-```
-
-![LongTextInput](./img/long-text-input.png)
-
-You can make the `LongTextInput` component resettable using the `resettable` prop. This will add a reset button which will be displayed only when the field has a value and is focused.
-
-```jsx
-import { LongTextInput } from 'react-admin';
-
-<LongTextInput source="title" resettable />
-```
-
-![resettable LongTextInput](./img/resettable-long-text-input.png)
-
-
 ## `<NumberInput>`
 
 `<NumberInput>` translates to a HTML `<input type="number">`. It is necessary for numeric values because of a [known React bug](https://github.com/facebook/react/issues/1425), which prevents using the more generic [`<TextInput>`](#textinput) in that case.
@@ -1110,7 +1087,6 @@ import {
     ChipField,
     Create,
     DateInput,
-    LongTextInput,
     ReferenceArrayInput,
     SelectArrayInput,
     TextInput,
@@ -1120,7 +1096,7 @@ export const PostCreate = props => (
     <Create {...props}>
         <SimpleForm>
             <TextInput source="title" />
-            <LongTextInput source="body" />
+            <TextInput multiline source="body" />
             <DateInput source="published_at" />
 
             <ReferenceArrayInput reference="tags" source="tags">
@@ -1151,6 +1127,12 @@ You can choose a specific input type using the `type` attribute, for instance `t
 
 ```jsx
 <TextInput label="Email Address" source="email" type="email" />
+```
+
+You can make the `TextInput` expandable using the `multiline` prop for multiline text values. It renders as an auto expandable textarea.
+
+```jsx
+<TextInput multiline source="body" />
 ```
 
 You can make the `TextInput` component resettable using the `resettable` prop. This will add a reset button which will be displayed only when the field has a value and is focused.

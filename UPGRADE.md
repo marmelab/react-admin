@@ -173,6 +173,15 @@ Components deprecated in 2.X have been removed in 3.x. This includes:
 * `ViewTitle` (use `Title` instead)
 * `RecordTitle` (use `TitleForRecord` instead)
 * `TitleDeprecated` (use `Title` instead)
+* `LongTextInput` (use the `TextInput` instead)
+
+```diff
+- import { LongTextInput } from 'react-admin';
+- <LongTextInput source="body" />
++ import { TextInput } from 'react-admin';
++ <TextInput multiline source="body" />
+```
+
 * `BulkActions` (use the [`bulkActionButtons` prop](https://marmelab.com/react-admin/List.html#bulk-action-buttons) instead)
 
 ```diff
