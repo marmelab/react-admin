@@ -123,11 +123,10 @@ function Datagrid({ classes: classesOverride, ...props }) {
 
     const updateSort = event => {
         event.stopPropagation();
-        props.setSort(event.currentTarget.dataset.sort);
+        setSort(event.currentTarget.dataset.sort);
     };
 
     const handleSelectAll = event => {
-        const { onSelect, ids, selectedIds } = props;
         if (event.target.checked) {
             onSelect(
                 ids.reduce(
