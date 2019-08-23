@@ -43,6 +43,8 @@ class FormTab extends Component {
         basePath,
         record,
         resource,
+        variant,
+        margin,
     }) => (
         <span style={hidden ? hiddenStyle : null} className={contentClassName}>
             {React.Children.map(
@@ -54,6 +56,8 @@ class FormTab extends Component {
                             input={input}
                             record={record}
                             resource={resource}
+                            variant={variant}
+                            margin={margin}
                         />
                     )
             )}

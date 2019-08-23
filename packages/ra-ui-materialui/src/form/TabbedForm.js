@@ -97,6 +97,8 @@ export const TabbedFormView = ({
     undoable,
     value,
     version,
+    variant,
+    margin,
     ...rest
 }) => {
     useInitializeFormWithRecord(form, record);
@@ -147,6 +149,8 @@ export const TabbedFormView = ({
                                               record,
                                               basePath,
                                               hidden: !routeProps.match,
+                                              variant,
+                                              margin,
                                           })
                                         : null
                                 }

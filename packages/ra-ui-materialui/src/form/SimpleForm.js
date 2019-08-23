@@ -82,6 +82,8 @@ const SimpleFormView = ({
     undoable,
     version,
     handleSubmit,
+    variant,
+    margin,
     ...rest
 }) => {
     useInitializeFormWithRecord(form, record);
@@ -106,6 +108,8 @@ const SimpleFormView = ({
                         input={input}
                         record={record}
                         resource={resource}
+                        variant={variant}
+                        margin={margin}
                     />
                 ))}
             </CardContentInner>
