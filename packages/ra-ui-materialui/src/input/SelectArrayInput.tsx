@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { FunctionComponent, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import {
@@ -12,8 +12,11 @@ import {
     Chip,
 } from '@material-ui/core';
 import classnames from 'classnames';
-import { FieldTitle, useInput, useTranslate } from 'ra-core';
+import { FieldTitle, useInput, useTranslate, InputProps } from 'ra-core';
 import InputHelperText from './InputHelperText';
+import { InputWithOptionsProps } from './InputWithOptions';
+import { SelectProps } from '@material-ui/core/Select';
+import { FormControlProps } from '@material-ui/core/FormControl';
 
 const sanitizeRestProps = ({
     addLabel,
@@ -53,7 +56,7 @@ const sanitizeRestProps = ({
     translateChoice,
     validation,
     ...rest
-}) => rest;
+}: any) => rest;
 
 const useStyles = makeStyles(theme => ({
     root: {},
@@ -122,7 +125,9 @@ const useStyles = makeStyles(theme => ({
  *    { id: 'photography', name: 'myroot.tags.photography' },
  * ];
  */
-const SelectArrayInput = ({
+const SelectArrayInput: FunctionComponent<
+    InputWithOptionsProps & InputProps<SelectProps> & FormControlProps
+> = ({
     choices,
     classes: classesOverride,
     className,
@@ -161,7 +166,7 @@ const SelectArrayInput = ({
 
     const renderMenuItemOption = useCallback(
         choice => {
-            if (React.isValidElement(optionText)) {
+            if (React.isValidElement<{ record: any }>(optionText)) {
                 return React.cloneElement(optionText, {
                     record: choice,
                 });
@@ -213,7 +218,7 @@ const SelectArrayInput = ({
                 multiple
                 input={<Input id={id} />}
                 error={!!(touched && error)}
-                renderValue={selected => (
+                renderValue={(selected: any[]) => (
                     <div className={classes.chips}>
                         {selected
                             .map(item =>

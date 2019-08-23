@@ -37,9 +37,10 @@ describe('<SelectArrayInput />', () => {
                 render={() => <SelectArrayInput {...defaultProps} />}
             />
         );
-        expect(getByLabelText('resources.posts.fields.categories').value).toBe(
-            'programming,lifestyle'
-        );
+        const input = getByLabelText(
+            'resources.posts.fields.categories'
+        ) as HTMLInputElement;
+        expect(input.value).toBe('programming,lifestyle');
     });
 
     it('should reveal choices on click', () => {
@@ -162,7 +163,7 @@ describe('<SelectArrayInput />', () => {
     });
 
     it('should use optionText with an element value as text identifier', () => {
-        const Foobar = ({ record }) => <span>{record.foobar}</span>;
+        const Foobar = ({ record = undefined }) => <span>{record.foobar}</span>;
         const { getByRole, queryByText } = render(
             <Form
                 onSubmit={jest.fn()}

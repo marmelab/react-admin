@@ -4,9 +4,9 @@ type OptionTextFunction<ChoiceType = any> = (record: ChoiceType) => string;
 
 export interface InputWithOptionsProps<ChoiceType = any> {
     choices: ChoiceType[];
-    optionText:
+    optionText?:
         | string
         | OptionTextFunction<ChoiceType>
         | ReactElement<{ record: ChoiceType }>;
-    optionValue: string;
+    optionValue?: string;
 }
