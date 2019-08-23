@@ -33,7 +33,6 @@ export const TextInput: FunctionComponent<
     onFocus,
     onChange,
     validate,
-    multiline,
     ...rest
 }) => {
     const {
@@ -73,8 +72,6 @@ export const TextInput: FunctionComponent<
                     helperText={helperText}
                 />
             }
-            multiline={multiline}
-            fullWidth={multiline}
             {...options}
             {...sanitizeRestProps(rest)}
         />
@@ -87,7 +84,6 @@ TextInput.propTypes = {
     options: PropTypes.object,
     resource: PropTypes.string,
     source: PropTypes.string,
-    multiline: PropTypes.bool,
 };
 
 TextInput.defaultProps = {
