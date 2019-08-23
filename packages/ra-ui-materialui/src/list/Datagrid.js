@@ -1,4 +1,9 @@
-import React, { isValidElement, Children, cloneElement } from 'react';
+import React, {
+    isValidElement,
+    Children,
+    cloneElement,
+    useCallback,
+} from 'react';
 import PropTypes from 'prop-types';
 import { sanitizeListRestProps } from 'ra-core';
 import { makeStyles } from '@material-ui/core/styles';
@@ -121,25 +126,31 @@ function Datagrid({ classes: classesOverride, ...props }) {
         ...rest
     } = props;
 
-    const updateSort = event => {
-        event.stopPropagation();
-        setSort(event.currentTarget.dataset.sort);
-    };
+    const updateSort = useCallback(
+        event => {
+            event.stopPropagation();
+            setSort(event.currentTarget.dataset.sort);
+        },
+        [setSort]
+    );
 
-    const handleSelectAll = event => {
-        if (event.target.checked) {
-            onSelect(
-                ids.reduce(
-                    (idList, id) =>
-                        idList.includes(id) ? idList : idList.concat(id),
+    const handleSelectAll = useCallback(
+        event => {
+            if (event.target.checked) {
+                onSelect(
+                    ids.reduce(
+                        (idList, id) =>
+                            idList.includes(id) ? idList : idList.concat(id),
 
-                    selectedIds
-                )
-            );
-        } else {
-            onSelect([]);
-        }
-    };
+                        selectedIds
+                    )
+                );
+            } else {
+                onSelect([]);
+            }
+        },
+        [ids, onSelect, selectedIds]
+    );
 
     /**
      * if loaded is false, the list displays for the first time, and the dataProvider hasn't answered yet
