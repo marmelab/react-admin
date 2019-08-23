@@ -1,6 +1,6 @@
 import React, { Children, cloneElement } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import classNames from 'classnames';
 import MuiAppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -9,8 +9,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
 import withWidth from '@material-ui/core/withWidth';
-import compose from 'recompose/compose';
-import { toggleSidebar as toggleSidebarAction } from 'ra-core';
+import { toggleSidebar } from 'ra-core';
 
 import LoadingIndicator from './LoadingIndicator';
 import DefaultUserMenu from './UserMenu';
@@ -54,15 +53,22 @@ const AppBar = ({
     logout,
     open,
     title,
-    toggleSidebar,
     userMenu,
     width,
     ...rest
 }) => {
     const classes = useStyles({ classes: classesOverride });
+    const dispatch = useDispatch();
+    const locale = useSelector(state => state.i18n.locale);
+
     return (
         <HideOnScroll>
-            <MuiAppBar className={className} color="secondary" {...rest}>
+            <MuiAppBar
+                className={className}
+                color="secondary"
+                locale={locale}
+                {...rest}
+            >
                 <Toolbar
                     disableGutters
                     variant={width === 'xs' ? 'regular' : 'dense'}
@@ -71,7 +77,7 @@ const AppBar = ({
                     <IconButton
                         color="inherit"
                         aria-label="open drawer"
-                        onClick={toggleSidebar}
+                        onClick={() => dispatch(toggleSidebar())}
                         className={classNames(classes.menuButton)}
                     >
                         <MenuIcon
@@ -106,7 +112,6 @@ AppBar.propTypes = {
     className: PropTypes.string,
     logout: PropTypes.element,
     open: PropTypes.bool,
-    toggleSidebar: PropTypes.func.isRequired,
     userMenu: PropTypes.element,
     width: PropTypes.string,
 };
@@ -115,16 +120,4 @@ AppBar.defaultProps = {
     userMenu: <DefaultUserMenu />,
 };
 
-const enhance = compose(
-    connect(
-        state => ({
-            locale: state.i18n.locale, // force redraw on locale change
-        }),
-        {
-            toggleSidebar: toggleSidebarAction,
-        }
-    ),
-    withWidth()
-);
-
-export default enhance(AppBar);
+export default withWidth()(AppBar);
