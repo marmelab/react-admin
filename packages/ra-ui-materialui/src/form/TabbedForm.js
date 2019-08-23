@@ -68,6 +68,8 @@ const TabbedForm = ({ initialValues, ...props }) => {
 const defaultSubscription = {
     submitting: true,
     pristine: true,
+    valid: true,
+    invalid: true,
 };
 
 export default withRouter(TabbedForm);

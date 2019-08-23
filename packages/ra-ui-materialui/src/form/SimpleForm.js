@@ -59,6 +59,8 @@ const SimpleForm = ({ initialValues, ...props }) => {
 const defaultSubscription = {
     submitting: true,
     pristine: true,
+    valid: true,
+    invalid: true,
 };
 
 export default SimpleForm;
