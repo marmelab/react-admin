@@ -22,6 +22,11 @@ const sanitizeRestProps = ({
     ...props
 }) => props;
 
+// Our handleClick does nothing as we wrap the children inside a Link but it is
+// required fo ChipField which uses a Chip from material-ui.
+// The material-ui Chip requires an onClick handler to behave like a clickable element
+const handleClick = () => {};
+
 /**
  * Iterator component to be used to display a list of entities, using a single field
  *
@@ -67,11 +72,6 @@ function SingleFieldList({
     ...rest
 }) {
     const classes = useStyles({ classes: classesOverride });
-
-    // Our handleClick does nothing as we wrap the children inside a Link but it is
-    // required fo ChipField which uses a Chip from material-ui.
-    // The material-ui Chip requires an onClick handler to behave like a clickable element
-    const handleClick = () => {};
 
     if (loaded === false) {
         return <LinearProgress />;
