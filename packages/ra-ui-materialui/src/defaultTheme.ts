@@ -16,4 +16,11 @@ export default {
         width: 240,
         closedWidth: 55,
     },
+    overrides: {
+        MuiFilledInput: {
+            root: {
+                backgroundColor: 'rgba(0, 0, 0, 0.04)',
+            },
+        },
+    },
 };

@@ -202,7 +202,6 @@ const SelectInput: FunctionComponent<
             id={id}
             {...input}
             select
-            margin="normal"
             label={
                 <FieldTitle
                     label={label}

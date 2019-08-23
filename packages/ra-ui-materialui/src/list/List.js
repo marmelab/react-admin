@@ -35,7 +35,7 @@ export const useStyles = makeStyles(theme => ({
         },
     },
     bulkActionsDisplayed: {
-        marginTop: -theme.spacing(8),
+        marginTop: -theme.spacing(9),
         transition: theme.transitions.create('margin-top'),
     },
     actions: {

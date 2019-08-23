@@ -6,12 +6,10 @@ import { sanitizeListRestProps } from 'ra-core';
 import FilterForm from './FilterForm';
 import FilterButton from './FilterButton';
 
-const styles = theme => ({
+const styles = {
     button: {},
-    form: {
-        marginBottom: theme.spacing(1),
-    },
-});
+    form: {},
+};
 
 export class Filter extends Component {
     renderButton() {

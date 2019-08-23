@@ -56,6 +56,8 @@ export const ArrayInput = ({
     resource,
     source,
     validate,
+    variant,
+    margin = 'dense',
     ...rest
 }) => {
     const fieldProps = useFieldArray(source, {
@@ -84,6 +86,8 @@ export const ArrayInput = ({
                 record,
                 resource,
                 source,
+                variant,
+                margin,
             })}
         </FormControl>
     );

@@ -55,7 +55,6 @@ export const TextInput: FunctionComponent<
         <ResettableTextField
             id={id}
             {...input}
-            margin="normal"
             label={
                 <FieldTitle
                     label={label}

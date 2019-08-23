@@ -43,6 +43,7 @@ const NumberInput: FunctionComponent<
     onFocus,
     onChange,
     validate,
+    variant = 'filled',
     ...rest
 }) => {
     const {
@@ -66,7 +67,7 @@ const NumberInput: FunctionComponent<
         <TextField
             id={id}
             {...input}
-            margin="normal"
+            variant={variant}
             error={!!(touched && error)}
             helperText={
                 <InputHelperText

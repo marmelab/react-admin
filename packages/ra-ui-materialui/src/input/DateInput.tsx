@@ -54,6 +54,7 @@ export const DateInput: FunctionComponent<
     onChange,
     onFocus,
     validate,
+    variant = 'filled',
     ...rest
 }) => {
     const {
@@ -76,8 +77,8 @@ export const DateInput: FunctionComponent<
         <TextField
             id={id}
             {...input}
+            variant={variant}
             type="date"
-            margin="normal"
             error={!!(touched && error)}
             helperText={
                 <InputHelperText
