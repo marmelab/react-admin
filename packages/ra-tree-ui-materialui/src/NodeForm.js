@@ -1,8 +1,7 @@
-import React, { cloneElement, Children, Component } from 'react';
+import React, { cloneElement, Children } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import compose from 'recompose/compose';
-import { withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import { Form } from 'react-final-form';
 import {
     crudUpdate as crudUpdateAction,
@@ -11,13 +10,13 @@ import {
 
 import NodeFormActions from './NodeFormActions';
 
-const styles = {
+const useStyles = makeStyles({
     root: {
         alignItems: 'center',
         display: 'flex',
         flexGrow: 1,
     },
-};
+});
 
 const sanitizeRestProps = ({
     anyTouched,
@@ -71,30 +70,24 @@ const sanitizeRestProps = ({
     validate,
     ...props
 }) => props;
-class NodeForm extends Component {
-    static propTypes = {
-        actions: PropTypes.node,
-        basePath: PropTypes.string.isRequired,
-        cancelDropOnChildren: PropTypes.bool,
-        children: PropTypes.node,
-        classes: PropTypes.object,
-        dispatchCrudUpdate: PropTypes.func.isRequired,
-        handleSubmit: PropTypes.func.isRequired,
-        invalid: PropTypes.bool,
-        node: PropTypes.object.isRequired,
-        pristine: PropTypes.bool,
-        resource: PropTypes.string.isRequired,
-        saving: PropTypes.bool,
-        startUndoable: PropTypes.func.isRequired,
-        submitOnEnter: PropTypes.bool,
-        undoable: PropTypes.bool,
-    };
 
-    static defaultProps = {
-        actions: <NodeFormActions />,
-    };
+function NodeForm({
+    actions,
+    basePath,
+    children,
+    classes: classesOverride,
+    handleSubmit: handleSubmitProp,
+    invalid,
+    node,
+    pristine,
+    resource,
+    saving,
+    submitOnEnter = true,
+    ...props
+}) {
+    const classes = useStyles({ classes: classesOverride });
 
-    handleClick = event => {
+    const handleClick = event => {
         event.persist();
         // This ensure clicking on an input or button does not collapse/expand a node
         // When clicking on the form (empty spaces around inputs) however, it should
@@ -104,25 +97,22 @@ class NodeForm extends Component {
         }
     };
 
-    handleDrop = event => {
+    const handleDrop = event => {
         event.persist();
-        if (this.props.cancelDropOnChildren) {
+        if (props.cancelDropOnChildren) {
             event.preventDefault();
         }
     };
 
-    handleSubmit = () => {
+    const handleSubmit = () => {
         const {
-            basePath,
             dispatchCrudUpdate,
-            handleSubmit,
             node: { record },
-            resource,
             startUndoable,
             undoable = true,
-        } = this.props;
+        } = props;
 
-        return handleSubmit(values =>
+        return handleSubmitProp(values =>
             undoable
                 ? startUndoable(
                       crudUpdateAction(
@@ -145,74 +135,75 @@ class NodeForm extends Component {
         );
     };
 
-    render() {
-        const {
-            actions,
-            basePath,
-            children,
-            classes,
-            handleSubmit,
-            invalid,
-            node,
-            pristine,
-            resource,
-            saving,
-            submitOnEnter = true,
-            ...props
-        } = this.props;
-
-        return (
-            <Form
-                onSubmit={this.handleSubmit}
-                render={({ handleSubmit }) => (
-                    <form
-                        className={classes.root}
-                        onClick={this.handleClick}
-                        onSubmit={handleSubmit}
-                        {...sanitizeRestProps(props)}
-                    >
-                        {Children.map(children, field =>
-                            field
-                                ? cloneElement(field, {
-                                      basePath:
-                                          field.props.basePath || basePath,
-                                      onDrop: this.handleDrop,
-                                      record: node.record,
-                                      resource,
-                                  })
-                                : null
-                        )}
-                        {actions &&
-                            cloneElement(actions, {
-                                basePath,
-                                record: node.record,
-                                resource,
-                                handleSubmit: this.handleSubmit,
-                                handleSubmitWithRedirect: this.handleSubmit,
-                                invalid,
-                                pristine,
-                                saving,
-                                submitOnEnter,
-                            })}
-                    </form>
-                )}
-            />
-        );
-    }
+    return (
+        <Form
+            onSubmit={handleSubmit}
+            render={({ handleSubmit }) => (
+                <form
+                    className={classes.root}
+                    onClick={handleClick}
+                    onSubmit={handleSubmit}
+                    {...sanitizeRestProps(props)}
+                >
+                    {Children.map(children, field =>
+                        field
+                            ? cloneElement(field, {
+                                  basePath: field.props.basePath || basePath,
+                                  onDrop: handleDrop,
+                                  record: node.record,
+                                  resource,
+                              })
+                            : null
+                    )}
+                    {actions &&
+                        cloneElement(actions, {
+                            basePath,
+                            record: node.record,
+                            resource,
+                            handleSubmit: handleSubmit,
+                            handleSubmitWithRedirect: handleSubmit,
+                            invalid,
+                            pristine,
+                            saving,
+                            submitOnEnter,
+                        })}
+                </form>
+            )}
+        />
+    );
 }
+
+NodeForm.propTypes = {
+    actions: PropTypes.node,
+    basePath: PropTypes.string.isRequired,
+    cancelDropOnChildren: PropTypes.bool,
+    children: PropTypes.node,
+    classes: PropTypes.object,
+    dispatchCrudUpdate: PropTypes.func.isRequired,
+    handleSubmit: PropTypes.func.isRequired,
+    invalid: PropTypes.bool,
+    node: PropTypes.object.isRequired,
+    pristine: PropTypes.bool,
+    resource: PropTypes.string.isRequired,
+    saving: PropTypes.bool,
+    startUndoable: PropTypes.func.isRequired,
+    submitOnEnter: PropTypes.bool,
+    undoable: PropTypes.bool,
+};
+
+NodeForm.defaultProps = {
+    actions: <NodeFormActions />,
+};
 
 const mapStateToProps = (state, { node }) => ({
     initialValues: node.record,
     record: node.record,
 });
 
-export default compose(
-    connect(
-        mapStateToProps,
-        {
-            dispatchCrudUpdate: crudUpdateAction,
-            startUndoable: startUndoableAction,
-        }
-    ),
-    withStyles(styles)
+export default connect(
+    mapStateToProps,
+    {
+        dispatchCrudUpdate: crudUpdateAction,
+        startUndoable: startUndoableAction,
+    }
 )(NodeForm);
