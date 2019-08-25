@@ -1,12 +1,11 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 import ChevronLeft from '@material-ui/icons/ChevronLeft';
 import ChevronRight from '@material-ui/icons/ChevronRight';
-import compose from 'recompose/compose';
-import { translate } from 'ra-core';
+import { useTranslate } from 'react-admin';
 
 const useStyles = makeStyles(theme => ({
     actions: {
@@ -22,11 +21,10 @@ export function PaginationActions({
     page,
     rowsPerPage,
     count,
-    translate,
     onChangePage,
-    ...props
 }) {
     const classes = useStyles({ classes: classesOverride });
+    const translate = useTranslate();
     /**
      * Warning: material-ui's page is 0-based
      */
@@ -164,9 +162,4 @@ PaginationActions.propTypes = {
     rowsPerPage: PropTypes.number.isRequired,
 };
 
-const enhance = compose(
-    pure,
-    translate
-);
-
-export default enhance(PaginationActions);
+export default pure(PaginationActions);
