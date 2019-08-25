@@ -17,13 +17,20 @@ const useStyles = makeStyles(theme => ({
     hellip: { padding: '1.2em' },
 }));
 
-export function PaginationActions({ classes: classesOverride, ...props }) {
+export function PaginationActions({
+    classes: classesOverride,
+    page,
+    rowsPerPage,
+    count,
+    translate,
+    onChangePage,
+    ...props
+}) {
     const classes = useStyles({ classes: classesOverride });
     /**
      * Warning: material-ui's page is 0-based
      */
     const range = () => {
-        const { page, rowsPerPage, count } = props;
         const nbPages = Math.ceil(count / rowsPerPage) || 1;
         if (isNaN(page) || nbPages === 1) {
             return [];
@@ -59,39 +66,35 @@ export function PaginationActions({ classes: classesOverride, ...props }) {
         return input;
     };
 
-    const getNbPages = () => Math.ceil(props.count / props.rowsPerPage) || 1;
+    const getNbPages = () => Math.ceil(count / rowsPerPage) || 1;
 
     const prevPage = event => {
-        if (props.page === 0) {
-            throw new Error(
-                props.translate('ra.navigation.page_out_from_begin')
-            );
+        if (page === 0) {
+            throw new Error(translate('ra.navigation.page_out_from_begin'));
         }
-        props.onChangePage(event, props.page - 1);
+        onChangePage(event, page - 1);
     };
 
     const nextPage = event => {
-        if (props.page > getNbPages() - 1) {
-            throw new Error(props.translate('ra.navigation.page_out_from_end'));
+        if (page > getNbPages() - 1) {
+            throw new Error(translate('ra.navigation.page_out_from_end'));
         }
-        props.onChangePage(event, props.page + 1);
+        onChangePage(event, page + 1);
     };
 
     const gotoPage = event => {
         const page = parseInt(event.currentTarget.dataset.page, 10);
         if (page < 0 || page > getNbPages() - 1) {
             throw new Error(
-                props.translate('ra.navigation.page_out_of_boundaries', {
+                translate('ra.navigation.page_out_of_boundaries', {
                     page: page + 1,
                 })
             );
         }
-        props.onChangePage(event, page);
+        onChangePage(event, page);
     };
 
     const renderPageNums = () => {
-        const { classes = {} } = props;
-
         return range().map((pageNum, index) =>
             pageNum === '.' ? (
                 <span key={`hyphen_${index}`} className={classes.hellip}>
@@ -100,7 +103,7 @@ export function PaginationActions({ classes: classesOverride, ...props }) {
             ) : (
                 <Button
                     className="page-number"
-                    color={pageNum === props.page + 1 ? 'default' : 'primary'}
+                    color={pageNum === page + 1 ? 'default' : 'primary'}
                     key={pageNum}
                     data-page={pageNum - 1}
                     onClick={gotoPage}
@@ -111,8 +114,6 @@ export function PaginationActions({ classes: classesOverride, ...props }) {
             )
         );
     };
-
-    const { classes = {}, page, translate } = props;
 
     const nbPages = getNbPages();
     if (nbPages === 1) return <div className={classes.actions} />;
@@ -156,6 +157,7 @@ export function PaginationActions({ classes: classesOverride, ...props }) {
 PaginationActions.propTypes = {
     backIconButtonProps: PropTypes.object,
     count: PropTypes.number.isRequired,
+    classes: PropTypes.object,
     nextIconButtonProps: PropTypes.object,
     onChangePage: PropTypes.func.isRequired,
     page: PropTypes.number.isRequired,
