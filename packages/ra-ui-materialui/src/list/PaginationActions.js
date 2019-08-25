@@ -18,12 +18,12 @@ const styles = theme =>
         hellip: { padding: '1.2em' },
     });
 
-export class PaginationActions extends Component {
+export function PaginationActions(props) {
     /**
      * Warning: material-ui's page is 0-based
      */
-    range() {
-        const { page, rowsPerPage, count } = this.props;
+    const range = () => {
+        const { page, rowsPerPage, count } = props;
         const nbPages = Math.ceil(count / rowsPerPage) || 1;
         if (isNaN(page) || nbPages === 1) {
             return [];
@@ -57,45 +57,42 @@ export class PaginationActions extends Component {
         }
 
         return input;
-    }
-
-    getNbPages = () =>
-        Math.ceil(this.props.count / this.props.rowsPerPage) || 1;
-
-    prevPage = event => {
-        if (this.props.page === 0) {
-            throw new Error(
-                this.props.translate('ra.navigation.page_out_from_begin')
-            );
-        }
-        this.props.onChangePage(event, this.props.page - 1);
     };
 
-    nextPage = event => {
-        if (this.props.page > this.getNbPages() - 1) {
+    const getNbPages = () => Math.ceil(props.count / props.rowsPerPage) || 1;
+
+    const prevPage = event => {
+        if (props.page === 0) {
             throw new Error(
-                this.props.translate('ra.navigation.page_out_from_end')
+                props.translate('ra.navigation.page_out_from_begin')
             );
         }
-        this.props.onChangePage(event, this.props.page + 1);
+        props.onChangePage(event, props.page - 1);
     };
 
-    gotoPage = event => {
+    const nextPage = event => {
+        if (props.page > getNbPages() - 1) {
+            throw new Error(props.translate('ra.navigation.page_out_from_end'));
+        }
+        props.onChangePage(event, props.page + 1);
+    };
+
+    const gotoPage = event => {
         const page = parseInt(event.currentTarget.dataset.page, 10);
-        if (page < 0 || page > this.getNbPages() - 1) {
+        if (page < 0 || page > getNbPages() - 1) {
             throw new Error(
-                this.props.translate('ra.navigation.page_out_of_boundaries', {
+                props.translate('ra.navigation.page_out_of_boundaries', {
                     page: page + 1,
                 })
             );
         }
-        this.props.onChangePage(event, page);
+        props.onChangePage(event, page);
     };
 
-    renderPageNums() {
-        const { classes = {} } = this.props;
+    const renderPageNums = () => {
+        const { classes = {} } = props;
 
-        return this.range().map((pageNum, index) =>
+        return range().map((pageNum, index) =>
             pageNum === '.' ? (
                 <span key={`hyphen_${index}`} className={classes.hellip}>
                     &hellip;
@@ -103,55 +100,51 @@ export class PaginationActions extends Component {
             ) : (
                 <Button
                     className="page-number"
-                    color={
-                        pageNum === this.props.page + 1 ? 'default' : 'primary'
-                    }
+                    color={pageNum === props.page + 1 ? 'default' : 'primary'}
                     key={pageNum}
                     data-page={pageNum - 1}
-                    onClick={this.gotoPage}
+                    onClick={gotoPage}
                     size="small"
                 >
                     {pageNum}
                 </Button>
             )
         );
-    }
+    };
 
-    render() {
-        const { classes = {}, page, translate } = this.props;
+    const { classes = {}, page, translate } = props;
 
-        const nbPages = this.getNbPages();
-        if (nbPages === 1) return <div className={classes.actions} />;
-        return (
-            <div className={classes.actions}>
-                {page > 0 && (
-                    <Button
-                        color="primary"
-                        key="prev"
-                        onClick={this.prevPage}
-                        className="previous-page"
-                        size="small"
-                    >
-                        <ChevronLeft />
-                        {translate('ra.navigation.prev')}
-                    </Button>
-                )}
-                {this.renderPageNums()}
-                {page !== nbPages - 1 && (
-                    <Button
-                        color="primary"
-                        key="next"
-                        onClick={this.nextPage}
-                        className="next-page"
-                        size="small"
-                    >
-                        {translate('ra.navigation.next')}
-                        <ChevronRight />
-                    </Button>
-                )}
-            </div>
-        );
-    }
+    const nbPages = getNbPages();
+    if (nbPages === 1) return <div className={classes.actions} />;
+    return (
+        <div className={classes.actions}>
+            {page > 0 && (
+                <Button
+                    color="primary"
+                    key="prev"
+                    onClick={prevPage}
+                    className="previous-page"
+                    size="small"
+                >
+                    <ChevronLeft />
+                    {translate('ra.navigation.prev')}
+                </Button>
+            )}
+            {renderPageNums()}
+            {page !== nbPages - 1 && (
+                <Button
+                    color="primary"
+                    key="next"
+                    onClick={nextPage}
+                    className="next-page"
+                    size="small"
+                >
+                    {translate('ra.navigation.next')}
+                    <ChevronRight />
+                </Button>
+            )}
+        </div>
+    );
 }
 
 /**
