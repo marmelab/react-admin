@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import { PaginationActions } from './PaginationActions';
+import PaginationActions from './PaginationActions';
 
 describe('<PaginationActions />', () => {
     it('should not render any actions when no pagination is necessary', () => {

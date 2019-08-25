@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import pure from 'recompose/pure';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 import ChevronLeft from '@material-ui/icons/ChevronLeft';
@@ -16,7 +15,7 @@ const useStyles = makeStyles(theme => ({
     hellip: { padding: '1.2em' },
 }));
 
-export function PaginationActions({
+function PaginationActions({
     classes: classesOverride,
     page,
     rowsPerPage,
@@ -162,4 +161,4 @@ PaginationActions.propTypes = {
     rowsPerPage: PropTypes.number.isRequired,
 };
 
-export default pure(PaginationActions);
+export default PaginationActions;
