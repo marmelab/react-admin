@@ -161,4 +161,4 @@ PaginationActions.propTypes = {
     rowsPerPage: PropTypes.number.isRequired,
 };
 
-export default PaginationActions;
+export default React.memo(PaginationActions, () => true);
