@@ -62,10 +62,14 @@ describe('Validators', () => {
 
     describe('required', () => {
         it('should return undefined if the value is not empty', () => {
-            test(required(), ['foo', 12], undefined);
+            test(required(), ['foo', 12, [1]], undefined);
         });
         it('should return an error message if the value is empty', () => {
-            test(required(), [undefined, '', null], 'ra.validation.required');
+            test(
+                required(),
+                [undefined, '', null, []],
+                'ra.validation.required'
+            );
         });
         it('should have a `isRequired` prop for allowing the UI to add a required marker', () => {
             expect(required().isRequired).toEqual(true);
@@ -74,13 +78,13 @@ describe('Validators', () => {
             const message = jest.fn(() => 'ra.validation.required');
             test(
                 required(message),
-                [undefined, '', null],
+                [undefined, '', null, []],
                 'ra.validation.required'
             );
-            expect(message).toHaveBeenCalledTimes(3);
+            expect(message).toHaveBeenCalledTimes(4);
             expect(message).toHaveBeenLastCalledWith({
                 args: undefined,
-                value: null,
+                value: [],
                 values: null,
             });
         });
