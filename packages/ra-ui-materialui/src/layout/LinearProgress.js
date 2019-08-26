@@ -19,7 +19,7 @@ const useStyles = makeStyles(theme => ({
  * @see ReferenceField
  * @see ReferenceInput
  *
- * @param {object} classes CSS class names injected by withStyles
+ * @param {object} classes CSS class names
  */
 const LinearProgress = ({ classes: classesOverride, className, ...rest }) => {
     const classes = useStyles({ classes: classesOverride });
