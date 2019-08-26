@@ -108,7 +108,7 @@ function NodeForm({
         [cancelDropOnChildren]
     );
 
-    const handleSubmit = () => {
+    const handleSubmit = useCallback(() => {
         const {
             dispatchCrudUpdate,
             node: { record },
@@ -137,7 +137,7 @@ function NodeForm({
                       false
                   )
         );
-    };
+    }, [basePath, handleSubmitProp, resource, props]);
 
     return (
         <Form
