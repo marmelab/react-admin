@@ -53,20 +53,18 @@ const useDataProviderWithDeclarativeSideEffects = (): DataProviderHookFunction =
                     }
 
                     if (needUnselectAll) {
-                        unselectAll();
+                        unselectAll(resource);
                     }
                 };
             };
 
             const onSuccess = convertToFunctionSideEffect(options.onSuccess);
             const onFailure = convertToFunctionSideEffect(options.onFailure);
-            const result = dataProvider(type, resource, params, {
+            return dataProvider(type, resource, params, {
                 ...options,
                 onSuccess,
                 onFailure,
             });
-
-            return result;
         },
         [dataProvider, notify, redirect, refresh, unselectAll]
     );
