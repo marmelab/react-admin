@@ -16,6 +16,7 @@ import renderWithRedux from '../util/renderWithRedux';
 import TestContext from '../util/TestContext';
 import DataProviderContext from './DataProviderContext';
 import { showNotification, refreshView, setListSelectedIds } from '../actions';
+import { useNotify } from '../sideEffect';
 
 describe('Query', () => {
     afterEach(cleanup);
@@ -319,6 +320,62 @@ describe('Query', () => {
         expect(dispatchSpy).toHaveBeenCalledWith(setListSelectedIds('foo', []));
     });
 
+    it('supports onSuccess side effects using hooks', async () => {
+        let dispatchSpy;
+        const dataProvider = jest.fn();
+        dataProvider.mockImplementationOnce(() =>
+            Promise.resolve({ data: [{ id: 1, foo: 'bar' }], total: 42 })
+        );
+
+        const Foo = () => {
+            const notify = useNotify();
+            return (
+                <Query
+                    type="GET_LIST"
+                    resource="foo"
+                    options={{
+                        onSuccess: () => {
+                            notify('Youhou!', 'info');
+                        },
+                    }}
+                >
+                    {({ loading, data, total }) => (
+                        <div
+                            data-testid="test"
+                            className={loading ? 'loading' : 'idle'}
+                        >
+                            {loading ? 'no data' : total}
+                        </div>
+                    )}
+                </Query>
+            );
+        };
+        let getByTestId;
+        act(() => {
+            const res = render(
+                <DataProviderContext.Provider value={dataProvider}>
+                    <TestContext>
+                        {({ store }) => {
+                            dispatchSpy = jest.spyOn(store, 'dispatch');
+                            return <Foo />;
+                        }}
+                    </TestContext>
+                </DataProviderContext.Provider>
+            );
+            getByTestId = res.getByTestId;
+        });
+
+        const testElement = getByTestId('test');
+        await waitForDomChange({ container: testElement });
+
+        expect(dispatchSpy).toHaveBeenCalledWith(
+            showNotification('Youhou!', 'info', {
+                messageArgs: {},
+                undoable: false,
+            })
+        );
+    });
+
     it('supports declarative onFailure side effects', async () => {
         let dispatchSpy;
         const dataProvider = jest.fn();
@@ -340,8 +397,8 @@ describe('Query', () => {
                                     options={{
                                         onFailure: {
                                             notification: {
-                                                body: 'Youhou!',
-                                                level: 'info',
+                                                body: 'Damn!',
+                                                level: 'warning',
                                             },
                                             redirectTo: '/a_path',
                                             refresh: true,
@@ -372,7 +429,7 @@ describe('Query', () => {
         await waitForDomChange({ container: testElement });
 
         expect(dispatchSpy).toHaveBeenCalledWith(
-            showNotification('Youhou!', 'info', {
+            showNotification('Damn!', 'warning', {
                 messageArgs: {},
                 undoable: false,
             })
@@ -380,5 +437,61 @@ describe('Query', () => {
         expect(dispatchSpy).toHaveBeenCalledWith(push('/a_path'));
         expect(dispatchSpy).toHaveBeenCalledWith(refreshView());
         expect(dispatchSpy).toHaveBeenCalledWith(setListSelectedIds('foo', []));
+    });
+
+    it('supports onFailure side effects using hooks', async () => {
+        let dispatchSpy;
+        const dataProvider = jest.fn();
+        dataProvider.mockImplementationOnce(() =>
+            Promise.reject({ message: 'provider error' })
+        );
+
+        const Foo = () => {
+            const notify = useNotify();
+            return (
+                <Query
+                    type="GET_LIST"
+                    resource="foo"
+                    options={{
+                        onFailure: () => {
+                            notify('Damn!', 'warning');
+                        },
+                    }}
+                >
+                    {({ loading, data, total }) => (
+                        <div
+                            data-testid="test"
+                            className={loading ? 'loading' : 'idle'}
+                        >
+                            {loading ? 'no data' : total}
+                        </div>
+                    )}
+                </Query>
+            );
+        };
+        let getByTestId;
+        act(() => {
+            const res = render(
+                <DataProviderContext.Provider value={dataProvider}>
+                    <TestContext>
+                        {({ store }) => {
+                            dispatchSpy = jest.spyOn(store, 'dispatch');
+                            return <Foo />;
+                        }}
+                    </TestContext>
+                </DataProviderContext.Provider>
+            );
+            getByTestId = res.getByTestId;
+        });
+
+        const testElement = getByTestId('test');
+        await waitForDomChange({ container: testElement });
+
+        expect(dispatchSpy).toHaveBeenCalledWith(
+            showNotification('Damn!', 'warning', {
+                messageArgs: {},
+                undoable: false,
+            })
+        );
     });
 });
