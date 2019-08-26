@@ -4,12 +4,18 @@ import {
     cleanup,
     fireEvent,
     waitForDomChange,
+    act,
 } from '@testing-library/react';
 import expect from 'expect';
 import Mutation from './Mutation';
 import CoreAdmin from '../CoreAdmin';
 import Resource from '../Resource';
 import renderWithRedux from '../util/renderWithRedux';
+import DataProviderContext from './DataProviderContext';
+import TestContext from '../util/TestContext';
+import { showNotification, setListSelectedIds, refreshView } from '../actions';
+import { useNotify } from '../sideEffect';
+import { push } from 'connected-react-router';
 
 describe('useMutation', () => {
     afterEach(cleanup);
@@ -127,5 +133,237 @@ describe('useMutation', () => {
         fireEvent.click(testElement);
         await waitForDomChange({ container: testElement });
         expect(testElement.textContent).toEqual('provider error');
+    });
+
+    it('supports declarative onSuccess side effects', async () => {
+        let dispatchSpy;
+        const dataProvider = jest.fn();
+        dataProvider.mockImplementationOnce(() =>
+            Promise.resolve({ data: { foo: 'bar' } })
+        );
+
+        let getByTestId;
+        act(() => {
+            const res = render(
+                <DataProviderContext.Provider value={dataProvider}>
+                    <TestContext>
+                        {({ store }) => {
+                            dispatchSpy = jest.spyOn(store, 'dispatch');
+                            return (
+                                <Mutation
+                                    type="mytype"
+                                    resource="foo"
+                                    options={{
+                                        onSuccess: {
+                                            notification: {
+                                                body: 'Youhou!',
+                                                level: 'info',
+                                            },
+                                            redirectTo: '/a_path',
+                                            refresh: true,
+                                            unselectAll: true,
+                                        },
+                                    }}
+                                >
+                                    {(mutate, { data }) => (
+                                        <button
+                                            data-testid="test"
+                                            onClick={mutate}
+                                        >
+                                            {data ? data.foo : 'no data'}
+                                        </button>
+                                    )}
+                                </Mutation>
+                            );
+                        }}
+                    </TestContext>
+                </DataProviderContext.Provider>
+            );
+            getByTestId = res.getByTestId;
+        });
+
+        const testElement = getByTestId('test');
+        fireEvent.click(testElement);
+        await waitForDomChange({ container: testElement });
+
+        expect(dispatchSpy).toHaveBeenCalledWith(
+            showNotification('Youhou!', 'info', {
+                messageArgs: {},
+                undoable: false,
+            })
+        );
+        expect(dispatchSpy).toHaveBeenCalledWith(push('/a_path'));
+        expect(dispatchSpy).toHaveBeenCalledWith(refreshView());
+        expect(dispatchSpy).toHaveBeenCalledWith(setListSelectedIds('foo', []));
+    });
+
+    it('supports onSuccess side effects using hooks', async () => {
+        let dispatchSpy;
+        const dataProvider = jest.fn();
+        dataProvider.mockImplementationOnce(() =>
+            Promise.resolve({ data: { foo: 'bar' } })
+        );
+
+        const Foo = () => {
+            const notify = useNotify();
+            return (
+                <Mutation
+                    type="mytype"
+                    resource="foo"
+                    options={{
+                        onSuccess: () => {
+                            notify('Youhou!', 'info');
+                        },
+                    }}
+                >
+                    {(mutate, { data }) => (
+                        <button data-testid="test" onClick={mutate}>
+                            {data ? data.foo : 'no data'}
+                        </button>
+                    )}
+                </Mutation>
+            );
+        };
+        let getByTestId;
+        act(() => {
+            const res = render(
+                <DataProviderContext.Provider value={dataProvider}>
+                    <TestContext>
+                        {({ store }) => {
+                            dispatchSpy = jest.spyOn(store, 'dispatch');
+                            return <Foo />;
+                        }}
+                    </TestContext>
+                </DataProviderContext.Provider>
+            );
+            getByTestId = res.getByTestId;
+        });
+
+        const testElement = getByTestId('test');
+        fireEvent.click(testElement);
+        await waitForDomChange({ container: testElement });
+
+        expect(dispatchSpy).toHaveBeenCalledWith(
+            showNotification('Youhou!', 'info', {
+                messageArgs: {},
+                undoable: false,
+            })
+        );
+    });
+
+    it('supports declarative onFailure side effects', async () => {
+        let dispatchSpy;
+        const dataProvider = jest.fn();
+        dataProvider.mockImplementationOnce(() =>
+            Promise.reject({ message: 'provider error' })
+        );
+
+        let getByTestId;
+        act(() => {
+            const res = render(
+                <DataProviderContext.Provider value={dataProvider}>
+                    <TestContext>
+                        {({ store }) => {
+                            dispatchSpy = jest.spyOn(store, 'dispatch');
+                            return (
+                                <Mutation
+                                    type="mytype"
+                                    resource="foo"
+                                    options={{
+                                        onFailure: {
+                                            notification: {
+                                                body: 'Damn!',
+                                                level: 'warning',
+                                            },
+                                            redirectTo: '/a_path',
+                                            refresh: true,
+                                            unselectAll: true,
+                                        },
+                                    }}
+                                >
+                                    {(mutate, { error }) => (
+                                        <button
+                                            data-testid="test"
+                                            onClick={mutate}
+                                        >
+                                            {error ? error.message : 'no data'}
+                                        </button>
+                                    )}
+                                </Mutation>
+                            );
+                        }}
+                    </TestContext>
+                </DataProviderContext.Provider>
+            );
+            getByTestId = res.getByTestId;
+        });
+
+        const testElement = getByTestId('test');
+        fireEvent.click(testElement);
+        await waitForDomChange({ container: testElement });
+
+        expect(dispatchSpy).toHaveBeenCalledWith(
+            showNotification('Damn!', 'warning', {
+                messageArgs: {},
+                undoable: false,
+            })
+        );
+        expect(dispatchSpy).toHaveBeenCalledWith(push('/a_path'));
+        expect(dispatchSpy).toHaveBeenCalledWith(refreshView());
+        expect(dispatchSpy).toHaveBeenCalledWith(setListSelectedIds('foo', []));
+    });
+
+    it('supports onFailure side effects using hooks', async () => {
+        let dispatchSpy;
+        const dataProvider = jest.fn();
+        dataProvider.mockImplementationOnce(() =>
+            Promise.reject({ message: 'provider error' })
+        );
+
+        const Foo = () => {
+            const notify = useNotify();
+            return (
+                <Mutation
+                    type="mytype"
+                    resource="foo"
+                    options={{
+                        onFailure: () => {
+                            notify('Damn!', 'warning');
+                        },
+                    }}
+                >
+                    {(mutate, { error }) => (
+                        <button data-testid="test" onClick={mutate}>
+                            {error ? error.message : 'no data'}
+                        </button>
+                    )}
+                </Mutation>
+            );
+        };
+        let getByTestId;
+        act(() => {
+            const res = render(
+                <DataProviderContext.Provider value={dataProvider}>
+                    <TestContext>
+                        {({ store }) => {
+                            dispatchSpy = jest.spyOn(store, 'dispatch');
+                            return <Foo />;
+                        }}
+                    </TestContext>
+                </DataProviderContext.Provider>
+            );
+            getByTestId = res.getByTestId;
+        });
+
+        const testElement = getByTestId('test');
+        fireEvent.click(testElement);
+        await waitForDomChange({ container: testElement });
+
+        expect(dispatchSpy).toHaveBeenCalledWith(
+            showNotification('Damn!', 'warning', {
+                messageArgs: {},
+                undoable: false,
+            })
+        );
     });
 });
