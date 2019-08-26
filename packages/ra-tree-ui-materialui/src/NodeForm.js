@@ -108,14 +108,13 @@ function NodeForm({
         [cancelDropOnChildren]
     );
 
+    const {
+        dispatchCrudUpdate,
+        node: { record },
+        startUndoable,
+        undoable = true,
+    } = props;
     const handleSubmit = useCallback(() => {
-        const {
-            dispatchCrudUpdate,
-            node: { record },
-            startUndoable,
-            undoable = true,
-        } = props;
-
         return handleSubmitProp(values =>
             undoable
                 ? startUndoable(
@@ -137,7 +136,15 @@ function NodeForm({
                       false
                   )
         );
-    }, [basePath, handleSubmitProp, resource, props]);
+    }, [
+        basePath,
+        handleSubmitProp,
+        resource,
+        dispatchCrudUpdate,
+        record,
+        startUndoable,
+        undoable,
+    ]);
 
     return (
         <Form
