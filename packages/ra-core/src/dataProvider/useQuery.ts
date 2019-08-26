@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 
 import { useSafeSetState } from '../util/hooks';
-import useDataProvider from './useDataProvider';
+import useDataProvider from './useDataProviderWithDeclarativeSideEffects';
 
 export interface Query {
     type: string;
