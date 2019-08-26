@@ -1,4 +1,4 @@
-import React, { cloneElement, Children } from 'react';
+import React, { cloneElement, Children, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
@@ -87,7 +87,7 @@ function NodeForm({
 }) {
     const classes = useStyles({ classes: classesOverride });
 
-    const handleClick = event => {
+    const handleClick = useCallback(event => {
         event.persist();
         // This ensure clicking on an input or button does not collapse/expand a node
         // When clicking on the form (empty spaces around inputs) however, it should
@@ -95,14 +95,18 @@ function NodeForm({
         if (event.target.tagName.toLowerCase() !== 'form') {
             event.stopPropagation();
         }
-    };
+    }, []);
 
-    const handleDrop = event => {
-        event.persist();
-        if (props.cancelDropOnChildren) {
-            event.preventDefault();
-        }
-    };
+    const { cancelDropOnChildren } = props;
+    const handleDrop = useCallback(
+        event => {
+            event.persist();
+            if (cancelDropOnChildren) {
+                event.preventDefault();
+            }
+        },
+        [cancelDropOnChildren]
+    );
 
     const handleSubmit = () => {
         const {
