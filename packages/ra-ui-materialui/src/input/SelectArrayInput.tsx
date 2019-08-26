@@ -128,7 +128,7 @@ const useStyles = makeStyles(theme => ({
 const SelectArrayInput: FunctionComponent<
     InputWithOptionsProps & InputProps<SelectProps> & FormControlProps
 > = ({
-    choices,
+    choices = [],
     classes: classesOverride,
     className,
     label,
@@ -274,7 +274,6 @@ SelectArrayInput.propTypes = {
 };
 
 SelectArrayInput.defaultProps = {
-    choices: [],
     options: {},
     optionText: 'name',
     optionValue: 'id',
