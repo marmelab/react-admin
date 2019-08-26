@@ -9,6 +9,7 @@ import {
     CREATE,
     UPDATE,
     DELETE,
+    HttpError,
 } from 'ra-core';
 
 import buildApolloClient from './buildApolloClient';
@@ -77,6 +78,17 @@ export default async options => {
 
     const buildQuery = buildQueryFactory(introspectionResults, otherOptions);
 
+    const parseError = ({ networkError, graphQLErrors }) => {
+        const message =
+            get(graphQLErrors, '[0].message') ||
+            get(networkError, 'result.errors[0].message') ||
+            get(networkError, 'message');
+        const status =
+            get(graphQLErrors, '[0].statusCode') ||
+            get(networkError, 'statusCode');
+        throw new HttpError(message, status);
+    };
+
     const raDataProvider = (aorFetchType, resource, params) => {
         const overriddenBuildQuery = get(
             override,
@@ -97,7 +109,10 @@ export default async options => {
                 ...getOptions(otherOptions.query, aorFetchType, resource),
             };
 
-            return client.query(apolloQuery).then(parseResponse);
+            return client
+                .query(apolloQuery)
+                .then(parseResponse)
+                .catch(parseError);
         }
 
         const apolloQuery = {
@@ -106,7 +121,10 @@ export default async options => {
             ...getOptions(otherOptions.mutation, aorFetchType, resource),
         };
 
-        return client.mutate(apolloQuery).then(parseResponse);
+        return client
+            .mutate(apolloQuery)
+            .then(parseResponse)
+            .catch(parseError);
     };
 
     raDataProvider.observeRequest = (aorFetchType, resource, params) => {
@@ -121,7 +139,10 @@ export default async options => {
             ...getOptions(otherOptions.watchQuery, aorFetchType, resource),
         };
 
-        return client.watchQuery(apolloQuery).then(parseResponse);
+        return client
+            .watchQuery(apolloQuery)
+            .then(parseResponse)
+            .catch(parseError);
     };
 
     raDataProvider.saga = () => {};
