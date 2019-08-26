@@ -7,11 +7,15 @@ import {
     waitForDomChange,
 } from '@testing-library/react';
 import expect from 'expect';
+import { push } from 'connected-react-router';
+
 import Query from './Query';
 import CoreAdmin from '../CoreAdmin';
 import Resource from '../Resource';
 import renderWithRedux from '../util/renderWithRedux';
 import TestContext from '../util/TestContext';
+import DataProviderContext from './DataProviderContext';
+import { showNotification, refreshView, setListSelectedIds } from '../actions';
 
 describe('Query', () => {
     afterEach(cleanup);
@@ -250,5 +254,131 @@ describe('Query', () => {
             );
         });
         expect(dispatchSpy.mock.calls.length).toEqual(3);
+    });
+
+    it('supports declarative onSuccess side effects', async () => {
+        let dispatchSpy;
+        const dataProvider = jest.fn();
+        dataProvider.mockImplementationOnce(() =>
+            Promise.resolve({ data: [{ id: 1, foo: 'bar' }], total: 42 })
+        );
+
+        let getByTestId;
+        act(() => {
+            const res = render(
+                <DataProviderContext.Provider value={dataProvider}>
+                    <TestContext>
+                        {({ store }) => {
+                            dispatchSpy = jest.spyOn(store, 'dispatch');
+                            return (
+                                <Query
+                                    type="GET_LIST"
+                                    resource="foo"
+                                    options={{
+                                        onSuccess: {
+                                            notification: {
+                                                body: 'Youhou!',
+                                                level: 'info',
+                                            },
+                                            redirectTo: '/a_path',
+                                            refresh: true,
+                                            unselectAll: true,
+                                        },
+                                    }}
+                                >
+                                    {({ loading, data, total }) => (
+                                        <div
+                                            data-testid="test"
+                                            className={
+                                                loading ? 'loading' : 'idle'
+                                            }
+                                        >
+                                            {loading ? 'no data' : total}
+                                        </div>
+                                    )}
+                                </Query>
+                            );
+                        }}
+                    </TestContext>
+                </DataProviderContext.Provider>
+            );
+            getByTestId = res.getByTestId;
+        });
+
+        const testElement = getByTestId('test');
+        await waitForDomChange({ container: testElement });
+
+        expect(dispatchSpy).toHaveBeenCalledWith(
+            showNotification('Youhou!', 'info', {
+                messageArgs: {},
+                undoable: false,
+            })
+        );
+        expect(dispatchSpy).toHaveBeenCalledWith(push('/a_path'));
+        expect(dispatchSpy).toHaveBeenCalledWith(refreshView());
+        expect(dispatchSpy).toHaveBeenCalledWith(setListSelectedIds('foo', []));
+    });
+
+    it('supports declarative onFailure side effects', async () => {
+        let dispatchSpy;
+        const dataProvider = jest.fn();
+        dataProvider.mockImplementationOnce(() =>
+            Promise.reject({ message: 'provider error' })
+        );
+
+        let getByTestId;
+        act(() => {
+            const res = render(
+                <DataProviderContext.Provider value={dataProvider}>
+                    <TestContext>
+                        {({ store }) => {
+                            dispatchSpy = jest.spyOn(store, 'dispatch');
+                            return (
+                                <Query
+                                    type="GET_LIST"
+                                    resource="foo"
+                                    options={{
+                                        onFailure: {
+                                            notification: {
+                                                body: 'Youhou!',
+                                                level: 'info',
+                                            },
+                                            redirectTo: '/a_path',
+                                            refresh: true,
+                                            unselectAll: true,
+                                        },
+                                    }}
+                                >
+                                    {({ loading, data, total }) => (
+                                        <div
+                                            data-testid="test"
+                                            className={
+                                                loading ? 'loading' : 'idle'
+                                            }
+                                        >
+                                            {loading ? 'no data' : total}
+                                        </div>
+                                    )}
+                                </Query>
+                            );
+                        }}
+                    </TestContext>
+                </DataProviderContext.Provider>
+            );
+            getByTestId = res.getByTestId;
+        });
+
+        const testElement = getByTestId('test');
+        await waitForDomChange({ container: testElement });
+
+        expect(dispatchSpy).toHaveBeenCalledWith(
+            showNotification('Youhou!', 'info', {
+                messageArgs: {},
+                undoable: false,
+            })
+        );
+        expect(dispatchSpy).toHaveBeenCalledWith(push('/a_path'));
+        expect(dispatchSpy).toHaveBeenCalledWith(refreshView());
+        expect(dispatchSpy).toHaveBeenCalledWith(setListSelectedIds('foo', []));
     });
 });
