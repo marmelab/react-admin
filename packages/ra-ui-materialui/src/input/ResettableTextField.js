@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import InputAdornment from '@material-ui/core/InputAdornment';
@@ -44,24 +44,34 @@ function ResettableTextField({
     const [showClear, setShowClear] = useState(false);
     const classes = useStyles({ classes: classesOverride });
 
-    const handleClickClearButton = event => {
+    const { onChange, onFocus, onBlur } = props;
+    const handleClickClearButton = useCallback(
+        event => {
+            event.preventDefault();
+            onChange('');
+        },
+        [onChange]
+    );
+
+    const handleMouseDownClearButton = useCallback(event => {
         event.preventDefault();
-        props.onChange('');
-    };
+    }, []);
 
-    const handleMouseDownClearButton = event => {
-        event.preventDefault();
-    };
+    const handleFocus = useCallback(
+        event => {
+            setShowClear(true);
+            onFocus && onFocus(event);
+        },
+        [onFocus]
+    );
 
-    const handleFocus = event => {
-        setShowClear(true);
-        props.onFocus && props.onFocus(event);
-    };
-
-    const handleBlur = event => {
-        setShowClear(false);
-        props.onBlur && props.onBlur(event);
-    };
+    const handleBlur = useCallback(
+        event => {
+            setShowClear(false);
+            onBlur && onBlur(event);
+        },
+        [onBlur]
+    );
 
     const {
         clearButton,
