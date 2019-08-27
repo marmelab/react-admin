@@ -249,12 +249,14 @@ export class AutocompleteInput extends React.Component {
             classes = {},
             isRequired,
             label,
+            margin = 'dense',
             meta,
             onChange,
             resource,
             source,
             value,
             ref,
+            variant = 'filled',
             options: { InputProps, suggestionsContainerProps, ...options },
             ...other
         } = inputProps;
@@ -286,7 +288,8 @@ export class AutocompleteInput extends React.Component {
                 value={value}
                 onChange={onChange}
                 autoFocus={autoFocus}
-                margin="normal"
+                margin={margin}
+                variant={variant}
                 className={classnames(classes.root, className)}
                 inputRef={storeInputRef}
                 error={!!(touched && error)}
