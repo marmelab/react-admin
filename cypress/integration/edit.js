@@ -88,9 +88,6 @@ describe('Edit Page', () => {
             .clear()
             .type('Sed quo');
         cy.get('[role="tooltip"]').within(() => {
-            cy.contains(
-                'Accusantium qui nihil voluptatum quia voluptas maxime ab similique'
-            );
             cy.contains('Sed quo et et fugiat modi').click();
         });
         cy.get('[role="tooltip"]').should(el => expect(el).to.not.exist);
@@ -104,9 +101,7 @@ describe('Edit Page', () => {
             .clear()
             .type('architecto aut');
         cy.get('[role="tooltip"]').within(() => {
-            cy.contains('Sed quo et et fugiat modi');
             cy.contains('Sint dignissimos in architecto aut');
-            cy.contains('A voluptas eius eveniet ut commodi dolor');
         });
     });
 
