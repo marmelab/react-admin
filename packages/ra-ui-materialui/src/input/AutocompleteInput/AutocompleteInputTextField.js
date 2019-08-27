@@ -11,7 +11,7 @@ const AutoCompleteInputTextField = ({
     resource,
     isRequired,
     handleChange,
-    ...props,
+    ...props
 }) => {
     return (
         <TextField
@@ -26,7 +26,7 @@ const AutoCompleteInputTextField = ({
             InputProps={{
                 inputRef,
                 ...InputProps,
-                onChange: (event) => {
+                onChange: event => {
                     InputProps.onChange(event);
                     handleChange(event.target.value);
                 },
@@ -34,6 +34,6 @@ const AutoCompleteInputTextField = ({
             {...props}
         />
     );
-}
+};
 
 export default AutoCompleteInputTextField;

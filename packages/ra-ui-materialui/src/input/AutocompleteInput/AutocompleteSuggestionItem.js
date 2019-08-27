@@ -1,68 +1,82 @@
 import React from 'react';
-import MenuItem from '@material-ui/core/MenuItem';
 import parse from 'autosuggest-highlight/parse';
 import match from 'autosuggest-highlight/match';
-import { withStyles, createStyles } from '@material-ui/core/styles';
+import { makeStyles, MenuItem } from '@material-ui/core';
+import classnames from 'classnames';
 
-const styles = theme => createStyles({
+const useStyles = makeStyles(theme => ({
+    root: {
+        fontWeight: 400,
+    },
+    selected: {
+        fontWeight: 500,
+    },
     suggestion: {
         display: 'block',
         fontFamily: theme.typography.fontFamily,
     },
     suggestionText: { fontWeight: 300 },
     highlightedSuggestionText: { fontWeight: 500 },
-});
+}));
 
 const AutocompleteSuggestionItem = ({
+    component,
     suggestion,
     index,
-    itemProps,
     highlightedIndex,
     selectedItem,
     inputValue,
-    suggestionComponent,
-    classes,
+    classes: classesOverride,
     getSuggestionText,
+    ...rest
 }) => {
-    const isHighlighted = highlightedIndex === index
+    const classes = useStyles({ classes: classesOverride });
+    const isHighlighted = highlightedIndex === index;
     const suggestionText = getSuggestionText(suggestion);
     const isSelected = (selectedItem || '').indexOf(suggestionText) > -1;
     const matches = match(suggestionText, inputValue);
     const parts = parse(suggestionText, matches);
 
+    let additionalPropsForOverrides = {};
+
+    if (!!component) {
+        additionalPropsForOverrides = {
+            isHighlighted,
+            query: inputValue,
+            suggestion,
+        };
+    }
     return (
         <MenuItem
-            {...itemProps}
+            component={component}
             key={suggestionText}
             selected={isHighlighted}
-            component={suggestionComponent || 'div'}
-            style={{
-                fontWeight: isSelected ? 500 : 400,
-            }}
+            className={classnames(classes.root, {
+                [classes.selected]: isSelected,
+            })}
+            // The 3 props defined in additionalPropsForOverrides should only be passed if the component has been overridden
+            // as they are unknown to the default base component of MenuItem
+            {...additionalPropsForOverrides}
+            {...rest}
         >
             <div className={classes.suggestion}>
-                {
-                    parts.map((part, index) => {
-                        return part.highlight ? (
-                            <span
-                                key={index}
-                                className={classes.highlightedSuggestionText}
-                            >
-                                {part.text}
-                            </span>
-                        ) : (
-                            <strong
-                                key={index}
-                                className={classes.suggestionText}
-                            >
-                                {part.text}
-                            </strong>
-                        );
-                    })
-                }
+                {parts.map((part, index) => {
+                    return part.highlight ? (
+                        <span
+                            key={index}
+                            className={classes.highlightedSuggestionText}
+                        >
+                            {part.text}
+                        </span>
+                    ) : (
+                        <strong key={index} className={classes.suggestionText}>
+                            {part.text}
+                        </strong>
+                    );
+                })}
             </div>
         </MenuItem>
     );
 };
 
-export default withStyles(styles)(AutocompleteSuggestionItem);
+export default AutocompleteSuggestionItem;

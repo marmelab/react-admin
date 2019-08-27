@@ -16,7 +16,8 @@ describe('getSuggestions', () => {
                 getSuggestionText: ({ value }) => value,
                 optionValue: 'id',
                 limitChoicesToValue: true,
-            })('')).toEqual(choices);
+            })('')
+        ).toEqual(choices);
     });
 
     it('should filter choices based on second argument', () => {
@@ -28,10 +29,25 @@ describe('getSuggestions', () => {
                 getSuggestionText: ({ value }) => value,
                 optionValue: 'id',
                 limitChoicesToValue: true,
-            })('o')).toEqual([
-                { id: 1, value: 'one' },
-                { id: 2, value: 'two' },
-            ]);
+            })('o')
+        ).toEqual([{ id: 1, value: 'one' }, { id: 2, value: 'two' }]);
+    });
+
+    it('should filter choices based on second argument when it contains RegExp reserved characters', () => {
+        expect(
+            getSuggestions({
+                choices: [
+                    { id: 1, value: '**one' },
+                    { id: 2, value: 'two' },
+                    { id: 3, value: 'three' },
+                ],
+                allowEmpty: false,
+                optionText: 'value',
+                getSuggestionText: ({ value }) => value,
+                optionValue: 'id',
+                limitChoicesToValue: true,
+            })('**o')
+        ).toEqual([{ id: 1, value: '**one' }]);
     });
 
     it('should not filter choices based on second argument if limitChoicesToValue is false', () => {
@@ -43,7 +59,8 @@ describe('getSuggestions', () => {
                 getSuggestionText: ({ value }) => value,
                 optionValue: 'id',
                 limitChoicesToValue: false,
-            })('o')).toEqual(choices);
+            })('o')
+        ).toEqual(choices);
     });
 
     it('should add emptySuggestion if allowEmpty is true', () => {
@@ -55,11 +72,12 @@ describe('getSuggestions', () => {
                 getSuggestionText: ({ value }) => value,
                 optionValue: 'id',
                 limitChoicesToValue: true,
-            })('')).toEqual([
-                { id: 1, value: 'one' },
-                { id: 2, value: 'two' },
-                { id: 3, value: 'three' },
-                { id: null, value: '' },
-            ]);
+            })('')
+        ).toEqual([
+            { id: 1, value: 'one' },
+            { id: 2, value: 'two' },
+            { id: 3, value: 'three' },
+            { id: null, value: '' },
+        ]);
     });
 });

@@ -1,11 +1,9 @@
 import React from 'react';
-import Paper from '@material-ui/core/Paper';
-import Popper from '@material-ui/core/Popper';
-import { withStyles, createStyles } from '@material-ui/core/styles';
+import { makeStyles, Paper, Popper } from '@material-ui/core';
 
 import AutocompleteSuggestionItem from './AutocompleteSuggestionItem';
 
-const styles = createStyles({
+const useStyles = makeStyles({
     suggestionsContainer: {
         zIndex: 2,
     },
@@ -26,9 +24,12 @@ const AutocompleteSuggestionList = ({
     inputValue,
     getItemProps,
     highlightedIndex,
-    classes,
+    classes: classesOverride,
+    suggestionComponent,
     suggestionsContainerProps,
 }) => {
+    const classes = useStyles({ classes: classesOverride });
+
     return (
         <Popper
             open={isOpen}
@@ -36,10 +37,13 @@ const AutocompleteSuggestionList = ({
             className={classes.suggestionsContainer}
             {...suggestionsContainerProps}
         >
-            <div {...(isOpen ? menuProps : {})} >
+            <div {...(isOpen ? menuProps : {})}>
                 <Paper
                     square
-                    style={{ marginTop: 8, minWidth: inputEl ? inputEl.clientWidth : null }}
+                    style={{
+                        marginTop: 8,
+                        minWidth: inputEl ? inputEl.clientWidth : null,
+                    }}
                     className={classes.suggestionsPaper}
                 >
                     {suggestions.map((suggestion, index) => (
@@ -47,17 +51,20 @@ const AutocompleteSuggestionList = ({
                             key={getSuggestionValue(suggestion)}
                             suggestion={suggestion}
                             index={index}
-                            itemProps={getItemProps({ item: getSuggestionText(suggestion) })}
                             highlightedIndex={highlightedIndex}
                             selectedItem={selectedItem}
                             inputValue={inputValue}
                             getSuggestionText={getSuggestionText}
+                            component={suggestionComponent}
+                            {...getItemProps({
+                                item: getSuggestionText(suggestion),
+                            })}
                         />
                     ))}
                 </Paper>
             </div>
         </Popper>
     );
-}
+};
 
-export default withStyles(styles)(AutocompleteSuggestionList);
+export default AutocompleteSuggestionList;
