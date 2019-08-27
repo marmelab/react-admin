@@ -1,12 +1,16 @@
 import QuillSnowStylesheet from './QuillSnowStylesheet';
 
 export default theme => ({
+    label: {
+        position: 'relative',
+    },
     '@global': Object.assign({}, QuillSnowStylesheet, {
         '.ra-rich-text-input': {
             '& .ql-editor': {
                 fontSize: '1rem',
                 fontFamily: 'Roboto, sans-serif',
-                padding: 0,
+                padding: '6px 12px',
+                backgroundColor: 'rgba(0, 0, 0, 0.04)',
 
                 '&:hover::before': {
                     backgroundColor: 'rgba(0, 0, 0, 1)',
