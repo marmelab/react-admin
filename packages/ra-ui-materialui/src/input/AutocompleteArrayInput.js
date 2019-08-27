@@ -48,7 +48,6 @@ const styles = theme =>
         },
         chip: {
             marginRight: theme.spacing(1),
-            marginTop: theme.spacing(1),
         },
         chipDisabled: {
             pointerEvents: 'none',

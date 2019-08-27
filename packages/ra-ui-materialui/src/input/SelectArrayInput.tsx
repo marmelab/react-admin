@@ -7,6 +7,7 @@ import {
     MenuItem,
     InputLabel,
     Input,
+    FilledInput,
     FormHelperText,
     FormControl,
     Chip,
@@ -132,6 +133,7 @@ const SelectArrayInput: FunctionComponent<
     classes: classesOverride,
     className,
     label,
+    margin = 'dense',
     helperText,
     onBlur,
     onChange,
@@ -143,6 +145,7 @@ const SelectArrayInput: FunctionComponent<
     source,
     translateChoice,
     validate,
+    variant = 'filled',
     ...rest
 }) => {
     const classes = useStyles({ classes: classesOverride });
@@ -200,12 +203,13 @@ const SelectArrayInput: FunctionComponent<
 
     return (
         <FormControl
-            margin="normal"
+            margin={margin}
             className={classnames(classes.root, className)}
             error={touched && !!error}
+            variant={variant}
             {...sanitizeRestProps(rest)}
         >
-            <InputLabel htmlFor={id}>
+            <InputLabel htmlFor={id} margin={margin} shrink variant={variant}>
                 <FieldTitle
                     label={label}
                     source={source}
@@ -216,7 +220,13 @@ const SelectArrayInput: FunctionComponent<
             <Select
                 autoWidth
                 multiple
-                input={<Input id={id} />}
+                input={
+                    variant === 'standard' ? (
+                        <Input id={id} />
+                    ) : (
+                        <FilledInput id={id} />
+                    )
+                }
                 error={!!(touched && error)}
                 renderValue={(selected: any[]) => (
                     <div className={classes.chips}>
@@ -236,13 +246,15 @@ const SelectArrayInput: FunctionComponent<
                     </div>
                 )}
                 data-testid="selectArray"
+                margin={margin}
+                variant={variant}
                 {...input}
                 value={input.value || []}
                 {...options}
             >
                 {choices.map(renderMenuItem)}
             </Select>
-            {helperText || (touched && error) ? (
+            {(touched && error) || helperText ? (
                 <FormHelperText>
                     <InputHelperText
                         touched={touched}

@@ -31,6 +31,7 @@ const NullableBooleanInput: FunctionComponent<
     className,
     helperText,
     label,
+    margin = 'dense',
     onBlur,
     onChange,
     onFocus,
@@ -38,6 +39,7 @@ const NullableBooleanInput: FunctionComponent<
     resource,
     source,
     validate,
+    variant = 'filled',
     ...rest
 }) => {
     const classes = useStyles({});
@@ -64,7 +66,7 @@ const NullableBooleanInput: FunctionComponent<
             id={id}
             {...input}
             select
-            margin="normal"
+            margin={margin}
             label={
                 <FieldTitle
                     label={label}
@@ -82,6 +84,7 @@ const NullableBooleanInput: FunctionComponent<
                 />
             }
             className={classnames(classes.input, className)}
+            variant={variant}
             {...options}
             {...sanitizeRestProps(rest)}
         >
