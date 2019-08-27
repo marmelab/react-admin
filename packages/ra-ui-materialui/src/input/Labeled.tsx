@@ -66,7 +66,6 @@ export const Labeled = ({
     return (
         <FormControl
             className={className}
-            margin="normal"
             fullWidth={fullWidth}
             error={meta && meta.touched && !!meta.error}
         >
