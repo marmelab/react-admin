@@ -50,6 +50,7 @@ export const DateInput: FunctionComponent<
     source,
     resource,
     helperText,
+    margin = 'dense',
     onBlur,
     onChange,
     onFocus,
@@ -78,6 +79,7 @@ export const DateInput: FunctionComponent<
             id={id}
             {...input}
             variant={variant}
+            margin={margin}
             type="date"
             error={!!(touched && error)}
             helperText={
