@@ -96,7 +96,7 @@ export class RichTextInput extends Component {
             resource,
             isRequired,
             id,
-            classes,
+            classes = {},
             margin = 'dense',
             variant,
         } = this.props;
