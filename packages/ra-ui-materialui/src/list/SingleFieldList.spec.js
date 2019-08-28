@@ -2,7 +2,7 @@ import React from 'react';
 import assert from 'assert';
 import { shallow } from 'enzyme';
 
-import { SingleFieldList } from './SingleFieldList';
+import SingleFieldList from './SingleFieldList';
 import ChipField from '../field/ChipField';
 
 describe('<SingleFieldList />', () => {
