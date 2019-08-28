@@ -17,6 +17,9 @@ export const lightTheme = {
         MuiFilledInput: {
             root: {
                 backgroundColor: 'rgba(0, 0, 0, 0.04)',
+                '&$disabled': {
+                    backgroundColor: 'rgba(0, 0, 0, 0.04)',
+                },
             },
         },
     },
