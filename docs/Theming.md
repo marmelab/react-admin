@@ -68,14 +68,14 @@ import { makeStyles } from '@material-ui/core/styles';
 export const VisitorIcon = Icon;
 
 // The Filter component supports the `form` and `button` CSS classes. Here we override the `form` class
-const useStyles = makeStyles({
+const useFilterStyles = makeStyles({
     form: {
         backgroundColor: 'Lavender',
     },
 });
 
 const VisitorFilter = props => {
-    const classes = useStyles();
+    const classes = useFilterStyles();
     return (
         <Filter classes={classes} {...props}>
             <TextInput
@@ -92,7 +92,7 @@ const VisitorFilter = props => {
 };
 
 // The List component supports the `root`, `header`, `actions` and `noResults` CSS classes. Here we override the `header` and `actions` classes
-const useStyles = makeStyles({
+const useListStyles = makeStyles({
     actions: {
         backgroundColor: 'Lavender',
     },
@@ -102,7 +102,7 @@ const useStyles = makeStyles({
 });
 
 export const VisitorList = props => {
-    const classes = useStyles();
+    const classes = useListStyles();
     return (
         <List
             classes={classes}
