@@ -11,27 +11,25 @@ Whether you need to adjust a CSS rule for a single component, or change the colo
 
 Every react-admin component provides a `className` property, which is always applied to the root element.
 
-Here is an example customizing an `EditButton` component inside a `Datagrid`, using its `className` property and the `withStyles` Higher Order Component from Material-UI:
+Here is an example customizing an `EditButton` component inside a `Datagrid`, using its `className` property and the `makeStyle` hook from Material-UI:
 
 {% raw %}
 ```jsx
 import { NumberField, List, Datagrid, EditButton } from 'react-admin';
-import { withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 
-const styles = {
+const useStyles = makeStyles({
     button: {
         fontWeight: 'bold',
         // This is JSS syntax to target a deeper element using css selector, here the svg icon for this button
         '& svg': { color: 'orange' }
     },
-};
+});
 
-const MyEditButton = withStyles(styles)(({ classes, ...props }) => (
-    <EditButton
-        className={classes.button}
-        {...props}
-    />
-));
+const MyEditButton = props => {
+    const classes = useStyles();
+    return <EditButton className={classes.button} {...props} />;
+};
 
 export const ProductList = (props) => (
     <List {...props}>
@@ -65,65 +63,71 @@ import {
     TextInput,
 } from 'react-admin';
 import Icon from '@material-ui/icons/Person';
-import { withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 
 export const VisitorIcon = Icon;
 
 // The Filter component supports the `form` and `button` CSS classes. Here we override the `form` class
-const filterStyles = {
+const useFilterStyles = makeStyles({
     form: {
         backgroundColor: 'Lavender',
     },
+});
+
+const VisitorFilter = props => {
+    const classes = useFilterStyles();
+    return (
+        <Filter classes={classes} {...props}>
+            <TextInput
+                className={classes.searchInput}
+                label="pos.search"
+                source="q"
+                alwaysOn
+            />
+            <DateInput source="last_seen_gte" />
+            <NullableBooleanInput source="has_ordered" />
+            <NullableBooleanInput source="has_newsletter" defaultValue />
+        </Filter>
+    );
 };
 
-const VisitorFilter = withStyles(filterStyles)(({ classes, ...props }) => (
-    <Filter classes={classes} {...props}>
-        <TextInput
-            className={classes.searchInput}
-            label="pos.search"
-            source="q"
-            alwaysOn
-        />
-        <DateInput source="last_seen_gte" />
-        <NullableBooleanInput source="has_ordered" />
-        <NullableBooleanInput source="has_newsletter" defaultValue />
-    </Filter>
-));
-
 // The List component supports the `root`, `header`, `actions` and `noResults` CSS classes. Here we override the `header` and `actions` classes
-const listStyles = {
+const useListStyles = makeStyles({
     actions: {
         backgroundColor: 'Lavender',
     },
     header: {
         backgroundColor: 'Lavender',
     },
-};
+});
 
-export const VisitorList = withStyles(listStyles)(({ classes, ...props }) => (
-    <List
-        classes={classes}
-        {...props}
-        filters={<VisitorFilter />}
-        sort={{ field: 'last_seen', order: 'DESC' }}
-        perPage={25}
-    >
-        <Datagrid classes={classes} {...props}>
-            <DateField source="last_seen" type="date" />
-            <NumberField
-                source="nb_commands"
-                label="resources.customers.fields.commands"
-            />
-            <NumberField
-                source="total_spent"
-                options={{ style: 'currency', currency: 'USD' }}
-            />
-            <DateField source="latest_purchase" showTime />
-            <BooleanField source="has_newsletter" label="News." />
-            <EditButton />
-        </Datagrid>
-    </List>
-));
+export const VisitorList = props => {
+    const classes = useListStyles();
+    return (
+        <List
+            classes={classes}
+            {...props}
+            filters={<VisitorFilter />}
+            sort={{ field: 'last_seen', order: 'DESC' }}
+            perPage={25}
+        >
+            <Datagrid classes={classes} {...props}>
+                <DateField source="last_seen" type="date" />
+                <NumberField
+                    source="nb_commands"
+                    label="resources.customers.fields.commands"
+                />
+                <NumberField
+                    source="total_spent"
+                    options={{ style: 'currency', currency: 'USD' }}
+                />
+                <DateField source="latest_purchase" showTime />
+                <BooleanField source="has_newsletter" label="News." />
+                <EditButton />
+            </Datagrid>
+        </List>
+    )
+};
 ```
 {% endraw %}
 
@@ -142,16 +146,17 @@ Sometimes you want the format to depend on the value. The following example show
 {% raw %}
 ```jsx
 import { NumberField, List, Datagrid, EditButton } from 'react-admin';
-import { withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
 
-const coloredStyles = {
+const useStyles = makeStyles({
     small: { color: 'black' },
     big: { color: 'red' },
-};
+});
 
-const ColoredNumberField = withStyles(coloredStyles)(
-    ({ classes, ...props }) => (
+const ColoredNumberField = props => {
+    const classes = useStyles();
+    return (
         <NumberField
             className={classnames({
                 [classes.small]: props.record[props.source] < 100,
@@ -159,12 +164,13 @@ const ColoredNumberField = withStyles(coloredStyles)(
             })}
             {...props}
         />
-    ));
+    );
+};
 
 // Ensure the original component defaultProps are still applied as they may be used by its parents (such as the `Show` component):
 ColoredNumberField.defaultProps = NumberField.defaultProps;
 
-export const PostList = (props) => (
+export const PostList = props => (
     <List {...props}>
         <Datagrid>
             <TextField source="id" />
@@ -182,16 +188,17 @@ Furthermore, you may extract this highlighting strategy into an Higher Order Com
 {% raw %}
 ```jsx
 import { NumberField, List, Datagrid, EditButton } from 'react-admin';
-import { withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
 
-const coloredStyles = {
+const useStyles = makeStyles({
     small: { color: 'black' },
     big: { color: 'red' },
-};
+});
 
-const colored = WrappedComponent => withStyles(coloredStyles)(
-    ({ classes, ...props }) => (
+const colored = WrappedComponent => props => {
+    const classes = useStyles();
+    return (
         <WrappedComponent
             className={classnames({
                 [classes.small]: props.record[props.source] < 500,
@@ -199,7 +206,8 @@ const colored = WrappedComponent => withStyles(coloredStyles)(
             })}
             {...props}
         />
-    ));
+    )
+};
 
 
 const ColoredNumberField = colored(NumberField);
@@ -425,24 +433,25 @@ You can also customize the default icon by setting the `icon` prop to the `<User
 {% raw %}
 ``` jsx
 import { AppBar, UserMenu } from 'react-admin';
-import { withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
 
-const myCustomIconStyle = {
+const useStyles = makeStyles({
     avatar: {
         height: 30,
         width: 30,
     },
-};
+});
 
-const MyCustomIcon = withStyles(myCustomIconStyle)(
-    ({ classes }) => (
+const MyCustomIcon = () => {
+    const classes = useStyles();
+    return (
         <Avatar
             className={classes.avatar}
             src="https://marmelab.com/images/avatars/adrien.jpg"
         />
     )
-);
+};
 
 const MyUserMenu = props => (<UserMenu {...props} icon={MyCustomIcon} />);
 
@@ -477,10 +486,10 @@ For more custom layouts, write a component from scratch. It must contain a `{chi
 
 ```jsx
 // in src/MyLayout.js
-import React, { Component } from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { withStyles, createMuiTheme } from '@material-ui/core/styles';
+import { useSelector, useDispatch } from 'react-redux';
+import { makeStyles } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
 import {
     AppBar,
@@ -490,7 +499,7 @@ import {
     setSidebarVisibility,
 } from 'react-admin';
 
-const styles = theme => ({
+const useStyles = makeStyles(theme => ({
     root: {
         display: 'flex',
         flexDirection: 'column',
@@ -516,40 +525,38 @@ const styles = theme => ({
         marginTop: '4em',
         paddingLeft: 5,
     },
-});
+}));
 
-class MyLayout extends Component {
-    componentWillMount() {
-        this.props.setSidebarVisibility(true);
-    }
-
-    render() {
-        const {
-            children,
-            classes,
-            dashboard,
-            isLoading,
-            logout,
-            open,
-            title,
-        } = this.props;
-        return (
-            <div className={classes.root}>
-                <div className={classes.appFrame}>
-                    <AppBar title={title} open={open} logout={logout} />
-                    <main className={classes.contentWithSidebar}>
-                        <Sidebar>
-                            <Menu logout={logout} hasDashboard={!!dashboard} />
-                        </Sidebar>
-                        <div className={classes.content}>
-                            {children}
-                        </div>
-                    </main>
-                    <Notification />
-                </div>
+const MyLayout = ({ 
+    children,
+    dashboard,
+    logout,
+    title,
+}) => {
+    const classes = useStyles();
+    const dispatch = useDispatch();
+    const open = useSelector(state => state.admin.ui.sidebarOpen);
+    
+    useEffect(() => {
+        dispatch(setSidebarVisibility(true));
+    }, [setSidebarVisibility]);
+    
+    return (
+        <div className={classes.root}>
+            <div className={classes.appFrame}>
+                <AppBar title={title} open={open} logout={logout} />
+                <main className={classes.contentWithSidebar}>
+                    <Sidebar>
+                        <Menu logout={logout} hasDashboard={!!dashboard} />
+                    </Sidebar>
+                    <div className={classes.content}>
+                        {children}
+                    </div>
+                </main>
+                <Notification />
             </div>
-        );
-    }
+        </div>
+    );
 }
 
 MyLayout.propTypes = {
@@ -558,14 +565,11 @@ MyLayout.propTypes = {
         PropTypes.func,
         PropTypes.string,
     ]),
-    isLoading: PropTypes.bool.isRequired,
     logout: componentPropType,
-    setSidebarVisibility: PropTypes.func.isRequired,
     title: PropTypes.string.isRequired,
 };
 
-const mapStateToProps = state => ({ isLoading: state.admin.loading > 0 });
-export default connect(mapStateToProps, { setSidebarVisibility })(withStyles(styles)(MyLayout));
+export default MyLayout
 ```
 
 ## Customizing the AppBar Content
@@ -579,11 +583,11 @@ Here is an example customization for `<AppBar>` to include a company logo in the
 import React from 'react';
 import { AppBar } from 'react-admin';
 import Typography from '@material-ui/core/Typography';
-import { withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 
 import Logo from './Logo';
 
-const styles = {
+const useStyles = makeStyles({
     title: {
         flex: 1,
         textOverflow: 'ellipsis',
@@ -593,20 +597,23 @@ const styles = {
     spacer: {
         flex: 1,
     },
-};
+});
 
-const MyAppBar = withStyles(styles)(({ classes, ...props }) => (
-    <AppBar {...props}>
-        <Typography
-            variant="h6"
-            color="inherit"
-            className={classes.title}
-            id="react-admin-title"
-        />
-        <Logo />
-        <span className={classes.spacer} />
-    </AppBar>
-));
+const MyAppBar = props => {
+    const classes = useStyles();
+    return (
+        <AppBar {...props}>
+            <Typography
+                variant="h6"
+                color="inherit"
+                className={classes.title}
+                id="react-admin-title"
+            />
+            <Logo />
+            <span className={classes.spacer} />
+        </AppBar>
+    );
+};
 
 export default MyAppBar;
 ```
@@ -672,14 +679,16 @@ If you want to add or remove menu items, for instance to link to non-resources p
 ```jsx
 // in src/Menu.js
 import React, { createElement } from 'react';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useMediaQuery } from '@material-ui/core';
 import { MenuItemLink, getResources } from 'react-admin';
 import { withRouter } from 'react-router-dom';
 import LabelIcon from '@material-ui/icons/Label';
 
-const Menu = ({ resources, onMenuClick, open, logout }) => {
+const Menu = ({ onMenuClick, logout }) => {
     const isXSmall = useMediaQuery(theme => theme.breakpoints.down('xs'));
+    const open = useSelector(state => state.admin.ui.sidebarOpen);
+    const resources = useSelector(getResources);
     return (
         <div>
             {resources.map(resource => (
@@ -704,12 +713,7 @@ const Menu = ({ resources, onMenuClick, open, logout }) => {
     );
 }
 
-const mapStateToProps = state => ({
-    open: state.admin.ui.sidebarOpen,
-    resources: getResources(state),
-});
-
-export default withRouter(connect(mapStateToProps)(Menu));
+export default withRouter(Menu);
 ```
 
 **Tip**: Note the `MenuItemLink` component. It must be used to avoid unwanted side effects in mobile views.
@@ -764,14 +768,16 @@ If the default active style does not suit your tastes, you can override it by pa
 ```jsx
 // in src/Menu.js
 import React, { createElement } from 'react';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useMediaQuery } from '@material-ui/core';
 import { MenuItemLink, getResources } from 'react-admin';
 import { withRouter } from 'react-router-dom';
 import LabelIcon from '@material-ui/icons/Label';
 
-const Menu = ({ resources, onMenuClick, open, logout }) => {
+const Menu = ({ onMenuClick, logout }) => {
     const isXSmall = useMediaQuery(theme => theme.breakpoints.down('xs'));
+    const open = useSelector(state => state.admin.ui.sidebarOpen);
+    const resources = useSelector(getResources);
     return (
         <div>
             {resources.map(resource => (
@@ -796,12 +802,7 @@ const Menu = ({ resources, onMenuClick, open, logout }) => {
     );
 }
 
-const mapStateToProps = state => ({
-    open: state.admin.ui.sidebarOpen,
-    resources: getResources(state),
-});
-
-export default withRouter(connect(mapStateToProps)(Menu));
+export default withRouter(Menu);
 ```
 
 ## Using a Custom Login Page
@@ -872,34 +873,37 @@ import React from 'react';
 import Button from '@material-ui/core/Button';
 import ErrorIcon from '@material-ui/icons/Report';
 import History from '@material-ui/icons/History';
-import { Title } from 'react-admin';
+import { Title, useTranslate } from 'react-admin';
 
 const MyError = ({
     error,
     errorInfo,
     ...rest
-}) => (
-    <div>
-        <Title title="Error" />
-        <h1><ErrorIcon /> Something Went Wrong </h1>
-        <div>A client error occurred and your request couldn't be completed.</div>
-        {process.env.NODE_ENV !== 'production' && (
-            <details>
-                <h2>{translate(error.toString())}</h2>
-                {errorInfo.componentStack}
-            </details>
-        )}
+}) => {
+    const translate = useTranslate();
+    return (
         <div>
-            <Button
-                variant="contained"
-                icon={<History />}
-                onClick={() => history.go(-1)}
-            >
-                Back
-            </Button>
+            <Title title="Error" />
+            <h1><ErrorIcon /> Something Went Wrong </h1>
+            <div>A client error occurred and your request couldn't be completed.</div>
+            {process.env.NODE_ENV !== 'production' && (
+                <details>
+                    <h2>{translate(error.toString())}</h2>
+                    {errorInfo.componentStack}
+                </details>
+            )}
+            <div>
+                <Button
+                    variant="contained"
+                    icon={<History />}
+                    onClick={() => history.go(-1)}
+                >
+                    Back
+                </Button>
+            </div>
         </div>
-    </div>
-);
+    );
+}
 
 export default MyError;
 ```
