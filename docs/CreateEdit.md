@@ -363,6 +363,8 @@ Here are all the props accepted by the `<SimpleForm>` component:
 * [`submitOnEnter`](#submit-on-enter)
 * [`redirect`](#redirection-after-submission)
 * [`toolbar`](#toolbar)
+* [`variant`](#variant)
+* [`margin`](#margin)
 * `save`: The function invoked when the form is submitted. This is passed automatically by `react-admin` when the form component is used inside `Create` and `Edit` components.
 * `saving`: A boolean indicating whether a save operation is ongoing. This is passed automatically by `react-admin` when the form component is used inside `Create` and `Edit` components.
 
@@ -394,6 +396,8 @@ Here are all the props accepted by the `<TabbedForm>` component:
 * [`submitOnEnter`](#submit-on-enter)
 * [`redirect`](#redirection-after-submission)
 * [`toolbar`](#toolbar)
+* [`variant`](#variant)
+* [`margin`](#margin)
 * `save`: The function invoked when the form is submitted. This is passed automatically by `react-admin` when the form component is used inside `Create` and `Edit` components.
 * `saving`: A boolean indicating whether a save operation is ongoing. This is passed automatically by `react-admin` when the form component is used inside `Create` and `Edit` components.
 
@@ -440,6 +444,7 @@ To style the tabs, the `<FormTab>` component accepts two props:
 - `contentClassName` is passed to the tab *content*
 
 ### TabbedFormTabs
+
 By default `<TabbedForm>` uses `<TabbedFormTabs>`, an internal react-admin component to renders tabs. You can pass a custom component as the `tabs` prop to override the default component. Besides, props from `<TabbedFormTabs>` are passed to material-ui's `<Tabs>` component inside `<TabbedFormTabs>`.
 
 The following example shows how to make use of scrollable `<Tabs>`. Pass the `scrollable` prop to `<TabbedFormTabs>` and pass that as the `tabs` prop to `<TabbedForm>`
@@ -826,6 +831,34 @@ Here are the props received by the `Toolbar` component when passed as the `toolb
 **Tip**: Don't forget to also set the `redirect` prop of the Form component to handle submission by the `ENTER` key.
 
 **Tip**: To alter the form values before submitting, you should use the `handleSubmit` prop. See [Altering the Form Values before Submitting](./Actions.md#altering-the-form-values-before-submitting) for more information and examples.
+
+## Variant
+
+By default, react-admin input components use the Material Design "filled" variant. If you want to use the "standard" or "outlined" variants, you can either set the `variant` prop on each Input component individually, or set the `variant` prop directly on the Form component. In that case, the Form component will transmit the `variant` to each Input.
+
+```jsx
+export const PostEdit = (props) => (
+    <Edit {...props}>
+        <SimpleForm variant="standard">
+            ...
+        </SimpleForm>
+    </Edit>
+);
+```
+
+## Margin
+
+By default, react-admin input components use the Material Design "dense" mrgin. If you want to use the "normal" or "none" margins, you can either set the `margin` prop on each Input component individually, or set the `margin` prop directly on the Form component. In that case, the Form component will transmit the `margin` to each Input.
+
+```jsx
+export const PostEdit = (props) => (
+    <Edit {...props}>
+        <SimpleForm margin="normal">
+            ...
+        </SimpleForm>
+    </Edit>
+);
+```
 
 ## Customizing Input Container Styles
 
