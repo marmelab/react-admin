@@ -200,7 +200,7 @@ const FileInput: FunctionComponent<
                         ))}
                     </div>
                 )}
-                {helperText || (touched && error) ? (
+                {(touched && error) || helperText ? (
                     <FormHelperText>
                         <InputHelperText
                             touched={touched}

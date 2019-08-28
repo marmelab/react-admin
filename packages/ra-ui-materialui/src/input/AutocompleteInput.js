@@ -294,11 +294,13 @@ export class AutocompleteInput extends React.Component {
                 inputRef={storeInputRef}
                 error={!!(touched && error)}
                 helperText={
-                    <InputHelperText
-                        touched={touched}
-                        error={error}
-                        helperText={helperText}
-                    />
+                    (touched && error) || helperText ? (
+                        <InputHelperText
+                            touched={touched}
+                            error={error}
+                            helperText={helperText}
+                        />
+                    ) : null
                 }
                 name={input.name}
                 {...options}

@@ -35,6 +35,7 @@ const NumberInput: FunctionComponent<
 > = ({
     helperText,
     label,
+    margin = 'dense',
     options,
     source,
     step,
@@ -70,11 +71,13 @@ const NumberInput: FunctionComponent<
             variant={variant}
             error={!!(touched && error)}
             helperText={
-                <InputHelperText
-                    touched={touched}
-                    error={error}
-                    helperText={helperText}
-                />
+                (touched && error) || helperText ? (
+                    <InputHelperText
+                        touched={touched}
+                        error={error}
+                        helperText={helperText}
+                    />
+                ) : null
             }
             step={step}
             label={
@@ -85,6 +88,7 @@ const NumberInput: FunctionComponent<
                     isRequired={isRequired}
                 />
             }
+            margin={margin}
             {...options}
             {...sanitizeRestProps(rest)}
         />

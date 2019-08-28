@@ -277,11 +277,13 @@ export class AutocompleteArrayInput extends React.Component {
                 inputRef={storeInputRef}
                 error={touched && !!error}
                 helperText={
-                    <InputHelperText
-                        touched={touched}
-                        error={error}
-                        helperText={helperText}
-                    />
+                    (touched && error) || helperText ? (
+                        <InputHelperText
+                            touched={touched}
+                            error={error}
+                            helperText={helperText}
+                        />
+                    ) : null
                 }
                 chipRenderer={this.renderChip}
                 label={
