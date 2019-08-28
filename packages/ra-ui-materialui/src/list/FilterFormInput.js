@@ -14,9 +14,7 @@ const sanitizeRestProps = ({ alwaysOn, ...props }) => props;
 const useStyles = makeStyles(theme => ({
     body: { display: 'flex', alignItems: 'flex-end' },
     spacer: { width: theme.spacing(2) },
-    hideButton: {
-        marginBottom: theme.spacing(2),
-    },
+    hideButton: {},
 }));
 
 const FilterFormInput = ({
