@@ -724,6 +724,8 @@ import { bitcoinRateReceived as bitcoinRateReceivedAction } from './bitcoinRateR
 
 class BitCoinRate extends Component {
     componentWillMount() {
+        const {bitcoinRateReceived} = this.props
+
         fetch('https://blockchain.info/fr/ticker')
             .then(response => response.json())
             .then(rates => rates.USD['15m'])
