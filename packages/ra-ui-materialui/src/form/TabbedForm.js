@@ -10,12 +10,16 @@ import { makeStyles } from '@material-ui/core/styles';
 import { useTranslate } from 'ra-core';
 
 import Toolbar from './Toolbar';
-import CardContentInner from '../layout/CardContentInner';
 import TabbedFormTabs from './TabbedFormTabs';
 import useInitializeFormWithRecord from './useInitializeFormWithRecord';
 
 const useStyles = makeStyles(theme => ({
     errorTabButton: { color: theme.palette.error.main },
+    content: {
+        paddingTop: theme.spacing(1),
+        paddingLeft: theme.spacing(2),
+        paddingRight: theme.spacing(2),
+    },
 }));
 
 const TabbedForm = ({ initialValues, ...props }) => {
@@ -131,7 +135,7 @@ export const TabbedFormView = ({
                 children
             )}
             <Divider />
-            <CardContentInner>
+            <div className={classes.content}>
                 {/* All tabs are rendered (not only the one in focus), to allow validation
                 on tabs not in focus. The tabs receive a `hidden` property, which they'll
                 use to hide the tab using CSS if it's not the one in focus.
@@ -157,7 +161,7 @@ export const TabbedFormView = ({
                             </Route>
                         )
                 )}
-            </CardContentInner>
+            </div>
             {toolbar &&
                 React.cloneElement(toolbar, {
                     basePath,
