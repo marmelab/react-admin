@@ -99,14 +99,16 @@ export class RichTextInput extends Component {
                 className="ra-rich-text-input"
                 margin="dense"
             >
-                <InputLabel shrink htmlFor={id} className={classes.label}>
-                    <FieldTitle
-                        label={label}
-                        source={source}
-                        resource={resource}
-                        isRequired={isRequired}
-                    />
-                </InputLabel>
+                {label !== '' && label !== false && (
+                    <InputLabel shrink htmlFor={id} className={classes.label}>
+                        <FieldTitle
+                            label={label}
+                            source={source}
+                            resource={resource}
+                            isRequired={isRequired}
+                        />
+                    </InputLabel>
+                )}
                 <div data-testid="quill" ref={this.updateDivRef} />
                 <FormHelperText
                     error={!!error}
