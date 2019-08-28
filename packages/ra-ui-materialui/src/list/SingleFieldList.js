@@ -23,8 +23,8 @@ const sanitizeRestProps = ({
 }) => props;
 
 // Our handleClick does nothing as we wrap the children inside a Link but it is
-// required fo ChipField which uses a Chip from material-ui.
-// The material-ui Chip requires an onClick handler to behave like a clickable element
+// required by ChipField, which uses a Chip from material-ui.
+// The material-ui Chip requires an onClick handler to behave like a clickable element.
 const handleClick = () => {};
 
 /**
