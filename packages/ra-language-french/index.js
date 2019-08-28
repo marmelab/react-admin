@@ -29,6 +29,7 @@ module.exports = {
         boolean: {
             true: 'Oui',
             false: 'Non',
+            null: '',
         },
         page: {
             create: 'Créer %{name}',
