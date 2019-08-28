@@ -7,6 +7,12 @@ import {
 import useDataProvider, { DataProviderHookFunction } from './useDataProvider';
 import { useCallback } from 'react';
 
+/**
+ * This version of the useDataProvider hook ensure Query and Mutation components are still usable
+ * with side effects declared as objects.
+ *
+ * This is for backward compatibility only and will be removed in next major version.
+ */
 const useDataProviderWithDeclarativeSideEffects = (): DataProviderHookFunction => {
     const dataProvider = useDataProvider();
     const notify = useNotify();
