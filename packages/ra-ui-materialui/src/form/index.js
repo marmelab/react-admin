@@ -5,7 +5,6 @@ import SimpleFormIterator from './SimpleFormIterator';
 import TabbedForm from './TabbedForm';
 import TabbedFormTabs from './TabbedFormTabs';
 import Toolbar from './Toolbar';
-import useInitializeFormWithRecord from './useInitializeFormWithRecord';
 
 export {
     FormInput,
@@ -15,5 +14,4 @@ export {
     TabbedForm,
     TabbedFormTabs,
     Toolbar,
-    useInitializeFormWithRecord,
 };

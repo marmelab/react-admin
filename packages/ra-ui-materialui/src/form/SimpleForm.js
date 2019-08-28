@@ -4,12 +4,11 @@ import { Form } from 'react-final-form';
 import arrayMutators from 'final-form-arrays';
 import { useSelector } from 'react-redux';
 import classnames from 'classnames';
-import { useTranslate } from 'ra-core';
+import { useTranslate, useInitializeFormWithRecord } from 'ra-core';
 
 import FormInput from './FormInput';
 import Toolbar from './Toolbar';
 import CardContentInner from '../layout/CardContentInner';
-import useInitializeFormWithRecord from './useInitializeFormWithRecord';
 
 const SimpleForm = ({ initialValues, ...props }) => {
     let redirect = useRef(props.redirect);
