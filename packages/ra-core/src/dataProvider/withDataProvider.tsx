@@ -1,7 +1,7 @@
 import React from 'react';
 import { DataProvider } from '../types';
 
-import useDataProvider from './useDataProvider';
+import useDataProvider from './useDataProviderWithDeclarativeSideEffects';
 
 export interface DataProviderProps {
     dataProvider: DataProvider;
