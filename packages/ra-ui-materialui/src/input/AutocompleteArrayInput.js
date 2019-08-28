@@ -48,6 +48,9 @@ const styles = theme =>
         },
         chip: {
             marginRight: theme.spacing(1),
+            '&.standard': {
+                marginTop: theme.spacing(1),
+            },
         },
         chipDisabled: {
             pointerEvents: 'none',
@@ -230,6 +233,7 @@ export class AutocompleteArrayInput extends React.Component {
             helperText,
             fullWidth,
             options: { InputProps, suggestionsContainerProps, ...options },
+            variant,
         } = this.props;
 
         const {
@@ -294,6 +298,7 @@ export class AutocompleteArrayInput extends React.Component {
                         isRequired={isRequired}
                     />
                 }
+                variant={variant}
                 {...other}
                 {...finalOptions}
             />
@@ -304,7 +309,7 @@ export class AutocompleteArrayInput extends React.Component {
         { value, isFocused, isDisabled, handleClick, handleDelete },
         key
     ) => {
-        const { classes = {}, choices } = this.props;
+        const { classes = {}, choices, variant } = this.props;
 
         const suggestion = choices.find(
             choice => this.getSuggestionValue(choice) === value
@@ -313,7 +318,7 @@ export class AutocompleteArrayInput extends React.Component {
         return (
             <Chip
                 key={key}
-                className={classNames(classes.chip, {
+                className={classNames(classes.chip, variant, {
                     [classes.chipDisabled]: isDisabled,
                     [classes.chipFocused]: isFocused,
                 })}

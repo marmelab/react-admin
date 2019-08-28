@@ -81,6 +81,9 @@ export default theme => ({
             '& .standard .ql-editor': {
                 backgroundColor: 'white',
             },
+            '& .outlined .ql-editor': {
+                backgroundColor: 'white',
+            },
             '& .ql-toolbar.ql-snow': {
                 margin: '0.5rem 0',
                 border: 0,

@@ -21,8 +21,8 @@ const chipInputStyles = createStyles({
     },
 });
 
-const AutocompleteArrayInputChip = props => (
-    <ChipInput variant="filled" {...props} />
+const AutocompleteArrayInputChip = ({ variant = 'filled', ...props }) => (
+    <ChipInput variant={variant} {...props} />
 );
 
 export default withStyles(chipInputStyles)(AutocompleteArrayInputChip);

@@ -242,21 +242,24 @@ export class AutocompleteInput extends React.Component {
     };
 
     renderInput = inputProps => {
-        const { helperText, input } = this.props;
+        const {
+            helperText,
+            input,
+            variant = 'filled',
+            margin = 'dense',
+        } = this.props;
         const {
             autoFocus,
             className,
             classes = {},
             isRequired,
             label,
-            margin = 'dense',
             meta,
             onChange,
             resource,
             source,
             value,
             ref,
-            variant = 'filled',
             options: { InputProps, suggestionsContainerProps, ...options },
             ...other
         } = inputProps;
