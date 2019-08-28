@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FunctionComponent, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
@@ -23,6 +23,20 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
+interface Props {
+    children: ReactElement;
+    className?: string;
+    classes?: object;
+    fullWidth?: boolean;
+    id: string;
+    input: any;
+    isRequired: boolean;
+    label?: string;
+    meta: any;
+    resource: string;
+    source: string;
+    [key: string]: any;
+}
 /**
  * Use any component as read-only Input, labeled just like other Inputs.
  *
@@ -38,7 +52,7 @@ const useStyles = makeStyles(theme => ({
  *     <FooComponent source="title" />
  * </Labeled>
  */
-export const Labeled = ({
+export const Labeled: FunctionComponent<Props> = ({
     children,
     className,
     classes: classesOverride,
@@ -54,11 +68,11 @@ export const Labeled = ({
 }) => {
     const classes = useStyles({ classes: classesOverride });
     if (!label && !source) {
+        // @ts-ignore
+        const name = children && children.type && children.type.name;
+
         throw new Error(
-            `Cannot create label for component <${children &&
-                children.type &&
-                children.type
-                    .name}>: You must set either the label or source props. You can also disable automated label insertion by setting 'addLabel: false' in the component default props`
+            `Cannot create label for component <${name}>: You must set either the label or source props. You can also disable automated label insertion by setting 'addLabel: false' in the component default props`
         );
     }
     const restProps = fullWidth ? { ...rest, fullWidth } : rest;

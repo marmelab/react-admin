@@ -195,10 +195,11 @@ export const ReferenceInputView = ({
     basePath,
     children,
     choices,
-    classes,
-    className,
+    classes = undefined,
+    className = undefined,
     error = undefined,
     helperText = undefined,
+    id,
     input,
     isRequired,
     loading,
@@ -219,20 +220,35 @@ export const ReferenceInputView = ({
     if (loading) {
         return (
             <Labeled
+                id={id}
                 label={label}
                 source={source}
                 resource={resource}
                 className={className}
                 isRequired={isRequired}
+                meta={meta}
+                input={input}
             >
                 <LinearProgress />
             </Labeled>
         );
     }
 
+    // This is not a final-form error but an unrecoverable error from the
+    // useReferenceInputController hook
     if (error) {
         return <ReferenceError label={label} error={error} />;
     }
+
+    // When the useReferenceInputController returns a warning, it means there it
+    // had an issue trying to load the referenced record
+    // We display it by overriding the final-form meta
+    const finalMeta = warning
+        ? {
+              ...meta,
+              error: warning,
+          }
+        : meta;
 
     return cloneElement(children, {
         allowEmpty,
@@ -242,8 +258,7 @@ export const ReferenceInputView = ({
         isRequired,
         label,
         resource,
-        helperText: warning || helperText,
-        meta,
+        meta: finalMeta,
         source,
         choices,
         basePath,

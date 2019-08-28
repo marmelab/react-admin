@@ -795,7 +795,15 @@ const OrderEdit = (props) => (
 );
 ```
 
+## Reference inputs used to inject an helperText inside meta
+
+`<ReferenceInput>` used to inject an `helperText` inside `meta` when they were unable to retrieve referenced records.
+
+They now set this issue as an error inside the meta just like final-form does and won't override their child `helperText` anymore.
+
+Furthermore, they don't support the `helperText` at all anymore as this is a pure UI concern which should be handled by their child.
+
 ## helperText is handled the same way in all components
 
-Some components (such as `<SelectArrayInput />`) accepted the `helperText` in their `meta` prop. They now receive it directly in their props.
-Besides, all components now display their error or their helperText, but not both at the same time.
+Somewhat related to the previous point, some components (such as `<SelectArrayInput>`) accepted the `helperText` in their `meta` prop. They now receive it directly in their props.
+Besides, all components now display their error or their helper text, but not both at the same time.

@@ -1,10 +1,12 @@
 import React from 'react';
-import assert from 'assert';
-import { shallow } from 'enzyme';
+import expect from 'expect';
+import { render, cleanup } from '@testing-library/react';
 import { ReferenceInputView } from './ReferenceInput';
 
 describe('<ReferenceInput />', () => {
     const defaultProps = {
+        allowEmpty: false,
+        basePath: '/posts',
         meta: {},
         input: {},
         label: '',
@@ -12,11 +14,20 @@ describe('<ReferenceInput />', () => {
         reference: 'posts',
         resource: 'comments',
         source: 'post_id',
+        choices: [],
+        id: 'post_id',
+        isRequired: false,
+        setFilter: jest.fn(),
+        setPagination: jest.fn(),
+        setSort: jest.fn(),
+        loading: false,
     };
     const MyComponent = () => <span id="mycomponent" />;
 
-    it('should render a LinearProgress if isLoading is true', () => {
-        const wrapper = shallow(
+    afterEach(cleanup);
+
+    it('should render a LinearProgress if loading is true', () => {
+        const { queryByRole } = render(
             <ReferenceInputView
                 {...{
                     ...defaultProps,
@@ -27,14 +38,12 @@ describe('<ReferenceInput />', () => {
                 <MyComponent />
             </ReferenceInputView>
         );
-        const MyComponentElement = wrapper.find('MyComponent');
-        assert.equal(MyComponentElement.length, 0);
-        const LinearProgressElement = wrapper.find('LinearProgress');
-        assert.equal(LinearProgressElement.length, 1);
+
+        expect(queryByRole('progressbar')).not.toBeNull();
     });
 
-    it('should not render a LinearProgress if isLoading is false', () => {
-        const wrapper = shallow(
+    it('should not render a LinearProgress if loading is false', () => {
+        const { queryByRole } = render(
             <ReferenceInputView
                 {...{
                     ...defaultProps,
@@ -45,15 +54,12 @@ describe('<ReferenceInput />', () => {
                 <MyComponent />
             </ReferenceInputView>
         );
-        const LinearProgressElement = wrapper.find('LinearProgress');
-        assert.equal(LinearProgressElement.length, 0);
-        const MyComponentElement = wrapper.find('MyComponent');
-        assert.equal(MyComponentElement.length, 1);
-        assert.deepEqual(MyComponentElement.prop('choices'), [{ id: 1 }]);
+
+        expect(queryByRole('progressbar')).toBeNull();
     });
 
     it('should display an error if error is defined', () => {
-        const wrapper = shallow(
+        const { queryByDisplayValue } = render(
             <ReferenceInputView
                 {...{
                     ...defaultProps,
@@ -64,15 +70,13 @@ describe('<ReferenceInput />', () => {
                 <MyComponent />
             </ReferenceInputView>
         );
-        const MyComponentElement = wrapper.find('MyComponent');
-        assert.equal(MyComponentElement.length, 0);
-        const ErrorElement = wrapper.find('ReferenceError');
-        assert.equal(ErrorElement.length, 1);
-        assert.equal(ErrorElement.prop('error'), 'fetch error');
+        expect(queryByDisplayValue('fetch error')).not.toBeNull();
     });
 
-    it('should pass warning as helperText to the children if defined', () => {
-        const wrapper = shallow(
+    it('should pass warning as error to the children if defined', () => {
+        const Component = ({ meta = { error: null } }) => meta.error;
+
+        const { queryByText } = render(
             <ReferenceInputView
                 {...{
                     ...defaultProps,
@@ -81,33 +85,10 @@ describe('<ReferenceInput />', () => {
                     input: { value: 1 },
                 }}
             >
-                <MyComponent />
-            </ReferenceInputView>
-        );
-        const ReferenceLoadingProgressElement = wrapper.find(
-            'ReferenceLoadingProgress'
-        );
-        assert.equal(ReferenceLoadingProgressElement.length, 0);
-        const ErrorElement = wrapper.find('ReferenceError');
-        assert.equal(ErrorElement.length, 0);
-        const MyComponentElement = wrapper.find('MyComponent');
-        assert.equal(MyComponentElement.length, 1);
-        assert.deepEqual(MyComponentElement.prop('helperText'), 'fetch error');
-        assert.deepEqual(MyComponentElement.prop('choices'), [{ id: 1 }]);
-    });
-
-    it('should pass meta down to child component', () => {
-        const wrapper = shallow(
-            <ReferenceInputView
-                {...defaultProps}
-                allowEmpty
-                meta={{ touched: false }}
-            >
-                <MyComponent />
+                <Component />
             </ReferenceInputView>
         );
 
-        const myComponent = wrapper.find('MyComponent');
-        assert.notEqual(myComponent.prop('meta', undefined));
+        expect(queryByText('fetch error')).not.toBeNull();
     });
 });
