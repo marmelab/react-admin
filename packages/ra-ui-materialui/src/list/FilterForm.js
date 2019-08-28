@@ -15,6 +15,7 @@ const useStyles = makeStyles(theme => ({
         display: 'flex',
         alignItems: 'flex-end',
         flexWrap: 'wrap',
+        minHeight: theme.spacing(9.5),
     },
     clearFix: { clear: 'right' },
 }));
