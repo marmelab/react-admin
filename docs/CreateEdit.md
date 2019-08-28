@@ -848,7 +848,7 @@ export const PostEdit = (props) => (
 
 ## Margin
 
-By default, react-admin input components use the Material Design "dense" mrgin. If you want to use the "normal" or "none" margins, you can either set the `margin` prop on each Input component individually, or set the `margin` prop directly on the Form component. In that case, the Form component will transmit the `margin` to each Input.
+By default, react-admin input components use the Material Design "dense" margin. If you want to use the "normal" or "none" margins, you can either set the `margin` prop on each Input component individually, or set the `margin` prop directly on the Form component. In that case, the Form component will transmit the `margin` to each Input.
 
 ```jsx
 export const PostEdit = (props) => (
