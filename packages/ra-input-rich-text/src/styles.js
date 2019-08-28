@@ -11,7 +11,6 @@ export default theme => ({
                 fontFamily: 'Roboto, sans-serif',
                 padding: '6px 12px',
                 backgroundColor: 'rgba(0, 0, 0, 0.04)',
-
                 '&:hover::before': {
                     backgroundColor: 'rgba(0, 0, 0, 1)',
                     height: 2,
@@ -79,7 +78,9 @@ export default theme => ({
                     transform: 'scaleX(1)',
                 },
             },
-
+            '& .standard .ql-editor': {
+                backgroundColor: 'white',
+            },
             '& .ql-toolbar.ql-snow': {
                 margin: '0.5rem 0',
                 border: 0,

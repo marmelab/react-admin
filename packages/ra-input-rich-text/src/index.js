@@ -90,14 +90,23 @@ export class RichTextInput extends Component {
     };
 
     render() {
-        const { label, source, resource, isRequired, id, classes } = this.props;
+        const {
+            label,
+            source,
+            resource,
+            isRequired,
+            id,
+            classes,
+            margin = 'dense',
+            variant,
+        } = this.props;
         const { touched, error, helperText = false } = this.props.meta;
         return (
             <FormControl
                 error={!!(touched && error)}
                 fullWidth={this.props.fullWidth}
                 className="ra-rich-text-input"
-                margin="dense"
+                margin={margin}
             >
                 {label !== '' && label !== false && (
                     <InputLabel shrink htmlFor={id} className={classes.label}>
@@ -109,7 +118,11 @@ export class RichTextInput extends Component {
                         />
                     </InputLabel>
                 )}
-                <div data-testid="quill" ref={this.updateDivRef} />
+                <div
+                    data-testid="quill"
+                    ref={this.updateDivRef}
+                    className={variant}
+                />
                 <FormHelperText
                     error={!!error}
                     className={!!error ? 'ra-rich-text-input-error' : ''}
