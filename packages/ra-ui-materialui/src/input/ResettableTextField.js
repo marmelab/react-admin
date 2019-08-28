@@ -6,8 +6,7 @@ import IconButton from '@material-ui/core/IconButton';
 import MuiTextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
 import ClearIcon from '@material-ui/icons/Clear';
-
-import { translate } from 'ra-core';
+import { useTranslate } from 'react-admin';
 
 const useStyles = makeStyles({
     clearIcon: {
@@ -30,7 +29,6 @@ const useStyles = makeStyles({
  * An override of the default Material-UI TextField which is resettable
  */
 function ResettableTextField({
-    translate,
     classes: classesOverride,
     clearAlwaysVisible,
     InputProps,
@@ -43,6 +41,7 @@ function ResettableTextField({
 }) {
     const [showClear, setShowClear] = useState(false);
     const classes = useStyles({ classes: classesOverride });
+    const translate = useTranslate();
 
     const { onChange, onFocus, onBlur } = props;
     const handleClickClearButton = useCallback(
@@ -132,8 +131,7 @@ ResettableTextField.propTypes = {
     onChange: PropTypes.func.isRequired,
     onFocus: PropTypes.func,
     resettable: PropTypes.bool,
-    translate: PropTypes.func.isRequired,
     value: PropTypes.any.isRequired,
 };
 
-export default translate(ResettableTextField);
+export default ResettableTextField;
