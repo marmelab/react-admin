@@ -21,16 +21,13 @@ const useStyles = makeStyles(theme => ({
             theme.palette.type === 'light'
                 ? lighten(theme.palette.primary.light, 0.85)
                 : theme.palette.primary.dark,
-        minHeight: theme.spacing(9),
-        height: theme.spacing(9),
+        minHeight: theme.spacing(8),
+        height: theme.spacing(8),
         transition: `${theme.transitions.create(
             'height'
         )}, ${theme.transitions.create('min-height')}`,
     },
-    buttons: {
-        paddingTop: theme.spacing(1),
-        paddingBottom: 0,
-    },
+    buttons: {},
     collapsed: {
         minHeight: 0,
         height: 0,
