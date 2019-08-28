@@ -14,6 +14,8 @@ const useInitializeFormWithRecord = (form, record) => {
         form.batch(() => {
             Object.keys(record).forEach(key => {
                 form.change(key, record[key]);
+                // Ensure the field stay pristine
+                form.resetFieldState(key);
             });
         });
     }, []); // eslint-disable-line
