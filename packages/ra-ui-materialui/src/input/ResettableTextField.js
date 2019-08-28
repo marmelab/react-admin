@@ -6,7 +6,7 @@ import IconButton from '@material-ui/core/IconButton';
 import MuiTextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
 import ClearIcon from '@material-ui/icons/Clear';
-import { useTranslate } from 'react-admin';
+import { useTranslate } from 'ra-core';
 
 const useStyles = makeStyles({
     clearIcon: {
