@@ -99,32 +99,11 @@ const useQuery = (
     const dataProviderWithDeclarativeSideEffects = useDataProviderWithDeclarativeSideEffects();
 
     useEffect(() => {
-        if (options.withDeclarativeSideEffectsSupport) {
-            dataProviderWithDeclarativeSideEffects(
-                type,
-                resource,
-                payload,
-                options
-            )
-                .then(({ data, total }) => {
-                    setState({
-                        data,
-                        total,
-                        loading: false,
-                        loaded: true,
-                    });
-                })
-                .catch(error => {
-                    setState({
-                        error,
-                        loading: false,
-                        loaded: false,
-                    });
-                });
-            return;
-        }
+        const dataProviderWithSideEffects = options.withDeclarativeSideEffectsSupport
+            ? dataProviderWithDeclarativeSideEffects
+            : dataProvider;
 
-        dataProvider(type, resource, payload, options)
+        dataProviderWithSideEffects(type, resource, payload, options)
             .then(({ data, total }) => {
                 setState({
                     data,

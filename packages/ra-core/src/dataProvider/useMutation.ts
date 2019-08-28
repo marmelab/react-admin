@@ -103,32 +103,11 @@ const useMutation = (
         (event, callTimePayload = {}, callTimeOptions = {}): void => {
             setState({ loading: true });
 
-            if (options.withDeclarativeSideEffectsSupport) {
-                dataProviderWithDeclarativeSideEffects(
-                    type,
-                    resource,
-                    merge({}, payload, callTimePayload),
-                    merge({}, options, callTimeOptions)
-                )
-                    .then(({ data, total }) => {
-                        setState({
-                            data,
-                            total,
-                            loading: false,
-                            loaded: true,
-                        });
-                    })
-                    .catch(errorFromResponse => {
-                        setState({
-                            error: errorFromResponse,
-                            loading: false,
-                            loaded: false,
-                        });
-                    });
-                return;
-            }
+            const dataProviderWithSideEffects = options.withDeclarativeSideEffectsSupport
+                ? dataProviderWithDeclarativeSideEffects
+                : dataProvider;
 
-            dataProvider(
+            dataProviderWithSideEffects(
                 type,
                 resource,
                 merge({}, payload, callTimePayload),
