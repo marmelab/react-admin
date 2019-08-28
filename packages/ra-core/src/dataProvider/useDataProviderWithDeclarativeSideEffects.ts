@@ -17,10 +17,7 @@ const useDataProviderWithDeclarativeSideEffects = (): DataProviderHookFunction =
     return useCallback(
         (type: string, resource: string, params: any, options: any = {}) => {
             const convertToFunctionSideEffect = sideEffects => {
-                if (
-                    typeof sideEffects === 'undefined' ||
-                    typeof sideEffects === 'function'
-                ) {
+                if (!sideEffects || typeof sideEffects === 'function') {
                     return sideEffects;
                 }
 
