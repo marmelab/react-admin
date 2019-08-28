@@ -22,6 +22,8 @@ const FilterFormInput = ({
     handleHide,
     classes: classesOverride,
     resource,
+    variant,
+    margin,
 }) => {
     const translate = useTranslate();
     const classes = useStyles({ classes: classesOverride });
@@ -47,6 +49,8 @@ const FilterFormInput = ({
                 component={filterElement.type}
                 resource={resource}
                 record={emptyRecord}
+                variant={variant}
+                margin={margin}
             />
             <div className={classes.spacer}>&nbsp;</div>
         </div>

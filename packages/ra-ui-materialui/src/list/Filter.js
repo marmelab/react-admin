@@ -22,6 +22,7 @@ export class Filter extends Component {
             hideFilter,
             displayedFilters,
             filterValues,
+            variant,
             ...rest
         } = this.props;
 
