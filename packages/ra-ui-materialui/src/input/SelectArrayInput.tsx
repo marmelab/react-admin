@@ -209,7 +209,7 @@ const SelectArrayInput: FunctionComponent<
             variant={variant}
             {...sanitizeRestProps(rest)}
         >
-            <InputLabel htmlFor={id} margin={margin} shrink variant={variant}>
+            <InputLabel htmlFor={id} shrink variant={variant}>
                 <FieldTitle
                     label={label}
                     source={source}
@@ -246,7 +246,6 @@ const SelectArrayInput: FunctionComponent<
                     </div>
                 )}
                 data-testid="selectArray"
-                margin={margin}
                 variant={variant}
                 {...input}
                 value={input.value || []}
