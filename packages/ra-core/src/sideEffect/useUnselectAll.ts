@@ -1,6 +1,7 @@
 import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import { setListSelectedIds } from '../actions';
+import { warning } from '../util';
 
 /**
  * Hook for Unselect All Side Effect
@@ -14,11 +15,11 @@ const useUnselectAll = (resource1?: string) => {
     const dispatch = useDispatch();
     return useCallback(
         (resource2?: string) => {
-            if (!resource2 && !resource1) {
-                console.log(
-                    "You didn't specify the resource at initialization (useUnselectAll('posts')) nor when using the callback (unselectAll('posts'))"
-                );
-            }
+            warning(
+                !resource2 && !resource1,
+                "You didn't specify the resource at initialization (useUnselectAll('posts')) nor when using the callback (unselectAll('posts'))"
+            );
+
             dispatch(setListSelectedIds(resource2 || resource1, []));
         },
         [dispatch, resource1]
