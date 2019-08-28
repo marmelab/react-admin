@@ -2,18 +2,20 @@ import { useCallback } from 'react';
 import merge from 'lodash/merge';
 
 import { useSafeSetState } from '../util/hooks';
-import useDataProvider from './useDataProviderWithDeclarativeSideEffects';
+import useDataProvider from './useDataProvider';
+import useDataProviderWithDeclarativeSideEffects from './useDataProviderWithDeclarativeSideEffects';
 
-export interface Query {
+export interface Mutation {
     type: string;
     resource: string;
     payload: object;
 }
 
-export interface QueryOptions {
+export interface MutationOptions {
     meta?: any;
     action?: string;
     undoable?: boolean;
+    withDeclarativeSideEffectsSupport?: boolean;
 }
 
 /**
@@ -74,8 +76,8 @@ export interface QueryOptions {
  * };
  */
 const useMutation = (
-    query: Query,
-    options: QueryOptions = {}
+    query: Mutation,
+    options: MutationOptions = {}
 ): [
     (event?: any, callTimePayload?: any, callTimeOptions?: any) => void,
     {
@@ -95,9 +97,37 @@ const useMutation = (
         loaded: false,
     });
     const dataProvider = useDataProvider();
+    const dataProviderWithDeclarativeSideEffects = useDataProviderWithDeclarativeSideEffects();
+
     const mutate = useCallback(
         (event, callTimePayload = {}, callTimeOptions = {}): void => {
             setState({ loading: true });
+
+            if (options.withDeclarativeSideEffectsSupport) {
+                dataProviderWithDeclarativeSideEffects(
+                    type,
+                    resource,
+                    merge({}, payload, callTimePayload),
+                    merge({}, options, callTimeOptions)
+                )
+                    .then(({ data, total }) => {
+                        setState({
+                            data,
+                            total,
+                            loading: false,
+                            loaded: true,
+                        });
+                    })
+                    .catch(errorFromResponse => {
+                        setState({
+                            error: errorFromResponse,
+                            loading: false,
+                            loaded: false,
+                        });
+                    });
+                return;
+            }
+
             dataProvider(
                 type,
                 resource,

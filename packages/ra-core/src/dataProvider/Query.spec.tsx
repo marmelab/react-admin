@@ -258,6 +258,7 @@ describe('Query', () => {
     });
 
     it('supports declarative onSuccess side effects', async () => {
+        expect.assertions(4);
         let dispatchSpy;
         const dataProvider = jest.fn();
         dataProvider.mockImplementationOnce(() =>
@@ -320,7 +321,7 @@ describe('Query', () => {
         expect(dispatchSpy).toHaveBeenCalledWith(setListSelectedIds('foo', []));
     });
 
-    it('supports onSuccess side effects using hooks', async () => {
+    it('supports onSuccess function for side effects', async () => {
         let dispatchSpy;
         const dataProvider = jest.fn();
         dataProvider.mockImplementationOnce(() =>
@@ -439,7 +440,7 @@ describe('Query', () => {
         expect(dispatchSpy).toHaveBeenCalledWith(setListSelectedIds('foo', []));
     });
 
-    it('supports onFailure side effects using hooks', async () => {
+    it('supports onFailure function for side effects', async () => {
         let dispatchSpy;
         const dataProvider = jest.fn();
         dataProvider.mockImplementationOnce(() =>

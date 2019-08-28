@@ -1,7 +1,8 @@
 import { useEffect } from 'react';
 
 import { useSafeSetState } from '../util/hooks';
-import useDataProvider from './useDataProviderWithDeclarativeSideEffects';
+import useDataProvider from './useDataProvider';
+import useDataProviderWithDeclarativeSideEffects from './useDataProviderWithDeclarativeSideEffects';
 
 export interface Query {
     type: string;
@@ -13,6 +14,7 @@ export interface QueryOptions {
     meta?: any;
     action?: string;
     undoable?: false;
+    withDeclarativeSideEffectsSupport?: boolean;
 }
 
 /**
@@ -94,7 +96,34 @@ const useQuery = (
         loaded: false,
     });
     const dataProvider = useDataProvider();
+    const dataProviderWithDeclarativeSideEffects = useDataProviderWithDeclarativeSideEffects();
+
     useEffect(() => {
+        if (options.withDeclarativeSideEffectsSupport) {
+            dataProviderWithDeclarativeSideEffects(
+                type,
+                resource,
+                payload,
+                options
+            )
+                .then(({ data, total }) => {
+                    setState({
+                        data,
+                        total,
+                        loading: false,
+                        loaded: true,
+                    });
+                })
+                .catch(error => {
+                    setState({
+                        error,
+                        loading: false,
+                        loaded: false,
+                    });
+                });
+            return;
+        }
+
         dataProvider(type, resource, payload, options)
             .then(({ data, total }) => {
                 setState({
