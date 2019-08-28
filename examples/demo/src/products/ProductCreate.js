@@ -9,15 +9,16 @@ import {
     TextInput,
     required,
 } from 'react-admin';
+import { InputAdornment } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import RichTextInput from 'ra-input-rich-text';
 
 export const styles = {
-    stock: { width: '5em' },
-    price: { width: '5em' },
-    width: { width: '5em' },
+    price: { width: '7em' },
+    width: { width: '7em' },
+    height: { width: '7em' },
+    stock: { width: '7em' },
     widthFormGroup: { display: 'inline-block' },
-    height: { width: '5em' },
     heightFormGroup: { display: 'inline-block', marginLeft: 32 },
 };
 
@@ -32,12 +33,12 @@ const ProductCreate = props => {
                     <TextInput
                         autoFocus
                         source="image"
-                        options={{ fullWidth: true }}
+                        fullWidth
                         validate={required()}
                     />
                     <TextInput
                         source="thumbnail"
-                        options={{ fullWidth: true }}
+                        fullWidth
                         validate={required()}
                     />
                 </FormTab>
@@ -47,18 +48,39 @@ const ProductCreate = props => {
                         source="price"
                         validate={required()}
                         className={classes.price}
+                        InputProps={{
+                            startAdornment: (
+                                <InputAdornment position="start">
+                                    €
+                                </InputAdornment>
+                            ),
+                        }}
                     />
                     <NumberInput
                         source="width"
                         validate={required()}
                         className={classes.width}
                         formClassName={classes.widthFormGroup}
+                        InputProps={{
+                            endAdornment: (
+                                <InputAdornment position="start">
+                                    cm
+                                </InputAdornment>
+                            ),
+                        }}
                     />
                     <NumberInput
                         source="height"
                         validate={required()}
                         className={classes.height}
                         formClassName={classes.heightFormGroup}
+                        InputProps={{
+                            endAdornment: (
+                                <InputAdornment position="start">
+                                    cm
+                                </InputAdornment>
+                            ),
+                        }}
                     />
                     <ReferenceInput
                         source="category_id"
@@ -77,7 +99,7 @@ const ProductCreate = props => {
                     label="resources.products.tabs.description"
                     path="description"
                 >
-                    <RichTextInput source="description" addLabel={false} />
+                    <RichTextInput source="description" label="" />
                 </FormTab>
             </TabbedForm>
         </Create>
