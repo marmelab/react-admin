@@ -133,51 +133,76 @@ const AutocompleteInput = ({
         [setFilter]
     );
 
+    // We must reset the filter every time the value change to ensures we
+    // display at least some choices even if the input has a value.
+    // Otherwise, it would only display the currently selected one and the user
+    // would have to first clear the input before seeing any other choices
     useEffect(() => {
         updateFilter('');
     }, [input.value, updateFilter]);
 
-    const getSuggestionValue = suggestion => get(suggestion, optionValue);
+    const getSuggestionValue = useCallback(
+        suggestion => get(suggestion, optionValue),
+        [optionValue]
+    );
 
-    const getSuggestionText = suggestion => {
-        if (!suggestion) return '';
+    const getSuggestionText = useCallback(
+        suggestion => {
+            if (!suggestion) return '';
 
-        const suggestionLabel =
-            typeof optionText === 'function'
-                ? optionText(suggestion)
-                : get(suggestion, optionText, '');
+            const suggestionLabel =
+                typeof optionText === 'function'
+                    ? optionText(suggestion)
+                    : get(suggestion, optionText, '');
 
-        // We explicitly call toString here because AutoSuggest expect a string
-        return translateChoice
-            ? translate(suggestionLabel, { _: suggestionLabel }).toString()
-            : suggestionLabel.toString();
-    };
+            // We explicitly call toString here because AutoSuggest expect a string
+            return translateChoice
+                ? translate(suggestionLabel, { _: suggestionLabel }).toString()
+                : suggestionLabel.toString();
+        },
+        [optionText, translate, translateChoice]
+    );
 
-    const getSuggestionTextFromValue = value => {
-        const currentChoice = choices.find(
-            choice => getSuggestionValue(choice) === value
-        );
+    const getSuggestionTextFromValue = useCallback(
+        value => {
+            const currentChoice = choices.find(
+                choice => getSuggestionValue(choice) === value
+            );
 
-        return getSuggestionText(currentChoice);
-    };
+            return getSuggestionText(currentChoice);
+        },
+        [choices, getSuggestionText, getSuggestionValue]
+    );
 
-    const handleSuggestionSelected = suggestionText => {
-        const possibleSuggestions = getSuggestions({
-            choices,
+    const handleSuggestionSelected = useCallback(
+        suggestionText => {
+            const possibleSuggestions = getSuggestions({
+                choices,
+                allowEmpty,
+                optionText,
+                optionValue,
+                limitChoicesToValue,
+                getSuggestionText,
+            })(suggestionText);
+
+            const suggestion = possibleSuggestions.find(
+                suggestion => getSuggestionText(suggestion) === suggestionText
+            );
+
+            const value = getSuggestionValue(suggestion);
+            input.onChange(value);
+        },
+        [
             allowEmpty,
+            choices,
+            getSuggestionText,
+            getSuggestionValue,
+            input,
+            limitChoicesToValue,
             optionText,
             optionValue,
-            limitChoicesToValue,
-            getSuggestionText,
-        })(suggestionText);
-
-        const suggestion = possibleSuggestions.find(
-            suggestion => getSuggestionText(suggestion) === suggestionText
-        );
-
-        const value = getSuggestionValue(suggestion);
-        input.onChange(value);
-    };
+        ]
+    );
 
     const updateAnchorEl = () => {
         if (!inputEl.current) {
@@ -220,61 +245,77 @@ const AutocompleteInput = ({
 
     // Override the blur event handling to automatically select
     // the only choice available if any
-    const handleBlur = (suggestionFilter, selectItem) => event => {
-        const possibleSuggestions = getSuggestions({
-            choices,
-            allowEmpty,
-            optionText,
-            optionValue,
-            limitChoicesToValue,
-            getSuggestionText,
-        })(suggestionFilter);
+    const handleBlur = useCallback(
+        (suggestionFilter, selectItem) => event => {
+            const possibleSuggestions = getSuggestions({
+                choices,
+                allowEmpty,
+                optionText,
+                optionValue,
+                limitChoicesToValue,
+                getSuggestionText,
+            })(suggestionFilter);
 
-        let suggestionToSelect;
+            let suggestionToSelect;
 
-        if (possibleSuggestions.length === 2 && allowEmpty) {
-            if (input.value === null) {
-                return input.onBlur(event);
+            if (possibleSuggestions.length === 2 && allowEmpty) {
+                if (input.value === null) {
+                    return input.onBlur(event);
+                }
+
+                if (suggestionFilter === '') {
+                    suggestionToSelect = possibleSuggestions.find(
+                        suggestion => suggestion.id === null
+                    );
+                } else {
+                    suggestionToSelect = possibleSuggestions.find(
+                        suggestion => suggestion.id !== null
+                    );
+                }
             }
 
-            if (suggestionFilter === '') {
-                suggestionToSelect = possibleSuggestions.find(
-                    suggestion => suggestion.id === null
-                );
-            } else {
+            if (possibleSuggestions.length === 1) {
                 suggestionToSelect = possibleSuggestions.find(
                     suggestion => suggestion.id !== null
                 );
             }
-        }
 
-        if (possibleSuggestions.length === 1) {
-            suggestionToSelect = possibleSuggestions.find(
-                suggestion => suggestion.id !== null
-            );
-        }
+            if (suggestionToSelect) {
+                const value = getSuggestionValue(suggestionToSelect);
+                if (input.value === value) {
+                    return input.onBlur(event);
+                }
 
-        if (suggestionToSelect) {
-            const value = getSuggestionValue(suggestionToSelect);
-            if (input.value === value) {
-                return input.onBlur(event);
+                const text = getSuggestionText(suggestionToSelect);
+
+                selectItem(text);
+            } else {
+                const text = getSuggestionTextFromValue(input.value);
+                selectItem(text);
             }
 
-            const text = getSuggestionText(suggestionToSelect);
+            return input.onBlur(event);
+        },
+        [
+            allowEmpty,
+            choices,
+            getSuggestionText,
+            getSuggestionTextFromValue,
+            getSuggestionValue,
+            input,
+            limitChoicesToValue,
+            optionText,
+            optionValue,
+        ]
+    );
 
-            selectItem(text);
-        } else {
-            const text = getSuggestionTextFromValue(input.value);
-            selectItem(text);
-        }
-
-        return input.onBlur(event);
-    };
-
-    const handleFocus = openMenu => event => {
-        openMenu(event);
-        input.onFocus(event);
-    };
+    const handleFocus = useCallback(
+        openMenu => event => {
+            openMenu(event);
+            input.onFocus(event);
+        },
+        [input]
+    );
 
     return (
         <Downshift
