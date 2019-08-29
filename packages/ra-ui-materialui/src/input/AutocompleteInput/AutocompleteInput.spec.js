@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import {
     render,
     cleanup,
@@ -340,7 +339,7 @@ describe('<AutocompleteInput />', () => {
             expect(onChange).toHaveBeenCalledWith(null);
         });
 
-        it('should revert the searchText when allowEmpty is false', () => {
+        it('should revert the searchText when allowEmpty is false', async () => {
             const { getByLabelText } = render(
                 <Form
                     onSubmit={jest.fn()}
@@ -357,6 +356,7 @@ describe('<AutocompleteInput />', () => {
             fireEvent.focus(input);
             fireEvent.change(input, { target: { value: 'bar' } });
             fireEvent.blur(input);
+            await waitForDomChange();
             expect(input.value).toEqual('foo');
         });
 
@@ -385,8 +385,16 @@ describe('<AutocompleteInput />', () => {
                     )}
                 />
             );
-            expect(queryByText('foo')).not.toBeNull();
-            expect(queryByText('bar')).not.toBeNull();
+            expect(
+                queryByText('foo', {
+                    selector: '[role="option"] *',
+                })
+            ).not.toBeNull();
+            expect(
+                queryByText('bar', {
+                    selector: '[role="option"] *',
+                })
+            ).not.toBeNull();
         });
 
         it('should reset filter when input value changed', () => {

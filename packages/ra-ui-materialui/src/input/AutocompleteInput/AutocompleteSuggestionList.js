@@ -57,7 +57,7 @@ const AutocompleteSuggestionList = ({
                             getSuggestionText={getSuggestionText}
                             component={suggestionComponent}
                             {...getItemProps({
-                                item: getSuggestionText(suggestion),
+                                item: suggestion,
                             })}
                         />
                     ))}

@@ -33,7 +33,8 @@ const AutocompleteSuggestionItem = ({
     const classes = useStyles({ classes: classesOverride });
     const isHighlighted = highlightedIndex === index;
     const suggestionText = getSuggestionText(suggestion);
-    const isSelected = (selectedItem || '').indexOf(suggestionText) > -1;
+    const selectedItemText = getSuggestionText(selectedItem);
+    const isSelected = (selectedItemText || '').indexOf(suggestionText) > -1;
     const matches = match(suggestionText, inputValue);
     const parts = parse(suggestionText, matches);
 

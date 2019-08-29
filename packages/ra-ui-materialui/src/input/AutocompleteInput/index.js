@@ -175,33 +175,10 @@ const AutocompleteInput = ({
     );
 
     const handleSuggestionSelected = useCallback(
-        suggestionText => {
-            const possibleSuggestions = getSuggestions({
-                choices,
-                allowEmpty,
-                optionText,
-                optionValue,
-                limitChoicesToValue,
-                getSuggestionText,
-            })(suggestionText);
-
-            const suggestion = possibleSuggestions.find(
-                suggestion => getSuggestionText(suggestion) === suggestionText
-            );
-
-            const value = getSuggestionValue(suggestion);
-            input.onChange(value);
+        suggestion => {
+            input.onChange(getSuggestionValue(suggestion));
         },
-        [
-            allowEmpty,
-            choices,
-            getSuggestionText,
-            getSuggestionValue,
-            input,
-            limitChoicesToValue,
-            optionText,
-            optionValue,
-        ]
+        [getSuggestionValue, input]
     );
 
     const updateAnchorEl = () => {
@@ -280,18 +257,14 @@ const AutocompleteInput = ({
                 );
             }
 
+            if (possibleSuggestions.length === 0) {
+                suggestionToSelect = choices.find(
+                    choice => getSuggestionValue(choice) === input.value
+                );
+            }
+
             if (suggestionToSelect) {
-                const value = getSuggestionValue(suggestionToSelect);
-                if (input.value === value) {
-                    return input.onBlur(event);
-                }
-
-                const text = getSuggestionText(suggestionToSelect);
-
-                selectItem(text);
-            } else {
-                const text = getSuggestionTextFromValue(input.value);
-                selectItem(text);
+                selectItem(suggestionToSelect);
             }
 
             return input.onBlur(event);
@@ -300,7 +273,6 @@ const AutocompleteInput = ({
             allowEmpty,
             choices,
             getSuggestionText,
-            getSuggestionTextFromValue,
             getSuggestionValue,
             input,
             limitChoicesToValue,
@@ -322,6 +294,7 @@ const AutocompleteInput = ({
             id={id}
             onChange={handleSuggestionSelected}
             initialInputValue={getSuggestionTextFromValue(input.value)}
+            itemToString={item => getSuggestionText(item)}
             {...rest}
         >
             {({
