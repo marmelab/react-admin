@@ -5,7 +5,14 @@ import React, {
     ReactElement,
 } from 'react';
 import PropTypes from 'prop-types';
-import { useInput, useReferenceInputController, InputProps } from 'ra-core';
+import { FieldInputProps, FieldMetaState } from 'react-final-form';
+import {
+    useInput,
+    useReferenceInputController,
+    InputProps,
+    Pagination,
+    Sort,
+} from 'ra-core';
 
 import LinearProgress from '../layout/LinearProgress';
 import Labeled from './Labeled';
@@ -190,15 +197,39 @@ const sanitizeRestProps = ({
     ...rest
 }: any) => rest;
 
-export const ReferenceInputView = ({
+interface ReferenceInputViewProps {
+    allowEmpty?: boolean;
+    basePath: string;
+    children: ReactElement;
+    choices: any[];
+    classes?: object;
+    className?: string;
+    error?: string;
+    helperText?: string;
+    id: string;
+    input: FieldInputProps<any, HTMLElement>;
+    isRequired: boolean;
+    label: string;
+    loading: boolean;
+    meta: FieldMetaState<any>;
+    reference: string;
+    resource: string;
+    setFilter: (v: string) => void;
+    setPagination: (pagination: Pagination) => void;
+    setSort: (sort: Sort) => void;
+    source: string;
+    warning?: string;
+}
+
+export const ReferenceInputView: FunctionComponent<ReferenceInputViewProps> = ({
     allowEmpty,
     basePath,
     children,
     choices,
-    classes = undefined,
-    className = undefined,
-    error = undefined,
-    helperText = undefined,
+    classes,
+    className,
+    error,
+    helperText,
     id,
     input,
     isRequired,
@@ -210,7 +241,7 @@ export const ReferenceInputView = ({
     setPagination,
     setSort,
     source,
-    warning = undefined,
+    warning,
     ...rest
 }) => {
     if (Children.count(children) !== 1) {
@@ -268,27 +299,6 @@ export const ReferenceInputView = ({
         translateChoice: false,
         ...sanitizeRestProps(rest),
     });
-};
-
-ReferenceInputView.propTypes = {
-    allowEmpty: PropTypes.bool,
-    basePath: PropTypes.string,
-    children: PropTypes.element,
-    choices: PropTypes.array,
-    classes: PropTypes.object,
-    className: PropTypes.string,
-    error: PropTypes.string,
-    input: PropTypes.object.isRequired,
-    loading: PropTypes.bool,
-    label: PropTypes.string,
-    meta: PropTypes.object,
-    onChange: PropTypes.func,
-    resource: PropTypes.string.isRequired,
-    setFilter: PropTypes.func,
-    setPagination: PropTypes.func,
-    setSort: PropTypes.func,
-    source: PropTypes.string,
-    warning: PropTypes.string,
 };
 
 export default ReferenceInput;
