@@ -56,10 +56,10 @@ const TabbedForm = ({ initialValues, ...props }) => {
             destroyOnUnregister
             subscription={defaultSubscription}
             {...props}
-            render={({ submitting, ...formProps }) => (
+            render={formProps => (
                 <TabbedFormView
                     classes={classes}
-                    saving={submitting || saving}
+                    saving={formProps.submitting || saving}
                     translate={translate}
                     {...props}
                     {...formProps}
