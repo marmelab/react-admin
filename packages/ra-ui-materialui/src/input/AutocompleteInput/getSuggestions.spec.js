@@ -7,7 +7,7 @@ describe('getSuggestions', () => {
         { id: 3, value: 'three' },
     ];
 
-    it('should return suggestions based on choices', () => {
+    it('should return all suggestions when filtered by empty string', () => {
         expect(
             getSuggestions({
                 choices,
