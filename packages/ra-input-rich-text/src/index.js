@@ -123,18 +123,18 @@ export class RichTextInput extends Component {
                     ref={this.updateDivRef}
                     className={variant}
                 />
-                <FormHelperText
-                    error={!!error}
-                    className={!!error ? 'ra-rich-text-input-error' : ''}
-                >
-                    {helperText || (touched && error) ? (
+                {helperText || (touched && error) ? (
+                    <FormHelperText
+                        error={!!error}
+                        className={!!error ? 'ra-rich-text-input-error' : ''}
+                    >
                         <InputHelperText
                             error={error}
                             helperText={helperText}
                             touched={touched}
                         />
-                    ) : null}
-                </FormHelperText>
+                    </FormHelperText>
+                ) : null}
             </FormControl>
         );
     }
