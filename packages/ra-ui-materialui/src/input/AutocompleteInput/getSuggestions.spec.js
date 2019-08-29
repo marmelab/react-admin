@@ -20,7 +20,7 @@ describe('getSuggestions', () => {
         ).toEqual(choices);
     });
 
-    it('should filter choices based on second argument', () => {
+    it('should filter choices according to the filter argument', () => {
         expect(
             getSuggestions({
                 choices,
@@ -33,7 +33,7 @@ describe('getSuggestions', () => {
         ).toEqual([{ id: 1, value: 'one' }, { id: 2, value: 'two' }]);
     });
 
-    it('should filter choices based on second argument when it contains RegExp reserved characters', () => {
+    it('should filter choices according to the filter argument when it contains RegExp reserved characters', () => {
         expect(
             getSuggestions({
                 choices: [
@@ -50,7 +50,7 @@ describe('getSuggestions', () => {
         ).toEqual([{ id: 1, value: '**one' }]);
     });
 
-    it('should not filter choices based on second argument if limitChoicesToValue is false', () => {
+    it('should not filter choices according to the filter argument if limitChoicesToValue is false', () => {
         expect(
             getSuggestions({
                 choices,
