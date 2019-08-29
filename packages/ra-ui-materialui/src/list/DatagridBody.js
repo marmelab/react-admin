@@ -61,7 +61,7 @@ const DatagridBody = ({
                 )}
             </TableBody>
         ),
-        [version, data, selectedIds, JSON.stringify(ids)] // eslint-disable-line
+        [version, data, selectedIds, JSON.stringify(ids), hasBulkActions] // eslint-disable-line
     );
 
 DatagridBody.propTypes = {
