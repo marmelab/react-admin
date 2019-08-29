@@ -84,15 +84,6 @@ describe('<AutocompleteInput />', () => {
         expect(queryByDisplayValue('foo')).not.toBeNull();
     });
 
-    const context = {
-        translate: () => 'translated',
-        locale: 'en',
-    };
-    const childContextTypes = {
-        translate: PropTypes.func.isRequired,
-        locale: PropTypes.string.isRequired,
-    };
-
     it('should use optionText with a string value as text identifier', () => {
         const { queryByDisplayValue } = render(
             <Form
