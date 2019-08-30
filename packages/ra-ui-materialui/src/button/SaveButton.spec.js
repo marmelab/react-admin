@@ -37,7 +37,7 @@ describe('<SaveButton />', () => {
             />
         );
 
-        fireEvent.click(getByLabelText('ra.action.save'));
+        fireEvent.mouseDown(getByLabelText('ra.action.save'));
         expect(onSubmit).toHaveBeenCalled();
     });
 
@@ -52,7 +52,7 @@ describe('<SaveButton />', () => {
             />
         );
 
-        fireEvent.click(getByLabelText('ra.action.save'));
+        fireEvent.mouseDown(getByLabelText('ra.action.save'));
         expect(onSubmit).not.toHaveBeenCalled();
     });
     it('should show a notification if the form is not valid', () => {
@@ -68,7 +68,7 @@ describe('<SaveButton />', () => {
             />
         );
 
-        fireEvent.click(getByLabelText('ra.action.save'));
+        fireEvent.mouseDown(getByLabelText('ra.action.save'));
         expect(showNotification).toHaveBeenCalled();
         expect(onSubmit).toHaveBeenCalled();
     });

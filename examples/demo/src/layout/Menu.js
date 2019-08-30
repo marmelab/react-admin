@@ -119,6 +119,7 @@ const Menu = ({ onMenuClick, open, logout }) => {
                 leftIcon={<reviews.icon />}
                 onClick={onMenuClick}
                 sidebarIsOpen={open}
+                dense
             />
             {isXsmall && (
                 <MenuItemLink
@@ -127,6 +128,7 @@ const Menu = ({ onMenuClick, open, logout }) => {
                     leftIcon={<SettingsIcon />}
                     onClick={onMenuClick}
                     sidebarIsOpen={open}
+                    dense
                 />
             )}
             {isXsmall && logout}

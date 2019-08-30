@@ -14,6 +14,7 @@ const DashboardMenuItem = ({ locale, onClick, ...props }) => {
             primaryText={translate('ra.page.dashboard')}
             leftIcon={<DashboardIcon />}
             exact
+            dense
             {...props}
         />
     );

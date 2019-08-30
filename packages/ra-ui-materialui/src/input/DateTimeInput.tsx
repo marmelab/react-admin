@@ -102,11 +102,13 @@ export const DateTimeInput: FunctionComponent<
             margin="normal"
             error={!!(touched && error)}
             helperText={
-                <InputHelperText
-                    touched={touched}
-                    error={error}
-                    helperText={helperText}
-                />
+                (touched && error) || helperText ? (
+                    <InputHelperText
+                        touched={touched}
+                        error={error}
+                        helperText={helperText}
+                    />
+                ) : null
             }
             label={
                 <FieldTitle

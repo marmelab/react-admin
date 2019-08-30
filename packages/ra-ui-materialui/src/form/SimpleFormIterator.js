@@ -121,6 +121,8 @@ export class SimpleFormIterator extends Component {
             translate,
             disableAdd,
             disableRemove,
+            variant,
+            margin,
         } = this.props;
         const records = get(record, source);
         return fields ? (
@@ -169,6 +171,8 @@ export class SimpleFormIterator extends Component {
                                                     {}
                                                 }
                                                 resource={resource}
+                                                variant={variant}
+                                                margin={margin}
                                             />
                                         ) : null
                                     )}

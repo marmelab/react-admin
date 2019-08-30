@@ -74,6 +74,8 @@ class ResettableTextField extends Component {
             value,
             resettable,
             disabled,
+            variant = 'filled',
+            margin = 'dense',
             ...props
         } = this.props;
         const { showClear } = this.state;
@@ -118,6 +120,8 @@ class ResettableTextField extends Component {
                     ...InputProps,
                 }}
                 disabled={disabled}
+                variant={variant}
+                margin={margin}
                 {...props}
                 onFocus={this.handleFocus}
                 onBlur={this.handleBlur}

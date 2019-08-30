@@ -143,7 +143,7 @@ export const RadioButtonGroupInput: FunctionComponent<
                     />
                 ))}
             </RadioGroup>
-            {helperText || (touched && error) ? (
+            {(touched && error) || helperText ? (
                 <FormHelperText>
                     <InputHelperText
                         touched={touched}
