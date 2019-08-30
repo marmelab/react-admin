@@ -7,11 +7,10 @@ import { useSelector } from 'react-redux';
 import { withRouter, Route } from 'react-router-dom';
 import Divider from '@material-ui/core/Divider';
 import { makeStyles } from '@material-ui/core/styles';
-import { useTranslate } from 'ra-core';
+import { useTranslate, useInitializeFormWithRecord } from 'ra-core';
 
 import Toolbar from './Toolbar';
 import TabbedFormTabs from './TabbedFormTabs';
-import useInitializeFormWithRecord from './useInitializeFormWithRecord';
 
 const useStyles = makeStyles(theme => ({
     errorTabButton: { color: theme.palette.error.main },
