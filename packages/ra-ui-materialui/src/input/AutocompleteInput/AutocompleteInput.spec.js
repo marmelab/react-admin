@@ -570,7 +570,6 @@ describe('<AutocompleteInput />', () => {
         const { queryAllByRole, getByLabelText } = render(
             <Form
                 onSubmit={jest.fn()}
-                initialValues={{ role: 2 }}
                 render={() => (
                     <AutocompleteInput
                         {...defaultProps}
@@ -593,7 +592,6 @@ describe('<AutocompleteInput />', () => {
         const { queryAllByRole, getByLabelText } = render(
             <Form
                 onSubmit={jest.fn()}
-                initialValues={{ role: 2 }}
                 render={() => (
                     <AutocompleteInput
                         {...defaultProps}
@@ -610,6 +608,33 @@ describe('<AutocompleteInput />', () => {
         fireEvent.focus(input);
         fireEvent.change(input, { target: { value: 'abc' } });
         expect(queryAllByRole('option').length).toEqual(1);
+    });
+
+    it('automatically selects a matched choice if there is only one when the input loose focus', async () => {
+        const onChange = jest.fn();
+        const { queryByDisplayValue, getByLabelText } = render(
+            <Form
+                onSubmit={jest.fn()}
+                render={() => (
+                    <AutocompleteInput
+                        {...defaultProps}
+                        onChange={onChange}
+                        choices={[
+                            { id: 1, name: 'ab' },
+                            { id: 2, name: 'abc' },
+                            { id: 3, name: '123' },
+                        ]}
+                    />
+                )}
+            />
+        );
+        const input = getByLabelText('resources.users.fields.role');
+        fireEvent.focus(input);
+        fireEvent.change(input, { target: { value: 'abc' } });
+        fireEvent.blur(input);
+        await waitForDomChange();
+        expect(queryByDisplayValue('abc')).not.toBeNull();
+        expect(onChange).toHaveBeenCalledWith(2);
     });
 
     it('passes options.suggestionsContainerProps to the suggestions container', () => {

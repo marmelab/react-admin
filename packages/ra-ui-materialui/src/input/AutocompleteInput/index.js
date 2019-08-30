@@ -7,7 +7,7 @@ import { useTranslate, useInput } from 'ra-core';
 
 import AutocompleteInputTextField from './AutocompleteInputTextField';
 import AutocompleteSuggestionList from './AutocompleteSuggestionList';
-import getSuggestions from './getSuggestions';
+import getSuggestionsFactory from './getSuggestions';
 import { InputHelperText } from '..';
 
 const useStyles = makeStyles({
@@ -86,17 +86,29 @@ const AutocompleteInput = ({
     choices,
     fullWidth,
     helperText,
+    // id may have been initialized before (from ReferenceInput for example)
+    id: idOverride,
+    // input may have been initialized before (from ReferenceInput for example)
+    input: inputOverride,
+    // isRequired may have been initialized before (from ReferenceInput for example)
+    isRequired: isRequiredOverride,
     label,
     limitChoicesToValue,
+    // input may have been initialized before (from ReferenceInput for example)
+    meta: metaOverride,
     onBlur,
     onChange,
     onFocus,
     options,
     optionText,
     optionValue,
+    pagination,
     resource,
     setFilter,
+    setPagination,
+    setSort,
     shouldRenderSuggestions: shouldRenderSuggestionsOverride,
+    sort,
     source,
     suggestionComponent,
     translateChoice,
@@ -111,6 +123,10 @@ const AutocompleteInput = ({
         isRequired,
         meta: { touched, error },
     } = useInput({
+        id: idOverride,
+        input: inputOverride,
+        isRequired: isRequiredOverride,
+        meta: metaOverride,
         onBlur,
         onChange,
         onFocus,
@@ -146,6 +162,11 @@ const AutocompleteInput = ({
         [optionValue]
     );
 
+    const getSuggestionFromValue = useCallback(
+        value => choices.find(choice => get(choice, optionValue) === value),
+        [choices, optionValue]
+    );
+
     const getSuggestionText = useCallback(
         suggestion => {
             if (!suggestion) return '';
@@ -161,17 +182,6 @@ const AutocompleteInput = ({
                 : suggestionLabel.toString();
         },
         [optionText, translate, translateChoice]
-    );
-
-    const getSuggestionTextFromValue = useCallback(
-        value => {
-            const currentChoice = choices.find(
-                choice => getSuggestionValue(choice) === value
-            );
-
-            return getSuggestionText(currentChoice);
-        },
-        [choices, getSuggestionText, getSuggestionValue]
     );
 
     const handleSuggestionSelected = useCallback(
@@ -220,18 +230,37 @@ const AutocompleteInput = ({
         updateAnchorEl();
     };
 
+    const initialSelectedItem = getSuggestionFromValue(input.value);
+
+    const getSuggestions = useCallback(
+        getSuggestionsFactory({
+            choices,
+            allowEmpty,
+            optionText,
+            optionValue,
+            limitChoicesToValue,
+            getSuggestionText,
+            initialSelectedItem: initialSelectedItem,
+        }),
+        [
+            choices,
+            allowEmpty,
+            optionText,
+            optionValue,
+            limitChoicesToValue,
+            getSuggestionText,
+            input,
+        ]
+    );
+
     // Override the blur event handling to automatically select
     // the only choice available if any
     const handleBlur = useCallback(
         (suggestionFilter, selectItem) => event => {
-            const possibleSuggestions = getSuggestions({
-                choices,
-                allowEmpty,
-                optionText,
-                optionValue,
-                limitChoicesToValue,
-                getSuggestionText,
-            })(suggestionFilter);
+            const possibleSuggestions = getSuggestions(
+                suggestionFilter,
+                input.value
+            );
 
             let suggestionToSelect;
 
@@ -269,16 +298,7 @@ const AutocompleteInput = ({
 
             return input.onBlur(event);
         },
-        [
-            allowEmpty,
-            choices,
-            getSuggestionText,
-            getSuggestionValue,
-            input,
-            limitChoicesToValue,
-            optionText,
-            optionValue,
-        ]
+        [allowEmpty, choices, getSuggestionValue, getSuggestions, input]
     );
 
     const handleFocus = useCallback(
@@ -293,7 +313,7 @@ const AutocompleteInput = ({
         <Downshift
             id={id}
             onChange={handleSuggestionSelected}
-            initialInputValue={getSuggestionTextFromValue(input.value)}
+            initialSelectedItem={initialSelectedItem}
             itemToString={item => getSuggestionText(item)}
             {...rest}
         >
@@ -304,7 +324,7 @@ const AutocompleteInput = ({
                 getMenuProps,
                 highlightedIndex,
                 isOpen,
-                inputValue,
+                inputValue: suggestionFilter,
                 selectItem,
                 selectedItem,
                 openMenu,
@@ -319,7 +339,10 @@ const AutocompleteInput = ({
                             InputProps={getInputProps({
                                 id,
                                 name: input.name,
-                                onBlur: handleBlur(inputValue, selectItem),
+                                onBlur: handleBlur(
+                                    suggestionFilter,
+                                    selectItem
+                                ),
                                 onFocus: handleFocus(openMenu),
                             })}
                             inputRef={storeInputRef}
@@ -343,18 +366,11 @@ const AutocompleteInput = ({
                                 { suppressRefError: true }
                             )}
                             inputEl={inputEl.current}
-                            suggestions={getSuggestions({
-                                choices,
-                                allowEmpty,
-                                optionText,
-                                optionValue,
-                                limitChoicesToValue,
-                                getSuggestionText,
-                            })(inputValue)}
+                            suggestions={getSuggestions(suggestionFilter)}
                             getSuggestionText={getSuggestionText}
                             getSuggestionValue={getSuggestionValue}
                             highlightedIndex={highlightedIndex}
-                            inputValue={inputValue}
+                            inputValue={suggestionFilter}
                             getItemProps={getItemProps}
                             suggestionComponent={suggestionComponent}
                             suggestionsContainerProps={
@@ -375,13 +391,9 @@ AutocompleteInput.propTypes = {
     choices: PropTypes.arrayOf(PropTypes.object),
     classes: PropTypes.object,
     className: PropTypes.string,
-    focusInputOnSuggestionClick: PropTypes.bool,
     InputProps: PropTypes.object,
-    input: PropTypes.object,
-    isRequired: PropTypes.bool,
     label: PropTypes.string,
     limitChoicesToValue: PropTypes.bool,
-    meta: PropTypes.object,
     options: PropTypes.object,
     optionText: PropTypes.oneOfType([PropTypes.string, PropTypes.func])
         .isRequired,
@@ -399,11 +411,10 @@ AutocompleteInput.propTypes = {
 
 AutocompleteInput.defaultProps = {
     choices: [],
-    focusInputOnSuggestionClick: false,
     options: {},
     optionText: 'name',
     optionValue: 'id',
-    limitChoicesToValue: true,
+    limitChoicesToValue: false,
     translateChoice: true,
 };
 

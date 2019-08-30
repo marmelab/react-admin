@@ -7,16 +7,32 @@ export default ({
     getSuggestionText,
     optionValue,
     limitChoicesToValue,
+    initialSelectedItem,
 }) => filter => {
-    const filteredChoices = limitChoicesToValue
-        ? choices.filter(choice =>
-              getSuggestionText(choice).match(
-                  // We must escape any RegExp reserved characters to avoid errors
-                  // For example, the filter might contains * which must be escaped as \*
-                  new RegExp(escapeRegExp(filter), 'i')
-              )
-          )
-        : choices;
+    // This is the first display case when the input already has a value.
+    // Unless limitChoicesToValue was set to true, we want to display more
+    // choices than just the currently selected one
+    if (
+        initialSelectedItem &&
+        filter === getSuggestionText(initialSelectedItem)
+    ) {
+        if (limitChoicesToValue) {
+            return choices.filter(
+                choice =>
+                    choice[optionValue] === initialSelectedItem[optionValue]
+            );
+        }
+
+        return choices;
+    }
+
+    const filteredChoices = choices.filter(choice =>
+        getSuggestionText(choice).match(
+            // We must escape any RegExp reserved characters to avoid errors
+            // For example, the filter might contains * which must be escaped as \*
+            new RegExp(escapeRegExp(filter), 'i')
+        )
+    );
 
     if (allowEmpty) {
         const emptySuggestion =

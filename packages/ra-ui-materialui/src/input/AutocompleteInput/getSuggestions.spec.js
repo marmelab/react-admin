@@ -50,7 +50,7 @@ describe('getSuggestions', () => {
         ).toEqual([{ id: 1, value: '**one' }]);
     });
 
-    it('should not filter choices according to the filter argument if limitChoicesToValue is false', () => {
+    it('should not filter choices according to the currently selected value if limitChoicesToValue is false', () => {
         expect(
             getSuggestions({
                 choices,
@@ -59,8 +59,23 @@ describe('getSuggestions', () => {
                 getSuggestionText: ({ value }) => value,
                 optionValue: 'id',
                 limitChoicesToValue: false,
-            })('o')
+                initialSelectedItem: choices[0],
+            })('one')
         ).toEqual(choices);
+    });
+
+    it('should filter choices according to the currently selected value if limitChoicesToValue is true', () => {
+        expect(
+            getSuggestions({
+                choices,
+                allowEmpty: false,
+                optionText: 'value',
+                getSuggestionText: ({ value }) => value,
+                optionValue: 'id',
+                limitChoicesToValue: true,
+                initialSelectedItem: choices[0],
+            })('one')
+        ).toEqual([choices[0]]);
     });
 
     it('should add emptySuggestion if allowEmpty is true', () => {
