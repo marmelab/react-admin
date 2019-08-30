@@ -100,7 +100,7 @@ const AutocompleteInput = ({
     onBlur,
     onChange,
     onFocus,
-    options,
+    options: { suggestionsContainerProps, labelProps, InputProps, ...options },
     optionText,
     optionValue,
     pagination,
@@ -134,7 +134,6 @@ const AutocompleteInput = ({
         onFocus,
         resource,
         source,
-        type: 'checkbox',
         validate,
         ...rest,
     });
@@ -255,54 +254,6 @@ const AutocompleteInput = ({
         ]
     );
 
-    // Override the blur event handling to automatically select
-    // the only choice available if any
-    const handleBlur = useCallback(
-        (suggestionFilter, selectItem) => event => {
-            const possibleSuggestions = getSuggestions(
-                suggestionFilter,
-                input.value
-            );
-
-            let suggestionToSelect;
-
-            if (possibleSuggestions.length === 2 && allowEmpty) {
-                if (input.value === null) {
-                    return input.onBlur(event);
-                }
-
-                if (suggestionFilter === '') {
-                    suggestionToSelect = possibleSuggestions.find(
-                        suggestion => suggestion.id === null
-                    );
-                } else {
-                    suggestionToSelect = possibleSuggestions.find(
-                        suggestion => suggestion.id !== null
-                    );
-                }
-            }
-
-            if (possibleSuggestions.length === 1) {
-                suggestionToSelect = possibleSuggestions.find(
-                    suggestion => suggestion.id !== null
-                );
-            }
-
-            if (possibleSuggestions.length === 0) {
-                suggestionToSelect = choices.find(
-                    choice => getSuggestionValue(choice) === input.value
-                );
-            }
-
-            if (suggestionToSelect) {
-                selectItem(suggestionToSelect);
-            }
-
-            return input.onBlur(event);
-        },
-        [allowEmpty, choices, getSuggestionValue, getSuggestions, input]
-    );
-
     const handleFocus = useCallback(
         openMenu => event => {
             openMenu(event);
@@ -327,7 +278,6 @@ const AutocompleteInput = ({
                 highlightedIndex,
                 isOpen,
                 inputValue: suggestionFilter,
-                selectItem,
                 selectedItem,
                 openMenu,
             }) => {
@@ -337,14 +287,12 @@ const AutocompleteInput = ({
                         <AutocompleteInputTextField
                             id={id}
                             fullWidth={fullWidth}
-                            labelProps={getLabelProps({ label })}
+                            labelProps={getLabelProps({ ...labelProps, label })}
                             InputProps={getInputProps({
+                                ...InputProps,
                                 id,
                                 name: input.name,
-                                onBlur: handleBlur(
-                                    suggestionFilter,
-                                    selectItem
-                                ),
+                                onBlur: input.onBlur,
                                 onFocus: handleFocus(openMenu),
                             })}
                             inputRef={storeInputRef}
@@ -364,6 +312,7 @@ const AutocompleteInput = ({
                             error={!!(touched && error)}
                             variant={variant}
                             margin={margin}
+                            {...options}
                         />
                         <AutocompleteSuggestionList
                             isOpen={isMenuOpen}
@@ -380,7 +329,7 @@ const AutocompleteInput = ({
                             getItemProps={getItemProps}
                             suggestionComponent={suggestionComponent}
                             suggestionsContainerProps={
-                                options.suggestionsContainerProps
+                                suggestionsContainerProps
                             }
                             selectedItem={selectedItem}
                         />
