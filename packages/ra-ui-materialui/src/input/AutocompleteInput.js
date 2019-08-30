@@ -242,7 +242,12 @@ export class AutocompleteInput extends React.Component {
     };
 
     renderInput = inputProps => {
-        const { helperText, input } = this.props;
+        const {
+            helperText,
+            input,
+            variant = 'filled',
+            margin = 'dense',
+        } = this.props;
         const {
             autoFocus,
             className,
@@ -286,16 +291,19 @@ export class AutocompleteInput extends React.Component {
                 value={value}
                 onChange={onChange}
                 autoFocus={autoFocus}
-                margin="normal"
+                margin={margin}
+                variant={variant}
                 className={classnames(classes.root, className)}
                 inputRef={storeInputRef}
                 error={!!(touched && error)}
                 helperText={
-                    <InputHelperText
-                        touched={touched}
-                        error={error}
-                        helperText={helperText}
-                    />
+                    (touched && error) || helperText ? (
+                        <InputHelperText
+                            touched={touched}
+                            error={error}
+                            helperText={helperText}
+                        />
+                    ) : null
                 }
                 name={input.name}
                 {...options}

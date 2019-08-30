@@ -27,6 +27,7 @@ const useStyles = makeStyles(theme => ({
             'height'
         )}, ${theme.transitions.create('min-height')}`,
     },
+    buttons: {},
     collapsed: {
         minHeight: 0,
         height: 0,

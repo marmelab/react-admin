@@ -2,10 +2,9 @@ import debounce from 'lodash/debounce';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Quill from 'quill';
-import { addField } from 'ra-core';
+import { addField, FieldTitle } from 'ra-core';
 import { InputHelperText } from 'ra-ui-materialui';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import FormControl from '@material-ui/core/FormControl';
+import { FormHelperText, FormControl, InputLabel } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 
 import styles from './styles';
@@ -91,14 +90,39 @@ export class RichTextInput extends Component {
     };
 
     render() {
+        const {
+            label,
+            source,
+            resource,
+            isRequired,
+            id,
+            classes = {},
+            margin = 'dense',
+            variant,
+        } = this.props;
         const { touched, error, helperText = false } = this.props.meta;
         return (
             <FormControl
                 error={!!(touched && error)}
                 fullWidth={this.props.fullWidth}
                 className="ra-rich-text-input"
+                margin={margin}
             >
-                <div data-testid="quill" ref={this.updateDivRef} />
+                {label !== '' && label !== false && (
+                    <InputLabel shrink htmlFor={id} className={classes.label}>
+                        <FieldTitle
+                            label={label}
+                            source={source}
+                            resource={resource}
+                            isRequired={isRequired}
+                        />
+                    </InputLabel>
+                )}
+                <div
+                    data-testid="quill"
+                    ref={this.updateDivRef}
+                    className={variant}
+                />
                 {helperText || (touched && error) ? (
                     <FormHelperText
                         error={!!error}
@@ -119,7 +143,6 @@ export class RichTextInput extends Component {
 const RichTextInputWithField = addField(withStyles(styles)(RichTextInput));
 
 RichTextInputWithField.defaultProps = {
-    addLabel: true,
     fullWidth: true,
 };
 export default RichTextInputWithField;

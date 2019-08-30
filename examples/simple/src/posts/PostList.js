@@ -30,7 +30,7 @@ export const PostIcon = BookIcon;
 
 const useQuickFilterStyles = makeStyles(theme => ({
     chip: {
-        marginBottom: theme.spacing(3),
+        marginBottom: theme.spacing(1),
     },
 }));
 const QuickFilter = ({ label }) => {

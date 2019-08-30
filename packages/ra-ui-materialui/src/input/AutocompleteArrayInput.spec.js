@@ -257,7 +257,7 @@ describe('<AutocompleteArrayInput />', () => {
             expect(queryAllByRole('option')).toHaveLength(1);
         });
 
-        it('should revert the searchText when allowEmpty is false', async () => {
+        it('should revert the searchText when allowEmpty is false', () => {
             const { getByLabelText, queryAllByRole } = render(
                 <AutocompleteArrayInput
                     {...defaultProps}
@@ -272,7 +272,6 @@ describe('<AutocompleteArrayInput />', () => {
             fireEvent.change(input, { target: { value: 'foo' } });
             expect(queryAllByRole('option')).toHaveLength(0);
             fireEvent.blur(input);
-            await waitForDomChange();
             expect(getByLabelText('resources.bar.fields.foo').value).toEqual(
                 ''
             );
@@ -300,7 +299,7 @@ describe('<AutocompleteArrayInput />', () => {
             expect(queryAllByRole('option')).toHaveLength(2);
         });
 
-        it('should resolve value from input value', async () => {
+        it('should resolve value from input value', () => {
             const onChange = jest.fn();
             const { getByLabelText } = render(
                 <AutocompleteArrayInput
@@ -316,7 +315,6 @@ describe('<AutocompleteArrayInput />', () => {
             fireEvent.change(input, { target: { value: 'male' } });
             fireEvent.blur(input);
 
-            await waitForDomChange();
             expect(onChange).toHaveBeenCalledTimes(1);
             expect(onChange).toHaveBeenCalledWith(['M']);
         });
@@ -409,7 +407,7 @@ describe('<AutocompleteArrayInput />', () => {
     });
 
     describe('Fix issue #2121', () => {
-        it('updates suggestions when input is blurred and refocused', async () => {
+        it('updates suggestions when input is blurred and refocused', () => {
             const { getByLabelText, queryAllByRole } = render(
                 <AutocompleteArrayInput
                     {...defaultProps}
@@ -427,7 +425,6 @@ describe('<AutocompleteArrayInput />', () => {
             fireEvent.change(input, { target: { value: 'ab' } });
             expect(queryAllByRole('option')).toHaveLength(2);
             fireEvent.blur(input);
-            await waitForDomChange();
 
             fireEvent.focus(input);
             fireEvent.change(input, { target: { value: 'ab' } });
@@ -476,7 +473,7 @@ describe('<AutocompleteArrayInput />', () => {
         expect(onChange).not.toHaveBeenCalled();
     });
 
-    it('automatically selects a matched choice on blur if there is only one', async () => {
+    it('automatically selects a matched choice on blur if there is only one', () => {
         const onChange = jest.fn();
 
         const { getByLabelText } = render(
@@ -494,7 +491,6 @@ describe('<AutocompleteArrayInput />', () => {
         fireEvent.focus(input);
         fireEvent.change(input, { target: { value: 'abc' } });
         fireEvent.blur(input);
-        await waitForDomChange();
 
         expect(onChange).toHaveBeenCalled();
     });

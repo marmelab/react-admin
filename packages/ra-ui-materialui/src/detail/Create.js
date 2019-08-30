@@ -68,18 +68,20 @@ Create.propTypes = {
     successMessage: PropTypes.string,
 };
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
     root: {},
     main: {
         display: 'flex',
     },
     noActions: {
-        marginTop: '1em',
+        [theme.breakpoints.up('sm')]: {
+            marginTop: '1em',
+        },
     },
     card: {
         flex: '1 1 auto',
     },
-});
+}));
 
 const sanitizeRestProps = ({
     actions,

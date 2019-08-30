@@ -80,7 +80,6 @@ export const Labeled: FunctionComponent<Props> = ({
     return (
         <FormControl
             className={className}
-            margin="normal"
             fullWidth={fullWidth}
             error={meta && meta.touched && !!meta.error}
         >

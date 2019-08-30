@@ -847,3 +847,38 @@ const Postedit = props =>
       </SimpleForm>
   </Edit>
 ```
+
+## Form Inputs are now filled and dense by default
+
+To better match the [Material Design](https://material.io/components/text-fields/) specification, react-admin defaults to the 'filled' variant for form inputs, and uses a *dense* margin to allow more compact forms. This will change the look and fill of existing forms built with `<SimpleForm>`, `<TabbedForm>`, and `<Filter>`. If you want your forms to look just like before, you need to set the `variant` and `margin` props as follows: 
+
+```diff
+// for SimpleForm
+const PostEdit = props =>
+    <Edit {...props}>
+        <SimpleForm
++           variant="standard"
++           margin="normal"
+        >
+            // ...
+        </SimpleForm>
+    </Edit>;
+// for TabbedForm
+const PostEdit = props =>
+    <Edit {...props}>
+        <TabbedForm
++           variant="standard"
++           margin="normal"
+        >
+            <FormTab label="Identity>
+                // ...
+            </FormTab>
+        </TabbedForm>
+    </Edit>;
+// for Filter
+const PostFilter = props => 
+-   <Filter>
++   <Filter variant="standard">
+        // ...
+    </Filter>;
+```

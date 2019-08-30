@@ -55,22 +55,26 @@ export const TextInput: FunctionComponent<
         <ResettableTextField
             id={id}
             {...input}
-            margin="normal"
             label={
-                <FieldTitle
-                    label={label}
-                    source={source}
-                    resource={resource}
-                    isRequired={isRequired}
-                />
+                label !== '' &&
+                label !== false && (
+                    <FieldTitle
+                        label={label}
+                        source={source}
+                        resource={resource}
+                        isRequired={isRequired}
+                    />
+                )
             }
             error={!!(touched && error)}
             helperText={
-                <InputHelperText
-                    touched={touched}
-                    error={error}
-                    helperText={helperText}
-                />
+                (touched && error) || helperText ? (
+                    <InputHelperText
+                        touched={touched}
+                        error={error}
+                        helperText={helperText}
+                    />
+                ) : null
             }
             {...options}
             {...sanitizeRestProps(rest)}

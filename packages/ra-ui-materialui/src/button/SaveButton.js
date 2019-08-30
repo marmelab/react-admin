@@ -1,4 +1,4 @@
-import React, { cloneElement } from 'react';
+import React, { cloneElement, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
@@ -55,29 +55,43 @@ export function SaveButton({
     variant = 'contained',
     icon,
     onClick,
+    handleSubmitWithRedirect,
+    showNotification,
     ...rest
 }) {
     const classes = useStyles({ classes: classesOverride });
-    const handleClick = e => {
-        const { handleSubmitWithRedirect, showNotification, onClick } = rest;
 
+    // We handle the click event through mousedown because of an issue when
+    // the button is not as the same place when mouseup occurs, preventing the click
+    // event to fire.
+    // It can happen when some errors appear under inputs, pushing the button
+    // towards the window bottom.
+    const handleMouseDown = event => {
         if (saving) {
             // prevent double submission
-            e.preventDefault();
+            event.preventDefault();
         } else {
             if (invalid) {
                 showNotification('ra.message.invalid_form', 'warning');
             }
             // always submit form explicitly regardless of button type
-            if (e) {
-                e.preventDefault();
+            if (event) {
+                event.preventDefault();
             }
             handleSubmitWithRedirect(redirect);
         }
 
         if (typeof onClick === 'function') {
-            onClick();
+            onClick(event);
         }
+    };
+
+    // As we handle the "click" through the mousedown event, we have to make sure we cancel
+    // the default click in case the issue mentionned above does not occur.
+    // Otherwise, this would trigger a standard HTML submit, not the final-form one.
+    const handleClick = event => {
+        event.preventDefault();
+        event.stopPropagation();
     };
 
     const type = submitOnEnter ? 'submit' : 'button';
@@ -86,6 +100,7 @@ export function SaveButton({
             className={classnames(classes.button, className)}
             variant={variant}
             type={type}
+            onMouseDown={handleMouseDown}
             onClick={handleClick}
             color={saving ? 'default' : 'primary'}
             aria-label={label && translate(label, { _: label })}

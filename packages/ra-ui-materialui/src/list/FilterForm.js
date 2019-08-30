@@ -8,16 +8,17 @@ import lodashGet from 'lodash/get';
 
 import FilterFormInput from './FilterFormInput';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
     form: {
-        marginTop: '-10px',
+        marginTop: -theme.spacing(2),
         paddingTop: 0,
         display: 'flex',
         alignItems: 'flex-end',
         flexWrap: 'wrap',
+        minHeight: theme.spacing(9.5),
     },
     clearFix: { clear: 'right' },
-});
+}));
 
 const sanitizeRestProps = ({
     anyTouched,
@@ -96,7 +97,14 @@ export class FilterForm extends Component {
         this.props.hideFilter(event.currentTarget.dataset.key);
 
     render() {
-        const { classes = {}, className, resource, ...rest } = this.props;
+        const {
+            classes = {},
+            className,
+            resource,
+            margin,
+            variant,
+            ...rest
+        } = this.props;
 
         return (
             <form
@@ -109,6 +117,8 @@ export class FilterForm extends Component {
                         filterElement={filterElement}
                         handleHide={this.handleHide}
                         resource={resource}
+                        margin={margin}
+                        variant={variant}
                     />
                 ))}
                 <div className={classes.clearFix} />

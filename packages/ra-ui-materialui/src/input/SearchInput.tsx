@@ -21,7 +21,8 @@ const SearchInput: FunctionComponent<
 
     return (
         <TextInput
-            label={false}
+            hiddenLabel
+            label=""
             placeholder={translate('ra.action.search')}
             InputProps={{
                 endAdornment: (
