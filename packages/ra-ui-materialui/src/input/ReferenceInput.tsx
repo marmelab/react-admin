@@ -1,11 +1,34 @@
-import React, { Children, cloneElement } from 'react';
+import React, {
+    Children,
+    cloneElement,
+    FunctionComponent,
+    ReactElement,
+} from 'react';
 import PropTypes from 'prop-types';
-import { useInput, useReferenceInputController } from 'ra-core';
+import { FieldInputProps, FieldMetaState } from 'react-final-form';
+import {
+    useInput,
+    useReferenceInputController,
+    InputProps,
+    Pagination,
+    Sort,
+} from 'ra-core';
 
 import LinearProgress from '../layout/LinearProgress';
 import Labeled from './Labeled';
 import ReferenceError from './ReferenceError';
 
+interface Props {
+    allowEmpty: boolean;
+    basePath: string;
+    children: ReactElement;
+    classes: any;
+    className: string;
+    label: string;
+    reference: string;
+    resource: string;
+    [key: string]: any;
+}
 /**
  * An Input component for choosing a reference record. Useful for foreign keys.
  *
@@ -85,7 +108,7 @@ import ReferenceError from './ReferenceError';
  *     <SelectInput optionText="title" />
  * </ReferenceInput>
  */
-export const ReferenceInput = ({
+export const ReferenceInput: FunctionComponent<Props & InputProps> = ({
     onBlur,
     onChange,
     onFocus,
@@ -172,9 +195,33 @@ const sanitizeRestProps = ({
     translateChoice,
     validation,
     ...rest
-}) => rest;
+}: any) => rest;
 
-export const ReferenceInputView = ({
+interface ReferenceInputViewProps {
+    allowEmpty?: boolean;
+    basePath: string;
+    children: ReactElement;
+    choices: any[];
+    classes?: object;
+    className?: string;
+    error?: string;
+    helperText?: string;
+    id: string;
+    input: FieldInputProps<any, HTMLElement>;
+    isRequired: boolean;
+    label: string;
+    loading: boolean;
+    meta: FieldMetaState<any>;
+    reference: string;
+    resource: string;
+    setFilter: (v: string) => void;
+    setPagination: (pagination: Pagination) => void;
+    setSort: (sort: Sort) => void;
+    source: string;
+    warning?: string;
+}
+
+export const ReferenceInputView: FunctionComponent<ReferenceInputViewProps> = ({
     allowEmpty,
     basePath,
     children,
@@ -182,12 +229,13 @@ export const ReferenceInputView = ({
     classes,
     className,
     error,
+    helperText,
+    id,
     input,
     isRequired,
     loading,
     label,
     meta,
-    onChange,
     resource,
     setFilter,
     setPagination,
@@ -203,20 +251,35 @@ export const ReferenceInputView = ({
     if (loading) {
         return (
             <Labeled
+                id={id}
                 label={label}
                 source={source}
                 resource={resource}
                 className={className}
                 isRequired={isRequired}
+                meta={meta}
+                input={input}
             >
                 <LinearProgress />
             </Labeled>
         );
     }
 
+    // This is not a final-form error but an unrecoverable error from the
+    // useReferenceInputController hook
     if (error) {
         return <ReferenceError label={label} error={error} />;
     }
+
+    // When the useReferenceInputController returns a warning, it means there it
+    // had an issue trying to load the referenced record
+    // We display it by overriding the final-form meta
+    const finalMeta = warning
+        ? {
+              ...meta,
+              error: warning,
+          }
+        : meta;
 
     return cloneElement(children, {
         allowEmpty,
@@ -226,41 +289,16 @@ export const ReferenceInputView = ({
         isRequired,
         label,
         resource,
-        meta: {
-            ...meta,
-            helperText: warning || false,
-        },
+        meta: finalMeta,
         source,
         choices,
         basePath,
-        onChange,
         setFilter,
         setPagination,
         setSort,
         translateChoice: false,
         ...sanitizeRestProps(rest),
     });
-};
-
-ReferenceInputView.propTypes = {
-    allowEmpty: PropTypes.bool,
-    basePath: PropTypes.string,
-    children: PropTypes.element,
-    choices: PropTypes.array,
-    classes: PropTypes.object,
-    className: PropTypes.string,
-    error: PropTypes.string,
-    input: PropTypes.object.isRequired,
-    loading: PropTypes.bool,
-    label: PropTypes.string,
-    meta: PropTypes.object,
-    onChange: PropTypes.func,
-    resource: PropTypes.string.isRequired,
-    setFilter: PropTypes.func,
-    setPagination: PropTypes.func,
-    setSort: PropTypes.func,
-    source: PropTypes.string,
-    warning: PropTypes.string,
 };
 
 export default ReferenceInput;

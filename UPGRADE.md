@@ -795,10 +795,58 @@ const OrderEdit = (props) => (
 );
 ```
 
+## Reference inputs used to inject an helperText inside meta
+
+`<ReferenceInput>` used to send a `helperText` inside the `meta` prop of its child whenever it was unable to retrieve referenced records. The same goes for `<ReferenceArrayInput>`.
+
+These components now use the `meta: { error }` prop and won't override their child `helperText` anymore.
+
+Furthermore, they don't support the `helperText` at all anymore as this is a pure UI concern which should be handled by their child.
+
+If you've implemented a custom child component for `<ReferenceInput>` of `<ReferenceArrayInput>`, you must now display the `error` in your component.
+
+```diff
+const MySelectIpnut = ({
+    // ...
+-   meta: { helperText }
++   meta: { error }
+}) => (
+    if (error) {
+        // ReferenceInput couldn't check referenced records, and therefore the choices list is empty
+        // display a custo merror message here.
+    }
+);
+```
+
 ## helperText is handled the same way in all components
 
-Some components (such as `<SelectArrayInput />`) accepted the `helperText` in their `meta` prop. They now receive it directly in their props.
-Besides, all components now display their error or their helperText, but not both at the same time.
+Somewhat related to the previous point, some components (such as `<SelectArrayInput>`) used to accept a `helperText` prop in their `meta` prop. They now receive it directly in their props.
+
+Besides, all components now display their error or their helper text, but not both at the same time.
+
+This has no impact unless you used to set the `helperText` manually in  `<SelectArrayInput>`:
+
+```diff
+const Postedit = props =>
+  <Edit {...props}>
+      <SimpleForm>
+          // ...
+         <SelectArrayInput
+            label="Tags"
+            source="categories"
+-           meta={{ helperText: 'Select categories' }}
++           helperText="Select categories"
+            choices={[
+             { id: 'music', name: 'Music' },
+             { id: 'photography', name: 'Photo' },
+             { id: 'programming', name: 'Code' },
+             { id: 'tech', name: 'Technology' },
+             { id: 'sport', name: 'Sport' },
+            ]}
+           />
+      </SimpleForm>
+  </Edit>
+```
 
 ## Form Inputs are now filled and dense by default
 
