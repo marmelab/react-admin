@@ -112,6 +112,7 @@ const FileInput: FunctionComponent<
         format: transformFiles,
         parse: transformFiles,
         source,
+        type: 'file',
         validate,
         ...rest,
     });
