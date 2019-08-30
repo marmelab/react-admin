@@ -94,6 +94,7 @@ const AutocompleteInput = ({
     isRequired: isRequiredOverride,
     label,
     limitChoicesToValue,
+    margin = 'dense',
     // input may have been initialized before (from ReferenceInput for example)
     meta: metaOverride,
     onBlur,
@@ -113,6 +114,7 @@ const AutocompleteInput = ({
     suggestionComponent,
     translateChoice,
     validate,
+    variant = 'filled',
     ...rest
 }) => {
     const translate = useTranslate();
@@ -351,13 +353,17 @@ const AutocompleteInput = ({
                             isRequired={isRequired}
                             handleChange={updateFilter}
                             helperText={
-                                <InputHelperText
-                                    touched={touched}
-                                    error={error}
-                                    helperText={helperText}
-                                />
+                                (touched && error) || helperText ? (
+                                    <InputHelperText
+                                        touched={touched}
+                                        error={error}
+                                        helperText={helperText}
+                                    />
+                                ) : null
                             }
                             error={!!(touched && error)}
+                            variant={variant}
+                            margin={margin}
                         />
                         <AutocompleteSuggestionList
                             isOpen={isMenuOpen}
