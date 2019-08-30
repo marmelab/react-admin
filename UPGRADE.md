@@ -882,3 +882,19 @@ const PostFilter = props =>
         // ...
     </Filter>;
 ```
+
+## Complete rewrite of the AutocompleteInput component
+
+We rewritten the `<AutocompleteInput>` component from scratch using [`downshift`](https://github.com/downshift-js/downshift).
+
+We also removed a feature many found confusing: the auto-selection of an item when it was matched exactly. 
+We no longer select anything automatically which made the `inputValueMatcher` prop obsolete:
+
+```diff
+<AutocompleteInput
+    source="role"
+-    inputValueMatcher={() => null}
+/>
+```
+
+If you passed [react-autosuggest](http://react-autosuggest.js.org/) props to customize the `<AutocompleteInput>`, you'll have to remove them.
