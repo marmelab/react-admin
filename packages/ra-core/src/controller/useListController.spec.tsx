@@ -190,6 +190,60 @@ describe('useListController', () => {
             cleanup();
         });
     });
+    describe('showFilter', () => {
+        it('Does not remove previously shown filter when adding a new one', () => {
+            let currentDisplayedFilters;
+
+            let fakeComponent = ({ showFilter, displayedFilters }) => {
+                currentDisplayedFilters = displayedFilters;
+                return (
+                    <>
+                        <button
+                            aria-label="Show filter 1"
+                            onClick={() => {
+                                showFilter('filter1', '');
+                            }}
+                        />
+                        <button
+                            aria-label="Show filter 2"
+                            onClick={() => {
+                                showFilter('filter2', '');
+                            }}
+                        />
+                    </>
+                );
+            };
+
+            const props = {
+                ...defaultProps,
+                children: fakeComponent,
+            };
+
+            const { getByLabelText } = renderWithRedux(
+                <ListController {...props} />,
+                {
+                    admin: {
+                        resources: {
+                            posts: {
+                                list: {
+                                    params: { filter: { q: 'hello' } },
+                                },
+                            },
+                        },
+                    },
+                }
+            );
+
+            fireEvent.click(getByLabelText('Show filter 1'));
+            expect(currentDisplayedFilters).toEqual({ filter1: true });
+            fireEvent.click(getByLabelText('Show filter 2'));
+            expect(currentDisplayedFilters).toEqual({
+                filter1: true,
+                filter2: true,
+            });
+        });
+    });
+
     describe('getListControllerProps', () => {
         it('should only pick the props injected by the ListController', () => {
             expect(
