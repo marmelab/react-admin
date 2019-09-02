@@ -25,6 +25,10 @@ const useStyles = makeStyles({
     },
 });
 
+const handleMouseDownClearButton = event => {
+    event.preventDefault();
+};
+
 /**
  * An override of the default Material-UI TextField which is resettable
  */
@@ -51,10 +55,6 @@ function ResettableTextField({
         },
         [onChange]
     );
-
-    const handleMouseDownClearButton = useCallback(event => {
-        event.preventDefault();
-    }, []);
 
     const handleFocus = useCallback(
         event => {
