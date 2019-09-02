@@ -183,13 +183,19 @@ const useListParams = ({
     );
 
     const hideFilter = useCallback((filterName: string) => {
-        setDisplayedFilters({ [filterName]: false });
+        setDisplayedFilters(previousFilters => ({
+            ...previousFilters,
+            [filterName]: false,
+        }));
         const newFilters = removeKey(filterValues, filterName);
         setFilters(newFilters);
     }, requestSignature); // eslint-disable-line react-hooks/exhaustive-deps
 
     const showFilter = useCallback((filterName: string, defaultValue: any) => {
-        setDisplayedFilters({ [filterName]: true });
+        setDisplayedFilters(previousFilters => ({
+            ...previousFilters,
+            [filterName]: true,
+        }));
         if (typeof defaultValue !== 'undefined') {
             setFilters({
                 ...filterValues,
