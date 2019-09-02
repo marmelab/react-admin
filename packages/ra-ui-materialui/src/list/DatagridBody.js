@@ -1,4 +1,4 @@
-import React, { cloneElement, useMemo } from 'react';
+import React, { cloneElement, memo } from 'react';
 import PropTypes from 'prop-types';
 import TableBody from '@material-ui/core/TableBody';
 import classnames from 'classnames';
@@ -24,45 +24,36 @@ const DatagridBody = ({
     styles,
     version,
     ...rest
-}) =>
-    useMemo(
-        () => (
-            <TableBody
-                className={classnames('datagrid-body', className)}
-                {...rest}
-            >
-                {ids.map((id, rowIndex) =>
-                    cloneElement(
-                        row,
-                        {
-                            basePath,
-                            classes,
-                            className: classnames(classes.row, {
-                                [classes.rowEven]: rowIndex % 2 === 0,
-                                [classes.rowOdd]: rowIndex % 2 !== 0,
-                                [classes.clickableRow]: rowClick,
-                            }),
-                            expand,
-                            hasBulkActions,
-                            hover,
-                            id,
-                            key: id,
-                            onToggleItem,
-                            record: data[id],
-                            resource,
-                            rowClick,
-                            selected: selectedIds.includes(id),
-                            style: rowStyle
-                                ? rowStyle(data[id], rowIndex)
-                                : null,
-                        },
-                        children
-                    )
-                )}
-            </TableBody>
-        ),
-        [version, data, selectedIds, JSON.stringify(ids), hasBulkActions] // eslint-disable-line
-    );
+}) => (
+    <TableBody className={classnames('datagrid-body', className)} {...rest}>
+        {ids.map((id, rowIndex) =>
+            cloneElement(
+                row,
+                {
+                    basePath,
+                    classes,
+                    className: classnames(classes.row, {
+                        [classes.rowEven]: rowIndex % 2 === 0,
+                        [classes.rowOdd]: rowIndex % 2 !== 0,
+                        [classes.clickableRow]: rowClick,
+                    }),
+                    expand,
+                    hasBulkActions,
+                    hover,
+                    id,
+                    key: id,
+                    onToggleItem,
+                    record: data[id],
+                    resource,
+                    rowClick,
+                    selected: selectedIds.includes(id),
+                    style: rowStyle ? rowStyle(data[id], rowIndex) : null,
+                },
+                children
+            )
+        )}
+    </TableBody>
+);
 
 DatagridBody.propTypes = {
     basePath: PropTypes.string,
@@ -91,7 +82,7 @@ DatagridBody.defaultProps = {
     row: <DatagridRow />,
 };
 
+const MemoDatagridBody = memo(DatagridBody);
 // trick material-ui Table into thinking this is one of the child type it supports
-DatagridBody.muiName = 'TableBody';
-
-export default DatagridBody;
+MemoDatagridBody.muiName = 'TableBody';
+export default MemoDatagridBody;

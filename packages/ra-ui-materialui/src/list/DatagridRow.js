@@ -8,7 +8,6 @@ import React, {
     useCallback,
     memo,
 } from 'react';
-import isEqual from 'lodash/isEqual';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { useDispatch } from 'react-redux';
@@ -207,13 +206,7 @@ DatagridRow.defaultProps = {
     selected: false,
 };
 
-const areEqual = (prevProps, nextProps) => {
-    const { children: _, ...prevPropsWithoutChildren } = prevProps;
-    const { children: __, ...nextPropsWithoutChildren } = nextProps;
-    return isEqual(prevPropsWithoutChildren, nextPropsWithoutChildren);
-};
-
-const PureDatagridRow = memo(DatagridRow, areEqual);
+const PureDatagridRow = memo(DatagridRow);
 
 PureDatagridRow.displayName = 'PureDatagridRow';
 
