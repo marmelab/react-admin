@@ -6,7 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import ListItem from '@material-ui/core/ListItem';
 import IconGetApp from '@material-ui/icons/GetApp';
-import { useTranslate } from 'react-admin';
+import { useTranslate } from 'ra-core';
 
 import { DROP_TARGET_TYPE } from './constants';
 
