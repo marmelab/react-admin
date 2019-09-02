@@ -885,16 +885,24 @@ const PostFilter = props =>
 
 ## Complete rewrite of the AutocompleteInput component
 
-We rewritten the `<AutocompleteInput>` component from scratch using [`downshift`](https://github.com/downshift-js/downshift).
+We rewrote the `<AutocompleteInput>` component from scratch using [`downshift`](https://github.com/downshift-js/downshift), while the previous version was based on [react-autosuggest](http://react-autosuggest.js.org/). The new `<AutocompleteInput>` component is more robust and more future-proof, and its API didn't change.
 
-We also removed a feature many found confusing: the auto-selection of an item when it was matched exactly. 
-We no longer select anything automatically which made the `inputValueMatcher` prop obsolete:
+There are two breaking changes in the new `<AutocompleteInput>`:
+
+- The `inputValueMatcher` prop is gone. We removed a feature many found confusing: the auto-selection of an item when it was matched exactly. So react-admin no longer selects anything automatically, therefore the `inputValueMatcher` prop is  obsolete
 
 ```diff
 <AutocompleteInput
     source="role"
--    inputValueMatcher={() => null}
+-   inputValueMatcher={() => null}
 />
 ```
-
-If you passed [react-autosuggest](http://react-autosuggest.js.org/) props to customize the `<AutocompleteInput>`, you'll have to remove them.
+ 
+ - Specific [`react-autosuggest` props](https://github.com/moroshko/react-autosuggest#props) (like `onSuggestionsFetchRequested`, `theme`, or `highlightFirstSuggestion`) are no longer supported, because the component now passes extra props to a `<Downshift>` component.
+ 
+```diff
+<AutocompleteInput
+    source="role"
+-   highlightFirstSuggestion={true}
+/>
+```
