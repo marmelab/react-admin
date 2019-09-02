@@ -1,4 +1,4 @@
-import { useReducer, useEffect, useRef } from 'react';
+import { useReducer, useEffect, useRef, useCallback } from 'react';
 
 import {
     SORT_ASC,
@@ -114,12 +114,20 @@ export default (initialSort: Sort = defaultSort): SortProps => {
     }, [initialSort.field, initialSort.order]); // eslint-disable-line react-hooks/exhaustive-deps
 
     return {
-        setSort: (sort: Sort) =>
-            dispatch({ type: 'SET_SORT', payload: { sort } }),
-        setSortField: (field: string) =>
-            dispatch({ type: 'SET_SORT_FIELD', payload: { field } }),
-        setSortOrder: (order: string) =>
-            dispatch({ type: 'SET_SORT_ORDER', payload: { order } }),
+        setSort: useCallback(
+            (sort: Sort) => dispatch({ type: 'SET_SORT', payload: { sort } }),
+            []
+        ),
+        setSortField: useCallback(
+            (field: string) =>
+                dispatch({ type: 'SET_SORT_FIELD', payload: { field } }),
+            []
+        ),
+        setSortOrder: useCallback(
+            (order: string) =>
+                dispatch({ type: 'SET_SORT_ORDER', payload: { order } }),
+            []
+        ),
         sort,
     };
 };

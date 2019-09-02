@@ -170,7 +170,7 @@ const PostCreate = ({ permissions, ...props }) => {
                                     getSource,
                                     ...rest
                                 }) =>
-                                    scopedFormData.user_id ? (
+                                    scopedFormData && scopedFormData.user_id ? (
                                         <SelectInput
                                             label="Role"
                                             source={getSource('role')}

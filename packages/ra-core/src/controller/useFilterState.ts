@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import debounce from 'lodash/debounce';
 
 export interface Filter {
@@ -68,13 +68,16 @@ export default ({
         ...filterToQuery(''),
     });
 
-    const setFilter = debounce(
-        value =>
-            setFilterValue({
-                ...permanentFilter,
-                ...filterToQuery(value),
-            }),
-        debounceTime
+    const setFilter = useCallback(
+        debounce(
+            value =>
+                setFilterValue({
+                    ...permanentFilter,
+                    ...filterToQuery(value),
+                }),
+            debounceTime
+        ),
+        []
     );
 
     return {
