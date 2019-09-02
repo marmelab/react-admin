@@ -1,6 +1,6 @@
 {
     "name": "ra-ui-materialui",
-    "version": "3.0.0-alpha.3",
+    "version": "3.0.0-alpha.4",
     "description": "UI Components for react-admin with MaterialUI",
     "files": [
         "*.md",
@@ -57,7 +57,7 @@
         "lodash": "~4.17.5",
         "material-ui-chip-input": "1.0.0",
         "prop-types": "^15.6.1",
-        "ra-core": "^3.0.0-alpha.3",
+        "ra-core": "^3.0.0-alpha.4",
         "react-autosuggest": "^9.4.2",
         "react-dropzone": "^10.1.7",
         "react-final-form": "^6.3.0",

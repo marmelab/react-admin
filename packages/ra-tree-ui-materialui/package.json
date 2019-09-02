@@ -1,6 +1,6 @@
 {
     "name": "ra-tree-ui-materialui",
-    "version": "3.0.0-alpha.3",
+    "version": "3.0.0-alpha.4",
     "description": "A treeview component with material-ui to use with react-admin",
     "main": "lib/index.js",
     "module": "esm/index.js",
