@@ -5,6 +5,7 @@ import SimpleFormIterator from './SimpleFormIterator';
 import TabbedForm from './TabbedForm';
 import TabbedFormTabs from './TabbedFormTabs';
 import Toolbar from './Toolbar';
+import getFormInitialValues from './getFormInitialValues';
 
 export {
     FormInput,
@@ -14,4 +15,5 @@ export {
     TabbedForm,
     TabbedFormTabs,
     Toolbar,
+    getFormInitialValues,
 };

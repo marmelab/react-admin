@@ -358,7 +358,7 @@ to change this behaviour you can pass `false` for the `submitOnEnter` property, 
 
 Here are all the props accepted by the `<SimpleForm>` component:
 
-* [`defaultValue`](#default-values)
+* [`initialValues`](#default-values)
 * [`validate`](#validation)
 * [`submitOnEnter`](#submit-on-enter)
 * [`redirect`](#redirection-after-submission)
@@ -391,7 +391,7 @@ to change this behaviour you can pass `false` for the `submitOnEnter` property.
 
 Here are all the props accepted by the `<TabbedForm>` component:
 
-* [`defaultValue`](#default-values)
+* [`initialValues`](#default-values)
 * [`validate`](#validation)
 * [`submitOnEnter`](#submit-on-enter)
 * [`redirect`](#redirection-after-submission)
@@ -467,17 +467,19 @@ export const PostEdit = (props) => (
 
 ## Default Values
 
-To define default values, you can add a `defaultValue` prop to form components (`<SimpleForm>`, `<Tabbedform>`, etc.), or add a `defaultValue` to individual input components. Let's see each of these options.
+To define default values, you can add a `initialValues` prop to form components (`<SimpleForm>`, `<Tabbedform>`, etc.), or add a `defaultValue` to individual input components. Let's see each of these options.
+
+**Note**: on RA v2 the `initialValues` used to be named `defaultValue`
 
 ### Global Default Value
 
-The value of the form `defaultValue` prop can be an object, or a function returning an object, specifying default values for the created record. For instance:
+The value of the form `initialValues` prop is an object, or a function returning an object, specifying default values for the created record. For instance:
 
 ```jsx
 const postDefaultValue = { created_at: new Date(), nb_views: 0 };
 export const PostCreate = (props) => (
     <Create {...props}>
-        <SimpleForm defaultValue={postDefaultValue}>
+        <SimpleForm initialValues={postDefaultValue}>
             <TextInput source="title" />
             <RichTextInput source="body" />
             <NumberInput source="nb_views" />
@@ -486,11 +488,11 @@ export const PostCreate = (props) => (
 );
 ```
 
-**Tip**: You can include properties in the form `defaultValue` that are not listed as input components, like the `created_at` property in the previous example.
+**Tip**: You can include properties in the form `initialValues` that are not listed as input components, like the `created_at` property in the previous example.
 
 ### Per Input Default Value
 
-Alternatively, you can specify a `defaultValue` prop directly in `<Input>` components. Just like for form-level default values, an input-level default value can be a scalar, or a function returning a scalar.  React-admin will merge the input default values with the form default value (input > form):
+Alternatively, you can specify a `defaultValue` prop directly in `<Input>` components. Default value can be a scalar, or a function returning a scalar.  React-admin will merge the input default values with the form default value (input > form):
 
 ```jsx
 export const PostCreate = (props) => (
@@ -630,7 +632,7 @@ const validateStock = [required(), number(), minValue(0)];
 
 export const ProductEdit = ({ ...props }) => (
     <Edit {...props}>
-        <SimpleForm defaultValue={{ stock: 0 }}>
+        <SimpleForm initialValues={{ stock: 0 }}>
             ...
             {/* do this */}
             <NumberInput source="stock" validate={validateStock} />
@@ -914,7 +916,7 @@ export const UserCreate = ({ permissions, ...props }) =>
     <Create {...props}>
         <SimpleForm
             toolbar={<UserCreateToolbar permissions={permissions} />}
-            defaultValue={{ role: 'user' }}
+            initialValues={{ role: 'user' }}
         >
             <TextInput source="name" validate={[required()]} />
             {permissions === 'admin' &&
@@ -932,7 +934,7 @@ This also works inside an `Edition` view with a `TabbedForm`, and you can hide a
 ```jsx
 export const UserEdit = ({ permissions, ...props }) =>
     <Edit title={<UserTitle />} {...props}>
-        <TabbedForm defaultValue={{ role: 'user' }}>
+        <TabbedForm initialValues={{ role: 'user' }}>
             <FormTab label="user.form.summary">
                 {permissions === 'admin' && <TextInput disabled source="id" />}
                 <TextInput source="name" validate={required()} />

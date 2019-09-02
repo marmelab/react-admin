@@ -9,6 +9,7 @@ import Divider from '@material-ui/core/Divider';
 import { makeStyles } from '@material-ui/core/styles';
 import { useTranslate, useInitializeFormWithRecord } from 'ra-core';
 
+import getFormInitialValues from './getFormInitialValues';
 import Toolbar from './Toolbar';
 import TabbedFormTabs from './TabbedFormTabs';
 
@@ -21,7 +22,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const TabbedForm = ({ initialValues, ...props }) => {
+const TabbedForm = ({ initialValues, defaultValue, ...props }) => {
     let redirect = useRef(props.redirect);
     // We don't use state here for two reasons:
     // 1. There no way to execute code only after the state has been updated
@@ -39,15 +40,14 @@ const TabbedForm = ({ initialValues, ...props }) => {
         props.save(values, finalRedirect);
     };
 
-    const finalInitialValues = {
-        ...initialValues,
-        ...props.record,
-    };
-
     return (
         <Form
             key={props.version}
-            initialValues={finalInitialValues}
+            initialValues={getFormInitialValues(
+                initialValues,
+                defaultValue,
+                props.record
+            )}
             onSubmit={submit}
             mutators={{ ...arrayMutators }}
             setRedirect={setRedirect}
@@ -185,7 +185,8 @@ TabbedFormView.propTypes = {
     children: PropTypes.node,
     className: PropTypes.string,
     classes: PropTypes.object,
-    defaultValue: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
+    defaultValue: PropTypes.oneOfType([PropTypes.object, PropTypes.func]), // @deprecated
+    initialValues: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
     handleSubmit: PropTypes.func, // passed by react-final-form
     invalid: PropTypes.bool,
     location: PropTypes.object,
