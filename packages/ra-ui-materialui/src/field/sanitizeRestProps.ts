@@ -11,6 +11,7 @@ export default (props: object): object =>
         'headerClassName',
         'label',
         'linkType',
+        'link',
         'locale',
         'record',
         'resource',

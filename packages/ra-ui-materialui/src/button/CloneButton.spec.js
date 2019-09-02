@@ -10,7 +10,7 @@ describe('<CloneButton />', () => {
         );
 
         expect(wrapper.prop('to')).toEqual(
-            expect.objectContaining({ state: { record: { foo: 'bar' } } })
+            expect.objectContaining({ search: 'foo=bar' })
         );
     });
 });

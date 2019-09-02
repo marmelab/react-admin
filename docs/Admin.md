@@ -28,25 +28,24 @@ export default App;
 Here are all the props accepted by the component:
 
 - [The `<Admin>` Component](#the-admin-component)
-    - [`dataProvider`](#dataprovider)
-    - [`title`](#title)
-    - [`dashboard`](#dashboard)
-    - [`catchAll`](#catchall)
-    - [`menu`](#menu)
-    - [`theme`](#theme)
-    - [`appLayout`](#applayout)
-    - [`customReducers`](#customreducers)
-    - [`customSagas`](#customsagas)
-    - [`customRoutes`](#customroutes)
-    - [`authProvider`](#authprovider)
-    - [`loginPage`](#loginpage)
-    - [`logoutButton`](#logoutbutton)
-    - [`initialState`](#initialstate)
-    - [`history`](#history)
-    - [`locale`](#internationalization)
-    - [`i18nProvider`](#internationalization)
-    - [Declaring resources at runtime](#declaring-resources-at-runtime)
-    - [Using react-admin without `<Admin>` and `<Resource>`](#using-react-admin-without-admin-and-resource)
+  - [`dataProvider`](#dataprovider)
+  - [`title`](#title)
+  - [`dashboard`](#dashboard)
+  - [`catchAll`](#catchall)
+  - [`menu`](#menu)
+  - [`theme`](#theme)
+  - [`layout`](#layout)
+  - [`customReducers`](#customreducers)
+  - [`customSagas`](#customsagas)
+  - [`customRoutes`](#customroutes)
+  - [`authProvider`](#authprovider)
+  - [`loginPage`](#loginpage)
+  - [`logoutButton`](#logoutbutton)
+  - [`initialState`](#initialstate)
+  - [`history`](#history)
+  - [Internationalization](#internationalization)
+  - [Declaring resources at runtime](#declaring-resources-at-runtime)
+  - [Using react-admin without `<Admin>` and `<Resource>`](#using-react-admin-without-admin-and-resource)
 
 ## `dataProvider`
 
@@ -153,7 +152,7 @@ const App = () => (
 
 ## `menu`
 
-**Tip**: This prop is deprecated. To override the menu component, use a [custom layout](#applayout) instead.
+**Tip**: This prop is deprecated. To override the menu component, use a [custom layout](#layout) instead.
 
 React-admin uses the list of `<Resource>` components passed as children of `<Admin>` to build a menu to each resource with a `list` component.
 
@@ -163,35 +162,39 @@ If you want to add or remove menu items, for instance to link to non-resources p
 // in src/Menu.js
 import React, { createElement } from 'react';
 import { connect } from 'react-redux';
+import { useMediaQuery } from '@material-ui/core';
 import { MenuItemLink, getResources } from 'react-admin';
 import { withRouter } from 'react-router-dom';
 import LabelIcon from '@material-ui/icons/Label';
 
-import Responsive from '../layout/Responsive';
-
-const Menu = ({ resources, onMenuClick, logout }) => (
-    <div>
-        {resources.map(resource => (
+const Menu = ({ resources, onMenuClick, open, logout }) => {
+    const isXSmall = useMediaQuery(theme => theme.breakpoints.down('xs'));
+    return (
+        <div>
+            {resources.map(resource => (
+                <MenuItemLink
+                    key={resource.name}
+                    to={`/${resource.name}`}
+                    primaryText={resource.options && resource.options.label || resource.name}
+                    leftIcon={createElement(resource.icon)}
+                    onClick={onMenuClick}
+                    sidebarIsOpen={open}
+                />
+            ))}
             <MenuItemLink
-                to={`/${resource.name}`}
-                primaryText={resource.name}
-                leftIcon={createElement(resource.icon)}
+                to="/custom-route"
+                primaryText="Miscellaneous"
+                leftIcon={LabelIcon}
                 onClick={onMenuClick}
+                sidebarIsOpen={open}
             />
-        ))}
-        <MenuItemLink
-            to="/custom-route"
-            primaryText="Miscellaneous"
-            leftIcon={<LabelIcon />}
-            onClick={onMenuClick} />
-        <Responsive
-            small={logout}
-            medium={null} // Pass null to render nothing on larger devices
-        />
-    </div>
-);
+            {isXSmall && logout}
+        </div>
+    );
+}
 
 const mapStateToProps = state => ({
+    open: state.admin.ui.sidebarOpen,
     resources: getResources(state),
 });
 
@@ -221,7 +224,7 @@ See the [Theming documentation](./Theming.md#using-a-custom-menu) for more detai
 
 ## `theme`
 
-Material UI supports [theming](http://www.material-ui.com/#/customization/themes). This lets you customize the look and feel of an admin by overriding fonts, colors, and spacing. You can provide a custom material ui theme by using the `theme` prop:
+Material UI supports [theming](http://material-ui.com/customization/themes). This lets you customize the look and feel of an admin by overriding fonts, colors, and spacing. You can provide a custom material ui theme by using the `theme` prop:
 
 ```jsx
 import { createMuiTheme } from '@material-ui/core/styles';
@@ -243,9 +246,9 @@ const App = () => (
 
 For more details on predefined themes and custom themes, refer to the [Material UI Customization documentation](https://material-ui.com/customization/themes/).
 
-## `appLayout`
+## `layout`
 
-If you want to deeply customize the app header, the menu, or the notifications, the best way is to provide a custom layout component. It must contain a `{children}` placeholder, where react-admin will render the resources. If you use material UI fields and inputs, it should contain a `<MuiThemeProvider>` element. And finally, if you want to show the spinner in the app header when the app fetches data in the background, the Layout should connect to the redux store.
+If you want to deeply customize the app header, the menu, or the notifications, the best way is to provide a custom layout component. It must contain a `{children}` placeholder, where react-admin will render the resources. If you use material UI fields and inputs, it should contain a `<ThemeProvider>` element. And finally, if you want to show the spinner in the app header when the app fetches data in the background, the Layout should connect to the redux store.
 
 Use the [default layout](https://github.com/marmelab/react-admin/blob/master/packages/ra-ui-materialui/src/layout/Layout.js) as a starting point, and check [the Theming documentation](./Theming.md#using-a-custom-layout) for examples.
 
@@ -254,7 +257,7 @@ Use the [default layout](https://github.com/marmelab/react-admin/blob/master/pac
 import MyLayout from './MyLayout';
 
 const App = () => (
-    <Admin appLayout={MyLayout} dataProvider={simpleRestProvider('http://path.to.my.api')}>
+    <Admin layout={MyLayout} dataProvider={simpleRestProvider('http://path.to.my.api')}>
         // ...
     </Admin>
 );
@@ -288,8 +291,7 @@ The `<Admin>` app uses [Redux](http://redux.js.org/) to manage state. The state 
 ```jsx
 {
     admin: { /*...*/ }, // used by react-admin
-    form: { /*...*/ }, // used by redux-form
-    routing: { /*...*/ }, // used by react-router-redux
+    routing: { /*...*/ }, // used by connected-react-router
 }
 ```
 
@@ -330,8 +332,7 @@ Now the state will look like:
 ```jsx
 {
     admin: { /*...*/ }, // used by react-admin
-    form: { /*...*/ }, // used by redux-form
-    routing: { /*...*/ }, // used by react-router-redux
+    routing: { /*...*/ }, // used by connected-react-router
     bitcoinRate: 123, // managed by rateReducer
 }
 ```
@@ -500,6 +501,35 @@ const App = () => (
 ## `initialState`
 
 The `initialState` prop lets you pass preloaded state to Redux. See the [Redux Documentation](http://redux.js.org/docs/api/createStore.html#createstorereducer-preloadedstate-enhancer) for more details.
+
+It accepts either a function or an object:
+
+```jsx
+const initialState = {
+    theme: 'dark',
+    grid: 5,
+};
+
+const App = () => (
+    <Admin initialState={initialState} dataProvider={simpleRestProvider('http://path.to.my.api')}>
+        // ...
+    </Admin>
+);
+```
+
+```jsx
+const initialState = () => ({
+    theme: localStorage.getItem('theme'),
+    grid: localStorage.getItem('grid'),
+});
+
+const App = () => (
+    <Admin initialState={initialState} dataProvider={simpleRestProvider('http://path.to.my.api')}>
+        // ...
+    </Admin>
+);
+```
+
 
 ## `history`
 

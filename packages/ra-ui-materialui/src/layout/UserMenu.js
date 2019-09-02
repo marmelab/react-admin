@@ -10,7 +10,7 @@ class UserMenu extends React.Component {
     static propTypes = {
         children: PropTypes.node,
         label: PropTypes.string.isRequired,
-        logout: PropTypes.node,
+        logout: PropTypes.element,
         icon: PropTypes.node,
         translate: PropTypes.func.isRequired,
     };
@@ -71,8 +71,11 @@ class UserMenu extends React.Component {
                     onClose={this.handleClose}
                 >
                     {Children.map(children, menuItem =>
-                        isValidElement(menuItem) ?
-                        cloneElement(menuItem, { onClick: this.handleClose }) : null
+                        isValidElement(menuItem)
+                            ? cloneElement(menuItem, {
+                                  onClick: this.handleClose,
+                              })
+                            : null
                     )}
                     {logout}
                 </Menu>

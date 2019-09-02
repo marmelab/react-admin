@@ -1,19 +1,20 @@
 import { createStore, compose, applyMiddleware } from 'redux';
-import { routerMiddleware } from 'react-router-redux';
+import { routerMiddleware } from 'connected-react-router';
 import createSagaMiddleware from 'redux-saga';
 import { all, fork } from 'redux-saga/effects';
 import { History } from 'history';
 
 import { AuthProvider, DataProvider, I18nProvider } from './types';
-import { USER_LOGOUT } from './actions/authActions';
 import createAppReducer from './reducer';
 import { adminSaga } from './sideEffect';
 import { defaultI18nProvider } from './i18n';
-import formMiddleware from './form/formMiddleware';
+import { CLEAR_STATE } from './actions/clearActions';
 
 interface Window {
     __REDUX_DEVTOOLS_EXTENSION__?: () => () => void;
 }
+
+export type InitialState = object | (() => object);
 
 interface Params {
     dataProvider: DataProvider;
@@ -22,7 +23,7 @@ interface Params {
     customReducers?: any;
     customSagas?: any[];
     i18nProvider?: I18nProvider;
-    initialState?: object;
+    initialState?: InitialState;
     locale?: string;
 }
 
@@ -37,10 +38,22 @@ export default ({
     locale = 'en',
 }: Params) => {
     const messages = i18nProvider(locale);
-    const appReducer = createAppReducer(customReducers, locale, messages);
+    const appReducer = createAppReducer(
+        customReducers,
+        locale,
+        messages,
+        history
+    );
 
     const resettableAppReducer = (state, action) =>
-        appReducer(action.type !== USER_LOGOUT ? state : undefined, action);
+        appReducer(
+            action.type !== CLEAR_STATE
+                ? state
+                : typeof initialState === 'function'
+                ? initialState()
+                : initialState,
+            action
+        );
     const saga = function* rootSaga() {
         yield all(
             [
@@ -54,13 +67,9 @@ export default ({
 
     const store = createStore(
         resettableAppReducer,
-        initialState,
+        typeof initialState === 'function' ? initialState() : initialState,
         compose(
-            applyMiddleware(
-                sagaMiddleware,
-                formMiddleware,
-                routerMiddleware(history)
-            ),
+            applyMiddleware(sagaMiddleware, routerMiddleware(history)),
             typeof typedWindow !== 'undefined' &&
                 typedWindow.__REDUX_DEVTOOLS_EXTENSION__
                 ? typedWindow.__REDUX_DEVTOOLS_EXTENSION__()

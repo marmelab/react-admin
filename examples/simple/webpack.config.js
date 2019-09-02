@@ -2,6 +2,8 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 const IgnoreNotFoundExportPlugin = require('ignore-not-found-export-plugin');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
+    .BundleAnalyzerPlugin;
 
 module.exports = {
     devtool: 'cheap-module-source-map',
@@ -31,7 +33,11 @@ module.exports = {
             'RedirectionSideEffect',
             'RefreshSideEffect',
         ]),
-    ],
+    ].concat(
+        process.env.NODE_ENV === 'development'
+            ? [new BundleAnalyzerPlugin()]
+            : []
+    ),
     resolve: {
         extensions: ['.ts', '.js', '.tsx', '.json'],
         alias: {
@@ -90,20 +96,6 @@ module.exports = {
                 'packages',
                 'ra-tree-ui-materialui',
                 'src'
-            ),
-            'ra-tree-language-english': path.join(
-                __dirname,
-                '..',
-                '..',
-                'packages',
-                'ra-tree-language-english'
-            ),
-            'ra-tree-language-french': path.join(
-                __dirname,
-                '..',
-                '..',
-                'packages',
-                'ra-tree-language-french'
             ),
         },
     },

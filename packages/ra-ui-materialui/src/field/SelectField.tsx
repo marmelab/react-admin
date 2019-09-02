@@ -2,16 +2,14 @@ import React, { SFC, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import pure from 'recompose/pure';
-import compose from 'recompose/compose';
-import { withTranslate, TranslationContextProps } from 'ra-core';
+import { useTranslate, Identifier } from 'ra-core';
 import Typography from '@material-ui/core/Typography';
 
 import sanitizeRestProps from './sanitizeRestProps';
 import { FieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 
 interface Choice {
-    id: string;
-    name: string;
+    [key: string]: string | Identifier;
 }
 
 type OptionTextElement = ReactElement<{ record: Choice }>;
@@ -83,37 +81,42 @@ interface Props extends FieldProps {
  *
  * **Tip**: <ReferenceField> sets `translateChoice` to false by default.
  */
-export const SelectField: SFC<
-    Props & InjectedFieldProps & TranslationContextProps
-> = ({
+export const SelectField: SFC<Props & InjectedFieldProps> = ({
     className,
     source,
     record,
     choices,
     optionValue,
     optionText,
-    translate,
     translateChoice,
     ...rest
 }) => {
+    const translate = useTranslate();
     const value = get(record, source);
     const choice = choices.find(c => c[optionValue] === value);
     if (!choice) {
         return null;
     }
-    const choiceName = React.isValidElement(optionText) // eslint-disable-line no-nested-ternary
-        ? React.cloneElement(optionText, { record: choice })
-        : typeof optionText === 'function'
-        ? optionText(choice)
-        : choice[optionText];
+    let choiceIsElement = false;
+    let choiceName;
+    if (React.isValidElement(optionText)) {
+        choiceIsElement = true;
+        choiceName = React.cloneElement(optionText, { record: choice });
+    } else {
+        choiceName =
+            typeof optionText === 'function'
+                ? optionText(choice)
+                : choice[optionText];
+    }
+
     return (
         <Typography
             component="span"
-            variant="body1"
+            variant="body2"
             className={className}
             {...sanitizeRestProps(rest)}
         >
-            {translateChoice
+            {translateChoice && !choiceIsElement
                 ? translate(choiceName, { _: choiceName })
                 : choiceName}
         </Typography>
@@ -126,15 +129,7 @@ SelectField.defaultProps = {
     translateChoice: true,
 };
 
-const enhance = compose<
-    Props & InjectedFieldProps & TranslationContextProps,
-    Props & TranslationContextProps
->(
-    pure,
-    withTranslate
-);
-
-const EnhancedSelectField = enhance(SelectField);
+const EnhancedSelectField = pure(SelectField);
 
 EnhancedSelectField.defaultProps = {
     addLabel: true,
@@ -143,7 +138,7 @@ EnhancedSelectField.defaultProps = {
 EnhancedSelectField.propTypes = {
     ...Typography.propTypes,
     ...fieldPropTypes,
-    choices: PropTypes.arrayOf(PropTypes.object).isRequired,
+    choices: PropTypes.arrayOf(PropTypes.any).isRequired,
     optionText: PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.func,

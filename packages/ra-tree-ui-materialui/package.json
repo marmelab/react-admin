@@ -1,6 +1,6 @@
 {
     "name": "ra-tree-ui-materialui",
-    "version": "2.8.5",
+    "version": "3.0.0-alpha.3",
     "description": "A treeview component with material-ui to use with react-admin",
     "main": "lib/index.js",
     "module": "esm/index.js",
@@ -37,20 +37,22 @@
         "watch": "rimraf ./lib && tsc --watch"
     },
     "peerDependencies": {
-        "ra-core": "^2.5.0",
+        "ra-core": "^3.0.0-alpha.0",
         "ra-ui-materialui": "^2.5.0",
-        "react": "^16.3.0",
-        "react-dom": "^16.3.0"
+        "react": "^16.8.0",
+        "react-dom": "^16.8.0"
     },
     "dependencies": {
+        "final-form": "^4.18.4",
         "lodash": "^4.17.10",
         "prop-types": "^15.6.1",
-        "ra-tree-core": "^2.6.0",
+        "ra-tree-core": "^3.0.0-alpha.0",
         "react-dnd": "^5.0.0",
-        "react-dnd-touch-backend": "^0.5.1"
+        "react-dnd-touch-backend": "^0.5.1",
+        "react-final-form": "^6.3.0"
     },
     "devDependencies": {
         "cross-env": "^5.2.0",
-        "rimraf": "^2.6.2"
+        "rimraf": "^2.6.3"
     }
 }

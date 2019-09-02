@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-    translate,
     Datagrid,
     Edit,
     EditButton,
@@ -8,17 +7,21 @@ import {
     ReferenceManyField,
     SimpleForm,
     TextInput,
+    useTranslate,
 } from 'react-admin';
 
 import ThumbnailField from '../products/ThumbnailField';
 import ProductRefField from '../products/ProductRefField';
 
-const CategoryTitle = translate(({ record, translate }) => (
-    <span>
-        {translate('resources.categories.name', { smart_count: 1 })} &quot;
-        {record.name}&quot;
-    </span>
-));
+const CategoryTitle = ({ record }) => {
+    const translate = useTranslate();
+    return (
+        <span>
+            {translate('resources.categories.name', { smart_count: 1 })} &quot;
+            {record.name}&quot;
+        </span>
+    );
+};
 
 const CategoryEdit = props => (
     <Edit title={<CategoryTitle />} {...props}>

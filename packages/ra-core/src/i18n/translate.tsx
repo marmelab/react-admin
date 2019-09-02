@@ -36,7 +36,6 @@ const MyHelloButton = ({ translate }) => (
 );`
     );
 
-    // tslint:disable-next-line:no-shadowed-variable
     const {
         translate: translateToDiscard,
         ...defaultProps

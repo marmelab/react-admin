@@ -9,7 +9,7 @@ Used to simulate a REST / GraphQL backend in [react-admin](https://github.com/ma
 ## Usage
 
 ```js
-import generator from 'data-generator-retail';
+import generateData from 'data-generator-retail';
 
 const data = generateData();
 // now do whatever you want with the data...

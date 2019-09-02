@@ -10,17 +10,17 @@ An `Input` component displays an input, or a dropdown list, a list of radio butt
 ```jsx
 // in src/posts.js
 import React from 'react';
-import { Edit, DisabledInput, LongTextInput, ReferenceInput, SelectInput, SimpleForm, TextInput } from 'react-admin';
+import { Edit, ReferenceInput, SelectInput, SimpleForm, TextInput } from 'react-admin';
 
 export const PostEdit = (props) => (
     <Edit title={<PostTitle />} {...props}>
         <SimpleForm>
-            <DisabledInput source="id" />
+            <TextInput disabled source="id" />
             <ReferenceInput label="User" source="userId" reference="users">
                 <SelectInput optionText="name" />
             </ReferenceInput>
             <TextInput source="title" />
-            <LongTextInput source="body" />
+            <TextInput multiline source="body" />
         </SimpleForm>
     </Edit>
 );
@@ -97,7 +97,7 @@ import { ArrayInput, SimpleFormIterator, DateInput, TextInput } from 'react-admi
 }
 ```
 
-`<ArrayInput>` expects a single child, which must be a *form iterator* component. A form iterator is a component accepting a `fields` object as passed by [redux-form's `<FieldArray>` component](https://redux-form.com/7.3.0/examples/fieldarrays/), and defining a layout for an array of fields. For instance, the `<SimpleFormIterator>` component displays an array of fields in an unordered list (`<ul>`), one sub-form by list item (`<li>`). It also provides controls for adding and removing a sub-record (a backlink in this example).
+`<ArrayInput>` expects a single child, which must be a *form iterator* component. A form iterator is a component accepting a `fields` object as passed by [react-final-form-array](https://github.com/final-form/react-final-form-arrays#fieldarrayrenderprops), and defining a layout for an array of fields. For instance, the `<SimpleFormIterator>` component displays an array of fields in an unordered list (`<ul>`), one sub-form by list item (`<li>`). It also provides controls for adding and removing a sub-record (a backlink in this example).
 
 You can pass `disableAdd` and `disableRemove` as props of `SimpleFormIterator`, to disable `ADD` and `REMOVE` button respectively. Default value of both is `false`.
 
@@ -114,7 +114,9 @@ import { ArrayInput, SimpleFormIterator, DateInput, TextInput } from 'react-admi
 
 ## `<AutocompleteInput>`
 
-To let users choose a value in a list using a dropdown with autocompletion, use `<AutocompleteInput>`. It renders using [react-autosuggest](http://react-autosuggest.js.org/) and a `fuzzySearch` filter. Set the `choices` attribute to determine the options list (with `id`, `name` tuples).
+To let users choose a value in a list using a dropdown with autocompletion, use `<AutocompleteInput>`. 
+It renders using [downshift](https://github.com/downshift-js/downshift) and a `fuzzySearch` filter. 
+Set the `choices` attribute to determine the options list (with `id`, `name` tuples).
 
 ```jsx
 import { AutocompleteInput } from 'react-admin';
@@ -156,13 +158,17 @@ const choices = [
 ];
 ```
 
-However, in some cases (e.g. inside a `<ReferenceInput>`), you may not want the choice to be translated. In that case, set the `translateChoice` prop to false.
+However, in some cases (e.g. inside a `<ReferenceInput>`), you may not want the choice to be translated. 
+In that case, set the `translateChoice` prop to false.
 
 ```jsx
 <AutocompleteInput source="gender" choices={choices} translateChoice={false}/>
 ```
 
-By default the component matches choices with the current input searchText: if it finds a match, this choice will be selected. For example, given the choices `[{ id: 'M', name: 'Male', id: 'F', name: 'Female' }]`, when the user enters the text `male`, then the component will set the input value to `M`. If you need to change how choices are matched, pass a custom function as `inputValueMatcher` prop. For example, given the choices: `[{id:1,iso2:'NL',name:'Dutch'},{id:2,iso2:'EN',name:'English'},{id:3,iso2:'FR',name:'French'}]`, if you want to match choices on the iso2 code, you can create the following `inputValueMatcher` function:
+By default the component matches choices with the current input searchText: if it finds a match, this choice will be selected. 
+For example, given the choices `[{ id: 'M', name: 'Male', id: 'F', name: 'Female' }]`, when the user enters the text `male`, then the component will set the input value to `M`. 
+If you need to change how choices are matched, pass a custom function as `inputValueMatcher` prop. 
+For example, given the choices: `[{id:1,iso2:'NL',name:'Dutch'},{id:2,iso2:'EN',name:'English'},{id:3,iso2:'FR',name:'French'}]`, if you want to match choices on the iso2 code, you can create the following `inputValueMatcher` function:
 
 ```javascript
 <AutocompleteInput inputValueMatcher={
@@ -174,7 +180,7 @@ By default the component matches choices with the current input searchText: if i
 
 If you want to limit the initial choices shown to the current value only, you can set the `limitChoicesToValue` prop.
 
-When dealing with a large amount of `choices` you may need to limit the number of suggestions that are rendered in order to maintain usable performance. The `shouldRenderSuggestions` is an optional prop that allows you to set conditions on when to render suggestions. An easy way to improve performance would be to skip rendering until the user has entered 2 or 3 characters in the search box. This lowers the result set significantly, and might be all you need (depending on your data set). 
+When dealing with a large amount of `choices` you may need to limit the number of suggestions that are rendered in order to maintain usable performance. The `shouldRenderSuggestions` is an optional prop that allows you to set conditions on when to render suggestions. An easy way to improve performance would be to skip rendering until the user has entered 2 or 3 characters in the search box. This lowers the result set significantly, and might be all you need (depending on your data set).
 Ex. `<AutocompleteInput shouldRenderSuggestions={(val) => { return val.trim().length > 2 }} />` would not render any suggestions until the 3rd character was entered. This prop is passed to the underlying `react-autosuggest` component and is documented [here](https://github.com/moroshko/react-autosuggest#should-render-suggestions-prop).
 
 `<AutocompleteInput>` renders a material-ui `<TextField>` component. Use the `options` attribute to override any of the `<TextField>` attributes:
@@ -210,8 +216,6 @@ Lastly, would you need to override the props of the suggestions container (a `Po
 
 **Tip**: `<AutocompleteInput>` is a stateless component, so it only allows to *filter* the list of choices, not to *extend* it. If you need to populate the list of choices based on the result from a `fetch` call (and if [`<ReferenceInput>`](#referenceinput) doesn't cover your need), you'll have to [write your own Input component](#writing-your-own-input-component) based on material-ui `<AutoComplete>` component.
 
-**Tip**: React-admin's `<AutocompleteInput>` has only a capital A, while material-ui's `<AutoComplete>` has a capital A and a capital C. Don't mix up the components!
-
 ### Properties
 
 | Prop | Required | Type | Default | Description |
@@ -220,7 +224,6 @@ Lastly, would you need to override the props of the suggestions container (a `Po
 | `resource` | Required | `string` | - | The resource working on. This field is passed down by wrapped components like `Create` and `Edit`.   |
 | `source` | Required |  `string` | - | Name of field to edit, its type should match the type retrieved from `optionValue`  |
 | `allowEmpty` | Optional | `boolean` | `false` | If `false` and the searchText typed did not match any suggestion, the searchText will revert to the current value when the field is blurred. If `true` and the `searchText` is set to `''` then the field will set the input value to `null`. |
-| `inputValueMatcher` | Optional | `Function` | `(input, suggestion, getOptionText) => input.toLowerCase().trim() === getOptionText(suggestion).toLowerCase().trim()` | Allows to define how choices are matched with the searchText while typing.    |
 | `optionValue` | Optional | `string` | `id` | Fieldname of record containing the value to use as input value  |
 | `optionText` | Optional | <code>string &#124; Function</code> | `name` | Fieldname of record to display in the suggestion item or function which accepts the correct record as argument (`(record)=> {string}`) |
 | `setFilter` | Optional | `Function` | null | A callback to inform the `searchText` has changed and new `choices` can be retrieved based on this `searchText`. Signature `searchText => void`. This function is automatically setup when using `ReferenceInput`.  |
@@ -289,7 +292,7 @@ By default the component matches choices with the current input searchText. For 
 
 If you want to limit the initial choices shown to the current value only, you can set the `limitChoicesToValue` prop.
 
-When dealing with a large amount of `choices` you may need to limit the number of suggestions that are rendered in order to maintain usable performance. The `shouldRenderSuggestions` is an optional prop that allows you to set conditions on when to render suggestions. An easy way to improve performance would be to skip rendering until the user has entered 2 or 3 characters in the search box. This lowers the result set significantly, and might be all you need (depending on your data set). 
+When dealing with a large amount of `choices` you may need to limit the number of suggestions that are rendered in order to maintain usable performance. The `shouldRenderSuggestions` is an optional prop that allows you to set conditions on when to render suggestions. An easy way to improve performance would be to skip rendering until the user has entered 2 or 3 characters in the search box. This lowers the result set significantly, and might be all you need (depending on your data set).
 Ex. `<AutocompleteArrayInput shouldRenderSuggestions={(val) => { return val.trim().length > 2 }} />` would not render any suggestions until the 3rd character was entered. This prop is passed to the underlying `react-autosuggest` component and is documented [here](https://github.com/moroshko/react-autosuggest#should-render-suggestions-prop).
 
 Lastly, `<AutocompleteArrayInput>` renders a [material-ui-chip-input](https://github.com/TeamWertarbyte/material-ui-chip-input) component. Use the `options` attribute to override any of the `<ChipInput>` attributes:
@@ -297,11 +300,12 @@ Lastly, `<AutocompleteArrayInput>` renders a [material-ui-chip-input](https://gi
 {% raw %}
 ```jsx
 <AutocompleteArrayInput source="category" options={{
-    fullWidth: true,
+    fullWidthInput: true,
 }} />
 ```
 {% endraw %}
 
+**Tip**: Like many other inputs, `<AutocompleteArrayInput>` accept a `fullWidth` prop.
 **Tip**: If you want to populate the `choices` attribute with a list of related records, you should decorate `<AutocompleteArrayInput>` with [`<ReferenceArrayInput>`](#referenceinput), and leave the `choices` empty:
 
 ```jsx
@@ -340,7 +344,9 @@ If you need to override the props of the suggestions container (a `Popper` eleme
 | `optionText` | Optional | <code>string &#124; Function</code> | `name` | Fieldname of record to display in the suggestion item or function which accepts the current record as argument (`(record)=> {string}`) |
 | `setFilter` | Optional | `Function` | null | A callback to inform the `searchText` has changed and new `choices` can be retrieved based on this `searchText`. Signature `searchText => void`. This function is automatically setup when using `ReferenceInput`.  |
 | `suggestionComponent` | Optional | Function | `({ suggestion, query, isHighlighted, props }) => <div {...props} />` | Allows to override how the item is rendered.  |
+| `suggestionLimit` | Optional | Number | null | Limits the numbers of suggestions that are shown in the dropdown list |
 | `shouldRenderSuggestions` | Optional | Function | `() => true` | A function that returns a `boolean` to determine whether or not suggestions are rendered. Use this when working with large collections of data to improve performance and user experience. This function is passed into the underlying react-autosuggest component. Ex.`(value) => value.trim() > 2` |
+| `fullWith` | Optional | Boolean | If `true`, the input will take all the form width
 
 ## `<BooleanInput>` and `<NullableBooleanInput>`
 
@@ -376,7 +382,7 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 ![CustomBooleanInputCheckIcon](./img/custom-switch-icon.png)
 
 
-Refer to [Material UI Switch documentation](http://www.material-ui.com/#/components/switch) for more details.
+Refer to [Material UI Switch documentation](http://material-ui.com/api/switch) for more details.
 
 `<NullableBooleanInput />` renders as a dropdown list, allowing to choose between true, false, and null values.
 
@@ -456,13 +462,22 @@ Lastly, use the `options` attribute if you want to override any of Material UI's
 
 {% raw %}
 ```jsx
+import { FavoriteBorder, Favorite } from '@material-ui/icons';
+
 <CheckboxGroupInput source="category" options={{
-    labelPosition: 'right'
+    icon: <FavoriteBorder />,
+    checkedIcon: <Favorite />
 }} />
 ```
 {% endraw %}
 
-Refer to [Material UI Checkbox documentation](http://www.material-ui.com/#/components/checkbox) for more details.
+### Properties
+
+| Prop | Type | Default | Description |
+| ---|---|---|--- |
+| `row` | `boolean` | true | Display group of elements in a compact row. |
+
+Refer to [Material UI Checkbox documentation](https://material-ui.com/api/checkbox/) for more details.
 
 ## `<DateInput>`
 
@@ -489,57 +504,6 @@ import { DateTimeInput } from 'react-admin';
 ```
 
 **Tip**: For a material-ui styled `<DateTimeInput>` component, check out [vascofg/react-admin-date-inputs](https://github.com/vascofg/react-admin-date-inputs).
-
-## `<DisabledInput>`
-
-When you want to display a record property in an `<Edit>` form without letting users update it (such as for auto-incremented primary keys), use the `<DisabledInput>`:
-
-```jsx
-import { DisabledInput } from 'react-admin';
-
-<DisabledInput source="id" />
-```
-
-![DisabledInput](./img/disabled-input.png)
-
-**Tip**: To add non-editable fields to the `<Edit>` view, you can also use one of react-admin `Field` components:
-
-```jsx
-// in src/posts.js
-import { Edit, LongTextInput, SimpleForm, TextField } from 'react-admin';
-
-export const PostEdit = (props) => (
-    <Edit {...props}>
-        <SimpleForm>
-            <TextField source="title" /> {/* NOT EDITABLE */}
-            <LongTextInput source="body" />
-        </SimpleForm>
-    </Edit>
-);
-```
-
-**Tip**: You can even use a component of your own, provided it accepts a `record` prop:
-
-```jsx
-// in src/posts.js
-import { Edit, Labeled, LongTextInput, SimpleForm } from 'react-admin';
-
-const titleStyle = { textOverflow: 'ellipsis', overflow: 'hidden', maxWidth: '20em' };
-const Title = ({ record, label }) => (
-    <Labeled label={label}>
-        <span style={titleStyle}>{record.title}</span>
-    </Labeled>
-);
-
-export const PostEdit = (props) => (
-    <Edit {...props}>
-        <SimpleForm>
-            <Title label="Title" />
-            <LongTextInput source="body" />
-        </SimpleForm>
-    </Edit>
-);
-```
 
 ## `<ImageInput>`
 
@@ -600,29 +564,6 @@ If the default Dropzone label doesn't fit with your need, you can pass a `placeh
 ```
 
 Note that the file upload returns a [File](https://developer.mozilla.org/en/docs/Web/API/File) object. It is your responsibility to handle it depending on your API behavior. You can for instance encode it in base64, or send it as a multi-part form data. Check [this example](./DataProviders.md#decorating-your-rest-client-example-of-file-upload) for base64 encoding data by extending the REST Client.
-
-## `<LongTextInput>`
-
-`<LongTextInput>` is the best choice for multiline text values. It renders as an auto expandable textarea.
-
-```jsx
-import { LongTextInput } from 'react-admin';
-
-<LongTextInput source="teaser" />
-```
-
-![LongTextInput](./img/long-text-input.png)
-
-You can make the `LongTextInput` component resettable using the `resettable` prop. This will add a reset button which will be displayed only when the field has a value and is focused.
-
-```jsx
-import { LongTextInput } from 'react-admin';
-
-<LongTextInput source="title" resettable />
-```
-
-![resettable LongTextInput](./img/resettable-long-text-input.png)
-
 
 ## `<NumberInput>`
 
@@ -713,7 +654,7 @@ Lastly, use the `options` attribute if you want to override any of Material UI's
 ```
 {% endraw %}
 
-Refer to [Material UI RadioGroup documentation](http://www.material-ui.com/#/components/radio-button) for more details.
+Refer to [Material UI RadioGroup documentation](http://material-ui.com/api/radio-group) for more details.
 
 **Tip**: If you want to populate the `choices` attribute with a list of related records, you should decorate `<RadioButtonGroupInput>` with [`<ReferenceInput>`](#referenceinput), and leave the `choices` empty:
 
@@ -918,7 +859,7 @@ The child component may further filter results (that's the case, for instance, f
 
 The child component receives the following props from `<ReferenceInput>`:
 
-- `isLoading`: whether the request for possible values is loading or not
+- `loading`: whether the request for possible values is loading or not
 - `filter`: the current filter of the request for possible values. Defaults to `{}`.
 - `pagination`: the current pagination of the request for possible values. Defaults to `{ page: 1, perPage: 25 }`.
 - `sort`: the current sorting of the request for possible values. Defaults to `{ field: 'id', order: 'DESC' }`.
@@ -958,7 +899,7 @@ You can customize the rich text editor toolbar using the `toolbar` attribute, as
 
 ## `<SelectInput>`
 
-To let users choose a value in a list using a dropdown, use `<SelectInput>`. It renders using [Material ui's `<SelectField>`](http://www.material-ui.com/#/components/select-field). Set the `choices` attribute to determine the options (with `id`, `name` tuples):
+To let users choose a value in a list using a dropdown, use `<SelectInput>`. It renders using [Material ui's `<Select>`](http://material-ui.com/api/select). Set the `choices` attribute to determine the options (with `id`, `name` tuples):
 
 ```jsx
 import { SelectInput } from 'react-admin';
@@ -1004,8 +945,7 @@ const FullNameField = ({ record }) => <span>{record.first_name} {record.last_nam
 <SelectInput source="gender" choices={choices} optionText={<FullNameField />}/>
 ```
 
-Enabling the `allowEmpty` props adds an empty choice (with a default `null` value, which you can overwrite with the `emptyValue` prop) on top of the options, and makes the value nullable:
-
+Enabling the `allowEmpty` props adds an empty choice (with a default `null` value, which you can overwrite with the `emptyValue` prop) on top of the options, and makes the value nullable. You can furthermore customize the `MenuItem` for the empty choice by using the `emptyText` prop, which can receive either a string or a React Element, which doesn't receive any props.
 ```jsx
 <SelectInput source="category" allowEmpty emptyValue="" choices={[
     { id: 'programming', name: 'Programming' },
@@ -1041,7 +981,7 @@ Lastly, use the `options` attribute if you want to override any of Material UI's
 ```
 {% endraw %}
 
-Refer to [Material UI SelectField documentation](http://www.material-ui.com/#/components/select-field) for more details.
+Refer to [Material UI Select documentation](http://material-ui.com/api/select) for more details.
 
 **Tip**: If you want to populate the `choices` attribute with a list of related records, you should decorate `<SelectInput>` with [`<ReferenceInput>`](#referenceinput), and leave the `choices` empty:
 
@@ -1059,7 +999,7 @@ You can make the `SelectInput` component resettable using the `resettable` prop.
 
 ![resettable SelectInput](./img/resettable-select-input.png)
 
-You can set disabled values by setting the `disabled` property of one item: 
+You can set disabled values by setting the `disabled` property of one item:
 
 ```jsx
 const choices = [
@@ -1070,7 +1010,7 @@ const choices = [
 <SelectInput source="author_id" choices={choices} optionText="full_name" optionValue="_id" />
 ```
 
-You can use a custom field name by setting `disableValue` prop: 
+You can use a custom field name by setting `disableValue` prop:
 
 ```jsx
 const choices = [
@@ -1083,7 +1023,7 @@ const choices = [
 
 ## `<SelectArrayInput>`
 
-To let users choose several values in a list using a dropdown, use `<SelectArrayInput>`. It renders using [Material ui's `<Select>`](http://www.material-ui.com/#/components/select). Set the `choices` attribute to determine the options (with `id`, `name` tuples):
+To let users choose several values in a list using a dropdown, use `<SelectArrayInput>`. It renders using [Material ui's `<Select>`](http://material-ui.com/api/select). Set the `choices` attribute to determine the options (with `id`, `name` tuples):
 
 ```js
 import { SelectArrayInput } from 'react-admin';
@@ -1140,7 +1080,7 @@ Lastly, use the `options` attribute if you want to override any of the `<Select>
 ```
 {% endraw %}
 
-Refer to [the Select documentation](http://www.material-ui.com/#/components/select) for more details.
+Refer to [the Select documentation](http://material-ui.com/api/select) for more details.
 
 The `SelectArrayInput` component **cannot** be used inside a `ReferenceInput` but can be used inside a `ReferenceArrayInput`.
 
@@ -1150,7 +1090,6 @@ import {
     ChipField,
     Create,
     DateInput,
-    LongTextInput,
     ReferenceArrayInput,
     SelectArrayInput,
     TextInput,
@@ -1160,7 +1099,7 @@ export const PostCreate = props => (
     <Create {...props}>
         <SimpleForm>
             <TextInput source="title" />
-            <LongTextInput source="body" />
+            <TextInput multiline source="body" />
             <DateInput source="published_at" />
 
             <ReferenceArrayInput reference="tags" source="tags">
@@ -1193,6 +1132,12 @@ You can choose a specific input type using the `type` attribute, for instance `t
 <TextInput label="Email Address" source="email" type="email" />
 ```
 
+You can make the `TextInput` expandable using the `multiline` prop for multiline text values. It renders as an auto expandable textarea.
+
+```jsx
+<TextInput multiline source="body" />
+```
+
 You can make the `TextInput` component resettable using the `resettable` prop. This will add a reset button which will be displayed only when the field has a value and is focused.
 
 ```jsx
@@ -1208,7 +1153,7 @@ import { TextInput } from 'react-admin';
 
 ## Transforming Input Value to/from Record
 
-The data format returned by the input component may not be what your API desires. Since React-admin uses Redux Form, we can use its `parse()` and `format()` functions to transform the input value when saving to and loading from the record. It's better to understand the [input value's lifecycle](http://redux-form.com/6.5.0/docs/ValueLifecycle.md/) before you start.
+The data format returned by the input component may not be what your API desires. Since React-admin uses react-final-form, we can use its [`parse()`](https://github.com/final-form/react-final-form#parse-value-any-name-string--any) and [`format()`](https://github.com/final-form/react-final-form#format-value-any-name-string--any) functions to transform the input value when saving to and loading from the record.
 
 Mnemonic for the two functions:
 - `parse()`: input -> record
@@ -1255,13 +1200,13 @@ You can find components for react-admin in third-party repositories.
 
 ## Writing Your Own Input Component
 
-If you need a more specific input type, you can also write it yourself. You'll have to rely on redux-form's [`<Field>`](http://redux-form.com/6.5.0/docs/api/Field.md/) component, so as to handle the value update cycle.
+If you need a more specific input type, you can also write it yourself. You'll have to rely on react-final-form's [`<Field>`](https://github.com/final-form/react-final-form#field--reactcomponenttypefieldprops) component or [`useField`](https://github.com/final-form/react-final-form#usefield) hook, so as to handle the value update cycle.
 
 For instance, let's write a component to edit the latitude and longitude of the current record:
 
 ```jsx
 // in LatLongInput.js
-import { Field } from 'redux-form';
+import { Field } from 'react-final-form';
 const LatLngInput = () => (
     <span>
         <Field name="lat" component="input" type="number" placeholder="latitude" />
@@ -1285,7 +1230,7 @@ const ItemEdit = (props) => (
 
 ```html
 <span>
-    <input type="number" placeholder="longitude" value={record.lat} />
+    <input type="number" placeholder="latitude" value={record.lat} />
     <input type="number" placeholder="longitude" value={record.lng} />
 </span>
 ```
@@ -1306,7 +1251,7 @@ This component lacks a label. React-admin provides the `<Labeled>` component for
 
 ```jsx
 // in LatLongInput.js
-import { Field } from 'redux-form';
+import { Field } from 'react-final-form';
 import { Labeled } from 'react-admin';
 
 const LatLngInput = () => (
@@ -1331,12 +1276,12 @@ Now the component will render with a label:
 </span>
 ```
 
-Instead of HTML `input` elements, you can use a material-ui component. To compose material-ui and `Field`, use a [field renderer function](http://redux-form.com/6.5.0/examples/material-ui/) to map the props:
+Instead of HTML `input` elements, you can use a material-ui component. To compose material-ui and `Field`, use a [field renderer function](https://github.com/final-form/react-final-form#render-props-fieldrenderprops--reactnode) to map the props:
 
 ```jsx
 // in LatLongInput.js
 import TextField from '@material-ui/core/TextField';
-import { Field } from 'redux-form';
+import { Field } from 'react-final-form';
 const renderTextField = ({ input, label, meta: { touched, error }, ...custom }) => (
     <TextField
         label={label}
@@ -1355,7 +1300,7 @@ const LatLngInput = () => (
 );
 ```
 
-Material-ui's `<TextField>` component already includes a label, so you don't need to use `<Labeled>` in this case. `<Field>` injects two props to its child component: `input` and `meta`. To learn more about these props, please refer to [the `<Field>` component documentation](http://redux-form.com/6.5.0/docs/api/Field.md/#props) in the redux-form website.
+Material-ui's `<TextField>` component already includes a label, so you don't need to use `<Labeled>` in this case. `<Field>` injects two props to its child component: `input` and `meta`. To learn more about these props, please refer to [the `<Field>` component documentation](https://github.com/final-form/react-final-form#fieldrenderprops) in the react-final-form documentation.
 
 **Tip**: If you only need one `<Field>` component in a custom input, you can let react-admin do the `<Field>` decoration for you by using the `addField` Higher-order component:
 
@@ -1375,12 +1320,12 @@ const SexInput = ({ input, meta: { touched, error } }) => (
         <MenuItem value="F" primaryText="Female" />
     </SelectField>
 );
-export default addField(SexInput); // decorate with redux-form's <Field>
+export default addField(SexInput); // decorate with react-final-form's <Field>
 
 // equivalent of
 import SelectField from '@material-ui/core/SelectField';
 import MenuItem from '@material-ui/core/MenuItem';
-import { Field } from 'redux-form';
+import { Field } from 'react-final-form';
 
 const renderSexInput = ({ input, meta: { touched, error } }) => (
     <SelectField
@@ -1396,7 +1341,7 @@ const SexInput = ({ source }) => <Field name={source} component={renderSexInput}
 export default SexInput;
 ```
 
-**Tip**: `addField` takes a list of props as second argument, so you can set `<Field>` props there. It's useful for instance if you need to set the [`format`](https://redux-form.com/7.4.2/docs/api/field.md/#-code-format-value-name-gt-formattedvalue-code-optional-) and [`parse`](https://redux-form.com/7.4.2/docs/api/field.md/#-code-parse-value-name-gt-parsedvalue-code-optional-) props of the field:
+**Tip**: `addField` takes a list of props as second argument, so you can set `<Field>` props there. It's useful for instance if you need to set the [`format`](https://github.com/final-form/react-final-form#format-value-any-name-string--any) and [`parse`](https://github.com/final-form/react-final-form#parse-value-any-name-string--any) props of the field:
 
 ```jsx
 const parse = value => // ...
@@ -1407,7 +1352,7 @@ const MyDateInput = props => // ...
 export default addField(MyDateInput, { parse, format });
 ```
 
-For more details on how to use redux-form's `<Field>` component, please refer to [the redux-form doc](http://redux-form.com/6.5.0/docs/api/Field.md/).
+For more details on how to use react-final-form's `<Field>` component, please refer to [the react-final-form doc](https://github.com/final-form/react-final-form#field--reactcomponenttypefieldprops).
 
 Instead of HTML `input` elements or material-ui components, you can use react-admin input components, like `<NumberInput>` for instance. React-admin components are already decorated by `<Field>`, and already include a label, so you don't need either `<Field>` or `<Labeled>` when using them:
 
@@ -1427,7 +1372,7 @@ export default LatLngInput;
 const ItemEdit = (props) => (
     <Edit {...props}>
         <SimpleForm>
-            <DisabledInput source="id" />
+            <TextInput disabled source="id" />
             <LatLngInput />
         </SimpleForm>
     </Edit>
@@ -1438,7 +1383,7 @@ const ItemEdit = (props) => (
 
 Edition forms often contain linked inputs, e.g. country and city (the choices of the latter depending on the value of the former).
 
-React-admin relies on redux-form, so you can grab the current form values using redux-form [formValueSelector()](https://redux-form.com/7.3.0/docs/api/formvalueselector.md/). Alternatively, you can use the react-admin `<FormDataConsumer>` component, which grabs the form values, and passes them to a child function.
+React-admin relies on react-final-form, so you can grab the current form values using react-final-form [useFormState](https://github.com/final-form/react-final-form#useformstate) hook. Alternatively, you can use the react-admin `<FormDataConsumer>` component, which grabs the form values, and passes them to a child function.
 
 This facilitates the implementation of linked inputs:
 
@@ -1467,37 +1412,42 @@ const OrderEdit = (props) => (
 
 - `scopedFormData`: an object containing the current values of the currently rendered item from the `ArrayInput`
 - `getSource`: a function which will translate the source into a valid one for the `ArrayInput`
-- `dispatch`: Redux' function to dispatch an action. Useful to update another input value.
 
-Here is an example usage for `dispatch`: A country input that resets a city input on change.
+Would you need to update an input when another one changes, use the `useForm` hook from `react-final-form`. For example, a country input that resets a city input on change.
 
 ```jsx
 
 import React, { Fragment } from 'react'
-import { change } from 'redux-form'
+import { useForm } from 'react-final-form'
 import { FormDataConsumer, REDUX_FORM_NAME } from 'react-admin';
+
+const OrderOrigin = ({ formData, ...rest }) => {
+    const form = useForm();
+
+    return (
+        <Fragment>
+            <SelectInput
+                source="country"
+                choices={countries}
+                onChange={value => form.change('city', null)}
+                {...rest}
+            />
+            <SelectInput
+                source="city"
+                choices={getCitiesFor(formData.country)}
+                {...rest}
+            />
+        </Fragment>
+    );
+};
 
 const OrderEdit = (props) => (
     <Edit {...props}>
         <SimpleForm>
             <FormDataConsumer>
-                {({ formData, dispatch, ...rest }) => (
-                    <Fragment>
-                        <SelectInput
-                            source="country"
-                            choices={countries}
-                            onChange={value => dispatch(
-                                change(REDUX_FORM_NAME, 'city', null)
-                            )}
-                             {...rest}
-                        />
-                        <SelectInput
-                            source="city"
-                            choices={getCitiesFor(formData.country)}
-                             {...rest}
-                        />
-                    </Fragment>
-                )}
+                {formDataProps => {
+                    <OrderOrigin {...formDataProps} />
+                }}
             </FormDataConsumer>
         </SimpleForm>
     </Edit>

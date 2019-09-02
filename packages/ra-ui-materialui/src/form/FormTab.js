@@ -20,7 +20,7 @@ const hiddenStyle = { display: 'none' };
 
 class FormTab extends Component {
     renderHeader = ({ className, label, icon, value, translate, ...rest }) => {
-        const to = { pathname: value, state: { skipFormReset: true } };
+        const to = { pathname: value };
 
         return (
             <MuiTab
@@ -43,6 +43,8 @@ class FormTab extends Component {
         basePath,
         record,
         resource,
+        variant,
+        margin,
     }) => (
         <span style={hidden ? hiddenStyle : null} className={contentClassName}>
             {React.Children.map(
@@ -54,6 +56,8 @@ class FormTab extends Component {
                             input={input}
                             record={record}
                             resource={resource}
+                            variant={variant}
+                            margin={margin}
                         />
                     )
             )}
@@ -61,8 +65,8 @@ class FormTab extends Component {
     );
 
     render() {
-        const { children, context, ...rest } = this.props;
-        return context === 'header'
+        const { children, intent, ...rest } = this.props;
+        return intent === 'header'
             ? this.renderHeader(rest)
             : this.renderContent({ children, ...rest });
     }
@@ -72,7 +76,7 @@ FormTab.propTypes = {
     className: PropTypes.string,
     contentClassName: PropTypes.string,
     children: PropTypes.node,
-    context: PropTypes.oneOf(['header', 'content']),
+    intent: PropTypes.oneOf(['header', 'content']),
     hidden: PropTypes.bool,
     icon: PropTypes.element,
     label: PropTypes.string.isRequired,

@@ -73,6 +73,7 @@ const App = () => (
 You can find translation packages for the following languages:
 
 - Arabic (`ar`): [developerium/ra-language-arabic](https://github.com/developerium/ra-language-arabic)
+- Bulgarian (`bg`): [ptodorov0/ra-language-bulgarian](https://github.com/ptodorov0/ra-language-bulgarian)
 - Catalan (`ca`): [sergioedo/ra-language-catalan](https://github.com/sergioedo/ra-language-catalan)
 - Chinese (`zh-TW`): [areyliu6/ra-language-chinese-traditional](https://github.com/areyliu6/ra-language-chinese-traditional)
 - Chinese (`zh`): [chen4w/ra-language-chinese](https://github.com/chen4w/ra-language-chinese)
@@ -94,20 +95,18 @@ You can find translation packages for the following languages:
 - Russian (`ru`): [klucherev/ra-language-russian](https://github.com/klucherev/ra-language-russian)
 - Slovak (`sk`): [zavadpe/ra-language-slovak](https://github.com/zavadpe/ra-language-slovak)
 - Spanish (`es`): [blackboxvision/ra-language-spanish](https://github.com/BlackBoxVision/ra-language-spanish)
+- Swedish (`sv`): [jolixab/ra-language-swedish](https://github.com/jolixab/ra-language-swedish)
 - Turkish (`tr`): [KamilGunduz/ra-language-turkish](https://github.com/KamilGunduz/ra-language-turkish)
 - Ukrainian (`ua`): [koresar/ra-language-ukrainian](https://github.com/koresar/ra-language-ukrainian)
 - Vietnamese (`vi`): [hieunguyendut/ra-language-vietnamese](https://github.com/hieunguyendut/ra-language-vietnamese)
 
 In addition, the previous version of react-admin, called admin-on-rest, was translated in the following languages:
 
-- Arabic ( `ع` ): [aymendhaya/aor-language-arabic](https://github.com/aymendhaya/aor-language-arabic)
 - Chinese (Traditional) (`cht`): [leesei/aor-language-chinese-traditional](https://github.com/leesei/aor-language-chinese-traditional)
 - Croatian (`hr`): [ariskemper/aor-language-croatian](https://github.com/ariskemper/aor-language-croatian)
 - Greek (`el`): [zifnab87/aor-language-greek](https://github.com/zifnab87/aor-language-greek)
-- Hebrew (`he`): [motro/aor-language-hebrew](https://github.com/motro/aor-language-hebrew)
 - Japanese (`ja`): [kuma-guy/aor-language-japanese](https://github.com/kuma-guy/aor-language-japanese)
 - Slovenian (`sl`): [ariskemper/aor-language-slovenian](https://github.com/ariskemper/aor-language-slovenian)
-- Swedish (`sv`): [StefanWallin/aor-language-swedish](https://github.com/StefanWallin/aor-language-swedish)
 - Thai (`th`): [liverbool/aor-language-thai](https://github.com/liverbool/aor-language-thai)
 
 These packages are not directly interoperable with react-admin, but the upgrade is straightforward; rename the root key from "aor" to "ra". We invite the authors of the packages listed above to republish their translations for react-admin, using a different package name.
@@ -139,31 +138,28 @@ const App = () => (
 export default App;
 ```
 
-Then, dispatch the `CHANGE_LOCALE` action, by using the `changeLocale` action creator. For instance, the following component switches language between English and French:
+Then, dispatch the `CHANGE_LOCALE` action, by using the `changeLocale` action creator. For instance, the following component allows the user to switch the interface language between English and French:
 
 ```jsx
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import Button from '@material-ui/core/Button';
-import { changeLocale as changeLocaleAction } from 'react-admin';
+import { changeLocale } from 'react-admin';
 
-class LocaleSwitcher extends Component {
-    switchToFrench = () => this.props.changeLocale('fr');
-    switchToEnglish = () => this.props.changeLocale('en');
-
-    render() {
-        const { changeLocale } = this.props;
-        return (
-            <div>
-                <div>Language</div>
-                <Button onClick={this.switchToEnglish}>en</Button>
-                <Button onClick={this.switchToFrench}>fr</Button>
-            </div>
-        );
-    }
+const LocaleSwitcher = () => {
+    const dispatch = useDispatch();
+    const switchToFrench = () => dispatch(changeLocale('fr'));
+    const switchToEnglish = () => dispatch(changeLocale('en'));
+    return (
+        <div>
+            <div>Language</div>
+            <Button onClick={switchToEnglish}>en</Button>
+            <Button onClick={switchToFrench}>fr</Button>
+        </div>
+    );
 }
 
-export default connect(undefined, { changeLocale: changeLocaleAction })(LocaleSwitcher);
+export default LocaleSwitcher;
 ```
 
 ## Using The Browser Locale
@@ -280,25 +276,68 @@ const App = () => (
 );
 ```
 
-## Translating Your Own Components
+## Translating Error Messages
 
-React-admin package provides a `translate` Higher-Order Component, which simply passes the `translate` function as a prop to the wrapped component:
+In Create and Edit views, forms can use custom validators. These validator functions should return translation keys rather than translated messages. React-admin automatically passes these identifiers to the translation function: 
+
+```jsx
+// in validators/required.js
+const required = () => (value, allValues, props) =>
+    value
+        ? undefined
+        : 'myroot.validation.required';
+
+// in i18n/en.json
+export default {
+    myroot: {
+        validation: {
+            required: 'Required field',
+        }
+    }
+}
+```
+
+If the translation depends on a variable, the validator can return an object rather than a translation identifier:
+
+```jsx
+// in validators/minLength.js
+const minLength = (min) => (value, allValues, props) => 
+    value.length >= min
+        ? undefined
+        : { message: 'myroot.validation.minLength', args: { min } };
+
+// in i18n/en.js
+export default {
+    myroot: {
+        validation: {
+            minLength: 'Must be %{min} characters at least',
+        }
+    }
+}
+```
+
+## `useTranslate` Hook
+
+If you need to translate messages in your own components, React-admin provides a `useTranslate` hook, which returns the `translate` function:
 
 ```jsx
 // in src/MyHelloButton.js
 import React from 'react';
-import { translate } from 'react-admin';
+import { useTranslate } from 'react-admin';
 
-const MyHelloButton = ({ translate }) => (
-    <button>{translate('myroot.hello.world')}</button>
-);
+const MyHelloButton = () => {
+    const translate = useTranslate();
+    return (
+        <button>{translate('myroot.hello.world')}</button>
+    );
+}
 
-export default translate(MyHelloButton);
+export default MyHelloButton;
 ```
 
 **Tip**: For your message identifiers, choose a different root name than `ra` and `resources`, which are reserved.
 
-**Tip**: Don't use `translate` for Field and Input labels, or for page titles, as they are already translated:
+**Tip**: Don't use `useTranslate` for Field and Input labels, or for page titles, as they are already translated:
 
 ```jsx
 // don't do this
@@ -310,6 +349,27 @@ export default translate(MyHelloButton);
 // or even better, use the default translation key
 <TextField source="first_name" />
 // and translate the `resources.customers.fields.first_name` key
+```
+
+## `withTranslate` HOC
+
+If you're stuck with class components, react-admin also exports a `withTranslate` higher-order component, which injects the `translate` function as prop. 
+
+```jsx
+// in src/MyHelloButton.js
+import React, { Component } from 'react';
+import { withTranslate } from 'react-admin';
+
+class MyHelloButton extends Component {
+    render() {
+        const { translate } = this.props;
+        return (
+            <button>{translate('myroot.hello.world')}</button>
+        );
+    } 
+}
+
+export default withTranslate(MyHelloButton);
 ```
 
 ## Using Specific Polyglot Features

@@ -1,5 +1,4 @@
 import React, { SFC } from 'react';
-import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import pure from 'recompose/pure';
 import Typography, { TypographyProps } from '@material-ui/core/Typography';
@@ -17,7 +16,7 @@ const TextField: SFC<FieldProps & InjectedFieldProps & TypographyProps> = ({
     return (
         <Typography
             component="span"
-            variant="body1"
+            variant="body2"
             className={className}
             {...sanitizeRestProps(rest)}
         >

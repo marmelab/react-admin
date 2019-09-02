@@ -1,14 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import compose from 'recompose/compose';
 
 import Button from '@material-ui/core/Button';
 import IconCancel from '@material-ui/icons/Cancel';
-import withStyles from '@material-ui/core/styles/withStyles';
+import { makeStyles } from '@material-ui/core/styles';
 
-import { translate } from 'react-admin'; // eslint-disable-line import/no-unresolved
+import { useTranslate } from 'react-admin';
 
-const styles = {
+const useStyles = makeStyles({
     button: {
         margin: '10px 24px',
         position: 'relative',
@@ -16,28 +15,25 @@ const styles = {
     iconPaddingStyle: {
         paddingRight: '0.5em',
     },
-};
+});
 
-const CancelButtonView = ({
-    classes,
+const PostQuickCreateCancelButton = ({
     onClick,
     label = 'ra.action.cancel',
-    translate,
-}) => (
-    <Button className={classes.button} onClick={onClick}>
-        <IconCancel className={classes.iconPaddingStyle} />
-        {label && translate(label, { _: label })}
-    </Button>
-);
-
-CancelButtonView.propTypes = {
-    classes: PropTypes.object,
-    label: PropTypes.string,
-    onClick: PropTypes.func.isRequired,
-    translate: PropTypes.func.isRequired,
+}) => {
+    const translate = useTranslate();
+    const classes = useStyles();
+    return (
+        <Button className={classes.button} onClick={onClick}>
+            <IconCancel className={classes.iconPaddingStyle} />
+            {label && translate(label, { _: label })}
+        </Button>
+    );
 };
 
-export default compose(
-    translate,
-    withStyles(styles)
-)(CancelButtonView);
+PostQuickCreateCancelButton.propTypes = {
+    label: PropTypes.string,
+    onClick: PropTypes.func.isRequired,
+};
+
+export default PostQuickCreateCancelButton;

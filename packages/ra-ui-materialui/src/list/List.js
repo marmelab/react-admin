@@ -1,12 +1,16 @@
-/* eslint no-console: ["error", { allow: ["warn", "error"] }] */
-import React, { isValidElement, Children, cloneElement } from 'react';
+import React, { Children, cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import Card from '@material-ui/core/Card';
 import classnames from 'classnames';
-import { withStyles, createStyles } from '@material-ui/core/styles';
-import { ListController, getListControllerProps } from 'ra-core';
+import { makeStyles } from '@material-ui/core/styles';
+import {
+    useCheckMinimumRequiredProps,
+    useListController,
+    getListControllerProps,
+    ComponentPropType,
+} from 'ra-core';
 
-import Title from '../layout/Title';
+import Title, { TitlePropType } from '../layout/Title';
 import ListToolbar from './ListToolbar';
 import DefaultPagination from './Pagination';
 import BulkDeleteButton from '../button/BulkDeleteButton';
@@ -16,13 +20,23 @@ import defaultTheme from '../defaultTheme';
 
 const DefaultBulkActionButtons = props => <BulkDeleteButton {...props} />;
 
-export const styles = createStyles({
-    root: {
+export const useStyles = makeStyles(theme => ({
+    root: {},
+    main: {
         display: 'flex',
     },
-    card: {
+    content: {
+        marginTop: 0,
+        transition: theme.transitions.create('margin-top'),
         position: 'relative',
         flex: '1 1 auto',
+        [theme.breakpoints.down('xs')]: {
+            boxShadow: 'none',
+        },
+    },
+    bulkActionsDisplayed: {
+        marginTop: -theme.spacing(8),
+        transition: theme.transitions.create('margin-top'),
     },
     actions: {
         zIndex: 2,
@@ -30,18 +44,12 @@ export const styles = createStyles({
         justifyContent: 'flex-end',
         flexWrap: 'wrap',
     },
-    header: {
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignSelf: 'flex-start',
-    },
     noResults: { padding: 20 },
-});
+}));
 
 const sanitizeRestProps = ({
     actions,
     basePath,
-    bulkActions,
     changeListParams,
     children,
     classes,
@@ -64,7 +72,7 @@ const sanitizeRestProps = ({
     history,
     ids,
     isLoading,
-    loadedOnce,
+    loaded,
     locale,
     location,
     match,
@@ -93,80 +101,82 @@ const sanitizeRestProps = ({
     title,
     toggleItem,
     total,
-    translate,
     version,
     ...rest
 }) => rest;
 
-export const ListView = withStyles(styles)(({
-    // component props
-    actions,
-    aside,
-    filter,
-    filters,
-    bulkActions, // deprecated
-    bulkActionButtons,
-    pagination,
-    // overridable by user
-    children,
-    className,
-    classes,
-    exporter,
-    title,
-    ...rest
-}) => {
+export const ListView = props => {
+    const {
+        actions,
+        aside,
+        filter,
+        filters,
+        bulkActionButtons,
+        pagination,
+        children,
+        className,
+        classes: classesOverride,
+        component: Content,
+        exporter,
+        title,
+        ...rest
+    } = props;
+    useCheckMinimumRequiredProps('List', ['children'], props);
+    const classes = useStyles({ classes: classesOverride });
     const { defaultTitle, version } = rest;
     const controllerProps = getListControllerProps(rest);
+
     return (
         <div
             className={classnames('list-page', classes.root, className)}
             {...sanitizeRestProps(rest)}
         >
             <Title title={title} defaultTitle={defaultTitle} />
-            <Card className={classes.card}>
-                {bulkActions !== false &&
-                    bulkActionButtons !== false &&
-                    bulkActionButtons &&
-                    !bulkActions && (
+
+            {(filters || actions) && (
+                <ListToolbar
+                    filters={filters}
+                    {...controllerProps}
+                    actions={actions}
+                    exporter={exporter}
+                    permanentFilter={filter}
+                />
+            )}
+            <div className={classes.main}>
+                <Content
+                    className={classnames(classes.content, {
+                        [classes.bulkActionsDisplayed]:
+                            controllerProps.selectedIds.length > 0,
+                    })}
+                    key={version}
+                >
+                    {bulkActionButtons !== false && bulkActionButtons && (
                         <BulkActionsToolbar {...controllerProps}>
                             {bulkActionButtons}
                         </BulkActionsToolbar>
                     )}
-                {(filters || actions) && (
-                    <ListToolbar
-                        filters={filters}
-                        {...controllerProps}
-                        actions={actions}
-                        bulkActions={bulkActions}
-                        exporter={exporter}
-                        permanentFilter={filter}
-                    />
-                )}
-                <div key={version}>
                     {children &&
                         cloneElement(Children.only(children), {
                             ...controllerProps,
-                            hasBulkActions:
-                                bulkActions !== false &&
-                                bulkActionButtons !== false,
+                            hasBulkActions: bulkActionButtons !== false,
                         })}
                     {pagination && cloneElement(pagination, controllerProps)}
-                </div>
-            </Card>
-            {aside && cloneElement(aside, controllerProps)}
+                </Content>
+                {aside && cloneElement(aside, controllerProps)}
+            </div>
         </div>
     );
-});
+};
 
 ListView.propTypes = {
     actions: PropTypes.element,
-    aside: PropTypes.node,
+    aside: PropTypes.element,
     basePath: PropTypes.string,
-    bulkActions: PropTypes.oneOfType([PropTypes.bool, PropTypes.element]),
     bulkActionButtons: PropTypes.oneOfType([PropTypes.bool, PropTypes.element]),
     children: PropTypes.element,
     className: PropTypes.string,
     classes: PropTypes.object,
+    component: ComponentPropType,
     currentSort: PropTypes.shape({
         field: PropTypes.string,
         order: PropTypes.string,
@@ -196,15 +206,15 @@ ListView.propTypes = {
     setPerPage: PropTypes.func,
     setSort: PropTypes.func,
     showFilter: PropTypes.func,
-    title: PropTypes.any,
+    title: TitlePropType,
     total: PropTypes.number,
-    translate: PropTypes.func,
     version: PropTypes.number,
 };
 
 ListView.defaultProps = {
     actions: <DefaultActions />,
     classes: {},
+    component: Card,
     bulkActionButtons: <DefaultBulkActionButtons />,
     pagination: <DefaultPagination />,
 };
@@ -225,7 +235,7 @@ ListView.defaultProps = {
  *   - sort
  *   - filter (the permanent filter to apply to the query)
  *   - actions
- *   - filters (a React Element used to display the filter form)
+ *   - filters (a React component used to display the filter form)
  *   - pagination
  *
  * @example
@@ -240,7 +250,7 @@ ListView.defaultProps = {
  *             title="List of posts"
  *             sort={{ field: 'published_at' }}
  *             filter={{ is_published: true }}
- *             filters={<PostFilter />}
+ *             filters={PostFilter}
  *         >
  *             <Datagrid>
  *                 <TextField source="id" />
@@ -250,17 +260,12 @@ ListView.defaultProps = {
  *         </List>
  *     );
  */
-const List = props => (
-    <ListController {...props}>
-        {controllerProps => <ListView {...props} {...controllerProps} />}
-    </ListController>
-);
+const List = props => <ListView {...props} {...useListController(props)} />;
 
 List.propTypes = {
     // the props you can change
     actions: PropTypes.element,
-    aside: PropTypes.node,
-    bulkActions: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
+    aside: PropTypes.element,
     bulkActionButtons: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
     children: PropTypes.node,
     classes: PropTypes.object,
@@ -274,7 +279,7 @@ List.propTypes = {
         field: PropTypes.string,
         order: PropTypes.string,
     }),
-    title: PropTypes.any,
+    title: TitlePropType,
     // the props managed by react-admin
     authProvider: PropTypes.func,
     hasCreate: PropTypes.bool.isRequired,

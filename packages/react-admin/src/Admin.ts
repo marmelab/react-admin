@@ -10,7 +10,7 @@ import {
 const Admin = CoreAdmin;
 
 Admin.defaultProps = {
-    appLayout: DefaultLayout,
+    layout: DefaultLayout,
     catchAll: NotFound,
     loading: Loading,
     loginPage: Login,

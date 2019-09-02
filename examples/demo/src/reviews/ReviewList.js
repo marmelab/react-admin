@@ -1,12 +1,10 @@
-import React, { Fragment, Component } from 'react';
-import compose from 'recompose/compose';
+import React, { Fragment, useCallback } from 'react';
 import classnames from 'classnames';
-import { BulkDeleteButton, List, Responsive } from 'react-admin';
-import { connect } from 'react-redux';
-import { push } from 'react-router-redux';
+import { BulkDeleteButton, List } from 'react-admin';
+import { useDispatch } from 'react-redux';
+import { push } from 'connected-react-router';
 import { Route } from 'react-router';
-import Drawer from '@material-ui/core/Drawer';
-import { createStyles, withStyles } from '@material-ui/core/styles';
+import { Drawer, useMediaQuery, makeStyles } from '@material-ui/core';
 import BulkAcceptButton from './BulkAcceptButton';
 import BulkRejectButton from './BulkRejectButton';
 import ReviewListMobile from './ReviewListMobile';
@@ -22,7 +20,7 @@ const ReviewsBulkActionButtons = props => (
     </Fragment>
 );
 
-const styles = theme => createStyles({
+const useStyles = makeStyles(theme => ({
     root: {
         display: 'flex',
     },
@@ -36,69 +34,72 @@ const styles = theme => createStyles({
     listWithDrawer: {
         marginRight: 400,
     },
-});
+    drawerPaper: {
+        zIndex: 100,
+    },
+}));
 
-class ReviewList extends Component {
-    render() {
-        const { classes, ...props } = this.props;
-        return (
-            <div className={classes.root}>
-                <Route path="/reviews/:id">
-                    {({ match }) => {
-                        const isMatch =
-                            !!(match &&
-                            match.params &&
-                            match.params.id !== 'create');
+const ReviewList = props => {
+    const classes = useStyles();
+    const dispatch = useDispatch();
+    const isXSmall = useMediaQuery(theme => theme.breakpoints.down('xs'));
 
-                        return (
-                            <Fragment>
-                                <List
-                                    {...props}
-                                    className={classnames(classes.list, {
-                                        [classes.listWithDrawer]: isMatch
-                                    })}
-                                    bulkActionButtons={<ReviewsBulkActionButtons />}
-                                    filters={<ReviewFilter />}
-                                    perPage={25}
-                                    sort={{ field: 'date', order: 'DESC' }}
-                                >
-                                    <Responsive
-                                        xsmall={<ReviewListMobile />}
-                                        medium={<ReviewListDesktop />}
+    const handleClose = useCallback(() => {
+        dispatch(push('/reviews'));
+    }, [dispatch]);
+
+    return (
+        <div className={classes.root}>
+            <Route path="/reviews/:id">
+                {({ match }) => {
+                    const isMatch = !!(
+                        match &&
+                        match.params &&
+                        match.params.id !== 'create'
+                    );
+
+                    return (
+                        <Fragment>
+                            <List
+                                {...props}
+                                className={classnames(classes.list, {
+                                    [classes.listWithDrawer]: isMatch,
+                                })}
+                                bulkActionButtons={<ReviewsBulkActionButtons />}
+                                filters={<ReviewFilter />}
+                                perPage={25}
+                                sort={{ field: 'date', order: 'DESC' }}
+                            >
+                                {isXSmall ? (
+                                    <ReviewListMobile />
+                                ) : (
+                                    <ReviewListDesktop />
+                                )}
+                            </List>
+                            <Drawer
+                                variant="persistent"
+                                open={isMatch}
+                                anchor="right"
+                                onClose={handleClose}
+                                classes={{
+                                    paper: classes.drawerPaper,
+                                }}
+                            >
+                                {/* To avoid any errors if the route does not match, we don't render at all the component in this case */}
+                                {isMatch ? (
+                                    <ReviewEdit
+                                        id={match.params.id}
+                                        onCancel={handleClose}
+                                        {...props}
                                     />
-                                </List>
-                                <Drawer
-                                    variant="persistent"
-                                    open={isMatch}
-                                    anchor="right"
-                                    onClose={this.handleClose}
-                                    classes={{
-                                        paper: classes.drawerPaper
-                                    }}
-                                >
-                                    {/* To avoid any errors if the route does not match, we don't render at all the component in this case */}
-                                    {isMatch ? (
-                                        <ReviewEdit
-                                            id={match.params.id}
-                                            onCancel={this.handleClose}
-                                            {...props}
-                                        />
-                                    ) : null}
-                                </Drawer>
-                            </Fragment>
-                        );
-                    }}
-                </Route>
-            </div>
-        );
-    }
+                                ) : null}
+                            </Drawer>
+                        </Fragment>
+                    );
+                }}
+            </Route>
+        </div>
+    );
+};
 
-    handleClose = () => {
-        this.props.push('/reviews');
-    };
-}
-
-export default compose(
-    connect(undefined, { push }),
-    withStyles(styles)
-)(ReviewList);
+export default ReviewList;

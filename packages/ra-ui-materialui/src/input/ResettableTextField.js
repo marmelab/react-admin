@@ -34,6 +34,7 @@ class ResettableTextField extends Component {
     static propTypes = {
         classes: PropTypes.object.isRequired,
         clearAlwaysVisible: PropTypes.bool,
+        disabled: PropTypes.bool,
         InputProps: PropTypes.object,
         onBlur: PropTypes.func,
         onChange: PropTypes.func.isRequired,
@@ -72,6 +73,9 @@ class ResettableTextField extends Component {
             InputProps,
             value,
             resettable,
+            disabled,
+            variant = 'filled',
+            margin = 'dense',
             ...props
         } = this.props;
         const { showClear } = this.state;
@@ -102,6 +106,7 @@ class ResettableTextField extends Component {
                                 disableRipple
                                 onClick={this.handleClickClearButton}
                                 onMouseDown={this.handleMouseDownClearButton}
+                                disabled={disabled}
                             >
                                 <ClearIcon
                                     className={classNames(clearIcon, {
@@ -114,6 +119,9 @@ class ResettableTextField extends Component {
                     ),
                     ...InputProps,
                 }}
+                disabled={disabled}
+                variant={variant}
+                margin={margin}
                 {...props}
                 onFocus={this.handleFocus}
                 onBlur={this.handleBlur}

@@ -9,10 +9,9 @@ import {
     List,
     NullableBooleanInput,
     NumberField,
-    Responsive,
     SearchInput,
 } from 'react-admin';
-import withStyles from '@material-ui/core/styles/withStyles';
+import { useMediaQuery, makeStyles } from '@material-ui/core';
 
 import SegmentsField from './SegmentsField';
 import SegmentInput from './SegmentInput';
@@ -30,20 +29,23 @@ const VisitorFilter = props => (
     </Filter>
 );
 
-const styles = {
+const useStyles = makeStyles({
     nb_commands: { color: 'purple' },
-};
+});
 
-const VisitorList = ({ classes, ...props }) => (
-    <List
-        {...props}
-        filters={<VisitorFilter />}
-        sort={{ field: 'last_seen', order: 'DESC' }}
-        perPage={25}
-    >
-        <Responsive
-            xsmall={<MobileGrid />}
-            medium={
+const VisitorList = props => {
+    const classes = useStyles();
+    const isXsmall = useMediaQuery(theme => theme.breakpoints.down('xs'));
+    return (
+        <List
+            {...props}
+            filters={<VisitorFilter />}
+            sort={{ field: 'last_seen', order: 'DESC' }}
+            perPage={25}
+        >
+            {isXsmall ? (
+                <MobileGrid />
+            ) : (
                 <Datagrid>
                     <CustomerLinkField />
                     <DateField source="last_seen" type="date" />
@@ -61,9 +63,9 @@ const VisitorList = ({ classes, ...props }) => (
                     <SegmentsField />
                     <EditButton />
                 </Datagrid>
-            }
-        />
-    </List>
-);
+            )}
+        </List>
+    );
+};
 
-export default withStyles(styles)(VisitorList);
+export default VisitorList;

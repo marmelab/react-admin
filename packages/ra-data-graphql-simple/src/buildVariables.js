@@ -1,3 +1,4 @@
+/* eslint-disable default-case */
 import {
     GET_LIST,
     GET_ONE,
@@ -25,13 +26,13 @@ const sanitizeValue = (type, value) => {
 
 const castType = (value, type) => {
     switch (`${type.kind}:${type.name}`) {
-        case "SCALAR:Int":
+        case 'SCALAR:Int':
             return Number(value);
 
-        case "SCALAR:String":
+        case 'SCALAR:String':
             return String(value);
 
-        case "SCALAR:Boolean":
+        case 'SCALAR:Boolean':
             return Boolean(value);
 
         default:
@@ -68,10 +69,11 @@ const prepareParams = (params, queryType, introspectionResults) => {
             param instanceof Object &&
             !Array.isArray(param) &&
             arg &&
-            arg.type.kind === "INPUT_OBJECT"
+            arg.type.kind === 'INPUT_OBJECT'
         ) {
             const args = introspectionResults.types.find(
-                item => item.kind === arg.type.kind && item.name === arg.type.name
+                item =>
+                    item.kind === arg.type.kind && item.name === arg.type.name
             ).inputFields;
             result[key] = prepareParams(param, { args }, introspectionResults);
             return;
@@ -126,7 +128,7 @@ const buildGetListVariables = introspectionResults => (
         const parts = key.split('.');
 
         if (parts.length > 1) {
-            if (parts[1] == 'id') {
+            if (parts[1] === 'id') {
                 const type = introspectionResults.types.find(
                     t => t.name === `${resource.type.name}Filter`
                 );
@@ -224,7 +226,11 @@ export default introspectionResults => (
     params,
     queryType
 ) => {
-    const preparedParams = prepareParams(params, queryType, introspectionResults);
+    const preparedParams = prepareParams(
+        params,
+        queryType,
+        introspectionResults
+    );
 
     switch (aorFetchType) {
         case GET_LIST: {
@@ -235,24 +241,24 @@ export default introspectionResults => (
                 queryType
             );
         }
-
         case GET_MANY:
             return {
                 filter: { ids: preparedParams.ids },
             };
-
         case GET_MANY_REFERENCE: {
             const parts = preparedParams.target.split('.');
             return {
+                page: parseInt(preparedParams.pagination.page, 10) - 1,
+                perPage: parseInt(preparedParams.pagination.perPage, 10),
+                sortField: preparedParams.sort.field,
+                sortOrder: preparedParams.sort.order,
                 filter: { [`${parts[0]}Id`]: preparedParams.id },
             };
         }
-
         case GET_ONE:
             return {
                 id: preparedParams.id,
             };
-
         case UPDATE: {
             return buildCreateUpdateVariables(introspectionResults)(
                 resource,
@@ -261,7 +267,6 @@ export default introspectionResults => (
                 queryType
             );
         }
-
         case CREATE: {
             return buildCreateUpdateVariables(introspectionResults)(
                 resource,
@@ -270,7 +275,6 @@ export default introspectionResults => (
                 queryType
             );
         }
-
         case DELETE:
             return {
                 id: preparedParams.id,

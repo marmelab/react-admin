@@ -1,3 +1,4 @@
+import React from 'react';
 import InferredElement from './InferredElement';
 
 describe('InferredElement', () => {

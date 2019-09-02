@@ -1,8 +1,13 @@
 import React from 'react';
-import assert from 'assert';
-import { shallow } from 'enzyme';
-import { Resource } from './Resource';
-import { Route } from 'react-router-dom';
+import expect from 'expect';
+import { cleanup, wait } from '@testing-library/react';
+import { Router } from 'react-router-dom';
+import { createMemoryHistory } from 'history';
+
+import Resource from './Resource';
+import { registerResource, unregisterResource } from './actions';
+import renderWithRedux from './util/renderWithRedux';
+import AuthContext from './auth/AuthContext';
 
 const PostList = () => <div>PostList</div>;
 const PostEdit = () => <div>PostEdit</div>;
@@ -21,92 +26,84 @@ const resource = {
 };
 
 describe('<Resource>', () => {
-    const registerResource = jest.fn();
-    const unregisterResource = jest.fn();
+    afterEach(cleanup);
 
     it(`registers its resource in redux on mount when context is 'registration'`, () => {
-        shallow(
-            <Resource
-                {...resource}
-                context="registration"
-                registerResource={registerResource}
-                unregisterResource={unregisterResource}
-            />
+        const { dispatch } = renderWithRedux(
+            <Resource {...resource} intent="registration" />
         );
-        assert.equal(registerResource.mock.calls.length, 1);
-        assert.deepEqual(registerResource.mock.calls[0][0], {
-            name: 'posts',
-            options: { foo: 'bar' },
-            hasList: true,
-            hasEdit: true,
-            hasShow: true,
-            hasCreate: true,
-            icon: PostIcon,
-        });
+        expect(dispatch).toHaveBeenCalledWith(
+            registerResource({
+                name: 'posts',
+                options: { foo: 'bar' },
+                hasList: true,
+                hasEdit: true,
+                hasShow: true,
+                hasCreate: true,
+                icon: PostIcon,
+            })
+        );
     });
     it(`unregister its resource from redux on unmount when context is 'registration'`, () => {
-        const wrapper = shallow(
-            <Resource
-                {...resource}
-                context="registration"
-                registerResource={registerResource}
-                unregisterResource={unregisterResource}
-            />
+        const { unmount, dispatch } = renderWithRedux(
+            <Resource {...resource} intent="registration" />
         );
-        wrapper.unmount();
-        assert.equal(unregisterResource.mock.calls.length, 1);
-        assert.deepEqual(unregisterResource.mock.calls[0][0], 'posts');
+        unmount();
+        expect(dispatch).toHaveBeenCalledTimes(2);
+        expect(dispatch.mock.calls[1][0]).toEqual(unregisterResource('posts'));
     });
-    it('renders list route if specified', () => {
-        const wrapper = shallow(
-            <Resource
-                {...resource}
-                context="route"
-                match={{ url: 'posts' }}
-                registerResource={registerResource}
-                unregisterResource={unregisterResource}
-            />
+    it('renders resource routes by default', () => {
+        const history = createMemoryHistory();
+        const { getByText } = renderWithRedux(
+            <Router history={history}>
+                <Resource
+                    {...resource}
+                    match={{
+                        url: '/posts',
+                        params: {},
+                        isExact: true,
+                        path: '/',
+                    }}
+                />
+            </Router>,
+            { admin: { resources: { posts: {} } } }
         );
-        assert.ok(wrapper.containsMatchingElement(<Route path="posts" />));
+        history.push('/posts');
+        expect(getByText('PostList')).toBeDefined();
+        history.push('/posts/123');
+        expect(getByText('PostEdit')).toBeDefined();
+        history.push('/posts/123/show');
+        expect(getByText('PostShow')).toBeDefined();
+        history.push('/posts/create');
+        expect(getByText('PostCreate')).toBeDefined();
     });
-    it('renders create route if specified', () => {
-        const wrapper = shallow(
-            <Resource
-                {...resource}
-                context="route"
-                match={{ url: 'posts' }}
-                registerResource={registerResource}
-                unregisterResource={unregisterResource}
-            />
+    it('injects permissions to the resource routes', async () => {
+        const history = createMemoryHistory();
+        const authProvider = type =>
+            type === 'AUTH_GET_PERMISSIONS'
+                ? Promise.resolve('admin')
+                : Promise.resolve();
+        const { getByText } = renderWithRedux(
+            <AuthContext.Provider value={authProvider}>
+                <Router history={history}>
+                    <Resource
+                        name="posts"
+                        list={({ permissions }) => (
+                            <span>Permissions: {permissions}</span>
+                        )}
+                        match={{
+                            url: '/posts',
+                            params: {},
+                            isExact: true,
+                            path: '/',
+                        }}
+                    />
+                </Router>
+            </AuthContext.Provider>,
+            { admin: { resources: { posts: {} } } }
         );
-        assert.ok(
-            wrapper.containsMatchingElement(<Route path="posts/create" />)
-        );
-    });
-    it('renders edit route if specified', () => {
-        const wrapper = shallow(
-            <Resource
-                {...resource}
-                context="route"
-                match={{ url: 'posts' }}
-                registerResource={registerResource}
-                unregisterResource={unregisterResource}
-            />
-        );
-        assert.ok(wrapper.containsMatchingElement(<Route path="posts/:id" />));
-    });
-    it('renders show route if specified', () => {
-        const wrapper = shallow(
-            <Resource
-                {...resource}
-                context="route"
-                match={{ url: 'posts' }}
-                registerResource={registerResource}
-                unregisterResource={unregisterResource}
-            />
-        );
-        assert.ok(
-            wrapper.containsMatchingElement(<Route path="posts/:id/show" />)
-        );
+        history.push('/posts');
+        await wait();
+        expect(getByText('Permissions: admin')).toBeDefined();
     });
 });

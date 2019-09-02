@@ -1,6 +1,6 @@
 {
     "name": "data-generator-retail",
-    "version": "2.8.5",
+    "version": "3.0.0-alpha.3",
     "homepage": "https://github.com/marmelab/react-admin/tree/master/examples/data-generator",
     "bugs": "https://github.com/marmelab/react-admin/issues",
     "license": "MIT",
@@ -17,6 +17,6 @@
     },
     "devDependencies": {
         "cross-env": "^5.2.0",
-        "rimraf": "^2.6.2"
+        "rimraf": "^2.6.3"
     }
 }

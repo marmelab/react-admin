@@ -9,15 +9,40 @@ title: "Authentication"
 
 React-admin lets you secure your admin app with the authentication strategy of your choice. Since there are many different possible strategies (Basic Auth, JWT, OAuth, etc.), react-admin simply provides hooks to execute your own authentication code.
 
-By default, react-admin apps don't require authentication. Here are the steps to add one.
+## The `authProvider`
 
-## Configuring the Auth Provider
+By default, react-admin apps don't require authentication. To restrict access to the admin, pass an `authProvider` to the `<Admin>` component.
 
-By default, the `/login` route renders a special component called `Login`, which displays a login form asking for username and password.
+```jsx
+// in src/App.js
+import authProvider from './authProvider';
+
+const App = () => (
+    <Admin authProvider={authProvider}>
+        ...
+    </Admin>
+);
+```
+
+What's an `authProvider`? Just like a `dataProvider`, an `authProvider` is a function that react-admin calls when needed, and that returns a Promise. The signature of an `authProvider` is:
+
+```js
+// in src/authProvider.js
+
+const authProvider = (type, params) => Promise.resolve;
+
+export default authProvider;
+```
+
+Let's see when react-admin calls the `authProvider`, and with which params. 
+
+## Login Configuration
+
+Once an admin has an `authProvider`, react-admin enables a new page on the `/login` route, which displays a login form asking for username and password.
 
 ![Default Login Form](./img/login-form.png)
 
-What this form does upon submission depends on the `authProvider` prop of the `<Admin>` component. This function receives authentication requests `(type, params)`, and should return a Promise. `Login` calls `authProvider` with the `AUTH_LOGIN` type, and `{ login, password }` as parameters. It's the ideal place to authenticate the user, and store their credentials.
+Upon submission, this form calls the `authProvider` with the `AUTH_LOGIN` type, and `{ login, password }` as parameters. It's the ideal place to authenticate the user, and store their credentials.
 
 For instance, to query an authentication route via HTTPS and store the credentials (a token) in local storage, configure `authProvider` as follows:
 
@@ -25,7 +50,7 @@ For instance, to query an authentication route via HTTPS and store the credentia
 // in src/authProvider.js
 import { AUTH_LOGIN } from 'react-admin';
 
-export default (type, params) => {
+const authProvider = (type, params) => {
     if (type === AUTH_LOGIN) {
         const { username, password } = params;
         const request = new Request('https://mydomain.com/authenticate', {
@@ -46,28 +71,17 @@ export default (type, params) => {
     }
     return Promise.resolve();
 }
+
+export default authProvider;
 ```
 
-**Tip**: It's a good idea to store credentials in `localStorage`, to avoid reconnection when opening a new browser tab. But this makes your application [open to XSS attacks](http://www.redotheweb.com/2015/11/09/api-security.html), so you'd better double down on security, and add an `httpOnly` cookie on the server side, too.
+Once the promise resolves, the login form redirects to the previous page, or to the admin index if the user just arrived.
 
-Then, pass this client to the `<Admin>` component:
-
-```jsx
-// in src/App.js
-import authProvider from './authProvider';
-
-const App = () => (
-    <Admin authProvider={authProvider}>
-        ...
-    </Admin>
-);
-```
-
-Upon receiving a 403 response, the admin app shows the Login page. `authProvider` is now called when the user submits the login form. Once the promise resolves, the login form redirects to the previous page, or to the admin index if the user just arrived.
+**Tip**: It's a good idea to store credentials in `localStorage`, as in this example, to avoid reconnection when opening a new browser tab. But this makes your application [open to XSS attacks](http://www.redotheweb.com/2015/11/09/api-security.html), so you'd better double down on security, and add an `httpOnly` cookie on the server side, too.
 
 ## Sending Credentials to the API
 
-To use the credentials when calling a data provider, you have to tweak, this time, the `dataProvider` function. As explained in the [Data providers documentation](DataProviders.md#adding-custom-headers), `simpleRestProvider` and `jsonServerProvider` take an `httpClient` as second parameter. That's the place where you can change request headers, cookies, etc.
+Now that the user has logged in, you can use their credentials to communicate with the `dataProvider`. For that, you have to tweak, this time, the `dataProvider` function. As explained in the [Data providers documentation](DataProviders.md#adding-custom-headers), `simpleRestProvider` and `jsonServerProvider` take an `httpClient` as second parameter. That's the place where you can change request headers, cookies, etc.
 
 For instance, to pass the token obtained during login as an `Authorization` header, configure the Data Provider as follows:
 
@@ -92,13 +106,15 @@ const App = () => (
 );
 ```
 
+Now the admin is secured: The user can be authenticatded and use their credentials to communicate with a secure API. 
+
 If you have a custom REST client, don't forget to add credentials yourself.
 
-## Adding a Logout Button
+## Logout Configuration
 
-If you provide an `authProvider` prop to `<Admin>`, react-admin displays a logout button in the top bar (or in the menu on mobile). When the user clicks on the logout button, this calls the `authProvider` with the `AUTH_LOGOUT` type and removes potentially sensitive data from the redux store. When resolved, the user gets redirected to the login page.
+If you provide an `authProvider` prop to `<Admin>`, react-admin displays a logout button in the top bar (or in the menu on mobile). When the user clicks on the logout button, this calls the `authProvider` with the `AUTH_LOGOUT` type and removes potentially sensitive data from the Redux store. Then the user gets redirected to the login page.
 
-For instance, to remove the token from local storage upon logout:
+So it's the responsibility of the `authProvider` to cleanup the current authentication data. For instance, if the authentication was a token stored in local storage, here the code to remove it:
 
 ```jsx
 // in src/authProvider.js
@@ -120,11 +136,13 @@ export default (type, params) => {
 
 The `authProvider` is also a good place to notify the authentication API that the user credentials are no longer valid after logout.
 
+Note that the `authProvider` can return the url to which the user will be redirected once logged out. By default, this is the `/login` route.
+
 ## Catching Authentication Errors On The API
 
-If the API requires authentication, and the user credentials are missing or invalid in the request, the API usually answers with an error code 401 or 403.
+If the API requires authentication, and the user credentials are missing in the request or invalid, the API usually answers with an HTTP error code 401 or 403.
 
-Fortunately, each time the API returns an error, the `authProvider` is called with the `AUTH_ERROR` type. Once again, it's up to you to decide which HTTP status codes should let the user continue (by returning a resolved promise) or log them out (by returning a rejected promise).
+Fortunately, each time the API returns an error, react-admin calls the `authProvider` with the `AUTH_ERROR` type. Once again, it's up to you to decide which HTTP status codes should let the user continue (by returning a resolved promise) or log them out (by returning a rejected promise).
 
 For instance, to redirect the user to the login page for both 401 and 403 codes:
 
@@ -151,11 +169,13 @@ export default (type, params) => {
 };
 ```
 
+Note that react-admin will call the `authProvider` with the `AUTH_LOGOUT` type before redirecting when you reject the promise and will use the url which may have been return by the call to `AUTH_LOGOUT`.
+
 ## Checking Credentials During Navigation
 
 Redirecting to the login page whenever a REST response uses a 401 status code is usually not enough, because react-admin keeps data on the client side, and could display stale data while contacting the server - even after the credentials are no longer valid.
 
-Fortunately, each time the user navigates, react-admin calls the `authProvider` with the `AUTH_CHECK` type, so it's the ideal place to check for credentials.
+Fortunately, each time the user navigates, react-admin calls the `authProvider` with the `AUTH_CHECK` type, so it's the ideal place to validate the credentials.
 
 For instance, to check for the existence of the token in local storage:
 
@@ -176,7 +196,7 @@ export default (type, params) => {
     if (type === AUTH_CHECK) {
         return localStorage.getItem('token') ? Promise.resolve() : Promise.reject();
     }
-    return Promise.reject('Unknown method');
+    return Promise.resolve();
 };
 ```
 
@@ -197,11 +217,15 @@ export default (type, params) => {
         // ...
     }
     if (type === AUTH_CHECK) {
-        return localStorage.getItem('token') ? Promise.resolve() : Promise.reject({ redirectTo: '/no-access' });
+        return localStorage.getItem('token')
+            ? Promise.resolve()
+            : Promise.reject({ redirectTo: '/no-access' });
     }
-    return Promise.reject('Unknown method');
+    return Promise.resolve();
 };
 ```
+
+Note that react-admin will call the `authProvider` with the `AUTH_LOGOUT` type before redirecting. If you specify the `redirectTo` here, it will override the url which may have been return by the call to `AUTH_LOGOUT`.
 
 **Tip**: For the `AUTH_CHECK` call, the `params` argument contains the `resource` name, so you can implement different checks for different resources:
 
@@ -228,11 +252,11 @@ export default (type, params) => {
             // check credentials for the comments resource
         }
     }
-    return Promise.reject('Unknown method');
+    return Promise.resolve();
 };
 ```
 
-**Tip**: The `authProvider` can only be called with `AUTH_LOGIN`, `AUTH_LOGOUT`, `AUTH_ERROR`, or `AUTH_CHECK`; that's why the final return is a rejected promise.
+**Tip**: In addition to `AUTH_LOGIN`, `AUTH_LOGOUT`, `AUTH_ERROR`, and `AUTH_CHECK`, react-admin calls the `authProvider` with the `AUTH_GET_PERMISSIONS` type to check user permissions. It's useful to enable or disable features on a per user basis. Read the [Authorization Documentation](./Authorization.md) to learn how to implement that type.
 
 ## Customizing The Login and Logout Components
 
@@ -246,64 +270,56 @@ For all these cases, it's up to you to implement your own `LoginPage` component,
 
 ```jsx
 // in src/MyLoginPage.js
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { userLogin } from 'react-admin';
-import { MuiThemeProvider } from '@material-ui/core/styles';
+import { ThemeProvider } from '@material-ui/styles';
 
-class MyLoginPage extends Component {
-    submit = (e) => {
+const MyLoginPage = ({ theme }) => {
+    const dispatch = useDispatch()
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const submit = (e) => {
         e.preventDefault();
         // gather your data/credentials here
-        const credentials = { };
-
-        // Dispatch the userLogin action (injected by connect)
-        this.props.userLogin(credentials);
+        const credentials = { email, password };
+        // Dispatch the userLogin action
+        dispatch(userLogin(credentials));
     }
 
-    render() {
-        return (
-            <MuiThemeProvider theme={this.props.theme}>
-                <form onSubmit={this.submit}>
-                ...
-                </form>
-            </MuiThemeProvider>
-        );
-    }
+    return (
+        <ThemeProvider theme={theme}>
+            <form onSubmit={submit}>
+                <input name="email" type="email" value={email} onChange={e => setEmail(e.target.value)} /> 
+                <input name="password" type="password" value={password} onChange={e => setPassword(e.target.value)} />
+            </form>
+        </ThemeProvider>
+    );
 };
 
-export default connect(undefined, { userLogin })(MyLoginPage);
+export default MyLoginPage;
 
 // in src/MyLogoutButton.js
-import React from 'react';
-import { connect } from 'react-redux';
-import { Responsive, userLogout } from 'react-admin';
+import React, { forwardRef } from 'react';
+import { useDispatch } from 'react-redux';
+import { userLogout } from 'react-admin';
 import MenuItem from '@material-ui/core/MenuItem';
-import Button from '@material-ui/core/Button';
 import ExitIcon from '@material-ui/icons/PowerSettingsNew';
 
-const MyLogoutButton = ({ userLogout, ...rest }) => (
-    <Responsive
-        xsmall={
-            <MenuItem
-                onClick={userLogout}
-                {...sanitizeRestProps(rest)}
-            >
-                <ExitIcon /> Logout
-            </MenuItem>
-        }
-        medium={
-            <Button
-                onClick={userLogout}
-                size="small"
-                {...sanitizeRestProps(rest)}
-            >
-                <ExitIcon /> Logout
-            </Button>
-        }
-    />
-);
-export default connect(undefined, { userLogout })(MyLogoutButton);
+const MyLogoutButton = forwardRef((props, ref) => {
+    const dispatch = useDispatch();
+    const logout = () => dispatch(userLogout(redirectTo));
+    return (
+        <MenuItem
+            onClick={logout}
+            ref={ref}
+        >
+            <ExitIcon /> Logout
+        </MenuItem>
+    );
+});
+
+export default MyLogoutButton;
 
 // in src/App.js
 import MyLoginPage from './MyLoginPage';
@@ -316,40 +332,75 @@ const App = () => (
 );
 ```
 
-## Restricting Access To A Custom Page
-
-If you add [custom pages](./Actions.md), of if you [create an admin app from scratch](./CustomApp.md), you may need to secure access to pages manually. That's the purpose of the `<Authenticated>` component, that you can use as a decorator for your own components.
-
-{% raw %}
-```jsx
-// in src/MyPage.js
-import { withRouter } from 'react-router-dom';
-import { Authenticated } from 'react-admin';
-
-const MyPage = ({ location }) => (
-    <Authenticated authParams={{ foo: 'bar' }} location={location}>
-        <div>
-            ...
-        </div>
-    </Authenticated>
-);
-
-export default withRouter(MyPage);
-```
-{% endraw %}
-
-The `<Authenticated>` component calls the `authProvider` function with `AUTH_CHECK` and `authParams`. If the response is a fulfilled promise, the child component is rendered. If the response is a rejected promise, `<Authenticated>` redirects to the login form. Upon successful login, the user is redirected to the initial location (that's why it's necessary to get the location from the router).
-
-
-## Redirect After Logout
-
-By default, react-admin redirects the user to '/login' after they log out. This can be changed by passing the url to redirect to as parameter to the `userLogout()` action creator when you `connect` the `MyLogoutButton` component:
+**Tip**: By default, react-admin redirects the user to '/login' after they log out. This can be changed by passing the url to redirect to as parameter to the `userLogout()` action creator:
 
 ```diff
 // in src/MyLogoutButton.js
 // ...
-- export default connect(undefined, { userLogout })(MyLogoutButton);
-+ const redirectTo = '/';
-+ const myCustomUserLogout = () => userLogout(redirectTo);
-+ export default connect(undefined, { userLogout: myCustomUserLogout })(MyLogoutButton);
+                <MenuItem
+-                   onClick={() => dispatch(userLogout())}
++                   onClick={() => dispatch(userLogout('/custom-login'))}
+                    {...props}
+                >
+                    <ExitIcon /> Logout
+                </MenuItem>
+```
+
+## `useAuth()` Hook
+
+If you add [custom pages](./Actions.md), of if you [create an admin app from scratch](./CustomApp.md), you may need to secure access to pages manually. That's the purpose of the `useAuth()` hook, which calls the `authProvider` with the `AUTH_CHECK` type on mount, and redirects to login if it returns a rejected Promise.
+
+```jsx
+// in src/MyPage.js
+import { useAuth } from 'react-admin';
+
+const MyPage = () => {
+    useAuth(); // redirects to login if not authenticated
+    return (
+        <div>
+            ...
+        </div>
+    )
+};
+
+export default MyPage;
+```
+
+If you call `useAuth()` with a parameter, this parameter is passed to the `authProvider` call as second parameter. that allows you to add authentication logic depending on the context of the call:
+
+```jsx
+const MyPage = () => {
+    useAuth({ foo: 'bar' }); // calls authProvider(AUTH_CHECK, { foo: 'bar' })
+    return (
+        <div>
+            ...
+        </div>
+    )
+};
+```
+
+The `useAuth` hook is optimistic: it doesn't block rendering during the `authProvider` call. In the above example, the `MyPage` component renders even before getting the response from the `authProvider`. If the call returns a rejected promise, the hook redirects to the login page, but the user may have seen the content of the `MyPage` component for a brief moment.
+
+To avoid rendering a component and force waiting for the `authProvider` response, use the return value of the `useAuth()` hook. 
+
+```jsx
+const MyPage = () => {
+    const { loaded } = useAuth();
+    return loaded ? (
+        <div>
+            ...
+        </div>
+    ) : null;
+};
+```
+
+Also, you may want to show special content instead of redirecting to login if the user isn't authenticated. Pass an options argument with `logoutOnFailure` set to `false` to disable this feature: 
+
+```jsx
+const MyPage = () => {
+    const { loaded, authenticated } = useAuth({}, { logoutOnFailure: false });
+    if (!loaded) return null;
+    if (!authenticated) return <AnonymousContent />;
+    return <AuthenticatedContent />
+};
 ```

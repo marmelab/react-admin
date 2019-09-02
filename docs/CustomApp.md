@@ -5,7 +5,7 @@ title: "Including the Admin in Another App"
 
 # Including React-Admin In Another Redux Application
 
-The `<Admin>` tag is a great shortcut got be up and running with react-admin in minutes. However, in many cases, you will want to embed the admin in another application, or customize the admin redux store deeply.
+The `<Admin>` tag is a great shortcut to be up and running with react-admin in minutes. However, in many cases, you will want to embed the admin in another application, or customize the admin redux store deeply.
 
 **Tip**: Before going for the Custom App route, explore all the options of [the `<Admin>` component](./Admin.md). They allow you to add custom routes, custom reducers, custom sagas, and customize the layout.
 
@@ -13,24 +13,21 @@ Fortunately, the `<Admin>` component detects when it's used inside an existing R
 
 Beware that you need to know about [redux](http://redux.js.org/), [react-router](https://github.com/reactjs/react-router), and [redux-saga](https://github.com/yelouafi/redux-saga) to go further.
 
-React-admin requires that the redux state contains at least 4 reducers: `admin`, `i18n`, `form`, and `router`. You can add more, or replace some of them with your own, but you can't remove or rename them. As it relies on redux-form, react-router, and redux-saga, react-admin also expects the store to use their middlewares.
+React-admin requires that the redux state contains at least 3 reducers: `admin`, `i18n` and `router`. You can add more, or replace some of them with your own, but you can't remove or rename them. As it relies on `connected-react-router` and `redux-saga`, react-admin also expects the store to use their middlewares.
 
 Here is the default store creation for react-admin:
 
 ```js
 // in src/createAdminStore.js
 import { applyMiddleware, combineReducers, compose, createStore } from 'redux';
-import { routerMiddleware, routerReducer } from 'react-router-redux';
-import { reducer as formReducer } from 'redux-form';
+import { routerMiddleware, connectRouter } from 'connected-react-router';
 import createSagaMiddleware from 'redux-saga';
 import { all, fork } from 'redux-saga/effects';
 import {
     adminReducer,
     adminSaga,
-    createAppReducer,
     defaultI18nProvider,
     i18nReducer,
-    formMiddleware,
     USER_LOGOUT,
 } from 'react-admin';
 
@@ -44,8 +41,7 @@ export default ({
     const reducer = combineReducers({
         admin: adminReducer,
         i18n: i18nReducer(locale, i18nProvider(locale)),
-        form: formReducer,
-        router: routerReducer,
+        router: connectRouter(history),
         { /* add your own reducers here */ },
     });
     const resettableAppReducer = (state, action) =>
@@ -67,7 +63,6 @@ export default ({
         compose(
             applyMiddleware(
                 sagaMiddleware,
-                formMiddleware,
                 routerMiddleware(history),
                 // add your own middlewares here
             ),
@@ -82,7 +77,7 @@ export default ({
 };
 ```
 
-You can use this script as a base and then add your own middleares or enhancers, e.g. to allow store persistence with [redux-persist](https://github.com/rt2zz/redux-persist).
+You can use this script as a base and then add your own middlewares or enhancers, e.g., to allow store persistence with [redux-persist](https://github.com/rt2zz/redux-persist).
 
 Then, use the `<Admin>` component as you would in a standalone application. Here is an example with 3 resources: `posts`, `comments`, and `users`
 
@@ -126,6 +121,7 @@ const App = () => (
     >
         <Admin
             authProvider={authProvider}
+            dataProvider={dataProvider}
             history={history}
             title="My Admin"
         >
@@ -139,7 +135,7 @@ const App = () => (
 export default App;
 ```
 
-**Tip**: One thing to pay attention to is that you must pass the same `history` and `authProvider` to both the redux Store creator and the `<Admin>` component. But you don't need to pass the `dataProvider` or the `i18nProvider`.
+**Tip**: One thing to pay attention to is that you must pass the same `history`, `dataProvider` and `authProvider` to both the redux Store creator and the `<Admin>` component. But you don't need to pass the `i18nProvider`.
 
 ## Not Using the `<Admin>` Components
 
@@ -152,14 +148,14 @@ Here is the main code for bootstrapping a barebones react-admin application with
 import React from 'react';
 import { Provider } from 'react-redux';
 import { createHashHistory } from 'history';
-+import { ConnectedRouter } from 'react-router-redux';
++import { ConnectedRouter } from 'connected-react-router';
 +import { Switch, Route } from 'react-router-dom';
 +import withContext from 'recompose/withContext';
 -import { Admin, Resource } from 'react-admin';
 +import { TranslationProvider, Resource } from 'react-admin';
 import restProvider from 'ra-data-simple-rest';
 import defaultMessages from 'ra-language-english';
-+import { MuiThemeProvider } from '@material-ui/core/styles';
++import { ThemeProvider } from '@material-ui/styles';
 +import AppBar from '@material-ui/core/AppBar';
 +import Toolbar from '@material-ui/core/Toolbar';
 +import Typography from '@material-ui/core/Typography';
@@ -202,13 +198,13 @@ const App = () => (
 -           <Resource name="comments" list={CommentList} edit={CommentEdit} create={CommentCreate} />
 -           <Resource name="users" list={UserList} edit={UserEdit} create={UserCreate} />
 +       <TranslationProvider>
-+           <MuiThemeProvider>
-+               <Resource name="posts" context="registration" />
-+               <Resource name="comments" context="registration" />
-+               <Resource name="users" context="registration" />
++           <ThemeProvider>
++               <Resource name="posts" intent="registration" />
++               <Resource name="comments" intent="registration" />
++               <Resource name="users" intent="registration" />
 +               <AppBar position="static" color="default">
 +                   <Toolbar>
-+                       <Typography variant="title" color="inherit">
++                       <Typography variant="h6" color="inherit">
 +                           My admin
 +                       </Typography>
 +                   </Toolbar>
@@ -228,7 +224,7 @@ const App = () => (
 +                       <Route exact path="/users/:id" render={(routeProps) => <UsersEdit resource="users" {...routeProps} />} />
 +                   </Switch>
 +               </ConnectedRouter>
-+           </MuiThemeProvider>
++           </ThemeProvider>
 +       </TranslationProvider>
 -       </Admin>
     </Provider>

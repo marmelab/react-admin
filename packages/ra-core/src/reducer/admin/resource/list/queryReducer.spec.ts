@@ -132,4 +132,31 @@ describe('Query Reducer', () => {
             });
         });
     });
+    describe('SET_PER_PAGE action', () => {
+        it('should update per page count', () => {
+            const updatedState = queryReducer(
+                {
+                    perPage: 10,
+                },
+                {
+                    type: 'SET_PER_PAGE',
+                    payload: 25,
+                }
+            );
+            assert.equal(updatedState.perPage, 25);
+        });
+        it('should reset page to 1', () => {
+            const updatedState = queryReducer(
+                {
+                    page: 5,
+                    perPage: 10,
+                },
+                {
+                    type: 'SET_PER_PAGE',
+                    payload: 25,
+                }
+            );
+            assert.equal(updatedState.page, 1);
+        });
+    });
 });

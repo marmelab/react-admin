@@ -1,14 +1,13 @@
 import React, { Children, Fragment, isValidElement } from 'react';
 import PropTypes from 'prop-types';
-import compose from 'recompose/compose';
 import MuiToolbar from '@material-ui/core/Toolbar';
 import withWidth from '@material-ui/core/withWidth';
-import { withStyles, createStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
 
 import { SaveButton, DeleteButton } from '../button';
 
-const styles = theme => createStyles({
+const useStyles = makeStyles(theme => ({
     toolbar: {
         backgroundColor:
             theme.palette.type === 'light'
@@ -16,7 +15,7 @@ const styles = theme => createStyles({
                 : theme.palette.grey[900],
     },
     desktopToolbar: {
-        marginTop: theme.spacing.unit * 2,
+        marginTop: theme.spacing(2),
     },
     mobileToolbar: {
         position: 'fixed',
@@ -39,7 +38,7 @@ const styles = theme => createStyles({
             height: '5em',
         },
     },
-});
+}));
 
 const valueOrDefault = (value, defaultValue) =>
     typeof value === 'undefined' ? defaultValue : value;
@@ -47,8 +46,8 @@ const valueOrDefault = (value, defaultValue) =>
 const Toolbar = ({
     basePath,
     children,
-    classes,
     className,
+    classes: classesOverride,
     handleSubmit,
     handleSubmitWithRedirect,
     invalid,
@@ -61,72 +60,75 @@ const Toolbar = ({
     undoable,
     width,
     ...rest
-}) => (
-    <Fragment>
-        <MuiToolbar
-            className={classnames(
-                classes.toolbar,
-                {
-                    [classes.mobileToolbar]: width === 'xs',
-                    [classes.desktopToolbar]: width !== 'xs',
-                },
-                className
-            )}
-            role="toolbar"
-            {...rest}
-        >
-            {Children.count(children) === 0 ? (
-                <div className={classes.defaultToolbar}>
-                    <SaveButton
-                        handleSubmitWithRedirect={handleSubmitWithRedirect}
-                        invalid={invalid}
-                        redirect={redirect}
-                        saving={saving}
-                        submitOnEnter={submitOnEnter}
-                    />
-                    {record && typeof record.id !== 'undefined' && (
-                        <DeleteButton
-                            basePath={basePath}
-                            record={record}
-                            resource={resource}
-                            undoable={undoable}
+}) => {
+    const classes = useStyles({ classes: classesOverride });
+    return (
+        <Fragment>
+            <MuiToolbar
+                className={classnames(
+                    classes.toolbar,
+                    {
+                        [classes.mobileToolbar]: width === 'xs',
+                        [classes.desktopToolbar]: width !== 'xs',
+                    },
+                    className
+                )}
+                role="toolbar"
+                {...rest}
+            >
+                {Children.count(children) === 0 ? (
+                    <div className={classes.defaultToolbar}>
+                        <SaveButton
+                            handleSubmitWithRedirect={handleSubmitWithRedirect}
+                            invalid={invalid}
+                            redirect={redirect}
+                            saving={saving}
+                            submitOnEnter={submitOnEnter}
                         />
-                    )}
-                </div>
-            ) : (
-                Children.map(children, button =>
-                    button && isValidElement(button)
-                        ? React.cloneElement(button, {
-                              basePath,
-                              handleSubmit: valueOrDefault(
-                                  button.props.handleSubmit,
-                                  handleSubmit
-                              ),
-                              handleSubmitWithRedirect: valueOrDefault(
-                                  button.props.handleSubmitWithRedirect,
-                                  handleSubmitWithRedirect
-                              ),
-                              invalid,
-                              pristine,
-                              record,
-                              resource,
-                              saving,
-                              submitOnEnter: valueOrDefault(
-                                  button.props.submitOnEnter,
-                                  submitOnEnter
-                              ),
-                              undoable: valueOrDefault(
-                                  button.props.undoable,
-                                  undoable
-                              ),
-                          })
-                        : null
-                )
-            )}
-        </MuiToolbar>
-        <div className={classes.spacer} />
-    </Fragment>
-);
+                        {record && typeof record.id !== 'undefined' && (
+                            <DeleteButton
+                                basePath={basePath}
+                                record={record}
+                                resource={resource}
+                                undoable={undoable}
+                            />
+                        )}
+                    </div>
+                ) : (
+                    Children.map(children, button =>
+                        button && isValidElement(button)
+                            ? React.cloneElement(button, {
+                                  basePath,
+                                  handleSubmit: valueOrDefault(
+                                      button.props.handleSubmit,
+                                      handleSubmit
+                                  ),
+                                  handleSubmitWithRedirect: valueOrDefault(
+                                      button.props.handleSubmitWithRedirect,
+                                      handleSubmitWithRedirect
+                                  ),
+                                  invalid,
+                                  pristine,
+                                  record,
+                                  resource,
+                                  saving,
+                                  submitOnEnter: valueOrDefault(
+                                      button.props.submitOnEnter,
+                                      submitOnEnter
+                                  ),
+                                  undoable: valueOrDefault(
+                                      button.props.undoable,
+                                      undoable
+                                  ),
+                              })
+                            : null
+                    )
+                )}
+            </MuiToolbar>
+            <div className={classes.spacer} />
+        </Fragment>
+    );
+};
 
 Toolbar.propTypes = {
     basePath: PropTypes.string,
@@ -154,8 +156,4 @@ Toolbar.defaultProps = {
     submitOnEnter: true,
 };
 
-const enhance = compose(
-    withWidth(),
-    withStyles(styles)
-);
-export default enhance(Toolbar);
+export default withWidth({ initialWidth: 'xs' })(Toolbar);

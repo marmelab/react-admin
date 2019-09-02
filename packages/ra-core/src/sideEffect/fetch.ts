@@ -44,10 +44,10 @@ function validateResponseFormat(
         fetchActionsWithArrayOfIdentifiedRecordsResponse.includes(type) &&
         Array.isArray(response.data) &&
         response.data.length > 0 &&
-        !response.data[0].hasOwnProperty('id')
+        response.data.some(d => !d.hasOwnProperty('id'))
     ) {
         logger(
-            `The response to '${type}' must be like { data : [{ id: 123, ...}, ...] }, but the received data items do not have an 'id' key. The dataProvider is probably wrong for '${type}'`
+            `The response to '${type}' must be like { data : [{ id: 123, ...}, ...] }, but at least one received data item do not have an 'id' key. The dataProvider is probably wrong for '${type}'`
         );
         throw new Error('ra.notification.data_provider_error');
     }
@@ -92,6 +92,8 @@ export function* handleFetch(
         meta: { fetch: fetchMeta, onSuccess, onFailure, ...meta },
     } = action;
     const restType = fetchMeta;
+    const successSideEffects = onSuccess instanceof Function ? {} : onSuccess;
+    const failureSideEffects = onFailure instanceof Function ? {} : onFailure;
 
     try {
         const isOptimistic = yield select(
@@ -122,7 +124,7 @@ export function* handleFetch(
             requestPayload: payload,
             meta: {
                 ...meta,
-                ...onSuccess,
+                ...successSideEffects,
                 fetchResponse: restType,
                 fetchStatus: FETCH_END,
             },
@@ -136,7 +138,7 @@ export function* handleFetch(
             requestPayload: payload,
             meta: {
                 ...meta,
-                ...onFailure,
+                ...failureSideEffects,
                 fetchResponse: restType,
                 fetchStatus: FETCH_ERROR,
             },
@@ -145,7 +147,7 @@ export function* handleFetch(
     } finally {
         if (yield cancelled()) {
             yield put({ type: FETCH_CANCEL });
-            return; /* tslint:disable-line no-unsafe-finally */
+            return;
         }
     }
 }

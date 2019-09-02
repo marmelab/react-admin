@@ -43,7 +43,7 @@ const RoutesWithLayout: SFC<Props> = ({
                         cloneElement(child, {
                             // The context prop instruct the Resource component to
                             // render itself as a standard component
-                            context: 'route',
+                            intent: 'route',
                             ...props,
                         })
                     }
@@ -58,8 +58,8 @@ const RoutesWithLayout: SFC<Props> = ({
                             authParams={{
                                 route: 'dashboard',
                             }}
+                            component={dashboard}
                             {...routeProps}
-                            render={props => createElement(dashboard, props)}
                         />
                     )}
                 />
@@ -71,8 +71,9 @@ const RoutesWithLayout: SFC<Props> = ({
                 />
             ) : null}
             <Route
-                render={() =>
+                render={routeProps =>
                     createElement(catchAll, {
+                        ...routeProps,
                         title,
                     })
                 }

@@ -88,25 +88,18 @@ export const PostShow = (props) => (
 
 ### Actions
 
-You can replace the list of default actions by your own element using the `actions` prop:
+You can replace the list of default actions by your own component using the `actions` prop:
 
 ```jsx
-import CardActions from '@material-ui/core/CardActions';
 import Button from '@material-ui/core/Button';
-import { EditButton } from 'react-admin';
-
-const cardActionStyle = {
-    zIndex: 2,
-    display: 'inline-block',
-    float: 'right',
-};
+import { EditButton, TopToolbar } from 'react-admin';
 
 const PostShowActions = ({ basePath, data, resource }) => (
-    <CardActions style={cardActionStyle}>
+    <TopToolbar>
         <EditButton basePath={basePath} record={data} />
         {/* Add your custom actions */}
         <Button color="primary" onClick={customAction}>Custom Action</Button>
-    </CardActions>
+    </TopToolbar>
 );
 
 export const PostShow = (props) => (
@@ -124,17 +117,18 @@ You may want to display additional information on the side of the resource detai
 ```jsx
 const Aside = () => (
     <div style={{ width: 200, margin: '1em' }}>
-        <Typography variant="title">Post details</Typography>
-        <Typography variant="body1">
+        <Typography variant="h6">Post details</Typography>
+        <Typography variant="body2">
             Posts will only be published one an editor approves them
         </Typography>
     </div>
 );
 
 const PostShow = props => (
-    <Show aside={<Aside />} {...props}>
+    <Show aside={Aside} {...props}>
         ...
     </Show>
+);
 ```
 {% endraw %}
 
@@ -144,9 +138,9 @@ The `aside` component receives the same props as the `Show` child component: `ba
 ```jsx
 const Aside = ({ record }) => (
     <div style={{ width: 200, margin: '1em' }}>
-        <Typography variant="title">Post details</Typography>
+        <Typography variant="h6">Post details</Typography>
         {record && (
-            <Typography variant="body1">
+            <Typography variant="body2">
                 Creation date: {record.createdAt}
             </Typography>
         )}
@@ -265,7 +259,7 @@ import {
 
 const ScrollableTabbedShowLayout = props => (
     <Show{...props}>
-        <TabbedShowLayout tabs={<TabbedShowLayoutTabs scrollable={true}/>}>
+        <TabbedShowLayout tabs={<TabbedShowLayoutTabs scrollable={true}{...props} />}>
             ...
         </TabbedShowLayout>
     </Show>
@@ -285,23 +279,17 @@ Here's an example inside a `Show` view with a `SimpleShowLayout` and a custom `a
 
 {% raw %}
 ```jsx
-import CardActions from '@material-ui/core/CardActions';
+import TopToolbar from '@material-ui/core/TopToolbar';
 import Button from '@material-ui/core/Button';
 import { EditButton, DeleteButton } from 'react-admin';
 
-const cardActionStyle = {
-    zIndex: 2,
-    display: 'inline-block',
-    float: 'right',
-};
-
 const PostShowActions = ({ permissions, basePath, data, resource }) => (
-    <CardActions style={cardActionStyle}>
+    <TopToolbar>
         <EditButton basePath={basePath} record={data} />
         {permissions === 'admin' &&
             <DeleteButton basePath={basePath} record={data} resource={resource} />
         }
-    </CardActions>
+    </TopToolbar>
 );
 
 export const PostShow = ({ permissions, ...props }) => (

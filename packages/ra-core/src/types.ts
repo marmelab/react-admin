@@ -1,5 +1,6 @@
 import { ReactNode, ReactElement, ComponentType } from 'react';
 import { RouteProps, RouteComponentProps, match as Match } from 'react-router';
+import { Location } from 'history';
 
 import { WithPermissionsChildrenParams } from './auth/WithPermissions';
 
@@ -46,10 +47,18 @@ export interface ReduxState {
     admin: {
         ui: {
             optimistic: boolean;
+            viewVersion: number;
         };
         resources: {
             [name: string]: {
                 data: any;
+                list: {
+                    params: any;
+                    ids: Identifier[];
+                    loadedOnce: boolean;
+                    selectedIds: Identifier[];
+                    total: number;
+                };
             };
         };
         references: {
@@ -58,10 +67,16 @@ export interface ReduxState {
             };
         };
         loading: number;
+        customQueries: {
+            [key: string]: any;
+        };
     };
     i18n: {
         locale: string;
         messages: object;
+    };
+    router: {
+        location: Location;
     };
 }
 
@@ -101,12 +116,14 @@ export interface LayoutProps {
 
 export type LayoutComponent = ComponentType<LayoutProps>;
 
-interface ReactAdminComponentProps {
+export interface ReactAdminComponentProps {
     basePath: string;
+    permissions?: any;
 }
-interface ReactAdminComponentPropsWithId {
-    id: Identifier;
+export interface ReactAdminComponentPropsWithId {
     basePath: string;
+    permissions?: any;
+    id: Identifier;
 }
 
 export type ResourceMatch = Match<{
@@ -114,7 +131,7 @@ export type ResourceMatch = Match<{
 }>;
 
 export interface ResourceProps {
-    context: 'route' | 'registration';
+    intent?: 'route' | 'registration';
     match?: ResourceMatch;
     name: string;
     list?: ComponentType<ReactAdminComponentProps>;
@@ -122,5 +139,5 @@ export interface ResourceProps {
     edit?: ComponentType<ReactAdminComponentPropsWithId>;
     show?: ComponentType<ReactAdminComponentPropsWithId>;
     icon?: ComponentType<any>;
-    options: object;
+    options?: object;
 }

@@ -9,7 +9,7 @@ import set from 'lodash/set';
 
 const initialState = {};
 
-interface State {
+export interface RecordState {
     [key: string]: any;
 }
 
@@ -18,7 +18,7 @@ type ActionTypes =
     | ResetFormAction
     | { type: 'OTHER_ACTION' };
 
-const recordReducer: Reducer<State> = (
+const recordReducer: Reducer<RecordState> = (
     previousState = initialState,
     action: ActionTypes
 ) => {

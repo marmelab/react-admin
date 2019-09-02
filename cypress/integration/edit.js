@@ -25,8 +25,11 @@ describe('Edit Page', () => {
         });
 
         it('should allow to update elements', () => {
-            EditPostPage.setInputValue('title', 'Lorem Ipsum');
+            EditPostPage.setInputValue('input', 'title', 'Lorem Ipsum');
             EditPostPage.submit();
+            // Ensure react-admin has handled the update as it will redirect to the list page
+            // once done
+            cy.url().should(url => expect(url).to.match(/.*\/posts$/));
             EditPostPage.navigate();
             cy.get(EditPostPage.elements.input('title')).should(el =>
                 expect(el).to.have.value('Lorem Ipsum')
@@ -34,7 +37,7 @@ describe('Edit Page', () => {
         });
 
         it('should redirect to list page after edit success', () => {
-            EditPostPage.setInputValue('title', 'Lorem Ipsum +');
+            EditPostPage.setInputValue('input', 'title', 'Lorem Ipsum +');
             EditPostPage.submit();
             cy.url().then(url => expect(url).to.contain('/#/posts'));
         });
@@ -68,21 +71,23 @@ describe('Edit Page', () => {
         );
 
         // This validate that the current redux form values are not kept after we navigate
-        EditCommentPage.setInputValue('body', 'Test');
+        EditCommentPage.setInputValue('input', 'body', 'Test');
 
         CreatePostPage.navigate();
 
-        cy.get(CreatePostPage.elements.bodyInput).should(el =>
-            // When the Quill editor is empty, it add the "ql-blank" CSS class
-            expect(el).to.have.class('ql-blank')
+        cy.get(CreatePostPage.elements.input('body', 'rich-text-input')).should(
+            el =>
+                // When the Quill editor is empty, it add the "ql-blank" CSS class
+                expect(el).to.have.class('ql-blank')
         );
     });
 
     it('should allow to select an item from the AutocompleteInput without showing the choices again after', () => {
         EditCommentPage.navigate();
-        cy.get(EditCommentPage.elements.input('post_id')).clear().type('Sed quo');
+        cy.get(EditCommentPage.elements.input('post_id'))
+            .clear()
+            .type('Sed quo');
         cy.get('[role="tooltip"]').within(() => {
-            cy.contains('Accusantium qui nihil voluptatum quia voluptas maxime ab similique');
             cy.contains('Sed quo et et fugiat modi').click();
         });
         cy.get('[role="tooltip"]').should(el => expect(el).to.not.exist);
@@ -92,13 +97,12 @@ describe('Edit Page', () => {
         cy.get('[role="tooltip"]').should(el => expect(el).to.not.exist);
 
         // Ensure they still appear when needed though
-        cy.get(EditCommentPage.elements.input('post_id')).clear().type('architecto aut');
+        cy.get(EditCommentPage.elements.input('post_id'))
+            .clear()
+            .type('architecto aut');
         cy.get('[role="tooltip"]').within(() => {
-            cy.contains('Sed quo et et fugiat modi');
             cy.contains('Sint dignissimos in architecto aut');
-            cy.contains('A voluptas eius eveniet ut commodi dolor');
         });
-
     });
 
     it('should reset the form correctly when switching from edit to create', () => {
@@ -108,7 +112,7 @@ describe('Edit Page', () => {
         );
 
         // This validate that the current redux form values are not kept after we navigate
-        EditPostPage.setInputValue('title', 'Another title');
+        EditPostPage.setInputValue('input', 'title', 'Another title');
 
         CreatePostPage.navigate();
         cy.get(CreatePostPage.elements.input('title')).should(el =>

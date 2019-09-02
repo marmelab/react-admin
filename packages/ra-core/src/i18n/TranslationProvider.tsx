@@ -1,4 +1,4 @@
-import React, { Children, ReactElement, createContext, Component } from 'react';
+import React, { Children, ReactElement, Component } from 'react';
 import Polyglot from 'node-polyglot';
 import { connect, MapStateToProps } from 'react-redux';
 import defaultMessages from 'ra-language-english';
@@ -56,7 +56,10 @@ class TranslationProviderView extends Component<ViewProps, State> {
     }
 
     componentDidUpdate(prevProps) {
-        if (prevProps.locale !== this.props.locale || prevProps.messages !== this.props.messages) {
+        if (
+            prevProps.locale !== this.props.locale ||
+            prevProps.messages !== this.props.messages
+        ) {
             const { locale, messages } = this.props;
 
             const polyglot = new Polyglot({

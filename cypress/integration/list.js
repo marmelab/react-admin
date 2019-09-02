@@ -16,23 +16,6 @@ describe('List Page', () => {
         });
     });
 
-    describe('Auto-hide AppBar', () => {
-        it('should hide/show the appBar when scroll action appears', () => {
-            // wait for the skeleton to disappear
-            cy.contains('1-10 of 13');
-
-            cy.viewport(1280, 500);
-
-            cy.scrollTo(0, 200);
-            cy.get(ListPagePosts.elements.headroomUnpinned).should(
-                'not.be.visible'
-            );
-
-            cy.scrollTo(0, -100);
-            cy.get(ListPagePosts.elements.headroomUnfixed).should('be.visible');
-        });
-    });
-
     describe('Pagination', () => {
         it('should display paginated list of available posts', () => {
             cy.contains('1-10 of 13');
@@ -126,7 +109,9 @@ describe('List Page', () => {
         it('should allow to select all items on the current page', () => {
             cy.contains('1-10 of 13'); // wait for data
             ListPagePosts.toggleSelectAll();
-            cy.get(ListPagePosts.elements.bulkActionsToolbar).should('exist');
+            cy.get(ListPagePosts.elements.bulkActionsToolbar).should(
+                'be.visible'
+            );
             cy.contains('10 items selected');
             cy.get(ListPagePosts.elements.selectedItem).should(els =>
                 expect(els).to.have.length(10)
@@ -136,10 +121,12 @@ describe('List Page', () => {
         it('should allow to unselect all items on the current page', () => {
             cy.contains('1-10 of 13'); // wait for data
             ListPagePosts.toggleSelectAll();
-            cy.get(ListPagePosts.elements.bulkActionsToolbar).should('exist');
+            cy.get(ListPagePosts.elements.bulkActionsToolbar).should(
+                'be.visible'
+            );
             ListPagePosts.toggleSelectAll();
             cy.get(ListPagePosts.elements.bulkActionsToolbar).should(
-                'not.exist'
+                'not.be.visible'
             );
             cy.get(ListPagePosts.elements.selectedItem).should(els =>
                 expect(els).to.have.length(0)
@@ -160,7 +147,7 @@ describe('List Page', () => {
             ListPagePosts.toggleSelectAll();
             ListPagePosts.applyUpdateBulkAction();
             cy.get(ListPagePosts.elements.bulkActionsToolbar).should(
-                'not.exist'
+                'not.be.visible'
             );
             cy.get(ListPagePosts.elements.selectedItem).should(els =>
                 expect(els).to.have.length(0)
@@ -207,30 +194,36 @@ describe('List Page', () => {
     describe('expand panel', () => {
         it('should show an expand button opening the expand element', () => {
             cy.contains('1-10 of 13'); // wait for data
-            cy.get('[role="expand"]')
+            cy.get('[aria-label="Expand"]')
                 .eq(0)
-                .click();
-            cy.get('[role="expand-content"]').should(el =>
+                .click()
+                .should(el => expect(el).to.have.attr('aria-expanded', 'true'))
+                .should(el => expect(el).to.have.attr('aria-label', 'Close'));
+
+            cy.get('#13-expand').should(el =>
                 expect(el).to.contain(
                     'Curabitur eu odio ullamcorper, pretium sem at, blandit libero. Nulla sodales facilisis libero, eu gravida tellus ultrices nec. In ut gravida mi. Vivamus finibus tortor tempus egestas lacinia. Cras eu arcu nisl. Donec pretium dolor ipsum, eget feugiat urna iaculis ut.'
                 )
-            );
-            cy.get('.datagrid-body').should(el =>
-                expect(el).to.not.contain('[role="expand-content"]')
             );
         });
 
         it('should accept multiple expands', () => {
             cy.contains('1-10 of 13'); // wait for data
-            cy.get('[role="expand"]')
+            cy.get('[aria-label="Expand"]')
                 .eq(0)
-                .click();
-            cy.get('[role="expand"]')
-                .eq(1)
-                .click();
-            cy.get('[role="expand-content"]').should(el =>
-                expect(el).to.have.length(2)
-            );
+                .click()
+                .should(el => expect(el).to.have.attr('aria-expanded', 'true'))
+                .should(el => expect(el).to.have.attr('aria-label', 'Close'));
+
+            cy.get('#13-expand').should(el => expect(el).to.exist);
+
+            cy.get('[aria-label="Expand"]')
+                .eq(0) // We still target the first button labeled Expand because the previous one should now have a Close label
+                .click()
+                .should(el => expect(el).to.have.attr('aria-expanded', 'true'))
+                .should(el => expect(el).to.have.attr('aria-label', 'Close'));
+
+            cy.get('#12-expand').should(el => expect(el).to.exist);
         });
     });
 

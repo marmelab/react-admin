@@ -60,6 +60,7 @@ class App extends Component {
 
 export default App;
 ```
+**Note**: the parser will generate additional `.id` properties for relation based types. These properties should be used as sources for reference based fields and inputs like `ReferenceField`: `<ReferenceField label="Author Name" source="author.id" reference="User">`.
 
 ## Expected GraphQL Schema
 

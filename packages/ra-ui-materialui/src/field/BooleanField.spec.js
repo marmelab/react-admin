@@ -1,22 +1,19 @@
 import React from 'react';
 import expect from 'expect';
 import { BooleanField } from './BooleanField';
-import { render, cleanup } from 'react-testing-library';
+import { render, cleanup } from '@testing-library/react';
 
 const defaultProps = {
     record: { published: true },
     source: 'published',
     resource: 'posts',
-    translate: x => x,
-    classes: {}
+    classes: {},
 };
 
 describe('<BooleanField />', () => {
     afterEach(cleanup);
     it('should display tick and truthy text if value is true', () => {
-        const { queryByText } = render(
-            <BooleanField {...defaultProps} />
-        );
+        const { queryByText } = render(<BooleanField {...defaultProps} />);
         expect(queryByText('ra.boolean.true')).not.toBeNull();
         expect(queryByText('ra.boolean.true').nextSibling.dataset.testid).toBe(
             'true'
@@ -26,7 +23,7 @@ describe('<BooleanField />', () => {
 
     it('should use valueLabelTrue for custom truthy text', () => {
         const { queryByText } = render(
-           <BooleanField
+            <BooleanField
                 {...defaultProps}
                 valueLabelTrue="Has been published"
             />

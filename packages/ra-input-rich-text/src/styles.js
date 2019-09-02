@@ -1,13 +1,16 @@
 import QuillSnowStylesheet from './QuillSnowStylesheet';
 
-export default {
+export default theme => ({
+    label: {
+        position: 'relative',
+    },
     '@global': Object.assign({}, QuillSnowStylesheet, {
         '.ra-rich-text-input': {
             '& .ql-editor': {
                 fontSize: '1rem',
                 fontFamily: 'Roboto, sans-serif',
-                padding: 0,
-
+                padding: '6px 12px',
+                backgroundColor: 'rgba(0, 0, 0, 0.04)',
                 '&:hover::before': {
                     backgroundColor: 'rgba(0, 0, 0, 1)',
                     height: 2,
@@ -35,7 +38,7 @@ export default {
                     transform: 'scaleX(0)',
                     transition:
                         'transform 200ms cubic-bezier(0, 0, 0.2, 1) 0ms',
-                    backgroundColor: '#304ffe',
+                    backgroundColor: theme.palette.primary.main,
                 },
 
                 '& p:not(:last-child)': {
@@ -75,7 +78,12 @@ export default {
                     transform: 'scaleX(1)',
                 },
             },
-
+            '& .standard .ql-editor': {
+                backgroundColor: 'white',
+            },
+            '& .outlined .ql-editor': {
+                backgroundColor: 'white',
+            },
             '& .ql-toolbar.ql-snow': {
                 margin: '0.5rem 0',
                 border: 0,
@@ -131,4 +139,4 @@ export default {
             },
         },
     }),
-};
+});

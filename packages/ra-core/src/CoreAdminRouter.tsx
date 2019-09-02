@@ -5,20 +5,18 @@ import React, {
     createElement,
     ComponentType,
     CSSProperties,
+    ReactElement,
 } from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
-import compose from 'recompose/compose';
-import getContext from 'recompose/getContext';
 
 import { AUTH_GET_PERMISSIONS } from './auth/types';
 import { isLoggedIn } from './reducer';
 import { userLogout as userLogoutAction } from './actions/authActions';
 import RoutesWithLayout from './RoutesWithLayout';
+import AuthContext from './auth/AuthContext';
 import {
     Dispatch,
-    AuthProvider,
     AdminChildren,
     CustomRoutes,
     CatchAllComponent,
@@ -36,7 +34,7 @@ const welcomeStyles: CSSProperties = {
 };
 
 export interface AdminRouterProps extends LayoutProps {
-    appLayout: LayoutComponent;
+    layout: LayoutComponent;
     catchAll: CatchAllComponent;
     children?: AdminChildren;
     customRoutes?: CustomRoutes;
@@ -44,7 +42,6 @@ export interface AdminRouterProps extends LayoutProps {
 }
 
 interface EnhancedProps {
-    authProvider?: AuthProvider;
     isLoggedIn?: boolean;
     userLogout: Dispatch<typeof userLogoutAction>;
 }
@@ -60,7 +57,7 @@ export class CoreAdminRouter extends Component<
     static defaultProps: Partial<AdminRouterProps> = {
         customRoutes: [],
     };
-
+    static contextType = AuthContext;
     state: State = { children: [] };
 
     componentWillMount() {
@@ -76,9 +73,11 @@ export class CoreAdminRouter extends Component<
     initializeResourcesAsync = async (
         props: AdminRouterProps & EnhancedProps
     ) => {
-        const { authProvider } = props;
+        const authProvider = this.context;
         try {
-            const permissions = await authProvider(AUTH_GET_PERMISSIONS);
+            const permissions = authProvider
+                ? await authProvider(AUTH_GET_PERMISSIONS)
+                : undefined;
             const resolveChildren = props.children as RenderResourcesFunction;
 
             const childrenFuncResult = resolveChildren(permissions);
@@ -106,6 +105,7 @@ export class CoreAdminRouter extends Component<
                 });
             }
         } catch (error) {
+            console.error(error);
             this.props.userLogout();
         }
     };
@@ -138,7 +138,7 @@ export class CoreAdminRouter extends Component<
 
     render() {
         const {
-            appLayout,
+            layout,
             catchAll,
             children,
             customRoutes,
@@ -172,8 +172,9 @@ export class CoreAdminRouter extends Component<
             return <Route path="/" key="loading" component={loading} />;
         }
 
-        const childrenToRender =
-            typeof children === 'function' ? this.state.children : children;
+        const childrenToRender = (typeof children === 'function'
+            ? this.state.children
+            : children) as Array<ReactElement<any, any>>;
 
         return (
             <div>
@@ -186,7 +187,7 @@ export class CoreAdminRouter extends Component<
                             key: child.props.name,
                             // The context prop instructs the Resource component to not render anything
                             // but simply to register itself as a known resource
-                            context: 'registration',
+                            intent: 'registration',
                         })
                 )}
                 <Switch>
@@ -206,7 +207,7 @@ export class CoreAdminRouter extends Component<
                         path="/"
                         render={() =>
                             createElement(
-                                appLayout,
+                                layout,
                                 {
                                     dashboard,
                                     logout,
@@ -231,7 +232,7 @@ export class CoreAdminRouter extends Component<
                                         ) =>
                                             cloneElement(child, {
                                                 key: child.props.name,
-                                                context: 'route',
+                                                intent: 'route',
                                             })
                                     )}
                                 </RoutesWithLayout>
@@ -248,12 +249,7 @@ const mapStateToProps = state => ({
     isLoggedIn: isLoggedIn(state),
 });
 
-export default compose(
-    getContext({
-        authProvider: PropTypes.func,
-    }),
-    connect(
-        mapStateToProps,
-        { userLogout: userLogoutAction }
-    )
+export default connect(
+    mapStateToProps,
+    { userLogout: userLogoutAction }
 )(CoreAdminRouter) as ComponentType<AdminRouterProps>;

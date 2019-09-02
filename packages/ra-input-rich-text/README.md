@@ -18,7 +18,6 @@ import {
     DateInput,
     Edit,
     EditButton,
-    LongTextInput,
     TextInput,
 } from 'react-admin';
 import RichTextInput from 'ra-input-rich-text';
@@ -29,9 +28,9 @@ const PostTitle = ({ record }) => {
 
 export const PostEdit = (props) => (
     <Edit title={<PostTitle />} {...props}>
-        <DisabledInput label="Id" source="id" />
+        <TextInput disabled label="Id" source="id" />
         <TextInput source="title" validation={{ required: true }} />
-        <LongTextInput source="teaser" validation={{ required: true }} />
+        <TextInput multiline source="teaser" validation={{ required: true }} />
         <RichTextInput source="body" validation={{ required: true }} />
         <DateInput label="Publication date" source="published_at" />
     </Edit>

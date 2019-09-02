@@ -1,13 +1,18 @@
-import React, { createElement, Component, ComponentType, SFC } from 'react';
-import PropTypes from 'prop-types';
-import { Provider } from 'react-redux';
+import React, {
+    createElement,
+    FunctionComponent,
+    ComponentType,
+    useContext,
+} from 'react';
+import { Provider, ReactReduxContext } from 'react-redux';
 import { History } from 'history';
 import { createHashHistory } from 'history';
 import { Switch, Route } from 'react-router-dom';
-import { ConnectedRouter } from 'react-router-redux';
-import withContext from 'recompose/withContext';
+import { ConnectedRouter } from 'connected-react-router';
 
-import createAdminStore from './createAdminStore';
+import AuthContext from './auth/AuthContext';
+import DataProviderContext from './dataProvider/DataProviderContext';
+import createAdminStore, { InitialState } from './createAdminStore';
 import TranslationProvider from './i18n/TranslationProvider';
 import CoreAdminRouter from './CoreAdminRouter';
 import {
@@ -26,10 +31,13 @@ import {
 
 export type ChildrenFunction = () => ComponentType[];
 
-const DefaultLayout: SFC<LayoutProps> = ({ children }) => <>{children}</>;
+const DefaultLayout: FunctionComponent<LayoutProps> = ({ children }) => (
+    <>{children}</>
+);
 
 export interface AdminProps {
-    appLayout: LayoutComponent;
+    layout: LayoutComponent;
+    appLayout?: LayoutComponent;
     authProvider?: AuthProvider;
     children?: AdminChildren;
     catchAll: CatchAllComponent;
@@ -40,7 +48,7 @@ export interface AdminProps {
     dataProvider: DataProvider;
     history: History;
     i18nProvider?: I18nProvider;
-    initialState?: object;
+    initialState?: InitialState;
     loading: ComponentType;
     locale?: string;
     loginPage: LoginComponent | boolean;
@@ -50,62 +58,38 @@ export interface AdminProps {
     title?: TitleComponent;
 }
 
-interface AdminContext {
-    authProvider: AuthProvider;
-}
+const CoreAdmin: FunctionComponent<AdminProps> = ({
+    layout,
+    appLayout,
+    authProvider,
+    dataProvider,
+    children,
+    customRoutes = [],
+    dashboard,
+    menu, // deprecated, use a custom layout instead
+    catchAll,
+    theme,
+    title = 'React Admin',
+    loading,
+    loginPage,
+    logoutButton,
+    history: customHistory,
+    customReducers,
+    customSagas,
+    i18nProvider,
+    initialState,
+    locale,
+}) => {
+    const reduxIsAlreadyInitialized = !!useContext(ReactReduxContext);
 
-class CoreAdminBase extends Component<AdminProps> {
-    static contextTypes = {
-        store: PropTypes.object,
-    };
-
-    static defaultProps: Partial<AdminProps> = {
-        catchAll: () => null,
-        appLayout: DefaultLayout,
-        loading: () => null,
-        loginPage: false,
-    };
-
-    reduxIsAlreadyInitialized = false;
-    history = null;
-
-    constructor(props, context) {
-        super(props, context);
-        if (context.store) {
-            this.reduxIsAlreadyInitialized = true;
-            if (!props.history) {
-                throw new Error(`Missing history prop.
-When integrating react-admin inside an existing redux Provider, you must provide the same 'history' prop to the <Admin> as the one used to bootstrap your routerMiddleware.
-React-admin uses this history for its own ConnectedRouter.`);
-            }
-            this.history = props.history;
-        } else {
-            if (!props.dataProvider) {
-                throw new Error(`Missing dataProvider prop.
-React-admin requires a valid dataProvider function to work.`);
-            }
-            this.history = props.history || createHashHistory();
-        }
-    }
-
-    renderCore() {
-        const {
-            appLayout,
-            authProvider,
-            children,
-            customRoutes = [],
-            dashboard,
-            menu, // deprecated, use a custom layout instead
-            catchAll,
-            theme,
-            title = 'React Admin',
-            loading,
-            loginPage,
-            logoutButton,
-        } = this.props;
-
+    const renderCore = history => {
         const logout = authProvider ? createElement(logoutButton) : null;
 
+        if (appLayout) {
+            console.warn(
+                'You are using deprecated prop "appLayout", it was replaced by "layout", see https://github.com/marmelab/react-admin/issues/2918'
+            );
+        }
         if (loginPage === true && process.env.NODE_ENV !== 'production') {
             console.warn(
                 'You passed true to the loginPage prop. You must either pass false to disable it or a component class to customize it'
@@ -113,84 +97,98 @@ React-admin requires a valid dataProvider function to work.`);
         }
 
         return (
-            <TranslationProvider>
-                <ConnectedRouter history={this.history}>
-                    <Switch>
-                        {loginPage !== false && loginPage !== true ? (
+            <DataProviderContext.Provider value={dataProvider}>
+                <TranslationProvider>
+                    <ConnectedRouter history={history}>
+                        <Switch>
+                            {loginPage !== false && loginPage !== true ? (
+                                <Route
+                                    exact
+                                    path="/login"
+                                    render={props =>
+                                        createElement(loginPage, {
+                                            ...props,
+                                            title,
+                                            theme,
+                                        })
+                                    }
+                                />
+                            ) : null}
                             <Route
-                                exact
-                                path="/login"
-                                render={props =>
-                                    createElement(loginPage, {
-                                        ...props,
-                                        title,
-                                        theme,
-                                    })
-                                }
+                                path="/"
+                                render={props => (
+                                    <CoreAdminRouter
+                                        layout={appLayout || layout}
+                                        catchAll={catchAll}
+                                        customRoutes={customRoutes}
+                                        dashboard={dashboard}
+                                        loading={loading}
+                                        logout={logout}
+                                        menu={menu}
+                                        theme={theme}
+                                        title={title}
+                                        {...props}
+                                    >
+                                        {children}
+                                    </CoreAdminRouter>
+                                )}
                             />
-                        ) : null}
-                        <Route
-                            path="/"
-                            render={props => (
-                                <CoreAdminRouter
-                                    appLayout={appLayout}
-                                    catchAll={catchAll}
-                                    customRoutes={customRoutes}
-                                    dashboard={dashboard}
-                                    loading={loading}
-                                    logout={logout}
-                                    menu={menu}
-                                    theme={theme}
-                                    title={title}
-                                    {...props}
-                                >
-                                    {children}
-                                </CoreAdminRouter>
-                            )}
-                        />
-                    </Switch>
-                </ConnectedRouter>
-            </TranslationProvider>
+                        </Switch>
+                    </ConnectedRouter>
+                </TranslationProvider>
+            </DataProviderContext.Provider>
+        );
+    };
+
+    let finalHistory = customHistory;
+
+    if (reduxIsAlreadyInitialized) {
+        if (!customHistory) {
+            throw new Error(`Missing history prop.
+When integrating react-admin inside an existing redux Provider, you must provide the same 'history' prop to the <Admin> as the one used to bootstrap your routerMiddleware.
+React-admin uses this history for its own ConnectedRouter.`);
+        }
+
+        return (
+            <AuthContext.Provider value={authProvider}>
+                {renderCore(customHistory)}
+            </AuthContext.Provider>
+        );
+    } else {
+        if (!dataProvider) {
+            throw new Error(`Missing dataProvider prop.
+React-admin requires a valid dataProvider function to work.`);
+        }
+
+        finalHistory = customHistory || createHashHistory();
+
+        return (
+            <AuthContext.Provider value={authProvider}>
+                <Provider
+                    store={createAdminStore({
+                        authProvider,
+                        customReducers,
+                        customSagas,
+                        dataProvider,
+                        i18nProvider,
+                        initialState,
+                        locale,
+                        history: finalHistory,
+                    })}
+                >
+                    {renderCore(finalHistory)}
+                </Provider>
+            </AuthContext.Provider>
         );
     }
+};
 
-    render() {
-        const {
-            authProvider,
-            customReducers,
-            customSagas,
-            dataProvider,
-            i18nProvider,
-            initialState,
-            locale,
-        } = this.props;
-
-        return this.reduxIsAlreadyInitialized ? (
-            this.renderCore()
-        ) : (
-            <Provider
-                store={createAdminStore({
-                    authProvider,
-                    customReducers,
-                    customSagas,
-                    dataProvider,
-                    i18nProvider,
-                    initialState,
-                    locale,
-                    history: this.history,
-                })}
-            >
-                {this.renderCore()}
-            </Provider>
-        );
-    }
-}
-
-const CoreAdmin = withContext<AdminContext, AdminProps>(
-    {
-        authProvider: PropTypes.func,
-    },
-    ({ authProvider }) => ({ authProvider })
-)(CoreAdminBase) as ComponentType<AdminProps>;
+CoreAdmin.defaultProps = {
+    catchAll: () => null,
+    layout: DefaultLayout,
+    appLayout: undefined,
+    loading: () => null,
+    loginPage: false,
+};
 
 export default CoreAdmin;

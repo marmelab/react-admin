@@ -12,10 +12,6 @@ const styles = {
 };
 
 export class Filter extends Component {
-    constructor(props) {
-        super(props);
-    }
-
     renderButton() {
         const {
             classes = {},
@@ -26,6 +22,7 @@ export class Filter extends Component {
             hideFilter,
             displayedFilters,
             filterValues,
+            variant,
             ...rest
         } = this.props;
 

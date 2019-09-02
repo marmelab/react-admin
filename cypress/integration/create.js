@@ -76,6 +76,11 @@ describe('Create Page', () => {
                 name: 'teaser',
                 value: 'Test teaser',
             },
+            {
+                type: 'rich-text-input',
+                name: 'body',
+                value: 'Test body',
+            },
         ];
 
         CreatePage.setValues(values);
@@ -103,6 +108,11 @@ describe('Create Page', () => {
                 name: 'teaser',
                 value: 'Test teaser',
             },
+            {
+                type: 'rich-text-input',
+                name: 'body',
+                value: 'Test body',
+            },
         ];
 
         CreatePage.setValues(values);
@@ -123,6 +133,11 @@ describe('Create Page', () => {
                 type: 'textarea',
                 name: 'teaser',
                 value: 'Test teaser',
+            },
+            {
+                type: 'rich-text-input',
+                name: 'body',
+                value: 'Test body',
             },
         ];
         CreatePage.setValues(values);
@@ -151,7 +166,12 @@ describe('Create Page', () => {
             {
                 type: 'checkbox',
                 name: 'commentable',
-                value: false,
+                value: 'false',
+            },
+            {
+                type: 'rich-text-input',
+                name: 'body',
+                value: 'Test body',
             },
         ];
 
@@ -210,6 +230,55 @@ describe('Create Page', () => {
         CreatePage.gotoTab(1);
         cy.get(CreatePage.elements.input('name')).should(el =>
             expect(el).to.have.value('The real Slim Shady!')
+        );
+    });
+
+    it('should not show rich text input error message when field is untouched', () => {
+        cy.get(CreatePage.elements.richTextInputError).should('not.exist');
+    });
+
+    it('should show rich text input error message when form is submitted', () => {
+        CreatePage.submit();
+        cy.get(CreatePage.elements.richTextInputError)
+            .should('exist')
+            .contains('Required');
+    });
+
+    it('should not show rich text input error message when form is submitted and input is filled with text', () => {
+        CreatePage.submit();
+        cy.get(CreatePage.elements.richTextInputError)
+            .should('exist')
+            .contains('Required');
+        cy.get(CreatePage.elements.input('body', 'rich-text-input')).type(
+            'text'
+        );
+        cy.get(CreatePage.elements.richTextInputError).should('not.exist');
+    });
+
+    it('should show body in edit view after creating new post', () => {
+        const values = [
+            {
+                type: 'input',
+                name: 'title',
+                value: 'Test title',
+            },
+            {
+                type: 'textarea',
+                name: 'teaser',
+                value: 'Test teaser',
+            },
+            {
+                type: 'rich-text-input',
+                name: 'body',
+                value: 'Test body',
+            },
+        ];
+
+        CreatePage.setValues(values);
+        CreatePage.submit();
+        EditPage.gotoTab(2);
+        cy.get(EditPage.elements.input('body', 'rich-text-input')).contains(
+            'Test body'
         );
     });
 });

@@ -3,8 +3,9 @@ import { connect } from 'react-redux';
 import debounce from 'lodash/debounce';
 import compose from 'recompose/compose';
 import { createSelector } from 'reselect';
+import get from 'lodash/get';
 import isEqual from 'lodash/isEqual';
-import { WrappedFieldInputProps } from 'redux-form';
+import difference from 'lodash/difference';
 
 import {
     crudGetMany as crudGetManyAction,
@@ -40,7 +41,7 @@ interface Props {
     children: (params: ChildrenFuncParams) => ReactNode;
     filter?: object;
     filterToQuery: (filter: {}) => any;
-    input?: WrappedFieldInputProps;
+    input?: any;
     meta?: object;
     perPage?: number;
     record?: Record;
@@ -164,7 +165,7 @@ export class UnconnectedReferenceArrayInputController extends Component<
     }
 
     componentDidMount() {
-        this.fetchReferencesAndOptions(this.props);
+        this.fetchReferencesAndOptions(this.props, {} as Props & EnhancedProps);
     }
 
     componentWillReceiveProps(nextProps: Props & EnhancedProps) {
@@ -223,8 +224,8 @@ export class UnconnectedReferenceArrayInputController extends Component<
         }
     };
 
-    fetchReferences = (props = this.props) => {
-        const { crudGetMany, input, reference } = props;
+    fetchReferences = (nextProps, currentProps = this.props) => {
+        const { crudGetMany, input, reference } = nextProps;
         const ids = input.value;
         if (ids) {
             if (!Array.isArray(ids)) {
@@ -232,7 +233,11 @@ export class UnconnectedReferenceArrayInputController extends Component<
                     'The value of ReferenceArrayInput should be an array'
                 );
             }
-            crudGetMany(reference, ids);
+            const idsToFetch = difference(
+                ids,
+                get(currentProps, 'input.value', [])
+            );
+            if (idsToFetch.length) crudGetMany(reference, idsToFetch);
         }
     };
 
@@ -251,12 +256,15 @@ export class UnconnectedReferenceArrayInputController extends Component<
             referenceSource(resource, source),
             pagination,
             sort,
-            { ...filter, ...defaultFilter }
+            {
+                ...filter,
+                ...defaultFilter,
+            }
         );
     };
 
-    fetchReferencesAndOptions(nextProps) {
-        this.fetchReferences(nextProps);
+    fetchReferencesAndOptions(nextProps, currentProps = this.props) {
+        this.fetchReferences(nextProps, currentProps);
         this.fetchOptions(nextProps);
     }
 
@@ -295,7 +303,23 @@ const makeMapStateToProps = () =>
         [
             getReferenceResource,
             getPossibleReferenceValues,
-            (_, { input: { value: referenceIds } }) => referenceIds || [],
+            (_, { resource, input }) => {
+                const { value: referenceIds } = input;
+
+                if (!referenceIds) {
+                    return [];
+                }
+
+                if (Array.isArray(referenceIds)) {
+                    return referenceIds;
+                }
+
+                throw new Error(
+                    `<ReferenceArrayInput> expects value to be an array, but the value passed as '${resource}.${
+                        input.name
+                    }' is type '${typeof referenceIds}': ${referenceIds}`
+                );
+            },
         ],
         (referenceState, possibleValues, inputIds) => ({
             matchingReferences: getPossibleReferences(

@@ -1,38 +1,48 @@
 import React from 'react';
 import expect from 'expect';
-import { shallow, render } from 'enzyme';
-import { html } from 'cheerio';
+import { cleanup } from '@testing-library/react';
 
-import { Authenticated } from './Authenticated';
+import Authenticated from './Authenticated';
+import AuthContext from './AuthContext';
+import renderWithRedux from '../util/renderWithRedux';
 
 describe('<Authenticated>', () => {
+    afterEach(cleanup);
     const Foo = () => <div>Foo</div>;
-    it('should call userCheck on mount', () => {
-        const userCheck = jest.fn();
-        shallow(
-            <Authenticated location={{}} userCheck={userCheck}>
-                <Foo />
-            </Authenticated>
+    it('should call authProvider on mount', () => {
+        const authProvider = jest.fn(() => Promise.resolve());
+        renderWithRedux(
+            <AuthContext.Provider value={authProvider}>
+                <Authenticated>
+                    <Foo />
+                </Authenticated>
+            </AuthContext.Provider>
         );
-        expect(userCheck.mock.calls.length).toEqual(1);
+        expect(authProvider).toBeCalledWith('AUTH_CHECK', { location: '/' });
     });
-    it('should call userCheck on update', () => {
-        const userCheck = jest.fn();
-        const wrapper = shallow(
-            <Authenticated location={{}} userCheck={userCheck}>
-                <Foo />
-            </Authenticated>
+    it('should call authProvider on update', () => {
+        const authProvider = jest.fn(() => Promise.resolve());
+        const FooWrapper = props => (
+            <AuthContext.Provider value={authProvider}>
+                <Authenticated {...props}>
+                    <Foo />
+                </Authenticated>
+            </AuthContext.Provider>
         );
-        wrapper.setProps({ location: { pathname: 'foo' }, userCheck });
-        expect(userCheck.mock.calls.length).toEqual(2);
+        const { rerender } = renderWithRedux(<FooWrapper />);
+        rerender(<FooWrapper authParams={{ foo: 'bar' }} />);
+        expect(authProvider).toBeCalledTimes(2);
+        expect(authProvider.mock.calls[1]).toEqual([
+            'AUTH_CHECK',
+            { foo: 'bar', location: '/' },
+        ]);
     });
     it('should render its child by default', () => {
-        const userCheck = jest.fn();
-        const wrapper = render(
-            <Authenticated location={{}} userCheck={userCheck}>
+        const { queryByText } = renderWithRedux(
+            <Authenticated>
                 <Foo />
             </Authenticated>
         );
-        expect(html(wrapper)).toEqual('<div>Foo</div>');
+        expect(queryByText('Foo')).toBeDefined();
     });
 });

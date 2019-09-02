@@ -1,40 +1,26 @@
-import React, { createElement, Component, ComponentType } from 'react';
-import { connect } from 'react-redux';
+import React, { FunctionComponent, useEffect, useMemo } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
+
 import WithPermissions from './auth/WithPermissions';
+import { registerResource, unregisterResource } from './actions';
+import { ResourceProps, ResourceMatch, ReduxState } from './types';
 
-import {
-    registerResource as registerResourceAction,
-    unregisterResource as unregisterResourceAction,
-} from './actions';
-import { Dispatch, ResourceProps, ResourceMatch } from './types';
+const defaultOptions = {};
 
-interface ConnectedProps {
-    registerResource: Dispatch<typeof registerResourceAction>;
-    unregisterResource: Dispatch<typeof unregisterResourceAction>;
-}
-
-export class Resource extends Component<ResourceProps & ConnectedProps> {
-    static defaultProps = {
-        context: 'route',
-        options: {},
-    };
-
-    componentWillMount() {
-        const {
-            context,
-            name,
-            list,
-            create,
-            edit,
-            show,
-            options,
-            icon,
-            registerResource,
-        } = this.props;
-
-        if (context === 'registration') {
-            const resource = {
+const ResourceRegister: FunctionComponent<ResourceProps> = ({
+    name,
+    list,
+    create,
+    edit,
+    show,
+    icon,
+    options = defaultOptions,
+}) => {
+    const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(
+            registerResource({
                 name,
                 options,
                 hasList: !!list,
@@ -42,36 +28,35 @@ export class Resource extends Component<ResourceProps & ConnectedProps> {
                 hasShow: !!show,
                 hasCreate: !!create,
                 icon,
-            };
+            })
+        );
+        return () => dispatch(unregisterResource(name));
+    }, [dispatch, name, create, edit, icon, list, show, options]);
+    return null;
+};
 
-            registerResource(resource);
-        }
-    }
+const ResourceRoutes: FunctionComponent<ResourceProps> = ({
+    name,
+    match,
+    list,
+    create,
+    edit,
+    show,
+    options = defaultOptions,
+}) => {
+    const isRegistered = useSelector((state: ReduxState) =>
+        state.admin.resources[name] ? true : false
+    );
 
-    componentWillUnmount() {
-        const { context, name, unregisterResource } = this.props;
-        if (context === 'registration') {
-            unregisterResource(name);
-        }
-    }
+    const basePath = match ? match.url : '';
 
-    render() {
-        const {
-            match,
-            context,
-            name,
-            list,
-            create,
-            edit,
-            show,
-            options,
-        } = this.props;
-
-        if (context === 'registration') {
+    // match tends to change even on the same route ; using memo to avoid an extra render
+    return useMemo(() => {
+        // if the registration hasn't finished, no need to render
+        if (!isRegistered) {
             return null;
         }
-
-        const resource = {
+        const props = {
             resource: name,
             options,
             hasList: !!list,
@@ -79,102 +64,81 @@ export class Resource extends Component<ResourceProps & ConnectedProps> {
             hasShow: !!show,
             hasCreate: !!create,
         };
-
-        const basePath = match.url;
-
         return (
             <Switch>
                 {create && (
                     <Route
-                        path={`${match.url}/create`}
+                        path={`${basePath}/create`}
                         render={routeProps => (
                             <WithPermissions
-                                render={props =>
-                                    createElement(create, {
-                                        basePath,
-                                        ...props,
-                                    })
-                                }
+                                component={create}
+                                basePath={basePath}
                                 {...routeProps}
-                                {...resource}
+                                {...props}
                             />
                         )}
                     />
                 )}
                 {show && (
                     <Route
-                        path={`${match.url}/:id/show`}
+                        path={`${basePath}/:id/show`}
                         render={routeProps => (
                             <WithPermissions
-                                render={props =>
-                                    createElement(show, {
-                                        basePath,
-                                        id: decodeURIComponent(
-                                            (props.match as ResourceMatch)
-                                                .params.id
-                                        ),
-                                        ...props,
-                                    })
-                                }
+                                component={show}
+                                basePath={basePath}
+                                id={decodeURIComponent(
+                                    (routeProps.match as ResourceMatch).params
+                                        .id
+                                )}
                                 {...routeProps}
-                                {...resource}
+                                {...props}
                             />
                         )}
                     />
                 )}
                 {edit && (
                     <Route
-                        path={`${match.url}/:id`}
+                        path={`${basePath}/:id`}
                         render={routeProps => (
                             <WithPermissions
-                                render={props =>
-                                    createElement(edit, {
-                                        basePath,
-                                        id: decodeURIComponent(
-                                            (props.match as ResourceMatch)
-                                                .params.id
-                                        ),
-                                        ...props,
-                                    })
-                                }
+                                component={edit}
+                                basePath={basePath}
+                                id={decodeURIComponent(
+                                    (routeProps.match as ResourceMatch).params
+                                        .id
+                                )}
                                 {...routeProps}
-                                {...resource}
+                                {...props}
                             />
                         )}
                     />
                 )}
                 {list && (
                     <Route
-                        path={`${match.url}`}
+                        path={`${basePath}`}
                         render={routeProps => (
                             <WithPermissions
-                                render={props =>
-                                    createElement(list, {
-                                        basePath,
-                                        ...props,
-                                    })
-                                }
+                                component={list}
+                                basePath={basePath}
                                 {...routeProps}
-                                {...resource}
+                                {...props}
                             />
                         )}
                     />
                 )}
             </Switch>
         );
-    }
-}
+    }, [basePath, name, create, edit, list, show, options, isRegistered]); // eslint-disable-line react-hooks/exhaustive-deps
+};
 
-const ConnectedResource = connect(
-    null,
-    {
-        registerResource: registerResourceAction,
-        unregisterResource: unregisterResourceAction,
-    }
-)(
-    // Necessary casting because of https://github.com/DefinitelyTyped/DefinitelyTyped/issues/19989#issuecomment-432752918
-    Resource as ComponentType<ResourceProps & ConnectedProps>
-);
+const Resource: FunctionComponent<ResourceProps> = ({
+    intent = 'route',
+    ...props
+}) =>
+    intent === 'registration' ? (
+        <ResourceRegister {...props} />
+    ) : (
+        <ResourceRoutes {...props} />
+    );
 
-// Necessary casting because of https://github.com/DefinitelyTyped/DefinitelyTyped/issues/19989#issuecomment-432752918
-export default ConnectedResource as ComponentType<ResourceProps>;
+export default Resource;

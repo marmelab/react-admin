@@ -1,13 +1,33 @@
 import React from 'react';
-import AvatarField from './AvatarField';
+import { makeStyles } from '@material-ui/core/styles';
 import pure from 'recompose/pure';
 
-const FullNameField = ({ record = {}, size }) => (
-    <div style={{ display: 'flex', flexWrap: 'nowrap', alignItems: 'center' }}>
-        <AvatarField record={record} size={size} />
-        &nbsp;{record.first_name} {record.last_name}
-    </div>
-);
+import AvatarField from './AvatarField';
+
+const useStyles = makeStyles(theme => ({
+    root: {
+        display: 'flex',
+        flexWrap: 'nowrap',
+        alignItems: 'center',
+    },
+    avatar: {
+        marginRight: theme.spacing(1),
+    },
+}));
+
+const FullNameField = ({ record = {}, size }) => {
+    const classes = useStyles();
+    return (
+        <div className={classes.root}>
+            <AvatarField
+                className={classes.avatar}
+                record={record}
+                size={size}
+            />
+            {record.first_name} {record.last_name}
+        </div>
+    );
+};
 
 const PureFullNameField = pure(FullNameField);
 

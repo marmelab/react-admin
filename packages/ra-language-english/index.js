@@ -22,10 +22,13 @@ module.exports = {
             show: 'Show',
             sort: 'Sort',
             undo: 'Undo',
+            expand: 'Expand',
+            close: 'Close',
         },
         boolean: {
             true: 'Yes',
             false: 'No',
+            null: '',
         },
         page: {
             create: 'Create %{name}',
@@ -89,6 +92,7 @@ module.exports = {
             prev: 'Prev',
         },
         auth: {
+            auth_check_error: 'Please login to continue',
             user_menu: 'Profile',
             username: 'Username',
             password: 'Password',

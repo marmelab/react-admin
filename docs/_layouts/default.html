@@ -12,10 +12,11 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <link rel="stylesheet" href="css/normalize.css">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style-v2.css">
     <link rel="stylesheet" href="css/syntax.css">
     <link rel="stylesheet" href="css/prism.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/octicons/4.4.0/font/octicons.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" /> 
 </head>
 
 <body>
@@ -23,7 +24,7 @@
         <div id="book-summary" class="book-summary">
             <nav role="navigation">
                 <div class="search">
-                        <form action="#" onsubmit="search();return false;">
+                        <form action="#" onsubmit="return false;">
                             <div style="display:flex;align-items:center;">
                                 <i class="octicon octicon-search"></i>
                                 <input type="text" name="q" id="query" size="31" maxlength="255" value="" placeholder="Search...">
@@ -152,8 +153,8 @@
                         </a>
                         <ul class="articles" {% if page.path !='Admin.md' %}style="display:none" {% endif %}>
                             <li class="chapter">
-                                <a href="#applayout">
-                                    <code>appLayout</code>
+                                <a href="#layout">
+                                    <code>layout</code>
                                 </a>
                             </li>
                             <li class="chapter">
@@ -545,11 +546,6 @@
                                 </a>
                             </li>
                             <li class="chapter">
-                                <a href="#disabledinput">
-                                    <code>&lt;DisabledInput&gt;</code>
-                                </a>
-                            </li>
-                            <li class="chapter">
                                 <a href="#fileinput">
                                     <code>&lt;FileInput&gt;</code>
                                 </a>
@@ -557,11 +553,6 @@
                             <li class="chapter">
                                 <a href="#imageinput">
                                     <code>&lt;ImageInput&gt;</code>
-                                </a>
-                            </li>
-                            <li class="chapter">
-                                <a href="#longtextinput">
-                                    <code>&lt;LongTextInput&gt;</code>
                                 </a>
                             </li>
                             <li class="chapter">
@@ -627,17 +618,19 @@
                         </a>
                         <ul class="articles" {% if page.path !='Authentication.md' %}style="display:none" {% endif %}>
                             <li class="chapter">
-                                <a href="#configuring-the-auth-provider">Configuring the Auth Provider</a>
+                                <a href="#the-authprovider">The <code>authProvider</code></a>
+                            </li>
+                            <li class="chapter">
+                                <a href="#login-configuration">Login Configuration</a>
                             </li>
                             <li class="chapter">
                                 <a href="#sending-credentials-to-the-api">Sending Credentials to the API</a>
                             </li>
                             <li class="chapter">
-                                <a href="#adding-a-logout-button">Adding a Logout Button</a>
+                                <a href="#logout-configuration">Logout Configuration</a>
                             </li>
                             <li class="chapter">
-                                <a href="#catching-authentication-errors-on-the-api">Catching Authentication Errors On
-                                    The API</a>
+                                <a href="#catching-authentication-errors-on-the-api">Catching Authentication Errors</a>
                             </li>
                             <li class="chapter">
                                 <a href="#checking-credentials-during-navigation">Checking Credentials During
@@ -648,7 +641,7 @@
                                     Components</a>
                             </li>
                             <li class="chapter">
-                                <a href="#restricting-access-to-a-custom-page">Restricting Access To A Custom Page</a>
+                                <a href="#useauth-hook"><code>useAuth()</code> Hook</a>
                             </li>
                         </ul>
                     </li>
@@ -661,16 +654,21 @@
                                 <a href="#configuring-the-auth-provider">Configuring the Auth Provider</a>
                             </li>
                             <li class="chapter">
-                                <a href="#restricting-access-to-resources-or-views">Restricting Access To Resources or
+                                <a href="#restricting-access-to-resources-or-views">Restricted Resources or
                                     Views</a>
                             </li>
                             <li class="chapter">
-                                <a href="#restricting-access-to-fields-and-inputs">Restricting Access To Fields And
+                                <a href="#restricting-access-to-fields-and-inputs">Restricted Fields And
                                     Inputs</a>
                             </li>
                             <li class="chapter">
-                                <a href="#restricting-access-to-content-in-custom-pages-or-menus">Restricting Access To
-                                    Content In Custom Pages or Menus</a>
+                                <a href="#restricting-access-to-the-dashboard">Restricted Dashboard</a>
+                            </li>
+                            <li class="chapter">
+                                <a href="#usepermissions-hook"><code>usePermissions()</code> Hook</a>
+                            </li>
+                            <li class="chapter">
+                                <a href="#restricting-access-to-a-menu">Restricted Menu</a>
                             </li>
                         </ul>
                     </li>
@@ -686,7 +684,7 @@
                                 <a href="#conditional-formatting">Conditional Formatting</a>
                             </li>
                             <li class="chapter">
-                                <a href="#responsive-utility">Responsive Utility</a>
+                                <a href="#usemediaquery-hook"><code>useMediaQuery()</code> Hook</a>
                             </li>
                             <li class="chapter">
                                 <a href="#using-a-predefined-theme">Using a Predefined Theme</a>
@@ -713,13 +711,13 @@
                         </a>
                         <ul class="articles" {% if page.path !='Actions.md' %}style="display:none" {% endif %}>
                             <li class="chapter">
-                                <a href="#the-basic-way-using-fetch">The Basic Way: Using <code>fetch</code></a>
+                                <a href="#usequery-hook"><code>useQuery</code></a>
                             </li>
                             <li class="chapter">
-                                <a href="#using-the-data-provider-instead-of-fetch">Using the <code>dataProvider</code></a>
+                                <a href="#usequerywithstore-hook"><code>useQueryWithStore</code></a>
                             </li>
                             <li class="chapter">
-                                <a href="#using-the-withdataprovider-decorator">Using <code>withDataProvider</code></a>
+                                <a href="#usemutation-hook"><code>useMutation</code></a>
                             </li>
                             <li class="chapter">
                                 <a href="#handling-side-effects">Handling Side Effects</a>
@@ -728,13 +726,13 @@
                                 <a href="#optimistic-rendering-and-undo">Optimistic Rendering and Undo</a>
                             </li>
                             <li class="chapter">
-                                <a href="#query-and-mutation-components"><code>&lt;Query&gt;</code> and <code>&lt;Mutation&gt;</code></a>
+                                    <a href="#usedataprovider-hook"><code>useDataProvider</code></a>
+                                </li>
+                            <li class="chapter">
+                                <a href="#legacy-components-query-mutation-and-withdataprovider"><code>&lt;Query&gt;</code> and <code>&lt;Mutation&gt;</code></a>
                             </li>    
                             <li class="chapter">
-                                <a href="#using-a-custom-action-creator">Using a Custom Action Creator</a>
-                            </li>
-                            <li class="chapter">
-                                <a href="#adding-side-effects-to-actions">Adding Side Effects to Actions</a>
+                                <a href="#querying-the-api-with-fetch">Querying The API With <code>fetch</code></a>
                             </li>
                             <li class="chapter">
                                 <a href="#making-an-action-undoable">Undoable Action</a>
@@ -742,9 +740,6 @@
                             <li class="chapter">
                                 <a href="#altering-the-form-values-before-submitting">Altering the Form Values before
                                     Submitting</a>
-                            </li>
-                            <li class="chapter">
-                                <a href="#custom-side-effects">Custom Side Effects</a>
                             </li>
                             <li class="chapter">
                                 <a href="#custom-sagas">Custom Sagas</a>
@@ -786,7 +781,10 @@
                                     Translations</a>
                             </li>
                             <li class="chapter">
-                                <a href="#translating-your-own-components">Translating Your Own Components</a>
+                                <a href="#usetranslate-hook"><code>useTranslate</code> Hook</a>
+                            </li>
+                            <li class="chapter">
+                                    <a href="#withtranslate-hoc"><code>withTranslate</code> HOC</a>
                             </li>
                             <li class="chapter">
                                 <a href="#using-specific-polyglot-features">Using Specific Polyglot Features</a>
@@ -878,6 +876,14 @@
         </script>
         <script src="js/prism.js"></script>
         <script src="js/menu.js"></script>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"></script> 
+        <script type="text/javascript"> docsearch({ 
+            apiKey: '32f254b1de6a25a96665d1229b6eb8f7', 
+            indexName: 'marmelab-react-admin', 
+            inputSelector: '#query', 
+            debug: false // Set debug to true if you want to inspect the dropdown 
+        }); 
+        </script> 
 </body>
 
 </html>

@@ -1,8 +1,4 @@
-import { random, lorem } from 'faker/locale/en';
-import subDays from 'date-fns/sub_days';
-import { randomDate } from './utils';
-
-export default (db, { serializeDate }) => {
+export default db => {
     let id = 0;
 
     return db.commands

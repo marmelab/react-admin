@@ -2,9 +2,9 @@ import debounce from 'lodash/debounce';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Quill from 'quill';
-import { addField } from 'ra-core';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import FormControl from '@material-ui/core/FormControl';
+import { addField, FieldTitle } from 'ra-core';
+import { InputHelperText } from 'ra-ui-materialui';
+import { FormHelperText, FormControl, InputLabel } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 
 import styles from './styles';
@@ -55,15 +55,11 @@ export class RichTextInput extends Component {
         this.quill.setContents(this.quill.clipboard.convert(value));
 
         this.editor = this.divRef.querySelector('.ql-editor');
-        this.quill.on('text-change', debounce(this.onTextChange, 500));
+        this.quill.on('text-change', this.onTextChange);
     }
 
-    shouldComponentUpdate(nextProps) {
-        return nextProps.input.value !== this.lastValueChange;
-    }
-
-    componentDidUpdate(prevProps) {
-        if (prevProps.input.value !== this.props.input.value) {
+    componentDidUpdate() {
+        if (this.lastValueChange !== this.props.input.value) {
             const selection = this.quill.getSelection();
             this.quill.setContents(
                 this.quill.clipboard.convert(this.props.input.value)
@@ -76,31 +72,69 @@ export class RichTextInput extends Component {
 
     componentWillUnmount() {
         this.quill.off('text-change', this.onTextChange);
+        this.onTextChange.cancel();
         this.quill = null;
     }
 
-    onTextChange = () => {
+    onTextChange = debounce(() => {
         const value =
-            this.editor.innerHTML == '<p><br></p>' ? '' : this.editor.innerHTML;
+            this.editor.innerHTML === '<p><br></p>'
+                ? ''
+                : this.editor.innerHTML;
         this.lastValueChange = value;
         this.props.input.onChange(value);
-    };
+    }, 500);
 
     updateDivRef = ref => {
         this.divRef = ref;
     };
 
     render() {
-        const { error, helperText = false } = this.props.meta;
+        const {
+            label,
+            source,
+            resource,
+            isRequired,
+            id,
+            classes = {},
+            margin = 'dense',
+            variant,
+        } = this.props;
+        const { touched, error, helperText = false } = this.props.meta;
         return (
             <FormControl
-                error={error !== null && error != undefined}
+                error={!!(touched && error)}
                 fullWidth={this.props.fullWidth}
                 className="ra-rich-text-input"
+                margin={margin}
             >
-                <div data-testid="quill" ref={this.updateDivRef} />
-                {error && <FormHelperText error>{error}</FormHelperText>}
-                {helperText && <FormHelperText>{helperText}</FormHelperText>}
+                {label !== '' && label !== false && (
+                    <InputLabel shrink htmlFor={id} className={classes.label}>
+                        <FieldTitle
+                            label={label}
+                            source={source}
+                            resource={resource}
+                            isRequired={isRequired}
+                        />
+                    </InputLabel>
+                )}
+                <div
+                    data-testid="quill"
+                    ref={this.updateDivRef}
+                    className={variant}
+                />
+                {helperText || (touched && error) ? (
+                    <FormHelperText
+                        error={!!error}
+                        className={!!error ? 'ra-rich-text-input-error' : ''}
+                    >
+                        <InputHelperText
+                            error={error}
+                            helperText={helperText}
+                            touched={touched}
+                        />
+                    </FormHelperText>
+                ) : null}
             </FormControl>
         );
     }
@@ -109,7 +143,6 @@ export class RichTextInput extends Component {
 const RichTextInputWithField = addField(withStyles(styles)(RichTextInput));
 
 RichTextInputWithField.defaultProps = {
-    addLabel: true,
     fullWidth: true,
 };
 export default RichTextInputWithField;

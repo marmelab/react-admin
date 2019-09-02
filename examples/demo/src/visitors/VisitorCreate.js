@@ -1,13 +1,6 @@
 import React from 'react';
-import {
-    Create,
-    DateInput,
-    FormTab,
-    LongTextInput,
-    TabbedForm,
-    TextInput,
-} from 'react-admin';
-import withStyles from '@material-ui/core/styles/withStyles';
+import { Create, DateInput, FormTab, TabbedForm, TextInput } from 'react-admin';
+import { makeStyles } from '@material-ui/core/styles';
 
 export const styles = {
     first_name: { display: 'inline-block' },
@@ -24,38 +17,51 @@ export const styles = {
     },
 };
 
-const VisitorCreate = ({ classes, ...props }) => (
-    <Create {...props}>
-        <TabbedForm>
-            <FormTab label="resources.customers.tabs.identity">
-                <TextInput
-                    autoFocus
-                    source="first_name"
-                    formClassName={classes.first_name}
-                />
-                <TextInput
-                    source="last_name"
-                    formClassName={classes.last_name}
-                />
-                <TextInput
-                    type="email"
-                    source="email"
-                    validation={{ email: true }}
-                    fullWidth={true}
-                    formClassName={classes.email}
-                />
-                <DateInput source="birthday" />
-            </FormTab>
-            <FormTab label="resources.customers.tabs.address" path="address">
-                <LongTextInput
-                    source="address"
-                    formClassName={classes.address}
-                />
-                <TextInput source="zipcode" formClassName={classes.zipcode} />
-                <TextInput source="city" formClassName={classes.city} />
-            </FormTab>
-        </TabbedForm>
-    </Create>
-);
+const useStyles = makeStyles(styles);
 
-export default withStyles(styles)(VisitorCreate);
+const VisitorCreate = props => {
+    const classes = useStyles();
+    return (
+        <Create {...props}>
+            <TabbedForm>
+                <FormTab label="resources.customers.tabs.identity">
+                    <TextInput
+                        autoFocus
+                        source="first_name"
+                        formClassName={classes.first_name}
+                    />
+                    <TextInput
+                        source="last_name"
+                        formClassName={classes.last_name}
+                    />
+                    <TextInput
+                        type="email"
+                        source="email"
+                        validation={{ email: true }}
+                        fullWidth={true}
+                        formClassName={classes.email}
+                    />
+                    <DateInput source="birthday" />
+                </FormTab>
+                <FormTab
+                    label="resources.customers.tabs.address"
+                    path="address"
+                >
+                    <TextInput
+                        source="address"
+                        formClassName={classes.address}
+                        multiline={true}
+                        fullWidth={true}
+                    />
+                    <TextInput
+                        source="zipcode"
+                        formClassName={classes.zipcode}
+                    />
+                    <TextInput source="city" formClassName={classes.city} />
+                </FormTab>
+            </TabbedForm>
+        </Create>
+    );
+};
+
+export default VisitorCreate;

@@ -1,21 +1,19 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import inflection from 'inflection';
-import { withStyles } from '@material-ui/core/styles';
 import {
-    ListController,
+    useListController,
     getElementsFromRecords,
     InferredElement,
 } from 'ra-core';
-import { ListView, styles } from './List';
+
+import { ListView } from './List';
 import listFieldTypes from './listFieldTypes';
 
-export class ListViewGuesser extends Component {
-    state = {
-        inferredChild: null,
-    };
-    componentDidUpdate() {
-        const { ids, data, resource } = this.props;
-        if (ids.length > 0 && data && !this.state.inferredChild) {
+const ListViewGuesser = props => {
+    const { ids, data, resource } = props;
+    const [inferredChild, setInferredChild] = useState(null);
+    useEffect(() => {
+        if (ids.length > 0 && data && !inferredChild) {
             const inferredElements = getElementsFromRecords(
                 ids.map(id => data[id]),
                 listFieldTypes
@@ -39,21 +37,17 @@ ${inferredChild.getRepresentation()}
     </List>
 );`
                 );
-            this.setState({ inferredChild: inferredChild.getElement() });
+            setInferredChild(inferredChild.getElement());
         }
-    }
+    }, [data, ids, inferredChild, resource]);
 
-    render() {
-        return <ListView {...this.props}>{this.state.inferredChild}</ListView>;
-    }
-}
+    return <ListView {...props}>{inferredChild}</ListView>;
+};
 
 ListViewGuesser.propTypes = ListView.propTypes;
 
 const ListGuesser = props => (
-    <ListController {...props}>
-        {controllerProps => <ListViewGuesser {...props} {...controllerProps} />}
-    </ListController>
+    <ListViewGuesser {...props} {...useListController(props)} />
 );
 
-export default withStyles(styles)(ListGuesser);
+export default ListGuesser;

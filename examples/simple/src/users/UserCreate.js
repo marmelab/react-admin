@@ -13,7 +13,14 @@ import {
 
 import Aside from './Aside';
 
-const UserEditToolbar = ({ permissions, ...props }) => (
+const UserEditToolbar = ({
+    permissions,
+    hasList,
+    hasEdit,
+    hasShow,
+    hasCreate,
+    ...props
+}) => (
     <Toolbar {...props}>
         <SaveButton
             label="user.action.save_and_show"
@@ -25,7 +32,7 @@ const UserEditToolbar = ({ permissions, ...props }) => (
                 label="user.action.save_and_add"
                 redirect={false}
                 submitOnEnter={false}
-                variant="flat"
+                variant="text"
             />
         )}
     </Toolbar>
@@ -33,7 +40,9 @@ const UserEditToolbar = ({ permissions, ...props }) => (
 
 const UserCreate = ({ permissions, ...props }) => (
     <Create {...props} aside={<Aside />}>
-        <TabbedForm toolbar={<UserEditToolbar permissions={permissions} />}>
+        <TabbedForm
+            toolbar={<UserEditToolbar permissions={permissions} {...props} />}
+        >
             <FormTab label="user.form.summary" path="">
                 <TextInput
                     source="name"
