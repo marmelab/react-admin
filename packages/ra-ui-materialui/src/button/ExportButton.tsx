@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, FunctionComponent } from 'react';
 import PropTypes from 'prop-types';
 import DownloadIcon from '@material-ui/icons/GetApp';
 import {
@@ -7,12 +7,14 @@ import {
     useNotify,
     GET_MANY,
     GET_LIST,
+    Sort,
+    DataProvider,
 } from 'ra-core';
 import jsonExport from 'jsonexport/dist';
 
 import Button from './Button';
 
-const sanitizeRestProps = ({ basePath, ...rest }) => rest;
+const sanitizeRestProps = ({ basePath, ...rest }: any) => rest;
 
 /**
  * Extracts, aggregates and deduplicates the ids of related records
@@ -67,11 +69,32 @@ const fetchRelatedRecords = dataProvider => (data, field, resource) =>
     );
 
 const DefaultIcon = <DownloadIcon />;
+const defaultFilter = {};
 
-const ExportButton = ({
+interface Props {
+    exporter?: (
+        data: any,
+        fetchRelatedRecords: (
+            data: any,
+            field: string,
+            resource: string
+        ) => Promise<any>,
+        dataProvider: DataProvider
+    ) => Promise<void>;
+    sort: Sort;
+    filter?: any;
+    maxResults: number;
+    resource: string;
+    onClick?: (e: Event) => void;
+    label: string;
+    icon?: JSX.Element;
+    [key: string]: any;
+}
+
+const ExportButton: FunctionComponent<Props> = ({
     exporter,
     sort,
-    filter,
+    filter = defaultFilter,
     maxResults = 1000,
     resource,
     onClick,
@@ -81,38 +104,43 @@ const ExportButton = ({
 }) => {
     const dataProvider = useDataProvider();
     const notify = useNotify();
-    const handleClick = useCallback(() => {
-        dataProvider(GET_LIST, resource, {
-            sort,
+    const handleClick = useCallback(
+        event => {
+            dataProvider(GET_LIST, resource, {
+                sort,
+                filter,
+                pagination: { page: 1, perPage: maxResults },
+            })
+                .then(({ data }) =>
+                    exporter
+                        ? exporter(
+                              data,
+                              fetchRelatedRecords(dataProvider),
+                              dataProvider
+                          )
+                        : jsonExport(data, (err, csv) =>
+                              downloadCSV(csv, resource)
+                          )
+                )
+                .catch(error => {
+                    console.error(error);
+                    notify('ra.notification.http_error', 'warning');
+                });
+            if (typeof onClick === 'function') {
+                onClick(event);
+            }
+        },
+        [
+            dataProvider,
+            exporter,
             filter,
-            pagination: { page: 1, perPage: maxResults },
-        })
-            .then(({ data }) =>
-                exporter
-                    ? exporter(
-                          data,
-                          fetchRelatedRecords(dataProvider),
-                          dataProvider
-                      )
-                    : jsonExport(data, (err, csv) => downloadCSV(csv, resource))
-            )
-            .catch(error => {
-                console.error(error);
-                notify('ra.notification.http_error', 'warning');
-            });
-        if (typeof onClick === 'function') {
-            onClick();
-        }
-    }, [
-        dataProvider,
-        exporter,
-        filter,
-        maxResults,
-        notify,
-        onClick,
-        resource,
-        sort,
-    ]);
+            maxResults,
+            notify,
+            onClick,
+            resource,
+            sort,
+        ]
+    );
 
     return (
         <Button
@@ -132,7 +160,10 @@ ExportButton.propTypes = {
     label: PropTypes.string,
     maxResults: PropTypes.number,
     resource: PropTypes.string.isRequired,
-    sort: PropTypes.object,
+    sort: PropTypes.exact({
+        field: PropTypes.string,
+        order: PropTypes.string,
+    }),
     icon: PropTypes.element,
 };
 
