@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import get from 'lodash/get';
 import { makeStyles } from '@material-ui/core/styles';
-import { Error } from '@material-ui/icons';
+import { Error as ErrorIcon } from '@material-ui/icons';
 import { useReference, getResourceLinkPath } from 'ra-core';
 
 import LinearProgress from '../layout/LinearProgress';
@@ -144,7 +144,7 @@ export const ReferenceFieldView = ({
     }
     if (error) {
         return (
-            <Error
+            <ErrorIcon
                 aria-errormessage={error.message ? error.message : error}
                 color="error"
                 fontSize="small"
