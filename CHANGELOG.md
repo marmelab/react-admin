@@ -1,5 +1,26 @@
 # Changelog
 
+## v3.0.0-alpha.4
+
+* Fix adding a filter overrides displayed filters ([3634](https://github.com/marmelab/react-admin/pull/3634)) ([djhi](https://github.com/djhi))
+* Fix FileInput does not react to click ([3628](https://github.com/marmelab/react-admin/pull/3628)) ([natrim](https://github.com/natrim))
+* Fix import package in `ra-data-simple-rest` ([3626](https://github.com/marmelab/react-admin/pull/3626)) ([natrim](https://github.com/natrim))
+* Add error log in `CoreAdminRouter` when `initializeResources` fails ([3625](https://github.com/marmelab/react-admin/pull/3625)) ([natrim](https://github.com/natrim))
+* Fix bad memoization in Input components ([3621](https://github.com/marmelab/react-admin/pull/3621)) ([Evgeny81](https://github.com/Evgeny81))
+* Fix missing translation in `NullableBooleanInput` ([3614](https://github.com/marmelab/react-admin/pull/3614)) ([fzaninotto](https://github.com/fzaninotto))
+* Add Form Helpers to `ra-core` ([3613](https://github.com/marmelab/react-admin/pull/3613)) ([djhi](https://github.com/djhi))
+* Fix backwards compatibility of `Query`, `Mutation`, and `withDataProvider` ([3605](https://github.com/marmelab/react-admin/pull/3605)) ([djhi](https://github.com/djhi))
+* Fix broken build due to missing `css-mediaquery` dependency ([3603](https://github.com/marmelab/react-admin/pull/3603)) ([djhi](https://github.com/djhi))
+* Fix `SelectArrayInput` overrides choices of `ReferenceArrayInput` ([3602](https://github.com/marmelab/react-admin/pull/3602)) ([djhi](https://github.com/djhi))
+* Fix required `ArrayInput` doesn't catch removed items in an `Edit` view  ([3601](https://github.com/marmelab/react-admin/pull/3601)) ([djhi](https://github.com/djhi))
+* Migrate `NodeForm`, `PaginationActions`, `RootDropTarget`, `AppBar`, `DragLayer`, `DragPreview`, `DataGrid`, `MenuLinkItem`, `Loading`, and `SingleFieldList` to hooks ([3599](https://github.com/marmelab/react-admin/pull/3599)) ([3598](https://github.com/marmelab/react-admin/pull/3598)) ([3596](https://github.com/marmelab/react-admin/pull/3596)) ([3595](https://github.com/marmelab/react-admin/pull/3595)) ([3591](https://github.com/marmelab/react-admin/pull/3591)) ([3589](https://github.com/marmelab/react-admin/pull/3589)) ([3585](https://github.com/marmelab/react-admin/pull/3585)) ([3584](https://github.com/marmelab/react-admin/pull/3584)) ([3583](https://github.com/marmelab/react-admin/pull/3583)) ([3582](https://github.com/marmelab/react-admin/pull/3582)) ([3580](https://github.com/marmelab/react-admin/pull/3580)) ([jaytula](https://github.com/jaytula))
+* Improve form look and feel ([3594](https://github.com/marmelab/react-admin/pull/3594)) ([fzaninotto](https://github.com/fzaninotto))
+* Migrate `SelectArrayInput` to TypeScript ([3592](https://github.com/marmelab/react-admin/pull/3592)) ([djhi](https://github.com/djhi))
+* Fix outdated comment on `withStyles` in `LinearProgress` ([3588](https://github.com/marmelab/react-admin/pull/3588)) ([jaytula](https://github.com/jaytula))
+* Remove deprecated `LongTextInput` ([3586](https://github.com/marmelab/react-admin/pull/3586)) ([Kunnu01](https://github.com/Kunnu01))
+* Update examples in `Theming.md` to use hooks ([3581](https://github.com/marmelab/react-admin/pull/3581)) ([m4theushw](https://github.com/m4theushw))
+* Improve form performance ([3577](https://github.com/marmelab/react-admin/pull/3577)) ([fzaninotto](https://github.com/fzaninotto))
+
 ## v3.0.0-alpha.3
 
 * Migrate `SelectArrayInput` to hooks ([3576](https://github.com/marmelab/react-admin/pull/3576)) ([djhi](https://github.com/djhi))
