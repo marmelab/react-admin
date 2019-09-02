@@ -1,23 +1,18 @@
-import React, { Component } from 'react';
+import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import GetApp from '@material-ui/icons/GetApp';
-import { crudGetAll, downloadCSV, CRUD_GET_MANY, GET_MANY } from 'ra-core';
+import DownloadIcon from '@material-ui/icons/GetApp';
+import {
+    downloadCSV,
+    useDataProvider,
+    useNotify,
+    GET_MANY,
+    GET_LIST,
+} from 'ra-core';
 import jsonExport from 'jsonexport/dist';
 
 import Button from './Button';
 
-const sanitizeRestProps = ({
-    basePath,
-    crudGetAll,
-    dispatch,
-    exporter,
-    filter,
-    maxResults,
-    resource,
-    sort,
-    ...rest
-}) => rest;
+const sanitizeRestProps = ({ basePath, ...rest }) => rest;
 
 /**
  * Extracts, aggregates and deduplicates the ids of related records
@@ -62,101 +57,83 @@ export const getRelatedIds = (records, field) =>
  *              post_title: posts[record.post_id].title,
  *          }));
  */
-const fetchRelatedRecords = dispatch => (data, field, resource) =>
-    new Promise((resolve, reject) => {
-        dispatch({
-            type: CRUD_GET_MANY,
-            payload: { ids: getRelatedIds(data, field) },
-            meta: {
-                resource,
-                fetch: GET_MANY,
-                onSuccess: {
-                    callback: ({ payload: { data } }) => {
-                        resolve(
-                            data.reduce((acc, post) => {
-                                acc[post.id] = post;
-                                return acc;
-                            }, {})
-                        );
-                    },
-                },
-                onFailure: {
-                    notification: {
-                        body: 'ra.notification.http_error',
-                        level: 'warning',
-                    },
-                    callback: ({ error }) => reject(error),
-                },
-            },
-        });
-    });
+const fetchRelatedRecords = dataProvider => (data, field, resource) =>
+    dataProvider(GET_MANY, resource, { ids: getRelatedIds(data, field) }).then(
+        ({ data }) =>
+            data.reduce((acc, post) => {
+                acc[post.id] = post;
+                return acc;
+            }, {})
+    );
 
-class ExportButton extends Component {
-    static propTypes = {
-        basePath: PropTypes.string,
-        dispatch: PropTypes.func,
-        exporter: PropTypes.func,
-        filter: PropTypes.object,
-        label: PropTypes.string,
-        maxResults: PropTypes.number.isRequired,
-        resource: PropTypes.string.isRequired,
-        sort: PropTypes.object,
-        icon: PropTypes.element,
-    };
+const DefaultIcon = <DownloadIcon />;
 
-    static defaultProps = {
-        label: 'ra.action.export',
-        maxResults: 1000,
-        icon: <GetApp />,
-    };
-
-    handleClick = () => {
-        const {
-            dispatch,
-            exporter,
-            filter,
-            maxResults,
+const ExportButton = ({
+    exporter,
+    sort,
+    filter,
+    maxResults = 1000,
+    resource,
+    onClick,
+    label = 'ra.action.export',
+    icon = DefaultIcon,
+    ...rest
+}) => {
+    const dataProvider = useDataProvider();
+    const notify = useNotify();
+    const handleClick = useCallback(() => {
+        dataProvider(GET_LIST, resource, {
             sort,
-            resource,
-            onClick,
-        } = this.props;
-        dispatch(
-            crudGetAll(
-                resource,
-                sort,
-                filter,
-                maxResults,
-                ({ payload: { data } }) =>
-                    exporter
-                        ? exporter(
-                              data,
-                              fetchRelatedRecords(dispatch),
-                              dispatch
-                          )
-                        : jsonExport(data, (err, csv) =>
-                              downloadCSV(csv, resource)
-                          )
+            filter,
+            pagination: { page: 1, perPage: maxResults },
+        })
+            .then(({ data }) =>
+                exporter
+                    ? exporter(
+                          data,
+                          fetchRelatedRecords(dataProvider),
+                          dataProvider
+                      )
+                    : jsonExport(data, (err, csv) => downloadCSV(csv, resource))
             )
-        );
-
+            .catch(error => {
+                console.error(error);
+                notify('ra.notification.http_error', 'warning');
+            });
         if (typeof onClick === 'function') {
             onClick();
         }
-    };
+    }, [
+        dataProvider,
+        exporter,
+        filter,
+        maxResults,
+        notify,
+        onClick,
+        resource,
+        sort,
+    ]);
 
-    render() {
-        const { label, icon, ...rest } = this.props;
+    return (
+        <Button
+            onClick={handleClick}
+            label={label}
+            {...sanitizeRestProps(rest)}
+        >
+            {icon}
+        </Button>
+    );
+};
 
-        return (
-            <Button
-                onClick={this.handleClick}
-                label={label}
-                {...sanitizeRestProps(rest)}
-            >
-                {icon}
-            </Button>
-        );
-    }
-}
+ExportButton.propTypes = {
+    basePath: PropTypes.string,
+    exporter: PropTypes.func,
+    filter: PropTypes.object,
+    label: PropTypes.string,
+    maxResults: PropTypes.number,
+    resource: PropTypes.string.isRequired,
+    sort: PropTypes.object,
+    icon: PropTypes.element,
+};
 
-export default connect()(ExportButton); // inject redux dispatch
+export default ExportButton;
