@@ -244,20 +244,19 @@ What if you want to check the permissions inside a [custom menu](./Admin.md#menu
 ```jsx
 // in src/myMenu.js
 import React from 'react';
-import { connect } from 'react-redux';
 import { MenuItemLink, usePermissions } from 'react-admin';
 
 const Menu = ({ onMenuClick, logout }) => {
     const { permissions } = usePermissions();
     return (
-    <div>
-        <MenuItemLink to="/posts" primaryText="Posts" onClick={onMenuClick} />
-        <MenuItemLink to="/comments" primaryText="Comments" onClick={onMenuClick} />
-        { permissions === 'admin' &&
-            <MenuItemLink to="/custom-route" primaryText="Miscellaneous" onClick={onMenuClick} />
-        }
-        {logout}
-    </div>
-);
+        <div>
+            <MenuItemLink to="/posts" primaryText="Posts" onClick={onMenuClick} />
+            <MenuItemLink to="/comments" primaryText="Comments" onClick={onMenuClick} />
+            {permissions === 'admin' &&
+                <MenuItemLink to="/custom-route" primaryText="Miscellaneous" onClick={onMenuClick} />
+            }
+            {logout}
+        </div>
+    );
 }
 ```

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
@@ -16,11 +16,11 @@ const useStyles = makeStyles({
 export const LoadingIndicator = ({
     classes: classesOverride,
     className,
-    isLoading,
     ...rest
 }) => {
+    const loading = useSelector(state => state.admin.loading > 0);
     const classes = useStyles({ classes: classesOverride });
-    return isLoading ? (
+    return loading ? (
         <CircularProgress
             className={classNames('app-loader', classes.loader, className)}
             color="inherit"
@@ -40,11 +40,4 @@ LoadingIndicator.propTypes = {
     width: PropTypes.string,
 };
 
-const mapStateToProps = state => ({
-    isLoading: state.admin.loading > 0,
-});
-
-export default connect(
-    mapStateToProps,
-    {} // Avoid connect passing dispatch in props
-)(LoadingIndicator);
+export default LoadingIndicator;

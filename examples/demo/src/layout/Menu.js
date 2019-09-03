@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import compose from 'recompose/compose';
+import { useSelector } from 'react-redux';
 import SettingsIcon from '@material-ui/icons/Settings';
 import LabelIcon from '@material-ui/icons/Label';
 import { useMediaQuery } from '@material-ui/core';
@@ -16,7 +15,7 @@ import categories from '../categories';
 import reviews from '../reviews';
 import SubMenu from './SubMenu';
 
-const Menu = ({ onMenuClick, open, logout }) => {
+const Menu = ({ onMenuClick, logout }) => {
     const [state, setState] = useState({
         menuCatalog: false,
         menuSales: false,
@@ -24,6 +23,9 @@ const Menu = ({ onMenuClick, open, logout }) => {
     });
     const translate = useTranslate();
     const isXsmall = useMediaQuery(theme => theme.breakpoints.down('xs'));
+    const open = useSelector(state => state.admin.ui.sidebarOpen);
+    useSelector(state => state.theme); // force rerender on theme change
+    useSelector(state => state.i18n.locale); // force rerender on locale change
 
     const handleToggle = menu => {
         setState(state => ({ ...state, [menu]: !state[menu] }));
@@ -141,18 +143,4 @@ Menu.propTypes = {
     logout: PropTypes.object,
 };
 
-const mapStateToProps = state => ({
-    open: state.admin.ui.sidebarOpen,
-    theme: state.theme,
-    locale: state.i18n.locale,
-});
-
-const enhance = compose(
-    withRouter,
-    connect(
-        mapStateToProps,
-        {}
-    )
-);
-
-export default enhance(Menu);
+export default withRouter(Menu);

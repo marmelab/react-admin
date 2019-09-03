@@ -1,11 +1,10 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import { useTranslate, changeLocale, Title } from 'react-admin';
 import { makeStyles } from '@material-ui/core/styles';
-import compose from 'recompose/compose';
 import { changeTheme } from './actions';
 
 const useStyles = makeStyles({
@@ -13,9 +12,12 @@ const useStyles = makeStyles({
     button: { margin: '1em' },
 });
 
-const Configuration = ({ theme, locale, changeTheme, changeLocale }) => {
+const Configuration = () => {
     const translate = useTranslate();
     const classes = useStyles();
+    const theme = useSelector(state => state.theme);
+    const locale = useSelector(state => state.i18n.locale);
+    const dispatch = useDispatch();
     return (
         <Card>
             <Title title={translate('pos.configuration')} />
@@ -27,7 +29,7 @@ const Configuration = ({ theme, locale, changeTheme, changeLocale }) => {
                     variant="contained"
                     className={classes.button}
                     color={theme === 'light' ? 'primary' : 'default'}
-                    onClick={() => changeTheme('light')}
+                    onClick={() => dispatch(changeTheme('light'))}
                 >
                     {translate('pos.theme.light')}
                 </Button>
@@ -35,7 +37,7 @@ const Configuration = ({ theme, locale, changeTheme, changeLocale }) => {
                     variant="contained"
                     className={classes.button}
                     color={theme === 'dark' ? 'primary' : 'default'}
-                    onClick={() => changeTheme('dark')}
+                    onClick={() => dispatch(changeTheme('dark'))}
                 >
                     {translate('pos.theme.dark')}
                 </Button>
@@ -46,7 +48,7 @@ const Configuration = ({ theme, locale, changeTheme, changeLocale }) => {
                     variant="contained"
                     className={classes.button}
                     color={locale === 'en' ? 'primary' : 'default'}
-                    onClick={() => changeLocale('en')}
+                    onClick={() => dispatch(changeLocale('en'))}
                 >
                     en
                 </Button>
@@ -54,7 +56,7 @@ const Configuration = ({ theme, locale, changeTheme, changeLocale }) => {
                     variant="contained"
                     className={classes.button}
                     color={locale === 'fr' ? 'primary' : 'default'}
-                    onClick={() => changeLocale('fr')}
+                    onClick={() => dispatch(changeLocale('fr'))}
                 >
                     fr
                 </Button>
@@ -63,19 +65,4 @@ const Configuration = ({ theme, locale, changeTheme, changeLocale }) => {
     );
 };
 
-const mapStateToProps = state => ({
-    theme: state.theme,
-    locale: state.i18n.locale,
-});
-
-const enhance = compose(
-    connect(
-        mapStateToProps,
-        {
-            changeLocale,
-            changeTheme,
-        }
-    )
-);
-
-export default enhance(Configuration);
+export default Configuration;

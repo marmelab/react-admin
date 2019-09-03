@@ -161,14 +161,16 @@ If you want to add or remove menu items, for instance to link to non-resources p
 ```jsx
 // in src/Menu.js
 import React, { createElement } from 'react';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useMediaQuery } from '@material-ui/core';
 import { MenuItemLink, getResources } from 'react-admin';
 import { withRouter } from 'react-router-dom';
 import LabelIcon from '@material-ui/icons/Label';
 
-const Menu = ({ resources, onMenuClick, open, logout }) => {
+const Menu = ({ onMenuClick, logout }) => {
     const isXSmall = useMediaQuery(theme => theme.breakpoints.down('xs'));
+    const open = useSelector(state => state.admin.ui.sidebarOpen);
+    const resources = useSelector(getResources);
     return (
         <div>
             {resources.map(resource => (
@@ -193,19 +195,12 @@ const Menu = ({ resources, onMenuClick, open, logout }) => {
     );
 }
 
-const mapStateToProps = state => ({
-    open: state.admin.ui.sidebarOpen,
-    resources: getResources(state),
-});
-
-export default withRouter(connect(mapStateToProps)(Menu));
+export default withRouter(Menu);
 ```
 
 **Tip**: Note the `MenuItemLink` component. It must be used to avoid unwanted side effects in mobile views. It supports a custom text and icon (which must be a material-ui `<SvgIcon>`).
 
 **Tip**: Note that we include the `logout` item only on small devices. Indeed, the `logout` button is already displayed in the AppBar on larger devices.
-
-**Tip**: Note that we use React Router [`withRouter`](https://reacttraining.com/react-router/web/api/withRouter) Higher Order Component and that it is used **before** Redux [`connect](https://github.com/reactjs/react-redux/blob/master/docs/api.html#connectmapstatetoprops-mapdispatchtoprops-mergeprops-options). This is required if you want the active menu item to be highlighted.
 
 Then, pass it to the `<Admin>` component as the `menu` prop:
 

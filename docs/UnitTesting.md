@@ -68,7 +68,7 @@ This means that reducers will work as they will within the app.
 
 ## Spying on the store 'dispatch'
 
-If you are using `mapDispatch` within connected components, it is likely you will want to test that actions have been dispatched with the correct arguments.  You can return the `store` being used within the tests using a `renderProp`.
+If you are using `useDispatch` within your components, it is likely you will want to test that actions have been dispatched with the correct arguments.  You can return the `store` being used within the tests using a `renderProp`.
 
 ```jsx
 let dispatchSpy;
@@ -86,7 +86,6 @@ it('should send the user to another url', () => {
     expect(dispatchSpy).toHaveBeenCalledWith(`/next-url`);
 });
 ```
-
 
 ## Testing Permissions
 
