@@ -184,7 +184,7 @@ const PostList = props => (
 )
 ```
 
-In many cases, you'll need more than simple object manipulation. You'll need to *augment* your objects based on relationships. For instance, the export for comments should include the title of the related post - but the export only exposes a `post_id` by default. For that purpose, the exporter receives a `fetchRelatedRecords` function as second parameter. It fetches related records using your `dataProvider` and Redux, and returns a promise.
+In many cases, you'll need more than simple object manipulation. You'll need to *augment* your objects based on relationships. For instance, the export for comments should include the title of the related post - but the export only exposes a `post_id` by default. For that purpose, the exporter receives a `fetchRelatedRecords` function as second parameter. It fetches related records using your `dataProvider` and the `GET_MANY` verb, and returns a promise.
 
 Here is an example for a Comments exporter, fetching related Posts:
 
@@ -194,6 +194,7 @@ import { List, downloadCSV } from 'react-admin';
 import jsonExport from 'jsonexport/dist';
 
 const exporter = (records, fetchRelatedRecords) => {
+    // will call dataProvider(GET_MANY, 'posts', { ids: records.map(record => record.post_id) }), ignoring duplicate and empty post_id
     fetchRelatedRecords(records, 'post_id', 'posts').then(posts => {
         const data = records.map(record => ({
                 ...record,
@@ -214,9 +215,7 @@ const CommentList = props => (
 )
 ```
 
-Under the hood, `fetchRelatedRecords()` uses react-admin's sagas, which trigger the loading spinner while loading. As a bonus, all the records fetched during an export are kepts in the main Redux store, so further browsing the admin will be accelerated.
-
-**Tip**: If you need to call another `dataProvider` verb in the exporter, take advantage of the third parameter passed to the function: `dispatch()`. It allows you to call any Redux action. Combine it with [the `callback` side effect](./Actions.md#custom-sagas) to grab the result in a callback.
+**Tip**: If you need to call another verb in the exporter, take advantage of the third parameter passed to the function: it's the `dataProvider` function.
 
 **Tip**: The `<ExportButton>` limits the main request to the `dataProvider` to 1,000 records. If you want to increase or decrease this limit, pass a `maxResults` prop to the `<ExportButton>` in a custom `<ListActions>` component, as explained in the previous section.
 

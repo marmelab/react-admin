@@ -906,3 +906,54 @@ There are two breaking changes in the new `<AutocompleteInput>`:
 -   highlightFirstSuggestion={true}
 />
 ```
+
+## The `exporter` function has changed signature
+
+In a `List`, you can pass a custom `exporter` function to control the data downloaded by users when they cllick on the "Export" button.
+
+```jsx
+const CommentList = props => (
+    <List {...props} exporter={exportComments}>
+        // ...
+    </List>
+)
+```
+
+In react-admin v3, you can still pass an `exporter` function this way, but its signature has changed:
+
+```diff
+-const exportComments = (data, fetchRelaterRecords, dispatch) => {
++const exportComments = (data, fetchRelaterRecords, dataProvider) => {
+    // ...
+}
+```
+
+If you used `dispatch` to call the dataProvider using an action creator with a `callback` side effect, you will see that the v3 version makes your exporter code much simpler. If you used it to dispatch custom side effects (like notification or redirect), we recommend that you override the `<ExportButton>` component completely - it'll be much easier to maintain.
+
+As a base, here is the simplified `ExportButton` code:
+
+```jsx
+import {
+    downloadCSV,
+    useDataProvider,
+    useNotify,
+    GET_LIST,
+} from 'react-admin';
+import jsonExport from 'jsonexport/dist';
+
+const ExportButton = ({ sort, filter, maxResults = 1000, resource }) => {
+    const dataProvider = useDataProvider();
+    const notify = useNotify();
+    const payload = { sort, filter, pagination: { page: 1, perPage: maxResults }}
+    const handleClick = dataProvider(GET_LIST, resource, payload)
+        .then(({ data }) => jsonExport(data, (err, csv) => downloadCSV(csv, resource)))
+        .catch(error => notify('ra.notification.http_error', 'warning'));
+
+    return (
+        <Button
+            label="Export"
+            onClick={handleClick}
+        />
+    );
+};
+```
