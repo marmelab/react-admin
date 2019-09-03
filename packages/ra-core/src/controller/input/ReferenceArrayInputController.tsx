@@ -27,7 +27,7 @@ const defaultReferenceSource = (resource: string, source: string) =>
 interface ChildrenFuncParams {
     choices: Record[];
     error?: string;
-    isLoading: boolean;
+    loading: boolean;
     onChange: (value: any) => void;
     setFilter: (filter: any) => void;
     setPagination: (pagination: Pagination) => void;
@@ -288,7 +288,7 @@ export class UnconnectedReferenceArrayInputController extends Component<
         return children({
             choices: dataStatus.choices,
             error: dataStatus.error,
-            isLoading: dataStatus.waiting,
+            loading: dataStatus.waiting,
             onChange,
             setFilter: this.debouncedSetFilter,
             setPagination: this.setPagination,

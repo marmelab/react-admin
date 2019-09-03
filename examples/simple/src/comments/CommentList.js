@@ -66,17 +66,10 @@ const exporter = (records, fetchRelatedRecords) =>
         });
     });
 
-const CommentPagination = ({
-    isLoading,
-    ids,
-    page,
-    perPage,
-    total,
-    setPage,
-}) => {
+const CommentPagination = ({ loading, ids, page, perPage, total, setPage }) => {
     const translate = useTranslate();
     const nbPages = Math.ceil(total / perPage) || 1;
-    if (!isLoading && (total === 0 || (ids && !ids.length))) {
+    if (!loading && (total === 0 || (ids && !ids.length))) {
         return <PaginationLimit total={total} page={page} ids={ids} />;
     }
 

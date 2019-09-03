@@ -55,7 +55,7 @@ const defaultFilter = {};
  *
  * @example
  *
- * const { isLoading, referenceRecord, resourceLinkPath } = useReferenceManyFieldController({
+ * const { loaded, referenceRecord, resourceLinkPath } = useReferenceManyFieldController({
  *     resource
  *     reference: 'users',
  *     record: {

@@ -26,8 +26,9 @@ export interface EditProps {
 }
 
 export interface EditControllerProps {
-    isLoading: boolean;
-    isSaving: boolean;
+    loading: boolean;
+    loaded: boolean;
+    saving: boolean;
     defaultTitle: string;
     save: (data: Record, redirect?: RedirectionSideEffect) => void;
     resource: string;
@@ -62,7 +63,7 @@ const useEditController = (props: EditProps): EditControllerProps => {
     const redirect = useRedirect();
     const refresh = useRefresh();
     const version = useVersion();
-    const { data: record, loading } = useGetOne(resource, id, {
+    const { data: record, loading, loaded } = useGetOne(resource, id, {
         version, // used to force reload
         onFailure: () => {
             notify('ra.notification.item_doesnt_exist', 'warning');
@@ -81,7 +82,7 @@ const useEditController = (props: EditProps): EditControllerProps => {
         record,
     });
 
-    const [update, { loading: isSaving }] = useUpdate(
+    const [update, { loading: saving }] = useUpdate(
         resource,
         id,
         {}, // set by the caller
@@ -119,8 +120,9 @@ const useEditController = (props: EditProps): EditControllerProps => {
     );
 
     return {
-        isLoading: loading,
-        isSaving,
+        loading,
+        loaded,
+        saving,
         defaultTitle,
         save,
         resource,

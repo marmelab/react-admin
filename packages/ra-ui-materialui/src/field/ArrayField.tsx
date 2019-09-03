@@ -129,7 +129,7 @@ export class ArrayField extends Component<
         return cloneElement(Children.only(children), {
             ids,
             data,
-            isLoading: false,
+            loading: false,
             basePath,
             currentSort: {},
             ...rest,

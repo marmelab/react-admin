@@ -362,9 +362,11 @@ export default (type, params) => {
 }
 ```
 
-## ReferenceInputController isLoading injected props renamed to loading
+## isLoading injected props renamed to loading
 
-When using custom component with ReferenceInputController, you should rename the component `isLoading` prop to `loading`.
+Much of the react-admin controller components that fetch data used to inject an `isLoading` boolean prop, set to true whenever a dataProvider call was pending. this prop was renamed to `loading` everywhere. Use the search and replace feature of your IDE to rename that prop.
+
+For instance:
 
 ```diff
 - <ReferenceInputController {...props}>

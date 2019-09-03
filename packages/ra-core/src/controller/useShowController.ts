@@ -20,7 +20,8 @@ export interface ShowProps {
 }
 
 export interface ShowControllerProps {
-    isLoading: boolean;
+    loading: boolean;
+    loaded: boolean;
     defaultTitle: string;
     resource: string;
     basePath: string;
@@ -53,7 +54,7 @@ const useShowController = (props: ShowProps): ShowControllerProps => {
     const redirect = useRedirect();
     const refresh = useRefresh();
     const version = useVersion();
-    const { data: record, loading } = useGetOne(resource, id, {
+    const { data: record, loading, loaded } = useGetOne(resource, id, {
         version, // used to force reload
         onFailure: () => {
             notify('ra.notification.item_doesnt_exist', 'warning');
@@ -73,7 +74,8 @@ const useShowController = (props: ShowProps): ShowControllerProps => {
     });
 
     return {
-        isLoading: loading,
+        loading,
+        loaded,
         defaultTitle,
         resource,
         basePath,

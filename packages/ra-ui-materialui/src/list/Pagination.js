@@ -9,7 +9,7 @@ import PaginationLimit from './PaginationLimit';
 const emptyArray = [];
 
 const Pagination = ({
-    isLoading,
+    loading,
     page,
     perPage,
     rowsPerPageOptions,
@@ -64,7 +64,7 @@ const Pagination = ({
     );
 
     if (total === 0) {
-        return isLoading ? <Toolbar variant="dense" /> : <PaginationLimit />;
+        return loading ? <Toolbar variant="dense" /> : <PaginationLimit />;
     }
     if (isSmall) {
         return (
@@ -99,7 +99,7 @@ const Pagination = ({
 
 Pagination.propTypes = {
     ids: PropTypes.array,
-    isLoading: PropTypes.bool,
+    loading: PropTypes.bool,
     page: PropTypes.number,
     perPage: PropTypes.number,
     rowsPerPageOptions: PropTypes.arrayOf(PropTypes.number),

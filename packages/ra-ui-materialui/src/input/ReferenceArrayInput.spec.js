@@ -15,12 +15,12 @@ describe('<ReferenceArrayInput />', () => {
     };
     const MyComponent = () => <span id="mycomponent" />;
 
-    it('should render a LinearProgress if isLoading is true', () => {
+    it('should render a LinearProgress if loading is true', () => {
         const wrapper = shallow(
             <ReferenceArrayInputView
                 {...{
                     ...defaultProps,
-                    isLoading: true,
+                    loading: true,
                     input: {},
                 }}
             >
