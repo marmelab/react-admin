@@ -919,7 +919,7 @@ const CommentList = props => (
 )
 ```
 
-In react-admin v3, you can styll pass an `exporter` function this way, but its signature has changed:
+In react-admin v3, you can still pass an `exporter` function this way, but its signature has changed:
 
 ```diff
 -const exportComments = (data, fetchRelaterRecords, dispatch) => {
