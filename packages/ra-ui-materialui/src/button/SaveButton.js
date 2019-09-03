@@ -138,7 +138,6 @@ SaveButton.propTypes = {
 };
 
 SaveButton.defaultProps = {
-    handleSubmitWithRedirect: () => () => {},
     icon: <ContentSave />,
 };
 
