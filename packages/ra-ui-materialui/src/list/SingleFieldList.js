@@ -17,7 +17,7 @@ const stopPropagation = e => e.stopPropagation();
 const sanitizeRestProps = ({
     currentSort,
     setSort,
-    isLoading,
+    loading,
     loaded,
     ...props
 }) => props;

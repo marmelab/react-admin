@@ -31,7 +31,7 @@ const sanitizeRestProps = ({
     hasBulkActions,
     hasCreate,
     hideFilter,
-    isLoading,
+    loading,
     loaded,
     loadedOnce,
     perPage,

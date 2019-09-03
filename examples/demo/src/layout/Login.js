@@ -75,7 +75,7 @@ const Login = ({ location }) => {
     const translate = useTranslate();
     const classes = useStyles();
     const dispatch = useDispatch();
-    const isLoading = useSelector(state => state.admin.loading > 0);
+    const loading = useSelector(state => state.admin.loading > 0);
 
     const login = auth =>
         dispatch(
@@ -116,7 +116,7 @@ const Login = ({ location }) => {
                                         name="username"
                                         component={renderInput}
                                         label={translate('ra.auth.username')}
-                                        disabled={isLoading}
+                                        disabled={loading}
                                     />
                                 </div>
                                 <div className={classes.input}>
@@ -125,7 +125,7 @@ const Login = ({ location }) => {
                                         component={renderInput}
                                         label={translate('ra.auth.password')}
                                         type="password"
-                                        disabled={isLoading}
+                                        disabled={loading}
                                     />
                                 </div>
                             </div>
@@ -134,11 +134,11 @@ const Login = ({ location }) => {
                                     variant="contained"
                                     type="submit"
                                     color="primary"
-                                    disabled={isLoading}
+                                    disabled={loading}
                                     className={classes.button}
                                     fullWidth
                                 >
-                                    {isLoading && (
+                                    {loading && (
                                         <CircularProgress
                                             size={25}
                                             thickness={2}

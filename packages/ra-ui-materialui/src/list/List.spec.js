@@ -18,7 +18,7 @@ describe('<List />', () => {
         filterValues: {},
         hasCreate: false,
         ids: [],
-        isLoading: false,
+        loading: false,
         location: { pathname: '' },
         params: {},
         perPage: 10,

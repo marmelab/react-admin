@@ -14,8 +14,9 @@ import { useTranslate } from '../i18n';
 import { useVersion } from '.';
 
 export interface CreateControllerProps {
-    isLoading: boolean;
-    isSaving: boolean;
+    loading: boolean;
+    loaded: boolean;
+    saving: boolean;
     defaultTitle: string;
     save: (record: Partial<Record>, redirect: RedirectionSideEffect) => void;
     resource: string;
@@ -77,7 +78,7 @@ const useCreateController = (props: CreateProps): CreateControllerProps => {
     const recordToUse = getRecord(location, record);
     const version = useVersion();
 
-    const [create, { loading: isSaving }] = useCreate(resource);
+    const [create, { loading: saving }] = useCreate(resource);
 
     const save = useCallback(
         (
@@ -131,8 +132,9 @@ const useCreateController = (props: CreateProps): CreateControllerProps => {
     });
 
     return {
-        isLoading: false,
-        isSaving,
+        loading: false,
+        loaded: true,
+        saving,
         defaultTitle,
         save,
         resource,

@@ -49,9 +49,7 @@ const Input = ({
 
 const LoginForm: SFC<Props> = ({ redirectTo }) => {
     const dispatch = useDispatch();
-    const isLoading = useSelector(
-        (state: ReduxState) => state.admin.loading > 0
-    );
+    const loading = useSelector((state: ReduxState) => state.admin.loading > 0);
     const translate = useTranslate();
     const classes = useStyles({});
 
@@ -85,7 +83,7 @@ const LoginForm: SFC<Props> = ({ redirectTo }) => {
                                 name="username"
                                 component={Input}
                                 label={translate('ra.auth.username')}
-                                disabled={isLoading}
+                                disabled={loading}
                             />
                         </div>
                         <div className={classes.input}>
@@ -95,7 +93,7 @@ const LoginForm: SFC<Props> = ({ redirectTo }) => {
                                 component={Input}
                                 label={translate('ra.auth.password')}
                                 type="password"
-                                disabled={isLoading}
+                                disabled={loading}
                             />
                         </div>
                     </div>
@@ -104,10 +102,10 @@ const LoginForm: SFC<Props> = ({ redirectTo }) => {
                             variant="contained"
                             type="submit"
                             color="primary"
-                            disabled={submitting || isLoading}
+                            disabled={submitting || loading}
                             className={classes.button}
                         >
-                            {isLoading && (
+                            {loading && (
                                 <CircularProgress
                                     className={classes.icon}
                                     size={18}

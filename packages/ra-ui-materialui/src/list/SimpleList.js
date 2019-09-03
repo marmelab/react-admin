@@ -50,7 +50,7 @@ const SimpleList = ({
     data,
     hasBulkActions,
     ids,
-    isLoading,
+    loading,
     leftAvatar,
     leftIcon,
     linkType,
@@ -66,7 +66,7 @@ const SimpleList = ({
 }) => {
     const classes = useStyles({ classes: classesOverride });
     return (
-        (isLoading || total > 0) && (
+        (loading || total > 0) && (
             <List className={className} {...sanitizeListRestProps(rest)}>
                 {ids.map(id => (
                     <LinkOrNot

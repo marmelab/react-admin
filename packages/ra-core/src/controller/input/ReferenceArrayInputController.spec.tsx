@@ -19,7 +19,7 @@ describe('<ReferenceArrayInputController />', () => {
         translate: x => `*${x}*`,
     };
 
-    it('should set isLoading to true as long as there are no references fetched and no selected references', () => {
+    it('should set loading to true as long as there are no references fetched and no selected references', () => {
         const children = jest.fn();
         shallow(
             <ReferenceArrayInputController
@@ -32,10 +32,10 @@ describe('<ReferenceArrayInputController />', () => {
             </ReferenceArrayInputController>
         );
 
-        assert.equal(children.mock.calls[0][0].isLoading, true);
+        assert.equal(children.mock.calls[0][0].loading, true);
     });
 
-    it('should set isLoading to true as long as there are no references fetched and there are no data found for the references already selected', () => {
+    it('should set loading to true as long as there are no references fetched and there are no data found for the references already selected', () => {
         const children = jest.fn();
         shallow(
             <ReferenceArrayInputController
@@ -49,10 +49,10 @@ describe('<ReferenceArrayInputController />', () => {
                 {children}
             </ReferenceArrayInputController>
         );
-        assert.equal(children.mock.calls[0][0].isLoading, true);
+        assert.equal(children.mock.calls[0][0].loading, true);
     });
 
-    it('should set isLoading to false if the references are being searched but data from at least one selected reference was found', () => {
+    it('should set loading to false if the references are being searched but data from at least one selected reference was found', () => {
         const children = jest.fn();
         shallow(
             <ReferenceArrayInputController
@@ -66,7 +66,7 @@ describe('<ReferenceArrayInputController />', () => {
                 {children}
             </ReferenceArrayInputController>
         );
-        assert.equal(children.mock.calls[0][0].isLoading, false);
+        assert.equal(children.mock.calls[0][0].loading, false);
         assert.deepEqual(children.mock.calls[0][0].choices, [{ id: 1 }]);
     });
 

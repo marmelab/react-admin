@@ -44,7 +44,7 @@ export const ReferenceArrayInputView = ({
     className,
     error,
     input,
-    isLoading,
+    loading,
     isRequired,
     label,
     meta,
@@ -64,7 +64,7 @@ export const ReferenceArrayInputView = ({
         { _: label }
     );
 
-    if (isLoading) {
+    if (loading) {
         return (
             <Labeled
                 label={translatedLabel}
@@ -116,7 +116,7 @@ ReferenceArrayInputView.propTypes = {
     choices: PropTypes.array,
     className: PropTypes.string,
     error: PropTypes.string,
-    isLoading: PropTypes.bool,
+    loading: PropTypes.bool,
     input: PropTypes.object.isRequired,
     label: PropTypes.string,
     meta: PropTypes.object,
