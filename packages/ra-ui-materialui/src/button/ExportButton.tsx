@@ -1,6 +1,7 @@
 import React, { useCallback, FunctionComponent } from 'react';
 import PropTypes from 'prop-types';
 import DownloadIcon from '@material-ui/icons/GetApp';
+import { ButtonProps } from '@material-ui/core/Button';
 import {
     downloadCSV,
     useDataProvider,
@@ -88,10 +89,10 @@ interface Props {
     onClick?: (e: Event) => void;
     label: string;
     icon?: JSX.Element;
-    [key: string]: any;
+    basePath: string;
 }
 
-const ExportButton: FunctionComponent<Props> = ({
+const ExportButton: FunctionComponent<Props & ButtonProps> = ({
     exporter,
     sort,
     filter = defaultFilter,
