@@ -38,7 +38,7 @@ const sanitizeRestProps = ({
     ...rest
 }) => rest;
 
-export function SaveButton({
+const SaveButton = ({
     className,
     classes: classesOverride = {},
     invalid,
@@ -52,7 +52,7 @@ export function SaveButton({
     onClick,
     handleSubmitWithRedirect,
     ...rest
-}) {
+}) => {
     const classes = useStyles({ classes: classesOverride });
     const notify = useNotify();
     const translate = useTranslate();
@@ -91,6 +91,7 @@ export function SaveButton({
     };
 
     const type = submitOnEnter ? 'submit' : 'button';
+    const displayedLabel = label && translate(label, { _: label });
     return (
         <Button
             className={classnames(classes.button, className)}
@@ -99,7 +100,7 @@ export function SaveButton({
             onMouseDown={handleMouseDown}
             onClick={handleClick}
             color={saving ? 'default' : 'primary'}
-            aria-label={label && translate(label, { _: label })}
+            aria-label={displayedLabel}
             {...sanitizeRestProps(rest)}
         >
             {saving && saving.redirect === redirect ? (
@@ -113,10 +114,10 @@ export function SaveButton({
                     className: classnames(classes.leftIcon, classes.icon),
                 })
             )}
-            {label && translate(label, { _: label })}
+            {displayedLabel}
         </Button>
     );
-}
+};
 
 SaveButton.propTypes = {
     className: PropTypes.string,
