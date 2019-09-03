@@ -720,8 +720,6 @@ export default withRouter(Menu);
 
 **Tip**: Note that we include the `logout` item only on small devices. Indeed, the `logout` button is already displayed in the AppBar on larger devices.
 
-**Tip**: Note that we use React Router [`withRouter`](https://reacttraining.com/react-router/web/api/withRouter) Higher Order Component and that it is used **before** Redux [`connect](https://github.com/reactjs/react-redux/blob/master/docs/api.html#connectmapstatetoprops-mapdispatchtoprops-mergeprops-options). This is required if you want the active menu item to be highlighted.
-
 **Tip**: The `primaryText` prop accepts a React node. You can pass a custom element in it. For example:
 
 ```jsx

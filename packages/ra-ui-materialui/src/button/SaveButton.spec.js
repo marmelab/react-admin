@@ -1,43 +1,43 @@
 import { render, cleanup, fireEvent } from '@testing-library/react';
 import React from 'react';
+import { TestContext } from 'ra-core';
 
-import { SaveButton } from './SaveButton';
-
-const translate = label => label;
+import SaveButton from './SaveButton';
 
 describe('<SaveButton />', () => {
     afterEach(cleanup);
 
     it('should render as submit type when submitOnEnter is true', () => {
         const { getByLabelText } = render(
-            <SaveButton submitOnEnter translate={translate} />
+            <TestContext>
+                <SaveButton submitOnEnter />
+            </TestContext>
         );
-        expect(getByLabelText('ra.action.save').getAttribute('type')).toEqual(
-            'submit'
-        );
+        expect(getByLabelText('Save').getAttribute('type')).toEqual('submit');
     });
 
     it('should render as button type when submitOnEnter is false', () => {
         const { getByLabelText } = render(
-            <SaveButton submitOnEnter={false} translate={translate} />
+            <TestContext>
+                <SaveButton submitOnEnter={false} />
+            </TestContext>
         );
 
-        expect(getByLabelText('ra.action.save').getAttribute('type')).toEqual(
-            'button'
-        );
+        expect(getByLabelText('Save').getAttribute('type')).toEqual('button');
     });
 
     it('should trigger submit action when clicked if no saving is in progress', () => {
         const onSubmit = jest.fn();
         const { getByLabelText } = render(
-            <SaveButton
-                translate={translate}
-                handleSubmitWithRedirect={onSubmit}
-                saving={false}
-            />
+            <TestContext>
+                <SaveButton
+                    handleSubmitWithRedirect={onSubmit}
+                    saving={false}
+                />
+            </TestContext>
         );
 
-        fireEvent.mouseDown(getByLabelText('ra.action.save'));
+        fireEvent.mouseDown(getByLabelText('Save'));
         expect(onSubmit).toHaveBeenCalled();
     });
 
@@ -45,31 +45,43 @@ describe('<SaveButton />', () => {
         const onSubmit = jest.fn();
 
         const { getByLabelText } = render(
-            <SaveButton
-                translate={translate}
-                handleSubmitWithRedirect={onSubmit}
-                saving
-            />
+            <TestContext>
+                <SaveButton handleSubmitWithRedirect={onSubmit} saving />
+            </TestContext>
         );
 
-        fireEvent.mouseDown(getByLabelText('ra.action.save'));
+        fireEvent.mouseDown(getByLabelText('Save'));
         expect(onSubmit).not.toHaveBeenCalled();
     });
+
     it('should show a notification if the form is not valid', () => {
         const onSubmit = jest.fn();
-        const showNotification = jest.fn();
+        let dispatchSpy;
 
         const { getByLabelText } = render(
-            <SaveButton
-                translate={translate}
-                handleSubmitWithRedirect={onSubmit}
-                invalid
-                showNotification={showNotification}
-            />
+            <TestContext>
+                {({ store }) => {
+                    dispatchSpy = jest.spyOn(store, 'dispatch');
+                    return (
+                        <SaveButton
+                            handleSubmitWithRedirect={onSubmit}
+                            invalid
+                        />
+                    );
+                }}
+            </TestContext>
         );
 
-        fireEvent.mouseDown(getByLabelText('ra.action.save'));
-        expect(showNotification).toHaveBeenCalled();
+        fireEvent.mouseDown(getByLabelText('Save'));
+        expect(dispatchSpy).toHaveBeenCalledWith({
+            payload: {
+                message: 'ra.message.invalid_form',
+                messageArgs: {},
+                type: 'warning',
+                undoable: false,
+            },
+            type: 'RA/SHOW_NOTIFICATION',
+        });
         expect(onSubmit).toHaveBeenCalled();
     });
 });

@@ -20,9 +20,6 @@ export interface DataProviderProps {
  * the injected dataProvider prop accepts a fourth parameter, an object literal
  * which may contain side effects, of make the action optimistic (with undoable: true).
  *
- * As it uses connect() from react-redux, this HOC also injects the dispatch prop,
- * allowing developers to dispatch additional actions upon completion.
- *
  * @example
  *
  * import { withDataProvider, showNotification } from 'react-admin';
