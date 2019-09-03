@@ -56,7 +56,7 @@ const BulkDeleteWithConfirmButton = ({
     const unselectAll = useUnselectAll();
     const refresh = useRefresh();
     const translate = useTranslate();
-    const [deleteMany] = useDeleteMany(resource, selectedIds, {
+    const [deleteMany, { loading }] = useDeleteMany(resource, selectedIds, {
         onSuccess: () => {
             refresh();
             notify('ra.notification.deleted', 'info', {
@@ -102,6 +102,7 @@ const BulkDeleteWithConfirmButton = ({
             </Button>
             <Confirm
                 isOpen={isOpen}
+                loading={loading}
                 title="ra.message.bulk_delete_title"
                 content="ra.message.bulk_delete_content"
                 translateOptions={{
@@ -124,7 +125,6 @@ const BulkDeleteWithConfirmButton = ({
 BulkDeleteWithConfirmButton.propTypes = {
     basePath: PropTypes.string,
     classes: PropTypes.object,
-    crudDeleteMany: PropTypes.func.isRequired,
     label: PropTypes.string,
     resource: PropTypes.string.isRequired,
     selectedIds: PropTypes.arrayOf(PropTypes.any).isRequired,

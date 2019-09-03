@@ -64,7 +64,7 @@ const DeleteWithConfirmButton = ({
     const redirect = useRedirect();
     const refresh = useRefresh();
     const classes = useStyles({ classes: classesOverride });
-    const [deleteOne] = useDelete(resource, record.id, record, {
+    const [deleteOne, { loading }] = useDelete(resource, record.id, record, {
         onSuccess: () => {
             notify('ra.notification.deleted', 'info', { smart_count: 1 });
             redirect(redirectTo, basePath);
@@ -114,6 +114,7 @@ const DeleteWithConfirmButton = ({
             </Button>
             <Confirm
                 isOpen={open}
+                loading={loading}
                 title="ra.message.delete_title"
                 content="ra.message.delete_content"
                 translateOptions={{

@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -52,6 +52,7 @@ const useStyles = makeStyles(theme => ({
  */
 const Confirm = ({
     isOpen,
+    loading,
     title,
     content,
     confirm,
@@ -63,13 +64,11 @@ const Confirm = ({
     translateOptions = {},
 }) => {
     const classes = useStyles({ classes: classesOverride });
-    const [loading, setLoading] = useState(false);
     const translate = useTranslate();
 
     const handleConfirm = useCallback(
         e => {
             e.stopPropagation();
-            setLoading(true);
             onConfirm();
         },
         [onConfirm]
@@ -126,6 +125,7 @@ Confirm.propTypes = {
     confirmColor: PropTypes.string.isRequired,
     content: PropTypes.string.isRequired,
     isOpen: PropTypes.bool,
+    loading: PropTypes.bool,
     onClose: PropTypes.func.isRequired,
     onConfirm: PropTypes.func.isRequired,
     title: PropTypes.string.isRequired,
