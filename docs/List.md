@@ -347,6 +347,7 @@ const ResetViewsButton = ({ selectedIds }) => {
             <Button label="Reset Views" onClick={handleClick} />
             <Confirm
                 isOpen={open}
+                loading={loading}
                 title="Update View Count"
                 content="Are you sure you want to reset the views for these items?"
                 onConfirm={handleConfirm}
