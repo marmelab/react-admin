@@ -61,6 +61,7 @@ export const Labeled: FunctionComponent<Props> = ({
     input,
     isRequired,
     label,
+    margin = 'dense',
     meta,
     resource,
     source,
@@ -82,6 +83,7 @@ export const Labeled: FunctionComponent<Props> = ({
             className={className}
             fullWidth={fullWidth}
             error={meta && meta.touched && !!meta.error}
+            margin={margin}
         >
             <InputLabel htmlFor={id} shrink className={classes.label}>
                 <FieldTitle
