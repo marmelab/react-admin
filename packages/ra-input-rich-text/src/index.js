@@ -29,6 +29,7 @@ export class RichTextInput extends Component {
             }),
         ]),
         fullWidth: PropTypes.bool,
+        quillInit: PropTypes.func
     };
 
     static defaultProps = {
@@ -51,6 +52,10 @@ export class RichTextInput extends Component {
             theme: 'snow',
             ...options,
         });
+
+        if (this.props.quillInit) {
+            this.props.quillInit(this.quill);
+        }
 
         this.quill.setContents(this.quill.clipboard.convert(value));
 
