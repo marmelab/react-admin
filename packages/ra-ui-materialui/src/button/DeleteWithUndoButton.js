@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import { fade } from '@material-ui/core/styles/colorManipulator';
@@ -55,7 +55,12 @@ const DeleteWithUndoButton = ({
     const notify = useNotify();
     const redirect = useRedirect();
     const refresh = useRefresh();
-    const [deleteOne, { loading }] = useDelete(resource, record.id, record, {
+
+    // We don't pass the action payload (the record and its identifier) at
+    // declaration time to avoid errors for people using the button in a
+    // component which may not have the record loaded immediately (for exemple
+    // in the actions of an Edit component)
+    const [deleteOne, { loading }] = useDelete(resource, undefined, undefined, {
         onSuccess: () => {
             notify('ra.notification.deleted', 'info', { smart_count: 1 }, true);
             redirect(redirectTo, basePath);
@@ -70,13 +75,16 @@ const DeleteWithUndoButton = ({
             ),
         undoable: true,
     });
-    const handleDelete = event => {
-        event.stopPropagation();
-        deleteOne();
-        if (typeof onClick === 'function') {
-            onClick();
-        }
-    };
+    const handleDelete = useCallback(
+        event => {
+            event.stopPropagation();
+            deleteOne(event, { id: record.id, previousData: record });
+            if (typeof onClick === 'function') {
+                onClick();
+            }
+        },
+        [deleteOne, onClick, record]
+    );
 
     return (
         <Button
