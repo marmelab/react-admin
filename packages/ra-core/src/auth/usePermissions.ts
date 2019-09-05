@@ -1,8 +1,7 @@
-import { useEffect, useContext } from 'react';
+import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
-import AuthContext from './AuthContext';
-import { AUTH_GET_PERMISSIONS } from './types';
+import useAuthProvider from './useAuthProvider';
 import { useSafeSetState } from '../util/hooks';
 import { ReduxState } from '../types';
 
@@ -51,17 +50,9 @@ const usePermissions = (authParams = emptyParams) => {
         loaded: false,
     });
     const location = useSelector((state: ReduxState) => state.router.location);
-    const pathname = location && location.pathname;
-    const authProvider = useContext(AuthContext);
+    const { getPermissions } = useAuthProvider(authParams);
     useEffect(() => {
-        if (!authProvider) {
-            setState({ loading: false, loaded: true });
-            return;
-        }
-        authProvider(AUTH_GET_PERMISSIONS, {
-            location: pathname,
-            ...authParams,
-        })
+        getPermissions(location)
             .then(permissions => {
                 setState({ loading: false, loaded: true, permissions });
             })
@@ -72,7 +63,7 @@ const usePermissions = (authParams = emptyParams) => {
                     error,
                 });
             });
-    }, [authParams, authProvider, pathname]); // eslint-disable-line react-hooks/exhaustive-deps
+    }, [authParams, getPermissions, location, setState]);
     return state;
 };
 

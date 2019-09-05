@@ -1,12 +1,11 @@
 import React, { useCallback, FunctionComponent } from 'react';
 import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
 import MenuItem, { MenuItemProps } from '@material-ui/core/MenuItem';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 
 import ExitIcon from '@material-ui/icons/PowerSettingsNew';
 import classnames from 'classnames';
-import { useTranslate, userLogout } from 'ra-core';
+import { useTranslate, useAuthProvider } from 'ra-core';
 
 interface Props {
     className?: string;
@@ -36,15 +35,13 @@ const LogoutWithRef: FunctionComponent<
     const { className, redirectTo, ...rest } = props;
     const classes = useStyles({}); // the empty {} is a temp fix for https://github.com/mui-org/material-ui/issues/15942
     const translate = useTranslate();
-    const dispatch = useDispatch();
+    const { logout } = useAuthProvider();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    const logout = useCallback(() => dispatch(userLogout(redirectTo)), [
-        redirectTo,
-    ]);
+    const handleClick = useCallback(() => logout(redirectTo), [redirectTo]);
     return (
         <MenuItem
             className={classnames('logout', classes.menuItem, className)}
-            onClick={logout}
+            onClick={handleClick}
             ref={ref}
             {...rest}
         >

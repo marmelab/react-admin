@@ -1,8 +1,8 @@
 import React from 'react';
-import { useGetList, useAuth, Title } from 'react-admin';
+import { useGetList, useAuthenticated, Title } from 'react-admin';
 
 const CustomRouteLayout = () => {
-    useAuth();
+    useAuthenticated();
     const { total, loaded } = useGetList(
         'posts',
         { page: 1, perPage: 10 },

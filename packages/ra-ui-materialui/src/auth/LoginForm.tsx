@@ -1,13 +1,17 @@
 import React, { SFC } from 'react';
 import PropTypes from 'prop-types';
 import { Field, Form } from 'react-final-form';
-import { useDispatch, useSelector } from 'react-redux';
 import CardActions from '@material-ui/core/CardActions';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { makeStyles, Theme } from '@material-ui/core/styles';
-import { userLogin, ReduxState, useTranslate } from 'ra-core';
+import {
+    useTranslate,
+    useAuthProvider,
+    useNotify,
+    useSafeSetState,
+} from 'ra-core';
 
 interface Props {
     redirectTo?: string;
@@ -48,9 +52,10 @@ const Input = ({
 );
 
 const LoginForm: SFC<Props> = ({ redirectTo }) => {
-    const dispatch = useDispatch();
-    const loading = useSelector((state: ReduxState) => state.admin.loading > 0);
+    const [loading, setLoading] = useSafeSetState(false);
+    const { login } = useAuthProvider();
     const translate = useTranslate();
+    const notify = useNotify();
     const classes = useStyles({});
 
     const validate = (values: FormData) => {
@@ -66,14 +71,29 @@ const LoginForm: SFC<Props> = ({ redirectTo }) => {
     };
 
     const submit = values => {
-        dispatch(userLogin(values, redirectTo));
+        setLoading(true);
+        login(values, redirectTo)
+            .then(() => {
+                setLoading(false);
+            })
+            .catch(error => {
+                setLoading(false);
+                notify(
+                    typeof error === 'string'
+                        ? error
+                        : typeof error === 'undefined' || !error.message
+                        ? 'ra.auth.sign_in_error'
+                        : error.message,
+                    'warning'
+                );
+            });
     };
 
     return (
         <Form
             onSubmit={submit}
             validate={validate}
-            render={({ handleSubmit, submitting }) => (
+            render={({ handleSubmit }) => (
                 <form onSubmit={handleSubmit} noValidate>
                     <div className={classes.form}>
                         <div className={classes.input}>
@@ -102,7 +122,7 @@ const LoginForm: SFC<Props> = ({ redirectTo }) => {
                             variant="contained"
                             type="submit"
                             color="primary"
-                            disabled={submitting || loading}
+                            disabled={loading}
                             className={classes.button}
                         >
                             {loading && (
