@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import { fade } from '@material-ui/core/styles/colorManipulator';
@@ -64,7 +64,12 @@ const DeleteWithConfirmButton = ({
     const redirect = useRedirect();
     const refresh = useRefresh();
     const classes = useStyles({ classes: classesOverride });
-    const [deleteOne, { loading }] = useDelete(resource, record.id, record, {
+
+    // We don't pass the action payload (the record and its identifier) at
+    // declaration time to avoid errors for people using the button in a
+    // component which may not have the record loaded immediately (for exemple
+    // in the actions of an Edit component)
+    const [deleteOne, { loading }] = useDelete(resource, undefined, undefined, {
         onSuccess: () => {
             notify('ra.notification.deleted', 'info', { smart_count: 1 });
             redirect(redirectTo, basePath);
@@ -90,12 +95,15 @@ const DeleteWithConfirmButton = ({
         e.stopPropagation();
     };
 
-    const handleDelete = () => {
-        deleteOne();
-        if (typeof onClick === 'function') {
-            onClick();
-        }
-    };
+    const handleDelete = useCallback(
+        event => {
+            deleteOne(event, { id: record.id, previousData: record });
+            if (typeof onClick === 'function') {
+                onClick();
+            }
+        },
+        [deleteOne, onClick, record]
+    );
 
     return (
         <Fragment>
