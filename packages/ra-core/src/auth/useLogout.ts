@@ -5,7 +5,6 @@ import { push } from 'connected-react-router';
 import useAuthProvider, { defaultAuthParams } from './useAuthProvider';
 import { AUTH_LOGOUT } from './types';
 import { clearState } from '../actions/clearActions';
-import { ReduxState } from '../types';
 
 /**
  * Get a callback for calling the authProvider with the AUTH_LOGOUT verb,
@@ -94,6 +93,6 @@ const useLogout = (authParams: any = defaultAuthParams): Logout => {
  *
  * @return {Promise} The authProvider response
  */
-type Logout = (redirectTo: string) => Promise<any>;
+type Logout = (redirectTo?: string) => Promise<any>;
 
 export default useLogout;

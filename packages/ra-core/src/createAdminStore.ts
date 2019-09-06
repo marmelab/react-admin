@@ -49,7 +49,7 @@ export default ({
         appReducer(
             action.type !== CLEAR_STATE
                 ? state
-                : // Erase data from the store but keep location, notifications, etc.
+                : // Erase data from the store but keep location, notifications, ui prefs, etc.
                   // This allows e.g. to display a notification on logout
                   {
                       ...state,

@@ -1,10 +1,9 @@
 import { useCallback } from 'react';
-import { useSelector } from 'react-redux';
+import { useStore } from 'react-redux';
 import { Location } from 'history';
 
 import useAuthProvider, { defaultAuthParams } from './useAuthProvider';
 import { AUTH_GET_PERMISSIONS } from './types';
-import { ReduxState } from '../types';
 
 /**
  * Get a callback for calling the authProvider with the AUTH_GET_PERMISSIONS verb.
@@ -42,14 +41,27 @@ const useGetPermissions = (
     authParams: any = defaultAuthParams
 ): GetPermissions => {
     const authProvider = useAuthProvider();
-    const currentLocation = useSelector(
-        (state: ReduxState) => state.router.location
-    );
+    /**
+     * We need the current location to pass to the authProvider for GET_PERMISSIONS.
+     *
+     * But if we used useSelector to read it from the store, the getPermissions function
+     * would be rebuilt each time the user changes location. Consequently, that
+     * would force a rerender of the enclosing component upon navigation.
+     *
+     * To avoid that, we don't subscribe to the store using useSelector;
+     * instead, we get a pointer to the store, and determine the location only
+     * after the getPermissions function was called.
+     */
+
+    const store = useStore();
 
     const getPermissions = useCallback(
-        (location: Location = currentLocation) =>
-            authProvider(AUTH_GET_PERMISSIONS, { location, ...authParams }),
-        [authParams, authProvider, currentLocation]
+        (location?: Location) =>
+            authProvider(AUTH_GET_PERMISSIONS, {
+                location: location || store.getState().router.location,
+                ...authParams,
+            }),
+        [authParams, authProvider, store]
     );
 
     return authProvider ? getPermissions : getPermissionsWithoutProvider;

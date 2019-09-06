@@ -1,9 +1,7 @@
 import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
 
 import useGetPermissions from './useGetPermissions';
 import { useSafeSetState } from '../util/hooks';
-import { ReduxState } from '../types';
 
 interface State {
     loading: boolean;
@@ -49,10 +47,9 @@ const usePermissions = (authParams = emptyParams) => {
         loading: true,
         loaded: false,
     });
-    const location = useSelector((state: ReduxState) => state.router.location);
     const getPermissions = useGetPermissions(authParams);
     useEffect(() => {
-        getPermissions(location)
+        getPermissions()
             .then(permissions => {
                 setState({ loading: false, loaded: true, permissions });
             })
@@ -63,7 +60,7 @@ const usePermissions = (authParams = emptyParams) => {
                     error,
                 });
             });
-    }, [authParams, getPermissions, location, setState]);
+    }, [authParams, getPermissions, setState]);
     return state;
 };
 
