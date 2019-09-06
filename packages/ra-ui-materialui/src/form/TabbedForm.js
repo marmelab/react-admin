@@ -11,6 +11,7 @@ import { useTranslate, useInitializeFormWithRecord } from 'ra-core';
 
 import Toolbar from './Toolbar';
 import TabbedFormTabs from './TabbedFormTabs';
+import checkForInitialValues from './checkForInitialValues';
 
 const useStyles = makeStyles(theme => ({
     errorTabButton: { color: theme.palette.error.main },
@@ -33,15 +34,16 @@ const TabbedForm = ({ initialValues, ...props }) => {
     const translate = useTranslate();
     const classes = useStyles();
 
-    const submit = values => {
-        const finalRedirect =
-            typeof redirect === undefined ? props.redirect : redirect.current;
-        props.save(values, finalRedirect);
-    };
-
     const finalInitialValues = {
         ...initialValues,
         ...props.record,
+    };
+
+    const submit = values => {
+        const finalRedirect =
+            typeof redirect === undefined ? props.redirect : redirect.current;
+        const finalValues = checkForInitialValues(finalInitialValues, values);
+        props.save(finalValues, finalRedirect);
     };
 
     return (

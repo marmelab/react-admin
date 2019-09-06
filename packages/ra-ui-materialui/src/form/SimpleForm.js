@@ -9,6 +9,7 @@ import { useTranslate, useInitializeFormWithRecord } from 'ra-core';
 import FormInput from './FormInput';
 import Toolbar from './Toolbar';
 import CardContentInner from '../layout/CardContentInner';
+import checkForInitialValues from './checkForInitialValues';
 
 const SimpleForm = ({ initialValues, ...props }) => {
     let redirect = useRef(props.redirect);
@@ -21,15 +22,17 @@ const SimpleForm = ({ initialValues, ...props }) => {
 
     const saving = useSelector(state => state.admin.saving);
     const translate = useTranslate();
-    const submit = values => {
-        const finalRedirect =
-            typeof redirect === undefined ? props.redirect : redirect.current;
-        props.save(values, finalRedirect);
-    };
 
     const finalInitialValues = {
         ...initialValues,
         ...props.record,
+    };
+
+    const submit = values => {
+        const finalRedirect =
+            typeof redirect === undefined ? props.redirect : redirect.current;
+        const finalValues = checkForInitialValues(finalInitialValues, values);
+        props.save(finalValues, finalRedirect);
     };
 
     return (
