@@ -79,11 +79,8 @@ const useCheckAuth = (authParams: any = defaultAuthParams): CheckAuth => {
     );
 
     const checkAuthWithoutAuthProvider = useCallback(
-        (_, __) => {
-            dispatch(push(authParams.afterLoginUrl));
-            return Promise.resolve();
-        },
-        [authParams.afterLoginUrl, dispatch]
+        (_, __) => Promise.resolve(),
+        []
     );
 
     return authProvider ? checkAuth : checkAuthWithoutAuthProvider;
