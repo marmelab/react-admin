@@ -1,6 +1,5 @@
 import { useCallback } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { push } from 'connected-react-router';
+import { useSelector } from 'react-redux';
 import { Location } from 'history';
 
 import useAuthProvider, { defaultAuthParams } from './useAuthProvider';
@@ -52,7 +51,6 @@ const useCheckAuth = (authParams: any = defaultAuthParams): CheckAuth => {
     const currentLocation = useSelector(
         (state: ReduxState) => state.router.location
     );
-    const dispatch = useDispatch();
     const notify = useNotify();
     const logout = useLogout(authParams);
 
@@ -78,13 +76,10 @@ const useCheckAuth = (authParams: any = defaultAuthParams): CheckAuth => {
         [authParams, authProvider, currentLocation, logout, notify]
     );
 
-    const checkAuthWithoutAuthProvider = useCallback(
-        (_, __) => Promise.resolve(),
-        []
-    );
-
     return authProvider ? checkAuth : checkAuthWithoutAuthProvider;
 };
+
+const checkAuthWithoutAuthProvider = (_, __) => Promise.resolve();
 
 /**
  * Check if the current user is authenticated by calling the authProvider AUTH_CHECK verb.

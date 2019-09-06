@@ -6,8 +6,6 @@ import useAuthProvider, { defaultAuthParams } from './useAuthProvider';
 import { AUTH_GET_PERMISSIONS } from './types';
 import { ReduxState } from '../types';
 
-const emptyArray = [];
-
 /**
  * Get a callback for calling the authProvider with the AUTH_GET_PERMISSIONS verb.
  *
@@ -54,13 +52,10 @@ const useGetPermissions = (
         [authParams, authProvider, currentLocation]
     );
 
-    const getPermissionsWithoutProvider = useCallback(
-        () => Promise.resolve(emptyArray),
-        []
-    );
-
     return authProvider ? getPermissions : getPermissionsWithoutProvider;
 };
+
+const getPermissionsWithoutProvider = () => Promise.resolve([]);
 
 /**
  * Ask the permissions to the  authProvider using the AUTH_GET_PERMISSIONS verb
