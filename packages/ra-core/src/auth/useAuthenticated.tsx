@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import useAuthProvider from './useAuthProvider';
+import useCheckAuth from './useCheckAuth';
 
 /**
  * Restrict access to children to authenticated users.
@@ -27,8 +27,8 @@ import useAuthProvider from './useAuthProvider';
  *     );
  */
 export default authParams => {
-    const { check } = useAuthProvider(authParams);
+    const checkAuth = useCheckAuth(authParams);
     useEffect(() => {
-        check().catch(() => {});
-    }, [check]);
+        checkAuth().catch(() => {});
+    }, [checkAuth]);
 };

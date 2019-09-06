@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
-import useAuthProvider from './useAuthProvider';
+import useGetPermissions from './useGetPermissions';
 import { useSafeSetState } from '../util/hooks';
 import { ReduxState } from '../types';
 
@@ -50,7 +50,7 @@ const usePermissions = (authParams = emptyParams) => {
         loaded: false,
     });
     const location = useSelector((state: ReduxState) => state.router.location);
-    const { getPermissions } = useAuthProvider(authParams);
+    const getPermissions = useGetPermissions(authParams);
     useEffect(() => {
         getPermissions(location)
             .then(permissions => {

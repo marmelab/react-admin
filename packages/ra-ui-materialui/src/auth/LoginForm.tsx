@@ -6,12 +6,7 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { makeStyles, Theme } from '@material-ui/core/styles';
-import {
-    useTranslate,
-    useAuthProvider,
-    useNotify,
-    useSafeSetState,
-} from 'ra-core';
+import { useTranslate, useLogin, useNotify, useSafeSetState } from 'ra-core';
 
 interface Props {
     redirectTo?: string;
@@ -53,7 +48,7 @@ const Input = ({
 
 const LoginForm: SFC<Props> = ({ redirectTo }) => {
     const [loading, setLoading] = useSafeSetState(false);
-    const { login } = useAuthProvider();
+    const login = useLogin();
     const translate = useTranslate();
     const notify = useNotify();
     const classes = useStyles({});

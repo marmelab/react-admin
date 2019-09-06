@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-import useAuthProvider from './useAuthProvider';
+import useCheckAuth from './useCheckAuth';
 import { useSafeSetState } from '../util/hooks';
 
 interface State {
@@ -54,16 +54,16 @@ const useAuthState = (authParams: any = emptyParams): State => {
         loaded: false,
         authenticated: true, // optimistic
     });
-    const { check } = useAuthProvider(authParams);
+    const checkAuth = useCheckAuth(authParams);
     useEffect(() => {
-        check(undefined, false)
+        checkAuth(undefined, false)
             .then(() =>
                 setState({ loading: false, loaded: true, authenticated: true })
             )
             .catch(() =>
                 setState({ loading: false, loaded: true, authenticated: false })
             );
-    }, [check, setState]);
+    }, [checkAuth, setState]);
     return state;
 };
 

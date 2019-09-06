@@ -5,7 +5,7 @@ import { makeStyles, Theme } from '@material-ui/core/styles';
 
 import ExitIcon from '@material-ui/icons/PowerSettingsNew';
 import classnames from 'classnames';
-import { useTranslate, useAuthProvider } from 'ra-core';
+import { useTranslate, useLogout } from 'ra-core';
 
 interface Props {
     className?: string;
@@ -35,7 +35,7 @@ const LogoutWithRef: FunctionComponent<
     const { className, redirectTo, ...rest } = props;
     const classes = useStyles({}); // the empty {} is a temp fix for https://github.com/mui-org/material-ui/issues/15942
     const translate = useTranslate();
-    const { logout } = useAuthProvider();
+    const logout = useLogout();
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const handleClick = useCallback(() => logout(redirectTo), [redirectTo]);
     return (
