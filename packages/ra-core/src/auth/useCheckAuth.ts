@@ -1,11 +1,8 @@
 import { useCallback } from 'react';
-import { useSelector } from 'react-redux';
-import { Location } from 'history';
 
 import useAuthProvider, { defaultAuthParams } from './useAuthProvider';
 import { AUTH_CHECK } from './types';
 import useLogout from './useLogout';
-import { ReduxState } from '../types';
 import useNotify from '../sideEffect/useNotify';
 
 /**
