@@ -27,7 +27,6 @@ describe('useAuthenticated', () => {
         const payload = authProvider.mock.calls[0][1] as any;
         expect(payload.afterLoginUrl).toBe('/');
         expect(payload.loginUrl).toBe('/login');
-        expect(payload.location.pathname).toBe('/');
         expect(dispatch).toHaveBeenCalledTimes(0);
     });
 
@@ -46,7 +45,6 @@ describe('useAuthenticated', () => {
         expect(authProvider.mock.calls[1][0]).toBe('AUTH_CHECK');
         const payload = authProvider.mock.calls[1][1] as any;
         expect(payload.foo).toBe('bar');
-        expect(payload.location.pathname).toBe('/');
         expect(dispatch).toHaveBeenCalledTimes(0);
     });
 
@@ -82,9 +80,9 @@ describe('useAuthenticated', () => {
                 undoable: false,
             })
         );
-        expect(dispatch.mock.calls[1][0]).toEqual(
+        expect(dispatch.mock.calls[1][0]).toEqual({ type: 'RA/CLEAR_STATE' });
+        expect(dispatch.mock.calls[2][0]).toEqual(
             push({ pathname: '/login', state: { nextPathname: '/' } })
         );
-        expect(dispatch.mock.calls[2][0]).toEqual({ type: 'RA/CLEAR_STATE' });
     });
 });

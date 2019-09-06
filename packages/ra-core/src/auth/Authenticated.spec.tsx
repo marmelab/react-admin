@@ -45,9 +45,9 @@ describe('<Authenticated>', () => {
                 undoable: false,
             })
         );
-        expect(dispatch.mock.calls[1][0]).toEqual(
+        expect(dispatch.mock.calls[1][0]).toEqual({ type: 'RA/CLEAR_STATE' });
+        expect(dispatch.mock.calls[2][0]).toEqual(
             push({ pathname: '/login', state: { nextPathname: '/' } })
         );
-        expect(dispatch.mock.calls[2][0]).toEqual({ type: 'RA/CLEAR_STATE' });
     });
 });
