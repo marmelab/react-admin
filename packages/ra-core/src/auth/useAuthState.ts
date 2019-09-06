@@ -56,7 +56,7 @@ const useAuthState = (authParams: any = emptyParams): State => {
     });
     const checkAuth = useCheckAuth(authParams);
     useEffect(() => {
-        checkAuth(undefined, false)
+        checkAuth(false)
             .then(() =>
                 setState({ loading: false, loaded: true, authenticated: true })
             )

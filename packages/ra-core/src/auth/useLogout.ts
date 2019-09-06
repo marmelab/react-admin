@@ -37,6 +37,7 @@ const useLogout = (authParams: any = defaultAuthParams): Logout => {
         (redirectTo = authParams.loginUrl) =>
             authProvider(AUTH_LOGOUT, authParams).then(
                 redirectToFromProvider => {
+                    dispatch(clearState());
                     dispatch(
                         push({
                             pathname: redirectToFromProvider || redirectTo,
@@ -46,7 +47,6 @@ const useLogout = (authParams: any = defaultAuthParams): Logout => {
                             },
                         })
                     );
-                    dispatch(clearState());
                     return redirectToFromProvider;
                 }
             ),

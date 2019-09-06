@@ -21,7 +21,7 @@ import useNotify from '../sideEffect/useNotify';
  *
  * @param {Object} authParams Any params you want to pass to the authProvider
  *
- * @returns {Object} { login, logout, checkAuth, getPermissions } callbacks for the authProvider
+ * @returns {Function} checkAuth callback
  *
  * @example
  *
@@ -39,7 +39,7 @@ import useNotify from '../sideEffect/useNotify';
  *     const checkAuth = usecheckAuth();
  *     const [authenticated, setAuthenticated] = useState(true); // optimistic auth
  *     useEffect(() => {
- *         checkAuth(undefined, false)
+ *         checkAuth(false)
  *              .then() => setAuthenticated(true))
  *              .catch(() => setAuthenticated(false));
  *     }, []);
@@ -48,22 +48,12 @@ import useNotify from '../sideEffect/useNotify';
  */
 const useCheckAuth = (authParams: any = defaultAuthParams): CheckAuth => {
     const authProvider = useAuthProvider();
-    const currentLocation = useSelector(
-        (state: ReduxState) => state.router.location
-    );
     const notify = useNotify();
     const logout = useLogout(authParams);
 
     const checkAuth = useCallback(
-        (
-            location: Location = currentLocation,
-            logoutOnFailure = true,
-            redirectTo = authParams.loginUrl
-        ) =>
-            authProvider(AUTH_CHECK, {
-                location,
-                ...authParams,
-            }).catch(error => {
+        (logoutOnFailure = true, redirectTo = authParams.loginUrl) =>
+            authProvider(AUTH_CHECK, authParams).catch(error => {
                 if (logoutOnFailure) {
                     logout(redirectTo);
                     notify(
@@ -73,7 +63,7 @@ const useCheckAuth = (authParams: any = defaultAuthParams): CheckAuth => {
                 }
                 throw error;
             }),
-        [authParams, authProvider, currentLocation, logout, notify]
+        [authParams, authProvider, logout, notify]
     );
 
     return authProvider ? checkAuth : checkAuthWithoutAuthProvider;
@@ -85,13 +75,12 @@ const checkAuthWithoutAuthProvider = (_, __) => Promise.resolve();
  * Check if the current user is authenticated by calling the authProvider AUTH_CHECK verb.
  * Logs the user out on failure.
  *
- * @param {Location} location The path name to check auth for
  * @param {boolean} logoutOnFailure Whether the user should be logged out if the authProvider fails to authenticatde them. True by default.
+ * @param {string} redirectTo The login form url. Defaults to '/login'
  *
  * @return {Promise} Resolved to the authProvider response if the user passes the check, or rejected with an error otherwise
  */
 type CheckAuth = (
-    location?: Location,
     logoutOnFailure?: boolean,
     redirectTo?: string
 ) => Promise<any>;
