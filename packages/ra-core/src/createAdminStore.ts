@@ -49,9 +49,17 @@ export default ({
         appReducer(
             action.type !== CLEAR_STATE
                 ? state
-                : typeof initialState === 'function'
-                ? initialState()
-                : initialState,
+                : // Erase data from the store but keep location, notifications, etc.
+                  // This allows e.g. to display a notification on logout
+                  {
+                      ...state,
+                      admin: {
+                          ...state.admin,
+                          resources: {},
+                          customQueries: {},
+                          references: { oneToMany: {}, possibleValues: {} },
+                      },
+                  },
             action
         );
     const saga = function* rootSaga() {

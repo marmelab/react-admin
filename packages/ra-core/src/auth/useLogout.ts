@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useStore } from 'react-redux';
 import { push } from 'connected-react-router';
 
 import useAuthProvider, { defaultAuthParams } from './useAuthProvider';
@@ -28,9 +28,20 @@ import { ReduxState } from '../types';
  */
 const useLogout = (authParams: any = defaultAuthParams): Logout => {
     const authProvider = useAuthProvider();
-    const currentLocation = useSelector(
-        (state: ReduxState) => state.router.location
-    );
+    /**
+     * We need the current location to pass in the router state
+     * so that the login hook knows where to redirect to as next route after login.
+     *
+     * But if we used useSelector to read it from the store, the logout function
+     * would be rebuilt each time the user changes location. Consequently, that
+     * would force a rerender of the Logout button upon navigation.
+     *
+     * To avoid that, we don't subscribe to the store using useSelector;
+     * instead, we get a pointer to the store, and determine the location only
+     * after the logout function was called.
+     */
+
+    const store = useStore();
     const dispatch = useDispatch();
 
     const logout = useCallback(
@@ -38,6 +49,7 @@ const useLogout = (authParams: any = defaultAuthParams): Logout => {
             authProvider(AUTH_LOGOUT, authParams).then(
                 redirectToFromProvider => {
                     dispatch(clearState());
+                    const currentLocation = store.getState().router.location;
                     dispatch(
                         push({
                             pathname: redirectToFromProvider || redirectTo,
@@ -50,11 +62,12 @@ const useLogout = (authParams: any = defaultAuthParams): Logout => {
                     return redirectToFromProvider;
                 }
             ),
-        [authParams, authProvider, currentLocation, dispatch]
+        [authParams, authProvider, store, dispatch]
     );
 
     const logoutWithoutProvider = useCallback(
         _ => {
+            const currentLocation = store.getState().router.location;
             dispatch(
                 push({
                     pathname: authParams.loginUrl,
@@ -67,7 +80,7 @@ const useLogout = (authParams: any = defaultAuthParams): Logout => {
             dispatch(clearState());
             return Promise.resolve();
         },
-        [authParams.loginUrl, currentLocation, dispatch]
+        [authParams.loginUrl, store, dispatch]
     );
 
     return authProvider ? logout : logoutWithoutProvider;
