@@ -13,6 +13,7 @@ import { Route, Switch } from 'react-router-dom';
 
 import { useLogout, useGetPermissions, useAuthState } from './auth';
 import RoutesWithLayout from './RoutesWithLayout';
+import { useTimeout } from './util';
 import {
     AdminChildren,
     CustomRoutes,
@@ -44,6 +45,7 @@ const CoreAdminRouter: FunctionComponent<AdminRouterProps> = props => {
     const getPermissions = useGetPermissions();
     const doLogout = useLogout();
     const { authenticated } = useAuthState();
+    const oneSecondHasPassed = useTimeout(1000);
     const [computedChildren, setComputedChildren] = useState<State>([]);
     useEffect(() => {
         if (typeof props.children === 'function') {
@@ -132,7 +134,11 @@ const CoreAdminRouter: FunctionComponent<AdminRouterProps> = props => {
         typeof children === 'function' &&
         (!computedChildren || computedChildren.length === 0)
     ) {
-        return <Route path="/" key="loading" component={loading} />;
+        if (oneSecondHasPassed) {
+            return <Route path="/" key="loading" component={loading} />;
+        } else {
+            return null;
+        }
     }
 
     const childrenToRender = (typeof children === 'function'

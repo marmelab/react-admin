@@ -11,7 +11,7 @@ import TestContext from './TestContext';
 import renderWithRedux from './renderWithRedux';
 import warning from './warning';
 import useWhyDidYouUpdate from './useWhyDidYouUpdate';
-import { useSafeSetState } from './hooks';
+import { useSafeSetState, useTimeout } from './hooks';
 
 export {
     downloadCSV,
@@ -28,4 +28,5 @@ export {
     warning,
     useWhyDidYouUpdate,
     useSafeSetState,
+    useTimeout,
 };
