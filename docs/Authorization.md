@@ -11,7 +11,7 @@ By default, a react-admin app doesn't check authorization. However, if needed, i
 
 ## Configuring the Auth Provider
 
-Each time react-admin needs to determine the user permissions, it calls the `authProvider` with the `AUTH_GET_PERMISSIONS` type. It's up to you to return the user permissions, be it a string (e.g. `'admin'`) or and array of roles (e.g. `['post_editor', 'comment_moderator', 'super_admin']`).
+Each time react-admin needs to determine the user permissions, it calls the `authProvider` with the `AUTH_GET_PERMISSIONS` type. It's up to you to return the user permissions, be it a string (e.g. `'admin'`) or an array of roles (e.g. `['post_editor', 'comment_moderator', 'super_admin']`).
 
 Following is an example where the `authProvider` stores the user's permissions in `localStorage` upon authentication, and returns these permissions when called with `AUTH_GET_PERMISSIONS`:
 
@@ -188,7 +188,7 @@ export default ({ permissions }) => (
 
 ## `usePermissions()` Hook
 
-You might want to check user permissions inside a [custom page](./Admin.md#customroutes). That's the purpose of the `usePermissions()` hook,which calls the `authProvider` with the `AUTH_GET_PERMISSIONS` type on mount, and returns the result when available:
+You might want to check user permissions inside a [custom page](./Admin.md#customroutes). That's the purpose of the `usePermissions()` hook, which calls the `authProvider` with the `AUTH_GET_PERMISSIONS` type on mount, and returns the result when available:
 
 ```jsx
 // in src/MyPage.js
