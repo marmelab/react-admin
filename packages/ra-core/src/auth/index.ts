@@ -9,6 +9,7 @@ import useLogin from './useLogin';
 import useLogout from './useLogout';
 import useCheckAuth from './useCheckAuth';
 import useGetPermissions from './useGetPermissions';
+import useLogoutIfAccessDenied from './useLogoutIfAccessDenied';
 export * from './types';
 
 export {
@@ -24,6 +25,7 @@ export {
     useAuthState,
     // hook with immediate effect
     useAuthenticated,
+    useLogoutIfAccessDenied,
     // components
     Authenticated,
     WithPermissions,
