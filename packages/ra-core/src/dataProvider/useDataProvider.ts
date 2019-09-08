@@ -199,7 +199,7 @@ const performUndoableQuery = ({
                 });
                 dispatch({ type: FETCH_END });
             })
-            .catch(error => {
+            .catch(error =>
                 logoutIfAccessDenied(error).then(loggedOut => {
                     if (loggedOut) return;
                     dispatch({
@@ -217,8 +217,8 @@ const performUndoableQuery = ({
                     dispatch({ type: FETCH_ERROR, error });
                     onFailure && onFailure(error);
                     throw new Error(error.message ? error.message : error);
-                });
-            });
+                })
+            );
     });
     return Promise.resolve({});
 };
@@ -273,7 +273,7 @@ const performQuery = ({
             onSuccess && onSuccess(response);
             return response;
         })
-        .catch(error => {
+        .catch(error =>
             logoutIfAccessDenied(error).then(loggedOut => {
                 if (loggedOut) return;
                 dispatch({
@@ -291,8 +291,8 @@ const performQuery = ({
                 dispatch({ type: FETCH_ERROR, error });
                 onFailure && onFailure(error);
                 throw new Error(error.message ? error.message : error);
-            });
-        });
+            })
+        );
 };
 
 interface QueryFunctionParams {

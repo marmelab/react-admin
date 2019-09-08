@@ -51,8 +51,12 @@ const useLogoutIfAccessDenied = (): LogoutIfAccessDenied => {
                 }),
         [authProvider, logout, notify]
     );
-    return logoutIfAccessDenied;
+    return authProvider
+        ? logoutIfAccessDenied
+        : logoutIfAccessDeniedWithoutProvider;
 };
+
+const logoutIfAccessDeniedWithoutProvider = () => Promise.resolve(false);
 
 /**
  * Call the authProvidr with the AUTH_ERROR verb and the error passed as argument.
