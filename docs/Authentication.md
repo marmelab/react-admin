@@ -29,12 +29,13 @@ What's an `authProvider`? Just like a `dataProvider`, an `authProvider` is a fun
 ```js
 // in src/authProvider.js
 
+// type is one of AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR, AUTH_CHECK, and AUTH_GET_PERMISSIONS 
 const authProvider = (type, params) => Promise.resolve;
 
 export default authProvider;
 ```
 
-Let's see when react-admin calls the `authProvider`, and with which params. 
+Let's see when react-admin calls the `authProvider`, and how to write one for your own authentication provider. 
 
 ## Login Configuration
 
@@ -266,25 +267,23 @@ But what if you want to use an email instead of a username? What if you want to 
 
 For all these cases, it's up to you to implement your own `LoginPage` component, which will be displayed under the `/login` route instead of the default username/password form, and your own `LogoutButton` component, which will be displayed in the sidebar. Pass both these components to the `<Admin>` component:
 
-**Tip**: Use the `userLogin` and `userLogout` actions in your custom `Login` and `Logout` components.
+**Tip**: Use the `useLogin` and `useLogout` hooks in your custom `Login` and `Logout` components.
 
 ```jsx
 // in src/MyLoginPage.js
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { userLogin } from 'react-admin';
+import { useLogin } from 'react-admin';
 import { ThemeProvider } from '@material-ui/styles';
 
 const MyLoginPage = ({ theme }) => {
     const dispatch = useDispatch()
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const login = useLogin();
     const submit = (e) => {
         e.preventDefault();
-        // gather your data/credentials here
-        const credentials = { email, password };
-        // Dispatch the userLogin action
-        dispatch(userLogin(credentials));
+        login({ email, password });
     }
 
     return (
@@ -302,16 +301,17 @@ export default MyLoginPage;
 // in src/MyLogoutButton.js
 import React, { forwardRef } from 'react';
 import { useDispatch } from 'react-redux';
-import { userLogout } from 'react-admin';
+import { useLogout } from 'react-admin';
 import MenuItem from '@material-ui/core/MenuItem';
 import ExitIcon from '@material-ui/icons/PowerSettingsNew';
 
 const MyLogoutButton = forwardRef((props, ref) => {
     const dispatch = useDispatch();
-    const logout = () => dispatch(userLogout(redirectTo));
+    const logout = useLogout();
+    const handleClick = () => logout();
     return (
         <MenuItem
-            onClick={logout}
+            onClick={handleClick}
             ref={ref}
         >
             <ExitIcon /> Logout
@@ -332,30 +332,25 @@ const App = () => (
 );
 ```
 
-**Tip**: By default, react-admin redirects the user to '/login' after they log out. This can be changed by passing the url to redirect to as parameter to the `userLogout()` action creator:
+**Tip**: By default, react-admin redirects the user to '/login' after they log out. This can be changed by passing the url to redirect to as parameter to the `logout()` function:
 
 ```diff
 // in src/MyLogoutButton.js
 // ...
-                <MenuItem
--                   onClick={() => dispatch(userLogout())}
-+                   onClick={() => dispatch(userLogout('/custom-login'))}
-                    {...props}
-                >
-                    <ExitIcon /> Logout
-                </MenuItem>
+-   const handleClick = () => logout();
++   const handleClick = () => logout('/custom-login');
 ```
 
-## `useAuth()` Hook
+## `useAuthenticated()` Hook
 
-If you add [custom pages](./Actions.md), of if you [create an admin app from scratch](./CustomApp.md), you may need to secure access to pages manually. That's the purpose of the `useAuth()` hook, which calls the `authProvider` with the `AUTH_CHECK` type on mount, and redirects to login if it returns a rejected Promise.
+If you add [custom pages](./Actions.md), of if you [create an admin app from scratch](./CustomApp.md), you may need to secure access to pages manually. That's the purpose of the `useAuthenticated()` hook, which calls the `authProvider` with the `AUTH_CHECK` type on mount, and redirects to login if it returns a rejected Promise.
 
 ```jsx
 // in src/MyPage.js
-import { useAuth } from 'react-admin';
+import { useAuthenticated } from 'react-admin';
 
 const MyPage = () => {
-    useAuth(); // redirects to login if not authenticated
+    useAuthenticated(); // redirects to login if not authenticated
     return (
         <div>
             ...
@@ -366,11 +361,11 @@ const MyPage = () => {
 export default MyPage;
 ```
 
-If you call `useAuth()` with a parameter, this parameter is passed to the `authProvider` call as second parameter. that allows you to add authentication logic depending on the context of the call:
+If you call `useAuthenticated()` with a parameter, this parameter is passed to the `authProvider` call as second parameter. that allows you to add authentication logic depending on the context of the call:
 
 ```jsx
 const MyPage = () => {
-    useAuth({ foo: 'bar' }); // calls authProvider(AUTH_CHECK, { foo: 'bar' })
+    useAuthenticated({ foo: 'bar' }); // calls authProvider(AUTH_CHECK, { foo: 'bar' })
     return (
         <div>
             ...
@@ -379,28 +374,51 @@ const MyPage = () => {
 };
 ```
 
-The `useAuth` hook is optimistic: it doesn't block rendering during the `authProvider` call. In the above example, the `MyPage` component renders even before getting the response from the `authProvider`. If the call returns a rejected promise, the hook redirects to the login page, but the user may have seen the content of the `MyPage` component for a brief moment.
+The `useAuthenticated` hook is optimistic: it doesn't block rendering during the `authProvider` call. In the above example, the `MyPage` component renders even before getting the response from the `authProvider`. If the call returns a rejected promise, the hook redirects to the login page, but the user may have seen the content of the `MyPage` component for a brief moment.
 
-To avoid rendering a component and force waiting for the `authProvider` response, use the return value of the `useAuth()` hook. 
+## `<Authenticated>` Component
+
+The `<Authenticated>` component uses the `useAuthenticated()` hook, and renders its child component - unless the authentication check fails. Use it as an alternative to the `useAuthenticated()` hook when you can't use a hook, e.g. inside a `Route` `render` function:
 
 ```jsx
-const MyPage = () => {
-    const { loaded } = useAuth();
-    return loaded ? (
-        <div>
-            ...
-        </div>
-    ) : null;
-};
+import { Authenticated } from 'react-admin';
+
+const CustomRoutes = [
+    <Route path="/foo" render={() =>
+        <Authenticated>
+            <Foo />
+        </Authenticated>
+    } />
+];
+const App = () => (
+    <Admin customRoutes={customRoutes}>
+        ...
+    </Admin>
+);
 ```
 
-Also, you may want to show special content instead of redirecting to login if the user isn't authenticated. Pass an options argument with `logoutOnFailure` set to `false` to disable this feature: 
+## `useAuthState()` Hook
+
+To avoid rendering a component and force waiting for the `authProvider` response, use the `useAuthState()` hook instead of the `useAuthenticated()` hook. It returns an object with 3 properties:
+
+- `loading`: `true` just after mount, while the `authProvider` is being called. `false` once the `authProvider` has answered
+- `loaded`: the opposite of `loading`.
+- `connected`: `undefined` while loading. then `true` or `false` depending on the `authProvider` response.
+
+
+You can render different content depending on the authenticated status. 
 
 ```jsx
+import { useAuthState } from 'react-admin';
+
 const MyPage = () => {
-    const { loaded, authenticated } = useAuth({}, { logoutOnFailure: false });
-    if (!loaded) return null;
-    if (!authenticated) return <AnonymousContent />;
-    return <AuthenticatedContent />
+    const { loading, authenticated } = useAuthState();
+    if (loading) {
+        return <Loading>;
+    }
+    if (authenticated) {
+        return <AuthenticatedContent />;
+    } 
+    return <AnonymousContent />;
 };
 ```

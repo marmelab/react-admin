@@ -2,8 +2,8 @@ import { useEffect } from 'react';
 import useCheckAuth from './useCheckAuth';
 
 /**
- * Restrict access to children to authenticated users.
- * Redirects anonymous users to the login page.
+ * Restrict access to authenticated users.
+ * Redirect anonymous users to the login page.
  *
  * Use it in your custom page components to require
  * authentication.

@@ -347,7 +347,13 @@ When you provide an `authProvider` to the `<Admin>` component, react-admin creat
 
 If you didn't access the `authProvider` context manually, you have nothing to change. All react-admin components have been updated to use the new context API.
 
-Note that direct access to the `authProvider` from the context is discouraged (and not documented). If you need to interact with the `authProvider`, use the new `useAuth()` and `usePermissions()` hooks, or the auth-related action creators (`userLogin`, `userLogout`, `userCheck`).
+Note that direct access to the `authProvider` from the context is discouraged (and not documented). If you need to interact with the `authProvider`, use the new auth hooks:
+
+- `useLogin`
+- `useLogout`
+- `useAuthenticated`
+- `useAuthState`
+- `usePermissions`
 
 ## `authProvider` No Longer Receives `match` in Params
 
