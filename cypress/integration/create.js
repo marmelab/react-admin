@@ -11,9 +11,8 @@ describe('Create Page', () => {
     const LoginPage = loginPageFactory('/#/login');
 
     beforeEach(() => {
-        LoginPage.navigate();
-        LoginPage.login('admin', 'password');
         CreatePage.navigate();
+        CreatePage.waitUntilVisible();
     });
 
     it('should show the correct title in the appBar', () => {
@@ -40,6 +39,9 @@ describe('Create Page', () => {
     });
 
     it('should have a working array input with references', () => {
+        CreatePage.logout();
+        LoginPage.login('admin', 'password');
+        CreatePage.waitUntilVisible();
         cy.get(CreatePage.elements.addAuthor).click();
         cy.get(CreatePage.elements.input('authors[0].user_id')).should(
             el => expect(el).to.exist
@@ -50,6 +52,9 @@ describe('Create Page', () => {
     });
 
     it('should have a working array input with a scoped FormDataConsumer', () => {
+        CreatePage.logout();
+        LoginPage.login('admin', 'password');
+        CreatePage.waitUntilVisible();
         cy.get(CreatePage.elements.addAuthor).click();
         CreatePage.setValues([
             {
@@ -215,8 +220,9 @@ describe('Create Page', () => {
     });
 
     it('should not reset the form value when switching tabs', () => {
-        LoginPage.navigate();
+        CreatePage.logout();
         LoginPage.login('admin', 'password');
+        CreatePage.waitUntilVisible();
         UserCreatePage.navigate();
 
         CreatePage.setValues([

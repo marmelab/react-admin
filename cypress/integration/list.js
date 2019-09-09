@@ -75,7 +75,7 @@ describe('List Page', () => {
         });
 
         it('should keep filters when navigating away and going back on given page', () => {
-            LoginPage.navigate();
+            ListPagePosts.logout();
             LoginPage.login('admin', 'password');
             ListPagePosts.setFilterValue('q', 'quis culpa impedit');
             cy.contains('1-1 of 1');
@@ -96,7 +96,7 @@ describe('List Page', () => {
         });
 
         it('should allow to disable alwaysOn filters with default value', () => {
-            LoginPage.navigate();
+            ListPagePosts.logout();
             LoginPage.login('admin', 'password');
             ListPageUsers.navigate();
             cy.contains('1-2 of 2');
@@ -181,7 +181,7 @@ describe('List Page', () => {
         });
 
         it('should accept a function returning a promise', () => {
-            LoginPage.navigate();
+            ListPagePosts.logout();
             LoginPage.login('user', 'password');
             ListPageUsers.navigate();
             cy.contains('Annamarie Mayer')
