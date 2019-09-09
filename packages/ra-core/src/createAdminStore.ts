@@ -11,7 +11,7 @@ import { defaultI18nProvider } from './i18n';
 import { CLEAR_STATE } from './actions/clearActions';
 
 interface Window {
-    __REDUX_DEVTOOLS_EXTENSION__?: () => () => void;
+    __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: (traceOptions: object) => Function;
 }
 
 export type InitialState = object | (() => object);
@@ -25,6 +25,7 @@ interface Params {
     i18nProvider?: I18nProvider;
     initialState?: InitialState;
     locale?: string;
+    devToolsTrace?: boolean;
 }
 
 export default ({
@@ -36,6 +37,7 @@ export default ({
     i18nProvider = defaultI18nProvider,
     initialState,
     locale = 'en',
+    devToolsTrace = false,
 }: Params) => {
     const messages = i18nProvider(locale);
     const appReducer = createAppReducer(
@@ -64,16 +66,19 @@ export default ({
     };
     const sagaMiddleware = createSagaMiddleware();
     const typedWindow = window as Window;
+    
+    const composeEnhancers = typeof typedWindow !== 'undefined' &&
+      typedWindow.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ &&
+      typedWindow.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
+          trace: devToolsTrace,
+          traceLimit: 25
+      }) || compose;
 
     const store = createStore(
         resettableAppReducer,
         typeof initialState === 'function' ? initialState() : initialState,
-        compose(
-            applyMiddleware(sagaMiddleware, routerMiddleware(history)),
-            typeof typedWindow !== 'undefined' &&
-                typedWindow.__REDUX_DEVTOOLS_EXTENSION__
-                ? typedWindow.__REDUX_DEVTOOLS_EXTENSION__()
-                : f => f
+        composeEnhancers(
+            applyMiddleware(sagaMiddleware, routerMiddleware(history))
         )
     );
     sagaMiddleware.run(saga);
