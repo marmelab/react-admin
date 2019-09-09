@@ -45,7 +45,13 @@ const useLogoutIfAccessDenied = (): LogoutIfAccessDenied => {
             authProvider(AUTH_ERROR, error)
                 .then(() => false)
                 .catch(e => {
-                    logout();
+                    const redirectTo =
+                        e && e.redirectTo
+                            ? e.redirectTo
+                            : error && error.redirectTo
+                            ? error.redirectto
+                            : undefined;
+                    logout({}, redirectTo);
                     notify('ra.notification.logged_out', 'warning');
                     return true;
                 }),

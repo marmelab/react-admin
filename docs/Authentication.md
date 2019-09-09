@@ -228,35 +228,6 @@ export default (type, params) => {
 
 Note that react-admin will call the `authProvider` with the `AUTH_LOGOUT` type before redirecting. If you specify the `redirectTo` here, it will override the url which may have been return by the call to `AUTH_LOGOUT`.
 
-**Tip**: For the `AUTH_CHECK` call, the `params` argument contains the `resource` name, so you can implement different checks for different resources:
-
-```jsx
-// in src/authProvider.js
-import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR, AUTH_CHECK } from 'react-admin';
-
-export default (type, params) => {
-    if (type === AUTH_LOGIN) {
-        // ...
-    }
-    if (type === AUTH_LOGOUT) {
-        // ...
-    }
-    if (type === AUTH_ERROR) {
-        // ...
-    }
-    if (type === AUTH_CHECK) {
-        const { resource } = params;
-        if (resource === 'posts') {
-            // check credentials for the posts resource
-        }
-        if (resource === 'comments') {
-            // check credentials for the comments resource
-        }
-    }
-    return Promise.resolve();
-};
-```
-
 **Tip**: In addition to `AUTH_LOGIN`, `AUTH_LOGOUT`, `AUTH_ERROR`, and `AUTH_CHECK`, react-admin calls the `authProvider` with the `AUTH_GET_PERMISSIONS` type to check user permissions. It's useful to enable or disable features on a per user basis. Read the [Authorization Documentation](./Authorization.md) to learn how to implement that type.
 
 ## Customizing The Login and Logout Components

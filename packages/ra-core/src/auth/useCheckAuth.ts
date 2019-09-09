@@ -54,7 +54,12 @@ const useCheckAuth = (): CheckAuth => {
         ) =>
             authProvider(AUTH_CHECK, params).catch(error => {
                 if (logoutOnFailure) {
-                    logout(redirectTo);
+                    logout(
+                        {},
+                        error && error.redirectTo
+                            ? error.redirectTo
+                            : redirectTo
+                    );
                     notify(
                         getErrorMessage(error, 'ra.auth.auth_check_error'),
                         'warning'
