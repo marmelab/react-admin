@@ -6,12 +6,14 @@ describe('checkForInitialValues', () => {
             firstName: 'John',
             lastName: 'Smith',
             age: 30,
+            email: 'john.smith@example.com',
             job: { title: 'Software Engineer' },
         };
         const values = {
             firstName: 'John',
             lastName: undefined,
             age: 30,
+            email: null,
             job: { title: undefined },
         };
         const finalValues = checkForInitialValues(initialValues, values);
@@ -19,6 +21,7 @@ describe('checkForInitialValues', () => {
             firstName: 'John',
             lastName: '',
             age: 30,
+            email: null,
             job: { title: '' },
         });
     });
