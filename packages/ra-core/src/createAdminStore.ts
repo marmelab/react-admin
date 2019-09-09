@@ -73,7 +73,7 @@ export default ({
             typedWindow.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
                 trace: devToolsTrace,
                 traceLimit: 25,
-        })) || 
+            })) || 
         compose;
 
     const store = createStore(
