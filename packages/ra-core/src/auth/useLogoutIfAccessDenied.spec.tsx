@@ -27,7 +27,7 @@ const TestComponent = ({ error }: { error?: any }) => {
 const authProvider = (type, params) =>
     new Promise((resolve, reject) => {
         if (type !== 'AUTH_ERROR') reject('bad method');
-        if (params instanceof Error && params.message == 'denied') {
+        if (params instanceof Error && params.message === 'denied') {
             reject(new Error('logout'));
         }
         resolve();
