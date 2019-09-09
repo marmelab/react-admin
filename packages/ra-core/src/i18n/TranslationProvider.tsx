@@ -12,6 +12,7 @@ import {
 interface MappedProps {
     locale: string;
     messages: object;
+    options?: object;
 }
 
 interface State {
@@ -41,10 +42,11 @@ interface ViewProps extends MappedProps, Props {}
 class TranslationProviderView extends Component<ViewProps, State> {
     constructor(props) {
         super(props);
-        const { locale, messages } = props;
+        const { locale, messages, options } = props;
         const polyglot = new Polyglot({
             locale,
             phrases: defaultsDeep({ '': '' }, messages, defaultMessages),
+            ...options,
         });
 
         this.state = {
@@ -60,11 +62,12 @@ class TranslationProviderView extends Component<ViewProps, State> {
             prevProps.locale !== this.props.locale ||
             prevProps.messages !== this.props.messages
         ) {
-            const { locale, messages } = this.props;
+            const { locale, messages, options } = this.props;
 
             const polyglot = new Polyglot({
                 locale,
                 phrases: defaultsDeep({ '': '' }, messages, defaultMessages),
+                ...options,
             });
 
             this.setState({

@@ -40,6 +40,7 @@ export interface AdminProps {
     dataProvider: DataProvider;
     history: History;
     i18nProvider?: I18nProvider;
+    polyglotOptions?: object;
     initialState?: object;
     loading: ComponentType;
     locale?: string;
@@ -102,6 +103,7 @@ React-admin requires a valid dataProvider function to work.`);
             loading,
             loginPage,
             logoutButton,
+            polyglotOptions,
         } = this.props;
 
         const logout = authProvider ? createElement(logoutButton) : null;
@@ -113,7 +115,7 @@ React-admin requires a valid dataProvider function to work.`);
         }
 
         return (
-            <TranslationProvider>
+            <TranslationProvider options={polyglotOptions}>
                 <ConnectedRouter history={this.history}>
                     <Switch>
                         {loginPage !== false && loginPage !== true ? (
