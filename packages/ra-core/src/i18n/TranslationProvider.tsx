@@ -12,7 +12,6 @@ import {
 interface MappedProps {
     locale: string;
     messages: object;
-    options?: object;
 }
 
 interface State {
@@ -20,6 +19,7 @@ interface State {
 }
 
 interface Props {
+    options?: object;
     children: ReactElement<any>;
 }
 
