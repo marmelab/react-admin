@@ -56,6 +56,7 @@ export interface AdminProps {
     menu?: ComponentType;
     theme?: object;
     title?: TitleComponent;
+    devToolsTrace?: boolean;
 }
 
 const CoreAdmin: FunctionComponent<AdminProps> = ({
@@ -79,6 +80,7 @@ const CoreAdmin: FunctionComponent<AdminProps> = ({
     i18nProvider,
     initialState,
     locale,
+    devToolsTrace = false,
 }) => {
     const reduxIsAlreadyInitialized = !!useContext(ReactReduxContext);
 
@@ -174,6 +176,7 @@ React-admin requires a valid dataProvider function to work.`);
                         initialState,
                         locale,
                         history: finalHistory,
+                        devToolsTrace,
                     })}
                 >
                     {renderCore(finalHistory)}
