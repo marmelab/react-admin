@@ -4,7 +4,43 @@ title: "Documentation"
 ---
 # react-admin
 
-A frontend Framework for building admin applications running in the browser, on top of REST/GraphQL APIs, using ES6, [React](https://facebook.github.io/react/) and [Material Design](https://material.io/). Open sourced and maintained by [marmelab](https://marmelab.com/).
+A frontend Framework for building admin applications running in the browser on top of REST/GraphQL APIs, using ES6, [React](https://facebook.github.io/react/) and [Material Design](https://material.io/). Previously named [admin-on-rest](https://github.com/marmelab/admin-on-rest). Open sourced and maintained by [marmelab](https://marmelab.com/).
+
+<div style="text-align: center" markdown="1">
+<i class="octicon octicon-device-desktop"></i> [Demo](https://marmelab.com/react-admin-demo/) -
+<i class="octicon octicon-mark-github"></i> [Source](https://github.com/marmelab/react-admin) -
+<i class="octicon octicon-megaphone"></i> [News](https://marmelab.com/en/blog/#react-admin) -
+<i class="octicon octicon-clock"></i> [Releases](https://github.com/marmelab/react-admin/releases) -
+<i class="octicon octicon-comment-discussion"></i> [Support](http://stackoverflow.com/questions/tagged/react-admin)
+</div>
+
+<iframe src="https://player.vimeo.com/video/268958716?byline=0&portrait=0" width="640" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen style="display:block;margin:0 auto"></iframe>
+
+## Features
+
+* Adapts to any backend (REST, GraphQL, SOAP, etc.)
+* Complete documentation
+* Super-fast UI thanks to optimistic rendering (renders before the server returns)
+* Undo updates and deletes for a few seconds
+* Supports relationships (many to one, one to many)
+* Internationalization (i18n)
+* Conditional formatting
+* Themeable
+* Supports any authentication provider (REST API, OAuth, Basic Auth, ...)
+* Full-featured Datagrid (sort, pagination, filters)
+* Filter-as-you-type
+* Supports any form layout (simple, tabbed, etc.)
+* Data Validation
+* Custom actions
+* Large library of components for various data types: boolean, number, rich text, etc.
+* WYSIWYG editor
+* Customize dashboard, menu, layout
+* Super easy to extend and override (it's just React components)
+* Highly customizable interface
+* Can connect to multiple backends
+* Leverages the best libraries in the React ecosystem (Redux, redux-form, redux-saga, material-ui, recompose)
+* Can be included in another React app
+* Inspired by the popular [ng-admin](https://github.com/marmelab/ng-admin) library (also by marmelab)
 
 ## Installation
 
@@ -17,7 +53,7 @@ npm install react-admin
 
 ## Usage
 
-Read the [Tutorial](./Tutorial.md) for a 30 minutes introduction. After that, continue reading the [Documentation](./DataProviders.md), or checkout the [source code of the demo](https://github.com/marmelab/react-admin/tree/master/examples/demo) for an example usage.
+Read the [Tutorial](./Tutorial.md) for a 30 minutes introduction. After that, head to the [Documentation](./index.md), or checkout the [source code of the demo](https://github.com/marmelab/react-admin/tree/master/examples/demo) for an example usage.
 
 ## At a Glance
 
