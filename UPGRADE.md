@@ -994,3 +994,21 @@ export default (type, params) => {
     return Promise.reject('Unknown method');
 };
 ```
+
+## No more Redux actions for authentication
+
+React-admin now uses hooks instead of sagas to handle authentication and authorization. That means that react-admin no longer dispatches the following actions:
+
+- `USER_LOGIN`
+- `USER_LOGIN_LOADING`
+- `USER_LOGIN_FAILURE`
+- `USER_LOGIN_SUCCESS`
+- `USER_CHECK`
+- `USER_CHECK_SUCCESS`
+- `USER_LOGOUT`
+
+If you have custom Login or Logout buttons that dispatch these actions, they will still work, but you are encouraged to migrate to the hook equivalents (`useLogin` and `useLogout`).
+
+If you had custom reducer or sagas based on these actions, they will no longer work. You will have to reimplement that custom logic using the new authentication hooks. 
+
+**Tip**: If you need to clear the Redux state, you can dispatch the `CLEAR_STATE` action.
