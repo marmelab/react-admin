@@ -66,13 +66,14 @@ export default ({
     };
     const sagaMiddleware = createSagaMiddleware();
     const typedWindow = window as Window;
-    
-    const composeEnhancers = typeof typedWindow !== 'undefined' &&
-      typedWindow.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ &&
-      typedWindow.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
-          trace: devToolsTrace,
-          traceLimit: 25
-      }) || compose;
+
+    const composeEnhancers = 
+        (typeof typedWindow !== 'undefined' &&
+            typedWindow.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ &&
+            typedWindow.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
+                trace: devToolsTrace,
+                traceLimit: 25,
+        })) || compose;
 
     const store = createStore(
         resettableAppReducer,
