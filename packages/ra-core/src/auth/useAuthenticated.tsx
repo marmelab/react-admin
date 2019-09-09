@@ -1,6 +1,8 @@
 import { useEffect } from 'react';
 import useCheckAuth from './useCheckAuth';
 
+const emptyParams = {};
+
 /**
  * Restrict access to authenticated users.
  * Redirect anonymous users to the login page.
@@ -26,9 +28,9 @@ import useCheckAuth from './useCheckAuth';
  *         </Admin>
  *     );
  */
-export default authParams => {
-    const checkAuth = useCheckAuth(authParams);
+export default (params: any = emptyParams) => {
+    const checkAuth = useCheckAuth();
     useEffect(() => {
-        checkAuth().catch(() => {});
-    }, [checkAuth]);
+        checkAuth(params).catch(() => {});
+    }, [checkAuth, params]);
 };

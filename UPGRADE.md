@@ -965,3 +965,28 @@ const ExportButton = ({ sort, filter, maxResults = 1000, resource }) => {
     );
 };
 ```
+
+## The `authProvider` no longer receives the Location pathname in AUTH_GET_PERMISSIONS
+
+When calling the `authProvider` for permissions (with the `AUTH_GET_PERMISSIONS` verb), react-admin used to include the pathname as second parameter. That allowed you to return different permissions based on the page. 
+
+We believe that permissions should not vary depending on where you are in the application ; it's up to components to decide to do something or not depending on permissions. So we've removed the pathname parameter from the calls - the `authProvider` doesn't receive it anymore. 
+
+If you want to keep location-dependent permissions logic, red the current location from the `window` object direclty in your `authProvider`:
+
+```diff
+// in myauthProvider.js
+import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR, AUTH_GET_PERMISSIONS } from 'react-admin';
+import decodeJwt from 'jwt-decode';
+
+export default (type, params) => {
+    // ...
+    if (type === AUTH_GET_PERMISSIONS) {
+-       const { pathname } = params;
++       const pathname = window.location.pathname;
+        // pathname-dependent logic follows 
+        // ...
+    }
+    return Promise.reject('Unknown method');
+};
+```

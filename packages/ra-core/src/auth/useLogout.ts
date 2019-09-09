@@ -11,7 +11,6 @@ import { clearState } from '../actions/clearActions';
  * redirect to the login page, and clear the Redux state.
  *
  * @see useAuthProvider
- * @param {Object} authParams Any params you want to pass to the authProvider
  *
  * @returns {Function} logout callback
  *
@@ -25,7 +24,7 @@ import { clearState } from '../actions/clearActions';
  *     return <button onClick={handleClick}>Logout</button>;
  * }
  */
-const useLogout = (authParams: any = defaultAuthParams): Logout => {
+const useLogout = (): Logout => {
     const authProvider = useAuthProvider();
     /**
      * We need the current location to pass in the router state
@@ -44,24 +43,22 @@ const useLogout = (authParams: any = defaultAuthParams): Logout => {
     const dispatch = useDispatch();
 
     const logout = useCallback(
-        (redirectTo = authParams.loginUrl) =>
-            authProvider(AUTH_LOGOUT, authParams).then(
-                redirectToFromProvider => {
-                    dispatch(clearState());
-                    const currentLocation = store.getState().router.location;
-                    dispatch(
-                        push({
-                            pathname: redirectToFromProvider || redirectTo,
-                            state: {
-                                nextPathname:
-                                    currentLocation && currentLocation.pathname,
-                            },
-                        })
-                    );
-                    return redirectToFromProvider;
-                }
-            ),
-        [authParams, authProvider, store, dispatch]
+        (params = {}, redirectTo = defaultAuthParams.loginUrl) =>
+            authProvider(AUTH_LOGOUT, params).then(redirectToFromProvider => {
+                dispatch(clearState());
+                const currentLocation = store.getState().router.location;
+                dispatch(
+                    push({
+                        pathname: redirectToFromProvider || redirectTo,
+                        state: {
+                            nextPathname:
+                                currentLocation && currentLocation.pathname,
+                        },
+                    })
+                );
+                return redirectToFromProvider;
+            }),
+        [authProvider, store, dispatch]
     );
 
     const logoutWithoutProvider = useCallback(
@@ -69,7 +66,7 @@ const useLogout = (authParams: any = defaultAuthParams): Logout => {
             const currentLocation = store.getState().router.location;
             dispatch(
                 push({
-                    pathname: authParams.loginUrl,
+                    pathname: defaultAuthParams.loginUrl,
                     state: {
                         nextPathname:
                             currentLocation && currentLocation.pathname,
@@ -79,7 +76,7 @@ const useLogout = (authParams: any = defaultAuthParams): Logout => {
             dispatch(clearState());
             return Promise.resolve();
         },
-        [authParams.loginUrl, store, dispatch]
+        [store, dispatch]
     );
 
     return authProvider ? logout : logoutWithoutProvider;
@@ -89,10 +86,11 @@ const useLogout = (authParams: any = defaultAuthParams): Logout => {
  * Log the current user out by calling the authProvider AUTH_LOGOUT verb,
  * and redirect them to the login screen.
  *
+ * @param {Object} params The parameters to pass to the authProvider
  * @param {string} redirectTo The path name to redirect the user to (optional, defaults to login)
  *
  * @return {Promise} The authProvider response
  */
-type Logout = (redirectTo?: string) => Promise<any>;
+type Logout = (params?: any, redirectTo?: string) => Promise<any>;
 
 export default useLogout;

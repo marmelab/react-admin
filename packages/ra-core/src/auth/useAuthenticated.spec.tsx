@@ -24,9 +24,6 @@ describe('useAuthenticated', () => {
         );
         expect(authProvider).toBeCalledTimes(1);
         expect(authProvider.mock.calls[0][0]).toBe('AUTH_CHECK');
-        const payload = authProvider.mock.calls[0][1] as any;
-        expect(payload.afterLoginUrl).toBe('/');
-        expect(payload.loginUrl).toBe('/login');
         expect(dispatch).toHaveBeenCalledTimes(0);
     });
 

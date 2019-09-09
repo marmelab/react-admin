@@ -26,7 +26,7 @@ const emptyParams = {};
  *
  * Useful to enable features based on user permissions
  *
- * @param {Object} authParams Any params you want to pass to the authProvider
+ * @param {Object} params Any params you want to pass to the authProvider
  *
  * @returns The current auth check state. Destructure as { permissions, error, loading, loaded }.
  *
@@ -42,14 +42,14 @@ const emptyParams = {};
  *         }
  *     };
  */
-const usePermissions = (authParams = emptyParams) => {
+const usePermissions = (params = emptyParams) => {
     const [state, setState] = useSafeSetState<State>({
         loading: true,
         loaded: false,
     });
-    const getPermissions = useGetPermissions(authParams);
+    const getPermissions = useGetPermissions();
     useEffect(() => {
-        getPermissions()
+        getPermissions(params)
             .then(permissions => {
                 setState({ loading: false, loaded: true, permissions });
             })
@@ -60,7 +60,7 @@ const usePermissions = (authParams = emptyParams) => {
                     error,
                 });
             });
-    }, [authParams, getPermissions, setState]);
+    }, [getPermissions, params, setState]);
     return state;
 };
 

@@ -29,7 +29,7 @@ const emptyParams = {};
  *
  * @see useAuthenticated()
  *
- * @param {Object} authParams Any params you want to pass to the authProvider
+ * @param {Object} params Any params you want to pass to the authProvider
  *
  * @returns The current auth check state. Destructure as { authenticated, error, loading, loaded }.
  *
@@ -48,22 +48,22 @@ const emptyParams = {};
  *         </Admin>
  *     );
  */
-const useAuthState = (authParams: any = emptyParams): State => {
+const useAuthState = (params: any = emptyParams): State => {
     const [state, setState] = useSafeSetState({
         loading: true,
         loaded: false,
         authenticated: true, // optimistic
     });
-    const checkAuth = useCheckAuth(authParams);
+    const checkAuth = useCheckAuth();
     useEffect(() => {
-        checkAuth(false)
+        checkAuth(params, false)
             .then(() =>
                 setState({ loading: false, loaded: true, authenticated: true })
             )
             .catch(() =>
                 setState({ loading: false, loaded: true, authenticated: false })
             );
-    }, [checkAuth, setState]);
+    }, [checkAuth, params, setState]);
     return state;
 };
 

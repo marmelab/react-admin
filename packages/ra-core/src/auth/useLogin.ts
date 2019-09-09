@@ -11,7 +11,6 @@ import { ReduxState } from '../types';
  * and redirect to the previous authenticated page (or the home page) on success.
  *
  * @see useAuthProvider
- * @param {Object} authParams Any params you want to pass to the authProvider
  *
  * @returns {Function} login callback
  *
@@ -30,7 +29,7 @@ import { ReduxState } from '../types';
  *     return <button onClick={handleClick}>Login</button>;
  * }
  */
-const useLogin = (authParams: any = defaultAuthParams): Login => {
+const useLogin = (): Login => {
     const authProvider = useAuthProvider();
     const currentLocation = useSelector(
         (state: ReduxState) => state.router.location
@@ -40,20 +39,20 @@ const useLogin = (authParams: any = defaultAuthParams): Login => {
     const dispatch = useDispatch();
 
     const login = useCallback(
-        (params, pathName = authParams.afterLoginUrl) =>
-            authProvider(AUTH_LOGIN, { ...params, ...authParams }).then(ret => {
+        (params: any = {}, pathName = defaultAuthParams.afterLoginUrl) =>
+            authProvider(AUTH_LOGIN, params).then(ret => {
                 dispatch(push(nextPathName || pathName));
                 return ret;
             }),
-        [authParams, authProvider, dispatch, nextPathName]
+        [authProvider, dispatch, nextPathName]
     );
 
     const loginWithoutProvider = useCallback(
         (_, __) => {
-            dispatch(push(authParams.afterLoginUrl));
+            dispatch(push(defaultAuthParams.afterLoginUrl));
             return Promise.resolve();
         },
-        [authParams.afterLoginUrl, dispatch]
+        [dispatch]
     );
 
     return authProvider ? login : loginWithoutProvider;

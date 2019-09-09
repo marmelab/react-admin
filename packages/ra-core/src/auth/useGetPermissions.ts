@@ -1,15 +1,12 @@
 import { useCallback } from 'react';
-import { useStore } from 'react-redux';
-import { Location } from 'history';
 
-import useAuthProvider, { defaultAuthParams } from './useAuthProvider';
+import useAuthProvider from './useAuthProvider';
 import { AUTH_GET_PERMISSIONS } from './types';
 
 /**
  * Get a callback for calling the authProvider with the AUTH_GET_PERMISSIONS verb.
  *
  * @see useAuthProvider
- * @param {Object} authParams Any params you want to pass to the authProvider
  *
  * @returns {Function} getPermissions callback
  *
@@ -37,31 +34,11 @@ import { AUTH_GET_PERMISSIONS } from './types';
  *     );
  * }
  */
-const useGetPermissions = (
-    authParams: any = defaultAuthParams
-): GetPermissions => {
+const useGetPermissions = (): GetPermissions => {
     const authProvider = useAuthProvider();
-    /**
-     * We need the current location to pass to the authProvider for GET_PERMISSIONS.
-     *
-     * But if we used useSelector to read it from the store, the getPermissions function
-     * would be rebuilt each time the user changes location. Consequently, that
-     * would force a rerender of the enclosing component upon navigation.
-     *
-     * To avoid that, we don't subscribe to the store using useSelector;
-     * instead, we get a pointer to the store, and determine the location only
-     * after the getPermissions function was called.
-     */
-
-    const store = useStore();
-
     const getPermissions = useCallback(
-        (location?: Location) =>
-            authProvider(AUTH_GET_PERMISSIONS, {
-                location: location || store.getState().router.location,
-                ...authParams,
-            }),
-        [authParams, authProvider, store]
+        (params: any = {}) => authProvider(AUTH_GET_PERMISSIONS, params),
+        [authProvider]
     );
 
     return authProvider ? getPermissions : getPermissionsWithoutProvider;
@@ -72,10 +49,10 @@ const getPermissionsWithoutProvider = () => Promise.resolve([]);
 /**
  * Ask the permissions to the  authProvider using the AUTH_GET_PERMISSIONS verb
  *
- * @param {Location} location the current location from history (optional)
+ * @param {Object} params The parameters to pass to the authProvider
  *
  * @return {Promise} The authProvider response
  */
-type GetPermissions = (location?: Location) => Promise<any>;
+type GetPermissions = (params?: any) => Promise<any>;
 
 export default useGetPermissions;
