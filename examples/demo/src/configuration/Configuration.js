@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
-import { useTranslate, changeLocale, Title } from 'react-admin';
+import { useTranslate, useLocale, useSetLocale, Title } from 'react-admin';
 import { makeStyles } from '@material-ui/core/styles';
 import { changeTheme } from './actions';
 
@@ -14,9 +14,10 @@ const useStyles = makeStyles({
 
 const Configuration = () => {
     const translate = useTranslate();
+    const locale = useLocale();
+    const setLocale = useSetLocale();
     const classes = useStyles();
     const theme = useSelector(state => state.theme);
-    const locale = useSelector(state => state.i18n.locale);
     const dispatch = useDispatch();
     return (
         <Card>
@@ -48,7 +49,7 @@ const Configuration = () => {
                     variant="contained"
                     className={classes.button}
                     color={locale === 'en' ? 'primary' : 'default'}
-                    onClick={() => dispatch(changeLocale('en'))}
+                    onClick={() => setLocale('en')}
                 >
                     en
                 </Button>
@@ -56,7 +57,7 @@ const Configuration = () => {
                     variant="contained"
                     className={classes.button}
                     color={locale === 'fr' ? 'primary' : 'default'}
-                    onClick={() => dispatch(changeLocale('fr'))}
+                    onClick={() => setLocale('fr')}
                 >
                     fr
                 </Button>
