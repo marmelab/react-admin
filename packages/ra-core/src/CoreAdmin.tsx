@@ -63,6 +63,7 @@ const CoreAdmin: FunctionComponent<AdminProps> = ({
     appLayout,
     authProvider,
     dataProvider,
+    i18nProvider,
     children,
     customRoutes = [],
     dashboard,
@@ -76,7 +77,6 @@ const CoreAdmin: FunctionComponent<AdminProps> = ({
     history: customHistory,
     customReducers,
     customSagas,
-    i18nProvider,
     initialState,
     locale,
 }) => {
@@ -98,7 +98,10 @@ const CoreAdmin: FunctionComponent<AdminProps> = ({
 
         return (
             <DataProviderContext.Provider value={dataProvider}>
-                <TranslationProvider>
+                <TranslationProvider
+                    locale={locale}
+                    i18nProvider={i18nProvider}
+                >
                     <ConnectedRouter history={history}>
                         <Switch>
                             {loginPage !== false && loginPage !== true ? (
