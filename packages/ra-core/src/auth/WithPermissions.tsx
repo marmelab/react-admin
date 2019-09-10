@@ -8,7 +8,7 @@ import {
 import { Location } from 'history';
 
 import warning from '../util/warning';
-import useAuth from './useAuth';
+import useAuthenticated from './useAuthenticated';
 import usePermissions from './usePermissions';
 
 export interface WithPermissionsChildrenParams {
@@ -80,7 +80,7 @@ const WithPermissions: FunctionComponent<Props> = ({
         'You should only use one of the `component`, `render` and `children` props in <WithPermissions>'
     );
 
-    useAuth(authParams);
+    useAuthenticated(authParams);
     const { permissions } = usePermissions(authParams);
     // render even though the AUTH_GET_PERMISSIONS
     // isn't finished (optimistic rendering)

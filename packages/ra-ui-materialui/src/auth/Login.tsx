@@ -7,12 +7,19 @@ import React, {
 } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import Card from '@material-ui/core/Card';
-import Avatar from '@material-ui/core/Avatar';
-import { createMuiTheme, makeStyles, Theme } from '@material-ui/core/styles';
+import {
+    Card,
+    Avatar,
+    createMuiTheme,
+    makeStyles,
+    Theme,
+} from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/styles';
 import LockIcon from '@material-ui/icons/Lock';
 import { StaticContext } from 'react-router';
+import { push } from 'connected-react-router';
+import { useDispatch } from 'react-redux';
+import { useCheckAuth } from 'ra-core';
 
 import defaultTheme from '../defaultTheme';
 import Notification from '../layout/Notification';
@@ -82,6 +89,18 @@ const Login: React.FunctionComponent<
     const styles = useStyles({});
     const muiTheme = useMemo(() => createMuiTheme(theme), [theme]);
     let backgroundImageLoaded = false;
+    const checkAuth = useCheckAuth();
+    const dispatch = useDispatch();
+    useEffect(() => {
+        checkAuth()
+            .then(() => {
+                // already authenticated, redirect to the home page
+                dispatch(push('/'));
+            })
+            .catch(() => {
+                // not authenticated, stay on the login page
+            });
+    }, [checkAuth, dispatch]);
 
     const updateBackgroundImage = () => {
         if (!backgroundImageLoaded && containerRef.current) {

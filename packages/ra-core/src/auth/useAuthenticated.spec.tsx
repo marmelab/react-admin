@@ -8,12 +8,44 @@ import AuthContext from './AuthContext';
 import renderWithRedux from '../util/renderWithRedux';
 import { showNotification } from '../actions/notificationActions';
 
-describe('<Authenticated>', () => {
+describe('useAuthenticated', () => {
     afterEach(cleanup);
 
     const Foo = () => <div>Foo</div>;
 
-    it('should render its child by default', async () => {
+    it('should call authProvider on mount', () => {
+        const authProvider = jest.fn(() => Promise.resolve());
+        const { dispatch } = renderWithRedux(
+            <AuthContext.Provider value={authProvider}>
+                <Authenticated>
+                    <Foo />
+                </Authenticated>
+            </AuthContext.Provider>
+        );
+        expect(authProvider).toBeCalledTimes(1);
+        expect(authProvider.mock.calls[0][0]).toBe('AUTH_CHECK');
+        expect(dispatch).toHaveBeenCalledTimes(0);
+    });
+
+    it('should call authProvider on update', () => {
+        const authProvider = jest.fn(() => Promise.resolve());
+        const FooWrapper = props => (
+            <AuthContext.Provider value={authProvider}>
+                <Authenticated {...props}>
+                    <Foo />
+                </Authenticated>
+            </AuthContext.Provider>
+        );
+        const { rerender, dispatch } = renderWithRedux(<FooWrapper />);
+        rerender(<FooWrapper authParams={{ foo: 'bar' }} />);
+        expect(authProvider).toBeCalledTimes(2);
+        expect(authProvider.mock.calls[1][0]).toBe('AUTH_CHECK');
+        const payload = authProvider.mock.calls[1][1] as any;
+        expect(payload.foo).toBe('bar');
+        expect(dispatch).toHaveBeenCalledTimes(0);
+    });
+
+    it('should not block rendering by default', async () => {
         const { dispatch, queryByText } = renderWithRedux(
             <Authenticated>
                 <Foo />

@@ -13,6 +13,7 @@ import { FETCH_END, FETCH_ERROR, FETCH_START } from '../actions/fetchActions';
 import { showNotification } from '../actions/notificationActions';
 import { refreshView } from '../actions/uiActions';
 import { ReduxState, DataProvider } from '../types';
+import useLogoutIfAccessDenied from '../auth/useLogoutIfAccessDenied';
 
 export type DataProviderHookFunction = (
     type: string,
@@ -77,6 +78,7 @@ const useDataProvider = (): DataProviderHookFunction => {
     const isOptimistic = useSelector(
         (state: ReduxState) => state.admin.ui.optimistic
     );
+    const logoutIfAccessDenied = useLogoutIfAccessDenied();
 
     return useCallback(
         (
@@ -119,12 +121,13 @@ const useDataProvider = (): DataProviderHookFunction => {
                 onFailure,
                 dataProvider,
                 dispatch,
+                logoutIfAccessDenied,
             };
             return undoable
                 ? performUndoableQuery(params)
                 : performQuery(params);
         },
-        [dataProvider, dispatch, isOptimistic]
+        [dataProvider, dispatch, isOptimistic, logoutIfAccessDenied]
     );
 };
 
@@ -147,6 +150,7 @@ const performUndoableQuery = ({
     onFailure,
     dataProvider,
     dispatch,
+    logoutIfAccessDenied,
 }: QueryFunctionParams) => {
     dispatch(startOptimisticMode());
     dispatch({
@@ -195,23 +199,26 @@ const performUndoableQuery = ({
                 });
                 dispatch({ type: FETCH_END });
             })
-            .catch(error => {
-                dispatch({
-                    type: `${action}_FAILURE`,
-                    error: error.message ? error.message : error,
-                    payload: error.body ? error.body : null,
-                    requestPayload: payload,
-                    meta: {
-                        ...rest,
-                        resource,
-                        fetchResponse: type,
-                        fetchStatus: FETCH_ERROR,
-                    },
-                });
-                dispatch({ type: FETCH_ERROR, error });
-                onFailure && onFailure(error);
-                throw new Error(error.message ? error.message : error);
-            });
+            .catch(error =>
+                logoutIfAccessDenied(error).then(loggedOut => {
+                    if (loggedOut) return;
+                    dispatch({
+                        type: `${action}_FAILURE`,
+                        error: error.message ? error.message : error,
+                        payload: error.body ? error.body : null,
+                        requestPayload: payload,
+                        meta: {
+                            ...rest,
+                            resource,
+                            fetchResponse: type,
+                            fetchStatus: FETCH_ERROR,
+                        },
+                    });
+                    dispatch({ type: FETCH_ERROR, error });
+                    onFailure && onFailure(error);
+                    throw new Error(error.message ? error.message : error);
+                })
+            );
     });
     return Promise.resolve({});
 };
@@ -232,6 +239,7 @@ const performQuery = ({
     onFailure,
     dataProvider,
     dispatch,
+    logoutIfAccessDenied,
 }: QueryFunctionParams) => {
     dispatch({
         type: action,
@@ -265,23 +273,26 @@ const performQuery = ({
             onSuccess && onSuccess(response);
             return response;
         })
-        .catch(error => {
-            dispatch({
-                type: `${action}_FAILURE`,
-                error: error.message ? error.message : error,
-                payload: error.body ? error.body : null,
-                requestPayload: payload,
-                meta: {
-                    ...rest,
-                    resource,
-                    fetchResponse: type,
-                    fetchStatus: FETCH_ERROR,
-                },
-            });
-            dispatch({ type: FETCH_ERROR, error });
-            onFailure && onFailure(error);
-            throw new Error(error.message ? error.message : error);
-        });
+        .catch(error =>
+            logoutIfAccessDenied(error).then(loggedOut => {
+                if (loggedOut) return;
+                dispatch({
+                    type: `${action}_FAILURE`,
+                    error: error.message ? error.message : error,
+                    payload: error.body ? error.body : null,
+                    requestPayload: payload,
+                    meta: {
+                        ...rest,
+                        resource,
+                        fetchResponse: type,
+                        fetchStatus: FETCH_ERROR,
+                    },
+                });
+                dispatch({ type: FETCH_ERROR, error });
+                onFailure && onFailure(error);
+                throw new Error(error.message ? error.message : error);
+            })
+        );
 };
 
 interface QueryFunctionParams {
@@ -296,6 +307,7 @@ interface QueryFunctionParams {
     onFailure?: (error: any) => void;
     dataProvider: DataProvider;
     dispatch: Dispatch;
+    logoutIfAccessDenied: (error?: any) => Promise<boolean>;
 }
 
 export default useDataProvider;

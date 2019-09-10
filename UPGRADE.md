@@ -347,7 +347,13 @@ When you provide an `authProvider` to the `<Admin>` component, react-admin creat
 
 If you didn't access the `authProvider` context manually, you have nothing to change. All react-admin components have been updated to use the new context API.
 
-Note that direct access to the `authProvider` from the context is discouraged (and not documented). If you need to interact with the `authProvider`, use the new `useAuth()` and `usePermissions()` hooks, or the auth-related action creators (`userLogin`, `userLogout`, `userCheck`).
+Note that direct access to the `authProvider` from the context is discouraged (and not documented). If you need to interact with the `authProvider`, use the new auth hooks:
+
+- `useLogin`
+- `useLogout`
+- `useAuthenticated`
+- `useAuthState`
+- `usePermissions`
 
 ## `authProvider` No Longer Receives `match` in Params
 
@@ -959,3 +965,50 @@ const ExportButton = ({ sort, filter, maxResults = 1000, resource }) => {
     );
 };
 ```
+
+## The `authProvider` no longer receives default parameters
+
+When calling the `authProvider` for permissions (with the `AUTH_GET_PERMISSIONS` verb), react-admin used to include the pathname as second parameter. That allowed you to return different permissions based on the page. In a similar fashion, for the `AUTH_CHECK` call, the `params` argument contained the `resource` name, allowing different checks for different resources.
+
+We believe that authentication and permissions should not vary depending on where you are in the application ; it's up to components to decide to do something or not depending on permissions. So we've removed the default parameters from all the `authProvider` calls. 
+
+If you want to keep location-dependent authentication or permissions logic, read the current location from the `window` object direclty in your `authProvider`, using `window.location.hash` (if you use a hash router), or using `window.location.pathname` (if you use a browser router):
+
+```diff
+// in myauthProvider.js
+import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR, AUTH_GET_PERMISSIONS } from 'react-admin';
+import decodeJwt from 'jwt-decode';
+
+export default (type, params) => {
+    if (type === AUTH_CHECK) {
+-       const { resource } = params;
++       const resource = window.location.hash.substring(2, window.location.hash.indexOf('/', 2))
+        // resource-dependent logic follows
+    }
+    if (type === AUTH_GET_PERMISSIONS) {
+-       const { pathname } = params;
++       const pathname = window.location.hash;
+        // pathname-dependent logic follows 
+        // ...
+    }
+    return Promise.reject('Unknown method');
+};
+```
+
+## No more Redux actions for authentication
+
+React-admin now uses hooks instead of sagas to handle authentication and authorization. That means that react-admin no longer dispatches the following actions:
+
+- `USER_LOGIN`
+- `USER_LOGIN_LOADING`
+- `USER_LOGIN_FAILURE`
+- `USER_LOGIN_SUCCESS`
+- `USER_CHECK`
+- `USER_CHECK_SUCCESS`
+- `USER_LOGOUT`
+
+If you have custom Login or Logout buttons that dispatch these actions, they will still work, but you are encouraged to migrate to the hook equivalents (`useLogin` and `useLogout`).
+
+If you had custom reducer or sagas based on these actions, they will no longer work. You will have to reimplement that custom logic using the new authentication hooks. 
+
+**Tip**: If you need to clear the Redux state, you can dispatch the `CLEAR_STATE` action.

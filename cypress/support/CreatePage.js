@@ -21,6 +21,8 @@ export default url => ({
         descInput: '.ql-editor',
         tab: index => `.form-tab:nth-of-type(${index})`,
         title: '#react-admin-title',
+        userMenu: 'button[title="Profile"]',
+        logout: '.logout',
     },
 
     navigate() {
@@ -28,7 +30,7 @@ export default url => ({
     },
 
     waitUntilVisible() {
-        cy.get(this.elements.submitButton);
+        cy.get(this.elements.submitButton).should('be.visible');
     },
 
     setInputValue(type, name, value, clearPreviousValue = true) {
@@ -88,5 +90,10 @@ export default url => ({
 
     gotoTab(index) {
         cy.get(this.elements.tab(index)).click();
+    },
+
+    logout() {
+        cy.get(this.elements.userMenu).click();
+        cy.get(this.elements.logout).click();
     },
 });
