@@ -95,6 +95,7 @@ const LoginForm: SFC<Props & EnhancedProps> = ({
                     label={translate('ra.auth.password')}
                     type="password"
                     disabled={isLoading}
+                    autocomplete="current-password"
                 />
             </div>
         </div>
