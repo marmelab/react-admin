@@ -110,7 +110,7 @@ export class RichTextInput extends Component {
 				toolbar: {
 					container: toolbar,
                     handlers: {
-                        image: imageHandler
+                        image: imageUpload
                     }
 				}, 
 				clipboard: { matchVisual: false } 
