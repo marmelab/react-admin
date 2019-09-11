@@ -14,6 +14,7 @@ import AuthContext from './auth/AuthContext';
 import DataProviderContext from './dataProvider/DataProviderContext';
 import createAdminStore, { InitialState } from './createAdminStore';
 import TranslationProvider from './i18n/TranslationProvider';
+import defaultI18nProvider from './i18n/defaultI18nProvider';
 import CoreAdminRouter from './CoreAdminRouter';
 import {
     AuthProvider,
@@ -63,6 +64,7 @@ const CoreAdmin: FunctionComponent<AdminProps> = ({
     appLayout,
     authProvider,
     dataProvider,
+    i18nProvider = defaultI18nProvider,
     children,
     customRoutes = [],
     dashboard,
@@ -76,7 +78,6 @@ const CoreAdmin: FunctionComponent<AdminProps> = ({
     history: customHistory,
     customReducers,
     customSagas,
-    i18nProvider,
     initialState,
     locale,
 }) => {
@@ -98,7 +99,10 @@ const CoreAdmin: FunctionComponent<AdminProps> = ({
 
         return (
             <DataProviderContext.Provider value={dataProvider}>
-                <TranslationProvider>
+                <TranslationProvider
+                    locale={locale}
+                    i18nProvider={i18nProvider}
+                >
                     <ConnectedRouter history={history}>
                         <Switch>
                             {loginPage !== false && loginPage !== true ? (
@@ -170,9 +174,7 @@ React-admin requires a valid dataProvider function to work.`);
                         customReducers,
                         customSagas,
                         dataProvider,
-                        i18nProvider,
                         initialState,
-                        locale,
                         history: finalHistory,
                     })}
                 >

@@ -1012,3 +1012,120 @@ If you have custom Login or Logout buttons that dispatch these actions, they wil
 If you had custom reducer or sagas based on these actions, they will no longer work. You will have to reimplement that custom logic using the new authentication hooks. 
 
 **Tip**: If you need to clear the Redux state, you can dispatch the `CLEAR_STATE` action.
+
+## The translation layer no longer uses Redux
+
+React-admin translation (i18n) layer lets developers provide translations for UI and content, based on Airbnb's [Polyglot](https://airbnb.io/polyglot.js/) library. The previous implementation used Redux and redux-saga. In react-admin 3.0, the translation utilities are implemented using a React context and a set of hooks. 
+
+If you didn't use translations, or if you passed your `i18nProvider` to the `<Admin>` component and used only one language, you have nothing to change. Your app will continue to work just as before. We encourage you to migrate from the `withTranslate` HOC to the `useTranslate` hook, but that's not compulsory.
+
+```diff
+-import { withTranslate } from 'react-admin';
++import { useTranslate } from 'react-admin';
+
+-const SettingsMenu = ({ translate }) => {
++const SettingsMenu = () => {
++   const translate = useTranslate();
+    return <MenuItem>{translate('settings')}</MenuItem>;
+}
+
+-export default withTranslate(SettingsMenu);
++export default SettingsMenu;
+```
+
+However, if your app allowed users to change locale at runtime, you need to update the menu or button that triggers the locale change. Instead of dispatching a `CHANGE_LOCALE` Redux action (which has no effect in react-admin 3.0), use the `useSetLocale` hook as follows:
+
+```diff
+import React from 'react';
+-import { connect } from 'react-redux';
+import Button from '@material-ui/core/Button';
+-import { changeLocale } from 'react-admin';
++import { useSetLocale } from 'react-admin';
+
+-const localeSwitcher = ({ changeLocale }) => 
++const LocaleSwitcher = () => {
++   const setLocale = usesetLocale();
+-   const switchToFrench = () => changeLocale('fr');
++   const switchToFrench = () => setLocale('fr');
+-   const switchToEnglish = () => changeLocale('en');
++   const switchToEnglish = () => setLocale('en');
+    return (
+        <div>
+            <div>Language</div>
+            <Button onClick={switchToEnglish}>en</Button>
+            <Button onClick={switchToFrench}>fr</Button>
+        </div>
+    );
+}
+
+-export default connect(null, { changeLocale })(LocaleSwitcher);
++export default LocaleSwitcher;
+```
+
+Also, if you connected a component to the redux store to get the current language, you now need to use the `useLocale()` hook instead.
+
+```diff
+-import { connect } from 'react-redux';
++import { useLocale } from 'react-admin';
+
+const availableLanguages = {
+    en: 'English',
+    fr: 'Français',
+}
+
+-const CurrentLanguage = ({ locale }) => {
++const CurrentLanguage = () => {
++   const locale = useLocale();
+    return <span>{availableLanguages[locale]}</span>;
+}
+
+- const mapStatetoProps = state => state.i18n.locale
+
+-export default connect(mapStateToProps)(CurrentLanguage);
++export default CurrentLanguage;
+```
+
+If you used a custom Redux store, you must update the `createAdminStore` call to omit the i18n details:
+
+```diff
+const App = () => (
+    <Provider
+        store={createAdminStore({
+            authProvider,
+            dataProvider,
+-           i18nProvider,
+            history,
+        })}
+    >
+        <Admin
+            authProvider={authProvider}
+            dataProvider={dataProvider}
+            history={history}
+            title="My Admin"
+        >
+```
+
+Also, if you used a custom app without the `Admin` component, update the `<TranslationProvider>` call as the signature has changed:
+
+```diff
+const App = () => (
+    <Provider
+        store={createAdminStore({
+            authProvider,
+            dataProvider,
+            history,
+        })}
+    >
+        <AuthContext.Provider value={authProvider}>
+        <DataProviderContext.Provider value={dataProvider}>
+-       <TranslationProvider />
++       <TranslationProvider
++           locale={locale}
++           i18nProvider={i18nProvider}
++       >
+            <ThemeProvider>
+                <Resource name="posts" intent="registration" />
+                <Resource name="comments" intent="registration" />
+                <Resource name="users" intent="registration" />
+                        // ...
+```

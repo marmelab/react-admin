@@ -13,7 +13,9 @@ describe('<SaveButton />', () => {
                 <SaveButton submitOnEnter />
             </TestContext>
         );
-        expect(getByLabelText('Save').getAttribute('type')).toEqual('submit');
+        expect(getByLabelText('ra.action.save').getAttribute('type')).toEqual(
+            'submit'
+        );
     });
 
     it('should render as button type when submitOnEnter is false', () => {
@@ -23,7 +25,9 @@ describe('<SaveButton />', () => {
             </TestContext>
         );
 
-        expect(getByLabelText('Save').getAttribute('type')).toEqual('button');
+        expect(getByLabelText('ra.action.save').getAttribute('type')).toEqual(
+            'button'
+        );
     });
 
     it('should trigger submit action when clicked if no saving is in progress', () => {
@@ -37,7 +41,7 @@ describe('<SaveButton />', () => {
             </TestContext>
         );
 
-        fireEvent.mouseDown(getByLabelText('Save'));
+        fireEvent.mouseDown(getByLabelText('ra.action.save'));
         expect(onSubmit).toHaveBeenCalled();
     });
 
@@ -50,7 +54,7 @@ describe('<SaveButton />', () => {
             </TestContext>
         );
 
-        fireEvent.mouseDown(getByLabelText('Save'));
+        fireEvent.mouseDown(getByLabelText('ra.action.save'));
         expect(onSubmit).not.toHaveBeenCalled();
     });
 
@@ -72,7 +76,7 @@ describe('<SaveButton />', () => {
             </TestContext>
         );
 
-        fireEvent.mouseDown(getByLabelText('Save'));
+        fireEvent.mouseDown(getByLabelText('ra.action.save'));
         expect(dispatchSpy).toHaveBeenCalledWith({
             payload: {
                 message: 'ra.message.invalid_form',
