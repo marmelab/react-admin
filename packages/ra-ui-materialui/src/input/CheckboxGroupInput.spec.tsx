@@ -161,14 +161,11 @@ describe('<CheckboxGroupInput />', () => {
                 onSubmit={jest.fn}
                 render={() => <CheckboxGroupInput {...defaultProps} />}
             />,
-            {
-                i18n: {
-                    messages: {
-                        Angular: 'Angular **',
-                        React: 'React **',
-                    },
-                },
-            }
+            {},
+            () => ({
+                Angular: 'Angular **',
+                React: 'React **',
+            })
         );
         expect(queryByLabelText('Angular **')).not.toBeNull();
         expect(queryByLabelText('React **')).not.toBeNull();
@@ -185,14 +182,11 @@ describe('<CheckboxGroupInput />', () => {
                     />
                 )}
             />,
-            {
-                i18n: {
-                    messages: {
-                        Angular: 'Angular **',
-                        React: 'React **',
-                    },
-                },
-            }
+            {},
+            () => ({
+                Angular: 'Angular **',
+                React: 'React **',
+            })
         );
         expect(queryByLabelText('Angular **')).toBeNull();
         expect(queryByLabelText('React **')).toBeNull();

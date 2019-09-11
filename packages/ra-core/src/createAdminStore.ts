@@ -7,7 +7,6 @@ import { History } from 'history';
 import { AuthProvider, DataProvider, I18nProvider } from './types';
 import createAppReducer from './reducer';
 import { adminSaga } from './sideEffect';
-import { defaultI18nProvider } from './i18n';
 import { CLEAR_STATE } from './actions/clearActions';
 
 interface Window {

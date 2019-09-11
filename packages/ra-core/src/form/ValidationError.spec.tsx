@@ -2,7 +2,6 @@ import React from 'react';
 import { render, cleanup } from '@testing-library/react';
 
 import ValidationError from './ValidationError';
-import { TranslationProvider } from '../i18n';
 import TestContext from '../util/TestContext';
 
 const translate = jest.fn(key => key);
@@ -10,27 +9,22 @@ const translate = jest.fn(key => key);
 const renderWithTranslations = content =>
     render(
         <TestContext
-            initialState={{
-                i18n: {
-                    locale: 'en',
-                    messages: {
-                        ra: {
-                            validation: {
-                                required: 'Required',
-                                minValue: 'Min Value %{value}',
-                                oneOf: 'Must be one of %{list}',
-                            },
-                        },
-                        myapp: {
-                            validation: {
-                                match: 'Must match %{match}',
-                            },
-                        },
+            i18nProvider={() => ({
+                ra: {
+                    validation: {
+                        required: 'Required',
+                        minValue: 'Min Value %{value}',
+                        oneOf: 'Must be one of %{list}',
                     },
                 },
-            }}
+                myapp: {
+                    validation: {
+                        match: 'Must match %{match}',
+                    },
+                },
+            })}
         >
-            <TranslationProvider>{content}</TranslationProvider>
+            {content}
         </TestContext>
     );
 

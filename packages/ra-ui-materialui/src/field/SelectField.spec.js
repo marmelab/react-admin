@@ -113,7 +113,8 @@ describe('<SelectField />', () => {
     it('should translate the choice by default', () => {
         const { queryAllByText } = renderWithRedux(
             <SelectField {...defaultProps} record={{ foo: 0 }} />,
-            { i18n: { messages: { hello: 'bonjour' } } }
+            {},
+            () => ({ hello: 'bonjour' })
         );
         expect(queryAllByText('hello')).toHaveLength(0);
         expect(queryAllByText('bonjour')).toHaveLength(1);
@@ -126,7 +127,8 @@ describe('<SelectField />', () => {
                 record={{ foo: 0 }}
                 translateChoice={false}
             />,
-            { i18n: { messages: { hello: 'bonjour' } } }
+            {},
+            () => ({ hello: 'bonjour' })
         );
         expect(queryAllByText('hello')).toHaveLength(1);
         expect(queryAllByText('bonjour')).toHaveLength(0);

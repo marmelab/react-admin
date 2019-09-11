@@ -21,11 +21,6 @@ const primedStore = {
         },
         customQueries: {},
     },
-    i18n: {
-        loading: false,
-        locale: 'en',
-        messages: {},
-    },
     router: {
         action: 'POP',
         location: {
