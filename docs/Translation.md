@@ -5,67 +5,104 @@ title: "Translation"
 
 # Translation
 
-The react-admin interface uses English as the default language. But it also supports any other language, thanks to the [polyglot.js](http://airbnb.io/polyglot.js/) library.
+The react-admin user interface uses English as the default language. But you can also display the UI and content in other languages, allow changing language at runtime, even lazy-loading optional languages to avoid increasing the bundle size with all translations. 
 
-## Changing Locale
+The react-admin translation layer is based on [polyglot.js](http://airbnb.io/polyglot.js/), which uses JSON files for translations. You will use translation features mostly via the `i18nProvider`, and a set of hooks (`useTranslate`, `useLocale`, `useSetLocale`).
 
-If you want to use another locale, you'll have to install a third-party package. For instance, to change the interface to French, you must install the `ra-language-french` npm package then instruct react-admin to use it.
+**Tip**: We'll use a bit of custom vocabulary in this chapter:
+ 
+- "i18n" is a shorter way to write "internationalization" (an i followed by 18 letters followed by n) 
+- "locale" is a concept similar to languages, but it also includes the concept of country. For instance, there are several English locales (like `en_us` and `en_gb`) because US and UK citizens don't use exactly the same language. For react-admin, the "locale" is just a key for your i18nProvider, so it can have any value you want.
 
-The `<Admin>` component has an `i18nProvider` prop, which accepts a function with the following signature:
+## Introducing the `i18nProvider`
 
-```js
+Just like for data fetching and authentication, react-admin relies on a simple function for translations. It's called the `i18nProvider`, and here is its signature:
+
+```jsx
 const i18nProvider = locale => messages;
 ```
 
-The `messages` should be a dictionary of interface and resource names (see the [Translation Messages section](#translation-messages) below for details about the dictionary format).
+Given a locale, The `i18nProvider` function should return a dictionary of terms. For instance:
 
-React-admin calls the `i18nProvider` when it starts, passing the `locale` specified on the `Admin` component as parameter. The provider must return the messages synchronously. React-admin also calls the `i18nProvider` whenever the locale changes, passing the new locale as parameter. So the simplest example for a multilingual interface reads as follow:
+```jsx
+const i18nProvider = locale => {
+    if (locale === 'en') {
+        return {
+            ra: {
+                notification: {
+                    http_error: 'Network error. Please retry',
+                },
+                action: {
+                    save: 'Save',
+                    delete: 'Delete',
+                },
+            },
+        };
+    }
+    if (locale === 'fr') {
+        return {
+            ra: {
+                notification: {
+                    http_error: 'Erreur réseau, veuillez réessayer',
+                },
+                action: {
+                    save: 'Enregistrer',
+                    delete: 'Supprimer',
+                },
+            },
+        };
+    }
+};
+```
+
+If you want to add or update tranlations, you'll have to provide your own `i18nProvider`.
+
+React-admin components use translation keys for their labels, and rely on the `i18nProvider` to translate them. For instance:
+
+```jsx
+const SaveButton = ({ doSave }) => {
+    const translate = useTranslate();
+    return (
+        <Button onclick={doSave}>
+            {translate('ra.action.save')} // will translate to "Save" in English and "Enregistrer" in French
+        </Button>;
+    );
+};
+```
+
+And just like for the `dataProvider` and the `authProvider`, you can *inject* the `i18nProvider` to your react-admin app using the `<Admin>` component:
+
+```jsx
+import i18nProvider from './i18n/i18nProvider';
+
+const App = () => (
+    <Admin 
+        dataProvider={dataProvider}
+        authProvider={authProvider}
+        i18nProvider={i18nProvider}
+    >
+        <Resource name="posts" list={...}>
+        // ...
+```
+
+## Changing The Default Locale
+
+The default react-admin locale is `en`, for English. If you want to display the interface in another language by default, you'll have to install a third-party package. For instance, to change the interface to French, you must install the `ra-language-french` npm package, then use it in a custom `i18nProvider`, as follows:
 
 ```jsx
 import React from 'react';
 import { Admin, Resource } from 'react-admin';
 import frenchMessages from 'ra-language-french';
-import englishMessages from 'ra-language-english';
 
-const messages = {
-    fr: frenchMessages,
-    en: englishMessages,
-}
-const i18nProvider = locale => messages[locale];
+const i18nProvider = () => frenchMessages;
 
 const App = () => (
-    <Admin locale="en" i18nProvider={i18nProvider}>
+    <Admin locale="fr" i18nProvider={i18nProvider}>
         ...
     </Admin>
 );
 
 export default App;
-```
-
-The `i18nProvider` may return a promise for locale change calls (except the initial call, when the app starts). This can be useful to only load the needed locale. For example:
-
-```js
-import englishMessages from '../en.js';
-
-const asyncMessages = {
-    fr: () => import('../i18n/fr.js').then(messages => messages.default),
-    it: () => import('../i18n/it.js').then(messages => messages.default),
-};
-
-const i18nProvider = locale => {
-    if (locale === 'en') {
-        // initial call, must return synchronously
-        return englishMessages;
-    }
-    // change of locale after initial call returns a promise
-    return asyncMessages[params.locale]();
-}
-
-const App = () => (
-    <Admin locale="en" i18nProvider={i18nProvider}>
-        ...
-    </Admin>
-);
 ```
 
 ## Available Locales
@@ -113,9 +150,9 @@ These packages are not directly interoperable with react-admin, but the upgrade 
 
 If you want to contribute a new translation, feel free to submit a pull request to update [this page](https://github.com/marmelab/react-admin/blob/master/docs/Translation.md) with a link to your package.
 
-## Changing Locale At Runtime
+## `useSetLocale`: Changing Locale At Runtime
 
-If you want to offer the ability to change locale at runtime, you must provide the messages for all possible translations:
+If you want to offer the ability to change locale at runtime, you must provide an `i18nProvider` that contains the messages for all possible locales:
 
 ```jsx
 import React from 'react';
@@ -138,23 +175,20 @@ const App = () => (
 export default App;
 ```
 
-Then, dispatch the `CHANGE_LOCALE` action, by using the `changeLocale` action creator. For instance, the following component allows the user to switch the interface language between English and French:
+Then, use the `useSetLocale` hook to change locale. For instance, the following component allows the user to switch the interface language between English and French:
 
 ```jsx
 import React, { Component } from 'react';
-import { useDispatch } from 'react-redux';
 import Button from '@material-ui/core/Button';
-import { changeLocale } from 'react-admin';
+import { useSetLocale } from 'react-admin';
 
 const LocaleSwitcher = () => {
-    const dispatch = useDispatch();
-    const switchToFrench = () => dispatch(changeLocale('fr'));
-    const switchToEnglish = () => dispatch(changeLocale('en'));
+    const setLocale = useSetLocale();
     return (
         <div>
             <div>Language</div>
-            <Button onClick={switchToEnglish}>en</Button>
-            <Button onClick={switchToFrench}>fr</Button>
+            <Button onClick={() => setLocale('fr')}>English</Button>
+            <Button onClick={() => setLocale('en')}>French</Button>
         </div>
     );
 }
@@ -162,9 +196,67 @@ const LocaleSwitcher = () => {
 export default LocaleSwitcher;
 ```
 
+## `useLocale`: Getting The Current Locale
+
+Your language switcher component probably needs to know the current locale, in order to disable/transform the button for the current language. The `useLocale` hook returns the current locale:
+
+```jsx
+import React, { Component } from 'react';
+import Button from '@material-ui/core/Button';
+import { useLocale, useSetLocale } from 'react-admin';
+
+const LocaleSwitcher = () => {
+    const locale = useLocale();
+    const setLocale = useSetLocale();
+    return (
+        <div>
+            <div>Language</div>
+            <Button 
+                disabled={locale === 'fr'}
+                onClick={() => setLocale('fr')}
+            >
+                English
+            </Button>
+            <Button
+                disabled={locale === 'en'}
+                onClick={() => setLocale('en')}
+            >
+                French
+            </Button>
+        </div>
+    );
+}
+
+export default LocaleSwitcher;
+```
+
+## Lazy-Loading Locales
+
+Bundling all the possible locales in the `i18nProvider` is a great recipe to increase your bundle size, and slow down the initial application load. Fortunately, the `i18nProvider` may return a *promise* for locale change calls (except the initial call, when the app starts) to load secondary locales on demand. For example:
+
+```js
+import englishMessages from '../en.js';
+
+const i18nProvider = locale => {
+    if (locale === 'en') {
+        // initial call, must return synchronously
+        return englishMessages;
+    }
+    if (locale === 'fr') {
+        return import('../i18n/fr.js').then(messages => messages.default);
+    }
+}
+
+const App = () => (
+    <Admin locale="en" i18nProvider={i18nProvider}>
+        ...
+    </Admin>
+);
+```
+
 ## Using The Browser Locale
 
-React-admin provides a helper function named `resolveBrowserLocale()`, which helps you to introduce a dynamic locale attribution based on the locale configured in the user's browser. To use it, simply pass the function as `locale` prop.
+React-admin provides a helper function named `resolveBrowserLocale()`, which detects the user's browser locale. To use it, simply pass the function as `locale` prop.
 
 ```jsx
 import React from 'react';
@@ -176,7 +268,7 @@ const messages = {
     fr: frenchMessages,
     en: englishMessages,
 };
-const i18nProvider = locale => messages[locale];
+const i18nProvider = locale => messages[locale] ? messages[locale] : messages.en;
 
 const App = () => (
     <Admin locale={resolveBrowserLocale()} i18nProvider={i18nProvider}>
@@ -186,6 +278,8 @@ const App = () => (
 
 export default App;
 ```
+
+Beware that users from all around the world may use your application, so make sure the `i18nProvider` returns default messages even for unknown locales?
 
 ## Translation Messages
 
@@ -218,8 +312,8 @@ By default, React-admin uses resource names ("post", "comment", etc) and field n
 
 However, before humanizing names, react-admin checks the `messages` dictionary for a possible translation, with the following keys:
 
-- `${locale}.resources.${resourceName}.name` for resource names (used for the menu and page titles)
-- `${locale}.resources.${resourceName}.fields.${fieldName}` for field names (used for datagrid header and form input labels)
+- `resources.${resourceName}.name` for resource names (used for the menu and page titles)
+- `resources.${resourceName}.fields.${fieldName}` for field names (used for datagrid header and form input labels)
 
 This lets you translate your own resource and field names by passing a `messages` object with a `resources` key:
 
@@ -274,46 +368,6 @@ const App = () => (
         ...
     </Admin>
 );
-```
-
-## Translating Error Messages
-
-In Create and Edit views, forms can use custom validators. These validator functions should return translation keys rather than translated messages. React-admin automatically passes these identifiers to the translation function: 
-
-```jsx
-// in validators/required.js
-const required = () => (value, allValues, props) =>
-    value
-        ? undefined
-        : 'myroot.validation.required';
-
-// in i18n/en.json
-export default {
-    myroot: {
-        validation: {
-            required: 'Required field',
-        }
-    }
-}
-```
-
-If the translation depends on a variable, the validator can return an object rather than a translation identifier:
-
-```jsx
-// in validators/minLength.js
-const minLength = (min) => (value, allValues, props) => 
-    value.length >= min
-        ? undefined
-        : { message: 'myroot.validation.minLength', args: { min } };
-
-// in i18n/en.js
-export default {
-    myroot: {
-        validation: {
-            minLength: 'Must be %{min} characters at least',
-        }
-    }
-}
 ```
 
 ## `useTranslate` Hook
@@ -399,6 +453,46 @@ translate('not_yet_translated', { _: 'Default translation' })
 ```
 
 To find more detailed examples, please refer to [http://airbnb.io/polyglot.js/](http://airbnb.io/polyglot.js/)
+
+## Translating Error Messages
+
+In Create and Edit views, forms can use custom validators. These validator functions should return translation keys rather than translated messages. React-admin automatically passes these identifiers to the translation function: 
+
+```jsx
+// in validators/required.js
+const required = () => (value, allValues, props) =>
+    value
+        ? undefined
+        : 'myroot.validation.required';
+
+// in i18n/en.json
+export default {
+    myroot: {
+        validation: {
+            required: 'Required field',
+        }
+    }
+}
+```
+
+If the translation depends on a variable, the validator can return an object rather than a translation identifier:
+
+```jsx
+// in validators/minLength.js
+const minLength = (min) => (value, allValues, props) => 
+    value.length >= min
+        ? undefined
+        : { message: 'myroot.validation.minLength', args: { min } };
+
+// in i18n/en.js
+export default {
+    myroot: {
+        validation: {
+            minLength: 'Must be %{min} characters at least',
+        }
+    }
+}
+```
 
 ## Notifications With Variables
 
