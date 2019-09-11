@@ -63,11 +63,11 @@ export default ({
         return limitSuggestions(
             removeAlreadySelectedSuggestions(
                 selectedItem,
-                filteredChoices.concat(emptySuggestion),
+                filteredChoices,
                 optionValue
             ),
             suggestionLimit
-        );
+        ).concat(emptySuggestion);
     }
 
     return limitSuggestions(

@@ -50,7 +50,7 @@ describe('getSuggestions', () => {
         ).toEqual([{ id: 1, value: '**one' }]);
     });
 
-    it('should not filter choices according to the currently selected values if limitChoicesToValue is false', () => {
+    it('should filter choices according to the currently selected values if limitChoicesToValue is false', () => {
         expect(
             getSuggestions({
                 choices,
@@ -61,7 +61,7 @@ describe('getSuggestions', () => {
                 limitChoicesToValue: false,
                 selectedItem: [choices[0]],
             })('')
-        ).toEqual(choices);
+        ).toEqual(choices.slice(1));
     });
 
     it('should filter choices according to the currently selected values if limitChoicesToValue is true', () => {
@@ -75,7 +75,7 @@ describe('getSuggestions', () => {
                 limitChoicesToValue: true,
                 selectedItem: [choices[0]],
             })('')
-        ).toEqual([choices[0]]);
+        ).toEqual(choices.slice(1));
     });
 
     it('should not filter choices according to the currently selected value if limitChoicesToValue is false', () => {
@@ -119,6 +119,36 @@ describe('getSuggestions', () => {
             { id: 1, value: 'one' },
             { id: 2, value: 'two' },
             { id: 3, value: 'three' },
+            { id: null, value: '' },
+        ]);
+    });
+
+    it('should limit the number of choices', () => {
+        expect(
+            getSuggestions({
+                choices,
+                allowEmpty: false,
+                optionText: 'value',
+                getSuggestionText: ({ value }) => value,
+                optionValue: 'id',
+                limitChoicesToValue: true,
+                suggestionLimit: 2,
+            })('')
+        ).toEqual([{ id: 1, value: 'one' }, { id: 2, value: 'two' }]);
+
+        expect(
+            getSuggestions({
+                choices,
+                allowEmpty: true,
+                optionText: 'value',
+                getSuggestionText: ({ value }) => value,
+                optionValue: 'id',
+                limitChoicesToValue: true,
+                suggestionLimit: 2,
+            })('')
+        ).toEqual([
+            { id: 1, value: 'one' },
+            { id: 2, value: 'two' },
             { id: null, value: '' },
         ]);
     });
