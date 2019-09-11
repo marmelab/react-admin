@@ -3,7 +3,7 @@ import expect from 'expect';
 import CheckboxGroupInput from './CheckboxGroupInput';
 import { render, cleanup, fireEvent } from '@testing-library/react';
 import { Form } from 'react-final-form';
-import { renderWithRedux } from 'ra-core';
+import { renderWithRedux, TranslationProvider } from 'ra-core';
 
 describe('<CheckboxGroupInput />', () => {
     const defaultProps = {
@@ -156,37 +156,41 @@ describe('<CheckboxGroupInput />', () => {
     });
 
     it('should translate the choices by default', () => {
-        const { queryByLabelText } = renderWithRedux(
-            <Form
-                onSubmit={jest.fn}
-                render={() => <CheckboxGroupInput {...defaultProps} />}
-            />,
-            {},
-            () => ({
-                Angular: 'Angular **',
-                React: 'React **',
-            })
+        const { queryByLabelText } = render(
+            <TranslationProvider
+                i18nProvider={() => ({
+                    Angular: 'Angular **',
+                    React: 'React **',
+                })}
+            >
+                <Form
+                    onSubmit={jest.fn}
+                    render={() => <CheckboxGroupInput {...defaultProps} />}
+                />
+            </TranslationProvider>
         );
         expect(queryByLabelText('Angular **')).not.toBeNull();
         expect(queryByLabelText('React **')).not.toBeNull();
     });
 
     it('should not translate the choices if translateChoice is false', () => {
-        const { queryByLabelText } = renderWithRedux(
-            <Form
-                onSubmit={jest.fn}
-                render={() => (
-                    <CheckboxGroupInput
-                        {...defaultProps}
-                        translateChoice={false}
-                    />
-                )}
-            />,
-            {},
-            () => ({
-                Angular: 'Angular **',
-                React: 'React **',
-            })
+        const { queryByLabelText } = render(
+            <TranslationProvider
+                i18nProvider={() => ({
+                    Angular: 'Angular **',
+                    React: 'React **',
+                })}
+            >
+                <Form
+                    onSubmit={jest.fn}
+                    render={() => (
+                        <CheckboxGroupInput
+                            {...defaultProps}
+                            translateChoice={false}
+                        />
+                    )}
+                />
+            </TranslationProvider>
         );
         expect(queryByLabelText('Angular **')).toBeNull();
         expect(queryByLabelText('React **')).toBeNull();

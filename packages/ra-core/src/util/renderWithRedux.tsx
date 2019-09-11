@@ -2,7 +2,6 @@ import React from 'react';
 import { render, RenderResult } from '@testing-library/react';
 
 import TestContext from './TestContext';
-import { I18nProvider } from '../types';
 
 export interface RenderWithReduxResult extends RenderResult {
     dispatch: jest.Mock;
@@ -19,7 +18,6 @@ export interface RenderWithReduxResult extends RenderResult {
  *
  * @param {ReactNode} component: The component you want to test in jsx
  * @param {Object} initialstate: Optional initial state of the redux store
- * @param {Function} i18nProvider A function returning a dictionary for translations
  * @param {Object} options: Render options, e.g. to use a custom container element
  * @return {{ dispatch, reduxStore, ...rest }} helper function to test rendered component.
  * Same as @testing-library/react render method with added dispatch and reduxStore helper
@@ -29,17 +27,12 @@ export interface RenderWithReduxResult extends RenderResult {
 export default (
     component,
     initialState = {},
-    i18nProvider?: I18nProvider,
     options = {}
 ): RenderWithReduxResult => {
     let dispatch;
     let reduxStore;
     const renderResult = render(
-        <TestContext
-            initialState={initialState}
-            i18nProvider={i18nProvider}
-            enableReducers
-        >
+        <TestContext initialState={initialState} enableReducers>
             {({ store }) => {
                 dispatch = jest.spyOn(store, 'dispatch');
                 reduxStore = store;

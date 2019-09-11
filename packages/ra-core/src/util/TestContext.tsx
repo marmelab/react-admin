@@ -74,12 +74,9 @@ class TestContext extends Component<Props> {
     };
 
     render() {
-        const { i18nProvider = defaultI18nProvider } = this.props;
         return (
             <Provider store={this.storeWithDefault}>
-                <TranslationProvider i18nProvider={i18nProvider}>
-                    {this.renderChildren()}
-                </TranslationProvider>
+                {this.renderChildren()}
             </Provider>
         );
     }

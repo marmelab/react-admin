@@ -2,7 +2,7 @@ import React from 'react';
 import expect from 'expect';
 import { render, cleanup } from '@testing-library/react';
 
-import { renderWithRedux } from 'ra-core';
+import { TranslationProvider } from 'ra-core';
 import { SelectField } from './SelectField';
 
 describe('<SelectField />', () => {
@@ -111,24 +111,24 @@ describe('<SelectField />', () => {
     });
 
     it('should translate the choice by default', () => {
-        const { queryAllByText } = renderWithRedux(
-            <SelectField {...defaultProps} record={{ foo: 0 }} />,
-            {},
-            () => ({ hello: 'bonjour' })
+        const { queryAllByText } = render(
+            <TranslationProvider i18nProvider={() => ({ hello: 'bonjour' })}>
+                <SelectField {...defaultProps} record={{ foo: 0 }} />
+            </TranslationProvider>
         );
         expect(queryAllByText('hello')).toHaveLength(0);
         expect(queryAllByText('bonjour')).toHaveLength(1);
     });
 
     it('should not translate the choice if translateChoice is false', () => {
-        const { queryAllByText } = renderWithRedux(
-            <SelectField
-                {...defaultProps}
-                record={{ foo: 0 }}
-                translateChoice={false}
-            />,
-            {},
-            () => ({ hello: 'bonjour' })
+        const { queryAllByText } = render(
+            <TranslationProvider i18nProvider={() => ({ hello: 'bonjour' })}>
+                <SelectField
+                    {...defaultProps}
+                    record={{ foo: 0 }}
+                    translateChoice={false}
+                />
+            </TranslationProvider>
         );
         expect(queryAllByText('hello')).toHaveLength(1);
         expect(queryAllByText('bonjour')).toHaveLength(0);

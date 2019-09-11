@@ -2,13 +2,13 @@ import React from 'react';
 import { render, cleanup } from '@testing-library/react';
 
 import ValidationError from './ValidationError';
-import TestContext from '../util/TestContext';
+import TranslationProvider from '../i18n/TranslationProvider';
 
 const translate = jest.fn(key => key);
 
 const renderWithTranslations = content =>
     render(
-        <TestContext
+        <TranslationProvider
             i18nProvider={() => ({
                 ra: {
                     validation: {
@@ -25,7 +25,7 @@ const renderWithTranslations = content =>
             })}
         >
             {content}
-        </TestContext>
+        </TranslationProvider>
     );
 
 describe('ValidationError', () => {
