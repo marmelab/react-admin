@@ -893,7 +893,7 @@ const PostFilter = props =>
 
 ## Complete rewrite of the AutocompleteInput and AutocompleteArrayInput components
 
-We rewrote the `<AutocompleteInput>` and `<AutocompleteArrayInput>` components from scratch using [`downshift`](https://github.com/downshift-js/downshift), while the previous version was based on [react-autosuggest](http://react-autosuggest.js.org/). The new components are more robusts and more future-proof, and their API didn't change.
+We rewrote the `<AutocompleteInput>` and `<AutocompleteArrayInput>` components from scratch using [`downshift`](https://github.com/downshift-js/downshift), while the previous version was based on [react-autosuggest](http://react-autosuggest.js.org/). The new components are more robust and more future-proof, and their API didn't change.
 
 There are two breaking changes in the new `<AutocompleteInput>` and `<AutocompleteArrayInput>` components:
 
