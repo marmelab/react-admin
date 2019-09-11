@@ -1,4 +1,4 @@
-import { DataProvider, AuthProvider, I18nProvider } from '../types';
+import { DataProvider, AuthProvider } from '../types';
 import { all } from 'redux-saga/effects';
 import auth from './auth';
 import callback from './callback';
