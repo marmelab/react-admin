@@ -8,7 +8,7 @@ export const UPDATE_MANY = 'UPDATE_MANY';
 export const DELETE = 'DELETE';
 export const DELETE_MANY = 'DELETE_MANY';
 
-export const fetchActionsWithRecordResponse = [GET_ONE, CREATE, UPDATE, DELETE];
+export const fetchActionsWithRecordResponse = [GET_ONE, CREATE, UPDATE];
 export const fetchActionsWithArrayOfIdentifiedRecordsResponse = [
     GET_LIST,
     GET_MANY,

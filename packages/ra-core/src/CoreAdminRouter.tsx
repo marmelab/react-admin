@@ -78,7 +78,9 @@ export class CoreAdminRouter extends Component<
     ) => {
         const { authProvider } = props;
         try {
-            const permissions = await authProvider(AUTH_GET_PERMISSIONS);
+            const permissions = authProvider
+                ? await authProvider(AUTH_GET_PERMISSIONS)
+                : undefined;
             const resolveChildren = props.children as RenderResourcesFunction;
 
             const childrenFuncResult = resolveChildren(permissions);
