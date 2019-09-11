@@ -41,6 +41,8 @@ const MyHelloButton = ({ translate }) => (
         );
     };
 
+    TranslatedComponent.defaultProps = BaseComponent.defaultProps;
+
     return TranslatedComponent;
 };
 
