@@ -99,7 +99,7 @@ const AutocompleteArrayInput: FunctionComponent<
         [setFilter]
     );
 
-    // We must reset the filter every time the value change to ensures we
+    // We must reset the filter every time the value changes to ensure we
     // display at least some choices even if the input has a value.
     // Otherwise, it would only display the currently selected one and the user
     // would have to first clear the input before seeing any other choices
