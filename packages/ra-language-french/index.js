@@ -114,6 +114,8 @@ module.exports = {
             http_error: 'Erreur de communication avec le serveur',
             data_provider_error:
                 'Erreur dans le dataProvider. Plus de détails dans la console.',
+            i18n_error:
+                'Erreur de chargement des traductions pour la langue sélectionnée',
             canceled: 'Action annulée',
             logged_out: 'Votre session a pris fin, veuillez vous reconnecter.',
         },

@@ -2,7 +2,7 @@ import React from 'react';
 import expect from 'expect';
 import { render, cleanup } from '@testing-library/react';
 
-import { TranslationProvider } from 'ra-core';
+import { TranslationProvider, renderWithRedux } from 'ra-core';
 import { SelectField } from './SelectField';
 
 describe('<SelectField />', () => {
@@ -111,7 +111,7 @@ describe('<SelectField />', () => {
     });
 
     it('should translate the choice by default', () => {
-        const { queryAllByText } = render(
+        const { queryAllByText } = renderWithRedux(
             <TranslationProvider i18nProvider={() => ({ hello: 'bonjour' })}>
                 <SelectField {...defaultProps} record={{ foo: 0 }} />
             </TranslationProvider>
@@ -121,7 +121,7 @@ describe('<SelectField />', () => {
     });
 
     it('should not translate the choice if translateChoice is false', () => {
-        const { queryAllByText } = render(
+        const { queryAllByText } = renderWithRedux(
             <TranslationProvider i18nProvider={() => ({ hello: 'bonjour' })}>
                 <SelectField
                     {...defaultProps}

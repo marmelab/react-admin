@@ -8,9 +8,13 @@ export interface TranslationContextProps {
     setLocale: (locale: string) => void;
 }
 
-export const TranslationContext = createContext<TranslationContextProps>({
+const TranslationContext = createContext<TranslationContextProps>({
     provider: () => ({}),
     locale: 'en',
     translate: id => id,
     setLocale: () => {},
 });
+
+TranslationContext.displayName = 'TranslationContext';
+
+export { TranslationContext };

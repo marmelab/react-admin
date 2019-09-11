@@ -156,7 +156,7 @@ describe('<CheckboxGroupInput />', () => {
     });
 
     it('should translate the choices by default', () => {
-        const { queryByLabelText } = render(
+        const { queryByLabelText } = renderWithRedux(
             <TranslationProvider
                 i18nProvider={() => ({
                     Angular: 'Angular **',
@@ -174,7 +174,7 @@ describe('<CheckboxGroupInput />', () => {
     });
 
     it('should not translate the choices if translateChoice is false', () => {
-        const { queryByLabelText } = render(
+        const { queryByLabelText } = renderWithRedux(
             <TranslationProvider
                 i18nProvider={() => ({
                     Angular: 'Angular **',

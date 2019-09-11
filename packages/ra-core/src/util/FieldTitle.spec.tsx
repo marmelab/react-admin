@@ -4,6 +4,7 @@ import React from 'react';
 
 import { FieldTitle } from './FieldTitle';
 import TranslationProvider from '../i18n/TranslationProvider';
+import renderWithRedux from './renderWithRedux';
 
 describe('FieldTitle', () => {
     afterEach(cleanup);
@@ -20,7 +21,7 @@ describe('FieldTitle', () => {
     });
 
     it('should use the label as translate key when translation is available', () => {
-        const { container } = render(
+        const { container } = renderWithRedux(
             <TranslationProvider i18nProvider={() => ({ foo: 'bar' })}>
                 <FieldTitle label="foo" />
             </TranslationProvider>
@@ -29,7 +30,7 @@ describe('FieldTitle', () => {
     });
 
     it('should use the humanized source when given', () => {
-        const { container } = render(
+        const { container } = renderWithRedux(
             <TranslationProvider i18nProvider={() => ({})}>
                 <FieldTitle resource="posts" source="title" />
             </TranslationProvider>
@@ -38,7 +39,7 @@ describe('FieldTitle', () => {
     });
 
     it('should use the humanized source when given with underscores', () => {
-        const { container } = render(
+        const { container } = renderWithRedux(
             <TranslationProvider i18nProvider={() => ({})}>
                 <FieldTitle resource="posts" source="title_with_underscore" />
             </TranslationProvider>
@@ -49,7 +50,7 @@ describe('FieldTitle', () => {
     });
 
     it('should use the humanized source when given with camelCase', () => {
-        const { container } = render(
+        const { container } = renderWithRedux(
             <TranslationProvider i18nProvider={() => ({})}>
                 <FieldTitle resource="posts" source="titleWithCamelCase" />
             </TranslationProvider>
@@ -60,7 +61,7 @@ describe('FieldTitle', () => {
     });
 
     it('should use the source and resource as translate key when translation is available', () => {
-        const { container } = render(
+        const { container } = renderWithRedux(
             <TranslationProvider
                 i18nProvider={() => ({
                     'resources.posts.fields.title': 'titre',

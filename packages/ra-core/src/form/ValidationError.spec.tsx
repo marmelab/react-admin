@@ -1,13 +1,14 @@
 import React from 'react';
-import { render, cleanup } from '@testing-library/react';
+import { cleanup } from '@testing-library/react';
 
 import ValidationError from './ValidationError';
 import TranslationProvider from '../i18n/TranslationProvider';
+import { renderWithRedux } from '../util';
 
 const translate = jest.fn(key => key);
 
 const renderWithTranslations = content =>
-    render(
+    renderWithRedux(
         <TranslationProvider
             i18nProvider={() => ({
                 ra: {

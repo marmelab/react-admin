@@ -109,6 +109,8 @@ module.exports = {
             http_error: 'Server communication error',
             data_provider_error:
                 'dataProvider error. Check the console for details.',
+            i18n_error:
+                'Cannot load the translations for the specified language',
             canceled: 'Action cancelled',
             logged_out: 'Your session has ended, please reconnect.',
         },

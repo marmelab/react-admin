@@ -14,6 +14,8 @@ import defaultsDeep from 'lodash/defaultsDeep';
 import { useSafeSetState } from '../util/hooks';
 import { I18nProvider } from '../types';
 import { TranslationContext } from './TranslationContext';
+import { useUpdateLoading } from '../loading';
+import { useNotify } from '../sideEffect';
 
 interface Props {
     locale?: string;
@@ -35,6 +37,8 @@ interface Props {
  */
 const TranslationProvider: FunctionComponent<Props> = props => {
     const { i18nProvider, children, locale = 'en' } = props;
+    const { startLoading, stopLoading } = useUpdateLoading();
+    const notify = useNotify();
 
     const [state, setState] = useSafeSetState({
         provider: i18nProvider,
@@ -56,26 +60,34 @@ const TranslationProvider: FunctionComponent<Props> = props => {
 
     const setLocale = useCallback(
         newLocale =>
-            new Promise(resolve =>
+            new Promise(resolve => {
+                startLoading();
                 // so we systematically return a Promise for the messages
                 // i18nProvider may return a Promise for language changes,
-                resolve(i18nProvider(newLocale))
-            ).then(messages => {
-                const polyglot = new Polyglot({
-                    locale: newLocale,
-                    phrases: defaultsDeep(
-                        { '': '' },
-                        messages,
-                        defaultMessages
-                    ),
-                });
-                setState({
-                    provider: i18nProvider,
-                    locale: newLocale,
-                    translate: polyglot.t.bind(polyglot),
-                });
-            }),
-        [i18nProvider, setState]
+                resolve(i18nProvider(newLocale));
+            })
+                .then(messages => {
+                    const polyglot = new Polyglot({
+                        locale: newLocale,
+                        phrases: defaultsDeep(
+                            { '': '' },
+                            messages,
+                            defaultMessages
+                        ),
+                    });
+                    stopLoading();
+                    setState({
+                        provider: i18nProvider,
+                        locale: newLocale,
+                        translate: polyglot.t.bind(polyglot),
+                    });
+                })
+                .catch(error => {
+                    stopLoading();
+                    notify('ra.notification.i18n_error', 'warning');
+                    console.error(error);
+                }),
+        [i18nProvider, notify, setState, startLoading, stopLoading]
     );
 
     const isInitialMount = useRef(true);
