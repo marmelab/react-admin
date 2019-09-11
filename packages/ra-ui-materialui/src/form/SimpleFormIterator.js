@@ -162,8 +162,17 @@ export class SimpleFormIterator extends Component {
                                                         ? undefined
                                                         : index2,
                                                     label:
-                                                        input.props.label ||
-                                                        input.props.source,
+                                                        typeof input.props
+                                                            .label ===
+                                                        'undefined'
+                                                            ? input.props.source
+                                                                ? `resources.${resource}.fields.${
+                                                                      input
+                                                                          .props
+                                                                          .source
+                                                                  }`
+                                                                : undefined
+                                                            : input.props.label,
                                                 })}
                                                 record={
                                                     (records &&
