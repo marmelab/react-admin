@@ -4,7 +4,6 @@ import {
     fireEvent,
     render,
     waitForDomChange,
-    wait,
 } from '@testing-library/react';
 import { Form } from 'react-final-form';
 import expect from 'expect';
@@ -38,8 +37,8 @@ describe('<AutocompleteArrayInput />', () => {
 
         fireEvent.focus(getByLabelText('resources.posts.fields.tags'));
         expect(queryAllByRole('option')).toHaveLength(2);
-        expect(getByText('Technical')).toBeDefined();
-        expect(getByText('Programming')).toBeDefined();
+        expect(getByText('Technical')).not.toBeNull();
+        expect(getByText('Programming')).not.toBeNull();
     });
 
     it('should use optionText with a string value as text identifier', () => {
@@ -62,8 +61,8 @@ describe('<AutocompleteArrayInput />', () => {
         fireEvent.focus(getByLabelText('resources.posts.fields.tags'));
 
         expect(queryAllByRole('option')).toHaveLength(2);
-        expect(getByText('Technical')).toBeDefined();
-        expect(getByText('Programming')).toBeDefined();
+        expect(getByText('Technical')).not.toBeNull();
+        expect(getByText('Programming')).not.toBeNull();
     });
 
     it('should use optionText with a string value including "." as text identifier', () => {
@@ -86,8 +85,8 @@ describe('<AutocompleteArrayInput />', () => {
         fireEvent.focus(getByLabelText('resources.posts.fields.tags'));
 
         expect(queryAllByRole('option')).toHaveLength(2);
-        expect(getByText('Technical')).toBeDefined();
-        expect(getByText('Programming')).toBeDefined();
+        expect(getByText('Technical')).not.toBeNull();
+        expect(getByText('Programming')).not.toBeNull();
     });
 
     it('should use optionText with a function value as text identifier', () => {
@@ -110,8 +109,8 @@ describe('<AutocompleteArrayInput />', () => {
         fireEvent.focus(getByLabelText('resources.posts.fields.tags'));
 
         expect(queryAllByRole('option')).toHaveLength(2);
-        expect(getByText('Technical')).toBeDefined();
-        expect(getByText('Programming')).toBeDefined();
+        expect(getByText('Technical')).not.toBeNull();
+        expect(getByText('Programming')).not.toBeNull();
     });
 
     it('should translate the choices by default', () => {
@@ -139,8 +138,8 @@ describe('<AutocompleteArrayInput />', () => {
         fireEvent.focus(getByLabelText('**resources.posts.fields.tags**'));
 
         expect(queryAllByRole('option')).toHaveLength(2);
-        expect(getByText('**Technical**')).toBeDefined();
-        expect(getByText('**Programming**')).toBeDefined();
+        expect(getByText('**Technical**')).not.toBeNull();
+        expect(getByText('**Programming**')).not.toBeNull();
     });
 
     it('should not translate the choices if translateChoice is false', () => {
@@ -155,7 +154,6 @@ describe('<AutocompleteArrayInput />', () => {
                     >
                         <AutocompleteArrayInput
                             {...defaultProps}
-                            translate={x => `**${x}**`}
                             choices={[
                                 { id: 't', name: 'Technical' },
                                 { id: 'p', name: 'Programming' },
@@ -170,8 +168,8 @@ describe('<AutocompleteArrayInput />', () => {
         fireEvent.focus(getByLabelText('**resources.posts.fields.tags**'));
 
         expect(queryAllByRole('option')).toHaveLength(2);
-        expect(getByText('Technical')).toBeDefined();
-        expect(getByText('Programming')).toBeDefined();
+        expect(getByText('Technical')).not.toBeNull();
+        expect(getByText('Programming')).not.toBeNull();
     });
 
     it('should respect shouldRenderSuggestions over default if passed in', async () => {
@@ -302,7 +300,7 @@ describe('<AutocompleteArrayInput />', () => {
             expect(input.value).toEqual('foo');
         });
 
-        it('should revert the searchText when allowEmpty is false', () => {
+        it('should revert the searchText on blur', () => {
             const { getByLabelText, queryAllByRole } = render(
                 <Form
                     onSubmit={jest.fn()}
@@ -326,7 +324,7 @@ describe('<AutocompleteArrayInput />', () => {
             expect(input.value).toEqual('');
         });
 
-        it('should show the suggestions when the input value is empty and the input is focussed and choices arrived late', () => {
+        it('should show the suggestions when the input value is empty and the input is focused and choices arrived late', () => {
             const { getByLabelText, queryAllByRole, rerender } = render(
                 <Form
                     onSubmit={jest.fn()}
@@ -442,8 +440,8 @@ describe('<AutocompleteArrayInput />', () => {
                 />
             );
             fireEvent.focus(getByLabelText('resources.posts.fields.tags'));
-            expect(getByLabelText('Technical')).toBeDefined();
-            expect(getByLabelText('Programming')).toBeDefined();
+            expect(getByLabelText('Technical')).not.toBeNull();
+            expect(getByLabelText('Programming')).not.toBeNull();
         });
     });
 
@@ -459,10 +457,12 @@ describe('<AutocompleteArrayInput />', () => {
                 )}
             />
         );
-        expect(getByText('Can I help you?')).toBeDefined();
+        expect(getByText('Can I help you?')).not.toBeNull();
     });
 
     describe('error message', () => {
+        const failingValidator = () => 'ra.validation.error';
+
         it('should not be displayed if field is pristine', () => {
             const { queryByText } = render(
                 <Form
@@ -470,27 +470,33 @@ describe('<AutocompleteArrayInput />', () => {
                     render={() => (
                         <AutocompleteArrayInput
                             {...defaultProps}
-                            meta={{ touched: false, error: 'Required' }}
+                            choices={[{ id: 1, name: 'hello' }]}
+                            validate={failingValidator}
                         />
                     )}
                 />
             );
-            expect(queryByText('Required')).toBeNull();
+            expect(queryByText('ra.validation.error')).toBeNull();
         });
 
         it('should be displayed if field has been touched and is invalid', () => {
-            const { queryByText } = render(
+            const { getByLabelText, queryByText } = render(
                 <Form
                     onSubmit={jest.fn()}
                     render={() => (
                         <AutocompleteArrayInput
                             {...defaultProps}
-                            meta={{ touched: true, error: 'Required' }}
+                            choices={[{ id: 1, name: 'hello' }]}
+                            validate={failingValidator}
                         />
                     )}
                 />
             );
-            expect(queryByText('Required')).toBeDefined();
+            const input = getByLabelText('resources.posts.fields.tags');
+            fireEvent.focus(input);
+            fireEvent.blur(input);
+
+            expect(queryByText('ra.validation.error')).not.toBeNull();
         });
     });
 
@@ -522,29 +528,6 @@ describe('<AutocompleteArrayInput />', () => {
             fireEvent.change(input, { target: { value: 'ab' } });
             expect(queryAllByRole('option')).toHaveLength(2);
         });
-    });
-
-    it('does not automatically select a matched choice if there are more than one', () => {
-        const { getByLabelText, queryAllByRole } = render(
-            <Form
-                onSubmit={jest.fn()}
-                render={() => (
-                    <AutocompleteArrayInput
-                        {...defaultProps}
-                        choices={[
-                            { id: 1, name: 'ab' },
-                            { id: 2, name: 'abc' },
-                            { id: 3, name: '123' },
-                        ]}
-                    />
-                )}
-            />
-        );
-
-        const input = getByLabelText('resources.posts.fields.tags');
-        fireEvent.focus(input);
-        fireEvent.change(input, { target: { value: 'ab' } });
-        expect(queryAllByRole('option')).toHaveLength(2);
     });
 
     it('does not automatically select a matched choice if there is only one', async () => {
@@ -593,7 +576,7 @@ describe('<AutocompleteArrayInput />', () => {
         const input = getByLabelText('resources.posts.fields.tags');
         fireEvent.focus(input);
 
-        expect(getByLabelText('Me')).toBeDefined();
+        expect(getByLabelText('Me')).not.toBeNull();
     });
 
     it('should limit suggestions when suggestionLimit is passed', () => {

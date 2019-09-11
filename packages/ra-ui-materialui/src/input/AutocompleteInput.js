@@ -141,8 +141,12 @@ const AutocompleteInput = ({
     let inputEl = useRef();
     let anchorEl = useRef();
 
-    const updateFilter = useCallback(
-        value => {
+    const handleFilterChange = useCallback(
+        eventOrValue => {
+            const value = eventOrValue.target
+                ? eventOrValue.target.value
+                : eventOrValue;
+
             if (setFilter) {
                 setFilter(value);
             }
@@ -155,8 +159,8 @@ const AutocompleteInput = ({
     // Otherwise, it would only display the currently selected one and the user
     // would have to first clear the input before seeing any other choices
     useEffect(() => {
-        updateFilter('');
-    }, [input.value, updateFilter]);
+        handleFilterChange('');
+    }, [input.value, handleFilterChange]);
 
     const getSuggestionValue = useCallback(
         suggestion => get(suggestion, optionValue),
@@ -303,9 +307,7 @@ const AutocompleteInput = ({
                                 name: input.name,
                                 onBlur: input.onBlur,
                                 onFocus: handleFocus(openMenu),
-                                onChange: event => {
-                                    updateFilter(event.target.value);
-                                },
+                                onChange: handleFilterChange,
                             })}
                             helperText={
                                 (touched && error) || helperText ? (

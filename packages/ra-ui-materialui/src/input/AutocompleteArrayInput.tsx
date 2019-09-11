@@ -23,6 +23,56 @@ interface Options {
     labelProps?: any;
 }
 
+/**
+ * An Input component for an autocomplete field, using an array of objects for the options
+ *
+ * Pass possible options as an array of objects in the 'choices' attribute.
+ *
+ * By default, the options are built from:
+ *  - the 'id' property as the option value,
+ *  - the 'name' property an the option text
+ * @example
+ * const choices = [
+ *    { id: 'M', name: 'Male' },
+ *    { id: 'F', name: 'Female' },
+ * ];
+ * <AutocompleteArrayInput source="gender" choices={choices} />
+ *
+ * You can also customize the properties to use for the option name and value,
+ * thanks to the 'optionText' and 'optionValue' attributes.
+ * @example
+ * const choices = [
+ *    { _id: 123, full_name: 'Leo Tolstoi', sex: 'M' },
+ *    { _id: 456, full_name: 'Jane Austen', sex: 'F' },
+ * ];
+ * <AutocompleteArrayInput source="author_id" choices={choices} optionText="full_name" optionValue="_id" />
+ *
+ * `optionText` also accepts a function, so you can shape the option text at will:
+ * @example
+ * const choices = [
+ *    { id: 123, first_name: 'Leo', last_name: 'Tolstoi' },
+ *    { id: 456, first_name: 'Jane', last_name: 'Austen' },
+ * ];
+ * const optionRenderer = choice => `${choice.first_name} ${choice.last_name}`;
+ * <AutocompleteArrayInput source="author_id" choices={choices} optionText={optionRenderer} />
+ *
+ * The choices are translated by default, so you can use translation identifiers as choices:
+ * @example
+ * const choices = [
+ *    { id: 'M', name: 'myroot.gender.male' },
+ *    { id: 'F', name: 'myroot.gender.female' },
+ * ];
+ *
+ * However, in some cases (e.g. inside a `<ReferenceInput>`), you may not want
+ * the choice to be translated. In that case, set the `translateChoice` prop to false.
+ * @example
+ * <AutocompleteArrayInput source="gender" choices={choices} translateChoice={false}/>
+ *
+ * The object passed as `options` props is passed to the material-ui <AutoComplete> component
+ *
+ * @example
+ * <AutocompleteArrayInput source="author_id" options={{ fullWidthInput: true }} />
+ */
 const AutocompleteArrayInput: FunctionComponent<
     Props & InputProps<TextFieldProps & Options> & DownshiftProps<any>
 > = ({
@@ -60,6 +110,7 @@ const AutocompleteArrayInput: FunctionComponent<
 }) => {
     const translate = useTranslate();
     const classes = useStyles({ classes: classesOverride });
+
     let inputEl = useRef<HTMLInputElement>();
     let anchorEl = useRef<any>();
 
@@ -82,7 +133,7 @@ const AutocompleteArrayInput: FunctionComponent<
         ...rest,
     });
 
-    const [inputValue, setInputValue] = React.useState('');
+    const [filterValue, setFilterValue] = React.useState('');
 
     const handleFilterChange = useCallback(
         (eventOrValue: React.ChangeEvent<{ value: string }> | string) => {
@@ -91,7 +142,7 @@ const AutocompleteArrayInput: FunctionComponent<
                 ? event.target.value
                 : (eventOrValue as string);
 
-            setInputValue(value);
+            setFilterValue(value);
             if (setFilter) {
                 setFilter(value);
             }
@@ -126,44 +177,59 @@ const AutocompleteArrayInput: FunctionComponent<
                     ? optionText(suggestion)
                     : get(suggestion, optionText, '');
 
-            // We explicitly call toString here because AutoSuggest expect a string
             return translateChoice
-                ? translate(suggestionLabel, { _: suggestionLabel }).toString()
-                : suggestionLabel.toString();
+                ? translate(suggestionLabel, { _: suggestionLabel })
+                : suggestionLabel;
         },
         [optionText, translate, translateChoice]
     );
 
     const selectedItems = (input.value || []).map(getSuggestionFromValue);
 
-    const handleKeyDown = (event: React.KeyboardEvent) => {
-        if (
-            selectedItems.length &&
-            !inputValue.length &&
-            event.key === 'Backspace'
-        ) {
-            const newSelectedItems = selectedItems.slice(
-                0,
-                selectedItems.length - 1
-            );
+    const handleKeyDown = useCallback(
+        (event: React.KeyboardEvent) => {
+            // Remove latest item from array when user hits backspace with no text
+            if (
+                selectedItems.length &&
+                !filterValue.length &&
+                event.key === 'Backspace'
+            ) {
+                const newSelectedItems = selectedItems.slice(
+                    0,
+                    selectedItems.length - 1
+                );
+                input.onChange(newSelectedItems.map(getSuggestionValue));
+            }
+        },
+        [filterValue.length, getSuggestionValue, input, selectedItems]
+    );
+
+    const handleChange = useCallback(
+        (item: any) => {
+            let newSelectedItems = selectedItems.includes(item)
+                ? [...selectedItems]
+                : [...selectedItems, item];
+            setFilterValue('');
             input.onChange(newSelectedItems.map(getSuggestionValue));
-        }
-    };
+        },
+        [getSuggestionValue, input, selectedItems]
+    );
 
-    const handleChange = (item: any) => {
-        let newSelectedItems = selectedItems.includes(item)
-            ? [...selectedItems]
-            : [...selectedItems, item];
-        setInputValue('');
-        input.onChange(newSelectedItems.map(getSuggestionValue));
-    };
+    const handleDelete = useCallback(
+        event => {
+            const newSelectedItems = [...selectedItems];
+            const value = event.target.getAttribute('data-item');
+            const item = choices.find(
+                choice => getSuggestionValue(choice) == value // eslint-disable-line eqeqeq
+            );
+            newSelectedItems.splice(newSelectedItems.indexOf(item), 1);
+            input.onChange(newSelectedItems.map(getSuggestionValue));
+        },
+        [choices, getSuggestionValue, input, selectedItems]
+    );
 
-    const handleDelete = (item: string) => () => {
-        const newSelectedItems = [...selectedItems];
-        newSelectedItems.splice(newSelectedItems.indexOf(item), 1);
-        input.onChange(newSelectedItems.map(getSuggestionValue));
-    };
-
+    // This function ensures that the suggestion list stay aligned to the
+    // input element even if it moves (because user scrolled for example)
     const updateAnchorEl = () => {
         if (!inputEl.current) {
             return;
@@ -171,6 +237,9 @@ const AutocompleteArrayInput: FunctionComponent<
 
         const inputPosition = inputEl.current.getBoundingClientRect() as DOMRect;
 
+        // It works by implementing a mock element providing the only method used
+        // by the PopOver component, getBoundingClientRect, which will return a
+        // position based on the input position
         if (!anchorEl.current) {
             anchorEl.current = { getBoundingClientRect: () => inputPosition };
         } else {
@@ -216,7 +285,7 @@ const AutocompleteArrayInput: FunctionComponent<
 
     const handleBlur = useCallback(
         event => {
-            setInputValue('');
+            setFilterValue('');
             handleFilterChange('');
             input.onBlur(event);
         },
@@ -244,7 +313,7 @@ const AutocompleteArrayInput: FunctionComponent<
 
     return (
         <Downshift
-            inputValue={inputValue}
+            inputValue={filterValue}
             onChange={handleChange}
             selectedItem={selectedItems}
             itemToString={item => getSuggestionValue(item)}
@@ -301,7 +370,10 @@ const AutocompleteArrayInput: FunctionComponent<
                                                 tabIndex={-1}
                                                 label={getSuggestionText(item)}
                                                 className={classes.chip}
-                                                onDelete={handleDelete(item)}
+                                                onDelete={handleDelete}
+                                                data-item={getSuggestionValue(
+                                                    item
+                                                )}
                                             />
                                         ))}
                                     </div>
@@ -344,6 +416,7 @@ const AutocompleteArrayInput: FunctionComponent<
                             isOpen={isMenuOpen}
                             menuProps={getMenuProps(
                                 {},
+                                // https://github.com/downshift-js/downshift/issues/235
                                 { suppressRefError: true }
                             )}
                             inputEl={inputEl.current}
@@ -363,7 +436,7 @@ const AutocompleteArrayInput: FunctionComponent<
                                             .includes(
                                                 getSuggestionValue(suggestion)
                                             )}
-                                        inputValue={inputValue}
+                                        inputValue={filterValue}
                                         getSuggestionText={getSuggestionText}
                                         component={suggestionComponent}
                                         {...getItemProps({
@@ -381,10 +454,10 @@ const AutocompleteArrayInput: FunctionComponent<
 };
 
 const useStyles = makeStyles(theme => {
-    const light = theme.palette.type === 'light';
-    const chipBackgroundColor = light
-        ? 'rgba(0, 0, 0, 0.09)'
-        : 'rgba(255, 255, 255, 0.09)';
+    const chipBackgroundColor =
+        theme.palette.type === 'light'
+            ? 'rgba(0, 0, 0, 0.09)'
+            : 'rgba(255, 255, 255, 0.09)';
 
     return {
         root: {

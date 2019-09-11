@@ -11,6 +11,19 @@ interface Options {
     selectedItem?: any | any[];
 }
 
+/**
+ * Get the suggestions to display after applying a fuzzy search on the available choices
+ *
+ * @example
+ * getSuggestions({
+ *  choices: [{ id: 1, name: 'admin' }, { id: 2, name: 'publisher' }],
+ *  optionText: 'name',
+ *  optionValue: 'id',
+ *  getSuggestionText: choice => choice[optionText],
+ * })('pub')
+ *
+ * Will return [{ id: 2, name: 'publisher' }]
+ */
 export default ({
     choices,
     allowEmpty,
@@ -21,9 +34,9 @@ export default ({
     selectedItem,
     suggestionLimit = 0,
 }: Options) => filter => {
-    // This is the first display case when the input already has a value.
-    // Unless limitChoicesToValue was set to true, we want to display more
-    // choices than just the currently selected one
+    // When we display the suggestions for the first time and the input
+    // already has a value, we want to display more choices than just the
+    // currently selected one, unless limitChoicesToValue was set to true
     if (
         selectedItem &&
         !Array.isArray(selectedItem) &&
