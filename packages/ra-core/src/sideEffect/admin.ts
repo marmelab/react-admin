@@ -4,7 +4,6 @@ import auth from './auth';
 import callback from './callback';
 import fetch from './fetch';
 import error from './error';
-import i18n from './i18n';
 import notification from './notification';
 import redirection from './redirection';
 import accumulate from './accumulate';
@@ -17,12 +16,10 @@ import unload from './unload';
  */
 export default (
     dataProvider: DataProvider,
-    authProvider: AuthProvider | null,
-    i18nProvider: I18nProvider
+    authProvider: AuthProvider | null
 ) =>
     function* admin() {
         yield all([
-            i18n(i18nProvider)(),
             auth(authProvider)(),
             undo(),
             fetch(dataProvider)(),

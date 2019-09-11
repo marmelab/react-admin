@@ -1,6 +1,5 @@
 import createAppReducer from './reducer';
 import adminReducer from './reducer/admin';
-import i18nReducer from './reducer/i18n';
 import queryReducer from './reducer/admin/resource/list/queryReducer';
 import CoreAdmin from './CoreAdmin';
 import CoreAdminRouter from './CoreAdminRouter';
@@ -11,7 +10,6 @@ import Resource from './Resource';
 export {
     createAppReducer,
     adminReducer,
-    i18nReducer,
     queryReducer,
     CoreAdmin,
     CoreAdminRouter,
@@ -31,7 +29,6 @@ export * from './form';
 export {
     getResources,
     getReferenceResource,
-    getLocale,
     getNotification,
     getPossibleReferences,
     getPossibleReferenceValues,

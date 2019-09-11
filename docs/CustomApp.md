@@ -27,20 +27,16 @@ import {
     adminReducer,
     adminSaga,
     defaultI18nProvider,
-    i18nReducer,
     USER_LOGOUT,
 } from 'react-admin';
 
 export default ({
     authProvider,
     dataProvider,
-    i18nProvider = defaultI18nProvider,
     history,
-    locale = 'en',
 }) => {
     const reducer = combineReducers({
         admin: adminReducer,
-        i18n: i18nReducer(locale, i18nProvider(locale)),
         router: connectRouter(history),
         { /* add your own reducers here */ },
     });
@@ -50,7 +46,7 @@ export default ({
     const saga = function* rootSaga() {
         yield all(
             [
-                adminSaga(dataProvider, authProvider, i18nProvider),
+                adminSaga(dataProvider, authProvider),
                 // add your own sagas here
             ].map(fork)
         );
@@ -115,7 +111,6 @@ const App = () => (
         store={createAdminStore({
             authProvider,
             dataProvider,
-            i18nProvider,
             history,
         })}
     >
@@ -152,7 +147,7 @@ import { createHashHistory } from 'history';
 +import { Switch, Route } from 'react-router-dom';
 +import withContext from 'recompose/withContext';
 -import { Admin, Resource } from 'react-admin';
-+import { TranslationProvider, Resource } from 'react-admin';
++import { AuthContext, DataProviderContext, TranslationProvider, Resource } from 'react-admin';
 import restProvider from 'ra-data-simple-rest';
 import defaultMessages from 'ra-language-english';
 +import { ThemeProvider } from '@material-ui/styles';
@@ -185,7 +180,6 @@ const App = () => (
         store={createAdminStore({
             authProvider,
             dataProvider,
-            i18nProvider,
             history,
         })}
     >
@@ -197,7 +191,12 @@ const App = () => (
 -           <Resource name="posts" list={PostList} create={PostCreate} edit={PostEdit} show={PostShow} />
 -           <Resource name="comments" list={CommentList} edit={CommentEdit} create={CommentCreate} />
 -           <Resource name="users" list={UserList} edit={UserEdit} create={UserCreate} />
-+       <TranslationProvider>
++       <AuthContext.Provider value={authProvider}>
++       <DataProviderContext.Provider value={dataProvider}>
++       <TranslationProvider
++           locale={locale}
++           i18nProvider={i18nProvider}
++       >
 +           <ThemeProvider>
 +               <Resource name="posts" intent="registration" />
 +               <Resource name="comments" intent="registration" />
@@ -226,6 +225,8 @@ const App = () => (
 +               </ConnectedRouter>
 +           </ThemeProvider>
 +       </TranslationProvider>
++       </DataProviderContext.Provider>
++       </AuthContext.Provider>
 -       </Admin>
     </Provider>
 );

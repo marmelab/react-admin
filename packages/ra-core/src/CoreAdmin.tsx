@@ -173,9 +173,7 @@ React-admin requires a valid dataProvider function to work.`);
                         customReducers,
                         customSagas,
                         dataProvider,
-                        i18nProvider,
                         initialState,
-                        locale,
                         history: finalHistory,
                     })}
                 >

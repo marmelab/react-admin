@@ -1085,15 +1085,47 @@ const availableLanguages = {
 +export default CurrentLanguage;
 ```
 
-If you used a custom app, you must update the `<TranslationProvider>` call as the signature has changed:
+If you used a custom Redux store, you must update the `createAdminStore` call to omit the i18n details:
 
 ```diff
-            return (
--               <TranslationProvider>
-+               <TranslationProvider
-+                   locale={locale}
-+                   i18nProvider={i18nProvider}
-+               >
-                    <ConnectedRouter history={history}>
+const App = () => (
+    <Provider
+        store={createAdminStore({
+            authProvider,
+            dataProvider,
+-           i18nProvider,
+            history,
+        })}
+    >
+        <Admin
+            authProvider={authProvider}
+            dataProvider={dataProvider}
+            history={history}
+            title="My Admin"
+        >
+```
+
+Also, if you used a custom app without the `Admin` component, update the `<TranslationProvider>` call as the signature has changed:
+
+```diff
+const App = () => (
+    <Provider
+        store={createAdminStore({
+            authProvider,
+            dataProvider,
+            history,
+        })}
+    >
+        <AuthContext.Provider value={authProvider}>
+        <DataProviderContext.Provider value={dataProvider}>
+-       <TranslationProvider />
++       <TranslationProvider
++           locale={locale}
++           i18nProvider={i18nProvider}
++       >
+            <ThemeProvider>
+                <Resource name="posts" intent="registration" />
+                <Resource name="comments" intent="registration" />
+                <Resource name="users" intent="registration" />
                         // ...
 ```

@@ -71,10 +71,6 @@ export interface ReduxState {
             [key: string]: any;
         };
     };
-    i18n: {
-        locale: string;
-        messages: object;
-    };
     router: {
         location: Location;
     };

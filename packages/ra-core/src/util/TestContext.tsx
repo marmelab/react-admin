@@ -5,7 +5,9 @@ import TranslationProvider from '../i18n/TranslationProvider';
 import merge from 'lodash/merge';
 import { createMemoryHistory } from 'history';
 
+import defaultI18nProvider from '../i18n/defaultI18nProvider';
 import createAdminStore from '../createAdminStore';
+import { I18nProvider } from '../types';
 
 export const defaultStore = {
     admin: {
@@ -13,11 +15,11 @@ export const defaultStore = {
         references: { possibleValues: {} },
         ui: { viewVersion: 1 },
     },
-    i18n: { locale: 'en', messages: {} },
 };
 
 interface Props {
     initialState?: object;
+    i18nProvider?: I18nProvider;
     enableReducers?: boolean;
 }
 
@@ -72,9 +74,10 @@ class TestContext extends Component<Props> {
     };
 
     render() {
+        const { i18nProvider = defaultI18nProvider } = this.props;
         return (
             <Provider store={this.storeWithDefault}>
-                <TranslationProvider>
+                <TranslationProvider i18nProvider={i18nProvider}>
                     {this.renderChildren()}
                 </TranslationProvider>
             </Provider>
