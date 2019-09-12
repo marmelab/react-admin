@@ -1,6 +1,6 @@
 import React from 'react';
 import expect from 'expect';
-import { render, fireEvent, cleanup, wait, act } from '@testing-library/react';
+import { fireEvent, cleanup, wait, act } from '@testing-library/react';
 
 import useTranslate from './useTranslate';
 import useSetLocale from './useSetLocale';
@@ -11,7 +11,7 @@ import {
 } from './';
 import { renderWithRedux } from '../util';
 
-describe('useTranslate', () => {
+describe('useSetLocale', () => {
     afterEach(cleanup);
 
     const Component = () => {
@@ -26,13 +26,13 @@ describe('useTranslate', () => {
     };
 
     it('should not fail when used outside of a translation provider', () => {
-        const { queryAllByText } = render(<Component />);
+        const { queryAllByText } = renderWithRedux(<Component />);
         expect(queryAllByText('hello')).toHaveLength(1);
     });
 
-    it('should use the setLocale function set in the translation context', () => {
+    it('should use the setLocale function set in the translation context', async () => {
         const setLocale = jest.fn();
-        const { getByText } = render(
+        const { getByText } = renderWithRedux(
             <TranslationContext.Provider
                 value={{
                     i18nProvider: () => '',
@@ -44,6 +44,7 @@ describe('useTranslate', () => {
             </TranslationContext.Provider>
         );
         fireEvent.click(getByText('Français'));
+        await wait();
         expect(setLocale).toHaveBeenCalledTimes(1);
     });
 

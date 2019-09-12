@@ -1047,9 +1047,11 @@ const i18nProvider = (type, params) => {
     const polyglot = new Polyglot({ locale: 'en', phrases: messages.en });
     let translate = polyglot.t.bind(polyglot);
     if (type === 'I18N_TRANSLATE') {
-        return translate(params);
+        const { key, options } = params;
+        return translate(key, options);
     }
     if type === 'I18N_CHANGE_LOCALE') {
+        const newLocale = params;
         return new Promise((resolve, reject) => {
             // load new messages and update the translate function
         })
