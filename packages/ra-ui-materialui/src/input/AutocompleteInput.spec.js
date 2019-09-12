@@ -6,7 +6,7 @@ import {
     waitForDomChange,
 } from '@testing-library/react';
 
-import AutocompleteInput from './index';
+import AutocompleteInput from './AutocompleteInput';
 import { Form } from 'react-final-form';
 import { TranslationContext } from 'ra-core';
 

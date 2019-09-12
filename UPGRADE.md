@@ -891,16 +891,20 @@ const PostFilter = props =>
     </Filter>;
 ```
 
-## Complete rewrite of the AutocompleteInput component
+## Complete rewrite of the AutocompleteInput and AutocompleteArrayInput components
 
-We rewrote the `<AutocompleteInput>` component from scratch using [`downshift`](https://github.com/downshift-js/downshift), while the previous version was based on [react-autosuggest](http://react-autosuggest.js.org/). The new `<AutocompleteInput>` component is more robust and more future-proof, and its API didn't change.
+We rewrote the `<AutocompleteInput>` and `<AutocompleteArrayInput>` components from scratch using [`downshift`](https://github.com/downshift-js/downshift), while the previous version was based on [react-autosuggest](http://react-autosuggest.js.org/). The new components are more robust and more future-proof, and their API didn't change.
 
-There are two breaking changes in the new `<AutocompleteInput>`:
+There are two breaking changes in the new `<AutocompleteInput>` and `<AutocompleteArrayInput>` components:
 
 - The `inputValueMatcher` prop is gone. We removed a feature many found confusing: the auto-selection of an item when it was matched exactly. So react-admin no longer selects anything automatically, therefore the `inputValueMatcher` prop is  obsolete
 
 ```diff
 <AutocompleteInput
+    source="role"
+-   inputValueMatcher={() => null}
+/>
+<AutocompleteArrayInput
     source="role"
 -   inputValueMatcher={() => null}
 />
@@ -912,6 +916,23 @@ There are two breaking changes in the new `<AutocompleteInput>`:
 <AutocompleteInput
     source="role"
 -   highlightFirstSuggestion={true}
+/>
+<AutocompleteArrayInput
+    source="role"
+-   highlightFirstSuggestion={true}
+/>
+```
+
+Besides, some props which were applicable to both components did not make sense for the `<AutocompleteArrayInput>` component:
+
+- `allowEmpty`: As the `<AutocompleteArrayInput>` deals with arrays, it does not make sense to add an empty choice. This prop is no longer accepted and will be ignored.
+- `limitChoicesToValue`: As the `<AutocompleteArrayInput>` deals with arrays and only accepts unique items, it does not make sense to show only the already selected items. This prop is no longer accepted and will be ignored.
+
+```diff
+<AutocompleteArrayInput
+    source="role"
+-   allowEmpty={true}
+-   limitChoicesToValue={true}
 />
 ```
 

@@ -1,14 +1,14 @@
 import React, { useRef, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
-import { makeStyles } from '@material-ui/core/styles';
+import { TextField, makeStyles } from '@material-ui/core';
 import Downshift from 'downshift';
-import { useTranslate, useInput } from 'ra-core';
+import { useTranslate, useInput, FieldTitle } from 'ra-core';
 
-import AutocompleteInputTextField from './AutocompleteInputTextField';
+import InputHelperText from './InputHelperText';
 import AutocompleteSuggestionList from './AutocompleteSuggestionList';
+import AutocompleteSuggestionItem from './AutocompleteSuggestionItem';
 import getSuggestionsFactory from './getSuggestions';
-import { InputHelperText } from '..';
 
 const useStyles = makeStyles({
     container: {
@@ -141,8 +141,12 @@ const AutocompleteInput = ({
     let inputEl = useRef();
     let anchorEl = useRef();
 
-    const updateFilter = useCallback(
-        value => {
+    const handleFilterChange = useCallback(
+        eventOrValue => {
+            const value = eventOrValue.target
+                ? eventOrValue.target.value
+                : eventOrValue;
+
             if (setFilter) {
                 setFilter(value);
             }
@@ -155,8 +159,8 @@ const AutocompleteInput = ({
     // Otherwise, it would only display the currently selected one and the user
     // would have to first clear the input before seeing any other choices
     useEffect(() => {
-        updateFilter('');
-    }, [input.value, updateFilter]);
+        handleFilterChange('');
+    }, [input.value, handleFilterChange]);
 
     const getSuggestionValue = useCallback(
         suggestion => get(suggestion, optionValue),
@@ -281,25 +285,30 @@ const AutocompleteInput = ({
                 selectedItem,
                 openMenu,
             }) => {
-                const isMenuOpen = isOpen && shouldRenderSuggestions();
+                const isMenuOpen =
+                    isOpen && shouldRenderSuggestions(suggestionFilter);
                 return (
                     <div className={classes.container}>
-                        <AutocompleteInputTextField
+                        <TextField
                             id={id}
                             fullWidth={fullWidth}
-                            labelProps={getLabelProps({ ...labelProps, label })}
+                            label={
+                                <FieldTitle
+                                    {...getLabelProps({ ...labelProps, label })}
+                                    source={source}
+                                    resource={resource}
+                                    isRequired={isRequired}
+                                />
+                            }
                             InputProps={getInputProps({
                                 ...InputProps,
+                                inputRef: storeInputRef,
                                 id,
                                 name: input.name,
                                 onBlur: input.onBlur,
                                 onFocus: handleFocus(openMenu),
+                                onChange: handleFilterChange,
                             })}
-                            inputRef={storeInputRef}
-                            source={source}
-                            resource={resource}
-                            isRequired={isRequired}
-                            handleChange={updateFilter}
                             helperText={
                                 (touched && error) || helperText ? (
                                     <InputHelperText
@@ -321,18 +330,31 @@ const AutocompleteInput = ({
                                 { suppressRefError: true }
                             )}
                             inputEl={inputEl.current}
-                            suggestions={getSuggestions(suggestionFilter)}
-                            getSuggestionText={getSuggestionText}
-                            getSuggestionValue={getSuggestionValue}
-                            highlightedIndex={highlightedIndex}
-                            inputValue={suggestionFilter}
-                            getItemProps={getItemProps}
-                            suggestionComponent={suggestionComponent}
                             suggestionsContainerProps={
                                 suggestionsContainerProps
                             }
-                            selectedItem={selectedItem}
-                        />
+                        >
+                            {getSuggestions(suggestionFilter).map(
+                                (suggestion, index) => (
+                                    <AutocompleteSuggestionItem
+                                        key={getSuggestionValue(suggestion)}
+                                        suggestion={suggestion}
+                                        index={index}
+                                        highlightedIndex={highlightedIndex}
+                                        isSelected={
+                                            getSuggestionValue(selectedItem) ===
+                                            getSuggestionValue(suggestion)
+                                        }
+                                        inputValue={suggestionFilter}
+                                        getSuggestionText={getSuggestionText}
+                                        component={suggestionComponent}
+                                        {...getItemProps({
+                                            item: suggestion,
+                                        })}
+                                    />
+                                )
+                            )}
+                        </AutocompleteSuggestionList>
                     </div>
                 );
             }}
