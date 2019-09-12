@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Admin, Resource } from 'react-admin';
+import { Admin, Resource, polyglotI18nProvider } from 'react-admin';
 
 import './App.css';
 
@@ -20,14 +20,14 @@ import reviews from './reviews';
 import dataProviderFactory from './dataProvider';
 import fakeServerFactory from './fakeServer';
 
-const i18nProvider = locale => {
+const i18nProvider = polyglotI18nProvider(locale => {
     if (locale === 'fr') {
         return import('./i18n/fr').then(messages => messages.default);
     }
 
     // Always fallback on english
     return englishMessages;
-};
+});
 
 class App extends Component {
     state = { dataProvider: null };
