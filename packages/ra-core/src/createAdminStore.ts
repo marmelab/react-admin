@@ -63,11 +63,11 @@ export default ({
         );
     };
     const sagaMiddleware = createSagaMiddleware();
-    const     typedWindow = window as Window;
+    const typedWindow = window as Window;
 
     const composeEnhancers =
         (process.env.NODE_ENV === 'development' &&
-        typeof typedWindow !== 'undefined' &&
+            typeof typedWindow !== 'undefined' &&
             typedWindow.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ &&
             typedWindow.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
                 trace: true,
