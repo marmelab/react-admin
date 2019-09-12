@@ -39,7 +39,11 @@ export default (
 
     return (type, params) => {
         if (type === I18N_TRANSLATE) {
-            return translate.apply(null, params as [string, any?]);
+            const { key, options = {} } = params as {
+                key: string;
+                options?: Object;
+            };
+            return translate.call(null, key, options);
         }
         if (type === I18N_CHANGE_LOCALE) {
             return new Promise(resolve => {

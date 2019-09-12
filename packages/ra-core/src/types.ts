@@ -30,7 +30,7 @@ export const I18N_CHANGE_LOCALE = 'I18N_CHANGE_LOCALE';
 
 export type I18nProvider = (
     type: typeof I18N_TRANSLATE | typeof I18N_CHANGE_LOCALE,
-    params: [string, any?] | string
+    params: { key: string; options?: Object } | string
 ) => string | Promise<any>;
 
 export type Translate = (id: string, options?: any) => string;
