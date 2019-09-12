@@ -45,6 +45,12 @@
       href="https://fonts.googleapis.com/css?family=Roboto:400,700|Source+Sans+Pro:400,600,700&display=swap"
       rel="stylesheet"
     />
+    <link rel="shortcut icon" href="./assets/favicon.ico" />
+    <meta property="og:title" content="React Admin"/>
+    <meta property="og:description" content="A Web Framework for B2B applications" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://marmelab.com/react-admin" />
+    <meta property="og:image" content="https://marmelab.com/react-admin/assets/logo.png" />
   </head>
   <body>
     <header>
@@ -84,7 +90,7 @@
                 </svg>
                 Github
               </a>
-              <a class="github-stars">
+              <a class="github-stars" href="https://github.com/marmelab/react-admin">
                 <div>
                     <svg viewBox="0 0 500 625" style="height: 15px; margin-top: 3px;"><path d="M382.4 307.1c-2.7 2.7-3.6 6.2-3.6 9.8l19.6 112.3c1.8 10.7-2.7 22.3-11.6 28.5s-20.5 7.1-31.2 2.7l-100.8-52.6c-3.6-1.8-7.1-1.8-10.7 0l-100.8 52.6c-4.5 2.7-8.9 3.6-13.4 3.6-6.2 0-11.6-1.8-16.9-5.3-8.9-6.2-13.4-17.8-11.6-28.5L121 317.8c.9-3.6-.9-7.1-3.6-9.8l-82-80.2c-8-8-10.7-19.6-7.1-30.3 3.6-10.7 12.5-17.8 23.2-19.6L164 160.8c3.6-.9 7.1-2.7 8.9-6.2l50.8-102.5C229 42.2 238.9 36 249.6 36c11.6 0 21.4 6.2 25.9 16.1l50.8 102.5c1.8 3.6 4.5 5.4 8.9 6.2l112.4 16c11.6 1.8 20.5 8.9 24.1 19.6 3.6 10.7.9 22.3-7.1 30.3l-82.2 80.4z"></path></svg>
                 </div>
@@ -126,7 +132,7 @@
         </p>
         <div class="split-horizontal">
           <div id="syntax-highlighter">
-            <pre><code class="language-javascript">import React from 'react';
+            <pre><code class="language-jsx">import React from 'react';
 import { Admin, Resource, ListGuesser } from 'react-admin';
 import simpleRestProvider from 'ra-data-simple-rest';
 
