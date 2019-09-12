@@ -3,6 +3,7 @@ import polyglotI18nProvider from './polyglotI18nProvider';
 import translate from './translate';
 import { TranslationContext } from './TranslationContext';
 import TranslationProvider from './TranslationProvider';
+import TestTranslationProvider from './TestTranslationProvider';
 import useLocale from './useLocale';
 import useSetLocale from './useSetLocale';
 import useTranslate from './useTranslate';
@@ -17,6 +18,7 @@ export {
     withTranslate, // deprecated
     TranslationContext,
     TranslationProvider,
+    TestTranslationProvider,
     useLocale,
     useSetLocale,
     useTranslate,

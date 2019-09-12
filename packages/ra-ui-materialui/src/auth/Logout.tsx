@@ -1,7 +1,8 @@
 import React, { useCallback, FunctionComponent } from 'react';
 import PropTypes from 'prop-types';
-import MenuItem, { MenuItemProps } from '@material-ui/core/MenuItem';
-import { makeStyles, Theme } from '@material-ui/core/styles';
+import { ListItemIcon, MenuItem, makeStyles } from '@material-ui/core';
+import { MenuItemProps } from '@material-ui/core/MenuItem';
+import { Theme } from '@material-ui/core/styles';
 
 import ExitIcon from '@material-ui/icons/PowerSettingsNew';
 import classnames from 'classnames';
@@ -15,9 +16,6 @@ interface Props {
 const useStyles = makeStyles((theme: Theme) => ({
     menuItem: {
         color: theme.palette.text.secondary,
-    },
-    iconMenuPaddingStyle: {
-        paddingRight: '1.2em',
     },
     iconPaddingStyle: {
         paddingRight: theme.spacing(1),
@@ -48,9 +46,9 @@ const LogoutWithRef: FunctionComponent<
             ref={ref}
             {...rest}
         >
-            <span className={classes.iconMenuPaddingStyle}>
+            <ListItemIcon>
                 <ExitIcon />
-            </span>
+            </ListItemIcon>
             {translate('ra.auth.logout')}
         </MenuItem>
     );
