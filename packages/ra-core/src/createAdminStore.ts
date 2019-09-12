@@ -25,7 +25,6 @@ interface Params {
     i18nProvider?: I18nProvider;
     initialState?: InitialState;
     locale?: string;
-    devToolsTrace?: boolean;
 }
 
 export default ({
@@ -37,7 +36,6 @@ export default ({
     i18nProvider = defaultI18nProvider,
     initialState,
     locale = 'en',
-    devToolsTrace = false,
 }: Params) => {
     const messages = i18nProvider(locale);
     const appReducer = createAppReducer(
@@ -68,10 +66,11 @@ export default ({
     const typedWindow = window as Window;
 
     const composeEnhancers =
+        process.env.NODE_ENV === 'development' &&
         (typeof typedWindow !== 'undefined' &&
             typedWindow.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ &&
             typedWindow.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
-                trace: devToolsTrace,
+                trace: true,
                 traceLimit: 25,
             })) ||
         compose;
