@@ -66,8 +66,8 @@ export default ({
     const typedWindow = window as Window;
 
     const composeEnhancers =
-        process.env.NODE_ENV === 'development' &&
-        (typeof typedWindow !== 'undefined' &&
+        (process.env.NODE_ENV === 'development' &&
+        typeof typedWindow !== 'undefined' &&
             typedWindow.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ &&
             typedWindow.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
                 trace: true,
