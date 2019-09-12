@@ -1,6 +1,5 @@
 import defaultMessages from 'ra-language-english';
-import { I18nProvider } from '../types';
 
-const defaultI18nProvider: I18nProvider = locale => defaultMessages;
+import polyglotI18nProvider from './polyglotI18nProvider';
 
-export default defaultI18nProvider;
+export default polyglotI18nProvider(() => defaultMessages);

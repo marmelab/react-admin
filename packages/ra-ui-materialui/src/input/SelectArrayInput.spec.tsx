@@ -2,7 +2,7 @@ import React from 'react';
 import expect from 'expect';
 import { render, cleanup } from '@testing-library/react';
 import { Form } from 'react-final-form';
-import { TranslationContext } from 'ra-core';
+import { TestTranslationProvider } from 'ra-core';
 
 import SelectArrayInput from './SelectArrayInput';
 
@@ -182,16 +182,12 @@ describe('<SelectArrayInput />', () => {
 
     it('should translate the choices', () => {
         const { getByRole, queryByText } = render(
-            <TranslationContext.Provider
-                value={{
-                    translate: x => `**${x}**`,
-                }}
-            >
+            <TestTranslationProvider translate={x => `**${x}**`}>
                 <Form
                     onSubmit={jest.fn()}
                     render={() => <SelectArrayInput {...defaultProps} />}
                 />
-            </TranslationContext.Provider>
+            </TestTranslationProvider>
         );
         getByRole('button').click();
         expect(queryByText('**Programming**')).not.toBeNull();

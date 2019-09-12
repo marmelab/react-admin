@@ -7,15 +7,12 @@ import React, {
     ReactElement,
     FunctionComponent,
 } from 'react';
-import Polyglot from 'node-polyglot';
-import defaultMessages from 'ra-language-english';
-import defaultsDeep from 'lodash/defaultsDeep';
 
 import { useSafeSetState } from '../util/hooks';
-import { I18nProvider } from '../types';
 import { TranslationContext } from './TranslationContext';
 import { useUpdateLoading } from '../loading';
 import { useNotify } from '../sideEffect';
+import { I18N_CHANGE_LOCALE, I18nProvider } from '../types';
 
 interface Props {
     locale?: string;
@@ -41,45 +38,23 @@ const TranslationProvider: FunctionComponent<Props> = props => {
     const notify = useNotify();
 
     const [state, setState] = useSafeSetState({
-        provider: i18nProvider,
         locale,
-        translate: (() => {
-            const messages = i18nProvider(locale);
-            if (messages instanceof Promise) {
-                throw new Error(
-                    `The i18nProvider returned a Promise for the messages of the default locale (${locale}). Please update your i18nProvider to return the messages of the default locale in a synchronous way.`
-                );
-            }
-            const polyglot = new Polyglot({
-                locale,
-                phrases: defaultsDeep({ '': '' }, messages, defaultMessages),
-            });
-            return polyglot.t.bind(polyglot);
-        })(),
+        i18nProvider,
     });
 
     const setLocale = useCallback(
-        newLocale =>
+        (newLocale: string) =>
             new Promise(resolve => {
                 startLoading();
                 // so we systematically return a Promise for the messages
                 // i18nProvider may return a Promise for language changes,
-                resolve(i18nProvider(newLocale));
+                resolve(i18nProvider(I18N_CHANGE_LOCALE, newLocale));
             })
-                .then(messages => {
-                    const polyglot = new Polyglot({
-                        locale: newLocale,
-                        phrases: defaultsDeep(
-                            { '': '' },
-                            messages,
-                            defaultMessages
-                        ),
-                    });
+                .then(() => {
                     stopLoading();
                     setState({
-                        provider: i18nProvider,
                         locale: newLocale,
-                        translate: polyglot.t.bind(polyglot),
+                        i18nProvider,
                     });
                 })
                 .catch(error => {
@@ -90,6 +65,7 @@ const TranslationProvider: FunctionComponent<Props> = props => {
         [i18nProvider, notify, setState, startLoading, stopLoading]
     );
 
+    // handle update with different locale
     const isInitialMount = useRef(true);
     useEffect(() => {
         if (isInitialMount.current) {

@@ -9,7 +9,7 @@ import { Form } from 'react-final-form';
 import expect from 'expect';
 
 import AutocompleteArrayInput from './AutocompleteArrayInput';
-import { TranslationContext } from 'ra-core';
+import { TestTranslationProvider } from 'ra-core';
 
 describe('<AutocompleteArrayInput />', () => {
     afterEach(cleanup);
@@ -118,11 +118,7 @@ describe('<AutocompleteArrayInput />', () => {
             <Form
                 onSubmit={jest.fn()}
                 render={() => (
-                    <TranslationContext.Provider
-                        value={{
-                            translate: x => `**${x}**`,
-                        }}
-                    >
+                    <TestTranslationProvider translate={x => `**${x}**`}>
                         <AutocompleteArrayInput
                             {...defaultProps}
                             choices={[
@@ -130,7 +126,7 @@ describe('<AutocompleteArrayInput />', () => {
                                 { id: 'p', name: 'Programming' },
                             ]}
                         />
-                    </TranslationContext.Provider>
+                    </TestTranslationProvider>
                 )}
             />
         );
@@ -147,11 +143,7 @@ describe('<AutocompleteArrayInput />', () => {
             <Form
                 onSubmit={jest.fn()}
                 render={() => (
-                    <TranslationContext.Provider
-                        value={{
-                            translate: x => `**${x}**`,
-                        }}
-                    >
+                    <TestTranslationProvider translate={x => `**${x}**`}>
                         <AutocompleteArrayInput
                             {...defaultProps}
                             choices={[
@@ -160,7 +152,7 @@ describe('<AutocompleteArrayInput />', () => {
                             ]}
                             translateChoice={false}
                         />
-                    </TranslationContext.Provider>
+                    </TestTranslationProvider>
                 )}
             />
         );

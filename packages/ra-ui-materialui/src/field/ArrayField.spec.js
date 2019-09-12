@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow, mount } from 'enzyme';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
-import { TranslationProvider } from 'ra-core';
+import { TestTranslationContext } from 'ra-core';
 
 import { ArrayField } from './ArrayField';
 import NumberField from './NumberField';
@@ -62,9 +62,7 @@ describe('<ArrayField />', () => {
         );
         const wrapper = mount(
             <Provider store={createStore(() => ({}))}>
-                <TranslationProvider i18nProvider={() => ({})}>
-                    <Dummy />
-                </TranslationProvider>
+                <Dummy />
             </Provider>
         );
         expect(

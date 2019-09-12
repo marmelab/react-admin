@@ -20,14 +20,14 @@ describe('useTranslate', () => {
         expect(queryAllByText('hello')).toHaveLength(1);
     });
 
-    it('should use the translate function set in the translation context', () => {
+    it('should use the i18nProvider I18N_TRANSLATE verb', () => {
         const { queryAllByText } = renderWithRedux(
             <TranslationContext.Provider
                 value={{
                     locale: 'de',
-                    translate: () => 'hallo',
-                    provider: () => ({}),
-                    setLocale: () => {},
+                    i18nProvider: type =>
+                        type === 'I18N_TRANSLATE' ? 'hallo' : '',
+                    setLocale: () => Promise.resolve(),
                 }}
             >
                 <Component />
@@ -39,10 +39,7 @@ describe('useTranslate', () => {
 
     it('should use the i18n provider when using TranslationProvider', () => {
         const { queryAllByText } = renderWithRedux(
-            <TranslationProvider
-                locale="fr"
-                i18nProvider={() => ({ hello: 'bonjour' })}
-            >
+            <TranslationProvider locale="fr" i18nProvider={() => 'bonjour'}>
                 <Component />
             </TranslationProvider>
         );

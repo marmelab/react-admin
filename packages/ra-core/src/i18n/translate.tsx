@@ -1,5 +1,4 @@
-import React, { ComponentType, Component, ComponentClass } from 'react';
-import { default as wrapDisplayName } from 'recompose/wrapDisplayName';
+import React, { ComponentType } from 'react';
 import { default as warning } from '../util/warning';
 import useTranslate from './useTranslate';
 import useLocale from './useLocale';

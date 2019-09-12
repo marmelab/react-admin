@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, cleanup, fireEvent } from '@testing-library/react';
 import { Form } from 'react-final-form';
-import { TranslationContext } from 'ra-core';
+import { TestTranslationProvider } from 'ra-core';
 
 import SelectInput from './SelectInput';
 import { required } from 'ra-core';
@@ -319,16 +319,12 @@ describe('<SelectInput />', () => {
 
     it('should translate the choices by default', () => {
         const { getByRole, getByText, queryAllByRole } = render(
-            <TranslationContext.Provider
-                value={{
-                    translate: x => `**${x}**`,
-                }}
-            >
+            <TestTranslationProvider translate={x => `**${x}**`}>
                 <Form
                     onSubmit={jest.fn()}
                     render={() => <SelectInput {...defaultProps} />}
                 />
-            </TranslationContext.Provider>
+            </TestTranslationProvider>
         );
         const select = getByRole('button');
         fireEvent.click(select);
@@ -344,11 +340,7 @@ describe('<SelectInput />', () => {
 
     it('should not translate the choices if translateChoice is false', () => {
         const { getByRole, getByText, queryAllByRole } = render(
-            <TranslationContext.Provider
-                value={{
-                    translate: x => `**${x}**`,
-                }}
-            >
+            <TestTranslationProvider translate={x => `**${x}**`}>
                 <Form
                     onSubmit={jest.fn()}
                     render={() => (
@@ -358,7 +350,7 @@ describe('<SelectInput />', () => {
                         />
                     )}
                 />
-            </TranslationContext.Provider>
+            </TestTranslationProvider>
         );
         const select = getByRole('button');
         fireEvent.click(select);

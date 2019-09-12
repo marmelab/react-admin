@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
-import TranslationProvider from '../i18n/TranslationProvider';
 import merge from 'lodash/merge';
 import { createMemoryHistory } from 'history';
 
-import defaultI18nProvider from '../i18n/defaultI18nProvider';
 import createAdminStore from '../createAdminStore';
 import { I18nProvider } from '../types';
 
