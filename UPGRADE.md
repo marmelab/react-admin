@@ -1034,6 +1034,54 @@ If you had custom reducer or sagas based on these actions, they will no longer w
 
 **Tip**: If you need to clear the Redux state, you can dispatch the `CLEAR_STATE` action.
 
+## i18nProvider Signature Changed
+
+The i18nProvider, that react-admin uses for translating UI and content, now has a signature similar to the other providers: it accepts a message type (either `I18N_TRANSLATE` or `I18N_CHANGE_LOCALE`) and a params argument.
+
+```jsx
+// react-admin 2.x
+const i18nProvider = (locale) => messages[locale];
+
+// react-admin 3.x
+const i18nProvider = (type, params) => {
+    const polyglot = new Polyglot({ locale: 'en', phrases: messages.en });
+    let translate = polyglot.t.bind(polyglot);
+    if (type === 'I18N_TRANSLATE') {
+        return translate(params);
+    }
+    if type === 'I18N_CHANGE_LOCALE') {
+        return new Promise((resolve, reject) => {
+            // load new messages and update the translate function
+        })
+    }
+} 
+```
+
+But don't worry: react-admin v3 exports a function called `polyglotI18nProvider`, that you can just wrap around your old `i18nProvider` to make it compatible with the new provider signature:
+
+```diff
+import React from 'react';
+-import { Admin, Resource } from 'react-admin';
++import { Admin, Resource, polyglotI18nProvider } from 'react-admin';
+import englishMessages from 'ra-language-english';
+import frenchMessages from 'ra-language-french';
+
+const messages = {
+    fr: frenchMessages,
+    en: englishMessages,
+};
+const i18nProvider = locale => messages[locale];
+
+const App = () => (
+-   <Admin locale="en" i18nProvider={i18nProvider}>
++   <Admin locale="en" i18nProvider={polyglotI18nProvider(i18nProvider)}>
+        ...
+    </Admin>
+);
+
+export default App;
+```
+
 ## The translation layer no longer uses Redux
 
 React-admin translation (i18n) layer lets developers provide translations for UI and content, based on Airbnb's [Polyglot](https://airbnb.io/polyglot.js/) library. The previous implementation used Redux and redux-saga. In react-admin 3.0, the translation utilities are implemented using a React context and a set of hooks. 
