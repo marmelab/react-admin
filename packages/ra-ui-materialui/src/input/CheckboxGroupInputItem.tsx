@@ -42,8 +42,9 @@ const CheckboxGroupInputItem = ({
                     className={classes.checkbox}
                     checked={
                         value
-                            ? value.find(v => v == get(choice, optionValue)) !==
-                              undefined // eslint-disable-line eqeqeq
+                            ? value.find(
+                                  v => v == get(choice, optionValue) // eslint-disable-line eqeqeq
+                              ) !== undefined
                             : false
                     }
                     value={String(get(choice, optionValue))}
