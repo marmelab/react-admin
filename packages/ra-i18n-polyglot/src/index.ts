@@ -1,6 +1,6 @@
 import Polyglot from 'node-polyglot';
 
-import { I18N_TRANSLATE, I18N_CHANGE_LOCALE, I18nProvider } from '../types';
+import { I18N_TRANSLATE, I18N_CHANGE_LOCALE, I18nProvider } from 'ra-core';
 
 type GetMessages = (locale: string) => Object;
 

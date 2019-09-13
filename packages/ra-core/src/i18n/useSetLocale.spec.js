@@ -1,14 +1,11 @@
 import React from 'react';
 import expect from 'expect';
 import { fireEvent, cleanup, wait, act } from '@testing-library/react';
+import polyglotI18nProvider from 'ra-i18n-polyglot';
 
 import useTranslate from './useTranslate';
 import useSetLocale from './useSetLocale';
-import {
-    TranslationContext,
-    TranslationProvider,
-    polyglotI18nProvider,
-} from './';
+import { TranslationContext, TranslationProvider } from './';
 import { renderWithRedux } from '../util';
 
 describe('useSetLocale', () => {

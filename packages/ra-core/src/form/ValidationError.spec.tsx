@@ -1,8 +1,9 @@
 import React from 'react';
+import polyglotI18nProvider from 'ra-i18n-polyglot';
 import { cleanup } from '@testing-library/react';
 
 import ValidationError from './ValidationError';
-import { TranslationProvider, polyglotI18nProvider } from '../i18n';
+import { TranslationProvider } from '../i18n';
 
 import { renderWithRedux } from '../util';
 

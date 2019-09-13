@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Admin, Resource, polyglotI18nProvider } from 'react-admin';
+import { Admin, Resource } from 'react-admin';
+import polyglotI18nProvider from 'ra-i18n-polyglot';
 
 import './App.css';
 

@@ -1,4 +1,4 @@
-import { polyglotI18nProvider } from 'react-admin';
+import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from './i18n/en';
 
 const messages = {

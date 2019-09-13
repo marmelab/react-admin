@@ -1059,12 +1059,12 @@ const i18nProvider = (type, params) => {
 } 
 ```
 
-But don't worry: react-admin v3 exports a function called `polyglotI18nProvider`, that you can just wrap around your old `i18nProvider` to make it compatible with the new provider signature:
+But don't worry: react-admin v3 contains a module called `ra-i18n-polyglot`, that is a wrapper around your old `i18nProvider` to make it compatible with the new provider signature:
 
 ```diff
 import React from 'react';
--import { Admin, Resource } from 'react-admin';
-+import { Admin, Resource, polyglotI18nProvider } from 'react-admin';
+import { Admin, Resource } from 'react-admin';
++import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
 import frenchMessages from 'ra-language-french';
 
@@ -1072,11 +1072,11 @@ const messages = {
     fr: frenchMessages,
     en: englishMessages,
 };
-const i18nProvider = locale => messages[locale];
+-const i18nProvider = locale => messages[locale];
++const i18nProvider = polyglotI18nProvider(locale => messages[locale]);
 
 const App = () => (
--   <Admin locale="en" i18nProvider={i18nProvider}>
-+   <Admin locale="en" i18nProvider={polyglotI18nProvider(i18nProvider)}>
+    <Admin locale="en" i18nProvider={i18nProvider}>
         ...
     </Admin>
 );

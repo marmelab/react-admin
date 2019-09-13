@@ -1,5 +1,4 @@
 import defaultI18nProvider from './defaultI18nProvider';
-import polyglotI18nProvider from './polyglotI18nProvider';
 import translate from './translate';
 import { TranslationContext } from './TranslationContext';
 import TranslationProvider from './TranslationProvider';
@@ -13,7 +12,6 @@ const withTranslate = translate;
 
 export {
     defaultI18nProvider,
-    polyglotI18nProvider,
     translate, // deprecated
     withTranslate, // deprecated
     TranslationContext,
