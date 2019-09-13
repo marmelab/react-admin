@@ -3,20 +3,26 @@ import set from 'lodash/set';
 import useChoices, { UseChoicesOptions } from './useChoices';
 import { useTranslate } from '../i18n';
 
-const defaultMatchSuggestion = getChoiceText => (filter, suggestion) => {
-    const suggestionText = getChoiceText(suggestion);
-
-    const isReactElement = isValidElement(suggestionText);
-
-    return isReactElement
-        ? false
-        : suggestionText.match(
-              // We must escape any RegExp reserved characters to avoid errors
-              // For example, the filter might contains * which must be escaped as \*
-              new RegExp(escapeRegExp(filter), 'i')
-          );
-};
-
+/*
+ * Returns helper functions for suggestions handling.
+ *
+ * @param allowEmpty A boolean indicating whether an empty suggestion should be added
+ * @param choices An array of available choices
+ * @param emptyText The text to use for the empty suggestion. Defaults to an empty string
+ * @param emptyValue The value to use for the empty suggestion. Defaults to `null`
+ * @param limitChoicesToValue A boolean indicating whether the initial suggestions should be limited to the currently selected one(s)
+ * @param matchSuggestion Optional unless `optionText` is a React element. Function which check wether a choice matches a filter. Must return a boolean.
+ * @param optionText Either a string defining the property to use to get the choice text, a function or a React element
+ * @param optionValue The property to use to get the choice value
+ * @param selectedItem The currently selected item. May be an array of selected items
+ * @param suggestionLimit The maximum number of suggestions returned, excluding the empty one if `allowEmpty` is `true`
+ * @param translateChoice A boolean indicating whether to option text should be translated
+ *
+ * @returns An object with helper functions:
+ * - getChoiceText: Returns the choice text or a React element
+ * - getChoiceValue: Returns the choice value
+ * - getSuggestions: A function taking a filter value (string) and returning the matching suggestions
+ */
 const useSuggestions = ({
     allowEmpty,
     choices,
@@ -38,21 +44,20 @@ const useSuggestions = ({
     });
 
     const getSuggestions = useCallback(
-        filter =>
-            getSuggestionsFactory({
-                allowEmpty,
-                choices,
-                emptyText: translate(emptyText, { _: emptyText }),
-                emptyValue,
-                getChoiceText,
-                getChoiceValue,
-                limitChoicesToValue,
-                matchSuggestion,
-                optionText,
-                optionValue,
-                selectedItem,
-                suggestionLimit,
-            })(filter),
+        getSuggestionsFactory({
+            allowEmpty,
+            choices,
+            emptyText: translate(emptyText, { _: emptyText }),
+            emptyValue,
+            getChoiceText,
+            getChoiceValue,
+            limitChoicesToValue,
+            matchSuggestion,
+            optionText,
+            optionValue,
+            selectedItem,
+            suggestionLimit,
+        }),
         [
             allowEmpty,
             choices,
@@ -91,6 +96,23 @@ interface Options extends UseChoicesOptions {
     suggestionLimit?: number;
     selectedItem?: any | any[];
 }
+
+/**
+ * Default matcher implementation which check whether the suggestion text matches the filter.
+ */
+const defaultMatchSuggestion = getChoiceText => (filter, suggestion) => {
+    const suggestionText = getChoiceText(suggestion);
+
+    const isReactElement = isValidElement(suggestionText);
+
+    return isReactElement
+        ? false
+        : suggestionText.match(
+              // We must escape any RegExp reserved characters to avoid errors
+              // For example, the filter might contains * which must be escaped as \*
+              new RegExp(escapeRegExp(filter), 'i')
+          );
+};
 
 /**
  * Get the suggestions to display after applying a fuzzy search on the available choices

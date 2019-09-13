@@ -22,6 +22,17 @@ export interface UseChoicesOptions {
     translateChoice?: boolean;
 }
 
+/*
+ * Returns helper functions for choices handling.
+ *
+ * @param optionText Either a string defining the property to use to get the choice text, a function or a React element
+ * @param optionValue The property to use to get the choice value
+ * @param translateChoice A boolean indicating whether to option text should be translated
+ *
+ * @returns An object with helper functions:
+ * - getChoiceText: Returns the choice text or a React element
+ * - getChoiceValue: Returns the choice value
+ */
 const useChoices = ({
     optionText = 'name',
     optionValue = 'id',
