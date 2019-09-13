@@ -4,9 +4,9 @@ import get from 'lodash/get';
 import { Identifier } from '../types';
 import { useTranslate } from '../i18n';
 
-export interface Choice {
+export type Choice = {
     [key: string]: string | Identifier;
-}
+};
 
 export type OptionTextElement = ReactElement<{ record: Choice }>;
 export type OptionText = (choice: Choice) => string | OptionTextElement;
