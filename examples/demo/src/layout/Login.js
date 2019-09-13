@@ -163,7 +163,7 @@ Login.propTypes = {
 };
 
 // We need to put the ThemeProvider decoration in another component
-// Because otherwise the withStyles() HOC used in EnhancedLogin won't get
+// Because otherwise the useStyles() hook used in Login won't get
 // the right theme
 const LoginWithTheme = props => (
     <ThemeProvider theme={createMuiTheme(lightTheme)}>
