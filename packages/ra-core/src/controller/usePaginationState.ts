@@ -1,4 +1,4 @@
-import { useState, useEffect, useReducer, useCallback, useRef } from 'react';
+import { useEffect, useReducer, useCallback, useRef } from 'react';
 import { Pagination } from '../types';
 
 interface PaginationProps {
