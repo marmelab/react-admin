@@ -286,7 +286,7 @@ nav {
   flex-wrap: wrap;
   justify-content: center;
   align-self: center;
-  max-width: 600px;
+  max-width: 700px;
   flex-grow: 0;
 }
 
@@ -304,7 +304,7 @@ nav {
 
 .grid img {
   height: 40px;
-  margin: 10px;
+  margin: 20px;
   align-self: center;
 }
 
