@@ -123,7 +123,6 @@ const AutocompleteInput: FunctionComponent<
     setFilter,
     shouldRenderSuggestions: shouldRenderSuggestionsOverride,
     source,
-    suggestionComponent,
     suggestionLimit,
     translateChoice = true,
     validate,
