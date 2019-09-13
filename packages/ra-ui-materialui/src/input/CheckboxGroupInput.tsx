@@ -6,12 +6,11 @@ import FormControl, { FormControlProps } from '@material-ui/core/FormControl';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import { makeStyles } from '@material-ui/core/styles';
-import { FieldTitle, useInput, InputProps } from 'ra-core';
+import { FieldTitle, useInput, InputProps, ChoicesProps } from 'ra-core';
 
 import defaultSanitizeRestProps from './sanitizeRestProps';
 import CheckboxGroupInputItem from './CheckboxGroupInputItem';
 import { CheckboxProps } from '@material-ui/core/Checkbox';
-import { InputWithOptionsProps } from './InputWithOptions';
 
 const sanitizeRestProps = ({
     setFilter,
@@ -91,9 +90,9 @@ const useStyles = makeStyles(theme => ({
  * The object passed as `options` props is passed to the material-ui <Checkbox> components
  */
 const CheckboxGroupInput: FunctionComponent<
-    InputWithOptionsProps & InputProps<CheckboxProps> & FormControlProps
+    ChoicesProps & InputProps<CheckboxProps> & FormControlProps
 > = ({
-    choices,
+    choices = [],
     helperText,
     label,
     onBlur,
@@ -183,7 +182,7 @@ const CheckboxGroupInput: FunctionComponent<
 };
 
 CheckboxGroupInput.propTypes = {
-    choices: PropTypes.arrayOf(PropTypes.object),
+    choices: PropTypes.arrayOf(PropTypes.object).isRequired,
     className: PropTypes.string,
     label: PropTypes.string,
     source: PropTypes.string,
@@ -192,15 +191,14 @@ CheckboxGroupInput.propTypes = {
         PropTypes.string,
         PropTypes.func,
         PropTypes.element,
-    ]).isRequired,
-    optionValue: PropTypes.string.isRequired,
+    ]),
+    optionValue: PropTypes.string,
     row: PropTypes.bool,
     resource: PropTypes.string,
-    translateChoice: PropTypes.bool.isRequired,
+    translateChoice: PropTypes.bool,
 };
 
 CheckboxGroupInput.defaultProps = {
-    choices: [],
     options: {},
     optionText: 'name',
     optionValue: 'id',
