@@ -3,7 +3,7 @@ import expect from 'expect';
 import { render, cleanup } from '@testing-library/react';
 import useChoices from './useChoices';
 import { renderWithRedux } from '../util';
-import { TranslationProvider } from '../i18n';
+import { TestTranslationProvider } from '../i18n';
 
 describe('useChoices hook', () => {
     afterEach(cleanup);
@@ -70,21 +70,21 @@ describe('useChoices hook', () => {
 
     it('should translate the choice by default', () => {
         const { queryAllByText } = renderWithRedux(
-            <TranslationProvider i18nProvider={() => ({ test: 'bonjour' })}>
+            <TestTranslationProvider translate={x => `**${x}**`}>
                 <Component {...defaultProps} />
-            </TranslationProvider>
+            </TestTranslationProvider>
         );
         expect(queryAllByText('test')).toHaveLength(0);
-        expect(queryAllByText('bonjour')).toHaveLength(1);
+        expect(queryAllByText('**test**')).toHaveLength(1);
     });
 
     it('should not translate the choice if translateChoice is false', () => {
         const { queryAllByText } = renderWithRedux(
-            <TranslationProvider i18nProvider={() => ({ hello: 'bonjour' })}>
+            <TestTranslationProvider translate={x => `**${x}**`}>
                 <Component {...defaultProps} translateChoice={false} />
-            </TranslationProvider>
+            </TestTranslationProvider>
         );
         expect(queryAllByText('test')).toHaveLength(1);
-        expect(queryAllByText('bonjour')).toHaveLength(0);
+        expect(queryAllByText('**test**')).toHaveLength(0);
     });
 });
