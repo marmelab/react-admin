@@ -2,7 +2,6 @@ import ChatBubbleIcon from '@material-ui/icons/ChatBubble';
 import CommentCreate from './CommentCreate';
 import CommentEdit from './CommentEdit';
 import CommentList from './CommentList';
-import CommentShow from './CommentShow';
 import { ShowGuesser } from 'react-admin';
 
 export default {

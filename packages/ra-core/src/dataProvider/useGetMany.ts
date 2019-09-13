@@ -186,8 +186,9 @@ const callQueries = debounce(() => {
                             loaded: true,
                         }));
                         if (onSuccess) {
-                            const subData = ids.map(id =>
-                                response.data.find(datum => datum.id == id)
+                            const subData = ids.map(
+                                id =>
+                                    response.data.find(datum => datum.id == id) // eslint-disable-line eqeqeq
                             );
                             onSuccess({ data: subData });
                         }

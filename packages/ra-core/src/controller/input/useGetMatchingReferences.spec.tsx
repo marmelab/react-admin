@@ -19,7 +19,7 @@ describe('useMatchingReferences', () => {
     afterEach(cleanup);
 
     it('should fetch matchingReferences only on mount', () => {
-        const { dispatch, rerender } = renderHook(() => {
+        const { dispatch } = renderHook(() => {
             return useMatchingReferences(defaultProps);
         });
 

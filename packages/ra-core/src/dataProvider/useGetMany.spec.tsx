@@ -19,11 +19,6 @@ const UseGetMany = ({
 };
 
 describe('useGetMany', () => {
-    const defaultProps = {
-        ids: [1],
-        resource: 'posts',
-    };
-
     afterEach(cleanup);
 
     it('should call the dataProvider with a GET_MANY on mount', async () => {
@@ -100,7 +95,7 @@ describe('useGetMany', () => {
             .mockReturnValueOnce(
                 Promise.resolve({ data: [{ id: 5 }, { id: 6 }, { id: 7 }] })
             );
-        const { dispatch } = renderWithRedux(
+        renderWithRedux(
             <DataProviderContext.Provider value={dataProvider}>
                 <UseGetMany resource="posts" ids={[1, 2]} />
                 <UseGetMany resource="posts" ids={[2, 3]} />
