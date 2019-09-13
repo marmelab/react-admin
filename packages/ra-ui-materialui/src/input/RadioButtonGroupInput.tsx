@@ -106,7 +106,6 @@ export const RadioButtonGroupInput: FunctionComponent<
         isRequired,
         meta: { error, touched },
     } = useInput({
-        type: 'radio',
         onBlur,
         onChange,
         onFocus,
