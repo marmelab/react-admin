@@ -45,6 +45,7 @@ const NumberInput: FunctionComponent<
     onChange,
     validate,
     variant = 'filled',
+    inputProps: overrideInputProps,
     ...rest
 }) => {
     const {
@@ -64,6 +65,8 @@ const NumberInput: FunctionComponent<
         ...rest,
     });
 
+    const inputProps = { ...overrideInputProps, step };
+
     return (
         <TextField
             id={id}
@@ -79,7 +82,6 @@ const NumberInput: FunctionComponent<
                     />
                 ) : null
             }
-            step={step}
             label={
                 <FieldTitle
                     label={label}
@@ -89,6 +91,7 @@ const NumberInput: FunctionComponent<
                 />
             }
             margin={margin}
+            inputProps={inputProps}
             {...options}
             {...sanitizeRestProps(rest)}
         />
