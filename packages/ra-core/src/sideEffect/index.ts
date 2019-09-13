@@ -2,7 +2,6 @@ import adminSaga from './admin';
 import authSaga from './auth';
 import callbackSaga, { CallbackSideEffect } from './callback';
 import fetchSaga from './fetch';
-import errorSaga from './error';
 import notificationSaga, { NotificationSideEffect } from './notification';
 import redirectionSaga, { RedirectionSideEffect } from './redirection';
 import accumulateSaga from './accumulate';
@@ -20,7 +19,6 @@ export {
     callbackSaga,
     CallbackSideEffect,
     fetchSaga,
-    errorSaga,
     notificationSaga,
     NotificationSideEffect,
     redirectionSaga,
