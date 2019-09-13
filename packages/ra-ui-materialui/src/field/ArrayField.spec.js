@@ -2,7 +2,6 @@ import React from 'react';
 import { shallow, mount } from 'enzyme';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
-import { TestTranslationContext } from 'ra-core';
 
 import { ArrayField } from './ArrayField';
 import NumberField from './NumberField';
