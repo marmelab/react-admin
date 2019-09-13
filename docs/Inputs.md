@@ -1486,3 +1486,22 @@ import { FormDataConsumer } from 'react-admin';
      </Edit>
  );
 ```
+
+**Tip**: When using a `FormDataConsumer` you can define `subscription` prop to pass to the `react-final-form`
+
+```jsx
+import { FormDataConsumer } from 'react-admin';
+
+ const PostEdit = (props) => (
+     <Edit {...props}>
+         <SimpleForm>
+             <BooleanInput source="hasEmail" />
+             <FormDataConsume subscription={{ values: true }}>
+                 {({ formData, ...rest }) => formData.hasEmail &&
+                      <TextInput source="email" {...rest} />
+                 }
+             </FormDataConsumer>
+         </SimpleForm>
+     </Edit>
+ );
+```
