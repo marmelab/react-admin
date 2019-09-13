@@ -34,13 +34,11 @@ import { reducer as formReducer } from 'redux-form';
 export default ({
     authProvider,
     dataProvider,
-    i18nProvider = defaultI18nProvider,
     history,
     locale = 'en',
 }) => {
     const reducer = combineReducers({
         admin: adminReducer,
-        i18n: i18nReducer(locale, i18nProvider(locale)),
         form: formReducer,
 -       router: routerReducer,
 +       router: connectRouter(history),
