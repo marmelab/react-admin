@@ -9,6 +9,7 @@ import useChoices, {
     OptionTextElement,
     OptionText,
 } from './useChoices';
+import useSuggestions from './useSuggestions';
 
 export {
     addField,
@@ -21,6 +22,7 @@ export {
     useChoices,
     useInput,
     useInitializeFormWithRecord,
+    useSuggestions,
     ValidationError,
 };
 export { isRequired } from './FormField';

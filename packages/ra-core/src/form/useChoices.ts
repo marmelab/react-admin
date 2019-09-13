@@ -1,4 +1,4 @@
-import { ReactElement, isValidElement, cloneElement } from 'react';
+import { ReactElement, isValidElement, cloneElement, useCallback } from 'react';
 import get from 'lodash/get';
 
 import { useTranslate } from '../i18n';
@@ -16,7 +16,7 @@ export interface ChoicesProps {
     translateChoice?: boolean;
 }
 
-interface Options {
+export interface UseChoicesOptions {
     optionValue?: string;
     optionText?: OptionTextElement | OptionText | string;
     translateChoice?: boolean;
@@ -26,26 +26,31 @@ const useChoices = ({
     optionText = 'name',
     optionValue = 'id',
     translateChoice = true,
-}: Options) => {
+}: UseChoicesOptions) => {
     const translate = useTranslate();
 
-    const getChoiceText = choice => {
-        if (isValidElement<{ record: any }>(optionText)) {
-            return cloneElement<{ record: any }>(optionText, {
-                record: choice,
-            });
-        }
-        const choiceName =
-            typeof optionText === 'function'
-                ? optionText(choice)
-                : get(choice, optionText);
+    const getChoiceText = useCallback(
+        choice => {
+            if (isValidElement<{ record: any }>(optionText)) {
+                return cloneElement<{ record: any }>(optionText, {
+                    record: choice,
+                });
+            }
+            const choiceName =
+                typeof optionText === 'function'
+                    ? optionText(choice)
+                    : get(choice, optionText);
 
-        return translateChoice
-            ? translate(choiceName, { _: choiceName })
-            : choiceName;
-    };
+            return translateChoice
+                ? translate(choiceName, { _: choiceName })
+                : choiceName;
+        },
+        [optionText, translate, translateChoice]
+    );
 
-    const getChoiceValue = choice => get(choice, optionValue);
+    const getChoiceValue = useCallback(choice => get(choice, optionValue), [
+        optionValue,
+    ]);
 
     return {
         getChoiceText,
