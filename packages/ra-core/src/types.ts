@@ -25,7 +25,14 @@ export interface Pagination {
     perPage: number;
 }
 
-export type I18nProvider = (locale: string) => object | Promise<object>;
+export const I18N_TRANSLATE = 'I18N_TRANSLATE';
+export const I18N_CHANGE_LOCALE = 'I18N_CHANGE_LOCALE';
+
+export type I18nProvider = (
+    type: typeof I18N_TRANSLATE | typeof I18N_CHANGE_LOCALE,
+    params: { key: string; options?: Object } | string
+) => string | Promise<any>;
+
 export type Translate = (id: string, options?: any) => string;
 
 export type AuthActionType =

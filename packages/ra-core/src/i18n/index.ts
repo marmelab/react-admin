@@ -1,6 +1,7 @@
-import defaultI18nProvider from './defaultI18nProvider';
 import translate from './translate';
+import { TranslationContext } from './TranslationContext';
 import TranslationProvider from './TranslationProvider';
+import TestTranslationProvider from './TestTranslationProvider';
 import useLocale from './useLocale';
 import useSetLocale from './useSetLocale';
 import useTranslate from './useTranslate';
@@ -9,13 +10,14 @@ import useTranslate from './useTranslate';
 const withTranslate = translate;
 
 export {
-    defaultI18nProvider,
     translate, // deprecated
     withTranslate, // deprecated
+    TranslationContext,
+    TranslationProvider,
+    TestTranslationProvider,
     useLocale,
     useSetLocale,
     useTranslate,
-    TranslationProvider,
 };
 export const DEFAULT_LOCALE = 'en';
 

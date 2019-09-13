@@ -14,7 +14,6 @@ import AuthContext from './auth/AuthContext';
 import DataProviderContext from './dataProvider/DataProviderContext';
 import createAdminStore, { InitialState } from './createAdminStore';
 import TranslationProvider from './i18n/TranslationProvider';
-import defaultI18nProvider from './i18n/defaultI18nProvider';
 import CoreAdminRouter from './CoreAdminRouter';
 import {
     AuthProvider,
@@ -64,7 +63,7 @@ const CoreAdmin: FunctionComponent<AdminProps> = ({
     appLayout,
     authProvider,
     dataProvider,
-    i18nProvider = defaultI18nProvider,
+    i18nProvider,
     children,
     customRoutes = [],
     dashboard,

@@ -92,7 +92,7 @@ const Login: React.FunctionComponent<
     const checkAuth = useCheckAuth();
     const dispatch = useDispatch();
     useEffect(() => {
-        checkAuth()
+        checkAuth({}, false)
             .then(() => {
                 // already authenticated, redirect to the home page
                 dispatch(push('/'));

@@ -1,18 +1,17 @@
 import { createContext } from 'react';
-import { Translate, I18nProvider } from '../types';
+import { I18nProvider } from '../types';
 
 export interface TranslationContextProps {
-    provider: I18nProvider;
     locale: string;
-    translate: Translate;
-    setLocale: (locale: string) => void;
+    setLocale: (locale: string) => Promise<void>;
+    i18nProvider: I18nProvider;
 }
 
 const TranslationContext = createContext<TranslationContextProps>({
-    provider: () => ({}),
     locale: 'en',
-    translate: id => id,
-    setLocale: () => {},
+    setLocale: () => Promise.resolve(),
+    i18nProvider: (type, params: { key: string; options?: Object }) =>
+        params && params.key ? params.key : '',
 });
 
 TranslationContext.displayName = 'TranslationContext';

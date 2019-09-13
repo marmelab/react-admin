@@ -11,6 +11,7 @@ import CustomRouteLayout from './customRouteLayout';
 import CustomRouteNoLayout from './customRouteNoLayout';
 import dataProvider from './dataProvider';
 import i18nProvider from './i18nProvider';
+import Layout from './Layout';
 import posts from './posts';
 import users from './users';
 import tags from './tags';
@@ -22,6 +23,7 @@ render(
         i18nProvider={i18nProvider}
         title="Example Admin"
         locale="en"
+        layout={Layout}
         customReducers={{ tree }}
         customRoutes={[
             <Route

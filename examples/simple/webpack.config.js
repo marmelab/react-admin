@@ -73,6 +73,14 @@ module.exports = {
                 'ra-data-fakerest',
                 'src'
             ),
+            'ra-i18n-polyglot': path.join(
+                __dirname,
+                '..',
+                '..',
+                'packages',
+                'ra-i18n-polyglot',
+                'src'
+            ),
             'ra-input-rich-text': path.join(
                 __dirname,
                 '..',

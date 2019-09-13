@@ -34,13 +34,11 @@ import { reducer as formReducer } from 'redux-form';
 export default ({
     authProvider,
     dataProvider,
-    i18nProvider = defaultI18nProvider,
     history,
     locale = 'en',
 }) => {
     const reducer = combineReducers({
         admin: adminReducer,
-        i18n: i18nReducer(locale, i18nProvider(locale)),
         form: formReducer,
 -       router: routerReducer,
 +       router: connectRouter(history),
@@ -1033,6 +1031,56 @@ If you have custom Login or Logout buttons that dispatch these actions, they wil
 If you had custom reducer or sagas based on these actions, they will no longer work. You will have to reimplement that custom logic using the new authentication hooks. 
 
 **Tip**: If you need to clear the Redux state, you can dispatch the `CLEAR_STATE` action.
+
+## i18nProvider Signature Changed
+
+The i18nProvider, that react-admin uses for translating UI and content, now has a signature similar to the other providers: it accepts a message type (either `I18N_TRANSLATE` or `I18N_CHANGE_LOCALE`) and a params argument.
+
+```jsx
+// react-admin 2.x
+const i18nProvider = (locale) => messages[locale];
+
+// react-admin 3.x
+const i18nProvider = (type, params) => {
+    const polyglot = new Polyglot({ locale: 'en', phrases: messages.en });
+    let translate = polyglot.t.bind(polyglot);
+    if (type === 'I18N_TRANSLATE') {
+        const { key, options } = params;
+        return translate(key, options);
+    }
+    if type === 'I18N_CHANGE_LOCALE') {
+        const newLocale = params;
+        return new Promise((resolve, reject) => {
+            // load new messages and update the translate function
+        })
+    }
+} 
+```
+
+But don't worry: react-admin v3 contains a module called `ra-i18n-polyglot`, that is a wrapper around your old `i18nProvider` to make it compatible with the new provider signature:
+
+```diff
+import React from 'react';
+import { Admin, Resource } from 'react-admin';
++import polyglotI18nProvider from 'ra-i18n-polyglot';
+import englishMessages from 'ra-language-english';
+import frenchMessages from 'ra-language-french';
+
+const messages = {
+    fr: frenchMessages,
+    en: englishMessages,
+};
+-const i18nProvider = locale => messages[locale];
++const i18nProvider = polyglotI18nProvider(locale => messages[locale]);
+
+const App = () => (
+    <Admin locale="en" i18nProvider={i18nProvider}>
+        ...
+    </Admin>
+);
+
+export default App;
+```
 
 ## The translation layer no longer uses Redux
 

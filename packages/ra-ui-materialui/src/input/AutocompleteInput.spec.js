@@ -8,7 +8,7 @@ import {
 
 import AutocompleteInput from './AutocompleteInput';
 import { Form } from 'react-final-form';
-import { TranslationContext } from 'ra-core';
+import { TestTranslationProvider } from 'ra-core';
 
 describe('<AutocompleteInput />', () => {
     const defaultProps = {
@@ -136,11 +136,7 @@ describe('<AutocompleteInput />', () => {
 
     it('should translate the value by default', () => {
         const { queryByDisplayValue } = render(
-            <TranslationContext.Provider
-                value={{
-                    translate: x => `**${x}**`,
-                }}
-            >
+            <TestTranslationProvider translate={x => `**${x}**`}>
                 <Form
                     onSubmit={jest.fn()}
                     initialValues={{ role: 2 }}
@@ -151,18 +147,14 @@ describe('<AutocompleteInput />', () => {
                         />
                     )}
                 />
-            </TranslationContext.Provider>
+            </TestTranslationProvider>
         );
         expect(queryByDisplayValue('**foo**')).not.toBeNull();
     });
 
     it('should not translate the value if translateChoice is false', () => {
         const { queryByDisplayValue } = render(
-            <TranslationContext.Provider
-                value={{
-                    translate: x => `**${x}**`,
-                }}
-            >
+            <TestTranslationProvider translate={x => `**${x}**`}>
                 <Form
                     onSubmit={jest.fn()}
                     initialValues={{ role: 2 }}
@@ -174,7 +166,7 @@ describe('<AutocompleteInput />', () => {
                         />
                     )}
                 />
-            </TranslationContext.Provider>
+            </TestTranslationProvider>
         );
         expect(queryByDisplayValue('foo')).not.toBeNull();
         expect(queryByDisplayValue('**foo**')).toBeNull();

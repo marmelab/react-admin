@@ -3,7 +3,7 @@ import expect from 'expect';
 import CheckboxGroupInput from './CheckboxGroupInput';
 import { render, cleanup, fireEvent } from '@testing-library/react';
 import { Form } from 'react-final-form';
-import { renderWithRedux, TranslationProvider } from 'ra-core';
+import { renderWithRedux, TestTranslationProvider } from 'ra-core';
 
 describe('<CheckboxGroupInput />', () => {
     const defaultProps = {
@@ -157,17 +157,17 @@ describe('<CheckboxGroupInput />', () => {
 
     it('should translate the choices by default', () => {
         const { queryByLabelText } = renderWithRedux(
-            <TranslationProvider
-                i18nProvider={() => ({
+            <TestTranslationProvider
+                messages={{
                     Angular: 'Angular **',
                     React: 'React **',
-                })}
+                }}
             >
                 <Form
                     onSubmit={jest.fn}
                     render={() => <CheckboxGroupInput {...defaultProps} />}
                 />
-            </TranslationProvider>
+            </TestTranslationProvider>
         );
         expect(queryByLabelText('Angular **')).not.toBeNull();
         expect(queryByLabelText('React **')).not.toBeNull();
@@ -175,11 +175,11 @@ describe('<CheckboxGroupInput />', () => {
 
     it('should not translate the choices if translateChoice is false', () => {
         const { queryByLabelText } = renderWithRedux(
-            <TranslationProvider
-                i18nProvider={() => ({
+            <TestTranslationProvider
+                messages={{
                     Angular: 'Angular **',
                     React: 'React **',
-                })}
+                }}
             >
                 <Form
                     onSubmit={jest.fn}
@@ -190,7 +190,7 @@ describe('<CheckboxGroupInput />', () => {
                         />
                     )}
                 />
-            </TranslationProvider>
+            </TestTranslationProvider>
         );
         expect(queryByLabelText('Angular **')).toBeNull();
         expect(queryByLabelText('React **')).toBeNull();

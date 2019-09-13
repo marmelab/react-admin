@@ -2,7 +2,7 @@ import React from 'react';
 import expect from 'expect';
 import { render, cleanup } from '@testing-library/react';
 
-import { TranslationProvider, renderWithRedux } from 'ra-core';
+import { TestTranslationProvider, renderWithRedux } from 'ra-core';
 import { SelectField } from './SelectField';
 
 describe('<SelectField />', () => {
@@ -112,9 +112,9 @@ describe('<SelectField />', () => {
 
     it('should translate the choice by default', () => {
         const { queryAllByText } = renderWithRedux(
-            <TranslationProvider i18nProvider={() => ({ hello: 'bonjour' })}>
+            <TestTranslationProvider messages={{ hello: 'bonjour' }}>
                 <SelectField {...defaultProps} record={{ foo: 0 }} />
-            </TranslationProvider>
+            </TestTranslationProvider>
         );
         expect(queryAllByText('hello')).toHaveLength(0);
         expect(queryAllByText('bonjour')).toHaveLength(1);
@@ -122,13 +122,13 @@ describe('<SelectField />', () => {
 
     it('should not translate the choice if translateChoice is false', () => {
         const { queryAllByText } = renderWithRedux(
-            <TranslationProvider i18nProvider={() => ({ hello: 'bonjour' })}>
+            <TestTranslationProvider messages={{ hello: 'bonjour' }}>
                 <SelectField
                     {...defaultProps}
                     record={{ foo: 0 }}
                     translateChoice={false}
                 />
-            </TranslationProvider>
+            </TestTranslationProvider>
         );
         expect(queryAllByText('hello')).toHaveLength(1);
         expect(queryAllByText('bonjour')).toHaveLength(0);

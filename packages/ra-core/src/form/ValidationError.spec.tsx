@@ -1,8 +1,10 @@
 import React from 'react';
+import polyglotI18nProvider from 'ra-i18n-polyglot';
 import { cleanup } from '@testing-library/react';
 
 import ValidationError from './ValidationError';
-import TranslationProvider from '../i18n/TranslationProvider';
+import { TranslationProvider } from '../i18n';
+
 import { renderWithRedux } from '../util';
 
 const translate = jest.fn(key => key);
@@ -10,7 +12,7 @@ const translate = jest.fn(key => key);
 const renderWithTranslations = content =>
     renderWithRedux(
         <TranslationProvider
-            i18nProvider={() => ({
+            i18nProvider={polyglotI18nProvider(() => ({
                 ra: {
                     validation: {
                         required: 'Required',
@@ -23,7 +25,7 @@ const renderWithTranslations = content =>
                         match: 'Must match %{match}',
                     },
                 },
-            })}
+            }))}
         >
             {content}
         </TranslationProvider>
