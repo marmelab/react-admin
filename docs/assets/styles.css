@@ -262,9 +262,8 @@ nav {
 }
 
 #syntax-highlighter {
-  width: 45%;
+  width: 52%;
   font-size: 12px;
-  margin-right: 3em;
 }
 #syntax-highlighter pre {
   padding: 2em !important;
