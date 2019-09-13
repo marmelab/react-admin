@@ -10,12 +10,11 @@ import {
 import { RadioGroupProps } from '@material-ui/core/RadioGroup';
 import { FormControlProps } from '@material-ui/core/FormControl';
 import get from 'lodash/get';
-import { useInput, FieldTitle, InputProps } from 'ra-core';
+import { useInput, FieldTitle, InputProps, ChoicesProps } from 'ra-core';
 
 import sanitizeRestProps from './sanitizeRestProps';
 import InputHelperText from './InputHelperText';
 import RadioButtonGroupInputItem from './RadioButtonGroupInputItem';
-import { InputWithOptionsProps } from './InputWithOptions';
 
 const useStyles = makeStyles({
     label: {
@@ -81,9 +80,9 @@ const useStyles = makeStyles({
  * The object passed as `options` props is passed to the material-ui <RadioButtonGroup> component
  */
 export const RadioButtonGroupInput: FunctionComponent<
-    InputWithOptionsProps & InputProps<RadioGroupProps> & FormControlProps
+    ChoicesProps & InputProps<RadioGroupProps> & FormControlProps
 > = ({
-    choices,
+    choices = [],
     classes: classesOverride,
     helperText,
     label,
@@ -107,6 +106,7 @@ export const RadioButtonGroupInput: FunctionComponent<
         isRequired,
         meta: { error, touched },
     } = useInput({
+        type: 'radio',
         onBlur,
         onChange,
         onFocus,
@@ -157,22 +157,21 @@ export const RadioButtonGroupInput: FunctionComponent<
 };
 
 RadioButtonGroupInput.propTypes = {
-    choices: PropTypes.arrayOf(PropTypes.object),
+    choices: PropTypes.arrayOf(PropTypes.any).isRequired,
     label: PropTypes.string,
     options: PropTypes.object,
     optionText: PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.func,
         PropTypes.element,
-    ]).isRequired,
-    optionValue: PropTypes.string.isRequired,
+    ]),
+    optionValue: PropTypes.string,
     resource: PropTypes.string,
     source: PropTypes.string,
-    translateChoice: PropTypes.bool.isRequired,
+    translateChoice: PropTypes.bool,
 };
 
 RadioButtonGroupInput.defaultProps = {
-    choices: [],
     options: {},
     optionText: 'name',
     optionValue: 'id',
