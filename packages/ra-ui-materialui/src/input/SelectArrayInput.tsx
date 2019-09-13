@@ -12,12 +12,16 @@ import {
     Chip,
 } from '@material-ui/core';
 import classnames from 'classnames';
-import { FieldTitle, useInput, InputProps, ChoicesProps } from 'ra-core';
+import {
+    FieldTitle,
+    useInput,
+    InputProps,
+    ChoicesProps,
+    useChoices,
+} from 'ra-core';
 import InputHelperText from './InputHelperText';
 import { SelectProps } from '@material-ui/core/Select';
 import { FormControlProps } from '@material-ui/core/FormControl';
-import { useChoices } from 'ra-core';
-import { Choice } from 'ra-core';
 
 const sanitizeRestProps = ({
     addLabel,
@@ -254,7 +258,7 @@ const SelectArrayInput: FunctionComponent<
 };
 
 SelectArrayInput.propTypes = {
-    choices: PropTypes.arrayOf<Choice>(PropTypes.any).isRequired,
+    choices: PropTypes.arrayOf(PropTypes.object).isRequired,
     classes: PropTypes.object,
     className: PropTypes.string,
     children: PropTypes.node,

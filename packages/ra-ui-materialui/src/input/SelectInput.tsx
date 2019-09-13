@@ -15,7 +15,6 @@ import {
 import ResettableTextField from './ResettableTextField';
 import InputHelperText from './InputHelperText';
 import { TextFieldProps } from '@material-ui/core/TextField';
-import { Choice } from 'ra-core';
 
 const sanitizeRestProps = ({
     addLabel,
@@ -246,7 +245,7 @@ SelectInput.propTypes = {
     allowEmpty: PropTypes.bool.isRequired,
     emptyText: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
     emptyValue: PropTypes.any,
-    choices: PropTypes.arrayOf<Choice>(PropTypes.any).isRequired,
+    choices: PropTypes.arrayOf(PropTypes.object).isRequired,
     classes: PropTypes.object,
     className: PropTypes.string,
     label: PropTypes.string,

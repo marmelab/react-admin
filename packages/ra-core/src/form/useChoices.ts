@@ -1,24 +1,32 @@
 import { ReactElement, isValidElement, cloneElement } from 'react';
 import get from 'lodash/get';
 
-import { Identifier } from '../types';
 import { useTranslate } from '../i18n';
+import { Record } from '../types';
 
-export type Choice = {
-    [key: string]: string | Identifier;
-};
-
-export type OptionTextElement = ReactElement<{ record: Choice }>;
-export type OptionText = (choice: Choice) => string | OptionTextElement;
+export type OptionTextElement = ReactElement<{
+    record: Record;
+}>;
+export type OptionText = (choice: object) => string | OptionTextElement;
 
 export interface ChoicesProps {
-    choices: Choice[];
-    optionValue: string;
-    optionText: OptionTextElement | OptionText | string;
-    translateChoice: boolean;
+    choices: object[];
+    optionValue?: string;
+    optionText?: OptionTextElement | OptionText | string;
+    translateChoice?: boolean;
 }
 
-const useChoices = ({ optionText, optionValue, translateChoice }) => {
+interface Options {
+    optionValue?: string;
+    optionText?: OptionTextElement | OptionText | string;
+    translateChoice?: boolean;
+}
+
+const useChoices = ({
+    optionText = 'name',
+    optionValue = 'id',
+    translateChoice = true,
+}: Options) => {
     const translate = useTranslate();
 
     const getChoiceText = choice => {

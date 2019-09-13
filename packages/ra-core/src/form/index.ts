@@ -5,7 +5,6 @@ import useInput, { InputProps } from './useInput';
 import ValidationError from './ValidationError';
 import useInitializeFormWithRecord from './useInitializeFormWithRecord';
 import useChoices, {
-    Choice,
     ChoicesProps,
     OptionTextElement,
     OptionText,
@@ -13,7 +12,6 @@ import useChoices, {
 
 export {
     addField,
-    Choice,
     ChoicesProps,
     FormDataConsumer,
     FormField,

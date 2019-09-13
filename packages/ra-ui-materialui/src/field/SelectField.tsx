@@ -121,7 +121,7 @@ EnhancedSelectField.defaultProps = {
 EnhancedSelectField.propTypes = {
     ...Typography.propTypes,
     ...fieldPropTypes,
-    choices: PropTypes.arrayOf(PropTypes.any).isRequired,
+    choices: PropTypes.arrayOf(PropTypes.object).isRequired,
     optionText: PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.func,
