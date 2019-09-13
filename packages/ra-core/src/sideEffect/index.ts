@@ -7,7 +7,6 @@ import redirectionSaga, { RedirectionSideEffect } from './redirection';
 import accumulateSaga from './accumulate';
 import refreshSaga, { RefreshSideEffect } from './refresh';
 import undoSaga from './undo';
-import unloadSaga from './unload';
 import useRedirect from './useRedirect';
 import useNotify from './useNotify';
 import useRefresh from './useRefresh';
@@ -27,7 +26,6 @@ export {
     refreshSaga,
     RefreshSideEffect,
     undoSaga,
-    unloadSaga,
     useRedirect,
     useNotify,
     useRefresh,

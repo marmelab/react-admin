@@ -153,6 +153,9 @@ const performUndoableQuery = ({
     logoutIfAccessDenied,
 }: QueryFunctionParams) => {
     dispatch(startOptimisticMode());
+    if (window) {
+        window.addEventListener('beforeunload', warnBeforeClosingWindow);
+    }
     dispatch({
         type: action,
         payload,
@@ -173,6 +176,12 @@ const performUndoableQuery = ({
         if (isUndo) {
             dispatch(showNotification('ra.notification.canceled'));
             dispatch(refreshView());
+            if (window) {
+                window.removeEventListener(
+                    'beforeunload',
+                    warnBeforeClosingWindow
+                );
+            }
             return;
         }
         dispatch({
@@ -198,9 +207,21 @@ const performUndoableQuery = ({
                     },
                 });
                 dispatch({ type: FETCH_END });
+                if (window) {
+                    window.removeEventListener(
+                        'beforeunload',
+                        warnBeforeClosingWindow
+                    );
+                }
             })
-            .catch(error =>
-                logoutIfAccessDenied(error).then(loggedOut => {
+            .catch(error => {
+                if (window) {
+                    window.removeEventListener(
+                        'beforeunload',
+                        warnBeforeClosingWindow
+                    );
+                }
+                return logoutIfAccessDenied(error).then(loggedOut => {
                     if (loggedOut) return;
                     dispatch({
                         type: `${action}_FAILURE`,
@@ -217,10 +238,17 @@ const performUndoableQuery = ({
                     dispatch({ type: FETCH_ERROR, error });
                     onFailure && onFailure(error);
                     throw new Error(error.message ? error.message : error);
-                })
-            );
+                });
+            });
     });
     return Promise.resolve({});
+};
+
+// event listener added as window.onbeforeunload when starting optimistic mode, and removed when it ends
+const warnBeforeClosingWindow = event => {
+    event.preventDefault(); // standard
+    event.returnValue = ''; // Chrome
+    return 'Your latest modifications are not yet sent to the server. Are you sure?'; // Old IE
 };
 
 /**

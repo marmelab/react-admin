@@ -8,7 +8,6 @@ import redirection from './redirection';
 import accumulate from './accumulate';
 import refresh from './refresh';
 import undo from './undo';
-import unload from './unload';
 
 /**
  * @param {Object} dataProvider A Data Provider function
@@ -27,6 +26,5 @@ export default (
             refresh(),
             notification(),
             callback(),
-            unload(),
         ]);
     };
