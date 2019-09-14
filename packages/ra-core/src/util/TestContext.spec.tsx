@@ -7,9 +7,6 @@ import { refreshView } from '../actions';
 
 const primedStore = {
     admin: {
-        auth: {
-            isLoggedIn: false,
-        },
         loading: 0,
         notifications: [],
         record: {},
@@ -23,11 +20,6 @@ const primedStore = {
             viewVersion: 1,
         },
         customQueries: {},
-    },
-    i18n: {
-        loading: false,
-        locale: 'en',
-        messages: {},
     },
     router: {
         action: 'POP',

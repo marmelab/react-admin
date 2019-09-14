@@ -15,9 +15,12 @@ describe('<SimpleForm />', () => {
                 <TextInput source="city" />
             </SimpleForm>
         );
-
-        expect(queryByLabelText('Name')).not.toBeNull();
-        expect(queryByLabelText('City')).not.toBeNull();
+        expect(
+            queryByLabelText('resources.undefined.fields.name')
+        ).not.toBeNull();
+        expect(
+            queryByLabelText('resources.undefined.fields.city')
+        ).not.toBeNull();
     });
 
     it('should display <Toolbar />', () => {
@@ -27,7 +30,7 @@ describe('<SimpleForm />', () => {
                 <TextInput source="city" />
             </SimpleForm>
         );
-        expect(queryByLabelText('Save')).not.toBeNull();
+        expect(queryByLabelText('ra.action.save')).not.toBeNull();
     });
 
     it('should pass submitOnEnter to <Toolbar />', () => {

@@ -1,8 +1,7 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
-import { createStore, combineReducers } from 'redux';
+import { createStore } from 'redux';
 import { Provider } from 'react-redux';
-import { TranslationProvider } from 'ra-core';
 
 import { ArrayField } from './ArrayField';
 import NumberField from './NumberField';
@@ -47,11 +46,6 @@ describe('<ArrayField />', () => {
     });
 
     it('should render the underlying iterator component', () => {
-        const store = createStore(
-            combineReducers({
-                i18n: () => ({ locale: 'en', messages: {} }),
-            })
-        );
         const Dummy = () => (
             <ArrayField
                 source="arr"
@@ -66,10 +60,8 @@ describe('<ArrayField />', () => {
             </ArrayField>
         );
         const wrapper = mount(
-            <Provider store={store}>
-                <TranslationProvider>
-                    <Dummy />
-                </TranslationProvider>
+            <Provider store={createStore(() => ({}))}>
+                <Dummy />
             </Provider>
         );
         expect(

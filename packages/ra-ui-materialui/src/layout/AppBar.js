@@ -1,6 +1,6 @@
 import React, { Children, cloneElement } from 'react';
 import PropTypes from 'prop-types';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import classNames from 'classnames';
 import MuiAppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -58,17 +58,11 @@ const AppBar = ({
 }) => {
     const classes = useStyles({ classes: classesOverride });
     const dispatch = useDispatch();
-    const locale = useSelector(state => state.i18n.locale);
     const isXSmall = useMediaQuery(theme => theme.breakpoints.down('xs'));
 
     return (
         <HideOnScroll>
-            <MuiAppBar
-                className={className}
-                color="secondary"
-                locale={locale}
-                {...rest}
-            >
+            <MuiAppBar className={className} color="secondary" {...rest}>
                 <Toolbar
                     disableGutters
                     variant={isXSmall ? 'regular' : 'dense'}

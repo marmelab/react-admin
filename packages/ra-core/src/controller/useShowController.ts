@@ -15,7 +15,6 @@ export interface ShowProps {
     hasList?: boolean;
     id: Identifier;
     resource: string;
-    undoable?: boolean;
     [key: string]: any;
 }
 
@@ -48,7 +47,7 @@ export interface ShowControllerProps {
  */
 const useShowController = (props: ShowProps): ShowControllerProps => {
     useCheckMinimumRequiredProps('Show', ['basePath', 'resource'], props);
-    const { basePath, id, resource, undoable = true } = props;
+    const { basePath, id, resource } = props;
     const translate = useTranslate();
     const notify = useNotify();
     const redirect = useRedirect();

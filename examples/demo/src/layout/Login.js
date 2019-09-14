@@ -1,7 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Field, Form } from 'react-final-form';
-import { useDispatch, useSelector } from 'react-redux';
 
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -13,7 +12,7 @@ import { createMuiTheme, makeStyles } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
 import LockIcon from '@material-ui/icons/Lock';
 
-import { Notification, useTranslate, userLogin } from 'react-admin';
+import { Notification, useTranslate, useLogin } from 'react-admin';
 
 import { lightTheme } from './themes';
 
@@ -72,15 +71,17 @@ const renderInput = ({
 );
 
 const Login = ({ location }) => {
+    const [loading, setLoading] = useState(false);
     const translate = useTranslate();
     const classes = useStyles();
-    const dispatch = useDispatch();
-    const loading = useSelector(state => state.admin.loading > 0);
+    const doLogin = useLogin();
 
-    const login = auth =>
-        dispatch(
-            userLogin(auth, location.state ? location.state.nextPathname : '/')
+    const login = auth => {
+        setLoading(true);
+        doLogin(auth, location.state ? location.state.nextPathname : '/').then(
+            () => setLoading(false)
         );
+    };
 
     const validate = (values, props) => {
         const errors = {};
@@ -162,7 +163,7 @@ Login.propTypes = {
 };
 
 // We need to put the ThemeProvider decoration in another component
-// Because otherwise the withStyles() HOC used in EnhancedLogin won't get
+// Because otherwise the useStyles() hook used in Login won't get
 // the right theme
 const LoginWithTheme = props => (
     <ThemeProvider theme={createMuiTheme(lightTheme)}>

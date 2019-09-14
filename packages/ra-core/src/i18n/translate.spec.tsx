@@ -1,4 +1,5 @@
 import React, { SFC } from 'react';
+import expect from 'expect';
 
 import translate from './translate';
 import { TranslationContextProps } from './TranslationContext';

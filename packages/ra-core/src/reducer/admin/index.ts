@@ -11,7 +11,6 @@ import references, {
 } from './references';
 import saving from './saving';
 import ui from './ui';
-import auth, { isLoggedIn as authIsLoggedIn } from './auth';
 import customQueries from './customQueries';
 
 export default combineReducers({
@@ -23,7 +22,6 @@ export default combineReducers({
     references,
     saving,
     ui,
-    auth,
 });
 
 export const getPossibleReferenceValues = (state, props) =>
@@ -34,7 +32,5 @@ export const getResources = state => resourceGetResources(state.resources);
 export const getReferenceResource = (state, props) => {
     return resourceGetReferenceResource(state.resources, props);
 };
-
-export const isLoggedIn = state => authIsLoggedIn(state.auth);
 
 export { getPossibleReferences } from './references';

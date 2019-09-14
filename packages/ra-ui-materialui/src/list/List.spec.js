@@ -64,7 +64,7 @@ describe('<List />', () => {
             </ThemeProvider>
         );
         expect(queryAllByText('filters')).toHaveLength(2);
-        expect(queryAllByLabelText('Export')).toHaveLength(1);
+        expect(queryAllByLabelText('ra.action.export')).toHaveLength(1);
         expect(queryAllByText('pagination')).toHaveLength(1);
         expect(queryAllByText('datagrid')).toHaveLength(1);
     });

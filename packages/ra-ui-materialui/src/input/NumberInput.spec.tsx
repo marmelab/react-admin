@@ -28,6 +28,19 @@ describe('<NumberInput />', () => {
         expect(input.getAttribute('type')).toEqual('number');
     });
 
+    describe('props', () => {
+        it('should accept `step` prop and pass it to native input', () => {
+            const { getByLabelText } = render(
+                <Form
+                    onSubmit={jest.fn}
+                    render={() => <NumberInput {...defaultProps} step="0.1" />}
+                />
+            );
+            const input = getByLabelText('resources.posts.fields.views');
+            expect(input.step).toEqual('0.1');
+        });
+    });
+
     describe('onChange event', () => {
         it('should be customizable via the `onChange` prop', () => {
             let value;

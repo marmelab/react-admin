@@ -1,5 +1,6 @@
 import React, { ReactNode, SFC } from 'react';
 import { useFormState } from 'react-final-form';
+import { FormSubscription } from 'final-form';
 import get from 'lodash/get';
 
 import warning from '../util/warning';
@@ -15,6 +16,7 @@ interface ConnectedProps {
     form?: string;
     record?: any;
     source?: string;
+    subscription?: FormSubscription;
     [key: string]: any;
 }
 
@@ -117,8 +119,8 @@ export const FormDataConsumerView: SFC<Props> = ({
     return ret === undefined ? null : ret;
 };
 
-const FormDataConsumer = (props: ConnectedProps) => {
-    const formState = useFormState();
+const FormDataConsumer = ({ subscription, ...props }: ConnectedProps) => {
+    const formState = useFormState({ subscription });
 
     return <FormDataConsumerView formData={formState.values} {...props} />;
 };

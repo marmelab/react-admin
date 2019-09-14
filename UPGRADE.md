@@ -34,13 +34,11 @@ import { reducer as formReducer } from 'redux-form';
 export default ({
     authProvider,
     dataProvider,
-    i18nProvider = defaultI18nProvider,
     history,
     locale = 'en',
 }) => {
     const reducer = combineReducers({
         admin: adminReducer,
-        i18n: i18nReducer(locale, i18nProvider(locale)),
         form: formReducer,
 -       router: routerReducer,
 +       router: connectRouter(history),
@@ -347,7 +345,13 @@ When you provide an `authProvider` to the `<Admin>` component, react-admin creat
 
 If you didn't access the `authProvider` context manually, you have nothing to change. All react-admin components have been updated to use the new context API.
 
-Note that direct access to the `authProvider` from the context is discouraged (and not documented). If you need to interact with the `authProvider`, use the new `useAuth()` and `usePermissions()` hooks, or the auth-related action creators (`userLogin`, `userLogout`, `userCheck`).
+Note that direct access to the `authProvider` from the context is discouraged (and not documented). If you need to interact with the `authProvider`, use the new auth hooks:
+
+- `useLogin`
+- `useLogout`
+- `useAuthenticated`
+- `useAuthState`
+- `usePermissions`
 
 ## `authProvider` No Longer Receives `match` in Params
 
@@ -885,16 +889,20 @@ const PostFilter = props =>
     </Filter>;
 ```
 
-## Complete rewrite of the AutocompleteInput component
+## Complete rewrite of the AutocompleteInput and AutocompleteArrayInput components
 
-We rewrote the `<AutocompleteInput>` component from scratch using [`downshift`](https://github.com/downshift-js/downshift), while the previous version was based on [react-autosuggest](http://react-autosuggest.js.org/). The new `<AutocompleteInput>` component is more robust and more future-proof, and its API didn't change.
+We rewrote the `<AutocompleteInput>` and `<AutocompleteArrayInput>` components from scratch using [`downshift`](https://github.com/downshift-js/downshift), while the previous version was based on [react-autosuggest](http://react-autosuggest.js.org/). The new components are more robust and more future-proof, and their API didn't change.
 
-There are two breaking changes in the new `<AutocompleteInput>`:
+There are two breaking changes in the new `<AutocompleteInput>` and `<AutocompleteArrayInput>` components:
 
 - The `inputValueMatcher` prop is gone. We removed a feature many found confusing: the auto-selection of an item when it was matched exactly. So react-admin no longer selects anything automatically, therefore the `inputValueMatcher` prop is  obsolete
 
 ```diff
 <AutocompleteInput
+    source="role"
+-   inputValueMatcher={() => null}
+/>
+<AutocompleteArrayInput
     source="role"
 -   inputValueMatcher={() => null}
 />
@@ -906,6 +914,23 @@ There are two breaking changes in the new `<AutocompleteInput>`:
 <AutocompleteInput
     source="role"
 -   highlightFirstSuggestion={true}
+/>
+<AutocompleteArrayInput
+    source="role"
+-   highlightFirstSuggestion={true}
+/>
+```
+
+Besides, some props which were applicable to both components did not make sense for the `<AutocompleteArrayInput>` component:
+
+- `allowEmpty`: As the `<AutocompleteArrayInput>` deals with arrays, it does not make sense to add an empty choice. This prop is no longer accepted and will be ignored.
+- `limitChoicesToValue`: As the `<AutocompleteArrayInput>` deals with arrays and only accepts unique items, it does not make sense to show only the already selected items. This prop is no longer accepted and will be ignored.
+
+```diff
+<AutocompleteArrayInput
+    source="role"
+-   allowEmpty={true}
+-   limitChoicesToValue={true}
 />
 ```
 
@@ -958,4 +983,218 @@ const ExportButton = ({ sort, filter, maxResults = 1000, resource }) => {
         />
     );
 };
+```
+
+## The `authProvider` no longer receives default parameters
+
+When calling the `authProvider` for permissions (with the `AUTH_GET_PERMISSIONS` verb), react-admin used to include the pathname as second parameter. That allowed you to return different permissions based on the page. In a similar fashion, for the `AUTH_CHECK` call, the `params` argument contained the `resource` name, allowing different checks for different resources.
+
+We believe that authentication and permissions should not vary depending on where you are in the application ; it's up to components to decide to do something or not depending on permissions. So we've removed the default parameters from all the `authProvider` calls. 
+
+If you want to keep location-dependent authentication or permissions logic, read the current location from the `window` object direclty in your `authProvider`, using `window.location.hash` (if you use a hash router), or using `window.location.pathname` (if you use a browser router):
+
+```diff
+// in myauthProvider.js
+import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR, AUTH_GET_PERMISSIONS } from 'react-admin';
+import decodeJwt from 'jwt-decode';
+
+export default (type, params) => {
+    if (type === AUTH_CHECK) {
+-       const { resource } = params;
++       const resource = window.location.hash.substring(2, window.location.hash.indexOf('/', 2))
+        // resource-dependent logic follows
+    }
+    if (type === AUTH_GET_PERMISSIONS) {
+-       const { pathname } = params;
++       const pathname = window.location.hash;
+        // pathname-dependent logic follows 
+        // ...
+    }
+    return Promise.reject('Unknown method');
+};
+```
+
+## No more Redux actions for authentication
+
+React-admin now uses hooks instead of sagas to handle authentication and authorization. That means that react-admin no longer dispatches the following actions:
+
+- `USER_LOGIN`
+- `USER_LOGIN_LOADING`
+- `USER_LOGIN_FAILURE`
+- `USER_LOGIN_SUCCESS`
+- `USER_CHECK`
+- `USER_CHECK_SUCCESS`
+- `USER_LOGOUT`
+
+If you have custom Login or Logout buttons that dispatch these actions, they will still work, but you are encouraged to migrate to the hook equivalents (`useLogin` and `useLogout`).
+
+If you had custom reducer or sagas based on these actions, they will no longer work. You will have to reimplement that custom logic using the new authentication hooks. 
+
+**Tip**: If you need to clear the Redux state, you can dispatch the `CLEAR_STATE` action.
+
+## i18nProvider Signature Changed
+
+The i18nProvider, that react-admin uses for translating UI and content, now has a signature similar to the other providers: it accepts a message type (either `I18N_TRANSLATE` or `I18N_CHANGE_LOCALE`) and a params argument.
+
+```jsx
+// react-admin 2.x
+const i18nProvider = (locale) => messages[locale];
+
+// react-admin 3.x
+const i18nProvider = (type, params) => {
+    const polyglot = new Polyglot({ locale: 'en', phrases: messages.en });
+    let translate = polyglot.t.bind(polyglot);
+    if (type === 'I18N_TRANSLATE') {
+        const { key, options } = params;
+        return translate(key, options);
+    }
+    if type === 'I18N_CHANGE_LOCALE') {
+        const newLocale = params;
+        return new Promise((resolve, reject) => {
+            // load new messages and update the translate function
+        })
+    }
+} 
+```
+
+But don't worry: react-admin v3 contains a module called `ra-i18n-polyglot`, that is a wrapper around your old `i18nProvider` to make it compatible with the new provider signature:
+
+```diff
+import React from 'react';
+import { Admin, Resource } from 'react-admin';
++import polyglotI18nProvider from 'ra-i18n-polyglot';
+import englishMessages from 'ra-language-english';
+import frenchMessages from 'ra-language-french';
+
+const messages = {
+    fr: frenchMessages,
+    en: englishMessages,
+};
+-const i18nProvider = locale => messages[locale];
++const i18nProvider = polyglotI18nProvider(locale => messages[locale]);
+
+const App = () => (
+    <Admin locale="en" i18nProvider={i18nProvider}>
+        ...
+    </Admin>
+);
+
+export default App;
+```
+
+## The translation layer no longer uses Redux
+
+React-admin translation (i18n) layer lets developers provide translations for UI and content, based on Airbnb's [Polyglot](https://airbnb.io/polyglot.js/) library. The previous implementation used Redux and redux-saga. In react-admin 3.0, the translation utilities are implemented using a React context and a set of hooks. 
+
+If you didn't use translations, or if you passed your `i18nProvider` to the `<Admin>` component and used only one language, you have nothing to change. Your app will continue to work just as before. We encourage you to migrate from the `withTranslate` HOC to the `useTranslate` hook, but that's not compulsory.
+
+```diff
+-import { withTranslate } from 'react-admin';
++import { useTranslate } from 'react-admin';
+
+-const SettingsMenu = ({ translate }) => {
++const SettingsMenu = () => {
++   const translate = useTranslate();
+    return <MenuItem>{translate('settings')}</MenuItem>;
+}
+
+-export default withTranslate(SettingsMenu);
++export default SettingsMenu;
+```
+
+However, if your app allowed users to change locale at runtime, you need to update the menu or button that triggers the locale change. Instead of dispatching a `CHANGE_LOCALE` Redux action (which has no effect in react-admin 3.0), use the `useSetLocale` hook as follows:
+
+```diff
+import React from 'react';
+-import { connect } from 'react-redux';
+import Button from '@material-ui/core/Button';
+-import { changeLocale } from 'react-admin';
++import { useSetLocale } from 'react-admin';
+
+-const localeSwitcher = ({ changeLocale }) => 
++const LocaleSwitcher = () => {
++   const setLocale = usesetLocale();
+-   const switchToFrench = () => changeLocale('fr');
++   const switchToFrench = () => setLocale('fr');
+-   const switchToEnglish = () => changeLocale('en');
++   const switchToEnglish = () => setLocale('en');
+    return (
+        <div>
+            <div>Language</div>
+            <Button onClick={switchToEnglish}>en</Button>
+            <Button onClick={switchToFrench}>fr</Button>
+        </div>
+    );
+}
+
+-export default connect(null, { changeLocale })(LocaleSwitcher);
++export default LocaleSwitcher;
+```
+
+Also, if you connected a component to the redux store to get the current language, you now need to use the `useLocale()` hook instead.
+
+```diff
+-import { connect } from 'react-redux';
++import { useLocale } from 'react-admin';
+
+const availableLanguages = {
+    en: 'English',
+    fr: 'Français',
+}
+
+-const CurrentLanguage = ({ locale }) => {
++const CurrentLanguage = () => {
++   const locale = useLocale();
+    return <span>{availableLanguages[locale]}</span>;
+}
+
+- const mapStatetoProps = state => state.i18n.locale
+
+-export default connect(mapStateToProps)(CurrentLanguage);
++export default CurrentLanguage;
+```
+
+If you used a custom Redux store, you must update the `createAdminStore` call to omit the i18n details:
+
+```diff
+const App = () => (
+    <Provider
+        store={createAdminStore({
+            authProvider,
+            dataProvider,
+-           i18nProvider,
+            history,
+        })}
+    >
+        <Admin
+            authProvider={authProvider}
+            dataProvider={dataProvider}
+            history={history}
+            title="My Admin"
+        >
+```
+
+Also, if you used a custom app without the `Admin` component, update the `<TranslationProvider>` call as the signature has changed:
+
+```diff
+const App = () => (
+    <Provider
+        store={createAdminStore({
+            authProvider,
+            dataProvider,
+            history,
+        })}
+    >
+        <AuthContext.Provider value={authProvider}>
+        <DataProviderContext.Provider value={dataProvider}>
+-       <TranslationProvider />
++       <TranslationProvider
++           locale={locale}
++           i18nProvider={i18nProvider}
++       >
+            <ThemeProvider>
+                <Resource name="posts" intent="registration" />
+                <Resource name="comments" intent="registration" />
+                <Resource name="users" intent="registration" />
+                        // ...
 ```

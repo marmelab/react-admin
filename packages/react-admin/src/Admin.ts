@@ -7,9 +7,12 @@ import {
     NotFound,
 } from 'ra-ui-materialui';
 
+import defaultI18nProvider from './defaultI18nProvider';
+
 const Admin = CoreAdmin;
 
 Admin.defaultProps = {
+    i18nProvider: defaultI18nProvider,
     layout: DefaultLayout,
     catchAll: NotFound,
     loading: Loading,

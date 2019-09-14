@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
-import TranslationProvider from '../i18n/TranslationProvider';
 import merge from 'lodash/merge';
 import { createMemoryHistory } from 'history';
 
 import createAdminStore from '../createAdminStore';
+import { I18nProvider } from '../types';
 
 export const defaultStore = {
     admin: {
@@ -13,11 +13,11 @@ export const defaultStore = {
         references: { possibleValues: {} },
         ui: { viewVersion: 1 },
     },
-    i18n: { locale: 'en', messages: {} },
 };
 
 interface Props {
     initialState?: object;
+    i18nProvider?: I18nProvider;
     enableReducers?: boolean;
 }
 
@@ -74,9 +74,7 @@ class TestContext extends Component<Props> {
     render() {
         return (
             <Provider store={this.storeWithDefault}>
-                <TranslationProvider>
-                    {this.renderChildren()}
-                </TranslationProvider>
+                {this.renderChildren()}
             </Provider>
         );
     }

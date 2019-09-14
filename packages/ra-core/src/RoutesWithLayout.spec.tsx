@@ -15,9 +15,7 @@ describe('<RoutesWithLayout>', () => {
 
     // the Provider is required because the dashboard is wrapped by <Authenticated>, which is a connected component
     const store = createStore(() => ({
-        admin: {
-            auth: { isLoggedIn: true },
-        },
+        admin: {},
         router: { location: { pathname: '/' } },
     }));
 

@@ -1,0 +1,35 @@
+{
+    "name": "ra-i18n-polyglot",
+    "version": "3.0.0-alpha.4",
+    "description": "Polyglot i18n provider for react-admin",
+    "main": "lib/index.js",
+    "module": "esm/index.js",
+    "sideEffects": false,
+    "files": [
+        "*.md",
+        "lib",
+        "esm",
+        "src"
+    ],
+    "authors": [
+        "François Zaninotto"
+    ],
+    "repository": "marmelab/react-admin",
+    "homepage": "https://github.com/marmelab/react-admin#readme",
+    "bugs": "https://github.com/marmelab/react-admin/issues",
+    "license": "MIT",
+    "scripts": {
+        "build": "yarn run build-cjs && yarn run build-esm",
+        "build-cjs": "rimraf ./lib && tsc",
+        "build-esm": "rimraf ./esm && tsc --outDir esm --module es2015",
+        "watch": "rimraf ./lib && tsc --watch"
+    },
+    "dependencies": {
+        "node-polyglot": "^2.2.2",
+        "ra-core": "^3.0.0-alpha.4"
+    },
+    "devDependencies": {
+        "cross-env": "^5.2.0",
+        "rimraf": "^2.6.3"
+    }
+}

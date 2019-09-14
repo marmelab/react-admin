@@ -1,10 +1,7 @@
-import { useEffect, useContext } from 'react';
-import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
 
-import AuthContext from './AuthContext';
-import { AUTH_GET_PERMISSIONS } from './types';
+import useGetPermissions from './useGetPermissions';
 import { useSafeSetState } from '../util/hooks';
-import { ReduxState } from '../types';
 
 interface State {
     loading: boolean;
@@ -29,7 +26,7 @@ const emptyParams = {};
  *
  * Useful to enable features based on user permissions
  *
- * @param {Object} authParams Any params you want to pass to the authProvider
+ * @param {Object} params Any params you want to pass to the authProvider
  *
  * @returns The current auth check state. Destructure as { permissions, error, loading, loaded }.
  *
@@ -45,23 +42,14 @@ const emptyParams = {};
  *         }
  *     };
  */
-const usePermissions = (authParams = emptyParams) => {
+const usePermissions = (params = emptyParams) => {
     const [state, setState] = useSafeSetState<State>({
         loading: true,
         loaded: false,
     });
-    const location = useSelector((state: ReduxState) => state.router.location);
-    const pathname = location && location.pathname;
-    const authProvider = useContext(AuthContext);
+    const getPermissions = useGetPermissions();
     useEffect(() => {
-        if (!authProvider) {
-            setState({ loading: false, loaded: true });
-            return;
-        }
-        authProvider(AUTH_GET_PERMISSIONS, {
-            location: pathname,
-            ...authParams,
-        })
+        getPermissions(params)
             .then(permissions => {
                 setState({ loading: false, loaded: true, permissions });
             })
@@ -72,7 +60,7 @@ const usePermissions = (authParams = emptyParams) => {
                     error,
                 });
             });
-    }, [authParams, authProvider, pathname]); // eslint-disable-line react-hooks/exhaustive-deps
+    }, [getPermissions, params, setState]);
     return state;
 };
 

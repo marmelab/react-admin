@@ -1,4 +1,4 @@
-import React, { SFC, ComponentType } from 'react';
+import React, { SFC } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import { makeStyles } from '@material-ui/core/styles';

@@ -127,7 +127,7 @@ export class SimpleFormIterator extends Component {
         const records = get(record, source);
         return fields ? (
             <ul className={classes.root}>
-                {submitFailed && error && (
+                {submitFailed && typeof error !== 'object' && error && (
                     <FormHelperText error>{error}</FormHelperText>
                 )}
                 <TransitionGroup>

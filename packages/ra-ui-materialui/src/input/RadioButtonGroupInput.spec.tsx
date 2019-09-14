@@ -2,7 +2,7 @@ import React from 'react';
 import expect from 'expect';
 import { render, cleanup, fireEvent } from '@testing-library/react';
 import { Form } from 'react-final-form';
-import { TranslationContext } from 'ra-core';
+import { TestTranslationProvider } from 'ra-core';
 
 import RadioButtonGroupInput from './RadioButtonGroupInput';
 
@@ -156,11 +156,7 @@ describe('<RadioButtonGroupInput />', () => {
 
     it('should translate the choices by default', () => {
         const { queryByText } = render(
-            <TranslationContext.Provider
-                value={{
-                    translate: x => `**${x}**`,
-                }}
-            >
+            <TestTranslationProvider translate={x => `**${x}**`}>
                 <Form
                     onSubmit={jest.fn}
                     render={() => (
@@ -170,18 +166,14 @@ describe('<RadioButtonGroupInput />', () => {
                         />
                     )}
                 />
-            </TranslationContext.Provider>
+            </TestTranslationProvider>
         );
         expect(queryByText('**Mastercard**')).not.toBeNull();
     });
 
     it('should not translate the choices if translateChoice is false', () => {
         const { queryByText } = render(
-            <TranslationContext.Provider
-                value={{
-                    translate: x => `**${x}**`,
-                }}
-            >
+            <TestTranslationProvider translate={x => `**${x}**`}>
                 <Form
                     onSubmit={jest.fn}
                     render={() => (
@@ -192,7 +184,7 @@ describe('<RadioButtonGroupInput />', () => {
                         />
                     )}
                 />
-            </TranslationContext.Provider>
+            </TestTranslationProvider>
         );
         expect(queryByText('**Mastercard**')).toBeNull();
         expect(queryByText('Mastercard')).not.toBeNull();

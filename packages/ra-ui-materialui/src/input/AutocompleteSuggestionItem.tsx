@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 import parse from 'autosuggest-highlight/parse';
 import match from 'autosuggest-highlight/match';
 import { makeStyles, MenuItem } from '@material-ui/core';
+import { MenuItemProps } from '@material-ui/core/MenuItem';
 import classnames from 'classnames';
 
 const useStyles = makeStyles(theme => ({
@@ -19,12 +20,25 @@ const useStyles = makeStyles(theme => ({
     highlightedSuggestionText: { fontWeight: 500 },
 }));
 
-const AutocompleteSuggestionItem = ({
+interface Props {
+    component: any;
+    suggestion: any;
+    index: number;
+    highlightedIndex: number;
+    isSelected: boolean;
+    inputValue: string;
+    classes?: any;
+    getSuggestionText: (suggestion: any) => string;
+}
+
+const AutocompleteSuggestionItem: FunctionComponent<
+    Props & MenuItemProps<'li', { button?: true }>
+> = ({
     component,
     suggestion,
     index,
     highlightedIndex,
-    selectedItem,
+    isSelected,
     inputValue,
     classes: classesOverride,
     getSuggestionText,
@@ -33,8 +47,6 @@ const AutocompleteSuggestionItem = ({
     const classes = useStyles({ classes: classesOverride });
     const isHighlighted = highlightedIndex === index;
     const suggestionText = getSuggestionText(suggestion);
-    const selectedItemText = getSuggestionText(selectedItem);
-    const isSelected = (selectedItemText || '').indexOf(suggestionText) > -1;
     const matches = match(suggestionText, inputValue);
     const parts = parse(suggestionText, matches);
 

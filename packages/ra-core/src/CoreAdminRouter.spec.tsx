@@ -5,7 +5,7 @@ import { Router, Route } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
 
 import renderWithRedux from './util/renderWithRedux';
-import { CoreAdminRouter } from './CoreAdminRouter';
+import CoreAdminRouter from './CoreAdminRouter';
 import AuthContext from './auth/AuthContext';
 import Resource from './Resource';
 
@@ -15,7 +15,6 @@ describe('<AdminRouter>', () => {
     afterEach(cleanup);
 
     const defaultProps = {
-        userLogout: () => <span />,
         customRoutes: [],
     };
 

@@ -12,6 +12,7 @@
         "ra-data-fakerest": "^3.0.0-alpha.0",
         "ra-data-graphql-simple": "^3.0.0-alpha.0",
         "ra-data-simple-rest": "^3.0.0-alpha.0",
+        "ra-i18n-polyglot": "^3.0.0-alpha.4",
         "ra-input-rich-text": "^3.0.0-alpha.0",
         "ra-language-english": "^3.0.0-alpha.0",
         "ra-language-french": "^3.0.0-alpha.0",

@@ -25,7 +25,6 @@ const Menu = ({ onMenuClick, logout }) => {
     const isXsmall = useMediaQuery(theme => theme.breakpoints.down('xs'));
     const open = useSelector(state => state.admin.ui.sidebarOpen);
     useSelector(state => state.theme); // force rerender on theme change
-    useSelector(state => state.i18n.locale); // force rerender on locale change
 
     const handleToggle = menu => {
         setState(state => ({ ...state, [menu]: !state[menu] }));

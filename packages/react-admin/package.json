@@ -36,6 +36,7 @@
     "dependencies": {
         "ra-core": "^3.0.0-alpha.4",
         "ra-language-english": "^3.0.0-alpha.4",
+        "ra-i18n-polyglot": "^3.0.0-alpha.4",
         "ra-ui-materialui": "^3.0.0-alpha.4"
     }
 }
