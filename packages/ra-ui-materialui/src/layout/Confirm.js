@@ -58,6 +58,8 @@ const Confirm = ({
     confirm,
     cancel,
     confirmColor,
+    ConfirmIcon,
+    CancelIcon,
     onClose,
     onConfirm,
     classes: classesOverride,
@@ -98,7 +100,7 @@ const Confirm = ({
             </DialogContent>
             <DialogActions>
                 <Button disabled={loading} onClick={onClose}>
-                    <AlertError className={classes.iconPaddingStyle} />
+                    <CancelIcon className={classes.iconPaddingStyle} />
                     {translate(cancel, { _: cancel })}
                 </Button>
                 <Button
@@ -110,7 +112,7 @@ const Confirm = ({
                     })}
                     autoFocus
                 >
-                    <ActionCheck className={classes.iconPaddingStyle} />
+                    <ConfirmIcon className={classes.iconPaddingStyle} />
                     {translate(confirm, { _: confirm })}
                 </Button>
             </DialogActions>
@@ -123,6 +125,8 @@ Confirm.propTypes = {
     classes: PropTypes.object,
     confirm: PropTypes.string.isRequired,
     confirmColor: PropTypes.string.isRequired,
+    ConfirmIcon: PropTypes.elementType.isRequired,
+    CancelIcon: PropTypes.elementType.isRequired,
     content: PropTypes.string.isRequired,
     isOpen: PropTypes.bool,
     loading: PropTypes.bool,
@@ -136,6 +140,8 @@ Confirm.defaultProps = {
     classes: {},
     confirm: 'ra.action.confirm',
     confirmColor: 'primary',
+    ConfirmIcon: ActionCheck,
+    CancelIcon: AlertError,
     isOpen: false,
 };
 
