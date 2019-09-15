@@ -647,8 +647,7 @@ import { RadioButtonGroupInput, ReferenceInput } from 'react-admin'
 
 Use `<ReferenceArrayInput>` to edit an array of reference values, i.e. to let users choose a list of values (usually foreign keys) from another REST endpoint.
 
-`<ReferenceArrayInput>` fetches the related resources (using the `CRUD_GET_MANY` REST method) as well as possible resources (using the
-`CRUD_GET_MATCHING` REST method) in the reference endpoint.
+`<ReferenceArrayInput>` fetches the related resources (using the `GET_MANY` dataProvider type) as well as possible resources (using the `GET_LIST` dataProvider type) in the reference endpoint.
 
 For instance, if the post object has many tags, a post resource may look like:
 
