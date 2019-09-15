@@ -6,6 +6,7 @@ import useLogoutIfAccessDenied from './useLogoutIfAccessDenied';
 import AuthContext from './AuthContext';
 import useLogout from './useLogout';
 import useNotify from '../sideEffect/useNotify';
+import { AuthProvider } from '../types';
 
 jest.mock('./useLogout');
 jest.mock('../sideEffect/useNotify');
@@ -24,14 +25,18 @@ const TestComponent = ({ error }: { error?: any }) => {
     return <div>{loggedOut ? '' : 'logged in'}</div>;
 };
 
-const authProvider = (type, params) =>
-    new Promise((resolve, reject) => {
-        if (type !== 'AUTH_ERROR') reject('bad method');
+const authProvider: AuthProvider = {
+    login: () => Promise.reject('bad method'),
+    logout: () => Promise.reject('bad method'),
+    checkAuth: () => Promise.reject('bad method'),
+    checkError: params => {
         if (params instanceof Error && params.message === 'denied') {
-            reject(new Error('logout'));
+            return Promise.reject(new Error('logout'));
         }
-        resolve();
-    });
+        return Promise.resolve();
+    },
+    getPermissions: () => Promise.reject('bad method'),
+};
 
 describe('useLogoutIfAccessDenied', () => {
     afterEach(cleanup);

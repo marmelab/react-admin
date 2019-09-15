@@ -42,7 +42,13 @@ describe('usePermissions', () => {
     });
 
     it('should return the permissions after a tick', async () => {
-        const authProvider = () => Promise.resolve('admin');
+        const authProvider = {
+            login: () => Promise.reject('bad method'),
+            logout: () => Promise.reject('bad method'),
+            checkAuth: () => Promise.reject('bad method'),
+            checkError: () => Promise.reject('bad method'),
+            getPermissions: () => Promise.resolve('admin'),
+        };
         const { queryByText } = renderWithRedux(
             <AuthContext.Provider value={authProvider}>
                 <UsePermissions>{stateInpector}</UsePermissions>
@@ -55,7 +61,13 @@ describe('usePermissions', () => {
     });
 
     it('should return an error after a tick if the auth call fails', async () => {
-        const authProvider = () => Promise.reject('not good');
+        const authProvider = {
+            login: () => Promise.reject('bad method'),
+            logout: () => Promise.reject('bad method'),
+            checkAuth: () => Promise.reject('bad method'),
+            checkError: () => Promise.reject('bad method'),
+            getPermissions: () => Promise.reject('not good'),
+        };
         const { queryByText } = renderWithRedux(
             <AuthContext.Provider value={authProvider}>
                 <UsePermissions>{stateInpector}</UsePermissions>
