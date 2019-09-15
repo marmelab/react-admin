@@ -43,7 +43,7 @@ const Authenticated: FunctionComponent<Props> = ({
     ...rest
 }) => {
     useAuthenticated(authParams);
-    // render the child even though the AUTH_CHECK isn't finished (optimistic rendering)
+    // render the child even though the useAuthenticated() call isn't finished (optimistic rendering)
     // the above hook will log out if the authProvider doesn't validate that the user is authenticated
     return cloneElement(children, rest);
 };

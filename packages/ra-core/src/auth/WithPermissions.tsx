@@ -82,8 +82,7 @@ const WithPermissions: FunctionComponent<Props> = ({
 
     useAuthenticated(authParams);
     const { permissions } = usePermissions(authParams);
-    // render even though the AUTH_GET_PERMISSIONS
-    // isn't finished (optimistic rendering)
+    // render even though the usePermissions() call isn't finished (optimistic rendering)
     if (component) {
         return createElement(component, { permissions, ...props });
     }
