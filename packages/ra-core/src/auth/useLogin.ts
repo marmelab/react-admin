@@ -3,11 +3,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { push } from 'connected-react-router';
 
 import useAuthProvider, { defaultAuthParams } from './useAuthProvider';
-import { AUTH_LOGIN } from './types';
 import { ReduxState } from '../types';
 
 /**
- * Get a callback for calling the authProvider with the AUTH_LOGIN verb
+ * Get a callback for calling the authProvider.login() method
  * and redirect to the previous authenticated page (or the home page) on success.
  *
  * @see useAuthProvider
@@ -40,7 +39,7 @@ const useLogin = (): Login => {
 
     const login = useCallback(
         (params: any = {}, pathName = defaultAuthParams.afterLoginUrl) =>
-            authProvider(AUTH_LOGIN, params).then(ret => {
+            authProvider.login(params).then(ret => {
                 dispatch(push(nextPathName || pathName));
                 return ret;
             }),
@@ -59,7 +58,7 @@ const useLogin = (): Login => {
 };
 
 /**
- * Log a user in by calling the authProvider AUTH_LOGIN verb
+ * Log a user in by calling the authProvider.login() method
  *
  * @param {object} params Login parameters to pass to the authProvider. May contain username/email, password, etc
  * @param {string} pathName The path to redirect to after login. By default, redirects to the home page, or to the last page visited after deconnexion.

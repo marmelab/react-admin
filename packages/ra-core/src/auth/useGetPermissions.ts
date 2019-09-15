@@ -1,10 +1,9 @@
 import { useCallback } from 'react';
 
 import useAuthProvider from './useAuthProvider';
-import { AUTH_GET_PERMISSIONS } from './types';
 
 /**
- * Get a callback for calling the authProvider with the AUTH_GET_PERMISSIONS verb.
+ * Get a callback for calling the authProvider.getPermissions() method.
  *
  * @see useAuthProvider
  *
@@ -37,7 +36,7 @@ import { AUTH_GET_PERMISSIONS } from './types';
 const useGetPermissions = (): GetPermissions => {
     const authProvider = useAuthProvider();
     const getPermissions = useCallback(
-        (params: any = {}) => authProvider(AUTH_GET_PERMISSIONS, params),
+        (params: any = {}) => authProvider.getPermissions(params),
         [authProvider]
     );
 
@@ -47,7 +46,7 @@ const useGetPermissions = (): GetPermissions => {
 const getPermissionsWithoutProvider = () => Promise.resolve([]);
 
 /**
- * Ask the permissions to the  authProvider using the AUTH_GET_PERMISSIONS verb
+ * Proxy for calling authProvider.getPermissions()
  *
  * @param {Object} params The parameters to pass to the authProvider
  *

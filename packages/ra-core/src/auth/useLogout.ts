@@ -3,11 +3,10 @@ import { useDispatch, useStore } from 'react-redux';
 import { push } from 'connected-react-router';
 
 import useAuthProvider, { defaultAuthParams } from './useAuthProvider';
-import { AUTH_LOGOUT } from './types';
 import { clearState } from '../actions/clearActions';
 
 /**
- * Get a callback for calling the authProvider with the AUTH_LOGOUT verb,
+ * Get a callback for calling the authProvider.logout() method,
  * redirect to the login page, and clear the Redux state.
  *
  * @see useAuthProvider
@@ -44,7 +43,7 @@ const useLogout = (): Logout => {
 
     const logout = useCallback(
         (params = {}, redirectTo = defaultAuthParams.loginUrl) =>
-            authProvider(AUTH_LOGOUT, params).then(redirectToFromProvider => {
+            authProvider.logout(params).then(redirectToFromProvider => {
                 dispatch(clearState());
                 const currentLocation = store.getState().router.location;
                 dispatch(
@@ -83,7 +82,7 @@ const useLogout = (): Logout => {
 };
 
 /**
- * Log the current user out by calling the authProvider AUTH_LOGOUT verb,
+ * Log the current user out by calling the authProvider.logout() method,
  * and redirect them to the login screen.
  *
  * @param {Object} params The parameters to pass to the authProvider

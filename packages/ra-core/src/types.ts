@@ -42,7 +42,18 @@ export type AuthActionType =
     | 'AUTH_CHECK'
     | 'AUTH_GET_PERMISSIONS';
 
-export type AuthProvider = (type: AuthActionType, params?: any) => Promise<any>;
+export type AuthProvider = {
+    login: (params: any) => Promise<any>;
+    logout: (params: any) => Promise<void | string>;
+    checkAuth: (params: any) => Promise<void>;
+    checkError: (error: any) => Promise<void>;
+    getPermissions: (params: any) => Promise<any>;
+};
+
+export type LegacyAuthProvider = (
+    type: AuthActionType,
+    params?: any
+) => Promise<any>;
 
 export type DataProvider = (
     type: string,

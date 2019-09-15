@@ -1,12 +1,11 @@
 import { useCallback } from 'react';
 
 import useAuthProvider, { defaultAuthParams } from './useAuthProvider';
-import { AUTH_CHECK } from './types';
 import useLogout from './useLogout';
 import useNotify from '../sideEffect/useNotify';
 
 /**
- * Get a callback for calling the authProvider with the AUTH_CHECK verb.
+ * Get a callback for calling the authProvider.checkAuth() method.
  * In case of rejection, redirects to the login page, displays a notification,
  * and throws an error.
  *
@@ -52,7 +51,7 @@ const useCheckAuth = (): CheckAuth => {
             logoutOnFailure = true,
             redirectTo = defaultAuthParams.loginUrl
         ) =>
-            authProvider(AUTH_CHECK, params).catch(error => {
+            authProvider.checkAuth(params).catch(error => {
                 if (logoutOnFailure) {
                     logout(
                         {},
@@ -76,7 +75,7 @@ const useCheckAuth = (): CheckAuth => {
 const checkAuthWithoutAuthProvider = () => Promise.resolve();
 
 /**
- * Check if the current user is authenticated by calling the authProvider AUTH_CHECK verb.
+ * Check if the current user is authenticated by calling authProvider.checkAuth().
  * Logs the user out on failure.
  *
  * @param {Object} params The parameters to pass to the authProvider
