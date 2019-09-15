@@ -1,9 +1,8 @@
 import React from 'react';
-import get from 'lodash/get';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import { makeStyles } from '@material-ui/core/styles';
-import { useTranslate } from 'ra-core';
+import { useChoices } from 'ra-core';
 
 const useStyles = makeStyles({
     checkbox: {
@@ -22,40 +21,35 @@ const CheckboxGroupInputItem = ({
     ...rest
 }) => {
     const classes = useStyles({});
-    const translate = useTranslate();
+    const { getChoiceText, getChoiceValue } = useChoices({
+        optionText,
+        optionValue,
+        translateChoice,
+    });
 
-    const choiceName = React.isValidElement<{ record: any }>(optionText)
-        ? React.cloneElement<{ record: any }>(optionText, { record: choice })
-        : typeof optionText === 'function'
-        ? optionText(choice)
-        : get(choice, optionText);
+    const choiceName = getChoiceText(choice);
 
     return (
         <FormControlLabel
-            htmlFor={`${id}_${get(choice, optionValue)}`}
-            key={get(choice, optionValue)}
+            htmlFor={`${id}_${getChoiceValue(choice)}`}
+            key={getChoiceValue(choice)}
             onChange={onChange}
             control={
                 <Checkbox
-                    id={`${id}_${get(choice, optionValue)}`}
+                    id={`${id}_${getChoiceValue(choice)}`}
                     color="primary"
                     className={classes.checkbox}
                     checked={
                         value
-                            ? value.find(
-                                  v => v == get(choice, optionValue) // eslint-disable-line eqeqeq
-                              ) !== undefined
+                            ? value.find(v => v == getChoiceValue(choice)) !== // eslint-disable-line eqeqeq
+                              undefined
                             : false
                     }
-                    value={String(get(choice, optionValue))}
+                    value={String(getChoiceValue(choice))}
                     {...rest}
                 />
             }
-            label={
-                translateChoice
-                    ? translate(choiceName, { _: choiceName })
-                    : choiceName
-            }
+            label={choiceName}
         />
     );
 };

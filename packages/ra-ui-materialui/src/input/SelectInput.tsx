@@ -3,7 +3,14 @@ import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import MenuItem from '@material-ui/core/MenuItem';
 import { makeStyles } from '@material-ui/core/styles';
-import { useInput, FieldTitle, useTranslate, InputProps } from 'ra-core';
+import {
+    useInput,
+    FieldTitle,
+    useTranslate,
+    InputProps,
+    ChoicesProps,
+    useChoices,
+} from 'ra-core';
 
 import ResettableTextField from './ResettableTextField';
 import InputHelperText from './InputHelperText';
@@ -131,10 +138,12 @@ const useStyles = makeStyles(theme => ({
  *
  */
 const SelectInput: FunctionComponent<
-    InputProps<TextFieldProps> & Omit<TextFieldProps, 'label' | 'helperText'>
+    ChoicesProps &
+        InputProps<TextFieldProps> &
+        Omit<TextFieldProps, 'label' | 'helperText'>
 > = ({
     allowEmpty,
-    choices,
+    choices = [],
     className,
     disableValue,
     emptyText,
@@ -155,6 +164,11 @@ const SelectInput: FunctionComponent<
 }) => {
     const translate = useTranslate();
     const classes = useStyles({});
+    const { getChoiceText, getChoiceValue } = useChoices({
+        optionText,
+        optionValue,
+        translateChoice,
+    });
 
     const {
         id,
@@ -177,25 +191,9 @@ const SelectInput: FunctionComponent<
             : translate(emptyText, { _: emptyText });
     }, [emptyText, translate]);
 
-    const renderMenuItemOption = useCallback(
-        choice => {
-            if (React.isValidElement<{ record: any }>(optionText)) {
-                return React.cloneElement<{ record: any }>(optionText, {
-                    record: choice,
-                });
-            }
-
-            const choiceName =
-                typeof optionText === 'function'
-                    ? optionText(choice)
-                    : get(choice, optionText);
-
-            return translateChoice
-                ? translate(choiceName, { _: choiceName })
-                : choiceName;
-        },
-        [optionText, translate, translateChoice]
-    );
+    const renderMenuItemOption = useCallback(choice => getChoiceText(choice), [
+        getChoiceText,
+    ]);
 
     return (
         <ResettableTextField
@@ -232,8 +230,8 @@ const SelectInput: FunctionComponent<
             ) : null}
             {choices.map(choice => (
                 <MenuItem
-                    key={get(choice, optionValue)}
-                    value={get(choice, optionValue)}
+                    key={getChoiceValue(choice)}
+                    value={getChoiceValue(choice)}
                     disabled={get(choice, disableValue)}
                 >
                     {renderMenuItemOption(choice)}
@@ -247,7 +245,7 @@ SelectInput.propTypes = {
     allowEmpty: PropTypes.bool.isRequired,
     emptyText: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
     emptyValue: PropTypes.any,
-    choices: PropTypes.arrayOf(PropTypes.object),
+    choices: PropTypes.arrayOf(PropTypes.object).isRequired,
     classes: PropTypes.object,
     className: PropTypes.string,
     label: PropTypes.string,
@@ -268,7 +266,6 @@ SelectInput.defaultProps = {
     allowEmpty: false,
     emptyText: '',
     emptyValue: '',
-    choices: [],
     options: {},
     optionText: 'name',
     optionValue: 'id',

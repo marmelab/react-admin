@@ -893,7 +893,7 @@ const PostFilter = props =>
 
 We rewrote the `<AutocompleteInput>` and `<AutocompleteArrayInput>` components from scratch using [`downshift`](https://github.com/downshift-js/downshift), while the previous version was based on [react-autosuggest](http://react-autosuggest.js.org/). The new components are more robust and more future-proof, and their API didn't change.
 
-There are two breaking changes in the new `<AutocompleteInput>` and `<AutocompleteArrayInput>` components:
+There are three breaking changes in the new `<AutocompleteInput>` and `<AutocompleteArrayInput>` components:
 
 - The `inputValueMatcher` prop is gone. We removed a feature many found confusing: the auto-selection of an item when it was matched exactly. So react-admin no longer selects anything automatically, therefore the `inputValueMatcher` prop is  obsolete
 
@@ -921,6 +921,29 @@ There are two breaking changes in the new `<AutocompleteInput>` and `<Autocomple
 />
 ```
 
+- The `suggestionComponent` prop is gone.
+
+Instead, the new `<AutocompleteInput>` and `<AutocompleteArrayInput>` components use the `optionText` like all other inputs accepting choices.
+However, if you pass a React element as the `optionText`, you must now also specify the new `matchSuggestion` prop.
+This is required because the inputs use the `optionText` by default to filter suggestions.
+This function receives the current filter and a choice, and should return a boolean indicating whether this choice matches the filter.
+
+```diff
+<AutocompleteInput
+    source="role"
+-   suggestionComponent={MyComponent}
++   optionText={<MyComponent />}
++   matchSuggestion={matchSuggestion}
+/>
+
+<AutocompleteArrayInput
+    source="role"
+-   suggestionComponent={MyComponent}
++   optionText={<MyComponent />}
++   matchSuggestion={matchSuggestion}
+/>
+```
+ 
 Besides, some props which were applicable to both components did not make sense for the `<AutocompleteArrayInput>` component:
 
 - `allowEmpty`: As the `<AutocompleteArrayInput>` deals with arrays, it does not make sense to add an empty choice. This prop is no longer accepted and will be ignored.

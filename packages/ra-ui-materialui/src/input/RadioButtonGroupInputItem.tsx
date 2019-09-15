@@ -1,8 +1,7 @@
-import React, { isValidElement, cloneElement } from 'react';
+import React from 'react';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Radio from '@material-ui/core/Radio';
-import get from 'lodash/get';
-import { useTranslate } from 'ra-core';
+import { useChoices } from 'ra-core';
 
 const RadioButtonGroupInputItem = ({
     choice,
@@ -11,26 +10,21 @@ const RadioButtonGroupInputItem = ({
     source,
     translateChoice,
 }) => {
-    const translate = useTranslate();
+    const { getChoiceText, getChoiceValue } = useChoices({
+        optionText,
+        optionValue,
+        translateChoice,
+    });
 
-    const choiceName = isValidElement<{ record: any }>(optionText)
-        ? cloneElement(optionText, { record: choice })
-        : typeof optionText === 'function'
-        ? optionText(choice)
-        : get(choice, optionText);
-
-    const nodeId = `${source}_${get(choice, optionValue)}`;
+    const choiceName = getChoiceText(choice);
+    const nodeId = `${source}_${getChoiceValue(choice)}`;
 
     return (
         <FormControlLabel
             htmlFor={nodeId}
-            value={get(choice, optionValue)}
+            value={getChoiceValue(choice)}
             control={<Radio id={nodeId} color="primary" />}
-            label={
-                translateChoice
-                    ? translate(choiceName, { _: choiceName })
-                    : choiceName
-            }
+            label={choiceName}
         />
     );
 };
