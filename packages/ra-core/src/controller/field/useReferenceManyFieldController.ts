@@ -2,6 +2,7 @@ import get from 'lodash/get';
 
 import { Record, Sort, RecordMap, Identifier } from '../../types';
 import { useGetManyReference } from '../../dataProvider';
+import { useNotify } from '../../sideEffect';
 
 interface ReferenceManyProps {
     data: RecordMap;
@@ -88,6 +89,7 @@ const useReferenceManyFieldController = ({
     sort = { field: 'id', order: 'DESC' },
 }: Options): ReferenceManyProps => {
     const referenceId = get(record, source);
+    const notify = useNotify();
     const { data, ids, total, loading, loaded } = useGetManyReference(
         resource,
         reference,
@@ -96,7 +98,16 @@ const useReferenceManyFieldController = ({
         { page, perPage },
         sort,
         filter,
-        source
+        source,
+        {
+            onFailure: error =>
+                notify(
+                    typeof error === 'string'
+                        ? error
+                        : error.message || 'ra.notification.http_error',
+                    'warning'
+                ),
+        }
     );
 
     const referenceBasePath = basePath.replace(resource, reference);

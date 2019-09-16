@@ -40,13 +40,6 @@ describe('<ReferenceManyFieldController />', () => {
         assert.deepEqual(dispatch.mock.calls[0], [
             {
                 meta: {
-                    fetch: 'GET_MANY_REFERENCE',
-                    onFailure: {
-                        notification: {
-                            body: 'ra.notification.http_error',
-                            level: 'warning',
-                        },
-                    },
                     relatedTo: 'foo_bar@foo_id_undefined',
                     resource: 'bar',
                 },
@@ -169,13 +162,6 @@ describe('<ReferenceManyFieldController />', () => {
         assert.deepEqual(dispatch.mock.calls[0], [
             {
                 meta: {
-                    fetch: 'GET_MANY_REFERENCE',
-                    onFailure: {
-                        notification: {
-                            body: 'ra.notification.http_error',
-                            level: 'warning',
-                        },
-                    },
                     relatedTo: 'posts_comments@post_id_1',
                     resource: 'comments',
                 },
@@ -208,20 +194,14 @@ describe('<ReferenceManyFieldController />', () => {
         );
 
         const { rerender, dispatch } = renderWithRedux(<ControllerWrapper />);
-        rerender(<ControllerWrapper sort={{ field: 'id', order: 'ASC' }} />);
 
-        expect(dispatch).toBeCalledTimes(2);
+        expect(dispatch).toBeCalledTimes(3); // CRUD_GET_MANY_REFERENCE, CRUD_GET_MANY_REFERENCE_LOADING, FETCH_START
+        rerender(<ControllerWrapper sort={{ field: 'id', order: 'ASC' }} />);
+        expect(dispatch).toBeCalledTimes(6);
 
         assert.deepEqual(dispatch.mock.calls[0], [
             {
                 meta: {
-                    fetch: 'GET_MANY_REFERENCE',
-                    onFailure: {
-                        notification: {
-                            body: 'ra.notification.http_error',
-                            level: 'warning',
-                        },
-                    },
                     relatedTo: 'foo_bar@foo_id_1',
                     resource: 'bar',
                 },
@@ -237,16 +217,9 @@ describe('<ReferenceManyFieldController />', () => {
             },
         ]);
 
-        assert.deepEqual(dispatch.mock.calls[1], [
+        assert.deepEqual(dispatch.mock.calls[3], [
             {
                 meta: {
-                    fetch: 'GET_MANY_REFERENCE',
-                    onFailure: {
-                        notification: {
-                            body: 'ra.notification.http_error',
-                            level: 'warning',
-                        },
-                    },
                     relatedTo: 'foo_bar@foo_id_1',
                     resource: 'bar',
                 },

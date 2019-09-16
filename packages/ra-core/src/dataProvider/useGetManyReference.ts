@@ -1,7 +1,7 @@
 import { useSelector, shallowEqual } from 'react-redux';
 import { CRUD_GET_MANY_REFERENCE } from '../actions/dataActions/crudGetManyReference';
 import { GET_MANY_REFERENCE } from '../dataFetchActions';
-import { Pagination, Sort, Identifier } from '../types';
+import { Pagination, Sort, Identifier, ReduxState } from '../types';
 import useQueryWithStore from './useQueryWithStore';
 import {
     getReferences,
@@ -87,9 +87,12 @@ const useGetManyReference = (
 
 export default useGetManyReference;
 
-const selectData = (reference, relatedTo) => state =>
-    getReferences(state, reference, relatedTo);
+const selectData = (reference: string, relatedTo: string) => (
+    state: ReduxState
+) => getReferences(state, reference, relatedTo);
 
-const selectIds = relatedTo => state => getIds(state, relatedTo);
+const selectIds = (relatedTo: string) => (state: ReduxState) =>
+    getIds(state, relatedTo);
 
-const selectTotal = relatedTo => state => getTotal(state, relatedTo);
+const selectTotal = (relatedTo: string) => (state: ReduxState) =>
+    getTotal(state, relatedTo);
