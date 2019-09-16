@@ -33,6 +33,7 @@ export type Translate = (key: string, options?: any) => string;
 export type I18nProvider = {
     translate: Translate;
     changeLocale: (locale: string, options?: any) => Promise<void>;
+    [key: string]: any;
 };
 
 export type AuthActionType =
@@ -48,6 +49,7 @@ export type AuthProvider = {
     checkAuth: (params: any) => Promise<void>;
     checkError: (error: any) => Promise<void>;
     getPermissions: (params: any) => Promise<any>;
+    [key: string]: any;
 };
 
 export type LegacyAuthProvider = (

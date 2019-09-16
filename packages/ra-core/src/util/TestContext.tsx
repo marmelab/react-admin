@@ -5,7 +5,6 @@ import merge from 'lodash/merge';
 import { createMemoryHistory } from 'history';
 
 import createAdminStore from '../createAdminStore';
-import { I18nProvider } from '../types';
 
 export const defaultStore = {
     admin: {
@@ -17,7 +16,6 @@ export const defaultStore = {
 
 interface Props {
     initialState?: object;
-    i18nProvider?: I18nProvider;
     enableReducers?: boolean;
 }
 
