@@ -155,6 +155,7 @@ const PostEdit = ({ permissions, ...props }) => (
                     reference="comments"
                     target="post_id"
                     addLabel={false}
+                    fullWidth
                 >
                     <Datagrid>
                         <DateField source="created_at" />

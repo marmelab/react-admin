@@ -12,6 +12,7 @@ import withDataProvider from './withDataProvider';
 import useGetOne from './useGetOne';
 import useGetList from './useGetList';
 import useGetMany from './useGetMany';
+import useGetManyReference from './useGetManyReference';
 import useUpdate from './useUpdate';
 import useUpdateMany from './useUpdateMany';
 import useCreate from './useCreate';
@@ -31,6 +32,7 @@ export {
     useGetOne,
     useGetList,
     useGetMany,
+    useGetManyReference,
     useUpdate,
     useUpdateMany,
     useCreate,
