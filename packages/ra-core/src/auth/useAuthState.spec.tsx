@@ -42,7 +42,13 @@ describe('useAuthState', () => {
     });
 
     it('should return an error after a tick if the auth fails', async () => {
-        const authProvider = () => Promise.reject('not good');
+        const authProvider = {
+            login: () => Promise.reject('bad method'),
+            logout: () => Promise.reject('bad method'),
+            checkAuth: () => Promise.reject('failed'),
+            checkError: () => Promise.reject('bad method'),
+            getPermissions: () => Promise.reject('bad method'),
+        };
         const { queryByText } = renderWithRedux(
             <AuthContext.Provider value={authProvider}>
                 <UseAuth options={{ logoutOnFailure: false }}>

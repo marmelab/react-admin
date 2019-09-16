@@ -1,12 +1,11 @@
 import { useCallback } from 'react';
 
-import { AUTH_ERROR } from './types';
 import useAuthProvider from './useAuthProvider';
 import useLogout from './useLogout';
 import { useNotify } from '../sideEffect';
 
 /**
- * Returns a callback used to call the authProvidr with the AUTH_ERROR verb
+ * Returns a callback used to call the authProvider.checkError() method
  * and an error from the dataProvider. If the authProvider rejects the call,
  * the hook logs the user out and shows a logged out notification.
  *
@@ -42,7 +41,8 @@ const useLogoutIfAccessDenied = (): LogoutIfAccessDenied => {
     const notify = useNotify();
     const logoutIfAccessDenied = useCallback(
         (error?: any) =>
-            authProvider(AUTH_ERROR, error)
+            authProvider
+                .checkError(error)
                 .then(() => false)
                 .catch(e => {
                     const redirectTo =
@@ -65,7 +65,7 @@ const useLogoutIfAccessDenied = (): LogoutIfAccessDenied => {
 const logoutIfAccessDeniedWithoutProvider = () => Promise.resolve(false);
 
 /**
- * Call the authProvidr with the AUTH_ERROR verb and the error passed as argument.
+ * Call the authProvider.authError() method, unsing the error passed as argument.
  * If the authProvider rejects the call, logs the user out and shows a logged out notification.
  *
  * @param {Error} error An Error object (usually returned by the dataProvider)

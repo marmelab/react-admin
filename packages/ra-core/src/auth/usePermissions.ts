@@ -15,7 +15,7 @@ const emptyParams = {};
 /**
  * Hook for getting user permissions
  *
- * Calls the authProvider asynchronously with the AUTH_GET_PERMISSIONS verb.
+ * Calls the authProvider.getPrmissions() method asynchronously.
  * If the authProvider returns a rejected promise, returns empty permissions.
  *
  * The return value updates according to the request state:

@@ -61,8 +61,8 @@ const useStyles = makeStyles((theme: Theme) => ({
  * A standalone login page, to serve as authentication gate to the admin
  *
  * Expects the user to enter a login and a password, which will be checked
- * by the `authProvider` using the AUTH_LOGIN verb. Redirects to the root page
- * (/) upon success, otherwise displays an authentication error message.
+ * by the `authProvider.login()` method. Redirects to the root page (/)
+ * upon success, otherwise displays an authentication error message.
  *
  * Copy and adapt this component to implement your own login logic
  * (e.g. to authenticate via email or facebook or anything else).

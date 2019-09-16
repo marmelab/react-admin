@@ -14,7 +14,7 @@ const emptyParams = {};
 /**
  * Hook for getting the authentication status and restricting access to authenticated users
  *
- * Calls the authProvider asynchronously with the AUTH_CHECK verb.
+ * Calls the authProvider.checkAuth() method asynchronously.
  * If the authProvider returns a rejected promise, logs the user out.
  *
  * The return value updates according to the authProvider request state:

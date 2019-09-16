@@ -10,13 +10,14 @@ import { createHashHistory } from 'history';
 import { Switch, Route } from 'react-router-dom';
 import { ConnectedRouter } from 'connected-react-router';
 
-import AuthContext from './auth/AuthContext';
+import { AuthContext, convertLegacyAuthProvider } from './auth';
 import DataProviderContext from './dataProvider/DataProviderContext';
 import createAdminStore, { InitialState } from './createAdminStore';
 import TranslationProvider from './i18n/TranslationProvider';
 import CoreAdminRouter from './CoreAdminRouter';
 import {
     AuthProvider,
+    LegacyAuthProvider,
     I18nProvider,
     DataProvider,
     TitleComponent,
@@ -38,7 +39,7 @@ const DefaultLayout: FunctionComponent<LayoutProps> = ({ children }) => (
 export interface AdminProps {
     layout: LayoutComponent;
     appLayout?: LayoutComponent;
-    authProvider?: AuthProvider;
+    authProvider?: AuthProvider | LegacyAuthProvider;
     children?: AdminChildren;
     catchAll: CatchAllComponent;
     customSagas?: any[];
@@ -144,6 +145,10 @@ const CoreAdmin: FunctionComponent<AdminProps> = ({
     };
 
     let finalHistory = customHistory;
+    const finalAuthProvider =
+        authProvider instanceof Function
+            ? convertLegacyAuthProvider(authProvider)
+            : authProvider;
 
     if (reduxIsAlreadyInitialized) {
         if (!customHistory) {
@@ -153,7 +158,7 @@ React-admin uses this history for its own ConnectedRouter.`);
         }
 
         return (
-            <AuthContext.Provider value={authProvider}>
+            <AuthContext.Provider value={finalAuthProvider}>
                 {renderCore(customHistory)}
             </AuthContext.Provider>
         );
@@ -166,10 +171,10 @@ React-admin requires a valid dataProvider function to work.`);
         finalHistory = customHistory || createHashHistory();
 
         return (
-            <AuthContext.Provider value={authProvider}>
+            <AuthContext.Provider value={finalAuthProvider}>
                 <Provider
                     store={createAdminStore({
-                        authProvider,
+                        authProvider: finalAuthProvider,
                         customReducers,
                         customSagas,
                         dataProvider,

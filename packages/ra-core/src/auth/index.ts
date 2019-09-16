@@ -10,11 +10,13 @@ import useLogout from './useLogout';
 import useCheckAuth from './useCheckAuth';
 import useGetPermissions from './useGetPermissions';
 import useLogoutIfAccessDenied from './useLogoutIfAccessDenied';
+import convertLegacyAuthProvider from './convertLegacyAuthProvider';
 export * from './types';
 
 export {
     AuthContext,
     useAuthProvider,
+    convertLegacyAuthProvider,
     // low-vevel hooks for calling a particular verb on the authProvider
     useLogin,
     useLogout,

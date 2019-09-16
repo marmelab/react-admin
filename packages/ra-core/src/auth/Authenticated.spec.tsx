@@ -25,9 +25,13 @@ describe('<Authenticated>', () => {
     });
 
     it('should logout, redirect to login and show a notification after a tick if the auth fails', async () => {
-        const authProvider = jest.fn(type =>
-            type === 'AUTH_CHECK' ? Promise.reject() : Promise.resolve()
-        );
+        const authProvider = {
+            login: jest.fn().mockResolvedValue(''),
+            logout: jest.fn().mockResolvedValue(''),
+            checkAuth: jest.fn().mockRejectedValue(undefined),
+            checkError: jest.fn().mockResolvedValue(''),
+            getPermissions: jest.fn().mockResolvedValue(''),
+        };
         const { dispatch } = renderWithRedux(
             <AuthContext.Provider value={authProvider}>
                 <Authenticated>
@@ -36,8 +40,8 @@ describe('<Authenticated>', () => {
             </AuthContext.Provider>
         );
         await wait();
-        expect(authProvider.mock.calls[0][0]).toBe('AUTH_CHECK');
-        expect(authProvider.mock.calls[1][0]).toBe('AUTH_LOGOUT');
+        expect(authProvider.checkAuth.mock.calls[0][0]).toEqual({});
+        expect(authProvider.logout.mock.calls[0][0]).toEqual({});
         expect(dispatch).toHaveBeenCalledTimes(3);
         expect(dispatch.mock.calls[0][0]).toEqual(
             showNotification('ra.auth.auth_check_error', 'warning', {
