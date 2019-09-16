@@ -1,7 +1,5 @@
-import { useMemo } from 'react';
 import get from 'lodash/get';
 
-import { nameRelatedTo } from '../../reducer/admin/references/oneToMany';
 import { Record, Sort, RecordMap, Identifier } from '../../types';
 import { useGetManyReference } from '../../dataProvider';
 
