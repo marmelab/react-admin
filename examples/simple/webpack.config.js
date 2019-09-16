@@ -29,7 +29,11 @@ module.exports = {
         // required because of https://github.com/babel/babel/issues/7640
         new IgnoreNotFoundExportPlugin([
             'CallbackSideEffect',
+            'ChoicesProps',
+            'InputProps',
             'NotificationSideEffect',
+            'OptionText',
+            'OptionTextElement',
             'RedirectionSideEffect',
             'RefreshSideEffect',
         ]),
