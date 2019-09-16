@@ -22,7 +22,6 @@ import {
     USER_LOGOUT,
 } from '../actions/authActions';
 import { FETCH_ERROR } from '../actions/fetchActions';
-import { AUTH_LOGIN, AUTH_CHECK, AUTH_ERROR, AUTH_LOGOUT } from '../auth';
 import { clearState } from '../actions/clearActions';
 
 export default (authProvider?: AuthProvider) => {

@@ -5,7 +5,7 @@ import {
     AUTH_ERROR,
     AUTH_GET_PERMISSIONS,
 } from './types';
-import { AuthActionType, AuthProvider, LegacyAuthProvider } from '../types';
+import { AuthProvider, LegacyAuthProvider } from '../types';
 
 /**
  * Turn a function-based authProvider to an object-based one

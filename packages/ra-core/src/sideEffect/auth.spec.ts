@@ -6,7 +6,6 @@ import {
     handleLogout,
     handleFetchError,
 } from './auth';
-import { AUTH_LOGIN, AUTH_CHECK, AUTH_LOGOUT, AUTH_ERROR } from '../auth';
 import {
     USER_LOGIN_LOADING,
     USER_LOGIN_SUCCESS,
