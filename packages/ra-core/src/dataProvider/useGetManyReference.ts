@@ -23,13 +23,13 @@ import { useMemo } from 'react';
  * This hook will return the cached result when called a second time
  * with the same parameters, until the response arrives.
  *
- * @param {string} resource The resource name, e.g. 'posts'
- * @param {string} reference The referenced resource name, e.g. 'comments'
+ * @param {string} resource The referenced resource name, e.g. 'comments'
  * @param {string} target The target resource key, e.g. 'post_id'
  * @param {Object} id The identifier of the record to look for in 'target'
  * @param {Object} pagination The request pagination { page, perPage }, e.g. { page: 1, perPage: 10 }
  * @param {Object} sort The request sort { field, order }, e.g. { field: 'id', order: 'DESC' }
  * @param {Object} filters The request filters, e.g. { body: 'hello, world' }
+ * @param {string} referencingResource The resource name, e.g. 'posts'. Used to generate a cache key
  * @param {Object} options Options object to pass to the dataProvider. May include side effects to be executed upon success of failure, e.g. { onSuccess: { refresh: true } }
  *
  * @returns The current request state. Destructure as { data, total, ids, error, loading, loaded }.
@@ -40,12 +40,13 @@ import { useMemo } from 'react';
  *
  * const PostComments = ({ post_id }) => {
  *     const { data, ids, loading, error } = useGetManyReference(
- *         'posts',
  *         'comments',
  *         'post_id',
  *         post_id,
  *         { page: 1, perPage: 10 },
  *         { field: 'published_at', order: 'DESC' }
+ *         {},
+ *         'posts',
  *     );
  *     if (loading) { return <Loading />; }
  *     if (error) { return <p>ERROR</p>; }
@@ -56,31 +57,30 @@ import { useMemo } from 'react';
  */
 const useGetManyReference = (
     resource: string,
-    reference: string,
     target: string,
     id: Identifier,
     pagination: Pagination,
     sort: Sort,
     filter: object,
-    source: string,
+    referencingResource: string,
     options?: any
 ) => {
     const relatedTo = useMemo(
-        () => nameRelatedTo(reference, id, resource, target, filter),
-        [filter, reference, id, resource, target]
+        () => nameRelatedTo(resource, id, referencingResource, target, filter),
+        [filter, resource, id, referencingResource, target]
     );
 
     const { data: ids, total, error, loading, loaded } = useQueryWithStore(
         {
             type: GET_MANY_REFERENCE,
-            resource: reference,
-            payload: { target, id, pagination, sort, filter, source },
+            resource: resource,
+            payload: { target, id, pagination, sort, filter },
         },
         { ...options, relatedTo, action: CRUD_GET_MANY_REFERENCE },
         selectIds(relatedTo),
         selectTotal(relatedTo)
     );
-    const data = useSelector(selectData(reference, relatedTo), shallowEqual);
+    const data = useSelector(selectData(resource, relatedTo), shallowEqual);
 
     return { data, ids, total, error, loading, loaded };
 };

@@ -3,6 +3,7 @@ import assert from 'assert';
 
 import ReferenceManyFieldController from './ReferenceManyFieldController';
 import renderWithRedux from '../../util/renderWithRedux';
+import { waitForDomChange } from '@testing-library/react';
 
 describe('<ReferenceManyFieldController />', () => {
     it('should set loaded to false when related records are not yet fetched', () => {
@@ -48,7 +49,6 @@ describe('<ReferenceManyFieldController />', () => {
                     id: undefined,
                     pagination: { page: 1, perPage: 25 },
                     sort: { field: 'id', order: 'DESC' },
-                    source: 'items',
                     target: 'foo_id',
                 },
                 type: 'RA/CRUD_GET_MANY_REFERENCE',
@@ -144,7 +144,9 @@ describe('<ReferenceManyFieldController />', () => {
     });
 
     it('should support custom source', () => {
-        const children = jest.fn().mockReturnValue('children');
+        const children = jest.fn(({ data }) =>
+            data && data.length > 0 ? data.length : null
+        );
 
         const { dispatch } = renderWithRedux(
             <ReferenceManyFieldController
@@ -156,7 +158,30 @@ describe('<ReferenceManyFieldController />', () => {
                 source="customId"
             >
                 {children}
-            </ReferenceManyFieldController>
+            </ReferenceManyFieldController>,
+            {
+                admin: {
+                    references: {
+                        oneToMany: {
+                            'posts_comments@post_id_1': {
+                                ids: [1],
+                                total: 1,
+                            },
+                        },
+                    },
+                    resources: {
+                        comments: {
+                            data: {
+                                1: {
+                                    post_id: 1,
+                                    id: 1,
+                                    body: 'Hello!',
+                                },
+                            },
+                        },
+                    },
+                },
+            }
         );
 
         assert.deepEqual(dispatch.mock.calls[0], [
@@ -170,12 +195,19 @@ describe('<ReferenceManyFieldController />', () => {
                     id: 1,
                     pagination: { page: 1, perPage: 25 },
                     sort: { field: 'id', order: 'DESC' },
-                    source: 'customId',
                     target: 'post_id',
                 },
                 type: 'RA/CRUD_GET_MANY_REFERENCE',
             },
         ]);
+
+        expect(children.mock.calls[0][0].data).toEqual({
+            1: {
+                post_id: 1,
+                id: 1,
+                body: 'Hello!',
+            },
+        });
     });
 
     it('should call crudGetManyReference when its props changes', () => {
@@ -210,7 +242,6 @@ describe('<ReferenceManyFieldController />', () => {
                     id: 1,
                     pagination: { page: 1, perPage: 25 },
                     sort: { field: 'id', order: 'DESC' },
-                    source: 'id',
                     target: 'foo_id',
                 },
                 type: 'RA/CRUD_GET_MANY_REFERENCE',
@@ -228,7 +259,6 @@ describe('<ReferenceManyFieldController />', () => {
                     id: 1,
                     pagination: { page: 1, perPage: 25 },
                     sort: { field: 'id', order: 'ASC' },
-                    source: 'id',
                     target: 'foo_id',
                 },
                 type: 'RA/CRUD_GET_MANY_REFERENCE',

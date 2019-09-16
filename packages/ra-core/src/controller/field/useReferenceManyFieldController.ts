@@ -91,14 +91,13 @@ const useReferenceManyFieldController = ({
     const referenceId = get(record, source);
     const notify = useNotify();
     const { data, ids, total, loading, loaded } = useGetManyReference(
-        resource,
         reference,
         target,
         referenceId,
         { page, perPage },
         sort,
         filter,
-        source,
+        resource,
         {
             onFailure: error =>
                 notify(
