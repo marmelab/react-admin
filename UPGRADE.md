@@ -1057,22 +1057,18 @@ If you had custom reducer or sagas based on these actions, they will no longer w
 
 ## i18nProvider Signature Changed
 
-The i18nProvider, that react-admin uses for translating UI and content, now has a signature similar to the other providers: it accepts a message type (either `I18N_TRANSLATE` or `I18N_CHANGE_LOCALE`) and a params argument.
+The i18nProvider, that react-admin uses for translating UI and content, must now be an object exposing two methods: `trasnlate` and `changeLocale`.
 
 ```jsx
 // react-admin 2.x
 const i18nProvider = (locale) => messages[locale];
 
 // react-admin 3.x
-const i18nProvider = (type, params) => {
-    const polyglot = new Polyglot({ locale: 'en', phrases: messages.en });
-    let translate = polyglot.t.bind(polyglot);
-    if (type === 'I18N_TRANSLATE') {
-        const { key, options } = params;
-        return translate(key, options);
-    }
-    if type === 'I18N_CHANGE_LOCALE') {
-        const newLocale = params;
+const polyglot = new Polyglot({ locale: 'en', phrases: messages.en });
+let translate = polyglot.t.bind(polyglot);
+const i18nProvider = {
+    translate: (key, options) => translate(key, options),
+    changeLocale: newLocale => {
         return new Promise((resolve, reject) => {
             // load new messages and update the translate function
         })
