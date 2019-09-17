@@ -13,6 +13,7 @@ import useGetOne from './useGetOne';
 import useGetList from './useGetList';
 import useGetMany from './useGetMany';
 import useGetManyReference from './useGetManyReference';
+import useGetMatching from './useGetMatching';
 import useUpdate from './useUpdate';
 import useUpdateMany from './useUpdateMany';
 import useCreate from './useCreate';
@@ -33,6 +34,7 @@ export {
     useGetList,
     useGetMany,
     useGetManyReference,
+    useGetMatching,
     useUpdate,
     useUpdateMany,
     useCreate,
