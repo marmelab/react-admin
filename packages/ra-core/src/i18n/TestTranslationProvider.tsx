@@ -8,12 +8,15 @@ export default ({ translate, messages, children }: any) => (
         value={{
             locale: 'en',
             setLocale: () => Promise.resolve(),
-            i18nProvider: (_, options: { key: string; options?: any }) =>
-                messages
-                    ? lodashGet(messages, options.key)
-                        ? lodashGet(messages, options.key)
-                        : options.options._
-                    : translate.call(null, options.key, options.options),
+            i18nProvider: {
+                translate: messages
+                    ? (key: string, options?: any) =>
+                          lodashGet(messages, key)
+                              ? lodashGet(messages, key)
+                              : options._
+                    : translate,
+                changeLocale: () => Promise.resolve(),
+            },
         }}
     >
         {children}

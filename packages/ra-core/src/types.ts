@@ -28,12 +28,13 @@ export interface Pagination {
 export const I18N_TRANSLATE = 'I18N_TRANSLATE';
 export const I18N_CHANGE_LOCALE = 'I18N_CHANGE_LOCALE';
 
-export type I18nProvider = (
-    type: typeof I18N_TRANSLATE | typeof I18N_CHANGE_LOCALE,
-    params: { key: string; options?: Object } | string
-) => string | Promise<any>;
+export type Translate = (key: string, options?: any) => string;
 
-export type Translate = (id: string, options?: any) => string;
+export type I18nProvider = {
+    translate: Translate;
+    changeLocale: (locale: string, options?: any) => Promise<void>;
+    [key: string]: any;
+};
 
 export type AuthActionType =
     | 'AUTH_LOGIN'
@@ -48,6 +49,7 @@ export type AuthProvider = {
     checkAuth: (params: any) => Promise<void>;
     checkError: (error: any) => Promise<void>;
     getPermissions: (params: any) => Promise<any>;
+    [key: string]: any;
 };
 
 export type LegacyAuthProvider = (
