@@ -1,5 +1,33 @@
 # Upgrade to 3.0
 
+## Upgrade all react-admin packages
+
+In the `packages.json`, upgrade ALL react-admin related dependencies to 3.0.0. This includes `react-admin`, `ra-language-XXX`, `ra-data-XXX`, etc.
+
+```diff
+{
+    "name": "demo",
+    "version": "0.1.0",
+    "private": true,
+    "dependencies": {
+-       "ra-data-simple-rest": "^2.9.6",
++       "ra-data-simple-rest": "^3.0.0",
+-       "ra-input-rich-text": "^2.9.6",
++       "ra-input-rich-text": "^3.0.0",
+-       "ra-language-english": "^2.9.6",
++       "ra-language-english": "^3.0.0",
+-       "ra-language-french": "^2.9.6",
++       "ra-language-french": "^3.0.0",
+-       "react-admin": "^2.9.6",
++       "react-admin": "^3.0.0",
+        "react": "~16.8.0",
+        "react-dom": "~16.8.0",
+        ...
+    },
+```
+
+Failing to upgrade one of the `ra-` packages will result in a duplication of the react-admin package in two incompatible versions, and cause hard-to-debug bugs.  
+
 ## Increased version requirement for key dependencies
 
 * `react` and `react-dom` are now required to be >= 16.8. This version is backward compatible with 16.3, which was the minimum requirement in react-admin, but it offers the support for Hooks.
