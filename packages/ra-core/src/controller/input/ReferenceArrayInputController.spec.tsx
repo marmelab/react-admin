@@ -1,13 +1,12 @@
 import React from 'react';
 import expect from 'expect';
-import { cleanup, wait } from '@testing-library/react';
+import { cleanup, wait, fireEvent } from '@testing-library/react';
 import ReferenceArrayInputController from './ReferenceArrayInputController';
 import { renderWithRedux } from '../../util';
-import { DataProviderContext } from '../../../lib';
+import { CRUD_GET_MATCHING, CRUD_GET_MANY } from '../../../lib';
 
 describe('<ReferenceArrayInputController />', () => {
     const defaultProps = {
-        children: jest.fn(),
         input: { value: undefined },
         record: undefined,
         basePath: '/tags',
@@ -19,8 +18,10 @@ describe('<ReferenceArrayInputController />', () => {
     afterEach(cleanup);
 
     it('should set loading to true as long as there are no references fetched and no selected references', () => {
-        const children = jest.fn(() => <div />);
-        renderWithRedux(
+        const children = jest.fn(({ loading }) => (
+            <div>{loading.toString()}</div>
+        ));
+        const { queryByText } = renderWithRedux(
             <ReferenceArrayInputController
                 {...defaultProps}
                 input={{ value: [1, 2] }}
@@ -29,12 +30,14 @@ describe('<ReferenceArrayInputController />', () => {
             </ReferenceArrayInputController>
         );
 
-        expect(children.mock.calls[0][0].loading).toEqual(true);
+        expect(queryByText('true')).not.toBeNull();
     });
 
     it('should set loading to true as long as there are no references fetched and there are no data found for the references already selected', () => {
-        const children = jest.fn(() => <div />);
-        renderWithRedux(
+        const children = jest.fn(({ loading }) => (
+            <div>{loading.toString()}</div>
+        ));
+        const { queryByText } = renderWithRedux(
             <ReferenceArrayInputController
                 {...defaultProps}
                 input={{ value: [1, 2] }}
@@ -42,17 +45,17 @@ describe('<ReferenceArrayInputController />', () => {
                 {children}
             </ReferenceArrayInputController>
         );
-        expect(children.mock.calls[0][0].loading).toEqual(true);
+        expect(queryByText('true')).not.toBeNull();
     });
 
     it('should set loading to false if the references are being searched but data from at least one selected reference was found', () => {
-        const children = jest.fn(() => <div />);
-        renderWithRedux(
+        const children = jest.fn(({ loading }) => (
+            <div>{loading.toString()}</div>
+        ));
+        const { queryByText } = renderWithRedux(
             <ReferenceArrayInputController
-                {...{
-                    ...defaultProps,
-                    input: { value: [1, 2] },
-                }}
+                {...defaultProps}
+                input={{ value: [1, 2] }}
             >
                 {children}
             </ReferenceArrayInputController>,
@@ -73,364 +76,558 @@ describe('<ReferenceArrayInputController />', () => {
                 },
             }
         );
-        expect(children.mock.calls[0][0].loading).toEqual(false);
-        expect(children.mock.calls[0][0].choices).toEqual([{ id: 1 }]);
+
+        expect(queryByText('false')).not.toBeNull();
     });
 
     it('should set error in case of references fetch error and there are no selected reference in the input value', async () => {
         const children = jest.fn(({ error }) => <div>{error}</div>);
+
         const { queryByText } = renderWithRedux(
-            <DataProviderContext.Provider
-                value={jest.fn((...args) => {
-                    console.log(args);
-                    return Promise.reject();
-                })}
-            >
-                <ReferenceArrayInputController {...defaultProps}>
-                    {children}
-                </ReferenceArrayInputController>
-            </DataProviderContext.Provider>
+            <ReferenceArrayInputController {...defaultProps}>
+                {children}
+            </ReferenceArrayInputController>,
+            {
+                admin: {
+                    references: {
+                        possibleValues: {
+                            'posts@tag_ids': { error: 'boom' },
+                        },
+                    },
+                },
+            }
         );
 
-        await wait(() =>
-            expect(
-                queryByText('ra.input.references.all_missing')
-            ).not.toBeNull()
-        );
+        expect(queryByText('ra.input.references.all_missing')).not.toBeNull();
     });
 
     it('should set error in case of references fetch error and there are no data found for the references already selected', () => {
-        const children = jest.fn(() => <div />);
-        renderWithRedux(
+        const children = jest.fn(({ error }) => <div>{error}</div>);
+        const { queryByText } = renderWithRedux(
             <ReferenceArrayInputController
-                {...{
-                    ...defaultProps,
-                    matchingReferences: { error: 'fetch error' },
-                    input: { value: [1] },
-                    referenceRecords: [],
-                }}
+                {...defaultProps}
+                input={{ value: [1] }}
             >
                 {children}
-            </ReferenceArrayInputController>
+            </ReferenceArrayInputController>,
+            {
+                admin: {
+                    references: {
+                        possibleValues: {
+                            'posts@tag_ids': { error: 'boom' },
+                        },
+                    },
+                },
+            }
         );
-        expect(children.mock.calls[0][0].error).toEqual(
-            '*ra.input.references.all_missing*'
-        );
+        expect(queryByText('ra.input.references.all_missing')).not.toBeNull();
     });
 
     it('should not display an error in case of references fetch error but data from at least one selected reference was found', () => {
-        const children = jest.fn(() => <div />);
-        renderWithRedux(
+        const children = jest.fn(({ error }) => <div>{error}</div>);
+        const { queryByText } = renderWithRedux(
             <ReferenceArrayInputController
-                {...{
-                    ...defaultProps,
-                    matchingReferences: { error: 'fetch error' },
-                    input: { value: [1, 2] },
-                    referenceRecords: [{ id: 2 }],
-                }}
+                {...defaultProps}
+                input={{ value: [1, 2] }}
             >
                 {children}
-            </ReferenceArrayInputController>
+            </ReferenceArrayInputController>,
+            {
+                admin: {
+                    resources: {
+                        tags: {
+                            data: {
+                                1: {
+                                    id: 1,
+                                },
+                            },
+                            list: {
+                                total: 42,
+                            },
+                        },
+                    },
+                    references: {
+                        possibleValues: {
+                            'posts@tag_ids': { error: 'boom' },
+                        },
+                    },
+                },
+            }
         );
-        expect(children.mock.calls[0][0].error).toEqual(undefined);
-        expect(children.mock.calls[0][0].choices).toEqual([{ id: 2 }]);
+        expect(queryByText('ra.input.references.all_missing')).toBeNull();
     });
 
     it('should set warning if references fetch fails but selected references are not empty', () => {
-        const children = jest.fn(() => <div />);
-        renderWithRedux(
+        const children = jest.fn(({ warning }) => <div>{warning}</div>);
+        const { queryByText } = renderWithRedux(
             <ReferenceArrayInputController
-                {...{
-                    ...defaultProps,
-                    matchingReferences: { error: 'fetch error' },
-                    input: { value: [1, 2] },
-                    referenceRecords: [{ id: 2 }],
-                }}
+                {...defaultProps}
+                input={{ value: [1, 2] }}
             >
                 {children}
-            </ReferenceArrayInputController>
+            </ReferenceArrayInputController>,
+            {
+                admin: {
+                    resources: {
+                        tags: {
+                            data: {
+                                1: {
+                                    id: 1,
+                                },
+                            },
+                            list: {
+                                total: 42,
+                            },
+                        },
+                    },
+                    references: {
+                        possibleValues: {
+                            'posts@tag_ids': { error: 'boom' },
+                        },
+                    },
+                },
+            }
         );
-        expect(children.mock.calls[0][0].warning).toEqual('*fetch error*');
+        expect(queryByText('ra.input.references.many_missing')).not.toBeNull();
     });
 
     it('should set warning if references were found but selected references are not complete', () => {
-        const children = jest.fn(() => <div />);
-        renderWithRedux(
+        const children = jest.fn(({ warning }) => <div>{warning}</div>);
+        const { queryByText } = renderWithRedux(
             <ReferenceArrayInputController
-                {...{
-                    ...defaultProps,
-                    matchingReferences: [],
-                    input: { value: [1, 2] },
-                    referenceRecords: [{ id: 2 }],
-                }}
+                {...defaultProps}
+                input={{ value: [1, 2] }}
             >
                 {children}
-            </ReferenceArrayInputController>
+            </ReferenceArrayInputController>,
+            {
+                admin: {
+                    resources: {
+                        tags: {
+                            data: {
+                                1: {
+                                    id: 1,
+                                },
+                            },
+                            list: {
+                                total: 42,
+                            },
+                        },
+                    },
+                    references: {
+                        possibleValues: {
+                            'posts@tag_ids': [],
+                        },
+                    },
+                },
+            }
         );
-        expect(children.mock.calls[0][0].warning).toEqual(
-            '*ra.input.references.many_missing*'
-        );
+        expect(queryByText('ra.input.references.many_missing')).not.toBeNull();
     });
 
     it('should set warning if references were found but selected references are empty', () => {
-        const children = jest.fn(() => <div />);
-        renderWithRedux(
+        const children = jest.fn(({ warning }) => <div>{warning}</div>);
+        const { queryByText } = renderWithRedux(
             <ReferenceArrayInputController
-                {...{
-                    ...defaultProps,
-                    matchingReferences: [],
-                    input: { value: [1, 2] },
-                    referenceRecords: [],
-                }}
+                {...defaultProps}
+                input={{ value: [1, 2] }}
             >
                 {children}
-            </ReferenceArrayInputController>
+            </ReferenceArrayInputController>,
+            {
+                admin: {
+                    references: {
+                        possibleValues: {
+                            'posts@tag_ids': [],
+                        },
+                    },
+                },
+            }
         );
-        expect(children.mock.calls[0][0].warning).toEqual(
-            '*ra.input.references.many_missing*'
-        );
+        expect(queryByText('ra.input.references.many_missing')).not.toBeNull();
     });
 
     it('should not set warning if all references were found', () => {
-        const children = jest.fn(() => <div />);
-        renderWithRedux(
+        const children = jest.fn(({ warning }) => <div>{warning}</div>);
+        const { queryByText } = renderWithRedux(
             <ReferenceArrayInputController
-                {...{
-                    ...defaultProps,
-                    matchingReferences: [],
-                    input: { value: [1, 2] },
-                    referenceRecords: [{ id: 1 }, { id: 2 }],
-                }}
+                {...defaultProps}
+                input={{ value: [1, 2] }}
+            >
+                {children}
+            </ReferenceArrayInputController>,
+            {
+                admin: {
+                    resources: {
+                        tags: {
+                            data: {
+                                1: {
+                                    id: 1,
+                                },
+                                2: {
+                                    id: 2,
+                                },
+                            },
+                            list: {
+                                total: 42,
+                            },
+                        },
+                    },
+                    references: {
+                        possibleValues: {
+                            'posts@tag_ids': [],
+                        },
+                    },
+                },
+            }
+        );
+        expect(queryByText('ra.input.references.many_missing')).toBeNull();
+    });
+
+    it('should call crudGetMatching on mount with default fetch values', () => {
+        const children = jest.fn(() => <div />);
+
+        const { dispatch } = renderWithRedux(
+            <ReferenceArrayInputController {...defaultProps} allowEmpty>
+                {children}
+            </ReferenceArrayInputController>
+        );
+        expect(dispatch.mock.calls[0][0]).toEqual({
+            type: CRUD_GET_MATCHING,
+            meta: {
+                relatedTo: 'posts@tag_ids',
+                resource: 'tags',
+            },
+            payload: {
+                pagination: {
+                    page: 1,
+                    perPage: 25,
+                },
+                sort: {
+                    field: 'id',
+                    order: 'DESC',
+                },
+                filter: { q: '' },
+            },
+        });
+    });
+
+    it('should allow to customize crudGetMatching arguments with perPage, sort, and filter props', () => {
+        const children = jest.fn(() => <div />);
+
+        const { dispatch } = renderWithRedux(
+            <ReferenceArrayInputController
+                {...defaultProps}
+                sort={{ field: 'foo', order: 'ASC' }}
+                perPage={5}
+                filter={{ permanentFilter: 'foo' }}
             >
                 {children}
             </ReferenceArrayInputController>
         );
-        expect(children.mock.calls[0][0].warning).toEqual(undefined);
+        expect(dispatch.mock.calls[0][0]).toEqual({
+            type: CRUD_GET_MATCHING,
+            meta: {
+                relatedTo: 'posts@tag_ids',
+                resource: 'tags',
+            },
+            payload: {
+                pagination: {
+                    page: 1,
+                    perPage: 5,
+                },
+                sort: {
+                    field: 'foo',
+                    order: 'ASC',
+                },
+                filter: { permanentFilter: 'foo', q: '' },
+            },
+        });
     });
 
-    it.skip('should call crudGetMatching on mount with default fetch values', () => {
-        const crudGetMatching = jest.fn();
-        renderWithRedux(
-            <ReferenceArrayInputController {...defaultProps} allowEmpty />
+    it('should call crudGetMatching when setFilter is called', async () => {
+        const children = jest.fn(({ setFilter }) => (
+            <button aria-label="Filter" onClick={() => setFilter('bar')} />
+        ));
+
+        const { dispatch, getByLabelText } = renderWithRedux(
+            <ReferenceArrayInputController {...defaultProps}>
+                {children}
+            </ReferenceArrayInputController>
         );
-        expect(crudGetMatching.mock.calls[0]).toEqual([
-            'tags',
-            'posts@tag_ids',
-            {
-                page: 1,
-                perPage: 25,
-            },
-            {
-                field: 'id',
-                order: 'DESC',
-            },
-            {},
-        ]);
+
+        fireEvent.click(getByLabelText('Filter'));
+
+        await wait(() => {
+            expect(dispatch).toHaveBeenCalledWith({
+                type: CRUD_GET_MATCHING,
+                meta: {
+                    relatedTo: 'posts@tag_ids',
+                    resource: 'tags',
+                },
+                payload: {
+                    pagination: {
+                        page: 1,
+                        perPage: 25,
+                    },
+                    sort: {
+                        field: 'id',
+                        order: 'DESC',
+                    },
+                    filter: { q: 'bar' },
+                },
+            });
+        });
     });
 
-    it.skip('should allow to customize crudGetMatching arguments with perPage, sort, and filter props', () => {
-        const crudGetMatching = jest.fn();
-        renderWithRedux(
+    it('should use custom filterToQuery function prop', async () => {
+        const children = jest.fn(({ setFilter }) => (
+            <button aria-label="Filter" onClick={() => setFilter('bar')} />
+        ));
+
+        const { dispatch, getByLabelText } = renderWithRedux(
             <ReferenceArrayInputController
                 {...defaultProps}
-                allowEmpty
-                sort={{ field: 'foo', order: 'ASC' }}
-                perPage={5}
-                filter={{ q: 'foo' }}
-            />
-        );
-        expect(crudGetMatching.mock.calls[0]).toEqual([
-            'tags',
-            'posts@tag_ids',
-            {
-                page: 1,
-                perPage: 5,
-            },
-            {
-                field: 'foo',
-                order: 'ASC',
-            },
-            {
-                q: 'foo',
-            },
-        ]);
-    });
-
-    it.skip('should call crudGetMatching when setFilter is called', () => {
-        const wrapper = renderWithRedux(
-            <ReferenceArrayInputController {...defaultProps} allowEmpty />
-        );
-        // wrapper.instance().setFilter('bar');
-        // exp(crudGetMatching.mock.calls[1], [
-        //     'tags',
-        //     'posts@tag_ids',
-        //     {
-        //         page: 1,
-        //         perPage: 25,
-        //     },
-        //     {
-        //         field: 'id',
-        //         order: 'DESC',
-        //     },
-        //     {
-        //         q: 'bar',
-        //     },
-        // ]);
-    });
-
-    it.skip('should use custom filterToQuery function prop', () => {
-        const wrapper = renderWithRedux(
-            <ReferenceArrayInputController
-                {...defaultProps}
-                allowEmpty
                 filterToQuery={searchText => ({ foo: searchText })}
-            />
+            >
+                {children}
+            </ReferenceArrayInputController>
         );
-        // wrapper.instance().setFilter('bar');
-        // assert.deepEqual(crudGetMatching.mock.calls[1], [
-        //     'tags',
-        //     'posts@tag_ids',
-        //     {
-        //         page: 1,
-        //         perPage: 25,
-        //     },
-        //     {
-        //         field: 'id',
-        //         order: 'DESC',
-        //     },
-        //     {
-        //         foo: 'bar',
-        //     },
-        // ]);
+
+        fireEvent.click(getByLabelText('Filter'));
+
+        await wait(() => {
+            expect(dispatch).toHaveBeenCalledWith({
+                type: CRUD_GET_MATCHING,
+                meta: {
+                    relatedTo: 'posts@tag_ids',
+                    resource: 'tags',
+                },
+                payload: {
+                    pagination: {
+                        page: 1,
+                        perPage: 25,
+                    },
+                    sort: {
+                        field: 'id',
+                        order: 'DESC',
+                    },
+                    filter: { foo: 'bar' },
+                },
+            });
+        });
     });
 
-    it.skip('should call crudGetMany on mount if value is set', () => {
-        // const crudGetMany = jest.fn();
-        renderWithRedux(
-            <ReferenceArrayInputController
-                {...defaultProps}
-                allowEmpty
-                input={{ value: [5, 6] }}
-            />
-        );
-        // expect(crudGetMany.mock.calls[0]).toEqual(['tags', [5, 6]]);
-    });
+    it('should call crudGetMany on mount if value is set', async () => {
+        const children = jest.fn(() => <div />);
 
-    it.skip('should only call crudGetMatching when calling setFilter', () => {
-        const wrapper = renderWithRedux(
-            <ReferenceArrayInputController
-                {...defaultProps}
-                input={{ value: [5] }}
-            />
-        );
-        // assert.equal(crudGetMatching.mock.calls.length, 1);
-        // assert.equal(crudGetMany.mock.calls.length, 1);
-
-        // wrapper.instance().setFilter('bar');
-        // assert.equal(crudGetMatching.mock.calls.length, 2);
-        // assert.equal(crudGetMany.mock.calls.length, 1);
-    });
-
-    it.skip('should only call crudGetMatching when props are changed from outside', () => {
-        const wrapper = renderWithRedux(
-            <ReferenceArrayInputController
-                {...defaultProps}
-                allowEmpty
-                input={{ value: [5] }}
-            />
-        );
-        // assert.equal(crudGetMatching.mock.calls.length, 1);
-        // assert.equal(crudGetMany.mock.calls.length, 1);
-
-        // wrapper.setProps({ filter: { foo: 'bar' } });
-        // assert.deepEqual(crudGetMatching.mock.calls[1], [
-        //     'tags',
-        //     'posts@tag_ids',
-        //     { page: 1, perPage: 25 },
-        //     { field: 'id', order: 'DESC' },
-        //     { foo: 'bar' },
-        // ]);
-        // assert.equal(crudGetMany.mock.calls.length, 1);
-
-        // wrapper.setProps({ sort: { field: 'foo', order: 'ASC' } });
-        // assert.deepEqual(crudGetMatching.mock.calls[2], [
-        //     'tags',
-        //     'posts@tag_ids',
-        //     { page: 1, perPage: 25 },
-        //     { field: 'foo', order: 'ASC' },
-        //     { foo: 'bar' },
-        // ]);
-        // assert.equal(crudGetMany.mock.calls.length, 1);
-
-        // wrapper.setProps({ perPage: 42 });
-        // assert.deepEqual(crudGetMatching.mock.calls[3], [
-        //     'tags',
-        //     'posts@tag_ids',
-        //     { page: 1, perPage: 42 },
-        //     { field: 'foo', order: 'ASC' },
-        //     { foo: 'bar' },
-        // ]);
-        // assert.equal(crudGetMany.mock.calls.length, 1);
-    });
-
-    it.skip('should call crudGetMany when input value changes', () => {
-        const wrapper = renderWithRedux(
-            <ReferenceArrayInputController
-                {...defaultProps}
-                input={{ value: [5] }}
-                allowEmpty
-            />
-        );
-        // assert.equal(crudGetMany.mock.calls.length, 1);
-        // wrapper.setProps({ input: { value: [6] } });
-        // assert.equal(crudGetMany.mock.calls.length, 2);
-    });
-
-    it.skip('should call crudGetMany when input value changes only with the additional input values', () => {
-        const wrapper = renderWithRedux(
-            <ReferenceArrayInputController
-                {...defaultProps}
-                input={{ value: [5] }}
-                allowEmpty
-            />
-        );
-        // expect(
-        //     crudGetMany.mock.calls[crudGetMany.mock.calls.length - 1]
-        // ).toEqual([defaultProps.reference, [5]]);
-        // wrapper.setProps({ input: { value: [5, 6] } });
-        // expect(
-        //     crudGetMany.mock.calls[crudGetMany.mock.calls.length - 1]
-        // ).toEqual([defaultProps.reference, [6]]);
-    });
-
-    it.skip('should not call crudGetMany when already fetched input value changes', () => {
-        const wrapper = renderWithRedux(
+        const { dispatch } = renderWithRedux(
             <ReferenceArrayInputController
                 {...defaultProps}
                 input={{ value: [5, 6] }}
-                allowEmpty
-            />
+            >
+                {children}
+            </ReferenceArrayInputController>
         );
-        // expect(crudGetMany.mock.calls[0]).toEqual([
-        //     defaultProps.reference,
-        //     [5, 6],
-        // ]);
-        // wrapper.setProps({ input: { value: [6] } });
-        // expect(crudGetMany.mock.calls.length).toEqual(1);
+        await wait(() => {
+            expect(dispatch).toHaveBeenCalledWith({
+                type: CRUD_GET_MANY,
+                meta: {
+                    resource: 'tags',
+                },
+                payload: { ids: [5, 6] },
+            });
+        });
     });
 
-    it.skip('should only call crudGetOne and not crudGetMatching when only the record changes', () => {
-        const wrapper = renderWithRedux(
+    it('should only call crudGetMatching when calling setFilter', async () => {
+        const children = jest.fn(({ setFilter }) => (
+            <button aria-label="Filter" onClick={() => setFilter('bar')} />
+        ));
+
+        const { dispatch, getByLabelText } = renderWithRedux(
             <ReferenceArrayInputController
                 {...defaultProps}
-                allowEmpty
                 input={{ value: [5] }}
-            />
+            >
+                {children}
+            </ReferenceArrayInputController>
         );
-        // assert.equal(crudGetMatching.mock.calls.length, 1);
-        // assert.equal(crudGetMany.mock.calls.length, 1);
-        // wrapper.setProps({ record: { id: 1 } });
-        // assert.equal(crudGetMatching.mock.calls.length, 2);
-        // assert.equal(crudGetMany.mock.calls.length, 1);
+
+        fireEvent.click(getByLabelText('Filter'));
+
+        await wait(() => {
+            expect(
+                dispatch.mock.calls.filter(
+                    call => call[0].type === CRUD_GET_MATCHING
+                ).length
+            ).toEqual(2);
+            expect(
+                dispatch.mock.calls.filter(
+                    call => call[0].type === CRUD_GET_MANY
+                ).length
+            ).toEqual(1);
+        });
+    });
+
+    it('should only call crudGetMatching when props other than input are changed from outside', async () => {
+        const children = jest.fn(() => <div />);
+
+        const { dispatch, rerender } = renderWithRedux(
+            <ReferenceArrayInputController
+                {...defaultProps}
+                input={{ value: [5] }}
+            >
+                {children}
+            </ReferenceArrayInputController>
+        );
+
+        rerender(
+            <ReferenceArrayInputController
+                {...defaultProps}
+                input={{ value: [5] }}
+                filter={{ permanentFilter: 'bar' }}
+            >
+                {children}
+            </ReferenceArrayInputController>
+        );
+
+        await wait(() => {
+            expect(
+                dispatch.mock.calls.filter(
+                    call => call[0].type === CRUD_GET_MATCHING
+                ).length
+            ).toEqual(2);
+            expect(
+                dispatch.mock.calls.filter(
+                    call => call[0].type === CRUD_GET_MANY
+                ).length
+            ).toEqual(1);
+        });
+
+        rerender(
+            <ReferenceArrayInputController
+                {...defaultProps}
+                input={{ value: [5] }}
+                filter={{ permanentFilter: 'bar' }}
+                sort={{ field: 'foo', order: 'ASC' }}
+            >
+                {children}
+            </ReferenceArrayInputController>
+        );
+
+        await wait(() => {
+            expect(
+                dispatch.mock.calls.filter(
+                    call => call[0].type === CRUD_GET_MATCHING
+                ).length
+            ).toEqual(3);
+            expect(
+                dispatch.mock.calls.filter(
+                    call => call[0].type === CRUD_GET_MANY
+                ).length
+            ).toEqual(1);
+        });
+
+        rerender(
+            <ReferenceArrayInputController
+                {...defaultProps}
+                input={{ value: [5] }}
+                filter={{ permanentFilter: 'bar' }}
+                sort={{ field: 'foo', order: 'ASC' }}
+                perPage={42}
+            >
+                {children}
+            </ReferenceArrayInputController>
+        );
+
+        await wait(() => {
+            expect(
+                dispatch.mock.calls.filter(
+                    call => call[0].type === CRUD_GET_MATCHING
+                ).length
+            ).toEqual(4);
+            expect(
+                dispatch.mock.calls.filter(
+                    call => call[0].type === CRUD_GET_MANY
+                ).length
+            ).toEqual(1);
+        });
+    });
+
+    it('should call crudGetMany when input value changes only with the additional input values', async () => {
+        const children = jest.fn(() => <div />);
+
+        const { dispatch, rerender } = renderWithRedux(
+            <ReferenceArrayInputController
+                {...defaultProps}
+                input={{ value: [5] }}
+            >
+                {children}
+            </ReferenceArrayInputController>
+        );
+
+        await wait();
+        expect(dispatch).toHaveBeenCalledWith({
+            type: CRUD_GET_MANY,
+            meta: {
+                resource: 'tags',
+            },
+            payload: { ids: [5] },
+        });
+        rerender(
+            <ReferenceArrayInputController
+                {...defaultProps}
+                input={{ value: [5, 6] }}
+            >
+                {children}
+            </ReferenceArrayInputController>
+        );
+
+        await wait();
+
+        expect(dispatch).toHaveBeenCalledWith({
+            type: CRUD_GET_MANY,
+            meta: {
+                resource: 'tags',
+            },
+            payload: { ids: [6] },
+        });
+    });
+
+    it('should not call crudGetMany when already fetched input value changes', async () => {
+        const children = jest.fn(() => <div />);
+
+        const { dispatch, rerender } = renderWithRedux(
+            <ReferenceArrayInputController
+                {...defaultProps}
+                input={{ value: [5, 6] }}
+            >
+                {children}
+            </ReferenceArrayInputController>
+        );
+
+        await wait();
+        expect(dispatch).toHaveBeenCalledWith({
+            type: CRUD_GET_MANY,
+            meta: {
+                resource: 'tags',
+            },
+            payload: { ids: [5, 6] },
+        });
+        rerender(
+            <ReferenceArrayInputController
+                {...defaultProps}
+                input={{ value: [5, 6] }}
+            >
+                {children}
+            </ReferenceArrayInputController>
+        );
+
+        await wait();
+        expect(
+            dispatch.mock.calls.filter(call => call[0].type === CRUD_GET_MANY)
+                .length
+        ).toEqual(1);
     });
 });

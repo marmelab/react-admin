@@ -37,16 +37,19 @@ const referenceSource = (resource, source) => `${resource}@${source}`;
  *
  * import { useGetMatching } from 'react-admin';
  *
- * const LatestNews = () => {
- *     const { data, ids, loading, error } = useGetList(
- *         'posts',
+ * const PostTags = () => {
+ *     const { data, loading, error } = useGetMatching(
+ *         'tags',
  *         { page: 1, perPage: 10 },
- *         { field: 'published_at', order: 'DESC' }
+ *         { field: 'published_at', order: 'DESC' },
+ *         'tag_ids',
+ *         {},
+ *         'posts',
  *     );
  *     if (loading) { return <Loading />; }
  *     if (error) { return <p>ERROR</p>; }
- *     return <ul>{ids.map(id =>
- *         <li key={id}>{data[id].title}</li>
+ *     return <ul>{data.map(tag =>
+ *         <li key={tag.id}>{tag.name}</li>
  *     )}</ul>;
  * };
  */
@@ -59,6 +62,7 @@ const useGetMatching = (
     referencingResource: string,
     options?: any
 ) => {
+    const relatedTo = referenceSource(referencingResource, source);
     const {
         data: possibleValues,
         total,
@@ -73,7 +77,7 @@ const useGetMatching = (
         },
         {
             ...options,
-            relatedTo: referenceSource(referencingResource, source),
+            relatedTo,
             action: CRUD_GET_MATCHING,
         },
         (state: ReduxState) =>
