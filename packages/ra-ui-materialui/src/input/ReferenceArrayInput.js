@@ -232,10 +232,14 @@ export const ReferenceArrayInput = ({
         onBlur,
         onChange,
         onFocus,
+        source: props.source,
         validate,
     });
 
-    const controllerProps = useReferenceArrayInputController();
+    const controllerProps = useReferenceArrayInputController({
+        ...props,
+        input,
+    });
 
     const translate = useTranslate();
 
@@ -260,18 +264,15 @@ ReferenceArrayInput.propTypes = {
     className: PropTypes.string,
     filter: PropTypes.object,
     filterToQuery: PropTypes.func.isRequired,
-    input: PropTypes.object.isRequired,
     label: PropTypes.string,
-    meta: PropTypes.object,
     perPage: PropTypes.number,
     reference: PropTypes.string.isRequired,
-    resource: PropTypes.string.isRequired,
+    resource: PropTypes.string,
     sort: PropTypes.shape({
         field: PropTypes.string,
         order: PropTypes.oneOf(['ASC', 'DESC']),
     }),
     source: PropTypes.string,
-    translate: PropTypes.func.isRequired,
 };
 
 ReferenceArrayInput.defaultProps = {
