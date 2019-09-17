@@ -246,8 +246,9 @@ export const ReferenceArrayInput = ({
             isRequired={isRequired}
             meta={meta}
             translate={translate}
+            children={children}
             {...props}
-            {...{ children, ...controllerProps }}
+            {...controllerProps}
         />
     );
 };
