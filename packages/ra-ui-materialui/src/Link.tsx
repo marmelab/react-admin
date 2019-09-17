@@ -11,9 +11,6 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-/**
- * @deprecated Use react-router-dom's Link instead
- */
 const Link = ({
     to,
     children,
