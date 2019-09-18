@@ -11,6 +11,7 @@ import {
     useInitializeFormWithRecord,
     sanitizeEmptyValues,
 } from 'ra-core';
+import get from 'lodash/get';
 
 import getFormInitialValues from './getFormInitialValues';
 import Toolbar from './Toolbar';
@@ -287,7 +288,8 @@ export const findTabsWithErrors = (children, errors) => {
 
         if (
             inputs.some(
-                input => isValidElement(input) && errors[input.props.source]
+                input =>
+                    isValidElement(input) && get(errors, input.props.source)
             )
         ) {
             return [...acc, child.props.label];
