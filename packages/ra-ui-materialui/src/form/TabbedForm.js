@@ -14,6 +14,7 @@ import Divider from '@material-ui/core/Divider';
 import Tabs from '@material-ui/core/Tabs';
 import { withStyles, createStyles } from '@material-ui/core/styles';
 import { getDefaultValues, translate, REDUX_FORM_NAME } from 'ra-core';
+import get from 'lodash/get';
 
 import Toolbar from './Toolbar';
 import CardContentInner from '../layout/CardContentInner';
@@ -271,7 +272,8 @@ export const findTabsWithErrors = (
 
         if (
             inputs.some(
-                input => isValidElement(input) && errors[input.props.source]
+                input =>
+                    isValidElement(input) && get(errors, input.props.source)
             )
         ) {
             return [...acc, child.props.label];

@@ -115,6 +115,9 @@ describe('<TabbedForm />', () => {
             const collectErrors = () => ({
                 field1: 'required',
                 field5: 'required',
+                field7: {
+                    test: 'required',
+                },
             });
             const state = {};
             const props = {
@@ -137,11 +140,17 @@ describe('<TabbedForm />', () => {
                         createElement('input', { source: 'field5' }),
                         createElement('input', { source: 'field6' })
                     ),
+                    createElement(
+                        FormTab,
+                        { label: 'tab4' },
+                        createElement('input', { source: 'field7.test' }),
+                        createElement('input', { source: 'field8' })
+                    ),
                 ],
             };
 
             const tabs = findTabsWithErrors(state, props, collectErrors);
-            assert.deepEqual(tabs, ['tab1', 'tab3']);
+            assert.deepEqual(tabs, ['tab1', 'tab3', 'tab4']);
         });
     });
 });
