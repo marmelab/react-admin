@@ -29,7 +29,7 @@ export class RichTextInput extends Component {
             }),
         ]),
         fullWidth: PropTypes.bool,
-        quillInit: PropTypes.func
+        quillInit: PropTypes.func,
     };
 
     static defaultProps = {
