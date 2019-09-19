@@ -216,7 +216,7 @@ For all these cases, it's up to you to implement your own `LoginPage` component,
 // in src/MyLoginPage.js
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { useLogin } from 'react-admin';
+import { useLogin, useNotify } from 'react-admin';
 import { ThemeProvider } from '@material-ui/styles';
 
 const MyLoginPage = ({ theme }) => {
@@ -224,9 +224,11 @@ const MyLoginPage = ({ theme }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const login = useLogin();
+    const notify = useNotify();
     const submit = (e) => {
         e.preventDefault();
-        login({ email, password });
+        login({ email, password })
+            .catch(() => notify('Invalid email or password'));
     }
 
     return (
