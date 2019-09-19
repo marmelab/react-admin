@@ -44,6 +44,18 @@ You can customize the rich text editor toolbar using the `toolbar` attribute, as
 <RichTextInput source="body" toolbar={[ ['bold', 'italic', 'underline', 'link'] ]} />
 ```
 
+If you need more customization, you can access the quill object through the `quillInit` callback that will be called just after its initialization.
+
+```js
+const quillInit = quill => quill.getModule('toolbar').addHandler('bold', function (value) {
+    this.quill.format('bold', value)
+});
+
+// ...
+
+<RichTextInput source="text" quillInit={quillInit}/>
+```
+
 ## License
 
 This library is licensed under the MIT License, and sponsored by [marmelab](http://marmelab.com).
