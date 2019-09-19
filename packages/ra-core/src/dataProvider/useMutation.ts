@@ -155,7 +155,7 @@ const useMutation = (
                 callTimeOptions
             );
 
-            setState({ loading: true });
+            setState(prevState => ({ ...prevState, loading: true }));
 
             finalDataProvider[params.type](
                 params.resource,
