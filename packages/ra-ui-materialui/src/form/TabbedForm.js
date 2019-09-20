@@ -104,7 +104,7 @@ export const TabbedFormView = ({
     margin,
     ...rest
 }) => {
-    useInitializeFormWithRecord(form, record);
+    useInitializeFormWithRecord(record);
 
     const handleSubmitWithRedirect = useCallback(
         (redirect = defaultRedirect) => {

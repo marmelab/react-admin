@@ -1,9 +1,12 @@
 import { useEffect } from 'react';
+import { useForm } from 'react-final-form';
 
 /**
  * Restore the record values which should override any default values specified on the form.
  */
-const useInitializeFormWithRecord = (form, record) => {
+const useInitializeFormWithRecord = record => {
+    const form = useForm();
+
     useEffect(() => {
         if (!record) {
             return;
@@ -16,7 +19,7 @@ const useInitializeFormWithRecord = (form, record) => {
         form.batch(() => {
             Object.keys(record).forEach(key => {
                 // We have to check the record key is actually registered as a field
-                // as some of record keys may not have a matching input
+                // as some record keys may not have a matching input
                 if (registeredFields.some(field => field === key)) {
                     form.change(key, record[key]);
                     form.resetFieldState(key);
