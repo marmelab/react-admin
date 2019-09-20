@@ -39,14 +39,14 @@
         "enzyme-adapter-react-16": "~1.12.1",
         "history": "^4.7.2",
         "ignore-styles": "~5.0.1",
-        "react": "~16.8.0",
-        "react-dom": "~16.8.0",
-        "react-test-renderer": "~16.8.6",
+        "react": "^16.9.0",
+        "react-dom": "^16.9.0",
+        "react-test-renderer": "^16.9.0",
         "rimraf": "^2.6.3"
     },
     "peerDependencies": {
-        "react": "^16.8.0",
-        "react-dom": "^16.8.0"
+        "react": "^16.9.0",
+        "react-dom": "^16.9.0"
     },
     "dependencies": {
         "@testing-library/react": "^8.0.7",
