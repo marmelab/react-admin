@@ -29,7 +29,7 @@ export class RichTextInput extends Component {
             }),
         ]),
         fullWidth: PropTypes.bool,
-        quillInit: PropTypes.func,
+        configureQuill: PropTypes.func,
     };
 
     static defaultProps = {
@@ -53,8 +53,8 @@ export class RichTextInput extends Component {
             ...options,
         });
 
-        if (this.props.quillInit) {
-            this.props.quillInit(this.quill);
+        if (this.props.configureQuill) {
+            this.props.configureQuill(this.quill);
         }
 
         this.quill.setContents(this.quill.clipboard.convert(value));
