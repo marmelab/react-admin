@@ -107,11 +107,12 @@ const ExportButton: FunctionComponent<Props & ButtonProps> = ({
     const notify = useNotify();
     const handleClick = useCallback(
         event => {
-            dataProvider(GET_LIST, resource, {
-                sort,
-                filter,
-                pagination: { page: 1, perPage: maxResults },
-            })
+            dataProvider
+                .getList(resource, {
+                    sort,
+                    filter,
+                    pagination: { page: 1, perPage: maxResults },
+                })
                 .then(({ data }) =>
                     exporter
                         ? exporter(
