@@ -167,12 +167,13 @@ describe('<ReferenceArrayFieldController />', () => {
 
     it('should call the dataProvider with GET_MANY on mount', async () => {
         const children = jest.fn().mockReturnValue('child');
-        const dataProvider = jest.fn();
-        dataProvider.mockReturnValueOnce(
-            Promise.resolve({
-                data: [{ id: 1, title: 'foo' }, { id: 2, title: 'bar' }],
-            })
-        );
+        const dataProvider = {
+            getMany: jest.fn(() =>
+                Promise.resolve({
+                    data: [{ id: 1, title: 'foo' }, { id: 2, title: 'bar' }],
+                })
+            ),
+        };
         const { dispatch } = renderWithRedux(
             <DataProviderContext.Provider value={dataProvider}>
                 <ReferenceArrayFieldController
@@ -198,6 +199,6 @@ describe('<ReferenceArrayFieldController />', () => {
         await new Promise(resolve => setTimeout(resolve, 10));
         expect(dispatch).toBeCalledTimes(5);
         expect(dispatch.mock.calls[0][0].type).toBe('RA/CRUD_GET_MANY');
-        expect(dataProvider).toBeCalledTimes(1);
+        expect(dataProvider.getMany).toBeCalledTimes(1);
     });
 });

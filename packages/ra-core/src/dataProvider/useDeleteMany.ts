@@ -1,5 +1,7 @@
+import { useCallback } from 'react';
+import merge from 'lodash/merge';
+
 import { CRUD_DELETE_MANY } from '../actions/dataActions/crudDeleteMany';
-import { DELETE_MANY } from '../dataFetchActions';
 import useMutation from './useMutation';
 import { Identifier } from '../types';
 
@@ -29,10 +31,38 @@ import { Identifier } from '../types';
  *     return <button disabled={loading} onClick={deleteMany}>Delete selected posts</button>;
  * };
  */
-const useDeleteMany = (resource: string, ids: [Identifier], options?: any) =>
-    useMutation(
-        { type: DELETE_MANY, resource, payload: { ids } },
-        { ...options, action: CRUD_DELETE_MANY }
+const useDeleteMany = (
+    resource: string,
+    ids: [Identifier],
+    options?: any
+): [
+    (event: any, callTimePayload?: any, callTimeOptions?: any) => void,
+    {
+        data?: any;
+        error?: any;
+        loading: boolean;
+        loaded: boolean;
+    }
+] => {
+    const [mutate, state] = useMutation();
+
+    const deleteCallback = useCallback(
+        (event: any, callTimeData?: any, callTimeOptions?: any) =>
+            mutate(
+                {
+                    resource,
+                    payload: merge({}, { ids }, callTimeData),
+                    type: 'deleteMany',
+                },
+                {
+                    action: CRUD_DELETE_MANY,
+                    ...merge({}, options, callTimeOptions),
+                }
+            ),
+        [ids, mutate, resource, JSON.stringify(options)] // eslint-disable-line react-hooks/exhaustive-deps
     );
+
+    return [deleteCallback, state];
+};
 
 export default useDeleteMany;

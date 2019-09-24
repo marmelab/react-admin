@@ -1,5 +1,7 @@
+import { useCallback } from 'react';
+import merge from 'lodash/merge';
+
 import { CRUD_UPDATE_MANY } from '../actions/dataActions/crudUpdateMany';
-import { UPDATE_MANY } from '../dataFetchActions';
 import useMutation from './useMutation';
 import { Identifier } from '../types';
 
@@ -35,10 +37,26 @@ const useUpdateMany = (
     ids: [Identifier],
     data: any,
     options?: any
-) =>
-    useMutation(
-        { type: UPDATE_MANY, resource, payload: { ids, data } },
-        { ...options, action: CRUD_UPDATE_MANY }
+) => {
+    const [mutate, state] = useMutation();
+
+    const update = useCallback(
+        (event: any, callTimeData?: any, callTimeOptions?: any) =>
+            mutate(
+                {
+                    resource,
+                    payload: merge({}, { ids, data }, callTimeData),
+                    type: 'updateMany',
+                },
+                {
+                    action: CRUD_UPDATE_MANY,
+                    ...merge({}, options, callTimeOptions),
+                }
+            ),
+        [ids, data, mutate, resource, JSON.stringify(options)] // eslint-disable-line react-hooks/exhaustive-deps
     );
+
+    return [update, state];
+};
 
 export default useUpdateMany;

@@ -71,7 +71,7 @@ const useGetMatching = (
         loaded,
     } = useQueryWithStore(
         {
-            type: GET_LIST,
+            type: 'getList',
             resource,
             payload: { pagination, sort, filter },
         },

@@ -122,7 +122,7 @@ const useQueryWithStore = (
     }
     const dataProvider = useDataProvider();
     useEffect(() => {
-        dataProvider(type, resource, payload, options)
+        dataProvider[type](resource, payload, options)
             .then(() => {
                 // We don't care about the dataProvider response here, because
                 // it was already passed to SUCCESS reducers by the dataProvider

@@ -1,5 +1,4 @@
 import { useCallback } from 'react';
-import merge from 'lodash/merge';
 
 import { useSafeSetState } from '../util/hooks';
 import useDataProvider from './useDataProvider';
@@ -76,10 +75,15 @@ export interface MutationOptions {
  * };
  */
 const useMutation = (
-    query: Mutation,
-    options: MutationOptions = {}
+    {
+        withDeclarativeSideEffectsSupport = false,
+    }: {
+        withDeclarativeSideEffectsSupport?: boolean;
+    } = {
+        withDeclarativeSideEffectsSupport: false,
+    }
 ): [
-    (event?: any, callTimePayload?: any, callTimeOptions?: any) => void,
+    (query: Mutation, options?: any) => void,
     {
         data?: any;
         total?: number;
@@ -88,7 +92,6 @@ const useMutation = (
         loaded: boolean;
     }
 ] => {
-    const { type, resource, payload } = query;
     const [state, setState] = useSafeSetState({
         data: null,
         error: null,
@@ -96,23 +99,21 @@ const useMutation = (
         loading: false,
         loaded: false,
     });
+
     const dataProvider = useDataProvider();
     const dataProviderWithDeclarativeSideEffects = useDataProviderWithDeclarativeSideEffects();
 
     const mutate = useCallback(
-        (event, callTimePayload = {}, callTimeOptions = {}): void => {
-            setState({ loading: true });
+        (query: Mutation, options): void => {
+            const { type, resource, payload } = query;
 
-            const dataProviderWithSideEffects = options.withDeclarativeSideEffectsSupport
+            const dataProviderWithSideEffects = withDeclarativeSideEffectsSupport
                 ? dataProviderWithDeclarativeSideEffects
                 : dataProvider;
 
-            dataProviderWithSideEffects(
-                type,
-                resource,
-                merge({}, payload, callTimePayload),
-                merge({}, options, callTimeOptions)
-            )
+            setState({ loading: true });
+
+            dataProviderWithSideEffects[type](resource, payload, options)
                 .then(({ data, total }) => {
                     setState({
                         data,
@@ -129,8 +130,7 @@ const useMutation = (
                     });
                 });
         },
-        // deep equality, see https://github.com/facebook/react/issues/14476#issuecomment-471199055
-        [JSON.stringify({ query, options }), dataProvider] // eslint-disable-line react-hooks/exhaustive-deps
+        [dataProvider] // eslint-disable-line react-hooks/exhaustive-deps
     );
 
     return [mutate, state];

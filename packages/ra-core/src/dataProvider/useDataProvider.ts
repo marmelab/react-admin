@@ -1,4 +1,4 @@
-import { useCallback, useContext } from 'react';
+import { useContext, useMemo } from 'react';
 import { Dispatch } from 'redux';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -12,25 +12,62 @@ import {
 import { FETCH_END, FETCH_ERROR, FETCH_START } from '../actions/fetchActions';
 import { showNotification } from '../actions/notificationActions';
 import { refreshView } from '../actions/uiActions';
-import { ReduxState, DataProvider } from '../types';
+import {
+    ReduxState,
+    DataProvider,
+    HookDataProvider,
+    UseDataProviderOptions,
+} from '../types';
 import useLogoutIfAccessDenied from '../auth/useLogoutIfAccessDenied';
+import {
+    CREATE,
+    DELETE,
+    DELETE_MANY,
+    GET_LIST,
+    GET_MANY,
+    GET_MANY_REFERENCE,
+    GET_ONE,
+    UPDATE,
+    UPDATE_MANY,
+} from '../dataFetchActions';
 
-export type DataProviderHookFunction = (
-    type: string,
-    resource: string,
-    params: any,
-    options?: UseDataProviderOptions
-) => Promise<{ data?: any; total?: any; error?: any }>;
+const defaultDataProvider = {
+    create: () => Promise.resolve(null), // avoids adding a context in tests
+    delete: () => Promise.resolve(null), // avoids adding a context in tests
+    deleteMany: () => Promise.resolve(null), // avoids adding a context in tests
+    getList: () => Promise.resolve(null), // avoids adding a context in tests
+    getMany: () => Promise.resolve(null), // avoids adding a context in tests
+    getManyReference: () => Promise.resolve(null), // avoids adding a context in tests
+    getOne: () => Promise.resolve(null), // avoids adding a context in tests
+    update: () => Promise.resolve(null), // avoids adding a context in tests
+    updateMany: () => Promise.resolve(null), // avoids adding a context in tests
+};
 
-interface UseDataProviderOptions {
-    action?: string;
-    meta?: object;
-    undoable?: boolean;
-    onSuccess?: any;
-    onFailure?: any;
-}
+const getFetchType = actionType => {
+    switch (actionType) {
+        case 'create':
+            return CREATE;
+        case 'delete':
+            return DELETE;
+        case 'deleteMany':
+            return DELETE_MANY;
+        case 'getList':
+            return GET_LIST;
+        case 'getMany':
+            return GET_MANY;
+        case 'getManyReference':
+            return GET_MANY_REFERENCE;
+        case 'getOne':
+            return GET_ONE;
+        case 'update':
+            return UPDATE;
+        case 'updateMany':
+            return UPDATE_MANY;
 
-const defaultDataProvider = () => Promise.resolve(); // avoids adding a context in tests
+        default:
+            return actionType;
+    }
+};
 
 /**
  * Hook for getting an instance of the dataProvider as prop
@@ -72,7 +109,7 @@ const defaultDataProvider = () => Promise.resolve(); // avoids adding a context 
  *     }
  * }
  */
-const useDataProvider = (): DataProviderHookFunction => {
+const useDataProvider = (): HookDataProvider => {
     const dispatch = useDispatch() as Dispatch;
     const dataProvider = useContext(DataProviderContext) || defaultDataProvider;
     const isOptimistic = useSelector(
@@ -80,55 +117,70 @@ const useDataProvider = (): DataProviderHookFunction => {
     );
     const logoutIfAccessDenied = useLogoutIfAccessDenied();
 
-    return useCallback(
-        (
-            type: string,
-            resource: string,
-            payload: any,
-            options: UseDataProviderOptions = {}
-        ) => {
-            const {
-                action = 'CUSTOM_FETCH',
-                undoable = false,
-                onSuccess,
-                onFailure,
-                ...rest
-            } = options;
-            if (onSuccess && typeof onSuccess !== 'function') {
-                throw new Error('The onSuccess option must be a function');
-            }
-            if (onFailure && typeof onFailure !== 'function') {
-                throw new Error('The onFailure option must be a function');
-            }
-            if (undoable && !onSuccess) {
-                throw new Error(
-                    'You must pass an onSuccess callback calling notify() to use the undoable mode'
-                );
-            }
-            if (isOptimistic) {
-                // in optimistic mode, all fetch actions are canceled,
-                // so the admin uses the store without synchronization
-                return Promise.resolve();
-            }
+    const dataProviderProxy = useMemo(() => {
+        return new Proxy(dataProvider, {
+            get: (target, name) => {
+                return (
+                    resource: string,
+                    payload: any,
+                    options: UseDataProviderOptions
+                ) => {
+                    const type = name.toString();
+                    const {
+                        action = 'CUSTOM_FETCH',
+                        undoable = false,
+                        onSuccess = undefined,
+                        onFailure = undefined,
+                        ...rest
+                    } = options || {};
 
-            const params = {
-                type,
-                payload,
-                resource,
-                action,
-                rest,
-                onSuccess,
-                onFailure,
-                dataProvider,
-                dispatch,
-                logoutIfAccessDenied,
-            };
-            return undoable
-                ? performUndoableQuery(params)
-                : performQuery(params);
-        },
-        [dataProvider, dispatch, isOptimistic, logoutIfAccessDenied]
-    );
+                    if (typeof dataProvider[type] !== 'function') {
+                        throw new Error(
+                            `Unknown dataProvider function: ${type}`
+                        );
+                    }
+                    if (onSuccess && typeof onSuccess !== 'function') {
+                        throw new Error(
+                            'The onSuccess option must be a function'
+                        );
+                    }
+                    if (onFailure && typeof onFailure !== 'function') {
+                        throw new Error(
+                            'The onFailure option must be a function'
+                        );
+                    }
+                    if (undoable && !onSuccess) {
+                        throw new Error(
+                            'You must pass an onSuccess callback calling notify() to use the undoable mode'
+                        );
+                    }
+                    if (isOptimistic) {
+                        // in optimistic mode, all fetch actions are canceled,
+                        // so the admin uses the store without synchronization
+                        return Promise.resolve();
+                    }
+
+                    const params = {
+                        type,
+                        payload,
+                        resource,
+                        action,
+                        rest,
+                        onSuccess,
+                        onFailure,
+                        dataProvider,
+                        dispatch,
+                        logoutIfAccessDenied,
+                    };
+                    return undoable
+                        ? performUndoableQuery(params)
+                        : performQuery(params);
+                };
+            },
+        });
+    }, [dataProvider, dispatch, isOptimistic, logoutIfAccessDenied]);
+
+    return dataProviderProxy;
 };
 
 /**
@@ -166,7 +218,7 @@ const performUndoableQuery = ({
         payload,
         meta: {
             resource,
-            fetch: type,
+            fetch: getFetchType(type),
             optimistic: true,
         },
     });
@@ -190,7 +242,7 @@ const performUndoableQuery = ({
             meta: { resource, ...rest },
         });
         dispatch({ type: FETCH_START });
-        dataProvider(type, resource, payload)
+        dataProvider[type](resource, payload)
             .then(response => {
                 if (process.env.NODE_ENV !== 'production') {
                     validateResponseFormat(response, type);
@@ -202,7 +254,7 @@ const performUndoableQuery = ({
                     meta: {
                         ...rest,
                         resource,
-                        fetchResponse: type,
+                        fetchResponse: getFetchType(type),
                         fetchStatus: FETCH_END,
                     },
                 });
@@ -231,7 +283,7 @@ const performUndoableQuery = ({
                         meta: {
                             ...rest,
                             resource,
-                            fetchResponse: type,
+                            fetchResponse: getFetchType(type),
                             fetchStatus: FETCH_ERROR,
                         },
                     });
@@ -281,7 +333,7 @@ const performQuery = ({
     });
     dispatch({ type: FETCH_START });
 
-    return dataProvider(type, resource, payload)
+    return dataProvider[type](resource, payload)
         .then(response => {
             if (process.env.NODE_ENV !== 'production') {
                 validateResponseFormat(response, type);
@@ -293,7 +345,7 @@ const performQuery = ({
                 meta: {
                     ...rest,
                     resource,
-                    fetchResponse: type,
+                    fetchResponse: getFetchType(type),
                     fetchStatus: FETCH_END,
                 },
             });
@@ -312,7 +364,7 @@ const performQuery = ({
                     meta: {
                         ...rest,
                         resource,
-                        fetchResponse: type,
+                        fetchResponse: getFetchType(type),
                         fetchStatus: FETCH_ERROR,
                     },
                 });

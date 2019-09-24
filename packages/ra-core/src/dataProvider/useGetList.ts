@@ -49,7 +49,7 @@ const useGetList = (
     options?: any
 ) => {
     const { data: ids, total, error, loading, loaded } = useQueryWithStore(
-        { type: GET_LIST, resource, payload: { pagination, sort, filter } },
+        { type: 'getList', resource, payload: { pagination, sort, filter } },
         { ...options, action: CRUD_GET_LIST },
         (state: ReduxState) =>
             state.admin.resources[resource]

@@ -72,7 +72,7 @@ const useGetManyReference = (
 
     const { data: ids, total, error, loading, loaded } = useQueryWithStore(
         {
-            type: GET_MANY_REFERENCE,
+            type: 'getManyReference',
             resource: resource,
             payload: { target, id, pagination, sort, filter },
         },

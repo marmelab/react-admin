@@ -1,11 +1,7 @@
-import {
-    useNotify,
-    useRedirect,
-    useRefresh,
-    useUnselectAll,
-} from '../sideEffect';
-import useDataProvider, { DataProviderHookFunction } from './useDataProvider';
-import { useCallback } from 'react';
+import useDataProvider from './useDataProvider';
+import { useMemo } from 'react';
+import { DataProvider, UseDataProviderOptions } from '../types';
+import useDeclarativeSideEffects from './useDeclarativeSideEffects';
 
 /**
  * This version of the useDataProvider hook ensure Query and Mutation components are still usable
@@ -13,64 +9,36 @@ import { useCallback } from 'react';
  *
  * This is for backward compatibility only and will be removed in next major version.
  */
-const useDataProviderWithDeclarativeSideEffects = (): DataProviderHookFunction => {
+const useDataProviderWithDeclarativeSideEffects = (): DataProvider => {
     const dataProvider = useDataProvider();
-    const notify = useNotify();
-    const redirect = useRedirect();
-    const refresh = useRefresh();
-    const unselectAll = useUnselectAll();
+    const getSideEffects = useDeclarativeSideEffects();
 
-    return useCallback(
-        (type: string, resource: string, params: any, options: any = {}) => {
-            const convertToFunctionSideEffect = sideEffects => {
-                if (!sideEffects || typeof sideEffects === 'function') {
-                    return sideEffects;
-                }
-
-                if (Object.keys(sideEffects).length === 0) {
-                    return undefined;
-                }
-
-                const {
-                    notification,
-                    redirectTo,
-                    refresh: needRefresh,
-                    unselectAll: needUnselectAll,
-                } = sideEffects;
-
-                return () => {
-                    if (notification) {
-                        notify(
-                            notification.body,
-                            notification.level,
-                            notification.messageArgs
+    const dataProviderProxy = useMemo(
+        () =>
+            new Proxy(dataProvider, {
+                get: (target, name) => {
+                    return (
+                        resource: string,
+                        payload: any,
+                        options: UseDataProviderOptions
+                    ) => {
+                        const { onSuccess, onFailure } = getSideEffects(
+                            resource,
+                            options
                         );
-                    }
 
-                    if (redirectTo) {
-                        redirect(redirectTo);
-                    }
-
-                    if (needRefresh) {
-                        refresh();
-                    }
-
-                    if (needUnselectAll) {
-                        unselectAll(resource);
-                    }
-                };
-            };
-
-            const onSuccess = convertToFunctionSideEffect(options.onSuccess);
-            const onFailure = convertToFunctionSideEffect(options.onFailure);
-            return dataProvider(type, resource, params, {
-                ...options,
-                onSuccess,
-                onFailure,
-            });
-        },
-        [dataProvider, notify, redirect, refresh, unselectAll]
+                        return target[name.toString()](resource, payload, {
+                            ...options,
+                            onSuccess,
+                            onFailure,
+                        });
+                    };
+                },
+            }),
+        [dataProvider, getSideEffects]
     );
+
+    return dataProviderProxy;
 };
 
 export default useDataProviderWithDeclarativeSideEffects;

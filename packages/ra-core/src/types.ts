@@ -189,6 +189,73 @@ export type DataProvider = {
     [key: string]: any;
 };
 
+export interface UseDataProviderOptions {
+    action?: string;
+    fetch?: string;
+    meta?: object;
+    undoable?: boolean;
+    onSuccess?: any;
+    onFailure?: any;
+}
+
+export type HookDataProvider = {
+    create: <RecordType = Record, DataType = RecordType>(
+        resource: string,
+        params: CreateParams<DataType>,
+        options?: UseDataProviderOptions
+    ) => Promise<CreateResult<RecordType>>;
+
+    delete: <RecordType = Record>(
+        resource: string,
+        params: DeleteParams,
+        options?: UseDataProviderOptions
+    ) => Promise<DeleteResult<RecordType>>;
+
+    deleteMany: (
+        resource: string,
+        params: DeleteManyParams,
+        options?: UseDataProviderOptions
+    ) => Promise<DeleteManyResult>;
+
+    getList: <RecordType = Record, FilterType = any>(
+        resource: string,
+        params: GetListParams<FilterType>,
+        options?: UseDataProviderOptions
+    ) => Promise<GetListResult<RecordType>>;
+
+    getMany: <RecordType = Record>(
+        resource: string,
+        params: GetManyParams,
+        options?: UseDataProviderOptions
+    ) => Promise<GetManyResult<RecordType>>;
+
+    getManyReference: <RecordType = Record, FilterType = any>(
+        resource: string,
+        params: GetManyReferenceParams<FilterType>,
+        options?: UseDataProviderOptions
+    ) => Promise<GetManyReferenceResult<RecordType>>;
+
+    getOne: <RecordType = Record>(
+        resource: string,
+        params: GetOneParams,
+        options?: UseDataProviderOptions
+    ) => Promise<GetOneResult<RecordType>>;
+
+    update: <RecordType = Record, DataType = RecordType>(
+        resource: string,
+        params: UpdateParams<RecordType, DataType>,
+        options?: UseDataProviderOptions
+    ) => Promise<UpdateResult<RecordType>>;
+
+    updateMany: <RecordType = Record, DataType = RecordType>(
+        resource: string,
+        params: UpdateManyParams<DataType>,
+        options?: UseDataProviderOptions
+    ) => Promise<UpdateManyResult<RecordType>>;
+
+    [key: string]: any;
+};
+
 export interface ReduxState {
     admin: {
         ui: {

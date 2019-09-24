@@ -34,7 +34,7 @@ import useQueryWithStore from './useQueryWithStore';
  */
 const useGetOne = (resource: string, id: Identifier, options?: any) =>
     useQueryWithStore(
-        { type: GET_ONE, resource, payload: { id } },
+        { type: 'getOne', resource, payload: { id } },
         { ...options, action: CRUD_GET_ONE },
         (state: ReduxState) =>
             state.admin.resources[resource]

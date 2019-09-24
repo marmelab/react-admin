@@ -79,7 +79,7 @@ export interface QueryOptions {
  */
 const useQuery = (
     query: Query,
-    options: QueryOptions = {}
+    { withDeclarativeSideEffectsSupport, ...options }: QueryOptions = {}
 ): {
     data?: any;
     total?: number;
@@ -98,12 +98,13 @@ const useQuery = (
     const dataProvider = useDataProvider();
     const dataProviderWithDeclarativeSideEffects = useDataProviderWithDeclarativeSideEffects();
 
+    /* eslint-disable react-hooks/exhaustive-deps */
     useEffect(() => {
-        const dataProviderWithSideEffects = options.withDeclarativeSideEffectsSupport
+        const dataProviderWithSideEffects = withDeclarativeSideEffectsSupport
             ? dataProviderWithDeclarativeSideEffects
             : dataProvider;
 
-        dataProviderWithSideEffects(type, resource, payload, options)
+        dataProviderWithSideEffects[type](resource, payload, options)
             .then(({ data, total }) => {
                 setState({
                     data,
@@ -120,7 +121,13 @@ const useQuery = (
                 });
             });
         // deep equality, see https://github.com/facebook/react/issues/14476#issuecomment-471199055
-    }, [JSON.stringify({ query, options }), dataProvider]); // eslint-disable-line react-hooks/exhaustive-deps
+    }, [
+        JSON.stringify({ query, options }),
+        dataProvider,
+        dataProviderWithDeclarativeSideEffects,
+        setState,
+    ]);
+    /* eslint-enable react-hooks/exhaustive-deps */
 
     return state;
 };
