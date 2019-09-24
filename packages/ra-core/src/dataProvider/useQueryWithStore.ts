@@ -34,9 +34,9 @@ const isEmptyList = data =>
  * Default cache selector. Allows to cache responses by default.
  *
  * By default, custom queries are dispatched as a CUSTOM_QUERY Redux action.
- * The fetch middleware dispatches a CUSTOM_QUERY_SUCCESS when the response comes,
- * and the customQueries reducer stores the result in the store. This selector
- * reads the customQueries store and acts as a response cache.
+ * The useDataProvider hookdispatches a CUSTOM_QUERY_SUCCESS when the response
+ * comes, and the customQueries reducer stores the result in the store.
+ * This selector reads the customQueries store and acts as a response cache.
  */
 const defaultDataSelector = query => (state: ReduxState) => {
     const key = JSON.stringify(query);
@@ -60,7 +60,7 @@ const defaultTotalSelector = () => null;
  * with the same parameters, until the response arrives.
  *
  * @param {Object} query
- * @param {string} query.type The verb passed to th data provider, e.g. 'GET_LIST', 'GET_ONE'
+ * @param {string} query.type The verb passed to th data provider, e.g. 'getList', 'getOne'
  * @param {string} query.resource A resource name, e.g. 'posts', 'comments'
  * @param {Object} query.payload The payload object, e.g; { post_id: 12 }
  * @param {Object} options
@@ -78,7 +78,7 @@ const defaultTotalSelector = () => null;
  * const UserProfile = ({ record }) => {
  *     const { data, loading, error } = useQueryWithStore(
  *         {
- *             type: 'GET_ONE',
+ *             type: 'getOne',
  *             resource: 'users',
  *             payload: { id: record.id }
  *         },
@@ -94,7 +94,7 @@ const useQueryWithStore = (
     query: Query,
     options: QueryOptions = { action: 'CUSTOM_QUERY' },
     dataSelector: (state: ReduxState) => any = defaultDataSelector(query),
-    totalSelector?: (state: ReduxState) => number
+    totalSelector: (state: ReduxState) => number = defaultTotalSelector
 ): {
     data?: any;
     total?: number;
@@ -104,7 +104,7 @@ const useQueryWithStore = (
 } => {
     const { type, resource, payload } = query;
     const data = useSelector(dataSelector);
-    const total = useSelector(totalSelector || defaultTotalSelector);
+    const total = useSelector(totalSelector);
     const [state, setState] = useSafeSetState({
         data,
         total,

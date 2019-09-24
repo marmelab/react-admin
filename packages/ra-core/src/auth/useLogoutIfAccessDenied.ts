@@ -26,7 +26,7 @@ import { useNotify } from '../sideEffect';
  *     const logoutIfAccessDenied = useLogoutIfAccessDenied();
  *     const notify = useNotify()
  *     useEffect(() => {
- *         dataProvider('GET_ONE', 'secret', { id: 123 })
+ *         dataProvider.getOne('secret', { id: 123 })
  *             .catch(error => {
  *                  logoutIfaccessDenied(error);
  *                  notify('server error', 'warning');

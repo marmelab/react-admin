@@ -27,17 +27,26 @@ interface Props {
 }
 
 /**
- * Craft a callback to fetch the data provider and pass it to a child function
+ * Get a callback to call the data provider and pass the result to a child function
+ *
+ * @param {string} type The method called on the data provider, e.g. 'update', 'delete'. Can also be a custom method if the dataProvider supports is.
+ * @param {string} resource A resource name, e.g. 'posts', 'comments'
+ * @param {Object} payload The payload object, e.g; { id: 12 }
+ * @param {Object} options
+ * @param {string} options.action Redux action type
+ * @param {boolean} options.undoable Set to true to run the mutation locally before calling the dataProvider
+ * @param {Function} options.onSuccess Side effect function to be executed upon success of failure, e.g. { onSuccess: response => refresh() } }
+ * @param {Function} options.onFailure Side effect function to be executed upon failure, e.g. { onFailure: error => notify(error.message) } }
  *
  * @example
  *
  * const ApproveButton = ({ record }) => (
  *     <Mutation
- *         type="UPDATE"
+ *         type="update"
  *         resource="comments"
  *         payload={{ id: record.id, data: { isApproved: true } }}
  *     >
- *         {(approve) => (
+ *         {approve => (
  *             <FlatButton label="Approve" onClick={approve} />
  *         )}
  *     </Mutation>
@@ -50,9 +59,7 @@ const Mutation: FunctionComponent<Props> = ({
     payload,
     options,
 }) => {
-    const [mutate, state] = useMutation({
-        withDeclarativeSideEffectsSupport: true,
-    });
+    const [mutate, state] = useMutation();
 
     const finalMutate = useCallback(
         (event: any, callTimeData?: any, callTimeOptions?: any) =>
@@ -62,9 +69,13 @@ const Mutation: FunctionComponent<Props> = ({
                     payload: merge({}, payload, callTimeData),
                     type,
                 },
-                merge({}, options, callTimeOptions)
+                merge(
+                    { withDeclarativeSideEffectsSupport: true },
+                    options,
+                    callTimeOptions
+                )
             ),
-        [payload, mutate, resource, JSON.stringify(options)] // eslint-disable-line react-hooks/exhaustive-deps
+        [mutate, resource, JSON.stringify({ payload, options })] // eslint-disable-line react-hooks/exhaustive-deps
     );
 
     return children(finalMutate, state);

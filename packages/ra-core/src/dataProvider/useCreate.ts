@@ -5,7 +5,7 @@ import { CRUD_CREATE } from '../actions/dataActions/crudCreate';
 import useMutation from './useMutation';
 
 /**
- * Get a callback to call the dataProvider with a CREATE verb, the result and the loading state.
+ * Get a callback to call the dataProvider.create() method, the result and the loading state.
  *
  * The return value updates according to the request state:
  *

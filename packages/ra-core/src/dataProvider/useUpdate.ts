@@ -2,11 +2,11 @@ import { useCallback } from 'react';
 import merge from 'lodash/merge';
 
 import { CRUD_UPDATE } from '../actions/dataActions/crudUpdate';
-import { Identifier, Record } from '../types';
+import { Identifier } from '../types';
 import useMutation from './useMutation';
 
 /**
- * Get a callback to call the dataProvider with an UPDATE verb, the result and the loading state.
+ * Get a callback to call the dataProvider.update() method, the result and the loading state.
  *
  * The return value updates according to the request state:
  *

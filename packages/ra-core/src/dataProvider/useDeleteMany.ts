@@ -6,7 +6,7 @@ import useMutation from './useMutation';
 import { Identifier } from '../types';
 
 /**
- * Get a callback to call the dataProvider with a DELETE_MANY verb, the result
+ * Get a callback to call the dataProvider.deleteMany() method, the result
  * of the call (the list of deleted record ids), and the loading state.
  *
  * The return value updates according to the request state:

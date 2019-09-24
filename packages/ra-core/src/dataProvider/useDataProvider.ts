@@ -5,6 +5,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import DataProviderContext from './DataProviderContext';
 import validateResponseFormat from './validateResponseFormat';
 import undoableEventEmitter from './undoableEventEmitter';
+import getFetchType from './getFetchType';
+import defaultDataProvider from './defaultDataProvider';
 import {
     startOptimisticMode,
     stopOptimisticMode,
@@ -15,75 +17,48 @@ import { refreshView } from '../actions/uiActions';
 import {
     ReduxState,
     DataProvider,
-    HookDataProvider,
+    DataProviderProxy,
     UseDataProviderOptions,
 } from '../types';
 import useLogoutIfAccessDenied from '../auth/useLogoutIfAccessDenied';
-import {
-    CREATE,
-    DELETE,
-    DELETE_MANY,
-    GET_LIST,
-    GET_MANY,
-    GET_MANY_REFERENCE,
-    GET_ONE,
-    UPDATE,
-    UPDATE_MANY,
-} from '../dataFetchActions';
-
-const defaultDataProvider = {
-    create: () => Promise.resolve(null), // avoids adding a context in tests
-    delete: () => Promise.resolve(null), // avoids adding a context in tests
-    deleteMany: () => Promise.resolve(null), // avoids adding a context in tests
-    getList: () => Promise.resolve(null), // avoids adding a context in tests
-    getMany: () => Promise.resolve(null), // avoids adding a context in tests
-    getManyReference: () => Promise.resolve(null), // avoids adding a context in tests
-    getOne: () => Promise.resolve(null), // avoids adding a context in tests
-    update: () => Promise.resolve(null), // avoids adding a context in tests
-    updateMany: () => Promise.resolve(null), // avoids adding a context in tests
-};
-
-const getFetchType = actionType => {
-    switch (actionType) {
-        case 'create':
-            return CREATE;
-        case 'delete':
-            return DELETE;
-        case 'deleteMany':
-            return DELETE_MANY;
-        case 'getList':
-            return GET_LIST;
-        case 'getMany':
-            return GET_MANY;
-        case 'getManyReference':
-            return GET_MANY_REFERENCE;
-        case 'getOne':
-            return GET_ONE;
-        case 'update':
-            return UPDATE;
-        case 'updateMany':
-            return UPDATE_MANY;
-
-        default:
-            return actionType;
-    }
-};
 
 /**
- * Hook for getting an instance of the dataProvider as prop
+ * Hook for getting a dataProvider
  *
- * Gets a dataProvider function, which behaves just like the real dataProvider
- * (same signature, returns a Promise), but dispatches Redux actions along the
- * process. The benefit is that react-admin tracks the loading state when using
- * this function, shows the loader animation while the dataProvider is waiting
- * for a response, and executes side effects when the response arrives.
+ * Gets a dataProvider object, which behaves just like the real dataProvider
+ * (same methods returning a Promise). But it's actually a Proxy object, which
+ * dispatches Redux actions along the process. The benefit is that react-admin
+ * tracks the loading state when using this hook, and stores results in the
+ * Redux store for future use.
  *
- * In addition to the 3 parameters of the dataProvider function (verb, resource,
- * payload), the returned function accepts a fourth parameter, an object
- * literal which may contain side effects, or make the action optimistic (with
- * undoable: true).
+ * In addition to the 2 usual parameters of the dataProvider methods (resource,
+ * payload), the Proxy supports a third parameter for every call. It's an
+ * object literal which may contain side effects, or make the action optimistic
+ * (with undoable: true).
  *
- * @return dataProvider (type, resource, payload, options) => Promise<any>
+ * @return dataProvider
+ *
+ * @example
+ *
+ * const dataProvider = useDataProvider();
+ * dataProvider.getOne('posts', { id: 123 });
+ * // this will dispatch the following actions:
+ * // - CUSTOM_FETCH
+ * // - CUSTOM_FETCH_LOADING
+ * // - FETCH_START
+ * // - CUSTOM_FETCH_SUCCESS
+ * // - FETCH_END
+ *
+ * @example
+ *
+ * const dataProvider = useDataProvider();
+ * dataProvider.getOne('posts', { id: 123 }, { action: CRUD_GET_ONE });
+ * // this will dispatch the following actions:
+ * // - CRUD_GET_ONE
+ * // - CRUD_GET_ONE_LOADING
+ * // - FETCH_START
+ * // - CRUD_GET_ONE_SUCCESS
+ * // - FETCH_END
  *
  * @example
  *
@@ -97,7 +72,7 @@ const getFetchType = actionType => {
  *      const dataProvider = useDataProvider();
  *
  *      useEffect(() => {
- *          dataProvider('GET_LIST', 'posts', { filter: { status: 'pending' }})
+ *          dataProvider.getList('posts', { filter: { status: 'pending' }})
  *            .then(({ data }) => setPosts(data))
  *            .catch(error => dispatch(showNotification(error.message, 'error')));
  *      }, [])
@@ -109,7 +84,7 @@ const getFetchType = actionType => {
  *     }
  * }
  */
-const useDataProvider = (): HookDataProvider => {
+const useDataProvider = (): DataProviderProxy => {
     const dispatch = useDispatch() as Dispatch;
     const dataProvider = useContext(DataProviderContext) || defaultDataProvider;
     const isOptimistic = useSelector(

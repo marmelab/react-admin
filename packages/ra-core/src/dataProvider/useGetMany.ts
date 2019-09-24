@@ -7,7 +7,7 @@ import union from 'lodash/union';
 import isEqual from 'lodash/isEqual';
 
 import { CRUD_GET_MANY } from '../actions/dataActions/crudGetMany';
-import { Identifier, ReduxState, HookDataProvider } from '../types';
+import { Identifier, ReduxState, DataProviderProxy } from '../types';
 import { useSafeSetState } from '../util/hooks';
 import useDataProvider from './useDataProvider';
 import { useEffect } from 'react';
@@ -25,12 +25,13 @@ interface QueriesToCall {
 }
 
 let queriesToCall: QueriesToCall = {};
-let dataProvider: HookDataProvider;
+let dataProvider: DataProviderProxy;
 
 const DataProviderOptions = { action: CRUD_GET_MANY };
 
 /**
- * Call the dataProvider with a GET_MANY verb and return the result as well as the loading state.
+ * Call the dataProvider.getMany() method and return the resolved result
+ * as well as the loading state.
  *
  * The return value updates according to the request state:
  *

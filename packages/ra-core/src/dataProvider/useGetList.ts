@@ -1,11 +1,11 @@
 import { useSelector, shallowEqual } from 'react-redux';
 import { CRUD_GET_LIST } from '../actions/dataActions/crudGetList';
-import { GET_LIST } from '../dataFetchActions';
 import { Pagination, Sort, ReduxState } from '../types';
 import useQueryWithStore from './useQueryWithStore';
 
 /**
- * Call the dataProvider with a GET_LIST verb and return the result as well as the loading state.
+ * Call the dataProvider.getList() method and return the resolved result
+ * as well as the loading state.
  *
  * The return value updates according to the request state:
  *

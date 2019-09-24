@@ -1,6 +1,5 @@
 import { useSelector, shallowEqual } from 'react-redux';
 import { CRUD_GET_MANY_REFERENCE } from '../actions/dataActions/crudGetManyReference';
-import { GET_MANY_REFERENCE } from '../dataFetchActions';
 import { Pagination, Sort, Identifier, ReduxState } from '../types';
 import useQueryWithStore from './useQueryWithStore';
 import {
@@ -12,7 +11,8 @@ import {
 import { useMemo } from 'react';
 
 /**
- * Call the dataProvider with a GET_MANY_REFERENCE verb and return the result as well as the loading state.
+ * Call the dataProvider.getManyReference() method and return the resolved result
+ * as well as the loading state.
  *
  * The return value updates according to the request state:
  *

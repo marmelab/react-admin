@@ -4,19 +4,6 @@ import { useSafeSetState } from '../util/hooks';
 import useDataProvider from './useDataProvider';
 import useDataProviderWithDeclarativeSideEffects from './useDataProviderWithDeclarativeSideEffects';
 
-export interface Mutation {
-    type: string;
-    resource: string;
-    payload: object;
-}
-
-export interface MutationOptions {
-    meta?: any;
-    action?: string;
-    undoable?: boolean;
-    withDeclarativeSideEffectsSupport?: boolean;
-}
-
 /**
  * Get a callback to fetch the data provider through Redux, usually for mutations
  *
@@ -29,23 +16,28 @@ export interface MutationOptions {
  * - success: { data: [data from response], total: [total from response], loading: false, loaded: true }
  * - error: { error: [error from response], loading: false, loaded: true }
  *
- * @param {Object} query
- * @param {string} query.type The verb passed to th data provider, e.g. 'UPDATE'
- * @param {string} query.resource A resource name, e.g. 'posts', 'comments'
- * @param {Object} query.payload The payload object, e.g. { id: 123, data: { isApproved: true } }
- * @param {Object} options
- * @param {string} options.action Redux action type
- * @param {Object} options.meta Redux action metas, including side effects to be executed upon success of failure, e.g. { onSuccess: { refresh: true } }
- *
  * @returns A tuple with the mutation callback and the request state. Destructure as [mutate, { data, total, error, loading, loaded }].
+ *
+ * The mutate function accepts the following arguments
+ * - {Object} query
+ * - {string} query.type The method called on the data provider, e.g. 'update'
+ * - {string} query.resource A resource name, e.g. 'posts', 'comments'
+ * - {Object} query.payload The payload object, e.g. { id: 123, data: { isApproved: true } }
+ * - {Object} options
+ * - {string} options.action Redux action type
+ * - {boolean} options.undoable Set to true to run the mutation locally before calling the dataProvider
+ * - {Function} options.onSuccess Side effect function to be executed upon success of failure, e.g. { onSuccess: response => refresh() } }
+ * - {Function} options.onFailure Side effect function to be executed upon failure, e.g. { onFailure: error => notify(error.message) } }
+ * - {boolean} withDeclarativeSideEffectsSupport Set to true to support legacy side effects (e.g. { onSuccess: { refresh: true } })
  *
  * @example
  *
- * import { useMutation, UPDATE } from 'react-admin';
+ * import { useMutation } from 'react-admin';
  *
  * const ApproveButton = ({ record }) => {
- *     const [approve, { loading }] = useMutation({
- *         type: UPDATE,
+ *     const [mutate, { loading }] = useMutation()
+ *     const approve = () => mutate({
+ *         type: 'update',
  *         resource: 'comments',
  *         payload: { id: record.id, data: { isApproved: true } }
  *     });
@@ -54,44 +46,29 @@ export interface MutationOptions {
  *
  * @example
  *
- * import { useMutation, UPDATE } from 'react-admin';
+ * import { useMutation, CRUD_UPDATE } from 'react-admin';
  *
  * const MarkDateButton = ({ record }) => {
- *     // the mutation data can be passed at call time
- *     const [approve, { loading }] = useMutation({
- *         type: UPDATE,
- *         resource: 'posts',
- *         payload: { id: record.id } // no data
- *     });
- *     // the mutation callback expects call time payload as second parameter
- *     // and merges it with the initial payload when called
+ *     const [mutate, { loading }] = useMutation();
+ *     const handleClick = () => mutate(
+ *         {
+ *              type: 'update',
+ *              resource: 'posts',
+ *              payload: { id: record.id, data: { updatedAt: new Date() } }
+ *         },
+ *         {
+ *              undoable: true,
+ *              action: CRUD_UPDATE
+ *         }
+ *     );
  *     return <FlatButton
  *          label="Mark Date"
- *          onClick={() => approve(null, {
- *              data: { updatedAt: new Date() } // data defined here
- *          })}
+ *          onClick={handleClick}
  *          disabled={loading}
  *     />;
  * };
  */
-const useMutation = (
-    {
-        withDeclarativeSideEffectsSupport = false,
-    }: {
-        withDeclarativeSideEffectsSupport?: boolean;
-    } = {
-        withDeclarativeSideEffectsSupport: false,
-    }
-): [
-    (query: Mutation, options?: any) => void,
-    {
-        data?: any;
-        total?: number;
-        error?: any;
-        loading: boolean;
-        loaded: boolean;
-    }
-] => {
+const useMutation = (): UseMutationValue => {
     const [state, setState] = useSafeSetState({
         data: null,
         error: null,
@@ -104,16 +81,16 @@ const useMutation = (
     const dataProviderWithDeclarativeSideEffects = useDataProviderWithDeclarativeSideEffects();
 
     const mutate = useCallback(
-        (query: Mutation, options): void => {
+        (query: Mutation, options: MutationOptions): void => {
             const { type, resource, payload } = query;
-
-            const dataProviderWithSideEffects = withDeclarativeSideEffectsSupport
+            const { withDeclarativeSideEffectsSupport, ...rest } = options;
+            const finalDataProvider = withDeclarativeSideEffectsSupport
                 ? dataProviderWithDeclarativeSideEffects
                 : dataProvider;
 
             setState({ loading: true });
 
-            dataProviderWithSideEffects[type](resource, payload, options)
+            finalDataProvider[type](resource, payload, rest)
                 .then(({ data, total }) => {
                     setState({
                         data,
@@ -130,10 +107,35 @@ const useMutation = (
                     });
                 });
         },
-        [dataProvider] // eslint-disable-line react-hooks/exhaustive-deps
+        [dataProvider, dataProviderWithDeclarativeSideEffects, setState]
     );
 
     return [mutate, state];
 };
+
+export interface Mutation {
+    type: string;
+    resource: string;
+    payload: object;
+}
+
+export interface MutationOptions {
+    action?: string;
+    undoable?: boolean;
+    onSuccess?: (response: any) => any | Object;
+    onError?: (error?: any) => any | Object;
+    withDeclarativeSideEffectsSupport: boolean;
+}
+
+export type UseMutationValue = [
+    (query: Mutation, options?: any) => void,
+    {
+        data?: any;
+        total?: number;
+        error?: any;
+        loading: boolean;
+        loaded: boolean;
+    }
+];
 
 export default useMutation;
