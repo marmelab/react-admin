@@ -20,11 +20,13 @@ interface Props {
 }
 
 const useStyles = makeStyles((theme: Theme) => ({
-    confirm: {
-        backgroundColor: theme.palette.background.default,
+    error: {
+        backgroundColor: theme.palette.error.dark,
+        color: theme.palette.error.contrastText,
     },
     warning: {
         backgroundColor: theme.palette.error.light,
+        color: theme.palette.error.contrastText,
     },
     undo: {
         color: theme.palette.primary.light,
