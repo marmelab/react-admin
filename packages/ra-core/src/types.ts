@@ -11,10 +11,10 @@ export interface Record {
     [key: string]: any;
 }
 
-export interface RecordMap {
+export interface RecordMap<RecordType = Record> {
     // Accept strings and numbers as identifiers
-    [id: string]: Record;
-    [id: number]: Record;
+    [id: string]: RecordType;
+    [id: number]: RecordType;
 }
 
 export interface Sort {
@@ -51,11 +51,143 @@ export type LegacyAuthProvider = (
     params?: any
 ) => Promise<any>;
 
-export type DataProvider = (
+export type LegacyDataProvider = (
     type: string,
     resource: string,
     params: any
 ) => Promise<any>;
+
+export interface CreateResult<RecordType = Record> {
+    data: RecordType;
+}
+
+export interface CreateParams<DataType = Record> {
+    data: DataType;
+}
+
+export interface DeleteResult<RecordType = Record> {
+    data?: RecordType;
+}
+
+export interface DeleteParams {
+    id: Identifier;
+}
+
+export interface DeleteManyResult {
+    data?: Identifier[];
+}
+
+export interface DeleteManyParams {
+    ids: Identifier[];
+}
+
+export interface GetListResult<RecordType = Record> {
+    data: RecordType[];
+    total: number;
+}
+
+export interface GetListParams<FilterType = any> {
+    pagination: Pagination;
+    sort: Sort;
+    filter: FilterType;
+}
+
+export interface GetManyResult<RecordType = Record> {
+    data: RecordType[];
+}
+
+export interface GetManyParams {
+    ids: Identifier[];
+}
+
+export interface GetManyReferenceResult<RecordType = Record> {
+    data: RecordType[];
+    total: number;
+}
+
+export interface GetManyReferenceParams<FilterType = any> {
+    target: string;
+    id: Identifier;
+    pagination: Pagination;
+    sort: Sort;
+    filter: FilterType;
+}
+
+export interface GetOneResult<RecordType = Record> {
+    data: RecordType;
+}
+
+export interface GetOneParams {
+    id: Identifier;
+}
+
+export interface UpdateResult<RecordType = Record> {
+    data: RecordType;
+}
+
+export interface UpdateParams<RecordType = Record, DataType = RecordType> {
+    id: Identifier;
+    data: DataType;
+    previousData: RecordType;
+}
+
+export interface UpdateManyResult<RecordType = Record> {
+    data: RecordType;
+}
+
+export interface UpdateManyParams<DataType = Record> {
+    ids: Identifier[];
+    data: DataType;
+}
+
+export type DataProvider = {
+    create: <RecordType = Record, DataType = RecordType>(
+        resource: string,
+        params: CreateParams<DataType>
+    ) => Promise<CreateResult<RecordType>>;
+
+    delete: <RecordType = Record>(
+        resource: string,
+        params: DeleteParams
+    ) => Promise<DeleteResult<RecordType>>;
+
+    deleteMany: (
+        resource: string,
+        params: DeleteManyParams
+    ) => Promise<DeleteManyResult>;
+
+    getList: <RecordType = Record, FilterType = any>(
+        resource: string,
+        params: GetListParams<FilterType>
+    ) => Promise<GetListResult<RecordType>>;
+
+    getMany: <RecordType = Record>(
+        resource: string,
+        params: GetManyParams
+    ) => Promise<GetManyResult<RecordType>>;
+
+    getManyReference: <RecordType = Record, FilterType = any>(
+        resource: string,
+        params: GetManyReferenceParams<FilterType>
+    ) => Promise<GetManyReferenceResult<RecordType>>;
+
+    getOne: <RecordType = Record>(
+        resource: string,
+        params: GetOneParams
+    ) => Promise<GetOneResult<RecordType>>;
+
+    update: <RecordType = Record, DataType = RecordType>(
+        resource: string,
+        params: UpdateParams<RecordType, DataType>
+    ) => Promise<UpdateResult<RecordType>>;
+
+    updateMany: <RecordType = Record, DataType = RecordType>(
+        resource: string,
+        params: UpdateManyParams<DataType>
+    ) => Promise<UpdateManyResult<RecordType>>;
+
+    [key: string]: any;
+};
 
 export interface ReduxState {
     admin: {

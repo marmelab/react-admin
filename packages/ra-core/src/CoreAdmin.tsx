@@ -11,7 +11,7 @@ import { Switch, Route } from 'react-router-dom';
 import { ConnectedRouter } from 'connected-react-router';
 
 import { AuthContext, convertLegacyAuthProvider } from './auth';
-import DataProviderContext from './dataProvider/DataProviderContext';
+import { DataProviderContext, convertLegacyDataProvider } from './dataProvider';
 import createAdminStore, { InitialState } from './createAdminStore';
 import TranslationProvider from './i18n/TranslationProvider';
 import CoreAdminRouter from './CoreAdminRouter';
@@ -28,6 +28,7 @@ import {
     CatchAllComponent,
     CustomRoutes,
     DashboardComponent,
+    LegacyDataProvider,
 } from './types';
 
 export type ChildrenFunction = () => ComponentType[];
@@ -46,7 +47,7 @@ export interface AdminProps {
     customReducers?: object;
     customRoutes?: CustomRoutes;
     dashboard?: DashboardComponent;
-    dataProvider: DataProvider;
+    dataProvider: DataProvider | LegacyDataProvider;
     history: History;
     i18nProvider?: I18nProvider;
     initialState?: InitialState;
@@ -83,6 +84,11 @@ const CoreAdmin: FunctionComponent<AdminProps> = ({
 }) => {
     const reduxIsAlreadyInitialized = !!useContext(ReactReduxContext);
 
+    const finalDataProvider =
+        dataProvider instanceof Function
+            ? convertLegacyDataProvider(dataProvider)
+            : dataProvider;
+
     const renderCore = history => {
         const logout = authProvider ? createElement(logoutButton) : null;
 
@@ -98,7 +104,7 @@ const CoreAdmin: FunctionComponent<AdminProps> = ({
         }
 
         return (
-            <DataProviderContext.Provider value={dataProvider}>
+            <DataProviderContext.Provider value={finalDataProvider}>
                 <TranslationProvider
                     locale={locale}
                     i18nProvider={i18nProvider}
@@ -177,7 +183,7 @@ React-admin requires a valid dataProvider function to work.`);
                         authProvider: finalAuthProvider,
                         customReducers,
                         customSagas,
-                        dataProvider,
+                        dataProvider: finalDataProvider,
                         initialState,
                         history: finalHistory,
                     })}

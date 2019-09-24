@@ -18,6 +18,7 @@ import {
     fetchActionsWithArrayOfIdentifiedRecordsResponse,
     fetchActionsWithArrayOfRecordsResponse,
     fetchActionsWithTotalResponse,
+    sanitizeFetchType,
 } from '../dataFetchActions';
 
 function validateResponseFormat(
@@ -110,8 +111,7 @@ export function* handleFetch(
             put({ type: FETCH_START }),
         ]);
         const response = yield call(
-            dataProvider,
-            restType,
+            dataProvider[sanitizeFetchType(restType)],
             meta.resource,
             payload
         );
