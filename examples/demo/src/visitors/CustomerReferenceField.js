@@ -8,6 +8,7 @@ const CustomerReferenceField = props => (
         <FullNameField />
     </ReferenceField>
 );
+
 CustomerReferenceField.defaultProps = {
     source: 'customer_id',
     addLabel: true,

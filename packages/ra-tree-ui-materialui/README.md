@@ -41,6 +41,7 @@ import { Admin, Resource, mergeTranslations } from 'react-admin';
 import { reducer as tree } from 'ra-tree-ui-materialui';
 import englishMessages from 'ra-language-english';
 import treeEnglishMessages from 'ra-tree-language-english';
+import polyglotI18nProvider from 'ra-i18n-polyglot';
 
 import dataProvider from './dataProvider';
 import posts from './posts';
@@ -49,12 +50,13 @@ import tags from './tags';
 const messages = {
     'en': mergeTranslations(englishMessages, treeEnglishMessages),
 };
+const i18nProvider = polyglotI18nProvider(locale => messages[locale]);
 
 const App = () => (
     <Admin
         dataProvider={dataProvider}
+        i18nProvider={i18nProvider}
         locale="en"
-        messages={messages}
         customReducers={{ tree }}
     >
         <Resource name="posts" {...posts} />

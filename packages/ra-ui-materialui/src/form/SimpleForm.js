@@ -1,14 +1,163 @@
-import React, { Children, Component } from 'react';
+import React, { Children, useCallback, useRef } from 'react';
 import PropTypes from 'prop-types';
-import { reduxForm } from 'redux-form';
-import { connect } from 'react-redux';
-import compose from 'recompose/compose';
+import { Form } from 'react-final-form';
+import arrayMutators from 'final-form-arrays';
+import { useSelector } from 'react-redux';
 import classnames from 'classnames';
-import { getDefaultValues, translate, REDUX_FORM_NAME } from 'ra-core';
+import { useTranslate, useInitializeFormWithRecord } from 'ra-core';
 
 import FormInput from './FormInput';
 import Toolbar from './Toolbar';
 import CardContentInner from '../layout/CardContentInner';
+
+const SimpleForm = ({ initialValues, ...props }) => {
+    let redirect = useRef(props.redirect);
+    // We don't use state here for two reasons:
+    // 1. There no way to execute code only after the state has been updated
+    // 2. We don't want the form to rerender when redirect is changed
+    const setRedirect = newRedirect => {
+        redirect.current = newRedirect;
+    };
+
+    const saving = useSelector(state => state.admin.saving);
+    const translate = useTranslate();
+    const submit = values => {
+        const finalRedirect =
+            typeof redirect === undefined ? props.redirect : redirect.current;
+        props.save(values, finalRedirect);
+    };
+
+    const finalInitialValues = {
+        ...initialValues,
+        ...props.record,
+    };
+
+    return (
+        <Form
+            key={props.version}
+            initialValues={finalInitialValues}
+            onSubmit={submit}
+            mutators={{ ...arrayMutators }}
+            keepDirtyOnReinitialize
+            destroyOnUnregister
+            subscription={defaultSubscription}
+            {...props}
+            render={formProps => (
+                <SimpleFormView
+                    saving={formProps.submitting || saving}
+                    translate={translate}
+                    setRedirect={setRedirect}
+                    {...props}
+                    {...formProps}
+                />
+            )}
+        />
+    );
+};
+
+const defaultSubscription = {
+    submitting: true,
+    pristine: true,
+    valid: true,
+    invalid: true,
+};
+
+export default SimpleForm;
+
+const SimpleFormView = ({
+    basePath,
+    children,
+    className,
+    invalid,
+    form,
+    pristine,
+    record,
+    redirect: defaultRedirect,
+    resource,
+    saving,
+    setRedirect,
+    submitOnEnter,
+    toolbar,
+    undoable,
+    version,
+    handleSubmit,
+    variant,
+    margin,
+    ...rest
+}) => {
+    useInitializeFormWithRecord(record);
+
+    const handleSubmitWithRedirect = useCallback(
+        (redirect = defaultRedirect) => {
+            setRedirect(redirect);
+            handleSubmit();
+        },
+        [setRedirect, defaultRedirect, handleSubmit]
+    );
+
+    return (
+        <form
+            className={classnames('simple-form', className)}
+            {...sanitizeRestProps(rest)}
+        >
+            <CardContentInner key={version}>
+                {Children.map(children, input => (
+                    <FormInput
+                        basePath={basePath}
+                        input={input}
+                        record={record}
+                        resource={resource}
+                        variant={variant}
+                        margin={margin}
+                    />
+                ))}
+            </CardContentInner>
+            {toolbar &&
+                React.cloneElement(toolbar, {
+                    basePath,
+                    handleSubmitWithRedirect,
+                    handleSubmit,
+                    invalid,
+                    pristine,
+                    record,
+                    redirect: defaultRedirect,
+                    resource,
+                    saving,
+                    submitOnEnter,
+                    undoable,
+                })}
+        </form>
+    );
+};
+
+SimpleFormView.propTypes = {
+    basePath: PropTypes.string,
+    children: PropTypes.node,
+    className: PropTypes.string,
+    defaultValue: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
+    handleSubmit: PropTypes.func, // passed by react-final-form
+    invalid: PropTypes.bool,
+    pristine: PropTypes.bool,
+    record: PropTypes.object,
+    resource: PropTypes.string,
+    redirect: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.bool,
+        PropTypes.func,
+    ]),
+    save: PropTypes.func, // the handler defined in the parent, which triggers the REST submission
+    saving: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
+    submitOnEnter: PropTypes.bool,
+    toolbar: PropTypes.element,
+    undoable: PropTypes.bool,
+    validate: PropTypes.func,
+    version: PropTypes.number,
+};
+
+SimpleFormView.defaultProps = {
+    submitOnEnter: true,
+    toolbar: <Toolbar />,
+};
 
 const sanitizeRestProps = ({
     anyTouched,
@@ -25,9 +174,13 @@ const sanitizeRestProps = ({
     clearSubmitErrors,
     destroy,
     dirty,
+    dirtyFields,
+    dirtySinceLastSubmit,
     dispatch,
     form,
     handleSubmit,
+    hasSubmitErrors,
+    hasValidationErrors,
     initialize,
     initialized,
     initialValues,
@@ -37,117 +190,22 @@ const sanitizeRestProps = ({
     reset,
     resetSection,
     save,
+    setRedirect,
     submit,
+    submitError,
+    submitErrors,
+    submitAsSideEffect,
     submitFailed,
     submitSucceeded,
     submitting,
     touch,
     translate,
     triggerSubmit,
+    undoable,
     untouch,
     valid,
     validate,
+    validating,
+    _reduxForm,
     ...props
 }) => props;
-
-export class SimpleForm extends Component {
-    handleSubmitWithRedirect = (redirect = this.props.redirect) =>
-        this.props.handleSubmit(values => this.props.save(values, redirect));
-
-    render() {
-        const {
-            basePath,
-            children,
-            className,
-            invalid,
-            pristine,
-            record,
-            redirect,
-            resource,
-            saving,
-            submitOnEnter,
-            toolbar,
-            version,
-            ...rest
-        } = this.props;
-
-        return (
-            <form
-                className={classnames('simple-form', className)}
-                {...sanitizeRestProps(rest)}
-            >
-                <CardContentInner key={version}>
-                    {Children.map(children, input => (
-                        <FormInput
-                            basePath={basePath}
-                            input={input}
-                            record={record}
-                            resource={resource}
-                        />
-                    ))}
-                </CardContentInner>
-                {toolbar && (
-                    <CardContentInner>
-                        {React.cloneElement(toolbar, {
-                            basePath,
-                            handleSubmitWithRedirect: this
-                                .handleSubmitWithRedirect,
-                            handleSubmit: this.props.handleSubmit,
-                            invalid,
-                            pristine,
-                            record,
-                            redirect,
-                            resource,
-                            saving,
-                            submitOnEnter,
-                        })}
-                    </CardContentInner>
-                )}
-            </form>
-        );
-    }
-}
-
-SimpleForm.propTypes = {
-    basePath: PropTypes.string,
-    children: PropTypes.node,
-    className: PropTypes.string,
-    defaultValue: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
-    handleSubmit: PropTypes.func, // passed by redux-form
-    invalid: PropTypes.bool,
-    pristine: PropTypes.bool,
-    record: PropTypes.object,
-    resource: PropTypes.string,
-    redirect: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.bool,
-        PropTypes.func,
-    ]),
-    save: PropTypes.func, // the handler defined in the parent, which triggers the REST submission
-    saving: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
-    submitOnEnter: PropTypes.bool,
-    toolbar: PropTypes.element,
-    validate: PropTypes.func,
-    version: PropTypes.number,
-};
-
-SimpleForm.defaultProps = {
-    submitOnEnter: true,
-    toolbar: <Toolbar />,
-};
-
-const enhance = compose(
-    connect((state, props) => ({
-        form: props.form || REDUX_FORM_NAME,
-        initialValues: getDefaultValues(state, props),
-        saving: props.saving || state.admin.saving,
-    })),
-    translate, // Must be before reduxForm so that it can be used in validation
-    reduxForm({
-        destroyOnUnmount: false,
-        enableReinitialize: true,
-        keepDirtyOnReinitialize: true,
-    })
-);
-
-export default enhance(SimpleForm);

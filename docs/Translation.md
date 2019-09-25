@@ -5,118 +5,205 @@ title: "Translation"
 
 # Translation
 
-The react-admin interface uses English as the default language. But it also supports any other language, thanks to the [polyglot.js](http://airbnb.io/polyglot.js/) library.
+The react-admin user interface uses English as the default language. But you can also display the UI and content in other languages, allow changing language at runtime, even lazy-loading optional languages to avoid increasing the bundle size with all translations. 
 
-## Changing Locale
+You will use translation features mostly via the `i18nProvider`, and a set of hooks (`useTranslate`, `useLocale`, `useSetLocale`).
 
-If you want to use another locale, you'll have to install a third-party package. For instance, to change the interface to French, you must install the `ra-language-french` npm package then instruct react-admin to use it.
+**Tip**: We'll use a bit of custom vocabulary in this chapter:
+ 
+- "i18n" is a shorter way to write "internationalization" (an i followed by 18 letters followed by n) 
+- "locale" is a concept similar to languages, but it also includes the concept of country. For instance, there are several English locales (like `en_us` and `en_gb`) because US and UK citizens don't use exactly the same language. For react-admin, the "locale" is just a key for your i18nProvider, so it can have any value you want.
 
-The `<Admin>` component has an `i18nProvider` prop, which accepts a function with the following signature:
+## Introducing the `i18nProvider`
 
-```js
-const i18nProvider = locale => messages;
+Just like for data fetching and authentication, react-admin relies on a simple object for translations. It's called the `i18nProvider`, and it manages translation and language change using two methods:
+
+```jsx
+const i18nProvider = {
+    translate: (key, options) => string,
+    changeLocale: locale => Promise,
+}
 ```
 
-The `messages` should be a dictionary of interface and resource names (see the [Translation Messages section](#translation-messages) below for details about the dictionary format).
+And just like for the `dataProvider` and the `authProvider`, you can *inject* the `i18nProvider` to your react-admin app using the `<Admin>` component:
 
-React-admin calls the `i18nProvider` when it starts, passing the `locale` specified on the `Admin` component as parameter. The provider must return the messages synchronously. React-admin also calls the `i18nProvider` whenever the locale changes, passing the new locale as parameter. So the simplest example for a multilingual interface reads as follow:
+```jsx
+import i18nProvider from './i18n/i18nProvider';
+
+const App = () => (
+    <Admin 
+        dataProvider={dataProvider}
+        authProvider={authProvider}
+        i18nProvider={i18nProvider}
+    >
+        <Resource name="posts" list={...}>
+        // ...
+```
+
+If you want to add or update tranlations, you'll have to provide your own `i18nProvider`.
+
+React-admin components use translation keys for their labels, and rely on the `i18nProvider` to translate them. For instance:
+
+```jsx
+const SaveButton = ({ doSave }) => {
+    const translate = useTranslate(); // returns the i18nProvider.translate() method
+    return (
+        <Button onclick={doSave}>
+            {translate('ra.action.save')} // will translate to "Save" in English and "Enregistrer" in French
+        </Button>;
+    );
+};
+```
+
+## Using Polyglot.js
+
+Here is the simplest possible implementation for an `i18nProvider` with English and French messages:
+
+```jsx
+import lodashGet from 'lodash/get';
+
+const englishMessages = {
+    ra: {
+        notification: {
+            http_error: 'Network error. Please retry',
+        },
+        action: {
+            save: 'Save',
+            delete: 'Delete',
+        },
+    },
+};
+const frenchMessages = {
+    ra: {
+        notification: {
+            http_error: 'Erreur réseau, veuillez réessayer',
+        },
+        action: {
+            save: 'Enregistrer',
+            delete: 'Supprimer',
+        },
+    },
+};
+let messages = englishMessages;
+
+const i18nProvider = {
+    translate: key => lodashGet(messages, key),
+    changeLocale: newLocale => {
+        messages = (newLocale === 'fr') ? frenchMessages : englishMessages;
+        return Promise.resolve();
+    }
+};
+```
+
+But this is too naive: react-admin expects that i18nProviders support string interpolation for translation, and asynchronous message loading for locale change. That's why react-admin bundles an `i18nProvider` *factory* called `polyglotI18nProvider`. This factory relies on [polyglot.js](http://airbnb.io/polyglot.js/), which uses JSON files for translations. It only expects one argument: a function returning a list of messages based on a locale passed as argument. 
+
+So the previous provider can be written as:
+
+```jsx
+import polyglotI18nProvider from 'ra-i18n-polyglot';
+
+const englishMessages = {
+    ra: {
+        notification: {
+            http_error: 'Network error. Please retry',
+        },
+        action: {
+            save: 'Save',
+            delete: 'Delete',
+        },
+    },
+};
+const frenchMessages = {
+    ra: {
+        notification: {
+            http_error: 'Erreur réseau, veuillez réessayer',
+        },
+        action: {
+            save: 'Enregistrer',
+            delete: 'Supprimer',
+        },
+    },
+};
+
+const i18nProvider = polyglotI18nProvider(locale => 
+    locale === 'fr' ? frenchMessages : englishMessages
+);
+```
+
+## Changing The Default Locale
+
+The default react-admin locale is `en`, for English. If you want to display the interface in another language by default, you'll have to install a third-party package. For instance, to change the interface to French, you must install the `ra-language-french` npm package, then use it in a custom `i18nProvider`, as follows:
 
 ```jsx
 import React from 'react';
 import { Admin, Resource } from 'react-admin';
+import polyglotI18nProvider from 'ra-i18n-polyglot';
 import frenchMessages from 'ra-language-french';
-import englishMessages from 'ra-language-english';
 
-const messages = {
-    fr: frenchMessages,
-    en: englishMessages,
-}
-const i18nProvider = locale => messages[locale];
+const i18nProvider = polyglotI18nProvider(() => frenchMessages);
 
 const App = () => (
-    <Admin locale="en" i18nProvider={i18nProvider}>
+    <Admin locale="fr" i18nProvider={i18nProvider}>
         ...
     </Admin>
 );
 
 export default App;
-```
-
-The `i18nProvider` may return a promise for locale change calls (except the initial call, when the app starts). This can be useful to only load the needed locale. For example:
-
-```js
-import englishMessages from '../en.js';
-
-const asyncMessages = {
-    fr: () => import('../i18n/fr.js').then(messages => messages.default),
-    it: () => import('../i18n/it.js').then(messages => messages.default),
-};
-
-const i18nProvider = locale => {
-    if (locale === 'en') {
-        // initial call, must return synchronously
-        return englishMessages;
-    }
-    // change of locale after initial call returns a promise
-    return asyncMessages[params.locale]();
-}
-
-const App = () => (
-    <Admin locale="en" i18nProvider={i18nProvider}>
-        ...
-    </Admin>
-);
 ```
 
 ## Available Locales
 
 You can find translation packages for the following languages:
 
-- Chinese (`cn`): [chen4w/ra-language-chinese](https://github.com/chen4w/ra-language-chinese)
+- Arabic (`ar`): [developerium/ra-language-arabic](https://github.com/developerium/ra-language-arabic)
+- Bulgarian (`bg`): [ptodorov0/ra-language-bulgarian](https://github.com/ptodorov0/ra-language-bulgarian)
+- Catalan (`ca`): [sergioedo/ra-language-catalan](https://github.com/sergioedo/ra-language-catalan)
+- Chinese (`zh-TW`): [areyliu6/ra-language-chinese-traditional](https://github.com/areyliu6/ra-language-chinese-traditional)
+- Chinese (`zh`): [chen4w/ra-language-chinese](https://github.com/chen4w/ra-language-chinese)
 - Czech (`cs`): [binao/ra-language-czech](https://github.com/binao/ra-language-czech)
 - Danish (`da`): [nikri/ra-language-danish](https://github.com/nikri/ra-language-danish)
-- Dutch (`nl`): [pimschaaf/ra-language-dutch](https://github.com/pimschaaf/ra-language-dutch)
+- Dutch (`nl`): [nickwaelkens/ra-language-dutch](https://github.com/nickwaelkens/ra-language-dutch)
 - English (`en`): [marmelab/ra-language-english](https://github.com/marmelab/react-admin/tree/master/packages/ra-language-english)
 - Farsi (`fa`): [hamidfzm/ra-language-farsi](https://github.com/hamidfzm/ra-language-farsi)
 - Finnish (`fi`): [aikain/ra-language-finnish](https://github.com/aikain/ra-language-finnish)
 - French (`fr`): [marmelab/ra-language-french](https://github.com/marmelab/react-admin/tree/master/packages/ra-language-french)
-- German (`de`): [greenbananaCH/ra-language-german](https://github.com/greenbananaCH/ra-language-german)
+- German (`de`): [greenbananaCH/ra-language-german](https://github.com/greenbananaCH/ra-language-german) (tree translation: [straurob/ra-tree-language-german](https://github.com/straurob/ra-tree-language-german))
+- Hebrew (`he`): [ak-il/ra-language-hebrew](https://github.com/ak-il/ra-language-hebrew)
 - Hungarian (`hu`): [phelion/ra-language-hungarian](https://github.com/phelion/ra-language-hungarian)
 - Indonesian (`id`): [ronadi/ra-language-indonesian](https://github.com/ronadi/ra-language-indonesian)
-- Italian (`it`): [stefsava/ra-language-italian](https://github.com/stefsava/ra-language-italian)
+- Italian (`it`): [stefsava/ra-italian](https://github.com/stefsava/ra-italian)
+- Norwegian (`no`): [jon-harald/ra-language-norwegian](https://github.com/jon-harald/ra-language-norwegian)
 - Polish (`pl`): [tskorupka/ra-language-polish](https://github.com/tskorupka/ra-language-polish)
 - Portuguese (`pt`): [marquesgabriel/ra-language-portuguese](https://github.com/marquesgabriel/ra-language-portuguese)
 - Russian (`ru`): [klucherev/ra-language-russian](https://github.com/klucherev/ra-language-russian)
 - Slovak (`sk`): [zavadpe/ra-language-slovak](https://github.com/zavadpe/ra-language-slovak)
 - Spanish (`es`): [blackboxvision/ra-language-spanish](https://github.com/BlackBoxVision/ra-language-spanish)
+- Swedish (`sv`): [jolixab/ra-language-swedish](https://github.com/jolixab/ra-language-swedish)
 - Turkish (`tr`): [KamilGunduz/ra-language-turkish](https://github.com/KamilGunduz/ra-language-turkish)
 - Ukrainian (`ua`): [koresar/ra-language-ukrainian](https://github.com/koresar/ra-language-ukrainian)
 - Vietnamese (`vi`): [hieunguyendut/ra-language-vietnamese](https://github.com/hieunguyendut/ra-language-vietnamese)
 
 In addition, the previous version of react-admin, called admin-on-rest, was translated in the following languages:
 
-- Arabic ( `ع` ): [aymendhaya/aor-language-arabic](https://github.com/aymendhaya/aor-language-arabic)
 - Chinese (Traditional) (`cht`): [leesei/aor-language-chinese-traditional](https://github.com/leesei/aor-language-chinese-traditional)
 - Croatian (`hr`): [ariskemper/aor-language-croatian](https://github.com/ariskemper/aor-language-croatian)
 - Greek (`el`): [zifnab87/aor-language-greek](https://github.com/zifnab87/aor-language-greek)
-- Hebrew (`he`): [motro/aor-language-hebrew](https://github.com/motro/aor-language-hebrew)
 - Japanese (`ja`): [kuma-guy/aor-language-japanese](https://github.com/kuma-guy/aor-language-japanese)
-- Norwegian (`nb`): [zeusbaba/aor-language-norwegian](https://github.com/zeusbaba/aor-language-norwegian)
 - Slovenian (`sl`): [ariskemper/aor-language-slovenian](https://github.com/ariskemper/aor-language-slovenian)
-- Swedish (`sv`): [StefanWallin/aor-language-swedish](https://github.com/StefanWallin/aor-language-swedish)
 - Thai (`th`): [liverbool/aor-language-thai](https://github.com/liverbool/aor-language-thai)
 
 These packages are not directly interoperable with react-admin, but the upgrade is straightforward; rename the root key from "aor" to "ra". We invite the authors of the packages listed above to republish their translations for react-admin, using a different package name.
 
 If you want to contribute a new translation, feel free to submit a pull request to update [this page](https://github.com/marmelab/react-admin/blob/master/docs/Translation.md) with a link to your package.
 
-## Changing Locale At Runtime
+## `useSetLocale`: Changing Locale At Runtime
 
-If you want to offer the ability to change locale at runtime, you must provide the messages for all possible translations:
+If you want to offer the ability to change locale at runtime, you must provide an `i18nProvider` that contains the messages for all possible locales:
 
 ```jsx
 import React from 'react';
 import { Admin, Resource } from 'react-admin';
+import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
 import frenchMessages from 'ra-language-french';
 
@@ -124,7 +211,7 @@ const messages = {
     fr: frenchMessages,
     en: englishMessages,
 };
-const i18nProvider = locale => messages[locale];
+const i18nProvider = polyglotI18nProvider(locale => messages[locale]);
 
 const App = () => (
     <Admin locale="en" i18nProvider={i18nProvider}>
@@ -135,40 +222,98 @@ const App = () => (
 export default App;
 ```
 
-Then, dispatch the `CHANGE_LOCALE` action, by using the `changeLocale` action creator. For instance, the following component switches language between English and French:
+Then, use the `useSetLocale` hook to change locale. For instance, the following component allows the user to switch the interface language between English and French:
 
 ```jsx
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import Button from '@material-ui/core/Button';
-import { changeLocale as changeLocaleAction } from 'react-admin';
+import { useSetLocale } from 'react-admin';
 
-class LocaleSwitcher extends Component {
-    switchToFrench = () => this.props.changeLocale('fr');
-    switchToEnglish = () => this.props.changeLocale('en');
-
-    render() {
-        const { changeLocale } = this.props;
-        return (
-            <div>
-                <div>Language</div>
-                <Button onClick={this.switchToEnglish}>en</Button>
-                <Button onClick={this.switchToFrench}>fr</Button>
-            </div>
-        );
-    }
+const LocaleSwitcher = () => {
+    const setLocale = useSetLocale();
+    return (
+        <div>
+            <div>Language</div>
+            <Button onClick={() => setLocale('fr')}>English</Button>
+            <Button onClick={() => setLocale('en')}>French</Button>
+        </div>
+    );
 }
 
-export default connect(undefined, { changeLocale: changeLocaleAction })(LocaleSwitcher);
+export default LocaleSwitcher;
+```
+
+## `useLocale`: Getting The Current Locale
+
+Your language switcher component probably needs to know the current locale, in order to disable/transform the button for the current language. The `useLocale` hook returns the current locale:
+
+```jsx
+import React, { Component } from 'react';
+import Button from '@material-ui/core/Button';
+import { useLocale, useSetLocale } from 'react-admin';
+
+const LocaleSwitcher = () => {
+    const locale = useLocale();
+    const setLocale = useSetLocale();
+    return (
+        <div>
+            <div>Language</div>
+            <Button 
+                disabled={locale === 'fr'}
+                onClick={() => setLocale('fr')}
+            >
+                English
+            </Button>
+            <Button
+                disabled={locale === 'en'}
+                onClick={() => setLocale('en')}
+            >
+                French
+            </Button>
+        </div>
+    );
+}
+
+export default LocaleSwitcher;
+```
+
+## Lazy-Loading Locales
+
+Bundling all the possible locales in the `i18nProvider` is a great recipe to increase your bundle size, and slow down the initial application load. Fortunately, the `i18nProvider` returns a *promise* for locale change calls to load secondary locales on demand. And the `polyglotI18nProvider` accepts when its argument function returns a Promise, too. For example:
+
+```js
+import polyglotI18nProvider from 'ra-i18n-polyglot';
+import englishMessages from '../en.js';
+
+const i18nProvider = polyglotI18nProvider(locale => {
+    if (locale === 'en') {
+        // initial call, must return synchronously
+        return englishMessages;
+    }
+    if (locale === 'fr') {
+        return import('../i18n/fr.js').then(messages => messages.default);
+    }
+});
+
+const App = () => (
+    <Admin locale="en" i18nProvider={i18nProvider}>
+        ...
+    </Admin>
+);
 ```
 
 ## Using The Browser Locale
 
-React-admin provides a helper function named `resolveBrowserLocale()`, which helps you to introduce a dynamic locale attribution based on the locale configured in the user's browser. To use it, simply pass the function as `locale` prop.
+React-admin provides a helper function named `resolveBrowserLocale()`, which detects the user's browser locale. To use it, simply pass the function as `locale` prop.
 
 ```jsx
 import React from 'react';
-import { Admin, Resource, resolveBrowserLocale } from 'react-admin';
+import { 
+    Admin,
+    Resource,
+    resolveBrowserLocale,
+} from 'react-admin';
+import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
 import frenchMessages from 'ra-language-french';
 
@@ -176,7 +321,7 @@ const messages = {
     fr: frenchMessages,
     en: englishMessages,
 };
-const i18nProvider = locale => messages[locale];
+const i18nProvider = polyglotI18nProvider(locale => messages[locale] ? messages[locale] : messages.en);
 
 const App = () => (
     <Admin locale={resolveBrowserLocale()} i18nProvider={i18nProvider}>
@@ -187,9 +332,11 @@ const App = () => (
 export default App;
 ```
 
+Beware that users from all around the world may use your application, so make sure the `i18nProvider` returns default messages even for unknown locales?
+
 ## Translation Messages
 
-The `message` returned by the `i18nProvider` value should be a dictionary where the keys identify interface components, and values are the translated string. This dictionary is a simple JavaScript object looking like the following:
+The `message` returned by the `polyglotI18nProvider` function argument should be a dictionary where the keys identify interface components, and values are the translated string. This dictionary is a simple JavaScript object looking like the following:
 
 ```jsx
 {
@@ -218,8 +365,8 @@ By default, React-admin uses resource names ("post", "comment", etc) and field n
 
 However, before humanizing names, react-admin checks the `messages` dictionary for a possible translation, with the following keys:
 
-- `${locale}.resources.${resourceName}.name` for resource names (used for the menu and page titles)
-- `${locale}.resources.${resourceName}.fields.${fieldName}` for field names (used for datagrid header and form input labels)
+- `resources.${resourceName}.name` for resource names (used for the menu and page titles)
+- `resources.${resourceName}.fields.${fieldName}` for field names (used for datagrid header and form input labels)
 
 This lets you translate your own resource and field names by passing a `messages` object with a `resources` key:
 
@@ -256,6 +403,8 @@ Using `resources` keys is an alternative to using the `label` prop in Field and 
 When translating an admin, interface messages (e.g. "List", "Page", etc.) usually come from a third-party package, while your domain messages (e.g. "Shoe", "Date of birth", etc.) come from your own code. That means you need to combine these messages before passing them to `<Admin>`. The recipe for combining messages is to use ES6 destructuring:
 
 ```jsx
+import { Admin } from 'react-admin';
+import polyglotI18nProvider from 'ra-i18n-polyglot';
 // interface translations
 import englishMessages from 'ra-language-english';
 import frenchMessages from 'ra-language-french';
@@ -267,7 +416,7 @@ const messages = {
     fr: { ...frenchMessages, ...domainMessages.fr },
     en: { ...englishMessages, ...domainMessages.en },
 };
-const i18nProvider = locale => messages[locale];
+const i18nProvider = polyglotI18nProvider(locale => messages[locale]);
 
 const App = () => (
     <Admin i18nProvider={i18nProvider}>
@@ -276,54 +425,28 @@ const App = () => (
 );
 ```
 
-## Translating Your Own Components
+## `useTranslate` Hook
 
-The translation system use the React `context` to pass translations down the component tree. To translate a sentence, use the `translate` function from the context. Of course, this assumes that you've previously added the corresponding translation to the `messages` props of the `Admin` component.
-
-```jsx
-// in src/MyHelloButton.js
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-
-class MyHelloButton {
-    render() {
-        const { translate } = this.context;
-        return <button>{translate('myroot.hello.world')}</button>;
-    }
-}
-MyHelloButton.contextTypes = {
-    translate: PropTypes.func,
-};
-
-// in src/App.js
-const messages = {
-    en: {
-        myroot: {
-            hello: {
-                world: 'Hello, World!',
-            },
-        },
-    },
-};
-```
-
-However, using the context makes components harder to test. That's why react-admin provides a `translate` Higher-Order Component, which simply passes the `translate` function from context to props:
+If you need to translate messages in your own components, React-admin provides a `useTranslate` hook, which returns the `translate` function:
 
 ```jsx
 // in src/MyHelloButton.js
 import React from 'react';
-import { translate } from 'react-admin';
+import { useTranslate } from 'react-admin';
 
-const MyHelloButton = ({ translate }) => (
-    <button>{translate('myroot.hello.world')}</button>
-);
+const MyHelloButton = () => {
+    const translate = useTranslate();
+    return (
+        <button>{translate('myroot.hello.world')}</button>
+    );
+}
 
-export default translate(MyHelloButton);
+export default MyHelloButton;
 ```
 
 **Tip**: For your message identifiers, choose a different root name than `ra` and `resources`, which are reserved.
 
-**Tip**: Don't use `translate` for Field and Input labels, or for page titles, as they are already translated:
+**Tip**: Don't use `useTranslate` for Field and Input labels, or for page titles, as they are already translated:
 
 ```jsx
 // don't do this
@@ -335,6 +458,27 @@ export default translate(MyHelloButton);
 // or even better, use the default translation key
 <TextField source="first_name" />
 // and translate the `resources.customers.fields.first_name` key
+```
+
+## `withTranslate` HOC
+
+If you're stuck with class components, react-admin also exports a `withTranslate` higher-order component, which injects the `translate` function as prop. 
+
+```jsx
+// in src/MyHelloButton.js
+import React, { Component } from 'react';
+import { withTranslate } from 'react-admin';
+
+class MyHelloButton extends Component {
+    render() {
+        const { translate } = this.props;
+        return (
+            <button>{translate('myroot.hello.world')}</button>
+        );
+    } 
+}
+
+export default withTranslate(MyHelloButton);
 ```
 
 ## Using Specific Polyglot Features
@@ -364,6 +508,46 @@ translate('not_yet_translated', { _: 'Default translation' })
 ```
 
 To find more detailed examples, please refer to [http://airbnb.io/polyglot.js/](http://airbnb.io/polyglot.js/)
+
+## Translating Error Messages
+
+In Create and Edit views, forms can use custom validators. These validator functions should return translation keys rather than translated messages. React-admin automatically passes these identifiers to the translation function: 
+
+```jsx
+// in validators/required.js
+const required = () => (value, allValues, props) =>
+    value
+        ? undefined
+        : 'myroot.validation.required';
+
+// in i18n/en.json
+export default {
+    myroot: {
+        validation: {
+            required: 'Required field',
+        }
+    }
+}
+```
+
+If the translation depends on a variable, the validator can return an object rather than a translation identifier:
+
+```jsx
+// in validators/minLength.js
+const minLength = (min) => (value, allValues, props) => 
+    value.length >= min
+        ? undefined
+        : { message: 'myroot.validation.minLength', args: { min } };
+
+// in i18n/en.js
+export default {
+    myroot: {
+        validation: {
+            minLength: 'Must be %{min} characters at least',
+        }
+    }
+}
+```
 
 ## Notifications With Variables
 

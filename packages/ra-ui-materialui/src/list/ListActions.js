@@ -1,13 +1,11 @@
-import React, { cloneElement } from 'react';
+import React, { cloneElement, useMemo } from 'react';
 import PropTypes from 'prop-types';
-import onlyUpdateForKeys from 'recompose/onlyUpdateForKeys';
 import { sanitizeListRestProps } from 'ra-core';
 
-import CardActions from '../layout/CardActions';
+import TopToolbar from '../layout/TopToolbar';
 import { CreateButton, ExportButton } from '../button';
 
-const Actions = ({
-    bulkActions,
+const ListActions = ({
     currentSort,
     className,
     resource,
@@ -15,47 +13,47 @@ const Actions = ({
     displayedFilters,
     exporter,
     filterValues,
+    permanentFilter,
     hasCreate,
     basePath,
     selectedIds,
     onUnselectItems,
     showFilter,
+    total,
     ...rest
-}) => (
-    <CardActions className={className} {...sanitizeListRestProps(rest)}>
-        {bulkActions &&
-            cloneElement(bulkActions, {
-                basePath,
-                filterValues,
-                resource,
-                selectedIds,
-                onUnselectItems,
-            })}
-        {filters &&
-            cloneElement(filters, {
-                resource,
-                showFilter,
-                displayedFilters,
-                filterValues,
-                context: 'button',
-            })}
-        {hasCreate && <CreateButton basePath={basePath} />}
-        <ExportButton
-            resource={resource}
-            sort={currentSort}
-            filter={filterValues}
-            exporter={exporter}
-        />
-    </CardActions>
-);
+}) =>
+    useMemo(
+        () => (
+            <TopToolbar className={className} {...sanitizeListRestProps(rest)}>
+                {filters &&
+                    cloneElement(filters, {
+                        resource,
+                        showFilter,
+                        displayedFilters,
+                        filterValues,
+                        context: 'button',
+                    })}
+                {hasCreate && <CreateButton basePath={basePath} />}
+                {exporter !== false && (
+                    <ExportButton
+                        disabled={total === 0}
+                        resource={resource}
+                        sort={currentSort}
+                        filter={{ ...filterValues, ...permanentFilter }}
+                        exporter={exporter}
+                    />
+                )}
+            </TopToolbar>
+        ),
+        [resource, displayedFilters, filterValues, selectedIds, filters, total] // eslint-disable-line react-hooks/exhaustive-deps
+    );
 
-Actions.propTypes = {
-    bulkActions: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
+ListActions.propTypes = {
     basePath: PropTypes.string,
     className: PropTypes.string,
     currentSort: PropTypes.object,
     displayedFilters: PropTypes.object,
-    exporter: PropTypes.func,
+    exporter: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
     filters: PropTypes.element,
     filterValues: PropTypes.object,
     hasCreate: PropTypes.bool,
@@ -63,16 +61,12 @@ Actions.propTypes = {
     onUnselectItems: PropTypes.func.isRequired,
     selectedIds: PropTypes.arrayOf(PropTypes.any),
     showFilter: PropTypes.func,
+    total: PropTypes.number,
 };
 
-Actions.defaultProps = {
+ListActions.defaultProps = {
     selectedIds: [],
+    onUnselectItems: () => null,
 };
 
-export default onlyUpdateForKeys([
-    'resource',
-    'filters',
-    'displayedFilters',
-    'filterValues',
-    'selectedIds',
-])(Actions);
+export default ListActions;

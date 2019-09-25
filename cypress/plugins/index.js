@@ -1,4 +1,5 @@
 const wp = require('@cypress/webpack-preprocessor');
+const task = require('cypress-skip-and-only-ui/task');
 
 module.exports = on => {
     const options = {
@@ -11,8 +12,11 @@ module.exports = on => {
                     arg => arg !== '--disable-blink-features=RootLayerScrolling'
                 ),
                 '--disable-gpu',
+                '--proxy-bypass-list=<-loopback>',
             ];
         }
     });
     on('file:preprocessor', wp(options));
+
+    on('task', task);
 };

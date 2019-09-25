@@ -1,0 +1,7 @@
+{
+    "extends": "../tsconfig.json",
+    "compilerOptions": {
+        "rootDir": "integration"
+    },
+    "types": ["cypress", "node"]
+}

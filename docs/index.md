@@ -9,7 +9,8 @@ A frontend Framework for building admin applications running in the browser on t
 <div style="text-align: center" markdown="1">
 <i class="octicon octicon-device-desktop"></i> [Demo](https://marmelab.com/react-admin-demo/) -
 <i class="octicon octicon-mark-github"></i> [Source](https://github.com/marmelab/react-admin) -
-<i class="octicon octicon-megaphone"></i> [Releases](https://github.com/marmelab/react-admin/releases) -
+<i class="octicon octicon-megaphone"></i> [News](https://marmelab.com/en/blog/#react-admin) -
+<i class="octicon octicon-clock"></i> [Releases](https://github.com/marmelab/react-admin/releases) -
 <i class="octicon octicon-comment-discussion"></i> [Support](http://stackoverflow.com/questions/tagged/react-admin)
 </div>
 
@@ -37,7 +38,7 @@ A frontend Framework for building admin applications running in the browser on t
 * Super easy to extend and override (it's just React components)
 * Highly customizable interface
 * Can connect to multiple backends
-* Leverages the best libraries in the React ecosystem (Redux, redux-form, redux-saga, material-ui, recompose)
+* Leverages the best libraries in the React ecosystem (Redux, react-final-form, redux-saga, material-ui, recompose)
 * Can be included in another React app
 * Inspired by the popular [ng-admin](https://github.com/marmelab/ng-admin) library (also by marmelab)
 
@@ -52,7 +53,7 @@ npm install react-admin
 
 ## Usage
 
-Read the [Tutorial](./Tutorial.md) for a 15 minutes introduction. After that, head to the [Documentation](./index.md), or checkout the [source code of the demo](https://github.com/marmelab/react-admin/tree/master/examples/demo) for an example usage.
+Read the [Tutorial](./Tutorial.md) for a 30 minutes introduction. After that, head to the [Documentation](./index.md), or checkout the [source code of the demo](https://github.com/marmelab/react-admin/tree/master/examples/demo) for an example usage.
 
 ## At a Glance
 
@@ -79,7 +80,7 @@ The `<Resource>` component is a configuration component that allows to define su
 ```jsx
 // in posts.js
 import React from 'react';
-import { List, Datagrid, Edit, Create, SimpleForm, DateField, TextField, EditButton, DisabledInput, TextInput, LongTextInput, DateInput } from 'react-admin';
+import { List, Datagrid, Edit, Create, SimpleForm, DateField, TextField, EditButton, TextInput, DateInput } from 'react-admin';
 import BookIcon from '@material-ui/icons/Book';
 export const PostIcon = BookIcon;
 
@@ -103,13 +104,13 @@ const PostTitle = ({ record }) => {
 export const PostEdit = (props) => (
     <Edit title={<PostTitle />} {...props}>
         <SimpleForm>
-            <DisabledInput source="id" />
+            <TextInput disabled source="id" />
             <TextInput source="title" />
             <TextInput source="teaser" options={{ multiLine: true }} />
-            <LongTextInput source="body" />
+            <TextInput multiline source="body" />
             <DateInput label="Publication date" source="published_at" />
             <TextInput source="average_note" />
-            <DisabledInput label="Nb views" source="views" />
+            <TextInput disabled label="Nb views" source="views" />
         </SimpleForm>
     </Edit>
 );
@@ -119,7 +120,7 @@ export const PostCreate = (props) => (
         <SimpleForm>
             <TextInput source="title" />
             <TextInput source="teaser" options={{ multiLine: true }} />
-            <LongTextInput source="body" />
+            <TextInput multiline source="body" />
             <TextInput label="Publication date" source="published_at" />
             <TextInput source="average_note" />
         </SimpleForm>
@@ -140,7 +141,7 @@ See the [Data Providers documentation](./DataProviders.md) for details.
 
 ## Batteries Included But Removable
 
-React-admin is designed as a library of loosely coupled React components built on top of [material-ui](http://www.material-ui.com/#/), in addition to controller functions implemented the Redux way. It is very easy to replace one part of react-admin with your own, e.g. to use a custom datagrid, GraphQL instead of REST, or bootstrap instead of Material Design.
+React-admin is designed as a library of loosely coupled React components built on top of [material-ui](http://material-ui.com/), in addition to controller functions implemented the Redux way. It is very easy to replace one part of react-admin with your own, e.g. to use a custom datagrid, GraphQL instead of REST, or bootstrap instead of Material Design.
 
 ## Contributing
 

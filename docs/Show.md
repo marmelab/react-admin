@@ -88,25 +88,18 @@ export const PostShow = (props) => (
 
 ### Actions
 
-You can replace the list of default actions by your own element using the `actions` prop:
+You can replace the list of default actions by your own component using the `actions` prop:
 
 ```jsx
-import CardActions from '@material-ui/core/CardActions';
 import Button from '@material-ui/core/Button';
-import { EditButton } from 'react-admin';
-
-const cardActionStyle = {
-    zIndex: 2,
-    display: 'inline-block',
-    float: 'right',
-};
+import { EditButton, TopToolbar } from 'react-admin';
 
 const PostShowActions = ({ basePath, data, resource }) => (
-    <CardActions style={cardActionStyle}>
+    <TopToolbar>
         <EditButton basePath={basePath} record={data} />
         {/* Add your custom actions */}
         <Button color="primary" onClick={customAction}>Custom Action</Button>
-    </CardActions>
+    </TopToolbar>
 );
 
 export const PostShow = (props) => (
@@ -120,34 +113,43 @@ export const PostShow = (props) => (
 
 You may want to display additional information on the side of the resource detail. Use the `aside` prop for that, passing the component of your choice:
 
+{% raw %}
 ```jsx
 const Aside = () => (
     <div style={{ width: 200, margin: '1em' }}>
-        <Typography variant="title">Post details</Typography>
-        <Typography variant="body1">
+        <Typography variant="h6">Post details</Typography>
+        <Typography variant="body2">
             Posts will only be published one an editor approves them
         </Typography>
     </div>
 );
 
 const PostShow = props => (
-    <Show aside={<Aside />} {...props}>
+    <Show aside={Aside} {...props}>
         ...
     </Show>
+);
 ```
+{% endraw %}
 
 The `aside` component receives the same props as the `Show` child component: `basePath`, `record`, `resource`, and `version`. That means you can display secondary details of the current record in the aside component:
 
+{% raw %}
 ```jsx
 const Aside = ({ record }) => (
     <div style={{ width: 200, margin: '1em' }}>
-        <Typography variant="title">Post details</Typography>
-        <Typography variant="body1">
-            Creation date: {record.createdAt}
-        </Typography>
+        <Typography variant="h6">Post details</Typography>
+        {record && (
+            <Typography variant="body2">
+                Creation date: {record.createdAt}
+            </Typography>
+        )}
     </div>
 );
 ```
+{% endraw %}
+
+**Tip**: Always test that the `record` is defined before using it, as react-admin starts rendering the UI before the API call is over.
 
 ## The `<ShowGuesser>` component
 
@@ -178,7 +180,7 @@ React-admin provides guessers for the `List` view (`ListGuesser`), the `Edit` vi
 
 The `<SimpleShowLayout>` component receives the `record` as prop from its parent component. It is responsible for rendering the actual view.
 
-The `<SimpleShowLayout>` renders its child components line by line (within `<div>` components).
+The `<SimpleShowLayout>` renders its child components line by line (within `<div>` components) inside a material-ui `<CardContent/>`.
 
 ```jsx
 export const PostShow = (props) => (
@@ -192,28 +194,7 @@ export const PostShow = (props) => (
 );
 ```
 
-It is possible to override its style by specifying the `style` prop, for example:
-
-```jsx
-const styles = {
-    container: {
-        display: 'flex',
-    },
-    item: {
-        marginRight: '1rem',
-    },
-};
-
-export const PostShow = (props) => (
-    <Show {...props}>
-        <SimpleShowLayout style={styles.container}>
-            <TextField source="title" style={styles.item} />
-            <RichTextField source="body" style={styles.item} />
-            <NumberField source="nb_views" style={styles.item} />
-        </SimpleShowLayout>
-    </Show>
-);
-```
+It accepts a `className` prop to let you override the style of the `<CardContent/>`.
 
 ## The `<TabbedShowLayout>` component
 
@@ -258,33 +239,57 @@ export const PostShow = (props) => (
 ```
 {% endraw %}
 
+To style the tabs, the `<Tab>` component accepts two props:
+
+- `className` is passed to the tab *header*
+- `contentClassName` is passed to the tab *content*
+
+### Tabs element
+
+By default, `<TabbedShowLayout>` renders its tabs using `<TabbedShowLayoutTabs>`, an internal react-admin component. You can pass a custom component as the `tabs` prop to override that default. Also, props passed to `<TabbedShowLayoutTabs>` are passed to the material-ui's `<Tabs>` component inside `<TabbedShowLayoutTabs>`. That means you can create a custom `tabs` component without copying several components from the react-admin source.
+
+For instance, to make use of scrollable `<Tabs>`, you can pass a scrollable props to `<TabbedShowLayoutTabs>` and use it in the `tabs` prop from `<TabbedShowLayout>` as follows:
+
+```jsx
+import {
+    Show,
+    TabbedShowLayout,
+    TabbedShowLayoutTabs,
+} from 'react-admin';
+
+const ScrollableTabbedShowLayout = props => (
+    <Show{...props}>
+        <TabbedShowLayout tabs={<TabbedShowLayoutTabs scrollable={true}{...props} />}>
+            ...
+        </TabbedShowLayout>
+    </Show>
+);
+
+export default ScrollableTabbedShowLayout;
+
+```
+
 ## Displaying Fields depending on the user permissions
 
-You might want to display some fields only to users with specific permissions. Those permissions are retrieved for each route and will provided to your component as a `permissions` prop.
+You might want to display some fields only to users with specific permissions. 
 
-Each route will call the `authProvider` with the `AUTH_GET_PERMISSIONS` type and some parameters including the current location and route parameters. It's up to you to return whatever you need to check inside your component such as the user's role, etc.
+Before rendering the `Show` component, react-admin calls the `authProvider.getPermissions()` method, and passes the result to the component as the `permissions` prop. It's up to your `authProvider` to return whatever you need to check roles and permissions inside your component.
 
 Here's an example inside a `Show` view with a `SimpleShowLayout` and a custom `actions` component:
 
 {% raw %}
 ```jsx
-import CardActions from '@material-ui/core/CardActions';
+import TopToolbar from '@material-ui/core/TopToolbar';
 import Button from '@material-ui/core/Button';
 import { EditButton, DeleteButton } from 'react-admin';
 
-const cardActionStyle = {
-    zIndex: 2,
-    display: 'inline-block',
-    float: 'right',
-};
-
 const PostShowActions = ({ permissions, basePath, data, resource }) => (
-    <CardActions style={cardActionStyle}>
+    <TopToolbar>
         <EditButton basePath={basePath} record={data} />
         {permissions === 'admin' &&
             <DeleteButton basePath={basePath} record={data} resource={resource} />
         }
-    </CardActions>
+    </TopToolbar>
 );
 
 export const PostShow = ({ permissions, ...props }) => (

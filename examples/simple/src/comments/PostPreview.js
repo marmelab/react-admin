@@ -1,24 +1,25 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { SimpleShowLayout, TextField } from 'react-admin';
 
-const PostPreviewView = ({ isLoading, ...props }) => (
-    <SimpleShowLayout {...props}>
-        <TextField source="id" />
-        <TextField source="title" />
-        <TextField source="teaser" />
-    </SimpleShowLayout>
-);
+const PostPreview = props => {
+    const record = useSelector(
+        state =>
+            state.admin.resources[props.resource]
+                ? state.admin.resources[props.resource].data[props.id]
+                : null,
+        [props.resource, props.id]
+    );
+    const version = useSelector(state => state.admin.ui.viewVersion);
+    useSelector(state => state.admin.loading > 0);
 
-const mapStateToProps = (state, props) => ({
-    record: state.admin.resources[props.resource]
-        ? state.admin.resources[props.resource].data[props.id]
-        : null,
-    isLoading: state.admin.loading > 0,
-    version: state.admin.ui.viewVersion,
-});
+    return (
+        <SimpleShowLayout version={version} record={record} {...props}>
+            <TextField source="id" />
+            <TextField source="title" />
+            <TextField source="teaser" />
+        </SimpleShowLayout>
+    );
+};
 
-export default connect(
-    mapStateToProps,
-    {}
-)(PostPreviewView);
+export default PostPreview;

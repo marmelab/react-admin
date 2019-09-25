@@ -8,9 +8,10 @@ describe('Tabs with routing', () => {
     const LoginPage = loginPageFactory('#/login');
 
     beforeEach(() => {
-        LoginPage.navigate();
+        ShowPage.navigate();
+        ShowPage.logout();
         LoginPage.login('admin', 'password');
-        cy.url().then(url => expect(url).to.contain('#/posts'));
+        cy.url().then(url => expect(url).to.contain('#/users'));
     });
 
     describe('in TabbedLayout component', () => {
@@ -22,11 +23,9 @@ describe('Tabs with routing', () => {
             cy.contains('Id');
             cy.contains('Name');
             ShowPage.gotoTab(2);
-            cy
-                .url()
-                .then(url =>
-                    expect(url).to.match(/.*#\/users\/1\/show\/security/)
-                );
+            cy.url().then(url =>
+                expect(url).to.match(/.*#\/users\/1\/show\/security/)
+            );
             cy.contains('Role');
             ShowPage.gotoTab(1);
             cy.contains('Id');
@@ -38,11 +37,9 @@ describe('Tabs with routing', () => {
             cy.contains('Id');
             cy.contains('Name');
             ShowPage.gotoTab(2);
-            cy
-                .url()
-                .then(url =>
-                    expect(url).to.match(/.*#\/users\/1\/show\/security/)
-                );
+            cy.url().then(url =>
+                expect(url).to.match(/.*#\/users\/1\/show\/security/)
+            );
             cy.contains('Role');
             cy.go('back');
             cy.contains('Id');
@@ -59,9 +56,9 @@ describe('Tabs with routing', () => {
             cy.contains('Id');
             cy.contains('Name');
             EditPage.gotoTab(2);
-            cy
-                .url()
-                .then(url => expect(url).to.match(/.*#\/users\/1\/security/));
+            cy.url().then(url =>
+                expect(url).to.match(/.*#\/users\/1\/security/)
+            );
             cy.contains('Role');
             EditPage.gotoTab(1);
             cy.contains('Id');
@@ -73,9 +70,9 @@ describe('Tabs with routing', () => {
             cy.contains('Id');
             cy.contains('Name');
             EditPage.gotoTab(2);
-            cy
-                .url()
-                .then(url => expect(url).to.match(/.*#\/users\/1\/security/));
+            cy.url().then(url =>
+                expect(url).to.match(/.*#\/users\/1\/security/)
+            );
             cy.contains('Role');
             cy.go('back');
             cy.contains('Id');

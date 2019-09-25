@@ -1,4 +1,4 @@
-import React, { Children, cloneElement } from 'react';
+import React, { Children, cloneElement, isValidElement } from 'react';
 import PropTypes from 'prop-types';
 import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
@@ -10,7 +10,7 @@ class UserMenu extends React.Component {
     static propTypes = {
         children: PropTypes.node,
         label: PropTypes.string.isRequired,
-        logout: PropTypes.node,
+        logout: PropTypes.element,
         icon: PropTypes.node,
         translate: PropTypes.func.isRequired,
     };
@@ -71,7 +71,11 @@ class UserMenu extends React.Component {
                     onClose={this.handleClose}
                 >
                     {Children.map(children, menuItem =>
-                        cloneElement(menuItem, { onClick: this.handleClose })
+                        isValidElement(menuItem)
+                            ? cloneElement(menuItem, {
+                                  onClick: this.handleClose,
+                              })
+                            : null
                     )}
                     {logout}
                 </Menu>

@@ -1,18 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import onlyUpdateForKeys from 'recompose/onlyUpdateForKeys';
-import MuiButton from '@material-ui/core/Button';
-import { withStyles } from '@material-ui/core/styles';
+import { Fab, makeStyles, useMediaQuery } from '@material-ui/core';
 import ContentAdd from '@material-ui/icons/Add';
-import compose from 'recompose/compose';
 import classnames from 'classnames';
 import { Link } from 'react-router-dom';
-import { translate } from 'ra-core';
+import { useTranslate } from 'ra-core';
 
 import Button from './Button';
-import Responsive from '../layout/Responsive';
 
-const styles = theme => ({
+const useStyles = makeStyles(theme => ({
     floating: {
         color: theme.palette.getContrastText(theme.palette.primary.main),
         margin: 0,
@@ -26,43 +23,42 @@ const styles = theme => ({
     floatingLink: {
         color: 'inherit',
     },
-});
+}));
 
 const CreateButton = ({
     basePath = '',
     className,
-    classes = {},
-    translate,
+    classes: classesOverride,
     label = 'ra.action.create',
+    icon = <ContentAdd />,
     ...rest
-}) => (
-    <Responsive
-        small={
-            <MuiButton
-                component={Link}
-                variant="fab"
-                color="primary"
-                className={classnames(classes.floating, className)}
-                to={`${basePath}/create`}
-                aria-label={label && translate(label)}
-                {...rest}
-            >
-                <ContentAdd />
-            </MuiButton>
-        }
-        medium={
-            <Button
-                component={Link}
-                to={`${basePath}/create`}
-                className={className}
-                label={label && translate(label)}
-                {...rest}
-            >
-                <ContentAdd />
-            </Button>
-        }
-    />
-);
+}) => {
+    const classes = useStyles({ classes: classesOverride });
+    const translate = useTranslate();
+    const isSmall = useMediaQuery(theme => theme.breakpoints.down('sm'));
+    return isSmall ? (
+        <Fab
+            component={Link}
+            color="primary"
+            className={classnames(classes.floating, className)}
+            to={`${basePath}/create`}
+            aria-label={label && translate(label)}
+            {...rest}
+        >
+            {icon}
+        </Fab>
+    ) : (
+        <Button
+            component={Link}
+            to={`${basePath}/create`}
+            className={className}
+            label={label}
+            {...rest}
+        >
+            {icon}
+        </Button>
+    );
+};
 
 CreateButton.propTypes = {
     basePath: PropTypes.string,
@@ -70,13 +66,8 @@ CreateButton.propTypes = {
     classes: PropTypes.object,
     label: PropTypes.string,
     size: PropTypes.string,
-    translate: PropTypes.func.isRequired,
+    icon: PropTypes.element,
 };
 
-const enhance = compose(
-    translate,
-    onlyUpdateForKeys(['basePath', 'label']),
-    withStyles(styles)
-);
-
+const enhance = onlyUpdateForKeys(['basePath', 'label', 'translate']);
 export default enhance(CreateButton);

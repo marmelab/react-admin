@@ -1,48 +1,9 @@
-import React from 'react';
+import React, { Children, cloneElement, memo } from 'react';
 import PropTypes from 'prop-types';
 import LinearProgress from '@material-ui/core/LinearProgress';
-import { withStyles } from '@material-ui/core/styles';
-import { ReferenceArrayFieldController } from 'ra-core';
-
-const styles = {
-    progress: { marginTop: '1em' },
-};
-
-export const ReferenceArrayFieldView = ({
-    children,
-    className,
-    classes = {},
-    data,
-    ids,
-    isLoading,
-    reference,
-    referenceBasePath,
-}) => {
-    if (isLoading) {
-        return <LinearProgress className={classes.progress} />;
-    }
-
-    return React.cloneElement(children, {
-        className,
-        resource: reference,
-        ids,
-        data,
-        isLoading,
-        basePath: referenceBasePath,
-        currentSort: {},
-    });
-};
-
-ReferenceArrayFieldView.propTypes = {
-    classes: PropTypes.object,
-    className: PropTypes.string,
-    data: PropTypes.object,
-    ids: PropTypes.array,
-    isLoading: PropTypes.bool,
-    children: PropTypes.element.isRequired,
-    reference: PropTypes.string.isRequired,
-    referenceBasePath: PropTypes.string,
-};
+import { makeStyles } from '@material-ui/core/styles';
+import { useReferenceArrayFieldController } from 'ra-core';
+import { fieldPropTypes } from './types';
 
 /**
  * A container component that fetches records from another resource specified
@@ -84,35 +45,75 @@ export const ReferenceArrayField = ({ children, ...props }) => {
     }
 
     return (
-        <ReferenceArrayFieldController {...props}>
-            {controllerProps => (
-                <ReferenceArrayFieldView
-                    {...props}
-                    {...{ children, ...controllerProps }}
-                />
-            )}
-        </ReferenceArrayFieldController>
+        <PureReferenceArrayFieldView
+            {...props}
+            {...useReferenceArrayFieldController(props)}
+        >
+            {children}
+        </PureReferenceArrayFieldView>
     );
 };
 
 ReferenceArrayField.propTypes = {
+    ...fieldPropTypes,
     addLabel: PropTypes.bool,
-    basePath: PropTypes.string.isRequired,
+    basePath: PropTypes.string,
     classes: PropTypes.object,
     className: PropTypes.string,
     children: PropTypes.element.isRequired,
     label: PropTypes.string,
-    record: PropTypes.object.isRequired,
+    record: PropTypes.object,
     reference: PropTypes.string.isRequired,
-    resource: PropTypes.string.isRequired,
+    resource: PropTypes.string,
     sortBy: PropTypes.string,
     source: PropTypes.string.isRequired,
 };
 
-const EnhancedReferenceArrayField = withStyles(styles)(ReferenceArrayField);
-
-EnhancedReferenceArrayField.defaultProps = {
+ReferenceArrayField.defaultProps = {
     addLabel: true,
 };
 
-export default EnhancedReferenceArrayField;
+const useStyles = makeStyles(theme => ({
+    progress: { marginTop: theme.spacing(2) },
+}));
+
+export const ReferenceArrayFieldView = ({
+    children,
+    className,
+    classes: classesOverride,
+    data,
+    ids,
+    loaded,
+    reference,
+    referenceBasePath,
+}) => {
+    const classes = useStyles({ classes: classesOverride });
+    if (!loaded) {
+        return <LinearProgress className={classes.progress} />;
+    }
+
+    return cloneElement(Children.only(children), {
+        className,
+        resource: reference,
+        ids,
+        data,
+        loaded,
+        basePath: referenceBasePath,
+        currentSort: {},
+    });
+};
+
+ReferenceArrayFieldView.propTypes = {
+    classes: PropTypes.object,
+    className: PropTypes.string,
+    data: PropTypes.object,
+    ids: PropTypes.array,
+    loaded: PropTypes.bool,
+    children: PropTypes.element.isRequired,
+    reference: PropTypes.string.isRequired,
+    referenceBasePath: PropTypes.string,
+};
+
+const PureReferenceArrayFieldView = memo(ReferenceArrayFieldView);
+
+export default ReferenceArrayField;

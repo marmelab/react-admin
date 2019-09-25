@@ -1,27 +1,39 @@
-import React, { Component } from 'react';
+import React, {
+    isValidElement,
+    Children,
+    cloneElement,
+    useCallback,
+} from 'react';
 import PropTypes from 'prop-types';
 import { sanitizeListRestProps } from 'ra-core';
-import { withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Checkbox from '@material-ui/core/Checkbox';
-
 import classnames from 'classnames';
 
 import DatagridHeaderCell from './DatagridHeaderCell';
 import DatagridBody from './DatagridBody';
+import DatagridLoading from './DatagridLoading';
 
-const styles = {
+const useStyles = makeStyles(theme => ({
     table: {
         tableLayout: 'auto',
     },
+    thead: {},
     tbody: {
         height: 'inherit',
     },
+    headerRow: {},
     headerCell: {
+        height: 42,
+        minHeight: 42,
         padding: '0 12px',
+        '&:last-child': {
+            padding: '0 12px',
+        },
     },
     checkbox: {},
     row: {},
@@ -36,19 +48,31 @@ const styles = {
             padding: '0 12px',
         },
     },
-};
+    expandHeader: {
+        padding: 0,
+        width: theme.spacing(6),
+    },
+    expandIconCell: {
+        width: theme.spacing(6),
+    },
+    expandIcon: {
+        padding: theme.spacing(1),
+        transform: 'rotate(-90deg)',
+        transition: theme.transitions.create('transform', {
+            duration: theme.transitions.duration.shortest,
+        }),
+    },
+    expanded: {
+        transform: 'rotate(0deg)',
+    },
+}));
 
 /**
  * The Datagrid component renders a list of records as a table.
  * It is usually used as a child of the <List> and <ReferenceManyField> components.
  *
  * Props:
- *  - styles
  *  - rowStyle
- *  - options (passed as props to <Table>)
- *  - headerOptions (passed as props to mui <TableHead>)
- *  - bodyOptions (passed as props to mui <TableBody>)
- *  - rowOptions (passed as props to mui <TableRow>)
  *
  * @example Display all posts as a datagrid
  * const postRowStyle = (record, index) => ({
@@ -75,135 +99,180 @@ const styles = {
  *     </Datagrid>
  * </ReferenceManyField>
  */
-class Datagrid extends Component {
-    updateSort = event => {
-        event.stopPropagation();
-        this.props.setSort(event.currentTarget.dataset.sort);
-    };
+function Datagrid({ classes: classesOverride, ...props }) {
+    const classes = useStyles({ classes: classesOverride });
+    const {
+        basePath,
+        body,
+        children,
+        className,
+        currentSort,
+        data,
+        expand,
+        hasBulkActions,
+        hover,
+        ids,
+        loading,
+        loaded,
+        onSelect,
+        onToggleItem,
+        resource,
+        rowClick,
+        rowStyle,
+        selectedIds,
+        setSort,
+        total,
+        version,
+        ...rest
+    } = props;
 
-    handleSelectAll = event => {
-        const { onSelect, ids, selectedIds } = this.props;
-        if (event.target.checked) {
-            onSelect(
-                ids.reduce(
-                    (idList, id) =>
-                        idList.includes(id) ? idList : idList.concat(id),
+    const updateSort = useCallback(
+        event => {
+            event.stopPropagation();
+            setSort(event.currentTarget.dataset.sort);
+        },
+        [setSort]
+    );
 
-                    selectedIds
-                )
-            );
-        } else {
-            onSelect([]);
-        }
-    };
+    const handleSelectAll = useCallback(
+        event => {
+            if (event.target.checked) {
+                onSelect(
+                    ids.reduce(
+                        (idList, id) =>
+                            idList.includes(id) ? idList : idList.concat(id),
 
-    render() {
-        const {
-            basePath,
-            data,
-            children,
-            classes,
-            className,
-            currentSort,
-            hasBulkActions,
-            hover,
-            ids,
-            isLoading,
-            resource,
-            rowStyle,
-            selectedIds,
-            setSort,
-            onSelect,
-            onToggleItem,
-            rowClick,
-            total,
-            version,
-            ...rest
-        } = this.props;
+                        selectedIds
+                    )
+                );
+            } else {
+                onSelect([]);
+            }
+        },
+        [ids, onSelect, selectedIds]
+    );
 
-        if (!isLoading && (ids.length === 0 || total === 0)) {
-            return null;
-        }
-
+    /**
+     * if loaded is false, the list displays for the first time, and the dataProvider hasn't answered yet
+     * if loaded is true, the data for the list has at least been returned once by the dataProvider
+     * if loaded is undefined, the Datagrid parent doesn't track loading state (e.g. ReferenceArrayField)
+     */
+    if (loaded === false) {
         return (
-            <Table
-                className={classnames(classes.table, className)}
-                {...sanitizeListRestProps(rest)}
-            >
-                <TableHead>
-                    <TableRow className={classes.row}>
-                        {hasBulkActions && (
-                            <TableCell padding="none">
-                                <Checkbox
-                                    className="select-all"
-                                    color="primary"
-                                    checked={
-                                        selectedIds.length > 0 &&
-                                        ids.length > 0 &&
-                                        !ids.find(
-                                            it => selectedIds.indexOf(it) === -1
-                                        )
-                                    }
-                                    onChange={this.handleSelectAll}
-                                />
-                            </TableCell>
-                        )}
-                        {React.Children.map(
-                            children,
-                            (field, index) =>
-                                field ? (
-                                    <DatagridHeaderCell
-                                        className={classes.headerCell}
-                                        currentSort={currentSort}
-                                        field={field}
-                                        isSorting={
-                                            field.props.source ===
-                                            currentSort.field
-                                        }
-                                        key={field.props.source || index}
-                                        resource={resource}
-                                        updateSort={this.updateSort}
-                                    />
-                                ) : null
-                        )}
-                    </TableRow>
-                </TableHead>
-                <DatagridBody
-                    basePath={basePath}
-                    classes={classes}
-                    rowClick={rowClick}
-                    data={data}
-                    hasBulkActions={hasBulkActions}
-                    hover={hover}
-                    ids={ids}
-                    isLoading={isLoading}
-                    onToggleItem={onToggleItem}
-                    resource={resource}
-                    rowStyle={rowStyle}
-                    selectedIds={selectedIds}
-                    version={version}
-                >
-                    {children}
-                </DatagridBody>
-            </Table>
+            <DatagridLoading
+                classes={classes}
+                className={className}
+                expand={expand}
+                hasBulkActions={hasBulkActions}
+                nbChildren={React.Children.count(children)}
+            />
         );
     }
+
+    /**
+     * Once loaded, the data for the list may be empty. Instead of
+     * displaying the table header with zero data rows,
+     * the datagrid displays nothing in this case.
+     */
+    if (loaded && (ids.length === 0 || total === 0)) {
+        return null;
+    }
+
+    /**
+     * After the initial load, if the data for the list isn't empty,
+     * and even if the data is refreshing (e.g. after a filter change),
+     * the datagrid displays the current data.
+     */
+    return (
+        <Table
+            className={classnames(classes.table, className)}
+            {...sanitizeListRestProps(rest)}
+        >
+            <TableHead className={classes.thead}>
+                <TableRow
+                    className={classnames(classes.row, classes.headerRow)}
+                >
+                    {expand && (
+                        <TableCell
+                            padding="none"
+                            className={classes.expandHeader}
+                        />
+                    )}
+                    {hasBulkActions && (
+                        <TableCell padding="none">
+                            <Checkbox
+                                className="select-all"
+                                color="primary"
+                                checked={
+                                    selectedIds.length > 0 &&
+                                    ids.length > 0 &&
+                                    !ids.find(
+                                        it => selectedIds.indexOf(it) === -1
+                                    )
+                                }
+                                onChange={handleSelectAll}
+                            />
+                        </TableCell>
+                    )}
+                    {Children.map(children, (field, index) =>
+                        isValidElement(field) ? (
+                            <DatagridHeaderCell
+                                className={classes.headerCell}
+                                currentSort={currentSort}
+                                field={field}
+                                isSorting={
+                                    currentSort.field ===
+                                    (field.props.sortBy || field.props.source)
+                                }
+                                key={field.props.source || index}
+                                resource={resource}
+                                updateSort={updateSort}
+                                padding="none"
+                            />
+                        ) : null
+                    )}
+                </TableRow>
+            </TableHead>
+            {cloneElement(
+                body,
+                {
+                    basePath,
+                    className: classes.tbody,
+                    classes,
+                    expand,
+                    rowClick,
+                    data,
+                    hasBulkActions,
+                    hover,
+                    ids,
+                    onToggleItem,
+                    resource,
+                    rowStyle,
+                    selectedIds,
+                    version,
+                },
+                children
+            )}
+        </Table>
+    );
 }
 
 Datagrid.propTypes = {
     basePath: PropTypes.string,
+    body: PropTypes.element,
     children: PropTypes.node.isRequired,
     classes: PropTypes.object,
     className: PropTypes.string,
     currentSort: PropTypes.shape({
-        sort: PropTypes.string,
+        field: PropTypes.string,
         order: PropTypes.string,
-    }).isRequired,
+    }),
     data: PropTypes.object.isRequired,
+    expand: PropTypes.oneOfType([PropTypes.element, PropTypes.elementType]),
     hasBulkActions: PropTypes.bool.isRequired,
     hover: PropTypes.bool,
     ids: PropTypes.arrayOf(PropTypes.any).isRequired,
-    isLoading: PropTypes.bool,
+    loading: PropTypes.bool,
     onSelect: PropTypes.func,
     onToggleItem: PropTypes.func,
     resource: PropTypes.string,
@@ -220,6 +289,7 @@ Datagrid.defaultProps = {
     hasBulkActions: false,
     ids: [],
     selectedIds: [],
+    body: <DatagridBody />,
 };
 
-export default withStyles(styles)(Datagrid);
+export default Datagrid;

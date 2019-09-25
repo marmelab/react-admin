@@ -1,39 +1,35 @@
-import React, { Component } from 'react';
+import React, { forwardRef, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import MenuItem from '@material-ui/core/MenuItem';
 import { FieldTitle } from 'ra-core';
 
-class FilterButtonMenuItem extends Component {
-    static propTypes = {
-        filter: PropTypes.object.isRequired,
-        onShow: PropTypes.func.isRequired,
-        resource: PropTypes.string.isRequired,
-    };
-
-    handleShow = () => {
-        const { filter, onShow } = this.props;
+const FilterButtonMenuItem = forwardRef(({ filter, onShow, resource }, ref) => {
+    const handleShow = useCallback(() => {
         onShow({ source: filter.source, defaultValue: filter.defaultValue });
-    };
+    }, [filter.defaultValue, filter.source, onShow]);
 
-    render() {
-        const { filter, resource } = this.props;
+    return (
+        <MenuItem
+            className="new-filter-item"
+            data-key={filter.source}
+            data-default-value={filter.defaultValue}
+            key={filter.source}
+            onClick={handleShow}
+            ref={ref}
+        >
+            <FieldTitle
+                label={filter.label}
+                source={filter.source}
+                resource={resource}
+            />
+        </MenuItem>
+    );
+});
 
-        return (
-            <MenuItem
-                className="new-filter-item"
-                data-key={filter.source}
-                data-default-value={filter.defaultValue}
-                key={filter.source}
-                onClick={this.handleShow}
-            >
-                <FieldTitle
-                    label={filter.label}
-                    source={filter.source}
-                    resource={resource}
-                />
-            </MenuItem>
-        );
-    }
-}
+FilterButtonMenuItem.propTypes = {
+    filter: PropTypes.object.isRequired,
+    onShow: PropTypes.func.isRequired,
+    resource: PropTypes.string.isRequired,
+};
 
 export default FilterButtonMenuItem;

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import CardActions from '../layout/CardActions';
+import TopToolbar from '../layout/TopToolbar';
 import { ListButton } from '../button';
 
 const sanitizeRestProps = ({
@@ -17,18 +17,18 @@ const sanitizeRestProps = ({
  *
  * Internal component. If you want to add or remove actions for a Create view,
  * write your own CreateActions Component. Then, in the <Create> component,
- * use it in the `actions` prop to pas a custom element.
+ * use it in the `actions` prop to pass a custom component.
  *
  * @example
  *     import Button from '@material-ui/core/Button';
- *     import { CardActions, Create, ListButton } from 'react-admin';
+ *     import { TopToolbar, Create, ListButton } from 'react-admin';
  *
  *     const PostCreateActions = ({ basePath }) => (
- *         <CardActions>
+ *         <TopToolbar>
  *             <ListButton basePath={basePath} />
  *             // Add your custom actions here //
  *             <Button color="primary" onClick={customAction}>Custom Action</Button>
- *         </CardActions>
+ *         </TopToolbar>
  *     );
  *
  *     export const PostCreate = (props) => (
@@ -38,9 +38,9 @@ const sanitizeRestProps = ({
  *     );
  */
 const CreateActions = ({ basePath, className, hasList, ...rest }) => (
-    <CardActions className={className} {...sanitizeRestProps(rest)}>
+    <TopToolbar className={className} {...sanitizeRestProps(rest)}>
         {hasList && <ListButton basePath={basePath} />}
-    </CardActions>
+    </TopToolbar>
 );
 
 CreateActions.propTypes = {

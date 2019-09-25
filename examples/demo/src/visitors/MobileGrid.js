@@ -3,14 +3,15 @@ import React from 'react';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
-import { withStyles } from '@material-ui/core/styles';
-import { DateField, EditButton, translate, NumberField } from 'react-admin';
+import { makeStyles } from '@material-ui/core/styles';
+
+import { DateField, EditButton, useTranslate, NumberField } from 'react-admin';
 
 import AvatarField from './AvatarField';
-import { ColoredNumberField } from './index';
+import ColoredNumberField from './ColoredNumberField';
 import SegmentsField from './SegmentsField';
 
-const listStyles = theme => ({
+const useStyles = makeStyles(theme => ({
     card: {
         height: '100%',
         display: 'flex',
@@ -28,10 +29,12 @@ const listStyles = theme => ({
         display: 'flex',
         flexDirection: 'column',
     },
-});
+}));
 
-const MobileGrid = withStyles(listStyles)(
-    translate(({ classes, ids, data, basePath, translate }) => (
+const MobileGrid = ({ ids, data, basePath }) => {
+    const translate = useTranslate();
+    const classes = useStyles();
+    return (
         <div style={{ margin: '1em' }}>
             {ids.map(id => (
                 <Card key={id} className={classes.card}>
@@ -54,7 +57,8 @@ const MobileGrid = withStyles(listStyles)(
                         <div>
                             {translate(
                                 'resources.customers.fields.last_seen_gte'
-                            )}&nbsp;
+                            )}
+                            &nbsp;
                             <DateField
                                 record={data[id]}
                                 source="last_seen"
@@ -65,7 +69,9 @@ const MobileGrid = withStyles(listStyles)(
                             {translate(
                                 'resources.commands.name',
                                 parseInt(data[id].nb_commands, 10) || 1
-                            )}&nbsp;:&nbsp;<NumberField
+                            )}
+                            &nbsp;:&nbsp;
+                            <NumberField
                                 record={data[id]}
                                 source="nb_commands"
                                 label="resources.customers.fields.commands"
@@ -75,7 +81,8 @@ const MobileGrid = withStyles(listStyles)(
                         <div>
                             {translate(
                                 'resources.customers.fields.total_spent'
-                            )}&nbsp; :{' '}
+                            )}
+                            &nbsp; :{' '}
                             <ColoredNumberField
                                 record={data[id]}
                                 source="total_spent"
@@ -83,17 +90,16 @@ const MobileGrid = withStyles(listStyles)(
                             />
                         </div>
                     </CardContent>
-                    {data[id].groups &&
-                        data[id].groups.length > 0 && (
-                            <CardContent className={classes.cardContent}>
-                                <SegmentsField record={data[id]} />
-                            </CardContent>
-                        )}
+                    {data[id].groups && data[id].groups.length > 0 && (
+                        <CardContent className={classes.cardContent}>
+                            <SegmentsField record={data[id]} />
+                        </CardContent>
+                    )}
                 </Card>
             ))}
         </div>
-    ))
-);
+    );
+};
 
 MobileGrid.defaultProps = {
     data: {},

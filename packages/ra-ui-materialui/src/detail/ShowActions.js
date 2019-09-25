@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { EditButton } from '../button';
-import CardActions from '../layout/CardActions';
+import TopToolbar from '../layout/TopToolbar';
 
 const sanitizeRestProps = ({
     basePath,
@@ -19,18 +19,18 @@ const sanitizeRestProps = ({
  *
  * Internal component. If you want to add or remove actions for a Show view,
  * write your own ShowActions Component. Then, in the <Show> component,
- * use it in the `actions` prop to pas a custom element.
+ * use it in the `actions` prop to pass a custom component.
  *
  * @example
  *     import Button from '@material-ui/core/Button';
- *     import { CardActions, EditButton, Show } from 'react-admin';
+ *     import { TopToolbar, EditButton, Show } from 'react-admin';
  *
  *     const PostShowActions = ({ basePath, record, resource }) => (
- *         <CardActions>
+ *         <TopToolbar>
  *             <EditButton basePath={basePath} record={record} />
  *             // Add your custom actions here //
  *             <Button color="primary" onClick={customAction}>Custom Action</Button>
- *         </CardActions>
+ *         </TopToolbar>
  *     );
  *
  *     export const PostShow = (props) => (
@@ -39,17 +39,10 @@ const sanitizeRestProps = ({
  *         </Show>
  *     );
  */
-const ShowActions = ({
-    basePath,
-    className,
-    data,
-    hasEdit,
-    resource,
-    ...rest
-}) => (
-    <CardActions className={className} {...sanitizeRestProps(rest)}>
+const ShowActions = ({ basePath, className, data, hasEdit, ...rest }) => (
+    <TopToolbar className={className} {...sanitizeRestProps(rest)}>
         {hasEdit && <EditButton basePath={basePath} record={data} />}
-    </CardActions>
+    </TopToolbar>
 );
 
 ShowActions.propTypes = {

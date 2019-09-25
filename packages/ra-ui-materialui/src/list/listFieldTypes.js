@@ -79,7 +79,7 @@ ${children.map(child => `            ${child.getRepresentation()}`).join('\n')}
         component: props => <TextField source="id" {...props} />, // eslint-disable-line react/display-name
         representation: () => `<TextField source="id" />`,
     },
-    richText: false, // never display a rich text field in a datagrid
+    richText: undefined, // never display a rich text field in a datagrid
     string: {
         component: TextField,
         representation: props => `<TextField source="${props.source}" />`,

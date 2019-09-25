@@ -1,7 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import compose from 'recompose/compose';
-import { addField, translate, ReferenceArrayInputController } from 'ra-core';
+import {
+    useReferenceArrayInputController,
+    useInput,
+    useTranslate,
+} from 'ra-core';
 
 import LinearProgress from '../layout/LinearProgress';
 import Labeled from '../input/Labeled';
@@ -44,7 +47,7 @@ export const ReferenceArrayInputView = ({
     className,
     error,
     input,
-    isLoading,
+    loading,
     isRequired,
     label,
     meta,
@@ -64,7 +67,7 @@ export const ReferenceArrayInputView = ({
         { _: label }
     );
 
-    if (isLoading) {
+    if (loading) {
         return (
             <Labeled
                 label={translatedLabel}
@@ -105,6 +108,7 @@ export const ReferenceArrayInputView = ({
         translateChoice: false,
         limitChoicesToValue: true,
         ...sanitizeRestProps(rest),
+        ...children.props,
     });
 };
 
@@ -115,7 +119,7 @@ ReferenceArrayInputView.propTypes = {
     choices: PropTypes.array,
     className: PropTypes.string,
     error: PropTypes.string,
-    isLoading: PropTypes.bool,
+    loading: PropTypes.bool,
     input: PropTypes.object.isRequired,
     label: PropTypes.string,
     meta: PropTypes.object,
@@ -208,22 +212,48 @@ ReferenceArrayInputView.propTypes = {
  *     <SelectArrayInput optionText="name" />
  * </ReferenceArrayInput>
  */
-export const ReferenceArrayInput = ({ children, ...props }) => {
+export const ReferenceArrayInput = ({
+    children,
+    id: idOverride,
+    onBlur,
+    onChange,
+    onFocus,
+    validate,
+    ...props
+}) => {
     if (React.Children.count(children) !== 1) {
         throw new Error(
             '<ReferenceArrayInput> only accepts a single child (like <Datagrid>)'
         );
     }
 
+    const { id, input, isRequired, meta } = useInput({
+        id: idOverride,
+        onBlur,
+        onChange,
+        onFocus,
+        source: props.source,
+        validate,
+    });
+
+    const controllerProps = useReferenceArrayInputController({
+        ...props,
+        input,
+    });
+
+    const translate = useTranslate();
+
     return (
-        <ReferenceArrayInputController {...props}>
-            {controllerProps => (
-                <ReferenceArrayInputView
-                    {...props}
-                    {...{ children, ...controllerProps }}
-                />
-            )}
-        </ReferenceArrayInputController>
+        <ReferenceArrayInputView
+            id={id}
+            input={input}
+            isRequired={isRequired}
+            meta={meta}
+            translate={translate}
+            children={children}
+            {...props}
+            {...controllerProps}
+        />
     );
 };
 
@@ -234,18 +264,15 @@ ReferenceArrayInput.propTypes = {
     className: PropTypes.string,
     filter: PropTypes.object,
     filterToQuery: PropTypes.func.isRequired,
-    input: PropTypes.object.isRequired,
     label: PropTypes.string,
-    meta: PropTypes.object,
     perPage: PropTypes.number,
     reference: PropTypes.string.isRequired,
-    resource: PropTypes.string.isRequired,
+    resource: PropTypes.string,
     sort: PropTypes.shape({
         field: PropTypes.string,
         order: PropTypes.oneOf(['ASC', 'DESC']),
     }),
     source: PropTypes.string,
-    translate: PropTypes.func.isRequired,
 };
 
 ReferenceArrayInput.defaultProps = {
@@ -256,9 +283,4 @@ ReferenceArrayInput.defaultProps = {
     sort: { field: 'id', order: 'DESC' },
 };
 
-const EnhancedReferenceArrayInput = compose(
-    addField,
-    translate
-)(ReferenceArrayInput);
-
-export default EnhancedReferenceArrayInput;
+export default ReferenceArrayInput;

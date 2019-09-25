@@ -11,7 +11,6 @@ title: "Reference"
 * [`<Admin>`](./Admin.md)
 * `<AdminRoutes>`
 * `<AppBar>`
-* `<AppBarMobile>` (deprecated)
 * [`<ArrayField>`](./Fields.md#arrayfield)
 * [`<ArrayInput>`](./Inputs.md#arrayinput)
 * [`<Authenticated>`](./Authentication.md#restricting-access-to-a-custom-page)
@@ -34,7 +33,6 @@ title: "Reference"
 * [`<DateField>`](./Fields.md#datefield)
 * [`<DateInput>`](./Inputs.md#dateinput)
 * `<DeleteButton>`
-* [`<DisabledInput>`](./Inputs.md#disabledinput)
 * [`<Edit>`](./CreateEdit.md#the-create-and-edit-components)
 * `<EditActions>`
 * `<EditButton>`
@@ -47,17 +45,14 @@ title: "Reference"
 * [`<FormDataConsumer>`](./Inputs.md#linking-two-inputs)
 * [`<FormTab>`](./CreateEdit.md#the-tabbedform-component)
 * [`<FunctionField>`](./Fields.md#functionfield)
-* `<EditButton>`
 * [`<ImageField>`](./Fields.md#imagefield)
 * [`<ImageInput>`](./Inputs.md#imageinput)
 * [`<ImageInputPreview>`](./Inputs.md#imageinput)
-* [`<FunctionField>`](./Fields.md#functionfield)
 * `<Labeled>`
 * [`<Layout>`](./Theming.md#using-a-custom-layout)
 * [`<Loading>`](./Theming.md#Loading)
 * [`<List>`](./List.md#the-list-component)
 * `<ListButton>`
-* [`<LongTextInput>`](./Inputs.md#longtextinput)
 * [`<Menu>`](./Theming.md#using-a-custom-menu)
 * `<Notification>`
 * [`<NullableBooleanInput>`](./Inputs.md#booleaninput-and-nullablebooleaninput)
@@ -66,12 +61,12 @@ title: "Reference"
 * [`<Pagination>`](./List.md#pagination)
 * [`<RadioButtonGroupInput>`](./Inputs.md#radiobuttongroupinput)
 * [`<ReferenceArrayField>`](./Fields.md#referencearrayfield)
+* [`<ReferenceArrayInput>`](./Inputs.md#referencearrayinput)
 * [`<ReferenceField>`](./Fields.md#referencefield)
 * [`<ReferenceInput>`](./Inputs.md#referenceinput)
 * [`<ReferenceManyField>`](./Fields.md#referencemanyfield)
 * `<RefreshButton>`
 * [`<Resource>`](./Resource.md#the-resource-component)
-* [`<Responsive>`](./Theming.md#responsive-utility)
 * [`<RichTextField>`](./Fields.md#richtextfield)
 * [`<RichTextInput>`](./Inputs.md#richtextinput)
 * `<SaveButton>`
@@ -94,7 +89,6 @@ title: "Reference"
 * `<Title>`
 * `<Toolbar>`
 * [`<UrlField>`](./Fields.md#urlfield)
-* `<ViewTitle>` (deprecated)
 * [`<WithPermissions>`](./Authorization.md#withpermissions)
 
 </div>

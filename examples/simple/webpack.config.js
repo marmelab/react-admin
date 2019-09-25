@@ -1,6 +1,9 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
+const IgnoreNotFoundExportPlugin = require('ignore-not-found-export-plugin');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
+    .BundleAnalyzerPlugin;
 
 module.exports = {
     devtool: 'cheap-module-source-map',
@@ -23,7 +26,22 @@ module.exports = {
             template: './src/index.html',
         }),
         new HardSourceWebpackPlugin(),
-    ],
+        // required because of https://github.com/babel/babel/issues/7640
+        new IgnoreNotFoundExportPlugin([
+            'CallbackSideEffect',
+            'ChoicesProps',
+            'InputProps',
+            'NotificationSideEffect',
+            'OptionText',
+            'OptionTextElement',
+            'RedirectionSideEffect',
+            'RefreshSideEffect',
+        ]),
+    ].concat(
+        process.env.NODE_ENV === 'development'
+            ? [new BundleAnalyzerPlugin()]
+            : []
+    ),
     resolve: {
         extensions: ['.ts', '.js', '.tsx', '.json'],
         alias: {
@@ -59,6 +77,14 @@ module.exports = {
                 'ra-data-fakerest',
                 'src'
             ),
+            'ra-i18n-polyglot': path.join(
+                __dirname,
+                '..',
+                '..',
+                'packages',
+                'ra-i18n-polyglot',
+                'src'
+            ),
             'ra-input-rich-text': path.join(
                 __dirname,
                 '..',
@@ -82,20 +108,6 @@ module.exports = {
                 'packages',
                 'ra-tree-ui-materialui',
                 'src'
-            ),
-            'ra-tree-language-english': path.join(
-                __dirname,
-                '..',
-                '..',
-                'packages',
-                'ra-tree-language-english'
-            ),
-            'ra-tree-language-french': path.join(
-                __dirname,
-                '..',
-                '..',
-                'packages',
-                'ra-tree-language-french'
             ),
         },
     },

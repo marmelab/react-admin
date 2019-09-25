@@ -24,7 +24,7 @@ describe('buildQuery', () => {
         expect(() =>
             buildQueryFactory()(introspectionResults)('CREATE', 'Post')
         ).toThrow(
-            'No query or mutation matching aor fetch type CREATE could be found for resource Post'
+            'No query or mutation matching fetch type CREATE could be found for resource Post'
         );
     });
 

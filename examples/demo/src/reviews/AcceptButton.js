@@ -1,48 +1,62 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import Button from '@material-ui/core/Button';
 import ThumbUp from '@material-ui/icons/ThumbUp';
-import { translate } from 'react-admin';
-import compose from 'recompose/compose';
-import { reviewApprove as reviewApproveAction } from './reviewActions';
+import { useTranslate, useUpdate, useNotify, useRedirect } from 'react-admin';
 
-class AcceptButton extends Component {
-    handleApprove = () => {
-        const { reviewApprove, record } = this.props;
-        reviewApprove(record.id, record);
-    };
+/**
+ * This custom button demonstrate using useUpdate to update data
+ */
+const AcceptButton = ({ record }) => {
+    const translate = useTranslate();
+    const notify = useNotify();
+    const redirectTo = useRedirect();
 
-    render() {
-        const { record, translate } = this.props;
-        return record && record.status === 'pending' ? (
-            <Button color="primary" size="small" onClick={this.handleApprove}>
-                <ThumbUp
-                    color="primary"
-                    style={{ paddingRight: '0.5em', color: 'green' }}
-                />
-                {translate('resources.reviews.action.accept')}
-            </Button>
-        ) : (
-            <span />
-        );
-    }
-}
+    const [approve, { loading }] = useUpdate(
+        'reviews',
+        record.id,
+        { status: 'accepted' },
+        record,
+        {
+            undoable: true,
+            onSuccess: () => {
+                notify(
+                    'resources.reviews.notification.approved_success',
+                    'info',
+                    {},
+                    true
+                );
+                redirectTo('/reviews');
+            },
+            onFailure: () => {
+                notify(
+                    'resources.reviews.notification.approved_error',
+                    'warning'
+                );
+            },
+        }
+    );
+    return record && record.status === 'pending' ? (
+        <Button
+            variant="outlined"
+            color="primary"
+            size="small"
+            onClick={approve}
+            disabled={loading}
+        >
+            <ThumbUp
+                color="primary"
+                style={{ paddingRight: '0.5em', color: 'green' }}
+            />
+            {translate('resources.reviews.action.accept')}
+        </Button>
+    ) : (
+        <span />
+    );
+};
 
 AcceptButton.propTypes = {
     record: PropTypes.object,
-    reviewApprove: PropTypes.func,
-    translate: PropTypes.func,
 };
 
-const enhance = compose(
-    translate,
-    connect(
-        null,
-        {
-            reviewApprove: reviewApproveAction,
-        }
-    )
-);
-
-export default enhance(AcceptButton);
+export default AcceptButton;

@@ -60,7 +60,7 @@ ${children.map(child => `            ${child.getRepresentation()}`).join('\n')}
     },
     referenceChild: {
         component: props => <SelectInput optionText="id" {...props} />, // eslint-disable-line react/display-name
-        representation: () => `<SelectInput optionText="id">`,
+        representation: () => `<SelectInput optionText="id" />`,
     },
     referenceArray: {
         component: ReferenceArrayInput,
@@ -71,7 +71,7 @@ ${children.map(child => `            ${child.getRepresentation()}`).join('\n')}
     },
     referenceArrayChild: {
         component: props => <SelectInput optionText="id" {...props} />, // eslint-disable-line react/display-name
-        representation: () => `<SelectInput optionText="id">`,
+        representation: () => `<SelectInput optionText="id" />`,
     },
     richText: {
         component: TextInput,

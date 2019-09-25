@@ -24,7 +24,7 @@ The `dataProvider` parameter of the `<Admin>` component must be a function with 
  * @param {Object} payload Request parameters. Depends on the action type
  * @returns {Promise} the Promise for a response
  */
-const dataProvider = (type, resource, params) => new Promise();
+const dataProvider = (type, resource, payload) => new Promise();
 ```
 
 You can find a Data Provider example implementation in [`packages/ra-data-simple-rest/src/index.js`](https://github.com/marmelab/react-admin/blob/master/packages/ra-data-simple-rest/src/index.js);
@@ -42,12 +42,25 @@ The react-admin project includes 4 Data Providers:
 
 You can find Data Providers for various backends in third-party repositories:
 
+* **[Django Rest Framework](https://www.django-rest-framework.org/)**: [synaptic-cl/ra-data-drf](https://github.com/synaptic-cl/ra-data-drf)
 * **[Feathersjs](http://www.feathersjs.com/)**: [josx/ra-data-feathers](https://github.com/josx/ra-data-feathers)
-* **[PostgREST](http://postgrest.com/en/v0.4/)**: [tomberek/aor-postgrest-client](https://github.com/tomberek/aor-postgrest-client)
-* **[Prisma](https://github.com/weakky/ra-data-prisma)**: [weakky/ra-data-prisma](https://github.com/weakky/ra-data-prisma)
-* **[Xmysql](https://github.com/o1lab/xmysql)**: [soaserele/aor-xmysql](https://github.com/soaserele/aor-xmysql)
-* **[Firebase](https://github.com/aymendhaya/ra-data-firebase-client):** [aymendhaya/ra-data-firebase-client](https://github.com/aymendhaya/ra-data-firebase-client).
+* **[Firebase](https://firebase.google.com/docs/database)**: [aymendhaya/ra-data-firebase-client](https://github.com/aymendhaya/ra-data-firebase-client).
+* **[Firestore](https://firebase.google.com/docs/firestore)**: [rafalzawadzki/ra-data-firestore-client](https://github.com/rafalzawadzki/ra-data-firestore-client).
+* **[GraphCool](http://www.graph.cool/)**: [marmelab/ra-data-graphcool](https://github.com/marmelab/react-admin/tree/master/packages/ra-data-graphcool) (uses [Apollo](http://www.apollodata.com/))
+* **[GraphQL](http://graphql.org/)**: [marmelab/ra-data-graphql](https://github.com/marmelab/react-admin/tree/master/packages/ra-data-graphql) (uses [Apollo](http://www.apollodata.com/))
+* **[HAL](http://stateless.co/hal_specification.html)**: [b-social/ra-data-hal](https://github.com/b-social/ra-data-hal)
+* **[Hasura](https://github.com/hasura/graphql-engine)**: [hasura/ra-data-hasura](https://github.com/hasura/graphql-engine/tree/master/community/tools/ra-data-hasura)
+* **[Hydra](http://www.hydra-cg.com/) / [JSON-LD](https://json-ld.org/)**: [api-platform/admin/hydra](https://github.com/api-platform/admin/blob/master/src/hydra/hydraClient.js)
 * **[JSON API](http://jsonapi.org/)**: [henvo/ra-jsonapi-client](https://github.com/henvo/ra-jsonapi-client)
+* **[JSON HAL](https://tools.ietf.org/html/draft-kelly-json-hal-08)**: [ra-data-json-hal](https://www.npmjs.com/package/ra-data-json-hal)
+* **[JSON server](https://github.com/typicode/json-server)**: [marmelab/ra-data-json-server](https://github.com/marmelab/ra-data-json-server).
+* **[NestJS CRUD](https://github.com/nestjsx/crud)**: [FusionWorks/react-admin-nestjsx-crud-dataprovider](https://github.com/FusionWorks/react-admin-nestjsx-crud-dataprovider)
+* **[Parse](https://parseplatform.org/)**: [almahdi/ra-data-parse](https://github.com/almahdi/ra-data-parse)
+* **[Prisma](https://github.com/weakky/ra-data-prisma)**: [weakky/ra-data-prisma](https://github.com/weakky/ra-data-prisma)
+* **[REST-HAPI](https://github.com/JKHeadley/rest-hapi)**: [ra-data-rest-hapi](https://github.com/mkg20001/ra-data-rest-hapi)
+* **[Sails.js](https://sailsjs.com/)**: [mpampin/ra-data-json-sails](https://github.com/mpampin/ra-data-json-sails)
+* **[Spring Boot](https://spring.io/projects/spring-boot)**: [vishpat/ra-data-springboot-rest](https://github.com/vishpat/ra-data-springboot-rest) 
+* **[Strapi](https://strapi.io/)**: [nazirov91/ra-strapi-rest](https://github.com/nazirov91/ra-strapi-rest)
 
 If you've written a Data Provider for another backend, and open-sourced it, please help complete this list with your package.
 
@@ -59,8 +72,11 @@ Due to the breaking changes, the following providers are no longer working with 
 
 * **[DynamoDb](https://github.com/abiglobalhealth/aor-dynamodb-client)**: [abiglobalhealth/aor-dynamodb-client](https://github.com/abiglobalhealth/aor-dynamodb-client)
 * **[Epilogue](https://github.com/dchester/epilogue)**: [dunghuynh/aor-epilogue-client](https://github.com/dunghuynh/aor-epilogue-client)
-* **[Loopback](http://loopback.io/)**: [kimkha/aor-loopback](https://github.com/kimkha/aor-loopback)
+* **[Firebase](https://firebase.google.com/)**: [sidferreira/aor-firebase-client](https://github.com/sidferreira/aor-firebase-client)		
+* **[Loopback](http://loopback.io/)**: [kimkha/aor-loopback](https://github.com/kimkha/aor-loopback)		
 * **[Parse Server](https://github.com/ParsePlatform/parse-server)**: [leperone/aor-parseserver-client](https://github.com/leperone/aor-parseserver-client)
+* **[PostgREST](http://postgrest.com/en/v0.4/)**: [tomberek/aor-postgrest-client](https://github.com/tomberek/aor-postgrest-client)
+* **[Xmysql](https://github.com/o1lab/xmysql)**: [soaserele/aor-xmysql](https://github.com/soaserele/aor-xmysql)
 
 Fortunately, Data Providers aren't complex pieces of code and supporting the new version of react-admin should not be too harsh. If you are a maintainer of one of these projects we would warmly welcome an upgrade.
 
@@ -104,7 +120,7 @@ Here is how this provider maps request types to API calls:
 | `UPDATE_MANY`        | Multiple calls to `PUT http://my.api.url/posts/123`
 | `DELETE`             | `DELETE http://my.api.url/posts/123`
 | `DELETE_MANY`        | Multiple calls to `DELETE http://my.api.url/posts/123`
-| `GET_MANY`           | `GET http://my.api.url/posts?filter={ids:[123,456,789]}`
+| `GET_MANY`           | `GET http://my.api.url/posts?filter={id:[123,456,789]}`
 | `GET_MANY_REFERENCE` | `GET http://my.api.url/posts?filter={author_id:345}`
 
 **Note**: The simple REST client expects the API to include a `Content-Range` header in the response to `GET_LIST` calls. The value must be the total number of resources in the collection. This allows react-admin to know how many pages of resources there are in total, and build the pagination controls.
@@ -190,15 +206,17 @@ const convertFileToBase64 = file => new Promise((resolve, reject) => {
  */
 const addUploadFeature = requestHandler => (type, resource, params) => {
     if (type === 'UPDATE' && resource === 'posts') {
+        // notice that following condition can be true only when `<ImageInput source="pictures" />` component has parameter `multiple={true}`
+        // if parameter `multiple` is false, then data.pictures is not an array, but single object
         if (params.data.pictures && params.data.pictures.length) {
             // only freshly dropped pictures are instance of File
-            const formerPictures = params.data.pictures.filter(p.rawFile => !(p instanceof File));
-            const newPictures = params.data.pictures.filter(p.rawFile => p instanceof File);
+            const formerPictures = params.data.pictures.filter(p => !(p.rawFile instanceof File));
+            const newPictures = params.data.pictures.filter(p => p.rawFile instanceof File);
 
             return Promise.all(newPictures.map(convertFileToBase64))
-                .then(base64Pictures => base64Pictures.map(picture64 => ({
+                .then(base64Pictures => base64Pictures.map((picture64, index) => ({
                     src: picture64,
-                    title: `${params.data.title}`,
+                    title: `${newPictures[index].title}`,
                 })))
                 .then(transformedNewPictures => requestHandler(type, resource, {
                     ...params,
@@ -382,7 +400,7 @@ export default (type, resource, params) => {
             options.method = 'PUT';
             options.body = JSON.stringify(params.data);
             break;
-        case UPDATE_MANY:
+        case UPDATE_MANY: {
             const query = {
                 filter: JSON.stringify({ id: params.ids }),
             };
@@ -390,17 +408,19 @@ export default (type, resource, params) => {
             options.method = 'PATCH';
             options.body = JSON.stringify(params.data);
             break;
+        }
         case DELETE:
             url = `${apiUrl}/${resource}/${params.id}`;
             options.method = 'DELETE';
             break;
-        case DELETE_MANY:
+        case DELETE_MANY: {
             const query = {
                 filter: JSON.stringify({ id: params.ids }),
             };
             url = `${apiUrl}/${resource}?${stringify(query)}`;
             options.method = 'DELETE';
             break;
+        }
         case GET_MANY: {
             const query = {
                 filter: JSON.stringify({ id: params.ids }),
@@ -431,9 +451,10 @@ export default (type, resource, params) => {
 
     return fetch(url, options)
         .then(res => res.json())
-        .then(response =>
+        .then(response => {
             /* Convert HTTP Response to Data Provider Response */
             /* Covered in the next section */
+        }
         );
 };
 ```
@@ -449,8 +470,8 @@ Request Type         | Response format
 `CREATE`             | `{ data: {Record} }`
 `UPDATE`             | `{ data: {Record} }`
 `UPDATE_MANY`        | `{ data: {mixed[]} }` The ids which have been updated
-`DELETE`             | `{ data: {Record} }`
-`DELETE_MANY`        | `{ data: {mixed[]} }` The ids which have been deleted
+`DELETE`             | `{ data: {Record|null} }` The record that has been deleted (optional)
+`DELETE_MANY`        | `{ data: {mixed[]} }` The ids of the deleted records (optional)
 `GET_MANY`           | `{ data: {Record[]} }`
 `GET_MANY_REFERENCE` | `{ data: {Record[]}, total: {int} }`
 
@@ -571,16 +592,16 @@ POST http://path.to.my.api/posts
 PUT http://path.to.my.api/posts/123
 { "id": 123, "title": "hello, world", "author_id": 12 }
 
-PUT http://path.to.my.api/posts?filter={ids:[123,124,125]}
+PUT http://path.to.my.api/posts?filter={id:[123,124,125]}
 [123, 124, 125]
 
 DELETE http://path.to.my.api/posts/123
 { "id": 123, "title": "hello, world", "author_id": 12 }
 
-DELETE http://path.to.my.api/posts?filter={ids:[123,124,125]}
+DELETE http://path.to.my.api/posts?filter={id:[123,124,125]}
 [123, 124, 125]
 
-GET http://path.to.my.api/posts?filter={ids:[123,124,125]}
+GET http://path.to.my.api/posts?filter={id:[123,124,125]}
 [
     { "id": 123, "title": "hello, world", "author_id": 12 },
     { "id": 124, "title": "good day sunshine", "author_id": 12 },
@@ -660,6 +681,8 @@ export default (type, resource, params) => {
                     };
                 case CREATE:
                     return { data: { ...params.data, id: json.id } };
+                case DELETE_MANY:
+                    return { data: json || [] };
                 default:
                     return { data: json };
             }

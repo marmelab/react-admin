@@ -8,6 +8,7 @@ module.exports = {
             cancel: 'Cancel',
             clear_input_value: 'Clear value',
             clone: 'Clone',
+            confirm: 'Confirm',
             create: 'Create',
             delete: 'Delete',
             edit: 'Edit',
@@ -21,17 +22,20 @@ module.exports = {
             show: 'Show',
             sort: 'Sort',
             undo: 'Undo',
+            expand: 'Expand',
+            close: 'Close',
         },
         boolean: {
             true: 'Yes',
             false: 'No',
+            null: '',
         },
         page: {
             create: 'Create %{name}',
             dashboard: 'Dashboard',
             edit: '%{name} #%{id}',
             error: 'Something went wrong',
-            list: '%{name} List',
+            list: '%{name}',
             loading: 'Loading',
             not_found: 'Not Found',
             show: '%{name} #%{id}',
@@ -62,7 +66,7 @@ module.exports = {
             bulk_delete_content:
                 'Are you sure you want to delete this %{name}? |||| Are you sure you want to delete these %{smart_count} items?',
             bulk_delete_title:
-                'Delete %{name} |||| Delete %{smart_count} %{name} items',
+                'Delete %{name} |||| Delete %{smart_count} %{name}',
             delete_content: 'Are you sure you want to delete this item?',
             delete_title: 'Delete %{name} #%{id}',
             details: 'Details',
@@ -88,6 +92,7 @@ module.exports = {
             prev: 'Prev',
         },
         auth: {
+            auth_check_error: 'Please login to continue',
             user_menu: 'Profile',
             username: 'Username',
             password: 'Password',
@@ -104,7 +109,10 @@ module.exports = {
             http_error: 'Server communication error',
             data_provider_error:
                 'dataProvider error. Check the console for details.',
+            i18n_error:
+                'Cannot load the translations for the specified language',
             canceled: 'Action cancelled',
+            logged_out: 'Your session has ended, please reconnect.',
         },
         validation: {
             required: 'Required',
