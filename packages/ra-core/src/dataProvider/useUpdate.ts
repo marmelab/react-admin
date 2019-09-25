@@ -1,6 +1,3 @@
-import { useCallback } from 'react';
-import merge from 'lodash/merge';
-
 import { CRUD_UPDATE } from '../actions/dataActions/crudUpdate';
 import { Identifier } from '../types';
 import useMutation from './useMutation';
@@ -47,30 +44,10 @@ const useUpdate = (
         loading: boolean;
         loaded: boolean;
     }
-] => {
-    const [mutate, state] = useMutation();
-
-    const update = useCallback(
-        (event: any, callTimeData?: any, callTimeOptions?: any) =>
-            mutate(
-                {
-                    resource,
-                    payload: merge(
-                        {},
-                        { id, data, previousData },
-                        callTimeData
-                    ),
-                    type: 'update',
-                },
-                {
-                    action: CRUD_UPDATE,
-                    ...merge({}, options, callTimeOptions),
-                }
-            ),
-        [id, data, previousData, mutate, resource, JSON.stringify(options)] // eslint-disable-line react-hooks/exhaustive-deps
+] =>
+    useMutation(
+        { type: 'update', resource, payload: { id, data, previousData } },
+        { ...options, action: CRUD_UPDATE }
     );
-
-    return [update, state];
-};
 
 export default useUpdate;

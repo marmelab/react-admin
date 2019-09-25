@@ -1,6 +1,3 @@
-import { useCallback } from 'react';
-import merge from 'lodash/merge';
-
 import { CRUD_CREATE } from '../actions/dataActions/crudCreate';
 import useMutation from './useMutation';
 
@@ -42,26 +39,10 @@ const useCreate = (
         loading: boolean;
         loaded: boolean;
     }
-] => {
-    const [mutate, state] = useMutation();
-
-    const create = useCallback(
-        (event: any, callTimeData?: any, callTimeOptions?: any) =>
-            mutate(
-                {
-                    resource,
-                    payload: merge({}, data, callTimeData),
-                    type: 'create',
-                },
-                {
-                    action: CRUD_CREATE,
-                    ...merge({}, options, callTimeOptions),
-                }
-            ),
-        [data, mutate, resource, JSON.stringify(options)] // eslint-disable-line react-hooks/exhaustive-deps
+] =>
+    useMutation(
+        { type: 'create', resource, payload: data },
+        { ...options, action: CRUD_CREATE }
     );
-
-    return [create, state];
-};
 
 export default useCreate;

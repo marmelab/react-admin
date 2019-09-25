@@ -4,19 +4,6 @@ import { useSafeSetState } from '../util/hooks';
 import useDataProvider from './useDataProvider';
 import useDataProviderWithDeclarativeSideEffects from './useDataProviderWithDeclarativeSideEffects';
 
-export interface Query {
-    type: string;
-    resource: string;
-    payload: object;
-}
-
-export interface QueryOptions {
-    action?: string;
-    onSuccess?: (response: any) => any | Object;
-    onError?: (error?: any) => any | Object;
-    withDeclarativeSideEffectsSupport?: boolean;
-}
-
 /**
  * Call the data provider on mount
  *
@@ -79,16 +66,7 @@ export interface QueryOptions {
  *     );
  * };
  */
-const useQuery = (
-    query: Query,
-    options: QueryOptions = {}
-): {
-    data?: any;
-    total?: number;
-    error?: any;
-    loading: boolean;
-    loaded: boolean;
-} => {
+const useQuery = (query: Query, options: QueryOptions = {}): UseQueryValue => {
     const { type, resource, payload } = query;
     const { withDeclarativeSideEffectsSupport, ...rest } = options;
     const [state, setState] = useSafeSetState({
@@ -128,8 +106,8 @@ const useQuery = (
                     loaded: false,
                 });
             });
-        // deep equality, see https://github.com/facebook/react/issues/14476#issuecomment-471199055
     }, [
+        // deep equality, see https://github.com/facebook/react/issues/14476#issuecomment-471199055
         JSON.stringify({ query, options: rest }),
         dataProvider,
         dataProviderWithDeclarativeSideEffects,
@@ -138,6 +116,27 @@ const useQuery = (
     /* eslint-enable react-hooks/exhaustive-deps */
 
     return state;
+};
+
+export interface Query {
+    type: string;
+    resource: string;
+    payload: object;
+}
+
+export interface QueryOptions {
+    action?: string;
+    onSuccess?: (response: any) => any | Object;
+    onError?: (error?: any) => any | Object;
+    withDeclarativeSideEffectsSupport?: boolean;
+}
+
+export type UseQueryValue = {
+    data?: any;
+    total?: number;
+    error?: any;
+    loading: boolean;
+    loaded: boolean;
 };
 
 export default useQuery;

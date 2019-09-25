@@ -87,7 +87,6 @@ const useCreateController = (props: CreateProps): CreateControllerProps => {
             { onSuccess, onFailure } = {}
         ) =>
             create(
-                null,
                 { data },
                 {
                     onSuccess: onSuccess

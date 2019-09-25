@@ -35,7 +35,6 @@ const SaveWithNoteButton = props => {
         }
 
         create(
-            null,
             {
                 data: { ...formState.values, average_note: 10 },
             },

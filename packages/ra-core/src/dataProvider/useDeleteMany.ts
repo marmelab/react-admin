@@ -1,6 +1,3 @@
-import { useCallback } from 'react';
-import merge from 'lodash/merge';
-
 import { CRUD_DELETE_MANY } from '../actions/dataActions/crudDeleteMany';
 import useMutation from './useMutation';
 import { Identifier } from '../types';
@@ -43,26 +40,10 @@ const useDeleteMany = (
         loading: boolean;
         loaded: boolean;
     }
-] => {
-    const [mutate, state] = useMutation();
-
-    const deleteCallback = useCallback(
-        (event: any, callTimeData?: any, callTimeOptions?: any) =>
-            mutate(
-                {
-                    resource,
-                    payload: merge({}, { ids }, callTimeData),
-                    type: 'deleteMany',
-                },
-                {
-                    action: CRUD_DELETE_MANY,
-                    ...merge({}, options, callTimeOptions),
-                }
-            ),
-        [ids, mutate, resource, JSON.stringify(options)] // eslint-disable-line react-hooks/exhaustive-deps
+] =>
+    useMutation(
+        { type: 'deleteMany', resource, payload: { ids } },
+        { ...options, action: CRUD_DELETE_MANY }
     );
-
-    return [deleteCallback, state];
-};
 
 export default useDeleteMany;
