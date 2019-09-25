@@ -92,7 +92,7 @@ const useEditController = (props: EditProps): EditControllerProps => {
     const save = useCallback(
         (data: Partial<Record>, redirectTo = 'list') =>
             update(
-                { data },
+                { payload: { data } },
                 {
                     onSuccess: () => {
                         notify(
