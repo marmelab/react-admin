@@ -119,6 +119,7 @@ export const RadioButtonGroupInput: FunctionComponent<
         <FormControl
             component="fieldset"
             margin="normal"
+            error={touched && !!error}
             {...sanitizeRestProps(rest)}
         >
             <FormLabel component="legend" className={classes.label}>

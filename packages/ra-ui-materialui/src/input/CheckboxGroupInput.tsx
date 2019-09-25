@@ -6,11 +6,12 @@ import FormControl, { FormControlProps } from '@material-ui/core/FormControl';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import { makeStyles } from '@material-ui/core/styles';
+import { CheckboxProps } from '@material-ui/core/Checkbox';
 import { FieldTitle, useInput, InputProps, ChoicesProps } from 'ra-core';
 
 import defaultSanitizeRestProps from './sanitizeRestProps';
 import CheckboxGroupInputItem from './CheckboxGroupInputItem';
-import { CheckboxProps } from '@material-ui/core/Checkbox';
+import InputHelperText from './InputHelperText';
 
 const sanitizeRestProps = ({
     setFilter,
@@ -150,6 +151,7 @@ const CheckboxGroupInput: FunctionComponent<
         <FormControl
             component="fieldset"
             margin="normal"
+            error={touched && !!error}
             {...sanitizeRestProps(rest)}
         >
             <FormLabel component="legend" className={classes.label}>
@@ -175,8 +177,15 @@ const CheckboxGroupInput: FunctionComponent<
                     />
                 ))}
             </FormGroup>
-            {touched && error && <FormHelperText error>{error}</FormHelperText>}
-            {helperText && <FormHelperText>{helperText}</FormHelperText>}
+            {(touched && error) || helperText ? (
+                <FormHelperText>
+                    <InputHelperText
+                        touched={touched}
+                        error={error}
+                        helperText={helperText}
+                    />
+                </FormHelperText>
+            ) : null}
         </FormControl>
     );
 };
