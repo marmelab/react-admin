@@ -1,6 +1,5 @@
 import { useSelector } from 'react-redux';
 import { CRUD_GET_MATCHING } from '../actions/dataActions/crudGetMatching';
-import { GET_LIST } from '../dataFetchActions';
 import { Pagination, Sort, ReduxState } from '../types';
 import useQueryWithStore from './useQueryWithStore';
 import {
