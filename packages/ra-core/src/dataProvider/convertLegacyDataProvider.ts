@@ -11,17 +11,16 @@ import {
 } from '../dataFetchActions';
 import { LegacyDataProvider, DataProvider } from '../types';
 
-const defaultDataProvider = {
-    create: () => Promise.resolve(null), // avoids adding a context in tests
-    delete: () => Promise.resolve(null), // avoids adding a context in tests
-    deleteMany: () => Promise.resolve(null), // avoids adding a context in tests
-    getList: () => Promise.resolve(null), // avoids adding a context in tests
-    getMany: () => Promise.resolve(null), // avoids adding a context in tests
-    getManyReference: () => Promise.resolve(null), // avoids adding a context in tests
-    getOne: () => Promise.resolve(null), // avoids adding a context in tests
-    update: () => Promise.resolve(null), // avoids adding a context in tests
-    updateMany: () => Promise.resolve(null), // avoids adding a context in tests
-};
+const defaultDataProvider = () => Promise.resolve();
+defaultDataProvider.create = () => Promise.resolve(null);
+defaultDataProvider.delete = () => Promise.resolve(null);
+defaultDataProvider.deleteMany = () => Promise.resolve(null);
+defaultDataProvider.getList = () => Promise.resolve(null);
+defaultDataProvider.getMany = () => Promise.resolve(null);
+defaultDataProvider.getManyReference = () => Promise.resolve(null);
+defaultDataProvider.getOne = () => Promise.resolve(null);
+defaultDataProvider.update = () => Promise.resolve(null);
+defaultDataProvider.updateMany = () => Promise.resolve(null);
 
 const fetchMap = {
     create: CREATE,
@@ -57,6 +56,9 @@ const convertLegacyDataProvider = (
 
                 return legacyDataProvider(name.toString(), resource, params);
             };
+        },
+        apply(_, __, args) {
+            return legacyDataProvider.apply(legacyDataProvider, args);
         },
     });
 
