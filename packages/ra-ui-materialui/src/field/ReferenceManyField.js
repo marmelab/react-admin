@@ -1,4 +1,4 @@
-import React, { Fragment, cloneElement, Children } from 'react';
+import React, { Fragment, cloneElement, Children, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import {
     useSortState,
@@ -6,7 +6,8 @@ import {
     useReferenceManyFieldController,
 } from 'ra-core';
 
-const switchOrder = (order, defaultOrder) => order ? (order === "DESC" ? "ASC" : "DESC") : defaultOrder
+const switchOrder = (order, defaultOrder) =>
+    order ? (order === 'DESC' ? 'ASC' : 'DESC') : defaultOrder;
 /**
  * Render related records to the current one.
  *
@@ -88,7 +89,10 @@ export const ReferenceManyField = props => {
         perPage,
         sort,
     });
-    const updateSort = useCallback(field => setSort({ field, order: switchOrder(sort.order, "DESC") }), [setSort, sort.order]) 
+    const updateSort = useCallback(
+        field => setSort({ field, order: switchOrder(sort.order, 'DESC') }),
+        [setSort, sort.order]
+    );
 
     return (
         <ReferenceManyFieldView
