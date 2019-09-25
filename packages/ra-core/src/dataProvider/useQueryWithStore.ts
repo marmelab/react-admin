@@ -2,9 +2,10 @@ import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import isEqual from 'lodash/isEqual';
 
-import { ReduxState } from '../types';
-import { useSafeSetState } from '../util/hooks';
 import useDataProvider from './useDataProvider';
+import getFetchType from './getFetchType';
+import { useSafeSetState } from '../util/hooks';
+import { ReduxState } from '../types';
 
 export interface Query {
     type: string;
@@ -39,7 +40,7 @@ const isEmptyList = data =>
  * This selector reads the customQueries store and acts as a response cache.
  */
 const defaultDataSelector = query => (state: ReduxState) => {
-    const key = JSON.stringify(query);
+    const key = JSON.stringify({ ...query, type: getFetchType(query.type) });
     return state.admin.customQueries[key]
         ? state.admin.customQueries[key].data
         : undefined;
