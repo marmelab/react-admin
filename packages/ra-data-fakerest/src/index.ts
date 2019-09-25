@@ -1,15 +1,5 @@
 import FakeRest from 'fakerest';
-import {
-    GET_LIST,
-    GET_ONE,
-    GET_MANY,
-    GET_MANY_REFERENCE,
-    CREATE,
-    UPDATE,
-    UPDATE_MANY,
-    DELETE,
-    DELETE_MANY,
-} from 'react-admin';
+import { DataProvider } from 'ra-core';
 
 /* eslint-disable no-console */
 function log(type, resource, params, response) {
@@ -30,6 +20,7 @@ function log(type, resource, params, response) {
  * Useful for debugging and testing - do not use in production.
  *
  * @example
+ *
  * import fakeDataProvider from 'ra-data-fakerest';
  * const dataProvider = fakeDataProvider({
  *   posts: [
@@ -42,16 +33,17 @@ function log(type, resource, params, response) {
  *   ],
  * })
  */
-export default (data, loggingEnabled = false) => {
+export default (data, loggingEnabled = false): DataProvider => {
     const restServer = new FakeRest.Server();
     restServer.init(data);
     if (window) {
-        window.restServer = restServer; // give way to update data in the console
+        // give way to update data in the console
+        (window as any).restServer = restServer;
     }
 
     function getResponse(type, resource, params) {
         switch (type) {
-            case GET_LIST: {
+            case 'getList': {
                 const { page, perPage } = params.pagination;
                 const { field, order } = params.sort;
                 const query = {
@@ -66,17 +58,17 @@ export default (data, loggingEnabled = false) => {
                     }),
                 };
             }
-            case GET_ONE:
+            case 'getOne':
                 return {
                     data: restServer.getOne(resource, params.id, { ...params }),
                 };
-            case GET_MANY:
+            case 'getMany':
                 return {
                     data: restServer.getAll(resource, {
                         filter: { id: params.ids },
                     }),
                 };
-            case GET_MANY_REFERENCE: {
+            case 'getManyReference': {
                 const { page, perPage } = params.pagination;
                 const { field, order } = params.sort;
                 const query = {
@@ -91,26 +83,26 @@ export default (data, loggingEnabled = false) => {
                     }),
                 };
             }
-            case UPDATE:
+            case 'update':
                 return {
                     data: restServer.updateOne(resource, params.id, {
                         ...params.data,
                     }),
                 };
-            case UPDATE_MANY:
+            case 'updateMany':
                 params.ids.forEach(id =>
                     restServer.updateOne(resource, id, {
                         ...params.data,
                     })
                 );
                 return { data: params.ids };
-            case CREATE:
+            case 'create':
                 return {
                     data: restServer.addOne(resource, { ...params.data }),
                 };
-            case DELETE:
+            case 'delete':
                 return { data: restServer.removeOne(resource, params.id) };
-            case DELETE_MANY:
+            case 'deleteMany':
                 params.ids.forEach(id => restServer.removeOne(resource, id));
                 return { data: params.ids };
             default:
@@ -119,32 +111,43 @@ export default (data, loggingEnabled = false) => {
     }
 
     /**
-     * @param {String} type One of the constants appearing at the top if this file, e.g. 'UPDATE'
+     * @param {String} type One of the data Provider methods, e.g. 'getList'
      * @param {String} resource Name of the resource to fetch, e.g. 'posts'
      * @param {Object} params The data request params, depending on the type
      * @returns {Promise} The response
      */
-    return (type, resource, params) => {
+    const handle = (type, resource, params): Promise<any> => {
         const collection = restServer.getCollection(resource);
         if (!collection) {
-            return new Promise((_, reject) =>
-                reject(new Error(`Undefined collection "${resource}"`))
+            return Promise.reject(
+                new Error(`Undefined collection "${resource}"`)
             );
         }
         let response;
         try {
             response = getResponse(type, resource, params);
         } catch (error) {
-            return new Promise((_, reject) => reject(error));
-        }
-        if (response === false) {
-            return new Promise((_, reject) =>
-                reject(new Error(`Unsupported fetch action type ${type}`))
-            );
+            console.error(error);
+            return Promise.reject(error);
         }
         if (loggingEnabled) {
             log(type, resource, params, response);
         }
-        return new Promise(resolve => resolve(response));
+        return Promise.resolve(response);
+    };
+
+    return {
+        getList: (resource, params) => handle('getList', resource, params),
+        getOne: (resource, params) => handle('getOne', resource, params),
+        getMany: (resource, params) => handle('getMany', resource, params),
+        getManyReference: (resource, params) =>
+            handle('getManyReference', resource, params),
+        update: (resource, params) => handle('update', resource, params),
+        updateMany: (resource, params) =>
+            handle('updateMany', resource, params),
+        create: (resource, params) => handle('create', resource, params),
+        delete: (resource, params) => handle('delete', resource, params),
+        deleteMany: (resource, params) =>
+            handle('deleteMany', resource, params),
     };
 };
