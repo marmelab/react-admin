@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Form, FormSpy } from 'react-final-form';
 import classnames from 'classnames';
@@ -37,7 +37,10 @@ const sanitizeRestProps = ({
     dirtySinceLastSubmit,
     dispatch,
     displayedFilters,
+    errors,
+    filters,
     filterValues,
+    form,
     handleSubmit,
     hasSubmitErrors,
     hasValidationErrors,
@@ -46,6 +49,7 @@ const sanitizeRestProps = ({
     initialized,
     initialValues,
     invalid,
+    modified,
     pristine,
     pure,
     reset,
@@ -61,71 +65,76 @@ const sanitizeRestProps = ({
     submitSucceeded,
     submitting,
     touch,
+    touched,
     triggerSubmit,
     untouch,
     valid,
     validate,
     validating,
-    _reduxForm,
+    values,
+    visited,
+    __versions,
     ...props
 }) => props;
 
-export class FilterForm extends Component {
-    componentDidMount() {
-        this.props.filters.forEach(filter => {
+export const FilterForm = ({
+    classes = {},
+    className,
+    resource,
+    margin,
+    variant,
+    filters,
+    displayedFilters,
+    hideFilter,
+    initialValues,
+    ...rest
+}) => {
+    useEffect(() => {
+        filters.forEach(filter => {
             if (filter.props.alwaysOn && filter.props.defaultValue) {
                 throw new Error(
                     'Cannot use alwaysOn and defaultValue on a filter input. Please set the filterDefaultValues props on the <List> element instead.'
                 );
             }
         });
-    }
+    }, [filters]);
 
-    getShownFilters() {
-        const { filters, displayedFilters, initialValues } = this.props;
-
-        return filters.filter(
+    const getShownFilters = () =>
+        filters.filter(
             filterElement =>
                 filterElement.props.alwaysOn ||
                 displayedFilters[filterElement.props.source] ||
                 typeof lodashGet(initialValues, filterElement.props.source) !==
                     'undefined'
         );
-    }
 
-    handleHide = event =>
-        this.props.hideFilter(event.currentTarget.dataset.key);
+    const handleHide = event => hideFilter(event.currentTarget.dataset.key);
 
-    render() {
-        const {
-            classes = {},
-            className,
-            resource,
-            margin,
-            variant,
-            ...rest
-        } = this.props;
+    return (
+        <form
+            className={classnames(className, classes.form)}
+            {...sanitizeRestProps(rest)}
+            onSubmit={handleSubmit}
+        >
+            {getShownFilters().map(filterElement => (
+                <FilterFormInput
+                    key={filterElement.props.source}
+                    filterElement={filterElement}
+                    handleHide={handleHide}
+                    resource={resource}
+                    margin={margin}
+                    variant={variant}
+                />
+            ))}
+            <div className={classes.clearFix} />
+        </form>
+    );
+};
 
-        return (
-            <form
-                className={classnames(className, classes.form)}
-                {...sanitizeRestProps(rest)}
-            >
-                {this.getShownFilters().map(filterElement => (
-                    <FilterFormInput
-                        key={filterElement.props.source}
-                        filterElement={filterElement}
-                        handleHide={this.handleHide}
-                        resource={resource}
-                        margin={margin}
-                        variant={variant}
-                    />
-                ))}
-                <div className={classes.clearFix} />
-            </form>
-        );
-    }
-}
+const handleSubmit = event => {
+    event.preventDefault();
+    return false;
+};
 
 FilterForm.propTypes = {
     resource: PropTypes.string.isRequired,
@@ -169,7 +178,7 @@ const EnhancedFilterForm = props => {
 
     return (
         <Form
-            onSubmit={() => {}}
+            onSubmit={handleFinalFormSubmit}
             initialValues={mergedInitialValuesWithDefaultValues}
             render={formProps => (
                 <>
@@ -188,6 +197,8 @@ const EnhancedFilterForm = props => {
         />
     );
 };
+
+const handleFinalFormSubmit = () => {};
 
 // Options to instruct the FormSpy that it should only listen to the values and pristine changes
 const FormSpySubscription = { values: true, pristine: true };
