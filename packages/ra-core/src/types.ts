@@ -68,191 +68,170 @@ export type LegacyAuthProvider = (
  */
 
 export type DataProvider = {
-    create: <RecordType = Record, DataType = RecordType>(
+    getList: (
         resource: string,
-        params: CreateParams<DataType>
-    ) => Promise<CreateResult<RecordType>>;
+        params: GetListParams
+    ) => Promise<GetListResult>;
 
-    delete: <RecordType = Record>(
+    getOne: (resource: string, params: GetOneParams) => Promise<GetOneResult>;
+
+    getMany: (
         resource: string,
-        params: DeleteParams
-    ) => Promise<DeleteResult<RecordType>>;
+        params: GetManyParams
+    ) => Promise<GetManyResult>;
+
+    getManyReference: (
+        resource: string,
+        params: GetManyReferenceParams
+    ) => Promise<GetManyReferenceResult>;
+
+    update: (resource: string, params: UpdateParams) => Promise<UpdateResult>;
+
+    updateMany: (
+        resource: string,
+        params: UpdateManyParams
+    ) => Promise<UpdateManyResult>;
+
+    create: (resource: string, params: CreateParams) => Promise<CreateResult>;
+
+    delete: (resource: string, params: DeleteParams) => Promise<DeleteResult>;
 
     deleteMany: (
         resource: string,
         params: DeleteManyParams
     ) => Promise<DeleteManyResult>;
 
-    getList: <RecordType = Record, FilterType = any>(
-        resource: string,
-        params: GetListParams<FilterType>
-    ) => Promise<GetListResult<RecordType>>;
-
-    getMany: <RecordType = Record>(
-        resource: string,
-        params: GetManyParams
-    ) => Promise<GetManyResult<RecordType>>;
-
-    getManyReference: <RecordType = Record, FilterType = any>(
-        resource: string,
-        params: GetManyReferenceParams<FilterType>
-    ) => Promise<GetManyReferenceResult<RecordType>>;
-
-    getOne: <RecordType = Record>(
-        resource: string,
-        params: GetOneParams
-    ) => Promise<GetOneResult<RecordType>>;
-
-    update: <RecordType = Record, DataType = RecordType>(
-        resource: string,
-        params: UpdateParams<RecordType, DataType>
-    ) => Promise<UpdateResult<RecordType>>;
-
-    updateMany: <RecordType = Record, DataType = RecordType>(
-        resource: string,
-        params: UpdateManyParams<DataType>
-    ) => Promise<UpdateManyResult<RecordType>>;
-
     [key: string]: any;
 };
 
-export interface CreateResult<RecordType = Record> {
-    data: RecordType;
-}
-
-export interface CreateParams<DataType = Record> {
-    data: DataType;
-}
-
-export interface DeleteResult<RecordType = Record> {
-    data?: RecordType;
-}
-
-export interface DeleteParams {
-    id: Identifier;
-}
-
-export interface DeleteManyResult {
-    data?: Identifier[];
-}
-
-export interface DeleteManyParams {
-    ids: Identifier[];
-}
-
-export interface GetListResult<RecordType = Record> {
-    data: RecordType[];
-    total: number;
-}
-
-export interface GetListParams<FilterType = any> {
+export interface GetListParams {
     pagination: Pagination;
     sort: Sort;
-    filter: FilterType;
+    filter: any;
 }
-
-export interface GetManyResult<RecordType = Record> {
-    data: RecordType[];
-}
-
-export interface GetManyParams {
-    ids: Identifier[];
-}
-
-export interface GetManyReferenceResult<RecordType = Record> {
-    data: RecordType[];
+export interface GetListResult {
+    data: Record[];
     total: number;
-}
-
-export interface GetManyReferenceParams<FilterType = any> {
-    target: string;
-    id: Identifier;
-    pagination: Pagination;
-    sort: Sort;
-    filter: FilterType;
-}
-
-export interface GetOneResult<RecordType = Record> {
-    data: RecordType;
 }
 
 export interface GetOneParams {
     id: Identifier;
 }
-
-export interface UpdateResult<RecordType = Record> {
-    data: RecordType;
+export interface GetOneResult {
+    data: Record;
 }
 
-export interface UpdateParams<RecordType = Record, DataType = RecordType> {
-    id: Identifier;
-    data: DataType;
-    previousData: RecordType;
-}
-
-export interface UpdateManyResult<RecordType = Record> {
-    data: RecordType;
-}
-
-export interface UpdateManyParams<DataType = Record> {
+export interface GetManyParams {
     ids: Identifier[];
-    data: DataType;
+}
+export interface GetManyResult {
+    data: Record[];
+}
+
+export interface GetManyReferenceParams {
+    target: string;
+    id: Identifier;
+    pagination: Pagination;
+    sort: Sort;
+    filter: any;
+}
+export interface GetManyReferenceResult {
+    data: Record[];
+    total: number;
+}
+
+export interface UpdateParams {
+    id: Identifier;
+    data: any;
+    previousData: Record;
+}
+export interface UpdateResult {
+    data: Record;
+}
+
+export interface UpdateManyParams {
+    ids: Identifier[];
+    data: any;
+}
+export interface UpdateManyResult {
+    data?: Identifier[];
+}
+
+export interface CreateParams {
+    data: any;
+}
+export interface CreateResult {
+    data: Record;
+}
+
+export interface DeleteParams {
+    id: Identifier;
+}
+export interface DeleteResult {
+    data?: Record;
+}
+
+export interface DeleteManyParams {
+    ids: Identifier[];
+}
+export interface DeleteManyResult {
+    data?: Identifier[];
 }
 
 export type DataProviderProxy = {
-    create: <RecordType = Record, DataType = RecordType>(
+    getList: (
         resource: string,
-        params: CreateParams<DataType>,
+        params: GetListParams,
         options?: UseDataProviderOptions
-    ) => Promise<CreateResult<RecordType>>;
+    ) => Promise<GetListResult>;
 
-    delete: <RecordType = Record>(
+    getOne: (
+        resource: string,
+        params: GetOneParams,
+        options?: UseDataProviderOptions
+    ) => Promise<GetOneResult>;
+
+    getMany: (
+        resource: string,
+        params: GetManyParams,
+        options?: UseDataProviderOptions
+    ) => Promise<GetManyResult>;
+
+    getManyReference: (
+        resource: string,
+        params: GetManyReferenceParams,
+        options?: UseDataProviderOptions
+    ) => Promise<GetManyReferenceResult>;
+
+    update: (
+        resource: string,
+        params: UpdateParams,
+        options?: UseDataProviderOptions
+    ) => Promise<UpdateResult>;
+
+    updateMany: (
+        resource: string,
+        params: UpdateManyParams,
+        options?: UseDataProviderOptions
+    ) => Promise<UpdateManyResult>;
+
+    create: (
+        resource: string,
+        params: CreateParams,
+        options?: UseDataProviderOptions
+    ) => Promise<CreateResult>;
+
+    delete: (
         resource: string,
         params: DeleteParams,
         options?: UseDataProviderOptions
-    ) => Promise<DeleteResult<RecordType>>;
+    ) => Promise<DeleteResult>;
 
     deleteMany: (
         resource: string,
         params: DeleteManyParams,
         options?: UseDataProviderOptions
     ) => Promise<DeleteManyResult>;
-
-    getList: <RecordType = Record, FilterType = any>(
-        resource: string,
-        params: GetListParams<FilterType>,
-        options?: UseDataProviderOptions
-    ) => Promise<GetListResult<RecordType>>;
-
-    getMany: <RecordType = Record>(
-        resource: string,
-        params: GetManyParams,
-        options?: UseDataProviderOptions
-    ) => Promise<GetManyResult<RecordType>>;
-
-    getManyReference: <RecordType = Record, FilterType = any>(
-        resource: string,
-        params: GetManyReferenceParams<FilterType>,
-        options?: UseDataProviderOptions
-    ) => Promise<GetManyReferenceResult<RecordType>>;
-
-    getOne: <RecordType = Record>(
-        resource: string,
-        params: GetOneParams,
-        options?: UseDataProviderOptions
-    ) => Promise<GetOneResult<RecordType>>;
-
-    update: <RecordType = Record, DataType = RecordType>(
-        resource: string,
-        params: UpdateParams<RecordType, DataType>,
-        options?: UseDataProviderOptions
-    ) => Promise<UpdateResult<RecordType>>;
-
-    updateMany: <RecordType = Record, DataType = RecordType>(
-        resource: string,
-        params: UpdateManyParams<DataType>,
-        options?: UseDataProviderOptions
-    ) => Promise<UpdateManyResult<RecordType>>;
 
     [key: string]: any;
 };
