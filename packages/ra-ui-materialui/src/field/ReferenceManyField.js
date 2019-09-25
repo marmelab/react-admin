@@ -6,6 +6,7 @@ import {
     useReferenceManyFieldController,
 } from 'ra-core';
 
+const switchOrder = (order, defaultOrder) => order ? (order === "DESC" ? "ASC" : "DESC") : defaultOrder
 /**
  * Render related records to the current one.
  *
@@ -87,6 +88,7 @@ export const ReferenceManyField = props => {
         perPage,
         sort,
     });
+    const updateSort = useCallback(field => setSort({ field, order: switchOrder(sort.order, "DESC") }), [setSort, sort.order]) 
 
     return (
         <ReferenceManyFieldView
@@ -97,7 +99,7 @@ export const ReferenceManyField = props => {
                 perPage,
                 setPage,
                 setPerPage,
-                setSort,
+                setSort: updateSort,
                 ...controllerProps,
             }}
         />
