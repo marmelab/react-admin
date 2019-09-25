@@ -52,7 +52,6 @@ const BooleanInput: FunctionComponent<
     return (
         <FormGroup {...sanitizeRestProps(rest)}>
             <FormControlLabel
-                htmlFor={id}
                 control={
                     <Switch
                         id={id}

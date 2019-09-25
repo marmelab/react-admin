@@ -1,5 +1,10 @@
 import React from 'react';
-import { render, cleanup, fireEvent } from '@testing-library/react';
+import {
+    render,
+    cleanup,
+    fireEvent,
+    waitForDomChange,
+} from '@testing-library/react';
 import { Form } from 'react-final-form';
 
 import BooleanInput from './BooleanInput';
@@ -72,6 +77,22 @@ describe('<BooleanInput />', () => {
         ) as HTMLInputElement;
 
         expect(input.checked).toBe(false);
+    });
+
+    it('should update on click', async () => {
+        const { getByLabelText } = render(
+            <Form
+                onSubmit={jest.fn}
+                render={() => <BooleanInput {...defaultProps} />}
+            />
+        );
+
+        const input = getByLabelText(
+            'resources.posts.fields.isPublished'
+        ) as HTMLInputElement;
+
+        fireEvent.click(input);
+        expect(input.checked).toBe(true);
     });
 
     it('should displays errors', () => {
