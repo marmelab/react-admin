@@ -34,6 +34,9 @@ const fetchMap = {
     updateMany: UPDATE_MANY,
 };
 
+interface ConvertedDataProvider extends DataProvider {
+    (type: string, resource: string, params: any): Promise<any>;
+}
 /**
  * Turn a function-based dataProvider to an object-based one
  *
@@ -41,11 +44,11 @@ const fetchMap = {
  *
  * @param {Function} dataProvider A legacy dataProvider (type, resource, params) => Promise<any>
  *
- * @returns {Object} An dataProvider that react-admin can use
+ * @returns {Object} A dataProvider that react-admin can use
  */
 const convertLegacyDataProvider = (
     legacyDataProvider: LegacyDataProvider
-): DataProvider => {
+): ConvertedDataProvider => {
     const proxy = new Proxy(defaultDataProvider, {
         get(_, name) {
             return (resource, params) => {
