@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { Form, FormSpy } from 'react-final-form';
 import classnames from 'classnames';
@@ -108,7 +108,10 @@ export const FilterForm = ({
                     'undefined'
         );
 
-    const handleHide = event => hideFilter(event.currentTarget.dataset.key);
+    const handleHide = useCallback(
+        event => hideFilter(event.currentTarget.dataset.key),
+        [hideFilter]
+    );
 
     return (
         <form
