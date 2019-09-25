@@ -284,7 +284,9 @@ describe('<RadioButtonGroupInput />', () => {
 
             fireEvent.blur(input);
 
-            expect(getByText('ra.validation.error')).toBeDefined();
+            const error = getByText('ra.validation.error');
+            expect(error).toBeDefined();
+            expect(error.classList.contains('Mui-error')).toEqual(true);
             expect(queryByText('Can I help you?')).toBeNull();
         });
     });
