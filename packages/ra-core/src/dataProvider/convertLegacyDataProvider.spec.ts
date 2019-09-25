@@ -8,7 +8,7 @@ describe('convertLegacyDataProvider', () => {
         const convertedProvider = convertLegacyDataProvider(legacyProvider);
         convertedProvider('GET_LIST', 'posts', { filter: { foo: 'bar' } });
         expect(legacyProvider).toHaveBeenCalledWith('GET_LIST', 'posts', {
-            foo: 'bar',
+            filter: { foo: 'bar' },
         });
     });
     it('should return an object allowing new style calls', () => {
@@ -16,7 +16,7 @@ describe('convertLegacyDataProvider', () => {
         const convertedProvider = convertLegacyDataProvider(legacyProvider);
         convertedProvider.getList('posts', { filter: { foo: 'bar' } });
         expect(legacyProvider).toHaveBeenCalledWith('GET_LIST', 'posts', {
-            foo: 'bar',
+            filter: { foo: 'bar' },
         });
     });
 });
