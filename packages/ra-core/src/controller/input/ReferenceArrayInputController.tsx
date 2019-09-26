@@ -258,8 +258,8 @@ export class UnconnectedReferenceArrayInputController extends Component<
             pagination,
             sort,
             {
-                ...filter,
                 ...defaultFilter,
+                ...filter,
             }
         );
     };
