@@ -33,7 +33,7 @@ const i18nProvider = polyglotI18nProvider(locale => {
 class App extends Component {
     state = { dataProvider: null };
 
-    async componentWillMount() {
+    async componentDidMount() {
         this.restoreFetch = await fakeServerFactory(
             process.env.REACT_APP_DATA_PROVIDER
         );
