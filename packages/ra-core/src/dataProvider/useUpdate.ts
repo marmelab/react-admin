@@ -1,4 +1,3 @@
-import { CRUD_UPDATE } from '../actions/dataActions/crudUpdate';
 import { Identifier } from '../types';
 import useMutation from './useMutation';
 
@@ -35,7 +34,7 @@ const useUpdate = (
     id: Identifier,
     data?: any,
     previousData?: any,
-    options: any = {}
+    options?: any
 ): [
     (event: any, callTimePayload?: any, callTimeOptions?: any) => void,
     {
@@ -47,7 +46,7 @@ const useUpdate = (
 ] =>
     useMutation(
         { type: 'update', resource, payload: { id, data, previousData } },
-        { ...options, action: options.action || CRUD_UPDATE }
+        options
     );
 
 export default useUpdate;

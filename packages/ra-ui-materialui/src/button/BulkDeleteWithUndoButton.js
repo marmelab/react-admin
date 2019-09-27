@@ -3,7 +3,13 @@ import PropTypes from 'prop-types';
 import ActionDelete from '@material-ui/icons/Delete';
 import { fade } from '@material-ui/core/styles/colorManipulator';
 import { makeStyles } from '@material-ui/core/styles';
-import { useDeleteMany, useRefresh, useNotify, useUnselectAll } from 'ra-core';
+import {
+    useDeleteMany,
+    useRefresh,
+    useNotify,
+    useUnselectAll,
+    CRUD_DELETE_MANY,
+} from 'ra-core';
 
 import Button from './Button';
 
@@ -49,6 +55,7 @@ const BulkDeleteWithUndoButton = ({
     const unselectAll = useUnselectAll();
     const refresh = useRefresh();
     const [deleteMany, { loading }] = useDeleteMany(resource, selectedIds, {
+        action: CRUD_DELETE_MANY,
         onSuccess: () => {
             notify(
                 'ra.notification.deleted',

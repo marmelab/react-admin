@@ -6,6 +6,7 @@ import { Record, Identifier } from '../types';
 import { useGetOne } from '../dataProvider';
 import { useTranslate } from '../i18n';
 import { useNotify, useRedirect, useRefresh } from '../sideEffect';
+import { CRUD_GET_ONE } from '../actions';
 
 export interface ShowProps {
     basePath: string;
@@ -55,6 +56,7 @@ const useShowController = (props: ShowProps): ShowControllerProps => {
     const version = useVersion();
     const { data: record, loading, loaded } = useGetOne(resource, id, {
         version, // used to force reload
+        action: CRUD_GET_ONE,
         onFailure: () => {
             notify('ra.notification.item_doesnt_exist', 'warning');
             redirect('list', basePath);

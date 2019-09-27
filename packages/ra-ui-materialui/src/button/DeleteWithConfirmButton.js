@@ -11,6 +11,7 @@ import {
     useRefresh,
     useNotify,
     useRedirect,
+    CRUD_DELETE,
 } from 'ra-core';
 
 import Confirm from '../layout/Confirm';
@@ -70,6 +71,7 @@ const DeleteWithConfirmButton = ({
         record && record.id,
         record,
         {
+            action: CRUD_DELETE,
             onSuccess: () => {
                 notify('ra.notification.deleted', 'info', { smart_count: 1 });
                 redirect(redirectTo, basePath);

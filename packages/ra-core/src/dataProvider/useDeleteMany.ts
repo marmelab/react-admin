@@ -1,4 +1,3 @@
-import { CRUD_DELETE_MANY } from '../actions/dataActions/crudDeleteMany';
 import useMutation from './useMutation';
 import { Identifier } from '../types';
 
@@ -31,7 +30,7 @@ import { Identifier } from '../types';
 const useDeleteMany = (
     resource: string,
     ids: [Identifier],
-    options: any = {}
+    options?: any
 ): [
     (event: any, callTimePayload?: any, callTimeOptions?: any) => void,
     {
@@ -40,10 +39,6 @@ const useDeleteMany = (
         loading: boolean;
         loaded: boolean;
     }
-] =>
-    useMutation(
-        { type: 'deleteMany', resource, payload: { ids } },
-        { ...options, action: options.actions || CRUD_DELETE_MANY }
-    );
+] => useMutation({ type: 'deleteMany', resource, payload: { ids } }, options);
 
 export default useDeleteMany;

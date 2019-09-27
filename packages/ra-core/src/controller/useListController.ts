@@ -1,6 +1,7 @@
 import { isValidElement, ReactElement, useMemo } from 'react';
 import inflection from 'inflection';
 import { Location } from 'history';
+import { useSelector, shallowEqual } from 'react-redux';
 
 import { useCheckMinimumRequiredProps } from './checkMinimumRequiredProps';
 import useListParams from './useListParams';
@@ -10,8 +11,8 @@ import { useTranslate } from '../i18n';
 import { SORT_ASC } from '../reducer/admin/resource/list/queryReducer';
 import { CRUD_GET_LIST, ListParams } from '../actions';
 import { useNotify } from '../sideEffect';
-import { Sort, RecordMap, Identifier } from '../types';
-import useGetList from '../dataProvider/useGetList';
+import { Sort, RecordMap, Identifier, ReduxState } from '../types';
+import useQueryWithStore from '../dataProvider/useQueryWithStore';
 
 export interface ListProps {
     // the props you can change
@@ -124,14 +125,19 @@ const useListController = (props: ListProps): ListControllerProps => {
 
     const [selectedIds, selectionModifiers] = useRecordSelection(resource);
 
-    const { data, ids, total, loading, loaded } = useGetList(
-        resource,
+    const { data: ids, total, error, loading, loaded } = useQueryWithStore(
         {
-            page: query.page,
-            perPage: query.perPage,
+            type: 'getList',
+            resource,
+            payload: {
+                pagination: {
+                    page: query.page,
+                    perPage: query.perPage,
+                },
+                sort: { field: query.sort, order: query.order },
+                filter: { ...query.filter, ...filter },
+            },
         },
-        { field: query.sort, order: query.order },
-        { ...query.filter, ...filter },
         {
             action: CRUD_GET_LIST,
             version,
@@ -142,7 +148,22 @@ const useListController = (props: ListProps): ListControllerProps => {
                         : error.message || 'ra.notification.http_error',
                     'warning'
                 ),
-        }
+        },
+        (state: ReduxState) =>
+            state.admin.resources[resource]
+                ? state.admin.resources[resource].list.ids
+                : null,
+        (state: ReduxState) =>
+            state.admin.resources[resource]
+                ? state.admin.resources[resource].list.total
+                : null
+    );
+    const data = useSelector(
+        (state: ReduxState) =>
+            state.admin.resources[resource]
+                ? state.admin.resources[resource].data
+                : null,
+        shallowEqual
     );
 
     if (!query.page && !(ids || []).length && query.page > 1 && total > 0) {

@@ -1,4 +1,3 @@
-import { CRUD_CREATE } from '../actions/dataActions/crudCreate';
 import useMutation from './useMutation';
 
 /**
@@ -30,7 +29,7 @@ import useMutation from './useMutation';
 const useCreate = (
     resource: string,
     data: any = {},
-    options: any = {}
+    options?: any
 ): [
     (event: any, callTimePayload?: any, callTimeOptions?: any) => void,
     {
@@ -39,10 +38,6 @@ const useCreate = (
         loading: boolean;
         loaded: boolean;
     }
-] =>
-    useMutation(
-        { type: 'create', resource, payload: data },
-        { ...options, action: options.actions || CRUD_CREATE }
-    );
+] => useMutation({ type: 'create', resource, payload: data }, options);
 
 export default useCreate;

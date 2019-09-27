@@ -1,4 +1,3 @@
-import { CRUD_GET_ONE } from '../actions/dataActions/crudGetOne';
 import { Identifier, Record, ReduxState } from '../types';
 import useQueryWithStore from './useQueryWithStore';
 
@@ -35,11 +34,11 @@ import useQueryWithStore from './useQueryWithStore';
 const useGetOne = (
     resource: string,
     id: Identifier,
-    options: any = {}
+    options?: any
 ): UseGetOneHookValue =>
     useQueryWithStore(
         { type: 'getOne', resource, payload: { id } },
-        { ...options, action: options.actions || CRUD_GET_ONE },
+        options,
         (state: ReduxState) =>
             state.admin.resources[resource]
                 ? state.admin.resources[resource].data[id]

@@ -2,16 +2,16 @@ import { useCallback } from 'react';
 // @ts-ignore
 import inflection from 'inflection';
 import { parse } from 'query-string';
-
-import { useCreate } from '../dataProvider';
-import { useCheckMinimumRequiredProps } from './checkMinimumRequiredProps';
 import { Location } from 'history';
 import { match as Match } from 'react-router';
-import { Record } from '../types';
-import { useNotify, useRedirect, RedirectionSideEffect } from '../sideEffect';
 
+import { useCheckMinimumRequiredProps } from './checkMinimumRequiredProps';
+import { useCreate } from '../dataProvider';
+import { useNotify, useRedirect, RedirectionSideEffect } from '../sideEffect';
 import { useTranslate } from '../i18n';
 import { useVersion } from '.';
+import { CRUD_CREATE } from '../actions';
+import { Record } from '../types';
 
 export interface CreateControllerProps {
     loading: boolean;
@@ -89,6 +89,7 @@ const useCreateController = (props: CreateProps): CreateControllerProps => {
             create(
                 { payload: { data } },
                 {
+                    action: CRUD_CREATE,
                     onSuccess: onSuccess
                         ? onSuccess
                         : ({ data: newRecord }) => {

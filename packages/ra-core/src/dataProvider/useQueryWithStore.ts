@@ -14,8 +14,10 @@ export interface Query {
 }
 
 export interface QueryOptions {
-    meta?: any;
+    onSuccess?: (args?: any) => void;
+    onFailure?: (error: any) => void;
     action?: string;
+    [key: string]: any;
 }
 
 /**
@@ -66,7 +68,8 @@ const defaultTotalSelector = () => null;
  * @param {Object} query.payload The payload object, e.g; { post_id: 12 }
  * @param {Object} options
  * @param {string} options.action Redux action type
- * @param {Object} options.meta Redux action metas, including side effects to be executed upon success of failure, e.g. { onSuccess: { refresh: true } }
+ * @param {Function} options.onSuccess Side effect function to be executed upon success of failure, e.g. { onSuccess: response => refresh() } }
+ * @param {Function} options.onFailure Side effect function to be executed upon failure, e.g. { onFailure: error => notify(error.message) } }
  * @param {function} dataSelector Redux selector to get the result. Required.
  * @param {function} totalSelector Redux selector to get the total (optional, only for LIST queries)
  *

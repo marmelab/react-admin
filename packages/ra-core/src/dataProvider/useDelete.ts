@@ -1,4 +1,3 @@
-import { CRUD_DELETE } from '../actions/dataActions/crudDelete';
 import useMutation from './useMutation';
 import { Identifier } from '../types';
 
@@ -33,7 +32,7 @@ const useDelete = (
     resource: string,
     id: Identifier,
     previousData: any = {},
-    options: any = {}
+    options?: any
 ): [
     (event: any, callTimePayload?: any, callTimeOptions?: any) => void,
     {
@@ -45,7 +44,7 @@ const useDelete = (
 ] =>
     useMutation(
         { type: 'delete', resource, payload: { id, previousData } },
-        { ...options, action: options.actions || CRUD_DELETE }
+        options
     );
 
 export default useDelete;

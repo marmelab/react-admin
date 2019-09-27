@@ -1,4 +1,3 @@
-import { CRUD_UPDATE_MANY } from '../actions/dataActions/crudUpdateMany';
 import useMutation from './useMutation';
 import { Identifier } from '../types';
 
@@ -33,11 +32,11 @@ const useUpdateMany = (
     resource: string,
     ids: [Identifier],
     data: any,
-    options: any = {}
+    options?: any
 ) =>
     useMutation(
         { type: 'updateMany', resource, payload: { ids, data } },
-        { ...options, action: options.action || CRUD_UPDATE_MANY }
+        options
     );
 
 export default useUpdateMany;
