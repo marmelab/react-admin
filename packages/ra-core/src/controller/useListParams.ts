@@ -1,7 +1,6 @@
 import { useCallback, useState, useMemo } from 'react';
 import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import { parse, stringify } from 'query-string';
-import { push } from 'connected-react-router';
 import lodashDebounce from 'lodash/debounce';
 import pickBy from 'lodash/pickBy';
 import { Location } from 'history';
@@ -17,6 +16,7 @@ import { changeListParams, ListParams } from '../actions/listActions';
 import { Sort, ReduxState } from '../types';
 import removeEmpty from '../util/removeEmpty';
 import removeKey from '../util/removeKey';
+import { useHistory } from 'react-router';
 
 interface ListParamsOptions {
     resource: string;
@@ -111,6 +111,7 @@ const useListParams = ({
 }: ListParamsOptions): [Parameters, Modifiers] => {
     const [displayedFilters, setDisplayedFilters] = useState({});
     const dispatch = useDispatch();
+    const history = useHistory();
 
     const { params } = useSelector(
         (reduxState: ReduxState) => reduxState.admin.resources[resource].list,
@@ -140,14 +141,12 @@ const useListParams = ({
 
     const changeParams = useCallback(action => {
         const newParams = queryReducer(query, action);
-        dispatch(
-            push({
-                search: `?${stringify({
-                    ...newParams,
-                    filter: JSON.stringify(newParams.filter),
-                })}`,
-            })
-        );
+        history.push({
+            search: `?${stringify({
+                ...newParams,
+                filter: JSON.stringify(newParams.filter),
+            })}`,
+        });
         dispatch(changeListParams(resource, newParams));
     }, requestSignature); // eslint-disable-line react-hooks/exhaustive-deps
 
