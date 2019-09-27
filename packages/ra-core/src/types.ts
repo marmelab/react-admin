@@ -3,6 +3,7 @@ import { RouteProps, RouteComponentProps, match as Match } from 'react-router';
 import { Location } from 'history';
 
 import { WithPermissionsChildrenParams } from './auth/WithPermissions';
+import { AuthActionType } from './auth/types';
 
 export type Identifier = string | number;
 export interface Record {
@@ -35,13 +36,6 @@ export type I18nProvider = {
     changeLocale: (locale: string, options?: any) => Promise<void>;
     [key: string]: any;
 };
-
-export type AuthActionType =
-    | 'AUTH_LOGIN'
-    | 'AUTH_LOGOUT'
-    | 'AUTH_ERROR'
-    | 'AUTH_CHECK'
-    | 'AUTH_GET_PERMISSIONS';
 
 export type AuthProvider = {
     login: (params: any) => Promise<any>;
