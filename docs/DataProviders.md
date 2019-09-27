@@ -17,7 +17,7 @@ dataProvider
 
 It's the Data Provider's job to turns these method calls into HTTP requests, and transform the HTTP responses to the data format expected by react-admin. In technical terms, a Data Provider is an *adapter* for an API. 
 
-And to inject a Data Provider in a react-admin application, just pass it as the `dataProvider` prop of the `<Admin>` component, as follows:
+And to inject a Data Provider in a react-admin application, pass it as the `dataProvider` prop of the `<Admin>` component, as follows:
 
 ```jsx
 import { Admin, Resource } from 'react-admin';
@@ -267,7 +267,7 @@ Using this technique, you can also combine two Data Providers for two backends i
 
 ## Writing Your Own Data Provider
 
-APIs are so diverse that quite often, none of the available Data Providers suit you API. In such cases, you'll have to write your own Data Provider. Don't worry, it usually takes a couple hours and presents no difficulty. 
+APIs are so diverse that quite often, none of the available Data Providers suit you API. In such cases, you'll have to write your own Data Provider. Don't worry, it usually takes only a couple hours. 
 
 The methods of a Data Provider receive a request, and return a promise for a response. Both the request and the response format are standardized.
 
