@@ -945,3 +945,106 @@ export const UserEdit = ({ permissions, ...props }) =>
     </Edit>;
 ```
 {% endraw %}
+
+## Altering the Form Values before Submitting
+
+Sometimes, you may want your custom action to alter the form values before actually sending them to the `dataProvider`.
+For those cases, you should know that every buttons inside a form [Toolbar](/CreateEdit.md#toolbar) receive two props:
+
+- `handleSubmit` which calls the default form save method
+- `handleSubmitWithRedirect` which calls the default form save method but allows to specify a custom redirection
+
+Knowing this, there are two ways to alter the form values before submit:
+
+1. Using react-final-form API to send change events
+
+```jsx
+import React, { useCallback } from 'react';
+import { useForm } from 'react-final-form';
+import { SaveButton, Toolbar, useCreate, useRedirect, useNotify } from 'react-admin';
+
+const SaveWithNoteButton = ({ handleSubmitWithRedirect, ...props }) => {
+    const [create] = useCreate('posts');
+    const redirectTo = useRedirect();
+    const notify = useNotify();
+    const { basePath, redirect } = props;
+
+    const form = useForm();
+
+    const handleClick = useCallback(() => {
+        form.change('average_note', 10);
+
+        handleSubmitWithRedirect('edit');
+    }, [form]);
+
+    return <SaveButton {...props} handleSubmitWithRedirect={handleClick} />;
+};
+```
+
+2. Using react-admin hooks to run custom mutations
+
+For instance, in the `simple` example:
+
+```jsx
+import React, { useCallback } from 'react';
+import { useFormState } from 'react-final-form';
+import { SaveButton, Toolbar, useCreate, useRedirect, useNotify } from 'react-admin';
+
+const SaveWithNoteButton = props => {
+    const [create] = useCreate('posts');
+    const redirectTo = useRedirect();
+    const notify = useNotify();
+    const { basePath, redirect } = props;
+
+    const formState = useFormState();
+    const handleClick = useCallback(() => {
+        if (!formState.valid) {
+            return;
+        }
+
+        create(
+            {
+                data: { ...formState.values, average_note: 10 },
+            },
+            {
+                onSuccess: ({ data: newRecord }) => {
+                    notify('ra.notification.created', 'info', {
+                        smart_count: 1,
+                    });
+                    redirectTo(redirect, basePath, newRecord.id, newRecord);
+                },
+            }
+        );
+    }, [
+        formState.valid,
+        formState.values,
+        create,
+        notify,
+        redirectTo,
+        redirect,
+        basePath,
+    ]);
+
+    return <SaveButton {...props} handleSubmitWithRedirect={handleClick} />;
+};
+```
+
+This button can be used in the `PostCreateToolbar` component:
+
+```jsx
+const PostCreateToolbar = props => (
+    <Toolbar {...props}>
+        <SaveButton
+            label="post.action.save_and_show"
+            redirect="show"
+            submitOnEnter={true}
+        />
+        <SaveWithNoteButton
+            label="post.action.save_with_average_note"
+            redirect="show"
+            submitOnEnter={false}
+            variant="text"
+        />
+    </Toolbar>
+);
+```

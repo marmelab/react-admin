@@ -642,7 +642,7 @@ React-admin stores the Data Provider passed to `<Admin>` in a React context, so 
 
 * `useDataProvider`
 * `useQuery`
-* `usequeryWithStore`
+* `useQueryWithStore`
 * `useMutation`
 * `useGetList`
 * `useGetOne`
