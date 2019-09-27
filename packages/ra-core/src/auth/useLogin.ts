@@ -1,9 +1,7 @@
 import { useCallback } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { push } from 'connected-react-router';
 
 import useAuthProvider, { defaultAuthParams } from './useAuthProvider';
-import { ReduxState } from '../types';
+import { useLocation, useHistory } from 'react-router';
 
 /**
  * Get a callback for calling the authProvider.login() method
@@ -30,28 +28,25 @@ import { ReduxState } from '../types';
  */
 const useLogin = (): Login => {
     const authProvider = useAuthProvider();
-    const currentLocation = useSelector(
-        (state: ReduxState) => state.router.location
-    );
-    const nextPathName =
-        currentLocation.state && currentLocation.state.nextPathname;
-    const dispatch = useDispatch();
+    const location = useLocation();
+    const history = useHistory();
+    const nextPathName = location.state && location.state.nextPathname;
 
     const login = useCallback(
         (params: any = {}, pathName = defaultAuthParams.afterLoginUrl) =>
             authProvider.login(params).then(ret => {
-                dispatch(push(nextPathName || pathName));
+                history.push(nextPathName || pathName);
                 return ret;
             }),
-        [authProvider, dispatch, nextPathName]
+        [authProvider, history, nextPathName]
     );
 
     const loginWithoutProvider = useCallback(
         (_, __) => {
-            dispatch(push(defaultAuthParams.afterLoginUrl));
+            history.push(defaultAuthParams.afterLoginUrl);
             return Promise.resolve();
         },
-        [dispatch]
+        [history]
     );
 
     return authProvider ? login : loginWithoutProvider;
