@@ -7,6 +7,7 @@ import { ArrayField } from './ArrayField';
 import NumberField from './NumberField';
 import TextField from './TextField';
 import Datagrid from '../list/Datagrid';
+import { MemoryRouter } from 'react-router';
 
 describe('<ArrayField />', () => {
     it('should not fail for empty records', () => {
@@ -60,9 +61,11 @@ describe('<ArrayField />', () => {
             </ArrayField>
         );
         const wrapper = mount(
-            <Provider store={createStore(() => ({}))}>
-                <Dummy />
-            </Provider>
+            <MemoryRouter>
+                <Provider store={createStore(() => ({}))}>
+                    <Dummy />
+                </Provider>
+            </MemoryRouter>
         );
         expect(
             wrapper
