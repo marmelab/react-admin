@@ -1,10 +1,10 @@
 import { useCallback } from 'react';
-import { push } from 'connected-react-router';
 import { useDispatch } from 'react-redux';
 
 import { Identifier, Record } from '../types';
 import resolveRedirectTo from '../util/resolveRedirectTo';
 import { refreshView } from '../actions/uiActions';
+import { useHistory } from 'react-router';
 
 type RedirectToFunction = (
     basePath?: string,
@@ -31,6 +31,7 @@ export type RedirectionSideEffect = string | false | RedirectToFunction;
  */
 const useRedirect = () => {
     const dispatch = useDispatch();
+    const history = useHistory();
     return useCallback(
         (
             redirectTo: RedirectionSideEffect,
@@ -43,9 +44,9 @@ const useRedirect = () => {
                 return;
             }
 
-            dispatch(push(resolveRedirectTo(redirectTo, basePath, id, data)));
+            history.push(resolveRedirectTo(redirectTo, basePath, id, data));
         },
-        [dispatch]
+        [dispatch, history]
     );
 };
 
