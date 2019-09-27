@@ -8,7 +8,7 @@ import useRecordSelection from './useRecordSelection';
 import useVersion from './useVersion';
 import { useTranslate } from '../i18n';
 import { SORT_ASC } from '../reducer/admin/resource/list/queryReducer';
-import { ListParams } from '../actions/listActions';
+import { CRUD_GET_LIST, ListParams } from '../actions';
 import { useNotify } from '../sideEffect';
 import { Sort, RecordMap, Identifier } from '../types';
 import useGetList from '../dataProvider/useGetList';
@@ -133,6 +133,7 @@ const useListController = (props: ListProps): ListControllerProps => {
         { field: query.sort, order: query.order },
         { ...query.filter, ...filter },
         {
+            action: CRUD_GET_LIST,
             version,
             onFailure: error =>
                 notify(
