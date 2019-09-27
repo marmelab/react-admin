@@ -4,7 +4,6 @@ import { useSelector } from 'react-redux';
 import SettingsIcon from '@material-ui/icons/Settings';
 import LabelIcon from '@material-ui/icons/Label';
 import { useMediaQuery } from '@material-ui/core';
-import { withRouter } from 'react-router-dom';
 import { useTranslate, DashboardMenuItem, MenuItemLink } from 'react-admin';
 
 import visitors from '../visitors';
@@ -151,4 +150,4 @@ Menu.propTypes = {
     logout: PropTypes.object,
 };
 
-export default withRouter(Menu);
+export default Menu;
