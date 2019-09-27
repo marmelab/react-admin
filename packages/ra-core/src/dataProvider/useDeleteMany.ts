@@ -31,7 +31,7 @@ import { Identifier } from '../types';
 const useDeleteMany = (
     resource: string,
     ids: [Identifier],
-    options?: any
+    options: any = {}
 ): [
     (event: any, callTimePayload?: any, callTimeOptions?: any) => void,
     {
@@ -43,7 +43,7 @@ const useDeleteMany = (
 ] =>
     useMutation(
         { type: 'deleteMany', resource, payload: { ids } },
-        { ...options, action: CRUD_DELETE_MANY }
+        { ...options, action: options.actions || CRUD_DELETE_MANY }
     );
 
 export default useDeleteMany;

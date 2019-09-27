@@ -33,7 +33,7 @@ const useDelete = (
     resource: string,
     id: Identifier,
     previousData: any = {},
-    options?: any
+    options: any = {}
 ): [
     (event: any, callTimePayload?: any, callTimeOptions?: any) => void,
     {
@@ -45,7 +45,7 @@ const useDelete = (
 ] =>
     useMutation(
         { type: 'delete', resource, payload: { id, previousData } },
-        { ...options, action: CRUD_DELETE }
+        { ...options, action: options.actions || CRUD_DELETE }
     );
 
 export default useDelete;

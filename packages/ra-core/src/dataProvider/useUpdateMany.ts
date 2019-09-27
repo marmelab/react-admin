@@ -33,11 +33,11 @@ const useUpdateMany = (
     resource: string,
     ids: [Identifier],
     data: any,
-    options?: any
+    options: any = {}
 ) =>
     useMutation(
         { type: 'updateMany', resource, payload: { ids, data } },
-        { ...options, action: CRUD_UPDATE_MANY }
+        { ...options, action: options.action || CRUD_UPDATE_MANY }
     );
 
 export default useUpdateMany;

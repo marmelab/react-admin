@@ -80,7 +80,7 @@ import useDataProviderWithDeclarativeSideEffects from './useDataProviderWithDecl
  * import { useMutation } from 'react-admin';
  *
  * const ApproveButton = ({ record }) => {
- *     const [mutate, { loading }] = useMutation()
+ *     const [mutate, { loading }] = useMutation();
  *     const approve = event => mutate({
  *         type: 'update',
  *         resource: 'comments',

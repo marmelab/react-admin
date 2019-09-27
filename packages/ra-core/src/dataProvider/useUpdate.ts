@@ -35,7 +35,7 @@ const useUpdate = (
     id: Identifier,
     data?: any,
     previousData?: any,
-    options?: any
+    options: any = {}
 ): [
     (event: any, callTimePayload?: any, callTimeOptions?: any) => void,
     {
@@ -47,7 +47,7 @@ const useUpdate = (
 ] =>
     useMutation(
         { type: 'update', resource, payload: { id, data, previousData } },
-        { ...options, action: CRUD_UPDATE }
+        { ...options, action: options.action || CRUD_UPDATE }
     );
 
 export default useUpdate;

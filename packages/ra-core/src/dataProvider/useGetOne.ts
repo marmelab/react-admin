@@ -35,11 +35,11 @@ import useQueryWithStore from './useQueryWithStore';
 const useGetOne = (
     resource: string,
     id: Identifier,
-    options?: any
+    options: any = {}
 ): UseGetOneHookValue =>
     useQueryWithStore(
         { type: 'getOne', resource, payload: { id } },
-        { ...options, action: CRUD_GET_ONE },
+        { ...options, action: options.actions || CRUD_GET_ONE },
         (state: ReduxState) =>
             state.admin.resources[resource]
                 ? state.admin.resources[resource].data[id]
