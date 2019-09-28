@@ -780,7 +780,7 @@ This works exactly the way you expect. The lesson here is that react-admin takes
 
 Here is the elephant in the room of this tutorial. In real world projects, the dialect of your API (REST? GraphQL? Something else?) won't match the JSONPlaceholder dialect. Writing a Data Provider is probably the first thing you'll have to do to make react-admin work. Depending on your API, this can require a few hours of additional work.
 
-React-admin delegates every data query to a Data Provider function. This function must simply return a promise for the result. This gives extreme freedom to map any API dialect, add authentication headers, use endpoints from several domains, etc.
+React-admin delegates every data query to a Data Provider object, which acts as an adapter to your API. This makes react-admin capable of mapping any API dialect, using endpoints from several domains, etc.
 
 For instance, let's imagine you have to use the `my.api.url` REST API, which expects the following parameters:
 
@@ -789,39 +789,27 @@ For instance, let's imagine you have to use the `my.api.url` REST API, which exp
 | Get list            | `GET http://my.api.url/posts?sort=['title','ASC']&range=[0, 24]&filter={title:'bar'}` |
 | Get one record      | `GET http://my.api.url/posts/123` |
 | Get several records | `GET http://my.api.url/posts?filter={id:[123,456,789]}` |
-| Update a record     | `PUT http://my.api.url/posts/123` |
+| Get related records | `GET http://my.api.url/posts?filter={author_id:345}` |
 | Create a record     | `POST http://my.api.url/posts/123` |
+| Update a record     | `PUT http://my.api.url/posts/123` |
+| Update records      | `PUT http://my.api.url/posts?filter={id:[123,124,125]}` |
 | Delete a record     | `DELETE http://my.api.url/posts/123` |
+| Delete records      | `DELETE http://my.api.url/posts?filter={id:[123,124,125]}` |
 
-React-admin defines custom verbs for each of the actions of this list. Just like HTTP verbs (`GET`, `POST`, etc.), react-admin verbs qualify a request to a data provider. React-admin verbs are called `GET_LIST`, `GET_ONE`, `GET_MANY`, `CREATE`, `UPDATE`, and `DELETE`. The Data Provider will have to map each of these verbs to one (or many) HTTP request(s).
+
+React-admin calls the Data Provider with one method for each of the actions of this list, and expects a Promise in return. These methods are called `getList`, `getOne`, `getMany`, `getManyReference`, `create`, `update`, `updateMany`, `delete`, and `deleteMany`. It's the Data Provider's job to emit HTTP requests and transform the response into the format expected by react-admin.
 
 The code for a Data Provider for the `my.api.url` API is as follows:
 
-```jsx
-// in src/dataProvider
-import {
-    GET_LIST,
-    GET_ONE,
-    GET_MANY,
-    GET_MANY_REFERENCE,
-    CREATE,
-    UPDATE,
-    DELETE,
-    fetchUtils,
-} from 'react-admin';
+```js
+import { fetchUtils } from 'react-admin';
 import { stringify } from 'query-string';
 
-const API_URL = 'my.api.url';
+const apiUrl = 'https://my.api.com/';
+const httpClient = fetchUtils.fetchJson;
 
-/**
- * @param {String} type One of the constants appearing at the top of this file, e.g. 'UPDATE'
- * @param {String} resource Name of the resource to fetch, e.g. 'posts'
- * @param {Object} params The Data Provider request params, depending on the type
- * @returns {Object} { url, options } The HTTP request parameters
- */
-const convertDataProviderRequestToHTTP = (type, resource, params) => {
-    switch (type) {
-    case GET_LIST: {
+export default {
+    getList: (resource, params) => {
         const { page, perPage } = params.pagination;
         const { field, order } = params.sort;
         const query = {
@@ -829,83 +817,88 @@ const convertDataProviderRequestToHTTP = (type, resource, params) => {
             range: JSON.stringify([(page - 1) * perPage, page * perPage - 1]),
             filter: JSON.stringify(params.filter),
         };
-        return { url: `${API_URL}/${resource}?${stringify(query)}` };
-    }
-    case GET_ONE:
-        return { url: `${API_URL}/${resource}/${params.id}` };
-    case GET_MANY: {
+        const url = `${apiUrl}/${resource}?${stringify(query)}`;
+
+        return httpClient(url).then(({ headers, json }) => ({
+            data: json,
+            total: parseInt(headers.get('content-range').split('/').pop(), 10),
+        }));
+    },
+
+    getOne: (resource, params) =>
+        httpClient(`${apiUrl}/${resource}/${params.id}`).then(({ json }) => ({
+            data: json,
+        })),
+
+    getMany: (resource, params) => {
         const query = {
             filter: JSON.stringify({ id: params.ids }),
         };
-        return { url: `${API_URL}/${resource}?${stringify(query)}` };
-    }
-    case GET_MANY_REFERENCE: {
+        const url = `${apiUrl}/${resource}?${stringify(query)}`;
+        return httpClient(url).then(({ json }) => ({ data: json }));
+    },
+
+    getManyReference: (resource, params) => {
         const { page, perPage } = params.pagination;
         const { field, order } = params.sort;
         const query = {
             sort: JSON.stringify([field, order]),
-            range: JSON.stringify([(page - 1) * perPage, (page * perPage) - 1]),
-            filter: JSON.stringify({ ...params.filter, [params.target]: params.id }),
+            range: JSON.stringify([(page - 1) * perPage, page * perPage - 1]),
+            filter: JSON.stringify({
+                ...params.filter,
+                [params.target]: params.id,
+            }),
         };
-        return { url: `${API_URL}/${resource}?${stringify(query)}` };
-    }
-    case UPDATE:
-        return {
-            url: `${API_URL}/${resource}/${params.id}`,
-            options: { method: 'PUT', body: JSON.stringify(params.data) },
-        };
-    case CREATE:
-        return {
-            url: `${API_URL}/${resource}`,
-            options: { method: 'POST', body: JSON.stringify(params.data) },
-        };
-    case DELETE:
-        return {
-            url: `${API_URL}/${resource}/${params.id}`,
-            options: { method: 'DELETE' },
-        };
-    default:
-        throw new Error(`Unsupported fetch action type ${type}`);
-    }
-};
+        const url = `${apiUrl}/${resource}?${stringify(query)}`;
 
-/**
- * @param {Object} response HTTP response from fetch()
- * @param {String} type One of the constants appearing at the top of this file, e.g. 'UPDATE'
- * @param {String} resource Name of the resource to fetch, e.g. 'posts'
- * @param {Object} params The Data Provider request params, depending on the type
- * @returns {Object} Data Provider response
- */
-const convertHTTPResponseToDataProvider = (response, type, resource, params) => {
-    const { headers, json } = response;
-    switch (type) {
-    case GET_LIST:
-        return {
-            data: json.map(x => x),
+        return httpClient(url).then(({ headers, json }) => ({
+            data: json,
             total: parseInt(headers.get('content-range').split('/').pop(), 10),
-        };
-    case CREATE:
-        return { data: { ...params.data, id: json.id } };
-    default:
-        return { data: json };
-    }
-};
+        }));
+    },
 
-/**
- * @param {string} type Request type, e.g GET_LIST
- * @param {string} resource Resource name, e.g. "posts"
- * @param {Object} payload Request parameters. Depends on the request type
- * @returns {Promise} the Promise for response
- */
-export default (type, resource, params) => {
-    const { fetchJson } = fetchUtils;
-    const { url, options } = convertDataProviderRequestToHTTP(type, resource, params);
-    return fetchJson(url, options)
-        .then(response => convertHTTPResponseToDataProvider(response, type, resource, params));
-};
+    update: (resource, params) =>
+        httpClient(`${apiUrl}/${resource}/${params.id}`, {
+            method: 'PUT',
+            body: JSON.stringify(params.data),
+        }).then(({ json }) => ({ data: json })),
+
+    updateMany: (resource, params) => {
+        const query = {
+            filter: JSON.stringify({ id: params.ids}),
+        };
+        return httpClient(`${apiUrl}/${resource}?${stringify(query)}`, {
+            method: 'PUT',
+            body: JSON.stringify(params.data),
+        }).then(({ json }) => ({ data: json }));
+    }
+
+    create: (resource, params) =>
+        httpClient(`${apiUrl}/${resource}`, {
+            method: 'POST',
+            body: JSON.stringify(params.data),
+        }).then(({ json }) => ({
+            data: { ...params.data, id: json.id },
+        })),
+
+    delete: (resource, params) =>
+        httpClient(`${apiUrl}/${resource}/${params.id}`, {
+            method: 'DELETE',
+        }).then(({ json }) => ({ data: json })),
+
+    deleteMany: (resource, params) => {
+        const query = {
+            filter: JSON.stringify({ id: params.ids}),
+        };
+        return httpClient(`${apiUrl}/${resource}?${stringify(query)}`, {
+            method: 'DELETE',
+            body: JSON.stringify(params.data),
+        }).then(({ json }) => ({ data: json }));
+    }
+});
 ```
 
-**Tip**: `fetchJson()` is just a shortcut for `fetch().then(r => r.json())`, plus a control of the HTTP response code to throw an `HTTPError` in case of 4xx or 5xx response. Feel free to use `fetch()` directly if it doesn't suit your needs.
+**Tip**: `fetchUtils.fetchJson()` is just a shortcut for `fetch().then(r => r.json())`, plus a control of the HTTP response code to throw an `HTTPError` in case of 4xx or 5xx response. Feel free to use `fetch()` directly if it doesn't suit your needs.
 
 Using this provider instead of the previous `jsonServerProvider` is just a matter of switching a function:
 

@@ -47,9 +47,9 @@ interface Props {
  *    tag_ids: [ "1", "23", "4" ]
  * }
  *
- * ReferenceArrayInput component fetches the current resources (using the
- * `CRUD_GET_MANY` REST method) as well as possible resources (using the
- * `CRUD_GET_MATCHING` REST method) in the reference endpoint. It then
+ * ReferenceArrayInput component fetches the current resources (using
+ * `dataProvider.getMany()`) as well as possible resources (using
+ * `dataProvider.getMatching()` REST method) in the reference endpoint. It then
  * delegates rendering to a subcomponent, to which it passes the possible
  * choices as the `choices` attribute.
  *

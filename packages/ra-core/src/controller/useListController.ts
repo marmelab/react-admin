@@ -125,7 +125,16 @@ const useListController = (props: ListProps): ListControllerProps => {
 
     const [selectedIds, selectionModifiers] = useRecordSelection(resource);
 
-    const { data: ids, total, error, loading, loaded } = useQueryWithStore(
+    /**
+     * We don't use useGetList() here because we want the list of ids to be
+     * always available for optimistic rendering, and therefore we need a
+     * custom action (CRUD_GET_LIST), a custom reducer for ids and total
+     * (admin.resources.[resource].list.ids and admin.resources.[resource].list.total)
+     * and a custom selector for these reducers.
+     * Also we don't want that calls to useGetList() in userland change
+     * the list of ids in the main List view.
+     */
+    const { data: ids, total, loading, loaded } = useQueryWithStore(
         {
             type: 'getList',
             resource,

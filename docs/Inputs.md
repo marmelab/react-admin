@@ -647,7 +647,7 @@ import { RadioButtonGroupInput, ReferenceInput } from 'react-admin'
 
 Use `<ReferenceArrayInput>` to edit an array of reference values, i.e. to let users choose a list of values (usually foreign keys) from another REST endpoint.
 
-`<ReferenceArrayInput>` fetches the related resources (using the `GET_MANY` dataProvider type) as well as possible resources (using the `GET_LIST` dataProvider type) in the reference endpoint.
+`<ReferenceArrayInput>` fetches the related resources (using `dataProvider.getMany()`) as well as possible resources (using `dataProvider.getList()`) in the reference endpoint.
 
 For instance, if the post object has many tags, a post resource may look like:
 
@@ -738,7 +738,7 @@ You can tweak how this component fetches the possible values using the `perPage`
 
 ## `<ReferenceInput>`
 
-Use `<ReferenceInput>` for foreign-key values, for instance, to edit the `post_id` of a `comment` resource. This component fetches the possible values in the reference resource (using the `GET_LIST` data provider verb) and the referenced record (using the `GET_MANY` data provider verb), then delegates rendering to a subcomponent, to which it passes the possible choices as the `choices` attribute.
+Use `<ReferenceInput>` for foreign-key values, for instance, to edit the `post_id` of a `comment` resource. This component fetches the related record (using `dataProvider.getMany()`) as well as possible choices (using `dataProvider.getList()` in the reference resource), then delegates rendering to a subcomponent, to which it passes the possible choices as the `choices` attribute.
 
 This means you can use `<ReferenceInput>` with any of [`<SelectInput>`](#selectinput), [`<AutocompleteInput>`](#autocompleteinput), or [`<RadioButtonGroupInput>`](#radiobuttongroupinput), or even with the component of your choice, provided it supports the `choices` attribute.
 

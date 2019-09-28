@@ -33,7 +33,7 @@ interface Props {
  * An Input component for choosing a reference record. Useful for foreign keys.
  *
  * This component fetches the possible values in the reference resource
- * (using the `CRUD_GET_MATCHING` REST method), then delegates rendering
+ * (using `dataProvider.getMatching()`), then delegates rendering
  * to a subcomponent, to which it passes the possible choices
  * as the `choices` attribute.
  *

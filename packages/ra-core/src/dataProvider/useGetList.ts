@@ -1,6 +1,3 @@
-import { useSelector, shallowEqual } from 'react-redux';
-
-import { CRUD_GET_LIST } from '../actions';
 import { Pagination, Sort, ReduxState } from '../types';
 import useQueryWithStore from './useQueryWithStore';
 

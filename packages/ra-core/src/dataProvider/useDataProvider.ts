@@ -38,43 +38,17 @@ import useLogoutIfAccessDenied from '../auth/useLogoutIfAccessDenied';
  *
  * @return dataProvider
  *
- * @example
- *
- * const dataProvider = useDataProvider();
- * dataProvider.getOne('posts', { id: 123 });
- * // this will dispatch the following actions:
- * // - CUSTOM_FETCH
- * // - CUSTOM_FETCH_LOADING
- * // - FETCH_START
- * // - CUSTOM_FETCH_SUCCESS
- * // - FETCH_END
- *
- * @example
- *
- * const dataProvider = useDataProvider();
- * dataProvider.getOne('posts', { id: 123 }, { action: CRUD_GET_ONE });
- * // this will dispatch the following actions:
- * // - CRUD_GET_ONE
- * // - CRUD_GET_ONE_LOADING
- * // - FETCH_START
- * // - CRUD_GET_ONE_SUCCESS
- * // - FETCH_END
- *
- * @example
+ * @example Basic usage
  *
  * import React, { useState } from 'react';
- * import { useDispatch } from 'react-redux';
- * import { useDataProvider, showNotification } from 'react-admin';
+ * import { useDataProvider } from 'react-admin';
  *
  * const PostList = () => {
  *      const [posts, setPosts] = useState([])
- *      const dispatch = useDispatch();
  *      const dataProvider = useDataProvider();
- *
  *      useEffect(() => {
  *          dataProvider.getList('posts', { filter: { status: 'pending' }})
- *            .then(({ data }) => setPosts(data))
- *            .catch(error => dispatch(showNotification(error.message, 'error')));
+ *            .then(({ data }) => setPosts(data));
  *      }, [])
  *
  *      return (
@@ -83,6 +57,58 @@ import useLogoutIfAccessDenied from '../auth/useLogoutIfAccessDenied';
  *          </Fragment>
  *     }
  * }
+ *
+ * @example Handling all states (loading, error, success)
+ *
+ * import { useState, useEffect } from 'react';
+ * import { useDataProvider } from 'react-admin';
+ *
+ * const UserProfile = ({ userId }) => {
+ *     const dataProvider = useDataProvider();
+ *     const [user, setUser] = useState();
+ *     const [loading, setLoading] = useState(true);
+ *     const [error, setError] = useState();
+ *     useEffect(() => {
+ *         dataProvider.getOne('users', { id: userId })
+ *             .then(({ data }) => {
+ *                 setUser(data);
+ *                 setLoading(false);
+ *             })
+ *             .catch(error => {
+ *                 setError(error);
+ *                 setLoading(false);
+ *             })
+ *     }, []);
+ *
+ *     if (loading) return <Loading />;
+ *     if (error) return <Error />
+ *     if (!user) return null;
+ *
+ *     return (
+ *         <ul>
+ *             <li>Name: {user.name}</li>
+ *             <li>Email: {user.email}</li>
+ *         </ul>
+ *     )
+ * }
+ *
+ * @example Action customization
+ *
+ * dataProvider.getOne('users', { id: 123 });
+ * // will dispatch the following actions:
+ * // - CUSTOM_FETCH
+ * // - CUSTOM_FETCH_LOADING
+ * // - FETCH_START
+ * // - CUSTOM_FETCH_SUCCESS
+ * // - FETCH_END
+ *
+ * dataProvider.getOne('users', { id: 123 }, { action: CRUD_GET_ONE });
+ * // will dispatch the following actions:
+ * // - CRUD_GET_ONE
+ * // - CRUD_GET_ONE_LOADING
+ * // - FETCH_START
+ * // - CRUD_GET_ONE_SUCCESS
+ * // - FETCH_END
  */
 const useDataProvider = (): DataProviderProxy => {
     const dispatch = useDispatch() as Dispatch;
