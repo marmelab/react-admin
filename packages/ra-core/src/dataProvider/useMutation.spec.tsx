@@ -67,7 +67,9 @@ describe('useMutation', () => {
                 >
                     {mutate => (
                         <button
-                            onClick={e => mutate(e, { bar: 2 }, { baz: 1 })}
+                            onClick={e =>
+                                mutate({ payload: { bar: 2 } }, { baz: 1 })
+                            }
                         >
                             Hello
                         </button>
