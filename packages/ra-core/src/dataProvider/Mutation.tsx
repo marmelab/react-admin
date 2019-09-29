@@ -1,5 +1,4 @@
-import { FunctionComponent, useCallback } from 'react';
-import merge from 'lodash/merge';
+import { FunctionComponent } from 'react';
 
 import useMutation from './useMutation';
 
@@ -58,27 +57,12 @@ const Mutation: FunctionComponent<Props> = ({
     resource,
     payload,
     options,
-}) => {
-    const [mutate, state] = useMutation();
-
-    const finalMutate = useCallback(
-        (event: any, callTimeData?: any, callTimeOptions?: any) =>
-            mutate(
-                {
-                    resource,
-                    payload: merge({}, payload, callTimeData),
-                    type,
-                },
-                merge(
-                    { withDeclarativeSideEffectsSupport: true },
-                    options,
-                    callTimeOptions
-                )
-            ),
-        [mutate, resource, JSON.stringify({ payload, options })] // eslint-disable-line react-hooks/exhaustive-deps
+}) =>
+    children(
+        ...useMutation(
+            { type, resource, payload },
+            { ...options, withDeclarativeSideEffectsSupport: true }
+        )
     );
-
-    return children(finalMutate, state);
-};
 
 export default Mutation;

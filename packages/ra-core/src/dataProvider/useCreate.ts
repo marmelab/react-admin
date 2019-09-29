@@ -26,18 +26,7 @@ import useMutation from './useMutation';
  *     return <button disabled={loading} onClick={create}>Like</div>;
  * };
  */
-const useCreate = (
-    resource: string,
-    data: any = {},
-    options?: any
-): [
-    (event: any, callTimePayload?: any, callTimeOptions?: any) => void,
-    {
-        data?: any;
-        error?: any;
-        loading: boolean;
-        loaded: boolean;
-    }
-] => useMutation({ type: 'create', resource, payload: data }, options);
+const useCreate = (resource: string, data: any = {}, options?: any) =>
+    useMutation({ type: 'create', resource, payload: { data } }, options);
 
 export default useCreate;

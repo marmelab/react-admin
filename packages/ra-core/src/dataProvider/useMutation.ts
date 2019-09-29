@@ -201,12 +201,12 @@ export interface MutationOptions {
     action?: string;
     undoable?: boolean;
     onSuccess?: (response: any) => any | Object;
-    onError?: (error?: any) => any | Object;
+    onFailure?: (error?: any) => any | Object;
     withDeclarativeSideEffectsSupport?: boolean;
 }
 
 export type UseMutationValue = [
-    (query: Mutation, options?: MutationOptions) => void,
+    (query: Partial<Mutation>, options?: Partial<MutationOptions>) => void,
     {
         data?: any;
         total?: number;
