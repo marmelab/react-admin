@@ -27,18 +27,7 @@ import { Identifier } from '../types';
  *     return <button disabled={loading} onClick={deleteMany}>Delete selected posts</button>;
  * };
  */
-const useDeleteMany = (
-    resource: string,
-    ids: [Identifier],
-    options?: any
-): [
-    (event: any, callTimePayload?: any, callTimeOptions?: any) => void,
-    {
-        data?: any;
-        error?: any;
-        loading: boolean;
-        loaded: boolean;
-    }
-] => useMutation({ type: 'deleteMany', resource, payload: { ids } }, options);
+const useDeleteMany = (resource: string, ids: [Identifier], options?: any) =>
+    useMutation({ type: 'deleteMany', resource, payload: { ids } }, options);
 
 export default useDeleteMany;
