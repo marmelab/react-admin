@@ -245,7 +245,7 @@ SelectInput.propTypes = {
     allowEmpty: PropTypes.bool.isRequired,
     emptyText: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
     emptyValue: PropTypes.any,
-    choices: PropTypes.arrayOf(PropTypes.object).isRequired,
+    choices: PropTypes.arrayOf(PropTypes.object),
     classes: PropTypes.object,
     className: PropTypes.string,
     label: PropTypes.string,
