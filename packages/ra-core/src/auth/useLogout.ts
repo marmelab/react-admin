@@ -25,22 +25,20 @@ import { useHistory, useLocation } from 'react-router';
  */
 const useLogout = (): Logout => {
     const authProvider = useAuthProvider();
-    const location = useLocation();
+    const dispatch = useDispatch();
 
     /**
      * We need the current location to pass in the router state
      * so that the login hook knows where to redirect to as next route after login.
      *
-     * But if we used useSelector to read it from the store, the logout function
+     * But if we used useLocation to get it, the logout function
      * would be rebuilt each time the user changes location. Consequently, that
-     * would force a rerender of the Logout button upon navigation.
+     * would force a rerender of all components using this hook upon navigation
+     * (CoreAdminRouter for example).
      *
-     * To avoid that, we don't subscribe to the store using useSelector;
-     * instead, we get a pointer to the store, and determine the location only
-     * after the logout function was called.
+     * To avoid that, we read the location directly from history which is mutable.
+     * See: https://reacttraining.com/react-router/web/api/history/history-is-mutable
      */
-
-    const dispatch = useDispatch();
     const history = useHistory();
 
     const logout = useCallback(
@@ -50,12 +48,13 @@ const useLogout = (): Logout => {
                 history.push({
                     pathname: redirectToFromProvider || redirectTo,
                     state: {
-                        nextPathname: location && location.pathname,
+                        nextPathname:
+                            history.location && history.location.pathname,
                     },
                 });
                 return redirectToFromProvider;
             }),
-        [authProvider, location, history, dispatch]
+        [authProvider, history, dispatch]
     );
 
     const logoutWithoutProvider = useCallback(
@@ -63,13 +62,13 @@ const useLogout = (): Logout => {
             history.push({
                 pathname: defaultAuthParams.loginUrl,
                 state: {
-                    nextPathname: location && location.pathname,
+                    nextPathname: history.location && history.location.pathname,
                 },
             });
             dispatch(clearState());
             return Promise.resolve();
         },
-        [location, dispatch, history]
+        [dispatch, history]
     );
 
     return authProvider ? logout : logoutWithoutProvider;
