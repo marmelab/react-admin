@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { Form } from 'react-final-form';
 import arrayMutators from 'final-form-arrays';
-import { useSelector } from 'react-redux';
 import { Route } from 'react-router-dom';
 import Divider from '@material-ui/core/Divider';
 import { makeStyles } from '@material-ui/core/styles';
@@ -22,7 +21,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const TabbedForm = ({ initialValues, ...props }) => {
+const TabbedForm = ({ initialValues, saving, ...props }) => {
     let redirect = useRef(props.redirect);
     // We don't use state here for two reasons:
     // 1. There no way to execute code only after the state has been updated
@@ -30,7 +29,7 @@ const TabbedForm = ({ initialValues, ...props }) => {
     const setRedirect = newRedirect => {
         redirect.current = newRedirect;
     };
-    const saving = useSelector(state => state.admin.saving);
+
     const translate = useTranslate();
     const classes = useStyles();
 
