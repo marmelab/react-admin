@@ -3,7 +3,7 @@ import { useDispatch, useStore } from 'react-redux';
 
 import useAuthProvider, { defaultAuthParams } from './useAuthProvider';
 import { clearState } from '../actions/clearActions';
-import { useHistory } from 'react-router';
+import { useHistory, useLocation } from 'react-router';
 
 /**
  * Get a callback for calling the authProvider.logout() method,
@@ -25,6 +25,8 @@ import { useHistory } from 'react-router';
  */
 const useLogout = (): Logout => {
     const authProvider = useAuthProvider();
+    const location = useLocation();
+
     /**
      * We need the current location to pass in the router state
      * so that the login hook knows where to redirect to as next route after login.
@@ -38,7 +40,6 @@ const useLogout = (): Logout => {
      * after the logout function was called.
      */
 
-    const store = useStore();
     const dispatch = useDispatch();
     const history = useHistory();
 
@@ -46,32 +47,29 @@ const useLogout = (): Logout => {
         (params = {}, redirectTo = defaultAuthParams.loginUrl) =>
             authProvider.logout(params).then(redirectToFromProvider => {
                 dispatch(clearState());
-                const currentLocation = store.getState().router.location;
                 history.push({
                     pathname: redirectToFromProvider || redirectTo,
                     state: {
-                        nextPathname:
-                            currentLocation && currentLocation.pathname,
+                        nextPathname: location && location.pathname,
                     },
                 });
                 return redirectToFromProvider;
             }),
-        [authProvider, store, history, dispatch]
+        [authProvider, location, history, dispatch]
     );
 
     const logoutWithoutProvider = useCallback(
         _ => {
-            const currentLocation = store.getState().router.location;
             history.push({
                 pathname: defaultAuthParams.loginUrl,
                 state: {
-                    nextPathname: currentLocation && currentLocation.pathname,
+                    nextPathname: location && location.pathname,
                 },
             });
             dispatch(clearState());
             return Promise.resolve();
         },
-        [store, dispatch, history]
+        [location, dispatch, history]
     );
 
     return authProvider ? logout : logoutWithoutProvider;
