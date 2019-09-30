@@ -5,7 +5,6 @@ import resources, {
 } from './resource';
 import loading from './loading';
 import notifications from './notifications';
-import record from './record';
 import references, {
     getPossibleReferenceValues as referencesGetPossibleReferenceValues,
 } from './references';
@@ -17,7 +16,6 @@ export default combineReducers({
     customQueries,
     loading,
     notifications,
-    record,
     references,
     ui,
 });
