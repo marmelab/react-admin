@@ -1,4 +1,4 @@
-import { isValidElement, ReactElement, useMemo } from 'react';
+import { isValidElement, ReactElement, useEffect, useMemo } from 'react';
 import inflection from 'inflection';
 import { Location } from 'history';
 import { useSelector, shallowEqual } from 'react-redux';
@@ -175,10 +175,15 @@ const useListController = (props: ListProps): ListControllerProps => {
         shallowEqual
     );
 
-    if (!query.page && !(ids || []).length && query.page > 1 && total > 0) {
-        // query for a page that doesn't exist, check the previous page
-        queryModifiers.setPage(query.page - 1);
-    }
+    useEffect(() => {
+        if (
+            query.page < 0 ||
+            (!loading && query.page > 1 && (ids || []).length === 0)
+        ) {
+            // query for a page that doesn't exist, set page to 1
+            queryModifiers.setPage(1);
+        }
+    }, [loading, query.page, ids, queryModifiers]);
 
     const currentSort = useMemo(
         () => ({

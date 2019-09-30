@@ -949,7 +949,7 @@ export const UserEdit = ({ permissions, ...props }) =>
 ## Altering the Form Values before Submitting
 
 Sometimes, you may want your custom action to alter the form values before actually sending them to the `dataProvider`.
-For those cases, you should know that every buttons inside a form [Toolbar](/CreateEdit.md#toolbar) receive two props:
+For those cases, you should know that every button inside a form [Toolbar](/CreateEdit.md#toolbar) receive two props:
 
 - `handleSubmit` which calls the default form save method
 - `handleSubmitWithRedirect` which calls the default form save method but allows to specify a custom redirection

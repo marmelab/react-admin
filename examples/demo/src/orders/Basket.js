@@ -25,7 +25,7 @@ const Basket = ({ record }) => {
             type: 'getMany',
             resource: 'products',
             payload: {
-                ids: record && record.basket.map(item => item.product_id),
+                ids: record ? record.basket.map(item => item.product_id) : [],
             },
         },
         {},
