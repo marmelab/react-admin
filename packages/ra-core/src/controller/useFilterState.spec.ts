@@ -35,7 +35,7 @@ describe('useFilterState', () => {
         act(() => hookValue.setFilter('needle in a haystack'));
 
         expect(childrenMock).toBeCalledTimes(1);
-        await new Promise(resolve => setTimeout(resolve, 10));
+        await new Promise(resolve => setTimeout(resolve, 11));
 
         expect(childrenMock).toBeCalledTimes(2);
 
@@ -56,7 +56,7 @@ describe('useFilterState', () => {
         act(() => hookValue.setFilter('needle in a haystack'));
 
         expect(childrenMock).toBeCalledTimes(1);
-        await new Promise(resolve => setTimeout(resolve, 10));
+        await new Promise(resolve => setTimeout(resolve, 11));
 
         expect(childrenMock).toBeCalledTimes(2);
 
