@@ -177,7 +177,7 @@ const useListController = (props: ListProps): ListControllerProps => {
 
     useEffect(() => {
         if (
-            query.page < 0 ||
+            query.page <= 0 ||
             (!loading && query.page > 1 && (ids || []).length === 0)
         ) {
             // query for a page that doesn't exist, set page to 1
