@@ -1,6 +1,5 @@
 import { useSelector } from 'react-redux';
 import { CRUD_GET_MATCHING } from '../actions/dataActions/crudGetMatching';
-import { GET_LIST } from '../dataFetchActions';
 import { Pagination, Sort, ReduxState } from '../types';
 import useQueryWithStore from './useQueryWithStore';
 import {
@@ -12,7 +11,12 @@ import {
 const referenceSource = (resource, source) => `${resource}@${source}`;
 
 /**
- * Call the dataProvider with a GET_LIST verb and return the result as well as the loading state.
+ * Call the dataProvider.getList() method return the resolved result
+ * as well as the loading state.
+ *
+ * React-admin uses a different store location for the result of this query
+ * than for useGetList(). Therefore, calling useGetMatching() does not modify
+ * the ids and total for the resource.
  *
  * The return value updates according to the request state:
  *
@@ -38,12 +42,13 @@ const referenceSource = (resource, source) => `${resource}@${source}`;
  * import { useGetMatching } from 'react-admin';
  *
  * const PostTags = () => {
+ *     // call dataProvider.getList('tags', { pagination: { page: 1, perPage: 10 }, sort: { { field: 'published_at', order: 'DESC' } } })
  *     const { data, loading, error } = useGetMatching(
  *         'tags',
  *         { page: 1, perPage: 10 },
  *         { field: 'published_at', order: 'DESC' },
- *         'tag_ids',
  *         {},
+ *         'tag_ids',
  *         'posts',
  *     );
  *     if (loading) { return <Loading />; }
@@ -71,7 +76,7 @@ const useGetMatching = (
         loaded,
     } = useQueryWithStore(
         {
-            type: GET_LIST,
+            type: 'getList',
             resource,
             payload: { pagination, sort, filter },
         },

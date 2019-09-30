@@ -4,7 +4,13 @@ import { makeStyles } from '@material-ui/core/styles';
 import { fade } from '@material-ui/core/styles/colorManipulator';
 import ActionDelete from '@material-ui/icons/Delete';
 import classnames from 'classnames';
-import { useDelete, useRefresh, useNotify, useRedirect } from 'ra-core';
+import {
+    useDelete,
+    useRefresh,
+    useNotify,
+    useRedirect,
+    CRUD_DELETE,
+} from 'ra-core';
 
 import Button from './Button';
 
@@ -56,34 +62,41 @@ const DeleteWithUndoButton = ({
     const redirect = useRedirect();
     const refresh = useRefresh();
 
-    // We don't pass the action payload (the record and its identifier) at
-    // declaration time to avoid errors for people using the button in a
-    // component which may not have the record loaded immediately (for exemple
-    // in the actions of an Edit component)
-    const [deleteOne, { loading }] = useDelete(resource, undefined, undefined, {
-        onSuccess: () => {
-            notify('ra.notification.deleted', 'info', { smart_count: 1 }, true);
-            redirect(redirectTo, basePath);
-            refresh();
-        },
-        onFailure: error =>
-            notify(
-                typeof error === 'string'
-                    ? error
-                    : error.message || 'ra.notification.http_error',
-                'warning'
-            ),
-        undoable: true,
-    });
+    const [deleteOne, { loading }] = useDelete(
+        resource,
+        record && record.id,
+        record,
+        {
+            action: CRUD_DELETE,
+            onSuccess: () => {
+                notify(
+                    'ra.notification.deleted',
+                    'info',
+                    { smart_count: 1 },
+                    true
+                );
+                redirect(redirectTo, basePath);
+                refresh();
+            },
+            onFailure: error =>
+                notify(
+                    typeof error === 'string'
+                        ? error
+                        : error.message || 'ra.notification.http_error',
+                    'warning'
+                ),
+            undoable: true,
+        }
+    );
     const handleDelete = useCallback(
         event => {
             event.stopPropagation();
-            deleteOne(event, { id: record.id, previousData: record });
+            deleteOne();
             if (typeof onClick === 'function') {
                 onClick();
             }
         },
-        [deleteOne, onClick, record]
+        [deleteOne, onClick]
     );
 
     return (

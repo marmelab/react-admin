@@ -2,9 +2,10 @@ import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import isEqual from 'lodash/isEqual';
 
-import { ReduxState } from '../types';
-import { useSafeSetState } from '../util/hooks';
 import useDataProvider from './useDataProvider';
+import getFetchType from './getFetchType';
+import { useSafeSetState } from '../util/hooks';
+import { ReduxState } from '../types';
 
 export interface Query {
     type: string;
@@ -13,8 +14,10 @@ export interface Query {
 }
 
 export interface QueryOptions {
-    meta?: any;
+    onSuccess?: (args?: any) => void;
+    onFailure?: (error: any) => void;
     action?: string;
+    [key: string]: any;
 }
 
 /**
@@ -34,12 +37,12 @@ const isEmptyList = data =>
  * Default cache selector. Allows to cache responses by default.
  *
  * By default, custom queries are dispatched as a CUSTOM_QUERY Redux action.
- * The fetch middleware dispatches a CUSTOM_QUERY_SUCCESS when the response comes,
- * and the customQueries reducer stores the result in the store. This selector
- * reads the customQueries store and acts as a response cache.
+ * The useDataProvider hookdispatches a CUSTOM_QUERY_SUCCESS when the response
+ * comes, and the customQueries reducer stores the result in the store.
+ * This selector reads the customQueries store and acts as a response cache.
  */
 const defaultDataSelector = query => (state: ReduxState) => {
-    const key = JSON.stringify(query);
+    const key = JSON.stringify({ ...query, type: getFetchType(query.type) });
     return state.admin.customQueries[key]
         ? state.admin.customQueries[key].data
         : undefined;
@@ -60,12 +63,13 @@ const defaultTotalSelector = () => null;
  * with the same parameters, until the response arrives.
  *
  * @param {Object} query
- * @param {string} query.type The verb passed to th data provider, e.g. 'GET_LIST', 'GET_ONE'
+ * @param {string} query.type The verb passed to th data provider, e.g. 'getList', 'getOne'
  * @param {string} query.resource A resource name, e.g. 'posts', 'comments'
  * @param {Object} query.payload The payload object, e.g; { post_id: 12 }
  * @param {Object} options
  * @param {string} options.action Redux action type
- * @param {Object} options.meta Redux action metas, including side effects to be executed upon success of failure, e.g. { onSuccess: { refresh: true } }
+ * @param {Function} options.onSuccess Side effect function to be executed upon success of failure, e.g. { onSuccess: response => refresh() } }
+ * @param {Function} options.onFailure Side effect function to be executed upon failure, e.g. { onFailure: error => notify(error.message) } }
  * @param {function} dataSelector Redux selector to get the result. Required.
  * @param {function} totalSelector Redux selector to get the total (optional, only for LIST queries)
  *
@@ -78,7 +82,7 @@ const defaultTotalSelector = () => null;
  * const UserProfile = ({ record }) => {
  *     const { data, loading, error } = useQueryWithStore(
  *         {
- *             type: 'GET_ONE',
+ *             type: 'getOne',
  *             resource: 'users',
  *             payload: { id: record.id }
  *         },
@@ -94,7 +98,7 @@ const useQueryWithStore = (
     query: Query,
     options: QueryOptions = { action: 'CUSTOM_QUERY' },
     dataSelector: (state: ReduxState) => any = defaultDataSelector(query),
-    totalSelector?: (state: ReduxState) => number
+    totalSelector: (state: ReduxState) => number = defaultTotalSelector
 ): {
     data?: any;
     total?: number;
@@ -104,7 +108,7 @@ const useQueryWithStore = (
 } => {
     const { type, resource, payload } = query;
     const data = useSelector(dataSelector);
-    const total = useSelector(totalSelector || defaultTotalSelector);
+    const total = useSelector(totalSelector);
     const [state, setState] = useSafeSetState({
         data,
         total,
@@ -122,7 +126,7 @@ const useQueryWithStore = (
     }
     const dataProvider = useDataProvider();
     useEffect(() => {
-        dataProvider(type, resource, payload, options)
+        dataProvider[type](resource, payload, options)
             .then(() => {
                 // We don't care about the dataProvider response here, because
                 // it was already passed to SUCCESS reducers by the dataProvider

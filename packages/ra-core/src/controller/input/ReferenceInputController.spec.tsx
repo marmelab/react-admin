@@ -22,10 +22,11 @@ describe('<ReferenceInputController />', () => {
 
     it('should fetch reference matchingReferences, and provide filter pagination and sort', async () => {
         const children = jest.fn().mockReturnValue(<p>child</p>);
-        const dataProvider = jest.fn();
-        dataProvider.mockImplementationOnce(() =>
-            Promise.resolve({ data: [{ id: 1, title: 'foo' }] })
-        );
+        const dataProvider = {
+            getMany: jest.fn(() =>
+                Promise.resolve({ data: [{ id: 1, title: 'foo' }] })
+            ),
+        };
         const { dispatch } = renderWithRedux(
             <DataProviderContext.Provider value={dataProvider}>
                 <ReferenceInputController

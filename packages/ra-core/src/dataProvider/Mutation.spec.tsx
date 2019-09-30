@@ -52,10 +52,9 @@ describe('Mutation', () => {
 
     it('supports declarative onSuccess side effects', async () => {
         let dispatchSpy;
-        const dataProvider = jest.fn();
-        dataProvider.mockImplementationOnce(() =>
-            Promise.resolve({ data: { foo: 'bar' } })
-        );
+        const dataProvider = {
+            mytype: jest.fn(() => Promise.resolve({ data: { foo: 'bar' } })),
+        };
 
         let getByTestId;
         act(() => {
@@ -114,10 +113,9 @@ describe('Mutation', () => {
 
     it('supports onSuccess side effects using hooks', async () => {
         let dispatchSpy;
-        const dataProvider = jest.fn();
-        dataProvider.mockImplementationOnce(() =>
-            Promise.resolve({ data: { foo: 'bar' } })
-        );
+        const dataProvider = {
+            mytype: jest.fn(() => Promise.resolve({ data: { foo: 'bar' } })),
+        };
 
         const Foo = () => {
             const notify = useNotify();
@@ -168,10 +166,11 @@ describe('Mutation', () => {
 
     it('supports declarative onFailure side effects', async () => {
         let dispatchSpy;
-        const dataProvider = jest.fn();
-        dataProvider.mockImplementationOnce(() =>
-            Promise.reject({ message: 'provider error' })
-        );
+        const dataProvider = {
+            mytype: jest.fn(() =>
+                Promise.reject({ message: 'provider error' })
+            ),
+        };
 
         let getByTestId;
         act(() => {
@@ -230,10 +229,11 @@ describe('Mutation', () => {
 
     it('supports onFailure side effects using hooks', async () => {
         let dispatchSpy;
-        const dataProvider = jest.fn();
-        dataProvider.mockImplementationOnce(() =>
-            Promise.reject({ message: 'provider error' })
-        );
+        const dataProvider = {
+            mytype: jest.fn(() =>
+                Promise.reject({ message: 'provider error' })
+            ),
+        };
 
         const Foo = () => {
             const notify = useNotify();

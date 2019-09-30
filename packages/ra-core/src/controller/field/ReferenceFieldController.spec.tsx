@@ -15,10 +15,11 @@ const defaultState = {
 describe('<ReferenceFieldController />', () => {
     afterEach(cleanup);
     it('should call the CRUD_GET_MANY action on mount if reference source is defined', async () => {
-        const dataProvider = jest.fn();
-        dataProvider.mockImplementationOnce(() =>
-            Promise.resolve({ data: [{ id: 123, title: 'foo' }] })
-        );
+        const dataProvider = {
+            getMany: jest.fn(() =>
+                Promise.resolve({ data: [{ id: 123, title: 'foo' }] })
+            ),
+        };
         const { dispatch } = renderWithRedux(
             <DataProviderContext.Provider value={dataProvider}>
                 <ReferenceFieldController
@@ -43,8 +44,8 @@ describe('<ReferenceFieldController />', () => {
             ids: [123],
         });
         expect(crudGetManyAction.meta.resource).toEqual('posts');
-        expect(dataProvider).toBeCalledTimes(1);
-        expect(dataProvider).toBeCalledWith('GET_MANY', 'posts', {
+        expect(dataProvider.getMany).toBeCalledTimes(1);
+        expect(dataProvider.getMany).toBeCalledWith('posts', {
             ids: [123],
         });
     });

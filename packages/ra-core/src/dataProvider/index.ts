@@ -1,3 +1,4 @@
+import convertLegacyDataProvider from './convertLegacyDataProvider';
 import DataProviderContext from './DataProviderContext';
 import HttpError from './HttpError';
 import * as fetchUtils from './fetch';
@@ -21,9 +22,10 @@ import useDelete from './useDelete';
 import useDeleteMany from './useDeleteMany';
 
 export {
+    convertLegacyDataProvider,
     DataProviderContext,
-    HttpError,
     fetchUtils,
+    HttpError,
     Mutation,
     Query,
     undoableEventEmitter,

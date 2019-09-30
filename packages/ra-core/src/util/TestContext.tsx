@@ -5,6 +5,7 @@ import merge from 'lodash/merge';
 import { createMemoryHistory } from 'history';
 
 import createAdminStore from '../createAdminStore';
+import { convertLegacyDataProvider } from '../dataProvider';
 
 export const defaultStore = {
     admin: {
@@ -55,8 +56,9 @@ class TestContext extends Component<Props> {
         this.storeWithDefault = enableReducers
             ? createAdminStore({
                   initialState: merge({}, defaultStore, initialState),
-                  dataProvider: () =>
-                      Promise.resolve(dataProviderDefaultResponse),
+                  dataProvider: convertLegacyDataProvider(() =>
+                      Promise.resolve(dataProviderDefaultResponse)
+                  ),
                   history: createMemoryHistory(),
               })
             : createStore(() => merge({}, defaultStore, initialState));

@@ -4,6 +4,7 @@ export interface State {
     [key: string]: any;
 }
 
+// reducer for queries called via useQueryWithStore and without a custom action name
 const customQueriesReducer: Reducer<State> = (
     previousState = {},
     { type, requestPayload, payload, meta }

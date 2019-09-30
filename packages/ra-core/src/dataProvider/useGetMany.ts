@@ -7,10 +7,9 @@ import union from 'lodash/union';
 import isEqual from 'lodash/isEqual';
 
 import { CRUD_GET_MANY } from '../actions/dataActions/crudGetMany';
-import { GET_MANY } from '../dataFetchActions';
-import { Identifier, ReduxState } from '../types';
+import { Identifier, ReduxState, DataProviderProxy } from '../types';
 import { useSafeSetState } from '../util/hooks';
-import useDataProvider, { DataProviderHookFunction } from './useDataProvider';
+import useDataProvider from './useDataProvider';
 import { useEffect } from 'react';
 
 type Callback = (args?: any) => void;
@@ -26,10 +25,13 @@ interface QueriesToCall {
 }
 
 let queriesToCall: QueriesToCall = {};
-let dataProvider: DataProviderHookFunction;
+let dataProvider: DataProviderProxy;
+
+const DataProviderOptions = { action: CRUD_GET_MANY };
 
 /**
- * Call the dataProvider with a GET_MANY verb and return the result as well as the loading state.
+ * Call the dataProvider.getMany() method and return the resolved result
+ * as well as the loading state.
  *
  * The return value updates according to the request state:
  *
@@ -170,12 +172,8 @@ const callQueries = debounce(() => {
             });
             return;
         }
-        dataProvider(
-            GET_MANY,
-            resource,
-            { ids: accumulatedIds },
-            { action: CRUD_GET_MANY }
-        )
+        dataProvider
+            .getMany(resource, { ids: accumulatedIds }, DataProviderOptions)
             .then(response =>
                 // Forces batching, see https://stackoverflow.com/questions/48563650/does-react-keep-the-order-for-state-updates/48610973#48610973
                 ReactDOM.unstable_batchedUpdates(() =>

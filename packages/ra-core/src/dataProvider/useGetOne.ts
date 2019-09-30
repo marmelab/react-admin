@@ -1,10 +1,9 @@
-import { CRUD_GET_ONE } from '../actions/dataActions/crudGetOne';
-import { GET_ONE } from '../dataFetchActions';
-import { Identifier, ReduxState } from '../types';
+import { Identifier, Record, ReduxState } from '../types';
 import useQueryWithStore from './useQueryWithStore';
 
 /**
- * Call the dataProvider with a GET_ONE verb and return the result as well as the loading state.
+ * Call the dataProvider.getOne() method and return the resolved value
+ * as well as the loading state.
  *
  * The return value updates according to the request state:
  *
@@ -32,14 +31,25 @@ import useQueryWithStore from './useQueryWithStore';
  *     return <div>User {data.username}</div>;
  * };
  */
-const useGetOne = (resource: string, id: Identifier, options?: any) =>
+const useGetOne = (
+    resource: string,
+    id: Identifier,
+    options?: any
+): UseGetOneHookValue =>
     useQueryWithStore(
-        { type: GET_ONE, resource, payload: { id } },
-        { ...options, action: CRUD_GET_ONE },
+        { type: 'getOne', resource, payload: { id } },
+        options,
         (state: ReduxState) =>
             state.admin.resources[resource]
                 ? state.admin.resources[resource].data[id]
                 : null
     );
+
+export type UseGetOneHookValue = {
+    data?: Record;
+    loading: boolean;
+    loaded: boolean;
+    error?: any;
+};
 
 export default useGetOne;

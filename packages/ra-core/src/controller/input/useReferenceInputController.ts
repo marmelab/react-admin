@@ -42,7 +42,7 @@ interface Option {
  * A hook for choosing a reference record. Useful for foreign keys.
  *
  * This hook fetches the possible values in the reference resource
- * (using the `CRUD_GET_MATCHING` REST method), it returns the possible choices
+ * (using `dataProvider.getMatching()`), it returns the possible choices
  * as the `choices` attribute.
  *
  * @example
