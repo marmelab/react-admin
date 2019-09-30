@@ -11,13 +11,12 @@ import React, {
 import isEqual from 'lodash/isEqual';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { useDispatch } from 'react-redux';
-import { push } from 'connected-react-router';
 import { TableCell, TableRow, Checkbox } from '@material-ui/core';
 import { linkToRecord } from 'ra-core';
 
 import DatagridCell from './DatagridCell';
 import ExpandRowButton from './ExpandRowButton';
+import { useHistory } from 'react-router';
 
 const computeNbColumns = (expand, children, hasBulkActions) =>
     expand
@@ -58,7 +57,8 @@ const DatagridRow = ({
             setNbColumns(newNbColumns);
         }
     }, [expand, nbColumns, children, hasBulkActions]);
-    const dispatch = useDispatch();
+
+    const history = useHistory();
 
     const handleToggleExpand = useCallback(
         event => {
@@ -83,10 +83,10 @@ const DatagridRow = ({
                     : rowClick;
             switch (effect) {
                 case 'edit':
-                    dispatch(push(linkToRecord(basePath, id)));
+                    history.push(linkToRecord(basePath, id));
                     return;
                 case 'show':
-                    dispatch(push(linkToRecord(basePath, id, 'show')));
+                    history.push(linkToRecord(basePath, id, 'show'));
                     return;
                 case 'expand':
                     handleToggleExpand(event);
@@ -95,13 +95,13 @@ const DatagridRow = ({
                     handleToggleSelection(event);
                     return;
                 default:
-                    if (effect) dispatch(push(effect));
+                    if (effect) history.push(effect);
                     return;
             }
         },
         [
             basePath,
-            dispatch,
+            history,
             handleToggleExpand,
             handleToggleSelection,
             id,

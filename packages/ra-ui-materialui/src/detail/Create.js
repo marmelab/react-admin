@@ -122,6 +122,7 @@ export const CreateView = props => {
         redirect,
         resource,
         save,
+        saving,
         title,
         version,
         ...rest
@@ -161,6 +162,7 @@ export const CreateView = props => {
                                 : children.props.redirect,
                         resource,
                         save,
+                        saving,
                         version,
                     })}
                 </Card>
@@ -170,6 +172,7 @@ export const CreateView = props => {
                         record,
                         resource,
                         save,
+                        saving,
                         version,
                     })}
             </div>

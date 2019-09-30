@@ -3,14 +3,14 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { Form } from 'react-final-form';
 import arrayMutators from 'final-form-arrays';
-import { useSelector } from 'react-redux';
-import { withRouter, Route } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 import Divider from '@material-ui/core/Divider';
 import { makeStyles } from '@material-ui/core/styles';
 import { useTranslate, useInitializeFormWithRecord } from 'ra-core';
 
 import Toolbar from './Toolbar';
-import TabbedFormTabs from './TabbedFormTabs';
+import TabbedFormTabs, { getTabFullPath } from './TabbedFormTabs';
+import { useRouteMatch, useLocation } from 'react-router';
 
 const useStyles = makeStyles(theme => ({
     errorTabButton: { color: theme.palette.error.main },
@@ -21,7 +21,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const TabbedForm = ({ initialValues, ...props }) => {
+const TabbedForm = ({ initialValues, saving, ...props }) => {
     let redirect = useRef(props.redirect);
     // We don't use state here for two reasons:
     // 1. There no way to execute code only after the state has been updated
@@ -29,7 +29,7 @@ const TabbedForm = ({ initialValues, ...props }) => {
     const setRedirect = newRedirect => {
         redirect.current = newRedirect;
     };
-    const saving = useSelector(state => state.admin.saving);
+
     const translate = useTranslate();
     const classes = useStyles();
 
@@ -75,7 +75,7 @@ const defaultSubscription = {
     invalid: true,
 };
 
-export default withRouter(TabbedForm);
+export default TabbedForm;
 
 export const TabbedFormView = ({
     basePath,
@@ -85,8 +85,6 @@ export const TabbedFormView = ({
     form,
     handleSubmit,
     invalid,
-    location,
-    match,
     pristine,
     record,
     redirect: defaultRedirect,
@@ -116,6 +114,9 @@ export const TabbedFormView = ({
 
     const tabsWithErrors = findTabsWithErrors(children, form.getState().errors);
 
+    const match = useRouteMatch();
+    const location = useLocation();
+
     const url = match ? match.url : location.pathname;
     return (
         <form
@@ -127,7 +128,6 @@ export const TabbedFormView = ({
                 tabs,
                 {
                     classes,
-                    currentLocationPath: location.pathname,
                     url,
                     tabsWithErrors,
                 },
@@ -267,11 +267,6 @@ const sanitizeRestProps = ({
     _reduxForm,
     ...props
 }) => props;
-
-export const getTabFullPath = (tab, index, baseUrl) =>
-    `${baseUrl}${
-        tab.props.path ? `/${tab.props.path}` : index > 0 ? `/${index}` : ''
-    }`;
 
 export const findTabsWithErrors = (children, errors) => {
     return Children.toArray(children).reduce((acc, child) => {

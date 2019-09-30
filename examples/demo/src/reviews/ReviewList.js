@@ -1,9 +1,7 @@
 import React, { Fragment, useCallback } from 'react';
 import classnames from 'classnames';
 import { BulkDeleteButton, List } from 'react-admin';
-import { useDispatch } from 'react-redux';
-import { push } from 'connected-react-router';
-import { Route } from 'react-router';
+import { Route, useHistory } from 'react-router';
 import { Drawer, useMediaQuery, makeStyles } from '@material-ui/core';
 import BulkAcceptButton from './BulkAcceptButton';
 import BulkRejectButton from './BulkRejectButton';
@@ -41,12 +39,12 @@ const useStyles = makeStyles(theme => ({
 
 const ReviewList = props => {
     const classes = useStyles();
-    const dispatch = useDispatch();
     const isXSmall = useMediaQuery(theme => theme.breakpoints.down('xs'));
+    const history = useHistory();
 
     const handleClose = useCallback(() => {
-        dispatch(push('/reviews'));
-    }, [dispatch]);
+        history.push('/reviews');
+    }, [history]);
 
     return (
         <div className={classes.root}>

@@ -1,12 +1,13 @@
 import React from 'react';
 import expect from 'expect';
 import { cleanup, wait } from '@testing-library/react';
-import { push } from 'connected-react-router';
 
 import Authenticated from './Authenticated';
 import AuthContext from './AuthContext';
 import renderWithRedux from '../util/renderWithRedux';
 import { showNotification } from '../actions/notificationActions';
+import { createMemoryHistory } from 'history';
+import { Router } from 'react-router';
 
 describe('useAuthenticated', () => {
     afterEach(cleanup);
@@ -74,17 +75,22 @@ describe('useAuthenticated', () => {
             checkError: jest.fn().mockResolvedValue(''),
             getPermissions: jest.fn().mockResolvedValue(''),
         };
+
+        const history = createMemoryHistory();
+
         const { dispatch } = renderWithRedux(
-            <AuthContext.Provider value={authProvider}>
-                <Authenticated>
-                    <Foo />
-                </Authenticated>
-            </AuthContext.Provider>
+            <Router history={history}>
+                <AuthContext.Provider value={authProvider}>
+                    <Authenticated>
+                        <Foo />
+                    </Authenticated>
+                </AuthContext.Provider>
+            </Router>
         );
         await wait();
         expect(authProvider.checkAuth.mock.calls[0][0]).toEqual({});
         expect(authProvider.logout.mock.calls[0][0]).toEqual({});
-        expect(dispatch).toHaveBeenCalledTimes(3);
+        expect(dispatch).toHaveBeenCalledTimes(2);
         expect(dispatch.mock.calls[0][0]).toEqual(
             showNotification('ra.auth.auth_check_error', 'warning', {
                 messageArgs: {},
@@ -92,8 +98,7 @@ describe('useAuthenticated', () => {
             })
         );
         expect(dispatch.mock.calls[1][0]).toEqual({ type: 'RA/CLEAR_STATE' });
-        expect(dispatch.mock.calls[2][0]).toEqual(
-            push({ pathname: '/login', state: { nextPathname: '/' } })
-        );
+        expect(history.location.pathname).toEqual('/login');
+        expect(history.location.state).toEqual({ nextPathname: '/' });
     });
 });

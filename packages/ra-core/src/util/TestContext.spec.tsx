@@ -15,7 +15,6 @@ const primedStore = {
             possibleValues: {},
         },
         resources: {},
-        saving: false,
         ui: {
             viewVersion: 1,
         },

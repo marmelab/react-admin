@@ -2,7 +2,6 @@ import React, { Children, useCallback, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { Form } from 'react-final-form';
 import arrayMutators from 'final-form-arrays';
-import { useSelector } from 'react-redux';
 import classnames from 'classnames';
 import { useTranslate, useInitializeFormWithRecord } from 'ra-core';
 
@@ -10,7 +9,7 @@ import FormInput from './FormInput';
 import Toolbar from './Toolbar';
 import CardContentInner from '../layout/CardContentInner';
 
-const SimpleForm = ({ initialValues, ...props }) => {
+const SimpleForm = ({ initialValues, saving, ...props }) => {
     let redirect = useRef(props.redirect);
     // We don't use state here for two reasons:
     // 1. There no way to execute code only after the state has been updated
@@ -19,7 +18,6 @@ const SimpleForm = ({ initialValues, ...props }) => {
         redirect.current = newRedirect;
     };
 
-    const saving = useSelector(state => state.admin.saving);
     const translate = useTranslate();
     const submit = values => {
         const finalRedirect =

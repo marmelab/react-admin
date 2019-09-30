@@ -1,8 +1,9 @@
 import React, { Children, cloneElement, isValidElement } from 'react';
 import PropTypes from 'prop-types';
 import Tabs from '@material-ui/core/Tabs';
+import { useLocation } from 'react-router';
 
-const getTabFullPath = (tab, index, baseUrl) =>
+export const getTabFullPath = (tab, index, baseUrl) =>
     `${baseUrl}${
         tab.props.path ? `/${tab.props.path}` : index > 0 ? `/${index}` : ''
     }`;
@@ -10,11 +11,12 @@ const getTabFullPath = (tab, index, baseUrl) =>
 const TabbedFormTabs = ({
     children,
     classes,
-    currentLocationPath,
     url,
     tabsWithErrors,
     ...rest
 }) => {
+    const location = useLocation();
+
     const validTabPaths = Children.toArray(children).map((tab, index) =>
         getTabFullPath(tab, index, url)
     );
@@ -26,8 +28,8 @@ const TabbedFormTabs = ({
     // available tab. The current location will be applied again on the
     // first render containing the targeted tab. This is almost transparent
     // for the user who may just see an short tab selection animation
-    const tabValue = validTabPaths.includes(currentLocationPath)
-        ? currentLocationPath
+    const tabValue = validTabPaths.includes(location.pathname)
+        ? location.pathname
         : validTabPaths[0];
 
     return (
@@ -46,7 +48,7 @@ const TabbedFormTabs = ({
                     value: tabPath,
                     className:
                         tabsWithErrors.includes(tab.props.label) &&
-                        currentLocationPath !== tabPath
+                        location.pathname !== tabPath
                             ? classes.errorTabButton
                             : null,
                 });
@@ -58,7 +60,6 @@ const TabbedFormTabs = ({
 TabbedFormTabs.propTypes = {
     children: PropTypes.node,
     classes: PropTypes.object,
-    currentLocationPath: PropTypes.string,
     url: PropTypes.string,
     tabsWithErrors: PropTypes.arrayOf(PropTypes.string),
 };
