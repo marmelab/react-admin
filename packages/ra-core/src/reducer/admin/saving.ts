@@ -1,4 +1,3 @@
-import { LOCATION_CHANGE } from 'connected-react-router';
 import {
     CRUD_CREATE,
     CRUD_CREATE_SUCCESS,
@@ -15,7 +14,6 @@ export default (previousState = false, { type, meta }) => {
             return {
                 redirect: meta.onSuccess && meta.onSuccess.redirectTo,
             };
-        case LOCATION_CHANGE:
         case CRUD_CREATE_SUCCESS:
         case CRUD_CREATE_FAILURE:
         case CRUD_UPDATE_SUCCESS:
