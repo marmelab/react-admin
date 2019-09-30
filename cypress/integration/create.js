@@ -255,6 +255,10 @@ describe('Create Page', () => {
         cy.get(CreatePage.elements.richTextInputError)
             .should('exist')
             .contains('Required');
+
+        // Quill take a little time to boot and Cypress is too fast which can leads to unstable tests
+        // so we wait a bit before interacting with the rich-text-input
+        cy.wait(250);
         cy.get(CreatePage.elements.input('body', 'rich-text-input')).type(
             'text'
         );
