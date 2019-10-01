@@ -1094,17 +1094,17 @@ const i18nProvider = (locale) => messages[locale];
 // react-admin 3.x
 const polyglot = new Polyglot({ locale: 'en', phrases: messages.en });
 let translate = polyglot.t.bind(polyglot);
+let locale = 'en';
 const i18nProvider = {
     translate: (key, options) => translate(key, options),
     changeLocale: newLocale => {
+        locale = newLocale;
         return new Promise((resolve, reject) => {
             // load new messages and update the translate function
         })
     },
     getLocale: () => {
-        return new Promise((resolve, reject) => {
-            // load new messages and update the translate function
-        })
+        return locale;
     }
 } 
 ```
