@@ -100,7 +100,7 @@ const buildGetListVariables = introspectionResults => (
     aorFetchType,
     params
 ) => {
-    const filter = Object.keys(params.filter).reduce((acc, key) => {
+    const filter = params.filter ? Object.keys(params.filter).reduce((acc, key) => {
         if (key === 'ids') {
             return { ...acc, ids: params.filter[key] };
         }
@@ -174,7 +174,7 @@ const buildGetListVariables = introspectionResults => (
         }
 
         return { ...acc, [key]: params.filter[key] };
-    }, {});
+    }, {}) : {};
 
     return {
         page: parseInt(params.pagination.page, 10) - 1,
