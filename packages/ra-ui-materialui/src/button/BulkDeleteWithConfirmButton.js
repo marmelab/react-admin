@@ -43,11 +43,11 @@ const useStyles = makeStyles(theme => ({
 const BulkDeleteWithConfirmButton = ({
     basePath,
     classes: classesOverride,
+    confirmTitle = 'ra.message.bulk_delete_title',
+    confirmContent = 'ra.message.bulk_delete_content',
     crudDeleteMany,
     icon,
     label,
-    confirmTitle = 'ra.message.bulk_delete_title',
-    confirmContent = 'ra.message.bulk_delete_content',
     onClick,
     resource,
     selectedIds,
