@@ -917,6 +917,35 @@ const PostFilter = props =>
     </Filter>;
 ```
 
+## Form prop `defaultValue` was renamed to `initialValues`
+
+This is actually to be consistent with the underlying form library ([final-form](https://final-form.org/docs/react-final-form))
+
+```diff
+// for SimpleForm
+const PostEdit = props =>
+    <Edit {...props}>
+        <SimpleForm
+-           defaultValue={{ stock: 0 }}
++           initialValues={{ stock: 0 }}
+        >
+            // ...
+        </SimpleForm>
+    </Edit>;
+// for TabbedForm
+const PostEdit = props =>
+    <Edit {...props}>
+        <TabbedForm
+-           defaultValue={{ stock: 0 }}
++           initialValues={{ stock: 0 }}
+        >
+            <FormTab label="Identity>
+                // ...
+            </FormTab>
+        </TabbedForm>
+    </Edit>;
+```
+
 ## Complete rewrite of the AutocompleteInput and AutocompleteArrayInput components
 
 We rewrote the `<AutocompleteInput>` and `<AutocompleteArrayInput>` components from scratch using [`downshift`](https://github.com/downshift-js/downshift), while the previous version was based on [react-autosuggest](http://react-autosuggest.js.org/). The new components are more robust and more future-proof, and their API didn't change.
