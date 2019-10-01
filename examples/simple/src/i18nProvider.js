@@ -12,4 +12,4 @@ export default polyglotI18nProvider(locale => {
 
     // Always fallback on english
     return englishMessages;
-});
+}, 'en');

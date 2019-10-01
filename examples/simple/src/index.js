@@ -22,7 +22,6 @@ render(
         dataProvider={dataProvider}
         i18nProvider={i18nProvider}
         title="Example Admin"
-        locale="en"
         layout={Layout}
         customReducers={{ tree }}
         customRoutes={[
