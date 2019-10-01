@@ -100,89 +100,96 @@ const buildGetListVariables = introspectionResults => (
     aorFetchType,
     params
 ) => {
-    const filter = params.filter ? Object.keys(params.filter).reduce((acc, key) => {
-        if (key === 'ids') {
-            return { ...acc, ids: params.filter[key] };
-        }
-
-        if (typeof params.filter[key] === 'object') {
-            const type = introspectionResults.types.find(
-                t => t.name === `${resource.type.name}Filter`
-            );
-            const filterSome = type.inputFields.find(
-                t => t.name === `${key}_some`
-            );
-
-            if (filterSome) {
-                const filter = Object.keys(params.filter[key]).reduce(
-                    (acc, k) => ({
-                        ...acc,
-                        [`${k}_in`]: params.filter[key][k],
-                    }),
-                    {}
-                );
-                return { ...acc, [`${key}_some`]: filter };
+    let variables = { };
+    if (params.filter) {
+        variables.filter = Object.keys(params.filter).reduce((acc, key) => {
+            if (key === 'ids') {
+                return { ...acc, ids: params.filter[key] };
             }
-        }
 
-        const parts = key.split('.');
-
-        if (parts.length > 1) {
-            if (parts[1] === 'id') {
+            if (typeof params.filter[key] === 'object') {
                 const type = introspectionResults.types.find(
                     t => t.name === `${resource.type.name}Filter`
                 );
                 const filterSome = type.inputFields.find(
-                    t => t.name === `${parts[0]}_some`
+                    t => t.name === `${key}_some`
                 );
 
                 if (filterSome) {
+                    const filter = Object.keys(params.filter[key]).reduce(
+                        (acc, k) => ({
+                            ...acc,
+                            [`${k}_in`]: params.filter[key][k],
+                        }),
+                        {}
+                    );
+                    return { ...acc, [`${key}_some`]: filter };
+                }
+            }
+
+            const parts = key.split('.');
+
+            if (parts.length > 1) {
+                if (parts[1] === 'id') {
+                    const type = introspectionResults.types.find(
+                        t => t.name === `${resource.type.name}Filter`
+                    );
+                    const filterSome = type.inputFields.find(
+                        t => t.name === `${parts[0]}_some`
+                    );
+
+                    if (filterSome) {
+                        return {
+                            ...acc,
+                            [`${parts[0]}_some`]: { id: params.filter[key] },
+                        };
+                    }
+
+                    return { ...acc, [parts[0]]: { id: params.filter[key] } };
+                }
+
+                const resourceField = resource.type.fields.find(
+                    f => f.name === parts[0]
+                );
+                const type = getFinalType(resourceField.type);
+                return { ...acc, [key]: sanitizeValue(type, params.filter[key]) };
+            }
+
+            const resourceField = resource.type.fields.find(f => f.name === key);
+
+            if (resourceField) {
+                const type = getFinalType(resourceField.type);
+                const isAList = isList(resourceField.type);
+
+                if (isAList) {
                     return {
                         ...acc,
-                        [`${parts[0]}_some`]: { id: params.filter[key] },
+                        [key]: Array.isArray(params.filter[key])
+                            ? params.filter[key].map(value =>
+                                  sanitizeValue(type, value)
+                              )
+                            : sanitizeValue(type, [params.filter[key]]),
                     };
                 }
 
-                return { ...acc, [parts[0]]: { id: params.filter[key] } };
+                return { ...acc, [key]: sanitizeValue(type, params.filter[key]) };
             }
 
-            const resourceField = resource.type.fields.find(
-                f => f.name === parts[0]
-            );
-            const type = getFinalType(resourceField.type);
-            return { ...acc, [key]: sanitizeValue(type, params.filter[key]) };
-        }
+            return { ...acc, [key]: params.filter[key] };
+        }, {})
+    }
+    
+    if (params.pagination) {
+        variables.page = parseInt(params.pagination.page, 10) - 1
+        variables.perPage = parseInt(params.pagination.perPage, 10)
+    }
+    
+    if (params.sort){
+        variables.sortField = params.sort.field
+        variables.sortOrder = params.sort.order
+    }
 
-        const resourceField = resource.type.fields.find(f => f.name === key);
-
-        if (resourceField) {
-            const type = getFinalType(resourceField.type);
-            const isAList = isList(resourceField.type);
-
-            if (isAList) {
-                return {
-                    ...acc,
-                    [key]: Array.isArray(params.filter[key])
-                        ? params.filter[key].map(value =>
-                              sanitizeValue(type, value)
-                          )
-                        : sanitizeValue(type, [params.filter[key]]),
-                };
-            }
-
-            return { ...acc, [key]: sanitizeValue(type, params.filter[key]) };
-        }
-
-        return { ...acc, [key]: params.filter[key] };
-    }, {}) : {};
-
-    return {
-        page: parseInt(params.pagination.page, 10) - 1,
-        perPage: parseInt(params.pagination.perPage, 10),
-        sortField: params.sort.field,
-        sortOrder: params.sort.order,
-        filter,
-    };
+    return variables
 };
 
 const buildCreateUpdateVariables = () => (
