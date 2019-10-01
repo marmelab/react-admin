@@ -46,6 +46,8 @@ const BulkDeleteWithConfirmButton = ({
     crudDeleteMany,
     icon,
     label,
+    confirmTitle = 'ra.message.bulk_delete_title',
+    confirmContent = 'ra.message.bulk_delete_content',
     onClick,
     resource,
     selectedIds,
@@ -105,8 +107,8 @@ const BulkDeleteWithConfirmButton = ({
             <Confirm
                 isOpen={isOpen}
                 loading={loading}
-                title="ra.message.bulk_delete_title"
-                content="ra.message.bulk_delete_content"
+                title={confirmTitle}
+                content={confirmContent}
                 translateOptions={{
                     smart_count: selectedIds.length,
                     name: inflection.humanize(
