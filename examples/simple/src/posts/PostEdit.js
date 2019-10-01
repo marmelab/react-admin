@@ -136,6 +136,7 @@ const PostEdit = ({ permissions, ...props }) => (
                 </ArrayInput>
                 <DateInput source="published_at" options={{ locale: 'pt' }} />
                 <SelectInput
+                    allowEmpty
                     resettable
                     source="category"
                     choices={[

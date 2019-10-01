@@ -6,7 +6,11 @@ import arrayMutators from 'final-form-arrays';
 import { Route } from 'react-router-dom';
 import Divider from '@material-ui/core/Divider';
 import { makeStyles } from '@material-ui/core/styles';
-import { useTranslate, useInitializeFormWithRecord } from 'ra-core';
+import {
+    useTranslate,
+    useInitializeFormWithRecord,
+    sanitizeEmptyValues,
+} from 'ra-core';
 
 import getFormInitialValues from './getFormInitialValues';
 import Toolbar from './Toolbar';
@@ -34,20 +38,24 @@ const TabbedForm = ({ initialValues, defaultValue, saving, ...props }) => {
     const translate = useTranslate();
     const classes = useStyles();
 
+    const finalInitialValues = getFormInitialValues(
+        initialValues,
+        defaultValue,
+        props.record
+    );
+
     const submit = values => {
         const finalRedirect =
             typeof redirect === undefined ? props.redirect : redirect.current;
-        props.save(values, finalRedirect);
+        const finalValues = sanitizeEmptyValues(finalInitialValues, values);
+
+        props.save(finalValues, finalRedirect);
     };
 
     return (
         <Form
             key={props.version}
-            initialValues={getFormInitialValues(
-                initialValues,
-                defaultValue,
-                props.record
-            )}
+            initialValues={finalInitialValues}
             onSubmit={submit}
             mutators={{ ...arrayMutators }}
             setRedirect={setRedirect}

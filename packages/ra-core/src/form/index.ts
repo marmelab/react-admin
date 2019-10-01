@@ -4,6 +4,7 @@ import FormField from './FormField';
 import useInput, { InputProps } from './useInput';
 import ValidationError from './ValidationError';
 import useInitializeFormWithRecord from './useInitializeFormWithRecord';
+import sanitizeEmptyValues from './sanitizeEmptyValues';
 import useChoices, {
     ChoicesProps,
     OptionTextElement,
@@ -19,6 +20,7 @@ export {
     InputProps,
     OptionTextElement,
     OptionText,
+    sanitizeEmptyValues,
     useChoices,
     useInput,
     useInitializeFormWithRecord,

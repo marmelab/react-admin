@@ -224,7 +224,12 @@ const SelectInput: FunctionComponent<
             {...sanitizeRestProps(rest)}
         >
             {allowEmpty ? (
-                <MenuItem value={emptyValue} key="null">
+                <MenuItem
+                    value={emptyValue}
+                    key="null"
+                    aria-label={translate('ra.action.clear_input_value')}
+                    title={translate('ra.action.clear_input_value')}
+                >
                     {renderEmptyItemOption()}
                 </MenuItem>
             ) : null}
