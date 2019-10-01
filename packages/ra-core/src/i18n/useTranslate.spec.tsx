@@ -28,6 +28,7 @@ describe('useTranslate', () => {
                     i18nProvider: {
                         translate: () => 'hallo',
                         changeLocale: () => Promise.resolve(),
+                        getLocale: () => 'de',
                     },
                     setLocale: () => Promise.resolve(),
                 }}
@@ -42,10 +43,10 @@ describe('useTranslate', () => {
     it('should use the i18n provider when using TranslationProvider', () => {
         const { queryAllByText } = renderWithRedux(
             <TranslationProvider
-                locale="fr"
                 i18nProvider={{
                     translate: () => 'bonjour',
                     changeLocale: () => Promise.resolve(),
+                    getLocale: () => 'fr',
                 }}
             >
                 <Component />

@@ -1085,7 +1085,7 @@ If you had custom reducer or sagas based on these actions, they will no longer w
 
 ## i18nProvider Signature Changed
 
-The i18nProvider, that react-admin uses for translating UI and content, must now be an object exposing two methods: `trasnlate` and `changeLocale`.
+The i18nProvider, that react-admin uses for translating UI and content, must now be an object exposing three methods: `translate`, `changeLocale` and `getLocale`.
 
 ```jsx
 // react-admin 2.x
@@ -1094,17 +1094,24 @@ const i18nProvider = (locale) => messages[locale];
 // react-admin 3.x
 const polyglot = new Polyglot({ locale: 'en', phrases: messages.en });
 let translate = polyglot.t.bind(polyglot);
+let locale = 'en';
 const i18nProvider = {
     translate: (key, options) => translate(key, options),
     changeLocale: newLocale => {
+        locale = newLocale;
         return new Promise((resolve, reject) => {
             // load new messages and update the translate function
         })
+    },
+    getLocale: () => {
+        return locale;
     }
 } 
 ```
 
 But don't worry: react-admin v3 contains a module called `ra-i18n-polyglot`, that is a wrapper around your old `i18nProvider` to make it compatible with the new provider signature:
+
+Besides, the `Admin` component does not accept a `locale` prop anymore as it is the `i18nProvider` provider responsibility:
 
 ```diff
 import React from 'react';
@@ -1118,10 +1125,11 @@ const messages = {
     en: englishMessages,
 };
 -const i18nProvider = locale => messages[locale];
-+const i18nProvider = polyglotI18nProvider(locale => messages[locale]);
++const i18nProvider = polyglotI18nProvider(locale => messages[locale], 'fr);
 
 const App = () => (
-    <Admin locale="en" i18nProvider={i18nProvider}>
+-    <Admin locale="fr i18nProvider={i18nProvider}>
++    <Admin i18nProvider={i18nProvider}>
         ...
     </Admin>
 );
