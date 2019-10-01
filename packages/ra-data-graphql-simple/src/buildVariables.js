@@ -100,7 +100,7 @@ const buildGetListVariables = introspectionResults => (
     aorFetchType,
     params
 ) => {
-    let variables = { };
+    let variables = { filter: { } };
     if (params.filter) {
         variables.filter = Object.keys(params.filter).reduce((acc, key) => {
             if (key === 'ids') {
