@@ -1,15 +1,14 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import MuiTab from '@material-ui/core/Tab';
 import classnames from 'classnames';
 import { translate } from 'ra-core';
+import { Field } from 'redux-form';
 
 import FormInput from './FormInput';
 
 const sanitizeRestProps = ({ label, icon, value, translate, ...rest }) => rest;
-
-const hiddenStyle = { display: 'none' };
 
 class FormTab extends Component {
     renderHeader = ({ className, label, icon, value, translate, ...rest }) => {
@@ -29,8 +28,8 @@ class FormTab extends Component {
         );
     };
 
-    renderContent = ({ children, hidden, ...rest }) => (
-        <span style={hidden ? hiddenStyle : null}>
+    renderContent = ({ children, ...rest }) => (
+        <Fragment>
             {React.Children.map(
                 children,
                 input =>
@@ -38,14 +37,29 @@ class FormTab extends Component {
                         <FormInput input={input} {...sanitizeRestProps(rest)} />
                     )
             )}
-        </span>
+        </Fragment>
+    );
+
+    renderHiddenContent = ({ children }) => (
+        <Fragment>
+            {React.Children.map(children, raInputComponent => (
+                <Field
+                    component={() => null}
+                    source={raInputComponent.props.source}
+                    name={raInputComponent.props.source}
+                    validate={raInputComponent.props.validate}
+                />
+            ))}
+        </Fragment>
     );
 
     render() {
-        const { children, context, ...rest } = this.props;
+        const { children, context, hidden, ...rest } = this.props;
         return context === 'header'
             ? this.renderHeader(rest)
-            : this.renderContent({ children, ...rest });
+            : hidden
+                ? this.renderHiddenContent({ children })
+                : this.renderContent({ children, ...rest });
     }
 }
 

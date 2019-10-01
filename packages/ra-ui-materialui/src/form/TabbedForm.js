@@ -175,7 +175,7 @@ export class TabbedForm extends Component {
                                              *
                                              * @ref https://github.com/marmelab/react-admin/issues/1956
                                              */
-                                            key: `${index}_${!routeProps.match}`,
+                                            key: `${index}_${routeProps.url}`,
                                         })
                                     }
                                 </Route>
