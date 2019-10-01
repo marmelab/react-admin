@@ -24,6 +24,7 @@ export default (
     initialLocale: string = 'en',
     polyglotOptions: any = {}
 ): I18nProvider => {
+    let locale = initialLocale;
     const messages = getMessages(initialLocale);
     if (messages instanceof Promise) {
         throw new Error(
@@ -31,7 +32,7 @@ export default (
         );
     }
     const polyglot = new Polyglot({
-        locale: initialLocale,
+        locale,
         phrases: { '': '', ...messages },
         ...polyglotOptions,
     });
@@ -39,18 +40,20 @@ export default (
 
     return {
         translate: (key: string, options: any = {}) => translate(key, options),
-        changeLocale: (locale: string) =>
+        changeLocale: (newLocale: string) =>
             new Promise(resolve =>
                 // so we systematically return a Promise for the messages
                 // i18nProvider may return a Promise for language changes,
-                resolve(getMessages(locale as string))
+                resolve(getMessages(newLocale as string))
             ).then(messages => {
+                locale = newLocale;
                 const newPolyglot = new Polyglot({
-                    locale,
+                    locale: newLocale,
                     phrases: { '': '', ...messages },
                     ...polyglotOptions,
                 });
                 translate = newPolyglot.t.bind(newPolyglot);
             }),
+        getLocale: () => locale,
     };
 };

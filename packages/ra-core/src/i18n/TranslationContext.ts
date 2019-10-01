@@ -13,6 +13,7 @@ const TranslationContext = createContext<TranslationContextProps>({
     i18nProvider: {
         translate: x => x,
         changeLocale: () => Promise.resolve(),
+        getLocale: () => 'en',
     },
 });
 

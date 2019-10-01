@@ -97,6 +97,11 @@ const CoreAdmin: FunctionComponent<AdminProps> = ({
                 'You are using deprecated prop "appLayout", it was replaced by "layout", see https://github.com/marmelab/react-admin/issues/2918'
             );
         }
+        if (locale) {
+            console.warn(
+                'You are using deprecated prop "locale". You must now pass the initial locale to your i18nProvider'
+            );
+        }
         if (loginPage === true && process.env.NODE_ENV !== 'production') {
             console.warn(
                 'You passed true to the loginPage prop. You must either pass false to disable it or a component class to customize it'
@@ -105,10 +110,7 @@ const CoreAdmin: FunctionComponent<AdminProps> = ({
 
         return (
             <DataProviderContext.Provider value={finalDataProvider}>
-                <TranslationProvider
-                    locale={locale}
-                    i18nProvider={i18nProvider}
-                >
+                <TranslationProvider i18nProvider={i18nProvider}>
                     <ConnectedRouter history={history}>
                         <Switch>
                             {loginPage !== false && loginPage !== true ? (

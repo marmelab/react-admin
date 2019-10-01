@@ -16,6 +16,7 @@ export default ({ translate, messages, children }: any) => (
                               : options._
                     : translate,
                 changeLocale: () => Promise.resolve(),
+                getLocale: () => 'en',
             },
         }}
     >
