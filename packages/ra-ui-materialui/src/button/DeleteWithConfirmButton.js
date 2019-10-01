@@ -53,6 +53,8 @@ const DeleteWithConfirmButton = ({
     className,
     icon,
     label = 'ra.action.delete',
+    confirmTitle = 'ra.message.delete_title',
+    confirmContent = 'ra.message.delete_content',
     onClick,
     record,
     resource,
@@ -127,8 +129,8 @@ const DeleteWithConfirmButton = ({
             <Confirm
                 isOpen={open}
                 loading={loading}
-                title="ra.message.delete_title"
-                content="ra.message.delete_content"
+                title={confirmTitle}
+                content={confirmContent}
                 translateOptions={{
                     name: inflection.humanize(
                         translate(`resources.${resource}.name`, {
