@@ -100,7 +100,7 @@ const buildGetListVariables = introspectionResults => (
     aorFetchType,
     params
 ) => {
-    let variables = { filter: { } };
+    let variables = { filter: {} };
     if (params.filter) {
         variables.filter = Object.keys(params.filter).reduce((acc, key) => {
             if (key === 'ids') {
@@ -152,10 +152,15 @@ const buildGetListVariables = introspectionResults => (
                     f => f.name === parts[0]
                 );
                 const type = getFinalType(resourceField.type);
-                return { ...acc, [key]: sanitizeValue(type, params.filter[key]) };
+                return {
+                    ...acc,
+                    [key]: sanitizeValue(type, params.filter[key]),
+                };
             }
 
-            const resourceField = resource.type.fields.find(f => f.name === key);
+            const resourceField = resource.type.fields.find(
+                f => f.name === key
+            );
 
             if (resourceField) {
                 const type = getFinalType(resourceField.type);
@@ -172,24 +177,27 @@ const buildGetListVariables = introspectionResults => (
                     };
                 }
 
-                return { ...acc, [key]: sanitizeValue(type, params.filter[key]) };
+                return {
+                    ...acc,
+                    [key]: sanitizeValue(type, params.filter[key]),
+                };
             }
 
             return { ...acc, [key]: params.filter[key] };
-        }, {})
-    }
-    
-    if (params.pagination) {
-        variables.page = parseInt(params.pagination.page, 10) - 1
-        variables.perPage = parseInt(params.pagination.perPage, 10)
-    }
-    
-    if (params.sort){
-        variables.sortField = params.sort.field
-        variables.sortOrder = params.sort.order
+        }, {});
     }
 
-    return variables
+    if (params.pagination) {
+        variables.page = parseInt(params.pagination.page, 10) - 1;
+        variables.perPage = parseInt(params.pagination.perPage, 10);
+    }
+
+    if (params.sort) {
+        variables.sortField = params.sort.field;
+        variables.sortOrder = params.sort.order;
+    }
+
+    return variables;
 };
 
 const buildCreateUpdateVariables = () => (
