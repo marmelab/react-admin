@@ -3,7 +3,11 @@ import PropTypes from 'prop-types';
 import { Form } from 'react-final-form';
 import arrayMutators from 'final-form-arrays';
 import classnames from 'classnames';
-import { useTranslate, useInitializeFormWithRecord } from 'ra-core';
+import {
+    useTranslate,
+    useInitializeFormWithRecord,
+    sanitizeEmptyValues,
+} from 'ra-core';
 
 import getFormInitialValues from './getFormInitialValues';
 import FormInput from './FormInput';
@@ -20,20 +24,25 @@ const SimpleForm = ({ initialValues, defaultValue, saving, ...props }) => {
     };
 
     const translate = useTranslate();
+
+    const finalInitialValues = getFormInitialValues(
+        initialValues,
+        defaultValue,
+        props.record
+    );
+
     const submit = values => {
         const finalRedirect =
             typeof redirect === undefined ? props.redirect : redirect.current;
-        props.save(values, finalRedirect);
+        const finalValues = sanitizeEmptyValues(finalInitialValues, values);
+
+        props.save(finalValues, finalRedirect);
     };
 
     return (
         <Form
             key={props.version}
-            initialValues={getFormInitialValues(
-                initialValues,
-                defaultValue,
-                props.record
-            )}
+            initialValues={finalInitialValues}
             onSubmit={submit}
             mutators={{ ...arrayMutators }}
             keepDirtyOnReinitialize
