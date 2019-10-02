@@ -26,6 +26,9 @@
         "watch": "rimraf ./lib && tsc --watch"
     },
     "devDependencies": {
+        "@material-ui/core": "^4.3.3",
+        "@material-ui/icons": "^4.2.1",
+        "@material-ui/styles": "^4.3.3",
         "@testing-library/react": "^8.0.7",
         "cross-env": "^5.2.0",
         "enzyme": "~3.9.0",
@@ -37,24 +40,32 @@
         "ra-core": "^3.0.0-beta.0",
         "react": "^16.9.0",
         "react-dom": "^16.9.0",
+        "react-final-form": "^6.3.0",
+        "react-final-form-arrays": "^3.1.1",
         "react-test-renderer": "~16.8.6",
         "react-redux": "^7.1.0",
+        "react-router": "^5.1.0",
+        "react-router-dom": "^5.1.0",
         "redux": "^3.7.2 || ^4.0.3",
         "rimraf": "^2.6.3"
     },
     "peerDependencies": {
+        "@material-ui/core": "^4.3.3",
+        "@material-ui/icons": "^4.2.1",
+        "@material-ui/styles": "^4.3.3",
         "final-form": "^4.18.5",
         "final-form-arrays": "^3.0.1",
         "ra-core": "^3.0.0-beta.0",
         "react": "^16.9.0",
         "react-dom": "^16.9.0",
+        "react-final-form": "^6.3.0",
+        "react-final-form-arrays": "^3.1.1",
         "react-redux": "^7.1.0",
+        "react-router": "^5.1.0",
+        "react-router-dom": "^5.1.0",
         "redux": "^3.7.2 || ^4.0.3"
     },
     "dependencies": {
-        "@material-ui/core": "^4.3.3",
-        "@material-ui/icons": "^4.2.1",
-        "@material-ui/styles": "^4.3.3",
         "autosuggest-highlight": "^3.1.1",
         "classnames": "~2.2.5",
         "connected-react-router": "^6.5.2",
@@ -65,10 +76,6 @@
         "lodash": "~4.17.5",
         "prop-types": "^15.6.1",
         "react-dropzone": "^10.1.7",
-        "react-final-form": "^6.3.0",
-        "react-final-form-arrays": "^3.1.1",
-        "react-router": "^5.1.0",
-        "react-router-dom": "^5.1.0",
         "react-transition-group": "^2.2.1",
         "recompose": "~0.26.0"
     }
