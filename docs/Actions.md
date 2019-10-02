@@ -262,7 +262,7 @@ class ApproveButton extends Component {
 +               notification: { body: 'Comment approved', level: 'info' },
 +               redirectTo: '/comments',
 +           },
-+           onError: {
++           onFailure: {
 +               notification: { body: 'Error: comment not approved', level: 'warning' }
 +           }
 +       })
@@ -312,7 +312,7 @@ class ApproveButton extends Component {
                 notification: { body: 'Comment approved', level: 'info' },
                 redirectTo: '/comments',
             },
-            onError: {
+            onFailure: {
                 notification: { body: 'Error: comment not approved', level: 'warning' }
             }
         })
@@ -390,7 +390,7 @@ const options = {
         notification: { body: 'Comment approved', level: 'info' },
         redirectTo: '/comments',
     },
-    onError: {
+    onFailure: {
         notification: { body: 'Error: comment not approved', level: 'warning' }
     }
 };
