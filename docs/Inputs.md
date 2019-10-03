@@ -1490,6 +1490,7 @@ import { FormDataConsumer } from 'react-admin';
 
 **Tip**: When using a `FormDataConsumer` you can define `subscription` prop to pass to the `react-final-form`
 
+{% raw %}
 ```jsx
 import { FormDataConsumer } from 'react-admin';
 
@@ -1506,3 +1507,4 @@ import { FormDataConsumer } from 'react-admin';
      </Edit>
  );
 ```
+{% endraw %}
