@@ -1,48 +1,15 @@
 import React from 'react';
-import {
-    DeleteButton,
-    EditButton,
-    List,
-    SaveButton,
-    ShowButton,
-    TextInput,
-} from 'react-admin';
-import {
-    DragPreview,
-    IgnoreFormProps,
-    NodeForm,
-    Tree,
-    NodeActions,
-} from 'ra-tree-ui-materialui';
-
-const TagDragPreview = props => (
-    <DragPreview {...props}>{({ node }) => node.record.name}</DragPreview>
-);
-
-const CustomNodeActions = props => (
-    <NodeActions {...props}>
-        <SaveButton variant="flat" />
-        <IgnoreFormProps>
-            <EditButton />
-            <ShowButton />
-            <DeleteButton />
-        </IgnoreFormProps>
-    </NodeActions>
-);
+import { TextField } from 'react-admin';
+import { Tree, TreeNode, TreeList } from 'ra-tree-ui-materialui';
 
 const TagList = props => (
-    <List {...props} perPage={1000}>
-        <Tree
-            allowDropOnRoot
-            enableDragAndDrop
-            parentSource="parent_id"
-            dragPreviewComponent={TagDragPreview}
-        >
-            <NodeForm actions={<CustomNodeActions />}>
-                <TextInput source="name" />
-            </NodeForm>
-        </Tree>
-    </List>
+    <Tree {...props}>
+        <TreeList>
+            <TreeNode>
+                <TextField source="name" />
+            </TreeNode>
+        </TreeList>
+    </Tree>
 );
 
 export default TagList;

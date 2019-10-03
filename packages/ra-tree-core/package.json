@@ -4,6 +4,7 @@
     "description": "A treeview component without ui to use with react-admin",
     "main": "lib/index.js",
     "module": "esm/index.js",
+    "types": "esm/index.d.ts",
     "sideEffects": false,
     "files": [
         "LICENSE",
