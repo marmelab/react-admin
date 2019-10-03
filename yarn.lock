@@ -12506,36 +12506,6 @@ quill@~1.3.6:
     parchment "^1.1.4"
     quill-delta "^3.6.2"
 
-ra-ui-materialui@^3.0.0-beta.:
-  version "3.0.0-beta.0"
-  resolved "https://npm.kopaxgroup.com:443/ra-ui-materialui/-/ra-ui-materialui-3.0.0-beta.0.tgz#d77ebbf4af902797cc8325c860be797991ed6184"
-  integrity sha512-GAvAsqFDq+XROJ1iBEREh0v9YLq80k2WpIGLU5OavecOFtNjdHpKrg8mMOMW+fCIj04PpksQnus/1E4lBcaHCg==
-  dependencies:
-    "@material-ui/core" "^4.3.3"
-    "@material-ui/icons" "^4.2.1"
-    "@material-ui/styles" "^4.3.3"
-    autosuggest-highlight "^3.1.1"
-    classnames "~2.2.5"
-    connected-react-router "^6.5.2"
-    css-mediaquery "^0.1.2"
-    downshift "3.2.7"
-    final-form "^4.18.5"
-    final-form-arrays "^3.0.1"
-    inflection "~1.12.0"
-    jsonexport "^2.4.1"
-    lodash "~4.17.5"
-    prop-types "^15.6.1"
-    ra-core "^3.0.0-beta.0"
-    react-dropzone "^10.1.7"
-    react-final-form "^6.3.0"
-    react-final-form-arrays "^3.1.1"
-    react-redux "^7.1.0"
-    react-router "^5.1.0"
-    react-router-dom "^5.1.0"
-    react-transition-group "^2.2.1"
-    recompose "~0.26.0"
-    redux "^3.7.2 || ^4.0.3"
-
 raf@3.4.0:
   version "3.4.0"
   resolved "https://registry.yarnpkg.com/raf/-/raf-3.4.0.tgz#a28876881b4bc2ca9117d4138163ddb80f781575"
