@@ -402,6 +402,33 @@ describe('<ReferenceArrayInputController />', () => {
         assert.equal(crudGetMany.mock.calls.length, 1);
     });
 
+    it('should call crudGetMatching with replaced filter from outside', () => {
+        const crudGetMatching = jest.fn();
+        const crudGetMany = jest.fn();
+        const wrapper = shallow(
+            <ReferenceArrayInputController
+                {...defaultProps}
+                allowEmpty
+                input={{ value: [5] }}
+                crudGetMany={crudGetMany}
+                crudGetMatching={crudGetMatching}
+                filter={{ foo: 'bar' }}
+            />
+        );
+        assert.equal(crudGetMatching.mock.calls.length, 1);
+        assert.equal(crudGetMany.mock.calls.length, 1);
+
+        wrapper.setProps({ filter: { foo: 'baz' } });
+        assert.deepEqual(crudGetMatching.mock.calls[1], [
+            'tags',
+            'posts@tag_ids',
+            { page: 1, perPage: 25 },
+            { field: 'id', order: 'DESC' },
+            { foo: 'baz' },
+        ]);
+        assert.equal(crudGetMany.mock.calls.length, 1);
+    });
+
     it('should call crudGetMany when input value changes', () => {
         const crudGetMany = jest.fn();
         const wrapper = shallow(
