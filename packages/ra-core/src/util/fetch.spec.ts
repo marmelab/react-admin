@@ -1,5 +1,9 @@
 import assert from 'assert';
-import { queryParameters, flattenObject } from './fetch';
+import {
+    createHeadersFromOptions,
+    queryParameters,
+    flattenObject,
+} from './fetch';
 
 describe('queryParameters', () => {
     it('should generate a query parameter', () => {
@@ -55,5 +59,31 @@ describe('flattenObject', () => {
         const input = { foo: 'foo', bar: { baz: 'barbaz' } };
         const expected = { foo: 'foo', 'bar.baz': 'barbaz' };
         assert.deepEqual(flattenObject(input), expected);
+    });
+});
+
+describe('createHeadersFromOptions', () => {
+    it('should add a Content-Type header for POST requests', () => {
+        const options = {
+            method: 'POST',
+        };
+
+        const headers = createHeadersFromOptions(options);
+        assert.strictEqual(headers.get('Content-Type'), 'application/json');
+    });
+
+    it('should not add a Content-Type header for GET requests', () => {
+        const optionsWithoutMethod = {};
+        const optionsWithMethod = {
+            method: 'GET',
+        };
+
+        const headersWithMethod = createHeadersFromOptions(optionsWithMethod);
+        assert.strictEqual(headersWithMethod.get('Content-Type'), null);
+
+        const headersWithoutMethod = createHeadersFromOptions(
+            optionsWithoutMethod
+        );
+        assert.strictEqual(headersWithoutMethod.get('Content-Type'), null);
     });
 });
