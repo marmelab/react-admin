@@ -26,7 +26,7 @@ import {
 
 const welcomeStyles: CSSProperties = {
     width: '50%',
-    margin: '40vh',
+    margin: '40vh 25vw',
     textAlign: 'center',
 };
 
