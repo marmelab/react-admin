@@ -37,19 +37,21 @@
         "watch": "rimraf ./lib && tsc --watch"
     },
     "devDependencies": {
-        "ra-core": "^3.0.0-beta.0",
-        "ra-tree-core": "^3.0.0-beta.0",
-        "ra-ui-materialui": "^2.5.0",
         "cross-env": "^5.2.0",
         "final-form": "^4.18.4",
+        "ra-core": "^3.0.0-beta.0",
+        "ra-tree-core": "^3.0.0-beta.0",
+        "ra-ui-materialui": "^3.0.0-beta.",
         "react-final-form": "^6.3.0",
+        "react": "^16.9.0",
+        "react-dom": "^16.9.0",
         "rimraf": "^2.6.3"
     },
     "peerDependencies": {
         "final-form": "^4.18.4",
         "ra-core": "^3.0.0-alpha.0",
-        "ra-ui-materialui": "^2.5.0",
         "ra-tree-core": "^3.0.0-beta.0",
+        "ra-ui-materialui": "^3.0.0-beta.",
         "react": "^16.9.0",
         "react-dom": "^16.9.0",
         "react-final-form": "^6.3.0"
