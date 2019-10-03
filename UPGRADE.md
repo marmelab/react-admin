@@ -128,7 +128,7 @@ import {
 
 -const ApproveButton = ({ dataProvider, dispatch, record }) => {
 +const ApproveButton = ({ dataProvider, record }) => {
-+   const dispatch = withDispatch();
++   const dispatch = useDispatch();
     const handleClick = () => {
         const updatedRecord = { ...record, is_approved: true };
         dataProvider(UPDATE, 'comments', { id: record.id, data: updatedRecord })
