@@ -126,6 +126,8 @@ const useQueryWithStore = (
     }
     const dataProvider = useDataProvider();
     useEffect(() => {
+        setState(prevState => ({ ...prevState, loading: true }));
+
         dataProvider[type](resource, payload, options)
             .then(() => {
                 // We don't care about the dataProvider response here, because

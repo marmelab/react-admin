@@ -128,7 +128,7 @@ import {
 
 -const ApproveButton = ({ dataProvider, dispatch, record }) => {
 +const ApproveButton = ({ dataProvider, record }) => {
-+   const dispatch = withDispatch();
++   const dispatch = useDispatch();
     const handleClick = () => {
         const updatedRecord = { ...record, is_approved: true };
         dataProvider(UPDATE, 'comments', { id: record.id, data: updatedRecord })
@@ -1154,10 +1154,10 @@ const messages = {
     en: englishMessages,
 };
 -const i18nProvider = locale => messages[locale];
-+const i18nProvider = polyglotI18nProvider(locale => messages[locale], 'fr);
++const i18nProvider = polyglotI18nProvider(locale => messages[locale], 'fr');
 
 const App = () => (
--    <Admin locale="fr i18nProvider={i18nProvider}>
+-    <Admin locale="fr" i18nProvider={i18nProvider}>
 +    <Admin i18nProvider={i18nProvider}>
         ...
     </Admin>
