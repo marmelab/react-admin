@@ -43,8 +43,8 @@ const useStyles = makeStyles(theme => ({
 const BulkDeleteWithConfirmButton = ({
     basePath,
     classes: classesOverride,
-    confirmTitle = 'ra.message.bulk_delete_title',
-    confirmContent = 'ra.message.bulk_delete_content',
+    confirmTitle,
+    confirmContent,
     crudDeleteMany,
     icon,
     label,
@@ -129,6 +129,8 @@ const BulkDeleteWithConfirmButton = ({
 BulkDeleteWithConfirmButton.propTypes = {
     basePath: PropTypes.string,
     classes: PropTypes.object,
+    confirmTitle: PropTypes.string,
+    confirmContent: PropTypes.string,
     label: PropTypes.string,
     resource: PropTypes.string.isRequired,
     selectedIds: PropTypes.arrayOf(PropTypes.any).isRequired,
@@ -136,6 +138,8 @@ BulkDeleteWithConfirmButton.propTypes = {
 };
 
 BulkDeleteWithConfirmButton.defaultProps = {
+    confirmTitle: 'ra.message.bulk_delete_title',
+    confirmContent: 'ra.message.bulk_delete_content',
     label: 'ra.action.delete',
     icon: <ActionDelete />,
 };
