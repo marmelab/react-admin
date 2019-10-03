@@ -1154,10 +1154,10 @@ const messages = {
     en: englishMessages,
 };
 -const i18nProvider = locale => messages[locale];
-+const i18nProvider = polyglotI18nProvider(locale => messages[locale], 'fr);
++const i18nProvider = polyglotI18nProvider(locale => messages[locale], 'fr');
 
 const App = () => (
--    <Admin locale="fr i18nProvider={i18nProvider}>
+-    <Admin locale="fr" i18nProvider={i18nProvider}>
 +    <Admin i18nProvider={i18nProvider}>
         ...
     </Admin>
