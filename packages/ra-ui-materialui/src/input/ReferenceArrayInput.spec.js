@@ -166,6 +166,6 @@ describe('<ReferenceArrayInput />', () => {
         );
 
         const myComponent = wrapper.find('MyComponent');
-        assert.notEqual(myComponent.prop('meta', undefined));
+        assert.notEqual(myComponent.prop('meta'), undefined);
     });
 });
