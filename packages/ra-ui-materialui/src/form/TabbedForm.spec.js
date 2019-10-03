@@ -56,6 +56,9 @@ describe('<TabbedForm />', () => {
             const errors = {
                 field1: 'required',
                 field5: 'required',
+                field7: {
+                    test: 'required',
+                },
             };
             const children = [
                 createElement(
@@ -76,10 +79,16 @@ describe('<TabbedForm />', () => {
                     createElement('input', { source: 'field5' }),
                     createElement('input', { source: 'field6' })
                 ),
+                createElement(
+                    FormTab,
+                    { label: 'tab4' },
+                    createElement('input', { source: 'field7.test' }),
+                    createElement('input', { source: 'field8' })
+                ),
             ];
 
             const tabs = findTabsWithErrors(children, errors);
-            expect(tabs).toEqual(['tab1', 'tab3']);
+            expect(tabs).toEqual(['tab1', 'tab3', 'tab4']);
         });
     });
 });
