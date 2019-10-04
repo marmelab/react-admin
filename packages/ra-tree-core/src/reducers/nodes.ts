@@ -125,11 +125,16 @@ const nodesReducer = (
         }
         case CRUD_GET_TREE_ROOT_NODES_SUCCESS: {
             const newState = {
+                ...previousState,
                 [ROOT_NODE_ID]: action.payload.data.map(({ id }) => id),
+                // Initialize the children for all root nodes if necessary
                 ...action.payload.data.reduce(
                     (acc, { id }) => ({
                         ...acc,
-                        [id]: previousState[id] || [],
+                        [id]:
+                            previousState[id] != undefined // eslint-disable-line
+                                ? previousState[id]
+                                : [],
                     }),
                     {}
                 ),
@@ -144,11 +149,20 @@ const nodesReducer = (
         case CRUD_GET_TREE_CHILDREN_NODES_SUCCESS: {
             const newState = {
                 ...previousState,
-                [action.requestPayload]: action.payload.data.map(
-                    ({ id }) => id
-                ),
+                [action.requestPayload]:
+                    // The children value for this node may be false to indicate we fetched them but found none
+                    action.payload.total > 0
+                        ? action.payload.data.map(({ id }) => id)
+                        : false,
+                // Initialize the children for all the children nodes if necessary
                 ...action.payload.data.reduce(
-                    (acc, { id }) => ({ ...acc, [id]: [] }),
+                    (acc, { id }) => ({
+                        ...acc,
+                        [id]:
+                            previousState[id] != undefined // eslint-disable-line
+                                ? previousState[id]
+                                : [],
+                    }),
                     {}
                 ),
             };

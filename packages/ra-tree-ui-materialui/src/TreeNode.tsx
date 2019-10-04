@@ -116,6 +116,11 @@ class TreeNode extends Component<Props & WithStyles<typeof styles>> {
             return null;
         }
 
+        // The children value for this node may be false (indicating we fetched them but found none)
+        // We don't want to show the loading indicator all the time, only on the first fetch
+        const showLoading =
+            loading && (Array.isArray(nodes) && nodes.length === 0);
+
         return (
             <ListItem
                 className={classnames(classes.root, className)}
@@ -124,7 +129,7 @@ class TreeNode extends Component<Props & WithStyles<typeof styles>> {
             >
                 <div className={classes.container}>
                     <ListItemIcon>
-                        {loading ? (
+                        {showLoading ? (
                             <div className={classes.icon}>
                                 <CircularProgress size="1em" />
                             </div>
