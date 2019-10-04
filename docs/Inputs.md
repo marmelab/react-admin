@@ -1478,8 +1478,8 @@ Here is an example usage for `dispatch`: A country input that resets a city inpu
 
 ```jsx
 
-import React, { Fragment } from 'react'
-import { change } from 'redux-form'
+import React, { Fragment } from 'react';
+import { change } from 'redux-form';
 import { FormDataConsumer, REDUX_FORM_NAME } from 'react-admin';
 
 const OrderEdit = (props) => (
