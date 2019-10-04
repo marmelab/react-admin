@@ -123,8 +123,6 @@ export class TreeControllerView extends Component<
             name: resourceName,
         });
 
-        console.log({ loading: props.loading });
-
         return children({
             defaultTitle,
             parentSource,

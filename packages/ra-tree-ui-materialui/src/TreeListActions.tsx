@@ -15,6 +15,7 @@ const TreeListActions = ({
     hasEdit,
     hasList,
     hasShow,
+    loading,
     parentSource,
     permanentFilter,
     positionSource,

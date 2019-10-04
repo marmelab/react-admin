@@ -1,24 +1,63 @@
-import React, { Children, Component, ReactElement, cloneElement } from 'react';
+import React, {
+    Children,
+    Component,
+    ReactElement,
+    cloneElement,
+    SFC,
+    ComponentType,
+} from 'react';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
+import Card from '@material-ui/core/Card';
+import { createStyles, WithStyles, withStyles } from '@material-ui/core/styles';
 import { TreeController } from 'ra-tree-core';
+import { Title } from 'ra-ui-materialui';
+
+import TreeListActions from './TreeListActions';
+import TreeListToolbar from './TreeListToolbar';
+import { Record, Dispatch } from 'ra-core';
+
+type FetchRelatedData = () => void;
+
+type Exporter = (
+    data: Record[],
+    fetchRelatedData: FetchRelatedData,
+    dispatch: Dispatch<any>
+) => void;
 
 interface Props {
-    basePath: string;
+    actions?: ReactElement<any>;
+    aside?: ReactElement<any>;
     children: ReactElement<any>;
+    className: string;
+    exporter: Exporter;
+    filter?: object;
     parentSource: string;
-    positionSource: string;
-    resource: string;
+    positionSource?: string;
+    title?: string;
 }
 
-export class Tree extends Component<Props> {
+interface InjectedProps {
+    basePath: string;
+    resource: string;
+    version: number;
+}
+
+export class Tree extends Component<Props & InjectedProps> {
     static propTypes = {
-        allowDropOnRoot: PropTypes.bool,
+        actions: PropTypes.element,
+        aside: PropTypes.element,
         basePath: PropTypes.string.isRequired,
         children: PropTypes.node,
         classes: PropTypes.object,
-        enableDragAndDrop: PropTypes.bool,
-        parentSource: PropTypes.string,
+        className: PropTypes.string,
+        exporter: PropTypes.func,
+        filter: PropTypes.object,
+        parentSource: PropTypes.string.isRequired,
+        positionSource: PropTypes.string,
         resource: PropTypes.string.isRequired,
+        title: PropTypes.string,
+        version: PropTypes.number,
     };
 
     static defaultProps = {
@@ -51,9 +90,63 @@ export class Tree extends Component<Props> {
     }
 }
 
-const TreeView = ({ children, ...props }) => cloneElement(children, props);
+export default Tree as ComponentType<Props>;
 
-export default Tree;
+interface ViewProps {
+    defaultTitle: string;
+}
+
+export const styles = createStyles({
+    root: {
+        display: 'flex',
+        flex: 1,
+    },
+    card: {
+        position: 'relative',
+        flex: '1 1 auto',
+    },
+    actions: {
+        zIndex: 2,
+        display: 'flex',
+        justifyContent: 'flex-end',
+        flexWrap: 'wrap',
+    },
+});
+
+const TreeView = withStyles(styles)(
+    ({
+        actions = <TreeListActions />,
+        aside,
+        children,
+        className,
+        classes,
+        defaultTitle,
+        exporter,
+        filter,
+        title,
+        version,
+        ...props
+    }: Props & InjectedProps & ViewProps & WithStyles<typeof styles>) => (
+        <div
+            className={classnames('tree-page', classes.root, className)}
+            {...sanitizeRestProps(props)}
+        >
+            <Title title={title} defaultTitle={defaultTitle} />
+            <Card className={classes.card}>
+                {actions && (
+                    <TreeListToolbar
+                        {...props}
+                        actions={actions}
+                        exporter={exporter}
+                        permanentFilter={filter}
+                    />
+                )}
+                <div key={version}>{cloneElement(children, props)}</div>
+            </Card>
+            {aside && cloneElement(aside, props)}
+        </div>
+    )
+);
 
 const warnAboutChildren = () =>
     console.warn(
@@ -110,3 +203,30 @@ If you need actions on each node, use the actions prop on either the NodeView or
     </Tree>
 `
     );
+
+const sanitizeRestProps = ({
+    basePath,
+    children,
+    classes,
+    closeNode,
+    data,
+    expandNode,
+    hasCreate,
+    hasEdit,
+    hasList,
+    hasShow,
+    history,
+    loading,
+    locale,
+    location,
+    match,
+    nodes,
+    options,
+    parentSource,
+    permissions,
+    positionSource,
+    resource,
+    toggleNode,
+    version,
+    ...rest
+}: any) => rest;

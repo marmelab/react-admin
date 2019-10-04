@@ -149,7 +149,10 @@ class TreeNode extends Component<Props & WithStyles<typeof styles>> {
                     <div className={classes.content}>
                         {Children.map(children, child =>
                             isValidElement(child)
-                                ? cloneElement<any>(child, { record })
+                                ? cloneElement<any>(child, {
+                                      basePath,
+                                      record,
+                                  })
                                 : null
                         )}
                     </div>
