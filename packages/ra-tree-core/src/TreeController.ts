@@ -1,6 +1,9 @@
 import { Component, ReactElement, ComponentType } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import compose from 'recompose/compose';
+import inflection from 'inflection';
+import { Identifier, withTranslate, Translate } from 'ra-core';
 import { getTreeRootNodes } from './selectors';
 import {
     crudGetTreeRootNodes as crudGetTreeRootNodesAction,
@@ -8,7 +11,6 @@ import {
     expandNode as expandNodeAction,
     toggleNode as toggleNodeAction,
 } from './actions';
-import { Identifier } from 'ra-core';
 
 export type NodeFunction = (nodeId: Identifier) => void;
 
@@ -41,6 +43,7 @@ interface InjectedProps {
     hasList: boolean;
     hasShow: boolean;
     resource: string;
+    translate: Translate;
 }
 
 interface StateProps {
@@ -106,12 +109,24 @@ export class TreeControllerView extends Component<
             expandNode,
             parentSource,
             resource,
-            toggleNode,
             rootNodes,
+            toggleNode,
+            translate,
             ...props
         } = this.props;
 
+        const resourceName = translate(`resources.${resource}.name`, {
+            smart_count: 2,
+            _: inflection.humanize(inflection.pluralize(resource)),
+        });
+        const defaultTitle = translate('ra.page.list', {
+            name: resourceName,
+        });
+
+        console.log({ loading: props.loading });
+
         return children({
+            defaultTitle,
             parentSource,
             nodes: rootNodes,
             closeNode: this.handleCloseNode,
@@ -129,18 +144,17 @@ const mapStateToProps = (state, { resource }) => ({
     version: state.admin.ui.viewVersion,
 });
 
-const TreeController = connect<
-    StateProps,
-    DispatchProps,
-    Props & InjectedProps
->(
-    mapStateToProps,
-    {
-        crudGetTreeRootNodes: crudGetTreeRootNodesAction,
-        closeNode: closeNodeAction,
-        expandNode: expandNodeAction,
-        toggleNode: toggleNodeAction,
-    }
+const TreeController = compose<any, Props>(
+    connect(
+        mapStateToProps,
+        {
+            crudGetTreeRootNodes: crudGetTreeRootNodesAction,
+            closeNode: closeNodeAction,
+            expandNode: expandNodeAction,
+            toggleNode: toggleNodeAction,
+        }
+    ),
+    withTranslate
 )(TreeControllerView);
 
 TreeController.defaultProps = {

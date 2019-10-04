@@ -116,7 +116,7 @@ class TreeNode extends Component<Props & WithStyles<typeof styles>> {
                             <div className={classes.icon}>
                                 <CircularProgress size="1em" />
                             </div>
-                        ) : nodes.length === 0 ? (
+                        ) : !nodes || nodes.length === 0 ? (
                             <div className={classes.icon}>
                                 <KeyboardArrowRight />
                             </div>
@@ -183,7 +183,7 @@ const styles = (theme: Theme): StyleRules => ({
     container: {
         alignItems: 'center',
         display: 'inline-flex',
-        justifyContent: 'baseline',
+        justifyContent: 'center',
         verticalAlign: 'middle',
     },
     content: {

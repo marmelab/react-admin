@@ -1,10 +1,9 @@
 import assert from 'assert';
 
-import { DELETE, DELETE_MANY } from '../../../dataFetchActions';
-import getFetchedAt from '../../../util/getFetchedAt';
+import { DELETE, DELETE_MANY, getFetchedAt } from 'ra-core';
 import dataReducer, { addRecords } from './data';
 
-jest.mock('../../../util/getFetchedAt');
+jest.mock('ra-core');
 
 describe('data addRecordsFactory', () => {
     it('should call getFetchedAt with newRecords ids and oldRecordFetchedAt and return records returned by getFetchedAt', () => {
