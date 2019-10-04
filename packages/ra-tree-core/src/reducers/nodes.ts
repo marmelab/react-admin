@@ -101,7 +101,7 @@ const nodesReducer = (
                     acc,
                     {
                         // @ts-ignore
-                        [action.meta.parentSource.toString()]: parentId = ROOT_NODE_ID,
+                        [action.meta.parentSource]: parentId = ROOT_NODE_ID,
                         id,
                     }
                 ) => ({
@@ -127,7 +127,10 @@ const nodesReducer = (
             const newState = {
                 [ROOT_NODE_ID]: action.payload.data.map(({ id }) => id),
                 ...action.payload.data.reduce(
-                    (acc, { id }) => ({ ...acc, [id]: [] }),
+                    (acc, { id }) => ({
+                        ...acc,
+                        [id]: previousState[id] || [],
+                    }),
                     {}
                 ),
             };
@@ -141,7 +144,7 @@ const nodesReducer = (
         case CRUD_GET_TREE_CHILDREN_NODES_SUCCESS: {
             const newState = {
                 ...previousState,
-                [action.requestPayload.toString()]: action.payload.data.map(
+                [action.requestPayload]: action.payload.data.map(
                     ({ id }) => id
                 ),
                 ...action.payload.data.reduce(

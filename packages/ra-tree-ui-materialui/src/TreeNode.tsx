@@ -75,7 +75,7 @@ class TreeNode extends Component<Props & WithStyles<typeof styles>> {
     };
 
     fetchChildren = () => {
-        if (this.props.record) {
+        if (this.props.record && this.props.record.id) {
             this.props.crudGetTreeChildrenNodes({
                 resource: this.props.resource,
                 parentSource: this.props.parentSource,
@@ -135,7 +135,6 @@ class TreeNode extends Component<Props & WithStyles<typeof styles>> {
                         ) : (
                             <IconButton
                                 className={classes.button}
-                                disableRipple
                                 aria-label={translate(
                                     expanded
                                         ? 'ra.tree.close'
