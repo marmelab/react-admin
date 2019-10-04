@@ -67,12 +67,14 @@ class TreeNode extends Component<Props & WithStyles<typeof styles>> {
     };
 
     fetchChildren = () => {
-        this.props.crudGetTreeChildrenNodes({
-            resource: this.props.resource,
-            parentSource: this.props.parentSource,
-            positionSource: this.props.positionSource,
-            nodeId: this.props.record.id,
-        });
+        if (this.props.record) {
+            this.props.crudGetTreeChildrenNodes({
+                resource: this.props.resource,
+                parentSource: this.props.parentSource,
+                positionSource: this.props.positionSource,
+                nodeId: this.props.record.id,
+            });
+        }
     };
 
     render() {
@@ -207,9 +209,12 @@ const styles = (theme: Theme): StyleRules => ({
 });
 
 const mapStateToProps = (state, { record, resource }) => ({
-    expanded: getIsExpanded(state, resource, record ? record.id : undefined),
-    loading: getIsLoading(state, resource, record ? record.id : undefined),
-    nodes: getChildrenNodes(state, resource, record ? record.id : undefined),
+    expanded:
+        record && record.id ? getIsExpanded(state, resource, record.id) : false,
+    loading:
+        record && record.id ? getIsLoading(state, resource, record.id) : false,
+    nodes:
+        record && record.id ? getChildrenNodes(state, resource, record.id) : [],
 });
 
 export default compose(
