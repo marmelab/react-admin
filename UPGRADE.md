@@ -200,6 +200,7 @@ Components deprecated in 2.X have been removed in 3.x. This includes:
 * `RecordTitle` (use `TitleForRecord` instead)
 * `TitleDeprecated` (use `Title` instead)
 * `LongTextInput` (use the `TextInput` instead)
+* `Headroom` (use `HideOnScroll` instead)
 
 ```diff
 - import { LongTextInput } from 'react-admin';
