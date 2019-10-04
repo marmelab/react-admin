@@ -1,5 +1,17 @@
 # Changelog
 
+## v2.9.7
+
+* Fix missing semicolons in docs ([3773](https://github.com/marmelab/react-admin/pull/3773)) ([emptyhand](https://github.com/emptyhand))
+* Fix typo in `ra-core` readme ([3772](https://github.com/marmelab/react-admin/pull/3772)) ([AlexanderOttenhoff](https://github.com/AlexanderOttenhoff))
+* Fix `dataProvider` doc uses onFailure instead of onError ([3761](https://github.com/marmelab/react-admin/pull/3761)) ([mchaffotte](https://github.com/mchaffotte))
+* Fix `Content-Type` header added for non GET requests. ([3743](https://github.com/marmelab/react-admin/pull/3743)) ([clement-escolano](https://github.com/clement-escolano))
+* Fix filter extend order in `ReferenceInputController` ([3740](https://github.com/marmelab/react-admin/pull/3740)) ([TheHyphen](https://github.com/TheHyphen))
+* Fix `TabbedForm` does not detect errors when source is a path ([3711](https://github.com/marmelab/react-admin/pull/3711)) ([djhi](https://github.com/djhi))
+* Add support for GraphQL Interface type ([3692](https://github.com/marmelab/react-admin/pull/3692)) ([MichielDeMey](https://github.com/MichielDeMey))
+* Fix typo in exporter documentation ([3675](https://github.com/marmelab/react-admin/pull/3675)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix Move built-in validators documentation order ([3363](https://github.com/marmelab/react-admin/pull/3363)) ([heyfife](https://github.com/heyfife))
+
 ## v2.9.6
 
 * Fix too drastic validation of `DELETE` and `DELETE_MANY` dataProvider responses ([3441](https://github.com/marmelab/react-admin/pull/3441)) ([Kmaschta](https://github.com/Kmaschta))
