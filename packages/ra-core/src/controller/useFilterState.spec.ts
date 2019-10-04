@@ -27,7 +27,7 @@ describe('useFilterState', () => {
 
     it('should return a setFilter function to update the filter value after a given debounceTime', async () => {
         const { hookValue, childrenMock } = renderHook(() =>
-            useFilterState({ debounceTime: 10 })
+            useFilterState({ debounceTime: 50 })
         );
 
         expect(hookValue.filter).toEqual({ q: '' });
@@ -35,7 +35,7 @@ describe('useFilterState', () => {
         act(() => hookValue.setFilter('needle in a haystack'));
 
         expect(childrenMock).toBeCalledTimes(1);
-        await new Promise(resolve => setTimeout(resolve, 11));
+        await new Promise(resolve => setTimeout(resolve, 70));
 
         expect(childrenMock).toBeCalledTimes(2);
 
@@ -47,7 +47,7 @@ describe('useFilterState', () => {
     it('should provide setFilter to update filter value after given debounceTime preserving permanentFilter and filterToQuery', async () => {
         const { hookValue, childrenMock } = renderHook(() =>
             useFilterState({
-                debounceTime: 10,
+                debounceTime: 50,
                 permanentFilter: { type: 'thisOne' },
                 filterToQuery: v => ({ search: v }),
             })
@@ -56,7 +56,7 @@ describe('useFilterState', () => {
         act(() => hookValue.setFilter('needle in a haystack'));
 
         expect(childrenMock).toBeCalledTimes(1);
-        await new Promise(resolve => setTimeout(resolve, 11));
+        await new Promise(resolve => setTimeout(resolve, 70));
 
         expect(childrenMock).toBeCalledTimes(2);
 
