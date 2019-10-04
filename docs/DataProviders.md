@@ -605,7 +605,7 @@ export default {
             method: 'PUT',
             body: JSON.stringify(params.data),
         }).then(({ json }) => ({ data: json }));
-    }
+    },
 
     create: (resource, params) =>
         httpClient(`${apiUrl}/${resource}`, {
@@ -628,8 +628,8 @@ export default {
             method: 'DELETE',
             body: JSON.stringify(params.data),
         }).then(({ json }) => ({ data: json }));
-    }
-});
+    },
+};
 ```
 
 ### Error Format
