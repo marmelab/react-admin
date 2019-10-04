@@ -20,6 +20,7 @@ import {
     Theme,
     StyleRules,
 } from '@material-ui/core/styles';
+import isEqual from 'lodash/isEqual';
 import {
     crudGetTreeChildrenNodes as crudGetTreeChildrenNodesAction,
     getIsExpanded,
@@ -31,6 +32,7 @@ import { withTranslate, Record, Identifier, Translate } from 'ra-core';
 import TreeNodeList from './TreeNodeList';
 
 interface Props {
+    actions?: ReactElement<any>;
     basePath: string;
     className?: string;
     closeNode: NodeFunction;
@@ -56,6 +58,12 @@ class TreeNode extends Component<Props & WithStyles<typeof styles>> {
         this.fetchChildren();
     }
 
+    componentDidUpdate(prevProps) {
+        if (!isEqual(this.props.record, prevProps.record)) {
+            this.fetchChildren();
+        }
+    }
+
     handleClick = () => {
         this.props.toggleNode(this.props.record.id);
 
@@ -79,6 +87,7 @@ class TreeNode extends Component<Props & WithStyles<typeof styles>> {
 
     render() {
         const {
+            actions,
             basePath,
             children,
             className,
@@ -110,6 +119,7 @@ class TreeNode extends Component<Props & WithStyles<typeof styles>> {
         return (
             <ListItem
                 className={classnames(classes.root, className)}
+                divider={!expanded}
                 {...props}
             >
                 <div className={classes.container}>
@@ -155,6 +165,13 @@ class TreeNode extends Component<Props & WithStyles<typeof styles>> {
                                   })
                                 : null
                         )}
+                        {actions && isValidElement<any>(actions)
+                            ? cloneElement<any>(actions, {
+                                  basePath,
+                                  record,
+                                  ...actions.props,
+                              })
+                            : null}
                     </div>
                 </div>
                 {expanded ? (
@@ -184,15 +201,17 @@ const styles = (theme: Theme): StyleRules => ({
     root: {
         display: 'inline-block',
         verticalAlign: 'middle',
+        paddingRight: 0,
     },
     container: {
         alignItems: 'center',
-        display: 'inline-flex',
-        justifyContent: 'center',
+        display: 'flex',
         verticalAlign: 'middle',
     },
     content: {
-        display: 'inline-flex',
+        alignItems: 'center',
+        display: 'flex',
+        flex: 1,
     },
     button: {
         height: theme.spacing.unit * 3,
