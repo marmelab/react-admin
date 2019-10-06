@@ -7,7 +7,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import { Link, useTranslate, useQueryWithStore, GET_MANY } from 'react-admin';
+import { Link, useTranslate, useQueryWithStore } from 'react-admin';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles({
@@ -20,19 +20,19 @@ const Basket = ({ record }) => {
     const classes = useStyles();
     const translate = useTranslate();
 
-    const { basket } = record;
-
     const { loaded, data: products } = useQueryWithStore(
         {
-            type: GET_MANY,
+            type: 'getMany',
             resource: 'products',
             payload: {
-                ids: basket.map(item => item.product_id),
+                ids: record ? record.basket.map(item => item.product_id) : [],
             },
         },
         {},
         state => {
-            const productIds = basket.map(item => item.product_id);
+            const productIds = record
+                ? record.basket.map(item => item.product_id)
+                : [];
             return productIds
                 .map(
                     productId => state.admin.resources.products.data[productId]
@@ -45,7 +45,7 @@ const Basket = ({ record }) => {
         }
     );
 
-    if (!loaded) return null;
+    if (!loaded || !record) return null;
 
     return (
         <Paper className={classes.container} elevation={2}>
@@ -75,7 +75,7 @@ const Basket = ({ record }) => {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {basket.map(
+                    {record.basket.map(
                         item =>
                             products[item.product_id] && (
                                 <TableRow key={item.product_id}>

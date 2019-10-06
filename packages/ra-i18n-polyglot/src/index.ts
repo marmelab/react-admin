@@ -1,6 +1,6 @@
 import Polyglot from 'node-polyglot';
 
-import { I18N_TRANSLATE, I18N_CHANGE_LOCALE, I18nProvider } from 'ra-core';
+import { I18nProvider } from 'ra-core';
 
 type GetMessages = (locale: string) => Object;
 
@@ -24,6 +24,7 @@ export default (
     initialLocale: string = 'en',
     polyglotOptions: any = {}
 ): I18nProvider => {
+    let locale = initialLocale;
     const messages = getMessages(initialLocale);
     if (messages instanceof Promise) {
         throw new Error(
@@ -31,33 +32,28 @@ export default (
         );
     }
     const polyglot = new Polyglot({
-        locale: initialLocale,
+        locale,
         phrases: { '': '', ...messages },
         ...polyglotOptions,
     });
     let translate = polyglot.t.bind(polyglot);
 
-    return (type, params) => {
-        if (type === I18N_TRANSLATE) {
-            const { key, options = {} } = params as {
-                key: string;
-                options?: Object;
-            };
-            return translate.call(null, key, options);
-        }
-        if (type === I18N_CHANGE_LOCALE) {
-            return new Promise(resolve => {
+    return {
+        translate: (key: string, options: any = {}) => translate(key, options),
+        changeLocale: (newLocale: string) =>
+            new Promise(resolve =>
                 // so we systematically return a Promise for the messages
                 // i18nProvider may return a Promise for language changes,
-                resolve(getMessages(params as string));
-            }).then(messages => {
+                resolve(getMessages(newLocale as string))
+            ).then(messages => {
+                locale = newLocale;
                 const newPolyglot = new Polyglot({
-                    locale: params,
+                    locale: newLocale,
                     phrases: { '': '', ...messages },
                     ...polyglotOptions,
                 });
                 translate = newPolyglot.t.bind(newPolyglot);
-            });
-        }
+            }),
+        getLocale: () => locale,
     };
 };

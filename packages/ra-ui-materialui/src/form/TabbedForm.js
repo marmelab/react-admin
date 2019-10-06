@@ -3,14 +3,20 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { Form } from 'react-final-form';
 import arrayMutators from 'final-form-arrays';
-import { useSelector } from 'react-redux';
-import { withRouter, Route } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 import Divider from '@material-ui/core/Divider';
 import { makeStyles } from '@material-ui/core/styles';
-import { useTranslate, useInitializeFormWithRecord } from 'ra-core';
+import {
+    useTranslate,
+    useInitializeFormWithRecord,
+    sanitizeEmptyValues,
+} from 'ra-core';
+import get from 'lodash/get';
 
+import getFormInitialValues from './getFormInitialValues';
 import Toolbar from './Toolbar';
-import TabbedFormTabs from './TabbedFormTabs';
+import TabbedFormTabs, { getTabFullPath } from './TabbedFormTabs';
+import { useRouteMatch, useLocation } from 'react-router';
 
 const useStyles = makeStyles(theme => ({
     errorTabButton: { color: theme.palette.error.main },
@@ -21,7 +27,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const TabbedForm = ({ initialValues, ...props }) => {
+const TabbedForm = ({ initialValues, defaultValue, saving, ...props }) => {
     let redirect = useRef(props.redirect);
     // We don't use state here for two reasons:
     // 1. There no way to execute code only after the state has been updated
@@ -29,19 +35,22 @@ const TabbedForm = ({ initialValues, ...props }) => {
     const setRedirect = newRedirect => {
         redirect.current = newRedirect;
     };
-    const saving = useSelector(state => state.admin.saving);
+
     const translate = useTranslate();
     const classes = useStyles();
+
+    const finalInitialValues = getFormInitialValues(
+        initialValues,
+        defaultValue,
+        props.record
+    );
 
     const submit = values => {
         const finalRedirect =
             typeof redirect === undefined ? props.redirect : redirect.current;
-        props.save(values, finalRedirect);
-    };
+        const finalValues = sanitizeEmptyValues(finalInitialValues, values);
 
-    const finalInitialValues = {
-        ...initialValues,
-        ...props.record,
+        props.save(finalValues, finalRedirect);
     };
 
     return (
@@ -75,7 +84,7 @@ const defaultSubscription = {
     invalid: true,
 };
 
-export default withRouter(TabbedForm);
+export default TabbedForm;
 
 export const TabbedFormView = ({
     basePath,
@@ -85,8 +94,6 @@ export const TabbedFormView = ({
     form,
     handleSubmit,
     invalid,
-    location,
-    match,
     pristine,
     record,
     redirect: defaultRedirect,
@@ -104,7 +111,7 @@ export const TabbedFormView = ({
     margin,
     ...rest
 }) => {
-    useInitializeFormWithRecord(form, record);
+    useInitializeFormWithRecord(record);
 
     const handleSubmitWithRedirect = useCallback(
         (redirect = defaultRedirect) => {
@@ -115,6 +122,9 @@ export const TabbedFormView = ({
     );
 
     const tabsWithErrors = findTabsWithErrors(children, form.getState().errors);
+
+    const match = useRouteMatch();
+    const location = useLocation();
 
     const url = match ? match.url : location.pathname;
     return (
@@ -127,7 +137,6 @@ export const TabbedFormView = ({
                 tabs,
                 {
                     classes,
-                    currentLocationPath: location.pathname,
                     url,
                     tabsWithErrors,
                 },
@@ -185,7 +194,8 @@ TabbedFormView.propTypes = {
     children: PropTypes.node,
     className: PropTypes.string,
     classes: PropTypes.object,
-    defaultValue: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
+    defaultValue: PropTypes.oneOfType([PropTypes.object, PropTypes.func]), // @deprecated
+    initialValues: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
     handleSubmit: PropTypes.func, // passed by react-final-form
     invalid: PropTypes.bool,
     location: PropTypes.object,
@@ -268,11 +278,6 @@ const sanitizeRestProps = ({
     ...props
 }) => props;
 
-export const getTabFullPath = (tab, index, baseUrl) =>
-    `${baseUrl}${
-        tab.props.path ? `/${tab.props.path}` : index > 0 ? `/${index}` : ''
-    }`;
-
 export const findTabsWithErrors = (children, errors) => {
     return Children.toArray(children).reduce((acc, child) => {
         if (!isValidElement(child)) {
@@ -283,7 +288,8 @@ export const findTabsWithErrors = (children, errors) => {
 
         if (
             inputs.some(
-                input => isValidElement(input) && errors[input.props.source]
+                input =>
+                    isValidElement(input) && get(errors, input.props.source)
             )
         ) {
             return [...acc, child.props.label];

@@ -3,6 +3,7 @@ import {
     render,
     cleanup,
     fireEvent,
+    wait,
     waitForDomChange,
 } from '@testing-library/react';
 
@@ -382,7 +383,7 @@ describe('<AutocompleteInput />', () => {
             );
             const input = getByLabelText('resources.users.fields.role');
             fireEvent.change(input, { target: { value: 'bar' } });
-            expect(setFilter).toHaveBeenCalledTimes(2);
+            expect(setFilter).toHaveBeenCalledTimes(3);
             expect(setFilter).toHaveBeenCalledWith('bar');
 
             rerender(
@@ -401,34 +402,23 @@ describe('<AutocompleteInput />', () => {
                     )}
                 />
             );
-            expect(setFilter).toHaveBeenCalledTimes(3);
+            expect(setFilter).toHaveBeenCalledTimes(5);
             expect(setFilter).toHaveBeenCalledWith('');
         });
 
         it('should allow customized rendering of suggesting item', () => {
+            const SuggestionItem = ({ record }: { record?: any }) => (
+                <div aria-label={record.name} />
+            );
+
             const { getByLabelText, queryByLabelText } = render(
                 <Form
                     onSubmit={jest.fn()}
                     render={() => (
                         <AutocompleteInput
                             {...defaultProps}
-                            suggestionComponent={React.forwardRef(
-                                (
-                                    {
-                                        suggestion,
-                                        query,
-                                        isHighlighted,
-                                        ...props
-                                    },
-                                    ref
-                                ) => (
-                                    <div
-                                        {...props}
-                                        ref={ref}
-                                        aria-label={suggestion.name}
-                                    />
-                                )
-                            )}
+                            optionText={<SuggestionItem />}
+                            matchSuggestion={(filter, choice) => true}
                             choices={[
                                 { id: 1, name: 'bar' },
                                 { id: 2, name: 'foo' },
@@ -506,7 +496,6 @@ describe('<AutocompleteInput />', () => {
             const { queryAllByRole, getByLabelText } = render(
                 <Form
                     onSubmit={jest.fn()}
-                    initialValues={{ role: 2 }}
                     render={() => (
                         <AutocompleteInput
                             {...defaultProps}
@@ -520,6 +509,7 @@ describe('<AutocompleteInput />', () => {
                 />
             );
             const input = getByLabelText('resources.users.fields.role');
+
             fireEvent.focus(input);
             fireEvent.change(input, { target: { value: 'a' } });
             expect(queryAllByRole('option').length).toEqual(2);
@@ -531,29 +521,7 @@ describe('<AutocompleteInput />', () => {
         });
     });
 
-    it('does not automatically select a matched choice if there are more than one', () => {
-        const { queryAllByRole, getByLabelText } = render(
-            <Form
-                onSubmit={jest.fn()}
-                render={() => (
-                    <AutocompleteInput
-                        {...defaultProps}
-                        choices={[
-                            { id: 1, name: 'ab' },
-                            { id: 2, name: 'abc' },
-                            { id: 3, name: '123' },
-                        ]}
-                    />
-                )}
-            />
-        );
-        const input = getByLabelText('resources.users.fields.role');
-        fireEvent.focus(input);
-        fireEvent.change(input, { target: { value: 'ab' } });
-        expect(queryAllByRole('option').length).toEqual(2);
-    });
-
-    it('does not automatically select a matched choice if there is only one', () => {
+    it('does not automatically select a matched choice if there is only one', async () => {
         const { queryAllByRole, getByLabelText } = render(
             <Form
                 onSubmit={jest.fn()}
@@ -572,7 +540,7 @@ describe('<AutocompleteInput />', () => {
         const input = getByLabelText('resources.users.fields.role');
         fireEvent.focus(input);
         fireEvent.change(input, { target: { value: 'abc' } });
-        expect(queryAllByRole('option').length).toEqual(1);
+        await wait(() => expect(queryAllByRole('option').length).toEqual(1));
     });
 
     it('passes options.suggestionsContainerProps to the suggestions container', () => {

@@ -16,9 +16,7 @@ import {
 } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/styles';
 import LockIcon from '@material-ui/icons/Lock';
-import { StaticContext } from 'react-router';
-import { push } from 'connected-react-router';
-import { useDispatch } from 'react-redux';
+import { StaticContext, useHistory } from 'react-router';
 import { useCheckAuth } from 'ra-core';
 
 import defaultTheme from '../defaultTheme';
@@ -61,8 +59,8 @@ const useStyles = makeStyles((theme: Theme) => ({
  * A standalone login page, to serve as authentication gate to the admin
  *
  * Expects the user to enter a login and a password, which will be checked
- * by the `authProvider` using the AUTH_LOGIN verb. Redirects to the root page
- * (/) upon success, otherwise displays an authentication error message.
+ * by the `authProvider.login()` method. Redirects to the root page (/)
+ * upon success, otherwise displays an authentication error message.
  *
  * Copy and adapt this component to implement your own login logic
  * (e.g. to authenticate via email or facebook or anything else).
@@ -90,17 +88,17 @@ const Login: React.FunctionComponent<
     const muiTheme = useMemo(() => createMuiTheme(theme), [theme]);
     let backgroundImageLoaded = false;
     const checkAuth = useCheckAuth();
-    const dispatch = useDispatch();
+    const history = useHistory();
     useEffect(() => {
         checkAuth({}, false)
             .then(() => {
                 // already authenticated, redirect to the home page
-                dispatch(push('/'));
+                history.push('/');
             })
             .catch(() => {
                 // not authenticated, stay on the login page
             });
-    }, [checkAuth, dispatch]);
+    }, [checkAuth, history]);
 
     const updateBackgroundImage = () => {
         if (!backgroundImageLoaded && containerRef.current) {

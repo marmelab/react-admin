@@ -3,7 +3,9 @@ import isEqual from 'lodash/isEqual';
 
 // thanks Kent C Dodds for the following helpers
 
-export function useSafeSetState<T>(initialState): [T, (args: any) => void] {
+export function useSafeSetState<T>(
+    initialState?: any
+): [T, (args: any) => void] {
     const [state, setState] = useState(initialState);
 
     const mountedRef = useRef(false);

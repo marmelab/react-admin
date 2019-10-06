@@ -1,26 +1,12 @@
-import React, { SFC, ReactElement } from 'react';
+import React, { SFC } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import pure from 'recompose/pure';
-import { useTranslate, Identifier } from 'ra-core';
+import { ChoicesProps, useChoices } from 'ra-core';
 import Typography from '@material-ui/core/Typography';
 
 import sanitizeRestProps from './sanitizeRestProps';
 import { FieldProps, InjectedFieldProps, fieldPropTypes } from './types';
-
-interface Choice {
-    [key: string]: string | Identifier;
-}
-
-type OptionTextElement = ReactElement<{ record: Choice }>;
-type OptionText = (choice: Choice) => string | OptionTextElement;
-
-interface Props extends FieldProps {
-    choices: Choice[];
-    optionValue: string;
-    optionText: OptionTextElement | OptionText | string;
-    translateChoice: boolean;
-}
 
 /**
  * Display a value in an enumeration
@@ -81,7 +67,9 @@ interface Props extends FieldProps {
  *
  * **Tip**: <ReferenceField> sets `translateChoice` to false by default.
  */
-export const SelectField: SFC<Props & InjectedFieldProps> = ({
+export const SelectField: SFC<
+    ChoicesProps & FieldProps & InjectedFieldProps
+> = ({
     className,
     source,
     record,
@@ -91,23 +79,20 @@ export const SelectField: SFC<Props & InjectedFieldProps> = ({
     translateChoice,
     ...rest
 }) => {
-    const translate = useTranslate();
     const value = get(record, source);
-    const choice = choices.find(c => c[optionValue] === value);
+    const { getChoiceText, getChoiceValue } = useChoices({
+        optionText,
+        optionValue,
+        translateChoice,
+    });
+
+    const choice = choices.find(choice => getChoiceValue(choice) === value);
+
     if (!choice) {
         return null;
     }
-    let choiceIsElement = false;
-    let choiceName;
-    if (React.isValidElement(optionText)) {
-        choiceIsElement = true;
-        choiceName = React.cloneElement(optionText, { record: choice });
-    } else {
-        choiceName =
-            typeof optionText === 'function'
-                ? optionText(choice)
-                : choice[optionText];
-    }
+
+    let choiceText = getChoiceText(choice);
 
     return (
         <Typography
@@ -116,9 +101,7 @@ export const SelectField: SFC<Props & InjectedFieldProps> = ({
             className={className}
             {...sanitizeRestProps(rest)}
         >
-            {translateChoice && !choiceIsElement
-                ? translate(choiceName, { _: choiceName })
-                : choiceName}
+            {choiceText}
         </Typography>
     );
 };
@@ -138,7 +121,7 @@ EnhancedSelectField.defaultProps = {
 EnhancedSelectField.propTypes = {
     ...Typography.propTypes,
     ...fieldPropTypes,
-    choices: PropTypes.arrayOf(PropTypes.any).isRequired,
+    choices: PropTypes.arrayOf(PropTypes.object).isRequired,
     optionText: PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.func,

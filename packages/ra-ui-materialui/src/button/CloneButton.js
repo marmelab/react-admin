@@ -34,7 +34,7 @@ export const CloneButton = ({
         component={Link}
         to={{
             pathname: `${basePath}/create`,
-            search: stringify(omitId(record)), // FIXME use location state when https://github.com/supasate/connected-react-router/issues/301 is fixed
+            search: stringify(omitId(record)),
         }}
         label={label}
         onClick={stopPropagation}

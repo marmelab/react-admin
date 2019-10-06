@@ -1,8 +1,36 @@
 # Upgrade to 3.0
 
+## Upgrade all react-admin packages
+
+In the `packages.json`, upgrade ALL react-admin related dependencies to 3.0.0. This includes `react-admin`, `ra-language-XXX`, `ra-data-XXX`, etc.
+
+```diff
+{
+    "name": "demo",
+    "version": "0.1.0",
+    "private": true,
+    "dependencies": {
+-       "ra-data-simple-rest": "^2.9.6",
++       "ra-data-simple-rest": "^3.0.0",
+-       "ra-input-rich-text": "^2.9.6",
++       "ra-input-rich-text": "^3.0.0",
+-       "ra-language-english": "^2.9.6",
++       "ra-language-english": "^3.0.0",
+-       "ra-language-french": "^2.9.6",
++       "ra-language-french": "^3.0.0",
+-       "react-admin": "^2.9.6",
++       "react-admin": "^3.0.0",
+        "react": "^16.9.0",
+        "react-dom": "^16.9.0",
+        ...
+    },
+```
+
+Failing to upgrade one of the `ra-` packages will result in a duplication of the react-admin package in two incompatible versions, and cause hard-to-debug bugs.  
+
 ## Increased version requirement for key dependencies
 
-* `react` and `react-dom` are now required to be >= 16.8. This version is backward compatible with 16.3, which was the minimum requirement in react-admin, but it offers the support for Hooks.
+* `react` and `react-dom` are now required to be >= 16.9. This version is backward compatible with 16.3, which was the minimum requirement in react-admin, but it offers the support for Hooks.
 * `react-redux` requires a minimum version of 7.1.0 (instead of 5.0). Check their upgrade guide for [6.0](https://github.com/reduxjs/react-redux/releases/tag/v6.0.0) and [7.0](https://github.com/reduxjs/react-redux/releases/tag/v7.0.0)
 * `redux-form` requires a minimum version of 8.2 (instead of 7.4). Check their [Upgrade guide](https://github.com/erikras/redux-form/releases/tag/v8.0.0).
 * `material-ui` requires a minimum of 4.0.0 (instead of 1.5). Check their [Upgrade guide](https://next.material-ui.com/guides/migration-v3/).
@@ -100,7 +128,7 @@ import {
 
 -const ApproveButton = ({ dataProvider, dispatch, record }) => {
 +const ApproveButton = ({ dataProvider, record }) => {
-+   const dispatch = withDispatch();
++   const dispatch = useDispatch();
     const handleClick = () => {
         const updatedRecord = { ...record, is_approved: true };
         dataProvider(UPDATE, 'comments', { id: record.id, data: updatedRecord })
@@ -172,6 +200,7 @@ Components deprecated in 2.X have been removed in 3.x. This includes:
 * `RecordTitle` (use `TitleForRecord` instead)
 * `TitleDeprecated` (use `Title` instead)
 * `LongTextInput` (use the `TextInput` instead)
+* `Headroom` (use `HideOnScroll` instead)
 
 ```diff
 - import { LongTextInput } from 'react-admin';
@@ -889,11 +918,40 @@ const PostFilter = props =>
     </Filter>;
 ```
 
+## Form prop `defaultValue` was renamed to `initialValues`
+
+This is actually to be consistent with the underlying form library ([final-form](https://final-form.org/docs/react-final-form))
+
+```diff
+// for SimpleForm
+const PostEdit = props =>
+    <Edit {...props}>
+        <SimpleForm
+-           defaultValue={{ stock: 0 }}
++           initialValues={{ stock: 0 }}
+        >
+            // ...
+        </SimpleForm>
+    </Edit>;
+// for TabbedForm
+const PostEdit = props =>
+    <Edit {...props}>
+        <TabbedForm
+-           defaultValue={{ stock: 0 }}
++           initialValues={{ stock: 0 }}
+        >
+            <FormTab label="Identity>
+                // ...
+            </FormTab>
+        </TabbedForm>
+    </Edit>;
+```
+
 ## Complete rewrite of the AutocompleteInput and AutocompleteArrayInput components
 
 We rewrote the `<AutocompleteInput>` and `<AutocompleteArrayInput>` components from scratch using [`downshift`](https://github.com/downshift-js/downshift), while the previous version was based on [react-autosuggest](http://react-autosuggest.js.org/). The new components are more robust and more future-proof, and their API didn't change.
 
-There are two breaking changes in the new `<AutocompleteInput>` and `<AutocompleteArrayInput>` components:
+There are three breaking changes in the new `<AutocompleteInput>` and `<AutocompleteArrayInput>` components:
 
 - The `inputValueMatcher` prop is gone. We removed a feature many found confusing: the auto-selection of an item when it was matched exactly. So react-admin no longer selects anything automatically, therefore the `inputValueMatcher` prop is  obsolete
 
@@ -921,6 +979,29 @@ There are two breaking changes in the new `<AutocompleteInput>` and `<Autocomple
 />
 ```
 
+- The `suggestionComponent` prop is gone.
+
+Instead, the new `<AutocompleteInput>` and `<AutocompleteArrayInput>` components use the `optionText` like all other inputs accepting choices.
+However, if you pass a React element as the `optionText`, you must now also specify the new `matchSuggestion` prop.
+This is required because the inputs use the `optionText` by default to filter suggestions.
+This function receives the current filter and a choice, and should return a boolean indicating whether this choice matches the filter.
+
+```diff
+<AutocompleteInput
+    source="role"
+-   suggestionComponent={MyComponent}
++   optionText={<MyComponent />}
++   matchSuggestion={matchSuggestion}
+/>
+
+<AutocompleteArrayInput
+    source="role"
+-   suggestionComponent={MyComponent}
++   optionText={<MyComponent />}
++   matchSuggestion={matchSuggestion}
+/>
+```
+ 
 Besides, some props which were applicable to both components did not make sense for the `<AutocompleteArrayInput>` component:
 
 - `allowEmpty`: As the `<AutocompleteArrayInput>` deals with arrays, it does not make sense to add an empty choice. This prop is no longer accepted and will be ignored.
@@ -1034,30 +1115,33 @@ If you had custom reducer or sagas based on these actions, they will no longer w
 
 ## i18nProvider Signature Changed
 
-The i18nProvider, that react-admin uses for translating UI and content, now has a signature similar to the other providers: it accepts a message type (either `I18N_TRANSLATE` or `I18N_CHANGE_LOCALE`) and a params argument.
+The i18nProvider, that react-admin uses for translating UI and content, must now be an object exposing three methods: `translate`, `changeLocale` and `getLocale`.
 
 ```jsx
 // react-admin 2.x
 const i18nProvider = (locale) => messages[locale];
 
 // react-admin 3.x
-const i18nProvider = (type, params) => {
-    const polyglot = new Polyglot({ locale: 'en', phrases: messages.en });
-    let translate = polyglot.t.bind(polyglot);
-    if (type === 'I18N_TRANSLATE') {
-        const { key, options } = params;
-        return translate(key, options);
-    }
-    if type === 'I18N_CHANGE_LOCALE') {
-        const newLocale = params;
+const polyglot = new Polyglot({ locale: 'en', phrases: messages.en });
+let translate = polyglot.t.bind(polyglot);
+let locale = 'en';
+const i18nProvider = {
+    translate: (key, options) => translate(key, options),
+    changeLocale: newLocale => {
+        locale = newLocale;
         return new Promise((resolve, reject) => {
             // load new messages and update the translate function
         })
+    },
+    getLocale: () => {
+        return locale;
     }
 } 
 ```
 
 But don't worry: react-admin v3 contains a module called `ra-i18n-polyglot`, that is a wrapper around your old `i18nProvider` to make it compatible with the new provider signature:
+
+Besides, the `Admin` component does not accept a `locale` prop anymore as it is the `i18nProvider` provider responsibility:
 
 ```diff
 import React from 'react';
@@ -1071,10 +1155,11 @@ const messages = {
     en: englishMessages,
 };
 -const i18nProvider = locale => messages[locale];
-+const i18nProvider = polyglotI18nProvider(locale => messages[locale]);
++const i18nProvider = polyglotI18nProvider(locale => messages[locale], 'fr');
 
 const App = () => (
-    <Admin locale="en" i18nProvider={i18nProvider}>
+-    <Admin locale="fr" i18nProvider={i18nProvider}>
++    <Admin i18nProvider={i18nProvider}>
         ...
     </Admin>
 );

@@ -1281,9 +1281,9 @@ As you can see, nothing prevents you from using `<Field>` components inside your
 
 ## Displaying Fields depending on the user permissions
 
-You might want to display some fields or filters only to users with specific permissions. Those permissions are retrieved for each route and will provided to your component as a `permissions` prop.
+You might want to display some fields or filters only to users with specific permissions. 
 
-Each route will call the `authProvider` with the `AUTH_GET_PERMISSIONS` type and some parameters including the current location and route parameters. It's up to you to return whatever you need to check inside your component such as the user's role, etc.
+Before rendering the `List`, react-admin calls the `authProvider.getPermissions()` method, and passes the result to the component as the `permissions` prop. It's up to your `authProvider` to return whatever you need to check roles and permissions inside your component.
 
 {% raw %}
 ```jsx
@@ -1327,4 +1327,4 @@ export const UserList = ({ permissions, ...props }) => {
 ```
 {% endraw %}
 
-**Tip** Note how the `permissions` prop is passed down to the custom `filters` component.
+**Tip**: Note how the `permissions` prop is passed down to the custom `filters` component.

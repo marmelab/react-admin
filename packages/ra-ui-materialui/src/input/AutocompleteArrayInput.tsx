@@ -3,16 +3,23 @@ import React, {
     useEffect,
     useRef,
     FunctionComponent,
+    useMemo,
+    isValidElement,
 } from 'react';
 import Downshift, { DownshiftProps } from 'downshift';
 import classNames from 'classnames';
 import get from 'lodash/get';
 import { makeStyles, TextField, Chip } from '@material-ui/core';
 import { TextFieldProps } from '@material-ui/core/TextField';
-import { useTranslate, useInput, FieldTitle, InputProps } from 'ra-core';
+import {
+    useInput,
+    FieldTitle,
+    InputProps,
+    useSuggestions,
+    warning,
+} from 'ra-core';
 
 import InputHelperText from './InputHelperText';
-import getSuggestionsFactory from './getSuggestions';
 import AutocompleteSuggestionList from './AutocompleteSuggestionList';
 import AutocompleteSuggestionItem from './AutocompleteSuggestionItem';
 
@@ -56,6 +63,18 @@ interface Options {
  * const optionRenderer = choice => `${choice.first_name} ${choice.last_name}`;
  * <AutocompleteArrayInput source="author_id" choices={choices} optionText={optionRenderer} />
  *
+ * `optionText` also accepts a React Element, that will be cloned and receive
+ * the related choice as the `record` prop. You can use Field components there.
+ * Note that you must also specify the `matchSuggestion` prop
+ * @example
+ * const choices = [
+ *    { id: 123, first_name: 'Leo', last_name: 'Tolstoi' },
+ *    { id: 456, first_name: 'Jane', last_name: 'Austen' },
+ * ];
+ * const matchSuggestion = (filterValue, choice) => choice.first_name.match(filterValue) || choice.last_name.match(filterValue);
+ * const FullNameField = ({ record }) => <span>{record.first_name} {record.last_name}</span>;
+ * <SelectInput source="gender" choices={choices} optionText={<FullNameField />} matchSuggestion={matchSuggestion} />
+ *
  * The choices are translated by default, so you can use translation identifiers as choices:
  * @example
  * const choices = [
@@ -79,12 +98,15 @@ const AutocompleteArrayInput: FunctionComponent<
     allowEmpty,
     classes: classesOverride,
     choices = [],
+    emptyText,
+    emptyValue,
     helperText,
     id: idOverride,
     input: inputOverride,
     isRequired: isRequiredOverride,
     limitChoicesToValue,
     margin,
+    matchSuggestion,
     meta: metaOverride,
     onBlur,
     onChange,
@@ -101,14 +123,21 @@ const AutocompleteArrayInput: FunctionComponent<
     setFilter,
     shouldRenderSuggestions: shouldRenderSuggestionsOverride,
     source,
-    suggestionComponent,
     suggestionLimit,
     translateChoice = true,
     validate,
     variant = 'filled',
     ...rest
 }) => {
-    const translate = useTranslate();
+    warning(
+        isValidElement(optionText) && !matchSuggestion,
+        `If the optionText prop is a React element, you must also specify the matchSuggestion prop:
+<AutocompleteInput
+    matchSuggestion={(filterValue, suggestion) => true}
+/>
+        `
+    );
+
     const classes = useStyles({ classes: classesOverride });
 
     let inputEl = useRef<HTMLInputElement>();
@@ -135,6 +164,30 @@ const AutocompleteArrayInput: FunctionComponent<
 
     const [filterValue, setFilterValue] = React.useState('');
 
+    const getSuggestionFromValue = useCallback(
+        value => choices.find(choice => get(choice, optionValue) === value),
+        [choices, optionValue]
+    );
+
+    const selectedItems = useMemo(
+        () => (input.value || []).map(getSuggestionFromValue),
+        [input.value, getSuggestionFromValue]
+    );
+
+    const { getChoiceText, getChoiceValue, getSuggestions } = useSuggestions({
+        allowEmpty,
+        choices,
+        emptyText,
+        emptyValue,
+        limitChoicesToValue,
+        matchSuggestion,
+        optionText,
+        optionValue,
+        selectedItem: selectedItems,
+        suggestionLimit,
+        translateChoice,
+    });
+
     const handleFilterChange = useCallback(
         (eventOrValue: React.ChangeEvent<{ value: string }> | string) => {
             const event = eventOrValue as React.ChangeEvent<{ value: string }>;
@@ -158,34 +211,6 @@ const AutocompleteArrayInput: FunctionComponent<
         handleFilterChange('');
     }, [input.value, handleFilterChange]);
 
-    const getSuggestionValue = useCallback(
-        suggestion => get(suggestion, optionValue),
-        [optionValue]
-    );
-
-    const getSuggestionFromValue = useCallback(
-        value => choices.find(choice => get(choice, optionValue) === value),
-        [choices, optionValue]
-    );
-
-    const getSuggestionText = useCallback(
-        suggestion => {
-            if (!suggestion) return '';
-
-            const suggestionLabel =
-                typeof optionText === 'function'
-                    ? optionText(suggestion)
-                    : get(suggestion, optionText, '');
-
-            return translateChoice
-                ? translate(suggestionLabel, { _: suggestionLabel })
-                : suggestionLabel;
-        },
-        [optionText, translate, translateChoice]
-    );
-
-    const selectedItems = (input.value || []).map(getSuggestionFromValue);
-
     const handleKeyDown = useCallback(
         (event: React.KeyboardEvent) => {
             // Remove latest item from array when user hits backspace with no text
@@ -198,10 +223,10 @@ const AutocompleteArrayInput: FunctionComponent<
                     0,
                     selectedItems.length - 1
                 );
-                input.onChange(newSelectedItems.map(getSuggestionValue));
+                input.onChange(newSelectedItems.map(getChoiceValue));
             }
         },
-        [filterValue.length, getSuggestionValue, input, selectedItems]
+        [filterValue.length, getChoiceValue, input, selectedItems]
     );
 
     const handleChange = useCallback(
@@ -210,9 +235,9 @@ const AutocompleteArrayInput: FunctionComponent<
                 ? [...selectedItems]
                 : [...selectedItems, item];
             setFilterValue('');
-            input.onChange(newSelectedItems.map(getSuggestionValue));
+            input.onChange(newSelectedItems.map(getChoiceValue));
         },
-        [getSuggestionValue, input, selectedItems]
+        [getChoiceValue, input, selectedItems]
     );
 
     const handleDelete = useCallback(
@@ -220,12 +245,12 @@ const AutocompleteArrayInput: FunctionComponent<
             const newSelectedItems = [...selectedItems];
             const value = event.target.getAttribute('data-item');
             const item = choices.find(
-                choice => getSuggestionValue(choice) == value // eslint-disable-line eqeqeq
+                choice => getChoiceValue(choice) == value // eslint-disable-line eqeqeq
             );
             newSelectedItems.splice(newSelectedItems.indexOf(item), 1);
-            input.onChange(newSelectedItems.map(getSuggestionValue));
+            input.onChange(newSelectedItems.map(getChoiceValue));
         },
-        [choices, getSuggestionValue, input, selectedItems]
+        [choices, getChoiceValue, input, selectedItems]
     );
 
     // This function ensures that the suggestion list stay aligned to the
@@ -255,28 +280,6 @@ const AutocompleteArrayInput: FunctionComponent<
             }
         }
     };
-
-    const getSuggestions = useCallback(
-        getSuggestionsFactory({
-            choices,
-            allowEmpty: false, // We do not want to insert an empty choice
-            optionText,
-            optionValue,
-            limitChoicesToValue,
-            getSuggestionText,
-            selectedItem: selectedItems,
-            suggestionLimit,
-        }),
-        [
-            choices,
-            optionText,
-            optionValue,
-            limitChoicesToValue,
-            getSuggestionText,
-            input,
-            suggestionLimit,
-        ]
-    );
 
     const storeInputRef = input => {
         inputEl.current = input;
@@ -316,7 +319,7 @@ const AutocompleteArrayInput: FunctionComponent<
             inputValue={filterValue}
             onChange={handleChange}
             selectedItem={selectedItems}
-            itemToString={item => getSuggestionValue(item)}
+            itemToString={item => getChoiceValue(item)}
             {...rest}
         >
             {({
@@ -332,6 +335,7 @@ const AutocompleteArrayInput: FunctionComponent<
                 const isMenuOpen =
                     isOpen && shouldRenderSuggestions(suggestionFilter);
                 const {
+                    id: idFromDownshift,
                     onBlur,
                     onChange,
                     onFocus,
@@ -345,10 +349,9 @@ const AutocompleteArrayInput: FunctionComponent<
                 return (
                     <div className={classes.container}>
                         <TextField
+                            id={id}
                             fullWidth
                             InputProps={{
-                                id,
-                                name: id,
                                 inputRef: storeInputRef,
                                 classes: {
                                     root: classNames(classes.inputRoot, {
@@ -368,12 +371,10 @@ const AutocompleteArrayInput: FunctionComponent<
                                             <Chip
                                                 key={index}
                                                 tabIndex={-1}
-                                                label={getSuggestionText(item)}
+                                                label={getChoiceText(item)}
                                                 className={classes.chip}
                                                 onDelete={handleDelete}
-                                                data-item={getSuggestionValue(
-                                                    item
-                                                )}
+                                                data-item={getChoiceValue(item)}
                                             />
                                         ))}
                                     </div>
@@ -427,18 +428,17 @@ const AutocompleteArrayInput: FunctionComponent<
                             {getSuggestions(suggestionFilter).map(
                                 (suggestion, index) => (
                                     <AutocompleteSuggestionItem
-                                        key={getSuggestionValue(suggestion)}
+                                        key={getChoiceValue(suggestion)}
                                         suggestion={suggestion}
                                         index={index}
                                         highlightedIndex={highlightedIndex}
                                         isSelected={selectedItems
-                                            .map(getSuggestionValue)
+                                            .map(getChoiceValue)
                                             .includes(
-                                                getSuggestionValue(suggestion)
+                                                getChoiceValue(suggestion)
                                             )}
-                                        inputValue={filterValue}
-                                        getSuggestionText={getSuggestionText}
-                                        component={suggestionComponent}
+                                        filterValue={filterValue}
+                                        getSuggestionText={getChoiceText}
                                         {...getItemProps({
                                             item: suggestion,
                                         })}

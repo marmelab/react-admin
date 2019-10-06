@@ -16,16 +16,51 @@ You will use translation features mostly via the `i18nProvider`, and a set of ho
 
 ## Introducing the `i18nProvider`
 
-Just like for data fetching and authentication, react-admin relies on a simple function for translations. It's called the `i18nProvider`, and here is its signature:
+Just like for data fetching and authentication, react-admin relies on a simple object for translations. It's called the `i18nProvider`, and it manages translation and language change using two methods:
 
 ```jsx
-const i18nProvider = (type, params) => string | Promise;
+const i18nProvider = {
+    translate: (key, options) => string,
+    changeLocale: locale => Promise,
+    getLocale: () => string,
+}
 ```
 
-The `i18nProvider` expects two possible `type` arguments: `I18N_TRANSLATE` and `I18N_CHANGE_LOCALE`. Here is the simplest possible implementation for a French and English provider:
+And just like for the `dataProvider` and the `authProvider`, you can *inject* the `i18nProvider` to your react-admin app using the `<Admin>` component:
 
 ```jsx
-import { I18N_TRANSLATE, I18N_CHANGE_LOCALE } from 'react-admin';
+import i18nProvider from './i18n/i18nProvider';
+
+const App = () => (
+    <Admin 
+        dataProvider={dataProvider}
+        authProvider={authProvider}
+        i18nProvider={i18nProvider}
+    >
+        <Resource name="posts" list={...}>
+        // ...
+```
+
+If you want to add or update tranlations, you'll have to provide your own `i18nProvider`.
+
+React-admin components use translation keys for their labels, and rely on the `i18nProvider` to translate them. For instance:
+
+```jsx
+const SaveButton = ({ doSave }) => {
+    const translate = useTranslate(); // returns the i18nProvider.translate() method
+    return (
+        <Button onclick={doSave}>
+            {translate('ra.action.save')} // will translate to "Save" in English and "Enregistrer" in French
+        </Button>;
+    );
+};
+```
+
+## Using Polyglot.js
+
+Here is the simplest possible implementation for an `i18nProvider` with English and French messages:
+
+```jsx
 import lodashGet from 'lodash/get';
 
 const englishMessages = {
@@ -50,22 +85,20 @@ const frenchMessages = {
         },
     },
 };
+let messages = englishMessages;
 
-const i18nProvider = (type, params) => {
-    let messages = englishMessages;
-    if (type === I18N_TRANSLATE) {
-        const { key } = params;
-        return lodashGet(messages, key)
-    }
-    if (type === I18N_CHANGE_LOCALE) {
-        const newLocale = params;
+let locale = 'en';
+
+const i18nProvider = {
+    translate: key => lodashGet(messages, key),
+    changeLocale: newLocale => {
         messages = (newLocale === 'fr') ? frenchMessages : englishMessages;
+        locale = newLocale;
         return Promise.resolve();
-    }
+    },
+    getLocale: () => locale;
 };
 ```
-
-## Using Polyglot.js
 
 But this is too naive: react-admin expects that i18nProviders support string interpolation for translation, and asynchronous message loading for locale change. That's why react-admin bundles an `i18nProvider` *factory* called `polyglotI18nProvider`. This factory relies on [polyglot.js](http://airbnb.io/polyglot.js/), which uses JSON files for translations. It only expects one argument: a function returning a list of messages based on a locale passed as argument. 
 
@@ -98,38 +131,9 @@ const frenchMessages = {
 };
 
 const i18nProvider = polyglotI18nProvider(locale => 
-    locale === 'fr' ? frenchMessages : englishMessages
+    locale === 'fr' ? frenchMessages : englishMessages,
+    'en' // Default locale
 );
-```
-
-If you want to add or update tranlations, you'll have to provide your own `i18nProvider`.
-
-React-admin components use translation keys for their labels, and rely on the `i18nProvider` to translate them. For instance:
-
-```jsx
-const SaveButton = ({ doSave }) => {
-    const translate = useTranslate(); // calls the i18nProvider with the I18N_TRANSLATE type
-    return (
-        <Button onclick={doSave}>
-            {translate('ra.action.save')} // will translate to "Save" in English and "Enregistrer" in French
-        </Button>;
-    );
-};
-```
-
-And just like for the `dataProvider` and the `authProvider`, you can *inject* the `i18nProvider` to your react-admin app using the `<Admin>` component:
-
-```jsx
-import i18nProvider from './i18n/i18nProvider';
-
-const App = () => (
-    <Admin 
-        dataProvider={dataProvider}
-        authProvider={authProvider}
-        i18nProvider={i18nProvider}
-    >
-        <Resource name="posts" list={...}>
-        // ...
 ```
 
 ## Changing The Default Locale
@@ -142,10 +146,10 @@ import { Admin, Resource } from 'react-admin';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import frenchMessages from 'ra-language-french';
 
-const i18nProvider = polyglotI18nProvider(() => frenchMessages);
+const i18nProvider = polyglotI18nProvider(() => frenchMessages, 'fr');
 
 const App = () => (
-    <Admin locale="fr" i18nProvider={i18nProvider}>
+    <Admin i18nProvider={i18nProvider}>
         ...
     </Admin>
 );
@@ -295,10 +299,10 @@ const i18nProvider = polyglotI18nProvider(locale => {
     if (locale === 'fr') {
         return import('../i18n/fr.js').then(messages => messages.default);
     }
-});
+}, 'en');
 
 const App = () => (
-    <Admin locale="en" i18nProvider={i18nProvider}>
+    <Admin i18nProvider={i18nProvider}>
         ...
     </Admin>
 );
@@ -306,7 +310,7 @@ const App = () => (
 
 ## Using The Browser Locale
 
-React-admin provides a helper function named `resolveBrowserLocale()`, which detects the user's browser locale. To use it, simply pass the function as `locale` prop.
+React-admin provides a helper function named `resolveBrowserLocale()`, which detects the user's browser locale. To use it, simply pass the function as the `initialLocale` argument of `polyglotI18nProvider`.
 
 ```jsx
 import React from 'react';
@@ -323,10 +327,13 @@ const messages = {
     fr: frenchMessages,
     en: englishMessages,
 };
-const i18nProvider = polyglotI18nProvider(locale => messages[locale] ? messages[locale] : messages.en);
+const i18nProvider = polyglotI18nProvider(
+    locale => messages[locale] ? messages[locale] : messages.en,
+    resolveBrowserLocale()
+);
 
 const App = () => (
-    <Admin locale={resolveBrowserLocale()} i18nProvider={i18nProvider}>
+    <Admin i18nProvider={i18nProvider}>
         ...
     </Admin>
 );

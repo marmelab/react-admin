@@ -136,6 +136,7 @@ const PostEdit = ({ permissions, ...props }) => (
                 </ArrayInput>
                 <DateInput source="published_at" options={{ locale: 'pt' }} />
                 <SelectInput
+                    allowEmpty
                     resettable
                     source="category"
                     choices={[
@@ -155,6 +156,7 @@ const PostEdit = ({ permissions, ...props }) => (
                     reference="comments"
                     target="post_id"
                     addLabel={false}
+                    fullWidth
                 >
                     <Datagrid>
                         <DateField source="created_at" />

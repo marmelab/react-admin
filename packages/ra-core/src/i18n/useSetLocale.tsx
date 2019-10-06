@@ -1,7 +1,6 @@
 import { useContext, useCallback } from 'react';
 
 import { TranslationContext } from './TranslationContext';
-import { I18N_CHANGE_LOCALE } from '../types';
 import { useUpdateLoading } from '../loading';
 import { useNotify } from '../sideEffect';
 
@@ -43,7 +42,7 @@ const useSetLocale = (): SetLocale => {
                 startLoading();
                 // so we systematically return a Promise for the messages
                 // i18nProvider may return a Promise for language changes,
-                resolve(i18nProvider(I18N_CHANGE_LOCALE, newLocale));
+                resolve(i18nProvider.changeLocale(newLocale));
             })
                 .then(() => {
                     stopLoading();

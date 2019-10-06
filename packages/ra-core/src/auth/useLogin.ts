@@ -1,13 +1,10 @@
 import { useCallback } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { push } from 'connected-react-router';
 
 import useAuthProvider, { defaultAuthParams } from './useAuthProvider';
-import { AUTH_LOGIN } from './types';
-import { ReduxState } from '../types';
+import { useLocation, useHistory } from 'react-router';
 
 /**
- * Get a callback for calling the authProvider with the AUTH_LOGIN verb
+ * Get a callback for calling the authProvider.login() method
  * and redirect to the previous authenticated page (or the home page) on success.
  *
  * @see useAuthProvider
@@ -31,35 +28,32 @@ import { ReduxState } from '../types';
  */
 const useLogin = (): Login => {
     const authProvider = useAuthProvider();
-    const currentLocation = useSelector(
-        (state: ReduxState) => state.router.location
-    );
-    const nextPathName =
-        currentLocation.state && currentLocation.state.nextPathname;
-    const dispatch = useDispatch();
+    const location = useLocation();
+    const history = useHistory();
+    const nextPathName = location.state && location.state.nextPathname;
 
     const login = useCallback(
         (params: any = {}, pathName = defaultAuthParams.afterLoginUrl) =>
-            authProvider(AUTH_LOGIN, params).then(ret => {
-                dispatch(push(nextPathName || pathName));
+            authProvider.login(params).then(ret => {
+                history.push(nextPathName || pathName);
                 return ret;
             }),
-        [authProvider, dispatch, nextPathName]
+        [authProvider, history, nextPathName]
     );
 
     const loginWithoutProvider = useCallback(
         (_, __) => {
-            dispatch(push(defaultAuthParams.afterLoginUrl));
+            history.push(defaultAuthParams.afterLoginUrl);
             return Promise.resolve();
         },
-        [dispatch]
+        [history]
     );
 
     return authProvider ? login : loginWithoutProvider;
 };
 
 /**
- * Log a user in by calling the authProvider AUTH_LOGIN verb
+ * Log a user in by calling the authProvider.login() method
  *
  * @param {object} params Login parameters to pass to the authProvider. May contain username/email, password, etc
  * @param {string} pathName The path to redirect to after login. By default, redirects to the home page, or to the last page visited after deconnexion.

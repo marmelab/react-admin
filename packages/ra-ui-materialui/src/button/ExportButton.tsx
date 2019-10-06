@@ -6,8 +6,6 @@ import {
     downloadCSV,
     useDataProvider,
     useNotify,
-    GET_MANY,
-    GET_LIST,
     Sort,
     DataProvider,
 } from 'ra-core';
@@ -61,13 +59,14 @@ export const getRelatedIds = (records, field) =>
  *          }));
  */
 const fetchRelatedRecords = dataProvider => (data, field, resource) =>
-    dataProvider(GET_MANY, resource, { ids: getRelatedIds(data, field) }).then(
-        ({ data }) =>
+    dataProvider
+        .getMany(resource, { ids: getRelatedIds(data, field) })
+        .then(({ data }) =>
             data.reduce((acc, post) => {
                 acc[post.id] = post;
                 return acc;
             }, {})
-    );
+        );
 
 const DefaultIcon = <DownloadIcon />;
 const defaultFilter = {};
@@ -107,11 +106,12 @@ const ExportButton: FunctionComponent<Props & ButtonProps> = ({
     const notify = useNotify();
     const handleClick = useCallback(
         event => {
-            dataProvider(GET_LIST, resource, {
-                sort,
-                filter,
-                pagination: { page: 1, perPage: maxResults },
-            })
+            dataProvider
+                .getList(resource, {
+                    sort,
+                    filter,
+                    pagination: { page: 1, perPage: maxResults },
+                })
                 .then(({ data }) =>
                     exporter
                         ? exporter(

@@ -9,13 +9,11 @@ const primedStore = {
     admin: {
         loading: 0,
         notifications: [],
-        record: {},
         references: {
             oneToMany: {},
             possibleValues: {},
         },
         resources: {},
-        saving: false,
         ui: {
             viewVersion: 1,
         },

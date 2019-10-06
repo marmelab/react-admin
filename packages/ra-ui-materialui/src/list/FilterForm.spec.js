@@ -20,7 +20,7 @@ describe('<FilterForm />', () => {
         const filters = [
             <TextInput source="title" label="Title" />,
             <TextInput source="customer.name" label="Name" />,
-        ]; // eslint-disable-line react/jsx-key
+        ];
         const displayedFilters = {
             title: true,
             'customer.name': true,

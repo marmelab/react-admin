@@ -20,3 +20,28 @@ export const fetchActionsWithArrayOfRecordsResponse = [
     DELETE_MANY,
 ];
 export const fetchActionsWithTotalResponse = [GET_LIST, GET_MANY_REFERENCE];
+
+export const sanitizeFetchType = (fetchType: string) => {
+    switch (fetchType) {
+        case GET_LIST:
+            return 'getList';
+        case GET_ONE:
+            return 'getOne';
+        case GET_MANY:
+            return 'getMany';
+        case GET_MANY_REFERENCE:
+            return 'getManyReference';
+        case CREATE:
+            return 'create';
+        case UPDATE:
+            return 'update';
+        case UPDATE_MANY:
+            return 'updateMany';
+        case DELETE:
+            return 'delete';
+        case DELETE_MANY:
+            return 'deleteMany';
+        default:
+            return fetchType;
+    }
+};

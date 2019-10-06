@@ -4,6 +4,10 @@ import { act, cleanup } from '@testing-library/react';
 
 import EditController from './EditController';
 import renderWithRedux from '../util/renderWithRedux';
+import {
+    DataProviderContext,
+    convertLegacyDataProvider,
+} from '../dataProvider';
 
 describe('useEditController', () => {
     afterEach(cleanup);
@@ -73,13 +77,18 @@ describe('useEditController', () => {
 
     it('should return a save callback when undoable is false', () => {
         let saveCallback;
+        const dataProvider = convertLegacyDataProvider(() =>
+            Promise.resolve({ data: null })
+        );
         const { dispatch } = renderWithRedux(
-            <EditController {...defaultProps} undoable={false}>
-                {({ save }) => {
-                    saveCallback = save;
-                    return null;
-                }}
-            </EditController>
+            <DataProviderContext.Provider value={dataProvider}>
+                <EditController {...defaultProps} undoable={false}>
+                    {({ save }) => {
+                        saveCallback = save;
+                        return null;
+                    }}
+                </EditController>
+            </DataProviderContext.Provider>
         );
         act(() => saveCallback({ foo: 'bar' }));
         const call = dispatch.mock.calls.find(

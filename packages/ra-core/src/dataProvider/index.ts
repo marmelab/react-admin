@@ -1,3 +1,4 @@
+import convertLegacyDataProvider from './convertLegacyDataProvider';
 import DataProviderContext from './DataProviderContext';
 import HttpError from './HttpError';
 import * as fetchUtils from './fetch';
@@ -12,6 +13,8 @@ import withDataProvider from './withDataProvider';
 import useGetOne from './useGetOne';
 import useGetList from './useGetList';
 import useGetMany from './useGetMany';
+import useGetManyReference from './useGetManyReference';
+import useGetMatching from './useGetMatching';
 import useUpdate from './useUpdate';
 import useUpdateMany from './useUpdateMany';
 import useCreate from './useCreate';
@@ -19,9 +22,10 @@ import useDelete from './useDelete';
 import useDeleteMany from './useDeleteMany';
 
 export {
+    convertLegacyDataProvider,
     DataProviderContext,
-    HttpError,
     fetchUtils,
+    HttpError,
     Mutation,
     Query,
     undoableEventEmitter,
@@ -31,6 +35,8 @@ export {
     useGetOne,
     useGetList,
     useGetMany,
+    useGetManyReference,
+    useGetMatching,
     useUpdate,
     useUpdateMany,
     useCreate,

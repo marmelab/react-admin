@@ -1,10 +1,8 @@
-import { CRUD_DELETE_MANY } from '../actions/dataActions/crudDeleteMany';
-import { DELETE_MANY } from '../dataFetchActions';
 import useMutation from './useMutation';
 import { Identifier } from '../types';
 
 /**
- * Get a callback to call the dataProvider with a DELETE_MANY verb, the result
+ * Get a callback to call the dataProvider.deleteMany() method, the result
  * of the call (the list of deleted record ids), and the loading state.
  *
  * The return value updates according to the request state:
@@ -30,9 +28,6 @@ import { Identifier } from '../types';
  * };
  */
 const useDeleteMany = (resource: string, ids: [Identifier], options?: any) =>
-    useMutation(
-        { type: DELETE_MANY, resource, payload: { ids } },
-        { ...options, action: CRUD_DELETE_MANY }
-    );
+    useMutation({ type: 'deleteMany', resource, payload: { ids } }, options);
 
 export default useDeleteMany;

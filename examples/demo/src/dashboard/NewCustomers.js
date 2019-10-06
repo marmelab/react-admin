@@ -10,7 +10,7 @@ import CustomerIcon from '@material-ui/icons/PersonAdd';
 import Divider from '@material-ui/core/Divider';
 import { makeStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
-import { useTranslate, useQueryWithStore, GET_LIST } from 'react-admin';
+import { useTranslate, useQueryWithStore } from 'react-admin';
 
 import CardIcon from './CardIcon';
 
@@ -48,7 +48,7 @@ const NewCustomers = () => {
     }, []);
 
     const { loaded, data: visitors } = useQueryWithStore({
-        type: GET_LIST,
+        type: 'getList',
         resource: 'customers',
         payload: {
             filter: {

@@ -32,7 +32,10 @@ describe('useSetLocale', () => {
         const { getByText } = renderWithRedux(
             <TranslationContext.Provider
                 value={{
-                    i18nProvider: () => '',
+                    i18nProvider: {
+                        translate: () => '',
+                        changeLocale: () => Promise.resolve(),
+                    },
                     locale: 'de',
                     setLocale,
                 }}

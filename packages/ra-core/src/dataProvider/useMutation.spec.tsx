@@ -10,6 +10,7 @@ import Mutation from './Mutation';
 import CoreAdmin from '../CoreAdmin';
 import Resource from '../Resource';
 import renderWithRedux from '../util/renderWithRedux';
+import { DataProviderContext } from '.';
 
 describe('useMutation', () => {
     afterEach(cleanup);
@@ -28,11 +29,21 @@ describe('useMutation', () => {
     });
 
     it('should dispatch a fetch action when the mutation callback is triggered', () => {
+        const dataProvider = {
+            mytype: jest.fn(() => Promise.resolve({ data: { foo: 'bar' } })),
+        };
+
         const myPayload = {};
         const { getByText, dispatch } = renderWithRedux(
-            <Mutation type="mytype" resource="myresource" payload={myPayload}>
-                {mutate => <button onClick={mutate}>Hello</button>}
-            </Mutation>
+            <DataProviderContext.Provider value={dataProvider}>
+                <Mutation
+                    type="mytype"
+                    resource="myresource"
+                    payload={myPayload}
+                >
+                    {mutate => <button onClick={mutate}>Hello</button>}
+                </Mutation>
+            </DataProviderContext.Provider>
         );
         fireEvent.click(getByText('Hello'));
         const action = dispatch.mock.calls[0][0];
@@ -42,15 +53,29 @@ describe('useMutation', () => {
     });
 
     it('should use callTimePayload and callTimeOptions', () => {
+        const dataProvider = {
+            mytype: jest.fn(() => Promise.resolve({ data: { foo: 'bar' } })),
+        };
+
         const myPayload = { foo: 1 };
         const { getByText, dispatch } = renderWithRedux(
-            <Mutation type="mytype" resource="myresource" payload={myPayload}>
-                {mutate => (
-                    <button onClick={e => mutate(e, { bar: 2 }, { baz: 1 })}>
-                        Hello
-                    </button>
-                )}
-            </Mutation>
+            <DataProviderContext.Provider value={dataProvider}>
+                <Mutation
+                    type="mytype"
+                    resource="myresource"
+                    payload={myPayload}
+                >
+                    {mutate => (
+                        <button
+                            onClick={e =>
+                                mutate({ payload: { bar: 2 } }, { baz: 1 })
+                            }
+                        >
+                            Hello
+                        </button>
+                    )}
+                </Mutation>
+            </DataProviderContext.Provider>
         );
         fireEvent.click(getByText('Hello'));
         const action = dispatch.mock.calls[0][0];
@@ -59,18 +84,28 @@ describe('useMutation', () => {
     });
 
     it('should update the loading state when the mutation callback is triggered', () => {
+        const dataProvider = {
+            mytype: jest.fn(() => Promise.resolve({ data: { foo: 'bar' } })),
+        };
+
         const myPayload = {};
         const { getByText } = renderWithRedux(
-            <Mutation type="mytype" resource="myresource" payload={myPayload}>
-                {(mutate, { loading }) => (
-                    <button
-                        className={loading ? 'loading' : 'idle'}
-                        onClick={mutate}
-                    >
-                        Hello
-                    </button>
-                )}
-            </Mutation>
+            <DataProviderContext.Provider value={dataProvider}>
+                <Mutation
+                    type="mytype"
+                    resource="myresource"
+                    payload={myPayload}
+                >
+                    {(mutate, { loading }) => (
+                        <button
+                            className={loading ? 'loading' : 'idle'}
+                            onClick={mutate}
+                        >
+                            Hello
+                        </button>
+                    )}
+                </Mutation>
+            </DataProviderContext.Provider>
         );
         expect(getByText('Hello').className).toEqual('idle');
         fireEvent.click(getByText('Hello'));
@@ -78,10 +113,10 @@ describe('useMutation', () => {
     });
 
     it('should update the data state after a success response', async () => {
-        const dataProvider = jest.fn();
-        dataProvider.mockImplementationOnce(() =>
-            Promise.resolve({ data: { foo: 'bar' } })
-        );
+        const dataProvider = {
+            mytype: jest.fn(() => Promise.resolve({ data: { foo: 'bar' } })),
+        };
+
         const Foo = () => (
             <Mutation type="mytype" resource="foo">
                 {(mutate, { data }) => (
@@ -104,10 +139,11 @@ describe('useMutation', () => {
     });
 
     it('should update the error state after an error response', async () => {
-        const dataProvider = jest.fn();
-        dataProvider.mockImplementationOnce(() =>
-            Promise.reject({ message: 'provider error' })
-        );
+        const dataProvider = {
+            mytype: jest.fn(() =>
+                Promise.reject({ message: 'provider error' })
+            ),
+        };
         const Foo = () => (
             <Mutation type="mytype" resource="foo">
                 {(mutate, { error }) => (

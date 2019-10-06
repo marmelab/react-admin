@@ -1,6 +1,5 @@
 import React, {
     Children,
-    useState,
     useEffect,
     cloneElement,
     createElement,
@@ -13,7 +12,7 @@ import { Route, Switch } from 'react-router-dom';
 
 import { useLogout, useGetPermissions, useAuthState } from './auth';
 import RoutesWithLayout from './RoutesWithLayout';
-import { useTimeout } from './util';
+import { useTimeout, useSafeSetState } from './util';
 import {
     AdminChildren,
     CustomRoutes,
@@ -27,7 +26,7 @@ import {
 
 const welcomeStyles: CSSProperties = {
     width: '50%',
-    margin: '40vh',
+    margin: '40vh 25vw',
     textAlign: 'center',
 };
 
@@ -46,7 +45,7 @@ const CoreAdminRouter: FunctionComponent<AdminRouterProps> = props => {
     const doLogout = useLogout();
     const { authenticated } = useAuthState();
     const oneSecondHasPassed = useTimeout(1000);
-    const [computedChildren, setComputedChildren] = useState<State>([]);
+    const [computedChildren, setComputedChildren] = useSafeSetState<State>([]);
     useEffect(() => {
         if (typeof props.children === 'function') {
             initializeResources();

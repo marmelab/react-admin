@@ -12,7 +12,7 @@ import { createMuiTheme, makeStyles } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
 import LockIcon from '@material-ui/icons/Lock';
 
-import { Notification, useTranslate, useLogin } from 'react-admin';
+import { Notification, useTranslate, useLogin, useNotify } from 'react-admin';
 
 import { lightTheme } from './themes';
 
@@ -74,16 +74,27 @@ const Login = ({ location }) => {
     const [loading, setLoading] = useState(false);
     const translate = useTranslate();
     const classes = useStyles();
-    const doLogin = useLogin();
+    const notify = useNotify();
+    const login = useLogin();
 
-    const login = auth => {
+    const handleSubmit = auth => {
         setLoading(true);
-        doLogin(auth, location.state ? location.state.nextPathname : '/').then(
-            () => setLoading(false)
-        );
+        login(auth, location.state ? location.state.nextPathname : '/')
+            .then(() => setLoading(false))
+            .catch(error => {
+                setLoading(false);
+                notify(
+                    typeof error === 'string'
+                        ? error
+                        : typeof error === 'undefined' || !error.message
+                        ? 'ra.auth.sign_in_error'
+                        : error.message,
+                    'warning'
+                );
+            });
     };
 
-    const validate = (values, props) => {
+    const validate = values => {
         const errors = {};
         if (!values.username) {
             errors.username = translate('ra.validation.required');
@@ -96,7 +107,7 @@ const Login = ({ location }) => {
 
     return (
         <Form
-            onSubmit={login}
+            onSubmit={handleSubmit}
             validate={validate}
             render={({ handleSubmit }) => (
                 <form onSubmit={handleSubmit} noValidate>

@@ -10,13 +10,14 @@ import { createHashHistory } from 'history';
 import { Switch, Route } from 'react-router-dom';
 import { ConnectedRouter } from 'connected-react-router';
 
-import AuthContext from './auth/AuthContext';
-import DataProviderContext from './dataProvider/DataProviderContext';
+import { AuthContext, convertLegacyAuthProvider } from './auth';
+import { DataProviderContext, convertLegacyDataProvider } from './dataProvider';
 import createAdminStore, { InitialState } from './createAdminStore';
 import TranslationProvider from './i18n/TranslationProvider';
 import CoreAdminRouter from './CoreAdminRouter';
 import {
     AuthProvider,
+    LegacyAuthProvider,
     I18nProvider,
     DataProvider,
     TitleComponent,
@@ -27,6 +28,7 @@ import {
     CatchAllComponent,
     CustomRoutes,
     DashboardComponent,
+    LegacyDataProvider,
 } from './types';
 
 export type ChildrenFunction = () => ComponentType[];
@@ -38,14 +40,14 @@ const DefaultLayout: FunctionComponent<LayoutProps> = ({ children }) => (
 export interface AdminProps {
     layout: LayoutComponent;
     appLayout?: LayoutComponent;
-    authProvider?: AuthProvider;
+    authProvider?: AuthProvider | LegacyAuthProvider;
     children?: AdminChildren;
     catchAll: CatchAllComponent;
     customSagas?: any[];
     customReducers?: object;
     customRoutes?: CustomRoutes;
     dashboard?: DashboardComponent;
-    dataProvider: DataProvider;
+    dataProvider: DataProvider | LegacyDataProvider;
     history: History;
     i18nProvider?: I18nProvider;
     initialState?: InitialState;
@@ -82,12 +84,22 @@ const CoreAdmin: FunctionComponent<AdminProps> = ({
 }) => {
     const reduxIsAlreadyInitialized = !!useContext(ReactReduxContext);
 
+    const finalDataProvider =
+        dataProvider instanceof Function
+            ? convertLegacyDataProvider(dataProvider)
+            : dataProvider;
+
     const renderCore = history => {
         const logout = authProvider ? createElement(logoutButton) : null;
 
         if (appLayout) {
             console.warn(
                 'You are using deprecated prop "appLayout", it was replaced by "layout", see https://github.com/marmelab/react-admin/issues/2918'
+            );
+        }
+        if (locale) {
+            console.warn(
+                'You are using deprecated prop "locale". You must now pass the initial locale to your i18nProvider'
             );
         }
         if (loginPage === true && process.env.NODE_ENV !== 'production') {
@@ -97,11 +109,8 @@ const CoreAdmin: FunctionComponent<AdminProps> = ({
         }
 
         return (
-            <DataProviderContext.Provider value={dataProvider}>
-                <TranslationProvider
-                    locale={locale}
-                    i18nProvider={i18nProvider}
-                >
+            <DataProviderContext.Provider value={finalDataProvider}>
+                <TranslationProvider i18nProvider={i18nProvider}>
                     <ConnectedRouter history={history}>
                         <Switch>
                             {loginPage !== false && loginPage !== true ? (
@@ -144,6 +153,10 @@ const CoreAdmin: FunctionComponent<AdminProps> = ({
     };
 
     let finalHistory = customHistory;
+    const finalAuthProvider =
+        authProvider instanceof Function
+            ? convertLegacyAuthProvider(authProvider)
+            : authProvider;
 
     if (reduxIsAlreadyInitialized) {
         if (!customHistory) {
@@ -153,7 +166,7 @@ React-admin uses this history for its own ConnectedRouter.`);
         }
 
         return (
-            <AuthContext.Provider value={authProvider}>
+            <AuthContext.Provider value={finalAuthProvider}>
                 {renderCore(customHistory)}
             </AuthContext.Provider>
         );
@@ -166,13 +179,13 @@ React-admin requires a valid dataProvider function to work.`);
         finalHistory = customHistory || createHashHistory();
 
         return (
-            <AuthContext.Provider value={authProvider}>
+            <AuthContext.Provider value={finalAuthProvider}>
                 <Provider
                     store={createAdminStore({
-                        authProvider,
+                        authProvider: finalAuthProvider,
                         customReducers,
                         customSagas,
-                        dataProvider,
+                        dataProvider: finalDataProvider,
                         initialState,
                         history: finalHistory,
                     })}

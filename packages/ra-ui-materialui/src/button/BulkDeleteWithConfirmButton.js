@@ -10,6 +10,7 @@ import {
     useRefresh,
     useNotify,
     useUnselectAll,
+    CRUD_DELETE_MANY,
 } from 'ra-core';
 
 import Confirm from '../layout/Confirm';
@@ -57,6 +58,7 @@ const BulkDeleteWithConfirmButton = ({
     const refresh = useRefresh();
     const translate = useTranslate();
     const [deleteMany, { loading }] = useDeleteMany(resource, selectedIds, {
+        action: CRUD_DELETE_MANY,
         onSuccess: () => {
             refresh();
             notify('ra.notification.deleted', 'info', {

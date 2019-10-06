@@ -85,6 +85,7 @@ import { createHashHistory } from 'history';
 import { Admin, Resource } from 'react-admin';
 import restProvider from 'ra-data-simple-rest';
 import defaultMessages from 'ra-language-english';
+import polyglotI18nProvider from 'ra_i18n_polyglot';
 
 import createAdminStore from './createAdminStore';
 import messages from './i18n';
@@ -95,15 +96,15 @@ import { PostList, PostCreate, PostEdit, PostShow } from './Post';
 import { CommentList, CommentEdit, CommentCreate } from './Comment';
 import { UserList, UserEdit, UserCreate } from './User';
 
-// side effects
-const authProvider = () => Promise.resolve();
+// dependency injection
 const dataProvider = restProvider('http://path.to.my.api/');
-const i18nProvider = locale => {
+const authProvider = () => Promise.resolve();
+const i18nProvider = polyglotI18nProvider(locale => {
     if (locale !== 'en') {
         return messages[locale];
     }
     return defaultMessages;
-};
+});
 const history = createHashHistory();
 
 const App = () => (
@@ -150,6 +151,7 @@ import { createHashHistory } from 'history';
 +import { AuthContext, DataProviderContext, TranslationProvider, Resource } from 'react-admin';
 import restProvider from 'ra-data-simple-rest';
 import defaultMessages from 'ra-language-english';
+import polyglotI18nProvider from 'ra_i18n_polyglot';
 +import { ThemeProvider } from '@material-ui/styles';
 +import AppBar from '@material-ui/core/AppBar';
 +import Toolbar from '@material-ui/core/Toolbar';
@@ -164,15 +166,15 @@ import { PostList, PostCreate, PostEdit, PostShow } from './Post';
 import { CommentList, CommentEdit, CommentCreate } from './Comment';
 import { UserList, UserEdit, UserCreate } from './User';
 
-// side effects
-const authProvider = () => Promise.resolve();
+// dependency injection
 const dataProvider = restProvider('http://path.to.my.api/');
-const i18nProvider = locale => {
+const authProvider = () => Promise.resolve();
+const i18nProvider = polyglotI18nProvider(locale => {
     if (locale !== 'en') {
         return messages[locale];
     }
     return defaultMessages;
-};
+});
 const history = createHashHistory();
 
 const App = () => (

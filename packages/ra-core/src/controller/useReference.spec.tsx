@@ -21,10 +21,11 @@ describe('useReference', () => {
     afterEach(cleanup);
 
     it('should fetch reference on mount', async () => {
-        const dataProvider = jest.fn();
-        dataProvider.mockImplementationOnce(() =>
-            Promise.resolve({ data: [{ id: 1, title: 'foo' }] })
-        );
+        const dataProvider = {
+            getMany: jest.fn(() =>
+                Promise.resolve({ data: [{ id: 1, title: 'foo' }] })
+            ),
+        };
         const { dispatch } = renderWithRedux(
             <DataProviderContext.Provider value={dataProvider}>
                 <UseReference {...defaultProps} />
@@ -36,10 +37,11 @@ describe('useReference', () => {
     });
 
     it('should not refetch reference on update', async () => {
-        const dataProvider = jest.fn();
-        dataProvider.mockImplementationOnce(() =>
-            Promise.resolve({ data: [{ id: 1, title: 'foo' }] })
-        );
+        const dataProvider = {
+            getMany: jest.fn(() =>
+                Promise.resolve({ data: [{ id: 1, title: 'foo' }] })
+            ),
+        };
         const { dispatch, rerender } = renderWithRedux(
             <DataProviderContext.Provider value={dataProvider}>
                 <UseReference {...defaultProps} />
@@ -56,10 +58,11 @@ describe('useReference', () => {
     });
 
     it('should refetch reference when id changes', async () => {
-        const dataProvider = jest.fn();
-        dataProvider.mockImplementation(() =>
-            Promise.resolve({ data: [{ id: 1, title: 'foo' }] })
-        );
+        const dataProvider = {
+            getMany: jest.fn(() =>
+                Promise.resolve({ data: [{ id: 1, title: 'foo' }] })
+            ),
+        };
         const { dispatch, rerender } = renderWithRedux(
             <DataProviderContext.Provider value={dataProvider}>
                 <UseReference {...defaultProps} />
@@ -76,10 +79,11 @@ describe('useReference', () => {
     });
 
     it('should refetch reference when reference prop changes', async () => {
-        const dataProvider = jest.fn();
-        dataProvider.mockImplementation(() =>
-            Promise.resolve({ data: [{ id: 1, title: 'foo' }] })
-        );
+        const dataProvider = {
+            getMany: jest.fn(() =>
+                Promise.resolve({ data: [{ id: 1, title: 'foo' }] })
+            ),
+        };
         const { dispatch, rerender } = renderWithRedux(
             <DataProviderContext.Provider value={dataProvider}>
                 <UseReference {...defaultProps} />
@@ -96,10 +100,11 @@ describe('useReference', () => {
     });
 
     it('it should not refetch reference when other props change change', async () => {
-        const dataProvider = jest.fn();
-        dataProvider.mockImplementation(() =>
-            Promise.resolve({ data: [{ id: 1, title: 'foo' }] })
-        );
+        const dataProvider = {
+            getMany: jest.fn(() =>
+                Promise.resolve({ data: [{ id: 1, title: 'foo' }] })
+            ),
+        };
         const { dispatch, rerender } = renderWithRedux(
             <DataProviderContext.Provider value={dataProvider}>
                 <UseReference {...defaultProps} />
@@ -117,10 +122,12 @@ describe('useReference', () => {
 
     it('should retrieve referenceRecord from redux state', () => {
         const hookValue = jest.fn();
-        const dataProvider = jest.fn();
-        dataProvider.mockImplementation(() =>
-            Promise.resolve({ data: [{ id: 1, title: 'foo' }] })
-        );
+        const dataProvider = {
+            getMany: jest.fn(() =>
+                Promise.resolve({ data: [{ id: 1, title: 'foo' }] })
+            ),
+        };
+
         renderWithRedux(
             <DataProviderContext.Provider value={dataProvider}>
                 <UseReference {...defaultProps} callback={hookValue} />
@@ -144,10 +151,11 @@ describe('useReference', () => {
 
     it('should set loading to true if no referenceRecord yet', () => {
         const hookValue = jest.fn();
-        const dataProvider = jest.fn();
-        dataProvider.mockImplementation(() =>
-            Promise.resolve({ data: [{ id: 1, title: 'foo' }] })
-        );
+        const dataProvider = {
+            getMany: jest.fn(() =>
+                Promise.resolve({ data: [{ id: 1, title: 'foo' }] })
+            ),
+        };
         renderWithRedux(
             <DataProviderContext.Provider value={dataProvider}>
                 <UseReference {...defaultProps} callback={hookValue} />

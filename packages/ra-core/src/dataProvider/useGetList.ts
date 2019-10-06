@@ -1,11 +1,9 @@
-import { useSelector, shallowEqual } from 'react-redux';
-import { CRUD_GET_LIST } from '../actions/dataActions/crudGetList';
-import { GET_LIST } from '../dataFetchActions';
 import { Pagination, Sort, ReduxState } from '../types';
 import useQueryWithStore from './useQueryWithStore';
 
 /**
- * Call the dataProvider with a GET_LIST verb and return the result as well as the loading state.
+ * Call the dataProvider.getList() method and return the resolved result
+ * as well as the loading state.
  *
  * The return value updates according to the request state:
  *
@@ -48,26 +46,37 @@ const useGetList = (
     filter: object,
     options?: any
 ) => {
-    const { data: ids, total, error, loading, loaded } = useQueryWithStore(
-        { type: GET_LIST, resource, payload: { pagination, sort, filter } },
-        { ...options, action: CRUD_GET_LIST },
+    if (options && options.action) {
+        throw new Error(
+            'useGetList() does not support custom action names. Use useQueryWithStore() and your own Redux selectors if you need a custom action name for a getList query'
+        );
+    }
+    const key = JSON.stringify({
+        type: 'GET_LIST',
+        resource: resource,
+        payload: { pagination, sort, filter },
+    });
+    const { data, total, error, loading, loaded } = useQueryWithStore(
+        { type: 'getList', resource, payload: { pagination, sort, filter } },
+        options,
         (state: ReduxState) =>
-            state.admin.resources[resource]
-                ? state.admin.resources[resource].list.ids
+            state.admin.customQueries[key]
+                ? state.admin.customQueries[key].data
                 : null,
         (state: ReduxState) =>
-            state.admin.resources[resource]
-                ? state.admin.resources[resource].list.total
+            state.admin.customQueries[key]
+                ? state.admin.customQueries[key].total
                 : null
     );
-    const data = useSelector(
-        (state: ReduxState) =>
-            state.admin.resources[resource]
-                ? state.admin.resources[resource].data
-                : null,
-        shallowEqual
-    );
-    return { data, ids, total, error, loading, loaded };
+    const ids = data ? data.map(record => record.id) : [];
+    const dataObject = data
+        ? data.reduce((acc, next) => {
+              acc[next.id] = next;
+              return acc;
+          }, {})
+        : {};
+
+    return { data: dataObject, ids, total, error, loading, loaded };
 };
 
 export default useGetList;

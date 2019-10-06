@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { GET_LIST, GET_MANY, useVersion, useDataProvider } from 'react-admin';
+import { useVersion, useDataProvider } from 'react-admin';
 import { useMediaQuery } from '@material-ui/core';
 
 import Welcome from './Welcome';
@@ -27,15 +27,11 @@ const Dashboard = () => {
     const fetchOrders = useCallback(async () => {
         const aMonthAgo = new Date();
         aMonthAgo.setDate(aMonthAgo.getDate() - 30);
-        const { data: recentOrders } = await dataProvider(
-            GET_LIST,
-            'commands',
-            {
-                filter: { date_gte: aMonthAgo.toISOString() },
-                sort: { field: 'date', order: 'DESC' },
-                pagination: { page: 1, perPage: 50 },
-            }
-        );
+        const { data: recentOrders } = await dataProvider.getList('commands', {
+            filter: { date_gte: aMonthAgo.toISOString() },
+            sort: { field: 'date', order: 'DESC' },
+            pagination: { page: 1, perPage: 50 },
+        });
         const aggregations = recentOrders
             .filter(order => order.status !== 'cancelled')
             .reduce(
@@ -66,7 +62,7 @@ const Dashboard = () => {
             nbNewOrders: aggregations.nbNewOrders,
             pendingOrders: aggregations.pendingOrders,
         }));
-        const { data: customers } = await dataProvider(GET_MANY, 'customers', {
+        const { data: customers } = await dataProvider.getMany('customers', {
             ids: aggregations.pendingOrders.map(order => order.customer_id),
         });
         setState(state => ({
@@ -79,7 +75,7 @@ const Dashboard = () => {
     }, [dataProvider]);
 
     const fetchReviews = useCallback(async () => {
-        const { data: reviews } = await dataProvider(GET_LIST, 'reviews', {
+        const { data: reviews } = await dataProvider.getList('reviews', {
             filter: { status: 'pending' },
             sort: { field: 'date', order: 'DESC' },
             pagination: { page: 1, perPage: 100 },
@@ -87,7 +83,7 @@ const Dashboard = () => {
         const nbPendingReviews = reviews.reduce(nb => ++nb, 0);
         const pendingReviews = reviews.slice(0, Math.min(10, reviews.length));
         setState(state => ({ ...state, pendingReviews, nbPendingReviews }));
-        const { data: customers } = await dataProvider(GET_MANY, 'customers', {
+        const { data: customers } = await dataProvider.getMany('customers', {
             ids: pendingReviews.map(review => review.customer_id),
         });
         setState(state => ({

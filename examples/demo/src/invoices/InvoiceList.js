@@ -32,7 +32,7 @@ const InvoiceList = props => (
             <ReferenceField
                 source="customer_id"
                 reference="customers"
-                linkType={false}
+                link={false}
                 label="resources.invoices.fields.address"
             >
                 <AddressField />

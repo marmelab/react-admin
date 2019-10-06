@@ -10,8 +10,11 @@ export interface TranslationContextProps {
 const TranslationContext = createContext<TranslationContextProps>({
     locale: 'en',
     setLocale: () => Promise.resolve(),
-    i18nProvider: (type, params: { key: string; options?: Object }) =>
-        params && params.key ? params.key : '',
+    i18nProvider: {
+        translate: x => x,
+        changeLocale: () => Promise.resolve(),
+        getLocale: () => 'en',
+    },
 });
 
 TranslationContext.displayName = 'TranslationContext';

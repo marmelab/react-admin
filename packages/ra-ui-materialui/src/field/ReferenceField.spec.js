@@ -57,10 +57,11 @@ describe('<ReferenceField />', () => {
         });
 
         it('should not display a loader if the dataProvider query completes', async () => {
-            const dataProvider = jest.fn();
-            dataProvider.mockReturnValueOnce(
-                Promise.resolve({ data: [{ id: 123, title: 'foo' }] })
-            );
+            const dataProvider = {
+                getMany: jest.fn(() =>
+                    Promise.resolve({ data: [{ id: 123, title: 'foo' }] })
+                ),
+            };
             const { queryByRole, container } = renderWithRedux(
                 <DataProviderContext.Provider value={dataProvider}>
                     <MemoryRouter>
@@ -90,8 +91,9 @@ describe('<ReferenceField />', () => {
         });
 
         it('should not display a loader if the dataProvider query completes without finding the reference', async () => {
-            const dataProvider = jest.fn();
-            dataProvider.mockReturnValueOnce(Promise.resolve({ data: [] }));
+            const dataProvider = {
+                getMany: jest.fn(() => Promise.resolve({ data: [] })),
+            };
             const { queryByRole, container } = renderWithRedux(
                 <DataProviderContext.Provider value={dataProvider}>
                     <ReferenceField
@@ -112,10 +114,9 @@ describe('<ReferenceField />', () => {
         });
 
         it('should not display a loader if the dataProvider query fails', async () => {
-            const dataProvider = jest.fn();
-            dataProvider.mockImplementationOnce(() =>
-                Promise.reject(new Error())
-            );
+            const dataProvider = {
+                getMany: jest.fn(() => Promise.reject(new Error())),
+            };
             const { queryByRole, container } = renderWithRedux(
                 <DataProviderContext.Provider value={dataProvider}>
                     <ReferenceField
@@ -166,10 +167,11 @@ describe('<ReferenceField />', () => {
     });
 
     it('should call the dataProvider for the related record', async () => {
-        const dataProvider = jest.fn();
-        dataProvider.mockImplementationOnce(() =>
-            Promise.resolve({ data: [{ id: 123, title: 'foo' }] })
-        );
+        const dataProvider = {
+            getMany: jest.fn(() =>
+                Promise.resolve({ data: [{ id: 123, title: 'foo' }] })
+            ),
+        };
         const { dispatch } = renderWithRedux(
             <DataProviderContext.Provider value={dataProvider}>
                 <MemoryRouter>
@@ -192,8 +194,9 @@ describe('<ReferenceField />', () => {
     });
 
     it('should display an error icon if the dataProvider call fails', async () => {
-        const dataProvider = jest.fn();
-        dataProvider.mockImplementationOnce(() => Promise.reject('boo'));
+        const dataProvider = {
+            getMany: jest.fn(() => Promise.reject('boo')),
+        };
         const { getByRole } = renderWithRedux(
             <DataProviderContext.Provider value={dataProvider}>
                 <ReferenceField

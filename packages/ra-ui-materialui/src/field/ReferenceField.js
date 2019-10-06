@@ -81,7 +81,7 @@ const ReferenceField = ({ children, record, source, ...props }) => {
 
 ReferenceField.propTypes = {
     addLabel: PropTypes.bool,
-    basePath: PropTypes.string.isRequired,
+    basePath: PropTypes.string,
     children: PropTypes.element.isRequired,
     classes: PropTypes.object,
     className: PropTypes.string,

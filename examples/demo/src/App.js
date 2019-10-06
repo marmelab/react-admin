@@ -28,12 +28,12 @@ const i18nProvider = polyglotI18nProvider(locale => {
 
     // Always fallback on english
     return englishMessages;
-});
+}, 'en');
 
 class App extends Component {
     state = { dataProvider: null };
 
-    async componentWillMount() {
+    async componentDidMount() {
         this.restoreFetch = await fakeServerFactory(
             process.env.REACT_APP_DATA_PROVIDER
         );
@@ -70,7 +70,6 @@ class App extends Component {
                 dashboard={Dashboard}
                 loginPage={Login}
                 layout={Layout}
-                locale="en"
                 i18nProvider={i18nProvider}
             >
                 <Resource name="customers" {...visitors} />

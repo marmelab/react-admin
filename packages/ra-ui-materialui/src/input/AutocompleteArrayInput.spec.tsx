@@ -400,6 +400,10 @@ describe('<AutocompleteArrayInput />', () => {
         });
 
         it('should allow customized rendering of suggesting item', () => {
+            const SuggestionItem = ({ record }: { record?: any }) => (
+                <div aria-label={record.name} />
+            );
+
             const { getByLabelText } = render(
                 <Form
                     onSubmit={jest.fn()}
@@ -410,23 +414,8 @@ describe('<AutocompleteArrayInput />', () => {
                                 { id: 't', name: 'Technical' },
                                 { id: 'p', name: 'Programming' },
                             ]}
-                            suggestionComponent={React.forwardRef(
-                                (
-                                    {
-                                        suggestion,
-                                        query,
-                                        isHighlighted,
-                                        ...props
-                                    },
-                                    ref
-                                ) => (
-                                    <div
-                                        {...props}
-                                        ref={ref}
-                                        aria-label={suggestion.name}
-                                    />
-                                )
-                            )}
+                            optionText={<SuggestionItem />}
+                            matchSuggestion={(filter, choice) => true}
                         />
                     )}
                 />

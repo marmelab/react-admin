@@ -22,7 +22,6 @@ import {
     USER_LOGOUT,
 } from '../actions/authActions';
 import { FETCH_ERROR } from '../actions/fetchActions';
-import { AUTH_LOGIN, AUTH_CHECK, AUTH_ERROR, AUTH_LOGOUT } from '../auth';
 import { clearState } from '../actions/clearActions';
 
 export default (authProvider?: AuthProvider) => {
@@ -58,7 +57,7 @@ export const handleLogin = (authProvider: AuthProvider) =>
         const { payload, meta } = action;
         try {
             yield put({ type: USER_LOGIN_LOADING });
-            const authPayload = yield call(authProvider, AUTH_LOGIN, payload);
+            const authPayload = yield call([authProvider, 'login'], payload);
             yield put({
                 type: USER_LOGIN_SUCCESS,
                 payload: authPayload,
@@ -81,9 +80,9 @@ export const handleCheck = (authProvider: AuthProvider) =>
     function*(action) {
         const { payload, meta } = action;
         try {
-            yield call(authProvider, AUTH_CHECK, payload);
+            yield call([authProvider, 'checkAuth'], payload);
         } catch (error) {
-            const redirectTo = yield call(authProvider, AUTH_LOGOUT);
+            const redirectTo = yield call([authProvider, 'logout'], undefined);
             yield put(
                 replace({
                     pathname:
@@ -105,7 +104,7 @@ export const handleCheck = (authProvider: AuthProvider) =>
 export const handleLogout = (authProvider: AuthProvider) =>
     function*(action) {
         const { payload } = action;
-        const redirectTo = yield call(authProvider, AUTH_LOGOUT);
+        const redirectTo = yield call([authProvider, 'logout'], undefined);
         yield put(
             push((payload && payload.redirectTo) || redirectTo || '/login')
         );
@@ -116,10 +115,10 @@ export const handleFetchError = (authProvider: AuthProvider) =>
     function*(action) {
         const { error } = action;
         try {
-            yield call(authProvider, AUTH_ERROR, error);
+            yield call([authProvider, 'checkError'], error);
         } catch (e) {
             const nextPathname = yield select(currentPathnameSelector);
-            const redirectTo = yield call(authProvider, AUTH_LOGOUT);
+            const redirectTo = yield call([authProvider, 'logout'], undefined);
             yield put(
                 push({
                     pathname: redirectTo || '/login',

@@ -1,6 +1,6 @@
 {
     "name": "ra-input-rich-text",
-    "version": "3.0.0-alpha.4",
+    "version": "3.0.0-beta.0",
     "description": "<RichTextInput> component for react-admin, useful for editing HTML code in admin GUIs.",
     "main": "lib/index.js",
     "module": "esm/index.js",
@@ -41,8 +41,8 @@
     },
     "peerDependencies": {
         "ra-core": "^3.0.0-alpha.0",
-        "react": "^16.8.0",
-        "react-dom": "^16.8.0"
+        "react": "^16.9.0",
+        "react-dom": "^16.9.0"
     },
     "dependencies": {
         "lodash": "~4.17.5",

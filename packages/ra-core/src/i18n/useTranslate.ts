@@ -1,7 +1,7 @@
 import { useContext, useCallback } from 'react';
 
 import { TranslationContext } from './TranslationContext';
-import { I18N_TRANSLATE, Translate } from '../types';
+import { Translate } from '../types';
 
 /**
  * Translate a string using the current locale and the translations from the i18nProvider
@@ -26,7 +26,7 @@ const useTranslate = (): Translate => {
     const { i18nProvider, locale } = useContext(TranslationContext);
     const translate = useCallback(
         (key: string, options?: any) =>
-            i18nProvider(I18N_TRANSLATE, { key, options }) as string,
+            i18nProvider.translate(key, options) as string,
         // update the hook each time the locale changes
         [i18nProvider, locale] // eslint-disable-line react-hooks/exhaustive-deps
     );

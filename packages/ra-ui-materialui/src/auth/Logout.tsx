@@ -17,9 +17,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     menuItem: {
         color: theme.palette.text.secondary,
     },
-    iconPaddingStyle: {
-        paddingRight: theme.spacing(1),
-    },
+    icon: { minWidth: theme.spacing(5) },
 }));
 
 /**
@@ -46,7 +44,7 @@ const LogoutWithRef: FunctionComponent<
             ref={ref}
             {...rest}
         >
-            <ListItemIcon>
+            <ListItemIcon className={classes.icon}>
                 <ExitIcon />
             </ListItemIcon>
             {translate('ra.auth.logout')}

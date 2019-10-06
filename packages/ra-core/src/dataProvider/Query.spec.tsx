@@ -7,7 +7,6 @@ import {
     waitForDomChange,
 } from '@testing-library/react';
 import expect from 'expect';
-import { push } from 'connected-react-router';
 
 import Query from './Query';
 import CoreAdmin from '../CoreAdmin';
@@ -17,13 +16,14 @@ import TestContext from '../util/TestContext';
 import DataProviderContext from './DataProviderContext';
 import { showNotification, refreshView, setListSelectedIds } from '../actions';
 import { useNotify } from '../sideEffect';
+import { History } from 'history';
 
 describe('Query', () => {
     afterEach(cleanup);
 
     it('should render its child', () => {
         const { getByTestId } = renderWithRedux(
-            <Query type="foo" resource="bar">
+            <Query type="getList" resource="bar">
                 {() => <div data-testid="test">Hello</div>}
             </Query>
         );
@@ -35,7 +35,7 @@ describe('Query', () => {
         const myPayload = {};
         act(() => {
             const result = renderWithRedux(
-                <Query type="mytype" resource="myresource" payload={myPayload}>
+                <Query type="getList" resource="myresource" payload={myPayload}>
                     {() => <div>Hello</div>}
                 </Query>
             );
@@ -52,7 +52,7 @@ describe('Query', () => {
     it('should set the loading state to loading when mounting', () => {
         const myPayload = {};
         const { getByText } = renderWithRedux(
-            <Query type="mytype" resource="myresource" payload={myPayload}>
+            <Query type="getList" resource="myresource" payload={myPayload}>
                 {({ loading }) => (
                     <div className={loading ? 'loading' : 'idle'}>Hello</div>
                 )}
@@ -62,10 +62,9 @@ describe('Query', () => {
     });
 
     it('should update the data state after a success response', async () => {
-        const dataProvider = jest.fn();
-        dataProvider.mockImplementationOnce(() =>
-            Promise.resolve({ data: { foo: 'bar' } })
-        );
+        const dataProvider = {
+            mytype: jest.fn(() => Promise.resolve({ data: { foo: 'bar' } })),
+        };
         const Foo = () => (
             <Query type="mytype" resource="foo">
                 {({ loading, data }) => (
@@ -97,10 +96,11 @@ describe('Query', () => {
     });
 
     it('should return the total prop if available', async () => {
-        const dataProvider = jest.fn();
-        dataProvider.mockImplementationOnce(() =>
-            Promise.resolve({ data: [{ foo: 'bar' }], total: 42 })
-        );
+        const dataProvider = {
+            mytype: jest.fn(() =>
+                Promise.resolve({ data: { foo: 'bar' }, total: 42 })
+            ),
+        };
 
         const Foo = () => (
             <Query type="mytype" resource="foo">
@@ -133,12 +133,13 @@ describe('Query', () => {
     });
 
     it('should update the error state after an error response', async () => {
-        const dataProvider = jest.fn();
-        dataProvider.mockImplementationOnce(() =>
-            Promise.reject({ message: 'provider error' })
-        );
+        const dataProvider = {
+            getList: jest.fn(() =>
+                Promise.reject({ message: 'provider error' })
+            ),
+        };
         const Foo = () => (
-            <Query type="mytype" resource="foo">
+            <Query type="getList" resource="foo">
                 {({ loading, error }) => (
                     <div
                         data-testid="test"
@@ -176,7 +177,7 @@ describe('Query', () => {
                     dispatchSpy = jest.spyOn(store, 'dispatch');
                     return (
                         <Query
-                            type="mytype"
+                            type="getList"
                             resource="myresource"
                             payload={myPayload}
                         >
@@ -193,7 +194,7 @@ describe('Query', () => {
                 <TestContext>
                     {() => (
                         <Query
-                            type="mytype"
+                            type="getList"
                             resource="myresource"
                             payload={mySecondPayload}
                         >
@@ -223,7 +224,7 @@ describe('Query', () => {
                     };
                     return (
                         <Query
-                            type="mytype"
+                            type="getList"
                             resource="myresource"
                             payload={myPayload}
                         >
@@ -244,7 +245,7 @@ describe('Query', () => {
                 <TestContext>
                     {() => (
                         <Query
-                            type="mytype"
+                            type="getList"
                             resource="myresource"
                             payload={myPayload}
                         >
@@ -260,21 +261,25 @@ describe('Query', () => {
     it('supports declarative onSuccess side effects', async () => {
         expect.assertions(4);
         let dispatchSpy;
-        const dataProvider = jest.fn();
-        dataProvider.mockImplementationOnce(() =>
-            Promise.resolve({ data: [{ id: 1, foo: 'bar' }], total: 42 })
-        );
+        let historyForAssertions: History;
+
+        const dataProvider = {
+            getList: jest.fn(() =>
+                Promise.resolve({ data: [{ id: 1, foo: 'bar' }], total: 42 })
+            ),
+        };
 
         let getByTestId;
         act(() => {
             const res = render(
                 <DataProviderContext.Provider value={dataProvider}>
                     <TestContext>
-                        {({ store }) => {
+                        {({ store, history }) => {
                             dispatchSpy = jest.spyOn(store, 'dispatch');
+                            historyForAssertions = history;
                             return (
                                 <Query
-                                    type="GET_LIST"
+                                    type="getList"
                                     resource="foo"
                                     options={{
                                         onSuccess: {
@@ -316,23 +321,24 @@ describe('Query', () => {
                 undoable: false,
             })
         );
-        expect(dispatchSpy).toHaveBeenCalledWith(push('/a_path'));
+        expect(historyForAssertions.location.pathname).toEqual('/a_path');
         expect(dispatchSpy).toHaveBeenCalledWith(refreshView());
         expect(dispatchSpy).toHaveBeenCalledWith(setListSelectedIds('foo', []));
     });
 
     it('supports onSuccess function for side effects', async () => {
         let dispatchSpy;
-        const dataProvider = jest.fn();
-        dataProvider.mockImplementationOnce(() =>
-            Promise.resolve({ data: [{ id: 1, foo: 'bar' }], total: 42 })
-        );
+        const dataProvider = {
+            getList: jest.fn(() =>
+                Promise.resolve({ data: [{ id: 1, foo: 'bar' }], total: 42 })
+            ),
+        };
 
         const Foo = () => {
             const notify = useNotify();
             return (
                 <Query
-                    type="GET_LIST"
+                    type="getList"
                     resource="foo"
                     options={{
                         onSuccess: () => {
@@ -379,21 +385,25 @@ describe('Query', () => {
 
     it('supports declarative onFailure side effects', async () => {
         let dispatchSpy;
-        const dataProvider = jest.fn();
-        dataProvider.mockImplementationOnce(() =>
-            Promise.reject({ message: 'provider error' })
-        );
+        let historyForAssertions: History;
+
+        const dataProvider = {
+            getList: jest.fn(() =>
+                Promise.reject({ message: 'provider error' })
+            ),
+        };
 
         let getByTestId;
         act(() => {
             const res = render(
                 <DataProviderContext.Provider value={dataProvider}>
                     <TestContext>
-                        {({ store }) => {
+                        {({ store, history }) => {
+                            historyForAssertions = history;
                             dispatchSpy = jest.spyOn(store, 'dispatch');
                             return (
                                 <Query
-                                    type="GET_LIST"
+                                    type="getList"
                                     resource="foo"
                                     options={{
                                         onFailure: {
@@ -435,23 +445,24 @@ describe('Query', () => {
                 undoable: false,
             })
         );
-        expect(dispatchSpy).toHaveBeenCalledWith(push('/a_path'));
+        expect(historyForAssertions.location.pathname).toEqual('/a_path');
         expect(dispatchSpy).toHaveBeenCalledWith(refreshView());
         expect(dispatchSpy).toHaveBeenCalledWith(setListSelectedIds('foo', []));
     });
 
     it('supports onFailure function for side effects', async () => {
         let dispatchSpy;
-        const dataProvider = jest.fn();
-        dataProvider.mockImplementationOnce(() =>
-            Promise.reject({ message: 'provider error' })
-        );
+        const dataProvider = {
+            getList: jest.fn(() =>
+                Promise.reject({ message: 'provider error' })
+            ),
+        };
 
         const Foo = () => {
             const notify = useNotify();
             return (
                 <Query
-                    type="GET_LIST"
+                    type="getList"
                     resource="foo"
                     options={{
                         onFailure: () => {

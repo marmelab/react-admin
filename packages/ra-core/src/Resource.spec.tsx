@@ -79,10 +79,14 @@ describe('<Resource>', () => {
     });
     it('injects permissions to the resource routes', async () => {
         const history = createMemoryHistory();
-        const authProvider = type =>
-            type === 'AUTH_GET_PERMISSIONS'
-                ? Promise.resolve('admin')
-                : Promise.resolve();
+        const authProvider = {
+            login: jest.fn().mockResolvedValue(''),
+            logout: jest.fn().mockResolvedValue(''),
+            checkAuth: jest.fn().mockResolvedValue(''),
+            checkError: jest.fn().mockResolvedValue(''),
+            getPermissions: jest.fn().mockResolvedValue('admin'),
+        };
+
         const { getByText } = renderWithRedux(
             <AuthContext.Provider value={authProvider}>
                 <Router history={history}>
