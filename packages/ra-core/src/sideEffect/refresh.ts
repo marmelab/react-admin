@@ -4,7 +4,7 @@ import { refreshView } from '../actions/uiActions';
 export type RefreshSideEffect = boolean;
 
 /**
- * Redirection Side Effects
+ * Refresh Side Effects
  */
 function* handleRefresh() {
     yield put(refreshView());
