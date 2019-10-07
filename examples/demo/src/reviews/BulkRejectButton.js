@@ -7,6 +7,7 @@ import {
     useNotify,
     useRedirect,
     useUnselectAll,
+    CRUD_UPDATE_MANY,
 } from 'react-admin';
 
 const BulkRejectButton = ({ selectedIds }) => {
@@ -19,6 +20,7 @@ const BulkRejectButton = ({ selectedIds }) => {
         selectedIds,
         { status: 'rejected' },
         {
+            action: CRUD_UPDATE_MANY,
             undoable: true,
             onSuccess: () => {
                 notify(

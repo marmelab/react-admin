@@ -527,7 +527,7 @@ You can also use a custom `link` function to get a custom path for the children.
 </ReferenceField>
 ```
 
-**Tip**: React-admin uses `CRUD_GET_ONE_REFERENCE` action to accumulate and deduplicate the ids of the referenced records to make *one* `GET_MANY` call for the entire list, instead of n `GET_ONE` calls. So for instance, if the API returns the following list of comments:
+**Tip**: React-admin accumulates and deduplicates the ids of the referenced records to make *one* `GET_MANY` call for the entire list, instead of n `GET_ONE` calls. So for instance, if the API returns the following list of comments:
 
 ```jsx
 [

@@ -1,11 +1,13 @@
-import React, { Component } from 'react';
-import { createStore } from 'redux';
+import React, { Component, ReactNode } from 'react';
+import { createStore, Store } from 'redux';
 import { Provider } from 'react-redux';
-import TranslationProvider from '../i18n/TranslationProvider';
 import merge from 'lodash/merge';
-import { createMemoryHistory } from 'history';
+import { createMemoryHistory, History } from 'history';
+import { Router } from 'react-router';
 
 import createAdminStore from '../createAdminStore';
+import { convertLegacyDataProvider } from '../dataProvider';
+import { ReduxState } from '../types';
 
 export const defaultStore = {
     admin: {
@@ -13,12 +15,20 @@ export const defaultStore = {
         references: { possibleValues: {} },
         ui: { viewVersion: 1 },
     },
-    i18n: { locale: 'en', messages: {} },
 };
+
+type ChildrenFunction = ({
+    store,
+    history,
+}: {
+    store: Store<ReduxState>;
+    history: History;
+}) => ReactNode;
 
 interface Props {
     initialState?: object;
     enableReducers?: boolean;
+    children: ReactNode | ChildrenFunction;
 }
 
 const dataProviderDefaultResponse = { data: null };
@@ -49,16 +59,19 @@ const dataProviderDefaultResponse = { data: null };
  */
 class TestContext extends Component<Props> {
     storeWithDefault = null;
+    history: History = null;
 
     constructor(props) {
         super(props);
+        this.history = props.history || createMemoryHistory();
         const { initialState = {}, enableReducers = false } = props;
 
         this.storeWithDefault = enableReducers
             ? createAdminStore({
                   initialState: merge({}, defaultStore, initialState),
-                  dataProvider: () =>
-                      Promise.resolve(dataProviderDefaultResponse),
+                  dataProvider: convertLegacyDataProvider(() =>
+                      Promise.resolve(dataProviderDefaultResponse)
+                  ),
                   history: createMemoryHistory(),
               })
             : createStore(() => merge({}, defaultStore, initialState));
@@ -67,16 +80,17 @@ class TestContext extends Component<Props> {
     renderChildren = () => {
         const { children } = this.props;
         return typeof children === 'function'
-            ? children({ store: this.storeWithDefault })
+            ? (children as ChildrenFunction)({
+                  store: this.storeWithDefault,
+                  history: this.history,
+              })
             : children;
     };
 
     render() {
         return (
             <Provider store={this.storeWithDefault}>
-                <TranslationProvider>
-                    {this.renderChildren()}
-                </TranslationProvider>
+                <Router history={this.history}>{this.renderChildren()}</Router>
             </Provider>
         );
     }

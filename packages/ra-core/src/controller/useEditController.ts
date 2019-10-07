@@ -12,6 +12,7 @@ import {
 } from '../sideEffect';
 import { useGetOne, useUpdate } from '../dataProvider';
 import { useTranslate } from '../i18n';
+import { CRUD_GET_ONE, CRUD_UPDATE } from '../actions';
 
 export interface EditProps {
     basePath: string;
@@ -65,6 +66,7 @@ const useEditController = (props: EditProps): EditControllerProps => {
     const version = useVersion();
     const { data: record, loading, loaded } = useGetOne(resource, id, {
         version, // used to force reload
+        action: CRUD_GET_ONE,
         onFailure: () => {
             notify('ra.notification.item_doesnt_exist', 'warning');
             redirect('list', basePath);
@@ -92,9 +94,9 @@ const useEditController = (props: EditProps): EditControllerProps => {
     const save = useCallback(
         (data: Partial<Record>, redirectTo = 'list') =>
             update(
-                null,
-                { data },
+                { payload: { data } },
                 {
+                    action: CRUD_UPDATE,
                     onSuccess: () => {
                         notify(
                             successMessage || 'ra.notification.updated',

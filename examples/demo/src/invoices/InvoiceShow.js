@@ -43,7 +43,7 @@ const InvoiceShow = props => {
                             source="customer_id"
                             basePath="/invoices"
                             record={record}
-                            linkType={false}
+                            link={false}
                         >
                             <CustomerField />
                         </ReferenceField>
@@ -70,7 +70,7 @@ const InvoiceShow = props => {
                             source="command_id"
                             basePath="/invoices"
                             record={record}
-                            linkType={false}
+                            link={false}
                         >
                             <TextField
                                 source="reference"
@@ -88,7 +88,7 @@ const InvoiceShow = props => {
                         source="command_id"
                         basePath="/invoices"
                         record={record}
-                        linkType={false}
+                        link={false}
                     >
                         <Basket />
                     </ReferenceField>

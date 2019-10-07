@@ -7,7 +7,6 @@ import { History } from 'history';
 import { AuthProvider, DataProvider, I18nProvider } from './types';
 import createAppReducer from './reducer';
 import { adminSaga } from './sideEffect';
-import { defaultI18nProvider } from './i18n';
 import { CLEAR_STATE } from './actions/clearActions';
 
 interface Window {
@@ -33,33 +32,30 @@ export default ({
     customReducers = {},
     authProvider = null,
     customSagas = [],
-    i18nProvider = defaultI18nProvider,
     initialState,
-    locale = 'en',
 }: Params) => {
-    const messages = i18nProvider(locale);
-    const appReducer = createAppReducer(
-        customReducers,
-        locale,
-        messages,
-        history
-    );
+    const appReducer = createAppReducer(customReducers, history);
 
     const resettableAppReducer = (state, action) =>
         appReducer(
             action.type !== CLEAR_STATE
                 ? state
-                : typeof initialState === 'function'
-                ? initialState()
-                : initialState,
+                : // Erase data from the store but keep location, notifications, ui prefs, etc.
+                  // This allows e.g. to display a notification on logout
+                  {
+                      ...state,
+                      admin: {
+                          ...state.admin,
+                          resources: {},
+                          customQueries: {},
+                          references: { oneToMany: {}, possibleValues: {} },
+                      },
+                  },
             action
         );
     const saga = function* rootSaga() {
         yield all(
-            [
-                adminSaga(dataProvider, authProvider, i18nProvider),
-                ...customSagas,
-            ].map(fork)
+            [adminSaga(dataProvider, authProvider), ...customSagas].map(fork)
         );
     };
     const sagaMiddleware = createSagaMiddleware();

@@ -19,18 +19,14 @@ const UseGetMany = ({
 };
 
 describe('useGetMany', () => {
-    const defaultProps = {
-        ids: [1],
-        resource: 'posts',
-    };
-
     afterEach(cleanup);
 
     it('should call the dataProvider with a GET_MANY on mount', async () => {
-        const dataProvider = jest.fn();
-        dataProvider.mockReturnValueOnce(
-            Promise.resolve({ data: [{ id: 1, title: 'foo' }] })
-        );
+        const dataProvider = {
+            getMany: jest.fn(() =>
+                Promise.resolve({ data: [{ id: 1, title: 'foo' }] })
+            ),
+        };
         const { dispatch } = renderWithRedux(
             <DataProviderContext.Provider value={dataProvider}>
                 <UseGetMany resource="posts" ids={[1]} />
@@ -39,19 +35,19 @@ describe('useGetMany', () => {
         await new Promise(resolve => setTimeout(resolve));
         expect(dispatch).toBeCalledTimes(5);
         expect(dispatch.mock.calls[0][0].type).toBe('RA/CRUD_GET_MANY');
-        expect(dataProvider).toBeCalledTimes(1);
-        expect(dataProvider.mock.calls[0]).toEqual([
-            'GET_MANY',
+        expect(dataProvider.getMany).toBeCalledTimes(1);
+        expect(dataProvider.getMany.mock.calls[0]).toEqual([
             'posts',
             { ids: [1] },
         ]);
     });
 
     it('should aggregate multiple queries into a single call', async () => {
-        const dataProvider = jest.fn();
-        dataProvider.mockReturnValueOnce(
-            Promise.resolve({ data: [{ id: 1, title: 'foo' }] })
-        );
+        const dataProvider = {
+            getMany: jest.fn(() =>
+                Promise.resolve({ data: [{ id: 1, title: 'foo' }] })
+            ),
+        };
         const { dispatch } = renderWithRedux(
             <DataProviderContext.Provider value={dataProvider}>
                 <UseGetMany resource="posts" ids={[1]} />
@@ -61,19 +57,19 @@ describe('useGetMany', () => {
         );
         await new Promise(resolve => setTimeout(resolve));
         expect(dispatch).toBeCalledTimes(5);
-        expect(dataProvider).toBeCalledTimes(1);
-        expect(dataProvider.mock.calls[0]).toEqual([
-            'GET_MANY',
+        expect(dataProvider.getMany).toBeCalledTimes(1);
+        expect(dataProvider.getMany.mock.calls[0]).toEqual([
             'posts',
             { ids: [1, 2, 3, 4] },
         ]);
     });
 
     it('should deduplicate repeated ids', async () => {
-        const dataProvider = jest.fn();
-        dataProvider.mockReturnValueOnce(
-            Promise.resolve({ data: [{ id: 1, title: 'foo' }] })
-        );
+        const dataProvider = {
+            getMany: jest.fn(() =>
+                Promise.resolve({ data: [{ id: 1, title: 'foo' }] })
+            ),
+        };
         const { dispatch } = renderWithRedux(
             <DataProviderContext.Provider value={dataProvider}>
                 <UseGetMany resource="posts" ids={[1]} />
@@ -83,24 +79,26 @@ describe('useGetMany', () => {
         );
         await new Promise(resolve => setTimeout(resolve));
         expect(dispatch).toBeCalledTimes(5);
-        expect(dataProvider).toBeCalledTimes(1);
-        expect(dataProvider.mock.calls[0]).toEqual([
-            'GET_MANY',
+        expect(dataProvider.getMany).toBeCalledTimes(1);
+        expect(dataProvider.getMany.mock.calls[0]).toEqual([
             'posts',
             { ids: [1, 2, 3] },
         ]);
     });
 
     it('should not aggregate or deduplicate calls for different resources', async () => {
-        const dataProvider = jest.fn();
-        dataProvider
-            .mockReturnValueOnce(
-                Promise.resolve({ data: [{ id: 1 }, { id: 2 }, { id: 3 }] })
-            )
-            .mockReturnValueOnce(
-                Promise.resolve({ data: [{ id: 5 }, { id: 6 }, { id: 7 }] })
-            );
-        const { dispatch } = renderWithRedux(
+        const dataProvider = {
+            getMany: jest
+                .fn()
+                .mockReturnValueOnce(
+                    Promise.resolve({ data: [{ id: 1 }, { id: 2 }, { id: 3 }] })
+                )
+                .mockReturnValueOnce(
+                    Promise.resolve({ data: [{ id: 5 }, { id: 6 }, { id: 7 }] })
+                ),
+        };
+
+        renderWithRedux(
             <DataProviderContext.Provider value={dataProvider}>
                 <UseGetMany resource="posts" ids={[1, 2]} />
                 <UseGetMany resource="posts" ids={[2, 3]} />
@@ -109,24 +107,23 @@ describe('useGetMany', () => {
             </DataProviderContext.Provider>
         );
         await new Promise(resolve => setTimeout(resolve));
-        expect(dataProvider).toBeCalledTimes(2);
-        expect(dataProvider.mock.calls[0]).toEqual([
-            'GET_MANY',
+        expect(dataProvider.getMany).toBeCalledTimes(2);
+        expect(dataProvider.getMany.mock.calls[0]).toEqual([
             'posts',
             { ids: [1, 2, 3] },
         ]);
-        expect(dataProvider.mock.calls[1]).toEqual([
-            'GET_MANY',
+        expect(dataProvider.getMany.mock.calls[1]).toEqual([
             'comments',
             { ids: [5, 6, 7] },
         ]);
     });
 
     it('should not call the dataProvider on update', async () => {
-        const dataProvider = jest.fn();
-        dataProvider.mockReturnValueOnce(
-            Promise.resolve({ data: [{ id: 1, title: 'foo' }] })
-        );
+        const dataProvider = {
+            getMany: jest.fn(() =>
+                Promise.resolve({ data: [{ id: 1, title: 'foo' }] })
+            ),
+        };
         const { dispatch, rerender } = renderWithRedux(
             <DataProviderContext.Provider value={dataProvider}>
                 <UseGetMany resource="posts" ids={[1]} />
@@ -140,14 +137,15 @@ describe('useGetMany', () => {
         );
         await new Promise(resolve => setTimeout(resolve, 10));
         expect(dispatch).toBeCalledTimes(5);
-        expect(dataProvider).toBeCalledTimes(1);
+        expect(dataProvider.getMany).toBeCalledTimes(1);
     });
 
     it('should call the dataProvider on update when the resource changes', async () => {
-        const dataProvider = jest.fn();
-        dataProvider.mockReturnValue(
-            Promise.resolve({ data: [{ id: 1, title: 'foo' }] })
-        );
+        const dataProvider = {
+            getMany: jest.fn(() =>
+                Promise.resolve({ data: [{ id: 1, title: 'foo' }] })
+            ),
+        };
         const { dispatch, rerender } = renderWithRedux(
             <DataProviderContext.Provider value={dataProvider}>
                 <UseGetMany resource="posts" ids={[1]} />
@@ -161,7 +159,7 @@ describe('useGetMany', () => {
         );
         await new Promise(resolve => setTimeout(resolve));
         expect(dispatch).toBeCalledTimes(10);
-        expect(dataProvider).toBeCalledTimes(2);
+        expect(dataProvider.getMany).toBeCalledTimes(2);
     });
 
     it('should retrieve results from redux state on mount', () => {
@@ -186,12 +184,13 @@ describe('useGetMany', () => {
 
     it('should replace redux data with dataProvider data', async () => {
         const hookValue = jest.fn();
-        const dataProvider = jest.fn();
-        dataProvider.mockReturnValue(
-            Promise.resolve({
-                data: [{ id: 1, title: 'foo' }, { id: 2, title: 'bar' }],
-            })
-        );
+        const dataProvider = {
+            getMany: jest.fn(() =>
+                Promise.resolve({
+                    data: [{ id: 1, title: 'foo' }, { id: 2, title: 'bar' }],
+                })
+            ),
+        };
         renderWithRedux(
             <DataProviderContext.Provider value={dataProvider}>
                 <UseGetMany
@@ -219,12 +218,13 @@ describe('useGetMany', () => {
 
     it('should return loading state false once the dataProvider returns', async () => {
         const hookValue = jest.fn();
-        const dataProvider = jest.fn();
-        dataProvider.mockReturnValueOnce(
-            Promise.resolve({
-                data: [{ id: 1, title: 'foo' }, { id: 2, title: 'bar' }],
-            })
-        );
+        const dataProvider = {
+            getMany: jest.fn(() =>
+                Promise.resolve({
+                    data: [{ id: 1, title: 'foo' }, { id: 2, title: 'bar' }],
+                })
+            ),
+        };
         renderWithRedux(
             <DataProviderContext.Provider value={dataProvider}>
                 <UseGetMany
@@ -266,10 +266,9 @@ describe('useGetMany', () => {
 
     it('should set the error state when the dataProvider fails', async () => {
         const hookValue = jest.fn();
-        const dataProvider = jest.fn();
-        dataProvider.mockImplementationOnce(() =>
-            Promise.reject(new Error('failed'))
-        );
+        const dataProvider = {
+            getMany: jest.fn(() => Promise.reject(new Error('failed'))),
+        };
         renderWithRedux(
             <DataProviderContext.Provider value={dataProvider}>
                 <UseGetMany
@@ -289,18 +288,23 @@ describe('useGetMany', () => {
     it('should execute success side effects on success', async () => {
         const onSuccess1 = jest.fn();
         const onSuccess2 = jest.fn();
-        const dataProvider = jest.fn();
-        dataProvider
-            .mockReturnValueOnce(
-                Promise.resolve({
-                    data: [{ id: 1, title: 'foo' }, { id: 2, title: 'bar' }],
-                })
-            )
-            .mockReturnValueOnce(
-                Promise.resolve({
-                    data: [{ id: 3, foo: 1 }, { id: 4, foo: 2 }],
-                })
-            );
+        const dataProvider = {
+            getMany: jest
+                .fn()
+                .mockReturnValueOnce(
+                    Promise.resolve({
+                        data: [
+                            { id: 1, title: 'foo' },
+                            { id: 2, title: 'bar' },
+                        ],
+                    })
+                )
+                .mockReturnValueOnce(
+                    Promise.resolve({
+                        data: [{ id: 3, foo: 1 }, { id: 4, foo: 2 }],
+                    })
+                ),
+        };
         renderWithRedux(
             <DataProviderContext.Provider value={dataProvider}>
                 <UseGetMany
@@ -328,12 +332,13 @@ describe('useGetMany', () => {
 
     it('should execute success side effects once for each hook call', async () => {
         const onSuccess = jest.fn();
-        const dataProvider = jest.fn();
-        dataProvider.mockReturnValueOnce(
-            Promise.resolve({
-                data: [{ id: 1, title: 'foo' }, { id: 2, title: 'bar' }],
-            })
-        );
+        const dataProvider = {
+            getMany: jest.fn(() =>
+                Promise.resolve({
+                    data: [{ id: 1, title: 'foo' }, { id: 2, title: 'bar' }],
+                })
+            ),
+        };
         renderWithRedux(
             <DataProviderContext.Provider value={dataProvider}>
                 <UseGetMany
@@ -360,10 +365,9 @@ describe('useGetMany', () => {
 
     it('should execute failure side effects on failure', async () => {
         const onFailure = jest.fn();
-        const dataProvider = jest.fn();
-        dataProvider.mockImplementation(() =>
-            Promise.reject(new Error('failed'))
-        );
+        const dataProvider = {
+            getMany: jest.fn(() => Promise.reject(new Error('failed'))),
+        };
         renderWithRedux(
             <DataProviderContext.Provider value={dataProvider}>
                 <UseGetMany
@@ -380,10 +384,9 @@ describe('useGetMany', () => {
 
     it('should execute success side effects once for each hook call', async () => {
         const onFailure = jest.fn();
-        const dataProvider = jest.fn();
-        dataProvider.mockImplementation(() =>
-            Promise.reject(new Error('failed'))
-        );
+        const dataProvider = {
+            getMany: jest.fn(() => Promise.reject(new Error('failed'))),
+        };
         renderWithRedux(
             <DataProviderContext.Provider value={dataProvider}>
                 <UseGetMany

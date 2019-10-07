@@ -112,15 +112,17 @@ describe('<ArrayInput />', () => {
                 )}
             />
         );
-        expect(queryAllByLabelText('id')).toHaveLength(2);
-        expect(queryAllByLabelText('id').map(input => input.value)).toEqual([
-            '123',
-            '456',
-        ]);
-        expect(queryAllByLabelText('foo')).toHaveLength(2);
-        expect(queryAllByLabelText('foo').map(input => input.value)).toEqual([
-            'bar',
-            'baz',
-        ]);
+        expect(queryAllByLabelText('resources.bar.fields.id')).toHaveLength(2);
+        expect(
+            queryAllByLabelText('resources.bar.fields.id').map(
+                input => input.value
+            )
+        ).toEqual(['123', '456']);
+        expect(queryAllByLabelText('resources.bar.fields.foo')).toHaveLength(2);
+        expect(
+            queryAllByLabelText('resources.bar.fields.foo').map(
+                input => input.value
+            )
+        ).toEqual(['bar', 'baz']);
     });
 });

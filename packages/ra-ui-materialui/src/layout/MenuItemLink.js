@@ -1,4 +1,4 @@
-import React, { cloneElement, useCallback } from 'react';
+import React, { forwardRef, cloneElement, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { NavLink } from 'react-router-dom';
@@ -21,53 +21,61 @@ const useStyles = makeStyles(theme => ({
     icon: { minWidth: theme.spacing(5) },
 }));
 
-function MenuItemLink({
-    classes: classesOverride,
-    className,
-    primaryText,
-    leftIcon,
-    onClick,
-    sidebarIsOpen,
-    ...props
-}) {
-    const classes = useStyles({ classes: classesOverride });
-
-    const handleMenuTap = useCallback(
-        e => {
-            onClick && onClick(e);
+const MenuItemLink = forwardRef(
+    (
+        {
+            classes: classesOverride,
+            className,
+            primaryText,
+            leftIcon,
+            onClick,
+            sidebarIsOpen,
+            ...props
         },
-        [onClick]
-    );
+        ref
+    ) => {
+        const classes = useStyles({ classes: classesOverride });
 
-    const renderMenuItem = () => {
-        return (
-            <MenuItem
-                className={classnames(classes.root, className)}
-                activeClassName={classes.active}
-                component={NavLinkRef}
-                {...props}
-                onClick={handleMenuTap}
-            >
-                {leftIcon && (
-                    <ListItemIcon className={classes.icon}>
-                        {cloneElement(leftIcon, { titleAccess: primaryText })}
-                    </ListItemIcon>
-                )}
-                {primaryText}
-            </MenuItem>
+        const handleMenuTap = useCallback(
+            e => {
+                onClick && onClick(e);
+            },
+            [onClick]
         );
-    };
 
-    if (sidebarIsOpen) {
-        return renderMenuItem();
+        const renderMenuItem = () => {
+            return (
+                <MenuItem
+                    className={classnames(classes.root, className)}
+                    activeClassName={classes.active}
+                    component={NavLinkRef}
+                    ref={ref}
+                    {...props}
+                    onClick={handleMenuTap}
+                >
+                    {leftIcon && (
+                        <ListItemIcon className={classes.icon}>
+                            {cloneElement(leftIcon, {
+                                titleAccess: primaryText,
+                            })}
+                        </ListItemIcon>
+                    )}
+                    {primaryText}
+                </MenuItem>
+            );
+        };
+
+        if (sidebarIsOpen) {
+            return renderMenuItem();
+        }
+
+        return (
+            <Tooltip title={primaryText} placement="right">
+                {renderMenuItem()}
+            </Tooltip>
+        );
     }
-
-    return (
-        <Tooltip title={primaryText} placement="right">
-            {renderMenuItem()}
-        </Tooltip>
-    );
-}
+);
 
 MenuItemLink.propTypes = {
     classes: PropTypes.object,

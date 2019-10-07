@@ -1,6 +1,7 @@
-import { isValidElement, ReactElement, useMemo } from 'react';
+import { isValidElement, ReactElement, useEffect, useMemo } from 'react';
 import inflection from 'inflection';
 import { Location } from 'history';
+import { useSelector, shallowEqual } from 'react-redux';
 
 import { useCheckMinimumRequiredProps } from './checkMinimumRequiredProps';
 import useListParams from './useListParams';
@@ -8,10 +9,10 @@ import useRecordSelection from './useRecordSelection';
 import useVersion from './useVersion';
 import { useTranslate } from '../i18n';
 import { SORT_ASC } from '../reducer/admin/resource/list/queryReducer';
-import { ListParams } from '../actions/listActions';
+import { CRUD_GET_LIST, ListParams } from '../actions';
 import { useNotify } from '../sideEffect';
-import { Sort, RecordMap, Identifier } from '../types';
-import useGetList from '../dataProvider/useGetList';
+import { Sort, RecordMap, Identifier, ReduxState } from '../types';
+import useQueryWithStore from '../dataProvider/useQueryWithStore';
 
 export interface ListProps {
     // the props you can change
@@ -124,15 +125,30 @@ const useListController = (props: ListProps): ListControllerProps => {
 
     const [selectedIds, selectionModifiers] = useRecordSelection(resource);
 
-    const { data, ids, total, loading, loaded } = useGetList(
-        resource,
+    /**
+     * We don't use useGetList() here because we want the list of ids to be
+     * always available for optimistic rendering, and therefore we need a
+     * custom action (CRUD_GET_LIST), a custom reducer for ids and total
+     * (admin.resources.[resource].list.ids and admin.resources.[resource].list.total)
+     * and a custom selector for these reducers.
+     * Also we don't want that calls to useGetList() in userland change
+     * the list of ids in the main List view.
+     */
+    const { data: ids, total, loading, loaded } = useQueryWithStore(
         {
-            page: query.page,
-            perPage: query.perPage,
+            type: 'getList',
+            resource,
+            payload: {
+                pagination: {
+                    page: query.page,
+                    perPage: query.perPage,
+                },
+                sort: { field: query.sort, order: query.order },
+                filter: { ...query.filter, ...filter },
+            },
         },
-        { field: query.sort, order: query.order },
-        { ...query.filter, ...filter },
         {
+            action: CRUD_GET_LIST,
             version,
             onFailure: error =>
                 notify(
@@ -141,13 +157,33 @@ const useListController = (props: ListProps): ListControllerProps => {
                         : error.message || 'ra.notification.http_error',
                     'warning'
                 ),
-        }
+        },
+        (state: ReduxState) =>
+            state.admin.resources[resource]
+                ? state.admin.resources[resource].list.ids
+                : null,
+        (state: ReduxState) =>
+            state.admin.resources[resource]
+                ? state.admin.resources[resource].list.total
+                : null
+    );
+    const data = useSelector(
+        (state: ReduxState) =>
+            state.admin.resources[resource]
+                ? state.admin.resources[resource].data
+                : null,
+        shallowEqual
     );
 
-    if (!query.page && !(ids || []).length && query.page > 1 && total > 0) {
-        // query for a page that doesn't exist, check the previous page
-        queryModifiers.setPage(query.page - 1);
-    }
+    useEffect(() => {
+        if (
+            query.page <= 0 ||
+            (!loading && query.page > 1 && (ids || []).length === 0)
+        ) {
+            // query for a page that doesn't exist, set page to 1
+            queryModifiers.setPage(1);
+        }
+    }, [loading, query.page, ids, queryModifiers]);
 
     const currentSort = useMemo(
         () => ({

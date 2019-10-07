@@ -5,17 +5,16 @@ import { Router, Route } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
 
 import renderWithRedux from './util/renderWithRedux';
-import { CoreAdminRouter } from './CoreAdminRouter';
+import CoreAdminRouter from './CoreAdminRouter';
 import AuthContext from './auth/AuthContext';
 import Resource from './Resource';
 
 const Layout = ({ children }) => <div>Layout {children}</div>;
 
-describe('<AdminRouter>', () => {
+describe('<CoreAdminRouter>', () => {
     afterEach(cleanup);
 
     const defaultProps = {
-        userLogout: () => <span />,
         customRoutes: [],
     };
 
@@ -75,8 +74,16 @@ describe('<AdminRouter>', () => {
     describe('With resources returned from a function as children', () => {
         it('should render all resources with a registration intent', async () => {
             const history = createMemoryHistory();
+            const authProvider = {
+                login: jest.fn().mockResolvedValue(''),
+                logout: jest.fn().mockResolvedValue(''),
+                checkAuth: jest.fn().mockResolvedValue(''),
+                checkError: jest.fn().mockResolvedValue(''),
+                getPermissions: jest.fn().mockResolvedValue(''),
+            };
+
             const { getByText } = renderWithRedux(
-                <AuthContext.Provider value={() => Promise.resolve()}>
+                <AuthContext.Provider value={authProvider}>
                     <Router history={history}>
                         <CoreAdminRouter {...defaultProps} layout={Layout}>
                             {() => [

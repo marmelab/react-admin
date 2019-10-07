@@ -49,22 +49,20 @@ Here are all the props accepted by the component:
 
 ## `dataProvider`
 
-The only required prop, it must be a function returning a promise, with the following signature:
+The only required prop, it must be an object with the following methods returning a promise:
 
 ```jsx
-/**
- * Query a data provider and return a promise for a response
- *
- * @example
- * dataProvider(GET_ONE, 'posts', { id: 123 })
- *  => new Promise(resolve => resolve({ id: 123, title: "hello, world" }))
- *
- * @param {string} type Request type, e.g GET_LIST
- * @param {string} resource Resource name, e.g. "posts"
- * @param {Object} payload Request parameters. Depends on the action type
- * @returns {Promise} the Promise for a response
- */
-const dataProvider = (type, resource, params) => new Promise();
+const dataProvider = {
+    getList:    (resource, params) => Promise,
+    getOne:     (resource, params) => Promise,
+    getMany:    (resource, params) => Promise,
+    getManyReference: (resource, params) => Promise,
+    create:     (resource, params) => Promise,
+    update:     (resource, params) => Promise,
+    updateMany: (resource, params) => Promise,
+    delete:     (resource, params) => Promise,
+    deleteMany: (resource, params) => Promise,
+}
 ```
 
 The `dataProvider` is also the ideal place to add custom HTTP headers, authentication, etc. The [Data Providers Chapter](./DataProviders.md) of the documentation lists available data providers, and explains how to build your own.
@@ -438,15 +436,15 @@ export default Foo;
 
 ## `authProvider`
 
-The `authProvider` prop expect a function returning a Promise, to control the application authentication strategy:
+The `authProvider` prop expect an object with 5 methods, each returning a Promise, to control the authentication strategy:
 
 ```jsx
-import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR, AUTH_CHECK } from 'react-admin';
-
-const authProvider(type, params) {
-    // type can be any of AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR, and AUTH_CHECK
-    // ...
-    return Promise.resolve();
+const authProvider = {
+    login: params => Promise.resolve(),
+    logout: params => Promise.resolve(),
+    checkAuth: params => Promise.resolve(),
+    checkError: error => Promise.resolve(),
+    getPermissions: params => Promise.resolve(),
 };
 
 const App = () => (
@@ -546,11 +544,11 @@ const App = () => (
 
 ## Internationalization
 
-The `locale` and `i18nProvider` props let you translate the GUI. The [Translation Documentation](./Translation.md) details this process.
+The `i18nProvider` props let you translate the GUI. The [Translation Documentation](./Translation.md) details this process.
 
 ## Declaring resources at runtime
 
-You might want to dynamically define the resources when the app starts. The `<Admin>` component accepts a function as its child and this function can return a Promise. If you also defined an `authProvider`, the function will receive the result of a call to `authProvider` with the `AUTH_GET_PERMISSIONS` type (you can read more about this in the [Authorization](./Authorization.md) chapter).
+You might want to dynamically define the resources when the app starts. The `<Admin>` component accepts a function as its child and this function can return a Promise. If you also defined an `authProvider`, the child function will receive the result of a call to `authProvider.getPermissions()` (you can read more about this in the [Authorization](./Authorization.md) chapter).
 
 For instance, getting the resource from an API might look like:
 

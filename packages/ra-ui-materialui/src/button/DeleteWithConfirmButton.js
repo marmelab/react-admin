@@ -11,6 +11,7 @@ import {
     useRefresh,
     useNotify,
     useRedirect,
+    CRUD_DELETE,
 } from 'ra-core';
 
 import Confirm from '../layout/Confirm';
@@ -65,25 +66,27 @@ const DeleteWithConfirmButton = ({
     const refresh = useRefresh();
     const classes = useStyles({ classes: classesOverride });
 
-    // We don't pass the action payload (the record and its identifier) at
-    // declaration time to avoid errors for people using the button in a
-    // component which may not have the record loaded immediately (for exemple
-    // in the actions of an Edit component)
-    const [deleteOne, { loading }] = useDelete(resource, undefined, undefined, {
-        onSuccess: () => {
-            notify('ra.notification.deleted', 'info', { smart_count: 1 });
-            redirect(redirectTo, basePath);
-            refresh();
-        },
-        onFailure: error =>
-            notify(
-                typeof error === 'string'
-                    ? error
-                    : error.message || 'ra.notification.http_error',
-                'warning'
-            ),
-        undoable: false,
-    });
+    const [deleteOne, { loading }] = useDelete(
+        resource,
+        record && record.id,
+        record,
+        {
+            action: CRUD_DELETE,
+            onSuccess: () => {
+                notify('ra.notification.deleted', 'info', { smart_count: 1 });
+                redirect(redirectTo, basePath);
+                refresh();
+            },
+            onFailure: error =>
+                notify(
+                    typeof error === 'string'
+                        ? error
+                        : error.message || 'ra.notification.http_error',
+                    'warning'
+                ),
+            undoable: false,
+        }
+    );
 
     const handleClick = e => {
         setOpen(true);
@@ -97,12 +100,13 @@ const DeleteWithConfirmButton = ({
 
     const handleDelete = useCallback(
         event => {
-            deleteOne(event, { id: record.id, previousData: record });
+            event.stopPropagation();
+            deleteOne();
             if (typeof onClick === 'function') {
                 onClick();
             }
         },
-        [deleteOne, onClick, record]
+        [deleteOne, onClick]
     );
 
     return (

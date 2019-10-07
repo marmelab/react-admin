@@ -29,7 +29,11 @@ module.exports = {
         // required because of https://github.com/babel/babel/issues/7640
         new IgnoreNotFoundExportPlugin([
             'CallbackSideEffect',
+            'ChoicesProps',
+            'InputProps',
             'NotificationSideEffect',
+            'OptionText',
+            'OptionTextElement',
             'RedirectionSideEffect',
             'RefreshSideEffect',
         ]),
@@ -71,6 +75,14 @@ module.exports = {
                 '..',
                 'packages',
                 'ra-data-fakerest',
+                'src'
+            ),
+            'ra-i18n-polyglot': path.join(
+                __dirname,
+                '..',
+                '..',
+                'packages',
+                'ra-i18n-polyglot',
                 'src'
             ),
             'ra-input-rich-text': path.join(

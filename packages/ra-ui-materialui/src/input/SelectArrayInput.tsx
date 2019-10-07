@@ -1,6 +1,5 @@
 import React, { FunctionComponent, useCallback } from 'react';
 import PropTypes from 'prop-types';
-import get from 'lodash/get';
 import {
     makeStyles,
     Select,
@@ -13,9 +12,14 @@ import {
     Chip,
 } from '@material-ui/core';
 import classnames from 'classnames';
-import { FieldTitle, useInput, useTranslate, InputProps } from 'ra-core';
+import {
+    FieldTitle,
+    useInput,
+    InputProps,
+    ChoicesProps,
+    useChoices,
+} from 'ra-core';
 import InputHelperText from './InputHelperText';
-import { InputWithOptionsProps } from './InputWithOptions';
 import { SelectProps } from '@material-ui/core/Select';
 import { FormControlProps } from '@material-ui/core/FormControl';
 
@@ -24,10 +28,10 @@ const sanitizeRestProps = ({
     allowEmpty,
     basePath,
     choices,
-    className,
-    component,
-    crudGetMatching,
-    crudGetOne,
+    classNamInputWithOptionsPropse,
+    componenInputWithOptionsPropst,
+    crudGetMInputWithOptionsPropsatching,
+    crudGetOInputWithOptionsPropsne,
     defaultValue,
     filter,
     filterToQuery,
@@ -127,7 +131,7 @@ const useStyles = makeStyles(theme => ({
  * ];
  */
 const SelectArrayInput: FunctionComponent<
-    InputWithOptionsProps & InputProps<SelectProps> & FormControlProps
+    ChoicesProps & InputProps<SelectProps> & FormControlProps
 > = ({
     choices = [],
     classes: classesOverride,
@@ -149,8 +153,11 @@ const SelectArrayInput: FunctionComponent<
     ...rest
 }) => {
     const classes = useStyles({ classes: classesOverride });
-
-    const translate = useTranslate();
+    const { getChoiceText, getChoiceValue } = useChoices({
+        optionText,
+        optionValue,
+        translateChoice,
+    });
 
     const {
         id,
@@ -167,38 +174,22 @@ const SelectArrayInput: FunctionComponent<
         ...rest,
     });
 
-    const renderMenuItemOption = useCallback(
-        choice => {
-            if (React.isValidElement<{ record: any }>(optionText)) {
-                return React.cloneElement(optionText, {
-                    record: choice,
-                });
-            }
-
-            const choiceName =
-                typeof optionText === 'function'
-                    ? optionText(choice)
-                    : get(choice, optionText);
-
-            return translateChoice
-                ? translate(choiceName, { _: choiceName })
-                : choiceName;
-        },
-        [optionText, translate, translateChoice]
-    );
+    const renderMenuItemOption = useCallback(choice => getChoiceText(choice), [
+        getChoiceText,
+    ]);
 
     const renderMenuItem = useCallback(
         choice => {
             return choice ? (
                 <MenuItem
-                    key={get(choice, optionValue)}
-                    value={get(choice, optionValue)}
+                    key={getChoiceValue(choice)}
+                    value={getChoiceValue(choice)}
                 >
                     {renderMenuItemOption(choice)}
                 </MenuItem>
             ) : null;
         },
-        [optionValue, renderMenuItemOption]
+        [getChoiceValue, renderMenuItemOption]
     );
 
     return (
@@ -233,12 +224,12 @@ const SelectArrayInput: FunctionComponent<
                         {selected
                             .map(item =>
                                 choices.find(
-                                    choice => get(choice, optionValue) === item
+                                    choice => getChoiceValue(choice) === item
                                 )
                             )
                             .map(item => (
                                 <Chip
-                                    key={get(item, optionValue)}
+                                    key={getChoiceValue(item)}
                                     label={renderMenuItemOption(item)}
                                     className={classes.chip}
                                 />
@@ -267,7 +258,7 @@ const SelectArrayInput: FunctionComponent<
 };
 
 SelectArrayInput.propTypes = {
-    choices: PropTypes.arrayOf(PropTypes.object),
+    choices: PropTypes.arrayOf(PropTypes.object).isRequired,
     classes: PropTypes.object,
     className: PropTypes.string,
     children: PropTypes.node,

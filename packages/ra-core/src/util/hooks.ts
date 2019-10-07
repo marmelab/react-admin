@@ -3,7 +3,9 @@ import isEqual from 'lodash/isEqual';
 
 // thanks Kent C Dodds for the following helpers
 
-export function useSafeSetState<T>(initialState): [T, (args: any) => void] {
+export function useSafeSetState<T>(
+    initialState?: any
+): [T, (args: any) => void] {
     const [state, setState] = useState(initialState);
 
     const mountedRef = useRef(false);
@@ -36,4 +38,20 @@ export function useDeepCompareEffect(callback, inputs) {
         return cleanupRef.current;
     });
     const previousInputs = usePrevious(inputs);
+}
+
+export function useTimeout(ms = 0) {
+    const [ready, setReady] = useState(false);
+
+    useEffect(() => {
+        let timer = setTimeout(() => {
+            setReady(true);
+        }, ms);
+
+        return () => {
+            clearTimeout(timer);
+        };
+    }, [ms]);
+
+    return ready;
 }

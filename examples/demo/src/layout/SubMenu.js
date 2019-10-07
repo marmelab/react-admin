@@ -30,12 +30,13 @@ const SubMenu = ({
     name,
     icon,
     children,
+    dense,
 }) => {
     const translate = useTranslate();
     const classes = useStyles();
 
     const header = (
-        <MenuItem dense button onClick={handleToggle}>
+        <MenuItem dense={dense} button onClick={handleToggle}>
             <ListItemIcon className={classes.icon}>
                 {isOpen ? <ExpandMore /> : icon}
             </ListItemIcon>
@@ -56,7 +57,7 @@ const SubMenu = ({
             )}
             <Collapse in={isOpen} timeout="auto" unmountOnExit>
                 <List
-                    dense
+                    dense={dense}
                     component="div"
                     disablePadding
                     className={

@@ -6,12 +6,12 @@ import FormControl, { FormControlProps } from '@material-ui/core/FormControl';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import { makeStyles } from '@material-ui/core/styles';
-import { FieldTitle, useInput, InputProps } from 'ra-core';
+import { CheckboxProps } from '@material-ui/core/Checkbox';
+import { FieldTitle, useInput, InputProps, ChoicesProps } from 'ra-core';
 
 import defaultSanitizeRestProps from './sanitizeRestProps';
 import CheckboxGroupInputItem from './CheckboxGroupInputItem';
-import { CheckboxProps } from '@material-ui/core/Checkbox';
-import { InputWithOptionsProps } from './InputWithOptions';
+import InputHelperText from './InputHelperText';
 
 const sanitizeRestProps = ({
     setFilter,
@@ -91,9 +91,9 @@ const useStyles = makeStyles(theme => ({
  * The object passed as `options` props is passed to the material-ui <Checkbox> components
  */
 const CheckboxGroupInput: FunctionComponent<
-    InputWithOptionsProps & InputProps<CheckboxProps> & FormControlProps
+    ChoicesProps & InputProps<CheckboxProps> & FormControlProps
 > = ({
-    choices,
+    choices = [],
     helperText,
     label,
     onBlur,
@@ -151,6 +151,7 @@ const CheckboxGroupInput: FunctionComponent<
         <FormControl
             component="fieldset"
             margin="normal"
+            error={touched && !!error}
             {...sanitizeRestProps(rest)}
         >
             <FormLabel component="legend" className={classes.label}>
@@ -176,14 +177,21 @@ const CheckboxGroupInput: FunctionComponent<
                     />
                 ))}
             </FormGroup>
-            {touched && error && <FormHelperText error>{error}</FormHelperText>}
-            {helperText && <FormHelperText>{helperText}</FormHelperText>}
+            {(touched && error) || helperText ? (
+                <FormHelperText>
+                    <InputHelperText
+                        touched={touched}
+                        error={error}
+                        helperText={helperText}
+                    />
+                </FormHelperText>
+            ) : null}
         </FormControl>
     );
 };
 
 CheckboxGroupInput.propTypes = {
-    choices: PropTypes.arrayOf(PropTypes.object),
+    choices: PropTypes.arrayOf(PropTypes.object).isRequired,
     className: PropTypes.string,
     label: PropTypes.string,
     source: PropTypes.string,
@@ -192,15 +200,14 @@ CheckboxGroupInput.propTypes = {
         PropTypes.string,
         PropTypes.func,
         PropTypes.element,
-    ]).isRequired,
-    optionValue: PropTypes.string.isRequired,
+    ]),
+    optionValue: PropTypes.string,
     row: PropTypes.bool,
     resource: PropTypes.string,
-    translateChoice: PropTypes.bool.isRequired,
+    translateChoice: PropTypes.bool,
 };
 
 CheckboxGroupInput.defaultProps = {
-    choices: [],
     options: {},
     optionText: 'name',
     optionValue: 'id',

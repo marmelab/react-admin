@@ -165,19 +165,6 @@ In that case, set the `translateChoice` prop to false.
 <AutocompleteInput source="gender" choices={choices} translateChoice={false}/>
 ```
 
-By default the component matches choices with the current input searchText: if it finds a match, this choice will be selected. 
-For example, given the choices `[{ id: 'M', name: 'Male', id: 'F', name: 'Female' }]`, when the user enters the text `male`, then the component will set the input value to `M`. 
-If you need to change how choices are matched, pass a custom function as `inputValueMatcher` prop. 
-For example, given the choices: `[{id:1,iso2:'NL',name:'Dutch'},{id:2,iso2:'EN',name:'English'},{id:3,iso2:'FR',name:'French'}]`, if you want to match choices on the iso2 code, you can create the following `inputValueMatcher` function:
-
-```javascript
-<AutocompleteInput inputValueMatcher={
-    (input, suggestion, getOptionText) =>
-        input.toUpperCase().trim() === suggestion.iso2 ||
-        input.toLowerCase().trim() === getOptionText(suggestion).toLowerCase().trim()
-}/>
-```
-
 If you want to limit the initial choices shown to the current value only, you can set the `limitChoicesToValue` prop.
 
 When dealing with a large amount of `choices` you may need to limit the number of suggestions that are rendered in order to maintain usable performance. The `shouldRenderSuggestions` is an optional prop that allows you to set conditions on when to render suggestions. An easy way to improve performance would be to skip rendering until the user has entered 2 or 3 characters in the search box. This lowers the result set significantly, and might be all you need (depending on your data set).
@@ -220,19 +207,23 @@ Lastly, would you need to override the props of the suggestions container (a `Po
 
 | Prop | Required | Type | Default | Description |
 | ---|---|---|---|--- |
-| `choices` | Required | `Object[]` | - | List of items to autosuggest |
-| `resource` | Required | `string` | - | The resource working on. This field is passed down by wrapped components like `Create` and `Edit`.   |
-| `source` | Required |  `string` | - | Name of field to edit, its type should match the type retrieved from `optionValue`  |
 | `allowEmpty` | Optional | `boolean` | `false` | If `false` and the searchText typed did not match any suggestion, the searchText will revert to the current value when the field is blurred. If `true` and the `searchText` is set to `''` then the field will set the input value to `null`. |
+| `choices` | Required | `Object[]` | - | List of items to autosuggest |
+| `emptyValue` | Optional | anything | `null` | The value to use for the empty element |
+| `emptyText` | Optional | `string` | '' | The text to use for the empty element |
+| `matchSuggestion` | Optional | `Function` | - | Required if `optionText` is a React element. Function returning a boolean indicating whether a choice matches the filter. `(filter, choice) => boolean`
 | `optionValue` | Optional | `string` | `id` | Fieldname of record containing the value to use as input value  |
 | `optionText` | Optional | <code>string &#124; Function</code> | `name` | Fieldname of record to display in the suggestion item or function which accepts the correct record as argument (`(record)=> {string}`) |
+| `resource` | Required | `string` | - | The resource working on. This field is passed down by wrapped components like `Create` and `Edit`.   |
 | `setFilter` | Optional | `Function` | null | A callback to inform the `searchText` has changed and new `choices` can be retrieved based on this `searchText`. Signature `searchText => void`. This function is automatically setup when using `ReferenceInput`.  |
-| `suggestionComponent` | Optional | Function | `({ suggestion, query, isHighlighted, props }) => <div {...props} />` | Allows to override how the item is rendered.  |
+| `source` | Required |  `string` | - | Name of field to edit, its type should match the type retrieved from `optionValue`  |
 | `shouldRenderSuggestions` | Optional | Function | `() => true` | A function that returns a `boolean` to determine whether or not suggestions are rendered. Use this when working with large collections of data to improve performance and user experience. This function is passed into the underlying react-autosuggest component. Ex.`(value) => value.trim() > 2` |
 
 ## `<AutocompleteArrayInput>`
 
-To let users choose multiple values in a list using a dropdown with autocompletion, use `<AutocompleteArrayInput>`. It renders using [material-ui-chip-input](https://github.com/TeamWertarbyte/material-ui-chip-input), [react-autosuggest](http://react-autosuggest.js.org/) and a `fuzzySearch` filter. Set the `choices` attribute to determine the options list (with `id`, `name` tuples).
+To let users choose multiple values in a list using a dropdown with autocompletion, use `<AutocompleteArrayInput>`.
+It renders using [downshift](https://github.com/downshift-js/downshift) and a `fuzzySearch` filter. 
+Set the `choices` attribute to determine the options list (with `id`, `name` tuples).
 
 ```jsx
 import { AutocompleteArrayInput } from 'react-admin';
@@ -280,18 +271,6 @@ However, in some cases (e.g. inside a `<ReferenceInput>`), you may not want the 
 <AutocompleteArrayInput source="gender" choices={choices} translateChoice={false}/>
 ```
 
-By default the component matches choices with the current input searchText. For example, given the choices `[{ id: 'M', name: 'Male', id: 'F', name: 'Female' }]`, when the user enters the text `male`, then the component will set the input value to `M`. If you need to change how choices are matched, pass a custom function as `inputValueMatcher` prop. For example, given the choices: `[{id:1,iso2:'NL',name:'Dutch'},{id:2,iso2:'EN',name:'English'},{id:3,iso2:'FR',name:'French'}]`, if you want to match choices on the iso2 code, you can create the following `inputValueMatcher` function:
-
-```javascript
-<AutocompleteArrayInput inputValueMatcher={
-    (input, suggestion, getOptionText) =>
-        input.toUpperCase().trim() === suggestion.iso2 ||
-        input.toLowerCase().trim() === getOptionText(suggestion).toLowerCase().trim()
-}/>
-```
-
-If you want to limit the initial choices shown to the current value only, you can set the `limitChoicesToValue` prop.
-
 When dealing with a large amount of `choices` you may need to limit the number of suggestions that are rendered in order to maintain usable performance. The `shouldRenderSuggestions` is an optional prop that allows you to set conditions on when to render suggestions. An easy way to improve performance would be to skip rendering until the user has entered 2 or 3 characters in the search box. This lowers the result set significantly, and might be all you need (depending on your data set).
 Ex. `<AutocompleteArrayInput shouldRenderSuggestions={(val) => { return val.trim().length > 2 }} />` would not render any suggestions until the 3rd character was entered. This prop is passed to the underlying `react-autosuggest` component and is documented [here](https://github.com/moroshko/react-autosuggest#should-render-suggestions-prop).
 
@@ -336,17 +315,15 @@ If you need to override the props of the suggestions container (a `Popper` eleme
 | Prop | Required | Type | Default | Description |
 | ---|---|---|---|--- |
 | `choices` | Required | `Object[]` | - | List of items to autosuggest |
-| `resource` | Required | `string` | - | The resource working on. This field is passed down by wrapped components like `Create` and `Edit`.   |
-| `source` | Required |  `string` | - | Name of field to edit, its type should match the type retrieved from `optionValue`  |
-| `allowEmpty` | Optional | `boolean` | `false` | If `false` and the searchText typed did not match any suggestion, the searchText will revert to the current value when the field is blurred. If `true` and the `searchText` is set to `''` then the field will set the input value to `null`. |
-| `inputValueMatcher` | Optional | `Function` | `(input, suggestion, getOptionText) => input.toLowerCase().trim() === getOptionText(suggestion).toLowerCase().trim()` | Allows to define how choices are matched with the searchText while typing.    |
+| `fullWith` | Optional | Boolean | If `true`, the input will take all the form width
+| `matchSuggestion` | Optional | `Function` | - | Required if `optionText` is a React element. Function returning a boolean indicating whether a choice matches the filter. `(filter, choice) => boolean`
 | `optionValue` | Optional | `string` | `id` | Fieldname of record containing the value to use as input value  |
 | `optionText` | Optional | <code>string &#124; Function</code> | `name` | Fieldname of record to display in the suggestion item or function which accepts the current record as argument (`(record)=> {string}`) |
+| `resource` | Required | `string` | - | The resource working on. This field is passed down by wrapped components like `Create` and `Edit`.   |
 | `setFilter` | Optional | `Function` | null | A callback to inform the `searchText` has changed and new `choices` can be retrieved based on this `searchText`. Signature `searchText => void`. This function is automatically setup when using `ReferenceInput`.  |
-| `suggestionComponent` | Optional | Function | `({ suggestion, query, isHighlighted, props }) => <div {...props} />` | Allows to override how the item is rendered.  |
+| `source` | Required |  `string` | - | Name of field to edit, its type should match the type retrieved from `optionValue`  |
 | `suggestionLimit` | Optional | Number | null | Limits the numbers of suggestions that are shown in the dropdown list |
 | `shouldRenderSuggestions` | Optional | Function | `() => true` | A function that returns a `boolean` to determine whether or not suggestions are rendered. Use this when working with large collections of data to improve performance and user experience. This function is passed into the underlying react-autosuggest component. Ex.`(value) => value.trim() > 2` |
-| `fullWith` | Optional | Boolean | If `true`, the input will take all the form width
 
 ## `<BooleanInput>` and `<NullableBooleanInput>`
 
@@ -670,8 +647,7 @@ import { RadioButtonGroupInput, ReferenceInput } from 'react-admin'
 
 Use `<ReferenceArrayInput>` to edit an array of reference values, i.e. to let users choose a list of values (usually foreign keys) from another REST endpoint.
 
-`<ReferenceArrayInput>` fetches the related resources (using the `CRUD_GET_MANY` REST method) as well as possible resources (using the
-`CRUD_GET_MATCHING` REST method) in the reference endpoint.
+`<ReferenceArrayInput>` fetches the related resources (using `dataProvider.getMany()`) as well as possible resources (using `dataProvider.getList()`) in the reference endpoint.
 
 For instance, if the post object has many tags, a post resource may look like:
 
@@ -762,7 +738,7 @@ You can tweak how this component fetches the possible values using the `perPage`
 
 ## `<ReferenceInput>`
 
-Use `<ReferenceInput>` for foreign-key values, for instance, to edit the `post_id` of a `comment` resource. This component fetches the possible values in the reference resource (using the `GET_LIST` data provider verb) and the referenced record (using the `GET_MANY` data provider verb), then delegates rendering to a subcomponent, to which it passes the possible choices as the `choices` attribute.
+Use `<ReferenceInput>` for foreign-key values, for instance, to edit the `post_id` of a `comment` resource. This component fetches the related record (using `dataProvider.getMany()`) as well as possible choices (using `dataProvider.getList()` in the reference resource), then delegates rendering to a subcomponent, to which it passes the possible choices as the `choices` attribute.
 
 This means you can use `<ReferenceInput>` with any of [`<SelectInput>`](#selectinput), [`<AutocompleteInput>`](#autocompleteinput), or [`<RadioButtonGroupInput>`](#radiobuttongroupinput), or even with the component of your choice, provided it supports the `choices` attribute.
 
@@ -1511,3 +1487,24 @@ import { FormDataConsumer } from 'react-admin';
      </Edit>
  );
 ```
+
+**Tip**: When using a `FormDataConsumer` you can define `subscription` prop to pass to the `react-final-form`
+
+{% raw %}
+```jsx
+import { FormDataConsumer } from 'react-admin';
+
+ const PostEdit = (props) => (
+     <Edit {...props}>
+         <SimpleForm>
+             <BooleanInput source="hasEmail" />
+             <FormDataConsume subscription={{ values: true }}>
+                 {({ formData, ...rest }) => formData.hasEmail &&
+                      <TextInput source="email" {...rest} />
+                 }
+             </FormDataConsumer>
+         </SimpleForm>
+     </Edit>
+ );
+```
+{% endraw %}

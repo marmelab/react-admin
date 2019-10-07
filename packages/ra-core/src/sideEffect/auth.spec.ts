@@ -1,3 +1,4 @@
+import expect from 'expect';
 import { runSaga } from 'redux-saga';
 import {
     handleLogin,
@@ -5,7 +6,6 @@ import {
     handleLogout,
     handleFetchError,
 } from './auth';
-import { AUTH_LOGIN, AUTH_CHECK, AUTH_LOGOUT, AUTH_ERROR } from '../auth';
 import {
     USER_LOGIN_LOADING,
     USER_LOGIN_SUCCESS,
@@ -25,7 +25,13 @@ describe('Auth saga', () => {
     describe('Login saga', () => {
         test('Handle successful login', async () => {
             const dispatch = jest.fn();
-            const authProvider = jest.fn().mockResolvedValue({ role: 'admin' });
+            const authProvider = {
+                login: jest.fn().mockResolvedValue({ role: 'admin' }),
+                logout: () => Promise.reject('bad method'),
+                checkAuth: () => Promise.reject('bad method'),
+                checkError: () => Promise.reject('bad method'),
+                getPermissions: () => Promise.reject('bad method'),
+            };
             const action = {
                 payload: {
                     login: 'user',
@@ -37,7 +43,7 @@ describe('Auth saga', () => {
             };
 
             await runSaga({ dispatch }, handleLogin(authProvider), action);
-            expect(authProvider).toHaveBeenCalledWith(AUTH_LOGIN, {
+            expect(authProvider.login).toHaveBeenCalledWith({
                 login: 'user',
                 password: 'password123',
             });
@@ -51,7 +57,13 @@ describe('Auth saga', () => {
 
         test('Handle successful login with redirection from previous state', async () => {
             const dispatch = jest.fn();
-            const authProvider = jest.fn().mockResolvedValue({ role: 'admin' });
+            const authProvider = {
+                login: jest.fn().mockResolvedValue({ role: 'admin' }),
+                logout: () => Promise.reject('bad method'),
+                checkAuth: () => Promise.reject('bad method'),
+                checkError: () => Promise.reject('bad method'),
+                getPermissions: () => Promise.reject('bad method'),
+            };
             const action = {
                 payload: {
                     login: 'user',
@@ -73,7 +85,7 @@ describe('Auth saga', () => {
                 action
             );
 
-            expect(authProvider).toHaveBeenCalledWith(AUTH_LOGIN, {
+            expect(authProvider.login).toHaveBeenCalledWith({
                 login: 'user',
                 password: 'password123',
             });
@@ -88,7 +100,13 @@ describe('Auth saga', () => {
         test('Handle failed login', async () => {
             const dispatch = jest.fn();
             const error = { message: 'Bazinga!' };
-            const authProvider = jest.fn().mockRejectedValue(error);
+            const authProvider = {
+                login: jest.fn().mockRejectedValue(error),
+                logout: () => Promise.reject('bad method'),
+                checkAuth: () => Promise.reject('bad method'),
+                checkError: () => Promise.reject('bad method'),
+                getPermissions: () => Promise.reject('bad method'),
+            };
             const action = {
                 payload: {
                     login: 'user',
@@ -100,7 +118,7 @@ describe('Auth saga', () => {
             };
 
             await runSaga({ dispatch }, handleLogin(authProvider), action);
-            expect(authProvider).toHaveBeenCalledWith(AUTH_LOGIN, {
+            expect(authProvider.login).toHaveBeenCalledWith({
                 login: 'user',
                 password: 'password123',
             });
@@ -118,7 +136,13 @@ describe('Auth saga', () => {
     describe('Check saga', () => {
         test('Handle successful check', async () => {
             const dispatch = jest.fn();
-            const authProvider = jest.fn().mockResolvedValue({ role: 'admin' });
+            const authProvider = {
+                login: () => Promise.reject('bad method'),
+                logout: () => Promise.reject('bad method'),
+                checkAuth: jest.fn().mockResolvedValue({ role: 'admin' }),
+                checkError: () => Promise.reject('bad method'),
+                getPermissions: () => Promise.reject('bad method'),
+            };
             const action = {
                 payload: {
                     resource: 'posts',
@@ -129,7 +153,7 @@ describe('Auth saga', () => {
             };
 
             await runSaga({ dispatch }, handleCheck(authProvider), action);
-            expect(authProvider).toHaveBeenCalledWith(AUTH_CHECK, {
+            expect(authProvider.checkAuth).toHaveBeenCalledWith({
                 resource: 'posts',
             });
             expect(dispatch).not.toHaveBeenCalled();
@@ -138,11 +162,13 @@ describe('Auth saga', () => {
         test('Handle failed check', async () => {
             const dispatch = jest.fn();
             const error = { message: 'Bazinga!' };
-            const authProvider = jest
-                .fn()
-                .mockRejectedValueOnce(error)
-                .mockResolvedValueOnce('/custom');
-
+            const authProvider = {
+                login: () => Promise.reject('bad method'),
+                logout: jest.fn().mockResolvedValueOnce('/custom'),
+                checkAuth: jest.fn().mockRejectedValueOnce(error),
+                checkError: () => Promise.reject('bad method'),
+                getPermissions: () => Promise.reject('bad method'),
+            };
             const action = {
                 payload: {
                     resource: 'posts',
@@ -153,10 +179,10 @@ describe('Auth saga', () => {
             };
 
             await runSaga({ dispatch }, handleCheck(authProvider), action);
-            expect(authProvider).toHaveBeenCalledWith(AUTH_CHECK, {
+            expect(authProvider.checkAuth).toHaveBeenCalledWith({
                 resource: 'posts',
             });
-            expect(authProvider).toHaveBeenCalledWith(AUTH_LOGOUT);
+            expect(authProvider.logout).toHaveBeenCalled();
             await wait();
             expect(dispatch).toHaveBeenCalledWith(
                 replace({
@@ -173,7 +199,13 @@ describe('Auth saga', () => {
     describe('Logout saga', () => {
         test('Handle logout', async () => {
             const dispatch = jest.fn();
-            const authProvider = jest.fn().mockResolvedValue('/custom');
+            const authProvider = {
+                login: () => Promise.reject('bad method'),
+                logout: jest.fn().mockResolvedValueOnce('/custom'),
+                checkAuth: () => Promise.reject('bad method'),
+                checkError: () => Promise.reject('bad method'),
+                getPermissions: () => Promise.reject('bad method'),
+            };
             const action = {
                 payload: {
                     resource: 'posts',
@@ -184,7 +216,7 @@ describe('Auth saga', () => {
             };
 
             await runSaga({ dispatch }, handleLogout(authProvider), action);
-            expect(authProvider).toHaveBeenCalledWith(AUTH_LOGOUT);
+            expect(authProvider.logout).toHaveBeenCalled();
             expect(dispatch).toHaveBeenCalledWith(push('/custom'));
             expect(dispatch).toHaveBeenCalledWith(clearState());
         });
@@ -193,10 +225,13 @@ describe('Auth saga', () => {
         test('Handle errors when authProvider throws', async () => {
             const dispatch = jest.fn();
             const error = { message: 'Bazinga!' };
-            const authProvider = jest
-                .fn()
-                .mockRejectedValueOnce(undefined)
-                .mockResolvedValueOnce('/custom');
+            const authProvider = {
+                login: () => Promise.reject('bad method'),
+                logout: jest.fn().mockResolvedValueOnce('/custom'),
+                checkAuth: () => Promise.reject('bad method'),
+                checkError: jest.fn().mockRejectedValueOnce(undefined),
+                getPermissions: () => Promise.reject('bad method'),
+            };
             const action = {
                 error,
             };
@@ -209,8 +244,8 @@ describe('Auth saga', () => {
                 handleFetchError(authProvider),
                 action
             );
-            expect(authProvider).toHaveBeenCalledWith(AUTH_ERROR, error);
-            expect(authProvider).toHaveBeenCalledWith(AUTH_LOGOUT);
+            expect(authProvider.checkError).toHaveBeenCalledWith(error);
+            expect(authProvider.logout).toHaveBeenCalled();
             await wait();
             expect(dispatch).toHaveBeenCalledWith(
                 push({

@@ -1,64 +1,48 @@
-import { Component } from 'react';
+import { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import compose from 'recompose/compose';
-import { crudDeleteMany, startUndoable, translate } from 'ra-core';
+import { useDispatch } from 'react-redux';
+import { crudDeleteMany, startUndoable } from 'ra-core';
 
-class BulkDeleteAction extends Component {
-    componentDidMount = () => {
+/**
+ *@deprecated use BulkDeleteButton instead
+ */
+const BulkDeleteAction = props => {
+    const dispatch = useDispatch();
+
+    useEffect(() => {
         if (process.env.NODE_ENV !== 'production') {
             // eslint-disable-next-line no-console
             console.warn(
                 '<BulkDeleteAction> is deprecated. Use the <BulkDeleteButton> component instead, via the bulkActionButton props.'
             );
         }
-        const {
-            basePath,
-            dispatchCrudDeleteMany,
-            resource,
-            selectedIds,
-            startUndoable,
-            undoable,
-        } = this.props;
+        const { basePath, resource, selectedIds, undoable, onExit } = props;
         if (undoable) {
-            startUndoable(crudDeleteMany(resource, selectedIds, basePath));
+            dispatch(
+                startUndoable(crudDeleteMany(resource, selectedIds, basePath))
+            );
         } else {
-            dispatchCrudDeleteMany(resource, selectedIds, basePath);
+            dispatch(crudDeleteMany(resource, selectedIds, basePath));
         }
-        this.props.onExit();
-    };
+        onExit();
+    }, [dispatch, props]);
 
-    render() {
-        return null;
-    }
-}
+    return null;
+};
 
 BulkDeleteAction.propTypes = {
     basePath: PropTypes.string,
-    dispatchCrudDeleteMany: PropTypes.func.isRequired,
     label: PropTypes.string,
     onExit: PropTypes.func.isRequired,
     resource: PropTypes.string.isRequired,
-    startUndoable: PropTypes.func,
     selectedIds: PropTypes.arrayOf(PropTypes.any).isRequired,
     translate: PropTypes.func.isRequired,
     undoable: PropTypes.bool,
 };
 
-const EnhancedBulkDeleteAction = compose(
-    connect(
-        undefined,
-        {
-            startUndoable,
-            dispatchCrudDeleteMany: crudDeleteMany,
-        }
-    ),
-    translate
-)(BulkDeleteAction);
-
-EnhancedBulkDeleteAction.defaultProps = {
+BulkDeleteAction.defaultProps = {
     label: 'ra.action.delete',
     undoable: true,
 };
 
-export default EnhancedBulkDeleteAction;
+export default BulkDeleteAction;

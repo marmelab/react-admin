@@ -1,7 +1,7 @@
 import HttpError from './HttpError';
 import { stringify } from 'query-string';
 
-interface Options extends RequestInit {
+export interface Options extends RequestInit {
     user?: {
         authenticated?: boolean;
         token?: string;

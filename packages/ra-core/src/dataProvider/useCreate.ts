@@ -1,9 +1,7 @@
-import { CRUD_CREATE } from '../actions/dataActions/crudCreate';
-import { CREATE } from '../dataFetchActions';
 import useMutation from './useMutation';
 
 /**
- * Get a callback to call the dataProvider with a CREATE verb, the result and the loading state.
+ * Get a callback to call the dataProvider.create() method, the result and the loading state.
  *
  * The return value updates according to the request state:
  *
@@ -29,9 +27,6 @@ import useMutation from './useMutation';
  * };
  */
 const useCreate = (resource: string, data: any = {}, options?: any) =>
-    useMutation(
-        { type: CREATE, resource, payload: { data } },
-        { ...options, action: CRUD_CREATE }
-    );
+    useMutation({ type: 'create', resource, payload: { data } }, options);
 
 export default useCreate;

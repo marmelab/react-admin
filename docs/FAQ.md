@@ -16,25 +16,107 @@ title: "FAQ"
 
 ## Can I have custom identifiers/primary keys for my resources?
 
-React-admin requires that each resource has an `id` field to identify it. If your API uses a different name for the primary key, you have to map that name to `id` in a custom [dataProvider](./DataProviders.md). For instance, to use a field named `_id` as identifier:
+React-admin requires that each resource has an `id` field to identify it. If your API uses a different name for the primary key, you have to map that name to `id` in your [dataProvider](./DataProviders.md). For instance, to use a field named `_id` as identifier:
 
-```js
-const convertHTTPResponse = (response, type, resource, params) => {
-    const { headers, json } = response;
-    switch (type) {
-    case GET_LIST:
-        return {
-            data: json.map(resource => ({ ...resource, id: resource._id }) ),
-            total: parseInt(headers.get('content-range').split('/').pop(), 10),
+```diff
+const dataProvider = {
+    getList: (resource, params) => {
+        const { page, perPage } = params.pagination;
+        const { field, order } = params.sort;
+        const query = {
+            sort: JSON.stringify([field, order]),
+            range: JSON.stringify([(page - 1) * perPage, page * perPage - 1]),
+            filter: JSON.stringify(params.filter),
         };
-    case UPDATE:
-    case DELETE:
-    case GET_ONE:
-        return { ...json, id: json._id };
-    case CREATE:
-        return { ...params.data, id: json._id };
-    default:
-        return json;
+        const url = `${apiUrl}/${resource}?${stringify(query)}`;
+
+        return httpClient(url).then(({ headers, json }) => ({
+-           data: json,
++           data: json.map(resource => ({ ...resource, id: resource._id }) ),
+            total: parseInt(headers.get('content-range').split('/').pop(), 10),
+        }));
+    },
+    getOne: (resource, params) =>
+        httpClient(`${apiUrl}/${resource}/${params.id}`).then(({ json }) => ({
+-           data: json,
++           { ...json, id: json._id },
+        })),
+
+    getMany: (resource, params) => {
+        const query = {
+            filter: JSON.stringify({ id: params.ids }),
+        };
+        const url = `${apiUrl}/${resource}?${stringify(query)}`;
+        return httpClient(url).then(({ json }) => ({ 
+-           data: json,
++           data: json.map(resource => ({ ...resource, id: resource._id }) ),
+        }));
+    },
+
+    getManyReference: (resource, params) => {
+        const { page, perPage } = params.pagination;
+        const { field, order } = params.sort;
+        const query = {
+            sort: JSON.stringify([field, order]),
+            range: JSON.stringify([(page - 1) * perPage, page * perPage - 1]),
+            filter: JSON.stringify({
+                ...params.filter,
+                [params.target]: params.id,
+            }),
+        };
+        const url = `${apiUrl}/${resource}?${stringify(query)}`;
+
+        return httpClient(url).then(({ headers, json }) => ({
+-           data: json,
++           data: json.map(resource => ({ ...resource, id: resource._id }) ),
+            total: parseInt(headers.get('content-range').split('/').pop(), 10),
+        }));
+    },
+
+    update: (resource, params) =>
+        httpClient(`${apiUrl}/${resource}/${params.id}`, {
+            method: 'PUT',
+            body: JSON.stringify(params.data),
+        }).then(({ json }) => ({ 
+-           data: json,
++           { ...json, id: json._id },
+        })),
+
+    updateMany: (resource, params) => {
+        const query = {
+            filter: JSON.stringify({ id: params.ids}),
+        };
+        return httpClient(`${apiUrl}/${resource}?${stringify(query)}`, {
+            method: 'PUT',
+            body: JSON.stringify(params.data),
+        }).then(({ json }) => ({ data: json }));
+    }
+
+    create: (resource, params) =>
+        httpClient(`${apiUrl}/${resource}`, {
+            method: 'POST',
+            body: JSON.stringify(params.data),
+        }).then(({ json }) => ({
+-           data: { ...params.data, id: json.id },
++           data: { ...params.data, id: json._id },
+        })),
+
+    delete: (resource, params) =>
+        httpClient(`${apiUrl}/${resource}/${params.id}`, {
+            method: 'DELETE',
+        }).then(({ json }) => ({ 
+-           data: json,
++           { ...json, id: json._id },
+        })),
+
+    deleteMany: (resource, params) => {
+        const query = {
+            filter: JSON.stringify({ id: params.ids}),
+        };
+        return httpClient(`${apiUrl}/${resource}?${stringify(query)}`, {
+            method: 'DELETE',
+            body: JSON.stringify(params.data),
+        }).then(({ json }) => ({ data: json }));
     }
 };
 ```

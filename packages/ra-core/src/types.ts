@@ -3,6 +3,11 @@ import { RouteProps, RouteComponentProps, match as Match } from 'react-router';
 import { Location } from 'history';
 
 import { WithPermissionsChildrenParams } from './auth/WithPermissions';
+import { AuthActionType } from './auth/types';
+
+/**
+ * data types
+ */
 
 export type Identifier = string | number;
 export interface Record {
@@ -10,10 +15,10 @@ export interface Record {
     [key: string]: any;
 }
 
-export interface RecordMap {
+export interface RecordMap<RecordType = Record> {
     // Accept strings and numbers as identifiers
-    [id: string]: Record;
-    [id: number]: Record;
+    [id: string]: RecordType;
+    [id: number]: RecordType;
 }
 
 export interface Sort {
@@ -25,23 +30,231 @@ export interface Pagination {
     perPage: number;
 }
 
-export type I18nProvider = (locale: string) => object | Promise<object>;
-export type Translate = (id: string, options?: any) => string;
+/**
+ * i18nProvider types
+ */
 
-export type AuthActionType =
-    | 'AUTH_LOGIN'
-    | 'AUTH_LOGOUT'
-    | 'AUTH_ERROR'
-    | 'AUTH_CHECK'
-    | 'AUTH_GET_PERMISSIONS';
+export const I18N_TRANSLATE = 'I18N_TRANSLATE';
+export const I18N_CHANGE_LOCALE = 'I18N_CHANGE_LOCALE';
 
-export type AuthProvider = (type: AuthActionType, params?: any) => Promise<any>;
+export type Translate = (key: string, options?: any) => string;
 
-export type DataProvider = (
+export type I18nProvider = {
+    translate: Translate;
+    changeLocale: (locale: string, options?: any) => Promise<void>;
+    getLocale: () => string;
+    [key: string]: any;
+};
+
+/**
+ * authProvider types
+ */
+
+export type AuthProvider = {
+    login: (params: any) => Promise<any>;
+    logout: (params: any) => Promise<void | string>;
+    checkAuth: (params: any) => Promise<void>;
+    checkError: (error: any) => Promise<void>;
+    getPermissions: (params: any) => Promise<any>;
+    [key: string]: any;
+};
+
+export type LegacyAuthProvider = (
+    type: AuthActionType,
+    params?: any
+) => Promise<any>;
+
+/**
+ * dataProvider types
+ */
+
+export type DataProvider = {
+    getList: (
+        resource: string,
+        params: GetListParams
+    ) => Promise<GetListResult>;
+
+    getOne: (resource: string, params: GetOneParams) => Promise<GetOneResult>;
+
+    getMany: (
+        resource: string,
+        params: GetManyParams
+    ) => Promise<GetManyResult>;
+
+    getManyReference: (
+        resource: string,
+        params: GetManyReferenceParams
+    ) => Promise<GetManyReferenceResult>;
+
+    update: (resource: string, params: UpdateParams) => Promise<UpdateResult>;
+
+    updateMany: (
+        resource: string,
+        params: UpdateManyParams
+    ) => Promise<UpdateManyResult>;
+
+    create: (resource: string, params: CreateParams) => Promise<CreateResult>;
+
+    delete: (resource: string, params: DeleteParams) => Promise<DeleteResult>;
+
+    deleteMany: (
+        resource: string,
+        params: DeleteManyParams
+    ) => Promise<DeleteManyResult>;
+
+    [key: string]: any;
+};
+
+export interface GetListParams {
+    pagination: Pagination;
+    sort: Sort;
+    filter: any;
+}
+export interface GetListResult {
+    data: Record[];
+    total: number;
+}
+
+export interface GetOneParams {
+    id: Identifier;
+}
+export interface GetOneResult {
+    data: Record;
+}
+
+export interface GetManyParams {
+    ids: Identifier[];
+}
+export interface GetManyResult {
+    data: Record[];
+}
+
+export interface GetManyReferenceParams {
+    target: string;
+    id: Identifier;
+    pagination: Pagination;
+    sort: Sort;
+    filter: any;
+}
+export interface GetManyReferenceResult {
+    data: Record[];
+    total: number;
+}
+
+export interface UpdateParams {
+    id: Identifier;
+    data: any;
+    previousData: Record;
+}
+export interface UpdateResult {
+    data: Record;
+}
+
+export interface UpdateManyParams {
+    ids: Identifier[];
+    data: any;
+}
+export interface UpdateManyResult {
+    data?: Identifier[];
+}
+
+export interface CreateParams {
+    data: any;
+}
+export interface CreateResult {
+    data: Record;
+}
+
+export interface DeleteParams {
+    id: Identifier;
+}
+export interface DeleteResult {
+    data?: Record;
+}
+
+export interface DeleteManyParams {
+    ids: Identifier[];
+}
+export interface DeleteManyResult {
+    data?: Identifier[];
+}
+
+export type DataProviderProxy = {
+    getList: (
+        resource: string,
+        params: GetListParams,
+        options?: UseDataProviderOptions
+    ) => Promise<GetListResult>;
+
+    getOne: (
+        resource: string,
+        params: GetOneParams,
+        options?: UseDataProviderOptions
+    ) => Promise<GetOneResult>;
+
+    getMany: (
+        resource: string,
+        params: GetManyParams,
+        options?: UseDataProviderOptions
+    ) => Promise<GetManyResult>;
+
+    getManyReference: (
+        resource: string,
+        params: GetManyReferenceParams,
+        options?: UseDataProviderOptions
+    ) => Promise<GetManyReferenceResult>;
+
+    update: (
+        resource: string,
+        params: UpdateParams,
+        options?: UseDataProviderOptions
+    ) => Promise<UpdateResult>;
+
+    updateMany: (
+        resource: string,
+        params: UpdateManyParams,
+        options?: UseDataProviderOptions
+    ) => Promise<UpdateManyResult>;
+
+    create: (
+        resource: string,
+        params: CreateParams,
+        options?: UseDataProviderOptions
+    ) => Promise<CreateResult>;
+
+    delete: (
+        resource: string,
+        params: DeleteParams,
+        options?: UseDataProviderOptions
+    ) => Promise<DeleteResult>;
+
+    deleteMany: (
+        resource: string,
+        params: DeleteManyParams,
+        options?: UseDataProviderOptions
+    ) => Promise<DeleteManyResult>;
+
+    [key: string]: any;
+};
+
+export interface UseDataProviderOptions {
+    action?: string;
+    fetch?: string;
+    meta?: object;
+    undoable?: boolean;
+    onSuccess?: any;
+    onFailure?: any;
+}
+
+export type LegacyDataProvider = (
     type: string,
     resource: string,
     params: any
 ) => Promise<any>;
+
+/**
+ * Redux state type
+ */
 
 export interface ReduxState {
     admin: {
@@ -71,14 +284,14 @@ export interface ReduxState {
             [key: string]: any;
         };
     };
-    i18n: {
-        locale: string;
-        messages: object;
-    };
     router: {
         location: Location;
     };
 }
+
+/**
+ * Misc types
+ */
 
 export type Dispatch<T> = T extends (...args: infer A) => any
     ? (...args: A) => void

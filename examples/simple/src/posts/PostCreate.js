@@ -35,9 +35,10 @@ const SaveWithNoteButton = props => {
         }
 
         create(
-            null,
             {
-                data: { ...formState.values, average_note: 10 },
+                payload: {
+                    data: { ...formState.values, average_note: 10 },
+                },
             },
             {
                 onSuccess: ({ data: newRecord }) => {

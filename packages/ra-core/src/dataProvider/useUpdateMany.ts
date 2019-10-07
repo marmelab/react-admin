@@ -1,10 +1,8 @@
-import { CRUD_UPDATE_MANY } from '../actions/dataActions/crudUpdateMany';
-import { UPDATE_MANY } from '../dataFetchActions';
 import useMutation from './useMutation';
 import { Identifier } from '../types';
 
 /**
- * Get a callback to call the dataProvider with a UPDATE_MANY verb, the result
+ * Get a callback to call the dataProvider.updateMany() method, the result
  * of the call (the list of updated record ids), and the loading state.
  *
  * The return value updates according to the request state:
@@ -37,8 +35,8 @@ const useUpdateMany = (
     options?: any
 ) =>
     useMutation(
-        { type: UPDATE_MANY, resource, payload: { ids, data } },
-        { ...options, action: CRUD_UPDATE_MANY }
+        { type: 'updateMany', resource, payload: { ids, data } },
+        options
     );
 
 export default useUpdateMany;

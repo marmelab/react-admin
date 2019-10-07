@@ -7,6 +7,7 @@ import {
     useNotify,
     useUnselectAll,
     Button,
+    CRUD_UPDATE_MANY,
 } from 'react-admin';
 
 const ResetViewsButton = ({ resource, selectedIds }) => {
@@ -18,6 +19,7 @@ const ResetViewsButton = ({ resource, selectedIds }) => {
         selectedIds,
         { views: 0 },
         {
+            action: CRUD_UPDATE_MANY,
             onSuccess: () => {
                 notify(
                     'ra.notification.updated',

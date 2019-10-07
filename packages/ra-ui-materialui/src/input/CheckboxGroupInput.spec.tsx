@@ -3,7 +3,7 @@ import expect from 'expect';
 import CheckboxGroupInput from './CheckboxGroupInput';
 import { render, cleanup, fireEvent } from '@testing-library/react';
 import { Form } from 'react-final-form';
-import { renderWithRedux } from 'ra-core';
+import { renderWithRedux, TestTranslationProvider } from 'ra-core';
 
 describe('<CheckboxGroupInput />', () => {
     const defaultProps = {
@@ -21,11 +21,11 @@ describe('<CheckboxGroupInput />', () => {
                 render={() => <CheckboxGroupInput {...defaultProps} />}
             />
         );
-        const input1 = getByLabelText('Angular');
+        const input1 = getByLabelText('Angular') as HTMLInputElement;
         expect(input1.type).toBe('checkbox');
         expect(input1.value).toBe('ang');
         expect(input1.checked).toBe(false);
-        const input2 = getByLabelText('React');
+        const input2 = getByLabelText('React') as HTMLInputElement;
         expect(input2.type).toBe('checkbox');
         expect(input2.value).toBe('rct');
         expect(input2.checked).toBe(false);
@@ -49,9 +49,9 @@ describe('<CheckboxGroupInput />', () => {
                 )}
             />
         );
-        const input1 = getByLabelText('Angular');
+        const input1 = getByLabelText('Angular') as HTMLInputElement;
         expect(input1.checked).toEqual(true);
-        const input2 = getByLabelText('React');
+        const input2 = getByLabelText('React') as HTMLInputElement;
         expect(input2.checked).toEqual(false);
     });
 
@@ -68,7 +68,8 @@ describe('<CheckboxGroupInput />', () => {
                 )}
             />
         );
-        expect(getByLabelText('Bar').value).toBe('foo');
+        const input = getByLabelText('Bar') as HTMLInputElement;
+        expect(input.value).toBe('foo');
     });
 
     it('should use optionValue including "." as value identifier', () => {
@@ -84,7 +85,8 @@ describe('<CheckboxGroupInput />', () => {
                 )}
             />
         );
-        expect(getByLabelText('Bar').value).toBe('foo');
+        const input = getByLabelText('Bar') as HTMLInputElement;
+        expect(input.value).toBe('foo');
     });
 
     it('should use optionText with a string value as text identifier', () => {
@@ -157,18 +159,17 @@ describe('<CheckboxGroupInput />', () => {
 
     it('should translate the choices by default', () => {
         const { queryByLabelText } = renderWithRedux(
-            <Form
-                onSubmit={jest.fn}
-                render={() => <CheckboxGroupInput {...defaultProps} />}
-            />,
-            {
-                i18n: {
-                    messages: {
-                        Angular: 'Angular **',
-                        React: 'React **',
-                    },
-                },
-            }
+            <TestTranslationProvider
+                messages={{
+                    Angular: 'Angular **',
+                    React: 'React **',
+                }}
+            >
+                <Form
+                    onSubmit={jest.fn}
+                    render={() => <CheckboxGroupInput {...defaultProps} />}
+                />
+            </TestTranslationProvider>
         );
         expect(queryByLabelText('Angular **')).not.toBeNull();
         expect(queryByLabelText('React **')).not.toBeNull();
@@ -176,23 +177,22 @@ describe('<CheckboxGroupInput />', () => {
 
     it('should not translate the choices if translateChoice is false', () => {
         const { queryByLabelText } = renderWithRedux(
-            <Form
-                onSubmit={jest.fn}
-                render={() => (
-                    <CheckboxGroupInput
-                        {...defaultProps}
-                        translateChoice={false}
-                    />
-                )}
-            />,
-            {
-                i18n: {
-                    messages: {
-                        Angular: 'Angular **',
-                        React: 'React **',
-                    },
-                },
-            }
+            <TestTranslationProvider
+                messages={{
+                    Angular: 'Angular **',
+                    React: 'React **',
+                }}
+            >
+                <Form
+                    onSubmit={jest.fn}
+                    render={() => (
+                        <CheckboxGroupInput
+                            {...defaultProps}
+                            translateChoice={false}
+                        />
+                    )}
+                />
+            </TestTranslationProvider>
         );
         expect(queryByLabelText('Angular **')).toBeNull();
         expect(queryByLabelText('React **')).toBeNull();
@@ -240,7 +240,7 @@ describe('<CheckboxGroupInput />', () => {
             // This validator always returns an error
             const validate = () => 'ra.validation.error';
 
-            const { queryByLabelText, queryByText } = render(
+            const { queryByLabelText, getByText } = render(
                 <Form
                     onSubmit={jest.fn}
                     validateOnBlur
@@ -252,12 +252,14 @@ describe('<CheckboxGroupInput />', () => {
                     )}
                 />
             );
-            const input = queryByLabelText('Angular');
+            const input = queryByLabelText('Angular') as HTMLInputElement;
             fireEvent.click(input);
             expect(input.checked).toBe(true);
 
             fireEvent.blur(input);
-            expect(queryByText('ra.validation.error')).not.toBeNull();
+            const error = getByText('ra.validation.error');
+            expect(error).toBeDefined();
+            expect(error.classList.contains('Mui-error')).toEqual(true);
         });
     });
 });

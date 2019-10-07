@@ -502,6 +502,10 @@
                                 <a href="#displaying-fields-or-inputs-depending-on-the-user-permissions">User
                                     permissions</a>
                             </li>
+                            <li class="chapter">
+                                <a href="#altering-the-form-values-before-submitting">Altering the Form Values before
+                                    Submitting</a>
+                            </li>
                         </ul>
                     </li>
                     <li class="chapter {% if page.path == 'Inputs.md' %}active{% endif %}">
@@ -641,7 +645,13 @@
                                     Components</a>
                             </li>
                             <li class="chapter">
-                                <a href="#useauth-hook"><code>useAuth()</code> Hook</a>
+                                <a href="#useauth-hook"><code>useAuthenticated()</code> Hook</a>
+                            </li>
+                            <li class="chapter">
+                                <a href="#authenticated-component"><code>&lt;Authenticated&gt;</code> Component</a>
+                            </li>
+                            <li class="chapter">
+                                <a href="#useauthstate-hook"><code>useAuthState()</code> Hook</a>
                             </li>
                         </ul>
                     </li>
@@ -696,7 +706,7 @@
                                 <a href="#using-a-custom-layout">Using a Custom Layout</a>
                             </li>
                             <li class="chapter">
-                                <a href="#using-a-custom-appbar">Using a Custom AppBar</a>
+                                <a href="#customizing-the-appbar-content">Using a Custom AppBar</a>
                             </li>
                             <li class="chapter">
                                 <a href="#using-a-custom-menu">Using a Custom Menu</a>
@@ -711,6 +721,9 @@
                         </a>
                         <ul class="articles" {% if page.path !='Actions.md' %}style="display:none" {% endif %}>
                             <li class="chapter">
+                                    <a href="#usedataprovider-hook"><code>useDataProvider</code></a>
+                            </li>
+                            <li class="chapter">
                                 <a href="#usequery-hook"><code>useQuery</code></a>
                             </li>
                             <li class="chapter">
@@ -720,35 +733,22 @@
                                 <a href="#usemutation-hook"><code>useMutation</code></a>
                             </li>
                             <li class="chapter">
-                                <a href="#handling-side-effects">Handling Side Effects</a>
+                                    <a href="#specialized-hooks">Specialized Hooks</a>
+                                </li>
+                            <li class="chapter">
+                                <a href="#handling-side-effects-in-usedataprovider">Handling Side Effects</a>
                             </li>
                             <li class="chapter">
                                 <a href="#optimistic-rendering-and-undo">Optimistic Rendering and Undo</a>
                             </li>
                             <li class="chapter">
-                                    <a href="#usedataprovider-hook"><code>useDataProvider</code></a>
-                                </li>
+                                    <a href="#customizing-the-redux-action">Custom Redux Action</a>
+                            </li>
                             <li class="chapter">
                                 <a href="#legacy-components-query-mutation-and-withdataprovider"><code>&lt;Query&gt;</code> and <code>&lt;Mutation&gt;</code></a>
                             </li>    
                             <li class="chapter">
                                 <a href="#querying-the-api-with-fetch">Querying The API With <code>fetch</code></a>
-                            </li>
-                            <li class="chapter">
-                                <a href="#making-an-action-undoable">Undoable Action</a>
-                            </li>
-                            <li class="chapter">
-                                <a href="#altering-the-form-values-before-submitting">Altering the Form Values before
-                                    Submitting</a>
-                            </li>
-                            <li class="chapter">
-                                <a href="#custom-sagas">Custom Sagas</a>
-                            </li>
-                            <li class="chapter">
-                                <a href="#using-a-custom-reducer">Using a Custom Reducer</a>
-                            </li>
-                            <li class="chapter">
-                                <a href="#list-bulk-actions">List Bulk Actions</a>
                             </li>
                         </ul>
                     </li>
@@ -759,13 +759,22 @@
                         </a>
                         <ul class="articles" {% if page.path !='Translation.md' %}style="display:none" {% endif %}>
                             <li class="chapter">
-                                <a href="#changing-locale">Changing Locale</a>
+                                <a href="#introducing-the-i18nprovider">The <code>i18nProvider</code> function</a>
+                            </li>
+                            <li class="chapter">
+                                <a href="#changing-the-default-locale">Changing the default locale</a>
                             </li>
                             <li class="chapter">
                                 <a href="#available-locales">Available Locales</a>
                             </li>
                             <li class="chapter">
-                                <a href="#changing-locale-at-runtime">Changing Locale At Runtime</a>
+                                <a href="#usesetlocale-changing-locale-at-runtime"><code>useSetLocale()</code> hook</a>
+                            </li>
+                            <li class="chapter">
+                                <a href="#uselocale-getting-the-current-locale"><code>useLocale()</code> hook</a>
+                            </li>
+                            <li class="chapter">
+                                <a href="#lazy-loading-locales">Lazy-Loading Locales</a>
                             </li>
                             <li class="chapter">
                                 <a href="#using-the-browser-locale">Using Browser Locale</a>
@@ -788,6 +797,9 @@
                             </li>
                             <li class="chapter">
                                 <a href="#using-specific-polyglot-features">Using Specific Polyglot Features</a>
+                            </li>
+                            <li class="chapter">
+                                <a href="#translating-error-messages">Translating Error Messages</a>
                             </li>
                             <li class="chapter">
                                 <a href="#notifications-with-variables">Notifications With Variables</a>
@@ -863,17 +875,6 @@
                 </div>
             </div>
         </div>
-        <script>
-            (function (i, s, o, g, r, a, m) {
-                i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
-                    (i[r].q = i[r].q || []).push(arguments)
-                }, i[r].l = 1 * new Date(); a = s.createElement(o),
-                    m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
-            })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
-
-            ga('create', 'UA-46201426-1', 'auto');
-            ga('send', 'pageview');
-        </script>
         <script src="js/prism.js"></script>
         <script src="js/menu.js"></script>
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"></script> 

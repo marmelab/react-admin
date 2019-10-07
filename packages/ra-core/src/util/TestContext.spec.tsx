@@ -7,27 +7,17 @@ import { refreshView } from '../actions';
 
 const primedStore = {
     admin: {
-        auth: {
-            isLoggedIn: false,
-        },
         loading: 0,
         notifications: [],
-        record: {},
         references: {
             oneToMany: {},
             possibleValues: {},
         },
         resources: {},
-        saving: false,
         ui: {
             viewVersion: 1,
         },
         customQueries: {},
-    },
-    i18n: {
-        loading: false,
-        locale: 'en',
-        messages: {},
     },
     router: {
         action: 'POP',

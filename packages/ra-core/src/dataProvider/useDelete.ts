@@ -1,10 +1,8 @@
-import { CRUD_DELETE } from '../actions/dataActions/crudDelete';
-import { DELETE } from '../dataFetchActions';
 import useMutation from './useMutation';
 import { Identifier } from '../types';
 
 /**
- * Get a callback to call the dataProvider with a DELETE verb, the result
+ * Get a callback to call the dataProvider.delete() method, the result
  * of the call (the deleted record), and the loading state.
  *
  * The return value updates according to the request state:
@@ -37,8 +35,8 @@ const useDelete = (
     options?: any
 ) =>
     useMutation(
-        { type: DELETE, resource, payload: { id, previousData } },
-        { ...options, action: CRUD_DELETE }
+        { type: 'delete', resource, payload: { id, previousData } },
+        options
     );
 
 export default useDelete;

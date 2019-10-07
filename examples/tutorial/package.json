@@ -5,9 +5,9 @@
     "dependencies": {
         "@material-ui/core": "^4.3.3",
         "ra-data-json-server": "^3.0.0-alpha.0",
-        "react": "~16.8.0",
+        "react": "^16.9.0",
         "react-admin": "^3.0.0-alpha.0",
-        "react-dom": "~16.8.0",
+        "react-dom": "^16.9.0",
         "react-scripts": "^3.0.0"
     },
     "scripts": {

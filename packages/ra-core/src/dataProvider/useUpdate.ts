@@ -1,10 +1,8 @@
-import { CRUD_UPDATE } from '../actions/dataActions/crudUpdate';
-import { UPDATE } from '../dataFetchActions';
 import { Identifier } from '../types';
 import useMutation from './useMutation';
 
 /**
- * Get a callback to call the dataProvider with an UPDATE verb, the result and the loading state.
+ * Get a callback to call the dataProvider.update() method, the result and the loading state.
  *
  * The return value updates according to the request state:
  *
@@ -39,8 +37,8 @@ const useUpdate = (
     options?: any
 ) =>
     useMutation(
-        { type: UPDATE, resource, payload: { id, data, previousData } },
-        { ...options, action: CRUD_UPDATE }
+        { type: 'update', resource, payload: { id, data, previousData } },
+        options
     );
 
 export default useUpdate;

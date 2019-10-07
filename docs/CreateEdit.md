@@ -358,7 +358,7 @@ to change this behaviour you can pass `false` for the `submitOnEnter` property, 
 
 Here are all the props accepted by the `<SimpleForm>` component:
 
-* [`defaultValue`](#default-values)
+* [`initialValues`](#default-values)
 * [`validate`](#validation)
 * [`submitOnEnter`](#submit-on-enter)
 * [`redirect`](#redirection-after-submission)
@@ -391,7 +391,7 @@ to change this behaviour you can pass `false` for the `submitOnEnter` property.
 
 Here are all the props accepted by the `<TabbedForm>` component:
 
-* [`defaultValue`](#default-values)
+* [`initialValues`](#default-values)
 * [`validate`](#validation)
 * [`submitOnEnter`](#submit-on-enter)
 * [`redirect`](#redirection-after-submission)
@@ -467,17 +467,19 @@ export const PostEdit = (props) => (
 
 ## Default Values
 
-To define default values, you can add a `defaultValue` prop to form components (`<SimpleForm>`, `<Tabbedform>`, etc.), or add a `defaultValue` to individual input components. Let's see each of these options.
+To define default values, you can add a `initialValues` prop to form components (`<SimpleForm>`, `<Tabbedform>`, etc.), or add a `defaultValue` to individual input components. Let's see each of these options.
+
+**Note**: on RA v2 the `initialValues` used to be named `defaultValue`
 
 ### Global Default Value
 
-The value of the form `defaultValue` prop can be an object, or a function returning an object, specifying default values for the created record. For instance:
+The value of the form `initialValues` prop is an object, or a function returning an object, specifying default values for the created record. For instance:
 
 ```jsx
 const postDefaultValue = { created_at: new Date(), nb_views: 0 };
 export const PostCreate = (props) => (
     <Create {...props}>
-        <SimpleForm defaultValue={postDefaultValue}>
+        <SimpleForm initialValues={postDefaultValue}>
             <TextInput source="title" />
             <RichTextInput source="body" />
             <NumberInput source="nb_views" />
@@ -486,11 +488,11 @@ export const PostCreate = (props) => (
 );
 ```
 
-**Tip**: You can include properties in the form `defaultValue` that are not listed as input components, like the `created_at` property in the previous example.
+**Tip**: You can include properties in the form `initialValues` that are not listed as input components, like the `created_at` property in the previous example.
 
 ### Per Input Default Value
 
-Alternatively, you can specify a `defaultValue` prop directly in `<Input>` components. Just like for form-level default values, an input-level default value can be a scalar, or a function returning a scalar.  React-admin will merge the input default values with the form default value (input > form):
+Alternatively, you can specify a `defaultValue` prop directly in `<Input>` components. Default value can be a scalar, or a function returning a scalar.  React-admin will merge the input default values with the form default value (input > form):
 
 ```jsx
 export const PostCreate = (props) => (
@@ -630,7 +632,7 @@ const validateStock = [required(), number(), minValue(0)];
 
 export const ProductEdit = ({ ...props }) => (
     <Edit {...props}>
-        <SimpleForm defaultValue={{ stock: 0 }}>
+        <SimpleForm initialValues={{ stock: 0 }}>
             ...
             {/* do this */}
             <NumberInput source="stock" validate={validateStock} />
@@ -886,11 +888,11 @@ export const UserEdit = props => {
 
 ## Displaying Fields or Inputs depending on the user permissions
 
-You might want to display some fields, inputs or filters only to users with specific permissions. Those permissions are retrieved for each route and will provided to your component as a `permissions` prop.
+You might want to display some fields, inputs or filters only to users with specific permissions. 
 
-Each route will call the `authProvider` with the `AUTH_GET_PERMISSIONS` type and some parameters including the current location and route parameters. It's up to you to return whatever you need to check inside your component such as the user's role, etc.
+Before rendering the `Create` and `Edit` components, react-admin calls the `authProvider.getPermissions()` method, and passes the result to the component as the `permissions` prop. It's up to your `authProvider` to return whatever you need to check roles and permissions inside your component.
 
-Here's an example inside a `Create` view with a `SimpleForm` and a custom `Toolbar`:
+Here is an example inside a `Create` view with a `SimpleForm` and a custom `Toolbar`:
 
 {% raw %}
 ```jsx
@@ -914,7 +916,7 @@ export const UserCreate = ({ permissions, ...props }) =>
     <Create {...props}>
         <SimpleForm
             toolbar={<UserCreateToolbar permissions={permissions} />}
-            defaultValue={{ role: 'user' }}
+            initialValues={{ role: 'user' }}
         >
             <TextInput source="name" validate={[required()]} />
             {permissions === 'admin' &&
@@ -932,7 +934,7 @@ This also works inside an `Edition` view with a `TabbedForm`, and you can hide a
 ```jsx
 export const UserEdit = ({ permissions, ...props }) =>
     <Edit title={<UserTitle />} {...props}>
-        <TabbedForm defaultValue={{ role: 'user' }}>
+        <TabbedForm initialValues={{ role: 'user' }}>
             <FormTab label="user.form.summary">
                 {permissions === 'admin' && <TextInput disabled source="id" />}
                 <TextInput source="name" validate={required()} />
@@ -945,3 +947,108 @@ export const UserEdit = ({ permissions, ...props }) =>
     </Edit>;
 ```
 {% endraw %}
+
+## Altering the Form Values before Submitting
+
+Sometimes, you may want your custom action to alter the form values before actually sending them to the `dataProvider`.
+For those cases, you should know that every button inside a form [Toolbar](/CreateEdit.md#toolbar) receive two props:
+
+- `handleSubmit` which calls the default form save method
+- `handleSubmitWithRedirect` which calls the default form save method but allows to specify a custom redirection
+
+Knowing this, there are two ways to alter the form values before submit:
+
+1. Using react-final-form API to send change events
+
+```jsx
+import React, { useCallback } from 'react';
+import { useForm } from 'react-final-form';
+import { SaveButton, Toolbar, useCreate, useRedirect, useNotify } from 'react-admin';
+
+const SaveWithNoteButton = ({ handleSubmitWithRedirect, ...props }) => {
+    const [create] = useCreate('posts');
+    const redirectTo = useRedirect();
+    const notify = useNotify();
+    const { basePath, redirect } = props;
+
+    const form = useForm();
+
+    const handleClick = useCallback(() => {
+        form.change('average_note', 10);
+
+        handleSubmitWithRedirect('edit');
+    }, [form]);
+
+    return <SaveButton {...props} handleSubmitWithRedirect={handleClick} />;
+};
+```
+
+2. Using react-admin hooks to run custom mutations
+
+For instance, in the `simple` example:
+
+```jsx
+import React, { useCallback } from 'react';
+import { useFormState } from 'react-final-form';
+import { SaveButton, Toolbar, useCreate, useRedirect, useNotify } from 'react-admin';
+
+const SaveWithNoteButton = props => {
+    const [create] = useCreate('posts');
+    const redirectTo = useRedirect();
+    const notify = useNotify();
+    const { basePath, redirect } = props;
+
+    const formState = useFormState();
+    const handleClick = useCallback(() => {
+        if (!formState.valid) {
+            return;
+        }
+
+        create(
+            {
+                data: { ...formState.values, average_note: 10 },
+            },
+            {
+                onSuccess: ({ data: newRecord }) => {
+                    notify('ra.notification.created', 'info', {
+                        smart_count: 1,
+                    });
+                    redirectTo(redirect, basePath, newRecord.id, newRecord);
+                },
+            }
+        );
+    }, [
+        formState.valid,
+        formState.values,
+        create,
+        notify,
+        redirectTo,
+        redirect,
+        basePath,
+    ]);
+
+    return <SaveButton {...props} handleSubmitWithRedirect={handleClick} />;
+};
+```
+
+This button can be used in the `PostCreateToolbar` component:
+
+```jsx
+const PostCreateToolbar = props => (
+    <Toolbar {...props}>
+        <SaveButton
+            label="post.action.save_and_show"
+            redirect="show"
+            submitOnEnter={true}
+        />
+        <SaveWithNoteButton
+            label="post.action.save_with_average_note"
+            redirect="show"
+            submitOnEnter={false}
+            variant="text"
+        />
+    </Toolbar>
+);
+```
+
+**Note**: This technique will not trigger a form validation pass.

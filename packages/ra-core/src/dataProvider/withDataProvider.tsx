@@ -10,19 +10,23 @@ export interface DataProviderProps {
 /**
  * Higher-order component for fetching the dataProvider
  *
- * Injects a dataProvider function prop, which behaves just like
- * the dataProvider function (same signature, returns a Promise), but
- * uses Redux under the hood. The benefit is that react-admin tracks
- * the loading state when using this function, and shows the loader animation
- * while the dataProvider is waiting for a response.
+ * Injects a dataProvider object, which behaves just like the real dataProvider
+ * (same methods returning a Promise). But it's actually a Proxy object, which
+ * dispatches Redux actions along the process. The benefit is that react-admin
+ * tracks the loading state when using this hook, and stores results in the
+ * Redux store for future use.
  *
- * In addition to the 3 parameters of the dataProvider function (verb, resource, payload),
- * the injected dataProvider prop accepts a fourth parameter, an object literal
- * which may contain side effects, of make the action optimistic (with undoable: true).
+ * In addition to the 2 usual parameters of the dataProvider methods (resource,
+ * payload), the Proxy supports a third parameter for every call. It's an
+ * object literal which may contain side effects, or make the action optimistic
+ * (with undoable: true).
+ *
+ * @see useDataProvider
  *
  * @example
  *
  * import { withDataProvider, showNotification } from 'react-admin';
+ *
  * class PostList extends Component {
  *     state = {
  *         posts: [],
@@ -30,7 +34,7 @@ export interface DataProviderProps {
  *
  *     componentDidMount() {
  *         const { dataProvider, dispatch } = this.props;
- *         dataProvider('GET_LIST', 'posts', { filter: { status: 'pending' }})
+ *         dataProvider.getList('posts', { filter: { status: 'pending' }})
  *            .then(({ data: posts }) => this.setState({ posts }))
  *            .catch(error => dispatch(showNotification(error.message, 'error')))
  *     }

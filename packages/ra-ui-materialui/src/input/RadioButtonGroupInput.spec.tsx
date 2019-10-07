@@ -2,7 +2,7 @@ import React from 'react';
 import expect from 'expect';
 import { render, cleanup, fireEvent } from '@testing-library/react';
 import { Form } from 'react-final-form';
-import { TranslationContext } from 'ra-core';
+import { TestTranslationProvider } from 'ra-core';
 
 import RadioButtonGroupInput from './RadioButtonGroupInput';
 
@@ -31,11 +31,11 @@ describe('<RadioButtonGroupInput />', () => {
             />
         );
         expect(queryByText('Credit card')).not.toBeNull();
-        const input1 = getByLabelText('VISA');
+        const input1 = getByLabelText('VISA') as HTMLInputElement;
         expect(input1.type).toBe('radio');
         expect(input1.name).toBe('type');
         expect(input1.checked).toBeFalsy();
-        const input2 = getByLabelText('Mastercard');
+        const input2 = getByLabelText('Mastercard') as HTMLInputElement;
         expect(input2.type).toBe('radio');
         expect(input2.name).toBe('type');
         expect(input2.checked).toBeFalsy();
@@ -49,8 +49,12 @@ describe('<RadioButtonGroupInput />', () => {
                 render={() => <RadioButtonGroupInput {...defaultProps} />}
             />
         );
-        expect(getByLabelText('VISA').checked).toBeFalsy();
-        expect(getByLabelText('Mastercard').checked).toBeTruthy();
+        expect(
+            (getByLabelText('VISA') as HTMLInputElement).checked
+        ).toBeFalsy();
+        expect(
+            (getByLabelText('Mastercard') as HTMLInputElement).checked
+        ).toBeTruthy();
     });
 
     it('should use optionValue as value identifier', () => {
@@ -66,7 +70,9 @@ describe('<RadioButtonGroupInput />', () => {
                 )}
             />
         );
-        expect(getByLabelText('Mastercard').value).toBe('mc');
+        expect((getByLabelText('Mastercard') as HTMLInputElement).value).toBe(
+            'mc'
+        );
     });
 
     it('should use optionValue including "." as value identifier', () => {
@@ -84,7 +90,9 @@ describe('<RadioButtonGroupInput />', () => {
                 )}
             />
         );
-        expect(getByLabelText('Mastercard').value).toBe('mc');
+        expect((getByLabelText('Mastercard') as HTMLInputElement).value).toBe(
+            'mc'
+        );
     });
 
     it('should use optionText with a string value as text identifier', () => {
@@ -138,7 +146,9 @@ describe('<RadioButtonGroupInput />', () => {
     });
 
     it('should use optionText with an element value as text identifier', () => {
-        const Foobar = ({ record }) => <span>{record.longname}</span>;
+        const Foobar = ({ record }: { record?: any }) => (
+            <span>{record.longname}</span>
+        );
         const { queryByText } = render(
             <Form
                 onSubmit={jest.fn}
@@ -156,11 +166,7 @@ describe('<RadioButtonGroupInput />', () => {
 
     it('should translate the choices by default', () => {
         const { queryByText } = render(
-            <TranslationContext.Provider
-                value={{
-                    translate: x => `**${x}**`,
-                }}
-            >
+            <TestTranslationProvider translate={x => `**${x}**`}>
                 <Form
                     onSubmit={jest.fn}
                     render={() => (
@@ -170,18 +176,14 @@ describe('<RadioButtonGroupInput />', () => {
                         />
                     )}
                 />
-            </TranslationContext.Provider>
+            </TestTranslationProvider>
         );
         expect(queryByText('**Mastercard**')).not.toBeNull();
     });
 
     it('should not translate the choices if translateChoice is false', () => {
         const { queryByText } = render(
-            <TranslationContext.Provider
-                value={{
-                    translate: x => `**${x}**`,
-                }}
-            >
+            <TestTranslationProvider translate={x => `**${x}**`}>
                 <Form
                     onSubmit={jest.fn}
                     render={() => (
@@ -192,7 +194,7 @@ describe('<RadioButtonGroupInput />', () => {
                         />
                     )}
                 />
-            </TranslationContext.Provider>
+            </TestTranslationProvider>
         );
         expect(queryByText('**Mastercard**')).toBeNull();
         expect(queryByText('Mastercard')).not.toBeNull();
@@ -250,7 +252,7 @@ describe('<RadioButtonGroupInput />', () => {
                 />
             );
 
-            const input = getByLabelText('Mastercard');
+            const input = getByLabelText('Mastercard') as HTMLInputElement;
             fireEvent.click(input);
             expect(input.checked).toBe(true);
 
@@ -276,13 +278,15 @@ describe('<RadioButtonGroupInput />', () => {
                     )}
                 />
             );
-            const input = getByLabelText('Mastercard');
+            const input = getByLabelText('Mastercard') as HTMLInputElement;
             fireEvent.click(input);
             expect(input.checked).toBe(true);
 
             fireEvent.blur(input);
 
-            expect(getByText('ra.validation.error')).toBeDefined();
+            const error = getByText('ra.validation.error');
+            expect(error).toBeDefined();
+            expect(error.classList.contains('Mui-error')).toEqual(true);
             expect(queryByText('Can I help you?')).toBeNull();
         });
     });

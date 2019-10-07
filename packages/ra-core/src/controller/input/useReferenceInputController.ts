@@ -1,3 +1,6 @@
+import { useEffect } from 'react';
+import isEqual from 'lodash/isEqual';
+
 import { getStatusForInput as getDataStatus } from './referenceDataStatus';
 import useTranslate from '../../i18n/useTranslate';
 import { Sort, Record, Pagination } from '../../types';
@@ -42,7 +45,7 @@ interface Option {
  * A hook for choosing a reference record. Useful for foreign keys.
  *
  * This hook fetches the possible values in the reference resource
- * (using the `CRUD_GET_MATCHING` REST method), it returns the possible choices
+ * (using `dataProvider.getMatching()`), it returns the possible choices
  * as the `choices` attribute.
  *
  * @example
@@ -84,12 +87,14 @@ const useReferenceInputController = ({
     filterToQuery,
     referenceSource = defaultReferenceSource,
     resource,
+    sort: sortOverride,
     source,
 }: Option): ReferenceInputValue => {
     const translate = useTranslate();
 
     const { pagination, setPagination } = usePaginationState({ perPage });
-    const { sort, setSort } = useSortState();
+    const { sort, setSort } = useSortState(sortOverride);
+
     const { filter: filterValue, setFilter } = useFilterState({
         permanentFilter: filter,
         filterToQuery,

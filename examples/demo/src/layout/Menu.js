@@ -4,7 +4,6 @@ import { useSelector } from 'react-redux';
 import SettingsIcon from '@material-ui/icons/Settings';
 import LabelIcon from '@material-ui/icons/Label';
 import { useMediaQuery } from '@material-ui/core';
-import { withRouter } from 'react-router-dom';
 import { useTranslate, DashboardMenuItem, MenuItemLink } from 'react-admin';
 
 import visitors from '../visitors';
@@ -15,7 +14,7 @@ import categories from '../categories';
 import reviews from '../reviews';
 import SubMenu from './SubMenu';
 
-const Menu = ({ onMenuClick, logout }) => {
+const Menu = ({ onMenuClick, dense, logout }) => {
     const [state, setState] = useState({
         menuCatalog: false,
         menuSales: false,
@@ -25,7 +24,6 @@ const Menu = ({ onMenuClick, logout }) => {
     const isXsmall = useMediaQuery(theme => theme.breakpoints.down('xs'));
     const open = useSelector(state => state.admin.ui.sidebarOpen);
     useSelector(state => state.theme); // force rerender on theme change
-    useSelector(state => state.i18n.locale); // force rerender on locale change
 
     const handleToggle = menu => {
         setState(state => ({ ...state, [menu]: !state[menu] }));
@@ -41,6 +39,7 @@ const Menu = ({ onMenuClick, logout }) => {
                 sidebarIsOpen={open}
                 name="pos.menu.sales"
                 icon={<orders.icon />}
+                dense={dense}
             >
                 <MenuItemLink
                     to={`/commands`}
@@ -50,6 +49,7 @@ const Menu = ({ onMenuClick, logout }) => {
                     leftIcon={<orders.icon />}
                     onClick={onMenuClick}
                     sidebarIsOpen={open}
+                    dense={dense}
                 />
                 <MenuItemLink
                     to={`/invoices`}
@@ -59,6 +59,7 @@ const Menu = ({ onMenuClick, logout }) => {
                     leftIcon={<invoices.icon />}
                     onClick={onMenuClick}
                     sidebarIsOpen={open}
+                    dense={dense}
                 />
             </SubMenu>
             <SubMenu
@@ -67,6 +68,7 @@ const Menu = ({ onMenuClick, logout }) => {
                 sidebarIsOpen={open}
                 name="pos.menu.catalog"
                 icon={<products.icon />}
+                dense={dense}
             >
                 <MenuItemLink
                     to={`/products`}
@@ -76,6 +78,7 @@ const Menu = ({ onMenuClick, logout }) => {
                     leftIcon={<products.icon />}
                     onClick={onMenuClick}
                     sidebarIsOpen={open}
+                    dense={dense}
                 />
                 <MenuItemLink
                     to={`/categories`}
@@ -85,6 +88,7 @@ const Menu = ({ onMenuClick, logout }) => {
                     leftIcon={<categories.icon />}
                     onClick={onMenuClick}
                     sidebarIsOpen={open}
+                    dense={dense}
                 />
             </SubMenu>
             <SubMenu
@@ -93,6 +97,7 @@ const Menu = ({ onMenuClick, logout }) => {
                 sidebarIsOpen={open}
                 name="pos.menu.customers"
                 icon={<visitors.icon />}
+                dense={dense}
             >
                 <MenuItemLink
                     to={`/customers`}
@@ -102,6 +107,7 @@ const Menu = ({ onMenuClick, logout }) => {
                     leftIcon={<visitors.icon />}
                     onClick={onMenuClick}
                     sidebarIsOpen={open}
+                    dense={dense}
                 />
                 <MenuItemLink
                     to={`/segments`}
@@ -111,6 +117,7 @@ const Menu = ({ onMenuClick, logout }) => {
                     leftIcon={<LabelIcon />}
                     onClick={onMenuClick}
                     sidebarIsOpen={open}
+                    dense={dense}
                 />
             </SubMenu>
             <MenuItemLink
@@ -121,7 +128,7 @@ const Menu = ({ onMenuClick, logout }) => {
                 leftIcon={<reviews.icon />}
                 onClick={onMenuClick}
                 sidebarIsOpen={open}
-                dense
+                dense={dense}
             />
             {isXsmall && (
                 <MenuItemLink
@@ -130,7 +137,7 @@ const Menu = ({ onMenuClick, logout }) => {
                     leftIcon={<SettingsIcon />}
                     onClick={onMenuClick}
                     sidebarIsOpen={open}
-                    dense
+                    dense={dense}
                 />
             )}
             {isXsmall && logout}
@@ -143,4 +150,4 @@ Menu.propTypes = {
     logout: PropTypes.object,
 };
 
-export default withRouter(Menu);
+export default Menu;

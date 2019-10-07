@@ -687,25 +687,30 @@ The `List` component accepts the usual `className` prop but you can override man
 
 Here is an example of how you can override some of these classes:
 
-You can customize the list styles by passing a `classes` object as prop, through `withStyles()`. Here is an example:
+You can customize the list styles by passing a `classes` object as prop, through `useStyles()`. Here is an example:
 
 {% raw %}
 ```jsx
-const styles = {
+import { makeStyles } from '@material-ui/core';
+
+const useStyles = makeStyles({
     header: {
         backgroundColor: '#ccc',
     },
-};
+});
 
-const PostList = ({ classes, ...props }) => (
-    <List {...props} classes={{ header: classes.header }}>
-        <Datagrid>
-            ...
-        </Datagrid>
-    </List>
-);
+const PostList = props => {
+    const classes = useStyles();
+    return (
+        <List {...props} classes={{ header: classes.header }}>
+            <Datagrid>
+                ...
+            </Datagrid>
+        </List>
+    );
+}
 
-export withStyles(styles)(PostList);
+export PostList;
 ```
 {% endraw %}
 
@@ -974,56 +979,64 @@ The `Datagrid` component accepts the usual `className` prop but you can override
 
 Here is an example of how you can override some of these classes:
 
-You can customize the datagrid styles by passing a `classes` object as prop, through `withStyles()`. Here is an example:
+You can customize the datagrid styles by passing a `classes` object as prop, through `useStyles()`. Here is an example:
 
 {% raw %}
 ```jsx
-const styles = {
+import { makeStyles } from '@material-ui/core';
+
+const useStyles = makeStyles({
     row: {
         backgroundColor: '#ccc',
     },
-};
+});
 
-const PostList = ({ classes, ...props) => (
-    <List {...props}>
-        <Datagrid classes={{ row: classes.row }}>
-            ...
-        </Datagrid>
-    </List>
-);
+const PostList = props => {
+    const classes = useStyles();
+    return (
+        <List {...props}>
+            <Datagrid classes={{ row: classes.row }}>
+                ...
+            </Datagrid>
+        </List>
+    );
+}
 
-export withStyles(styles)(PostList);
+export PostList;
 ```
 {% endraw %}
 
 **Tip**: If you want to override the `header` and `cell` styles independently for each column, use the `headerClassName` and `cellClassName` props in `<Field>` components. For instance, to hide a certain column on small screens:
 
 ```jsx
-import { withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core';
 
-const styles = theme => ({
+const useStyles = makeStyles(theme => ({
     hiddenOnSmallScreens: {
         [theme.breakpoints.down('md')]: {
             display: 'none',
         },
     },
-});
+}));
 
-const PostList = ({ classes, ...props }) => (
-    <List {...props}>
-        <Datagrid>
-            <TextField source="id" />
-            <TextField source="title" />
-            <TextField
-                source="views"
-                headerClassName={classes.hiddenOnSmallScreens}
-                cellClassName={classes.hiddenOnSmallScreens}
-            />
-        </Datagrid>
-    </List>
-);
+const PostList = props => {
+    const classes = usestyles();
+    return (
+        <List {...props}>
+            <Datagrid>
+                <TextField source="id" />
+                <TextField source="title" />
+                <TextField
+                    source="views"
+                    headerClassName={classes.hiddenOnSmallScreens}
+                    cellClassName={classes.hiddenOnSmallScreens}
+                />
+            </Datagrid>
+        </List>
+    );
+};
 
-export default withStyles(styles)(PostList);
+export default PostList;
 ```
 
 ## The `<SimpleList>` component
@@ -1268,9 +1281,9 @@ As you can see, nothing prevents you from using `<Field>` components inside your
 
 ## Displaying Fields depending on the user permissions
 
-You might want to display some fields or filters only to users with specific permissions. Those permissions are retrieved for each route and will provided to your component as a `permissions` prop.
+You might want to display some fields or filters only to users with specific permissions. 
 
-Each route will call the `authProvider` with the `AUTH_GET_PERMISSIONS` type and some parameters including the current location and route parameters. It's up to you to return whatever you need to check inside your component such as the user's role, etc.
+Before rendering the `List`, react-admin calls the `authProvider.getPermissions()` method, and passes the result to the component as the `permissions` prop. It's up to your `authProvider` to return whatever you need to check roles and permissions inside your component.
 
 {% raw %}
 ```jsx
@@ -1314,4 +1327,4 @@ export const UserList = ({ permissions, ...props }) => {
 ```
 {% endraw %}
 
-**Tip** Note how the `permissions` prop is passed down to the custom `filters` component.
+**Tip**: Note how the `permissions` prop is passed down to the custom `filters` component.

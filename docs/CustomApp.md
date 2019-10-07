@@ -57,6 +57,14 @@ export default ({
 }: Params) => {
     const appReducer = createAppReducer(customReducers, history);
 
+    const reducer = combineReducers({
+        admin: adminReducer,
+        router: connectRouter(history),
+        { /* add your own reducers here */ },
+    });
+    const resettableAppReducer = (state, action) =>
+        reducer(action.type !== USER_LOGOUT ? state : undefined, action);
+
     const resettableAppReducer = (state, action) =>
         appReducer(
             action.type !== CLEAR_STATE
@@ -74,7 +82,7 @@ export default ({
                   },
             action
         );
-        const saga = function* rootSaga() {
+    const saga = function* rootSaga() {
         yield all(
             [
                 adminSaga(dataProvider, authProvider),

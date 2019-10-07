@@ -1,10 +1,11 @@
 import React, { Children, cloneElement, isValidElement } from 'react';
 import PropTypes from 'prop-types';
 import Divider from '@material-ui/core/Divider';
-import { withRouter, Route } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 
-import TabbedShowLayoutTabs from './TabbedShowLayoutTabs';
+import TabbedShowLayoutTabs, { getTabFullPath } from './TabbedShowLayoutTabs';
+import { useRouteMatch } from 'react-router';
 
 const sanitizeRestProps = ({
     children,
@@ -19,11 +20,6 @@ const sanitizeRestProps = ({
     tabs,
     ...rest
 }) => rest;
-
-const getTabFullPath = (tab, index, baseUrl) =>
-    `${baseUrl}${
-        tab.props.path ? `/${tab.props.path}` : index > 0 ? `/${index}` : ''
-    }`;
 
 const useStyles = makeStyles(theme => ({
     content: {
@@ -77,8 +73,6 @@ const TabbedShowLayout = ({
     children,
     classes: classesOverride,
     className,
-    location,
-    match,
     record,
     resource,
     version,
@@ -86,19 +80,12 @@ const TabbedShowLayout = ({
     tabs,
     ...rest
 }) => {
+    const match = useRouteMatch();
+
     const classes = useStyles({ classes: classesOverride });
     return (
         <div className={className} key={version} {...sanitizeRestProps(rest)}>
-            {cloneElement(
-                tabs,
-                {
-                    // The location pathname will contain the page path including the current tab path
-                    // so we can use it as a way to determine the current tab
-                    value: location.pathname,
-                    match,
-                },
-                children
-            )}
+            {cloneElement(tabs, {}, children)}
 
             <Divider />
             <div className={classes.content}>
@@ -140,4 +127,4 @@ TabbedShowLayout.defaultProps = {
     tabs: <TabbedShowLayoutTabs />,
 };
 
-export default withRouter(TabbedShowLayout);
+export default TabbedShowLayout;
