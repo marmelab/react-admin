@@ -1,17 +1,26 @@
-import React, { cloneElement, Component } from 'react';
+import React, { cloneElement, Component, Children } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { withStyles } from '@material-ui/core/styles';
+import LinearProgress from '@material-ui/core/LinearProgress';
+import { createStyles, withStyles } from '@material-ui/core/styles';
 import { linkToRecord } from 'ra-core';
 
 import Link from '../Link';
 
-const styles = {
+const styles = createStyles({
     root: { display: 'flex', flexWrap: 'wrap' },
-};
+});
 
-const sanitizeRestProps = ({ currentSort, setSort, isLoading, ...props }) =>
-    props;
+// useful to prevent click bubbling in a datagrid with rowClick
+const stopPropagation = e => e.stopPropagation();
+
+const sanitizeRestProps = ({
+    currentSort,
+    setSort,
+    isLoading,
+    loadedOnce,
+    ...props
+}) => props;
 
 /**
  * Iterator component to be used to display a list of entities, using a single field
@@ -22,7 +31,7 @@ const sanitizeRestProps = ({ currentSort, setSort, isLoading, ...props }) =>
  *         <ChipField source="title" />
  *     </SingleFieldList>
  * </ReferenceManyField>
- * 
+ *
  * By default, it includes a link to the <Edit> page of the related record
  * (`/books/:id` in the previous example).
  *
@@ -44,7 +53,6 @@ const sanitizeRestProps = ({ currentSort, setSort, isLoading, ...props }) =>
  *         <ChipField source="title" />
  *     </SingleFieldList>
  * </ReferenceManyField>
-
  */
 export class SingleFieldList extends Component {
     // Our handleClick does nothing as we wrap the children inside a Link but it is
@@ -57,12 +65,17 @@ export class SingleFieldList extends Component {
             className,
             ids,
             data,
+            loadedOnce,
             resource,
             basePath,
             children,
             linkType,
             ...rest
         } = this.props;
+
+        if (loadedOnce === false) {
+            return <LinearProgress />;
+        }
 
         return (
             <div
@@ -80,8 +93,9 @@ export class SingleFieldList extends Component {
                                 className={classnames(classes.link, className)}
                                 key={id}
                                 to={resourceLinkPath}
+                                onClick={stopPropagation}
                             >
-                                {cloneElement(children, {
+                                {cloneElement(Children.only(children), {
                                     record: data[id],
                                     resource,
                                     basePath,
@@ -92,7 +106,7 @@ export class SingleFieldList extends Component {
                         );
                     }
 
-                    return cloneElement(children, {
+                    return cloneElement(Children.only(children), {
                         key: id,
                         record: data[id],
                         resource,

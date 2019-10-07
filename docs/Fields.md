@@ -149,9 +149,21 @@ import { BooleanField } from 'react-admin';
 
 ![BooleanField](./img/boolean-field.png)
 
+The `BooleanField` also includes an hidden text for accessibility (or to query in end to end tests). By default, it includes the translated label and the translated value, for example `Published: false`.
+
+If you need to override it, you can use the `valueLabelTrue` and `valueLabelFalse` props which both accept a string. Those strings may be translation keys:
+
+```jsx
+// Simple texts
+<BooleanField source="published" valueLabelTrue="Has been published" valueLabelFalse="Has not been published yet" />
+
+// Translation keys
+<BooleanField source="published" valueLabelTrue="myapp.published.true" valueLabelFalse="myapp.published.false" />
+```
+
 ## `<ChipField>`
 
-Displays a value inside a ["Chip"](http://www.material-ui.com/#/components/chip), which is Material UI's term for a label.
+Displays a value inside a ["Chip"](http://v1.material-ui.com/demos/chip), which is Material UI's term for a label.
 
 ```jsx
 import { ChipField } from 'react-admin';
@@ -395,8 +407,6 @@ By default, the text is built by
 - finding a choice where the 'id' property equals the field value
 - using the 'name' property an the option text
 
-**Warning**: This component name may conflict with material-ui's [`<SelectField>`](http://www.material-ui.com/#/components/select-field) if you import both.
-
 You can also customize the properties to use for the lookup value and text, thanks to the 'optionValue' and 'optionText' attributes.
 
 ```jsx
@@ -426,7 +436,7 @@ const choices = [
    { id: 456, first_name: 'Jane', last_name: 'Austen' },
 ];
 const FullNameField = ({ record }) => <Chip>{record.first_name} {record.last_name}</Chip>;
-<SelectField source="gender" choices={choices} optionText={<FullNameField />}/>
+<SelectField source="author_id" choices={choices} optionText={<FullNameField />}/>
 ```
 
 The current choice is translated by default, so you can use translation identifiers as choices:
@@ -534,7 +544,7 @@ Then react-admin renders the `<CommentList>` with a loader for the `<ReferenceFi
 
 ## `<ReferenceManyField>`
 
-This component fetches a list of referenced records by reverse lookup of the current `record.id` in other resource (using the `GET_MANY_REFERENCE` REST method). The field name of the current record's id in the other resource is specified by the required `target` field. The result is then passed to an iterator component (like `<SingleFieldList>` or `<Datagrid>`). The iterator component usually has one or more child `<Field>` components.
+This component fetches a list of referenced records by reverse lookup of the current `record.id` in other resource (using the `GET_MANY_REFERENCE` REST method). You can specify the target field name, i.e. the field name of the current record's id in the other resource, using the required `target` field. The result is then passed to an iterator component (like `<SingleFieldList>` or `<Datagrid>`). The iterator component usually has one or more child `<Field>` components.
 
 For instance, here is how to fetch the `comments` related to a `post` record by matching `comment.post_id` to `post.id`, and then display the `author.name` for each, in a `<ChipField>`:
 
@@ -594,10 +604,20 @@ export const PostEdit = (props) => (
 
 ![ReferenceManyFieldDatagrid](./img/reference-many-field-datagrid.png)
 
-By default, react-admin restricts the possible values to 25. You can change this limit by setting the `perPage` prop.
+By default, react-admin restricts the possible values to 25 and displays no pagination control. You can change the limit by setting the `perPage` prop:
 
 ```jsx
 <ReferenceManyField perPage={10} reference="comments" target="post_id">
+   ...
+</ReferenceManyField>
+```
+
+And if you want to allow users to paginate the list, pass a `<Pagination>` component as the `pagination` prop:
+
+```jsx
+import { Pagination } from 'react-admin';
+
+<ReferenceManyField pagination={<Pagination />} reference="comments" target="post_id">
    ...
 </ReferenceManyField>
 ```
@@ -747,7 +767,7 @@ import { UrlField } from 'react-admin';
 
 ## Styling Fields
 
-All field components accept a `className` prop, allowing you to customize their style to your liking. We advise you to use the Material UI styling solution, JSS, to generate those classes. See their [documentation](https://material-ui.com/customization/css-in-js/#api) about that.
+All field components accept a `className` prop, allowing you to customize their style to your liking. We advise you to use the Material UI styling solution, JSS, to generate those classes. See their [documentation](https://v1.material-ui.com/customization/css-in-js/#api) about that.
 
 {% raw %}
 ```jsx

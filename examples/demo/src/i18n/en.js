@@ -24,10 +24,15 @@ export default {
             welcome: {
                 title: 'Welcome to react-admin demo',
                 subtitle:
-                    "This is the admin of an imaginary poster shop. Fell free to explore and modify the data - it's local to your computer, and will reset each time you reload.",
+                    "This is the admin of an imaginary poster shop. Feel free to explore and modify the data - it's local to your computer, and will reset each time you reload.",
                 aor_button: 'react-admin site',
                 demo_button: 'Source for this demo',
             },
+        },
+        menu: {
+            sales: 'Sales',
+            catalog: 'Catalog',
+            customers: 'Customers',
         },
     },
     resources: {
@@ -53,6 +58,7 @@ export default {
         },
         commands: {
             name: 'Order |||| Orders',
+            title: 'Order %{reference}',
             fields: {
                 basket: {
                     delivery: 'Delivery',
@@ -69,6 +75,18 @@ export default {
                 total_gte: 'Min amount',
                 status: 'Status',
                 returned: 'Returned',
+            },
+        },
+        invoices: {
+            name: 'Invoice |||| Invoices',
+            fields: {
+                date: 'Invoice date',
+                customer_id: 'Customer',
+                command_id: 'Order',
+                date_gte: 'Passed Since',
+                date_lte: 'Passed Before',
+                total_gte: 'Min amount',
+                address: 'Address',
             },
         },
         products: {
@@ -103,6 +121,7 @@ export default {
         },
         reviews: {
             name: 'Review |||| Reviews',
+            detail: 'Review detail',
             fields: {
                 customer_id: 'Customer',
                 command_id: 'Order',

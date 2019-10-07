@@ -8,7 +8,14 @@ import { Field } from 'redux-form';
 
 import FormInput from './FormInput';
 
-const sanitizeRestProps = ({ label, icon, value, translate, ...rest }) => rest;
+const sanitizeRestProps = ({
+    contentClassName,
+    label,
+    icon,
+    value,
+    translate,
+    ...rest
+}) => rest;
 
 class FormTab extends Component {
     renderHeader = ({ className, label, icon, value, translate, ...rest }) => {
@@ -28,13 +35,24 @@ class FormTab extends Component {
         );
     };
 
-    renderContent = ({ children, ...rest }) => (
+    renderContent = ({
+        contentClassName,
+        children,
+        basePath,
+        record,
+        resource,
+    }) => (
         <Fragment>
             {React.Children.map(
                 children,
                 input =>
                     input && (
-                        <FormInput input={input} {...sanitizeRestProps(rest)} />
+                        <FormInput
+                            basePath={basePath}
+                            input={input}
+                            record={record}
+                            resource={resource}
+                        />
                     )
             )}
         </Fragment>
@@ -65,6 +83,7 @@ class FormTab extends Component {
 
 FormTab.propTypes = {
     className: PropTypes.string,
+    contentClassName: PropTypes.string,
     children: PropTypes.node,
     context: PropTypes.oneOf(['header', 'content']),
     hidden: PropTypes.bool,

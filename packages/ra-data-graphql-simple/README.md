@@ -60,6 +60,7 @@ class App extends Component {
 
 export default App;
 ```
+**Note**: the parser will generate additional `.id` properties for relation based types. These properties should be used as sources for reference based fields and inputs like `ReferenceField`: `<ReferenceField label="Author Name" source="author.id" reference="User">`.
 
 ## Expected GraphQL Schema
 
@@ -139,7 +140,7 @@ The default behavior might not be optimized especially when dealing with referen
 
 ```js
 // in src/dataProvider.js
-import buildGraphqlProvider, { buildQuery } from 'ra-data-simple';
+import buildGraphQLProvider, { buildQuery } from 'ra-data-graphql-simple';
 
 const myBuildQuery = introspection => (fetchType, resource, params) => {
     const builtQuery = buildQuery(introspection)(fetchType, resource, params);
@@ -167,7 +168,7 @@ const myBuildQuery = introspection => (fetchType, resource, params) => {
     return builtQuery;
 }
 
-export default buildGraphqlProvider({ buildQuery: myBuildQuery })
+export default buildGraphQLProvider({ buildQuery: myBuildQuery })
 ```
 
 ### Customize the introspection

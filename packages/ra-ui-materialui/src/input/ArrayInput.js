@@ -1,4 +1,4 @@
-import React, { cloneElement, Component } from 'react';
+import React, { cloneElement, Component, Children } from 'react';
 import PropTypes from 'prop-types';
 import { isRequired, FieldTitle, withDefaultValue } from 'ra-core';
 import { FieldArray } from 'redux-form';
@@ -51,7 +51,7 @@ import sanitizeRestProps from './sanitizeRestProps';
 export class ArrayInput extends Component {
     renderFieldArray = fieldProps => {
         const { children, record, resource, source } = this.props;
-        return cloneElement(children, {
+        return cloneElement(Children.only(children), {
             ...fieldProps,
             record,
             resource,
@@ -107,7 +107,10 @@ ArrayInput.propTypes = {
     source: PropTypes.string,
     record: PropTypes.object,
     options: PropTypes.object,
-    validate: PropTypes.func,
+    validate: PropTypes.oneOfType([
+        PropTypes.func,
+        PropTypes.arrayOf(PropTypes.func),
+    ]),
 };
 
 ArrayInput.defaultProps = {

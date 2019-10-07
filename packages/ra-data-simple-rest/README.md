@@ -18,7 +18,7 @@ This Data Provider fits REST APIs using simple GET parameters for filters and so
 |----------------------|----------------------------------------------------------------
 | `GET_LIST`           | `GET http://my.api.url/posts?sort=['title','ASC']&range=[0, 24]&filter={title:'bar'}`
 | `GET_ONE`            | `GET http://my.api.url/posts/123`
-| `CREATE`             | `POST http://my.api.url/posts/123`
+| `CREATE`             | `POST http://my.api.url/posts`
 | `UPDATE`             | `PUT http://my.api.url/posts/123`
 | `DELETE`             | `DELETE http://my.api.url/posts/123`
 | `GET_MANY`           | `GET http://my.api.url/posts?filter={ids:[123,456,789]}`
@@ -98,6 +98,13 @@ const httpClient = (url, options = {}) => {
 ```
 
 Now all the requests to the REST API will contain the `Authorization: SRTRDFVESGNJYTUKTYTHRG` header.
+
+**Note**: In case of REST verb "CREATE" consider that the response body is the same as the request body but with the object ID injected .
+```
+case CREATE:
+return { data: { ...params.data, id: json.id } };
+```
+This is because of backwards compatibility compliance.
 
 ## License
 

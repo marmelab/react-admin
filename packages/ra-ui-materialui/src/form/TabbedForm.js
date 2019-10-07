@@ -1,4 +1,4 @@
-import React, { Children, Component } from 'react';
+import React, { Children, Component, isValidElement } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import {
@@ -12,15 +12,17 @@ import { withRouter, Route } from 'react-router-dom';
 import compose from 'recompose/compose';
 import Divider from '@material-ui/core/Divider';
 import Tabs from '@material-ui/core/Tabs';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, createStyles } from '@material-ui/core/styles';
 import { getDefaultValues, translate, REDUX_FORM_NAME } from 'ra-core';
+import get from 'lodash/get';
 
 import Toolbar from './Toolbar';
 import CardContentInner from '../layout/CardContentInner';
 
-const styles = theme => ({
-    errorTabButton: { color: theme.palette.error.main },
-});
+const styles = theme =>
+    createStyles({
+        errorTabButton: { color: theme.palette.error.main },
+    });
 
 const sanitizeRestProps = ({
     anyTouched,
@@ -57,6 +59,7 @@ const sanitizeRestProps = ({
     touch,
     translate,
     triggerSubmit,
+    undoable,
     untouch,
     valid,
     validate,
@@ -90,13 +93,15 @@ export class TabbedForm extends Component {
             tabsWithErrors,
             toolbar,
             translate,
+            undoable,
             value,
             version,
             ...rest
         } = this.props;
 
+        const url = match ? match.url : location.pathname;
         const validTabPaths = Children.toArray(children).map((tab, index) =>
-            getTabFullPath(tab, index, match.url)
+            getTabFullPath(tab, index, url)
         );
 
         // This ensure we don't get warnings from material-ui Tabs component when
@@ -123,13 +128,13 @@ export class TabbedForm extends Component {
                     indicatorColor="primary"
                 >
                     {Children.map(children, (tab, index) => {
-                        if (!tab) return null;
+                        if (!isValidElement(tab)) return null;
 
                         // Builds the full tab tab which is the concatenation of the last matched route in the
                         // TabbedShowLayout hierarchy (ex: '/posts/create', '/posts/12', , '/posts/12/show')
                         // and the tab path.
                         // This will be used as the Tab's value
-                        const tabPath = getTabFullPath(tab, index, match.url);
+                        const tabPath = getTabFullPath(tab, index, url);
 
                         return React.cloneElement(tab, {
                             context: 'header',
@@ -154,52 +159,51 @@ export class TabbedForm extends Component {
                             tab && (
                                 <Route
                                     exact
-                                    path={getTabFullPath(tab, index, match.url)}
+                                    path={getTabFullPath(tab, index, url)}
                                 >
                                     {routeProps =>
-                                        React.cloneElement(tab, {
-                                            context: 'content',
-                                            resource,
-                                            record,
-                                            basePath,
-                                            hidden: !routeProps.match,
-                                            /**
-                                             * Force redraw when the tab becomes active
-                                             *
-                                             * This is because the fields, decorated by redux-form and connect,
-                                             * aren't redrawn by default when the tab becomes active.
-                                             * Unfortunately, some material-ui fields (like multiline TextField)
-                                             * compute their size based on the scrollHeight of a dummy DOM element,
-                                             * and scrollHeight is 0 in a hidden div. So they must be redrawn
-                                             * once the tab becomes active.
-                                             *
-                                             * @ref https://github.com/marmelab/react-admin/issues/1956
-                                             */
-                                            key: `${index}_${routeProps.url}`,
-                                        })
+                                        isValidElement(tab)
+                                            ? React.cloneElement(tab, {
+                                                context: 'content',
+                                                resource,
+                                                record,
+                                                basePath,
+                                                hidden: !routeProps.match,
+                                                /**
+                                                 * Force redraw when the tab becomes active
+                                                 *
+                                                 * This is because the fields, decorated by redux-form and connect,
+                                                 * aren't redrawn by default when the tab becomes active.
+                                                 * Unfortunately, some material-ui fields (like multiline TextField)
+                                                 * compute their size based on the scrollHeight of a dummy DOM element,
+                                                 * and scrollHeight is 0 in a hidden div. So they must be redrawn
+                                                 * once the tab becomes active.
+                                                 *
+                                                 * @ref https://github.com/marmelab/react-admin/issues/1956
+                                                 */
+                                                key: `${index}_${routeProps.url}`,
+                                            })
+                                            : null
                                     }
                                 </Route>
                             )
                     )}
                 </CardContentInner>
-                {toolbar && (
-                    <CardContentInner>
-                        {React.cloneElement(toolbar, {
-                            basePath,
-                            className: 'toolbar',
-                            handleSubmitWithRedirect: this
-                                .handleSubmitWithRedirect,
-                            handleSubmit: this.props.handleSubmit,
-                            invalid,
-                            pristine,
-                            record,
-                            redirect,
-                            resource,
-                            saving,
-                            submitOnEnter,
-                        })}{' '}
-                    </CardContentInner>
-                )}
+                {toolbar &&
+                    React.cloneElement(toolbar, {
+                        basePath,
+                        className: 'toolbar',
+                        handleSubmitWithRedirect: this.handleSubmitWithRedirect,
+                        handleSubmit: this.props.handleSubmit,
+                        invalid,
+                        pristine,
+                        record,
+                        redirect,
+                        resource,
+                        saving,
+                        submitOnEnter,
+                        undoable,
+                    })}
             </form>
         );
     }
@@ -229,6 +233,7 @@ TabbedForm.propTypes = {
     tabsWithErrors: PropTypes.arrayOf(PropTypes.string),
     toolbar: PropTypes.element,
     translate: PropTypes.func,
+    undoable: PropTypes.bool,
     validate: PropTypes.func,
     value: PropTypes.number,
     version: PropTypes.number,
@@ -259,9 +264,18 @@ export const findTabsWithErrors = (
     const errors = collectErrorsImpl(state, props);
 
     return Children.toArray(props.children).reduce((acc, child) => {
+        if (!isValidElement(child)) {
+            return acc;
+        }
+
         const inputs = Children.toArray(child.props.children);
 
-        if (inputs.some(input => errors[input.props.source])) {
+        if (
+            inputs.some(
+                input =>
+                    isValidElement(input) && get(errors, input.props.source)
+            )
+        ) {
             return [...acc, child.props.label];
         }
 
@@ -273,7 +287,12 @@ const enhance = compose(
     withRouter,
     connect((state, props) => {
         const children = Children.toArray(props.children).reduce(
-            (acc, child) => [...acc, ...Children.toArray(child.props.children)],
+            (acc, child) => [
+                ...acc,
+                ...(isValidElement(child)
+                    ? Children.toArray(child.props.children)
+                    : []),
+            ],
             []
         );
 

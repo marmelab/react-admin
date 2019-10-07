@@ -27,23 +27,26 @@ export default App;
 
 Here are all the props accepted by the component:
 
-* [`dataProvider`](#dataprovider)
-* [`title`](#title)
-* [`dashboard`](#dashboard)
-* [`catchAll`](#catchall)
-* [`menu`](#menu) (deprecated)
-* [`theme`](#theme)
-* [`appLayout`](#applayout)
-* [`customReducers`](#customreducers)
-* [`customSagas`](#customsagas)
-* [`customRoutes`](#customroutes)
-* [`authProvider`](#authprovider)
-* [`loginPage`](#loginpage)
-* [`logoutButton`](#logoutbutton)
-* [`locale`](#internationalization)
-* [`messages`](#internationalization)
-* [`initialState`](#initialstate)
-* [`history`](#history)
+- [The `<Admin>` Component](#the-admin-component)
+    - [`dataProvider`](#dataprovider)
+    - [`title`](#title)
+    - [`dashboard`](#dashboard)
+    - [`catchAll`](#catchall)
+    - [`menu`](#menu)
+    - [`theme`](#theme)
+    - [`appLayout`](#applayout)
+    - [`customReducers`](#customreducers)
+    - [`customSagas`](#customsagas)
+    - [`customRoutes`](#customroutes)
+    - [`authProvider`](#authprovider)
+    - [`loginPage`](#loginpage)
+    - [`logoutButton`](#logoutbutton)
+    - [`initialState`](#initialstate)
+    - [`history`](#history)
+    - [`locale`](#internationalization)
+    - [`i18nProvider`](#internationalization)
+    - [Declaring resources at runtime](#declaring-resources-at-runtime)
+    - [Using react-admin without `<Admin>` and `<Resource>`](#using-react-admin-without-admin-and-resource)
 
 ## `dataProvider`
 
@@ -150,7 +153,7 @@ const App = () => (
 
 ## `menu`
 
-**Tip**: This prop is deprecated. To override the menu component, use a [custom layout](#appLayout) instead.
+**Tip**: This prop is deprecated. To override the menu component, use a [custom layout](#applayout) instead.
 
 React-admin uses the list of `<Resource>` components passed as children of `<Admin>` to build a menu to each resource with a `list` component.
 
@@ -170,8 +173,9 @@ const Menu = ({ resources, onMenuClick, logout }) => (
     <div>
         {resources.map(resource => (
             <MenuItemLink
+                key={resource.name}
                 to={`/${resource.name}`}
-                primaryText={resource.name}
+                primaryText={resource.options && resource.options.label || resource.name}
                 leftIcon={createElement(resource.icon)}
                 onClick={onMenuClick}
             />
@@ -218,7 +222,7 @@ See the [Theming documentation](./Theming.md#using-a-custom-menu) for more detai
 
 ## `theme`
 
-Material UI supports [theming](http://www.material-ui.com/#/customization/themes). This lets you customize the look and feel of an admin by overriding fonts, colors, and spacing. You can provide a custom material ui theme by using the `theme` prop:
+Material UI supports [theming](http://v1.material-ui.com/customization/themes). This lets you customize the look and feel of an admin by overriding fonts, colors, and spacing. You can provide a custom material ui theme by using the `theme` prop:
 
 ```jsx
 import { createMuiTheme } from '@material-ui/core/styles';
@@ -238,7 +242,7 @@ const App = () => (
 
 ![Dark theme](./img/dark-theme.png)
 
-For more details on predefined themes and custom themes, refer to the [Material UI Customization documentation](https://material-ui.com/customization/themes/).
+For more details on predefined themes and custom themes, refer to the [Material UI Customization documentation](https://v1.material-ui.com/customization/themes/).
 
 ## `appLayout`
 
@@ -430,10 +434,12 @@ const Foo = () => (
             ...
         </CardContent>
     </Card>
-));
+);
 
 export default Foo;
 ```
+
+**Tip**: Custom routes can be [a `<Redirect>` route](https://reacttraining.com/react-router/web/api/Redirect), too. 
 
 ## `authProvider`
 
@@ -471,7 +477,11 @@ const App = () => (
 );
 ```
 
+You can also disable it completely along with the `/login` route by passing `false` to this prop.
+
 See The [Authentication documentation](./Authentication.md#customizing-the-login-and-logout-components) for more details.
+
+**Tip**: Before considering to write your own login page component, please take a look at how to change the default [background image](./Theming.md#using-a-custom-login-page) or the [Material UI theme](#theme). See the [Authentication documentation](./Authentication.md#customizing-the-login-and-logout-components) for more details.
 
 ## `logoutButton`
 
@@ -499,7 +509,7 @@ By default, react-admin creates URLs using a hash sign (e.g. "myadmin.acme.com/#
 You can create your own `history` function (compatible with [the `history` npm package](https://github.com/reacttraining/history)), and pass it to the `<Admin>` component to override the default history strategy. For instance, to use `browserHistory`:
 
 ```js
-import createHistory from 'history/createBrowserHistory';
+import { createBrowserHistory as createHistory } from 'history';
 
 const history = createHistory();
 
@@ -512,7 +522,7 @@ const App = () => (
 
 ## Internationalization
 
-The `locale` and `messages` props let you translate the GUI. The [Translation Documentation](./Translation.md) details this process.
+The `locale` and `i18nProvider` props let you translate the GUI. The [Translation Documentation](./Translation.md) details this process.
 
 ## Declaring resources at runtime
 

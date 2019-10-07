@@ -1,7 +1,4 @@
 node_modules
+build
 lib
-example/static
-docs/_site/
-docs/js/
-docs/css/
-
+esm

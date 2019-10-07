@@ -81,7 +81,7 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson) => {
                 break;
             case GET_MANY: {
                 const query = {
-                    [`id_like`]: params.ids.join('|'),
+                    id: params.ids,
                 };
                 url = `${apiUrl}/${resource}?${stringify(query)}`;
                 break;
@@ -121,6 +121,8 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson) => {
                 };
             case CREATE:
                 return { data: { ...params.data, id: json.id } };
+            case DELETE_MANY:
+                return { data: json || [] };
             default:
                 return { data: json };
         }
@@ -138,7 +140,7 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson) => {
             return Promise.all(
                 params.ids.map(id =>
                     httpClient(`${apiUrl}/${resource}/${id}`, {
-                        method: 'PATCH',
+                        method: 'PUT',
                         body: JSON.stringify(params.data),
                     })
                 )

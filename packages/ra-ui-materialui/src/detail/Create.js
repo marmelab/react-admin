@@ -1,11 +1,21 @@
-import React from 'react';
+import React, { Children, cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import Card from '@material-ui/core/Card';
+import { withStyles, createStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
 import { CreateController } from 'ra-core';
 
 import TitleForRecord from '../layout/TitleForRecord';
 import CardContentInner from '../layout/CardContentInner';
+
+const styles = createStyles({
+    root: {
+        display: 'flex',
+    },
+    card: {
+        flex: '1 1 auto',
+    },
+});
 
 const sanitizeRestProps = ({
     actions,
@@ -29,58 +39,72 @@ const sanitizeRestProps = ({
     ...rest
 }) => rest;
 
-export const CreateView = ({
-    actions,
-    basePath,
-    children,
-    className,
-    defaultTitle,
-    hasList,
-    hasShow,
-    record = {},
-    redirect,
-    resource,
-    save,
-    title,
-    ...rest
-}) => (
-    <div
-        className={classnames('create-page', className)}
-        {...sanitizeRestProps(rest)}
-    >
-        <TitleForRecord
-            title={title}
-            record={record}
-            defaultTitle={defaultTitle}
-        />
-        <Card>
-            {actions && (
-                <CardContentInner>
-                    {React.cloneElement(actions, {
-                        basePath,
-                        resource,
-                        hasList,
-                    })}
-                </CardContentInner>
-            )}
-            {React.cloneElement(children, {
-                basePath,
-                record,
-                redirect:
-                    typeof children.props.redirect === 'undefined'
-                        ? redirect
-                        : children.props.redirect,
-                resource,
-                save,
-            })}
-        </Card>
-    </div>
+export const CreateView = withStyles(styles)(
+    ({
+        actions,
+        aside,
+        basePath,
+        children,
+        classes,
+        className,
+        defaultTitle,
+        hasList,
+        hasShow,
+        record = {},
+        redirect,
+        resource,
+        save,
+        title,
+        ...rest
+    }) => (
+        <div
+            className={classnames('create-page', classes.root, className)}
+            {...sanitizeRestProps(rest)}
+        >
+            <TitleForRecord
+                title={title}
+                record={record}
+                defaultTitle={defaultTitle}
+            />
+            <Card className={classes.card}>
+                {actions && (
+                    <CardContentInner>
+                        {cloneElement(actions, {
+                            basePath,
+                            resource,
+                            hasList,
+                            ...actions.props,
+                        })}
+                    </CardContentInner>
+                )}
+                {cloneElement(Children.only(children), {
+                    basePath,
+                    record,
+                    redirect:
+                        typeof children.props.redirect === 'undefined'
+                            ? redirect
+                            : children.props.redirect,
+                    resource,
+                    save,
+                })}
+            </Card>
+            {aside &&
+                cloneElement(aside, {
+                    basePath,
+                    record,
+                    resource,
+                    save,
+                })}
+        </div>
+    )
 );
 
 CreateView.propTypes = {
     actions: PropTypes.element,
+    aside: PropTypes.node,
     basePath: PropTypes.string,
     children: PropTypes.element,
+    classes: PropTypes.object,
     className: PropTypes.string,
     defaultTitle: PropTypes.any,
     hasList: PropTypes.bool,
@@ -90,6 +114,10 @@ CreateView.propTypes = {
     resource: PropTypes.string,
     save: PropTypes.func,
     title: PropTypes.any,
+};
+
+CreateView.defaultProps = {
+    classes: {},
 };
 
 /**
@@ -141,7 +169,9 @@ const Create = props => (
 
 Create.propTypes = {
     actions: PropTypes.element,
+    aside: PropTypes.node,
     children: PropTypes.element,
+    classes: PropTypes.object,
     className: PropTypes.string,
     hasCreate: PropTypes.bool,
     hasEdit: PropTypes.bool,

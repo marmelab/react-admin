@@ -178,7 +178,7 @@ describe('<SingleFieldList />', () => {
 
         const linkElements = wrapper.find('WithStyles(Link)');
         assert.equal(linkElements.length, 0);
-        const chipElements = wrapper.find('WithStyles(pure(ChipField))');
+        const chipElements = wrapper.find('EnhancedChipField');
         assert.equal(chipElements.length, 2);
     });
 });

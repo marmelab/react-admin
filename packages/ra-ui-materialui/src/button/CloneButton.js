@@ -6,12 +6,27 @@ import { Link } from 'react-router-dom';
 
 import Button from './Button';
 
+// useful to prevent click bubbling in a datagrid with rowClick
+const stopPropagation = e => e.stopPropagation();
+
 const omitId = ({ id, ...rest }) => rest;
+
+const sanitizeRestProps = ({
+    // the next 6 props are injected by Toolbar
+    handleSubmit,
+    handleSubmitWithRedirect,
+    invalid,
+    pristine,
+    saving,
+    submitOnEnter,
+    ...rest
+}) => rest;
 
 export const CloneButton = ({
     basePath = '',
     label = 'ra.action.clone',
     record = {},
+    icon = <Queue />,
     ...rest
 }) => (
     <Button
@@ -21,9 +36,10 @@ export const CloneButton = ({
             state: { record: omitId(record) },
         }}
         label={label}
-        {...rest}
+        onClick={stopPropagation}
+        {...sanitizeRestProps(rest)}
     >
-        <Queue />
+        {icon}
     </Button>
 );
 
@@ -33,6 +49,7 @@ CloneButton.propTypes = {
     classes: PropTypes.object,
     label: PropTypes.string,
     record: PropTypes.object,
+    icon: PropTypes.element,
 };
 
 const enhance = shouldUpdate(

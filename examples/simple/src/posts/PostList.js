@@ -2,12 +2,15 @@ import BookIcon from '@material-ui/icons/Book';
 import Chip from '@material-ui/core/Chip';
 import { withStyles } from '@material-ui/core/styles';
 import React, { Children, Fragment, cloneElement } from 'react';
+import lodashGet from 'lodash/get';
+import { unparse as convertToCSV } from 'papaparse/papaparse.min';
 import {
     BooleanField,
     BulkDeleteButton,
     ChipField,
     Datagrid,
     DateField,
+    downloadCSV,
     EditButton,
     Filter,
     List,
@@ -45,6 +48,16 @@ const PostFilter = props => (
     </Filter>
 );
 
+const exporter = posts => {
+    const data = posts.map(post => ({
+        ...post,
+        backlinks: lodashGet(post, 'backlinks', []).map(
+            backlink => backlink.url
+        ),
+    }));
+    return downloadCSV(convertToCSV({ data }), 'posts');
+};
+
 const styles = theme => ({
     title: {
         maxWidth: '20em',
@@ -78,12 +91,25 @@ const PostListActionToolbar = withStyles({
     </div>
 ));
 
+const rowClick = (id, basePath, record) => {
+    if (record.commentable) {
+        return 'edit';
+    }
+
+    return 'show';
+};
+
+const PostPanel = ({ id, record, resource }) => (
+    <div dangerouslySetInnerHTML={{ __html: record.body }} />
+);
+
 const PostList = withStyles(styles)(({ classes, ...props }) => (
     <List
         {...props}
         bulkActionButtons={<PostListBulkActions />}
         filters={<PostFilter />}
         sort={{ field: 'published_at', order: 'DESC' }}
+        exporter={exporter}
     >
         <Responsive
             small={
@@ -96,7 +122,7 @@ const PostList = withStyles(styles)(({ classes, ...props }) => (
                 />
             }
             medium={
-                <Datagrid>
+                <Datagrid rowClick={rowClick} expand={<PostPanel />}>
                     <TextField source="id" />
                     <TextField source="title" cellClassName={classes.title} />
                     <DateField
@@ -114,6 +140,7 @@ const PostList = withStyles(styles)(({ classes, ...props }) => (
                         label="Tags"
                         reference="tags"
                         source="tags"
+                        sortBy="tags.name"
                         cellClassName={classes.hiddenOnSmallScreens}
                         headerClassName={classes.hiddenOnSmallScreens}
                     >

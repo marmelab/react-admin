@@ -11,6 +11,7 @@ describe('<PaginationActions />', () => {
                 rowsPerPage={20}
                 count={15}
                 translate={x => x}
+                onChangePage={() => null}
                 classes={{}}
             />
         );
@@ -24,6 +25,7 @@ describe('<PaginationActions />', () => {
                 rowsPerPage={5}
                 count={15}
                 translate={x => x}
+                onChangePage={() => null}
                 classes={{}}
             />
         );
@@ -38,6 +40,7 @@ describe('<PaginationActions />', () => {
                 rowsPerPage={1}
                 count={15}
                 translate={x => x}
+                onChangePage={() => null}
                 classes={{}}
             />
         );

@@ -34,7 +34,7 @@ describe('<FileInput />', () => {
     });
 
     it('should correctly update upon drop when allowing a single file', () => {
-        const onChange = jest.fn();
+        const onBlur = jest.fn();
 
         const wrapper = shallow(
             <FileInput
@@ -42,7 +42,7 @@ describe('<FileInput />', () => {
                     value: {
                         src: 'b64_picture',
                     },
-                    onChange,
+                    onBlur,
                 }}
                 translate={x => x}
                 source="src"
@@ -51,13 +51,13 @@ describe('<FileInput />', () => {
 
         wrapper.instance().onDrop([{ preview: 'new_b64_picture' }]);
 
-        assert.deepEqual(onChange.mock.calls[0][0], {
+        assert.deepEqual(onBlur.mock.calls[0][0], {
             preview: 'new_b64_picture',
         });
     });
 
     it('should correctly update upon removal when allowing a single file', () => {
-        const onChange = jest.fn();
+        const onBlur = jest.fn();
 
         const wrapper = shallow(
             <FileInput
@@ -65,7 +65,7 @@ describe('<FileInput />', () => {
                     value: {
                         src: 'b64_picture',
                     },
-                    onChange,
+                    onBlur,
                 }}
                 translate={x => x}
                 source="src"
@@ -73,11 +73,11 @@ describe('<FileInput />', () => {
         );
 
         wrapper.instance().onRemove({ src: 'b64_picture' })();
-        assert.deepEqual(onChange.mock.calls[0][0], null);
+        assert.deepEqual(onBlur.mock.calls[0][0], null);
     });
 
     it('should correctly update upon drop when allowing multiple files', () => {
-        const onChange = jest.fn();
+        const onBlur = jest.fn();
 
         const wrapper = shallow(
             <FileInput
@@ -86,7 +86,7 @@ describe('<FileInput />', () => {
                         { src: 'b64_picture' },
                         { src: 'another_b64_picture' },
                     ],
-                    onChange,
+                    onBlur,
                 }}
                 translate={x => x}
                 source="pictures"
@@ -96,7 +96,7 @@ describe('<FileInput />', () => {
 
         wrapper.instance().onDrop([{ preview: 'new_b64_picture' }]);
 
-        assert.deepEqual(onChange.mock.calls[0][0], [
+        assert.deepEqual(onBlur.mock.calls[0][0], [
             { src: 'b64_picture' },
             { src: 'another_b64_picture' },
             { preview: 'new_b64_picture' },
@@ -104,7 +104,7 @@ describe('<FileInput />', () => {
     });
 
     it('should correctly update upon removal when allowing multiple files', () => {
-        const onChange = jest.fn();
+        const onBlur = jest.fn();
 
         const wrapper = shallow(
             <FileInput
@@ -113,7 +113,7 @@ describe('<FileInput />', () => {
                         { src: 'b64_picture' },
                         { src: 'another_b64_picture' },
                     ],
-                    onChange,
+                    onBlur,
                 }}
                 translate={x => x}
                 source="pictures"
@@ -123,7 +123,7 @@ describe('<FileInput />', () => {
 
         wrapper.instance().onRemove({ src: 'another_b64_picture' })();
 
-        assert.deepEqual(onChange.mock.calls[0][0], [{ src: 'b64_picture' }]);
+        assert.deepEqual(onBlur.mock.calls[0][0], [{ src: 'b64_picture' }]);
     });
 
     it('should display correct label depending multiple property', () => {
@@ -309,7 +309,7 @@ describe('<FileInput />', () => {
                 source="picture"
                 translate={x => x}
                 input={{
-                    onChange: () => {},
+                    onBlur: () => {},
                     value: [
                         { url: 'http://static.acme.com/foo.jpg' },
                         { url: 'http://static.acme.com/bar.jpg' },
@@ -321,7 +321,9 @@ describe('<FileInput />', () => {
             </FileInput>
         );
 
-        const inputPreview = wrapper.find('WithStyles(FileInputPreview)');
+        const inputPreview = wrapper.find(
+            'WithStyles(translate(FileInputPreview))'
+        );
         inputPreview.at(1).prop('onRemove')();
         wrapper.update();
 

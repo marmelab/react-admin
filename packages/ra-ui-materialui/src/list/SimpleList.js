@@ -7,17 +7,17 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, createStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
 import { linkToRecord, sanitizeListRestProps } from 'ra-core';
 
-const styles = {
+const styles = createStyles({
     link: {
         textDecoration: 'none',
         color: 'inherit',
     },
     tertiary: { float: 'right', opacity: 0.541176 },
-};
+});
 
 const LinkOrNot = withStyles(styles)(
     ({ classes, linkType, basePath, id, children }) =>
@@ -67,7 +67,7 @@ const SimpleList = ({
                     id={id}
                     key={id}
                 >
-                    <ListItem button>
+                    <ListItem button={!!linkType}>
                         {leftIcon && (
                             <ListItemIcon>
                                 {leftIcon(data[id], id)}
@@ -122,7 +122,7 @@ SimpleList.propTypes = {
     leftIcon: PropTypes.func,
     linkType: PropTypes.oneOfType([PropTypes.string, PropTypes.bool])
         .isRequired,
-    onToggleItem: PropTypes.func.isRequired,
+    onToggleItem: PropTypes.func,
     primaryText: PropTypes.func,
     rightAvatar: PropTypes.func,
     rightIcon: PropTypes.func,

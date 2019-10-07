@@ -7,6 +7,7 @@ import {
     MuiThemeProvider,
     createMuiTheme,
     withStyles,
+    createStyles,
 } from '@material-ui/core/styles';
 import compose from 'recompose/compose';
 
@@ -17,38 +18,40 @@ import Notification from './Notification';
 import Error from './Error';
 import defaultTheme from '../defaultTheme';
 
-const styles = theme => ({
-    root: {
-        display: 'flex',
-        flexDirection: 'column',
-        zIndex: 1,
-        minHeight: '100vh',
-        backgroundColor: theme.palette.background.default,
-        position: 'relative',
-        minWidth: 'fit-content',
-        width: '100%',
-    },
-    appFrame: {
-        display: 'flex',
-        flexDirection: 'column',
-    },
-    contentWithSidebar: {
-        display: 'flex',
-        flexGrow: 1,
-    },
-    content: {
-        display: 'flex',
-        flexDirection: 'column',
-        flexGrow: 1,
-        padding: theme.spacing.unit * 3,
-        [theme.breakpoints.up('xs')]: {
-            paddingLeft: 5,
+const styles = theme =>
+    createStyles({
+        root: {
+            display: 'flex',
+            flexDirection: 'column',
+            zIndex: 1,
+            minHeight: '100vh',
+            backgroundColor: theme.palette.background.default,
+            position: 'relative',
+            minWidth: 'fit-content',
+            width: '100%',
         },
-        [theme.breakpoints.down('sm')]: {
-            padding: 0,
+        appFrame: {
+            display: 'flex',
+            flexDirection: 'column',
         },
-    },
-});
+        contentWithSidebar: {
+            display: 'flex',
+            flexGrow: 1,
+        },
+        content: {
+            display: 'flex',
+            flexDirection: 'column',
+            flexGrow: 1,
+            flexBasis: 0,
+            padding: theme.spacing.unit * 3,
+            [theme.breakpoints.up('xs')]: {
+                paddingLeft: 5,
+            },
+            [theme.breakpoints.down('sm')]: {
+                padding: 0,
+            },
+        },
+    });
 
 const sanitizeRestProps = ({
     staticContext,
@@ -67,7 +70,7 @@ class Layout extends Component {
          * Reset the error state upon navigation
          *
          * @see https://stackoverflow.com/questions/48121750/browser-navigation-broken-by-use-of-react-error-boundaries
-         * */
+         */
         props.history.listen(() => {
             if (this.state.hasError) {
                 this.setState({ hasError: false });

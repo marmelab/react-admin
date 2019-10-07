@@ -69,7 +69,7 @@ const mapStateToProps = state => ({
     locale: state.i18n.locale,
 });
 
-export default compose(
+const enhance = compose(
     connect(
         mapStateToProps,
         {
@@ -79,4 +79,6 @@ export default compose(
     ),
     translate,
     withStyles(styles)
-)(Configuration);
+);
+
+export default enhance(Configuration);

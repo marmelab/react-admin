@@ -5,7 +5,7 @@ title: "Including the Admin in Another App"
 
 # Including React-Admin In Another Redux Application
 
-The `<Admin>` tag is a great shortcut got be up and running with react-admin in minutes. However, in many cases, you will want to embed the admin in another application, or customize the admin redux store deeply.
+The `<Admin>` tag is a great shortcut to be up and running with react-admin in minutes. However, in many cases, you will want to embed the admin in another application, or customize the admin redux store deeply.
 
 **Tip**: Before going for the Custom App route, explore all the options of [the `<Admin>` component](./Admin.md). They allow you to add custom routes, custom reducers, custom sagas, and customize the layout.
 
@@ -13,14 +13,15 @@ Fortunately, the `<Admin>` component detects when it's used inside an existing R
 
 Beware that you need to know about [redux](http://redux.js.org/), [react-router](https://github.com/reactjs/react-router), and [redux-saga](https://github.com/yelouafi/redux-saga) to go further.
 
-React-admin requires that the redux state contains at least 4 reducers: `admin`, `i18n`, `form`, and `routing`. You can add more, or replace some of them with your own, but you can't remove or rename them. As it relies on redux-form, react-router, and redux-saga, react-admin also expects the store to use their middlewares.
+React-admin requires that the redux state contains at least 4 reducers: `admin`, `i18n`, `form`, and `router`. You can add more, or replace some of them with your own, but you can't remove or rename them. As it relies on redux-form, react-router, and redux-saga, react-admin also expects the store to use their middlewares.
 
 Here is the default store creation for react-admin:
 
 ```js
 // in src/createAdminStore.js
-import { combineReducers, createStore, compose, applyMiddleware } from 'redux';
-import { routerMiddleware } from 'react-router-redux';
+import { applyMiddleware, combineReducers, compose, createStore } from 'redux';
+import { routerMiddleware, routerReducer } from 'react-router-redux';
+import { reducer as formReducer } from 'redux-form';
 import createSagaMiddleware from 'redux-saga';
 import { all, fork } from 'redux-saga/effects';
 import {
@@ -44,7 +45,7 @@ export default ({
         admin: adminReducer,
         i18n: i18nReducer(locale, i18nProvider(locale)),
         form: formReducer,
-        routing: routerReducer,
+        router: routerReducer,
         { /* add your own reducers here */ },
     });
     const resettableAppReducer = (state, action) =>
@@ -70,8 +71,8 @@ export default ({
                 routerMiddleware(history),
                 // add your own middlewares here
             ),
-            typeof window !== 'undefined' && window.devToolsExtension
-                ? window.devToolsExtension()
+            typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION__
+                ? window.__REDUX_DEVTOOLS_EXTENSION__()
                 : f => f
             // add your own enhancers here
         )
@@ -81,7 +82,7 @@ export default ({
 };
 ```
 
-You can use this script as a base and then add your own middleares or enhancers, e.g. to allow store persistence with [redux-persist](https://github.com/rt2zz/redux-persist).
+You can use this script as a base and then add your own middlewares or enhancers, e.g., to allow store persistence with [redux-persist](https://github.com/rt2zz/redux-persist).
 
 Then, use the `<Admin>` component as you would in a standalone application. Here is an example with 3 resources: `posts`, `comments`, and `users`
 
@@ -89,7 +90,7 @@ Then, use the `<Admin>` component as you would in a standalone application. Here
 // in src/App.js
 import React from 'react';
 import { Provider } from 'react-redux';
-import createHistory from 'history/createHashHistory';
+import { createHashHistory } from 'history';
 import { Admin, Resource } from 'react-admin';
 import restProvider from 'ra-data-simple-rest';
 import defaultMessages from 'ra-language-english';
@@ -112,7 +113,7 @@ const i18nProvider = locale => {
     }
     return defaultMessages;
 };
-const history = createHistory();
+const history = createHashHistory();
 
 const App = () => (
     <Provider
@@ -150,7 +151,7 @@ Here is the main code for bootstrapping a barebones react-admin application with
 // in src/App.js
 import React from 'react';
 import { Provider } from 'react-redux';
-import createHistory from 'history/createHashHistory';
+import { createHashHistory } from 'history';
 +import { ConnectedRouter } from 'react-router-redux';
 +import { Switch, Route } from 'react-router-dom';
 +import withContext from 'recompose/withContext';
@@ -181,7 +182,7 @@ const i18nProvider = locale => {
     }
     return defaultMessages;
 };
-const history = createHistory();
+const history = createHashHistory();
 
 const App = () => (
     <Provider
@@ -201,18 +202,18 @@ const App = () => (
 -           <Resource name="comments" list={CommentList} edit={CommentEdit} create={CommentCreate} />
 -           <Resource name="users" list={UserList} edit={UserEdit} create={UserCreate} />
 +       <TranslationProvider>
-+           <ConnectedRouter history={history}>
++           <MuiThemeProvider>
 +               <Resource name="posts" context="registration" />
 +               <Resource name="comments" context="registration" />
 +               <Resource name="users" context="registration" />
-+               <MuiThemeProvider>
-+                   <AppBar position="static" color="default">
-+                       <Toolbar>
-+                           <Typography variant="title" color="inherit">
-+                               My admin
-+                           </Typography>
-+                       </Toolbar>
-+                   </AppBar>
++               <AppBar position="static" color="default">
++                   <Toolbar>
++                       <Typography variant="title" color="inherit">
++                           My admin
++                       </Typography>
++                   </Toolbar>
++               </AppBar>
++               <ConnectedRouter history={history}>
 +                   <Switch>
 +                       <Route exact path="/" component={Dashboard} />
 +                       <Route exact path="/posts" hasCreate render={(routeProps) => <PostList resource="posts" {...routeProps} />} />
@@ -226,8 +227,8 @@ const App = () => (
 +                       <Route exact path="/users/create" render={(routeProps) => <UsersCreate resource="users" {...routeProps} />} />
 +                       <Route exact path="/users/:id" render={(routeProps) => <UsersEdit resource="users" {...routeProps} />} />
 +                   </Switch>
-+               </MuiThemeProvider>
-+           </ConnectedRouter>
++               </ConnectedRouter>
++           </MuiThemeProvider>
 +       </TranslationProvider>
 -       </Admin>
     </Provider>
@@ -239,6 +240,7 @@ const App = () => (
 +       authProvider: PropTypes.func,
 +   },
 +   () => ({ authProvider })
++)(App);
 ```
 
 Note that this example still uses `<Resource>`, because this component lazily initializes the store for the resource data.

@@ -1,13 +1,13 @@
-import { GET_LIST, GET_MANY, GET_MANY_REFERENCE, DELETE } from 'react-admin';
+import { GET_LIST, GET_MANY, GET_MANY_REFERENCE, DELETE } from 'ra-core';
 import { QUERY_TYPES } from 'ra-data-graphql';
 import { TypeKind } from 'graphql';
-import * as gqlTypes from 'graphql-ast-types';
+import * as gqlTypes from 'graphql-ast-types-browser';
 
 import getFinalType from './getFinalType';
 import isList from './isList';
 import isRequired from './isRequired';
 
-export const buildFields = introspectionResults => fields =>
+export const buildFields = (introspectionResults, path = []) => fields =>
     fields.reduce((acc, field) => {
         const type = getFinalType(field.type);
 
@@ -15,7 +15,7 @@ export const buildFields = introspectionResults => fields =>
             return acc;
         }
 
-        if (type.kind !== TypeKind.OBJECT) {
+        if (type.kind !== TypeKind.OBJECT && type.kind !== TypeKind.INTERFACE) {
             return [...acc, gqlTypes.field(gqlTypes.name(field.name))];
         }
 
@@ -40,7 +40,9 @@ export const buildFields = introspectionResults => fields =>
             t => t.name === type.name
         );
 
-        if (linkedType) {
+        if (linkedType && !path.includes(linkedType.name)) {
+            path.push(linkedType.name);
+
             return [
                 ...acc,
                 gqlTypes.field(
@@ -49,7 +51,9 @@ export const buildFields = introspectionResults => fields =>
                     null,
                     null,
                     gqlTypes.selectionSet(
-                        buildFields(introspectionResults)(linkedType.fields)
+                        buildFields(introspectionResults, path)(
+                            linkedType.fields
+                        )
                     )
                 ),
             ];

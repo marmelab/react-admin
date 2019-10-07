@@ -45,4 +45,7 @@ DatagridCell.propTypes = {
     resource: PropTypes.string,
 };
 
+// wat? TypeScript looses the displayName if we don't set it explicitly
+DatagridCell.displayName = 'DatagridCell';
+
 export default DatagridCell;

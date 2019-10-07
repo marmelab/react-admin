@@ -105,6 +105,7 @@ export const ReferenceArrayInputView = ({
         translateChoice: false,
         limitChoicesToValue: true,
         ...sanitizeRestProps(rest),
+        ...children.props,
     });
 };
 

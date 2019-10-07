@@ -2,17 +2,22 @@ export default url => ({
     elements: {
         addAuthor: '.button-add-authors',
         body: 'body',
-        bodyInput: '.ra-input-body .ql-editor',
-        input: (name, type = 'input') => `.create-page ${type}[name='${name}']`,
+        input: (name, type = 'input') => {
+            if (type === 'rich-text-input') {
+                return `.ra-input-${name} .ql-editor`;
+            }
+            return `.create-page ${type}[name='${name}']`;
+        },
         inputs: `.ra-input`,
+        richTextInputError: '.create-page .ra-rich-text-input-error',
         snackbar: 'div[role="alertdialog"]',
-        submitButton: ".create-page button[type='submit']",
+        submitButton: ".create-page div[role='toolbar'] button[type='submit']",
         submitAndShowButton:
-            ".create-page form>div:last-child button[type='button']:nth-child(2)",
+            ".create-page form div[role='toolbar'] button[type='button']:nth-child(2)",
         submitAndAddButton:
-            ".create-page form>div:last-child button[type='button']:nth-child(3)",
+            ".create-page form div[role='toolbar'] button[type='button']:nth-child(3)",
         submitCommentable:
-            ".create-page form>div:last-child button[type='button']:last-child",
+            ".create-page form div[role='toolbar'] button[type='button']:last-child",
         descInput: '.ql-editor',
         tab: index => `.form-tab:nth-of-type(${index})`,
         title: '#react-admin-title',
@@ -37,6 +42,9 @@ export default url => ({
             cy.get(this.elements.input(name, type)).clear();
         }
         cy.get(this.elements.input(name, type)).type(value);
+        if (type === 'rich-text-input') {
+            cy.wait(500);
+        }
     },
 
     setValues(values, clearPreviousValue = true) {

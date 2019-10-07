@@ -1,44 +1,74 @@
-import assert from 'assert';
-import { shallow } from 'enzyme';
 import React from 'react';
+import { render, cleanup } from 'react-testing-library';
+import { shallow } from 'enzyme';
 
 import { BooleanInput } from './BooleanInput';
 
 describe('<BooleanInput />', () => {
-    it('should render as a mui Toggle', () => {
-        const wrapper = shallow(<BooleanInput source="foo" input={{}} />)
-            .find('WithStyles(FormControlLabel)')
-            .shallow()
-            .dive();
-        const choices = wrapper.find('WithStyles(Switch)');
-        assert.equal(choices.length, 1);
+    afterEach(cleanup);
+
+    const defaultProps = {
+        resource: 'foo',
+        meta: {},
+    };
+
+    it('should render as a checkbox', () => {
+        const { getByLabelText } = render(
+            <BooleanInput {...defaultProps} source="bar" input={{}} />
+        );
+        expect(getByLabelText('resources.foo.fields.bar').type).toBe(
+            'checkbox'
+        );
     });
 
     it('should be checked if the value is true', () => {
-        const wrapper = shallow(
-            <BooleanInput source="foo" input={{ value: true }} />
-        )
-            .find('WithStyles(FormControlLabel)')
-            .shallow()
-            .dive();
-        assert.equal(wrapper.find('WithStyles(Switch)').prop('checked'), true);
+        const { getByLabelText } = render(
+            <BooleanInput
+                {...defaultProps}
+                source="bar"
+                input={{ value: true }}
+            />
+        );
+        expect(getByLabelText('resources.foo.fields.bar').checked).toBe(true);
     });
 
     it('should not be checked if the value is false', () => {
-        const wrapper = shallow(
-            <BooleanInput source="foo" input={{ value: false }} />
-        )
-            .find('WithStyles(FormControlLabel)')
-            .shallow()
-            .dive();
-        assert.equal(wrapper.find('WithStyles(Switch)').prop('checked'), false);
+        const { getByLabelText } = render(
+            <BooleanInput
+                {...defaultProps}
+                source="bar"
+                input={{ value: false }}
+            />
+        );
+        expect(getByLabelText('resources.foo.fields.bar').checked).toBe(false);
     });
 
     it('should not be checked if the value is undefined', () => {
-        const wrapper = shallow(<BooleanInput source="foo" input={{}} />)
-            .find('WithStyles(FormControlLabel)')
+        const { getByLabelText } = render(
+            <BooleanInput {...defaultProps} source="bar" input={{}} />
+        );
+        expect(getByLabelText('resources.foo.fields.bar').checked).toBe(false);
+    });
+
+    it('should displays errors', () => {
+        const wrapper = shallow(
+            <BooleanInput
+                {...defaultProps}
+                source="foo"
+                input={{}}
+                meta={{ error: 'foobar' }}
+            />
+        )
+            .find('WithStyles(FormGroup)')
             .shallow()
             .dive();
-        assert.equal(wrapper.find('WithStyles(Switch)').prop('checked'), false);
+        expect(wrapper.find('WithStyles(FormHelperText)').length).toBe(1);
+        expect(
+            wrapper
+                .find('WithStyles(FormHelperText)')
+                .at(0)
+                .children()
+                .text()
+        ).toBe('foobar');
     });
 });

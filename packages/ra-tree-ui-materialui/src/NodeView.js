@@ -67,16 +67,14 @@ export class NodeView extends Component {
                 onClick={this.handleClick}
                 {...sanitizeRestProps(props)}
             >
-                {Children.map(
-                    children,
-                    field =>
-                        field
-                            ? cloneElement(field, {
-                                  basePath: field.props.basePath || basePath,
-                                  record: node.record,
-                                  resource,
-                              })
-                            : null
+                {Children.map(children, field =>
+                    field
+                        ? cloneElement(field, {
+                              basePath: field.props.basePath || basePath,
+                              record: node.record,
+                              resource,
+                          })
+                        : null
                 )}
                 {actions &&
                     cloneElement(actions, {

@@ -1,61 +1,22 @@
 {
-    "env": {
-        "es6": true,
-        "browser": true,
-        "mocha": true,
-        "jest": true,
-        "node": true,
-        "phantomjs": true,
-        "protractor": true,
-        "cypress/globals": true
-    },
-    "plugins": ["prettier", "react", "cypress"],
+    "parser": "@typescript-eslint/parser",
     "extends": [
-        "eslint:recommended",
-        "prettier",
-        "prettier/react",
-        "plugin:react/recommended",
-        "plugin:import/errors",
-        "plugin:import/warnings"
+        "react-app",
+        "plugin:prettier/recommended",
+        "prettier/@typescript-eslint",
+        "prettier/babel",
+        "prettier/react"
     ],
-    "parser": "babel-eslint",
-    "parserOptions": {
-        "ecmaVersion": 6,
-        "sourceType": "module",
-        "ecmaFeatures": {
-            "modules": true
-        }
-    },
+    "plugins": [
+        "@typescript-eslint",
+        "import",
+        "jsx-a11y",
+        "prettier",
+        "react",
+        "react-hooks"
+    ],
     "rules": {
-        "prettier/prettier": [
-            "error",
-            {
-                "singleQuote": true,
-                "tabWidth": 4,
-                "trailingComma": "es5"
-            }
-        ],
-        "react/forbid-prop-types": ["off"],
-        "react/prop-types": ["warn"],
-        "react/jsx-no-bind": ["off"],
-        "react/jsx-indent": ["off"],
-        "react/jsx-indent-props": ["off"],
-        "react/jsx-filename-extension": ["off"],
-        "import/no-named-as-default": ["off"],
-        "no-unused-vars": [
-            "error",
-            {
-                "ignoreRestSiblings": true
-            }
-        ]
-    },
-    "overrides": [
-        {
-            "files": ["**/*.spec.js"],
-            "rules": {
-                "react/jsx-no-bind": ["off"],
-                "react/prop-types": ["off"]
-            }
-        }
-    ]
+        "no-use-before-define": "off",
+        "prettier/prettier": "error"
+    }
 }

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Snackbar from '@material-ui/core/Snackbar';
 import Button from '@material-ui/core/Button';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, createStyles } from '@material-ui/core/styles';
 import compose from 'recompose/compose';
 import classnames from 'classnames';
 
@@ -15,17 +15,18 @@ import {
     complete,
 } from 'ra-core';
 
-const styles = theme => ({
-    confirm: {
-        backgroundColor: theme.palette.background.default,
-    },
-    warning: {
-        backgroundColor: theme.palette.error.light,
-    },
-    undo: {
-        color: theme.palette.primary.light,
-    },
-});
+const styles = theme =>
+    createStyles({
+        confirm: {
+            backgroundColor: theme.palette.background.default,
+        },
+        warning: {
+            backgroundColor: theme.palette.error.light,
+        },
+        undo: {
+            color: theme.palette.primary.light,
+        },
+    });
 
 class Notification extends React.Component {
     state = {
@@ -71,7 +72,12 @@ class Notification extends React.Component {
             hideNotification,
             ...rest
         } = this.props;
-
+        const {
+            warning,
+            confirm,
+            undo: undoClass, // Rename classes.undo to undoClass in this scope to avoid name conflicts
+            ...snackbarClasses
+        } = classes;
         return (
             <Snackbar
                 open={this.state.open}
@@ -83,6 +89,9 @@ class Notification extends React.Component {
                 autoHideDuration={
                     (notification && notification.autoHideDuration) ||
                     autoHideDuration
+                }
+                disableWindowBlurListener={
+                    notification && notification.undoable
                 }
                 onExited={this.handleExited}
                 onClose={this.handleRequestClose}
@@ -96,7 +105,7 @@ class Notification extends React.Component {
                     notification && notification.undoable ? (
                         <Button
                             color="primary"
-                            className={classes.undo}
+                            className={undoClass}
                             size="small"
                             onClick={undo}
                         >
@@ -104,6 +113,7 @@ class Notification extends React.Component {
                         </Button>
                     ) : null
                 }
+                classes={snackbarClasses}
                 {...rest}
             />
         );

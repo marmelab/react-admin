@@ -1,3 +1,4 @@
+/* eslint-disable default-case */
 import {
     GET_LIST,
     GET_ONE,
@@ -6,7 +7,7 @@ import {
     CREATE,
     UPDATE,
     DELETE,
-} from 'react-admin';
+} from 'ra-core';
 
 const buildGetListVariables = introspectionResults => (
     resource,
@@ -41,7 +42,7 @@ const buildGetListVariables = introspectionResults => (
         const parts = key.split('.');
 
         if (parts.length > 1) {
-            if (parts[1] == 'id') {
+            if (parts[1] === 'id') {
                 const type = introspectionResults.types.find(
                     t => t.name === `${resource.type.name}Filter`
                 );
@@ -63,10 +64,10 @@ const buildGetListVariables = introspectionResults => (
                 f => f.name === parts[0]
             );
             if (resourceField.type.name === 'Int') {
-                return { ...acc, [key]: parseInt(params.filter[key]) };
+                return { ...acc, [key]: parseInt(params.filter[key], 10) };
             }
             if (resourceField.type.name === 'Float') {
-                return { ...acc, [key]: parseFloat(params.filter[key]) };
+                return { ...acc, [key]: parseFloat(params.filter[key], 10) };
             }
         }
 
@@ -75,9 +76,10 @@ const buildGetListVariables = introspectionResults => (
 
     return {
         skip: parseInt(
-            (params.pagination.page - 1) * params.pagination.perPage
+            (params.pagination.page - 1) * params.pagination.perPage,
+            10
         ),
-        first: parseInt(params.pagination.perPage),
+        first: parseInt(params.pagination.perPage, 10),
         orderBy: `${params.sort.field}_${params.sort.order}`,
         filter,
     };
@@ -156,7 +158,6 @@ export default introspectionResults => (
                 queryType
             );
         }
-
         case CREATE: {
             return buildCreateUpdateVariables(introspectionResults)(
                 resource,
@@ -165,7 +166,6 @@ export default introspectionResults => (
                 queryType
             );
         }
-
         case DELETE:
             return {
                 id: params.id,

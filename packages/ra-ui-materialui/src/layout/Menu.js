@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import inflection from 'inflection';
 import compose from 'recompose/compose';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, createStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
 import { getResources, translate } from 'ra-core';
 import DefaultIcon from '@material-ui/icons/ViewList';
@@ -12,13 +12,13 @@ import DashboardMenuItem from './DashboardMenuItem';
 import MenuItemLink from './MenuItemLink';
 import Responsive from '../layout/Responsive';
 
-const styles = {
+const styles = createStyles({
     main: {
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'flex-start',
     },
-};
+});
 
 const translatedResourceName = (resource, translate) =>
     translate(`resources.${resource.name}.name`, {
@@ -85,7 +85,7 @@ Menu.defaultProps = {
 const mapStateToProps = state => ({
     open: state.admin.ui.sidebarOpen,
     resources: getResources(state),
-    pathname: state.routing.location.pathname, // used to force redraw on navigation
+    pathname: state.router.location.pathname, // used to force redraw on navigation
 });
 
 const enhance = compose(
@@ -99,8 +99,8 @@ const enhance = compose(
                 prev.resources.every(
                     (value, index) => value === next.resources[index] // shallow compare resources
                 ) &&
-                prev.pathname == next.pathname &&
-                prev.open == next.open,
+                prev.pathname === next.pathname &&
+                prev.open === next.open,
         }
     ),
     withStyles(styles)

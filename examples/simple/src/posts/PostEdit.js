@@ -83,8 +83,12 @@ const PostEdit = props => (
                 />
             </FormTab>
             <FormTab label="post.form.miscellaneous">
-                <ReferenceArrayInput reference="tags" source="tags">
-                    <AutocompleteArrayInput />
+                <ReferenceArrayInput
+                    reference="tags"
+                    source="tags"
+                    filter={{ published: true }}
+                >
+                    <AutocompleteArrayInput fullWidth />
                 </ReferenceArrayInput>
                 <ArrayInput source="backlinks">
                     <SimpleFormIterator>

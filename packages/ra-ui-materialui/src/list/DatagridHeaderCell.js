@@ -6,11 +6,11 @@ import compose from 'recompose/compose';
 import TableCell from '@material-ui/core/TableCell';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Tooltip from '@material-ui/core/Tooltip';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, createStyles } from '@material-ui/core/styles';
 import { FieldTitle, translate } from 'ra-core';
 
 // remove the sort icons when not active
-const styles = {
+const styles = createStyles({
     icon: {
         display: 'none',
     },
@@ -19,7 +19,7 @@ const styles = {
             display: 'inline',
         },
     },
-};
+});
 
 export const DatagridHeaderCell = ({
     classes,
@@ -97,7 +97,8 @@ const enhance = compose(
         (props, nextProps) =>
             props.isSorting !== nextProps.isSorting ||
             (nextProps.isSorting &&
-                props.currentSort.order !== nextProps.currentSort.order)
+                props.currentSort.order !== nextProps.currentSort.order) ||
+            (nextProps.isSorting && props.sortable !== nextProps.sortable)
     ),
     translate,
     withStyles(styles)

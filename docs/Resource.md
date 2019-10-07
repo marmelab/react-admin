@@ -26,7 +26,7 @@ const App = () => (
 
 `<Resource>` allows you to define a component for each CRUD operation, using the following prop names:
 
-* `list`
+* `list` (if defined, the resource is displayed on the Menu)
 * `create`
 * `edit`
 * `show`

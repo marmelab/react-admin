@@ -1,9 +1,9 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, Children, cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import Drawer from '@material-ui/core/Drawer';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, createStyles } from '@material-ui/core/styles';
 import withWidth from '@material-ui/core/withWidth';
 import { setSidebarVisibility } from 'ra-core';
 
@@ -12,30 +12,31 @@ import Responsive from './Responsive';
 export const DRAWER_WIDTH = 240;
 export const CLOSED_DRAWER_WIDTH = 55;
 
-const styles = theme => ({
-    drawerPaper: {
-        position: 'relative',
-        height: 'auto',
-        overflowX: 'hidden',
-        transition: theme.transitions.create('width', {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.leavingScreen,
-        }),
-        backgroundColor: 'transparent',
-        marginTop: '0.5em',
-        borderRight: 'none',
-        [theme.breakpoints.only('xs')]: {
-            marginTop: 0,
-            height: '100vh',
-            position: 'inherit',
-            backgroundColor: theme.palette.background.default,
+const styles = theme =>
+    createStyles({
+        drawerPaper: {
+            position: 'relative',
+            height: 'auto',
+            overflowX: 'hidden',
+            transition: theme.transitions.create('width', {
+                easing: theme.transitions.easing.sharp,
+                duration: theme.transitions.duration.leavingScreen,
+            }),
+            backgroundColor: 'transparent',
+            marginTop: '0.5em',
+            borderRight: 'none',
+            [theme.breakpoints.only('xs')]: {
+                marginTop: 0,
+                height: '100vh',
+                position: 'inherit',
+                backgroundColor: theme.palette.background.default,
+            },
+            [theme.breakpoints.up('md')]: {
+                border: 'none',
+                marginTop: '1.5em',
+            },
         },
-        [theme.breakpoints.up('md')]: {
-            border: 'none',
-            marginTop: '1.5em',
-        },
-    },
-});
+    });
 
 // We shouldn't need PureComponent here as it's connected
 // but for some reason it keeps rendering even though mapStateToProps returns the same object
@@ -76,7 +77,7 @@ class Sidebar extends PureComponent {
                         onClose={this.toggleSidebar}
                         {...rest}
                     >
-                        {React.cloneElement(children, {
+                        {cloneElement(Children.only(children), {
                             onMenuClick: this.handleClose,
                         })}
                     </Drawer>
@@ -94,7 +95,7 @@ class Sidebar extends PureComponent {
                         onClose={this.toggleSidebar}
                         {...rest}
                     >
-                        {React.cloneElement(children, {
+                        {cloneElement(Children.only(children), {
                             dense: true,
                             onMenuClick: this.handleClose,
                         })}
@@ -113,7 +114,7 @@ class Sidebar extends PureComponent {
                         onClose={this.toggleSidebar}
                         {...rest}
                     >
-                        {React.cloneElement(children, { dense: true })}
+                        {cloneElement(Children.only(children), { dense: true })}
                     </Drawer>
                 }
             />

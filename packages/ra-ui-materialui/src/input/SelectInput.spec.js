@@ -53,6 +53,29 @@ describe('<SelectInput />', () => {
         assert.equal(MenuItemElement2.childAt(0).text(), 'Female');
     });
 
+    it('should render disable choices marked so', () => {
+        const wrapper = shallow(
+            <SelectInput
+                {...defaultProps}
+                choices={[
+                    { id: 123, full_name: 'Leo Tolstoi', sex: 'M' },
+                    { id: 456, full_name: 'Jane Austen', sex: 'F' },
+                    {
+                        id: 1,
+                        full_name: 'System Administrator',
+                        sex: 'F',
+                        disabled: true,
+                    },
+                ]}
+            />
+        );
+        const MenuItemElements = wrapper.find('WithStyles(MenuItem)');
+        const MenuItemElement = MenuItemElements.at(1);
+        assert.equal(!!MenuItemElement.prop('disabled'), false);
+        const MenuItemElement2 = MenuItemElements.at(2);
+        assert.equal(MenuItemElement2.prop('disabled'), true);
+    });
+
     it('should add an empty menu when allowEmpty is true', () => {
         const wrapper = shallow(
             <SelectInput
@@ -68,7 +91,27 @@ describe('<SelectInput />', () => {
         assert.equal(MenuItemElements.length, 3);
         const MenuItemElement1 = MenuItemElements.first();
         assert.equal(MenuItemElement1.prop('value'), '');
-        assert.equal(MenuItemElement1.childAt(0).text(), '');
+        assert.equal(MenuItemElement1.children().length, 0);
+    });
+
+    it('should add an empty menu with custom value when allowEmpty is true', () => {
+        const emptyValue = 'test';
+        const wrapper = shallow(
+            <SelectInput
+                allowEmpty
+                emptyValue={emptyValue}
+                {...defaultProps}
+                choices={[
+                    { id: 'M', name: 'Male' },
+                    { id: 'F', name: 'Female' },
+                ]}
+            />
+        );
+        const MenuItemElements = wrapper.find('WithStyles(MenuItem)');
+        assert.equal(MenuItemElements.length, 3);
+        const MenuItemElement1 = MenuItemElements.first();
+        assert.equal(MenuItemElement1.prop('value'), emptyValue);
+        assert.equal(MenuItemElement1.children().length, 0);
     });
 
     it('should not add a falsy (null or false) element when allowEmpty is false', () => {

@@ -9,7 +9,7 @@ import {
     CREATE,
     UPDATE,
     DELETE,
-} from 'react-admin';
+} from 'ra-core';
 
 describe('introspection', () => {
     describe('filterTypesByIncludeExclude', () => {
@@ -80,6 +80,8 @@ describe('introspection', () => {
                 Promise.resolve({
                     data: {
                         __schema: {
+                            queryType: { name: 'Query' },
+                            mutationType: { name: 'Mutation' },
                             types: [
                                 {
                                     name: 'Query',

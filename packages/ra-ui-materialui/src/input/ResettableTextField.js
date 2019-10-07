@@ -5,12 +5,12 @@ import classNames from 'classnames';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import IconButton from '@material-ui/core/IconButton';
 import MuiTextField from '@material-ui/core/TextField';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, createStyles } from '@material-ui/core/styles';
 import ClearIcon from '@material-ui/icons/Clear';
 
 import { translate } from 'ra-core';
 
-const styles = {
+const styles = createStyles({
     clearIcon: {
         height: 16,
         width: 0,
@@ -25,7 +25,7 @@ const styles = {
     visibleClearButton: {
         width: 24,
     },
-};
+});
 
 /**
  * An override of the default Material-UI TextField which is resettable
@@ -34,6 +34,7 @@ class ResettableTextField extends Component {
     static propTypes = {
         classes: PropTypes.object.isRequired,
         clearAlwaysVisible: PropTypes.bool,
+        disabled: PropTypes.bool,
         InputProps: PropTypes.object,
         onBlur: PropTypes.func,
         onChange: PropTypes.func.isRequired,
@@ -72,6 +73,7 @@ class ResettableTextField extends Component {
             InputProps,
             value,
             resettable,
+            disabled,
             ...props
         } = this.props;
         const { showClear } = this.state;
@@ -88,37 +90,34 @@ class ResettableTextField extends Component {
                 classes={restClasses}
                 value={value}
                 InputProps={{
-                    endAdornment: resettable &&
-                        value && (
-                            <InputAdornment position="end">
-                                <IconButton
-                                    className={classNames(clearButton, {
-                                        [visibleClearButton]:
+                    endAdornment: resettable && value && (
+                        <InputAdornment position="end">
+                            <IconButton
+                                className={classNames(clearButton, {
+                                    [visibleClearButton]:
+                                        clearAlwaysVisible || showClear,
+                                })}
+                                aria-label={translate(
+                                    'ra.action.clear_input_value'
+                                )}
+                                title={translate('ra.action.clear_input_value')}
+                                disableRipple
+                                onClick={this.handleClickClearButton}
+                                onMouseDown={this.handleMouseDownClearButton}
+                                disabled={disabled}
+                            >
+                                <ClearIcon
+                                    className={classNames(clearIcon, {
+                                        [visibleClearIcon]:
                                             clearAlwaysVisible || showClear,
                                     })}
-                                    aria-label={translate(
-                                        'ra.action.clear_input_value'
-                                    )}
-                                    title={translate(
-                                        'ra.action.clear_input_value'
-                                    )}
-                                    disableRipple
-                                    onClick={this.handleClickClearButton}
-                                    onMouseDown={
-                                        this.handleMouseDownClearButton
-                                    }
-                                >
-                                    <ClearIcon
-                                        className={classNames(clearIcon, {
-                                            [visibleClearIcon]:
-                                                clearAlwaysVisible || showClear,
-                                        })}
-                                    />
-                                </IconButton>
-                            </InputAdornment>
-                        ),
+                                />
+                            </IconButton>
+                        </InputAdornment>
+                    ),
                     ...InputProps,
                 }}
+                disabled={disabled}
                 {...props}
                 onFocus={this.handleFocus}
                 onBlur={this.handleBlur}

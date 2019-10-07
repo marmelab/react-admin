@@ -3,49 +3,50 @@ import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, createStyles } from '@material-ui/core/styles';
 import { lighten } from '@material-ui/core/styles/colorManipulator';
 import { translate, sanitizeListRestProps } from 'ra-core';
 
 import CardActions from '../layout/CardActions';
 
-const styles = theme => ({
-    toolbar: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        zIndex: 3,
-        color:
-            theme.palette.type === 'light'
-                ? theme.palette.primary.main
-                : theme.palette.text.primary,
-        justifyContent: 'space-between',
-        backgroundColor:
-            theme.palette.type === 'light'
-                ? lighten(theme.palette.primary.light, 0.85)
-                : theme.palette.primary.dark,
-        minHeight: 64,
-        height: 64,
-        transition: `${theme.transitions.create(
-            'height'
-        )}, ${theme.transitions.create('min-height')}`,
-    },
-    toolbarCollapsed: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        zIndex: 3,
-        minHeight: 0,
-        height: 0,
-        overflowY: 'hidden',
-        transition: theme.transitions.create('all'),
-    },
-    title: {
-        flex: '0 0 auto',
-    },
-});
+const styles = theme =>
+    createStyles({
+        toolbar: {
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            zIndex: 3,
+            color:
+                theme.palette.type === 'light'
+                    ? theme.palette.primary.main
+                    : theme.palette.text.primary,
+            justifyContent: 'space-between',
+            backgroundColor:
+                theme.palette.type === 'light'
+                    ? lighten(theme.palette.primary.light, 0.85)
+                    : theme.palette.primary.dark,
+            minHeight: 64,
+            height: 64,
+            transition: `${theme.transitions.create(
+                'height'
+            )}, ${theme.transitions.create('min-height')}`,
+        },
+        toolbarCollapsed: {
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            zIndex: 3,
+            minHeight: 0,
+            height: 0,
+            overflowY: 'hidden',
+            transition: theme.transitions.create('all'),
+        },
+        title: {
+            flex: '0 0 auto',
+        },
+    });
 
 const BulkActionsToolbar = ({
     classes,
@@ -74,7 +75,7 @@ const BulkActionsToolbar = ({
             </div>
             <CardActions>
                 {Children.map(children, child =>
-                    cloneElement(child, {
+                    cloneElement(Children.only(child), {
                         basePath,
                         filterValues,
                         resource,

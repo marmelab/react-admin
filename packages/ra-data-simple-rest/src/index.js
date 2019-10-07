@@ -22,7 +22,7 @@ import {
  * GET_ONE      => GET http://my.api.url/posts/123
  * GET_MANY     => GET http://my.api.url/posts?filter={ids:[123,456,789]}
  * UPDATE       => PUT http://my.api.url/posts/123
- * CREATE       => POST http://my.api.url/posts/123
+ * CREATE       => POST http://my.api.url/posts
  * DELETE       => DELETE http://my.api.url/posts/123
  */
 export default (apiUrl, httpClient = fetchUtils.fetchJson) => {
@@ -126,6 +126,9 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson) => {
                 };
             case CREATE:
                 return { data: { ...params.data, id: json.id } };
+            case DELETE_MANY: {
+                return { data: json || [] };
+            }
             default:
                 return { data: json };
         }

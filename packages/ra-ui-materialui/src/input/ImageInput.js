@@ -1,10 +1,10 @@
 import compose from 'recompose/compose';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, createStyles } from '@material-ui/core/styles';
 import { addField, translate } from 'ra-core';
 
 import { FileInput } from './FileInput';
 
-const styles = {
+const styles = createStyles({
     root: { width: '100%' },
     dropZone: {
         background: '#efefef',
@@ -29,7 +29,7 @@ const styles = {
             opacity: 1,
         },
     },
-};
+});
 
 export class ImageInput extends FileInput {
     static defaultProps = {

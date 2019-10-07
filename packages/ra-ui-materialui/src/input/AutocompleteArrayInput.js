@@ -7,7 +7,7 @@ import Chip from '@material-ui/core/Chip';
 import Paper from '@material-ui/core/Paper';
 import Popper from '@material-ui/core/Popper';
 import MenuItem from '@material-ui/core/MenuItem';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, createStyles } from '@material-ui/core/styles';
 import parse from 'autosuggest-highlight/parse';
 import match from 'autosuggest-highlight/match';
 import blue from '@material-ui/core/colors/blue';
@@ -18,38 +18,44 @@ import { addField, translate, FieldTitle } from 'ra-core';
 
 import AutocompleteArrayInputChip from './AutocompleteArrayInputChip';
 
-const styles = theme => ({
-    container: {
-        flexGrow: 1,
-        position: 'relative',
-    },
-    root: {},
-    suggestionsContainerOpen: {
-        position: 'absolute',
-        marginBottom: theme.spacing.unit * 3,
-        zIndex: 2,
-    },
-    suggestion: {
-        display: 'block',
-        fontFamily: theme.typography.fontFamily,
-    },
-    suggestionText: { fontWeight: 300 },
-    highlightedSuggestionText: { fontWeight: 500 },
-    suggestionsList: {
-        margin: 0,
-        padding: 0,
-        listStyleType: 'none',
-    },
-    chip: {
-        marginRight: theme.spacing.unit,
-    },
-    chipDisabled: {
-        pointerEvents: 'none',
-    },
-    chipFocused: {
-        backgroundColor: blue[300],
-    },
-});
+const styles = theme =>
+    createStyles({
+        container: {
+            flexGrow: 1,
+            position: 'relative',
+        },
+        root: {},
+        suggestionsContainerOpen: {
+            position: 'absolute',
+            marginBottom: theme.spacing.unit * 3,
+            zIndex: 2,
+        },
+        suggestionsPaper: {
+            maxHeight: '50vh',
+            overflowY: 'auto',
+        },
+        suggestion: {
+            display: 'block',
+            fontFamily: theme.typography.fontFamily,
+        },
+        suggestionText: { fontWeight: 300 },
+        highlightedSuggestionText: { fontWeight: 500 },
+        suggestionsList: {
+            margin: 0,
+            padding: 0,
+            listStyleType: 'none',
+        },
+        chip: {
+            marginRight: theme.spacing.unit,
+            marginTop: theme.spacing.unit,
+        },
+        chipDisabled: {
+            pointerEvents: 'none',
+        },
+        chipFocused: {
+            backgroundColor: blue[300],
+        },
+    });
 
 /**
  * An Input component for an autocomplete field, using an array of objects for the options
@@ -64,7 +70,7 @@ const styles = theme => ({
  *    { id: 'M', name: 'Male' },
  *    { id: 'F', name: 'Female' },
  * ];
- * <AutocompleteInput source="gender" choices={choices} />
+ * <AutocompleteArrayInput source="gender" choices={choices} />
  *
  * You can also customize the properties to use for the option name and value,
  * thanks to the 'optionText' and 'optionValue' attributes.
@@ -73,7 +79,7 @@ const styles = theme => ({
  *    { _id: 123, full_name: 'Leo Tolstoi', sex: 'M' },
  *    { _id: 456, full_name: 'Jane Austen', sex: 'F' },
  * ];
- * <AutocompleteInput source="author_id" choices={choices} optionText="full_name" optionValue="_id" />
+ * <AutocompleteArrayInput source="author_id" choices={choices} optionText="full_name" optionValue="_id" />
  *
  * `optionText` also accepts a function, so you can shape the option text at will:
  * @example
@@ -82,7 +88,7 @@ const styles = theme => ({
  *    { id: 456, first_name: 'Jane', last_name: 'Austen' },
  * ];
  * const optionRenderer = choice => `${choice.first_name} ${choice.last_name}`;
- * <AutocompleteInput source="author_id" choices={choices} optionText={optionRenderer} />
+ * <AutocompleteArrayInput source="author_id" choices={choices} optionText={optionRenderer} />
  *
  * The choices are translated by default, so you can use translation identifiers as choices:
  * @example
@@ -94,35 +100,41 @@ const styles = theme => ({
  * However, in some cases (e.g. inside a `<ReferenceInput>`), you may not want
  * the choice to be translated. In that case, set the `translateChoice` prop to false.
  * @example
- * <AutocompleteInput source="gender" choices={choices} translateChoice={false}/>
+ * <AutocompleteArrayInput source="gender" choices={choices} translateChoice={false}/>
  *
  * The object passed as `options` props is passed to the material-ui <AutoComplete> component
  *
  * @example
- * <AutocompleteInput source="author_id" options={{ fullWidth: true }} />
+ * <AutocompleteArrayInput source="author_id" options={{ fullWidthInput: true }} />
  */
 export class AutocompleteArrayInput extends React.Component {
+    initialInputValue = [];
+
     state = {
         dirty: false,
-        inputValue: null,
+        inputValue: this.initialInputValue,
         searchText: '',
         suggestions: [],
     };
 
     inputEl = null;
+    anchorEl = null;
+
+    getInputValue = inputValue =>
+        inputValue === '' ? this.initialInputValue : inputValue;
 
     componentWillMount() {
         this.setState({
-            inputValue: this.props.input.value,
+            inputValue: this.getInputValue(this.props.input.value),
             suggestions: this.props.choices,
         });
     }
 
     componentWillReceiveProps(nextProps) {
         const { choices, input, inputValueMatcher } = nextProps;
-        if (!isEqual(input.value, this.state.inputValue)) {
+        if (!isEqual(this.getInputValue(input.value), this.state.inputValue)) {
             this.setState({
-                inputValue: input.value,
+                inputValue: this.getInputValue(input.value),
                 dirty: false,
                 suggestions: this.props.choices,
             });
@@ -162,7 +174,7 @@ export class AutocompleteArrayInput extends React.Component {
         const { input } = this.props;
 
         input.onChange([
-            ...this.state.inputValue,
+            ...(this.state.inputValue || []),
             this.getSuggestionValue(suggestion),
         ]);
 
@@ -197,18 +209,17 @@ export class AutocompleteArrayInput extends React.Component {
         this.updateFilter(inputValue);
     };
     handleChange = (event, { newValue, method }) => {
-        switch (method) {
-            case 'type':
-            case 'escape':
-                {
-                    this.handleMatchSuggestionOrFilter(newValue);
-                }
-                break;
+        if (['type', 'escape'].includes(method)) {
+            this.handleMatchSuggestionOrFilter(newValue);
         }
     };
 
     renderInput = inputProps => {
-        const { input } = this.props;
+        const {
+            input,
+            fullWidth,
+            options: { InputProps, suggestionsContainerProps, ...options },
+        } = this.props;
         const {
             autoFocus,
             className,
@@ -221,7 +232,6 @@ export class AutocompleteArrayInput extends React.Component {
             source,
             value,
             ref,
-            options: { InputProps, ...options },
             ...other
         } = inputProps;
         if (typeof meta === 'undefined') {
@@ -236,7 +246,13 @@ export class AutocompleteArrayInput extends React.Component {
         // but Autosuggest also needs this reference (it provides the ref prop)
         const storeInputRef = input => {
             this.inputEl = input;
+            this.updateAnchorEl();
             ref(input);
+        };
+
+        const finalOptions = {
+            fullWidth,
+            ...options,
         };
 
         return (
@@ -245,14 +261,21 @@ export class AutocompleteArrayInput extends React.Component {
                 onUpdateInput={onChange}
                 onAdd={this.handleAdd}
                 onDelete={this.handleDelete}
-                value={input.value}
+                value={this.getInputValue(input.value)}
                 inputRef={storeInputRef}
-                error={touched && error}
-                helperText={touched && error && helperText}
+                error={!!(touched && error)}
+                helperText={(touched && error) || helperText}
                 chipRenderer={this.renderChip}
-                label={<FieldTitle label={label} />}
+                label={
+                    <FieldTitle
+                        label={label}
+                        source={source}
+                        resource={resource}
+                        isRequired={isRequired}
+                    />
+                }
                 {...other}
-                {...options}
+                {...finalOptions}
             />
         );
     };
@@ -302,7 +325,7 @@ export class AutocompleteArrayInput extends React.Component {
 
         if (choice) {
             return input.onChange([
-                ...this.state.inputValue,
+                ...(this.state.inputValue || []),
                 this.getSuggestionValue(choice),
             ]);
         }
@@ -322,20 +345,50 @@ export class AutocompleteArrayInput extends React.Component {
         input.onChange(this.state.inputValue.filter(value => value !== chip));
     };
 
-    renderSuggestionsContainer = options => {
+    updateAnchorEl() {
+        if (!this.inputEl) {
+            return;
+        }
+
+        const inputPosition = this.inputEl.getBoundingClientRect();
+
+        if (!this.anchorEl) {
+            this.anchorEl = { getBoundingClientRect: () => inputPosition };
+        } else {
+            const anchorPosition = this.anchorEl.getBoundingClientRect();
+
+            if (
+                anchorPosition.x !== inputPosition.x ||
+                anchorPosition.y !== inputPosition.y
+            ) {
+                this.anchorEl = { getBoundingClientRect: () => inputPosition };
+            }
+        }
+    }
+
+    renderSuggestionsContainer = autosuggestOptions => {
         const {
             containerProps: { className, ...containerProps },
             children,
-        } = options;
+        } = autosuggestOptions;
+        const { classes = {}, options } = this.props;
+
+        // Force the Popper component to reposition the popup only when this.inputEl is moved to another location
+        this.updateAnchorEl();
 
         return (
             <Popper
                 className={className}
-                open
-                anchorEl={this.inputEl}
+                open={Boolean(children)}
+                anchorEl={this.anchorEl}
                 placement="bottom-start"
+                {...options.suggestionsContainerProps}
             >
-                <Paper square {...containerProps}>
+                <Paper
+                    square
+                    className={classes.suggestionsPaper}
+                    {...containerProps}
+                >
                     {children}
                 </Paper>
             </Popper>
@@ -412,7 +465,17 @@ export class AutocompleteArrayInput extends React.Component {
         this.previousFilterValue = value;
     };
 
-    shouldRenderSuggestions = () => true;
+    shouldRenderSuggestions = val => {
+        const { shouldRenderSuggestions } = this.props;
+        if (
+            shouldRenderSuggestions !== undefined &&
+            typeof shouldRenderSuggestions === 'function'
+        ) {
+            return shouldRenderSuggestions(val);
+        }
+
+        return true;
+    };
 
     render() {
         const {
@@ -488,6 +551,7 @@ AutocompleteArrayInput.propTypes = {
     optionValue: PropTypes.string.isRequired,
     resource: PropTypes.string,
     setFilter: PropTypes.func,
+    shouldRenderSuggestions: PropTypes.func,
     source: PropTypes.string,
     suggestionComponent: PropTypes.func,
     translate: PropTypes.func.isRequired,

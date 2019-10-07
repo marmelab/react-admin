@@ -3,10 +3,15 @@ import assert from 'assert';
 import { shallow } from 'enzyme';
 import { ImageField } from './ImageField';
 
+const defaultProps = {
+    classes: {},
+    source: 'url',
+};
+
 describe('<ImageField />', () => {
     it('should return an empty div when record is not set', () => {
         assert.equal(
-            shallow(<ImageField source="url" />).html(),
+            shallow(<ImageField {...defaultProps} />).html(),
             '<div></div>'
         );
     });
@@ -14,11 +19,11 @@ describe('<ImageField />', () => {
     it('should render an image with correct attributes based on `source` and `title`', () => {
         const wrapper = shallow(
             <ImageField
+                {...defaultProps}
                 record={{
                     url: 'http://foo.com/bar.jpg',
                     title: 'Hello world!',
                 }}
-                source="url"
                 title="title"
             />
         );
@@ -32,6 +37,7 @@ describe('<ImageField />', () => {
     it('should support deep linking', () => {
         const wrapper = shallow(
             <ImageField
+                {...defaultProps}
                 record={{
                     picture: {
                         url: 'http://foo.com/bar.jpg',
@@ -52,10 +58,10 @@ describe('<ImageField />', () => {
     it('should allow setting static string as title', () => {
         const wrapper = shallow(
             <ImageField
+                {...defaultProps}
                 record={{
                     url: 'http://foo.com/bar.jpg',
                 }}
-                source="url"
                 title="Hello world!"
             />
         );
@@ -68,6 +74,7 @@ describe('<ImageField />', () => {
     it('should render a list of images with correct attributes based on `src` and `title`', () => {
         const wrapper = shallow(
             <ImageField
+                {...defaultProps}
                 record={{
                     pictures: [
                         {
@@ -99,6 +106,7 @@ describe('<ImageField />', () => {
         assert.deepEqual(
             shallow(
                 <ImageField
+                    {...defaultProps}
                     source="foo"
                     record={{ foo: true }}
                     className="foo"

@@ -6,7 +6,7 @@ import {
     CREATE,
     UPDATE,
     DELETE,
-} from 'react-admin';
+} from 'ra-core';
 import getResponseParser from './getResponseParser';
 
 const testListTypes = type => {

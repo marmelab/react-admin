@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormGroup from '@material-ui/core/FormGroup';
+import FormHelperText from '@material-ui/core/FormHelperText';
 import Switch from '@material-ui/core/Switch';
 import { addField, FieldTitle } from 'ra-core';
 
@@ -15,12 +16,15 @@ export class BooleanInput extends Component {
     render() {
         const {
             className,
+            id,
             input,
             isRequired,
             label,
             source,
             resource,
             options,
+            fullWidth,
+            meta,
             ...rest
         } = this.props;
 
@@ -29,8 +33,10 @@ export class BooleanInput extends Component {
         return (
             <FormGroup className={className} {...sanitizeRestProps(rest)}>
                 <FormControlLabel
+                    htmlFor={id}
                     control={
                         <Switch
+                            id={id}
                             color="primary"
                             checked={!!value}
                             onChange={this.handleChange}
@@ -47,6 +53,9 @@ export class BooleanInput extends Component {
                         />
                     }
                 />
+                {meta.error && (
+                    <FormHelperText error>{meta.error}</FormHelperText>
+                )}
             </FormGroup>
         );
     }
@@ -54,6 +63,7 @@ export class BooleanInput extends Component {
 
 BooleanInput.propTypes = {
     className: PropTypes.string,
+    id: PropTypes.string,
     input: PropTypes.object,
     isRequired: PropTypes.bool,
     label: PropTypes.string,
