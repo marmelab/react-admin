@@ -95,15 +95,6 @@ const useReferenceInputController = ({
     const { pagination, setPagination } = usePaginationState({ perPage });
     const { sort, setSort } = useSortState(sortOverride);
 
-    // We need to keep the current sort synchronized with the sort prop
-    // because the inner component may call the setSort too
-    useEffect(() => {
-        if (!isEqual(sort, sortOverride)) {
-            return;
-        }
-        setSort(sortOverride);
-    }, [setSort, sort, sortOverride]);
-
     const { filter: filterValue, setFilter } = useFilterState({
         permanentFilter: filter,
         filterToQuery,
