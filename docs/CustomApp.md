@@ -19,56 +19,95 @@ Here is the default store creation for react-admin:
 
 ```js
 // in src/createAdminStore.js
-import { applyMiddleware, combineReducers, compose, createStore } from 'redux';
-import { routerMiddleware, connectRouter } from 'connected-react-router';
+import { createStore, compose, applyMiddleware } from 'redux';
+import { routerMiddleware } from 'connected-react-router';
 import createSagaMiddleware from 'redux-saga';
 import { all, fork } from 'redux-saga/effects';
-import {
-    adminReducer,
-    adminSaga,
-    defaultI18nProvider,
-    i18nReducer,
-    USER_LOGOUT,
-} from 'react-admin';
+import { History } from 'history';
+
+import { AuthProvider, DataProvider, I18nProvider } from './types';
+import createAppReducer from './reducer';
+import { adminSaga } from './sideEffect';
+import { defaultI18nProvider } from './i18n';
+import { CLEAR_STATE } from './actions/clearActions';
+
+interface Window {
+    __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: (traceOptions: object) => Function;
+}
+
+export type InitialState = object | (() => object);
+
+interface Params {
+    dataProvider: DataProvider;
+    history: History;
+    authProvider?: AuthProvider;
+    customReducers?: any;
+    customSagas?: any[];
+    i18nProvider?: I18nProvider;
+    initialState?: InitialState;
+    locale?: string;
+}
 
 export default ({
-    authProvider,
     dataProvider,
-    i18nProvider = defaultI18nProvider,
     history,
+    customReducers = {},
+    authProvider = null,
+    customSagas = [],
+    i18nProvider = defaultI18nProvider,
+    initialState,
     locale = 'en',
-}) => {
-    const reducer = combineReducers({
-        admin: adminReducer,
-        i18n: i18nReducer(locale, i18nProvider(locale)),
-        router: connectRouter(history),
-        { /* add your own reducers here */ },
-    });
-    const resettableAppReducer = (state, action) =>
-        reducer(action.type !== USER_LOGOUT ? state : undefined, action);
+}: Params) => {
+    const messages = i18nProvider(locale);
+    const appReducer = createAppReducer(
+        customReducers,
+        locale,
+        messages,
+        history,
+		{ /* add your own reducers here */ },
+    );
 
+    const resettableAppReducer = (state, action) =>
+        appReducer(
+            action.type !== CLEAR_STATE
+                ? state
+                : typeof initialState === 'function'
+                ? initialState()
+                : initialState,
+            action
+        );
     const saga = function* rootSaga() {
         yield all(
             [
                 adminSaga(dataProvider, authProvider, i18nProvider),
+                ...customSagas,
                 // add your own sagas here
             ].map(fork)
         );
     };
     const sagaMiddleware = createSagaMiddleware();
+    const typedWindow = window as Window;
+
+    const composeEnhancers =
+        (process.env.NODE_ENV === 'development' &&
+            typeof typedWindow !== 'undefined' &&
+            typedWindow.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ &&
+            typedWindow.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
+                trace: true,
+                traceLimit: 25,
+            })) ||
+        compose;
 
     const store = createStore(
         resettableAppReducer,
         { /* set your initial state here */ },
-        compose(
+        typeof initialState === 'function' ? initialState() : initialState,
+        composeEnhancers(
             applyMiddleware(
-                sagaMiddleware,
-                routerMiddleware(history),
-                // add your own middlewares here
-            ),
-            typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION__
-                ? window.__REDUX_DEVTOOLS_EXTENSION__()
-                : f => f
+				sagaMiddleware, 
+				routerMiddleware(history),
+				// add your own middlewares here
+			),
             // add your own enhancers here
         )
     );
