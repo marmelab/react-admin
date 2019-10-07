@@ -6,6 +6,7 @@ import expect from 'expect';
 import renderWithRedux from '../../util/renderWithRedux';
 import ReferenceInputController from './ReferenceInputController';
 import { DataProviderContext } from '../../dataProvider';
+import { crudGetMatching } from '../../actions';
 
 describe('<ReferenceInputController />', () => {
     const defaultProps = {
@@ -34,6 +35,7 @@ describe('<ReferenceInputController />', () => {
                         ...defaultProps,
                         input: { value: 1 } as any,
                         loading: true,
+                        sort: { field: 'title', order: 'ASC' },
                     }}
                 >
                     {children}
@@ -62,13 +64,22 @@ describe('<ReferenceInputController />', () => {
             filter: { q: '' },
             loading: false,
             pagination: { page: 1, perPage: 25 },
-            sort: { field: 'id', order: 'DESC' },
+            sort: { field: 'title', order: 'ASC' },
             warning: null,
         });
-        await new Promise(resolve => setTimeout(resolve));
+        await new Promise(resolve => setTimeout(resolve, 100));
         expect(dispatch).toBeCalledTimes(6);
         expect(dispatch.mock.calls[0][0].type).toBe(
             'RA/CRUD_GET_MATCHING_ACCUMULATE'
+        );
+        expect(dispatch.mock.calls[0][0].meta.accumulate()).toEqual(
+            crudGetMatching(
+                'posts',
+                'comments@post_id',
+                { page: 1, perPage: 25 },
+                { field: 'title', order: 'ASC' },
+                { q: '' }
+            )
         );
         expect(dispatch.mock.calls[1][0].type).toBe('RA/CRUD_GET_MANY');
     });

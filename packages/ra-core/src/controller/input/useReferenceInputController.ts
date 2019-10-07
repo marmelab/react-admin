@@ -1,3 +1,6 @@
+import { useEffect } from 'react';
+import isEqual from 'lodash/isEqual';
+
 import { getStatusForInput as getDataStatus } from './referenceDataStatus';
 import useTranslate from '../../i18n/useTranslate';
 import { Sort, Record, Pagination } from '../../types';
@@ -84,12 +87,23 @@ const useReferenceInputController = ({
     filterToQuery,
     referenceSource = defaultReferenceSource,
     resource,
+    sort: sortOverride,
     source,
 }: Option): ReferenceInputValue => {
     const translate = useTranslate();
 
     const { pagination, setPagination } = usePaginationState({ perPage });
-    const { sort, setSort } = useSortState();
+    const { sort, setSort } = useSortState(sortOverride);
+
+    // We need to keep the current sort synchronized with the sort prop
+    // because the inner component may call the setSort too
+    useEffect(() => {
+        if (!isEqual(sort, sortOverride)) {
+            return;
+        }
+        setSort(sortOverride);
+    }, [setSort, sort, sortOverride]);
+
     const { filter: filterValue, setFilter } = useFilterState({
         permanentFilter: filter,
         filterToQuery,
