@@ -14,6 +14,7 @@ import { useDispatch } from 'react-redux';
 import { push } from 'connected-react-router';
 import { TableCell, TableRow, Checkbox } from '@material-ui/core';
 import { linkToRecord } from 'ra-core';
+import isEqual from 'lodash/isEqual';
 
 import DatagridCell from './DatagridCell';
 import ExpandRowButton from './ExpandRowButton';
@@ -27,7 +28,7 @@ const computeNbColumns = (expand, children, hasBulkActions) =>
 
 const defaultClasses = {};
 
-const DatagridRow = ({
+export const DatagridRow = ({
     basePath,
     children,
     classes = defaultClasses,
@@ -206,7 +207,13 @@ DatagridRow.defaultProps = {
     selected: false,
 };
 
-const PureDatagridRow = memo(DatagridRow);
+const areEqual = (prevProps, nextProps) => {
+    const { children: _, ...prevPropsWithoutChildren } = prevProps;
+    const { children: __, ...nextPropsWithoutChildren } = nextProps;
+    return isEqual(prevPropsWithoutChildren, nextPropsWithoutChildren);
+};
+
+const PureDatagridRow = memo(DatagridRow, areEqual);
 
 PureDatagridRow.displayName = 'PureDatagridRow';
 

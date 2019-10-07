@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import TableBody from '@material-ui/core/TableBody';
 import classnames from 'classnames';
 
-import DatagridRow from './DatagridRow';
+import PureDatagridRow, { DatagridRow } from './DatagridRow';
 
-const DatagridBody = ({
+export const DatagridBody = ({
     basePath,
     children,
     classes,
@@ -85,4 +85,8 @@ DatagridBody.defaultProps = {
 const MemoDatagridBody = memo(DatagridBody);
 // trick material-ui Table into thinking this is one of the child type it supports
 MemoDatagridBody.muiName = 'TableBody';
+MemoDatagridBody.defaultProps = {
+    row: <PureDatagridRow />,
+};
+
 export default MemoDatagridBody;
