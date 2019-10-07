@@ -19,95 +19,52 @@ Here is the default store creation for react-admin:
 
 ```js
 // in src/createAdminStore.js
-import { createStore, compose, applyMiddleware } from 'redux';
-import { routerMiddleware } from 'connected-react-router';
+import { applyMiddleware, combineReducers, compose, createStore } from 'redux';
+import { routerMiddleware, connectRouter } from 'connected-react-router';
 import createSagaMiddleware from 'redux-saga';
 import { all, fork } from 'redux-saga/effects';
-import { History } from 'history';
-
-import { AuthProvider, DataProvider, I18nProvider } from './types';
-import createAppReducer from './reducer';
-import { adminSaga } from './sideEffect';
-import { defaultI18nProvider } from './i18n';
-import { CLEAR_STATE } from './actions/clearActions';
-
-interface Window {
-    __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: (traceOptions: object) => Function;
-}
-
-export type InitialState = object | (() => object);
-
-interface Params {
-    dataProvider: DataProvider;
-    history: History;
-    authProvider?: AuthProvider;
-    customReducers?: any;
-    customSagas?: any[];
-    i18nProvider?: I18nProvider;
-    initialState?: InitialState;
-    locale?: string;
-}
+import {
+    adminReducer,
+    adminSaga,
+    defaultI18nProvider,
+    USER_LOGOUT,
+} from 'react-admin';
 
 export default ({
+    authProvider,
     dataProvider,
     history,
-    customReducers = {},
-    authProvider = null,
-    customSagas = [],
-    i18nProvider = defaultI18nProvider,
-    initialState,
-    locale = 'en',
-}: Params) => {
-    const messages = i18nProvider(locale);
-    const appReducer = createAppReducer(
-        customReducers,
-        locale,
-        messages,
-        history,
-		{ /* add your own reducers here */ },
-    );
-
+}) => {
+    const reducer = combineReducers({
+        admin: adminReducer,
+        router: connectRouter(history),
+        { /* add your own reducers here */ },
+    });
     const resettableAppReducer = (state, action) =>
-        appReducer(
-            action.type !== CLEAR_STATE
-                ? state
-                : typeof initialState === 'function'
-                ? initialState()
-                : initialState,
-            action
-        );
+        reducer(action.type !== USER_LOGOUT ? state : undefined, action);
+
     const saga = function* rootSaga() {
         yield all(
             [
-                adminSaga(dataProvider, authProvider, i18nProvider),
-                ...customSagas,
+                adminSaga(dataProvider, authProvider),
                 // add your own sagas here
             ].map(fork)
         );
     };
     const sagaMiddleware = createSagaMiddleware();
-    const typedWindow = window as Window;
-
-    const composeEnhancers =
-        (process.env.NODE_ENV === 'development' &&
-            typeof typedWindow !== 'undefined' &&
-            typedWindow.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ &&
-            typedWindow.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
-                trace: true,
-                traceLimit: 25,
-            })) ||
-        compose;
 
     const store = createStore(
         resettableAppReducer,
         { /* set your initial state here */ },
-        typeof initialState === 'function' ? initialState() : initialState,
-        composeEnhancers(
+        compose(
             applyMiddleware(
-				sagaMiddleware, 
-				routerMiddleware(history),
-				// add your own middlewares here
-			),
+                sagaMiddleware,
+                routerMiddleware(history),
+                // add your own middlewares here
+            ),
+            typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION__
+                ? window.__REDUX_DEVTOOLS_EXTENSION__()
+                : f => f
             // add your own enhancers here
         )
     );
@@ -128,6 +85,7 @@ import { createHashHistory } from 'history';
 import { Admin, Resource } from 'react-admin';
 import restProvider from 'ra-data-simple-rest';
 import defaultMessages from 'ra-language-english';
+import polyglotI18nProvider from 'ra_i18n_polyglot';
 
 import createAdminStore from './createAdminStore';
 import messages from './i18n';
@@ -138,15 +96,15 @@ import { PostList, PostCreate, PostEdit, PostShow } from './Post';
 import { CommentList, CommentEdit, CommentCreate } from './Comment';
 import { UserList, UserEdit, UserCreate } from './User';
 
-// side effects
-const authProvider = () => Promise.resolve();
+// dependency injection
 const dataProvider = restProvider('http://path.to.my.api/');
-const i18nProvider = locale => {
+const authProvider = () => Promise.resolve();
+const i18nProvider = polyglotI18nProvider(locale => {
     if (locale !== 'en') {
         return messages[locale];
     }
     return defaultMessages;
-};
+});
 const history = createHashHistory();
 
 const App = () => (
@@ -154,7 +112,6 @@ const App = () => (
         store={createAdminStore({
             authProvider,
             dataProvider,
-            i18nProvider,
             history,
         })}
     >
@@ -191,9 +148,10 @@ import { createHashHistory } from 'history';
 +import { Switch, Route } from 'react-router-dom';
 +import withContext from 'recompose/withContext';
 -import { Admin, Resource } from 'react-admin';
-+import { TranslationProvider, Resource } from 'react-admin';
++import { AuthContext, DataProviderContext, TranslationProvider, Resource } from 'react-admin';
 import restProvider from 'ra-data-simple-rest';
 import defaultMessages from 'ra-language-english';
+import polyglotI18nProvider from 'ra_i18n_polyglot';
 +import { ThemeProvider } from '@material-ui/styles';
 +import AppBar from '@material-ui/core/AppBar';
 +import Toolbar from '@material-ui/core/Toolbar';
@@ -208,15 +166,15 @@ import { PostList, PostCreate, PostEdit, PostShow } from './Post';
 import { CommentList, CommentEdit, CommentCreate } from './Comment';
 import { UserList, UserEdit, UserCreate } from './User';
 
-// side effects
-const authProvider = () => Promise.resolve();
+// dependency injection
 const dataProvider = restProvider('http://path.to.my.api/');
-const i18nProvider = locale => {
+const authProvider = () => Promise.resolve();
+const i18nProvider = polyglotI18nProvider(locale => {
     if (locale !== 'en') {
         return messages[locale];
     }
     return defaultMessages;
-};
+});
 const history = createHashHistory();
 
 const App = () => (
@@ -224,7 +182,6 @@ const App = () => (
         store={createAdminStore({
             authProvider,
             dataProvider,
-            i18nProvider,
             history,
         })}
     >
@@ -236,7 +193,12 @@ const App = () => (
 -           <Resource name="posts" list={PostList} create={PostCreate} edit={PostEdit} show={PostShow} />
 -           <Resource name="comments" list={CommentList} edit={CommentEdit} create={CommentCreate} />
 -           <Resource name="users" list={UserList} edit={UserEdit} create={UserCreate} />
-+       <TranslationProvider>
++       <AuthContext.Provider value={authProvider}>
++       <DataProviderContext.Provider value={dataProvider}>
++       <TranslationProvider
++           locale={locale}
++           i18nProvider={i18nProvider}
++       >
 +           <ThemeProvider>
 +               <Resource name="posts" intent="registration" />
 +               <Resource name="comments" intent="registration" />
@@ -265,6 +227,8 @@ const App = () => (
 +               </ConnectedRouter>
 +           </ThemeProvider>
 +       </TranslationProvider>
++       </DataProviderContext.Provider>
++       </AuthContext.Provider>
 -       </Admin>
     </Provider>
 );
