@@ -11,6 +11,8 @@ import {
 import PostReferenceInput from './PostReferenceInput';
 
 const defaultValue = { created_at: new Date() };
+const defaultSort = { field: 'title', order: 'ASC' };
+
 const CommentCreate = props => (
     <Create {...props}>
         <SimpleForm redirect={false} defaultValue={defaultValue}>
@@ -20,6 +22,7 @@ const CommentCreate = props => (
                 allowEmpty
                 validate={required()}
                 perPage={10000}
+                sort={defaultSort}
             />
             <TextInput
                 source="author.name"
