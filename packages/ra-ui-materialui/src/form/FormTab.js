@@ -42,7 +42,7 @@ class FormTab extends Component {
         record,
         resource,
     }) => (
-        <Fragment>
+        <span className={contentClassName}>
             {React.Children.map(
                 children,
                 input =>
@@ -55,7 +55,7 @@ class FormTab extends Component {
                         />
                     )
             )}
-        </Fragment>
+        </span>
     );
 
     renderHiddenContent = ({ children }) => (
