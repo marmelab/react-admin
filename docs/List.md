@@ -1026,7 +1026,7 @@ const PostList = ({ classes, ...props }) => (
 export default withStyles(styles)(PostList);
 ```
 
-### Performances
+### Performance
 
 when displaying large pages of data, you might experience some performance issues.
 This is mostly due to the fact that we iterate over the `<Datagrid>` children and clone them.
