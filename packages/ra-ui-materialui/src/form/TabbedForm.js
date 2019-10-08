@@ -164,12 +164,12 @@ export class TabbedForm extends Component {
                                     {routeProps =>
                                         isValidElement(tab)
                                             ? React.cloneElement(tab, {
-                                                context: 'content',
-                                                resource,
-                                                record,
-                                                basePath,
-                                                hidden: !routeProps.match,
-                                            })
+                                                  context: 'content',
+                                                  resource,
+                                                  record,
+                                                  basePath,
+                                                  hidden: !routeProps.match,
+                                              })
                                             : null
                                     }
                                 </Route>

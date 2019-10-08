@@ -76,8 +76,8 @@ class FormTab extends Component {
         return context === 'header'
             ? this.renderHeader(rest)
             : hidden
-                ? this.renderHiddenContent({ children })
-                : this.renderContent({ children, ...rest });
+            ? this.renderHiddenContent({ children })
+            : this.renderContent({ children, ...rest });
     }
 }
 
