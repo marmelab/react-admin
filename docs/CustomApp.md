@@ -66,10 +66,15 @@ export default ({
   
     const store = createStore(
         resettableAppReducer,
-        typeof initialState === 'function' ? initialState() : initialState,
+        { /* set your initial state here */ },
         composeEnhancers(
-            applyMiddleware(sagaMiddleware, routerMiddleware(history))
-        )
+            applyMiddleware(
+                sagaMiddleware,
+                routerMiddleware(history),
+                // add your own middlewares here
+            ),
+            // add your own enhancers here
+        ),        
     );
     sagaMiddleware.run(saga);
     return store;
