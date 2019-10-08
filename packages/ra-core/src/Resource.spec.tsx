@@ -62,7 +62,7 @@ describe('<Resource>', () => {
             <Resource
                 {...resource}
                 context="route"
-                match={{ url: 'posts' }}
+                match={{ path: 'posts' }}
                 registerResource={registerResource}
                 unregisterResource={unregisterResource}
             />
@@ -74,7 +74,7 @@ describe('<Resource>', () => {
             <Resource
                 {...resource}
                 context="route"
-                match={{ url: 'posts' }}
+                match={{ path: 'posts' }}
                 registerResource={registerResource}
                 unregisterResource={unregisterResource}
             />
@@ -88,7 +88,7 @@ describe('<Resource>', () => {
             <Resource
                 {...resource}
                 context="route"
-                match={{ url: 'posts' }}
+                match={{ path: 'posts' }}
                 registerResource={registerResource}
                 unregisterResource={unregisterResource}
             />
@@ -100,7 +100,7 @@ describe('<Resource>', () => {
             <Resource
                 {...resource}
                 context="route"
-                match={{ url: 'posts' }}
+                match={{ path: 'posts' }}
                 registerResource={registerResource}
                 unregisterResource={unregisterResource}
             />

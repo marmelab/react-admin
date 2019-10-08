@@ -80,13 +80,13 @@ export class Resource extends Component<ResourceProps & ConnectedProps> {
             hasCreate: !!create,
         };
 
-        const basePath = match.url;
+        const basePath = match.path;
 
         return (
             <Switch>
                 {create && (
                     <Route
-                        path={`${match.url}/create`}
+                        path={`${match.path}/create`}
                         render={routeProps => (
                             <WithPermissions
                                 render={props =>
@@ -103,7 +103,7 @@ export class Resource extends Component<ResourceProps & ConnectedProps> {
                 )}
                 {show && (
                     <Route
-                        path={`${match.url}/:id/show`}
+                        path={`${match.path}/:id/show`}
                         render={routeProps => (
                             <WithPermissions
                                 render={props =>
@@ -124,7 +124,7 @@ export class Resource extends Component<ResourceProps & ConnectedProps> {
                 )}
                 {edit && (
                     <Route
-                        path={`${match.url}/:id`}
+                        path={`${match.path}/:id`}
                         render={routeProps => (
                             <WithPermissions
                                 render={props =>
@@ -145,7 +145,7 @@ export class Resource extends Component<ResourceProps & ConnectedProps> {
                 )}
                 {list && (
                     <Route
-                        path={`${match.url}`}
+                        path={`${match.path}`}
                         render={routeProps => (
                             <WithPermissions
                                 render={props =>
