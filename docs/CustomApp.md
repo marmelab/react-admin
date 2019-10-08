@@ -53,20 +53,27 @@ export default ({
     };
     const sagaMiddleware = createSagaMiddleware();
 
+    const composeEnhancers =
+        (process.env.NODE_ENV === 'development' &&
+            typeof window !== 'undefined' &&
+            window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ &&
+            window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
+                trace: true,
+                traceLimit: 25,
+            })) ||
+        compose;
+  
     const store = createStore(
         resettableAppReducer,
         { /* set your initial state here */ },
-        compose(
+        composeEnhancers(
             applyMiddleware(
                 sagaMiddleware,
                 routerMiddleware(history),
                 // add your own middlewares here
             ),
-            typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION__
-                ? window.__REDUX_DEVTOOLS_EXTENSION__()
-                : f => f
             // add your own enhancers here
-        )
+        ),        
     );
     sagaMiddleware.run(saga);
     return store;
