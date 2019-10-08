@@ -1026,6 +1026,29 @@ const PostList = ({ classes, ...props }) => (
 export default withStyles(styles)(PostList);
 ```
 
+### Performances
+
+when displaying large pages of data, you might experience some performance issues.
+This is mostly due to the fact that we iterate over the `<Datagrid>` children and clone them.
+
+In such cases, you can opt-in for an optimized version of the `<Datagrid>` by setting its `optimized` prop to `true`. 
+Be aware that you can't have dynamic children, such as those displayed or hidden by checking permissions, when using this mode.
+
+```jsx
+const PostList = props => (
+    <List {...props}>
+        <Datagrid optimized>
+            <TextField source="id" />
+            <TextField source="title" />
+            <TextField source="views" />
+        </Datagrid>
+    </List>
+);
+
+export default withStyles(styles)(PostList);
+```
+
+
 ## The `<SimpleList>` component
 
 For mobile devices, a `<Datagrid>` is often unusable - there is simply not enough space to display several columns. The convention in that case is to use a simple list, with only one column per row. The `<SimpleList>` component serves that purpose, leveraging [material-ui's `<List>` and `<ListItem>` components](https://material-ui.com/demos/lists/). You can use it as `<List>` or `<ReferenceManyField>` child:
