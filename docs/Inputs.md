@@ -873,6 +873,18 @@ You can customize the rich text editor toolbar using the `toolbar` attribute, as
 <RichTextInput source="body" toolbar={[ ['bold', 'italic', 'underline', 'link'] ]} />
 ```
 
+If you need more customization, you can access the quill object through the `configureQuill` callback that will be called just after its initialization.
+
+```js
+const configureQuill = quill => quill.getModule('toolbar').addHandler('bold', function (value) {
+    this.quill.format('bold', value)
+});
+
+// ...
+
+<RichTextInput source="text" configureQuill={configureQuill}/>
+```
+
 ## `<SelectInput>`
 
 To let users choose a value in a list using a dropdown, use `<SelectInput>`. It renders using [Material ui's `<Select>`](http://material-ui.com/api/select). Set the `choices` attribute to determine the options (with `id`, `name` tuples):
