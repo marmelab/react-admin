@@ -3,19 +3,20 @@ import React, {
     Component,
     ReactElement,
     cloneElement,
-    SFC,
     ComponentType,
 } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import Card from '@material-ui/core/Card';
 import { createStyles, WithStyles, withStyles } from '@material-ui/core/styles';
+import { Record, Dispatch } from 'ra-core';
 import { TreeController } from 'ra-tree-core';
 import { Title } from 'ra-ui-materialui';
+import { DragDropContextProvider } from 'react-dnd';
+import HTML5Backend from 'react-dnd-html5-backend';
 
 import TreeListActions from './TreeListActions';
 import TreeListToolbar from './TreeListToolbar';
-import { Record, Dispatch } from 'ra-core';
 
 type FetchRelatedData = () => void;
 
@@ -77,15 +78,17 @@ export class Tree extends Component<Props & InjectedProps> {
     render() {
         const { children, parentSource, positionSource, ...props } = this.props;
         return (
-            <TreeController
-                parentSource={parentSource}
-                positionSource={positionSource}
-                {...props}
-            >
-                {controllerProps => (
-                    <TreeView {...controllerProps}>{children}</TreeView>
-                )}
-            </TreeController>
+            <DragDropContextProvider backend={HTML5Backend}>
+                <TreeController
+                    parentSource={parentSource}
+                    positionSource={positionSource}
+                    {...props}
+                >
+                    {controllerProps => (
+                        <TreeView {...controllerProps}>{children}</TreeView>
+                    )}
+                </TreeController>
+            </DragDropContextProvider>
         );
     }
 }

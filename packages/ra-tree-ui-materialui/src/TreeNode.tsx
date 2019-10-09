@@ -5,6 +5,7 @@ import React, {
     isValidElement,
     ReactElement,
 } from 'react';
+import { findDOMNode } from 'react-dom';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import classnames from 'classnames';
@@ -23,21 +24,42 @@ import {
 import isEqual from 'lodash/isEqual';
 import {
     crudGetTreeChildrenNodes as crudGetTreeChildrenNodesAction,
+    crudMoveNode as crudMoveNodeAction,
     getIsExpanded,
     getIsLoading,
     getChildrenNodes,
     NodeFunction,
 } from 'ra-tree-core';
 import { withTranslate, Record, Identifier, Translate } from 'ra-core';
+
+import {
+    DragSource,
+    DropTarget,
+    ConnectDragSource,
+    ConnectDropTarget,
+    DropTargetMonitor,
+    DragSourceMonitor,
+    DragSourceConnector,
+    DropTargetConnector,
+    XYCoord,
+} from 'react-dnd';
+
 import TreeNodeList from './TreeNodeList';
 
 interface Props {
     actions?: ReactElement<any>;
-    basePath: string;
     className?: string;
+    canDrag: (record: Record) => boolean;
+    canDrop: (data: { dropTarget: Record; dragSource: Record }) => boolean;
+}
+
+interface InjectedProps {
+    basePath: string;
     closeNode: NodeFunction;
     crudGetTreeChildrenNodes: typeof crudGetTreeChildrenNodesAction;
+    crudMoveNode: typeof crudMoveNodeAction;
     expanded: boolean;
+    expandNode: NodeFunction;
     hasCreate: boolean;
     hasEdit: boolean;
     hasList: boolean;
@@ -49,16 +71,37 @@ interface Props {
     positionSource: string;
     record: Record;
     resource: string;
-    expandNode: NodeFunction;
     toggleNode: NodeFunction;
     translate: Translate;
 }
-class TreeNode extends Component<Props & WithStyles<typeof styles>> {
+
+interface InjectedByDndProps {
+    canDrag: boolean;
+    canDrop: boolean;
+    connectDragSource: ConnectDragSource;
+    connectDropTarget: ConnectDropTarget;
+    isDragging: boolean;
+    isOver: boolean;
+    isOverCurrent: boolean;
+}
+
+class TreeNode extends Component<
+    Props & InjectedProps & InjectedByDndProps & WithStyles<typeof styles>
+> {
     componentDidMount() {
         this.fetchChildren();
     }
 
     componentDidUpdate(prevProps) {
+        if (
+            !this.props.expanded &&
+            (this.props.isOverCurrent ||
+                (this.props.isOver && !!this.props.positionSource)) &&
+            !this.props.isDragging
+        ) {
+            this.handleClick();
+        }
+
         if (!isEqual(this.props.record, prevProps.record)) {
             this.fetchChildren();
         }
@@ -89,17 +132,25 @@ class TreeNode extends Component<Props & WithStyles<typeof styles>> {
         const {
             actions,
             basePath,
+            canDrag,
+            canDrop,
             children,
             className,
             classes,
             closeNode,
+            connectDragSource,
+            connectDropTarget,
             crudGetTreeChildrenNodes,
+            crudMoveNode,
             expanded,
             expandNode,
             hasCreate,
             hasEdit,
             hasList,
             hasShow,
+            isDragging,
+            isOver,
+            isOverCurrent,
             loading,
             nodeChildren,
             nodes,
@@ -121,82 +172,97 @@ class TreeNode extends Component<Props & WithStyles<typeof styles>> {
         const showLoading =
             loading && (Array.isArray(nodes) && nodes.length === 0);
 
-        return (
-            <ListItem
-                className={classnames(classes.root, className)}
-                divider={!expanded}
-                {...props}
-            >
-                <div className={classes.container}>
-                    <ListItemIcon>
-                        {showLoading ? (
-                            <div className={classes.icon}>
-                                <CircularProgress size="1em" />
-                            </div>
-                        ) : !nodes || nodes.length === 0 ? (
-                            <div className={classes.icon}>
-                                <KeyboardArrowRight />
-                            </div>
-                        ) : (
-                            <IconButton
-                                className={classes.button}
-                                aria-label={translate(
-                                    expanded
-                                        ? 'ra.tree.close'
-                                        : 'ra.tree.expand'
-                                )}
-                                title={translate(
-                                    expanded
-                                        ? 'ra.tree.close'
-                                        : 'ra.tree.expand'
-                                )}
-                                onClick={this.handleClick}
-                            >
-                                {expanded ? (
-                                    <KeyboardArrowDown />
-                                ) : (
-                                    <KeyboardArrowRight />
-                                )}
-                            </IconButton>
-                        )}
-                    </ListItemIcon>
-                    <div className={classes.content}>
-                        {Children.map(children, child =>
-                            isValidElement(child)
-                                ? cloneElement<any>(child, {
-                                      basePath,
-                                      record,
-                                  })
-                                : null
-                        )}
-                        {actions && isValidElement<any>(actions)
-                            ? cloneElement<any>(actions, {
-                                  basePath,
-                                  record,
-                                  ...actions.props,
-                              })
-                            : null}
-                    </div>
-                </div>
-                {expanded ? (
-                    <TreeNodeList
-                        basePath={basePath}
-                        closeNode={closeNode}
-                        expandNode={expandNode}
-                        hasCreate={hasCreate}
-                        hasEdit={hasEdit}
-                        hasList={hasList}
-                        hasShow={hasShow}
-                        nodes={nodes}
-                        parentSource={parentSource}
-                        positionSource={positionSource}
-                        resource={resource}
-                        toggleNode={toggleNode}
+        return connectDropTarget(
+            connectDragSource(
+                <li
+                    // This is a hack to cancel styles added dynamically on hover which
+                    // are not correctly removed once the dragged item leaves this node
+                    className={classnames({
+                        [classes.draggedOver]:
+                            canDrop &&
+                            (isOverCurrent || (isOver && !!positionSource)),
+                        [classes.resetDraggedOver]: !isOverCurrent,
+                    })}
+                    data-position={record[positionSource]}
+                >
+                    <ListItem
+                        className={classnames(classes.root, className)}
+                        divider={!expanded}
+                        component="div"
+                        {...props}
                     >
-                        {nodeChildren}
-                    </TreeNodeList>
-                ) : null}
-            </ListItem>
+                        <div className={classes.container}>
+                            <ListItemIcon>
+                                {showLoading ? (
+                                    <div className={classes.icon}>
+                                        <CircularProgress size="1em" />
+                                    </div>
+                                ) : nodes || nodes.length === 0 ? (
+                                    <IconButton
+                                        className={classes.button}
+                                        aria-label={translate(
+                                            expanded
+                                                ? 'ra.tree.close'
+                                                : 'ra.tree.expand'
+                                        )}
+                                        title={translate(
+                                            expanded
+                                                ? 'ra.tree.close'
+                                                : 'ra.tree.expand'
+                                        )}
+                                        onClick={this.handleClick}
+                                    >
+                                        {expanded ? (
+                                            <KeyboardArrowDown />
+                                        ) : (
+                                            <KeyboardArrowRight />
+                                        )}
+                                    </IconButton>
+                                ) : (
+                                    <KeyboardArrowRight
+                                        className={classes.invisible}
+                                    />
+                                )}
+                            </ListItemIcon>
+                            <div className={classes.content}>
+                                {Children.map(children, child =>
+                                    isValidElement(child)
+                                        ? cloneElement<any>(child, {
+                                              basePath,
+                                              record,
+                                          })
+                                        : null
+                                )}
+                                {actions && isValidElement<any>(actions)
+                                    ? cloneElement<any>(actions, {
+                                          basePath,
+                                          record,
+                                          ...actions.props,
+                                      })
+                                    : null}
+                            </div>
+                        </div>
+                        {expanded ? (
+                            <TreeNodeList
+                                basePath={basePath}
+                                closeNode={closeNode}
+                                expandNode={expandNode}
+                                hasCreate={hasCreate}
+                                hasEdit={hasEdit}
+                                hasList={hasList}
+                                hasShow={hasShow}
+                                nodes={nodes}
+                                parentSource={parentSource}
+                                positionSource={positionSource}
+                                resource={resource}
+                                toggleNode={toggleNode}
+                            >
+                                {nodeChildren}
+                            </TreeNodeList>
+                        ) : null}
+                    </ListItem>
+                </li>
+            )
         );
     }
 }
@@ -206,6 +272,27 @@ const styles = (theme: Theme): StyleRules => ({
         display: 'inline-block',
         verticalAlign: 'middle',
         paddingRight: 0,
+    },
+    draggedOver: {
+        backgroundColor: theme.palette.action.hover,
+    },
+    resetDraggedOver: {
+        '&.draggedAbove': {
+            borderTopStyle: 'none',
+        },
+        '&.draggedBelow': {
+            borderBottomStyle: 'none',
+        },
+    },
+    draggedAbove: {
+        borderTopWidth: 2,
+        borderTopStyle: 'solid',
+        borderTopColor: theme.palette.action.active,
+    },
+    draggedBelow: {
+        borderBottomWidth: 2,
+        borderBottomStyle: 'solid',
+        borderBottomColor: theme.palette.action.active,
     },
     container: {
         alignItems: 'center',
@@ -232,6 +319,9 @@ const styles = (theme: Theme): StyleRules => ({
         verticalAlign: 'middle',
         width: theme.spacing.unit * 3,
     },
+    invisible: {
+        opacity: 0,
+    },
 });
 
 const mapStateToProps = (state, { record, resource }) => ({
@@ -243,11 +333,194 @@ const mapStateToProps = (state, { record, resource }) => ({
         record && record.id ? getChildrenNodes(state, resource, record.id) : [],
 });
 
+type DroppedPosition = 'above' | 'below' | 'over' | 'none';
+
+const getDroppedPosition = (
+    boundingRect: ClientRect,
+    mousePosition: XYCoord
+): DroppedPosition => {
+    // Get vertical middle
+    const hoverMiddleY = (boundingRect.bottom - boundingRect.top) / 2;
+
+    // Get pixels to the top
+    const hoverClientY = mousePosition.y - boundingRect.top;
+    const percentage = (hoverMiddleY - hoverClientY) / boundingRect.height;
+
+    const isAbove = percentage > 0.25;
+    const isBelow = percentage < -0.25;
+
+    return isAbove ? 'above' : isBelow ? 'below' : 'over';
+};
+
+const nodeTarget = {
+    canDrop(props: Props & InjectedProps, monitor: DropTargetMonitor) {
+        const { record: draggedRecord } = monitor.getItem();
+        const isJustOverThisOne = monitor.isOver({ shallow: true });
+        const canDrop = props.canDrop
+            ? props.canDrop({
+                  dropTarget: props.record,
+                  dragSource: draggedRecord,
+              })
+            : true;
+        const isNotDroppingOverItself = props.record.id !== draggedRecord.id;
+
+        return isJustOverThisOne && canDrop && isNotDroppingOverItself;
+    },
+
+    hover(
+        props: Props & InjectedProps & WithStyles<typeof styles>,
+        monitor: DropTargetMonitor,
+        component
+    ) {
+        const domNode = findDOMNode(component) as HTMLElement;
+
+        const item = monitor.getItem();
+        const canDrop = monitor.canDrop();
+        const isOverCurrent = monitor.isOver({ shallow: true });
+
+        let droppedPosition: DroppedPosition = 'none';
+
+        if (item && isOverCurrent && !!props.positionSource && canDrop) {
+            // Determine rectangle on screen
+            const hoverBoundingRect = domNode.getBoundingClientRect();
+            // Determine mouse position
+            const mousePosition = monitor.getClientOffset();
+
+            droppedPosition = getDroppedPosition(
+                hoverBoundingRect,
+                mousePosition
+            );
+        }
+
+        switch (droppedPosition) {
+            case 'above': {
+                domNode.classList.remove(props.classes.draggedBelow);
+                domNode.classList.add(props.classes.draggedAbove);
+                break;
+            }
+            case 'below': {
+                domNode.classList.remove(props.classes.draggedAbove);
+                domNode.classList.add(props.classes.draggedBelow);
+                break;
+            }
+            default:
+                domNode.classList.remove(props.classes.draggedAbove);
+                domNode.classList.remove(props.classes.draggedBelow);
+                break;
+        }
+    },
+
+    drop(props: Props & InjectedProps, monitor: DropTargetMonitor, component) {
+        if (monitor.didDrop()) {
+            return;
+        }
+
+        const { record: draggedRecord } = monitor.getItem();
+
+        const domNode = findDOMNode(component) as HTMLElement;
+        // Determine rectangle on screen
+        const hoverBoundingRect = domNode.getBoundingClientRect();
+        // Determine mouse position
+        const mousePosition = monitor.getClientOffset();
+        const droppedPosition = getDroppedPosition(
+            hoverBoundingRect,
+            mousePosition
+        );
+
+        // If the item was dropped over the component, its record will be the new parent
+        // of the item and the item will be the last child
+        if (droppedPosition === 'over' || !props.positionSource) {
+            props.crudMoveNode({
+                resource: props.resource,
+                data: {
+                    ...draggedRecord,
+                    [props.parentSource]: props.record.id,
+                    [props.positionSource]: props.positionSource
+                        ? props.nodes.length - 1
+                        : undefined,
+                },
+                parentSource: props.parentSource,
+                positionSource: props.positionSource,
+            });
+            return;
+        }
+
+        // If the item was dropped above or below the component, its record's parent
+        // will be the new parent of the item
+        if (droppedPosition === 'above') {
+            props.crudMoveNode({
+                resource: props.resource,
+                data: {
+                    ...draggedRecord,
+                    [props.parentSource]: props.record[props.parentSource],
+                    [props.positionSource]: props.record[props.positionSource],
+                },
+                parentSource: props.parentSource,
+                positionSource: props.positionSource,
+            });
+            return;
+        }
+        if (droppedPosition === 'below') {
+            props.crudMoveNode({
+                resource: props.resource,
+                data: {
+                    ...draggedRecord,
+                    [props.parentSource]: props.record[props.parentSource],
+                    [props.positionSource]:
+                        props.record[props.positionSource] + 1,
+                },
+                parentSource: props.parentSource,
+                positionSource: props.positionSource,
+            });
+            return;
+        }
+    },
+};
+
+const collectDropTarget = (
+    connect: DropTargetConnector,
+    monitor: DropTargetMonitor
+) => ({
+    connectDropTarget: connect.dropTarget(),
+    isOver: monitor.isOver(),
+    isOverCurrent: monitor.isOver({ shallow: true }),
+    canDrop: monitor.canDrop(),
+});
+
+const nodeSource = {
+    canDrag(props) {
+        return props.canDrag ? props.canDrag(props.record) : true;
+    },
+
+    isDragging(props: Props & InjectedProps, monitor: DragSourceMonitor) {
+        return monitor.getItem().record.id === props.record.id;
+    },
+
+    beginDrag(props: Props & InjectedProps, monitor, component) {
+        // Returns the node record as the item being dragged
+        // It will be returned for every call to monitor.getItem()
+        return { record: props.record, component };
+    },
+};
+
+const collectDragSource = (
+    connect: DragSourceConnector,
+    monitor: DragSourceMonitor
+) => ({
+    connectDragSource: connect.dragSource(),
+    isDragging: monitor.isDragging(),
+});
+
 export default compose(
     connect(
         mapStateToProps,
-        { crudGetTreeChildrenNodes: crudGetTreeChildrenNodesAction }
+        {
+            crudGetTreeChildrenNodes: crudGetTreeChildrenNodesAction,
+            crudMoveNode: crudMoveNodeAction,
+        }
     ),
-    withTranslate,
-    withStyles(styles)
+    withStyles(styles),
+    DropTarget('TREE_NODE', nodeTarget, collectDropTarget),
+    DragSource('TREE_NODE', nodeSource, collectDragSource),
+    withTranslate
 )(TreeNode);

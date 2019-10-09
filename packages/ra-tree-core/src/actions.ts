@@ -1,3 +1,5 @@
+import { CREATE, UPDATE } from 'ra-core';
+
 export const CRUD_GET_TREE_ROOT_NODES = 'RA/CRUD_GET_TREE_ROOT_NODES';
 export const CRUD_GET_TREE_ROOT_NODES_SUCCESS =
     'RA/CRUD_GET_TREE_ROOT_NODES_SUCCESS';
@@ -43,6 +45,50 @@ export const crudGetTreeChildrenNodes = ({
         parentSource,
         positionSource,
         fetch: GET_TREE_CHILDREN_NODES,
+    },
+});
+
+export const CRUD_INSERT_NODE = 'RA/TREE/CRUD_INSERT_NODE';
+export const INSERT_NODE = 'INSERT_NODE';
+
+export const crudInsertNode = ({
+    resource,
+    data,
+    parentSource,
+    positionSource,
+}) => ({
+    type: CRUD_INSERT_NODE,
+    payload: {
+        data,
+    },
+    meta: {
+        resource,
+        parentSource,
+        positionSource,
+        fetch: INSERT_NODE,
+        refresh: true,
+    },
+});
+
+export const CRUD_MOVE_NODE = 'RA/TREE/CRUD_MOVE_NODE';
+export const MOVE_NODE = 'MOVE_NODE';
+
+export const crudMoveNode = ({
+    resource,
+    data,
+    parentSource,
+    positionSource,
+}) => ({
+    type: CRUD_MOVE_NODE,
+    payload: {
+        data,
+    },
+    meta: {
+        resource,
+        parentSource,
+        positionSource,
+        fetch: MOVE_NODE,
+        refresh: true,
     },
 });
 

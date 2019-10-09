@@ -1,6 +1,6 @@
 {
     "name": "ra-tree-core",
-    "version": "2.6.0",
+    "version": "2.9.7",
     "description": "A treeview component without ui to use with react-admin",
     "main": "lib/index.js",
     "module": "esm/index.js",
@@ -42,11 +42,13 @@
         "react-dom": "^16.3.0"
     },
     "dependencies": {
-        "performant-array-to-tree": "^1.1.2",
+        "performant-array-to-tree": "^1.2.0",
         "prop-types": "^15.6.1"
     },
     "devDependencies": {
         "cross-env": "^5.2.0",
+        "react": "~16.3.1",
+        "react-dom": "~16.3.1",
         "rimraf": "^2.6.2"
     }
 }

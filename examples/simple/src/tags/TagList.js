@@ -13,10 +13,14 @@ const TagNodeActions = props => (
         <EditButton />
     </TreeNodeActions>
 );
+
+// Disallow dragging of items without parents (top level items)
+const canDrag = record => !!record.parent_id;
+
 const TagList = props => (
-    <Tree {...props}>
+    <Tree positionSource="position" {...props}>
         <TreeList>
-            <TreeNode actions={<TagNodeActions />}>
+            <TreeNode actions={<TagNodeActions />} canDrag={canDrag}>
                 <TextField source="name" />
             </TreeNode>
         </TreeList>
