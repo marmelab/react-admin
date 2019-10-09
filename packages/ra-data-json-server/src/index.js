@@ -10,7 +10,7 @@ import {
     UPDATE_MANY,
     DELETE,
     DELETE_MANY,
-} from 'react-admin';
+} from 'ra-core';
 
 /**
  * Maps react-admin queries to a json-server powered REST API
