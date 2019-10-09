@@ -290,7 +290,7 @@ const MyUrlField = ({ record = {}, source }) => {
         <a href={record[source]} className={classes.link}>
             {record[source]}
             <LaunchIcon className={classes.icon} />
-        </a>;
+        </a>
     );
 }
 
@@ -644,6 +644,31 @@ const App = () => (
 ```
 
 ![Custom home page](./img/dashboard.png)
+
+This dashboard could be used to display aggregated data and react-admin provide some React hooks to make it easier. One of these hooks is `useGetList` and is used like this:
+
+```jsx
+// in src/Dashboard.js
+import React from 'react';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import CardHeader from '@material-ui/core/CardHeader';
++import { useGetList } from "react-admin";
+
+export default () => {
++    const { loading, total } = useGetList("posts", { page: 1, perPage: 1 }, {}, {});
+
+    return (
+        <Card>
+            <CardHeader title="Welcome to the administration" />
+-            <CardContent>Lorem ipsum sic dolor amet...</CardContent>
++           {!loading && <CardContent>There are {total} posts !</CardContent>}
+        </Card>
+    );
+};
+```
+
+![Custom home page](./img/tutorial-dashboard-hooks.png)
 
 ## Adding a Login Page
 
