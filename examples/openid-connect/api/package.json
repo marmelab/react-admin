@@ -1,0 +1,16 @@
+{
+  "name": "api",
+  "version": "0.0.1",
+  "main": "index.js",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "start": "now dev --listen 8080"
+  },
+  "devDependencies": {
+    "now": "^16.3.1"
+  },
+  "dependencies": {
+    "phin": "^3.4.0"
+  }
+}
