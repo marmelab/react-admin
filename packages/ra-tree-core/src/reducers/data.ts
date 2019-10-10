@@ -14,7 +14,11 @@ import {
     UPDATE,
     UPDATE_MANY,
 } from 'ra-core';
-import { GET_TREE_ROOT_NODES, GET_TREE_CHILDREN_NODES } from '../actions';
+import {
+    GET_TREE_ROOT_NODES,
+    GET_TREE_CHILDREN_NODES,
+    MOVE_NODE,
+} from '../actions';
 
 /**
  * A list of records indexed by id, together with their fetch dates
@@ -109,12 +113,29 @@ const dataReducer: Reducer<RecordSetWithDate> = (
     { payload, meta }
 ) => {
     if (meta && meta.optimistic) {
-        if (meta.fetch === UPDATE) {
+        if (meta.fetch === UPDATE || meta.fetch === MOVE_NODE) {
             const updatedRecord = {
                 ...previousState[payload.id],
                 ...payload.data,
             };
-            return addRecords([updatedRecord], previousState);
+
+            const nextSiblings = meta.positionSource
+                ? Object.keys(previousState)
+                      .filter(
+                          id =>
+                              previousState[id][meta.parentSource] ===
+                                  payload.data[meta.parentSource] &&
+                              previousState[id][meta.positionSource] >=
+                                  payload.data[meta.positionSource]
+                      )
+                      .map(id => ({
+                          ...previousState[id],
+                          [meta.positionSource]:
+                              previousState[id][meta.positionSource] + 1,
+                      }))
+                : [];
+
+            return addRecords([updatedRecord, ...nextSiblings], previousState);
         }
         if (meta.fetch === UPDATE_MANY) {
             const updatedRecords = payload.ids.map(id => ({

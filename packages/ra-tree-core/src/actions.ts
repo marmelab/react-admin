@@ -48,28 +48,6 @@ export const crudGetTreeChildrenNodes = ({
     },
 });
 
-export const CRUD_INSERT_NODE = 'RA/TREE/CRUD_INSERT_NODE';
-export const INSERT_NODE = 'INSERT_NODE';
-
-export const crudInsertNode = ({
-    resource,
-    data,
-    parentSource,
-    positionSource,
-}) => ({
-    type: CRUD_INSERT_NODE,
-    payload: {
-        data,
-    },
-    meta: {
-        resource,
-        parentSource,
-        positionSource,
-        fetch: INSERT_NODE,
-        refresh: true,
-    },
-});
-
 export const CRUD_MOVE_NODE = 'RA/TREE/CRUD_MOVE_NODE';
 export const MOVE_NODE = 'MOVE_NODE';
 
@@ -78,17 +56,39 @@ export const crudMoveNode = ({
     data,
     parentSource,
     positionSource,
+    previousData,
+    refresh,
+    redirectTo,
+    basePath,
 }) => ({
     type: CRUD_MOVE_NODE,
     payload: {
         data,
+        previousData,
     },
     meta: {
         resource,
         parentSource,
         positionSource,
         fetch: MOVE_NODE,
-        refresh: true,
+        onSuccess: {
+            notification: {
+                body: 'ra.notification.updated',
+                level: 'info',
+                messageArgs: {
+                    smart_count: 1,
+                },
+            },
+            refresh,
+            redirectTo,
+            basePath,
+        },
+        onFailure: {
+            notification: {
+                body: 'ra.notification.http_error',
+                level: 'warning',
+            },
+        },
     },
 });
 

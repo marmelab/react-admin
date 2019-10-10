@@ -14,6 +14,7 @@ import uniq from 'lodash/uniq';
 import {
     CRUD_GET_TREE_ROOT_NODES_SUCCESS,
     CRUD_GET_TREE_CHILDREN_NODES_SUCCESS,
+    MOVE_NODE,
 } from '../actions';
 
 export const ROOT_NODE_ID = '@@ROOT_NODE_ID';
@@ -35,22 +36,61 @@ const nodesReducer = (
     action
 ) => {
     if (action.meta && action.meta.optimistic) {
+        if (action.meta.fetch === MOVE_NODE) {
+            // We need to remove this node from its previous parent as it may have change
+            const previousParentId =
+                action.payload.previousData[action.meta.parentSource];
+
+            const newState = {
+                ...previousState,
+                [previousParentId]: previousState[previousParentId].filter(
+                    id => id !== action.payload.data.id
+                ),
+            };
+
+            const newParentId = action.payload.data[action.meta.parentSource];
+            // The new parent may not have any children yet
+            const currentParentChildren = newState[newParentId] || [];
+
+            if (action.meta.positionSource) {
+                // Then we need to update the new parent (which may be the same) and the node position
+                newState[newParentId] = [
+                    ...currentParentChildren.slice(
+                        0,
+                        action.payload.data[action.meta.positionSource]
+                    ),
+                    action.payload.data.id,
+                    ...currentParentChildren.slice(
+                        action.payload.data[action.meta.positionSource]
+                    ),
+                ];
+                return newState;
+            }
+
+            newState[newParentId] = [
+                ...currentParentChildren,
+                action.payload.data.id,
+            ];
+
+            return newState;
+        }
+
         if (action.meta.fetch === DELETE) {
+            const parentId = action.payload[action.meta.parentSource];
+
             const {
                 [action.payload.id]: excludedAsDeleted,
-                [action.requestPayload[
-                    action.meta.parentSource
-                ]]: parentChildren,
+                [parentId]: parentChildren,
                 ...newState
             } = previousState;
 
-            const index = previousState[action.meta.parentSource].findIndex(
+            const index = previousState[parentId].findIndex(
                 nodeId => nodeId === action.payload.id
             );
 
-            newState[action.meta.parentSource] = [
-                ...previousState[action.meta.parentSource].slice(0, index),
-                ...previousState[action.meta.parentSource].slice(index + 1),
+            newState[parentId] = [
+                ...previousState[parentId].slice(0, index),
+                ...previousState[parentId].slice(index + 1),
             ];
 
             Object.defineProperty(newState, 'fetchedAt', {
@@ -173,18 +213,74 @@ const nodesReducer = (
 
             return newState;
         }
-        // case CRUD_GET_MANY_SUCCESS:
-        // case CRUD_GET_MANY_REFERENCE_SUCCESS:
-        //     return addRecordIds(
-        //         action.payload.data
-        //             .map(({ id }) => id)
-        //             .filter(id => previousState.indexOf(id) !== -1),
-        //         previousState
-        //     );
-        // case CRUD_GET_ONE_SUCCESS:
-        // case CRUD_CREATE_SUCCESS:
-        // case CRUD_UPDATE_SUCCESS:
-        //     return addRecordIds([action.payload.data.id], previousState);
+        case CRUD_CREATE_SUCCESS: {
+            const newParentId = action.payload.data[action.meta.parentSource];
+
+            // The new parent may not have any children yet
+            const currentParentChildren = previousState[newParentId] || [];
+
+            if (action.meta.positionSource) {
+                return {
+                    ...previousState,
+                    [newParentId]: [
+                        ...currentParentChildren.slice(
+                            0,
+                            action.payload.data[action.meta.positionSource]
+                        ),
+                        action.payload.data.id,
+                        ...currentParentChildren.slice(
+                            action.payload.data[action.meta.positionSource] + 1
+                        ),
+                    ],
+                };
+            }
+
+            return {
+                ...previousState,
+                [newParentId]: [
+                    ...currentParentChildren,
+                    action.payload.data.id,
+                ],
+            };
+        }
+        case CRUD_UPDATE_SUCCESS: {
+            // We need to remove this node from its previous parent as it may have change
+            const previousParentId =
+                action.payload.previousData[action.meta.parentSource];
+
+            const newState = {
+                ...previousState,
+                [previousParentId]: previousState[previousParentId].filter(
+                    id => id !== action.payload.data.id
+                ),
+            };
+
+            const newParentId = action.payload.data[action.meta.parentSource];
+            // The new parent may not have any children yet
+            const currentParentChildren = newState[newParentId] || [];
+
+            if (action.meta.positionSource) {
+                // Then we need to update the new parent (which may be the same) and the node position
+                newState[newParentId] = [
+                    ...currentParentChildren.slice(
+                        0,
+                        action.payload.data[action.meta.positionSource]
+                    ),
+                    action.payload.data.id,
+                    ...currentParentChildren.slice(
+                        action.payload.data[action.meta.positionSource]
+                    ),
+                ];
+                return newState;
+            }
+
+            newState[newParentId] = [
+                ...currentParentChildren,
+                action.payload.data.id,
+            ];
+
+            return newState;
+        }
         default:
             return previousState;
     }

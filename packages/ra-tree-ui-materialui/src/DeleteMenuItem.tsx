@@ -18,7 +18,7 @@ interface InjectedProps {
 }
 
 const DeleteMenuItem: SFC<Props & InjectedProps & MenuItemProps> = ({
-    undoable,
+    undoable = true,
     ...props
 }) =>
     undoable ? (

@@ -4,6 +4,7 @@ import React, {
     cloneElement,
     isValidElement,
     ReactElement,
+    ComponentType,
 } from 'react';
 import { findDOMNode } from 'react-dom';
 import { connect } from 'react-redux';
@@ -30,7 +31,13 @@ import {
     getChildrenNodes,
     NodeFunction,
 } from 'ra-tree-core';
-import { withTranslate, Record, Identifier, Translate } from 'ra-core';
+import {
+    withTranslate,
+    Record,
+    Identifier,
+    Translate,
+    startUndoable as startUndoableAction,
+} from 'ra-core';
 
 import {
     DragSource,
@@ -51,6 +58,7 @@ interface Props {
     className?: string;
     canDrag: (record: Record) => boolean;
     canDrop: (data: { dropTarget: Record; dragSource: Record }) => boolean;
+    undoable?: boolean;
 }
 
 interface InjectedProps {
@@ -71,6 +79,7 @@ interface InjectedProps {
     positionSource: string;
     record: Record;
     resource: string;
+    startUndoable: typeof startUndoableAction;
     toggleNode: NodeFunction;
     translate: Translate;
 }
@@ -85,7 +94,7 @@ interface InjectedByDndProps {
     isOverCurrent: boolean;
 }
 
-class TreeNode extends Component<
+class TreeNodeView extends Component<
     Props & InjectedProps & InjectedByDndProps & WithStyles<typeof styles>
 > {
     componentDidMount() {
@@ -158,8 +167,10 @@ class TreeNode extends Component<
             positionSource,
             record,
             resource,
+            startUndoable,
             toggleNode,
             translate,
+            undoable,
             ...props
         } = this.props;
 
@@ -430,52 +441,39 @@ const nodeTarget = {
             mousePosition
         );
 
-        // If the item was dropped over the component, its record will be the new parent
-        // of the item and the item will be the last child
-        if (droppedPosition === 'over' || !props.positionSource) {
-            props.crudMoveNode({
-                resource: props.resource,
-                data: {
-                    ...draggedRecord,
-                    [props.parentSource]: props.record.id,
-                    [props.positionSource]: props.positionSource
-                        ? props.nodes.length - 1
-                        : undefined,
-                },
-                parentSource: props.parentSource,
-                positionSource: props.positionSource,
-            });
-            return;
-        }
+        // If the item was dropped over the component, its record will be the new parent of the item,
+        // otherwise the parent will be the record's parent
+        const nodeParent =
+            droppedPosition === 'over'
+                ? props.record.id
+                : props.record[props.parentSource];
 
-        // If the item was dropped above or below the component, its record's parent
-        // will be the new parent of the item
-        if (droppedPosition === 'above') {
-            props.crudMoveNode({
-                resource: props.resource,
-                data: {
-                    ...draggedRecord,
-                    [props.parentSource]: props.record[props.parentSource],
-                    [props.positionSource]: props.record[props.positionSource],
-                },
-                parentSource: props.parentSource,
-                positionSource: props.positionSource,
-            });
-            return;
-        }
-        if (droppedPosition === 'below') {
-            props.crudMoveNode({
-                resource: props.resource,
-                data: {
-                    ...draggedRecord,
-                    [props.parentSource]: props.record[props.parentSource],
-                    [props.positionSource]:
-                        props.record[props.positionSource] + 1,
-                },
-                parentSource: props.parentSource,
-                positionSource: props.positionSource,
-            });
-            return;
+        const nodePosition = !props.positionSource
+            ? undefined
+            : droppedPosition === 'above'
+            ? props.record[props.positionSource]
+            : droppedPosition === 'below'
+            ? props.record[props.positionSource]
+            : props.nodes.length - 1;
+
+        const actionPayload = {
+            resource: props.resource,
+            data: {
+                ...draggedRecord,
+                [props.parentSource]: nodeParent,
+                [props.positionSource]: nodePosition,
+            },
+            parentSource: props.parentSource,
+            positionSource: props.positionSource,
+            previousData: draggedRecord,
+            basePath: props.basePath,
+            refresh: false,
+        };
+
+        if (props.undoable) {
+            props.startUndoable(crudMoveNodeAction(actionPayload));
+        } else {
+            props.crudMoveNode(actionPayload);
         }
     },
 };
@@ -514,16 +512,23 @@ const collectDragSource = (
     isDragging: monitor.isDragging(),
 });
 
-export default compose(
+const TreeNode = compose(
     connect(
         mapStateToProps,
         {
             crudGetTreeChildrenNodes: crudGetTreeChildrenNodesAction,
             crudMoveNode: crudMoveNodeAction,
+            startUndoable: startUndoableAction,
         }
     ),
     withStyles(styles),
     DropTarget('TREE_NODE', nodeTarget, collectDropTarget),
     DragSource('TREE_NODE', nodeSource, collectDragSource),
     withTranslate
-)(TreeNode);
+)(TreeNodeView) as ComponentType<Props & WithStyles<typeof styles>>;
+
+TreeNode.defaultProps = {
+    undoable: true,
+};
+
+export default TreeNode;
