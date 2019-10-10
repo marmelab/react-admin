@@ -29,8 +29,8 @@ const buildGetListVariables = introspectionResults => (
 
             if (filterSome) {
                 const filter = Object.keys(params.filter[key]).reduce(
-                    (acc, k) => ({
-                        ...acc,
+                    (filter_acc, k) => ({
+                        ...filter_acc,
                         [`${k}_in`]: params.filter[key][k],
                     }),
                     {}
@@ -85,7 +85,7 @@ const buildGetListVariables = introspectionResults => (
     };
 };
 
-const buildCreateUpdateVariables = () => (
+const buildCreateUpdateVariables = (
     resource,
     aorFetchType,
     params,
@@ -147,28 +147,18 @@ export default introspectionResults => (
             };
         }
         case GET_ONE:
-            return {
-                id: params.id,
-            };
-        case UPDATE: {
-            return buildCreateUpdateVariables(introspectionResults)(
-                resource,
-                aorFetchType,
-                params,
-                queryType
-            );
-        }
-        case CREATE: {
-            return buildCreateUpdateVariables(introspectionResults)(
-                resource,
-                aorFetchType,
-                params,
-                queryType
-            );
-        }
         case DELETE:
             return {
                 id: params.id,
             };
+        case CREATE:
+        case UPDATE: {
+            return buildCreateUpdateVariables(
+                resource,
+                aorFetchType,
+                params,
+                queryType
+            );
+        }
     }
 };
