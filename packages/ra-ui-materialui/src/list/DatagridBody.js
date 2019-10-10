@@ -2,6 +2,7 @@ import React, { cloneElement, memo } from 'react';
 import PropTypes from 'prop-types';
 import TableBody from '@material-ui/core/TableBody';
 import classnames from 'classnames';
+import isEqual from 'lodash/isEqual';
 
 import PureDatagridRow, { DatagridRow } from './DatagridRow';
 
@@ -81,8 +82,16 @@ DatagridBody.defaultProps = {
     ids: [],
     row: <DatagridRow />,
 };
+// trick material-ui Table into thinking this is one of the child type it supports
+DatagridBody.muiName = 'TableBody';
 
-const MemoDatagridBody = memo(DatagridBody);
+const areEqual = (prevProps, nextProps) => {
+    const { children: _, ...prevPropsWithoutChildren } = prevProps;
+    const { children: __, ...nextPropsWithoutChildren } = nextProps;
+    return isEqual(prevPropsWithoutChildren, nextPropsWithoutChildren);
+};
+
+const MemoDatagridBody = memo(DatagridBody, areEqual);
 // trick material-ui Table into thinking this is one of the child type it supports
 MemoDatagridBody.muiName = 'TableBody';
 MemoDatagridBody.defaultProps = {
