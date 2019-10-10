@@ -1,14 +1,20 @@
 /* eslint react/jsx-key: off */
 import React from 'react';
-import { Edit, SimpleForm, TextField, TextInput, required } from 'react-admin';
+import {
+    Create,
+    SimpleForm,
+    TextField,
+    TextInput,
+    required,
+} from 'react-admin';
 
-const TagEdit = props => (
-    <Edit {...props}>
+const TagCreate = props => (
+    <Create {...props}>
         <SimpleForm redirect="list">
             <TextField source="id" />
             <TextInput source="name" validate={[required()]} />
         </SimpleForm>
-    </Edit>
+    </Create>
 );
 
-export default TagEdit;
+export default TagCreate;

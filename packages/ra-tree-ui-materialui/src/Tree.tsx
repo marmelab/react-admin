@@ -12,8 +12,6 @@ import { createStyles, WithStyles, withStyles } from '@material-ui/core/styles';
 import { Record, Dispatch } from 'ra-core';
 import { TreeController } from 'ra-tree-core';
 import { Title } from 'ra-ui-materialui';
-import { DragDropContextProvider } from 'react-dnd';
-import HTML5Backend from 'react-dnd-html5-backend';
 
 import TreeListActions from './TreeListActions';
 import TreeListToolbar from './TreeListToolbar';
@@ -78,17 +76,15 @@ export class Tree extends Component<Props & InjectedProps> {
     render() {
         const { children, parentSource, positionSource, ...props } = this.props;
         return (
-            <DragDropContextProvider backend={HTML5Backend}>
-                <TreeController
-                    parentSource={parentSource}
-                    positionSource={positionSource}
-                    {...props}
-                >
-                    {controllerProps => (
-                        <TreeView {...controllerProps}>{children}</TreeView>
-                    )}
-                </TreeController>
-            </DragDropContextProvider>
+            <TreeController
+                parentSource={parentSource}
+                positionSource={positionSource}
+                {...props}
+            >
+                {controllerProps => (
+                    <TreeView {...controllerProps}>{children}</TreeView>
+                )}
+            </TreeController>
         );
     }
 }

@@ -19,7 +19,10 @@ interface Props {
 }
 interface InjectedProps {
     basePath: string;
+    parentSource: string;
+    positionSource?: string;
     record: Record;
+    resource?: string;
 }
 const styles = (theme: Theme) =>
     createStyles({
@@ -35,7 +38,10 @@ const TreeNodeActions = withStyles(styles)(
         children,
         classes,
         className,
+        parentSource,
+        positionSource,
         record,
+        resource,
     }: Props & InjectedProps & WithStyles<typeof styles>) => (
         <div className={classnames(classes.root, className)}>
             {Children.map(children, child =>
@@ -43,6 +49,9 @@ const TreeNodeActions = withStyles(styles)(
                     ? cloneElement<any>(child, {
                           basePath,
                           record,
+                          parentSource,
+                          positionSource,
+                          resource,
                           ...child.props,
                       })
                     : null

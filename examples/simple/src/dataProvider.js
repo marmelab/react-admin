@@ -7,6 +7,7 @@ import {
     GET_TREE_CHILDREN_NODES,
     MOVE_NODE,
 } from 'ra-tree-core';
+import { CREATE } from 'ra-core';
 
 const dataProvider = jsonRestProvider(data, true);
 
@@ -35,20 +36,47 @@ const dataProviderWithTree = async (type, resource, params) => {
         });
 
         await Promise.all(
-            data.map(node =>
-                dataProvider('UPDATE', resource, {
+            data.map(node => {
+                if (node.position < params.data.position) {
+                    return Promise.resolve();
+                }
+                return dataProvider('UPDATE', resource, {
                     id: node.id,
                     data: {
                         position: node.position + 1,
                     },
-                })
-            )
+                });
+            })
         );
 
         return dataProvider('UPDATE', resource, {
             id: params.data.id,
             data: params.data,
         });
+    }
+
+    if (type === CREATE && resource === 'tags') {
+        const { data } = await dataProvider('GET_LIST', resource, {
+            filter: { parent_id: params.data.parent_id },
+            sort: { field: 'position', order: 'ASC' },
+            pagination: { page: 1, perPage: 1000 },
+        });
+
+        await Promise.all(
+            data.map(node => {
+                if (node.position < params.data.position) {
+                    return Promise.resolve();
+                }
+                return dataProvider('UPDATE', resource, {
+                    id: node.id,
+                    data: {
+                        position: node.position + 1,
+                    },
+                });
+            })
+        );
+
+        return dataProvider(type, resource, params);
     }
 
     return dataProvider(type, resource, params);

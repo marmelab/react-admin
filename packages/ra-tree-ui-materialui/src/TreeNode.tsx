@@ -236,7 +236,10 @@ class TreeNode extends Component<
                                 {actions && isValidElement<any>(actions)
                                     ? cloneElement<any>(actions, {
                                           basePath,
+                                          parentSource,
+                                          positionSource,
                                           record,
+                                          resource,
                                           ...actions.props,
                                       })
                                     : null}

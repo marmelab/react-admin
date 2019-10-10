@@ -1,16 +1,27 @@
 import React from 'react';
 import { TextField } from 'react-admin';
 import {
+    AddChildNodeMenuItem,
+    AddNodeAfterMenuItem,
+    AddNodeBeforeMenuItem,
+    DeleteMenuItem,
+    EditMenuItem,
     Tree,
     TreeNode,
     TreeList,
     TreeNodeActions,
+    TreeNodeActionsMenu,
 } from 'ra-tree-ui-materialui';
-import { EditButton } from 'ra-ui-materialui';
 
 const TagNodeActions = props => (
     <TreeNodeActions {...props}>
-        <EditButton />
+        <TreeNodeActionsMenu {...props}>
+            <AddChildNodeMenuItem />
+            <AddNodeAfterMenuItem />
+            <AddNodeBeforeMenuItem />
+            <EditMenuItem />
+            <DeleteMenuItem />
+        </TreeNodeActionsMenu>
     </TreeNodeActions>
 );
 
