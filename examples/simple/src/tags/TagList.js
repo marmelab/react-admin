@@ -17,8 +17,8 @@ const TagNodeActions = props => (
     <TreeNodeActions {...props}>
         <TreeNodeActionsMenu {...props}>
             <AddChildNodeMenuItem />
-            <AddNodeAfterMenuItem />
             <AddNodeBeforeMenuItem />
+            <AddNodeAfterMenuItem />
             <EditMenuItem />
             <DeleteMenuItem />
         </TreeNodeActionsMenu>
