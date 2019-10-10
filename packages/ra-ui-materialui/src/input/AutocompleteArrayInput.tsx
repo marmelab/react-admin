@@ -23,8 +23,6 @@ import InputHelperText from './InputHelperText';
 import AutocompleteSuggestionList from './AutocompleteSuggestionList';
 import AutocompleteSuggestionItem from './AutocompleteSuggestionItem';
 
-interface Props {}
-
 interface Options {
     suggestionsContainerProps?: any;
     labelProps?: any;
@@ -93,7 +91,7 @@ interface Options {
  * <AutocompleteArrayInput source="author_id" options={{ fullWidthInput: true }} />
  */
 const AutocompleteArrayInput: FunctionComponent<
-    Props & InputProps<TextFieldProps & Options> & DownshiftProps<any>
+    InputProps<TextFieldProps & Options> & DownshiftProps<any>
 > = ({
     allowEmpty,
     classes: classesOverride,
