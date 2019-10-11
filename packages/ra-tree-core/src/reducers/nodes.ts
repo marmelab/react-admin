@@ -1,10 +1,4 @@
-import {
-    CRUD_CREATE_SUCCESS,
-    CRUD_UPDATE_SUCCESS,
-    DELETE,
-    DELETE_MANY,
-    Identifier,
-} from 'ra-core';
+import { DELETE, DELETE_MANY, Identifier } from 'ra-core';
 import {
     CRUD_GET_TREE_ROOT_NODES_SUCCESS,
     CRUD_GET_TREE_CHILDREN_NODES_SUCCESS,
@@ -104,9 +98,9 @@ const nodesReducer = (
         if (action.meta.fetch === DELETE_MANY) {
             const newState = action.payload.ids.reduce(
                 (acc, idToRemove) =>
-                    Object.keys(acc).reduce((acc, id) => {
-                        if (id === idToRemove) {
-                            return acc;
+                    Object.keys(acc).reduce((acc2, id) => {
+                        if (id === idToRemove || acc[id] === false) {
+                            return acc2;
                         }
 
                         const index = acc[id].findIndex(
@@ -114,11 +108,14 @@ const nodesReducer = (
                         );
 
                         if (index === -1) {
-                            return acc;
+                            return {
+                                ...acc2,
+                                [id]: acc[id],
+                            };
                         }
 
                         return {
-                            ...acc,
+                            ...acc2,
                             [id]: [
                                 ...acc[id].slice(0, index),
                                 ...acc[id].slice(index + 1),
@@ -157,7 +154,7 @@ const nodesReducer = (
                 ...previousState,
                 [action.requestPayload.id]:
                     // The children value for this node may be false to indicate we fetched them but found none
-                    action.payload.total > 0
+                    action.payload.data.length > 0
                         ? action.payload.data.map(({ id }) => id)
                         : false,
                 // Initialize the children for all the children nodes if necessary
@@ -172,80 +169,6 @@ const nodesReducer = (
                     {}
                 ),
             };
-
-            return newState;
-        }
-        case CRUD_CREATE_SUCCESS: {
-            const newParentId =
-                action.payload.data[action.meta.parentSource] || ROOT_NODE_ID;
-
-            // The new parent may not have any children yet
-            const currentParentChildren =
-                (previousState[newParentId] as IdentifierArray) || [];
-
-            if (action.meta.positionSource) {
-                return {
-                    ...previousState,
-                    [newParentId]: [
-                        ...currentParentChildren.slice(
-                            0,
-                            action.payload.data[action.meta.positionSource]
-                        ),
-                        action.payload.data.id,
-                        ...currentParentChildren.slice(
-                            action.payload.data[action.meta.positionSource] + 1
-                        ),
-                    ],
-                };
-            }
-
-            return {
-                ...previousState,
-                [newParentId]: [
-                    ...currentParentChildren,
-                    action.payload.data.id,
-                ],
-            };
-        }
-        case CRUD_UPDATE_SUCCESS: {
-            // We need to remove this node from its previous parent as it may have change
-            const previousParentId =
-                action.payload.previousData[action.meta.parentSource] ||
-                ROOT_NODE_ID;
-
-            const newState = {
-                ...previousState,
-                [previousParentId]: (previousState[
-                    previousParentId
-                ] as IdentifierArray).filter(
-                    id => id !== action.payload.data.id
-                ),
-            };
-
-            const newParentId =
-                action.payload.data[action.meta.parentSource] || ROOT_NODE_ID;
-            // The new parent may not have any children yet
-            const currentParentChildren = newState[newParentId] || [];
-
-            if (action.meta.positionSource) {
-                // Then we need to update the new parent (which may be the same) and the node position
-                newState[newParentId] = [
-                    ...currentParentChildren.slice(
-                        0,
-                        action.payload.data[action.meta.positionSource]
-                    ),
-                    action.payload.data.id,
-                    ...currentParentChildren.slice(
-                        action.payload.data[action.meta.positionSource]
-                    ),
-                ];
-                return newState;
-            }
-
-            newState[newParentId] = [
-                ...currentParentChildren,
-                action.payload.data.id,
-            ];
 
             return newState;
         }

@@ -55,7 +55,7 @@ export const crudMoveNode = ({
     parentSource,
     positionSource,
     previousData,
-    refresh,
+    refresh = true,
     redirectTo,
     basePath,
 }) => ({
