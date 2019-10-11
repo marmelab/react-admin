@@ -28,8 +28,8 @@ interface Props {
     actions?: ReactElement<any>;
     aside?: ReactElement<any>;
     children: ReactElement<any>;
-    className: string;
-    exporter: Exporter;
+    className?: string;
+    exporter?: Exporter;
     filter?: object;
     parentSource: string;
     positionSource?: string;

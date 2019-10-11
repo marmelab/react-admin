@@ -1,10 +1,11 @@
-import nodesReducer, { ROOT_NODE_ID } from './nodes';
+import { DELETE, DELETE_MANY } from 'ra-core';
+import nodesReducer from './nodes';
 import {
     CRUD_GET_TREE_ROOT_NODES_SUCCESS,
     CRUD_GET_TREE_CHILDREN_NODES_SUCCESS,
     MOVE_NODE,
 } from '../actions';
-import { DELETE, DELETE_MANY } from 'ra-core';
+import { ROOT_NODE_ID } from '../constants';
 
 describe('nodes reducer', () => {
     test('Populates the tree by initializing the root nodes on CRUD_GET_TREE_ROOT_NODES_SUCCESS without loosing already loaded data', () => {

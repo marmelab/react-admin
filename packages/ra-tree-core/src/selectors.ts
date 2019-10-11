@@ -1,4 +1,4 @@
-import { ROOT_NODE_ID } from './reducers/nodes';
+import { ROOT_NODE_ID } from './constants';
 
 export const getTreeRootNodes = (state, resource) =>
     state.tree[resource] ? state.tree[resource].nodes[ROOT_NODE_ID] : [];

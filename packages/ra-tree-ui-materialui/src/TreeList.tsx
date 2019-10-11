@@ -1,13 +1,26 @@
-import React from 'react';
+import React, { ReactElement, SFC, ComponentType } from 'react';
 
 import TreeNodeList from './TreeNodeList';
 import TreeListLoading from './TreeListLoading';
 
-const TreeList = ({ children, loading, ...props }) =>
+interface Props {
+    children: ReactElement<any>;
+}
+
+interface InjectedProps {
+    loading: boolean;
+    nodes: any[];
+}
+
+const TreeList: SFC<Props & InjectedProps> = ({
+    children,
+    loading,
+    ...props
+}) =>
     loading && props.nodes.length === 0 ? (
         <TreeListLoading />
     ) : (
         <TreeNodeList {...props}>{children}</TreeNodeList>
     );
 
-export default TreeList;
+export default TreeList as ComponentType<Props>;

@@ -56,8 +56,8 @@ import TreeNodeList from './TreeNodeList';
 interface Props {
     actions?: ReactElement<any>;
     className?: string;
-    canDrag: (record: Record) => boolean;
-    canDrop: (data: { dropTarget: Record; dragSource: Record }) => boolean;
+    canDrag?: (record: Record) => boolean;
+    canDrop?: (data: { dropTarget: Record; dragSource: Record }) => boolean;
     undoable?: boolean;
 }
 
@@ -194,12 +194,12 @@ class TreeNodeView extends Component<
                         [classes.resetDraggedOver]: !isOverCurrent,
                     })}
                     data-position={record[positionSource]}
+                    {...props}
                 >
                     <ListItem
                         className={classnames(classes.root, className)}
                         divider={!expanded}
                         component="div"
-                        {...props}
                     >
                         <div className={classes.container}>
                             <ListItemIcon>
@@ -523,7 +523,7 @@ const TreeNode = compose(
     DropTarget('TREE_NODE', nodeTarget, collectDropTarget),
     DragSource('TREE_NODE', nodeSource, collectDragSource),
     withTranslate
-)(TreeNodeView) as ComponentType<Props & WithStyles<typeof styles>>;
+)(TreeNodeView) as ComponentType<Props>;
 
 TreeNode.defaultProps = {
     undoable: true,

@@ -4,8 +4,7 @@ import {
     CRUD_GET_TREE_CHILDREN_NODES_SUCCESS,
     MOVE_NODE,
 } from '../actions';
-
-export const ROOT_NODE_ID = '@@ROOT_NODE_ID';
+import { ROOT_NODE_ID } from '../constants';
 
 type IdentifierArray = Identifier[];
 
