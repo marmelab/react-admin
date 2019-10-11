@@ -29,28 +29,28 @@ describe('<Tree>', () => {
         const dataProvider = (type, resource, params) => {
             if (type === GET_TREE_ROOT_NODES) {
                 return Promise.resolve({
-                    data: [{ id: 1, name: 'music' }, { id: 2, name: 'cinema' }],
+                    data: [{ id: 0, name: 'music' }, { id: 1, name: 'cinema' }],
                 });
             }
 
             if (type === GET_TREE_CHILDREN_NODES) {
-                if (params.id === 1) {
+                if (params.id === 0) {
                     return Promise.resolve({
                         data: [
-                            { id: 3, name: 'rock', parent_id: 1 },
-                            { id: 4, name: 'rap', parent_id: 1 },
+                            { id: 3, name: 'rock', parent_id: 0 },
+                            { id: 4, name: 'rap', parent_id: 0 },
                         ],
                     });
                 }
 
-                if (params.id === 2) {
+                if (params.id === 1) {
                     return Promise.resolve({
                         data: [
-                            { id: 5, name: 'drama', parent_id: 2 },
+                            { id: 5, name: 'drama', parent_id: 1 },
                             {
                                 id: 6,
                                 name: 'adventure',
-                                parent_id: 2,
+                                parent_id: 1,
                             },
                         ],
                     });

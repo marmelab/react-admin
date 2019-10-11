@@ -12,13 +12,13 @@ const expandedReducer = (
         case CRUD_GET_TREE_CHILDREN_NODES_LOADING:
             return {
                 ...previousState,
-                [payload]: true,
+                [payload.id]: true,
             };
         case CRUD_GET_TREE_CHILDREN_NODES_SUCCESS:
         case CRUD_GET_TREE_CHILDREN_NODES_FAILURE:
             return {
                 ...previousState,
-                [requestPayload]: false,
+                [requestPayload.id]: false,
             };
         default:
             return previousState;

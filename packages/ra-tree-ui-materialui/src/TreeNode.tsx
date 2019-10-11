@@ -128,7 +128,7 @@ class TreeNodeView extends Component<
     };
 
     fetchChildren = () => {
-        if (this.props.record && this.props.record.id) {
+        if (this.props.record && this.props.record.id != undefined) {
             this.props.crudGetTreeChildrenNodes({
                 resource: this.props.resource,
                 parentSource: this.props.parentSource,
@@ -336,11 +336,17 @@ const styles = (theme: Theme): StyleRules => ({
 
 const mapStateToProps = (state, { record, resource }) => ({
     expanded:
-        record && record.id ? getIsExpanded(state, resource, record.id) : false,
+        record && record.id != undefined
+            ? getIsExpanded(state, resource, record.id)
+            : false,
     loading:
-        record && record.id ? getIsLoading(state, resource, record.id) : false,
+        record && record.id != undefined
+            ? getIsLoading(state, resource, record.id)
+            : false,
     nodes:
-        record && record.id ? getChildrenNodes(state, resource, record.id) : [],
+        record && record.id != undefined
+            ? getChildrenNodes(state, resource, record.id)
+            : [],
 });
 
 type DroppedPosition = 'above' | 'below' | 'over' | 'none';
