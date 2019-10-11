@@ -1,14 +1,3 @@
-import {
-    CREATE,
-    UPDATE,
-    crudDelete,
-    CrudDeleteAction,
-    DELETE,
-    NotificationSideEffect,
-    RedirectionSideEffect,
-    RefreshSideEffect,
-} from 'ra-core';
-
 export const CRUD_GET_TREE_ROOT_NODES = 'RA/CRUD_GET_TREE_ROOT_NODES';
 export const CRUD_GET_TREE_ROOT_NODES_SUCCESS =
     'RA/CRUD_GET_TREE_ROOT_NODES_SUCCESS';
@@ -48,7 +37,7 @@ export const crudGetTreeChildrenNodes = ({
     nodeId,
 }) => ({
     type: CRUD_GET_TREE_CHILDREN_NODES,
-    payload: nodeId,
+    payload: { id: nodeId },
     meta: {
         resource,
         parentSource,
@@ -100,24 +89,6 @@ export const crudMoveNode = ({
         },
     },
 });
-
-interface DeleteNodeAction extends CrudDeleteAction {
-    readonly meta: {
-        resource: string;
-        fetch: typeof DELETE;
-        onSuccess: {
-            notification: NotificationSideEffect;
-            redirectTo: RedirectionSideEffect;
-            refresh: RefreshSideEffect;
-            basePath: string;
-        };
-        onFailure: {
-            notification: NotificationSideEffect;
-        };
-        parentSource: string;
-        positionSource: string;
-    };
-}
 
 export const TOGGLE_NODE = 'RA/TREE/TOGGLE_NODE';
 

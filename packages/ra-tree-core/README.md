@@ -41,47 +41,69 @@ import { TreeController } from 'ra-tree-core';
 import TreeNode from './TreeNode';
 
 export const CategoriesList = (props) => (
-    <List {...props}>
-        <TreeController>
-            {({ tree }) => (
-                <Fragment>
-                    {tree.map(node => <TreeNode node={node} />)}
-                </Fragment>
-            )}
-        </TreeController>
-    </List>
+    <TreeController {...props}>
+        {({ tree }) => (
+            <Fragment>
+                {tree.map(node => <TreeNode node={node} />)}
+            </Fragment>
+        )}
+    </TreeController>
 );
 ```
 
 `react-admin` will fetch the data and the `TreeController` component will build a tree from it. Note that every category which do not have a parent will be considered a root node. The `TreeController` component will call its children function which is responsible for the actual rendering.
 
+Note that your `dataProvider` must handle three new verbs:
+
+### `GET_TREE_ROOT_NODES`
+
+Should fetch the root nodes for the specified resource. It receives no parameters and should return an array of records as its `data`.
+
+### `GET_TREE_CHILDREN_NODES`
+
+Should fetch the leaves of the specified node. It receives the following parameters: 
+- `id`: the identifier of the node for which we want to fetch the leaves
+
+Should should return an array of records as its `data`. 
+
+### `MOVE_NODE`
+
+Called when a node is moved either to a new parent or a new position. It receives the following parameters: 
+- `data`: the new node with its parent, and optionnaly position, fields already updated.
+- `previousData`: the node before the update
+
+**Note**: It is your responsability to correctly update the siblings if necessary according to the new node position.
+
 ## API
 
 ### <TreeController>
 
-Meant to be used as the child of the [`List`](https://marmelab.com/react-admin/List.html#the-list-component), [`ReferenceManyField`](https://marmelab.com/react-admin/Fields.html#referencemanyfield) or [ReferenceArrayField](https://marmelab.com/react-admin/Fields.html#referencearrayfield) components.
+Meant to be used as an alternative to the [`ListController`](https://marmelab.com/react-admin/List.html#the-list-component) component.
 
 The `TreeController` accepts the following props:
 
-- `getTreeFromArray`: The function used to build the tree from the fetched data. It defaults to one using [performant-array-to-tree](https://github.com/philipstanislaus/performant-array-to-tree)
-- `getTreeState`: A function which must return the tree state root from the redux state in case you mounted it on a different key than `tree`. It will be called with a single `state` argument which is the redux state.
 - `children`: A function which will be called with a single object argument having the following props
-  - `tree`: an array of the root nodes. Each node have the following properties:
-    - `children`: an array of its child nodes
-    - `depth`: a number indicating its depth in the hierarchy
-    - `record`: the node's original data
-  - `getIsNodeExpanded`: a function which takes a node identifier and returns a boolean indicating whether this node is expanded
+  - `nodes`: an array of the root nodes identifiers
   - `toggleNode`: a function which takes a node identifier and toggles its expanded state
   - `expandNode`: a function which takes a node identifier and explicitly expands it
   - `closeNode`: a function which takes a node identifier and explicitly closes it
   - any additional props received by the `TreeController` component
 - `parentSource`: The field used as the parent identifier for each node. Defaults to `parent_id`
+- `positionSource`: The field used to order nodes. Optional.
+
+### Actions
+
+This package also exports several actions to interact with the Tree:
+
+- `crudGetTreeRootNodes`: Called automatically by the `<TreeController>` component, trigger a fetch of the root nodes.
+- `crudGetTreeChildrenNodes`: Trigger a fetch of the leaves for a specific node.
+- `crudMoveNode`: Trigger a fetch which will update a node parent and its position (if specified).
+- `toggleNode`, `expandNode` and `closeNode` to control if a node is expanded.
 
 ## Roadmap
 
 - Support nested set hierarchical data
 - `TreeSelectInputController` to select a value inside the hierarchical data (with autocomplete showing the matched nodes)
-- `TreeInputController` to edit a field containing hierarchical data as json
 - `TreeNodeFieldController` to show a node and its hierarchie. It should recursively fetch the parents by default, accepting a custom function to fetch them in one call (`fetchHierarchy`).
 
 ## License

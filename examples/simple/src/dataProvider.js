@@ -22,7 +22,7 @@ const dataProviderWithTree = async (type, resource, params) => {
 
     if (type === GET_TREE_CHILDREN_NODES) {
         return dataProvider('GET_LIST', resource, {
-            filter: { parent_id: params },
+            filter: { parent_id: params.id },
             sort: { field: 'position', order: 'ASC' },
             pagination: { page: 1, perPage: 1000 },
         });

@@ -155,7 +155,7 @@ const nodesReducer = (
         case CRUD_GET_TREE_CHILDREN_NODES_SUCCESS: {
             const newState = {
                 ...previousState,
-                [action.requestPayload]:
+                [action.requestPayload.id]:
                     // The children value for this node may be false to indicate we fetched them but found none
                     action.payload.total > 0
                         ? action.payload.data.map(({ id }) => id)
