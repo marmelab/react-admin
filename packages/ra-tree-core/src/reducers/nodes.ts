@@ -1,13 +1,8 @@
 import {
-    CRUD_GET_LIST_SUCCESS,
-    CRUD_GET_MANY_SUCCESS,
-    CRUD_GET_MANY_REFERENCE_SUCCESS,
-    CRUD_GET_ONE_SUCCESS,
     CRUD_CREATE_SUCCESS,
     CRUD_UPDATE_SUCCESS,
     DELETE,
     DELETE_MANY,
-    getFetchedAt,
     Identifier,
 } from 'ra-core';
 import {
@@ -104,10 +99,6 @@ const nodesReducer = (
                 };
             }, previousState);
 
-            Object.defineProperty(newState, 'fetchedAt', {
-                value: previousState.fetchedAt,
-            });
-
             return newState;
         }
         if (action.meta.fetch === DELETE_MANY) {
@@ -137,40 +128,11 @@ const nodesReducer = (
                 previousState
             );
 
-            Object.defineProperty(newState, 'fetchedAt', {
-                value: previousState.fetchedAt,
-            });
-
             return newState;
         }
     }
 
     switch (action.type) {
-        case CRUD_GET_LIST_SUCCESS: {
-            const newState = action.payload.data.reduce(
-                (
-                    acc,
-                    // @ts-ignore
-                    { [action.meta.parentSource]: parentId = ROOT_NODE_ID, id }
-                ) => ({
-                    ...acc,
-                    [parentId]: Array.from(new Set([...acc[parentId], id])),
-                }),
-                {
-                    ...previousState,
-                    ...action.payload.data.reduce(
-                        (acc, { id }) => ({ ...acc, [id]: [] }),
-                        {}
-                    ),
-                }
-            );
-
-            Object.defineProperty(newState, 'fetchedAt', {
-                value: previousState.fetchedAt,
-            });
-
-            return newState;
-        }
         case CRUD_GET_TREE_ROOT_NODES_SUCCESS: {
             const newState = {
                 ...previousState,
@@ -187,10 +149,6 @@ const nodesReducer = (
                     {}
                 ),
             };
-
-            Object.defineProperty(newState, 'fetchedAt', {
-                value: previousState.fetchedAt,
-            });
 
             return newState;
         }
@@ -214,10 +172,6 @@ const nodesReducer = (
                     {}
                 ),
             };
-
-            Object.defineProperty(newState, 'fetchedAt', {
-                value: previousState.fetchedAt,
-            });
 
             return newState;
         }
