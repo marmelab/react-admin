@@ -18,8 +18,8 @@ import {
     Record,
     RedirectionSideEffect,
     Translate,
+    crudDelete,
 } from 'ra-core';
-import { deleteNode } from 'ra-tree-core';
 
 interface Props {
     className?: string;
@@ -88,22 +88,11 @@ class DeleteWithUndoButton extends Component<
             record,
             basePath,
             redirect: redirectTo,
-            parentSource,
-            positionSource,
             onClick,
         } = this.props;
 
         startUndoable(
-            deleteNode({
-                resource,
-                id: record.id,
-                previousData: record,
-                basePath,
-                redirectTo,
-                refresh: false,
-                parentSource,
-                positionSource,
-            })
+            crudDelete(resource, record.id, record, basePath, redirectTo, false)
         );
 
         if (typeof onClick === 'function') {

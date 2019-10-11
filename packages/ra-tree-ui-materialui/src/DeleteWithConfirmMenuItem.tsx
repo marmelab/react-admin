@@ -13,9 +13,9 @@ import {
     RedirectionSideEffect,
     Record,
     Translate,
+    crudDelete as crudDeleteAction,
 } from 'ra-core';
 import { Confirm } from 'ra-ui-materialui';
-import { deleteNode as deleteNodeAction } from 'ra-tree-core';
 
 interface Props {
     className?: string;
@@ -27,7 +27,7 @@ interface Props {
 
 interface InjectedProps {
     basePath: string;
-    deleteNode: typeof deleteNodeAction;
+    crudDelete: typeof crudDeleteAction;
     parentSource: string;
     positionSource?: string;
     record: Record;
@@ -56,7 +56,7 @@ class DeleteWithConfirmMenuItem extends Component<
         basePath: PropTypes.string,
         classes: PropTypes.object,
         className: PropTypes.string,
-        deleteNode: PropTypes.func.isRequired,
+        crudDelete: PropTypes.func.isRequired,
         label: PropTypes.string,
         record: PropTypes.object,
         redirect: PropTypes.oneOfType([
@@ -89,25 +89,14 @@ class DeleteWithConfirmMenuItem extends Component<
 
     handleDelete = () => {
         const {
-            deleteNode,
+            crudDelete,
             resource,
             record,
             basePath,
             redirect: redirectTo,
-            parentSource,
-            positionSource,
         } = this.props;
 
-        deleteNode({
-            resource,
-            id: record.id,
-            previousData: record,
-            basePath,
-            redirectTo,
-            parentSource,
-            positionSource,
-            refresh: false,
-        });
+        crudDelete(resource, record.id, record, basePath, redirectTo, false);
     };
 
     render() {
@@ -157,7 +146,7 @@ class DeleteWithConfirmMenuItem extends Component<
 const sanitizeRestProps = ({
     basePath,
     classes,
-    deleteNode,
+    crudDelete,
     filterValues,
     handleSubmit,
     handleSubmitWithRedirect,
@@ -177,7 +166,7 @@ const sanitizeRestProps = ({
 export default compose(
     connect(
         null,
-        { deleteNode: deleteNodeAction }
+        { crudDelete: crudDeleteAction }
     ),
     withTranslate,
     withStyles(styles)

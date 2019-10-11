@@ -10,7 +10,6 @@ import {
     getFetchedAt,
     Identifier,
 } from 'ra-core';
-import uniq from 'lodash/uniq';
 import {
     CRUD_GET_TREE_ROOT_NODES_SUCCESS,
     CRUD_GET_TREE_CHILDREN_NODES_SUCCESS,
@@ -26,7 +25,7 @@ export interface IdentifierArrayWithDate extends IdentifierArray {
 }
 
 type MapOfIdentifierArray = {
-    [key: string]: IdentifierArrayWithDate;
+    [key: string]: IdentifierArrayWithDate | boolean;
 };
 
 type State = MapOfIdentifierArray;
@@ -44,7 +43,9 @@ const nodesReducer = (
 
             const newState = {
                 ...previousState,
-                [previousParentId]: previousState[previousParentId].filter(
+                [previousParentId]: (previousState[
+                    previousParentId
+                ] as IdentifierArray).filter(
                     id => id !== action.payload.data.id
                 ),
             };
@@ -78,24 +79,30 @@ const nodesReducer = (
         }
 
         if (action.meta.fetch === DELETE) {
-            const parentId =
-                action.payload.previousData[action.meta.parentSource] ||
-                ROOT_NODE_ID;
+            const idToRemove = action.payload.id;
 
-            const {
-                [action.payload.id]: excludedAsDeleted,
-                [parentId]: parentChildren,
-                ...newState
-            } = previousState;
+            const newState = Object.keys(previousState).reduce((acc, id) => {
+                if (id === idToRemove || acc[id] === false) {
+                    return acc;
+                }
 
-            const index = previousState[parentId].findIndex(
-                nodeId => nodeId === action.payload.id
-            );
+                const children = acc[id] as IdentifierArray;
+                const index = children.findIndex(
+                    nodeId => nodeId === idToRemove
+                );
 
-            newState[parentId] = [
-                ...previousState[parentId].slice(0, index),
-                ...previousState[parentId].slice(index + 1),
-            ];
+                if (index === -1) {
+                    return acc;
+                }
+
+                return {
+                    ...acc,
+                    [id]: [
+                        ...children.slice(0, index),
+                        ...children.slice(index + 1),
+                    ],
+                };
+            }, previousState);
 
             Object.defineProperty(newState, 'fetchedAt', {
                 value: previousState.fetchedAt,
@@ -143,11 +150,8 @@ const nodesReducer = (
             const newState = action.payload.data.reduce(
                 (
                     acc,
-                    {
-                        // @ts-ignore
-                        [action.meta.parentSource]: parentId = ROOT_NODE_ID,
-                        id,
-                    }
+                    // @ts-ignore
+                    { [action.meta.parentSource]: parentId = ROOT_NODE_ID, id }
                 ) => ({
                     ...acc,
                     [parentId]: Array.from(new Set([...acc[parentId], id])),
@@ -176,7 +180,7 @@ const nodesReducer = (
                     (acc, { id }) => ({
                         ...acc,
                         [id]:
-                            previousState[id] != undefined // eslint-disable-line
+                            previousState[id] != undefined // eslint-disable-line eqeqeq
                                 ? previousState[id]
                                 : [],
                     }),
@@ -203,7 +207,7 @@ const nodesReducer = (
                     (acc, { id }) => ({
                         ...acc,
                         [id]:
-                            previousState[id] != undefined // eslint-disable-line
+                            previousState[id] != undefined // eslint-disable-line eqeqeq
                                 ? previousState[id]
                                 : [],
                     }),
@@ -222,7 +226,8 @@ const nodesReducer = (
                 action.payload.data[action.meta.parentSource] || ROOT_NODE_ID;
 
             // The new parent may not have any children yet
-            const currentParentChildren = previousState[newParentId] || [];
+            const currentParentChildren =
+                (previousState[newParentId] as IdentifierArray) || [];
 
             if (action.meta.positionSource) {
                 return {
@@ -256,7 +261,9 @@ const nodesReducer = (
 
             const newState = {
                 ...previousState,
-                [previousParentId]: previousState[previousParentId].filter(
+                [previousParentId]: (previousState[
+                    previousParentId
+                ] as IdentifierArray).filter(
                     id => id !== action.payload.data.id
                 ),
             };

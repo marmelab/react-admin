@@ -119,35 +119,6 @@ interface DeleteNodeAction extends CrudDeleteAction {
     };
 }
 
-export const deleteNode = ({
-    resource,
-    parentSource,
-    positionSource,
-    id,
-    previousData,
-    basePath,
-    redirectTo,
-    refresh,
-}): DeleteNodeAction => {
-    const action = crudDelete(
-        resource,
-        id,
-        previousData,
-        basePath,
-        redirectTo,
-        refresh
-    );
-
-    return {
-        ...action,
-        meta: {
-            ...action.meta,
-            parentSource,
-            positionSource,
-        },
-    };
-};
-
 export const TOGGLE_NODE = 'RA/TREE/TOGGLE_NODE';
 
 export const toggleNode = ({ resource, nodeId }) => ({
