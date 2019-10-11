@@ -1,9 +1,16 @@
 {
-    "extends": "../../tsconfig.json",
+    "extends": "../../tsconfig.base.json",
     "compilerOptions": {
-        "outDir": "lib",
-        "rootDir": "src"
+        "outDir": "./lib",
+        "rootDir": "./src",
+        "tsBuildInfoFile": "./lib/tsbuildinfo",
+        "checkJs": false,
+        "strict": false,
+        "noImplicitAny": false
     },
     "exclude": ["**/*.spec.ts", "**/*.spec.tsx", "**/*.spec.js"],
-    "include": ["src"]
+    "include": ["src"],
+    "references": [
+        { "path": "../ra-core/tsconfig.json" },
+    ]
 }

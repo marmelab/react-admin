@@ -32,7 +32,7 @@ const useStyles = makeStyles({
     },
 });
 
-interface Props extends FieldProps {
+export interface Props extends FieldProps {
     valueLabelTrue?: string;
     valueLabelFalse?: string;
 }

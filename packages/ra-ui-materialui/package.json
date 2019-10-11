@@ -8,7 +8,7 @@
         "esm",
         "src"
     ],
-    "main": "lib/index",
+    "main": "lib/index.js",
     "module": "esm/index.js",
     "sideEffects": false,
     "authors": [

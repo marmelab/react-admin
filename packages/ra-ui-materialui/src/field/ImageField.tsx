@@ -18,7 +18,7 @@ const useStyles = makeStyles({
     },
 });
 
-interface Props extends FieldProps {
+export interface Props extends FieldProps {
     src?: string;
     title?: string;
     classes?: object;

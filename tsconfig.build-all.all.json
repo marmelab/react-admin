@@ -1,0 +1,11 @@
+{
+    "references": [
+        {
+            "path": "./tsconfig.build-all.cjs.json"
+        },
+        {
+            "path": "./tsconfig.build-all.esm.json"
+        }
+    ],
+    "include": []
+}

@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
     highlightedSuggestionText: { fontWeight: 500 },
 }));
 
-interface Props {
+export interface Props {
     suggestion: any;
     index: number;
     highlightedIndex: number;

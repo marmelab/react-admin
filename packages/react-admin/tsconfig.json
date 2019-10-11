@@ -1,11 +1,15 @@
 {
-    "extends": "../../tsconfig.json",
+    "extends": "../../tsconfig.base.json",
     "compilerOptions": {
-        "outDir": "lib",
-        "rootDir": "src",
-        "declaration": false,
-        "allowJs": false
+        "outDir": "./lib",
+        "rootDir": "./src",
+        "tsBuildInfoFile": "./lib/.tsbuildinfo"
     },
     "exclude": ["**/*.spec.ts", "**/*.spec.tsx", "**/*.spec.js"],
-    "include": ["src"]
+    "include": ["src"],
+    "references": [
+        { "path": "../ra-ui-materialui/tsconfig.json" },
+        { "path": "../ra-i18n-polyglot/tsconfig.json" },
+        { "path": "../ra-core/tsconfig.json" },
+    ]
 }

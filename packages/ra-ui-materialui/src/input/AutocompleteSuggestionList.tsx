@@ -11,7 +11,7 @@ const useStyles = makeStyles({
     },
 });
 
-interface Props {
+export interface Props {
     children: ReactNode;
     isOpen: boolean;
     menuProps: any;

@@ -5,7 +5,7 @@ import Typography, { TypographyProps } from '@material-ui/core/Typography';
 import sanitizeRestProps from './sanitizeRestProps';
 import { FieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 
-interface Props extends FieldProps {
+export interface Props extends FieldProps {
     render: (record: object, source: string) => any;
 }
 

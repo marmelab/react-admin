@@ -8,7 +8,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import { useTranslate, useLogin, useNotify, useSafeSetState } from 'ra-core';
 
-interface Props {
+export interface Props {
     redirectTo?: string;
 }
 

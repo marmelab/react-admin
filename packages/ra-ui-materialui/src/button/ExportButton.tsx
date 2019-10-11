@@ -71,7 +71,7 @@ const fetchRelatedRecords = dataProvider => (data, field, resource) =>
 const DefaultIcon = <DownloadIcon />;
 const defaultFilter = {};
 
-interface Props {
+export interface Props {
     exporter?: (
         data: any,
         fetchRelatedRecords: (

@@ -8,7 +8,7 @@ import ExitIcon from '@material-ui/icons/PowerSettingsNew';
 import classnames from 'classnames';
 import { useTranslate, useLogout } from 'ra-core';
 
-interface Props {
+export interface Props {
     className?: string;
     redirectTo?: string;
 }

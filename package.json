@@ -2,7 +2,7 @@
     "private": true,
     "name": "react-admin-lerna",
     "scripts": {
-        "build": "lerna run build",
+        "build": "yarn build-with-composite",
         "build-demo": "cd examples/demo && cross-env REACT_APP_DATA_PROVIDER=rest yarn -s build",
         "test-unit": "cross-env NODE_ENV=test cross-env BABEL_ENV=cjs NODE_ICU_DATA=node_modules/full-icu jest",
         "test-unit-ci": "cross-env NODE_ENV=test cross-env BABEL_ENV=cjs NODE_ICU_DATA=node_modules/full-icu jest --runInBand",
@@ -15,7 +15,13 @@
         "run-simple": "cd examples/simple && yarn -s start",
         "run-tutorial": "yarn run -s build && cd examples/tutorial && yarn -s start",
         "run-demo": "cd examples/demo && cross-env REACT_APP_DATA_PROVIDER=rest yarn -s start",
-        "run-graphql-demo": "cd examples/demo && cross-env REACT_APP_DATA_PROVIDER=graphql yarn -s start"
+        "run-graphql-demo": "cd examples/demo && cross-env REACT_APP_DATA_PROVIDER=graphql yarn -s start",
+        "build-with-composite": "yarn tsc --build tsconfig.build-all.all.json",
+        "watch-with-composite": "yarn tsc --build tsconfig.build-all.all.json --incremental --watch",
+        "cleanup": "lerna exec --parallel \"rm -fr lib && rm -fr esm\"",
+        "validate-emitted-declarations": "tsc -p declarationsSanityTest/tsconfig.json",
+        "validate-project-refs": "yarn cleanup && yarn lerna exec --no-bail --concurrency 1 \"cd ../../ yarn cleanup && cd - && tsc --build tsconfig.json\"",
+        "validate-project-refs-esm": "yarn cleanup && yarn lerna exec --no-bail --concurrency 1 \"cd ../../ yarn cleanup && cd - && tsc --build tsconfig.esm.json\""
     },
     "jest": {
         "setupFilesAfterEnv": [
@@ -33,7 +39,8 @@
         ],
         "globals": {
             "ts-jest": {
-                "isolatedModules": true
+                "isolatedModules": true,
+                "tsConfig": "tsconfig.base.json"
             }
         }
     },
@@ -76,6 +83,6 @@
         "cypress"
     ],
     "dependencies": {
-        "typescript": "^3.5.3"
+        "typescript": "^3.7.0-dev.20191011"
     }
 }
