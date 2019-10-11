@@ -71,7 +71,7 @@ class DeleteWithConfirmMenuItem extends Component<
 
     static defaultProps = {
         classes: {},
-        redirect: false,
+        redirect: undefined,
         icon: <ActionDelete />,
     };
 
@@ -93,7 +93,7 @@ class DeleteWithConfirmMenuItem extends Component<
             resource,
             record,
             basePath,
-            redirect,
+            redirect: redirectTo,
             parentSource,
             positionSource,
         } = this.props;
@@ -103,9 +103,10 @@ class DeleteWithConfirmMenuItem extends Component<
             id: record.id,
             previousData: record,
             basePath,
-            redirect,
+            redirectTo,
             parentSource,
             positionSource,
+            refresh: false,
         });
     };
 

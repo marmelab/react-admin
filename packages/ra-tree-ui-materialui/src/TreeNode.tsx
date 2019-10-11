@@ -468,6 +468,7 @@ const nodeTarget = {
             previousData: draggedRecord,
             basePath: props.basePath,
             refresh: false,
+            redirectTo: undefined,
         };
 
         if (props.undoable) {

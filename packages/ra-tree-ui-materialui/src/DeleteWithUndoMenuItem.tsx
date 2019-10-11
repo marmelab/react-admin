@@ -75,7 +75,7 @@ class DeleteWithUndoButton extends Component<
 
     static defaultProps = {
         classes: {},
-        redirect: false,
+        redirect: undefined,
         undoable: true,
         icon: <ActionDelete />,
     };
@@ -87,7 +87,7 @@ class DeleteWithUndoButton extends Component<
             resource,
             record,
             basePath,
-            redirect,
+            redirect: redirectTo,
             parentSource,
             positionSource,
             onClick,
@@ -99,7 +99,8 @@ class DeleteWithUndoButton extends Component<
                 id: record.id,
                 previousData: record,
                 basePath,
-                redirect,
+                redirectTo,
+                refresh: false,
                 parentSource,
                 positionSource,
             })
