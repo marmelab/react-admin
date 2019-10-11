@@ -33,7 +33,9 @@ const SimpleForm = ({ initialValues, defaultValue, saving, ...props }) => {
 
     const submit = values => {
         const finalRedirect =
-            typeof redirect === undefined ? props.redirect : redirect.current;
+            typeof redirect.current === undefined
+                ? props.redirect
+                : redirect.current;
         const finalValues = sanitizeEmptyValues(finalInitialValues, values);
 
         props.save(finalValues, finalRedirect);

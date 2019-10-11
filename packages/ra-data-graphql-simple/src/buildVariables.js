@@ -89,7 +89,7 @@ const prepareParams = (params, queryType, introspectionResults) => {
             return;
         }
 
-        result[key] = castType(param, arg.type, introspectionResults.types);
+        result[key] = castType(param, arg.type);
     });
 
     return result;
@@ -115,8 +115,8 @@ const buildGetListVariables = introspectionResults => (
 
             if (filterSome) {
                 const filter = Object.keys(params.filter[key]).reduce(
-                    (acc, k) => ({
-                        ...acc,
+                    (filter_acc, k) => ({
+                        ...filter_acc,
                         [`${k}_in`]: params.filter[key][k],
                     }),
                     {}
@@ -185,7 +185,7 @@ const buildGetListVariables = introspectionResults => (
     };
 };
 
-const buildCreateUpdateVariables = () => (
+const buildCreateUpdateVariables = (
     resource,
     aorFetchType,
     params,
@@ -256,28 +256,18 @@ export default introspectionResults => (
             };
         }
         case GET_ONE:
-            return {
-                id: preparedParams.id,
-            };
-        case UPDATE: {
-            return buildCreateUpdateVariables(introspectionResults)(
-                resource,
-                aorFetchType,
-                preparedParams,
-                queryType
-            );
-        }
-        case CREATE: {
-            return buildCreateUpdateVariables(introspectionResults)(
-                resource,
-                aorFetchType,
-                preparedParams,
-                queryType
-            );
-        }
         case DELETE:
             return {
                 id: preparedParams.id,
             };
+        case CREATE:
+        case UPDATE: {
+            return buildCreateUpdateVariables(
+                resource,
+                aorFetchType,
+                preparedParams,
+                queryType
+            );
+        }
     }
 };
