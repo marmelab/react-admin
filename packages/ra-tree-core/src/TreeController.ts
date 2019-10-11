@@ -5,19 +5,10 @@ import compose from 'recompose/compose';
 import inflection from 'inflection';
 import { Identifier, withTranslate, Translate } from 'ra-core';
 import { getTreeRootNodes } from './selectors';
-import {
-    crudGetTreeRootNodes as crudGetTreeRootNodesAction,
-    closeNode as closeNodeAction,
-    expandNode as expandNodeAction,
-    toggleNode as toggleNodeAction,
-} from './actions';
-
-export type NodeFunction = (nodeId: Identifier) => void;
+import { crudGetTreeRootNodes as crudGetTreeRootNodesAction } from './actions';
 
 export type TreeControllerChildrenFunction = (params: {
     basePath: string;
-    closeNode: NodeFunction;
-    expandNode: NodeFunction;
     hasCreate: boolean;
     hasEdit: boolean;
     hasList: boolean;
@@ -26,7 +17,6 @@ export type TreeControllerChildrenFunction = (params: {
     parentSource: string;
     positionSource: string;
     resource: string;
-    toggleNode: NodeFunction;
     [key: string]: any;
 }) => ReactElement<any>;
 
@@ -53,10 +43,7 @@ interface StateProps {
 }
 
 interface DispatchProps {
-    closeNode: typeof closeNodeAction;
     crudGetTreeRootNodes: typeof crudGetTreeRootNodesAction;
-    expandNode: typeof expandNodeAction;
-    toggleNode: typeof toggleNodeAction;
 }
 
 export class TreeControllerView extends Component<
@@ -65,11 +52,8 @@ export class TreeControllerView extends Component<
     static propTypes = {
         basePath: PropTypes.string.isRequired,
         children: PropTypes.func.isRequired,
-        closeNode: PropTypes.func.isRequired,
-        expandNode: PropTypes.func.isRequired,
         parentSource: PropTypes.string,
         resource: PropTypes.string.isRequired,
-        toggleNode: PropTypes.func.isRequired,
     };
 
     componentDidMount() {
@@ -92,25 +76,14 @@ export class TreeControllerView extends Component<
             positionSource: props.positionSource,
         });
     };
-    handleCloseNode = nodeId =>
-        this.props.closeNode({ resource: this.props.resource, nodeId });
-
-    handleExpandNode = nodeId =>
-        this.props.expandNode({ resource: this.props.resource, nodeId });
-
-    handleToggleNode = nodeId =>
-        this.props.toggleNode({ resource: this.props.resource, nodeId });
 
     render() {
         const {
             children,
-            closeNode,
             crudGetTreeRootNodes,
-            expandNode,
             parentSource,
             resource,
             rootNodes,
-            toggleNode,
             translate,
             ...props
         } = this.props;
@@ -127,9 +100,6 @@ export class TreeControllerView extends Component<
             defaultTitle,
             parentSource,
             nodes: rootNodes,
-            closeNode: this.handleCloseNode,
-            expandNode: this.handleExpandNode,
-            toggleNode: this.handleToggleNode,
             resource,
             ...props,
         });
@@ -147,9 +117,6 @@ const TreeController = compose<any, Props>(
         mapStateToProps,
         {
             crudGetTreeRootNodes: crudGetTreeRootNodesAction,
-            closeNode: closeNodeAction,
-            expandNode: expandNodeAction,
-            toggleNode: toggleNodeAction,
         }
     ),
     withTranslate

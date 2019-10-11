@@ -29,7 +29,7 @@ import {
     getIsExpanded,
     getIsLoading,
     getChildrenNodes,
-    NodeFunction,
+    toggleNode as toggleNodeAction,
 } from 'ra-tree-core';
 import {
     withTranslate,
@@ -63,11 +63,9 @@ interface Props {
 
 interface InjectedProps {
     basePath: string;
-    closeNode: NodeFunction;
     crudGetTreeChildrenNodes: typeof crudGetTreeChildrenNodesAction;
     crudMoveNode: typeof crudMoveNodeAction;
     expanded: boolean;
-    expandNode: NodeFunction;
     hasCreate: boolean;
     hasEdit: boolean;
     hasList: boolean;
@@ -80,7 +78,7 @@ interface InjectedProps {
     record: Record;
     resource: string;
     startUndoable: typeof startUndoableAction;
-    toggleNode: NodeFunction;
+    toggleNode: typeof toggleNodeAction;
     translate: Translate;
 }
 
@@ -117,7 +115,10 @@ class TreeNodeView extends Component<
     }
 
     handleClick = () => {
-        this.props.toggleNode(this.props.record.id);
+        this.props.toggleNode({
+            resource: this.props.resource,
+            nodeId: this.props.record.id,
+        });
 
         // If the node wasn't expanded, the previous line is actually requesting
         // it to expand, so we reload its children to be sure they are up to date
@@ -146,13 +147,11 @@ class TreeNodeView extends Component<
             children,
             className,
             classes,
-            closeNode,
             connectDragSource,
             connectDropTarget,
             crudGetTreeChildrenNodes,
             crudMoveNode,
             expanded,
-            expandNode,
             hasCreate,
             hasEdit,
             hasList,
@@ -259,8 +258,6 @@ class TreeNodeView extends Component<
                         {expanded ? (
                             <TreeNodeList
                                 basePath={basePath}
-                                closeNode={closeNode}
-                                expandNode={expandNode}
                                 hasCreate={hasCreate}
                                 hasEdit={hasEdit}
                                 hasList={hasList}
@@ -269,7 +266,6 @@ class TreeNodeView extends Component<
                                 parentSource={parentSource}
                                 positionSource={positionSource}
                                 resource={resource}
-                                toggleNode={toggleNode}
                             >
                                 {nodeChildren}
                             </TreeNodeList>
@@ -520,6 +516,7 @@ const TreeNode = compose(
             crudGetTreeChildrenNodes: crudGetTreeChildrenNodesAction,
             crudMoveNode: crudMoveNodeAction,
             startUndoable: startUndoableAction,
+            toggleNode: toggleNodeAction,
         }
     ),
     withStyles(styles),

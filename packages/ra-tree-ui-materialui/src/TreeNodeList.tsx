@@ -11,12 +11,7 @@ import compose from 'recompose/compose';
 import { withStyles, WithStyles, StyleRules } from '@material-ui/core/styles';
 import List, { ListProps } from '@material-ui/core/List';
 import { Record, Identifier } from 'ra-core';
-import {
-    getTreeNodes,
-    closeNode as closeNodeAction,
-    expandNode as expandNodeAction,
-    toggleNode as toggleNodeAction,
-} from 'ra-tree-core';
+import { getTreeNodes } from 'ra-tree-core';
 
 interface Props {
     children: ReactElement<any>;
@@ -26,8 +21,6 @@ interface Props {
 interface InjectedProps {
     basePath: string;
     data: Record[];
-    closeNode: typeof closeNodeAction;
-    expandNode: typeof expandNodeAction;
     hasCreate: boolean;
     hasEdit: boolean;
     hasList: boolean;
@@ -37,7 +30,6 @@ interface InjectedProps {
     parentSource: string;
     positionSource: string;
     resource: string;
-    toggleNode: typeof toggleNodeAction;
 }
 
 const TreeNodeListView: SFC<
@@ -46,9 +38,7 @@ const TreeNodeListView: SFC<
     basePath,
     children,
     classes,
-    closeNode,
     data,
-    expandNode,
     hasCreate,
     hasEdit,
     hasList,
@@ -58,7 +48,6 @@ const TreeNodeListView: SFC<
     parentSource,
     positionSource,
     resource,
-    toggleNode,
     ...props
 }) => (
     <List
@@ -85,7 +74,6 @@ const TreeNodeListView: SFC<
                       positionSource,
                       record,
                       resource,
-                      toggleNode,
                   })
                 : null
         )}
