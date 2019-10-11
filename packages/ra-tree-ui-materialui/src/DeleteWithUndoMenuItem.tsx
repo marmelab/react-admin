@@ -14,12 +14,12 @@ import MenuItem, { MenuItemProps } from '@material-ui/core/MenuItem';
 import classnames from 'classnames';
 import {
     withTranslate,
-    crudDelete as crudDeleteAction,
     startUndoable as startUndoableAction,
     Record,
     RedirectionSideEffect,
     Translate,
 } from 'ra-core';
+import { deleteNode } from 'ra-tree-core';
 
 interface Props {
     className?: string;
@@ -88,11 +88,21 @@ class DeleteWithUndoButton extends Component<
             record,
             basePath,
             redirect,
+            parentSource,
+            positionSource,
             onClick,
         } = this.props;
 
         startUndoable(
-            crudDeleteAction(resource, record.id, record, basePath, redirect)
+            deleteNode({
+                resource,
+                id: record.id,
+                previousData: record,
+                basePath,
+                redirect,
+                parentSource,
+                positionSource,
+            })
         );
 
         if (typeof onClick === 'function') {

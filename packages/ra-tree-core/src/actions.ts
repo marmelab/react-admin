@@ -1,4 +1,13 @@
-import { CREATE, UPDATE } from 'ra-core';
+import {
+    CREATE,
+    UPDATE,
+    crudDelete,
+    CrudDeleteAction,
+    DELETE,
+    NotificationSideEffect,
+    RedirectionSideEffect,
+    RefreshSideEffect,
+} from 'ra-core';
 
 export const CRUD_GET_TREE_ROOT_NODES = 'RA/CRUD_GET_TREE_ROOT_NODES';
 export const CRUD_GET_TREE_ROOT_NODES_SUCCESS =
@@ -91,6 +100,53 @@ export const crudMoveNode = ({
         },
     },
 });
+
+interface DeleteNodeAction extends CrudDeleteAction {
+    readonly meta: {
+        resource: string;
+        fetch: typeof DELETE;
+        onSuccess: {
+            notification: NotificationSideEffect;
+            redirectTo: RedirectionSideEffect;
+            refresh: RefreshSideEffect;
+            basePath: string;
+        };
+        onFailure: {
+            notification: NotificationSideEffect;
+        };
+        parentSource: string;
+        positionSource: string;
+    };
+}
+
+export const deleteNode = ({
+    resource,
+    parentSource,
+    positionSource,
+    id,
+    previousData,
+    basePath,
+    redirectTo,
+    refresh,
+}): DeleteNodeAction => {
+    const action = crudDelete(
+        resource,
+        id,
+        previousData,
+        basePath,
+        redirectTo,
+        refresh
+    );
+
+    return {
+        ...action,
+        meta: {
+            ...action.meta,
+            parentSource,
+            positionSource,
+        },
+    };
+};
 
 export const TOGGLE_NODE = 'RA/TREE/TOGGLE_NODE';
 

@@ -10,13 +10,12 @@ import classnames from 'classnames';
 import inflection from 'inflection';
 import {
     withTranslate,
-    crudDelete as crudDeleteAction,
     RedirectionSideEffect,
     Record,
     Translate,
 } from 'ra-core';
-
 import { Confirm } from 'ra-ui-materialui';
+import { deleteNode as deleteNodeAction } from 'ra-tree-core';
 
 interface Props {
     className?: string;
@@ -28,7 +27,7 @@ interface Props {
 
 interface InjectedProps {
     basePath: string;
-    crudDelete: typeof crudDeleteAction;
+    deleteNode: typeof deleteNodeAction;
     parentSource: string;
     positionSource?: string;
     record: Record;
@@ -57,7 +56,7 @@ class DeleteWithConfirmMenuItem extends Component<
         basePath: PropTypes.string,
         classes: PropTypes.object,
         className: PropTypes.string,
-        crudDelete: PropTypes.func.isRequired,
+        deleteNode: PropTypes.func.isRequired,
         label: PropTypes.string,
         record: PropTypes.object,
         redirect: PropTypes.oneOfType([
@@ -89,8 +88,25 @@ class DeleteWithConfirmMenuItem extends Component<
     };
 
     handleDelete = () => {
-        const { crudDelete, resource, record, basePath, redirect } = this.props;
-        crudDelete(resource, record.id, record, basePath, redirect);
+        const {
+            deleteNode,
+            resource,
+            record,
+            basePath,
+            redirect,
+            parentSource,
+            positionSource,
+        } = this.props;
+
+        deleteNode({
+            resource,
+            id: record.id,
+            previousData: record,
+            basePath,
+            redirect,
+            parentSource,
+            positionSource,
+        });
     };
 
     render() {
@@ -140,7 +156,7 @@ class DeleteWithConfirmMenuItem extends Component<
 const sanitizeRestProps = ({
     basePath,
     classes,
-    crudDelete,
+    deleteNode,
     filterValues,
     handleSubmit,
     handleSubmitWithRedirect,
@@ -160,7 +176,7 @@ const sanitizeRestProps = ({
 export default compose(
     connect(
         null,
-        { crudDelete: crudDeleteAction }
+        { deleteNode: deleteNodeAction }
     ),
     withTranslate,
     withStyles(styles)

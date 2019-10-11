@@ -39,7 +39,8 @@ const nodesReducer = (
         if (action.meta.fetch === MOVE_NODE) {
             // We need to remove this node from its previous parent as it may have change
             const previousParentId =
-                action.payload.previousData[action.meta.parentSource];
+                action.payload.previousData[action.meta.parentSource] ||
+                ROOT_NODE_ID;
 
             const newState = {
                 ...previousState,
@@ -48,7 +49,8 @@ const nodesReducer = (
                 ),
             };
 
-            const newParentId = action.payload.data[action.meta.parentSource];
+            const newParentId =
+                action.payload.data[action.meta.parentSource] || ROOT_NODE_ID;
             // The new parent may not have any children yet
             const currentParentChildren = newState[newParentId] || [];
 
@@ -76,7 +78,9 @@ const nodesReducer = (
         }
 
         if (action.meta.fetch === DELETE) {
-            const parentId = action.payload[action.meta.parentSource];
+            const parentId =
+                action.payload.previousData[action.meta.parentSource] ||
+                ROOT_NODE_ID;
 
             const {
                 [action.payload.id]: excludedAsDeleted,
@@ -214,7 +218,8 @@ const nodesReducer = (
             return newState;
         }
         case CRUD_CREATE_SUCCESS: {
-            const newParentId = action.payload.data[action.meta.parentSource];
+            const newParentId =
+                action.payload.data[action.meta.parentSource] || ROOT_NODE_ID;
 
             // The new parent may not have any children yet
             const currentParentChildren = previousState[newParentId] || [];
@@ -246,7 +251,8 @@ const nodesReducer = (
         case CRUD_UPDATE_SUCCESS: {
             // We need to remove this node from its previous parent as it may have change
             const previousParentId =
-                action.payload.previousData[action.meta.parentSource];
+                action.payload.previousData[action.meta.parentSource] ||
+                ROOT_NODE_ID;
 
             const newState = {
                 ...previousState,
@@ -255,7 +261,8 @@ const nodesReducer = (
                 ),
             };
 
-            const newParentId = action.payload.data[action.meta.parentSource];
+            const newParentId =
+                action.payload.data[action.meta.parentSource] || ROOT_NODE_ID;
             // The new parent may not have any children yet
             const currentParentChildren = newState[newParentId] || [];
 
