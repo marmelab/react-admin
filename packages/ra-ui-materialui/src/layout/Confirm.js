@@ -45,6 +45,8 @@ const useStyles = makeStyles(theme => ({
  *     content="Are you sure you want to delete this item?"
  *     confirm="Yes"
  *     confirmColor="primary"
+ *     ConfirmIcon=ActionCheck
+ *     CancelIcon=AlertError
  *     cancel="Cancel"
  *     onConfirm={() => { // do something }}
  *     onClose={() => { // do something }}
