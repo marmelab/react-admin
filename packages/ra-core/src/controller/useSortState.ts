@@ -102,6 +102,7 @@ export const defaultSort = { field: 'id', order: 'DESC' };
  * @param {string} initialSort.order The initial sort order
  * @returns {SortProps} The sort props
  */
+
 export default (initialSort: Sort = defaultSort): SortProps => {
     const [sort, dispatch] = useReducer(sortReducer, initialSort);
     const isFirstRender = useRef(true);
@@ -116,17 +117,17 @@ export default (initialSort: Sort = defaultSort): SortProps => {
     return {
         setSort: useCallback(
             (sort: Sort) => dispatch({ type: 'SET_SORT', payload: { sort } }),
-            []
+            [dispatch]
         ),
         setSortField: useCallback(
             (field: string) =>
                 dispatch({ type: 'SET_SORT_FIELD', payload: { field } }),
-            []
+            [dispatch]
         ),
         setSortOrder: useCallback(
             (order: string) =>
                 dispatch({ type: 'SET_SORT_ORDER', payload: { order } }),
-            []
+            [dispatch]
         ),
         sort,
     };

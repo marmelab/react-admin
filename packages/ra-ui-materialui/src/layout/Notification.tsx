@@ -48,7 +48,7 @@ const Notification: React.FunctionComponent<
 
     const handleRequestClose = useCallback(() => {
         setOpen(false);
-    }, []);
+    }, [setOpen]);
 
     const handleExited = useCallback(() => {
         if (notification && notification.undoable) {

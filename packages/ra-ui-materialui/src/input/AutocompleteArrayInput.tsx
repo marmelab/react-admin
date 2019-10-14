@@ -198,7 +198,7 @@ const AutocompleteArrayInput: FunctionComponent<
                 setFilter(value);
             }
         },
-        [setFilter]
+        [setFilter, setFilterValue]
     );
 
     // We must reset the filter every time the value changes to ensure we
@@ -235,7 +235,7 @@ const AutocompleteArrayInput: FunctionComponent<
             setFilterValue('');
             input.onChange(newSelectedItems.map(getChoiceValue));
         },
-        [getChoiceValue, input, selectedItems]
+        [getChoiceValue, input, selectedItems, setFilterValue]
     );
 
     const handleDelete = useCallback(
@@ -290,7 +290,7 @@ const AutocompleteArrayInput: FunctionComponent<
             handleFilterChange('');
             input.onBlur(event);
         },
-        [handleFilterChange, input]
+        [handleFilterChange, input, setFilterValue]
     );
 
     const handleFocus = useCallback(

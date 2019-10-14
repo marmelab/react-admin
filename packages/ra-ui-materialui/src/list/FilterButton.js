@@ -42,19 +42,19 @@ const FilterButton = ({
             setOpen(true);
             anchorEl.current = event.currentTarget;
         },
-        [anchorEl]
+        [anchorEl, setOpen]
     );
 
     const handleRequestClose = useCallback(() => {
         setOpen(false);
-    }, []);
+    }, [setOpen]);
 
     const handleShow = useCallback(
         ({ source, defaultValue }) => {
             showFilter(source, defaultValue);
             setOpen(false);
         },
-        [showFilter]
+        [showFilter, setOpen]
     );
 
     if (hiddenFilters.length === 0) return null;
