@@ -29,6 +29,7 @@ const NullableBooleanInput: FunctionComponent<
     InputProps<TextFieldProps> & Omit<TextFieldProps, 'label' | 'helperText'>
 > = ({
     className,
+    format = getStringFromBoolean,
     helperText,
     label,
     margin = 'dense',
@@ -36,6 +37,7 @@ const NullableBooleanInput: FunctionComponent<
     onChange,
     onFocus,
     options,
+    parse = getBooleanFromString,
     resource,
     source,
     validate,
@@ -51,11 +53,11 @@ const NullableBooleanInput: FunctionComponent<
         isRequired,
         meta: { error, touched },
     } = useInput({
-        format: getStringFromBoolean,
+        format,
         onBlur,
         onChange,
         onFocus,
-        parse: getBooleanFromString,
+        parse,
         resource,
         source,
         type: 'checkbox',

@@ -23,7 +23,7 @@ const convertDateToString = (value: Date) => {
 
 const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
 
-const format = (value: string | Date) => {
+const getStringFromDate = (value: string | Date) => {
     // null, undefined and empty string values should not go through dateFormatter
     // otherwise, it returns undefined and will make the input an uncontrolled one.
     if (value == null || value === '') {
@@ -45,6 +45,7 @@ const format = (value: string | Date) => {
 export const DateInput: FunctionComponent<
     InputProps<TextFieldProps> & Omit<TextFieldProps, 'helperText' | 'label'>
 > = ({
+    format = getStringFromDate,
     label,
     options,
     source,
@@ -54,6 +55,7 @@ export const DateInput: FunctionComponent<
     onBlur,
     onChange,
     onFocus,
+    parse,
     validate,
     variant = 'filled',
     ...rest
@@ -68,6 +70,7 @@ export const DateInput: FunctionComponent<
         onBlur,
         onChange,
         onFocus,
+        parse,
         resource,
         source,
         validate,

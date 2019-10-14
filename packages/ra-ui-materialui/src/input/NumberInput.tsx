@@ -33,16 +33,18 @@ const NumberInput: FunctionComponent<
         InputProps<TextFieldProps> &
         Omit<TextFieldProps, 'label' | 'helperText'>
 > = ({
+    format,
     helperText,
     label,
     margin = 'dense',
-    options,
-    source,
-    step,
-    resource,
     onBlur,
     onFocus,
     onChange,
+    options,
+    parse,
+    resource,
+    source,
+    step,
     validate,
     variant = 'filled',
     inputProps: overrideInputProps,
@@ -54,6 +56,7 @@ const NumberInput: FunctionComponent<
         isRequired,
         meta: { error, touched },
     } = useInput({
+        format,
         onBlur,
         onChange,
         onFocus,
