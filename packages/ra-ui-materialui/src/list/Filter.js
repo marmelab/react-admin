@@ -15,6 +15,7 @@ const Filter = props => {
     const classes = useStyles({ classes: props.classes });
     const renderButton = () => {
         const {
+            classes: classesOverride,
             context,
             resource,
             children,
@@ -41,6 +42,7 @@ const Filter = props => {
 
     const renderForm = () => {
         const {
+            classes: classesOverride,
             context,
             resource,
             children,
