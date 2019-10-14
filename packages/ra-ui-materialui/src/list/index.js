@@ -2,8 +2,8 @@ import BulkActionsToolbar from './BulkActionsToolbar';
 import BulkDeleteAction from './BulkDeleteAction';
 import Datagrid from './Datagrid';
 import DatagridLoading from './DatagridLoading';
-import DatagridBody from './DatagridBody';
-import DatagridRow from './DatagridRow';
+import DatagridBody, { PureDatagridBody } from './DatagridBody';
+import DatagridRow, { PureDatagridRow } from './DatagridRow';
 import DatagridHeaderCell from './DatagridHeaderCell';
 import DatagridCell from './DatagridCell';
 import Filter from './Filter';
@@ -37,6 +37,8 @@ export {
     ListToolbar,
     Pagination,
     PaginationLimit,
+    PureDatagridBody,
+    PureDatagridRow,
     SimpleList,
     SingleFieldList,
 };

@@ -91,10 +91,10 @@ const areEqual = (prevProps, nextProps) => {
     return isEqual(prevPropsWithoutChildren, nextPropsWithoutChildren);
 };
 
-export const MemoDatagridBody = memo(DatagridBody, areEqual);
+export const PureDatagridBody = memo(DatagridBody, areEqual);
 // trick material-ui Table into thinking this is one of the child type it supports
-MemoDatagridBody.muiName = 'TableBody';
-MemoDatagridBody.defaultProps = {
+PureDatagridBody.muiName = 'TableBody';
+PureDatagridBody.defaultProps = {
     row: <PureDatagridRow />,
 };
 

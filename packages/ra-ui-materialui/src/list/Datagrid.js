@@ -16,7 +16,7 @@ import classnames from 'classnames';
 
 import DatagridHeaderCell from './DatagridHeaderCell';
 import DatagridLoading from './DatagridLoading';
-import DatagridBody, { MemoDatagridBody } from './DatagridBody';
+import DatagridBody, { PureDatagridBody } from './DatagridBody';
 
 const useStyles = makeStyles(theme => ({
     table: {
@@ -104,7 +104,7 @@ function Datagrid({ classes: classesOverride, ...props }) {
     const {
         basePath,
         optimized = false,
-        body = optimized ? <MemoDatagridBody /> : <DatagridBody />,
+        body = optimized ? <PureDatagridBody /> : <DatagridBody />,
         children,
         className,
         currentSort,
