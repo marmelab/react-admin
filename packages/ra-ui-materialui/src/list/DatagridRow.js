@@ -28,7 +28,7 @@ const computeNbColumns = (expand, children, hasBulkActions) =>
 
 const defaultClasses = {};
 
-export const DatagridRow = ({
+const DatagridRow = ({
     basePath,
     children,
     classes = defaultClasses,
@@ -213,8 +213,8 @@ const areEqual = (prevProps, nextProps) => {
     return isEqual(prevPropsWithoutChildren, nextPropsWithoutChildren);
 };
 
-const PureDatagridRow = memo(DatagridRow, areEqual);
+export const PureDatagridRow = memo(DatagridRow, areEqual);
 
 PureDatagridRow.displayName = 'PureDatagridRow';
 
-export default PureDatagridRow;
+export default DatagridRow;

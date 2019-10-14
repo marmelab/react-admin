@@ -16,7 +16,7 @@ import classnames from 'classnames';
 
 import DatagridHeaderCell from './DatagridHeaderCell';
 import DatagridLoading from './DatagridLoading';
-import MemoDatagridBody, { DatagridBody } from './DatagridBody';
+import DatagridBody, { MemoDatagridBody } from './DatagridBody';
 
 const useStyles = makeStyles(theme => ({
     table: {

@@ -4,9 +4,9 @@ import TableBody from '@material-ui/core/TableBody';
 import classnames from 'classnames';
 import isEqual from 'lodash/isEqual';
 
-import PureDatagridRow, { DatagridRow } from './DatagridRow';
+import DatagridRow, { PureDatagridRow } from './DatagridRow';
 
-export const DatagridBody = ({
+const DatagridBody = ({
     basePath,
     children,
     classes,
@@ -91,11 +91,11 @@ const areEqual = (prevProps, nextProps) => {
     return isEqual(prevPropsWithoutChildren, nextPropsWithoutChildren);
 };
 
-const MemoDatagridBody = memo(DatagridBody, areEqual);
+export const MemoDatagridBody = memo(DatagridBody, areEqual);
 // trick material-ui Table into thinking this is one of the child type it supports
 MemoDatagridBody.muiName = 'TableBody';
 MemoDatagridBody.defaultProps = {
     row: <PureDatagridRow />,
 };
 
-export default MemoDatagridBody;
+export default DatagridBody;
