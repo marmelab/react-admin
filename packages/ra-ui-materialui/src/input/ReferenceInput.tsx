@@ -109,16 +109,20 @@ interface Props {
  * </ReferenceInput>
  */
 export const ReferenceInput: FunctionComponent<Props & InputProps> = ({
+    format,
     onBlur,
     onChange,
     onFocus,
+    parse,
     validate,
     ...props
 }) => {
     const inputProps = useInput({
+        format,
         onBlur,
         onChange,
         onFocus,
+        parse,
         validate,
         ...props,
     });
