@@ -36,7 +36,9 @@ describe('<NumberInput />', () => {
                     render={() => <NumberInput {...defaultProps} step="0.1" />}
                 />
             );
-            const input = getByLabelText('resources.posts.fields.views');
+            const input = getByLabelText(
+                'resources.posts.fields.views'
+            ) as HTMLInputElement;
             expect(input.step).toEqual('0.1');
         });
     });

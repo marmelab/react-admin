@@ -6,14 +6,14 @@ import { useInput, FieldTitle, InputProps } from 'ra-core';
 import InputHelperText from './InputHelperText';
 import sanitizeRestProps from './sanitizeRestProps';
 
-const parse = value => {
+const convertStringToNumber = value => {
     const float = parseFloat(value);
 
     return isNaN(float) ? null : float;
 };
 
 interface Props {
-    step: string | number;
+    step?: string | number;
 }
 
 /**
@@ -41,7 +41,7 @@ const NumberInput: FunctionComponent<
     onFocus,
     onChange,
     options,
-    parse,
+    parse = convertStringToNumber,
     resource,
     source,
     step,
