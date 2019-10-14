@@ -13,7 +13,7 @@ Fortunately, the `<Admin>` component detects when it's used inside an existing R
 
 Beware that you need to know about [redux](http://redux.js.org/), [react-router](https://github.com/reactjs/react-router), and [redux-saga](https://github.com/yelouafi/redux-saga) to go further.
 
-React-admin requires that the redux state contains at least 3 reducers: `admin`, `i18n` and `router`. You can add more, or replace some of them with your own, but you can't remove or rename them. As it relies on `connected-react-router` and `redux-saga`, react-admin also expects the store to use their middlewares.
+React-admin requires that the redux state contains at least 2 reducers: `admin` and `router`. You can add more, or replace some of them with your own, but you can't remove or rename them. As it relies on `connected-react-router` and `redux-saga`, react-admin also expects the store to use their middlewares.
 
 Here is the default store creation for react-admin:
 
