@@ -25,7 +25,7 @@ const TagNodeActions = props => (
     </TreeNodeActions>
 );
 
-// Disallow dragging of items without parents (top level items)
+// Disallow dragging of items without parent (top level items)
 const canDrag = record => !!record.parent_id;
 
 const TagList = props => (
