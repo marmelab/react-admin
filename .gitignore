@@ -16,3 +16,5 @@ lib-composite
 .tsbuildinfo
 base.tsBuildInfoFile
 .tsbuildinfoEsm
+declarationDir-ignore
+declarationDir-ignore-esm

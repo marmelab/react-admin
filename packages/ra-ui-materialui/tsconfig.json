@@ -6,7 +6,8 @@
         "tsBuildInfoFile": "./lib/tsbuildinfo",
         "checkJs": false,
         "strict": false,
-        "noImplicitAny": false
+        "noImplicitAny": false,
+        // "declarationDir": "./declarationDir-ignore"
     },
     "exclude": ["**/*.spec.ts", "**/*.spec.tsx", "**/*.spec.js"],
     "include": ["src"],

@@ -12,6 +12,7 @@ import renderWithRedux from './renderWithRedux';
 import warning from './warning';
 import useWhyDidYouUpdate from './useWhyDidYouUpdate';
 import { useSafeSetState, useTimeout } from './hooks';
+import { trickTSNamespaceInfer } from './trickTSNamespaceInfer';
 
 export {
     downloadCSV,
@@ -29,4 +30,5 @@ export {
     useWhyDidYouUpdate,
     useSafeSetState,
     useTimeout,
+    trickTSNamespaceInfer,
 };

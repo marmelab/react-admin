@@ -3,7 +3,8 @@
     "compilerOptions": {
         "outDir": "./lib",
         "rootDir": "./src",
-        "tsBuildInfoFile": "./lib/.tsbuildinfo"
+        "tsBuildInfoFile": "./lib/.tsbuildinfo",
+        "declarationDir": "./declarationDir-ignore"
     },
     "exclude": ["**/*.spec.ts", "**/*.spec.tsx", "**/*.spec.js"],
     "include": ["src"],

@@ -3,7 +3,8 @@
     "compilerOptions": {
         "outDir": "./esm",
         "rootDir": "./src",
-        "tsBuildInfoFile": "./esm/.tsbuildinfo"
+        "tsBuildInfoFile": "./esm/.tsbuildinfo",
+        "declarationDir": "./declarationDir-ignore-esm"
     },
     "exclude": ["**/*.spec.ts", "**/*.spec.tsx", "**/*.spec.js"],
     "include": ["src"],
