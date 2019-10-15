@@ -12,7 +12,7 @@ yarn add ra-tree-core
 
 ## Usage
 
-With a categories ressource having this structure where a category may have a parent category referenced by the `parent_id` field:
+With a `categories` resource having this structure where a category may have a parent category referenced by the `parent_id` field:
 
 ```json
 [
@@ -41,7 +41,7 @@ import { TreeController } from 'ra-tree-core';
 import TreeNode from './TreeNode';
 
 export const CategoriesList = (props) => (
-    <TreeController {...props}>
+    <TreeController resource="categories" {...props}>
         {({ tree }) => (
             <Fragment>
                 {tree.map(node => <TreeNode node={node} />)}
@@ -51,9 +51,9 @@ export const CategoriesList = (props) => (
 );
 ```
 
-`react-admin` will fetch the data and the `TreeController` component will build a tree from it. Note that every category which do not have a parent will be considered a root node. The `TreeController` component will call its children function which is responsible for the actual rendering.
+The `TreeController` component calls the `dataProvider` for the `categories` resource, and build an internal tree structure based on the results. Note that every category which does not have a parent will be considered a root node. The `TreeController` component then calls its child function, which is responsible for the actual rendering.
 
-Note that your `dataProvider` must handle three new verbs:
+Note that your `dataProvider` must handle three new verbs: `GET_TREE_ROOT_NODES`, `GET_TREE_CHILDREN_NODES`, and `MOVE_NODE`.
 
 ### `GET_TREE_ROOT_NODES`
 
@@ -61,18 +61,18 @@ Should fetch the root nodes for the specified resource. It receives no parameter
 
 ### `GET_TREE_CHILDREN_NODES`
 
-Should fetch the leaves of the specified node. It receives the following parameters: 
+Should fetch the leaves of the specified node. It receives the following parameter: 
 - `id`: the identifier of the node for which we want to fetch the leaves
 
-Should should return an array of records as its `data`. 
+The `dataProvider` should return an array of records as its `data`. 
 
 ### `MOVE_NODE`
 
-Called when a node is moved either to a new parent or a new position. It receives the following parameters: 
-- `data`: the new node with its parent, and optionnaly position, fields already updated.
+Called when a node is moved either to a new parent, or to a new position. It receives the following parameters: 
+- `data`: the new node with its parent, and optionally position, fields already updated.
 - `previousData`: the node before the update
 
-**Note**: It is your responsability to correctly update the siblings if necessary according to the new node position.
+**Note**: It is your responsibility to correctly update the siblings if necessary according to the new node position.
 
 ## API
 
@@ -104,7 +104,7 @@ This package also exports several actions to interact with the Tree:
 
 - Support nested set hierarchical data
 - `TreeSelectInputController` to select a value inside the hierarchical data (with autocomplete showing the matched nodes)
-- `TreeNodeFieldController` to show a node and its hierarchie. It should recursively fetch the parents by default, accepting a custom function to fetch them in one call (`fetchHierarchy`).
+- `TreeNodeFieldController` to show a node and its hierarchy. It should recursively fetch the parents by default, accepting a custom function to fetch them in one call (`fetchHierarchy`).
 
 ## License
 
