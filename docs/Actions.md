@@ -252,7 +252,7 @@ The specialized hooks based on `useMutation` return a callback:
 For instance, here is another version of the `<ApproveButton>`  based on `useDataProvider` that notifies the user of success or failure using the bottom notification banner:
 
 ```jsx
-import { useDataProvider, useNotify } from 'react-admin';
+import { useDataProvider, useNotify, useRedirect } from 'react-admin';
 
 const ApproveButton = ({ record }) => {
     const notify = useNotify();
