@@ -29,6 +29,7 @@ const dataProviderWithTree = async (type, resource, params) => {
     }
 
     if (type === MOVE_NODE) {
+        // Fetch all nodes with the same parent so that we can update their position too
         const { data } = await dataProvider('GET_LIST', resource, {
             filter: { parent_id: params.data.parent_id },
             sort: { field: 'position', order: 'ASC' },
@@ -37,9 +38,11 @@ const dataProviderWithTree = async (type, resource, params) => {
 
         await Promise.all(
             data.map(node => {
+                // If this node is before the moved node, we have nothing to do
                 if (node.position < params.data.position) {
                     return Promise.resolve();
                 }
+                // Otherwise, update its position according to the moved node
                 return dataProvider('UPDATE', resource, {
                     id: node.id,
                     data: {
@@ -49,6 +52,7 @@ const dataProviderWithTree = async (type, resource, params) => {
             })
         );
 
+        // Finally, move the node as requested
         return dataProvider('UPDATE', resource, {
             id: params.data.id,
             data: params.data,
@@ -56,6 +60,8 @@ const dataProviderWithTree = async (type, resource, params) => {
     }
 
     if (type === CREATE && resource === 'tags') {
+        // The new node may have been inserted at a position previously occupied by another node
+        // Fetch all nodes with the same parent so that we can update their position too
         const { data } = await dataProvider('GET_LIST', resource, {
             filter: { parent_id: params.data.parent_id },
             sort: { field: 'position', order: 'ASC' },
@@ -64,9 +70,11 @@ const dataProviderWithTree = async (type, resource, params) => {
 
         await Promise.all(
             data.map(node => {
+                // If this node is before the new node, we have nothing to do
                 if (node.position < params.data.position) {
                     return Promise.resolve();
                 }
+                // Otherwise, update its position according to the new node
                 return dataProvider('UPDATE', resource, {
                     id: node.id,
                     data: {
@@ -76,6 +84,7 @@ const dataProviderWithTree = async (type, resource, params) => {
             })
         );
 
+        // Finally, create the new node as requested
         return dataProvider(type, resource, params);
     }
 

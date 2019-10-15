@@ -157,52 +157,29 @@ const warnAboutChildren = () =>
         `You passed multiple children to the Tree component.
 
     <Tree>
-        <NodeView>
-            <TextField source="name" />
-        </NodeView>
+        <TreeList>
+            <TreeNode>
+                <TextField source="name" />
+            </TreeNode>
+        </TreeList>
     </Tree>
 
-    // Or
-
-    <Tree>
-        <NodeForm>
-            <TextInput source="name" />
-        </NodeForm>
-    </Tree>
-
-If you need actions on each node, use the actions prop on either the NodeView or NodeForm component:
+If you need actions on each node, use the actions prop on the TreeNode component:
 
     const MyNodeActions = props => (
-        <NodeActions {...props}>
+        <TreeNodeActions {...props}>
             <EditButton />
             <ShowButton />
             <DeleteButton />
-        </NodeActions>
+        </TreeNodeActions>
     );
 
     <Tree>
-        <NodeView actions={<MyNodeActions />}>
-            <TextField source="name" />
-        </NodeView>
-    </Tree>
-
-    // Or
-
-    const MyNodeActions = props => (
-        <NodeActions {...props}>
-            <SaveButton variant="flat" />
-            <IgnoreFormProps>
-                <EditButton />
-                <ShowButton />
-                <DeleteButton />
-            </IgnoreFormProps>
-        </NodeActions>
-    );
-
-    <Tree>
-        <NodeForm actions={<MyNodeActions />}>
-            <TextInput source="name" />
-        </NodeForm>
+        <TreeList>
+            <TreeNode actions={<MyNodeActions />}>
+                <TextField source="name" />
+            </TreeNode>
+        </TreeList>
     </Tree>
 `
     );

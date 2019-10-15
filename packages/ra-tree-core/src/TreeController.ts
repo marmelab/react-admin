@@ -46,7 +46,7 @@ interface DispatchProps {
     crudGetTreeRootNodes: typeof crudGetTreeRootNodesAction;
 }
 
-export class TreeControllerView extends Component<
+export class TreeController extends Component<
     Props & InjectedProps & StateProps & DispatchProps
 > {
     static propTypes = {
@@ -112,7 +112,7 @@ const mapStateToProps = (state, { resource }) => ({
     version: state.admin.ui.viewVersion,
 });
 
-const TreeController = compose<any, Props>(
+const EnhancedTreeController = compose<any, Props>(
     connect(
         mapStateToProps,
         {
@@ -120,10 +120,10 @@ const TreeController = compose<any, Props>(
         }
     ),
     withTranslate
-)(TreeControllerView);
+)(TreeController);
 
-TreeController.defaultProps = {
+EnhancedTreeController.defaultProps = {
     parentSource: 'parent_id',
 };
 
-export default TreeController as ComponentType<Props>;
+export default EnhancedTreeController as ComponentType<Props>;

@@ -32,6 +32,29 @@ const styles = (theme: Theme) =>
         },
     });
 
+/**
+ * @example
+ * const TagNodeActions = props => (
+ *     <TreeNodeActions {...props}>
+ *         <TreeNodeActionsMenu {...props}>
+ *             <AddChildNodeMenuItem />
+ *             <AddNodeBeforeMenuItem />
+ *             <AddNodeAfterMenuItem />
+ *             <EditMenuItem />
+ *             <DeleteMenuItem />
+ *         </TreeNodeActionsMenu>
+ *     </TreeNodeActions>
+ * );
+ * export const TagsList = (props) => (
+ *     <Tree {...props}>
+ *         <TreeList>
+ *             <TreeNode actions={<TagNodeActions />}>
+ *                 <TextField source="name" />
+ *             </TreeNode>
+ *         </TreeList>
+ *     </Tree>
+ * );
+ */
 const TreeNodeActions = withStyles(styles)(
     ({
         basePath,

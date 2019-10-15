@@ -61,14 +61,16 @@ Should fetch the root nodes for the specified resource. It receives no parameter
 
 ### `GET_TREE_CHILDREN_NODES`
 
-Should fetch the leaves of the specified node. It receives the following parameter: 
+Should fetch the leaves of the specified node. It receives the following parameter:
+
 - `id`: the identifier of the node for which we want to fetch the leaves
 
 The `dataProvider` should return an array of records as its `data`. 
 
 ### `MOVE_NODE`
 
-Called when a node is moved either to a new parent, or to a new position. It receives the following parameters: 
+Called when a node is moved either to a new parent, or to a new position. It receives the following parameters:
+
 - `data`: the new node with its parent, and optionally position, fields already updated.
 - `previousData`: the node before the update
 
