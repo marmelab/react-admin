@@ -8,8 +8,6 @@ import {
     GET_TREE_CHILDREN_NODES,
     reducer as treeReducer,
 } from 'ra-tree-core';
-import { DragDropContextProvider } from 'react-dnd';
-import HTML5Backend from 'react-dnd-html5-backend';
 
 import Tree from './Tree';
 import TreeList from './TreeList';
@@ -63,14 +61,12 @@ describe('<Tree>', () => {
         };
 
         const { queryByText, queryAllByLabelText } = render(
-            <DragDropContextProvider backend={HTML5Backend}>
-                <CoreAdmin
-                    dataProvider={dataProvider}
-                    customReducers={{ tree: treeReducer }}
-                >
-                    <Resource name="tags" list={TagsList} />
-                </CoreAdmin>
-            </DragDropContextProvider>
+            <CoreAdmin
+                dataProvider={dataProvider}
+                customReducers={{ tree: treeReducer }}
+            >
+                <Resource name="tags" list={TagsList} />
+            </CoreAdmin>
         );
         await new Promise(resolve => setTimeout(resolve, 50));
 
