@@ -4,32 +4,33 @@ import { addField, translate } from 'ra-core';
 
 import { FileInput } from './FileInput';
 
-const styles = createStyles({
-    root: { width: '100%' },
-    dropZone: {
-        background: '#efefef',
-        cursor: 'pointer',
-        padding: '1rem',
-        textAlign: 'center',
-        color: '#999',
-    },
-    preview: {},
-    removeButton: {
-        display: 'inline-block',
-        position: 'relative',
-        float: 'left',
-        '& button': {
-            position: 'absolute',
-            top: '0.5rem',
-            right: '0.5rem',
-            minWidth: '2rem',
-            opacity: 0,
+const styles = theme =>
+    createStyles({
+        root: { width: '100%' },
+        dropZone: {
+            background: theme.palette.background.default,
+            cursor: 'pointer',
+            padding: '1rem',
+            textAlign: 'center',
+            color: theme.palette.text.hint,
         },
-        '&:hover button': {
-            opacity: 1,
+        preview: {},
+        removeButton: {
+            display: 'inline-block',
+            position: 'relative',
+            float: 'left',
+            '& button': {
+                position: 'absolute',
+                top: '0.5rem',
+                right: '0.5rem',
+                minWidth: '2rem',
+                opacity: 0,
+            },
+            '&:hover button': {
+                opacity: 1,
+            },
         },
-    },
-});
+    });
 
 export class ImageInput extends FileInput {
     static defaultProps = {

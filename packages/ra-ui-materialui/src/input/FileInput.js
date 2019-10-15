@@ -12,18 +12,19 @@ import Labeled from './Labeled';
 import FileInputPreview from './FileInputPreview';
 import sanitizeRestProps from './sanitizeRestProps';
 
-const styles = createStyles({
-    dropZone: {
-        background: '#efefef',
-        cursor: 'pointer',
-        padding: '1rem',
-        textAlign: 'center',
-        color: '#999',
-    },
-    preview: {},
-    removeButton: {},
-    root: { width: '100%' },
-});
+const styles = theme =>
+    createStyles({
+        dropZone: {
+            background: theme.palette.background.default,
+            cursor: 'pointer',
+            padding: '1rem',
+            textAlign: 'center',
+            color: theme.palette.text.hint,
+        },
+        preview: {},
+        removeButton: {},
+        root: { width: '100%' },
+    });
 
 export class FileInput extends Component {
     static propTypes = {
