@@ -201,9 +201,8 @@ const SelectInput: FunctionComponent<
             {...input}
             select
             label={
-                label === false ? (
-                    label
-                ) : (
+                label !== '' &&
+                label !== false && (
                     <FieldTitle
                         label={label}
                         source={source}
