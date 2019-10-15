@@ -8,11 +8,11 @@ import React, {
     useCallback,
     memo,
 } from 'react';
-import isEqual from 'lodash/isEqual';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { TableCell, TableRow, Checkbox } from '@material-ui/core';
 import { linkToRecord } from 'ra-core';
+import isEqual from 'lodash/isEqual';
 
 import DatagridCell from './DatagridCell';
 import ExpandRowButton from './ExpandRowButton';
@@ -213,8 +213,8 @@ const areEqual = (prevProps, nextProps) => {
     return isEqual(prevPropsWithoutChildren, nextPropsWithoutChildren);
 };
 
-const PureDatagridRow = memo(DatagridRow, areEqual);
+export const PureDatagridRow = memo(DatagridRow, areEqual);
 
 PureDatagridRow.displayName = 'PureDatagridRow';
 
-export default PureDatagridRow;
+export default DatagridRow;

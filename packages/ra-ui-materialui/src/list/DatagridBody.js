@@ -1,9 +1,10 @@
-import React, { cloneElement, useMemo } from 'react';
+import React, { cloneElement, memo } from 'react';
 import PropTypes from 'prop-types';
 import TableBody from '@material-ui/core/TableBody';
 import classnames from 'classnames';
+import isEqual from 'lodash/isEqual';
 
-import DatagridRow from './DatagridRow';
+import DatagridRow, { PureDatagridRow } from './DatagridRow';
 
 const DatagridBody = ({
     basePath,
@@ -24,45 +25,36 @@ const DatagridBody = ({
     styles,
     version,
     ...rest
-}) =>
-    useMemo(
-        () => (
-            <TableBody
-                className={classnames('datagrid-body', className)}
-                {...rest}
-            >
-                {ids.map((id, rowIndex) =>
-                    cloneElement(
-                        row,
-                        {
-                            basePath,
-                            classes,
-                            className: classnames(classes.row, {
-                                [classes.rowEven]: rowIndex % 2 === 0,
-                                [classes.rowOdd]: rowIndex % 2 !== 0,
-                                [classes.clickableRow]: rowClick,
-                            }),
-                            expand,
-                            hasBulkActions,
-                            hover,
-                            id,
-                            key: id,
-                            onToggleItem,
-                            record: data[id],
-                            resource,
-                            rowClick,
-                            selected: selectedIds.includes(id),
-                            style: rowStyle
-                                ? rowStyle(data[id], rowIndex)
-                                : null,
-                        },
-                        children
-                    )
-                )}
-            </TableBody>
-        ),
-        [version, data, selectedIds, JSON.stringify(ids), hasBulkActions] // eslint-disable-line
-    );
+}) => (
+    <TableBody className={classnames('datagrid-body', className)} {...rest}>
+        {ids.map((id, rowIndex) =>
+            cloneElement(
+                row,
+                {
+                    basePath,
+                    classes,
+                    className: classnames(classes.row, {
+                        [classes.rowEven]: rowIndex % 2 === 0,
+                        [classes.rowOdd]: rowIndex % 2 !== 0,
+                        [classes.clickableRow]: rowClick,
+                    }),
+                    expand,
+                    hasBulkActions,
+                    hover,
+                    id,
+                    key: id,
+                    onToggleItem,
+                    record: data[id],
+                    resource,
+                    rowClick,
+                    selected: selectedIds.includes(id),
+                    style: rowStyle ? rowStyle(data[id], rowIndex) : null,
+                },
+                children
+            )
+        )}
+    </TableBody>
+);
 
 DatagridBody.propTypes = {
     basePath: PropTypes.string,
@@ -90,8 +82,20 @@ DatagridBody.defaultProps = {
     ids: [],
     row: <DatagridRow />,
 };
-
 // trick material-ui Table into thinking this is one of the child type it supports
 DatagridBody.muiName = 'TableBody';
+
+const areEqual = (prevProps, nextProps) => {
+    const { children: _, ...prevPropsWithoutChildren } = prevProps;
+    const { children: __, ...nextPropsWithoutChildren } = nextProps;
+    return isEqual(prevPropsWithoutChildren, nextPropsWithoutChildren);
+};
+
+export const PureDatagridBody = memo(DatagridBody, areEqual);
+// trick material-ui Table into thinking this is one of the child type it supports
+PureDatagridBody.muiName = 'TableBody';
+PureDatagridBody.defaultProps = {
+    row: <PureDatagridRow />,
+};
 
 export default DatagridBody;

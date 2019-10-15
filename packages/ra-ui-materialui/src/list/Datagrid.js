@@ -15,8 +15,8 @@ import Checkbox from '@material-ui/core/Checkbox';
 import classnames from 'classnames';
 
 import DatagridHeaderCell from './DatagridHeaderCell';
-import DatagridBody from './DatagridBody';
 import DatagridLoading from './DatagridLoading';
+import DatagridBody, { PureDatagridBody } from './DatagridBody';
 
 const useStyles = makeStyles(theme => ({
     table: {
@@ -103,7 +103,8 @@ function Datagrid({ classes: classesOverride, ...props }) {
     const classes = useStyles({ classes: classesOverride });
     const {
         basePath,
-        body,
+        optimized = false,
+        body = optimized ? <PureDatagridBody /> : <DatagridBody />,
         children,
         className,
         currentSort,
@@ -282,7 +283,6 @@ Datagrid.defaultProps = {
     hasBulkActions: false,
     ids: [],
     selectedIds: [],
-    body: <DatagridBody />,
 };
 
 export default Datagrid;
