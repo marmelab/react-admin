@@ -23,8 +23,6 @@ import InputHelperText from './InputHelperText';
 import AutocompleteSuggestionList from './AutocompleteSuggestionList';
 import AutocompleteSuggestionItem from './AutocompleteSuggestionItem';
 
-interface Props {}
-
 interface Options {
     suggestionsContainerProps?: any;
     labelProps?: any;
@@ -93,13 +91,14 @@ interface Options {
  * <AutocompleteInput source="author_id" options={{ fullWidthInput: true }} />
  */
 const AutocompleteInput: FunctionComponent<
-    Props & InputProps<TextFieldProps & Options> & DownshiftProps<any>
+    InputProps<TextFieldProps & Options> & DownshiftProps<any>
 > = ({
     allowEmpty,
     classes: classesOverride,
     choices = [],
     emptyText,
     emptyValue,
+    format,
     helperText,
     id: idOverride,
     input: inputOverride,
@@ -119,6 +118,7 @@ const AutocompleteInput: FunctionComponent<
     } = {},
     optionText = 'name',
     optionValue = 'id',
+    parse,
     resource,
     setFilter,
     shouldRenderSuggestions: shouldRenderSuggestionsOverride,
@@ -149,6 +149,7 @@ const AutocompleteInput: FunctionComponent<
         isRequired,
         meta: { touched, error },
     } = useInput({
+        format,
         id: idOverride,
         input: inputOverride,
         isRequired: isRequiredOverride,
@@ -156,6 +157,7 @@ const AutocompleteInput: FunctionComponent<
         onBlur,
         onChange,
         onFocus,
+        parse,
         resource,
         source,
         validate,

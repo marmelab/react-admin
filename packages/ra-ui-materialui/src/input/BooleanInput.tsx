@@ -14,6 +14,7 @@ const BooleanInput: FunctionComponent<
     InputProps<SwitchProps> &
         Omit<FormGroupProps, 'defaultValue' | 'onChange' | 'onBlur' | 'onFocus'>
 > = ({
+    format,
     label,
     fullWidth,
     helperText,
@@ -21,6 +22,7 @@ const BooleanInput: FunctionComponent<
     onChange,
     onFocus,
     options,
+    parse,
     resource,
     source,
     validate,
@@ -32,9 +34,11 @@ const BooleanInput: FunctionComponent<
         isRequired,
         meta: { error, touched },
     } = useInput({
+        format,
         onBlur,
         onChange,
         onFocus,
+        parse,
         resource,
         source,
         type: 'checkbox',

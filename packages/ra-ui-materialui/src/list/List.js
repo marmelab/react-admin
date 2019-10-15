@@ -16,7 +16,6 @@ import DefaultPagination from './Pagination';
 import BulkDeleteButton from '../button/BulkDeleteButton';
 import BulkActionsToolbar from './BulkActionsToolbar';
 import DefaultActions from './ListActions';
-import defaultTheme from '../defaultTheme';
 
 const DefaultBulkActionButtons = props => <BulkDeleteButton {...props} />;
 
@@ -97,7 +96,6 @@ const sanitizeRestProps = ({
     setSort,
     showFilter,
     sort,
-    theme,
     title,
     toggleItem,
     total,
@@ -290,13 +288,11 @@ List.propTypes = {
     match: PropTypes.object.isRequired,
     path: PropTypes.string,
     resource: PropTypes.string.isRequired,
-    theme: PropTypes.object.isRequired,
 };
 
 List.defaultProps = {
     filter: {},
     perPage: 10,
-    theme: defaultTheme,
 };
 
 export default List;

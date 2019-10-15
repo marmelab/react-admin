@@ -148,6 +148,7 @@ const SelectInput: FunctionComponent<
     disableValue,
     emptyText,
     emptyValue,
+    format,
     helperText,
     label,
     onBlur,
@@ -156,6 +157,7 @@ const SelectInput: FunctionComponent<
     options,
     optionText,
     optionValue,
+    parse,
     resource,
     source,
     translateChoice,
@@ -176,9 +178,11 @@ const SelectInput: FunctionComponent<
         isRequired,
         meta: { error, touched },
     } = useInput({
+        format,
         onBlur,
         onChange,
         onFocus,
+        parse,
         resource,
         source,
         validate,
@@ -224,7 +228,12 @@ const SelectInput: FunctionComponent<
             {...sanitizeRestProps(rest)}
         >
             {allowEmpty ? (
-                <MenuItem value={emptyValue} key="null">
+                <MenuItem
+                    value={emptyValue}
+                    key="null"
+                    aria-label={translate('ra.action.clear_input_value')}
+                    title={translate('ra.action.clear_input_value')}
+                >
                     {renderEmptyItemOption()}
                 </MenuItem>
             ) : null}

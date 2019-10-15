@@ -13,7 +13,7 @@ Fortunately, the `<Admin>` component detects when it's used inside an existing R
 
 Beware that you need to know about [redux](http://redux.js.org/), [react-router](https://github.com/reactjs/react-router), and [redux-saga](https://github.com/yelouafi/redux-saga) to go further.
 
-React-admin requires that the redux state contains at least 3 reducers: `admin`, `i18n` and `router`. You can add more, or replace some of them with your own, but you can't remove or rename them. As it relies on `connected-react-router` and `redux-saga`, react-admin also expects the store to use their middlewares.
+React-admin requires that the redux state contains at least 2 reducers: `admin` and `router`. You can add more, or replace some of them with your own, but you can't remove or rename them. As it relies on `connected-react-router` and `redux-saga`, react-admin also expects the store to use their middlewares.
 
 Here is the default store creation for react-admin:
 
@@ -53,20 +53,27 @@ export default ({
     };
     const sagaMiddleware = createSagaMiddleware();
 
+    const composeEnhancers =
+        (process.env.NODE_ENV === 'development' &&
+            typeof window !== 'undefined' &&
+            window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ &&
+            window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
+                trace: true,
+                traceLimit: 25,
+            })) ||
+        compose;
+  
     const store = createStore(
         resettableAppReducer,
         { /* set your initial state here */ },
-        compose(
+        composeEnhancers(
             applyMiddleware(
                 sagaMiddleware,
                 routerMiddleware(history),
                 // add your own middlewares here
             ),
-            typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION__
-                ? window.__REDUX_DEVTOOLS_EXTENSION__()
-                : f => f
             // add your own enhancers here
-        )
+        ),        
     );
     sagaMiddleware.run(saga);
     return store;

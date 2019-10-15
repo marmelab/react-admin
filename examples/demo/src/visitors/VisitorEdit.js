@@ -95,6 +95,7 @@ const VisitorEdit = props => {
                         sort={{ field: 'date', order: 'DESC' }}
                         reference="reviews"
                         target="customer_id"
+                        fullWidth
                     >
                         <Datagrid filter={{ status: 'approved' }}>
                             <DateField source="date" />

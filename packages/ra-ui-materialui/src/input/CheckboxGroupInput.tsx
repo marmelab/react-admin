@@ -94,6 +94,7 @@ const CheckboxGroupInput: FunctionComponent<
     ChoicesProps & InputProps<CheckboxProps> & FormControlProps
 > = ({
     choices = [],
+    format,
     helperText,
     label,
     onBlur,
@@ -102,6 +103,7 @@ const CheckboxGroupInput: FunctionComponent<
     optionText,
     optionValue,
     options,
+    parse,
     resource,
     row,
     source,
@@ -118,9 +120,11 @@ const CheckboxGroupInput: FunctionComponent<
         isRequired,
         meta: { error, touched },
     } = useInput({
+        format,
         onBlur,
         onChange,
         onFocus,
+        parse,
         resource,
         source,
         validate,

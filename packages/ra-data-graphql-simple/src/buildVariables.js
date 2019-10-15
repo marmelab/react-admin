@@ -89,7 +89,7 @@ const prepareParams = (params, queryType, introspectionResults) => {
             return;
         }
 
-        result[key] = castType(param, arg.type, introspectionResults.types);
+        result[key] = castType(param, arg.type);
     });
 
     return result;
@@ -200,7 +200,7 @@ const buildGetListVariables = introspectionResults => (
     return variables;
 };
 
-const buildCreateUpdateVariables = () => (
+const buildCreateUpdateVariables = (
     resource,
     aorFetchType,
     params,
@@ -272,28 +272,18 @@ export default introspectionResults => (
             return variables;
         }
         case GET_ONE:
-            return {
-                id: preparedParams.id,
-            };
-        case UPDATE: {
-            return buildCreateUpdateVariables(introspectionResults)(
-                resource,
-                aorFetchType,
-                preparedParams,
-                queryType
-            );
-        }
-        case CREATE: {
-            return buildCreateUpdateVariables(introspectionResults)(
-                resource,
-                aorFetchType,
-                preparedParams,
-                queryType
-            );
-        }
         case DELETE:
             return {
                 id: preparedParams.id,
             };
+        case CREATE:
+        case UPDATE: {
+            return buildCreateUpdateVariables(
+                resource,
+                aorFetchType,
+                preparedParams,
+                queryType
+            );
+        }
     }
 };

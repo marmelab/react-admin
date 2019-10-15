@@ -22,17 +22,17 @@ interface Props {
  * @example
  *     const MyApp = () => (
  *         <Provider store={store}>
- *             <TranslationProvider locale="fr" i18nProvider={i18nProvider}>
+ *             <TranslationProvider i18nProvider={i18nProvider}>
  *                 <!-- Child components go here -->
  *             </TranslationProvider>
  *         </Provider>
  *     );
  */
 const TranslationProvider: FunctionComponent<Props> = props => {
-    const { i18nProvider, children, locale = 'en' } = props;
+    const { i18nProvider, children } = props;
 
     const [state, setState] = useSafeSetState({
-        locale,
+        locale: i18nProvider ? i18nProvider.getLocale() : 'en',
         i18nProvider,
     });
 

@@ -145,4 +145,18 @@ describe('Edit Page', () => {
             expect(el).to.have.value(date)
         );
     });
+
+    it('should persit emptied inputs', () => {
+        EditPostPage.navigate();
+        EditPostPage.gotoTab(3);
+        cy.contains('Tech').click();
+        cy.get('li[aria-label="Clear value"]').click();
+        EditPostPage.submit();
+
+        EditPostPage.navigate();
+        EditPostPage.gotoTab(3);
+        cy.get(EditPostPage.elements.input('category')).should(el =>
+            expect(el).to.have.value('')
+        );
+    });
 });

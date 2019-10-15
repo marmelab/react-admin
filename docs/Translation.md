@@ -22,6 +22,7 @@ Just like for data fetching and authentication, react-admin relies on a simple o
 const i18nProvider = {
     translate: (key, options) => string,
     changeLocale: locale => Promise,
+    getLocale: () => string,
 }
 ```
 
@@ -86,12 +87,16 @@ const frenchMessages = {
 };
 let messages = englishMessages;
 
+let locale = 'en';
+
 const i18nProvider = {
     translate: key => lodashGet(messages, key),
     changeLocale: newLocale => {
         messages = (newLocale === 'fr') ? frenchMessages : englishMessages;
+        locale = newLocale;
         return Promise.resolve();
-    }
+    },
+    getLocale: () => locale;
 };
 ```
 
@@ -126,7 +131,8 @@ const frenchMessages = {
 };
 
 const i18nProvider = polyglotI18nProvider(locale => 
-    locale === 'fr' ? frenchMessages : englishMessages
+    locale === 'fr' ? frenchMessages : englishMessages,
+    'en' // Default locale
 );
 ```
 
@@ -140,10 +146,10 @@ import { Admin, Resource } from 'react-admin';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import frenchMessages from 'ra-language-french';
 
-const i18nProvider = polyglotI18nProvider(() => frenchMessages);
+const i18nProvider = polyglotI18nProvider(() => frenchMessages, 'fr');
 
 const App = () => (
-    <Admin locale="fr" i18nProvider={i18nProvider}>
+    <Admin i18nProvider={i18nProvider}>
         ...
     </Admin>
 );
@@ -225,7 +231,7 @@ export default App;
 Then, use the `useSetLocale` hook to change locale. For instance, the following component allows the user to switch the interface language between English and French:
 
 ```jsx
-import React, { Component } from 'react';
+import React from 'react';
 import Button from '@material-ui/core/Button';
 import { useSetLocale } from 'react-admin';
 
@@ -293,10 +299,10 @@ const i18nProvider = polyglotI18nProvider(locale => {
     if (locale === 'fr') {
         return import('../i18n/fr.js').then(messages => messages.default);
     }
-});
+}, 'en');
 
 const App = () => (
-    <Admin locale="en" i18nProvider={i18nProvider}>
+    <Admin i18nProvider={i18nProvider}>
         ...
     </Admin>
 );
@@ -304,7 +310,7 @@ const App = () => (
 
 ## Using The Browser Locale
 
-React-admin provides a helper function named `resolveBrowserLocale()`, which detects the user's browser locale. To use it, simply pass the function as `locale` prop.
+React-admin provides a helper function named `resolveBrowserLocale()`, which detects the user's browser locale. To use it, simply pass the function as the `initialLocale` argument of `polyglotI18nProvider`.
 
 ```jsx
 import React from 'react';
@@ -321,10 +327,13 @@ const messages = {
     fr: frenchMessages,
     en: englishMessages,
 };
-const i18nProvider = polyglotI18nProvider(locale => messages[locale] ? messages[locale] : messages.en);
+const i18nProvider = polyglotI18nProvider(
+    locale => messages[locale] ? messages[locale] : messages.en,
+    resolveBrowserLocale()
+);
 
 const App = () => (
-    <Admin locale={resolveBrowserLocale()} i18nProvider={i18nProvider}>
+    <Admin i18nProvider={i18nProvider}>
         ...
     </Admin>
 );

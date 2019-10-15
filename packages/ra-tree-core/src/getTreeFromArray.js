@@ -32,6 +32,6 @@ export default (data, parentSource) => {
         id: 'id',
         parentId: parentSource,
     })
-        .map(node => createNode(node, 1))
+        .map(node => createNode(node))
         .map(node => addParent(node, null));
 };

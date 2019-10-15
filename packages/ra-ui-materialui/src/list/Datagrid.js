@@ -15,8 +15,8 @@ import Checkbox from '@material-ui/core/Checkbox';
 import classnames from 'classnames';
 
 import DatagridHeaderCell from './DatagridHeaderCell';
-import DatagridBody from './DatagridBody';
 import DatagridLoading from './DatagridLoading';
+import DatagridBody, { PureDatagridBody } from './DatagridBody';
 
 const useStyles = makeStyles(theme => ({
     table: {
@@ -103,7 +103,8 @@ function Datagrid({ classes: classesOverride, ...props }) {
     const classes = useStyles({ classes: classesOverride });
     const {
         basePath,
-        body,
+        optimized = false,
+        body = optimized ? <PureDatagridBody /> : <DatagridBody />,
         children,
         className,
         currentSort,
@@ -138,12 +139,7 @@ function Datagrid({ classes: classesOverride, ...props }) {
         event => {
             if (event.target.checked) {
                 onSelect(
-                    ids.reduce(
-                        (idList, id) =>
-                            idList.includes(id) ? idList : idList.concat(id),
-
-                        selectedIds
-                    )
+                    ids.concat(selectedIds.filter(id => !ids.includes(id)))
                 );
             } else {
                 onSelect([]);
@@ -206,9 +202,7 @@ function Datagrid({ classes: classesOverride, ...props }) {
                                 checked={
                                     selectedIds.length > 0 &&
                                     ids.length > 0 &&
-                                    !ids.find(
-                                        it => selectedIds.indexOf(it) === -1
-                                    )
+                                    ids.every(id => selectedIds.includes(id))
                                 }
                                 onChange={handleSelectAll}
                             />
@@ -289,7 +283,6 @@ Datagrid.defaultProps = {
     hasBulkActions: false,
     ids: [],
     selectedIds: [],
-    body: <DatagridBody />,
 };
 
 export default Datagrid;

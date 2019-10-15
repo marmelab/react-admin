@@ -290,7 +290,7 @@ const performUndoableQuery = ({
                     });
                     dispatch({ type: FETCH_ERROR, error });
                     onFailure && onFailure(error);
-                    throw new Error(error.message ? error.message : error);
+                    throw error;
                 });
             });
     });
@@ -371,7 +371,7 @@ const performQuery = ({
                 });
                 dispatch({ type: FETCH_ERROR, error });
                 onFailure && onFailure(error);
-                throw new Error(error.message ? error.message : error);
+                throw error;
             })
         );
 };

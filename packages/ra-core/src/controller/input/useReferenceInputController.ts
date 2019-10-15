@@ -1,3 +1,6 @@
+import { useEffect } from 'react';
+import isEqual from 'lodash/isEqual';
+
 import { getStatusForInput as getDataStatus } from './referenceDataStatus';
 import useTranslate from '../../i18n/useTranslate';
 import { Sort, Record, Pagination } from '../../types';
@@ -84,12 +87,14 @@ const useReferenceInputController = ({
     filterToQuery,
     referenceSource = defaultReferenceSource,
     resource,
+    sort: sortOverride,
     source,
 }: Option): ReferenceInputValue => {
     const translate = useTranslate();
 
     const { pagination, setPagination } = usePaginationState({ perPage });
-    const { sort, setSort } = useSortState();
+    const { sort, setSort } = useSortState(sortOverride);
+
     const { filter: filterValue, setFilter } = useFilterState({
         permanentFilter: filter,
         filterToQuery,

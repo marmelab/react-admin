@@ -6,14 +6,14 @@ import { useInput, FieldTitle, InputProps } from 'ra-core';
 import InputHelperText from './InputHelperText';
 import sanitizeRestProps from './sanitizeRestProps';
 
-const parse = value => {
+const convertStringToNumber = value => {
     const float = parseFloat(value);
 
     return isNaN(float) ? null : float;
 };
 
 interface Props {
-    step: string | number;
+    step?: string | number;
 }
 
 /**
@@ -33,16 +33,18 @@ const NumberInput: FunctionComponent<
         InputProps<TextFieldProps> &
         Omit<TextFieldProps, 'label' | 'helperText'>
 > = ({
+    format,
     helperText,
     label,
     margin = 'dense',
-    options,
-    source,
-    step,
-    resource,
     onBlur,
     onFocus,
     onChange,
+    options,
+    parse = convertStringToNumber,
+    resource,
+    source,
+    step,
     validate,
     variant = 'filled',
     inputProps: overrideInputProps,
@@ -54,6 +56,7 @@ const NumberInput: FunctionComponent<
         isRequired,
         meta: { error, touched },
     } = useInput({
+        format,
         onBlur,
         onChange,
         onFocus,

@@ -210,17 +210,27 @@ But what if you want to use an email instead of a username? What if you want to 
 
 For all these cases, it's up to you to implement your own `LoginPage` component, which will be displayed under the `/login` route instead of the default username/password form, and your own `LogoutButton` component, which will be displayed in the sidebar. Pass both these components to the `<Admin>` component:
 
-**Tip**: Use the `useLogin` and `useLogout` hooks in your custom `Login` and `Logout` components.
+```jsx
+// in src/App.js
+import MyLoginPage from './MyLoginPage';
+import MyLogoutButton from './MyLogoutButton';
+
+const App = () => (
+    <Admin loginPage={MyLoginPage} logoutButton={MyLogoutButton} authProvider={authProvider}>
+    ...
+    </Admin>
+);
+```
+
+Use the `useLogin` and `useLogout` hooks in your custom `LoginPage` and `LogoutButton` components.
 
 ```jsx
 // in src/MyLoginPage.js
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { useLogin, useNotify } from 'react-admin';
 import { ThemeProvider } from '@material-ui/styles';
 
 const MyLoginPage = ({ theme }) => {
-    const dispatch = useDispatch()
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const login = useLogin();
@@ -245,13 +255,11 @@ export default MyLoginPage;
 
 // in src/MyLogoutButton.js
 import React, { forwardRef } from 'react';
-import { useDispatch } from 'react-redux';
 import { useLogout } from 'react-admin';
 import MenuItem from '@material-ui/core/MenuItem';
 import ExitIcon from '@material-ui/icons/PowerSettingsNew';
 
 const MyLogoutButton = forwardRef((props, ref) => {
-    const dispatch = useDispatch();
     const logout = useLogout();
     const handleClick = () => logout();
     return (
@@ -265,16 +273,6 @@ const MyLogoutButton = forwardRef((props, ref) => {
 });
 
 export default MyLogoutButton;
-
-// in src/App.js
-import MyLoginPage from './MyLoginPage';
-import MyLogoutButton from './MyLogoutButton';
-
-const App = () => (
-    <Admin loginPage={MyLoginPage} logoutButton={MyLogoutButton} authProvider={authProvider}>
-    ...
-    </Admin>
-);
 ```
 
 **Tip**: By default, react-admin redirects the user to '/login' after they log out. This can be changed by passing the url to redirect to as parameter to the `logout()` function:
@@ -348,8 +346,7 @@ To avoid rendering a component and force waiting for the `authProvider` response
 
 - `loading`: `true` just after mount, while the `authProvider` is being called. `false` once the `authProvider` has answered
 - `loaded`: the opposite of `loading`.
-- `connected`: `undefined` while loading. then `true` or `false` depending on the `authProvider` response.
-
+- `authenticated`: `undefined` while loading. then `true` or `false` depending on the `authProvider` response.
 
 You can render different content depending on the authenticated status. 
 

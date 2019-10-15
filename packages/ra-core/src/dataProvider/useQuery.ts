@@ -90,6 +90,8 @@ const useQuery = (query: Query, options: QueryOptions = {}): UseQueryValue => {
             ? dataProviderWithDeclarativeSideEffects
             : dataProvider;
 
+        setState(prevState => ({ ...prevState, loading: true }));
+
         dataProviderWithSideEffects[type](resource, payload, rest)
             .then(({ data, total }) => {
                 setState({

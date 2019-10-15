@@ -25,13 +25,15 @@ export const TextInput: FunctionComponent<
     InputProps<TextFieldProps> & Omit<TextFieldProps, 'label' | 'helperText'>
 > = ({
     label,
-    options,
-    resource,
-    source,
+    format,
     helperText,
     onBlur,
     onFocus,
     onChange,
+    options,
+    parse,
+    resource,
+    source,
     validate,
     ...rest
 }) => {
@@ -41,9 +43,11 @@ export const TextInput: FunctionComponent<
         isRequired,
         meta: { error, touched },
     } = useInput({
+        format,
         onBlur,
         onChange,
         onFocus,
+        parse,
         resource,
         source,
         type: 'text',

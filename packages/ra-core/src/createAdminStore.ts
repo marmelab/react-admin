@@ -10,7 +10,7 @@ import { adminSaga } from './sideEffect';
 import { CLEAR_STATE } from './actions/clearActions';
 
 interface Window {
-    __REDUX_DEVTOOLS_EXTENSION__?: () => () => void;
+    __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: (traceOptions: object) => Function;
 }
 
 export type InitialState = object | (() => object);
@@ -61,15 +61,21 @@ export default ({
     const sagaMiddleware = createSagaMiddleware();
     const typedWindow = window as Window;
 
+    const composeEnhancers =
+        (process.env.NODE_ENV === 'development' &&
+            typeof typedWindow !== 'undefined' &&
+            typedWindow.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ &&
+            typedWindow.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
+                trace: true,
+                traceLimit: 25,
+            })) ||
+        compose;
+
     const store = createStore(
         resettableAppReducer,
         typeof initialState === 'function' ? initialState() : initialState,
-        compose(
-            applyMiddleware(sagaMiddleware, routerMiddleware(history)),
-            typeof typedWindow !== 'undefined' &&
-                typedWindow.__REDUX_DEVTOOLS_EXTENSION__
-                ? typedWindow.__REDUX_DEVTOOLS_EXTENSION__()
-                : f => f
+        composeEnhancers(
+            applyMiddleware(sagaMiddleware, routerMiddleware(history))
         )
     );
     sagaMiddleware.run(saga);

@@ -6,8 +6,14 @@ import arrayMutators from 'final-form-arrays';
 import { Route } from 'react-router-dom';
 import Divider from '@material-ui/core/Divider';
 import { makeStyles } from '@material-ui/core/styles';
-import { useTranslate, useInitializeFormWithRecord } from 'ra-core';
+import {
+    useTranslate,
+    useInitializeFormWithRecord,
+    sanitizeEmptyValues,
+} from 'ra-core';
+import get from 'lodash/get';
 
+import getFormInitialValues from './getFormInitialValues';
 import Toolbar from './Toolbar';
 import TabbedFormTabs, { getTabFullPath } from './TabbedFormTabs';
 import { useRouteMatch, useLocation } from 'react-router';
@@ -21,7 +27,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const TabbedForm = ({ initialValues, saving, ...props }) => {
+const TabbedForm = ({ initialValues, defaultValue, saving, ...props }) => {
     let redirect = useRef(props.redirect);
     // We don't use state here for two reasons:
     // 1. There no way to execute code only after the state has been updated
@@ -33,15 +39,20 @@ const TabbedForm = ({ initialValues, saving, ...props }) => {
     const translate = useTranslate();
     const classes = useStyles();
 
+    const finalInitialValues = getFormInitialValues(
+        initialValues,
+        defaultValue,
+        props.record
+    );
+
     const submit = values => {
         const finalRedirect =
-            typeof redirect === undefined ? props.redirect : redirect.current;
-        props.save(values, finalRedirect);
-    };
+            typeof redirect.current === undefined
+                ? props.redirect
+                : redirect.current;
+        const finalValues = sanitizeEmptyValues(finalInitialValues, values);
 
-    const finalInitialValues = {
-        ...initialValues,
-        ...props.record,
+        props.save(finalValues, finalRedirect);
     };
 
     return (
@@ -185,7 +196,8 @@ TabbedFormView.propTypes = {
     children: PropTypes.node,
     className: PropTypes.string,
     classes: PropTypes.object,
-    defaultValue: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
+    defaultValue: PropTypes.oneOfType([PropTypes.object, PropTypes.func]), // @deprecated
+    initialValues: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
     handleSubmit: PropTypes.func, // passed by react-final-form
     invalid: PropTypes.bool,
     location: PropTypes.object,
@@ -278,7 +290,8 @@ export const findTabsWithErrors = (children, errors) => {
 
         if (
             inputs.some(
-                input => isValidElement(input) && errors[input.props.source]
+                input =>
+                    isValidElement(input) && get(errors, input.props.source)
             )
         ) {
             return [...acc, child.props.label];

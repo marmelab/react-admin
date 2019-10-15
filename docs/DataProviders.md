@@ -52,7 +52,7 @@ const dataProvider = {
 
 You can find an example Data Provider implementation at the end of this chapter.
 
-**Tip**: In react-admin v2, Data Providers used to be functions, not objects. React-admin v3 can detect a legacy Data Provider and wrap an object around it. So Data Providers developped for react-admin v3 still work with react-admin v3.  
+**Tip**: In react-admin v2, Data Providers used to be functions, not objects. React-admin v3 can detect a legacy Data Provider and wrap an object around it. So Data Providers developped for react-admin v2 still work with react-admin v3.  
 
 ## Available Providers
 
@@ -605,7 +605,7 @@ export default {
             method: 'PUT',
             body: JSON.stringify(params.data),
         }).then(({ json }) => ({ data: json }));
-    }
+    },
 
     create: (resource, params) =>
         httpClient(`${apiUrl}/${resource}`, {
@@ -628,8 +628,8 @@ export default {
             method: 'DELETE',
             body: JSON.stringify(params.data),
         }).then(({ json }) => ({ data: json }));
-    }
-});
+    },
+};
 ```
 
 ### Error Format

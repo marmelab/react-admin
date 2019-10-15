@@ -84,6 +84,7 @@ export const RadioButtonGroupInput: FunctionComponent<
 > = ({
     choices = [],
     classes: classesOverride,
+    format,
     helperText,
     label,
     onBlur,
@@ -92,6 +93,7 @@ export const RadioButtonGroupInput: FunctionComponent<
     options,
     optionText,
     optionValue,
+    parse,
     resource,
     source,
     translateChoice,
@@ -106,9 +108,11 @@ export const RadioButtonGroupInput: FunctionComponent<
         isRequired,
         meta: { error, touched },
     } = useInput({
+        format,
         onBlur,
         onChange,
         onFocus,
+        parse,
         resource,
         source,
         validate,
