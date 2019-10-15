@@ -41,8 +41,6 @@ import { Admin, Resource, mergeTranslations } from 'react-admin';
 import { reducer as tree } from 'ra-tree-ui-materialui';
 import englishMessages from 'ra-language-english';
 import treeEnglishMessages from 'ra-tree-language-english';
-import { DragDropContextProvider } from 'react-dnd';
-import HTML5Backend from 'react-dnd-html5-backend';
 
 import dataProvider from './dataProvider';
 import posts from './posts';
@@ -54,22 +52,18 @@ const messages = {
 const i18nProvider = locale => messages[locale];
 
 const App = () => (
-    <DragDropContextProvider backend={HTML5Backend}>
-        <Admin
-            dataProvider={dataProvider}
-            i18nProvider={i18nProvider}
-            locale="en"
-            // Note that you cannot name it anything other than `tree`
-            customReducers={{ tree }}
-        >
-            <Resource name="posts" {...posts} />
-            <Resource name="tags" {...tags} />
-        </Admin>
-    </DragDropContextProvider>
+    <Admin
+        dataProvider={dataProvider}
+        i18nProvider={i18nProvider}
+        locale="en"
+        // Note that you cannot name it anything other than `tree`
+        customReducers={{ tree }}
+    >
+        <Resource name="posts" {...posts} />
+        <Resource name="tags" {...tags} />
+    </Admin>
 )
 ```
-
-Note that we wrapped the `<Admin>` component inside a `<DragDropContextProvider>`. This is required for now and allow to drag and drop nodes. We might make it optional in the future if you don't need this feature.
 
 You can then use the tree components:
 
