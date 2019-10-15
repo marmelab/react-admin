@@ -3,7 +3,7 @@ module.exports = {
         tree: {
             add_child_node: 'Ajouter un enfant',
             add_node_after: 'Insérer un nœud après',
-            add_node_before: 'Insérer un noeud avant',
+            add_node_before: 'Insérer un nœud avant',
             close: 'Fermer',
             expand: 'Ouvre',
         },
