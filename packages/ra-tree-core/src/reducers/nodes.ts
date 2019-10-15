@@ -40,7 +40,7 @@ const nodesReducer = (
 
             const newParentId =
                 action.payload.data[action.meta.parentSource] || ROOT_NODE_ID;
-            // The new parent may not have any children yet
+            // The new parent may not have any child yet
             const currentParentChildren = newState[newParentId] || [];
 
             if (action.meta.positionSource) {
