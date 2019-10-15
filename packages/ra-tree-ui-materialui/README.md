@@ -123,7 +123,7 @@ The `Tree` component accepts the following props:
 
 ### <TreeList>
 
-This is the UI container. Does nothing for now but may includes advanced selection features in the future. Takes no props.
+This is the UI container. Does nothing for now but may include advanced selection features in the future. Takes no props.
 
 ### <TreeNode>
 
