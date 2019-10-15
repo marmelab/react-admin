@@ -24,7 +24,7 @@ const nodesReducer = (
 ) => {
     if (action.meta && action.meta.optimistic) {
         if (action.meta.fetch === MOVE_NODE) {
-            // We need to remove this node from its previous parent as it may have change
+            // We need to remove this node from its previous parent as it may have changed
             const previousParentId =
                 action.payload.previousData[action.meta.parentSource] ||
                 ROOT_NODE_ID;
