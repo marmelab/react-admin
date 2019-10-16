@@ -106,7 +106,7 @@ The `dataProvider` should return an array of records as its `data`.
 
 Called when a node is moved either to a new parent, or to a new position. It receives the following parameters:
 
-- `data`: the new node with its parent, and optionally position, fields already updated.
+- `data`: the new node, updated
 - `previousData`: the node before the update
 
 **Note**: It is your responsibility to correctly update the siblings if necessary according to the new node position.
