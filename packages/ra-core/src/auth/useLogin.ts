@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 
 import useAuthProvider, { defaultAuthParams } from './useAuthProvider';
-import { useLocation, useHistory } from 'react-router';
+import { useLocation, useHistory } from 'react-router-dom';
 
 /**
  * Get a callback for calling the authProvider.login() method

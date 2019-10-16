@@ -16,7 +16,7 @@ import {
 } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/styles';
 import LockIcon from '@material-ui/icons/Lock';
-import { StaticContext, useHistory } from 'react-router';
+import { StaticContext, useHistory } from 'react-router-dom';
 import { useCheckAuth } from 'ra-core';
 
 import defaultTheme from '../defaultTheme';

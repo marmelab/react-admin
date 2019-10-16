@@ -5,7 +5,7 @@ import { Route } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 
 import TabbedShowLayoutTabs, { getTabFullPath } from './TabbedShowLayoutTabs';
-import { useRouteMatch } from 'react-router';
+import { useRouteMatch } from 'react-router-dom';
 
 const sanitizeRestProps = ({
     children,

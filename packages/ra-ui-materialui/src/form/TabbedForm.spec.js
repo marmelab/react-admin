@@ -1,6 +1,6 @@
 import { cleanup } from '@testing-library/react';
 import React, { createElement } from 'react';
-import { MemoryRouter } from 'react-router';
+import { MemoryRouter } from 'react-router-dom';
 import { renderWithRedux } from 'ra-core';
 
 import TabbedForm, { findTabsWithErrors } from './TabbedForm';

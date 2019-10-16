@@ -16,7 +16,7 @@ import { linkToRecord } from 'ra-core';
 
 import DatagridCell from './DatagridCell';
 import ExpandRowButton from './ExpandRowButton';
-import { useHistory } from 'react-router';
+import { useHistory } from 'react-router-dom';
 
 const computeNbColumns = (expand, children, hasBulkActions) =>
     expand

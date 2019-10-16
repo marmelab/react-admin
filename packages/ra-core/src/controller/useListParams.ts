@@ -16,7 +16,7 @@ import { changeListParams, ListParams } from '../actions/listActions';
 import { Sort, ReduxState } from '../types';
 import removeEmpty from '../util/removeEmpty';
 import removeKey from '../util/removeKey';
-import { useHistory } from 'react-router';
+import { useHistory } from 'react-router-dom';
 
 interface ListParamsOptions {
     resource: string;

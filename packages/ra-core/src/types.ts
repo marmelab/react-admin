@@ -1,5 +1,5 @@
 import { ReactNode, ReactElement, ComponentType } from 'react';
-import { RouteProps, RouteComponentProps, match as Match } from 'react-router';
+import { RouteProps, RouteComponentProps, match as Match } from 'react-router-dom';
 import { Location } from 'history';
 
 import { WithPermissionsChildrenParams } from './auth/WithPermissions';

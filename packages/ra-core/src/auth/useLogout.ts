@@ -3,7 +3,7 @@ import { useDispatch, useStore } from 'react-redux';
 
 import useAuthProvider, { defaultAuthParams } from './useAuthProvider';
 import { clearState } from '../actions/clearActions';
-import { useHistory, useLocation } from 'react-router';
+import { useHistory, useLocation } from 'react-router-dom';
 
 /**
  * Get a callback for calling the authProvider.logout() method,

@@ -3,7 +3,7 @@ import { createStore, Store } from 'redux';
 import { Provider } from 'react-redux';
 import merge from 'lodash/merge';
 import { createMemoryHistory, History } from 'history';
-import { Router } from 'react-router';
+import { Router } from 'react-router-dom';
 
 import createAdminStore from '../createAdminStore';
 import { convertLegacyDataProvider } from '../dataProvider';
