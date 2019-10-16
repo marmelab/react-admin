@@ -17,6 +17,29 @@ interface InjectedProps {
     translate: Translate;
 }
 
+/**
+ * Menu item meant to be used inside a <TreeNodeActionsMenu>. It provides a custom create button
+ * which will initialize the create form with values to insert a new node after the current one
+ *
+ * @example
+ * const TagNodeActions = props => (
+ *     <TreeNodeActions {...props}>
+ *         <TreeNodeActionsMenu {...props}>
+ *             <AddNodeBeforeMenuItem />
+ *             <AddNodeAfterMenuItem />
+ *         </TreeNodeActionsMenu>
+ *     </TreeNodeActions>
+ * );
+ * export const TagsList = (props) => (
+ *     <Tree {...props}>
+ *         <TreeList>
+ *             <TreeNode actions={<TagNodeActions />}>
+ *                 <TextField source="name" />
+ *             </TreeNode>
+ *         </TreeList>
+ *     </Tree>
+ * );
+ */
 const AddNodeAfterMenuItemView: SFC<Props & InjectedProps & MenuItemProps> = ({
     basePath,
     label = 'ra.tree.add_node_after',
@@ -26,8 +49,11 @@ const AddNodeAfterMenuItemView: SFC<Props & InjectedProps & MenuItemProps> = ({
     translate,
     ...props
 }) => {
+    // This record will be used to initialize the form values for the new node
     const record = {
+        // The new node will have the same parent as the node after which it will be inserted
         [parentSource]: siblingRecord[parentSource],
+        // The new node will be inserted after its sibling
         [positionSource]: siblingRecord[positionSource] + 1,
     };
 
