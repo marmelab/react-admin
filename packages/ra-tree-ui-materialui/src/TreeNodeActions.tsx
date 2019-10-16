@@ -33,6 +33,9 @@ const styles = (theme: Theme) =>
     });
 
 /**
+ * Component used to position node actions correctly.
+ *
+ * // Usage with as a DropDown menu (recommanded)
  * @example
  * const TagNodeActions = props => (
  *     <TreeNodeActions {...props}>
@@ -43,6 +46,23 @@ const styles = (theme: Theme) =>
  *             <EditMenuItem />
  *             <DeleteMenuItem />
  *         </TreeNodeActionsMenu>
+ *     </TreeNodeActions>
+ * );
+ * export const TagsList = (props) => (
+ *     <Tree {...props}>
+ *         <TreeList>
+ *             <TreeNode actions={<TagNodeActions />}>
+ *                 <TextField source="name" />
+ *             </TreeNode>
+ *         </TreeList>
+ *     </Tree>
+ * );
+ * // Usage with standard react admin buttons
+ * @example
+ * const TagNodeActions = props => (
+ *     <TreeNodeActions {...props}>
+ *         <EditButton />
+ *         <DeleteButton />
  *     </TreeNodeActions>
  * );
  * export const TagsList = (props) => (
