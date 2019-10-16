@@ -11,11 +11,6 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import classnames from 'classnames';
 import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import IconButton from '@material-ui/core/IconButton';
-import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
-import KeyboardArrowDown from '@material-ui/icons/KeyboardArrowDown';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import {
     withStyles,
     WithStyles,
@@ -48,10 +43,11 @@ import {
     DragSourceMonitor,
     DragSourceConnector,
     DropTargetConnector,
-    XYCoord,
 } from 'react-dnd';
 
 import TreeNodeList from './TreeNodeList';
+import TreeNodeIcon from './TreeNodeIcon';
+import getMousePosition, { MousePosition } from './getMousePosition';
 
 interface Props {
     actions?: ReactElement<any>;
@@ -100,6 +96,7 @@ class TreeNodeView extends Component<
     }
 
     componentDidUpdate(prevProps) {
+        // Automatically expand the node when dragging another node over it
         if (
             !this.props.expanded &&
             (this.props.isOverCurrent ||
@@ -128,12 +125,21 @@ class TreeNodeView extends Component<
     };
 
     fetchChildren = () => {
-        if (this.props.record && this.props.record.id != undefined) {
-            this.props.crudGetTreeChildrenNodes({
-                resource: this.props.resource,
-                parentSource: this.props.parentSource,
-                positionSource: this.props.positionSource,
-                nodeId: this.props.record.id,
+        const {
+            crudGetTreeChildrenNodes,
+            parentSource,
+            positionSource,
+            record,
+            resource,
+        } = this.props;
+
+        // eslint-disable-next-line eqeqeq
+        if (record && record.id != undefined) {
+            crudGetTreeChildrenNodes({
+                resource,
+                parentSource,
+                positionSource,
+                nodeId: record.id,
             });
         }
     };
@@ -185,12 +191,12 @@ class TreeNodeView extends Component<
         return connectDropTarget(
             connectDragSource(
                 <li
-                    // This is a hack to cancel styles added dynamically on hover which
-                    // are not correctly removed once the dragged item leaves this node
                     className={classnames({
                         [classes.draggedOver]:
                             canDrop &&
                             (isOverCurrent || (isOver && !!positionSource)),
+                        // This is a hack to cancel styles added dynamically on hover by our react-dnd target,
+                        // which are not correctly removed once the dragged item leaves this node
                         [classes.resetDraggedOver]: !isOverCurrent,
                     })}
                     data-position={record[positionSource]}
@@ -202,38 +208,12 @@ class TreeNodeView extends Component<
                         component="div"
                     >
                         <div className={classes.container}>
-                            <ListItemIcon>
-                                {showLoading ? (
-                                    <div className={classes.icon}>
-                                        <CircularProgress size="1em" />
-                                    </div>
-                                ) : nodes || nodes.length === 0 ? (
-                                    <IconButton
-                                        className={classes.button}
-                                        aria-label={translate(
-                                            expanded
-                                                ? 'ra.tree.close'
-                                                : 'ra.tree.expand'
-                                        )}
-                                        title={translate(
-                                            expanded
-                                                ? 'ra.tree.close'
-                                                : 'ra.tree.expand'
-                                        )}
-                                        onClick={this.handleClick}
-                                    >
-                                        {expanded ? (
-                                            <KeyboardArrowDown />
-                                        ) : (
-                                            <KeyboardArrowRight />
-                                        )}
-                                    </IconButton>
-                                ) : (
-                                    <KeyboardArrowRight
-                                        className={classes.invisible}
-                                    />
-                                )}
-                            </ListItemIcon>
+                            <TreeNodeIcon
+                                expanded={expanded}
+                                loading={showLoading}
+                                hasChildren={nodes && nodes.length > 0}
+                                onClick={this.handleClick}
+                            />
                             <div className={classes.content}>
                                 {Children.map(children, child =>
                                     isValidElement(child)
@@ -314,60 +294,20 @@ const styles = (theme: Theme): StyleRules => ({
         display: 'flex',
         flex: 1,
     },
-    button: {
-        height: theme.spacing.unit * 3,
-        width: theme.spacing.unit * 3,
-    },
-    icon: {
-        alignItems: 'center',
-        display: 'inline-flex',
-        flex: '0 0 auto',
-        fontSize: '1.5rem',
-        height: theme.spacing.unit * 3,
-        justifyContent: 'baseline',
-        position: 'relative',
-        verticalAlign: 'middle',
-        width: theme.spacing.unit * 3,
-    },
-    invisible: {
-        opacity: 0,
-    },
 });
 
-const mapStateToProps = (state, { record, resource }) => ({
-    expanded:
-        record && record.id != undefined
-            ? getIsExpanded(state, resource, record.id)
-            : false,
-    loading:
-        record && record.id != undefined
-            ? getIsLoading(state, resource, record.id)
-            : false,
-    nodes:
-        record && record.id != undefined
-            ? getChildrenNodes(state, resource, record.id)
-            : [],
-});
+const mapStateToProps = (state, { record, resource }) => {
+    const hasRecord = record && record.id != undefined; // eslint-disable-line eqeqeq
 
-type DroppedPosition = 'above' | 'below' | 'over' | 'none';
-
-const getDroppedPosition = (
-    boundingRect: ClientRect,
-    mousePosition: XYCoord
-): DroppedPosition => {
-    // Get vertical middle
-    const hoverMiddleY = (boundingRect.bottom - boundingRect.top) / 2;
-
-    // Get pixels to the top
-    const hoverClientY = mousePosition.y - boundingRect.top;
-    const percentage = (hoverMiddleY - hoverClientY) / boundingRect.height;
-
-    const isAbove = percentage > 0.25;
-    const isBelow = percentage < -0.25;
-
-    return isAbove ? 'above' : isBelow ? 'below' : 'over';
+    return {
+        expanded: hasRecord ? getIsExpanded(state, resource, record.id) : false,
+        loading: hasRecord ? getIsLoading(state, resource, record.id) : false,
+        nodes: hasRecord ? getChildrenNodes(state, resource, record.id) : [],
+    };
 };
 
+// This object contains the react-dnd drop target specification
+// See https://react-dnd.github.io/react-dnd/docs/api/drop-target
 const nodeTarget = {
     canDrop(props: Props & InjectedProps, monitor: DropTargetMonitor) {
         const { record: draggedRecord } = monitor.getItem();
@@ -383,26 +323,39 @@ const nodeTarget = {
         return isJustOverThisOne && canDrop && isNotDroppingOverItself;
     },
 
+    // This function is call when a node is dragged over another one
+    // It is called for every mouse moves and we use it when nodes are ordered
+    // to show lines above or under depending on the mouse position
     hover(
         props: Props & InjectedProps & WithStyles<typeof styles>,
         monitor: DropTargetMonitor,
         component
     ) {
+        // If nodes are not ordered we have nothing to do
+        if (!props.positionSource) {
+            return;
+        }
+
         const domNode = findDOMNode(component) as HTMLElement;
 
         const item = monitor.getItem();
         const canDrop = monitor.canDrop();
         const isOverCurrent = monitor.isOver({ shallow: true });
 
-        let droppedPosition: DroppedPosition = 'none';
+        let droppedPosition: MousePosition = 'none';
 
-        if (item && isOverCurrent && !!props.positionSource && canDrop) {
+        // If the draggged node is over a child of this node, we have nothing to do
+        if (!isOverCurrent) {
+            return;
+        }
+
+        if (item && canDrop) {
             // Determine rectangle on screen
             const hoverBoundingRect = domNode.getBoundingClientRect();
             // Determine mouse position
             const mousePosition = monitor.getClientOffset();
 
-            droppedPosition = getDroppedPosition(
+            droppedPosition = getMousePosition(
                 hoverBoundingRect,
                 mousePosition
             );
@@ -426,6 +379,7 @@ const nodeTarget = {
         }
     },
 
+    // This function is called when a node is dropped over the current one
     drop(props: Props & InjectedProps, monitor: DropTargetMonitor, component) {
         if (monitor.didDrop()) {
             return;
@@ -438,7 +392,7 @@ const nodeTarget = {
         const hoverBoundingRect = domNode.getBoundingClientRect();
         // Determine mouse position
         const mousePosition = monitor.getClientOffset();
-        const droppedPosition = getDroppedPosition(
+        const droppedPosition = getMousePosition(
             hoverBoundingRect,
             mousePosition
         );
@@ -491,6 +445,8 @@ const collectDropTarget = (
     canDrop: monitor.canDrop(),
 });
 
+// This object contains the react-dnd drag source specification
+// See https://react-dnd.github.io/react-dnd/docs/api/drag-source
 const nodeSource = {
     canDrag(props) {
         return props.canDrag ? props.canDrag(props.record) : true;
