@@ -1,4 +1,4 @@
-import React, { SFC, ComponentType } from 'react';
+import React, { SFC, ComponentType, MouseEvent } from 'react';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import IconButton from '@material-ui/core/IconButton';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
@@ -13,7 +13,7 @@ interface Props {
     expanded: boolean;
     hasChildren: boolean;
     loading: boolean;
-    onClick: (event: MouseEvent) => void;
+    onClick: (event: MouseEvent<HTMLElement>) => void;
 }
 
 interface InjectedProps {
