@@ -30,6 +30,41 @@ With a `categories` resource having this structure where a category may have a p
 ]
 ```
 
+First, you need to register the tree reducer and the translations:
+
+```js
+// in App.js
+import React from 'react';
+import { Admin, Resource, mergeTranslations } from 'react-admin';
+import { reducer as tree } from 'ra-tree-ui-materialui';
+import englishMessages from 'ra-language-english';
+import treeEnglishMessages from 'ra-tree-language-english';
+
+import dataProvider from './dataProvider';
+import posts from './posts';
+import tags from './tags';
+
+const messages = {
+    'en': mergeTranslations(englishMessages, treeEnglishMessages),
+};
+const i18nProvider = locale => messages[locale];
+
+const App = () => (
+    <Admin
+        dataProvider={dataProvider}
+        i18nProvider={i18nProvider}
+        locale="en"
+        // Note that you cannot name it anything other than `tree`
+        customReducers={{ tree }}
+    >
+        <Resource name="posts" {...posts} />
+        <Resource name="tags" {...tags} />
+    </Admin>
+)
+```
+
+You can then use the tree components:
+
 ```js
 // in src/category/list.js
 import React from 'react';
