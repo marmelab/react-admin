@@ -368,7 +368,7 @@ export default App;
 
 ## `customRoutes`
 
-To register your own routes, create a module returning a list of [react-router](https://github.com/ReactTraining/react-router) `<Route>` component:
+To register your own routes, create a module returning a list of [react-router-dom](https://reacttraining.com/react-router/web/guides/quick-start) `<Route>` component:
 
 ```jsx
 // in src/customRoutes.js
