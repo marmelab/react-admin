@@ -170,7 +170,7 @@ You can declare a resource without `list` prop, to manage reference for example:
 
 But with the default menu, resources without `list` prop aren't shown.
 
-In order to have a specific resource without `list` prop listed on the menu, you have to [write your own custom menu](./Theming.html#using-a-custom-menu).
+In order to have a specific resource without `list` prop listed on the menu, you have to [write your own custom menu](./Theming.md#using-a-custom-menu).
 
  ```jsx
  const MyMenu = ({ resources, onMenuClick, logout }) => (

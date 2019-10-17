@@ -359,7 +359,7 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 ![CustomBooleanInputCheckIcon](./img/custom-switch-icon.png)
 
 
-Refer to [Material UI Switch documentation](http://material-ui.com/api/switch) for more details.
+Refer to [Material UI Switch documentation](https://material-ui.com/api/switch) for more details.
 
 `<NullableBooleanInput />` renders as a dropdown list, allowing to choose between true, false, and null values.
 
@@ -458,7 +458,7 @@ Refer to [Material UI Checkbox documentation](https://material-ui.com/api/checkb
 
 ## `<DateInput>`
 
-Ideal for editing dates, `<DateInput>` renders a standard browser [Date Picker](https://material-ui.com/demos/pickers/#date-pickers), so the appearance depends on the browser (and falls back to a text input on safari).
+Ideal for editing dates, `<DateInput>` renders a standard browser [Date Picker](https://material-ui.com/components/pickers/#date-pickers), so the appearance depends on the browser (and falls back to a text input on safari).
 
 ```jsx
 import { DateInput } from 'react-admin';
@@ -472,7 +472,7 @@ import { DateInput } from 'react-admin';
 
 ## `<DateTimeInput>`
 
-An input for editing dates with time. `<DateTimeInput>` renders a standard browser [Date and Time Picker](https://material-ui.com/demos/pickers/#date-amp-time-pickers), so the appearance depends on the browser (and falls back to a text input on safari).
+An input for editing dates with time. `<DateTimeInput>` renders a standard browser [Date and Time Picker](https://material-ui.com/components/pickers/#date-amp-time-pickers), so the appearance depends on the browser (and falls back to a text input on safari).
 
 ```jsx
 import { DateTimeInput } from 'react-admin';
@@ -496,7 +496,7 @@ Previews are enabled using `<ImageInput>` children, as following:
 </ImageInput>
 ```
 
-Writing a custom field component for displaying the current value(s) is easy:  it's a standard [field](./Fields.md#writing_your_own_field_component).
+Writing a custom field component for displaying the current value(s) is easy:  it's a standard [field](./Fields.md#writing-your-own-field-component).
 
 When receiving **new** files, `ImageInput` will add a `rawFile` property to the object passed as the `record` prop of children. This `rawFile` is the [File](https://developer.mozilla.org/en-US/docs/Web/API/File) instance of the newly added file. This can be useful to display information about size or mimetype inside a custom field.
 
@@ -510,7 +510,7 @@ If the default Dropzone label doesn't fit with your need, you can pass a `placeh
 </ImageInput>
 ```
 
-Note that the image upload returns a [File](https://developer.mozilla.org/en/docs/Web/API/File) object. It is your responsibility to handle it depending on your API behavior. You can for instance encode it in base64, or send it as a multi-part form data. Check [this example](./DataProviders.md#decorating-your-rest-client-example-of-file-upload) for base64 encoding data by extending the REST Client.
+Note that the image upload returns a [File](https://developer.mozilla.org/en/docs/Web/API/File) object. It is your responsibility to handle it depending on your API behavior. You can for instance encode it in base64, or send it as a multi-part form data. Check [this example](./DataProviders.md#extending-a-data-provider-example-of-file-upload) for base64 encoding data by extending the REST Client.
 
 ## `<FileInput>`
 
@@ -526,7 +526,7 @@ Previews (actually a simple list of files names) are enabled using `<FileField>`
 </FileInput>
 ```
 
-Writing a custom field component for displaying the current value(s) is easy:  it's a standard [field](./Fields.md#writing_your_own_field_component).
+Writing a custom field component for displaying the current value(s) is easy:  it's a standard [field](./Fields.md#writing-your-own-field-component).
 
 When receiving **new** files, `FileInput` will add a `rawFile` property to the object passed as the `record` prop of children. This `rawFile` is the [File](https://developer.mozilla.org/en-US/docs/Web/API/File) instance of the newly added file. This can be useful to display information about size or mimetype inside a custom field.
 
@@ -540,7 +540,7 @@ If the default Dropzone label doesn't fit with your need, you can pass a `placeh
 </FileInput>
 ```
 
-Note that the file upload returns a [File](https://developer.mozilla.org/en/docs/Web/API/File) object. It is your responsibility to handle it depending on your API behavior. You can for instance encode it in base64, or send it as a multi-part form data. Check [this example](./DataProviders.md#decorating-your-rest-client-example-of-file-upload) for base64 encoding data by extending the REST Client.
+Note that the file upload returns a [File](https://developer.mozilla.org/en/docs/Web/API/File) object. It is your responsibility to handle it depending on your API behavior. You can for instance encode it in base64, or send it as a multi-part form data. Check [this example](./DataProviders.md#extending-a-data-provider-example-of-file-upload) for base64 encoding data by extending the REST Client.
 
 ## `<NumberInput>`
 
@@ -631,7 +631,7 @@ Lastly, use the `options` attribute if you want to override any of Material UI's
 ```
 {% endraw %}
 
-Refer to [Material UI RadioGroup documentation](http://material-ui.com/api/radio-group) for more details.
+Refer to [Material UI RadioGroup documentation](https://material-ui.com/api/radio-group) for more details.
 
 **Tip**: If you want to populate the `choices` attribute with a list of related records, you should decorate `<RadioButtonGroupInput>` with [`<ReferenceInput>`](#referenceinput), and leave the `choices` empty:
 
@@ -887,7 +887,7 @@ const configureQuill = quill => quill.getModule('toolbar').addHandler('bold', fu
 
 ## `<SelectInput>`
 
-To let users choose a value in a list using a dropdown, use `<SelectInput>`. It renders using [Material ui's `<Select>`](http://material-ui.com/api/select). Set the `choices` attribute to determine the options (with `id`, `name` tuples):
+To let users choose a value in a list using a dropdown, use `<SelectInput>`. It renders using [Material ui's `<Select>`](https://material-ui.com/api/select). Set the `choices` attribute to determine the options (with `id`, `name` tuples):
 
 ```jsx
 import { SelectInput } from 'react-admin';
@@ -969,7 +969,7 @@ Lastly, use the `options` attribute if you want to override any of Material UI's
 ```
 {% endraw %}
 
-Refer to [Material UI Select documentation](http://material-ui.com/api/select) for more details.
+Refer to [Material UI Select documentation](https://material-ui.com/api/select) for more details.
 
 **Tip**: If you want to populate the `choices` attribute with a list of related records, you should decorate `<SelectInput>` with [`<ReferenceInput>`](#referenceinput), and leave the `choices` empty:
 
@@ -1011,7 +1011,7 @@ const choices = [
 
 ## `<SelectArrayInput>`
 
-To let users choose several values in a list using a dropdown, use `<SelectArrayInput>`. It renders using [Material ui's `<Select>`](http://material-ui.com/api/select). Set the `choices` attribute to determine the options (with `id`, `name` tuples):
+To let users choose several values in a list using a dropdown, use `<SelectArrayInput>`. It renders using [Material ui's `<Select>`](https://material-ui.com/api/select). Set the `choices` attribute to determine the options (with `id`, `name` tuples):
 
 ```js
 import { SelectArrayInput } from 'react-admin';
@@ -1068,7 +1068,7 @@ Lastly, use the `options` attribute if you want to override any of the `<Select>
 ```
 {% endraw %}
 
-Refer to [the Select documentation](http://material-ui.com/api/select) for more details.
+Refer to [the Select documentation](https://material-ui.com/api/select) for more details.
 
 The `SelectArrayInput` component **cannot** be used inside a `ReferenceInput` but can be used inside a `ReferenceArrayInput`.
 

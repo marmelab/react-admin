@@ -2,7 +2,7 @@
 
 For editing HTML with [react-admin](https://github.com/marmelab/react-admin), use the `<RichTextInput>` component. It embarks [quill](http://quilljs.com/), a popular cross-platform Rich Text Editor.
 
-![`<RichTextInput>` example](http://marmelab.com/admin-on-rest/img/rich-text-input.png)
+![`<RichTextInput>` example](http://marmelab.com/react-admin/img/rich-text-input.png)
 
 ## Installation
 

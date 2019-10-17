@@ -734,7 +734,7 @@ export const PostList = (props) => (
 
 ![Mobile post list](./img/tutorial_mobile_post_list.gif)
 
-The `<SimpleList>` component uses [material-ui's `<List>` and `<ListItem>` components](http://material-ui.com/demos/lists), and expects functions as `primaryText`, `secondaryText`, and `tertiaryText` props.
+The `<SimpleList>` component uses [material-ui's `<List>` and `<ListItem>` components](https://material-ui.com/components/lists), and expects functions as `primaryText`, `secondaryText`, and `tertiaryText` props.
 
 **Note:** Since JSONRestServer doesn't provide `views` or `published_at` values for posts, we switched to a custom API for those screenshots in order to demonstrate how to use some of the `SimpleList` component props.
 
@@ -917,4 +917,4 @@ const App = () => (
 
 React-admin was built with customization in mind. You can replace any react-admin component with a component of your own, for instance to display a custom list layout, or a different edit form for a given resource.
 
-Now that you've completed the tutorial, continue reading the [react-admin documentation](http://marmelab.com/react-admin/), and read the [Material UI components documentation](http://material-ui.com/).
+Now that you've completed the tutorial, continue reading the [react-admin documentation](http://marmelab.com/react-admin/), and read the [Material UI components documentation](https://material-ui.com/).

@@ -163,7 +163,7 @@ If you need to override it, you can use the `valueLabelTrue` and `valueLabelFals
 
 ## `<ChipField>`
 
-Displays a value inside a ["Chip"](http://material-ui.com/demos/chip), which is Material UI's term for a label.
+Displays a value inside a ["Chip"](https://material-ui.com/components/chips), which is Material UI's term for a label.
 
 ```jsx
 import { ChipField } from 'react-admin';

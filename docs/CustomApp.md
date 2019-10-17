@@ -251,4 +251,4 @@ const App = () => (
 
 Note that this example still uses `<Resource>`, because this component lazily initializes the store for the resource data.
 
-This application has no sidebar, no theming, no [auth control](./Authentication.md#restricting-access-to-a-custom-page) - it's up to you to add these. From there on, you can customize pretty much anything you want.
+This application has no sidebar, no theming, no [auth control](./Authentication.md#useauthenticated-hook) - it's up to you to add these. From there on, you can customize pretty much anything you want.

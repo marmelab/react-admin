@@ -13,7 +13,7 @@ title: "Reference"
 * [`<AppBar>`](./Theming.md#customizing-the-appbar-content)
 * [`<ArrayField>`](./Fields.md#arrayfield)
 * [`<ArrayInput>`](./Inputs.md#arrayinput)
-* [`<Authenticated>`](./Authentication.md#restricting-access-to-a-custom-page)
+* [`<Authenticated>`](./Authentication.md#useauthenticated-hook)
 * [`<AutocompleteArrayInput>`](./Inputs.md#autocompletearrayinput)
 * [`<AutocompleteInput>`](./Inputs.md#autocompleteinput)
 * [`<BooleanField>`](./Fields.md#booleanfield)
@@ -96,7 +96,7 @@ title: "Reference"
 * [`translate`](./Translation.md#withtranslate-hoc)
 * `<Toolbar>`
 * [`<UrlField>`](./Fields.md#urlfield)
-* [`useAuthenticated`](./Authentication.md#useauth-hook)
+* [`useAuthenticated`](./Authentication.md#useauthenticated-hook)
 * `useAuthProvider`
 * [`useAuthState`](./Authentication.md#useauthstate-hook)
 * `useCheckAuth`
@@ -121,13 +121,13 @@ title: "Reference"
 * `useLoading`
 * [`useLocale`](./Translation.md#uselocale-getting-the-current-locale)
 * [`useLogin`](./Authentication.md#customizing-the-login-and-logout-components)
-* [`useLogout`]((./Authentication.md#customizing-the-login-and-logout-components))
+* [`useLogout`](./Authentication.md#customizing-the-login-and-logout-components)
 * `useLogoutIfAccessDenied`
 * [`useMediaQuery`](./Theming.md#usemediaquery-hook)
 * [`useMutation`](./Actions.md#usemutation-hook)
 * [`useNotify`](./Actions.md#handling-side-effects-in-usedataprovider)
 * `usePaginationState`
-* [`usePermissions`](./Authorization.mdusepermissions-hook)
+* [`usePermissions`](./Authorization.md#usepermissions-hook)
 * [`useQuery`](./Actions.md#usequery-hook)
 * [`useQueryWithStore`](./Actions.md#usequerywithstore-hook)
 * [`useRedirect`](./Actions.md#handling-side-effects-in-usedataprovider)
@@ -150,6 +150,6 @@ title: "Reference"
 * `useVersion`
 * [`withDataProvider`](./Actions.md#legacy-components-query-mutation-and-withdataprovider)
 * [`withTranslate`](./Translation.md#withtranslate-hoc)
-* [`<WithPermissions>`](./Authorization.md#withpermissions)
+* [`<WithPermissions>`](./Authorization.md#usepermissions-hook)
 
 </div>
