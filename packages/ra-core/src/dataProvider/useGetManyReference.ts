@@ -28,7 +28,7 @@ import { useMemo } from 'react';
  * @param {Object} id The identifier of the record to look for in 'target'
  * @param {Object} pagination The request pagination { page, perPage }, e.g. { page: 1, perPage: 10 }
  * @param {Object} sort The request sort { field, order }, e.g. { field: 'id', order: 'DESC' }
- * @param {Object} filters The request filters, e.g. { body: 'hello, world' }
+ * @param {Object} filter The request filters, e.g. { body: 'hello, world' }
  * @param {string} referencingResource The resource name, e.g. 'posts'. Used to generate a cache key
  * @param {Object} options Options object to pass to the dataProvider. May include side effects to be executed upon success of failure, e.g. { onSuccess: { refresh: true } }
  *

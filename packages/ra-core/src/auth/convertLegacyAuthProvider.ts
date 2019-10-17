@@ -12,7 +12,7 @@ import { AuthProvider, LegacyAuthProvider } from '../types';
  *
  * Allows using legacy authProviders transparently.
  *
- * @param {Function} authProvider A legacy authProvider (type, params) => Promise<any>
+ * @param {Function} legacyAuthProvider A legacy authProvider (type, params) => Promise<any>
  *
  * @returns {Object} An authProvider that react-admin can use
  */

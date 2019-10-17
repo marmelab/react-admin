@@ -42,7 +42,7 @@ interface ConvertedDataProvider extends DataProvider {
  *
  * Allows using legacy dataProviders transparently.
  *
- * @param {Function} dataProvider A legacy dataProvider (type, resource, params) => Promise<any>
+ * @param {Function} legacyDataProvider A legacy dataProvider (type, resource, params) => Promise<any>
  *
  * @returns {Object} A dataProvider that react-admin can use
  */

@@ -28,6 +28,7 @@ interface Props {
 /**
  * Get a callback to call the data provider and pass the result to a child function
  *
+ * @param {Function} children Must be a function which will be called with the mutate callback
  * @param {string} type The method called on the data provider, e.g. 'update', 'delete'. Can also be a custom method if the dataProvider supports is.
  * @param {string} resource A resource name, e.g. 'posts', 'comments'
  * @param {Object} payload The payload object, e.g; { id: 12 }

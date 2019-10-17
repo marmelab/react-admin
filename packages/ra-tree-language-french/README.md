@@ -11,7 +11,7 @@ npm install --save ra-language-french ra-tree-language-french
 ## Usage
 
 ```js
-import englishMessages from 'ra-language-french';
+import frenchMessages from 'ra-language-french';
 import treeFrenchMessages from 'ra-tree-language-french';
 import { mergeTranslations } from 'react-admin';
 

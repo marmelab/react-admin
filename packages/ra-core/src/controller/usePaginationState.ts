@@ -47,7 +47,7 @@ const defaultPagination = {
  *
  * const { page, setpage, perPage, setPerPage } = usePagination(initialPerPage);
  *
- * @param {numper} initialPerPage the initial value per page
+ * @param {number} initialPagination the initial value per page
  * @returns {PaginationProps} The pagination props
  */
 export default (
