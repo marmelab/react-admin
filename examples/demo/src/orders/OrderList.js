@@ -98,7 +98,12 @@ class TabbedDatagrid extends React.Component {
                 ) : (
                     <div>
                         {filterValues.status === 'ordered' && (
-                            <Datagrid {...props} ids={this.state.ordered}>
+                            <Datagrid
+                                {...props}
+                                ids={this.state.ordered}
+                                optimized
+                                rowClick="edit"
+                            >
                                 <DateField source="date" showTime />
                                 <TextField source="reference" />
                                 <CustomerReferenceField />
@@ -111,7 +116,6 @@ class TabbedDatagrid extends React.Component {
                                     }}
                                     className={classes.total}
                                 />
-                                <EditButton />
                             </Datagrid>
                         )}
                         {filterValues.status === 'delivered' && (

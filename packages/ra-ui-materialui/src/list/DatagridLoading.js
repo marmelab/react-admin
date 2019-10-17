@@ -32,8 +32,9 @@ const DatagridLoading = ({
     hasBulkActions,
     nbChildren,
     nbFakeLines = 5,
+    size,
 }) => (
-    <Table className={classnames(classes.table, className)}>
+    <Table className={classnames(classes.table, className)} size={size}>
         <TableHead>
             <TableRow className={classes.row}>
                 {expand && (
@@ -44,7 +45,7 @@ const DatagridLoading = ({
                 )}
                 {hasBulkActions && (
                     <TableCell
-                        padding="none"
+                        padding="checkbox"
                         className={classes.expandIconCell}
                     >
                         <Checkbox
@@ -59,9 +60,6 @@ const DatagridLoading = ({
                         variant="head"
                         className={classes.headerCell}
                         key={key}
-                        padding={
-                            !!expand || hasBulkActions ? 'none' : undefined
-                        }
                     >
                         <Placeholder />
                     </TableCell>
@@ -87,7 +85,7 @@ const DatagridLoading = ({
                     )}
                     {hasBulkActions && (
                         <TableCell
-                            padding="none"
+                            padding="checkbox"
                             className={classes.expandIconCell}
                         >
                             <Checkbox
@@ -98,13 +96,7 @@ const DatagridLoading = ({
                         </TableCell>
                     )}
                     {times(nbChildren, key2 => (
-                        <TableCell
-                            padding={
-                                !!expand || hasBulkActions ? 'none' : undefined
-                            }
-                            className={classes.rowCell}
-                            key={key2}
-                        >
+                        <TableCell className={classes.rowCell} key={key2}>
                             <Placeholder />
                         </TableCell>
                     ))}

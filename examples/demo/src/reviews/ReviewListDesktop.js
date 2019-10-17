@@ -29,6 +29,7 @@ const ReviewListDesktop = props => {
             rowClick="edit"
             rowStyle={rowStyle}
             classes={{ headerRow: classes.headerRow }}
+            optimized
             {...props}
         >
             <DateField source="date" />

@@ -134,7 +134,7 @@ const DatagridRow = ({
                     </TableCell>
                 )}
                 {hasBulkActions && (
-                    <TableCell padding="none">
+                    <TableCell padding="checkbox">
                         <Checkbox
                             color="primary"
                             className={`select-item ${classes.checkbox}`}
@@ -152,9 +152,6 @@ const DatagridRow = ({
                                 classes.rowCell
                             )}
                             record={record}
-                            padding={
-                                !!expand || hasBulkActions ? 'none' : undefined
-                            }
                             {...{ field, basePath, resource }}
                         />
                     ) : null

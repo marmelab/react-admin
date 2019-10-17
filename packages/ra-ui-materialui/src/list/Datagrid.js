@@ -23,18 +23,9 @@ const useStyles = makeStyles(theme => ({
         tableLayout: 'auto',
     },
     thead: {},
-    tbody: {
-        height: 'inherit',
-    },
+    tbody: {},
     headerRow: {},
-    headerCell: {
-        height: 42,
-        minHeight: 42,
-        padding: '0 12px',
-        '&:last-child': {
-            padding: '0 12px',
-        },
-    },
+    headerCell: {},
     checkbox: {},
     row: {},
     clickableRow: {
@@ -42,12 +33,7 @@ const useStyles = makeStyles(theme => ({
     },
     rowEven: {},
     rowOdd: {},
-    rowCell: {
-        padding: '0 12px',
-        '&:last-child': {
-            padding: '0 12px',
-        },
-    },
+    rowCell: {},
     expandHeader: {
         padding: 0,
         width: theme.spacing(6),
@@ -122,6 +108,7 @@ function Datagrid({ classes: classesOverride, ...props }) {
         rowStyle,
         selectedIds,
         setSort,
+        size = 'small',
         total,
         version,
         ...rest
@@ -161,6 +148,7 @@ function Datagrid({ classes: classesOverride, ...props }) {
                 expand={expand}
                 hasBulkActions={hasBulkActions}
                 nbChildren={React.Children.count(children)}
+                size={size}
             />
         );
     }
@@ -182,6 +170,7 @@ function Datagrid({ classes: classesOverride, ...props }) {
     return (
         <Table
             className={classnames(classes.table, className)}
+            size={size}
             {...sanitizeListRestProps(rest)}
         >
             <TableHead className={classes.thead}>
@@ -195,7 +184,7 @@ function Datagrid({ classes: classesOverride, ...props }) {
                         />
                     )}
                     {hasBulkActions && (
-                        <TableCell padding="none">
+                        <TableCell padding="checkbox">
                             <Checkbox
                                 className="select-all"
                                 color="primary"
@@ -221,7 +210,6 @@ function Datagrid({ classes: classesOverride, ...props }) {
                                 key={field.props.source || index}
                                 resource={resource}
                                 updateSort={updateSort}
-                                padding="none"
                             />
                         ) : null
                     )}
