@@ -68,8 +68,8 @@ See the [translation](./Translation.md#available-locales) page.
 ## Miscellaneous
 
 - [marmelab/ra-realtime](https://github.com/marmelab/react-admin/tree/master/packages/ra-realtime): enable realtime updates
-- [marmelab/ra-tree-ui-materialui](https://github.com/marmelab/react-admin/blob/master/packages/ra-tree-ui-materialui/): Components to show data represented as a tree. This package is part of our [Labs](/Labs.md) experimentations. This means it misses some features and might not handle all corner cases. Use it at your own risks. Besides, we would really appreciate some feedback!
-- [marmelab/ra-tree-core](https://github.com/marmelab/react-admin/blob/master/packages/ra-tree-core/): Components providing the logic but no UI to show data represented as a tree. This package is part of our [Labs](/Labs.md) experimentations. This means it misses some features and might not handle all corner cases. Use it at your own risks. Besides, we would really appreciate some feedback!
+- [marmelab/ra-tree-ui-materialui](https://github.com/marmelab/react-admin/blob/master/packages/ra-tree-ui-materialui/): Components to show data represented as a tree. Only compatible with react-admin v2 for now. 
+- [marmelab/ra-tree-core](https://github.com/marmelab/react-admin/blob/master/packages/ra-tree-core/): Components providing the logic but no UI to show data represented as a tree. Only compatible with react-admin v2 for now.
 - [ra-customizable-datagrid](https://github.com/fizix-io/ra-customizable-datagrid): plugin that allows to hide / show columns dynamically.
 - [FusionWorks/react-admin-google-maps](https://github.com/FusionWorks/react-admin-google-maps): Input/view components for displaying location using Google Maps.
 - [api-platform/admin](https://api-platform.com/docs/admin): create a fully featured admin using React Admin for API supporting the [Hydra Core Vocabulary](http://www.hydra-cg.com/), including but not limited to APIs created using the [API Platform framework](https://api-platform.com)
