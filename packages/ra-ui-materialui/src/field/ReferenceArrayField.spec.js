@@ -1,7 +1,7 @@
 import React from 'react';
 import expect from 'expect';
 import { render, cleanup } from '@testing-library/react';
-import { MemoryRouter } from 'react-router';
+import { MemoryRouter } from 'react-router-dom';
 
 import { ReferenceArrayFieldView } from './ReferenceArrayField';
 import TextField from './TextField';

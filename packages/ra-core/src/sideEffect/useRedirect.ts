@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { Identifier, Record } from '../types';
 import resolveRedirectTo from '../util/resolveRedirectTo';
 import { refreshView } from '../actions/uiActions';
-import { useHistory } from 'react-router';
+import { useHistory } from 'react-router-dom';
 
 type RedirectToFunction = (
     basePath?: string,

@@ -1,7 +1,7 @@
 import React, { Children, cloneElement, isValidElement } from 'react';
 import PropTypes from 'prop-types';
 import Tabs from '@material-ui/core/Tabs';
-import { useLocation, useRouteMatch } from 'react-router';
+import { useLocation, useRouteMatch } from 'react-router-dom';
 
 export const getTabFullPath = (tab, index, baseUrl) =>
     `${baseUrl}${

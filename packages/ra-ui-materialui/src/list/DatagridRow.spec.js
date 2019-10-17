@@ -5,7 +5,7 @@ import { renderWithRedux, linkToRecord } from 'ra-core';
 
 import DatagridRow from './DatagridRow';
 import { createMemoryHistory } from 'history';
-import { Router } from 'react-router';
+import { Router } from 'react-router-dom';
 
 const TitleField = ({ record }) => <span>{record.title}</span>;
 const ExpandPanel = () => <span>expanded</span>;

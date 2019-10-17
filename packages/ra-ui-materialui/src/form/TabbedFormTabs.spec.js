@@ -3,7 +3,7 @@ import { render, cleanup } from '@testing-library/react';
 
 import TabbedFormTabs from './TabbedFormTabs';
 import FormTab from './FormTab';
-import { MemoryRouter } from 'react-router';
+import { MemoryRouter } from 'react-router-dom';
 
 describe('<TabbedFormTabs />', () => {
     afterEach(cleanup);

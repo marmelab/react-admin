@@ -4,7 +4,7 @@ import { cleanup } from '@testing-library/react';
 import { renderWithRedux } from 'ra-core';
 import { ThemeProvider } from '@material-ui/styles';
 import { createMuiTheme } from '@material-ui/core/styles';
-import { MemoryRouter } from 'react-router';
+import { MemoryRouter } from 'react-router-dom';
 
 import defaultTheme from '../defaultTheme.ts';
 import List, { ListView } from './List';

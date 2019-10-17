@@ -16,7 +16,7 @@ import get from 'lodash/get';
 import getFormInitialValues from './getFormInitialValues';
 import Toolbar from './Toolbar';
 import TabbedFormTabs, { getTabFullPath } from './TabbedFormTabs';
-import { useRouteMatch, useLocation } from 'react-router';
+import { useRouteMatch, useLocation } from 'react-router-dom';
 
 const useStyles = makeStyles(theme => ({
     errorTabButton: { color: theme.palette.error.main },
