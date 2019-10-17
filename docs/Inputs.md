@@ -83,7 +83,7 @@ import { ArrayInput, SimpleFormIterator, DateInput, TextInput } from 'react-admi
 
 ```js
 {
-  id: 123
+  id: 123,
   backlinks: [
         {
             date: '2012-08-10T00:00:00.000Z',

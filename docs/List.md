@@ -873,7 +873,7 @@ const postRowClick = (id, basePath, record) => record.editable ? 'edit' : 'show'
 ```js
 import fetchUserRights from './fetchUserRights';
 
-const postRowClick = (id, basePath, record) => fetchUserRights().then(({ canEdit }) canEdit ? 'edit' : 'show');
+const postRowClick = (id, basePath, record) => fetchUserRights().then(({ canEdit }) => canEdit ? 'edit' : 'show');
 ```
 
 ### `expand`

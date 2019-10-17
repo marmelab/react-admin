@@ -91,7 +91,7 @@ const VisitorFilter = props => {
     );
 };
 
-// The List component supports the `root`, `header`, `actions` and `noResults` CSS classes. Here we override the `header` and `actions` classes
+// The List component supports the `root`, `header`, `actions` and `noResults` CSS classes. Here we override the `header` and `actions` classes
 const useListStyles = makeStyles({
     actions: {
         backgroundColor: 'Lavender',
@@ -141,7 +141,7 @@ If you need more control over the HTML code, you can also create your own [Field
 
 ## Conditional Formatting
 
-Sometimes you want the format to depend on the value. The following example shows how to create a new custom `NumberField` component which highlight its text in red when its value is 100 or higher.
+Sometimes you want the format to depend on the value. The following example shows how to create a new custom `NumberField` component which highlight its text in red when its value is 100 or higher.
 
 {% raw %}
 ```jsx
