@@ -17,7 +17,7 @@ import useQueryWithStore from './useQueryWithStore';
  * @param {string} resource The resource name, e.g. 'posts'
  * @param {Object} pagination The request pagination { page, perPage }, e.g. { page: 1, perPage: 10 }
  * @param {Object} sort The request sort { field, order }, e.g. { field: 'id', order: 'DESC' }
- * @param {Object} filters The request filters, e.g. { title: 'hello, world' }
+ * @param {Object} filter The request filters, e.g. { title: 'hello, world' }
  * @param {Object} options Options object to pass to the dataProvider. May include side effects to be executed upon success of failure, e.g. { onSuccess: { refresh: true } }
  *
  * @returns The current request state. Destructure as { data, total, ids, error, loading, loaded }.

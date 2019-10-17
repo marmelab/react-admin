@@ -9,8 +9,6 @@ import { useNotify } from '../sideEffect';
  *
  * This hook rerenders when the locale changes.
  *
- * @param {string} locale
- *
  * @example
  *
  * import { useLocale } from 'react-admin';

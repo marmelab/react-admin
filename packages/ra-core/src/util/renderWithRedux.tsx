@@ -17,7 +17,7 @@ export interface RenderWithReduxResult extends RenderResult {
  * );
  *
  * @param {ReactNode} component: The component you want to test in jsx
- * @param {Object} initialstate: Optional initial state of the redux store
+ * @param {Object} initialState: Optional initial state of the redux store
  * @param {Object} options: Render options, e.g. to use a custom container element
  * @return {{ dispatch, reduxStore, ...rest }} helper function to test rendered component.
  * Same as @testing-library/react render method with added dispatch and reduxStore helper

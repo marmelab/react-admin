@@ -11,6 +11,7 @@ import undo from './undo';
 
 /**
  * @param {Object} dataProvider A Data Provider function
+ * @param {Function} authProvider
  */
 export default (
     dataProvider: DataProvider,
