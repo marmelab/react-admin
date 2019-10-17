@@ -871,7 +871,7 @@ export default {
             method: 'PUT',
             body: JSON.stringify(params.data),
         }).then(({ json }) => ({ data: json }));
-    }
+    },
 
     create: (resource, params) =>
         httpClient(`${apiUrl}/${resource}`, {
@@ -895,7 +895,7 @@ export default {
             body: JSON.stringify(params.data),
         }).then(({ json }) => ({ data: json }));
     }
-});
+};
 ```
 
 **Tip**: `fetchUtils.fetchJson()` is just a shortcut for `fetch().then(r => r.json())`, plus a control of the HTTP response code to throw an `HTTPError` in case of 4xx or 5xx response. Feel free to use `fetch()` directly if it doesn't suit your needs.

@@ -131,7 +131,7 @@ The introspection result is an object with 4 properties:
 
 - `types`: an array of all the GraphQL types discovered on your endpoint
 - `queries`: an array of all the GraphQL queries and mutations discovered on your endpoint
-- `resources`: an array of objects with a `type` property, which is the GraphQL type for this resource, and a property for each react-admin fetch verb for which we found a matching query or mutation
+- `resources`: an array of objects with a `type` property, which is the GraphQL type for this resource, and a property for each react-admin fetch verb for which we found a matching query or mutation
 - `schema`: the full schema
 
 For example:

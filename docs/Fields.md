@@ -83,7 +83,7 @@ Ideal for embedded arrays of objects, e.g. `tags` and `backlinks` in the followi
 
 ```js
 {
-  id: 123
+  id: 123,
   tags: [
         { name: 'foo' },
         { name: 'bar' }
