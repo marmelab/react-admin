@@ -285,7 +285,7 @@ export const PostList = (props) => {
 
 ## Using a Predefined Theme
 
-Material UI also supports [complete theming](http://material-ui.com/customization/themes) out of the box. Material UI ships two base themes: light and dark. React-admin uses the light one by default. To use the dark one, pass it to the `<Admin>` component, in the `theme` prop (along with `createMuiTheme()`).
+Material UI also supports [complete theming](https://material-ui.com/customization/themes) out of the box. Material UI ships two base themes: light and dark. React-admin uses the light one by default. To use the dark one, pass it to the `<Admin>` component, in the `theme` prop (along with `createMuiTheme()`).
 
 ```jsx
 import { createMuiTheme } from '@material-ui/core/styles';

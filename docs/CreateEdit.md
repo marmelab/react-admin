@@ -832,7 +832,7 @@ Here are the props received by the `Toolbar` component when passed as the `toolb
 
 **Tip**: Don't forget to also set the `redirect` prop of the Form component to handle submission by the `ENTER` key.
 
-**Tip**: To alter the form values before submitting, you should use the `handleSubmit` prop. See [Altering the Form Values before Submitting](./Actions.md#altering-the-form-values-before-submitting) for more information and examples.
+**Tip**: To alter the form values before submitting, you should use the `handleSubmit` prop. See [Altering the Form Values before Submitting](#altering-the-form-values-before-submitting) for more information and examples.
 
 ## Variant
 
@@ -951,7 +951,7 @@ export const UserEdit = ({ permissions, ...props }) =>
 ## Altering the Form Values before Submitting
 
 Sometimes, you may want your custom action to alter the form values before actually sending them to the `dataProvider`.
-For those cases, you should know that every button inside a form [Toolbar](/CreateEdit.md#toolbar) receive two props:
+For those cases, you should know that every button inside a form [Toolbar](#toolbar) receive two props:
 
 - `handleSubmit` which calls the default form save method
 - `handleSubmitWithRedirect` which calls the default form save method but allows to specify a custom redirection

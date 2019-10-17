@@ -160,7 +160,7 @@ export const UserList = ({ permissions, ...props }) =>
 
 ## Restricting Access to the Dashboard
 
-React-admin injects the permissions into the component provided as a [`dashboard`]('./Admin.md#dashboard), too:
+React-admin injects the permissions into the component provided as a [`dashboard`](./Admin.md#dashboard), too:
 
 ```jsx
 // in src/Dashboard.js
