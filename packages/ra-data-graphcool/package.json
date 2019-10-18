@@ -1,6 +1,6 @@
 {
     "name": "ra-data-graphcool",
-    "version": "3.0.0-alpha.4",
+    "version": "3.0.0-beta.1",
     "description": "A Graphcool data provider for react-admin",
     "main": "lib/index.js",
     "module": "esm/index.js",
@@ -37,7 +37,7 @@
         "graphql-tag": "^2.10.1",
         "lodash": "~4.17.5",
         "pluralize": "~7.0.0",
-        "ra-data-graphql": "^3.0.0-alpha.4"
+        "ra-data-graphql": "^3.0.0-beta.1"
     },
     "peerDependencies": {
         "graphql": "^0.13.2",
