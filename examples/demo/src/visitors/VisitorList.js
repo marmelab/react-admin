@@ -4,7 +4,6 @@ import {
     Datagrid,
     DateField,
     DateInput,
-    EditButton,
     Filter,
     List,
     NullableBooleanInput,
