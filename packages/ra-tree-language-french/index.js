@@ -1,9 +1,11 @@
 module.exports = {
     ra: {
         tree: {
-            drag_preview:
-                'Nœud #%{id} |||| Nœud #%{id} contenant %{smart_count} enfants',
-            root_target: 'Lâcher un nœud ici pour le remonter à la racine',
+            add_child_node: 'Ajouter un enfant',
+            add_node_after: 'Insérer un nœud après',
+            add_node_before: 'Insérer un nœud avant',
+            close: 'Fermer',
+            expand: 'Ouvre',
         },
     },
 };

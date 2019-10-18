@@ -37,20 +37,23 @@
         "watch": "rimraf ./lib && tsc --watch"
     },
     "peerDependencies": {
-        "ra-core": "^2.5.0",
-        "ra-ui-materialui": "^2.5.0",
+        "ra-core": "^2.9.7",
+        "ra-ui-materialui": "^2.9.7",
         "react": "^16.3.0",
         "react-dom": "^16.3.0"
     },
     "dependencies": {
-        "lodash": "^4.17.10",
+        "lodash": "^4.17.15",
         "prop-types": "^15.6.1",
-        "ra-tree-core": "^2.6.0",
-        "react-dnd": "^5.0.0",
-        "react-dnd-touch-backend": "^0.5.1"
+        "ra-tree-core": "^2.9.7",
+        "react-dnd": "7.1.0",
+        "react-dnd-html5-backend": "7.1.0"
     },
     "devDependencies": {
         "cross-env": "^5.2.0",
+        "react": "~16.3.1",
+        "react-dom": "~16.3.1",
+        "react-testing-library": "^5.2.3",
         "rimraf": "^2.6.2"
     }
 }

@@ -1,48 +1,41 @@
 import React from 'react';
+import { TextField } from 'react-admin';
 import {
-    DeleteButton,
-    EditButton,
-    List,
-    SaveButton,
-    ShowButton,
-    TextInput,
-} from 'react-admin';
-import {
-    DragPreview,
-    IgnoreFormProps,
-    NodeForm,
+    AddChildNodeMenuItem,
+    AddNodeAfterMenuItem,
+    AddNodeBeforeMenuItem,
+    DeleteMenuItem,
+    EditMenuItem,
     Tree,
-    NodeActions,
+    TreeNode,
+    TreeList,
+    TreeNodeActions,
+    TreeNodeActionsMenu,
 } from 'ra-tree-ui-materialui';
 
-const TagDragPreview = props => (
-    <DragPreview {...props}>{({ node }) => node.record.name}</DragPreview>
+const TagNodeActions = props => (
+    <TreeNodeActions {...props}>
+        <TreeNodeActionsMenu {...props}>
+            <AddChildNodeMenuItem />
+            <AddNodeBeforeMenuItem />
+            <AddNodeAfterMenuItem />
+            <EditMenuItem />
+            <DeleteMenuItem />
+        </TreeNodeActionsMenu>
+    </TreeNodeActions>
 );
 
-const CustomNodeActions = props => (
-    <NodeActions {...props}>
-        <SaveButton variant="flat" />
-        <IgnoreFormProps>
-            <EditButton />
-            <ShowButton />
-            <DeleteButton />
-        </IgnoreFormProps>
-    </NodeActions>
-);
+// Disallow dragging of items without parent (top level items)
+const canDrag = record => !!record.parent_id;
 
 const TagList = props => (
-    <List {...props} perPage={1000}>
-        <Tree
-            allowDropOnRoot
-            enableDragAndDrop
-            parentSource="parent_id"
-            dragPreviewComponent={TagDragPreview}
-        >
-            <NodeForm actions={<CustomNodeActions />}>
-                <TextInput source="name" />
-            </NodeForm>
-        </Tree>
-    </List>
+    <Tree positionSource="position" {...props}>
+        <TreeList>
+            <TreeNode actions={<TagNodeActions />} canDrag={canDrag}>
+                <TextField source="name" />
+            </TreeNode>
+        </TreeList>
+    </Tree>
 );
 
 export default TagList;

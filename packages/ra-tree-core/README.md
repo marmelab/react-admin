@@ -12,7 +12,7 @@ yarn add ra-tree-core
 
 ## Usage
 
-With a categories ressource having this structure where a category may have a parent category referenced by the `parent_id` field:
+With a `categories` resource having this structure where a category may have a parent category referenced by the `parent_id` field:
 
 ```json
 [
@@ -30,6 +30,41 @@ With a categories ressource having this structure where a category may have a pa
 ]
 ```
 
+First, you need to register the tree reducer and the translations:
+
+```js
+// in App.js
+import React from 'react';
+import { Admin, Resource, mergeTranslations } from 'react-admin';
+import { reducer as tree } from 'ra-tree-ui-materialui';
+import englishMessages from 'ra-language-english';
+import treeEnglishMessages from 'ra-tree-language-english';
+
+import dataProvider from './dataProvider';
+import posts from './posts';
+import tags from './tags';
+
+const messages = {
+    'en': mergeTranslations(englishMessages, treeEnglishMessages),
+};
+const i18nProvider = locale => messages[locale];
+
+const App = () => (
+    <Admin
+        dataProvider={dataProvider}
+        i18nProvider={i18nProvider}
+        locale="en"
+        // Note that you cannot name it anything other than `tree`
+        customReducers={{ tree }}
+    >
+        <Resource name="posts" {...posts} />
+        <Resource name="tags" {...tags} />
+    </Admin>
+)
+```
+
+You can then use the tree components:
+
 ```js
 // in src/category/list.js
 import React from 'react';
@@ -41,48 +76,72 @@ import { TreeController } from 'ra-tree-core';
 import TreeNode from './TreeNode';
 
 export const CategoriesList = (props) => (
-    <List {...props}>
-        <TreeController>
-            {({ tree }) => (
-                <Fragment>
-                    {tree.map(node => <TreeNode node={node} />)}
-                </Fragment>
-            )}
-        </TreeController>
-    </List>
+    <TreeController resource="categories" {...props}>
+        {({ tree }) => (
+            <Fragment>
+                {tree.map(node => <TreeNode node={node} />)}
+            </Fragment>
+        )}
+    </TreeController>
 );
 ```
 
-`react-admin` will fetch the data and the `TreeController` component will build a tree from it. Note that every category which do not have a parent will be considered a root node. The `TreeController` component will call its children function which is responsible for the actual rendering.
+The `TreeController` component calls the `dataProvider` for the `categories` resource, and build an internal tree structure based on the results. Note that every category which does not have a parent will be considered a root node. The `TreeController` component then calls its child function, which is responsible for the actual rendering.
+
+Note that your `dataProvider` must handle three new verbs: `GET_TREE_ROOT_NODES`, `GET_TREE_CHILDREN_NODES`, and `MOVE_NODE`.
+
+### `GET_TREE_ROOT_NODES`
+
+Should fetch the root nodes for the specified resource. It receives no parameters and should return an array of records as its `data`.
+
+### `GET_TREE_CHILDREN_NODES`
+
+Should fetch the leaves of the specified node. It receives the following parameter:
+
+- `id`: the identifier of the node for which we want to fetch the leaves
+
+The `dataProvider` should return an array of records as its `data`. 
+
+### `MOVE_NODE`
+
+Called when a node is moved either to a new parent, or to a new position. It receives the following parameters:
+
+- `data`: the new node, updated
+- `previousData`: the node before the update
+
+**Note**: It is your responsibility to correctly update the siblings if necessary according to the new node position.
 
 ## API
 
 ### <TreeController>
 
-Meant to be used as the child of the [`List`](https://marmelab.com/react-admin/List.html#the-list-component), [`ReferenceManyField`](https://marmelab.com/react-admin/Fields.html#referencemanyfield) or [ReferenceArrayField](https://marmelab.com/react-admin/Fields.html#referencearrayfield) components.
+Meant to be used as an alternative to the [`ListController`](https://marmelab.com/react-admin/List.html#the-list-component) component.
 
 The `TreeController` accepts the following props:
 
-- `getTreeFromArray`: The function used to build the tree from the fetched data. It defaults to one using [performant-array-to-tree](https://github.com/philipstanislaus/performant-array-to-tree)
-- `getTreeState`: A function which must return the tree state root from the redux state in case you mounted it on a different key than `tree`. It will be called with a single `state` argument which is the redux state.
 - `children`: A function which will be called with a single object argument having the following props
-  - `tree`: an array of the root nodes. Each node have the following properties:
-    - `children`: an array of its child nodes
-    - `depth`: a number indicating its depth in the hierarchy
-    - `record`: the node's original data
-  - `getIsNodeExpanded`: a function which takes a node identifier and returns a boolean indicating whether this node is expanded
+  - `nodes`: an array of the root nodes identifiers
   - `toggleNode`: a function which takes a node identifier and toggles its expanded state
   - `expandNode`: a function which takes a node identifier and explicitly expands it
   - `closeNode`: a function which takes a node identifier and explicitly closes it
   - any additional props received by the `TreeController` component
 - `parentSource`: The field used as the parent identifier for each node. Defaults to `parent_id`
+- `positionSource`: The field used to order nodes. Optional.
+
+### Actions
+
+This package also exports several actions to interact with the Tree:
+
+- `crudGetTreeRootNodes`: Called automatically by the `<TreeController>` component, trigger a fetch of the root nodes.
+- `crudGetTreeChildrenNodes`: Trigger a fetch of the leaves for a specific node.
+- `crudMoveNode`: Trigger a fetch which will update a node parent and its position (if specified).
+- `toggleNode`, `expandNode` and `closeNode` to control if a node is expanded.
 
 ## Roadmap
 
 - Support nested set hierarchical data
 - `TreeSelectInputController` to select a value inside the hierarchical data (with autocomplete showing the matched nodes)
-- `TreeInputController` to edit a field containing hierarchical data as json
-- `TreeNodeFieldController` to show a node and its hierarchie. It should recursively fetch the parents by default, accepting a custom function to fetch them in one call (`fetchHierarchy`).
+- `TreeNodeFieldController` to show a node and its hierarchy. It should recursively fetch the parents by default, accepting a custom function to fetch them in one call (`fetchHierarchy`).
 
 ## License
 
