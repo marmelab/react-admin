@@ -1,6 +1,6 @@
 # Changelog
 
-## v3.0.0-beta.1
+## v3.0.0-beta.2
 
 * Fix `<Datagrid>` has no padding when disabling bulk actions ([3840](https://github.com/marmelab/react-admin/pull/3840)) ([fzaninotto](https://github.com/fzaninotto))
 * Fix anchors and uris in the docs. ([3838](https://github.com/marmelab/react-admin/pull/3838)) ([WiXSL](https://github.com/WiXSL))
@@ -24,6 +24,10 @@
 * Fix example for `useDispatch` hook in upgrade guide ([3765](https://github.com/marmelab/react-admin/pull/3765)) ([mabhub](https://github.com/mabhub))
 * Update dependencies for stateful packages to avoid duplicate pckages bug ([3763](https://github.com/marmelab/react-admin/pull/3763)) ([kopax](https://github.com/kopax))
 * Fix Forms Remove Empty Values ([3758](https://github.com/marmelab/react-admin/pull/3758)) ([djhi](https://github.com/djhi))
+
+## v3.0.0-beta.1
+
+* Failed (and unpublished) release
 
 ## v3.0.0-beta.0
 
