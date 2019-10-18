@@ -1,5 +1,30 @@
 # Changelog
 
+## v3.0.0-beta.1
+
+* Fix `<Datagrid>` has no padding when disabling bulk actions ([3840](https://github.com/marmelab/react-admin/pull/3840)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix anchors and uris in the docs. ([3838](https://github.com/marmelab/react-admin/pull/3838)) ([WiXSL](https://github.com/WiXSL))
+* [BC Break] Remove `ra-tree` ([3836](https://github.com/marmelab/react-admin/pull/3836)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix JSDocs errors ([3829](https://github.com/marmelab/react-admin/pull/3829)) ([WiXSL](https://github.com/WiXSL))
+* Fix typos in docs ([3828](https://github.com/marmelab/react-admin/pull/3828)) ([WiXSL](https://github.com/WiXSL))
+* Fix imports of routing components to `react-router-dom` ([3825](https://github.com/marmelab/react-admin/pull/3825)) ([thclark](https://github.com/thclark))
+* Fix `defaultI18nProvider` Export ([3820](https://github.com/marmelab/react-admin/pull/3820)) ([djhi](https://github.com/djhi))
+* Fix warnings Displayed when Overriding Filter Classes ([3817](https://github.com/marmelab/react-admin/pull/3817)) ([djhi](https://github.com/djhi))
+* Fix hard to read code due to non explicit dependencies ([3816](https://github.com/marmelab/react-admin/pull/3816)) ([pemoreau](https://github.com/pemoreau))
+* Fix `FinalForm` Props Leak to Root Component ([3815](https://github.com/marmelab/react-admin/pull/3815)) ([djhi](https://github.com/djhi))
+* Fix following sonarqube audit ([3798](https://github.com/marmelab/react-admin/pull/3798)) ([pemoreau](https://github.com/pemoreau))
+* Fix Upgrade guide order ([3789](https://github.com/marmelab/react-admin/pull/3789)) ([djhi](https://github.com/djhi))
+* Fix `ReferenceInput` ignores its `sort` prop ([3783](https://github.com/marmelab/react-admin/pull/3783)) ([djhi](https://github.com/djhi))
+* Add `redux-devtools-extension` trace feature in development mode if available ([3781](https://github.com/marmelab/react-admin/pull/3781)) ([WiXSL](https://github.com/WiXSL))
+* Fix unstable tests ([3777](https://github.com/marmelab/react-admin/pull/3777)) ([djhi](https://github.com/djhi))
+* Fix minor typo in custom data-provider exemple documentation([3775](https://github.com/marmelab/react-admin/pull/3775)) ([alexisjanvier](https://github.com/alexisjanvier))
+* Fix missing deprecated component in Upgrade guide ([3770](https://github.com/marmelab/react-admin/pull/3770)) ([Kmaschta](https://github.com/Kmaschta))
+* Add hooks to Reference documentation ([3768](https://github.com/marmelab/react-admin/pull/3768)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix missing quote in `i18nProvider` upgrade guide ([3766](https://github.com/marmelab/react-admin/pull/3766)) ([mabhub](https://github.com/mabhub))
+* Fix example for `useDispatch` hook in upgrade guide ([3765](https://github.com/marmelab/react-admin/pull/3765)) ([mabhub](https://github.com/mabhub))
+* Update dependencies for stateful packages to avoid duplicate pckages bug ([3763](https://github.com/marmelab/react-admin/pull/3763)) ([kopax](https://github.com/kopax))
+* Fix Forms Remove Empty Values ([3758](https://github.com/marmelab/react-admin/pull/3758)) ([djhi](https://github.com/djhi))
+
 ## v3.0.0-beta.0
 
 * Ensure Data Provider does not alter the original error ([3757](https://github.com/marmelab/react-admin/pull/3757)) ([djhi](https://github.com/djhi))
