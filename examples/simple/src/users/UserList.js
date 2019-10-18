@@ -56,6 +56,7 @@ const UserList = ({ permissions, ...props }) => (
             <Datagrid
                 rowClick={rowClick(permissions)}
                 expand={<UserEditEmbedded />}
+                optimized
             >
                 <TextField source="id" />
                 <TextField source="name" />

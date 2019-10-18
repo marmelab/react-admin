@@ -7,9 +7,14 @@ import { linkToRecord } from 'ra-core';
 
 import Link from '../Link';
 
-const useStyles = makeStyles({
-    root: { display: 'flex', flexWrap: 'wrap' },
-});
+const useStyles = makeStyles(theme => ({
+    root: {
+        display: 'flex',
+        flexWrap: 'wrap',
+        marginTop: -theme.spacing(1),
+        marginBottom: -theme.spacing(1),
+    },
+}));
 
 // useful to prevent click bubbling in a datagrid with rowClick
 const stopPropagation = e => e.stopPropagation();

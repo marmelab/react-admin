@@ -46,7 +46,7 @@ const VisitorList = props => {
             {isXsmall ? (
                 <MobileGrid />
             ) : (
-                <Datagrid>
+                <Datagrid optimized rowClick="edit">
                     <CustomerLinkField />
                     <DateField source="last_seen" type="date" />
                     <NumberField
@@ -61,7 +61,6 @@ const VisitorList = props => {
                     <DateField source="latest_purchase" showTime />
                     <BooleanField source="has_newsletter" label="News." />
                     <SegmentsField />
-                    <EditButton />
                 </Datagrid>
             )}
         </List>

@@ -90,6 +90,8 @@ const usePostListActionToolbarStyles = makeStyles({
     toolbar: {
         alignItems: 'center',
         display: 'flex',
+        marginTop: -1,
+        marginBottom: -1,
     },
 });
 
@@ -134,7 +136,7 @@ const PostList = props => {
                     }
                 />
             ) : (
-                <Datagrid rowClick={rowClick} expand={PostPanel}>
+                <Datagrid rowClick={rowClick} expand={PostPanel} optimized>
                     <TextField source="id" />
                     <TextField source="title" cellClassName={classes.title} />
                     <DateField

@@ -4,7 +4,12 @@ import { useTranslate } from 'react-admin';
 import segments from '../segments/data';
 
 const styles = {
-    main: { display: 'flex', flexWrap: 'wrap' },
+    main: {
+        display: 'flex',
+        flexWrap: 'wrap',
+        marginTop: -8,
+        marginBottom: -8,
+    },
     chip: { margin: 4 },
 };
 
