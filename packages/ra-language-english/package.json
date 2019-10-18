@@ -1,6 +1,6 @@
 {
     "name": "ra-language-english",
-    "version": "3.0.0-beta.0",
+    "version": "3.0.0-beta.2",
     "description": "English messages for react-admin, the frontend framework for building admin applications on top of REST/GraphQL services",
     "main": "index.js",
     "repository": {
