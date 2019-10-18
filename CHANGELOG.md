@@ -1,5 +1,16 @@
 # Changelog
 
+## v2.9.8
+ 
+* Rewrite `ra-tree`. The new API isn't backwards compatible, but as ra-tree is considered a "lab" feature, we chose to release it in a minor version. ([3771](https://github.com/marmelab/react-admin/pull/3771)) ([djhi](https://github.com/djhi))
+* Add support for custom queries in `ra-data-graphql` ([3839](https://github.com/marmelab/react-admin/pull/3839)) ([djhi](https://github.com/djhi))
+* Add theme support in `FileInput` dropzone background ([3823](https://github.com/marmelab/react-admin/pull/3823)) ([despatates](https://github.com/despatates))
+* Add link to OpenID Connect advanced example ([3795](https://github.com/marmelab/react-admin/pull/3795)) ([Kmaschta](https://github.com/Kmaschta))
+* Fix react-admin dependency in secondary packages ([3791](https://github.com/marmelab/react-admin/pull/3791)) ([manelpb](https://github.com/manelpb))
+* Fix trailing slash in url breaks routing ([3788](https://github.com/marmelab/react-admin/pull/3788)) ([djhi](https://github.com/djhi))
+* Fix jsDoc in `refresh` side effect ([3780](https://github.com/marmelab/react-admin/pull/3780)) ([gillesdemey](https://github.com/gillesdemey))
+* Fix autocomplete of Password field on `LoginForm` ([3666](https://github.com/marmelab/react-admin/pull/3666)) ([UltimateForm](https://github.com/UltimateForm))
+
 ## v2.9.7
 
 * Fix missing semicolons in docs ([3773](https://github.com/marmelab/react-admin/pull/3773)) ([emptyhand](https://github.com/emptyhand))
