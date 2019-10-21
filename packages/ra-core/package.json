@@ -54,6 +54,7 @@
         "rimraf": "^2.6.3"
     },
     "peerDependencies": {
+        "@testing-library/react": "^8.0.7",
         "connected-react-router": "^6.5.2",
         "final-form": "^4.18.5",
         "react": "^16.9.0",
