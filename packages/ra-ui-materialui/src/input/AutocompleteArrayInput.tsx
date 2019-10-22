@@ -390,6 +390,7 @@ const AutocompleteArrayInput: FunctionComponent<
                                 },
                                 onFocus,
                             }}
+                            error={!!(touched && error)}
                             label={
                                 <FieldTitle
                                     {...labelProps}
