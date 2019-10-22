@@ -6,6 +6,8 @@
 .book-summary {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     width: 300px;
+    height: 100vh;
+    overflow: auto;
     color: #364149;
     background: #fafafa;
     border-right: 1px solid rgba(0, 0, 0, 0.07);

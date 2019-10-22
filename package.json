@@ -68,7 +68,8 @@
         "prettier": "~1.17.1",
         "raf": "~3.4.1",
         "ts-jest": "^24.0.0",
-        "wait-on": "^3.2.0"
+        "wait-on": "^3.2.0",
+        "whatwg-fetch": "^3.0.0"
     },
     "workspaces": [
         "packages/*",

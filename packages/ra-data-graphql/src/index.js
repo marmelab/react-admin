@@ -90,7 +90,9 @@ export default async options => {
               }
             : buildQuery(aorFetchType, resource, params);
 
-        if (QUERY_TYPES.includes(aorFetchType)) {
+        const operation = getQueryOperation(query.query);
+
+        if (operation === 'query') {
             const apolloQuery = {
                 ...query,
                 fetchPolicy: 'network-only',
@@ -129,4 +131,12 @@ export default async options => {
     raDataProvider.saga = () => {};
 
     return raDataProvider;
+};
+
+const getQueryOperation = query => {
+    if (query && query.definitions && query.definitions.length > 0) {
+        return query.definitions[0].operation;
+    }
+
+    throw new Error('Unable to determine the query operation');
 };

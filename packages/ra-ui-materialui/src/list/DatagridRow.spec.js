@@ -1,6 +1,5 @@
 import React from 'react';
 import { cleanup, fireEvent, wait } from '@testing-library/react';
-import { push } from 'connected-react-router';
 import { renderWithRedux, linkToRecord } from 'ra-core';
 
 import DatagridRow from './DatagridRow';

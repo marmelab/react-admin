@@ -98,9 +98,9 @@ const TagList = props => (
     <List
         {...props}
         perPage={1000}
-        pagination={false}
+        pagination={null}
         component={SmallCard}
-        actions={false}
+        actions={null}
     >
         <Tree />
     </List>

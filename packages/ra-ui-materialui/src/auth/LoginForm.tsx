@@ -109,6 +109,7 @@ const LoginForm: SFC<Props> = ({ redirectTo }) => {
                                 label={translate('ra.auth.password')}
                                 type="password"
                                 disabled={loading}
+                                autocomplete="current-password"
                             />
                         </div>
                     </div>

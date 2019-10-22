@@ -28,7 +28,6 @@
     },
     "devDependencies": {
         "@redux-saga/testing-utils": "^1.0.2",
-        "@testing-library/react": "^8.0.7",
         "@types/history": "^4.7.2",
         "@types/node-polyglot": "^0.4.31",
         "@types/react-redux": "^7.1.1",
@@ -66,6 +65,7 @@
         "redux-saga": "^1.0.0"
     },
     "dependencies": {
+        "@testing-library/react": "^8.0.7",
         "classnames": "~2.2.5",
         "date-fns": "^1.29.0",
         "eventemitter3": "^3.0.0",

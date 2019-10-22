@@ -1,6 +1,3 @@
-import { useEffect } from 'react';
-import isEqual from 'lodash/isEqual';
-
 import { getStatusForInput as getDataStatus } from './referenceDataStatus';
 import useTranslate from '../../i18n/useTranslate';
 import { Sort, Record, Pagination } from '../../types';

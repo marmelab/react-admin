@@ -1404,10 +1404,8 @@ const OrderEdit = (props) => (
 Would you need to update an input when another one changes, use the `useForm` hook from `react-final-form`. For example, a country input that resets a city input on change.
 
 ```jsx
-
-import React, { Fragment } from 'react'
-import { useForm } from 'react-final-form'
-import { FormDataConsumer, REDUX_FORM_NAME } from 'react-admin';
+import React, { Fragment } from 'react';
+import { useForm } from 'react-final-form';
 
 const OrderOrigin = ({ formData, ...rest }) => {
     const form = useForm();

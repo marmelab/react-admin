@@ -283,7 +283,7 @@ Fetching data is called a *side effect*, since it calls the outside world, and i
 
 ## Handling Side Effects In Other Hooks
 
-But the other hooks presented in this chapter, starting with `useMutation`, don't expose the `dataProvider` Promise. To allow for side effects with these hooks, they all accept an additional `options` argument. It's an object with `onSuccess` and `onFailure` functions, that react admin executes on success... or on failure.
+But the other hooks presented in this chapter, starting with `useMutation`, don't expose the `dataProvider` Promise. To allow for side effects with these hooks, they all accept an additional `options` argument. It's an object with `onSuccess` and `onFailure` functions, that react-admin executes on success... or on failure.
 
 So the `<ApproveButton>` written with `useMutation` instead of `useDataProvider` can specify side effects as follows:
 
