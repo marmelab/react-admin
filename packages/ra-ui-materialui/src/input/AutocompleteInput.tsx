@@ -345,6 +345,7 @@ const AutocompleteInput: FunctionComponent<
                                 },
                                 onFocus,
                             }}
+                            error={!!(touched && error)}
                             label={
                                 <FieldTitle
                                     {...labelProps}
