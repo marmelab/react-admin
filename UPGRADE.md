@@ -1147,7 +1147,7 @@ import {
     undo,
     complete,
 +   undoableEventEmitter,
-} from 'ra-core';
+} from 'react-admin';
 
 class Notification extends React.Component {
     state = {
