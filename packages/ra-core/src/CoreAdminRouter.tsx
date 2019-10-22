@@ -4,7 +4,6 @@ import React, {
     cloneElement,
     createElement,
     ComponentType,
-    CSSProperties,
     ReactElement,
     FunctionComponent,
 } from 'react';
@@ -12,7 +11,7 @@ import { Route, Switch } from 'react-router-dom';
 
 import { useLogout, useGetPermissions, useAuthState } from './auth';
 import RoutesWithLayout from './RoutesWithLayout';
-import { useTimeout, useSafeSetState } from './util';
+import { Ready, useTimeout, useSafeSetState } from './util';
 import {
     AdminChildren,
     CustomRoutes,
@@ -23,12 +22,6 @@ import {
     RenderResourcesFunction,
     ResourceElement,
 } from './types';
-
-const welcomeStyles: CSSProperties = {
-    width: '50%',
-    margin: '40vh 25vw',
-    textAlign: 'center',
-};
 
 export interface AdminRouterProps extends LayoutProps {
     layout: LayoutComponent;
@@ -119,14 +112,7 @@ const CoreAdminRouter: FunctionComponent<AdminRouterProps> = props => {
         typeof children !== 'function' &&
         !children
     ) {
-        return (
-            <div style={welcomeStyles}>
-                React-admin is properly configured.
-                <br />
-                Now you can add a first &lt;Resource&gt; as child of
-                &lt;Admin&gt;.
-            </div>
-        );
+        return <Ready />;
     }
 
     if (
