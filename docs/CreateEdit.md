@@ -543,9 +543,68 @@ export const UserCreate = (props) => (
 
 **Tip**: The props you pass to `<SimpleForm>` and `<TabbedForm>` are passed to the `<Form>` of `react-final-form`.
 
-### Per Input Validation: Function Validator
+### Per Input Validation: Built-in Field Validators
 
-Alternatively, you can specify a `validate` prop directly in `<Input>` components, taking either a function, or an array of functions. These functions should return `undefined` when there is no error, or an error string.
+Alternatively, you can specify a `validate` prop directly in `<Input>` components, taking either a function, or an array of functions. React-admin already bundles a few validator functions, that you can just require, and use as input-level validators:
+
+* `required(message)` if the field is mandatory,
+* `minValue(min, message)` to specify a minimum value for integers,
+* `maxValue(max, message)` to specify a maximum value for integers,
+* `minLength(min, message)` to specify a minimum length for strings,
+* `maxLength(max, message)` to specify a maximum length for strings,
+* `number(message)` to check that the input is a valid number,
+* `email(message)` to check that the input is a valid email address,
+* `regex(pattern, message)` to validate that the input matches a regex,
+* `choices(list, message)` to validate that the input is within a given list,
+
+Example usage:
+
+```jsx
+import {
+    required,
+    minLength,
+    maxLength,
+    minValue,
+    maxValue,
+    number,
+    regex,
+    email,
+    choices
+} from 'react-admin';
+
+const validateFirstName = [required(), minLength(2), maxLength(15)];
+const validateEmail = email();
+const validateAge = [number(), minValue(18)];
+const validateZipCode = regex(/^\d{5}$/, 'Must be a valid Zip Code');
+const validateSex = choices(['m', 'f'], 'Must be Male or Female');
+
+export const UserCreate = (props) => (
+    <Create {...props}>
+        <SimpleForm>
+            <TextInput label="First Name" source="firstName" validate={validateFirstName} />
+            <TextInput label="Email" source="email" validate={validateEmail} />
+            <TextInput label="Age" source="age" validate={validateAge}/>
+            <TextInput label="Zip Code" source="zip" validate={validateZipCode}/>
+            <SelectInput label="Sex" source="sex" choices={[
+                { id: 'm', name: 'Male' },
+                { id: 'f', name: 'Female' },
+            ]} validate={validateSex}/>
+        </SimpleForm>
+    </Create>
+);
+```
+
+**Tip**: If you pass a function as a message, react-admin calls this function with `{ args, value, values,translate, ...props }` as argument. For instance:
+
+```jsx
+const message = ({ translate }) => translate('myroot.validation.email_invalid');
+const validateEmail = email(message);
+```
+
+### Per Input Validation: Custom Function Validator
+
+You can also define your own validator functions. These functions should return `undefined` when there is no error, or an error string.
+
 
 ```jsx
 const required = (message = 'Required') =>
@@ -648,64 +707,6 @@ export const ProductEdit = ({ ...props }) => (
 **Tip**: The props of your Input components are passed to a `react-final-form` `<Field>` component.
 
 **Tip**: You can use *both* Form validation and input validation.
-
-### Built-in Field Validators
-
-React-admin already bundles a few validator functions, that you can just require, and use as input-level validators:
-
-* `required(message)` if the field is mandatory,
-* `minValue(min, message)` to specify a minimum value for integers,
-* `maxValue(max, message)` to specify a maximum value for integers,
-* `minLength(min, message)` to specify a minimum length for strings,
-* `maxLength(max, message)` to specify a maximum length for strings,
-* `number(message)` to check that the input is a valid number,
-* `email(message)` to check that the input is a valid email address,
-* `regex(pattern, message)` to validate that the input matches a regex,
-* `choices(list, message)` to validate that the input is within a given list,
-
-Example usage:
-
-```jsx
-import {
-    required,
-    minLength,
-    maxLength,
-    minValue,
-    maxValue,
-    number,
-    regex,
-    email,
-    choices
-} from 'react-admin';
-
-const validateFirstName = [required(), minLength(2), maxLength(15)];
-const validateEmail = email();
-const validateAge = [number(), minValue(18)];
-const validateZipCode = regex(/^\d{5}$/, 'Must be a valid Zip Code');
-const validateSex = choices(['m', 'f'], 'Must be Male or Female');
-
-export const UserCreate = (props) => (
-    <Create {...props}>
-        <SimpleForm>
-            <TextInput label="First Name" source="firstName" validate={validateFirstName} />
-            <TextInput label="Email" source="email" validate={validateEmail} />
-            <TextInput label="Age" source="age" validate={validateAge}/>
-            <TextInput label="Zip Code" source="zip" validate={validateZipCode}/>
-            <SelectInput label="Sex" source="sex" choices={[
-                { id: 'm', name: 'Male' },
-                { id: 'f', name: 'Female' },
-            ]} validate={validateSex}/>
-        </SimpleForm>
-    </Create>
-);
-```
-
-**Tip**: If you pass a function as a message, react-admin calls this function with `{ args, value, values,translate, ...props }` as argument. For instance:
-
-```jsx
-const message = ({ translate }) => translate('myroot.validation.email_invalid');
-const validateEmail = email(message);
-```
 
 ## Submit On Enter
 

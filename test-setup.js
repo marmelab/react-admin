@@ -58,3 +58,12 @@ jest.spyOn(console, 'error').mockImplementation((...args) => {
     }
     originalError.call(console, ...args);
 });
+
+/**
+ * Mock fetch objects Response, Request and Headers
+ */
+const { Response, Headers, Request } = require('whatwg-fetch');
+
+global.Response = Response;
+global.Headers = Headers;
+global.Request = Request;

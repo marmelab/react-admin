@@ -166,7 +166,7 @@ import jsonExport from 'jsonexport/dist';
 
 const exporter = posts => {
     const postsForExport = posts.map(post => {
-        const { postForExport, backlinks, author } = post; // omit backlinks and author
+        const { backlinks, author, ...postForExport } = post; // omit backlinks and author
         postForExport.author_name = post.author.name; // add a field
         return postForExport;
     });

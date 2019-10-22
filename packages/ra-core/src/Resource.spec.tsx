@@ -62,7 +62,7 @@ describe('<Resource>', () => {
                         url: '/posts',
                         params: {},
                         isExact: true,
-                        path: '/',
+                        path: '/posts',
                     }}
                 />
             </Router>,

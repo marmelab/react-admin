@@ -8,13 +8,14 @@ export interface Options extends RequestInit {
     };
 }
 
-export const fetchJson = (url, options: Options = {}) => {
+export const createHeadersFromOptions = (options: Options): Headers => {
     const requestHeaders = (options.headers ||
         new Headers({
             Accept: 'application/json',
         })) as Headers;
     if (
         !requestHeaders.has('Content-Type') &&
+        !(options && (!options.method || options.method === 'GET')) &&
         !(options && options.body && options.body instanceof FormData)
     ) {
         requestHeaders.set('Content-Type', 'application/json');
@@ -22,6 +23,12 @@ export const fetchJson = (url, options: Options = {}) => {
     if (options.user && options.user.authenticated && options.user.token) {
         requestHeaders.set('Authorization', options.user.token);
     }
+
+    return requestHeaders;
+};
+
+export const fetchJson = (url, options: Options = {}) => {
+    const requestHeaders = createHeadersFromOptions(options);
 
     return fetch(url, { ...options, headers: requestHeaders })
         .then(response =>

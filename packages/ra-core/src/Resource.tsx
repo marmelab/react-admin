@@ -48,7 +48,7 @@ const ResourceRoutes: FunctionComponent<ResourceProps> = ({
         state.admin.resources[name] ? true : false
     );
 
-    const basePath = match ? match.url : '';
+    const basePath = match ? match.path : '';
 
     // match tends to change even on the same route ; using memo to avoid an extra render
     return useMemo(() => {
@@ -64,6 +64,7 @@ const ResourceRoutes: FunctionComponent<ResourceProps> = ({
             hasShow: !!show,
             hasCreate: !!create,
         };
+
         return (
             <Switch>
                 {create && (

@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="css/prism.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/octicons/4.4.0/font/octicons.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" /> 
+    <!-- You won't find analytics tags in this page. React-admin protects your privacy! -->
 </head>
 
 <body>
@@ -31,6 +32,27 @@
                             </div>
                         </form>
                         <script type="text/javascript">
+                            document.body.onload = function () {
+                                const targetNode = document.getElementById('algolia-autocomplete-listbox-0');
+                                const config = { attributes: true };
+                                const callback = function(mutationsList, observer) {
+                                    for(let mutation of mutationsList) {
+                                        if (mutation.type === 'attributes') {
+                                            let bookSummary = document.getElementById('book-summary');
+                                            if (document.getElementById('algolia-autocomplete-listbox-0').style.display === 'block') {
+                                                bookSummary.style.overflow = 'unset';
+                                                bookSummary.style.height = 'unset';
+                                            } else {
+                                                bookSummary.style.overflow = 'auto';
+                                                bookSummary.style.height = '100vh';
+                                            }
+                                        }
+                                    }
+                                };
+                                const observer = new MutationObserver(callback);
+                                observer.observe(targetNode, config);
+                            };
+                            
                             function encodeHTML(s) {
                                 return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
                             }
@@ -43,7 +65,7 @@
                 <ul class="summary">
                     <li class="header">Table of Contents</li>
                     <li class="chapter {% if page.path == 'index.md' %}active{% endif %}">
-                        <a href="./index.html">
+                        <a href="./Readme.html">
                             <b>1.</b> Read Me
                         </a>
                     </li>
