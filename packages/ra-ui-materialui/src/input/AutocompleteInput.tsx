@@ -103,6 +103,7 @@ const AutocompleteInput: FunctionComponent<
     id: idOverride,
     input: inputOverride,
     isRequired: isRequiredOverride,
+    label,
     limitChoicesToValue,
     margin,
     matchSuggestion,
@@ -347,6 +348,7 @@ const AutocompleteInput: FunctionComponent<
                             }}
                             label={
                                 <FieldTitle
+                                    label={label}
                                     {...labelProps}
                                     source={source}
                                     resource={resource}
