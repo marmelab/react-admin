@@ -39,7 +39,7 @@ interface Modifiers {
     changeParams: (action: any) => void;
     setPage: (page: number) => void;
     setPerPage: (pageSize: number) => void;
-    setSort: (sort: Sort) => void;
+    setSort: (sort: string) => void;
     setFilters: (filters: any) => void;
     hideFilter: (filterName: string) => void;
     showFilter: (filterName: string, defaultValue: any) => void;
