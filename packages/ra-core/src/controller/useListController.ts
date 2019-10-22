@@ -63,7 +63,7 @@ export interface ListControllerProps {
     setFilters: (filters: any) => void;
     setPage: (page: number) => void;
     setPerPage: (page: number) => void;
-    setSort: (sort: Sort) => void;
+    setSort: (sort: string) => void;
     showFilter: (filterName: string, defaultValue: any) => void;
     total: number;
     version: number;

@@ -39,7 +39,7 @@ interface Modifiers {
     changeParams: (action: any) => void;
     setPage: (page: number) => void;
     setPerPage: (pageSize: number) => void;
-    setSort: (sort: Sort) => void;
+    setSort: (sort: string) => void;
     setFilters: (filters: any) => void;
     hideFilter: (filterName: string) => void;
     showFilter: (filterName: string, defaultValue: any) => void;
@@ -158,17 +158,19 @@ const useListParams = ({
     }, requestSignature); // eslint-disable-line react-hooks/exhaustive-deps
 
     const setSort = useCallback(
-        newSort => changeParams({ type: SET_SORT, payload: { sort: newSort } }),
+        (newSort: string) =>
+            changeParams({ type: SET_SORT, payload: { sort: newSort } }),
         requestSignature // eslint-disable-line react-hooks/exhaustive-deps
     );
 
     const setPage = useCallback(
-        newPage => changeParams({ type: SET_PAGE, payload: newPage }),
+        (newPage: number) => changeParams({ type: SET_PAGE, payload: newPage }),
         requestSignature // eslint-disable-line react-hooks/exhaustive-deps
     );
 
     const setPerPage = useCallback(
-        newPerPage => changeParams({ type: SET_PER_PAGE, payload: newPerPage }),
+        (newPerPage: number) =>
+            changeParams({ type: SET_PER_PAGE, payload: newPerPage }),
         requestSignature // eslint-disable-line react-hooks/exhaustive-deps
     );
 
