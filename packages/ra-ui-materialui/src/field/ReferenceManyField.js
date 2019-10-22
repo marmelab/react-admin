@@ -70,7 +70,7 @@ export const ReferenceManyField = props => {
             '<ReferenceManyField> only accepts a single child (like <Datagrid>)'
         );
     }
-    const { sort, setSort } = useSortState(initialSort);
+    const { sort, setSortField } = useSortState(initialSort);
     const { page, perPage, setPage, setPerPage } = usePaginationState({
         perPage: initialPerPage,
     });
@@ -97,7 +97,7 @@ export const ReferenceManyField = props => {
                 perPage,
                 setPage,
                 setPerPage,
-                setSort,
+                setSort: setSortField,
                 ...controllerProps,
             }}
         />
