@@ -172,7 +172,7 @@ But with the default menu, resources without `list` prop aren't shown.
 
 In order to have a specific resource without `list` prop listed on the menu, you have to [write your own custom menu](./Theming.md#using-a-custom-menu).
 
- ```jsx
+```jsx
  const MyMenu = ({ resources, onMenuClick, logout }) => (
     <div>
         {resources.map(resource => (
@@ -187,7 +187,7 @@ In order to have a specific resource without `list` prop listed on the menu, you
 
 React Admin users and third-party libraries maintainers might have noticed that the default UI template `ra-ui-materialui` [has `@material-ui/core@^1.4.0` as dependency](https://github.com/marmelab/react-admin/blob/ae45a2509b391a6ea81cdf9c248ff9d28364b6e1/packages/ra-ui-materialui/package.json#L44) even though the latest version of Material UI is already 3.x.
 
-We chose not to upgrade to Material UI v3 when it was released because the MUI team was already hard at work preparing the next major version ([which includes major breaking changes](https://github.com/mui-org/material-ui/issues/13663)). In fact, material-ui published a release schedule for one major version every 6 months. This means that developers using material-ui have to upgrade their codebase every six months to get the latest updates. On the other hand, react-admin plans to release a major version once every year, minimizing the upgrade work for developers. This gain in stability is a tradeoff - react-admin users can't use the latest version of material-ui for about half a year.
+We chose not to upgrade to Material UI v3 when it was released because the MUI team was already hard at work preparing the next major version ([which includes major breaking changes](https://github.com/mui-org/material-ui/issues/13663)). In fact, material-ui published a release schedule for one major version every 6 months. This means that developers using material-ui have to upgrade their codebase every six months to get the latest updates. On the other hand, react-admin plans to release a major version once every year, minimizing the upgrade work for developers. This gain in stability is a trade-off - react-admin users can't use the latest version of material-ui for about half a year.
 
 Feel free to discuss this policy in [issue #2399](https://github.com/marmelab/react-admin/issues/2399).
 

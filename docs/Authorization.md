@@ -92,7 +92,7 @@ Note that the function returns an array of React elements. This is required to a
 
 You might want to display some fields or inputs only to users with specific permissions. By default, react-admin calls the `authProvider` for permissions for each resource routes, and passes them to the `list`, `edit`, `create`, and `show` components.
 
-Here is an example of a `Create` view with a conditionnal Input based on permissions:
+Here is an example of a `Create` view with a conditional Input based on permissions:
 
 {% raw %}
 ```jsx

@@ -100,7 +100,7 @@ This object updates according to the request state:
 - success: `{ data: [data from response], total: [total from response], loading: false, loaded: true }`
 - error: `{ error: [error from response], loading: false, loaded: true }`
 
-As a reminder, here are the read query types handled by Data Droviders:
+As a reminder, here are the read query types handled by Data Providers:
 
 Type               | Usage                                           | Params format              | Response format
 ------------------ | ------------------------------------------------|--------------------------- | ---------------
@@ -247,7 +247,7 @@ The specialized hooks based on `useMutation` return a callback:
 
 ## Handling Side Effects In `useDataProvider`
 
-`useDataProvider` returns a `dataProvider` object. Each call to its method return a Promise, allowing to add business logic on success in `then()`, and on fialure in `catch()`.
+`useDataProvider` returns a `dataProvider` object. Each call to its method return a Promise, allowing to add business logic on success in `then()`, and on failure in `catch()`.
 
 For instance, here is another version of the `<ApproveButton>`  based on `useDataProvider` that notifies the user of success or failure using the bottom notification banner:
 
@@ -279,7 +279,7 @@ Fetching data is called a *side effect*, since it calls the outside world, and i
 - `useNotify`: Return a function to display a notification. The arguments should be a message (it can be a translation key), a level (either `info` or `warning`), an options object to pass to the `translate()` function, and a boolean to set to `true` if the notification should contain an "undo" button.
 - `useRedirect`: Return a function to redirect the user to another page. The arguments should be the path to redirect the user to, and the current `basePath`.
 - `useRefresh`: Return a function to force a rerender of the current view (equivalent to pressing the Refresh button).
-- `useUnselectAll`: Return a function to unselect all lines in the current datagrid. Pass the name of the resource as argument.
+- `useUnselectAll`: Return a function to unselect all lines in the current `Datagrid`. Pass the name of the resource as argument.
 
 ## Handling Side Effects In Other Hooks
 

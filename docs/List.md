@@ -731,7 +731,7 @@ const App = () => (
 );
 ```
 
-Just like `List`, `ListGuesser` fetches the data. It then analyzes the response, and guesses the fields it should use to display a basic datagrid with the data. It also dumps the components it has guessed in the console, where you can copy it into your own code. Use this feature to quickly bootstrap a `List` on top of an existing API, without adding the fields one by one.
+Just like `List`, `ListGuesser` fetches the data. It then analyzes the response, and guesses the fields it should use to display a basic `Datagrid` with the data. It also dumps the components it has guessed in the console, where you can copy it into your own code. Use this feature to quickly bootstrap a `List` on top of an existing API, without adding the fields one by one.
 
 ![Guessed List](./img/guessed-list.png)
 
@@ -741,7 +741,7 @@ React-admin provides guessers for the `List` view (`ListGuesser`), the `Edit` vi
 
 ## The `<Datagrid>` component
 
-The datagrid component renders a list of records as a table. It is usually used as a child of the [`<List>`](#the-list-component) and [`<ReferenceManyField>`](./Fields.md#referencemanyfield) components.
+The `Datagrid` component renders a list of records as a table. It is usually used as a child of the [`<List>`](#the-list-component) and [`<ReferenceManyField>`](./Fields.md#referencemanyfield) components.
 
 Here are all the props accepted by the component:
 
@@ -1020,7 +1020,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const PostList = props => {
-    const classes = usestyles();
+    const classes = useStyles();
     return (
         <List {...props}>
             <Datagrid>

@@ -107,7 +107,7 @@ const App = () => (
 );
 ```
 
-Now the admin is secured: The user can be authenticatded and use their credentials to communicate with a secure API. 
+Now the admin is secured: The user can be authenticated and use their credentials to communicate with a secure API. 
 
 If you have a custom REST client, don't forget to add credentials yourself.
 
