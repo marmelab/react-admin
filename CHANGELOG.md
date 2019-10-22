@@ -1,8 +1,16 @@
 # Changelog
 
-## v3.0.0-beta.2
+## v3.0.0-beta.3
 
-* Fix `<Datagrid>` has no padding when disabling bulk actions ([3840](https://github.com/marmelab/react-admin/pull/3840)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix typos and anchors in the docs. ([3860](https://github.com/marmelab/react-admin/pull/3860)) ([WiXSL](https://github.com/WiXSL))
+* Fix `<Datagrid>` is not sortable when used inside `<ReferenceManyField>` ([3859](https://github.com/marmelab/react-admin/pull/3859)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<AutocompleteInput>` error message color ([3857](https://github.com/marmelab/react-admin/pull/3857)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<AutocompleteInput>` does not use custom label ([3855](https://github.com/marmelab/react-admin/pull/3855)) ([fzaninotto](https://github.com/* fzaninotto))([3852](https://github.com/marmelab/react-admin/pull/3852)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix missing `@testing-library/react` dependency([3851](https://github.com/marmelab/react-admin/pull/3851)) ([zyhou](https://github.com/zyhou))
+
+## v3.0.0-beta.2
+ 
+ * Fix `<Datagrid>` has no padding when disabling bulk actions ([3840](https://github.com/marmelab/react-admin/pull/3840)) ([fzaninotto](https://github.com/fzaninotto))
 * Fix anchors and uris in the docs. ([3838](https://github.com/marmelab/react-admin/pull/3838)) ([WiXSL](https://github.com/WiXSL))
 * [BC Break] Remove `ra-tree` ([3836](https://github.com/marmelab/react-admin/pull/3836)) ([fzaninotto](https://github.com/fzaninotto))
 * Fix JSDocs errors ([3829](https://github.com/marmelab/react-admin/pull/3829)) ([WiXSL](https://github.com/WiXSL))
