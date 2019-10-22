@@ -41,7 +41,7 @@ const App = () => (
         // ...
 ```
 
-If you want to add or update tranlations, you'll have to provide your own `i18nProvider`.
+If you want to add or update translations, you'll have to provide your own `i18nProvider`.
 
 React-admin components use translation keys for their labels, and rely on the `i18nProvider` to translate them. For instance:
 

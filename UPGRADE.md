@@ -289,7 +289,7 @@ import Button from '@material-ui/core/Button';
 
 -const localeSwitcher = ({ changeLocale }) => 
 +const LocaleSwitcher = () => {
-+   const setLocale = usesetLocale();
++   const setLocale = useSetLocale();
 -   const switchToFrench = () => changeLocale('fr');
 +   const switchToFrench = () => setLocale('fr');
 -   const switchToEnglish = () => changeLocale('en');

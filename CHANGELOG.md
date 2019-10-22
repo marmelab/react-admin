@@ -763,7 +763,7 @@ For highlights about this version, read [the 2.3 release announcement post](http
 
 Deprecations:
 
-* `<Admin>` `menu` prop. To override the menu component, use a [custom layout](#appLayout) instead.
+* `<Admin>` `menu` prop. To override the menu component, use a [custom layout](./docs/Admin.md#layout) instead.
 * `<AppBarMobile>`. The `<AppBar>` component is now responsive.
 * `<BulkActions>`. Use `<BulkActionToolbar>` instead.
 * `<Header>`. Use `<Title>` instead.

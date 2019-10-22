@@ -61,7 +61,7 @@ This article shows how you can customize many parts of the framework without rep
 
 ## OpenID Connect Authentication with React Admin
 
-![OpenID Connect on React Admin with a button "Login With Google"](/img/openid-connect-example.png)
+![OpenID Connect on React Admin with a button "Login With Google"](./img/openid-connect-example.png)
 
 * [Live Example](https://marmelab.com/ra-example-oauth)
 * [Code Repository](https://github.com/marmelab/ra-example-oauth)
