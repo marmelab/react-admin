@@ -3,7 +3,6 @@ import assert from 'assert';
 
 import ReferenceManyFieldController from './ReferenceManyFieldController';
 import renderWithRedux from '../../util/renderWithRedux';
-import { waitForDomChange } from '@testing-library/react';
 
 describe('<ReferenceManyFieldController />', () => {
     it('should set loaded to false when related records are not yet fetched', () => {
