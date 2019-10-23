@@ -741,22 +741,24 @@ But a responsive layout is not enough to make a responsive app. Datagrid compone
 First, you should know that you don't have to use the `<Datagrid>` component as `<List>` child. You can use any other component you like. For instance, the `<SimpleList>` component:
 
 ```jsx
-// in src/posts.js
+// in src/users.js
 import React from 'react';
 import { List, SimpleList } from 'react-admin';
 
-export const PostList = (props) => (
-    <List {...props}>
-        <SimpleList
-            primaryText={record => record.title}
-            secondaryText={record => `${record.views} views`}
-            tertiaryText={record => new Date(record.published_at).toLocaleDateString()}
-        />
-    </List>
-);
+export const UserList = props => {
+    return (
+        <List {...props}>
+            <SimpleList
+                primaryText={record => record.name}
+                secondaryText={record => record.username}
+                tertiaryText={record => record.email}
+            />
+        </List>
+    );
+};
 ```
 
-![Mobile post list](./img/tutorial_mobile_post_list.gif)
+![Mobile users list](./img/tutorial_mobile_user_list.gif)
 
 The `<SimpleList>` component uses [material-ui's `<List>` and `<ListItem>` components](https://material-ui.com/components/lists), and expects functions as `primaryText`, `secondaryText`, and `tertiaryText` props.
 
@@ -765,35 +767,33 @@ The `<SimpleList>` component uses [material-ui's `<List>` and `<ListItem>` compo
 That works fine on mobile, but now the desktop user experience is worse. The best compromise would be to use `<SimpleList>` on small screens, and `<Datagrid>` on other screens. That's where the `useMediaQuery` hook comes in:
 
 ```jsx
-// in src/posts.js
+// in src/users.js
 import React from 'react';
 import { useMediaQuery } from '@material-ui/core';
-import { List, SimpleList, Datagrid, TextField, ReferenceField, EditButton } from 'react-admin';
+import { SimpleList, List, Datagrid, EmailField, TextField } from 'react-admin';
 
-export const PostList = (props) => {
+export const UserList = props => {
     const isSmall = useMediaQuery(theme => theme.breakpoints.down('sm'));
+
     return (
-        <List {...props}>
+        <List title="All users" {...props}>
             {isSmall ? (
                 <SimpleList
-                    primaryText={record => record.title}
-                    secondaryText={record => `${record.views} views`}
-                    tertiaryText={record => new Date(record.published_at).toLocaleDateString()}
+                    primaryText={record => record.name}
+                    secondaryText={record => record.username}
+                    tertiaryText={record => record.email}
                 />
             ) : (
                 <Datagrid>
                     <TextField source="id" />
-                    <ReferenceField label="User" source="userId" reference="users">
-                        <TextField source="name" />
-                    </ReferenceField>
-                    <TextField source="title" />
-                    <TextField source="body" />
-                    <EditButton />
+                    <TextField source="name" />
+                    <TextField source="username" />
+                    <EmailField source="email" />
                 </Datagrid>
             )}
         </List>
     );
-}
+};
 ```
 
 This works exactly the way you expect. The lesson here is that react-admin takes care of responsive web design for the layout, but it's your job to use `useMediaQuery()` in pages.
