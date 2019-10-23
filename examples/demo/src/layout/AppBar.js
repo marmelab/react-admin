@@ -18,7 +18,7 @@ const useStyles = makeStyles({
     },
 });
 
-const ConfigurationMenu = forwardRef((_, ref) => {
+const ConfigurationMenu = forwardRef((props, ref) => {
     const translate = useTranslate();
     return (
         <MenuItemLink
@@ -26,6 +26,7 @@ const ConfigurationMenu = forwardRef((_, ref) => {
             to="/configuration"
             primaryText={translate('pos.configuration')}
             leftIcon={<SettingsIcon />}
+            onClick={props.onClick}
         />
     );
 });

@@ -413,13 +413,19 @@ You can replace the default user menu by your own by setting the `userMenu` prop
 import { AppBar, UserMenu, MenuItemLink } from 'react-admin';
 import SettingsIcon from '@material-ui/icons/Settings';
 
+const ConfigurationMenu = forwardRef(({ onClick }, ref) => (
+    <MenuItemLink
+        ref={ref}
+        to="/configuration"
+        primaryText={Configuration}
+        leftIcon={<SettingsIcon />}
+        onClick={onClick} // close the menu on click
+    />
+));
+
 const MyUserMenu = props => (
     <UserMenu {...props}>
-        <MenuItemLink
-            to="/configuration"
-            primaryText="Configuration"
-            leftIcon={<SettingsIcon />}
-        />
+        <ConfigurationMenu />
     </UserMenu>
 );
 
