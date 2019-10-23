@@ -375,7 +375,7 @@ By default, React-admin uses resource names ("post", "comment", etc) and field n
 However, before humanizing names, react-admin checks the `messages` dictionary for a possible translation, with the following keys:
 
 - `resources.${resourceName}.name` for resource names (used for the menu and page titles)
-- `resources.${resourceName}.fields.${fieldName}` for field names (used for datagrid header and form input labels)
+- `resources.${resourceName}.fields.${fieldName}` for field names (used for `Datagrid` header and form input labels)
 
 This lets you translate your own resource and field names by passing a `messages` object with a `resources` key:
 

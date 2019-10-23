@@ -769,11 +769,11 @@ export const PostList = (props) => (
 );
 ```
 
-The datagrid is an *iterator* component: it receives an array of ids, and a data store, and is supposed to iterate over the ids to display each record. Another example of iterator component is [`<SingleFieldList>`](#the-singlefieldlist-component).
+The `Datagrid` is an *iterator* component: it receives an array of ids, and a data store, and is supposed to iterate over the ids to display each record. Another example of iterator component is [`<SingleFieldList>`](#the-singlefieldlist-component).
 
 ### Body element
 
-By default, `<Datagrid>` renders its body using `<DatagridBody>`, an internal react-admin component. You can pass a custom component as the `row` prop to override that default. And by the way, `<DatagridBody>` has a `row` property set to `<DatagridRow>` by default for the same purpose. `<DatagridRow>` receives the row `record`, the `resource`, and a copy of the datagrid children. That means you can create a custom datagrid logic without copying several components from the react-admin source.
+By default, `<Datagrid>` renders its body using `<DatagridBody>`, an internal react-admin component. You can pass a custom component as the `row` prop to override that default. And by the way, `<DatagridBody>` has a `row` property set to `<DatagridRow>` by default for the same purpose. `<DatagridRow>` receives the row `record`, the `resource`, and a copy of the `<Datagrid>` children. That means you can create a custom `<Datagrid>` logic without copying several components from the react-admin source.
 
 For instance, to show the selection checkbox only for records that have a `selectable` field set to true, you can override `<DatagridRow>` and `<DatagridBody>` as follows:
 
@@ -823,7 +823,7 @@ export default PostList;
 
 ### Row Style Function
 
-You can customize the datagrid row style (applied to the `<tr>` element) based on the record, thanks to the `rowStyle` prop, which expects a function.
+You can customize the `<Datagrid>` row style (applied to the `<tr>` element) based on the record, thanks to the `rowStyle` prop, which expects a function.
 
 For instance, this allows to apply a custom background to the entire row if one value of the record - like its number of views - passes a certain threshold.
 
@@ -979,7 +979,7 @@ The `Datagrid` component accepts the usual `className` prop but you can override
 
 Here is an example of how you can override some of these classes:
 
-You can customize the datagrid styles by passing a `classes` object as prop, through `useStyles()`. Here is an example:
+You can customize the `<Datagrid>` styles by passing a `classes` object as prop, through `useStyles()`. Here is an example:
 
 {% raw %}
 ```jsx
@@ -1174,7 +1174,7 @@ A `<List>` can delegate to any iterator component - `<Datagrid>` is just one exa
 - `ids` is an array of the ids currently displayed in the list
 - `data` is an object of all the fetched data for this resource, indexed by id.
 
-For instance, what if you prefer to show a list of cards rather than a datagrid?
+For instance, what if you prefer to show a list of cards rather than a `<Datagrid>`?
 
 ![Custom iterator](./img/custom-iterator.png)
 

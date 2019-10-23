@@ -5,7 +5,7 @@
 * Fix typos and anchors in the docs. ([3860](https://github.com/marmelab/react-admin/pull/3860)) ([WiXSL](https://github.com/WiXSL))
 * Fix `<Datagrid>` is not sortable when used inside `<ReferenceManyField>` ([3859](https://github.com/marmelab/react-admin/pull/3859)) ([fzaninotto](https://github.com/fzaninotto))
 * Fix `<AutocompleteInput>` error message color ([3857](https://github.com/marmelab/react-admin/pull/3857)) ([fzaninotto](https://github.com/fzaninotto))
-* Fix `<AutocompleteInput>` does not use custom label ([3855](https://github.com/marmelab/react-admin/pull/3855)) ([fzaninotto](https://github.com/* fzaninotto))([3852](https://github.com/marmelab/react-admin/pull/3852)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<AutocompleteInput>` does not use custom label ([3855](https://github.com/marmelab/react-admin/pull/3855)) ([fzaninotto](https://github.com/fzaninotto))([3852](https://github.com/marmelab/react-admin/pull/3852)) ([fzaninotto](https://github.com/fzaninotto))
 * Fix missing `@testing-library/react` dependency([3851](https://github.com/marmelab/react-admin/pull/3851)) ([zyhou](https://github.com/zyhou))
 
 ## v3.0.0-beta.2
@@ -261,7 +261,7 @@
 
 ## v2.9.4
 
-* Fix closing delete confirmation modal triggers datagrid rowClick event ([3360](https://github.com/marmelab/react-admin/pull/3360)) ([Kmaschta](https://github.com/Kmaschta))
+* Fix closing delete confirmation modal triggers `<Datagrid>` rowClick event ([3360](https://github.com/marmelab/react-admin/pull/3360)) ([Kmaschta](https://github.com/Kmaschta))
 * Fix `<DashboardMenuItem>` does not use `className` prop ([3357](https://github.com/marmelab/react-admin/pull/3357)) ([Kmaschta](https://github.com/Kmaschta))
 * Fix unused import in tutorial ([3366](https://github.com/marmelab/react-admin/pull/3366)) ([jesseshieh](https://github.com/jesseshieh))
 * Fix broken links to material-ui v1 documentation ([3365](https://github.com/marmelab/react-admin/pull/3365)) ([fzaninotto](https://github.com/fzaninotto))
@@ -446,10 +446,10 @@ For highlights about this version, read [the react-admin 2.8 announcement blog p
 * Fix import path typo in Unit Testing documentation ([2872](https://github.com/marmelab/react-admin/pull/2872)) ([mexitalian](https://github.com/mexitalian))
 * Fix `<AutocompleteArrayInput>` throws an error when receiving an empty value ([2861](https://github.com/marmelab/react-admin/pull/2861)) ([tiagoschenkel](https://github.com/tiagoschenkel))
 * Fix `<AutocompleteArrayInput>` shows choices in a wrong position when input element moves to another location ([2860](https://github.com/marmelab/react-admin/pull/2860)) ([tiagoschenkel](https://github.com/tiagoschenkel))
-* Migrate ra-core controllers to TypeScript ([2881](https://github.com/marmelab/react-admin/pull/2881)) ([djhi](https://github.com/djhi))
-* Migrate ra-core inference to TypeScript ([2879](https://github.com/marmelab/react-admin/pull/2879)) ([djhi](https://github.com/djhi))
-* Migrate ra-core form to TypeScript ([2878](https://github.com/marmelab/react-admin/pull/2878)) ([djhi](https://github.com/djhi))
-* Migrate ra-core i18n Migration to TypeScript ([2874](https://github.com/marmelab/react-admin/pull/2874)) ([djhi](https://github.com/djhi))
+* Migrate `ra-core` controllers to TypeScript ([2881](https://github.com/marmelab/react-admin/pull/2881)) ([djhi](https://github.com/djhi))
+* Migrate `ra-core` inference to TypeScript ([2879](https://github.com/marmelab/react-admin/pull/2879)) ([djhi](https://github.com/djhi))
+* Migrate `ra-core` form to TypeScript ([2878](https://github.com/marmelab/react-admin/pull/2878)) ([djhi](https://github.com/djhi))
+* Migrate `ra-core` i18n Migration to TypeScript ([2874](https://github.com/marmelab/react-admin/pull/2874)) ([djhi](https://github.com/djhi))
 
 ## v2.7.1
 
@@ -516,7 +516,7 @@ For highlights about this version, read [the react-admin 2.8 announcement blog p
 * Add documentation about dispatching actions within `<FormDataConsumer>` ([2775](https://github.com/marmelab/react-admin/pull/2775)) ([fzaninotto](https://github.com/fzaninotto))
 * Add Hasura data provider ([2791](https://github.com/marmelab/react-admin/pull/2791)) ([praveenweb](https://github.com/praveenweb))
 * Add JSDoc to validators for easier debugging ([2773](https://github.com/marmelab/react-admin/pull/2773)) ([fzaninotto](https://github.com/fzaninotto))
-* Migrate ra-core util scripts to TypeScript ([2787](https://github.com/marmelab/react-admin/pull/2787)) ([fzaninotto](https://github.com/fzaninotto))
+* Migrate `ra-core` util scripts to TypeScript ([2787](https://github.com/marmelab/react-admin/pull/2787)) ([fzaninotto](https://github.com/fzaninotto))
 
 ## v2.6.1
 
@@ -638,8 +638,8 @@ For highlights about this version, read [the react-admin 2.6 announcement blog p
 * Fix non-Admin snippet in custom app documentation ([#2493](https://github.com/marmelab/react-admin/pull/2493)) ([fzaninotto](https://github.com/fzaninotto)) 
 * Fix `<ReferenceManyField>` does not pass total to children ([#2487](https://github.com/marmelab/react-admin/pull/2487)) ([fzaninotto](https://github.com/fzaninotto)) 
 * Fix production build problem with graphql-ast-types package ([#2486](https://github.com/marmelab/react-admin/pull/2486)) ([Kmaschta](https://github.com/Kmaschta)
-* Migrate non-data actions of ra-core package to Typescript ([#2521](https://github.com/marmelab/react-admin/pull/2521)) ([xavierhans](https://github.com/xavierhans)
-* Migrate i18n and auth directories of ra-core package to TypeScript ([#2508](https://github.com/marmelab/react-admin/pull/2508)) ([djhi](https://github.com/djhi)
+* Migrate non-data actions of `ra-core` package to Typescript ([#2521](https://github.com/marmelab/react-admin/pull/2521)) ([xavierhans](https://github.com/xavierhans)
+* Migrate i18n and auth directories of `ra-core` package to TypeScript ([#2508](https://github.com/marmelab/react-admin/pull/2508)) ([djhi](https://github.com/djhi)
 * Add Catalan translation ([#2488](https://github.com/marmelab/react-admin/pull/2488)) ([sergioedo](https://github.com/sergioedo)) 
 
 ## v2.4.1
@@ -981,7 +981,7 @@ For highlights about this version, read [the 2.1 release announcement post](http
 * Fix yarn.lock to match `packages.json` ([fzaninotto](https://github.com/fzaninotto))
 * Fix select all checkbox selects rows twice ([fzaninotto](https://github.com/fzaninotto))
 * Fix typo in Inputs documentation ([afilp](https://github.com/afilp))
-* Fix custom datagrid style fonction example ([afilp](https://github.com/afilp))
+* Fix custom `<Datagrid>` style fonction example ([afilp](https://github.com/afilp))
 
 # v2.0.0
 
@@ -1024,7 +1024,7 @@ This new release is not backwards compatible with 1.x. Please refer to [the Upgr
 * Documentation: Update CreateEdit.md for 'number' validation ([afilp](https://github.com/afilp))
 * Fix Edit view refresh does not cancel changes ([djhi](https://github.com/djhi))
 * Fix form default values can't be changed once mounted ([djhi](https://github.com/djhi))
-* Documentation: Add a FAQ entry about unique child key in datagrid ([djhi](https://github.com/djhi))
+* Documentation: Add a FAQ entry about unique child key in `<Datagrid>` ([djhi](https://github.com/djhi))
 * Documentation: Add explanation about dateInput and timezone ([alexisjanvier](https://github.com/alexisjanvier))
 * Fix link color in reference field ([djhi](https://github.com/djhi))
 * Fix: Cleanup example app code ([djhi](https://github.com/djhi))
@@ -1431,8 +1431,8 @@ See the [v0.8.0 announcement in the marmelab blog](https://marmelab.com/blog/201
 * Add `filter` prop to `<List>` component for permanent filters
 * Add support for `defaultValue` in filters
 * Add support for functions as value for the `defaultValue` prop
-* Add ability to disable sorting on datagrid headers
-* Add `perPage`, `sort`, and `filter` props to ``<ReferenceManyField>`
+* Add ability to disable sorting on `<Datagrid>` headers
+* Add `perPage`, `sort`, and `filter` props to `<ReferenceManyField>`
 * Add `label` prop to all buttons
 * Add Custom Actions documentation
 * Add CSS prefix to flex-box elements ([yshing](https://github.com/yshing))
@@ -1515,7 +1515,7 @@ See the [v0.7.0 announcement in the marmelab blog](https://marmelab.com/blog/201
 * [BC Break] The `filter` prop of the <List> component now expects an element rather than a component (`<List filter={<MyFilter/>} >` rather than `<List filter={MyFilter} >`)
 * [BC Break] The `title` prop of all view components now expect an element rather than a component (`<List title={<MyTitle/>`} > rather than `<List title={MyTitle} >`)
 * [BC Break] Rename `style` to `elStyle` and let style override container element
-* Add special design for non-sortable columns in datagrid
+* Add special design for non-sortable columns in `<Datagrid>`
 * Add `style`, `elStyle` to all components
 * Add `headerStyle` to Field components (ability to style `<th>`)
 * Add `rowStyle` to `<Datagrid>` (ability to style `<tr>` according to the value)
@@ -1527,10 +1527,10 @@ See the [v0.7.0 announcement in the marmelab blog](https://marmelab.com/blog/201
 * Add `<NullableBooleanInput>` component
 * Add `<NumberField>` component
 * Add `<FunctionField>` component
-* Align datagrid first column to the page title
+* Align `<Datagrid>` first column to the page title
 * Hide resources in the Menu when they don't have a list view
 * Fix warning for fields with no source and no label
-* Fix FilterButton for fields without label
+* Fix `<FilterButton>` for fields without label
 
 ## v0.5.4
 
@@ -1551,7 +1551,7 @@ See the [v0.7.0 announcement in the marmelab blog](https://marmelab.com/blog/201
 
 * Fix `<SelectInput>` subcomponent key in case of duplicate value ([rweindl](https://github.com/rweindl))
 * Fix `make test-watch` command
-* Fix  datagrid margins to accomodate more content
+* Fix  `<Datagrid>` margins to accomodate more content
 * Fix cannot set empty value on `<ReferenceInput/>`
 * Fix bad error message in `restClient` when no count header is found
 * Fix Infinite loop when two menu clicked quickly
@@ -1579,13 +1579,13 @@ See the [v0.5.0 announcement in the marmelab blog](http://marmelab.com/blog/2016
 * Fix spinner not stopping after delete
 * Fix Router now scrolls to top
 * Fix `<RadioButtonGroupInput>`
-* Fix datagrid layout to make columns adapt width to content
+* Fix `<Datagrid>` layout to make columns adapt width to content
 * Fix doc on reducers in CustomApp (by [ArnaudD](https://github.com/ArnaudD))
 * Fix custom app docs now that redux form is required
-* Fix RadioButtonGroupInput
+* Fix `<RadioButtonGroupInput>`
 * Fix Pagination when list has no filter
 * Fix clearing text filter doesn't fetch the unfiltered list
-* Fix Warning when Datagrid contains two action buttons
+* Fix Warning when `<Datagrid>` contains two action buttons
 
 ## v0.4.0
 
