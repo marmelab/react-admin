@@ -949,7 +949,7 @@ const PostFilter = props =>
     </Filter>;
 ```
 
-## Form prop `defaultValue` was renamed to `initialValues`
+## Form prop `defaultValue` was renamed to `initialValue`
 
 This is actually to be consistent with the underlying form library ([final-form](https://final-form.org/docs/react-final-form))
 
@@ -959,7 +959,7 @@ const PostEdit = props =>
     <Edit {...props}>
         <SimpleForm
 -           defaultValue={{ stock: 0 }}
-+           initialValues={{ stock: 0 }}
++           initialValue={{ stock: 0 }}
         >
             // ...
         </SimpleForm>
@@ -969,7 +969,7 @@ const PostEdit = props =>
     <Edit {...props}>
         <TabbedForm
 -           defaultValue={{ stock: 0 }}
-+           initialValues={{ stock: 0 }}
++           initialValue={{ stock: 0 }}
         >
             <FormTab label="Identity>
                 // ...
