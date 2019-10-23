@@ -644,6 +644,8 @@ const App = () => (
 
 ![Custom home page](./img/dashboard.png)
 
+## Querying Data
+
 This dashboard could be used to display aggregated data and react-admin provides some React hooks to make it easier. One of these hooks is `useGetList` and is used like this:
 
 ```jsx
