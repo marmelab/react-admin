@@ -773,7 +773,7 @@ The `Datagrid` is an *iterator* component: it receives an array of ids, and a da
 
 ### Body element
 
-By default, `<Datagrid>` renders its body using `<DatagridBody>`, an internal react-admin component. You can pass a custom component as the `row` prop to override that default. And by the way, `<DatagridBody>` has a `row` property set to `<DatagridRow>` by default for the same purpose. `<DatagridRow>` receives the row `record`, the `resource`, and a copy of the `<Datagrid>` children. That means you can create a custom `<Datagrid>` logic without copying several components from the react-admin source.
+By default, `<Datagrid>` renders its body using `<DatagridBody>`, an internal react-admin component. You can pass a custom component as the `row` prop to override that default. And by the way, `<DatagridBody>` has a `row` property set to `<DatagridRow>` by default for the same purpose. `<DatagridRow>` receives the row `record`, the `resource`, and a copy of the `<Datagrid>` children. That means you can create custom datagrid logic without copying several components from the react-admin source.
 
 For instance, to show the selection checkbox only for records that have a `selectable` field set to true, you can override `<DatagridRow>` and `<DatagridBody>` as follows:
 
@@ -1174,7 +1174,7 @@ A `<List>` can delegate to any iterator component - `<Datagrid>` is just one exa
 - `ids` is an array of the ids currently displayed in the list
 - `data` is an object of all the fetched data for this resource, indexed by id.
 
-For instance, what if you prefer to show a list of cards rather than a `<Datagrid>`?
+For instance, what if you prefer to show a list of cards rather than a datagrid?
 
 ![Custom iterator](./img/custom-iterator.png)
 
