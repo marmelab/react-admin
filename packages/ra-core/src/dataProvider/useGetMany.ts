@@ -153,11 +153,11 @@ const callQueries = debounce(() => {
         /**
          * Extract ids from queries, aggregate and deduplicate them
          *
-         * @example from [[1, 2], [2, null, 3], [4, null]] to [1, 2, 3, 4]
+         * @example from [[1, 2], [2, null, 3], [4, '']] to [1, 2, 3, 4]
          */
         const accumulatedIds = queries
             .reduce((acc, { ids }) => union(acc, ids), []) // concat + unique
-            .filter(v => v != null); // remove null values
+            .filter(v => v); // remove falsey values
         if (accumulatedIds.length === 0) {
             // no need to call the data provider if all the ids are null
             queries.forEach(({ ids, setState, onSuccess }) => {
