@@ -64,7 +64,7 @@
         "recompose": "~0.26.0",
         "redux": "~3.7.2",
         "redux-form": "~7.4.0",
-        "redux-saga": "~0.16.0",
+        "redux-saga": "~1.1.1",
         "reselect": "~3.0.0"
     }
 }
