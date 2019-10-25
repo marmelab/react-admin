@@ -248,7 +248,7 @@ To style the tabs, the `<Tab>` component accepts two props:
 
 By default, `<TabbedShowLayout>` renders its tabs using `<TabbedShowLayoutTabs>`, an internal react-admin component. You can pass a custom component as the `tabs` prop to override that default. Also, props passed to `<TabbedShowLayoutTabs>` are passed to the material-ui's `<Tabs>` component inside `<TabbedShowLayoutTabs>`. That means you can create a custom `tabs` component without copying several components from the react-admin source.
 
-For instance, to make use of scrollable `<Tabs>`, you can pass a scrollable props to `<TabbedShowLayoutTabs>` and use it in the `tabs` prop from `<TabbedShowLayout>` as follows:
+For instance, to make use of scrollable `<Tabs>`, you can pass a `variant="scrollable"` prop to `<TabbedShowLayoutTabs>` and use it in the `tabs` prop from `<TabbedShowLayout>` as follows:
 
 ```jsx
 import {
@@ -259,7 +259,7 @@ import {
 
 const ScrollableTabbedShowLayout = props => (
     <Show{...props}>
-        <TabbedShowLayout tabs={<TabbedShowLayoutTabs scrollable={true}{...props} />}>
+        <TabbedShowLayout tabs={<TabbedShowLayoutTabs variant="scrollable" {...props} />}>
             ...
         </TabbedShowLayout>
     </Show>
