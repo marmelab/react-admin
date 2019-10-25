@@ -1431,9 +1431,9 @@ const OrderEdit = (props) => (
     <Edit {...props}>
         <SimpleForm>
             <FormDataConsumer>
-                {formDataProps => {
+                {formDataProps => (
                     <OrderOrigin {...formDataProps} />
-                }}
+                )}
             </FormDataConsumer>
         </SimpleForm>
     </Edit>
