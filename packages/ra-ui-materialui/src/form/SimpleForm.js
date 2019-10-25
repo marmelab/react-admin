@@ -48,7 +48,6 @@ const SimpleForm = ({ initialValues, defaultValue, saving, ...props }) => {
             onSubmit={submit}
             mutators={{ ...arrayMutators }}
             keepDirtyOnReinitialize
-            destroyOnUnregister
             subscription={defaultSubscription}
             {...props}
             render={formProps => (
