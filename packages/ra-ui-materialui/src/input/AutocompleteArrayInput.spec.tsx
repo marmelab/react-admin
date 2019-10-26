@@ -183,7 +183,7 @@ describe('<AutocompleteArrayInput />', () => {
         expect(queryAllByRole('option')).toHaveLength(0);
 
         fireEvent.change(input, { target: { value: 'Tec' } });
-        waitForDomChange();
+        await waitForDomChange();
         expect(queryAllByRole('option')).toHaveLength(1);
     });
 
