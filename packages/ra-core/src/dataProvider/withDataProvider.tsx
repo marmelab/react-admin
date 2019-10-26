@@ -57,7 +57,7 @@ export interface DataProviderProps {
  */
 const withDataProvider = <P extends object>(
     Component: React.ComponentType<P>
-): React.SFC<P & DataProviderProps> => (props: P) => (
+): React.FunctionComponent<P & DataProviderProps> => (props: P) => (
     <Component {...props} dataProvider={useDataProvider()} />
 );
 

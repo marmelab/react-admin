@@ -1,4 +1,4 @@
-import React, { SFC } from 'react';
+import React, { FunctionComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Field, Form } from 'react-final-form';
 import CardActions from '@material-ui/core/CardActions';
@@ -46,7 +46,7 @@ const Input = ({
     />
 );
 
-const LoginForm: SFC<Props> = ({ redirectTo }) => {
+const LoginForm: FunctionComponent<Props> = ({ redirectTo }) => {
     const [loading, setLoading] = useSafeSetState(false);
     const login = useLogin();
     const translate = useTranslate();

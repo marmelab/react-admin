@@ -1,4 +1,4 @@
-import React, { SFC } from 'react';
+import React, { FunctionComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Field, FieldProps } from 'react-final-form';
 import { Validator, composeValidators } from './validate';
@@ -20,7 +20,12 @@ interface Props extends Omit<FieldProps<any, HTMLElement>, 'validate'> {
     validate?: Validator | Validator[];
 }
 
-export const FormField: SFC<Props> = ({ id, input, validate, ...props }) => {
+export const FormField: FunctionComponent<Props> = ({
+    id,
+    input,
+    validate,
+    ...props
+}) => {
     if (process.env.NODE_ENV !== 'production') {
         console.log('FormField is deprecated, use the useInput hook instead.');
     }

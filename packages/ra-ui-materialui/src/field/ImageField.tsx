@@ -1,4 +1,4 @@
-import React, { SFC } from 'react';
+import React, { FunctionComponent } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import { makeStyles } from '@material-ui/core/styles';
@@ -24,7 +24,7 @@ interface Props extends FieldProps {
     classes?: object;
 }
 
-export const ImageField: SFC<Props & InjectedFieldProps> = ({
+export const ImageField: FunctionComponent<Props & InjectedFieldProps> = ({
     className,
     classes: classesOverride,
     record,

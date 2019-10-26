@@ -1,4 +1,4 @@
-import React, { SFC } from 'react';
+import React, { FunctionComponent } from 'react';
 import get from 'lodash/get';
 import pure from 'recompose/pure';
 import Typography, { TypographyProps } from '@material-ui/core/Typography';
@@ -6,12 +6,9 @@ import Typography, { TypographyProps } from '@material-ui/core/Typography';
 import sanitizeRestProps from './sanitizeRestProps';
 import { FieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 
-const TextField: SFC<FieldProps & InjectedFieldProps & TypographyProps> = ({
-    className,
-    source,
-    record = {},
-    ...rest
-}) => {
+const TextField: FunctionComponent<
+    FieldProps & InjectedFieldProps & TypographyProps
+> = ({ className, source, record = {}, ...rest }) => {
     const value = get(record, source);
     return (
         <Typography

@@ -1,10 +1,10 @@
-import React, { SFC, HtmlHTMLAttributes } from 'react';
+import React, { FunctionComponent, HtmlHTMLAttributes } from 'react';
 import get from 'lodash/get';
 import pure from 'recompose/pure';
 import sanitizeRestProps from './sanitizeRestProps';
 import { FieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 
-const UrlField: SFC<
+const UrlField: FunctionComponent<
     FieldProps & InjectedFieldProps & HtmlHTMLAttributes<HTMLAnchorElement>
 > = ({ className, source, record = {}, ...rest }) => (
     <a
