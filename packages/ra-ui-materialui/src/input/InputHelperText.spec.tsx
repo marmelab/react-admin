@@ -7,7 +7,9 @@ describe('InputHelperText', () => {
     afterEach(cleanup);
 
     it('does not render anything when the input has not been touched yet and has no helper text', () => {
-        const { container } = render(<InputHelperText error="Crap!" />);
+        const { container } = render(
+            <InputHelperText touched={false} error="Crap!" />
+        );
         expect(container.innerHTML).toBe('');
     });
 
