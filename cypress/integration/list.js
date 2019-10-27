@@ -262,5 +262,20 @@ describe('List Page', () => {
                 )
             ).should('exist');
         });
+
+        it('should keep filters when sorting a column', () => {
+            ListPagePosts.setFilterValue('q', 'quis culpa impedit');
+            cy.get(ListPagePosts.elements.recordRows).should(el =>
+                expect(el).to.have.length(1)
+            );
+
+            ListPagePosts.toggleColumnSort('title');
+            ListPagePosts.waitUntilDataLoaded();
+
+            cy.get(ListPagePosts.elements.filter('q')).should(
+                'have.value',
+                'quis culpa impedit'
+            );
+        });
     });
 });
