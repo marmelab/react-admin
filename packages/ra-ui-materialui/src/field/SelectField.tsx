@@ -1,4 +1,4 @@
-import React, { SFC } from 'react';
+import React, { FunctionComponent } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import pure from 'recompose/pure';
@@ -67,7 +67,7 @@ import { FieldProps, InjectedFieldProps, fieldPropTypes } from './types';
  *
  * **Tip**: <ReferenceField> sets `translateChoice` to false by default.
  */
-export const SelectField: SFC<
+export const SelectField: FunctionComponent<
     ChoicesProps & FieldProps & InjectedFieldProps
 > = ({
     className,

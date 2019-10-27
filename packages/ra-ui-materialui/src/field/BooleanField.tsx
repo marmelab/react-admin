@@ -1,4 +1,4 @@
-import React, { SFC } from 'react';
+import React, { FunctionComponent } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import pure from 'recompose/pure';
@@ -37,7 +37,7 @@ interface Props extends FieldProps {
     valueLabelFalse?: string;
 }
 
-export const BooleanField: SFC<
+export const BooleanField: FunctionComponent<
     Props & InjectedFieldProps & TypographyProps
 > = ({
     className,

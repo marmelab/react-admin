@@ -1,4 +1,4 @@
-import React, { SFC } from 'react';
+import React, { FunctionComponent } from 'react';
 import compose from 'recompose/compose';
 import get from 'lodash/get';
 import pure from 'recompose/pure';
@@ -13,13 +13,9 @@ const useStyles = makeStyles({
     chip: { margin: 4 },
 });
 
-export const ChipField: SFC<FieldProps & InjectedFieldProps & ChipProps> = ({
-    className,
-    classes: classesOverride,
-    source,
-    record = {},
-    ...rest
-}) => {
+export const ChipField: FunctionComponent<
+    FieldProps & InjectedFieldProps & ChipProps
+> = ({ className, classes: classesOverride, source, record = {}, ...rest }) => {
     const classes = useStyles({ classes: classesOverride });
 
     return (

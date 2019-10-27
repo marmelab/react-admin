@@ -1,4 +1,4 @@
-import React, { SFC } from 'react';
+import React, { FunctionComponent } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import pure from 'recompose/pure';
@@ -46,15 +46,9 @@ interface Props extends FieldProps {
  * // renders the record { id: 1234, price: 25.99 } as
  * <span>25,99 $US</span>
  */
-export const NumberField: SFC<Props & InjectedFieldProps & TypographyProps> = ({
-    className,
-    record,
-    source,
-    locales,
-    options,
-    textAlign,
-    ...rest
-}) => {
+export const NumberField: FunctionComponent<
+    Props & InjectedFieldProps & TypographyProps
+> = ({ className, record, source, locales, options, textAlign, ...rest }) => {
     if (!record) {
         return null;
     }

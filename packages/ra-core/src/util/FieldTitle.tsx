@@ -1,4 +1,4 @@
-import React, { SFC } from 'react';
+import React, { FunctionComponent } from 'react';
 import pure from 'recompose/pure';
 
 import useTranslate from '../i18n/useTranslate';
@@ -11,7 +11,7 @@ interface Props {
     label?: string;
 }
 
-export const FieldTitle: SFC<Props> = ({
+export const FieldTitle: FunctionComponent<Props> = ({
     resource,
     source,
     label,

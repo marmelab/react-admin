@@ -1,4 +1,4 @@
-import React, { SFC } from 'react';
+import React, { FunctionComponent } from 'react';
 import expect from 'expect';
 
 import translate from './translate';
@@ -9,7 +9,7 @@ interface Props extends TranslationContextProps {
 }
 describe('translate HOC', () => {
     it('should conserve base component default props', () => {
-        const Component: SFC<Props> = () => <div />;
+        const Component: FunctionComponent<Props> = () => <div />;
         Component.defaultProps = { foo: 'bar' };
 
         const TranslatedComponent = translate(Component);

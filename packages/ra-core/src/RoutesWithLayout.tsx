@@ -1,4 +1,9 @@
-import React, { Children, cloneElement, createElement, SFC } from 'react';
+import React, {
+    Children,
+    cloneElement,
+    createElement,
+    FunctionComponent,
+} from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
 import WithPermissions from './auth/WithPermissions';
@@ -18,7 +23,7 @@ interface Props {
     title?: TitleComponent;
 }
 
-const RoutesWithLayout: SFC<Props> = ({
+const RoutesWithLayout: FunctionComponent<Props> = ({
     catchAll,
     children,
     customRoutes,

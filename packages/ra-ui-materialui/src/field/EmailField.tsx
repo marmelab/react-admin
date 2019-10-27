@@ -1,4 +1,4 @@
-import React, { SFC, HtmlHTMLAttributes } from 'react';
+import React, { FunctionComponent, HtmlHTMLAttributes } from 'react';
 import get from 'lodash/get';
 import pure from 'recompose/pure';
 
@@ -8,7 +8,7 @@ import { FieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 // useful to prevent click bubbling in a datagrid with rowClick
 const stopPropagation = e => e.stopPropagation();
 
-const EmailField: SFC<
+const EmailField: FunctionComponent<
     FieldProps & InjectedFieldProps & HtmlHTMLAttributes<HTMLAnchorElement>
 > = ({ className, source, record = {}, ...rest }) => (
     <a

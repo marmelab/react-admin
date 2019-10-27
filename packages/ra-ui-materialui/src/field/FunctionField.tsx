@@ -1,4 +1,4 @@
-import React, { SFC } from 'react';
+import React, { FunctionComponent } from 'react';
 import pure from 'recompose/pure';
 import Typography, { TypographyProps } from '@material-ui/core/Typography';
 
@@ -13,13 +13,9 @@ interface Props extends FieldProps {
  * @example
  * <FunctionField source="last_name" label="Name" render={record => `${record.first_name} ${record.last_name}`} />
  */
-const FunctionField: SFC<Props & InjectedFieldProps & TypographyProps> = ({
-    className,
-    record = {},
-    source,
-    render,
-    ...rest
-}) =>
+const FunctionField: FunctionComponent<
+    Props & InjectedFieldProps & TypographyProps
+> = ({ className, record = {}, source, render, ...rest }) =>
     record ? (
         <Typography
             component="span"

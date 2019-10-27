@@ -1,4 +1,4 @@
-import React, { ReactNode, SFC } from 'react';
+import React, { ReactNode, FunctionComponent } from 'react';
 import { useFormState } from 'react-final-form';
 import { FormSubscription } from 'final-form';
 import get from 'lodash/get';
@@ -63,7 +63,7 @@ interface Props extends ConnectedProps {
  *     </Edit>
  * );
  */
-export const FormDataConsumerView: SFC<Props> = ({
+export const FormDataConsumerView: FunctionComponent<Props> = ({
     children,
     form,
     formData,
