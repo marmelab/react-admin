@@ -1143,8 +1143,10 @@ The undo feature is partially implemented in the `Notification` component. If yo
 import React from 'react';
 import classnames from 'classnames';
 import {
+    Button,
 +   undoableEventEmitter,
 } from 'react-admin';
+import Snackbar from "@material-ui/core/Snackbar";
 
 class Notification extends React.Component {
     state = {
