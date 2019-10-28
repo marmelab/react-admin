@@ -1,8 +1,9 @@
 import React from 'react';
 import debounce from 'lodash/debounce';
 import { render, fireEvent, waitForElement } from '@testing-library/react';
+import { Form } from 'react-final-form';
 
-import { RichTextInput } from './index';
+import RichTextInput from './index';
 
 let container;
 
@@ -30,12 +31,12 @@ describe('RichTextInput', () => {
         const handleChange = jest.fn();
         debounce.mockImplementation(fn => fn);
         const { getByTestId, rerender } = render(
-            <RichTextInput
-                input={{
-                    value: '<p>test</p>',
-                    onChange: handleChange,
-                }}
-                meta={{ error: null }}
+            <Form
+                initialValues={{ body: '<p>test</p>' }}
+                onSubmit={jest.fn()}
+                render={() => (
+                    <RichTextInput source="body" onChange={handleChange} />
+                )}
             />
         );
         const quillNode = await waitForElement(() => {
@@ -50,12 +51,12 @@ describe('RichTextInput', () => {
         jest.runOnlyPendingTimers();
 
         rerender(
-            <RichTextInput
-                input={{
-                    value: '<p>test1</p>',
-                    onChange: handleChange,
-                }}
-                meta={{ error: null }}
+            <Form
+                initialValues={{ body: '<p>test1</p>' }}
+                onSubmit={jest.fn()}
+                render={() => (
+                    <RichTextInput source="body" onChange={handleChange} />
+                )}
             />
         );
 

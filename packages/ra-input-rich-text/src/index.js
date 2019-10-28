@@ -1,153 +1,142 @@
 import debounce from 'lodash/debounce';
-import React, { Component } from 'react';
+import React, { useRef, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import Quill from 'quill';
-import { addField, FieldTitle } from 'ra-core';
+import { useInput, FieldTitle } from 'ra-core';
 import { InputHelperText } from 'ra-ui-materialui';
 import { FormHelperText, FormControl, InputLabel } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 
 import styles from './styles';
 
-export class RichTextInput extends Component {
-    lastValueChange = null;
+const useStyles = makeStyles(styles);
 
-    static propTypes = {
-        addLabel: PropTypes.bool.isRequired,
-        classes: PropTypes.object,
-        input: PropTypes.object,
-        label: PropTypes.string,
-        meta: PropTypes.object,
-        options: PropTypes.object,
-        source: PropTypes.string,
-        toolbar: PropTypes.oneOfType([
-            PropTypes.array,
-            PropTypes.bool,
-            PropTypes.shape({
-                container: PropTypes.array,
-                handlers: PropTypes.object,
-            }),
-        ]),
-        fullWidth: PropTypes.bool,
-        configureQuill: PropTypes.func,
-    };
+const RichTextInput = ({
+    options = {}, // Quill editor options
+    record = {},
+    toolbar = true,
+    fullWidth = true,
+    configureQuill,
+    helperText = false,
+    label,
+    source,
+    resource,
+    variant,
+    margin = 'dense',
+    ...rest
+}) => {
+    const classes = useStyles();
+    const quillInstance = useRef();
+    const divRef = useRef();
+    const editor = useRef();
 
-    static defaultProps = {
-        addLabel: true,
-        options: {}, // Quill editor options
-        record: {},
-        toolbar: true,
-        fullWidth: true,
-    };
+    const {
+        id,
+        isRequired,
+        input: { value, onChange },
+        meta: { touched, error },
+    } = useInput({ source, ...rest });
 
-    componentDidMount() {
-        const {
-            input: { value },
-            toolbar,
-            options,
-        } = this.props;
+    const lastValueChange = useRef(value);
 
-        this.quill = new Quill(this.divRef, {
+    const onTextChange = useCallback(
+        debounce(() => {
+            const value =
+                editor.current.innerHTML === '<p><br></p>'
+                    ? ''
+                    : editor.current.innerHTML;
+            lastValueChange.current = value;
+            onChange(value);
+        }, 500),
+        []
+    );
+
+    useEffect(() => {
+        quillInstance.current = new Quill(divRef.current, {
             modules: { toolbar, clipboard: { matchVisual: false } },
             theme: 'snow',
             ...options,
         });
 
-        if (this.props.configureQuill) {
-            this.props.configureQuill(this.quill);
+        if (configureQuill) {
+            configureQuill(quillInstance.current);
         }
 
-        this.quill.setContents(this.quill.clipboard.convert(value));
+        quillInstance.current.setContents(
+            quillInstance.current.clipboard.convert(value)
+        );
 
-        this.editor = this.divRef.querySelector('.ql-editor');
-        this.quill.on('text-change', this.onTextChange);
-    }
+        editor.current = divRef.current.querySelector('.ql-editor');
+        quillInstance.current.on('text-change', onTextChange);
 
-    componentDidUpdate() {
-        if (this.lastValueChange !== this.props.input.value) {
-            const selection = this.quill.getSelection();
-            this.quill.setContents(
-                this.quill.clipboard.convert(this.props.input.value)
+        return () => {
+            quillInstance.current.off('text-change', onTextChange);
+            onTextChange.cancel();
+            quillInstance.current = null;
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    useEffect(() => {
+        if (lastValueChange.current !== value) {
+            const selection = quillInstance.current.getSelection();
+            quillInstance.current.setContents(
+                quillInstance.current.clipboard.convert(value)
             );
-            if (selection && this.quill.hasFocus()) {
-                this.quill.setSelection(selection);
+            if (selection && quillInstance.current.hasFocus()) {
+                quillInstance.current.setSelection(selection);
             }
         }
-    }
+    }, [value]);
 
-    componentWillUnmount() {
-        this.quill.off('text-change', this.onTextChange);
-        this.onTextChange.cancel();
-        this.quill = null;
-    }
-
-    onTextChange = debounce(() => {
-        const value =
-            this.editor.innerHTML === '<p><br></p>'
-                ? ''
-                : this.editor.innerHTML;
-        this.lastValueChange = value;
-        this.props.input.onChange(value);
-    }, 500);
-
-    updateDivRef = ref => {
-        this.divRef = ref;
-    };
-
-    render() {
-        const {
-            label,
-            source,
-            resource,
-            isRequired,
-            id,
-            classes = {},
-            margin = 'dense',
-            variant,
-        } = this.props;
-        const { touched, error, helperText = false } = this.props.meta;
-        return (
-            <FormControl
-                error={!!(touched && error)}
-                fullWidth={this.props.fullWidth}
-                className="ra-rich-text-input"
-                margin={margin}
-            >
-                {label !== '' && label !== false && (
-                    <InputLabel shrink htmlFor={id} className={classes.label}>
-                        <FieldTitle
-                            label={label}
-                            source={source}
-                            resource={resource}
-                            isRequired={isRequired}
-                        />
-                    </InputLabel>
-                )}
-                <div
-                    data-testid="quill"
-                    ref={this.updateDivRef}
-                    className={variant}
-                />
-                {helperText || (touched && error) ? (
-                    <FormHelperText
-                        error={!!error}
-                        className={!!error ? 'ra-rich-text-input-error' : ''}
-                    >
-                        <InputHelperText
-                            error={error}
-                            helperText={helperText}
-                            touched={touched}
-                        />
-                    </FormHelperText>
-                ) : null}
-            </FormControl>
-        );
-    }
-}
-
-const RichTextInputWithField = addField(withStyles(styles)(RichTextInput));
-
-RichTextInputWithField.defaultProps = {
-    fullWidth: true,
+    return (
+        <FormControl
+            error={!!(touched && error)}
+            fullWidth={fullWidth}
+            className="ra-rich-text-input"
+            margin={margin}
+        >
+            {label !== '' && label !== false && (
+                <InputLabel shrink htmlFor={id} className={classes.label}>
+                    <FieldTitle
+                        label={label}
+                        source={source}
+                        resource={resource}
+                        isRequired={isRequired}
+                    />
+                </InputLabel>
+            )}
+            <div data-testid="quill" ref={divRef} className={variant} />
+            {helperText || (touched && error) ? (
+                <FormHelperText
+                    error={!!error}
+                    className={!!error ? 'ra-rich-text-input-error' : ''}
+                >
+                    <InputHelperText
+                        error={error}
+                        helperText={helperText}
+                        touched={touched}
+                    />
+                </FormHelperText>
+            ) : null}
+        </FormControl>
+    );
 };
-export default RichTextInputWithField;
+
+RichTextInput.propTypes = {
+    label: PropTypes.string,
+    options: PropTypes.object,
+    source: PropTypes.string,
+    toolbar: PropTypes.oneOfType([
+        PropTypes.array,
+        PropTypes.bool,
+        PropTypes.shape({
+            container: PropTypes.array,
+            handlers: PropTypes.object,
+        }),
+    ]),
+    fullWidth: PropTypes.bool,
+    configureQuill: PropTypes.func,
+};
+
+export default RichTextInput;
