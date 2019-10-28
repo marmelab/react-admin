@@ -11,8 +11,8 @@ export default {
             views: 143,
             average_note: 2.72198,
             commentable: true,
-            pictures: {
-                first: {
+            pictures: [
+                {
                     name: 'the picture name',
                     url: 'http://www.photo-libre.fr/paysage/1.jpg',
                     metas: {
@@ -30,11 +30,11 @@ export default {
                         ],
                     },
                 },
-                second: {
+                {
                     name: 'better name',
                     url: 'http://www.photo-libre.fr/paysage/2.jpg',
                 },
-            },
+            ],
             published_at: new Date('2012-08-06'),
             tags: [1, 3],
             category: 'tech',
@@ -236,7 +236,7 @@ export default {
             tags: [],
             category: 'lifestyle',
             subcategory: 'fitness',
-            pictures: { first: {}, second: {} },
+            pictures: [],
             backlinks: [
                 {
                     date: '2012-08-07T00:00:00.000Z',
