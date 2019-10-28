@@ -94,8 +94,6 @@ DatagridHeaderCell.propTypes = {
 
 export default shouldUpdate(
     (props, nextProps) =>
-        props.isSorting !== nextProps.isSorting ||
-        (nextProps.isSorting &&
-            props.currentSort.order !== nextProps.currentSort.order) ||
+        props.updateSort !== nextProps.updateSort ||
         (nextProps.isSorting && props.sortable !== nextProps.sortable)
 )(DatagridHeaderCell);
