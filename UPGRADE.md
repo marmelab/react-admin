@@ -1140,12 +1140,9 @@ The undo feature is partially implemented in the `Notification` component. If yo
 
 ```diff
 // in src/MyNotification.js
+import React from 'react';
+import classnames from 'classnames';
 import {
-    hideNotification,
-    getNotification,
-    translate,
-    undo,
-    complete,
 +   undoableEventEmitter,
 } from 'react-admin';
 
