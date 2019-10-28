@@ -1,4 +1,10 @@
-import React, { Component, createElement, useEffect, useRef } from 'react';
+import React, {
+    Component,
+    createElement,
+    useEffect,
+    useRef,
+    useState,
+} from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
@@ -179,16 +185,18 @@ const EnhancedLayout = compose(
 )(Layout);
 
 const LayoutWithTheme = ({ theme: themeOverride, ...props }) => {
-    const theme = useRef(createMuiTheme(themeOverride));
+    const themeProp = useRef(themeOverride);
+    const [theme, setTheme] = useState(createMuiTheme(themeOverride));
 
     useEffect(() => {
-        if (theme.current !== themeOverride) {
-            theme.current = createMuiTheme(themeOverride);
+        if (themeProp.current !== themeOverride) {
+            themeProp.current = themeOverride;
+            setTheme(createMuiTheme(themeOverride));
         }
-    }, [themeOverride]);
+    }, [themeOverride, themeProp, theme, setTheme]);
 
     return (
-        <ThemeProvider theme={theme.current}>
+        <ThemeProvider theme={theme}>
             <EnhancedLayout {...props} />
         </ThemeProvider>
     );
