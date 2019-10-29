@@ -326,7 +326,6 @@ const AutocompleteInput: FunctionComponent<
                         <TextField
                             id={id}
                             name={input.name}
-                            fullWidth
                             InputProps={{
                                 inputRef: storeInputRef,
                                 classes: {
