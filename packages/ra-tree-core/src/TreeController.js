@@ -59,7 +59,7 @@ export class TreeControllerView extends Component {
             Object.values(availableData),
             parentSource
         );
-
+        // @ts-ignore
         return children({
             getIsNodeExpanded: this.handleGetIsNodeExpanded,
             parentSource,
