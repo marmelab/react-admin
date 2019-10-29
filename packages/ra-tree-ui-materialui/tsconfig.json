@@ -5,7 +5,7 @@
         "rootDir": "./src",
         "tsBuildInfoFile": "./lib/.tsbuildinfo",
         "checkJs": false,
-        "declarationDir": "./declarationDir-ignore"
+        // "declarationDir": "./declarationDir-ignore"
     },
     "exclude": ["**/*.spec.ts", "**/*.spec.tsx", "**/*.spec.js"],
     "include": ["src"],
