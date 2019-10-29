@@ -1140,14 +1140,34 @@ The undo feature is partially implemented in the `Notification` component. If yo
 
 ```diff
 // in src/MyNotification.js
+import React from 'react';
+import { connect } from 'react-redux';
+import compose from 'recompose/compose';
+import classnames from 'classnames';
+import Snackbar from "@material-ui/core/Snackbar";
+import { withStyles, createStyles } from "@material-ui/core";
 import {
-    hideNotification,
-    getNotification,
-    translate,
-    undo,
     complete,
+    undo,
+    translate,
+    getNotification,
+    hideNotification,
+    Button,
 +   undoableEventEmitter,
 } from 'react-admin';
+
+const styles = theme =>
+  createStyles({
+    confirm: {
+      backgroundColor: theme.palette.background.default
+    },
+    warning: {
+      backgroundColor: theme.palette.error.light
+    },
+    undo: {
+      color: theme.palette.primary.light
+    }
+  });
 
 class Notification extends React.Component {
     state = {
@@ -1248,6 +1268,23 @@ class Notification extends React.Component {
         );
     }
 }
+
+const mapStateToProps = state => ({
+  notification: getNotification(state)
+});
+
+export default compose(
+  translate,
+  withStyles(styles),
+  connect(
+    mapStateToProps,
+    {
+      complete,
+      hideNotification,
+      undo
+    }
+  )
+)(Notification);
 ```
 
 ## No More Tree Packages in Core
