@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux';
 import { CRUD_GET_MATCHING } from '../actions/dataActions/crudGetMatching';
-import { Pagination, Sort, ReduxState } from '../types';
+import { Identifier, Pagination, Sort, Record, ReduxState } from '../types';
 import useQueryWithStore from './useQueryWithStore';
 import {
     getReferenceResource,
@@ -66,7 +66,7 @@ const useGetMatching = (
     source: string,
     referencingResource: string,
     options?: any
-) => {
+): UseGetMatchingResult => {
     const relatedTo = referenceSource(referencingResource, source);
     const {
         data: possibleValues,
@@ -118,5 +118,14 @@ const useGetMatching = (
         loaded,
     };
 };
+
+interface UseGetMatchingResult {
+    data: Record[];
+    ids: Identifier[];
+    total: number;
+    error?: any;
+    loading: boolean;
+    loaded: boolean;
+}
 
 export default useGetMatching;

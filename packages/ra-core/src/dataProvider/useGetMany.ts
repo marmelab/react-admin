@@ -7,7 +7,7 @@ import union from 'lodash/union';
 import isEqual from 'lodash/isEqual';
 
 import { CRUD_GET_MANY } from '../actions/dataActions/crudGetMany';
-import { Identifier, ReduxState, DataProviderProxy } from '../types';
+import { Identifier, Record, ReduxState, DataProviderProxy } from '../types';
 import { useSafeSetState } from '../util/hooks';
 import useDataProvider from './useDataProvider';
 import { useEffect } from 'react';
@@ -23,7 +23,12 @@ interface Query {
 interface QueriesToCall {
     [resource: string]: Query[];
 }
-
+interface UseGetManyResult {
+    data: Record[];
+    error?: any;
+    loading: boolean;
+    loaded: boolean;
+}
 let queriesToCall: QueriesToCall = {};
 let dataProvider: DataProviderProxy;
 
@@ -74,7 +79,11 @@ const DataProviderOptions = { action: CRUD_GET_MANY };
  *      );
  * };
  */
-const useGetMany = (resource: string, ids: Identifier[], options: any = {}) => {
+const useGetMany = (
+    resource: string,
+    ids: Identifier[],
+    options: any = {}
+): UseGetManyResult => {
     // we can't use useQueryWithStore here because we're aggregating queries first
     // therefore part of the useQueryWithStore logic will have to be repeated below
     const selectMany = useMemo(makeGetManySelector, []);
