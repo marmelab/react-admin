@@ -63,7 +63,6 @@ const TabbedForm = ({ initialValues, defaultValue, saving, ...props }) => {
             mutators={{ ...arrayMutators }}
             setRedirect={setRedirect}
             keepDirtyOnReinitialize
-            destroyOnUnregister
             subscription={defaultSubscription}
             {...props}
             render={formProps => (
