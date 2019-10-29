@@ -83,6 +83,6 @@
         "cypress"
     ],
     "dependencies": {
-        "typescript": "^3.7.0-dev.20191011"
+        "typescript": "https://typescript.visualstudio.com/cf7ac146-d525-443c-b23c-0d58337efebc/_apis/build/builds/51345/artifacts?artifactName=tgz&fileId=BE8227D37C4FBD85D3EC6A4F2B506E69739A0B654874B0793F8371FF9400A48102&fileName=/typescript-3.8.0-insiders.20191028.tgz"
     }
 }
