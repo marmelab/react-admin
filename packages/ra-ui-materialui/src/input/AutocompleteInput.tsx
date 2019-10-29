@@ -105,7 +105,7 @@ const AutocompleteInput: FunctionComponent<
     isRequired: isRequiredOverride,
     label,
     limitChoicesToValue,
-    margin,
+    margin = 'dense',
     matchSuggestion,
     meta: metaOverride,
     onBlur,
@@ -326,7 +326,6 @@ const AutocompleteInput: FunctionComponent<
                         <TextField
                             id={id}
                             name={input.name}
-                            fullWidth
                             InputProps={{
                                 inputRef: storeInputRef,
                                 classes: {
