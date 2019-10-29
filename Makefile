@@ -27,6 +27,10 @@ build-composite:
 	@echo "Build composite project";
 	@yarn build
 
+validate-types:
+	@echo "validate-types";
+	@yarn validate-emitted-declarations
+
 copy-docs-react-admin:
 	@echo "Copy docs react-admin";
 	@rm -rf ./packages/react-admin/docs
@@ -48,42 +52,42 @@ serve-github-pages: ## Serve the doc from a Github Pages docker container
 			--host=0.0.0.0 \
 			--incremental
 
-lint: ## lint the code and check coding conventions
-	@echo "Running linter..."
-	@yarn -s lint
+# lint: ## lint the code and check coding conventions
+# 	@echo "Running linter..."
+# 	@yarn -s lint
 
-prettier: ## prettify the source code using prettier
-	@echo "Running prettier..."
-	@yarn -s prettier
+# prettier: ## prettify the source code using prettier
+# 	@echo "Running prettier..."
+# 	@yarn -s prettier
 
-test: build test-unit lint test-e2e ## launch all tests
+# test: build test-unit lint test-e2e ## launch all tests
 
-test-unit: ## launch unit tests
-	@if [ "$(CI)" != "true" ]; then \
-		echo "Running unit tests..."; \
-		yarn -s test-unit; \
-	fi
-	@if [ "$(CI)" = "true" ]; then \
-		echo "Running unit tests in CI..."; \
-		yarn -s test-unit-ci; \
-	fi
+# test-unit: ## launch unit tests
+# 	@if [ "$(CI)" != "true" ]; then \
+# 		echo "Running unit tests..."; \
+# 		yarn -s test-unit; \
+# 	fi
+# 	@if [ "$(CI)" = "true" ]; then \
+# 		echo "Running unit tests in CI..."; \
+# 		yarn -s test-unit-ci; \
+# 	fi
 
-test-unit-watch: ## launch unit tests and watch for changes
-	echo "Running unit tests..."; \
-	yarn -s test-unit --watch; \
+# test-unit-watch: ## launch unit tests and watch for changes
+# 	echo "Running unit tests..."; \
+# 	yarn -s test-unit --watch; \
 
-test-e2e: ## launch end-to-end tests
-	@if [ "$(build)" != "false" ]; then \
-		echo 'Building example code (call "make build=false test-e2e" to skip the build)...'; \
-		cd examples/simple && BABEL_ENV=cjs yarn -s build; \
-	fi
+# test-e2e: ## launch end-to-end tests
+# 	@if [ "$(build)" != "false" ]; then \
+# 		echo 'Building example code (call "make build=false test-e2e" to skip the build)...'; \
+# 		cd examples/simple && BABEL_ENV=cjs yarn -s build; \
+# 	fi
 
-	@NODE_ENV=test cd cypress && yarn -s test
+# 	@NODE_ENV=test cd cypress && yarn -s test
 
 
-test-e2e-local: ## launch end-to-end tests for development
-	@echo 'Starting e2e tests environment. Ensure you started the simple example first (make run-simple)'
-	@cd cypress && yarn -s start
+# test-e2e-local: ## launch end-to-end tests for development
+# 	@echo 'Starting e2e tests environment. Ensure you started the simple example first (make run-simple)'
+# 	@cd cypress && yarn -s start
 
 declarations-test:
 	@echo 'declarations-test'
