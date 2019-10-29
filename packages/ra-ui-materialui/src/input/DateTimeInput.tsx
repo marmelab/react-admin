@@ -68,6 +68,7 @@ export const DateTimeInput: FunctionComponent<
 > = ({
     label,
     helperText,
+    margin = 'dense',
     onBlur,
     onChange,
     onFocus,
@@ -75,6 +76,7 @@ export const DateTimeInput: FunctionComponent<
     source,
     resource,
     validate,
+    variant = 'filled',
     ...rest
 }) => {
     const {
@@ -99,7 +101,8 @@ export const DateTimeInput: FunctionComponent<
         <TextField
             id={id}
             {...input}
-            margin="normal"
+            variant={variant}
+            margin={margin}
             error={!!(touched && error)}
             helperText={
                 (touched && error) || helperText ? (
