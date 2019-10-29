@@ -1,7 +1,7 @@
 import { useMemo, useState, useEffect, useRef } from 'react';
 import isEqual from 'lodash/isEqual';
 import difference from 'lodash/difference';
-import { Record, Pagination, Sort } from '../../types';
+import { Pagination, Record, Sort } from '../../types';
 import { useGetMany } from '../../dataProvider';
 import { FieldInputProps } from 'react-final-form';
 import useGetMatching from '../../dataProvider/useGetMatching';
@@ -13,7 +13,7 @@ import { getStatusForArrayInput as getDataStatus } from './referenceDataStatus';
  *
  * @example
  *
- * const { choices, error, loaded, loading, referenceBasePath } = useReferenceArrayInputController({
+ * const { choices, error, loaded, loading } = useReferenceArrayInputController({
  *      basePath: 'resource';
  *      record: { referenceIds: ['id1', 'id2']};
  *      reference: 'reference';
@@ -33,7 +33,6 @@ import { getStatusForArrayInput as getDataStatus } from './referenceDataStatus';
  * @return {Object} controllerProps Fetched data and callbacks for the ReferenceArrayInput components
  */
 const useReferenceArrayInputController = ({
-    basePath,
     filter: defaultFilter,
     filterToQuery = defaultFilterToQuery,
     input,
@@ -115,7 +114,7 @@ const useReferenceArrayInputController = ({
     // the component displaying the currently selected records may fail
     const finalMatchingReferences =
         matchingReferences && matchingReferences.length > 0
-            ? matchingReferences.concat(finalReferenceRecords)
+            ? mergeReferences(matchingReferences, finalReferenceRecords)
             : finalReferenceRecords.length > 0
             ? finalReferenceRecords
             : matchingReferences;
@@ -127,18 +126,29 @@ const useReferenceArrayInputController = ({
         translate,
     });
 
-    const referenceBasePath = basePath.replace(resource, reference); // FIXME obviously very weak
     return {
         choices: dataStatus.choices,
         error: dataStatus.error,
         loaded,
         loading: dataStatus.waiting,
-        referenceBasePath,
         setFilter,
         setPagination,
         setSort,
         warning: dataStatus.warning,
     };
+};
+
+// concatenate and deduplicate two lists of records
+const mergeReferences = (ref1: Record[], ref2: Record[]): Record[] => {
+    const res = [...ref1];
+    const ids = ref1.map(ref => ref.id);
+    ref2.forEach(ref => {
+        if (!ids.includes(ref.id)) {
+            ids.push(ref.id);
+            res.push(ref);
+        }
+    });
+    return res;
 };
 
 export default useReferenceArrayInputController;
@@ -151,7 +161,6 @@ export default useReferenceArrayInputController;
  * @property {Object} error the error returned by the dataProvider
  * @property {boolean} loading is the reference currently loading
  * @property {boolean} loaded has the reference already been loaded
- * @property {string} referenceBasePath basePath of the reference
  */
 interface ReferenceArrayInputProps {
     choices: Record[];
@@ -159,7 +168,6 @@ interface ReferenceArrayInputProps {
     warning?: any;
     loading: boolean;
     loaded: boolean;
-    referenceBasePath: string;
     setFilter: (filter: any) => void;
     setPagination: (pagination: Pagination) => void;
     setSort: (sort: Sort) => void;

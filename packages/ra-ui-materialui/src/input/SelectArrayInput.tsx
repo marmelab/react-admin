@@ -41,6 +41,7 @@ const sanitizeRestProps = ({
     isRequired,
     label,
     limitChoicesToValue,
+    loaded,
     locale,
     meta,
     onChange,
@@ -262,7 +263,7 @@ const SelectArrayInput: FunctionComponent<
 };
 
 SelectArrayInput.propTypes = {
-    choices: PropTypes.arrayOf(PropTypes.object).isRequired,
+    choices: PropTypes.arrayOf(PropTypes.object),
     classes: PropTypes.object,
     className: PropTypes.string,
     children: PropTypes.node,
