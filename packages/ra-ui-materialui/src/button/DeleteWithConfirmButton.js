@@ -98,16 +98,12 @@ const DeleteWithConfirmButton = ({
         e.stopPropagation();
     };
 
-    const handleDelete = useCallback(
-        event => {
-            event.stopPropagation();
-            deleteOne();
-            if (typeof onClick === 'function') {
-                onClick();
-            }
-        },
-        [deleteOne, onClick]
-    );
+    const handleDelete = useCallback(() => {
+        deleteOne();
+        if (typeof onClick === 'function') {
+            onClick();
+        }
+    }, [deleteOne, onClick]);
 
     return (
         <Fragment>
