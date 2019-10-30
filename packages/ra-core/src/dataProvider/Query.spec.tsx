@@ -9,8 +9,7 @@ import {
 import expect from 'expect';
 
 import Query from './Query';
-import CoreAdmin from '../CoreAdmin';
-import Resource from '../Resource';
+import { CoreAdmin, Resource } from '../core';
 import renderWithRedux from '../util/renderWithRedux';
 import TestContext from '../util/TestContext';
 import DataProviderContext from './DataProviderContext';
