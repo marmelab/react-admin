@@ -364,20 +364,20 @@ export interface ResourceProps {
 export interface AdminProps {
     appLayout?: LayoutComponent;
     authProvider?: AuthProvider | LegacyAuthProvider;
-    catchAll: CatchAllComponent;
+    catchAll?: CatchAllComponent;
     children?: AdminChildren;
     customReducers?: object;
     customRoutes?: CustomRoutes;
     customSagas?: any[];
     dashboard?: DashboardComponent;
     dataProvider: DataProvider | LegacyDataProvider;
-    history: History;
+    history?: History;
     i18nProvider?: I18nProvider;
     initialState?: InitialState;
-    layout: LayoutComponent;
-    loading: ComponentType;
+    layout?: LayoutComponent;
+    loading?: ComponentType;
     locale?: string;
-    loginPage: LoginComponent | boolean;
+    loginPage?: LoginComponent | boolean;
     logoutButton?: ComponentType;
     menu?: ComponentType;
     theme?: object;

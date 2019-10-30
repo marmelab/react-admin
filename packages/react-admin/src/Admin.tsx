@@ -1,8 +1,8 @@
 import React, { FunctionComponent } from 'react';
+import { AdminProps } from 'ra-core';
 
 import AdminContext from './AdminContext';
 import AdminUI from './AdminUI';
-import { AdminProps } from 'ra-core';
 
 /**
  * Main admin component, entry point to the application.

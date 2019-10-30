@@ -33,7 +33,7 @@ export interface AdminContextProps {
     customRoutes?: CustomRoutes;
     dashboard?: DashboardComponent;
     dataProvider: DataProvider | LegacyDataProvider;
-    history: History;
+    history?: History;
     i18nProvider?: I18nProvider;
     initialState?: InitialState;
     theme?: object;
