@@ -293,6 +293,8 @@ export interface ReduxState {
     };
 }
 
+export type InitialState = object | (() => object);
+
 /**
  * Misc types
  */

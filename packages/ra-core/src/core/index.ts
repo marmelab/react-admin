@@ -1,16 +1,17 @@
-import CoreAdmin from './CoreAdmin';
+import CoreAdmin, { AdminProps } from './CoreAdmin';
 import CoreAdminContext from './CoreAdminContext';
 import CoreAdminRouter from './CoreAdminRouter';
-import CoreUI from './CoreUI';
+import CoreAdminUI from './CoreAdminUI';
 import createAdminStore from './createAdminStore';
 import RoutesWithLayout from './RoutesWithLayout';
 import Resource from './Resource';
 
 export {
+    AdminProps,
     CoreAdmin,
     CoreAdminContext,
     CoreAdminRouter,
-    CoreUI,
+    CoreAdminUI,
     createAdminStore,
     RoutesWithLayout,
     Resource,

@@ -4,7 +4,12 @@ import createSagaMiddleware from 'redux-saga';
 import { all, fork } from 'redux-saga/effects';
 import { History } from 'history';
 
-import { AuthProvider, DataProvider, I18nProvider } from '../types';
+import {
+    AuthProvider,
+    DataProvider,
+    I18nProvider,
+    InitialState,
+} from '../types';
 import createAppReducer from '../reducer';
 import { adminSaga } from '../sideEffect';
 import { CLEAR_STATE } from '../actions/clearActions';
@@ -12,8 +17,6 @@ import { CLEAR_STATE } from '../actions/clearActions';
 interface Window {
     __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: (traceOptions: object) => Function;
 }
-
-export type InitialState = object | (() => object);
 
 interface Params {
     dataProvider: DataProvider;

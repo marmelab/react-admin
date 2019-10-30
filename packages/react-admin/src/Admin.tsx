@@ -1,48 +1,8 @@
-import React, { FunctionComponent, ComponentType } from 'react';
-import { History } from 'history';
+import React, { FunctionComponent } from 'react';
 
-import CoreAdminContext from './CoreAdminContext';
-import CoreAdminUI from './CoreAdminUI';
-import {
-    AuthProvider,
-    LegacyAuthProvider,
-    I18nProvider,
-    DataProvider,
-    TitleComponent,
-    LoginComponent,
-    LayoutComponent,
-    AdminChildren,
-    CatchAllComponent,
-    CustomRoutes,
-    DashboardComponent,
-    LegacyDataProvider,
-    InitialState,
-} from '../types';
-
-export type ChildrenFunction = () => ComponentType[];
-
-export interface AdminProps {
-    appLayout?: LayoutComponent;
-    authProvider?: AuthProvider | LegacyAuthProvider;
-    catchAll: CatchAllComponent;
-    children?: AdminChildren;
-    customReducers?: object;
-    customRoutes?: CustomRoutes;
-    customSagas?: any[];
-    dashboard?: DashboardComponent;
-    dataProvider: DataProvider | LegacyDataProvider;
-    history: History;
-    i18nProvider?: I18nProvider;
-    initialState?: InitialState;
-    layout: LayoutComponent;
-    loading: ComponentType;
-    locale?: string;
-    loginPage: LoginComponent | boolean;
-    logoutButton?: ComponentType;
-    menu?: ComponentType;
-    theme?: object;
-    title?: TitleComponent;
-}
+import AdminContext from './AdminContext';
+import AdminUI from './AdminUI';
+import { AdminProps } from 'ra-core';
 
 /**
  * Main admin component, entry point to the application.
@@ -58,55 +18,55 @@ export interface AdminProps {
  * // static list of resources
  *
  * import {
- *     CoreAdmin,
+ *     Admin,
  *     Resource,
  *     ListGuesser,
  *     useDataProvider,
- * } from 'ra-core';
+ * } from 'react-admin';
  *
  * const App = () => (
- *     <Core dataProvider={myDataProvider}>
+ *     <Admin dataProvider={myDataProvider}>
  *         <Resource name="posts" list={ListGuesser} />
- *     </Core>
+ *     </Admin>
  * );
  *
  * // dynamic list of resources based on permissions
  *
  * import {
- *     CoreAdmin,
+ *     Admin,
  *     Resource,
  *     ListGuesser,
  *     useDataProvider,
- * } from 'ra-core';
+ * } from 'react-admin';
  *
  * const App = () => (
- *     <CoreAdmin dataProvider={myDataProvider}>
+ *     <Admin dataProvider={myDataProvider}>
  *         {permissions => [
  *             <Resource name="posts" key="posts" list={ListGuesser} />,
  *         ]}
- *     </CoreAdmin>
+ *     </Admin>
  * );
  *
  * // If you have to build a dynamic list of resources using a side effect,
- * // you can't use <CoreAdmin>. But as it delegates to sub components,
+ * // you can't use <Admin>. But as it delegates to sub components,
  * // it's relatively straightforward to replace it:
  *
  * import React, { useEffect, useState } from 'react';
  * import {
- *     CoreAdminContext,
- *     CoreAdminUI,
+ *     AdminContext,
+ *     AdminUI,
  *     Resource,
  *     ListGuesser,
  *     useDataProvider,
- * } from 'ra-core';
+ * } from 'react-admin';
  *
  * const App = () => (
- *     <CoreAdminContext dataProvider={myDataProvider}>
- *         <UI />
- *     </CoreAdminContext>
+ *     <AdminContext dataProvider={myDataProvider}>
+ *         <Resources />
+ *     </AdminContext>
  * );
  *
- * const UI = () => {
+ * const Resources = () => {
  *     const [resources, setResources] = useState([]);
  *     const dataProvider = useDataProvider();
  *     useEffect(() => {
@@ -114,15 +74,15 @@ export interface AdminProps {
  *     }, []);
  *
  *     return (
- *         <CoreAdminUI>
+ *         <AdminUI>
  *             {resources.map(resource => (
  *                 <Resource name={resource.name} key={resource.key} list={ListGuesser} />
  *             ))}
- *         </CoreAdminUI>
+ *         </AdminUI>
  *     );
  * };
  */
-const CoreAdmin: FunctionComponent<AdminProps> = ({
+const Admin: FunctionComponent<AdminProps> = ({
     appLayout,
     authProvider,
     catchAll,
@@ -161,7 +121,7 @@ const CoreAdmin: FunctionComponent<AdminProps> = ({
     }
 
     return (
-        <CoreAdminContext
+        <AdminContext
             authProvider={authProvider}
             dataProvider={dataProvider}
             i18nProvider={i18nProvider}
@@ -170,7 +130,7 @@ const CoreAdmin: FunctionComponent<AdminProps> = ({
             customSagas={customSagas}
             initialState={initialState}
         >
-            <CoreAdminUI
+            <AdminUI
                 layout={appLayout || layout}
                 customRoutes={customRoutes}
                 dashboard={dashboard}
@@ -183,9 +143,9 @@ const CoreAdmin: FunctionComponent<AdminProps> = ({
                 logout={authProvider ? logoutButton : undefined}
             >
                 {children}
-            </CoreAdminUI>
-        </CoreAdminContext>
+            </AdminUI>
+        </AdminContext>
     );
 };
 
-export default CoreAdmin;
+export default Admin;

@@ -9,7 +9,7 @@ import {
     DataProviderContext,
     convertLegacyDataProvider,
 } from '../dataProvider';
-import createAdminStore, { InitialState } from './createAdminStore';
+import createAdminStore from './createAdminStore';
 import TranslationProvider from '../i18n/TranslationProvider';
 import {
     AuthProvider,
@@ -20,11 +20,12 @@ import {
     CustomRoutes,
     DashboardComponent,
     LegacyDataProvider,
+    InitialState,
 } from '../types';
 
 export type ChildrenFunction = () => ComponentType[];
 
-export interface AdminProps {
+export interface AdminContextProps {
     authProvider?: AuthProvider | LegacyAuthProvider;
     children?: AdminChildren;
     customSagas?: any[];
@@ -38,7 +39,7 @@ export interface AdminProps {
     theme?: object;
 }
 
-const CoreAdminContext: FunctionComponent<AdminProps> = ({
+const CoreAdminContext: FunctionComponent<AdminContextProps> = ({
     authProvider,
     dataProvider,
     i18nProvider,

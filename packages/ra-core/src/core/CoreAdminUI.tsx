@@ -19,7 +19,7 @@ const DefaultLayout: FunctionComponent<LayoutProps> = ({ children }) => (
     <>{children}</>
 );
 
-export interface AdminProps {
+export interface CoreAdminUIProps {
     catchAll: CatchAllComponent;
     children?: AdminChildren;
     customRoutes?: CustomRoutes;
@@ -33,7 +33,7 @@ export interface AdminProps {
     title?: TitleComponent;
 }
 
-const CoreSwitch: FunctionComponent<AdminProps> = ({
+const CoreAdminUI: FunctionComponent<CoreAdminUIProps> = ({
     catchAll = Noop,
     children,
     customRoutes = [],
@@ -86,4 +86,4 @@ const CoreSwitch: FunctionComponent<AdminProps> = ({
 
 const Noop = () => null;
 
-export default CoreSwitch;
+export default CoreAdminUI;
