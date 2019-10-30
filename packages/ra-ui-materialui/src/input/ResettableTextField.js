@@ -79,6 +79,7 @@ function ResettableTextField({
     const {
         clearButton,
         clearIcon,
+        selectAdornment,
         visibleClearButton,
         visibleClearIcon,
         ...restClasses
@@ -93,7 +94,7 @@ function ResettableTextField({
                     <InputAdornment
                         position="end"
                         classes={{
-                            root: props.select ? classes.selectAdornment : null,
+                            root: props.select ? selectAdornment : null,
                         }}
                     >
                         <IconButton
