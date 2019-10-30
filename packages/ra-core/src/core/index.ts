@@ -1,4 +1,4 @@
-import CoreAdmin, { AdminProps } from './CoreAdmin';
+import CoreAdmin from './CoreAdmin';
 import CoreAdminContext from './CoreAdminContext';
 import CoreAdminRouter from './CoreAdminRouter';
 import CoreAdminUI from './CoreAdminUI';
@@ -7,7 +7,6 @@ import RoutesWithLayout from './RoutesWithLayout';
 import Resource from './Resource';
 
 export {
-    AdminProps,
     CoreAdmin,
     CoreAdminContext,
     CoreAdminRouter,
