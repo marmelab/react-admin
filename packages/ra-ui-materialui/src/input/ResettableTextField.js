@@ -90,7 +90,7 @@ function ResettableTextField({
         ...restClasses
     } = classes;
 
-    const { endAdornment, ...InputPropsWithoutEndAdornment } = InputProps;
+    const { endAdornment, ...InputPropsWithoutEndAdornment } = InputProps || {};
 
     return (
         <MuiTextField
