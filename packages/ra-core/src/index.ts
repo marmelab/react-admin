@@ -13,6 +13,7 @@ export {
     adminReducer,
     queryReducer,
     CoreAdmin,
+    CoreAdminContext,
     CoreAdminRouter,
     createAdminStore,
     RoutesWithLayout,
