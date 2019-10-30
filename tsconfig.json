@@ -69,7 +69,6 @@
     //     { "path": "./packages/ra-data-json-server" },
     //     { "path": "./packages/ra-data-simple-rest" },
     //     { "path": "./packages/ra-input-rich-text" },
-    //     { "path": "./packages/ra-realtime" },
     //     { "path": "./packages/ra-ui-materialui" },
     //     { "path": "./packages/react-admin" }
     // ]
