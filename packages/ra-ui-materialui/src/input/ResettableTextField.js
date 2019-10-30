@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { Fragment, useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import InputAdornment from '@material-ui/core/InputAdornment';
@@ -90,6 +90,8 @@ function ResettableTextField({
         ...restClasses
     } = classes;
 
+    const { endAdornment, ...InputPropsWithoutEndAdornment } = InputProps;
+
     return (
         <MuiTextField
             classes={restClasses}
@@ -99,37 +101,47 @@ function ResettableTextField({
                     props.select && variant === 'filled'
                         ? { adornedEnd: inputAdornedEnd }
                         : {},
-                endAdornment: resettable && value && (
-                    <InputAdornment
-                        position="end"
-                        classes={{
-                            root: props.select ? selectAdornment : null,
-                        }}
-                    >
-                        <IconButton
-                            className={classNames(clearButton, {
-                                [visibleClearButton]:
-                                    clearAlwaysVisible || showClear,
-                            })}
-                            aria-label={translate(
-                                'ra.action.clear_input_value'
-                            )}
-                            title={translate('ra.action.clear_input_value')}
-                            disableRipple
-                            onClick={handleClickClearButton}
-                            onMouseDown={handleMouseDownClearButton}
-                            disabled={disabled}
-                        >
-                            <ClearIcon
-                                className={classNames(clearIcon, {
-                                    [visibleClearIcon]:
-                                        clearAlwaysVisible || showClear,
-                                })}
-                            />
-                        </IconButton>
-                    </InputAdornment>
-                ),
-                ...InputProps,
+                endAdornment:
+                    resettable && value ? (
+                        <Fragment>
+                            <InputAdornment
+                                position="end"
+                                classes={{
+                                    root: props.select
+                                        ? selectAdornment
+                                        : null,
+                                }}
+                            >
+                                <IconButton
+                                    className={classNames(clearButton, {
+                                        [visibleClearButton]:
+                                            clearAlwaysVisible || showClear,
+                                    })}
+                                    aria-label={translate(
+                                        'ra.action.clear_input_value'
+                                    )}
+                                    title={translate(
+                                        'ra.action.clear_input_value'
+                                    )}
+                                    disableRipple
+                                    onClick={handleClickClearButton}
+                                    onMouseDown={handleMouseDownClearButton}
+                                    disabled={disabled}
+                                >
+                                    <ClearIcon
+                                        className={classNames(clearIcon, {
+                                            [visibleClearIcon]:
+                                                clearAlwaysVisible || showClear,
+                                        })}
+                                    />
+                                </IconButton>
+                            </InputAdornment>
+                            {endAdornment}
+                        </Fragment>
+                    ) : (
+                        endAdornment
+                    ),
+                ...InputPropsWithoutEndAdornment,
             }}
             disabled={disabled}
             variant={variant}
