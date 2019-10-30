@@ -107,9 +107,7 @@ function ResettableTextField({
                             <InputAdornment
                                 position="end"
                                 classes={{
-                                    root: props.select
-                                        ? selectAdornment
-                                        : null,
+                                    root: props.select ? selectAdornment : null,
                                 }}
                             >
                                 <IconButton
