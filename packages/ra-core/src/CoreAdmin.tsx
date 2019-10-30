@@ -1,10 +1,9 @@
-import React, { createElement, FunctionComponent, ComponentType } from 'react';
+import React, { FunctionComponent, ComponentType } from 'react';
 import { History } from 'history';
-import { Switch, Route } from 'react-router-dom';
 
 import { InitialState } from './createAdminStore';
-import CoreAdminRouter from './CoreAdminRouter';
 import CoreAdminContext from './CoreAdminContext';
+import CoreSwitch from './CoreSwitch';
 import {
     AuthProvider,
     LegacyAuthProvider,
@@ -13,7 +12,6 @@ import {
     TitleComponent,
     LoginComponent,
     LayoutComponent,
-    LayoutProps,
     AdminChildren,
     CatchAllComponent,
     CustomRoutes,
@@ -22,10 +20,6 @@ import {
 } from './types';
 
 export type ChildrenFunction = () => ComponentType[];
-
-const DefaultLayout: FunctionComponent<LayoutProps> = ({ children }) => (
-    <>{children}</>
-);
 
 export interface AdminProps {
     layout: LayoutComponent;
@@ -88,7 +82,6 @@ const CoreAdmin: FunctionComponent<AdminProps> = ({
         );
     }
 
-    const logout = authProvider ? createElement(logoutButton) : null;
     return (
         <CoreAdminContext
             authProvider={authProvider}
@@ -99,50 +92,22 @@ const CoreAdmin: FunctionComponent<AdminProps> = ({
             customSagas={customSagas}
             initialState={initialState}
         >
-            <Switch>
-                {loginPage !== false && loginPage !== true ? (
-                    <Route
-                        exact
-                        path="/login"
-                        render={props =>
-                            createElement(loginPage, {
-                                ...props,
-                                title,
-                                theme,
-                            })
-                        }
-                    />
-                ) : null}
-                <Route
-                    path="/"
-                    render={props => (
-                        <CoreAdminRouter
-                            layout={appLayout || layout}
-                            catchAll={catchAll}
-                            customRoutes={customRoutes}
-                            dashboard={dashboard}
-                            loading={loading}
-                            logout={logout}
-                            menu={menu}
-                            theme={theme}
-                            title={title}
-                            {...props}
-                        >
-                            {children}
-                        </CoreAdminRouter>
-                    )}
-                />
-            </Switch>
+            <CoreSwitch
+                layout={appLayout || layout}
+                customRoutes={customRoutes}
+                dashboard={dashboard}
+                menu={menu}
+                catchAll={catchAll}
+                theme={theme}
+                title={title}
+                loading={loading}
+                loginPage={loginPage}
+                logout={authProvider ? logoutButton : undefined}
+            >
+                {children}
+            </CoreSwitch>
         </CoreAdminContext>
     );
-};
-
-CoreAdmin.defaultProps = {
-    catchAll: () => null,
-    layout: DefaultLayout,
-    appLayout: undefined,
-    loading: () => null,
-    loginPage: false,
 };
 
 export default CoreAdmin;
