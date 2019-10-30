@@ -1,20 +1,10 @@
-import React, {
-    createElement,
-    FunctionComponent,
-    ComponentType,
-    useContext,
-} from 'react';
-import { Provider, ReactReduxContext } from 'react-redux';
+import React, { createElement, FunctionComponent, ComponentType } from 'react';
 import { History } from 'history';
-import { createHashHistory } from 'history';
 import { Switch, Route } from 'react-router-dom';
-import { ConnectedRouter } from 'connected-react-router';
 
-import { AuthContext, convertLegacyAuthProvider } from './auth';
-import { DataProviderContext, convertLegacyDataProvider } from './dataProvider';
-import createAdminStore, { InitialState } from './createAdminStore';
-import TranslationProvider from './i18n/TranslationProvider';
+import { InitialState } from './createAdminStore';
 import CoreAdminRouter from './CoreAdminRouter';
+import CoreAdminContext from './CoreAdminContext';
 import {
     AuthProvider,
     LegacyAuthProvider,
@@ -76,125 +66,75 @@ const CoreAdmin: FunctionComponent<AdminProps> = ({
     loading,
     loginPage,
     logoutButton,
-    history: customHistory,
+    history,
     customReducers,
     customSagas,
     initialState,
     locale,
 }) => {
-    const reduxIsAlreadyInitialized = !!useContext(ReactReduxContext);
-
-    const finalDataProvider =
-        dataProvider instanceof Function
-            ? convertLegacyDataProvider(dataProvider)
-            : dataProvider;
-
-    const renderCore = history => {
-        const logout = authProvider ? createElement(logoutButton) : null;
-
-        if (appLayout) {
-            console.warn(
-                'You are using deprecated prop "appLayout", it was replaced by "layout", see https://github.com/marmelab/react-admin/issues/2918'
-            );
-        }
-        if (locale) {
-            console.warn(
-                'You are using deprecated prop "locale". You must now pass the initial locale to your i18nProvider'
-            );
-        }
-        if (loginPage === true && process.env.NODE_ENV !== 'production') {
-            console.warn(
-                'You passed true to the loginPage prop. You must either pass false to disable it or a component class to customize it'
-            );
-        }
-
-        return (
-            <DataProviderContext.Provider value={finalDataProvider}>
-                <TranslationProvider i18nProvider={i18nProvider}>
-                    <ConnectedRouter history={history}>
-                        <Switch>
-                            {loginPage !== false && loginPage !== true ? (
-                                <Route
-                                    exact
-                                    path="/login"
-                                    render={props =>
-                                        createElement(loginPage, {
-                                            ...props,
-                                            title,
-                                            theme,
-                                        })
-                                    }
-                                />
-                            ) : null}
-                            <Route
-                                path="/"
-                                render={props => (
-                                    <CoreAdminRouter
-                                        layout={appLayout || layout}
-                                        catchAll={catchAll}
-                                        customRoutes={customRoutes}
-                                        dashboard={dashboard}
-                                        loading={loading}
-                                        logout={logout}
-                                        menu={menu}
-                                        theme={theme}
-                                        title={title}
-                                        {...props}
-                                    >
-                                        {children}
-                                    </CoreAdminRouter>
-                                )}
-                            />
-                        </Switch>
-                    </ConnectedRouter>
-                </TranslationProvider>
-            </DataProviderContext.Provider>
-        );
-    };
-
-    let finalHistory = customHistory;
-    const finalAuthProvider =
-        authProvider instanceof Function
-            ? convertLegacyAuthProvider(authProvider)
-            : authProvider;
-
-    if (reduxIsAlreadyInitialized) {
-        if (!customHistory) {
-            throw new Error(`Missing history prop.
-When integrating react-admin inside an existing redux Provider, you must provide the same 'history' prop to the <Admin> as the one used to bootstrap your routerMiddleware.
-React-admin uses this history for its own ConnectedRouter.`);
-        }
-
-        return (
-            <AuthContext.Provider value={finalAuthProvider}>
-                {renderCore(customHistory)}
-            </AuthContext.Provider>
-        );
-    } else {
-        if (!dataProvider) {
-            throw new Error(`Missing dataProvider prop.
-React-admin requires a valid dataProvider function to work.`);
-        }
-
-        finalHistory = customHistory || createHashHistory();
-
-        return (
-            <AuthContext.Provider value={finalAuthProvider}>
-                <Provider
-                    store={createAdminStore({
-                        authProvider: finalAuthProvider,
-                        customReducers,
-                        customSagas,
-                        dataProvider: finalDataProvider,
-                        initialState,
-                        history: finalHistory,
-                    })}
-                >
-                    {renderCore(finalHistory)}
-                </Provider>
-            </AuthContext.Provider>
+    if (appLayout) {
+        console.warn(
+            'You are using deprecated prop "appLayout", it was replaced by "layout", see https://github.com/marmelab/react-admin/issues/2918'
         );
     }
+    if (loginPage === true && process.env.NODE_ENV !== 'production') {
+        console.warn(
+            'You passed true to the loginPage prop. You must either pass false to disable it or a component class to customize it'
+        );
+    }
+    if (locale) {
+        console.warn(
+            'You are using deprecated prop "locale". You must now pass the initial locale to your i18nProvider'
+        );
+    }
+
+    const logout = authProvider ? createElement(logoutButton) : null;
+    return (
+        <CoreAdminContext
+            authProvider={authProvider}
+            dataProvider={dataProvider}
+            i18nProvider={i18nProvider}
+            history={history}
+            customReducers={customReducers}
+            customSagas={customSagas}
+            initialState={initialState}
+        >
+            <Switch>
+                {loginPage !== false && loginPage !== true ? (
+                    <Route
+                        exact
+                        path="/login"
+                        render={props =>
+                            createElement(loginPage, {
+                                ...props,
+                                title,
+                                theme,
+                            })
+                        }
+                    />
+                ) : null}
+                <Route
+                    path="/"
+                    render={props => (
+                        <CoreAdminRouter
+                            layout={appLayout || layout}
+                            catchAll={catchAll}
+                            customRoutes={customRoutes}
+                            dashboard={dashboard}
+                            loading={loading}
+                            logout={logout}
+                            menu={menu}
+                            theme={theme}
+                            title={title}
+                            {...props}
+                        >
+                            {children}
+                        </CoreAdminRouter>
+                    )}
+                />
+            </Switch>
+        </CoreAdminContext>
+    );
 };
 
 CoreAdmin.defaultProps = {

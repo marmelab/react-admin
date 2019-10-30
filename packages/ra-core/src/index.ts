@@ -2,6 +2,7 @@ import createAppReducer from './reducer';
 import adminReducer from './reducer/admin';
 import queryReducer from './reducer/admin/resource/list/queryReducer';
 import CoreAdmin from './CoreAdmin';
+import CoreAdminContext from './CoreAdminContext';
 import CoreAdminRouter from './CoreAdminRouter';
 import createAdminStore from './createAdminStore';
 import RoutesWithLayout from './RoutesWithLayout';
