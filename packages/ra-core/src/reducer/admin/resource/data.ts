@@ -1,6 +1,6 @@
 import { Reducer } from 'redux';
 import isEqual from 'lodash/isEqual';
-import { FETCH_END } from '../../../actions/fetchActions';
+import { FETCH_END } from '../../../actions';
 import {
     CREATE,
     DELETE,
@@ -11,7 +11,7 @@ import {
     GET_ONE,
     UPDATE,
     UPDATE_MANY,
-} from '../../../dataFetchActions';
+} from '../../../core';
 import getFetchedAt from '../../../util/getFetchedAt';
 import { Record, Identifier } from '../../../types';
 

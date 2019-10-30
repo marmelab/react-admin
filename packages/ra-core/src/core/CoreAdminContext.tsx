@@ -4,10 +4,13 @@ import { History } from 'history';
 import { createHashHistory } from 'history';
 import { ConnectedRouter } from 'connected-react-router';
 
-import { AuthContext, convertLegacyAuthProvider } from './auth';
-import { DataProviderContext, convertLegacyDataProvider } from './dataProvider';
+import { AuthContext, convertLegacyAuthProvider } from '../auth';
+import {
+    DataProviderContext,
+    convertLegacyDataProvider,
+} from '../dataProvider';
 import createAdminStore, { InitialState } from './createAdminStore';
-import TranslationProvider from './i18n/TranslationProvider';
+import TranslationProvider from '../i18n/TranslationProvider';
 import {
     AuthProvider,
     LegacyAuthProvider,
@@ -17,7 +20,7 @@ import {
     CustomRoutes,
     DashboardComponent,
     LegacyDataProvider,
-} from './types';
+} from '../types';
 
 export type ChildrenFunction = () => ComponentType[];
 

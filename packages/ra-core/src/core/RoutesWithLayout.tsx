@@ -6,14 +6,14 @@ import React, {
 } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
-import WithPermissions from './auth/WithPermissions';
+import WithPermissions from '../auth/WithPermissions';
 import {
     AdminChildren,
     CustomRoutes,
     CatchAllComponent,
     TitleComponent,
     DashboardComponent,
-} from './types';
+} from '../types';
 
 interface Props {
     catchAll: CatchAllComponent;

@@ -1,27 +1,9 @@
 import createAppReducer from './reducer';
 import adminReducer from './reducer/admin';
 import queryReducer from './reducer/admin/resource/list/queryReducer';
-import CoreAdmin from './CoreAdmin';
-import CoreAdminContext from './CoreAdminContext';
-import CoreAdminRouter from './CoreAdminRouter';
-import CoreSwitch from './CoreSwitch';
-import createAdminStore from './createAdminStore';
-import RoutesWithLayout from './RoutesWithLayout';
-import Resource from './Resource';
 
-export {
-    createAppReducer,
-    adminReducer,
-    queryReducer,
-    CoreAdmin,
-    CoreAdminContext,
-    CoreAdminRouter,
-    CoreSwitch,
-    createAdminStore,
-    RoutesWithLayout,
-    Resource,
-};
-export * from './dataFetchActions';
+export { createAppReducer, adminReducer, queryReducer };
+export * from './core';
 export * from './actions';
 export * from './auth';
 export * from './dataProvider';

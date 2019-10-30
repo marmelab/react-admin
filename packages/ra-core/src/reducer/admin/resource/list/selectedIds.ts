@@ -5,7 +5,7 @@ import {
     TOGGLE_LIST_ITEM,
     ToggleListItemAction,
 } from '../../../../actions/listActions';
-import { DELETE, DELETE_MANY } from '../../../../dataFetchActions';
+import { DELETE, DELETE_MANY } from '../../../../core';
 import { Identifier } from '../../../../types';
 
 const initialState = [];

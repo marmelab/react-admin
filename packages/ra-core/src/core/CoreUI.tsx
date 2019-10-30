@@ -11,7 +11,7 @@ import {
     CatchAllComponent,
     CustomRoutes,
     DashboardComponent,
-} from './types';
+} from '../types';
 
 export type ChildrenFunction = () => ComponentType[];
 

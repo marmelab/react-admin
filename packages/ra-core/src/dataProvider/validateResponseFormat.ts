@@ -3,7 +3,7 @@ import {
     fetchActionsWithArrayOfIdentifiedRecordsResponse,
     fetchActionsWithArrayOfRecordsResponse,
     fetchActionsWithTotalResponse,
-} from '../dataFetchActions';
+} from '../core';
 
 function validateResponseFormat(
     response,
