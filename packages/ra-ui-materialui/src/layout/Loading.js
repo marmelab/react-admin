@@ -33,6 +33,9 @@ const useStyles = makeStyles(
     { name: 'RaLoading' }
 );
 
+/**
+ * @type {React.FunctionComponent}
+ */
 const Loading = ({
     classes: classesOverride,
     className,
@@ -41,7 +44,7 @@ const Loading = ({
 }) => {
     const classes = useStyles({ classes: classesOverride });
     const translate = useTranslate();
-    return (
+    return ((
         <div className={classnames(classes.container, className)}>
             <div className={classes.message}>
                 <CircularProgress className={classes.icon} color="primary" />
@@ -49,7 +52,7 @@ const Loading = ({
                 <div>{translate(loadingSecondary)}.</div>
             </div>
         </div>
-    );
+    ));
 };
 
 Loading.propTypes = {

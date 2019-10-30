@@ -114,9 +114,9 @@ const AutocompleteArrayInput: FunctionComponent<
     onChange,
     onFocus,
     options: {
-        suggestionsContainerProps,
-        labelProps,
-        InputProps,
+        suggestionsContainerProps = undefined,
+        labelProps = undefined,
+        InputProps = undefined,
         ...options
     } = {},
     optionText = 'name',

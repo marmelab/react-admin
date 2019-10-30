@@ -13,3 +13,9 @@ examples/**/static
 examples/**/dist
 cypress/videos
 cypress/screenshots
+lib-composite
+.tsbuildinfo
+base.tsBuildInfoFile
+.tsbuildinfoEsm
+declarationDir-ignore
+declarationDir-ignore-esm

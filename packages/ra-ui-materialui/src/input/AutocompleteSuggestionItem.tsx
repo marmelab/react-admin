@@ -23,7 +23,7 @@ const useStyles = makeStyles(
     { name: 'RaAutocompleteSuggestionItem' }
 );
 
-interface Props {
+export interface Props {
     suggestion: any;
     index: number;
     highlightedIndex: number;

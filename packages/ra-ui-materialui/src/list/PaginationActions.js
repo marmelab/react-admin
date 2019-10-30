@@ -18,7 +18,7 @@ const useStyles = makeStyles(
     { name: 'RaPaginationActions' }
 );
 
-function PaginationActions({
+export function PaginationActions({
     classes: classesOverride,
     page,
     rowsPerPage,

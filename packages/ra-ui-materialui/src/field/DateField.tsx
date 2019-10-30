@@ -17,7 +17,7 @@ const toLocaleStringSupportsLocales = (() => {
     return false;
 })();
 
-interface Props extends FieldProps {
+export interface Props extends FieldProps {
     locales?: string | string[];
     options?: object;
     showTime?: boolean;

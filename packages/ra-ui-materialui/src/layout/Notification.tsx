@@ -15,7 +15,7 @@ import {
     useTranslate,
 } from 'ra-core';
 
-interface Props {
+export interface Props {
     type?: string;
 }
 
@@ -40,7 +40,7 @@ const Notification: React.FunctionComponent<
     Props & Omit<SnackbarProps, 'open'>
 > = ({ type, className, autoHideDuration, ...rest }) => {
     const [open, setOpen] = useState(false);
-    const notification = useSelector(getNotification);
+    const notification = useSelector<any, any>(getNotification);
     const dispatch = useDispatch();
     const translate = useTranslate();
     const styles = useStyles({});

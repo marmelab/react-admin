@@ -1,0 +1,16 @@
+{
+    "extends": "../../tsconfig.base.esm.json",
+    "compilerOptions": {
+        "outDir": "./esm",
+        "rootDir": "./src",
+        "tsBuildInfoFile": "./esm/.tsbuildinfo",
+        // "declarationDir": "./declarationDir-ignore-esm"
+    },
+    "exclude": ["**/*.spec.ts", "**/*.spec.tsx", "**/*.spec.js"],
+    "include": ["src"],
+    "references": [
+        { "path": "../ra-ui-materialui/" },
+        { "path": "../ra-i18n-polyglot/" },
+        { "path": "../ra-core/" },
+    ]
+}

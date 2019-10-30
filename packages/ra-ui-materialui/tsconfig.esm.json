@@ -1,0 +1,15 @@
+{
+    "extends": "../../tsconfig.base.esm.json",
+    "compilerOptions": {
+        "outDir": "./esm",
+        "rootDir": "./src",
+        "tsBuildInfoFile": "./esm/.tsbuildinfo",
+        "checkJs": false,
+        // "declarationDir": "./declarationDir-ignore-esm"
+    },
+    "exclude": ["**/*.spec.ts", "**/*.spec.tsx", "**/*.spec.js"],
+    "include": ["src"],
+    "references": [
+        { "path": "../ra-core/" },
+    ]
+}

@@ -9,7 +9,7 @@ import { InjectedFieldProps, FieldProps, fieldPropTypes } from './types';
 export const removeTags = (input: string) =>
     input ? input.replace(/<[^>]+>/gm, '') : '';
 
-interface Props extends FieldProps {
+export interface Props extends FieldProps {
     stripTags: boolean;
 }
 

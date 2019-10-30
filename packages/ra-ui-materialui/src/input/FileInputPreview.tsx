@@ -15,7 +15,7 @@ const useStyles = makeStyles(
     { name: 'RaFileInputPreview' }
 );
 
-interface Props {
+export interface Props {
     children: ReactNode;
     className?: string;
     onRemove: () => void;

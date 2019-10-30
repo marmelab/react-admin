@@ -1,0 +1,23 @@
+{
+    "compilerOptions": {
+        "outDir": "lib-composite"
+    },
+    "references": [
+        { "path": "packages/ra-core/tsconfig.esm.json" },
+        { "path": "packages/ra-data-fakerest/tsconfig.esm.json" },
+        { "path": "packages/ra-data-graphcool/tsconfig.esm.json" },
+        { "path": "packages/ra-data-graphql/tsconfig.esm.json" },
+        { "path": "packages/ra-data-graphql-simple/tsconfig.esm.json" },
+        { "path": "packages/ra-data-json-server/tsconfig.esm.json" },
+        { "path": "packages/ra-data-simple-rest/tsconfig.esm.json" },
+        { "path": "packages/ra-i18n-polyglot/tsconfig.esm.json" },
+        { "path": "packages/ra-input-rich-text/tsconfig.esm.json" },
+        // { "path": "packages/ra-language-english/tsconfig.esm.json" },
+        // { "path": "packages/ra-language-french/tsconfig.esm.json" },
+        // { "path": "packages/ra-tree-language-english/tsconfig.esm.json" },
+        // { "path": "packages/ra-tree-language-french/tsconfig.esm.json" },
+        { "path": "packages/ra-ui-materialui/tsconfig.esm.json" },
+        { "path": "packages/react-admin/tsconfig.esm.json" }
+    ],
+    "include": []
+}

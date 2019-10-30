@@ -12,7 +12,7 @@ import { useTranslate } from 'ra-core';
 import { FieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 import sanitizeRestProps from './sanitizeRestProps';
 
-interface Props extends FieldProps {
+export interface Props extends FieldProps {
     valueLabelTrue?: string;
     valueLabelFalse?: string;
 }

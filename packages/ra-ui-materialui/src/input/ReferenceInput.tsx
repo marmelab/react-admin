@@ -19,7 +19,7 @@ import LinearProgress from '../layout/LinearProgress';
 import Labeled from './Labeled';
 import ReferenceError from './ReferenceError';
 
-interface Props {
+export interface Props {
     allowEmpty: boolean;
     basePath: string;
     children: ReactElement;

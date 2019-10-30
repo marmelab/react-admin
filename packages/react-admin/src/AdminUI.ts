@@ -1,4 +1,4 @@
-import { CoreAdminUI } from 'ra-core';
+import { CoreAdminUI, LoginComponent } from 'ra-core';
 import {
     Layout as DefaultLayout,
     Loading,
@@ -13,7 +13,7 @@ AdminUI.defaultProps = {
     layout: DefaultLayout,
     catchAll: NotFound,
     loading: Loading,
-    loginPage: Login,
+    loginPage: Login as LoginComponent,
     logout: Logout,
 };
 

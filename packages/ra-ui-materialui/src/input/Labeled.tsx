@@ -26,7 +26,7 @@ const useStyles = makeStyles(
     { name: 'RaLabeled' }
 );
 
-interface Props {
+export interface Props {
     children: ReactElement;
     className?: string;
     classes?: object;

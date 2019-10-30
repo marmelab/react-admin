@@ -23,58 +23,18 @@ build-demo: ## compile the demo example to static js
 run-graphql-demo: ## run the demo example
 	@yarn -s run-graphql-demo
 
-build-ra-core:
-	@echo "Transpiling ra-core files...";
-	@cd ./packages/ra-core && yarn -s build
+build-composite:
+	@echo "Build composite project";
+	@yarn build
 
-build-ra-ui-materialui:
-	@echo "Transpiling ra-ui-materialui files...";
-	@cd ./packages/ra-ui-materialui && yarn -s build
-
-build-react-admin:
-	@echo "Transpiling react-admin files...";
+copy-docs-react-admin:
+	@echo "Copy docs react-admin";
 	@rm -rf ./packages/react-admin/docs
-	@cd ./packages/react-admin && yarn -s build
+	@cd ./packages/react-admin
 	@mkdir packages/react-admin/docs
 	@cp docs/*.md packages/react-admin/docs
 
-build-ra-data-fakerest:
-	@echo "Transpiling ra-data-fakerest files...";
-	@cd ./packages/ra-data-fakerest && yarn -s build
-
-build-ra-data-json-server:
-	@echo "Transpiling ra-data-json-server files...";
-	@cd ./packages/ra-data-json-server && yarn -s build
-
-build-ra-data-simple-rest:
-	@echo "Transpiling ra-data-simple-rest files...";
-	@cd ./packages/ra-data-simple-rest && yarn -s build
-
-build-ra-data-graphql:
-	@echo "Transpiling ra-data-graphql files...";
-	@cd ./packages/ra-data-graphql && yarn -s build
-
-build-ra-data-graphcool:
-	@echo "Transpiling ra-data-graphcool files...";
-	@cd ./packages/ra-data-graphcool && yarn -s build
-
-build-ra-data-graphql-simple:
-	@echo "Transpiling ra-data-graphql-simple files...";
-	@cd ./packages/ra-data-graphql-simple && yarn -s build
-
-build-ra-i18n-polyglot:
-	@echo "Transpiling ra-i18n-polyglot files...";
-	@cd ./packages/ra-i18n-polyglot && yarn -s build
-
-build-ra-input-rich-text:
-	@echo "Transpiling ra-input-rich-text files...";
-	@cd ./packages/ra-input-rich-text && yarn -s build
-
-build-data-generator:
-	@echo "Transpiling data-generator files...";
-	@cd ./examples/data-generator && yarn -s build
-
-build: build-ra-core build-ra-ui-materialui build-ra-data-fakerest build-ra-data-json-server build-ra-data-simple-rest build-ra-data-graphql build-ra-data-graphcool build-ra-data-graphql-simple build-ra-i18n-polyglot build-ra-input-rich-text build-data-generator build-react-admin  ## compile ES6 files to JS
+build: build-composite copy-docs-react-admin
 
 doc: ## compile doc as html and launch doc web server
 	@yarn -s doc
@@ -124,3 +84,7 @@ test-e2e: ## launch end-to-end tests
 test-e2e-local: ## launch end-to-end tests for development
 	@echo 'Starting e2e tests environment. Ensure you started the simple example first (make run-simple)'
 	@cd cypress && yarn -s start
+
+declarations-test:
+	@echo 'declarations-test'
+	@yarn validate-emitted-declarations
