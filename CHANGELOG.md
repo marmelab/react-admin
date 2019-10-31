@@ -1,5 +1,29 @@
 # Changelog
 
+## v3.0.0-beta-4
+
+* [BC Break] Remove ra-realtime ([3908](https://github.com/marmelab/react-admin/pull/3908)) ([fzaninotto](https://github.com/fzaninotto))
+* Add `<CoreAdminContext>` to ease custom apps ([3907](https://github.com/marmelab/react-admin/pull/3907)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix warning in `<ResettableTextField>`. ([3904](https://github.com/marmelab/react-admin/pull/3904)) ([WiXSL](https://github.com/WiXSL))
+* Fix `<ReferenceArrayInput>` does not work in Filters ([3898](https://github.com/marmelab/react-admin/pull/3898)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<DateTimeInput>` style differs from other inputs ([3897](https://github.com/marmelab/react-admin/pull/3897)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix notifications upgrade guide ([3893](https://github.com/marmelab/react-admin/pull/3893)) ([WiXSL](https://github.com/WiXSL))
+* Fix ResettableTextField adornment style ([3891](https://github.com/marmelab/react-admin/pull/3891)) ([tdeo](https://github.com/tdeo))
+* Fix `<AutocompleteInput>` default width and margin ([3890](https://github.com/marmelab/react-admin/pull/3890)) ([tdeo](https://github.com/tdeo))
+* Fix `<DeleteWithConfirm>` throws exception ([3889](https://github.com/marmelab/react-admin/pull/3889)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix incorrect test data in simple example ([3888](https://github.com/marmelab/react-admin/pull/3888)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix search field loses its value when a column is sorted ([3887](https://github.com/marmelab/react-admin/pull/3887)) ([m4theushw](https://github.com/m4theushw))
+* Fix deprecated React types ([3886](https://github.com/marmelab/react-admin/pull/3886)) ([WiXSL](https://github.com/WiXSL))
+* Fix missing await for async operation in test. ([3885](https://github.com/marmelab/react-admin/pull/3885)) ([WiXSL](https://github.com/WiXSL))
+* Fix bug when using `<SimpleForm>` with `<ArrayInput>` ([3884](https://github.com/marmelab/react-admin/pull/3884)) ([jinseoplee](https://github.com/jinseoplee))
+* Fix typo in example ([3880](https://github.com/marmelab/react-admin/pull/3880)) ([tdeo](https://github.com/tdeo))
+* Fix `<TabbedShowLayout>` documentation for scrollable tabs ([3878](https://github.com/marmelab/react-admin/pull/3878)) ([tdeo](https://github.com/tdeo))
+* Convert `<RichTextInput>` to a functional component ([3875](https://github.com/marmelab/react-admin/pull/3875)) ([m4theushw](https://github.com/m4theushw))
+* Fix broken links in Data Provider docs ([3874](https://github.com/marmelab/react-admin/pull/3874)) ([WiXSL](https://github.com/WiXSL))
+* Fix custom user menu does not close after selecting an item in the demo ([3868](https://github.com/marmelab/react-admin/pull/3868)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix theme can't be changed dynamically ([3867](https://github.com/marmelab/react-admin/pull/3867)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix various typos in the docs. ([3861](https://github.com/marmelab/react-admin/pull/3861)) ([WiXSL](https://github.com/WiXSL))
+
 ## v3.0.0-beta.3
 
 * Fix typos and anchors in the docs. ([3860](https://github.com/marmelab/react-admin/pull/3860)) ([WiXSL](https://github.com/WiXSL))
