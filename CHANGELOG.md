@@ -1,5 +1,9 @@
 # Changelog
 
+## v3.0.0-beta-5
+
+* Fix Erroneous TypeScript types ([fzaninotto](https://github.com/fzaninotto))
+
 ## v3.0.0-beta-4
 
 * [BC Break] Remove ra-realtime ([3908](https://github.com/marmelab/react-admin/pull/3908)) ([fzaninotto](https://github.com/fzaninotto))
