@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import InputAdornment from '@material-ui/core/InputAdornment';
@@ -103,49 +103,46 @@ function ResettableTextField({
                         : {},
                 endAdornment:
                     resettable && value ? (
-                        <Fragment>
-                            <InputAdornment
-                                position="end"
-                                classes={{
-                                    root: props.select ? selectAdornment : null,
-                                }}
+                        <InputAdornment
+                            position="end"
+                            classes={{
+                                root: props.select ? selectAdornment : null,
+                            }}
+                        >
+                            <IconButton
+                                className={classNames(clearButton, {
+                                    [visibleClearButton]:
+                                        clearAlwaysVisible || showClear,
+                                })}
+                                aria-label={translate(
+                                    'ra.action.clear_input_value'
+                                )}
+                                title={translate('ra.action.clear_input_value')}
+                                disableRipple
+                                onClick={handleClickClearButton}
+                                onMouseDown={handleMouseDownClearButton}
+                                disabled={disabled}
                             >
-                                <IconButton
-                                    className={classNames(clearButton, {
-                                        [visibleClearButton]:
+                                <ClearIcon
+                                    className={classNames(clearIcon, {
+                                        [visibleClearIcon]:
                                             clearAlwaysVisible || showClear,
                                     })}
-                                    aria-label={translate(
-                                        'ra.action.clear_input_value'
-                                    )}
-                                    title={translate(
-                                        'ra.action.clear_input_value'
-                                    )}
-                                    disableRipple
-                                    onClick={handleClickClearButton}
-                                    onMouseDown={handleMouseDownClearButton}
-                                    disabled={disabled}
-                                >
-                                    <ClearIcon
-                                        className={classNames(clearIcon, {
-                                            [visibleClearIcon]:
-                                                clearAlwaysVisible || showClear,
-                                        })}
-                                    />
-                                </IconButton>
-                            </InputAdornment>
-                        </Fragment>
+                                />
+                            </IconButton>
+                        </InputAdornment>
                     ) : (
-                        endAdornment || (
+                        endAdornment ||
+                        (resettable && (
                             <InputAdornment
                                 position="end"
                                 classes={{
                                     root: props.select ? selectAdornment : null,
                                 }}
                             >
-                                <IconButton />
+                                <IconButton disabled />
                             </InputAdornment>
-                        )
+                        ))
                     ),
                 ...InputPropsWithoutEndAdornment,
             }}
