@@ -1,0 +1,6 @@
+name: react-admin documentation
+markdown: kramdown
+kramdown:
+    input: GFM
+highlighter: rouge
+url: https://marmelab.com/react-admin
