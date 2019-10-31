@@ -2,9 +2,9 @@ import React, { FunctionComponent, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
 
-import WithPermissions from './auth/WithPermissions';
-import { registerResource, unregisterResource } from './actions';
-import { ResourceProps, ResourceMatch, ReduxState } from './types';
+import WithPermissions from '../auth/WithPermissions';
+import { registerResource, unregisterResource } from '../actions';
+import { ResourceProps, ResourceMatch, ReduxState } from '../types';
 
 const defaultOptions = {};
 

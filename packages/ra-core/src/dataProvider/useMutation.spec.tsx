@@ -6,9 +6,9 @@ import {
     waitForDomChange,
 } from '@testing-library/react';
 import expect from 'expect';
+
 import Mutation from './Mutation';
-import CoreAdmin from '../CoreAdmin';
-import Resource from '../Resource';
+import { CoreAdmin, Resource } from '../core';
 import renderWithRedux from '../util/renderWithRedux';
 import { DataProviderContext } from '.';
 

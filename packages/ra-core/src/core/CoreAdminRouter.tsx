@@ -9,9 +9,9 @@ import React, {
 } from 'react';
 import { Route, Switch } from 'react-router-dom';
 
-import { useLogout, useGetPermissions, useAuthState } from './auth';
 import RoutesWithLayout from './RoutesWithLayout';
-import { Ready, useTimeout, useSafeSetState } from './util';
+import { useLogout, useGetPermissions, useAuthState } from '../auth';
+import { Ready, useTimeout, useSafeSetState } from '../util';
 import {
     AdminChildren,
     CustomRoutes,
@@ -21,7 +21,7 @@ import {
     ResourceProps,
     RenderResourcesFunction,
     ResourceElement,
-} from './types';
+} from '../types';
 
 export interface AdminRouterProps extends LayoutProps {
     layout: LayoutComponent;

@@ -7,9 +7,9 @@ import {
     CrudGetOneSuccessAction,
     CRUD_CREATE_SUCCESS,
     CrudCreateSuccessAction,
-} from '../../../../actions/dataActions';
+} from '../../../../actions';
 import getFetchedAt from '../../../../util/getFetchedAt';
-import { DELETE, DELETE_MANY } from '../../../../dataFetchActions';
+import { DELETE, DELETE_MANY } from '../../../../core';
 import { Identifier } from '../../../../types';
 
 type IdentifierArray = Identifier[];

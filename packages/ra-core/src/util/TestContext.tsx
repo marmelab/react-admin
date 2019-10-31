@@ -5,7 +5,7 @@ import merge from 'lodash/merge';
 import { createMemoryHistory, History } from 'history';
 import { Router } from 'react-router-dom';
 
-import createAdminStore from '../createAdminStore';
+import createAdminStore from '../core/createAdminStore';
 import { convertLegacyDataProvider } from '../dataProvider';
 import { ReduxState } from '../types';
 

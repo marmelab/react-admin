@@ -4,9 +4,9 @@ import expect from 'expect';
 import { Router, Route } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
 
-import renderWithRedux from './util/renderWithRedux';
+import renderWithRedux from '../util/renderWithRedux';
 import CoreAdminRouter from './CoreAdminRouter';
-import AuthContext from './auth/AuthContext';
+import AuthContext from '../auth/AuthContext';
 import Resource from './Resource';
 
 const Layout = ({ children }) => <div>Layout {children}</div>;

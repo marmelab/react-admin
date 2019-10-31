@@ -7,19 +7,14 @@ import {
     takeEvery,
 } from 'redux-saga/effects';
 import { DataProvider, ReduxState } from '../types';
-import {
-    FETCH_CANCEL,
-    FETCH_END,
-    FETCH_ERROR,
-    FETCH_START,
-} from '../actions/fetchActions';
+import { FETCH_CANCEL, FETCH_END, FETCH_ERROR, FETCH_START } from '../actions';
 import {
     fetchActionsWithRecordResponse,
     fetchActionsWithArrayOfIdentifiedRecordsResponse,
     fetchActionsWithArrayOfRecordsResponse,
     fetchActionsWithTotalResponse,
     sanitizeFetchType,
-} from '../dataFetchActions';
+} from '../core';
 
 function validateResponseFormat(
     response,

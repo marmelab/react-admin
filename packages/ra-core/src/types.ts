@@ -4,7 +4,7 @@ import {
     RouteComponentProps,
     match as Match,
 } from 'react-router-dom';
-import { Location } from 'history';
+import { Location, History } from 'history';
 
 import { WithPermissionsChildrenParams } from './auth/WithPermissions';
 import { AuthActionType } from './auth/types';
@@ -293,6 +293,8 @@ export interface ReduxState {
     };
 }
 
+export type InitialState = object | (() => object);
+
 /**
  * Misc types
  */
@@ -357,4 +359,27 @@ export interface ResourceProps {
     show?: ComponentType<ReactAdminComponentPropsWithId>;
     icon?: ComponentType<any>;
     options?: object;
+}
+
+export interface AdminProps {
+    appLayout?: LayoutComponent;
+    authProvider?: AuthProvider | LegacyAuthProvider;
+    catchAll?: CatchAllComponent;
+    children?: AdminChildren;
+    customReducers?: object;
+    customRoutes?: CustomRoutes;
+    customSagas?: any[];
+    dashboard?: DashboardComponent;
+    dataProvider: DataProvider | LegacyDataProvider;
+    history?: History;
+    i18nProvider?: I18nProvider;
+    initialState?: InitialState;
+    layout?: LayoutComponent;
+    loading?: ComponentType;
+    locale?: string;
+    loginPage?: LoginComponent | boolean;
+    logoutButton?: ComponentType;
+    menu?: ComponentType;
+    theme?: object;
+    title?: TitleComponent;
 }
