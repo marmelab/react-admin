@@ -5,15 +5,6 @@ title: "FAQ"
 
 # FAQ
 
-- [FAQ](#faq)
-  - [Can I have custom identifiers/primary keys for my resources?](#can-i-have-custom-identifiersprimary-keys-for-my-resources)
-  - [I get warning about unique key for child in array](#i-get-warning-about-unique-key-for-child-in-array)
-  - [How can I customize the UI depending on the user permissions?](#how-can-i-customize-the-ui-depending-on-the-user-permissions)
-  - [How can I customize forms depending on its inputs values?](#how-can-i-customize-forms-depending-on-its-inputs-values)
-  - [UI in production build is empty or broke](#ui-in-production-build-is-empty-or-broke)
-  - [My Resource is defined but not displayed on the Menu](#my-resource-is-defined-but-not-displayed-on-the-menu)
-  - [Why Doesn't React Admin Support The Latest Version Of Material-UI?](#why-doesnt-react-admin-support-the-latest-version-of-material-ui)
-
 ## Can I have custom identifiers/primary keys for my resources?
 
 React-admin requires that each resource has an `id` field to identify it. If your API uses a different name for the primary key, you have to map that name to `id` in your [dataProvider](./DataProviders.md). For instance, to use a field named `_id` as identifier:

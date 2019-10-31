@@ -5,14 +5,6 @@ title: "Ecosystem"
 
 # Ecosystem
 
-- [Inputs and Fields](#inputs-and-fields)
-- [Translations](#translations)
-- [Authentication Providers](#authentication-providers)
-- [Authorization Management](#authorization-management)
-- [Data Providers](#data-providers)
-- [User Interface](#ui)
-- [Miscellaneous](#miscellaneous)
-
 ## Inputs and Fields
 
 - [vascofg/react-admin-color-input](https://github.com/vascofg/react-admin-color-input): a color input using [React Color](http://casesandberg.github.io/react-color/), a collection of color pickers
