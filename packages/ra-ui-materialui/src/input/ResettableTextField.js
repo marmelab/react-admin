@@ -134,10 +134,18 @@ function ResettableTextField({
                                     />
                                 </IconButton>
                             </InputAdornment>
-                            {endAdornment}
                         </Fragment>
                     ) : (
-                        endAdornment
+                        endAdornment || (
+                            <InputAdornment
+                                position="end"
+                                classes={{
+                                    root: props.select ? selectAdornment : null,
+                                }}
+                            >
+                                <IconButton />
+                            </InputAdornment>
+                        )
                     ),
                 ...InputPropsWithoutEndAdornment,
             }}
