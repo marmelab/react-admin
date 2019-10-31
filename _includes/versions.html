@@ -18,7 +18,7 @@
     <li>
         {% if version contains "latest" %}
         {% if page.dir contains "doc" %}
-        <a href="{{ site.url }}/{{ page.name }}">{{
+        <a href="{{ site.url }}/{{ page.name | replace: "md", "html" }}">{{
                 version
             }}</a>
         {% else %}
@@ -27,7 +27,7 @@
         {% elsif page.dir contains version %}
         <a href="#">{{ version }}</a>
         {% else %}
-        <a href="{{ site.url }}/doc/{{ version }}/{{ page.name }}">{{
+        <a href="{{ site.url }}/doc/{{ version }}/{{ page.name | replace: "md", "html" }}">{{
             version
         }}</a>
         {% endif %}
