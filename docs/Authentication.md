@@ -58,7 +58,7 @@ export default {
             method: 'POST',
             body: JSON.stringify({ username, password }),
             headers: new Headers({ 'Content-Type': 'application/json' }),
-        })
+        });
         return fetch(request)
             .then(response => {
                 if (response.status < 200 || response.status >= 300) {
@@ -97,7 +97,7 @@ const httpClient = (url, options = {}) => {
     const token = localStorage.getItem('token');
     options.headers.set('Authorization', `Bearer ${token}`);
     return fetchUtils.fetchJson(url, options);
-}
+};
 const dataProvider = simpleRestProvider('http://localhost:3000', httpClient);
 
 const App = () => (
@@ -149,7 +149,7 @@ export default {
     login: ({ username, password }) => { /* ... */ },
     logout: () => { /* ... */ },
     checkError: (error) => {
-        const status  = error.status;
+        const status = error.status;
         if (status === 401 || status === 403) {
             localStorage.removeItem('token');
             return Promise.reject();
@@ -212,6 +212,9 @@ For all these cases, it's up to you to implement your own `LoginPage` component,
 
 ```jsx
 // in src/App.js
+import React from 'react';
+import { Admin } from 'react-admin';
+
 import MyLoginPage from './MyLoginPage';
 import MyLogoutButton from './MyLogoutButton';
 
@@ -239,7 +242,7 @@ const MyLoginPage = ({ theme }) => {
         e.preventDefault();
         login({ email, password })
             .catch(() => notify('Invalid email or password'));
-    }
+    };
 
     return (
         <ThemeProvider theme={theme}>
@@ -351,12 +354,12 @@ To avoid rendering a component and force waiting for the `authProvider` response
 You can render different content depending on the authenticated status. 
 
 ```jsx
-import { useAuthState } from 'react-admin';
+import { useAuthState, Loading } from 'react-admin';
 
 const MyPage = () => {
     const { loading, authenticated } = useAuthState();
     if (loading) {
-        return <Loading>;
+        return <Loading />;
     }
     if (authenticated) {
         return <AuthenticatedContent />;

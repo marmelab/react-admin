@@ -99,6 +99,10 @@ export default () => (
 
 ```jsx
 // in src/App.js
+import React from 'react';
+import { Admin } from 'react-admin';
+import simpleRestProvider from 'ra-data-simple-rest';
+
 import Dashboard from './Dashboard';
 
 const App = () => (
@@ -137,6 +141,10 @@ export default () => (
 
 ```jsx
 // in src/App.js
+import React from 'react';
+import { Admin } from 'react-admin';
+import simpleRestProvider from 'ra-data-simple-rest';
+
 import NotFound from './NotFound';
 
 const App = () => (
@@ -530,7 +538,8 @@ By default, react-admin creates URLs using a hash sign (e.g. "myadmin.acme.com/#
 
 You can create your own `history` function (compatible with [the `history` npm package](https://github.com/reacttraining/history)), and pass it to the `<Admin>` component to override the default history strategy. For instance, to use `browserHistory`:
 
-```js
+```jsx
+import React from 'react';
 import { createBrowserHistory as createHistory } from 'history';
 
 const history = createHistory();
@@ -552,7 +561,7 @@ You might want to dynamically define the resources when the app starts. The `<Ad
 
 For instance, getting the resource from an API might look like:
 
-```js
+```jsx
 import React from 'react';
 
 import { Admin, Resource } from 'react-admin';

@@ -16,8 +16,8 @@ React-admin stores the `dataProvider` object in a React context, so it's availab
 For instance, here is how to query the Data Provider for the current user profile:
 
 ```jsx
-import { useState, useEffect } from 'react';
-import { useDataProvider } from 'react-admin';
+import React, { useState, useEffect } from 'react';
+import { useDataProvider, Loading, Error } from 'react-admin';
 
 const UserProfile = ({ userId }) => {
     const dataProvider = useDataProvider();
@@ -37,7 +37,7 @@ const UserProfile = ({ userId }) => {
     }, []);
 
     if (loading) return <Loading />;
-    if (error) return <Error />
+    if (error) return <Error />;
     if (!user) return null;
 
     return (
@@ -46,7 +46,7 @@ const UserProfile = ({ userId }) => {
             <li>Email: {user.email}</li>
         </ul>
     )
-}
+};
 ```
 
 **Tip**: The `dataProvider` returned by the hook is actually a *wrapper* around your Data Provider. This wrapper dispatches Redux actions on load, success and failure, which keeps track of the loading state.
@@ -58,7 +58,8 @@ The `useQuery` hook calls the Data Provider on mount, and returns an object that
 For instance, the previous code snippet can be rewritten with `useQuery` as follows:
 
 ```jsx
-import { useQuery } from 'react-admin';
+import React from 'react';
+import { useQuery, Loading, Error } from 'react-admin';
 
 const UserProfile = ({ userId }) => {
     const { data, loading, error } = useQuery({ 
@@ -68,7 +69,7 @@ const UserProfile = ({ userId }) => {
     });
 
     if (loading) return <Loading />;
-    if (error) return <Error />
+    if (error) return <Error />;
     if (!data) return null;
 
     return (
@@ -77,7 +78,7 @@ const UserProfile = ({ userId }) => {
             <li>Email: {data.email}</li>
         </ul>
     )
-}
+};
 ```
 
 `useQuery` expects a Query argument with the following keys:
@@ -116,18 +117,19 @@ React-admin exposes a more powerful version of `useQuery`. `useQueryWithStore` p
 You can use this hook to show the cached result immediately on mount, while the updated result is fetched from the API. This is called optimistic rendering.
 
 ```diff
--import { useQuery } from 'react-admin';
-+import { useQueryWithStore } from 'react-admin';
+import React from 'react';
+-import { useQuery, Loading, Error } from 'react-admin';
++import { useQueryWithStore, Loading, Error } from 'react-admin';
 
 const UserProfile = ({ record }) => {
 -   const { loaded, error, data } = useQuery({
 +   const { loaded, error, data } = useQueryWithStore({
-        type: 'getOne,
+        type: 'getOne',
         resource: 'users',
         payload: { id: record.id }
     });
     if (!loaded) { return <Loading />; }
-    if (error) { return <p>ERROR</p>; }
+    if (error) { return <Error />; }
     return <div>User {data.username}</div>;
 };
 ```
@@ -141,7 +143,8 @@ In practice, react-admin uses `useQueryWithStore` instead of `useQuery` everywhe
 Here is an implementation of an "Approve" button:
 
 ```jsx
-import { useMutation } from 'react-admin';
+import React from 'react';
+import { useMutation, Button } from 'react-admin';
 
 const ApproveButton = ({ record }) => {
     const [approve, { loading }] = useMutation({
@@ -149,7 +152,7 @@ const ApproveButton = ({ record }) => {
         resource: 'comments',
         payload: { id: record.id, data: { isApproved: true } }
     });
-    return <FlatButton label="Approve" onClick={approve} disabled={loading} />;
+    return <Button label='Approve' onClick={approve} disabled={loading} />;
 };
 ```
 
@@ -190,7 +193,8 @@ Type         | Usage                     | Params format                        
 `useMutation` accepts a variant call where the parameters are passed to the callback instead of when calling the hook. Use this variant when some parameters are only known at call time.
 
 ```jsx
-import { useMutation } from 'react-admin';
+import React from 'react';
+import { useMutation, Button } from 'react-admin';
 
 const ApproveButton = ({ record }) => {
     const [mutate, { loading }] = useMutation();
@@ -202,8 +206,7 @@ const ApproveButton = ({ record }) => {
             data: { isApproved: true, updatedAt: new Date() }
         },
     });
-    return <FlatButton
-        data-id={record.id}
+    return <Button
         label="Approve"
         onClick={approve}
         disabled={loading}
@@ -222,11 +225,12 @@ React-admin provides one hook for each of the Data Provider methods. Based on `u
 For instance, here is an example using `useUpdate()`:
 
 ```jsx
-import { useUpdate } from 'react-admin';
+import React from 'react';
+import { useUpdate, Button } from 'react-admin';
 
 const ApproveButton = ({ record }) => {
     const [approve, { loading }] = useUpdate('comments', record.id, { isApproved: true }, record);
-    return <FlatButton label="Approve" onClick={approve} disabled={loading} />;
+    return <Button label='Approve' onClick={approve} disabled={loading} />;
 };
 ```
 
@@ -252,7 +256,8 @@ The specialized hooks based on `useMutation` return a callback:
 For instance, here is another version of the `<ApproveButton>`  based on `useDataProvider` that notifies the user of success or failure using the bottom notification banner:
 
 ```jsx
-import { useDataProvider, useNotify, useRedirect } from 'react-admin';
+import React from 'react';
+import { useDataProvider, useNotify, useRedirect, Button } from 'react-admin';
 
 const ApproveButton = ({ record }) => {
     const notify = useNotify();
@@ -270,7 +275,7 @@ const ApproveButton = ({ record }) => {
             notify(`Comment approval error: ${error.message}`, 'warning');
         });
     
-    return <FlatButton label="Approve" onClick={approve} disabled={loading} />;
+    return <Button label='Approve' onClick={approve} disabled={loading} />;
 };
 ```
 
@@ -288,7 +293,8 @@ But the other hooks presented in this chapter, starting with `useMutation`, don'
 So the `<ApproveButton>` written with `useMutation` instead of `useDataProvider` can specify side effects as follows:
 
 ```jsx
-import { useMutation, useNotify, useRedirect } from 'react-admin';
+import React from 'react';
+import { useMutation, useNotify, useRedirect, Button } from 'react-admin';
 
 const ApproveButton = ({ record }) => {
     const notify = useNotify();
@@ -307,7 +313,7 @@ const ApproveButton = ({ record }) => {
             onFailure: (error) => notify(`Comment approval error: ${error.message}`, 'warning'),
         }
     );
-    return <FlatButton label="Approve" onClick={approve} disabled={loading} />;
+    return <Button label='Approve' onClick={approve} disabled={loading} />;
 };
 ```
 
@@ -322,7 +328,8 @@ As a bonus, while the success notification is displayed, users have the ability 
 You can benefit from optimistic rendering when you call the `useMutation` hook, too. You just need to pass `undoable: true` in the options parameter:
 
 ```diff
-import { useMutation, useNotify, useRedirect } from 'react-admin';
+import React from 'react';
+import { useMutation, useNotify, useRedirect, Button } from 'react-admin';
 
 const ApproveButton = ({ record }) => {
     const notify = useNotify();
@@ -343,7 +350,7 @@ const ApproveButton = ({ record }) => {
             onFailure: (error) => notify(`Error: ${error.message}`, 'warning'),
         }
     );
-    return <FlatButton label="Approve" onClick={approve} disabled={loading} />;
+    return <Button label='Approve' onClick={approve} disabled={loading} />;
 };
 ```
 
@@ -352,7 +359,8 @@ As you can see in this example, you need to tweak the notification for undoable 
 You can pass the `{ undoable: true }` options parameter to specialized hooks, too. they all accept an optional last argument with side effects.
 
 ```jsx
-import { useUpdate, useNotify, useRedirect } from 'react-admin';
+import React from 'react';
+import { useUpdate, useNotify, useRedirect, Button } from 'react-admin';
 
 const ApproveButton = ({ record }) => {
     const notify = useNotify();
@@ -370,7 +378,7 @@ const ApproveButton = ({ record }) => {
             onFailure: (error) => notify(`Error: ${error.message}`, 'warning'),
         }
     );
-    return <FlatButton label="Approve" onClick={approve} disabled={loading} />;
+    return <Button label='Approve' onClick={approve} disabled={loading} />;
 };
 ```
 
@@ -385,7 +393,8 @@ The `useDataProvider` hook dispatches redux actions on load, on success, and on 
 React-admin doesn't have any reducer watching these actions. You can write a custom reducer for these actions to store the return of the Data Provider in Redux. But the best way to do so is to set the hooks dispatch a custom action instead of `CUSTOM_FETCH`. Use the `action` option for that purpose: 
 
 ```diff
-import { useUpdate, useNotify, useRedirect } from 'react-admin';
+import React from 'react';
+import { useUpdate, useNotify, useRedirect, Button } from 'react-admin';
 
 const ApproveButton = ({ record }) => {
     const notify = useNotify();
@@ -404,7 +413,7 @@ const ApproveButton = ({ record }) => {
             onFailure: (error) => notify(`Error: ${error.message}`, 'warning'),
         }
     );
-    return <FlatButton label="Approve" onClick={approve} disabled={loading} />;
+    return <Button label='Approve' onClick={approve} disabled={loading} />;
 };
 ```
 
@@ -418,13 +427,14 @@ You can fetch and display a user profile using the `<Query>` component, which us
 
 {% raw %}
 ```jsx
-import { Query } from 'react-admin';
+import React from 'react';
+import { Query, Loading, Error } from 'react-admin';
 
 const UserProfile = ({ record }) => (
-    <Query type="getOne" resource="users" payload={{ id: record.id }}>
+    <Query type='getOne' resource='users' payload={{ id: record.id }}>
         {({ data, loading, error }) => {
             if (loading) { return <Loading />; }
-            if (error) { return <p>ERROR</p>; }
+            if (error) { return <Error />; }
             return <div>User {data.username}</div>;
         }}
     </Query>
@@ -435,7 +445,8 @@ const UserProfile = ({ record }) => (
 Or, query a user list on the dashboard with the same `<Query>` component:
 
 ```jsx
-import { Query } from 'react-admin';
+import React from 'react';
+import { Query, Loading, Error } from 'react-admin';
 
 const payload = {
    pagination: { page: 1, perPage: 10 },
@@ -443,10 +454,10 @@ const payload = {
 };
 
 const UserList = () => (
-    <Query type="getList" resource="users" payload={payload}>
+    <Query type='getList' resource='users' payload={payload}>
         {({ data, total, loading, error }) => {
             if (loading) { return <Loading />; }
-            if (error) { return <p>ERROR</p>; }
+            if (error) { return <Error />; }
             return (
                 <div>
                     <p>Total users: {total}</p>
@@ -469,7 +480,8 @@ When calling the API to update ("mutate") data, use the `<Mutation>` component i
 Here is a version of the `<ApproveButton>` component demonstrating `<Mutation>`:
 
 ```jsx
-import { Mutation, useNotify, useRedirect } from 'react-admin';
+import React from 'react';
+import { Mutation, useNotify, useRedirect, Button } from 'react-admin';
 
 const ApproveButton = ({ record }) => {
     const notify = useNotify();
@@ -478,24 +490,24 @@ const ApproveButton = ({ record }) => {
     const options = {
         undoable: true,
         onSuccess: ({ data }) => {
-            notify('Comment approved', 'info', {}, true);,
-            redirect('/comments'),
+            notify('Comment approved', 'info', {}, true);
+            redirect('/comments');
         },
         onFailure: (error) => notify(`Error: ${error.message}`, 'warning'),
     };
     return (
         <Mutation
-            type="update"
-            resource="comments"
+            type='update'
+            resource='comments'
             payload={payload}
             options={options}
         >
             {(approve, { loading }) => (
-                <FlatButton label="Approve" onClick={approve} disabled={loading} />
+                <Button label='Approve' onClick={approve} disabled={loading} />
             )}
         </Mutation>
     );
-}
+};
 
 export default ApproveButton;
 ```
@@ -526,7 +538,7 @@ import { useState, useEffect } from 'react';
     }, []);
 
     if (loading) return <Loading />;
-    if (error) return <Error />
+    if (error) return <Error />;
     if (!user) return null;
 
     return (
@@ -535,7 +547,7 @@ import { useState, useEffect } from 'react';
             <li>Email: {user.email}</li>
         </ul>
     )
-}
+};
 
 -export default UserProfile;
 +export default withDataProvider(UserProfile);
@@ -553,8 +565,7 @@ There is no special react-admin sauce in that case. Here is an example implement
 // in src/comments/ApproveButton.js
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { useNotify, , useRedirect, fetchStart, fetchEnd } from 'react-admin';
-import { push } from 'connected-react-router';
+import { useNotify, useRedirect, fetchStart, fetchEnd, Button } from 'react-admin';
 
 const ApproveButton = ({ record }) => {
     const dispatch = useDispatch();
@@ -577,10 +588,10 @@ const ApproveButton = ({ record }) => {
                 setLoading(false);
                 dispatch(fetchEnd()); // stop the global loading indicator
             });
-    }
+    };
 
-    return <Button label="Approve" onClick={handleClick} disabled={loading} />;
-}
+    return <Button label='Approve' onClick={handleClick} disabled={loading} />;
+};
 
 export default ApproveButton;
 ```
