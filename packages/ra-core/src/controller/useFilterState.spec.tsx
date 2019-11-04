@@ -1,6 +1,7 @@
+import React from 'react';
 import renderHook from '../util/renderHook';
 import useFilterState from './useFilterState';
-import { act } from '@testing-library/react';
+import { render, act } from '@testing-library/react';
 
 describe('useFilterState', () => {
     it('should initialize filterState with default filter', () => {
@@ -45,29 +46,44 @@ describe('useFilterState', () => {
     });
 
     it('should provide setFilter to update filter value after given debounceTime preserving permanentFilter and filterToQuery', async () => {
-        const { hookValue, childrenMock } = renderHook(() =>
-            useFilterState({
+        let ret = { filter: null, setFilter: v => null };
+        const permanentFilter = { type: 'thisOne' }; // define outside of the component or the useEffect runs indefinitely
+        const Test = () => {
+            const { filter, setFilter } = useFilterState({
+                permanentFilter,
                 debounceTime: 50,
-                permanentFilter: { type: 'thisOne' },
                 filterToQuery: v => ({ search: v }),
-            })
-        );
+            });
+            ret = { filter, setFilter };
+            return <p>done</p>;
+        };
+        render(<Test />);
 
-        act(() => hookValue.setFilter('needle in a haystack'));
-
-        expect(childrenMock).toBeCalledTimes(1);
+        act(() => ret.setFilter('needle in a haystack'));
         await new Promise(resolve => setTimeout(resolve, 70));
-
-        expect(childrenMock).toBeCalledTimes(2);
-
-        expect(childrenMock.mock.calls[0][0].filter).toEqual({
-            type: 'thisOne',
-            search: '',
-        });
-
-        expect(childrenMock.mock.calls[1][0].filter).toEqual({
+        expect(ret.filter).toEqual({
             type: 'thisOne',
             search: 'needle in a haystack',
         });
+    });
+
+    it('should update the filter when the permanentFilter is updated', async () => {
+        let ret = { filter: null, setFilter: v => null };
+        const Test = ({ permanentFilter }) => {
+            const { filter, setFilter } = useFilterState({
+                permanentFilter,
+                debounceTime: 0,
+            });
+            ret = { filter, setFilter };
+            return <p>done</p>;
+        };
+        const { rerender } = render(<Test permanentFilter={{ foo: 'bar' }} />);
+        expect(ret.filter).toEqual({ foo: 'bar', q: '' });
+        act(() => ret.setFilter('search'));
+        await new Promise(resolve => setTimeout(resolve, 10));
+        expect(ret.filter).toEqual({ foo: 'bar', q: 'search' });
+        rerender(<Test permanentFilter={{ foo: 'baz' }} />);
+        await new Promise(resolve => setTimeout(resolve, 10));
+        expect(ret.filter).toEqual({ foo: 'baz', q: 'search' });
     });
 });
