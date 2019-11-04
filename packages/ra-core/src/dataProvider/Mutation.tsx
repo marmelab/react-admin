@@ -47,7 +47,7 @@ interface Props {
  *         payload={{ id: record.id, data: { isApproved: true } }}
  *     >
  *         {approve => (
- *             <FlatButton label="Approve" onClick={approve} />
+ *             <Button label="Approve" onClick={approve} />
  *         )}
  *     </Mutation>
  * );
