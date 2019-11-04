@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import shouldUpdate from 'recompose/shouldUpdate';
 import ContentCreate from '@material-ui/icons/Create';
 import { Link } from 'react-router-dom';
 import { linkToRecord } from 'ra-core';
@@ -37,14 +36,4 @@ EditButton.propTypes = {
     icon: PropTypes.element,
 };
 
-const enhance = shouldUpdate(
-    (props, nextProps) =>
-        props.translate !== nextProps.translate ||
-        (props.record &&
-            nextProps.record &&
-            props.record.id !== nextProps.record.id) ||
-        props.basePath !== nextProps.basePath ||
-        (props.record == null && nextProps.record != null)
-);
-
-export default enhance(EditButton);
+export default EditButton;
