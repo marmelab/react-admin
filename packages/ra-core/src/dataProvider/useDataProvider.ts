@@ -274,6 +274,7 @@ const performUndoableQuery = ({
                         warnBeforeClosingWindow
                     );
                 }
+                console.error(error);
                 return logoutIfAccessDenied(error).then(loggedOut => {
                     if (loggedOut) return;
                     dispatch({
@@ -354,8 +355,9 @@ const performQuery = ({
             onSuccess && onSuccess(response);
             return response;
         })
-        .catch(error =>
-            logoutIfAccessDenied(error).then(loggedOut => {
+        .catch(error => {
+            console.error(error);
+            return logoutIfAccessDenied(error).then(loggedOut => {
                 if (loggedOut) return;
                 dispatch({
                     type: `${action}_FAILURE`,
@@ -372,8 +374,8 @@ const performQuery = ({
                 dispatch({ type: FETCH_ERROR, error });
                 onFailure && onFailure(error);
                 throw error;
-            })
-        );
+            });
+        });
 };
 
 interface QueryFunctionParams {
