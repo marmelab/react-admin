@@ -585,7 +585,7 @@ const messages = {
 
 By default, the `polyglotI18nProvider` logs a warning in the console each time it is called with a message that can't be found in the current translations. This is a Polyglot feature that helpts tracking missing translation messages.
 
-But you may want to avoid this for some messages, e.g. error messages from a data sourc eyou don't control (like a web server).
+But you may want to avoid this for some messages, e.g. error messages from a data source you don't control (like a web server).
 
 The fastest way to do so is to use the third parameter of the `polyglotI18nProvider` function to pass the `allowMissing` option to Polyglot at initialization:
 
