@@ -583,7 +583,7 @@ const messages = {
 
 ## Silencing Translation Warnings
 
-By default, the `polyglotI18nProvider` logs a warning in the console each time it is called with a message that can't be found in the current translations. This is a Polyglot feature that helpts tracking missing translation messages.
+By default, the `polyglotI18nProvider` logs a warning in the console each time it is called with a message that can't be found in the current translations. This is a Polyglot feature that helps tracking missing translation messages.
 
 But you may want to avoid this for some messages, e.g. error messages from a data source you don't control (like a web server).
 
