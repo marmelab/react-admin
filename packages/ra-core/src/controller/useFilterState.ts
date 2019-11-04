@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 import debounce from 'lodash/debounce';
 
 export interface Filter {
@@ -15,6 +15,9 @@ interface UseFilterStateProps {
     filter: Filter;
     setFilter: (v: string) => void;
 }
+
+const defaultFilterToQuery = (v: string) => ({ q: v });
+const emptyFilter = {};
 
 /**
  * @name setFilter
@@ -52,31 +55,42 @@ interface UseFilterStateProps {
  *  }
  *
  * @param {Object} option
- * @param {Function} option.filterToQuery function to convert the filter string to a filter object
- * @param {Object} option.permanentFilter permanent filter to be merged with the filter string default to {}
- * @param {number} option.debounceTime Time between filter update allow to debounce the search
+ * @param {Function} option.filterToQuery Function to convert the filter string to a filter object. Defaults to v => ({ q: v }).
+ * @param {Object} option.permanentFilter Permanent filter to be merged with the filter string. Defaults to {}.
+ * @param {number} option.debounceTime Time in ms between filter updates - used to debounce the search. Defaults to 500ms.
  *
  * @returns {FilterProps} The filter props
  */
 export default ({
-    filterToQuery = v => ({ q: v }),
-    permanentFilter = {},
+    filterToQuery = defaultFilterToQuery,
+    permanentFilter = emptyFilter,
     debounceTime = 500,
 }: UseFilterStateOptions): UseFilterStateProps => {
+    const permanentFilterProp = useRef(permanentFilter);
+    const latestValue = useRef();
     const [filter, setFilterValue] = useState({
         ...permanentFilter,
         ...filterToQuery(''),
     });
 
+    useEffect(() => {
+        if (permanentFilterProp.current !== permanentFilter) {
+            permanentFilterProp.current = permanentFilter;
+            setFilterValue({
+                ...permanentFilter,
+                ...filterToQuery(latestValue.current),
+            });
+        }
+    }, [permanentFilter, permanentFilterProp, filterToQuery]);
+
     const setFilter = useCallback(
-        debounce(
-            value =>
-                setFilterValue({
-                    ...permanentFilter,
-                    ...filterToQuery(value),
-                }),
-            debounceTime
-        ),
+        debounce(value => {
+            setFilterValue({
+                ...permanentFilter,
+                ...filterToQuery(value),
+            });
+            latestValue.current = value;
+        }, debounceTime),
         []
     );
 
