@@ -1,18 +1,4 @@
-import CoreAdmin from './CoreAdmin';
-import CoreAdminContext from './CoreAdminContext';
-import CoreAdminRouter from './CoreAdminRouter';
-import CoreAdminUI from './CoreAdminUI';
-import createAdminStore from './createAdminStore';
-import RoutesWithLayout from './RoutesWithLayout';
-import Resource from './Resource';
-
-export {
-    CoreAdmin,
-    CoreAdminContext,
-    CoreAdminRouter,
-    CoreAdminUI,
-    createAdminStore,
-    RoutesWithLayout,
-    Resource,
-};
 export * from './dataFetchActions';
+export * from './components';
+// there seems to be a bug in TypeScript: this only works if the exports are in this order.
+// Swapping the two exports leads to the core module missing the dataFetchActions constants
