@@ -421,7 +421,7 @@ const ConfigurationMenu = forwardRef(({ onClick }, ref) => (
     <MenuItemLink
         ref={ref}
         to="/configuration"
-        primaryText={Configuration}
+        primaryText="Configuration"
         leftIcon={<SettingsIcon />}
         onClick={onClick} // close the menu on click
     />
@@ -970,5 +970,5 @@ Usage:
 ```jsx
 ({ data, ...props }) => !data ?
         <LinearProgress /> :
-        <MyInput data={data} />
+        <MyInput data={data} />;
 ```
