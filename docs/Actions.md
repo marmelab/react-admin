@@ -152,7 +152,7 @@ const ApproveButton = ({ record }) => {
         resource: 'comments',
         payload: { id: record.id, data: { isApproved: true } }
     });
-    return <Button label='Approve' onClick={approve} disabled={loading} />;
+    return <Button label="Approve" onClick={approve} disabled={loading} />;
 };
 ```
 
@@ -230,7 +230,7 @@ import { useUpdate, Button } from 'react-admin';
 
 const ApproveButton = ({ record }) => {
     const [approve, { loading }] = useUpdate('comments', record.id, { isApproved: true }, record);
-    return <Button label='Approve' onClick={approve} disabled={loading} />;
+    return <Button label="Approve" onClick={approve} disabled={loading} />;
 };
 ```
 
@@ -275,7 +275,7 @@ const ApproveButton = ({ record }) => {
             notify(`Comment approval error: ${error.message}`, 'warning');
         });
     
-    return <Button label='Approve' onClick={approve} disabled={loading} />;
+    return <Button label="Approve" onClick={approve} disabled={loading} />;
 };
 ```
 
@@ -313,7 +313,7 @@ const ApproveButton = ({ record }) => {
             onFailure: (error) => notify(`Comment approval error: ${error.message}`, 'warning'),
         }
     );
-    return <Button label='Approve' onClick={approve} disabled={loading} />;
+    return <Button label="Approve" onClick={approve} disabled={loading} />;
 };
 ```
 
@@ -350,7 +350,7 @@ const ApproveButton = ({ record }) => {
             onFailure: (error) => notify(`Error: ${error.message}`, 'warning'),
         }
     );
-    return <Button label='Approve' onClick={approve} disabled={loading} />;
+    return <Button label="Approve" onClick={approve} disabled={loading} />;
 };
 ```
 
@@ -378,7 +378,7 @@ const ApproveButton = ({ record }) => {
             onFailure: (error) => notify(`Error: ${error.message}`, 'warning'),
         }
     );
-    return <Button label='Approve' onClick={approve} disabled={loading} />;
+    return <Button label="Approve" onClick={approve} disabled={loading} />;
 };
 ```
 
@@ -413,7 +413,7 @@ const ApproveButton = ({ record }) => {
             onFailure: (error) => notify(`Error: ${error.message}`, 'warning'),
         }
     );
-    return <Button label='Approve' onClick={approve} disabled={loading} />;
+    return <Button label="Approve" onClick={approve} disabled={loading} />;
 };
 ```
 
@@ -589,8 +589,7 @@ const ApproveButton = ({ record }) => {
                 dispatch(fetchEnd()); // stop the global loading indicator
             });
     };
-
-    return <Button label='Approve' onClick={handleClick} disabled={loading} />;
+    return <Button label="Approve" onClick={handleClick} disabled={loading} />;
 };
 
 export default ApproveButton;
