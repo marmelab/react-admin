@@ -560,7 +560,7 @@ export default {
 
 ## Translating Notification Messages
 
-By default, react-admin translates the notificaiton messages. You can pass variables for polyglot interpolation with custom notifications. For example:
+By default, react-admin translates the notification messages. You can pass variables for polyglot interpolation with custom notifications. For example:
 
 ```js
 notify('myroot.hello.world', 'info', { messageArgs: { name: 'Planet Earth' } });
