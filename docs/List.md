@@ -577,9 +577,9 @@ For instance, you can modify the default pagination by adjusting the "rows per p
 
 ```jsx
 // in src/MyPagination.js
-import { Pagination } from 'react-admin';
+import { Pagination, List } from 'react-admin';
 
-const PostPagination = props => <Pagination rowsPerPageOptions={[10, 25, 50, 100]} {...props} />
+const PostPagination = props => <Pagination rowsPerPageOptions={[10, 25, 50, 100]} {...props} />;
 
 export const PostList = (props) => (
     <List {...props} pagination={<PostPagination />}>

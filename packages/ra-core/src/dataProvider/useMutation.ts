@@ -70,7 +70,7 @@ import useDataProviderWithDeclarativeSideEffects from './useDataProviderWithDecl
  *         resource: 'comments',
  *         payload: { id: record.id, data: { isApproved: true } }
  *     });
- *     return <FlatButton label="Approve" onClick={approve} disabled={loading} />;
+ *     return <Button label="Approve" onClick={approve} disabled={loading} />;
  * };
  *
  * @example
@@ -89,8 +89,7 @@ import useDataProviderWithDeclarativeSideEffects from './useDataProviderWithDecl
  *             data: { isApproved: true, updatedAt: new Date() }
  *         },
  *     });
- *     return <FlatButton
- *         data-id={record.id}
+ *     return <Button
  *         label="Approve"
  *         onClick={approve}
  *         disabled={loading}
@@ -118,7 +117,7 @@ import useDataProviderWithDeclarativeSideEffects from './useDataProviderWithDecl
  *              onFailure: error => notify('Failure !')
  *         }
  *     );
- *     return <FlatButton label="Reset stock" onClick={handleClick} disabled={loading} />;
+ *     return <Button label="Reset stock" onClick={handleClick} disabled={loading} />;
  * };
  */
 const useMutation = (

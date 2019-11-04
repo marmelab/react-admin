@@ -244,7 +244,7 @@ const LocaleSwitcher = () => {
             <Button onClick={() => setLocale('en')}>French</Button>
         </div>
     );
-}
+};
 
 export default LocaleSwitcher;
 ```
@@ -278,7 +278,7 @@ const LocaleSwitcher = () => {
             </Button>
         </div>
     );
-}
+};
 
 export default LocaleSwitcher;
 ```
@@ -448,7 +448,7 @@ const MyHelloButton = () => {
     return (
         <button>{translate('myroot.hello.world')}</button>
     );
-}
+};
 
 export default MyHelloButton;
 ```
@@ -485,7 +485,7 @@ class MyHelloButton extends Component {
             <button>{translate('myroot.hello.world')}</button>
         );
     } 
-}
+};
 
 export default withTranslate(MyHelloButton);
 ```

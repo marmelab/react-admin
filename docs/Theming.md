@@ -15,7 +15,8 @@ Here is an example customizing an `EditButton` component inside a `Datagrid`, us
 
 {% raw %}
 ```jsx
-import { NumberField, List, Datagrid, EditButton } from 'react-admin';
+import React from 'react';
+import { NumberField, List, Datagrid, TextField, EditButton } from 'react-admin';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles({
@@ -145,7 +146,8 @@ Sometimes you want the format to depend on the value. The following example show
 
 {% raw %}
 ```jsx
-import { NumberField, List, Datagrid, EditButton } from 'react-admin';
+import React from 'react';
+import { NumberField, List, Datagrid, TextField, EditButton } from 'react-admin';
 import { makeStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
 
@@ -187,7 +189,8 @@ Furthermore, you may extract this highlighting strategy into an Higher Order Com
 
 {% raw %}
 ```jsx
-import { NumberField, List, Datagrid, EditButton } from 'react-admin';
+import React from 'react';
+import { NumberField, List, Datagrid, TextField, EditButton } from 'react-admin';
 import { makeStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
 
@@ -278,7 +281,7 @@ export const PostList = (props) => {
             )}
         </List>
     );
-}
+};
 ```
 
 **Tip**: Previous versions of react-admin shipped a `<Responsive>` component to do media queries. This component is now deprecated. Use `useMediaQuery` instead.
@@ -410,6 +413,7 @@ export default MyLayout;
 You can replace the default user menu by your own by setting the `userMenu` prop of the `<AppBar>` component. For instance, to add custom menu items, just decorate the default `<UserMenu>` by adding children to it:
 
 ```jsx
+import React from 'react';
 import { AppBar, UserMenu, MenuItemLink } from 'react-admin';
 import SettingsIcon from '@material-ui/icons/Settings';
 
@@ -417,7 +421,7 @@ const ConfigurationMenu = forwardRef(({ onClick }, ref) => (
     <MenuItemLink
         ref={ref}
         to="/configuration"
-        primaryText={Configuration}
+        primaryText="Configuration"
         leftIcon={<SettingsIcon />}
         onClick={onClick} // close the menu on click
     />
@@ -503,6 +507,7 @@ import {
     Notification,
     Sidebar,
     setSidebarVisibility,
+    ComponentPropType,
 } from 'react-admin';
 
 const useStyles = makeStyles(theme => ({
@@ -563,7 +568,7 @@ const MyLayout = ({
             </div>
         </div>
     );
-}
+};
 
 MyLayout.propTypes = {
     children: PropTypes.oneOfType([PropTypes.func, PropTypes.node]),
@@ -571,11 +576,11 @@ MyLayout.propTypes = {
         PropTypes.func,
         PropTypes.string,
     ]),
-    logout: componentPropType,
+    logout: ComponentPropType,
     title: PropTypes.string.isRequired,
 };
 
-export default MyLayout
+export default MyLayout;
 ```
 
 ## Customizing the AppBar Content
@@ -628,6 +633,7 @@ To use this custom `MyAppBar` component, pass it as prop to a custom `Layout`, a
 
 ```jsx
 // in src/MyLayout.js
+import React from 'react';
 import { Layout } from 'react-admin';
 import MyAppBar from './MyAppBar';
 
@@ -659,6 +665,7 @@ By default, React-admin uses [Material-ui's `<AppBar>` component](https://materi
 
 ```jsx
 // in src/MyAppBar.js
+import React from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -717,7 +724,7 @@ const Menu = ({ onMenuClick, logout }) => {
             {isXSmall && logout}
         </div>
     );
-}
+};
 
 export default withRouter(Menu);
 ```
@@ -804,7 +811,7 @@ const Menu = ({ onMenuClick, logout }) => {
             {isXSmall && logout}
         </div>
     );
-}
+};
 
 export default withRouter(Menu);
 ```
@@ -907,7 +914,7 @@ const MyError = ({
             </div>
         </div>
     );
-}
+};
 
 export default MyError;
 ```
@@ -961,7 +968,7 @@ Display a linear progress component. Display the same loading component as `reac
 Usage:
 
 ```jsx
-({ data, ...props }) => !data?
+({ data, ...props }) => !data ?
         <LinearProgress /> :
-        <MyInput data={data} />
+        <MyInput data={data} />;
 ```

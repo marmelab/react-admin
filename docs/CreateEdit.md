@@ -59,7 +59,7 @@ export const PostCreate = (props) => (
 );
 
 export const PostEdit = (props) => (
-    <Edit title={<PostTitle />} {...props}>
+    <Edit {...props}>
         <SimpleForm>
             <TextInput disabled label="Id" source="id" />
             <TextInput source="title" validate={required()} />
@@ -119,6 +119,7 @@ export const PostEdit = (props) => (
 You can replace the list of default actions by your own element using the `actions` prop:
 
 ```jsx
+import React from 'react';
 import Button from '@material-ui/core/Button';
 import { TopToolbar, ShowButton } from 'react-admin';
 
@@ -207,6 +208,7 @@ const PostEdit = props => (
 **Tip**: If you want a confirmation dialog for the Delete button but don't mind undoable Edits, then pass a [custom toolbar](#toolbar) to the form, as follows:
 
 ```jsx
+import React from 'react';
 import {
     Toolbar,
     SaveButton,
@@ -228,7 +230,7 @@ const CustomToolbar = props => (
         <SaveButton />
         <DeleteButton undoable={false} />
     </Toolbar>
-));
+);
 
 const PostEdit = props => (
     <Edit {...props}>
@@ -236,6 +238,7 @@ const PostEdit = props => (
             ...
         </SimpleForm>
     </Edit>
+);
 ```
 
 ## Prefilling a `<Create>` Record
@@ -245,6 +248,7 @@ You may need to prepopulate a record based on another one. For that use case, us
 For instance, to allow cloning all the posts from the list:
 
 ```jsx
+import React from 'react';
 import { List, Datagrid, TextField, CloneButton } from 'react-admin';
 
 const PostList = props => (
@@ -254,7 +258,7 @@ const PostList = props => (
             <CloneButton />
         </Datagrid>
     </List>
-)
+);
 ```
 
 Alternately, you may need to prepopulate a record based on a *related* record. For instance, in a `PostList` component, you may want to display a button to create a comment related to the current post. Clicking on that button would lead to a `CommentCreate` page where the `post_id` is preset to the id of the Post.
@@ -267,6 +271,8 @@ That means that if you want to create a link to a creation form, presetting *som
 
 {% raw %}
 ```jsx
+import React from 'react';
+import { Datagrid } from 'react-admin';
 import Button from '@material-ui/core/Button';
 import { Link } from 'react-router-dom';
 
@@ -299,6 +305,7 @@ export default PostList = props => (
 
 {% raw %}
 ```jsx
+import React from 'react';
 import Button from '@material-ui/core/Button';
 import { Link } from 'react-router-dom';
 
@@ -403,7 +410,21 @@ Here are all the props accepted by the `<TabbedForm>` component:
 
 {% raw %}
 ```jsx
-import { TabbedForm, FormTab } from 'react-admin'
+import React from 'react';
+import {
+    TabbedForm,
+    FormTab,
+    Edit,
+    Datagrid,
+    TextField,
+    DateField,
+    TextInput,
+    ReferenceManyField,
+    NumberInput,    
+    DateInput,
+    BooleanInput,
+    EditButton
+} from 'react-admin';
 
 export const PostEdit = (props) => (
     <Edit {...props}>
@@ -450,6 +471,7 @@ By default `<TabbedForm>` uses `<TabbedFormTabs>`, an internal react-admin compo
 The following example shows how to make use of scrollable `<Tabs>`. Pass the `scrollable` prop to `<TabbedFormTabs>` and pass that as the `tabs` prop to `<TabbedForm>`
 
 ```jsx
+import React from 'react';
 import {
     Edit,
     TabbedForm,
@@ -624,7 +646,7 @@ const ageValidation = (value, allValues) => {
         return 'Must be over 18';
     }
     return [];
-}
+};
 
 const validateFirstName = [required(), maxLength(15)];
 const validateAge = [required(), number(), ageValidation];
@@ -772,6 +794,7 @@ The most common use case is to display two submit buttons in the `<Create>` view
 For that use case, use the `<SaveButton>` component with a custom `redirect` prop:
 
 ```jsx
+import React from 'react';
 import { Create, SimpleForm, SaveButton, Toolbar } from 'react-admin';
 
 const PostCreateToolbar = props => (
@@ -802,6 +825,7 @@ export const PostCreate = (props) => (
 Another use case is to remove the `<DeleteButton>` from the toolbar in an edit view. In that case, create a custom toolbar containing only the `<SaveButton>` as child;
 
 ```jsx
+import React from 'react';
 import { Edit, SimpleForm, SaveButton, Toolbar } from 'react-admin';
 
 const PostEditToolbar = props => (
