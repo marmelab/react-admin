@@ -881,7 +881,7 @@ const postRowClick = (id, basePath, record) => fetchUserRights().then(({ canEdit
 To show more data from the resource without adding too many columns, you can show data in an expandable panel below the row on demand, using the `expand` prop. For instance, this code shows the `body` of a post in an expandable panel:
 
 {% raw %}
-```js
+```jsx
 const PostPanel = ({ id, record, resource }) => (
     <div dangerouslySetInnerHTML={{ __html: record.body }} />
 );
@@ -906,7 +906,7 @@ The `expand` prop expects an component as value. When the user chooses to expand
 
 **Tip**: Since the `expand` element receives the same props as a detail view, you can actually use a `<Show>` view as component for the `expand` prop:
 
-```js
+```jsx
 const PostShow = props => (
     <Show
         {...props}
@@ -936,7 +936,7 @@ The result will be the same as in the previous snippet, except that `<Show>` enc
 
 **Tip**: You can go one step further and use an `<Edit>` view as `expand` component, albeit with a twist:
 
-```js
+```jsx
 const PostEdit = props => (
     <Edit 
         {...props}
