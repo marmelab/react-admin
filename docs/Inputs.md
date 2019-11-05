@@ -183,7 +183,7 @@ Ex. `<AutocompleteInput shouldRenderSuggestions={(val) => { return val.trim().le
 **Tip**: If you want to populate the `choices` attribute with a list of related records, you should decorate `<AutocompleteInput>` with [`<ReferenceInput>`](#referenceinput), and leave the `choices` empty:
 
 ```jsx
-import { AutocompleteInput, ReferenceInput } from 'react-admin'
+import { AutocompleteInput, ReferenceInput } from 'react-admin';
 
 <ReferenceInput label="Post" source="post_id" reference="posts">
     <AutocompleteInput optionText="title" />
@@ -197,7 +197,7 @@ Lastly, would you need to override the props of the suggestions container (a `Po
 <AutocompleteInput source="category" options={{
     suggestionsContainerProps: {
         disablePortal: true,
-}} />
+}}} />
 ```
 {% endraw %}
 
@@ -288,7 +288,7 @@ Lastly, `<AutocompleteArrayInput>` renders a [material-ui-chip-input](https://gi
 **Tip**: If you want to populate the `choices` attribute with a list of related records, you should decorate `<AutocompleteArrayInput>` with [`<ReferenceArrayInput>`](#referenceinput), and leave the `choices` empty:
 
 ```jsx
-import { AutocompleteArrayInput, ReferenceArrayInput } from 'react-admin'
+import { AutocompleteArrayInput, ReferenceArrayInput } from 'react-admin';
 
 <ReferenceArrayInput label="Tags" reference="tags" source="tags">
     <AutocompleteArrayInput />
@@ -302,7 +302,7 @@ If you need to override the props of the suggestions container (a `Popper` eleme
 <AutocompleteArrayInput source="category" options={{
     suggestionsContainerProps: {
         disablePortal: true,
-}} />
+}}} />
 ```
 {% endraw %}
 
@@ -636,7 +636,7 @@ Refer to [Material UI RadioGroup documentation](https://material-ui.com/api/radi
 **Tip**: If you want to populate the `choices` attribute with a list of related records, you should decorate `<RadioButtonGroupInput>` with [`<ReferenceInput>`](#referenceinput), and leave the `choices` empty:
 
 ```jsx
-import { RadioButtonGroupInput, ReferenceInput } from 'react-admin'
+import { RadioButtonGroupInput, ReferenceInput } from 'react-admin';
 
 <ReferenceInput label="Author" source="author_id" reference="authors">
     <RadioButtonGroupInput optionText="last_name" />
@@ -671,8 +671,8 @@ This means you can use `<ReferenceArrayInput>` with [`<SelectArrayInput>`](#sele
 
 The component expects a `source` and a `reference` attributes. For instance, to make the `tag_ids` for a `post` editable:
 
-```js
-import { ReferenceArrayInput, SelectArrayInput } from 'react-admin'
+```jsx
+import { ReferenceArrayInput, SelectArrayInput } from 'react-admin';
 
 <ReferenceArrayInput source="tag_ids" reference="tags">
     <SelectArrayInput optionText="name" />
@@ -683,7 +683,7 @@ import { ReferenceArrayInput, SelectArrayInput } from 'react-admin'
 
 **Note**: You **must** add a `<Resource>` for the reference resource - react-admin needs it to fetch the reference data. You can omit the list prop in this reference if you want to hide it in the sidebar menu.
 
-```js
+```jsx
 <Admin dataProvider={myDataProvider}>
     <Resource name="posts" list={PostList} edit={PostEdit} />
     <Resource name="tags" />
@@ -693,8 +693,8 @@ import { ReferenceArrayInput, SelectArrayInput } from 'react-admin'
 Set the `allowEmpty` prop when you want to add an empty choice with a value of null in the choices list.
 Disabling `allowEmpty` does not mean that the input will be required. If you want to make the input required, you must add a validator as indicated in [Validation Documentation](./CreateEdit.md#validation). Enabling the `allowEmpty` props just adds an empty choice (with `null` value) on top of the options, and makes the value nullable.
 
-```js
-import { ReferenceArrayInput, SelectArrayInput } from 'react-admin'
+```jsx
+import { ReferenceArrayInput, SelectArrayInput } from 'react-admin';
 
 <ReferenceArrayInput source="tag_ids" reference="tags" allowEmpty>
     <SelectArrayInput optionText="name" />
@@ -706,7 +706,7 @@ import { ReferenceArrayInput, SelectArrayInput } from 'react-admin'
 You can tweak how this component fetches the possible values using the `perPage`, `sort`, and `filter` props.
 
 {% raw %}
-```js
+```jsx
 // by default, fetches only the first 25 values. You can extend this limit
 // by setting the `perPage` prop.
 <ReferenceArrayInput
@@ -745,7 +745,7 @@ This means you can use `<ReferenceInput>` with any of [`<SelectInput>`](#selecti
 The component expects a `source` and a `reference` attributes. For instance, to make the `post_id` for a `comment` editable:
 
 ```jsx
-import { ReferenceInput, SelectInput } from 'react-admin'
+import { ReferenceInput, SelectInput } from 'react-admin';
 
 <ReferenceInput label="Post" source="post_id" reference="posts">
     <SelectInput optionText="title" />
@@ -769,7 +769,7 @@ Set the `allowEmpty` prop when you want to add an empty choice with a value of n
 Disabling `allowEmpty` does not mean that the input will be required. If you want to make the input required, you must add a validator as indicated in [Validation Documentation](./CreateEdit.md#validation). Enabling the `allowEmpty` props just adds an empty choice (with `null` value) on top of the options, and makes the value nullable.
 
 ```jsx
-import { ReferenceInput, SelectInput } from 'react-admin'
+import { ReferenceInput, SelectInput } from 'react-admin';
 
 <ReferenceInput label="Post" source="post_id" reference="posts" allowEmpty>
     <SelectInput optionText="title" />
@@ -875,7 +875,7 @@ You can customize the rich text editor toolbar using the `toolbar` attribute, as
 
 If you need more customization, you can access the quill object through the `configureQuill` callback that will be called just after its initialization.
 
-```js
+```jsx
 const configureQuill = quill => quill.getModule('toolbar').addHandler('bold', function (value) {
     this.quill.format('bold', value)
 });
@@ -974,7 +974,7 @@ Refer to [Material UI Select documentation](https://material-ui.com/api/select) 
 **Tip**: If you want to populate the `choices` attribute with a list of related records, you should decorate `<SelectInput>` with [`<ReferenceInput>`](#referenceinput), and leave the `choices` empty:
 
 ```jsx
-import { SelectInput, ReferenceInput } from 'react-admin'
+import { SelectInput, ReferenceInput } from 'react-admin';
 
 <ReferenceInput label="Author" source="author_id" reference="authors">
     <SelectInput optionText="last_name" />
@@ -1013,7 +1013,7 @@ const choices = [
 
 To let users choose several values in a list using a dropdown, use `<SelectArrayInput>`. It renders using [Material ui's `<Select>`](https://material-ui.com/api/select). Set the `choices` attribute to determine the options (with `id`, `name` tuples):
 
-```js
+```jsx
 import { SelectArrayInput } from 'react-admin';
 
 <SelectArrayInput label="Tags" source="categories" choices={[
@@ -1063,7 +1063,7 @@ const choices = [
 Lastly, use the `options` attribute if you want to override any of the `<Select>` attributes:
 
 {% raw %}
-```js
+```jsx
 <SelectArrayInput source="category" options={{ fullWidth: true }} />
 ```
 {% endraw %}
