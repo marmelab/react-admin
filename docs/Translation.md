@@ -518,7 +518,7 @@ translate('not_yet_translated', { _: 'Default translation' })
 
 To find more detailed examples, please refer to [http://airbnb.io/polyglot.js/](http://airbnb.io/polyglot.js/)
 
-## Translating Error Messages
+## Translating Validation Errors
 
 In Create and Edit views, forms can use custom validators. These validator functions should return translation keys rather than translated messages. React-admin automatically passes these identifiers to the translation function: 
 
@@ -558,12 +558,12 @@ export default {
 }
 ```
 
-## Notifications With Variables
+## Translating Notification Messages
 
-It is possible to pass variables for polyglot interpolation with custom notifications. For example:
+By default, react-admin translates the notification messages. You can pass variables for polyglot interpolation with custom notifications. For example:
 
 ```js
-showNotification('myroot.hello.world', 'info', { messageArgs: { name: 'Planet Earth' } });
+notify('myroot.hello.world', 'info', { messageArgs: { name: 'Planet Earth' } });
 ```
 
 Assuming you have the following in your custom messages:
@@ -580,3 +580,29 @@ const messages = {
     },
 };
 ```
+
+## Silencing Translation Warnings
+
+By default, the `polyglotI18nProvider` logs a warning in the console each time it is called with a message that can't be found in the current translations. This is a Polyglot feature that helps tracking missing translation messages.
+
+But you may want to avoid this for some messages, e.g. error messages from a data source you don't control (like a web server).
+
+The fastest way to do so is to use the third parameter of the `polyglotI18nProvider` function to pass the `allowMissing` option to Polyglot at initialization:
+
+```diff
+import polyglotI18nProvider from 'ra-i18n-polyglot';
+import englishMessages from './i18n/englishMessages';
+import frenchMessages from './i18n/frenchMessages';
+
+const i18nProvider = polyglotI18nProvider(locale => 
+    locale === 'fr' ? frenchMessages : englishMessages,
+    'en' // Default locale,
++   {
++       allowMissing: true
++   }
+);
+```
+
+**Tip**: Check [the Polyglot documentation](https://airbnb.io/polyglot.js/#options-overview) for a list of options you can pass to Polyglot at startup. 
+
+This solution is all-or-nothing: you can't silence only *some* missing translation warnings. An alternative solution consists of passing a default translation using the `_` translation option, as explained in the [Using Specific Polyglot Features section](#using-specific-polyglot-features) above. 
