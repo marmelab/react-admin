@@ -448,7 +448,7 @@ const choices = [
 ];
 ```
 
-However, in some cases (e.g. inside a `<ReferenceField>`), you may not want the choice to be translated. In that case, set the `translateChoice` prop to false.
+However, in some cases (e.g. inside a `<ReferenceField>`), you may not want the choice to be translated. In that case, set the `translateChoice` prop to `false`.
 
 ```jsx
 <SelectField source="gender" choices={choices} translateChoice={false}/>
@@ -965,7 +965,7 @@ const ConditionalEmailField = ({ record, ...rest }) =>
 export default ConditionalEmailField;
 ```
 
-**Tip**: Always check that the `record` is defined before inspecting its properties, as react-admin displays the Show view *before* fetching the record from the data provider. So the first time it renders the show view for a resource, the `record` is undefined.
+**Tip**: Always check that the `record` is defined before inspecting its properties, as react-admin displays the Show view *before* fetching the record from the data provider. So the first time it renders the show view for a resource, the `record` is `undefined`.
 
 This `ConditionalEmailField` is properly hidden when `hasEmail` is false. But when `hasEmail` is true, the Show layout renders it... without label. And if you add a `addLabel` default prop, the Show layout will render the label regardless of the `hasEmail` value...
 

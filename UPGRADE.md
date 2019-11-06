@@ -251,7 +251,7 @@ const OrderEdit = (props) => (
 
 ## Validators Should Return Non-Translated Messages
 
-Form validators used to return translated error messages - that's why they received the field `props` as argument, including the `translate` function. They don't receive these props anymore, and they must return unstranslated messages instead - react-admin translates validation messages afterwards.
+Form validators used to return translated error messages - that's why they received the field `props` as argument, including the `translate` function. They don't receive these props anymore, and they must return untranslated messages instead - react-admin translates validation messages afterwards.
 
 ```diff
 // in validators/required.js
@@ -397,7 +397,7 @@ If you had custom exporter on `List` components, here's how to migrate:
 
 ## The `exporter` Function Has Changed Signature
 
-In a `List`, you can pass a custom `exporter` function to control the data downloaded by users when they cllick on the "Export" button.
+In a `List`, you can pass a custom `exporter` function to control the data downloaded by users when they click on the "Export" button.
 
 ```jsx
 const CommentList = props => (
@@ -1023,7 +1023,7 @@ const PostEdit = props =>
 
 ## The `<AutocompleteInput>` And `<AutocompleteArrayInput>` Components No Longer Support Certain Props
 
-We rewrote the `<AutocompleteInput>` and `<AutocompleteArrayInput>` components from scratch using [`downshift`](https://github.com/downshift-js/downshift), while the previous version was based on [react-autosuggest](http://react-autosuggest.js.org/). The new components are more robust and more future-proof, and their API didn't change.
+We rewrote the `<AutocompleteInput>` and `<AutocompleteArrayInput>` components from scratch using [`downshift`](https://github.com/downshift-js/downshift), while the previous version was based on [react-autosuggest](https://react-autosuggest.js.org/). The new components are more robust and more future-proof, and their API didn't change.
 
 There are three breaking changes in the new `<AutocompleteInput>` and `<AutocompleteArrayInput>` components:
 

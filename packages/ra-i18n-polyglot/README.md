@@ -70,7 +70,7 @@ Polyglot.js is a fantastic library: in addition to being small, fully maintained
 const messages = {
     'hello_name': 'Hello, %{name}',
     'count_beer': 'One beer |||| %{smart_count} beers',
-}
+};
 
 // interpolation
 translate('hello_name', { name: 'John Doe' });
@@ -84,7 +84,7 @@ translate('count_beer', { smart_count: 2 });
 => '2 beers'
 
 // default value
-translate('not_yet_translated', { _: 'Default translation' })
+translate('not_yet_translated', { _: 'Default translation' });
 => 'Default translation'
 ```
 

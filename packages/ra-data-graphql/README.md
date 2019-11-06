@@ -99,7 +99,7 @@ buildGraphQLProvider({
 });
 ```
 
-You can pass any options supported by the [ApolloClient](http://dev.apollodata.com/core/apollo-client-api.html#apollo-client) contructor with the addition of `uri` which can be specified so that we create the network interface for you.
+You can pass any options supported by the [ApolloClient](http://dev.apollodata.com/core/apollo-client-api.html#apollo-client) constructor with the addition of `uri` which can be specified so that we create the network interface for you.
 
 You can also supply your own [ApolloClient](http://dev.apollodata.com/core/apollo-client-api.html#apollo-client) instance directly with:
 
