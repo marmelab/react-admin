@@ -612,7 +612,7 @@ For highlights about this version, read [the react-admin 2.6 announcement blog p
 
 ## v2.5.1
 
-* Fix warning in `SelectInput` test ([2608](https://github.com/marmelab/react-admin/pull/2608)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix warning in SelectInput test ([2608](https://github.com/marmelab/react-admin/pull/2608)) ([fzaninotto](https://github.com/fzaninotto))
 * Fix Autocomplete suggestions positioning is sometimes not recalculated properly ([2607](https://github.com/marmelab/react-admin/pull/2607)) ([djhi](https://github.com/djhi))
 * Fix login background style ([2594](https://github.com/marmelab/react-admin/pull/2594), [2596](https://github.com/marmelab/react-admin/pull/2596)) ([Kmaschta](https://github.com/Kmaschta))
 
