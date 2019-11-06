@@ -17,20 +17,23 @@ interface FormData {
     password: string;
 }
 
-const useStyles = makeStyles((theme: Theme) => ({
-    form: {
-        padding: '0 1em 1em 1em',
-    },
-    input: {
-        marginTop: '1em',
-    },
-    button: {
-        width: '100%',
-    },
-    icon: {
-        marginRight: theme.spacing(1),
-    },
-}));
+const useStyles = makeStyles(
+    (theme: Theme) => ({
+        form: {
+            padding: '0 1em 1em 1em',
+        },
+        input: {
+            marginTop: '1em',
+        },
+        button: {
+            width: '100%',
+        },
+        icon: {
+            marginRight: theme.spacing(1),
+        },
+    }),
+    { name: 'LoginForm' }
+);
 
 const Input = ({
     meta: { touched, error }, // eslint-disable-line react/prop-types
