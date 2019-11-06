@@ -53,12 +53,12 @@
 * Fix `ReferenceInput` ignores its `sort` prop ([3783](https://github.com/marmelab/react-admin/pull/3783)) ([djhi](https://github.com/djhi))
 * Add `redux-devtools-extension` trace feature in development mode if available ([3781](https://github.com/marmelab/react-admin/pull/3781)) ([WiXSL](https://github.com/WiXSL))
 * Fix unstable tests ([3777](https://github.com/marmelab/react-admin/pull/3777)) ([djhi](https://github.com/djhi))
-* Fix minor typo in custom data-provider exemple documentation([3775](https://github.com/marmelab/react-admin/pull/3775)) ([alexisjanvier](https://github.com/alexisjanvier))
+* Fix minor typo in custom data-provider example documentation([3775](https://github.com/marmelab/react-admin/pull/3775)) ([alexisjanvier](https://github.com/alexisjanvier))
 * Fix missing deprecated component in Upgrade guide ([3770](https://github.com/marmelab/react-admin/pull/3770)) ([Kmaschta](https://github.com/Kmaschta))
 * Add hooks to Reference documentation ([3768](https://github.com/marmelab/react-admin/pull/3768)) ([fzaninotto](https://github.com/fzaninotto))
 * Fix missing quote in `i18nProvider` upgrade guide ([3766](https://github.com/marmelab/react-admin/pull/3766)) ([mabhub](https://github.com/mabhub))
 * Fix example for `useDispatch` hook in upgrade guide ([3765](https://github.com/marmelab/react-admin/pull/3765)) ([mabhub](https://github.com/mabhub))
-* Update dependencies for stateful packages to avoid duplicate pckages bug ([3763](https://github.com/marmelab/react-admin/pull/3763)) ([kopax](https://github.com/kopax))
+* Update dependencies for stateful packages to avoid duplicate packages bug ([3763](https://github.com/marmelab/react-admin/pull/3763)) ([kopax](https://github.com/kopax))
 * Fix Forms Remove Empty Values ([3758](https://github.com/marmelab/react-admin/pull/3758)) ([djhi](https://github.com/djhi))
 
 ## v3.0.0-beta.1
@@ -612,7 +612,7 @@ For highlights about this version, read [the react-admin 2.6 announcement blog p
 
 ## v2.5.1
 
-* Fix warning in SelectInput test ([2608](https://github.com/marmelab/react-admin/pull/2608)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix warning in `SelectInput` test ([2608](https://github.com/marmelab/react-admin/pull/2608)) ([fzaninotto](https://github.com/fzaninotto))
 * Fix Autocomplete suggestions positioning is sometimes not recalculated properly ([2607](https://github.com/marmelab/react-admin/pull/2607)) ([djhi](https://github.com/djhi))
 * Fix login background style ([2594](https://github.com/marmelab/react-admin/pull/2594), [2596](https://github.com/marmelab/react-admin/pull/2596)) ([Kmaschta](https://github.com/Kmaschta))
 
@@ -725,7 +725,7 @@ For highlights about this version, read the [react-admin 2.4 announcement blog p
 * Fix query-string parsing for array values in `Create` ([#2373](https://github.com/marmelab/react-admin/pull/2373)) ([djhi](https://github.com/djhi))
 * Fix out of boundaries pagination does not allow pagination ([#2365](https://github.com/marmelab/react-admin/pull/2365)) ([fzaninotto](https://github.com/fzaninotto))
 * Fix `SimpleFormIterator` does not iterate on sub records ([#2364](https://github.com/marmelab/react-admin/pull/2364)) ([fzaninotto](https://github.com/fzaninotto))
-* Fix triling whitespaces in documentation ([#2359](https://github.com/marmelab/react-admin/pull/2359)) ([josx](https://github.com/josx))
+* Fix trailing whitespaces in documentation ([#2359](https://github.com/marmelab/react-admin/pull/2359)) ([josx](https://github.com/josx))
 * Fix Feathers dataProvidr package name to `ra-data-feathers` ([#2358](https://github.com/marmelab/react-admin/pull/2358)) ([josx](https://github.com/josx))
 * Fix small typo in `List` doc ([#2355](https://github.com/marmelab/react-admin/pull/2355)) ([ArnaudD](https://github.com/ArnaudD))
 * Fix `fetchRelatedRecords` should ignore nullable relationships in `exporter` ([#2354](https://github.com/marmelab/react-admin/pull/2354)) ([Luwangel](https://github.com/Luwangel))
@@ -795,7 +795,7 @@ For highlights about this version, read [the 2.3 release announcement post](http
 * [GraphQL] Allow easier per-query override ([djhi](https://github.com/djhi))
 * [npm] Expose `esm` modules to enable tree shaking (and smaller bundle size) ([Kmaschta](https://github.com/Kmaschta))
 * [npm] Remove babel `stage-0` preset and use `preset-env` instead ([Kmaschta](https://github.com/Kmaschta))
-* [redux] Allow to use <Admin> inside an external <Provider> ([fzaninotto](https://github.com/fzaninotto))
+* [redux] Allow to use `<Admin>` inside an external `<Provider>` ([fzaninotto](https://github.com/fzaninotto))
 
 Deprecations:
 
@@ -849,7 +849,7 @@ Deprecations:
 * Fix `ra-data-graphql-simple` example usage ([kfern](https://github.com/kfern))
 * Fix typo in `<ArrayInput>` documentation ([igneel64](https://github.com/igneel64))
 * Fix documentation links not working work when browsing the doc via Github ([fzaninotto](https://github.com/fzaninotto))
-* Fix link in `CreateEdit` dicumentation ([JulienMattiussi](https://github.com/JulienMattiussi))
+* Fix link in `CreateEdit` documentation ([JulienMattiussi](https://github.com/JulienMattiussi))
 * Fix error when using `<ReferenceInput>` in `<SimpleFormIterator>` ([blasic](https://github.com/blasic))
 * Fix Field with `sortBy` and no `source` is not sortable ([Luwangel](https://github.com/Luwangel))
 * Fix `<label>` and `<input>` not bounded correctly in login form ([josx](https://github.com/josx))
@@ -1042,7 +1042,7 @@ This new release is not backwards compatible with 1.x. Please refer to [the Upgr
 
 # v1.4.0
 
-* Documentation: change extraction of status for AUTH_ERROR ([zifnab87](https://github.com/zifnab87))
+* Documentation: change extraction of status for `AUTH_ERROR` ([zifnab87](https://github.com/zifnab87))
 * Add Slovak translation ([zavadpe](https://github.com/zavadpe))
 * Documentation: Use standard es6 in docs and example ([djhi](https://github.com/djhi))
 * Fix: Ensure validation custom messages without translation don't add warnings ([djhi](https://github.com/djhi))
@@ -1540,7 +1540,7 @@ See the [v0.7.0 announcement in the marmelab blog](https://marmelab.com/blog/201
 
 ## v0.6.0
 
-* [BC Break] The `filter` prop of the <List> component now expects an element rather than a component (`<List filter={<MyFilter/>} >` rather than `<List filter={MyFilter} >`)
+* [BC Break] The `filter` prop of the `<List>` component now expects an element rather than a component (`<List filter={<MyFilter/>} >` rather than `<List filter={MyFilter} >`)
 * [BC Break] The `title` prop of all view components now expect an element rather than a component (`<List title={<MyTitle/>`} > rather than `<List title={MyTitle} >`)
 * [BC Break] Rename `style` to `elStyle` and let style override container element
 * Add special design for non-sortable columns in `<Datagrid>`

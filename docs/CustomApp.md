@@ -84,7 +84,7 @@ You can use this script as a base and then add your own middlewares or enhancers
 
 Then, use the `<Admin>` component as you would in a standalone application. Here is an example with 3 resources: `posts`, `comments`, and `users`
 
-```js
+```jsx
 // in src/App.js
 import React from 'react';
 import { Provider } from 'react-redux';

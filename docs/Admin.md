@@ -160,7 +160,7 @@ const App = () => (
 
 **Tip**: This prop is deprecated. To override the menu component, use a [custom layout](#layout) instead.
 
-React-admin uses the list of `<Resource>` components passed as children of `<Admin>` to build a menu to each resource with a `list` component.
+React-admin uses the list of `<Resource>` components passed as children of `<Admin>` to build a menu to each resource with a `<List>` component.
 
 If you want to add or remove menu items, for instance to link to non-resources pages, you can create your own menu component:
 

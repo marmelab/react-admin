@@ -99,7 +99,7 @@ buildGraphQLProvider({
 });
 ```
 
-You can pass any options supported by the [ApolloClient](http://dev.apollodata.com/core/apollo-client-api.html#apollo-client) contructor with the addition of `uri` which can be specified so that we create the network interface for you.
+You can pass any options supported by the [ApolloClient](http://dev.apollodata.com/core/apollo-client-api.html#apollo-client) constructor with the addition of `uri` which can be specified so that we create the network interface for you.
 
 You can also supply your own [ApolloClient](http://dev.apollodata.com/core/apollo-client-api.html#apollo-client) instance directly with:
 
@@ -111,7 +111,7 @@ buildGraphQLProvider({ client: myClient });
 
 Instead of running an introspection query you can also provide the introspection query result directly. This speeds up the initial rendering of the `Admin` component as it no longer has to wait for the introspection query request to resolve.
 
-```jsx
+```js
 import { __schema as schema } from './schema';
 
 buildGraphQLProvider({

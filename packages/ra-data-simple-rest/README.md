@@ -74,7 +74,7 @@ const httpClient = (url, options = {}) => {
     // add your own headers here
     options.headers.set('X-Custom-Header', 'foobar');
     return fetchUtils.fetchJson(url, options);
-}
+};
 const dataProvider = simpleRestProvider('http://localhost:3000', httpClient);
 
 render(
@@ -89,14 +89,14 @@ Now all the requests to the REST API will contain the `X-Custom-Header: foobar` 
 
 **Tip**: The most common usage of custom headers is for authentication. `fetchJson` has built-on support for the `Authorization` token header:
 
-```jsx
+```js
 const httpClient = (url, options = {}) => {
     options.user = {
         authenticated: true,
         token: 'SRTRDFVESGNJYTUKTYTHRG'
-    }
+    };
     return fetchUtils.fetchJson(url, options);
-}
+};
 ```
 
 Now all the requests to the REST API will contain the `Authorization: SRTRDFVESGNJYTUKTYTHRG` header.

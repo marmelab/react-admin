@@ -215,7 +215,7 @@ Lastly, would you need to override the props of the suggestions container (a `Po
 | `optionValue` | Optional | `string` | `id` | Fieldname of record containing the value to use as input value  |
 | `optionText` | Optional | <code>string &#124; Function</code> | `name` | Fieldname of record to display in the suggestion item or function which accepts the correct record as argument (`(record)=> {string}`) |
 | `resource` | Required | `string` | - | The resource working on. This field is passed down by wrapped components like `Create` and `Edit`.   |
-| `setFilter` | Optional | `Function` | null | A callback to inform the `searchText` has changed and new `choices` can be retrieved based on this `searchText`. Signature `searchText => void`. This function is automatically setup when using `ReferenceInput`.  |
+| `setFilter` | Optional | `Function` | `null` | A callback to inform the `searchText` has changed and new `choices` can be retrieved based on this `searchText`. Signature `searchText => void`. This function is automatically setup when using `ReferenceInput`.  |
 | `source` | Required |  `string` | - | Name of field to edit, its type should match the type retrieved from `optionValue`  |
 | `shouldRenderSuggestions` | Optional | Function | `() => true` | A function that returns a `boolean` to determine whether or not suggestions are rendered. Use this when working with large collections of data to improve performance and user experience. This function is passed into the underlying react-autosuggest component. Ex.`(value) => value.trim() > 2` |
 
@@ -320,9 +320,9 @@ If you need to override the props of the suggestions container (a `Popper` eleme
 | `optionValue` | Optional | `string` | `id` | Fieldname of record containing the value to use as input value  |
 | `optionText` | Optional | <code>string &#124; Function</code> | `name` | Fieldname of record to display in the suggestion item or function which accepts the current record as argument (`(record)=> {string}`) |
 | `resource` | Required | `string` | - | The resource working on. This field is passed down by wrapped components like `Create` and `Edit`.   |
-| `setFilter` | Optional | `Function` | null | A callback to inform the `searchText` has changed and new `choices` can be retrieved based on this `searchText`. Signature `searchText => void`. This function is automatically setup when using `ReferenceInput`.  |
+| `setFilter` | Optional | `Function` | `null` | A callback to inform the `searchText` has changed and new `choices` can be retrieved based on this `searchText`. Signature `searchText => void`. This function is automatically setup when using `ReferenceInput`.  |
 | `source` | Required |  `string` | - | Name of field to edit, its type should match the type retrieved from `optionValue`  |
-| `suggestionLimit` | Optional | Number | null | Limits the numbers of suggestions that are shown in the dropdown list |
+| `suggestionLimit` | Optional | Number | `null` | Limits the numbers of suggestions that are shown in the dropdown list |
 | `shouldRenderSuggestions` | Optional | Function | `() => true` | A function that returns a `boolean` to determine whether or not suggestions are rendered. Use this when working with large collections of data to improve performance and user experience. This function is passed into the underlying react-autosuggest component. Ex.`(value) => value.trim() > 2` |
 
 ## `<BooleanInput>` and `<NullableBooleanInput>`
@@ -361,7 +361,7 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 
 Refer to [Material UI Switch documentation](https://material-ui.com/api/switch) for more details.
 
-`<NullableBooleanInput />` renders as a dropdown list, allowing to choose between true, false, and null values.
+`<NullableBooleanInput />` renders as a dropdown list, allowing to choose between `true`, `false`, and `null` values.
 
 ```jsx
 import { NullableBooleanInput } from 'react-admin';
@@ -690,7 +690,7 @@ import { ReferenceArrayInput, SelectArrayInput } from 'react-admin';
 </Admin>
 ```
 
-Set the `allowEmpty` prop when you want to add an empty choice with a value of null in the choices list.
+Set the `allowEmpty` prop when you want to add an empty choice with a value of `null` in the choices list.
 Disabling `allowEmpty` does not mean that the input will be required. If you want to make the input required, you must add a validator as indicated in [Validation Documentation](./CreateEdit.md#validation). Enabling the `allowEmpty` props just adds an empty choice (with `null` value) on top of the options, and makes the value nullable.
 
 ```jsx
@@ -765,7 +765,7 @@ import { ReferenceInput, SelectInput } from 'react-admin';
 
 **Tip**: Why does `<ReferenceInput>` use the `GET_MANY` verb with a single value `[id]` instead of `GET_ONE` to fetch the record for the current value? Because when there are many `<ReferenceInput>` for the same resource in a form (for instance when inside an `<ArrayInput>`), react-admin *aggregates* the calls to `GET_MANY` into a single one with `[id1, id2, ...)]`. This speeds up the UI and avoids hitting the API too much.
 
-Set the `allowEmpty` prop when you want to add an empty choice with a value of null in the choices list.
+Set the `allowEmpty` prop when you want to add an empty choice with a value of `null` in the choices list.
 Disabling `allowEmpty` does not mean that the input will be required. If you want to make the input required, you must add a validator as indicated in [Validation Documentation](./CreateEdit.md#validation). Enabling the `allowEmpty` props just adds an empty choice (with `null` value) on top of the options, and makes the value nullable.
 
 ```jsx

@@ -12,7 +12,7 @@ npm install ra-input-rich-text --save-dev
 
 ## Usage
 
-```js
+```jsx
 import React from 'react';
 import {
     DateInput,
@@ -39,7 +39,7 @@ export const PostEdit = (props) => (
 
 You can customize the rich text editor toolbar using the `toolbar` attribute, as described on the [Quill official toolbar documentation](https://quilljs.com/docs/modules/toolbar/).
 
-```js
+```jsx
 <RichTextInput source="body" toolbar={[ ['bold', 'italic', 'underline', 'link'] ]} />
 ```
 
@@ -57,4 +57,4 @@ const configureQuill = quill => quill.getModule('toolbar').addHandler('bold', fu
 
 ## License
 
-This library is licensed under the MIT License, and sponsored by [marmelab](http://marmelab.com).
+This library is licensed under the MIT License, and sponsored by [marmelab](https://marmelab.com).

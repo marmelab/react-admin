@@ -89,9 +89,9 @@ const UserProfile = ({ userId }) => {
 
 The return value of `useQuery` is an object representing the query state, using the following keys:
 
-- `data`: undefined until the response arrives, then contains the `data` key in the `dataProvider` response
-- `total`: null until the response arrives, then contains the `total` key in the `dataProvider` response (only for `getList` and `getManyReference` types)
-- `error`: null unless the `dataProvider` threw an error, in which case it contains that error.
+- `data`: `undefined` until the response arrives, then contains the `data` key in the `dataProvider` response
+- `total`: `null` until the response arrives, then contains the `total` key in the `dataProvider` response (only for `getList` and `getManyReference` types)
+- `error`: `null` unless the `dataProvider` threw an error, in which case it contains that error.
 - `loading`: A boolean updating according to the request state
 - `loaded`: A boolean updating according to the request state
 
@@ -166,8 +166,8 @@ The return value of `useQuery` is an array with the following items:
 
 - A callback function
 - An object representing the query state, using the following keys
-    - `data`: undefined until the response arrives, then contains the `data` key in the `dataProvider` response
-    - `error`: null unless the `dataProvider` threw an error, in which case it contains that error.
+    - `data`: `undefined` until the response arrives, then contains the `data` key in the `dataProvider` response
+    - `error`: `null` unless the `dataProvider` threw an error, in which case it contains that error.
     - `loading`: A boolean updating according to the request state
     - `loaded`: A boolean updating according to the request state
 

@@ -12,7 +12,7 @@ dataProvider
     .getOne('posts', { id: 123 })
     .then(response => {
         console.log(response.data); // { id: 123, title: "hello, world" }
-    })
+    });
 ```
 
 It's the Data Provider's job to turns these method calls into HTTP requests, and transform the HTTP responses to the data format expected by react-admin. In technical terms, a Data Provider is an *adapter* for an API. 

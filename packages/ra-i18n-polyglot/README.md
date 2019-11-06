@@ -41,7 +41,7 @@ export default App;
 
 The `message` returned by the function argument should be a dictionary where the keys identify interface components, and values are the translated string. This dictionary is a simple JavaScript object looking like the following:
 
-```jsx
+```js
 {
     ra: {
         action: {
@@ -66,11 +66,11 @@ The default messages are available [here](https://github.com/marmelab/react-admi
 
 Polyglot.js is a fantastic library: in addition to being small, fully maintained, and totally framework agnostic, it provides some nice features such as interpolation and pluralization, that you can use in react-admin.
 
-```jsx
+```js
 const messages = {
     'hello_name': 'Hello, %{name}',
     'count_beer': 'One beer |||| %{smart_count} beers',
-}
+};
 
 // interpolation
 translate('hello_name', { name: 'John Doe' });
@@ -84,7 +84,7 @@ translate('count_beer', { smart_count: 2 });
 => '2 beers'
 
 // default value
-translate('not_yet_translated', { _: 'Default translation' })
+translate('not_yet_translated', { _: 'Default translation' });
 => 'Default translation'
 ```
 
