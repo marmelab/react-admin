@@ -54,7 +54,7 @@ export const PostShow = ({ ...props }) => (
 
 **Tip**: If you display a record with a complex structure, you can use a path with dot separators as the `source` attribute. For instance, if the API returns the following 'book' record:
 
-```jsx
+```js
 {
     id: 1234,
     title: 'War and Peace',
@@ -441,7 +441,7 @@ const FullNameField = ({ record }) => <Chip>{record.first_name} {record.last_nam
 
 The current choice is translated by default, so you can use translation identifiers as choices:
 
-```jsx
+```js
 const choices = [
    { id: 'M', name: 'myroot.gender.male' },
    { id: 'F', name: 'myroot.gender.female' },
@@ -529,7 +529,7 @@ You can also use a custom `link` function to get a custom path for the children.
 
 **Tip**: React-admin accumulates and deduplicates the ids of the referenced records to make *one* `GET_MANY` call for the entire list, instead of n `GET_ONE` calls. So for instance, if the API returns the following list of comments:
 
-```jsx
+```js
 [
     {
         id: 123,
@@ -905,7 +905,7 @@ const TextField = ({ source, record = {} }) => <span>{get(record, source)}</span
 
 If you are not looking for reusability, you can create even simpler components, with no attributes. Let's say an API returns user records with `firstName` and `lastName` properties, and that you want to display a full name in a user list.
 
-```jsx
+```js
 {
     id: 123,
     firstName: 'John',
@@ -941,7 +941,7 @@ React-admin uses a trick: the Show view layouts (`<SimpleShowLayout>` and `<Tabb
 
 That means that the only thing you need to add to a custom component to make it usable in a Show view is a `addLabel: true` default prop.
 
-```jsx
+```js
 FullNameField.defaultProps = {
     addLabel: true,
 };

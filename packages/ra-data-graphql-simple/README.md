@@ -25,7 +25,7 @@ yarn add graphql ra-data-graphql-simple
 
 The `ra-data-graphql-simple` package exposes a single function, which is a constructor for a `dataProvider` based on a GraphQL endpoint. When executed, this function calls the GraphQL endpoint, running an [introspection](http://graphql.org/learn/introspection/) query. It uses the result of this query (the GraphQL schema) to automatically configure the `dataProvider` accordingly.
 
-```js
+```jsx
 // in App.js
 import React, { Component } from 'react';
 import buildGraphQLProvider from 'ra-data-graphql-simple';
@@ -166,7 +166,7 @@ const myBuildQuery = introspection => (fetchType, resource, params) => {
     }
 
     return builtQuery;
-}
+};
 
 export default buildGraphQLProvider({ buildQuery: myBuildQuery })
 ```
@@ -179,7 +179,7 @@ These are the default options for introspection:
 const introspectionOptions = {
     include: [], // Either an array of types to include or a function which will be called for every type discovered through introspection
     exclude: [], // Either an array of types to exclude or a function which will be called for every type discovered through introspection
-}
+};
 
 // Including types
 const introspectionOptions = {

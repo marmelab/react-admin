@@ -111,7 +111,7 @@ buildGraphQLProvider({ client: myClient });
 
 Instead of running an introspection query you can also provide the introspection query result directly. This speeds up the initial rendering of the `Admin` component as it no longer has to wait for the introspection query request to resolve.
 
-```jsx
+```js
 import { __schema as schema } from './schema';
 
 buildGraphQLProvider({
