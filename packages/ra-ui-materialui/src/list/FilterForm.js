@@ -170,8 +170,8 @@ export const mergeInitialValuesWithDefaultValues = ({
     ...initialValues,
 });
 
-const EnhancedFilterForm = props => {
-    const classes = useStyles();
+const EnhancedFilterForm = ({ classes: classesOverride, ...props }) => {
+    const classes = useStyles({ classes: classesOverride });
 
     const mergedInitialValuesWithDefaultValues = mergeInitialValuesWithDefaultValues(
         props
