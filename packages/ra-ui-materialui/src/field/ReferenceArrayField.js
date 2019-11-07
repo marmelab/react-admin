@@ -73,9 +73,12 @@ ReferenceArrayField.defaultProps = {
     addLabel: true,
 };
 
-const useStyles = makeStyles(theme => ({
-    progress: { marginTop: theme.spacing(2) },
-}));
+const useStyles = makeStyles(
+    theme => ({
+        progress: { marginTop: theme.spacing(2) },
+    }),
+    { name: 'ReferenceArrayField' }
+);
 
 export const ReferenceArrayFieldView = ({
     children,

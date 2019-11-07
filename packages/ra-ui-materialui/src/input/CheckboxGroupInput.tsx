@@ -26,7 +26,7 @@ const useStyles = makeStyles(theme => ({
         transform: 'translate(0, 8px) scale(0.75)',
         transformOrigin: `top ${theme.direction === 'ltr' ? 'left' : 'right'}`,
     },
-}));
+}), { name: 'CheckboxGroupInput' });
 
 /**
  * An Input component for a checkbox group, using an array of objects for the options

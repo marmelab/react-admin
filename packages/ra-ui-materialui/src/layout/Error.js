@@ -13,37 +13,40 @@ import History from '@material-ui/icons/History';
 import Title, { TitlePropType } from './Title';
 import { useTranslate } from 'ra-core';
 
-const useStyles = makeStyles(theme => ({
-    container: {
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        [theme.breakpoints.down('sm')]: {
-            padding: '1em',
+const useStyles = makeStyles(
+    theme => ({
+        container: {
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            [theme.breakpoints.down('sm')]: {
+                padding: '1em',
+            },
+            fontFamily: 'Roboto, sans-serif',
+            opacity: 0.5,
         },
-        fontFamily: 'Roboto, sans-serif',
-        opacity: 0.5,
-    },
-    title: {
-        display: 'flex',
-        alignItems: 'center',
-    },
-    icon: {
-        width: '2em',
-        height: '2em',
-        marginRight: '0.5em',
-    },
-    panel: {
-        marginTop: '1em',
-    },
-    panelDetails: {
-        whiteSpace: 'pre-wrap',
-    },
-    toolbar: {
-        marginTop: '2em',
-    },
-}));
+        title: {
+            display: 'flex',
+            alignItems: 'center',
+        },
+        icon: {
+            width: '2em',
+            height: '2em',
+            marginRight: '0.5em',
+        },
+        panel: {
+            marginTop: '1em',
+        },
+        panelDetails: {
+            whiteSpace: 'pre-wrap',
+        },
+        toolbar: {
+            marginTop: '2em',
+        },
+    }),
+    { name: 'Error' }
+);
 
 function goBack() {
     window.history.go(-1);

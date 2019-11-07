@@ -466,51 +466,54 @@ const AutocompleteArrayInput: FunctionComponent<
     );
 };
 
-const useStyles = makeStyles(theme => {
-    const chipBackgroundColor =
-        theme.palette.type === 'light'
-            ? 'rgba(0, 0, 0, 0.09)'
-            : 'rgba(255, 255, 255, 0.09)';
+const useStyles = makeStyles(
+    theme => {
+        const chipBackgroundColor =
+            theme.palette.type === 'light'
+                ? 'rgba(0, 0, 0, 0.09)'
+                : 'rgba(255, 255, 255, 0.09)';
 
-    return {
-        root: {
-            flexGrow: 1,
-            height: 250,
-        },
-        container: {
-            flexGrow: 1,
-            position: 'relative',
-        },
-        paper: {
-            position: 'absolute',
-            zIndex: 1,
-            marginTop: theme.spacing(1),
-            left: 0,
-            right: 0,
-        },
-        chip: {
-            margin: theme.spacing(0.5, 0.5, 0.5, 0),
-        },
-        chipContainerFilled: {
-            margin: '27px 12px 10px 0',
-        },
-        inputRoot: {
-            flexWrap: 'wrap',
-        },
-        inputRootFilled: {
-            flexWrap: 'wrap',
-            '& $chip': {
-                backgroundColor: chipBackgroundColor,
+        return {
+            root: {
+                flexGrow: 1,
+                height: 250,
             },
-        },
-        inputInput: {
-            width: 'auto',
-            flexGrow: 1,
-        },
-        divider: {
-            height: theme.spacing(2),
-        },
-    };
-});
+            container: {
+                flexGrow: 1,
+                position: 'relative',
+            },
+            paper: {
+                position: 'absolute',
+                zIndex: 1,
+                marginTop: theme.spacing(1),
+                left: 0,
+                right: 0,
+            },
+            chip: {
+                margin: theme.spacing(0.5, 0.5, 0.5, 0),
+            },
+            chipContainerFilled: {
+                margin: '27px 12px 10px 0',
+            },
+            inputRoot: {
+                flexWrap: 'wrap',
+            },
+            inputRootFilled: {
+                flexWrap: 'wrap',
+                '& $chip': {
+                    backgroundColor: chipBackgroundColor,
+                },
+            },
+            inputInput: {
+                width: 'auto',
+                flexGrow: 1,
+            },
+            divider: {
+                height: theme.spacing(2),
+            },
+        };
+    },
+    { name: 'AutocompleteArrayInput' }
+);
 
 export default AutocompleteArrayInput;

@@ -19,19 +19,22 @@ interface Props {
     type?: string;
 }
 
-const useStyles = makeStyles((theme: Theme) => ({
-    error: {
-        backgroundColor: theme.palette.error.dark,
-        color: theme.palette.error.contrastText,
-    },
-    warning: {
-        backgroundColor: theme.palette.error.light,
-        color: theme.palette.error.contrastText,
-    },
-    undo: {
-        color: theme.palette.primary.light,
-    },
-}));
+const useStyles = makeStyles(
+    (theme: Theme) => ({
+        error: {
+            backgroundColor: theme.palette.error.dark,
+            color: theme.palette.error.contrastText,
+        },
+        warning: {
+            backgroundColor: theme.palette.error.light,
+            color: theme.palette.error.contrastText,
+        },
+        undo: {
+            color: theme.palette.primary.light,
+        },
+    }),
+    { name: 'Notification' }
+);
 
 const Notification: React.FunctionComponent<
     Props & Omit<SnackbarProps, 'open'>

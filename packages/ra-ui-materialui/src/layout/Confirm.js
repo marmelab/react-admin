@@ -13,27 +13,30 @@ import AlertError from '@material-ui/icons/ErrorOutline';
 import classnames from 'classnames';
 import { useTranslate } from 'ra-core';
 
-const useStyles = makeStyles(theme => ({
-    contentText: {
-        minWidth: 400,
-    },
-    confirmPrimary: {
-        color: theme.palette.primary.main,
-    },
-    confirmWarning: {
-        color: theme.palette.error.main,
-        '&:hover': {
-            backgroundColor: fade(theme.palette.error.main, 0.12),
-            // Reset on mouse devices
-            '@media (hover: none)': {
-                backgroundColor: 'transparent',
+const useStyles = makeStyles(
+    theme => ({
+        contentText: {
+            minWidth: 400,
+        },
+        confirmPrimary: {
+            color: theme.palette.primary.main,
+        },
+        confirmWarning: {
+            color: theme.palette.error.main,
+            '&:hover': {
+                backgroundColor: fade(theme.palette.error.main, 0.12),
+                // Reset on mouse devices
+                '@media (hover: none)': {
+                    backgroundColor: 'transparent',
+                },
             },
         },
-    },
-    iconPaddingStyle: {
-        paddingRight: '0.5em',
-    },
-}));
+        iconPaddingStyle: {
+            paddingRight: '0.5em',
+        },
+    }),
+    { name: 'Confirm' }
+);
 
 /**
  * Confirmation dialog

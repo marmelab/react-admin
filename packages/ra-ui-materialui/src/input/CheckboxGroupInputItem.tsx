@@ -4,11 +4,14 @@ import Checkbox from '@material-ui/core/Checkbox';
 import { makeStyles } from '@material-ui/core/styles';
 import { useChoices } from 'ra-core';
 
-const useStyles = makeStyles({
-    checkbox: {
-        height: 32,
+const useStyles = makeStyles(
+    {
+        checkbox: {
+            height: 32,
+        },
     },
-});
+    { name: 'CheckboxGroupInputItem' }
+);
 
 const CheckboxGroupInputItem = ({
     id,

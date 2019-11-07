@@ -12,25 +12,28 @@ import { useTranslate } from 'ra-core';
 import { FieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 import sanitizeRestProps from './sanitizeRestProps';
 
-const useStyles = makeStyles({
-    label: {
-        // Move the text out of the flow of the container.
-        position: 'absolute',
+const useStyles = makeStyles(
+    {
+        label: {
+            // Move the text out of the flow of the container.
+            position: 'absolute',
 
-        // Reduce its height and width to just one pixel.
-        height: 1,
-        width: 1,
+            // Reduce its height and width to just one pixel.
+            height: 1,
+            width: 1,
 
-        // Hide any overflowing elements or text.
-        overflow: 'hidden',
+            // Hide any overflowing elements or text.
+            overflow: 'hidden',
 
-        // Clip the box to zero pixels.
-        clip: 'rect(0, 0, 0, 0)',
+            // Clip the box to zero pixels.
+            clip: 'rect(0, 0, 0, 0)',
 
-        // Text won't wrap to a second line.
-        whiteSpace: 'nowrap',
+            // Text won't wrap to a second line.
+            whiteSpace: 'nowrap',
+        },
     },
-});
+    { name: 'BooleanField' }
+);
 
 interface Props extends FieldProps {
     valueLabelTrue?: string;

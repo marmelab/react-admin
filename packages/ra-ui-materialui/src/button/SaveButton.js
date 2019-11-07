@@ -7,17 +7,20 @@ import ContentSave from '@material-ui/icons/Save';
 import classnames from 'classnames';
 import { useTranslate, useNotify } from 'ra-core';
 
-const useStyles = makeStyles(theme => ({
-    button: {
-        position: 'relative',
-    },
-    leftIcon: {
-        marginRight: theme.spacing(1),
-    },
-    icon: {
-        fontSize: 18,
-    },
-}));
+const useStyles = makeStyles(
+    theme => ({
+        button: {
+            position: 'relative',
+        },
+        leftIcon: {
+            marginRight: theme.spacing(1),
+        },
+        icon: {
+            fontSize: 18,
+        },
+    }),
+    { name: 'SaveButton' }
+);
 
 const sanitizeRestProps = ({
     basePath,

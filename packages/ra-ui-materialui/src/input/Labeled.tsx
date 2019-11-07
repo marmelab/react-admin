@@ -5,23 +5,26 @@ import FormControl from '@material-ui/core/FormControl';
 import { makeStyles } from '@material-ui/core/styles';
 import { FieldTitle } from 'ra-core';
 
-const useStyles = makeStyles(theme => ({
-    label: {
-        position: 'relative',
-    },
-    value: {
-        fontFamily: theme.typography.fontFamily,
-        color: 'currentColor',
-        padding: `${theme.spacing(1)}px 0 ${theme.spacing(1) / 2}px`,
-        border: 0,
-        boxSizing: 'content-box',
-        verticalAlign: 'middle',
-        background: 'none',
-        margin: 0, // Reset for Safari
-        display: 'block',
-        width: '100%',
-    },
-}));
+const useStyles = makeStyles(
+    theme => ({
+        label: {
+            position: 'relative',
+        },
+        value: {
+            fontFamily: theme.typography.fontFamily,
+            color: 'currentColor',
+            padding: `${theme.spacing(1)}px 0 ${theme.spacing(1) / 2}px`,
+            border: 0,
+            boxSizing: 'content-box',
+            verticalAlign: 'middle',
+            background: 'none',
+            margin: 0, // Reset for Safari
+            display: 'block',
+            width: '100%',
+        },
+    }),
+    { name: 'Labeled' }
+);
 
 interface Props {
     children: ReactElement;

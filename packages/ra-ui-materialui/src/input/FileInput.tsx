@@ -18,18 +18,23 @@ import FileInputPreview from './FileInputPreview';
 import sanitizeRestProps from './sanitizeRestProps';
 import InputHelperText from './InputHelperText';
 
-const useStyles = makeStyles(theme => ({
-    dropZone: {
-        background: theme.palette.background.default,
-        cursor: 'pointer',
-        padding: theme.spacing(1),
-        textAlign: 'center',
-        color: theme.palette.getContrastText(theme.palette.background.default),
-    },
-    preview: {},
-    removeButton: {},
-    root: { width: '100%' },
-}));
+const useStyles = makeStyles(
+    theme => ({
+        dropZone: {
+            background: theme.palette.background.default,
+            cursor: 'pointer',
+            padding: theme.spacing(1),
+            textAlign: 'center',
+            color: theme.palette.getContrastText(
+                theme.palette.background.default
+            ),
+        },
+        preview: {},
+        removeButton: {},
+        root: { width: '100%' },
+    }),
+    { name: 'FileInput' }
+);
 
 export interface FileInputProps {
     accept?: string;

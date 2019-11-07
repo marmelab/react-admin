@@ -19,32 +19,35 @@ import DefaultActions from './ListActions';
 
 const DefaultBulkActionButtons = props => <BulkDeleteButton {...props} />;
 
-export const useStyles = makeStyles(theme => ({
-    root: {},
-    main: {
-        display: 'flex',
-    },
-    content: {
-        marginTop: 0,
-        transition: theme.transitions.create('margin-top'),
-        position: 'relative',
-        flex: '1 1 auto',
-        [theme.breakpoints.down('xs')]: {
-            boxShadow: 'none',
+export const useStyles = makeStyles(
+    theme => ({
+        root: {},
+        main: {
+            display: 'flex',
         },
-    },
-    bulkActionsDisplayed: {
-        marginTop: -theme.spacing(8),
-        transition: theme.transitions.create('margin-top'),
-    },
-    actions: {
-        zIndex: 2,
-        display: 'flex',
-        justifyContent: 'flex-end',
-        flexWrap: 'wrap',
-    },
-    noResults: { padding: 20 },
-}));
+        content: {
+            marginTop: 0,
+            transition: theme.transitions.create('margin-top'),
+            position: 'relative',
+            flex: '1 1 auto',
+            [theme.breakpoints.down('xs')]: {
+                boxShadow: 'none',
+            },
+        },
+        bulkActionsDisplayed: {
+            marginTop: -theme.spacing(8),
+            transition: theme.transitions.create('margin-top'),
+        },
+        actions: {
+            zIndex: 2,
+            display: 'flex',
+            justifyContent: 'flex-end',
+            flexWrap: 'wrap',
+        },
+        noResults: { padding: 20 },
+    }),
+    { name: 'List' }
+);
 
 const sanitizeRestProps = ({
     actions,

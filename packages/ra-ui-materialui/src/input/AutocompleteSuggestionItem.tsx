@@ -5,20 +5,23 @@ import { makeStyles, MenuItem } from '@material-ui/core';
 import { MenuItemProps } from '@material-ui/core/MenuItem';
 import classnames from 'classnames';
 
-const useStyles = makeStyles(theme => ({
-    root: {
-        fontWeight: 400,
-    },
-    selected: {
-        fontWeight: 500,
-    },
-    suggestion: {
-        display: 'block',
-        fontFamily: theme.typography.fontFamily,
-    },
-    suggestionText: { fontWeight: 300 },
-    highlightedSuggestionText: { fontWeight: 500 },
-}));
+const useStyles = makeStyles(
+    theme => ({
+        root: {
+            fontWeight: 400,
+        },
+        selected: {
+            fontWeight: 500,
+        },
+        suggestion: {
+            display: 'block',
+            fontFamily: theme.typography.fontFamily,
+        },
+        suggestionText: { fontWeight: 300 },
+        highlightedSuggestionText: { fontWeight: 500 },
+    }),
+    { name: 'AutocompleteSuggestionItem' }
+);
 
 interface Props {
     suggestion: any;

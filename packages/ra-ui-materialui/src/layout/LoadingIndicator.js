@@ -7,11 +7,14 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 import RefreshIconButton from '../button/RefreshIconButton';
 
-const useStyles = makeStyles({
-    loader: {
-        margin: 14,
+const useStyles = makeStyles(
+    {
+        loader: {
+            margin: 14,
+        },
     },
-});
+    { name: 'LoadingIndicator' }
+);
 
 export const LoadingIndicator = ({
     classes: classesOverride,

@@ -18,40 +18,43 @@ import DatagridHeaderCell from './DatagridHeaderCell';
 import DatagridLoading from './DatagridLoading';
 import DatagridBody, { PureDatagridBody } from './DatagridBody';
 
-const useStyles = makeStyles(theme => ({
-    table: {
-        tableLayout: 'auto',
-    },
-    thead: {},
-    tbody: {},
-    headerRow: {},
-    headerCell: {},
-    checkbox: {},
-    row: {},
-    clickableRow: {
-        cursor: 'pointer',
-    },
-    rowEven: {},
-    rowOdd: {},
-    rowCell: {},
-    expandHeader: {
-        padding: 0,
-        width: theme.spacing(6),
-    },
-    expandIconCell: {
-        width: theme.spacing(6),
-    },
-    expandIcon: {
-        padding: theme.spacing(1),
-        transform: 'rotate(-90deg)',
-        transition: theme.transitions.create('transform', {
-            duration: theme.transitions.duration.shortest,
-        }),
-    },
-    expanded: {
-        transform: 'rotate(0deg)',
-    },
-}));
+const useStyles = makeStyles(
+    theme => ({
+        table: {
+            tableLayout: 'auto',
+        },
+        thead: {},
+        tbody: {},
+        headerRow: {},
+        headerCell: {},
+        checkbox: {},
+        row: {},
+        clickableRow: {
+            cursor: 'pointer',
+        },
+        rowEven: {},
+        rowOdd: {},
+        rowCell: {},
+        expandHeader: {
+            padding: 0,
+            width: theme.spacing(6),
+        },
+        expandIconCell: {
+            width: theme.spacing(6),
+        },
+        expandIcon: {
+            padding: theme.spacing(1),
+            transform: 'rotate(-90deg)',
+            transition: theme.transitions.create('transform', {
+                duration: theme.transitions.duration.shortest,
+            }),
+        },
+        expanded: {
+            transform: 'rotate(0deg)',
+        },
+    }),
+    { name: 'Datagrid' }
+);
 
 /**
  * The Datagrid component renders a list of records as a table.

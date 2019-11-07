@@ -1,15 +1,18 @@
 import React, { ReactNode, FunctionComponent } from 'react';
 import { makeStyles, Paper, Popper } from '@material-ui/core';
 
-const useStyles = makeStyles({
-    suggestionsContainer: {
-        zIndex: 2,
+const useStyles = makeStyles(
+    {
+        suggestionsContainer: {
+            zIndex: 2,
+        },
+        suggestionsPaper: {
+            maxHeight: '50vh',
+            overflowY: 'auto',
+        },
     },
-    suggestionsPaper: {
-        maxHeight: '50vh',
-        overflowY: 'auto',
-    },
-});
+    { name: 'AutocompleteSuggestionList' }
+);
 
 interface Props {
     children: ReactNode;

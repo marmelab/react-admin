@@ -7,11 +7,14 @@ import { useTranslate, InputProps } from 'ra-core';
 
 import TextInput from './TextInput';
 
-const useStyles = makeStyles({
-    input: {
-        marginTop: 32,
+const useStyles = makeStyles(
+    {
+        input: {
+            marginTop: 32,
+        },
     },
-});
+    { name: 'SearchInput' }
+);
 
 const SearchInput: FunctionComponent<
     InputProps<TextFieldProps> & Omit<TextFieldProps, 'label' | 'helperText'>

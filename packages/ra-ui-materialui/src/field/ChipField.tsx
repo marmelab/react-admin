@@ -9,9 +9,12 @@ import classnames from 'classnames';
 import sanitizeRestProps from './sanitizeRestProps';
 import { FieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 
-const useStyles = makeStyles({
-    chip: { margin: 4 },
-});
+const useStyles = makeStyles(
+    {
+        chip: { margin: 4 },
+    },
+    { name: 'ChipField' }
+);
 
 export const ChipField: FunctionComponent<
     FieldProps & InjectedFieldProps & ChipProps

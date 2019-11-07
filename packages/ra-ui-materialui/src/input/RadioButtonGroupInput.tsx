@@ -21,7 +21,7 @@ const useStyles = makeStyles(theme => ({
         transform: 'translate(0, 5px) scale(0.75)',
         transformOrigin: `top ${theme.direction === 'ltr' ? 'left' : 'right'}`,
     },
-}));
+}), { name: 'RadioButtonGroupInput' });
 
 /**
  * An Input component for a radio button group, using an array of objects for the options

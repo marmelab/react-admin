@@ -9,16 +9,19 @@ import { makeStyles } from '@material-ui/core/styles';
 import { FieldTitle, useTranslate } from 'ra-core';
 
 // remove the sort icons when not active
-const useStyles = makeStyles({
-    icon: {
-        display: 'none',
-    },
-    active: {
-        '& $icon': {
-            display: 'inline',
+const useStyles = makeStyles(
+    {
+        icon: {
+            display: 'none',
+        },
+        active: {
+            '& $icon': {
+                display: 'inline',
+            },
         },
     },
-});
+    { name: 'DatagridHeaderCell' }
+);
 
 export const DatagridHeaderCell = ({
     className,

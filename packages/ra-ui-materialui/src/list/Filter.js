@@ -6,10 +6,13 @@ import { sanitizeListRestProps } from 'ra-core';
 import FilterForm from './FilterForm';
 import FilterButton from './FilterButton';
 
-const useStyles = makeStyles({
-    button: {},
-    form: {},
-});
+const useStyles = makeStyles(
+    {
+        button: {},
+        form: {},
+    },
+    { name: 'Filter' }
+);
 
 const Filter = props => {
     const classes = useStyles({ classes: props.classes });

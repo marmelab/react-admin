@@ -20,7 +20,7 @@ const useStyles = makeStyles(
         },
         icon: { minWidth: theme.spacing(5) },
     }),
-    { name: 'LogoutWithRef' }
+    { name: 'Logout' }
 );
 
 /**

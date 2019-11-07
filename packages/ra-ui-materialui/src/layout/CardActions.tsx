@@ -4,16 +4,19 @@ import { warning } from 'ra-core';
 import { makeStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
 
-const useStyles = makeStyles({
-    cardActions: {
-        zIndex: 2,
-        display: 'flex',
-        alignItems: 'flex-start',
-        justifyContent: 'flex-end',
-        flexWrap: 'wrap',
-        padding: 0,
+const useStyles = makeStyles(
+    {
+        cardActions: {
+            zIndex: 2,
+            display: 'flex',
+            alignItems: 'flex-start',
+            justifyContent: 'flex-end',
+            flexWrap: 'wrap',
+            padding: 0,
+        },
     },
-});
+    { name: 'CardActions' }
+);
 
 const CardActions = ({ className, children, ...rest }) => {
     warning(

@@ -11,13 +11,16 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
 import { linkToRecord, sanitizeListRestProps } from 'ra-core';
 
-const useStyles = makeStyles({
-    link: {
-        textDecoration: 'none',
-        color: 'inherit',
+const useStyles = makeStyles(
+    {
+        link: {
+            textDecoration: 'none',
+            color: 'inherit',
+        },
+        tertiary: { float: 'right', opacity: 0.541176 },
     },
-    tertiary: { float: 'right', opacity: 0.541176 },
-});
+    { name: 'SimpleList' }
+);
 
 const LinkOrNot = ({
     classes: classesOverride,

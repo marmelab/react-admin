@@ -4,12 +4,15 @@ import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
 
-const useStyles = makeStyles(theme => ({
-    root: {
-        margin: `${theme.spacing(1)}px 0`,
-        width: `${theme.spacing(20)}px`,
-    },
-}));
+const useStyles = makeStyles(
+    theme => ({
+        root: {
+            margin: `${theme.spacing(1)}px 0`,
+            width: `${theme.spacing(20)}px`,
+        },
+    }),
+    { name: 'LinearProgress' }
+);
 
 /**
  * Progress bar formatted to replace an input or a field in a form layout

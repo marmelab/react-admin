@@ -57,11 +57,14 @@ const sanitizeRestProps = ({
     ...rest
 }: any) => rest;
 
-const useStyles = makeStyles(theme => ({
-    input: {
-        minWidth: theme.spacing(20),
-    },
-}));
+const useStyles = makeStyles(
+    theme => ({
+        input: {
+            minWidth: theme.spacing(20),
+        },
+    }),
+    { name: 'SelectInput' }
+);
 
 /**
  * An Input component for a select box, using an array of objects for the options
