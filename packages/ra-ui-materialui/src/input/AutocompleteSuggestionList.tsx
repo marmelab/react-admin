@@ -35,6 +35,7 @@ const AutocompleteSuggestionList: FunctionComponent<Props> = ({
             open={isOpen}
             anchorEl={inputEl}
             className={classes.suggestionsContainer}
+            modifiers={{}}
             {...suggestionsContainerProps}
         >
             <div {...(isOpen ? menuProps : {})}>
