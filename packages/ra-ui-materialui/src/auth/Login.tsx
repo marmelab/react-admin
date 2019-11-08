@@ -58,7 +58,7 @@ const useStyles = makeStyles(
             backgroundColor: theme.palette.secondary[500],
         },
     }),
-    { name: 'Login' }
+    { name: 'RaLogin' }
 );
 
 /**

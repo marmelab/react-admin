@@ -25,7 +25,7 @@ const useStyles = makeStyles(
             color: 'inherit',
         },
     }),
-    { name: 'CreateButton' }
+    { name: 'RaCreateButton' }
 );
 
 const CreateButton = ({

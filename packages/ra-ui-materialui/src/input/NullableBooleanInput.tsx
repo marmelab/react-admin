@@ -13,7 +13,7 @@ const useStyles = makeStyles(
     theme => ({
         input: { width: theme.spacing(16) },
     }),
-    { name: 'NullableBooleanInput' }
+    { name: 'RaNullableBooleanInput' }
 );
 
 const getBooleanFromString = (value: string): boolean | null => {

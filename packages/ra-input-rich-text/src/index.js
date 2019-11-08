@@ -9,7 +9,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import styles from './styles';
 
-const useStyles = makeStyles(styles, { name: 'RichTextInput' });
+const useStyles = makeStyles(styles, { name: 'RaRichTextInput' });
 
 const RichTextInput = ({
     options = {}, // Quill editor options

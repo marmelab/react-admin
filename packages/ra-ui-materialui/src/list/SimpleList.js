@@ -19,7 +19,7 @@ const useStyles = makeStyles(
         },
         tertiary: { float: 'right', opacity: 0.541176 },
     },
-    { name: 'SimpleList' }
+    { name: 'RaSimpleList' }
 );
 
 const LinkOrNot = ({

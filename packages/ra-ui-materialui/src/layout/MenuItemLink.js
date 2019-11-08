@@ -21,7 +21,7 @@ const useStyles = makeStyles(
         },
         icon: { minWidth: theme.spacing(5) },
     }),
-    { name: 'MenuItemLink' }
+    { name: 'RaMenuItemLink' }
 );
 
 const MenuItemLink = forwardRef(

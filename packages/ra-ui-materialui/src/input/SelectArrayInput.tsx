@@ -79,7 +79,7 @@ const useStyles = makeStyles(
             overflow: 'auto',
         },
     }),
-    { name: 'SelectArrayInput' }
+    { name: 'RaSelectArrayInput' }
 );
 
 /**

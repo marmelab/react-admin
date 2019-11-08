@@ -27,7 +27,7 @@ const useStyles = makeStyles(
             paddingRight: theme.spacing(2),
         },
     }),
-    { name: 'TabbedForm' }
+    { name: 'RaTabbedForm' }
 );
 
 const TabbedForm = ({ initialValues, defaultValue, saving, ...props }) => {

@@ -10,7 +10,7 @@ const useStyles = makeStyles(
             height: 32,
         },
     },
-    { name: 'CheckboxGroupInputItem' }
+    { name: 'RaCheckboxGroupInputItem' }
 );
 
 const CheckboxGroupInputItem = ({

@@ -47,7 +47,7 @@ const useStyles = makeStyles(
             },
         },
     }),
-    { name: 'DeleteWithConfirmButton' }
+    { name: 'RaDeleteWithConfirmButton' }
 );
 
 const DeleteWithConfirmButton = ({

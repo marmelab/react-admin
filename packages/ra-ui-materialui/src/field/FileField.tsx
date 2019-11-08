@@ -11,7 +11,7 @@ const useStyles = makeStyles(
     {
         root: { display: 'inline-block' },
     },
-    { name: 'FileField' }
+    { name: 'RaFileField' }
 );
 
 interface Props extends FieldProps {

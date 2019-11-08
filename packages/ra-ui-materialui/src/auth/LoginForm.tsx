@@ -32,7 +32,7 @@ const useStyles = makeStyles(
             marginRight: theme.spacing(1),
         },
     }),
-    { name: 'LoginForm' }
+    { name: 'RaLoginForm' }
 );
 
 const Input = ({

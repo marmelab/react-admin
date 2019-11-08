@@ -18,7 +18,7 @@ const useStyles = makeStyles(
             maxHeight: '10rem',
         },
     },
-    { name: 'ImageField' }
+    { name: 'RaImageField' }
 );
 
 interface Props extends FieldProps {

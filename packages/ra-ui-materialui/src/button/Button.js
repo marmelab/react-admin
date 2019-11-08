@@ -32,7 +32,7 @@ const useStyles = makeStyles(
             fontSize: 24,
         },
     },
-    { name: 'Button' }
+    { name: 'RaButton' }
 );
 
 const Button = ({

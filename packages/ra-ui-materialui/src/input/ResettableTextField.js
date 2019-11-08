@@ -29,7 +29,7 @@ const useStyles = makeStyles(
             marginRight: 12,
         },
     },
-    { name: 'ResettableTextField' }
+    { name: 'RaResettableTextField' }
 );
 
 const handleMouseDownClearButton = event => {

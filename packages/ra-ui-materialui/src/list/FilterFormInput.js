@@ -17,7 +17,7 @@ const useStyles = makeStyles(
         spacer: { width: theme.spacing(2) },
         hideButton: {},
     }),
-    { name: 'FilterFormInput' }
+    { name: 'RaFilterFormInput' }
 );
 
 const FilterFormInput = ({

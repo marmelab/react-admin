@@ -13,7 +13,7 @@ const useStyles = makeStyles(
             margin: 14,
         },
     },
-    { name: 'LoadingIndicator' }
+    { name: 'RaLoadingIndicator' }
 );
 
 export const LoadingIndicator = ({

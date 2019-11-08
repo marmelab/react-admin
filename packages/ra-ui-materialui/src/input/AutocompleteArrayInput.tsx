@@ -513,7 +513,7 @@ const useStyles = makeStyles(
             },
         };
     },
-    { name: 'AutocompleteArrayInput' }
+    { name: 'RaAutocompleteArrayInput' }
 );
 
 export default AutocompleteArrayInput;

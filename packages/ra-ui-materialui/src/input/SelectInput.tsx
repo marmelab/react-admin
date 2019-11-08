@@ -63,7 +63,7 @@ const useStyles = makeStyles(
             minWidth: theme.spacing(20),
         },
     }),
-    { name: 'SelectInput' }
+    { name: 'RaSelectInput' }
 );
 
 /**

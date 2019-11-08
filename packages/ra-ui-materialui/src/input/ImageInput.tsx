@@ -35,7 +35,7 @@ const useStyles = makeStyles(
             },
         },
     }),
-    { name: 'ImageInput' }
+    { name: 'RaImageInput' }
 );
 
 const ImageInput = (props: FileInputProps & InputProps<FileInputOptions>) => {

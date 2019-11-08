@@ -33,7 +33,7 @@ const useStyles = makeStyles(
             color: theme.palette.primary.light,
         },
     }),
-    { name: 'Notification' }
+    { name: 'RaNotification' }
 );
 
 const Notification: React.FunctionComponent<

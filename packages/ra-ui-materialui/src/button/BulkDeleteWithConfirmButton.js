@@ -40,7 +40,7 @@ const useStyles = makeStyles(
             },
         },
     }),
-    { name: 'BulkDeleteWithConfirmButton' }
+    { name: 'RaBulkDeleteWithConfirmButton' }
 );
 
 const BulkDeleteWithConfirmButton = ({

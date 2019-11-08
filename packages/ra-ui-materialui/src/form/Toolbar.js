@@ -40,7 +40,7 @@ const useStyles = makeStyles(
             },
         },
     }),
-    { name: 'Toolbar' }
+    { name: 'RaToolbar' }
 );
 
 const valueOrDefault = (value, defaultValue) =>

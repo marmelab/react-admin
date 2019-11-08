@@ -38,7 +38,7 @@ const useStyles = makeStyles(
             marginTop: '2em',
         },
     }),
-    { name: 'NotFound' }
+    { name: 'RaNotFound' }
 );
 
 function goBack() {

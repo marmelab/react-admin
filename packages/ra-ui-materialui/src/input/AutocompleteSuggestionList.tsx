@@ -11,7 +11,7 @@ const useStyles = makeStyles(
             overflowY: 'auto',
         },
     },
-    { name: 'AutocompleteSuggestionList' }
+    { name: 'RaAutocompleteSuggestionList' }
 );
 
 interface Props {

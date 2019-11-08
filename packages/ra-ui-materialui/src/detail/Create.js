@@ -83,7 +83,7 @@ const useStyles = makeStyles(
             flex: '1 1 auto',
         },
     }),
-    { name: 'Create' }
+    { name: 'RaCreate' }
 );
 
 const sanitizeRestProps = ({

@@ -16,7 +16,7 @@ const useStyles = makeStyles(
             marginBottom: -theme.spacing(1),
         },
     }),
-    { name: 'SingleFieldList' }
+    { name: 'RaSingleFieldList' }
 );
 
 // useful to prevent click bubbling in a datagrid with rowClick

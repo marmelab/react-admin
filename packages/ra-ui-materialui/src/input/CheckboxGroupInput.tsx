@@ -20,13 +20,18 @@ const sanitizeRestProps = ({
     ...rest
 }: any) => defaultSanitizeRestProps(rest);
 
-const useStyles = makeStyles(theme => ({
-    root: {},
-    label: {
-        transform: 'translate(0, 8px) scale(0.75)',
-        transformOrigin: `top ${theme.direction === 'ltr' ? 'left' : 'right'}`,
-    },
-}), { name: 'CheckboxGroupInput' });
+const useStyles = makeStyles(
+    theme => ({
+        root: {},
+        label: {
+            transform: 'translate(0, 8px) scale(0.75)',
+            transformOrigin: `top ${
+                theme.direction === 'ltr' ? 'left' : 'right'
+            }`,
+        },
+    }),
+    { name: 'RaCheckboxGroupInput' }
+);
 
 /**
  * An Input component for a checkbox group, using an array of objects for the options

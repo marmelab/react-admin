@@ -46,7 +46,7 @@ export const useStyles = makeStyles(
         },
         noResults: { padding: 20 },
     }),
-    { name: 'List' }
+    { name: 'RaList' }
 );
 
 const sanitizeRestProps = ({

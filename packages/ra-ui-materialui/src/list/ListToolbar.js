@@ -26,7 +26,7 @@ const useStyles = makeStyles(
             },
         },
     }),
-    { name: 'ListToolbar' }
+    { name: 'RaListToolbar' }
 );
 
 const defaultClasses = {}; // avoid needless updates

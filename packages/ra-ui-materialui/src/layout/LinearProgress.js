@@ -11,7 +11,7 @@ const useStyles = makeStyles(
             width: `${theme.spacing(20)}px`,
         },
     }),
-    { name: 'LinearProgress' }
+    { name: 'RaLinearProgress' }
 );
 
 /**

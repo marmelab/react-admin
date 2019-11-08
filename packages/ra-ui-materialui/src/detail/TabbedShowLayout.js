@@ -29,7 +29,7 @@ const useStyles = makeStyles(
             paddingRight: theme.spacing(2),
         },
     }),
-    { name: 'TabbedShow' }
+    { name: 'RaTabbedShowLayout' }
 );
 
 /**

@@ -39,7 +39,7 @@ const useStyles = makeStyles(
             },
         },
     }),
-    { name: 'BulkDeleteWithUndoButton' }
+    { name: 'RaBulkDeleteWithUndoButton' }
 );
 
 const BulkDeleteWithUndoButton = ({

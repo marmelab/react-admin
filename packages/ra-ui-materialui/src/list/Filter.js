@@ -11,7 +11,7 @@ const useStyles = makeStyles(
         button: {},
         form: {},
     },
-    { name: 'Filter' }
+    { name: 'RaFilter' }
 );
 
 const Filter = props => {

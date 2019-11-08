@@ -15,7 +15,7 @@ const useStyles = makeStyles(
         },
         hellip: { padding: '1.2em' },
     }),
-    { name: 'PaginationActions' }
+    { name: 'RaPaginationActions' }
 );
 
 function PaginationActions({

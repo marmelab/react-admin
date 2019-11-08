@@ -41,7 +41,7 @@ const useStyles = makeStyles(
             },
         },
     }),
-    { name: 'Sidebar' }
+    { name: 'RaSidebar' }
 );
 
 const Sidebar = ({ children, closedSize, size, ...rest }) => {

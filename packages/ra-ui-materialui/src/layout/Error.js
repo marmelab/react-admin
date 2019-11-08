@@ -45,7 +45,7 @@ const useStyles = makeStyles(
             marginTop: '2em',
         },
     }),
-    { name: 'Error' }
+    { name: 'RaError' }
 );
 
 function goBack() {

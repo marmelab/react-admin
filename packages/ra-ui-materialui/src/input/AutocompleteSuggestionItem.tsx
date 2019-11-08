@@ -20,7 +20,7 @@ const useStyles = makeStyles(
         suggestionText: { fontWeight: 300 },
         highlightedSuggestionText: { fontWeight: 500 },
     }),
-    { name: 'AutocompleteSuggestionItem' }
+    { name: 'RaAutocompleteSuggestionItem' }
 );
 
 interface Props {

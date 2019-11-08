@@ -13,7 +13,7 @@ const useStyles = makeStyles(
     {
         root: { display: 'inline-block' },
     },
-    { name: 'FilterButton' }
+    { name: 'RaFilterButton' }
 );
 
 const FilterButton = ({

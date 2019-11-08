@@ -26,7 +26,7 @@ const useStyles = makeStyles(
             },
         },
     }),
-    { name: 'TopToolbar' }
+    { name: 'RaTopToolbar' }
 );
 
 const TopToolbar = ({ className, children, ...rest }) => {

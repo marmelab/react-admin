@@ -45,7 +45,7 @@ const useStyles = makeStyles(
             overflow: 'hidden',
         },
     }),
-    { name: 'AppBar' }
+    { name: 'RaAppBar' }
 );
 
 const AppBar = ({

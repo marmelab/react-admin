@@ -19,7 +19,7 @@ const useStyles = makeStyles(
             fontSize: 18,
         },
     }),
-    { name: 'SaveButton' }
+    { name: 'RaSaveButton' }
 );
 
 const sanitizeRestProps = ({

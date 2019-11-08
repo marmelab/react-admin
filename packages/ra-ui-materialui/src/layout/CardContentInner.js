@@ -20,7 +20,7 @@ var useStyles = makeStyles(
             },
         },
     }),
-    { name: 'CardContentInner' }
+    { name: 'RaCardContentInner' }
 );
 
 /**

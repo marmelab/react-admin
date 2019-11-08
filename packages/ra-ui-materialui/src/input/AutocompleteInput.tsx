@@ -458,7 +458,7 @@ const useStyles = makeStyles(
             },
         };
     },
-    { name: 'AutocompleteInput' }
+    { name: 'RaAutocompleteInput' }
 );
 
 export default AutocompleteInput;

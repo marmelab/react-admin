@@ -53,7 +53,7 @@ const useStyles = makeStyles(
             transform: 'rotate(0deg)',
         },
     }),
-    { name: 'Datagrid' }
+    { name: 'RaDatagrid' }
 );
 
 /**

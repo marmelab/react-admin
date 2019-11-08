@@ -32,7 +32,7 @@ const useStyles = makeStyles(
             whiteSpace: 'nowrap',
         },
     },
-    { name: 'BooleanField' }
+    { name: 'RaBooleanField' }
 );
 
 interface Props extends FieldProps {

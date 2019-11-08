@@ -83,7 +83,7 @@ export const useStyles = makeStyles(
             flex: '1 1 auto',
         },
     },
-    { name: 'Edit' }
+    { name: 'RaEdit' }
 );
 
 const sanitizeRestProps = ({

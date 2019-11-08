@@ -33,7 +33,7 @@ const useStyles = makeStyles(
         removeButton: {},
         root: { width: '100%' },
     }),
-    { name: 'FileInput' }
+    { name: 'RaFileInput' }
 );
 
 export interface FileInputProps {

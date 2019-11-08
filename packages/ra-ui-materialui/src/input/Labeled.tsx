@@ -23,7 +23,7 @@ const useStyles = makeStyles(
             width: '100%',
         },
     }),
-    { name: 'Labeled' }
+    { name: 'RaLabeled' }
 );
 
 interface Props {

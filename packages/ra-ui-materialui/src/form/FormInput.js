@@ -11,7 +11,7 @@ const useStyles = makeStyles(
     theme => ({
         input: { width: theme.spacing(32) },
     }),
-    { name: 'FormInput' }
+    { name: 'RaFormInput' }
 );
 
 export const FormInput = ({ input, classes: classesOverride, ...rest }) => {

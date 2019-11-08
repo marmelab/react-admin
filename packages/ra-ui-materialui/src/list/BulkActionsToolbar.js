@@ -38,7 +38,7 @@ const useStyles = makeStyles(
             flex: '0 0 auto',
         },
     }),
-    { name: 'BulkActionsToolbar' }
+    { name: 'RaBulkActionsToolbar' }
 );
 
 const BulkActionsToolbar = ({

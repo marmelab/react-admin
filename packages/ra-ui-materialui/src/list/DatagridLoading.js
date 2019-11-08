@@ -18,7 +18,7 @@ const useStyles = makeStyles(
             display: 'flex',
         },
     }),
-    { name: 'DatagridLoading' }
+    { name: 'RaDatagridLoading' }
 );
 
 const Placeholder = ({ classes: classesOverride }) => {

@@ -20,7 +20,7 @@ const useStyles = makeStyles(
             },
         },
     },
-    { name: 'DatagridHeaderCell' }
+    { name: 'RaDatagridHeaderCell' }
 );
 
 export const DatagridHeaderCell = ({

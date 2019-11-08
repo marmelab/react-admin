@@ -45,7 +45,7 @@ const useStyles = makeStyles(
             },
         },
     }),
-    { name: 'DeleteWithUndoButton' }
+    { name: 'RaDeleteWithUndoButton' }
 );
 
 const DeleteWithUndoButton = ({

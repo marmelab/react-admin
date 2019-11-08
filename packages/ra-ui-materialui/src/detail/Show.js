@@ -80,7 +80,7 @@ export const useStyles = makeStyles(
             flex: '1 1 auto',
         },
     },
-    { name: 'Show' }
+    { name: 'RaShow' }
 );
 
 const sanitizeRestProps = ({

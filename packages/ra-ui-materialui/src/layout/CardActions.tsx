@@ -15,7 +15,7 @@ const useStyles = makeStyles(
             padding: 0,
         },
     },
-    { name: 'CardActions' }
+    { name: 'RaCardActions' }
 );
 
 const CardActions = ({ className, children, ...rest }) => {

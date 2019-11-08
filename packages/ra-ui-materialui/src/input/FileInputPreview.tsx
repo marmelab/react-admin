@@ -12,7 +12,7 @@ const useStyles = makeStyles(
             color: theme.palette.error.main,
         },
     }),
-    { name: 'FileInputPreview' }
+    { name: 'RaFileInputPreview' }
 );
 
 interface Props {

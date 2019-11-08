@@ -119,7 +119,7 @@ const useStyles = makeStyles(
             color: theme.palette.primary.main,
         },
     }),
-    { name: 'ReferenceField' }
+    { name: 'RaReferenceField' }
 );
 
 // useful to prevent click bubbling in a datagrid with rowClick

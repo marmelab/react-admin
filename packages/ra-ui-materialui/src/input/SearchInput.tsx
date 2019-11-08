@@ -13,7 +13,7 @@ const useStyles = makeStyles(
             marginTop: 32,
         },
     },
-    { name: 'SearchInput' }
+    { name: 'RaSearchInput' }
 );
 
 const SearchInput: FunctionComponent<

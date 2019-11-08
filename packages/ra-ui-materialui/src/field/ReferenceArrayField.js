@@ -77,7 +77,7 @@ const useStyles = makeStyles(
     theme => ({
         progress: { marginTop: theme.spacing(2) },
     }),
-    { name: 'ReferenceArrayField' }
+    { name: 'RaReferenceArrayField' }
 );
 
 export const ReferenceArrayFieldView = ({

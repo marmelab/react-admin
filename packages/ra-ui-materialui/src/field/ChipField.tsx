@@ -13,7 +13,7 @@ const useStyles = makeStyles(
     {
         chip: { margin: 4 },
     },
-    { name: 'ChipField' }
+    { name: 'RaChipField' }
 );
 
 export const ChipField: FunctionComponent<

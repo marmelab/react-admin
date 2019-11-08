@@ -20,7 +20,7 @@ const useStyles = makeStyles(
         },
         clearFix: { clear: 'right' },
     }),
-    { name: 'FilterForm' }
+    { name: 'RaFilterForm' }
 );
 
 const sanitizeRestProps = ({
