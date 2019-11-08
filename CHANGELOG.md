@@ -1,5 +1,22 @@
 # Changelog
 
+## v3.0.0-beta.6
+
+* Fix `<AutocompleteInput allowEmpty` position ([3953](https://github.com/marmelab/react-admin/pull/3953)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `>AutocompleteInput>` suggestion list placement ([3951](https://github.com/marmelab/react-admin/pull/3951)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix delete wrong item in `<AutocompleteArrayInput>` ([3950](https://github.com/marmelab/react-admin/pull/3950)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix click in `<AutocompleteArrayInput>` does not show options ([3949](https://github.com/marmelab/react-admin/pull/3949)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<EnhancedFilterForm>` does not allow style override via classes prop ([3948](https://github.com/marmelab/react-admin/pull/3948)) ([MiMo42](https://github.com/MiMo42))
+* Fix `<FieldTitle>` not receiving `label` prop ([3944](https://github.com/marmelab/react-admin/pull/3944)) ([m4theushw](https://github.com/m4theushw))
+* Fix js vs jsx markdown styles in docs code. ([3938](https://github.com/marmelab/react-admin/pull/3938)) ([WiXSL](https://github.com/WiXSL))
+* Fix docs JSX samples. ([3936](https://github.com/marmelab/react-admin/pull/3936)) ([WiXSL](https://github.com/WiXSL))
+* Fix `<SelectInput resettable` with value doesn't show options on click ([3932](https://github.com/marmelab/react-admin/pull/3932)) ([tdeo](https://github.com/tdeo))
+* Fix missing documentation for `allowMissing` Polyglot option ([3930](https://github.com/marmelab/react-admin/pull/3930)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix overly aggressive `<EditButton>` memoization ([3929](https://github.com/marmelab/react-admin/pull/3929)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `useFilterState` does not react to `permanentFilter` changes ([3928](https://github.com/marmelab/react-admin/pull/3928)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix missing core constants make `convertLegacyDataProvider` fail ([3927](https://github.com/marmelab/react-admin/pull/3927)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix docs examples ([3922](https://github.com/marmelab/react-admin/pull/3922)) ([WiXSL](https://github.com/WiXSL))
+
 ## v3.0.0-beta-5
 
 * Fix Erroneous TypeScript types ([fzaninotto](https://github.com/fzaninotto))
