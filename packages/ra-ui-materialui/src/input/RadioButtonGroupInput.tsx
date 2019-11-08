@@ -16,11 +16,13 @@ import sanitizeRestProps from './sanitizeRestProps';
 import InputHelperText from './InputHelperText';
 import RadioButtonGroupInputItem from './RadioButtonGroupInputItem';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
     label: {
         position: 'relative',
+        transform: 'translate(0, 1.5px) scale(0.75)',
+        transformOrigin: `top ${theme.direction === 'ltr' ? 'left' : 'right'}`,
     },
-});
+}));
 
 /**
  * An Input component for a radio button group, using an array of objects for the options
