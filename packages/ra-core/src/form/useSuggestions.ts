@@ -118,14 +118,24 @@ const defaultMatchSuggestion = getChoiceText => (filter, suggestion) => {
  * Get the suggestions to display after applying a fuzzy search on the available choices
  *
  * @example
+ * 
  * getSuggestions({
- *  choices: [{ id: 1, name: 'admin' }, { id: 2, name: 'publisher' }],
- *  optionText: 'name',
- *  optionValue: 'id',
- *  getSuggestionText: choice => choice[optionText],
+ *   choices: [{ id: 1, name: 'admin' }, { id: 2, name: 'publisher' }],
+ *   optionText: 'name',
+ *   optionValue: 'id',
+ *   getSuggestionText: choice => choice[optionText],
  * })('pub')
  *
- * Will return [{ id: 2, name: 'publisher' }]
+ * // Will return [{ id: 2, name: 'publisher' }]
+ * getSuggestions({
+    *   choices: [{ id: 1, name: 'admin' }, { id: 2, name: 'publisher' }],
+    *   optionText: 'name',
+    *   optionValue: 'id',
+    *   getSuggestionText: choice => choice[optionText],
+    * })('pub')
+    *
+    * // Will return [{ id: 2, name: 'publisher' }]
+   
  */
 export const getSuggestionsFactory = ({
     choices = [],
@@ -136,79 +146,127 @@ export const getSuggestionsFactory = ({
     optionValue,
     getChoiceText,
     getChoiceValue,
-    limitChoicesToValue,
+    limitChoicesToValue = false,
     matchSuggestion = defaultMatchSuggestion(getChoiceText),
     selectedItem,
     suggestionLimit = 0,
 }) => filter => {
-    // When we display the suggestions for the first time and the input
-    // already has a value, we want to display more choices than just the
-    // currently selected one, unless limitChoicesToValue was set to true
+    let suggestions = [];
+    // if an item is selected and matches the filter
     if (
         selectedItem &&
         !Array.isArray(selectedItem) &&
         matchSuggestion(filter, selectedItem)
     ) {
         if (limitChoicesToValue) {
-            return limitSuggestions(
-                choices.filter(
-                    choice =>
-                        getChoiceValue(choice) === getChoiceValue(selectedItem)
-                ),
-                suggestionLimit
+            // display only the selected item
+            suggestions = choices.filter(
+                choice =>
+                    getChoiceValue(choice) === getChoiceValue(selectedItem)
+            );
+        } else {
+            // ignore the filter to show more choices
+            suggestions = removeAlreadySelectedSuggestions(
+                choices,
+                selectedItem,
+                getChoiceValue
             );
         }
-
-        return limitSuggestions(
-            removeAlreadySelectedSuggestions(selectedItem, getChoiceValue)(
-                choices
-            ),
-            suggestionLimit
+    } else {
+        suggestions = choices.filter(choice => matchSuggestion(filter, choice));
+        suggestions = removeAlreadySelectedSuggestions(
+            suggestions,
+            selectedItem,
+            getChoiceValue
         );
     }
 
-    const filteredChoices = choices.filter(choice =>
-        matchSuggestion(filter, choice)
-    );
-
-    const finalChoices = limitSuggestions(
-        removeAlreadySelectedSuggestions(selectedItem, getChoiceValue)(
-            filteredChoices
-        ),
-        suggestionLimit
-    );
+    suggestions = limitSuggestions(suggestions, suggestionLimit);
 
     if (allowEmpty) {
-        const emptySuggestion = {};
-        set(emptySuggestion, optionValue, emptyValue);
-
-        if (typeof optionText !== 'function') {
-            set(emptySuggestion, optionText, emptyText);
-        }
-        return [].concat(emptySuggestion, finalChoices);
+        suggestions = addEmptySuggestion(suggestions, {
+            optionText,
+            optionValue,
+            emptyText,
+            emptyValue,
+        });
     }
 
-    return finalChoices;
+    return suggestions;
 };
 
+/**
+ * @example
+ *
+ * removeAlreadySelectedSuggestions(
+ *  [{ id: 1, name: 'foo'}, { id: 2, name: 'bar' }],
+ *  [{ id: 1, name: 'foo'}]
+ * );
+ *
+ * // Will return [{ id: 2, name: 'bar' }]
+ *
+ * @param suggestions List of suggestions
+ * @param selectedItems List of selection
+ * @param getChoiceValue Converter function fro msuggestion to value
+ */
 const removeAlreadySelectedSuggestions = (
-    selectedItem,
-    getChoiceValue
-) => suggestions => {
-    if (!Array.isArray(selectedItem)) {
-        return suggestions;
-    }
-
-    const selectedValues = selectedItem.map(getChoiceValue);
+    suggestions: any[],
+    selectedItems: any[] | any,
+    getChoiceValue: (suggestion: any) => any
+) => {
+    const selectedValues = Array.isArray(selectedItems)
+        ? selectedItems.map(getChoiceValue)
+        : [getChoiceValue(selectedItems)];
 
     return suggestions.filter(
         suggestion => !selectedValues.includes(getChoiceValue(suggestion))
     );
 };
 
-const limitSuggestions = (suggestions, limit = 0) => {
-    if (Number.isInteger(limit) && limit > 0) {
-        return suggestions.slice(0, limit);
+/**
+ * @example
+ *
+ * limitSuggestions(
+ *  [{ id: 1, name: 'foo'}, { id: 2, name: 'bar' }],
+ *  1
+ * );
+ *
+ * // Will return [{ id: 1, name: 'foo' }]
+ *
+ * @param suggestions List of suggestions
+ * @param limit
+ */
+const limitSuggestions = (suggestions: any[], limit: any = 0) =>
+    Number.isInteger(limit) && limit > 0
+        ? suggestions.slice(0, limit)
+        : suggestions;
+
+/**
+ * addEmptySuggestion(
+ *  [{ id: 1, name: 'foo'}, { id: 2, name: 'bar' }],
+ * );
+ *
+ * // Will return [{ id: null, name: '' }, { id: 1, name: 'foo' }, , { id: 2, name: 'bar' }]
+ *
+ * @param suggestions List of suggestions
+ * @param options
+ */
+const addEmptySuggestion = (
+    suggestions: any[],
+    {
+        optionText = 'name',
+        optionValue = 'id',
+        emptyText = '',
+        emptyValue = null,
     }
-    return suggestions;
+) => {
+    let newSuggestions = suggestions;
+
+    const emptySuggestion = {};
+    set(emptySuggestion, optionValue, emptyValue);
+    if (typeof optionText === 'string') {
+        set(emptySuggestion, optionText, emptyText);
+    }
+
+    return [].concat(emptySuggestion, newSuggestions);
 };

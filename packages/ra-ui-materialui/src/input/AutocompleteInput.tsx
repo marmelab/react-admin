@@ -2,6 +2,7 @@ import React, {
     useCallback,
     useEffect,
     useRef,
+    useState,
     FunctionComponent,
     useMemo,
     isValidElement,
@@ -165,7 +166,7 @@ const AutocompleteInput: FunctionComponent<
         ...rest,
     });
 
-    const [filterValue, setFilterValue] = React.useState('');
+    const [filterValue, setFilterValue] = useState('');
 
     const getSuggestionFromValue = useCallback(
         value => choices.find(choice => get(choice, optionValue) === value),
