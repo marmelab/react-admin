@@ -185,7 +185,7 @@ export const getSuggestionsFactory = ({
         if (typeof optionText !== 'function') {
             set(emptySuggestion, optionText, emptyText);
         }
-        return finalChoices.concat(emptySuggestion);
+        return [].concat(emptySuggestion, finalChoices);
     }
 
     return finalChoices;
