@@ -61,8 +61,8 @@ describe('getSuggestions', () => {
                 ...defaultOptions,
                 limitChoicesToValue: false,
                 selectedItem: choices[0],
-            })('one')
-        ).toEqual(choices);
+            })('o') // should not filter 'two'
+        ).toEqual([{ id: 2, value: 'two' }, { id: 3, value: 'three' }]);
     });
 
     it('should filter choices according to the currently selected value if selectedItem is not an array and limitChoicesToValue is true', () => {
@@ -81,10 +81,10 @@ describe('getSuggestions', () => {
                 allowEmpty: true,
             })('')
         ).toEqual([
+            { id: null, value: '' },
             { id: 1, value: 'one' },
             { id: 2, value: 'two' },
             { id: 3, value: 'three' },
-            { id: null, value: '' },
         ]);
     });
 
@@ -103,9 +103,9 @@ describe('getSuggestions', () => {
                 allowEmpty: true,
             })('')
         ).toEqual([
+            { id: null, value: '' },
             { id: 1, value: 'one' },
             { id: 2, value: 'two' },
-            { id: null, value: '' },
         ]);
     });
 });

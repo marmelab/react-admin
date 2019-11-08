@@ -207,13 +207,16 @@ export const getSuggestionsFactory = ({
  *
  * @param suggestions List of suggestions
  * @param selectedItems List of selection
- * @param getChoiceValue Converter function fro msuggestion to value
+ * @param getChoiceValue Converter function from suggestion to value
  */
 const removeAlreadySelectedSuggestions = (
     suggestions: any[],
     selectedItems: any[] | any,
     getChoiceValue: (suggestion: any) => any
 ) => {
+    if (!selectedItems) {
+        return suggestions;
+    }
     const selectedValues = Array.isArray(selectedItems)
         ? selectedItems.map(getChoiceValue)
         : [getChoiceValue(selectedItems)];
