@@ -539,9 +539,16 @@ const filterSentToDataProvider = { ...filterDefaultValues, ...filterChosenByUser
 
 ### Pagination
 
-You can replace the default pagination element by your own, using the `pagination` prop. The pagination element receives the current page, the number of records per page, the total number of records, as well as a `setPage()` function that changes the page.
+Here are all the props required by the <Pagination> component:
 
-For instance, you can modify the default pagination by adjusting the "rows per page" selector.
+* `page`: The current page number (integer). First page is `1`.
+* `perPage`: The number of records per page.
+* `setPage`: `function(page: number) => void`. A function that set the current page number.
+* `total`: The total number of records.
+
+You don't need to fill these props when you pass the `Pagination` component to the `List` component through the `pagination` prop: `<List pagination={<Pagination />}>`.
+
+You can also replace the default pagination element by your own. For instance, you can modify the default pagination by adjusting the "rows per page" selector.
 
 ```jsx
 // in src/MyPagination.js
@@ -900,7 +907,7 @@ The result will be the same as in the previous snippet, except that `<Show>` enc
 
 ```js
 const PostEdit = props => (
-    <Edit 
+    <Edit
         {...props}
         /* disable the app title change when shown */
         title=" "
