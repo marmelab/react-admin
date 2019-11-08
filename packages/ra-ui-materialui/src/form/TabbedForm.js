@@ -244,6 +244,7 @@ const sanitizeRestProps = ({
     destroy,
     dirty,
     dirtyFields,
+    dirtyFieldsSinceLastSubmit,
     dirtySinceLastSubmit,
     dispatch,
     form,
