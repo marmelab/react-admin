@@ -2,7 +2,7 @@
 
 ## v3.0.0-beta.6
 
-* Fix `<AutocompleteInput> allowEmpty` position ([3953](https://github.com/marmelab/react-admin/pull/3953)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<AutocompleteInput>` `allowEmpty` position ([3953](https://github.com/marmelab/react-admin/pull/3953)) ([fzaninotto](https://github.com/fzaninotto))
 * Fix `<AutocompleteInput>` suggestion list placement ([3951](https://github.com/marmelab/react-admin/pull/3951)) ([fzaninotto](https://github.com/fzaninotto))
 * Fix delete wrong item in `<AutocompleteArrayInput>` ([3950](https://github.com/marmelab/react-admin/pull/3950)) ([fzaninotto](https://github.com/fzaninotto))
 * Fix click in `<AutocompleteArrayInput>` does not show options ([3949](https://github.com/marmelab/react-admin/pull/3949)) ([fzaninotto](https://github.com/fzaninotto))
