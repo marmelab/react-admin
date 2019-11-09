@@ -42,7 +42,7 @@ const DatagridRow = ({
     rowClick,
     selected,
     style,
-    isSelectable = () => true,
+    selectable,
     ...rest
 }) => {
     const [expanded, setExpanded] = useState(false);
@@ -136,7 +136,7 @@ const DatagridRow = ({
                 )}
                 {hasBulkActions && (
                     <TableCell padding="checkbox">
-                        {isSelectable(record) && (
+                        {selectable && (
                             <Checkbox
                                 color="primary"
                                 className={`select-item ${classes.checkbox}`}
@@ -198,7 +198,7 @@ DatagridRow.propTypes = {
     rowClick: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
     selected: PropTypes.bool,
     style: PropTypes.object,
-    isSelectable: PropTypes.func,
+    selectable: PropTypes.bool,
 };
 
 DatagridRow.defaultProps = {
@@ -206,6 +206,7 @@ DatagridRow.defaultProps = {
     hover: true,
     record: {},
     selected: false,
+    selectable: true,
 };
 
 const areEqual = (prevProps, nextProps) => {

@@ -110,6 +110,7 @@ function Datagrid({ classes: classesOverride, ...props }) {
         setSort,
         size = 'small',
         total,
+        selectableRows = () => true,
         version,
         ...rest
     } = props;
@@ -125,14 +126,17 @@ function Datagrid({ classes: classesOverride, ...props }) {
     const handleSelectAll = useCallback(
         event => {
             if (event.target.checked) {
+                //
                 onSelect(
-                    ids.concat(selectedIds.filter(id => !ids.includes(id)))
+                    ids
+                        .concat(selectedIds.filter(id => !ids.includes(id)))
+                        .filter(id => selectableRows(data[id]))
                 );
             } else {
                 onSelect([]);
             }
         },
-        [ids, onSelect, selectedIds]
+        [data, ids, onSelect, selectableRows, selectedIds]
     );
 
     /**
@@ -191,7 +195,9 @@ function Datagrid({ classes: classesOverride, ...props }) {
                                 checked={
                                     selectedIds.length > 0 &&
                                     ids.length > 0 &&
-                                    ids.every(id => selectedIds.includes(id))
+                                    ids
+                                        .filter(id => selectableRows(data[id]))
+                                        .every(id => selectedIds.includes(id))
                                 }
                                 onChange={handleSelectAll}
                             />
@@ -231,6 +237,7 @@ function Datagrid({ classes: classesOverride, ...props }) {
                     resource,
                     rowStyle,
                     selectedIds,
+                    selectableRows,
                     version,
                 },
                 children
@@ -264,6 +271,7 @@ Datagrid.propTypes = {
     setSort: PropTypes.func,
     total: PropTypes.number,
     version: PropTypes.number,
+    selectableRows: PropTypes.func,
 };
 
 Datagrid.defaultProps = {
