@@ -109,7 +109,7 @@ const LoginForm: FunctionComponent<Props> = ({ redirectTo }) => {
                                 label={translate('ra.auth.password')}
                                 type="password"
                                 disabled={loading}
-                                autocomplete="current-password"
+                                autoComplete="current-password"
                             />
                         </div>
                     </div>
