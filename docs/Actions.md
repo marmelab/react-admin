@@ -173,10 +173,10 @@ The return value of `useQuery` is an array with the following items:
 
 This object updates according to the request state:
 
-- mount: { loading: false, loaded: false }
-- mutate called: { loading: true, loaded: false }
-- success: { data: [data from response], total: [total from response], loading: false, loaded: true }
-- error: { error: [error from response], loading: false, loaded: true }
+- mount: `{ loading: false, loaded: false }`
+- mutate called: `{ loading: true, loaded: false }`
+- success: `{ data: [data from response], total: [total from response], loading: false, loaded: true }`
+- error: `{ error: [error from response], loading: false, loaded: true }`
 
 You can destructure the return value of the `useMutation` hook as `[mutate,  { data, total, error, loading, loaded }]`.
 
