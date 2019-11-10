@@ -110,7 +110,7 @@ function Datagrid({ classes: classesOverride, ...props }) {
         setSort,
         size = 'small',
         total,
-        selectableRows = () => true,
+        canSelectRow = () => true,
         version,
         ...rest
     } = props;
@@ -130,13 +130,13 @@ function Datagrid({ classes: classesOverride, ...props }) {
                 onSelect(
                     ids
                         .concat(selectedIds.filter(id => !ids.includes(id)))
-                        .filter(id => selectableRows(data[id]))
+                        .filter(id => canSelectRow(data[id]))
                 );
             } else {
                 onSelect([]);
             }
         },
-        [data, ids, onSelect, selectableRows, selectedIds]
+        [data, ids, onSelect, canSelectRow, selectedIds]
     );
 
     /**
@@ -196,7 +196,7 @@ function Datagrid({ classes: classesOverride, ...props }) {
                                     selectedIds.length > 0 &&
                                     ids.length > 0 &&
                                     ids
-                                        .filter(id => selectableRows(data[id]))
+                                        .filter(id => canSelectRow(data[id]))
                                         .every(id => selectedIds.includes(id))
                                 }
                                 onChange={handleSelectAll}
@@ -237,7 +237,7 @@ function Datagrid({ classes: classesOverride, ...props }) {
                     resource,
                     rowStyle,
                     selectedIds,
-                    selectableRows,
+                    canSelectRow,
                     version,
                 },
                 children
@@ -271,7 +271,7 @@ Datagrid.propTypes = {
     setSort: PropTypes.func,
     total: PropTypes.number,
     version: PropTypes.number,
-    selectableRows: PropTypes.func,
+    canSelectRow: PropTypes.func,
 };
 
 Datagrid.defaultProps = {
