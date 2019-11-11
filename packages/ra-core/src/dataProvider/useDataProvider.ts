@@ -274,7 +274,9 @@ const performUndoableQuery = ({
                         warnBeforeClosingWindow
                     );
                 }
-                console.error(error);
+                if (process.env.NODE_ENV !== 'production') {
+                    console.error(error);
+                }
                 return logoutIfAccessDenied(error).then(loggedOut => {
                     if (loggedOut) return;
                     dispatch({
@@ -356,7 +358,9 @@ const performQuery = ({
             return response;
         })
         .catch(error => {
-            console.error(error);
+            if (process.env.NODE_ENV !== 'production') {
+                console.error(error);
+            }
             return logoutIfAccessDenied(error).then(loggedOut => {
                 if (loggedOut) return;
                 dispatch({
