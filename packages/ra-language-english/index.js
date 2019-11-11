@@ -5,6 +5,7 @@ module.exports = {
             add: 'Add',
             back: 'Go Back',
             bulk_actions: '1 item selected |||| %{smart_count} items selected',
+            unselect_items: 'Unselect item |||| Unselect %{smart_count} items'
             cancel: 'Cancel',
             clear_input_value: 'Clear value',
             clone: 'Clone',
