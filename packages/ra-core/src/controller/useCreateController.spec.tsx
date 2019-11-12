@@ -30,7 +30,7 @@ describe('useCreateController', () => {
                 getRecord(
                     {
                         ...location,
-                        search: '?foo=baz&array[]=1&array[]=2',
+                        search: '?source={"foo":"baz","array":["1","2"]}',
                     },
                     undefined
                 )
