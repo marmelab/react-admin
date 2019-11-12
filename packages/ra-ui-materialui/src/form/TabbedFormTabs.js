@@ -17,9 +17,10 @@ const TabbedFormTabs = ({
 }) => {
     const location = useLocation();
 
-    const validTabPaths = Children.toArray(children).map((tab, index) =>
-        getTabFullPath(tab, index, url)
-    );
+    const validTabPaths = Children.map(children, (tab, index) => {
+        if (!isValidElement(tab)) return undefined;
+        return getTabFullPath(tab, index, url);
+    });
 
     // This ensure we don't get warnings from material-ui Tabs component when
     // the current location pathname targets a dynamically added Tab
