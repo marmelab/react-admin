@@ -34,7 +34,7 @@ export const CloneButton = ({
         component={Link}
         to={{
             pathname: `${basePath}/create`,
-            search: stringify(omitId(record)),
+            search: stringify({ source: JSON.stringify(omitId(record)) }),
         }}
         label={label}
         onClick={stopPropagation}
