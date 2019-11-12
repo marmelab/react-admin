@@ -70,6 +70,20 @@ const defaultSubscription = {
     invalid: true,
 };
 
+SimpleForm.propTypes = {
+    defaultValue: PropTypes.oneOfType([PropTypes.object, PropTypes.func]), // @deprecated
+    initialValues: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
+    save: PropTypes.func,
+    saving: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
+    redirect: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.bool,
+        PropTypes.func,
+    ]),
+    record: PropTypes.object,
+    version: PropTypes.number,
+};
+
 export default SimpleForm;
 
 const SimpleFormView = ({
