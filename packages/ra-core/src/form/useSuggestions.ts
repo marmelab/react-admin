@@ -84,7 +84,8 @@ const useSuggestions = ({
 
 export default useSuggestions;
 
-const escapeRegExp = value => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
+const escapeRegExp = value =>
+    value ? value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') : ''; // $& means the whole matched string
 
 interface Options extends UseChoicesOptions {
     choices: any[];
