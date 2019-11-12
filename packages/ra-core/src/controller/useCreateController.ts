@@ -151,7 +151,7 @@ export const getRecord = ({ state, search }, record: any = {}) =>
     state && state.record
         ? state.record
         : search
-        ? parse(search, { arrayFormat: 'bracket' })
+        ? JSON.parse(parse(search).source)
         : record;
 
 const getDefaultRedirectRoute = (hasShow, hasEdit) => {
