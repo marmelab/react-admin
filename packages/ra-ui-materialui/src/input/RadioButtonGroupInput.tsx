@@ -107,7 +107,6 @@ export const RadioButtonGroupInput: FunctionComponent<
 
     const {
         id,
-        input,
         isRequired,
         meta: { error, touched },
     } = useInput({
@@ -118,7 +117,6 @@ export const RadioButtonGroupInput: FunctionComponent<
         parse,
         resource,
         source,
-        type: 'radio',
         validate,
         ...rest,
     });
@@ -139,7 +137,7 @@ export const RadioButtonGroupInput: FunctionComponent<
                 />
             </FormLabel>
 
-            <RadioGroup id={id} row={row} {...input} {...options}>
+            <RadioGroup id={id} row={row} {...options}>
                 {choices.map(choice => (
                     <RadioButtonGroupInputItem
                         key={get(choice, optionValue)}
