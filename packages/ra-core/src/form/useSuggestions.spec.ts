@@ -31,6 +31,12 @@ describe('getSuggestions', () => {
             { id: 1, value: 'one' },
             { id: 2, value: 'two' },
         ]);
+        expect(
+            getSuggestions({
+                ...defaultOptions,
+                choices: [{ id: 0, value: '0' }, { id: 1, value: 'one' }],
+            })('0')
+        ).toEqual([{ id: 0, value: '0' }]);
     });
 
     it('should filter choices according to the filter argument when it contains RegExp reserved characters', () => {
@@ -107,5 +113,11 @@ describe('getSuggestions', () => {
             { id: 1, value: 'one' },
             { id: 2, value: 'two' },
         ]);
+    });
+
+    it('should return all choices on empty/falsy values', () => {
+        expect(getSuggestions(defaultOptions)(undefined)).toEqual(choices);
+        expect(getSuggestions(defaultOptions)(false)).toEqual(choices);
+        expect(getSuggestions(defaultOptions)(null)).toEqual(choices);
     });
 });
