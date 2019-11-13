@@ -138,6 +138,7 @@ const useQueryWithStore = (
                 // will be empty, so it should not be used at all.
                 setState(prevState => ({
                     ...prevState,
+                    error: null,
                     loading: false,
                     loaded: true,
                 }));
