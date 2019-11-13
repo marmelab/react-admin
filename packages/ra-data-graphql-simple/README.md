@@ -29,7 +29,7 @@ The `ra-data-graphql-simple` package exposes a single function, which is a const
 // in App.js
 import React, { Component } from 'react';
 import buildGraphQLProvider from 'ra-data-graphql-simple';
-import { Admin, Resource, Delete } from 'react-admin';
+import { Admin, Resource } from 'react-admin';
 
 import { PostCreate, PostEdit, PostList } from './posts';
 
@@ -52,7 +52,7 @@ class App extends Component {
 
         return (
             <Admin dataProvider={dataProvider}>
-                <Resource name="Post" list={PostList} edit={PostEdit} create={PostCreate} remove={Delete} />
+                <Resource name="Post" list={PostList} edit={PostEdit} create={PostCreate} />
             </Admin>
         );
     }
