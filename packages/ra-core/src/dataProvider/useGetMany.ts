@@ -189,6 +189,7 @@ const callQueries = debounce(() => {
                     queries.forEach(({ ids, setState, onSuccess }) => {
                         setState(prevState => ({
                             ...prevState,
+                            error: null,
                             loading: false,
                             loaded: true,
                         }));
