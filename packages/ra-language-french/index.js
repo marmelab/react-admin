@@ -6,7 +6,6 @@ module.exports = {
             back: 'Retour',
             bulk_actions:
                 '%{smart_count} selectionné |||| %{smart_count} selectionnés',
-            unselect_items: 'Désélectionner %{smart_count}'
             cancel: 'Annuler',
             clear_input_value: 'Vider le champ',
             clone: 'Dupliquer',
@@ -24,6 +23,7 @@ module.exports = {
             show: 'Afficher',
             sort: 'Trier',
             undo: 'Annuler',
+            unselect: 'Désélectionner'
             expand: 'Étendre',
             close: 'Fermer',
         },

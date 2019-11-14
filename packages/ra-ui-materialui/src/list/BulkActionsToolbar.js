@@ -68,8 +68,8 @@ const BulkActionsToolbar = ({
         >
             <IconButton
                 className={classes.icon}
-                aria-label={translate('ra.action.unselect_items')}
-                title={translate('ra.action.unselect_items')}
+                aria-label={translate('ra.action.unselect')}
+                title={translate('ra.action.unselect')}
                 onClick={onUnselectItems}
             >
                 <CloseIcon />
