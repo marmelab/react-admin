@@ -25,7 +25,7 @@ const styles = theme =>
         suggestionsContainerOpen: {
             position: 'absolute',
             marginBottom: theme.spacing.unit * 3,
-            zIndex: 2,
+            zIndex: 1300,
         },
         suggestionsPaper: {
             maxHeight: '50vh',
