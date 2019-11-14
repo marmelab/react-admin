@@ -23,7 +23,7 @@ const sanitizeRestProps = ({
 const useStyles = makeStyles(theme => ({
     root: {},
     label: {
-        transform: 'translate(0, 1.5px) scale(0.75)',
+        transform: 'translate(0, 8px) scale(0.75)',
         transformOrigin: `top ${theme.direction === 'ltr' ? 'left' : 'right'}`,
     },
 }));
@@ -97,6 +97,7 @@ const CheckboxGroupInput: FunctionComponent<
     format,
     helperText,
     label,
+    margin = 'dense',
     onBlur,
     onChange,
     onFocus,
@@ -154,7 +155,7 @@ const CheckboxGroupInput: FunctionComponent<
     return (
         <FormControl
             component="fieldset"
-            margin="normal"
+            margin={margin}
             error={touched && !!error}
             {...sanitizeRestProps(rest)}
         >

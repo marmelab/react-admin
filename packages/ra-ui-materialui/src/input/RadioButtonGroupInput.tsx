@@ -16,11 +16,12 @@ import sanitizeRestProps from './sanitizeRestProps';
 import InputHelperText from './InputHelperText';
 import RadioButtonGroupInputItem from './RadioButtonGroupInputItem';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
     label: {
-        position: 'relative',
+        transform: 'translate(0, 5px) scale(0.75)',
+        transformOrigin: `top ${theme.direction === 'ltr' ? 'left' : 'right'}`,
     },
-});
+}));
 
 /**
  * An Input component for a radio button group, using an array of objects for the options
@@ -87,6 +88,7 @@ export const RadioButtonGroupInput: FunctionComponent<
     format,
     helperText,
     label,
+    margin = 'dense',
     onBlur,
     onChange,
     onFocus,
@@ -95,6 +97,7 @@ export const RadioButtonGroupInput: FunctionComponent<
     optionValue,
     parse,
     resource,
+    row,
     source,
     translateChoice,
     validate,
@@ -104,7 +107,6 @@ export const RadioButtonGroupInput: FunctionComponent<
 
     const {
         id,
-        input,
         isRequired,
         meta: { error, touched },
     } = useInput({
@@ -122,7 +124,7 @@ export const RadioButtonGroupInput: FunctionComponent<
     return (
         <FormControl
             component="fieldset"
-            margin="normal"
+            margin={margin}
             error={touched && !!error}
             {...sanitizeRestProps(rest)}
         >
@@ -135,7 +137,7 @@ export const RadioButtonGroupInput: FunctionComponent<
                 />
             </FormLabel>
 
-            <RadioGroup id={id} {...input} {...options}>
+            <RadioGroup id={id} row={row} {...options}>
                 {choices.map(choice => (
                     <RadioButtonGroupInputItem
                         key={get(choice, optionValue)}
@@ -179,6 +181,7 @@ RadioButtonGroupInput.defaultProps = {
     options: {},
     optionText: 'name',
     optionValue: 'id',
+    row: true,
     translateChoice: true,
 };
 

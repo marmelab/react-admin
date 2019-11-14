@@ -1,4 +1,5 @@
 import React from 'react';
+import { useField } from 'react-final-form';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Radio from '@material-ui/core/Radio';
 import { useChoices } from 'ra-core';
@@ -15,16 +16,22 @@ const RadioButtonGroupInputItem = ({
         optionValue,
         translateChoice,
     });
+    const label = getChoiceText(choice);
+    const value = getChoiceValue(choice);
+    const {
+        input: { type, ...inputProps },
+    } = useField(source, {
+        type: 'radio',
+        value,
+    });
 
-    const choiceName = getChoiceText(choice);
-    const nodeId = `${source}_${getChoiceValue(choice)}`;
+    const nodeId = `${source}_${label}`;
 
     return (
         <FormControlLabel
+            label={label}
             htmlFor={nodeId}
-            value={getChoiceValue(choice)}
-            control={<Radio id={nodeId} color="primary" />}
-            label={choiceName}
+            control={<Radio id={nodeId} color="primary" {...inputProps} />}
         />
     );
 };
