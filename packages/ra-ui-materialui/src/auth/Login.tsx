@@ -27,6 +27,8 @@ import DefaultLoginForm from './LoginForm';
 interface Props {
     backgroundImage?: string;
     children: ReactNode;
+    classes?: object;
+    className?: string;
     staticContext?: StaticContext;
     theme: object;
 }
@@ -78,6 +80,7 @@ const Login: React.FunctionComponent<
     Props & HtmlHTMLAttributes<HTMLDivElement>
 > = ({
     theme,
+    classes: classesOverride,
     className,
     children,
     staticContext,
@@ -85,7 +88,7 @@ const Login: React.FunctionComponent<
     ...rest
 }) => {
     const containerRef = useRef<HTMLDivElement>();
-    const styles = useStyles({});
+    const classes = useStyles({ classes: classesOverride });
     const muiTheme = useMemo(() => createMuiTheme(theme), [theme]);
     let backgroundImageLoaded = false;
     const checkAuth = useCheckAuth();
@@ -126,13 +129,13 @@ const Login: React.FunctionComponent<
     return (
         <ThemeProvider theme={muiTheme}>
             <div
-                className={classnames(styles.main, className)}
+                className={classnames(classes.main, className)}
                 {...rest}
                 ref={containerRef}
             >
-                <Card className={styles.card}>
-                    <div className={styles.avatar}>
-                        <Avatar className={styles.icon}>
+                <Card className={classes.card}>
+                    <div className={classes.avatar}>
+                        <Avatar className={classes.icon}>
                             <LockIcon />
                         </Avatar>
                     </div>
@@ -147,6 +150,8 @@ const Login: React.FunctionComponent<
 Login.propTypes = {
     backgroundImage: PropTypes.string,
     children: PropTypes.node,
+    classes: PropTypes.object,
+    className: PropTypes.string,
     theme: PropTypes.object,
     staticContext: PropTypes.object,
 };
