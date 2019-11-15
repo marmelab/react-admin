@@ -49,9 +49,9 @@ React-admin components use translation keys for their labels, and rely on the `i
 const SaveButton = ({ doSave }) => {
     const translate = useTranslate(); // returns the i18nProvider.translate() method
     return (
-        <Button onclick={doSave}>
+        <Button onClick={doSave}>
             {translate('ra.action.save')} // will translate to "Save" in English and "Enregistrer" in French
-        </Button>;
+        </Button>
     );
 };
 ```

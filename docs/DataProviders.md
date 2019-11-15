@@ -184,14 +184,14 @@ Now all the requests to the REST API will contain the `X-Custom-Header: foobar` 
 
 **Tip**: The most common usage of custom headers is for authentication. `fetchJson` has built-on support for the `Authorization` token header:
 
-```jsx
+```js
 const fetchJson = (url, options = {}) => {
     options.user = {
         authenticated: true,
         token: 'SRTRDFVESGNJYTUKTYTHRG'
-    }
+    };
     return fetchUtils.fetchJson(url, options);
-}
+};
 const dataProvider = simpleRestProvider('http://path.to.my.api/', fetchJson);
 ```
 
@@ -203,7 +203,7 @@ As Data Providers are just objects, you can extend them with custom logic for a 
 
 For instance, the following Data Provider extends the `ra-data-simple-rest` provider, and adds image upload support for the `update('posts')` call (react-admin offers an `<ImageInput />` component that allows image upload).
 
-```jsx
+```js
 import dataProvider from 'ra-data-simple-rest';
 
 const myDataProvider = {
@@ -295,7 +295,7 @@ Method             | Usage                                           | Parameter
 
 Here are several examples of how react-admin can call the Data Provider:
 
-```jsx
+```js
 dataProvider.getList('posts', {
     pagination: { page: 1, perPage: 5 },
     sort: { field: 'title', order: 'ASC' },
@@ -347,7 +347,7 @@ A `{Record}` is an object literal with at least an `id` property, e.g. `{ id: 12
 
 Building up on the previous example, here are example responses matching the format expected by react-admin:
 
-```jsx
+```js
 dataProvider.getList('posts', {
     pagination: { page: 1, perPage: 5 },
     sort: { field: 'title', order: 'ASC' },
