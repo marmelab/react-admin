@@ -95,7 +95,10 @@ function ResettableTextField({
             classes={restClasses}
             value={value}
             InputProps={{
-                classes: { adornedEnd: props.select ? inputAdornedEnd : null },
+                classes:
+                    props.select && variant === 'filled'
+                        ? { adornedEnd: inputAdornedEnd }
+                        : {},
                 endAdornment: resettable && value && (
                     <InputAdornment
                         position="end"
