@@ -1,4 +1,5 @@
 import React, { memo } from 'react';
+import PropTypes from 'prop-types';
 import Table from '@material-ui/core/Table';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
@@ -105,5 +106,15 @@ const DatagridLoading = ({
         </TableBody>
     </Table>
 );
+
+DatagridLoading.propTypes = {
+    classes: PropTypes.object,
+    className: PropTypes.string,
+    expand: PropTypes.oneOfType([PropTypes.element, PropTypes.elementType]),
+    hasBulkActions: PropTypes.bool,
+    nbChildren: PropTypes.number,
+    nbFakeLines: PropTypes.number,
+    size: PropTypes.string,
+};
 
 export default memo(DatagridLoading);

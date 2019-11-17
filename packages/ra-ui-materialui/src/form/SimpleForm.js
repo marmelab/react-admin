@@ -63,6 +63,27 @@ const SimpleForm = ({ initialValues, defaultValue, saving, ...props }) => {
     );
 };
 
+SimpleForm.propTypes = {
+    basePath: PropTypes.string,
+    children: PropTypes.node,
+    className: PropTypes.string,
+    defaultValue: PropTypes.oneOfType([PropTypes.object, PropTypes.func]), // @deprecated
+    initialValues: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
+    handleSubmit: PropTypes.func, // passed by react-final-form
+    invalid: PropTypes.bool,
+    pristine: PropTypes.bool,
+    resource: PropTypes.string,
+    redirect: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.bool,
+        PropTypes.func,
+    ]),
+    submitOnEnter: PropTypes.bool,
+    toolbar: PropTypes.element,
+    undoable: PropTypes.bool,
+    validate: PropTypes.func,
+};
+
 const defaultSubscription = {
     submitting: true,
     pristine: true,
