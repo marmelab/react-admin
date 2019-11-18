@@ -166,7 +166,7 @@ const callQueries = debounce(() => {
          */
         const accumulatedIds = queries
             .reduce((acc, { ids }) => union(acc, ids), []) // concat + unique
-            .filter(v => v != null); // remove null values
+            .filter(v => v != null && v !== ''); // remove null values
         if (accumulatedIds.length === 0) {
             // no need to call the data provider if all the ids are null
             queries.forEach(({ ids, setState, onSuccess }) => {

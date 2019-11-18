@@ -92,7 +92,7 @@ const VisitorFilter = props => {
     );
 };
 
-// The List component supports the `root`, `header`, `actions` and `noResults` CSS classes. Here we override the `header` and `actions` classes
+// The `List` component supports the `root`, `header`, `actions` and `noResults` CSS classes. Here we override the `header` and `actions` classes
 const useListStyles = makeStyles({
     actions: {
         backgroundColor: 'Lavender',

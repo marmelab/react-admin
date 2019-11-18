@@ -170,7 +170,7 @@ const choices = [
 ```
 
 However, in some cases (e.g. inside a `<ReferenceInput>`), you may not want the choice to be translated. 
-In that case, set the `translateChoice` prop to false.
+In that case, set the `translateChoice` prop to `false`.
 
 ```jsx
 <AutocompleteInput source="gender" choices={choices} translateChoice={false}/>
@@ -276,7 +276,7 @@ const choices = [
 ];
 ```
 
-However, in some cases (e.g. inside a `<ReferenceInput>`), you may not want the choice to be translated. In that case, set the `translateChoice` prop to false.
+However, in some cases (e.g. inside a `<ReferenceInput>`), you may not want the choice to be translated. In that case, set the `translateChoice` prop to `false`.
 
 ```jsx
 <AutocompleteArrayInput source="gender" choices={choices} translateChoice={false}/>
@@ -330,9 +330,9 @@ If you need to override the props of the suggestions container (a `Popper` eleme
 | `optionValue` | Optional | `string` | `id` | Fieldname of record containing the value to use as input value  |
 | `optionText` | Optional | <code>string &#124; Function</code> | `name` | Fieldname of record to display in the suggestion item or function which accepts the current record as argument (`(record)=> {string}`) |
 | `setFilter` | Optional | `Function` | `null` | A callback to inform the `searchText` has changed and new `choices` can be retrieved based on this `searchText`. Signature `searchText => void`. This function is automatically setup when using `ReferenceInput`.  |
-| `shouldRenderSuggestions` | Optional | Function | `() => true` | A function that returns a `boolean` to determine whether or not suggestions are rendered. Use this when working with large collections of data to improve performance and user experience. This function is passed into the underlying react-autosuggest component. Ex.`(value) => value.trim() > 2` |
+| `shouldRenderSuggestions` | Optional | `Function` | `() => true` | A function that returns a `boolean` to determine whether or not suggestions are rendered. Use this when working with large collections of data to improve performance and user experience. This function is passed into the underlying react-autosuggest component. Ex.`(value) => value.trim() > 2` |
 | `source` | Required |  `string` | - | Name of field to edit, its type should match the type retrieved from `optionValue`  |
-| `suggestionLimit` | Optional | Number | `null` | Limits the numbers of suggestions that are shown in the dropdown list |
+| `suggestionLimit` | Optional | `Number` | `null` | Limits the numbers of suggestions that are shown in the dropdown list |
 
 `<AutocompleteArrayInput>` also accepts the [common input props](./Inputs.md#common-input-props).
 
@@ -440,7 +440,7 @@ const choices = [
 ];
 ```
 
-However, in some cases (e.g. inside a `<ReferenceInput>`), you may not want the choice to be translated. In that case, set the `translateChoice` prop to false.
+However, in some cases (e.g. inside a `<ReferenceInput>`), you may not want the choice to be translated. In that case, set the `translateChoice` prop to `false`.
 
 ```jsx
 <CheckboxGroupInput source="gender" choices={choices} translateChoice={false}/>
@@ -466,7 +466,7 @@ import { FavoriteBorder, Favorite } from '@material-ui/icons';
 | `choices` | Required | `Object[]` | - | List of choices |
 | `optionText` | Optional | <code>string &#124; Function</code> | `name` | Fieldname of record to display in the suggestion item or function which accepts the correct record as argument (`(record)=> {string}`) |
 | `optionValue` | Optional | `string` | `id` | Fieldname of record containing the value to use as input value |
-| `row` | `boolean` | true | Display group of elements in a compact row. |
+| `row` | `boolean` | `true` | Display group of elements in a compact row. |
 
 Refer to [Material UI Checkbox documentation](https://material-ui.com/api/checkbox/) for more details.
 
@@ -641,7 +641,7 @@ const choices = [
 ];
 ```
 
-However, in some cases (e.g. inside a `<ReferenceInput>`), you may not want the choice to be translated. In that case, set the `translateChoice` prop to false.
+However, in some cases (e.g. inside a `<ReferenceInput>`), you may not want the choice to be translated. In that case, set the `translateChoice` prop to `false`.
 
 ```jsx
 <RadioButtonGroupInput source="gender" choices={choices} translateChoice={false}/>
@@ -1007,13 +1007,13 @@ const choices = [
 ];
 ```
 
-However, in some cases, you may not want the choice to be translated. In that case, set the `translateChoice` prop to false.
+However, in some cases, you may not want the choice to be translated. In that case, set the `translateChoice` prop to `false`.
 
 ```jsx
 <SelectInput source="gender" choices={choices} translateChoice={false}/>
 ```
 
-Note that `translateChoice` is set to false when `<SelectInput>` is a child of `<ReferenceInput>`.
+Note that `translateChoice` is set to `false` when `<SelectInput>` is a child of `<ReferenceInput>`.
 
 Lastly, use the `options` attribute if you want to override any of Material UI's `<SelectField>` attributes:
 

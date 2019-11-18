@@ -92,7 +92,7 @@ import { createHashHistory } from 'history';
 import { Admin, Resource } from 'react-admin';
 import restProvider from 'ra-data-simple-rest';
 import defaultMessages from 'ra-language-english';
-import polyglotI18nProvider from 'ra_i18n_polyglot';
+import polyglotI18nProvider from 'ra-i18n-polyglot';
 
 import createAdminStore from './createAdminStore';
 import messages from './i18n';
@@ -158,7 +158,7 @@ import { createHashHistory } from 'history';
 +import { AuthContext, DataProviderContext, TranslationProvider, Resource } from 'react-admin';
 import restProvider from 'ra-data-simple-rest';
 import defaultMessages from 'ra-language-english';
-import polyglotI18nProvider from 'ra_i18n_polyglot';
+import polyglotI18nProvider from 'ra-i18n-polyglot';
 +import { ThemeProvider } from '@material-ui/styles';
 +import AppBar from '@material-ui/core/AppBar';
 +import Toolbar from '@material-ui/core/Toolbar';
