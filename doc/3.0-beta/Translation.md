@@ -18,7 +18,7 @@ You will use translation features mostly via the `i18nProvider`, and a set of ho
 
 Just like for data fetching and authentication, react-admin relies on a simple object for translations. It's called the `i18nProvider`, and it manages translation and language change using two methods:
 
-```jsx
+```js
 const i18nProvider = {
     translate: (key, options) => string,
     changeLocale: locale => Promise,
@@ -49,9 +49,9 @@ React-admin components use translation keys for their labels, and rely on the `i
 const SaveButton = ({ doSave }) => {
     const translate = useTranslate(); // returns the i18nProvider.translate() method
     return (
-        <Button onclick={doSave}>
+        <Button onClick={doSave}>
             {translate('ra.action.save')} // will translate to "Save" in English and "Enregistrer" in French
-        </Button>;
+        </Button>
     );
 };
 ```
@@ -60,7 +60,7 @@ const SaveButton = ({ doSave }) => {
 
 Here is the simplest possible implementation for an `i18nProvider` with English and French messages:
 
-```jsx
+```js
 import lodashGet from 'lodash/get';
 
 const englishMessages = {
@@ -96,7 +96,7 @@ const i18nProvider = {
         locale = newLocale;
         return Promise.resolve();
     },
-    getLocale: () => locale;
+    getLocale: () => locale
 };
 ```
 
@@ -104,7 +104,7 @@ But this is too naive: react-admin expects that i18nProviders support string int
 
 So the previous provider can be written as:
 
-```jsx
+```js
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 
 const englishMessages = {
@@ -244,7 +244,7 @@ const LocaleSwitcher = () => {
             <Button onClick={() => setLocale('en')}>French</Button>
         </div>
     );
-}
+};
 
 export default LocaleSwitcher;
 ```
@@ -278,7 +278,7 @@ const LocaleSwitcher = () => {
             </Button>
         </div>
     );
-}
+};
 
 export default LocaleSwitcher;
 ```
@@ -347,7 +347,7 @@ Beware that users from all around the world may use your application, so make su
 
 The `message` returned by the `polyglotI18nProvider` function argument should be a dictionary where the keys identify interface components, and values are the translated string. This dictionary is a simple JavaScript object looking like the following:
 
-```jsx
+```js
 {
     ra: {
         action: {
@@ -379,7 +379,7 @@ However, before humanizing names, react-admin checks the `messages` dictionary f
 
 This lets you translate your own resource and field names by passing a `messages` object with a `resources` key:
 
-```jsx
+```js
 {
     resources: {
         shoe: {
@@ -448,7 +448,7 @@ const MyHelloButton = () => {
     return (
         <button>{translate('myroot.hello.world')}</button>
     );
-}
+};
 
 export default MyHelloButton;
 ```
@@ -485,7 +485,7 @@ class MyHelloButton extends Component {
             <button>{translate('myroot.hello.world')}</button>
         );
     } 
-}
+};
 
 export default withTranslate(MyHelloButton);
 ```
@@ -494,11 +494,11 @@ export default withTranslate(MyHelloButton);
 
 Polyglot.js is a fantastic library: in addition to being small, fully maintained, and totally framework agnostic, it provides some nice features such as interpolation and pluralization, that you can use in react-admin.
 
-```jsx
+```js
 const messages = {
     'hello_name': 'Hello, %{name}',
     'count_beer': 'One beer |||| %{smart_count} beers',
-}
+};
 
 // interpolation
 translate('hello_name', { name: 'John Doe' });
@@ -512,17 +512,17 @@ translate('count_beer', { smart_count: 2 });
 => '2 beers'
 
 // default value
-translate('not_yet_translated', { _: 'Default translation' })
+translate('not_yet_translated', { _: 'Default translation' });
 => 'Default translation'
 ```
 
 To find more detailed examples, please refer to [http://airbnb.io/polyglot.js/](http://airbnb.io/polyglot.js/)
 
-## Translating Error Messages
+## Translating Validation Errors
 
 In Create and Edit views, forms can use custom validators. These validator functions should return translation keys rather than translated messages. React-admin automatically passes these identifiers to the translation function: 
 
-```jsx
+```js
 // in validators/required.js
 const required = () => (value, allValues, props) =>
     value
@@ -536,12 +536,12 @@ export default {
             required: 'Required field',
         }
     }
-}
+};
 ```
 
 If the translation depends on a variable, the validator can return an object rather than a translation identifier:
 
-```jsx
+```js
 // in validators/minLength.js
 const minLength = (min) => (value, allValues, props) => 
     value.length >= min
@@ -555,15 +555,15 @@ export default {
             minLength: 'Must be %{min} characters at least',
         }
     }
-}
+};
 ```
 
-## Notifications With Variables
+## Translating Notification Messages
 
-It is possible to pass variables for polyglot interpolation with custom notifications. For example:
+By default, react-admin translates the notification messages. You can pass variables for polyglot interpolation with custom notifications. For example:
 
 ```js
-showNotification('myroot.hello.world', 'info', { messageArgs: { name: 'Planet Earth' } });
+notify('myroot.hello.world', 'info', { messageArgs: { name: 'Planet Earth' } });
 ```
 
 Assuming you have the following in your custom messages:
@@ -580,3 +580,29 @@ const messages = {
     },
 };
 ```
+
+## Silencing Translation Warnings
+
+By default, the `polyglotI18nProvider` logs a warning in the console each time it is called with a message that can't be found in the current translations. This is a Polyglot feature that helps tracking missing translation messages.
+
+But you may want to avoid this for some messages, e.g. error messages from a data source you don't control (like a web server).
+
+The fastest way to do so is to use the third parameter of the `polyglotI18nProvider` function to pass the `allowMissing` option to Polyglot at initialization:
+
+```diff
+import polyglotI18nProvider from 'ra-i18n-polyglot';
+import englishMessages from './i18n/englishMessages';
+import frenchMessages from './i18n/frenchMessages';
+
+const i18nProvider = polyglotI18nProvider(locale => 
+    locale === 'fr' ? frenchMessages : englishMessages,
+    'en', // Default locale
++   {
++       allowMissing: true
++   }
+);
+```
+
+**Tip**: Check [the Polyglot documentation](https://airbnb.io/polyglot.js/#options-overview) for a list of options you can pass to Polyglot at startup. 
+
+This solution is all-or-nothing: you can't silence only *some* missing translation warnings. An alternative solution consists of passing a default translation using the `_` translation option, as explained in the [Using Specific Polyglot Features section](#using-specific-polyglot-features) above. 

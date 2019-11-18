@@ -577,9 +577,9 @@ For instance, you can modify the default pagination by adjusting the "rows per p
 
 ```jsx
 // in src/MyPagination.js
-import { Pagination } from 'react-admin';
+import { Pagination, List } from 'react-admin';
 
-const PostPagination = props => <Pagination rowsPerPageOptions={[10, 25, 50, 100]} {...props} />
+const PostPagination = props => <Pagination rowsPerPageOptions={[10, 25, 50, 100]} {...props} />;
 
 export const PostList = (props) => (
     <List {...props} pagination={<PostPagination />}>
@@ -775,10 +775,11 @@ The `Datagrid` is an *iterator* component: it receives an array of ids, and a da
 
 By default, `<Datagrid>` renders its body using `<DatagridBody>`, an internal react-admin component. You can pass a custom component as the `row` prop to override that default. And by the way, `<DatagridBody>` has a `row` property set to `<DatagridRow>` by default for the same purpose. `<DatagridRow>` receives the row `record`, the `resource`, and a copy of the `<Datagrid>` children. That means you can create custom datagrid logic without copying several components from the react-admin source.
 
-For instance, to show the selection checkbox only for records that have a `selectable` field set to true, you can override `<DatagridRow>` and `<DatagridBody>` as follows:
+For instance, to show the selection checkbox only for records that have a `selectable` field set to `true`, you can override `<DatagridRow>` and `<DatagridBody>` as follows:
 
 ```jsx
 // in src/PostList.js
+import React from 'react';
 import { Datagrid, DatagridBody, List, TextField } from 'react-admin';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
@@ -804,7 +805,7 @@ const MyDatagridRow = ({ record, resource, id, onToggleItem, children, selected,
             </TableCell>
         ))}
     </TableRow>
-)
+);
 
 const MyDatagridBody = props => <DatagridBody {...props} row={<MyDatagridRow />} />;
 const MyDatagrid = props => <Datagrid {...props} body={<MyDatagridBody />} />;
@@ -812,7 +813,7 @@ const MyDatagrid = props => <Datagrid {...props} body={<MyDatagridBody />} />;
 const PostList = props => (
     <List {...props}>
         <MyDatagrid>
-            <Textfield source="title" />
+            <TextField source="title" />
             ...
         </MyDatagrid>
     </List>
@@ -881,7 +882,7 @@ const postRowClick = (id, basePath, record) => fetchUserRights().then(({ canEdit
 To show more data from the resource without adding too many columns, you can show data in an expandable panel below the row on demand, using the `expand` prop. For instance, this code shows the `body` of a post in an expandable panel:
 
 {% raw %}
-```js
+```jsx
 const PostPanel = ({ id, record, resource }) => (
     <div dangerouslySetInnerHTML={{ __html: record.body }} />
 );
@@ -906,7 +907,7 @@ The `expand` prop expects an component as value. When the user chooses to expand
 
 **Tip**: Since the `expand` element receives the same props as a detail view, you can actually use a `<Show>` view as component for the `expand` prop:
 
-```js
+```jsx
 const PostShow = props => (
     <Show
         {...props}
@@ -936,7 +937,7 @@ The result will be the same as in the previous snippet, except that `<Show>` enc
 
 **Tip**: You can go one step further and use an `<Edit>` view as `expand` component, albeit with a twist:
 
-```js
+```jsx
 const PostEdit = props => (
     <Edit 
         {...props}
@@ -983,6 +984,7 @@ You can customize the `<Datagrid>` styles by passing a `classes` object as prop,
 
 {% raw %}
 ```jsx
+import React from 'react';
 import { makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles({
@@ -1009,6 +1011,7 @@ export PostList;
 **Tip**: If you want to override the `header` and `cell` styles independently for each column, use the `headerClassName` and `cellClassName` props in `<Field>` components. For instance, to hide a certain column on small screens:
 
 ```jsx
+import React from 'react';
 import { makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
@@ -1183,6 +1186,7 @@ You'll need to create your own iterator component as follows:
 {% raw %}
 ```jsx
 // in src/comments.js
+import React from 'react';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';

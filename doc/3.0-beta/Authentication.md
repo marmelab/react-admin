@@ -50,7 +50,7 @@ Upon submission, this form calls the `authProvider.login({ login, password })` m
 
 For instance, to query an authentication route via HTTPS and store the credentials (a token) in local storage, configure `authProvider` as follows:
 
-```jsx
+```js
 // in src/authProvider.js
 export default {
     login: ({ username, password }) =>  {
@@ -58,7 +58,7 @@ export default {
             method: 'POST',
             body: JSON.stringify({ username, password }),
             headers: new Headers({ 'Content-Type': 'application/json' }),
-        })
+        });
         return fetch(request)
             .then(response => {
                 if (response.status < 200 || response.status >= 300) {
@@ -97,7 +97,7 @@ const httpClient = (url, options = {}) => {
     const token = localStorage.getItem('token');
     options.headers.set('Authorization', `Bearer ${token}`);
     return fetchUtils.fetchJson(url, options);
-}
+};
 const dataProvider = simpleRestProvider('http://localhost:3000', httpClient);
 
 const App = () => (
@@ -117,7 +117,7 @@ As soon as you provide an `authProvider` prop to `<Admin>`, react-admin displays
 
 So it's the responsibility of the `authProvider` to cleanup the current authentication data. For instance, if the authentication was a token stored in local storage, here the code to remove it:
 
-```jsx
+```js
 // in src/authProvider.js
 export default {
     login: ({ username, password }) => { /* ... */ },
@@ -143,13 +143,13 @@ Fortunately, each time the API returns an error, react-admin calls the `authProv
 
 For instance, to redirect the user to the login page for both 401 and 403 codes:
 
-```jsx
+```js
 // in src/authProvider.js
 export default {
     login: ({ username, password }) => { /* ... */ },
     logout: () => { /* ... */ },
     checkError: (error) => {
-        const status  = error.status;
+        const status = error.status;
         if (status === 401 || status === 403) {
             localStorage.removeItem('token');
             return Promise.reject();
@@ -170,7 +170,7 @@ Fortunately, each time the user navigates, react-admin calls the `authProvider.c
 
 For instance, to check for the existence of the token in local storage:
 
-```jsx
+```js
 // in src/authProvider.js
 export default {
     login: ({ username, password }) => { /* ... */ },
@@ -185,7 +185,7 @@ export default {
 
 If the promise is rejected, react-admin redirects by default to the `/login` page. You can override where to redirect the user in `checkAuth()`, by rejecting an object with a `redirectTo` property:
 
-```jsx
+```js
 // in src/authProvider.js
 export default {
     login: ({ username, password }) => { /* ... */ },
@@ -212,6 +212,9 @@ For all these cases, it's up to you to implement your own `LoginPage` component,
 
 ```jsx
 // in src/App.js
+import React from 'react';
+import { Admin } from 'react-admin';
+
 import MyLoginPage from './MyLoginPage';
 import MyLogoutButton from './MyLogoutButton';
 
@@ -239,7 +242,7 @@ const MyLoginPage = ({ theme }) => {
         e.preventDefault();
         login({ email, password })
             .catch(() => notify('Invalid email or password'));
-    }
+    };
 
     return (
         <ThemeProvider theme={theme}>
@@ -351,12 +354,12 @@ To avoid rendering a component and force waiting for the `authProvider` response
 You can render different content depending on the authenticated status. 
 
 ```jsx
-import { useAuthState } from 'react-admin';
+import { useAuthState, Loading } from 'react-admin';
 
 const MyPage = () => {
     const { loading, authenticated } = useAuthState();
     if (loading) {
-        return <Loading>;
+        return <Loading />;
     }
     if (authenticated) {
         return <AuthenticatedContent />;

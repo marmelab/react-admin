@@ -12,7 +12,7 @@ dataProvider
     .getOne('posts', { id: 123 })
     .then(response => {
         console.log(response.data); // { id: 123, title: "hello, world" }
-    })
+    });
 ```
 
 It's the Data Provider's job to turns these method calls into HTTP requests, and transform the HTTP responses to the data format expected by react-admin. In technical terms, a Data Provider is an *adapter* for an API. 
@@ -73,11 +73,11 @@ Developers from the react-admin community have open-sourced Data Providers for m
 * **[GraphQL](http://graphql.org/)**: [marmelab/ra-data-graphql](https://github.com/marmelab/react-admin/tree/master/packages/ra-data-graphql) (uses [Apollo](http://www.apollodata.com/))
 * **[HAL](http://stateless.co/hal_specification.html)**: [b-social/ra-data-hal](https://github.com/b-social/ra-data-hal)
 * **[Hasura](https://github.com/hasura/graphql-engine)**: [hasura/ra-data-hasura](https://github.com/hasura/graphql-engine/tree/master/community/tools/ra-data-hasura)
-* **[Hydra](http://www.hydra-cg.com/) / [JSON-LD](https://json-ld.org/)**: [api-platform/admin/hydra](https://github.com/api-platform/admin/blob/master/src/hydra/hydraClient.js)
+* **[Hydra](http://www.hydra-cg.com/) / [JSON-LD](https://json-ld.org/)**: [api-platform/admin/hydra](https://github.com/api-platform/admin/blob/master/src/hydra/dataProvider.js)
 * **[IndexedDB](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API)**: [tykoth/ra-data-dexie](https://github.com/tykoth/ra-data-dexie)
 * **[JSON API](http://jsonapi.org/)**: [henvo/ra-jsonapi-client](https://github.com/henvo/ra-jsonapi-client)
 * **[JSON HAL](https://tools.ietf.org/html/draft-kelly-json-hal-08)**: [ra-data-json-hal](https://www.npmjs.com/package/ra-data-json-hal)
-* **[JSON server](https://github.com/typicode/json-server)**: [marmelab/ra-data-json-server](https://github.com/marmelab/ra-data-json-server).
+* **[JSON server](https://github.com/typicode/json-server)**: [marmelab/ra-data-json-server](https://github.com/marmelab/react-admin/tree/master/packages/ra-data-json-server).
 * **[Loopback](https://loopback.io/)**: [darthwesker/react-admin-loopback](https://github.com/darthwesker/react-admin-loopback)
 * **[NestJS CRUD](https://github.com/nestjsx/crud)**: [FusionWorks/react-admin-nestjsx-crud-dataprovider](https://github.com/FusionWorks/react-admin-nestjsx-crud-dataprovider)
 * **[Parse](https://parseplatform.org/)**: [almahdi/ra-data-parse](https://github.com/almahdi/ra-data-parse)
@@ -184,14 +184,14 @@ Now all the requests to the REST API will contain the `X-Custom-Header: foobar` 
 
 **Tip**: The most common usage of custom headers is for authentication. `fetchJson` has built-on support for the `Authorization` token header:
 
-```jsx
+```js
 const fetchJson = (url, options = {}) => {
     options.user = {
         authenticated: true,
         token: 'SRTRDFVESGNJYTUKTYTHRG'
-    }
+    };
     return fetchUtils.fetchJson(url, options);
-}
+};
 const dataProvider = simpleRestProvider('http://path.to.my.api/', fetchJson);
 ```
 
@@ -203,7 +203,7 @@ As Data Providers are just objects, you can extend them with custom logic for a 
 
 For instance, the following Data Provider extends the `ra-data-simple-rest` provider, and adds image upload support for the `update('posts')` call (react-admin offers an `<ImageInput />` component that allows image upload).
 
-```jsx
+```js
 import dataProvider from 'ra-data-simple-rest';
 
 const myDataProvider = {
@@ -295,7 +295,7 @@ Method             | Usage                                           | Parameter
 
 Here are several examples of how react-admin can call the Data Provider:
 
-```jsx
+```js
 dataProvider.getList('posts', {
     pagination: { page: 1, perPage: 5 },
     sort: { field: 'title', order: 'ASC' },
@@ -347,7 +347,7 @@ A `{Record}` is an object literal with at least an `id` property, e.g. `{ id: 12
 
 Building up on the previous example, here are example responses matching the format expected by react-admin:
 
-```jsx
+```js
 dataProvider.getList('posts', {
     pagination: { page: 1, perPage: 5 },
     sort: { field: 'title', order: 'ASC' },

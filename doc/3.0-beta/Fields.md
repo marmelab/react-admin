@@ -54,7 +54,7 @@ export const PostShow = ({ ...props }) => (
 
 **Tip**: If you display a record with a complex structure, you can use a path with dot separators as the `source` attribute. For instance, if the API returns the following 'book' record:
 
-```jsx
+```js
 {
     id: 1234,
     title: 'War and Peace',
@@ -195,7 +195,7 @@ import { DateField } from 'react-admin';
 <DateField source="publication_date" />
 ```
 
-This component accepts a `showTime` attribute (false by default) to force the display of time in addition to date. It uses `Intl.DateTimeFormat()` if available, passing the `locales` and `options` props as arguments. If Intl is not available, it ignores the `locales` and `options` props.
+This component accepts a `showTime` attribute (`false` by default) to force the display of time in addition to date. It uses `Intl.DateTimeFormat()` if available, passing the `locales` and `options` props as arguments. If Intl is not available, it ignores the `locales` and `options` props.
 
 {% raw %}
 ```jsx
@@ -441,20 +441,20 @@ const FullNameField = ({ record }) => <Chip>{record.first_name} {record.last_nam
 
 The current choice is translated by default, so you can use translation identifiers as choices:
 
-```jsx
+```js
 const choices = [
    { id: 'M', name: 'myroot.gender.male' },
    { id: 'F', name: 'myroot.gender.female' },
 ];
 ```
 
-However, in some cases (e.g. inside a `<ReferenceField>`), you may not want the choice to be translated. In that case, set the `translateChoice` prop to false.
+However, in some cases (e.g. inside a `<ReferenceField>`), you may not want the choice to be translated. In that case, set the `translateChoice` prop to `false`.
 
 ```jsx
 <SelectField source="gender" choices={choices} translateChoice={false}/>
 ```
 
-**Tip**: <ReferenceField> sets `translateChoice` to false by default.
+**Tip**: `<ReferenceField>` sets `translateChoice` to `false` by default.
 
 ## `<ReferenceField>`
 
@@ -529,7 +529,7 @@ You can also use a custom `link` function to get a custom path for the children.
 
 **Tip**: React-admin accumulates and deduplicates the ids of the referenced records to make *one* `GET_MANY` call for the entire list, instead of n `GET_ONE` calls. So for instance, if the API returns the following list of comments:
 
-```jsx
+```js
 [
     {
         id: 123,
@@ -905,7 +905,7 @@ const TextField = ({ source, record = {} }) => <span>{get(record, source)}</span
 
 If you are not looking for reusability, you can create even simpler components, with no attributes. Let's say an API returns user records with `firstName` and `lastName` properties, and that you want to display a full name in a user list.
 
-```jsx
+```js
 {
     id: 123,
     firstName: 'John',
@@ -935,13 +935,13 @@ export const UserList = (props) => (
 
 ## Adding Label To Custom Field Components In The Show View
 
-React-admin lets you use the same Field components in the List view and in the Show view. But if you use the `<FullNameField>` custom field component defined earlier in a Show view, something is missing: the Field label. Why do other fields have a label and not this custom Field? And how can you create a Field component that has a label in the Show view, but not in the List view?
+React-admin lets you use the same `Field` components in the `List` view and in the `Show` view. But if you use the `<FullNameField>` custom field component defined earlier in a `Show` view, something is missing: the `Field` label. Why do other fields have a label and not this custom `Field`? And how can you create a `Field` component that has a label in the `Show` view, but not in the `List` view?
 
-React-admin uses a trick: the Show view layouts (`<SimpleShowLayout>` and `<TabbedShowLayout>`) inspect their Field children, and whenever one has the `addLabel` prop set to `true`, the layout adds a label.
+React-admin uses a trick: the `Show` view layouts (`<SimpleShowLayout>` and `<TabbedShowLayout>`) inspect their `Field` children, and whenever one has the `addLabel` prop set to `true`, the layout adds a label.
 
-That means that the only thing you need to add to a custom component to make it usable in a Show view is a `addLabel: true` default prop.
+That means that the only thing you need to add to a custom component to make it usable in a `Show` view is a `addLabel: true` default prop.
 
-```jsx
+```js
 FullNameField.defaultProps = {
     addLabel: true,
 };
@@ -965,9 +965,9 @@ const ConditionalEmailField = ({ record, ...rest }) =>
 export default ConditionalEmailField;
 ```
 
-**Tip**: Always check that the `record` is defined before inspecting its properties, as react-admin displays the Show view *before* fetching the record from the data provider. So the first time it renders the show view for a resource, the `record` is undefined.
+**Tip**: Always check that the `record` is defined before inspecting its properties, as react-admin displays the `Show` view *before* fetching the record from the data provider. So the first time it renders the show view for a resource, the `record` is `undefined`.
 
-This `ConditionalEmailField` is properly hidden when `hasEmail` is false. But when `hasEmail` is true, the Show layout renders it... without label. And if you add a `addLabel` default prop, the Show layout will render the label regardless of the `hasEmail` value...
+This `ConditionalEmailField` is properly hidden when `hasEmail` is `false`. But when `hasEmail` is `true`, the Show layout renders it... without label. And if you add a `addLabel` default prop, the `Show` layout will render the label regardless of the `hasEmail` value...
 
 One solution is to add the label manually in the custom component:
 
