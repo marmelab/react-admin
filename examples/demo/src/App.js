@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Admin, Resource, Loading } from 'react-admin';
+import { Admin, Resource } from 'react-admin';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 
 import './App.css';
@@ -53,11 +53,9 @@ const App = () => {
 
     if (!dataProvider) {
         return (
-            <Loading
-                className="loader-container"
-                loadingPrimary={i18nProvider.translate('ra.page.loading')}
-                loadingSecondary={i18nProvider.translate('ra.message.loading')}
-            />
+            <div className="loader-container">
+                <div className="loader">Loading...</div>
+            </div>
         );
     }
 
