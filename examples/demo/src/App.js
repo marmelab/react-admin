@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Admin, Resource } from 'react-admin';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 
@@ -30,61 +30,59 @@ const i18nProvider = polyglotI18nProvider(locale => {
     return englishMessages;
 }, 'en');
 
-class App extends Component {
-    state = { dataProvider: null };
+const App = () => {
+    const [dataProvider, setDataProvider] = useState(null);
 
-    async componentDidMount() {
-        this.restoreFetch = await fakeServerFactory(
-            process.env.REACT_APP_DATA_PROVIDER
-        );
+    useEffect(() => {
+        let restoreFetch;
 
-        const dataProvider = await dataProviderFactory(
-            process.env.REACT_APP_DATA_PROVIDER
-        );
-
-        this.setState({ dataProvider });
-    }
-
-    componentWillUnmount() {
-        this.restoreFetch();
-    }
-
-    render() {
-        const { dataProvider } = this.state;
-
-        if (!dataProvider) {
-            return (
-                <div className="loader-container">
-                    <div className="loader">Loading...</div>
-                </div>
+        const fetchDataProvider = async () => {
+            restoreFetch = await fakeServerFactory(
+                process.env.REACT_APP_DATA_PROVIDER
             );
-        }
 
+            setDataProvider(
+                await dataProviderFactory(process.env.REACT_APP_DATA_PROVIDER)
+            );
+        };
+
+        fetchDataProvider();
+
+        return restoreFetch;
+    }, []);
+
+    if (!dataProvider) {
         return (
-            <Admin
-                title=""
-                dataProvider={dataProvider}
-                customReducers={{ theme: themeReducer }}
-                customRoutes={customRoutes}
-                authProvider={authProvider}
-                dashboard={Dashboard}
-                loginPage={Login}
-                layout={Layout}
-                i18nProvider={i18nProvider}
-            >
-                <Resource name="customers" {...visitors} />
-                <Resource
-                    name="commands"
-                    {...orders}
-                    options={{ label: 'Orders' }}
-                />
-                <Resource name="invoices" {...invoices} />
-                <Resource name="products" {...products} />
-                <Resource name="categories" {...categories} />
-                <Resource name="reviews" {...reviews} />
-            </Admin>
+            <div className="loader-container">
+                <div className="loader">Loading...</div>
+            </div>
         );
     }
-}
+
+    return (
+        <Admin
+            title=""
+            dataProvider={dataProvider}
+            customReducers={{ theme: themeReducer }}
+            customRoutes={customRoutes}
+            authProvider={authProvider}
+            dashboard={Dashboard}
+            loginPage={Login}
+            layout={Layout}
+            i18nProvider={i18nProvider}
+        >
+            <Resource name="customers" {...visitors} />
+            <Resource
+                name="commands"
+                {...orders}
+                options={{ label: 'Orders' }}
+            />
+            <Resource name="invoices" {...invoices} />
+            <Resource name="products" {...products} />
+            <Resource name="categories" {...categories} />
+            <Resource name="reviews" {...reviews} />
+        </Admin>
+    );
+};
 
 export default App;
