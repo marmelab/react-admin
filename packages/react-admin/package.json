@@ -44,7 +44,7 @@
         "ra-i18n-polyglot": "^3.0.0-beta.6",
         "ra-language-english": "^3.0.0-beta.2",
         "ra-ui-materialui": "^3.0.0-beta.6",
-        "react-final-form": "^6.3.0",
+        "react-final-form": "^6.3.1",
         "react-final-form-arrays": "^3.1.1",
         "react-redux": "^7.1.0",
         "react-router": "^5.1.0",
