@@ -10,36 +10,43 @@ An `Input` component displays an input, or a dropdown list, a list of radio butt
 ```jsx
 // in src/posts.js
 import React from 'react';
-import { Edit, ReferenceInput, SelectInput, SimpleForm, TextInput } from 'react-admin';
+import { Edit, SimpleForm, ReferenceInput, SelectInput, TextInput, required } from 'react-admin';
 
 export const PostEdit = (props) => (
     <Edit title={<PostTitle />} {...props}>
         <SimpleForm>
             <TextInput disabled source="id" />
-            <ReferenceInput label="User" source="userId" reference="users">
+            <ReferenceInput label="User" source="userId" reference="users" validate={[required()]}>
                 <SelectInput optionText="name" />
             </ReferenceInput>
-            <TextInput source="title" />
-            <TextInput multiline source="body" />
+            <TextInput source="title" label="Post title" validate={[required()]} />
+            <TextInput multiline source="body" initialValue="Lorem Ipsum" />
         </SimpleForm>
     </Edit>
 );
 ```
 
-All input components accept the following attributes:
+## Common Input Props
+
+All input components accept the following props:
 
 * `source`: Property name of your entity to view/edit. This attribute is required.
-* `defaultValue`: Value to be set when the property is `null` or `undefined`.
-* `validate`: Validation rules for the current property (see the [Validation Documentation](./CreateEdit.md#validation))
-* `label`: Used as a table header of an input label. Defaults to the `source` when omitted.
-* `style`: A style object to customize the look and feel of the field container (e.g. the `<div>` in a form).
-* `elStyle`: A style object to customize the look and feel of the field element itself
+* `label`: Used as input label. Defaults to the humanized `source` when omitted.
+* `validate`: Validation rules for the current property. See the [Validation Documentation](./CreateEdit.md#validation) for details.
+* `helperText`: Text to be displayed under the input. 
+* `fullWith`: If `true`, the input will expand to fill the form width. Defaults to `false`.
 
 ```jsx
-<TextInput source="zb_title" label="Title" />
+<TextInput source="zb_title" label="Title" initialValue="Foo" />
 ```
 
-Additional props are passed down to the underlying component (usually a material-ui component). For instance, when setting the `fullWidth` prop on a `TextInput` component, the underlying material-ui `<TextField>` receives it, and goes full width.
+React-admin uses [react-final-form](https://final-form.org/docs/react-final-form/getting-started) to control form inputs. Each input component also accepts all react-final-form [`FieldProps`](https://final-form.org/docs/react-final-form/types/FieldProps), including:
+
+* `initialValue`: Value to be set when the property is `null` or `undefined`.
+* `format`: A function that takes the value from the form values and the name of the field and formats the value to give to the input. See the [Transforming Input Value](./Inputs.md#transforming-input-value-to-from-record) section.
+* [`parse`](https://final-form.org/docs/react-final-form/types/FieldProps#parse): A function that takes the value from the input and name of the field and converts the value into the value you want stored as this field's value in the form. See the [Transforming Input Value](./Inputs.md#transforming-input-value-to-from-record) section.
+
+Additional props are passed down to the underlying component (usually a material-ui component). For instance, when setting the `className` prop on a `TextInput` component, the underlying material-ui `<TextField>` receives it, and renders with custom styles. You can also set the underlying component `variant` and `margin` that way.
 
 **Tip**: If you edit a record with a complex structure, you can use a path as the `source` parameter. For instance, if the API returns the following 'book' record:
 
@@ -61,6 +68,8 @@ Then you can display a text input to edit the author first name as follows:
 ```
 
 **Tip**: If your interface has to support multiple languages, don't use the `label` prop, and put the localized labels in a dictionary instead. See the [Translation documentation](./Translation.md#translating-resource-and-field-names) for details.
+
+**Tip**: For compatibility reasons, input components also accept the `defaultValue` prop - which is simply copied as the `initialValue` prop.
 
 ## `<ArrayInput>`
 
@@ -111,6 +120,8 @@ import { ArrayInput, SimpleFormIterator, DateInput, TextInput } from 'react-admi
     </SimpleFormIterator>
 </ArrayInput>
 ```
+
+`<ArrayInput>` also accepts the [common input props](./Inputs.md#common-input-props).
 
 ## `<AutocompleteInput>`
 
@@ -212,12 +223,12 @@ Lastly, would you need to override the props of the suggestions container (a `Po
 | `emptyValue` | Optional | anything | `null` | The value to use for the empty element |
 | `emptyText` | Optional | `string` | '' | The text to use for the empty element |
 | `matchSuggestion` | Optional | `Function` | - | Required if `optionText` is a React element. Function returning a boolean indicating whether a choice matches the filter. `(filter, choice) => boolean`
-| `optionValue` | Optional | `string` | `id` | Fieldname of record containing the value to use as input value  |
 | `optionText` | Optional | <code>string &#124; Function</code> | `name` | Fieldname of record to display in the suggestion item or function which accepts the correct record as argument (`(record)=> {string}`) |
-| `resource` | Required | `string` | - | The resource working on. This field is passed down by wrapped components like `Create` and `Edit`.   |
+| `optionValue` | Optional | `string` | `id` | Fieldname of record containing the value to use as input value  |
 | `setFilter` | Optional | `Function` | `null` | A callback to inform the `searchText` has changed and new `choices` can be retrieved based on this `searchText`. Signature `searchText => void`. This function is automatically setup when using `ReferenceInput`.  |
-| `source` | Required |  `string` | - | Name of field to edit, its type should match the type retrieved from `optionValue`  |
 | `shouldRenderSuggestions` | Optional | Function | `() => true` | A function that returns a `boolean` to determine whether or not suggestions are rendered. Use this when working with large collections of data to improve performance and user experience. This function is passed into the underlying react-autosuggest component. Ex.`(value) => value.trim() > 2` |
+
+`<AutocompleteInput>` also accepts the [common input props](./Inputs.md#common-input-props).
 
 ## `<AutocompleteArrayInput>`
 
@@ -315,15 +326,15 @@ If you need to override the props of the suggestions container (a `Popper` eleme
 | Prop | Required | Type | Default | Description |
 | ---|---|---|---|--- |
 | `choices` | Required | `Object[]` | - | List of items to autosuggest |
-| `fullWith` | Optional | Boolean | If `true`, the input will take all the form width
 | `matchSuggestion` | Optional | `Function` | - | Required if `optionText` is a React element. Function returning a boolean indicating whether a choice matches the filter. `(filter, choice) => boolean`
 | `optionValue` | Optional | `string` | `id` | Fieldname of record containing the value to use as input value  |
 | `optionText` | Optional | <code>string &#124; Function</code> | `name` | Fieldname of record to display in the suggestion item or function which accepts the current record as argument (`(record)=> {string}`) |
-| `resource` | Required | `string` | - | The resource working on. This field is passed down by wrapped components like `Create` and `Edit`.   |
 | `setFilter` | Optional | `Function` | `null` | A callback to inform the `searchText` has changed and new `choices` can be retrieved based on this `searchText`. Signature `searchText => void`. This function is automatically setup when using `ReferenceInput`.  |
+| `shouldRenderSuggestions` | Optional | Function | `() => true` | A function that returns a `boolean` to determine whether or not suggestions are rendered. Use this when working with large collections of data to improve performance and user experience. This function is passed into the underlying react-autosuggest component. Ex.`(value) => value.trim() > 2` |
 | `source` | Required |  `string` | - | Name of field to edit, its type should match the type retrieved from `optionValue`  |
 | `suggestionLimit` | Optional | Number | `null` | Limits the numbers of suggestions that are shown in the dropdown list |
-| `shouldRenderSuggestions` | Optional | Function | `() => true` | A function that returns a `boolean` to determine whether or not suggestions are rendered. Use this when working with large collections of data to improve performance and user experience. This function is passed into the underlying react-autosuggest component. Ex.`(value) => value.trim() > 2` |
+
+`<AutocompleteArrayInput>` also accepts the [common input props](./Inputs.md#common-input-props).
 
 ## `<BooleanInput>` and `<NullableBooleanInput>`
 
@@ -334,7 +345,6 @@ import { BooleanInput } from 'react-admin';
 
 <BooleanInput label="Commentable" source="commentable" />
 ```
-
 
 ![BooleanInput](./img/boolean-input.png)
 
@@ -358,7 +368,6 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 
 ![CustomBooleanInputCheckIcon](./img/custom-switch-icon.png)
 
-
 Refer to [Material UI Switch documentation](https://material-ui.com/api/switch) for more details.
 
 `<NullableBooleanInput />` renders as a dropdown list, allowing to choose between `true`, `false`, and `null` values.
@@ -370,6 +379,8 @@ import { NullableBooleanInput } from 'react-admin';
 ```
 
 ![NullableBooleanInput](./img/nullable-boolean-input.png)
+
+`<BooleanInput>` and `<NullableBooleanInput>` also accepts the [common input props](./Inputs.md#common-input-props).
 
 ## `<CheckboxGroupInput>`
 
@@ -452,13 +463,18 @@ import { FavoriteBorder, Favorite } from '@material-ui/icons';
 
 | Prop | Type | Default | Description |
 | ---|---|---|--- |
+| `choices` | Required | `Object[]` | - | List of choices |
+| `optionText` | Optional | <code>string &#124; Function</code> | `name` | Fieldname of record to display in the suggestion item or function which accepts the correct record as argument (`(record)=> {string}`) |
+| `optionValue` | Optional | `string` | `id` | Fieldname of record containing the value to use as input value |
 | `row` | `boolean` | true | Display group of elements in a compact row. |
 
 Refer to [Material UI Checkbox documentation](https://material-ui.com/api/checkbox/) for more details.
 
+`<CheckboxGroupInput>` also accepts the [common input props](./Inputs.md#common-input-props).
+
 ## `<DateInput>`
 
-Ideal for editing dates, `<DateInput>` renders a standard browser [Date Picker](https://material-ui.com/components/pickers/#date-pickers), so the appearance depends on the browser (and falls back to a text input on safari).
+Ideal for editing dates, `<DateInput>` renders an HTML `<input type="date">` element, that most browsers display as a standard [Date Picker](https://material-ui.com/components/pickers/#date-pickers). That means the appearance of `<DateInput>` depends on the browser, and falls back to a text input on Safari. The date formatting in this input depends on the user's locale.
 
 ```jsx
 import { DateInput } from 'react-admin';
@@ -467,6 +483,8 @@ import { DateInput } from 'react-admin';
 ```
 
 ![DateInput](./img/date-input.gif)
+
+`<DateInput>` also accepts the [common input props](./Inputs.md#common-input-props).
 
 **Tip**: For a material-ui styled `<DateInput>` component, check out [vascofg/react-admin-date-inputs](https://github.com/vascofg/react-admin-date-inputs).
 
@@ -479,6 +497,8 @@ import { DateTimeInput } from 'react-admin';
 
 <DateTimeInput source="published_at" />
 ```
+
+`<DateTimeInput>` also accepts the [common input props](./Inputs.md#common-input-props).
 
 **Tip**: For a material-ui styled `<DateTimeInput>` component, check out [vascofg/react-admin-date-inputs](https://github.com/vascofg/react-admin-date-inputs).
 
@@ -500,9 +520,9 @@ Writing a custom field component for displaying the current value(s) is easy:  i
 
 When receiving **new** files, `ImageInput` will add a `rawFile` property to the object passed as the `record` prop of children. This `rawFile` is the [File](https://developer.mozilla.org/en-US/docs/Web/API/File) instance of the newly added file. This can be useful to display information about size or mimetype inside a custom field.
 
-The `ImageInput` component accepts an `options` prop into which you can pass all the [react-dropzone properties](https://react-dropzone.netlify.com/#proptypes). However, some of the most useful props should be passed **directly** on the `ImageInput`: `maxSize`, `minSize`, `multiple`.
+The `ImageInput` component accepts an `options` prop, allowing to set the [react-dropzone properties](https://react-dropzone.netlify.com/#proptypes). However, some of these props must be passed **directly** to `ImageInput`: `maxSize`, `minSize`, `multiple`.
 
-If the default Dropzone label doesn't fit with your need, you can pass a `placeholder` attribute to overwrite it. The attribute can be anything React can render (`PropTypes.node`):
+If the default Dropzone label doesn't fit with your need, you can pass a `placeholder` prop to overwrite it. The value can be anything React can render (`PropTypes.node`):
 
 ```jsx
 <ImageInput source="pictures" label="Related pictures" accept="image/*" placeholder={<p>Drop your file here</p>}>
@@ -511,6 +531,8 @@ If the default Dropzone label doesn't fit with your need, you can pass a `placeh
 ```
 
 Note that the image upload returns a [File](https://developer.mozilla.org/en/docs/Web/API/File) object. It is your responsibility to handle it depending on your API behavior. You can for instance encode it in base64, or send it as a multi-part form data. Check [this example](./DataProviders.md#extending-a-data-provider-example-of-file-upload) for base64 encoding data by extending the REST Client.
+
+`<ImageInput>` also accepts the [common input props](./Inputs.md#common-input-props).
 
 ## `<FileInput>`
 
@@ -532,7 +554,7 @@ When receiving **new** files, `FileInput` will add a `rawFile` property to the o
 
 The `FileInput` component accepts an `options` prop into which you can pass all the [react-dropzone properties](https://react-dropzone.netlify.com/#proptypes). However, some of the most useful props should be passed **directly** on the `FileInput`: `maxSize`, `minSize`, `multiple`.
 
-If the default Dropzone label doesn't fit with your need, you can pass a `placeholder` attribute to overwrite it. The attribute can be anything React can render (`PropTypes.node`):
+If the default Dropzone label doesn't fit with your need, you can pass a `placeholder` prop to overwrite it. The value can be anything React can render (`PropTypes.node`):
 
 ```jsx
 <FileInput source="files" label="Related files" accept="application/pdf" placeholder={<p>Drop your file here</p>}>
@@ -541,6 +563,8 @@ If the default Dropzone label doesn't fit with your need, you can pass a `placeh
 ```
 
 Note that the file upload returns a [File](https://developer.mozilla.org/en/docs/Web/API/File) object. It is your responsibility to handle it depending on your API behavior. You can for instance encode it in base64, or send it as a multi-part form data. Check [this example](./DataProviders.md#extending-a-data-provider-example-of-file-upload) for base64 encoding data by extending the REST Client.
+
+`<FileInput>` also accepts the [common input props](./Inputs.md#common-input-props).
 
 ## `<NumberInput>`
 
@@ -558,9 +582,11 @@ You can customize the `step` props (which defaults to "any"):
 <NumberInput source="nb_views" step={1} />
 ```
 
+`<NumberInput>` also accepts the [common input props](./Inputs.md#common-input-props).
+
 ## `<RadioButtonGroupInput>`
 
-If you want to let the user choose a value among a list of possible values by showing them all (instead of hiding them behind a dropdown list, as in [`<SelectInput>`](#selectinput)), `<RadioButtonGroupInput>` is the right component. Set the `choices` attribute to determine the options (with `id`, `name` tuples):
+If you want to let the user choose a value among a list of possible values that are always shown (instead of hiding them behind a dropdown list, as in [`<SelectInput>`](#selectinput)), `<RadioButtonGroupInput>` is the right component. Set the `choices` attribute to determine the options (with `id`, `name` tuples):
 
 ```jsx
 import { RadioButtonGroupInput } from 'react-admin';
@@ -642,6 +668,19 @@ import { RadioButtonGroupInput, ReferenceInput } from 'react-admin';
     <RadioButtonGroupInput optionText="last_name" />
 </ReferenceInput>
 ```
+
+### Properties
+
+| Prop | Required | Type | Default | Description |
+| ---|---|---|---|--- |
+| `choices` | Required | `Object[]` | - | List of items to show as options |
+| `options` | Optional | Object | Props to pass to the underlying `<RadioButtonGroup>` element
+| `optionText` | Optional | <code>string &#124; Function</code> | `name` | Fieldname of record to display in the suggestion item or function which accepts the current record as argument (`(record)=> {string}`) |
+| `optionValue` | Optional | `string` | `id` | Fieldname of record containing the value to use as input value  |
+| `row` | `boolean` | true | Display options in a compact row. |
+| `translateChoice` | Optional | Boolean | `true` | Whether the choices should be translated |
+
+`<RadioButtonGroupInput>` also accepts the [common input props](./Inputs.md#common-input-props).
 
 ## `<ReferenceArrayInput>`
 
@@ -735,6 +774,8 @@ You can tweak how this component fetches the possible values using the `perPage`
 </ReferenceArrayInput>
 ```
 {% endraw %}
+
+`<ReferenceArrayInput>` also accepts the [common input props](./Inputs.md#common-input-props).
 
 ## `<ReferenceInput>`
 
@@ -846,6 +887,19 @@ The child component receives the following props from `<ReferenceInput>`:
 - `setPagination`: : function to call to update the pagination of the request for possible values
 - `setSort`: function to call to update the sorting of the request for possible values
 
+### Properties
+
+| Prop | Required | Type | Default | Description |
+| ---|---|---|---|--- |
+| `allowEmpty` | Optional | Boolean | false | If true, add an empty item to the list of choices to allow for empty value |
+| `filter` | Optional | Object | `{}` | Permanent filters to use for getting the suggestion list |
+| `filterToQuery` | Optional | Function `string => Object` | `searchText => ({ q: [searchText] })` | How to transform the searchText (passed e.g. by an `<AutocompleteArrayInput>`) into a parameter for the data provider |
+| `perPage` | Optional | number | 25 | Number of suggestions to show  |
+| `reference` | Required | String | '' | Name of the reference resource, e.g. 'posts'. |
+| `sort` | Optional | `{ field: String, order: 'ASC' | 'DESC' }` | `{ field: 'id', order: 'DESC' }` | How to order the list of suggestions |
+
+`<ReferenceInput>` also accepts the [common input props](./Inputs.md#common-input-props).
+
 ## `<RichTextInput>`
 
 `<RichTextInput>` is the ideal component if you want to allow your users to edit some HTML contents. It
@@ -884,6 +938,8 @@ const configureQuill = quill => quill.getModule('toolbar').addHandler('bold', fu
 
 <RichTextInput source="text" configureQuill={configureQuill}/>
 ```
+
+`<RichTextInput>` also accepts the [common input props](./Inputs.md#common-input-props).
 
 ## `<SelectInput>`
 
@@ -1009,6 +1065,21 @@ const choices = [
 <SelectInput source="contact_id" choices={choices} optionText="full_name" optionValue="_id" disableValue="not_available" />
 ```
 
+### Properties
+
+| Prop | Required | Type | Default | Description |
+| ---|---|---|---|--- |
+| `allowEmpty` | Optional | Boolean | `false` | If true, the first option is an empty one |
+| `choices` | Required | `Object[]` | - | List of items to show as options |
+| `emptyText` | Optional | string | '' | The text to display for the empty option |
+| `options` | Optional | Object | Props to pass to the underlying `<SelectInput>` element
+| `optionText` | Optional | <code>string &#124; Function</code> | `name` | Fieldname of record to display in the suggestion item or function which accepts the current record as argument (`(record)=> {string}`) |
+| `optionValue` | Optional | `string` | `id` | Fieldname of record containing the value to use as input value  |
+| `resettable` | Optional | Boolean | `false` | If `true`, display a button to reset the changes in this input value |
+| `translateChoice` | Optional | Boolean | `true` | Whether the choices should be translated |
+
+`<SelectInput>` also accepts the [common input props](./Inputs.md#common-input-props).
+
 ## `<SelectArrayInput>`
 
 To let users choose several values in a list using a dropdown, use `<SelectArrayInput>`. It renders using [Material ui's `<Select>`](https://material-ui.com/api/select). Set the `choices` attribute to determine the options (with `id`, `name` tuples):
@@ -1102,6 +1173,8 @@ export const PostCreate = props => (
 
 **Tip**: As it does not provide autocompletion, the `SelectArrayInput` might not be suited when the referenced resource has a lot of items.
 
+`<SelectArrayInput>` also accepts the [common input props](./Inputs.md#common-input-props).
+
 ## `<TextInput>`
 
 `<TextInput>` is the most common input. It is used for texts, emails, URL or passwords. In translates to an HTML `<input>` tag.
@@ -1136,8 +1209,16 @@ import { TextInput } from 'react-admin';
 
 ![resettable TextInput](./img/resettable-text-input.png)
 
-
 **Warning**: Do not use `type="number"`, or you'll receive a string as value (this is a [known React bug](https://github.com/facebook/react/issues/1425)). Instead, use [`<NumberInput>`](#numberinput).
+
+### Properties
+
+| Prop | Required | Type | Default | Description |
+| ---|---|---|---|--- |
+| `resettable` | Optional | Boolean | `false` | If `true`, display a button to reset the changes in this input value |
+| `type` | Optional | string | `text` | Type attribute passed to the `<input>` element |
+
+`<TextInput>` also accepts the [common input props](./Inputs.md#common-input-props).
 
 ## Transforming Input Value to/from Record
 
@@ -1188,7 +1269,7 @@ You can find components for react-admin in third-party repositories.
 
 ## Writing Your Own Input Component
 
-If you need a more specific input type, you can also write it yourself. You'll have to rely on react-final-form's [`<Field>`](https://github.com/final-form/react-final-form#field--reactcomponenttypefieldprops) component or [`useField`](https://github.com/final-form/react-final-form#usefield) hook, so as to handle the value update cycle.
+If you need a more specific input type, you can write it directly in React. You'll have to rely on react-final-form's [`<Field>`](https://github.com/final-form/react-final-form#field--reactcomponenttypefieldprops) component, or its [`useField`](https://github.com/final-form/react-final-form#usefield) hook, so as to handle the value update cycle.
 
 For instance, let's write a component to edit the latitude and longitude of the current record:
 
@@ -1214,7 +1295,7 @@ const ItemEdit = (props) => (
 );
 ```
 
-`LatLngInput` takes no props, because the `<Field>` component can access the current record via its context. The `name` prop serves as a selector for the record property to edit. All `Field` props except `name` and `component` are passed to the child component/element (an `<input>` in that example). Executing this component will render roughly the following code:
+`LatLngInput` takes no props, because the `<Field>` component can access the current record via the form context. The `name` prop serves as a selector for the record property to edit. All the props passed to `Field` except `name` and `component` are passed to the child component (an `<input>` in that example). Executing this component will render roughly the following code:
 
 ```html
 <span>
@@ -1223,7 +1304,7 @@ const ItemEdit = (props) => (
 </span>
 ```
 
-**Tip**: The `<Field>` component supports dot notation in the `name` prop, to edit nested props:
+**Tip**: The `<Field>` component supports dot notation in the `name` prop, to allow binding to nested values:
 
 ```jsx
 const LatLongInput = () => (
