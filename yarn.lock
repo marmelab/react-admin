@@ -12682,10 +12682,10 @@ react-final-form-arrays@^3.1.1:
   dependencies:
     "@babel/runtime" "^7.4.5"
 
-react-final-form@^6.3.1:
-  version "6.3.1"
-  resolved "https://registry.yarnpkg.com/react-final-form/-/react-final-form-6.3.1.tgz#d4b72a81892b2ebc46ea053d6b11b361d063ddf8"
-  integrity sha512-UzpAVBLnXRr2GnTP/Z3wjxlFZnfiOnWKNYW2ViK5+6Res0Ehp6vMkBLfaWaoHxSXNCUJtnItM23okAzBINSelg==
+react-final-form@^6.3.3:
+  version "6.3.3"
+  resolved "https://registry.yarnpkg.com/react-final-form/-/react-final-form-6.3.3.tgz#8856a92278de2733f83e88c75d9ef347294a66a0"
+  integrity sha512-hFLwLpLasywky46SovNEGlym7+N+3RKge1/cg+/fVec/YY0l4g0ihgjRof6PbkiYe4qGjKbwbrvlgfZ9/Uf8vw==
   dependencies:
     "@babel/runtime" "^7.4.5"
     ts-essentials "^3.0.2"
