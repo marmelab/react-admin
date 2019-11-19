@@ -4532,15 +4532,15 @@ core-js-compat@^3.1.1:
     browserslist "^4.6.6"
     semver "^6.3.0"
 
-core-js@2.5.7:
-  version "2.5.7"
-  resolved "https://registry.yarnpkg.com/core-js/-/core-js-2.5.7.tgz#f972608ff0cead68b841a16a932d0b183791814e"
-  integrity sha512-RszJCAxg/PP6uzXVXL6BsxSXx/B05oJAQ2vkJRjyjrEcNVycaqOmNb5OTxZPE3xa5gwZduqza6L9JOCenh/Ecw==
-
 core-js@3.1.4:
   version "3.1.4"
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.1.4.tgz#3a2837fc48e582e1ae25907afcd6cf03b0cc7a07"
   integrity sha512-YNZN8lt82XIMLnLirj9MhKDFZHalwzzrL9YLt6eb0T5D0EDl4IQ90IGkua8mHbnxNrkj1d8hbdizMc0Qmg1WnQ==
+
+core-js@3.2.1:
+  version "3.2.1"
+  resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.2.1.tgz#cd41f38534da6cc59f7db050fe67307de9868b09"
+  integrity sha512-Qa5XSVefSVPRxy2XfUC13WbvqkxhkwB3ve+pgCQveNgYzbM/UxZeu1dcOX/xr4UmfUd+muuvsaxilQzCyUurMw==
 
 core-js@^1.0.0:
   version "1.2.7"
@@ -12299,13 +12299,6 @@ promise-inflight@^1.0.1:
   resolved "https://registry.yarnpkg.com/promise-inflight/-/promise-inflight-1.0.1.tgz#98472870bf228132fcbdd868129bad12c3c029e3"
   integrity sha1-mEcocL8igTL8vdhoEputEsPAKeM=
 
-promise@8.0.2:
-  version "8.0.2"
-  resolved "https://registry.yarnpkg.com/promise/-/promise-8.0.2.tgz#9dcd0672192c589477d56891271bdc27547ae9f0"
-  integrity sha512-EIyzM39FpVOMbqgzEHhxdrEhtOSDOtjMZQ0M6iVfCE+kWNgCkAyOdnuCWqfmflylftfadU6FkiMgHZA2kUzwRw==
-  dependencies:
-    asap "~2.0.6"
-
 promise@8.0.3:
   version "8.0.3"
   resolved "https://registry.yarnpkg.com/promise/-/promise-8.0.3.tgz#f592e099c6cddc000d538ee7283bb190452b0bf6"
@@ -12358,6 +12351,11 @@ proxy-addr@~2.0.4, proxy-addr@~2.0.5:
   dependencies:
     forwarded "~0.1.2"
     ipaddr.js "1.9.0"
+
+proxy-polyfill@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/proxy-polyfill/-/proxy-polyfill-0.3.0.tgz#385c13d1402d4ae1357b6e44652d9b8d6289b0ef"
+  integrity sha512-0HN+SoV3qKJ1EIIOsEybYgyTTnR26PJ0af/shBqaXLUMIg7/8PHEyQ28QfaDFwmvH77yRuLtclnERgrCq4v+xg==
 
 prr@~1.0.1:
   version "1.0.1"
@@ -12491,13 +12489,6 @@ quill@~1.3.6:
     parchment "^1.1.4"
     quill-delta "^3.6.2"
 
-raf@3.4.0:
-  version "3.4.0"
-  resolved "https://registry.yarnpkg.com/raf/-/raf-3.4.0.tgz#a28876881b4bc2ca9117d4138163ddb80f781575"
-  integrity sha512-pDP/NMRAXoTfrhCfyfSEwJAKLaxBU9eApMeBPB1TkDouZmvPerIClV8lTAd+uF8ZiTaVl69e1FCxQrAd/VTjGw==
-  dependencies:
-    performance-now "^2.1.0"
-
 raf@3.4.1, raf@^3.4.0, raf@~3.4.1:
   version "3.4.1"
   resolved "https://registry.yarnpkg.com/raf/-/raf-3.4.1.tgz#0742e99a4a6552f445d73e3ee0328af0ff1ede39"
@@ -12597,23 +12588,24 @@ rc@^1.0.1, rc@^1.1.6, rc@^1.2.7:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
-react-app-polyfill@^0.1.3:
-  version "0.1.3"
-  resolved "https://registry.yarnpkg.com/react-app-polyfill/-/react-app-polyfill-0.1.3.tgz#e57bb50f3751dac0e6b3ac27673812c68c679a1d"
-  integrity sha512-Fl5Pic4F15G05qX7RmUqPZr1MtyFKJKSlRwMhel4kvDLrk/KcQ9QbpvyMTzv/0NN5957XFQ7r1BNHWi7qN59Pw==
-  dependencies:
-    core-js "2.5.7"
-    object-assign "4.1.1"
-    promise "8.0.2"
-    raf "3.4.0"
-    whatwg-fetch "3.0.0"
-
 react-app-polyfill@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/react-app-polyfill/-/react-app-polyfill-1.0.2.tgz#2a51175885c88245a2a356dc46df29f38ec9f060"
   integrity sha512-yZcpLnIr0FOIzrOOz9JC37NWAWEuCaQWmYn9EWjEzlCW4cOmA5MkT5L3iP8QuUeFnoqVCTJgjIWYbXEJgNXhGA==
   dependencies:
     core-js "3.1.4"
+    object-assign "4.1.1"
+    promise "8.0.3"
+    raf "3.4.1"
+    regenerator-runtime "0.13.3"
+    whatwg-fetch "3.0.0"
+
+react-app-polyfill@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/react-app-polyfill/-/react-app-polyfill-1.0.4.tgz#4dd2636846b585c2d842b1e44e1bc29044345874"
+  integrity sha512-5Vte6ki7jpNsNCUKaboyofAhmURmCn2Y6Hu7ydJ6Iu4dct1CIGoh/1FT7gUZKAbowVX2lxVPlijvp1nKxfAl4w==
+  dependencies:
+    core-js "3.2.1"
     object-assign "4.1.1"
     promise "8.0.3"
     raf "3.4.1"
