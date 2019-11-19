@@ -43,8 +43,8 @@ All input components accept the following props:
 React-admin uses [react-final-form](https://final-form.org/docs/react-final-form/getting-started) to control form inputs. Each input component also accepts all react-final-form [`FieldProps`](https://final-form.org/docs/react-final-form/types/FieldProps), including:
 
 * `initialValue`: Value to be set when the property is `null` or `undefined`.
-* `format`: A function that takes the value from the form values and the name of the field and formats the value to give to the input. See the [Transforming Input Value](./Inputs.md#transforming-input-value-to-from-record) section.
-* [`parse`](https://final-form.org/docs/react-final-form/types/FieldProps#parse): A function that takes the value from the input and name of the field and converts the value into the value you want stored as this field's value in the form. See the [Transforming Input Value](./Inputs.md#transforming-input-value-to-from-record) section.
+* `format`: A function that takes the value from the form values and the name of the field and formats the value to give to the input. See the [Transforming Input Value](./Inputs.md#transforming-input-value-tofrom-record) section.
+* [`parse`](https://final-form.org/docs/react-final-form/types/FieldProps#parse): A function that takes the value from the input and name of the field and converts the value into the value you want stored as this field's value in the form. See the [Transforming Input Value](./Inputs.md#transforming-input-value-tofrom-record) section.
 
 Additional props are passed down to the underlying component (usually a material-ui component). For instance, when setting the `className` prop on a `TextInput` component, the underlying material-ui `<TextField>` receives it, and renders with custom styles. You can also set the underlying component `variant` and `margin` that way.
 
