@@ -1,5 +1,15 @@
 # Changelog
 
+## v2.9.9
+
+* Add link to `ra-language-japanese` in Translation doc ([3994](https://github.com/marmelab/react-admin/pull/3994)) ([bicstone](https://github.com/bicstone))
+* Fix duplicate keywords ([3993](https://github.com/marmelab/react-admin/pull/3993)) ([bicstone](https://github.com/bicstone))
+* Fix warning in Login form ([3958](https://github.com/marmelab/react-admin/pull/3958)) ([gstvg](https://github.com/gstvg))
+* Add example of custom Datagrid usage in the List documentation ([3956](https://github.com/marmelab/react-admin/pull/3956)) ([nicgirault](https://github.com/nicgirault))
+* Add a list if `<Pagination>` props in the List documentation ([3954](https://github.com/marmelab/react-admin/pull/3954)) ([nicgirault](https://github.com/nicgirault))
+* Fix pessimistic delete one does not remove item from selection ([3926](https://github.com/marmelab/react-admin/pull/3926)) ([fzaninotto](https://github.com/fzaninotto))
+* Add a link to `moleculer-data-provider` in Data Providers doc ([3925](https://github.com/marmelab/react-admin/pull/3925)) ([jjgumucio](https://github.com/jjgumucio))
+
 ## v2.9.8
  
 * Rewrite `ra-tree`. The new API isn't backwards compatible, but as ra-tree is considered a "lab" feature, we chose to release it in a minor version. ([3771](https://github.com/marmelab/react-admin/pull/3771)) ([djhi](https://github.com/djhi))
