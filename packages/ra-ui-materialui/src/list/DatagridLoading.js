@@ -114,7 +114,7 @@ DatagridLoading.propTypes = {
     hasBulkActions: PropTypes.bool,
     nbChildren: PropTypes.number,
     nbFakeLines: PropTypes.number,
-    size: PropTypes.string,
+    size: PropTypes.oneOf(['small', 'medium']),
 };
 
 export default memo(DatagridLoading);
