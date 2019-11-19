@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import MuiTab from '@material-ui/core/Tab';
 import classnames from 'classnames';
-import { translate } from 'ra-core';
+import { useTranslate } from 'ra-core';
 
 import FormInput from './FormInput';
 
@@ -18,8 +18,9 @@ const sanitizeRestProps = ({
 
 const hiddenStyle = { display: 'none' };
 
-class FormTab extends Component {
-    renderHeader = ({ className, label, icon, value, translate, ...rest }) => {
+const FormTab = props => {
+    const translate = useTranslate();
+    const renderHeader = ({ className, label, icon, value, ...rest }) => {
         const to = { pathname: value };
 
         return (
@@ -36,7 +37,7 @@ class FormTab extends Component {
         );
     };
 
-    renderContent = ({
+    const renderContent = ({
         contentClassName,
         children,
         hidden,
@@ -64,13 +65,11 @@ class FormTab extends Component {
         </span>
     );
 
-    render() {
-        const { children, intent, ...rest } = this.props;
-        return intent === 'header'
-            ? this.renderHeader(rest)
-            : this.renderContent({ children, ...rest });
-    }
-}
+    const { children, intent, ...rest } = props;
+    return intent === 'header'
+        ? renderHeader(rest)
+        : renderContent({ children, ...rest });
+};
 
 FormTab.propTypes = {
     className: PropTypes.string,
@@ -81,10 +80,9 @@ FormTab.propTypes = {
     icon: PropTypes.element,
     label: PropTypes.string.isRequired,
     path: PropTypes.string,
-    translate: PropTypes.func.isRequired,
     value: PropTypes.string,
 };
 
 FormTab.displayName = 'FormTab';
 
-export default translate(FormTab);
+export default FormTab;

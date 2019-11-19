@@ -1,8 +1,8 @@
-import React, { Component, isValidElement } from 'react';
+import React, { isValidElement } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import MuiTab from '@material-ui/core/Tab';
-import { translate } from 'ra-core';
+import { useTranslate } from 'ra-core';
 import classnames from 'classnames';
 
 import Labeled from '../input/Labeled';
@@ -58,8 +58,9 @@ const sanitizeRestProps = ({
  *     );
  *     export default App;
  */
-class Tab extends Component {
-    renderHeader = ({ className, label, icon, value, translate, ...rest }) => (
+const Tab = props => {
+    const translate = useTranslate();
+    const renderHeader = ({ className, label, icon, value, ...rest }) => (
         <MuiTab
             key={label}
             label={translate(label, { _: label })}
@@ -72,7 +73,7 @@ class Tab extends Component {
         />
     );
 
-    renderContent = ({
+    const renderContent = ({
         contentClassName,
         children,
         basePath,
@@ -115,13 +116,11 @@ class Tab extends Component {
         </span>
     );
 
-    render() {
-        const { children, context, ...rest } = this.props;
-        return context === 'header'
-            ? this.renderHeader(rest)
-            : this.renderContent({ children, ...rest });
-    }
-}
+    const { children, context, ...rest } = props;
+    return context === 'header'
+        ? renderHeader(rest)
+        : renderContent({ children, ...rest });
+};
 
 Tab.propTypes = {
     className: PropTypes.string,
@@ -130,8 +129,7 @@ Tab.propTypes = {
     context: PropTypes.oneOf(['header', 'content']),
     icon: PropTypes.element,
     label: PropTypes.string.isRequired,
-    translate: PropTypes.func.isRequired,
     value: PropTypes.string,
 };
 
-export default translate(Tab);
+export default Tab;
