@@ -69,19 +69,21 @@ SimpleForm.propTypes = {
     className: PropTypes.string,
     defaultValue: PropTypes.oneOfType([PropTypes.object, PropTypes.func]), // @deprecated
     initialValues: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
-    handleSubmit: PropTypes.func, // passed by react-final-form
     invalid: PropTypes.bool,
-    pristine: PropTypes.bool,
-    resource: PropTypes.string,
+    record: PropTypes.object,
     redirect: PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.bool,
         PropTypes.func,
     ]),
+    resource: PropTypes.string,
+    save: PropTypes.func,
+    saving: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
     submitOnEnter: PropTypes.bool,
     toolbar: PropTypes.element,
     undoable: PropTypes.bool,
     validate: PropTypes.func,
+    version: PropTypes.number,
 };
 
 const defaultSubscription = {

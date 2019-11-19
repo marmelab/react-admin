@@ -85,17 +85,17 @@ TabbedForm.propTypes = {
     classes: PropTypes.object,
     defaultValue: PropTypes.oneOfType([PropTypes.object, PropTypes.func]), // @deprecated
     initialValues: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
-    handleSubmit: PropTypes.func, // passed by react-final-form
-    invalid: PropTypes.bool,
     location: PropTypes.object,
     match: PropTypes.object,
-    pristine: PropTypes.bool,
+    record: PropTypes.object,
     redirect: PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.bool,
         PropTypes.func,
     ]),
     resource: PropTypes.string,
+    save: PropTypes.func, // the handler defined in the parent, which triggers the REST submission
+    saving: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
     submitOnEnter: PropTypes.bool,
     tabs: PropTypes.element.isRequired,
     tabsWithErrors: PropTypes.arrayOf(PropTypes.string),
@@ -104,6 +104,7 @@ TabbedForm.propTypes = {
     undoable: PropTypes.bool,
     validate: PropTypes.func,
     value: PropTypes.number,
+    version: PropTypes.number,
 };
 
 const defaultSubscription = {
