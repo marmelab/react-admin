@@ -1000,6 +1000,59 @@ const PostList = ({ classes, ...props }) => (
 export default withStyles(styles)(PostList);
 ```
 
+**Tip**: You can use the `Datagrid` component with [custom queries](./Actions.md#query-and-mutation-components):
+
+```jsx
+import keyBy from 'lodash/keyBy'
+import { Datagrid, Query, TextField, Pagination, Loading } from 'react-admin'
+
+const CustomList = () => {
+  const [page, setPage] = useState(1)
+  const perPage = 50
+
+  return (
+    <Query
+      type="GET_LIST"
+      resource="posts"
+      payload={{
+        pagination: { page, perPage },
+        sort: { field: 'id', order: 'ASC' },
+        filter: {},
+      }}
+    >
+      {({ data, total, loading, error }) => {
+        if (loading) {
+          return <Loading />
+        }
+        if (error) {
+          return <p>ERROR: {error}</p>
+        }
+        return (
+          <>
+            <Datagrid
+              data={keyBy(data, 'id')}
+              ids={data.map(({ id }) => id)}
+              currentSort={{ field: 'id', order: 'ASC' }}
+              basePath="/posts" // required only if you set use "rowClick"
+              rowClick="edit"
+            >
+              <TextField source="id" />
+              <TextField source="name" />
+            </Datagrid>
+            <Pagination
+              page={page}
+              perPage={perPage}
+              setPage={setPage}
+              total={total}
+            />
+          </>
+        )
+      }}
+    </Query>
+  )
+}
+```
+
 ## The `<SimpleList>` component
 
 For mobile devices, a `<Datagrid>` is often unusable - there is simply not enough space to display several columns. The convention in that case is to use a simple list, with only one column per row. The `<SimpleList>` component serves that purpose, leveraging [material-ui's `<List>` and `<ListItem>` components](https://v1.material-ui.com/demos/lists/). You can use it as `<List>` or `<ReferenceManyField>` child:
