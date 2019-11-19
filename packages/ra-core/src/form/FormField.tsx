@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from 'react';
 import PropTypes from 'prop-types';
-import { Field, FieldProps } from 'react-final-form';
+import { Field, FieldProps, FieldRenderProps } from 'react-final-form';
 import { Validator, composeValidators } from './validate';
 
 export const isRequired = validate => {
@@ -13,7 +13,11 @@ export const isRequired = validate => {
     return false;
 };
 
-interface Props extends Omit<FieldProps<any, HTMLElement>, 'validate'> {
+interface Props
+    extends Omit<
+        FieldProps<any, FieldRenderProps<any, HTMLElement>, HTMLElement>,
+        'validate'
+    > {
     defaultValue?: any;
     input?: any;
     source: string;

@@ -1,6 +1,6 @@
 import {
     useField as useFinalFormField,
-    FieldProps as FinalFormFieldProps,
+    FieldProps,
     FieldRenderProps,
     FieldInputProps,
 } from 'react-final-form';
@@ -10,7 +10,7 @@ import { useCallback, ChangeEvent } from 'react';
 
 export interface InputProps<T = any>
     extends Omit<
-        FinalFormFieldProps<any, HTMLElement>,
+        FieldProps<any, FieldRenderProps<any, HTMLElement>, HTMLElement>,
         'validate' | 'children'
     > {
     source: string;
