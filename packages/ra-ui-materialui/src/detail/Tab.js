@@ -58,9 +58,22 @@ const sanitizeRestProps = ({
  *     );
  *     export default App;
  */
-const Tab = props => {
+const Tab = ({
+    basePath,
+    children,
+    contentClassName,
+    context,
+    className,
+    icon,
+    label,
+    record,
+    resource,
+    value,
+    ...rest
+}) => {
     const translate = useTranslate();
-    const renderHeader = ({ className, label, icon, value, ...rest }) => (
+
+    const renderHeader = () => (
         <MuiTab
             key={label}
             label={translate(label, { _: label })}
@@ -73,13 +86,7 @@ const Tab = props => {
         />
     );
 
-    const renderContent = ({
-        contentClassName,
-        children,
-        basePath,
-        record,
-        resource,
-    }) => (
+    const renderContent = () => (
         <span className={contentClassName}>
             {React.Children.map(children, field =>
                 field && isValidElement(field) ? (
@@ -116,10 +123,7 @@ const Tab = props => {
         </span>
     );
 
-    const { children, context, ...rest } = props;
-    return context === 'header'
-        ? renderHeader(rest)
-        : renderContent({ children, ...rest });
+    return context === 'header' ? renderHeader() : renderContent();
 };
 
 Tab.propTypes = {

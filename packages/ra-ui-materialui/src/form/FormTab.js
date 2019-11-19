@@ -18,35 +18,38 @@ const sanitizeRestProps = ({
 
 const hiddenStyle = { display: 'none' };
 
-const FormTab = props => {
+const FormTab = ({
+    basePath,
+    className,
+    contentClassName,
+    children,
+    hidden,
+    icon,
+    intent,
+    label,
+    margin,
+    record,
+    resource,
+    variant,
+    value,
+    ...rest
+}) => {
     const translate = useTranslate();
-    const renderHeader = ({ className, label, icon, value, ...rest }) => {
-        const to = { pathname: value };
 
-        return (
-            <MuiTab
-                key={label}
-                label={translate(label, { _: label })}
-                value={value}
-                icon={icon}
-                className={classnames('form-tab', className)}
-                component={Link}
-                to={to}
-                {...sanitizeRestProps(rest)}
-            />
-        );
-    };
+    const renderHeader = () => (
+        <MuiTab
+            key={label}
+            label={translate(label, { _: label })}
+            value={value}
+            icon={icon}
+            className={classnames('form-tab', className)}
+            component={Link}
+            to={{ pathname: value }}
+            {...sanitizeRestProps(rest)}
+        />
+    );
 
-    const renderContent = ({
-        contentClassName,
-        children,
-        hidden,
-        basePath,
-        record,
-        resource,
-        variant,
-        margin,
-    }) => (
+    const renderContent = () => (
         <span style={hidden ? hiddenStyle : null} className={contentClassName}>
             {React.Children.map(
                 children,
@@ -65,10 +68,7 @@ const FormTab = props => {
         </span>
     );
 
-    const { children, intent, ...rest } = props;
-    return intent === 'header'
-        ? renderHeader(rest)
-        : renderContent({ children, ...rest });
+    return intent === 'header' ? renderHeader() : renderContent();
 };
 
 FormTab.propTypes = {
