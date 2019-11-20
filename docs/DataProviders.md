@@ -79,6 +79,7 @@ Developers from the react-admin community have open-sourced Data Providers for m
 * **[JSON HAL](https://tools.ietf.org/html/draft-kelly-json-hal-08)**: [ra-data-json-hal](https://www.npmjs.com/package/ra-data-json-hal)
 * **[JSON server](https://github.com/typicode/json-server)**: [marmelab/ra-data-json-server](https://github.com/marmelab/react-admin/tree/master/packages/ra-data-json-server).
 * **[Loopback](https://loopback.io/)**: [darthwesker/react-admin-loopback](https://github.com/darthwesker/react-admin-loopback)
+* **[Moleculer Microservices](https://github.com/RancaguaInnova/moleculer-data-provider)**: [RancaguaInnova/moleculer-data-provider](https://github.com/RancaguaInnova/moleculer-data-provider)
 * **[NestJS CRUD](https://github.com/nestjsx/crud)**: [FusionWorks/react-admin-nestjsx-crud-dataprovider](https://github.com/FusionWorks/react-admin-nestjsx-crud-dataprovider)
 * **[Parse](https://parseplatform.org/)**: [almahdi/ra-data-parse](https://github.com/almahdi/ra-data-parse)
 * **[Prisma](https://github.com/weakky/ra-data-prisma)**: [weakky/ra-data-prisma](https://github.com/weakky/ra-data-prisma)
