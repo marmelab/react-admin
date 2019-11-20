@@ -50,27 +50,37 @@ interface State {
  * );
  */
 class Mutation extends Component<Props, State> {
+    unmounted = false;
+
     state = {
         data: null,
         loading: false,
         error: null,
     };
 
+    componentWillUnmount() {
+        this.unmounted = true;
+    }
+
     mutate = () => {
         this.setState({ loading: true });
         const { dataProvider, type, resource, payload, options } = this.props;
         dataProvider(type, resource, payload, options)
             .then(({ data }) => {
-                this.setState({
-                    data,
-                    loading: false,
-                });
+                if (!this.unmounted) {
+                    this.setState({
+                        data,
+                        loading: false,
+                    });
+                }
             })
             .catch(error => {
-                this.setState({
-                    error,
-                    loading: false,
-                });
+                if (!this.unmounted) {
+                    this.setState({
+                        error,
+                        loading: false,
+                    });
+                }
             });
     };
 
