@@ -1,5 +1,26 @@
 # Changelog
 
+## v3.0.0
+
+* Fix IE11 support on demo ([4007](https://github.com/marmelab/react-admin/pull/4007)) ([m4theushw](https://github.com/m4theushw))
+* Fix anchor in Input documentation ([4004](https://github.com/marmelab/react-admin/pull/4004)) ([WiXSL](https://github.com/WiXSL))
+* Fix setting filter resets pagination ([4000](https://github.com/marmelab/react-admin/pull/4000)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix Inputs doc to make props more obvious ([3998](https://github.com/marmelab/react-admin/pull/3998)) ([fzaninotto](https://github.com/fzaninotto))
+* Update demo example to use function components ([3995](https://github.com/marmelab/react-admin/pull/3995)) ([WiXSL](https://github.com/WiXSL))
+* Fix `useGetMany` hook `accumulatedIds` filter function ([3989](https://github.com/marmelab/react-admin/pull/3989)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<SelectInput variant="standard">` shows warning for unknown class ([3988](https://github.com/marmelab/react-admin/pull/3988)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<Login>` component does not accept style override ([3986](https://github.com/marmelab/react-admin/pull/3986)) ([zyhou](https://github.com/zyhou))
+* Fix `<Field>` in form does not like the variant prop ([3984](https://github.com/marmelab/react-admin/pull/3984)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `useQueryWithStore` and `useGetMany` return error: null when success after first fail ([3983](https://github.com/marmelab/react-admin/pull/3983)) ([Slavvkko](https://github.com/Slavvkko))
+* Fix `<RadioButtonGroupInput>` label size ([3974](https://github.com/marmelab/react-admin/pull/3974)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<CloneButton>` for nested objects ([3973](https://github.com/marmelab/react-admin/pull/3973)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<TabbedFormTabs>` computes wrong tab index ([3972](https://github.com/marmelab/react-admin/pull/3972)) ([natrim](https://github.com/natrim))
+* Fix `useSuggestions` crashes on empty value ([3971](https://github.com/marmelab/react-admin/pull/3971)) ([natrim](https://github.com/natrim))
+* Fix `dataProvider` console logs in production ([3967](https://github.com/marmelab/react-admin/pull/3967)) ([WiXSL](https://github.com/WiXSL))
+* Fix various typos in docs ([3963](https://github.com/marmelab/react-admin/pull/3963)) ([WiXSL](https://github.com/WiXSL))
+* Fix warning in `<LoginForm>` ([3961](https://github.com/marmelab/react-admin/pull/3961)) ([WiXSL](https://github.com/WiXSL))
+* Fix warnings caused by passing new FinalForm form state property `dirtyFieldsSinceLastSubmit` ([3959](https://github.com/marmelab/react-admin/pull/3959)) ([MiMo42](https://github.com/MiMo42))
+
 ## v2.9.9
 
 * Add link to `ra-language-japanese` in Translation doc ([3994](https://github.com/marmelab/react-admin/pull/3994)) ([bicstone](https://github.com/bicstone))
