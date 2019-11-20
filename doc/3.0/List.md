@@ -571,9 +571,16 @@ const filterSentToDataProvider = { ...filterDefaultValues, ...filterChosenByUser
 
 ### Pagination
 
-You can replace the default pagination element by your own, using the `pagination` prop. The pagination element receives the current page, the number of records per page, the total number of records, as well as a `setPage()` function that changes the page.
+Here are all the props required by the <Pagination> component:
 
-For instance, you can modify the default pagination by adjusting the "rows per page" selector.
+* `page`: The current page number (integer). First page is `1`.
+* `perPage`: The number of records per page.
+* `setPage`: `function(page: number) => void`. A function that set the current page number.
+* `total`: The total number of records.
+
+You don't need to fill these props when you pass the `Pagination` component to the `List` component through the `pagination` prop: `<List pagination={<Pagination />}>`.
+
+You can also replace the default pagination element by your own. For instance, you can modify the default pagination by adjusting the "rows per page" selector.
 
 ```jsx
 // in src/MyPagination.js
@@ -939,7 +946,7 @@ The result will be the same as in the previous snippet, except that `<Show>` enc
 
 ```jsx
 const PostEdit = props => (
-    <Edit 
+    <Edit
         {...props}
         /* disable the app title change when shown */
         title=" "
@@ -1064,6 +1071,53 @@ const PostList = props => (
 export default withStyles(styles)(PostList);
 ```
 
+**Tip**: You can use the `Datagrid` component with [custom queries](./Actions.md#usequery-hook):
+
+```jsx
+import keyBy from 'lodash/keyBy'
+import { useQuery, Datagrid, TextField, Pagination, Loading } from 'react-admin'
+
+const CustomList = () => {
+    const [page, setPage] = useState(1);
+    const perPage = 50;
+    const { data, total, loading, error } = useQuery({
+        type: 'GET_LIST'
+        resource: 'posts'
+        payload: {
+            pagination: { page, perPage },
+            sort: { field: 'id', order: 'ASC' },
+            filter: {},
+        }
+    });
+
+    if (loading) {
+        return <Loading />
+    }
+    if (error) {
+        return <p>ERROR: {error}</p>
+    }
+    return (
+        <>
+            <Datagrid
+                data={keyBy(data, 'id')}
+                ids={data.map(({ id }) => id)}
+                currentSort={{ field: 'id', order: 'ASC' }}
+                basePath="/posts" // required only if you set use "rowClick"
+                rowClick="edit"
+            >
+                <TextField source="id" />
+                <TextField source="name" />
+            </Datagrid>
+            <Pagination
+                page={page}
+                perPage={perPage}
+                setPage={setPage}
+                total={total}
+            />
+        </>
+    )
+}
+```
 
 ## The `<SimpleList>` component
 
