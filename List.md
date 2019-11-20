@@ -1017,6 +1017,7 @@ export PostList;
 
 **Tip**: If you want to override the `header` and `cell` styles independently for each column, use the `headerClassName` and `cellClassName` props in `<Field>` components. For instance, to hide a certain column on small screens:
 
+{% raw %}
 ```jsx
 import React from 'react';
 import { makeStyles } from '@material-ui/core';
@@ -1048,6 +1049,7 @@ const PostList = props => {
 
 export default PostList;
 ```
+{% endraw %}
 
 ### Performance
 
