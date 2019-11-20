@@ -140,14 +140,7 @@ const useListParams = ({
     );
 
     const changeParams = useCallback(action => {
-        const newQuery = getQuery({
-            location,
-            params,
-            filterDefaultValues,
-            sort,
-            perPage,
-        });
-        const newParams = queryReducer(newQuery, action);
+        const newParams = queryReducer(query, action);
         history.push({
             search: `?${stringify({
                 ...newParams,

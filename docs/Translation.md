@@ -178,6 +178,7 @@ You can find translation packages for the following languages:
 - Hungarian (`hu`): [phelion/ra-language-hungarian](https://github.com/phelion/ra-language-hungarian)
 - Indonesian (`id`): [ronadi/ra-language-indonesian](https://github.com/ronadi/ra-language-indonesian)
 - Italian (`it`): [stefsava/ra-italian](https://github.com/stefsava/ra-italian)
+- Japanese (`ja`): [bicstone/ra-language-japanese](https://github.com/bicstone/ra-language-japanese)
 - Norwegian (`no`): [jon-harald/ra-language-norwegian](https://github.com/jon-harald/ra-language-norwegian)
 - Polish (`pl`): [tskorupka/ra-language-polish](https://github.com/tskorupka/ra-language-polish)
 - Portuguese (`pt`): [marquesgabriel/ra-language-portuguese](https://github.com/marquesgabriel/ra-language-portuguese)
@@ -194,7 +195,6 @@ In addition, the previous version of react-admin, called admin-on-rest, was tran
 - Chinese (Traditional) (`cht`): [leesei/aor-language-chinese-traditional](https://github.com/leesei/aor-language-chinese-traditional)
 - Croatian (`hr`): [ariskemper/aor-language-croatian](https://github.com/ariskemper/aor-language-croatian)
 - Greek (`el`): [zifnab87/aor-language-greek](https://github.com/zifnab87/aor-language-greek)
-- Japanese (`ja`): [kuma-guy/aor-language-japanese](https://github.com/kuma-guy/aor-language-japanese)
 - Slovenian (`sl`): [ariskemper/aor-language-slovenian](https://github.com/ariskemper/aor-language-slovenian)
 - Thai (`th`): [liverbool/aor-language-thai](https://github.com/liverbool/aor-language-thai)
 
