@@ -1221,7 +1221,7 @@ export const CategoriesList = (props) => (
 );
 ```
 
-To learn more about this component features, please refers to its [README](https://github.com/marmelab/react-admin/blob/master/packages/ra-tree-ui-materialui/README.md).
+To learn more about this component features, please refers to its [README](https://github.com/marmelab/react-admin/blob/2.x/packages/ra-tree-ui-materialui/README.md).
 
 ## Using a Custom Iterator
 
