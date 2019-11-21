@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import MuiTab from '@material-ui/core/Tab';
 import classnames from 'classnames';
-import { translate } from 'ra-core';
+import { useTranslate } from 'ra-core';
 
 import FormInput from './FormInput';
 
@@ -18,34 +18,38 @@ const sanitizeRestProps = ({
 
 const hiddenStyle = { display: 'none' };
 
-class FormTab extends Component {
-    renderHeader = ({ className, label, icon, value, translate, ...rest }) => {
-        const to = { pathname: value };
+const FormTab = ({
+    basePath,
+    className,
+    contentClassName,
+    children,
+    hidden,
+    icon,
+    intent,
+    label,
+    margin,
+    record,
+    resource,
+    variant,
+    value,
+    ...rest
+}) => {
+    const translate = useTranslate();
 
-        return (
-            <MuiTab
-                key={label}
-                label={translate(label, { _: label })}
-                value={value}
-                icon={icon}
-                className={classnames('form-tab', className)}
-                component={Link}
-                to={to}
-                {...sanitizeRestProps(rest)}
-            />
-        );
-    };
+    const renderHeader = () => (
+        <MuiTab
+            key={label}
+            label={translate(label, { _: label })}
+            value={value}
+            icon={icon}
+            className={classnames('form-tab', className)}
+            component={Link}
+            to={{ pathname: value }}
+            {...sanitizeRestProps(rest)}
+        />
+    );
 
-    renderContent = ({
-        contentClassName,
-        children,
-        hidden,
-        basePath,
-        record,
-        resource,
-        variant,
-        margin,
-    }) => (
+    const renderContent = () => (
         <span style={hidden ? hiddenStyle : null} className={contentClassName}>
             {React.Children.map(
                 children,
@@ -64,13 +68,8 @@ class FormTab extends Component {
         </span>
     );
 
-    render() {
-        const { children, intent, ...rest } = this.props;
-        return intent === 'header'
-            ? this.renderHeader(rest)
-            : this.renderContent({ children, ...rest });
-    }
-}
+    return intent === 'header' ? renderHeader() : renderContent();
+};
 
 FormTab.propTypes = {
     className: PropTypes.string,
@@ -81,10 +80,9 @@ FormTab.propTypes = {
     icon: PropTypes.element,
     label: PropTypes.string.isRequired,
     path: PropTypes.string,
-    translate: PropTypes.func.isRequired,
     value: PropTypes.string,
 };
 
 FormTab.displayName = 'FormTab';
 
-export default translate(FormTab);
+export default FormTab;
