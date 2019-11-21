@@ -205,12 +205,15 @@ const SelectInput: FunctionComponent<
             {...input}
             select
             label={
-                <FieldTitle
-                    label={label}
-                    source={source}
-                    resource={resource}
-                    isRequired={isRequired}
-                />
+                label !== '' &&
+                label !== false && (
+                    <FieldTitle
+                        label={label}
+                        source={source}
+                        resource={resource}
+                        isRequired={isRequired}
+                    />
+                )
             }
             className={`${classes.input} ${className}`}
             clearAlwaysVisible
@@ -257,7 +260,7 @@ SelectInput.propTypes = {
     choices: PropTypes.arrayOf(PropTypes.object),
     classes: PropTypes.object,
     className: PropTypes.string,
-    label: PropTypes.string,
+    label: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
     options: PropTypes.object,
     optionText: PropTypes.oneOfType([
         PropTypes.string,
