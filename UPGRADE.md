@@ -534,6 +534,23 @@ If you had custom reducer or sagas based on these actions, they will no longer w
 
 **Tip**: If you need to clear the Redux state, you can dispatch the `CLEAR_STATE` action.
 
+## Login uses children instead of a loginForm prop
+
+If you were using `Login` with a custom login form, you now need to pass that as a child instead of a prop of `Login`.
+
+```diff
+import { Login } from 'react-admin';
+const LoginPage = () => (
+     <Login
+-        loginForm={<LoginForm />}
+         backgroundImage={backgroundImage}
+-    />
++    >
++        <LoginForm />
++    </Login>
+ );
+```
+
 ## i18nProvider Signature Changed
 
 The react-admin translation (i18n) layer lets developers provide translations for UI and content, based on Airbnb's [Polyglot](https://airbnb.io/polyglot.js/) library. The `i18nProvider`, which contains that translation logic, used to be a function. It must now be an object exposing three methods: `translate`, `changeLocale` and `getLocale`.
