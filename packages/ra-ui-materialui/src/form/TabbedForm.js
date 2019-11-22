@@ -7,6 +7,7 @@ import { Route } from 'react-router-dom';
 import Divider from '@material-ui/core/Divider';
 import { makeStyles } from '@material-ui/core/styles';
 import {
+    escapePath,
     useTranslate,
     useInitializeFormWithRecord,
     sanitizeEmptyValues,
@@ -153,7 +154,12 @@ export const TabbedFormView = ({
                     children,
                     (tab, index) =>
                         tab && (
-                            <Route exact path={getTabFullPath(tab, index, url)}>
+                            <Route
+                                exact
+                                path={escapePath(
+                                    getTabFullPath(tab, index, url)
+                                )}
+                            >
                                 {routeProps =>
                                     isValidElement(tab)
                                         ? React.cloneElement(tab, {
