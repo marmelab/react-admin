@@ -283,7 +283,6 @@ nav {
 
 #preview img {
     width: 100%;
-    height: calc(100% - 14px);
     margin: 6px 0;
     border-radius: 5px;
     border: 1px solid rgba(255, 255, 255, 0.5);
