@@ -139,9 +139,7 @@ function ResettableTextField({
                                 classes={{
                                     root: props.select ? selectAdornment : null,
                                 }}
-                            >
-                                <IconButton disabled />
-                            </InputAdornment>
+                            />
                         ))
                     ),
                 ...InputPropsWithoutEndAdornment,
