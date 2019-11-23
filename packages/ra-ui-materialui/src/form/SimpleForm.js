@@ -69,7 +69,6 @@ SimpleForm.propTypes = {
     className: PropTypes.string,
     defaultValue: PropTypes.oneOfType([PropTypes.object, PropTypes.func]), // @deprecated
     initialValues: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
-    invalid: PropTypes.bool,
     record: PropTypes.object,
     redirect: PropTypes.oneOfType([
         PropTypes.string,
