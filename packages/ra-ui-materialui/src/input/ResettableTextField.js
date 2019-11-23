@@ -102,7 +102,9 @@ function ResettableTextField({
                         ? { adornedEnd: inputAdornedEnd }
                         : {},
                 endAdornment:
-                    resettable && value ? (
+                    !clearAlwaysVisible && !showClear ? (
+                        endAdornment
+                    ) : resettable && value ? (
                         <InputAdornment
                             position="end"
                             classes={{
@@ -132,15 +134,7 @@ function ResettableTextField({
                             </IconButton>
                         </InputAdornment>
                     ) : (
-                        endAdornment ||
-                        (resettable && (
-                            <InputAdornment
-                                position="end"
-                                classes={{
-                                    root: props.select ? selectAdornment : null,
-                                }}
-                            />
-                        ))
+                        endAdornment
                     ),
                 ...InputPropsWithoutEndAdornment,
             }}
