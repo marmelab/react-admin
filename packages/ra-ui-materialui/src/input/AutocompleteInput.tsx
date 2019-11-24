@@ -154,7 +154,6 @@ const AutocompleteInput: FunctionComponent<
         format,
         id: idOverride,
         input: inputOverride,
-        isRequired: isRequiredOverride,
         meta: metaOverride,
         onBlur,
         onChange,
@@ -353,7 +352,12 @@ const AutocompleteInput: FunctionComponent<
                                     {...labelProps}
                                     source={source}
                                     resource={resource}
-                                    isRequired={isRequired}
+                                    isRequired={
+                                        typeof isRequiredOverride !==
+                                        'undefined'
+                                            ? isRequiredOverride
+                                            : isRequired
+                                    }
                                 />
                             }
                             InputLabelProps={getLabelProps({
