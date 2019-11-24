@@ -78,6 +78,35 @@ const TabbedForm = ({ initialValues, defaultValue, saving, ...props }) => {
     );
 };
 
+TabbedForm.propTypes = {
+    basePath: PropTypes.string,
+    children: PropTypes.node,
+    className: PropTypes.string,
+    classes: PropTypes.object,
+    defaultValue: PropTypes.oneOfType([PropTypes.object, PropTypes.func]), // @deprecated
+    initialValues: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
+    location: PropTypes.object,
+    match: PropTypes.object,
+    record: PropTypes.object,
+    redirect: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.bool,
+        PropTypes.func,
+    ]),
+    resource: PropTypes.string,
+    save: PropTypes.func, // the handler defined in the parent, which triggers the REST submission
+    saving: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
+    submitOnEnter: PropTypes.bool,
+    tabs: PropTypes.element.isRequired,
+    tabsWithErrors: PropTypes.arrayOf(PropTypes.string),
+    toolbar: PropTypes.element,
+    translate: PropTypes.func,
+    undoable: PropTypes.bool,
+    validate: PropTypes.func,
+    value: PropTypes.number,
+    version: PropTypes.number,
+};
+
 const defaultSubscription = {
     submitting: true,
     pristine: true,

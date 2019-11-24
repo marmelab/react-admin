@@ -63,6 +63,28 @@ const SimpleForm = ({ initialValues, defaultValue, saving, ...props }) => {
     );
 };
 
+SimpleForm.propTypes = {
+    basePath: PropTypes.string,
+    children: PropTypes.node,
+    className: PropTypes.string,
+    defaultValue: PropTypes.oneOfType([PropTypes.object, PropTypes.func]), // @deprecated
+    initialValues: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
+    record: PropTypes.object,
+    redirect: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.bool,
+        PropTypes.func,
+    ]),
+    resource: PropTypes.string,
+    save: PropTypes.func,
+    saving: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
+    submitOnEnter: PropTypes.bool,
+    toolbar: PropTypes.element,
+    undoable: PropTypes.bool,
+    validate: PropTypes.func,
+    version: PropTypes.number,
+};
+
 const defaultSubscription = {
     submitting: true,
     pristine: true,
