@@ -93,6 +93,7 @@ interface Options {
 const AutocompleteArrayInput: FunctionComponent<
     InputProps<TextFieldProps & Options> & DownshiftProps<any>
 > = ({
+    allowDuplicates,
     allowEmpty,
     classes: classesOverride,
     choices = [],
@@ -178,6 +179,7 @@ const AutocompleteArrayInput: FunctionComponent<
     );
 
     const { getChoiceText, getChoiceValue, getSuggestions } = useSuggestions({
+        allowDuplicates,
         allowEmpty,
         choices,
         emptyText,
@@ -234,13 +236,14 @@ const AutocompleteArrayInput: FunctionComponent<
 
     const handleChange = useCallback(
         (item: any) => {
-            let newSelectedItems = selectedItems.includes(item)
-                ? [...selectedItems]
-                : [...selectedItems, item];
+            let newSelectedItems =
+                !allowDuplicates && selectedItems.includes(item)
+                    ? [...selectedItems]
+                    : [...selectedItems, item];
             setFilterValue('');
             input.onChange(newSelectedItems.map(getChoiceValue));
         },
-        [getChoiceValue, input, selectedItems, setFilterValue]
+        [allowDuplicates, getChoiceValue, input, selectedItems, setFilterValue]
     );
 
     const handleDelete = useCallback(

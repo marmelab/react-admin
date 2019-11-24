@@ -6,6 +6,7 @@ import { useTranslate } from '../i18n';
 /*
  * Returns helper functions for suggestions handling.
  *
+ * @param allowDuplicates A boolean indicating whether a suggestion can be added several times
  * @param allowEmpty A boolean indicating whether an empty suggestion should be added
  * @param choices An array of available choices
  * @param emptyText The text to use for the empty suggestion. Defaults to an empty string
@@ -24,6 +25,7 @@ import { useTranslate } from '../i18n';
  * - getSuggestions: A function taking a filter value (string) and returning the matching suggestions
  */
 const useSuggestions = ({
+    allowDuplicates,
     allowEmpty,
     choices,
     emptyText = '',
@@ -45,6 +47,7 @@ const useSuggestions = ({
 
     const getSuggestions = useCallback(
         getSuggestionsFactory({
+            allowDuplicates,
             allowEmpty,
             choices,
             emptyText: translate(emptyText, { _: emptyText }),
@@ -59,6 +62,7 @@ const useSuggestions = ({
             suggestionLimit,
         }),
         [
+            allowDuplicates,
             allowEmpty,
             choices,
             emptyText,
@@ -89,6 +93,7 @@ const escapeRegExp = value =>
 
 interface Options extends UseChoicesOptions {
     choices: any[];
+    allowDuplicates?: boolean;
     allowEmpty?: boolean;
     emptyText?: string;
     emptyValue?: any;
@@ -119,7 +124,7 @@ const defaultMatchSuggestion = getChoiceText => (filter, suggestion) => {
  * Get the suggestions to display after applying a fuzzy search on the available choices
  *
  * @example
- * 
+ *
  * getSuggestions({
  *   choices: [{ id: 1, name: 'admin' }, { id: 2, name: 'publisher' }],
  *   optionText: 'name',
@@ -129,17 +134,17 @@ const defaultMatchSuggestion = getChoiceText => (filter, suggestion) => {
  *
  * // Will return [{ id: 2, name: 'publisher' }]
  * getSuggestions({
-    *   choices: [{ id: 1, name: 'admin' }, { id: 2, name: 'publisher' }],
-    *   optionText: 'name',
-    *   optionValue: 'id',
-    *   getSuggestionText: choice => choice[optionText],
-    * })('pub')
-    *
-    * // Will return [{ id: 2, name: 'publisher' }]
-   
+ *   choices: [{ id: 1, name: 'admin' }, { id: 2, name: 'publisher' }],
+ *   optionText: 'name',
+ *   optionValue: 'id',
+ *   getSuggestionText: choice => choice[optionText],
+ * })('pub')
+ *
+ * // Will return [{ id: 2, name: 'publisher' }]
  */
 export const getSuggestionsFactory = ({
     choices = [],
+    allowDuplicates,
     allowEmpty,
     emptyText,
     emptyValue,
@@ -165,21 +170,25 @@ export const getSuggestionsFactory = ({
                 choice =>
                     getChoiceValue(choice) === getChoiceValue(selectedItem)
             );
-        } else {
+        } else if (!allowDuplicates) {
             // ignore the filter to show more choices
             suggestions = removeAlreadySelectedSuggestions(
                 choices,
                 selectedItem,
                 getChoiceValue
             );
+        } else {
+            suggestions = choices;
         }
     } else {
         suggestions = choices.filter(choice => matchSuggestion(filter, choice));
-        suggestions = removeAlreadySelectedSuggestions(
-            suggestions,
-            selectedItem,
-            getChoiceValue
-        );
+        if (!allowDuplicates) {
+            suggestions = removeAlreadySelectedSuggestions(
+                suggestions,
+                selectedItem,
+                getChoiceValue
+            );
+        }
     }
 
     suggestions = limitSuggestions(suggestions, suggestionLimit);

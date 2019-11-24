@@ -325,8 +325,10 @@ If you need to override the props of the suggestions container (a `Popper` eleme
 
 | Prop | Required | Type | Default | Description |
 | ---|---|---|---|--- |
+| `allowEmpty` | Optional | `boolean` | `false` | If `true`, the first option is an empty one |
+| `allowDuplicates` | Optional | `boolean` | `false` | If `true`, the options can be selected several times |
 | `choices` | Required | `Object[]` | - | List of items to autosuggest |
-| `matchSuggestion` | Optional | `Function` | - | Required if `optionText` is a React element. Function returning a boolean indicating whether a choice matches the filter. `(filter, choice) => boolean`
+| `matchSuggestion` | Optional | `Function` | - | Required if `optionText` is a React element. Function returning a boolean indicating whether a choice matches the filter. `(filter, choice) => boolean` |
 | `optionValue` | Optional | `string` | `id` | Fieldname of record containing the value to use as input value  |
 | `optionText` | Optional | <code>string &#124; Function</code> | `name` | Fieldname of record to display in the suggestion item or function which accepts the current record as argument (`(record)=> {string}`) |
 | `setFilter` | Optional | `Function` | `null` | A callback to inform the `searchText` has changed and new `choices` can be retrieved based on this `searchText`. Signature `searchText => void`. This function is automatically setup when using `ReferenceInput`.  |
