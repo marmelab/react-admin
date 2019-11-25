@@ -1,7 +1,8 @@
 import { useMemo, useState, useEffect, useRef } from 'react';
+import { useSelector } from 'react-redux';
 import isEqual from 'lodash/isEqual';
 import difference from 'lodash/difference';
-import { Pagination, Record, Sort } from '../../types';
+import { Pagination, Record, Sort, ReduxState } from '../../types';
 import { useGetMany } from '../../dataProvider';
 import { FieldInputProps } from 'react-final-form';
 import useGetMatching from '../../dataProvider/useGetMatching';
@@ -49,12 +50,18 @@ const useReferenceArrayInputController = ({
     // only the missing references when the input value changes
     const inputValue = useRef(input.value);
     const [idsToFetch, setIdsToFetch] = useState(input.value);
+    const [idsToGetFromStore, setIdsToGetFromStore] = useState([]);
+    const referenceRecordsFromStore = useSelector((state: ReduxState) =>
+        idsToGetFromStore.map(id => state.admin.resources[reference].data[id])
+    );
 
+    // optimization: we fetch selected items only once. When the user selects more items,
+    // as we already have the past selected items in the store, we don't fetch them.
     useEffect(() => {
         const newIdsToFetch = difference(input.value, inputValue.current);
-
         if (newIdsToFetch.length > 0) {
             setIdsToFetch(newIdsToFetch);
+            setIdsToGetFromStore(inputValue.current);
         }
         inputValue.current = input.value;
     }, [input.value, setIdsToFetch]);
@@ -90,10 +97,19 @@ const useReferenceArrayInputController = ({
         [defaultFilter, filter, filterToQuery]
     );
 
-    const { data: referenceRecords, loaded } = useGetMany(
+    const { data: referenceRecordsFetched, loaded } = useGetMany(
         reference,
         idsToFetch || []
     );
+
+    const referenceRecords = referenceRecordsFetched.concat(
+        referenceRecordsFromStore
+    );
+
+    // filter out not found references - happens when the dataProvider doesn't guarantee referential integrity
+    const finalReferenceRecords = referenceRecords
+        ? referenceRecords.filter(Boolean)
+        : [];
 
     const { data: matchingReferences } = useGetMatching(
         reference,
@@ -104,11 +120,6 @@ const useReferenceArrayInputController = ({
         resource,
         options
     );
-
-    // filter out not found references - happens when the dataProvider doesn't guarantee referential integrity
-    const finalReferenceRecords = referenceRecords
-        ? referenceRecords.filter(Boolean)
-        : [];
 
     // We merge the currently selected records with the matching ones, otherwise
     // the component displaying the currently selected records may fail
