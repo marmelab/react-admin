@@ -471,7 +471,7 @@ const MyAppBar = props => <AppBar {...props} userMenu={MyUserMenu} />;
 
 ### Sidebar Customization
 
-You can specify the `Sidebar` width by setting the `width` and `closedWidth` property on your custom material-ui them:
+You can specify the `Sidebar` width by setting the `width` and `closedWidth` property on your custom material-ui theme:
 
 ```jsx
 import { createMuiTheme } from '@material-ui/core/styles';
@@ -488,6 +488,28 @@ const App = () => (
         // ...
     </Admin>
 );
+```
+
+For more advanced sidebar theming, pass your own `Sidebar` component to a custom `Layout`:
+
+```jsx
+import { Sidebar, Layout } from 'react-admin';
+import { makeStyles } from '@material-ui/core/styles';
+
+const useSidebarStyles = makeStyles({
+    drawerPaper: {
+        backgroundColor: 'red',
+    },
+});
+
+const MySidebar = props => {
+    const classes = useSidebarStyles();
+    return (
+        <Sidebar classes={classes} {...props} />
+    );
+};
+
+const MyLayout = props => <Layout {...props} sidebar={MySidebar} />
 ```
 
 ### Layout From Scratch
@@ -717,7 +739,7 @@ const Menu = ({ onMenuClick, logout }) => {
             <MenuItemLink
                 to="/custom-route"
                 primaryText="Miscellaneous"
-                leftIcon={LabelIcon}
+                leftIcon={<LabelIcon />}
                 onClick={onMenuClick}
                 sidebarIsOpen={open}
             />
