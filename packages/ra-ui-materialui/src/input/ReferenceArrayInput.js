@@ -154,7 +154,7 @@ ReferenceArrayInput.propTypes = {
 ReferenceArrayInput.defaultProps = {
     allowEmpty: false,
     filter: {},
-    filterToQuery: searchText => ({ q: searchText }),
+    filterToQuery: searchText => (searchText ? { q: searchText } : {}),
     perPage: 25,
     sort: { field: 'id', order: 'DESC' },
 };
