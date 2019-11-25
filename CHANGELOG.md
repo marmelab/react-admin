@@ -1,5 +1,15 @@
 # Changelog
 
+## v3.0.1
+
+* Fix `<ReferenceInput>` should not set filter in getList when q is empty ([4039](https://github.com/marmelab/react-admin/pull/4039)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<Sidebar>` classes can't be overridden ([4038](https://github.com/marmelab/react-admin/pull/4038)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<AutocompleteInput>` required label ([4034](https://github.com/marmelab/react-admin/pull/4034)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<TabbedForm>` and `<TabbedShowLayout>` do not support parenthesis in id ([4028](https://github.com/marmelab/react-admin/pull/4028)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix wrong syntax in custom menu example ([4023](https://github.com/marmelab/react-admin/pull/4023)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix missing mention in Upgrade doc about `<Login>` using children instead of a loginForm prop ([4022](https://github.com/marmelab/react-admin/pull/4022)) ([christiaanwesterbeek](https://github.com/christiaanwesterbeek))
+* Fix internal cross-package dependencies to use table v3 ([4013](https://github.com/marmelab/react-admin/pull/4013)) ([WiXSL](https://github.com/WiXSL))
+
 ## v3.0.0
 
 * Fix IE11 support on demo ([4007](https://github.com/marmelab/react-admin/pull/4007)) ([m4theushw](https://github.com/m4theushw))
