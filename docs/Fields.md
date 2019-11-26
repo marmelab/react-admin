@@ -149,12 +149,12 @@ import { BooleanField } from 'react-admin';
 
 ![BooleanField](./img/boolean-field.png)
 
-The `BooleanField` also includes an hidden text for accessibility (or to query in end to end tests). By default, it includes the translated label and the translated value, for example `Published: false`.
+The `BooleanField` also includes a tooltip text for accessibility (or to query in end to end tests). By default, it is the translated value ('true' or 'false' in English).
 
-If you need to override it, you can use the `valueLabelTrue` and `valueLabelFalse` props which both accept a string. Those strings may be translation keys:
+If you need to override it, you can use the `valueLabelTrue` and `valueLabelFalse` props, which both accept a string. These strings may be translation keys:
 
 ```jsx
-// Simple texts
+// English labels
 <BooleanField source="published" valueLabelTrue="Has been published" valueLabelFalse="Has not been published yet" />
 
 // Translation keys
