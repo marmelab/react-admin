@@ -8,6 +8,7 @@ describe('<NullableBooleanInput />', () => {
     const defaultProps = {
         source: 'isPublished',
         resource: 'posts',
+        value: '',
     };
 
     it('should give three different choices for true, false or unknown', () => {

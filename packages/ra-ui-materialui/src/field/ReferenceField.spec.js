@@ -114,6 +114,7 @@ describe('<ReferenceField />', () => {
         });
 
         it('should not display a loader if the dataProvider query fails', async () => {
+            jest.spyOn(console, 'error').mockImplementationOnce(() => {});
             const dataProvider = {
                 getMany: jest.fn(() => Promise.reject(new Error())),
             };
@@ -194,6 +195,7 @@ describe('<ReferenceField />', () => {
     });
 
     it('should display an error icon if the dataProvider call fails', async () => {
+        jest.spyOn(console, 'error').mockImplementationOnce(() => {});
         const dataProvider = {
             getMany: jest.fn(() => Promise.reject('boo')),
         };

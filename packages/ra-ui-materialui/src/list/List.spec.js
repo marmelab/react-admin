@@ -29,7 +29,6 @@ describe('<List />', () => {
         selectedIds: [],
         setPage: () => null,
         total: 100,
-        translate: x => x,
         version: 1,
     };
 

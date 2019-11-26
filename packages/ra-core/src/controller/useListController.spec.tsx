@@ -47,7 +47,7 @@ describe('useListController', () => {
                 inputProps={{
                     'aria-label': 'search',
                 }}
-                value={filterValues.q}
+                value={filterValues.q || ''}
                 onChange={event => {
                     setFilters({ q: event.target.value });
                 }}

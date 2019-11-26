@@ -107,7 +107,7 @@ describe('<ImageField />', () => {
             <ImageField
                 {...defaultProps}
                 source="foo"
-                record={{ foo: true }}
+                record={{ foo: 'http://example.com' }}
                 className="foo"
             />
         );

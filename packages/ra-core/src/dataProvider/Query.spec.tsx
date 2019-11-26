@@ -132,6 +132,7 @@ describe('Query', () => {
     });
 
     it('should update the error state after an error response', async () => {
+        jest.spyOn(console, 'error').mockImplementationOnce(() => {});
         const dataProvider = {
             getList: jest.fn(() =>
                 Promise.reject({ message: 'provider error' })
@@ -383,6 +384,7 @@ describe('Query', () => {
     });
 
     it('supports declarative onFailure side effects', async () => {
+        jest.spyOn(console, 'error').mockImplementationOnce(() => {});
         let dispatchSpy;
         let historyForAssertions: History;
 
@@ -450,6 +452,7 @@ describe('Query', () => {
     });
 
     it('supports onFailure function for side effects', async () => {
+        jest.spyOn(console, 'error').mockImplementationOnce(() => {});
         let dispatchSpy;
         const dataProvider = {
             getList: jest.fn(() =>
