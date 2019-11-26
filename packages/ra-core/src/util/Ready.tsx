@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 
 const styles = {
     root: {
+        position: 'absolute',
         width: '100vw',
-        height: '100vh',
+        height: '100%',
         display: 'flex',
         flexDirection: 'column' as 'column',
         fontFamily: '"Roboto", sans-serif',
@@ -31,7 +32,6 @@ const styles = {
     },
     link: {
         textAlign: 'center' as 'center',
-        width: 150,
         display: 'block',
         textDecoration: 'none',
         color: 'black',
