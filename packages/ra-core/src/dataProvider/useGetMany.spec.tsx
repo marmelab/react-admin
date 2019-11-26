@@ -265,6 +265,7 @@ describe('useGetMany', () => {
     });
 
     it('should set the error state when the dataProvider fails', async () => {
+        jest.spyOn(console, 'error').mockImplementationOnce(() => {});
         const hookValue = jest.fn();
         const dataProvider = {
             getMany: jest.fn(() => Promise.reject(new Error('failed'))),
@@ -364,6 +365,7 @@ describe('useGetMany', () => {
     });
 
     it('should execute failure side effects on failure', async () => {
+        jest.spyOn(console, 'error').mockImplementationOnce(() => {});
         const onFailure = jest.fn();
         const dataProvider = {
             getMany: jest.fn(() => Promise.reject(new Error('failed'))),
@@ -382,7 +384,8 @@ describe('useGetMany', () => {
         expect(onFailure.mock.calls.pop()[0]).toEqual(new Error('failed'));
     });
 
-    it('should execute success side effects once for each hook call', async () => {
+    it('should execute failure side effects once for each hook call', async () => {
+        jest.spyOn(console, 'error').mockImplementationOnce(() => {});
         const onFailure = jest.fn();
         const dataProvider = {
             getMany: jest.fn(() => Promise.reject(new Error('failed'))),

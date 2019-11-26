@@ -224,7 +224,14 @@ describe('<ReferenceManyFieldController />', () => {
             </ReferenceManyFieldController>
         );
 
-        const { rerender, dispatch } = renderWithRedux(<ControllerWrapper />);
+        const { rerender, dispatch } = renderWithRedux(<ControllerWrapper />, {
+            admin: {
+                resources: {
+                    bar: {},
+                    foo: {},
+                },
+            },
+        });
 
         expect(dispatch).toBeCalledTimes(3); // CRUD_GET_MANY_REFERENCE, CRUD_GET_MANY_REFERENCE_LOADING, FETCH_START
         rerender(<ControllerWrapper sort={{ field: 'id', order: 'ASC' }} />);

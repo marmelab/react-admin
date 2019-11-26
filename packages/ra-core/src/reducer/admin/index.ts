@@ -11,13 +11,22 @@ import references, {
 import ui from './ui';
 import customQueries from './customQueries';
 
+const defaultReducer = () => null;
+
 export default combineReducers({
-    resources,
-    customQueries,
-    loading,
-    notifications,
-    references,
-    ui,
+    /**
+     * ts-jest does some aggressive module mocking when unit testing reducers individually.
+     * To avoid 'No reducer provided for key "..."' warnings,
+     * we pass default reducers. Sorry for legibility.
+     *
+     * @see https://stackoverflow.com/questions/43375079/redux-warning-only-appearing-in-tests
+     */
+    resources: resources || defaultReducer,
+    customQueries: customQueries || defaultReducer,
+    loading: loading || defaultReducer,
+    notifications: notifications || defaultReducer,
+    references: references || defaultReducer,
+    ui: ui || defaultReducer,
 });
 
 export const getPossibleReferenceValues = (state, props) =>

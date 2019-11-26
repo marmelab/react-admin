@@ -139,6 +139,7 @@ describe('useMutation', () => {
     });
 
     it('should update the error state after an error response', async () => {
+        jest.spyOn(console, 'error').mockImplementationOnce(() => {});
         const dataProvider = {
             mytype: jest.fn(() =>
                 Promise.reject({ message: 'provider error' })

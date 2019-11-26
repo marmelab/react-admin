@@ -1,6 +1,6 @@
 import React from 'react';
 import expect from 'expect';
-import { act, cleanup } from '@testing-library/react';
+import { act, cleanup, wait } from '@testing-library/react';
 
 import EditController from './EditController';
 import renderWithRedux from '../util/renderWithRedux';
@@ -35,7 +35,7 @@ describe('useEditController', () => {
         expect(crudGetOneAction.meta.resource).toEqual('posts');
     });
 
-    it('should grab the record from the store based on the id', () => {
+    it('should grab the record from the store based on the id', async () => {
         const { getByText } = renderWithRedux(
             <EditController {...defaultProps}>
                 {({ record }) => <div>{record && record.title}</div>}
@@ -48,6 +48,7 @@ describe('useEditController', () => {
                 },
             }
         );
+        await wait();
         expect(getByText('hello')).toBeDefined();
     });
 
