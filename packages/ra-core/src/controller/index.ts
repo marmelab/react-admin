@@ -8,6 +8,7 @@ import {
 } from './useListController';
 import useRecordSelection from './useRecordSelection';
 import useVersion from './useVersion';
+import useFilterState from './useFilterState';
 import useSortState from './useSortState';
 import usePaginationState from './usePaginationState';
 import useListController from './useListController';
@@ -30,6 +31,7 @@ export {
     useShowController,
     useRecordSelection,
     useVersion,
+    useFilterState,
     useSortState,
     usePaginationState,
     useReference,
