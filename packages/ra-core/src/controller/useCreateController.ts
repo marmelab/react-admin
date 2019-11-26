@@ -147,12 +147,24 @@ const useCreateController = (props: CreateProps): CreateControllerProps => {
 
 export default useCreateController;
 
-export const getRecord = ({ state, search }, record: any = {}) =>
-    state && state.record
-        ? state.record
-        : search
-        ? JSON.parse(parse(search).source)
-        : record;
+export const getRecord = ({ state, search }, record: any = {}) => {
+    if (state && state.record) {
+        return state.record;
+    }
+    if (search) {
+        try {
+            const searchParams = parse(search);
+            if (searchParams.source) {
+                return JSON.parse(searchParams.source);
+            }
+        } catch (e) {
+            console.error(
+                `Failed to parse location search parameter '${search}'. To pre-fill some fields in the Create form, pass a stringified source parameter (e.g. '?source={"title":"foo"}')`
+            );
+        }
+    }
+    return record;
+};
 
 const getDefaultRedirectRoute = (hasShow, hasEdit) => {
     if (hasEdit) {
