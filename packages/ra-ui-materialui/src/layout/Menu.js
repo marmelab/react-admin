@@ -10,13 +10,16 @@ import { getResources, useTranslate } from 'ra-core';
 import DashboardMenuItem from './DashboardMenuItem';
 import MenuItemLink from './MenuItemLink';
 
-const useStyles = makeStyles({
-    main: {
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'flex-start',
+const useStyles = makeStyles(
+    {
+        main: {
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'flex-start',
+        },
     },
-});
+    { name: 'RaMenu' }
+);
 
 const translatedResourceName = (resource, translate) =>
     translate(`resources.${resource.name}.name`, {

@@ -11,12 +11,15 @@ import Checkbox from '@material-ui/core/Checkbox';
 import classnames from 'classnames';
 import { makeStyles } from '@material-ui/core/styles';
 
-const useStyles = makeStyles(theme => ({
-    root: {
-        backgroundColor: theme.palette.grey[300],
-        display: 'flex',
-    },
-}));
+const useStyles = makeStyles(
+    theme => ({
+        root: {
+            backgroundColor: theme.palette.grey[300],
+            display: 'flex',
+        },
+    }),
+    { name: 'RaDatagridLoading' }
+);
 
 const Placeholder = ({ classes: classesOverride }) => {
     const classes = useStyles({ classes: classesOverride });

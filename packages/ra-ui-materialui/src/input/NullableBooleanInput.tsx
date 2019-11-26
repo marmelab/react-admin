@@ -9,9 +9,12 @@ import { useInput, useTranslate, FieldTitle, InputProps } from 'ra-core';
 import sanitizeRestProps from './sanitizeRestProps';
 import InputHelperText from './InputHelperText';
 
-const useStyles = makeStyles(theme => ({
-    input: { width: theme.spacing(16) },
-}));
+const useStyles = makeStyles(
+    theme => ({
+        input: { width: theme.spacing(16) },
+    }),
+    { name: 'RaNullableBooleanInput' }
+);
 
 const getBooleanFromString = (value: string): boolean | null => {
     if (value === 'true') return true;

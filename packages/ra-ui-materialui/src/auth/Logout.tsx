@@ -13,12 +13,15 @@ interface Props {
     redirectTo?: string;
 }
 
-const useStyles = makeStyles((theme: Theme) => ({
-    menuItem: {
-        color: theme.palette.text.secondary,
-    },
-    icon: { minWidth: theme.spacing(5) },
-}));
+const useStyles = makeStyles(
+    (theme: Theme) => ({
+        menuItem: {
+            color: theme.palette.text.secondary,
+        },
+        icon: { minWidth: theme.spacing(5) },
+    }),
+    { name: 'RaLogout' }
+);
 
 /**
  * Logout button component, to be passed to the Admin component

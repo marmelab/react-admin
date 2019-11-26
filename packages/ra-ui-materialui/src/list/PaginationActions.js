@@ -6,14 +6,17 @@ import ChevronLeft from '@material-ui/icons/ChevronLeft';
 import ChevronRight from '@material-ui/icons/ChevronRight';
 import { useTranslate } from 'ra-core';
 
-const useStyles = makeStyles(theme => ({
-    actions: {
-        flexShrink: 0,
-        color: theme.palette.text.secondary,
-        marginLeft: 20,
-    },
-    hellip: { padding: '1.2em' },
-}));
+const useStyles = makeStyles(
+    theme => ({
+        actions: {
+            flexShrink: 0,
+            color: theme.palette.text.secondary,
+            marginLeft: 20,
+        },
+        hellip: { padding: '1.2em' },
+    }),
+    { name: 'RaPaginationActions' }
+);
 
 function PaginationActions({
     classes: classesOverride,

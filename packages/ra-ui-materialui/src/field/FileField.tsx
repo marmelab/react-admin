@@ -7,9 +7,12 @@ import classnames from 'classnames';
 import sanitizeRestProps from './sanitizeRestProps';
 import { FieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 
-const useStyles = makeStyles({
-    root: { display: 'inline-block' },
-});
+const useStyles = makeStyles(
+    {
+        root: { display: 'inline-block' },
+    },
+    { name: 'RaFileField' }
+);
 
 interface Props extends FieldProps {
     src?: string;

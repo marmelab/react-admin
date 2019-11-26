@@ -10,27 +10,30 @@ import {
 import classnames from 'classnames';
 import { useTranslate } from 'ra-core';
 
-const useStyles = makeStyles({
-    button: {
-        display: 'inline-flex',
-        alignItems: 'center',
+const useStyles = makeStyles(
+    {
+        button: {
+            display: 'inline-flex',
+            alignItems: 'center',
+        },
+        label: {
+            paddingLeft: '0.5em',
+        },
+        labelRightIcon: {
+            paddingRight: '0.5em',
+        },
+        smallIcon: {
+            fontSize: 20,
+        },
+        mediumIcon: {
+            fontSize: 22,
+        },
+        largeIcon: {
+            fontSize: 24,
+        },
     },
-    label: {
-        paddingLeft: '0.5em',
-    },
-    labelRightIcon: {
-        paddingRight: '0.5em',
-    },
-    smallIcon: {
-        fontSize: 20,
-    },
-    mediumIcon: {
-        fontSize: 22,
-    },
-    largeIcon: {
-        fontSize: 24,
-    },
-});
+    { name: 'RaButton' }
+);
 
 const Button = ({
     alignIcon = 'left',

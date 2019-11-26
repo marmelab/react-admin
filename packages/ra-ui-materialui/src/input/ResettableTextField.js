@@ -8,30 +8,29 @@ import { makeStyles } from '@material-ui/core/styles';
 import ClearIcon from '@material-ui/icons/Clear';
 import { useTranslate } from 'ra-core';
 
-const useStyles = makeStyles({
-    clearIcon: {
-        height: 16,
-        width: 0,
+const useStyles = makeStyles(
+    {
+        clearIcon: {
+            height: 16,
+            width: 0,
+        },
+        visibleClearIcon: {
+            width: 16,
+        },
+        clearButton: {
+            height: 24,
+            padding: 0,
+            width: 0,
+        },
+        visibleClearButton: {
+            width: 24,
+        },
+        selectAdornment: {
+            marginRight: 12,
+        },
     },
-    visibleClearIcon: {
-        width: 16,
-    },
-    clearButton: {
-        height: 24,
-        padding: 0,
-        width: 0,
-    },
-    visibleClearButton: {
-        width: 24,
-    },
-    selectAdornment: {
-        position: 'absolute',
-        right: 24,
-    },
-    inputAdornedEnd: {
-        paddingRight: 0,
-    },
-});
+    { name: 'RaResettableTextField' }
+);
 
 const handleMouseDownClearButton = event => {
     event.preventDefault();

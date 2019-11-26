@@ -68,20 +68,23 @@ Create.propTypes = {
     successMessage: PropTypes.string,
 };
 
-const useStyles = makeStyles(theme => ({
-    root: {},
-    main: {
-        display: 'flex',
-    },
-    noActions: {
-        [theme.breakpoints.up('sm')]: {
-            marginTop: '1em',
+const useStyles = makeStyles(
+    theme => ({
+        root: {},
+        main: {
+            display: 'flex',
         },
-    },
-    card: {
-        flex: '1 1 auto',
-    },
-}));
+        noActions: {
+            [theme.breakpoints.up('sm')]: {
+                marginTop: '1em',
+            },
+        },
+        card: {
+            flex: '1 1 auto',
+        },
+    }),
+    { name: 'RaCreate' }
+);
 
 const sanitizeRestProps = ({
     actions,

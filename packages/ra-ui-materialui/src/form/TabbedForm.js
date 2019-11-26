@@ -18,14 +18,17 @@ import Toolbar from './Toolbar';
 import TabbedFormTabs, { getTabFullPath } from './TabbedFormTabs';
 import { useRouteMatch, useLocation } from 'react-router-dom';
 
-const useStyles = makeStyles(theme => ({
-    errorTabButton: { color: theme.palette.error.main },
-    content: {
-        paddingTop: theme.spacing(1),
-        paddingLeft: theme.spacing(2),
-        paddingRight: theme.spacing(2),
-    },
-}));
+const useStyles = makeStyles(
+    theme => ({
+        errorTabButton: { color: theme.palette.error.main },
+        content: {
+            paddingTop: theme.spacing(1),
+            paddingLeft: theme.spacing(2),
+            paddingRight: theme.spacing(2),
+        },
+    }),
+    { name: 'RaTabbedForm' }
+);
 
 const TabbedForm = ({ initialValues, defaultValue, saving, ...props }) => {
     let redirect = useRef(props.redirect);

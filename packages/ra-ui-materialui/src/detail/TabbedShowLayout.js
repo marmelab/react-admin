@@ -21,13 +21,16 @@ const sanitizeRestProps = ({
     ...rest
 }) => rest;
 
-const useStyles = makeStyles(theme => ({
-    content: {
-        paddingTop: theme.spacing(1),
-        paddingLeft: theme.spacing(2),
-        paddingRight: theme.spacing(2),
-    },
-}));
+const useStyles = makeStyles(
+    theme => ({
+        content: {
+            paddingTop: theme.spacing(1),
+            paddingLeft: theme.spacing(2),
+            paddingRight: theme.spacing(2),
+        },
+    }),
+    { name: 'RaTabbedShowLayout' }
+);
 
 /**
  * Tabbed Layout for a Show view, showing fields grouped in tabs.

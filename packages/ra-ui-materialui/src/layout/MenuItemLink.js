@@ -11,15 +11,18 @@ const NavLinkRef = React.forwardRef((props, ref) => (
     <NavLink innerRef={ref} {...props} />
 ));
 
-const useStyles = makeStyles(theme => ({
-    root: {
-        color: theme.palette.text.secondary,
-    },
-    active: {
-        color: theme.palette.text.primary,
-    },
-    icon: { minWidth: theme.spacing(5) },
-}));
+const useStyles = makeStyles(
+    theme => ({
+        root: {
+            color: theme.palette.text.secondary,
+        },
+        active: {
+            color: theme.palette.text.primary,
+        },
+        icon: { minWidth: theme.spacing(5) },
+    }),
+    { name: 'RaMenuItemLink' }
+);
 
 const MenuItemLink = forwardRef(
     (

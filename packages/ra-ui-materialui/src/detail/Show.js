@@ -67,18 +67,21 @@ Show.propTypes = {
     title: PropTypes.node,
 };
 
-export const useStyles = makeStyles({
-    root: {},
-    main: {
-        display: 'flex',
+export const useStyles = makeStyles(
+    {
+        root: {},
+        main: {
+            display: 'flex',
+        },
+        noActions: {
+            marginTop: '1em',
+        },
+        card: {
+            flex: '1 1 auto',
+        },
     },
-    noActions: {
-        marginTop: '1em',
-    },
-    card: {
-        flex: '1 1 auto',
-    },
-});
+    { name: 'RaShow' }
+);
 
 const sanitizeRestProps = ({
     actions,
