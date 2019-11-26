@@ -1038,6 +1038,51 @@ const PostEdit = props =>
     </Edit>;
 ```
 
+## Prefilling Some Fields Of A `<Create>` Page Needs Different URL Syntax
+
+We've described how to pre-fill some fields in the create form in an [Advanced Tutorial](https://marmelab.com/blog/2018/07/09/react-admin-tutorials-form-for-related-records.html). In v2, you had to pass all the fields to be pre-filled as search parameters. In v3, you have to pass a single `source` search parameter containing a stringified object:
+
+```jsx
+const AddNewCommentButton = ({ record }) => (
+  <Button
+    component={Link}
+    to={{
+      pathname: "/comments/create",
+-     search: `?post_id=${record.id}`,
++     search: `?source=${JSON.stringify({ post_id: record.id })}`,
+    }}
+    label="Add a comment"
+  >
+    <ChatBubbleIcon />
+  </Button>
+);
+```
+
+That's what the `<CloneButton>` does in react-admin v3:
+
+```jsx
+export const CloneButton = ({
+    basePath = '',
+    label = 'ra.action.clone',
+    record = {},
+    icon = <Queue />,
+    ...rest
+}) => (
+    <Button
+        component={Link}
+        to={{
+            pathname: `${basePath}/create`,
+            search: stringify({ source: JSON.stringify(omitId(record)) }),
+        }}
+        label={label}
+        onClick={stopPropagation}
+        {...sanitizeRestProps(rest)}
+    >
+        {icon}
+    </Button>
+);
+```
+
 ## The `<AutocompleteInput>` And `<AutocompleteArrayInput>` Components No Longer Support Certain Props
 
 We rewrote the `<AutocompleteInput>` and `<AutocompleteArrayInput>` components from scratch using [`downshift`](https://github.com/downshift-js/downshift), while the previous version was based on [react-autosuggest](https://react-autosuggest.js.org/). The new components are more robust and more future-proof, and their API didn't change.
