@@ -564,7 +564,14 @@ describe('<ReferenceArrayInputController />', () => {
                 input={{ value: [5] }}
             >
                 {children}
-            </ReferenceArrayInputController>
+            </ReferenceArrayInputController>,
+            {
+                admin: {
+                    resources: { tags: { data: {}, list: {} } },
+                    references: { possibleValues: {} },
+                    ui: { viewVersion: 1 },
+                },
+            }
         );
 
         await wait();

@@ -102,14 +102,12 @@ const useReferenceArrayInputController = ({
         idsToFetch || []
     );
 
-    const referenceRecords = referenceRecordsFetched.concat(
-        referenceRecordsFromStore
-    );
+    const referenceRecords = referenceRecordsFetched
+        ? referenceRecordsFetched.concat(referenceRecordsFromStore)
+        : referenceRecordsFromStore;
 
     // filter out not found references - happens when the dataProvider doesn't guarantee referential integrity
-    const finalReferenceRecords = referenceRecords
-        ? referenceRecords.filter(Boolean)
-        : [];
+    const finalReferenceRecords = referenceRecords.filter(Boolean);
 
     const { data: matchingReferences } = useGetMatching(
         reference,
