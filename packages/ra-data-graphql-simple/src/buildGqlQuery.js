@@ -71,9 +71,10 @@ export const buildFields = (introspectionResults, path = []) => fields =>
                         ...buildFragments(introspectionResults)(
                             linkedType.possibleTypes || []
                         ),
-                        ...buildFields(introspectionResults, path)(
-                            linkedType.fields
-                        ),
+                        ...buildFields(introspectionResults, [
+                            ...path,
+                            linkedType.name,
+                        ])(linkedType.fields),
                     ])
                 ),
             ];
