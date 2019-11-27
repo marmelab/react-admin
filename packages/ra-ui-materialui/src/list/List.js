@@ -18,6 +18,7 @@ import DefaultPagination from './Pagination';
 import BulkDeleteButton from '../button/BulkDeleteButton';
 import BulkActionsToolbar from './BulkActionsToolbar';
 import DefaultActions from './ListActions';
+import EmptyState from './EmptyState';
 
 /**
  * List page component
@@ -115,12 +116,64 @@ export const ListView = props => {
         component: Content,
         exporter = defaultExporter,
         title,
+        emptyState,
         ...rest
     } = props;
     useCheckMinimumRequiredProps('List', ['children'], props);
     const classes = useStyles({ classes: classesOverride });
-    const { defaultTitle, version } = rest;
+    const {
+        defaultTitle,
+        version,
+        total,
+        loaded,
+        loading,
+        hasCreate,
+        filterValues,
+    } = rest;
     const controllerProps = getListControllerProps(rest);
+
+    const renderChildren = () => (
+        <>
+            {(filters || actions) && (
+                <ListToolbar
+                    filters={filters}
+                    {...controllerProps}
+                    actions={actions}
+                    exporter={exporter} // deprecated, use ExporterContext instead
+                    permanentFilter={filter}
+                />
+            )}
+            <div className={classes.main}>
+                <Content
+                    className={classnames(classes.content, {
+                        [classes.bulkActionsDisplayed]:
+                            controllerProps.selectedIds.length > 0,
+                    })}
+                    key={version}
+                >
+                    {bulkActionButtons !== false && bulkActionButtons && (
+                        <BulkActionsToolbar {...controllerProps}>
+                            {bulkActionButtons}
+                        </BulkActionsToolbar>
+                    )}
+                    {children &&
+                        cloneElement(Children.only(children), {
+                            ...controllerProps,
+                            hasBulkActions: bulkActionButtons !== false,
+                        })}
+                    {pagination && cloneElement(pagination, controllerProps)}
+                </Content>
+                {aside && cloneElement(aside, controllerProps)}
+            </div>
+        </>
+    );
+
+    const shouldRenderEmptyState =
+        hasCreate &&
+        loaded &&
+        !loading &&
+        !total &&
+        !Object.keys(filterValues).length;
 
     return (
         <ExporterContext.Provider value={exporter}>
@@ -129,39 +182,9 @@ export const ListView = props => {
                 {...sanitizeRestProps(rest)}
             >
                 <Title title={title} defaultTitle={defaultTitle} />
-
-                {(filters || actions) && (
-                    <ListToolbar
-                        filters={filters}
-                        {...controllerProps}
-                        actions={actions}
-                        exporter={exporter} // deprecated, use ExporterContext instead
-                        permanentFilter={filter}
-                    />
-                )}
-                <div className={classes.main}>
-                    <Content
-                        className={classnames(classes.content, {
-                            [classes.bulkActionsDisplayed]:
-                                controllerProps.selectedIds.length > 0,
-                        })}
-                        key={version}
-                    >
-                        {bulkActionButtons !== false && bulkActionButtons && (
-                            <BulkActionsToolbar {...controllerProps}>
-                                {bulkActionButtons}
-                            </BulkActionsToolbar>
-                        )}
-                        {children &&
-                            cloneElement(Children.only(children), {
-                                ...controllerProps,
-                                hasBulkActions: bulkActionButtons !== false,
-                            })}
-                        {pagination &&
-                            cloneElement(pagination, controllerProps)}
-                    </Content>
-                    {aside && cloneElement(aside, controllerProps)}
-                </div>
+                {shouldRenderEmptyState
+                    ? cloneElement(emptyState, controllerProps)
+                    : renderChildren()}
             </div>
         </ExporterContext.Provider>
     );
@@ -218,6 +241,7 @@ ListView.defaultProps = {
     component: Card,
     bulkActionButtons: <DefaultBulkActionButtons />,
     pagination: <DefaultPagination />,
+    emptyState: <EmptyState />,
 };
 
 export const useStyles = makeStyles(
@@ -304,6 +328,7 @@ const sanitizeRestProps = ({
     toggleItem,
     total,
     version,
+    emptyState,
     ...rest
 }) => rest;
 
