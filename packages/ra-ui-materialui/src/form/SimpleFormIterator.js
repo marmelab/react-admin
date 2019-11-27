@@ -130,7 +130,7 @@ export class SimpleFormIterator extends Component {
                 {submitFailed && typeof error !== 'object' && error && (
                     <FormHelperText error>{error}</FormHelperText>
                 )}
-                <TransitionGroup>
+                <TransitionGroup component={null}>
                     {fields.map((member, index) => (
                         <CSSTransition
                             key={this.ids[index]}
