@@ -4,36 +4,13 @@ import get from 'lodash/get';
 import pure from 'recompose/pure';
 import FalseIcon from '@material-ui/icons/Clear';
 import TrueIcon from '@material-ui/icons/Done';
-import Typography, { TypographyProps } from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
+import { Tooltip, Typography } from '@material-ui/core';
+import { TypographyProps } from '@material-ui/core/Typography';
 import compose from 'recompose/compose';
 import { useTranslate } from 'ra-core';
 
 import { FieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 import sanitizeRestProps from './sanitizeRestProps';
-
-const useStyles = makeStyles(
-    {
-        label: {
-            // Move the text out of the flow of the container.
-            position: 'absolute',
-
-            // Reduce its height and width to just one pixel.
-            height: 1,
-            width: 1,
-
-            // Hide any overflowing elements or text.
-            overflow: 'hidden',
-
-            // Clip the box to zero pixels.
-            clip: 'rect(0, 0, 0, 0)',
-
-            // Text won't wrap to a second line.
-            whiteSpace: 'nowrap',
-        },
-    },
-    { name: 'RaBooleanField' }
-);
 
 interface Props extends FieldProps {
     valueLabelTrue?: string;
@@ -51,7 +28,6 @@ export const BooleanField: FunctionComponent<
     valueLabelFalse,
     ...rest
 }) => {
-    const classes = useStyles({ classes: classesOverride });
     const translate = useTranslate();
     const value = get(record, source);
     let ariaLabel = value ? valueLabelTrue : valueLabelFalse;
@@ -68,10 +44,9 @@ export const BooleanField: FunctionComponent<
                 className={className}
                 {...sanitizeRestProps(rest)}
             >
-                <span className={classes.label}>
-                    {translate(ariaLabel, { _: ariaLabel })}
-                </span>
-                <FalseIcon data-testid="false" />
+                <Tooltip title={translate(ariaLabel, { _: ariaLabel })}>
+                    <FalseIcon data-testid="false" />
+                </Tooltip>
             </Typography>
         );
     }
@@ -84,10 +59,9 @@ export const BooleanField: FunctionComponent<
                 className={className}
                 {...sanitizeRestProps(rest)}
             >
-                <span className={classes.label}>
-                    {translate(ariaLabel, { _: ariaLabel })}
-                </span>
-                <TrueIcon data-testid="true" />
+                <Tooltip title={translate(ariaLabel, { _: ariaLabel })}>
+                    <TrueIcon data-testid="true" />
+                </Tooltip>
             </Typography>
         );
     }
