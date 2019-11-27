@@ -148,6 +148,7 @@ const PostCreate = ({ permissions, ...props }) => {
                 <ArrayInput
                     source="backlinks"
                     defaultValue={backlinksDefaultValue}
+                    validate={[required()]}
                 >
                     <SimpleFormIterator>
                         <DateInput source="date" />
