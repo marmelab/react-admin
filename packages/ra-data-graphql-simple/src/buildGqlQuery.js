@@ -7,6 +7,25 @@ import getFinalType from './getFinalType';
 import isList from './isList';
 import isRequired from './isRequired';
 
+export const buildFragments = introspectionResults => possibleTypes =>
+    possibleTypes.reduce((acc, possibleType) => {
+        const type = getFinalType(possibleType);
+
+        const linkedType = introspectionResults.types.find(
+            t => t.name === type.name
+        );
+
+        return [
+            ...acc,
+            gqlTypes.inlineFragment(
+                gqlTypes.selectionSet(
+                    buildFields(introspectionResults)(linkedType.fields)
+                ),
+                gqlTypes.namedType(gqlTypes.name(type.name))
+            ),
+        ];
+    }, []);
+
 export const buildFields = (introspectionResults, path = []) => fields =>
     fields.reduce((acc, field) => {
         const type = getFinalType(field.type);
@@ -48,12 +67,15 @@ export const buildFields = (introspectionResults, path = []) => fields =>
                     null,
                     null,
                     null,
-                    gqlTypes.selectionSet(
-                        buildFields(introspectionResults, [
+                    gqlTypes.selectionSet([
+                        ...buildFragments(introspectionResults)(
+                            linkedType.possibleTypes || []
+                        ),
+                        ...buildFields(introspectionResults, [
                             ...path,
                             linkedType.name,
-                        ])(linkedType.fields)
-                    )
+                        ])(linkedType.fields),
+                    ])
                 ),
             ];
         }
