@@ -62,7 +62,7 @@ const NewCustomers = () => {
 
     if (!loaded) return null;
 
-    const nb = visitors.reduce(nb => ++nb, 0);
+    const nb = visitors ? visitors.reduce(nb => ++nb, 0) : 0;
     return (
         <div className={classes.main}>
             <CardIcon Icon={CustomerIcon} bgColor="#4caf50" />
@@ -79,23 +79,27 @@ const NewCustomers = () => {
                 </Typography>
                 <Divider />
                 <List>
-                    {visitors.map(record => (
-                        <ListItem
-                            button
-                            to={`/customers/${record.id}`}
-                            component={Link}
-                            key={record.id}
-                        >
-                            <ListItemAvatar>
-                                <Avatar src={`${record.avatar}?size=32x32`} />
-                            </ListItemAvatar>
-                            <ListItemText
-                                primary={`${record.first_name} ${
-                                    record.last_name
-                                }`}
-                            />
-                        </ListItem>
-                    ))}
+                    {visitors
+                        ? visitors.map(record => (
+                              <ListItem
+                                  button
+                                  to={`/customers/${record.id}`}
+                                  component={Link}
+                                  key={record.id}
+                              >
+                                  <ListItemAvatar>
+                                      <Avatar
+                                          src={`${record.avatar}?size=32x32`}
+                                      />
+                                  </ListItemAvatar>
+                                  <ListItemText
+                                      primary={`${record.first_name} ${
+                                          record.last_name
+                                      }`}
+                                  />
+                              </ListItem>
+                          ))
+                        : null}
                 </List>
             </Card>
         </div>
