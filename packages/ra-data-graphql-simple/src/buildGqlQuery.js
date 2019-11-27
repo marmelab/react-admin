@@ -41,8 +41,6 @@ export const buildFields = (introspectionResults, path = []) => fields =>
         );
 
         if (linkedType && !path.includes(linkedType.name)) {
-            path.push(linkedType.name);
-
             return [
                 ...acc,
                 gqlTypes.field(
@@ -51,9 +49,10 @@ export const buildFields = (introspectionResults, path = []) => fields =>
                     null,
                     null,
                     gqlTypes.selectionSet(
-                        buildFields(introspectionResults, path)(
-                            linkedType.fields
-                        )
+                        buildFields(introspectionResults, [
+                            ...path,
+                            linkedType.name,
+                        ])(linkedType.fields)
                     )
                 ),
             ];
