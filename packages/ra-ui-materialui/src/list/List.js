@@ -16,6 +16,7 @@ import DefaultPagination from './Pagination';
 import BulkDeleteButton from '../button/BulkDeleteButton';
 import BulkActionsToolbar from './BulkActionsToolbar';
 import DefaultActions from './ListActions';
+import EmptyState from './EmptyState';
 
 const DefaultBulkActionButtons = props => <BulkDeleteButton {...props} />;
 
@@ -100,6 +101,7 @@ const sanitizeRestProps = ({
     toggleItem,
     total,
     version,
+    emptyState,
     ...rest
 }) => rest;
 
@@ -117,20 +119,24 @@ export const ListView = props => {
         component: Content,
         exporter,
         title,
+        emptyState,
         ...rest
     } = props;
     useCheckMinimumRequiredProps('List', ['children'], props);
     const classes = useStyles({ classes: classesOverride });
-    const { defaultTitle, version } = rest;
+    const {
+        defaultTitle,
+        version,
+        total,
+        loaded,
+        loading,
+        hasCreate,
+        filterValues,
+    } = rest;
     const controllerProps = getListControllerProps(rest);
 
-    return (
-        <div
-            className={classnames('list-page', classes.root, className)}
-            {...sanitizeRestProps(rest)}
-        >
-            <Title title={title} defaultTitle={defaultTitle} />
-
+    const renderChildren = () => (
+        <>
             {(filters || actions) && (
                 <ListToolbar
                     filters={filters}
@@ -162,6 +168,25 @@ export const ListView = props => {
                 </Content>
                 {aside && cloneElement(aside, controllerProps)}
             </div>
+        </>
+    );
+
+    const shouldRenderEmptyState =
+        hasCreate &&
+        loaded &&
+        !loading &&
+        !total &&
+        !Object.keys(filterValues).length;
+
+    return (
+        <div
+            className={classnames('list-page', classes.root, className)}
+            {...sanitizeRestProps(rest)}
+        >
+            <Title title={title} defaultTitle={defaultTitle} />
+            {shouldRenderEmptyState
+                ? cloneElement(emptyState, controllerProps)
+                : renderChildren()}
         </div>
     );
 };
@@ -215,6 +240,7 @@ ListView.defaultProps = {
     component: Card,
     bulkActionButtons: <DefaultBulkActionButtons />,
     pagination: <DefaultPagination />,
+    emptyState: <EmptyState />,
 };
 
 /**
