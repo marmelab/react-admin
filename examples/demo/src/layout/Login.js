@@ -79,9 +79,8 @@ const Login = ({ location }) => {
 
     const handleSubmit = auth => {
         setLoading(true);
-        login(auth, location.state ? location.state.nextPathname : '/')
-            .then(() => setLoading(false))
-            .catch(error => {
+        login(auth, location.state ? location.state.nextPathname : '/').catch(
+            error => {
                 setLoading(false);
                 notify(
                     typeof error === 'string'
@@ -91,7 +90,8 @@ const Login = ({ location }) => {
                         : error.message,
                     'warning'
                 );
-            });
+            }
+        );
     };
 
     const validate = values => {
