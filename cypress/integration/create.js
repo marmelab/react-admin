@@ -38,6 +38,15 @@ describe('Create Page', () => {
         );
     });
 
+    it('should validate ArrayInput', () => {
+        const backlinksContainer = cy
+            .get(CreatePage.elements.input('backlinks[0].date'))
+            .parents('.ra-input-backlinks');
+        backlinksContainer.contains('Remove').click();
+        CreatePage.submit();
+        backlinksContainer.contains('Required');
+    });
+
     it('should have a working array input with references', () => {
         CreatePage.logout();
         LoginPage.login('admin', 'password');
