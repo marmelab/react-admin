@@ -8,7 +8,6 @@ import React, {
     isValidElement,
 } from 'react';
 import Downshift, { DownshiftProps } from 'downshift';
-import classNames from 'classnames';
 import get from 'lodash/get';
 import { makeStyles, TextField } from '@material-ui/core';
 import { TextFieldProps } from '@material-ui/core/TextField';
@@ -95,6 +94,7 @@ const AutocompleteInput: FunctionComponent<
     InputProps<TextFieldProps & Options> & DownshiftProps<any>
 > = ({
     allowEmpty,
+    className,
     classes: classesOverride,
     choices = [],
     emptyText,
@@ -117,7 +117,11 @@ const AutocompleteInput: FunctionComponent<
         labelProps,
         InputProps,
         ...options
-    } = {},
+    } = {
+        suggestionsContainerProps: undefined,
+        labelProps: undefined,
+        InputProps: undefined,
+    },
     optionText = 'name',
     optionValue = 'id',
     parse,
@@ -301,7 +305,6 @@ const AutocompleteInput: FunctionComponent<
                 getLabelProps,
                 getMenuProps,
                 isOpen,
-                inputValue,
                 highlightedIndex,
                 openMenu,
             }) => {
@@ -318,6 +321,7 @@ const AutocompleteInput: FunctionComponent<
                 } = getInputProps({
                     onBlur: handleBlur,
                     onFocus: handleFocus(openMenu),
+                    ...InputProps,
                 });
                 const suggestions = getSuggestions(filterValue);
 
@@ -328,13 +332,6 @@ const AutocompleteInput: FunctionComponent<
                             name={input.name}
                             InputProps={{
                                 inputRef: storeInputRef,
-                                classes: {
-                                    root: classNames(classes.inputRoot, {
-                                        [classes.inputRootFilled]:
-                                            variant === 'filled',
-                                    }),
-                                    input: classes.inputInput,
-                                },
                                 onBlur,
                                 onChange: event => {
                                     handleFilterChange(event);
@@ -375,6 +372,7 @@ const AutocompleteInput: FunctionComponent<
                             variant={variant}
                             margin={margin}
                             value={filterValue}
+                            className={className}
                             {...inputProps}
                             {...options}
                         />
@@ -415,51 +413,15 @@ const AutocompleteInput: FunctionComponent<
     );
 };
 
-const useStyles = makeStyles(theme => {
-    const chipBackgroundColor =
-        theme.palette.type === 'light'
-            ? 'rgba(0, 0, 0, 0.09)'
-            : 'rgba(255, 255, 255, 0.09)';
-
-    return {
-        root: {
-            flexGrow: 1,
-            height: 250,
-        },
-        container: {
-            flexGrow: 1,
-            position: 'relative',
-        },
-        paper: {
-            position: 'absolute',
-            zIndex: 1,
-            marginTop: theme.spacing(1),
-            left: 0,
-            right: 0,
-        },
-        chip: {
-            margin: theme.spacing(0.5, 0.5, 0.5, 0),
-        },
-        chipContainerFilled: {
-            margin: '27px 12px 10px 0',
-        },
-        inputRoot: {
-            flexWrap: 'wrap',
-        },
-        inputRootFilled: {
-            flexWrap: 'wrap',
-            '& $chip': {
-                backgroundColor: chipBackgroundColor,
-            },
-        },
-        inputInput: {
-            width: 'auto',
-            flexGrow: 1,
-        },
-        divider: {
-            height: theme.spacing(2),
-        },
-    };
-});
+const useStyles = makeStyles(theme => ({
+    root: {
+        flexGrow: 1,
+        height: 250,
+    },
+    container: {
+        flexGrow: 1,
+        position: 'relative',
+    },
+}));
 
 export default AutocompleteInput;
