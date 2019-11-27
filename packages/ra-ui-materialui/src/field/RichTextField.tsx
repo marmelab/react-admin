@@ -1,4 +1,4 @@
-import React, { SFC } from 'react';
+import React, { FunctionComponent } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import pure from 'recompose/pure';
@@ -13,18 +13,15 @@ interface Props extends FieldProps {
     stripTags: boolean;
 }
 
-const RichTextField: SFC<Props & InjectedFieldProps & TypographyProps> = ({
-    className,
-    source,
-    record = {},
-    stripTags,
-    ...rest
-}) => {
+const RichTextField: FunctionComponent<
+    Props & InjectedFieldProps & TypographyProps
+> = ({ className, source, record = {}, stripTags, ...rest }) => {
     const value = get(record, source);
     if (stripTags) {
         return (
             <Typography
                 className={className}
+                variant="body2"
                 component="span"
                 {...sanitizeRestProps(rest)}
             >
@@ -36,6 +33,7 @@ const RichTextField: SFC<Props & InjectedFieldProps & TypographyProps> = ({
     return (
         <Typography
             className={className}
+            variant="body2"
             component="span"
             {...sanitizeRestProps(rest)}
         >

@@ -14,7 +14,7 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import { withStyles, createStyles } from '@material-ui/core/styles';
 import CloseIcon from '@material-ui/icons/RemoveCircleOutline';
 import AddIcon from '@material-ui/icons/AddCircleOutline';
-import { translate } from 'ra-core';
+import { translate, ValidationError } from 'ra-core';
 import classNames from 'classnames';
 
 import FormInput from '../form/FormInput';
@@ -62,7 +62,7 @@ const styles = theme =>
             paddingTop: '0.5em',
         },
         leftIcon: {
-            marginRight: theme.spacing.unit,
+            marginRight: theme.spacing(1),
         },
     });
 
@@ -71,7 +71,7 @@ export class SimpleFormIterator extends Component {
         super(props);
         // we need a unique id for each field for a proper enter/exit animation
         // but redux-form doesn't provide one (cf https://github.com/erikras/redux-form/issues/2735)
-        // so we keep an internal map between the field position and an autoincrement id
+        // so we keep an internal map between the field position and an auto-increment id
         this.nextId = props.fields.length
             ? props.fields.length
             : props.defaultValue
@@ -93,7 +93,7 @@ export class SimpleFormIterator extends Component {
 
     // Returns a boolean to indicate whether to disable the remove button for certain fields.
     // If disableRemove is a function, then call the function with the current record to
-    // determing if the button should be disabled. Otherwise, use a boolean property that
+    // determining if the button should be disabled. Otherwise, use a boolean property that
     // enables or disables the button for all of the fields.
     disableRemoveField = (record, disableRemove) => {
         if (typeof disableRemove === 'boolean') {
@@ -121,14 +121,18 @@ export class SimpleFormIterator extends Component {
             translate,
             disableAdd,
             disableRemove,
+            variant,
+            margin,
         } = this.props;
         const records = get(record, source);
         return fields ? (
             <ul className={classes.root}>
-                {submitFailed && error && (
-                    <FormHelperText error>{error}</FormHelperText>
+                {submitFailed && typeof error !== 'object' && error && (
+                    <FormHelperText error>
+                        <ValidationError error={error} />
+                    </FormHelperText>
                 )}
-                <TransitionGroup>
+                <TransitionGroup component={null}>
                     {fields.map((member, index) => (
                         <CSSTransition
                             key={this.ids[index]}
@@ -160,8 +164,17 @@ export class SimpleFormIterator extends Component {
                                                         ? undefined
                                                         : index2,
                                                     label:
-                                                        input.props.label ||
-                                                        input.props.source,
+                                                        typeof input.props
+                                                            .label ===
+                                                        'undefined'
+                                                            ? input.props.source
+                                                                ? `resources.${resource}.fields.${
+                                                                      input
+                                                                          .props
+                                                                          .source
+                                                                  }`
+                                                                : undefined
+                                                            : input.props.label,
                                                 })}
                                                 record={
                                                     (records &&
@@ -169,6 +182,8 @@ export class SimpleFormIterator extends Component {
                                                     {}
                                                 }
                                                 resource={resource}
+                                                variant={variant}
+                                                margin={margin}
                                             />
                                         ) : null
                                     )}

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import Table from '@material-ui/core/Table';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
@@ -8,40 +8,44 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import IconButton from '@material-ui/core/IconButton';
 import Checkbox from '@material-ui/core/Checkbox';
 import classnames from 'classnames';
-import { withStyles, createStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 
-const RawPlaceholder = ({ classes }) => (
-    <div className={classes.root}>&nbsp;</div>
-);
+const useStyles = makeStyles(theme => ({
+    root: {
+        backgroundColor: theme.palette.grey[300],
+        display: 'flex',
+    },
+}));
 
-const styles = theme =>
-    createStyles({
-        root: {
-            backgroundColor: theme.palette.grey[300],
-            display: 'flex',
-        },
-    });
-
-const Placeholder = withStyles(styles)(RawPlaceholder);
+const Placeholder = ({ classes: classesOverride }) => {
+    const classes = useStyles({ classes: classesOverride });
+    return <div className={classes.root}>&nbsp;</div>;
+};
 
 const times = (nbChildren, fn) =>
     Array.from({ length: nbChildren }, (_, key) => fn(key));
 
-export default ({
+const DatagridLoading = ({
     classes,
     className,
     expand,
     hasBulkActions,
     nbChildren,
     nbFakeLines = 5,
+    size,
 }) => (
-    <Table className={classnames(classes.table, className)}>
+    <Table className={classnames(classes.table, className)} size={size}>
         <TableHead>
             <TableRow className={classes.row}>
-                {expand && <TableCell className={classes.expandHeader} />}
-                {hasBulkActions && (
+                {expand && (
                     <TableCell
                         padding="none"
+                        className={classes.expandHeader}
+                    />
+                )}
+                {hasBulkActions && (
+                    <TableCell
+                        padding="checkbox"
                         className={classes.expandIconCell}
                     >
                         <Checkbox
@@ -53,7 +57,6 @@ export default ({
                 )}
                 {times(nbChildren, key => (
                     <TableCell
-                        padding="none"
                         variant="head"
                         className={classes.headerCell}
                         key={key}
@@ -82,7 +85,7 @@ export default ({
                     )}
                     {hasBulkActions && (
                         <TableCell
-                            padding="none"
+                            padding="checkbox"
                             className={classes.expandIconCell}
                         >
                             <Checkbox
@@ -93,11 +96,7 @@ export default ({
                         </TableCell>
                     )}
                     {times(nbChildren, key2 => (
-                        <TableCell
-                            padding="none"
-                            className={classes.rowCell}
-                            key={key2}
-                        >
+                        <TableCell className={classes.rowCell} key={key2}>
                             <Placeholder />
                         </TableCell>
                     ))}
@@ -106,3 +105,5 @@ export default ({
         </TableBody>
     </Table>
 );
+
+export default memo(DatagridLoading);

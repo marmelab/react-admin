@@ -7,18 +7,14 @@ import {
     takeEvery,
 } from 'redux-saga/effects';
 import { DataProvider, ReduxState } from '../types';
-import {
-    FETCH_CANCEL,
-    FETCH_END,
-    FETCH_ERROR,
-    FETCH_START,
-} from '../actions/fetchActions';
+import { FETCH_CANCEL, FETCH_END, FETCH_ERROR, FETCH_START } from '../actions';
 import {
     fetchActionsWithRecordResponse,
     fetchActionsWithArrayOfIdentifiedRecordsResponse,
     fetchActionsWithArrayOfRecordsResponse,
     fetchActionsWithTotalResponse,
-} from '../dataFetchActions';
+    sanitizeFetchType,
+} from '../core';
 
 function validateResponseFormat(
     response,
@@ -92,6 +88,8 @@ export function* handleFetch(
         meta: { fetch: fetchMeta, onSuccess, onFailure, ...meta },
     } = action;
     const restType = fetchMeta;
+    const successSideEffects = onSuccess instanceof Function ? {} : onSuccess;
+    const failureSideEffects = onFailure instanceof Function ? {} : onFailure;
 
     try {
         const isOptimistic = yield select(
@@ -108,8 +106,7 @@ export function* handleFetch(
             put({ type: FETCH_START }),
         ]);
         const response = yield call(
-            dataProvider,
-            restType,
+            dataProvider[sanitizeFetchType(restType)],
             meta.resource,
             payload
         );
@@ -122,7 +119,7 @@ export function* handleFetch(
             requestPayload: payload,
             meta: {
                 ...meta,
-                ...onSuccess,
+                ...successSideEffects,
                 fetchResponse: restType,
                 fetchStatus: FETCH_END,
             },
@@ -136,7 +133,7 @@ export function* handleFetch(
             requestPayload: payload,
             meta: {
                 ...meta,
-                ...onFailure,
+                ...failureSideEffects,
                 fetchResponse: restType,
                 fetchStatus: FETCH_ERROR,
             },

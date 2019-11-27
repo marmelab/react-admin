@@ -1,10 +1,13 @@
 import React from 'react';
-import { render } from 'enzyme';
-import { TestContext } from 'ra-core';
+import expect from 'expect';
+import { cleanup } from '@testing-library/react';
+import { renderWithRedux } from 'ra-core';
 
 import Edit from './Edit';
 
 describe('<Edit />', () => {
+    afterEach(cleanup);
+
     const defaultEditProps = {
         basePath: '/',
         id: '123',
@@ -15,14 +18,11 @@ describe('<Edit />', () => {
 
     it('should display aside component', () => {
         const Aside = () => <div id="aside">Hello</div>;
-        const wrapper = render(
-            <TestContext>
-                <Edit {...defaultEditProps} aside={<Aside />}>
-                    <div />
-                </Edit>
-            </TestContext>
+        const { queryAllByText } = renderWithRedux(
+            <Edit {...defaultEditProps} aside={<Aside />}>
+                <div />
+            </Edit>
         );
-        const aside = wrapper.find('#aside');
-        expect(aside.text()).toEqual('Hello');
+        expect(queryAllByText('Hello')).toHaveLength(1);
     });
 });

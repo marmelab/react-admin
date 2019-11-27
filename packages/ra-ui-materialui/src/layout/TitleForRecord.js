@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Title from './Title';
+import Title, { TitlePropType } from './Title';
 
 const TitleForRecord = ({ defaultTitle, record, title }) =>
     record ? (
@@ -12,7 +12,7 @@ const TitleForRecord = ({ defaultTitle, record, title }) =>
 TitleForRecord.propTypes = {
     defaultTitle: PropTypes.any,
     record: PropTypes.object,
-    title: PropTypes.any,
+    title: TitlePropType,
 };
 
 export default TitleForRecord;

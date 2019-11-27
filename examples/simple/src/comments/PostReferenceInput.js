@@ -1,10 +1,8 @@
-import React, { Fragment } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import compose from 'recompose/compose';
-import { Field } from 'redux-form';
+import React, { Fragment, useState, useCallback, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { FormSpy } from 'react-final-form';
 
-import withStyles from '@material-ui/core/styles/withStyles';
+import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
@@ -15,156 +13,147 @@ import {
     crudGetMatching,
     ReferenceInput,
     SelectInput,
-    translate,
+    useTranslate,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
 
 import PostQuickCreate from './PostQuickCreate';
 import PostPreview from './PostPreview';
 
-const styles = {
+const useStyles = makeStyles({
     button: {
         margin: '10px 24px',
         position: 'relative',
     },
-};
+});
 
-class PostReferenceInputView extends React.Component {
-    static propTypes = {
-        classes: PropTypes.object.isRequired,
-        crudGetMatching: PropTypes.func.isRequired,
-        post_id: PropTypes.any,
-        translate: PropTypes.func.isRequired,
-    };
+const PostReferenceInput = props => {
+    const translate = useTranslate();
+    const classes = useStyles();
+    const dispatch = useDispatch();
 
-    state = {
-        showCreateDialog: false,
-        showPreviewDialog: false,
-        new_post_id: '',
-    };
+    const [showCreateDialog, setShowCreateDialog] = useState(false);
+    const [showPreviewDialog, setShowPreviewDialog] = useState(false);
+    const [newPostId, setNewPostId] = useState('');
 
-    handleNewClick = event => {
-        event.preventDefault();
-        this.setState({ showCreateDialog: true });
-    };
-
-    handleShowClick = event => {
-        event.preventDefault();
-        this.setState({ showPreviewDialog: true });
-    };
-
-    handleCloseCreate = () => {
-        this.setState({ showCreateDialog: false });
-    };
-
-    handleCloseShow = () => {
-        this.setState({ showPreviewDialog: false });
-    };
-
-    handleSave = post => {
-        const { crudGetMatching } = this.props;
-        this.setState({ showCreateDialog: false, new_post_id: post.id }, () => {
-            // Refresh the choices of the ReferenceInput to ensure our newly created post
-            // always appear, even after selecting another post
+    useEffect(() => {
+        //Refresh the choices of the ReferenceInput to ensure our newly created post
+        // always appear, even after selecting another post
+        dispatch(
             crudGetMatching(
                 'posts',
                 'comments@post_id',
                 { page: 1, perPage: 25 },
                 { field: 'id', order: 'DESC' },
                 {}
-            );
-        });
-    };
-
-    render() {
-        const { showCreateDialog, showPreviewDialog, new_post_id } = this.state;
-        const { classes, translate, ...props } = this.props;
-
-        return (
-            <Fragment>
-                <ReferenceInput {...props} defaultValue={new_post_id}>
-                    <SelectInput optionText="title" />
-                </ReferenceInput>
-                <Button
-                    data-testid="button-add-post"
-                    className={classes.button}
-                    onClick={this.handleNewClick}
-                >
-                    {translate('ra.action.create')}
-                </Button>
-                <Field
-                    name="post_id"
-                    component={({ input }) =>
-                        input.value && (
-                            <Fragment>
-                                <Button
-                                    data-testid="button-show-post"
-                                    className={classes.button}
-                                    onClick={this.handleShowClick}
-                                >
-                                    {translate('ra.action.show')}
-                                </Button>
-                                <Dialog
-                                    data-testid="dialog-show-post"
-                                    fullWidth
-                                    open={showPreviewDialog}
-                                    onClose={this.handleCloseShow}
-                                    aria-label={translate('simple.create-post')}
-                                >
-                                    <DialogTitle>
-                                        {translate('simple.create-post')}
-                                    </DialogTitle>
-                                    <DialogContent>
-                                        <PostPreview
-                                            id={input.value}
-                                            basePath="/posts"
-                                            resource="posts"
-                                        />
-                                    </DialogContent>
-                                    <DialogActions>
-                                        <Button
-                                            data-testid="button-close-modal"
-                                            onClick={this.handleCloseShow}
-                                        >
-                                            {translate('simple.action.close')}
-                                        </Button>
-                                    </DialogActions>
-                                </Dialog>
-                            </Fragment>
-                        )
-                    }
-                />
-                <Dialog
-                    data-testid="dialog-add-post"
-                    fullWidth
-                    open={showCreateDialog}
-                    onClose={this.handleCloseCreate}
-                    aria-label={translate('simple.create-post')}
-                >
-                    <DialogTitle>{translate('simple.create-post')}</DialogTitle>
-                    <DialogContent>
-                        <PostQuickCreate
-                            onCancel={this.handleCloseCreate}
-                            onSave={this.handleSave}
-                            basePath="/posts"
-                            form="post-create"
-                            resource="posts"
-                        />
-                    </DialogContent>
-                </Dialog>
-            </Fragment>
+            )
         );
-    }
-}
+    }, [dispatch, newPostId]);
 
-const mapDispatchToProps = {
-    crudGetMatching,
+    const handleNewClick = useCallback(
+        event => {
+            event.preventDefault();
+            setShowCreateDialog(true);
+        },
+        [setShowCreateDialog]
+    );
+
+    const handleShowClick = useCallback(
+        event => {
+            event.preventDefault();
+            setShowPreviewDialog(true);
+        },
+        [setShowPreviewDialog]
+    );
+
+    const handleCloseCreate = useCallback(() => {
+        setShowCreateDialog(false);
+    }, [setShowCreateDialog]);
+
+    const handleCloseShow = useCallback(() => {
+        setShowPreviewDialog(false);
+    }, [setShowPreviewDialog]);
+
+    const handleSave = useCallback(
+        post => {
+            setShowCreateDialog(false);
+            setNewPostId(post.id);
+        },
+        [setShowCreateDialog, setNewPostId]
+    );
+
+    return (
+        <Fragment>
+            <ReferenceInput {...props} defaultValue={newPostId}>
+                <SelectInput optionText="title" />
+            </ReferenceInput>
+            <Button
+                data-testid="button-add-post"
+                className={classes.button}
+                onClick={handleNewClick}
+            >
+                {translate('ra.action.create')}
+            </Button>
+            <FormSpy
+                subscription={{ values: true }}
+                render={({ values }) =>
+                    values.post_id ? (
+                        <Fragment>
+                            <Button
+                                data-testid="button-show-post"
+                                className={classes.button}
+                                onClick={handleShowClick}
+                            >
+                                {translate('ra.action.show')}
+                            </Button>
+                            <Dialog
+                                data-testid="dialog-show-post"
+                                fullWidth
+                                open={showPreviewDialog}
+                                onClose={handleCloseShow}
+                                aria-label={translate('simple.create-post')}
+                            >
+                                <DialogTitle>
+                                    {translate('simple.create-post')}
+                                </DialogTitle>
+                                <DialogContent>
+                                    <PostPreview
+                                        id={values.post_id}
+                                        basePath="/posts"
+                                        resource="posts"
+                                    />
+                                </DialogContent>
+                                <DialogActions>
+                                    <Button
+                                        data-testid="button-close-modal"
+                                        onClick={handleCloseShow}
+                                    >
+                                        {translate('simple.action.close')}
+                                    </Button>
+                                </DialogActions>
+                            </Dialog>
+                        </Fragment>
+                    ) : null
+                }
+            />
+            <Dialog
+                data-testid="dialog-add-post"
+                fullWidth
+                open={showCreateDialog}
+                onClose={handleCloseCreate}
+                aria-label={translate('simple.create-post')}
+            >
+                <DialogTitle>{translate('simple.create-post')}</DialogTitle>
+                <DialogContent>
+                    <PostQuickCreate
+                        onCancel={handleCloseCreate}
+                        onSave={handleSave}
+                        basePath="/posts"
+                        resource="posts"
+                    />
+                </DialogContent>
+            </Dialog>
+        </Fragment>
+    );
 };
 
-export default compose(
-    connect(
-        undefined,
-        mapDispatchToProps
-    ),
-    withStyles(styles),
-    translate
-)(PostReferenceInputView);
+export default PostReferenceInput;

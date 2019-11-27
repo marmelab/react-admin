@@ -6,6 +6,8 @@ export default (url, initialField = 'title') => ({
         snackbar: 'div[role="alertdialog"]',
         tabs: `.show-tab`,
         tab: index => `.show-tab:nth-of-type(${index})`,
+        userMenu: 'button[title="Profile"]',
+        logout: '.logout',
     },
 
     navigate() {
@@ -13,10 +15,15 @@ export default (url, initialField = 'title') => ({
     },
 
     waitUntilVisible() {
-        cy.get(this.elements.field(initialField));
+        cy.get(this.elements.field(initialField)).should('be.visible');
     },
 
     gotoTab(index) {
         cy.get(this.elements.tab(index)).click();
+    },
+
+    logout() {
+        cy.get(this.elements.userMenu).click();
+        cy.get(this.elements.logout).click();
     },
 });

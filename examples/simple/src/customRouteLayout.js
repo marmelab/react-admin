@@ -1,38 +1,28 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { crudGetList as crudGetListAction, Title } from 'react-admin'; // eslint-disable-line import/no-unresolved
+import React from 'react';
+import { useGetList, useAuthenticated, Title } from 'react-admin';
 
-class CustomRouteLayout extends Component {
-    componentWillMount() {
-        this.props.crudGetList(
-            'posts',
-            { page: 0, perPage: 10 },
-            { field: 'id', order: 'ASC' }
-        );
-    }
+const CustomRouteLayout = () => {
+    useAuthenticated();
+    const { ids, data, total, loaded } = useGetList(
+        'posts',
+        { page: 1, perPage: 10 },
+        { field: 'published_at', order: 'DESC' }
+    );
 
-    render() {
-        const { total } = this.props;
+    return loaded ? (
+        <div>
+            <Title title="Example Admin" />
+            <h1>Posts</h1>
+            <p>
+                Found <span className="total">{total}</span> posts !
+            </p>
+            <ul>
+                {ids.map(id => (
+                    <li key={id}>{data[id].title}</li>
+                ))}
+            </ul>
+        </div>
+    ) : null;
+};
 
-        return (
-            <div>
-                <Title title="Example Admin" />
-                <h1>Posts</h1>
-                <p>
-                    Found <span className="total">{total}</span> posts !
-                </p>
-            </div>
-        );
-    }
-}
-
-const mapStateToProps = state => ({
-    total: state.admin.resources.posts
-        ? state.admin.resources.posts.list.total
-        : 0,
-});
-
-export default connect(
-    mapStateToProps,
-    { crudGetList: crudGetListAction }
-)(CustomRouteLayout);
+export default CustomRouteLayout;

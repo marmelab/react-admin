@@ -125,10 +125,11 @@ export class ArrayField extends Component<
         } = this.props;
         const { ids, data } = this.state;
 
+        // @ts-ignore
         return cloneElement(Children.only(children), {
             ids,
             data,
-            isLoading: false,
+            loading: false,
             basePath,
             currentSort: {},
             ...rest,

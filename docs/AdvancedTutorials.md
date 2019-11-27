@@ -58,3 +58,10 @@ This article shows how you can customize many parts of the framework without rep
 
 * [Article](https://marmelab.com/blog/2019/03/27/supplying-your-own-defaults-to-react-admin.html)
 * [Codesandbox](https://codesandbox.io/s/qzxx4mjl59)
+
+## OpenID Connect Authentication with React Admin
+
+![OpenID Connect on React Admin with a button "Login With Google"](./img/openid-connect-example.png)
+
+* [Live Example](https://marmelab.com/ra-example-oauth)
+* [Code Repository](https://github.com/marmelab/ra-example-oauth)

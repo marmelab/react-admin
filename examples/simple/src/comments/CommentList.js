@@ -2,16 +2,19 @@ import React from 'react';
 import ChevronLeft from '@material-ui/icons/ChevronLeft';
 import ChevronRight from '@material-ui/icons/ChevronRight';
 import PersonIcon from '@material-ui/icons/Person';
-import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import CardHeader from '@material-ui/core/CardHeader';
-import Grid from '@material-ui/core/Grid';
-import Toolbar from '@material-ui/core/Toolbar';
-import { withStyles } from '@material-ui/core/styles';
-import { unparse as convertToCSV } from 'papaparse/papaparse.min';
+import {
+    Avatar,
+    Button,
+    Card,
+    CardActions,
+    CardContent,
+    CardHeader,
+    Grid,
+    Toolbar,
+    useMediaQuery,
+    makeStyles,
+} from '@material-ui/core';
+import jsonExport from 'jsonexport/dist';
 import {
     DateField,
     EditButton,
@@ -20,14 +23,13 @@ import {
     PaginationLimit,
     ReferenceField,
     ReferenceInput,
-    Responsive,
     SearchInput,
     SelectInput,
     ShowButton,
     SimpleList,
     TextField,
     downloadCSV,
-    translate,
+    useTranslate,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
 
 const CommentFilter = props => (
@@ -47,7 +49,7 @@ const exporter = (records, fetchRelatedRecords) =>
             recordForExport.post_title = posts[record.post_id].title;
             return recordForExport;
         });
-        const fields = [
+        const headers = [
             'id',
             'author_name',
             'post_id',
@@ -55,47 +57,52 @@ const exporter = (records, fetchRelatedRecords) =>
             'created_at',
             'body',
         ];
-        downloadCSV(convertToCSV({ data, fields }), 'comments');
+
+        jsonExport(data, { headers }, (error, csv) => {
+            if (error) {
+                console.error(error);
+            }
+            downloadCSV(csv, 'comments');
+        });
     });
 
-const CommentPagination = translate(
-    ({ isLoading, ids, page, perPage, total, setPage, translate }) => {
-        const nbPages = Math.ceil(total / perPage) || 1;
-        if (!isLoading && (total === 0 || (ids && !ids.length))) {
-            return <PaginationLimit total={total} page={page} ids={ids} />;
-        }
-
-        return (
-            nbPages > 1 && (
-                <Toolbar>
-                    {page > 1 && (
-                        <Button
-                            color="primary"
-                            key="prev"
-                            onClick={() => setPage(page - 1)}
-                        >
-                            <ChevronLeft />
-                            &nbsp;
-                            {translate('ra.navigation.prev')}
-                        </Button>
-                    )}
-                    {page !== nbPages && (
-                        <Button
-                            color="primary"
-                            key="next"
-                            onClick={() => setPage(page + 1)}
-                        >
-                            {translate('ra.navigation.next')}&nbsp;
-                            <ChevronRight />
-                        </Button>
-                    )}
-                </Toolbar>
-            )
-        );
+const CommentPagination = ({ loading, ids, page, perPage, total, setPage }) => {
+    const translate = useTranslate();
+    const nbPages = Math.ceil(total / perPage) || 1;
+    if (!loading && (total === 0 || (ids && !ids.length))) {
+        return <PaginationLimit total={total} page={page} ids={ids} />;
     }
-);
 
-const listStyles = theme => ({
+    return (
+        nbPages > 1 && (
+            <Toolbar>
+                {page > 1 && (
+                    <Button
+                        color="primary"
+                        key="prev"
+                        onClick={() => setPage(page - 1)}
+                    >
+                        <ChevronLeft />
+                        &nbsp;
+                        {translate('ra.navigation.prev')}
+                    </Button>
+                )}
+                {page !== nbPages && (
+                    <Button
+                        color="primary"
+                        key="next"
+                        onClick={() => setPage(page + 1)}
+                    >
+                        {translate('ra.navigation.next')}&nbsp;
+                        <ChevronRight />
+                    </Button>
+                )}
+            </Toolbar>
+        )
+    );
+};
+
+const useListStyles = makeStyles(theme => ({
     card: {
         height: '100%',
         display: 'flex',
@@ -112,11 +119,14 @@ const listStyles = theme => ({
     cardActions: {
         justifyContent: 'flex-end',
     },
-});
+}));
 
-const CommentGrid = withStyles(listStyles)(
-    translate(({ classes, ids, data, basePath, translate }) => (
-        <Grid spacing={16} container style={{ padding: '0 1em' }}>
+const CommentGrid = ({ ids, data, basePath }) => {
+    const translate = useTranslate();
+    const classes = useListStyles();
+
+    return (
+        <Grid spacing={2} container>
             {ids.map(id => (
                 <Grid item key={id} sm={12} md={6} lg={4}>
                     <Card className={classes.card}>
@@ -174,8 +184,8 @@ const CommentGrid = withStyles(listStyles)(
                 </Grid>
             ))}
         </Grid>
-    ))
-);
+    );
+};
 
 CommentGrid.defaultProps = {
     data: {},
@@ -194,16 +204,21 @@ const CommentMobileList = props => (
     />
 );
 
-const CommentList = props => (
-    <List
-        {...props}
-        perPage={6}
-        exporter={exporter}
-        filters={<CommentFilter />}
-        pagination={<CommentPagination />}
-    >
-        <Responsive small={<CommentMobileList />} medium={<CommentGrid />} />
-    </List>
-);
+const CommentList = props => {
+    const isSmall = useMediaQuery(theme => theme.breakpoints.down('sm'));
+
+    return (
+        <List
+            {...props}
+            perPage={6}
+            exporter={exporter}
+            filters={<CommentFilter />}
+            pagination={<CommentPagination />}
+            component="div"
+        >
+            {isSmall ? <CommentMobileList /> : <CommentGrid />}
+        </List>
+    );
+};
 
 export default CommentList;

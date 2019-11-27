@@ -4,7 +4,6 @@ import {
     Create,
     DateInput,
     TextInput,
-    LongTextInput,
     SimpleForm,
     required,
     minLength,
@@ -12,6 +11,8 @@ import {
 import PostReferenceInput from './PostReferenceInput';
 
 const defaultValue = { created_at: new Date() };
+const defaultSort = { field: 'title', order: 'ASC' };
+
 const CommentCreate = props => (
     <Create {...props}>
         <SimpleForm redirect={false} defaultValue={defaultValue}>
@@ -21,6 +22,7 @@ const CommentCreate = props => (
                 allowEmpty
                 validate={required()}
                 perPage={10000}
+                sort={defaultSort}
             />
             <TextInput
                 source="author.name"
@@ -28,7 +30,7 @@ const CommentCreate = props => (
                 fullWidth
             />
             <DateInput source="created_at" />
-            <LongTextInput source="body" />
+            <TextInput source="body" fullWidth={true} multiline={true} />
         </SimpleForm>
     </Create>
 );

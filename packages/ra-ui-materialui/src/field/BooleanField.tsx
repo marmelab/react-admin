@@ -1,18 +1,18 @@
-import React, { SFC } from 'react';
+import React, { FunctionComponent } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import pure from 'recompose/pure';
 import FalseIcon from '@material-ui/icons/Clear';
 import TrueIcon from '@material-ui/icons/Done';
 import Typography, { TypographyProps } from '@material-ui/core/Typography';
-import { createStyles, withStyles, WithStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import compose from 'recompose/compose';
-import { translate as withTranslate, TranslationContextProps } from 'ra-core';
+import { useTranslate } from 'ra-core';
 
 import { FieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 import sanitizeRestProps from './sanitizeRestProps';
 
-const styles = createStyles({
+const useStyles = makeStyles({
     label: {
         // Move the text out of the flow of the container.
         position: 'absolute',
@@ -37,22 +37,19 @@ interface Props extends FieldProps {
     valueLabelFalse?: string;
 }
 
-interface EnhancedProps
-    extends TranslationContextProps,
-        WithStyles<typeof styles> {}
-
-export const BooleanField: SFC<
-    Props & InjectedFieldProps & EnhancedProps & TypographyProps
+export const BooleanField: FunctionComponent<
+    Props & InjectedFieldProps & TypographyProps
 > = ({
     className,
-    classes,
+    classes: classesOverride,
     source,
     record = {},
-    translate,
     valueLabelTrue,
     valueLabelFalse,
     ...rest
 }) => {
+    const classes = useStyles({ classes: classesOverride });
+    const translate = useTranslate();
     const value = get(record, source);
     let ariaLabel = value ? valueLabelTrue : valueLabelFalse;
 
@@ -64,7 +61,7 @@ export const BooleanField: SFC<
         return (
             <Typography
                 component="span"
-                variant="body1"
+                variant="body2"
                 className={className}
                 {...sanitizeRestProps(rest)}
             >
@@ -80,7 +77,7 @@ export const BooleanField: SFC<
         return (
             <Typography
                 component="span"
-                variant="body1"
+                variant="body2"
                 className={className}
                 {...sanitizeRestProps(rest)}
             >
@@ -95,7 +92,7 @@ export const BooleanField: SFC<
     return (
         <Typography
             component="span"
-            variant="body1"
+            variant="body2"
             className={className}
             {...sanitizeRestProps(rest)}
         />
@@ -103,13 +100,9 @@ export const BooleanField: SFC<
 };
 
 const EnhancedBooleanField = compose<
-    Props & InjectedFieldProps & EnhancedProps & TypographyProps,
+    Props & InjectedFieldProps & TypographyProps,
     Props & TypographyProps
->(
-    pure,
-    withStyles(styles),
-    withTranslate
-)(BooleanField);
+>(pure)(BooleanField);
 
 EnhancedBooleanField.defaultProps = {
     addLabel: true,

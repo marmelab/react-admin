@@ -1,79 +1,73 @@
 import React, { Children, cloneElement } from 'react';
 import PropTypes from 'prop-types';
-import compose from 'recompose/compose';
+import classnames from 'classnames';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import { withStyles, createStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import { lighten } from '@material-ui/core/styles/colorManipulator';
-import { translate, sanitizeListRestProps } from 'ra-core';
+import { useTranslate, sanitizeListRestProps } from 'ra-core';
 
-import CardActions from '../layout/CardActions';
+import TopToolbar from '../layout/TopToolbar';
 
-const styles = theme =>
-    createStyles({
-        toolbar: {
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            zIndex: 3,
-            color:
-                theme.palette.type === 'light'
-                    ? theme.palette.primary.main
-                    : theme.palette.text.primary,
-            justifyContent: 'space-between',
-            backgroundColor:
-                theme.palette.type === 'light'
-                    ? lighten(theme.palette.primary.light, 0.85)
-                    : theme.palette.primary.dark,
-            minHeight: 64,
-            height: 64,
-            transition: `${theme.transitions.create(
-                'height'
-            )}, ${theme.transitions.create('min-height')}`,
-        },
-        toolbarCollapsed: {
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            zIndex: 3,
-            minHeight: 0,
-            height: 0,
-            overflowY: 'hidden',
-            transition: theme.transitions.create('all'),
-        },
-        title: {
-            flex: '0 0 auto',
-        },
-    });
+const useStyles = makeStyles(theme => ({
+    toolbar: {
+        zIndex: 3,
+        color:
+            theme.palette.type === 'light'
+                ? theme.palette.primary.main
+                : theme.palette.text.primary,
+        justifyContent: 'space-between',
+        backgroundColor:
+            theme.palette.type === 'light'
+                ? lighten(theme.palette.primary.light, 0.85)
+                : theme.palette.primary.dark,
+        minHeight: theme.spacing(8),
+        height: theme.spacing(8),
+        transition: `${theme.transitions.create(
+            'height'
+        )}, ${theme.transitions.create('min-height')}`,
+    },
+    buttons: {},
+    collapsed: {
+        minHeight: 0,
+        height: 0,
+        overflowY: 'hidden',
+    },
+    title: {
+        flex: '0 0 auto',
+    },
+}));
 
 const BulkActionsToolbar = ({
-    classes,
     basePath,
+    classes: classesOverride,
     filterValues,
     label,
     resource,
     selectedIds,
-    translate,
     children,
     ...rest
-}) =>
-    selectedIds.length > 0 ? (
+}) => {
+    const classes = useStyles({ classes: classesOverride });
+    const translate = useTranslate();
+
+    return (
         <Toolbar
             data-test="bulk-actions-toolbar"
-            className={classes.toolbar}
+            className={classnames(classes.toolbar, {
+                [classes.collapsed]: selectedIds.length === 0,
+            })}
             {...sanitizeListRestProps(rest)}
         >
             <div className={classes.title}>
-                <Typography color="inherit" variant="subheading">
+                <Typography color="inherit" variant="subtitle1">
                     {translate(label, {
                         _: label,
                         smart_count: selectedIds.length,
                     })}
                 </Typography>
             </div>
-            <CardActions>
+            <TopToolbar>
                 {Children.map(children, child =>
                     cloneElement(Children.only(child), {
                         basePath,
@@ -82,11 +76,10 @@ const BulkActionsToolbar = ({
                         selectedIds,
                     })
                 )}
-            </CardActions>
+            </TopToolbar>
         </Toolbar>
-    ) : (
-        <Toolbar className={classes.toolbarCollapsed} />
     );
+};
 
 BulkActionsToolbar.propTypes = {
     children: PropTypes.node,
@@ -96,16 +89,10 @@ BulkActionsToolbar.propTypes = {
     label: PropTypes.string,
     resource: PropTypes.string,
     selectedIds: PropTypes.array,
-    translate: PropTypes.func.isRequired,
 };
 
 BulkActionsToolbar.defaultProps = {
     label: 'ra.action.bulk_actions',
 };
 
-const enhance = compose(
-    translate,
-    withStyles(styles)
-);
-
-export default enhance(BulkActionsToolbar);
+export default BulkActionsToolbar;

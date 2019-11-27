@@ -60,8 +60,6 @@ export const buildFields = (introspectionResults, path = []) => fields =>
         );
 
         if (linkedType && !path.includes(linkedType.name)) {
-            path.push(linkedType.name);
-
             return [
                 ...acc,
                 gqlTypes.field(

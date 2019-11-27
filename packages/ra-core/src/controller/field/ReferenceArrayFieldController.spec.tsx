@@ -1,124 +1,204 @@
 import React from 'react';
-import assert from 'assert';
-import { shallow } from 'enzyme';
-import { UnconnectedReferenceArrayFieldController as ReferenceArrayFieldController } from './ReferenceArrayFieldController';
+import { cleanup } from '@testing-library/react';
+import expect from 'expect';
+
+import ReferenceArrayFieldController from './ReferenceArrayFieldController';
+import { DataProviderContext } from '../../dataProvider';
+import renderWithRedux from '../../util/renderWithRedux';
 
 describe('<ReferenceArrayFieldController />', () => {
-    const crudGetManyAccumulate = jest.fn();
+    afterEach(cleanup);
+    it('should set the loaded prop to false when related records are not yet fetched', () => {
+        const children = jest.fn().mockReturnValue('child');
 
-    it('should set the loadedOnce prop to false when related records are not yet fetched', () => {
-        const children = jest.fn();
-
-        shallow(
+        renderWithRedux(
             <ReferenceArrayFieldController
-                record={{ id: 1, barIds: [1, 2] }}
                 resource="foo"
                 reference="bar"
-                source="barIds"
                 basePath=""
-                data={null}
-                ids={[1, 2]}
-                crudGetManyAccumulate={crudGetManyAccumulate}
+                record={{ id: 1, barIds: [1, 2] }}
+                source="barIds"
             >
                 {children}
-            </ReferenceArrayFieldController>
+            </ReferenceArrayFieldController>,
+            {
+                admin: {
+                    resources: {
+                        bar: {
+                            data: {},
+                        },
+                    },
+                },
+            }
         );
-        assert.equal(children.mock.calls[0][0].loadedOnce, false);
+        expect(children.mock.calls[0][0]).toEqual({
+            currentSort: { field: 'id', order: 'ASC' },
+            loaded: false,
+            loading: true,
+            referenceBasePath: '',
+            data: {},
+            ids: [1, 2],
+            error: null,
+        });
     });
 
-    it('should set the loadedOnce prop to true when at least one related record is found', () => {
-        const children = jest.fn();
+    it('should set the loaded prop to false when at least one related record is not found', () => {
+        const children = jest.fn().mockReturnValue('child');
 
-        shallow(
+        renderWithRedux(
             <ReferenceArrayFieldController
                 record={{ id: 1, barIds: [1, 2] }}
                 resource="foo"
                 reference="bar"
                 source="barIds"
                 basePath=""
-                data={{ 1: { id: 1 } }}
-                ids={[1, 2]}
-                crudGetManyAccumulate={crudGetManyAccumulate}
             >
                 {children}
-            </ReferenceArrayFieldController>
+            </ReferenceArrayFieldController>,
+            {
+                admin: {
+                    resources: {
+                        bar: {
+                            data: {
+                                2: {
+                                    id: 2,
+                                    title: 'hello',
+                                },
+                            },
+                        },
+                    },
+                },
+            }
         );
 
-        assert.equal(children.mock.calls[0][0].loadedOnce, true);
+        expect(children.mock.calls[0][0]).toEqual({
+            currentSort: { field: 'id', order: 'ASC' },
+            loaded: false,
+            loading: true,
+            referenceBasePath: '',
+            data: {
+                2: {
+                    id: 2,
+                    title: 'hello',
+                },
+            },
+            ids: [1, 2],
+            error: null,
+        });
     });
 
     it('should set the data prop to the loaded data when it has been fetched', () => {
-        const children = jest.fn();
-        const data = {
-            1: { id: 1, title: 'hello' },
-            2: { id: 2, title: 'world' },
-        };
-        shallow(
+        const children = jest.fn().mockReturnValue('child');
+        renderWithRedux(
             <ReferenceArrayFieldController
                 record={{ id: 1, barIds: [1, 2] }}
                 resource="foo"
                 reference="bar"
                 source="barIds"
                 basePath=""
-                data={data}
-                ids={[1, 2]}
-                crudGetManyAccumulate={crudGetManyAccumulate}
             >
                 {children}
-            </ReferenceArrayFieldController>
+            </ReferenceArrayFieldController>,
+            {
+                admin: {
+                    resources: {
+                        bar: {
+                            data: {
+                                1: { id: 1, title: 'hello' },
+                                2: { id: 2, title: 'world' },
+                            },
+                        },
+                    },
+                },
+            }
         );
-        assert.equal(children.mock.calls[0][0].loadedOnce, true);
-        assert.deepEqual(children.mock.calls[0][0].data, data);
-        assert.deepEqual(children.mock.calls[0][0].ids, [1, 2]);
+        expect(children.mock.calls[0][0]).toEqual({
+            currentSort: { field: 'id', order: 'ASC' },
+            loaded: true,
+            loading: true,
+            referenceBasePath: '',
+            data: {
+                1: { id: 1, title: 'hello' },
+                2: { id: 2, title: 'world' },
+            },
+            ids: [1, 2],
+            error: null,
+        });
     });
 
     it('should support record with string identifier', () => {
-        const children = jest.fn();
-        const data = {
-            'abc-1': { id: 'abc-1', title: 'hello' },
-            'abc-2': { id: 'abc-2', title: 'world' },
-        };
-        shallow(
+        const children = jest.fn().mockReturnValue('child');
+        renderWithRedux(
             <ReferenceArrayFieldController
                 record={{ id: 1, barIds: ['abc-1', 'abc-2'] }}
                 resource="foo"
                 reference="bar"
                 source="barIds"
                 basePath=""
-                data={data}
-                ids={['abc-1', 'abc-2']}
-                crudGetManyAccumulate={crudGetManyAccumulate}
             >
                 {children}
-            </ReferenceArrayFieldController>
+            </ReferenceArrayFieldController>,
+            {
+                admin: {
+                    resources: {
+                        bar: {
+                            data: {
+                                'abc-1': { id: 'abc-1', title: 'hello' },
+                                'abc-2': { id: 'abc-2', title: 'world' },
+                            },
+                        },
+                    },
+                },
+            }
         );
-        assert.equal(children.mock.calls[0][0].loadedOnce, true);
-        assert.deepEqual(children.mock.calls[0][0].data, data);
-        assert.deepEqual(children.mock.calls[0][0].ids, ['abc-1', 'abc-2']);
+        expect(children.mock.calls[0][0]).toEqual({
+            currentSort: { field: 'id', order: 'ASC' },
+            loaded: true,
+            loading: true,
+            referenceBasePath: '',
+            data: {
+                'abc-1': { id: 'abc-1', title: 'hello' },
+                'abc-2': { id: 'abc-2', title: 'world' },
+            },
+            ids: ['abc-1', 'abc-2'],
+            error: null,
+        });
     });
 
-    it('should support record with number identifier', () => {
-        const children = jest.fn();
-        const data = {
-            1: { id: 1, title: 'hello' },
-            2: { id: 2, title: 'world' },
+    it('should call the dataProvider with GET_MANY on mount', async () => {
+        const children = jest.fn().mockReturnValue('child');
+        const dataProvider = {
+            getMany: jest.fn(() =>
+                Promise.resolve({
+                    data: [{ id: 1, title: 'foo' }, { id: 2, title: 'bar' }],
+                })
+            ),
         };
-        shallow(
-            <ReferenceArrayFieldController
-                record={{ id: 1, barIds: [1, 2] }}
-                resource="foo"
-                reference="bar"
-                source="barIds"
-                basePath=""
-                data={data}
-                ids={[1, 2]}
-                crudGetManyAccumulate={crudGetManyAccumulate}
-            >
-                {children}
-            </ReferenceArrayFieldController>
+        const { dispatch } = renderWithRedux(
+            <DataProviderContext.Provider value={dataProvider}>
+                <ReferenceArrayFieldController
+                    record={{ id: 1, barIds: [1, 2] }}
+                    resource="foo"
+                    reference="bar"
+                    source="barIds"
+                    basePath=""
+                >
+                    {children}
+                </ReferenceArrayFieldController>
+            </DataProviderContext.Provider>,
+            {
+                admin: {
+                    resources: {
+                        bar: {
+                            data: {},
+                        },
+                    },
+                },
+            }
         );
-        assert.equal(children.mock.calls[0][0].loadedOnce, true);
-        assert.deepEqual(children.mock.calls[0][0].data, data);
-        assert.deepEqual(children.mock.calls[0][0].ids, [1, 2]);
+        await new Promise(resolve => setTimeout(resolve, 10));
+        expect(dispatch).toBeCalledTimes(5);
+        expect(dispatch.mock.calls[0][0].type).toBe('RA/CRUD_GET_MANY');
+        expect(dataProvider.getMany).toBeCalledTimes(1);
     });
 });

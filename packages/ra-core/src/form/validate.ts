@@ -1,49 +1,56 @@
 import lodashMemoize from 'lodash/memoize';
-import { Translate } from '../types';
 
 /* eslint-disable no-underscore-dangle */
 /* @link http://stackoverflow.com/questions/46155/validate-email-address-in-javascript */
 const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/; // eslint-disable-line no-useless-escape
 
 const isEmpty = (value: any) =>
-    typeof value === 'undefined' || value === null || value === '';
+    typeof value === 'undefined' ||
+    value === null ||
+    value === '' ||
+    (Array.isArray(value) && value.length === 0);
+
+export interface ValidationErrorMessageWithArgs {
+    message: string;
+    args: {
+        [key: string]: ValidationErrorMessageWithArgs | any;
+    };
+}
+
+export type ValidationErrorMessage = string | ValidationErrorMessageWithArgs;
 
 export type Validator = (
     value: any,
     values: any,
     props: any
-) => string | null | undefined;
+) => ValidationErrorMessage | null | undefined;
 
 interface MessageFuncParams {
     args: any;
     value: any;
     values: any;
-    translate: Translate;
-    [key: string]: any;
 }
 
-type MessageFunc = (params: MessageFuncParams) => string;
+type MessageFunc = (params: MessageFuncParams) => ValidationErrorMessage;
 
 const getMessage = (
     message: string | MessageFunc,
     messageArgs: any,
     value: any,
-    values: any,
-    props: {
-        translate: Translate;
-    }
+    values: any
 ) =>
     typeof message === 'function'
         ? message({
               args: messageArgs,
               value,
               values,
-              ...props,
           })
-        : props.translate(message, {
-              _: message,
-              ...messageArgs,
-          });
+        : messageArgs
+        ? {
+              message,
+              args: messageArgs,
+          }
+        : message;
 
 type Memoize = <T extends (...args: any[]) => any>(
     func: T,
@@ -55,6 +62,20 @@ type Memoize = <T extends (...args: any[]) => any>(
 // Hence, we memoize every built-in validator to prevent a "Maximum call stack" error.
 const memoize: Memoize = (fn: any) =>
     lodashMemoize(fn, (...args) => JSON.stringify(args));
+
+// Compose multiple validators into a single one for use with final-form
+export const composeValidators = (...validators) => (value, values, meta) => {
+    const allValidators = Array.isArray(validators[0])
+        ? validators[0]
+        : validators;
+
+    return allValidators.reduce(
+        (error, validator) =>
+            error ||
+            (typeof validator === 'function' && validator(value, values, meta)),
+        undefined
+    );
+};
 
 /**
  * Required validator
@@ -70,9 +91,9 @@ const memoize: Memoize = (fn: any) =>
  */
 export const required = memoize((message = 'ra.validation.required') =>
     Object.assign(
-        (value, values, props) =>
+        (value, values) =>
             isEmpty(value)
-                ? getMessage(message, undefined, value, values, props)
+                ? getMessage(message, undefined, value, values)
                 : undefined,
         { isRequired: true }
     )
@@ -92,9 +113,9 @@ export const required = memoize((message = 'ra.validation.required') =>
  * <TextInput type="password" name="password" validate={passwordValidators} />
  */
 export const minLength = memoize(
-    (min, message = 'ra.validation.minLength') => (value, values, props) =>
+    (min, message = 'ra.validation.minLength') => (value, values) =>
         !isEmpty(value) && value.length < min
-            ? getMessage(message, { min }, value, values, props)
+            ? getMessage(message, { min }, value, values)
             : undefined
 );
 
@@ -112,9 +133,9 @@ export const minLength = memoize(
  * <TextInput name="name" validate={nameValidators} />
  */
 export const maxLength = memoize(
-    (max, message = 'ra.validation.maxLength') => (value, values, props) =>
+    (max, message = 'ra.validation.maxLength') => (value, values) =>
         !isEmpty(value) && value.length > max
-            ? getMessage(message, { max }, value, values, props)
+            ? getMessage(message, { max }, value, values)
             : undefined
 );
 
@@ -132,9 +153,9 @@ export const maxLength = memoize(
  * <NumberInput name="foo" validate={fooValidators} />
  */
 export const minValue = memoize(
-    (min, message = 'ra.validation.minValue') => (value, values, props) =>
+    (min, message = 'ra.validation.minValue') => (value, values) =>
         !isEmpty(value) && value < min
-            ? getMessage(message, { min }, value, values, props)
+            ? getMessage(message, { min }, value, values)
             : undefined
 );
 
@@ -152,9 +173,9 @@ export const minValue = memoize(
  * <NumberInput name="foo" validate={fooValidators} />
  */
 export const maxValue = memoize(
-    (max, message = 'ra.validation.maxValue') => (value, values, props) =>
+    (max, message = 'ra.validation.maxValue') => (value, values) =>
         !isEmpty(value) && value > max
-            ? getMessage(message, { max }, value, values, props)
+            ? getMessage(message, { max }, value, values)
             : undefined
 );
 
@@ -171,9 +192,9 @@ export const maxValue = memoize(
  * <TextInput name="age" validate={ageValidators} />
  */
 export const number = memoize(
-    (message = 'ra.validation.number') => (value, values, props) =>
+    (message = 'ra.validation.number') => (value, values) =>
         !isEmpty(value) && isNaN(Number(value))
-            ? getMessage(message, undefined, value, values, props)
+            ? getMessage(message, undefined, value, values)
             : undefined
 );
 
@@ -191,9 +212,9 @@ export const number = memoize(
  * <TextInput name="zip" validate={zipValidators} />
  */
 export const regex = lodashMemoize(
-    (pattern, message = 'ra.validation.regex') => (value, values, props) =>
+    (pattern, message = 'ra.validation.regex') => (value, values) =>
         !isEmpty(value) && typeof value === 'string' && !pattern.test(value)
-            ? getMessage(message, { pattern }, value, values, props)
+            ? getMessage(message, { pattern }, value, values)
             : undefined,
     (pattern, message) => {
         return pattern.toString() + message;
@@ -216,10 +237,10 @@ export const email = memoize((message = 'ra.validation.email') =>
     regex(EMAIL_REGEX, message)
 );
 
-const oneOfTypeMessage: MessageFunc = ({ list, value, values, translate }) =>
-    translate('ra.validation.oneOf', {
-        options: list.join(', '),
-    });
+const oneOfTypeMessage: MessageFunc = ({ args }) => ({
+    message: 'ra.validation.oneOf',
+    args,
+});
 
 /**
  * Choices validator
@@ -235,8 +256,8 @@ const oneOfTypeMessage: MessageFunc = ({ list, value, values, translate }) =>
  * <TextInput name="gender" validate={genderValidators} />
  */
 export const choices = memoize(
-    (list, message = oneOfTypeMessage) => (value, values, props) =>
+    (list, message = oneOfTypeMessage) => (value, values) =>
         !isEmpty(value) && list.indexOf(value) === -1
-            ? getMessage(message, { list }, value, values, props)
+            ? getMessage(message, { list }, value, values)
             : undefined
 );

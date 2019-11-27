@@ -14,17 +14,18 @@ npm install --save ra-data-json-server
 
 This Data Provider fits REST APIs powered by [JSON Server](https://github.com/typicode/json-server), such as [JSONPlaceholder](http://jsonplaceholder.typicode.com/).
 
-| REST verb            | API calls
-|----------------------|----------------------------------------------------------------
-| `GET_LIST`           | `GET http://my.api.url/posts?_sort=title&_order=ASC&_start=0&_end=24&title=bar`
-| `GET_ONE`            | `GET http://my.api.url/posts/123`
-| `CREATE`             | `POST http://my.api.url/posts/123`
-| `UPDATE`             | `PUT http://my.api.url/posts/123`
-| `DELETE`             | `DELETE http://my.api.url/posts/123`
-| `GET_MANY`           | `GET http://my.api.url/posts/123, GET http://my.api.url/posts/456, GET http://my.api.url/posts/789`
-| `GET_MANY_REFERENCE` | `GET http://my.api.url/posts?author_id=345`
+| Method             | API calls
+|--------------------|----------------------------------------------------------------
+| `getList`          | `GET http://my.api.url/posts?_sort=title&_order=ASC&_start=0&_end=24&title=bar`
+| `getOne`           | `GET http://my.api.url/posts/123`
+| `getMany`          | `GET http://my.api.url/posts/123, GET http://my.api.url/posts/456, GET http://my.api.url/posts/789`
+| `getManyReference` | `GET http://my.api.url/posts?author_id=345`
+| `create`           | `POST http://my.api.url/posts/123`
+| `update`           | `PUT http://my.api.url/posts/123`
+| `updateMany`       | `PUT http://my.api.url/posts/123`, `PUT http://my.api.url/posts/456`, `PUT http://my.api.url/posts/789`
+| `delete`           | `DELETE http://my.api.url/posts/123`
 
-**Note**: The JSON Server REST Data Provider expects the API to include a `X-Total-Count` header in the response to `GET_LIST` calls. The value must be the total number of resources in the collection. This allows react-admin to know how many pages of resources there are in total, and build the pagination controls.
+**Note**: The JSON Server REST Data Provider expects the API to include a `X-Total-Count` header in the response to `getList` and `getManyReference` calls. The value must be the total number of resources in the collection. This allows react-admin to know how many pages of resources there are in total, and build the pagination controls.
 
 ```
 X-Total-Count: 319
@@ -72,7 +73,7 @@ const httpClient = (url, options = {}) => {
     // add your own headers here
     options.headers.set('X-Custom-Header', 'foobar');
     return fetchUtils.fetchJson(url, options);
-}
+};
 const dataProvider = jsonServerProvider('http://jsonplaceholder.typicode.com', httpClient);
 
 render(
@@ -87,24 +88,17 @@ Now all the requests to the REST API will contain the `X-Custom-Header: foobar` 
 
 **Tip**: The most common usage of custom headers is for authentication. `fetchJson` has built-on support for the `Authorization` token header:
 
-```jsx
+```js
 const httpClient = (url, options = {}) => {
     options.user = {
         authenticated: true,
         token: 'SRTRDFVESGNJYTUKTYTHRG'
-    }
+    };
     return fetchUtils.fetchJson(url, options);
-}
+};
 ```
 
 Now all the requests to the REST API will contain the `Authorization: SRTRDFVESGNJYTUKTYTHRG` header.
-
-**Note**: In case of REST verb "CREATE" consider that the response body is the same as the request body but with the object ID injected .
-```
-case CREATE:
-return { data: { ...params.data, id: json.id } };
-```
-This is because of backwards compatibility compliance.
 
 ## License
 

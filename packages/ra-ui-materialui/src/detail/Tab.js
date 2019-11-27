@@ -22,7 +22,7 @@ const sanitizeRestProps = ({
  * The `<Tab>` component accepts the following props:
  *
  * - label: The string displayed for each tab
- * - icon: The icon to show before the label (optional). Must be an element.
+ * - icon: The icon to show before the label (optional). Must be a component.
  *
  * @example
  *     // in src/posts.js

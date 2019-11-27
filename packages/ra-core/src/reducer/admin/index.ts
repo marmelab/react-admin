@@ -5,23 +5,28 @@ import resources, {
 } from './resource';
 import loading from './loading';
 import notifications from './notifications';
-import record from './record';
 import references, {
     getPossibleReferenceValues as referencesGetPossibleReferenceValues,
 } from './references';
-import saving from './saving';
 import ui from './ui';
-import auth, { isLoggedIn as authIsLoggedIn } from './auth';
+import customQueries from './customQueries';
+
+const defaultReducer = () => null;
 
 export default combineReducers({
-    resources,
-    loading,
-    notifications,
-    record,
-    references,
-    saving,
-    ui,
-    auth,
+    /**
+     * ts-jest does some aggressive module mocking when unit testing reducers individually.
+     * To avoid 'No reducer provided for key "..."' warnings,
+     * we pass default reducers. Sorry for legibility.
+     *
+     * @see https://stackoverflow.com/questions/43375079/redux-warning-only-appearing-in-tests
+     */
+    resources: resources || defaultReducer,
+    customQueries: customQueries || defaultReducer,
+    loading: loading || defaultReducer,
+    notifications: notifications || defaultReducer,
+    references: references || defaultReducer,
+    ui: ui || defaultReducer,
 });
 
 export const getPossibleReferenceValues = (state, props) =>
@@ -32,7 +37,5 @@ export const getResources = state => resourceGetResources(state.resources);
 export const getReferenceResource = (state, props) => {
     return resourceGetReferenceResource(state.resources, props);
 };
-
-export const isLoggedIn = state => authIsLoggedIn(state.auth);
 
 export { getPossibleReferences } from './references';

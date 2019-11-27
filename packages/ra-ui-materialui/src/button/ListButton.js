@@ -8,7 +8,7 @@ import Button from './Button';
 const ListButton = ({
     basePath = '',
     label = 'ra.action.list',
-    icon,
+    icon = <ActionList />,
     ...rest
 }) => (
     <Button component={Link} to={basePath} label={label} {...rest}>
@@ -20,10 +20,6 @@ ListButton.propTypes = {
     basePath: PropTypes.string,
     label: PropTypes.string,
     icon: PropTypes.element,
-};
-
-ListButton.defaultProps = {
-    icon: <ActionList />,
 };
 
 export default ListButton;

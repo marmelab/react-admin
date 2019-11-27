@@ -1,4 +1,4 @@
-export default (db, { serializeDate }) => {
+export default db => {
     let id = 0;
 
     return db.commands

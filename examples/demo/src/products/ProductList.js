@@ -1,28 +1,28 @@
 import React from 'react';
 import {
-    translate,
     Filter,
     List,
     NumberInput,
     ReferenceInput,
     SearchInput,
     SelectInput,
+    useTranslate,
 } from 'react-admin';
 import Chip from '@material-ui/core/Chip';
-import withStyles from '@material-ui/core/styles/withStyles';
+import { makeStyles } from '@material-ui/core/styles';
 import GridList from './GridList';
 
-const quickFilterStyles = {
+const useQuickFilterStyles = makeStyles(theme => ({
     root: {
-        marginBottom: '0.7em',
+        marginBottom: theme.spacing(3),
     },
-};
+}));
 
-const QuickFilter = translate(
-    withStyles(quickFilterStyles)(({ classes, label, translate }) => (
-        <Chip className={classes.root} label={translate(label)} />
-    ))
-);
+const QuickFilter = ({ label }) => {
+    const translate = useTranslate();
+    const classes = useQuickFilterStyles();
+    return <Chip className={classes.root} label={translate(label)} />;
+};
 
 export const ProductFilter = props => (
     <Filter {...props}>

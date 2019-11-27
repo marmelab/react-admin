@@ -1,6 +1,6 @@
 {
     "name": "ra-data-graphql-simple",
-    "version": "2.9.6",
+    "version": "3.0.1",
     "description": "A GraphQL simple data provider for react-admin",
     "main": "lib/index.js",
     "module": "esm/index.js",
@@ -36,15 +36,15 @@
         "graphql-tag": "^2.10.1",
         "lodash": "~4.17.5",
         "pluralize": "~7.0.0",
-        "ra-data-graphql": "^2.9.6"
+        "ra-data-graphql": "^3.0.1"
     },
     "peerDependencies": {
-        "graphql": "^0.13.2",
-        "ra-core": "^2.5.0"
+        "graphql": "^14.1.1",
+        "ra-core": "^3.0.0"
     },
     "devDependencies": {
         "cross-env": "^5.2.0",
         "graphql": "^14.1.1",
-        "rimraf": "^2.6.2"
+        "rimraf": "^2.6.3"
     }
 }

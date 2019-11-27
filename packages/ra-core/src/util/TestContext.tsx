@@ -1,12 +1,13 @@
-import React, { Component } from 'react';
-import { createStore } from 'redux';
+import React, { Component, ReactNode } from 'react';
+import { createStore, Store } from 'redux';
 import { Provider } from 'react-redux';
-import { reducer as formReducer } from 'redux-form';
-import TranslationProvider from '../i18n/TranslationProvider';
 import merge from 'lodash/merge';
-import { createMemoryHistory } from 'history';
+import { createMemoryHistory, History } from 'history';
+import { Router } from 'react-router-dom';
 
-import createAdminStore from '../createAdminStore';
+import createAdminStore from '../core/createAdminStore';
+import { convertLegacyDataProvider } from '../dataProvider';
+import { ReduxState } from '../types';
 
 export const defaultStore = {
     admin: {
@@ -14,14 +15,23 @@ export const defaultStore = {
         references: { possibleValues: {} },
         ui: { viewVersion: 1 },
     },
-    form: formReducer({}, { type: '@@FOO' }), // Call the reducer with an unknown type to initialize it
-    i18n: { locale: 'en', messages: {} },
 };
 
+type ChildrenFunction = ({
+    store,
+    history,
+}: {
+    store: Store<ReduxState>;
+    history: History;
+}) => ReactNode;
+
 interface Props {
-    store?: object;
+    initialState?: object;
     enableReducers?: boolean;
+    children: ReactNode | ChildrenFunction;
 }
+
+const dataProviderDefaultResponse = { data: null };
 
 /**
  * Simulate a react-admin context in unit tests
@@ -31,7 +41,7 @@ interface Props {
  * @example
  * // in an enzyme test
  * const wrapper = render(
- *     <TestContext store={{ admin: { resources: { post: { data: { 1: {id: 1, title: 'foo' } } } } } }}>
+ *     <TestContext initialState={{ admin: { resources: { post: { data: { 1: {id: 1, title: 'foo' } } } } } }}>
  *         <Show {...defaultShowProps} />
  *     </TestContext>
  * );
@@ -39,7 +49,7 @@ interface Props {
  * @example
  * // in an enzyme test, using jest.
  * const wrapper = render(
- *     <TestContext store={{ admin: { resources: { post: { data: { 1: {id: 1, title: 'foo' } } } } } }}>
+ *     <TestContext initialState={{ admin: { resources: { post: { data: { 1: {id: 1, title: 'foo' } } } } } }}>
  *         {({ store }) => {
  *              dispatchSpy = jest.spyOn(store, 'dispatch');
  *              return <Show {...defaultShowProps} />
@@ -49,32 +59,38 @@ interface Props {
  */
 class TestContext extends Component<Props> {
     storeWithDefault = null;
+    history: History = null;
 
     constructor(props) {
         super(props);
-        const { store = {}, enableReducers = false } = props;
+        this.history = props.history || createMemoryHistory();
+        const { initialState = {}, enableReducers = false } = props;
+
         this.storeWithDefault = enableReducers
             ? createAdminStore({
-                  initialState: merge(defaultStore, store),
-                  dataProvider: () => Promise.resolve({}),
+                  initialState: merge({}, defaultStore, initialState),
+                  dataProvider: convertLegacyDataProvider(() =>
+                      Promise.resolve(dataProviderDefaultResponse)
+                  ),
                   history: createMemoryHistory(),
               })
-            : createStore(() => merge(defaultStore, store));
+            : createStore(() => merge({}, defaultStore, initialState));
     }
 
     renderChildren = () => {
         const { children } = this.props;
         return typeof children === 'function'
-            ? children({ store: this.storeWithDefault })
+            ? (children as ChildrenFunction)({
+                  store: this.storeWithDefault,
+                  history: this.history,
+              })
             : children;
     };
 
     render() {
         return (
             <Provider store={this.storeWithDefault}>
-                <TranslationProvider>
-                    {this.renderChildren()}
-                </TranslationProvider>
+                <Router history={this.history}>{this.renderChildren()}</Router>
             </Provider>
         );
     }

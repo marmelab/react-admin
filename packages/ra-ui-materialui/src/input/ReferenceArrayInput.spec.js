@@ -15,12 +15,12 @@ describe('<ReferenceArrayInput />', () => {
     };
     const MyComponent = () => <span id="mycomponent" />;
 
-    it('should render a LinearProgress if isLoading is true', () => {
+    it('should render a LinearProgress if loading is true', () => {
         const wrapper = shallow(
             <ReferenceArrayInputView
                 {...{
                     ...defaultProps,
-                    isLoading: true,
+                    loading: true,
                     input: {},
                 }}
             >
@@ -29,9 +29,7 @@ describe('<ReferenceArrayInput />', () => {
         );
         const MyComponentElement = wrapper.find('MyComponent');
         assert.equal(MyComponentElement.length, 0);
-        const LinearProgressElement = wrapper.find(
-            'WithStyles(LinearProgress)'
-        );
+        const LinearProgressElement = wrapper.find('LinearProgress');
         assert.equal(LinearProgressElement.length, 1);
     });
 
@@ -168,6 +166,6 @@ describe('<ReferenceArrayInput />', () => {
         );
 
         const myComponent = wrapper.find('MyComponent');
-        assert.notEqual(myComponent.prop('meta', undefined));
+        assert.notEqual(myComponent.prop('meta'), undefined);
     });
 });

@@ -11,25 +11,23 @@ import {
     NullableBooleanInput,
     NumberField,
     ReferenceInput,
-    Responsive,
     SearchInput,
     TextField,
     TextInput,
 } from 'react-admin';
-import withStyles from '@material-ui/core/styles/withStyles';
-import Divider from '@material-ui/core/Divider';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
+import {
+    makeStyles,
+    useMediaQuery,
+    Divider,
+    Tabs,
+    Tab,
+} from '@material-ui/core';
 
 import NbItemsField from './NbItemsField';
 import CustomerReferenceField from '../visitors/CustomerReferenceField';
 import MobileGrid from './MobileGrid';
 
-const filterStyles = {
-    status: { width: 150 },
-};
-
-const OrderFilter = withStyles(filterStyles)(({ classes, ...props }) => (
+const OrderFilter = props => (
     <Filter {...props}>
         <SearchInput source="q" alwaysOn />
         <ReferenceInput source="customer_id" reference="customers">
@@ -44,11 +42,11 @@ const OrderFilter = withStyles(filterStyles)(({ classes, ...props }) => (
         <TextInput source="total_gte" />
         <NullableBooleanInput source="returned" />
     </Filter>
-));
+);
 
-const datagridStyles = {
+const useDatagridStyles = makeStyles({
     total: { fontWeight: 'bold' },
-};
+});
 
 class TabbedDatagrid extends React.Component {
     tabs = [
@@ -72,11 +70,12 @@ class TabbedDatagrid extends React.Component {
     };
 
     render() {
-        const { classes, filterValues, ...props } = this.props;
+        const { isXSmall, classes, filterValues, ...props } = this.props;
+
         return (
             <Fragment>
                 <Tabs
-                    fullWidth
+                    variant="fullWidth"
                     centered
                     value={filterValues.status}
                     indicatorColor="primary"
@@ -91,77 +90,82 @@ class TabbedDatagrid extends React.Component {
                     ))}
                 </Tabs>
                 <Divider />
-                <Responsive
-                    xsmall={
-                        <MobileGrid
-                            {...props}
-                            ids={this.state[filterValues.status]}
-                        />
-                    }
-                    medium={
-                        <div>
-                            {filterValues.status === 'ordered' && (
-                                <Datagrid {...props} ids={this.state.ordered}>
-                                    <DateField source="date" showTime />
-                                    <TextField source="reference" />
-                                    <CustomerReferenceField />
-                                    <NbItemsField />
-                                    <NumberField
-                                        source="total"
-                                        options={{
-                                            style: 'currency',
-                                            currency: 'USD',
-                                        }}
-                                        className={classes.total}
-                                    />
-                                    <EditButton />
-                                </Datagrid>
-                            )}
-                            {filterValues.status === 'delivered' && (
-                                <Datagrid {...props} ids={this.state.delivered}>
-                                    <DateField source="date" showTime />
-                                    <TextField source="reference" />
-                                    <CustomerReferenceField />
-                                    <NbItemsField />
-                                    <NumberField
-                                        source="total"
-                                        options={{
-                                            style: 'currency',
-                                            currency: 'USD',
-                                        }}
-                                        className={classes.total}
-                                    />
-                                    <BooleanField source="returned" />
-                                    <EditButton />
-                                </Datagrid>
-                            )}
-                            {filterValues.status === 'cancelled' && (
-                                <Datagrid {...props} ids={this.state.cancelled}>
-                                    <DateField source="date" showTime />
-                                    <TextField source="reference" />
-                                    <CustomerReferenceField />
-                                    <NbItemsField />
-                                    <NumberField
-                                        source="total"
-                                        options={{
-                                            style: 'currency',
-                                            currency: 'USD',
-                                        }}
-                                        className={classes.total}
-                                    />
-                                    <BooleanField source="returned" />
-                                    <EditButton />
-                                </Datagrid>
-                            )}
-                        </div>
-                    }
-                />
+                {isXSmall ? (
+                    <MobileGrid
+                        {...props}
+                        ids={this.state[filterValues.status]}
+                    />
+                ) : (
+                    <div>
+                        {filterValues.status === 'ordered' && (
+                            <Datagrid
+                                {...props}
+                                ids={this.state.ordered}
+                                optimized
+                                rowClick="edit"
+                            >
+                                <DateField source="date" showTime />
+                                <TextField source="reference" />
+                                <CustomerReferenceField />
+                                <NbItemsField />
+                                <NumberField
+                                    source="total"
+                                    options={{
+                                        style: 'currency',
+                                        currency: 'USD',
+                                    }}
+                                    className={classes.total}
+                                />
+                            </Datagrid>
+                        )}
+                        {filterValues.status === 'delivered' && (
+                            <Datagrid {...props} ids={this.state.delivered}>
+                                <DateField source="date" showTime />
+                                <TextField source="reference" />
+                                <CustomerReferenceField />
+                                <NbItemsField />
+                                <NumberField
+                                    source="total"
+                                    options={{
+                                        style: 'currency',
+                                        currency: 'USD',
+                                    }}
+                                    className={classes.total}
+                                />
+                                <BooleanField source="returned" />
+                                <EditButton />
+                            </Datagrid>
+                        )}
+                        {filterValues.status === 'cancelled' && (
+                            <Datagrid {...props} ids={this.state.cancelled}>
+                                <DateField source="date" showTime />
+                                <TextField source="reference" />
+                                <CustomerReferenceField />
+                                <NbItemsField />
+                                <NumberField
+                                    source="total"
+                                    options={{
+                                        style: 'currency',
+                                        currency: 'USD',
+                                    }}
+                                    className={classes.total}
+                                />
+                                <BooleanField source="returned" />
+                                <EditButton />
+                            </Datagrid>
+                        )}
+                    </div>
+                )}
             </Fragment>
         );
     }
 }
 
-const StyledTabbedDatagrid = withStyles(datagridStyles)(TabbedDatagrid);
+const StyledTabbedDatagrid = props => {
+    const classes = useDatagridStyles();
+    const isXSmall = useMediaQuery(theme => theme.breakpoints.down('xs'));
+    return <TabbedDatagrid classes={classes} isXSmall={isXSmall} {...props} />;
+};
 
 const OrderList = ({ classes, ...props }) => (
     <List

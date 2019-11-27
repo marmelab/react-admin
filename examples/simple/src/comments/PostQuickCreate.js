@@ -1,15 +1,15 @@
-import React, { Component } from 'react';
+import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { withStyles } from '@material-ui/core/styles';
+import { useSelector, useDispatch } from 'react-redux';
+import { makeStyles } from '@material-ui/core/styles';
 import {
     CREATE,
-    LongTextInput,
     SaveButton,
     SimpleForm,
     TextInput,
     Toolbar,
     required,
+    showNotification,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
 
 import CancelButton from './PostQuickCreateCancelButton';
@@ -28,64 +28,65 @@ PostQuickCreateToolbar.propTypes = {
     onCancel: PropTypes.func.isRequired,
 };
 
-const styles = {
+const useStyles = makeStyles({
     form: { padding: 0 },
-};
-
-class PostQuickCreateView extends Component {
-    static propTypes = {
-        dispatch: PropTypes.func.isRequired,
-        onCancel: PropTypes.func.isRequired,
-        onSave: PropTypes.func.isRequired,
-        submitting: PropTypes.bool.isRequired,
-    };
-
-    handleSave = values => {
-        const { dispatch, onSave } = this.props;
-        dispatch({
-            type: 'QUICK_CREATE',
-            payload: { data: values },
-            meta: {
-                fetch: CREATE,
-                resource: 'posts',
-                onSuccess: {
-                    callback: ({ payload: { data } }) => onSave(data),
-                },
-                onError: {
-                    callback: ({ error }) => this.setState({ error }),
-                },
-            },
-        });
-    };
-
-    render() {
-        const { classes, submitting, onCancel } = this.props;
-
-        return (
-            <SimpleForm
-                form="post-create"
-                save={this.handleSave}
-                saving={submitting}
-                redirect={false}
-                toolbar={
-                    <PostQuickCreateToolbar
-                        onCancel={onCancel}
-                        submitting={submitting}
-                    />
-                }
-                classes={{ form: classes.form }}
-            >
-                <TextInput source="title" validate={required()} />
-                <LongTextInput source="teaser" validate={required()} />
-            </SimpleForm>
-        );
-    }
-}
-
-const mapStateToProps = state => ({
-    submitting: state.admin.loading > 0,
 });
 
-export default connect(mapStateToProps)(
-    withStyles(styles)(PostQuickCreateView)
-);
+const PostQuickCreate = ({ onCancel, onSave, ...props }) => {
+    const classes = useStyles();
+    const dispatch = useDispatch();
+    const submitting = useSelector(state => state.admin.loading > 0);
+
+    const handleSave = useCallback(
+        values => {
+            dispatch({
+                type: 'QUICK_CREATE',
+                payload: { data: values },
+                meta: {
+                    fetch: CREATE,
+                    resource: 'posts',
+                    onSuccess: {
+                        callback: ({ payload: { data } }) => onSave(data),
+                    },
+                    onFailure: {
+                        callback: ({ error }) => {
+                            dispatch(showNotification(error.message, 'error'));
+                        },
+                    },
+                },
+            });
+        },
+        [dispatch, onSave]
+    );
+
+    return (
+        <SimpleForm
+            save={handleSave}
+            saving={submitting}
+            redirect={false}
+            toolbar={
+                <PostQuickCreateToolbar
+                    onCancel={onCancel}
+                    submitting={submitting}
+                />
+            }
+            classes={{ form: classes.form }}
+            {...props}
+        >
+            <TextInput source="title" validate={required()} />
+            <TextInput
+                source="teaser"
+                validate={required()}
+                fullWidth={true}
+                multiline={true}
+            />
+        </SimpleForm>
+    );
+};
+
+PostQuickCreate.propTypes = {
+    onCancel: PropTypes.func.isRequired,
+    onSave: PropTypes.func.isRequired,
+};
+
+export default PostQuickCreate;

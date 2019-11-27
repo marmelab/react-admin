@@ -5,35 +5,118 @@ title: "FAQ"
 
 # FAQ
 
-- [Can I have custom identifiers/primary keys for my resources?](#can-i-have-custom-identifiersprimary-keys-for-my-resources)
-- [I get warning about unique key for child in array](#i-get-warning-about-unique-key-for-child-in-array)
-- [A form with validation freezes when rendering](#a-form-with-validation-freezes-when-rendering)
-- [How can I customize the UI depending on the user permissions?](#how-can-i-customize-the-ui-depending-on-the-user-permissions)
-- [How can I customize forms depending on its inputs values?](#how-can-i-customize-forms-depending-on-its-inputs-values)
-- [My Resource is defined but not displayed on the Menu](#my-resource-is-defined-but-not-displayed-on-the-menu)
-- [Why React Admin Doesn't Support The Latest Version Of Material-UI?](#why-react-admin-doesnt-support-the-latest-version-of-material-ui)
+- [FAQ](#faq)
+  - [Can I have custom identifiers/primary keys for my resources?](#can-i-have-custom-identifiersprimary-keys-for-my-resources)
+  - [I get warning about unique key for child in array](#i-get-warning-about-unique-key-for-child-in-array)
+  - [How can I customize the UI depending on the user permissions?](#how-can-i-customize-the-ui-depending-on-the-user-permissions)
+  - [How can I customize forms depending on its inputs values?](#how-can-i-customize-forms-depending-on-its-inputs-values)
+  - [UI in production build is empty or broke](#ui-in-production-build-is-empty-or-broke)
+  - [My Resource is defined but not displayed on the Menu](#my-resource-is-defined-but-not-displayed-on-the-menu)
+  - [Why Doesn't React Admin Support The Latest Version Of Material-UI?](#why-doesnt-react-admin-support-the-latest-version-of-material-ui)
 
 ## Can I have custom identifiers/primary keys for my resources?
 
-React-admin requires that each resource has an `id` field to identify it. If your API uses a different name for the primary key, you have to map that name to `id` in a custom [dataProvider](./DataProviders.md). For instance, to use a field named `_id` as identifier:
+React-admin requires that each resource has an `id` field to identify it. If your API uses a different name for the primary key, you have to map that name to `id` in your [dataProvider](./DataProviders.md). For instance, to use a field named `_id` as identifier:
 
-```js
-const convertHTTPResponse = (response, type, resource, params) => {
-    const { headers, json } = response;
-    switch (type) {
-    case GET_LIST:
-        return {
-            data: json.map(resource => ({ ...resource, id: resource._id }) ),
-            total: parseInt(headers.get('content-range').split('/').pop(), 10),
+```diff
+const dataProvider = {
+    getList: (resource, params) => {
+        const { page, perPage } = params.pagination;
+        const { field, order } = params.sort;
+        const query = {
+            sort: JSON.stringify([field, order]),
+            range: JSON.stringify([(page - 1) * perPage, page * perPage - 1]),
+            filter: JSON.stringify(params.filter),
         };
-    case UPDATE:
-    case DELETE:
-    case GET_ONE:
-        return { ...json, id: json._id };
-    case CREATE:
-        return { ...params.data, id: json._id };
-    default:
-        return json;
+        const url = `${apiUrl}/${resource}?${stringify(query)}`;
+
+        return httpClient(url).then(({ headers, json }) => ({
+-           data: json,
++           data: json.map(resource => ({ ...resource, id: resource._id }) ),
+            total: parseInt(headers.get('content-range').split('/').pop(), 10),
+        }));
+    },
+    getOne: (resource, params) =>
+        httpClient(`${apiUrl}/${resource}/${params.id}`).then(({ json }) => ({
+-           data: json,
++           { ...json, id: json._id },
+        })),
+
+    getMany: (resource, params) => {
+        const query = {
+            filter: JSON.stringify({ id: params.ids }),
+        };
+        const url = `${apiUrl}/${resource}?${stringify(query)}`;
+        return httpClient(url).then(({ json }) => ({ 
+-           data: json,
++           data: json.map(resource => ({ ...resource, id: resource._id }) ),
+        }));
+    },
+
+    getManyReference: (resource, params) => {
+        const { page, perPage } = params.pagination;
+        const { field, order } = params.sort;
+        const query = {
+            sort: JSON.stringify([field, order]),
+            range: JSON.stringify([(page - 1) * perPage, page * perPage - 1]),
+            filter: JSON.stringify({
+                ...params.filter,
+                [params.target]: params.id,
+            }),
+        };
+        const url = `${apiUrl}/${resource}?${stringify(query)}`;
+
+        return httpClient(url).then(({ headers, json }) => ({
+-           data: json,
++           data: json.map(resource => ({ ...resource, id: resource._id }) ),
+            total: parseInt(headers.get('content-range').split('/').pop(), 10),
+        }));
+    },
+
+    update: (resource, params) =>
+        httpClient(`${apiUrl}/${resource}/${params.id}`, {
+            method: 'PUT',
+            body: JSON.stringify(params.data),
+        }).then(({ json }) => ({ 
+-           data: json,
++           { ...json, id: json._id },
+        })),
+
+    updateMany: (resource, params) => {
+        const query = {
+            filter: JSON.stringify({ id: params.ids}),
+        };
+        return httpClient(`${apiUrl}/${resource}?${stringify(query)}`, {
+            method: 'PUT',
+            body: JSON.stringify(params.data),
+        }).then(({ json }) => ({ data: json }));
+    }
+
+    create: (resource, params) =>
+        httpClient(`${apiUrl}/${resource}`, {
+            method: 'POST',
+            body: JSON.stringify(params.data),
+        }).then(({ json }) => ({
+-           data: { ...params.data, id: json.id },
++           data: { ...params.data, id: json._id },
+        })),
+
+    delete: (resource, params) =>
+        httpClient(`${apiUrl}/${resource}/${params.id}`, {
+            method: 'DELETE',
+        }).then(({ json }) => ({ 
+-           data: json,
++           { ...json, id: json._id },
+        })),
+
+    deleteMany: (resource, params) => {
+        const query = {
+            filter: JSON.stringify({ id: params.ids}),
+        };
+        return httpClient(`${apiUrl}/${resource}?${stringify(query)}`, {
+            method: 'DELETE',
+            body: JSON.stringify(params.data),
+        }).then(({ json }) => ({ data: json }));
     }
 };
 ```
@@ -46,40 +129,6 @@ When displaying a `Datagrid` component, you get the following warning:
 > Check the render method of `DatagridBody`.
 
 This is most probably because the resource does not have an `id` property as expected by react-admin. See the previous FAQ to see how to resolve this: [Can I have custom identifiers/primary keys for my resources?](#can-i-have-custom-identifiersprimary-keys-for-my-resources)
-
-## A form with validation freezes when rendering
-
-You're probably using validator factories directly in the render method of your component:
-
-```jsx
-export const CommentEdit = ({ ...props }) => (
-    <Edit {...props}>
-        <SimpleForm>
-            <DisabledInput source="id" />
-            <DateInput source="created_at" />
-            <LongTextInput source="body" validate={minLength(10)} />
-        </SimpleForm>
-    </Edit>
-);
-```
-
-Avoid calling functions directly inside the render method:
-
-```jsx
-const validateMinLength = minLength(10);
-
-export const CommentEdit = ({ ...props }) => (
-    <Edit {...props}>
-        <SimpleForm>
-            <DisabledInput source="id" />
-            <DateInput source="created_at" />
-            <LongTextInput source="body" validate={validateMinLength} />
-        </SimpleForm>
-    </Edit>
-);
-```
-
-This is related to [redux-form](https://github.com/erikras/redux-form/issues/3288).
 
 ## How can I customize the UI depending on the user permissions?
 
@@ -121,9 +170,9 @@ You can declare a resource without `list` prop, to manage reference for example:
 
 But with the default menu, resources without `list` prop aren't shown.
 
-In order to have a specific resource without `list` prop listed on the menu, you have to [write your own custom menu](./Theming.html#using-a-custom-menu).
+In order to have a specific resource without `list` prop listed on the menu, you have to [write your own custom menu](./Theming.md#using-a-custom-menu).
 
- ```jsx
+```jsx
  const MyMenu = ({ resources, onMenuClick, logout }) => (
     <div>
         {resources.map(resource => (
@@ -138,7 +187,7 @@ In order to have a specific resource without `list` prop listed on the menu, you
 
 React Admin users and third-party libraries maintainers might have noticed that the default UI template `ra-ui-materialui` [has `@material-ui/core@^1.4.0` as dependency](https://github.com/marmelab/react-admin/blob/ae45a2509b391a6ea81cdf9c248ff9d28364b6e1/packages/ra-ui-materialui/package.json#L44) even though the latest version of Material UI is already 3.x.
 
-We chose not to upgrade to Material UI v3 when it was released because the MUI team was already hard at work preparing the next major version ([which includes major breaking changes](https://github.com/mui-org/material-ui/issues/13663)). In fact, material-ui published a release schedule for one major version every 6 months. This means that developers using material-ui have to upgrade their codebase every six months to get the latest updates. On the other hand, react-admin plans to release a major version once every year, minimizing the upgrade work for developers. This gain in stability is a tradeoff - react-admin users can't use the latest version of material-ui for about half a year.
+We chose not to upgrade to Material UI v3 when it was released because the MUI team was already hard at work preparing the next major version ([which includes major breaking changes](https://github.com/mui-org/material-ui/issues/13663)). In fact, material-ui published a release schedule for one major version every 6 months. This means that developers using material-ui have to upgrade their codebase every six months to get the latest updates. On the other hand, react-admin plans to release a major version once every year, minimizing the upgrade work for developers. This gain in stability is a trade-off - react-admin users can't use the latest version of material-ui for about half a year.
 
 Feel free to discuss this policy in [issue #2399](https://github.com/marmelab/react-admin/issues/2399).
 

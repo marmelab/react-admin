@@ -1,1096 +1,1356 @@
-# Upgrade to 2.0
+# Upgrade to 3.0
 
-- [Admin-on-rest Renamed to React-Admin](#admin-on-rest-renamed-to-react-admin)
-- [`restClient` Prop Renamed To `dataProvider` in `<Admin>` Component](#restclient-prop-renamed-to-dataprovider-in-admin-component)
-- [Default REST Clients Moved to Standalone Packages](#default-rest-clients-moved-to-standalone-packages)
-- [`authClient` Prop Renamed To `authProvider` in `<Admin>` Component](#authclient-prop-renamed-to-authprovider-in-admin-component)
-- [Default (English) Messages Moved To Standalone Package](#default-english-messages-moved-to-standalone-package)
-- [Message Hash Main Key Changed ("aor" => "ra")](#message-hash-main-key-changed-aor--ra)
-- [Removed the Delete view in Resource](#removed-the-delete-view-in-resource)
-- [Replaced `messages` by `i18nProvider` in `<Admin>`](#replaced-messages-by-i18nprovider-in-admin)
-- [`crudSaga` renamed to `adminSaga`](#crudsaga-renamed-to-adminsaga)
-- [`<AutocompleteInput>` no longer accepts a `filter` prop](#autocompleteinput-no-longer-accepts-a-filter-prop)
-- [`<Datagrid>` No Longer Accepts `options`, `headerOptions`, `bodyOptions`, and `rowOptions` props](#datagrid-no-longer-accepts-options-headeroptions-bodyoptions-and-rowoptions-props)
-- [`<DateInput>` Stores a Date String Instead Of a Date Object](#dateinput-stores-a-date-string-instead-of-a-date-object)
-- [Removed `<DateInput>` `options` props](#removed-dateinput-options-props)
-- [`<SelectArrayInput>` does not support autocompletion anymore.](#selectarrayinput-does-not-support-autocompletion-anymore)
-- [CSS Classes Changed](#css-classes-changed)
-- [`addField` Prop Replaced By `addField` HOC](#addfield-prop-replaced-by-addfield-hoc)
-- [No More `refresh` Prop Passed To `<List>` Actions](#no-more-refresh-prop-passed-to-list-actions)
-- [Customizing styles](#customizing-styles)
-- [Authentication: `<Restricted>` renamed to `<Authenticated>`](#authentication-restricted-renamed-to-authenticated)
-- [Authorization: `<WithPermission>` and `<SwitchPermissions>` replaced by `<WithPermissions>`](#authorization-withpermission-and-switchpermissions-replaced-by-withpermissions)
-- [Custom Layouts](#custom-layouts)
-- [Menu `onMenuTap` prop has been renamed `onMenuClick`](#menu-onmenutap-prop-has-been-renamed-onmenuclick)
-- [Logout is now displayed in the AppBar on desktop](#logout-is-now-displayed-in-the-appbar-on-desktop)
-- [Data providers should support two more types for bulk actions](#data-providers-should-support-two-more-types-for-bulk-actions)
-- [react-admin addon packages renamed with ra prefix and moved into root repository](#react-admin-addon-packages-renamed-with-ra-prefix-and-moved-into-root-repository)
-- [`aor-dependent-input` Was Removed](#aor-dependent-input-was-removed)
-- [The require,number and email validators should be renamed to require(),number() and validation()](#validators-should-be-initialized)
+We took advantage of the major release to fix all the problems in react-admin that required a breaking change. As a consequence, you'll need to do many small changes in the code of existing react-admin v2 applications. Follow this step-by-step guide to upgrade to react-admin v3.  
 
-## Admin-on-rest Renamed to React-Admin
+## Upgrade all react-admin packages
 
-We've chosen to remove term REST from the project name, to emphasize the fact that it can adapt to any type of backend - including GraphQL.
-
-So the main package name has changed from `admin-on-rest` to `react-admin`. You must update your dependencies:
-
-```sh
-npm uninstall admin-on-rest
-npm install react-admin
-```
-
-As well as all your files depending on the 'admin-on-rest' package:
+In the `packages.json`, upgrade ALL react-admin related dependencies to 3.0.0. This includes `react-admin`, `ra-language-XXX`, `ra-data-XXX`, etc.
 
 ```diff
-- import { BooleanField, NumberField, Show } from 'admin-on-rest'; 
-+ import { BooleanField, NumberField, Show } from 'react-admin'; 
+{
+    "name": "demo",
+    "version": "0.1.0",
+    "private": true,
+    "dependencies": {
+-       "ra-data-simple-rest": "^2.9.6",
++       "ra-data-simple-rest": "^3.0.0",
+-       "ra-input-rich-text": "^2.9.6",
++       "ra-input-rich-text": "^3.0.0",
+-       "ra-language-english": "^2.9.6",
++       "ra-language-english": "^3.0.0",
+-       "ra-language-french": "^2.9.6",
++       "ra-language-french": "^3.0.0",
+-       "react-admin": "^2.9.6",
++       "react-admin": "^3.0.0",
+        "react": "^16.9.0",
+        "react-dom": "^16.9.0",
+        ...
+    },
 ```
 
-A global search and replace on the string "admin-on-rest" should do the trick in no time.
+Failing to upgrade one of the `ra-` packages will result in a duplication of the react-admin package in two incompatible versions, and cause hard-to-debug bugs.  
 
-## `restClient` Prop Renamed To `dataProvider` in `<Admin>` Component
+## Increased version requirement for key dependencies
 
-In the `<Admin>` component, the `restClient` prop is now called `dataProvider`:
+* `react` and `react-dom` are now required to be >= 16.9. This version is backward compatible with 16.3, which was the minimum requirement in react-admin, and it offers the support for Hooks, on which react-admin v3 relies heavily.
+* `react-redux` requires a minimum version of 7.1.0 (instead of 5.0). Check their upgrade guide for [6.0](https://github.com/reduxjs/react-redux/releases/tag/v6.0.0) and [7.0](https://github.com/reduxjs/react-redux/releases/tag/v7.0.0)
+* `material-ui` requires a minimum of 4.0.0 (instead of 1.5). Check their [Upgrade guide](https://next.material-ui.com/guides/migration-v3/).
+
+## `react-router-redux` replaced by `connected-react-router`
+
+We've replaced the `react-router-redux` package, which was deprecated and not compatible with the latest version of `react-redux`, by an equivalent package named `connected-react-router`. As they share the same API, you can just change the `import` statement and it should work fine.
 
 ```diff
-import restClient from './restClient';
-- <Admin restClient={restClient}>
-+ <Admin dataProvider={restClient}>
-   ...
-</Admin>
+-import { push } from 'react-router-redux';
++import { push } from 'connected-react-router';
+
+-import { LOCATION_CHANGE } from 'react-router-redux';
++import { LOCATION_CHANGE } from 'connected-react-router';
 ```
 
-The signature of the Data Provider function is the same as the REST client function, so you shouldn't need to change anything in your previous REST client function.
+It's a bit more work if you're using a Custom App, as the initialization of `connected-react-router` requires one more step than `react-router-redux`.
 
-Once again, this change de-emphasizes the "REST" term in admin-on-rest.
-
-## Default REST Clients Moved to Standalone Packages
-
-`simpleRestClient` and `jsonServerRestClient` are no longer part of the core package. They have been moved to standalone packages, where they are the default export:
-
-* `simpleRestClient` => `ra-data-simple-rest`
-* `jsonServerRestClient` => `ra-data-json-server`
-
-Update your `import` statements accordingly:
+If you create a custom reducer, here is how to update your `createAdminStore` file:
 
 ```diff
-- import { simpleRestClient } from 'admin-on-rest';
-+ import simpleRestClient from 'ra-data-simple-rest';
+import { applyMiddleware, combineReducers, compose, createStore } from 'redux';
+-import { routerMiddleware, routerReducer } from 'react-router-redux';
++import { routerMiddleware, connectRouter } from 'connected-react-router';
+-import { reducer as formReducer } from 'redux-form';
 
-- import { jsonServerRestClient } from 'admin-on-rest';
-+ import jsonServerRestClient from 'ra-data-json-server';
+...
+
+export default ({
+    authProvider,
+    dataProvider,
+    history,
+    locale = 'en',
+}) => {
+    const reducer = combineReducers({
+        admin: adminReducer,
+-       form: formReducer,
+-       router: routerReducer,
++       router: connectRouter(history),
+        { /* add your own reducers here */ },
+    });
+    ...
 ```
 
-## `authClient` Prop Renamed To `authProvider` in `<Admin>` Component
+The syntax of the `routerMiddleware` doesn't change.
 
-In the `<Admin>` component, the `authClient` prop is now called `authProvider`:
+And if you don't use the `<Admin>` component, change the package for `ConnectedRouter`:
 
 ```diff
-- import authClient from './authClient';
-+ import authProvider from './authProvider';
-- <Admin authClient={authClient}>
-+ <Admin authProvider={authProvider}>
-   ...
-</Admin>
+import React from 'react';
+import { Provider } from 'react-redux';
+import { createHashHistory } from 'history';
+-import { ConnectedRouter } from 'react-router-redux';
++import { ConnectedRouter } from 'connected-react-router';
+import { Switch, Route } from 'react-router-dom';
+import withContext from 'recompose/withContext';
+...
 ```
 
-The signature of the authorizations provider function is the same as the authorizations client function, so you shouldn't need to change anything in your previous authorizations client function.
+## `redux-form` replaced by `react-final-form`
 
-## Default (English) Messages Moved To Standalone Package
-
-The English messages have moved to another package, `ra-language-english`. The core package still displays the interface messages in English by default (by using `ra-language-english` as a dependency), but if you overrode some of the messages, you'll need to update the package name:
+The author of `redux-form` has written a new Form library for React called `react-final-form` to fix all the problems that `redux-form` had by construction. `react-final-form` no longer stores the form state in Redux. But the two libraries share a similar API. So in many cases, changing the imported package will suffice:
 
 ```diff
-- import { enMessages } from 'admin-on-rest';
-+ import enMessages from 'ra-language-english';
-const messages = { 'en': enMessages };
+-import { Field } from 'redux-form';
++import { Field } from 'react-final-form';
 ```
 
-## Message Hash Main Key Changed ("aor" => "ra")
+The next sections highlight changes that you must do to your code as a consequence of switching to `react-final-form`.
 
-The main key of translation message objects was renamed from "aor" ro "ra". You must update your custom messages accordingly if you overrode core interface messages. If you're a language package author, you must also update and  republish your package to have it work with react-admin 2.0.
+## Custom Form Toolbar or Buttons Must Use New `handleSubmit` Signature
 
-```diff
-module.exports = {
--    aor: {
-+    ra: {
-        action: {
-            delete: 'Delete',
-            show: 'Show',
-            ...
-```
+If you were using custom buttons (to alter the form values before submit for example), you'll need to update your code. In `react-admin` v2, the form toolbar and its buttons used to receive `handleSubmit` and `handleSubmitWithRedirect` props. These props accepted functions which were called with the form values.
 
-## Removed the Delete view in Resource
+The migration to `react-final-form` changes their signature and behavior to the following:
 
-Admin-on-rest used to have a special Delete view, accessible with a special URL, to display a confirmation message after a user clicked on the Delete button. This view added complexity to the early stages of development with admin-on-rest. Besides, it provided a mediocre user experience.
+- `handleSubmit`: accepts no arguments, and will submit the form with its current values immediately
+- `handleSubmitWithRedirect` accepts a custom redirect, and will submit the form with its current values immediately
 
-In react-admin, the deletion confirmation is now a Dialog that opens on top of the page where the user currently is.
+Here's how to migrate the *Altering the Form Values before Submitting* example from the documentation, in two variants:
 
-As a consequence, you no longer need to pass a value to the `remove` prop in Resources:
-
-```diff
--  <Resource name="posts" list={PostList} edit={PostEdit} show={PostShow} remove={Delete} />
-+  <Resource name="posts" list={PostList} edit={PostEdit} show={PostShow} />
-```
-
-That also means that if you disabled deletion on a Resource by not passing a `remove` prop, you will be surprised by Delete buttons popping in the Edit views. The way to remove this button is to [Customize the Edit Toolbar](https://marmelab.com/react-admin/CreateEdit.html#actions).
-
-## Replaced `messages` by `i18nProvider` in `<Admin>`
-
-In admin-on-rest, localization messages were passed as an object literal in the `messages` props of the `<Admin>` component. To do the same in react-admin, you must now use a slightly more lengthy syntax, and pass a function in the `i18nProvider` prop instead.
-
-```diff
-- import { Admin, enMessages } from 'admin-on-rest';
-- import frMessages from 'aor-language-french';
-+ import { Admin } from 'react-admin';
-+ import enMessages from 'ra-language-english';
-+ import frMessages from 'ra-language-french';
-
-const messages = {
-    en: enMessages,
-    fr: frMessages,
-};
-
-- const App = () => <Admin locale="en" messages={messages} />;
-+ const i18nProvider = locale => messages[locale];
-+ const App = () => <Admin locale="en" i18nProvider={i18nProvider} />;
-```
-
-The new `i18nProvider` allows to load the messages asynchronously - see [the `i18nProvider` documentation](./Translation.md#i18nProvider) for details.
-
-## `crudSaga` renamed to `adminSaga`
-
-If you don't use the `<Admin>` component, but prefer to implement your administration inside another root component, you probably followed the Custom App documentation, and used the `crudSaga`. This property was renamed to `adminSaga`
-
-```diff
-// in src/App.js
-- import { crudSaga, ... } from 'admin-on-rest';
-+ import { adminSaga, ... } from 'react-admin';
-
-// ...
-- sagaMiddleware.run(crudSaga(dataProvider, i18nProvider));
-+ sagaMiddleware.run(adminSaga(dataProvider, authProvider, i18nProvider));
-```
-
-## `<AutocompleteInput>` no longer accepts a `filter` prop
-
-Material-ui's implementation of the autocomplete input has radically changed. React-admin maintains backwards compatibility, except for the `filter` prop, which no longer makes sense in the new implementation.
-
-## `<Datagrid>` No Longer Accepts `options`, `headerOptions`, `bodyOptions`, and `rowOptions` props
-
-Material-ui's implementation of the `<Table>` component has reduced dramatically. Therefore, all the advanced features of the datagrid are no longer available from react-admin.
-
-If you need a fixed header, row hover, multi-row selection, or any other material-ui 0.x `<Table>` feature, you'll need to implement your own `<Datagrid>` alternative, e.g. using the library recommended by material-ui, [DevExtreme React Grid](https://devexpress.github.io/devextreme-reactive/react/grid/).
-
-## `<DateInput>` Stores a Date String Instead Of a Date Object
-
-The value of the `<DateInput>` used to be a `Date` object. It's now a `String`, i.e. a stringified date. If you used `format` and `parse` to convert a string to a `Date`, you can now remove these props:
-
-```diff
-- const dateFormatter = v => { // from record to input
--   // v is a string of "YYYY-MM-DD" format
--   const match = /(\d{4})-(\d{2})-(\d{2})/.exec(v);
--   if (match === null) return;
--   const d = new Date(match[1], parseInt(match[2], 10) - 1, match[3]);
--   if (isNaN(d)) return;
--   return d;
-- };
-- const dateParser = v => { // from input to record
--   // v is a `Date` object
--   if (!(v instanceof Date) || isNaN(v)) return;
--   const pad = '00';
--   const yy = v.getFullYear().toString();
--   const mm = (v.getMonth() + 1).toString();
--   const dd = v.getDate().toString();
--   return `${yy}-${(pad + mm).slice(-2)}-${(pad + dd).slice(-2)}`;
-- };
-- <DateInput source="isodate" format={dateFormatter} parse={dateParser} label="ISO date" />
-+ <DateInput source="isodate" label="ISO date" />
-```
-
-On the other way around, if your data provider expects JavaScript `Date` objects for value, you now need to do the conversion to and from strings using `format` and `parse`:
-
-```diff
-- <DateInput source="isodate" label="ISO date" />
-+ const dateFormatter = v => { // from record to input
-+   // v is a `Date` object
-+   if (!(v instanceof Date) || isNaN(v)) return;
-+   const pad = '00';
-+   const yy = v.getFullYear().toString();
-+   const mm = (v.getMonth() + 1).toString();
-+   const dd = v.getDate().toString();
-+   return `${yy}-${(pad + mm).slice(-2)}-${(pad + dd).slice(-2)}`;
-+ };
-+ const dateParser = v => { // from input to record
-+   // v is a string of "YYYY-MM-DD" format
-+   const match = /(\d{4})-(\d{2})-(\d{2})/.exec(v);
-+   if (match === null) return;
-+   const d = new Date(match[1], parseInt(match[2], 10) - 1, match[3]);
-+   if (isNaN(d)) return;
-+   return d;
-+ };
-+ <DateInput source="isodate" format={dateFormatter} parse={dateParser} label="ISO date" />
-```
-
-## Removed `<DateInput>` `options` props
-
-Material-ui 1.0 doesn't provide a real date picker, so the `options` prop of the `<DateInput>` is no longer supported.
-
-## `<SelectArrayInput>` does not support autocompletion anymore.
-
-This component relied on [material-ui-chip-input](https://github.com/TeamWertarbyte/material-ui-chip-input) which is not yet fully ported to Material-ui 1.0: it doesn't support the autocomplete feature we need. We will add another component for this when `material-ui-chip-input` is ported.
-
-## CSS Classes Changed
-
-React-admin does not rely heavily on CSS classes. Nevertheless, a few components added CSS classes to facilitate per-field theming: `<SimpleShowLayout>`, `<Tab>`, and `<FormInput>`. These CSS classes used to follow the "aor-" naming pattern. They have all been renamed to use the "ra-" pattern instead. Here is the list of concerned classes:
-
-* `aor-field` => `ra-field`
-* `aor-field-[source]` => `ra-field-[source]`
-* `aor-input` => `ra-input`
-* `aor-input-[source]` => `ra-input-[source]`
-
-If you used CSS to customize the look and feel of these components, please update your CSS selectors accordingly.
-
-## `addField` Prop Replaced By `addField` HOC
-
-Adding the `addField` prop to a component used to automatically add a redux-form `<Field>` component around an input component that you wanted to bind to the edit or create form. This feature was moved to a Higher-order component (HOC):
-
-```diff
-import SelectField from '@material-ui/core/SelectField';
-import MenuItem from '@material-ui/core/MenuItem';
-+ import { addField } from 'react-admin';
-const SexInput = ({ input, meta: { touched, error } }) => (
-    <SelectField
-        floatingLabelText="Sex"
-        errorText={touched && error}
-        {...input}
-    >
-        <MenuItem value="M" primaryText="Male" />
-        <MenuItem value="F" primaryText="Female" />
-    </SelectField>
-);
-- SexInput.defaultProps = {
--     addField: true, // require a <Field> decoration
-- }
-- export default SexInput;
-+ export default addField(SexInput);
-```
-
-Admin-on-rest input components all use the new `addField` HOC. This means that it's no longer necessary to set the `addField` prop when you compose one of admin-on-rest's components:
-
-```diff
-- import { SelectInput } from 'admin-on-rest';
-+ import { SelectInput } from 'react-admin';
-const choices = [
-    { id: 'M', name: 'Male' },
-    { id: 'F', name: 'Female' },
-]
-const SexInput = props => <SelectInput {...props} choices={choices}/>;
-- SexInput.defaultProps = {
--     addField: true;
-- }
-export default SexInput;
-```
-
-## No More `refresh` Prop Passed To `<List>` Actions
-
-The Refresh button now uses Redux to force a refetch of the data. As a consequence, the List view no longer passes the `refresh` prop to the `<Actions>` component. If you relied on that prop to refresh the list, you must now use the new `<RefreshButton>` component.
-
-```diff
-import CardActions from '@material-ui/core/CardActions';
-- import FlatButton from '@material-ui/core/FlatButton';
-- import { CreateButton } from 'admin-on-rest';
-- import NavigationRefresh from '@material-ui/core/svg-icons/navigation/refresh';
-+ import { CreateButton, RefreshButton } from 'react-admin';
-
-- const PostListActions = ({ resource, filters, displayedFilters, filterValues, basePath, showFilter, refresh }) => (
-+ const PostListActions = ({ resource, filters, displayedFilters, filterValues, basePath, showFilter }) => (
-    <CardActions>
-        {filters && React.cloneElement(filters, { resource, showFilter, displayedFilters, filterValues, context: 'button' }) }
-        <CreateButton basePath={basePath} />
--       <FlatButton primary label="refresh" onClick={refresh} icon={<NavigationRefresh />} />
-+       <RefreshButton />
-    </CardActions>
-);
-```
-
-## Customizing Styles
-
-Following the same path as Material UI, react-admin now uses [JSS](https://github.com/cssinjs/jss) for styling components instead of the `style` prop. This approach has many benefits, including a smaller DOM, faster rendering, media queries support, and automated browser prefixing.
-
-All react-admin components now accept a `className` prop instead of the `elStyle` prop. But it expects a CSS *class name* instead of a CSS object. To set custom styles through a class name, you must use the [`withStyles` Higher Order Component](https://material-ui.com/customization/css-in-js/#api) supplied by Material-UI.
-
-```diff
-- import { EmailField, List, Datagrid } from 'admin-on-rest';
-- const UserList = props => (
--     <List {...props}>
--         <Datagrid>
--             ...
--             <EmailField source="email" elStyle={{ textDecoration: 'none' }} />
--         </Datagrid>
--     </List>
-- );
-- export default UserList;
-// renders in the datagrid as
-//<td>
-//    <a style="text-decoration:none" href="mailto:foo@example.com">foo@example.com</a>
-//</td>
-+ import { EmailField, List, Datagrid } from 'react-admin';
-+ import { withStyles } from '@material-ui/core/styles';
-+ const styles = {
-+     field: {
-+         textDecoration: 'none',
-+     },
-+ };
-+ const UserList = ({ classes, ...props }) => (
-+     <List {...props}>
-+         <Datagrid>
-+            ...
-+             <EmailField source="email" className={classes.field} />
-+         </Datagrid>
-+     </List>
-+ );
-+ export default withStyles(styles)(UserList);
-```
-
-In addition to `elStyle`, Field and Input components used to support a `style` prop to override the styles of the *container element* (the `<td>` in a datagrid). This prop is no longer supported in react-admin. Instead, the `Datagrid` component will check if its children have a `headerClassName` and `cellClassName` props. If they do, it will apply those classes to the table header and cells respectively.
-
-```diff
-- import { EmailField, List, Datagrid } from 'admin-on-rest';
-+ import { EmailField, List, Datagrid } from 'react-admin';
-+ import { withStyles } from '@material-ui/core/styles';
-
-+ const styles = {
-+     cell: {
-+         backgroundColor: 'lightgrey',
-+     },
-+     field: {
-+         textDecoration: 'none',
-+     },
-+ };
-
-- const UserList = props => (
-+ const UserList = ({ classes, ...props }) => (
-    <List {...props}>
-        <Datagrid>
--           <EmailField source="email" style={{ backgroundColor: 'lightgrey' }} elStyle={{ textDecoration: 'none' }} />
-+           <EmailField source="email" cellClassName={classes.cell} className={classes.field} />
-        </Datagrid>
-    </List>
-);
-
-- export default UserList;
-+ export default withStyles(styles)(UserList);
-// renders in the datagrid as
-// <td style="background-color:lightgrey">
-//     <a style="text-decoration:none" href="mailto:foo@example.com">
-//         foo@example.com
-//     </a>
-// </td>
-```
-
-Furthermore, some React-admin components such as the `List`, `Filter`, and `Datagrid` also accept a `classes` prop. This prop is injected by the [`withStyles` Higher Order Component](https://material-ui.com/customization/css-in-js/#api) and allows you to customize the style of some deep children. See the Theming documentation for details.
-
-**Tip**: When you set the `classes` prop in the `List` or `Datagrid` components, you might see warnings about the `cell` and `field` classes being unknown by those components. Those warnings are not displayed in `production` mode, and are just a way to ensure you know what you're doing. And you can make them disappear by destructuring the `classes` prop:
+1. Using the `react-final-form` hook API to send change events
 
 ```jsx
-import { EmailField, List, Datagrid } from 'react-admin';
-import { withStyles } from '@material-ui/core/styles';
+import React, { useCallback } from 'react';
+import { useForm } from 'react-final-form';
+import { SaveButton, Toolbar, useCreate, useRedirect, useNotify } from 'react-admin';
 
-const styles = {
-    header: { fontWeight: 'bold' },
-    actions: { fontWeight: 'bold' },
-    emailCellClassName: {
-        backgroundColor: 'lightgrey',
-    },
-    emailFieldClassName: {
-        textDecoration: 'none',
-    },
+const SaveWithNoteButton = ({ handleSubmit, handleSubmitWithRedirect, ...props }) => {
+    const [create] = useCreate('posts');
+    const redirectTo = useRedirect();
+    const notify = useNotify();
+    const { basePath, redirect } = props;
+
+    const form = useForm();
+
+    const handleClick = useCallback(() => {
+        form.change('average_note', 10);
+
+        handleSubmitWithRedirect('edit');
+    }, [form]);
+
+    return <SaveButton {...props} handleSubmitWithRedirect={handleClick} />;
 };
-
-export const UserList = ({
-    classes: { emailCellClassName, emailFieldClassName, ...classes },
-    ...props
-}) => (
-    <List
-        {...props}
-        filters={<UserFilter />}
-        sort={{ field: 'name', order: 'ASC' }}
-        classes={classes}
-    >
-        <Datagrid>
-            <EmailField
-                source="email"
-                cellClassName={emailCellClassName}
-                className={emailFieldClassName}
-            />
-        </Datagrid>
-    </List>
-);
-
-// renders in the datagrid as
-<td style="background-color:lightgrey">
-    <a style="text-decoration:none" href="mailto:foo@example.com">
-        foo@example.com
-    </a>
-</td>
 ```
 
-Finally, Field and Input components accept a `textAlign` prop, which can be either `left`, or `right`. Through this prop, these components inform their parent component that they look better when aligned to left or right. It's the responsability of the parent component to apply this alignment. For instance, the `NumberField` component has a default value of `right` for the `textAlign` prop, so the `Datagrid` component uses a right alignment in header and table cell - but form components (`SimpleForm` and `TabbedForm`) ignore the prop and display it left aligned.
+2. Using react-admin hooks to run custom mutations
 
-## Authentication: `<Restricted>` renamed to `<Authenticated>`
+For instance, in the `simple` example:
 
-The `Restricted` component has been renamed to `Authenticated`. Update your `import` statements accordingly:
-
-```diff
-// in src/MyPage.js
-import { withRouter } from 'react-router-dom';
-- import { Restricted } from 'admin-on-rest';
-+ import { Authenticated } from 'react-admin';
-
-const MyPage = ({ location }) => (
--  <Restricted authParams={{ foo: 'bar' }} location={location}>
-+  <Authenticated authParams={{ foo: 'bar' }} location={location}>
-        <div>
-            ...
-        </div>
--  </Restricted>
-+  </Authenticated>
-)
-
-export default withRouter(MyPage);
-```
-
-## Authorization: `<WithPermission>` and `<SwitchPermissions>` replaced by `<WithPermissions>`
-
-We removed the `WithPermission` and `SwitchPermissions` in favor of a more versatile component: `WithPermissions`. The `WithPermissions` component retrieves permissions by calling the `authProvider` with the `AUTH_GET_PERMISSIONS` type. It then passes the permissions to the render callback. 
-
-This component follows the [render callback pattern](https://cdb.reacttraining.com/use-a-render-prop-50de598f11ce). Just like the [React Router `Route`](https://reacttraining.com/react-router/web/api/Route) component, you can pass a render callback to `<WithPermissions>` either as its only child, or via its `render` prop (if both are passed, the `render` prop is used).
-
-If you were using `WithPermission` before, here's how to migrate to `WithPermissions`:
-
-```diff
-import React from 'react';
-- import { MenuItemLink, WithPermission } from 'admin-on-rest';
-+ import { MenuItemLink, WithPermissions } from 'react-admin';
-
-export default ({ onMenuClick, logout }) => (
-    <div>
-        <MenuItemLink to="/posts" primaryText="Posts" onClick={onMenuClick} />
-        <MenuItemLink to="/comments" primaryText="Comments" onClick={onMenuClick} />
--       <WithPermission value="admin">
--           <MenuItemLink to="/custom-route" primaryText="Miscellaneous" onClick={onMenuClick} />
--       </WithPermission>
-+       <WithPermissions>
-+           {({ permissions }) => permissions === 'admin'
-+               ? <MenuItemLink to="/custom-route" primaryText="Miscellaneous" onClick={onMenuClick} />
-+               : null
-+           }
-+       </WithPermissions>
-        {logout}
-    </div>
-);
-```
-
-If you were using `SwitchPermissions` before, here's how to migrate to `WithPermissions`:
-
-```diff
-// before
-import React from 'react';
-import BenefitsSummary from './BenefitsSummary';
-import BenefitsDetailsWithSensitiveData from './BenefitsDetailsWithSensitiveData';
-- import { ViewTitle, SwitchPermissions, Permission } from 'admin-on-rest';
-+ import { ViewTitle, WithPermissions } from 'react-admin';
-
-export default () => (
-    <div>
--         <SwitchPermissions>
--             <Permission value="associate">
--                 <BenefitsSummary />
--             </Permission>
--             <Permission value="boss">
--                 <BenefitsDetailsWithSensitiveData />
--             </Permission>
--         </SwitchPermissions>
-+         <WithPermissions>
-+             {({ permissions }) => {
-+                 if (permissions === 'associate') {
-+                     return <BenefitsSummary />;
-+                 }
-+                 if (permissions === 'boss') {
-+                     return <BenefitsDetailsWithSensitiveData />;
-+                 }
-+             }}
-+         </WithPermissions>
-    </div>
-);
-```
-
-We also reviewed how permissions are passed to the `List`, `Edit`, `Create`, `Show` and `Delete` components. React-admin now injects the permissions to theses components in the `permissions` props, without having to use the render callback pattern. It should now be easier to customize behaviors and components according to permissions.
-
-Here's how to migrate a `Create` component:
-
-```diff
-const UserCreateToolbar = ({ permissions, ...props }) =>
-    <Toolbar {...props}>
-        <SaveButton
-            label="user.action.save_and_show"
-            redirect="show"
-            submitOnEnter={true}
-        />
-        {permissions === 'admin' &&
-            <SaveButton
-                label="user.action.save_and_add"
-                redirect={false}
-                submitOnEnter={false}
-                variant="flat"
-            />}
-    </Toolbar>;
-
-- export const UserCreate = ({ ...props }) =>
-+ export const UserCreate = ({ permissions, ...props }) =>
-    <Create {...props}>
--       {permissions =>
-            <SimpleForm
-                toolbar={<UserCreateToolbar permissions={permissions} />}
-                defaultValue={{ role: 'user' }}
-            >
-                <TextInput source="name" validate={[required()]} />
-                {permissions === 'admin' &&
-                    <TextInput source="role" validate={[required()]} />}
-            </SimpleForm>
--       }
-    </Create>;
-```
-
-Here's how to migrate an `Edit` component:
-
-```diff
-// before
-- export const UserEdit = ({ ...props }) =>
-+ export const UserEdit = ({ permissions, ...props }) =>
-    <Edit title={<UserTitle />} {...props}>
--       {permissions =>
-            <TabbedForm defaultValue={{ role: 'user' }}>
-                <FormTab label="user.form.summary">
-                    {permissions === 'admin' && <DisabledInput source="id" />}
-                    <TextInput source="name" validate={required()} />
-                </FormTab>
-                {permissions === 'admin' &&
-                    <FormTab label="user.form.security">
-                        <TextInput source="role" validate={required()} />
-                    </FormTab>}
-            </TabbedForm>
--       }
-    </Edit>;
-```
-
-Here's how to migrate a `List` component. Note that the `<Filter>` component does not support the function as a child pattern anymore. If you need permissions within it, just pass them from the `List` component.
-
-```diff
-- const UserFilter = ({ ...props }) =>
-+ const UserFilter = ({ permissions, ...props }) =>
-    <Filter {...props}>
--       {permissions => [
-            <TextInput
-                key="user.list.search"
-                label="user.list.search"
-                source="q"
-                alwaysOn
-            />,
-            <TextInput key="name" source="name" />,
-            permissions === 'admin' ? <TextInput source="role" /> : null,
--       ]}
-    </Filter>;
-
-- export const UserList = ({ ...props }) =>
-+ export const UserList = ({ permissions, ...props }) =>
-    <List
-        {...props}
--       filters={<UserFilter />}
-+       filters={<UserFilter permissions={permissions} />}
-        sort={{ field: 'name', order: 'ASC' }}
-    >
--       {permissions =>
-            <Responsive
-                small={
-                    <SimpleList
-                        primaryText={record => record.name}
-                        secondaryText={record =>
-                            permissions === 'admin' ? record.role : null}
-                    />
-                }
-                medium={
-                    <Datagrid>
-                        <TextField source="id" />
-                        <TextField source="name" />
-                        {permissions === 'admin' && <TextField source="role" />}
-                        {permissions === 'admin' && <EditButton />}
-                        <ShowButton />
-                    </Datagrid>
-                }
-            />
--       }
-    </List>;
-```
-
-Moreover, you won't need the now deprecated `<WithPermission>` or `<SwitchPermissions>` components inside a `Dashboard` to access permissions anymore: react-admin injects `permissions` to the dashboard, too:
-
-```diff
-// in src/Dashboard.js
-import React from 'react';
-import BenefitsSummary from './BenefitsSummary';
-import BenefitsDetailsWithSensitiveData from './BenefitsDetailsWithSensitiveData';
-- import { ViewTitle, SwitchPermissions, Permission } from 'admin-on-rest';
-+ import { ViewTitle } from 'react-admin';
-
-- export default () => (
-+ export default ({ permissions }) => (
-    <Card>
-        <ViewTitle title="Dashboard" />
--       <SwitchPermissions>
--           <Permission value="associate">
--               <BenefitsSummary />
--           </Permission>
--           <Permission value="boss">
--               <BenefitsDetailsWithSensitiveData />
--           </Permission>
--       </SwitchPermissions>
-+       {permissions === 'associate' && <BenefitsSummary />}
-+       {permissions === 'boss' && <BenefitsDetailsWithSensitiveData />}
-    </Card>
-);
-```
-
-Finally, you won't need the now deprecated `<WithPermission>` or `<SwitchPermissions>` in custom routes either if you want access to permissions. Much like you can restrict access to authenticated users only with the [`Authenticated`](Authentication.html#restricting-access-to-a-custom-page) component, you may decorate your custom route with the `WithPermissions` component. It will ensure the user is authenticated and call the `authProvider` with the `AUTH_GET_PERMISSIONS` type and the `authParams` you specify:
-
-{% raw %}
 ```jsx
-// in src/MyPage.js
-import React from 'react';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import { ViewTitle, WithPermissions } from 'react-admin';
-import { withRouter } from 'react-router-dom';
+import React, { useCallback } from 'react';
+import { useFormState } from 'react-final-form';
+import { SaveButton, Toolbar, useCreate, useRedirect, useNotify } from 'react-admin';
 
-const MyPage = ({ permissions }) => (
-    <Card>
-        <ViewTitle title="My custom page" />
-        <CardContent>Lorem ipsum sic dolor amet...</CardContent>
-        {permissions === 'admin'
-            ? <CardContent>Sensitive data</CardContent>
-            : null
+const SaveWithNoteButton = props => {
+    const [create] = useCreate('posts');
+    const redirectTo = useRedirect();
+    const notify = useNotify();
+    const { basePath, redirect } = props;
+
+    const formState = useFormState();
+    const handleClick = useCallback(() => {
+        if (!formState.valid) {
+            return;
         }
-    </Card>
-)
-const MyPageWithPermissions = ({ location, match }) => (
-    <WithPermissions
-        authParams={{ key: match.path, params: route.params }}
-        // location is not required but it will trigger a new permissions check if specified when it changes
-        location={location}
-        render={({ permissions }) => <MyPage permissions={permissions} /> }
-    />
-);
 
-export default MyPageWithPermissions;
-
-// in src/customRoutes.js
-import React from 'react';
-import { Route } from 'react-router-dom';
-import Foo from './Foo';
-import Bar from './Bar';
-import Baz from './Baz';
-import MyPageWithPermissions from './MyPage';
-
-export default [
-    <Route exact path="/foo" component={Foo} />,
-    <Route exact path="/bar" component={Bar} />,
-    <Route exact path="/baz" component={Baz} noLayout />,
-    <Route exact path="/baz" component={MyPageWithPermissions} />,
-];
-```
-
-## Custom Layouts
-
-The default layout has been simplified, and this results in a simplified custom layout too. You don't need to pass the `AdminRoutes` anymore, as the layout receives the component to render as the standard `children` prop:
-
-```diff
-import React, { createElement, Component } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-- import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
-+ import { MuiThemeProvider, withStyles } from '@material-ui/core/styles';
-- import CircularProgress from '@material-ui/core/CircularProgress';
-import {
--   AdminRoutes,
-    AppBar,
-    Menu,
-    Notification,
-    Sidebar,
--   setSidebarVisibility,
-- } from 'admin-on-rest';
-+ } from 'react-admin';
-
-- const styles = {
--     wrapper: {
--         // Avoid IE bug with Flexbox, see #467
--         display: 'flex',
--         flexDirection: 'column',
--     },
--     main: {
--         display: 'flex',
--         flexDirection: 'column',
--         minHeight: '100vh',
--     },
--     body: {
--         backgroundColor: '#edecec',
--         display: 'flex',
--         flex: 1,
--         overflowY: 'hidden',
--         overflowX: 'scroll',
--     },
--     content: {
--         flex: 1,
--         padding: '2em',
--     },
--     loader: {
--         position: 'absolute',
--         top: 0,
--         right: 0,
--         margin: 16,
--         zIndex: 1200,
--     },
-- };
-+ const styles = theme => ({
-+     root: {
-+         display: 'flex',
-+         flexDirection: 'column',
-+         zIndex: 1,
-+         minHeight: '100vh',
-+         backgroundColor: theme.palette.background.default,
-+         position: 'relative',
-+     },
-+     appFrame: {
-+         display: 'flex',
-+         flexDirection: 'column',
-+         overflowX: 'auto',
-+     },
-+     contentWithSidebar: {
-+         display: 'flex',
-+         flexGrow: 1,
-+     },
-+     content: {
-+         display: 'flex',
-+         flexDirection: 'column',
-+         flexGrow: 2,
-+         padding: theme.spacing.unit * 3,
-+         marginTop: '4em',
-+         paddingLeft: 5,
-+     },
-+ });
-
-class MyLayout extends Component {
--   componentWillMount() {
--       this.props.setSidebarVisibility(true);
--   }
-
-    render() {
-        const {
-            children,
--           customRoutes,
-            dashboard,
-            isLoading,
-            logout,
-            menu,
-+           open,
-            title,
-        } = this.props;
-
-        return (
-            <MuiThemeProvider>
--               <div style={styles.wrapper}>
-+               <div className={classes.root}>
--                   <div style={styles.main}>
-+                   <div className={classes.appFrame}>
--                       <AppBar title={title} />
-+                       <AppBar title={title} open={open} logout={logout} />
--                       <div className="body" style={styles.body}>
-+                       <main className={classes.contentWithSidebar}>
--                           <div style={styles.content}>
--                               <AdminRoutes
--                                   customRoutes={customRoutes}
--                                   dashboard={dashboard}
--                               >
--                                   {children}
--                               </AdminRoutes>
-                            <Sidebar>
-                                {createElement(menu || Menu, {
-                                    logout,
-                                    hasDashboard: !!dashboard,
-                                })}
-                            </Sidebar>
-+                           <div className={classes.content}>
-+                               {children}</div>
-+                           </div>
--                       </div>
-+                       </main>
-                        <Notification />
--                       {isLoading && (
--                           <CircularProgress
--                               color="#fff"
--                               size={30}
--                               thickness={2}
--                               style={styles.loader}
--                           />
--                       )}
-                    </div>
-                </div>
-            </MuiThemeProvider>
+        create(
+            null,
+            {
+                data: { ...formState.values, average_note: 10 },
+            },
+            {
+                onSuccess: ({ data: newRecord }) => {
+                    notify('ra.notification.created', 'info', {
+                        smart_count: 1,
+                    });
+                    redirectTo(redirect, basePath, newRecord.id, newRecord);
+                },
+            }
         );
-    }
-}
+    }, [
+        formState.valid,
+        formState.values,
+        create,
+        notify,
+        redirectTo,
+        redirect,
+        basePath,
+    ]);
 
-MyLayout.propTypes = {
--   authClient: PropTypes.func,
-+   children: PropTypes.oneOfType([PropTypes.func, PropTypes.node]),
-+   classes: PropTypes.object,
--   customRoutes: PropTypes.array,
-    dashboard: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
--   isLoading: PropTypes.bool.isRequired,
-+   logout: PropTypes.oneOfType([PropTypes.node PropTypes.func, PropTypes.string]),
-    menu: PropTypes.element,
-+   open: PropTypes.bool,
--   resources: PropTypes.array,
--   setSidebarVisibility: PropTypes.func.isRequired,
-    title: PropTypes.string.isRequired,
+    return <SaveButton {...props} handleSubmitWithRedirect={handleClick} />;
 };
-
-const mapStateToProps = state => ({
--   isLoading: state.admin.loading > 0
-+   open: state.admin.ui.sidebarOpen,
-});
-
-- export default connect(mapStateToProps, { setSidebarVisibility })(MyLayout);
-+ export default connect(mapStateToProps, {})(withStyles(styles)(MyLayout));
 ```
 
-**Tip**: React-admin's theme is a bot more complex than that, as it is reponsive. Check out the default layout source for details.
+## `FormDataConsumer` Children No Longer Receives `dispatch`
 
-## Menu `onMenuTap` prop has been renamed `onMenuClick`
+In `react-admin` v2, you could link two inputs using the `FormDataConsumer` component. The render prop function received the `dispatch` function that it could use to trigger form changes.
 
-Material-ui renamed all `xxxTap` props to `xxxClick`, so did we.
-
-```diff
-import React from 'react';
-import { connect } from 'react-redux';
-- import { MenuItemLink, getResources } from 'admin-on-rest';
-+ import { MenuItemLink, getResources } from 'react-admin';
-
-- const Menu = ({ resources, onMenuTap, logout }) => (
-+ const Menu = ({ resources, onMenuClick, logout }) => (
-    <div>
-        {resources.map(resource => (
--           <MenuItemLink to={`/${resource.name}`} primaryText={resource.name} onClick={onMenuTap} />
-+           <MenuItemLink to={`/${resource.name}`} primaryText={resource.name} onClick={onMenuClick} />
-        ))}
--       <MenuItemLink to="/custom-route" primaryText="Miscellaneous" onClick={onMenuTap} />
-+       <MenuItemLink to="/custom-route" primaryText="Miscellaneous" onClick={onMenuClick} />
-        {logout}
-    </div>
-);
-
-const mapStateToProps = state => ({
-    resources: getResources(state),
-});
-
-export default connect(mapStateToProps)(Menu);
-```
-
-## Logout is Now Displayed in the AppBar on Desktop
-
-The Logout button is now displayed in the AppBar on desktop, but is still displayed as a menu item on small devices.
-
-This impacts how you build a custom menu, as you'll now have to check whether you are on small devices before displaying the logout:
+The migration to `react-final-form` changes this render prop signature a little as it will no longer receive a `dispatch` function. However, it's possible to use the `useForm` hook from `react-final-form` to achieve the same behavior:
 
 ```diff
-// in src/Menu.js
-import React from 'react';
-import { connect } from 'react-redux';
-- import { MenuItemLink, getResources } from 'admin-on-rest';
-+ import { MenuItemLink, getResources, Responsive } from 'react-admin';
-import { withRouter } from 'react-router-dom';
+import React, { Fragment } from 'react';
+-import { change } from 'redux-form';
++import { useForm } from 'react-final-form';
+import { FormDataConsumer, REDUX_FORM_NAME } from 'react-admin';
 
-const Menu = ({ resources, onMenuClick, logout }) => (
-    <div>
-        {resources.map(resource => (
-            <MenuItemLink to={`/${resource.name}`} primaryText={resource.name} onClick={onMenuClick} />
-        ))}
-        <MenuItemLink to="/custom-route" primaryText="Miscellaneous" onClick={onMenuClick} />
--       {logout}
-+        <Responsive xsmall={logout} medium={null} />
-    </div>
-);
++const OrderOrigin = ({ formData, ...rest }) => {
++    const form = useForm();
++
++    return (
++        <Fragment>
++            <SelectInput
++                source="country"
++                choices={countries}
++                onChange={value => form.change('city', null)}
++                {...rest}
++            />
++            <SelectInput
++                source="city"
++                choices={getCitiesFor(formData.country)}
++                {...rest}
++            />
++        </Fragment>
++    );
++};
 
-const mapStateToProps = state => ({
-    resources: getResources(state),
-});
-
-export default withRouter(connect(mapStateToProps)(Menu));
-```
-
-It also impacts custom layouts if you're using the default `AppBar`. You now have to pass the `logout` prop to the `AppBar`:
-
-```diff
-// in src/MyLayout.js
-const MyLayout () => ({ logout, ...props }) => (
-    <MuiThemeProvider>
-        ...
--          <AppBar title={title} />
-+          <AppBar title={title} logout={logout} />
-        ...
-    </MuiThemeProvider>
+const OrderEdit = (props) => (
+    <Edit {...props}>
+        <SimpleForm>
+            <FormDataConsumer>
+-                {({ formData, dispatch, ...rest }) => (
+-                    <Fragment>
+-                        <SelectInput
+-                            source="country"
+-                            choices={countries}
+-                            onChange={value => dispatch(
+-                                change(REDUX_FORM_NAME, 'city', null)
+-                            )}
+-                             {...rest}
+-                        />
+-                        <SelectInput
+-                            source="city"
+-                            choices={getCitiesFor(formData.country)}
+-                             {...rest}
+-                        />
+-                    </Fragment>
+-                )}
++                {formDataProps => {
++                    <OrderOrigin {...formDataProps} />
++                }}
+            </FormDataConsumer>
+        </SimpleForm>
+    </Edit>
 );
 ```
 
-## Data Providers Should Support Two More Types For Bulk Actions
+## Validators Should Return Non-Translated Messages
 
-The `List` component now support bulk actions. The consequence is that data providers should support them too. We introduced two new message types for the `dataProvider`: `DELETE_MANY` and `UPDATE_MANY`.
-
-Both will be called with an `ids` property in their params, containing an array of resource ids. In addition, `UPDATE_MANY` will also get a `data` property in its params, defining how to update the resources.
-
-Please refer to the `dataProvider` documentation for more information.
-
-## react-admin Addon Packages Renamed With ra Prefix And Moved Into Root Repository
-
-The `aor-graphql` and `aor-realtime` packages have been migrated into the main `react-admin` repository and renamed with the new prefix. Besides, `aor-graphql-client` and `aor-graphql-client-graphcool` follow the new dataProvider packages naming.
-
-* `aor-realtime` => `ra-realtime`
-* `aor-graphql-client` => `ra-data-graphql`
-* `aor-graphql-client-graphcool` => `ra-data-graphcool`
-
-Update your `import` statements accordingly:
+Form validators used to return translated error messages - that's why they received the field `props` as argument, including the `translate` function. They don't receive these props anymore, and they must return untranslated messages instead - react-admin translates validation messages afterwards.
 
 ```diff
-- import realtimeSaga from 'aor-realtime';
-+ import realtimeSaga from 'ra-realtime';
-
-- import buildGraphQLProvider from 'aor-graphql-client';
-+ import buildGraphQLProvider from 'ra-data-graphql';
-
-- import buildGraphcoolProvider from 'aor-graphql-client-graphcool';
-+ import buildGraphcoolProvider from 'ra-data-graphcool';
+// in validators/required.js
+-const required = () => (value, allValues, props) =>
++const required = () => (value, allValues) =>
+    value
+        ? undefined
+-       : props.translate('myroot.validation.required');
++       : 'myroot.validation.required';
 ```
 
-## `aor-dependent-input` Was Removed
-
-The `aor-dependent-input` package has been removed.
-
-You can achieve a similar effect to the old `<DependentInput>` component by using the new `<FormDataConsumer>` component.
-
-To display a component based on the value of the current (edited) record, wrap that component with `<FormDataConsumer>`, which uses grabs the form data from the redux-form state, and passes it to a child function: 
+In case the error message depends on a variable, you can return an object `{ message, args }` instead of a message string:
 
 ```diff
-- import { DependentInput } from 'aor-dependent-input';
-+ import { FormDataConsumer } from 'react-admin';
+-const minLength = (min) => (value, allValues, props) => 
++const minLength = (min) => (value, allValues) => 
+    value.length >= min
+        ? undefined
+-       : props.translate('myroot.validation.minLength', { min });
++       : { message: 'myroot.validation.minLength', args: { min } };
+```
+
+React-admin core validators have been modified so you don't have to change anything when using them.
+
+```jsx
+import {
+    required,
+    minLength,
+    maxLength,
+    minValue,
+    number,
+    email,
+} from 'react-admin';
+
+// no change vs 2.x
+const validateFirstName = [required(), minLength(2), maxLength(15)];
+const validateEmail = email();
+const validateAge = [number(), minValue(18)];
 
 export const UserCreate = (props) => (
     <Create {...props}>
         <SimpleForm>
-            <TextInput source="firstName" />
-            <TextInput source="lastName" />
-            <BooleanInput source="hasEmail" label="Has email ?" />
--           <DependentInput dependsOn="hasEmail">
--                <TextInput source="email" />
--           </DependentInput>
-+           <FormDataConsumer>
-+               {({ formData, ...rest }) => formData.hasEmail && 
-+                   <TextInput source="email" {...rest} />
-+               }
-+           </FormDataConsumer>
+            <TextInput label="First Name" source="firstName" validate={validateFirstName} />
+            <TextInput label="Email" source="email" validate={validateEmail} />
+            <TextInput label="Age" source="age" validate={validateAge}/>
         </SimpleForm>
     </Create>
 );
 ```
 
-As for the `<DependentField>` in a `<Show>` view, you need to use an alternative approach, taking advantage of the structure of `<Show>`, which in fact decomposes into a controller and a view component:
+## Migration to react-final-form Requires Custom App Modification
+
+We used to implement some black magic in `formMiddleware` to handle `redux-form` correctly. It is no longer necessary now that we migrated to `react-final-form`. Besides, `redux-form` required a reducer which is no longer needed as well. 
+
+If you had your own custom Redux store, you can migrate it by following this diff:
+
+```diff
+// in src/createAdminStore.js
+import { applyMiddleware, combineReducers, compose, createStore } from 'redux';
+import { routerMiddleware, connectRouter } from 'connected-react-router';
+-import { reducer as formReducer } from 'redux-form';
+import createSagaMiddleware from 'redux-saga';
+import { all, fork } from 'redux-saga/effects';
+import {
+    adminReducer,
+    adminSaga,
+    createAppReducer,
+    defaultI18nProvider,
+    i18nReducer,
+-   formMiddleware,
+    USER_LOGOUT,
+} from 'react-admin';
+
+export default ({
+    authProvider,
+    dataProvider,
+    i18nProvider = defaultI18nProvider,
+    history,
+    locale = 'en',
+}) => {
+    const reducer = combineReducers({
+        admin: adminReducer,
+        i18n: i18nReducer(locale, i18nProvider(locale)),
+-       form: formReducer,
+        router: connectRouter(history),
+        { /* add your own reducers here */ },
+    });
+    const resettableAppReducer = (state, action) =>
+        reducer(action.type !== USER_LOGOUT ? state : undefined, action);
+
+    const saga = function* rootSaga() {
+        yield all(
+            [
+                adminSaga(dataProvider, authProvider, i18nProvider),
+                // add your own sagas here
+            ].map(fork)
+        );
+    };
+    const sagaMiddleware = createSagaMiddleware();
+
+    const store = createStore(
+        resettableAppReducer,
+        { /* set your initial state here */ },
+        compose(
+            applyMiddleware(
+                sagaMiddleware,
+-               formMiddleware,
+                routerMiddleware(history),
+                // add your own middlewares here
+            ),
+            typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION__
+                ? window.__REDUX_DEVTOOLS_EXTENSION__()
+                : f => f
+            // add your own enhancers here
+        )
+    );
+    sagaMiddleware.run(saga);
+    return store;
+};
+```
+
+## Custom Exporter Functions Must Use `jsonexport` Instead Of `papaparse`
+
+React-admin used to bundle the `papaparse` library for converting JSON to CSV, as part of the Export functionality. But 90% of the `papaparse` code is used to convert CSV to JSON and was useless in react-admin. We decided to replace it by a lighter library: [jsonexport](https://github.com/kauegimenes/jsonexport).
+
+If you had custom exporter on `List` components, here's how to migrate:
+
+```diff
+-import { unparse as convertToCSV } from 'papaparse/papaparse.min';
++import jsonExport from 'jsonexport/dist';
+
+-const csv = convertToCSV({
+-    data: postsForExport,
+-    fields: ['id', 'title', 'author_name', 'body']
+-});
+-downloadCSV(csv, 'posts');
++jsonExport(postsForExport, {
++    headers: ['id', 'title', 'author_name', 'body']
++}, (err, csv) => {
++    downloadCSV(csv, 'posts');
++});
+```
+
+## The `exporter` Function Has Changed Signature
+
+In a `List`, you can pass a custom `exporter` function to control the data downloaded by users when they click on the "Export" button.
 
 ```jsx
-// inside react-admin
-const Show = props => (
-    <ShowController {...props}>
-        {controllerProps => <ShowView {...props} {...controllerProps} />}
-    </ShowController>
+const CommentList = props => (
+    <List {...props} exporter={exportComments}>
+        // ...
+    </List>
+)
+```
+
+In react-admin v3, you can still pass an `exporter` function this way, but its signature has changed:
+
+```diff
+-const exportComments = (data, fetchRelaterRecords, dispatch) => {
++const exportComments = (data, fetchRelaterRecords, dataProvider) => {
+    // ...
+}
+```
+
+If you used `dispatch` to call the dataProvider using an action creator with a `callback` side effect, you will see that the v3 version makes your exporter code much simpler. If you used it to dispatch custom side effects (like notification or redirect), we recommend that you override the `<ExportButton>` component completely - it'll be much easier to maintain.
+
+As a base, here is the simplified `ExportButton` code:
+
+```jsx
+import {
+    downloadCSV,
+    useDataProvider,
+    useNotify,
+} from 'react-admin';
+import jsonExport from 'jsonexport/dist';
+
+const ExportButton = ({ sort, filter, maxResults = 1000, resource }) => {
+    const dataProvider = useDataProvider();
+    const notify = useNotify();
+    const payload = { sort, filter, pagination: { page: 1, perPage: maxResults }}
+    const handleClick = dataProvider.getList(resource, payload)
+        .then(({ data }) => jsonExport(data, (err, csv) => downloadCSV(csv, resource)))
+        .catch(error => notify('ra.notification.http_error', 'warning'));
+
+    return (
+        <Button
+            label="Export"
+            onClick={handleClick}
+        />
+    );
+};
+```
+
+## `authProvider` No Longer Uses Legacy React Context
+
+When you provide an `authProvider` to the `<Admin>` component, react-admin creates a React context to make it available everywhere in the application. In version 2.x, this used the [legacy React context API](https://reactjs.org/docs/legacy-context.html). In 3.0, this uses the normal context API. That means that any context consumer will need to use the new context API.
+
+```diff
+-import React from 'react';
++import React, { useContext } from 'react';
++import { AuthContext } from 'react-admin';
+
+-const MyComponentWithAuthProvider = (props, context) => {
++const MyComponentWithAuthProvider = (props) => {
++   const authProvider = useContext(AuthContext);
+    authProvider('AUTH_CHECK');
+    return <div>I'm authenticated</div>;
+}
+
+-MyComponentWithAuthProvider.contextTypes = { authProvider: PropTypes.object }
+```
+
+If you didn't access the `authProvider` context manually, you have nothing to change. All react-admin components have been updated to use the new context API.
+
+Note that direct access to the `authProvider` from the context is discouraged (and not documented). If you need to interact with the `authProvider`, use the new auth hooks:
+
+- `useLogin`
+- `useLogout`
+- `useAuthenticated`
+- `useAuthState`
+- `usePermissions`
+
+## `authProvider` No Longer Receives `match` in Params
+
+Whenever it called the `authProvider`, react-admin used to pass both the `location` and the `match` object from react-router. In v3, the `match` object is no longer passed as argument. There is no legitimate usage of this parameter we can think about, and it forced passing down that object across several components for nothing, so it's been removed. Upgrade your `authProvider` to remove that parameter.
+
+```diff
+// in src/authProvider
+export default (type, params) => {
+-   const { location, match } = params;
++   const { location } = params;
+    // ...
+}
+```
+
+## The `authProvider` No Longer Receives Default Parameters
+
+When calling the `authProvider` for permissions (with the `AUTH_GET_PERMISSIONS` verb), react-admin used to include the `pathname` as second parameter. That allowed you to return different permissions based on the page. In a similar fashion, for the `AUTH_CHECK` call, the `params` argument contained the `resource` name, allowing different checks for different resources.
+
+We believe that authentication and permissions should not vary depending on where you are in the application ; it's up to components to decide to do something or not depending on permissions. So we've removed the default parameters from all the `authProvider` calls. 
+
+If you want to keep location-dependent authentication or permissions logic, read the current location from the `window` object directly in your `authProvider`, using `window.location.hash` (if you use a hash router), or using `window.location.pathname` (if you use a browser router):
+
+```diff
+// in myauthProvider.js
+import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR, AUTH_GET_PERMISSIONS } from 'react-admin';
+import decodeJwt from 'jwt-decode';
+
+export default (type, params) => {
+    if (type === AUTH_CHECK) {
+-       const { resource } = params;
++       const resource = window.location.hash.substring(2, window.location.hash.indexOf('/', 2))
+        // resource-dependent logic follows
+    }
+    if (type === AUTH_GET_PERMISSIONS) {
+-       const { pathname } = params;
++       const pathname = window.location.hash;
+        // pathname-dependent logic follows 
+        // ...
+    }
+    return Promise.reject('Unknown method');
+};
+```
+
+## No More Redux Actions For Authentication
+
+React-admin now uses hooks instead of sagas to handle authentication and authorization. That means that react-admin no longer dispatches the following actions:
+
+- `USER_LOGIN`
+- `USER_LOGIN_LOADING`
+- `USER_LOGIN_FAILURE`
+- `USER_LOGIN_SUCCESS`
+- `USER_CHECK`
+- `USER_CHECK_SUCCESS`
+- `USER_LOGOUT`
+
+If you have custom Login or Logout buttons dispatching these actions, they will still work, but you are encouraged to migrate to the hook equivalents (`useLogin` and `useLogout`).
+
+If you had custom reducer or sagas based on these actions, they will no longer work. You will have to reimplement that custom logic using the new authentication hooks. 
+
+**Tip**: If you need to clear the Redux state, you can dispatch the `CLEAR_STATE` action.
+
+## Login uses children instead of a loginForm prop
+
+If you were using `Login` with a custom login form, you now need to pass that as a child instead of a prop of `Login`.
+
+```diff
+import { Login } from 'react-admin';
+const LoginPage = () => (
+     <Login
+-        loginForm={<LoginForm />}
+         backgroundImage={backgroundImage}
+-    />
++    >
++        <LoginForm />
++    </Login>
+ );
+```
+
+## i18nProvider Signature Changed
+
+The react-admin translation (i18n) layer lets developers provide translations for UI and content, based on Airbnb's [Polyglot](https://airbnb.io/polyglot.js/) library. The `i18nProvider`, which contains that translation logic, used to be a function. It must now be an object exposing three methods: `translate`, `changeLocale` and `getLocale`.
+
+```jsx
+// react-admin 2.x
+const i18nProvider = (locale) => messages[locale];
+
+// react-admin 3.x
+const polyglot = new Polyglot({ locale: 'en', phrases: messages.en });
+let translate = polyglot.t.bind(polyglot);
+let locale = 'en';
+const i18nProvider = {
+    translate: (key, options) => translate(key, options),
+    changeLocale: newLocale => {
+        locale = newLocale;
+        return new Promise((resolve, reject) => {
+            // load new messages and update the translate function
+        })
+    },
+    getLocale: () => locale;
+} 
+```
+
+But don't worry: react-admin v3 contains a module called `ra-i18n-polyglot`, that is a wrapper around your old `i18nProvider` to make it compatible with the new provider signature:
+
+```diff
+import React from 'react';
+import { Admin, Resource } from 'react-admin';
++import polyglotI18nProvider from 'ra-i18n-polyglot';
+import englishMessages from 'ra-language-english';
+import frenchMessages from 'ra-language-french';
+
+const messages = {
+    fr: frenchMessages,
+    en: englishMessages,
+};
+-const i18nProvider = locale => messages[locale];
++const i18nProvider = polyglotI18nProvider(locale => messages[locale], 'fr');
+
+const App = () => (
+-    <Admin locale="fr" i18nProvider={i18nProvider}>
++    <Admin i18nProvider={i18nProvider}>
+        ...
+    </Admin>
+);
+
+export default App;
+```
+
+**Tip**: The `Admin` component does not accept a `locale` prop anymore as it is the `i18nProvider` provider responsibility. Pass the initial locale as second argument to `polyglotI18nProvider` instead of passing it to `Admin`
+
+## The Translation Layer No Longer Uses Redux
+
+The previous implementation if the i18n layer used Redux and redux-saga. In react-admin 3.0, the translation utilities are implemented using a React context and a set of hooks. 
+
+If you didn't use translations, or if you passed your `i18nProvider` to the `<Admin>` component and used only one language, you have nothing to change. Your app will continue to work just as before. We encourage you to migrate from the `withTranslate` HOC to the `useTranslate` hook, but that's not compulsory.
+
+```diff
+-import { withTranslate } from 'react-admin';
++import { useTranslate } from 'react-admin';
+
+-const SettingsMenu = ({ translate }) => {
++const SettingsMenu = () => {
++   const translate = useTranslate();
+    return <MenuItem>{translate('settings')}</MenuItem>;
+}
+
+-export default withTranslate(SettingsMenu);
++export default SettingsMenu;
+```
+
+However, if your app allowed users to change locale at runtime, you need to update the menu or button that triggers that locale change. Instead of dispatching a `CHANGE_LOCALE` Redux action (which has no effect in react-admin 3.0), use the `useSetLocale` hook as follows:
+
+```diff
+import React from 'react';
+-import { connect } from 'react-redux';
+import Button from '@material-ui/core/Button';
+-import { changeLocale } from 'react-admin';
++import { useSetLocale } from 'react-admin';
+
+-const localeSwitcher = ({ changeLocale }) => 
++const LocaleSwitcher = () => {
++   const setLocale = useSetLocale();
+-   const switchToFrench = () => changeLocale('fr');
++   const switchToFrench = () => setLocale('fr');
+-   const switchToEnglish = () => changeLocale('en');
++   const switchToEnglish = () => setLocale('en');
+    return (
+        <div>
+            <div>Language</div>
+            <Button onClick={switchToEnglish}>en</Button>
+            <Button onClick={switchToFrench}>fr</Button>
+        </div>
+    );
+}
+
+-export default connect(null, { changeLocale })(LocaleSwitcher);
++export default LocaleSwitcher;
+```
+
+Also, if you connected a component to the Redux store to get the current language, you now need to use the `useLocale()` hook instead.
+
+```diff
+-import { connect } from 'react-redux';
++import { useLocale } from 'react-admin';
+
+const availableLanguages = {
+    en: 'English',
+    fr: 'Français',
+}
+
+-const CurrentLanguage = ({ locale }) => {
++const CurrentLanguage = () => {
++   const locale = useLocale();
+    return <span>{availableLanguages[locale]}</span>;
+}
+
+- const mapStatetoProps = state => state.i18n.locale
+
+-export default connect(mapStateToProps)(CurrentLanguage);
++export default CurrentLanguage;
+```
+
+If you used a custom Redux store, you must update the `createAdminStore` call to omit the i18n details:
+
+```diff
+const App = () => (
+    <Provider
+        store={createAdminStore({
+            authProvider,
+            dataProvider,
+-           i18nProvider,
+            history,
+        })}
+    >
+        <Admin
+            authProvider={authProvider}
+            dataProvider={dataProvider}
+            history={history}
+            title="My Admin"
+        >
+```
+
+## `withDataProvider` No Longer Injects `dispatch`
+
+The `withDataProvider` HOC used to inject two props: `dataProvider`, and Redux' `dispatch`. This last prop is now easy to get via the `useDispatch` hook from Redux, so `withDataProvider` no longer injects it.
+
+```diff
+import {
+   showNotification,
+   UPDATE,
+   withDataProvider,
+} from 'react-admin';
++ import { useDispatch } from 'react-redux';
+
+-const ApproveButton = ({ dataProvider, dispatch, record }) => {
++const ApproveButton = ({ dataProvider, record }) => {
++   const dispatch = useDispatch();
+    const handleClick = () => {
+        const updatedRecord = { ...record, is_approved: true };
+        dataProvider(UPDATE, 'comments', { id: record.id, data: updatedRecord })
+            .then(() => {
+                dispatch(showNotification('Comment approved'));
+                dispatch(push('/comments'));
+            })
+            .catch((e) => {
+                dispatch(showNotification('Error: comment not approved', 'warning'))
+            });
+    }
+
+    return <Button label="Approve" onClick={handleClick} />;
+}
+
+export default withDataProvider(ApproveButton);
+```
+
+## Resource `context` Renamed to `intent`
+
+If you're using a Custom App, you had to render `<Resource>` components with the registration *context* prior to rendering your app routes. The `context` prop was renamed to `intent` because it conflicted with a prop injected by `react-redux`.
+
+```diff
+-               <Resource name="posts" context="registration" />
++               <Resource name="posts" intent="registration" />
+-               <Resource name="comments" context="registration" />
++               <Resource name="comments" intent="registration" />
+-               <Resource name="users" context="registration" />
++               <Resource name="users" intent="registration" />
+```
+
+## `<ReferenceField>` `linkType` Prop Renamed to `link`
+
+When using the `<ReferenceField>` component, you should rename the `linkType` prop to `link`. This prop now also accepts custom functions to return a link (see the Fields documentation).
+
+```diff
+- <ReferenceField resource="comments" record={data[id]} source="post_id" reference="posts" basePath={basePath} linkType="show">
++ <ReferenceField resource="comments" record={data[id]} source="post_id" reference="posts" basePath={basePath} link="show">
+```
+
+## `<CardActions>` Renamed to `<TopToolbar>`
+
+The `<CardActions>` component, which used to wrap the action buttons in the `Edit`, `Show` and `Create` views, is now named `<TopToolbar>`. That's because actions aren't located inside the `Card` anymore, but above it.
+
+```diff
+import Button from '@material-ui/core/Button';
+-import { CardActions, ShowButton } from 'react-admin';
++import { TopToolbar, ShowButton } from 'react-admin';
+
+const PostEditActions = ({ basePath, data, resource }) => (
+-   <CardActions>
++   <TopToolbar>
+        <ShowButton basePath={basePath} record={data} />
+        {/* Add your custom actions */}
+        <Button color="primary" onClick={customAction}>Custom Action</Button>
+-   </CardActions>
++   </TopToolbar>
+);
+
+export const PostEdit = (props) => (
+    <Edit actions={<PostEditActions />} {...props}>
+        ...
+    </Edit>
 );
 ```
 
-The `<ShowController>` fetches the `record` from the data provider, and passes it to its child function when received (among the `controllerProps`). That means the following code:
+But watch out, you can't just replace "CardActions" by "TopToolbar" in your entire codebase, because you probably also use material-ui's `<CardActions>`, and that component still exists. The fact that react-admin exported a component with the same name but with a different look and feel than the material-ui component was also a motivation to rename it.
 
-```jsx
-import { Show, SimpleShowLayout, TextField } from 'react-admin';
+## `<Admin>` `appLayout` Prop Renamed To `layout`
 
-const UserShow = props => (
-    <Show {...props}>
-        <SimpleShowLayout>
-            <TextField source="username" />
-            <TextField source="email" />
-        </SimpleShowLayout>
-    </Show>
+You can inject a layout component in the `<Admin>` component to override the default layout. However, this injection used a counterintuitive prop name: `appLayout`. It has been renamed to the more natural `layout`.
+
+You will only have to change your code if you used a custom layout:
+
+```diff
+const App = () => (
+-   <Admin appLayout={MyLayout}>
++   <Admin layout={MyLayout}>
+        <Resource name="posts" list={PostList} edit={PostEdit} />
+    </Admin>
 );
 ```
 
-Is equivalent to:
+## Prop `isLoading` Renamed To `loading`
 
-```jsx
-import { ShowController, ShowView, SimpleShowLayout, TextField } from 'react-admin';
+Most of the react-admin controller components that fetch data used to inject an `isLoading` boolean prop, set to true whenever a `dataProvider` call was pending. This prop was renamed to `loading` everywhere. Use the search and replace feature of your IDE to rename that prop.
 
-const UserShow = props => (
-    <ShowController {...props}>
-        {controllerProps => 
-            <ShowView {...props} {...controllerProps}>
-                <SimpleShowLayout>
-                    <TextField source="username" />
-                    <TextField source="email" />
-                </SimpleShowLayout>
-            </ShowView>
-        }
-    </ShowController>
+For instance:
+
+```diff
+  <ReferenceInputController {...props}>
+-     {({ isLoading, otherProps }) => (
++     {({ loading, otherProps }) => (
+          <CustomReferenceInputView
+              {...otherProps}
+-             isLoading={isLoading}
++             loading={loading}
+          />
+      )}
+  </ReferenceInputController>
+```
+
+## Prop `loadedOnce` Renamed To `loaded`
+
+The `List`, `ReferenceArrayfield` and `ReferenceManyField` used to inject a `loadedOnce` prop to their child. This prop has been renamed to `loaded`.
+
+As a consequence, the components usually used as child of these 3 components now accept a `loaded` prop instead of `loadedOnce`. This concerns `Datagrid`, `SingleFieldList`, and `GridList`.
+
+This change is transparent unless you use a custom view component inside a `List`, `ReferenceArrayfield` or `ReferenceManyField`.
+
+```diff
+const PostList = props => (
+    <List {...props}>
+        <MyListView />
+    </List>
+)
+
+-const MyListView = ({ loadedOnce, ...props }) => (
++const MyListView = ({ loaded, ...props }) => (
+-   if (!loadedOnce) return null;
++   if (!loaded) return null;
+    // rest of the view
 );
 ```
 
-If you want one field to be displayed based on the `record`, for instance to display the email field only if the `hasEmail` field is `true`, you just need to test the value from `controllerProps.record`, as follows:
+## Deprecated components were removed
 
-```jsx
-import { ShowController, ShowView, SimpleShowLayout, TextField } from 'react-admin';
+Components deprecated in 2.X have been removed in 3.x. This includes:
 
-const UserShow = props => (
-    <ShowController {...props}>
-        {controllerProps => 
-            <ShowView {...props} {...controllerProps}>
-                <SimpleShowLayout>
-                    <TextField source="username" />
-                    {controllerProps.record && controllerProps.record.hasEmail && 
-                        <TextField source="email" />
-                    }
-                </SimpleShowLayout>
-            </ShowView>
-        }
-    </ShowController>
+* `AppBarMobile` (use `AppBar` instead, which is responsive)
+* `Header` (use `Title` instead)
+* `ViewTitle` (use `Title` instead)
+* `RecordTitle` (use `TitleForRecord` instead)
+* `TitleDeprecated` (use `Title` instead)
+* `Headroom` (use `HideOnScroll` instead)
+* `LongTextInput` (use the `TextInput` instead)
+
+```diff
+- import { LongTextInput } from 'react-admin';
+- <LongTextInput source="body" />
++ import { TextInput } from 'react-admin';
++ <TextInput multiline source="body" />
+```
+
+* `BulkActions` (use the [`bulkActionButtons` prop](https://marmelab.com/react-admin/List.html#bulk-action-buttons) instead)
+
+```diff
+- const PostBulkActions = props => (
+-     <BulkActions {...props}>
+-         <CustomBulkMenuItem />
+-         {/* Add the default bulk delete action */}
+-         <BulkDeleteMenuItem />
+-     </BulkActions>
+- );
++ const PostBulkActionButtons = props => (
++     <Fragment>
++         <ResetViewsButton label="Reset Views" {...props} />
++         {/* Add the default bulk delete action */}
++         <BulkDeleteButton {...props} />
++     </Fragment>
++ );
+
+export const PostList = (props) => (
+    <List 
+        {...props} 
+-       bulkActions={<PostBulkActions />}
++       bulkActionButtons={<PostBulkActionButtons />}>
+        ...
+    </List>
 );
 ```
 
-## Validators should be initialized
+## The `DisabledInput` Component Was Removed
 
-The `required`,`number` and `email` validators must now be executed just like the other validators, not passed as function arguments.
+See [RFC 3518](https://github.com/marmelab/react-admin/issues/3518) for the rationale.
 
-Update your `require`,`number` and `email` validations. 
+You can replace `<DisabledInput>` with a disabled or read-only `TextInput`. For example, the `disabled` prop:
+
+```diff
+-import { DisabledInput } from 'react-admin';
++import { TextInput } from 'react-admin';
+
+-<DisabledInput source="id" />
++<TextInput source="id" disabled />
+```
+
+See material-ui [`TextField` documentation](https://material-ui.com/components/text-fields/#textfield) for available options.
+
+## The SideBar Width Must Be Set Through The `theme`
+
+The `<SideBar>` component used to accept `size` and `closedSize` prop to control its width.
+
+You can now customize those values by providing a custom material-ui theme.
+
+```jsx
+import { createMuiTheme } from '@material-ui/core/styles';
+
+const theme = createMuiTheme({
+    sidebar: {
+        width: 300, // The default value is 240
+        closedWidth: 70, // The default value is 55
+    },
+});
+
+const App = () => (
+    <Admin theme={theme} dataProvider={simpleRestProvider('http://path.to.my.api')}>
+        // ...
+    </Admin>
+);
+```
+
+## Reference Inputs No Longer Inject A `helperText` field Inside `meta`
+
+`<ReferenceInput>` used to send a `helperText` inside the `meta` prop of its child whenever it was unable to retrieve referenced records. The same goes for `<ReferenceArrayInput>`.
+
+These components now use the `meta: { error }` prop and won't override their child `helperText` anymore.
+
+Furthermore, they don't support the `helperText` at all anymore as this is a pure UI concern which should be handled by their child.
+
+If you've implemented a custom child component for `<ReferenceInput>` of `<ReferenceArrayInput>`, you must now display the `error` in your component.
+
+```diff
+const MySelectIpnut = ({
+    // ...
+-   meta: { helperText }
++   meta: { error }
+}) => (
+    if (error) {
+        // ReferenceInput couldn't check referenced records, and therefore the choices list is empty
+        // display a custo merror message here.
+    }
+);
+```
+
+## `helperText` Is Handled The Same Way In All Components
+
+Somewhat related to the previous point, some components (such as `<SelectArrayInput>`) used to accept a `helperText` prop in their `meta` prop. They now receive it directly in their props.
+
+Besides, all components now display their error or their helper text, but not both at the same time.
+
+This has no impact unless you used to set the `helperText` manually in `<SelectArrayInput>`:
+
+```diff
+const Postedit = props =>
+  <Edit {...props}>
+      <SimpleForm>
+          // ...
+         <SelectArrayInput
+            label="Tags"
+            source="categories"
+-           meta={{ helperText: 'Select categories' }}
++           helperText="Select categories"
+            choices={[
+             { id: 'music', name: 'Music' },
+             { id: 'photography', name: 'Photo' },
+             { id: 'programming', name: 'Code' },
+             { id: 'tech', name: 'Technology' },
+             { id: 'sport', name: 'Sport' },
+            ]}
+           />
+      </SimpleForm>
+  </Edit>
+```
+
+## Form Inputs Are Now `filled` And `dense` By Default
+
+To better match the [Material Design](https://material.io/components/text-fields/) specification, react-admin defaults to the *filled* variant for form inputs, and uses a *dense* margin to allow more compact forms. This will change the look and feel of existing forms built with `<SimpleForm>`, `<TabbedForm>`, and `<Filter>`. If you want your forms to look just like before, you need to set the `variant` and `margin` props as follows: 
+
+```diff
+// for SimpleForm
+const PostEdit = props =>
+    <Edit {...props}>
+        <SimpleForm
++           variant="standard"
++           margin="normal"
+        >
+            // ...
+        </SimpleForm>
+    </Edit>;
+// for TabbedForm
+const PostEdit = props =>
+    <Edit {...props}>
+        <TabbedForm
++           variant="standard"
++           margin="normal"
+        >
+            <FormTab label="Identity>
+                // ...
+            </FormTab>
+        </TabbedForm>
+    </Edit>;
+// for Filter
+const PostFilter = props => 
+-   <Filter>
++   <Filter variant="standard">
+        // ...
+    </Filter>;
+```
+
+## `<Form>` `defaultValue` Prop Was Renamed To `initialValues`
+
+This is actually to be consistent with the underlying form library ([final-form](https://final-form.org/docs/react-final-form))
+
+```diff
+// for SimpleForm
+const PostEdit = props =>
+    <Edit {...props}>
+        <SimpleForm
+-           defaultValue={{ stock: 0 }}
++           initialValues={{ stock: 0 }}
+        >
+            // ...
+        </SimpleForm>
+    </Edit>;
+// for TabbedForm
+const PostEdit = props =>
+    <Edit {...props}>
+        <TabbedForm
+-           defaultValue={{ stock: 0 }}
++           initialValues={{ stock: 0 }}
+        >
+            <FormTab label="Identity>
+                // ...
+            </FormTab>
+        </TabbedForm>
+    </Edit>;
+```
+
+## Prefilling Some Fields Of A `<Create>` Page Needs Different URL Syntax
+
+We've described how to pre-fill some fields in the create form in an [Advanced Tutorial](https://marmelab.com/blog/2018/07/09/react-admin-tutorials-form-for-related-records.html). In v2, you had to pass all the fields to be pre-filled as search parameters. In v3, you have to pass a single `source` search parameter containing a stringified object:
+
+```jsx
+const AddNewCommentButton = ({ record }) => (
+  <Button
+    component={Link}
+    to={{
+      pathname: "/comments/create",
+-     search: `?post_id=${record.id}`,
++     search: `?source=${JSON.stringify({ post_id: record.id })}`,
+    }}
+    label="Add a comment"
+  >
+    <ChatBubbleIcon />
+  </Button>
+);
+```
+
+That's what the `<CloneButton>` does in react-admin v3:
+
+```jsx
+export const CloneButton = ({
+    basePath = '',
+    label = 'ra.action.clone',
+    record = {},
+    icon = <Queue />,
+    ...rest
+}) => (
+    <Button
+        component={Link}
+        to={{
+            pathname: `${basePath}/create`,
+            search: stringify({ source: JSON.stringify(omitId(record)) }),
+        }}
+        label={label}
+        onClick={stopPropagation}
+        {...sanitizeRestProps(rest)}
+    >
+        {icon}
+    </Button>
+);
+```
+
+## The `<AutocompleteInput>` And `<AutocompleteArrayInput>` Components No Longer Support Certain Props
+
+We rewrote the `<AutocompleteInput>` and `<AutocompleteArrayInput>` components from scratch using [`downshift`](https://github.com/downshift-js/downshift), while the previous version was based on [react-autosuggest](https://react-autosuggest.js.org/). The new components are more robust and more future-proof, and their API didn't change.
+
+There are three breaking changes in the new `<AutocompleteInput>` and `<AutocompleteArrayInput>` components:
+
+- The `inputValueMatcher` prop is gone. We removed a feature many found confusing: the auto-selection of an item when it was matched exactly. So react-admin no longer selects anything automatically, therefore the `inputValueMatcher` prop is obsolete.
+
+```diff
+<AutocompleteInput
+    source="role"
+-   inputValueMatcher={() => null}
+/>
+<AutocompleteArrayInput
+    source="role"
+-   inputValueMatcher={() => null}
+/>
+```
+ 
+- Specific [`react-autosuggest` props](https://github.com/moroshko/react-autosuggest#props) (like `onSuggestionsFetchRequested`, `theme`, or `highlightFirstSuggestion`) are no longer supported, because the component now passes extra props to a `<Downshift>` component.
  
 ```diff
--<TextInput source="foo" validate={[required,maxSize(2)]} />
-+<TextInput source="foo" validate={[required(),maxSize(2)]} />
-
--<TextInput source="foo" validate={number} />
-+<TextInput source="foo" validate={number()} />
-
--<TextInput source="foo" validate={email} />
-+<TextInput source="foo" validate={email()} />
+<AutocompleteInput
+    source="role"
+-   highlightFirstSuggestion={true}
+/>
+<AutocompleteArrayInput
+    source="role"
+-   highlightFirstSuggestion={true}
+/>
 ```
+
+- The `suggestionComponent` prop is gone.
+
+Instead, the new `<AutocompleteInput>` and `<AutocompleteArrayInput>` components use the `optionText` prop, like all other inputs accepting choices. However, if you pass a React element as the `optionText`, you must now also specify the new `matchSuggestion` prop. This is required because the inputs use the `optionText` by default to filter suggestions. This function receives the current filter and a choice, and should return a boolean indicating whether this choice matches the filter.
+
+```diff
+<AutocompleteInput
+    source="role"
+-   suggestionComponent={MyComponent}
++   optionText={<MyComponent />}
++   matchSuggestion={matchSuggestion}
+/>
+
+<AutocompleteArrayInput
+    source="role"
+-   suggestionComponent={MyComponent}
++   optionText={<MyComponent />}
++   matchSuggestion={matchSuggestion}
+/>
+```
+ 
+Besides, some props which were applicable to both components did not make sense for the `<AutocompleteArrayInput>` component:
+
+- `allowEmpty`: As the `<AutocompleteArrayInput>` deals with arrays, it does not make sense to add an empty choice. This prop is no longer accepted and will be ignored.
+- `limitChoicesToValue`: As the `<AutocompleteArrayInput>` deals with arrays and only accepts unique items, it does not make sense to show only the already selected items. This prop is no longer accepted and will be ignored.
+
+```diff
+<AutocompleteArrayInput
+    source="role"
+-   allowEmpty={true}
+-   limitChoicesToValue={true}
+/>
+```
+
+## New DataProviderContext Requires Custom App Modification
+
+The new dataProvider-related hooks (`useQuery`, `useMutation`, `useDataProvider`, etc.) grab the `dataProvider` instance from a new React context. If you use the `<Admin>` component, your app will continue to work and there is nothing to do, as `<Admin>` now provides that context. But if you use a Custom App, you'll need to set the value of that new `DataProvider` context:
+
+```diff
+-import { TranslationProvider, Resource } from 'react-admin';
++import { TranslationProvider, DataProviderContext, Resource } from 'react-admin';
+
+const App = () => (
+    <Provider
+        store={createAdminStore({
+            authProvider,
+            dataProvider,
+            i18nProvider,
+            history,
+        })}
+    >
+        <TranslationProvider>
++           <DataProviderContext.Provider valuse={dataProvider} />
+                <ThemeProvider>
+                    <Resource name="posts" intent="registration" />
+                    ...
+                    <AppBar position="static" color="default">
+                        <Toolbar>
+                            <Typography variant="h6" color="inherit">
+                                My admin
+                            </Typography>
+                        </Toolbar>
+                    </AppBar>
+                    <ConnectedRouter history={history}>
+                        <Switch>
+                            <Route exact path="/" component={Dashboard} />
+                            <Route exact path="/posts" hasCreate render={(routeProps) => <PostList resource="posts" {...routeProps} />} />
+                            <Route exact path="/posts/create" render={(routeProps) => <PostCreate resource="posts" {...routeProps} />} />
+                            <Route exact path="/posts/:id" hasShow render={(routeProps) => <PostEdit resource="posts" {...routeProps} />} />
+                            <Route exact path="/posts/:id/show" hasEdit render={(routeProps) => <PostShow resource="posts" {...routeProps} />} />
+                            ...
+                        </Switch>
+                    </ConnectedRouter>
+                </ThemeProvider>
++           </DataProviderContext.Provider>
+        </TranslationProvider>
+    </Provider>
+);
+```
+
+Note that if you were unit testing controller components, you'll probably need to add a mock `dataProvider` via `<DataProviderContext>` in your tests, too.
+
+## Custom `<Notification>` Components Must Emit UndoEvents
+
+The undo feature is partially implemented in the `Notification` component. If you've overridden that component, you'll have to add a call to `undoableEventEmitter` in case of confirmation and undo:
+
+```diff
+// in src/MyNotification.js
+import React from 'react';
+import { connect } from 'react-redux';
+import compose from 'recompose/compose';
+import classnames from 'classnames';
+import Snackbar from "@material-ui/core/Snackbar";
+import { withStyles, createStyles } from "@material-ui/core";
+import {
+    complete,
+    undo,
+    translate,
+    getNotification,
+    hideNotification,
+    Button,
++   undoableEventEmitter,
+} from 'react-admin';
+
+const styles = theme =>
+  createStyles({
+    confirm: {
+      backgroundColor: theme.palette.background.default
+    },
+    warning: {
+      backgroundColor: theme.palette.error.light
+    },
+    undo: {
+      color: theme.palette.primary.light
+    }
+  });
+
+class Notification extends React.Component {
+    state = {
+        open: false,
+    };
+    componentWillMount = () => {
+        this.setOpenState(this.props);
+    };
+    componentWillReceiveProps = nextProps => {
+        this.setOpenState(nextProps);
+    };
+
+    setOpenState = ({ notification }) => {
+        this.setState({
+            open: !!notification,
+        });
+    };
+
+    handleRequestClose = () => {
+        this.setState({
+            open: false,
+        });
+    };
+
+    handleExited = () => {
+        const { notification, hideNotification, complete } = this.props;
+        if (notification && notification.undoable) {
+            complete();
++           undoableEventEmitter.emit('end', { isUndo: false });
+        }
+        hideNotification();
+    };
+
+    handleUndo = () => {
+        const { undo } = this.props;
+        undo();
++       undoableEventEmitter.emit('end', { isUndo: true });
+    };
+
+    render() {
+        const {
+            undo,
+            complete,
+            classes,
+            className,
+            type,
+            translate,
+            notification,
+            autoHideDuration,
+            hideNotification,
+            ...rest
+        } = this.props;
+        const {
+            warning,
+            confirm,
+            undo: undoClass, // Rename classes.undo to undoClass in this scope to avoid name conflicts
+            ...snackbarClasses
+        } = classes;
+        return (
+            <Snackbar
+                open={this.state.open}
+                message={
+                    notification &&
+                    notification.message &&
+                    translate(notification.message, notification.messageArgs)
+                }
+                autoHideDuration={
+                    (notification && notification.autoHideDuration) ||
+                    autoHideDuration
+                }
+                disableWindowBlurListener={
+                    notification && notification.undoable
+                }
+                onExited={this.handleExited}
+                onClose={this.handleRequestClose}
+                ContentProps={{
+                    className: classnames(
+                        classes[(notification && notification.type) || type],
+                        className
+                    ),
+                }}
+                action={
+                    notification && notification.undoable ? (
+                        <Button
+                            color="primary"
+                            className={undoClass}
+                            size="small"
+-                           onClick={undo}
++                           onClick={this.handleUndo}
+                        >
+                            {translate('ra.action.undo')}
+                        </Button>
+                    ) : null
+                }
+                classes={snackbarClasses}
+                {...rest}
+            />
+        );
+    }
+}
+
+const mapStateToProps = state => ({
+  notification: getNotification(state)
+});
+
+export default compose(
+  translate,
+  withStyles(styles),
+  connect(
+    mapStateToProps,
+    {
+      complete,
+      hideNotification,
+      undo
+    }
+  )
+)(Notification);
+```
+
+## No More Tree Packages in Core
+
+The `ra-tree` and `ra-tree-ui-material-ui` packages were removed in v3. The v2 version performed poorly, and we don't want to delay v3 to reimplement the Tree packages.
+
+If you were using these packages just for displaying a tree, you'll have to reimplement a basic tree widget, taking the Tags list from the Simple example as an inspiration. If you were using these packages for creating and updating a tree, we recommend that you wait until the core team or another community member publishes a Tree package compatible with v3.

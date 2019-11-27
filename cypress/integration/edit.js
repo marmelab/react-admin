@@ -27,6 +27,9 @@ describe('Edit Page', () => {
         it('should allow to update elements', () => {
             EditPostPage.setInputValue('input', 'title', 'Lorem Ipsum');
             EditPostPage.submit();
+            // Ensure react-admin has handled the update as it will redirect to the list page
+            // once done
+            cy.url().should(url => expect(url).to.match(/.*\/posts$/));
             EditPostPage.navigate();
             cy.get(EditPostPage.elements.input('title')).should(el =>
                 expect(el).to.have.value('Lorem Ipsum')
@@ -85,9 +88,6 @@ describe('Edit Page', () => {
             .clear()
             .type('Sed quo');
         cy.get('[role="tooltip"]').within(() => {
-            cy.contains(
-                'Accusantium qui nihil voluptatum quia voluptas maxime ab similique'
-            );
             cy.contains('Sed quo et et fugiat modi').click();
         });
         cy.get('[role="tooltip"]').should(el => expect(el).to.not.exist);
@@ -101,9 +101,7 @@ describe('Edit Page', () => {
             .clear()
             .type('architecto aut');
         cy.get('[role="tooltip"]').within(() => {
-            cy.contains('Sed quo et et fugiat modi');
             cy.contains('Sint dignissimos in architecto aut');
-            cy.contains('A voluptas eius eveniet ut commodi dolor');
         });
     });
 
@@ -145,6 +143,20 @@ describe('Edit Page', () => {
         const date = new Date('2012-08-05').toISOString().slice(0, 10);
         cy.get(CreatePostPage.elements.input('published_at')).should(el =>
             expect(el).to.have.value(date)
+        );
+    });
+
+    it('should persit emptied inputs', () => {
+        EditPostPage.navigate();
+        EditPostPage.gotoTab(3);
+        cy.contains('Tech').click();
+        cy.get('li[aria-label="Clear value"]').click();
+        EditPostPage.submit();
+
+        EditPostPage.navigate();
+        EditPostPage.gotoTab(3);
+        cy.get(EditPostPage.elements.input('category')).should(el =>
+            expect(el).to.have.value('')
         );
     });
 });

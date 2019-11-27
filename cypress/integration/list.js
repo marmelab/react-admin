@@ -16,23 +16,6 @@ describe('List Page', () => {
         });
     });
 
-    describe('Auto-hide AppBar', () => {
-        it('should hide/show the appBar when scroll action appears', () => {
-            // wait for the skeleton to disappear
-            cy.contains('1-10 of 13');
-
-            cy.viewport(1280, 500);
-
-            cy.scrollTo(0, 200);
-            cy.get(ListPagePosts.elements.headroomUnpinned).should(
-                'not.be.visible'
-            );
-
-            cy.scrollTo(0, -100);
-            cy.get(ListPagePosts.elements.headroomUnfixed).should('be.visible');
-        });
-    });
-
     describe('Pagination', () => {
         it('should display paginated list of available posts', () => {
             cy.contains('1-10 of 13');
@@ -92,7 +75,7 @@ describe('List Page', () => {
         });
 
         it('should keep filters when navigating away and going back on given page', () => {
-            LoginPage.navigate();
+            ListPagePosts.logout();
             LoginPage.login('admin', 'password');
             ListPagePosts.setFilterValue('q', 'quis culpa impedit');
             cy.contains('1-1 of 1');
@@ -113,7 +96,7 @@ describe('List Page', () => {
         });
 
         it('should allow to disable alwaysOn filters with default value', () => {
-            LoginPage.navigate();
+            ListPagePosts.logout();
             LoginPage.login('admin', 'password');
             ListPageUsers.navigate();
             cy.contains('1-2 of 2');
@@ -126,7 +109,9 @@ describe('List Page', () => {
         it('should allow to select all items on the current page', () => {
             cy.contains('1-10 of 13'); // wait for data
             ListPagePosts.toggleSelectAll();
-            cy.get(ListPagePosts.elements.bulkActionsToolbar).should('exist');
+            cy.get(ListPagePosts.elements.bulkActionsToolbar).should(
+                'be.visible'
+            );
             cy.contains('10 items selected');
             cy.get(ListPagePosts.elements.selectedItem).should(els =>
                 expect(els).to.have.length(10)
@@ -136,10 +121,12 @@ describe('List Page', () => {
         it('should allow to unselect all items on the current page', () => {
             cy.contains('1-10 of 13'); // wait for data
             ListPagePosts.toggleSelectAll();
-            cy.get(ListPagePosts.elements.bulkActionsToolbar).should('exist');
+            cy.get(ListPagePosts.elements.bulkActionsToolbar).should(
+                'be.visible'
+            );
             ListPagePosts.toggleSelectAll();
             cy.get(ListPagePosts.elements.bulkActionsToolbar).should(
-                'not.exist'
+                'not.be.visible'
             );
             cy.get(ListPagePosts.elements.selectedItem).should(els =>
                 expect(els).to.have.length(0)
@@ -160,7 +147,7 @@ describe('List Page', () => {
             ListPagePosts.toggleSelectAll();
             ListPagePosts.applyUpdateBulkAction();
             cy.get(ListPagePosts.elements.bulkActionsToolbar).should(
-                'not.exist'
+                'not.be.visible'
             );
             cy.get(ListPagePosts.elements.selectedItem).should(els =>
                 expect(els).to.have.length(0)
@@ -194,7 +181,7 @@ describe('List Page', () => {
         });
 
         it('should accept a function returning a promise', () => {
-            LoginPage.navigate();
+            ListPagePosts.logout();
             LoginPage.login('user', 'password');
             ListPageUsers.navigate();
             cy.contains('Annamarie Mayer')
@@ -227,12 +214,15 @@ describe('List Page', () => {
                 .click()
                 .should(el => expect(el).to.have.attr('aria-expanded', 'true'))
                 .should(el => expect(el).to.have.attr('aria-label', 'Close'));
+
             cy.get('#13-expand').should(el => expect(el).to.exist);
+
             cy.get('[aria-label="Expand"]')
-                .eq(0)
+                .eq(0) // We still target the first button labeled Expand because the previous one should now have a Close label
                 .click()
                 .should(el => expect(el).to.have.attr('aria-expanded', 'true'))
                 .should(el => expect(el).to.have.attr('aria-label', 'Close'));
+
             cy.get('#12-expand').should(el => expect(el).to.exist);
         });
     });
@@ -271,6 +261,21 @@ describe('List Page', () => {
                     '[class*=iconDirectionDesc]'
                 )
             ).should('exist');
+        });
+
+        it('should keep filters when sorting a column', () => {
+            ListPagePosts.setFilterValue('q', 'quis culpa impedit');
+            cy.get(ListPagePosts.elements.recordRows).should(el =>
+                expect(el).to.have.length(1)
+            );
+
+            ListPagePosts.toggleColumnSort('title');
+            ListPagePosts.waitUntilDataLoaded();
+
+            cy.get(ListPagePosts.elements.filter('q')).should(
+                'have.value',
+                'quis culpa impedit'
+            );
         });
     });
 });

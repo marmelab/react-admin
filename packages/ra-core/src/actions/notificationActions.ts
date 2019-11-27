@@ -25,7 +25,7 @@ export interface ShowNotificationAction {
 /**
  * Shows a snackbar/toast notification on the screen
  *
- * @see {@link https://v1.material-ui.com/api/snackbar/|Material ui snackbar component}
+ * @see {@link https://material-ui.com/api/snackbar/|Material ui snackbar component}
  * @see {@link https://material.io/guidelines/components/snackbars-toasts.html|Material ui reference document on snackbar}
  */
 export const showNotification = (

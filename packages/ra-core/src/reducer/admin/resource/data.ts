@@ -1,5 +1,6 @@
 import { Reducer } from 'redux';
-import { FETCH_END } from '../../../actions/fetchActions';
+import isEqual from 'lodash/isEqual';
+import { FETCH_END } from '../../../actions';
 import {
     CREATE,
     DELETE,
@@ -10,7 +11,7 @@ import {
     GET_ONE,
     UPDATE,
     UPDATE_MANY,
-} from '../../../dataFetchActions';
+} from '../../../core';
 import getFetchedAt from '../../../util/getFetchedAt';
 import { Record, Identifier } from '../../../types';
 
@@ -75,7 +76,12 @@ export const addRecords = (
 
     const records = { fetchedAt: newFetchedAt };
     Object.keys(newFetchedAt).forEach(
-        id => (records[id] = newRecordsById[id] || oldRecords[id])
+        id =>
+            (records[id] = newRecordsById[id]
+                ? isEqual(newRecordsById[id], oldRecords[id])
+                    ? oldRecords[id] // do not change the record to avoid a redraw
+                    : newRecordsById[id]
+                : oldRecords[id])
     );
 
     return hideFetchedAt(records);

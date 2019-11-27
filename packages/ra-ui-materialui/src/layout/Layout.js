@@ -1,22 +1,29 @@
-import React, { Component, createElement } from 'react';
+import React, {
+    Component,
+    createElement,
+    useEffect,
+    useRef,
+    useState,
+} from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
-import { withRouter } from 'react-router';
+import { withRouter } from 'react-router-dom';
 import {
-    MuiThemeProvider,
     createMuiTheme,
     withStyles,
     createStyles,
 } from '@material-ui/core/styles';
+import { ThemeProvider } from '@material-ui/styles';
 import compose from 'recompose/compose';
 
-import AppBar from './AppBar';
-import Sidebar from './Sidebar';
-import Menu from './Menu';
-import Notification from './Notification';
-import Error from './Error';
+import DefaultAppBar from './AppBar';
+import DefaultSidebar from './Sidebar';
+import DefaultMenu from './Menu';
+import DefaultNotification from './Notification';
+import DefaultError from './Error';
 import defaultTheme from '../defaultTheme';
+import { ComponentPropType } from 'ra-core';
 
 const styles = theme =>
     createStyles({
@@ -33,6 +40,12 @@ const styles = theme =>
         appFrame: {
             display: 'flex',
             flexDirection: 'column',
+            [theme.breakpoints.up('xs')]: {
+                marginTop: theme.spacing(6),
+            },
+            [theme.breakpoints.down('xs')]: {
+                marginTop: theme.spacing(7),
+            },
         },
         contentWithSidebar: {
             display: 'flex',
@@ -43,7 +56,9 @@ const styles = theme =>
             flexDirection: 'column',
             flexGrow: 1,
             flexBasis: 0,
-            padding: theme.spacing.unit * 3,
+            padding: theme.spacing(3),
+            paddingTop: theme.spacing(1),
+            paddingLeft: 0,
             [theme.breakpoints.up('xs')]: {
                 paddingLeft: 5,
             },
@@ -131,38 +146,29 @@ class Layout extends Component {
     }
 }
 
-const componentPropType = PropTypes.oneOfType([
-    PropTypes.func,
-    PropTypes.string,
-]);
-
 Layout.propTypes = {
-    appBar: componentPropType,
+    appBar: ComponentPropType,
     children: PropTypes.oneOfType([PropTypes.func, PropTypes.node]),
     classes: PropTypes.object,
     className: PropTypes.string,
     customRoutes: PropTypes.array,
-    dashboard: componentPropType,
-    error: componentPropType,
+    dashboard: ComponentPropType,
+    error: ComponentPropType,
     history: PropTypes.object.isRequired,
-    logout: PropTypes.oneOfType([
-        PropTypes.node,
-        PropTypes.func,
-        PropTypes.string,
-    ]),
-    menu: componentPropType,
-    notification: componentPropType,
+    logout: PropTypes.element,
+    menu: ComponentPropType,
+    notification: ComponentPropType,
     open: PropTypes.bool,
-    sidebar: componentPropType,
+    sidebar: ComponentPropType,
     title: PropTypes.node.isRequired,
 };
 
 Layout.defaultProps = {
-    appBar: AppBar,
-    error: Error,
-    menu: Menu,
-    notification: Notification,
-    sidebar: Sidebar,
+    appBar: DefaultAppBar,
+    error: DefaultError,
+    menu: DefaultMenu,
+    notification: DefaultNotification,
+    sidebar: DefaultSidebar,
 };
 
 const mapStateToProps = state => ({
@@ -178,25 +184,23 @@ const EnhancedLayout = compose(
     withStyles(styles)
 )(Layout);
 
-class LayoutWithTheme extends Component {
-    constructor(props) {
-        super(props);
-        this.theme = createMuiTheme(props.theme);
-    }
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.theme !== this.props.theme) {
-            this.theme = createMuiTheme(nextProps.theme);
+const LayoutWithTheme = ({ theme: themeOverride, ...props }) => {
+    const themeProp = useRef(themeOverride);
+    const [theme, setTheme] = useState(createMuiTheme(themeOverride));
+
+    useEffect(() => {
+        if (themeProp.current !== themeOverride) {
+            themeProp.current = themeOverride;
+            setTheme(createMuiTheme(themeOverride));
         }
-    }
-    render() {
-        const { theme, ...rest } = this.props;
-        return (
-            <MuiThemeProvider theme={this.theme}>
-                <EnhancedLayout {...rest} />
-            </MuiThemeProvider>
-        );
-    }
-}
+    }, [themeOverride, themeProp, theme, setTheme]);
+
+    return (
+        <ThemeProvider theme={theme}>
+            <EnhancedLayout {...props} />
+        </ThemeProvider>
+    );
+};
 
 LayoutWithTheme.propTypes = {
     theme: PropTypes.object,

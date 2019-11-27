@@ -11,9 +11,8 @@ describe('Create Page', () => {
     const LoginPage = loginPageFactory('/#/login');
 
     beforeEach(() => {
-        LoginPage.navigate();
-        LoginPage.login('admin', 'password');
         CreatePage.navigate();
+        CreatePage.waitUntilVisible();
     });
 
     it('should show the correct title in the appBar', () => {
@@ -39,7 +38,19 @@ describe('Create Page', () => {
         );
     });
 
+    it('should validate ArrayInput', () => {
+        const backlinksContainer = cy
+            .get(CreatePage.elements.input('backlinks[0].date'))
+            .parents('.ra-input-backlinks');
+        backlinksContainer.contains('Remove').click();
+        CreatePage.submit();
+        backlinksContainer.contains('Required');
+    });
+
     it('should have a working array input with references', () => {
+        CreatePage.logout();
+        LoginPage.login('admin', 'password');
+        CreatePage.waitUntilVisible();
         cy.get(CreatePage.elements.addAuthor).click();
         cy.get(CreatePage.elements.input('authors[0].user_id')).should(
             el => expect(el).to.exist
@@ -50,6 +61,9 @@ describe('Create Page', () => {
     });
 
     it('should have a working array input with a scoped FormDataConsumer', () => {
+        CreatePage.logout();
+        LoginPage.login('admin', 'password');
+        CreatePage.waitUntilVisible();
         cy.get(CreatePage.elements.addAuthor).click();
         CreatePage.setValues([
             {
@@ -166,7 +180,7 @@ describe('Create Page', () => {
             {
                 type: 'checkbox',
                 name: 'commentable',
-                value: false,
+                value: 'false',
             },
             {
                 type: 'rich-text-input',
@@ -215,8 +229,9 @@ describe('Create Page', () => {
     });
 
     it('should not reset the form value when switching tabs', () => {
-        LoginPage.navigate();
+        CreatePage.logout();
         LoginPage.login('admin', 'password');
+        CreatePage.waitUntilVisible();
         UserCreatePage.navigate();
 
         CreatePage.setValues([
@@ -249,6 +264,10 @@ describe('Create Page', () => {
         cy.get(CreatePage.elements.richTextInputError)
             .should('exist')
             .contains('Required');
+
+        // Quill take a little time to boot and Cypress is too fast which can leads to unstable tests
+        // so we wait a bit before interacting with the rich-text-input
+        cy.wait(250);
         cy.get(CreatePage.elements.input('body', 'rich-text-input')).type(
             'text'
         );

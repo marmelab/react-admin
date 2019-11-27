@@ -1,6 +1,6 @@
 import assert from 'assert';
 
-import { DELETE, DELETE_MANY } from '../../../dataFetchActions';
+import { DELETE, DELETE_MANY } from '../../../core';
 import getFetchedAt from '../../../util/getFetchedAt';
 import dataReducer, { addRecords } from './data';
 

@@ -34,7 +34,7 @@ export const buildFields = introspectionResults => fields =>
             return acc;
         }
 
-        if (type.kind !== TypeKind.OBJECT) {
+        if (type.kind !== TypeKind.OBJECT && type.kind !== TypeKind.INTERFACE) {
             return [...acc, gqlTypes.field(gqlTypes.name(field.name))];
         }
 

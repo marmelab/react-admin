@@ -2,7 +2,7 @@ import React from 'react';
 import assert from 'assert';
 import { shallow } from 'enzyme';
 
-import { SingleFieldList } from './SingleFieldList';
+import SingleFieldList from './SingleFieldList';
 import ChipField from '../field/ChipField';
 
 describe('<SingleFieldList />', () => {
@@ -20,7 +20,7 @@ describe('<SingleFieldList />', () => {
                 <ChipField source="title" />
             </SingleFieldList>
         );
-        const linkElements = wrapper.find('WithStyles(Link)');
+        const linkElements = wrapper.find('Link');
         assert.equal(linkElements.length, 2);
         assert.deepEqual(linkElements.map(link => link.prop('to')), [
             '/posts/1',
@@ -42,7 +42,7 @@ describe('<SingleFieldList />', () => {
                 <ChipField source="title" />
             </SingleFieldList>
         );
-        const linkElements = wrapper.find('WithStyles(Link)');
+        const linkElements = wrapper.find('Link');
         assert.equal(linkElements.length, 2);
         assert.deepEqual(linkElements.map(link => link.prop('to')), [
             '/posts/1',
@@ -64,7 +64,7 @@ describe('<SingleFieldList />', () => {
                 <ChipField source="title" />
             </SingleFieldList>
         );
-        let linkElements = wrapper.find('WithStyles(Link)');
+        let linkElements = wrapper.find('Link');
         assert.equal(linkElements.length, 2);
         assert.deepEqual(linkElements.map(link => link.prop('to')), [
             '/edit/1',
@@ -84,7 +84,7 @@ describe('<SingleFieldList />', () => {
                 <ChipField source="title" />
             </SingleFieldList>
         );
-        linkElements = wrapper.find('WithStyles(Link)');
+        linkElements = wrapper.find('Link');
         assert.equal(linkElements.length, 2);
         assert.deepEqual(linkElements.map(link => link.prop('to')), [
             '/show/1',
@@ -108,7 +108,7 @@ describe('<SingleFieldList />', () => {
             </SingleFieldList>
         );
 
-        const linkElements = wrapper.find('WithStyles(Link)');
+        const linkElements = wrapper.find('Link');
         assert.equal(linkElements.length, 2);
         assert.deepEqual(linkElements.map(link => link.prop('to')), [
             '/prefix/bar/1/show',
@@ -131,7 +131,7 @@ describe('<SingleFieldList />', () => {
                 <ChipField source="title" />
             </SingleFieldList>
         );
-        let linkElements = wrapper.find('WithStyles(Link)');
+        let linkElements = wrapper.find('Link');
         assert.equal(linkElements.length, 2);
         assert.deepEqual(linkElements.map(link => link.prop('to')), [
             '/edit/1/show',
@@ -152,7 +152,7 @@ describe('<SingleFieldList />', () => {
                 <ChipField source="title" />
             </SingleFieldList>
         );
-        linkElements = wrapper.find('WithStyles(Link)');
+        linkElements = wrapper.find('Link');
         assert.equal(linkElements.length, 2);
         assert.deepEqual(linkElements.map(link => link.prop('to')), [
             '/show/1/show',
@@ -176,7 +176,7 @@ describe('<SingleFieldList />', () => {
             </SingleFieldList>
         );
 
-        const linkElements = wrapper.find('WithStyles(Link)');
+        const linkElements = wrapper.find('Link');
         assert.equal(linkElements.length, 0);
         const chipElements = wrapper.find('EnhancedChipField');
         assert.equal(chipElements.length, 2);

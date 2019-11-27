@@ -1,54 +1,71 @@
-import assert from 'assert';
 import React from 'react';
-import { shallow, render } from 'enzyme';
-import { TestContext } from 'ra-core';
+import expect from 'expect';
+import { cleanup } from '@testing-library/react';
+import { renderWithRedux } from 'ra-core';
+import { ThemeProvider } from '@material-ui/styles';
+import { createMuiTheme } from '@material-ui/core/styles';
+import { MemoryRouter } from 'react-router-dom';
 
+import defaultTheme from '../defaultTheme.ts';
 import List, { ListView } from './List';
 
+const theme = createMuiTheme(defaultTheme);
+
 describe('<List />', () => {
+    afterEach(cleanup);
+
     const defaultProps = {
         filterValues: {},
         hasCreate: false,
         ids: [],
-        isLoading: false,
+        loading: false,
         location: { pathname: '' },
         params: {},
+        perPage: 10,
         push: () => {},
         query: {},
         refresh: () => {},
         resource: 'post',
+        selectedIds: [],
+        setPage: () => null,
         total: 100,
-        translate: x => x,
         version: 1,
     };
-    it('should render a mui Card', () => {
+
+    it('should render a list page', () => {
         const Datagrid = () => <div>datagrid</div>;
-        const wrapper = shallow(
-            <ListView {...defaultProps}>
-                <Datagrid />
-            </ListView>
-        ).dive();
-        assert.equal(wrapper.find('WithStyles(Card)').length, 1);
+        const { container } = renderWithRedux(
+            <ThemeProvider theme={theme}>
+                <ListView {...defaultProps}>
+                    <Datagrid />
+                </ListView>
+            </ThemeProvider>
+        );
+        expect(container.querySelectorAll('.list-page')).toHaveLength(1);
     });
 
     it('should render a toolbar, children and pagination', () => {
         const Filters = () => <div>filters</div>;
         const Pagination = () => <div>pagination</div>;
         const Datagrid = () => <div>datagrid</div>;
-        const wrapper = shallow(
-            <ListView
-                filters={<Filters />}
-                pagination={<Pagination />}
-                {...defaultProps}
-            >
-                <Datagrid />
-            </ListView>
-        ).dive();
-        expect(
-            wrapper.find('translate(WithStyles(BulkActionsToolbar))')
-        ).toHaveLength(1);
-        expect(wrapper.find('Datagrid')).toHaveLength(1);
-        expect(wrapper.find('Pagination')).toHaveLength(1);
+        const { queryAllByText, queryAllByLabelText } = renderWithRedux(
+            <ThemeProvider theme={theme}>
+                <MemoryRouter initialEntries={['/']}>
+                    <ListView
+                        filters={<Filters />}
+                        pagination={<Pagination />}
+                        {...defaultProps}
+                        hasCreate
+                    >
+                        <Datagrid />
+                    </ListView>
+                </MemoryRouter>
+            </ThemeProvider>
+        );
+        expect(queryAllByText('filters')).toHaveLength(2);
+        expect(queryAllByLabelText('ra.action.export')).toHaveLength(1);
+        expect(queryAllByText('pagination')).toHaveLength(1);
+        expect(queryAllByText('datagrid')).toHaveLength(1);
     });
 
     const defaultListProps = {
@@ -64,7 +81,8 @@ describe('<List />', () => {
         resource: 'foo',
         total: 0,
     };
-    const defaultStoreForList = {
+
+    const defaultStateForList = {
         admin: {
             resources: {
                 foo: {
@@ -82,14 +100,14 @@ describe('<List />', () => {
     it('should display aside component', () => {
         const Dummy = () => <div />;
         const Aside = () => <div id="aside">Hello</div>;
-        const wrapper = render(
-            <TestContext store={defaultStoreForList}>
+        const { queryAllByText } = renderWithRedux(
+            <ThemeProvider theme={theme}>
                 <List {...defaultListProps} aside={<Aside />}>
                     <Dummy />
                 </List>
-            </TestContext>
+            </ThemeProvider>,
+            defaultStateForList
         );
-        const aside = wrapper.find('#aside');
-        expect(aside.text()).toEqual('Hello');
+        expect(queryAllByText('Hello')).toHaveLength(1);
     });
 });

@@ -1,14 +1,13 @@
 /* eslint react/jsx-key: off */
 import PeopleIcon from '@material-ui/icons/People';
 import memoize from 'lodash/memoize';
-
+import { useMediaQuery } from '@material-ui/core';
 import React from 'react';
 import {
     BulkDeleteWithConfirmButton,
     Datagrid,
     Filter,
     List,
-    Responsive,
     SearchInput,
     SimpleList,
     TextField,
@@ -46,26 +45,24 @@ const UserList = ({ permissions, ...props }) => (
         aside={<Aside />}
         bulkActionButtons={<UserBulkActionButtons />}
     >
-        <Responsive
-            small={
-                <SimpleList
-                    primaryText={record => record.name}
-                    secondaryText={record =>
-                        permissions === 'admin' ? record.role : null
-                    }
-                />
-            }
-            medium={
-                <Datagrid
-                    rowClick={rowClick(permissions)}
-                    expand={<UserEditEmbedded />}
-                >
-                    <TextField source="id" />
-                    <TextField source="name" />
-                    {permissions === 'admin' && <TextField source="role" />}
-                </Datagrid>
-            }
-        />
+        {useMediaQuery(theme => theme.breakpoints.down('sm')) ? (
+            <SimpleList
+                primaryText={record => record.name}
+                secondaryText={record =>
+                    permissions === 'admin' ? record.role : null
+                }
+            />
+        ) : (
+            <Datagrid
+                rowClick={rowClick(permissions)}
+                expand={<UserEditEmbedded />}
+                optimized
+            >
+                <TextField source="id" />
+                <TextField source="name" />
+                {permissions === 'admin' && <TextField source="role" />}
+            </Datagrid>
+        )}
     </List>
 );
 

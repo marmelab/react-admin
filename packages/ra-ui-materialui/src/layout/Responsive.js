@@ -2,6 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import withWidth from '@material-ui/core/withWidth';
 
+/**
+ * @deprecated use useMediaQuery instead
+ */
 export const Responsive = ({
     xsmall,
     small,
@@ -62,4 +65,4 @@ Responsive.propTypes = {
     width: PropTypes.string,
 };
 
-export default withWidth()(Responsive);
+export default withWidth({ initialWidth: 'xs' })(Responsive);

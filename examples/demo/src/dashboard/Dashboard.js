@@ -1,7 +1,6 @@
-import React, { Component } from 'react';
-import { GET_LIST, GET_MANY, Responsive, withDataProvider } from 'react-admin';
-import compose from 'recompose/compose';
-import { connect } from 'react-redux';
+import React, { useState, useEffect, useCallback } from 'react';
+import { useVersion, useDataProvider } from 'react-admin';
+import { useMediaQuery } from '@material-ui/core';
 
 import Welcome from './Welcome';
 import MonthlyRevenue from './MonthlyRevenue';
@@ -18,39 +17,21 @@ const styles = {
     singleCol: { marginTop: '2em', marginBottom: '2em' },
 };
 
-class Dashboard extends Component {
-    state = {};
+const Dashboard = () => {
+    const [state, setState] = useState({});
+    const version = useVersion();
+    const dataProvider = useDataProvider();
+    const isXSmall = useMediaQuery(theme => theme.breakpoints.down('xs'));
+    const isSmall = useMediaQuery(theme => theme.breakpoints.down('sm'));
 
-    componentDidMount() {
-        this.fetchData();
-    }
-
-    componentDidUpdate(prevProps) {
-        // handle refresh
-        if (this.props.version !== prevProps.version) {
-            this.fetchData();
-        }
-    }
-
-    fetchData() {
-        this.fetchOrders();
-        this.fetchReviews();
-        this.fetchCustomers();
-    }
-
-    async fetchOrders() {
-        const { dataProvider } = this.props;
+    const fetchOrders = useCallback(async () => {
         const aMonthAgo = new Date();
         aMonthAgo.setDate(aMonthAgo.getDate() - 30);
-        const { data: recentOrders } = await dataProvider(
-            GET_LIST,
-            'commands',
-            {
-                filter: { date_gte: aMonthAgo.toISOString() },
-                sort: { field: 'date', order: 'DESC' },
-                pagination: { page: 1, perPage: 50 },
-            }
-        );
+        const { data: recentOrders } = await dataProvider.getList('commands', {
+            filter: { date_gte: aMonthAgo.toISOString() },
+            sort: { field: 'date', order: 'DESC' },
+            pagination: { page: 1, perPage: 50 },
+        });
         const aggregations = recentOrders
             .filter(order => order.status !== 'cancelled')
             .reduce(
@@ -70,7 +51,8 @@ class Dashboard extends Component {
                     pendingOrders: [],
                 }
             );
-        this.setState({
+        setState(state => ({
+            ...state,
             revenue: aggregations.revenue.toLocaleString(undefined, {
                 style: 'currency',
                 currency: 'USD',
@@ -79,153 +61,117 @@ class Dashboard extends Component {
             }),
             nbNewOrders: aggregations.nbNewOrders,
             pendingOrders: aggregations.pendingOrders,
-        });
-        const { data: customers } = await dataProvider(GET_MANY, 'customers', {
+        }));
+        const { data: customers } = await dataProvider.getMany('customers', {
             ids: aggregations.pendingOrders.map(order => order.customer_id),
         });
-        this.setState({
+        setState(state => ({
+            ...state,
             pendingOrdersCustomers: customers.reduce((prev, customer) => {
                 prev[customer.id] = customer; // eslint-disable-line no-param-reassign
                 return prev;
             }, {}),
-        });
-    }
+        }));
+    }, [dataProvider]);
 
-    async fetchReviews() {
-        const { dataProvider } = this.props;
-        const { data: reviews } = await dataProvider(GET_LIST, 'reviews', {
+    const fetchReviews = useCallback(async () => {
+        const { data: reviews } = await dataProvider.getList('reviews', {
             filter: { status: 'pending' },
             sort: { field: 'date', order: 'DESC' },
             pagination: { page: 1, perPage: 100 },
         });
         const nbPendingReviews = reviews.reduce(nb => ++nb, 0);
         const pendingReviews = reviews.slice(0, Math.min(10, reviews.length));
-        this.setState({ pendingReviews, nbPendingReviews });
-        const { data: customers } = await dataProvider(GET_MANY, 'customers', {
+        setState(state => ({ ...state, pendingReviews, nbPendingReviews }));
+        const { data: customers } = await dataProvider.getMany('customers', {
             ids: pendingReviews.map(review => review.customer_id),
         });
-        this.setState({
+        setState(state => ({
+            ...state,
             pendingReviewsCustomers: customers.reduce((prev, customer) => {
                 prev[customer.id] = customer; // eslint-disable-line no-param-reassign
                 return prev;
             }, {}),
-        });
-    }
+        }));
+    }, [dataProvider]);
 
-    async fetchCustomers() {
-        const { dataProvider } = this.props;
-        const aMonthAgo = new Date();
-        aMonthAgo.setDate(aMonthAgo.getDate() - 30);
-        const { data: newCustomers } = await dataProvider(
-            GET_LIST,
-            'customers',
-            {
-                filter: {
-                    has_ordered: true,
-                    first_seen_gte: aMonthAgo.toISOString(),
-                },
-                sort: { field: 'first_seen', order: 'DESC' },
-                pagination: { page: 1, perPage: 100 },
-            }
-        );
-        this.setState({
-            newCustomers,
-            nbNewCustomers: newCustomers.reduce(nb => ++nb, 0),
-        });
-    }
+    useEffect(() => {
+        fetchOrders();
+        fetchReviews();
+    }, [version]); // eslint-disable-line react-hooks/exhaustive-deps
 
-    render() {
-        const {
-            nbNewCustomers,
-            nbNewOrders,
-            nbPendingReviews,
-            newCustomers,
-            pendingOrders,
-            pendingOrdersCustomers,
-            pendingReviews,
-            pendingReviewsCustomers,
-            revenue,
-        } = this.state;
-        return (
-            <Responsive
-                xsmall={
-                    <div>
-                        <div style={styles.flexColumn}>
-                            <div style={{ marginBottom: '2em' }}>
-                                <Welcome />
-                            </div>
-                            <div style={styles.flex}>
-                                <MonthlyRevenue value={revenue} />
-                                <NbNewOrders value={nbNewOrders} />
-                            </div>
-                            <div style={styles.singleCol}>
-                                <PendingOrders
-                                    orders={pendingOrders}
-                                    customers={pendingOrdersCustomers}
-                                />
-                            </div>
-                        </div>
-                    </div>
-                }
-                small={
-                    <div style={styles.flexColumn}>
-                        <div style={styles.singleCol}>
-                            <Welcome />
-                        </div>
-                        <div style={styles.flex}>
-                            <MonthlyRevenue value={revenue} />
-                            <NbNewOrders value={nbNewOrders} />
-                        </div>
-                        <div style={styles.singleCol}>
-                            <PendingOrders
-                                orders={pendingOrders}
-                                customers={pendingOrdersCustomers}
-                            />
-                        </div>
-                    </div>
-                }
-                medium={
-                    <div style={styles.flex}>
-                        <div style={styles.leftCol}>
-                            <div style={styles.flex}>
-                                <MonthlyRevenue value={revenue} />
-                                <NbNewOrders value={nbNewOrders} />
-                            </div>
-                            <div style={styles.singleCol}>
-                                <Welcome />
-                            </div>
-                            <div style={styles.singleCol}>
-                                <PendingOrders
-                                    orders={pendingOrders}
-                                    customers={pendingOrdersCustomers}
-                                />
-                            </div>
-                        </div>
-                        <div style={styles.rightCol}>
-                            <div style={styles.flex}>
-                                <PendingReviews
-                                    nb={nbPendingReviews}
-                                    reviews={pendingReviews}
-                                    customers={pendingReviewsCustomers}
-                                />
-                                <NewCustomers
-                                    nb={nbNewCustomers}
-                                    visitors={newCustomers}
-                                />
-                            </div>
-                        </div>
-                    </div>
-                }
-            />
-        );
-    }
-}
+    const {
+        nbNewOrders,
+        nbPendingReviews,
+        pendingOrders,
+        pendingOrdersCustomers,
+        pendingReviews,
+        pendingReviewsCustomers,
+        revenue,
+    } = state;
+    return isXSmall ? (
+        <div>
+            <div style={styles.flexColumn}>
+                <div style={{ marginBottom: '2em' }}>
+                    <Welcome />
+                </div>
+                <div style={styles.flex}>
+                    <MonthlyRevenue value={revenue} />
+                    <NbNewOrders value={nbNewOrders} />
+                </div>
+                <div style={styles.singleCol}>
+                    <PendingOrders
+                        orders={pendingOrders}
+                        customers={pendingOrdersCustomers}
+                    />
+                </div>
+            </div>
+        </div>
+    ) : isSmall ? (
+        <div style={styles.flexColumn}>
+            <div style={styles.singleCol}>
+                <Welcome />
+            </div>
+            <div style={styles.flex}>
+                <MonthlyRevenue value={revenue} />
+                <NbNewOrders value={nbNewOrders} />
+            </div>
+            <div style={styles.singleCol}>
+                <PendingOrders
+                    orders={pendingOrders}
+                    customers={pendingOrdersCustomers}
+                />
+            </div>
+        </div>
+    ) : (
+        <div style={styles.flex}>
+            <div style={styles.leftCol}>
+                <div style={styles.flex}>
+                    <MonthlyRevenue value={revenue} />
+                    <NbNewOrders value={nbNewOrders} />
+                </div>
+                <div style={styles.singleCol}>
+                    <Welcome />
+                </div>
+                <div style={styles.singleCol}>
+                    <PendingOrders
+                        orders={pendingOrders}
+                        customers={pendingOrdersCustomers}
+                    />
+                </div>
+            </div>
+            <div style={styles.rightCol}>
+                <div style={styles.flex}>
+                    <PendingReviews
+                        nb={nbPendingReviews}
+                        reviews={pendingReviews}
+                        customers={pendingReviewsCustomers}
+                    />
+                    <NewCustomers />
+                </div>
+            </div>
+        </div>
+    );
+};
 
-const mapStateToProps = state => ({
-    version: state.admin.ui.viewVersion,
-});
-
-export default compose(
-    connect(mapStateToProps),
-    withDataProvider
-)(Dashboard);
+export default Dashboard;
