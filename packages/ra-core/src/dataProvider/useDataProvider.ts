@@ -266,6 +266,7 @@ const performUndoableQuery = ({
                         warnBeforeClosingWindow
                     );
                 }
+                dispatch(refreshView());
             })
             .catch(error => {
                 if (window) {
