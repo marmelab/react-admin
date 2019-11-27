@@ -42,6 +42,7 @@ const DatagridRow = ({
     rowClick,
     selected,
     style,
+    selectable,
     ...rest
 }) => {
     const [expanded, setExpanded] = useState(false);
@@ -135,12 +136,14 @@ const DatagridRow = ({
                 )}
                 {hasBulkActions && (
                     <TableCell padding="checkbox">
-                        <Checkbox
-                            color="primary"
-                            className={`select-item ${classes.checkbox}`}
-                            checked={selected}
-                            onClick={handleToggleSelection}
-                        />
+                        {selectable && (
+                            <Checkbox
+                                color="primary"
+                                className={`select-item ${classes.checkbox}`}
+                                checked={selected}
+                                onClick={handleToggleSelection}
+                            />
+                        )}
                     </TableCell>
                 )}
                 {React.Children.map(children, (field, index) =>
@@ -195,6 +198,7 @@ DatagridRow.propTypes = {
     rowClick: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
     selected: PropTypes.bool,
     style: PropTypes.object,
+    selectable: PropTypes.bool,
 };
 
 DatagridRow.defaultProps = {
@@ -202,6 +206,7 @@ DatagridRow.defaultProps = {
     hover: true,
     record: {},
     selected: false,
+    selectable: true,
 };
 
 const areEqual = (prevProps, nextProps) => {
