@@ -1,5 +1,22 @@
 # Changelog
 
+## v3.0.2
+
+* Fix duplicated import in `<TabbedForm>` ([4074](https://github.com/marmelab/react-admin/pull/4074)) ([kopax](https://github.com/kopax))
+* Fix `<DatagridRow rowClick` event handling ([4063](https://github.com/marmelab/react-admin/pull/4063)) ([djhi](https://github.com/djhi))
+* Fix warnings on Logout on Demo ([4062](https://github.com/marmelab/react-admin/pull/4062)) ([djhi](https://github.com/djhi))
+* Fix `<ArrayInput>` validation ([4061](https://github.com/marmelab/react-admin/pull/4061)) ([djhi](https://github.com/djhi))
+* Fix support of GraphQL interface type ([3712](https://github.com/marmelab/react-admin/pull/3712)) ([MichielDeMey](https://github.com/MichielDeMey))
+* Fix `ra-data-graphql-simple`: Queries that have the same type defined multiple times are being dropped ([3900](https://github.com/marmelab/react-admin/pull/3900)) ([Ashenback](https://github.com/Ashenback))
+* Fix warning about unmounted component after Login on Demo ([4059](https://github.com/marmelab/react-admin/pull/4059)) ([djhi](https://github.com/djhi))
+* Fix `<AutocompleteInput>` default width ([4055](https://github.com/marmelab/react-admin/pull/4055)) ([djhi](https://github.com/djhi))
+* Fix `List` does not refresh correctly after optimistic update ([4058](https://github.com/marmelab/react-admin/pull/4058)) ([djhi](https://github.com/djhi))
+* Fix `<Create>` form prefill ([4053](https://github.com/marmelab/react-admin/pull/4053)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix console errors in tests ([4050](https://github.com/marmelab/react-admin/pull/4050)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix missing `useFilterState` export ([4051](https://github.com/marmelab/react-admin/pull/4051)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<AutocompleteArrayInput>` inside `<ReferenceArrayInput>` ([4042](https://github.com/marmelab/react-admin/pull/4042)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix outdated mention of `ra-realtime` in the Ecosystem doc ([4045](https://github.com/marmelab/react-admin/pull/4045)) ([esistgut](https://github.com/esistgut))
+
 ## v3.0.1
 
 * Fix `<ReferenceInput>` should not set filter in getList when q is empty ([4039](https://github.com/marmelab/react-admin/pull/4039)) ([fzaninotto](https://github.com/fzaninotto))
