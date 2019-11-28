@@ -1,16 +1,17 @@
-import React from 'react';
+import React, { FC, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import shouldUpdate from 'recompose/shouldUpdate';
 import Queue from '@material-ui/icons/Queue';
 import { Link } from 'react-router-dom';
 import { stringify } from 'query-string';
+import { Record } from 'ra-core';
 
-import Button from './Button';
+import Button, { ButtonProps } from './Button';
 
 // useful to prevent click bubbling in a datagrid with rowClick
 const stopPropagation = e => e.stopPropagation();
 
-const omitId = ({ id, ...rest }) => rest;
+const omitId = ({ id, ...rest }: Record) => rest;
 
 const sanitizeRestProps = ({
     // the next 6 props are injected by Toolbar
@@ -21,21 +22,27 @@ const sanitizeRestProps = ({
     saving,
     submitOnEnter,
     ...rest
-}) => rest;
+}: any) => rest;
 
-export const CloneButton = ({
+export const CloneButton: FC<CloneButtonProps> = ({
     basePath = '',
     label = 'ra.action.clone',
-    record = {},
+    record,
     icon = <Queue />,
     ...rest
 }) => (
     <Button
         component={Link}
-        to={{
-            pathname: `${basePath}/create`,
-            search: stringify({ source: JSON.stringify(omitId(record)) }),
-        }}
+        to={
+            record
+                ? {
+                      pathname: `${basePath}/create`,
+                      search: stringify({
+                          source: JSON.stringify(omitId(record)),
+                      }),
+                  }
+                : `${basePath}/create`
+        }
         label={label}
         onClick={stopPropagation}
         {...sanitizeRestProps(rest)}
@@ -44,18 +51,23 @@ export const CloneButton = ({
     </Button>
 );
 
+interface Props {
+    basePath: string;
+    record?: Record;
+    icon?: ReactElement;
+}
+
+export type CloneButtonProps = Props & ButtonProps;
+
 CloneButton.propTypes = {
     basePath: PropTypes.string,
-    className: PropTypes.string,
-    classes: PropTypes.object,
-    label: PropTypes.string,
-    record: PropTypes.object,
     icon: PropTypes.element,
+    label: PropTypes.string,
+    record: PropTypes.any,
 };
 
 const enhance = shouldUpdate(
-    (props, nextProps) =>
-        props.translate !== nextProps.translate ||
+    (props: Props, nextProps: Props) =>
         (props.record &&
             nextProps.record &&
             props.record !== nextProps.record) ||

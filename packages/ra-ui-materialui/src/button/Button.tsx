@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import {
     Button as MuiButton,
@@ -6,7 +6,10 @@ import {
     IconButton,
     useMediaQuery,
     makeStyles,
+    PropTypes as MuiPropTypes,
 } from '@material-ui/core';
+import { ButtonProps as MuiButtonProps } from '@material-ui/core/Button';
+import { Theme } from '@material-ui/core';
 import classnames from 'classnames';
 import { useTranslate } from 'ra-core';
 
@@ -35,7 +38,20 @@ const useStyles = makeStyles(
     { name: 'RaButton' }
 );
 
-const Button = ({
+/**
+ * A generic Button with side icon. Only the icon is displayed on small screens.
+ *
+ * The component translates the label. Pass the icon as child.
+ * The icon displays on the left side of the button by default. Set alignIcon prop to 'right' to inverse.
+ *
+ * @example
+ *
+ * <Button label="Edit" color="secondary" onClick={doEdit}>
+ *   <ContentCreate />
+ * </Button>
+ *
+ */
+const Button: FC<ButtonProps> = ({
     alignIcon = 'left',
     children,
     classes: classesOverride,
@@ -48,7 +64,9 @@ const Button = ({
 }) => {
     const translate = useTranslate();
     const classes = useStyles({ classes: classesOverride });
-    const isXSmall = useMediaQuery(theme => theme.breakpoints.down('xs'));
+    const isXSmall = useMediaQuery((theme: Theme) =>
+        theme.breakpoints.down('xs')
+    );
 
     return isXSmall ? (
         label && !disabled ? (
@@ -105,12 +123,25 @@ const Button = ({
     );
 };
 
+interface Props {
+    alignIcon?: 'left' | 'right';
+    children?: ReactElement;
+    classes?: object;
+    className?: string;
+    color?: MuiPropTypes.Color;
+    disabled?: boolean;
+    label?: string;
+    size?: 'small' | 'medium' | 'large';
+}
+
+export type ButtonProps = Props & MuiButtonProps;
+
 Button.propTypes = {
-    alignIcon: PropTypes.string,
+    alignIcon: PropTypes.oneOf(['left', 'right']),
     children: PropTypes.element,
     classes: PropTypes.object,
     className: PropTypes.string,
-    color: PropTypes.string,
+    color: PropTypes.oneOf(['default', 'inherit', 'primary', 'secondary']),
     disabled: PropTypes.bool,
     label: PropTypes.string,
     size: PropTypes.oneOf(['small', 'medium', 'large']),

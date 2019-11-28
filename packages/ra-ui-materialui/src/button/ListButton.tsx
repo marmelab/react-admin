@@ -1,25 +1,32 @@
-import React from 'react';
+import React, { FC, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import ActionList from '@material-ui/icons/List';
 import { Link } from 'react-router-dom';
 
-import Button from './Button';
+import Button, { ButtonProps } from './Button';
 
-const ListButton = ({
+const ListButton: FC<ListButtonProps> = ({
     basePath = '',
     label = 'ra.action.list',
     icon = <ActionList />,
     ...rest
 }) => (
-    <Button component={Link} to={basePath} label={label} {...rest}>
+    <Button component={Link} to={basePath} label={label} {...rest as any}>
         {icon}
     </Button>
 );
 
+interface Props {
+    basePath: string;
+    icon?: ReactElement;
+}
+
+export type ListButtonProps = Props & ButtonProps;
+
 ListButton.propTypes = {
     basePath: PropTypes.string,
-    label: PropTypes.string,
     icon: PropTypes.element,
+    label: PropTypes.string,
 };
 
 export default ListButton;

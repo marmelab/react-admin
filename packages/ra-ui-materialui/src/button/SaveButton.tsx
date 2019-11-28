@@ -1,11 +1,16 @@
-import React, { cloneElement } from 'react';
+import React, { cloneElement, FC, ReactElement, SyntheticEvent } from 'react';
 import PropTypes from 'prop-types';
-import Button from '@material-ui/core/Button';
+import Button, { ButtonProps } from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { makeStyles } from '@material-ui/core/styles';
 import ContentSave from '@material-ui/icons/Save';
 import classnames from 'classnames';
-import { useTranslate, useNotify } from 'ra-core';
+import {
+    useTranslate,
+    useNotify,
+    RedirectionSideEffect,
+    Record,
+} from 'ra-core';
 
 const useStyles = makeStyles(
     theme => ({
@@ -24,24 +29,14 @@ const useStyles = makeStyles(
 
 const sanitizeRestProps = ({
     basePath,
-    className,
-    classes,
-    saving,
-    label,
-    invalid,
-    variant,
     handleSubmit,
-    handleSubmitWithRedirect,
-    submitOnEnter,
     record,
-    redirect,
     resource,
-    locale,
     undoable,
     ...rest
-}) => rest;
+}: SaveButtonProps) => rest;
 
-const SaveButton = ({
+const SaveButton: FC<SaveButtonProps> = ({
     className,
     classes: classesOverride = {},
     invalid,
@@ -106,7 +101,7 @@ const SaveButton = ({
             aria-label={displayedLabel}
             {...sanitizeRestProps(rest)}
         >
-            {saving && saving.redirect === redirect ? (
+            {saving ? (
                 <CircularProgress
                     size={18}
                     thickness={2}
@@ -122,6 +117,29 @@ const SaveButton = ({
     );
 };
 
+interface Props {
+    classes?: object;
+    className?: string;
+    handleSubmitWithRedirect?: (redirect?: RedirectionSideEffect) => void;
+    icon?: ReactElement;
+    invalid?: boolean;
+    label?: string;
+    onClick?: () => void;
+    pristine?: boolean;
+    redirect?: RedirectionSideEffect;
+    saving?: boolean;
+    submitOnEnter?: boolean;
+    variant?: string;
+    // May be injected by Toolbar - sanitized in SaveButton
+    basePath?: string;
+    handleSubmit?: (event?: SyntheticEvent<HTMLFormElement>) => Promise<Object>;
+    record?: Record;
+    resource?: string;
+    undoable?: boolean;
+}
+
+type SaveButtonProps = Props & ButtonProps;
+
 SaveButton.propTypes = {
     className: PropTypes.string,
     classes: PropTypes.object,
@@ -134,7 +152,7 @@ SaveButton.propTypes = {
         PropTypes.bool,
         PropTypes.func,
     ]),
-    saving: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
+    saving: PropTypes.bool,
     submitOnEnter: PropTypes.bool,
     variant: PropTypes.oneOf(['text', 'outlined', 'contained']),
     icon: PropTypes.element,

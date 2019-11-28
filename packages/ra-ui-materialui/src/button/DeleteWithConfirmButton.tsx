@@ -1,4 +1,11 @@
-import React, { Fragment, useState, useCallback } from 'react';
+import React, {
+    Fragment,
+    useState,
+    useCallback,
+    FC,
+    ReactElement,
+    SyntheticEvent,
+} from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import { fade } from '@material-ui/core/styles/colorManipulator';
@@ -12,27 +19,24 @@ import {
     useNotify,
     useRedirect,
     CRUD_DELETE,
+    Record,
+    RedirectionSideEffect,
 } from 'ra-core';
 
 import Confirm from '../layout/Confirm';
-import Button from './Button';
+import Button, { ButtonProps } from './Button';
 
 const sanitizeRestProps = ({
-    basePath,
-    classes,
-    filterValues,
     handleSubmit,
     handleSubmitWithRedirect,
     invalid,
     label,
     pristine,
-    resource,
     saving,
-    selectedIds,
     submitOnEnter,
-    redirect,
+    undoable,
     ...rest
-}) => rest;
+}: Omit<DeleteWithConfirmButtonProps, 'basePath'>) => rest;
 
 const useStyles = makeStyles(
     theme => ({
@@ -50,7 +54,7 @@ const useStyles = makeStyles(
     { name: 'RaDeleteWithConfirmButton' }
 );
 
-const DeleteWithConfirmButton = ({
+const DeleteWithConfirmButton: FC<DeleteWithConfirmButtonProps> = ({
     basePath,
     classes: classesOverride,
     className,
@@ -103,12 +107,15 @@ const DeleteWithConfirmButton = ({
         e.stopPropagation();
     };
 
-    const handleDelete = useCallback(() => {
-        deleteOne();
-        if (typeof onClick === 'function') {
-            onClick();
-        }
-    }, [deleteOne, onClick]);
+    const handleDelete = useCallback(
+        event => {
+            deleteOne();
+            if (typeof onClick === 'function') {
+                onClick(event);
+            }
+        },
+        [deleteOne, onClick]
+    );
 
     return (
         <Fragment>
@@ -147,6 +154,30 @@ const DeleteWithConfirmButton = ({
     );
 };
 
+interface Props {
+    basePath: string;
+    classes?: object;
+    className?: string;
+    confirmTitle?: string;
+    confirmContent?: string;
+    icon?: ReactElement;
+    label?: string;
+    onClick?: (e: MouseEvent) => void;
+    record?: Record;
+    redirect?: RedirectionSideEffect;
+    resource?: string;
+    // May be injected by Toolbar - sanitized in DeleteWithUndoButtonutton
+    handleSubmit?: (event?: SyntheticEvent<HTMLFormElement>) => Promise<Object>;
+    handleSubmitWithRedirect?: (redirect?: RedirectionSideEffect) => void;
+    invalid?: boolean;
+    pristine?: boolean;
+    saving?: boolean;
+    submitOnEnter?: boolean;
+    undoable?: boolean;
+}
+
+type DeleteWithConfirmButtonProps = Props & ButtonProps;
+
 DeleteWithConfirmButton.propTypes = {
     basePath: PropTypes.string,
     classes: PropTypes.object,
@@ -154,7 +185,7 @@ DeleteWithConfirmButton.propTypes = {
     confirmTitle: PropTypes.string,
     confirmContent: PropTypes.string,
     label: PropTypes.string,
-    record: PropTypes.object,
+    record: PropTypes.any,
     redirect: PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.bool,

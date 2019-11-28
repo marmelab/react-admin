@@ -1,7 +1,6 @@
 import React, { useCallback, FunctionComponent } from 'react';
 import PropTypes from 'prop-types';
 import DownloadIcon from '@material-ui/icons/GetApp';
-import { ButtonProps } from '@material-ui/core/Button';
 import {
     downloadCSV,
     useDataProvider,
@@ -11,7 +10,7 @@ import {
 } from 'ra-core';
 import jsonExport from 'jsonexport/dist';
 
-import Button from './Button';
+import Button, { ButtonProps } from './Button';
 
 const sanitizeRestProps = ({ basePath, ...rest }: any) => rest;
 
@@ -71,27 +70,7 @@ const fetchRelatedRecords = dataProvider => (data, field, resource) =>
 const DefaultIcon = <DownloadIcon />;
 const defaultFilter = {};
 
-interface Props {
-    exporter?: (
-        data: any,
-        fetchRelatedRecords: (
-            data: any,
-            field: string,
-            resource: string
-        ) => Promise<any>,
-        dataProvider: DataProvider
-    ) => Promise<void>;
-    sort: Sort;
-    filter?: any;
-    maxResults: number;
-    resource: string;
-    onClick?: (e: Event) => void;
-    label: string;
-    icon?: JSX.Element;
-    basePath: string;
-}
-
-const ExportButton: FunctionComponent<Props & ButtonProps> = ({
+const ExportButton: FunctionComponent<ExportButtonProps> = ({
     exporter,
     sort,
     filter = defaultFilter,
@@ -153,6 +132,28 @@ const ExportButton: FunctionComponent<Props & ButtonProps> = ({
         </Button>
     );
 };
+
+interface Props {
+    exporter?: (
+        data: any,
+        fetchRelatedRecords: (
+            data: any,
+            field: string,
+            resource: string
+        ) => Promise<any>,
+        dataProvider: DataProvider
+    ) => Promise<void>;
+    sort: Sort;
+    filter?: any;
+    maxResults: number;
+    resource: string;
+    onClick?: (e: Event) => void;
+    label: string;
+    icon?: JSX.Element;
+    basePath: string;
+}
+
+export type ExportButtonProps = Props & ButtonProps;
 
 ExportButton.propTypes = {
     basePath: PropTypes.string,

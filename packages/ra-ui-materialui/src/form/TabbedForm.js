@@ -242,7 +242,7 @@ TabbedFormView.propTypes = {
     ]),
     resource: PropTypes.string,
     save: PropTypes.func, // the handler defined in the parent, which triggers the REST submission
-    saving: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
+    saving: PropTypes.bool,
     submitOnEnter: PropTypes.bool,
     tabs: PropTypes.element.isRequired,
     tabsWithErrors: PropTypes.arrayOf(PropTypes.string),

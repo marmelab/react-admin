@@ -1,39 +1,46 @@
-import React from 'react';
+import React, { FC, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import ContentCreate from '@material-ui/icons/Create';
+import { ButtonProps as MuiButtonProps } from '@material-ui/core/Button';
 import { Link } from 'react-router-dom';
-import { linkToRecord } from 'ra-core';
+import { linkToRecord, Record } from 'ra-core';
 
-import Button from './Button';
+import Button, { ButtonProps } from './Button';
 
 // useful to prevent click bubbling in a datagrid with rowClick
 const stopPropagation = e => e.stopPropagation();
 
-const EditButton = ({
+const EditButton: FC<EditButtonProps> = ({
     basePath = '',
     label = 'ra.action.edit',
-    record = {},
+    record,
     icon = <ContentCreate />,
     ...rest
 }) => (
     <Button
         component={Link}
-        to={linkToRecord(basePath, record.id)}
+        to={linkToRecord(basePath, record && record.id)}
         label={label}
         onClick={stopPropagation}
-        {...rest}
+        {...rest as any}
     >
         {icon}
     </Button>
 );
 
+interface Props {
+    basePath: string;
+    record?: Record;
+    icon?: ReactElement;
+}
+
+export type EditButtonProps = Props & ButtonProps & MuiButtonProps;
+
 EditButton.propTypes = {
     basePath: PropTypes.string,
-    className: PropTypes.string,
-    classes: PropTypes.object,
-    label: PropTypes.string,
-    record: PropTypes.object,
     icon: PropTypes.element,
+    label: PropTypes.string,
+    record: PropTypes.any,
 };
 
 export default EditButton;
