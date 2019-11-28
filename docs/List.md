@@ -756,7 +756,7 @@ Here are all the props accepted by the component:
 * [`rowStyle`](#row-style-function)
 * [`rowClick`](#rowclick)
 * [`expand`](#expand)
-* [`canRowSelect`](#canrowselect)
+* [`isRowSelectable`](#isrowselectable)
 
 It renders as many columns as it receives `<Field>` children.
 
@@ -908,14 +908,14 @@ const PostList = props => (
 )
 ```
 
-### `canRowSelect`
+### `isRowSelectable`
 
-You can customize which rows will show a selection checkbox using the `canRowSelect` prop. It expects a function that will receive the record of each `<DatagridRow>` and returns a boolean expression.  For instance, this code shows a checkbox only for rows with an id greather than 300:
+You can customize which rows will show a selection checkbox using the `isRowSelectable` prop. It expects a function that will receive the record of each `<DatagridRow>` and returns a boolean expression.  For instance, this code shows a checkbox only for rows with an id greather than 300:
 
 ```jsx
 export const PostList = props => (
     <List {...props}>
-        <Datagrid canRowSelect={ record => record.id > 300 }>
+        <Datagrid isRowSelectable={ record => record.id > 300 }>
             ...
         </Datagrid>
     </List>
