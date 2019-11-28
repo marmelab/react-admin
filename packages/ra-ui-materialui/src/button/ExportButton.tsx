@@ -152,11 +152,11 @@ interface Props {
     ) => Promise<void>;
     filter?: any;
     icon?: JSX.Element;
-    label: string;
-    maxResults: number;
+    label?: string;
+    maxResults?: number;
     onClick?: (e: Event) => void;
-    resource: string;
-    sort: Sort;
+    resource?: string;
+    sort?: Sort;
 }
 
 export type ExportButtonProps = Props & ButtonProps;
