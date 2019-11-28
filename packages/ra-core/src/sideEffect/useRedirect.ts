@@ -12,7 +12,7 @@ type RedirectToFunction = (
     data?: Record
 ) => string;
 
-export type RedirectionSideEffect = string | false | RedirectToFunction;
+export type RedirectionSideEffect = string | boolean | RedirectToFunction;
 
 /**
  * Hook for Redirection Side Effect

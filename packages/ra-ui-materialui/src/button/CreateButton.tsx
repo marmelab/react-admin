@@ -1,13 +1,52 @@
-import React from 'react';
+import React, { FC, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import onlyUpdateForKeys from 'recompose/onlyUpdateForKeys';
-import { Fab, makeStyles, useMediaQuery } from '@material-ui/core';
+import { Fab, makeStyles, useMediaQuery, Theme } from '@material-ui/core';
 import ContentAdd from '@material-ui/icons/Add';
 import classnames from 'classnames';
 import { Link } from 'react-router-dom';
 import { useTranslate } from 'ra-core';
 
-import Button from './Button';
+import Button, { ButtonProps } from './Button';
+
+const CreateButton: FC<CreateButtonProps> = ({
+    basePath = '',
+    className,
+    classes: classesOverride,
+    label = 'ra.action.create',
+    icon = defaultIcon,
+    ...rest
+}) => {
+    const classes = useStyles({ classes: classesOverride });
+    const translate = useTranslate();
+    const isSmall = useMediaQuery((theme: Theme) =>
+        theme.breakpoints.down('sm')
+    );
+    return isSmall ? (
+        <Fab
+            component={Link}
+            color="primary"
+            className={classnames(classes.floating, className)}
+            to={`${basePath}/create`}
+            aria-label={label && translate(label)}
+            {...rest as any}
+        >
+            {icon}
+        </Fab>
+    ) : (
+        <Button
+            component={Link}
+            to={`${basePath}/create`}
+            className={className}
+            label={label}
+            {...rest as any}
+        >
+            {icon}
+        </Button>
+    );
+};
+
+const defaultIcon = <ContentAdd />;
 
 const useStyles = makeStyles(
     theme => ({
@@ -28,48 +67,19 @@ const useStyles = makeStyles(
     { name: 'RaCreateButton' }
 );
 
-const CreateButton = ({
-    basePath = '',
-    className,
-    classes: classesOverride,
-    label = 'ra.action.create',
-    icon = <ContentAdd />,
-    ...rest
-}) => {
-    const classes = useStyles({ classes: classesOverride });
-    const translate = useTranslate();
-    const isSmall = useMediaQuery(theme => theme.breakpoints.down('sm'));
-    return isSmall ? (
-        <Fab
-            component={Link}
-            color="primary"
-            className={classnames(classes.floating, className)}
-            to={`${basePath}/create`}
-            aria-label={label && translate(label)}
-            {...rest}
-        >
-            {icon}
-        </Fab>
-    ) : (
-        <Button
-            component={Link}
-            to={`${basePath}/create`}
-            className={className}
-            label={label}
-            {...rest}
-        >
-            {icon}
-        </Button>
-    );
-};
+interface Props {
+    basePath?: string;
+    icon?: ReactElement;
+}
+
+export type CreateButtonProps = Props & ButtonProps;
 
 CreateButton.propTypes = {
     basePath: PropTypes.string,
-    className: PropTypes.string,
     classes: PropTypes.object,
-    label: PropTypes.string,
-    size: PropTypes.string,
+    className: PropTypes.string,
     icon: PropTypes.element,
+    label: PropTypes.string,
 };
 
 const enhance = onlyUpdateForKeys(['basePath', 'label', 'translate']);

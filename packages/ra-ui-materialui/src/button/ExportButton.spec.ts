@@ -1,3 +1,5 @@
+import expect from 'expect';
+
 import { getRelatedIds } from './ExportButton';
 
 describe('ExportButton', () => {
