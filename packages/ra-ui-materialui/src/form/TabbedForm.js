@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { Form } from 'react-final-form';
 import arrayMutators from 'final-form-arrays';
-import { Route } from 'react-router-dom';
+import { Route, useRouteMatch, useLocation } from 'react-router-dom';
 import Divider from '@material-ui/core/Divider';
 import { makeStyles } from '@material-ui/core/styles';
 import {
@@ -17,7 +17,6 @@ import get from 'lodash/get';
 import getFormInitialValues from './getFormInitialValues';
 import Toolbar from './Toolbar';
 import TabbedFormTabs, { getTabFullPath } from './TabbedFormTabs';
-import { useRouteMatch, useLocation } from 'react-router-dom';
 
 const useStyles = makeStyles(theme => ({
     errorTabButton: { color: theme.palette.error.main },
