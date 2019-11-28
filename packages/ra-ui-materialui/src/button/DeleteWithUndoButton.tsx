@@ -20,12 +20,12 @@ const DeleteWithUndoButton: FC<DeleteWithUndoButtonProps> = ({
     label = 'ra.action.delete',
     classes: classesOverride,
     className,
-    icon,
+    icon = defaultIcon,
     onClick,
     resource,
     record,
     basePath,
-    redirect: redirectTo,
+    redirect: redirectTo = 'list',
     ...rest
 }) => {
     const classes = useStyles({ classes: classesOverride });
@@ -139,6 +139,8 @@ interface Props {
     undoable?: boolean;
 }
 
+const defaultIcon = <ActionDelete />;
+
 export type DeleteWithUndoButtonProps = Props & ButtonProps;
 
 DeleteWithUndoButton.propTypes = {
@@ -154,11 +156,6 @@ DeleteWithUndoButton.propTypes = {
     ]),
     resource: PropTypes.string,
     icon: PropTypes.element,
-};
-
-DeleteWithUndoButton.defaultProps = {
-    redirect: 'list',
-    icon: <ActionDelete />,
 };
 
 export default DeleteWithUndoButton;

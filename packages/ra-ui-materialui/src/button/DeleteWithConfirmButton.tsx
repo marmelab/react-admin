@@ -32,12 +32,12 @@ const DeleteWithConfirmButton: FC<DeleteWithConfirmButtonProps> = ({
     className,
     confirmTitle = 'ra.message.delete_title',
     confirmContent = 'ra.message.delete_content',
-    icon,
+    icon = defaultIcon,
     label = 'ra.action.delete',
     onClick,
     record,
     resource,
-    redirect: redirectTo,
+    redirect: redirectTo = 'list',
     ...rest
 }) => {
     const [open, setOpen] = useState(false);
@@ -126,6 +126,8 @@ const DeleteWithConfirmButton: FC<DeleteWithConfirmButtonProps> = ({
     );
 };
 
+const defaultIcon = <ActionDelete />;
+
 const sanitizeRestProps = ({
     handleSubmit,
     handleSubmitWithRedirect,
@@ -193,11 +195,6 @@ DeleteWithConfirmButton.propTypes = {
     ]),
     resource: PropTypes.string,
     icon: PropTypes.element,
-};
-
-DeleteWithConfirmButton.defaultProps = {
-    redirect: 'list',
-    icon: <ActionDelete />,
 };
 
 export default DeleteWithConfirmButton;

@@ -22,7 +22,7 @@ const SaveButton: FC<SaveButtonProps> = ({
     saving,
     submitOnEnter,
     variant = 'contained',
-    icon,
+    icon = defaultIcon,
     onClick,
     handleSubmitWithRedirect,
     ...rest
@@ -93,6 +93,8 @@ const SaveButton: FC<SaveButtonProps> = ({
     );
 };
 
+const defaultIcon = <ContentSave />;
+
 const useStyles = makeStyles(
     theme => ({
         button: {
@@ -156,10 +158,6 @@ SaveButton.propTypes = {
     submitOnEnter: PropTypes.bool,
     variant: PropTypes.oneOf(['text', 'outlined', 'contained']),
     icon: PropTypes.element,
-};
-
-SaveButton.defaultProps = {
-    icon: <ContentSave />,
 };
 
 export default SaveButton;

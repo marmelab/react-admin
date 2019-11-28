@@ -11,7 +11,7 @@ const EditButton: FC<EditButtonProps> = ({
     basePath = '',
     label = 'ra.action.edit',
     record,
-    icon = <ContentCreate />,
+    icon = defaultIcon,
     ...rest
 }) => (
     <Button
@@ -24,6 +24,8 @@ const EditButton: FC<EditButtonProps> = ({
         {icon}
     </Button>
 );
+
+const defaultIcon = <ContentCreate />;
 
 // useful to prevent click bubbling in a datagrid with rowClick
 const stopPropagation = e => e.stopPropagation();

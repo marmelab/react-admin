@@ -8,13 +8,15 @@ import Button, { ButtonProps } from './Button';
 const ListButton: FC<ListButtonProps> = ({
     basePath = '',
     label = 'ra.action.list',
-    icon = <ActionList />,
+    icon = defaultIcon,
     ...rest
 }) => (
     <Button component={Link} to={basePath} label={label} {...rest as any}>
         {icon}
     </Button>
 );
+
+const defaultIcon = <ActionList />;
 
 interface Props {
     basePath?: string;

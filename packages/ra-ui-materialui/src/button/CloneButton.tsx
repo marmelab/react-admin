@@ -12,7 +12,7 @@ export const CloneButton: FC<CloneButtonProps> = ({
     basePath = '',
     label = 'ra.action.clone',
     record,
-    icon = <Queue />,
+    icon = defaultIcon,
     ...rest
 }) => (
     <Button
@@ -34,6 +34,8 @@ export const CloneButton: FC<CloneButtonProps> = ({
         {icon}
     </Button>
 );
+
+const defaultIcon = <Queue />;
 
 // useful to prevent click bubbling in a datagrid with rowClick
 const stopPropagation = e => e.stopPropagation();

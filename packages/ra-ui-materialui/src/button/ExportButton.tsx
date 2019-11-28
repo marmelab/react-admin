@@ -20,7 +20,7 @@ const ExportButton: FunctionComponent<ExportButtonProps> = ({
     resource,
     onClick,
     label = 'ra.action.export',
-    icon = DefaultIcon,
+    icon = defaultIcon,
     ...rest
 }) => {
     const dataProvider = useDataProvider();
@@ -128,7 +128,7 @@ const fetchRelatedRecords = dataProvider => (data, field, resource) =>
             }, {})
         );
 
-const DefaultIcon = <DownloadIcon />;
+const defaultIcon = <DownloadIcon />;
 const defaultFilter = {};
 
 const sanitizeRestProps = ({

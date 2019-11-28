@@ -14,7 +14,7 @@ const CreateButton: FC<CreateButtonProps> = ({
     className,
     classes: classesOverride,
     label = 'ra.action.create',
-    icon = <ContentAdd />,
+    icon = defaultIcon,
     ...rest
 }) => {
     const classes = useStyles({ classes: classesOverride });
@@ -45,6 +45,8 @@ const CreateButton: FC<CreateButtonProps> = ({
         </Button>
     );
 };
+
+const defaultIcon = <ContentAdd />;
 
 const useStyles = makeStyles(
     theme => ({

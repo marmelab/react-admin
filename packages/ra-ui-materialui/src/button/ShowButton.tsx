@@ -11,7 +11,7 @@ const ShowButton: FC<ShowButtonProps> = ({
     basePath = '',
     label = 'ra.action.show',
     record,
-    icon = <ImageEye />,
+    icon = defaultIcon,
     ...rest
 }) => (
     <Button
@@ -24,6 +24,8 @@ const ShowButton: FC<ShowButtonProps> = ({
         {icon}
     </Button>
 );
+
+const defaultIcon = <ImageEye />;
 
 // useful to prevent click bubbling in a datagrid with rowClick
 const stopPropagation = e => e.stopPropagation();
