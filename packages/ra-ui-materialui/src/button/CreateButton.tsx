@@ -9,25 +9,6 @@ import { useTranslate } from 'ra-core';
 
 import Button, { ButtonProps } from './Button';
 
-const useStyles = makeStyles(
-    theme => ({
-        floating: {
-            color: theme.palette.getContrastText(theme.palette.primary.main),
-            margin: 0,
-            top: 'auto',
-            right: 20,
-            bottom: 60,
-            left: 'auto',
-            position: 'fixed',
-            zIndex: 1000,
-        },
-        floatingLink: {
-            color: 'inherit',
-        },
-    }),
-    { name: 'RaCreateButton' }
-);
-
 const CreateButton: FC<CreateButtonProps> = ({
     basePath = '',
     className,
@@ -65,8 +46,27 @@ const CreateButton: FC<CreateButtonProps> = ({
     );
 };
 
+const useStyles = makeStyles(
+    theme => ({
+        floating: {
+            color: theme.palette.getContrastText(theme.palette.primary.main),
+            margin: 0,
+            top: 'auto',
+            right: 20,
+            bottom: 60,
+            left: 'auto',
+            position: 'fixed',
+            zIndex: 1000,
+        },
+        floatingLink: {
+            color: 'inherit',
+        },
+    }),
+    { name: 'RaCreateButton' }
+);
+
 interface Props {
-    basePath: string;
+    basePath?: string;
     icon?: ReactElement;
 }
 

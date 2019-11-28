@@ -16,37 +16,6 @@ import {
 
 import Button, { ButtonProps } from './Button';
 
-export const sanitizeRestProps = ({
-    classes,
-    handleSubmit,
-    handleSubmitWithRedirect,
-    invalid,
-    label,
-    pristine,
-    resource,
-    saving,
-    undoable,
-    redirect,
-    submitOnEnter,
-    ...rest
-}: Omit<DeleteWithUndoButtonProps, 'basePath'>) => rest;
-
-const useStyles = makeStyles(
-    theme => ({
-        deleteButton: {
-            color: theme.palette.error.main,
-            '&:hover': {
-                backgroundColor: fade(theme.palette.error.main, 0.12),
-                // Reset on mouse devices
-                '@media (hover: none)': {
-                    backgroundColor: 'transparent',
-                },
-            },
-        },
-    }),
-    { name: 'RaDeleteWithUndoButton' }
-);
-
 const DeleteWithUndoButton: FC<DeleteWithUndoButtonProps> = ({
     label = 'ra.action.delete',
     classes: classesOverride,
@@ -119,8 +88,39 @@ const DeleteWithUndoButton: FC<DeleteWithUndoButtonProps> = ({
     );
 };
 
+export const sanitizeRestProps = ({
+    classes,
+    handleSubmit,
+    handleSubmitWithRedirect,
+    invalid,
+    label,
+    pristine,
+    resource,
+    saving,
+    undoable,
+    redirect,
+    submitOnEnter,
+    ...rest
+}: DeleteWithUndoButtonProps) => rest;
+
+const useStyles = makeStyles(
+    theme => ({
+        deleteButton: {
+            color: theme.palette.error.main,
+            '&:hover': {
+                backgroundColor: fade(theme.palette.error.main, 0.12),
+                // Reset on mouse devices
+                '@media (hover: none)': {
+                    backgroundColor: 'transparent',
+                },
+            },
+        },
+    }),
+    { name: 'RaDeleteWithUndoButton' }
+);
+
 interface Props {
-    basePath: string;
+    basePath?: string;
     classes?: object;
     className?: string;
     icon?: ReactElement;

@@ -8,22 +8,6 @@ import { Record } from 'ra-core';
 
 import Button, { ButtonProps } from './Button';
 
-// useful to prevent click bubbling in a datagrid with rowClick
-const stopPropagation = e => e.stopPropagation();
-
-const omitId = ({ id, ...rest }: Record) => rest;
-
-const sanitizeRestProps = ({
-    // the next 6 props are injected by Toolbar
-    handleSubmit,
-    handleSubmitWithRedirect,
-    invalid,
-    pristine,
-    saving,
-    submitOnEnter,
-    ...rest
-}: any) => rest;
-
 export const CloneButton: FC<CloneButtonProps> = ({
     basePath = '',
     label = 'ra.action.clone',
@@ -51,8 +35,24 @@ export const CloneButton: FC<CloneButtonProps> = ({
     </Button>
 );
 
+// useful to prevent click bubbling in a datagrid with rowClick
+const stopPropagation = e => e.stopPropagation();
+
+const omitId = ({ id, ...rest }: Record) => rest;
+
+const sanitizeRestProps = ({
+    // the next 6 props are injected by Toolbar
+    handleSubmit,
+    handleSubmitWithRedirect,
+    invalid,
+    pristine,
+    saving,
+    submitOnEnter,
+    ...rest
+}: any) => rest;
+
 interface Props {
-    basePath: string;
+    basePath?: string;
     record?: Record;
     icon?: ReactElement;
 }

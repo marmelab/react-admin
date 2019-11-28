@@ -12,30 +12,6 @@ import {
     Record,
 } from 'ra-core';
 
-const useStyles = makeStyles(
-    theme => ({
-        button: {
-            position: 'relative',
-        },
-        leftIcon: {
-            marginRight: theme.spacing(1),
-        },
-        icon: {
-            fontSize: 18,
-        },
-    }),
-    { name: 'RaSaveButton' }
-);
-
-const sanitizeRestProps = ({
-    basePath,
-    handleSubmit,
-    record,
-    resource,
-    undoable,
-    ...rest
-}: SaveButtonProps) => rest;
-
 const SaveButton: FC<SaveButtonProps> = ({
     className,
     classes: classesOverride = {},
@@ -116,6 +92,30 @@ const SaveButton: FC<SaveButtonProps> = ({
         </Button>
     );
 };
+
+const useStyles = makeStyles(
+    theme => ({
+        button: {
+            position: 'relative',
+        },
+        leftIcon: {
+            marginRight: theme.spacing(1),
+        },
+        icon: {
+            fontSize: 18,
+        },
+    }),
+    { name: 'RaSaveButton' }
+);
+
+const sanitizeRestProps = ({
+    basePath,
+    handleSubmit,
+    record,
+    resource,
+    undoable,
+    ...rest
+}: SaveButtonProps) => rest;
 
 interface Props {
     classes?: object;

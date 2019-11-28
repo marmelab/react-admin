@@ -7,9 +7,6 @@ import { linkToRecord, Record } from 'ra-core';
 
 import Button, { ButtonProps } from './Button';
 
-// useful to prevent click bubbling in a datagrid with rowClick
-const stopPropagation = e => e.stopPropagation();
-
 const EditButton: FC<EditButtonProps> = ({
     basePath = '',
     label = 'ra.action.edit',
@@ -28,8 +25,11 @@ const EditButton: FC<EditButtonProps> = ({
     </Button>
 );
 
+// useful to prevent click bubbling in a datagrid with rowClick
+const stopPropagation = e => e.stopPropagation();
+
 interface Props {
-    basePath: string;
+    basePath?: string;
     record?: Record;
     icon?: ReactElement;
 }

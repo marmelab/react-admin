@@ -12,64 +12,6 @@ import jsonExport from 'jsonexport/dist';
 
 import Button, { ButtonProps } from './Button';
 
-const sanitizeRestProps = ({ basePath, ...rest }: any) => rest;
-
-/**
- * Extracts, aggregates and deduplicates the ids of related records
- *
- * @example
- *     const books = [
- *         { id: 1, author_id: 123, title: 'Pride and Prejudice' },
- *         { id: 2, author_id: 123, title: 'Sense and Sensibility' },
- *         { id: 3, author_id: 456, title: 'War and Peace' },
- *     ];
- *     getRelatedIds(books, 'author_id'); => [123, 456]
- *
- * @example
- *     const books = [
- *         { id: 1, tag_ids: [1, 2], title: 'Pride and Prejudice' },
- *         { id: 2, tag_ids: [2, 3], title: 'Sense and Sensibility' },
- *         { id: 3, tag_ids: [4], title: 'War and Peace' },
- *     ];
- *     getRelatedIds(records, 'tag_ids'); => [1, 2, 3, 4]
- *
- * @param {Object[]} records An array of records
- * @param {string} field the identifier of the record field to use
- */
-export const getRelatedIds = (records, field) =>
-    Array.from(
-        new Set(
-            records
-                .filter(record => record[field] != null)
-                .map(record => record[field])
-                .reduce((ids, value) => ids.concat(value), [])
-        )
-    );
-
-/**
- * Helper function for calling the data provider with GET_MANY
- * via redux and saga, and getting a Promise in return
- *
- * @example
- *     fetchRelatedRecords(records, 'post_id', 'posts').then(posts =>
- *          posts.map(record => ({
- *              ...record,
- *              post_title: posts[record.post_id].title,
- *          }));
- */
-const fetchRelatedRecords = dataProvider => (data, field, resource) =>
-    dataProvider
-        .getMany(resource, { ids: getRelatedIds(data, field) })
-        .then(({ data }) =>
-            data.reduce((acc, post) => {
-                acc[post.id] = post;
-                return acc;
-            }, {})
-        );
-
-const DefaultIcon = <DownloadIcon />;
-const defaultFilter = {};
-
 const ExportButton: FunctionComponent<ExportButtonProps> = ({
     exporter,
     sort,
@@ -133,7 +75,72 @@ const ExportButton: FunctionComponent<ExportButtonProps> = ({
     );
 };
 
+/**
+ * Extracts, aggregates and deduplicates the ids of related records
+ *
+ * @example
+ *     const books = [
+ *         { id: 1, author_id: 123, title: 'Pride and Prejudice' },
+ *         { id: 2, author_id: 123, title: 'Sense and Sensibility' },
+ *         { id: 3, author_id: 456, title: 'War and Peace' },
+ *     ];
+ *     getRelatedIds(books, 'author_id'); => [123, 456]
+ *
+ * @example
+ *     const books = [
+ *         { id: 1, tag_ids: [1, 2], title: 'Pride and Prejudice' },
+ *         { id: 2, tag_ids: [2, 3], title: 'Sense and Sensibility' },
+ *         { id: 3, tag_ids: [4], title: 'War and Peace' },
+ *     ];
+ *     getRelatedIds(records, 'tag_ids'); => [1, 2, 3, 4]
+ *
+ * @param {Object[]} records An array of records
+ * @param {string} field the identifier of the record field to use
+ */
+export const getRelatedIds = (records, field) =>
+    Array.from(
+        new Set(
+            records
+                .filter(record => record[field] != null)
+                .map(record => record[field])
+                .reduce((ids, value) => ids.concat(value), [])
+        )
+    );
+
+/**
+ * Helper function for calling the data provider with GET_MANY
+ * via redux and saga, and getting a Promise in return
+ *
+ * @example
+ *     fetchRelatedRecords(records, 'post_id', 'posts').then(posts =>
+ *          posts.map(record => ({
+ *              ...record,
+ *              post_title: posts[record.post_id].title,
+ *          }));
+ */
+const fetchRelatedRecords = dataProvider => (data, field, resource) =>
+    dataProvider
+        .getMany(resource, { ids: getRelatedIds(data, field) })
+        .then(({ data }) =>
+            data.reduce((acc, post) => {
+                acc[post.id] = post;
+                return acc;
+            }, {})
+        );
+
+const DefaultIcon = <DownloadIcon />;
+const defaultFilter = {};
+
+const sanitizeRestProps = ({
+    basePath,
+    ...rest
+}: Omit<
+    ExportButtonProps,
+    'exporter' | 'sort' | 'filter' | 'maxResults' | 'resource' | 'label'
+>) => rest;
+
 interface Props {
+    basePath?: string;
     exporter?: (
         data: any,
         fetchRelatedRecords: (
@@ -143,14 +150,13 @@ interface Props {
         ) => Promise<any>,
         dataProvider: DataProvider
     ) => Promise<void>;
-    sort: Sort;
     filter?: any;
-    maxResults: number;
-    resource: string;
-    onClick?: (e: Event) => void;
-    label: string;
     icon?: JSX.Element;
-    basePath: string;
+    label: string;
+    maxResults: number;
+    onClick?: (e: Event) => void;
+    resource: string;
+    sort: Sort;
 }
 
 export type ExportButtonProps = Props & ButtonProps;

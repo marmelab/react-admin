@@ -13,31 +13,6 @@ import { Theme } from '@material-ui/core';
 import classnames from 'classnames';
 import { useTranslate } from 'ra-core';
 
-const useStyles = makeStyles(
-    {
-        button: {
-            display: 'inline-flex',
-            alignItems: 'center',
-        },
-        label: {
-            paddingLeft: '0.5em',
-        },
-        labelRightIcon: {
-            paddingRight: '0.5em',
-        },
-        smallIcon: {
-            fontSize: 20,
-        },
-        mediumIcon: {
-            fontSize: 22,
-        },
-        largeIcon: {
-            fontSize: 24,
-        },
-    },
-    { name: 'RaButton' }
-);
-
 /**
  * A generic Button with side icon. Only the icon is displayed on small screens.
  *
@@ -122,6 +97,31 @@ const Button: FC<ButtonProps> = ({
         </MuiButton>
     );
 };
+
+const useStyles = makeStyles(
+    {
+        button: {
+            display: 'inline-flex',
+            alignItems: 'center',
+        },
+        label: {
+            paddingLeft: '0.5em',
+        },
+        labelRightIcon: {
+            paddingRight: '0.5em',
+        },
+        smallIcon: {
+            fontSize: 20,
+        },
+        mediumIcon: {
+            fontSize: 22,
+        },
+        largeIcon: {
+            fontSize: 24,
+        },
+    },
+    { name: 'RaButton' }
+);
 
 interface Props {
     alignIcon?: 'left' | 'right';

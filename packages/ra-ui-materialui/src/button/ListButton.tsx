@@ -17,7 +17,7 @@ const ListButton: FC<ListButtonProps> = ({
 );
 
 interface Props {
-    basePath: string;
+    basePath?: string;
     icon?: ReactElement;
 }
 

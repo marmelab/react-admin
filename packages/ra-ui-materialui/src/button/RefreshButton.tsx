@@ -6,8 +6,6 @@ import { refreshView } from 'ra-core';
 
 import Button, { ButtonProps } from './Button';
 
-const defaultIcon = <NavigationRefresh />;
-
 const RefreshButton: FC<RefreshButtonProps> = ({
     label = 'ra.action.refresh',
     icon = defaultIcon,
@@ -32,6 +30,8 @@ const RefreshButton: FC<RefreshButtonProps> = ({
         </Button>
     );
 };
+
+const defaultIcon = <NavigationRefresh />;
 
 interface Props {
     label?: string;

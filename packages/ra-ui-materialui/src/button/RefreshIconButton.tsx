@@ -6,8 +6,6 @@ import IconButton, { IconButtonProps } from '@material-ui/core/IconButton';
 import NavigationRefresh from '@material-ui/icons/Refresh';
 import { refreshView, useTranslate } from 'ra-core';
 
-const defaultIcon = <NavigationRefresh />;
-
 const RefreshIconButton: FC<RefreshIconProps> = ({
     label = 'ra.action.refresh',
     icon = defaultIcon,
@@ -42,6 +40,8 @@ const RefreshIconButton: FC<RefreshIconProps> = ({
         </Tooltip>
     );
 };
+
+const defaultIcon = <NavigationRefresh />;
 
 interface Props {
     className?: string;

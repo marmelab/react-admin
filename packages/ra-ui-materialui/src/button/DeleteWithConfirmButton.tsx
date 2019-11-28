@@ -26,34 +26,6 @@ import {
 import Confirm from '../layout/Confirm';
 import Button, { ButtonProps } from './Button';
 
-const sanitizeRestProps = ({
-    handleSubmit,
-    handleSubmitWithRedirect,
-    invalid,
-    label,
-    pristine,
-    saving,
-    submitOnEnter,
-    undoable,
-    ...rest
-}: Omit<DeleteWithConfirmButtonProps, 'basePath'>) => rest;
-
-const useStyles = makeStyles(
-    theme => ({
-        deleteButton: {
-            color: theme.palette.error.main,
-            '&:hover': {
-                backgroundColor: fade(theme.palette.error.main, 0.12),
-                // Reset on mouse devices
-                '@media (hover: none)': {
-                    backgroundColor: 'transparent',
-                },
-            },
-        },
-    }),
-    { name: 'RaDeleteWithConfirmButton' }
-);
-
 const DeleteWithConfirmButton: FC<DeleteWithConfirmButtonProps> = ({
     basePath,
     classes: classesOverride,
@@ -154,8 +126,36 @@ const DeleteWithConfirmButton: FC<DeleteWithConfirmButtonProps> = ({
     );
 };
 
+const sanitizeRestProps = ({
+    handleSubmit,
+    handleSubmitWithRedirect,
+    invalid,
+    label,
+    pristine,
+    saving,
+    submitOnEnter,
+    undoable,
+    ...rest
+}: DeleteWithConfirmButtonProps) => rest;
+
+const useStyles = makeStyles(
+    theme => ({
+        deleteButton: {
+            color: theme.palette.error.main,
+            '&:hover': {
+                backgroundColor: fade(theme.palette.error.main, 0.12),
+                // Reset on mouse devices
+                '@media (hover: none)': {
+                    backgroundColor: 'transparent',
+                },
+            },
+        },
+    }),
+    { name: 'RaDeleteWithConfirmButton' }
+);
+
 interface Props {
-    basePath: string;
+    basePath?: string;
     classes?: object;
     className?: string;
     confirmTitle?: string;

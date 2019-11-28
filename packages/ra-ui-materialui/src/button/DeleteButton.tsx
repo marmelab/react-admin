@@ -14,7 +14,7 @@ const DeleteButton: FC<DeleteButtonProps> = ({ undoable, ...props }) =>
     );
 
 interface Props {
-    basePath: string;
+    basePath?: string;
     classes?: object;
     className?: string;
     icon?: ReactElement;
