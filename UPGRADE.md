@@ -489,7 +489,7 @@ export default (type, params) => {
 
 ## The `authProvider` Must Handle Permissions
 
-React-admin calls the `authProvider` to get the permissions for each page - using the `AUTH_GET_PERMISSIONS` verb. While in 2.x, implementing this `AUTH_GET_PERMISSIONS` verb was optional, it becomes compulsory in 3.0 as soon as you provide a custom `authProvider`. You can simply return a Promise resolved to an empty array to ignore permissions handling.
+React-admin calls the `authProvider` to get the permissions for each page - using the `AUTH_GET_PERMISSIONS` verb. While in 2.x, implementing this `AUTH_GET_PERMISSIONS` verb was optional, it becomes compulsory in 3.0 as soon as you provide a custom `authProvider`. You can simply return a resolved Promise to ignore permissions handling.
 
 ```diff
 // in src/authProvider.js
@@ -516,7 +516,7 @@ export default (type, params) => {
         }
     }
 +   if (type === AUTH_GET_PERMISSIONS) {
-+       return Promise.resolve([]);
++       return Promise.resolve();
 +   }
     return Promise.reject('Unknown method');
 };
