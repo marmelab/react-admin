@@ -6,6 +6,7 @@ import Button from '@material-ui/core/Button';
 import { useTranslate, useLocale, useSetLocale, Title } from 'react-admin';
 import { makeStyles } from '@material-ui/core/styles';
 import { changeTheme } from './actions';
+import { AppState } from '../types';
 
 const useStyles = makeStyles({
     label: { width: '10em', display: 'inline-block' },
@@ -17,7 +18,7 @@ const Configuration = () => {
     const locale = useLocale();
     const setLocale = useSetLocale();
     const classes = useStyles();
-    const theme = useSelector(state => state.theme);
+    const theme = useSelector((state: AppState) => state.theme);
     const dispatch = useDispatch();
     return (
         <Card>

@@ -310,7 +310,7 @@ export type RenderResourcesFunction = (
 export type AdminChildren = RenderResourcesFunction | ReactNode;
 
 export interface CustomRoute extends RouteProps {
-    noLayout: boolean;
+    noLayout?: boolean;
 }
 
 export type CustomRoutes = Array<ReactElement<CustomRoute>>;
