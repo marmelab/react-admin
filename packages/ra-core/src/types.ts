@@ -264,6 +264,7 @@ export interface ReduxState {
     admin: {
         ui: {
             optimistic: boolean;
+            sidebarOpen: boolean;
             viewVersion: number;
         };
         resources: {

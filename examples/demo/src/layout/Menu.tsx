@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { FC, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import SettingsIcon from '@material-ui/icons/Settings';
 import LabelIcon from '@material-ui/icons/Label';
-import { useMediaQuery } from '@material-ui/core';
+import { useMediaQuery, Theme } from '@material-ui/core';
 import { useTranslate, DashboardMenuItem, MenuItemLink } from 'react-admin';
 
 import visitors from '../visitors';
@@ -13,19 +13,30 @@ import products from '../products';
 import categories from '../categories';
 import reviews from '../reviews';
 import SubMenu from './SubMenu';
+import { AppState } from '../types';
 
-const Menu = ({ onMenuClick, dense, logout }) => {
+type MenuName = 'menuCatalog' | 'menuSales' | 'menuCustomers';
+
+interface Props {
+    dense: boolean;
+    logout: () => void;
+    onMenuClick: () => void;
+}
+
+const Menu: FC<Props> = ({ onMenuClick, dense, logout }) => {
     const [state, setState] = useState({
         menuCatalog: false,
         menuSales: false,
         menuCustomers: false,
     });
     const translate = useTranslate();
-    const isXsmall = useMediaQuery(theme => theme.breakpoints.down('xs'));
-    const open = useSelector(state => state.admin.ui.sidebarOpen);
-    useSelector(state => state.theme); // force rerender on theme change
+    const isXSmall = useMediaQuery((theme: Theme) =>
+        theme.breakpoints.down('xs')
+    );
+    const open = useSelector((state: AppState) => state.admin.ui.sidebarOpen);
+    useSelector((state: AppState) => state.theme); // force rerender on theme change
 
-    const handleToggle = menu => {
+    const handleToggle = (menu: MenuName) => {
         setState(state => ({ ...state, [menu]: !state[menu] }));
     };
 
@@ -92,8 +103,8 @@ const Menu = ({ onMenuClick, dense, logout }) => {
                 />
             </SubMenu>
             <SubMenu
-                handleToggle={() => handleToggle('menuCustomer')}
-                isOpen={state.menuCustomer}
+                handleToggle={() => handleToggle('menuCustomers')}
+                isOpen={state.menuCustomers}
                 sidebarIsOpen={open}
                 name="pos.menu.customers"
                 icon={<visitors.icon />}
@@ -130,7 +141,7 @@ const Menu = ({ onMenuClick, dense, logout }) => {
                 sidebarIsOpen={open}
                 dense={dense}
             />
-            {isXsmall && (
+            {isXSmall && (
                 <MenuItemLink
                     to="/configuration"
                     primaryText={translate('pos.configuration')}
@@ -140,14 +151,9 @@ const Menu = ({ onMenuClick, dense, logout }) => {
                     dense={dense}
                 />
             )}
-            {isXsmall && logout}
+            {isXSmall && logout}
         </div>
     );
-};
-
-Menu.propTypes = {
-    onMenuClick: PropTypes.func,
-    logout: PropTypes.object,
 };
 
 export default Menu;

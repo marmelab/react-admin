@@ -4,11 +4,12 @@ import { Layout, Sidebar } from 'react-admin';
 import AppBar from './AppBar';
 import Menu from './Menu';
 import { darkTheme, lightTheme } from './themes';
+import { AppState } from '../types';
 
-const CustomSidebar = props => <Sidebar {...props} size={200} />;
+const CustomSidebar = (props: any) => <Sidebar {...props} size={200} />;
 
-export default props => {
-    const theme = useSelector(state =>
+export default (props: any) => {
+    const theme = useSelector((state: AppState) =>
         state.theme === 'dark' ? darkTheme : lightTheme
     );
     return (

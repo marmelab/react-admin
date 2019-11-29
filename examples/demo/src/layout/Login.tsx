@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Field, Form } from 'react-final-form';
+import { Field, withTypes } from 'react-final-form';
 
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -12,9 +12,10 @@ import { createMuiTheme, makeStyles } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
 import LockIcon from '@material-ui/icons/Lock';
 
-import { Notification, useTranslate, useLogin, useNotify } from 'react-admin';
-
+import { Notification } from 'react-admin';
+import { useTranslate, useLogin, useNotify } from 'ra-core';
 import { lightTheme } from './themes';
+import { Location } from 'history';
 
 const useStyles = makeStyles(theme => ({
     main: {
@@ -57,7 +58,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const renderInput = ({
-    meta: { touched, error } = {},
+    meta: { touched, error } = { touched: false, error: undefined },
     input: { ...inputProps },
     ...props
 }) => (
@@ -70,17 +71,24 @@ const renderInput = ({
     />
 );
 
-const Login = ({ location }) => {
+interface FormValues {
+    username?: string;
+    password?: string;
+}
+
+const { Form } = withTypes<FormValues>();
+
+const Login = ({ location }: { location: Location }) => {
     const [loading, setLoading] = useState(false);
     const translate = useTranslate();
     const classes = useStyles();
     const notify = useNotify();
     const login = useLogin();
 
-    const handleSubmit = auth => {
+    const handleSubmit = (auth: FormValues) => {
         setLoading(true);
         login(auth, location.state ? location.state.nextPathname : '/').catch(
-            error => {
+            (error: Error) => {
                 setLoading(false);
                 notify(
                     typeof error === 'string'
@@ -94,8 +102,8 @@ const Login = ({ location }) => {
         );
     };
 
-    const validate = values => {
-        const errors = {};
+    const validate = (values: FormValues) => {
+        const errors: FormValues = {};
         if (!values.username) {
             errors.username = translate('ra.validation.required');
         }
@@ -126,6 +134,7 @@ const Login = ({ location }) => {
                                     <Field
                                         autoFocus
                                         name="username"
+                                        // @ts-ignore
                                         component={renderInput}
                                         label={translate('ra.auth.username')}
                                         disabled={loading}
@@ -134,6 +143,7 @@ const Login = ({ location }) => {
                                 <div className={classes.input}>
                                     <Field
                                         name="password"
+                                        // @ts-ignore
                                         component={renderInput}
                                         label={translate('ra.auth.password')}
                                         type="password"
@@ -147,7 +157,6 @@ const Login = ({ location }) => {
                                     type="submit"
                                     color="primary"
                                     disabled={loading}
-                                    className={classes.button}
                                     fullWidth
                                 >
                                     {loading && (
@@ -176,7 +185,7 @@ Login.propTypes = {
 // We need to put the ThemeProvider decoration in another component
 // Because otherwise the useStyles() hook used in Login won't get
 // the right theme
-const LoginWithTheme = props => (
+const LoginWithTheme = (props: any) => (
     <ThemeProvider theme={createMuiTheme(lightTheme)}>
         <Login {...props} />
     </ThemeProvider>
