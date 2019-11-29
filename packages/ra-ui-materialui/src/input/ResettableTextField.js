@@ -26,7 +26,11 @@ const useStyles = makeStyles(
             width: 24,
         },
         selectAdornment: {
-            marginRight: 12,
+            position: 'absolute',
+            right: 24,
+        },
+        inputAdornedEnd: {
+            paddingRight: 0,
         },
     },
     { name: 'RaResettableTextField' }
