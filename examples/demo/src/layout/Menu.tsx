@@ -1,5 +1,4 @@
 import React, { FC, useState } from 'react';
-import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import SettingsIcon from '@material-ui/icons/Settings';
 import LabelIcon from '@material-ui/icons/Label';

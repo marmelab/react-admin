@@ -6,6 +6,7 @@ import { useTranslate } from 'react-admin';
 import { stringify } from 'query-string';
 
 import products from '../products';
+import { FieldProps, Category } from '../types';
 
 const useStyles = makeStyles({
     icon: { paddingRight: '0.5em' },
@@ -15,10 +16,10 @@ const useStyles = makeStyles({
     },
 });
 
-const LinkToRelatedProducts = ({ record }) => {
+const LinkToRelatedProducts = ({ record }: FieldProps<Category>) => {
     const translate = useTranslate();
     const classes = useStyles();
-    return (
+    return record ? (
         <Button
             size="small"
             color="primary"
@@ -38,7 +39,7 @@ const LinkToRelatedProducts = ({ record }) => {
             <products.icon className={classes.icon} />
             {translate('resources.categories.fields.products')}
         </Button>
-    );
+    ) : null;
 };
 
 export default LinkToRelatedProducts;

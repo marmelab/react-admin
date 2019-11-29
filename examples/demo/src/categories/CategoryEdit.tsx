@@ -7,23 +7,24 @@ import {
     ReferenceManyField,
     SimpleForm,
     TextInput,
-    useTranslate,
 } from 'react-admin';
+import { useTranslate } from 'ra-core';
 
 import ThumbnailField from '../products/ThumbnailField';
 import ProductRefField from '../products/ProductRefField';
+import { FieldProps, Category } from '../types';
 
-const CategoryTitle = ({ record }) => {
+const CategoryTitle = ({ record }: FieldProps<Category>) => {
     const translate = useTranslate();
-    return (
+    return record ? (
         <span>
             {translate('resources.categories.name', { smart_count: 1 })} &quot;
             {record.name}&quot;
         </span>
-    );
+    ) : null;
 };
 
-const CategoryEdit = props => (
+const CategoryEdit = (props: any) => (
     <Edit title={<CategoryTitle />} {...props}>
         <SimpleForm>
             <TextInput source="name" />
