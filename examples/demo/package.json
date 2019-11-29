@@ -27,7 +27,8 @@
         "react-scripts": "^3.0.0",
         "recompose": "~0.26.0",
         "redux-saga": "^1.0.0",
-        "source-map-explorer": "^2.0.0"
+        "source-map-explorer": "^2.0.0",
+        "typescript": "^3.7.2"
     },
     "scripts": {
         "analyze": "source-map-explorer 'build/static/js/*.js'",
@@ -41,5 +42,11 @@
         "not dead",
         "not ie <= 10",
         "not op_mini all"
-    ]
+    ],
+    "devDependencies": {
+        "@types/jest": "^24.0.23",
+        "@types/node": "^12.12.14",
+        "@types/react": "^16.9.13",
+        "@types/react-dom": "^16.9.4"
+    }
 }
