@@ -40,6 +40,8 @@ module.exports = {
             loading: 'Chargement',
             not_found: 'Page manquante',
             show: '%{name} #%{id}',
+            empty: 'Pas encore de %{name}.',
+            invite: 'Voulez-vous en créer un ?',
         },
         input: {
             file: {
