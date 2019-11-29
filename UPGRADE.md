@@ -494,7 +494,7 @@ React-admin calls the `authProvider` to get the permissions for each page - usin
 ```diff
 // in src/authProvider.js
 -import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR, AUTH_CHECK } from 'react-admin';
-+import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR, AUTH_CHECK, aUTH_GET_PERMISSIONS } from 'react-admin';
++import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR, AUTH_CHECK, AUTH_GET_PERMISSIONS } from 'react-admin';
 
 export default (type, params) => {
     if (type === AUTH_LOGIN) {
