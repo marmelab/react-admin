@@ -13,13 +13,19 @@ import merge from 'lodash/merge';
 const sanitizeEmptyValues = (initialValues: object, values: object) => {
     // For every field initialy provided, we check wether it value has been removed
     // and set it explicitly to an empty string
+    if (!initialValues) return values;
     const initialValuesWithEmptyFields = Object.keys(initialValues).reduce(
         (acc, key) => {
-            if (typeof values[key] === 'object' && values[key] !== null) {
+            if (values[key] instanceof Date || Array.isArray(values[key])) {
+                acc[key] = values[key];
+            } else if (
+                typeof values[key] === 'object' &&
+                values[key] !== null
+            ) {
                 acc[key] = sanitizeEmptyValues(initialValues[key], values[key]);
             } else {
                 acc[key] =
-                    typeof values[key] === 'undefined' ? '' : values[key];
+                    typeof values[key] === 'undefined' ? null : values[key];
             }
             return acc;
         },
