@@ -487,6 +487,41 @@ export default (type, params) => {
 }
 ```
 
+## The `authProvider` Must Handle Permissions
+
+React-admin calls the `authProvider` to get the permissions for each page - using the `AUTH_GET_PERMISSIONS` verb. While in 2.x, implementing this `AUTH_GET_PERMISSIONS` verb was optional, it becomes compulsory in 3.0 as soon as you provide a custom `authProvider`. You can simply return a resolved Promise to ignore permissions handling.
+
+```diff
+// in src/authProvider.js
+-import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR, AUTH_CHECK } from 'react-admin';
++import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR, AUTH_CHECK, AUTH_GET_PERMISSIONS } from 'react-admin';
+
+export default (type, params) => {
+    if (type === AUTH_LOGIN) {
+        // ...
+    }
+    if (type === AUTH_LOGOUT) {
+        // ...
+    }
+    if (type === AUTH_ERROR) {
+        // ...
+    }
+    if (type === AUTH_CHECK) {
+        const { resource } = params;
+        if (resource === 'posts') {
+            // check credentials for the posts resource
+        }
+        if (resource === 'comments') {
+            // check credentials for the comments resource
+        }
+    }
++   if (type === AUTH_GET_PERMISSIONS) {
++       return Promise.resolve();
++   }
+    return Promise.reject('Unknown method');
+};
+```
+
 ## The `authProvider` No Longer Receives Default Parameters
 
 When calling the `authProvider` for permissions (with the `AUTH_GET_PERMISSIONS` verb), react-admin used to include the `pathname` as second parameter. That allowed you to return different permissions based on the page. In a similar fashion, for the `AUTH_CHECK` call, the `params` argument contained the `resource` name, allowing different checks for different resources.
