@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import pure from 'recompose/pure';
 
 import AvatarField from './AvatarField';
+import { FieldProps } from '../types';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -15,9 +16,13 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const FullNameField = ({ record = {}, size }) => {
+interface Props extends FieldProps {
+    size?: string;
+}
+
+const FullNameField: FC<Props> = ({ record, size }) => {
     const classes = useStyles();
-    return (
+    return record ? (
         <div className={classes.root}>
             <AvatarField
                 className={classes.avatar}
@@ -26,7 +31,7 @@ const FullNameField = ({ record = {}, size }) => {
             />
             {record.first_name} {record.last_name}
         </div>
-    );
+    ) : null;
 };
 
 const PureFullNameField = pure(FullNameField);

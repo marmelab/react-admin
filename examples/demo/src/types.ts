@@ -22,9 +22,38 @@ export interface Product extends Record {
     width: number;
 }
 
+export interface Customer extends Record {
+    first_name: string;
+    last_name: string;
+    address: string;
+    city: string;
+    zipcode: string;
+    avatar: string;
+    birthday: string;
+    first_seen: string;
+    last_seen: string;
+    has_ordered: boolean;
+    latest_purchase: string;
+    has_newsletter: boolean;
+    groups: string[];
+    nb_commands: number;
+    total_spent: number;
+}
+
+export interface Order extends Record {
+    basket: BasketItem[];
+}
+
+export interface BasketItem {
+    product_id: string;
+    quantity: number;
+}
+
 /**
  * Types to eventually add in react-admin
  */
 export interface FieldProps<T extends Record = Record> {
+    label?: string;
     record?: T;
+    source?: string;
 }

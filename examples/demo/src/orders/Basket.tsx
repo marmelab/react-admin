@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import classnames from 'classnames';
 
 import Table from '@material-ui/core/Table';
@@ -9,6 +9,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import { Link, useTranslate, useQueryWithStore } from 'react-admin';
 import { makeStyles } from '@material-ui/core/styles';
+import { FieldProps, AppState, Order, Product } from '../types';
 
 const useStyles = makeStyles({
     container: { minWidth: '35em', marginLeft: '1em' },
@@ -16,7 +17,7 @@ const useStyles = makeStyles({
     boldCell: { fontWeight: 'bold' },
 });
 
-const Basket = ({ record }) => {
+const Basket: FC<FieldProps<Order>> = ({ record }) => {
     const classes = useStyles();
     const translate = useTranslate();
 
@@ -29,19 +30,24 @@ const Basket = ({ record }) => {
             },
         },
         {},
-        state => {
+        (state: AppState) => {
             const productIds = record
                 ? record.basket.map(item => item.product_id)
                 : [];
+
             return productIds
-                .map(
-                    productId => state.admin.resources.products.data[productId]
+                .map<Product>(
+                    (productId: string) =>
+                        state.admin.resources.products.data[productId]
                 )
                 .filter(r => typeof r !== 'undefined')
-                .reduce((prev, next) => {
-                    prev[next.id] = next;
-                    return prev;
-                }, {});
+                .reduce(
+                    (prev, next) => {
+                        prev[next.id] = next;
+                        return prev;
+                    },
+                    {} as { [key: string]: Product }
+                );
         }
     );
 
@@ -76,7 +82,7 @@ const Basket = ({ record }) => {
                 </TableHead>
                 <TableBody>
                     {record.basket.map(
-                        item =>
+                        (item: any) =>
                             products[item.product_id] && (
                                 <TableRow key={item.product_id}>
                                     <TableCell>

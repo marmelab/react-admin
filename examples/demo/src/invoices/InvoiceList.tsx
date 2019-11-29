@@ -14,14 +14,14 @@ import FullNameField from '../visitors/FullNameField';
 import AddressField from '../visitors/AddressField';
 import InvoiceShow from './InvoiceShow';
 
-const ListFilters = props => (
+const ListFilters = (props: any) => (
     <Filter {...props}>
         <DateInput source="date_gte" alwaysOn />
         <DateInput source="date_lte" alwaysOn />
     </Filter>
 );
 
-const InvoiceList = props => (
+const InvoiceList = (props: any) => (
     <List {...props} filters={<ListFilters />} perPage={25}>
         <Datagrid rowClick="expand" expand={<InvoiceShow />}>
             <TextField source="id" />

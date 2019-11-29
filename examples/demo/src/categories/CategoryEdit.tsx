@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import {
     Datagrid,
     Edit,
@@ -14,7 +14,7 @@ import ThumbnailField from '../products/ThumbnailField';
 import ProductRefField from '../products/ProductRefField';
 import { FieldProps, Category } from '../types';
 
-const CategoryTitle = ({ record }: FieldProps<Category>) => {
+const CategoryTitle: FC<FieldProps<Category>> = ({ record }) => {
     const translate = useTranslate();
     return record ? (
         <span>
