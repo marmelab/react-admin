@@ -155,6 +155,12 @@ export const getRecord = ({ state, search }, record: any = {}) => {
         try {
             const searchParams = parse(search);
             if (searchParams.source) {
+                if (Array.isArray(searchParams.source)) {
+                    console.error(
+                        `Failed to parse location search parameter '${search}'. To pre-fill some fields in the Create form, pass a stringified source parameter (e.g. '?source={"title":"foo"}')`
+                    );
+                    return;
+                }
                 return JSON.parse(searchParams.source);
             }
         } catch (e) {
