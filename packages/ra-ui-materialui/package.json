@@ -75,7 +75,7 @@
         "jsonexport": "^2.4.1",
         "lodash": "~4.17.5",
         "prop-types": "^15.6.1",
-        "query-string": "~5.1.1",
+        "query-string": "^5.1.1",
         "react-dropzone": "^10.1.7",
         "react-transition-group": "^2.2.1",
         "recompose": "~0.26.0"
