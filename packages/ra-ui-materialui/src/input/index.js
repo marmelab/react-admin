@@ -20,6 +20,8 @@ import SearchInput from './SearchInput';
 import SelectArrayInput from './SelectArrayInput';
 import SelectInput from './SelectInput';
 import TextInput from './TextInput';
+import FileInputPreview from "./FileInputPreview";
+import ImageInputPreview from "./ImageInputPreview";
 
 export {
     ArrayInput,
@@ -44,4 +46,6 @@ export {
     SelectArrayInput,
     SelectInput,
     TextInput,
+    FileInputPreview,
+    ImageInputPreview
 };
