@@ -10,7 +10,7 @@ import {
     NumberField,
     SearchInput,
 } from 'react-admin';
-import { useMediaQuery, makeStyles } from '@material-ui/core';
+import { useMediaQuery, makeStyles, Theme } from '@material-ui/core';
 
 import SegmentsField from './SegmentsField';
 import SegmentInput from './SegmentInput';
@@ -18,7 +18,7 @@ import CustomerLinkField from './CustomerLinkField';
 import ColoredNumberField from './ColoredNumberField';
 import MobileGrid from './MobileGrid';
 
-const VisitorFilter = props => (
+const VisitorFilter = (props: any) => (
     <Filter {...props}>
         <SearchInput source="q" alwaysOn />
         <DateInput source="last_seen_gte" />
@@ -32,9 +32,11 @@ const useStyles = makeStyles({
     nb_commands: { color: 'purple' },
 });
 
-const VisitorList = props => {
+const VisitorList = (props: any) => {
     const classes = useStyles();
-    const isXsmall = useMediaQuery(theme => theme.breakpoints.down('xs'));
+    const isXsmall = useMediaQuery<Theme>(theme =>
+        theme.breakpoints.down('xs')
+    );
     return (
         <List
             {...props}

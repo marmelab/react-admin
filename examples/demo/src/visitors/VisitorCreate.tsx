@@ -1,8 +1,9 @@
 import React from 'react';
 import { Create, DateInput, FormTab, TabbedForm, TextInput } from 'react-admin';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, Theme } from '@material-ui/core/styles';
+import { Styles } from '@material-ui/styles/withStyles';
 
-export const styles = {
+export const styles: Styles<Theme, any> = {
     first_name: { display: 'inline-block' },
     last_name: { display: 'inline-block', marginLeft: 32 },
     email: { width: 544 },
@@ -19,7 +20,7 @@ export const styles = {
 
 const useStyles = makeStyles(styles);
 
-const VisitorCreate = props => {
+const VisitorCreate = (props: any) => {
     const classes = useStyles();
     return (
         <Create {...props}>

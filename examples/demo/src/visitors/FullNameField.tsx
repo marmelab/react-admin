@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import pure from 'recompose/pure';
 
 import AvatarField from './AvatarField';
-import { FieldProps } from '../types';
+import { FieldProps, Customer } from '../types';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -16,7 +16,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-interface Props extends FieldProps {
+interface Props extends FieldProps<Customer> {
     size?: string;
 }
 

@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
-import { FieldProps } from '../types';
+import { FieldProps, Customer } from '../types';
 
-const AddressField: FC<FieldProps> = ({ record }) =>
+const AddressField: FC<FieldProps<Customer>> = ({ record }) =>
     record ? (
         <span>
             {record.address}, {record.city} {record.zipcode}

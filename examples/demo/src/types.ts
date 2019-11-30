@@ -53,6 +53,7 @@ export interface BasketItem {
  * Types to eventually add in react-admin
  */
 export interface FieldProps<T extends Record = Record> {
+    addLabel?: boolean;
     label?: string;
     record?: T;
     source?: string;

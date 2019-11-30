@@ -1,9 +1,14 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { useTranslate, SelectArrayInput } from 'react-admin';
+import { InputProps } from 'ra-core';
 
 import segments from '../segments/data';
 
-const SegmentsInput = ({ addField, ...rest }) => {
+interface Props extends Omit<InputProps, 'source'> {
+    source?: string;
+}
+
+const SegmentsInput: FC<Props> = ({ addField, ...rest }) => {
     const translate = useTranslate();
     return (
         <SelectArrayInput

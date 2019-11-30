@@ -10,8 +10,12 @@ import { DateField, EditButton, useTranslate, NumberField } from 'react-admin';
 import AvatarField from './AvatarField';
 import ColoredNumberField from './ColoredNumberField';
 import SegmentsField from './SegmentsField';
+import { Identifier } from 'ra-core';
+import { Customer } from '../types';
+import { FC } from 'react';
 
 const useStyles = makeStyles(theme => ({
+    root: { margin: '1em' },
     card: {
         height: '100%',
         display: 'flex',
@@ -20,7 +24,7 @@ const useStyles = makeStyles(theme => ({
     },
     cardTitleContent: {
         display: 'flex',
-        flexDirection: 'rows',
+        flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
     },
@@ -31,11 +35,22 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const MobileGrid = ({ ids, data, basePath }) => {
+interface Props {
+    ids?: Identifier[];
+    data?: { [key: string]: Customer };
+    basePath?: string;
+}
+
+const MobileGrid: FC<Props> = ({ ids, data, basePath }) => {
     const translate = useTranslate();
     const classes = useStyles();
+
+    if (!ids || !data) {
+        return null;
+    }
+
     return (
-        <div style={{ margin: '1em' }}>
+        <div className={classes.root}>
             {ids.map(id => (
                 <Card key={id} className={classes.card}>
                     <CardHeader
@@ -68,14 +83,13 @@ const MobileGrid = ({ ids, data, basePath }) => {
                         <div>
                             {translate(
                                 'resources.commands.name',
-                                parseInt(data[id].nb_commands, 10) || 1
+                                data[id].nb_commands || 1
                             )}
                             &nbsp;:&nbsp;
                             <NumberField
                                 record={data[id]}
                                 source="nb_commands"
                                 label="resources.customers.fields.commands"
-                                className={classes.nb_commands}
                             />
                         </div>
                         <div>

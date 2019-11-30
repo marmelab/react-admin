@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { ReferenceField } from 'react-admin';
 
 import FullNameField from './FullNameField';
+import { FieldProps } from '../types';
 
-const CustomerReferenceField = props => (
+const CustomerReferenceField: FC<FieldProps> = props => (
     <ReferenceField source="customer_id" reference="customers" {...props}>
         <FullNameField />
     </ReferenceField>

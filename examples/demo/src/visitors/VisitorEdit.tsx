@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import {
     Datagrid,
     DateField,
@@ -21,13 +21,14 @@ import StarRatingField from '../reviews/StarRatingField';
 import FullNameField from './FullNameField';
 import SegmentsInput from './SegmentsInput';
 import { styles } from './VisitorCreate';
+import { Customer, FieldProps } from '../types';
 
 const useStyles = makeStyles(styles);
 
-const VisitorTitle = ({ record }) =>
-    record ? <FullNameField record={record} size={32} /> : null;
+const VisitorTitle: FC<FieldProps<Customer>> = ({ record }) =>
+    record ? <FullNameField record={record} size="32" /> : null;
 
-const VisitorEdit = props => {
+const VisitorEdit = (props: any) => {
     const classes = useStyles();
     return (
         <Edit title={<VisitorTitle />} {...props}>
