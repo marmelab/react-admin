@@ -85,10 +85,10 @@ interface Options {
  * @example
  * <AutocompleteInput source="gender" choices={choices} translateChoice={false}/>
  *
- * The object passed as `options` props is passed to the material-ui <AutoComplete> component
+ * The object passed as `options` props is passed to the material-ui <TextField> component
  *
  * @example
- * <AutocompleteInput source="author_id" options={{ fullWidthInput: true }} />
+ * <AutocompleteInput source="author_id" options={{ color: 'secondary', InputLabelProps: { shrink: true } }} />
  */
 const AutocompleteInput: FunctionComponent<
     InputProps<TextFieldProps & Options> & DownshiftProps<any>
@@ -100,6 +100,7 @@ const AutocompleteInput: FunctionComponent<
     emptyText,
     emptyValue,
     format,
+    fullWidth,
     helperText,
     id: idOverride,
     input: inputOverride,
@@ -371,6 +372,7 @@ const AutocompleteInput: FunctionComponent<
                             }
                             variant={variant}
                             margin={margin}
+                            fullWidth={fullWidth}
                             value={filterValue}
                             className={className}
                             {...inputProps}
