@@ -61,7 +61,7 @@ const useReferenceArrayInputController = ({
         const newIdsToFetch = difference(input.value, inputValue.current);
         if (newIdsToFetch.length > 0) {
             setIdsToFetch(newIdsToFetch);
-            setIdsToGetFromStore(inputValue.current);
+            setIdsToGetFromStore(inputValue.current || []);
         }
         inputValue.current = input.value;
     }, [input.value, setIdsToFetch]);
