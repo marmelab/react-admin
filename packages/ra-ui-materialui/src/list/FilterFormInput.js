@@ -42,16 +42,13 @@ const FilterFormInput = ({
                     <ActionHide />
                 </IconButton>
             )}
-            <Field
-                allowEmpty
-                {...sanitizeRestProps(filterElement.props)}
-                name={filterElement.props.source}
-                component={filterElement.type}
-                resource={resource}
-                record={emptyRecord}
-                variant={variant}
-                margin={margin}
-            />
+            {React.cloneElement(filterElement, {
+                allowEmpty: true,
+                resource,
+                record: emptyRecord,
+                variant,
+                margin,
+            })}
             <div className={classes.spacer}>&nbsp;</div>
         </div>
     );

@@ -60,7 +60,6 @@ const BooleanInput: FunctionComponent<
                     <Switch
                         id={id}
                         color="primary"
-                        checked={!!value}
                         onChange={handleChange}
                         {...inputProps}
                         {...options}
