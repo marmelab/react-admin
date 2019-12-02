@@ -100,6 +100,7 @@ const AutocompleteInput: FunctionComponent<
     emptyText,
     emptyValue,
     format,
+    fullWidth,
     helperText,
     id: idOverride,
     input: inputOverride,
@@ -371,6 +372,7 @@ const AutocompleteInput: FunctionComponent<
                             }
                             variant={variant}
                             margin={margin}
+                            fullWidth={fullWidth}
                             value={filterValue}
                             className={className}
                             {...inputProps}
