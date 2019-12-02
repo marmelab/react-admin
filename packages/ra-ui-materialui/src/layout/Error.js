@@ -48,9 +48,9 @@ const useStyles = makeStyles(
     { name: 'RaError' }
 );
 
-function goBack() {
+const goBack = () => {
     window.history.go(-1);
-}
+};
 
 const Error = ({
     error,

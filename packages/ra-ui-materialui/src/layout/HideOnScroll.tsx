@@ -7,7 +7,7 @@ interface Props {
     children: React.ReactElement;
 }
 
-function HideOnScroll(props: Props) {
+const HideOnScroll = (props: Props) => {
     const { children } = props;
     const trigger = useScrollTrigger();
     return (
@@ -15,7 +15,7 @@ function HideOnScroll(props: Props) {
             {children}
         </Slide>
     );
-}
+};
 
 HideOnScroll.propTypes = {
     children: PropTypes.node.isRequired,

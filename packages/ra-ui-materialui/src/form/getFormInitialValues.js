@@ -1,8 +1,4 @@
-export default function getFormInitialValues(
-    initialValues,
-    defaultValue,
-    record
-) {
+export default (initialValues, defaultValue, record) => {
     let finalInitialValues = {
         ...initialValues,
         ...record,
@@ -27,4 +23,4 @@ export default function getFormInitialValues(
     }
 
     return finalInitialValues;
-}
+};

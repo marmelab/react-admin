@@ -30,7 +30,7 @@ const useStyles = makeStyles(
  */
 const LogoutWithRef: FunctionComponent<
     Props & MenuItemProps<'li', { button: true }> // HACK: https://github.com/mui-org/material-ui/issues/16245
-> = React.forwardRef(function Logout(props, ref) {
+> = React.forwardRef((props, ref) => {
     const { className, redirectTo, ...rest } = props;
     const classes = useStyles({}); // the empty {} is a temp fix for https://github.com/mui-org/material-ui/issues/15942
     const translate = useTranslate();

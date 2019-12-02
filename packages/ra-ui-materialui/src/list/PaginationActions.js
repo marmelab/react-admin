@@ -18,13 +18,13 @@ const useStyles = makeStyles(
     { name: 'RaPaginationActions' }
 );
 
-function PaginationActions({
+const PaginationActions = ({
     classes: classesOverride,
     page,
     rowsPerPage,
     count,
     onChangePage,
-}) {
+}) => {
     const classes = useStyles({ classes: classesOverride });
     const translate = useTranslate();
     /**
@@ -146,7 +146,7 @@ function PaginationActions({
             )}
         </div>
     );
-}
+};
 
 /**
  * PaginationActions propTypes are copied over from material-ui’s

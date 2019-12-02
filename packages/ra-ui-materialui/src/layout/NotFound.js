@@ -41,9 +41,9 @@ const useStyles = makeStyles(
     { name: 'RaNotFound' }
 );
 
-function goBack() {
+const goBack = () => {
     window.history.go(-1);
-}
+};
 
 const NotFound = ({
     className,

@@ -67,7 +67,7 @@ const handleClick = () => {};
  *     </SingleFieldList>
  * </ReferenceManyField>
  */
-function SingleFieldList({
+const SingleFieldList = ({
     classes: classesOverride,
     className,
     ids,
@@ -78,7 +78,7 @@ function SingleFieldList({
     children,
     linkType,
     ...rest
-}) {
+}) => {
     const classes = useStyles({ classes: classesOverride });
 
     if (loaded === false) {
@@ -123,7 +123,7 @@ function SingleFieldList({
             })}
         </div>
     );
-}
+};
 
 SingleFieldList.propTypes = {
     basePath: PropTypes.string,
