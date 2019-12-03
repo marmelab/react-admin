@@ -45,4 +45,14 @@ describe('sanitizeEmptyValues', () => {
             sanitizeEmptyValues({ obj: { foo: null, foo2: 2 } }, { obj })
         ).toEqual({ obj: { foo: { bar: 1 }, foo2: null } });
     });
+    it("should not ignore initial value when it's not of the same type", () => {
+        const initialValues = { a: 'foobar' };
+        const values = { a: { hello: 'world' } };
+        expect(sanitizeEmptyValues(initialValues, values)).toEqual({
+            a: { hello: 'world' },
+        });
+        expect(sanitizeEmptyValues(values, initialValues)).toEqual({
+            a: 'foobar',
+        });
+    });
 });
