@@ -1,4 +1,3 @@
-import downloadCSV from './downloadCSV';
 import FieldTitle from './FieldTitle';
 import getFetchedAt from './getFetchedAt';
 import getFieldLabelTranslationArgs from './getFieldLabelTranslationArgs';
@@ -15,7 +14,6 @@ import useWhyDidYouUpdate from './useWhyDidYouUpdate';
 import { useSafeSetState, useTimeout } from './hooks';
 
 export {
-    downloadCSV,
     FieldTitle,
     getFetchedAt,
     getFieldLabelTranslationArgs,
