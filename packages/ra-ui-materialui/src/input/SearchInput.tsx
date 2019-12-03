@@ -23,6 +23,7 @@ const SearchInput: FunctionComponent<
         <TextInput
             hiddenLabel
             label=""
+            resettable
             placeholder={translate('ra.action.search')}
             InputProps={{
                 endAdornment: (
