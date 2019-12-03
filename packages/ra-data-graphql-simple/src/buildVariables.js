@@ -246,13 +246,19 @@ export default introspectionResults => (
                 filter: { ids: preparedParams.ids },
             };
         case GET_MANY_REFERENCE: {
-            const parts = preparedParams.target.split('.');
+            const {
+                target,
+                id,
+                pagination = {},
+                sort = {},
+                filter,
+            } = preparedParams;
             return {
-                page: parseInt(preparedParams.pagination.page, 10) - 1,
-                perPage: parseInt(preparedParams.pagination.perPage, 10),
-                sortField: preparedParams.sort.field,
-                sortOrder: preparedParams.sort.order,
-                filter: { [`${parts[0]}Id`]: preparedParams.id },
+                page: parseInt(pagination.page, 10) - 1,
+                perPage: parseInt(pagination.perPage, 10),
+                sortField: sort.field,
+                sortOrder: sort.order,
+                filter: { ...filter, [target]: id },
             };
         }
         case GET_ONE:
