@@ -20,6 +20,7 @@ const sanitizeEmptyValues = (initialValues: object, values: object) => {
                 acc[key] = values[key];
             } else if (
                 typeof values[key] === 'object' &&
+                typeof initialValues[key] === 'object' &&
                 values[key] !== null
             ) {
                 acc[key] = sanitizeEmptyValues(initialValues[key], values[key]);
