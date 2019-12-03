@@ -18,6 +18,8 @@ title: "Reference"
 * [`<AutocompleteInput>`](./Inputs.md#autocompleteinput)
 * [`<BooleanField>`](./Fields.md#booleanfield)
 * [`<BooleanInput>`](./Inputs.md#booleaninput-and-nullablebooleaninput)
+* [`<BulkDeleteButton>`](./List.md#bulk-action-buttons)
+* [`<BulkExportButton>`](./List.md#bulk-action-buttons)
 * [`<CheckboxGroupInput>`](./Inputs.md#checkboxgroupinput)
 * [`<ChipField>`](./Fields.md#chipfield)
 * `<CloneButton>`

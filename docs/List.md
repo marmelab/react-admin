@@ -219,6 +219,8 @@ const CommentList = props => (
 
 **Tip**: The `<ExportButton>` limits the main request to the `dataProvider` to 1,000 records. If you want to increase or decrease this limit, pass a `maxResults` prop to the `<ExportButton>` in a custom `<ListActions>` component, as explained in the previous section.
 
+**Tip**: React-admin also provides a `<BulkExportButton>` component that depends on the `exporter`, and that you can use in the `bulkActionButtons` prop of the `<List>` component.
+
 **Tip**: For complex (or large) exports, fetching all the related records and assembling them client-side can be slow. In that case, create the CSV on the server side, and replace the `<ExportButton>` component by a custom one, fetching the CSV route.
 
 ### Bulk Action Buttons
@@ -234,7 +236,7 @@ import ResetViewsButton from './ResetViewsButton';
 const PostBulkActionButtons = props => (
     <Fragment>
         <ResetViewsButton label="Reset Views" {...props} />
-        {/* Add the default bulk delete action */}
+        {/* default bulk delete action */}
         <BulkDeleteButton {...props} />
     </Fragment>
 );
@@ -247,6 +249,8 @@ export const PostList = (props) => (
 ```
 
 ![Bulk Action Buttons](./img/bulk-actions-toolbar.gif)
+
+**Tip**: React-admin provides 2 components that you can use in `bulkActionButtons`: `<BulkDeleteButton>`, and `<BulkExportButton>`.
 
 **Tip**: You can also disable bulk actions altogether by passing `false` to the `bulkActionButtons` prop. When using a `Datagrid` inside a `List` with disabled bulk actions, the checkboxes column won't be added.
 
