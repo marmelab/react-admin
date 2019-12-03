@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Field } from 'react-final-form';
 import IconButton from '@material-ui/core/IconButton';
 import ActionHide from '@material-ui/icons/HighlightOff';
 import { makeStyles } from '@material-ui/core/styles';
@@ -8,8 +7,6 @@ import classnames from 'classnames';
 import { useTranslate } from 'ra-core';
 
 const emptyRecord = {};
-
-const sanitizeRestProps = ({ alwaysOn, ...props }) => props;
 
 const useStyles = makeStyles(theme => ({
     body: { display: 'flex', alignItems: 'flex-end' },
@@ -42,16 +39,13 @@ const FilterFormInput = ({
                     <ActionHide />
                 </IconButton>
             )}
-            <Field
-                allowEmpty
-                {...sanitizeRestProps(filterElement.props)}
-                name={filterElement.props.source}
-                component={filterElement.type}
-                resource={resource}
-                record={emptyRecord}
-                variant={variant}
-                margin={margin}
-            />
+            {React.cloneElement(filterElement, {
+                allowEmpty: true,
+                resource,
+                record: emptyRecord,
+                variant,
+                margin,
+            })}
             <div className={classes.spacer}>&nbsp;</div>
         </div>
     );
