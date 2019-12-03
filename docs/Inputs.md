@@ -1589,7 +1589,7 @@ import { FormDataConsumer } from 'react-admin';
      <Edit {...props}>
          <SimpleForm>
              <BooleanInput source="hasEmail" />
-             <FormDataConsume subscription={{ values: true }}>
+             <FormDataConsumer subscription={{ values: true }}>
                  {({ formData, ...rest }) => formData.hasEmail &&
                       <TextInput source="email" {...rest} />
                  }
