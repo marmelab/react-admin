@@ -22,14 +22,17 @@ const useStyles = makeStyles({
     },
 });
 
-const EmptyState = ({ resource, basePath }) => {
+const Empty = ({ resource, basePath }) => {
     const classes = useStyles();
     const translate = useTranslate();
 
-    const resourceName = translate(`resources.${resource}.name`, {
-        smart_count: 0,
-        _: inflection.humanize(resource),
-    }).toLowerCase();
+    const resourceName = inflection.humanize(
+        translate(`resources.${resource}.name`, {
+            smart_count: 0,
+            _: inflection.pluralize(resource),
+        }),
+        true
+    );
 
     return (
         <>
@@ -45,4 +48,4 @@ const EmptyState = ({ resource, basePath }) => {
     );
 };
 
-export default EmptyState;
+export default Empty;

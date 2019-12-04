@@ -18,7 +18,7 @@ import DefaultPagination from './Pagination';
 import BulkDeleteButton from '../button/BulkDeleteButton';
 import BulkActionsToolbar from './BulkActionsToolbar';
 import DefaultActions from './ListActions';
-import EmptyState from './EmptyState';
+import Empty from './Empty';
 
 /**
  * List page component
@@ -116,7 +116,7 @@ export const ListView = props => {
         component: Content,
         exporter = defaultExporter,
         title,
-        emptyState,
+        empty,
         ...rest
     } = props;
     useCheckMinimumRequiredProps('List', ['children'], props);
@@ -132,7 +132,7 @@ export const ListView = props => {
     } = rest;
     const controllerProps = getListControllerProps(rest);
 
-    const renderChildren = () => (
+    const renderList = () => (
         <>
             {(filters || actions) && (
                 <ListToolbar
@@ -168,7 +168,7 @@ export const ListView = props => {
         </>
     );
 
-    const shouldRenderEmptyState =
+    const shouldRenderEmptyPage =
         hasCreate &&
         loaded &&
         !loading &&
@@ -182,9 +182,9 @@ export const ListView = props => {
                 {...sanitizeRestProps(rest)}
             >
                 <Title title={title} defaultTitle={defaultTitle} />
-                {shouldRenderEmptyState
-                    ? cloneElement(emptyState, controllerProps)
-                    : renderChildren()}
+                {shouldRenderEmptyPage
+                    ? cloneElement(empty, controllerProps)
+                    : renderList()}
             </div>
         </ExporterContext.Provider>
     );
@@ -241,7 +241,7 @@ ListView.defaultProps = {
     component: Card,
     bulkActionButtons: <DefaultBulkActionButtons />,
     pagination: <DefaultPagination />,
-    emptyState: <EmptyState />,
+    empty: <Empty />,
 };
 
 export const useStyles = makeStyles(
