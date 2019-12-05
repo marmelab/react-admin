@@ -35,7 +35,7 @@ const ReviewListDesktop = props => {
             <DateField source="date" />
             <CustomerReferenceField link={false} />
             <ProductReferenceField link={false} />
-            <StarRatingField />
+            <StarRatingField size="small" />
             <TextField source="comment" cellClassName={classes.comment} />
             <TextField source="status" />
         </Datagrid>
