@@ -82,7 +82,9 @@ const Toolbar = ({
                 {Children.count(children) === 0 ? (
                     <div className={classes.defaultToolbar}>
                         <SaveButton
-                            handleSubmitWithRedirect={handleSubmitWithRedirect}
+                            handleSubmitWithRedirect={
+                                handleSubmitWithRedirect || handleSubmit
+                            }
                             invalid={invalid}
                             redirect={redirect}
                             saving={saving}
