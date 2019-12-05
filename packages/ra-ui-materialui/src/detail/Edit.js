@@ -4,7 +4,7 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import { makeStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
-import { useEditController } from 'ra-core';
+import { useEditController, ComponentPropType } from 'ra-core';
 
 import DefaultActions from './EditActions';
 import TitleForRecord from '../layout/TitleForRecord';
@@ -117,6 +117,7 @@ export const EditView = ({
     children,
     classes: classesOverride,
     className,
+    component: Content,
     defaultTitle,
     hasList,
     hasShow,
@@ -162,7 +163,7 @@ export const EditView = ({
                     [classes.noActions]: !actions,
                 })}
             >
-                <Card className={classes.card}>
+                <Content className={classes.card}>
                     {record ? (
                         cloneElement(Children.only(children), {
                             basePath,
@@ -180,7 +181,7 @@ export const EditView = ({
                     ) : (
                         <CardContent>&nbsp;</CardContent>
                     )}
-                </Card>
+                </Content>
                 {aside &&
                     React.cloneElement(aside, {
                         basePath,
@@ -202,6 +203,7 @@ EditView.propTypes = {
     children: PropTypes.element,
     classes: PropTypes.object,
     className: PropTypes.string,
+    component: ComponentPropType,
     defaultTitle: PropTypes.any,
     hasList: PropTypes.bool,
     hasShow: PropTypes.bool,
@@ -215,6 +217,7 @@ EditView.propTypes = {
 
 EditView.defaultProps = {
     classes: {},
+    component: Card,
 };
 
 export default Edit;
