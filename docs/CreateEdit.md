@@ -928,6 +928,105 @@ export const UserEdit = props => {
 }
 ```
 
+## Customizing The Form Layout
+
+The `<SimpleForm>` and `<TabbedForm>` layouts are quite simple. In order to better use the screen real estate, you may want to arrange inputs differently, e.g. putting them in groups, adding separators, etc.
+
+![custom form layout](./img/custom-form-layout.png)
+
+For that purpose, you need to write a custom form layout, and use it instead of `<SimpleForm>`. 
+
+This custom form layout component must contain a react-final-form `Form` component. Note that `<SimpleForm>` and `<TabbedForm>` inject the `resource` prop to `Input` components. When you use a custom form layout, you must pass the `resource` prop manually. Finally, use the `<Toolbar>` component to automatically add a `<SaveButton>` and a `<DeleteButton>`.
+
+Here is an example of such custom form, taken from the Posters Galore demo. It's a good starting point for your custom form layouts.
+
+{% raw %}
+```jsx
+import {
+    DateInput,
+    Edit,
+    SelectArrayInput,
+    TextInput,
+    Toolbar,
+    sanitizeEmptyValues,
+    useTranslate,
+} from 'react-admin';
+import { Form } from 'react-final-form';
+import arrayMutators from 'final-form-arrays';
+import { CardContent, Typography } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+
+const VisitorForm = ({ basePath, record, save, saving, version }) => {
+    const classes = useStyles();
+
+    const submit = values => {
+        // React-final-form removes empty values from the form state.
+        // To allow users to *delete* values, this must be taken into account 
+        save(sanitizeEmptyValues(record, values));
+    };
+
+    return (
+        <Form
+            initialValues={record}
+            onSubmit={submit}
+            mutators={{ ...arrayMutators }} // necessary for ArrayInput
+            subscription={defaultSubscription} // don't redraw entire form each time one field changes
+            key={version} // support for refresh button
+            keepDirtyOnReinitialize
+            render={formProps => (
+                // here starts the custom form layout
+                <CardContent className={classes.formContent}>
+                    <div>
+                        <Typography variant="h6" gutterBottom>Identity</Typography>
+                        <TextInput resource="customers" source="first_name" className={classes.first_name} />
+                        ...
+                        
+                        <div className={classes.separator} />
+
+                        <Typography variant="h6" gutterBottom>Address</Typography>
+                        <TextInput resource="customers" source="address" multiline fullWidth />
+                        ...
+                    </div>
+                    <div>
+                        <Typography variant="h6" gutterBottom>Stats</Typography>
+                        <SelectArrayInput source="groups" resource="customers" choices={segments} />
+                        ...
+                    </div>
+                </CardContent>
+                <Toolbar
+                    basePath={basePath}
+                    handleSubmit={formProps.handleSubmit}
+                    invalid={formProps.invalid}
+                    record={record}
+                    resource="customers"
+                    saving={saving}
+                    undoable={true}
+                />
+            )}
+        />
+    );
+};
+
+const defaultSubscription = {
+    submitting: true,
+    pristine: true,
+    valid: true,
+    invalid: true,
+};
+```
+{% endraw %}
+
+
+To use this form layout, simply pass it as child to an `Edit` component:
+
+```jsx
+const VisitorEdit = props => (
+    <Edit {...props}>
+        <VisitorForm />
+    </Edit>
+);
+```
+
 ## Displaying Fields or Inputs depending on the user permissions
 
 You might want to display some fields, inputs or filters only to users with specific permissions. 
