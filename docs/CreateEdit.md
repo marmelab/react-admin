@@ -938,7 +938,7 @@ For that purpose, you need to write a custom form layout, and use it instead of 
 
 This custom form layout component must contain a react-final-form `Form` component. Note that `<SimpleForm>` and `<TabbedForm>` inject the `resource` prop to `Input` components. When you use a custom form layout, you must pass the `resource` prop manually. Finally, use the `<Toolbar>` component to automatically add a `<SaveButton>` and a `<DeleteButton>`.
 
-Here is an example of such custom form, taken from the Posters Galore demo. It's a good starting point for your custom form layouts.
+Here is an example of such custom form, taken from the Posters Galore demo. It uses [material-ui's `<Box>` component](https://material-ui.com/components/box/), and it's a good starting point for your custom form layouts.
 
 {% raw %}
 ```jsx
@@ -953,11 +953,9 @@ import {
 } from 'react-admin';
 import { Form } from 'react-final-form';
 import arrayMutators from 'final-form-arrays';
-import { CardContent, Typography } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { CardContent, Typography, Box } from '@material-ui/core';
 
 const VisitorForm = ({ basePath, record, save, saving, version }) => {
-    const classes = useStyles();
 
     const submit = values => {
         // React-final-form removes empty values from the form state.
@@ -975,24 +973,48 @@ const VisitorForm = ({ basePath, record, save, saving, version }) => {
             keepDirtyOnReinitialize
             render={formProps => (
                 // here starts the custom form layout
-                <CardContent className={classes.formContent}>
-                    <div>
-                        <Typography variant="h6" gutterBottom>Identity</Typography>
-                        <TextInput resource="customers" source="first_name" className={classes.first_name} />
-                        ...
-                        
-                        <div className={classes.separator} />
+                <>
+                <Box p="1em">
+                    <Box display="flex">
+                        <Box flex={2} mr="1em">
 
-                        <Typography variant="h6" gutterBottom>Address</Typography>
-                        <TextInput resource="customers" source="address" multiline fullWidth />
-                        ...
-                    </div>
-                    <div>
-                        <Typography variant="h6" gutterBottom>Stats</Typography>
-                        <SelectArrayInput source="groups" resource="customers" choices={segments} />
-                        ...
-                    </div>
-                </CardContent>
+                            <Typography variant="h6" gutterBottom>Identity</Typography>
+
+                            <Box display="flex">
+                                <Box flex={1} mr="0.5em">
+                                    <TextInput source="first_name" resource="customers" fullWidth />
+                                </Box>
+                                <Box flex={1} ml="0.5em">
+                                    <TextInput source="last_name" resource="customers" fullWidth />
+                                </Box>
+                            </Box>
+                            <TextInput source="email" resource="customers" type="email" fullWidth />
+                            <DateInput source="birthday" resource="customers" />
+                            <Box mt="1em" />
+
+                            <Typography variant="h6" gutterBottom>Address</Typography>
+
+                            <TextInput resource="customers" source="address" multiline fullWidth />
+                            <Box display="flex">
+                                <Box flex={1} mr="0.5em">
+                                    <TextInput source="zipcode" resource="customers" fullWidth />
+                                </Box>
+                                <Box flex={2} ml="0.5em">
+                                    <TextInput source="city" resource="customers" fullWidth />
+                                </Box>
+                            </Box>
+                        </Box>
+
+                        <Box flex={1} ml="1em">
+                            
+                            <Typography variant="h6" gutterBottom>Stats</Typography>
+
+                            <SelectArrayInput source="groups" resource="customers" choices={segments} fullWidth />
+                            <NullableBooleanInput source="has_newsletter" resource="customers" />
+                        </Box>
+
+                    </Box>
+                </Box>
                 <Toolbar
                     basePath={basePath}
                     handleSubmit={formProps.handleSubmit}
@@ -1002,6 +1024,7 @@ const VisitorForm = ({ basePath, record, save, saving, version }) => {
                     saving={saving}
                     undoable={true}
                 />
+                </>
             )}
         />
     );

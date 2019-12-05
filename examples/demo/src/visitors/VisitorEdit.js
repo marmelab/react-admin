@@ -10,8 +10,7 @@ import {
 } from 'react-admin';
 import { Form } from 'react-final-form';
 import arrayMutators from 'final-form-arrays';
-import { Card, CardContent, Typography } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { Box, Card, CardContent, Typography } from '@material-ui/core';
 
 import Aside from './Aside';
 import FullNameField from './FullNameField';
@@ -33,47 +32,6 @@ const VisitorEdit = props => {
 const VisitorTitle = ({ record }) =>
     record ? <FullNameField record={record} size={32} /> : null;
 
-const styles = theme => ({
-    formContent: {
-        display: 'flex',
-        [theme.breakpoints.down('md')]: {
-            display: 'block',
-        },
-    },
-    mainInputGroup: {
-        width: 503,
-        marginRight: '1em',
-        [theme.breakpoints.down('sm')]: { width: '100%', marginRight: 0 },
-    },
-    secondaryInputGroup: {
-        maxWidth: 400,
-        [theme.breakpoints.down('sm')]: { marginTop: '1em' },
-    },
-    first_name: {
-        display: 'inline-block',
-        [theme.breakpoints.down('sm')]: { display: 'block' },
-    },
-    last_name: {
-        display: 'inline-block',
-        marginLeft: '1em',
-        [theme.breakpoints.down('sm')]: { display: 'block', marginLeft: 0 },
-    },
-    zipcode: {
-        display: 'inline-block',
-        [theme.breakpoints.down('sm')]: { display: 'block' },
-    },
-    city: {
-        display: 'inline-block',
-        marginLeft: '1em',
-        [theme.breakpoints.down('sm')]: { display: 'block', marginLeft: 0 },
-    },
-    separator: {
-        height: '1em',
-    },
-});
-
-const useStyles = makeStyles(styles);
-
 const VisitorForm = ({
     basePath,
     initialValues,
@@ -83,7 +41,6 @@ const VisitorForm = ({
     saving,
     ...props
 }) => {
-    const classes = useStyles();
     const translate = useTranslate();
 
     const submit = values => {
@@ -101,23 +58,29 @@ const VisitorForm = ({
             render={formProps => (
                 <Card>
                     <CardContent>
-                        <div className={classes.formContent}>
-                            <div className={classes.mainInputGroup}>
+                        <Box display={{ md: 'block', lg: 'flex' }}>
+                            <Box flex={2} mr={{ md: 0, lg: '1em' }}>
                                 <Typography variant="h6" gutterBottom>
                                     {translate(
                                         'resources.customers.fieldGroups.identity'
                                     )}
                                 </Typography>
-                                <TextInput
-                                    source="first_name"
-                                    resource="customers"
-                                    className={classes.first_name}
-                                />
-                                <TextInput
-                                    source="last_name"
-                                    resource="customers"
-                                    className={classes.last_name}
-                                />
+                                <Box display={{ xs: 'block', sm: 'flex' }}>
+                                    <Box flex={1} mr={{ xs: 0, sm: '0.5em' }}>
+                                        <TextInput
+                                            source="first_name"
+                                            resource="customers"
+                                            fullWidth
+                                        />
+                                    </Box>
+                                    <Box flex={1} ml={{ xs: 0, sm: '0.5em' }}>
+                                        <TextInput
+                                            source="last_name"
+                                            resource="customers"
+                                            fullWidth
+                                        />
+                                    </Box>
+                                </Box>
                                 <TextInput
                                     type="email"
                                     source="email"
@@ -125,11 +88,18 @@ const VisitorForm = ({
                                     validation={{ email: true }}
                                     fullWidth
                                 />
-                                <DateInput
-                                    source="birthday"
-                                    resource="customers"
-                                />
-                                <div className={classes.separator} />
+                                <Box display={{ xs: 'block', sm: 'flex' }}>
+                                    <Box flex={1} mr={{ xs: 0, sm: '0.5em' }}>
+                                        <DateInput
+                                            source="birthday"
+                                            resource="customers"
+                                            fullWidth
+                                        />
+                                    </Box>
+                                    <Box flex={2} ml={{ xs: 0, sm: '0.5em' }} />
+                                </Box>
+
+                                <Box mt="1em" />
 
                                 <Typography variant="h6" gutterBottom>
                                     {translate(
@@ -142,25 +112,35 @@ const VisitorForm = ({
                                     multiline
                                     fullWidth
                                 />
-                                <TextInput
-                                    source="zipcode"
-                                    resource="customers"
-                                    className={classes.zipcode}
-                                />
-                                <TextInput
-                                    source="city"
-                                    resource="customers"
-                                    className={classes.city}
-                                />
-                            </div>
-                            <div className={classes.secondaryInputGroup}>
+                                <Box display={{ xs: 'block', sm: 'flex' }}>
+                                    <Box flex={1} mr={{ xs: 0, sm: '0.5em' }}>
+                                        <TextInput
+                                            source="zipcode"
+                                            resource="customers"
+                                            fullWidth
+                                        />
+                                    </Box>
+                                    <Box flex={2} ml={{ xs: 0, sm: '0.5em' }}>
+                                        <TextInput
+                                            source="city"
+                                            resource="customers"
+                                            fullWidth
+                                        />
+                                    </Box>
+                                </Box>
+                            </Box>
+                            <Box
+                                flex={1}
+                                ml={{ xs: 0, lg: '1em' }}
+                                mt={{ xs: '1em', lg: 0 }}
+                            >
                                 <Typography variant="h6" gutterBottom>
                                     {translate(
                                         'resources.customers.fieldGroups.stats'
                                     )}
                                 </Typography>
                                 <div>
-                                    <SegmentsInput />
+                                    <SegmentsInput fullWidth />
                                 </div>
                                 <div>
                                     <NullableBooleanInput
@@ -168,8 +148,8 @@ const VisitorForm = ({
                                         resource="customers"
                                     />
                                 </div>
-                            </div>
-                        </div>
+                            </Box>
+                        </Box>
                     </CardContent>
                     <Toolbar
                         record={record}
