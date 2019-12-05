@@ -56,12 +56,11 @@ export default {
                 total_spent: 'Dépenses',
                 zipcode: 'Code postal',
             },
-            tabs: {
+            fieldGroups: {
                 identity: 'Identité',
                 address: 'Adresse',
-                orders: 'Commandes',
-                reviews: 'Commentaires',
                 stats: 'Statistiques',
+                history: 'Historique',
             },
             page: {
                 delete: 'Supprimer le client',
@@ -69,6 +68,7 @@ export default {
         },
         commands: {
             name: 'Commande |||| Commandes',
+            amount: '1 commande |||| %{smart_count} commandes',
             title: 'Commande n°%{reference}',
             fields: {
                 basket: {
@@ -138,6 +138,8 @@ export default {
         },
         reviews: {
             name: 'Commentaire |||| Commentaires',
+            amount: '1 commentaire |||| %{smart_count} commentaires',
+            relative_to_poster: 'Commentaire sur',
             detail: 'Détail du commentaire',
             fields: {
                 customer_id: 'Client',
