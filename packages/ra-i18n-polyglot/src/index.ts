@@ -41,7 +41,7 @@ export default (
     return {
         translate: (key: string, options: any = {}) => translate(key, options),
         changeLocale: (newLocale: string) =>
-            new Promise(resolve =>
+            new Promise<object>(resolve =>
                 // so we systematically return a Promise for the messages
                 // i18nProvider may return a Promise for language changes,
                 resolve(getMessages(newLocale as string))
