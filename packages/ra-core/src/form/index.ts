@@ -1,6 +1,7 @@
 import addField from './addField';
 import FormDataConsumer from './FormDataConsumer';
 import FormField from './FormField';
+import FormWithRedirect from './FormWithRedirect';
 import useInput, { InputProps } from './useInput';
 import ValidationError from './ValidationError';
 import useInitializeFormWithRecord from './useInitializeFormWithRecord';
@@ -17,6 +18,7 @@ export {
     ChoicesProps,
     FormDataConsumer,
     FormField,
+    FormWithRedirect,
     InputProps,
     OptionTextElement,
     OptionText,
