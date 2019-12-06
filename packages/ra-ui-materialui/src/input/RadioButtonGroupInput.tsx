@@ -109,6 +109,7 @@ export const RadioButtonGroupInput: FunctionComponent<
         id,
         isRequired,
         meta: { error, touched },
+        input,
     } = useInput({
         format,
         onBlur,
@@ -140,6 +141,7 @@ export const RadioButtonGroupInput: FunctionComponent<
             <RadioGroup id={id} row={row} {...options}>
                 {choices.map(choice => (
                     <RadioButtonGroupInputItem
+                        {...input}
                         key={get(choice, optionValue)}
                         choice={choice}
                         optionText={optionText}

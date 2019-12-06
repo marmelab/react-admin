@@ -10,6 +10,7 @@ const RadioButtonGroupInputItem = ({
     optionValue,
     source,
     translateChoice,
+    onChange,
 }) => {
     const { getChoiceText, getChoiceValue } = useChoices({
         optionText,
@@ -35,8 +36,8 @@ const RadioButtonGroupInputItem = ({
                 <Radio
                     id={nodeId}
                     color="primary"
-                    onChange={() => onChange(value)}
                     {...inputProps}
+                    onChange={() => onChange(value)}
                 />
             }
         />
