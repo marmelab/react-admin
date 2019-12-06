@@ -30,6 +30,7 @@ import CardContentInner from '../layout/CardContentInner';
  * );
  *
  * @typedef {object} Props the props you can use (other props are injected by Create or Edit)
+ * @prop {ReactElement[]} children Input elements
  * @prop {object} initialValues
  * @prop {function} validate
  * @prop {boolean} submitOnEnter
@@ -48,6 +49,7 @@ const SimpleForm = props => (
 );
 
 SimpleForm.propTypes = {
+    children: PropTypes.node,
     defaultValue: PropTypes.oneOfType([PropTypes.object, PropTypes.func]), // @deprecated
     initialValues: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
     record: PropTypes.object,
@@ -83,11 +85,11 @@ const SimpleFormView = ({
     variant,
     ...rest
 }) => (
-    <>
-        <CardContentInner
-            className={classnames('simple-form', className)}
-            {...sanitizeRestProps(rest)}
-        >
+    <form
+        className={classnames('simple-form', className)}
+        {...sanitizeRestProps(rest)}
+    >
+        <CardContentInner>
             {Children.map(children, input => (
                 <FormInput
                     basePath={basePath}
@@ -113,7 +115,7 @@ const SimpleFormView = ({
                 submitOnEnter,
                 undoable,
             })}
-    </>
+    </form>
 );
 
 SimpleFormView.propTypes = {

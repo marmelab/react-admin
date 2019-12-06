@@ -112,14 +112,10 @@ const FormView = ({ render, ...props }) => {
         [setRedirect, redirect, handleSubmit]
     );
 
-    return (
-        <form>
-            {render({
-                ...props,
-                handleSubmitWithRedirect,
-            })}
-        </form>
-    );
+    return render({
+        ...props,
+        handleSubmitWithRedirect,
+    });
 };
 
 export default FormWithRedirect;
