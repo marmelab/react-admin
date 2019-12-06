@@ -1,5 +1,23 @@
 # Changelog
 
+## v3.0.3
+
+* Fix typo in `fullWidth` Input prop documentation ([4119](https://github.com/marmelab/react-admin/pull/4119)) ([JoonsungUm](https://github.com/JoonsungUm))
+* Fix outdated mention of Redux-form in Readme ([4108](https://github.com/marmelab/react-admin/pull/4108)) ([kopax](https://github.com/kopax))
+* Fix `<TextInput endAdornment` when resettable ([4107](https://github.com/marmelab/react-admin/pull/4107)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<ArrayInput>` usage in `<FilterForm>` ([4105](https://github.com/marmelab/react-admin/pull/4105)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix typo in `<FormDataConsumer>` docs  ([4104](https://github.com/marmelab/react-admin/pull/4104)) ([tdeo](https://github.com/tdeo))
+* Fix form values sanitization messes with JSON values ([4103](https://github.com/marmelab/react-admin/pull/4103)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<FilterForm>` doesn't use default values for `<BooleanInput>` ([4101](https://github.com/marmelab/react-admin/pull/4101)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix regression in `<ReferenceArrayInput>` (`idsToGetFromStore` error) ([4099](https://github.com/marmelab/react-admin/pull/4099)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix incorrect `dataProvider` leads to infinite render loop ([4097](https://github.com/marmelab/react-admin/pull/4097)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `fullWidth` support on `<AutoCompleteInput>` ([4096](https://github.com/marmelab/react-admin/pull/4096)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix missing mention about `AUTH_GET_PERMISSIONS` in Upgrade guide ([4088](https://github.com/marmelab/react-admin/pull/4088)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix unused prop in `<LoadingIndicator>` ([4085](https://github.com/marmelab/react-admin/pull/4085)) ([kopax](https://github.com/kopax))
+* Fix Form breaks when setting undefined value to object ([4082](https://github.com/marmelab/react-admin/pull/4082)) ([fzaninotto](https://github.com/fzaninotto))
+* Migrate half of the Demo to Typescript  ([4081](https://github.com/marmelab/react-admin/pull/4081)) ([djhi](https://github.com/djhi))
+* Fix missing dependency in `ra-ui-material-ui` packages.json ([4077](https://github.com/marmelab/react-admin/pull/4077)) ([kopax](https://github.com/kopax))
+
 ## v3.0.2
 
 * Fix duplicated import in `<TabbedForm>` ([4074](https://github.com/marmelab/react-admin/pull/4074)) ([kopax](https://github.com/kopax))
