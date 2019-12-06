@@ -1,72 +1,53 @@
-import React, { Children, useCallback, useRef } from 'react';
+import React, { Children } from 'react';
 import PropTypes from 'prop-types';
-import { Form } from 'react-final-form';
-import arrayMutators from 'final-form-arrays';
 import classnames from 'classnames';
-import {
-    useTranslate,
-    useInitializeFormWithRecord,
-    sanitizeEmptyValues,
-} from 'ra-core';
+import { FormWithRedirect } from 'ra-core';
 
-import getFormInitialValues from './getFormInitialValues';
 import FormInput from './FormInput';
 import Toolbar from './Toolbar';
 import CardContentInner from '../layout/CardContentInner';
 
-const SimpleForm = ({ initialValues, defaultValue, saving, ...props }) => {
-    let redirect = useRef(props.redirect);
-    // We don't use state here for two reasons:
-    // 1. There no way to execute code only after the state has been updated
-    // 2. We don't want the form to rerender when redirect is changed
-    const setRedirect = newRedirect => {
-        redirect.current = newRedirect;
-    };
-
-    const translate = useTranslate();
-
-    const finalInitialValues = getFormInitialValues(
-        initialValues,
-        defaultValue,
-        props.record
-    );
-
-    const submit = values => {
-        const finalRedirect =
-            typeof redirect.current === undefined
-                ? props.redirect
-                : redirect.current;
-        const finalValues = sanitizeEmptyValues(finalInitialValues, values);
-
-        props.save(finalValues, finalRedirect);
-    };
-
-    return (
-        <Form
-            key={props.version}
-            initialValues={finalInitialValues}
-            onSubmit={submit}
-            mutators={{ ...arrayMutators }}
-            keepDirtyOnReinitialize
-            subscription={defaultSubscription}
-            {...props}
-            render={formProps => (
-                <SimpleFormView
-                    saving={formProps.submitting || saving}
-                    translate={translate}
-                    setRedirect={setRedirect}
-                    {...props}
-                    {...formProps}
-                />
-            )}
-        />
-    );
-};
+/**
+ * Form with a one column layout, one input per line.
+ *
+ * Pass input components as children.
+ *
+ * @example
+ *
+ * import React from 'react';
+ * import { Create, Edit, SimpleForm, TextInput, DateInput, ReferenceManyField, Datagrid, TextField, DateField, EditButton } from 'react-admin';
+ * import RichTextInput from 'ra-input-rich-text';
+ *
+ * export const PostCreate = (props) => (
+ *     <Create {...props}>
+ *         <SimpleForm>
+ *             <TextInput source="title" />
+ *             <TextInput source="teaser" options={{ multiLine: true }} />
+ *             <RichTextInput source="body" />
+ *             <DateInput label="Publication date" source="published_at" defaultValue={new Date()} />
+ *         </SimpleForm>
+ *     </Create>
+ * );
+ *
+ * @typedef {object} Props the props you can use (other props are injected by Create or Edit)
+ * @prop {object} initialValues
+ * @prop {function} validate
+ * @prop {boolean} submitOnEnter
+ * @prop {string} redirect
+ * @prop {ReactElement} toolbar The element displayed at the bottom of the form, contzining the SaveButton
+ * @prop {string} variant Apply variant to all inputs. Possible values are 'standard', 'outlined', and 'filled' (default)
+ * @prop {string} margin Apply variant to all inputs. Possible values are 'none', 'normal', and 'dense' (default)
+ *
+ * @param {Prop} props
+ */
+const SimpleForm = props => (
+    <FormWithRedirect
+        {...props}
+        render={formProps => <SimpleFormView {...formProps} />}
+    />
+);
 
 SimpleForm.propTypes = {
-    basePath: PropTypes.string,
-    children: PropTypes.node,
-    className: PropTypes.string,
     defaultValue: PropTypes.oneOfType([PropTypes.object, PropTypes.func]), // @deprecated
     initialValues: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
     record: PropTypes.object,
@@ -75,97 +56,70 @@ SimpleForm.propTypes = {
         PropTypes.bool,
         PropTypes.func,
     ]),
-    resource: PropTypes.string,
     save: PropTypes.func,
     saving: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
     submitOnEnter: PropTypes.bool,
-    toolbar: PropTypes.element,
     undoable: PropTypes.bool,
     validate: PropTypes.func,
     version: PropTypes.number,
 };
 
-const defaultSubscription = {
-    submitting: true,
-    pristine: true,
-    valid: true,
-    invalid: true,
-};
-
-export default SimpleForm;
-
 const SimpleFormView = ({
     basePath,
     children,
     className,
+    handleSubmit,
+    handleSubmitWithRedirect,
     invalid,
-    form,
+    margin,
     pristine,
     record,
-    redirect: defaultRedirect,
+    redirect,
     resource,
     saving,
-    setRedirect,
     submitOnEnter,
     toolbar,
     undoable,
-    version,
-    handleSubmit,
     variant,
-    margin,
     ...rest
-}) => {
-    useInitializeFormWithRecord(record);
-
-    const handleSubmitWithRedirect = useCallback(
-        (redirect = defaultRedirect) => {
-            setRedirect(redirect);
-            handleSubmit();
-        },
-        [setRedirect, defaultRedirect, handleSubmit]
-    );
-
-    return (
-        <form
+}) => (
+    <>
+        <CardContentInner
             className={classnames('simple-form', className)}
             {...sanitizeRestProps(rest)}
         >
-            <CardContentInner key={version}>
-                {Children.map(children, input => (
-                    <FormInput
-                        basePath={basePath}
-                        input={input}
-                        record={record}
-                        resource={resource}
-                        variant={variant}
-                        margin={margin}
-                    />
-                ))}
-            </CardContentInner>
-            {toolbar &&
-                React.cloneElement(toolbar, {
-                    basePath,
-                    handleSubmitWithRedirect,
-                    handleSubmit,
-                    invalid,
-                    pristine,
-                    record,
-                    redirect: defaultRedirect,
-                    resource,
-                    saving,
-                    submitOnEnter,
-                    undoable,
-                })}
-        </form>
-    );
-};
+            {Children.map(children, input => (
+                <FormInput
+                    basePath={basePath}
+                    input={input}
+                    record={record}
+                    resource={resource}
+                    variant={variant}
+                    margin={margin}
+                />
+            ))}
+        </CardContentInner>
+        {toolbar &&
+            React.cloneElement(toolbar, {
+                basePath,
+                handleSubmitWithRedirect,
+                handleSubmit,
+                invalid,
+                pristine,
+                record,
+                redirect,
+                resource,
+                saving,
+                submitOnEnter,
+                undoable,
+            })}
+    </>
+);
 
 SimpleFormView.propTypes = {
     basePath: PropTypes.string,
     children: PropTypes.node,
     className: PropTypes.string,
-    defaultValue: PropTypes.oneOfType([PropTypes.object, PropTypes.func]), // @deprecated
-    initialValues: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
     handleSubmit: PropTypes.func, // passed by react-final-form
     invalid: PropTypes.bool,
     pristine: PropTypes.bool,
@@ -182,7 +136,6 @@ SimpleFormView.propTypes = {
     toolbar: PropTypes.element,
     undoable: PropTypes.bool,
     validate: PropTypes.func,
-    version: PropTypes.number,
 };
 
 SimpleFormView.defaultProps = {
@@ -222,7 +175,6 @@ const sanitizeRestProps = ({
     reset,
     resetSection,
     save,
-    setRedirect,
     submit,
     submitError,
     submitErrors,
@@ -241,3 +193,5 @@ const sanitizeRestProps = ({
     _reduxForm,
     ...props
 }) => props;
+
+export default SimpleForm;
