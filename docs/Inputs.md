@@ -34,7 +34,7 @@ All input components accept the following props:
 * `label`: Used as input label. Defaults to the humanized `source` when omitted.
 * `validate`: Validation rules for the current property. See the [Validation Documentation](./CreateEdit.md#validation) for details.
 * `helperText`: Text to be displayed under the input. 
-* `fullWith`: If `true`, the input will expand to fill the form width. Defaults to `false`.
+* `fullWidth`: If `true`, the input will expand to fill the form width. Defaults to `false`.
 
 ```jsx
 <TextInput source="zb_title" label="Title" initialValue="Foo" />
