@@ -100,9 +100,20 @@ const FormView = ({ render, ...props }) => {
     const { redirect, setRedirect, handleSubmit } = props;
 
     /**
-     * We want to allow developers to define the redirect from inside the form,
-     * e.g. in a <SaveButton redirect="list" />. So we must pass a function
-     * doing bot hsubmit and redirect, defaulting to the redirect defined in the form.
+     * We want to let developers define the redirection target from inside the form,
+     * e.g. in a <SaveButton redirect="list" />.
+     * This callback does two things: handle submit, and change the redirection target.
+     * The actual redirection is done in save(), passed by the main controller.
+     *
+     * If the redirection target doesn't depend on the button clicked, it's a
+     * better option to define it directly on the Form component. In that case,
+     * using handleSubmit() instead of handleSubmitWithRedirect is fine.
+     *
+     * @example
+     *
+     * <Button onClick={() => handleSubmitWithRedirect('edit')}>
+     *     Save and edit
+     * </Button>
      */
     const handleSubmitWithRedirect = useCallback(
         (redirectTo = redirect) => {
