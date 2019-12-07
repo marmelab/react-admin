@@ -27,36 +27,40 @@ import DefaultActions from './ListActions';
  *
  * In Redux terms, <List> is a connected component, and <Datagrid> is a dumb component.
  *
- * Props:
- *   - title
- *   - perPage
- *   - sort
- *   - filter (the permanent filter to apply to the query)
- *   - actions
- *   - filters (a React component used to display the filter form)
- *   - pagination
+ * The <List> component accepts the following props:
+ *
+ * - actions
+ * - aside
+ * - component
+ * - filter (the permanent filter to apply to the query)
+ * - filters (a React component used to display the filter form)
+ * - pagination
+ * - perPage
+ * - sort
+ * - title
  *
  * @example
- *     const PostFilter = (props) => (
- *         <Filter {...props}>
- *             <TextInput label="Search" source="q" alwaysOn />
- *             <TextInput label="Title" source="title" />
- *         </Filter>
- *     );
- *     export const PostList = (props) => (
- *         <List {...props}
- *             title="List of posts"
- *             sort={{ field: 'published_at' }}
- *             filter={{ is_published: true }}
- *             filters={PostFilter}
- *         >
- *             <Datagrid>
- *                 <TextField source="id" />
- *                 <TextField source="title" />
- *                 <EditButton />
- *             </Datagrid>
- *         </List>
- *     );
+ *
+ * const PostFilter = (props) => (
+ *     <Filter {...props}>
+ *         <TextInput label="Search" source="q" alwaysOn />
+ *         <TextInput label="Title" source="title" />
+ *     </Filter>
+ * );
+ * export const PostList = (props) => (
+ *     <List {...props}
+ *         title="List of posts"
+ *         sort={{ field: 'published_at' }}
+ *         filter={{ is_published: true }}
+ *         filters={PostFilter}
+ *     >
+ *         <Datagrid>
+ *             <TextField source="id" />
+ *             <TextField source="title" />
+ *             <EditButton />
+ *         </Datagrid>
+ *     </List>
+ * );
  */
 const List = props => <ListView {...props} {...useListController(props)} />;
 

@@ -18,39 +18,40 @@ import TitleForRecord from '../layout/TitleForRecord';
  * that's the job of its child component (usually `<SimpleForm>`),
  * to which it passes pass the `record` as prop.
  *
- * The `<Edit>` component accepts the following props:
+ * The <Edit> component accepts the following props:
  *
- * - aside
- * - title
  * - actions
- *
- * They all expect an element for value.
+ * - aside
+ * - component
+ * - redirect
+ * - title
  *
  * @example
- *     // in src/posts.js
- *     import React from 'react';
- *     import { Edit, SimpleForm, TextInput } from 'react-admin';
  *
- *     export const PostEdit = (props) => (
- *         <Edit {...props}>
- *             <SimpleForm>
- *                 <TextInput source="title" />
- *             </SimpleForm>
- *         </Edit>
- *     );
+ * // in src/posts.js
+ * import React from 'react';
+ * import { Edit, SimpleForm, TextInput } from 'react-admin';
  *
- *     // in src/App.js
- *     import React from 'react';
- *     import { Admin, Resource } from 'react-admin';
+ * export const PostEdit = (props) => (
+ *     <Edit {...props}>
+ *         <SimpleForm>
+ *             <TextInput source="title" />
+ *         </SimpleForm>
+ *     </Edit>
+ * );
  *
- *     import { PostEdit } from './posts';
+ * // in src/App.js
+ * import React from 'react';
+ * import { Admin, Resource } from 'react-admin';
  *
- *     const App = () => (
- *         <Admin dataProvider={...}>
- *             <Resource name="posts" edit={PostEdit} />
- *         </Admin>
- *     );
- *     export default App;
+ * import { PostEdit } from './posts';
+ *
+ * const App = () => (
+ *     <Admin dataProvider={...}>
+ *         <Resource name="posts" edit={PostEdit} />
+ *     </Admin>
+ * );
+ * export default App;
  */
 const Edit = props => <EditView {...props} {...useEditController(props)} />;
 

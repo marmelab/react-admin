@@ -17,38 +17,39 @@ import TitleForRecord from '../layout/TitleForRecord';
  * that's the job of its child component (usually `<SimpleShowLayout>`),
  * to which it passes pass the `record` as prop.
  *
- * The `<Show>` component accepts the following props:
+ * The <Show> component accepts the following props:
  *
- * - title
  * - actions
- *
- * Both expect an element for value.
+ * - aside
+ * - component
+ * - title
  *
  * @example
- *     // in src/posts.js
- *     import React from 'react';
- *     import { Show, SimpleShowLayout, TextField } from 'react-admin';
  *
- *     export const PostShow = (props) => (
- *         <Show {...props}>
- *             <SimpleShowLayout>
- *                 <TextField source="title" />
- *             </SimpleShowLayout>
- *         </Show>
- *     );
+ * // in src/posts.js
+ * import React from 'react';
+ * import { Show, SimpleShowLayout, TextField } from 'react-admin';
  *
- *     // in src/App.js
- *     import React from 'react';
- *     import { Admin, Resource } from 'react-admin';
+ * export const PostShow = (props) => (
+ *     <Show {...props}>
+ *         <SimpleShowLayout>
+ *             <TextField source="title" />
+ *         </SimpleShowLayout>
+ *     </Show>
+ * );
  *
- *     import { PostShow } from './posts';
+ * // in src/App.js
+ * import React from 'react';
+ * import { Admin, Resource } from 'react-admin';
  *
- *     const App = () => (
- *         <Admin dataProvider={...}>
- *             <Resource name="posts" show={PostShow} />
- *         </Admin>
- *     );
- *     export default App;
+ * import { PostShow } from './posts';
+ *
+ * const App = () => (
+ *     <Admin dataProvider={...}>
+ *         <Resource name="posts" show={PostShow} />
+ *     </Admin>
+ * );
+ * export default App;
  */
 const Show = props => <ShowView {...props} {...useShowController(props)} />;
 
@@ -74,6 +75,7 @@ export const ShowView = ({
     children,
     classes: classesOverride,
     className,
+    component: Content,
     defaultTitle,
     hasEdit,
     hasList,
@@ -115,7 +117,7 @@ export const ShowView = ({
                     [classes.noActions]: !actions,
                 })}
             >
-                <Card className={classes.card}>
+                <Content className={classes.card}>
                     {record &&
                         cloneElement(Children.only(children), {
                             resource,
@@ -123,7 +125,7 @@ export const ShowView = ({
                             record,
                             version,
                         })}
-                </Card>
+                </Content>
                 {aside &&
                     cloneElement(aside, {
                         resource,
@@ -156,6 +158,7 @@ ShowView.propTypes = {
 
 ShowView.defaultProps = {
     classes: {},
+    component: Card,
 };
 
 export const useStyles = makeStyles(

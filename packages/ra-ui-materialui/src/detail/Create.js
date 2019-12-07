@@ -15,38 +15,40 @@ import TitleForRecord from '../layout/TitleForRecord';
  * that's the job of its child component (usually `<SimpleForm>`),
  * to which it passes pass the `record` as prop.
  *
- * The `<Create>` component accepts the following props:
+ * The <Create> component accepts the following props:
  *
- * - title
  * - actions
- *
- * Both expect an element for value.
+ * - aside
+ * - component
+ * - redirect
+ * - title
  *
  * @example
- *     // in src/posts.js
- *     import React from 'react';
- *     import { Create, SimpleForm, TextInput } from 'react-admin';
  *
- *     export const PostCreate = (props) => (
- *         <Create {...props}>
- *             <SimpleForm>
- *                 <TextInput source="title" />
- *             </SimpleForm>
- *         </Create>
- *     );
+ * // in src/posts.js
+ * import React from 'react';
+ * import { Create, SimpleForm, TextInput } from 'react-admin';
  *
- *     // in src/App.js
- *     import React from 'react';
- *     import { Admin, Resource } from 'react-admin';
+ * export const PostCreate = (props) => (
+ *     <Create {...props}>
+ *         <SimpleForm>
+ *             <TextInput source="title" />
+ *         </SimpleForm>
+ *     </Create>
+ * );
  *
- *     import { PostCreate } from './posts';
+ * // in src/App.js
+ * import React from 'react';
+ * import { Admin, Resource } from 'react-admin';
  *
- *     const App = () => (
- *         <Admin dataProvider={...}>
- *             <Resource name="posts" create={PostCreate} />
- *         </Admin>
- *     );
- *     export default App;
+ * import { PostCreate } from './posts';
+ *
+ * const App = () => (
+ *     <Admin dataProvider={...}>
+ *         <Resource name="posts" create={PostCreate} />
+ *     </Admin>
+ * );
+ * export default App;
  */
 const Create = props => (
     <CreateView {...props} {...useCreateController(props)} />
