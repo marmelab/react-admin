@@ -68,6 +68,102 @@ Create.propTypes = {
     successMessage: PropTypes.string,
 };
 
+export const CreateView = props => {
+    const {
+        actions,
+        aside,
+        basePath,
+        children,
+        classes: classesOverride,
+        className,
+        component: Content,
+        defaultTitle,
+        hasList,
+        hasShow,
+        record = {},
+        redirect,
+        resource,
+        save,
+        saving,
+        title,
+        version,
+        ...rest
+    } = props;
+    useCheckMinimumRequiredProps('Create', ['children'], props);
+    const classes = useStyles({ classes: classesOverride });
+    return (
+        <div
+            className={classnames('create-page', classes.root, className)}
+            {...sanitizeRestProps(rest)}
+        >
+            <TitleForRecord
+                title={title}
+                record={record}
+                defaultTitle={defaultTitle}
+            />
+            {actions &&
+                cloneElement(actions, {
+                    basePath,
+                    resource,
+                    hasList,
+                    //  Ensure we don't override any user provided props
+                    ...actions.props,
+                })}
+            <div
+                className={classnames(classes.main, {
+                    [classes.noActions]: !actions,
+                })}
+            >
+                <Content className={classes.card}>
+                    {cloneElement(Children.only(children), {
+                        basePath,
+                        record,
+                        redirect:
+                            typeof children.props.redirect === 'undefined'
+                                ? redirect
+                                : children.props.redirect,
+                        resource,
+                        save,
+                        saving,
+                        version,
+                    })}
+                </Content>
+                {aside &&
+                    cloneElement(aside, {
+                        basePath,
+                        record,
+                        resource,
+                        save,
+                        saving,
+                        version,
+                    })}
+            </div>
+        </div>
+    );
+};
+
+CreateView.propTypes = {
+    actions: PropTypes.element,
+    aside: PropTypes.element,
+    basePath: PropTypes.string,
+    children: PropTypes.element,
+    classes: PropTypes.object,
+    className: PropTypes.string,
+    defaultTitle: PropTypes.any,
+    hasList: PropTypes.bool,
+    hasShow: PropTypes.bool,
+    record: PropTypes.object,
+    redirect: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+    resource: PropTypes.string,
+    save: PropTypes.func,
+    title: PropTypes.node,
+};
+
+CreateView.defaultProps = {
+    classes: {},
+    component: Card,
+};
+
 const useStyles = makeStyles(
     theme => ({
         root: {},
@@ -109,99 +205,5 @@ const sanitizeRestProps = ({
     successMessage,
     ...rest
 }) => rest;
-
-export const CreateView = props => {
-    const {
-        actions,
-        aside,
-        basePath,
-        children,
-        classes: classesOverride,
-        className,
-        defaultTitle,
-        hasList,
-        hasShow,
-        record = {},
-        redirect,
-        resource,
-        save,
-        saving,
-        title,
-        version,
-        ...rest
-    } = props;
-    useCheckMinimumRequiredProps('Create', ['children'], props);
-    const classes = useStyles({ classes: classesOverride });
-    return (
-        <div
-            className={classnames('create-page', classes.root, className)}
-            {...sanitizeRestProps(rest)}
-        >
-            <TitleForRecord
-                title={title}
-                record={record}
-                defaultTitle={defaultTitle}
-            />
-            {actions &&
-                cloneElement(actions, {
-                    basePath,
-                    resource,
-                    hasList,
-                    //  Ensure we don't override any user provided props
-                    ...actions.props,
-                })}
-            <div
-                className={classnames(classes.main, {
-                    [classes.noActions]: !actions,
-                })}
-            >
-                <Card className={classes.card}>
-                    {cloneElement(Children.only(children), {
-                        basePath,
-                        record,
-                        redirect:
-                            typeof children.props.redirect === 'undefined'
-                                ? redirect
-                                : children.props.redirect,
-                        resource,
-                        save,
-                        saving,
-                        version,
-                    })}
-                </Card>
-                {aside &&
-                    cloneElement(aside, {
-                        basePath,
-                        record,
-                        resource,
-                        save,
-                        saving,
-                        version,
-                    })}
-            </div>
-        </div>
-    );
-};
-
-CreateView.propTypes = {
-    actions: PropTypes.element,
-    aside: PropTypes.element,
-    basePath: PropTypes.string,
-    children: PropTypes.element,
-    classes: PropTypes.object,
-    className: PropTypes.string,
-    defaultTitle: PropTypes.any,
-    hasList: PropTypes.bool,
-    hasShow: PropTypes.bool,
-    record: PropTypes.object,
-    redirect: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
-    resource: PropTypes.string,
-    save: PropTypes.func,
-    title: PropTypes.node,
-};
-
-CreateView.defaultProps = {
-    classes: {},
-};
 
 export default Create;
