@@ -21,6 +21,7 @@ Here are all the props accepted by the `<Create>` and `<Edit>` components:
 * [`actions`](#actions)
 * [`aside`](#aside-component)
 * [`successMessage`](#success-message)
+* [`component](#component)
 * [`undoable`](#undoable) (`<Edit>` only)
 
 Here is the minimal code necessary to display a form to create and edit comments:
@@ -191,6 +192,21 @@ const PostEdit = props => (
 ```
 
 **Tip**: The message will be translated.
+
+### Component
+
+By default, the Create and Edit views render the main form inside a material-ui `<Card>` element. The actual layout of the form depends on the `Form` component you're using (`<SimpleForm>`, `<TabbedForm>`, or a custom form component).
+
+Some form layouts also use `Card`, in which case the user ends up seeing a card inside a card, which is bad UI. To avoid that, you can override the main form container by passing a `component` prop:
+
+```jsx
+const PostEdit = props => (
+    <Edit component="div" {...props}>
+        ...
+    </Edit>
+```
+
+The default value for the `component` prop is `Card`.
 
 ### Undoable
 

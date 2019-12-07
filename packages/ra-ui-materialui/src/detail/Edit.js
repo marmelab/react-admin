@@ -23,8 +23,9 @@ import TitleForRecord from '../layout/TitleForRecord';
  * - actions
  * - aside
  * - component
- * - redirect
+ * - successMessage
  * - title
+ * - undoable
  *
  * @example
  *
