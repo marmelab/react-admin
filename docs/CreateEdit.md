@@ -946,28 +946,21 @@ export const UserEdit = props => {
 
 ## Customizing The Form Layout
 
-The `<SimpleForm>` and `<TabbedForm>` layouts are quite simple. In order to better use the screen real estate, you may want to arrange inputs differently, e.g. putting them in groups, adding separators, etc.
+The `<SimpleForm>` and `<TabbedForm>` layouts are quite simple. In order to better use the screen real estate, you may want to arrange inputs differently, e.g. putting them in groups, adding separators, etc. For that purpose, you need to write a custom form layout, and use it instead of `<SimpleForm>`. 
 
 ![custom form layout](./img/custom-form-layout.png)
-
-For that purpose, you need to write a custom form layout, and use it instead of `<SimpleForm>`. 
-
-This custom form layout component must contain either a react-final-form `Form` component, or, even better, a react-admin `FormWithRedirect` component, which wraps react-final-form's component to handle redirection logic. Note that `<SimpleForm>` and `<TabbedForm>` inject the `resource` prop to `Input` components ; when you use a custom form layout, you must pass the `resource` prop manually. Finally, add a material-ui `<Toolbar>` with a `<SaveButton>` and a `<DeleteButton>`.
-
+ 
 Here is an example of such custom form, taken from the Posters Galore demo. It uses [material-ui's `<Box>` component](https://material-ui.com/components/box/), and it's a good starting point for your custom form layouts.
 
-{% raw %}
 ```jsx
 import {
+    FormWithRedirect,
     DateInput,
-    Edit,
     SelectArrayInput,
     TextInput,
     Toolbar,
-    FormWithRedirect,
     SaveButton,
     DeleteButton,
-    useTranslate,
 } from 'react-admin';
 import { CardContent, Typography, Box, Toolbar } from '@material-ui/core';
 
@@ -1032,7 +1025,10 @@ const VisitorForm = (props) => (
     />
 );
 ```
-{% endraw %}
+
+This custom form layout component uses the `FormWithRedirect` component, which wraps react-final-form's `Form` component to handle redirection logic. It also uses react-admin's `<SaveButton>` and a `<DeleteButton>`.
+
+**Tip**: When `Input` components have a `resource` prop, they use it to determine the input label. `<SimpleForm>` and `<TabbedForm>` inject this `resource` prop to `Input` components automatically. When you use a custom form layout, pass the `resource` prop manually - unless the `Input` has a `label` prop.
 
 To use this form layout, simply pass it as child to an `Edit` component:
 
@@ -1043,6 +1039,45 @@ const VisitorEdit = props => (
     </Edit>
 );
 ```
+
+**Tip**: `FormWithRedirect` contains some logic that you may not want. In fact, nothing forbids you from using [a react-final-form `Form` component](https://final-form.org/docs/react-final-form/api/Form) as root component for a custom form layout. You'll have to set initial values based the injected `record` prop manually, as follows:
+
+{% raw %}
+```jsx
+import { sanitizeEmptyValues } from 'react-admin';
+import { Form } from 'react-final-form';
+import arrayMutators from 'final-form-arrays';
+import { CardContent, Typography, Box } from '@material-ui/core';
+
+// the parent component (Edit or Create) injects these props to their child
+const VisitorForm = ({ basePath, record, save, saving, version }) => {
+    const submit = values => {
+        // React-final-form removes empty values from the form state.
+        // To allow users to *delete* values, this must be taken into account 
+        save(sanitizeEmptyValues(record, values));
+    };
+    return (
+        <Form
+            initialValues={record}
+            onSubmit={submit}
+            mutators={{ ...arrayMutators }} // necessary for ArrayInput
+            subscription={defaultSubscription} // don't redraw entire form each time one field changes
+            key={version} // support for refresh button
+            keepDirtyOnReinitialize
+            render={formProps => (
+                // render your custom form here
+            )}
+        />
+    );
+};
+const defaultSubscription = {
+    submitting: true,
+    pristine: true,
+    valid: true,
+    invalid: true,
+};
+```
+{% endraw %}
 
 ## Displaying Fields or Inputs depending on the user permissions
 
