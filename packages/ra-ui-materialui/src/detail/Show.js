@@ -67,47 +67,6 @@ Show.propTypes = {
     title: PropTypes.node,
 };
 
-export const useStyles = makeStyles(
-    {
-        root: {},
-        main: {
-            display: 'flex',
-        },
-        noActions: {
-            marginTop: '1em',
-        },
-        card: {
-            flex: '1 1 auto',
-        },
-    },
-    { name: 'RaShow' }
-);
-
-const sanitizeRestProps = ({
-    actions,
-    aside,
-    title,
-    children,
-    className,
-    id,
-    data,
-    loading,
-    loaded,
-    resource,
-    hasCreate,
-    hasEdit,
-    hasList,
-    hasShow,
-    version,
-    match,
-    location,
-    history,
-    options,
-    locale,
-    permissions,
-    ...rest
-}) => rest;
-
 export const ShowView = ({
     actions,
     aside,
@@ -198,5 +157,46 @@ ShowView.propTypes = {
 ShowView.defaultProps = {
     classes: {},
 };
+
+export const useStyles = makeStyles(
+    {
+        root: {},
+        main: {
+            display: 'flex',
+        },
+        noActions: {
+            marginTop: '1em',
+        },
+        card: {
+            flex: '1 1 auto',
+        },
+    },
+    { name: 'RaShow' }
+);
+
+const sanitizeRestProps = ({
+    actions,
+    aside,
+    title,
+    children,
+    className,
+    id,
+    data,
+    loading,
+    loaded,
+    resource,
+    hasCreate,
+    hasEdit,
+    hasList,
+    hasShow,
+    version,
+    match,
+    location,
+    history,
+    options,
+    locale,
+    permissions,
+    ...rest
+}) => rest;
 
 export default Show;
