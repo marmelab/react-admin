@@ -936,7 +936,7 @@ The `<SimpleForm>` and `<TabbedForm>` layouts are quite simple. In order to bett
 
 For that purpose, you need to write a custom form layout, and use it instead of `<SimpleForm>`. 
 
-This custom form layout component must contain a react-final-form `Form` component. Note that `<SimpleForm>` and `<TabbedForm>` inject the `resource` prop to `Input` components. When you use a custom form layout, you must pass the `resource` prop manually. Finally, use the `<Toolbar>` component to automatically add a `<SaveButton>` and a `<DeleteButton>`.
+This custom form layout component must contain either a react-final-form `Form` component, or, even better, a react-admin `FormWithRedirect` component, which wraps react-final-form's component to handle redirection logic. Note that `<SimpleForm>` and `<TabbedForm>` inject the `resource` prop to `Input` components ; when you use a custom form layout, you must pass the `resource` prop manually. Finally, add a material-ui `<Toolbar>` with a `<SaveButton>` and a `<DeleteButton>`.
 
 Here is an example of such custom form, taken from the Posters Galore demo. It uses [material-ui's `<Box>` component](https://material-ui.com/components/box/), and it's a good starting point for your custom form layouts.
 
@@ -948,32 +948,19 @@ import {
     SelectArrayInput,
     TextInput,
     Toolbar,
-    sanitizeEmptyValues,
+    FormWithRedirect,
+    SaveButton,
+    DeleteButton,
     useTranslate,
 } from 'react-admin';
-import { Form } from 'react-final-form';
-import arrayMutators from 'final-form-arrays';
-import { CardContent, Typography, Box } from '@material-ui/core';
+import { CardContent, Typography, Box, Toolbar } from '@material-ui/core';
 
-const VisitorForm = ({ basePath, record, save, saving, version }) => {
-
-    const submit = values => {
-        // React-final-form removes empty values from the form state.
-        // To allow users to *delete* values, this must be taken into account 
-        save(sanitizeEmptyValues(record, values));
-    };
-
-    return (
-        <Form
-            initialValues={record}
-            onSubmit={submit}
-            mutators={{ ...arrayMutators }} // necessary for ArrayInput
-            subscription={defaultSubscription} // don't redraw entire form each time one field changes
-            key={version} // support for refresh button
-            keepDirtyOnReinitialize
-            render={formProps => (
-                // here starts the custom form layout
-                <>
+const VisitorForm = (props) => (
+    <FormWithRedirect
+        {...props}
+        render={formProps => (
+            // here starts the custom form layout
+            <form>
                 <Box p="1em">
                     <Box display="flex">
                         <Box flex={2} mr="1em">
@@ -1015,30 +1002,21 @@ const VisitorForm = ({ basePath, record, save, saving, version }) => {
 
                     </Box>
                 </Box>
-                <Toolbar
-                    basePath={basePath}
-                    handleSubmit={formProps.handleSubmit}
-                    invalid={formProps.invalid}
-                    record={record}
-                    resource="customers"
-                    saving={saving}
-                    undoable={true}
-                />
-                </>
-            )}
-        />
-    );
-};
-
-const defaultSubscription = {
-    submitting: true,
-    pristine: true,
-    valid: true,
-    invalid: true,
-};
+                <Toolbar>
+                    <Box display="flex" justifyContent="space-between" width="100%">
+                        <SaveButton
+                            saving={formProps.saving}
+                            handleSubmitSithRedirect={formProps.handleSubmitSithRedirect}
+                        />
+                        <DeleteButton record={formProps.record} />
+                    </Box>
+                </Toolbar>
+            </form>
+        )}
+    />
+);
 ```
 {% endraw %}
-
 
 To use this form layout, simply pass it as child to an `Edit` component:
 
