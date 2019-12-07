@@ -70,46 +70,6 @@ Edit.propTypes = {
     successMessage: PropTypes.string,
 };
 
-export const useStyles = makeStyles(
-    {
-        root: {},
-        main: {
-            display: 'flex',
-        },
-        noActions: {
-            marginTop: '1em',
-        },
-        card: {
-            flex: '1 1 auto',
-        },
-    },
-    { name: 'RaEdit' }
-);
-
-const sanitizeRestProps = ({
-    data,
-    hasCreate,
-    hasEdit,
-    hasList,
-    hasShow,
-    id,
-    loading,
-    loaded,
-    saving,
-    resource,
-    title,
-    version,
-    match,
-    location,
-    history,
-    options,
-    locale,
-    permissions,
-    undoable,
-    successMessage,
-    ...rest
-}) => rest;
-
 export const EditView = ({
     actions,
     aside,
@@ -219,5 +179,45 @@ EditView.defaultProps = {
     classes: {},
     component: Card,
 };
+
+export const useStyles = makeStyles(
+    {
+        root: {},
+        main: {
+            display: 'flex',
+        },
+        noActions: {
+            marginTop: '1em',
+        },
+        card: {
+            flex: '1 1 auto',
+        },
+    },
+    { name: 'RaEdit' }
+);
+
+const sanitizeRestProps = ({
+    data,
+    hasCreate,
+    hasEdit,
+    hasList,
+    hasShow,
+    id,
+    loading,
+    loaded,
+    saving,
+    resource,
+    title,
+    version,
+    match,
+    location,
+    history,
+    options,
+    locale,
+    permissions,
+    undoable,
+    successMessage,
+    ...rest
+}) => rest;
 
 export default Edit;
