@@ -57,6 +57,28 @@ describe('<RadioButtonGroupInput />', () => {
         ).toBeTruthy();
     });
 
+    it('should work correctly when ids are numbers', () => {
+        const choices = [
+            { id: 1, name: 'VISA' },
+            { id: 2, name: 'Mastercard' },
+        ];
+        const { getByLabelText } = render(
+            <Form
+                onSubmit={jest.fn}
+                render={() => (
+                    <RadioButtonGroupInput
+                        {...defaultProps}
+                        choices={choices}
+                    />
+                )}
+            />
+        );
+        const input = getByLabelText('Mastercard') as HTMLInputElement;
+        expect(input.checked).toBe(false);
+        fireEvent.click(input);
+        expect(input.checked).toBe(true);
+    });
+
     it('should use optionValue as value identifier', () => {
         const { getByLabelText } = render(
             <Form
