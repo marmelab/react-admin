@@ -23,7 +23,7 @@ export default url => ({
         customBulkActionsButton:
             '[data-test=bulk-actions-toolbar] button:first-child',
         deleteBulkActionsButton:
-            '[data-test=bulk-actions-toolbar] button:last-child',
+            '[data-test=bulk-actions-toolbar] button:nth-child(2)',
         selectAll: '.select-all',
         selectedItem: '.select-item input:checked',
         selectItem: '.select-item input',

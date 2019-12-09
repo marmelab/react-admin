@@ -1,8 +1,8 @@
 import expect from 'expect';
 
-import { getRelatedIds } from './ExportButton';
+import { getRelatedIds } from './fetchRelatedRecords';
 
-describe('ExportButton', () => {
+describe('fetchRelatedRecords', () => {
     describe('getRelatedIds', () => {
         it('should ignore null or undefined values', () => {
             const books = [

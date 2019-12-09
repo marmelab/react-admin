@@ -2,20 +2,21 @@ import React, { useCallback, useContext, FunctionComponent } from 'react';
 import PropTypes from 'prop-types';
 import DownloadIcon from '@material-ui/icons/GetApp';
 import {
+    downloadCSV,
     fetchRelatedRecords,
     useDataProvider,
     useNotify,
-    Sort,
     DataProvider,
+    Identifier,
     ExporterContext,
 } from 'ra-core';
+import jsonExport from 'jsonexport/dist';
+
 import Button, { ButtonProps } from './Button';
 
-const ExportButton: FunctionComponent<ExportButtonProps> = ({
-    sort,
-    filter = defaultFilter,
-    maxResults = 1000,
+const BulkExportButton: FunctionComponent<BulkExportButtonProps> = ({
     resource,
+    selectedIds,
     onClick,
     label = 'ra.action.export',
     icon = defaultIcon,
@@ -26,40 +27,26 @@ const ExportButton: FunctionComponent<ExportButtonProps> = ({
     const notify = useNotify();
     const handleClick = useCallback(
         event => {
-            dataProvider
-                .getList(resource, {
-                    sort,
-                    filter,
-                    pagination: { page: 1, perPage: maxResults },
-                })
-                .then(
-                    ({ data }) =>
-                        exporter &&
+            exporter &&
+                dataProvider
+                    .getMany(resource, { ids: selectedIds })
+                    .then(({ data }) =>
                         exporter(
                             data,
                             fetchRelatedRecords(dataProvider),
                             dataProvider,
                             resource
                         )
-                )
-                .catch(error => {
-                    console.error(error);
-                    notify('ra.notification.http_error', 'warning');
-                });
+                    )
+                    .catch(error => {
+                        console.error(error);
+                        notify('ra.notification.http_error', 'warning');
+                    });
             if (typeof onClick === 'function') {
                 onClick(event);
             }
         },
-        [
-            dataProvider,
-            exporter,
-            filter,
-            maxResults,
-            notify,
-            onClick,
-            resource,
-            sort,
-        ]
+        [dataProvider, exporter, notify, onClick, resource, selectedIds]
     );
 
     return (
@@ -74,15 +61,14 @@ const ExportButton: FunctionComponent<ExportButtonProps> = ({
 };
 
 const defaultIcon = <DownloadIcon />;
-const defaultFilter = {};
 
 const sanitizeRestProps = ({
     basePath,
-    exporter,
+    filterValues,
     ...rest
 }: Omit<
-    ExportButtonProps,
-    'sort' | 'filter' | 'maxResults' | 'resource' | 'label'
+    BulkExportButtonProps,
+    'exporter' | 'selectedIds' | 'resource' | 'label'
 >) => rest;
 
 interface Props {
@@ -96,29 +82,23 @@ interface Props {
         ) => Promise<any>,
         dataProvider: DataProvider
     ) => Promise<void>;
-    filter?: any;
+    filterValues?: any;
     icon?: JSX.Element;
     label?: string;
-    maxResults?: number;
     onClick?: (e: Event) => void;
+    selectedIds: Identifier[];
     resource?: string;
-    sort?: Sort;
 }
 
-export type ExportButtonProps = Props & ButtonProps;
+export type BulkExportButtonProps = Props & ButtonProps;
 
-ExportButton.propTypes = {
+BulkExportButton.propTypes = {
     basePath: PropTypes.string,
     exporter: PropTypes.func,
-    filter: PropTypes.object,
     label: PropTypes.string,
-    maxResults: PropTypes.number,
     resource: PropTypes.string.isRequired,
-    sort: PropTypes.exact({
-        field: PropTypes.string,
-        order: PropTypes.string,
-    }),
+    selectedIds: PropTypes.arrayOf(PropTypes.any).isRequired,
     icon: PropTypes.element,
 };
 
-export default ExportButton;
+export default BulkExportButton;

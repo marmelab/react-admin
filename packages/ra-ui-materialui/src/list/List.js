@@ -8,6 +8,8 @@ import {
     useListController,
     getListControllerProps,
     ComponentPropType,
+    ExporterContext,
+    defaultExporter,
 } from 'ra-core';
 
 import Title, { TitlePropType } from '../layout/Title';
@@ -118,7 +120,7 @@ export const ListView = props => {
         className,
         classes: classesOverride,
         component: Content,
-        exporter,
+        exporter = defaultExporter,
         title,
         ...rest
     } = props;
@@ -128,44 +130,47 @@ export const ListView = props => {
     const controllerProps = getListControllerProps(rest);
 
     return (
-        <div
-            className={classnames('list-page', classes.root, className)}
-            {...sanitizeRestProps(rest)}
-        >
-            <Title title={title} defaultTitle={defaultTitle} />
+        <ExporterContext.Provider value={exporter}>
+            <div
+                className={classnames('list-page', classes.root, className)}
+                {...sanitizeRestProps(rest)}
+            >
+                <Title title={title} defaultTitle={defaultTitle} />
 
-            {(filters || actions) && (
-                <ListToolbar
-                    filters={filters}
-                    {...controllerProps}
-                    actions={actions}
-                    exporter={exporter}
-                    permanentFilter={filter}
-                />
-            )}
-            <div className={classes.main}>
-                <Content
-                    className={classnames(classes.content, {
-                        [classes.bulkActionsDisplayed]:
-                            controllerProps.selectedIds.length > 0,
-                    })}
-                    key={version}
-                >
-                    {bulkActionButtons !== false && bulkActionButtons && (
-                        <BulkActionsToolbar {...controllerProps}>
-                            {bulkActionButtons}
-                        </BulkActionsToolbar>
-                    )}
-                    {children &&
-                        cloneElement(Children.only(children), {
-                            ...controllerProps,
-                            hasBulkActions: bulkActionButtons !== false,
+                {(filters || actions) && (
+                    <ListToolbar
+                        filters={filters}
+                        {...controllerProps}
+                        actions={actions}
+                        exporter={exporter} // deprecated, use ExporterContext instead
+                        permanentFilter={filter}
+                    />
+                )}
+                <div className={classes.main}>
+                    <Content
+                        className={classnames(classes.content, {
+                            [classes.bulkActionsDisplayed]:
+                                controllerProps.selectedIds.length > 0,
                         })}
-                    {pagination && cloneElement(pagination, controllerProps)}
-                </Content>
-                {aside && cloneElement(aside, controllerProps)}
+                        key={version}
+                    >
+                        {bulkActionButtons !== false && bulkActionButtons && (
+                            <BulkActionsToolbar {...controllerProps}>
+                                {bulkActionButtons}
+                            </BulkActionsToolbar>
+                        )}
+                        {children &&
+                            cloneElement(Children.only(children), {
+                                ...controllerProps,
+                                hasBulkActions: bulkActionButtons !== false,
+                            })}
+                        {pagination &&
+                            cloneElement(pagination, controllerProps)}
+                    </Content>
+                    {aside && cloneElement(aside, controllerProps)}
+                </div>
             </div>
-        </div>
+        </ExporterContext.Provider>
     );
 };
 
