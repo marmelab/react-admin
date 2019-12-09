@@ -1,132 +1,168 @@
 import React from 'react';
 import {
-    Datagrid,
-    DateField,
     DateInput,
     Edit,
-    EditButton,
-    FormTab,
     NullableBooleanInput,
-    NumberField,
-    ReferenceManyField,
-    TabbedForm,
-    TextField,
     TextInput,
+    Toolbar,
+    useTranslate,
+    FormWithRedirect,
 } from 'react-admin';
-import { makeStyles } from '@material-ui/core/styles';
+import { Box, Card, CardContent, Typography } from '@material-ui/core';
 
-import NbItemsField from '../orders/NbItemsField';
-import ProductReferenceField from '../products/ProductReferenceField';
-import StarRatingField from '../reviews/StarRatingField';
+import Aside from './Aside';
 import FullNameField from './FullNameField';
 import SegmentsInput from './SegmentsInput';
-import { styles } from './VisitorCreate';
 
-const useStyles = makeStyles(styles);
+const VisitorEdit = props => {
+    return (
+        <Edit
+            title={<VisitorTitle />}
+            aside={<Aside />}
+            component="div"
+            {...props}
+        >
+            <VisitorForm />
+        </Edit>
+    );
+};
 
 const VisitorTitle = ({ record }) =>
     record ? <FullNameField record={record} size={32} /> : null;
 
-const VisitorEdit = props => {
-    const classes = useStyles();
+const VisitorForm = props => {
+    const translate = useTranslate();
     return (
-        <Edit title={<VisitorTitle />} {...props}>
-            <TabbedForm>
-                <FormTab label="resources.customers.tabs.identity">
-                    <TextInput
-                        source="first_name"
-                        formClassName={classes.first_name}
-                    />
-                    <TextInput
-                        source="last_name"
-                        formClassName={classes.last_name}
-                    />
-                    <TextInput
-                        type="email"
-                        source="email"
-                        validation={{ email: true }}
-                        fullWidth={true}
-                        formClassName={classes.email}
-                    />
-                    <DateInput source="birthday" />
-                </FormTab>
-                <FormTab
-                    label="resources.customers.tabs.address"
-                    path="address"
-                >
-                    <TextInput
-                        source="address"
-                        formClassName={classes.address}
-                        multiline={true}
-                        fullWidth={true}
-                    />
-                    <TextInput
-                        source="zipcode"
-                        formClassName={classes.zipcode}
-                    />
-                    <TextInput source="city" formClassName={classes.city} />
-                </FormTab>
-                <FormTab label="resources.customers.tabs.orders" path="orders">
-                    <ReferenceManyField
-                        addLabel={false}
-                        sort={{ field: 'date', order: 'DESC' }}
-                        reference="commands"
-                        target="customer_id"
-                    >
-                        <Datagrid>
-                            <DateField source="date" />
-                            <TextField source="reference" />
-                            <NbItemsField />
-                            <NumberField
-                                source="total"
-                                options={{ style: 'currency', currency: 'USD' }}
-                            />
-                            <TextField source="status" />
-                            <EditButton />
-                        </Datagrid>
-                    </ReferenceManyField>
-                </FormTab>
-                <FormTab
-                    label="resources.customers.tabs.reviews"
-                    path="reviews"
-                >
-                    <ReferenceManyField
-                        addLabel={false}
-                        sort={{ field: 'date', order: 'DESC' }}
-                        reference="reviews"
-                        target="customer_id"
-                        fullWidth
-                    >
-                        <Datagrid filter={{ status: 'approved' }}>
-                            <DateField source="date" />
-                            <ProductReferenceField />
-                            <StarRatingField />
-                            <TextField
-                                source="comment"
-                                cellClassName={classes.comment}
-                            />
-                            <EditButton style={{ padding: 0 }} />
-                        </Datagrid>
-                    </ReferenceManyField>
-                </FormTab>
-                <FormTab label="resources.customers.tabs.stats" path="stats">
-                    <SegmentsInput />
-                    <NullableBooleanInput source="has_newsletter" />
-                    <DateField
-                        source="first_seen"
-                        style={{ width: 128, display: 'inline-block' }}
-                    />
-                    <DateField
-                        source="latest_purchase"
-                        style={{ width: 128, display: 'inline-block' }}
-                    />
-                    <DateField
-                        source="last_seen"
-                        style={{ width: 128, display: 'inline-block' }}
-                    />
-                </FormTab>
-            </TabbedForm>
-        </Edit>
+        <FormWithRedirect
+            {...props}
+            render={formProps => (
+                <Card>
+                    <form>
+                        <CardContent>
+                            <Box display={{ md: 'block', lg: 'flex' }}>
+                                <Box flex={2} mr={{ md: 0, lg: '1em' }}>
+                                    <Typography variant="h6" gutterBottom>
+                                        {translate(
+                                            'resources.customers.fieldGroups.identity'
+                                        )}
+                                    </Typography>
+                                    <Box display={{ xs: 'block', sm: 'flex' }}>
+                                        <Box
+                                            flex={1}
+                                            mr={{ xs: 0, sm: '0.5em' }}
+                                        >
+                                            <TextInput
+                                                source="first_name"
+                                                resource="customers"
+                                                fullWidth
+                                            />
+                                        </Box>
+                                        <Box
+                                            flex={1}
+                                            ml={{ xs: 0, sm: '0.5em' }}
+                                        >
+                                            <TextInput
+                                                source="last_name"
+                                                resource="customers"
+                                                fullWidth
+                                            />
+                                        </Box>
+                                    </Box>
+                                    <TextInput
+                                        type="email"
+                                        source="email"
+                                        resource="customers"
+                                        validation={{ email: true }}
+                                        fullWidth
+                                    />
+                                    <Box display={{ xs: 'block', sm: 'flex' }}>
+                                        <Box
+                                            flex={1}
+                                            mr={{ xs: 0, sm: '0.5em' }}
+                                        >
+                                            <DateInput
+                                                source="birthday"
+                                                resource="customers"
+                                                fullWidth
+                                            />
+                                        </Box>
+                                        <Box
+                                            flex={2}
+                                            ml={{ xs: 0, sm: '0.5em' }}
+                                        />
+                                    </Box>
+
+                                    <Box mt="1em" />
+
+                                    <Typography variant="h6" gutterBottom>
+                                        {translate(
+                                            'resources.customers.fieldGroups.address'
+                                        )}
+                                    </Typography>
+                                    <TextInput
+                                        source="address"
+                                        resource="customers"
+                                        multiline
+                                        fullWidth
+                                    />
+                                    <Box display={{ xs: 'block', sm: 'flex' }}>
+                                        <Box
+                                            flex={1}
+                                            mr={{ xs: 0, sm: '0.5em' }}
+                                        >
+                                            <TextInput
+                                                source="zipcode"
+                                                resource="customers"
+                                                fullWidth
+                                            />
+                                        </Box>
+                                        <Box
+                                            flex={2}
+                                            ml={{ xs: 0, sm: '0.5em' }}
+                                        >
+                                            <TextInput
+                                                source="city"
+                                                resource="customers"
+                                                fullWidth
+                                            />
+                                        </Box>
+                                    </Box>
+                                </Box>
+                                <Box
+                                    flex={1}
+                                    ml={{ xs: 0, lg: '1em' }}
+                                    mt={{ xs: '1em', lg: 0 }}
+                                >
+                                    <Typography variant="h6" gutterBottom>
+                                        {translate(
+                                            'resources.customers.fieldGroups.stats'
+                                        )}
+                                    </Typography>
+                                    <div>
+                                        <SegmentsInput fullWidth />
+                                    </div>
+                                    <div>
+                                        <NullableBooleanInput
+                                            source="has_newsletter"
+                                            resource="customers"
+                                        />
+                                    </div>
+                                </Box>
+                            </Box>
+                        </CardContent>
+                        <Toolbar
+                            record={formProps.record}
+                            basePath={formProps.basePath}
+                            undoable={true}
+                            invalid={formProps.invalid}
+                            handleSubmit={formProps.handleSubmit}
+                            saving={formProps.saving}
+                            resource="customers"
+                        />
+                    </form>
+                </Card>
+            )}
+        />
     );
 };
 

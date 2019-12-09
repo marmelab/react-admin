@@ -40,17 +40,18 @@ export default {
             name: 'Customer |||| Customers',
             fields: {
                 commands: 'Orders',
+                first_seen: 'First seen',
                 groups: 'Segments',
+                last_seen: 'Last seen',
                 last_seen_gte: 'Visited Since',
                 name: 'Name',
                 total_spent: 'Total spent',
             },
-            tabs: {
+            fieldGroups: {
                 identity: 'Identity',
                 address: 'Address',
-                orders: 'Orders',
-                reviews: 'Reviews',
                 stats: 'Stats',
+                history: 'History',
             },
             page: {
                 delete: 'Delete Customer',
@@ -58,6 +59,7 @@ export default {
         },
         commands: {
             name: 'Order |||| Orders',
+            amount: '1 order |||| %{smart_count} orders',
             title: 'Order %{reference}',
             fields: {
                 basket: {
@@ -121,6 +123,8 @@ export default {
         },
         reviews: {
             name: 'Review |||| Reviews',
+            amount: '1 review |||| %{smart_count} reviews',
+            relative_to_poster: 'Review on poster',
             detail: 'Review detail',
             fields: {
                 customer_id: 'Customer',

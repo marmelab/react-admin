@@ -687,6 +687,30 @@ const Aside = ({ data, ids }) => (
 ```
 {% endraw %}
 
+### Component
+
+By default, the List view renders the main content area inside a material-ui `<Card>` element. The actual layout of the list depends on the child component you're using (`<Datagrid>`, `<SimpleList>`, or a custom layout component).
+
+Some layouts also use `Card`, in which case the user ends up seeing a card inside a card, which is bad UI. To avoid that, you can override the main area container by passing a `component` prop:
+
+```jsx
+// use a div as root component
+const PostList = props => (
+    <List component="div" {...props}>
+        ...
+    </List>
+);
+
+// use a custom component as root component 
+const PostList = props => (
+    <List component={MyComponent} {...props}>
+        ...
+    </List>
+);
+```
+
+The default value for the `component` prop is `Card`.
+
 ### CSS API
 
 The `List` component accepts the usual `className` prop but you can override many class names injected to the inner components by React-admin thanks to the `classes` property (as most Material UI components, see their [documentation about it](https://material-ui.com/customization/components/#overriding-styles-with-classes)). This property accepts the following keys:

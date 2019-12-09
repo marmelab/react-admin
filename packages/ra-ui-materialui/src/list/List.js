@@ -19,94 +19,87 @@ import BulkDeleteButton from '../button/BulkDeleteButton';
 import BulkActionsToolbar from './BulkActionsToolbar';
 import DefaultActions from './ListActions';
 
-const DefaultBulkActionButtons = props => <BulkDeleteButton {...props} />;
+/**
+ * List page component
+ *
+ * The <List> component renders the list layout (title, buttons, filters, pagination),
+ * and fetches the list of records from the REST API.
+ * It then delegates the rendering of the list of records to its child component.
+ * Usually, it's a <Datagrid>, responsible for displaying a table with one row for each post.
+ *
+ * In Redux terms, <List> is a connected component, and <Datagrid> is a dumb component.
+ *
+ * The <List> component accepts the following props:
+ *
+ * - actions
+ * - aside
+ * - component
+ * - filter (the permanent filter to apply to the query)
+ * - filters (a React component used to display the filter form)
+ * - pagination
+ * - perPage
+ * - sort
+ * - title
+ *
+ * @example
+ *
+ * const PostFilter = (props) => (
+ *     <Filter {...props}>
+ *         <TextInput label="Search" source="q" alwaysOn />
+ *         <TextInput label="Title" source="title" />
+ *     </Filter>
+ * );
+ * export const PostList = (props) => (
+ *     <List {...props}
+ *         title="List of posts"
+ *         sort={{ field: 'published_at' }}
+ *         filter={{ is_published: true }}
+ *         filters={PostFilter}
+ *     >
+ *         <Datagrid>
+ *             <TextField source="id" />
+ *             <TextField source="title" />
+ *             <EditButton />
+ *         </Datagrid>
+ *     </List>
+ * );
+ */
+const List = props => <ListView {...props} {...useListController(props)} />;
 
-export const useStyles = makeStyles(
-    theme => ({
-        root: {},
-        main: {
-            display: 'flex',
-        },
-        content: {
-            marginTop: 0,
-            transition: theme.transitions.create('margin-top'),
-            position: 'relative',
-            flex: '1 1 auto',
-            [theme.breakpoints.down('xs')]: {
-                boxShadow: 'none',
-            },
-        },
-        bulkActionsDisplayed: {
-            marginTop: -theme.spacing(8),
-            transition: theme.transitions.create('margin-top'),
-        },
-        actions: {
-            zIndex: 2,
-            display: 'flex',
-            justifyContent: 'flex-end',
-            flexWrap: 'wrap',
-        },
-        noResults: { padding: 20 },
+List.propTypes = {
+    // the props you can change
+    actions: PropTypes.element,
+    aside: PropTypes.element,
+    bulkActionButtons: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
+    children: PropTypes.node,
+    classes: PropTypes.object,
+    className: PropTypes.string,
+    filter: PropTypes.object,
+    filterDefaultValues: PropTypes.object,
+    filters: PropTypes.element,
+    pagination: PropTypes.element,
+    perPage: PropTypes.number.isRequired,
+    sort: PropTypes.shape({
+        field: PropTypes.string,
+        order: PropTypes.string,
     }),
-    { name: 'RaList' }
-);
+    title: TitlePropType,
+    // the props managed by react-admin
+    authProvider: PropTypes.func,
+    hasCreate: PropTypes.bool.isRequired,
+    hasEdit: PropTypes.bool.isRequired,
+    hasList: PropTypes.bool.isRequired,
+    hasShow: PropTypes.bool.isRequired,
+    location: PropTypes.object.isRequired,
+    match: PropTypes.object.isRequired,
+    path: PropTypes.string,
+    resource: PropTypes.string.isRequired,
+};
 
-const sanitizeRestProps = ({
-    actions,
-    basePath,
-    changeListParams,
-    children,
-    classes,
-    className,
-    crudGetList,
-    currentSort,
-    data,
-    defaultTitle,
-    displayedFilters,
-    exporter,
-    filter,
-    filterDefaultValues,
-    filters,
-    filterValues,
-    hasCreate,
-    hasEdit,
-    hasList,
-    hasShow,
-    hideFilter,
-    history,
-    ids,
-    loading,
-    loaded,
-    locale,
-    location,
-    match,
-    onSelect,
-    onToggleItem,
-    onUnselectItems,
-    options,
-    page,
-    pagination,
-    params,
-    permissions,
-    perPage,
-    push,
-    query,
-    refresh,
-    resource,
-    selectedIds,
-    setFilters,
-    setPage,
-    setPerPage,
-    setSelectedIds,
-    setSort,
-    showFilter,
-    sort,
-    title,
-    toggleItem,
-    total,
-    version,
-    ...rest
-}) => rest;
+List.defaultProps = {
+    filter: {},
+    perPage: 10,
+};
 
 export const ListView = props => {
     const {
@@ -217,6 +210,8 @@ ListView.propTypes = {
     version: PropTypes.number,
 };
 
+const DefaultBulkActionButtons = props => <BulkDeleteButton {...props} />;
+
 ListView.defaultProps = {
     actions: <DefaultActions />,
     classes: {},
@@ -225,82 +220,91 @@ ListView.defaultProps = {
     pagination: <DefaultPagination />,
 };
 
-/**
- * List page component
- *
- * The <List> component renders the list layout (title, buttons, filters, pagination),
- * and fetches the list of records from the REST API.
- * It then delegates the rendering of the list of records to its child component.
- * Usually, it's a <Datagrid>, responsible for displaying a table with one row for each post.
- *
- * In Redux terms, <List> is a connected component, and <Datagrid> is a dumb component.
- *
- * Props:
- *   - title
- *   - perPage
- *   - sort
- *   - filter (the permanent filter to apply to the query)
- *   - actions
- *   - filters (a React component used to display the filter form)
- *   - pagination
- *
- * @example
- *     const PostFilter = (props) => (
- *         <Filter {...props}>
- *             <TextInput label="Search" source="q" alwaysOn />
- *             <TextInput label="Title" source="title" />
- *         </Filter>
- *     );
- *     export const PostList = (props) => (
- *         <List {...props}
- *             title="List of posts"
- *             sort={{ field: 'published_at' }}
- *             filter={{ is_published: true }}
- *             filters={PostFilter}
- *         >
- *             <Datagrid>
- *                 <TextField source="id" />
- *                 <TextField source="title" />
- *                 <EditButton />
- *             </Datagrid>
- *         </List>
- *     );
- */
-const List = props => <ListView {...props} {...useListController(props)} />;
-
-List.propTypes = {
-    // the props you can change
-    actions: PropTypes.element,
-    aside: PropTypes.element,
-    bulkActionButtons: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
-    children: PropTypes.node,
-    classes: PropTypes.object,
-    className: PropTypes.string,
-    filter: PropTypes.object,
-    filterDefaultValues: PropTypes.object,
-    filters: PropTypes.element,
-    pagination: PropTypes.element,
-    perPage: PropTypes.number.isRequired,
-    sort: PropTypes.shape({
-        field: PropTypes.string,
-        order: PropTypes.string,
+export const useStyles = makeStyles(
+    theme => ({
+        root: {},
+        main: {
+            display: 'flex',
+        },
+        content: {
+            marginTop: 0,
+            transition: theme.transitions.create('margin-top'),
+            position: 'relative',
+            flex: '1 1 auto',
+            [theme.breakpoints.down('xs')]: {
+                boxShadow: 'none',
+            },
+        },
+        bulkActionsDisplayed: {
+            marginTop: -theme.spacing(8),
+            transition: theme.transitions.create('margin-top'),
+        },
+        actions: {
+            zIndex: 2,
+            display: 'flex',
+            justifyContent: 'flex-end',
+            flexWrap: 'wrap',
+        },
+        noResults: { padding: 20 },
     }),
-    title: TitlePropType,
-    // the props managed by react-admin
-    authProvider: PropTypes.func,
-    hasCreate: PropTypes.bool.isRequired,
-    hasEdit: PropTypes.bool.isRequired,
-    hasList: PropTypes.bool.isRequired,
-    hasShow: PropTypes.bool.isRequired,
-    location: PropTypes.object.isRequired,
-    match: PropTypes.object.isRequired,
-    path: PropTypes.string,
-    resource: PropTypes.string.isRequired,
-};
+    { name: 'RaList' }
+);
 
-List.defaultProps = {
-    filter: {},
-    perPage: 10,
-};
+const sanitizeRestProps = ({
+    actions,
+    basePath,
+    changeListParams,
+    children,
+    classes,
+    className,
+    crudGetList,
+    currentSort,
+    data,
+    defaultTitle,
+    displayedFilters,
+    exporter,
+    filter,
+    filterDefaultValues,
+    filters,
+    filterValues,
+    hasCreate,
+    hasEdit,
+    hasList,
+    hasShow,
+    hideFilter,
+    history,
+    ids,
+    loading,
+    loaded,
+    locale,
+    location,
+    match,
+    onSelect,
+    onToggleItem,
+    onUnselectItems,
+    options,
+    page,
+    pagination,
+    params,
+    permissions,
+    perPage,
+    push,
+    query,
+    refresh,
+    resource,
+    selectedIds,
+    setFilters,
+    setPage,
+    setPerPage,
+    setSelectedIds,
+    setSort,
+    showFilter,
+    sort,
+    title,
+    toggleItem,
+    total,
+    version,
+    ...rest
+}) => rest;
 
 export default List;

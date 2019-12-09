@@ -19,6 +19,7 @@ const SegmentsInput = ({ addField, ...rest }) => {
 SegmentsInput.defaultProps = {
     addField: true,
     source: 'groups',
+    resource: 'customers',
 };
 
 export default SegmentsInput;

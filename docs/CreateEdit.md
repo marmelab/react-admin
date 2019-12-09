@@ -21,6 +21,7 @@ Here are all the props accepted by the `<Create>` and `<Edit>` components:
 * [`actions`](#actions)
 * [`aside`](#aside-component)
 * [`successMessage`](#success-message)
+* [`component](#component)
 * [`undoable`](#undoable) (`<Edit>` only)
 
 Here is the minimal code necessary to display a form to create and edit comments:
@@ -191,6 +192,30 @@ const PostEdit = props => (
 ```
 
 **Tip**: The message will be translated.
+
+### Component
+
+By default, the Create and Edit views render the main form inside a material-ui `<Card>` element. The actual layout of the form depends on the `Form` component you're using (`<SimpleForm>`, `<TabbedForm>`, or a custom form component).
+
+Some form layouts also use `Card`, in which case the user ends up seeing a card inside a card, which is bad UI. To avoid that, you can override the main form container by passing a `component` prop :
+
+```jsx
+// use a div as root component
+const PostEdit = props => (
+    <Edit component="div" {...props}>
+        ...
+    </Edit>
+);
+
+// use a custom component as root component 
+const PostEdit = props => (
+    <Edit component={MyComponent} {...props}>
+        ...
+    </Edit>
+);
+```
+
+The default value for the `component` prop is `Card`.
 
 ### Undoable
 
@@ -927,6 +952,141 @@ export const UserEdit = props => {
     )
 }
 ```
+
+## Customizing The Form Layout
+
+The `<SimpleForm>` and `<TabbedForm>` layouts are quite simple. In order to better use the screen real estate, you may want to arrange inputs differently, e.g. putting them in groups, adding separators, etc. For that purpose, you need to write a custom form layout, and use it instead of `<SimpleForm>`. 
+
+![custom form layout](./img/custom-form-layout.png)
+ 
+Here is an example of such custom form, taken from the Posters Galore demo. It uses [material-ui's `<Box>` component](https://material-ui.com/components/box/), and it's a good starting point for your custom form layouts.
+
+```jsx
+import {
+    FormWithRedirect,
+    DateInput,
+    SelectArrayInput,
+    TextInput,
+    Toolbar,
+    SaveButton,
+    DeleteButton,
+} from 'react-admin';
+import { CardContent, Typography, Box, Toolbar } from '@material-ui/core';
+
+const VisitorForm = (props) => (
+    <FormWithRedirect
+        {...props}
+        render={formProps => (
+            // here starts the custom form layout
+            <form>
+                <Box p="1em">
+                    <Box display="flex">
+                        <Box flex={2} mr="1em">
+
+                            <Typography variant="h6" gutterBottom>Identity</Typography>
+
+                            <Box display="flex">
+                                <Box flex={1} mr="0.5em">
+                                    <TextInput source="first_name" resource="customers" fullWidth />
+                                </Box>
+                                <Box flex={1} ml="0.5em">
+                                    <TextInput source="last_name" resource="customers" fullWidth />
+                                </Box>
+                            </Box>
+                            <TextInput source="email" resource="customers" type="email" fullWidth />
+                            <DateInput source="birthday" resource="customers" />
+                            <Box mt="1em" />
+
+                            <Typography variant="h6" gutterBottom>Address</Typography>
+
+                            <TextInput resource="customers" source="address" multiline fullWidth />
+                            <Box display="flex">
+                                <Box flex={1} mr="0.5em">
+                                    <TextInput source="zipcode" resource="customers" fullWidth />
+                                </Box>
+                                <Box flex={2} ml="0.5em">
+                                    <TextInput source="city" resource="customers" fullWidth />
+                                </Box>
+                            </Box>
+                        </Box>
+
+                        <Box flex={1} ml="1em">
+                            
+                            <Typography variant="h6" gutterBottom>Stats</Typography>
+
+                            <SelectArrayInput source="groups" resource="customers" choices={segments} fullWidth />
+                            <NullableBooleanInput source="has_newsletter" resource="customers" />
+                        </Box>
+
+                    </Box>
+                </Box>
+                <Toolbar>
+                    <Box display="flex" justifyContent="space-between" width="100%">
+                        <SaveButton
+                            saving={formProps.saving}
+                            handleSubmitSithRedirect={formProps.handleSubmitSithRedirect}
+                        />
+                        <DeleteButton record={formProps.record} />
+                    </Box>
+                </Toolbar>
+            </form>
+        )}
+    />
+);
+```
+
+This custom form layout component uses the `FormWithRedirect` component, which wraps react-final-form's `Form` component to handle redirection logic. It also uses react-admin's `<SaveButton>` and a `<DeleteButton>`.
+
+**Tip**: When `Input` components have a `resource` prop, they use it to determine the input label. `<SimpleForm>` and `<TabbedForm>` inject this `resource` prop to `Input` components automatically. When you use a custom form layout, pass the `resource` prop manually - unless the `Input` has a `label` prop.
+
+To use this form layout, simply pass it as child to an `Edit` component:
+
+```jsx
+const VisitorEdit = props => (
+    <Edit {...props}>
+        <VisitorForm />
+    </Edit>
+);
+```
+
+**Tip**: `FormWithRedirect` contains some logic that you may not want. In fact, nothing forbids you from using [a react-final-form `Form` component](https://final-form.org/docs/react-final-form/api/Form) as root component for a custom form layout. You'll have to set initial values based the injected `record` prop manually, as follows:
+
+{% raw %}
+```jsx
+import { sanitizeEmptyValues } from 'react-admin';
+import { Form } from 'react-final-form';
+import arrayMutators from 'final-form-arrays';
+import { CardContent, Typography, Box } from '@material-ui/core';
+
+// the parent component (Edit or Create) injects these props to their child
+const VisitorForm = ({ basePath, record, save, saving, version }) => {
+    const submit = values => {
+        // React-final-form removes empty values from the form state.
+        // To allow users to *delete* values, this must be taken into account 
+        save(sanitizeEmptyValues(record, values));
+    };
+    return (
+        <Form
+            initialValues={record}
+            onSubmit={submit}
+            mutators={{ ...arrayMutators }} // necessary for ArrayInput
+            subscription={defaultSubscription} // don't redraw entire form each time one field changes
+            key={version} // support for refresh button
+            keepDirtyOnReinitialize
+            render={formProps => (
+                // render your custom form here
+            )}
+        />
+    );
+};
+const defaultSubscription = {
+    submitting: true,
+    pristine: true,
+    valid: true,
+    invalid: true,
+};
+```
+{% endraw %}
 
 ## Displaying Fields or Inputs depending on the user permissions
 

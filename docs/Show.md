@@ -18,6 +18,7 @@ Here are all the props accepted by the `<Show>` component:
 * [`title`](#page-title)
 * [`actions`](#actions)
 * [`aside`](#aside-component)
+* [`component`](#component)
 
 Here is the minimal code necessary to display a view to show a post:
 
@@ -150,6 +151,30 @@ const Aside = ({ record }) => (
 {% endraw %}
 
 **Tip**: Always test that the `record` is defined before using it, as react-admin starts rendering the UI before the API call is over.
+
+### Component
+
+By default, the Show view renders the main content area inside a material-ui `<Card>` element. The actual layout of the area depends on the `ShowLayout` component you're using (`<SimpleShowLayout>`, `<TabbedShowLayout>`, or a custom layout component).
+
+Some layouts also use `Card`, in which case the user ends up seeing a card inside a card, which is bad UI. To avoid that, you can override the main area container by passing a `component` prop:
+
+```jsx
+// use a div as root component
+const PostShow = props => (
+    <Show component="div" {...props}>
+        ...
+    </Show>
+);
+
+// use a custom component as root component 
+const PostShow = props => (
+    <Show component={MyComponent} {...props}>
+        ...
+    </Show>
+);
+```
+
+The default value for the `component` prop is `Card`.
 
 ## The `<ShowGuesser>` component
 
