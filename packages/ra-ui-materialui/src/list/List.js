@@ -205,6 +205,8 @@ ListView.propTypes = {
     version: PropTypes.number,
 };
 
+const DefaultBulkActionButtons = props => <BulkDeleteButton {...props} />;
+
 ListView.defaultProps = {
     actions: <DefaultActions />,
     classes: {},
@@ -212,8 +214,6 @@ ListView.defaultProps = {
     bulkActionButtons: <DefaultBulkActionButtons />,
     pagination: <DefaultPagination />,
 };
-
-const DefaultBulkActionButtons = props => <BulkDeleteButton {...props} />;
 
 export const useStyles = makeStyles(
     theme => ({
