@@ -159,10 +159,19 @@ By default, the Show view renders the main content area inside a material-ui `<C
 Some layouts also use `Card`, in which case the user ends up seeing a card inside a card, which is bad UI. To avoid that, you can override the main area container by passing a `component` prop:
 
 ```jsx
+// use a div as root component
 const PostShow = props => (
     <Show component="div" {...props}>
         ...
     </Show>
+);
+
+// use a custom component as root component 
+const PostShow = props => (
+    <Show component={MyComponent} {...props}>
+        ...
+    </Show>
+);
 ```
 
 The default value for the `component` prop is `Card`.

@@ -197,13 +197,22 @@ const PostEdit = props => (
 
 By default, the Create and Edit views render the main form inside a material-ui `<Card>` element. The actual layout of the form depends on the `Form` component you're using (`<SimpleForm>`, `<TabbedForm>`, or a custom form component).
 
-Some form layouts also use `Card`, in which case the user ends up seeing a card inside a card, which is bad UI. To avoid that, you can override the main form container by passing a `component` prop:
+Some form layouts also use `Card`, in which case the user ends up seeing a card inside a card, which is bad UI. To avoid that, you can override the main form container by passing a `component` prop :
 
 ```jsx
+// use a div as root component
 const PostEdit = props => (
     <Edit component="div" {...props}>
         ...
     </Edit>
+);
+
+// use a custom component as root component 
+const PostEdit = props => (
+    <Edit component={MyComponent} {...props}>
+        ...
+    </Edit>
+);
 ```
 
 The default value for the `component` prop is `Card`.
