@@ -177,6 +177,7 @@ const sanitizeRestProps = ({
     reset,
     resetSection,
     save,
+    setRedirect,
     submit,
     submitError,
     submitErrors,
