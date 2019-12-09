@@ -31,11 +31,20 @@ import getFormInitialValues from './getFormInitialValues';
  */
 const FormWithRedirect = ({
     initialValues,
+    debug,
+    decorators,
     defaultValue,
+    form,
+    initialValuesEqual,
+    keepDirtyOnReinitialize = true,
+    mutators = { ...arrayMutators },
     record,
     render,
     save,
     saving,
+    subscription = defaultSubscription,
+    validate,
+    validateOnBlur,
     version,
     ...props
 }) => {
@@ -66,11 +75,17 @@ const FormWithRedirect = ({
     return (
         <Form
             key={version} // support for refresh button
+            debug={debug}
+            decorators={decorators}
+            form={form}
             initialValues={finalInitialValues}
+            initialValuesEqual={initialValuesEqual}
+            keepDirtyOnReinitialize={keepDirtyOnReinitialize}
+            mutators={mutators} // necessary for ArrayInput
             onSubmit={submit}
-            mutators={{ ...arrayMutators }} // necessary for ArrayInput
-            keepDirtyOnReinitialize
-            subscription={defaultSubscription} // don't redraw entire form each time one field changes
+            subscription={subscription} // don't redraw entire form each time one field changes
+            validate={validate}
+            validateOnBlur={validateOnBlur}
         >
             {formProps => (
                 <FormView
