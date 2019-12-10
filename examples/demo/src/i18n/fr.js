@@ -55,15 +55,23 @@ export default {
                 name: 'Nom',
                 total_spent: 'Dépenses',
                 zipcode: 'Code postal',
+                password: 'Mot de passe',
+                confirm_password: 'Confirmez le mot de passe',
             },
             fieldGroups: {
                 identity: 'Identité',
                 address: 'Adresse',
                 stats: 'Statistiques',
                 history: 'Historique',
+                password: 'Mot de passe',
+                change_password: 'Changer le mot de passe',
             },
             page: {
                 delete: 'Supprimer le client',
+            },
+            errors: {
+                password_mismatch:
+                    'La confirmation du mot de passe est différent du mot de passe.',
             },
         },
         commands: {

@@ -5,6 +5,7 @@ import {
     SimpleForm,
     TextInput,
     useTranslate,
+    PasswordInput,
     required,
 } from 'react-admin';
 import { Typography, Box } from '@material-ui/core';
@@ -23,15 +24,30 @@ export const styles = {
         textOverflow: 'ellipsis',
         whiteSpace: 'nowrap',
     },
+    password: { display: 'inline-block' },
+    confirm_password: { display: 'inline-block', marginLeft: 32 },
 };
 
 const useStyles = makeStyles(styles);
 
+export const validatePasswords = ({ password, confirm_password }) => {
+    const errors = {};
+
+    if (password && confirm_password && password !== confirm_password) {
+        errors.confirm_password = [
+            'resources.customers.errors.password_mismatch',
+        ];
+    }
+
+    return errors;
+};
+
 const VisitorCreate = props => {
     const classes = useStyles();
+
     return (
         <Create {...props}>
-            <SimpleForm>
+            <SimpleForm validate={validatePasswords}>
                 <SectionTitle label="resources.customers.fieldGroups.identity" />
                 <TextInput
                     autoFocus
@@ -63,6 +79,16 @@ const VisitorCreate = props => {
                 />
                 <TextInput source="zipcode" formClassName={classes.zipcode} />
                 <TextInput source="city" formClassName={classes.city} />
+                <Separator />
+                <SectionTitle label="resources.customers.fieldGroups.password" />
+                <PasswordInput
+                    source="password"
+                    formClassName={classes.password}
+                />
+                <PasswordInput
+                    source="confirm_password"
+                    formClassName={classes.confirm_password}
+                />
             </SimpleForm>
         </Create>
     );
@@ -72,6 +98,7 @@ const requiredValidate = [required()];
 
 const SectionTitle = ({ label }) => {
     const translate = useTranslate();
+
     return (
         <Typography variant="h6" gutterBottom>
             {translate(label)}

@@ -4,6 +4,7 @@ import {
     Edit,
     NullableBooleanInput,
     TextInput,
+    PasswordInput,
     Toolbar,
     useTranslate,
     FormWithRedirect,
@@ -13,6 +14,7 @@ import { Box, Card, CardContent, Typography } from '@material-ui/core';
 import Aside from './Aside';
 import FullNameField from './FullNameField';
 import SegmentsInput from './SegmentsInput';
+import { validatePasswords } from './VisitorCreate';
 
 const VisitorEdit = props => {
     return (
@@ -32,9 +34,11 @@ const VisitorTitle = ({ record }) =>
 
 const VisitorForm = props => {
     const translate = useTranslate();
+
     return (
         <FormWithRedirect
             {...props}
+            validate={validatePasswords}
             render={formProps => (
                 <Card>
                     <form>
@@ -122,6 +126,36 @@ const VisitorForm = props => {
                                         >
                                             <TextInput
                                                 source="city"
+                                                resource="customers"
+                                                fullWidth
+                                            />
+                                        </Box>
+                                    </Box>
+
+                                    <Box mt="1em" />
+
+                                    <Typography variant="h6" gutterBottom>
+                                        {translate(
+                                            'resources.customers.fieldGroups.change_password'
+                                        )}
+                                    </Typography>
+                                    <Box display={{ xs: 'block', sm: 'flex' }}>
+                                        <Box
+                                            flex={1}
+                                            mr={{ xs: 0, sm: '0.5em' }}
+                                        >
+                                            <PasswordInput
+                                                source="password"
+                                                resource="customers"
+                                                fullWidth
+                                            />
+                                        </Box>
+                                        <Box
+                                            flex={1}
+                                            ml={{ xs: 0, sm: '0.5em' }}
+                                        >
+                                            <PasswordInput
+                                                source="confirm_password"
                                                 resource="customers"
                                                 fullWidth
                                             />

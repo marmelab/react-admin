@@ -586,6 +586,32 @@ You can customize the `step` props (which defaults to "any"):
 
 `<NumberInput>` also accepts the [common input props](./Inputs.md#common-input-props).
 
+## `<PasswordInput>`
+
+`<PasswordInput>` works like the [`<TextInput>`](#textinput) but overwrites its `type` prop to `password` or `text` in accordance with a visibility button, hidden by default.
+
+```jsx
+import { PasswordInput } from 'react-admin';
+<PasswordInput source="password" />
+```
+
+![Password Input](./img/password-input.png)
+
+It is possible to change the default behavior and display the value by default via the `initiallyVisible` prop:
+
+```jsx
+import { PasswordInput } from 'react-admin';
+<PasswordInput source="password" initiallyVisible />
+```
+
+![Password Input (visible)](./img/password-input-visible.png)
+
+**Tip**: It is possible to set the [`autocomplete` attribute](https://developer.mozilla.org/fr/docs/Web/HTML/Attributs/autocomplete) by injecting an input props:
+
+```jsx
+<PasswordInput source="password" inputProps={{ autocomplete: 'current-password' }} />
+```
+
 ## `<RadioButtonGroupInput>`
 
 If you want to let the user choose a value among a list of possible values that are always shown (instead of hiding them behind a dropdown list, as in [`<SelectInput>`](#selectinput)), `<RadioButtonGroupInput>` is the right component. Set the `choices` attribute to determine the options (with `id`, `name` tuples):
