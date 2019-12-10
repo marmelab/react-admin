@@ -14,6 +14,7 @@ import {
     Sort,
 } from 'ra-core';
 
+import sanitizeInputProps from './sanitizeRestProps';
 import LinearProgress from '../layout/LinearProgress';
 import Labeled from './Labeled';
 import ReferenceError from './ReferenceError';
@@ -165,41 +166,23 @@ ReferenceInput.defaultProps = {
 };
 
 const sanitizeRestProps = ({
-    allowEmpty,
-    basePath,
     choices,
     className,
-    component,
     crudGetMatching,
     crudGetOne,
-    defaultValue,
     filter,
     filterToQuery,
-    formClassName,
-    initializeForm,
-    input,
-    isRequired,
-    label,
-    locale,
-    meta,
     onChange,
-    optionValue,
-    optionText,
     perPage,
-    record,
     reference,
     referenceSource,
-    resource,
     setFilter,
     setPagination,
     setSort,
     sort,
-    source,
-    textAlign,
-    translateChoice,
     validation,
     ...rest
-}: any) => rest;
+}: any) => sanitizeInputProps(rest);
 
 interface ReferenceInputViewProps {
     allowEmpty?: boolean;
