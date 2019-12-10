@@ -328,7 +328,7 @@ const sanitizeRestProps = ({
     toggleItem,
     total,
     version,
-    emptyState,
+    empty,
     ...rest
 }) => rest;
 
