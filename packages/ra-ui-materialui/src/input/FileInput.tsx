@@ -121,13 +121,17 @@ const FileInput: FunctionComponent<
     const { touched, error } = meta;
     const files = value ? (Array.isArray(value) ? value : [value]) : [];
 
-    const onDrop = newFiles => {
+    const onDrop = (newFiles, rejectedFiles, event) => {
         const updatedFiles = multiple ? [...files, ...newFiles] : [...newFiles];
 
         if (multiple) {
             onChange(updatedFiles);
         } else {
             onChange(updatedFiles[0]);
+        }
+
+        if (options.onDrop) {
+            options.onDrop(newFiles, rejectedFiles, event);
         }
     };
 
@@ -154,6 +158,7 @@ const FileInput: FunctionComponent<
         multiple,
         onDrop,
     });
+
     return (
         <Labeled
             id={id}
