@@ -16,7 +16,7 @@ const Pagination = ({
     total,
     setPage,
     setPerPage,
-    ActionsComponent,
+    actions,
     limit,
     ...rest
 }) => {
@@ -91,7 +91,7 @@ const Pagination = ({
             page={page - 1}
             onChangePage={handlePageChange}
             onChangeRowsPerPage={handlePerPageChange}
-            ActionsComponent={ActionsComponent}
+            ActionsComponent={actions}
             component="span"
             labelRowsPerPage={translate('ra.navigation.page_rows_per_page')}
             labelDisplayedRows={labelDisplayedRows}
@@ -110,13 +110,13 @@ Pagination.propTypes = {
     setPage: PropTypes.func,
     setPerPage: PropTypes.func,
     total: PropTypes.number,
-    ActionsComponent: PropTypes.node,
+    actions: PropTypes.node,
     limit: PropTypes.element,
 };
 
 Pagination.defaultProps = {
     rowsPerPageOptions: [5, 10, 25],
-    ActionsComponent: DefaultPaginationActions,
+    actions: DefaultPaginationActions,
     limit: <DefaultPaginationLimit />,
 };
 
