@@ -146,6 +146,23 @@ describe('Edit Page', () => {
         );
     });
 
+    it('should not revert values when saving a record that was cloned', () => {
+        EditPostPage.navigate();
+        cy.get(EditPostPage.elements.input('title')).should(el =>
+            expect(el).to.have.value('Sed quo et et fugiat modi')
+        );
+
+        EditPostPage.clone();
+        CreatePostPage.setInputValue('input', 'title', 'Lorem Ipsum');
+
+        // The next assertion has to occur immediately, thus CreatePostPage.submit() is not used
+        cy.get(CreatePostPage.elements.submitButton).click();
+
+        cy.get(CreatePostPage.elements.input('title')).then(el => {
+            expect(el).to.have.value('Lorem Ipsum');
+        });
+    });
+
     it('should persit emptied inputs', () => {
         EditPostPage.navigate();
         EditPostPage.gotoTab(3);
