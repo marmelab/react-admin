@@ -23,7 +23,7 @@ module.exports = {
             show: 'Afficher',
             sort: 'Trier',
             undo: 'Annuler',
-            unselect: 'Désélectionner'
+            unselect: 'Désélectionner',
             expand: 'Étendre',
             close: 'Fermer',
         },
