@@ -1389,3 +1389,18 @@ export default compose(
 The `ra-tree` and `ra-tree-ui-material-ui` packages were removed in v3. The v2 version performed poorly, and we don't want to delay v3 to reimplement the Tree packages.
 
 If you were using these packages just for displaying a tree, you'll have to reimplement a basic tree widget, taking the Tags list from the Simple example as an inspiration. If you were using these packages for creating and updating a tree, we recommend that you wait until the core team or another community member publishes a Tree package compatible with v3.
+
+
+## ImageInput change onDrop callback to direct onChange props
+```
+ <ImageInput
+  multiple
+  source="pictures"
+  accept="image/*"
+  onChange= {() => {
+    console.log("callback onDrop is not Working/not fired :(");
+  } }
+ >   
+  <ImageField source="src" title="title" />
+</ImageInput>     
+```
