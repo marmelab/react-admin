@@ -95,6 +95,8 @@ export const ReferenceArrayInput = ({
     onChange,
     onFocus,
     validate,
+    parse,
+    format,
     ...props
 }) => {
     if (React.Children.count(children) !== 1) {
@@ -110,6 +112,8 @@ export const ReferenceArrayInput = ({
         onFocus,
         source: props.source,
         validate,
+        parse,
+        format,
     });
 
     const controllerProps = useReferenceArrayInputController({
