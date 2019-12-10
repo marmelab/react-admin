@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { TablePagination, Toolbar, useMediaQuery } from '@material-ui/core';
 import { useTranslate, sanitizeListRestProps } from 'ra-core';
 
-import PaginationActions from './PaginationActions';
-import PaginationLimit from './PaginationLimit';
+import DefaultPaginationActions from './PaginationActions';
+import DefaultPaginationLimit from './PaginationLimit';
 
 const emptyArray = [];
 
@@ -16,6 +16,8 @@ const Pagination = ({
     total,
     setPage,
     setPerPage,
+    ActionsComponent,
+    limit,
     ...rest
 }) => {
     useEffect(() => {
@@ -64,8 +66,9 @@ const Pagination = ({
     );
 
     if (total === 0) {
-        return loading ? <Toolbar variant="dense" /> : <PaginationLimit />;
+        return loading ? <Toolbar variant="dense" /> : limit;
     }
+
     if (isSmall) {
         return (
             <TablePagination
@@ -80,6 +83,7 @@ const Pagination = ({
             />
         );
     }
+
     return (
         <TablePagination
             count={total}
@@ -87,7 +91,7 @@ const Pagination = ({
             page={page - 1}
             onChangePage={handlePageChange}
             onChangeRowsPerPage={handlePerPageChange}
-            ActionsComponent={PaginationActions}
+            ActionsComponent={ActionsComponent}
             component="span"
             labelRowsPerPage={translate('ra.navigation.page_rows_per_page')}
             labelDisplayedRows={labelDisplayedRows}
@@ -106,10 +110,14 @@ Pagination.propTypes = {
     setPage: PropTypes.func,
     setPerPage: PropTypes.func,
     total: PropTypes.number,
+    ActionsComponent: PropTypes.node,
+    limit: PropTypes.element,
 };
 
 Pagination.defaultProps = {
     rowsPerPageOptions: [5, 10, 25],
+    ActionsComponent: DefaultPaginationActions,
+    limit: <DefaultPaginationLimit />,
 };
 
 export default React.memo(Pagination);
