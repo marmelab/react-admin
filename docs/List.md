@@ -573,68 +573,6 @@ export const PostList = (props) => (
 const filterSentToDataProvider = { ...filterDefaultValues, ...filterChosenByUser, ...filters };
 ```
 
-### Pagination
-
-Here are all the props required by the <Pagination> component:
-
-* `page`: The current page number (integer). First page is `1`.
-* `perPage`: The number of records per page.
-* `setPage`: `function(page: number) => void`. A function that set the current page number.
-* `total`: The total number of records.
-
-You don't need to fill these props when you pass the `Pagination` component to the `List` component through the `pagination` prop: `<List pagination={<Pagination />}>`.
-
-You can also replace the default pagination element by your own. For instance, you can modify the default pagination by adjusting the "rows per page" selector.
-
-```jsx
-// in src/MyPagination.js
-import { Pagination, List } from 'react-admin';
-
-const PostPagination = props => <Pagination rowsPerPageOptions={[10, 25, 50, 100]} {...props} />;
-
-export const PostList = (props) => (
-    <List {...props} pagination={<PostPagination />}>
-        ...
-    </List>
-);
-```
-
-**Tip**: Pass an empty array to `rowsPerPageOptions` to disable the rows per page selection.
-
-Alternately, if you want to replace the default pagination by a "<previous - next>" pagination, create a pagination component like the following:
-
-```jsx
-import Button from '@material-ui/core/Button';
-import ChevronLeft from '@material-ui/icons/ChevronLeft';
-import ChevronRight from '@material-ui/icons/ChevronRight';
-import Toolbar from '@material-ui/core/Toolbar';
-
-const PostPagination = ({ page, perPage, total, setPage }) => {
-    const nbPages = Math.ceil(total / perPage) || 1;
-    return (
-        nbPages > 1 &&
-            <Toolbar>
-                {page > 1 &&
-                    <Button color="primary" key="prev" icon={ChevronLeft} onClick={() => setPage(page - 1)}>
-                        Prev
-                    </Button>
-                }
-                {page !== nbPages &&
-                    <Button color="primary" key="next" icon={ChevronRight} onClick={() => setPage(page + 1)} labelPosition="before">
-                        Next
-                    </Button>
-                }
-            </Toolbar>
-    );
-}
-
-export const PostList = (props) => (
-    <List {...props} pagination={<PostPagination />}>
-        ...
-    </List>
-);
-```
-
 ### Aside component
 
 You may want to display additional information on the side of the list. Use the `aside` prop for that, passing the component of your choice:
@@ -1388,3 +1326,86 @@ export const UserList = ({ permissions, ...props }) => {
 {% endraw %}
 
 **Tip**: Note how the `permissions` prop is passed down to the custom `filters` component.
+
+## Pagination
+
+Here are all the props required by the <Pagination> component:
+
+* `page`: The current page number (integer). First page is `1`.
+* `perPage`: The number of records per page.
+* `setPage`: `function(page: number) => void`. A function that set the current page number.
+* `total`: The total number of records.
+* `ActionsComponent`: A composant that displays the pagination buttons (default: `PaginationActions`)
+* `limit`: An element that is displayed if there is no data to shpw (default: `<PaginationLimit>`)
+
+You don't need to fill these props when you pass the `Pagination` component to the `List` component through the `pagination` prop: `<List pagination={<Pagination />}>`.
+
+You can also replace the default pagination element by your own. For instance, you can modify the default pagination by adjusting the "rows per page" selector.
+
+```jsx
+// in src/MyPagination.js
+import { Pagination, List } from 'react-admin';
+
+const PostPagination = props => <Pagination rowsPerPageOptions={[10, 25, 50, 100]} {...props} />;
+
+export const PostList = (props) => (
+    <List {...props} pagination={<PostPagination />}>
+        ...
+    </List>
+);
+```
+
+**Tip**: Pass an empty array to `rowsPerPageOptions` to disable the rows per page selection.
+
+Alternately, if you want to replace the default pagination by a "<previous - next>" pagination, create a pagination component like the following:
+
+```jsx
+import Button from '@material-ui/core/Button';
+import ChevronLeft from '@material-ui/icons/ChevronLeft';
+import ChevronRight from '@material-ui/icons/ChevronRight';
+import Toolbar from '@material-ui/core/Toolbar';
+
+const PostPagination = ({ page, perPage, total, setPage }) => {
+    const nbPages = Math.ceil(total / perPage) || 1;
+    return (
+        nbPages > 1 &&
+            <Toolbar>
+                {page > 1 &&
+                    <Button color="primary" key="prev" icon={ChevronLeft} onClick={() => setPage(page - 1)}>
+                        Prev
+                    </Button>
+                }
+                {page !== nbPages &&
+                    <Button color="primary" key="next" icon={ChevronRight} onClick={() => setPage(page + 1)} labelPosition="before">
+                        Next
+                    </Button>
+                }
+            </Toolbar>
+    );
+}
+
+export const PostList = (props) => (
+    <List {...props} pagination={<PostPagination />}>
+        ...
+    </List>
+);
+```
+
+But if you just want to change the color property of the pagination button, you can extend the existing components:
+
+```jsx
+import {
+    List,
+    Pagination as RaPagination,
+    PaginationActions as RaPaginationActions,
+} from 'react-admin';
+
+export const PaginationActions = props => <RaPaginationActions {...props} color="secondary" />;
+
+export const Pagination = props => <RaPagination {...props} ActionsComponent={PaginationActions} />;
+
+export const UserList = props => (
+    <List {...props} pagination={<Pagination />}>
+    </List>
+);
+```
