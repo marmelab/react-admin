@@ -31,7 +31,14 @@ export interface EditControllerProps {
     loaded: boolean;
     saving: boolean;
     defaultTitle: string;
-    save: (data: Record, redirect?: RedirectionSideEffect) => void;
+    save: (
+        data: Record,
+        redirect?: RedirectionSideEffect,
+        callbacks?: {
+            onSuccess: () => void;
+            onFailure: (error: string | { message?: string }) => void;
+        }
+    ) => void;
     resource: string;
     basePath: string;
     record?: Record;
@@ -92,29 +99,38 @@ const useEditController = (props: EditProps): EditControllerProps => {
     );
 
     const save = useCallback(
-        (data: Partial<Record>, redirectTo = 'list') =>
+        (
+            data: Partial<Record>,
+            redirectTo = 'list',
+            { onSuccess, onFailure } = {}
+        ) =>
             update(
                 { payload: { data } },
                 {
                     action: CRUD_UPDATE,
-                    onSuccess: () => {
-                        notify(
-                            successMessage || 'ra.notification.updated',
-                            'info',
-                            {
-                                smart_count: 1,
-                            },
-                            undoable
-                        );
-                        redirect(redirectTo, basePath, data.id, data);
-                    },
-                    onFailure: error =>
-                        notify(
-                            typeof error === 'string'
-                                ? error
-                                : error.message || 'ra.notification.http_error',
-                            'warning'
-                        ),
+                    onSuccess: onSuccess
+                        ? onSuccess
+                        : () => {
+                              notify(
+                                  successMessage || 'ra.notification.updated',
+                                  'info',
+                                  {
+                                      smart_count: 1,
+                                  },
+                                  undoable
+                              );
+                              redirect(redirectTo, basePath, data.id, data);
+                          },
+                    onFailure: onFailure
+                        ? onFailure
+                        : error =>
+                              notify(
+                                  typeof error === 'string'
+                                      ? error
+                                      : error.message ||
+                                            'ra.notification.http_error',
+                                  'warning'
+                              ),
                     undoable,
                 }
             ),
