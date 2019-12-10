@@ -635,16 +635,22 @@ You can use the `empty` prop to replace that page by a custom component:
 
 {% raw %}
 ```jsx
+import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
 import { CreateButton, List } from 'react-admin';
 
 const Empty = ({ basePath, resource }) => (
-    <div style={{ textAlign: 'center', margin: '1em' }}>
-        <h1>No products available</h1>
-        <div>Create one or import from a file</div>
+    <Box textAlign="center" m={1}>
+        <Typography variant="h4" paragraph>
+            No products available
+        </Typography>
+        <Typography variant="body1">
+            Create one or import from a file
+        </Typography>
         <CreateButton basePath={basePath} />
         <Button onClick={...}>Import</Button>
-    </div>
+    </Box>
 );
 
 const ProductList = props => (

@@ -1,5 +1,6 @@
 import React from 'react';
 import Inbox from '@material-ui/icons/Inbox';
+import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/styles';
 import { useTranslate } from 'ra-core';
 import { CreateButton } from '../button';
@@ -8,7 +9,6 @@ import inflection from 'inflection';
 const useStyles = makeStyles({
     message: {
         textAlign: 'center',
-        fontFamily: 'Roboto, sans-serif',
         opacity: 0.5,
         margin: '0 1em',
     },
@@ -38,8 +38,12 @@ const Empty = ({ resource, basePath }) => {
         <>
             <div className={classes.message}>
                 <Inbox className={classes.icon} />
-                <h1>{translate('ra.page.empty', { name: resourceName })}</h1>
-                <div>{translate('ra.page.invite')}</div>
+                <Typography variant="h4" paragraph>
+                    {translate('ra.page.empty', { name: resourceName })}
+                </Typography>
+                <Typography variant="body1">
+                    {translate('ra.page.invite')}
+                </Typography>
             </div>
             <div className={classes.toolbar}>
                 <CreateButton variant="contained" basePath={basePath} />
