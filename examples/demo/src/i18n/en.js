@@ -46,15 +46,23 @@ export default {
                 last_seen_gte: 'Visited Since',
                 name: 'Name',
                 total_spent: 'Total spent',
+                password: 'Password',
+                confirm_password: 'Confirm password',
             },
             fieldGroups: {
                 identity: 'Identity',
                 address: 'Address',
                 stats: 'Stats',
                 history: 'History',
+                password: 'Password',
+                change_password: 'Change Password',
             },
             page: {
                 delete: 'Delete Customer',
+            },
+            errors: {
+                password_mismatch:
+                    'The password confirmation is not the same as the password.',
             },
         },
         commands: {

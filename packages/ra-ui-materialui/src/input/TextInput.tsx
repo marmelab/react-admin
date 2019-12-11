@@ -7,6 +7,9 @@ import ResettableTextField from './ResettableTextField';
 import InputHelperText from './InputHelperText';
 import sanitizeRestProps from './sanitizeRestProps';
 
+export type TextInputProps = InputProps<TextFieldProps> &
+    Omit<TextFieldProps, 'label' | 'helperText'>;
+
 /**
  * An Input component for a string
  *
@@ -21,9 +24,7 @@ import sanitizeRestProps from './sanitizeRestProps';
  *
  * The object passed as `options` props is passed to the <ResettableTextField> component
  */
-export const TextInput: FunctionComponent<
-    InputProps<TextFieldProps> & Omit<TextFieldProps, 'label' | 'helperText'>
-> = ({
+export const TextInput: FunctionComponent<TextInputProps> = ({
     label,
     format,
     helperText,
