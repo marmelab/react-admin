@@ -167,8 +167,10 @@ export const TabbedFormView = ({
                                               record,
                                               basePath,
                                               hidden: !routeProps.match,
-                                              variant,
-                                              margin,
+                                              variant:
+                                                  tab.props.variant || variant,
+                                              margin:
+                                                  tab.props.margin || margin,
                                           })
                                         : null
                                 }
