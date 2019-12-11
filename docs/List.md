@@ -28,6 +28,7 @@ Here are all the props accepted by the `<List>` component:
 * [`filterDefaultValues`](#filter-default-values) (the default values for `alwaysOn` filters)
 * [`pagination`](#pagination)
 * [`aside`](#aside-component)
+* [`emptyState`](#empty-state)
 
 Here is the minimal code necessary to display a list of posts:
 
@@ -592,6 +593,7 @@ const PostList = props => (
     <List aside={<Aside />} {...props}>
         ...
     </List>
+);
 ```
 {% endraw %}
 
@@ -624,6 +626,32 @@ const Aside = ({ data, ids }) => (
 );
 ```
 {% endraw %}
+
+### Empty state
+
+When there is no result, and there is no active filter, and the resource has a create page then a special page inviting the user to create the first record is displayed. Use the `emptyState` prop to modify that page, passing your custom component:
+
+{% raw %}
+```jsx
+import Button from '@material-ui/core/Button';
+import { CreateButton, List } from 'react-admin';
+
+const EmptyState = ({ basePath }) => (
+    <div style={{ textAlign: 'center', margin: '1em' }}>
+        <h1>No products available</h1>
+        <div>Create one or import from a file</div>
+        <CreateButton basePath={basePath} />
+        <Button onClick={...}>Import</Button>
+    </div>
+);
+
+const ProductList = props => (
+    <List emptyState={<EmptyState />} {...props}>
+        ...
+    </List>
+);
+
+The `emptyState` component receives the same props as the `aside` prop. Read the [section above](#aside-component) to check them.
 
 ### Component
 
