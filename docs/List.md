@@ -1336,7 +1336,7 @@ Here are all the props required by the <Pagination> component:
 * `setPage`: `function(page: number) => void`. A function that set the current page number.
 * `total`: The total number of records.
 * `actions`: A component that displays the pagination buttons (default: `PaginationActions`)
-* `limit`: An element that is displayed if there is no data to shpw (default: `<PaginationLimit>`)
+* `limit`: An element that is displayed if there is no data to show (default: `<PaginationLimit>`)
 
 You don't need to fill these props when you pass the `Pagination` component to the `List` component through the `pagination` prop: `<List pagination={<Pagination />}>`.
 
