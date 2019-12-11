@@ -28,7 +28,7 @@ Here are all the props accepted by the `<List>` component:
 * [`filterDefaultValues`](#filter-default-values) (the default values for `alwaysOn` filters)
 * [`pagination`](#pagination)
 * [`aside`](#aside-component)
-* [`emptyState`](#empty-state)
+* [`empty`](#empty-page)
 
 Here is the minimal code necessary to display a list of posts:
 
@@ -627,16 +627,18 @@ const Aside = ({ data, ids }) => (
 ```
 {% endraw %}
 
-### Empty state
+### Empty page
 
-When there is no result, and there is no active filter, and the resource has a create page then a special page inviting the user to create the first record is displayed. Use the `emptyState` prop to modify that page, passing your custom component:
+When there is no result, and there is no active filter, and the resource has a create page, react-admin displays a special page inviting the user to create the first record.
+
+You can use the `empty` prop to replace that page by a custom component:
 
 {% raw %}
 ```jsx
 import Button from '@material-ui/core/Button';
 import { CreateButton, List } from 'react-admin';
 
-const EmptyState = ({ basePath }) => (
+const Empty = ({ basePath, resource }) => (
     <div style={{ textAlign: 'center', margin: '1em' }}>
         <h1>No products available</h1>
         <div>Create one or import from a file</div>
@@ -646,12 +648,27 @@ const EmptyState = ({ basePath }) => (
 );
 
 const ProductList = props => (
-    <List emptyState={<EmptyState />} {...props}>
+    <List empty={<Empty />} {...props}>
         ...
     </List>
 );
+```
+{% endraw %}
 
-The `emptyState` component receives the same props as the `aside` prop. Read the [section above](#aside-component) to check them.
+The `empty` component receives the same props as the `List` child component, including the following:
+
+-   `basePath`,
+-   `currentSort`,
+-   `data`,
+-   `defaultTitle`,
+-   `filterValues`,
+-   `ids`,
+-   `page`,
+-   `perPage`,
+-   `resource`,
+-   `selectedIds`,
+-   `total`,
+-   `version`,
 
 ### Component
 
