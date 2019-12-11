@@ -6,6 +6,7 @@ import {
     useTranslate,
 } from 'ra-core';
 
+import sanitizeInputProps from './sanitizeRestProps';
 import LinearProgress from '../layout/LinearProgress';
 import Labeled from '../input/Labeled';
 import ReferenceError from './ReferenceError';
@@ -164,33 +165,13 @@ ReferenceArrayInput.defaultProps = {
 };
 
 const sanitizeRestProps = ({
-    alwaysOn,
-    basePath,
-    component,
     crudGetMany,
     crudGetMatching,
-    defaultValue,
     filterToQuery,
-    formClassName,
-    initializeForm,
-    input,
-    isRequired,
-    label,
-    locale,
-    meta,
-    optionText,
-    optionValue,
     perPage,
-    record,
     referenceSource,
-    resource,
-    allowEmpty,
-    source,
-    textAlign,
-    translate,
-    translateChoice,
     ...rest
-}) => rest;
+}) => sanitizeInputProps(rest);
 
 export const ReferenceArrayInputView = ({
     allowEmpty,
