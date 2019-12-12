@@ -1,7 +1,11 @@
 import React, { useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { TablePagination, Toolbar, useMediaQuery } from '@material-ui/core';
-import { useTranslate, sanitizeListRestProps } from 'ra-core';
+import {
+    useTranslate,
+    sanitizeListRestProps,
+    ComponentPropType,
+} from 'ra-core';
 
 import DefaultPaginationActions from './PaginationActions';
 import DefaultPaginationLimit from './PaginationLimit';
@@ -102,7 +106,9 @@ const Pagination = ({
 };
 
 Pagination.propTypes = {
+    actions: ComponentPropType,
     ids: PropTypes.array,
+    limit: PropTypes.element,
     loading: PropTypes.bool,
     page: PropTypes.number,
     perPage: PropTypes.number,
@@ -110,8 +116,6 @@ Pagination.propTypes = {
     setPage: PropTypes.func,
     setPerPage: PropTypes.func,
     total: PropTypes.number,
-    actions: PropTypes.node,
-    limit: PropTypes.element,
 };
 
 Pagination.defaultProps = {
