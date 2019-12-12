@@ -731,7 +731,7 @@ const Menu = ({ onMenuClick, logout }) => {
                     key={resource.name}
                     to={`/${resource.name}`}
                     primaryText={resource.options && resource.options.label || resource.name}
-                    leftIcon={createElement(resource.icon)}
+                    leftIcon={resource.icon && createElement(resource.icon)}
                     onClick={onMenuClick}
                     sidebarIsOpen={open}
                 />
@@ -818,7 +818,7 @@ const Menu = ({ onMenuClick, logout }) => {
                     key={resource.name}
                     to={`/${resource.name}`}
                     primaryText={resource.options && resource.options.label || resource.name}
-                    leftIcon={createElement(resource.icon)}
+                    leftIcon={resource.icon && createElement(resource.icon)}
                     onClick={onMenuClick}
                     sidebarIsOpen={open}
                 />
