@@ -1269,7 +1269,7 @@ You can find components for react-admin in third-party repositories.
 
 ## Writing Your Own Input Component
 
-If you need a more specific input type, you can write it directly in React. You'll have to rely on react-final-form's [`<Field>`](https://github.com/final-form/react-final-form#field--reactcomponenttypefieldprops) component, or its [`useField`](https://github.com/final-form/react-final-form#usefield) hook, so as to handle the value update cycle.
+If you need a more specific input type, you can write it directly in React. You'll have to rely on react-final-form's [`<Field>`](https://final-form.org/docs/react-final-form/api/Field) component, or its [`useField`](https://final-form.org/docs/react-final-form/api/useField) hook, so as to handle the value update cycle.
 
 For instance, let's write a component to edit the latitude and longitude of the current record:
 
@@ -1304,7 +1304,7 @@ const ItemEdit = (props) => (
 </span>
 ```
 
-**Tip**: The `<Field>` component supports dot notation in the `name` prop, to allow binding to nested values:
+**Tip**: React-final-form's `<Field>` component supports dot notation in the `name` prop, to allow binding to nested values:
 
 ```jsx
 const LatLongInput = () => (
@@ -1345,85 +1345,42 @@ Now the component will render with a label:
 </span>
 ```
 
-Instead of HTML `input` elements, you can use a material-ui component. To compose material-ui and `Field`, use a [field renderer function](https://github.com/final-form/react-final-form#render-props-fieldrenderprops--reactnode) to map the props:
+Instead of HTML `input` elements, you can use a material-ui component like `TextField`. To bind material-ui components to the form values, use the `useField()` hook:
 
 ```jsx
 // in LatLongInput.js
 import TextField from '@material-ui/core/TextField';
-import { Field } from 'react-final-form';
-const renderTextField = ({ input, label, meta: { touched, error }, ...custom }) => (
-    <TextField
-        label={label}
-        error={!!(touched && error)}
-        helperText={touched && error}
-        {...input}
-        {...custom}
-    />
-);
+import { useField } from 'react-final-form';
+
+const BoundedTextField = ({ name, label }) => {
+    const { 
+        input: { onChange },
+        meta: { touched, error }
+    } = useField(name);
+    return (
+        <TextField
+            name={name}
+            label={label}
+            onChange={onChange}
+            error={!!(touched && error)}
+            helperText={touched && error}
+        />
+    );
+};
 const LatLngInput = () => (
     <span>
-        <Field name="lat" component={renderTextField} label="latitude" />
+        <BoundedTextField name="lat" label="latitude" />
         &nbsp;
-        <Field name="lng" component={renderTextField} label="longitude" />
+        <BoundedTextField name="lng" label="longitude" />
     </span>
 );
 ```
 
-Material-ui's `<TextField>` component already includes a label, so you don't need to use `<Labeled>` in this case. `<Field>` injects two props to its child component: `input` and `meta`. To learn more about these props, please refer to [the `<Field>` component documentation](https://github.com/final-form/react-final-form#fieldrenderprops) in the react-final-form documentation.
+**Tip**: Material-ui's `<TextField>` component already includes a label, so you don't need to use `<Labeled>` in this case. 
 
-**Tip**: If you only need one `<Field>` component in a custom input, you can let react-admin do the `<Field>` decoration for you by using the `addField` Higher-order component:
+`useField()` returns two values: `input` and `meta`. To learn more about these props, please refer to [the `useField()` hook documentation](https://final-form.org/docs/react-final-form/api/useField) in the react-final-form website.
 
-```jsx
-// in SexInput.js
-import SelectField from '@material-ui/core/SelectField';
-import MenuItem from '@material-ui/core/MenuItem';
-import { addField } from 'react-admin';
-
-const SexInput = ({ input, meta: { touched, error } }) => (
-    <SelectField
-        floatingLabelText="Sex"
-        errorText={touched && error}
-        {...input}
-    >
-        <MenuItem value="M" primaryText="Male" />
-        <MenuItem value="F" primaryText="Female" />
-    </SelectField>
-);
-export default addField(SexInput); // decorate with react-final-form's <Field>
-
-// equivalent of
-import SelectField from '@material-ui/core/SelectField';
-import MenuItem from '@material-ui/core/MenuItem';
-import { Field } from 'react-final-form';
-
-const renderSexInput = ({ input, meta: { touched, error } }) => (
-    <SelectField
-        floatingLabelText="Sex"
-        errorText={touched && error}
-        {...input}
-    >
-        <MenuItem value="M" primaryText="Male" />
-        <MenuItem value="F" primaryText="Female" />
-    </SelectField>
-);
-const SexInput = ({ source }) => <Field name={source} component={renderSexInput} />
-export default SexInput;
-```
-
-**Tip**: `addField` takes a list of props as second argument, so you can set `<Field>` props there. It's useful for instance if you need to set the [`format`](https://github.com/final-form/react-final-form#format-value-any-name-string--any) and [`parse`](https://github.com/final-form/react-final-form#parse-value-any-name-string--any) props of the field:
-
-```jsx
-const parse = value => // ...
-const format = value => // ...
-
-const MyDateInput = props => // ...
-
-export default addField(MyDateInput, { parse, format });
-```
-
-For more details on how to use react-final-form's `<Field>` component, please refer to [the react-final-form doc](https://github.com/final-form/react-final-form#field--reactcomponenttypefieldprops).
-
-Instead of HTML `input` elements or material-ui components, you can use react-admin input components, like `<NumberInput>` for instance. React-admin components are already decorated by `<Field>`, and already include a label, so you don't need either `<Field>` or `<Labeled>` when using them:
+Instead of HTML `input` elements or material-ui components, you can use react-admin input components, like `<NumberInput>` for instance. React-admin components already use `useField()`, and already include a label, so you don't need either `useField()` or `<Labeled>` when using them:
 
 ```jsx
 // in LatLongInput.js
@@ -1436,16 +1393,89 @@ const LatLngInput = () => (
     </span>
 );
 export default LatLngInput;
+```
 
-// in ItemEdit.js
-const ItemEdit = (props) => (
+## `useInput()` Hook
+
+React-admin adds functionality to react-final-form:
+
+- handling of custom event emitters like `onChange`,
+- support for an array of validators,
+- detection of required fields to add an asterisk to the field label.
+
+So internally, react-admin components use another hook, which wraps react-final-form's `useField()` hook. It's called `useInput()` ; use it instead of `useField()` to create form inputs that have the exact same API as react-admin Input components:
+
+```jsx
+// in LatLongInput.js
+import TextField from '@material-ui/core/TextField';
+import { useInput, required } from 'react-admin';
+
+const BoundedTextField = props => {
+    const { 
+        input: { name, onChange },
+        meta: { touched, error },
+        isRequired
+    } = useInput(props);
+    return (
+        <TextField
+            name={name}
+            label={props.label}
+            onChange={onChange}
+            error={!!(touched && error)}
+            helperText={touched && error}
+            required={isRequired}
+        />
+    );
+};
+const LatLngInput = () => (
+    <span>
+        <BoundedTextField source="lat" label="latitude" validate={[required()]} />
+        &nbsp;
+        <BoundedTextField source="lng" label="longitude" validate={[required()]} />
+    </span>
+);
+```
+
+Here is another example, this time using a material-ui `SelectField` component:
+
+```jsx
+// in SexInput.js
+import SelectField from '@material-ui/core/SelectField';
+import MenuItem from '@material-ui/core/MenuItem';
+import { useInput } from 'react-admin';
+
+const SexInput = () => {
+    const { input, meta: { touched, error } } = useInput(props)
+    return (
+        <SelectField
+            floatingLabelText="Sex"
+            errorText={touched && error}
+            {...input}
+        >
+            <MenuItem value="M" primaryText="Male" />
+            <MenuItem value="F" primaryText="Female" />
+        </SelectField>
+    );
+};
+export default SexInput;
+```
+
+**Tip**: `useInput` accepts all arguments that you can pass to `useField`. That means that components using `useInput` accept props like [`format`](https://final-form.org/docs/react-final-form/types/FieldProps#format) and [`parse`](https://final-form.org/docs/react-final-form/types/FieldProps#parse), to convert values from the form to the input, and vice-versa:
+
+```jsx
+const parse = value => // ...
+const format = value => // ...
+
+const PersonEdit = props => (
     <Edit {...props}>
         <SimpleForm>
-            <TextInput disabled source="id" />
-            <LatLngInput />
+            <SexInput source="sex"
+                format={formValue => formValue === 0 ? 'M' : 'F'}
+                parse={inputValue => inputValue === 'M' ? 0 : 1}
+            />
         </SimpleForm>
     </Edit>
-);
+)
 ```
 
 ## Linking Two Inputs
