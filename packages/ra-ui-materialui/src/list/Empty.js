@@ -34,15 +34,22 @@ const Empty = ({ resource, basePath }) => {
         true
     );
 
+    const emptyMessage = translate('ra.page.empty', { name: resourceName });
+    const inviteMessage = translate('ra.page.invite');
+
     return (
         <>
             <div className={classes.message}>
                 <Inbox className={classes.icon} />
                 <Typography variant="h4" paragraph>
-                    {translate('ra.page.empty', { name: resourceName })}
+                    {translate(`resources.${resource}.empty`, {
+                        _: emptyMessage,
+                    })}
                 </Typography>
                 <Typography variant="body1">
-                    {translate('ra.page.invite')}
+                    {translate(`resources.${resource}.invite`, {
+                        _: inviteMessage,
+                    })}
                 </Typography>
             </div>
             <div className={classes.toolbar}>

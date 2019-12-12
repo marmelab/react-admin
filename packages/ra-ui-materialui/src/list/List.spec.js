@@ -120,7 +120,7 @@ describe('<List />', () => {
                 </ListView>
             </ThemeProvider>
         );
-        expect(queryAllByText('ra.page.empty')).toHaveLength(1);
+        expect(queryAllByText('resources.post.empty')).toHaveLength(1);
     });
 
     it('should not render an invite when a filter is active', () => {
@@ -138,6 +138,6 @@ describe('<List />', () => {
                 </ListView>
             </ThemeProvider>
         );
-        expect(queryAllByText('ra.page.empty')).toHaveLength(0);
+        expect(queryAllByText('resources.post.empty')).toHaveLength(0);
     });
 });
