@@ -1,5 +1,19 @@
 # Changelog
 
+## v3.0.4
+
+* Fix typos, syntax errors and anchors references in the docs ([4152](https://github.com/marmelab/react-admin/pull/4152)) ([WiXSL](https://github.com/WiXSL))
+* Fix deprecated `useField` documentation ([4151](https://github.com/marmelab/react-admin/pull/4151)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `ReferenceField` when used inside form ([4147](https://github.com/marmelab/react-admin/pull/4147)) ([fzaninotto](https://github.com/fzaninotto))
+* fix `<RadioButtonGroupInput onChange` prop being ignored ([4123](https://github.com/marmelab/react-admin/pull/4123)) ([ThieryMichel](https://github.com/ThieryMichel))
+* Fix `Input` components ignore `variant` prop ([4142](https://github.com/marmelab/react-admin/pull/4142)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `make doc` command fails in development ([4143](https://github.com/marmelab/react-admin/pull/4143)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix prop sanitatization for `ReferenceInput` ([4139](https://github.com/marmelab/react-admin/pull/4139)) ([Kmaschta](https://github.com/Kmaschta))
+* Fix `<FileInput onDrop` option ([4140](https://github.com/marmelab/react-admin/pull/4140)) ([Kmaschta](https://github.com/Kmaschta))
+* Fix `ReferenceArrayInput` ignores `parse` and `format` props ([4138](https://github.com/marmelab/react-admin/pull/4138)) ([Kmaschta](https://github.com/Kmaschta))
+* Fix cloned record reverts values when submitting ([4130](https://github.com/marmelab/react-admin/pull/4130)) ([m4theushw](https://github.com/m4theushw))
+* Fix `RadioButtonGroupInput` option not being checked when numeric ids are used ([4128](https://github.com/marmelab/react-admin/pull/4128)) ([m4theushw](https://github.com/m4theushw))
+
 ## v3.0.3
 
 * Fix typo in `fullWidth` Input prop documentation ([4119](https://github.com/marmelab/react-admin/pull/4119)) ([JoonsungUm](https://github.com/JoonsungUm))
