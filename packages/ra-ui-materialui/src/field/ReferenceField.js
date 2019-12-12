@@ -59,10 +59,9 @@ const ReferenceField = ({ children, record, source, ...props }) => {
     if (React.Children.count(children) !== 1) {
         throw new Error('<ReferenceField> only accepts a single child');
     }
-    const id = get(record, source);
     const { loaded, error, referenceRecord } = useReference({
-        ...props,
-        id,
+        reference: props.reference,
+        id: get(record, source),
     });
     const resourceLinkPath = getResourceLinkPath({ record, source, ...props });
 
