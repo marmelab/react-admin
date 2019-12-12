@@ -110,7 +110,6 @@ ReferenceField.defaultProps = {
     addLabel: true,
     classes: {},
     link: 'edit',
-    record: {},
 };
 
 const useStyles = makeStyles(theme => ({
