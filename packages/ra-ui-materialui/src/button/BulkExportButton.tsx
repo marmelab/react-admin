@@ -2,7 +2,6 @@ import React, { useCallback, useContext, FunctionComponent } from 'react';
 import PropTypes from 'prop-types';
 import DownloadIcon from '@material-ui/icons/GetApp';
 import {
-    downloadCSV,
     fetchRelatedRecords,
     useDataProvider,
     useNotify,
@@ -10,7 +9,6 @@ import {
     Identifier,
     ExporterContext,
 } from 'ra-core';
-import jsonExport from 'jsonexport/dist';
 
 import Button, { ButtonProps } from './Button';
 
