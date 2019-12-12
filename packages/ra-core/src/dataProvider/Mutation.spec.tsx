@@ -168,6 +168,7 @@ describe('Mutation', () => {
     });
 
     it('supports declarative onFailure side effects', async () => {
+        jest.spyOn(console, 'error').mockImplementationOnce(() => {});
         let dispatchSpy;
         let historyForAssertions: History;
 
@@ -234,6 +235,7 @@ describe('Mutation', () => {
     });
 
     it('supports onFailure side effects using hooks', async () => {
+        jest.spyOn(console, 'error').mockImplementationOnce(() => {});
         let dispatchSpy;
         const dataProvider = {
             mytype: jest.fn(() =>

@@ -44,7 +44,13 @@ const useStyles = makeStyles(
     { name: 'RaSidebar' }
 );
 
-const Sidebar = ({ children, closedSize, size, ...rest }) => {
+const Sidebar = ({
+    children,
+    closedSize,
+    size,
+    classes: classesOverride,
+    ...rest
+}) => {
     const dispatch = useDispatch();
     const isXSmall = useMediaQuery(theme => theme.breakpoints.down('xs'));
     const isSmall = useMediaQuery(theme => theme.breakpoints.down('sm'));
@@ -61,7 +67,7 @@ const Sidebar = ({ children, closedSize, size, ...rest }) => {
     useSelector(state => state.locale); // force redraw on locale change
     const handleClose = () => dispatch(setSidebarVisibility(false));
     const toggleSidebar = () => dispatch(setSidebarVisibility(!open));
-    const classes = useStyles({ open });
+    const classes = useStyles({ classes: classesOverride, open });
 
     return isXSmall ? (
         <Drawer

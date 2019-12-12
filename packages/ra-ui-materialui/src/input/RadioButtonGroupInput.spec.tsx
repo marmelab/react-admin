@@ -1,6 +1,11 @@
 import React from 'react';
 import expect from 'expect';
-import { render, cleanup, fireEvent } from '@testing-library/react';
+import {
+    render,
+    cleanup,
+    fireEvent,
+    waitForDomChange,
+} from '@testing-library/react';
 import { Form } from 'react-final-form';
 import { TestTranslationProvider } from 'ra-core';
 
@@ -41,6 +46,30 @@ describe('<RadioButtonGroupInput />', () => {
         expect(input2.checked).toBeFalsy();
     });
 
+    it('should trigger custom onChange when clicking radio button', async () => {
+        const onChange = jest.fn();
+        const { getByLabelText, queryByText } = render(
+            <Form
+                onSubmit={jest.fn}
+                render={() => (
+                    <RadioButtonGroupInput
+                        {...defaultProps}
+                        label="Credit card"
+                        onChange={onChange}
+                    />
+                )}
+            />
+        );
+        expect(queryByText('Credit card')).not.toBeNull();
+        const input1 = getByLabelText('VISA') as HTMLInputElement;
+        fireEvent.click(input1);
+        expect(onChange).toBeCalledWith('visa');
+
+        const input2 = getByLabelText('Mastercard') as HTMLInputElement;
+        fireEvent.click(input2);
+        expect(onChange).toBeCalledWith('mastercard');
+    });
+
     it('should use the value provided by final-form as the initial input value', () => {
         const { getByLabelText } = render(
             <Form
@@ -55,6 +84,28 @@ describe('<RadioButtonGroupInput />', () => {
         expect(
             (getByLabelText('Mastercard') as HTMLInputElement).checked
         ).toBeTruthy();
+    });
+
+    it('should work correctly when ids are numbers', () => {
+        const choices = [
+            { id: 1, name: 'VISA' },
+            { id: 2, name: 'Mastercard' },
+        ];
+        const { getByLabelText } = render(
+            <Form
+                onSubmit={jest.fn}
+                render={() => (
+                    <RadioButtonGroupInput
+                        {...defaultProps}
+                        choices={choices}
+                    />
+                )}
+            />
+        );
+        const input = getByLabelText('Mastercard') as HTMLInputElement;
+        expect(input.checked).toBe(false);
+        fireEvent.click(input);
+        expect(input.checked).toBe(true);
     });
 
     it('should use optionValue as value identifier', () => {

@@ -52,7 +52,7 @@ For instance, to query an authentication route via HTTPS and store the credentia
 
 ```js
 // in src/authProvider.js
-export default {
+const authProvider = {
     login: ({ username, password }) =>  {
         const request = new Request('https://mydomain.com/authenticate', {
             method: 'POST',
@@ -71,7 +71,7 @@ export default {
             });
     },
     // ...
-}
+};
 
 export default authProvider;
 ```

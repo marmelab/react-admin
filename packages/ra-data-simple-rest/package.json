@@ -1,6 +1,6 @@
 {
     "name": "ra-data-simple-rest",
-    "version": "3.0.0",
+    "version": "3.0.3",
     "description": "Simple REST data provider for react-admin",
     "main": "lib/index.js",
     "module": "esm/index.js",
@@ -25,13 +25,13 @@
         "watch": "rimraf ./lib && tsc --watch"
     },
     "dependencies": {
-        "query-string": "~5.1.1"
+        "query-string": "~6.9.0"
     },
     "devDependencies": {
         "cross-env": "^5.2.0",
         "rimraf": "^2.6.3"
     },
     "peerDependencies": {
-        "ra-core": "^3.0.0-alpha.0"
+        "ra-core": "^3.0.0"
     }
 }

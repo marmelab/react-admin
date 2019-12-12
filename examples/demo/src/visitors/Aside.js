@@ -7,6 +7,7 @@ import {
     useGetList,
     linkToRecord,
 } from 'react-admin';
+import PropTypes from 'prop-types';
 import {
     Tooltip,
     Typography,
@@ -43,6 +44,11 @@ const Aside = ({ record, basePath }) => {
             {record && <EventList record={record} basePath={basePath} />}
         </div>
     );
+};
+
+Aside.propTypes = {
+    record: PropTypes.any,
+    basePath: PropTypes.string,
 };
 
 const EventList = ({ record, basePath }) => {

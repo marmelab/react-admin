@@ -14,7 +14,7 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import { withStyles, createStyles } from '@material-ui/core/styles';
 import CloseIcon from '@material-ui/icons/RemoveCircleOutline';
 import AddIcon from '@material-ui/icons/AddCircleOutline';
-import { translate } from 'ra-core';
+import { translate, ValidationError } from 'ra-core';
 import classNames from 'classnames';
 
 import FormInput from '../form/FormInput';
@@ -129,9 +129,11 @@ export class SimpleFormIterator extends Component {
         return fields ? (
             <ul className={classes.root}>
                 {submitFailed && typeof error !== 'object' && error && (
-                    <FormHelperText error>{error}</FormHelperText>
+                    <FormHelperText error>
+                        <ValidationError error={error} />
+                    </FormHelperText>
                 )}
-                <TransitionGroup>
+                <TransitionGroup component={null}>
                     {fields.map((member, index) => (
                         <CSSTransition
                             key={this.ids[index]}

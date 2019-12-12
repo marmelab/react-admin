@@ -1,6 +1,7 @@
 import React, { useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { Form, FormSpy } from 'react-final-form';
+import arrayMutators from 'final-form-arrays';
 import classnames from 'classnames';
 import { makeStyles } from '@material-ui/core/styles';
 import lodashSet from 'lodash/set';
@@ -187,6 +188,7 @@ const EnhancedFilterForm = ({ classes: classesOverride, ...props }) => {
         <Form
             onSubmit={handleFinalFormSubmit}
             initialValues={mergedInitialValuesWithDefaultValues}
+            mutators={{ ...arrayMutators }}
             render={formProps => (
                 <>
                     <FormSpy

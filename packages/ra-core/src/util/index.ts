@@ -1,3 +1,4 @@
+import escapePath from './escapePath';
 import FieldTitle from './FieldTitle';
 import getFetchedAt from './getFetchedAt';
 import getFieldLabelTranslationArgs from './getFieldLabelTranslationArgs';
@@ -14,6 +15,7 @@ import useWhyDidYouUpdate from './useWhyDidYouUpdate';
 import { useSafeSetState, useTimeout } from './hooks';
 
 export {
+    escapePath,
     FieldTitle,
     getFetchedAt,
     getFieldLabelTranslationArgs,

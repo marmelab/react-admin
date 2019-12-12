@@ -78,6 +78,8 @@ const DatagridRow = ({
     const handleClick = useCallback(
         async event => {
             if (!rowClick) return;
+            event.persist();
+
             const effect =
                 typeof rowClick === 'function'
                     ? await rowClick(id, basePath, record)

@@ -26,7 +26,7 @@ const useInitializeFormWithRecord = record => {
                 }
             });
         });
-    }, [form, record]);
+    }, [form, JSON.stringify(record)]); // eslint-disable-line react-hooks/exhaustive-deps
 };
 
 export default useInitializeFormWithRecord;

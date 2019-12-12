@@ -3,9 +3,10 @@ import PropTypes from 'prop-types';
 import Divider from '@material-ui/core/Divider';
 import { Route } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
+import { useRouteMatch } from 'react-router-dom';
+import { escapePath } from 'ra-core';
 
 import TabbedShowLayoutTabs, { getTabFullPath } from './TabbedShowLayoutTabs';
-import { useRouteMatch } from 'react-router-dom';
 
 const sanitizeRestProps = ({
     children,
@@ -96,7 +97,9 @@ const TabbedShowLayout = ({
                     tab && isValidElement(tab) ? (
                         <Route
                             exact
-                            path={getTabFullPath(tab, index, match.url)}
+                            path={escapePath(
+                                getTabFullPath(tab, index, match.url)
+                            )}
                             render={() =>
                                 cloneElement(tab, {
                                     context: 'content',

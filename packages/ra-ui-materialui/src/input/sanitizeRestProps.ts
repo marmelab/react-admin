@@ -1,4 +1,5 @@
 export default ({
+    allowEmpty,
     alwaysOn,
     basePath,
     component,
@@ -16,7 +17,6 @@ export default ({
     optionValue,
     record,
     resource,
-    allowEmpty,
     source,
     textAlign,
     translate,

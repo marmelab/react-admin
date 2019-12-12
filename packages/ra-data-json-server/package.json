@@ -1,6 +1,6 @@
 {
     "name": "ra-data-json-server",
-    "version": "3.0.0",
+    "version": "3.0.4",
     "description": "JSON Server data provider for react-admin",
     "main": "lib/index.js",
     "module": "esm/index.js",
@@ -25,8 +25,8 @@
         "watch": "rimraf ./lib && tsc --watch"
     },
     "dependencies": {
-        "query-string": "~5.1.1",
-        "ra-core": "^3.0.0"
+        "query-string": "~6.9.0",
+        "ra-core": "^3.0.4"
     },
     "devDependencies": {
         "cross-env": "^5.2.0",

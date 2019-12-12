@@ -66,6 +66,7 @@ describe('List Page', () => {
 
         it('should hide filter when clicking on hide button', () => {
             ListPagePosts.showFilter('title');
+            cy.contains('1-1 of 1');
             ListPagePosts.hideFilter('title');
 
             cy.get(ListPagePosts.elements.filter('title')).should(

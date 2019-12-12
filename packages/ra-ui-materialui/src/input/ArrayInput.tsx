@@ -1,6 +1,6 @@
 import React, { cloneElement, Children } from 'react';
 import PropTypes from 'prop-types';
-import { isRequired, FieldTitle } from 'ra-core';
+import { isRequired, FieldTitle, composeValidators } from 'ra-core';
 import { useFieldArray } from 'react-final-form-arrays';
 import { InputLabel, FormControl } from '@material-ui/core';
 
@@ -60,9 +60,13 @@ export const ArrayInput = ({
     margin = 'dense',
     ...rest
 }) => {
+    const sanitizedValidate = Array.isArray(validate)
+        ? composeValidators(validate)
+        : validate;
+
     const fieldProps = useFieldArray(source, {
         initialValue: defaultValue,
-        validate,
+        validate: sanitizedValidate,
         ...rest,
     });
 

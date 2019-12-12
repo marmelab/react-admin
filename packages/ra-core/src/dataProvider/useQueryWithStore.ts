@@ -117,12 +117,18 @@ const useQueryWithStore = (
         loaded: data !== undefined && !isEmptyList(data),
     });
     if (!isEqual(state.data, data) || state.total !== total) {
-        setState({
-            ...state,
-            data,
-            total,
-            loaded: true,
-        });
+        if (isNaN(total)) {
+            console.error(
+                'Total from response is not a number. Please check your dataProvider or the API.'
+            );
+        } else {
+            setState({
+                ...state,
+                data,
+                total,
+                loaded: true,
+            });
+        }
     }
     const dataProvider = useDataProvider();
     useEffect(() => {

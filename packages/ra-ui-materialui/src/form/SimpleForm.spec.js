@@ -1,5 +1,6 @@
 import { cleanup } from '@testing-library/react';
 import React from 'react';
+import expect from 'expect';
 import { renderWithRedux } from 'ra-core';
 
 import SimpleForm from './SimpleForm';
@@ -58,5 +59,50 @@ describe('<SimpleForm />', () => {
         );
 
         expect(queryByText('submitOnEnter: true')).not.toBeNull();
+    });
+
+    it('should not alter default margin or variant', () => {
+        const { queryByLabelText } = renderWithRedux(
+            <SimpleForm>
+                <TextInput source="name" />
+            </SimpleForm>
+        );
+        const inputElement = queryByLabelText(
+            'resources.undefined.fields.name'
+        );
+        expect(inputElement.classList).toContain('MuiFilledInput-input');
+        expect(inputElement.parentElement.parentElement.classList).toContain(
+            'MuiFormControl-marginDense'
+        );
+    });
+
+    it('should pass variant and margin to child inputs', () => {
+        const { queryByLabelText } = renderWithRedux(
+            <SimpleForm variant="outlined" margin="normal">
+                <TextInput source="name" />
+            </SimpleForm>
+        );
+        const inputElement = queryByLabelText(
+            'resources.undefined.fields.name'
+        );
+        expect(inputElement.classList).toContain('MuiOutlinedInput-input');
+        expect(inputElement.parentElement.parentElement.classList).toContain(
+            'MuiFormControl-marginNormal'
+        );
+    });
+
+    it('should allow input children to override variant and margin', () => {
+        const { queryByLabelText } = renderWithRedux(
+            <SimpleForm variant="standard" margin="none">
+                <TextInput source="name" variant="outlined" margin="normal" />
+            </SimpleForm>
+        );
+        const inputElement = queryByLabelText(
+            'resources.undefined.fields.name'
+        );
+        expect(inputElement.classList).toContain('MuiOutlinedInput-input');
+        expect(inputElement.parentElement.parentElement.classList).toContain(
+            'MuiFormControl-marginNormal'
+        );
     });
 });

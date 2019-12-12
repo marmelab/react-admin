@@ -1054,6 +1054,7 @@ export default withStyles(styles)(PostList);
 
 **Tip**: You can use the `Datagrid` component with [custom queries](./Actions.md#usequery-hook):
 
+{% raw %}
 ```jsx
 import keyBy from 'lodash/keyBy'
 import { useQuery, Datagrid, TextField, Pagination, Loading } from 'react-admin'
@@ -1099,6 +1100,7 @@ const CustomList = () => {
     )
 }
 ```
+{% endraw %}
 
 ## The `<SimpleList>` component
 

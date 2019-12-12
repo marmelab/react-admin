@@ -487,6 +487,41 @@ export default (type, params) => {
 }
 ```
 
+## The `authProvider` Must Handle Permissions
+
+React-admin calls the `authProvider` to get the permissions for each page - using the `AUTH_GET_PERMISSIONS` verb. While in 2.x, implementing this `AUTH_GET_PERMISSIONS` verb was optional, it becomes compulsory in 3.0 as soon as you provide a custom `authProvider`. You can simply return a resolved Promise to ignore permissions handling.
+
+```diff
+// in src/authProvider.js
+-import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR, AUTH_CHECK } from 'react-admin';
++import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR, AUTH_CHECK, AUTH_GET_PERMISSIONS } from 'react-admin';
+
+export default (type, params) => {
+    if (type === AUTH_LOGIN) {
+        // ...
+    }
+    if (type === AUTH_LOGOUT) {
+        // ...
+    }
+    if (type === AUTH_ERROR) {
+        // ...
+    }
+    if (type === AUTH_CHECK) {
+        const { resource } = params;
+        if (resource === 'posts') {
+            // check credentials for the posts resource
+        }
+        if (resource === 'comments') {
+            // check credentials for the comments resource
+        }
+    }
++   if (type === AUTH_GET_PERMISSIONS) {
++       return Promise.resolve();
++   }
+    return Promise.reject('Unknown method');
+};
+```
+
 ## The `authProvider` No Longer Receives Default Parameters
 
 When calling the `authProvider` for permissions (with the `AUTH_GET_PERMISSIONS` verb), react-admin used to include the `pathname` as second parameter. That allowed you to return different permissions based on the page. In a similar fashion, for the `AUTH_CHECK` call, the `params` argument contained the `resource` name, allowing different checks for different resources.
@@ -533,6 +568,23 @@ If you have custom Login or Logout buttons dispatching these actions, they will 
 If you had custom reducer or sagas based on these actions, they will no longer work. You will have to reimplement that custom logic using the new authentication hooks. 
 
 **Tip**: If you need to clear the Redux state, you can dispatch the `CLEAR_STATE` action.
+
+## Login uses children instead of a loginForm prop
+
+If you were using `Login` with a custom login form, you now need to pass that as a child instead of a prop of `Login`.
+
+```diff
+import { Login } from 'react-admin';
+const LoginPage = () => (
+     <Login
+-        loginForm={<LoginForm />}
+         backgroundImage={backgroundImage}
+-    />
++    >
++        <LoginForm />
++    </Login>
+ );
+```
 
 ## i18nProvider Signature Changed
 
@@ -1019,6 +1071,51 @@ const PostEdit = props =>
             </FormTab>
         </TabbedForm>
     </Edit>;
+```
+
+## Prefilling Some Fields Of A `<Create>` Page Needs Different URL Syntax
+
+We've described how to pre-fill some fields in the create form in an [Advanced Tutorial](https://marmelab.com/blog/2018/07/09/react-admin-tutorials-form-for-related-records.html). In v2, you had to pass all the fields to be pre-filled as search parameters. In v3, you have to pass a single `source` search parameter containing a stringified object:
+
+```jsx
+const AddNewCommentButton = ({ record }) => (
+  <Button
+    component={Link}
+    to={{
+      pathname: "/comments/create",
+-     search: `?post_id=${record.id}`,
++     search: `?source=${JSON.stringify({ post_id: record.id })}`,
+    }}
+    label="Add a comment"
+  >
+    <ChatBubbleIcon />
+  </Button>
+);
+```
+
+That's what the `<CloneButton>` does in react-admin v3:
+
+```jsx
+export const CloneButton = ({
+    basePath = '',
+    label = 'ra.action.clone',
+    record = {},
+    icon = <Queue />,
+    ...rest
+}) => (
+    <Button
+        component={Link}
+        to={{
+            pathname: `${basePath}/create`,
+            search: stringify({ source: JSON.stringify(omitId(record)) }),
+        }}
+        label={label}
+        onClick={stopPropagation}
+        {...sanitizeRestProps(rest)}
+    >
+        {icon}
+    </Button>
+);
 ```
 
 ## The `<AutocompleteInput>` And `<AutocompleteArrayInput>` Components No Longer Support Certain Props

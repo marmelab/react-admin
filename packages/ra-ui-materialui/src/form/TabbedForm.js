@@ -1,15 +1,14 @@
 import React, { Children, isValidElement } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { Route } from 'react-router-dom';
+import { Route, useRouteMatch, useLocation } from 'react-router-dom';
 import Divider from '@material-ui/core/Divider';
 import { makeStyles } from '@material-ui/core/styles';
-import { FormWithRedirect } from 'ra-core';
+import { escapePath, FormWithRedirect } from 'ra-core';
 import get from 'lodash/get';
 
 import Toolbar from './Toolbar';
 import TabbedFormTabs, { getTabFullPath } from './TabbedFormTabs';
-import { useRouteMatch, useLocation } from 'react-router-dom';
 
 /**
  * Form layout where inputs are divided by tab, one input per line.
@@ -168,7 +167,12 @@ export const TabbedFormView = ({
                     children,
                     (tab, index) =>
                         tab && (
-                            <Route exact path={getTabFullPath(tab, index, url)}>
+                            <Route
+                                exact
+                                path={escapePath(
+                                    getTabFullPath(tab, index, url)
+                                )}
+                            >
                                 {routeProps =>
                                     isValidElement(tab)
                                         ? React.cloneElement(tab, {
@@ -177,8 +181,10 @@ export const TabbedFormView = ({
                                               record,
                                               basePath,
                                               hidden: !routeProps.match,
-                                              variant,
-                                              margin,
+                                              variant:
+                                                  tab.props.variant || variant,
+                                              margin:
+                                                  tab.props.margin || margin,
                                           })
                                         : null
                                 }

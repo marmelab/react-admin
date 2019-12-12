@@ -39,7 +39,6 @@ export const LoadingIndicator = ({
 LoadingIndicator.propTypes = {
     classes: PropTypes.object,
     className: PropTypes.string,
-    isLoading: PropTypes.bool,
     width: PropTypes.string,
 };
 

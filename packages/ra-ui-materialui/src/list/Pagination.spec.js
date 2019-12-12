@@ -39,6 +39,7 @@ describe('<Pagination />', () => {
         });
 
         it('should not display a pagination limit on an out of bounds page', () => {
+            jest.spyOn(console, 'error').mockImplementationOnce(() => {});
             const { queryByText } = render(
                 <ThemeProvider theme={theme}>
                     <Pagination {...defaultProps} total={10} page={2} />

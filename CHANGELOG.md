@@ -1,5 +1,64 @@
 # Changelog
 
+## v3.0.4
+
+* Fix typos, syntax errors and anchors references in the docs ([4152](https://github.com/marmelab/react-admin/pull/4152)) ([WiXSL](https://github.com/WiXSL))
+* Fix deprecated `useField` documentation ([4151](https://github.com/marmelab/react-admin/pull/4151)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `ReferenceField` when used inside form ([4147](https://github.com/marmelab/react-admin/pull/4147)) ([fzaninotto](https://github.com/fzaninotto))
+* fix `<RadioButtonGroupInput onChange` prop being ignored ([4123](https://github.com/marmelab/react-admin/pull/4123)) ([ThieryMichel](https://github.com/ThieryMichel))
+* Fix `Input` components ignore `variant` prop ([4142](https://github.com/marmelab/react-admin/pull/4142)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `make doc` command fails in development ([4143](https://github.com/marmelab/react-admin/pull/4143)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix prop sanitatization for `ReferenceInput` ([4139](https://github.com/marmelab/react-admin/pull/4139)) ([Kmaschta](https://github.com/Kmaschta))
+* Fix `<FileInput onDrop` option ([4140](https://github.com/marmelab/react-admin/pull/4140)) ([Kmaschta](https://github.com/Kmaschta))
+* Fix `ReferenceArrayInput` ignores `parse` and `format` props ([4138](https://github.com/marmelab/react-admin/pull/4138)) ([Kmaschta](https://github.com/Kmaschta))
+* Fix cloned record reverts values when submitting ([4130](https://github.com/marmelab/react-admin/pull/4130)) ([m4theushw](https://github.com/m4theushw))
+* Fix `RadioButtonGroupInput` option not being checked when numeric ids are used ([4128](https://github.com/marmelab/react-admin/pull/4128)) ([m4theushw](https://github.com/m4theushw))
+
+## v3.0.3
+
+* Fix typo in `fullWidth` Input prop documentation ([4119](https://github.com/marmelab/react-admin/pull/4119)) ([JoonsungUm](https://github.com/JoonsungUm))
+* Fix outdated mention of Redux-form in Readme ([4108](https://github.com/marmelab/react-admin/pull/4108)) ([kopax](https://github.com/kopax))
+* Fix `<TextInput endAdornment` when resettable ([4107](https://github.com/marmelab/react-admin/pull/4107)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<ArrayInput>` usage in `<FilterForm>` ([4105](https://github.com/marmelab/react-admin/pull/4105)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix typo in `<FormDataConsumer>` docs  ([4104](https://github.com/marmelab/react-admin/pull/4104)) ([tdeo](https://github.com/tdeo))
+* Fix form values sanitization messes with JSON values ([4103](https://github.com/marmelab/react-admin/pull/4103)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<FilterForm>` doesn't use default values for `<BooleanInput>` ([4101](https://github.com/marmelab/react-admin/pull/4101)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix regression in `<ReferenceArrayInput>` (`idsToGetFromStore` error) ([4099](https://github.com/marmelab/react-admin/pull/4099)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix incorrect `dataProvider` leads to infinite render loop ([4097](https://github.com/marmelab/react-admin/pull/4097)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `fullWidth` support on `<AutoCompleteInput>` ([4096](https://github.com/marmelab/react-admin/pull/4096)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix missing mention about `AUTH_GET_PERMISSIONS` in Upgrade guide ([4088](https://github.com/marmelab/react-admin/pull/4088)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix unused prop in `<LoadingIndicator>` ([4085](https://github.com/marmelab/react-admin/pull/4085)) ([kopax](https://github.com/kopax))
+* Fix Form breaks when setting undefined value to object ([4082](https://github.com/marmelab/react-admin/pull/4082)) ([fzaninotto](https://github.com/fzaninotto))
+* Migrate half of the Demo to Typescript  ([4081](https://github.com/marmelab/react-admin/pull/4081)) ([djhi](https://github.com/djhi))
+* Fix missing dependency in `ra-ui-material-ui` packages.json ([4077](https://github.com/marmelab/react-admin/pull/4077)) ([kopax](https://github.com/kopax))
+
+## v3.0.2
+
+* Fix duplicated import in `<TabbedForm>` ([4074](https://github.com/marmelab/react-admin/pull/4074)) ([kopax](https://github.com/kopax))
+* Fix `<DatagridRow rowClick` event handling ([4063](https://github.com/marmelab/react-admin/pull/4063)) ([djhi](https://github.com/djhi))
+* Fix warnings on Logout on Demo ([4062](https://github.com/marmelab/react-admin/pull/4062)) ([djhi](https://github.com/djhi))
+* Fix `<ArrayInput>` validation ([4061](https://github.com/marmelab/react-admin/pull/4061)) ([djhi](https://github.com/djhi))
+* Fix support of GraphQL interface type ([3712](https://github.com/marmelab/react-admin/pull/3712)) ([MichielDeMey](https://github.com/MichielDeMey))
+* Fix `ra-data-graphql-simple`: Queries that have the same type defined multiple times are being dropped ([3900](https://github.com/marmelab/react-admin/pull/3900)) ([Ashenback](https://github.com/Ashenback))
+* Fix warning about unmounted component after Login on Demo ([4059](https://github.com/marmelab/react-admin/pull/4059)) ([djhi](https://github.com/djhi))
+* Fix `<AutocompleteInput>` default width ([4055](https://github.com/marmelab/react-admin/pull/4055)) ([djhi](https://github.com/djhi))
+* Fix `List` does not refresh correctly after optimistic update ([4058](https://github.com/marmelab/react-admin/pull/4058)) ([djhi](https://github.com/djhi))
+* Fix `<Create>` form prefill ([4053](https://github.com/marmelab/react-admin/pull/4053)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix console errors in tests ([4050](https://github.com/marmelab/react-admin/pull/4050)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix missing `useFilterState` export ([4051](https://github.com/marmelab/react-admin/pull/4051)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<AutocompleteArrayInput>` inside `<ReferenceArrayInput>` ([4042](https://github.com/marmelab/react-admin/pull/4042)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix outdated mention of `ra-realtime` in the Ecosystem doc ([4045](https://github.com/marmelab/react-admin/pull/4045)) ([esistgut](https://github.com/esistgut))
+
+## v3.0.1
+
+* Fix `<ReferenceInput>` should not set filter in getList when q is empty ([4039](https://github.com/marmelab/react-admin/pull/4039)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<Sidebar>` classes can't be overridden ([4038](https://github.com/marmelab/react-admin/pull/4038)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<AutocompleteInput>` required label ([4034](https://github.com/marmelab/react-admin/pull/4034)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<TabbedForm>` and `<TabbedShowLayout>` do not support parenthesis in id ([4028](https://github.com/marmelab/react-admin/pull/4028)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix wrong syntax in custom menu example ([4023](https://github.com/marmelab/react-admin/pull/4023)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix missing mention in Upgrade doc about `<Login>` using children instead of a loginForm prop ([4022](https://github.com/marmelab/react-admin/pull/4022)) ([christiaanwesterbeek](https://github.com/christiaanwesterbeek))
+* Fix internal cross-package dependencies to use table v3 ([4013](https://github.com/marmelab/react-admin/pull/4013)) ([WiXSL](https://github.com/WiXSL))
+
 ## v3.0.0
 
 * Fix IE11 support on demo ([4007](https://github.com/marmelab/react-admin/pull/4007)) ([m4theushw](https://github.com/m4theushw))

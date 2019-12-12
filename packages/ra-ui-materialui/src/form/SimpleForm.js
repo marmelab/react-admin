@@ -90,16 +90,20 @@ const SimpleFormView = ({
         {...sanitizeRestProps(rest)}
     >
         <CardContentInner>
-            {Children.map(children, input => (
-                <FormInput
-                    basePath={basePath}
-                    input={input}
-                    record={record}
-                    resource={resource}
-                    variant={variant}
-                    margin={margin}
-                />
-            ))}
+            {Children.map(
+                children,
+                input =>
+                    input && (
+                        <FormInput
+                            basePath={basePath}
+                            input={input}
+                            record={record}
+                            resource={resource}
+                            variant={variant}
+                            margin={margin}
+                        />
+                    )
+            )}
         </CardContentInner>
         {toolbar &&
             React.cloneElement(toolbar, {

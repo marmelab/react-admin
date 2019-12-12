@@ -26,7 +26,6 @@ import { all, fork } from 'redux-saga/effects';
 import {
     adminReducer,
     adminSaga,
-    defaultI18nProvider,
     USER_LOGOUT,
 } from 'react-admin';
 
