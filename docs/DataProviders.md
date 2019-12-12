@@ -386,7 +386,7 @@ dataProvider.getManyReference('comments', {
     target: 'post_id',
     id: 123,
     sort: { field: 'created_at', order: 'DESC' }
-});
+})
 .then(response => console.log(response));
 
 // {
