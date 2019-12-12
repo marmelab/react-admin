@@ -588,7 +588,7 @@ React-admin uses the keys `ra.page.empty` and `ra.page.invite` when displaying t
 If you want to override these messages in a specific resource you can add the following keys to your translation:
 
 - `resources.${resourceName}.empty` for the primary message (e.g. "No posts yet.")
-- `resources.${resourceName}.invite` for the message inviting the user to create one  (e.g. "Do you want to create one?")
+- `resources.${resourceName}.invite` for the message inviting the user to create one (e.g. "Do you want to create one?")
 
 ## Silencing Translation Warnings
 
