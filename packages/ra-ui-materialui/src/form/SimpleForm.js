@@ -99,8 +99,8 @@ const SimpleFormView = ({
                             input={input}
                             record={record}
                             resource={resource}
-                            variant={variant}
-                            margin={margin}
+                            variant={input.props.variant || variant}
+                            margin={input.props.margin || margin}
                         />
                     )
             )}
