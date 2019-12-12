@@ -703,7 +703,7 @@ export default {
 }
 ```
 
-See the [Translation documentation](Translation.md#translating-error-messages) for details.
+See the [Translation documentation](Translation.md#translation-messages) for details.
 
 **Tip**: Make sure to define validation functions or array of functions in a variable, instead of defining them directly in JSX. This can result in a new function or array at every render, and trigger infinite rerender.
 
