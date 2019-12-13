@@ -67,7 +67,7 @@ Show.propTypes = {
     title: PropTypes.node,
 };
 
-export const useStyles = makeStyles({
+const useStyles = makeStyles({
     root: {},
     main: {
         display: 'flex',

@@ -19,7 +19,7 @@ import DefaultActions from './ListActions';
 
 const DefaultBulkActionButtons = props => <BulkDeleteButton {...props} />;
 
-export const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(theme => ({
     root: {},
     main: {
         display: 'flex',
