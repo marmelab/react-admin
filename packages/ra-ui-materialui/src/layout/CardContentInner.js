@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import CardContent from '@material-ui/core/CardContent';
 import { makeStyles } from '@material-ui/core/styles';
 
-var useStyles = makeStyles(
+const useStyles = makeStyles(
     theme => ({
         root: {
             paddingTop: 0,
