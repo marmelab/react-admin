@@ -381,14 +381,14 @@ React-admin provides guessers for the `List` view (`ListGuesser`), the `Edit` vi
 
 The `<SimpleForm>` component receives the `record` as prop from its parent component. It is responsible for rendering the actual form. It is also responsible for validating the form data. Finally, it receives a `handleSubmit` function as prop, to be called with the updated record as argument when the user submits the form.
 
-The `<SimpleForm>` renders its child components line by line (within `<div>` components). It uses `react-final-form`.
+The `<SimpleForm>` renders its child components line by line (within `<div>` components). It accepts Input and Field components as children. It relies on `react-final-form` for form handling.
 
 ![post edition form](./img/post-edition.png)
 
 By default the `<SimpleForm>` submits the form when the user presses `ENTER`. If you want
 to change this behaviour you can pass `false` for the `submitOnEnter` property, and the user will only be able to submit by pressing the save button. This can be useful e.g. if you have an input widget using `ENTER` for a special function.
 
-Here are all the props accepted by the `<SimpleForm>` component:
+Here are all the props you can set on the `<SimpleForm>` component:
 
 * [`initialValues`](#default-values)
 * [`validate`](#validation)
@@ -397,8 +397,6 @@ Here are all the props accepted by the `<SimpleForm>` component:
 * [`toolbar`](#toolbar)
 * [`variant`](#variant)
 * [`margin`](#margin)
-* `save`: The function invoked when the form is submitted. This is passed automatically by `react-admin` when the form component is used inside `Create` and `Edit` components.
-* `saving`: A boolean indicating whether a save operation is ongoing. This is passed automatically by `react-admin` when the form component is used inside `Create` and `Edit` components.
 
 ```jsx
 export const PostCreate = (props) => (
@@ -411,6 +409,11 @@ export const PostCreate = (props) => (
     </Create>
 );
 ```
+
+**Tip**: `Create` and `Edit` inject more props to their child. So `SimpleForm` also expects these props to be set (but you shouldn't set them yourself):
+
+* `save`: The function invoked when the form is submitted.
+* `saving`: A boolean indicating whether a save operation is ongoing.
 
 ## The `<TabbedForm>` component
 
@@ -884,7 +887,21 @@ Here are the props received by the `Toolbar` component when passed as the `toolb
 
 **Tip**: To alter the form values before submitting, you should use the `handleSubmit` prop. See [Altering the Form Values before Submitting](#altering-the-form-values-before-submitting) for more information and examples.
 
-## Variant
+## Customizing The Form Layout
+
+You can customize each row in a `<SimpleForm>` or in a `<TabbedForm>` by passing props to the Input components:
+
+* `className`
+* [`variant`](#variant)
+* [`margin`](#margin)
+* [`formClassName`](#formClassName)
+* [`fullWidth`](#fullWidth)
+
+You can find more about these props in [the Input documentation](./Inputs.md#common-input-props).
+
+You can also [wrap inputs inside containers](#custom-row-container), or [create a custom Form component](#custom-form-component), alternative to `<SimpleForm>` or `<TabbedForm>`. 
+
+### Variant
 
 By default, react-admin input components use the Material Design "filled" variant. If you want to use the "standard" or "outlined" variants, you can either set the `variant` prop on each Input component individually, or set the `variant` prop directly on the Form component. In that case, the Form component will transmit the `variant` to each Input.
 
@@ -915,7 +932,7 @@ export const PostEdit = (props) => (
 );
 ```
 
-## Margin
+### Margin
 
 By default, react-admin input components use the Material Design "dense" margin. If you want to use the "normal" or "none" margins, you can either set the `margin` prop on each Input component individually, or set the `margin` prop directly on the Form component. In that case, the Form component will transmit the `margin` to each Input.
 
@@ -929,7 +946,7 @@ export const PostEdit = (props) => (
 );
 ```
 
-## Customizing Input Container Styles
+### `formClassName`
 
 The input components are wrapped inside a `div` to ensure a good looking form by default. You can pass a `formClassName` prop to the input components to customize the style of this `div`. For example, here is how to display two inputs on the same line:
 
@@ -953,7 +970,73 @@ export const UserEdit = props => {
 }
 ```
 
-## Customizing The Form Layout
+### `fullWidth`
+
+If you just need a form row to take the entire form width, use the `fullWidth` prop instead:
+
+```jsx
+const useStyles = makeStyles({
+    inlineBlock: { display: 'inline-flex', marginRight: '1rem' },
+});
+
+export const UserEdit = props => {
+    const classes = useStyles();
+    return (
+        <Edit {...props}>
+            <SimpleForm>
+                <TextInput source="first_name" fullWidth />
+                <TextInput source="last_name" fullWidth />
+                <TextInput source="email" type="email" fullWidth />
+            </SimpleForm>
+        </Edit>
+    )
+}
+```
+
+### Custom Row Container
+
+You may want to customize the styles of Input components by wrapping them inside a container with a custom style. Unfortunately, this doesn't work:
+
+```jsx
+export const PostCreate = (props) => (
+    <Create {...props}>
+        <SimpleForm>
+            {/* this does not work */}
+            <div className="special-input">
+                <TextInput source="title" />
+            </div>
+            <RichTextInput source="body" />
+            <NumberInput source="nb_views" />
+        </SimpleForm>
+    </Create>
+);
+```
+
+That's because `<SimpleForm>` clones its children and injects props to them (like `record` or `resource`). Input and Field components expect these props, but DOM elements don't. That means that if you wrap an Input or a Field element in a `<div>`, you'll get a React warning about unrecognized DOM attributes, and an error about missing props in the child.
+
+You can try passing `className` to the Input element directly - all form inputs accept a `className` prop.
+
+Alternatively, you can create a custom Input component:
+
+```jsx
+const MyTextInput = props => (
+    <div className="special-input">
+        <TextInput {...props} />
+    </div>
+)
+export const PostCreate = (props) => (
+    <Create {...props}>
+        <SimpleForm>
+            {/* this works */}
+            <MyTextInput source="title" />
+            <RichTextInput source="body" />
+            <NumberInput source="nb_views" />
+        </SimpleForm>
+    </Create>
+);
+```
+
+### Custom Form Component
 
 The `<SimpleForm>` and `<TabbedForm>` layouts are quite simple. In order to better use the screen real estate, you may want to arrange inputs differently, e.g. putting them in groups, adding separators, etc. For that purpose, you need to write a custom form layout, and use it instead of `<SimpleForm>`. 
 
