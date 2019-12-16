@@ -1049,6 +1049,30 @@ const PostList = props => {
 export default PostList;
 ```
 
+Thi feature has a limit, though. `Datagrid` inspects its children for `headerClassName` and `cellClassName` props. This means you can't use these props in a *wrapped* component:
+
+```jsx
+const useStyles = makeStyles({
+    priceCell: { backgroundColor: 'blue' },
+});
+
+const PriceField = props => {
+    const classes = useStyles();
+    return <TextField cellClassName={classes.priceCell} {...props} />;
+};
+
+// the cell class name won't be applied here because Datagrid doesn't see it in its children
+export const ProductList = (props) => (
+    <List {...props}>
+        <Datagrid>
+            <PriceField source="price" />
+        </Datagrid>
+    </List>
+);
+```
+
+For this kind of use case, you need to use a [custom datagrid body component](#body-element).
+
 ### Performance
 
 when displaying large pages of data, you might experience some performance issues.
