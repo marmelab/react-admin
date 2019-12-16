@@ -975,22 +975,15 @@ export const UserEdit = props => {
 If you just need a form row to take the entire form width, use the `fullWidth` prop instead:
 
 ```jsx
-const useStyles = makeStyles({
-    inlineBlock: { display: 'inline-flex', marginRight: '1rem' },
-});
-
-export const UserEdit = props => {
-    const classes = useStyles();
-    return (
-        <Edit {...props}>
-            <SimpleForm>
-                <TextInput source="first_name" fullWidth />
-                <TextInput source="last_name" fullWidth />
-                <TextInput source="email" type="email" fullWidth />
-            </SimpleForm>
-        </Edit>
-    )
-}
+export const UserEdit = props => (
+    <Edit {...props}>
+        <SimpleForm>
+            <TextInput source="first_name" fullWidth />
+            <TextInput source="last_name" fullWidth />
+            <TextInput source="email" type="email" fullWidth />
+        </SimpleForm>
+    </Edit>
+);
 ```
 
 ### Custom Row Container
@@ -998,7 +991,7 @@ export const UserEdit = props => {
 You may want to customize the styles of Input components by wrapping them inside a container with a custom style. Unfortunately, this doesn't work:
 
 ```jsx
-export const PostCreate = (props) => (
+export const PostCreate = props => (
     <Create {...props}>
         <SimpleForm>
             {/* this does not work */}
