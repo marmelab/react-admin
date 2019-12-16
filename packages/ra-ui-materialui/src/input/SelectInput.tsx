@@ -19,6 +19,7 @@ import { TextFieldProps } from '@material-ui/core/TextField';
 const sanitizeRestProps = ({
     addLabel,
     allowEmpty,
+    alwaysOn,
     emptyValue,
     basePath,
     choices,
