@@ -25,7 +25,7 @@
         "watch": "rimraf ./lib && tsc --watch"
     },
     "dependencies": {
-        "query-string": "~6.9.0"
+        "query-string": "^5.1.1"
     },
     "devDependencies": {
         "cross-env": "^5.2.0",
