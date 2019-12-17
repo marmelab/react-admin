@@ -1,10 +1,12 @@
 import createPageFactory from '../support/CreatePage';
 import editPageFactory from '../support/EditPage';
+import listPageFactory from '../support/ListPage';
 
 describe('Edit Page', () => {
     const EditPostPage = editPageFactory('/#/posts/5');
     const CreatePostPage = createPageFactory('/#/posts/create');
     const EditCommentPage = editPageFactory('/#/comments/5');
+    const ListPagePosts = listPageFactory('/#/posts');
 
     describe('Title', () => {
         it('should show the correct title in the appBar', () => {
@@ -175,5 +177,29 @@ describe('Edit Page', () => {
         cy.get(EditPostPage.elements.input('category')).should(el =>
             expect(el).to.have.value('')
         );
+    });
+
+    it('should refresh the list when the update fails', () => {
+        ListPagePosts.navigate();
+        ListPagePosts.nextPage(); // Ensure the record is visible in the table
+
+        EditPostPage.navigate();
+        EditPostPage.setInputValue('input', 'title', 'f00bar');
+        EditPostPage.submit();
+
+        cy.get(ListPagePosts.elements.recordRows)
+            .eq(2)
+            .should(el => expect(el).to.contain('f00bar'));
+
+        cy.get('div[role="alertdialog"]');
+        cy.wait(4000); // Wait for the undo notification to disappear
+
+        cy.get('div[role="alertdialog"]').should(el =>
+            expect(el).to.have.text('this title cannot be used')
+        );
+
+        cy.get(ListPagePosts.elements.recordRows)
+            .eq(2)
+            .should(el => expect(el).to.contain('Sed quo et et fugiat modi'));
     });
 });
