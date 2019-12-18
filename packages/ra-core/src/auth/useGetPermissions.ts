@@ -45,7 +45,6 @@ const useGetPermissions = (): GetPermissions => {
     return authProvider ? getPermissions : getPermissionsWithoutProvider;
 };
 
-
 /**
  * Proxy for calling authProvider.getPermissions()
  *
