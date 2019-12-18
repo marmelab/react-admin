@@ -120,4 +120,28 @@ describe('getSuggestions', () => {
         expect(getSuggestions(defaultOptions)(false)).toEqual(choices);
         expect(getSuggestions(defaultOptions)(null)).toEqual(choices);
     });
+
+    it('should return all choices if allowDuplicates is true', () => {
+        expect(
+            getSuggestions({
+                ...defaultOptions,
+                allowDuplicates: true,
+                selectedItem: choices[0],
+            })('')
+        ).toEqual([
+            { id: 1, value: 'one' },
+            { id: 2, value: 'two' },
+            { id: 3, value: 'three' },
+        ]);
+    });
+
+    it('should return all the filtered choices if allowDuplicates is true', () => {
+        expect(
+            getSuggestions({
+                ...defaultOptions,
+                allowDuplicates: true,
+                selectedItem: [choices[0]],
+            })('o')
+        ).toEqual([{ id: 1, value: 'one' }, { id: 2, value: 'two' }]);
+    });
 });

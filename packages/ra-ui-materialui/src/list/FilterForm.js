@@ -9,17 +9,20 @@ import lodashGet from 'lodash/get';
 
 import FilterFormInput from './FilterFormInput';
 
-const useStyles = makeStyles(theme => ({
-    form: {
-        marginTop: -theme.spacing(2),
-        paddingTop: 0,
-        display: 'flex',
-        alignItems: 'flex-end',
-        flexWrap: 'wrap',
-        minHeight: theme.spacing(9.5),
-    },
-    clearFix: { clear: 'right' },
-}));
+const useStyles = makeStyles(
+    theme => ({
+        form: {
+            marginTop: -theme.spacing(2),
+            paddingTop: 0,
+            display: 'flex',
+            alignItems: 'flex-end',
+            flexWrap: 'wrap',
+            minHeight: theme.spacing(9.5),
+        },
+        clearFix: { clear: 'right' },
+    }),
+    { name: 'RaFilterForm' }
+);
 
 const sanitizeRestProps = ({
     anyTouched,

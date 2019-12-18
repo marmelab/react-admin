@@ -7,6 +7,7 @@ import jsonExport from 'jsonexport/dist';
 import {
     BooleanField,
     BulkDeleteButton,
+    BulkExportButton,
     ChipField,
     Datagrid,
     DateField,
@@ -83,6 +84,7 @@ const PostListBulkActions = props => (
     <Fragment>
         <ResetViewsButton {...props} />
         <BulkDeleteButton {...props} />
+        <BulkExportButton {...props} />
     </Fragment>
 );
 

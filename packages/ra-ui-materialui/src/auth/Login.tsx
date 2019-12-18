@@ -33,30 +33,33 @@ interface Props {
     theme: object;
 }
 
-const useStyles = makeStyles((theme: Theme) => ({
-    main: {
-        display: 'flex',
-        flexDirection: 'column',
-        minHeight: '100vh',
-        height: '1px',
-        alignItems: 'center',
-        justifyContent: 'flex-start',
-        backgroundRepeat: 'no-repeat',
-        backgroundSize: 'cover',
-    },
-    card: {
-        minWidth: 300,
-        marginTop: '6em',
-    },
-    avatar: {
-        margin: '1em',
-        display: 'flex',
-        justifyContent: 'center',
-    },
-    icon: {
-        backgroundColor: theme.palette.secondary[500],
-    },
-}));
+const useStyles = makeStyles(
+    (theme: Theme) => ({
+        main: {
+            display: 'flex',
+            flexDirection: 'column',
+            minHeight: '100vh',
+            height: '1px',
+            alignItems: 'center',
+            justifyContent: 'flex-start',
+            backgroundRepeat: 'no-repeat',
+            backgroundSize: 'cover',
+        },
+        card: {
+            minWidth: 300,
+            marginTop: '6em',
+        },
+        avatar: {
+            margin: '1em',
+            display: 'flex',
+            justifyContent: 'center',
+        },
+        icon: {
+            backgroundColor: theme.palette.secondary[500],
+        },
+    }),
+    { name: 'RaLogin' }
+);
 
 /**
  * A standalone login page, to serve as authentication gate to the admin

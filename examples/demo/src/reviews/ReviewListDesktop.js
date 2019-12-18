@@ -14,6 +14,12 @@ const useListStyles = makeStyles({
         borderLeftWidth: 5,
         borderLeftStyle: 'solid',
     },
+    headerCell: {
+        padding: '6px 8px 6px 8px',
+    },
+    rowCell: {
+        padding: '6px 8px 6px 8px',
+    },
     comment: {
         maxWidth: '18em',
         overflow: 'hidden',
@@ -28,14 +34,18 @@ const ReviewListDesktop = props => {
         <Datagrid
             rowClick="edit"
             rowStyle={rowStyle}
-            classes={{ headerRow: classes.headerRow }}
+            classes={{
+                headerRow: classes.headerRow,
+                headerCell: classes.headerCell,
+                rowCell: classes.rowCell,
+            }}
             optimized
             {...props}
         >
             <DateField source="date" />
             <CustomerReferenceField link={false} />
             <ProductReferenceField link={false} />
-            <StarRatingField />
+            <StarRatingField size="small" />
             <TextField source="comment" cellClassName={classes.comment} />
             <TextField source="status" />
         </Datagrid>

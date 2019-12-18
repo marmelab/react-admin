@@ -18,40 +18,43 @@ import DatagridHeaderCell from './DatagridHeaderCell';
 import DatagridLoading from './DatagridLoading';
 import DatagridBody, { PureDatagridBody } from './DatagridBody';
 
-const useStyles = makeStyles(theme => ({
-    table: {
-        tableLayout: 'auto',
-    },
-    thead: {},
-    tbody: {},
-    headerRow: {},
-    headerCell: {},
-    checkbox: {},
-    row: {},
-    clickableRow: {
-        cursor: 'pointer',
-    },
-    rowEven: {},
-    rowOdd: {},
-    rowCell: {},
-    expandHeader: {
-        padding: 0,
-        width: theme.spacing(6),
-    },
-    expandIconCell: {
-        width: theme.spacing(6),
-    },
-    expandIcon: {
-        padding: theme.spacing(1),
-        transform: 'rotate(-90deg)',
-        transition: theme.transitions.create('transform', {
-            duration: theme.transitions.duration.shortest,
-        }),
-    },
-    expanded: {
-        transform: 'rotate(0deg)',
-    },
-}));
+const useStyles = makeStyles(
+    theme => ({
+        table: {
+            tableLayout: 'auto',
+        },
+        thead: {},
+        tbody: {},
+        headerRow: {},
+        headerCell: {},
+        checkbox: {},
+        row: {},
+        clickableRow: {
+            cursor: 'pointer',
+        },
+        rowEven: {},
+        rowOdd: {},
+        rowCell: {},
+        expandHeader: {
+            padding: 0,
+            width: theme.spacing(6),
+        },
+        expandIconCell: {
+            width: theme.spacing(6),
+        },
+        expandIcon: {
+            padding: theme.spacing(1),
+            transform: 'rotate(-90deg)',
+            transition: theme.transitions.create('transform', {
+                duration: theme.transitions.duration.shortest,
+            }),
+        },
+        expanded: {
+            transform: 'rotate(0deg)',
+        },
+    }),
+    { name: 'RaDatagrid' }
+);
 
 /**
  * The Datagrid component renders a list of records as a table.
@@ -110,6 +113,7 @@ function Datagrid({ classes: classesOverride, ...props }) {
         setSort,
         size = 'small',
         total,
+        isRowSelectable,
         version,
         ...rest
     } = props;
@@ -125,14 +129,19 @@ function Datagrid({ classes: classesOverride, ...props }) {
     const handleSelectAll = useCallback(
         event => {
             if (event.target.checked) {
+                const all = ids.concat(
+                    selectedIds.filter(id => !ids.includes(id))
+                );
                 onSelect(
-                    ids.concat(selectedIds.filter(id => !ids.includes(id)))
+                    isRowSelectable
+                        ? all.filter(id => isRowSelectable(data[id]))
+                        : all
                 );
             } else {
                 onSelect([]);
             }
         },
-        [ids, onSelect, selectedIds]
+        [data, ids, onSelect, isRowSelectable, selectedIds]
     );
 
     /**
@@ -162,6 +171,10 @@ function Datagrid({ classes: classesOverride, ...props }) {
         return null;
     }
 
+    const all = isRowSelectable
+        ? ids.filter(id => isRowSelectable(data[id]))
+        : ids;
+
     /**
      * After the initial load, if the data for the list isn't empty,
      * and even if the data is refreshing (e.g. after a filter change),
@@ -190,8 +203,8 @@ function Datagrid({ classes: classesOverride, ...props }) {
                                 color="primary"
                                 checked={
                                     selectedIds.length > 0 &&
-                                    ids.length > 0 &&
-                                    ids.every(id => selectedIds.includes(id))
+                                    all.length > 0 &&
+                                    all.every(id => selectedIds.includes(id))
                                 }
                                 onChange={handleSelectAll}
                             />
@@ -231,6 +244,7 @@ function Datagrid({ classes: classesOverride, ...props }) {
                     resource,
                     rowStyle,
                     selectedIds,
+                    isRowSelectable,
                     version,
                 },
                 children
@@ -264,6 +278,7 @@ Datagrid.propTypes = {
     setSort: PropTypes.func,
     total: PropTypes.number,
     version: PropTypes.number,
+    isRowSelectable: PropTypes.func,
 };
 
 Datagrid.defaultProps = {

@@ -1,4 +1,3 @@
-import downloadCSV from './downloadCSV';
 import escapePath from './escapePath';
 import FieldTitle from './FieldTitle';
 import getFetchedAt from './getFetchedAt';
@@ -16,7 +15,6 @@ import useWhyDidYouUpdate from './useWhyDidYouUpdate';
 import { useSafeSetState, useTimeout } from './hooks';
 
 export {
-    downloadCSV,
     escapePath,
     FieldTitle,
     getFetchedAt,

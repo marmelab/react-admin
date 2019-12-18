@@ -9,34 +9,37 @@ import { useTranslate, sanitizeListRestProps } from 'ra-core';
 
 import TopToolbar from '../layout/TopToolbar';
 
-const useStyles = makeStyles(theme => ({
-    toolbar: {
-        zIndex: 3,
-        color:
-            theme.palette.type === 'light'
-                ? theme.palette.primary.main
-                : theme.palette.text.primary,
-        justifyContent: 'space-between',
-        backgroundColor:
-            theme.palette.type === 'light'
-                ? lighten(theme.palette.primary.light, 0.85)
-                : theme.palette.primary.dark,
-        minHeight: theme.spacing(8),
-        height: theme.spacing(8),
-        transition: `${theme.transitions.create(
-            'height'
-        )}, ${theme.transitions.create('min-height')}`,
-    },
-    buttons: {},
-    collapsed: {
-        minHeight: 0,
-        height: 0,
-        overflowY: 'hidden',
-    },
-    title: {
-        flex: '0 0 auto',
-    },
-}));
+const useStyles = makeStyles(
+    theme => ({
+        toolbar: {
+            zIndex: 3,
+            color:
+                theme.palette.type === 'light'
+                    ? theme.palette.primary.main
+                    : theme.palette.text.primary,
+            justifyContent: 'space-between',
+            backgroundColor:
+                theme.palette.type === 'light'
+                    ? lighten(theme.palette.primary.light, 0.85)
+                    : theme.palette.primary.dark,
+            minHeight: theme.spacing(8),
+            height: theme.spacing(8),
+            transition: `${theme.transitions.create(
+                'height'
+            )}, ${theme.transitions.create('min-height')}`,
+        },
+        buttons: {},
+        collapsed: {
+            minHeight: 0,
+            height: 0,
+            overflowY: 'hidden',
+        },
+        title: {
+            flex: '0 0 auto',
+        },
+    }),
+    { name: 'RaBulkActionsToolbar' }
+);
 
 const BulkActionsToolbar = ({
     basePath,

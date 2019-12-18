@@ -219,6 +219,8 @@ const CommentList = props => (
 
 **Tip**: The `<ExportButton>` limits the main request to the `dataProvider` to 1,000 records. If you want to increase or decrease this limit, pass a `maxResults` prop to the `<ExportButton>` in a custom `<ListActions>` component, as explained in the previous section.
 
+**Tip**: React-admin also provides a `<BulkExportButton>` component that depends on the `exporter`, and that you can use in the `bulkActionButtons` prop of the `<List>` component.
+
 **Tip**: For complex (or large) exports, fetching all the related records and assembling them client-side can be slow. In that case, create the CSV on the server side, and replace the `<ExportButton>` component by a custom one, fetching the CSV route.
 
 ### Bulk Action Buttons
@@ -234,7 +236,7 @@ import ResetViewsButton from './ResetViewsButton';
 const PostBulkActionButtons = props => (
     <Fragment>
         <ResetViewsButton label="Reset Views" {...props} />
-        {/* Add the default bulk delete action */}
+        {/* default bulk delete action */}
         <BulkDeleteButton {...props} />
     </Fragment>
 );
@@ -247,6 +249,8 @@ export const PostList = (props) => (
 ```
 
 ![Bulk Action Buttons](./img/bulk-actions-toolbar.gif)
+
+**Tip**: React-admin provides 2 components that you can use in `bulkActionButtons`: `<BulkDeleteButton>`, and `<BulkExportButton>`.
 
 **Tip**: You can also disable bulk actions altogether by passing `false` to the `bulkActionButtons` prop. When using a `Datagrid` inside a `List` with disabled bulk actions, the checkboxes column won't be added.
 
@@ -364,7 +368,7 @@ export default ResetViewsButton;
 
 **Tip**: `<Confirm>` text props such as `title` and `content` are translatable. You can pass use translation keys in these props.
 
-**Tip**: You can customize the text of the two `<Confirm>` component buttons using the `cancel` and `confirm` prop which accepts translation keys too.
+**Tip**: You can customize the text of the two `<Confirm>` component buttons using the `cancel` and `confirm` props which accept translation keys. You can customize the icons by setting the `ConfirmIcon` and `CancelIcon` props, which accept a SvgIcon type.
 
 **Tip**: React-admin doesn't use the `<Confirm>` component internally, because deletes and updates are applied locally immediately, then dispatched to the server after a few seconds, unless the user chooses to undo the modification. That's what we call optimistic rendering. You can do the same for the `ResetViewsButton` by setting `undoable: true` in the last argument of `useUpdateMany()`, as follows:
 
@@ -569,68 +573,6 @@ export const PostList = (props) => (
 const filterSentToDataProvider = { ...filterDefaultValues, ...filterChosenByUser, ...filters };
 ```
 
-### Pagination
-
-Here are all the props required by the <Pagination> component:
-
-* `page`: The current page number (integer). First page is `1`.
-* `perPage`: The number of records per page.
-* `setPage`: `function(page: number) => void`. A function that set the current page number.
-* `total`: The total number of records.
-
-You don't need to fill these props when you pass the `Pagination` component to the `List` component through the `pagination` prop: `<List pagination={<Pagination />}>`.
-
-You can also replace the default pagination element by your own. For instance, you can modify the default pagination by adjusting the "rows per page" selector.
-
-```jsx
-// in src/MyPagination.js
-import { Pagination, List } from 'react-admin';
-
-const PostPagination = props => <Pagination rowsPerPageOptions={[10, 25, 50, 100]} {...props} />;
-
-export const PostList = (props) => (
-    <List {...props} pagination={<PostPagination />}>
-        ...
-    </List>
-);
-```
-
-**Tip**: Pass an empty array to `rowsPerPageOptions` to disable the rows per page selection.
-
-Alternately, if you want to replace the default pagination by a "<previous - next>" pagination, create a pagination component like the following:
-
-```jsx
-import Button from '@material-ui/core/Button';
-import ChevronLeft from '@material-ui/icons/ChevronLeft';
-import ChevronRight from '@material-ui/icons/ChevronRight';
-import Toolbar from '@material-ui/core/Toolbar';
-
-const PostPagination = ({ page, perPage, total, setPage }) => {
-    const nbPages = Math.ceil(total / perPage) || 1;
-    return (
-        nbPages > 1 &&
-            <Toolbar>
-                {page > 1 &&
-                    <Button color="primary" key="prev" icon={ChevronLeft} onClick={() => setPage(page - 1)}>
-                        Prev
-                    </Button>
-                }
-                {page !== nbPages &&
-                    <Button color="primary" key="next" icon={ChevronRight} onClick={() => setPage(page + 1)} labelPosition="before">
-                        Next
-                    </Button>
-                }
-            </Toolbar>
-    );
-}
-
-export const PostList = (props) => (
-    <List {...props} pagination={<PostPagination />}>
-        ...
-    </List>
-);
-```
-
 ### Aside component
 
 You may want to display additional information on the side of the list. Use the `aside` prop for that, passing the component of your choice:
@@ -682,6 +624,30 @@ const Aside = ({ data, ids }) => (
 );
 ```
 {% endraw %}
+
+### Component
+
+By default, the List view renders the main content area inside a material-ui `<Card>` element. The actual layout of the list depends on the child component you're using (`<Datagrid>`, `<SimpleList>`, or a custom layout component).
+
+Some layouts also use `Card`, in which case the user ends up seeing a card inside a card, which is bad UI. To avoid that, you can override the main area container by passing a `component` prop:
+
+```jsx
+// use a div as root component
+const PostList = props => (
+    <List component="div" {...props}>
+        ...
+    </List>
+);
+
+// use a custom component as root component 
+const PostList = props => (
+    <List component={MyComponent} {...props}>
+        ...
+    </List>
+);
+```
+
+The default value for the `component` prop is `Card`.
 
 ### CSS API
 
@@ -756,6 +722,7 @@ Here are all the props accepted by the component:
 * [`rowStyle`](#row-style-function)
 * [`rowClick`](#rowclick)
 * [`expand`](#expand)
+* [`isRowSelectable`](#isrowselectable)
 
 It renders as many columns as it receives `<Field>` children.
 
@@ -906,6 +873,20 @@ const PostList = props => (
     </List>
 )
 ```
+
+### `isRowSelectable`
+
+You can customize which rows will show a selection checkbox using the `isRowSelectable` prop. It expects a function that will receive the record of each `<DatagridRow>` and returns a boolean expression.  For instance, this code shows a checkbox only for rows with an id greater than 300:
+
+```jsx
+export const PostList = props => (
+    <List {...props}>
+        <Datagrid isRowSelectable={ record => record.id > 300 }>
+            ...
+        </Datagrid>
+    </List>
+);
+```
 {% endraw %}
 
 ![expandable panel](./img/datagrid_expand.gif)
@@ -1049,7 +1030,7 @@ const PostList = props => {
 export default PostList;
 ```
 
-Thi feature has a limit, though. `Datagrid` inspects its children for `headerClassName` and `cellClassName` props. This means you can't use these props in a *wrapped* component:
+This feature has a limit, though. `Datagrid` inspects its children for `headerClassName` and `cellClassName` props. This means you can't use these props in a *wrapped* component:
 
 ```jsx
 const useStyles = makeStyles({
@@ -1371,3 +1352,86 @@ export const UserList = ({ permissions, ...props }) => {
 {% endraw %}
 
 **Tip**: Note how the `permissions` prop is passed down to the custom `filters` component.
+
+## Pagination
+
+Here are all the props required by the <Pagination> component:
+
+* `page`: The current page number (integer). First page is `1`.
+* `perPage`: The number of records per page.
+* `setPage`: `function(page: number) => void`. A function that set the current page number.
+* `total`: The total number of records.
+* `actions`: A component that displays the pagination buttons (default: `PaginationActions`)
+* `limit`: An element that is displayed if there is no data to show (default: `<PaginationLimit>`)
+
+You don't need to fill these props when you pass the `Pagination` component to the `List` component through the `pagination` prop: `<List pagination={<Pagination />}>`.
+
+You can also replace the default pagination element by your own. For instance, you can modify the default pagination by adjusting the "rows per page" selector.
+
+```jsx
+// in src/MyPagination.js
+import { Pagination, List } from 'react-admin';
+
+const PostPagination = props => <Pagination rowsPerPageOptions={[10, 25, 50, 100]} {...props} />;
+
+export const PostList = (props) => (
+    <List {...props} pagination={<PostPagination />}>
+        ...
+    </List>
+);
+```
+
+**Tip**: Pass an empty array to `rowsPerPageOptions` to disable the rows per page selection.
+
+Alternately, if you want to replace the default pagination by a "<previous - next>" pagination, create a pagination component like the following:
+
+```jsx
+import Button from '@material-ui/core/Button';
+import ChevronLeft from '@material-ui/icons/ChevronLeft';
+import ChevronRight from '@material-ui/icons/ChevronRight';
+import Toolbar from '@material-ui/core/Toolbar';
+
+const PostPagination = ({ page, perPage, total, setPage }) => {
+    const nbPages = Math.ceil(total / perPage) || 1;
+    return (
+        nbPages > 1 &&
+            <Toolbar>
+                {page > 1 &&
+                    <Button color="primary" key="prev" icon={ChevronLeft} onClick={() => setPage(page - 1)}>
+                        Prev
+                    </Button>
+                }
+                {page !== nbPages &&
+                    <Button color="primary" key="next" icon={ChevronRight} onClick={() => setPage(page + 1)} labelPosition="before">
+                        Next
+                    </Button>
+                }
+            </Toolbar>
+    );
+}
+
+export const PostList = (props) => (
+    <List {...props} pagination={<PostPagination />}>
+        ...
+    </List>
+);
+```
+
+But if you just want to change the color property of the pagination button, you can extend the existing components:
+
+```jsx
+import {
+    List,
+    Pagination as RaPagination,
+    PaginationActions as RaPaginationActions,
+} from 'react-admin';
+
+export const PaginationActions = props => <RaPaginationActions {...props} color="secondary" />;
+
+export const Pagination = props => <RaPagination {...props} ActionsComponent={PaginationActions} />;
+
+export const UserList = props => (
+    <List {...props} pagination={<Pagination />}>
+    </List>
+);
+```

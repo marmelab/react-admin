@@ -1,10 +1,14 @@
 import React, { useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { TablePagination, Toolbar, useMediaQuery } from '@material-ui/core';
-import { useTranslate, sanitizeListRestProps } from 'ra-core';
+import {
+    useTranslate,
+    sanitizeListRestProps,
+    ComponentPropType,
+} from 'ra-core';
 
-import PaginationActions from './PaginationActions';
-import PaginationLimit from './PaginationLimit';
+import DefaultPaginationActions from './PaginationActions';
+import DefaultPaginationLimit from './PaginationLimit';
 
 const emptyArray = [];
 
@@ -16,6 +20,8 @@ const Pagination = ({
     total,
     setPage,
     setPerPage,
+    actions,
+    limit,
     ...rest
 }) => {
     useEffect(() => {
@@ -64,8 +70,9 @@ const Pagination = ({
     );
 
     if (total === 0) {
-        return loading ? <Toolbar variant="dense" /> : <PaginationLimit />;
+        return loading ? <Toolbar variant="dense" /> : limit;
     }
+
     if (isSmall) {
         return (
             <TablePagination
@@ -80,6 +87,7 @@ const Pagination = ({
             />
         );
     }
+
     return (
         <TablePagination
             count={total}
@@ -87,7 +95,7 @@ const Pagination = ({
             page={page - 1}
             onChangePage={handlePageChange}
             onChangeRowsPerPage={handlePerPageChange}
-            ActionsComponent={PaginationActions}
+            ActionsComponent={actions}
             component="span"
             labelRowsPerPage={translate('ra.navigation.page_rows_per_page')}
             labelDisplayedRows={labelDisplayedRows}
@@ -98,7 +106,9 @@ const Pagination = ({
 };
 
 Pagination.propTypes = {
+    actions: ComponentPropType,
     ids: PropTypes.array,
+    limit: PropTypes.element,
     loading: PropTypes.bool,
     page: PropTypes.number,
     perPage: PropTypes.number,
@@ -110,6 +120,8 @@ Pagination.propTypes = {
 
 Pagination.defaultProps = {
     rowsPerPageOptions: [5, 10, 25],
+    actions: DefaultPaginationActions,
+    limit: <DefaultPaginationLimit />,
 };
 
 export default React.memo(Pagination);

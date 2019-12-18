@@ -18,7 +18,14 @@ export interface CreateControllerProps {
     loaded: boolean;
     saving: boolean;
     defaultTitle: string;
-    save: (record: Partial<Record>, redirect: RedirectionSideEffect) => void;
+    save: (
+        record: Partial<Record>,
+        redirect: RedirectionSideEffect,
+        callbacks?: {
+            onSuccess: () => void;
+            onFailure: (error: string | { message?: string }) => void;
+        }
+    ) => void;
     resource: string;
     basePath: string;
     record?: Partial<Record>;

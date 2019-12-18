@@ -415,15 +415,18 @@ const AutocompleteInput: FunctionComponent<
     );
 };
 
-const useStyles = makeStyles(theme => ({
-    root: {
-        flexGrow: 1,
-        height: 250,
+const useStyles = makeStyles(
+    {
+        root: {
+            flexGrow: 1,
+            height: 250,
+        },
+        container: {
+            flexGrow: 1,
+            position: 'relative',
+        },
     },
-    container: {
-        flexGrow: 1,
-        position: 'relative',
-    },
-}));
+    { name: 'RaAutocompleteInput' }
+);
 
 export default AutocompleteInput;

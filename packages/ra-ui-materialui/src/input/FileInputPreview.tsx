@@ -5,12 +5,15 @@ import RemoveCircle from '@material-ui/icons/RemoveCircle';
 import IconButton from '@material-ui/core/IconButton';
 import { useTranslate } from 'ra-core';
 
-const useStyles = makeStyles(theme => ({
-    removeButton: {},
-    removeIcon: {
-        color: theme.palette.error.main,
-    },
-}));
+const useStyles = makeStyles(
+    theme => ({
+        removeButton: {},
+        removeIcon: {
+            color: theme.palette.error.main,
+        },
+    }),
+    { name: 'RaFileInputPreview' }
+);
 
 interface Props {
     children: ReactNode;

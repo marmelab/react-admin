@@ -11,7 +11,7 @@ type RedirectToFunction = (
     data: any
 ) => string;
 
-export type RedirectionSideEffect = string | false | RedirectToFunction;
+export type RedirectionSideEffect = string | boolean | RedirectToFunction;
 
 interface ActionWithSideEffect {
     type: string;

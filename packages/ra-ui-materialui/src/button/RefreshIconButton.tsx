@@ -1,14 +1,12 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, FC, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import Tooltip from '@material-ui/core/Tooltip';
-import IconButton from '@material-ui/core/IconButton';
+import IconButton, { IconButtonProps } from '@material-ui/core/IconButton';
 import NavigationRefresh from '@material-ui/icons/Refresh';
 import { refreshView, useTranslate } from 'ra-core';
 
-const defaultIcon = <NavigationRefresh />;
-
-const RefreshIconButton = ({
+const RefreshIconButton: FC<RefreshIconProps> = ({
     label = 'ra.action.refresh',
     icon = defaultIcon,
     onClick,
@@ -22,7 +20,7 @@ const RefreshIconButton = ({
             event.preventDefault();
             dispatch(refreshView());
             if (typeof onClick === 'function') {
-                onClick();
+                onClick(event);
             }
         },
         [dispatch, onClick]
@@ -42,6 +40,17 @@ const RefreshIconButton = ({
         </Tooltip>
     );
 };
+
+const defaultIcon = <NavigationRefresh />;
+
+interface Props {
+    className?: string;
+    icon?: ReactElement;
+    label?: string;
+    onClick?: (e: MouseEvent) => void;
+}
+
+export type RefreshIconProps = Props & IconButtonProps;
 
 RefreshIconButton.propTypes = {
     className: PropTypes.string,

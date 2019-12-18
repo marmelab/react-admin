@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, FC, ReactElement, SyntheticEvent } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import { fade } from '@material-ui/core/styles/colorManipulator';
@@ -10,51 +10,22 @@ import {
     useNotify,
     useRedirect,
     CRUD_DELETE,
+    Record,
+    RedirectionSideEffect,
 } from 'ra-core';
 
-import Button from './Button';
+import Button, { ButtonProps } from './Button';
 
-export const sanitizeRestProps = ({
-    basePath,
-    classes,
-    filterValues,
-    handleSubmit,
-    handleSubmitWithRedirect,
-    invalid,
-    label,
-    pristine,
-    resource,
-    saving,
-    selectedIds,
-    undoable,
-    redirect,
-    submitOnEnter,
-    ...rest
-}) => rest;
-
-const useStyles = makeStyles(theme => ({
-    deleteButton: {
-        color: theme.palette.error.main,
-        '&:hover': {
-            backgroundColor: fade(theme.palette.error.main, 0.12),
-            // Reset on mouse devices
-            '@media (hover: none)': {
-                backgroundColor: 'transparent',
-            },
-        },
-    },
-}));
-
-const DeleteWithUndoButton = ({
+const DeleteWithUndoButton: FC<DeleteWithUndoButtonProps> = ({
     label = 'ra.action.delete',
     classes: classesOverride,
     className,
-    icon,
+    icon = defaultIcon,
     onClick,
     resource,
     record,
     basePath,
-    redirect: redirectTo,
+    redirect: redirectTo = 'list',
     ...rest
 }) => {
     const classes = useStyles({ classes: classesOverride });
@@ -93,7 +64,7 @@ const DeleteWithUndoButton = ({
             event.stopPropagation();
             deleteOne();
             if (typeof onClick === 'function') {
-                onClick();
+                onClick(event);
             }
         },
         [deleteOne, onClick]
@@ -117,12 +88,67 @@ const DeleteWithUndoButton = ({
     );
 };
 
+export const sanitizeRestProps = ({
+    classes,
+    handleSubmit,
+    handleSubmitWithRedirect,
+    invalid,
+    label,
+    pristine,
+    resource,
+    saving,
+    undoable,
+    redirect,
+    submitOnEnter,
+    ...rest
+}: DeleteWithUndoButtonProps) => rest;
+
+const useStyles = makeStyles(
+    theme => ({
+        deleteButton: {
+            color: theme.palette.error.main,
+            '&:hover': {
+                backgroundColor: fade(theme.palette.error.main, 0.12),
+                // Reset on mouse devices
+                '@media (hover: none)': {
+                    backgroundColor: 'transparent',
+                },
+            },
+        },
+    }),
+    { name: 'RaDeleteWithUndoButton' }
+);
+
+interface Props {
+    basePath?: string;
+    classes?: object;
+    className?: string;
+    icon?: ReactElement;
+    label?: string;
+    onClick?: (e: MouseEvent) => void;
+    record?: Record;
+    redirect?: RedirectionSideEffect;
+    resource?: string;
+    // May be injected by Toolbar - sanitized in DeleteWithUndoButton
+    handleSubmit?: (event?: SyntheticEvent<HTMLFormElement>) => Promise<Object>;
+    handleSubmitWithRedirect?: (redirect?: RedirectionSideEffect) => void;
+    invalid?: boolean;
+    pristine?: boolean;
+    saving?: boolean;
+    submitOnEnter?: boolean;
+    undoable?: boolean;
+}
+
+const defaultIcon = <ActionDelete />;
+
+export type DeleteWithUndoButtonProps = Props & ButtonProps;
+
 DeleteWithUndoButton.propTypes = {
     basePath: PropTypes.string,
     classes: PropTypes.object,
     className: PropTypes.string,
     label: PropTypes.string,
-    record: PropTypes.object,
+    record: PropTypes.any,
     redirect: PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.bool,
@@ -130,12 +156,6 @@ DeleteWithUndoButton.propTypes = {
     ]),
     resource: PropTypes.string,
     icon: PropTypes.element,
-};
-
-DeleteWithUndoButton.defaultProps = {
-    redirect: 'list',
-    undoable: true,
-    icon: <ActionDelete />,
 };
 
 export default DeleteWithUndoButton;

@@ -1,6 +1,7 @@
 import BulkDeleteButton from './BulkDeleteButton';
 import BulkDeleteWithConfirmButton from './BulkDeleteWithConfirmButton';
 import BulkDeleteWithUndoButton from './BulkDeleteWithUndoButton';
+import BulkExportButton from './BulkExportButton';
 import Button from './Button';
 import CloneButton from './CloneButton';
 import CreateButton from './CreateButton';
@@ -19,6 +20,7 @@ export {
     BulkDeleteButton,
     BulkDeleteWithConfirmButton,
     BulkDeleteWithUndoButton,
+    BulkExportButton,
     Button,
     CloneButton,
     CreateButton,

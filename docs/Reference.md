@@ -18,6 +18,8 @@ title: "Reference"
 * [`<AutocompleteInput>`](./Inputs.md#autocompleteinput)
 * [`<BooleanField>`](./Fields.md#booleanfield)
 * [`<BooleanInput>`](./Inputs.md#booleaninput-and-nullablebooleaninput)
+* [`<BulkDeleteButton>`](./List.md#bulk-action-buttons)
+* [`<BulkExportButton>`](./List.md#bulk-action-buttons)
 * [`<CheckboxGroupInput>`](./Inputs.md#checkboxgroupinput)
 * [`<ChipField>`](./Fields.md#chipfield)
 * `<CloneButton>`
@@ -62,6 +64,7 @@ title: "Reference"
 * [`<NumberField>`](./Fields.md#numberfield)
 * [`<NumberInput>`](./Inputs.md#numberinput)
 * [`<Pagination>`](./List.md#pagination)
+* [`<PasswordInput>`](./Inputs.md#passwordinput)
 * [`<Query>`](./Actions.md#legacy-components-query-mutation-and-withdataprovider)
 * [`<RadioButtonGroupInput>`](./Inputs.md#radiobuttongroupinput)
 * [`<ReferenceArrayField>`](./Fields.md#referencearrayfield)

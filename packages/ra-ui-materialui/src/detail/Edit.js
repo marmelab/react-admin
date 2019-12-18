@@ -4,7 +4,7 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import { makeStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
-import { useEditController } from 'ra-core';
+import { useEditController, ComponentPropType } from 'ra-core';
 
 import DefaultActions from './EditActions';
 import TitleForRecord from '../layout/TitleForRecord';
@@ -18,39 +18,41 @@ import TitleForRecord from '../layout/TitleForRecord';
  * that's the job of its child component (usually `<SimpleForm>`),
  * to which it passes pass the `record` as prop.
  *
- * The `<Edit>` component accepts the following props:
+ * The <Edit> component accepts the following props:
  *
- * - aside
- * - title
  * - actions
- *
- * They all expect an element for value.
+ * - aside
+ * - component
+ * - successMessage
+ * - title
+ * - undoable
  *
  * @example
- *     // in src/posts.js
- *     import React from 'react';
- *     import { Edit, SimpleForm, TextInput } from 'react-admin';
  *
- *     export const PostEdit = (props) => (
- *         <Edit {...props}>
- *             <SimpleForm>
- *                 <TextInput source="title" />
- *             </SimpleForm>
- *         </Edit>
- *     );
+ * // in src/posts.js
+ * import React from 'react';
+ * import { Edit, SimpleForm, TextInput } from 'react-admin';
  *
- *     // in src/App.js
- *     import React from 'react';
- *     import { Admin, Resource } from 'react-admin';
+ * export const PostEdit = (props) => (
+ *     <Edit {...props}>
+ *         <SimpleForm>
+ *             <TextInput source="title" />
+ *         </SimpleForm>
+ *     </Edit>
+ * );
  *
- *     import { PostEdit } from './posts';
+ * // in src/App.js
+ * import React from 'react';
+ * import { Admin, Resource } from 'react-admin';
  *
- *     const App = () => (
- *         <Admin dataProvider={...}>
- *             <Resource name="posts" edit={PostEdit} />
- *         </Admin>
- *     );
- *     export default App;
+ * import { PostEdit } from './posts';
+ *
+ * const App = () => (
+ *     <Admin dataProvider={...}>
+ *         <Resource name="posts" edit={PostEdit} />
+ *     </Admin>
+ * );
+ * export default App;
  */
 const Edit = props => <EditView {...props} {...useEditController(props)} />;
 
@@ -70,43 +72,6 @@ Edit.propTypes = {
     successMessage: PropTypes.string,
 };
 
-const useStyles = makeStyles({
-    root: {},
-    main: {
-        display: 'flex',
-    },
-    noActions: {
-        marginTop: '1em',
-    },
-    card: {
-        flex: '1 1 auto',
-    },
-});
-
-const sanitizeRestProps = ({
-    data,
-    hasCreate,
-    hasEdit,
-    hasList,
-    hasShow,
-    id,
-    loading,
-    loaded,
-    saving,
-    resource,
-    title,
-    version,
-    match,
-    location,
-    history,
-    options,
-    locale,
-    permissions,
-    undoable,
-    successMessage,
-    ...rest
-}) => rest;
-
 export const EditView = ({
     actions,
     aside,
@@ -114,6 +79,7 @@ export const EditView = ({
     children,
     classes: classesOverride,
     className,
+    component: Content,
     defaultTitle,
     hasList,
     hasShow,
@@ -159,7 +125,7 @@ export const EditView = ({
                     [classes.noActions]: !actions,
                 })}
             >
-                <Card className={classes.card}>
+                <Content className={classes.card}>
                     {record ? (
                         cloneElement(Children.only(children), {
                             basePath,
@@ -177,7 +143,7 @@ export const EditView = ({
                     ) : (
                         <CardContent>&nbsp;</CardContent>
                     )}
-                </Card>
+                </Content>
                 {aside &&
                     React.cloneElement(aside, {
                         basePath,
@@ -199,6 +165,7 @@ EditView.propTypes = {
     children: PropTypes.element,
     classes: PropTypes.object,
     className: PropTypes.string,
+    component: ComponentPropType,
     defaultTitle: PropTypes.any,
     hasList: PropTypes.bool,
     hasShow: PropTypes.bool,
@@ -212,6 +179,47 @@ EditView.propTypes = {
 
 EditView.defaultProps = {
     classes: {},
+    component: Card,
 };
+
+export const useStyles = makeStyles(
+    {
+        root: {},
+        main: {
+            display: 'flex',
+        },
+        noActions: {
+            marginTop: '1em',
+        },
+        card: {
+            flex: '1 1 auto',
+        },
+    },
+    { name: 'RaEdit' }
+);
+
+const sanitizeRestProps = ({
+    data,
+    hasCreate,
+    hasEdit,
+    hasList,
+    hasShow,
+    id,
+    loading,
+    loaded,
+    saving,
+    resource,
+    title,
+    version,
+    match,
+    location,
+    history,
+    options,
+    locale,
+    permissions,
+    undoable,
+    successMessage,
+    ...rest
+}) => rest;
 
 export default Edit;

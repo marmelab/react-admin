@@ -111,11 +111,14 @@ ReferenceField.defaultProps = {
     link: 'edit',
 };
 
-const useStyles = makeStyles(theme => ({
-    link: {
-        color: theme.palette.primary.main,
-    },
-}));
+const useStyles = makeStyles(
+    theme => ({
+        link: {
+            color: theme.palette.primary.main,
+        },
+    }),
+    { name: 'RaReferenceField' }
+);
 
 // useful to prevent click bubbling in a datagrid with rowClick
 const stopPropagation = e => e.stopPropagation();

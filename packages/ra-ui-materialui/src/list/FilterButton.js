@@ -9,9 +9,12 @@ import lodashGet from 'lodash/get';
 import FilterButtonMenuItem from './FilterButtonMenuItem';
 import Button from '../button/Button';
 
-const useStyles = makeStyles({
-    root: { display: 'inline-block' },
-});
+const useStyles = makeStyles(
+    {
+        root: { display: 'inline-block' },
+    },
+    { name: 'RaFilterButton' }
+);
 
 const FilterButton = ({
     filters,

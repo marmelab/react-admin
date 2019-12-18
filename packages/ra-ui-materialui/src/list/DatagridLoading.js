@@ -1,4 +1,5 @@
 import React, { memo } from 'react';
+import PropTypes from 'prop-types';
 import Table from '@material-ui/core/Table';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
@@ -10,12 +11,15 @@ import Checkbox from '@material-ui/core/Checkbox';
 import classnames from 'classnames';
 import { makeStyles } from '@material-ui/core/styles';
 
-const useStyles = makeStyles(theme => ({
-    root: {
-        backgroundColor: theme.palette.grey[300],
-        display: 'flex',
-    },
-}));
+const useStyles = makeStyles(
+    theme => ({
+        root: {
+            backgroundColor: theme.palette.grey[300],
+            display: 'flex',
+        },
+    }),
+    { name: 'RaDatagridLoading' }
+);
 
 const Placeholder = ({ classes: classesOverride }) => {
     const classes = useStyles({ classes: classesOverride });
@@ -105,5 +109,15 @@ const DatagridLoading = ({
         </TableBody>
     </Table>
 );
+
+DatagridLoading.propTypes = {
+    classes: PropTypes.object,
+    className: PropTypes.string,
+    expand: PropTypes.oneOfType([PropTypes.element, PropTypes.elementType]),
+    hasBulkActions: PropTypes.bool,
+    nbChildren: PropTypes.number,
+    nbFakeLines: PropTypes.number,
+    size: PropTypes.oneOf(['small', 'medium']),
+};
 
 export default memo(DatagridLoading);

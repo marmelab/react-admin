@@ -1,5 +1,37 @@
 # Changelog
 
+## v3.1.0
+
+* Add link to `ra-resource-aggregator` in Ecosystem doc ([4177](https://github.com/marmelab/react-admin/pull/4177)) ([dryhten](https://github.com/dryhten))
+* Add Form customization documentation ([4175](https://github.com/marmelab/react-admin/pull/4175)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix warning in `<SelectInput>` when `alwaysOn` is true  ([4174](https://github.com/marmelab/react-admin/pull/4174)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix duplicate `query-string` package ([4173](https://github.com/marmelab/react-admin/pull/4173)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `cellClassName` shortcoming isn't documented  ([4172](https://github.com/marmelab/react-admin/pull/4172)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix upgrade guide misses `redux-saga` version requirement  ([4171](https://github.com/marmelab/react-admin/pull/4171)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix typo in custom Actions documentation ([4168](https://github.com/marmelab/react-admin/pull/4168)) ([gartner](https://github.com/gartner))
+* Fix a couple variables defined with `var` instead of `const` ([4162](https://github.com/marmelab/react-admin/pull/4162)) ([WiXSL](https://github.com/WiXSL))
+* Fix typo in README ([4159](https://github.com/marmelab/react-admin/pull/4159)) ([erikras](https://github.com/erikras))
+* Fix `useStyles` hooks exported by mistake in `ra-ui-materialui` ([4153](https://github.com/marmelab/react-admin/pull/4153)) ([WiXSL](https://github.com/WiXSL))
+* Add ability to extend pagination more easily ([4132](https://github.com/marmelab/react-admin/pull/4132)) ([Kmaschta](https://github.com/Kmaschta))
+* Add the ability to override form layouts in a simpler way - introducing `<FormWithRedirect>` ([4116](https://github.com/marmelab/react-admin/pull/4116)) ([fzaninotto](https://github.com/fzaninotto))
+* Add `<BulkExportButton>` component  ([4109](https://github.com/marmelab/react-admin/pull/4109)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix bad rebase (re-apply changes from ba48c62 accidentally overridden by fd7ba05) ([4076](https://github.com/marmelab/react-admin/pull/4076)) ([WiXSL](https://github.com/WiXSL))
+* Add ability to extend `useEditController` ([4075](https://github.com/marmelab/react-admin/pull/4075)) ([Kmaschta](https://github.com/Kmaschta))
+* Add types for button components  ([4071](https://github.com/marmelab/react-admin/pull/4071)) ([fzaninotto](https://github.com/fzaninotto))
+* Add documentation for `isRowSelectable` prop ([4064](https://github.com/marmelab/react-admin/pull/4064)) ([WiXSL](https://github.com/WiXSL))
+* Add tooltip for `<BooleanField>` labels (instead of hidden text) ([4054](https://github.com/marmelab/react-admin/pull/4054)) ([fzaninotto](https://github.com/fzaninotto))
+* Add `allowDuplicates` for `<AutocompleteArrayInput>` ([4026](https://github.com/marmelab/react-admin/pull/4026)) ([alanpoulain](https://github.com/alanpoulain))
+* Update `<Tab>` and `<FormTab>` components to function components ([4002](https://github.com/marmelab/react-admin/pull/4002)) ([WiXSL](https://github.com/WiXSL))
+* Add PropTypes to `<SimpleForm>` and `<TabbedForm>` components ([3996](https://github.com/marmelab/react-admin/pull/3996)) ([WiXSL](https://github.com/WiXSL))
+* Add `isRowSelectable` function prop to `<Datagrid>` component ([3964](https://github.com/marmelab/react-admin/pull/3964)) ([WiXSL](https://github.com/WiXSL))
+* Add `name` option to `makeStyles` ([3946](https://github.com/marmelab/react-admin/pull/3946)) ([DanudeSandstorm](https://github.com/DanudeSandstorm))
+* Add custom icons for `<Confirm>` action buttons ([3812](https://github.com/marmelab/react-admin/pull/3812)) ([WiXSL](https://github.com/WiXSL))
+* Add ability to hide `<SelectInput>` label ([3806](https://github.com/marmelab/react-admin/pull/3806)) ([WiXSL](https://github.com/WiXSL))
+* Add props to allow customizing the title and content of `<Confirm>` modals for delete buttons ([3760](https://github.com/marmelab/react-admin/pull/3760)) ([macklin-10x](https://github.com/macklin-10x))-10x
+* Add comprehensive param support for `ra-data-graphql-simple` adapter `GET_MANY_REFERENCE` requests ([3759](https://github.com/marmelab/react-admin/pull/3759)) ([maxschridde1494](https://github.com/maxschridde1494))
+* Add `TransitionProps` prop to `<SimpleFormIterator>` component ([3226](https://github.com/marmelab/react-admin/pull/3226)) ([cherniavskii](https://github.com/cherniavskii))
+* Add `<PasswordInput>` component ([3013](https://github.com/marmelab/react-admin/pull/3013)) ([Kmaschta](https://github.com/Kmaschta))
+
 ## v3.0.4
 
 * Fix typos, syntax errors and anchors references in the docs ([4152](https://github.com/marmelab/react-admin/pull/4152)) ([WiXSL](https://github.com/WiXSL))

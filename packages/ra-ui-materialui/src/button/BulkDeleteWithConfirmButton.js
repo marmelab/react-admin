@@ -27,22 +27,27 @@ const sanitizeRestProps = ({
     ...rest
 }) => rest;
 
-const useStyles = makeStyles(theme => ({
-    deleteButton: {
-        color: theme.palette.error.main,
-        '&:hover': {
-            backgroundColor: fade(theme.palette.error.main, 0.12),
-            // Reset on mouse devices
-            '@media (hover: none)': {
-                backgroundColor: 'transparent',
+const useStyles = makeStyles(
+    theme => ({
+        deleteButton: {
+            color: theme.palette.error.main,
+            '&:hover': {
+                backgroundColor: fade(theme.palette.error.main, 0.12),
+                // Reset on mouse devices
+                '@media (hover: none)': {
+                    backgroundColor: 'transparent',
+                },
             },
         },
-    },
-}));
+    }),
+    { name: 'RaBulkDeleteWithConfirmButton' }
+);
 
 const BulkDeleteWithConfirmButton = ({
     basePath,
     classes: classesOverride,
+    confirmTitle,
+    confirmContent,
     crudDeleteMany,
     icon,
     label,
@@ -105,8 +110,8 @@ const BulkDeleteWithConfirmButton = ({
             <Confirm
                 isOpen={isOpen}
                 loading={loading}
-                title="ra.message.bulk_delete_title"
-                content="ra.message.bulk_delete_content"
+                title={confirmTitle}
+                content={confirmContent}
                 translateOptions={{
                     smart_count: selectedIds.length,
                     name: inflection.humanize(
@@ -127,6 +132,8 @@ const BulkDeleteWithConfirmButton = ({
 BulkDeleteWithConfirmButton.propTypes = {
     basePath: PropTypes.string,
     classes: PropTypes.object,
+    confirmTitle: PropTypes.string,
+    confirmContent: PropTypes.string,
     label: PropTypes.string,
     resource: PropTypes.string.isRequired,
     selectedIds: PropTypes.arrayOf(PropTypes.any).isRequired,
@@ -134,6 +141,8 @@ BulkDeleteWithConfirmButton.propTypes = {
 };
 
 BulkDeleteWithConfirmButton.defaultProps = {
+    confirmTitle: 'ra.message.bulk_delete_title',
+    confirmContent: 'ra.message.bulk_delete_content',
     label: 'ra.action.delete',
     icon: <ActionDelete />,
 };

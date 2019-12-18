@@ -8,34 +8,41 @@ import { setSidebarVisibility } from 'ra-core';
 export const DRAWER_WIDTH = 240;
 export const CLOSED_DRAWER_WIDTH = 55;
 
-const useStyles = makeStyles(theme => ({
-    drawerPaper: {
-        position: 'relative',
-        height: 'auto',
-        overflowX: 'hidden',
-        width: props =>
-            props.open
-                ? lodashGet(theme, 'sidebar.width', DRAWER_WIDTH)
-                : lodashGet(theme, 'sidebar.closedWidth', CLOSED_DRAWER_WIDTH),
-        transition: theme.transitions.create('width', {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.leavingScreen,
-        }),
-        backgroundColor: 'transparent',
-        marginTop: '0.5em',
-        borderRight: 'none',
-        [theme.breakpoints.only('xs')]: {
-            marginTop: 0,
-            height: '100vh',
-            position: 'inherit',
-            backgroundColor: theme.palette.background.default,
+const useStyles = makeStyles(
+    theme => ({
+        drawerPaper: {
+            position: 'relative',
+            height: 'auto',
+            overflowX: 'hidden',
+            width: props =>
+                props.open
+                    ? lodashGet(theme, 'sidebar.width', DRAWER_WIDTH)
+                    : lodashGet(
+                          theme,
+                          'sidebar.closedWidth',
+                          CLOSED_DRAWER_WIDTH
+                      ),
+            transition: theme.transitions.create('width', {
+                easing: theme.transitions.easing.sharp,
+                duration: theme.transitions.duration.leavingScreen,
+            }),
+            backgroundColor: 'transparent',
+            marginTop: '0.5em',
+            borderRight: 'none',
+            [theme.breakpoints.only('xs')]: {
+                marginTop: 0,
+                height: '100vh',
+                position: 'inherit',
+                backgroundColor: theme.palette.background.default,
+            },
+            [theme.breakpoints.up('md')]: {
+                border: 'none',
+                marginTop: '1.5em',
+            },
         },
-        [theme.breakpoints.up('md')]: {
-            border: 'none',
-            marginTop: '1.5em',
-        },
-    },
-}));
+    }),
+    { name: 'RaSidebar' }
+);
 
 const Sidebar = ({
     children,

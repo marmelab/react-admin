@@ -7,8 +7,8 @@ import {
     ReferenceManyField,
     SimpleForm,
     TextInput,
+    useTranslate,
 } from 'react-admin';
-import { useTranslate } from 'ra-core';
 
 import ThumbnailField from '../products/ThumbnailField';
 import ProductRefField from '../products/ProductRefField';
