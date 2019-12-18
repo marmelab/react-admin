@@ -12,8 +12,7 @@ This 30 minutes tutorial will expose how to create a new admin app based on an e
 React-admin uses React. We'll use Facebook's [create-react-app](https://github.com/facebookincubator/create-react-app) to create an empty React app, and install the `react-admin` package:
 
 ```sh
-npm install -g create-react-app
-create-react-app test-admin
+npx create-react-app test-admin
 cd test-admin/
 yarn add react-admin ra-data-json-server prop-types
 yarn start
