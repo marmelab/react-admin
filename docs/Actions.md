@@ -417,7 +417,7 @@ const ApproveButton = ({ record }) => {
 };
 ```
 
-**Tip**: When using the Data Provider hooks for regular pages (List, Edt, etc), react-admin always specifies a custom action name, related to the component asking for the data. For instance, in the `<List>` page, the action is called `CRUD_GET_LIST`. So unless you call the Data Provider hooks yourself, no `CUSTOM_FETCH` action should be dispatched.
+**Tip**: When using the Data Provider hooks for regular pages (List, Edit, etc), react-admin always specifies a custom action name, related to the component asking for the data. For instance, in the `<List>` page, the action is called `CRUD_GET_LIST`. So unless you call the Data Provider hooks yourself, no `CUSTOM_FETCH` action should be dispatched.
 
 ## Legacy Components: `<Query>`, `<Mutation>`, and `withDataProvider`
 
