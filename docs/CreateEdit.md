@@ -894,8 +894,8 @@ You can customize each row in a `<SimpleForm>` or in a `<TabbedForm>` by passing
 * `className`
 * [`variant`](#variant)
 * [`margin`](#margin)
-* [`formClassName`](#formClassName)
-* [`fullWidth`](#fullWidth)
+* [`formClassName`](#formclassname)
+* [`fullWidth`](#fullwidth)
 
 You can find more about these props in [the Input documentation](./Inputs.md#common-input-props).
 
