@@ -1030,7 +1030,7 @@ const PostList = props => {
 export default PostList;
 ```
 
-Thi feature has a limit, though. `Datagrid` inspects its children for `headerClassName` and `cellClassName` props. This means you can't use these props in a *wrapped* component:
+This feature has a limit, though. `Datagrid` inspects its children for `headerClassName` and `cellClassName` props. This means you can't use these props in a *wrapped* component:
 
 ```jsx
 const useStyles = makeStyles({
