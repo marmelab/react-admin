@@ -222,8 +222,8 @@ Lastly, would you need to override the props of the suggestions container (a `Po
 | ---|---|---|---|--- |
 | `allowEmpty` | Optional | `boolean` | `false` | If `false` and the searchText typed did not match any suggestion, the searchText will revert to the current value when the field is blurred. If `true` and the `searchText` is set to `''` then the field will set the input value to `null`. |
 | `choices` | Required | `Object[]` | - | List of items to autosuggest |
-| `emptyValue` | Optional | anything | `null` | The value to use for the empty element |
-| `emptyText` | Optional | `string` | '' | The text to use for the empty element |
+| `emptyValue` | Optional | anything | `''` | The value to use for the empty element |
+| `emptyText` | Optional | `string` | `''` | The text to use for the empty element |
 | `matchSuggestion` | Optional | `Function` | - | Required if `optionText` is a React element. Function returning a boolean indicating whether a choice matches the filter. `(filter, choice) => boolean`
 | `optionText` | Optional | <code>string &#124; Function</code> | `name` | Fieldname of record to display in the suggestion item or function which accepts the correct record as argument (`(record)=> {string}`) |
 | `optionValue` | Optional | `string` | `id` | Fieldname of record containing the value to use as input value  |
@@ -1019,9 +1019,9 @@ const FullNameField = ({ record }) => <span>{record.first_name} {record.last_nam
 <SelectInput source="gender" choices={choices} optionText={<FullNameField />}/>
 ```
 
-Enabling the `allowEmpty` props adds an empty choice (with a default `null` value, which you can overwrite with the `emptyValue` prop) on top of the options, and makes the value nullable. You can furthermore customize the `MenuItem` for the empty choice by using the `emptyText` prop, which can receive either a string or a React Element, which doesn't receive any props.
+Enabling the `allowEmpty` props adds an empty choice (with a default `''` value, which you can overwrite with the `emptyValue` prop) on top of the options. You can furthermore customize the `MenuItem` for the empty choice by using the `emptyText` prop, which can receive either a string or a React Element, which doesn't receive any props.
 ```jsx
-<SelectInput source="category" allowEmpty emptyValue="" choices={[
+<SelectInput source="category" allowEmpty emptyValue={null} choices={[
     { id: 'programming', name: 'Programming' },
     { id: 'lifestyle', name: 'Lifestyle' },
     { id: 'photography', name: 'Photography' },
