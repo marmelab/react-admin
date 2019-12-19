@@ -98,7 +98,7 @@ interface Options extends UseChoicesOptions {
     emptyText?: string;
     emptyValue?: any;
     limitChoicesToValue?: boolean;
-    matchSuggestion?: (filter: string) => (suggestion: any) => boolean;
+    matchSuggestion?: (filter: string, suggestion: any) => boolean;
     suggestionLimit?: number;
     selectedItem?: any | any[];
 }
