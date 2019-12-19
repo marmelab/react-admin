@@ -1,5 +1,13 @@
 # Changelog
 
+## v3.1.1
+
+* Fix `SelectInput` doc about `emptyValue` defaultValue ([4193](https://github.com/marmelab/react-admin/pull/4193)) ([alanpoulain](https://github.com/alanpoulain))
+* Fix `matchSuggestion` type in `useSuggestion` hook ([4192](https://github.com/marmelab/react-admin/pull/4192)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `ReferenceError` in `useGetPermissions` hook due to temporal dead zone  ([4191](https://github.com/marmelab/react-admin/pull/4191)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix unexpected token error in `FormWithRedirect`  ([4190](https://github.com/marmelab/react-admin/pull/4190)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix bad anchors in Create Edit docs ([4188](https://github.com/marmelab/react-admin/pull/4188)) ([WiXSL](https://github.com/WiXSL))
+
 ## v3.1.0
 
 * Add link to `ra-resource-aggregator` in Ecosystem doc ([4177](https://github.com/marmelab/react-admin/pull/4177)) ([dryhten](https://github.com/dryhten))
