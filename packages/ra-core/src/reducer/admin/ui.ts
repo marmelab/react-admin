@@ -26,8 +26,14 @@ export interface UIState {
     readonly viewVersion: number;
 }
 
+let isDesktop = false;
+
+if (typeof window !== 'undefined') {
+    isDesktop = window.matchMedia('(min-width: 960px)').matches;
+}
+
 const defaultState: UIState = {
-    sidebarOpen: false,
+    sidebarOpen: isDesktop,
     optimistic: false,
     viewVersion: 0,
 };
