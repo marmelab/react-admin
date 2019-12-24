@@ -24,6 +24,7 @@ interface Params {
     authProvider?: AuthProvider;
     customReducers?: any;
     customSagas?: any[];
+    rootSagaMiddleware?: Function;
     i18nProvider?: I18nProvider;
     initialState?: InitialState;
     locale?: string;
@@ -36,6 +37,7 @@ export default ({
     authProvider = null,
     customSagas = [],
     initialState,
+    rootSagaMiddleware = null,
 }: Params) => {
     const appReducer = createAppReducer(customReducers, history);
 
@@ -61,7 +63,7 @@ export default ({
             [adminSaga(dataProvider, authProvider), ...customSagas].map(fork)
         );
     };
-    const sagaMiddleware = createSagaMiddleware();
+    const sagaMiddleware = rootSagaMiddleware || createSagaMiddleware();
     const typedWindow = window as Window;
 
     const composeEnhancers =

@@ -370,6 +370,7 @@ export interface AdminProps {
     customReducers?: object;
     customRoutes?: CustomRoutes;
     customSagas?: any[];
+    rootSagaMiddleware?: Function;
     dashboard?: DashboardComponent;
     dataProvider: DataProvider | LegacyDataProvider;
     history?: History;

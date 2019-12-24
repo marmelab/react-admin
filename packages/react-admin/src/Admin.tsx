@@ -89,6 +89,7 @@ const Admin: FunctionComponent<AdminProps> = ({
     children,
     customReducers,
     customRoutes = [],
+    rootSagaMiddleware,
     customSagas,
     dashboard,
     dataProvider,
@@ -128,6 +129,7 @@ const Admin: FunctionComponent<AdminProps> = ({
             history={history}
             customReducers={customReducers}
             customSagas={customSagas}
+            rootSagaMiddleware={rootSagaMiddleware}
             initialState={initialState}
         >
             <AdminUI

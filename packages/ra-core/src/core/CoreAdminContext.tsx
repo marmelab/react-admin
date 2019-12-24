@@ -29,6 +29,7 @@ export interface AdminContextProps {
     authProvider?: AuthProvider | LegacyAuthProvider;
     children?: AdminChildren;
     customSagas?: any[];
+    rootSagaMiddleware?: Function;
     customReducers?: object;
     customRoutes?: CustomRoutes;
     dashboard?: DashboardComponent;
@@ -48,6 +49,7 @@ const CoreAdminContext: FunctionComponent<AdminContextProps> = ({
     customReducers,
     customSagas,
     initialState,
+    rootSagaMiddleware,
 }) => {
     const reduxIsAlreadyInitialized = !!useContext(ReactReduxContext);
 
@@ -96,6 +98,7 @@ React-admin uses this history for its own ConnectedRouter.`);
                     authProvider: finalAuthProvider,
                     customReducers,
                     customSagas,
+                    rootSagaMiddleware,
                     dataProvider: finalDataProvider,
                     initialState,
                     history: finalHistory,
