@@ -54,7 +54,7 @@ interface Option {
  * @param {string} option.resource The current resource name
  * @param {string} option.source The key of the linked resource identifier
  *
- * @returns {ReferenceProps} The reference props
+ * @returns {ReferenceArrayProps} The reference props
  */
 const useReferenceArrayFieldController = ({
     resource,
@@ -76,7 +76,7 @@ const useReferenceArrayFieldController = ({
     };
 };
 
-const indexById = (records: Record[]) =>
+const indexById = (records: Record[] = []) =>
     records
         .filter(r => typeof r !== 'undefined')
         .reduce((prev, current) => {
