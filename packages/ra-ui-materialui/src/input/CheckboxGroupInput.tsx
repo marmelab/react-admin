@@ -17,6 +17,7 @@ const sanitizeRestProps = ({
     setFilter,
     setPagination,
     setSort,
+    loaded,
     ...rest
 }: any) => defaultSanitizeRestProps(rest);
 
