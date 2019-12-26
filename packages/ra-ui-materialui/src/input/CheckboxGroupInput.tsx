@@ -201,7 +201,7 @@ const CheckboxGroupInput: FunctionComponent<
 };
 
 CheckboxGroupInput.propTypes = {
-    choices: PropTypes.arrayOf(PropTypes.object).isRequired,
+    choices: PropTypes.arrayOf(PropTypes.object),
     className: PropTypes.string,
     label: PropTypes.string,
     source: PropTypes.string,
