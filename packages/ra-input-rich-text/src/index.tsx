@@ -1,34 +1,69 @@
 import debounce from 'lodash/debounce';
-import React, { useRef, useEffect, useCallback } from 'react';
-import PropTypes from 'prop-types';
-import Quill from 'quill';
+import React, {
+    useRef,
+    useEffect,
+    useCallback,
+    FunctionComponent,
+    ComponentProps,
+} from 'react';
+import Quill, { QuillOptionsStatic } from 'quill';
 import { useInput, FieldTitle } from 'ra-core';
 import { InputHelperText } from 'ra-ui-materialui';
-import { FormHelperText, FormControl, InputLabel } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import {
+    FormHelperText,
+    FormControl,
+    InputLabel,
+    PropTypes as MuiPropTypes,
+    makeStyles,
+} from '@material-ui/core';
+import PropTypes from 'prop-types';
 
 import styles from './styles';
 
 const useStyles = makeStyles(styles, { name: 'RaRichTextInput' });
 
-const RichTextInput = ({
-    options = {}, // Quill editor options
-    record = {},
-    toolbar = true,
-    fullWidth = true,
-    configureQuill,
-    helperText = false,
-    label,
-    source,
-    resource,
-    variant,
-    margin = 'dense',
-    ...rest
-}) => {
-    const classes = useStyles();
-    const quillInstance = useRef();
-    const divRef = useRef();
-    const editor = useRef();
+interface Props {
+    label?: string | false;
+    options?: QuillOptionsStatic;
+    source: string;
+    toolbar?:
+        | boolean
+        | string[]
+        | Array<any>[]
+        | string
+        | {
+              container: string | string[] | Array<any>[];
+              handlers?: Record<string, Function>;
+          };
+    fullWidth?: boolean;
+    configureQuill?: (instance: Quill) => void;
+    helperText?: ComponentProps<typeof InputHelperText>['helperText'];
+    record?: Record<any, any>;
+    resource?: string;
+    variant?: string;
+    margin?: MuiPropTypes.Margin;
+    [key: string]: any;
+}
+
+const RichTextInput: FunctionComponent<Props> = props => {
+    const {
+        options = {}, // Quill editor options
+        record = {},
+        toolbar = true,
+        fullWidth = true,
+        configureQuill,
+        helperText = false,
+        label,
+        source,
+        resource,
+        variant,
+        margin = 'dense',
+        ...rest
+    } = props;
+    const classes = useStyles(props);
+    const quillInstance = useRef<Quill>();
+    const divRef = useRef<HTMLDivElement>();
+    const editor = useRef<HTMLElement>();
 
     const {
         id,
@@ -127,14 +162,6 @@ RichTextInput.propTypes = {
     label: PropTypes.string,
     options: PropTypes.object,
     source: PropTypes.string,
-    toolbar: PropTypes.oneOfType([
-        PropTypes.array,
-        PropTypes.bool,
-        PropTypes.shape({
-            container: PropTypes.array,
-            handlers: PropTypes.object,
-        }),
-    ]),
     fullWidth: PropTypes.bool,
     configureQuill: PropTypes.func,
 };

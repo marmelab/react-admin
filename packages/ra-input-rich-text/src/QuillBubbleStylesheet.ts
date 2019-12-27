@@ -1,3 +1,5 @@
+import { StyleRules } from '@material-ui/core/styles';
+
 // converted from vendor (node_modules/quill/dist/quill.bubble.css) using the jss cli
 export default {
     '@global': {
@@ -452,7 +454,7 @@ export default {
         '.ql-bubble .ql-stroke-miter': {
             fill: 'none',
             stroke: '#ccc',
-            strokeMiterlimit: '10',
+            strokeMiterlimit: 10,
             strokeWidth: '2',
         },
         '.ql-bubble .ql-fill, .ql-bubble .ql-stroke.ql-fill': {
@@ -468,7 +470,7 @@ export default {
             strokeWidth: '1',
         },
         '.ql-bubble .ql-transparent': {
-            opacity: '0.4',
+            opacity: 0.4,
         },
         '.ql-bubble .ql-direction svg:last-child': {
             display: 'none',
@@ -533,7 +535,7 @@ export default {
             display: 'inline-block',
             float: 'left',
             fontSize: 14,
-            fontWeight: '500',
+            fontWeight: 500,
             height: 24,
             position: 'relative',
             verticalAlign: 'middle',
@@ -567,7 +569,7 @@ export default {
         },
         '.ql-bubble .ql-picker.ql-expanded .ql-picker-label': {
             color: '#777',
-            zIndex: '2',
+            zIndex: 2,
         },
         '.ql-bubble .ql-picker.ql-expanded .ql-picker-label .ql-fill': {
             fill: '#777',
@@ -579,7 +581,7 @@ export default {
             display: 'block',
             marginTop: -1,
             top: '100%',
-            zIndex: '1',
+            zIndex: 1,
         },
         '.ql-bubble .ql-color-picker, .ql-bubble .ql-icon-picker': {
             width: 28,
@@ -785,7 +787,7 @@ export default {
             overflow: 'hidden',
             padding: '5px 15px',
             textDecoration: 'none',
-            zIndex: '1',
+            zIndex: 1,
         },
         '.ql-container.ql-bubble:not(.ql-disabled) a::after': {
             borderTop: '6px solid #444',
@@ -808,4 +810,4 @@ export default {
             visibility: 'visible',
         },
     },
-};
+} as StyleRules;
