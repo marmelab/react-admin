@@ -1474,7 +1474,7 @@ import SelectField from '@material-ui/core/SelectField';
 import MenuItem from '@material-ui/core/MenuItem';
 import { useInput } from 'react-admin';
 
-const SexInput = () => {
+const SexInput = props => {
     const { input, meta: { touched, error } } = useInput(props)
     return (
         <SelectField
