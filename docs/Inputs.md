@@ -1475,7 +1475,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import { useInput } from 'react-admin';
 
 const SexInput = props => {
-    const { input, meta: { touched, error } } = useInput(props)
+    const { input, meta: { touched, error } } = useInput(props);
     return (
         <SelectField
             floatingLabelText="Sex"
