@@ -856,6 +856,25 @@ const App = () => (
 );
 ```
 
+## Using a Custom Logout Button
+
+### Changing the Icon
+
+It is possible to use a completely [custom logout button](./Authentication.md#the-datagrid-component) or you can simply override some properties of the default button. If you want to change the icon, you can use the default `<Logout>` component and pass a different icon as the `icon` prop.
+
+```jsx
+import { Admin, Logout } from 'react-admin';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp'
+
+const MyLogoutButton = props => <Logout {...props} icon={<ExitToAppIcon/>} />;
+
+const App = () => (
+    <Admin logoutButton={MyLogoutButton}>
+        // ...
+    </Admin>
+);
+```
+
 ## Notifications
 
 You can override the notification component, for instance to change the notification duration. It defaults to 4000, i.e. 4 seconds, and you can override it using the `autoHideDuration` prop. For instance, to create a custom Notification component with a 5 seconds default:
