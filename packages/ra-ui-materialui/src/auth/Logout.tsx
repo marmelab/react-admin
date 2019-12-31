@@ -1,4 +1,4 @@
-import React, { useCallback, FunctionComponent } from 'react';
+import React, { useCallback, FunctionComponent, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import { ListItemIcon, MenuItem, makeStyles } from '@material-ui/core';
 import { MenuItemProps } from '@material-ui/core/MenuItem';
@@ -11,6 +11,7 @@ import { useTranslate, useLogout } from 'ra-core';
 interface Props {
     className?: string;
     redirectTo?: string;
+    icon?: ReactElement;
 }
 
 const useStyles = makeStyles(
@@ -31,7 +32,7 @@ const useStyles = makeStyles(
 const LogoutWithRef: FunctionComponent<
     Props & MenuItemProps<'li', { button: true }> // HACK: https://github.com/mui-org/material-ui/issues/16245
 > = React.forwardRef(function Logout(props, ref) {
-    const { className, redirectTo, ...rest } = props;
+    const { className, redirectTo, icon, ...rest } = props;
     const classes = useStyles({}); // the empty {} is a temp fix for https://github.com/mui-org/material-ui/issues/15942
     const translate = useTranslate();
     const logout = useLogout();
@@ -48,7 +49,7 @@ const LogoutWithRef: FunctionComponent<
             {...rest}
         >
             <ListItemIcon className={classes.icon}>
-                <ExitIcon />
+                {icon ? icon : <ExitIcon />}
             </ListItemIcon>
             {translate('ra.auth.logout')}
         </MenuItem>
@@ -58,6 +59,7 @@ const LogoutWithRef: FunctionComponent<
 LogoutWithRef.propTypes = {
     className: PropTypes.string,
     redirectTo: PropTypes.string,
+    icon: PropTypes.element,
 };
 
 export default LogoutWithRef;
