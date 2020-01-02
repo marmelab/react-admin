@@ -610,9 +610,11 @@ import { PasswordInput } from 'react-admin';
 
 **Tip**: It is possible to set the [`autocomplete` attribute](https://developer.mozilla.org/fr/docs/Web/HTML/Attributs/autocomplete) by injecting an input props:
 
+{% raw %}
 ```jsx
 <PasswordInput source="password" inputProps={{ autocomplete: 'current-password' }} />
 ```
+{% endraw %}
 
 ## `<RadioButtonGroupInput>`
 
