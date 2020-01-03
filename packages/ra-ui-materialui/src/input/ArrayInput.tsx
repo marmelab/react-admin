@@ -2,7 +2,7 @@ import React, { cloneElement, Children } from 'react';
 import PropTypes from 'prop-types';
 import { isRequired, FieldTitle, composeValidators } from 'ra-core';
 import { useFieldArray } from 'react-final-form-arrays';
-import { InputLabel, FormControl } from '@material-ui/core';
+import { InputLabel, FormControl, FormHelperText } from '@material-ui/core';
 
 import sanitizeRestProps from './sanitizeRestProps';
 
@@ -51,6 +51,7 @@ export const ArrayInput = ({
     className,
     defaultValue,
     label,
+    helperText,
     children,
     record,
     resource,
@@ -85,6 +86,8 @@ export const ArrayInput = ({
                     isRequired={isRequired(validate)}
                 />
             </InputLabel>
+            {helperText &&
+                <FormHelperText>{helperText}</FormHelperText>}
             {cloneElement(Children.only(children), {
                 ...fieldProps,
                 record,
@@ -103,6 +106,7 @@ ArrayInput.propTypes = {
     defaultValue: PropTypes.any,
     isRequired: PropTypes.bool,
     label: PropTypes.string,
+    helperText: PropTypes.string,
     resource: PropTypes.string,
     source: PropTypes.string,
     record: PropTypes.object,
