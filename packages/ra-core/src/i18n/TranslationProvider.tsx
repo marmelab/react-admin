@@ -2,7 +2,6 @@ import React, {
     useCallback,
     useMemo,
     Children,
-    ReactElement,
     FunctionComponent,
 } from 'react';
 
@@ -13,7 +12,6 @@ import { I18nProvider } from '../types';
 interface Props {
     locale?: string;
     i18nProvider: I18nProvider;
-    children: ReactElement<any>;
 }
 
 /**
