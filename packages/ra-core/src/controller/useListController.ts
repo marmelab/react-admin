@@ -2,6 +2,7 @@ import { isValidElement, ReactElement, useEffect, useMemo } from 'react';
 import inflection from 'inflection';
 import { Location } from 'history';
 import { useSelector, shallowEqual } from 'react-redux';
+import { useLocation } from 'react-router-dom';
 
 import { useCheckMinimumRequiredProps } from './checkMinimumRequiredProps';
 import useListParams from './useListParams';
@@ -29,7 +30,7 @@ export interface ListProps {
     hasEdit?: boolean;
     hasList?: boolean;
     hasShow?: boolean;
-    location: Location;
+    location?: Location;
     path?: string;
     query: ListParams;
     resource: string;
@@ -87,17 +88,12 @@ export interface ListControllerProps {
  * }
  */
 const useListController = (props: ListProps): ListControllerProps => {
-    useCheckMinimumRequiredProps(
-        'List',
-        ['basePath', 'location', 'resource'],
-        props
-    );
+    useCheckMinimumRequiredProps('List', ['basePath', 'resource'], props);
 
     const {
         basePath,
         resource,
         hasCreate,
-        location,
         filterDefaultValues,
         sort = defaultSort,
         perPage = 10,
@@ -110,6 +106,8 @@ const useListController = (props: ListProps): ListControllerProps => {
             '<List> received a React element as `filter` props. If you intended to set the list filter elements, use the `filters` (with an s) prop instead. The `filter` prop is internal and should not be set by the developer.'
         );
     }
+
+    const location = useLocation();
     const translate = useTranslate();
     const notify = useNotify();
     const version = useVersion();
