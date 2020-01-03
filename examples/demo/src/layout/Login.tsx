@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Field, withTypes } from 'react-final-form';
+import { useLocation } from 'react-router-dom';
 
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -15,7 +16,6 @@ import LockIcon from '@material-ui/icons/Lock';
 import { Notification } from 'react-admin';
 import { useTranslate, useLogin, useNotify } from 'ra-core';
 import { lightTheme } from './themes';
-import { Location } from 'history';
 
 const useStyles = makeStyles(theme => ({
     main: {
@@ -78,12 +78,13 @@ interface FormValues {
 
 const { Form } = withTypes<FormValues>();
 
-const Login = ({ location }: { location: Location }) => {
+const Login = () => {
     const [loading, setLoading] = useState(false);
     const translate = useTranslate();
     const classes = useStyles();
     const notify = useNotify();
     const login = useLogin();
+    const location = useLocation<{ nextPathname: string } | null>();
 
     const handleSubmit = (auth: FormValues) => {
         setLoading(true);
