@@ -52,7 +52,11 @@ const Menu = ({
     return (
         <div className={classnames(classes.main, className)} {...rest}>
             {hasDashboard && (
-                <DashboardMenuItem onClick={onMenuClick} sidebarIsOpen={open} />
+                <DashboardMenuItem
+                    onClick={onMenuClick}
+                    dense={dense}
+                    sidebarIsOpen={open}
+                />
             )}
             {resources
                 .filter(r => r.hasList)
