@@ -73,9 +73,13 @@ React-admin requires a valid dataProvider function to work.`);
             <AuthContext.Provider value={finalAuthProvider}>
                 <DataProviderContext.Provider value={finalDataProvider}>
                     <TranslationProvider i18nProvider={i18nProvider}>
-                        <ConnectedRouter history={finalHistory}>
-                            {children}
-                        </ConnectedRouter>
+                        {typeof window !== 'undefined' ? (
+                            <ConnectedRouter history={finalHistory}>
+                                {children}
+                            </ConnectedRouter>
+                        ) : (
+                            children
+                        )}
                     </TranslationProvider>
                 </DataProviderContext.Provider>
             </AuthContext.Provider>
