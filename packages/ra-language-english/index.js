@@ -39,6 +39,8 @@ module.exports = {
             loading: 'Loading',
             not_found: 'Not Found',
             show: '%{name} #%{id}',
+            empty: 'No %{name} yet.',
+            invite: 'Do you want to add one?',
         },
         input: {
             file: {
