@@ -66,6 +66,7 @@ const parse = (value: string) => new Date(value);
 export const DateTimeInput: FunctionComponent<
     InputProps<TextFieldProps> & Omit<TextFieldProps, 'helperText' | 'label'>
 > = ({
+    format = format,
     label,
     helperText,
     margin = 'dense',
@@ -75,6 +76,7 @@ export const DateTimeInput: FunctionComponent<
     options,
     source,
     resource,
+    parse = parse,
     validate,
     variant = 'filled',
     ...rest
