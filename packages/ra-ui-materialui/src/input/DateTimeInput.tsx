@@ -33,7 +33,7 @@ const dateTimeRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/;
  *
  * @param {Date | String} value date string or object
  */
-const format = (value: string | Date) => {
+const dateTimeFormatter = (value: string | Date) => {
     // null, undefined and empty string values should not go through convertDateToString
     // otherwise, it returns undefined and will make the input an uncontrolled one.
     if (value == null || value === '') {
@@ -58,7 +58,7 @@ const format = (value: string | Date) => {
  * @param {String} value Date string, formatted as yyyy-MM-ddThh:mm
  * @return {Date}
  */
-const parse = (value: string) => new Date(value);
+const dateTimeParser = (value: string) => new Date(value);
 
 /**
  * Input component for entering a date and a time with timezone, using the browser locale
@@ -66,7 +66,7 @@ const parse = (value: string) => new Date(value);
 export const DateTimeInput: FunctionComponent<
     InputProps<TextFieldProps> & Omit<TextFieldProps, 'helperText' | 'label'>
 > = ({
-    format = format,
+    format = dateTimeFormatter,
     label,
     helperText,
     margin = 'dense',
@@ -76,7 +76,7 @@ export const DateTimeInput: FunctionComponent<
     options,
     source,
     resource,
-    parse = parse,
+    parse = dateTimeParser,
     validate,
     variant = 'filled',
     ...rest
