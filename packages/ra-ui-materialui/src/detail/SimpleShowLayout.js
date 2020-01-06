@@ -49,7 +49,7 @@ const sanitizeRestProps = ({
  *     );
  *     export default App;
  */
-export const SimpleShowLayout = ({
+const SimpleShowLayout = ({
     basePath,
     className,
     children,
