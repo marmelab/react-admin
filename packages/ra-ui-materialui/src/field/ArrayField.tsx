@@ -78,10 +78,7 @@ const initialState = {
  *     )
  *     TagsField.defaultProps = { addLabel: true };
  */
-export class ArrayField extends Component<
-    FieldProps & InjectedFieldProps,
-    State
-> {
+class ArrayField extends Component<FieldProps & InjectedFieldProps, State> {
     constructor(props: FieldProps & InjectedFieldProps) {
         super(props);
         this.state = props.record
