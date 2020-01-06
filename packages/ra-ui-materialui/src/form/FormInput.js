@@ -14,7 +14,7 @@ const useStyles = makeStyles(
     { name: 'RaFormInput' }
 );
 
-export const FormInput = ({ input, classes: classesOverride, ...rest }) => {
+const FormInput = ({ input, classes: classesOverride, ...rest }) => {
     const classes = useStyles({ classes: classesOverride });
     return input ? (
         <div
