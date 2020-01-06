@@ -2,7 +2,7 @@ import assert from 'assert';
 import { shallow } from 'enzyme';
 import React from 'react';
 
-import { Responsive } from './Responsive';
+import Responsive from './Responsive';
 
 describe('<Responsive>', () => {
     const Small = () => <div />;
