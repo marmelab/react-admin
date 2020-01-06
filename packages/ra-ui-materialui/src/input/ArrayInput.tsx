@@ -1,8 +1,9 @@
 import React, { cloneElement, Children } from 'react';
 import PropTypes from 'prop-types';
-import { isRequired, FieldTitle, composeValidators } from 'ra-core';
+import { isRequired, FieldTitle, composeValidators, useInput } from 'ra-core';
 import { useFieldArray } from 'react-final-form-arrays';
 import { InputLabel, FormControl, FormHelperText } from '@material-ui/core';
+import InputHelperText from './InputHelperText';
 
 import sanitizeRestProps from './sanitizeRestProps';
 
@@ -49,11 +50,16 @@ import sanitizeRestProps from './sanitizeRestProps';
  */
 export const ArrayInput = ({
     className,
+    format,
     defaultValue,
     label,
     helperText,
+    onBlur,
+    onChange,
+    onFocus,
     children,
     record,
+    parse,
     resource,
     source,
     validate,
@@ -68,6 +74,23 @@ export const ArrayInput = ({
     const fieldProps = useFieldArray(source, {
         initialValue: defaultValue,
         validate: sanitizedValidate,
+        ...rest,
+    });
+    
+    const {
+        id,
+        input,
+        isRequired,
+        meta: { error, touched },
+    } = useInput({
+        format,
+        onBlur,
+        onChange,
+        onFocus,
+        parse,
+        resource,
+        source,
+        validate,
         ...rest,
     });
 
@@ -86,8 +109,15 @@ export const ArrayInput = ({
                     isRequired={isRequired(validate)}
                 />
             </InputLabel>
-            {helperText &&
-                <FormHelperText>{helperText}</FormHelperText>}
+            {(touched && error) || helperText ? (
+                <FormHelperText error={touched && !!error}>
+                    <InputHelperText
+                        touched={touched}
+                        error={error}
+                        helperText={helperText}
+                    />
+                </FormHelperText>
+            ) : null}
             {cloneElement(Children.only(children), {
                 ...fieldProps,
                 record,
