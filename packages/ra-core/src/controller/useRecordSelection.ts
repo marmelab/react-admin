@@ -14,7 +14,9 @@ const useSelectItems = (resource: string) => {
     const dispatch = useDispatch();
     const selectedIds = useSelector(
         (reduxState: ReduxState) =>
-            reduxState.admin.resources[resource].list.selectedIds,
+            reduxState.admin.resources[resource]
+                ? reduxState.admin.resources[resource].list.selectedIds
+                : [],
         shallowEqual
     );
     const selectionModifiers = {
