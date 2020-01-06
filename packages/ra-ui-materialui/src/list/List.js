@@ -220,7 +220,7 @@ ListView.defaultProps = {
     pagination: <DefaultPagination />,
 };
 
-export const useStyles = makeStyles(
+const useStyles = makeStyles(
     theme => ({
         root: {},
         main: {
