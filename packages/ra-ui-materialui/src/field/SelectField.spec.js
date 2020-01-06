@@ -3,7 +3,7 @@ import expect from 'expect';
 import { render, cleanup } from '@testing-library/react';
 
 import { TestTranslationProvider, renderWithRedux } from 'ra-core';
-import { SelectField } from './SelectField';
+import SelectField from './SelectField';
 
 describe('<SelectField />', () => {
     afterEach(cleanup);
