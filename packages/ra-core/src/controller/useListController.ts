@@ -41,6 +41,8 @@ const defaultSort = {
     order: SORT_ASC,
 };
 
+const defaultData = {};
+
 export interface ListControllerProps {
     basePath: string;
     currentSort: Sort;
@@ -171,7 +173,7 @@ const useListController = (props: ListProps): ListControllerProps => {
         (state: ReduxState) =>
             state.admin.resources[resource]
                 ? state.admin.resources[resource].data
-                : {},
+                : defaultData,
         shallowEqual
     );
 
