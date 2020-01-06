@@ -244,7 +244,7 @@ ListView.defaultProps = {
     empty: <Empty />,
 };
 
-export const useStyles = makeStyles(
+const useStyles = makeStyles(
     theme => ({
         root: {},
         main: {

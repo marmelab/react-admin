@@ -182,7 +182,7 @@ EditView.defaultProps = {
     component: Card,
 };
 
-export const useStyles = makeStyles(
+const useStyles = makeStyles(
     {
         root: {},
         main: {
