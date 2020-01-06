@@ -171,7 +171,7 @@ const useListController = (props: ListProps): ListControllerProps => {
         (state: ReduxState) =>
             state.admin.resources[resource]
                 ? state.admin.resources[resource].data
-                : null,
+                : {},
         shallowEqual
     );
 
@@ -209,7 +209,8 @@ const useListController = (props: ListProps): ListControllerProps => {
         displayedFilters: query.displayedFilters,
         filterValues: query.filterValues,
         hasCreate,
-        ids,
+        // ids might be null if the resource has not been initialized yet (custom routes for example)
+        ids: ids || [],
         loading,
         loaded,
         onSelect: selectionModifiers.select,
@@ -225,7 +226,8 @@ const useListController = (props: ListProps): ListControllerProps => {
         setPage: queryModifiers.setPage,
         setPerPage: queryModifiers.setPerPage,
         setSort: queryModifiers.setSort,
-        total,
+        // total might be null if the resource has not been initialized yet (custom routes for example)
+        total: total != undefined ? total : 0, // eslint-disable-line eqeqeq
         version,
     };
 };
