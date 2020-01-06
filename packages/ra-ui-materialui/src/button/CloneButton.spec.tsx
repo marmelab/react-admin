@@ -2,7 +2,7 @@ import expect from 'expect';
 import { shallow } from 'enzyme';
 import React from 'react';
 
-import CloneButton from './CloneButton';
+import { CloneButton } from './CloneButton';
 
 describe('<CloneButton />', () => {
     it('should pass a clone of the record in the location state', () => {

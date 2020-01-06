@@ -8,7 +8,7 @@ import { Record } from 'ra-core';
 
 import Button, { ButtonProps } from './Button';
 
-const CloneButton: FC<CloneButtonProps> = ({
+export const CloneButton: FC<CloneButtonProps> = ({
     basePath = '',
     label = 'ra.action.clone',
     record,
