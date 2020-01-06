@@ -1,7 +1,7 @@
 import React from 'react';
 import expect from 'expect';
 import { render, cleanup } from '@testing-library/react';
-import { ImageField } from './ImageField';
+import ImageField from './ImageField';
 
 const defaultProps = {
     classes: {},
