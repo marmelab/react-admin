@@ -48,7 +48,7 @@ interface Props extends FieldProps {
  * <span>mercredi 7 novembre 2012</span>
  */
 
-export const DateField: FunctionComponent<
+const DateField: FunctionComponent<
     Props & InjectedFieldProps & TypographyProps
 > = ({
     className,

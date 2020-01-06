@@ -67,7 +67,7 @@ import { FieldProps, InjectedFieldProps, fieldPropTypes } from './types';
  *
  * **Tip**: <ReferenceField> sets `translateChoice` to false by default.
  */
-export const SelectField: FunctionComponent<
+const SelectField: FunctionComponent<
     ChoicesProps & FieldProps & InjectedFieldProps
 > = ({
     className,

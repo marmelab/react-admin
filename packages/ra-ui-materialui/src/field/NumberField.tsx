@@ -46,7 +46,7 @@ interface Props extends FieldProps {
  * // renders the record { id: 1234, price: 25.99 } as
  * <span>25,99 $US</span>
  */
-export const NumberField: FunctionComponent<
+const NumberField: FunctionComponent<
     Props & InjectedFieldProps & TypographyProps
 > = ({ className, record, source, locales, options, textAlign, ...rest }) => {
     if (!record) {

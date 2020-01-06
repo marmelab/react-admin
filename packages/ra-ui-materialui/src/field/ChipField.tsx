@@ -16,7 +16,7 @@ const useStyles = makeStyles(
     { name: 'RaChipField' }
 );
 
-export const ChipField: FunctionComponent<
+const ChipField: FunctionComponent<
     FieldProps & InjectedFieldProps & ChipProps
 > = ({ className, classes: classesOverride, source, record = {}, ...rest }) => {
     const classes = useStyles({ classes: classesOverride });

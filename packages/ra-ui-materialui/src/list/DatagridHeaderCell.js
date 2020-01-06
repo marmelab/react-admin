@@ -23,7 +23,7 @@ const useStyles = makeStyles(
     { name: 'RaDatagridHeaderCell' }
 );
 
-export const DatagridHeaderCell = ({
+const DatagridHeaderCell = ({
     className,
     classes: classesOverride,
     field,
