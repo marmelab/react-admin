@@ -1,13 +1,23 @@
-import { ApolloClient } from 'apollo-client';
+import { ApolloClient, ApolloClientOptions } from 'apollo-client';
 import {
     HttpLink,
     InMemoryCache,
     IntrospectionFragmentMatcher,
 } from 'apollo-client-preset';
+import { ApolloCache } from 'apollo-cache';
+import { UriFunction } from 'apollo-link-http-common';
 
-export default options => {
+export interface BuildClientOptions<TCacheShape>
+    extends Omit<ApolloClientOptions<TCacheShape>, 'cache'> {
+    uri?: string | UriFunction;
+    cache?: ApolloCache<TCacheShape>;
+}
+
+export default <TCacheShape>(
+    options?: BuildClientOptions<TCacheShape>
+): ApolloClient<TCacheShape> => {
     if (!options) {
-        return new ApolloClient();
+        return new (ApolloClient as any)();
     }
 
     const { cache, link, uri, ...otherOptions } = options;
@@ -29,7 +39,7 @@ export default options => {
     }
 
     if (!cache) {
-        finalCache = new InMemoryCache({ fragmentMatcher }).restore({});
+        finalCache = new InMemoryCache({ fragmentMatcher }).restore({}) as any;
     }
 
     return new ApolloClient({

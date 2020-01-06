@@ -1,3 +1,11 @@
+import ApolloClient, { ApolloQueryResult, QueryOptions } from 'apollo-client';
+import { FetchResult } from 'apollo-link';
+import {
+    MutationOptions,
+    WatchQueryOptions,
+} from 'apollo-client/core/watchQueryOptions';
+import { DocumentNode } from 'graphql';
+import { OperationTypeNode } from 'graphql/language/ast';
 import merge from 'lodash/merge';
 import get from 'lodash/get';
 import pluralize from 'pluralize';
@@ -10,19 +18,18 @@ import {
     UPDATE,
     DELETE,
 } from 'ra-core';
+import { LegacyDataProvider } from 'ra-core/lib';
 
-import buildApolloClient from './buildApolloClient';
-import {
-    QUERY_TYPES as INNER_QUERY_TYPES,
-    MUTATION_TYPES as INNER_MUTATION_TYPES,
-    ALL_TYPES as INNER_ALL_TYPES,
-} from './constants';
-import defaultResolveIntrospection from './introspection';
-export const QUERY_TYPES = INNER_QUERY_TYPES;
-export const MUTATION_TYPES = INNER_MUTATION_TYPES;
-export const ALL_TYPES = INNER_ALL_TYPES;
+import buildApolloClient, { BuildClientOptions } from './buildApolloClient';
+import { OperationName } from './constants';
+import defaultResolveIntrospection, {
+    IntrospectedSchema,
+    IntrospectionOptions,
+} from './introspection';
 
-const defaultOptions = {
+export * from './constants';
+
+const defaultOptions: Partial<GraphQLProviderOptions> = {
     resolveIntrospection: defaultResolveIntrospection,
     introspection: {
         operationNames: {
@@ -47,7 +54,44 @@ const getOptions = (options, aorFetchType, resource) => {
     return options;
 };
 
-export default async options => {
+export interface GraphQLProviderOptions<OtherOptions = any> {
+    client?: ApolloClient<unknown>;
+    clientOptions?: BuildClientOptions<unknown>;
+    introspection?: IntrospectionOptions;
+    resolveIntrospection?: (
+        client: ApolloClient<unknown>,
+        options: IntrospectionOptions
+    ) => Promise<IntrospectedSchema> | IntrospectedSchema;
+    buildQuery: (
+        schema: IntrospectedSchema,
+        otherOptions: OtherOptions
+    ) => (
+        raFetchType: OperationName,
+        resourceName: string,
+        params: any
+    ) => QueryHandler;
+    query?:
+        | QueryOptions
+        | ((resource: string, raFetchType: OperationName) => QueryOptions);
+    mutation?:
+        | MutationOptions
+        | ((resource: string, raFetchType: OperationName) => MutationOptions);
+    watchQuery?:
+        | WatchQueryOptions
+        | ((resource: string, raFetchType: OperationName) => WatchQueryOptions);
+    // @deprecated
+    override?: Record<string, (params: any) => QueryHandler>;
+}
+
+interface QueryHandler {
+    query: DocumentNode;
+    variables: Record<string, any>;
+    parseResponse: (response: ApolloQueryResult<any> | FetchResult) => any;
+}
+
+export default async <Options extends {} = any>(
+    options: Options & GraphQLProviderOptions<Options>
+): Promise<LegacyDataProvider> => {
     const {
         client: clientObject,
         clientOptions,
@@ -56,7 +100,7 @@ export default async options => {
         buildQuery: buildQueryFactory,
         override = {},
         ...otherOptions
-    } = merge({}, defaultOptions, options);
+    } = merge({}, defaultOptions, options) as typeof options;
 
     if (override && process.env.NODE_ENV === 'production') {
         console.warn(
@@ -67,7 +111,7 @@ export default async options => {
 
     const client = clientObject || buildApolloClient(clientOptions);
 
-    let introspectionResults;
+    let introspectionResults: IntrospectedSchema;
     if (introspection) {
         introspectionResults = await resolveIntrospection(
             client,
@@ -75,10 +119,13 @@ export default async options => {
         );
     }
 
-    const buildQuery = buildQueryFactory(introspectionResults, otherOptions);
+    const buildQuery = buildQueryFactory(
+        introspectionResults,
+        otherOptions as Options
+    );
 
     const raDataProvider = (aorFetchType, resource, params) => {
-        const overriddenBuildQuery = get(
+        const overriddenBuildQuery: (params: any) => QueryHandler = get(
             override,
             `${resource}.${aorFetchType}`
         );
@@ -125,7 +172,7 @@ export default async options => {
             ...getOptions(otherOptions.watchQuery, aorFetchType, resource),
         };
 
-        return client.watchQuery(apolloQuery).then(parseResponse);
+        return client.watchQuery(apolloQuery).map(parseResponse);
     };
 
     raDataProvider.saga = () => {};
@@ -133,9 +180,12 @@ export default async options => {
     return raDataProvider;
 };
 
-const getQueryOperation = query => {
+const getQueryOperation = (query: DocumentNode): OperationTypeNode => {
     if (query && query.definitions && query.definitions.length > 0) {
-        return query.definitions[0].operation;
+        const node = query.definitions[0];
+        if (node.kind === 'OperationDefinition') {
+            return node.operation;
+        }
     }
 
     throw new Error('Unable to determine the query operation');

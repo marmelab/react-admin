@@ -1,3 +1,5 @@
+import { ApolloClient } from 'apollo-client';
+import { IntrospectionType } from 'graphql';
 import resolveIntrospection, {
     filterTypesByIncludeExclude,
 } from './introspection';
@@ -17,7 +19,7 @@ describe('introspection', () => {
             expect(
                 filterTypesByIncludeExclude({ include: ['Post', 'Comment'] })({
                     name: 'NotMe',
-                })
+                } as IntrospectionType)
             ).toBe(false);
         });
 
@@ -25,7 +27,7 @@ describe('introspection', () => {
             expect(
                 filterTypesByIncludeExclude({ include: ['Post', 'Comment'] })({
                     name: 'Post',
-                })
+                } as IntrospectionType)
             ).toBe(true);
         });
 
@@ -33,7 +35,7 @@ describe('introspection', () => {
             expect(
                 filterTypesByIncludeExclude({ exclude: ['NotMe'] })({
                     name: 'NotMe',
-                })
+                } as IntrospectionType)
             ).toBe(false);
         });
 
@@ -41,34 +43,34 @@ describe('introspection', () => {
             expect(
                 filterTypesByIncludeExclude({ exclude: ['NotMe'] })({
                     name: 'Post',
-                })
+                } as IntrospectionType)
             ).toBe(true);
         });
 
         it('return true with an include option being a function returning true', () => {
             const include = jest.fn(() => true);
-            const type = { name: 'Post' };
+            const type = { name: 'Post' } as IntrospectionType;
             expect(filterTypesByIncludeExclude({ include })(type)).toBe(true);
             expect(include).toHaveBeenCalledWith(type);
         });
 
         it('return false with an include option being a function returning false', () => {
             const include = jest.fn(() => false);
-            const type = { name: 'Post' };
+            const type = { name: 'Post' } as IntrospectionType;
             expect(filterTypesByIncludeExclude({ include })(type)).toBe(false);
             expect(include).toHaveBeenCalledWith(type);
         });
 
         it('return false with an exclude option being a function returning true', () => {
             const exclude = jest.fn(() => true);
-            const type = { name: 'Post' };
+            const type = { name: 'Post' } as IntrospectionType;
             expect(filterTypesByIncludeExclude({ exclude })(type)).toBe(false);
             expect(exclude).toHaveBeenCalledWith(type);
         });
 
         it('return true with an exclude option being a function returning false', () => {
             const exclude = jest.fn(() => false);
-            const type = { name: 'Post' };
+            const type = { name: 'Post' } as IntrospectionType;
             expect(filterTypesByIncludeExclude({ exclude })(type)).toBe(true);
             expect(exclude).toHaveBeenCalledWith(type);
         });
@@ -114,18 +116,21 @@ describe('introspection', () => {
             ),
         };
 
-        const introspectionResultsPromise = resolveIntrospection(client, {
-            operationNames: {
-                [GET_LIST]: resource => `all${resource.name}`,
-                [GET_ONE]: resource => `${resource.name}`,
-                [GET_MANY]: resource => `all${resource.name}`,
-                [GET_MANY_REFERENCE]: resource => `all${resource.name}`,
-                [CREATE]: resource => `create${resource.name}`,
-                [UPDATE]: resource => `update${resource.name}`,
-                [DELETE]: resource => `delete${resource.name}`,
-            },
-            exclude: ['ImExcluded'],
-        });
+        const introspectionResultsPromise = resolveIntrospection(
+            (client as unknown) as ApolloClient<unknown>,
+            {
+                operationNames: {
+                    [GET_LIST]: resource => `all${resource.name}`,
+                    [GET_ONE]: resource => `${resource.name}`,
+                    [GET_MANY]: resource => `all${resource.name}`,
+                    [GET_MANY_REFERENCE]: resource => `all${resource.name}`,
+                    [CREATE]: resource => `create${resource.name}`,
+                    [UPDATE]: resource => `update${resource.name}`,
+                    [DELETE]: resource => `delete${resource.name}`,
+                },
+                exclude: ['ImExcluded'],
+            }
+        );
 
         it('with a "types" array containing all types found', async () => {
             const introspectionResults = await introspectionResultsPromise;

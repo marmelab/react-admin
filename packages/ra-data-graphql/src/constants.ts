@@ -18,4 +18,15 @@ export const MUTATION_TYPES = [
     UPDATE_MANY,
     DELETE_MANY,
 ];
-export const ALL_TYPES = QUERY_TYPES.concat(MUTATION_TYPES);
+export const ALL_TYPES = [...QUERY_TYPES, ...MUTATION_TYPES] as OperationName[];
+
+export type OperationName =
+    | 'GET_LIST'
+    | 'GET_ONE'
+    | 'GET_MANY'
+    | 'GET_MANY_REFERENCE'
+    | 'CREATE'
+    | 'UPDATE'
+    | 'UPDATE_MANY'
+    | 'DELETE'
+    | 'DELETE_MANY';
