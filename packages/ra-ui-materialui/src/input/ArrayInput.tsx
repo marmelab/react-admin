@@ -81,7 +81,12 @@ export const ArrayInput = ({
             className={className}
             {...sanitizeRestProps(rest)}
         >
-            <InputLabel htmlFor={source} shrink>
+            <InputLabel
+                htmlFor={source}
+                shrink
+                variant={variant}
+                error={touched && !!error}
+            >
                 <FieldTitle
                     label={label}
                     source={source}
