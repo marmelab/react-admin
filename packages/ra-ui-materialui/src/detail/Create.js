@@ -205,6 +205,7 @@ const sanitizeRestProps = ({
     locale,
     permissions,
     successMessage,
+    translate,
     ...rest
 }) => rest;
 
