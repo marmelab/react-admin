@@ -5,7 +5,14 @@ import withWidth from '@material-ui/core/withWidth';
 /**
  * @deprecated use useMediaQuery instead
  */
-const Responsive = ({ xsmall, small, medium, large, width, ...rest }) => {
+export const Responsive = ({
+    xsmall,
+    small,
+    medium,
+    large,
+    width,
+    ...rest
+}) => {
     let element;
     switch (width) {
         case 'xs':
