@@ -109,7 +109,7 @@ interface Props {
  *     <SelectInput optionText="title" />
  * </ReferenceInput>
  */
-export const ReferenceInput: FunctionComponent<Props & InputProps> = ({
+const ReferenceInput: FunctionComponent<Props & InputProps> = ({
     format,
     onBlur,
     onChange,

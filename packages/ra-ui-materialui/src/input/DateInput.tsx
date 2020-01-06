@@ -42,7 +42,7 @@ const getStringFromDate = (value: string | Date) => {
     return convertDateToString(new Date(value));
 };
 
-export const DateInput: FunctionComponent<
+const DateInput: FunctionComponent<
     InputProps<TextFieldProps> & Omit<TextFieldProps, 'helperText' | 'label'>
 > = ({
     format = getStringFromDate,
