@@ -219,6 +219,7 @@ const sanitizeRestProps = ({
     permissions,
     undoable,
     successMessage,
+    translate,
     ...rest
 }) => rest;
 
