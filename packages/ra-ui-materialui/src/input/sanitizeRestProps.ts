@@ -5,6 +5,7 @@ export default ({
     component,
     defaultValue,
     formClassName,
+    initialValue,
     initializeForm,
     input,
     isRequired,
