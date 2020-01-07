@@ -8,7 +8,7 @@ import {
     GET_MANY_REFERENCE,
 } from '../../../core';
 import getFetchedAt from '../../../util/getFetchedAt';
-import dataReducer, { replaceRecords, addOneRecord } from './data';
+import dataReducer, { replaceRecords, addRecords, addOneRecord } from './data';
 import { FETCH_END } from '../../../actions';
 
 jest.mock('../../../util/getFetchedAt');
@@ -110,6 +110,106 @@ describe('data replaceRecordsFactory', () => {
         assert.deepEqual(newState, {
             record1: { id: 'record1', title: 'new title' },
             record2: { id: 'record2' },
+        });
+    });
+});
+
+describe('data addRecords', () => {
+    it('should add new records without changing the old ones', () => {
+        const now = new Date();
+        const before = new Date(0);
+        const newRecords = [
+            { id: 'new_record1', title: 'new title 1' },
+            { id: 'new_record2', title: 'new title 2' },
+        ];
+        const oldRecords = {
+            record1: { id: 'record1', title: 'title 1' },
+            record2: { id: 'record2', title: 'title 2' },
+            fetchedAt: { record1: before, record2: before },
+        };
+        // @ts-ignore
+        getFetchedAt.mockImplementationOnce(() => ({
+            new_record1: now,
+            new_record2: now,
+        }));
+
+        const newState = addRecords(newRecords, oldRecords);
+
+        assert.deepEqual(newState, {
+            record1: { id: 'record1', title: 'title 1' },
+            record2: { id: 'record2', title: 'title 2' },
+            new_record1: { id: 'new_record1', title: 'new title 1' },
+            new_record2: { id: 'new_record2', title: 'new title 2' },
+        });
+
+        assert.deepEqual(newState.fetchedAt, {
+            record1: before,
+            record2: before,
+            new_record1: now,
+            new_record2: now,
+        });
+    });
+
+    it('should update existion records without changing the other ones', () => {
+        const now = new Date();
+        const before = new Date(0);
+        const newRecords = [
+            { id: 'new_record1', title: 'new title 1' },
+            { id: 'record2', title: 'updated title 2' },
+        ];
+        const oldRecords = {
+            record1: { id: 'record1', title: 'title 1' },
+            record2: { id: 'record2', title: 'title 2' },
+            fetchedAt: { record1: before, record2: before },
+        };
+        // @ts-ignore
+        getFetchedAt.mockImplementationOnce(() => ({
+            new_record1: now,
+            record2: now,
+        }));
+
+        const newState = addRecords(newRecords, oldRecords);
+
+        assert.deepEqual(newState, {
+            record1: { id: 'record1', title: 'title 1' },
+            record2: { id: 'record2', title: 'updated title 2' },
+            new_record1: { id: 'new_record1', title: 'new title 1' },
+        });
+
+        assert.deepEqual(newState.fetchedAt, {
+            record1: before,
+            record2: now,
+            new_record1: now,
+        });
+    });
+
+    it('should reuse oldRecord if new record is the same', () => {
+        const now = new Date();
+        const before = new Date(0);
+        const newRecords = [
+            { id: 'record1', title: 'title 1' }, // same as before
+        ];
+        const oldRecords = {
+            record1: { id: 'record1', title: 'title 1' },
+            record2: { id: 'record2', title: 'title 2' },
+            fetchedAt: { record1: before, record2: before },
+        };
+        // @ts-ignore
+        getFetchedAt.mockImplementationOnce(() => ({
+            record1: now,
+        }));
+
+        const newState = addRecords(newRecords, oldRecords);
+
+        assert.deepEqual(newState, {
+            record1: { id: 'record1', title: 'title 1' },
+            record2: { id: 'record2', title: 'title 2' },
+        });
+        assert.equal(newState.record1, oldRecords.record1);
+
+        assert.deepEqual(newState.fetchedAt, {
+            record1: now,
+            record2: before,
         });
     });
 });
