@@ -2,11 +2,11 @@ import assert from 'assert';
 
 import { DELETE, DELETE_MANY, UPDATE } from '../../../core';
 import getFetchedAt from '../../../util/getFetchedAt';
-import dataReducer, { addRecords, addOneRecord } from './data';
+import dataReducer, { replaceRecords, addOneRecord } from './data';
 
 jest.mock('../../../util/getFetchedAt');
 
-describe('data addRecordsFactory', () => {
+describe('data replaceRecordsFactory', () => {
     it('should call getFetchedAt with newRecords ids and oldRecordFetchedAt and return records returned by getFetchedAt', () => {
         const newRecords = [{ id: 'record1' }, { id: 'record2' }];
         const oldFetchedAt = {};
@@ -21,7 +21,7 @@ describe('data addRecordsFactory', () => {
             record2: date2,
         }));
 
-        const newState = addRecords(newRecords, oldRecords);
+        const newState = replaceRecords(newRecords, oldRecords);
 
         // @ts-ignore
         assert.deepEqual(getFetchedAt.mock.calls[0], [
@@ -53,7 +53,7 @@ describe('data addRecordsFactory', () => {
             record2: new Date(),
         }));
 
-        const newState = addRecords(newRecords, oldRecords);
+        const newState = replaceRecords(newRecords, oldRecords);
 
         assert.deepEqual(newState, {
             record1: { id: 'record1' },
@@ -74,7 +74,7 @@ describe('data addRecordsFactory', () => {
             record3: new Date(),
         }));
 
-        const newState = addRecords(newRecords, oldRecords);
+        const newState = replaceRecords(newRecords, oldRecords);
 
         assert.deepEqual(newState, {
             record1: { id: 'record1' },
@@ -98,7 +98,7 @@ describe('data addRecordsFactory', () => {
             record2: new Date(),
         }));
 
-        const newState = addRecords(newRecords, oldRecords);
+        const newState = replaceRecords(newRecords, oldRecords);
 
         assert.deepEqual(newState, {
             record1: { id: 'record1', title: 'new title' },
