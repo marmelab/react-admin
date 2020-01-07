@@ -35,9 +35,6 @@ const castType = (value, type) => {
         case 'SCALAR:Boolean':
             return Boolean(value);
 
-        case 'SCALAR:Date':
-            return typeof value === 'string' ? value : value.toISOString();
-
         default:
             return value;
     }
@@ -65,6 +62,11 @@ const prepareParams = (params, queryType, introspectionResults) => {
 
         if (param instanceof File) {
             result[key] = param;
+            return;
+        }
+
+        if (param instanceof Date) {
+            result[key] = param.toISOString();
             return;
         }
 
