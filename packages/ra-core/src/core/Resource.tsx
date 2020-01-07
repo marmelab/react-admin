@@ -44,8 +44,8 @@ const ResourceRoutes: FunctionComponent<ResourceProps> = ({
     show,
     options = defaultOptions,
 }) => {
-    const isRegistered = useSelector((state: ReduxState) =>
-        state.admin.resources[name] ? true : false
+    const isRegistered = useSelector(
+        (state: ReduxState) => !!state.admin.resources[name]
     );
 
     const basePath = match ? match.path : '';
