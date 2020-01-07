@@ -17,7 +17,7 @@ interface Props extends FieldProps {
     valueLabelFalse?: string;
 }
 
-const BooleanField: FunctionComponent<
+export const BooleanField: FunctionComponent<
     Props & InjectedFieldProps & TypographyProps
 > = ({
     className,
