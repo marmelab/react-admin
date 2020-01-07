@@ -40,6 +40,16 @@ export const addRecordIdsFactory = getFetchedAtCallback => (
 
 const addRecordIds = addRecordIdsFactory(getFetchedAt);
 
+export const addOneRecordId = (id, oldRecordIds) => {
+    const newRecordIds = uniq(oldRecordIds.concat(id));
+
+    Object.defineProperty(newRecordIds, 'fetchedAt', {
+        value: { ...oldRecordIds.fetchedAt, [id]: new Date() },
+    }); // non enumerable by default
+
+    return newRecordIds;
+};
+
 type ActionTypes =
     | CrudGetListSuccessAction
     | CrudGetOneSuccessAction
@@ -90,7 +100,7 @@ const idsReducer: Reducer<State> = (
             return addRecordIds(action.payload.data.map(({ id }) => id), []);
         case CRUD_GET_ONE_SUCCESS:
         case CRUD_CREATE_SUCCESS:
-            return addRecordIds([action.payload.data.id], previousState);
+            return addOneRecordId(action.payload.data.id, previousState);
         default:
             return previousState;
     }
