@@ -86,6 +86,26 @@ export const addRecords = (
 
     return hideFetchedAt(records);
 };
+export const addOneRecord = (
+    newRecord: Record,
+    oldRecords: RecordSetWithDate
+): RecordSetWithDate => {
+    const newRecordsById = {
+        ...oldRecords,
+        [newRecord.id]: isEqual(newRecord, oldRecords[newRecord.id])
+            ? oldRecords[newRecord.id] // do not change the record to avoid a redraw
+            : newRecord,
+    };
+
+    const newFetchedAt = getFetchedAt(
+        Object.keys(newRecordsById),
+        oldRecords.fetchedAt
+    );
+
+    return Object.defineProperty(newRecordsById, 'fetchedAt', {
+        value: newFetchedAt,
+    }); // non enumerable by default
+};
 
 /**
  * Remove records from the pool
@@ -146,7 +166,7 @@ const dataReducer: Reducer<RecordSetWithDate> = (
         case GET_ONE:
         case UPDATE:
         case CREATE:
-            return addRecords([payload.data], previousState);
+            return addOneRecord(payload.data, previousState);
         default:
             return previousState;
     }
