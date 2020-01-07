@@ -1,6 +1,6 @@
 import assert from 'assert';
 
-import { DELETE, DELETE_MANY } from '../../../core';
+import { DELETE, DELETE_MANY, UPDATE } from '../../../core';
 import getFetchedAt from '../../../util/getFetchedAt';
 import dataReducer, { addRecords, addOneRecord } from './data';
 
@@ -218,6 +218,39 @@ describe('Resources data reducer', () => {
             assert.deepEqual(newState.fetchedAt, {
                 record1: now,
             });
+        });
+    });
+    describe('optimistic UPDATE', () => {
+        it('update the given record without touching the other', () => {
+            const before = new Date(0);
+            const state = {
+                record1: { id: 'record1', prop: 'value' },
+                record2: { id: 'record2', prop: 'value' },
+                record3: { id: 'record3', prop: 'value' },
+                fetchedAt: {
+                    record1: before,
+                    record2: before,
+                    record3: before,
+                },
+            };
+
+            const newState = dataReducer(state, {
+                type: 'FOO',
+                payload: { id: 'record2', data: { prop: 'new value' } },
+                meta: {
+                    fetch: UPDATE,
+                    optimistic: true,
+                },
+            });
+            assert.deepEqual(newState, {
+                record1: { id: 'record1', prop: 'value' },
+                record2: { id: 'record2', prop: 'new value' },
+                record3: { id: 'record3', prop: 'value' },
+            });
+            assert.deepEqual(newState.fetchedAt.record1, before);
+            assert.deepEqual(newState.fetchedAt.record3, before);
+
+            assert.notDeepEqual(newState.fetchedAt.record2, before);
         });
     });
 });
