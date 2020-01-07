@@ -381,7 +381,7 @@ React-admin provides guessers for the `List` view (`ListGuesser`), the `Edit` vi
 
 The `<SimpleForm>` component receives the `record` as prop from its parent component. It is responsible for rendering the actual form. It is also responsible for validating the form data. Finally, it receives a `handleSubmit` function as prop, to be called with the updated record as argument when the user submits the form.
 
-The `<SimpleForm>` renders its child components line by line (within `<div>` components). It accepts Input and Field components as children. It relies on `react-final-form` for form handling. Note that some props of `react-final-form` is given by `react-admin` as the result of a design choice. For instance, `keepDirtyOnReinitialize` is set to be `true` in `react-admin`, but it's `false` in `react-final-form` by default. However, you can override this props with any values you want because `react-admin` passes down props to to the underlying component in order to give flexibility to developers.
+The `<SimpleForm>` renders its child components line by line (within `<div>` components). It accepts Input and Field components as children. It relies on `react-final-form` for form handling. Note that some props of `react-final-form` is given by `react-admin` as the result of a design choice. For instance, `keepDirtyOnReinitialize` is set to be `true` in `react-admin`, but it's `false` in `react-final-form` by default. However, you can override this props with any values you want because `react-admin` passes down props to to the underlying component.
 
 ![post edition form](./img/post-edition.png)
 
