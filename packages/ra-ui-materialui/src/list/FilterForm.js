@@ -82,7 +82,7 @@ const sanitizeRestProps = ({
     ...props
 }) => props;
 
-const FilterForm = ({
+export const FilterForm = ({
     classes = {},
     className,
     resource,
