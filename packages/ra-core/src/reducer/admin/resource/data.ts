@@ -86,6 +86,34 @@ export const replaceRecords = (
 
     return hideFetchedAt(records);
 };
+
+/**
+ * Add new records to the pool, without touching the other ones.
+ */
+export const addRecords = (
+    newRecords: Record[] = [],
+    oldRecords: RecordSetWithDate
+): RecordSetWithDate => {
+    const newRecordsById = { ...oldRecords };
+    newRecords.forEach(record => {
+        newRecordsById[record.id] = isEqual(record, oldRecords[record.id])
+            ? (oldRecords[record.id] as Record)
+            : record;
+    });
+
+    const updatedFetchedAt = getFetchedAt(
+        newRecords.map(({ id }) => id),
+        oldRecords.fetchedAt
+    );
+
+    Object.defineProperty(newRecordsById, 'fetchedAt', {
+        value: { ...oldRecords.fetchedAt, ...updatedFetchedAt },
+        enumerable: false,
+    });
+
+    return newRecordsById;
+};
+
 export const addOneRecord = (
     newRecord: Record,
     oldRecords: RecordSetWithDate,
@@ -160,10 +188,7 @@ const dataReducer: Reducer<RecordSetWithDate> = (
             return replaceRecords(payload.data, previousState);
         case GET_MANY:
         case GET_MANY_REFERENCE:
-            return replaceRecords(
-                Object.values(previousState).concat(payload.data) as Record[],
-                previousState
-            );
+            return addRecords(payload.data, previousState);
         case UPDATE:
         case CREATE:
         case GET_ONE:
