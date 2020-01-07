@@ -138,7 +138,7 @@ const dataReducer: Reducer<RecordSetWithDate> = (
                 ...previousState[payload.id],
                 ...payload.data,
             };
-            return addRecords([updatedRecord], previousState);
+            return addOneRecord(updatedRecord, previousState);
         }
         if (meta.fetch === UPDATE_MANY) {
             const updatedRecords = payload.ids.map(id => ({
@@ -160,12 +160,16 @@ const dataReducer: Reducer<RecordSetWithDate> = (
 
     switch (meta.fetchResponse) {
         case GET_LIST:
+            return addRecords(payload.data, previousState);
         case GET_MANY:
         case GET_MANY_REFERENCE:
-            return addRecords(payload.data, previousState);
-        case GET_ONE:
+            return addRecords(
+                Object.values(previousState).concat(payload.data) as Record[],
+                previousState
+            );
         case UPDATE:
         case CREATE:
+        case GET_ONE:
             return addOneRecord(payload.data, previousState);
         default:
             return previousState;
