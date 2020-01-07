@@ -2,7 +2,8 @@ import React, { cloneElement, Children } from 'react';
 import PropTypes from 'prop-types';
 import { isRequired, FieldTitle, composeValidators } from 'ra-core';
 import { useFieldArray } from 'react-final-form-arrays';
-import { InputLabel, FormControl } from '@material-ui/core';
+import { InputLabel, FormControl, FormHelperText } from '@material-ui/core';
+import InputHelperText from './InputHelperText';
 
 import sanitizeRestProps from './sanitizeRestProps';
 
@@ -51,6 +52,7 @@ export const ArrayInput = ({
     className,
     defaultValue,
     label,
+    helperText,
     children,
     record,
     resource,
@@ -70,6 +72,8 @@ export const ArrayInput = ({
         ...rest,
     });
 
+    const { touched, error } = fieldProps.meta;
+
     return (
         <FormControl
             fullWidth
@@ -77,7 +81,12 @@ export const ArrayInput = ({
             className={className}
             {...sanitizeRestProps(rest)}
         >
-            <InputLabel htmlFor={source} shrink>
+            <InputLabel
+                htmlFor={source}
+                shrink
+                variant={variant}
+                error={touched && !!error}
+            >
                 <FieldTitle
                     label={label}
                     source={source}
@@ -85,6 +94,15 @@ export const ArrayInput = ({
                     isRequired={isRequired(validate)}
                 />
             </InputLabel>
+            {(touched && error) || helperText ? (
+                <FormHelperText error={touched && !!error}>
+                    <InputHelperText
+                        touched={touched}
+                        error={error}
+                        helperText={helperText}
+                    />
+                </FormHelperText>
+            ) : null}
             {cloneElement(Children.only(children), {
                 ...fieldProps,
                 record,
@@ -103,6 +121,7 @@ ArrayInput.propTypes = {
     defaultValue: PropTypes.any,
     isRequired: PropTypes.bool,
     label: PropTypes.string,
+    helperText: PropTypes.string,
     resource: PropTypes.string,
     source: PropTypes.string,
     record: PropTypes.object,
