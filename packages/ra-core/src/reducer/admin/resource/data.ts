@@ -88,7 +88,8 @@ export const addRecords = (
 };
 export const addOneRecord = (
     newRecord: Record,
-    oldRecords: RecordSetWithDate
+    oldRecords: RecordSetWithDate,
+    date = new Date()
 ): RecordSetWithDate => {
     const newRecordsById = {
         ...oldRecords,
@@ -97,14 +98,10 @@ export const addOneRecord = (
             : newRecord,
     };
 
-    const newFetchedAt = getFetchedAt(
-        Object.keys(newRecordsById),
-        oldRecords.fetchedAt
-    );
-
     return Object.defineProperty(newRecordsById, 'fetchedAt', {
-        value: newFetchedAt,
-    }); // non enumerable by default
+        value: { ...oldRecords.fetchedAt, [newRecord.id]: date },
+        enumerable: false,
+    });
 };
 
 /**

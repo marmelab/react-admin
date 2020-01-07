@@ -2,7 +2,7 @@ import assert from 'assert';
 
 import { DELETE, DELETE_MANY } from '../../../core';
 import getFetchedAt from '../../../util/getFetchedAt';
-import dataReducer, { addRecords } from './data';
+import dataReducer, { addRecords, addOneRecord } from './data';
 
 jest.mock('../../../util/getFetchedAt');
 
@@ -103,6 +103,56 @@ describe('data addRecordsFactory', () => {
         assert.deepEqual(newState, {
             record1: { id: 'record1', title: 'new title' },
             record2: { id: 'record2' },
+        });
+    });
+});
+
+describe('data addOneRecord', () => {
+    it('should add given record without changing the others', () => {
+        const now = new Date();
+        const before = new Date(0);
+        const newRecord = { id: 'new_record', title: 'new title' };
+        const oldRecords = {
+            record1: { id: 'record1', title: 'title 1' },
+            record2: { id: 'record2', title: 'title 2' },
+            fetchedAt: { record1: before, record2: before },
+        };
+
+        const newState = addOneRecord(newRecord, oldRecords, now);
+
+        assert.deepEqual(newState, {
+            record1: { id: 'record1', title: 'title 1' },
+            record2: { id: 'record2', title: 'title 2' },
+            new_record: { id: 'new_record', title: 'new title' },
+        });
+
+        assert.deepEqual(newState.fetchedAt, {
+            record1: before,
+            record2: before,
+            new_record: now,
+        });
+    });
+
+    it('should update given record without changing the others', () => {
+        const now = new Date();
+        const before = new Date(0);
+        const newRecord = { id: 'record1', title: 'new title' };
+        const oldRecords = {
+            record1: { id: 'record1', title: 'title 1' },
+            record2: { id: 'record2', title: 'title 2' },
+            fetchedAt: { record1: before, record2: before },
+        };
+
+        const newState = addOneRecord(newRecord, oldRecords, now);
+
+        assert.deepEqual(newState, {
+            record1: { id: 'record1', title: 'new title' },
+            record2: { id: 'record2', title: 'title 2' },
+        });
+
+        assert.deepEqual(newState.fetchedAt, {
+            record1: now,
+            record2: before,
         });
     });
 });
