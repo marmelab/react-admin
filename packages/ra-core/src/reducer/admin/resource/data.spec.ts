@@ -6,6 +6,8 @@ import {
     UPDATE,
     GET_MANY,
     GET_MANY_REFERENCE,
+    CREATE,
+    GET_ONE,
 } from '../../../core';
 import getFetchedAt from '../../../util/getFetchedAt';
 import dataReducer, { replaceRecords, addRecords, addOneRecord } from './data';
@@ -347,6 +349,40 @@ describe('Resources data reducer', () => {
                 meta: {
                     fetch: UPDATE,
                     optimistic: true,
+                },
+            });
+            assert.deepEqual(newState, {
+                record1: { id: 'record1', prop: 'value' },
+                record2: { id: 'record2', prop: 'new value' },
+                record3: { id: 'record3', prop: 'value' },
+            });
+            assert.deepEqual(newState.fetchedAt.record1, before);
+            assert.deepEqual(newState.fetchedAt.record3, before);
+
+            assert.notDeepEqual(newState.fetchedAt.record2, before);
+        });
+    });
+
+    describe.each([UPDATE, CREATE, GET_ONE])('%s', actionType => {
+        it('update the given record without touching the other', () => {
+            const before = new Date(0);
+            const state = {
+                record1: { id: 'record1', prop: 'value' },
+                record2: { id: 'record2', prop: 'value' },
+                record3: { id: 'record3', prop: 'value' },
+                fetchedAt: {
+                    record1: before,
+                    record2: before,
+                    record3: before,
+                },
+            };
+
+            const newState = dataReducer(state, {
+                type: 'FOO',
+                payload: { data: { id: 'record2', prop: 'new value' } },
+                meta: {
+                    fetchResponse: actionType,
+                    fetchStatus: FETCH_END,
                 },
             });
             assert.deepEqual(newState, {
