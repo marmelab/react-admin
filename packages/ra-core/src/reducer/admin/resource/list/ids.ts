@@ -40,11 +40,11 @@ export const addRecordIdsFactory = getFetchedAtCallback => (
 
 const addRecordIds = addRecordIdsFactory(getFetchedAt);
 
-export const addOneRecordId = (id, oldRecordIds) => {
+export const addOneRecordId = (id, oldRecordIds, date = new Date()) => {
     const newRecordIds = uniq(oldRecordIds.concat(id));
 
     Object.defineProperty(newRecordIds, 'fetchedAt', {
-        value: { ...oldRecordIds.fetchedAt, [id]: new Date() },
+        value: { ...oldRecordIds.fetchedAt, [id]: date },
     }); // non enumerable by default
 
     return newRecordIds;

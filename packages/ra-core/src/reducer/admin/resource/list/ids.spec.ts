@@ -1,8 +1,12 @@
 import assert from 'assert';
 
-import { IdentifierArrayWithDate, addRecordIdsFactory } from './ids';
+import {
+    IdentifierArrayWithDate,
+    addRecordIdsFactory,
+    addOneRecordId,
+} from './ids';
 
-describe('data addRecordIdsFactory', () => {
+describe('ids addRecordIdsFactory', () => {
     it('should call getFetchedAt with newRecords ids and oldRecordFetchedAt and return records returned by getFetchedAt', () => {
         const newRecords: IdentifierArrayWithDate = ['record1', 'record2'];
         const oldRecords: IdentifierArrayWithDate = [];
@@ -64,5 +68,55 @@ describe('data addRecordIdsFactory', () => {
         );
 
         assert.deepEqual(newState, ['record3', 'record1', 'record2']);
+    });
+});
+
+describe('ids addOneRecordId', () => {
+    it('should add new RecordId without touching the existing ones', () => {
+        const now = new Date();
+        const before = new Date(0);
+        const oldRecords = ['record1', 'record2', 'record3'];
+        // @ts-ignore
+        oldRecords.fetchedAt = {
+            record1: before,
+            record2: before,
+            record3: before,
+        };
+
+        const newState = addOneRecordId('new_record', oldRecords);
+
+        assert.deepEqual(newState, [
+            'record1',
+            'record2',
+            'record3',
+            'new_record',
+        ]);
+        assert.deepEqual(newState.fetchedAt, {
+            record1: before,
+            record2: before,
+            record3: before,
+            new_record: now,
+        });
+    });
+
+    it('should update fetchedAt for given id when he is already here', () => {
+        const now = new Date();
+        const before = new Date(0);
+        const oldRecords = ['record1', 'record2', 'record3'];
+        // @ts-ignore
+        oldRecords.fetchedAt = {
+            record1: before,
+            record2: before,
+            record3: before,
+        };
+
+        const newState = addOneRecordId('record1', oldRecords);
+
+        assert.deepEqual(newState, ['record1', 'record2', 'record3']);
+        assert.deepEqual(newState.fetchedAt, {
+            record1: now,
+            record2: before,
+            record3: before,
+        });
     });
 });
