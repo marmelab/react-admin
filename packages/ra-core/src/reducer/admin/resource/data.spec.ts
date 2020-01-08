@@ -10,12 +10,16 @@ import {
     GET_ONE,
 } from '../../../core';
 import getFetchedAt from '../../../util/getFetchedAt';
-import dataReducer, { replaceRecords, addRecords, addOneRecord } from './data';
+import dataReducer, {
+    addRecordsAndRemoveOutdated,
+    addRecords,
+    addOneRecord,
+} from './data';
 import { FETCH_END } from '../../../actions';
 
 jest.mock('../../../util/getFetchedAt');
 
-describe('data replaceRecordsFactory', () => {
+describe('data addRecordsAndRemoveOutdated', () => {
     it('should call getFetchedAt with newRecords ids and oldRecordFetchedAt and return records returned by getFetchedAt', () => {
         const newRecords = [{ id: 'record1' }, { id: 'record2' }];
         const oldFetchedAt = {};
@@ -30,7 +34,7 @@ describe('data replaceRecordsFactory', () => {
             record2: date2,
         }));
 
-        const newState = replaceRecords(newRecords, oldRecords);
+        const newState = addRecordsAndRemoveOutdated(newRecords, oldRecords);
 
         // @ts-ignore
         assert.deepEqual(getFetchedAt.mock.calls[0], [
@@ -62,7 +66,7 @@ describe('data replaceRecordsFactory', () => {
             record2: new Date(),
         }));
 
-        const newState = replaceRecords(newRecords, oldRecords);
+        const newState = addRecordsAndRemoveOutdated(newRecords, oldRecords);
 
         assert.deepEqual(newState, {
             record1: { id: 'record1' },
@@ -83,7 +87,7 @@ describe('data replaceRecordsFactory', () => {
             record3: new Date(),
         }));
 
-        const newState = replaceRecords(newRecords, oldRecords);
+        const newState = addRecordsAndRemoveOutdated(newRecords, oldRecords);
 
         assert.deepEqual(newState, {
             record1: { id: 'record1' },
@@ -107,7 +111,7 @@ describe('data replaceRecordsFactory', () => {
             record2: new Date(),
         }));
 
-        const newState = replaceRecords(newRecords, oldRecords);
+        const newState = addRecordsAndRemoveOutdated(newRecords, oldRecords);
 
         assert.deepEqual(newState, {
             record1: { id: 'record1', title: 'new title' },
