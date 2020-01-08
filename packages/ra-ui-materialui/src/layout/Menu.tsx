@@ -69,7 +69,6 @@ const Menu: FC<MenuProps> = ({
                 .map(resource => (
                     <MenuItemLink
                         key={resource.name}
-                        // @ts-ignore
                         to={`/${resource.name}`}
                         primaryText={translatedResourceName(
                             resource,
