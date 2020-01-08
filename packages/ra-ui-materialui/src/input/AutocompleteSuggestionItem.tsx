@@ -1,8 +1,8 @@
 import React, { FunctionComponent, isValidElement, cloneElement } from 'react';
 import parse from 'autosuggest-highlight/parse';
 import match from 'autosuggest-highlight/match';
-import { makeStyles, MenuItem } from '@material-ui/core';
-import { MenuItemProps } from '@material-ui/core/MenuItem';
+import { makeStyles } from '@material-ui/core/styles';
+import MenuItem, { MenuItemProps } from '@material-ui/core/MenuItem';
 import classnames from 'classnames';
 
 const useStyles = makeStyles(

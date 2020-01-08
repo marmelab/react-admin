@@ -1,6 +1,8 @@
 import React, { useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
-import { TablePagination, Toolbar, useMediaQuery } from '@material-ui/core';
+import TablePagination from '@material-ui/core/TablePagination';
+import Toolbar from '@material-ui/core/Toolbar';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 import {
     useTranslate,
     sanitizeListRestProps,

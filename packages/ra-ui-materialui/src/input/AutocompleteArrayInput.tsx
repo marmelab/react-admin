@@ -9,8 +9,9 @@ import React, {
 import Downshift, { DownshiftProps } from 'downshift';
 import classNames from 'classnames';
 import get from 'lodash/get';
-import { makeStyles, TextField, Chip } from '@material-ui/core';
-import { TextFieldProps } from '@material-ui/core/TextField';
+import { makeStyles } from '@material-ui/core/styles';
+import Chip from '@material-ui/core/Chip';
+import TextField, { TextFieldProps } from '@material-ui/core/TextField';
 import {
     useInput,
     FieldTitle,

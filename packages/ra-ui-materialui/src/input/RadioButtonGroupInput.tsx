@@ -1,14 +1,10 @@
 import React, { FunctionComponent } from 'react';
 import PropTypes from 'prop-types';
-import {
-    makeStyles,
-    FormControl,
-    FormHelperText,
-    FormLabel,
-    RadioGroup,
-} from '@material-ui/core';
-import { RadioGroupProps } from '@material-ui/core/RadioGroup';
-import { FormControlProps } from '@material-ui/core/FormControl';
+import { makeStyles } from '@material-ui/core/styles';
+import FormLabel from '@material-ui/core/FormLabel';
+import RadioGroup, { RadioGroupProps } from '@material-ui/core/RadioGroup';
+import FormControl, { FormControlProps } from '@material-ui/core/FormControl';
+import FormHelperText from '@material-ui/core/FormHelperText';
 import get from 'lodash/get';
 import { useInput, FieldTitle, InputProps, ChoicesProps } from 'ra-core';
 

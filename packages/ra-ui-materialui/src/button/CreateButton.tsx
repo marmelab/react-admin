@@ -1,7 +1,9 @@
 import React, { FC, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import onlyUpdateForKeys from 'recompose/onlyUpdateForKeys';
-import { Fab, makeStyles, useMediaQuery, Theme } from '@material-ui/core';
+import { makeStyles, Theme } from '@material-ui/core/styles';
+import Fab from '@material-ui/core/Fab';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 import ContentAdd from '@material-ui/icons/Add';
 import classnames from 'classnames';
 import { Link } from 'react-router-dom';
