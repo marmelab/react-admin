@@ -62,7 +62,7 @@ export const hideFetchedAt = (
  * The cached data is displayed before fetching, and stale data is removed
  * only once fresh data is fetched.
  */
-export const replaceRecords = (
+export const addRecordsAndRemoveOutdated = (
     newRecords: Record[] = [],
     oldRecords: RecordSetWithDate
 ): RecordSetWithDate => {
@@ -170,7 +170,7 @@ const dataReducer: Reducer<RecordSetWithDate> = (
                 ...previousState[id],
                 ...payload.data,
             }));
-            return replaceRecords(updatedRecords, previousState);
+            return addRecordsAndRemoveOutdated(updatedRecords, previousState);
         }
         if (meta.fetch === DELETE) {
             return removeRecords([payload.id], previousState);
@@ -185,7 +185,7 @@ const dataReducer: Reducer<RecordSetWithDate> = (
 
     switch (meta.fetchResponse) {
         case GET_LIST:
-            return replaceRecords(payload.data, previousState);
+            return addRecordsAndRemoveOutdated(payload.data, previousState);
         case GET_MANY:
         case GET_MANY_REFERENCE:
             return addRecords(payload.data, previousState);
