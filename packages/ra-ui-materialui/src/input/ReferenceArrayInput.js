@@ -89,7 +89,7 @@ import ReferenceError from './ReferenceError';
  *     <SelectArrayInput optionText="name" />
  * </ReferenceArrayInput>
  */
-export const ReferenceArrayInput = ({
+const ReferenceArrayInput = ({
     children,
     id: idOverride,
     onBlur,

@@ -3,7 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { shallow } from 'enzyme';
 
-import { DatagridCell } from './DatagridCell';
+import DatagridCell from './DatagridCell';
 
 describe('<DatagridCell />', () => {
     const Field = () => <div />;

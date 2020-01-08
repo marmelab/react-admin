@@ -24,7 +24,7 @@ export type TextInputProps = InputProps<TextFieldProps> &
  *
  * The object passed as `options` props is passed to the <ResettableTextField> component
  */
-export const TextInput: FunctionComponent<TextInputProps> = ({
+const TextInput: FunctionComponent<TextInputProps> = ({
     label,
     format,
     helperText,
