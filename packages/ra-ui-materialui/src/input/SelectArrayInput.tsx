@@ -1,16 +1,14 @@
 import React, { FunctionComponent, useCallback } from 'react';
 import PropTypes from 'prop-types';
-import {
-    makeStyles,
-    Select,
-    MenuItem,
-    InputLabel,
-    Input,
-    FilledInput,
-    FormHelperText,
-    FormControl,
-    Chip,
-} from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
+import InputLabel from '@material-ui/core/InputLabel';
+import Input from '@material-ui/core/Input';
+import FilledInput from '@material-ui/core/FilledInput';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import FormControl from '@material-ui/core/FormControl';
+import Chip from '@material-ui/core/Chip';
 import classnames from 'classnames';
 import {
     FieldTitle,

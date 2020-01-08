@@ -1,8 +1,8 @@
 import React, { useCallback, FunctionComponent } from 'react';
 import PropTypes from 'prop-types';
-import { ListItemIcon, MenuItem, makeStyles } from '@material-ui/core';
-import { MenuItemProps } from '@material-ui/core/MenuItem';
-import { Theme } from '@material-ui/core/styles';
+import { makeStyles, Theme } from '@material-ui/core/styles';
+import MenuItem, { MenuItemProps } from '@material-ui/core/MenuItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
 
 import ExitIcon from '@material-ui/icons/PowerSettingsNew';
 import classnames from 'classnames';

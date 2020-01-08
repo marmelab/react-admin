@@ -3,8 +3,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
-import { lighten } from '@material-ui/core/styles/colorManipulator';
+import colorManipulator, { makeStyles } from '@material-ui/core/styles';
 import { useTranslate, sanitizeListRestProps } from 'ra-core';
 
 import TopToolbar from '../layout/TopToolbar';
@@ -20,7 +19,10 @@ const useStyles = makeStyles(
             justifyContent: 'space-between',
             backgroundColor:
                 theme.palette.type === 'light'
-                    ? lighten(theme.palette.primary.light, 0.85)
+                    ? colorManipulator.lighten(
+                          theme.palette.primary.light,
+                          0.85
+                      )
                     : theme.palette.primary.dark,
             minHeight: theme.spacing(8),
             height: theme.spacing(8),
