@@ -57,7 +57,6 @@ const Menu: FC<MenuProps> = ({
     return (
         <div className={classnames(classes.main, className)} {...rest}>
             {hasDashboard && (
-                // @ts-ignore
                 <DashboardMenuItem
                     onClick={onMenuClick}
                     dense={dense}

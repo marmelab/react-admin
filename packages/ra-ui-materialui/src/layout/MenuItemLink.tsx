@@ -32,9 +32,7 @@ const useStyles = makeStyles(
     { name: 'RaMenuItemLink' }
 );
 
-const MenuItemLink: FC<
-    MenuItemLinkProps & NavLinkProps & MenuItemProps<'li', { button?: true }> // HACK: https://github.com/mui-org/material-ui/issues/16245
-> = forwardRef(
+const MenuItemLink: FC<MenuItemLinkProps> = forwardRef(
     (
         {
             classes: classesOverride,
@@ -90,12 +88,16 @@ const MenuItemLink: FC<
     }
 );
 
-export interface MenuItemLinkProps {
+interface Props {
     leftIcon?: ReactElement;
     primaryText?: ReactNode;
     staticContext?: StaticContext;
     sidebarIsOpen: boolean;
 }
+
+export type MenuItemLinkProps = Props &
+    NavLinkProps &
+    MenuItemProps<'li', { button?: true }>; // HACK: https://github.com/mui-org/material-ui/issues/16245
 
 MenuItemLink.propTypes = {
     classes: PropTypes.object,
@@ -105,6 +107,7 @@ MenuItemLink.propTypes = {
     primaryText: PropTypes.node,
     staticContext: PropTypes.object,
     to: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
+    sidebarIsOpen: PropTypes.bool,
 };
 
 export default MenuItemLink;
