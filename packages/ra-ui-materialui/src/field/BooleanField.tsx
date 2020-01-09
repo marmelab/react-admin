@@ -4,8 +4,8 @@ import get from 'lodash/get';
 import pure from 'recompose/pure';
 import FalseIcon from '@material-ui/icons/Clear';
 import TrueIcon from '@material-ui/icons/Done';
-import Tooltip from '@material-ui/core/Tooltip';
-import Typography, { TypographyProps } from '@material-ui/core/Typography';
+import { Tooltip, Typography } from '@material-ui/core';
+import { TypographyProps } from '@material-ui/core/Typography';
 import compose from 'recompose/compose';
 import { useTranslate } from 'ra-core';
 

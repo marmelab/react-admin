@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import Icon from '@material-ui/icons/Stars';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core';
 
 import { FieldProps } from '../types';
 

@@ -3,9 +3,7 @@ import PropTypes from 'prop-types';
 import { shallowEqual, useSelector } from 'react-redux';
 // @ts-ignore
 import inflection from 'inflection';
-import { Theme } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
+import { makeStyles, useMediaQuery, Theme } from '@material-ui/core';
 import DefaultIcon from '@material-ui/icons/ViewList';
 import classnames from 'classnames';
 import { getResources, useTranslate, Translate, ReduxState } from 'ra-core';
