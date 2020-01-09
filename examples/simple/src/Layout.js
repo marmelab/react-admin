@@ -1,7 +1,7 @@
 import React, { forwardRef } from 'react';
 import { Layout, AppBar, UserMenu, useLocale, useSetLocale } from 'react-admin';
 import { makeStyles, MenuItem, ListItemIcon } from '@material-ui/core';
-import { Language } from '@material-ui/icons';
+import Language from '@material-ui/icons/Language';
 
 const useStyles = makeStyles(theme => ({
     menuItem: {
