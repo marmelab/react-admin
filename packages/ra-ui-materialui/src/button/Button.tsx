@@ -1,13 +1,15 @@
 import React, { FC, ReactElement } from 'react';
 import PropTypes from 'prop-types';
-import Tooltip from '@material-ui/core/Tooltip';
-import IconButton from '@material-ui/core/IconButton';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
-import { makeStyles, Theme } from '@material-ui/core/styles';
-import { PropTypes as MuiPropTypes } from '@material-ui/core';
-import MuiButton, {
-    ButtonProps as MuiButtonProps,
-} from '@material-ui/core/Button';
+import {
+    Button as MuiButton,
+    Tooltip,
+    IconButton,
+    useMediaQuery,
+    makeStyles,
+    PropTypes as MuiPropTypes,
+} from '@material-ui/core';
+import { ButtonProps as MuiButtonProps } from '@material-ui/core/Button';
+import { Theme } from '@material-ui/core';
 import classnames from 'classnames';
 import { useTranslate } from 'ra-core';
 

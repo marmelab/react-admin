@@ -1,7 +1,5 @@
 import React, { ReactNode, FunctionComponent } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import Popper from '@material-ui/core/Popper';
+import { makeStyles, Paper, Popper } from '@material-ui/core';
 
 const useStyles = makeStyles(
     {
