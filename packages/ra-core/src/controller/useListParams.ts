@@ -52,6 +52,8 @@ const defaultSort = {
     order: SORT_ASC,
 };
 
+const defaultParams = {};
+
 /**
  * Get the list parameters (page, sort, filters) and modifiers.
  *
@@ -114,7 +116,10 @@ const useListParams = ({
     const history = useHistory();
 
     const { params } = useSelector(
-        (reduxState: ReduxState) => reduxState.admin.resources[resource].list,
+        (reduxState: ReduxState) =>
+            reduxState.admin.resources[resource]
+                ? reduxState.admin.resources[resource].list
+                : defaultParams,
         shallowEqual
     );
 
