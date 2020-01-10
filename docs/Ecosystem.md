@@ -5,14 +5,13 @@ title: "Ecosystem"
 
 # Ecosystem
 
-- [Ecosystem](#ecosystem)
-  - [Inputs and Fields](#inputs-and-fields)
-  - [Translations](#translations)
-  - [Authentication Providers](#authentication-providers)
-  - [Authorization Management](#authorization-management)
-  - [Data Providers](#data-providers)
-  - [User Interface](#user-interface)
-  - [Miscellaneous](#miscellaneous)
+- [Inputs and Fields](#inputs-and-fields)
+- [Translations](#translations)
+- [Authentication Providers](#authentication-providers)
+- [Authorization Management](#authorization-management)
+- [Data Providers](#data-providers)
+- [User Interface](#user-interface)
+- [Miscellaneous](#miscellaneous)
 
 ## Inputs and Fields
 
