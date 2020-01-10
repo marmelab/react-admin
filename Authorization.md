@@ -61,7 +61,7 @@ export default {
 
 ## Restricting Access to Resources or Views
 
-Permissions can be useful to to restrict access to resources or their views. To do so, you must use a function as the `<Admin>` only child. React-admin will call this function with the permissions returned by the `authProvider`.
+Permissions can be useful to restrict access to resources or their views. To do so, you must use a function as the `<Admin>` only child. React-admin will call this function with the permissions returned by the `authProvider`.
 
 ```jsx
 <Admin

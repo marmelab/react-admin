@@ -928,7 +928,7 @@ The child component receives the following props from `<ReferenceInput>`:
 | `filterToQuery` | Optional | Function `string => Object` | `searchText => ({ q: [searchText] })` | How to transform the searchText (passed e.g. by an `<AutocompleteArrayInput>`) into a parameter for the data provider |
 | `perPage` | Optional | number | 25 | Number of suggestions to show  |
 | `reference` | Required | String | '' | Name of the reference resource, e.g. 'posts'. |
-| `sort` | Optional | `{ field: String, order: 'ASC' | 'DESC' }` | `{ field: 'id', order: 'DESC' }` | How to order the list of suggestions |
+| `sort` | Optional | `{ field: String, order: 'ASC' or 'DESC' }` | `{ field: 'id', order: 'DESC' }` | How to order the list of suggestions |
 
 `<ReferenceInput>` also accepts the [common input props](./Inputs.md#common-input-props).
 
@@ -1476,8 +1476,8 @@ import SelectField from '@material-ui/core/SelectField';
 import MenuItem from '@material-ui/core/MenuItem';
 import { useInput } from 'react-admin';
 
-const SexInput = () => {
-    const { input, meta: { touched, error } } = useInput(props)
+const SexInput = props => {
+    const { input, meta: { touched, error } } = useInput(props);
     return (
         <SelectField
             floatingLabelText="Sex"
