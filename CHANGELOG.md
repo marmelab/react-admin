@@ -1,5 +1,33 @@
 # Changelog
 
+## v3.1.2
+
+* Fix build delay in certain bundlers due to `@material-ui/icons` import ([4265](https://github.com/marmelab/react-admin/pull/4265)) ([WiXSL was merge](https://github.com/WiXSL was merge))
+* Fix list appears empty after a while ([4261](https://github.com/marmelab/react-admin/pull/4261)) ([ThieryMichel](https://github.com/ThieryMichel))
+* Fix verbose code in `Resource` registration ([4257](https://github.com/marmelab/react-admin/pull/4257)) ([WiXSL](https://github.com/WiXSL))
+* Fix useless export of style hook in `Edit`, `Show`, and `List` ([4255](https://github.com/marmelab/react-admin/pull/4255)) ([WiXSL](https://github.com/WiXSL))
+* Fix 20 components exported twice (named and default) in `ra-ui-material-ui` ([4254](https://github.com/marmelab/react-admin/pull/4254)) ([WiXSL](https://github.com/WiXSL))
+* Fix custom routes not working when based on resources ([4251](https://github.com/marmelab/react-admin/pull/4251)) ([djhi](https://github.com/djhi))
+* Fix invalid DOM attribute warning when using `<EditController>`, `<ShowController>`, or `<CreateController>` ([4250](https://github.com/marmelab/react-admin/pull/4250)) ([djhi](https://github.com/djhi))
+* Fix validation message color in `<SelectArrayInput>` ([4249](https://github.com/marmelab/react-admin/pull/4249)) ([ThieryMichel](https://github.com/ThieryMichel))
+* Fix ability to override `parse` and `format` props in `<DateTimeInput>` ([4246](https://github.com/marmelab/react-admin/pull/4246)) ([WiXSL](https://github.com/WiXSL))
+* Fix `initialValue` prop passed to `<Input>` elements by mistake ([4244](https://github.com/marmelab/react-admin/pull/4244)) ([WiXSL](https://github.com/WiXSL))
+* Fix `<Router>` and `<Title>` code to allow Server-Side Rendering (SSR) ([4242](https://github.com/marmelab/react-admin/pull/4242)) ([CarsonF](https://github.com/CarsonF))
+* Fix `<DashboardMenuItem>` density differs from other menu items ([4241](https://github.com/marmelab/react-admin/pull/4241)) ([steurt](https://github.com/steurt))
+* Fix page components use injected `location` prop instead of `useLocation` hook as encouraged by `react-router` documentation ([4240](https://github.com/marmelab/react-admin/pull/4240)) ([CarsonF](https://github.com/CarsonF))
+* Fix `<DateTimeInput>` converts to value empty Object in `ra-data-graphql-simple` provider ([4238](https://github.com/marmelab/react-admin/pull/4238)) ([ThieryMichel](https://github.com/ThieryMichel))
+* Fix `withTranslate` HOC uses default `translate` prop instead of the one from context ([4233](https://github.com/marmelab/react-admin/pull/4233)) ([ThieryMichel](https://github.com/ThieryMichel))
+* Fix invalid DOM attribute warnings in `<CheckboxGroupInput>` ([4216](https://github.com/marmelab/react-admin/pull/4216)) ([SeanBE](https://github.com/SeanBE))
+* Fix TypeScript compilation issue in `ra-i18n-polyglot` ([4186](https://github.com/marmelab/react-admin/pull/4186)) ([WiXSL](https://github.com/WiXSL))
+* Fix GraphQL demo ([4237](https://github.com/marmelab/react-admin/pull/4237)) ([ThieryMichel](https://github.com/ThieryMichel))
+* [Doc] Fix typo in custom Save button code example ([4263](https://github.com/marmelab/react-admin/pull/4263)) ([almahdi](https://github.com/almahdi))
+* [Doc] Fix AppBar customization documentation ([4258](https://github.com/marmelab/react-admin/pull/4258)) ([michelerota](https://github.com/michelerota))
+* [Doc] Fix welcome page screenshot in tutorial ([4239](https://github.com/marmelab/react-admin/pull/4239)) ([zyhou](https://github.com/zyhou))
+* [Doc] Fix typos in Inputs and Authorization docs ([4226](https://github.com/marmelab/react-admin/pull/4226)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix snippet for creating the React app in Tutorial ([4198](https://github.com/marmelab/react-admin/pull/4198)) ([pizzafox](https://github.com/pizzafox))
+* [Doc] Add Armenian translation ([4199](https://github.com/marmelab/react-admin/pull/4199)) ([mrdntgrn](https://github.com/mrdntgrn))
+* [Doc] Add `express-sequelize-crud` to the list of data provider backends ([4150](https://github.com/marmelab/react-admin/pull/4150)) ([nicgirault](https://github.com/nicgirault))
+
 ## v3.1.1
 
 * Fix `SelectInput` doc about `emptyValue` defaultValue ([4193](https://github.com/marmelab/react-admin/pull/4193)) ([alanpoulain](https://github.com/alanpoulain))
