@@ -69,7 +69,13 @@ const NotFound = ({ className, classes: classesOverride, title, ...rest }) => {
     );
 };
 
-const sanitizeRestProps = ({ location, ...rest }) => rest;
+const sanitizeRestProps = ({
+    staticContext,
+    history,
+    location,
+    match,
+    ...rest
+}) => rest;
 
 NotFound.propTypes = {
     className: PropTypes.string,
