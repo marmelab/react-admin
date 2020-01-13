@@ -186,13 +186,11 @@ Ex. `<AutocompleteInput shouldRenderSuggestions={(val) => { return val.trim().le
 `<AutocompleteInput>` renders a [material-ui `<TextField>` component](https://material-ui.com/api/text-field/). Use the `options` attribute to override any of the `<TextField>` attributes:
 
 {% raw %}
-
 ```jsx
 <AutocompleteInput source="category" options={{
     color: 'secondary',
 }} />
 ```
-
 {% endraw %}
 
 **Tip**: If you want to populate the `choices` attribute with a list of related records, you should decorate `<AutocompleteInput>` with [`<ReferenceInput>`](#referenceinput), and leave the `choices` empty:
@@ -208,14 +206,12 @@ import { AutocompleteInput, ReferenceInput } from 'react-admin';
 Lastly, would you need to override the props of the suggestions container (a `Popper` element), you can specify them using the `options.suggestionsContainerProps`. For example:
 
 {% raw %}
-
 ```jsx
 <AutocompleteInput source="category" options={{
     suggestionsContainerProps: {
         disablePortal: true,
 }}} />
 ```
-
 {% endraw %}
 
 **Tip**: `<AutocompleteInput>` is a stateless component, so it only allows to *filter* the list of choices, not to *extend* it. If you need to populate the list of choices based on the result from a `fetch` call (and if [`<ReferenceInput>`](#referenceinput) doesn't cover your need), you'll have to [write your own Input component](#writing-your-own-input-component) based on material-ui `<AutoComplete>` component.
@@ -294,13 +290,11 @@ Ex. `<AutocompleteArrayInput shouldRenderSuggestions={(val) => { return val.trim
 Lastly, `<AutocompleteArrayInput>` renders a [material-ui `<TextField>` component](https://material-ui.com/api/text-field/). Use the `options` attribute to override any of the `<TextField>` attributes:
 
 {% raw %}
-
 ```jsx
 <AutocompleteArrayInput source="category" options={{
     color: 'secondary',
 }} />
 ```
-
 {% endraw %}
 
 **Tip**: Like many other inputs, `<AutocompleteArrayInput>` accept a `fullWidth` prop.
@@ -317,14 +311,12 @@ import { AutocompleteArrayInput, ReferenceArrayInput } from 'react-admin';
 If you need to override the props of the suggestions container (a `Popper` element), you can specify them using the `options.suggestionsContainerProps`. For example:
 
 {% raw %}
-
 ```jsx
 <AutocompleteArrayInput source="category" options={{
     suggestionsContainerProps: {
         disablePortal: true,
 }}} />
 ```
-
 {% endraw %}
 
 **Tip**: `<ReferenceArrayInput>` is a stateless component, so it only allows to *filter* the list of choices, not to *extend* it. If you need to populate the list of choices based on the result from a `fetch` call (and if [`<ReferenceArrayInput>`](#referencearrayinput) doesn't cover your need), you'll have to [write your own Input component](#writing-your-own-input-component) based on [material-ui-chip-input](https://github.com/TeamWertarbyte/material-ui-chip-input).
@@ -365,7 +357,6 @@ This input does not handle `null` values. You would need the `<NullableBooleanIn
 You can use the `options` prop to pass any option supported by the Material UI `Switch` components. For example, here's how to set a custom checked icon:
 
 {% raw %}
-
 ```jsx
 import { BooleanInput } from 'react-admin';
 import FavoriteIcon from '@material-ui/icons/Favorite';
@@ -377,7 +368,6 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
     }}
 />
 ```
-
 {% endraw %}
 
 ![CustomBooleanInputCheckIcon](./img/custom-switch-icon.png)
@@ -463,7 +453,6 @@ However, in some cases (e.g. inside a `<ReferenceInput>`), you may not want the 
 Lastly, use the `options` attribute if you want to override any of Material UI's `<Checkbox>` attributes:
 
 {% raw %}
-
 ```jsx
 import { FavoriteBorder, Favorite } from '@material-ui/icons';
 
@@ -472,7 +461,6 @@ import { FavoriteBorder, Favorite } from '@material-ui/icons';
     checkedIcon: <Favorite />
 }} />
 ```
-
 {% endraw %}
 
 ### Properties
@@ -623,11 +611,9 @@ import { PasswordInput } from 'react-admin';
 **Tip**: It is possible to set the [`autocomplete` attribute](https://developer.mozilla.org/fr/docs/Web/HTML/Attributs/autocomplete) by injecting an input props:
 
 {% raw %}
-
 ```jsx
 <PasswordInput source="password" inputProps={{ autocomplete: 'current-password' }} />
 ```
-
 {% endraw %}
 
 ## `<RadioButtonGroupInput>`
@@ -696,13 +682,11 @@ However, in some cases (e.g. inside a `<ReferenceInput>`), you may not want the 
 Lastly, use the `options` attribute if you want to override any of Material UI's `<RadioButtonGroup>` attributes:
 
 {% raw %}
-
 ```jsx
 <RadioButtonGroupInput source="category" options={{
     labelPosition: 'right'
 }} />
 ```
-
 {% endraw %}
 
 Refer to [Material UI RadioGroup documentation](https://material-ui.com/api/radio-group) for more details.
@@ -793,7 +777,6 @@ import { ReferenceArrayInput, SelectArrayInput } from 'react-admin';
 You can tweak how this component fetches the possible values using the `perPage`, `sort`, and `filter` props.
 
 {% raw %}
-
 ```jsx
 // by default, fetches only the first 25 values. You can extend this limit
 // by setting the `perPage` prop.
@@ -822,7 +805,6 @@ You can tweak how this component fetches the possible values using the `perPage`
     <SelectArrayInput optionText="name" />
 </ReferenceArrayInput>
 ```
-
 {% endraw %}
 
 `<ReferenceArrayInput>` also accepts the [common input props](./Inputs.md#common-input-props).
@@ -882,7 +864,6 @@ const CommentFilter = (props) => (
 You can tweak how this component fetches the possible values using the `perPage`, `sort`, and `filter` props.
 
 {% raw %}
-
 ```jsx
 // by default, fetches only the first 25 values. You can extend this limit
 // by setting the `perPage` prop.
@@ -911,7 +892,6 @@ You can tweak how this component fetches the possible values using the `perPage`
     <SelectInput optionText="title" />
 </ReferenceInput>
 ```
-
 {% endraw %}
 
 The child component may further filter results (that's the case, for instance, for `<AutocompleteInput>`). ReferenceInput passes a `setFilter` function as prop to its child component. It uses the value to create a filter for the query - by default `{ q: [searchText] }`. You can customize the mapping
@@ -1071,13 +1051,11 @@ Note that `translateChoice` is set to `false` when `<SelectInput>` is a child of
 Lastly, use the `options` attribute if you want to override any of Material UI's `<SelectField>` attributes:
 
 {% raw %}
-
 ```jsx
 <SelectInput source="category" options={{
     maxHeight: 200
 }} />
 ```
-
 {% endraw %}
 
 Refer to [Material UI Select documentation](https://material-ui.com/api/select) for more details.
@@ -1189,11 +1167,9 @@ const choices = [
 Lastly, use the `options` attribute if you want to override any of the `<Select>` attributes:
 
 {% raw %}
-
 ```jsx
 <SelectArrayInput source="category" options={{ fullWidth: true }} />
 ```
-
 {% endraw %}
 
 Refer to [the Select documentation](https://material-ui.com/api/select) for more details.
@@ -1672,7 +1648,6 @@ import { FormDataConsumer } from 'react-admin';
 **Tip**: When using a `FormDataConsumer` you can define `subscription` prop to pass to the `react-final-form`
 
 {% raw %}
-
 ```jsx
 import { FormDataConsumer } from 'react-admin';
 
@@ -1689,5 +1664,4 @@ import { FormDataConsumer } from 'react-admin';
      </Edit>
  );
 ```
-
 {% endraw %}
