@@ -20,13 +20,13 @@ const DefaultLayout: FunctionComponent<LayoutProps> = ({ children }) => (
 );
 
 export interface CoreAdminUIProps {
-    catchAll: CatchAllComponent;
+    catchAll?: CatchAllComponent;
     children?: AdminChildren;
     customRoutes?: CustomRoutes;
     dashboard?: DashboardComponent;
-    layout: LayoutComponent;
-    loading: ComponentType;
-    loginPage: LoginComponent | boolean;
+    layout?: LayoutComponent;
+    loading?: ComponentType;
+    loginPage?: LoginComponent | boolean;
     logout?: ComponentType;
     menu?: ComponentType;
     theme?: object;
