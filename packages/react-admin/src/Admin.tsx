@@ -104,7 +104,7 @@ const Admin: FunctionComponent<AdminProps> = ({
     theme,
     title = 'React Admin',
 }) => {
-    if (appLayout) {
+    if (appLayout && process.env.NODE_ENV !== 'production') {
         console.warn(
             'You are using deprecated prop "appLayout", it was replaced by "layout", see https://github.com/marmelab/react-admin/issues/2918'
         );
@@ -114,7 +114,7 @@ const Admin: FunctionComponent<AdminProps> = ({
             'You passed true to the loginPage prop. You must either pass false to disable it or a component class to customize it'
         );
     }
-    if (locale) {
+    if (locale && process.env.NODE_ENV !== 'production') {
         console.warn(
             'You are using deprecated prop "locale". You must now pass the initial locale to your i18nProvider'
         );
