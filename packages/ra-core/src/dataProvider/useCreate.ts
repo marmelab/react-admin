@@ -23,7 +23,7 @@ import useMutation from './useMutation';
  *     const like = { postId: record.id };
  *     const [create, { loading, error }] = useCreate('likes', like);
  *     if (error) { return <p>ERROR</p>; }
- *     return <button disabled={loading} onClick={create}>Like</div>;
+ *     return <button disabled={loading} onClick={create}>Like</button>;
  * };
  */
 const useCreate = (resource: string, data: any = {}, options?: any) =>
