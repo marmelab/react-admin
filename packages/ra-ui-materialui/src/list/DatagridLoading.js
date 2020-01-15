@@ -9,22 +9,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import IconButton from '@material-ui/core/IconButton';
 import Checkbox from '@material-ui/core/Checkbox';
 import classnames from 'classnames';
-import { makeStyles } from '@material-ui/core/styles';
-
-const useStyles = makeStyles(
-    theme => ({
-        root: {
-            backgroundColor: theme.palette.grey[300],
-            display: 'flex',
-        },
-    }),
-    { name: 'RaDatagridLoading' }
-);
-
-const Placeholder = ({ classes: classesOverride }) => {
-    const classes = useStyles({ classes: classesOverride });
-    return <div className={classes.root}>&nbsp;</div>;
-};
+import Placeholder from './Placeholder';
 
 const times = (nbChildren, fn) =>
     Array.from({ length: nbChildren }, (_, key) => fn(key));
