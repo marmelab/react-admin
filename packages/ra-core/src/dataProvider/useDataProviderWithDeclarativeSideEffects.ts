@@ -25,12 +25,17 @@ const useDataProviderWithDeclarativeSideEffects = (): DataProvider => {
                         resource,
                         options
                     );
-
-                    return target[name.toString()](resource, payload, {
-                        ...options,
-                        onSuccess,
-                        onFailure,
-                    });
+                    try {
+                        return target[name.toString()](resource, payload, {
+                            ...options,
+                            onSuccess,
+                            onFailure,
+                        });
+                    } catch (e) {
+                        // turn synchronous exceptions (e.g. in parameter preparation)
+                        // into async ones, otherwise they'll be lost
+                        return Promise.reject(e);
+                    }
                 };
             },
         });

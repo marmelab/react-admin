@@ -58,13 +58,15 @@ const DeleteWithConfirmButton: FC<DeleteWithConfirmButtonProps> = ({
                 redirect(redirectTo, basePath);
                 refresh();
             },
-            onFailure: error =>
+            onFailure: error => {
                 notify(
                     typeof error === 'string'
                         ? error
                         : error.message || 'ra.notification.http_error',
                     'warning'
-                ),
+                );
+                setOpen(false);
+            },
             undoable: false,
         }
     );

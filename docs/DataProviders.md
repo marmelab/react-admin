@@ -637,7 +637,49 @@ export default {
 
 ### Error Format
 
-When the API backend returns an error, the Data Provider should `throw` an `Error` object. This object should contain a `status` property with the HTTP response code (404, 500, etc.). React-admin inspects this error code, and uses it for [authentication](./Authentication.md) (in case of 401 or 403 errors). Besides, react-admin displays the error `message` on screen in a temporary notification.
+When the API backend returns an error, the Data Provider should return a rejected Promise containing an `Error` object. This object should contain a `status` property with the HTTP response code (404, 500, etc.). React-admin inspects this error code, and uses it for [authentication](./Authentication.md) (in case of 401 or 403 errors). Besides, react-admin displays the error `message` on screen in a temporary notification.
+
+If you use `fetchJson`, you don't need to do anything: HTTP errors are automaticlly decorated as expected by react-admin.
+
+If you use another HTTP client, make sure you return a rejected Promise. You can use the `HttpError` class to throw an error with status in one line:
+
+```js
+import { HttpError } from 'react-admin';
+
+export default {
+    getList: (resource, params) => {
+        return new Promise((resolve, reject) => {
+            myApiClient(url, { ...options, headers: requestHeaders })
+                .then(response =>
+                    response.text().then(text => ({
+                        status: response.status,
+                        statusText: response.statusText,
+                        headers: response.headers,
+                        body: text,
+                    }))
+                )
+                .then(({ status, statusText, headers, body }) => {
+                    let json;
+                    try {
+                        json = JSON.parse(body);
+                    } catch (e) {
+                        // not json, no big deal
+                    }
+                    if (status < 200 || status >= 300) {
+                        return reject(
+                            new HttpError(
+                                (json && json.message) || statusText,
+                                status,
+                                json
+                            )
+                        );
+                    }
+                    return resolve({ status, headers, body, json });
+                });
+        }),
+    ...
+}
+```
 
 ## Using The Data Provider In Components
 
