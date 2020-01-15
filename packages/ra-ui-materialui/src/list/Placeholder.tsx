@@ -9,7 +9,7 @@ const useStyles = makeStyles(
             display: 'flex',
         },
     }),
-    { name: 'RaSimpleListLoading' }
+    { name: 'RaPlaceholder' }
 );
 
 interface Props {
