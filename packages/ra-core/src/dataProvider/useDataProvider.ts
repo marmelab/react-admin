@@ -243,60 +243,69 @@ const performUndoableQuery = ({
             meta: { resource, ...rest },
         });
         dispatch({ type: FETCH_START });
-        dataProvider[type](resource, payload)
-            .then(response => {
-                if (process.env.NODE_ENV !== 'production') {
-                    validateResponseFormat(response, type);
-                }
-                dispatch({
-                    type: `${action}_SUCCESS`,
-                    payload: response,
-                    requestPayload: payload,
-                    meta: {
-                        ...rest,
-                        resource,
-                        fetchResponse: getFetchType(type),
-                        fetchStatus: FETCH_END,
-                    },
-                });
-                dispatch({ type: FETCH_END });
-                if (window) {
-                    window.removeEventListener(
-                        'beforeunload',
-                        warnBeforeClosingWindow
-                    );
-                }
-                dispatch(refreshView());
-            })
-            .catch(error => {
-                if (window) {
-                    window.removeEventListener(
-                        'beforeunload',
-                        warnBeforeClosingWindow
-                    );
-                }
-                if (process.env.NODE_ENV !== 'production') {
-                    console.error(error);
-                }
-                return logoutIfAccessDenied(error).then(loggedOut => {
-                    if (loggedOut) return;
+        try {
+            dataProvider[type](resource, payload)
+                .then(response => {
+                    if (process.env.NODE_ENV !== 'production') {
+                        validateResponseFormat(response, type);
+                    }
                     dispatch({
-                        type: `${action}_FAILURE`,
-                        error: error.message ? error.message : error,
-                        payload: error.body ? error.body : null,
+                        type: `${action}_SUCCESS`,
+                        payload: response,
                         requestPayload: payload,
                         meta: {
                             ...rest,
                             resource,
                             fetchResponse: getFetchType(type),
-                            fetchStatus: FETCH_ERROR,
+                            fetchStatus: FETCH_END,
                         },
                     });
-                    dispatch({ type: FETCH_ERROR, error });
-                    onFailure && onFailure(error);
-                    throw error;
+                    dispatch({ type: FETCH_END });
+                    if (window) {
+                        window.removeEventListener(
+                            'beforeunload',
+                            warnBeforeClosingWindow
+                        );
+                    }
+                    dispatch(refreshView());
+                })
+                .catch(error => {
+                    if (window) {
+                        window.removeEventListener(
+                            'beforeunload',
+                            warnBeforeClosingWindow
+                        );
+                    }
+                    if (process.env.NODE_ENV !== 'production') {
+                        console.error(error);
+                    }
+                    return logoutIfAccessDenied(error).then(loggedOut => {
+                        if (loggedOut) return;
+                        dispatch({
+                            type: `${action}_FAILURE`,
+                            error: error.message ? error.message : error,
+                            payload: error.body ? error.body : null,
+                            requestPayload: payload,
+                            meta: {
+                                ...rest,
+                                resource,
+                                fetchResponse: getFetchType(type),
+                                fetchStatus: FETCH_ERROR,
+                            },
+                        });
+                        dispatch({ type: FETCH_ERROR, error });
+                        onFailure && onFailure(error);
+                        throw error;
+                    });
                 });
-            });
+        } catch (e) {
+            if (process.env.NODE_ENV !== 'production') {
+                console.error(e);
+            }
+            throw new Error(
+                'The dataProvider threw an error. It should return a rejected Promise instead.'
+            );
+        }
     });
     return Promise.resolve({});
 };
@@ -337,50 +346,58 @@ const performQuery = ({
         meta: { resource, ...rest },
     });
     dispatch({ type: FETCH_START });
-
-    return dataProvider[type](resource, payload)
-        .then(response => {
-            if (process.env.NODE_ENV !== 'production') {
-                validateResponseFormat(response, type);
-            }
-            dispatch({
-                type: `${action}_SUCCESS`,
-                payload: response,
-                requestPayload: payload,
-                meta: {
-                    ...rest,
-                    resource,
-                    fetchResponse: getFetchType(type),
-                    fetchStatus: FETCH_END,
-                },
-            });
-            dispatch({ type: FETCH_END });
-            onSuccess && onSuccess(response);
-            return response;
-        })
-        .catch(error => {
-            if (process.env.NODE_ENV !== 'production') {
-                console.error(error);
-            }
-            return logoutIfAccessDenied(error).then(loggedOut => {
-                if (loggedOut) return;
+    try {
+        return dataProvider[type](resource, payload)
+            .then(response => {
+                if (process.env.NODE_ENV !== 'production') {
+                    validateResponseFormat(response, type);
+                }
                 dispatch({
-                    type: `${action}_FAILURE`,
-                    error: error.message ? error.message : error,
-                    payload: error.body ? error.body : null,
+                    type: `${action}_SUCCESS`,
+                    payload: response,
                     requestPayload: payload,
                     meta: {
                         ...rest,
                         resource,
                         fetchResponse: getFetchType(type),
-                        fetchStatus: FETCH_ERROR,
+                        fetchStatus: FETCH_END,
                     },
                 });
-                dispatch({ type: FETCH_ERROR, error });
-                onFailure && onFailure(error);
-                throw error;
+                dispatch({ type: FETCH_END });
+                onSuccess && onSuccess(response);
+                return response;
+            })
+            .catch(error => {
+                if (process.env.NODE_ENV !== 'production') {
+                    console.error(error);
+                }
+                return logoutIfAccessDenied(error).then(loggedOut => {
+                    if (loggedOut) return;
+                    dispatch({
+                        type: `${action}_FAILURE`,
+                        error: error.message ? error.message : error,
+                        payload: error.body ? error.body : null,
+                        requestPayload: payload,
+                        meta: {
+                            ...rest,
+                            resource,
+                            fetchResponse: getFetchType(type),
+                            fetchStatus: FETCH_ERROR,
+                        },
+                    });
+                    dispatch({ type: FETCH_ERROR, error });
+                    onFailure && onFailure(error);
+                    throw error;
+                });
             });
-        });
+    } catch (e) {
+        if (process.env.NODE_ENV !== 'production') {
+            console.error(e);
+        }
+        throw new Error(
+            'The dataProvider threw an error. It should return a rejected Promise instead.'
+        );
+    }
 };
 
 interface QueryFunctionParams {

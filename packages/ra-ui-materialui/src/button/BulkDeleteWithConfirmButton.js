@@ -71,13 +71,15 @@ const BulkDeleteWithConfirmButton = ({
             });
             unselectAll(resource);
         },
-        onFailure: error =>
+        onFailure: error => {
             notify(
                 typeof error === 'string'
                     ? error
                     : error.message || 'ra.notification.http_error',
                 'warning'
-            ),
+            );
+            setOpen(false);
+        },
     });
 
     const handleClick = e => {
