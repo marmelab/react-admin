@@ -9,6 +9,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import { makeStyles } from '@material-ui/core/styles';
 
 import Placeholder from './Placeholder';
+import { useTimeout } from 'ra-core';
 
 const useStyles = makeStyles(
     theme => ({
@@ -45,8 +46,9 @@ const SimpleListLoading: FC<Props & ListProps> = ({
     ...rest
 }) => {
     const classes = useStyles({ classes: classesOverride });
+    const oneSecondHasPassed = useTimeout(1000);
 
-    return (
+    return oneSecondHasPassed ? (
         <List className={className} {...rest}>
             {times(nbFakeLines, key => (
                 <ListItem>
@@ -78,7 +80,7 @@ const SimpleListLoading: FC<Props & ListProps> = ({
                 </ListItem>
             ))}
         </List>
-    );
+    ) : null;
 };
 
 SimpleListLoading.propTypes = {

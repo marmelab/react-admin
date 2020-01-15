@@ -83,6 +83,7 @@ const SimpleList = ({
             />
         );
     }
+
     return (
         (loading || total > 0) && (
             <List className={className} {...sanitizeListRestProps(rest)}>
