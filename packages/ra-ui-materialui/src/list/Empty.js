@@ -6,21 +6,24 @@ import { useTranslate } from 'ra-core';
 import { CreateButton } from '../button';
 import inflection from 'inflection';
 
-const useStyles = makeStyles({
-    message: {
-        textAlign: 'center',
-        opacity: 0.5,
-        margin: '0 1em',
+const useStyles = makeStyles(
+    {
+        message: {
+            textAlign: 'center',
+            opacity: 0.5,
+            margin: '0 1em',
+        },
+        icon: {
+            width: '9em',
+            height: '9em',
+        },
+        toolbar: {
+            textAlign: 'center',
+            marginTop: '2em',
+        },
     },
-    icon: {
-        width: '9em',
-        height: '9em',
-    },
-    toolbar: {
-        textAlign: 'center',
-        marginTop: '2em',
-    },
-});
+    { name: 'RaEmpty' }
+);
 
 const Empty = ({ resource, basePath }) => {
     const classes = useStyles();
