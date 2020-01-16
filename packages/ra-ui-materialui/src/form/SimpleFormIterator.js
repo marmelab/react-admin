@@ -103,9 +103,14 @@ export class SimpleFormIterator extends Component {
     };
 
     addField = () => {
-        const { fields } = this.props;
+        const { fields, children } = this.props;
         this.ids.push(this.nextId++);
-        fields.push({});
+        // Checks if there is just 1 children without source param then push string since it's not an {}
+        if (children.props && children.props.source === undefined) {
+            fields.push('');
+        } else {
+            fields.push({});
+        }
     };
 
     render() {
