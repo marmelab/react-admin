@@ -39,6 +39,7 @@ const useStyles = makeStyles(
                 border: 'none',
                 marginTop: '1.5em',
             },
+            zIndex: 'inherit',
         },
     }),
     { name: 'RaSidebar' }
