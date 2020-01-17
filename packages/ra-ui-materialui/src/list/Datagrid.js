@@ -26,7 +26,12 @@ const useStyles = makeStyles(
         thead: {},
         tbody: {},
         headerRow: {},
-        headerCell: {},
+        headerCell: {
+            position: 'sticky',
+            top: 0,
+            zIndex: 2,
+            backgroundColor: theme.palette.background.paper,
+        },
         checkbox: {},
         row: {},
         clickableRow: {
@@ -193,11 +198,17 @@ function Datagrid({ classes: classesOverride, ...props }) {
                     {expand && (
                         <TableCell
                             padding="none"
-                            className={classes.expandHeader}
+                            className={classnames(
+                                classes.headerCell,
+                                classes.expandHeader
+                            )}
                         />
                     )}
                     {hasBulkActions && (
-                        <TableCell padding="checkbox">
+                        <TableCell
+                            padding="checkbox"
+                            className={classes.headerCell}
+                        >
                             <Checkbox
                                 className="select-all"
                                 color="primary"
