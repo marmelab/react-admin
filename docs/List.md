@@ -242,7 +242,7 @@ const PostBulkActionButtons = props => (
 );
 
 export const PostList = (props) => (
-    <List {...props} bulkActionButtons={<PostBulkActionButtons />}>
+    <List {...props} bulkActionButtons={PostBulkActionButtons}>
         ...
     </List>
 );
