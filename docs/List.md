@@ -86,46 +86,86 @@ The title can be either a string, or an element of your own.
 You can replace the list of default actions by your own element using the `actions` prop:
 
 ```jsx
-import Button from '@material-ui/core/Button';
-import { CreateButton, ExportButton, RefreshButton } from 'react-admin';
-import Toolbar from '@material-ui/core/Toolbar';
+import React, { cloneElement, useMemo } from 'react';
+import PropTypes from 'prop-types';
+import {
+    TopToolbar, CreateButton, ExportButton, Button, sanitizeListRestProps,
+} from 'react-admin';
+import IconEvent from '@material-ui/icons/Event';
 
-const PostActions = ({
-    basePath,
+const ListActions = ({
     currentSort,
+    className,
+    resource,
+    filters,
     displayedFilters,
     exporter,
-    filters,
     filterValues,
-    onUnselectItems,
-    resource,
+    permanentFilter,
+    hasCreate,
+    basePath,
     selectedIds,
+    onUnselectItems,
     showFilter,
-    total
-}) => (
-    <Toolbar>
-        {filters && React.cloneElement(filters, {
-            resource,
-            showFilter,
-            displayedFilters,
-            filterValues,
-            context: 'button',
-        })}
-        <CreateButton basePath={basePath} />
-        <ExportButton
-            disabled={total === 0}
-            resource={resource}
-            sort={currentSort}
-            filter={filterValues}
-            exporter={exporter}
-        />
-        {/* Add your custom actions */}
-        <Button color="primary" onClick={customAction}>Custom Action</Button>
-    </Toolbar>
+    maxResults,
+    total,
+    ...rest
+}) => useMemo(
+    () => (
+        <TopToolbar className={className} {...sanitizeListRestProps(rest)}>
+            {filters && cloneElement(filters, {
+                resource,
+                showFilter,
+                displayedFilters,
+                filterValues,
+                context: 'button',
+            })}
+            {hasCreate && <CreateButton basePath={basePath} />}
+            {exporter !== false && (
+                <ExportButton
+                    disabled={total === 0}
+                    resource={resource}
+                    sort={currentSort}
+                    filter={{ ...filterValues, ...permanentFilter }}
+                    exporter={exporter}
+                    maxResults={maxResults}
+                />
+            )}
+            {/* Add your custom actions */}
+            <Button
+                onClick={() => { alert('Your custom action'); }}
+                label="Show calendar"
+            >
+                <IconEvent />
+            </Button>
+        </TopToolbar>
+    ),
+    [resource, displayedFilters, filterValues, selectedIds, filters, total],
 );
 
+ListActions.propTypes = {
+    basePath: PropTypes.string,
+    className: PropTypes.string,
+    currentSort: PropTypes.shape({}),
+    displayedFilters: PropTypes.shape({}),
+    exporter: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
+    filters: PropTypes.element,
+    filterValues: PropTypes.shape({}),
+    hasCreate: PropTypes.bool,
+    resource: PropTypes.string,
+    onUnselectItems: PropTypes.func.isRequired,
+    selectedIds: PropTypes.arrayOf(PropTypes.any),
+    showFilter: PropTypes.func,
+    total: PropTypes.number,
+};
+
+ListActions.defaultProps = {
+    selectedIds: [],
+    onUnselectItems: () => null,
+};
+
 export const PostList = (props) => (
-    <List {...props} actions={<PostActions />}>
+    <List {...props} actions={<ListActions />}>
         ...
     </List>
 );
