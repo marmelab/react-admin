@@ -883,12 +883,15 @@ Components deprecated in 2.X have been removed in 3.x. This includes:
 * `TitleDeprecated` (use `Title` instead)
 * `Headroom` (use `HideOnScroll` instead)
 * `LongTextInput` (use the `TextInput` instead)
+* `DisabledInput` (use the `TextInput` with the prop `disabled={true}` instead)
 
 ```diff
 - import { LongTextInput } from 'react-admin';
 - <LongTextInput source="body" />
+- <DisabledInput source="id" />
 + import { TextInput } from 'react-admin';
 + <TextInput multiline source="body" />
++ <TextInput disabled={true} source="id" />
 ```
 
 * `BulkActions` (use the [`bulkActionButtons` prop](https://marmelab.com/react-admin/List.html#bulk-action-buttons) instead)
