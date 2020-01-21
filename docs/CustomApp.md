@@ -9,7 +9,9 @@ The `<Admin>` tag is a great shortcut to be up and running with react-admin in m
 
 **Tip**: Before going for the Custom App route, explore all the options of [the `<Admin>` component](./Admin.md). They allow you to add custom routes, custom reducers, custom sagas, and customize the layout.
 
-Fortunately, the `<Admin>` component detects when it's used inside an existing Redux `<Provider>`, and skips its own store initialization. That means that react-admin will work out of the box inside another redux application - provided, of course, the store is compatible.
+## Using an Existing Redux Provider
+
+The `<Admin>` component detects when it's used inside an existing Redux `<Provider>`, and skips its own store initialization. That means that react-admin will work out of the box inside another Redux application - provided, of course, the store is compatible.
 
 Beware that you need to know about [redux](http://redux.js.org/), [react-router-dom](https://reacttraining.com/react-router/web/guides/quick-start), and [redux-saga](https://github.com/yelouafi/redux-saga) to go further.
 
@@ -219,16 +221,16 @@ const App = () => (
 +               <ConnectedRouter history={history}>
 +                   <Switch>
 +                       <Route exact path="/" component={Dashboard} />
-+                       <Route exact path="/posts" hasCreate render={(routeProps) => <PostList resource="posts" {...routeProps} />} />
-+                       <Route exact path="/posts/create" render={(routeProps) => <PostCreate resource="posts" {...routeProps} />} />
-+                       <Route exact path="/posts/:id" hasShow render={(routeProps) => <PostEdit resource="posts" {...routeProps} />} />
-+                       <Route exact path="/posts/:id/show" hasEdit render={(routeProps) => <PostShow resource="posts" {...routeProps} />} />
-+                       <Route exact path="/comments" hasCreate render={(routeProps) => <CommentList resource="comments" {...routeProps} />} />
-+                       <Route exact path="/comments/create" render={(routeProps) => <CommentCreate resource="comments" {...routeProps} />} />
-+                       <Route exact path="/comments/:id" render={(routeProps) => <CommentEdit resource="comments" {...routeProps} />} />
-+                       <Route exact path="/users" hasCreate render={(routeProps) => <UsersList resource="users" {...routeProps} />} />
-+                       <Route exact path="/users/create" render={(routeProps) => <UsersCreate resource="users" {...routeProps} />} />
-+                       <Route exact path="/users/:id" render={(routeProps) => <UsersEdit resource="users" {...routeProps} />} />
++                       <Route exact path="/posts" hasCreate render={(routeProps) => <PostList resource="posts" basePath={routeProps.match.url} {...routeProps} />} />
++                       <Route exact path="/posts/create" render={(routeProps) => <PostCreate resource="posts" basePath={routeProps.match.url} {...routeProps} />} />
++                       <Route exact path="/posts/:id" hasShow render={(routeProps) => <PostEdit resource="posts" basePath={routeProps.match.url} {...routeProps} />} />
++                       <Route exact path="/posts/:id/show" hasEdit render={(routeProps) => <PostShow resource="posts" basePath={routeProps.match.url} {...routeProps} />} />
++                       <Route exact path="/comments" hasCreate render={(routeProps) => <CommentList resource="comments" basePath={routeProps.match.url} {...routeProps} />} />
++                       <Route exact path="/comments/create" render={(routeProps) => <CommentCreate resource="comments" basePath={routeProps.match.url} {...routeProps} />} />
++                       <Route exact path="/comments/:id" render={(routeProps) => <CommentEdit resource="comments" basePath={routeProps.match.url} {...routeProps} />} />
++                       <Route exact path="/users" hasCreate render={(routeProps) => <UsersList resource="users" basePath={routeProps.match.url} {...routeProps} />} />
++                       <Route exact path="/users/create" render={(routeProps) => <UsersCreate resource="users" basePath={routeProps.match.url} {...routeProps} />} />
++                       <Route exact path="/users/:id" render={(routeProps) => <UsersEdit resource="users" basePath={routeProps.match.url} {...routeProps} />} />
 +                   </Switch>
 +               </ConnectedRouter>
 +           </ThemeProvider>
