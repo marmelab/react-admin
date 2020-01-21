@@ -947,6 +947,14 @@ export const PostEdit = (props) => (
 The input components are wrapped inside a `div` to ensure a good looking form by default. You can pass a `formClassName` prop to the input components to customize the style of this `div`. For example, here is how to display two inputs on the same line:
 
 ```jsx
+import React from 'react';
+import {
+    Edit,
+    SimpleForm,
+    TextInput,
+} from 'react-admin';
+import { makeStyles } from '@material-ui/core/styles';
+
 const useStyles = makeStyles({
     inlineBlock: { display: 'inline-flex', marginRight: '1rem' },
 });
