@@ -18,15 +18,6 @@ interface Option {
 }
 
 /**
- * @typedef ReferenceProps
- * @type {Object}
- * @property {boolean} loading: boolean indicating if the reference is loading
- * @property {boolean} loaded: boolean indicating if the reference has loaded
- * @property {Object} referenceRecord: the referenced record.
- * @property {string | false} resourceLinkPath link to the page of the related record (depends on link) (false is no link)
- */
-
-/**
  * Get the link toward the referenced resource
  *
  * @example
@@ -51,7 +42,7 @@ interface Option {
  * @param {string} option.resource The current resource name
  * @param {string} option.source The key of the linked resource identifier
  *
- * @returns {ReferenceProps} The reference props
+ * @returns {string | false} The reference props
  */
 const getResourceLinkPath = ({
     basePath,
