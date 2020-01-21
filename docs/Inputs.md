@@ -542,14 +542,14 @@ Note that the image upload returns a [File](https://developer.mozilla.org/en/doc
 
 | Prop | Type | Default | Description |
 | ---|---|---|--- |
-| `accept` | Optional | `string|string[]` | - | Accepted file type(s), e. g. 'image/*,.pdf'. If left empty, all file types are accepted. Equivalent of the `accept` attribute of an `<input type="file">`. See https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file#accept for syntax and examples. |
+| `accept` | Optional | `string | string[]` | - | Accepted file type(s), e. g. 'image/*,.pdf'. If left empty, all file types are accepted. Equivalent of the `accept` attribute of an `<input type="file">`. See https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file#accept for syntax and examples. |
 | `children` | Optional | `ReactNode` | - | Element used to display the preview of an image (cloned several times if the select accepts multiple files). |
 | `minSize` | Optional | `number` | 0 | Minimum image size (in bytes), e.g. 5000 form 5KB |
 | `maxSize` | Optional | `number` | Infinity | Maximum image size (in bytes), e.g. 5000000 for 5MB |
 | `multiple` | Optional | `boolean` | false | Set to true if the input should accept a list of images, false if it should only accept one image |
-| `labelSingle` | Optional | `string` | 'ra.input.image.upload_single' | Invite displayed in the drop zone if the input accepts one image |
-| `labelMultiple` | Optional | `string` | 'ra.input.image.upload_several' | Invite displayed in the drop zone if the input accepts several images |
-| `placeholder` | Optional | `string|ReactNode` | - | Invite displayed in the drop zone, overrides `labelSingle` and `labelMultiple` |
+| `labelSingle` | Optional | `string` | 'ra.input.image. upload_single' | Invite displayed in the drop zone if the input accepts one image |
+| `labelMultiple` | Optional | `string` | 'ra.input.file. upload_multiple' | Invite displayed in the drop zone if the input accepts several images |
+| `placeholder` | Optional | `string | ReactNode` | - | Invite displayed in the drop zone, overrides `labelSingle` and `labelMultiple` |
 | `options` | Optional | `object` | `{}` | Additional options passed to react-dropzone's `useDropzone()` hook. See [the react-dropzone source](https://github.com/react-dropzone/react-dropzone/blob/master/src/index.js)  for details . |
 
 `<ImageInput>` also accepts the [common input props](./Inputs.md#common-input-props).
@@ -590,14 +590,14 @@ Note that the file upload returns a [File](https://developer.mozilla.org/en/docs
 
 | Prop | Type | Default | Description |
 | ---|---|---|--- |
-| `accept` | Optional | `string|string[]` | - | Accepted file type(s), e. g. 'application/json,video/*' or 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'. If left empty, all file types are accepted. Equivalent of the `accept` attribute of an `<input type="file">`. See https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file#accept for syntax and examples. |
+| `accept` | Optional | `string | string[]` | - | Accepted file type(s), e. g. 'application/json,video/*' or 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'. If left empty, all file types are accepted. Equivalent of the `accept` attribute of an `<input type="file">`. See https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file#accept for syntax and examples. |
 | `children` | Optional | `ReactNode` | - | Element used to display the preview of a file (cloned several times if the select accepts multiple files). |
 | `minSize` | Optional | `number` | 0 | Minimum file size (in bytes), e.g. 5000 form 5KB |
 | `maxSize` | Optional | `number` | Infinity | Maximum file size (in bytes), e.g. 5000000 for 5MB |
 | `multiple` | Optional | `boolean` | false | Set to true if the input should accept a list of files, false if it should only accept one file |
-| `labelSingle` | Optional | `string` | 'ra.input.file.upload_single' | Invite displayed in the drop zone if the input accepts one file |
-| `labelMultiple` | Optional | `string` | 'ra.input.file.upload_several' | Invite displayed in the drop zone if the input accepts several files |
-| `placeholder` | Optional | `string|ReactNode` | - | Invite displayed in the drop zone, overrides `labelSingle` and `labelMultiple` |
+| `labelSingle` | Optional | `string` | 'ra.input.file. upload_single' | Invite displayed in the drop zone if the input accepts one file |
+| `labelMultiple` | Optional | `string` | 'ra.input.file. upload_several' | Invite displayed in the drop zone if the input accepts several files |
+| `placeholder` | Optional | `string | ReactNode` | - | Invite displayed in the drop zone, overrides `labelSingle` and `labelMultiple` |
 | `options` | Optional | `object` | `{}` | Additional options passed to react-dropzone's `useDropzone()` hook. See [the react-dropzone source](https://github.com/react-dropzone/react-dropzone/blob/master/src/index.js)  for details . |
 
 `<FileInput>` also accepts the [common input props](./Inputs.md#common-input-props).
