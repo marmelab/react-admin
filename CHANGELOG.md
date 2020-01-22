@@ -1,5 +1,25 @@
 # Changelog
 
+## v3.1.3
+
+* Fix `<Menu>` overlapps the `<AppBar>` with material-ui > 4.8 ([4315](https://github.com/marmelab/react-admin/pull/4315)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix unused `filter` prop in `useGetMatchingReference` hook ([4314](https://github.com/marmelab/react-admin/pull/4314)) ([Luwangel](https://github.com/Luwangel))
+* Fix several jsDoc blocks in `ra-core` hooks ([4312](https://github.com/marmelab/react-admin/pull/4312)) ([WiXSL](https://github.com/WiXSL))
+* Fix `autoHideDuration` prop not being used in `<Notification>` component ([4311](https://github.com/marmelab/react-admin/pull/4311)) ([WiXSL](https://github.com/WiXSL))
+* Fix `<NullableBooleanInput>` does not show initial value ([4303](https://github.com/marmelab/react-admin/pull/4303)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix typo in `useCreate` hook jsDoc ([4289](https://github.com/marmelab/react-admin/pull/4289)) ([ekalinin](https://github.com/ekalinin))
+* Fix error in `<Confirm>` due to bad prop-types package version ([4285](https://github.com/marmelab/react-admin/pull/4285)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix deprecation warnings about `<Admin>` props appearing in production ([4279](https://github.com/marmelab/react-admin/pull/4279)) ([alanpoulain](https://github.com/alanpoulain))
+* Fix warning on `catchall` page due to improper sanitization in `<NotFound>` component ([4275](https://github.com/marmelab/react-admin/pull/4275)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix custom layout documentation doesn't mention the importance of the `<Notification>` component ([4336](https://github.com/marmelab/react-admin/pull/4336)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix form customization code snippet in CreateEdit documentation ([4335](https://github.com/marmelab/react-admin/pull/4335)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix outdated mention of `aor-dependent-input` in the FAQ ([4334](https://github.com/marmelab/react-admin/pull/4334)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix missing `basePath` prop in Custom App doc ([4333](https://github.com/marmelab/react-admin/pull/4333)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix `<ImageInput>` and `<FileInput>` doc and explain `accept` prop ([4332](https://github.com/marmelab/react-admin/pull/4332)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix code snippet showing how to prefill forms ([4301](https://github.com/marmelab/react-admin/pull/4301)) ([nicgirault](https://github.com/nicgirault))
+* [Doc] Fix useless line breaks in the Inputs documentation  ([4278](https://github.com/marmelab/react-admin/pull/4278)) ([Luwangel](https://github.com/Luwangel))
+* [Doc] Fix link to broken tinyMCE third-party package ([4274](https://github.com/marmelab/react-admin/pull/4274)) ([Luwangel](https://github.com/Luwangel))
+
 ## v3.1.2
 
 * Fix build delay in certain bundlers due to `@material-ui/icons` import ([4265](https://github.com/marmelab/react-admin/pull/4265)) ([WiXSL was merge](https://github.com/WiXSL was merge))
