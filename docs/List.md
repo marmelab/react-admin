@@ -99,10 +99,10 @@ const ListActions = ({
     resource,
     filters,
     displayedFilters,
-    exporter,
+    exporter, // you can hide ExportButton if exporter = (null || false)
     filterValues,
     permanentFilter,
-    hasCreate,
+    hasCreate, // you can hide CreateButton if hasCreate = false
     basePath,
     selectedIds,
     onUnselectItems,
@@ -110,54 +110,33 @@ const ListActions = ({
     maxResults,
     total,
     ...rest
-}) => useMemo(
-    () => (
-        <TopToolbar className={className} {...sanitizeListRestProps(rest)}>
-            {filters && cloneElement(filters, {
-                resource,
-                showFilter,
-                displayedFilters,
-                filterValues,
-                context: 'button',
-            })}
-            {hasCreate && <CreateButton basePath={basePath} />}
-            {exporter !== false && (
-                <ExportButton
-                    disabled={total === 0}
-                    resource={resource}
-                    sort={currentSort}
-                    filter={{ ...filterValues, ...permanentFilter }}
-                    exporter={exporter}
-                    maxResults={maxResults}
-                />
-            )}
-            {/* Add your custom actions */}
-            <Button
-                onClick={() => { alert('Your custom action'); }}
-                label="Show calendar"
-            >
-                <IconEvent />
-            </Button>
-        </TopToolbar>
-    ),
-    [resource, displayedFilters, filterValues, selectedIds, filters, total],
+}) => (
+    <TopToolbar className={className} {...sanitizeListRestProps(rest)}>
+        {filters && cloneElement(filters, {
+            resource,
+            showFilter,
+            displayedFilters,
+            filterValues,
+            context: 'button',
+        })}
+        <CreateButton basePath={basePath} />
+        <ExportButton
+            disabled={total === 0}
+            resource={resource}
+            sort={currentSort}
+            filter={{ ...filterValues, ...permanentFilter }}
+            exporter={exporter}
+            maxResults={maxResults}
+        />
+        {/* Add your custom actions */}
+        <Button
+            onClick={() => { alert('Your custom action'); }}
+            label="Show calendar"
+        >
+            <IconEvent />
+        </Button>
+    </TopToolbar>
 );
-
-ListActions.propTypes = {
-    basePath: PropTypes.string,
-    className: PropTypes.string,
-    currentSort: PropTypes.shape({}),
-    displayedFilters: PropTypes.shape({}),
-    exporter: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
-    filters: PropTypes.element,
-    filterValues: PropTypes.shape({}),
-    hasCreate: PropTypes.bool,
-    resource: PropTypes.string,
-    onUnselectItems: PropTypes.func.isRequired,
-    selectedIds: PropTypes.arrayOf(PropTypes.any),
-    showFilter: PropTypes.func,
-    total: PropTypes.number,
-};
 
 ListActions.defaultProps = {
     selectedIds: [],
