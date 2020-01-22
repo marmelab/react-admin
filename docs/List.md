@@ -86,25 +86,33 @@ The title can be either a string, or an element of your own.
 You can replace the list of default actions by your own element using the `actions` prop:
 
 ```jsx
-import Button from '@material-ui/core/Button';
-import { CreateButton, ExportButton, RefreshButton } from 'react-admin';
-import Toolbar from '@material-ui/core/Toolbar';
+import React, { cloneElement, useMemo } from 'react';
+import PropTypes from 'prop-types';
+import {
+    TopToolbar, CreateButton, ExportButton, Button, sanitizeListRestProps,
+} from 'react-admin';
+import IconEvent from '@material-ui/icons/Event';
 
-const PostActions = ({
-    basePath,
+const ListActions = ({
     currentSort,
-    displayedFilters,
-    exporter,
-    filters,
-    filterValues,
-    onUnselectItems,
+    className,
     resource,
+    filters,
+    displayedFilters,
+    exporter, // you can hide ExportButton if exporter = (null || false)
+    filterValues,
+    permanentFilter,
+    hasCreate, // you can hide CreateButton if hasCreate = false
+    basePath,
     selectedIds,
+    onUnselectItems,
     showFilter,
-    total
+    maxResults,
+    total,
+    ...rest
 }) => (
-    <Toolbar>
-        {filters && React.cloneElement(filters, {
+    <TopToolbar className={className} {...sanitizeListRestProps(rest)}>
+        {filters && cloneElement(filters, {
             resource,
             showFilter,
             displayedFilters,
@@ -116,16 +124,27 @@ const PostActions = ({
             disabled={total === 0}
             resource={resource}
             sort={currentSort}
-            filter={filterValues}
+            filter={{ ...filterValues, ...permanentFilter }}
             exporter={exporter}
+            maxResults={maxResults}
         />
         {/* Add your custom actions */}
-        <Button color="primary" onClick={customAction}>Custom Action</Button>
-    </Toolbar>
+        <Button
+            onClick={() => { alert('Your custom action'); }}
+            label="Show calendar"
+        >
+            <IconEvent />
+        </Button>
+    </TopToolbar>
 );
 
+ListActions.defaultProps = {
+    selectedIds: [],
+    onUnselectItems: () => null,
+};
+
 export const PostList = (props) => (
-    <List {...props} actions={<PostActions />}>
+    <List {...props} actions={<ListActions />}>
         ...
     </List>
 );
