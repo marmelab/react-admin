@@ -512,7 +512,9 @@ import { DateTimeInput } from 'react-admin';
 
 ![ImageInput](./img/image-input.png)
 
-Previews are enabled using `<ImageInput>` children, as following:
+Files are accepted or rejected based on the `accept`, `multiple`, `minSize` and `maxSize` props. `accept` must be a valid [MIME type](http://www.iana.org/assignments/media-types/media-types.xhtml) according to [input element specification](https://www.w3.org/wiki/HTML/Elements/input/file) or a valid file extension. If `multiple` is set to false and additional files are droppped, all files besides the first will be rejected. Any file which does not have a size in the [`minSize`, `maxSize`] range, will be rejected as well.
+
+`ImageInput` delegates the preview of currently selected images to its child. `ImageInput` clones its child as many times as there are selected images, passing the image as the `record` prop. To preview a simple list of image thubnails, you can use `<ImageField>` as child, as follows:
 
 ```jsx
 <ImageInput source="pictures" label="Related pictures" accept="image/*">
@@ -520,11 +522,11 @@ Previews are enabled using `<ImageInput>` children, as following:
 </ImageInput>
 ```
 
-Writing a custom field component for displaying the current value(s) is easy:  it's a standard [field](./Fields.md#writing-your-own-field-component).
+Writing a custom preview component is quite straightforward: it's a standard [field](./Fields.md#writing-your-own-field-component).
 
-When receiving **new** files, `ImageInput` will add a `rawFile` property to the object passed as the `record` prop of children. This `rawFile` is the [File](https://developer.mozilla.org/en-US/docs/Web/API/File) instance of the newly added file. This can be useful to display information about size or mimetype inside a custom field.
+When receiving **new** images, `ImageInput` will add a `rawFile` property to the object passed as the `record` prop of children. This `rawFile` is the [File](https://developer.mozilla.org/en-US/docs/Web/API/File) instance of the newly added file. This can be useful to display information about size or mimetype inside a custom field.
 
-The `ImageInput` component accepts an `options` prop, allowing to set the [react-dropzone properties](https://react-dropzone.netlify.com/#proptypes). However, some of these props must be passed **directly** to `ImageInput`: `maxSize`, `minSize`, `multiple`.
+The `ImageInput` component accepts an `options` prop, allowing to set the [react-dropzone properties](https://react-dropzone.netlify.com/#proptypes).
 
 If the default Dropzone label doesn't fit with your need, you can pass a `placeholder` prop to overwrite it. The value can be anything React can render (`PropTypes.node`):
 
@@ -536,15 +538,31 @@ If the default Dropzone label doesn't fit with your need, you can pass a `placeh
 
 Note that the image upload returns a [File](https://developer.mozilla.org/en/docs/Web/API/File) object. It is your responsibility to handle it depending on your API behavior. You can for instance encode it in base64, or send it as a multi-part form data. Check [this example](./DataProviders.md#extending-a-data-provider-example-of-file-upload) for base64 encoding data by extending the REST Client.
 
+### Properties
+
+| Prop | Type | Default | Description |
+| ---|---|---|--- |
+| `accept` | Optional | `string | string[]` | - | Accepted file type(s), e. g. 'image/*,.pdf'. If left empty, all file types are accepted. Equivalent of the `accept` attribute of an `<input type="file">`. See https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file#accept for syntax and examples. |
+| `children` | Optional | `ReactNode` | - | Element used to display the preview of an image (cloned several times if the select accepts multiple files). |
+| `minSize` | Optional | `number` | 0 | Minimum image size (in bytes), e.g. 5000 form 5KB |
+| `maxSize` | Optional | `number` | Infinity | Maximum image size (in bytes), e.g. 5000000 for 5MB |
+| `multiple` | Optional | `boolean` | false | Set to true if the input should accept a list of images, false if it should only accept one image |
+| `labelSingle` | Optional | `string` | 'ra.input.image. upload_single' | Invite displayed in the drop zone if the input accepts one image |
+| `labelMultiple` | Optional | `string` | 'ra.input.file. upload_multiple' | Invite displayed in the drop zone if the input accepts several images |
+| `placeholder` | Optional | `string | ReactNode` | - | Invite displayed in the drop zone, overrides `labelSingle` and `labelMultiple` |
+| `options` | Optional | `object` | `{}` | Additional options passed to react-dropzone's `useDropzone()` hook. See [the react-dropzone source](https://github.com/react-dropzone/react-dropzone/blob/master/src/index.js)  for details . |
+
 `<ImageInput>` also accepts the [common input props](./Inputs.md#common-input-props).
 
 ## `<FileInput>`
 
-`<FileInput>` allows to upload some files using [react-dropzone](https://github.com/okonet/react-dropzone).
+`<FileInput>` allows to upload files using [react-dropzone](https://github.com/okonet/react-dropzone).
 
 ![FileInput](./img/file-input.png)
 
-Previews (actually a simple list of files names) are enabled using `<FileField>` children, as following:
+Files are accepted or rejected based on the `accept`, `multiple`, `minSize` and `maxSize` props. `accept` must be a valid [MIME type](http://www.iana.org/assignments/media-types/media-types.xhtml) according to [input element specification](https://www.w3.org/wiki/HTML/Elements/input/file) or a valid file extension. If `multiple` is set to false and additional files are droppped, all files besides the first will be rejected. Any file which does not have a size in the [`minSize`, `maxSize`] range, will be rejected as well.
+
+`FileInput` delegates the preview of currently selected files to its child. `FileInput` clones its child as many times as there are selected files, passing the file as the `record` prop. To preview a simple list of files names, you can use `<FileField>` as child, as follows:
 
 ```jsx
 <FileInput source="files" label="Related files" accept="application/pdf">
@@ -552,11 +570,11 @@ Previews (actually a simple list of files names) are enabled using `<FileField>`
 </FileInput>
 ```
 
-Writing a custom field component for displaying the current value(s) is easy:  it's a standard [field](./Fields.md#writing-your-own-field-component).
+Writing a custom preview component is quite straightforward: it's a standard [field](./Fields.md#writing-your-own-field-component).
 
 When receiving **new** files, `FileInput` will add a `rawFile` property to the object passed as the `record` prop of children. This `rawFile` is the [File](https://developer.mozilla.org/en-US/docs/Web/API/File) instance of the newly added file. This can be useful to display information about size or mimetype inside a custom field.
 
-The `FileInput` component accepts an `options` prop into which you can pass all the [react-dropzone properties](https://react-dropzone.netlify.com/#proptypes). However, some of the most useful props should be passed **directly** on the `FileInput`: `maxSize`, `minSize`, `multiple`.
+The `FileInput` component accepts an `options` prop into which you can pass all the [react-dropzone properties](https://react-dropzone.netlify.com/#proptypes). 
 
 If the default Dropzone label doesn't fit with your need, you can pass a `placeholder` prop to overwrite it. The value can be anything React can render (`PropTypes.node`):
 
@@ -567,6 +585,20 @@ If the default Dropzone label doesn't fit with your need, you can pass a `placeh
 ```
 
 Note that the file upload returns a [File](https://developer.mozilla.org/en/docs/Web/API/File) object. It is your responsibility to handle it depending on your API behavior. You can for instance encode it in base64, or send it as a multi-part form data. Check [this example](./DataProviders.md#extending-a-data-provider-example-of-file-upload) for base64 encoding data by extending the REST Client.
+
+### Properties
+
+| Prop | Type | Default | Description |
+| ---|---|---|--- |
+| `accept` | Optional | `string | string[]` | - | Accepted file type(s), e. g. 'application/json,video/*' or 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'. If left empty, all file types are accepted. Equivalent of the `accept` attribute of an `<input type="file">`. See https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file#accept for syntax and examples. |
+| `children` | Optional | `ReactNode` | - | Element used to display the preview of a file (cloned several times if the select accepts multiple files). |
+| `minSize` | Optional | `number` | 0 | Minimum file size (in bytes), e.g. 5000 form 5KB |
+| `maxSize` | Optional | `number` | Infinity | Maximum file size (in bytes), e.g. 5000000 for 5MB |
+| `multiple` | Optional | `boolean` | false | Set to true if the input should accept a list of files, false if it should only accept one file |
+| `labelSingle` | Optional | `string` | 'ra.input.file. upload_single' | Invite displayed in the drop zone if the input accepts one file |
+| `labelMultiple` | Optional | `string` | 'ra.input.file. upload_several' | Invite displayed in the drop zone if the input accepts several files |
+| `placeholder` | Optional | `string | ReactNode` | - | Invite displayed in the drop zone, overrides `labelSingle` and `labelMultiple` |
+| `options` | Optional | `object` | `{}` | Additional options passed to react-dropzone's `useDropzone()` hook. See [the react-dropzone source](https://github.com/react-dropzone/react-dropzone/blob/master/src/index.js)  for details . |
 
 `<FileInput>` also accepts the [common input props](./Inputs.md#common-input-props).
 
