@@ -44,6 +44,8 @@ const useStyles = makeStyles(
             justifyContent: 'flex-start',
             backgroundRepeat: 'no-repeat',
             backgroundSize: 'cover',
+            backgroundImage:
+                'linear-gradient(135deg, #00023b 0%, #00023b 50%, #313264 100%)',
         },
         card: {
             minWidth: 300,
