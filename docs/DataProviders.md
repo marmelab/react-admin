@@ -206,7 +206,9 @@ As Data Providers are just objects, you can extend them with custom logic for a 
 For instance, the following Data Provider extends the `ra-data-simple-rest` provider, and adds image upload support for the `update('posts')` call (react-admin offers an `<ImageInput />` component that allows image upload).
 
 ```js
-import dataProvider from 'ra-data-simple-rest';
+import simpleRestProvider from 'ra-data-simple-rest';
+
+const dataProvider = simpleRestProvider('http://path.to.my.api/');
 
 const myDataProvider = {
     ...dataProvider,
