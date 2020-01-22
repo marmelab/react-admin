@@ -160,7 +160,6 @@ Login.propTypes = {
 };
 
 Login.defaultProps = {
-    backgroundImage: 'https://source.unsplash.com/random/1600x900/daily',
     theme: defaultTheme,
     children: <DefaultLoginForm />,
 };
