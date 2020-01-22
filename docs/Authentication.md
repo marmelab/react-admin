@@ -149,7 +149,7 @@ export default {
     login: ({ username, password }) => { /* ... */ },
     logout: () => { /* ... */ },
     checkError: (error) => {
-        const status = error.status;
+        const status = error.response.status;
         if (status === 401 || status === 403) {
             localStorage.removeItem('token');
             return Promise.reject();
