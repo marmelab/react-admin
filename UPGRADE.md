@@ -209,7 +209,7 @@ import { FormDataConsumer, REDUX_FORM_NAME } from 'react-admin';
 +            <SelectInput
 +                source="country"
 +                choices={countries}
-+                onChange={value => form.change('city', null)}
++                onChange={value => form.change('city', value)}
 +                {...rest}
 +            />
 +            <SelectInput
@@ -231,7 +231,7 @@ const OrderEdit = (props) => (
 -                            source="country"
 -                            choices={countries}
 -                            onChange={value => dispatch(
--                                change(REDUX_FORM_NAME, 'city', null)
+-                                change(REDUX_FORM_NAME, 'city', value)
 -                            )}
 -                             {...rest}
 -                        />
@@ -374,6 +374,36 @@ export default ({
     return store;
 };
 ```
+
+## Custom Forms using `reduxForm()` must be replaced by using `<Form>`
+
+[Final form migration documentation here](https://final-form.org/docs/react-final-form/migration/redux-form) explains the various changes you have to perform in your code.
+
+```diff
+-import { reduxForm } from 'redux-form'
++import { Form } from 'react-final-form'
+
+-const CustomForm = reduxForm({ form: 'record-form', someOptions: true })(({ record, resource }) => (	
++const CustomForm = ({ record, resource }) => (
++   <Form someOptions={true}>
+    <div>	    
+        <Typography>Notes</Typography>
+        <TextInput source="note" />
+    </div>
++   </Form>
++);
+-));
+```
+
+## Material-ui icons have changed
+
+If you were using Material-ui icons for your design, just take care that the `v4.0` have removed some existing icons since the `v1.5`.
+
+Example: 
+`LightbulbOutline` is no more available in `@Material-ui/icons`
+But there is a quick fix for this one by using another package instead:
+`import Lightbulb from '@material-ui/docs/svgIcons/LightbulbOutline';`|
+
 
 ## Custom Exporter Functions Must Use `jsonexport` Instead Of `papaparse`
 
@@ -883,15 +913,12 @@ Components deprecated in 2.X have been removed in 3.x. This includes:
 * `TitleDeprecated` (use `Title` instead)
 * `Headroom` (use `HideOnScroll` instead)
 * `LongTextInput` (use the `TextInput` instead)
-* `DisabledInput` (use the `TextInput` with the prop `disabled={true}` instead)
 
 ```diff
 - import { LongTextInput } from 'react-admin';
 - <LongTextInput source="body" />
-- <DisabledInput source="id" />
 + import { TextInput } from 'react-admin';
 + <TextInput multiline source="body" />
-+ <TextInput disabled={true} source="id" />
 ```
 
 * `BulkActions` (use the [`bulkActionButtons` prop](https://marmelab.com/react-admin/List.html#bulk-action-buttons) instead)
