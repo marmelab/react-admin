@@ -2,6 +2,7 @@ import { useCallback, useState, useMemo } from 'react';
 import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import { parse, stringify } from 'query-string';
 import lodashDebounce from 'lodash/debounce';
+import set from 'lodash/set';
 import pickBy from 'lodash/pickBy';
 import { Location } from 'history';
 
@@ -203,10 +204,7 @@ const useListParams = ({
             [filterName]: true,
         }));
         if (typeof defaultValue !== 'undefined') {
-            setFilters({
-                ...filterValues,
-                [filterName]: defaultValue,
-            });
+            setFilters(set(filterValues, filterName, defaultValue));
         }
     }, requestSignature); // eslint-disable-line react-hooks/exhaustive-deps
 
