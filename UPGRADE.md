@@ -402,7 +402,7 @@ If you were using Material-ui icons for your design, just take care that the `v4
 Example: 
 `LightbulbOutline` is no more available in `@Material-ui/icons`
 But there is a quick fix for this one by using another package instead:
-`import Lightbulb from '@material-ui/docs/svgIcons/LightbulbOutline';`|
+`import Lightbulb from '@material-ui/docs/svgIcons/LightbulbOutline';`
 
 
 ## Custom Exporter Functions Must Use `jsonexport` Instead Of `papaparse`
