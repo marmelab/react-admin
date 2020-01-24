@@ -45,7 +45,7 @@ const useStyles = makeStyles(
             backgroundRepeat: 'no-repeat',
             backgroundSize: 'cover',
             backgroundImage:
-                'linear-gradient(135deg, #00023b 0%, #00023b 50%, #313264 100%)',
+                'radial-gradient(circle at 50% 14em, #313264 0%, #00023b 60%, #00023b 100%)',
         },
         card: {
             minWidth: 300,
