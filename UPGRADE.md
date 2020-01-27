@@ -383,14 +383,16 @@ export default ({
 -import { reduxForm } from 'redux-form'
 +import { Form } from 'react-final-form'
 
--const CustomForm = reduxForm({ form: 'record-form', someOptions: true })(({ record, resource }) => (	
+-const CustomForm = reduxForm({ form: 'record-form', someOptions: true })(({ record, resource }) => (
 +const CustomForm = ({ record, resource }) => (
 +    <Form someOptions={true}>
 +        {({ handleSubmit }) => (
 +            <form onSubmit={handleSubmit}>
+-            <Fragment>
                 <Typography>Notes</Typography>
                 <TextInput source="note" />
 +            </form>
+-            </Fragment>
 +        )}
 +    </Form>
 +);
