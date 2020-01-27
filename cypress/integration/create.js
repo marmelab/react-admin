@@ -249,7 +249,7 @@ describe('Create Page', () => {
     });
 
     it('should not show rich text input error message when field is untouched', () => {
-        cy.get(CreatePage.elements.richTextInputError).should('not.exist');
+        cy.get(CreatePage.elements.richTextInputError).should('not.have.value');
     });
 
     it('should show rich text input error message when form is submitted', () => {
