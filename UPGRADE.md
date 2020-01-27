@@ -375,9 +375,9 @@ export default ({
 };
 ```
 
-## Custom Forms using `reduxForm()` must be replaced by using `<Form>`
+## Custom Forms Using `reduxForm()` Must Be Replaced By The `<Form>` Component
 
-[Final form migration documentation here](https://final-form.org/docs/react-final-form/migration/redux-form) explains the various changes you have to perform in your code.
+The [final-form migration documentation here](https://final-form.org/docs/react-final-form/migration/redux-form) explains the various changes you have to perform in your code.
 
 ```diff
 -import { reduxForm } from 'redux-form'
@@ -399,14 +399,17 @@ export default ({
 -));
 ```
 
-## Material-ui icons have changed
+## Material-ui Icons Have Changed
 
-If you were using Material-ui icons for your design, just take care that the `v4.0` have removed some existing icons since the `v1.5`.
+If you were using Material-ui icons for your design, be aware that some icons present in 1.X versions were removed from version 4.0.
 
-Example: 
-`LightbulbOutline` is no more available in `@Material-ui/icons`
+Example:
+
+* `LightbulbOutline` is no more available in `@Material-ui/icons`
+
 But there is a quick fix for this one by using another package instead:
-`import Lightbulb from '@material-ui/docs/svgIcons/LightbulbOutline';`
+
+* `import Lightbulb from '@material-ui/docs/svgIcons/LightbulbOutline';`
 
 
 ## Custom Exporter Functions Must Use `jsonexport` Instead Of `papaparse`
