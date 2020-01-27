@@ -10,15 +10,12 @@ title: "Ecosystem"
 - [Authentication Providers](#authentication-providers)
 - [Authorization Management](#authorization-management)
 - [Data Providers](#data-providers)
-- [User Interface](#ui)
+- [User Interface](#user-interface)
 - [Miscellaneous](#miscellaneous)
 
 ## Inputs and Fields
 
-- [vascofg/react-admin-color-input](https://github.com/vascofg/react-admin-color-input): a color input using [React Color](http://casesandberg.github.io/react-color/), a collection of color pickers
-- [LoicMahieu/aor-tinymce-input](https://github.com/LoicMahieu/aor-tinymce-input): a TinyMCE component, useful for editing HTML
-- [vascofg/react-admin-date-inputs](https://github.com/vascofg/react-admin-date-inputs): a collection of Date Inputs, based on [material-ui-pickers](https://material-ui-pickers.firebaseapp.com/)
-- [maluramichael/ra-input-markdown](https://github.com/maluramichael/ra-input-markdown): a markdown editor, based on [react-mde](https://github.com/andrerpena/react-mde) and [showdown](https://github.com/showdownjs/showdown)
+See the [Input](./Inputs.md#third-party-components) page.
 
 ## Translations
 
@@ -26,23 +23,23 @@ See the [Translation](./Translation.md#available-locales) page.
 
 ## Authentication Providers
 
-* **[AWS Cognito](https://docs.aws.amazon.com/cognito/latest/developerguide/setting-up-the-javascript-sdk.html)**: [thedistance/ra-cognito](https://github.com/thedistance/ra-cognito)
+- **[AWS Cognito](https://docs.aws.amazon.com/cognito/latest/developerguide/setting-up-the-javascript-sdk.html)**: [thedistance/ra-cognito](https://github.com/thedistance/ra-cognito)
 
 ## Authorization Management
 
-* **[Access Control List (ACL) for Resources](https://github.com/marmelab/ra-auth-acl)**: [marmelab/ra-auth-acl](https://github.com/marmelab/ra-auth-acl)
+- **[Access Control List (ACL) for Resources](https://github.com/marmelab/ra-auth-acl)**: [marmelab/ra-auth-acl](https://github.com/marmelab/ra-auth-acl)
 
 ## Data Providers
 
 See the [Data Provider](./DataProviders.md#available-providers) page.
 
-## UI
+## User Interface
 
 - [**Bootstrap**](https://getbootstrap.com/): [bootstrap-styled/react-admin](https://bootstrap-styled.github.io/react-admin)
 
 ## Miscellaneous
 
-- [marmelab/ra-tree-ui-materialui](https://github.com/marmelab/react-admin/blob/master/packages/ra-tree-ui-materialui/): Components to show data represented as a tree. Only compatible with react-admin v2 for now. 
+- [marmelab/ra-tree-ui-materialui](https://github.com/marmelab/react-admin/blob/master/packages/ra-tree-ui-materialui/): Components to show data represented as a tree. Only compatible with react-admin v2 for now.
 - [marmelab/ra-tree-core](https://github.com/marmelab/react-admin/blob/master/packages/ra-tree-core/): Components providing the logic but no UI to show data represented as a tree. Only compatible with react-admin v2 for now.
 - [ra-customizable-datagrid](https://github.com/fizix-io/ra-customizable-datagrid): plugin that allows to hide / show columns dynamically.
 - [FusionWorks/react-admin-google-maps](https://github.com/FusionWorks/react-admin-google-maps): Input/view components for displaying location using Google Maps.

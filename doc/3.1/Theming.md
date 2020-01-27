@@ -605,6 +605,8 @@ MyLayout.propTypes = {
 export default MyLayout;
 ```
 
+**Tip**: Don't forget to render a `<Notification>` component in your custom layout, otherwise the undoable updates will never be sent to the server. That's because part of the "undo" logic of react-admin lies in the `<Notification>` component.  
+
 ## Customizing the AppBar Content
 
 By default, the react-admin `<AppBar>` component displays the page title. You can override this default by passing children to `<AppBar>` - they will replace the default title. And if you still want to include the page title, make sure you include an element with id `react-admin-title` in the top bar (this uses [React Portals](https://reactjs.org/docs/portals.html)). 
@@ -864,7 +866,7 @@ You can override the notification component, for instance to change the notifica
 // in src/MyNotification.js
 import { Notification } from 'react-admin';
 
-const MyNotification = props => <Notification {...props}autoHideDuration={5000} />;
+const MyNotification = props => <Notification {...props} autoHideDuration={5000} />;
 
 export default MyNotification;
 ```
