@@ -215,24 +215,48 @@ And then browse to [http://localhost:4000/](http://localhost:4000/)
 
 *Note*: if you have added a section with heading to the docs, you also have to add it to `docs/_layouts/default.html` (the links on the left) manually.
 
-If you are using react-admin as a dependency, and if you want to try and hack it, here is the advised process:
+## Local Development Workflow
+If you would like to extend or contribute to react-admin, here is the advised process ([discussion here](https://github.com/marmelab/react-admin/issues/2880)):
 
 ```sh
-# in myapp
-# install react-admin from GitHub in another directory
-$ cd ..
+# Clone react-admin locally and install dependencies for entire monorepo 
 $ git clone git@github.com:marmelab/react-admin.git && cd react-admin && make install
-# replace your node_modules/react-admin by a symbolic link to the github checkout
-$ cd ../myapp
-$ npm link ../react-admin/packages/react-admin
-# go back to the checkout, and replace the version of react by the one in your app
-$ cd ../react-admin
-$ npm link ../myapp/node_modules/react
-$ make watch
-# in another terminal, go back to your app, and start it as usual
-$ cd ../myapp
-$ npm run
+
+# Run the simple demo in watch mode (defaults to http://localhost:8080/)
+$ make run-simple
+
+# Make changes to any of the files in ./packages/* and save the file(s)
+# Wait a few seconds for run-simple to recompile and you'll see your changes in the browser
+# Add unit/integration tests (*.spec.*)
+
+# Make a production build
+$ make build
+
+### Include your changes to react-admin in your own app with yarn link
+
+# Register your local react-admin as a linkable package
+$ cd /code/path/to/react-admin/packages/react-admin && yarn link
+
+# Replace the npm-installed version with a symlink to your local version 
+$ cd /code/path/to/myapp/ && yarn link react-admin
+
+# If you run into issues with React red-screen, then you need to register your app's version of React as a linkable package 
+
+$ cd /code/path/to/myapp/node_modules/react && yarn link
+# And then replace the npm-installed version of React with a symlink to your app's node_modules version
+$ cd /code/path/to/react-admin/ && yarn link react
+
+# Rebuild the packages with the same version of React
+$ cd /code/path/to/react-admin/ && make build
+
+# Return to your app and ensure all dependencies have resolved 
+$ cd /code/path/to/myapp/ && yarn install
+
+# Start your app
+$ yarn start
 ```
+[End-to-end development experience demo (YouTube)](https://youtu.be/nHkVxDEnB3g) 
+
 
 **Tip**: If you're on Windows and can't use `make`, try [this Gist](https://gist.github.com/mantis/bb5d9f7d492f86e94341816321500934).
 
