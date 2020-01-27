@@ -385,12 +385,14 @@ export default ({
 
 -const CustomForm = reduxForm({ form: 'record-form', someOptions: true })(({ record, resource }) => (	
 +const CustomForm = ({ record, resource }) => (
-+   <Form someOptions={true}>
-    <div>	    
-        <Typography>Notes</Typography>
-        <TextInput source="note" />
-    </div>
-+   </Form>
++    <Form someOptions={true}>
++        {({ handleSubmit }) => (
++            <form onSubmit={handleSubmit}>
+                <Typography>Notes</Typography>
+                <TextInput source="note" />
++            </form>
++        )}
++    </Form>
 +);
 -));
 ```
