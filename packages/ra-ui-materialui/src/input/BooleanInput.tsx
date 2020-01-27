@@ -74,15 +74,13 @@ const BooleanInput: FunctionComponent<
                     />
                 }
             />
-            {(touched && error) || helperText ? (
-                <FormHelperText error={!!error}>
-                    <InputHelperText
-                        touched={touched}
-                        error={error}
-                        helperText={helperText}
-                    />
-                </FormHelperText>
-            ) : null}
+            <FormHelperText error={!!error}>
+                <InputHelperText
+                    touched={touched}
+                    error={error}
+                    helperText={helperText}
+                />
+            </FormHelperText>
         </FormGroup>
     );
 };
