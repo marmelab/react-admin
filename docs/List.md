@@ -85,6 +85,7 @@ The title can be either a string, or an element of your own.
 
 You can replace the list of default actions by your own element using the `actions` prop:
 
+{% raw %}
 ```jsx
 import React, { cloneElement, useMemo } from 'react';
 import PropTypes from 'prop-types';
@@ -149,6 +150,8 @@ export const PostList = (props) => (
     </List>
 );
 ```
+{% endraw %}
+
 
 You can also use such a custom `ListActions` prop to omit or reorder buttons based on permissions. Just pass the `permissions` down from the `List` component:
 
