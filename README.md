@@ -255,8 +255,6 @@ $ cd /code/path/to/myapp/ && yarn install
 # Start your app
 $ yarn start
 ```
-[End-to-end development experience demo (YouTube)](https://youtu.be/nHkVxDEnB3g) 
-
 
 **Tip**: If you're on Windows and can't use `make`, try [this Gist](https://gist.github.com/mantis/bb5d9f7d492f86e94341816321500934).
 
