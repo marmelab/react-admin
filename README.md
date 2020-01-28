@@ -264,8 +264,6 @@ make doc
 
 And then browse to [http://localhost:4000/](http://localhost:4000/)
 
-*Note*: if you have added a section with heading to the docs, you also have to add it to `docs/_layouts/default.html` (the links on the left) manually.
-
 ## License
 
 React-admin is licensed under the [MIT License](https://github.com/marmelab/react-admin/blob/master/LICENSE.md), sponsored and supported by [marmelab](http://marmelab.com).
