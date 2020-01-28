@@ -71,15 +71,15 @@ const NullableBooleanInput: FunctionComponent<
         ? {
               ...options,
               SelectProps: {
-                  ...(options && options.SelectProps),
                   displayEmpty: true,
+                  ...(options && options.SelectProps),
               },
               InputLabelProps: {
-                  ...(options && options.InputLabelProps),
                   shrink: true,
+                  ...(options && options.InputLabelProps),
               },
           }
-        : { ...options };
+        : options;
 
     return (
         <TextField
