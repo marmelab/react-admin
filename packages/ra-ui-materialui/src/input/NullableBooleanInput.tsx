@@ -82,13 +82,11 @@ const NullableBooleanInput: FunctionComponent<
             }
             error={!!(touched && error)}
             helperText={
-                (touched && error) || helperText ? (
-                    <InputHelperText
-                        touched={touched}
-                        error={error}
-                        helperText={helperText}
-                    />
-                ) : null
+                <InputHelperText
+                    touched={touched}
+                    error={error}
+                    helperText={helperText}
+                />
             }
             className={classnames(classes.input, className)}
             variant={variant}

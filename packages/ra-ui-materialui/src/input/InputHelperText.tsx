@@ -18,7 +18,9 @@ const InputHelperText: FunctionComponent<Props> = ({
         <ValidationError error={error} />
     ) : helperText ? (
         <>{translate(helperText, { _: helperText })}</>
-    ) : null;
+    ) : (
+        <> </>
+    );
 };
 
 export default InputHelperText;

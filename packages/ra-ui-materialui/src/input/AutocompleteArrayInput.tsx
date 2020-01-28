@@ -418,13 +418,11 @@ const AutocompleteArrayInput: FunctionComponent<
                                 htmlFor: id,
                             })}
                             helperText={
-                                (touched && error) || helperText ? (
-                                    <InputHelperText
-                                        touched={touched}
-                                        error={error}
-                                        helperText={helperText}
-                                    />
-                                ) : null
+                                <InputHelperText
+                                    touched={touched}
+                                    error={error}
+                                    helperText={helperText}
+                                />
                             }
                             variant={variant}
                             margin={margin}
