@@ -233,7 +233,7 @@ describe('<CheckboxGroupInput />', () => {
                     render={() => <CheckboxGroupInput {...defaultProps} />}
                 />
             );
-            expect(container.querySelector('p').innerHTML).toBe('');
+            expect(container.querySelector('p').innerHTML).toBe(' ');
         });
 
         it('should be displayed if field has been touched and is invalid', () => {
