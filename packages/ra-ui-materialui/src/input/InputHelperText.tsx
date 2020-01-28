@@ -19,7 +19,7 @@ const InputHelperText: FunctionComponent<Props> = ({
     ) : helperText ? (
         <>{translate(helperText, { _: helperText })}</>
     ) : (
-        <>' '</>
+        <> </>
     );
 };
 
