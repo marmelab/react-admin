@@ -220,8 +220,20 @@ const AutocompleteInput: FunctionComponent<
 
         // If we have a value, set the filter to its text so that
         // Downshift displays it correctly
-        setFilterValue(input.value ? getChoiceText(selectedItem) : '');
-    }, [input.value, handleFilterChange, selectedItem, getChoiceText]);
+        setFilterValue(
+            input.value
+                ? inputText
+                    ? inputText(getChoiceText(selectedItem).props.record)
+                    : getChoiceText(selectedItem)
+                : ''
+        );
+    }, [
+        input.value,
+        handleFilterChange,
+        selectedItem,
+        getChoiceText,
+        inputText,
+    ]);
 
     const handleChange = useCallback(
         (item: any) => {
@@ -268,10 +280,16 @@ const AutocompleteInput: FunctionComponent<
             handleFilterChange('');
             // If we had a value before, set the filter back to its text so that
             // Downshift displays it correctly
-            setFilterValue(input.value ? getChoiceText(selectedItem) : '');
+            setFilterValue(
+                input.value
+                    ? inputText
+                        ? inputText(getChoiceText(selectedItem).props.record)
+                        : getChoiceText(selectedItem)
+                    : ''
+            );
             input.onBlur(event);
         },
-        [getChoiceText, handleFilterChange, input, selectedItem]
+        [getChoiceText, handleFilterChange, input, inputText, selectedItem]
     );
 
     const handleFocus = useCallback(
@@ -295,11 +313,7 @@ const AutocompleteInput: FunctionComponent<
 
     return (
         <Downshift
-            inputValue={
-                inputText
-                    ? inputText(getChoiceText(selectedItem).props.record)
-                    : filterValue
-            }
+            inputValue={filterValue}
             onChange={handleChange}
             selectedItem={selectedItem}
             itemToString={item => getChoiceValue(item)}
@@ -378,14 +392,7 @@ const AutocompleteInput: FunctionComponent<
                             variant={variant}
                             margin={margin}
                             fullWidth={fullWidth}
-                            value={
-                                inputText
-                                    ? inputText(
-                                          getChoiceText(selectedItem).props
-                                              .record
-                                      )
-                                    : filterValue
-                            }
+                            value={filterValue}
                             className={className}
                             {...inputProps}
                             {...options}
