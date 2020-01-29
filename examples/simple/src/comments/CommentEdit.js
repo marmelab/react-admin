@@ -33,6 +33,14 @@ const useEditStyles = makeStyles({
     },
 });
 
+const OptionRenderer = ({ record }) => (
+    <span>
+        {record.title}-{record.id}
+    </span>
+);
+
+const selectionText = record => `${record.title}-${record.id}`;
+
 const CommentEdit = props => {
     const classes = useEditStyles();
     const {
@@ -66,6 +74,22 @@ const CommentEdit = props => {
                         version={version}
                     >
                         <TextInput disabled source="id" fullWidth />
+                        <ReferenceInput
+                            source="post_id"
+                            reference="posts"
+                            perPage={15}
+                            sort={{ field: 'title', order: 'ASC' }}
+                            fullWidth
+                        >
+                            <AutocompleteInput
+                                matchSuggestion={(filterValue, suggestion) =>
+                                    true
+                                }
+                                optionText={<OptionRenderer />}
+                                selectionText={selectionText}
+                                options={{ fullWidth: true }}
+                            />
+                        </ReferenceInput>
                         <ReferenceInput
                             source="post_id"
                             reference="posts"

@@ -124,6 +124,7 @@ const AutocompleteInput: FunctionComponent<
         InputProps: undefined,
     },
     optionText = 'name',
+    selectionText,
     optionValue = 'id',
     parse,
     resource,
@@ -294,7 +295,11 @@ const AutocompleteInput: FunctionComponent<
 
     return (
         <Downshift
-            inputValue={filterValue}
+            inputValue={
+                selectionText
+                    ? selectionText(getChoiceText(selectedItem).props.record)
+                    : filterValue
+            }
             onChange={handleChange}
             selectedItem={selectedItem}
             itemToString={item => getChoiceValue(item)}
@@ -373,7 +378,14 @@ const AutocompleteInput: FunctionComponent<
                             variant={variant}
                             margin={margin}
                             fullWidth={fullWidth}
-                            value={filterValue}
+                            value={
+                                selectionText
+                                    ? selectionText(
+                                          getChoiceText(selectedItem).props
+                                              .record
+                                      )
+                                    : filterValue
+                            }
                             className={className}
                             {...inputProps}
                             {...options}
