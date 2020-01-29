@@ -39,7 +39,7 @@ const OptionRenderer = ({ record }) => (
     </span>
 );
 
-const selectionText = record => `${record.title}-${record.id}`;
+const inputText = record => `${record.title}-${record.id}`;
 
 const CommentEdit = props => {
     const classes = useEditStyles();
@@ -86,22 +86,11 @@ const CommentEdit = props => {
                                     true
                                 }
                                 optionText={<OptionRenderer />}
-                                selectionText={selectionText}
+                                inputText={inputText}
                                 options={{ fullWidth: true }}
                             />
                         </ReferenceInput>
-                        <ReferenceInput
-                            source="post_id"
-                            reference="posts"
-                            perPage={15}
-                            sort={{ field: 'title', order: 'ASC' }}
-                            fullWidth
-                        >
-                            <AutocompleteInput
-                                optionText="title"
-                                options={{ fullWidth: true }}
-                            />
-                        </ReferenceInput>
+
                         <LinkToRelatedPost />
                         <TextInput
                             source="author.name"
