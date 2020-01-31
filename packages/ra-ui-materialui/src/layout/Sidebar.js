@@ -95,7 +95,6 @@ const Sidebar = ({
             {...rest}
         >
             {cloneElement(Children.only(children), {
-                dense: true,
                 onMenuClick: handleClose,
             })}
         </Drawer>
@@ -109,7 +108,7 @@ const Sidebar = ({
             onClose={toggleSidebar}
             {...rest}
         >
-            {cloneElement(Children.only(children), { dense: true })}
+            {children}
         </Drawer>
     );
 };
