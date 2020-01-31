@@ -158,7 +158,7 @@ const useStyles = makeStyles(
     { name: 'RaDeleteWithConfirmButton' }
 );
 
-interface Props {
+export interface Props {
     basePath?: string;
     classes?: object;
     className?: string;

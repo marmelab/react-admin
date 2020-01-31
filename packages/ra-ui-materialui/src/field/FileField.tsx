@@ -14,7 +14,7 @@ const useStyles = makeStyles(
     { name: 'RaFileField' }
 );
 
-interface Props extends FieldProps {
+export interface Props extends FieldProps {
     src?: string;
     title?: string;
     target?: string;

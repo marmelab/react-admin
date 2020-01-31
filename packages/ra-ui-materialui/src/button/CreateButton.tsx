@@ -67,7 +67,7 @@ const useStyles = makeStyles(
     { name: 'RaCreateButton' }
 );
 
-interface Props {
+export interface Props {
     basePath?: string;
     icon?: ReactElement;
 }

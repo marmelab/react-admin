@@ -123,7 +123,7 @@ const useStyles = makeStyles(
     { name: 'RaButton' }
 );
 
-interface Props {
+export interface Props {
     alignIcon?: 'left' | 'right';
     children?: ReactElement;
     classes?: object;

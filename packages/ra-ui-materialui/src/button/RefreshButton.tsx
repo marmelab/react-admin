@@ -33,7 +33,7 @@ const RefreshButton: FC<RefreshButtonProps> = ({
 
 const defaultIcon = <NavigationRefresh />;
 
-interface Props {
+export interface Props {
     label?: string;
     icon?: ReactElement;
     onClick?: (e: MouseEvent) => void;

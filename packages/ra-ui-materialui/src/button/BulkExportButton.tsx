@@ -69,7 +69,7 @@ const sanitizeRestProps = ({
     'exporter' | 'selectedIds' | 'resource' | 'label'
 >) => rest;
 
-interface Props {
+export interface Props {
     basePath?: string;
     exporter?: (
         data: any,

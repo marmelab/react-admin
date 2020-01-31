@@ -13,7 +13,7 @@ const DeleteButton: FC<DeleteButtonProps> = ({ undoable, ...props }) =>
         <DeleteWithConfirmButton {...props} />
     );
 
-interface Props {
+export interface Props {
     basePath?: string;
     classes?: object;
     className?: string;

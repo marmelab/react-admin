@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from 'react';
 import { useTranslate, ValidationError, ValidationErrorMessage } from 'ra-core';
 
-interface Props {
+export interface Props {
     helperText?: string;
     error?: ValidationErrorMessage;
     touched: boolean;

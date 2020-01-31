@@ -85,7 +85,7 @@ const sanitizeRestProps = ({
     'sort' | 'filter' | 'maxResults' | 'resource' | 'label'
 >) => rest;
 
-interface Props {
+export interface Props {
     basePath?: string;
     exporter?: (
         data: any,

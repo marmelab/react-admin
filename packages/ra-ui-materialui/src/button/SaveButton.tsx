@@ -119,7 +119,7 @@ const sanitizeRestProps = ({
     ...rest
 }: SaveButtonProps) => rest;
 
-interface Props {
+export interface Props {
     classes?: object;
     className?: string;
     handleSubmitWithRedirect?: (redirect?: RedirectionSideEffect) => void;

@@ -43,7 +43,7 @@ const RefreshIconButton: FC<RefreshIconProps> = ({
 
 const defaultIcon = <NavigationRefresh />;
 
-interface Props {
+export interface Props {
     className?: string;
     icon?: ReactElement;
     label?: string;

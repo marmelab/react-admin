@@ -18,7 +18,7 @@ const ListButton: FC<ListButtonProps> = ({
 
 const defaultIcon = <ActionList />;
 
-interface Props {
+export interface Props {
     basePath?: string;
     icon?: ReactElement;
 }

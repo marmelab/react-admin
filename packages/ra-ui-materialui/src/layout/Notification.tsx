@@ -15,7 +15,7 @@ import {
     useTranslate,
 } from 'ra-core';
 
-interface Props {
+export interface Props {
     type?: string;
 }
 

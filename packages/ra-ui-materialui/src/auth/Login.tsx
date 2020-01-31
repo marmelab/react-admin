@@ -24,7 +24,7 @@ import defaultTheme from '../defaultTheme';
 import Notification from '../layout/Notification';
 import DefaultLoginForm from './LoginForm';
 
-interface Props {
+export interface Props {
     backgroundImage?: string;
     children: ReactNode;
     classes?: object;

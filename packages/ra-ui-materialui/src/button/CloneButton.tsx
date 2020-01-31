@@ -53,7 +53,7 @@ const sanitizeRestProps = ({
     ...rest
 }: any) => rest;
 
-interface Props {
+export interface Props {
     basePath?: string;
     record?: Record;
     icon?: ReactElement;

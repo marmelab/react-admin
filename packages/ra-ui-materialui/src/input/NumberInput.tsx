@@ -12,7 +12,7 @@ const convertStringToNumber = value => {
     return isNaN(float) ? null : float;
 };
 
-interface Props {
+export interface Props {
     step?: string | number;
 }
 

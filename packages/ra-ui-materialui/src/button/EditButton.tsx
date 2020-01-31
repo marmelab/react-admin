@@ -30,7 +30,7 @@ const defaultIcon = <ContentCreate />;
 // useful to prevent click bubbling in a datagrid with rowClick
 const stopPropagation = e => e.stopPropagation();
 
-interface Props {
+export interface Props {
     basePath?: string;
     record?: Record;
     icon?: ReactElement;

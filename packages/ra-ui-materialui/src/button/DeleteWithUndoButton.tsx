@@ -119,7 +119,7 @@ const useStyles = makeStyles(
     { name: 'RaDeleteWithUndoButton' }
 );
 
-interface Props {
+export interface Props {
     basePath?: string;
     classes?: object;
     className?: string;

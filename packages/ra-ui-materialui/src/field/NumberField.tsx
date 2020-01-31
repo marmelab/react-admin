@@ -13,7 +13,7 @@ const hasNumberFormat = !!(
     typeof Intl.NumberFormat === 'function'
 );
 
-interface Props extends FieldProps {
+export interface Props extends FieldProps {
     locales?: string | string[];
     options?: object;
 }
