@@ -1104,7 +1104,7 @@ const VisitorForm = (props) => (
                     <Box display="flex" justifyContent="space-between" width="100%">
                         <SaveButton
                             saving={formProps.saving}
-                            handleSubmitSithRedirect={formProps.handleSubmitSithRedirect}
+                            handleSubmitWithRedirect={formProps.handleSubmitWithRedirect}
                         />
                         <DeleteButton record={formProps.record} />
                     </Box>
