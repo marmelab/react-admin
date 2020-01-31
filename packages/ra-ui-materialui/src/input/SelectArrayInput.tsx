@@ -257,15 +257,13 @@ const SelectArrayInput: FunctionComponent<
             >
                 {choices.map(renderMenuItem)}
             </Select>
-            {(touched && error) || helperText ? (
-                <FormHelperText error={touched && !!error}>
-                    <InputHelperText
-                        touched={touched}
-                        error={error}
-                        helperText={helperText}
-                    />
-                </FormHelperText>
-            ) : null}
+            <FormHelperText error={touched && !!error}>
+                <InputHelperText
+                    touched={touched}
+                    error={error}
+                    helperText={helperText}
+                />
+            </FormHelperText>
         </FormControl>
     );
 };
