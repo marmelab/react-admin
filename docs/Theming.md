@@ -842,12 +842,17 @@ export default withRouter(Menu);
 
 ### Changing the Background Image
 
-By default, the login page displays a random background image changing every day. If you want to change that background image, you can use the default Login page component and pass an image URL as the `backgroundImage` prop.
+By default, the login page displays a gradient background. If you want to change the background, you can use the default Login page component and pass an image URL as the `backgroundImage` prop.
 
 ```jsx
 import { Admin, Login } from 'react-admin';
 
-const MyLoginPage = () => <Login backgroundImage="/background.jpg" />;
+const MyLoginPage = () => (
+    <Login
+        // A random image that changes everyday
+        backgroundImage="https://source.unsplash.com/random/1600x900/daily"
+    />
+);
 
 const App = () => (
     <Admin loginPage={MyLoginPage}>
