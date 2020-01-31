@@ -384,6 +384,27 @@ import { NullableBooleanInput } from 'react-admin';
 
 ![NullableBooleanInput](./img/nullable-boolean-input.png)
 
+`<NullableBooleanInput />` doesn't display the empty option by default. If you want to customize its label and display it, you can use the `displayNull` prop.
+
+```jsx
+import { NullableBooleanInput } from 'react-admin';
+
+<NullableBooleanInput 
+    label="Commentable"
+    source="commentable"
+    displayNull
+/>
+```
+
+```jsx
+import englishMessages from 'ra-language-english';
+
+englishMessages.ra.boolean.null = 'Null label';
+```
+
+![NullableBooleanInput](./img/nullable-boolean-input-null-label.png)
+
+
 `<BooleanInput>` and `<NullableBooleanInput>` also accepts the [common input props](./Inputs.md#common-input-props).
 
 ## `<CheckboxGroupInput>`

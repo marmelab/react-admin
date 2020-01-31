@@ -40,6 +40,7 @@ const NullableBooleanInput: FunctionComponent<
     onChange,
     onFocus,
     options,
+    displayNull,
     parse = getBooleanFromString,
     resource,
     source,
@@ -65,6 +66,21 @@ const NullableBooleanInput: FunctionComponent<
         source,
         validate,
     });
+
+    const enhancedOptions = displayNull
+        ? {
+              ...options,
+              SelectProps: {
+                  displayEmpty: true,
+                  ...(options && options.SelectProps),
+              },
+              InputLabelProps: {
+                  shrink: true,
+                  ...(options && options.InputLabelProps),
+              },
+          }
+        : options;
+
     return (
         <TextField
             id={id}
@@ -89,7 +105,7 @@ const NullableBooleanInput: FunctionComponent<
             }
             className={classnames(classes.input, className)}
             variant={variant}
-            {...options}
+            {...enhancedOptions}
             {...sanitizeRestProps(rest)}
         >
             <MenuItem value="">{translate('ra.boolean.null')}</MenuItem>
