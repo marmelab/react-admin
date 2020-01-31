@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, cleanup, fireEvent, act } from '@testing-library/react';
+import { render, cleanup, fireEvent } from '@testing-library/react';
 import { Form } from 'react-final-form';
 import { TestTranslationProvider } from 'ra-core';
 

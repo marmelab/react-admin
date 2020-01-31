@@ -1,6 +1,6 @@
 import React from 'react';
 import expect from 'expect';
-import { render, cleanup } from '@testing-library/react';
+import { render, cleanup, fireEvent } from '@testing-library/react';
 import { Form } from 'react-final-form';
 import { TestTranslationProvider } from 'ra-core';
 
@@ -53,7 +53,7 @@ describe('<SelectArrayInput />', () => {
         expect(queryByText('Programming')).toBeNull();
         expect(queryByText('Lifestyle')).toBeNull();
         expect(queryByText('Photography')).toBeNull();
-        getByRole('button').click();
+        fireEvent.mouseDown(getByRole('button'));
         expect(queryByText('Programming')).not.toBeNull();
         expect(queryByText('Lifestyle')).not.toBeNull();
         expect(queryByText('Photography')).not.toBeNull();
@@ -74,8 +74,8 @@ describe('<SelectArrayInput />', () => {
                 )}
             />
         );
-        getByRole('button').click();
-        getByText('Programming').click();
+        fireEvent.mouseDown(getByRole('button'));
+        fireEvent.click(getByText('Programming'));
         expect(getByLabelText('resources.posts.fields.categories').value).toBe(
             'programming'
         );
@@ -99,8 +99,8 @@ describe('<SelectArrayInput />', () => {
                 )}
             />
         );
-        getByRole('button').click();
-        getByText('Programming').click();
+        fireEvent.mouseDown(getByRole('button'));
+        fireEvent.click(getByText('Programming'));
         expect(getByLabelText('resources.posts.fields.categories').value).toBe(
             'programming'
         );
@@ -119,7 +119,7 @@ describe('<SelectArrayInput />', () => {
                 )}
             />
         );
-        getByRole('button').click();
+        fireEvent.mouseDown(getByRole('button'));
         expect(queryByText('Programming')).not.toBeNull();
     });
 
@@ -141,7 +141,7 @@ describe('<SelectArrayInput />', () => {
                 )}
             />
         );
-        getByRole('button').click();
+        fireEvent.mouseDown(getByRole('button'));
         expect(queryByText('Programming')).not.toBeNull();
     });
 
@@ -158,7 +158,7 @@ describe('<SelectArrayInput />', () => {
                 )}
             />
         );
-        getByRole('button').click();
+        fireEvent.mouseDown(getByRole('button'));
         expect(queryByText('Programming')).not.toBeNull();
     });
 
@@ -176,7 +176,7 @@ describe('<SelectArrayInput />', () => {
                 )}
             />
         );
-        getByRole('button').click();
+        fireEvent.mouseDown(getByRole('button'));
         expect(queryByText('Programming')).not.toBeNull();
     });
 
@@ -189,7 +189,7 @@ describe('<SelectArrayInput />', () => {
                 />
             </TestTranslationProvider>
         );
-        getByRole('button').click();
+        fireEvent.mouseDown(getByRole('button'));
         expect(queryByText('**Programming**')).not.toBeNull();
         expect(queryByText('**Lifestyle**')).not.toBeNull();
     });
