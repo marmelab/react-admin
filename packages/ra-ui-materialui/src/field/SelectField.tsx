@@ -119,6 +119,7 @@ EnhancedSelectField.defaultProps = {
 };
 
 EnhancedSelectField.propTypes = {
+    // @ts-ignore
     ...Typography.propTypes,
     ...fieldPropTypes,
     choices: PropTypes.arrayOf(PropTypes.object).isRequired,

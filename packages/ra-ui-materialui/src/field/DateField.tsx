@@ -94,6 +94,7 @@ EnhancedDateField.defaultProps = {
 };
 
 EnhancedDateField.propTypes = {
+    // @ts-ignore
     ...Typography.propTypes,
     ...fieldPropTypes,
     locales: PropTypes.oneOfType([

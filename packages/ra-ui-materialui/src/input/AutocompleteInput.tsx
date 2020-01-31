@@ -344,6 +344,8 @@ const AutocompleteInput: FunctionComponent<
                     onChange,
                     onFocus,
                     ref,
+                    size,
+                    color,
                     ...inputProps
                 } = getInputProps({
                     onBlur: handleBlur,
@@ -399,6 +401,8 @@ const AutocompleteInput: FunctionComponent<
                             fullWidth={fullWidth}
                             value={filterValue}
                             className={className}
+                            size={size as any}
+                            color={color as any}
                             {...inputProps}
                             {...options}
                         />
