@@ -249,7 +249,7 @@ Lastly, would you need to override the props of the suggestions container (a `Po
 | `matchSuggestion` | Optional | `Function` | - | Required if `optionText` is a React element. Function returning a boolean indicating whether a choice matches the filter. `(filter, choice) => boolean`
 | `optionText` | Optional | <code>string &#124; Function &#124; Component</code> | `name` | Fieldname of record to display in the suggestion item or function which accepts the correct record as argument (`(record)=> {string}`) |
 | `optionValue` | Optional | `string` | `id` | Fieldname of record containing the value to use as input value  |
-| `inputText` | Optional | <code>Function</code> | `-` | If `optionText` is a custom Component, This function is needed to determine the text displayed filter of the current selection. In Autocomplete, the current selection have to be an editable string and can not be a Component  (`(record)=> {string}`) |
+| `inputText` | Optional | <code>Function</code> | `-` | If `optionText` is a custom Component, this function is needed to determine the text displayed for the current selection. |
 | `setFilter` | Optional | `Function` | `null` | A callback to inform the `searchText` has changed and new `choices` can be retrieved based on this `searchText`. Signature `searchText => void`. This function is automatically setup when using `ReferenceInput`.  |
 | `shouldRenderSuggestions` | Optional | Function | `() => true` | A function that returns a `boolean` to determine whether or not suggestions are rendered. Use this when working with large collections of data to improve performance and user experience. This function is passed into the underlying react-autosuggest component. Ex.`(value) => value.trim() > 2` |
 
