@@ -162,7 +162,7 @@ const optionRenderer = choice => `${choice.first_name} ${choice.last_name}`;
 <AutocompleteInput source="author_id" choices={choices} optionText={optionRenderer} />
 ```
 
-`optionText` also accepts a custom Component. If you do so, you will have to set the inputText function wich determine the input text filter of the current selection:
+`optionText` also accepts a custom Component. If you provide one, you will have to set the `inputText` function wich determine the input text filter of the current selection:
 
 ```jsx
 const choices = [
