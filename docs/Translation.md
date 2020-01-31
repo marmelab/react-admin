@@ -162,7 +162,7 @@ export default App;
 You can find translation packages for the following languages:
 
 - Arabic (`ar`): [developerium/ra-language-arabic](https://github.com/developerium/ra-language-arabic)
-- Armenian (`ar`): [mrdntgrn/ra-language-armenian](https://github.com/mrdntgrn/ra-language-armenian)
+- Armenian (`am`): [mrdntgrn/ra-language-armenian](https://github.com/mrdntgrn/ra-language-armenian)
 - Bulgarian (`bg`): [ptodorov0/ra-language-bulgarian](https://github.com/ptodorov0/ra-language-bulgarian)
 - Catalan (`ca`): [sergioedo/ra-language-catalan](https://github.com/sergioedo/ra-language-catalan)
 - Chinese (`zh-TW`): [areyliu6/ra-language-chinese-traditional](https://github.com/areyliu6/ra-language-chinese-traditional)
