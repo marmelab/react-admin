@@ -33,6 +33,14 @@ const useEditStyles = makeStyles({
     },
 });
 
+const OptionRenderer = ({ record }) => (
+    <span>
+        {record.title} - {record.id}
+    </span>
+);
+
+const inputText = record => `${record.title} - ${record.id}`;
+
 const CommentEdit = props => {
     const classes = useEditStyles();
     const {
@@ -74,10 +82,15 @@ const CommentEdit = props => {
                             fullWidth
                         >
                             <AutocompleteInput
-                                optionText="title"
+                                matchSuggestion={(filterValue, suggestion) =>
+                                    true
+                                }
+                                optionText={<OptionRenderer />}
+                                inputText={inputText}
                                 options={{ fullWidth: true }}
                             />
                         </ReferenceInput>
+
                         <LinkToRelatedPost />
                         <TextInput
                             source="author.name"
