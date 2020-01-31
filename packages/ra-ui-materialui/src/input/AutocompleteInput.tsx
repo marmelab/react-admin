@@ -137,6 +137,13 @@ const AutocompleteInput: FunctionComponent<
     variant = 'filled',
     ...rest
 }) => {
+    if (isValidElement(optionText) && !inputText) {
+        throw new Error(`If the optionText prop is a React element, you must also specify the inputText prop:
+        <AutocompleteInput
+            inputText={(record) => record.title}
+        />`);
+    }
+
     warning(
         isValidElement(optionText) && !matchSuggestion,
         `If the optionText prop is a React element, you must also specify the matchSuggestion prop:

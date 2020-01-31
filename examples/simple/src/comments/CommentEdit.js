@@ -35,11 +35,11 @@ const useEditStyles = makeStyles({
 
 const OptionRenderer = ({ record }) => (
     <span>
-        {record.title}-{record.id}
+        {record.title} - {record.id}
     </span>
 );
 
-const inputText = record => `${record.title}-${record.id}`;
+const inputText = record => `${record.title} - ${record.id}`;
 
 const CommentEdit = props => {
     const classes = useEditStyles();
