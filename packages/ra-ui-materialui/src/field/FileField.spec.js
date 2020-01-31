@@ -1,6 +1,6 @@
 import React from 'react';
 import expect from 'expect';
-import { FileField } from './FileField';
+import FileField from './FileField';
 import { render, cleanup } from '@testing-library/react';
 
 const defaultProps = {

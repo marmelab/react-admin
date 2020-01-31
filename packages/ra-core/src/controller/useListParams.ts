@@ -2,6 +2,7 @@ import { useCallback, useState, useMemo } from 'react';
 import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import { parse, stringify } from 'query-string';
 import lodashDebounce from 'lodash/debounce';
+import set from 'lodash/set';
 import pickBy from 'lodash/pickBy';
 import { Location } from 'history';
 
@@ -51,6 +52,8 @@ const defaultSort = {
     field: 'id',
     order: SORT_ASC,
 };
+
+const defaultParams = {};
 
 /**
  * Get the list parameters (page, sort, filters) and modifiers.
@@ -114,7 +117,10 @@ const useListParams = ({
     const history = useHistory();
 
     const { params } = useSelector(
-        (reduxState: ReduxState) => reduxState.admin.resources[resource].list,
+        (reduxState: ReduxState) =>
+            reduxState.admin.resources[resource]
+                ? reduxState.admin.resources[resource].list
+                : defaultParams,
         shallowEqual
     );
 
@@ -198,10 +204,7 @@ const useListParams = ({
             [filterName]: true,
         }));
         if (typeof defaultValue !== 'undefined') {
-            setFilters({
-                ...filterValues,
-                [filterName]: defaultValue,
-            });
+            setFilters(set(filterValues, filterName, defaultValue));
         }
     }, requestSignature); // eslint-disable-line react-hooks/exhaustive-deps
 

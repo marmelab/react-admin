@@ -66,6 +66,7 @@ The react-admin project includes 4 Data Providers:
 Developers from the react-admin community have open-sourced Data Providers for many more backends:
 
 * **[Django Rest Framework](https://www.django-rest-framework.org/)**: [synaptic-cl/ra-data-drf](https://github.com/synaptic-cl/ra-data-drf)
+* **[Express & Sequelize](https://github.com/lalalilo/express-sequelize-crud)**: [express-sequelize-crud](https://github.com/lalalilo/express-sequelize-crud)
 * **[Feathersjs](http://www.feathersjs.com/)**: [josx/ra-data-feathers](https://github.com/josx/ra-data-feathers)
 * **[Firebase](https://firebase.google.com/docs/database)**: [aymendhaya/ra-data-firebase-client](https://github.com/aymendhaya/ra-data-firebase-client).
 * **[Firestore](https://firebase.google.com/docs/firestore)**: [rafalzawadzki/ra-data-firestore-client](https://github.com/rafalzawadzki/ra-data-firestore-client).
@@ -205,7 +206,9 @@ As Data Providers are just objects, you can extend them with custom logic for a 
 For instance, the following Data Provider extends the `ra-data-simple-rest` provider, and adds image upload support for the `update('posts')` call (react-admin offers an `<ImageInput />` component that allows image upload).
 
 ```js
-import dataProvider from 'ra-data-simple-rest';
+import simpleRestProvider from 'ra-data-simple-rest';
+
+const dataProvider = simpleRestProvider('http://path.to.my.api/');
 
 const myDataProvider = {
     ...dataProvider,

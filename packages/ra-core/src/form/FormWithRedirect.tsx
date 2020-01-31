@@ -37,7 +37,7 @@ const FormWithRedirect = ({
     form,
     initialValuesEqual,
     keepDirtyOnReinitialize = true,
-    mutators = { ...arrayMutators },
+    mutators = arrayMutators as any, // FIXME see https://github.com/final-form/react-final-form/issues/704 and https://github.com/microsoft/TypeScript/issues/35771
     record,
     render,
     save,

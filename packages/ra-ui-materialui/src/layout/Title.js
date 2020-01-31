@@ -5,7 +5,10 @@ import { useTranslate, warning } from 'ra-core';
 
 const Title = ({ className, defaultTitle, locale, record, title, ...rest }) => {
     const translate = useTranslate();
-    const container = document.getElementById('react-admin-title');
+    const container =
+        typeof document !== 'undefined'
+            ? document.getElementById('react-admin-title')
+            : null;
     if (!container) return null;
     warning(!defaultTitle && !title, 'Missing title prop in <Title> element');
 

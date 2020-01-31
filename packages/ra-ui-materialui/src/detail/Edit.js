@@ -182,7 +182,7 @@ EditView.defaultProps = {
     component: Card,
 };
 
-export const useStyles = makeStyles(
+const useStyles = makeStyles(
     {
         root: {},
         main: {
@@ -219,6 +219,7 @@ const sanitizeRestProps = ({
     permissions,
     undoable,
     successMessage,
+    translate,
     ...rest
 }) => rest;
 

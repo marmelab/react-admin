@@ -326,7 +326,7 @@ export default PostList = props => (
 
 **Tip**: To style the button with the main color from the material-ui theme, use the `Link` component from the `react-admin` package rather than the one from `react-router-dom`.
 
-**Tip**: The `<Create>` component also watches the `location.search` (the query string in the URL) in addition to `location.state` (a cross-page message hidden in the router memory). So the `CreateRelatedCommentButton` could, in theory, be written as:
+**Tip**: The `<Create>` component also watches the "source" parameter of `location.search` (the query string in the URL) in addition to `location.state` (a cross-page message hidden in the router memory). So the `CreateRelatedCommentButton` could also be written as:
 
 {% raw %}
 ```jsx
@@ -339,7 +339,7 @@ const CreateRelatedCommentButton = ({ record }) => (
         component={Link}
         to={{
             pathname: '/comments/create',
-            search: '?post_id=' + record.id,
+            search: `?source=${JSON.stringify({ post_id: record.id })}`,
         }}
     >
         Write a comment for that post
@@ -347,10 +347,6 @@ const CreateRelatedCommentButton = ({ record }) => (
 );
 ```
 {% endraw %}
-
-However, this will only work if the post ids are typed as strings in the store. That's because the query string `?post_id=123`, once deserialized, reads as `{ post_id: '123' }` and not `{ post_id: 123 }`. Since [the `<SelectInput>` uses strict equality to check the selected option](https://github.com/mui-org/material-ui/issues/12047) comparing the `post_id` `'123'` from the URL with values like `123` in the choices will fail.
-
-So prefer `location.state` instead of `location.search` when you can, or use custom selection components.
 
 ## The `<EditGuesser>` component
 
@@ -894,8 +890,8 @@ You can customize each row in a `<SimpleForm>` or in a `<TabbedForm>` by passing
 * `className`
 * [`variant`](#variant)
 * [`margin`](#margin)
-* [`formClassName`](#formClassName)
-* [`fullWidth`](#fullWidth)
+* [`formClassName`](#formclassname)
+* [`fullWidth`](#fullwidth)
 
 You can find more about these props in [the Input documentation](./Inputs.md#common-input-props).
 
@@ -951,6 +947,14 @@ export const PostEdit = (props) => (
 The input components are wrapped inside a `div` to ensure a good looking form by default. You can pass a `formClassName` prop to the input components to customize the style of this `div`. For example, here is how to display two inputs on the same line:
 
 ```jsx
+import React from 'react';
+import {
+    Edit,
+    SimpleForm,
+    TextInput,
+} from 'react-admin';
+import { makeStyles } from '@material-ui/core/styles';
+
 const useStyles = makeStyles({
     inlineBlock: { display: 'inline-flex', marginRight: '1rem' },
 });
@@ -1100,7 +1104,7 @@ const VisitorForm = (props) => (
                     <Box display="flex" justifyContent="space-between" width="100%">
                         <SaveButton
                             saving={formProps.saving}
-                            handleSubmitSithRedirect={formProps.handleSubmitSithRedirect}
+                            handleSubmitWithRedirect={formProps.handleSubmitWithRedirect}
                         />
                         <DeleteButton record={formProps.record} />
                     </Box>
@@ -1284,7 +1288,7 @@ const SaveWithNoteButton = props => {
 
         create(
             {
-                data: { ...formState.values, average_note: 10 },
+                payload: { data: { ...formState.values, average_note: 10 } },
             },
             {
                 onSuccess: ({ data: newRecord }) => {

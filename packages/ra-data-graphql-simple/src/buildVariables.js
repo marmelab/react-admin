@@ -65,6 +65,11 @@ const prepareParams = (params, queryType, introspectionResults) => {
             return;
         }
 
+        if (param instanceof Date) {
+            result[key] = param.toISOString();
+            return;
+        }
+
         if (
             param instanceof Object &&
             !Array.isArray(param) &&
@@ -79,7 +84,11 @@ const prepareParams = (params, queryType, introspectionResults) => {
             return;
         }
 
-        if (param instanceof Object && !Array.isArray(param)) {
+        if (
+            param instanceof Object &&
+            !param instanceof Date &&
+            !Array.isArray(param)
+        ) {
             result[key] = prepareParams(param, queryType, introspectionResults);
             return;
         }

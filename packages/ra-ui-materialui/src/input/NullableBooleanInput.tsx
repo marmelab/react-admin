@@ -63,7 +63,6 @@ const NullableBooleanInput: FunctionComponent<
         parse,
         resource,
         source,
-        type: 'checkbox',
         validate,
     });
     return (

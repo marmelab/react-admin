@@ -161,9 +161,10 @@ const SaveWithNoteButton = props => {
         }
 
         create(
-            null,
             {
-                data: { ...formState.values, average_note: 10 },
+                payload: {
+                    data: { ...formState.values, average_note: 10 },
+                },
             },
             {
                 onSuccess: ({ data: newRecord }) => {
@@ -208,7 +209,7 @@ import { FormDataConsumer, REDUX_FORM_NAME } from 'react-admin';
 +            <SelectInput
 +                source="country"
 +                choices={countries}
-+                onChange={value => form.change('city', null)}
++                onChange={value => form.change('city', value)}
 +                {...rest}
 +            />
 +            <SelectInput
@@ -230,7 +231,7 @@ const OrderEdit = (props) => (
 -                            source="country"
 -                            choices={countries}
 -                            onChange={value => dispatch(
--                                change(REDUX_FORM_NAME, 'city', null)
+-                                change(REDUX_FORM_NAME, 'city', value)
 -                            )}
 -                             {...rest}
 -                        />
@@ -373,6 +374,43 @@ export default ({
     return store;
 };
 ```
+
+## Custom Forms Using `reduxForm()` Must Be Replaced By The `<Form>` Component
+
+The [final-form migration documentation here](https://final-form.org/docs/react-final-form/migration/redux-form) explains the various changes you have to perform in your code.
+
+```diff
+-import { reduxForm } from 'redux-form'
++import { Form } from 'react-final-form'
+
+-const CustomForm = reduxForm({ form: 'record-form', someOptions: true })(({ record, resource }) => (
++const CustomForm = ({ record, resource }) => (
++    <Form someOptions={true}>
++        {({ handleSubmit }) => (
++            <form onSubmit={handleSubmit}>
+-            <Fragment>
+                <Typography>Notes</Typography>
+                <TextInput source="note" />
++            </form>
+-            </Fragment>
++        )}
++    </Form>
++);
+-));
+```
+
+## Material-ui Icons Have Changed
+
+If you were using Material-ui icons for your design, be aware that some icons present in 1.X versions were removed from version 4.0.
+
+Example:
+
+* `LightbulbOutline` is no more available in `@Material-ui/icons`
+
+But there is a quick fix for this one by using another package instead:
+
+* `import Lightbulb from '@material-ui/docs/svgIcons/LightbulbOutline';`
+
 
 ## Custom Exporter Functions Must Use `jsonexport` Instead Of `papaparse`
 
@@ -1202,7 +1240,7 @@ const App = () => (
         })}
     >
         <TranslationProvider>
-+           <DataProviderContext.Provider valuse={dataProvider} />
++           <DataProviderContext.Provider value={dataProvider} />
                 <ThemeProvider>
                     <Resource name="posts" intent="registration" />
                     ...

@@ -1,6 +1,6 @@
 {
     "name": "ra-ui-materialui",
-    "version": "3.0.4",
+    "version": "3.1.4",
     "description": "UI Components for react-admin with MaterialUI",
     "files": [
         "*.md",
@@ -30,6 +30,7 @@
         "@material-ui/icons": "^4.2.1",
         "@material-ui/styles": "^4.3.3",
         "@testing-library/react": "^8.0.7",
+        "@types/query-string": "5.1.0",
         "cross-env": "^5.2.0",
         "enzyme": "~3.9.0",
         "enzyme-adapter-react-16": "~1.12.1",
@@ -37,7 +38,7 @@
         "final-form": "^4.18.5",
         "final-form-arrays": "^3.0.1",
         "ignore-styles": "~5.0.1",
-        "ra-core": "^3.0.4",
+        "ra-core": "^3.1.4",
         "react": "^16.9.0",
         "react-dom": "^16.9.0",
         "react-final-form": "^6.3.3",
@@ -74,7 +75,7 @@
         "inflection": "~1.12.0",
         "jsonexport": "^2.4.1",
         "lodash": "~4.17.5",
-        "prop-types": "^15.6.1",
+        "prop-types": "^15.7.0",
         "query-string": "^5.1.1",
         "react-dropzone": "^10.1.7",
         "react-transition-group": "^2.2.1",

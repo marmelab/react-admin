@@ -3,6 +3,8 @@ import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import { setListSelectedIds, toggleListItem } from '../actions/listActions';
 import { Identifier, ReduxState } from '../types';
 
+const defaultRecords = [];
+
 /**
  * Get the list of selected items for a resource, and callbacks to change the selection
  *
@@ -14,7 +16,9 @@ const useSelectItems = (resource: string) => {
     const dispatch = useDispatch();
     const selectedIds = useSelector(
         (reduxState: ReduxState) =>
-            reduxState.admin.resources[resource].list.selectedIds,
+            reduxState.admin.resources[resource]
+                ? reduxState.admin.resources[resource].list.selectedIds
+                : defaultRecords,
         shallowEqual
     );
     const selectionModifiers = {

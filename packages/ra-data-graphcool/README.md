@@ -153,7 +153,7 @@ const introspectionOptions = {
 };
 ```
 
-**Note**: `exclude` and `include` are mutually exclusives and `include` will take precendance.
+**Note**: `exclude` and `include` are mutually exclusives and `include` will take precedence.
 
 **Note**: When using functions, the `type` argument will be a type returned by the introspection query. Refer to the [introspection](http://graphql.org/learn/introspection/) documentation for more information.
 

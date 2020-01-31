@@ -66,7 +66,6 @@ export default ({
 
     const matchingReferences = useGetMatchingReferenceSelector({
         referenceSource,
-        filter,
         reference,
         resource,
         source,
@@ -98,7 +97,6 @@ export default ({
 
 const useGetMatchingReferenceSelector = ({
     referenceSource,
-    filter,
     reference,
     resource,
     source,

@@ -17,6 +17,7 @@ export default {
                 body: 'Contenu',
                 comments: 'Commentaires',
                 commentable: 'Commentable',
+                commentable_short: 'Com.',
                 created_at: 'Créé le',
                 notifications: 'Destinataires de notifications',
                 nb_view: 'Nb de vues',

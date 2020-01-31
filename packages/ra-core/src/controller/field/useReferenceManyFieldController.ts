@@ -4,6 +4,15 @@ import { Record, Sort, RecordMap, Identifier } from '../../types';
 import { useGetManyReference } from '../../dataProvider';
 import { useNotify } from '../../sideEffect';
 
+/**
+ * @typedef ReferenceManyProps
+ * @type {Object}
+ * @property {Array} data: the referenced records dictionary by their ids.
+ * @property {Array} ids: the list of referenced records ids.
+ * @property {boolean} loaded: boolean indicating if the references has already be loaded loaded
+ * @property {string | false} referenceBasePath base path of the related record
+ * @property {number} total records
+ */
 interface ReferenceManyProps {
     data: RecordMap;
     ids: Identifier[];
@@ -31,15 +40,6 @@ interface Options {
 }
 
 const defaultFilter = {};
-
-/**
- * @typedef ReferenceManyProps
- * @type {Object}
- * @property {Object} data: the referenced records dictionary by their ids.
- * @property {Object} ids: the list of referenced records ids.
- * @property {boolean} loaded: boolean indicating if the references has already be loaded loaded
- * @property {string | false} referenceBasePath base path of the related record
- */
 
 /**
  * Fetch reference records, and return them when avaliable

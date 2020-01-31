@@ -55,7 +55,7 @@ interface Props {
  *     <FooComponent source="title" />
  * </Labeled>
  */
-export const Labeled: FunctionComponent<Props> = ({
+const Labeled: FunctionComponent<Props> = ({
     children,
     className,
     classes: classesOverride,

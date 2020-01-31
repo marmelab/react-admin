@@ -1,68 +1,93 @@
-import assert from 'assert';
+import idsReducer from './ids';
+import {
+    CRUD_GET_LIST_SUCCESS,
+    CRUD_CREATE_SUCCESS,
+} from '../../../../actions';
+import { DELETE, DELETE_MANY } from '../../../../core';
 
-import { IdentifierArrayWithDate, addRecordIdsFactory } from './ids';
-
-describe('data addRecordIdsFactory', () => {
-    it('should call getFetchedAt with newRecords ids and oldRecordFetchedAt and return records returned by getFetchedAt', () => {
-        const newRecords: IdentifierArrayWithDate = ['record1', 'record2'];
-        const oldRecords: IdentifierArrayWithDate = [];
-        const date0 = new Date();
-        const date1 = new Date();
-        const date2 = new Date();
-        oldRecords.fetchedAt = date0;
-        const getFetchedAt = jest.fn().mockReturnValue({
-            record1: date1,
-            record2: date2,
-        });
-
-        const newState = addRecordIdsFactory(getFetchedAt)(
-            newRecords,
-            oldRecords
-        );
-
-        assert.deepEqual(newState, ['record1', 'record2']);
-
-        assert.deepEqual(getFetchedAt.mock.calls[0], [
-            ['record1', 'record2'],
-            date0,
-        ]);
-
-        assert.deepEqual(newState.fetchedAt, {
-            record1: date1,
-            record2: date2,
+describe('ids reducer', () => {
+    describe('DELETE', () => {
+        it('should remove id from ids on Delete action', () => {
+            const action = {
+                type: DELETE,
+                payload: {
+                    id: 'record2',
+                },
+                meta: {
+                    fetch: DELETE,
+                    optimistic: true,
+                },
+            };
+            const newState = idsReducer(
+                ['record1', 'record2', 'record3'],
+                action
+            );
+            expect(newState).toEqual(['record1', 'record3']);
         });
     });
 
-    it('should discard record that do not have their ids returned by getFetchedAt', () => {
-        const newRecords = ['record1', 'record2'];
-        const oldRecords = ['record3'];
-        const getFetchedAt = jest.fn().mockReturnValue({
-            record1: 'date',
-            record2: 'date',
+    describe('DELETE_MANY', () => {
+        it('should remove ids from ids on DELETE_MANY action', () => {
+            const action = {
+                type: DELETE_MANY,
+                payload: {
+                    ids: ['record1', 'record3'],
+                },
+                meta: {
+                    fetch: DELETE_MANY,
+                    optimistic: true,
+                },
+            };
+            const newState = idsReducer(
+                ['record1', 'record2', 'record3'],
+                action
+            );
+            expect(newState).toEqual(['record2']);
         });
-
-        const newState = addRecordIdsFactory(getFetchedAt)(
-            newRecords,
-            oldRecords
-        );
-
-        assert.deepEqual(newState, ['record1', 'record2']);
     });
 
-    it('should keep record that have their ids returned by getFetchedAt and add newRecords after oldRecords', () => {
-        const newRecords = ['record1', 'record2'];
-        const oldRecords = ['record3'];
-        const getFetchedAt = jest.fn().mockReturnValue({
-            record1: 'date',
-            record2: 'date',
-            record3: 'date',
+    describe('CRUD_GET_LIST_SUCCESS', () => {
+        it('should replace ids with ids from action', () => {
+            const action = {
+                type: CRUD_GET_LIST_SUCCESS,
+                payload: {
+                    data: [
+                        { id: 'new_record1' },
+                        { id: 'new_record2' },
+                        { id: 'new_record3' },
+                    ],
+                },
+            };
+            const newState = idsReducer(
+                ['record1', 'record2', 'record3'],
+                action
+            );
+            expect(newState).toEqual([
+                'new_record1',
+                'new_record2',
+                'new_record3',
+            ]);
         });
+    });
 
-        const newState = addRecordIdsFactory(getFetchedAt)(
-            newRecords,
-            oldRecords
-        );
-
-        assert.deepEqual(newState, ['record3', 'record1', 'record2']);
+    describe('CRUD_CREATE_SUCCESS', () => {
+        it('should add new id at the start of ids', () => {
+            const action = {
+                type: CRUD_CREATE_SUCCESS,
+                payload: {
+                    data: { id: 'new_record' },
+                },
+            };
+            const newState = idsReducer(
+                ['record1', 'record2', 'record3'],
+                action
+            );
+            expect(newState).toEqual([
+                'new_record',
+                'record1',
+                'record2',
+                'record3',
+            ]);
+        });
     });
 });
