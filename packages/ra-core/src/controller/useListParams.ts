@@ -116,10 +116,10 @@ const useListParams = ({
     const dispatch = useDispatch();
     const history = useHistory();
 
-    const { params } = useSelector(
+    const params = useSelector(
         (reduxState: ReduxState) =>
             reduxState.admin.resources[resource]
-                ? reduxState.admin.resources[resource].list
+                ? reduxState.admin.resources[resource].list.params
                 : defaultParams,
         shallowEqual
     );
