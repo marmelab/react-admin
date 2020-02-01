@@ -2,15 +2,15 @@
 
 ## v3.1.4
 
-* Fix default value of filters with paths not applied correctly ([4347](https://github.com/marmelab.react-admin/pull/4347)) ([djhi](https://github.com/djhi))
-* Fix Datagrid column headers don't update sort indicator when used in ReferenceManyField ([4346](https://github.com/marmelab.react-admin/pull/4346)) ([fzaninotto](https://github.com/fzaninotto))
-* [Doc] Fix typo in Create / Edit documentation ([4373](https://github.com/marmelab.react-admin/pull/4373)) ([fzaninotto](https://github.com/fzaninotto))
-* [Doc] Fix Armenian abbreviation in the translations documentation ([4371](https://github.com/marmelab.react-admin/pull/4371)) ([mrdntgrn](https://github.com/mrdntgrn))
-* [Doc] Fix instructions for contributing to react-admin in README ([4359](https://github.com/marmelab.react-admin/pull/4359)) ([PaulMest](https://github.com/PaulMest))
-* [Doc] Fix typo in `ra-data-graphcool` and `ra-data-graphql-simple` READMEs. ([4354](https://github.com/marmelab.react-admin/pull/4354)) ([kahdo](https://github.com/kahdo))
-* [Doc] Fix documentation about extending a dataProvider ([4341](https://github.com/marmelab.react-admin/pull/4341)) ([fzaninotto](https://github.com/fzaninotto))
-* [Doc] Fix upgrade documentation about form handling ([4330](https://github.com/marmelab.react-admin/pull/4330)) ([JulienMattiussi](https://github.com/JulienMattiussi))
-* [Doc] Fix custom actions example in List documentation ([4327](https://github.com/marmelab.react-admin/pull/4327)) ([Artexoid](https://github.com/Artexoid))
+* Fix default value of filters with paths not applied correctly ([4347](https://github.com/marmelab/react-admin/pull/4347)) ([djhi](https://github.com/djhi))
+* Fix Datagrid column headers don't update sort indicator when used in ReferenceManyField ([4346](https://github.com/marmelab/react-admin/pull/4346)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix typo in Create / Edit documentation ([4373](https://github.com/marmelab/react-admin/pull/4373)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix Armenian abbreviation in the translations documentation ([4371](https://github.com/marmelab/react-admin/pull/4371)) ([mrdntgrn](https://github.com/mrdntgrn))
+* [Doc] Fix instructions for contributing to react-admin in README ([4359](https://github.com/marmelab/react-admin/pull/4359)) ([PaulMest](https://github.com/PaulMest))
+* [Doc] Fix typo in `ra-data-graphcool` and `ra-data-graphql-simple` READMEs. ([4354](https://github.com/marmelab/react-admin/pull/4354)) ([kahdo](https://github.com/kahdo))
+* [Doc] Fix documentation about extending a dataProvider ([4341](https://github.com/marmelab/react-admin/pull/4341)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix upgrade documentation about form handling ([4330](https://github.com/marmelab/react-admin/pull/4330)) ([JulienMattiussi](https://github.com/JulienMattiussi))
+* [Doc] Fix custom actions example in List documentation ([4327](https://github.com/marmelab/react-admin/pull/4327)) ([Artexoid](https://github.com/Artexoid))
 
 ## v3.1.3
 
