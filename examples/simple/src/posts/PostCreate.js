@@ -132,10 +132,7 @@ const PostCreate = ({ permissions, ...props }) => {
                 <FormSpy subscription={{ values: true }}>
                     {({ values }) =>
                         values.title ? (
-                            <NumberInput
-                                source="average_note"
-                                defaultValue={5}
-                            />
+                            <NumberInput source="average_note" />
                         ) : null
                     }
                 </FormSpy>

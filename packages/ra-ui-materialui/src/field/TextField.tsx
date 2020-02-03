@@ -32,6 +32,7 @@ EnhancedTextField.defaultProps = {
 };
 
 EnhancedTextField.propTypes = {
+    // @ts-ignore
     ...Typography.propTypes,
     ...fieldPropTypes,
 };

@@ -351,6 +351,8 @@ const AutocompleteArrayInput: FunctionComponent<
                     onChange,
                     onFocus,
                     ref,
+                    color,
+                    size,
                     ...inputProps
                 } = getInputProps({
                     onBlur: handleBlur,
@@ -426,6 +428,8 @@ const AutocompleteArrayInput: FunctionComponent<
                             }
                             variant={variant}
                             margin={margin}
+                            color={color as any}
+                            size={size as any}
                             {...inputProps}
                             {...options}
                         />

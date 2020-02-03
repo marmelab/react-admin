@@ -223,7 +223,9 @@ describe('<CheckboxGroupInput />', () => {
                     render={() => <CheckboxGroupInput {...defaultProps} />}
                 />
             );
-            expect(container.querySelector('p').innerHTML).toBe(' ');
+            expect(container.querySelector('p').innerHTML).toBe(
+                '<span>​</span>'
+            );
         });
 
         it('should be empty if field has been touched but is valid', () => {
@@ -233,7 +235,9 @@ describe('<CheckboxGroupInput />', () => {
                     render={() => <CheckboxGroupInput {...defaultProps} />}
                 />
             );
-            expect(container.querySelector('p').innerHTML).toBe(' ');
+            expect(container.querySelector('p').innerHTML).toBe(
+                '<span>​</span>'
+            );
         });
 
         it('should be displayed if field has been touched and is invalid', () => {

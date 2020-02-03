@@ -10,7 +10,7 @@ export default url => ({
         },
         inputs: `.ra-input`,
         richTextInputError: '.create-page .ra-rich-text-input-error',
-        snackbar: 'div[role="alertdialog"]',
+        snackbar: 'div[role="alert"]',
         submitButton: ".create-page div[role='toolbar'] button[type='submit']",
         submitAndShowButton:
             ".create-page form div[role='toolbar'] button[type='button']:nth-child(2)",
