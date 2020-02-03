@@ -49,7 +49,10 @@
             <li class="logo">
                 <a href="{{ site.url }}"><img src="{{ site.url }}/assets/logo_white.png" /></a>
             </li>
-            {% include_relative navigation.html %}
+             <li class="version">
+                {% include versions.html %}
+            </li>
+	    {% include_relative navigation.html %}
         </ul>
 
     </header>
