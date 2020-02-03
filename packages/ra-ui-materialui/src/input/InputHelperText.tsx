@@ -19,7 +19,8 @@ const InputHelperText: FunctionComponent<Props> = ({
     ) : helperText ? (
         <>{translate(helperText, { _: helperText })}</>
     ) : (
-        <> </>
+        // eslint-disable-next-line react/no-danger
+        <span dangerouslySetInnerHTML={{ __html: '&#8203;' }} />
     );
 };
 
