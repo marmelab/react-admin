@@ -1,16 +1,37 @@
 # Changelog
 
+## v3.2.0
+
+* Add the `<Empty>` component, an invite to create the first record when the list is empty ([4113](https://github.com/marmelab/react-admin/pull/4113)) ([m4theushw](https://github.com/m4theushw))
+* Add sticky header to `<Datagrid>` ([4309](https://github.com/marmelab/react-admin/pull/4309)) ([fzaninotto](https://github.com/fzaninotto))
+* Display skeleton during `<SimpleList>` initial load ([4292](https://github.com/marmelab/react-admin/pull/4292)) ([djhi](https://github.com/djhi))
+* Delay skeleton display in `<Datagrid>` and `<SimpleList>`, a la Suspense ([4294](https://github.com/marmelab/react-admin/pull/4294)) ([djhi](https://github.com/djhi))
+* Force helper text height in all `<Input>` components to avoid form layout changes upon validation ([4364](https://github.com/marmelab/react-admin/pull/4364)) ([JulienMattiussi](https://github.com/JulienMattiussi))
+* Reduce the default app weight by removing the image background on the Login screen ([4342](https://github.com/marmelab/react-admin/pull/4342)) ([ThieryMichel](https://github.com/ThieryMichel))
+* Add ability to customize the icon in the `<Logout>` button ([4229](https://github.com/marmelab/react-admin/pull/4229)) ([steurt](https://github.com/steurt))
+* Add ability to customize `<Empty>` styles using the theme ([4293](https://github.com/marmelab/react-admin/pull/4293)) ([WiXSL](https://github.com/WiXSL))
+* Add `<NullableBooleanInput displayNull` prop to force the dislay of the null option ([4365](https://github.com/marmelab/react-admin/pull/4365)) ([JulienMattiussi](https://github.com/JulienMattiussi))
+* Add explicit error in `useDataProvider` hook when the `dataProvider` throws a sync error([4291](https://github.com/marmelab/react-admin/pull/4291)) ([fzaninotto](https://github.com/fzaninotto))
+* Export Reference Utilities ([4338](https://github.com/marmelab/react-admin/pull/4338)) ([djhi](https://github.com/djhi))
+* Ensure `useEditController` specifies a default redirect to its caller ([4339](https://github.com/marmelab/react-admin/pull/4339)) ([djhi](https://github.com/djhi))
+* Convert `<Menu>`, `<MenuItem>`, and `<DashboardMenuItem>` components to TypeScript ([4266](https://github.com/marmelab/react-admin/pull/4266)) ([steurt](https://github.com/steurt))
+* Fix menu size in latest version of material-ui ([4374](https://github.com/marmelab/react-admin/pull/4374)) ([fzaninotto](https://github.com/fzaninotto)) 
+* Fix Autocomplete selection display with custom Component ([4367](https://github.com/marmelab/react-admin/pull/4367)) ([JulienMattiussi](https://github.com/JulienMattiussi))
+* Fix interface name starting with a lowercase letter in ReferenceFieldController ([4163](https://github.com/marmelab/react-admin/pull/4163)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix urls in 3.1.4 changelog ([4379](https://github.com/marmelab/react-admin/pull/4379)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Add PostgREST data provider to the list of third-party providers ([4380](https://github.com/marmelab/react-admin/pull/4380)) ([scheiblr](https://github.com/scheiblr))
+
 ## v3.1.4
 
-* Fix default value of filters with paths not applied correctly ([4347](https://github.com/marmelab/react-admin/pull/4347)) ([djhi](https://github.com/djhi))
-* Fix Datagrid column headers don't update sort indicator when used in ReferenceManyField ([4346](https://github.com/marmelab/react-admin/pull/4346)) ([fzaninotto](https://github.com/fzaninotto))
-* [Doc] Fix typo in Create / Edit documentation ([4373](https://github.com/marmelab/react-admin/pull/4373)) ([fzaninotto](https://github.com/fzaninotto))
-* [Doc] Fix Armenian abbreviation in the translations documentation ([4371](https://github.com/marmelab/react-admin/pull/4371)) ([mrdntgrn](https://github.com/mrdntgrn))
-* [Doc] Fix instructions for contributing to react-admin in README ([4359](https://github.com/marmelab/react-admin/pull/4359)) ([PaulMest](https://github.com/PaulMest))
-* [Doc] Fix typo in `ra-data-graphcool` and `ra-data-graphql-simple` READMEs. ([4354](https://github.com/marmelab/react-admin/pull/4354)) ([kahdo](https://github.com/kahdo))
-* [Doc] Fix documentation about extending a dataProvider ([4341](https://github.com/marmelab/react-admin/pull/4341)) ([fzaninotto](https://github.com/fzaninotto))
-* [Doc] Fix upgrade documentation about form handling ([4330](https://github.com/marmelab/react-admin/pull/4330)) ([JulienMattiussi](https://github.com/JulienMattiussi))
-* [Doc] Fix custom actions example in List documentation ([4327](https://github.com/marmelab/react-admin/pull/4327)) ([Artexoid](https://github.com/Artexoid))
+* Fix default value of filters with paths not applied correctly ([4347](https://github.com/marmelab.react-admin/pull/4347)) ([djhi](https://github.com/djhi))
+* Fix Datagrid column headers don't update sort indicator when used in ReferenceManyField ([4346](https://github.com/marmelab.react-admin/pull/4346)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix typo in Create / Edit documentation ([4373](https://github.com/marmelab.react-admin/pull/4373)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix Armenian abbreviation in the translations documentation ([4371](https://github.com/marmelab.react-admin/pull/4371)) ([mrdntgrn](https://github.com/mrdntgrn))
+* [Doc] Fix instructions for contributing to react-admin in README ([4359](https://github.com/marmelab.react-admin/pull/4359)) ([PaulMest](https://github.com/PaulMest))
+* [Doc] Fix typo in `ra-data-graphcool` and `ra-data-graphql-simple` READMEs. ([4354](https://github.com/marmelab.react-admin/pull/4354)) ([kahdo](https://github.com/kahdo))
+* [Doc] Fix documentation about extending a dataProvider ([4341](https://github.com/marmelab.react-admin/pull/4341)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix upgrade documentation about form handling ([4330](https://github.com/marmelab.react-admin/pull/4330)) ([JulienMattiussi](https://github.com/JulienMattiussi))
+* [Doc] Fix custom actions example in List documentation ([4327](https://github.com/marmelab.react-admin/pull/4327)) ([Artexoid](https://github.com/Artexoid))
 
 ## v3.1.3
 
