@@ -10,7 +10,7 @@ describe('InputHelperText', () => {
         const { container } = render(
             <InputHelperText touched={false} error="Crap!" />
         );
-        expect(container.innerHTML).toBe(' ');
+        expect(container.innerHTML).toBe('<span>​</span>');
     });
 
     it('renders the helperText when there is no error', () => {
