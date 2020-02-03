@@ -465,7 +465,7 @@ const MyCustomIcon = () => {
 
 const MyUserMenu = props => (<UserMenu {...props} icon={MyCustomIcon} />);
 
-const MyAppBar = props => <AppBar {...props} userMenu={MyUserMenu} />;
+const MyAppBar = props => <AppBar {...props} userMenu={<MyUserMenu />} />;
 ```
 {% endraw %}
 
@@ -604,6 +604,8 @@ MyLayout.propTypes = {
 
 export default MyLayout;
 ```
+
+**Tip**: Don't forget to render a `<Notification>` component in your custom layout, otherwise the undoable updates will never be sent to the server. That's because part of the "undo" logic of react-admin lies in the `<Notification>` component.  
 
 ## Customizing the AppBar Content
 
@@ -842,12 +844,17 @@ export default withRouter(Menu);
 
 ### Changing the Background Image
 
-By default, the login page displays a random background image changing every day. If you want to change that background image, you can use the default Login page component and pass an image URL as the `backgroundImage` prop.
+By default, the login page displays a gradient background. If you want to change the background, you can use the default Login page component and pass an image URL as the `backgroundImage` prop.
 
 ```jsx
 import { Admin, Login } from 'react-admin';
 
-const MyLoginPage = () => <Login backgroundImage="/background.jpg" />;
+const MyLoginPage = () => (
+    <Login
+        // A random image that changes everyday
+        backgroundImage="https://source.unsplash.com/random/1600x900/daily"
+    />
+);
 
 const App = () => (
     <Admin loginPage={MyLoginPage}>
@@ -883,7 +890,7 @@ You can override the notification component, for instance to change the notifica
 // in src/MyNotification.js
 import { Notification } from 'react-admin';
 
-const MyNotification = props => <Notification {...props}autoHideDuration={5000} />;
+const MyNotification = props => <Notification {...props} autoHideDuration={5000} />;
 
 export default MyNotification;
 ```

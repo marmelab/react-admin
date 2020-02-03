@@ -44,6 +44,8 @@ const useStyles = makeStyles(
             justifyContent: 'flex-start',
             backgroundRepeat: 'no-repeat',
             backgroundSize: 'cover',
+            backgroundImage:
+                'radial-gradient(circle at 50% 14em, #313264 0%, #00023b 60%, #00023b 100%)',
         },
         card: {
             minWidth: 300,
@@ -160,7 +162,6 @@ Login.propTypes = {
 };
 
 Login.defaultProps = {
-    backgroundImage: 'https://source.unsplash.com/random/1600x900/daily',
     theme: defaultTheme,
     children: <DefaultLoginForm />,
 };

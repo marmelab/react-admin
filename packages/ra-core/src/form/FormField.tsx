@@ -24,7 +24,7 @@ interface Props
     validate?: Validator | Validator[];
 }
 
-export const FormField: FunctionComponent<Props> = ({
+const FormField: FunctionComponent<Props> = ({
     id,
     input,
     validate,

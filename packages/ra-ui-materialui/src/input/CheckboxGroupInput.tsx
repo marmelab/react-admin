@@ -17,6 +17,7 @@ const sanitizeRestProps = ({
     setFilter,
     setPagination,
     setSort,
+    loaded,
     ...rest
 }: any) => defaultSanitizeRestProps(rest);
 
@@ -187,21 +188,19 @@ const CheckboxGroupInput: FunctionComponent<
                     />
                 ))}
             </FormGroup>
-            {(touched && error) || helperText ? (
-                <FormHelperText>
-                    <InputHelperText
-                        touched={touched}
-                        error={error}
-                        helperText={helperText}
-                    />
-                </FormHelperText>
-            ) : null}
+            <FormHelperText>
+                <InputHelperText
+                    touched={touched}
+                    error={error}
+                    helperText={helperText}
+                />
+            </FormHelperText>
         </FormControl>
     );
 };
 
 CheckboxGroupInput.propTypes = {
-    choices: PropTypes.arrayOf(PropTypes.object).isRequired,
+    choices: PropTypes.arrayOf(PropTypes.object),
     className: PropTypes.string,
     label: PropTypes.string,
     source: PropTypes.string,

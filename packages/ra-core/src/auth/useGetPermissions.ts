@@ -2,6 +2,8 @@ import { useCallback } from 'react';
 
 import useAuthProvider from './useAuthProvider';
 
+const getPermissionsWithoutProvider = () => Promise.resolve([]);
+
 /**
  * Get a callback for calling the authProvider.getPermissions() method.
  *
@@ -42,8 +44,6 @@ const useGetPermissions = (): GetPermissions => {
 
     return authProvider ? getPermissions : getPermissionsWithoutProvider;
 };
-
-const getPermissionsWithoutProvider = () => Promise.resolve([]);
 
 /**
  * Proxy for calling authProvider.getPermissions()

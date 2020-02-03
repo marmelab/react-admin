@@ -148,7 +148,7 @@ Some use cases:
 - Show/hide some inputs if another input has a specific value
 - Show/hide some inputs if the current form value matches specific constraints
 
-For all those cases, you can use the [aor-dependent-input](https://github.com/marmelab/aor-dependent-input) addon.
+For all those cases, you can use the [`<FormDataConsumer>`](https://marmelab.com/react-admin/Inputs.html#linking-two-inputs) component.
 
 ## UI in production build is empty or broke
 

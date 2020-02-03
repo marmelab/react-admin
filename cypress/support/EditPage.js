@@ -10,7 +10,7 @@ export default url => ({
         },
         inputs: `.ra-input`,
         tabs: `.form-tab`,
-        snackbar: 'div[role="alertdialog"]',
+        snackbar: 'div[role="alert"]',
         submitButton: ".edit-page div[role='toolbar'] button[type='submit']",
         cloneButton: '.button-clone',
         tab: index => `.form-tab:nth-of-type(${index})`,

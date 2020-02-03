@@ -223,13 +223,11 @@ const SelectInput: FunctionComponent<
             clearAlwaysVisible
             error={!!(touched && error)}
             helperText={
-                (touched && error) || helperText ? (
-                    <InputHelperText
-                        touched={touched}
-                        error={error}
-                        helperText={helperText}
-                    />
-                ) : null
+                <InputHelperText
+                    touched={touched}
+                    error={error}
+                    helperText={helperText}
+                />
             }
             {...options}
             {...sanitizeRestProps(rest)}

@@ -27,7 +27,7 @@ interface Props extends FieldProps {
     classes?: object;
 }
 
-export const ImageField: FunctionComponent<Props & InjectedFieldProps> = ({
+const ImageField: FunctionComponent<Props & InjectedFieldProps> = ({
     className,
     classes: classesOverride,
     record,

@@ -23,17 +23,18 @@ const useStyles = makeStyles(
     { name: 'RaDatagridHeaderCell' }
 );
 
-export const DatagridHeaderCell = ({
-    className,
-    classes: classesOverride,
-    field,
-    currentSort,
-    updateSort,
-    resource,
-    isSorting,
-    ...rest
-}) => {
-    const classes = useStyles({ classes: classesOverride });
+export const DatagridHeaderCell = props => {
+    const {
+        className,
+        classes: classesOverride,
+        field,
+        currentSort,
+        updateSort,
+        resource,
+        isSorting,
+        ...rest
+    } = props;
+    const classes = useStyles(props);
     const translate = useTranslate();
     return (
         <TableCell
@@ -98,5 +99,7 @@ DatagridHeaderCell.propTypes = {
 export default shouldUpdate(
     (props, nextProps) =>
         props.updateSort !== nextProps.updateSort ||
+        props.currentSort.sort !== nextProps.currentSort.sort ||
+        props.currentSort.order !== nextProps.currentSort.order ||
         (nextProps.isSorting && props.sortable !== nextProps.sortable)
 )(DatagridHeaderCell);

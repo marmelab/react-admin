@@ -23,9 +23,7 @@ import { getStatusForArrayInput as getDataStatus } from './referenceDataStatus';
  * });
  *
  * @param {Object} option
- * @param {boolean} option.allowEmpty do we allow for no referenced record (default to false)
  * @param {string} option.basePath basepath to current resource
- * @param {string | false} option.linkType The type of the link toward the referenced record. edit, show of false for no link (default to edit)
  * @param {Object} option.record The The current resource record
  * @param {string} option.reference The linked resource name
  * @param {string} option.resource The current resource name

@@ -16,11 +16,7 @@ const useStyles = makeStyles(
     { name: 'RaLoadingIndicator' }
 );
 
-export const LoadingIndicator = ({
-    classes: classesOverride,
-    className,
-    ...rest
-}) => {
+const LoadingIndicator = ({ classes: classesOverride, className, ...rest }) => {
     const loading = useSelector(state => state.admin.loading > 0);
     const classes = useStyles({ classes: classesOverride });
     return loading ? (

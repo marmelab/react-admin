@@ -91,8 +91,8 @@ List.propTypes = {
     hasEdit: PropTypes.bool.isRequired,
     hasList: PropTypes.bool.isRequired,
     hasShow: PropTypes.bool.isRequired,
-    location: PropTypes.object.isRequired,
-    match: PropTypes.object.isRequired,
+    location: PropTypes.object,
+    match: PropTypes.object,
     path: PropTypes.string,
     resource: PropTypes.string.isRequired,
 };
@@ -244,7 +244,7 @@ ListView.defaultProps = {
     empty: <Empty />,
 };
 
-export const useStyles = makeStyles(
+const useStyles = makeStyles(
     theme => ({
         root: {},
         main: {

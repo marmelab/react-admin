@@ -351,6 +351,8 @@ const AutocompleteArrayInput: FunctionComponent<
                     onChange,
                     onFocus,
                     ref,
+                    color,
+                    size,
                     ...inputProps
                 } = getInputProps({
                     onBlur: handleBlur,
@@ -418,16 +420,16 @@ const AutocompleteArrayInput: FunctionComponent<
                                 htmlFor: id,
                             })}
                             helperText={
-                                (touched && error) || helperText ? (
-                                    <InputHelperText
-                                        touched={touched}
-                                        error={error}
-                                        helperText={helperText}
-                                    />
-                                ) : null
+                                <InputHelperText
+                                    touched={touched}
+                                    error={error}
+                                    helperText={helperText}
+                                />
                             }
                             variant={variant}
                             margin={margin}
+                            color={color as any}
+                            size={size as any}
                             {...inputProps}
                             {...options}
                         />

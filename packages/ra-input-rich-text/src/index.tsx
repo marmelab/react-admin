@@ -142,18 +142,16 @@ const RichTextInput: FunctionComponent<Props> = props => {
                 </InputLabel>
             )}
             <div data-testid="quill" ref={divRef} className={variant} />
-            {helperText || (touched && error) ? (
-                <FormHelperText
-                    error={!!error}
-                    className={!!error ? 'ra-rich-text-input-error' : ''}
-                >
-                    <InputHelperText
-                        error={error}
-                        helperText={helperText}
-                        touched={touched}
-                    />
-                </FormHelperText>
-            ) : null}
+            <FormHelperText
+                error={!!error}
+                className={!!error ? 'ra-rich-text-input-error' : ''}
+            >
+                <InputHelperText
+                    error={error}
+                    helperText={helperText}
+                    touched={touched}
+                />
+            </FormHelperText>
         </FormControl>
     );
 };

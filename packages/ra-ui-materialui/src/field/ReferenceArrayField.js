@@ -37,7 +37,7 @@ import { fieldPropTypes } from './types';
  * </ReferenceArrayField>
  *
  */
-export const ReferenceArrayField = ({ children, ...props }) => {
+const ReferenceArrayField = ({ children, ...props }) => {
     if (React.Children.count(children) !== 1) {
         throw new Error(
             '<ReferenceArrayField> only accepts a single child (like <Datagrid>)'

@@ -85,7 +85,7 @@ const useStyles = makeStyles(
  *
  * The object passed as `options` props is passed to the material-ui <RadioButtonGroup> component
  */
-export const RadioButtonGroupInput: FunctionComponent<
+const RadioButtonGroupInput: FunctionComponent<
     ChoicesProps & InputProps<RadioGroupProps> & FormControlProps
 > = ({
     choices = [],
@@ -156,15 +156,13 @@ export const RadioButtonGroupInput: FunctionComponent<
                     />
                 ))}
             </RadioGroup>
-            {(touched && error) || helperText ? (
-                <FormHelperText>
-                    <InputHelperText
-                        touched={touched}
-                        error={error}
-                        helperText={helperText}
-                    />
-                </FormHelperText>
-            ) : null}
+            <FormHelperText>
+                <InputHelperText
+                    touched={touched}
+                    error={error}
+                    helperText={helperText}
+                />
+            </FormHelperText>
         </FormControl>
     );
 };

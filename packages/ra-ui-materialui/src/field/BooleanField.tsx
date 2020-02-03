@@ -86,6 +86,7 @@ EnhancedBooleanField.defaultProps = {
 };
 
 EnhancedBooleanField.propTypes = {
+    // @ts-ignore
     ...Typography.propTypes,
     ...fieldPropTypes,
     valueLabelFalse: PropTypes.string,

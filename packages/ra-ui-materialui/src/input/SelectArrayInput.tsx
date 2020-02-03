@@ -208,7 +208,12 @@ const SelectArrayInput: FunctionComponent<
             variant={variant}
             {...sanitizeRestProps(rest)}
         >
-            <InputLabel htmlFor={id} shrink variant={variant}>
+            <InputLabel
+                htmlFor={id}
+                shrink
+                variant={variant}
+                error={touched && !!error}
+            >
                 <FieldTitle
                     label={label}
                     source={source}
@@ -252,15 +257,13 @@ const SelectArrayInput: FunctionComponent<
             >
                 {choices.map(renderMenuItem)}
             </Select>
-            {(touched && error) || helperText ? (
-                <FormHelperText>
-                    <InputHelperText
-                        touched={touched}
-                        error={error}
-                        helperText={helperText}
-                    />
-                </FormHelperText>
-            ) : null}
+            <FormHelperText error={touched && !!error}>
+                <InputHelperText
+                    touched={touched}
+                    error={error}
+                    helperText={helperText}
+                />
+            </FormHelperText>
         </FormControl>
     );
 };

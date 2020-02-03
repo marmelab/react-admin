@@ -36,7 +36,7 @@ const MyHelloButton = ({ translate }) => (
         const locale = useLocale();
 
         return (
-            <BaseComponent translate={translate} locale={locale} {...props} />
+            <BaseComponent {...props} translate={translate} locale={locale} />
         );
     };
 
