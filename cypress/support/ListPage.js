@@ -50,15 +50,15 @@ export default url => ({
     },
 
     nextPage() {
-        cy.get(this.elements.nextPage).click();
+        cy.get(this.elements.nextPage).click({ force: true });
     },
 
     previousPage() {
-        cy.get(this.elements.previousPage).click();
+        cy.get(this.elements.previousPage).click({ force: true });
     },
 
     goToPage(n) {
-        return cy.get(this.elements.pageNumber(n)).click();
+        return cy.get(this.elements.pageNumber(n)).click({ force: true });
     },
 
     setFilterValue(name, value, clearPreviousValue = true) {
