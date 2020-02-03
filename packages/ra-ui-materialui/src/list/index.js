@@ -15,7 +15,9 @@ import ListGuesser from './ListGuesser';
 import ListToolbar from './ListToolbar';
 import Pagination from './Pagination';
 import PaginationLimit from './PaginationLimit';
+import Placeholder from './Placeholder';
 import SimpleList from './SimpleList';
+import SimpleListLoading from './SimpleListLoading';
 import SingleFieldList from './SingleFieldList';
 
 export {
@@ -37,8 +39,10 @@ export {
     ListToolbar,
     Pagination,
     PaginationLimit,
+    Placeholder,
     PureDatagridBody,
     PureDatagridRow,
     SimpleList,
+    SimpleListLoading,
     SingleFieldList,
 };

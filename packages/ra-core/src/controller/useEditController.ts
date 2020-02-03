@@ -42,6 +42,7 @@ export interface EditControllerProps {
     resource: string;
     basePath: string;
     record?: Record;
+    redirect: RedirectionSideEffect;
     version: number;
     successMessage?: string;
 }
@@ -101,7 +102,7 @@ const useEditController = (props: EditProps): EditControllerProps => {
     const save = useCallback(
         (
             data: Partial<Record>,
-            redirectTo = 'list',
+            redirectTo = DefaultRedirect,
             { onSuccess, onFailure } = {}
         ) =>
             update(
@@ -146,8 +147,11 @@ const useEditController = (props: EditProps): EditControllerProps => {
         resource,
         basePath,
         record,
+        redirect: DefaultRedirect,
         version,
     };
 };
 
 export default useEditController;
+
+const DefaultRedirect = 'list';

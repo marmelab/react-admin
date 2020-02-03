@@ -25,6 +25,7 @@ const primedStore = {
             hash: '',
             key: '',
             pathname: '/',
+            query: {},
             search: '',
             state: undefined,
         },

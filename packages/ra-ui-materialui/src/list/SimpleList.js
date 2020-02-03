@@ -10,6 +10,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import { makeStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
 import { linkToRecord, sanitizeListRestProps } from 'ra-core';
+import SimpleListLoading from './SimpleListLoading';
 
 const useStyles = makeStyles(
     {
@@ -53,6 +54,7 @@ const SimpleList = ({
     data,
     hasBulkActions,
     ids,
+    loaded,
     loading,
     leftAvatar,
     leftIcon,
@@ -68,6 +70,20 @@ const SimpleList = ({
     ...rest
 }) => {
     const classes = useStyles({ classes: classesOverride });
+
+    if (loaded === false) {
+        return (
+            <SimpleListLoading
+                classes={classes}
+                className={className}
+                hasLeftAvatarOrIcon={!!leftIcon || !!leftAvatar}
+                hasRightAvatarOrIcon={!!rightIcon || !!rightAvatar}
+                hasSecondaryText={!!secondaryText}
+                hasTertiaryText={!!tertiaryText}
+            />
+        );
+    }
+
     return (
         (loading || total > 0) && (
             <List className={className} {...sanitizeListRestProps(rest)}>

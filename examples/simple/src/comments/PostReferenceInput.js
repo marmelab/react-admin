@@ -1,6 +1,6 @@
 import React, { Fragment, useState, useCallback, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { FormSpy } from 'react-final-form';
+import { FormSpy, useForm } from 'react-final-form';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
@@ -30,6 +30,7 @@ const PostReferenceInput = props => {
     const translate = useTranslate();
     const classes = useStyles();
     const dispatch = useDispatch();
+    const { change } = useForm();
 
     const [showCreateDialog, setShowCreateDialog] = useState(false);
     const [showPreviewDialog, setShowPreviewDialog] = useState(false);
@@ -77,8 +78,9 @@ const PostReferenceInput = props => {
         post => {
             setShowCreateDialog(false);
             setNewPostId(post.id);
+            change('post_id', post.id);
         },
-        [setShowCreateDialog, setNewPostId]
+        [setShowCreateDialog, setNewPostId, change]
     );
 
     return (

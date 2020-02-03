@@ -16,20 +16,18 @@ describe('<SelectInput />', () => {
     };
 
     it('should use the input parameter value as the initial input value', () => {
-        const { getByLabelText } = render(
+        const { container } = render(
             <Form
                 initialValues={{ language: 'ang' }}
                 onSubmit={jest.fn()}
                 render={() => <SelectInput {...defaultProps} />}
             />
         );
-        const input = getByLabelText(
-            'resources.posts.fields.language'
-        ) as HTMLInputElement;
+        const input = container.querySelector('input');
         expect(input.value).toEqual('ang');
     });
 
-    it('should render choices as mui MenuItem components', () => {
+    it('should render choices as mui MenuItem components', async () => {
         const { getByRole, getByText, queryAllByRole } = render(
             <Form
                 onSubmit={jest.fn()}
@@ -37,7 +35,7 @@ describe('<SelectInput />', () => {
             />
         );
         const select = getByRole('button');
-        fireEvent.click(select);
+        fireEvent.mouseDown(select);
         const options = queryAllByRole('option');
         expect(options.length).toEqual(2);
 
@@ -64,7 +62,7 @@ describe('<SelectInput />', () => {
             />
         );
         const select = getByRole('button');
-        fireEvent.click(select);
+        fireEvent.mouseDown(select);
         const option1 = getByText('Angular');
         expect(option1.getAttribute('aria-disabled')).toEqual('false');
 
@@ -80,7 +78,7 @@ describe('<SelectInput />', () => {
             />
         );
         const select = getByRole('button');
-        fireEvent.click(select);
+        fireEvent.mouseDown(select);
 
         const options = queryAllByRole('option');
         expect(options.length).toEqual(3);
@@ -103,7 +101,7 @@ describe('<SelectInput />', () => {
             />
         );
         const select = getByRole('button');
-        fireEvent.click(select);
+        fireEvent.mouseDown(select);
 
         const options = queryAllByRole('option');
         expect(options.length).toEqual(3);
@@ -126,7 +124,7 @@ describe('<SelectInput />', () => {
             />
         );
         const emptyOption = getByRole('button');
-        fireEvent.click(emptyOption);
+        fireEvent.mouseDown(emptyOption);
 
         const options = queryAllByRole('option');
         expect(options.length).toEqual(3);
@@ -154,7 +152,7 @@ describe('<SelectInput />', () => {
             />
         );
         const emptyOption = getByRole('button');
-        fireEvent.click(emptyOption);
+        fireEvent.mouseDown(emptyOption);
 
         const options = queryAllByRole('option');
         expect(options.length).toEqual(3);
@@ -170,7 +168,7 @@ describe('<SelectInput />', () => {
             />
         );
         const select = getByRole('button');
-        fireEvent.click(select);
+        fireEvent.mouseDown(select);
         const options = queryAllByRole('option');
         expect(options.length).toEqual(2);
     });
@@ -192,7 +190,7 @@ describe('<SelectInput />', () => {
             />
         );
         const select = getByRole('button');
-        fireEvent.click(select);
+        fireEvent.mouseDown(select);
 
         const option = getByText('Angular');
         expect(option.getAttribute('data-value')).toEqual('ang');
@@ -215,7 +213,7 @@ describe('<SelectInput />', () => {
             />
         );
         const select = getByRole('button');
-        fireEvent.click(select);
+        fireEvent.mouseDown(select);
 
         const option = getByText('Angular');
         expect(option.getAttribute('data-value')).toEqual('ang');
@@ -238,7 +236,7 @@ describe('<SelectInput />', () => {
             />
         );
         const select = getByRole('button');
-        fireEvent.click(select);
+        fireEvent.mouseDown(select);
 
         const option = getByText('Angular');
         expect(option.getAttribute('data-value')).toEqual('ang');
@@ -261,7 +259,7 @@ describe('<SelectInput />', () => {
             />
         );
         const select = getByRole('button');
-        fireEvent.click(select);
+        fireEvent.mouseDown(select);
 
         const option = getByText('Angular');
         expect(option.getAttribute('data-value')).toEqual('ang');
@@ -284,7 +282,7 @@ describe('<SelectInput />', () => {
             />
         );
         const select = getByRole('button');
-        fireEvent.click(select);
+        fireEvent.mouseDown(select);
 
         const option = getByText('Angular');
         expect(option.getAttribute('data-value')).toEqual('ang');
@@ -311,7 +309,7 @@ describe('<SelectInput />', () => {
             />
         );
         const select = getByRole('button');
-        fireEvent.click(select);
+        fireEvent.mouseDown(select);
 
         const option = getByLabelText('Angular');
         expect(option.getAttribute('data-value')).toEqual('ang');
@@ -327,7 +325,7 @@ describe('<SelectInput />', () => {
             </TestTranslationProvider>
         );
         const select = getByRole('button');
-        fireEvent.click(select);
+        fireEvent.mouseDown(select);
         const options = queryAllByRole('option');
         expect(options.length).toEqual(2);
 
@@ -353,7 +351,7 @@ describe('<SelectInput />', () => {
             </TestTranslationProvider>
         );
         const select = getByRole('button');
-        fireEvent.click(select);
+        fireEvent.mouseDown(select);
         const options = queryAllByRole('option');
         expect(options.length).toEqual(2);
 
@@ -430,7 +428,7 @@ describe('<SelectInput />', () => {
             const input = getByLabelText('resources.posts.fields.language *');
 
             const select = getByRole('button');
-            fireEvent.click(select);
+            fireEvent.mouseDown(select);
 
             const optionAngular = getByText('Angular');
             fireEvent.click(optionAngular);

@@ -844,15 +844,39 @@ export default withRouter(Menu);
 
 ### Changing the Background Image
 
-By default, the login page displays a random background image changing every day. If you want to change that background image, you can use the default Login page component and pass an image URL as the `backgroundImage` prop.
+By default, the login page displays a gradient background. If you want to change the background, you can use the default Login page component and pass an image URL as the `backgroundImage` prop.
 
 ```jsx
 import { Admin, Login } from 'react-admin';
 
-const MyLoginPage = () => <Login backgroundImage="/background.jpg" />;
+const MyLoginPage = () => (
+    <Login
+        // A random image that changes everyday
+        backgroundImage="https://source.unsplash.com/random/1600x900/daily"
+    />
+);
 
 const App = () => (
     <Admin loginPage={MyLoginPage}>
+        // ...
+    </Admin>
+);
+```
+
+## Using a Custom Logout Button
+
+### Changing the Icon
+
+It is possible to use a completely [custom logout button](./Authentication.md#the-datagrid-component) or you can simply override some properties of the default button. If you want to change the icon, you can use the default `<Logout>` component and pass a different icon as the `icon` prop.
+
+```jsx
+import { Admin, Logout } from 'react-admin';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp'
+
+const MyLogoutButton = props => <Logout {...props} icon={<ExitToAppIcon/>} />;
+
+const App = () => (
+    <Admin logoutButton={MyLogoutButton}>
         // ...
     </Admin>
 );

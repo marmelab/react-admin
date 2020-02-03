@@ -29,8 +29,9 @@ import { useLocation, useHistory } from 'react-router-dom';
 const useLogin = (): Login => {
     const authProvider = useAuthProvider();
     const location = useLocation();
+    const locationState = location.state as any;
     const history = useHistory();
-    const nextPathName = location.state && location.state.nextPathname;
+    const nextPathName = locationState && locationState.nextPathname;
 
     const login = useCallback(
         (params: any = {}, pathName = defaultAuthParams.afterLoginUrl) =>

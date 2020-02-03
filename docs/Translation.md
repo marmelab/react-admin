@@ -582,6 +582,15 @@ const messages = {
 };
 ```
 
+## Translating The Empty Page
+
+React-admin uses the keys `ra.page.empty` and `ra.page.invite` when displaying the page inviting the user to create the first record.
+
+If you want to override these messages in a specific resource you can add the following keys to your translation:
+
+- `resources.${resourceName}.empty` for the primary message (e.g. "No posts yet.")
+- `resources.${resourceName}.invite` for the message inviting the user to create one (e.g. "Do you want to create one?")
+
 ## Silencing Translation Warnings
 
 By default, the `polyglotI18nProvider` logs a warning in the console each time it is called with a message that can't be found in the current translations. This is a Polyglot feature that helps tracking missing translation messages.

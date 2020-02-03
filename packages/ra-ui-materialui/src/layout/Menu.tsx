@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { FC, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import { shallowEqual, useSelector } from 'react-redux';
+// @ts-ignore
 import inflection from 'inflection';
-import { makeStyles, useMediaQuery } from '@material-ui/core';
+import { makeStyles, useMediaQuery, Theme } from '@material-ui/core';
 import DefaultIcon from '@material-ui/icons/ViewList';
 import classnames from 'classnames';
-import { getResources, useTranslate } from 'ra-core';
+import { getResources, useTranslate, Translate, ReduxState } from 'ra-core';
 
 import DashboardMenuItem from './DashboardMenuItem';
 import MenuItemLink from './MenuItemLink';
@@ -21,7 +22,7 @@ const useStyles = makeStyles(
     { name: 'RaMenu' }
 );
 
-const translatedResourceName = (resource, translate) =>
+const translatedResourceName = (resource: any, translate: Translate) =>
     translate(`resources.${resource.name}.name`, {
         smart_count: 2,
         _:
@@ -33,7 +34,7 @@ const translatedResourceName = (resource, translate) =>
                 : inflection.humanize(inflection.pluralize(resource.name)),
     });
 
-const Menu = ({
+const Menu: FC<MenuProps> = ({
     classes: classesOverride,
     className,
     dense,
@@ -44,15 +45,23 @@ const Menu = ({
 }) => {
     const translate = useTranslate();
     const classes = useStyles({ classes: classesOverride });
-    const isXSmall = useMediaQuery(theme => theme.breakpoints.down('xs'));
-    const open = useSelector(state => state.admin.ui.sidebarOpen);
-    const resources = useSelector(getResources, shallowEqual);
-    useSelector(state => state.router.location.pathname); // used to force redraw on navigation
+    const isXSmall = useMediaQuery((theme: Theme) =>
+        theme.breakpoints.down('xs')
+    );
+    const open = useSelector((state: ReduxState) => state.admin.ui.sidebarOpen);
+    const resources = useSelector(getResources, shallowEqual) as Array<any>;
+
+    // Used to force redraw on navigation
+    useSelector((state: ReduxState) => state.router.location.pathname);
 
     return (
         <div className={classnames(classes.main, className)} {...rest}>
             {hasDashboard && (
-                <DashboardMenuItem onClick={onMenuClick} sidebarIsOpen={open} />
+                <DashboardMenuItem
+                    onClick={onMenuClick}
+                    dense={dense}
+                    sidebarIsOpen={open}
+                />
             )}
             {resources
                 .filter(r => r.hasList)
@@ -76,6 +85,15 @@ const Menu = ({
         </div>
     );
 };
+
+export interface MenuProps {
+    classes?: object;
+    className?: string;
+    dense?: boolean;
+    hasDashboard: boolean;
+    logout?: ReactElement;
+    onMenuClick?: () => void;
+}
 
 Menu.propTypes = {
     classes: PropTypes.object,

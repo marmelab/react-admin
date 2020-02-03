@@ -80,6 +80,7 @@ EnhancedNumberField.defaultProps = {
 };
 
 EnhancedNumberField.propTypes = {
+    // @ts-ignore
     ...Typography.propTypes,
     ...fieldPropTypes,
     locales: PropTypes.oneOfType([

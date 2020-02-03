@@ -12,9 +12,18 @@ const defaultRecords = [];
  *
  * @returns {Object} Destructure as [selectedIds, { select, toggle, clearSelection }].
  */
-const useSelectItems = (resource: string) => {
+const useSelectItems = (
+    resource: string
+): [
+    Identifier[],
+    {
+        select: (newIds: Identifier[]) => void;
+        toggle: (id: Identifier) => void;
+        clearSelection: () => void;
+    }
+] => {
     const dispatch = useDispatch();
-    const selectedIds = useSelector(
+    const selectedIds = useSelector<ReduxState, Identifier[]>(
         (reduxState: ReduxState) =>
             reduxState.admin.resources[resource]
                 ? reduxState.admin.resources[resource].list.selectedIds
@@ -38,6 +47,7 @@ const useSelectItems = (resource: string) => {
             dispatch(setListSelectedIds(resource, []));
         }, [resource]), // eslint-disable-line react-hooks/exhaustive-deps
     };
+
     return [selectedIds, selectionModifiers];
 };
 

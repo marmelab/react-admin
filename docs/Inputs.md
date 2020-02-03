@@ -162,6 +162,28 @@ const optionRenderer = choice => `${choice.first_name} ${choice.last_name}`;
 <AutocompleteInput source="author_id" choices={choices} optionText={optionRenderer} />
 ```
 
+`optionText` also accepts a custom Component. However, as the underlying Autocomplete component requires that the current selection is a string, if you opt for a Component, you must pass a function as the `inputText` prop. This function should return text representation of the current selection:
+
+```jsx
+const choices = [
+   { id: 123, first_name: 'Leo', last_name: 'Tolstoi' avatar='/pengouin' },
+   { id: 456, first_name: 'Jane', last_name: 'Austen' avatar='/panda' },
+];
+const OptionRenderer = choice => (
+    <span>
+        <img src={choice.avatar}>
+        {choice.first_name} {choice.last_name}
+    </span>
+);
+const inputText = choice => `${choice.first_name} ${choice.last_name}`;
+<AutocompleteInput
+    source="author_id"
+    choices={choices}
+    optionText={<OptionRenderer />}
+    inputText={inputText}
+/>
+```
+
 The choices are translated by default, so you can use translation identifiers as choices:
 
 ```jsx
@@ -225,8 +247,9 @@ Lastly, would you need to override the props of the suggestions container (a `Po
 | `emptyValue` | Optional | anything | `''` | The value to use for the empty element |
 | `emptyText` | Optional | `string` | `''` | The text to use for the empty element |
 | `matchSuggestion` | Optional | `Function` | - | Required if `optionText` is a React element. Function returning a boolean indicating whether a choice matches the filter. `(filter, choice) => boolean`
-| `optionText` | Optional | <code>string &#124; Function</code> | `name` | Fieldname of record to display in the suggestion item or function which accepts the correct record as argument (`(record)=> {string}`) |
+| `optionText` | Optional | <code>string &#124; Function &#124; Component</code> | `name` | Fieldname of record to display in the suggestion item or function which accepts the correct record as argument (`(record)=> {string}`) |
 | `optionValue` | Optional | `string` | `id` | Fieldname of record containing the value to use as input value  |
+| `inputText` | Optional | <code>Function</code> | `-` | If `optionText` is a custom Component, this function is needed to determine the text displayed for the current selection. |
 | `setFilter` | Optional | `Function` | `null` | A callback to inform the `searchText` has changed and new `choices` can be retrieved based on this `searchText`. Signature `searchText => void`. This function is automatically setup when using `ReferenceInput`.  |
 | `shouldRenderSuggestions` | Optional | Function | `() => true` | A function that returns a `boolean` to determine whether or not suggestions are rendered. Use this when working with large collections of data to improve performance and user experience. This function is passed into the underlying react-autosuggest component. Ex.`(value) => value.trim() > 2` |
 
@@ -383,6 +406,27 @@ import { NullableBooleanInput } from 'react-admin';
 ```
 
 ![NullableBooleanInput](./img/nullable-boolean-input.png)
+
+`<NullableBooleanInput />` doesn't display the empty option by default. If you want to customize its label and display it, you can use the `displayNull` prop.
+
+```jsx
+import { NullableBooleanInput } from 'react-admin';
+
+<NullableBooleanInput 
+    label="Commentable"
+    source="commentable"
+    displayNull
+/>
+```
+
+```jsx
+import englishMessages from 'ra-language-english';
+
+englishMessages.ra.boolean.null = 'Null label';
+```
+
+![NullableBooleanInput](./img/nullable-boolean-input-null-label.png)
+
 
 `<BooleanInput>` and `<NullableBooleanInput>` also accepts the [common input props](./Inputs.md#common-input-props).
 

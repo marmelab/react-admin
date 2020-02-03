@@ -1,13 +1,21 @@
-import React, { forwardRef, cloneElement, useCallback } from 'react';
+import React, {
+    forwardRef,
+    cloneElement,
+    useCallback,
+    FC,
+    ReactElement,
+    ReactNode,
+} from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { NavLink } from 'react-router-dom';
-import MenuItem from '@material-ui/core/MenuItem';
+import { StaticContext } from 'react-router';
+import { NavLink, NavLinkProps } from 'react-router-dom';
+import MenuItem, { MenuItemProps } from '@material-ui/core/MenuItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import Tooltip from '@material-ui/core/Tooltip';
 import { makeStyles } from '@material-ui/core/styles';
 
-const NavLinkRef = React.forwardRef((props, ref) => (
+const NavLinkRef = forwardRef<HTMLAnchorElement, NavLinkProps>((props, ref) => (
     <NavLink innerRef={ref} {...props} />
 ));
 
@@ -24,7 +32,7 @@ const useStyles = makeStyles(
     { name: 'RaMenuItemLink' }
 );
 
-const MenuItemLink = forwardRef(
+const MenuItemLink: FC<MenuItemLinkProps> = forwardRef(
     (
         {
             classes: classesOverride,
@@ -80,6 +88,17 @@ const MenuItemLink = forwardRef(
     }
 );
 
+interface Props {
+    leftIcon?: ReactElement;
+    primaryText?: ReactNode;
+    staticContext?: StaticContext;
+    sidebarIsOpen: boolean;
+}
+
+export type MenuItemLinkProps = Props &
+    NavLinkProps &
+    MenuItemProps<'li', { button?: true }>; // HACK: https://github.com/mui-org/material-ui/issues/16245
+
 MenuItemLink.propTypes = {
     classes: PropTypes.object,
     className: PropTypes.string,
@@ -88,6 +107,7 @@ MenuItemLink.propTypes = {
     primaryText: PropTypes.node,
     staticContext: PropTypes.object,
     to: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
+    sidebarIsOpen: PropTypes.bool,
 };
 
 export default MenuItemLink;

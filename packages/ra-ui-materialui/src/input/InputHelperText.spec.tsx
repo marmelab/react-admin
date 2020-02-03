@@ -6,11 +6,11 @@ import InputHelperText from './InputHelperText';
 describe('InputHelperText', () => {
     afterEach(cleanup);
 
-    it('does not render anything when the input has not been touched yet and has no helper text', () => {
+    it('does render empty string when the input has not been touched yet and has no helper text', () => {
         const { container } = render(
             <InputHelperText touched={false} error="Crap!" />
         );
-        expect(container.innerHTML).toBe('');
+        expect(container.innerHTML).toBe('<span>​</span>');
     });
 
     it('renders the helperText when there is no error', () => {

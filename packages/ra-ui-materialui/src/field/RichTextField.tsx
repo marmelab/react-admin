@@ -50,6 +50,7 @@ EnhancedRichTextField.defaultProps = {
 };
 
 EnhancedRichTextField.propTypes = {
+    // @ts-ignore
     ...Typography.propTypes,
     ...fieldPropTypes,
     stripTags: PropTypes.bool,

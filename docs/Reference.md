@@ -54,6 +54,7 @@ title: "Reference"
 * `<Labeled>`
 * [`<Layout>`](./Theming.md#using-a-custom-layout)
 * [`<Loading>`](./Theming.md#Loading)
+* [`<Logout>`](./Theming.md#using-a-custom-logout-button)
 * [`<List>`](./List.md#the-list-component)
 * [`<ListGuesser>`](./List.md#the-listguesser-component)
 * `<ListButton>`

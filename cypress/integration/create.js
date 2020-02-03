@@ -43,8 +43,25 @@ describe('Create Page', () => {
             .get(CreatePage.elements.input('backlinks[0].date'))
             .parents('.ra-input-backlinks');
         backlinksContainer.contains('Remove').click();
-        CreatePage.submit();
-        backlinksContainer.contains('Required');
+        CreatePage.setValues([
+            {
+                type: 'input',
+                name: 'title',
+                value: 'foo',
+            },
+            {
+                type: 'textarea',
+                name: 'teaser',
+                value: 'foo',
+            },
+            {
+                type: 'rich-text-input',
+                name: 'body',
+                value: 'foo',
+            },
+        ]);
+        cy.get(CreatePage.elements.submitButton).click();
+        cy.get('.ra-input-backlinks').contains('Required');
     });
 
     it('should have a working array input with references', () => {
@@ -72,7 +89,7 @@ describe('Create Page', () => {
                 value: 'Annamarie Mayer',
             },
         ]);
-        cy.contains('Annamarie Mayer').click();
+        cy.get('div[role="listbox"] li').trigger('click');
         cy.get(CreatePage.elements.input('authors[0].role')).should(
             el => expect(el).to.exist
         );
@@ -221,7 +238,7 @@ describe('Create Page', () => {
         ];
         CreatePage.setValues(values);
         cy.get(CreatePage.elements.input('average_note')).should(el =>
-            expect(el).to.have.value('5')
+            expect(el).to.have.value('0')
         );
         cy.get(CreatePage.elements.input('title')).should(el =>
             expect(el).to.have.value('Test title')
@@ -249,7 +266,7 @@ describe('Create Page', () => {
     });
 
     it('should not show rich text input error message when field is untouched', () => {
-        cy.get(CreatePage.elements.richTextInputError).should('not.exist');
+        cy.get(CreatePage.elements.richTextInputError).should('not.have.value');
     });
 
     it('should show rich text input error message when form is submitted', () => {
