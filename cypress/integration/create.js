@@ -238,7 +238,7 @@ describe('Create Page', () => {
         ];
         CreatePage.setValues(values);
         cy.get(CreatePage.elements.input('average_note')).should(el =>
-            expect(el).to.have.value('5')
+            expect(el).to.have.value('0')
         );
         cy.get(CreatePage.elements.input('title')).should(el =>
             expect(el).to.have.value('Test title')
