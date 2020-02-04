@@ -181,7 +181,7 @@ const EnhancedLayout = compose(
         {} // Avoid connect passing dispatch in props
     ),
     withRouter,
-    withStyles(styles)
+    withStyles(styles, { name: 'RaLayout' })
 )(Layout);
 
 const LayoutWithTheme = ({ theme: themeOverride, ...props }) => {
