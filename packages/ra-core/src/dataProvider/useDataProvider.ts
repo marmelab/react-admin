@@ -1,6 +1,6 @@
 import { useContext, useMemo } from 'react';
 import { Dispatch } from 'redux';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector, useStore } from 'react-redux';
 
 import DataProviderContext from './DataProviderContext';
 import validateResponseFormat from './validateResponseFormat';
@@ -117,9 +117,7 @@ const useDataProvider = (): DataProviderProxy => {
     const isOptimistic = useSelector(
         (state: ReduxState) => state.admin.ui.optimistic
     );
-    const resourcesData = useSelector(
-        (state: ReduxState) => state.admin.resources
-    );
+    const store = useStore<ReduxState>();
     const logoutIfAccessDenied = useLogoutIfAccessDenied();
 
     const dataProviderProxy = useMemo(() => {
@@ -165,22 +163,18 @@ const useDataProvider = (): DataProviderProxy => {
                         return Promise.resolve();
                     }
 
-                    if (
-                        canReplyWithCache(
-                            name,
-                            resource,
-                            payload,
-                            resourcesData
-                        )
-                    ) {
+                    const resourceState = store.getState().admin.resources[
+                        resource
+                    ];
+                    if (canReplyWithCache(name, payload, resourceState)) {
                         return answerWithCache({
                             type,
                             payload,
-                            resource,
                             action,
                             rest,
                             onSuccess,
-                            resourcesData,
+                            resource,
+                            resourceState,
                             dispatch,
                         });
                     }
@@ -202,13 +196,7 @@ const useDataProvider = (): DataProviderProxy => {
                 };
             },
         });
-    }, [
-        dataProvider,
-        dispatch,
-        isOptimistic,
-        logoutIfAccessDenied,
-        resourcesData,
-    ]);
+    }, [dataProvider, dispatch, isOptimistic, logoutIfAccessDenied, store]);
 
     return dataProviderProxy;
 };
@@ -436,7 +424,7 @@ const answerWithCache = ({
     action,
     rest,
     onSuccess,
-    resourcesData,
+    resourceState,
     dispatch,
 }) => {
     dispatch({
@@ -444,7 +432,7 @@ const answerWithCache = ({
         payload,
         meta: { resource, ...rest },
     });
-    const response = getResultFromCache(type, resource, payload, resourcesData);
+    const response = getResultFromCache(type, payload, resourceState);
     dispatch({
         type: `${action}_SUCCESS`,
         payload: response,
