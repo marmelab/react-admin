@@ -88,6 +88,16 @@ export default theme => ({
                 margin: '0.5rem 0',
                 border: 0,
                 padding: 0,
+
+                '& .ql-picker-item': {
+                    color: theme.palette.type === 'light' ? '#444' : 'white',
+                },
+                '& .ql-stroke': {
+                    stroke: theme.palette.type === 'light' ? '#444' : 'white',
+                },
+                '& .ql-fill': {
+                    fill: theme.palette.type === 'light' ? '#444' : 'white',
+                },
                 '& .ql-picker-item.ql-active': {
                     color: '#304ffe',
                 },
@@ -131,6 +141,7 @@ export default theme => ({
 
                 '& .ql-picker-label': {
                     paddingLeft: 0,
+                    color: theme.palette.type === 'light' ? '#444' : 'white',
                 },
 
                 '& + .ql-container.ql-snow': {
