@@ -28,7 +28,7 @@ const useEditStyles = makeStyles({
     root: { alignItems: 'flex-start' },
 });
 
-const OrderEdit = props => {
+const OrderEdit = (/** @type {any} */ props) => {
     const classes = useEditStyles();
     return (
         <Edit

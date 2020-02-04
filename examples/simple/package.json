@@ -12,14 +12,14 @@
     "author": "",
     "license": "MIT",
     "devDependencies": {
-        "@babel/cli": "^7.1.2",
-        "@babel/core": "^7.1.2",
-        "@babel/plugin-proposal-class-properties": "^7.1.0",
-        "@babel/plugin-proposal-object-rest-spread": "^7.0.0",
-        "@babel/plugin-syntax-dynamic-import": "^7.0.0",
-        "@babel/preset-env": "^7.1.0",
-        "@babel/preset-react": "^7.0.0",
-        "@babel/preset-typescript": "^7.1.0",
+        "@babel/cli": "^7.8.4",
+        "@babel/core": "^7.8.4",
+        "@babel/plugin-proposal-class-properties": "^7.8.3",
+        "@babel/plugin-proposal-object-rest-spread": "^7.8.3",
+        "@babel/plugin-syntax-dynamic-import": "^7.8.3",
+        "@babel/preset-env": "^7.8.4",
+        "@babel/preset-react": "^7.8.3",
+        "@babel/preset-typescript": "^7.8.3",
         "babel-loader": "^8.0.4",
         "hard-source-webpack-plugin": "^0.11.2",
         "html-loader": "~0.5.5",
@@ -34,7 +34,7 @@
         "webpack-dev-server": "~3.1.11"
     },
     "dependencies": {
-        "@babel/polyfill": "^7.0.0",
+        "@babel/polyfill": "^7.8.3",
         "@material-ui/core": "^4.9.0",
         "@material-ui/icons": "^4.5.1",
         "ra-data-fakerest": "^3.0.0",
@@ -42,8 +42,8 @@
         "ra-input-rich-text": "^3.0.0",
         "ra-language-english": "^3.0.0",
         "ra-language-french": "^3.0.0",
-        "react": "^16.9.0",
+        "react": "^16.12.0",
         "react-admin": "^3.0.0",
-        "react-dom": "^16.9.0"
+        "react-dom": "^16.12.0"
     }
 }

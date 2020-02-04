@@ -26,9 +26,9 @@
         "watch": "rimraf ./lib && tsc --watch"
     },
     "devDependencies": {
-        "@material-ui/core": "^4.3.3",
-        "@material-ui/icons": "^4.2.1",
-        "@material-ui/styles": "^4.3.3",
+        "@material-ui/core": "^4.9.1",
+        "@material-ui/icons": "^4.9.1",
+        "@material-ui/styles": "^4.9.0",
         "@testing-library/react": "^8.0.7",
         "@types/query-string": "5.1.0",
         "cross-env": "^5.2.0",
@@ -47,7 +47,7 @@
         "react-router": "^5.1.0",
         "react-router-dom": "^5.1.0",
         "react-test-renderer": "~16.8.6",
-        "redux": "^3.7.2 || ^4.0.3",
+        "redux": "^4.0.5",
         "rimraf": "^2.6.3"
     },
     "peerDependencies": {
