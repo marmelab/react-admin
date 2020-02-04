@@ -3,6 +3,8 @@ import {
     RegisterResourceAction,
     UNREGISTER_RESOURCE,
     UnregisterResourceAction,
+    REFRESH_VIEW,
+    RefreshViewAction,
 } from '../../../actions';
 
 import data from './data';
@@ -14,6 +16,7 @@ const initialState = {};
 type ActionTypes =
     | RegisterResourceAction
     | UnregisterResourceAction
+    | RefreshViewAction
     | { type: 'OTHER_ACTION'; payload?: any; meta?: { resource?: string } };
 
 export default (previousState = initialState, action: ActionTypes) => {
@@ -38,6 +41,19 @@ export default (previousState = initialState, action: ActionTypes) => {
 
             return { ...acc, [key]: previousState[key] };
         }, {});
+    }
+
+    if (action.type === REFRESH_VIEW) {
+        return Object.keys(previousState).reduce(
+            (acc, resource) => ({
+                ...acc,
+                [resource]: {
+                    ...previousState[resource],
+                    validity: {},
+                },
+            }),
+            {}
+        );
     }
 
     if (!action.meta || !action.meta.resource) {
