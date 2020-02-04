@@ -141,9 +141,15 @@ export default theme => ({
                     stroke: selectedColor,
                 },
 
-                '& .ql-snow .ql-picker.ql-expanded .ql-picker-options': {
-                    background:
+                '& .ql-picker.ql-expanded .ql-picker-options': {
+                    backgroundColor:
                         theme.palette.type === 'light' ? lightColor : darkColor,
+                    borderColor:
+                        theme.palette.type === 'light' ? '#ccc' : darkColor,
+                },
+
+                '& .ql-snow .ql-picker.ql-expanded .ql-picker-options': {
+                    background: '#fff',
                     zIndex: 10,
                 },
 
