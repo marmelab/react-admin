@@ -1,5 +1,9 @@
 import QuillSnowStylesheet from './QuillSnowStylesheet';
 
+const darkColor = '#444';
+const lightColor = 'white';
+const selectedColor = '#304ffe';
+
 export default theme => ({
     label: {
         position: 'relative',
@@ -61,7 +65,7 @@ export default theme => ({
                     fontWeight: 500,
                 },
                 '& a': {
-                    color: '#304ffe',
+                    color: selectedColor,
                 },
                 '& ul': {
                     marginBottom: '1rem',
@@ -79,10 +83,10 @@ export default theme => ({
                 },
             },
             '& .standard .ql-editor': {
-                backgroundColor: 'white',
+                backgroundColor: lightColor,
             },
             '& .outlined .ql-editor': {
-                backgroundColor: 'white',
+                backgroundColor: lightColor,
             },
             '& .ql-toolbar.ql-snow': {
                 margin: '0.5rem 0',
@@ -90,58 +94,63 @@ export default theme => ({
                 padding: 0,
 
                 '& .ql-picker-item': {
-                    color: theme.palette.type === 'light' ? '#444' : 'white',
+                    color:
+                        theme.palette.type === 'light' ? darkColor : lightColor,
                 },
                 '& .ql-stroke': {
-                    stroke: theme.palette.type === 'light' ? '#444' : 'white',
+                    stroke:
+                        theme.palette.type === 'light' ? darkColor : lightColor,
                 },
                 '& .ql-fill': {
-                    fill: theme.palette.type === 'light' ? '#444' : 'white',
+                    fill:
+                        theme.palette.type === 'light' ? darkColor : lightColor,
                 },
                 '& .ql-picker-item.ql-active': {
-                    color: '#304ffe',
+                    color: selectedColor,
                 },
                 '& .ql-picker-item:hover': {
-                    color: '#304ffe',
+                    color: selectedColor,
                 },
                 '& .ql-picker-item.ql-selected': {
-                    color: '#304ffe',
+                    color: selectedColor,
                 },
                 '& .ql-picker-label.ql-active': {
-                    color: '#304ffe',
+                    color: selectedColor,
                 },
                 '& .ql-picker-label.ql-selected': {
-                    color: '#304ffe',
+                    color: selectedColor,
                 },
                 '& .ql-picker-label:hover': {
-                    color: '#304ffe',
+                    color: selectedColor,
                 },
 
                 '& button:hover .ql-fill': {
-                    fill: '#304ffe',
+                    fill: selectedColor,
                 },
                 '& button.ql-active .ql-fill': {
-                    fill: '#304ffe',
+                    fill: selectedColor,
                 },
 
                 '& button:hover .ql-stroke': {
-                    stroke: '#304ffe',
+                    stroke: selectedColor,
                 },
                 '& button.ql-active .ql-stroke': {
-                    stroke: '#304ffe',
+                    stroke: selectedColor,
                 },
                 '& .ql-picker-label:hover .ql-stroke': {
-                    stroke: '#304ffe',
+                    stroke: selectedColor,
                 },
 
                 '& .ql-snow .ql-picker.ql-expanded .ql-picker-options': {
-                    background: '#fff',
+                    background:
+                        theme.palette.type === 'light' ? lightColor : darkColor,
                     zIndex: 10,
                 },
 
                 '& .ql-picker-label': {
                     paddingLeft: 0,
-                    color: theme.palette.type === 'light' ? '#444' : 'white',
+                    color:
+                        theme.palette.type === 'light' ? darkColor : lightColor,
                 },
 
                 '& + .ql-container.ql-snow': {
