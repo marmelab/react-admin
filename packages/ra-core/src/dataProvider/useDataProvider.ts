@@ -7,6 +7,7 @@ import validateResponseFormat from './validateResponseFormat';
 import undoableEventEmitter from './undoableEventEmitter';
 import getFetchType from './getFetchType';
 import defaultDataProvider from './defaultDataProvider';
+import { canReplyWithCache, getResultFromCache } from './replyWithCache';
 import {
     startOptimisticMode,
     stopOptimisticMode,
@@ -116,6 +117,9 @@ const useDataProvider = (): DataProviderProxy => {
     const isOptimistic = useSelector(
         (state: ReduxState) => state.admin.ui.optimistic
     );
+    const resourcesData = useSelector(
+        (state: ReduxState) => state.admin.resources
+    );
     const logoutIfAccessDenied = useLogoutIfAccessDenied();
 
     const dataProviderProxy = useMemo(() => {
@@ -161,6 +165,25 @@ const useDataProvider = (): DataProviderProxy => {
                         return Promise.resolve();
                     }
 
+                    if (
+                        canReplyWithCache(
+                            name,
+                            resource,
+                            payload,
+                            resourcesData
+                        )
+                    ) {
+                        return answerWithCache({
+                            type,
+                            payload,
+                            resource,
+                            action,
+                            rest,
+                            onSuccess,
+                            resourcesData,
+                            dispatch,
+                        });
+                    }
                     const params = {
                         type,
                         payload,
@@ -179,7 +202,13 @@ const useDataProvider = (): DataProviderProxy => {
                 };
             },
         });
-    }, [dataProvider, dispatch, isOptimistic, logoutIfAccessDenied]);
+    }, [
+        dataProvider,
+        dispatch,
+        isOptimistic,
+        logoutIfAccessDenied,
+        resourcesData,
+    ]);
 
     return dataProviderProxy;
 };
@@ -398,6 +427,37 @@ const performQuery = ({
             'The dataProvider threw an error. It should return a rejected Promise instead.'
         );
     }
+};
+
+const answerWithCache = ({
+    type,
+    payload,
+    resource,
+    action,
+    rest,
+    onSuccess,
+    resourcesData,
+    dispatch,
+}) => {
+    dispatch({
+        type: action,
+        payload,
+        meta: { resource, ...rest },
+    });
+    const response = getResultFromCache(type, resource, payload, resourcesData);
+    dispatch({
+        type: `${action}_SUCCESS`,
+        payload: response,
+        requestPayload: payload,
+        meta: {
+            ...rest,
+            resource,
+            fetchResponse: getFetchType(type),
+            fetchStatus: FETCH_END,
+        },
+    });
+    onSuccess && onSuccess(response);
+    return Promise.resolve(response);
 };
 
 interface QueryFunctionParams {

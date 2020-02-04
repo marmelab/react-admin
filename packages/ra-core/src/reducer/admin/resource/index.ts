@@ -7,6 +7,7 @@ import {
 
 import data from './data';
 import list from './list';
+import validity from './validity';
 
 const initialState = {};
 
@@ -21,6 +22,7 @@ export default (previousState = initialState, action: ActionTypes) => {
             props: action.payload,
             data: data(undefined, action),
             list: list(undefined, action),
+            validity: validity(undefined, action),
         };
         return {
             ...previousState,
@@ -52,6 +54,10 @@ export default (previousState = initialState, action: ActionTypes) => {
                           props: previousState[resource].props,
                           data: data(previousState[resource].data, action),
                           list: list(previousState[resource].list, action),
+                          validity: validity(
+                              previousState[resource].validity,
+                              action
+                          ),
                       }
                     : previousState[resource],
         }),
