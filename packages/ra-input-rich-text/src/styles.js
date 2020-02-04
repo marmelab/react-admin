@@ -1,9 +1,5 @@
 import QuillSnowStylesheet from './QuillSnowStylesheet';
 
-const darkColor = '#444';
-const lightColor = 'white';
-const selectedColor = '#304ffe';
-
 export default theme => ({
     label: {
         position: 'relative',
@@ -65,7 +61,7 @@ export default theme => ({
                     fontWeight: 500,
                 },
                 '& a': {
-                    color: selectedColor,
+                    color: theme.palette.primary.main,
                 },
                 '& ul': {
                     marginBottom: '1rem',
@@ -83,10 +79,10 @@ export default theme => ({
                 },
             },
             '& .standard .ql-editor': {
-                backgroundColor: lightColor,
+                backgroundColor: theme.palette.text.primary,
             },
             '& .outlined .ql-editor': {
-                backgroundColor: lightColor,
+                backgroundColor: theme.palette.text.primary,
             },
             '& .ql-toolbar.ql-snow': {
                 margin: '0.5rem 0',
@@ -94,58 +90,53 @@ export default theme => ({
                 padding: 0,
 
                 '& .ql-picker-item': {
-                    color:
-                        theme.palette.type === 'light' ? darkColor : lightColor,
+                    color: theme.palette.text.secondary,
                 },
                 '& .ql-stroke': {
-                    stroke:
-                        theme.palette.type === 'light' ? darkColor : lightColor,
+                    stroke: theme.palette.text.secondary,
                 },
                 '& .ql-fill': {
-                    fill:
-                        theme.palette.type === 'light' ? darkColor : lightColor,
+                    fill: theme.palette.text.secondary,
                 },
                 '& .ql-picker-item.ql-active': {
-                    color: selectedColor,
+                    color: theme.palette.primary.main,
                 },
                 '& .ql-picker-item:hover': {
-                    color: selectedColor,
+                    color: theme.palette.primary.main,
                 },
                 '& .ql-picker-item.ql-selected': {
-                    color: selectedColor,
+                    color: theme.palette.primary.main,
                 },
                 '& .ql-picker-label.ql-active': {
-                    color: selectedColor,
+                    color: theme.palette.primary.main,
                 },
                 '& .ql-picker-label.ql-selected': {
-                    color: selectedColor,
+                    color: theme.palette.primary.main,
                 },
                 '& .ql-picker-label:hover': {
-                    color: selectedColor,
+                    color: theme.palette.primary.main,
                 },
 
                 '& button:hover .ql-fill': {
-                    fill: selectedColor,
+                    fill: theme.palette.primary.main,
                 },
                 '& button.ql-active .ql-fill': {
-                    fill: selectedColor,
+                    fill: theme.palette.primary.main,
                 },
 
                 '& button:hover .ql-stroke': {
-                    stroke: selectedColor,
+                    stroke: theme.palette.primary.main,
                 },
                 '& button.ql-active .ql-stroke': {
-                    stroke: selectedColor,
+                    stroke: theme.palette.primary.main,
                 },
                 '& .ql-picker-label:hover .ql-stroke': {
-                    stroke: selectedColor,
+                    stroke: theme.palette.primary.main,
                 },
 
                 '& .ql-picker.ql-expanded .ql-picker-options': {
-                    backgroundColor:
-                        theme.palette.type === 'light' ? lightColor : darkColor,
-                    borderColor:
-                        theme.palette.type === 'light' ? '#ccc' : darkColor,
+                    backgroundColor: theme.palette.background.paper,
+                    borderColor: theme.palette.background.paper,
                 },
 
                 '& .ql-snow .ql-picker.ql-expanded .ql-picker-options': {
@@ -155,8 +146,7 @@ export default theme => ({
 
                 '& .ql-picker-label': {
                     paddingLeft: 0,
-                    color:
-                        theme.palette.type === 'light' ? darkColor : lightColor,
+                    color: theme.palette.text.secondary,
                 },
 
                 '& + .ql-container.ql-snow': {
