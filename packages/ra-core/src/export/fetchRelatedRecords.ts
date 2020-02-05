@@ -1,4 +1,4 @@
-import { DataProvider, Record, Identifier } from '../types';
+import { DataProvider, Record, Identifier, NOOP } from '../types';
 
 /**
  * Helper function for calling the dataProvider.getMany() method,
@@ -18,12 +18,15 @@ const fetchRelatedRecords = (dataProvider: DataProvider) => (
 ) =>
     dataProvider
         .getMany(resource, { ids: getRelatedIds(data, field) })
-        .then(({ data }) =>
-            data.reduce((acc, post) => {
+        .then(response => {
+            if (response === NOOP) {
+                return {};
+            }
+            return response.data.reduce((acc, post) => {
                 acc[post.id] = post;
                 return acc;
-            }, {})
-        );
+            }, {});
+        });
 
 /**
  * Extracts, aggregates and deduplicates the ids of related records

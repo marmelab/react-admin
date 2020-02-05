@@ -79,19 +79,22 @@ export type DataProvider = {
     getList: (
         resource: string,
         params: GetListParams
-    ) => Promise<GetListResult>;
+    ) => Promise<GetListResult | NOOP>;
 
-    getOne: (resource: string, params: GetOneParams) => Promise<GetOneResult>;
+    getOne: (
+        resource: string,
+        params: GetOneParams
+    ) => Promise<GetOneResult | NOOP>;
 
     getMany: (
         resource: string,
         params: GetManyParams
-    ) => Promise<GetManyResult>;
+    ) => Promise<GetManyResult | NOOP>;
 
     getManyReference: (
         resource: string,
         params: GetManyReferenceParams
-    ) => Promise<GetManyReferenceResult>;
+    ) => Promise<GetManyReferenceResult | NOOP>;
 
     update: (resource: string, params: UpdateParams) => Promise<UpdateResult>;
 

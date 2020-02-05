@@ -7,7 +7,13 @@ import union from 'lodash/union';
 import isEqual from 'lodash/isEqual';
 
 import { CRUD_GET_MANY } from '../actions/dataActions/crudGetMany';
-import { Identifier, Record, ReduxState, DataProviderProxy } from '../types';
+import {
+    Identifier,
+    Record,
+    ReduxState,
+    DataProviderProxy,
+    NOOP,
+} from '../types';
 import { useSafeSetState } from '../util/hooks';
 import useDataProvider from './useDataProvider';
 import { useEffect } from 'react';
@@ -183,9 +189,12 @@ const callQueries = debounce(() => {
         }
         dataProvider
             .getMany(resource, { ids: accumulatedIds }, DataProviderOptions)
-            .then(response =>
+            .then(response => {
+                if (response === NOOP) {
+                    return;
+                }
                 // Forces batching, see https://stackoverflow.com/questions/48563650/does-react-keep-the-order-for-state-updates/48610973#48610973
-                ReactDOM.unstable_batchedUpdates(() =>
+                return ReactDOM.unstable_batchedUpdates(() =>
                     queries.forEach(({ ids, setState, onSuccess }) => {
                         setState(prevState => ({
                             ...prevState,
@@ -201,8 +210,8 @@ const callQueries = debounce(() => {
                             onSuccess({ data: subData });
                         }
                     })
-                )
-            )
+                );
+            })
             .catch(error =>
                 ReactDOM.unstable_batchedUpdates(() =>
                     queries.forEach(({ setState, onFailure }) => {
