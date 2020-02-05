@@ -1,5 +1,5 @@
 import { stringify } from 'query-string';
-import { fetchUtils, DataProvider } from 'ra-core';
+import { fetchUtils, DataProvider, NOOP } from 'ra-core';
 
 /**
  * Maps react-admin queries to a json-server powered REST API
@@ -46,7 +46,10 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson): DataProvider => ({
         };
         const url = `${apiUrl}/${resource}?${stringify(query)}`;
 
-        return httpClient(url).then(({ headers, json }) => {
+        return httpClient(url).then(({ status, headers, json }) => {
+            if (status === 304) {
+                return NOOP;
+            }
             if (!headers.has('x-total-count')) {
                 throw new Error(
                     'The X-Total-Count header is missing in the HTTP Response. The jsonServer Data Provider expects responses for lists of resources to contain this header with the total number of results to build the pagination. If you are using CORS, did you declare X-Total-Count in the Access-Control-Expose-Headers header?'
@@ -66,16 +69,30 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson): DataProvider => ({
     },
 
     getOne: (resource, params) =>
-        httpClient(`${apiUrl}/${resource}/${params.id}`).then(({ json }) => ({
-            data: json,
-        })),
+        httpClient(`${apiUrl}/${resource}/${params.id}`).then(
+            ({ status, json }) => {
+                if (status === 304) {
+                    return NOOP;
+                }
+
+                return {
+                    data: json,
+                };
+            }
+        ),
 
     getMany: (resource, params) => {
         const query = {
             id: params.ids,
         };
         const url = `${apiUrl}/${resource}?${stringify(query)}`;
-        return httpClient(url).then(({ json }) => ({ data: json }));
+        return httpClient(url).then(({ status, json }) => {
+            if (status === 304) {
+                return NOOP;
+            }
+
+            return { data: json };
+        });
     },
 
     getManyReference: (resource, params) => {
@@ -91,7 +108,10 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson): DataProvider => ({
         };
         const url = `${apiUrl}/${resource}?${stringify(query)}`;
 
-        return httpClient(url).then(({ headers, json }) => {
+        return httpClient(url).then(({ status, headers, json }) => {
+            if (status === 304) {
+                return NOOP;
+            }
             if (!headers.has('x-total-count')) {
                 throw new Error(
                     'The X-Total-Count header is missing in the HTTP Response. The jsonServer Data Provider expects responses for lists of resources to contain this header with the total number of results to build the pagination. If you are using CORS, did you declare X-Total-Count in the Access-Control-Expose-Headers header?'
