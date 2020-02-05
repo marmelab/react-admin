@@ -17,11 +17,17 @@ run-tutorial: ## run the tutorial example
 run-demo: ## run the demo example
 	@yarn -s run-demo
 
+run-demo-watch: ## run the demo example with watch on the ra dependencies
+	@yarn -s run-demo-watch
+
 build-demo: ## compile the demo example to static js
 	@yarn -s build-demo
 
 run-graphql-demo: ## run the demo example
 	@yarn -s run-graphql-demo
+
+run-graphql-demo-watch: ## run the demo example with watch on the ra dependencies
+	@yarn -s run-graphql-demo-watch
 
 build-ra-core:
 	@echo "Transpiling ra-core files...";
