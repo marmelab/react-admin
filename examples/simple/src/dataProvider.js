@@ -11,6 +11,17 @@ const sometimesFailsDataProvider = new Proxy(uploadCapableDataProvider, {
         // if (name === 'delete' && resource === 'posts') {
         //     return Promise.reject(new Error('deletion error'));
         // }
+        // test cache
+        if (name === 'getList' || name === 'getMany' || name === 'getOne') {
+            return uploadCapableDataProvider[name](resource, params).then(
+                response => {
+                    const validUntil = new Date();
+                    validUntil.setTime(validUntil.getTime() + 5 * 60 * 1000); // five minutes
+                    response.validUntil = validUntil;
+                    return response;
+                }
+            );
+        }
         return uploadCapableDataProvider[name](resource, params);
     },
 });
