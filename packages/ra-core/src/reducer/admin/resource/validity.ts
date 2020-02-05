@@ -25,7 +25,12 @@ const validityReducer: Reducer<ValidityRegistry> = (
     previousState = initialState,
     { payload, requestPayload, meta }
 ) => {
-    if (!meta || !meta.fetchResponse || meta.fetchStatus !== FETCH_END) {
+    if (
+        !meta ||
+        !meta.fetchResponse ||
+        meta.fetchStatus !== FETCH_END ||
+        meta.fromCache === true
+    ) {
         return previousState;
     }
     if (payload.validUntil) {

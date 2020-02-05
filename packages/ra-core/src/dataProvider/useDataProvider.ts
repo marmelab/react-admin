@@ -442,6 +442,7 @@ const answerWithCache = ({
             resource,
             fetchResponse: getFetchType(type),
             fetchStatus: FETCH_END,
+            fromCache: true,
         },
     });
     onSuccess && onSuccess(response);
