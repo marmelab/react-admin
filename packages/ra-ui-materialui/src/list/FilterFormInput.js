@@ -48,6 +48,7 @@ const FilterFormInput = ({
                 record: emptyRecord,
                 variant,
                 margin,
+                helperText: false,
             })}
             <div className={classes.spacer}>&nbsp;</div>
         </div>
