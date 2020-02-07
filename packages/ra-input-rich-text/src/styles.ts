@@ -1,10 +1,13 @@
+import { Theme, StyleRules } from '@material-ui/core/styles';
+
 import QuillSnowStylesheet from './QuillSnowStylesheet';
 
-export default theme => ({
+export default (theme: Theme): StyleRules<string, any> => ({
     label: {
         position: 'relative',
     },
-    '@global': Object.assign({}, QuillSnowStylesheet, {
+    '@global': {
+        ...QuillSnowStylesheet,
         '.ra-rich-text-input': {
             '& .ql-editor': {
                 fontSize: '1rem',
@@ -138,5 +141,5 @@ export default theme => ({
                 },
             },
         },
-    }),
+    },
 });

@@ -1,3 +1,5 @@
+import { StyleRules } from '@material-ui/core/styles';
+
 // converted from vendor (node_modules/quill/dist/quill.snow.css) using the jss cli
 export default {
     '.ql-container': {
@@ -454,7 +456,7 @@ export default {
     '.ql-snow .ql-stroke-miter': {
         fill: 'none',
         stroke: '#444',
-        strokeMiterlimit: '10',
+        strokeMiterlimit: 10,
         strokeWidth: '2',
     },
     '.ql-snow .ql-fill, .ql-snow .ql-stroke.ql-fill': {
@@ -470,7 +472,7 @@ export default {
         strokeWidth: '1',
     },
     '.ql-snow .ql-transparent': {
-        opacity: '0.4',
+        opacity: 0.4,
     },
     '.ql-snow .ql-direction svg:last-child': {
         display: 'none',
@@ -535,7 +537,7 @@ export default {
         display: 'inline-block',
         float: 'left',
         fontSize: 14,
-        fontWeight: '500',
+        fontWeight: 500,
         height: 24,
         position: 'relative',
         verticalAlign: 'middle',
@@ -569,7 +571,7 @@ export default {
     },
     '.ql-snow .ql-picker.ql-expanded .ql-picker-label': {
         color: '#ccc',
-        zIndex: '2',
+        zIndex: 2,
     },
     '.ql-snow .ql-picker.ql-expanded .ql-picker-label .ql-fill': {
         fill: '#ccc',
@@ -581,7 +583,7 @@ export default {
         display: 'block',
         marginTop: -1,
         top: '100%',
-        zIndex: '1',
+        zIndex: 1,
     },
     '.ql-snow .ql-color-picker, .ql-snow .ql-icon-picker': {
         width: 28,
@@ -797,4 +799,4 @@ export default {
     '.ql-container.ql-snow': {
         border: '1px solid #ccc',
     },
-};
+} as StyleRules;
