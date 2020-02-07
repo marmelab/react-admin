@@ -1,6 +1,6 @@
 {
     "name": "react-admin",
-    "version": "3.2.0",
+    "version": "3.2.1",
     "description": "A frontend Framework for building admin applications on top of REST services, using ES6, React and Material UI",
     "files": [
         "*.md",
@@ -43,7 +43,7 @@
         "ra-core": "^3.2.0",
         "ra-i18n-polyglot": "^3.2.0",
         "ra-language-english": "^3.2.0",
-        "ra-ui-materialui": "^3.2.0",
+        "ra-ui-materialui": "^3.2.1",
         "react-final-form": "^6.3.3",
         "react-final-form-arrays": "^3.1.1",
         "react-redux": "^7.1.0",
