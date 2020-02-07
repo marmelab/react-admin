@@ -1,5 +1,11 @@
 # Changelog
 
+## v3.2.1
+
+* Fix `<FilterForm>` layout broken by bottom margin on `Input` components ([4390](https://github.com/marmelab/react-admin/pull/4390)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<RichTextInput>` dark theme ([4384](https://github.com/marmelab/react-admin/pull/4384)) ([JulienMattiussi](https://github.com/JulienMattiussi))
+* Fix `<Layout>` styles can't be overridden by theme ([4382](https://github.com/marmelab/react-admin/pull/4382)) ([leonidasv](https://github.com/leonidasv))
+
 ## v3.2.0
 
 * Add the `<Empty>` component, an invite to create the first record when the list is empty ([4113](https://github.com/marmelab/react-admin/pull/4113)) ([m4theushw](https://github.com/m4theushw))
