@@ -3,6 +3,10 @@ import React from 'react';
 import expect from 'expect';
 import { TestContext } from 'ra-core';
 
+import Create from '../detail/Create';
+import SimpleForm from '../form/SimpleForm';
+import Toolbar from '../form/Toolbar';
+import TextInput from '../input/TextInput';
 import SaveButton from './SaveButton';
 
 describe('<SaveButton />', () => {
@@ -41,8 +45,50 @@ describe('<SaveButton />', () => {
                 />
             </TestContext>
         );
-
         fireEvent.click(getByLabelText('ra.action.save'));
+        expect(onSubmit).toHaveBeenCalled();
+    });
+
+    it('should trigger submit action when Enter key if no saving is in progress', () => {
+        const onSubmit = jest.fn();
+
+        const defaultCreateProps = {
+            basePath: '/foo',
+            id: '123',
+            resource: 'foo',
+            location: {},
+            match: {},
+        };
+
+        const SaveToolbar = props => (
+            <Toolbar {...props}>
+                <SaveButton
+                    label="enterButton"
+                    handleSubmitWithRedirect={onSubmit}
+                    submitOnEnter={true}
+                    saving={false}
+                />
+            </Toolbar>
+        );
+
+        const { getByLabelText } = render(
+            <TestContext>
+                <Create {...defaultCreateProps}>
+                    <SimpleForm toolbar={<SaveToolbar />}>
+                        <TextInput label="Title" source="title" />
+                    </SimpleForm>
+                </Create>
+            </TestContext>
+        );
+
+        const input = getByLabelText('Title');
+        fireEvent.focus(input);
+        fireEvent.change(input, { target: { value: 'test' } });
+
+        const button = getByLabelText('enterButton');
+        //console.log(button);
+        //fireEvent.click(getByLabelText('ra.action.save'));
+        fireEvent.keyPress(input, { key: 'Enter', keyCode: 13 });
         expect(onSubmit).toHaveBeenCalled();
     });
 
