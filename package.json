@@ -47,7 +47,7 @@
         "babel-eslint": "^10.0.1",
         "cheerio": "~1.0.0-rc.2",
         "cross-env": "^5.2.0",
-        "eslint": "^6.6.0",
+        "eslint": "6.6.0",
         "eslint-config-prettier": "^4.3.0",
         "eslint-config-react-app": "^4.0.1",
         "eslint-plugin-cypress": "^2.2.1",
