@@ -18,13 +18,21 @@ const useStyles = makeStyles(
 
 export const ChipField: FunctionComponent<
     FieldProps & InjectedFieldProps & ChipProps
-> = ({ className, classes: classesOverride, source, record = {}, ...rest }) => {
+> = ({
+    className,
+    classes: classesOverride,
+    source,
+    record = {},
+    emptyText = '',
+    ...rest
+}) => {
     const classes = useStyles({ classes: classesOverride });
+    const value = get(record, source);
 
     return (
         <Chip
             className={classnames(classes.chip, className)}
-            label={get(record, source)}
+            label={value !== '' ? value : emptyText}
             {...sanitizeRestProps(rest)}
         />
     );
