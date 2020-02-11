@@ -283,6 +283,7 @@ export const ReferenceInputView: FunctionComponent<ReferenceInputViewProps> = ({
         setFilter,
         setPagination,
         setSort,
+        helperText,
         translateChoice: false,
         ...sanitizeRestProps(rest),
     });
