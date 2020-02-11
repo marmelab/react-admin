@@ -42,7 +42,7 @@ describe('<SaveButton />', () => {
             </TestContext>
         );
 
-        fireEvent.mouseDown(getByLabelText('ra.action.save'));
+        fireEvent.click(getByLabelText('ra.action.save'));
         expect(onSubmit).toHaveBeenCalled();
     });
 
@@ -55,7 +55,7 @@ describe('<SaveButton />', () => {
             </TestContext>
         );
 
-        fireEvent.mouseDown(getByLabelText('ra.action.save'));
+        fireEvent.click(getByLabelText('ra.action.save'));
         expect(onSubmit).not.toHaveBeenCalled();
     });
 
@@ -77,7 +77,7 @@ describe('<SaveButton />', () => {
             </TestContext>
         );
 
-        fireEvent.mouseDown(getByLabelText('ra.action.save'));
+        fireEvent.click(getByLabelText('ra.action.save'));
         expect(dispatchSpy).toHaveBeenCalledWith({
             payload: {
                 message: 'ra.message.invalid_form',
