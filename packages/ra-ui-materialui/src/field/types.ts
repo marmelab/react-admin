@@ -12,7 +12,7 @@ export interface FieldProps {
     cellClassName?: string;
     headerClassName?: string;
     textAlign?: TextAlign;
-    emptyText?: TextAlign;
+    emptyText?: string;
 }
 
 // Props injected by react-admin
