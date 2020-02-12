@@ -110,4 +110,16 @@ describe('<DateField />', () => {
             new Date('1/1/2016').toLocaleDateString('en-US')
         );
     });
+
+    it('should render the emptyText when value is null', () => {
+        const wrapper = shallow(
+            <DateField
+                record={{ foo: null }}
+                source="foo"
+                locales="fr-FR"
+                emptyText="NA"
+            />
+        );
+        assert.equal(wrapper.children().text(), 'NA');
+    });
 });

@@ -23,7 +23,7 @@ export const ChipField: FunctionComponent<
     classes: classesOverride,
     source,
     record = {},
-    emptyText = '',
+    emptyText,
     ...rest
 }) => {
     const classes = useStyles({ classes: classesOverride });
@@ -32,7 +32,7 @@ export const ChipField: FunctionComponent<
     return (
         <Chip
             className={classnames(classes.chip, className)}
-            label={value !== '' ? value : emptyText}
+            label={value === null && emptyText ? emptyText : value}
             {...sanitizeRestProps(rest)}
         />
     );

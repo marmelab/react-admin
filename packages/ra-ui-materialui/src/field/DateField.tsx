@@ -52,6 +52,7 @@ export const DateField: FunctionComponent<
     Props & InjectedFieldProps & TypographyProps
 > = ({
     className,
+    emptyText,
     locales,
     options,
     record,
@@ -63,17 +64,26 @@ export const DateField: FunctionComponent<
         return null;
     }
     const value = get(record, source);
-    if (value == null) {
+    if (value == null && !emptyText) {
         return null;
     }
-    const date = value instanceof Date ? value : new Date(value);
-    const dateString = showTime
-        ? toLocaleStringSupportsLocales
-            ? date.toLocaleString(locales, options)
-            : date.toLocaleString()
-        : toLocaleStringSupportsLocales
-        ? date.toLocaleDateString(locales, options)
-        : date.toLocaleDateString();
+
+    const renderValue = () => {
+        if (value == null) {
+            return emptyText;
+        }
+
+        const date = value instanceof Date ? value : new Date(value);
+        const dateString = showTime
+            ? toLocaleStringSupportsLocales
+                ? date.toLocaleString(locales, options)
+                : date.toLocaleString()
+            : toLocaleStringSupportsLocales
+            ? date.toLocaleDateString(locales, options)
+            : date.toLocaleDateString();
+
+        return dateString;
+    };
 
     return (
         <Typography
@@ -82,7 +92,7 @@ export const DateField: FunctionComponent<
             className={className}
             {...sanitizeRestProps(rest)}
         >
-            {dateString}
+            {renderValue()}
         </Typography>
     );
 };

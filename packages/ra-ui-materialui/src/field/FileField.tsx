@@ -24,6 +24,7 @@ interface Props extends FieldProps {
 const FileField: FunctionComponent<Props & InjectedFieldProps> = ({
     className,
     classes: classesOverride,
+    emptyText,
     record,
     source,
     title,
@@ -39,7 +40,9 @@ const FileField: FunctionComponent<Props & InjectedFieldProps> = ({
             <div
                 className={classnames(classes.root, className)}
                 {...sanitizeRestProps(rest)}
-            />
+            >
+                {emptyText}
+            </div>
         );
     }
 

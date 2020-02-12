@@ -25,4 +25,16 @@ describe('<UrlField />', () => {
             '<a href="https://en.wikipedia.org/wiki/HAL_9000">https://en.wikipedia.org/wiki/HAL_9000</a>'
         );
     });
+
+    it('should render the emptyText when value is null', () => {
+        const wrapper = shallow(
+            <UrlField
+                record={{ url: null }}
+                className="foo"
+                source="url"
+                emptyText="NA"
+            />
+        );
+        assert.equal(wrapper.html(), '<span class="foo">NA</span>');
+    });
 });

@@ -1,7 +1,7 @@
 import React from 'react';
 import assert from 'assert';
 import { shallow } from 'enzyme';
-import EmailField from './EmailField';
+import { EmailField } from './EmailField';
 
 describe('<EmailField />', () => {
     it('should render as an email link', () => {
@@ -37,11 +37,24 @@ describe('<EmailField />', () => {
         assert.deepEqual(
             shallow(
                 <EmailField
-                    record={{ foo: true }}
+                    record={{ email: true }}
                     source="email"
                     className="foo"
                 />
             ).prop('className'),
             'foo'
+        ));
+
+    it('should render the emptyText when value is null', () => {
+        const wrapper = shallow(
+            <EmailField record={{ foo: null }} source="foo" emptyText="NA" />
+        );
+        assert.equal(wrapper.html(), '<span>NA</span>');
+    });
+
+    it('should return null when the record has no value for the source', () =>
+        assert.equal(
+            shallow(<EmailField record={{}} source="foo" />).html(),
+            null
         ));
 });

@@ -8,11 +8,11 @@ import { FieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 
 const TextField: FunctionComponent<
     FieldProps & InjectedFieldProps & TypographyProps
-> = ({ className, source, record = {}, emptyText = '', ...rest }) => {
+> = ({ className, source, record = {}, emptyText, ...rest }) => {
     const value = get(record, source);
 
     const renderValue = () => {
-        if (value === '') {
+        if (value === null && emptyText) {
             return emptyText;
         }
         return typeof value !== 'string' ? JSON.stringify(value) : value;

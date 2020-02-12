@@ -13,6 +13,13 @@ describe('<NumberField />', () => {
             null
         ));
 
+    it('should render the emptyText when value is null', () => {
+        const wrapper = shallow(
+            <NumberField record={{ foo: null }} emptyText="NA" source="foo" />
+        );
+        assert.equal(wrapper.children().text(), 'NA');
+    });
+
     it('should render a number', () => {
         const wrapper = shallow(
             <NumberField record={{ foo: 1 }} source="foo" />

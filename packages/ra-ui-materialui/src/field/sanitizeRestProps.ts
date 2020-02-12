@@ -7,6 +7,7 @@ export default (props: object): object =>
         'basePath',
         'cellClassName',
         'className',
+        'emptyText',
         'formClassName',
         'headerClassName',
         'label',

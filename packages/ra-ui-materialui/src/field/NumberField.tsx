@@ -48,14 +48,30 @@ interface Props extends FieldProps {
  */
 export const NumberField: FunctionComponent<
     Props & InjectedFieldProps & TypographyProps
-> = ({ className, record, source, locales, options, textAlign, ...rest }) => {
+> = ({
+    className,
+    emptyText,
+    record,
+    source,
+    locales,
+    options,
+    textAlign,
+    ...rest
+}) => {
     if (!record) {
         return null;
     }
     const value = get(record, source);
-    if (value == null) {
+    if (value == null && !emptyText) {
         return null;
     }
+
+    const renderValue = () => {
+        if (value === null) {
+            return emptyText;
+        }
+        return hasNumberFormat ? value.toLocaleString(locales, options) : value;
+    };
 
     return (
         <Typography
@@ -64,7 +80,7 @@ export const NumberField: FunctionComponent<
             className={className}
             {...sanitizeRestProps(rest)}
         >
-            {hasNumberFormat ? value.toLocaleString(locales, options) : value}
+            {renderValue()}
         </Typography>
     );
 };

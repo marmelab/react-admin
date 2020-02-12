@@ -16,6 +16,17 @@ describe('<FileField />', () => {
         expect(container.firstChild.textContent).toEqual('');
     });
 
+    it('should render the emptyText when record has no value', () => {
+        const { container } = render(
+            <FileField
+                record={{ url: null }}
+                emptyText="NA"
+                {...defaultProps}
+            />
+        );
+        expect(container.firstChild.textContent).toEqual('NA');
+    });
+
     it('should render a link with correct attributes based on `source` and `title`', () => {
         const { getByTitle } = render(
             <FileField

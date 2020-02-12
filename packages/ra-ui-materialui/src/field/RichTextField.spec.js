@@ -103,4 +103,33 @@ describe('<RichTextField />', () => {
             ).prop('className'),
             'foo'
         ));
+
+    it('should render the emptyText when value is null and stripTags is set to false', () => {
+        const wrapper = render(
+            <RichTextField
+                record={{ body: null }}
+                emptyText="NA"
+                source="body"
+            />
+        );
+        assert.equal(
+            html(wrapper),
+            '<span class="MuiTypography-root MuiTypography-body2">NA</span>'
+        );
+    });
+
+    it('should render the emptyText when value is null and stripTags is set to true', () => {
+        const wrapper = render(
+            <RichTextField
+                record={{ body: null }}
+                emptyText="NA"
+                source="body"
+                stripTags
+            />
+        );
+        assert.equal(
+            html(wrapper),
+            '<span class="MuiTypography-root MuiTypography-body2">NA</span>'
+        );
+    });
 });

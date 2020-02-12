@@ -6,15 +6,19 @@ import { FieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 
 const UrlField: FunctionComponent<
     FieldProps & InjectedFieldProps & HtmlHTMLAttributes<HTMLAnchorElement>
-> = ({ className, source, record = {}, ...rest }) => (
-    <a
-        className={className}
-        href={get(record, source)}
-        {...sanitizeRestProps(rest)}
-    >
-        {get(record, source)}
-    </a>
-);
+> = ({ className, emptyText, source, record = {}, ...rest }) => {
+    const value = get(record, source);
+
+    if (value === null && emptyText) {
+        return <span className={className}>{emptyText}</span>;
+    }
+
+    return (
+        <a className={className} href={value} {...sanitizeRestProps(rest)}>
+            {value}
+        </a>
+    );
+};
 
 const EnhancedUrlField = pure<
     FieldProps & HtmlHTMLAttributes<HTMLAnchorElement>

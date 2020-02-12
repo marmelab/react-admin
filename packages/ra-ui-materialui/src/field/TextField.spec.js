@@ -28,17 +28,11 @@ describe('<TextField />', () => {
         );
     });
 
-    it('should render the emptyText when value is empty', () => {
-        const record = { title: '' };
+    it('should render the emptyText when value is null', () => {
+        const record = { title: null };
         const wrapper = render(
             <TextField record={record} source="title" emptyText="NA" />
         );
         assert.equal(wrapper.text(), 'NA');
-    });
-
-    it('should render "" when value is empty and emptyText is not present', () => {
-        const record = { title: '' };
-        const wrapper = render(<TextField record={record} source="title" />);
-        assert.equal(wrapper.text(), '');
     });
 });

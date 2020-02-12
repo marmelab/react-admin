@@ -16,6 +16,17 @@ describe('<ImageField />', () => {
         expect(container.firstChild.textContent).toEqual('');
     });
 
+    it('should render the emptyText when record has no value', () => {
+        const { container } = render(
+            <ImageField
+                record={{ url: null }}
+                emptyText="NA"
+                {...defaultProps}
+            />
+        );
+        expect(container.firstChild.textContent).toEqual('NA');
+    });
+
     it('should render an image with correct attributes based on `source` and `title`', () => {
         const { getByRole } = render(
             <ImageField
