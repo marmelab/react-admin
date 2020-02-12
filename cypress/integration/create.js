@@ -127,6 +127,38 @@ describe('Create Page', () => {
         EditPage.delete();
     });
 
+    it.only('should redirect to edit page after submit on enter', () => {
+        const values = [
+            {
+                type: 'input',
+                name: 'title',
+                value: 'Test title',
+            },
+            {
+                type: 'textarea',
+                name: 'teaser',
+                value: 'Test teaser',
+            },
+            {
+                type: 'rich-text-input',
+                name: 'body',
+                value: 'Test body',
+            },
+        ];
+
+        CreatePage.setValues(values);
+        CreatePage.submitWithKeyboard();
+        EditPage.waitUntilVisible();
+        cy.get(EditPage.elements.input('title')).should(el =>
+            expect(el).to.have.value('Test title')
+        );
+        cy.get(EditPage.elements.input('teaser')).should(el =>
+            expect(el).to.have.value('Test teaser')
+        );
+
+        EditPage.delete();
+    });
+
     it('should redirect to show page after create success with "Save and show"', () => {
         const values = [
             {
