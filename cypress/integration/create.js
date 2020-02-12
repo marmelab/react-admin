@@ -127,7 +127,7 @@ describe('Create Page', () => {
         EditPage.delete();
     });
 
-    it.only('should redirect to edit page after submit on enter', () => {
+    it('should redirect to edit page after submit on enter', () => {
         const values = [
             {
                 type: 'input',
