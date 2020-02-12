@@ -43,7 +43,7 @@ const useStyles = makeStyles(theme => ({
         minHeight: 48,
     },
     avatar: {
-        background: theme.palette.background.avatar,
+        background: theme.palette.background.paper,
     },
     listItemText: {
         overflowY: 'hidden',
