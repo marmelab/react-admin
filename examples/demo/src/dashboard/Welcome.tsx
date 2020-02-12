@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
@@ -17,11 +17,11 @@ const useStyles = makeStyles({
 });
 
 const mediaUrl = `https://marmelab.com/posters/beard-${parseInt(
-    Math.random() * 10,
+    (Math.random() * 10).toString(),
     10
 ) + 1}.jpeg`;
 
-const Welcome = () => {
+const Welcome: FC = () => {
     const translate = useTranslate();
     const classes = useStyles();
     return (
