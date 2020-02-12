@@ -17,7 +17,7 @@ const RichTextInput = ({
     toolbar = true,
     fullWidth = true,
     configureQuill,
-    helperText = false,
+    helperText,
     label,
     source,
     resource,
