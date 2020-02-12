@@ -273,7 +273,7 @@ export const ReferenceInputView: FunctionComponent<ReferenceInputViewProps> = ({
     // But in a Filter component, the child helperText have to be forced to false
     warningLog(
         helperText !== undefined && helperText !== false,
-        "<ReferenceInput> doesn't accept an helperText value, it should be set on the child component"
+        "<ReferenceInput> doesn't accept a helperText prop. Set the helperText prop on the child component instead"
     );
 
     const disabledHelperText = helperText === false ? { helperText } : {};
