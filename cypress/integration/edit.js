@@ -191,10 +191,9 @@ describe('Edit Page', () => {
             .eq(2)
             .should(el => expect(el).to.contain('f00bar'));
 
-        cy.get('div[role="alertdialog"]');
-        cy.wait(4000); // Wait for the undo notification to disappear
+        cy.get('body').click('left'); // dismiss notification
 
-        cy.get('div[role="alertdialog"]').should(el =>
+        cy.get('div[role="alert"]').should(el =>
             expect(el).to.have.text('this title cannot be used')
         );
 
