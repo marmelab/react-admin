@@ -719,7 +719,7 @@ import React, { createElement } from 'react';
 import { useSelector } from 'react-redux';
 import { useMediaQuery } from '@material-ui/core';
 import { MenuItemLink, getResources } from 'react-admin';
-import { withRouter } from 'react-router-dom';
+import DefaultIcon from '@material-ui/icons/ViewList';
 import LabelIcon from '@material-ui/icons/Label';
 
 const Menu = ({ onMenuClick, logout }) => {
@@ -732,8 +732,13 @@ const Menu = ({ onMenuClick, logout }) => {
                 <MenuItemLink
                     key={resource.name}
                     to={`/${resource.name}`}
-                    primaryText={resource.options && resource.options.label || resource.name}
-                    leftIcon={createElement(resource.icon)}
+                    primaryText={
+                        (resource.options && resource.options.label) ||
+                        resource.name
+                    }
+                    leftIcon={
+                        resource.icon ? <resource.icon /> : <DefaultIcon />
+                    }
                     onClick={onMenuClick}
                     sidebarIsOpen={open}
                 />
@@ -750,7 +755,7 @@ const Menu = ({ onMenuClick, logout }) => {
     );
 };
 
-export default withRouter(Menu);
+export default Menu;
 ```
 
 **Tip**: Note the `MenuItemLink` component. It must be used to avoid unwanted side effects in mobile views.
