@@ -7,15 +7,15 @@ import { CreateButton } from '../button';
 import inflection from 'inflection';
 
 const useStyles = makeStyles(
-    {
+    theme => ({
         message: {
             textAlign: 'center',
             opacity: theme.palette.type === 'light' ? 0.5 : 0.8,
             margin: '0 1em',
             color:
-              theme.palette.type === 'light'
-                ? 'inherit'
-                : theme.palette.text.primary,
+                theme.palette.type === 'light'
+                    ? 'inherit'
+                    : theme.palette.text.primary,
         },
         icon: {
             width: '9em',
@@ -25,7 +25,7 @@ const useStyles = makeStyles(
             textAlign: 'center',
             marginTop: '2em',
         },
-    },
+    }),
     { name: 'RaEmpty' }
 );
 
