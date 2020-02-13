@@ -35,7 +35,7 @@
         "@types/react-router": "^5.1.0",
         "@types/react-router-dom": "^5.1.0",
         "@types/recompose": "^0.27.0",
-        "connected-react-router": "^6.5.2",
+        "connected-react-router": "^6.7.0",
         "cross-env": "^5.2.0",
         "enzyme": "~3.9.0",
         "enzyme-adapter-react-16": "~1.12.1",
@@ -54,7 +54,7 @@
         "rimraf": "^2.6.3"
     },
     "peerDependencies": {
-        "connected-react-router": "^6.5.2",
+        "connected-react-router": "^6.7.0",
         "final-form": "^4.18.5",
         "react": "^16.9.0",
         "react-dom": "^16.9.0",

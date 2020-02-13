@@ -21,9 +21,7 @@ export const CloneButton: FC<CloneButtonProps> = ({
             record
                 ? {
                       pathname: `${basePath}/create`,
-                      search: stringify({
-                          source: JSON.stringify(omitId(record)),
-                      }),
+                      state: { record: omitId(record) },
                   }
                 : `${basePath}/create`
         }
