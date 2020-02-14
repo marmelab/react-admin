@@ -260,5 +260,5 @@ SimpleFormIterator.propTypes = {
 
 export default compose(
     translate,
-    withStyles(styles)
+    withStyles(styles, { name: 'RaSimpleFormIterator' })
 )(SimpleFormIterator);
