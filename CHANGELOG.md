@@ -1,5 +1,16 @@
 # Changelog
 
+## v3.2.2
+
+* Fix `<CloneButton>` does not work with `<TabbedForm>` ([4422](https://github.com/marmelab/react-admin/pull/4422)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<Empty>` component shows incorrectly in dark theme. ([4419](https://github.com/marmelab/react-admin/pull/4419)) ([WiXSL](https://github.com/WiXSL))
+* Fix `<List>` does not refresh after API error ([4179](https://github.com/marmelab/react-admin/pull/4179)) ([m4theushw](https://github.com/m4theushw))
+* Fix unable to submit a form using the keyboard ([4410](https://github.com/marmelab/react-admin/pull/4410)) ([JulienMattiussi](https://github.com/JulienMattiussi))
+* Fix hot reload for demo example ([4252](https://github.com/marmelab/react-admin/pull/4252)) ([ThieryMichel](https://github.com/ThieryMichel))
+* Fich rich text editor toobal colors ([4409](https://github.com/marmelab/react-admin/pull/4409)) ([JulienMattiussi](https://github.com/JulienMattiussi))
+* [Doc] Fix custom menu snippet in theming documentation ([4418](https://github.com/marmelab/react-admin/pull/4418)) ([fzaninotto](https://github.com/fzaninotto))
+
+
 ## v3.2.1
 
 * Fix `<FilterForm>` layout broken by bottom margin on `Input` components ([4390](https://github.com/marmelab/react-admin/pull/4390)) ([fzaninotto](https://github.com/fzaninotto))
