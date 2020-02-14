@@ -6,13 +6,13 @@ import { SaveButton, DeleteButton } from 'react-admin';
 import AcceptButton from './AcceptButton';
 import RejectButton from './RejectButton';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
     root: {
-        backgroundColor: 'white',
+        backgroundColor: theme.palette.background.paper,
         display: 'flex',
         justifyContent: 'space-between',
     },
-});
+}));
 
 const ReviewEditToolbar = ({
     basePath,
