@@ -31,7 +31,7 @@ export type RedirectionSideEffect = string | boolean | RedirectToFunction;
  */
 const useRedirect = () => {
     const dispatch = useDispatch();
-    const history = useHistory();
+    const history = useHistory(); // Note: history is mutable. This prevents render loops in useCallback.
     return useCallback(
         (
             redirectTo: RedirectionSideEffect,
@@ -40,7 +40,15 @@ const useRedirect = () => {
             data?: Partial<Record>
         ) => {
             if (!redirectTo) {
-                dispatch(refreshView());
+                if (history.location.state || history.location.search) {
+                    history.replace({
+                        ...history.location,
+                        state: {},
+                        search: undefined,
+                    });
+                } else {
+                    dispatch(refreshView());
+                }
                 return;
             }
 

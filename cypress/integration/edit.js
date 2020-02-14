@@ -1,12 +1,16 @@
 import createPageFactory from '../support/CreatePage';
 import editPageFactory from '../support/EditPage';
 import listPageFactory from '../support/ListPage';
+import loginPageFactory from '../support/LoginPage';
 
 describe('Edit Page', () => {
     const EditPostPage = editPageFactory('/#/posts/5');
+    const ListPagePosts = listPageFactory('/#/posts');
     const CreatePostPage = createPageFactory('/#/posts/create');
     const EditCommentPage = editPageFactory('/#/comments/5');
-    const ListPagePosts = listPageFactory('/#/posts');
+    const LoginPage = loginPageFactory('/#/login');
+    const EditUserPage = editPageFactory('/#/users/3');
+    const CreateUserPage = createPageFactory('/#/users/create');
 
     describe('Title', () => {
         it('should show the correct title in the appBar', () => {
@@ -162,6 +166,26 @@ describe('Edit Page', () => {
 
         cy.get(CreatePostPage.elements.input('title')).then(el => {
             expect(el).to.have.value('Lorem Ipsum');
+        });
+    });
+
+    it('should not lose the cloned values when switching tabs', () => {
+        EditPostPage.navigate();
+        EditPostPage.logout();
+        LoginPage.navigate();
+        LoginPage.login('admin', 'password');
+        EditUserPage.navigate();
+        cy.get(EditUserPage.elements.input('name')).should(el =>
+            expect(el).to.have.value('Annamarie Mayer')
+        );
+        EditUserPage.clone();
+        cy.get(CreateUserPage.elements.input('name')).then(el => {
+            expect(el).to.have.value('Annamarie Mayer');
+        });
+        CreateUserPage.gotoTab(2);
+        CreateUserPage.gotoTab(1);
+        cy.get(CreateUserPage.elements.input('name')).then(el => {
+            expect(el).to.have.value('Annamarie Mayer');
         });
     });
 

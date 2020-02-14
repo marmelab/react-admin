@@ -2,15 +2,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
+    CloneButton,
     DeleteWithConfirmButton,
     Edit,
     FormTab,
+    required,
     SaveButton,
     SelectInput,
+    ShowButton,
     TabbedForm,
     TextInput,
     Toolbar,
-    required,
+    TopToolbar,
 } from 'react-admin';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -39,8 +42,24 @@ const UserEditToolbar = props => {
     );
 };
 
+const EditActions = ({ basePath, data, hasShow }) => (
+    <TopToolbar>
+        <CloneButton
+            className="button-clone"
+            basePath={basePath}
+            record={data}
+        />
+        <ShowButton basePath={basePath} record={data} />
+    </TopToolbar>
+);
+
 const UserEdit = ({ permissions, ...props }) => (
-    <Edit title={<UserTitle />} aside={<Aside />} {...props}>
+    <Edit
+        title={<UserTitle />}
+        aside={<Aside />}
+        actions={<EditActions />}
+        {...props}
+    >
         <TabbedForm
             defaultValue={{ role: 'user' }}
             toolbar={<UserEditToolbar />}
