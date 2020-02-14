@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { Identifier, Record } from '../types';
 import resolveRedirectTo from '../util/resolveRedirectTo';
 import { refreshView } from '../actions/uiActions';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 type RedirectToFunction = (
     basePath?: string,
@@ -31,8 +31,7 @@ export type RedirectionSideEffect = string | boolean | RedirectToFunction;
  */
 const useRedirect = () => {
     const dispatch = useDispatch();
-    const history = useHistory();
-    const location = useLocation();
+    const history = useHistory(); // Note: history is mutable. This prevents render loops in useCallback.
     return useCallback(
         (
             redirectTo: RedirectionSideEffect,
@@ -41,9 +40,9 @@ const useRedirect = () => {
             data?: Partial<Record>
         ) => {
             if (!redirectTo) {
-                if (location.state || location.search) {
+                if (history.location.state || history.location.search) {
                     history.replace({
-                        ...location,
+                        ...history.location,
                         state: {},
                         search: undefined,
                     });
@@ -55,7 +54,7 @@ const useRedirect = () => {
 
             history.push(resolveRedirectTo(redirectTo, basePath, id, data));
         },
-        [dispatch, history, location]
+        [dispatch, history]
     );
 };
 
