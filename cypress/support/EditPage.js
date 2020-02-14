@@ -15,6 +15,8 @@ export default url => ({
         cloneButton: '.button-clone',
         tab: index => `.form-tab:nth-of-type(${index})`,
         title: '#react-admin-title',
+        userMenu: 'button[title="Profile"]',
+        logout: '.logout',
     },
 
     navigate() {
@@ -56,5 +58,10 @@ export default url => ({
 
     clone() {
         cy.get(this.elements.cloneButton).click();
+    },
+
+    logout() {
+        cy.get(this.elements.userMenu).click();
+        cy.get(this.elements.logout).click();
     },
 });

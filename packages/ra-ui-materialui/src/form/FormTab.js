@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import MuiTab from '@material-ui/core/Tab';
 import classnames from 'classnames';
 import { useTranslate } from 'ra-core';
@@ -35,6 +35,7 @@ const FormTab = ({
     ...rest
 }) => {
     const translate = useTranslate();
+    const location = useLocation();
 
     const renderHeader = () => (
         <MuiTab
@@ -44,7 +45,7 @@ const FormTab = ({
             icon={icon}
             className={classnames('form-tab', className)}
             component={Link}
-            to={{ pathname: value }}
+            to={{ ...location, pathname: value }}
             {...sanitizeRestProps(rest)}
         />
     );

@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { Identifier, Record } from '../types';
 import resolveRedirectTo from '../util/resolveRedirectTo';
 import { refreshView } from '../actions/uiActions';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 
 type RedirectToFunction = (
     basePath?: string,
@@ -32,6 +32,7 @@ export type RedirectionSideEffect = string | boolean | RedirectToFunction;
 const useRedirect = () => {
     const dispatch = useDispatch();
     const history = useHistory();
+    const location = useLocation();
     return useCallback(
         (
             redirectTo: RedirectionSideEffect,
@@ -40,13 +41,21 @@ const useRedirect = () => {
             data?: Partial<Record>
         ) => {
             if (!redirectTo) {
-                dispatch(refreshView());
+                if (location.state || location.search) {
+                    history.replace({
+                        ...location,
+                        state: {},
+                        search: undefined,
+                    });
+                } else {
+                    dispatch(refreshView());
+                }
                 return;
             }
 
             history.push(resolveRedirectTo(redirectTo, basePath, id, data));
         },
-        [dispatch, history]
+        [dispatch, history, location]
     );
 };
 
