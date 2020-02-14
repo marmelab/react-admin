@@ -1,4 +1,4 @@
-import React, { Children, useEffect, isValidElement } from 'react';
+import React, { Children, isValidElement } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { Route, useRouteMatch, useLocation } from 'react-router-dom';
@@ -141,10 +141,6 @@ export const TabbedFormView = ({
     const classes = useStyles({ classes: classesOverride });
     const match = useRouteMatch();
     const location = useLocation();
-    useEffect(() => {
-        console.log('form mount');
-        return () => console.log('form unmount');
-    }, []);
 
     const url = match ? match.url : location.pathname;
     return (
