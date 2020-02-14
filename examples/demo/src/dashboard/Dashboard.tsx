@@ -28,13 +28,13 @@ interface CustomerData {
 }
 
 interface State {
-    nbNewOrders: number;
-    nbPendingReviews: number;
-    pendingOrders: Order[];
-    pendingOrdersCustomers: CustomerData;
-    pendingReviews: Review[];
-    pendingReviewsCustomers: CustomerData;
-    revenue: number;
+    nbNewOrders?: number;
+    nbPendingReviews?: number;
+    pendingOrders?: Order[];
+    pendingOrdersCustomers?: CustomerData;
+    pendingReviews?: Review[];
+    pendingReviewsCustomers?: CustomerData;
+    revenue?: number;
 }
 
 const styles = {
