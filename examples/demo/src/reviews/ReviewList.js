@@ -71,7 +71,12 @@ const ReviewList = props => {
                                 {isXSmall ? (
                                     <ReviewListMobile />
                                 ) : (
-                                    <ReviewListDesktop />
+                                    <ReviewListDesktop
+                                        selectedRow={
+                                            isMatch &&
+                                            parseInt(match.params.id, 10)
+                                        }
+                                    />
                                 )}
                             </List>
                             <Drawer
