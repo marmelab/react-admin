@@ -8,7 +8,7 @@ import { useTranslate } from 'react-admin';
 import CardIcon from './CardIcon';
 
 interface Props {
-    value: number;
+    value?: number;
 }
 
 const useStyles = makeStyles({

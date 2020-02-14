@@ -13,8 +13,8 @@ import { useTranslate } from 'react-admin';
 import { Customer, Order } from '../types';
 
 interface Props {
-    orders: Order[];
-    customers: { [key: string]: Customer };
+    orders?: Order[];
+    customers?: { [key: string]: Customer };
 }
 
 const useStyles = makeStyles(theme => ({

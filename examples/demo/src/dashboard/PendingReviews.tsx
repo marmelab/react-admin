@@ -18,9 +18,9 @@ import StarRatingField from '../reviews/StarRatingField';
 import { Customer, Review } from '../types';
 
 interface Props {
-    reviews: Review[];
-    customers: { [key: string]: Customer };
-    nb: number;
+    reviews?: Review[];
+    customers?: { [key: string]: Customer };
+    nb?: number;
 }
 
 const useStyles = makeStyles(theme => ({
