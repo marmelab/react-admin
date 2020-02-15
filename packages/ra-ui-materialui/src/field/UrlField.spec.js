@@ -1,6 +1,7 @@
 import React from 'react';
 import assert from 'assert';
 import { shallow } from 'enzyme';
+import { render } from '@testing-library/react';
 import UrlField from './UrlField';
 
 describe('<UrlField />', () => {
@@ -27,7 +28,7 @@ describe('<UrlField />', () => {
     });
 
     it('should render the emptyText when value is null', () => {
-        const wrapper = shallow(
+        const { queryByText } = render(
             <UrlField
                 record={{ url: null }}
                 className="foo"
@@ -35,6 +36,6 @@ describe('<UrlField />', () => {
                 emptyText="NA"
             />
         );
-        assert.equal(wrapper.html(), '<span class="foo">NA</span>');
+        assert.notEqual(queryByText('NA'), null);
     });
 });

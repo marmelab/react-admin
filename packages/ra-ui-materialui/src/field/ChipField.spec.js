@@ -32,7 +32,7 @@ describe('<ChipField />', () => {
     });
 
     it('should render the emptyText when value is null', () => {
-        const { container } = render(
+        const { getByText } = render(
             <ChipField
                 className="className"
                 classes={{}}
@@ -41,6 +41,6 @@ describe('<ChipField />', () => {
                 emptyText="NA"
             />
         );
-        expect(container.textContent).toBe('NA');
+        expect(getByText('NA')).not.toBeNull();
     });
 });

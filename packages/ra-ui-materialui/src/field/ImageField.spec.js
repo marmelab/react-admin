@@ -17,14 +17,14 @@ describe('<ImageField />', () => {
     });
 
     it('should render the emptyText when record has no value', () => {
-        const { container } = render(
+        const { queryByText } = render(
             <ImageField
                 record={{ url: null }}
                 emptyText="NA"
                 {...defaultProps}
             />
         );
-        expect(container.firstChild.textContent).toEqual('NA');
+        expect(queryByText('NA')).not.toBeNull();
     });
 
     it('should render an image with correct attributes based on `source` and `title`', () => {

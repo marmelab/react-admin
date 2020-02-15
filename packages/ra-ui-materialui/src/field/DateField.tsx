@@ -68,7 +68,7 @@ export const DateField: FunctionComponent<
         return null;
     }
 
-    const renderValue = () => {
+    const getValue = () => {
         if (value == null) {
             return emptyText;
         }
@@ -92,7 +92,7 @@ export const DateField: FunctionComponent<
             className={className}
             {...sanitizeRestProps(rest)}
         >
-            {renderValue()}
+            {getValue()}
         </Typography>
     );
 };

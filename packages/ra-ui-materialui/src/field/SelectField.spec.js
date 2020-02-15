@@ -33,14 +33,14 @@ describe('<SelectField />', () => {
     });
 
     it('should render the emptyText when the value for the source is not in the choices', () => {
-        const { queryAllByText } = render(
+        const { queryByText } = render(
             <SelectField
                 record={{ foo: 2 }}
                 emptyText="Option not found"
                 {...defaultProps}
             />
         );
-        expect(queryAllByText('Option not found')).toHaveLength(1);
+        expect(queryByText('Option not found')).not.toBeNull();
     });
 
     it('should render the choice', () => {

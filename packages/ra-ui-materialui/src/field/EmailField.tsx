@@ -8,7 +8,7 @@ import { FieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 // useful to prevent click bubbling in a datagrid with rowClick
 const stopPropagation = e => e.stopPropagation();
 
-export const EmailField: FunctionComponent<
+const EmailField: FunctionComponent<
     FieldProps & InjectedFieldProps & HtmlHTMLAttributes<HTMLAnchorElement>
 > = ({ className, source, record = {}, emptyText, ...rest }) => {
     const value = get(record, source);

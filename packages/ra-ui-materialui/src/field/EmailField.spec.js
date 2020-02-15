@@ -1,7 +1,8 @@
 import React from 'react';
 import assert from 'assert';
 import { shallow } from 'enzyme';
-import { EmailField } from './EmailField';
+import { render } from '@testing-library/react';
+import EmailField from './EmailField';
 
 describe('<EmailField />', () => {
     it('should render as an email link', () => {
@@ -46,15 +47,14 @@ describe('<EmailField />', () => {
         ));
 
     it('should render the emptyText when value is null', () => {
-        const wrapper = shallow(
+        const { queryByText } = render(
             <EmailField record={{ foo: null }} source="foo" emptyText="NA" />
         );
-        assert.equal(wrapper.html(), '<span>NA</span>');
+        assert.notEqual(queryByText('NA'), null);
     });
 
-    it('should return null when the record has no value for the source', () =>
-        assert.equal(
-            shallow(<EmailField record={{}} source="foo" />).html(),
-            null
-        ));
+    it('should return null when the record has no value for the source', () => {
+        const { container } = render(<EmailField record={{}} source="foo" />);
+        assert.equal(container.firstChild, null);
+    });
 });

@@ -2,6 +2,7 @@ import React, { FunctionComponent, HtmlHTMLAttributes } from 'react';
 import get from 'lodash/get';
 import pure from 'recompose/pure';
 import sanitizeRestProps from './sanitizeRestProps';
+import Typography from '@material-ui/core/Typography';
 import { FieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 
 const UrlField: FunctionComponent<
@@ -9,8 +10,8 @@ const UrlField: FunctionComponent<
 > = ({ className, emptyText, source, record = {}, ...rest }) => {
     const value = get(record, source);
 
-    if (value === null && emptyText) {
-        return <span className={className}>{emptyText}</span>;
+    if (value == null && emptyText) {
+        return <Typography className={className}>{emptyText}</Typography>;
     }
 
     return (

@@ -32,7 +32,7 @@ export const ChipField: FunctionComponent<
     return (
         <Chip
             className={classnames(classes.chip, className)}
-            label={value === null && emptyText ? emptyText : value}
+            label={value == null && emptyText ? emptyText : value}
             {...sanitizeRestProps(rest)}
         />
     );
