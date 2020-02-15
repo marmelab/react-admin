@@ -25,7 +25,7 @@ const RichTextField: FunctionComponent<
                 component="span"
                 {...sanitizeRestProps(rest)}
             >
-                {value === null && emptyText ? emptyText : removeTags(value)}
+                {value == null && emptyText ? emptyText : removeTags(value)}
             </Typography>
         );
     }
@@ -37,7 +37,7 @@ const RichTextField: FunctionComponent<
             component="span"
             {...sanitizeRestProps(rest)}
         >
-            {value === null && emptyText ? (
+            {value == null && emptyText ? (
                 emptyText
             ) : (
                 <span dangerouslySetInnerHTML={{ __html: value }} />
