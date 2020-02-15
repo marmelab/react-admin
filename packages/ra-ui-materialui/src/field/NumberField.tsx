@@ -67,7 +67,7 @@ export const NumberField: FunctionComponent<
     }
 
     const renderValue = () => {
-        if (value === null) {
+        if (value == null) {
             return emptyText;
         }
         return hasNumberFormat ? value.toLocaleString(locales, options) : value;
