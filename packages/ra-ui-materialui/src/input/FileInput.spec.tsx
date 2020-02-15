@@ -9,12 +9,12 @@ import FileInput from './FileInput';
 describe('<FileInput />', () => {
     afterEach(cleanup);
 
-    const defautProps = {
+    const defaultProps = {
         source: 'image',
         resource: 'posts',
     };
 
-    const defautPropsMultiple = {
+    const defaultPropsMultiple = {
         source: 'images',
         resource: 'posts',
         multiple: true,
@@ -25,7 +25,7 @@ describe('<FileInput />', () => {
             <Form
                 onSubmit={jest.fn()}
                 render={() => (
-                    <FileInput {...defautProps}>
+                    <FileInput {...defaultProps}>
                         <div />
                     </FileInput>
                 )}
@@ -40,7 +40,7 @@ describe('<FileInput />', () => {
             <Form
                 onSubmit={jest.fn()}
                 render={() => (
-                    <FileInput {...defautProps} multiple>
+                    <FileInput {...defaultProps} multiple>
                         <div />
                     </FileInput>
                 )}
@@ -62,7 +62,7 @@ describe('<FileInput />', () => {
                 onSubmit={onSubmit}
                 render={({ handleSubmit }) => (
                     <form onSubmit={handleSubmit}>
-                        <FileInput {...defautProps}>
+                        <FileInput {...defaultProps}>
                             <div />
                         </FileInput>
                         <button type="submit" aria-label="Save" />
@@ -99,7 +99,7 @@ describe('<FileInput />', () => {
                 onSubmit={onSubmit}
                 render={({ handleSubmit }) => (
                     <form onSubmit={handleSubmit}>
-                        <FileInput {...defautPropsMultiple}>
+                        <FileInput {...defaultPropsMultiple}>
                             <div />
                         </FileInput>
                         <button type="submit" aria-label="Save" />
@@ -145,7 +145,7 @@ describe('<FileInput />', () => {
                 onSubmit={onSubmit}
                 render={({ handleSubmit }) => (
                     <form onSubmit={handleSubmit}>
-                        <FileInput {...defautProps}>
+                        <FileInput {...defaultProps}>
                             <FileField source="src" title="title" />
                         </FileInput>
                         <button type="submit" aria-label="Save" />
@@ -183,7 +183,7 @@ describe('<FileInput />', () => {
                 onSubmit={onSubmit}
                 render={({ handleSubmit }) => (
                     <form onSubmit={handleSubmit}>
-                        <FileInput {...defautPropsMultiple}>
+                        <FileInput {...defaultPropsMultiple}>
                             <FileField source="src" title="title" />
                         </FileInput>
                         <button type="submit" aria-label="Save" />
@@ -226,7 +226,7 @@ describe('<FileInput />', () => {
                 onSubmit={onSubmit}
                 render={({ handleSubmit }) => (
                     <form onSubmit={handleSubmit}>
-                        <FileInput {...defautPropsMultiple}>
+                        <FileInput {...defaultPropsMultiple}>
                             <FileField source="src" title="title" />
                         </FileInput>
                         <button type="submit" aria-label="Save" />
@@ -256,7 +256,10 @@ describe('<FileInput />', () => {
                 <Form
                     onSubmit={jest.fn()}
                     render={() => (
-                        <FileInput {...defautProps} placeholder={expectedLabel}>
+                        <FileInput
+                            {...defaultProps}
+                            placeholder={expectedLabel}
+                        >
                             <div />
                         </FileInput>
                     )}
@@ -285,7 +288,7 @@ describe('<FileInput />', () => {
                     }}
                     onSubmit={jest.fn()}
                     render={() => (
-                        <FileInput {...defautProps} source="image">
+                        <FileInput {...defaultProps} source="image">
                             <ImageField source="url" title="title" />
                         </FileInput>
                     )}
@@ -316,7 +319,7 @@ describe('<FileInput />', () => {
                         ],
                     }}
                     render={() => (
-                        <FileInput {...defautPropsMultiple}>
+                        <FileInput {...defaultPropsMultiple}>
                             <ImageField source="url" title="title" />
                         </FileInput>
                     )}
@@ -347,7 +350,7 @@ describe('<FileInput />', () => {
                         },
                     }}
                     render={() => (
-                        <FileInput {...defautProps} source="image">
+                        <FileInput {...defaultProps} source="image">
                             <ImageField source="url" title="title" />
                         </FileInput>
                     )}
@@ -370,7 +373,7 @@ describe('<FileInput />', () => {
                         },
                     }}
                     render={() => (
-                        <FileInput {...defautProps} source="image">
+                        <FileInput {...defaultProps} source="image">
                             <ImageField source="url" title="title" />
                         </FileInput>
                     )}
@@ -396,7 +399,7 @@ describe('<FileInput />', () => {
                     onSubmit={onSubmit}
                     render={({ handleSubmit }) => (
                         <form onSubmit={handleSubmit}>
-                            <FileInput {...defautPropsMultiple}>
+                            <FileInput {...defaultPropsMultiple}>
                                 <ImageField source="url" />
                             </FileInput>
                             <button type="submit" aria-label="Save" />
