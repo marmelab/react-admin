@@ -12,7 +12,7 @@ const TextField: FunctionComponent<
     const value = get(record, source);
 
     const renderValue = () => {
-        if (value === null && emptyText) {
+        if (value == null && emptyText) {
             return emptyText;
         }
         return typeof value !== 'string' ? JSON.stringify(value) : value;
