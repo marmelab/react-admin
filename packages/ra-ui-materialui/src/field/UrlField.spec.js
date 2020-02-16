@@ -1,15 +1,16 @@
 import React from 'react';
 import assert from 'assert';
-import { shallow } from 'enzyme';
 import { render } from '@testing-library/react';
 import UrlField from './UrlField';
 
 describe('<UrlField />', () => {
     it('should display a link', () => {
         const record = { website: 'https://en.wikipedia.org/wiki/HAL_9000' };
-        const wrapper = shallow(<UrlField record={record} source="website" />);
+        const { container } = render(
+            <UrlField record={record} source="website" />
+        );
         assert.equal(
-            wrapper.html(),
+            container.innerHTML,
             '<a href="https://en.wikipedia.org/wiki/HAL_9000">https://en.wikipedia.org/wiki/HAL_9000</a>'
         );
     });
@@ -18,11 +19,11 @@ describe('<UrlField />', () => {
         const record = {
             foo: { website: 'https://en.wikipedia.org/wiki/HAL_9000' },
         };
-        const wrapper = shallow(
+        const { container } = render(
             <UrlField record={record} source="foo.website" />
         );
         assert.equal(
-            wrapper.html(),
+            container.innerHTML,
             '<a href="https://en.wikipedia.org/wiki/HAL_9000">https://en.wikipedia.org/wiki/HAL_9000</a>'
         );
     });
