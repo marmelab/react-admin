@@ -66,7 +66,7 @@ export const NumberField: FunctionComponent<
         return null;
     }
 
-    const renderValue = () => {
+    const getValue = () => {
         if (value == null) {
             return emptyText;
         }
@@ -80,7 +80,7 @@ export const NumberField: FunctionComponent<
             className={className}
             {...sanitizeRestProps(rest)}
         >
-            {renderValue()}
+            {getValue()}
         </Typography>
     );
 };

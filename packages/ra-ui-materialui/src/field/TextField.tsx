@@ -11,7 +11,7 @@ const TextField: FunctionComponent<
 > = ({ className, source, record = {}, emptyText, ...rest }) => {
     const value = get(record, source);
 
-    const renderValue = () => {
+    const getValue = () => {
         if (value == null && emptyText) {
             return emptyText;
         }
@@ -25,7 +25,7 @@ const TextField: FunctionComponent<
             className={className}
             {...sanitizeRestProps(rest)}
         >
-            {renderValue()}
+            {getValue()}
         </Typography>
     );
 };
