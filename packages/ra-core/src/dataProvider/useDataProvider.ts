@@ -23,6 +23,10 @@ import {
 } from '../types';
 import useLogoutIfAccessDenied from '../auth/useLogoutIfAccessDenied';
 
+// List of dataProvider calls emitted while in optimistic mode.
+// These calls get replayed once the dataProvider exits optimistic mode
+const optimisticCalls = [];
+
 /**
  * Hook for getting a dataProvider
  *
@@ -157,48 +161,89 @@ const useDataProvider = (): DataProviderProxy => {
                             'You must pass an onSuccess callback calling notify() to use the undoable mode'
                         );
                     }
-                    if (isOptimistic) {
-                        // in optimistic mode, all fetch actions are canceled,
-                        // so the admin uses the store without synchronization
-                        return Promise.resolve();
-                    }
 
-                    const resourceState = store.getState().admin.resources[
-                        resource
-                    ];
-                    if (canReplyWithCache(name, payload, resourceState)) {
-                        return answerWithCache({
-                            type,
-                            payload,
-                            action,
-                            rest,
-                            onSuccess,
-                            resource,
-                            resourceState,
-                            dispatch,
-                        });
-                    }
                     const params = {
-                        type,
-                        payload,
-                        resource,
                         action,
-                        rest,
-                        onSuccess,
-                        onFailure,
                         dataProvider,
                         dispatch,
                         logoutIfAccessDenied,
+                        onFailure,
+                        onSuccess,
+                        payload,
+                        resource,
+                        rest,
+                        store,
+                        type,
+                        undoable,
                     };
-                    return undoable
-                        ? performUndoableQuery(params)
-                        : performQuery(params);
+                    if (isOptimistic) {
+                        // in optimistic mode, all fetch calls are stacked, to be
+                        // executed once the dataProvider leaves optimistic mode.
+                        // In the meantime, the admin uses data from the store.
+                        optimisticCalls.push(params);
+                        return Promise.resolve();
+                    }
+                    return doQuery(params);
                 };
             },
         });
     }, [dataProvider, dispatch, isOptimistic, logoutIfAccessDenied, store]);
 
     return dataProviderProxy;
+};
+
+const doQuery = ({
+    type,
+    payload,
+    resource,
+    action,
+    rest,
+    onSuccess,
+    onFailure,
+    dataProvider,
+    dispatch,
+    store,
+    undoable,
+    logoutIfAccessDenied,
+}) => {
+    const resourceState = store.getState().admin.resources[resource];
+    if (canReplyWithCache(type, payload, resourceState)) {
+        return answerWithCache({
+            type,
+            payload,
+            resource,
+            action,
+            rest,
+            onSuccess,
+            resourceState,
+            dispatch,
+        });
+    }
+    return undoable
+        ? performUndoableQuery({
+              type,
+              payload,
+              resource,
+              action,
+              rest,
+              onSuccess,
+              onFailure,
+              dataProvider,
+              dispatch,
+              logoutIfAccessDenied,
+          })
+        : performQuery({
+              type,
+              payload,
+              resource,
+              action,
+              rest,
+              onSuccess,
+              onFailure,
+              dataProvider,
+              dispatch,
+              logoutIfAccessDenied,
+          });
 };
 
 /**
@@ -284,7 +329,7 @@ const performUndoableQuery = ({
                             warnBeforeClosingWindow
                         );
                     }
-                    dispatch(refreshView());
+                    replayOptimisticCalls();
                 })
                 .catch(error => {
                     if (window) {
@@ -332,6 +377,16 @@ const warnBeforeClosingWindow = event => {
     event.preventDefault(); // standard
     event.returnValue = ''; // Chrome
     return 'Your latest modifications are not yet sent to the server. Are you sure?'; // Old IE
+};
+
+// Replay calls recorded while in optimistic mode
+const replayOptimisticCalls = () => {
+    Promise.all(
+        optimisticCalls.map(params =>
+            Promise.resolve(doQuery.call(null, params))
+        )
+    );
+    optimisticCalls.splice(0, optimisticCalls.length);
 };
 
 /**
